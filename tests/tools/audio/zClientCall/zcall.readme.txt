@@ -1,0 +1,15 @@
+zClientCall command-line tool usage:
+	zcall [passive | HostNameOrIp] [-param1(optional)] [-param2(optional)] [-param3(optional)]
+
+	Parameters details:
+passive			Turns host to passive and acesible for the incoming call
+HostNameOrIp	A name or IP of host that was turned to passive
+-mic_in		 	InputStreamFile.pcm	A file that will be used for a simulation of a talk. Should be a 16kHz PCM
+-speak_out		OutputStreamFile.pcm	A file that will be used for recording the input stream. Will be a 16kHz PCM
+-run_time value	Number of seconds to run zclient_call
+		
+To interrupt zcall press 'q' 
+
+Examples:
+	Terminal1:  ./zcall passive -speak_out ./ReceivedStream.16kHz_pcm.wav -run_time 30
+	Terminal2:  ./zcall 127.0.0.1 -mic_in ./StreamToTransmit.16kHz_pcm.wav -run_time 30
