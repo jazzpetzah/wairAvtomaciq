@@ -1,0 +1,5 @@
+swipeInWindow.py how to
+terminal command:
+sudo chmod 777 swipeInWindow.py
+./swipeInWindow.py "iOS Simulator" 0.5 0.15 0.5 0.9
+limitation: currently correctly works only vertical swipe
