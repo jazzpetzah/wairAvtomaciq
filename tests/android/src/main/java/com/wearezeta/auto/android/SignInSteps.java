@@ -8,7 +8,7 @@ import com.wearezeta.auto.android.pages.LoginPage;
 import cucumber.api.java.*;
 import cucumber.api.java.en.*;
 
-public class SmokeTest {
+public class SignInSteps {
 	
 	 private LoginPage page;
 	 
