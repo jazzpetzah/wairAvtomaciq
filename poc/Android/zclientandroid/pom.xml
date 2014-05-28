@@ -16,10 +16,10 @@
           <version>2.41.0</version>    
       </dependency>
       <dependency>
-	<groupId>io.appium</groupId>
-	<artifactId>java-client</artifactId>
-	<version>1.2.0</version>
-</dependency>
+		<groupId>io.appium</groupId>
+		<artifactId>java-client</artifactId>
+		<version>1.2.0</version>
+	</dependency>
       
   </dependencies>
 </project>
