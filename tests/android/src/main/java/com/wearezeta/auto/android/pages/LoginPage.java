@@ -7,23 +7,25 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
+
+import com.wearezeta.auto.common.AndroidLocators;
 import com.wearezeta.auto.common.DriverUtils;
 
 public class LoginPage extends AndroidPage {
 	
-	@FindBy(how = How.CLASS_NAME, using = "android.support.v4.view.ViewPager")
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameLoginPage)
 	private WebElement viewPager;
 	
-	@FindBy(how = How.ID, using = "com.waz.zclient:id/button_sign_in")
+	@FindBy(how = How.ID, using = AndroidLocators.idSignInButton)
 	private WebElement signInButton;
 	
-	@FindBy(how = How.ID, using = "com.waz.zclient:id/button_login")
+	@FindBy(how = How.ID, using = AndroidLocators.idLoginButton)
 	private WebElement confirmSignInButton;
 	
-	@FindBy(how = How.ID, using = "com.waz.zclient:id/username_or_email")
+	@FindBy(how = How.ID, using = AndroidLocators.idLoginField)
 	private WebElement loginField;
 	
-	@FindBy(how = How.ID, using = "com.waz.zclient:id/password")
+	@FindBy(how = How.ID, using = AndroidLocators.idPasswodField)
 	private WebElement passwordField;
 	
 	private String login;
@@ -70,7 +72,7 @@ public class LoginPage extends AndroidPage {
 	
 	public boolean waitForLogin() {
 		
-		return DriverUtils.waitUntilElementDissapear(driver, By.id("com.waz.zclient:id/progressBar1"));
+		return DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.idLoginProgressBar));
 	}
 	
 	public Boolean isLoginFinished(String contact) {

@@ -14,28 +14,29 @@ import org.openqa.selenium.support.ui.Wait;
 
 import com.google.common.base.Function;
 import com.wearezeta.auto.common.DriverUtils;
+import com.wearezeta.auto.common.IOSLocators;
 
 public class LoginPage extends IOSPage {
 	
-	@FindBy(how = How.NAME, using = "ZClientMainWindow")
+	@FindBy(how = How.NAME, using = IOSLocators.nameLoginPage)
 	private WebElement viewPager;
 	
-	@FindBy(how = How.NAME, using = "SignIn")
+	@FindBy(how = How.NAME, using = IOSLocators.nameSignInButton)
 	private WebElement signInButton;
 	
-	@FindBy(how = How.NAME, using = "ConfirmSignIn")
+	@FindBy(how = How.NAME, using = IOSLocators.nameLoginButton)
 	private WebElement confirmSignInButton;
 	
-	@FindBy(how = How.NAME, using = "SignInEmail")
+	@FindBy(how = How.NAME, using = IOSLocators.nameLoginField)
 	private WebElement loginField;
 	
-	@FindBy(how = How.NAME, using = "SignInPassword")
+	@FindBy(how = How.NAME, using = IOSLocators.namePasswodField)
 	private WebElement passwordField;
 	
-	@FindBy(how = How.CLASS_NAME, using = "UIAAlert")
+	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameAlert)
 	private WebElement alert;
 	
-	@FindBy(how = How.NAME, using = "OK")
+	@FindBy(how = How.NAME, using = IOSLocators.nameAlertOK)
 	private WebElement alertOk;
 	
 	private String login;
@@ -82,7 +83,7 @@ public class LoginPage extends IOSPage {
 	
 	public boolean waitForLogin() {
 		 
-		 return DriverUtils.waitUntilElementDissapear(driver, By.name("SignInEmail"));
+		 return DriverUtils.waitUntilElementDissapear(driver, By.name(IOSLocators.nameLoginField));
 	}
 	
 	public Boolean isLoginFinished(String contact) {
