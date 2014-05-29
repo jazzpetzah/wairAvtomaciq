@@ -1,6 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
-import java.net.MalformedURLException;
+import java.io.IOException;
 import java.util.HashMap;
 
 import org.openqa.selenium.By;
@@ -32,7 +32,7 @@ public class LoginPage extends AndroidPage {
 	
 	private String password;
 	
-	public LoginPage(String URL, String path) throws MalformedURLException {
+	public LoginPage(String URL, String path) throws IOException {
 		
 		super(URL, path);
 	}

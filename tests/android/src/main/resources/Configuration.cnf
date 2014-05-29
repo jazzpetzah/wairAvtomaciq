@@ -1,0 +1,6 @@
+#Configuration file for Android tests
+#Configure before running tests
+Url=http://127.0.0.1:4723/wd/hub
+appPath=C:\zclient-release-2007.apk
+package=com.waz.zclient
+activity=.StartupScreenActivity
