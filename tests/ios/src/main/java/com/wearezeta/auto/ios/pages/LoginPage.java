@@ -13,6 +13,7 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
 import com.google.common.base.Function;
+import com.wearezeta.auto.common.DriverUtils;
 
 public class LoginPage extends IOSPage {
 	
@@ -80,20 +81,8 @@ public class LoginPage extends IOSPage {
 	}
 	
 	public boolean waitForLogin() {
-		 Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-			       .withTimeout(30, TimeUnit.SECONDS)
-			       .pollingEvery(2, TimeUnit.SECONDS)
-			       .ignoring(NoSuchElementException.class);
 		 
-		 
-		 Boolean bool = wait.until(new Function<WebDriver, Boolean>() {
-			 
-			 public Boolean apply(WebDriver driver) {
-			       return (driver.findElement(By.name("SignInEmail")) != null);
-			     }
-		 });
-		 
-		 return bool;
+		 return DriverUtils.waitUntilElementDissapear(driver, By.name("SignInEmail"));
 	}
 	
 	public Boolean isLoginFinished(String contact) {
