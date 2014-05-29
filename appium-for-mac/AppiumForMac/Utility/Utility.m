@@ -55,6 +55,17 @@
     return components.count > 1 ? (NSString*)[components objectAtIndex:0] : nil;
 }
 
++(NSString*) getItemFromPathForAttribute:(NSString*)path withSeparator:(NSString*)separator
+{
+    NSArray *components = [path componentsSeparatedByString:separator];
+    if (components.count < 2)
+    {
+        return nil;
+    }
+    components = [(NSString*)[components objectAtIndex:1] componentsSeparatedByString:@"/"];
+    return components.count > 0 ? (NSString*)[components objectAtIndex:0] : nil;
+}
+
 +(NSString*) getSessionIDFromPath:(NSString*)path
 {
     return [self getItemFromPath:path withSeparator:@"/session/"];
