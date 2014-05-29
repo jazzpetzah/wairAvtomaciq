@@ -1,6 +1,6 @@
 Feature: Sign In
 
-Scenario Outline: Sing in to ZClient
+Scenario Outline: Sign in to ZClient
 	Given I see sign in screen
 	When I press Sign in button
 	And I have entered login <Login>
