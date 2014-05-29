@@ -1,40 +1,37 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.net.MalformedURLException;
-import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
 
-import com.google.common.base.Function;
+import com.wearezeta.auto.common.DriverUtils;
+import com.wearezeta.auto.common.IOSLocators;
 
 public class LoginPage extends IOSPage {
 	
-	@FindBy(how = How.NAME, using = "ZClientMainWindow")
+	@FindBy(how = How.NAME, using = IOSLocators.nameLoginPage)
 	private WebElement viewPager;
 	
-	@FindBy(how = How.NAME, using = "SignIn")
+	@FindBy(how = How.NAME, using = IOSLocators.nameSignInButton)
 	private WebElement signInButton;
 	
-	@FindBy(how = How.NAME, using = "ConfirmSignIn")
+	@FindBy(how = How.NAME, using = IOSLocators.nameLoginButton)
 	private WebElement confirmSignInButton;
 	
-	@FindBy(how = How.NAME, using = "SignInEmail")
+	@FindBy(how = How.NAME, using = IOSLocators.nameLoginField)
 	private WebElement loginField;
 	
-	@FindBy(how = How.NAME, using = "SignInPassword")
+	@FindBy(how = How.NAME, using = IOSLocators.namePasswodField)
 	private WebElement passwordField;
 	
-	@FindBy(how = How.CLASS_NAME, using = "UIAAlert")
+	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameAlert)
 	private WebElement alert;
 	
-	@FindBy(how = How.NAME, using = "OK")
+	@FindBy(how = How.NAME, using = IOSLocators.nameAlertOK)
 	private WebElement alertOk;
 	
 	private String login;
@@ -80,20 +77,8 @@ public class LoginPage extends IOSPage {
 	}
 	
 	public boolean waitForLogin() {
-		 Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-			       .withTimeout(30, TimeUnit.SECONDS)
-			       .pollingEvery(2, TimeUnit.SECONDS)
-			       .ignoring(NoSuchElementException.class);
 		 
-		 
-		 Boolean bool = wait.until(new Function<WebDriver, Boolean>() {
-			 
-			 public Boolean apply(WebDriver driver) {
-			       return (driver.findElement(By.name("SignInEmail")) != null);
-			     }
-		 });
-		 
-		 return bool;
+		 return DriverUtils.waitUntilElementDissapear(driver, By.name(IOSLocators.nameLoginField));
 	}
 	
 	public Boolean isLoginFinished(String contact) {

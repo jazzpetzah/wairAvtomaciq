@@ -1,37 +1,38 @@
 package com.wearezeta.auto.android.pages;
 
-import java.net.MalformedURLException;
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
 
-import com.google.common.base.Function;
+import com.wearezeta.auto.common.AndroidLocators;
 import com.wearezeta.auto.common.DriverUtils;
 
 public class LoginPage extends AndroidPage {
 	
-	@FindBy(how = How.CLASS_NAME, using = "android.support.v4.view.ViewPager")
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameLoginPage)
 	private WebElement viewPager;
 	
-	@FindBy(how = How.CLASS_NAME, using = "android.widget.Button")
-	private List<WebElement> loginScreensButtons;
+	@FindBy(how = How.ID, using = AndroidLocators.idSignInButton)
+	private WebElement signInButton;
 	
-	@FindBy(how = How.CLASS_NAME, using = "android.widget.EditText")
-	private List<WebElement> inputFields;
+	@FindBy(how = How.ID, using = AndroidLocators.idLoginButton)
+	private WebElement confirmSignInButton;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idLoginField)
+	private WebElement loginField;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idPasswodField)
+	private WebElement passwordField;
 	
 	private String login;
 	
 	private String password;
 	
-	public LoginPage(String URL, String path) throws MalformedURLException {
+	public LoginPage(String URL, String path) throws IOException {
 		
 		super(URL, path);
 	}
@@ -43,14 +44,12 @@ public class LoginPage extends AndroidPage {
 	
 	public void SignIn() {
 		
-		 for(WebElement button : loginScreensButtons)
-		 {
-			 if(button.getText().equals("SIGN IN"))
-			 {
-				 button.click();
-				 break;
-			 }
-		 }
+		try {
+			signInButton.click();
+		}
+		catch(NoSuchElementException ex) {
+			confirmSignInButton.click();
+		}
 	}
 
 	public String getLogin() {
@@ -59,18 +58,7 @@ public class LoginPage extends AndroidPage {
 
 	public void setLogin(String login) {
 
-		 for(WebElement field : inputFields)
-		 {
-			 try {
-				 if(field.getText().equals("Email"))
-				 {
-					 field.sendKeys(login);
-				 }
-			 }
-			 catch(Exception ex){
-			 	continue;
-			 }
-		 }
+		DriverUtils.setTextForChildByClassName(loginField, "android.widget.EditText", login);
 	}
 
 	public String getPassword() {
@@ -79,35 +67,12 @@ public class LoginPage extends AndroidPage {
 
 	public void setPassword(String password) {
 		 
-		 for(WebElement field : inputFields)
-		 {
-			 try {
-				 if(DriverUtils.isNullOrEmpty(field.getText()))
-				 {
-					 field.sendKeys(password);
-				 }
-			 }
-			 catch(Exception ex) {
-			 	continue;
-			 }
-		 }
+		DriverUtils.setTextForChildByClassName(passwordField, "android.widget.EditText", password);
 	}
 	
 	public boolean waitForLogin() {
-		 Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-			       .withTimeout(30, TimeUnit.SECONDS)
-			       .pollingEvery(2, TimeUnit.SECONDS)
-			       .ignoring(NoSuchElementException.class);
-		 
-		 
-		 Boolean bool = wait.until(new Function<WebDriver, Boolean>() {
-			 
-			 public Boolean apply(WebDriver driver) {
-			       return (driver.findElements(By.className("android.widget.ProgressBar")).size() == 0);
-			     }
-		 });
-		 
-		 return bool;
+		
+		return DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.idLoginProgressBar));
 	}
 	
 	public Boolean isLoginFinished(String contact) {

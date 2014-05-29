@@ -1,6 +1,8 @@
 package com.wearezeta.auto.ios;
 
 import org.junit.Assert;
+
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.ios.pages.LoginPage;
 
 import cucumber.api.java.*;
@@ -12,9 +14,9 @@ public class SignInSteps {
 	 
 	 @Before
 	 public void setUp() throws Exception {
-	        String path = "/Users/admin/Downloads/ZClient.app";
+	        String path = CommonUtils.getAppPathFromConfig(SignInSteps.class);
 
-	        page = new LoginPage("http://192.168.159.128:4723/wd/hub", path);
+	        page = new LoginPage(CommonUtils.getUrlFromConfig(SignInSteps.class), path);
 	 }
 	 
 	 @After
@@ -35,19 +37,19 @@ public class SignInSteps {
 		 page.SignIn();
 	 }
 	 
-	 @When ("I have entered login \"(.*)\"")
+	 @When ("I have entered login (.*)")
 	 public void WhenIHaveEnteredLogin(String value) {
 		 
 		 page.setLogin(value);
 	 }
 	 
-	 @When ("I have entered password \"(.*)\"")
+	 @When ("I have entered password (.*)")
 	 public void WhenIHaveEnteredPassword(String value) {
 		 
 		 page.setPassword(value);
 	 }
 	 
-	 @Then ("Contact list appears with \"(.*)\" element")
+	 @Then ("Contact list appears with my name (.*)")
 	 public void ThenContactListAppears(String value) {
 		 
 		 Assert.assertTrue("Login finished", page.waitForLogin());
