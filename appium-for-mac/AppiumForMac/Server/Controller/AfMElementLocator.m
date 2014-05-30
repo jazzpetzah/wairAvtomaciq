@@ -101,8 +101,10 @@
     NSArray *elementsToSearch;
 	if (baseElement != nil)
     {
-        // search the children if this is an element
-        elementsToSearch = baseElement.AXChildren;
+        if ([baseElement.AXRole caseInsensitiveCompare:@"AXUnknown"] != NSOrderedSame) {
+            // search the children if this is an element
+            elementsToSearch = baseElement.AXChildren;
+        }
     }
     else
     {
