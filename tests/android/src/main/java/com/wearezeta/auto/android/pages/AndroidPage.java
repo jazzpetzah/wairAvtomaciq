@@ -2,12 +2,22 @@ package com.wearezeta.auto.android.pages;
 
 import java.io.IOException;
 
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 
+import com.wearezeta.auto.common.AndroidLocators;
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.DriverUtils;
+import com.wearezeta.auto.common.SwipeDirection;
 
-public class AndroidPage extends BasePage {
+
+public abstract class AndroidPage extends BasePage {
+	
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameLoginPage)
+	private WebElement content;
 	
 	public AndroidPage(String URL, String path) throws IOException {
 		
@@ -24,4 +34,35 @@ public class AndroidPage extends BasePage {
 		Runtime.getRuntime().exec("cmd /C adb shell am force-stop com.waz.zclient");
 		super.Close();
 	}
+	
+	public abstract AndroidPage returnBySwipe (SwipeDirection direction) throws IOException;
+	
+	@Override
+	public AndroidPage swipeLeft(int time) throws IOException
+	{
+		DriverUtils.swipeLeft(driver, content, time);
+		return returnBySwipe(SwipeDirection.LEFT);
+	}
+	
+	@Override
+	public AndroidPage swipeRight(int time) throws IOException
+	{
+		DriverUtils.swipeRight(driver, content, time);
+		return returnBySwipe(SwipeDirection.RIGHT);
+	}
+	
+	@Override
+	public AndroidPage swipeUp(int time) throws IOException
+	{
+		DriverUtils.swipeUp(driver, content, time);
+		return returnBySwipe(SwipeDirection.UP);
+	}
+	
+	@Override
+	public AndroidPage swipeDown(int time) throws IOException
+	{
+		DriverUtils.swipeDown(driver, content, time);
+		return returnBySwipe(SwipeDirection.DOWN);
+	}
+	
 }
