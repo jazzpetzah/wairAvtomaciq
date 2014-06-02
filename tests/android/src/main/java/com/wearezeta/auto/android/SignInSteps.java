@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.junit.Assert;
 
@@ -36,7 +37,7 @@ public class SignInSteps {
 	 }
 	 
 	 @When("I press Sign in button")
-	 public void WhenIPressSignInButton() {
+	 public void WhenIPressSignInButton() throws IOException {
 		 
 		 page.SignIn();
 	 }

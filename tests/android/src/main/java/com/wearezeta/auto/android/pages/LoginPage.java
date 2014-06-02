@@ -1,7 +1,7 @@
 package com.wearezeta.auto.android.pages;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.*;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -28,13 +28,19 @@ public class LoginPage extends AndroidPage {
 	@FindBy(how = How.ID, using = AndroidLocators.idPasswodField)
 	private WebElement passwordField;
 	
-	private String login;
+	@FindBy(how = How.ID, using = AndroidLocators.idWelcomeButtonsContainer)
+	private List<WebElement> welcomeButtonsContainer;
 	
+	private String login;
 	private String password;
+	private String url;
+	private String path;
 	
 	public LoginPage(String URL, String path) throws IOException {
 		
 		super(URL, path);
+		url = URL;
+		this.path = path;
 	}
 	
 	public Boolean isVisible() {
@@ -42,14 +48,19 @@ public class LoginPage extends AndroidPage {
 		return viewPager != null;
 	}
 	
-	public void SignIn() {
+	public AndroidPage SignIn() throws IOException {
+		
+		AndroidPage page = null;
 		
 		try {
 			signInButton.click();
+			page = this;
 		}
 		catch(NoSuchElementException ex) {
 			confirmSignInButton.click();
+			page = new ContactListPage(url, path);
 		}
+		return page;
 	}
 
 	public String getLogin() {
@@ -80,6 +91,16 @@ public class LoginPage extends AndroidPage {
 		HashMap<String,Integer> usersMap = DriverUtils.waitForElementWithTextByClassName("android.widget.TextView", driver);
 		
 		return usersMap.containsKey(contact);
+	}
+	
+	public Boolean isWelcomeButtonsExist(){
+		return welcomeButtonsContainer.size() > 0;
+	}
+
+	@Override
+	public AndroidPage returnBySwipe(SwipeDirection direction) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
