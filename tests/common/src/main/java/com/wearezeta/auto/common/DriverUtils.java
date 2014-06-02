@@ -1,15 +1,21 @@
 package com.wearezeta.auto.common;
 
 
+import io.appium.java_client.AppiumDriver;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
@@ -76,4 +82,28 @@ public class DriverUtils {
 		 return usersList;
 	 }
 
+	 public static void scrollToElement(RemoteWebDriver driver,WebElement element){
+		 JavascriptExecutor js = (JavascriptExecutor) driver;
+		 HashMap<String, String> scrollToObject = new HashMap<String, String>();
+		 scrollToObject.put("element",((RemoteWebElement) element).getId());
+		 js.executeScript("mobile: scrollTo", scrollToObject);
+	 }
+	 
+	 public static void swipeLeft(AppiumDriver driver,WebElement element, int time){
+		 Point coords = element.getLocation();
+		 Dimension elementSize = element.getSize();
+		 driver.swipe(coords.x+elementSize.width-20, coords.y+elementSize.height/2, coords.x+20, coords.y+elementSize.height/2, time);
+	 }
+	 
+	 public static void swipeRight(AppiumDriver driver,WebElement element, int time){
+		 Point coords = element.getLocation();
+		 Dimension elementSize = element.getSize();
+		 driver.swipe(coords.x, coords.y+elementSize.height/2, coords.x+elementSize.width+20, coords.y+elementSize.height/2, time);
+	 }
+	 
+	 public static void swipeUp(AppiumDriver driver,WebElement element, int time){
+		 Point coords = element.getLocation();
+		 Dimension elementSize = element.getSize();
+		 driver.swipe(coords.x+elementSize.width/2, coords.y+elementSize.height-200, coords.x+elementSize.width/2, coords.y+150, time);
+	 }
 }
