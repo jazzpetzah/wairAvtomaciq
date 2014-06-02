@@ -286,6 +286,8 @@
 		[element addAttribute:[GDataXMLElement attributeWithName:@"path" stringValue:path]];
 	}
 
+    if ([root.AXRole caseInsensitiveCompare:@"AXUnknown"] == NSOrderedSame) return;
+    
 	for (int i=0; i < root.AXChildren.count; i++)
 	{
 		PFUIElement *child = [root.AXChildren objectAtIndex:i];

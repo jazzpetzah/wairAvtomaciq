@@ -468,7 +468,9 @@
 
 	AfMElementLocator *locator = [AfMElementLocator locatorWithSession:session using:using value:value];
 
-	// initialize status as though no element were found
+	AfMElementLocator *windowLocator = [AfMElementLocator locatorWithSession:session using:@"xpath" value:@"//AXWindow"];
+    
+    // initialize status as though no element were found
 	int statusCode = kAfMStatusCodeNoSuchElement;
 	
 	if (locator != nil)
@@ -490,6 +492,46 @@
 			return [self respondWithJson:elements status:kAfMStatusCodeSuccess session:sessionId];
         }
 	}
+    
+    if (windowLocator != nil) {
+        NSMutableArray *windows = [NSMutableArray new];
+        [windowLocator findAllUsingBaseElement:nil results:windows statusCode:&statusCode];
+        if (windows.count > 0) {
+            PFUIElement *mainWindow = [windows objectAtIndex:0];
+            int startX = mainWindow.AXPosition.pointValue.x;
+            int startY = mainWindow.AXPosition.pointValue.y;
+            int endX = startX + mainWindow.AXSize.pointValue.x;
+            int endY = startY + mainWindow.AXSize.pointValue.y;
+            
+            NSMutableArray *elements = [NSMutableArray new];
+			
+            NSString* val = value;
+            if ([using caseInsensitiveCompare:@"xpath"] == NSOrderedSame) {
+                val = [value stringByReplacingOccurrencesOfString:@"/" withString:@""];
+            }
+            
+            NSMutableArray *addresses = [NSMutableArray new];
+            for (int i = startX; i < endX; i+=5) {
+                for (int j = startY; j < endY; j+=5) {
+                    NSError *error = nil;
+                    PFUIElement *newElement = [PFUIElement elementAtPoint:NSMakePoint(i, j) withDelegate:nil error:&error];
+                    if ([val caseInsensitiveCompare:newElement.AXRole] == NSOrderedSame) {
+                        NSString *addr = [NSString stringWithFormat:@"%p", &newElement];
+                        
+                        if (![addresses containsObject:addr]) {
+                            session.elementIndex++;
+                            NSString *myKey = [NSString stringWithFormat:@"%d", session.elementIndex];
+                            [session.elements setValue:newElement forKey:myKey];
+                            [elements addObject:[NSDictionary dictionaryWithObject:myKey forKey:@"ELEMENT"]];
+                            [addresses addObject:addr];
+                        }
+                    }
+                }
+            }
+            if (elements.count > 0)
+                return [self respondWithJson:elements status:kAfMStatusCodeSuccess session:sessionId];
+        }
+    }
 
     return [self respondWithJsonError:statusCode session:sessionId];
 }
@@ -521,6 +563,24 @@
             session.elementIndex++;
             NSString *myKey = [NSString stringWithFormat:@"%d", session.elementIndex];
             [session.elements setValue:element forKey:myKey];
+            if ([element.AXRole caseInsensitiveCompare:@"AXScrollBar"] == NSOrderedSame) {
+                NSValue* pos = element.AXPosition;
+                NSPoint pnt = pos.pointValue;
+
+                CGEventRef event = CGEventCreate(NULL);
+                CGPoint pt = CGEventGetLocation(event);
+                pt.x = pnt.x+2;
+                pt.y = pnt.y+2;
+                
+                CGEventRef click1_move = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, pt, kCGMouseButtonLeft);
+                CGEventPost(kCGHIDEventTap, click1_move);
+                CFRelease(click1_move);
+                
+                CGEventRef scroll1_scroll = CGEventCreateScrollWheelEvent(NULL, kCGScrollEventUnitPixel, 1, -10);
+                CGEventPost(kCGHIDEventTap, scroll1_scroll);
+                CFRelease(scroll1_scroll);
+
+            }
             return [self respondWithJson:[NSDictionary dictionaryWithObject:myKey forKey:@"ELEMENT"] status:kAfMStatusCodeSuccess session:sessionId];
         }
 	}
@@ -585,9 +645,7 @@
 	}
     
     BOOL result = [session clickElement:element];
- 
-    NSString* filename = element.AXFilename;
-    
+
     if (!result || [element.AXFilename isEqualToString:@"test.jpg"]) {
         NSValue* pos = element.AXPosition;
         NSPoint pnt = pos.pointValue;
@@ -601,9 +659,6 @@
             parent = parent.AXParent;
         }
         
-        int statusCode = kAfMStatusCodeSuccess;        // The data structure CGPoint represents a point in a two-dimensional
-        // coordinate system.  Here, X and Y distance from upper left, in pixels.
-        //
         CGEventRef event = CGEventCreate(NULL);
         CGPoint pt = CGEventGetLocation(event);
         pt.x = pnt.x;
@@ -613,20 +668,14 @@
                                                          NULL, kCGEventMouseMoved,
                                                          pt,
                                                          kCGMouseButtonLeft);
-        // Left button down at 250x250
-        CGEventRef click1_down = CGEventCreateMouseEvent(
-                                                         NULL, kCGEventLeftMouseDown,
-                                                         pt,
-                                                         kCGMouseButtonLeft
-                                                         );
-        // Left button up at 250x250
-        CGEventRef click1_up = CGEventCreateMouseEvent(
-                                                       NULL, kCGEventLeftMouseUp,
-                                                       pt,
-                                                       kCGMouseButtonLeft
-                                                       );
         
         CGEventPost(kCGHIDEventTap, click1_move);
+
+        CGEventRef click2_move = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, pt, kCGMouseButtonLeft);
+        CGEventRef click1_down = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, pt, kCGMouseButtonLeft);
+        CGEventRef click1_up = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseUp, pt, kCGMouseButtonLeft);
+
+        CGEventPost(kCGHIDEventTap, click2_move);
         CGEventPost(kCGHIDEventTap, click1_down);
         CGEventPost(kCGHIDEventTap, click1_up);
         
@@ -730,22 +779,9 @@
     pt.x = pnt.x;
     pt.y = pnt.y;
     
-    CGEventRef click1_move = CGEventCreateMouseEvent(
-                                                     NULL, kCGEventMouseMoved,
-                                                     pt,
-                                                     kCGMouseButtonLeft);
-    // Left button down at 250x250
-    CGEventRef click1_down = CGEventCreateMouseEvent(
-                                                     NULL, kCGEventLeftMouseDown,
-                                                     pt,
-                                                     kCGMouseButtonLeft
-                                                     );
-    // Left button up at 250x250
-    CGEventRef click1_up = CGEventCreateMouseEvent(
-                                                   NULL, kCGEventLeftMouseUp,
-                                                   pt,
-                                                   kCGMouseButtonLeft
-                                                   );
+    CGEventRef click1_move = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, pt, kCGMouseButtonLeft);
+    CGEventRef click1_down = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, pt, kCGMouseButtonLeft);
+    CGEventRef click1_up = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseUp, pt, kCGMouseButtonLeft);
     
     CGEventPost(kCGHIDEventTap, click1_move);
     CGEventPost(kCGHIDEventTap, click1_down);
@@ -905,7 +941,7 @@
     NSString *sessionId = [Utility getSessionIDFromPath:path];
     AfMSessionController *session = [self controllerForSession:sessionId];
     NSString *elementId = [Utility getElementIDFromPath:path];
-    NSString *attributeName = [Utility getItemFromPath:path withSeparator:@"/attribute/"];
+    NSString *attributeName = [Utility getItemFromPathForAttribute:path withSeparator:@"/attribute/"];
 
 	// get the element
     PFUIElement *element = [session.elements objectForKey:elementId];
@@ -1028,71 +1064,14 @@
 -(AppiumMacHTTPJSONResponse*) postMoveTo:(NSString*)path data:(NSData*)postData
 {
     NSString *sessionId = [Utility getSessionIDFromPath:path];
-//    AfMSessionController *session = [self controllerForSession:sessionId];
-//    NSDictionary *postParams = [self dictionaryFromPostData:postData];
-//    NSString *elementId = [Utility getElementIDFromPath:path];
-//    PFUIElement *rootElement = [session.elements objectForKey:elementId];
-//    NSString *using = (NSString*)[postParams objectForKey:@"using"];
-//    NSString *value = (NSString*)[postParams objectForKey:@"value"];
-    
-//	AfMElementLocator *locator = [AfMElementLocator locatorWithSession:session using:using value:value];
-    
-	// initialize status as though no element were found
-	int statusCode = kAfMStatusCodeNoSuchElement;
-
-//	if (locator != nil)
-//	{
-//		PFUIElement *element = [locator findUsingBaseElement:rootElement statusCode:&statusCode];
-//        if (element != nil)
-//        {
-//            session.elementIndex++;
-//            NSString *myKey = [NSString stringWithFormat:@"%d", session.elementIndex];
-//            [session.elements setValue:element forKey:myKey];
-//            return [self respondWithJson:[NSDictionary dictionaryWithObject:myKey forKey:@"ELEMENT"] status:kAfMStatusCodeSuccess session:sessionId];
-//        }
-//	}
-    
-    return [self respondWithJsonError:statusCode session:sessionId];
+    return [self respondWithJsonError:kAfMStatusCodeUnknownError session:sessionId];
 }
 
-// /session/:sessionId/click
+// POST /session/:sessionId/click
 -(AppiumMacHTTPJSONResponse*) postClick:(NSString*)path data:(NSData*)postData
 {
     NSString *sessionId = [Utility getSessionIDFromPath:path];
-    
-    AfMSessionController *session = [self controllerForSession:sessionId];
-    NSDictionary *postParams = [self dictionaryFromPostData:postData];
-    NSString *elementId = [Utility getElementIDFromPath:path];
-    PFUIElement *rootElement = [session.elements objectForKey:elementId];
-    NSString *button = (NSString*)[postParams objectForKey:@"button"];
-    
-    int statusCode = kAfMStatusCodeSuccess;        // The data structure CGPoint represents a point in a two-dimensional
-    // coordinate system.  Here, X and Y distance from upper left, in pixels.
-    //
-    CGEventRef event = CGEventCreate(NULL);
-    CGPoint pt = CGEventGetLocation(event);
-    
-    // Left button down at 250x250
-    CGEventRef click1_down = CGEventCreateMouseEvent(
-                                                     NULL, kCGEventRightMouseDown,
-                                                     pt,
-                                                     kCGMouseButtonRight
-                                                     );
-    // Left button up at 250x250
-    CGEventRef click1_up = CGEventCreateMouseEvent(
-                                                   NULL, kCGEventRightMouseUp,
-                                                   pt,
-                                                   kCGMouseButtonRight
-                                                   );
-    
-    CGEventPost(kCGHIDEventTap, click1_down);
-    CGEventPost(kCGHIDEventTap, click1_up);
-    
-    // Release the events
-    CFRelease(click1_up);
-    CFRelease(click1_down);
-    
-    return [self respondWithJsonError:statusCode session:sessionId];
+    return [self respondWithJsonError:kAfMStatusCodeUnknownError session:sessionId];
 }
 
 // /session/:sessionId/buttondown
