@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 
 import com.wearezeta.auto.common.AndroidLocators;
+import com.wearezeta.auto.common.SwipeDirection;
 
 public class InstructionsPage extends AndroidPage {
 
