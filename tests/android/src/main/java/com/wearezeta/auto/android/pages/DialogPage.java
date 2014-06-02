@@ -2,6 +2,8 @@ package com.wearezeta.auto.android.pages;
 
 import java.io.IOException;
 
+import com.wearezeta.auto.common.SwipeDirection;
+
 public class DialogPage extends AndroidPage{
 
 	public DialogPage(String URL, String path) throws IOException {

@@ -11,6 +11,7 @@ import com.wearezeta.auto.common.AndroidLocators;
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.DriverUtils;
+import com.wearezeta.auto.common.SwipeDirection;
 
 
 public abstract class AndroidPage extends BasePage {

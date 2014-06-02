@@ -8,6 +8,7 @@ import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.AndroidLocators;
+import com.wearezeta.auto.common.SwipeDirection;
 
 public class PersonalInfoPaga extends AndroidPage
 {

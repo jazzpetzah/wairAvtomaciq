@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 
 import org.openqa.selenium.By;
@@ -7,9 +8,11 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.common.IOSLocators;
+import com.wearezeta.auto.common.SwipeDirection;
 
 public class LoginPage extends IOSPage {
 	
@@ -38,9 +41,15 @@ public class LoginPage extends IOSPage {
 	
 	private String password;
 	
+	private String url;
+	
+	private String path;
+	
 	public LoginPage(String URL, String path) throws MalformedURLException {
 		
 		super(URL, path);
+		this.url = URL;
+		this.path = path;
 	}
 	
 	public Boolean isVisible() {
@@ -48,14 +57,21 @@ public class LoginPage extends IOSPage {
 		return viewPager != null;
 	}
 	
-	public void SignIn() {
+	public IOSPage SignIn() {
+		
+		IOSPage page = null;
 		
 		try {
 			signInButton.click();
+			page = this;
 		}
 		catch(NoSuchElementException ex) {
 			confirmSignInButton.click();
+			// TODO when implemented should be replaced by page = new ContactListPage (url, path);
+			page = null;
 		}
+		
+		return page;
 	}
 
 	public String getLogin() {
@@ -94,6 +110,17 @@ public class LoginPage extends IOSPage {
 		WebElement el = driver.findElement(By.name(contact));
 		
 		return el != null;
+	}
+
+	@Override
+	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
+		// no need to swipe
+		return null;
+	}
+	
+	public Boolean isWelcomeButtonsExist() {
+		
+		return (ExpectedConditions.visibilityOf(signInButton) != null);
 	}
 
 }
