@@ -82,28 +82,32 @@ public class DriverUtils {
 		 return usersList;
 	 }
 
-	 public static void scrollToElement(RemoteWebDriver driver,WebElement element){
+	 public static void scrollToElement(RemoteWebDriver driver, WebElement element) {
 		 JavascriptExecutor js = (JavascriptExecutor) driver;
 		 HashMap<String, String> scrollToObject = new HashMap<String, String>();
 		 scrollToObject.put("element",((RemoteWebElement) element).getId());
 		 js.executeScript("mobile: scrollTo", scrollToObject);
 	 }
 	 
-	 public static void swipeLeft(AppiumDriver driver,WebElement element, int time){
+	 public static void swipeLeft(AppiumDriver driver, WebElement element, int time) {
 		 Point coords = element.getLocation();
 		 Dimension elementSize = element.getSize();
-		 driver.swipe(coords.x+elementSize.width-20, coords.y+elementSize.height/2, coords.x+20, coords.y+elementSize.height/2, time);
+		 driver.swipe(coords.x+elementSize.width - 20, coords.y+elementSize.height / 2, coords.x + 20, coords.y + elementSize.height / 2, time);
 	 }
 	 
-	 public static void swipeRight(AppiumDriver driver,WebElement element, int time){
+	 public static void swipeRight(AppiumDriver driver, WebElement element, int time) {
 		 Point coords = element.getLocation();
 		 Dimension elementSize = element.getSize();
-		 driver.swipe(coords.x, coords.y+elementSize.height/2, coords.x+elementSize.width+20, coords.y+elementSize.height/2, time);
+		 driver.swipe(coords.x, coords.y + elementSize.height / 2, coords.x + elementSize.width+20, coords.y + elementSize.height / 2, time);
 	 }
 	 
-	 public static void swipeUp(AppiumDriver driver,WebElement element, int time){
+	 public static void swipeUp(AppiumDriver driver,WebElement element, int time) {
 		 Point coords = element.getLocation();
 		 Dimension elementSize = element.getSize();
-		 driver.swipe(coords.x+elementSize.width/2, coords.y+elementSize.height-200, coords.x+elementSize.width/2, coords.y+150, time);
+		 driver.swipe(coords.x+elementSize.width / 2, coords.y + elementSize.height - 200, coords.x + elementSize.width / 2, coords.y + 150, time);
+	 }
+	 
+	 public static void swipeDown(AppiumDriver driver,WebElement element, int time) {
+		 
 	 }
 }

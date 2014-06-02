@@ -37,22 +37,32 @@ public abstract class AndroidPage extends BasePage {
 	
 	public abstract AndroidPage returnBySwipe (SwipeDirection direction) throws IOException;
 	
+	@Override
 	public AndroidPage swipeLeft(int time) throws IOException
 	{
 		DriverUtils.swipeLeft(driver, content, time);
 		return returnBySwipe(SwipeDirection.LEFT);
 	}
 	
+	@Override
 	public AndroidPage swipeRight(int time) throws IOException
 	{
 		DriverUtils.swipeRight(driver, content, time);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 	
+	@Override
 	public AndroidPage swipeUp(int time) throws IOException
 	{
 		DriverUtils.swipeUp(driver, content, time);
 		return returnBySwipe(SwipeDirection.UP);
+	}
+	
+	@Override
+	public AndroidPage swipeDown(int time) throws IOException
+	{
+		DriverUtils.swipeDown(driver, content, time);
+		return returnBySwipe(SwipeDirection.DOWN);
 	}
 	
 }
