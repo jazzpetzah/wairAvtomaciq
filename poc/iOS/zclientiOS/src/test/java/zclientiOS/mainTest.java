@@ -1,5 +1,6 @@
 package zclientiOS;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
@@ -45,7 +46,7 @@ public class mainTest
 	 @Before
 	    public void setUp() throws Exception 
 	    {
-	        String appPath = "/Project/ZClient.app";
+	        String appPath = "/Project/ZClient_Debug_3f609be.ipa";
 	        DesiredCapabilities capabilities = new DesiredCapabilities();
 	        capabilities.setCapability("platformName", "iOS");
 	        capabilities.setCapability("app", appPath);
@@ -152,6 +153,11 @@ public class mainTest
 		 tableView.click();
 	 }
 	 
+	 public void SimulatorSwipePy() throws IOException
+	 {
+		 Runtime.getRuntime().exec("/usr/bin/open -a Terminal /Users/admin/./swipeInWindow.py");
+	 }
+	 
 	 public void WaitElementClickable(WebElement element) {
 		 WebDriverWait wait = new WebDriverWait(driver, 30);
 		 wait.until(ExpectedConditions.elementToBeClickable(element));
@@ -204,11 +210,29 @@ public class mainTest
 		 WebElement SearchBox = driver.findElementByName("textViewSearch");
 		 SearchBox.click();
 		 SearchBox.sendKeys(username);
-		 WebElement user = driver.findElementByXPath("//UIAApplication[1]/UIAWindow[1]/UIACollectionView[2]/UIACollectionCell[1]/UIAStaticText[1]");
+		 WebElement user = driver.findElementByName(username);
+		 user.click();
+	 }
+	 
+	 public void PickUserSimulator(String username) throws IOException
+	 {
+		 WebElement ZLogoImg = driver.findElementByName("PULL TO START CONVERSATION");
+		 SimulatorSwipePy();
+		 WebElement SearchBox = driver.findElementByName("textViewSearch");
+		 SearchBox.click();
+		 SearchBox.sendKeys(username);
+		 WebElement user = driver.findElementByName(username);
 		 user.click();
 	 }
 	 
 	 public void PickUserAndStartConversation(String username)
+	 {
+		 PickUser(username);
+		 WebElement CreateConversationBtn = driver.findElementByName("CREATE CONVERSATION");
+		 CreateConversationBtn.click();
+	 }
+	 
+	 public void PickUserAndStartConversationSimulator(String username)
 	 {
 		 PickUser(username);
 		 WebElement CreateConversationBtn = driver.findElementByName("CREATE CONVERSATION");
@@ -310,5 +334,23 @@ public class mainTest
 		 
 		 
 	 }
+	 
+	 @Test
+	 public void UserPickerSimulator()
+	 {
+		 LoginAs(login, password);
+		 
+		 DismissAlert();
+		
+		 PickUserAndStartConversationSimulator(conversation);		 
+		 
+		 SendMessage(testMessage);
+		 
+		 TapMainScreen();
+		 
+		 MessageValidation(testMessage);	 
+		 
+	 }
+	 
 	 
 }

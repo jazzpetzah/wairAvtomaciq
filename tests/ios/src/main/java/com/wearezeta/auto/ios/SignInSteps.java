@@ -2,31 +2,12 @@ package com.wearezeta.auto.ios;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.ios.pages.*;
-import com.wearezeta.auto.common.CommonUtils;
-
-import cucumber.api.java.*;
+import java.io.IOException;
+import org.junit.Assert;
+import com.wearezeta.auto.ios.pages.PagesCollection;
 import cucumber.api.java.en.*;
 
 public class SignInSteps {
-	
-	
-	 
-	 @Before
-	 public void setUp() throws Exception {
-		String path = CommonUtils.getAppPathFromConfig(SignInSteps.class);
-		if ( PagesCollection.loginPage == null)
-		{
-			PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(SignInSteps.class), path);
-		}
-	 }
-	 
-	 @After
-	 public void tearDown() throws Exception {
-
-		 PagesCollection.loginPage.Close();
-		 IOSPage.clearPagesCollection();
-	 }
 	 
 	 @Given ("I see sign in screen")
 	 public void GiveniSeeSignInScreen() {
@@ -35,7 +16,7 @@ public class SignInSteps {
 	 }
 	 
 	 @When("I press Sign in button")
-	 public void WhenIPressSignInButton() {
+	 public void WhenIPressSignInButton() throws IOException {
 		 
 		 PagesCollection.loginPage.SignIn();
 	 }
