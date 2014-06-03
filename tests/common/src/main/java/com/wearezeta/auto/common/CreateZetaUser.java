@@ -15,8 +15,6 @@ import java.util.Properties;
 import com.wearezeta.auto.common.misc.RegExUtil;
 import com.wearezeta.auto.common.misc.ShellCommandExecutor;
 
-;
-
 public class CreateZetaUser {
 	private static boolean error = false;
 	private static final String CREATE_USER_JSON = "curl -i -XPOST \"%s/register\" "
