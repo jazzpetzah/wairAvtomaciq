@@ -18,7 +18,7 @@ public final class IOSLocators {
 	
 	public static final String nameAlertOK = "OK";
 	
-	public static final String classNameContactListNames = "UIACollectionCell";
+	public static final String classNameContactListNames = "UIAStaticText";
 	
 	public static final String nameWelcomeLabel = "Welcome Thank you for joining us, you are now ready to go.";
 
@@ -28,6 +28,8 @@ public final class IOSLocators {
 
 	public static final String xpathUserProfileName = "//UIAApplication[1]/UIAWindow[1]/UIAElement[1]/UIATextView[1]";
 	
-	
+	public static final String classNameDialogMessages = "UIATableCell";
+
+	public static final String nameCursorInput = "ComposeControllerTextView";
 
 }
