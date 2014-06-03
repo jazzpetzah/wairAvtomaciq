@@ -10,7 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import com.wearezeta.auto.common.AndroidLocators;
 import com.wearezeta.auto.common.SwipeDirection;
 
-public class PersonalInfoPaga extends AndroidPage
+public class PersonalInfoPage extends AndroidPage
 {
 	@FindBy(how = How.ID, using = AndroidLocators.idEmailField)
 	private WebElement emailField;
@@ -18,7 +18,7 @@ public class PersonalInfoPaga extends AndroidPage
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameTextView)
 	private List<WebElement> optionsButtons;
 	
-	public PersonalInfoPaga(String URL, String path) throws IOException {
+	public PersonalInfoPage(String URL, String path) throws IOException {
 		super(URL, path);
 
 	}

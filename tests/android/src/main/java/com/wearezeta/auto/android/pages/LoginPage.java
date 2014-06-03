@@ -3,14 +3,11 @@ package com.wearezeta.auto.android.pages;
 import java.io.IOException;
 import java.util.*;
 
-import org.openqa.selenium.By;
+import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 
-import com.wearezeta.auto.common.AndroidLocators;
-import com.wearezeta.auto.common.DriverUtils;
-import com.wearezeta.auto.common.SwipeDirection;
+import com.wearezeta.auto.common.*;
 
 public class LoginPage extends AndroidPage {
 	

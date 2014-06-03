@@ -65,4 +65,13 @@ public abstract class AndroidPage extends BasePage {
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 	
+	public static void clearPagesCollection()
+	{
+		PagesCollection.androidPage = null;
+		PagesCollection.contactListPage = null;
+		PagesCollection.dialogPage = null;
+		PagesCollection.instructionsPage = null;
+		PagesCollection.loginPage = null;
+		PagesCollection.personalInfoPaga = null;
+	}
 }

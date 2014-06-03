@@ -16,13 +16,12 @@ public class ContactListPage extends AndroidPage {
 	@FindBy(how = How.ID, using = AndroidLocators.idInstructions)
 	private List<WebElement> instructions;
 	
-
 	private String url;
 	private String path;
 	
 	public ContactListPage(String URL, String path) throws IOException {
 		super(URL, path);
-		url = URL;
+		this.url = URL;
 		this.path = path;
 	}
 

@@ -37,7 +37,7 @@ public class InstructionsPage extends AndroidPage {
 			}
 			case LEFT:
 			{
-				page = new PersonalInfoPaga(url, path);
+				page = new PersonalInfoPage(url, path);
 				break;
 			}
 			case RIGHT:
