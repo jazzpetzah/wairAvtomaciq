@@ -32,9 +32,9 @@ public class ContactListPage extends IOSPage {
 		if(welcomeLabel.isDisplayed()){
 			page = new WelcomePage(url, path);
 		}
-		else
-			//TODO What is Dialogue?
-			return null;
+		else{
+			page = new DialogPage(url, path);
+		}
 		return page;
 	}
 	private WebElement findNameInContactList(String name)

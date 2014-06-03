@@ -10,6 +10,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.common.IOSLocators;
 import com.wearezeta.auto.common.SwipeDirection;
@@ -57,7 +58,7 @@ public class LoginPage extends IOSPage {
 		return viewPager != null;
 	}
 	
-	public IOSPage SignIn() {
+	public IOSPage SignIn() throws IOException{
 		
 		IOSPage page = null;
 		
@@ -67,10 +68,8 @@ public class LoginPage extends IOSPage {
 		}
 		catch(NoSuchElementException ex) {
 			confirmSignInButton.click();
-			// TODO when implemented should be replaced by page = new ContactListPage (url, path);
-			page = null;
+			page = new ContactListPage(url, path);
 		}
-		
 		return page;
 	}
 

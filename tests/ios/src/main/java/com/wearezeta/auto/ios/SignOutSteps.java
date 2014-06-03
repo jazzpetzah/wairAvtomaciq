@@ -12,69 +12,68 @@ import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.*;
 
-
 public class SignOutSteps {
 	
-	private LoginPage loginPage;
-	private ContactListPage contactListPage;
-	private WelcomePage welcomePage;
-	private PersonalInfoPage personalInfoPage;
-	private String path;
-
 	 @Before
 	 public void setUp() throws Exception {
 		 
 		String path = CommonUtils.getAppPathFromConfig(SignInSteps.class);
-		loginPage = new LoginPage(CommonUtils.getUrlFromConfig(SignOutSteps.class), path);
-
+		
+		if ( PagesCollection.loginPage == null)
+		{
+			PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(SignInSteps.class), path);
+		}
 	 }
 	 
 	 @After
 	 public void tearDown() throws Exception {
 
-		 loginPage.Close();
+		 PagesCollection.loginPage.Close();
+		 IOSPage.clearPagesCollection();
 	 }
+
 	 
 	@Given("^I Sign in using login (.*) and password (.*)$")
 	public void GivenISignIn(String login, String password) throws IOException  {
 		
-		 Assert.assertNotNull(loginPage.isVisible());
-		 loginPage =(LoginPage)(loginPage.SignIn());
-		 loginPage.setLogin(login);
-		 loginPage.setPassword(password);
-		 contactListPage =(ContactListPage)(loginPage.SignIn());
-		 Assert.assertTrue("Login finished", loginPage.waitForLogin());
+		 Assert.assertNotNull(PagesCollection.loginPage.isVisible());
+		 PagesCollection.loginPage =(LoginPage)(PagesCollection.loginPage.SignIn());
+		 PagesCollection.loginPage.setLogin(login);
+		 PagesCollection.loginPage.setPassword(password);
+		 PagesCollection.contactListPage =(ContactListPage)(PagesCollection.loginPage.SignIn());
+		 Assert.assertTrue("Login finished", PagesCollection.loginPage.waitForLogin());
 	}
 
 	@Given("^I see Contact list with my name (.*)$")
 	public void GivenISeeContactListWithMyName(String name){
-		 Assert.assertTrue(loginPage.isLoginFinished(name));
+		 Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 	}
 
 	@When("^I tap on name (.*)$")
 	public void WhenITapOnName(String name) throws IOException  {
-		welcomePage = (WelcomePage) contactListPage.tapOnName(name);
+		PagesCollection.iOSPage = PagesCollection.contactListPage.tapOnName(name);
 	}
 
-	@When("^I swipe to personal info screen$")
+	@When("^I swipe left to personal screen$")
 	public void WhenISwipeToPersonalInfoScreen() throws IOException {
-		personalInfoPage = (PersonalInfoPage)(welcomePage.swipeLeft(500));
-		personalInfoPage.waitForEmailFieldVisible();
+		PagesCollection.welcomePage = (WelcomePage)(PagesCollection.iOSPage);
+		PagesCollection.personalInfoPage = (PersonalInfoPage)(PagesCollection.welcomePage.swipeLeft(500));
+		PagesCollection.personalInfoPage.waitForEmailFieldVisible();
 	}
 
-	@When("^I pull up for options$")
+	@When("^I swipe up to bring up options$")
 	public void WhenIPullUpForOptions() throws IOException {
-		personalInfoPage.swipeUp(1000);
+		PagesCollection.personalInfoPage.swipeUp(1000);
 	}
 
-	@When("^I press options button (.*)$")
+	@When("^I press Sign out button (.*)$")
 	public void WhenIPressOptionsButton(String buttonName) throws Throwable {
-		personalInfoPage.tapOptionsButtonByText(buttonName);
+		PagesCollection.personalInfoPage.tapOptionsButtonByText(buttonName);
 	}
 
-	@Then("^I see welcome screen$")
-	public void ThenISeeWelcomeScreen() {
-	    Assert.assertTrue("We see welcome buttons", loginPage.isWelcomeButtonsExist());
+	@Then("^I see login in screen$")
+	public void ThenISeeLogInScreen() {
+	    Assert.assertTrue("I see login screen", PagesCollection.loginPage.isWelcomeButtonsExist());
 	}
 
 }

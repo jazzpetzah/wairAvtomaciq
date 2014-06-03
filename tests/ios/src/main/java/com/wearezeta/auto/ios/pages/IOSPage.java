@@ -65,8 +65,11 @@ public abstract class IOSPage extends BasePage {
 	public static void clearPagesCollection()
 	{
 		PagesCollection.iOSPage = null;
-
 		PagesCollection.loginPage = null;
+		PagesCollection.personalInfoPage = null;
+		PagesCollection.welcomePage = null;
+		PagesCollection.contactListPage = null;
+		PagesCollection.dialogPage = null;
 
 	}
 }
