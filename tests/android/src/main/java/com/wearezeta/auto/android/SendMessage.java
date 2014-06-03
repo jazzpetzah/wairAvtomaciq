@@ -1,17 +1,10 @@
 package com.wearezeta.auto.android;
 
-import java.io.File;
-
 import org.junit.Assert;
 
-import com.wearezeta.auto.android.pages.AndroidPage;
-import com.wearezeta.auto.android.pages.PagesCollection;
-import com.wearezeta.auto.android.pages.DialogPage;
-import com.wearezeta.auto.android.pages.LoginPage;
+import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.CommonUtils;
 
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
 import cucumber.api.java.en.*;
 
 public class SendMessage{

@@ -8,6 +8,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.common.IOSLocators;
@@ -59,5 +60,13 @@ public abstract class IOSPage extends BasePage {
 	{
 		DriverUtils.swipeDown(driver, content, time);
 		return returnBySwipe(SwipeDirection.DOWN);
+	}
+	
+	public static void clearPagesCollection()
+	{
+		PagesCollection.iOSPage = null;
+
+		PagesCollection.loginPage = null;
+
 	}
 }
