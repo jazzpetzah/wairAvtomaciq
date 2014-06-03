@@ -1,7 +1,10 @@
 package com.wearezeta.auto.ios;
 
+import java.io.File;
+
 import org.junit.Assert;
 
+import com.wearezeta.auto.ios.SignInSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.ios.pages.LoginPage;
 
@@ -14,9 +17,9 @@ public class SignInSteps {
 	 
 	 @Before
 	 public void setUp() throws Exception {
-	        String path = CommonUtils.getAppPathFromConfig(SignInSteps.class);
-
-	        page = new LoginPage(CommonUtils.getUrlFromConfig(SignInSteps.class), path);
+		 
+		String path = CommonUtils.getAppPathFromConfig(SignInSteps.class);
+		page = new LoginPage(CommonUtils.getUrlFromConfig(SignInSteps.class), path);
 	 }
 	 
 	 @After
