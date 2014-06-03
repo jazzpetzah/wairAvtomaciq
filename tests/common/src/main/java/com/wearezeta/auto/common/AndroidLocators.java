@@ -25,4 +25,8 @@ public final class AndroidLocators {
 	public static final String idEmailField = "com.waz.zclient:id/email";
 	
 	public static final String idWelcomeButtonsContainer = "com.waz.zclient:id/welcome_buttons";
+	
+	public static final String idCursorInput = "com.waz.zclient:id/cursor_input";
+	
+	public static final String idDialogMessages = "com.waz.zclient:id/message";
 }

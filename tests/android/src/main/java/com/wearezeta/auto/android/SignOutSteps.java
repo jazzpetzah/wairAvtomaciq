@@ -13,69 +13,71 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.*;
 
 
-public class SignOutSteps {
-	
-	private LoginPage loginPage;
-	private ContactListPage contactListPage;
-	private InstructionsPage instructionsPage;
-	private PersonalInfoPaga personalInfoPaga;
-	private String path;
+public class SignOutSteps{
 
+	private String path;
+	
 	 @Before
 	 public void setUp() throws Exception {
 		 
-	        File app = new File(CommonUtils.getAppPathFromConfig(SignOutSteps.class));
+	        File app = new File(CommonUtils.getAppPathFromConfig(TestRun.class));
 	        path = app.getAbsolutePath();
-	        loginPage = new LoginPage(CommonUtils.getUrlFromConfig(SignOutSteps.class), path);
-
+	        if ( PagesCollection.loginPage == null)
+	        	{
+	        		PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(TestRun.class), path);
+	        	}
+	        	
 	 }
 	 
 	 @After
 	 public void tearDown() throws Exception {
 
-		 loginPage.Close();
+		 PagesCollection.loginPage.Close();
+		 AndroidPage.clearPagesCollection();
 	 }
+	 
 	 
 	@Given("^I Sign in using login (.*) and password (.*)$")
 	public void GivenISignIn(String login, String password) throws IOException  {
 		
-		 Assert.assertNotNull(loginPage.isVisible());
-		 loginPage =(LoginPage)(loginPage.SignIn());
-		 loginPage.setLogin(login);
-		 loginPage.setPassword(password);
-		 contactListPage =(ContactListPage)(loginPage.SignIn());
-		 Assert.assertTrue("Login finished", loginPage.waitForLogin());
+		 Assert.assertNotNull(PagesCollection.loginPage.isVisible());
+		 PagesCollection.loginPage =(LoginPage)(PagesCollection.loginPage.SignIn());
+		 PagesCollection.loginPage.setLogin(login);
+		 PagesCollection.loginPage.setPassword(password);
+		 PagesCollection.contactListPage =(ContactListPage)(PagesCollection.loginPage.SignIn());
+		 Assert.assertTrue("Login finished", PagesCollection.loginPage.waitForLogin());
 	}
 
 	@Given("^I see Contact list with my name (.*)$")
 	public void GivenISeeContactListWithMyName(String name){
-		 Assert.assertTrue(loginPage.isLoginFinished(name));
+		 Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 	}
 
 	@When("^I tap on name (.*)$")
 	public void WhenITapOnName(String name) throws IOException  {
-		instructionsPage = (InstructionsPage) contactListPage.tapOnName(name);
+		PagesCollection.androidPage = PagesCollection.contactListPage.tapOnName(name);
 	}
 
 	@When("^I swipe to personal info screen$")
 	public void WhenISwipeToPersonalInfoScreen() throws IOException {
-		personalInfoPaga = (PersonalInfoPaga)(instructionsPage.swipeLeft(500));
-		personalInfoPaga.waitForEmailFieldVisible();
+		PagesCollection.instructionsPage = (InstructionsPage) PagesCollection.androidPage;
+		PagesCollection.personalInfoPaga = (PersonalInfoPage)(PagesCollection.instructionsPage.swipeLeft(500));
+		PagesCollection.personalInfoPaga.waitForEmailFieldVisible();
 	}
 
 	@When("^I pull up for options$")
 	public void WhenIPullUpForOptions() throws IOException {
-		personalInfoPaga.swipeUp(1000);
+		PagesCollection.personalInfoPaga.swipeUp(1000);
 	}
 
 	@When("^I press options button (.*)$")
 	public void WhenIPressOptionsButton(String buttonName) throws Throwable {
-		personalInfoPaga.tapOptionsButtonByText(buttonName);
+		PagesCollection.personalInfoPaga.tapOptionsButtonByText(buttonName);
 	}
 
 	@Then("^I see welcome screen$")
 	public void ThenISeeWelcomeScreen() {
-	    Assert.assertTrue("We see welcome buttons", loginPage.isWelcomeButtonsExist());
+	    Assert.assertTrue("We see welcome buttons", PagesCollection.loginPage.isWelcomeButtonsExist());
 	}
 
 }

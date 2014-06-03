@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
+import java.util.UUID;
 
 public class CommonUtils {
 	
@@ -48,6 +49,11 @@ public class CommonUtils {
 	public static String getAndroidPackageFromConfig(Class c) throws IOException {
 
         return getValueFromConfig(c, "package");
+	}
+	
+	public static String generateGUID()
+	{
+		return UUID.randomUUID().toString();
 	}
 
 }
