@@ -1,5 +1,6 @@
 Feature: Send Message
   
+  @torun
   Scenario Outline: Send Message to user from my contact list
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

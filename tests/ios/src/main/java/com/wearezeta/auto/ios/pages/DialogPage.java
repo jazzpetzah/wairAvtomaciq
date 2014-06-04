@@ -51,7 +51,7 @@ public class DialogPage extends IOSPage{
 	}
 	
 	private String GetLastMessage(List<WebElement> chatList) {
-		String lastMessageXPath = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[" + chatList.size() + "]/UIATextView[1]";
+		String lastMessageXPath = String.format(IOSLocators.xpathLastMessageFormat, chatList.size());
 		WebElement el = driver.findElementByXPath(lastMessageXPath);
 		String lastMessage = el.getText();
 		return lastMessage;
