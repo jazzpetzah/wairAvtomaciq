@@ -7,7 +7,7 @@ import com.wearezeta.auto.common.CommonUtils;
 
 import cucumber.api.java.en.*;
 
-public class Conversation{
+public class DialogPageSteps{
 
 	private String message; 
 
