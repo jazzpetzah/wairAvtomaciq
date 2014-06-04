@@ -7,7 +7,7 @@ import com.wearezeta.auto.common.CommonUtils;
 
 import cucumber.api.java.en.*;
 
-public class SendMessage{
+public class DialogPageSteps{
 
 	private String message; 
 
@@ -32,13 +32,20 @@ public class SendMessage{
 	public void WhenIPressSend() throws Throwable {
 		PagesCollection.dialogPage.typeMessage("\\n");
 	}
+	
+	@When("^I multi tap on bottom part of the screen$")
+	public void WhenIMultiTapOnBottomPartOfTheScreen() throws Throwable {
+		PagesCollection.dialogPage.multiTapOnCursorInput();
+	}
+	@Then("^I see Hello message in the dialog$")
+	public void ThenISeeHelloMessageInTheDialog() throws Throwable {
+		Assert.assertTrue(PagesCollection.dialogPage.isknockAnimationExist());
+	}
 
 	@Then("^I see my message in the dialog$")
 	public void ThenISeeMyMessageInTheDialog() throws Throwable {
-		String dialogMessage = PagesCollection.dialogPage.getLastMessageFromDialog();
-		System.out.println("Last message from the dialog\"" + dialogMessage + "\"");
-		System.out.println("Generated message\"" + message.trim() + "\"");
-		Assert.assertTrue(dialogMessage.equals(message.trim()));
+		PagesCollection.dialogPage.waitForMessage();
+		Assert.assertTrue(PagesCollection.dialogPage.getLastMessageFromDialog().equals(message.trim()));
 	}
 
 }

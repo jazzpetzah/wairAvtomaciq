@@ -112,4 +112,24 @@ public class DriverUtils {
 		 Dimension elementSize = element.getSize();
 		 driver.swipe(coords.x+elementSize.width / 2, coords.y + 150, coords.x + elementSize.width / 2, coords.y + elementSize.height - 200, time);
 	 }
+	 
+	 public static void androidMultiTap(AppiumDriver driver,WebElement element, int tapNumber) throws InterruptedException
+	 {
+		 Point coords = element.getLocation();
+			Dimension elementSize = element.getSize();
+			
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			HashMap<String, Double> tapObject = new HashMap<String, Double>();
+			tapObject.put("tapCount", (double) 1);
+			tapObject.put("touchCount", (double) 1);
+			tapObject.put("duration", 0.2);
+			tapObject.put("x", (double) (coords.x + elementSize.width/2));
+			tapObject.put("y", (double) (coords.y + elementSize.height/2));
+	        
+	        for(int i=0;i<tapNumber;i++)
+	        { 
+	        	js.executeScript("mobile: tap", tapObject);
+	        	Thread.sleep(100);
+	        }
+	 }
 }

@@ -1,6 +1,6 @@
 #Configuration file for Android tests
 #Configure before running tests
 Url=http://127.0.0.1:4723/wd/hub
-appPath=C:\\Selendroid\\zclient-release-2007.apk
+appPath=C:\\Selendroid\\zclient-release-2008.apk
 package=com.waz.zclient
 activity=.StartupScreenActivity
