@@ -14,7 +14,7 @@ public class ContactListPage extends IOSPage {
 	private List<WebElement> contactListNames;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameWelcomeLabel)
-	private WebElement welcomeLabel;
+	private List<WebElement> welcomeLabel;
 	
 
 	private String url;
@@ -29,7 +29,7 @@ public class ContactListPage extends IOSPage {
 	public IOSPage tapOnName(String name) throws IOException{
 		IOSPage page = null;
 		findNameInContactList(name).click();
-		if(welcomeLabel.isDisplayed()){
+		if(welcomeLabel.size() > 0  && welcomeLabel.get(0).isDisplayed()){
 			page = new WelcomePage(url, path);
 		}
 		else{
