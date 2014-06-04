@@ -34,7 +34,7 @@ public class mainTest
 	 private static String login = "maksym.kuvshynov@wearezeta.com";
 	 private static String userName = "Maxim";
 	 private static String contactName = "Piotr";
-	 private static String password ="25ef24ss";
+	 private static String password ="123456";
 	 
 	 @Before
 	    public void setUp() throws Exception 

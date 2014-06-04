@@ -18,8 +18,13 @@ public class DialogPage extends AndroidPage{
 	@FindBy(how = How.ID, using = AndroidLocators.idDialogMessages)
 	private List<WebElement> messagesList;
 	
+	@FindBy(how = How.ID, using = AndroidLocators.idKnockAnimation)
+	private List<WebElement> knockAnimation;
+	
+	
 	private String url;
 	private String path;
+	private int initMessageCount;
 	
 	public DialogPage(String URL, String path) throws IOException {
 		super(URL, path);
@@ -31,11 +36,17 @@ public class DialogPage extends AndroidPage{
 	public void waitForCursorInputVisible(){
 		
 		wait.until(ExpectedConditions.visibilityOf(cursorInput));
+		initMessageCount = messagesList.size();
 	}
 	
 	public void tapOnCursorInput()
 	{
 		cursorInput.click();
+	}
+	
+	public void multiTapOnCursorInput() throws InterruptedException
+	{
+		DriverUtils.androidMultiTap(driver, cursorInput, 3);
 	}
 	
 	public void typeMessage(String message)
@@ -44,9 +55,15 @@ public class DialogPage extends AndroidPage{
 	}
 
 	public String getLastMessageFromDialog()
+
 	{
 		return messagesList.get(messagesList.size()-1).getText();
 	}
+	
+	public Boolean isknockAnimationExist(){
+		return knockAnimation.size() > 0;
+	}
+	
 	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws IOException {
 		AndroidPage page = null;
@@ -73,4 +90,15 @@ public class DialogPage extends AndroidPage{
 		return page;
 	}
 
+	public void waitForMessage() throws InterruptedException
+	{
+		for(int i = 0; i < 10 ; i++)
+		{
+			if(initMessageCount<messagesList.size())
+			{
+				break;
+			}
+			Thread.sleep(200);
+		}
+	}
 }
