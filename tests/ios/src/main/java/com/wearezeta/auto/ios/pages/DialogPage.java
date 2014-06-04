@@ -15,8 +15,14 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.nameCursorInput)
 	private WebElement cursorInput;
 	
+	@FindBy(how = How.NAME, using = IOSLocators.nameTextInput)
+	private WebElement textInput;
+	
 	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameDialogMessages)
 	private List<WebElement> messagesList;
+	
+	//@FindBy(how = How.XPATH, using = GetLastMessage(messagesList))
+	//private WebElement lastMessage;
 	
 	private String url;
 	private String path;
@@ -27,7 +33,7 @@ public class DialogPage extends IOSPage{
 		this.url = URL;
 		this.path = path;
 	}
-	
+
 	public void waitForCursorInputVisible(){
 		
 		wait.until(ExpectedConditions.visibilityOf(cursorInput));
@@ -38,14 +44,25 @@ public class DialogPage extends IOSPage{
 		cursorInput.click();
 	}
 	
+	public void waitForTextMessageInputVisible(){
+		wait.until(ExpectedConditions.visibilityOf(textInput));
+	}
+	
 	public void typeMessage(String message)
 	{
-		cursorInput.sendKeys(message);
+		textInput.sendKeys(message);
+	}
+	
+	private String GetLastMessage(List<WebElement> chatList) {
+		String lastMessageXPath = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[" + chatList.size() + "]/UIATextView[1]";
+		WebElement el = driver.findElementByXPath(lastMessageXPath);
+		String lastMessage = el.getText();
+		return lastMessage;
 	}
 
 	public String getLastMessageFromDialog()
 	{
-		return messagesList.get(messagesList.size()-1).getText();
+		return GetLastMessage(messagesList);
 	}
 	@Override
 	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
