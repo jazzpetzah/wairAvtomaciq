@@ -21,9 +21,6 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameDialogMessages)
 	private List<WebElement> messagesList;
 	
-	//@FindBy(how = How.XPATH, using = GetLastMessage(messagesList))
-	//private WebElement lastMessage;
-	
 	private String url;
 	private String path;
 	
@@ -64,6 +61,7 @@ public class DialogPage extends IOSPage{
 	{
 		return GetLastMessage(messagesList);
 	}
+	
 	@Override
 	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
 		IOSPage page = null;

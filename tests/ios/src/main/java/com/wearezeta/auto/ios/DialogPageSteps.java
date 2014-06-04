@@ -1,18 +1,15 @@
 package com.wearezeta.auto.ios;
 
-import java.io.IOException;
-
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
-import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 
-import cucumber.api.java.en.*;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 
-public class SendMessageSteps {
+public class DialogPageSteps {
 	
 	private String message;
 	
