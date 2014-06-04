@@ -1,4 +1,3 @@
-@torun
 Feature: Send Message
   
   Scenario Outline: Send Message to user from my contact list
