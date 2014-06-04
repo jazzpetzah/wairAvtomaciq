@@ -29,4 +29,6 @@ public final class AndroidLocators {
 	public static final String idCursorInput = "com.waz.zclient:id/cursor_input";
 	
 	public static final String idDialogMessages = "com.waz.zclient:id/message";
+	
+	public static final String idKnockAnimation = "com.waz.zclient:id/knock_anim";
 }
