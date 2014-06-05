@@ -1,4 +1,4 @@
-package com.wearezeta.auto.ios;
+package com.wearezeta.auto.osx;
 
 import org.junit.runner.RunWith;
 
@@ -7,7 +7,7 @@ import cucumber.api.junit.Cucumber;
 
 
 @RunWith(Cucumber.class)
-@CucumberOptions(format = {"html:report"})
+@CucumberOptions(format = {"html:report"} )
 public class TestRun {
 
 }

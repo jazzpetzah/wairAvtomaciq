@@ -29,7 +29,7 @@ public class LoginPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameLoginField)
 	private WebElement loginField;
 	
-	@FindBy(how = How.NAME, using = IOSLocators.namePasswodField)
+	@FindBy(how = How.NAME, using = IOSLocators.namePasswordField)
 	private WebElement passwordField;
 	
 	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameAlert)

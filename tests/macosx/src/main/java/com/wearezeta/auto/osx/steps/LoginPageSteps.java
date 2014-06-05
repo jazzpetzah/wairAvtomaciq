@@ -1,0 +1,68 @@
+package com.wearezeta.auto.osx.steps;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+
+import org.junit.Assert;
+import org.openqa.selenium.NoSuchElementException;
+
+import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.osx.pages.ContactListPage;
+import com.wearezeta.auto.osx.pages.LoginPage;
+
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
+
+public class LoginPageSteps {
+	@Given ("I Sign in using login (.*) and password (.*)")
+	public void GivenISignInUsingLoginAndPassword(String login, String password) throws IOException {
+		try {
+			LoginPage loginPage = CommonSteps.senderPages.getLoginPage();
+			Assert.assertNotNull(loginPage.isVisible());
+			loginPage.setLogin(login);
+			loginPage.setPassword(password);
+			loginPage.SignIn();
+			Assert.assertTrue("Failed to login", loginPage.waitForLogin());
+			loginPage.Close();
+		} catch (NoSuchElementException e) { }
+		
+		CommonSteps.senderPages.setContactListPage(new ContactListPage(
+				CommonUtils.getUrlFromConfig(ContactListPage.class),
+				CommonUtils.getAppPathFromConfig(ContactListPage.class)));
+	 }
+	
+	 @When("I press Sign In button")
+	 public void WhenIPressSignInButton() throws IOException {	 
+		 CommonSteps.senderPages.getLoginPage().SignIn();
+	 }
+	 
+	 @When ("I have entered login (.*)")
+	 public void WhenIHaveEnteredLogin(String value) {
+		 CommonSteps.senderPages.getLoginPage().setLogin(value);
+	 }
+	 
+	 @When ("I have entered password (.*)")
+	 public void WhenIHaveEnteredPassword(String value) {
+		 CommonSteps.senderPages.getLoginPage().setPassword(value);
+	 }
+	 
+	 @Given ("I see Sign In screen")
+	 public void GivenISeeSignInScreen() {
+		 Assert.assertNotNull(CommonSteps.senderPages.getLoginPage().isVisible());
+	 }
+	 
+	 @Given ("I am signed out from ZClient")
+	 public void GivenIAmSignedOutFromZClient() throws MalformedURLException, IOException {
+		 CommonSteps.senderPages.setContactListPage(new ContactListPage(
+					CommonUtils.getUrlFromConfig(ContactListPage.class),
+					CommonUtils.getAppPathFromConfig(ContactListPage.class)));
+		 CommonSteps.senderPages.getContactListPage().SignOut();
+	 }
+	 
+	 @Then("I have returned to Sign In screen")
+	 public void ThenISeeSignInScreen() {
+		 Assert.assertTrue("Failed to logout", CommonSteps.senderPages.getContactListPage().waitForSignOut());
+		 Assert.assertTrue(CommonSteps.senderPages.getContactListPage().isSignOutFinished());
+	 }
+}
