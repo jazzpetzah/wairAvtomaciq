@@ -1,0 +1,4 @@
+#Configuration file for IOS tests
+#Configure before running tests
+Url=http://127.0.0.1:4622/wd/hub
+appPath=ZClient
