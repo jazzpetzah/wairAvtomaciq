@@ -118,7 +118,8 @@ public class CreateZetaUser {
 				return null;
 			}
 		}
-		String regMail = setRegMail(mail, nextSuffix);
+		String regMail = null;
+		if (!error) regMail = setRegMail(mail, nextSuffix);
 		return regMail;
 	}
 	
