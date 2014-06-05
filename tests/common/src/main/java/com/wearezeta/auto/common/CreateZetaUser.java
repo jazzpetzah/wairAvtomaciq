@@ -25,21 +25,9 @@ public class CreateZetaUser {
 	private static final String MAIL_SERVER = "imap.gmail.com";
 	private static final String MAIL_PROTOCOL= "imaps";
 	
-//	private static String mail;
-//	private static String password;
-//	private static String backend_url;
-//	public static void main(String[] args) {
-//	  
-//	  mail = "smoketester@wearezeta.com"; 				// smoketester@wearezeta.com
-//	  password = "aqa123456"; 							// aqa123456
-//	  backend_url = "https://armada-dev.z-infra.com"; 	//new backend:https://dev-nginz-https.zinfra.io
-//	  													//old backend: https://armada-dev.z-infra.com
-//	   registerUser(mail, password, backend_url);
-//
-//	  }
-	 
 	/**
-	 * 
+	 *  Registers new zeta user and returns its mail.
+	 *  
 	 * @param mail
 	 *            = smoketester@wearezeta.com
 	 * @param password
@@ -48,7 +36,19 @@ public class CreateZetaUser {
 	 *            = "https://armada-dev.z-infra.com" (old backend) <br>
 	 *            https://dev-nginz-https.zinfra.io (new backend)
 	 */
-	public static void registerUser(String mail, String password, String backendUrl) {
+//	private static String mail;
+//	private static String password;
+//	private static String backend_url;
+//	public static void main(String[] args) {
+//	  
+//	  mail = "smoketester@wearezeta.com"; 				// smoketester@wearezeta.com
+//	  password = "aqa123456"; 							// aqa123456
+//	  backend_url = "dev-nginz-https.zinfra.io"; 	//new backend:https://dev-nginz-https.zinfra.io
+//	  													//old backend: https://armada-dev.z-infra.com
+//	  String test=registerUserAndReturnMail(mail, password, backend_url);
+//	  System.out.println("Registerd mail: "+test); 
+//	  }
+	public static String registerUserAndReturnMail(String mail, String password, String backendUrl) {
 		String lastSuffix = null;
 		String nextSuffixId = "1";
 		String lastSuffixName = "aqa";
@@ -108,14 +108,20 @@ public class CreateZetaUser {
 						setActRequest(regURL), "expired");
 				System.out.println("\nSuccess!\nUser " + setRegMail(mail, nextSuffix)
 						+ " activated.");
+				String regMail = setRegMail(mail, nextSuffix);
+				return regMail;
 			} catch (IOException e) {
 				e.printStackTrace();
+				return null;
 			} catch (InterruptedException e) {
 				e.printStackTrace();
+				return null;
 			}
 		}
+		String regMail = setRegMail(mail, nextSuffix);
+		return regMail;
 	}
-
+	
 	private static String setRegMail(String basemail, String suffix) {
 		String genmail = basemail.split("@")[0].concat("+").concat(suffix)
 				.concat("@").concat(basemail.split("@")[1]);
