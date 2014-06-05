@@ -12,7 +12,7 @@ public final class IOSLocators {
 	
 	public static final String nameLoginField = "SignInEmail";
 	
-	public static final String namePasswodField = "SignInPassword";
+	public static final String namePasswordField = "SignInPassword";
 	
 	public static final String classNameAlert = "UIAAlert";
 	
