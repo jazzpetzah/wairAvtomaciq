@@ -72,8 +72,8 @@
     
     <dependency>
         <groupId>com.atlassian.jira</groupId>
-        <artifactId>jira-rest-java-client</artifactId>
-        <version>2.0.0-m2</version>
+        <artifactId>jira-rest-java-client-api</artifactId>
+        <version>2.0.0-m30</version>
                     <exclusion>
                     <!--
                      Not excluding this will pull in both stax:stax-api:1.0.1 and javax.xml.stream:stax-api:1.0.2
@@ -85,10 +85,28 @@
                 </exclusion>
     </dependency>
     
+    <dependency>
+  <groupId>com.atlassian.jira</groupId>
+  <artifactId>jira-rest-java-client-core</artifactId>
+  <version>2.0.0-m30</version>
+</dependency>
+
+<dependency>
+	<groupId>org.apache.httpcomponents</groupId>
+	<artifactId>httpcore</artifactId>
+	<version>4.3.2</version>
+</dependency>
+    
 <dependency>
 	<groupId>com.sun.mail</groupId>
 	<artifactId>javax.mail</artifactId>
 	<version>1.5.2</version>
+</dependency>
+
+<dependency>
+    <groupId>com.google.guava</groupId>
+    <artifactId>guava</artifactId>
+    <version>17.0</version>
 </dependency>
 	
   </dependencies>
