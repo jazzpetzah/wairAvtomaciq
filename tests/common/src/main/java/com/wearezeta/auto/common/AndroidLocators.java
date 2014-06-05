@@ -31,4 +31,10 @@ public final class AndroidLocators {
 	public static final String idDialogMessages = "com.waz.zclient:id/message";
 	
 	public static final String idKnockAnimation = "com.waz.zclient:id/knock_anim";
+	
+	public static final String idDialogTakePhotoButton = "com.waz.zclient:id/button_take_picture";
+	
+	public static final String idDialogOkButton = "com.waz.zclient:id/button_ok";
+	
+	public static final String idDialogImages = "com.waz.zclient:id/image_message_view";
 }

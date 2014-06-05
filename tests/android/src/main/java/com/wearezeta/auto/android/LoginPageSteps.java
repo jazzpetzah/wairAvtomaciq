@@ -51,7 +51,7 @@ public class LoginPageSteps {
 	 
 	 @Then("^I see welcome screen$")
 		public void ThenISeeWelcomeScreen() {
-		    Assert.assertTrue("We see welcome buttons", PagesCollection.loginPage.isWelcomeButtonsExist());
+		    Assert.assertTrue("We don't see welcome buttons", PagesCollection.loginPage.isWelcomeButtonsExist());
 		}
 
 }

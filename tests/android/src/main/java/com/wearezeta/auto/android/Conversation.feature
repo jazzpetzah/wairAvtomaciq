@@ -1,7 +1,6 @@
-
 Feature: Conversation
 
-  Scenario Outline: Send Message to my contact
+  Scenario Outline: Send Message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on name <Contact>
@@ -15,7 +14,7 @@ Feature: Conversation
       | Login                           | Password | Name            | Contact |
       | sergeii.khyzhniak@wearezeta.com | 123456   | Sergey Hizhnyak | Piotr   |
 
-  Scenario Outline: Send Hello to my contact
+  Scenario Outline: Send Hello to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on name <Contact>
@@ -26,3 +25,19 @@ Feature: Conversation
     Examples: 
       | Login                           | Password | Name            | Contact |
       | sergeii.khyzhniak@wearezeta.com | 123456   | Sergey Hizhnyak | Piotr   |
+      
+@torun
+  Scenario Outline: Send Camera picture to contact
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on name <Contact>
+    And I see dialog page
+    And I swipe on bottom part of the screen
+    And I press Add Picture button
+    And I press "Take Photo" button
+    And I press "Confirm" button
+    Then I see new photo in the dialog
+
+    Examples: 
+      | Login                           | Password | Name            | Contact	| 
+      | sergeii.khyzhniak@wearezeta.com | 123456   | Sergey Hizhnyak | Volodymyr|

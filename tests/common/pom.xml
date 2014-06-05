@@ -52,8 +52,8 @@
 	<artifactId>javax.mail</artifactId>
 	<version>1.5.2</version>
 </dependency>
-	
-  </dependencies>
+
+</dependencies>
   
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>

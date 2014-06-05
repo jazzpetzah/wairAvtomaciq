@@ -17,11 +17,11 @@ public class CommonSteps {
 	@Before
 	 public void setUp() throws Exception {
 		 
-	        File app = new File(CommonUtils.getAppPathFromConfig(TestRun.class));
+	        File app = new File(CommonUtils.getAppPathFromConfig(CommonSteps.class));
 	        path = app.getAbsolutePath();
 	        if ( PagesCollection.loginPage == null)
 	        	{
-	        		PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(TestRun.class), path);
+	        		PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(CommonSteps.class), path);
 	        	}
 	        	
 	 }

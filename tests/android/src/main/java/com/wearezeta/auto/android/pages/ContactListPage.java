@@ -16,6 +16,9 @@ public class ContactListPage extends AndroidPage {
 	@FindBy(how = How.ID, using = AndroidLocators.idInstructions)
 	private List<WebElement> instructions;
 	
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameLoginPage)
+	private WebElement mainControl;
+	
 	private String url;
 	private String path;
 	
@@ -27,7 +30,8 @@ public class ContactListPage extends AndroidPage {
 
 	public AndroidPage tapOnName(String name) throws IOException{
 		AndroidPage page = null;
-		findNameInContactList(name).click();
+		
+		findNameInContactList(name, contactListNames).click();
 		if(instructions.size() > 0 && instructions.get(0).isDisplayed()){
 			page = new InstructionsPage(url, path);
 		}
@@ -37,11 +41,11 @@ public class ContactListPage extends AndroidPage {
 		return page;
 		
 	}
-	private WebElement findNameInContactList(String name)
+	private WebElement findNameInContactList(String name, List<WebElement> contacts)
 	 {
 		 Boolean flag = true;
 		 WebElement contact = null;
-		 for(WebElement listName : contactListNames )
+		 for(WebElement listName : contacts )
 		 {
 			 if(listName.getText().equals(name)){
 				 contact = listName;
@@ -50,8 +54,8 @@ public class ContactListPage extends AndroidPage {
 			 }
 		 }
 		 if(flag){
-			 DriverUtils.scrollToElement(driver,contactListNames.get(contactListNames.size() - 1));
-			 findNameInContactList(name);
+			 DriverUtils.swipeUp(driver, mainControl, 500);
+			 contact = findNameInContactList(name,contactListNames);
 		 }
 		return contact;
 	 }

@@ -44,6 +44,23 @@ public class DriverUtils {
 		 return bool;
 	 }
 	 
+	 public static boolean waitUntilElementAppears(RemoteWebDriver driver, final By by) {
+		 
+		 Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+			       .withTimeout(30, TimeUnit.SECONDS)
+			       .pollingEvery(2, TimeUnit.SECONDS)
+			       .ignoring(NoSuchElementException.class);
+		 
+		 Boolean bool = wait.until(new Function<WebDriver, Boolean>() {
+			 
+			 public Boolean apply(WebDriver driver) {
+			       return (driver.findElements(by).size() > 0);
+			     }
+		 });
+		 
+		 return bool;
+	 }
+	 
 	 public static void setTextForChildByClassName(WebElement parent, String childClassName, String value)
 	 {
 		 parent.findElement(By.className(childClassName)).sendKeys(value);
@@ -98,7 +115,7 @@ public class DriverUtils {
 	 public static void swipeRight(AppiumDriver driver, WebElement element, int time) {
 		 Point coords = element.getLocation();
 		 Dimension elementSize = element.getSize();
-		 driver.swipe(coords.x, coords.y + elementSize.height / 2, coords.x + elementSize.width+20, coords.y + elementSize.height / 2, time);
+		 driver.swipe(coords.x, coords.y + elementSize.height / 2, coords.x + elementSize.width-20, coords.y + elementSize.height / 2, time);
 	 }
 	 
 	 public static void swipeUp(AppiumDriver driver,WebElement element, int time) {

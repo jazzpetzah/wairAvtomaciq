@@ -1,7 +1,9 @@
 package com.wearezeta.auto.android.pages;
 
 import java.io.IOException;
+import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.FindBy;
@@ -63,6 +65,12 @@ public abstract class AndroidPage extends BasePage {
 	{
 		DriverUtils.swipeDown(driver, content, time);
 		return returnBySwipe(SwipeDirection.DOWN);
+	}
+	
+	public void tapButtonByClassNameAndIndex(WebElement element, String className, int index)
+	{
+		List<WebElement> buttonsList = element.findElements(By.className(className));
+		buttonsList.get(index).click();
 	}
 	
 	public static void clearPagesCollection()

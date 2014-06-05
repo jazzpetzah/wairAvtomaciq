@@ -37,6 +37,31 @@ public class DialogPageSteps{
 	public void WhenIMultiTapOnBottomPartOfTheScreen() throws Throwable {
 		PagesCollection.dialogPage.multiTapOnCursorInput();
 	}
+	
+	@When("^I swipe on bottom part of the screen$")
+	public void WhenISwipeOnBottomPartOfTheScreen() throws Throwable {
+		PagesCollection.dialogPage.SwipeOnCursorInput();
+	}
+
+	@When("^I press Add Picture button$")
+	public void WhenIPressAddPictureButton() throws Throwable {
+		PagesCollection.dialogPage.tapAddPictureBtn(0);
+	}
+
+	@When("^I press \"(.*)\" button$")
+	public void WhenIPressButton(String buttonName) throws Throwable {
+		 switch(buttonName.toLowerCase())
+		  {
+		  case "take photo":
+			  PagesCollection.dialogPage.takePhoto();
+			  break;
+		  case "confirm":
+			  PagesCollection.dialogPage.confirm();
+			  break;
+		  }
+	}
+	
+
 	@Then("^I see Hello message in the dialog$")
 	public void ThenISeeHelloMessageInTheDialog() throws Throwable {
 		Assert.assertTrue(PagesCollection.dialogPage.isknockAnimationExist());
@@ -46,6 +71,11 @@ public class DialogPageSteps{
 	public void ThenISeeMyMessageInTheDialog() throws Throwable {
 		PagesCollection.dialogPage.waitForMessage();
 		Assert.assertTrue(PagesCollection.dialogPage.getLastMessageFromDialog().equals(message.trim()));
+	}
+	
+	@Then("^I see new photo in the dialog$")
+	public void ThenISeeNewPhotoInTheDialog() throws Throwable {
+	    Assert.assertTrue(PagesCollection.dialogPage.isImageExists());
 	}
 
 }

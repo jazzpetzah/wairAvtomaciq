@@ -3,6 +3,7 @@ package com.wearezeta.auto.android.pages;
 import java.io.IOException;
 import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -21,6 +22,14 @@ public class DialogPage extends AndroidPage{
 	@FindBy(how = How.ID, using = AndroidLocators.idKnockAnimation)
 	private List<WebElement> knockAnimation;
 	
+	@FindBy(how = How.ID, using = AndroidLocators.idDialogTakePhotoButton)
+	private WebElement takePhotoButton;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idDialogOkButton)
+	private WebElement okButton;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idDialogImages)
+	private WebElement imagesList;
 	
 	private String url;
 	private String path;
@@ -49,6 +58,16 @@ public class DialogPage extends AndroidPage{
 		DriverUtils.androidMultiTap(driver, cursorInput, 3);
 	}
 	
+	public void SwipeOnCursorInput()
+	{
+		DriverUtils.swipeRight(driver, cursorInput, 1000);
+	}
+	
+	public void tapAddPictureBtn(int index)
+	{
+		tapButtonByClassNameAndIndex(cursorInput,AndroidLocators.classNameTextView,0);
+	}
+	
 	public void typeMessage(String message)
 	{
 		cursorInput.sendKeys(message);
@@ -63,6 +82,7 @@ public class DialogPage extends AndroidPage{
 	public Boolean isknockAnimationExist(){
 		return knockAnimation.size() > 0;
 	}
+
 	
 	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws IOException {
@@ -94,11 +114,24 @@ public class DialogPage extends AndroidPage{
 	{
 		for(int i = 0; i < 10 ; i++)
 		{
-			if(initMessageCount<messagesList.size())
+			if(initMessageCount < messagesList.size())
 			{
 				break;
 			}
 			Thread.sleep(200);
 		}
+	}
+	
+	public boolean isImageExists()
+	{
+		return DriverUtils.waitUntilElementAppears(driver,By.id(AndroidLocators.idDialogImages));
+	}
+
+	public void confirm() {
+		okButton.click();
+	}
+
+	public void takePhoto() {
+		takePhotoButton.click();
 	}
 }
