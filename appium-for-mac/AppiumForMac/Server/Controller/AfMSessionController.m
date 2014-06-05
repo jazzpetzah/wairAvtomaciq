@@ -85,10 +85,27 @@
 {
 	NSDictionary *errorDict;
     NSAppleScript *fronstMostProcessScript = [[NSAppleScript alloc] initWithSource:[NSString stringWithFormat:@"get POSIX path of (path to application \"%@\")", applicationName]];
-    NSString *statusString = [[fronstMostProcessScript executeAndReturnError:&errorDict] stringValue];
+   
+    BOOL statusOK = NO;
+    NSString *statusString = nil;
+    for (int i = 0; i < 10; i++) {
+        statusString = [[fronstMostProcessScript executeAndReturnError:&errorDict] stringValue];
+        if (statusString != nil) {
+            statusOK = YES;
+            break;
+        }
+        [NSThread sleepForTimeInterval:1.0];
+    }
+    
     // TODO: Add error handling
-    return [PFApplicationUIElement applicationUIElementWithURL:[NSURL fileURLWithPath:statusString] delegate:nil];
-	return nil;
+    if (statusOK)
+    {
+        return [PFApplicationUIElement applicationUIElementWithURL:[NSURL fileURLWithPath:statusString] delegate:nil];
+    }
+    else
+    {
+        return nil;
+    }
 }
 
 -(NSString*) applicationNameForProcessName:(NSString*)processName
@@ -274,12 +291,17 @@
 		[element addAttribute:[GDataXMLElement attributeWithName:@"AXValue" stringValue:[NSString stringWithFormat:@"%@",root.AXValue]]];
 	 }
 
-	NSString *identifier = [root valueForAttribute:@"AXIdenitifer"];
+	NSString *identifier = [root valueForAttribute:@"AXIdentifer"];
 	if (identifier != nil)
 	{
 		[element addAttribute:[GDataXMLElement attributeWithName:@"AXIdentifier" stringValue:[NSString stringWithFormat:@"%@",[root valueForAttribute:@"AXIdentifier"]]]];
 	}
 
+    NSString* placeholderValue = [root valueForAttribute:@"AXPlaceholderValue"];
+    if (placeholderValue != nil) {
+        [element addAttribute:[GDataXMLElement attributeWithName:@"AXPlaceholderValue" stringValue:[NSString stringWithFormat:@"%@",[root valueForAttribute:@"AXPlaceholderValue"]]]];
+    }
+    
 	if (pathMap != nil)
 	{
 		[pathMap setValue:root forKey:path];
