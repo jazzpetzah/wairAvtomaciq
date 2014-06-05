@@ -22,11 +22,11 @@ public class ContactListPageSteps {
 		PagesCollection.iOSPage = PagesCollection.contactListPage.tapOnName(name);
 	}
 	
-	 @Then ("Contact list appears with my name (.*)")
-	 public void ThenContactListAppears(String value) {
+	@Then ("Contact list appears with my name (.*)")
+	public void ThenContactListAppears(String value) {
 		 
-		 Assert.assertTrue("Login finished", PagesCollection.loginPage.waitForLogin());		 
-		 Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(value));		 
-	 }
+		Assert.assertTrue("Login finished", PagesCollection.loginPage.waitForLogin());		 
+		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(value));		 
+	}
 
 }

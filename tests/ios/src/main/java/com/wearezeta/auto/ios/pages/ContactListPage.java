@@ -26,7 +26,7 @@ public class ContactListPage extends IOSPage {
 		this.path = path;
 	}
 
-	public IOSPage tapOnName(String name) throws IOException{
+	public IOSPage tapOnName(String name) throws IOException {
 		IOSPage page = null;
 		findNameInContactList(name).click();
 		if(welcomeLabel.size() > 0  && welcomeLabel.get(0).isDisplayed()){
@@ -43,13 +43,13 @@ public class ContactListPage extends IOSPage {
 		 WebElement contact = null;
 		 for(WebElement listName : contactListNames )
 		 {
-			 if(listName.getText().equals(name)){
+			 if(listName.getText().equals(name)) {
 				 contact = listName;
 				 flag = false;
 				 break;
 			 }
 		 }
-		 if(flag){
+		 if(flag) {
 			 DriverUtils.scrollToElement(driver,contactListNames.get(contactListNames.size() - 1));
 			 findNameInContactList(name);
 		 }

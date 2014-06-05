@@ -4,8 +4,6 @@ import org.junit.Assert;
 
 import java.io.IOException;
 
-import org.junit.Assert;
-
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
@@ -52,10 +50,10 @@ public class LoginPageSteps {
 	
 	 
 	 @Then("^I see login in screen$")
-		public void ThenISeeLogInScreen() {
+	 public void ThenISeeLogInScreen() {
 		 
-		    Assert.assertTrue("I don't see login screen", PagesCollection.loginPage.isWelcomeButtonsExist());
-		}
+		 Assert.assertTrue("I don't see login screen", PagesCollection.loginPage.isWelcomeButtonsExist());
+	 }
 	 
 	 
 
