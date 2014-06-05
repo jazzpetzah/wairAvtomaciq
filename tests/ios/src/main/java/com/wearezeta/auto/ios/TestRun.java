@@ -7,7 +7,7 @@ import cucumber.api.junit.Cucumber;
 
 
 @RunWith(Cucumber.class)
-@CucumberOptions(format = {"html:report"}, tags = {"@torun"})
+@CucumberOptions(format = {"html:report"})
 public class TestRun {
 
 }

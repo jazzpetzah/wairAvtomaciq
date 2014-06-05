@@ -30,6 +30,10 @@ public final class IOSLocators {
 	
 	public static final String classNameDialogMessages = "UIATableCell";
 
-	public static final String nameCursorInput = "ComposeControllerTextView";
+	public static final String nameCursorInput = "TAP OR SLIDE  ";
+	
+	public static final String nameTextInput = "ComposeControllerTextView";
+	
+	public static final String xpathLastMessageFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]/UIATextView[1]";
 
 }

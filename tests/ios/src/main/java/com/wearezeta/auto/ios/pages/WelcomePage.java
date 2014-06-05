@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
-import java.util.*;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
