@@ -74,15 +74,6 @@
         <groupId>com.atlassian.jira</groupId>
         <artifactId>jira-rest-java-client-api</artifactId>
         <version>2.0.0-m30</version>
-                    <exclusion>
-                    <!--
-                     Not excluding this will pull in both stax:stax-api:1.0.1 and javax.xml.stream:stax-api:1.0.2
-                     as transitive dependencies. We don't want both, and not excluding this will give you a duplicate
-                     warning when the dependencies are shaded into the jar by the maven-shade-plugin
-                      -->
-                    <groupId>stax</groupId>
-                    <artifactId>stax-api</artifactId>
-                </exclusion>
     </dependency>
     
     <dependency>
