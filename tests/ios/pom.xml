@@ -82,7 +82,7 @@
         <configuration>
 		  <skipTests>${skipTests}</skipTests>
 		  <includes>
-            <include>**/DevRun.java</include>
+			<include>**/TestRun.java</include>
           </includes>
         </configuration>
       </plugin>
