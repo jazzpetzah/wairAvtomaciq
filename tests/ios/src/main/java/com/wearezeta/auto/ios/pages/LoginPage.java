@@ -99,6 +99,7 @@ public class LoginPage extends IOSPage {
 	public Boolean isLoginFinished(String contact) {
 		
 		try {
+			DriverUtils.waitUntilElementAppears(driver, By.className(IOSLocators.classNameAlert));
 			if(alert != null) {
 				alertOk.click();
 			}
