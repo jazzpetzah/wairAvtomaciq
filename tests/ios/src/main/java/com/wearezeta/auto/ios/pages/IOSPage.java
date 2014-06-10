@@ -62,7 +62,6 @@ public abstract class IOSPage extends BasePage {
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 	
-	@Override
 	public IOSPage swipeDownSimulator(int time) throws IOException
 	{
 		DriverUtils.swipeDown(driver, content, time);

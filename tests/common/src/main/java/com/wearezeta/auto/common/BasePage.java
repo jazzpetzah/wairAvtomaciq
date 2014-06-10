@@ -11,6 +11,8 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.wearezeta.auto.ios.pages.IOSPage;
+
 public abstract class BasePage {
 	
 	protected static AppiumDriver driver = null;
@@ -42,7 +44,5 @@ public abstract class BasePage {
 	public abstract BasePage swipeUp(int time) throws IOException;
 	
 	public abstract BasePage swipeDown(int time) throws IOException;
-
-	public abstract BasePage swipeDownSimulator(int time) throws IOException;
 
 }
