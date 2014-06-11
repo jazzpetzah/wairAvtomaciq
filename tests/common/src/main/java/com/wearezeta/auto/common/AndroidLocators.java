@@ -37,4 +37,18 @@ public final class AndroidLocators {
 	public static final String idDialogOkButton = "com.waz.zclient:id/button_ok";
 	
 	public static final String idDialogImages = "com.waz.zclient:id/image_message_view";
+	
+	public static final String idPickerUsersUnselected = "com.waz.zclient:id/pick_user_chathead_unselected";
+	
+	public static final String idPickerSearch = "com.waz.zclient:id/pick_user_search";
+	
+	public static final String idConnectToSend = "com.waz.zclient:id/send";
+	
+	public static final String idInstructionsConnectRequestDialog = "com.waz.zclient:id/connect_request_root";
+	
+	public static final String idInstructionsRequestIgnoreBtn = "com.waz.zclient:id/button_block";
+	
+	public static final String idInstructionsRequestConnectBtn = "com.waz.zclient:id/button_connect";
+	
+	
 }

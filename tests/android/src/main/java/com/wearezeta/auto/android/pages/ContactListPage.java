@@ -61,7 +61,29 @@ public class ContactListPage extends AndroidPage {
 	 }
 
 	@Override
-	public AndroidPage returnBySwipe(SwipeDirection direction) {
-		return null;
+	public AndroidPage returnBySwipe(SwipeDirection direction) throws IOException {
+		
+		AndroidPage page = null;
+		switch (direction){
+			case DOWN:
+			{
+				page = new PeoplePickerPage(url, path);
+				break;
+			}
+			case UP:
+			{
+				break;
+			}
+			case LEFT:
+			{
+				break;
+			}
+			case RIGHT:
+			{
+				break;
+			}
+		}	
+		return page;
 	}
+
 }

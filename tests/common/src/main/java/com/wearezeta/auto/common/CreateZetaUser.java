@@ -16,6 +16,11 @@ import com.wearezeta.auto.common.misc.RegExUtil;
 import com.wearezeta.auto.common.misc.ShellCommandExecutor;
 
 public class CreateZetaUser {
+	
+	public static String defaultEmail = "smoketester@wearezeta.com";
+	public static String defaultPassword = "aqa123456";
+	public static String defaultBackEndUrl = "https://dev-nginz-https.zinfra.io";
+	
 	private static boolean error = false;
 	private static final String CREATE_USER_JSON = "curl -i -XPOST \"%s/register\" "
 			+"-H'Content-type: application/json' "
@@ -100,10 +105,11 @@ public class CreateZetaUser {
 					password, 20, true, "http.*activate.*");
 			System.out.println("Generated activization request:\n\t"
 					+ setActRequest(regURL));
-
+			sleep(10);
 			try {
 				error = ShellCommandExecutor.runCommand("",
 						setActRequest(regURL), "activated");
+				sleep(3);
 				error = ShellCommandExecutor.runCommand("",
 						setActRequest(regURL), "expired");
 				System.out.println("\nSuccess!\nUser " + setRegMail(mail, nextSuffix)

@@ -28,6 +28,7 @@ public abstract class AndroidPage extends BasePage {
         capabilities.setCapability("app", path);
         capabilities.setCapability("app-package", CommonUtils.getAndroidPackageFromConfig(AndroidPage.class));
         capabilities.setCapability("app-activity", CommonUtils.getAndroidActivityFromConfig(AndroidPage.class));
+        capabilities.setCapability("app-wait-activity", CommonUtils.getAndroidActivityFromConfig(AndroidPage.class));
         super.InitConnection(URL, capabilities);
 	}
 
@@ -81,5 +82,7 @@ public abstract class AndroidPage extends BasePage {
 		PagesCollection.instructionsPage = null;
 		PagesCollection.loginPage = null;
 		PagesCollection.personalInfoPaga = null;
+		PagesCollection.peoplePickerPage = null;
+		PagesCollection.connectToPage = null;
 	}
 }

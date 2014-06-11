@@ -8,5 +8,6 @@ public class PagesCollection {
 	public static InstructionsPage instructionsPage = null;
 	public static PersonalInfoPage personalInfoPaga = null;
 	public static DialogPage dialogPage = null;
-	
+	public static PeoplePickerPage peoplePickerPage = null;
+	public static ConnectToPage connectToPage = null;
 }

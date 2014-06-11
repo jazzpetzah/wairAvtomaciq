@@ -39,7 +39,7 @@ public class mainTest
 	 @Before
 	    public void setUp() throws Exception 
 	    {
-	        File app = new File("C:\\Selendroid\\zclient-release-2007.apk");
+	        File app = new File("C:\\Selendroid\\zclient-release-2009.apk");
 	        DesiredCapabilities capabilities = new DesiredCapabilities();
 	        capabilities.setCapability("platformName", "Android");
 	        capabilities.setCapability("app", app.getAbsolutePath());
