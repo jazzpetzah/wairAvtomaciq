@@ -61,9 +61,9 @@ public class PeoplePickerPage extends IOSPage{
 	}
 	
 	private WebElement PickUser(String name){
-		WebElement user=null;
+
 		FillTextInPeoplePickerSearch(name);
-		return user = driver.findElement(By.name(name));
+		return driver.findElement(By.name(name));
 	}
 	
 	public void PickerUserAndTap(String name){

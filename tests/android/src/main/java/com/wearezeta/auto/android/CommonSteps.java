@@ -17,7 +17,7 @@ public class CommonSteps {
 	
 	@Before
 	 public void setUp() throws Exception {
-		if(Boolean.valueOf(CommonUtils.getAndroidGenerateUsersFlagFromConfig(CommonSteps.class)) && !CommonUtils.yourUserState.equals(UsersState.AllContactsConnected)){
+		if(Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class)) && !CommonUtils.yourUserState.equals(UsersState.AllContactsConnected)){
 			CommonUtils.generateUsers(2);
 		}
 		
@@ -26,8 +26,7 @@ public class CommonSteps {
 	    if ( PagesCollection.loginPage == null){
 	        	PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(CommonSteps.class), path);
 	    }
-	    
-	    if(Boolean.valueOf(CommonUtils.getAndroidGenerateUsersFlagFromConfig(CommonSteps.class)) && !CommonUtils.yourUserState.equals(UsersState.AllContactsConnected)){
+	    if(Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class)) && !CommonUtils.yourUserState.equals(UsersState.AllContactsConnected)){
 	    	AndroidTestPreparation.createContactLinks();
 	    }
 	 }
