@@ -171,7 +171,17 @@
 
 // /session/:sessionId/timeouts
 // /session/:sessionId/timeouts/async_script
-// /session/:sessionId/timeouts/implicit_wait
+// POST /session/:sessionId/timeouts/implicit_wait
+-(AppiumMacHTTPJSONResponse*) postImplicitWait:(NSString*)path data:(NSData*)postData
+{
+    NSString *sessionId = [Utility getSessionIDFromPath:path];
+    AfMSessionController *session = [self controllerForSession:sessionId];
+    NSDictionary *postParams = [self dictionaryFromPostData:postData];
+    NSString *ms = (NSString*)[postParams objectForKey:@"ms"];
+    session.implicitWaitMs = [ms floatValue];
+    NSLog(@"Implicit wait is set to: %f", session.implicitWaitMs);
+    return [self respondWithJson:nil status:kAfMStatusCodeSuccess session: sessionId];
+}
 
 // GET /session/:sessionId/window_handle
 -(AppiumMacHTTPJSONResponse*) getWindowHandle:(NSString*)path
@@ -441,16 +451,30 @@
 	// initialize status as though no element were found
 	int statusCode = kAfMStatusCodeNoSuchElement;
 
+    float intervalMs = 50;
+    int numberOfRetries = 1;
+    if (session.implicitWaitMs > -1) {
+        numberOfRetries = session.implicitWaitMs/intervalMs+1;
+    }
+    
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
+    [offsetComponents setSecond:session.implicitWaitMs/1000];
+    NSDate *endDate = [gregorian dateByAddingComponents:offsetComponents toDate: [NSDate date] options:0];
 	if (locator != nil)
 	{
-		PFUIElement *element = [locator findUsingBaseElement:nil statusCode:&statusCode];
-        if (element != nil)
+        do
         {
-            session.elementIndex++;
-            NSString *myKey = [NSString stringWithFormat:@"%d", session.elementIndex];
-            [session.elements setValue:element forKey:myKey];
-            return [self respondWithJson:[NSDictionary dictionaryWithObject:myKey forKey:@"ELEMENT"] status:kAfMStatusCodeSuccess session:sessionId];
-        }
+            PFUIElement *element = [locator findUsingBaseElement:nil statusCode:&statusCode];
+            if (element != nil)
+            {
+                session.elementIndex++;
+                NSString *myKey = [NSString stringWithFormat:@"%d", session.elementIndex];
+                [session.elements setValue:element forKey:myKey];
+                return [self respondWithJson:[NSDictionary dictionaryWithObject:myKey forKey:@"ELEMENT"] status:kAfMStatusCodeSuccess session:sessionId];
+            }
+            [NSThread sleepForTimeInterval:intervalMs/1000];
+        } while ([endDate compare:[NSDate date]] == NSOrderedDescending);
 	}
 	
 	return [self respondWithJsonError:statusCode session:sessionId];
@@ -473,66 +497,89 @@
     // initialize status as though no element were found
 	int statusCode = kAfMStatusCodeNoSuchElement;
 	
-	if (locator != nil)
-	{
-		NSMutableArray *matches = [NSMutableArray new];
-		[locator findAllUsingBaseElement:nil results:matches statusCode:&statusCode];
-        if (matches.count > 0)
-        {
-			NSMutableArray *elements = [NSMutableArray new];
-			for(PFUIElement *element in matches)
-			{
-				session.elementIndex++;
-				NSString *myKey = [NSString stringWithFormat:@"%d", session.elementIndex];
-				[session.elements setValue:element forKey:myKey];
-				[elements addObject:[NSDictionary dictionaryWithObject:myKey forKey:@"ELEMENT"]];
-			}
-			
-            //			return [self respondWithJson:nil status:kAfMStatusCodeNoSuchElement session: sessionId];
-			return [self respondWithJson:elements status:kAfMStatusCodeSuccess session:sessionId];
-        }
-	}
+    float intervalMs = 50;
+    int numberOfRetries = 1;
+    if (session.implicitWaitMs > -1) {
+        numberOfRetries = session.implicitWaitMs/intervalMs+1;
+    }
     
-    if (windowLocator != nil) {
-        NSMutableArray *windows = [NSMutableArray new];
-        [windowLocator findAllUsingBaseElement:nil results:windows statusCode:&statusCode];
-        if (windows.count > 0) {
-            PFUIElement *mainWindow = [windows objectAtIndex:0];
-            int startX = mainWindow.AXPosition.pointValue.x;
-            int startY = mainWindow.AXPosition.pointValue.y;
-            int endX = startX + mainWindow.AXSize.pointValue.x;
-            int endY = startY + mainWindow.AXSize.pointValue.y;
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
+    [offsetComponents setSecond:session.implicitWaitMs/1000];
+    NSDate *endDate = [gregorian dateByAddingComponents:offsetComponents toDate: [NSDate date] options:0];
+    
+    NSMutableArray *elements = [NSMutableArray new];
+    
+    do
+    {
+        if (locator != nil)
+        {
+            NSMutableArray *matches = [NSMutableArray new];
             
-            NSMutableArray *elements = [NSMutableArray new];
-			
-            NSString* val = value;
-            if ([using caseInsensitiveCompare:@"xpath"] == NSOrderedSame) {
-                val = [value stringByReplacingOccurrencesOfString:@"/" withString:@""];
+            [locator findAllUsingBaseElement:nil results:matches statusCode:&statusCode];
+            
+            if (matches.count > 0)
+            {
+                for(PFUIElement *element in matches)
+                {
+                    session.elementIndex++;
+                    NSString *myKey = [NSString stringWithFormat:@"%d", session.elementIndex];
+                    [session.elements setValue:element forKey:myKey];
+                    [elements addObject:[NSDictionary dictionaryWithObject:myKey forKey:@"ELEMENT"]];
+                }
+                
+                return [self respondWithJson:elements status:kAfMStatusCodeSuccess session:sessionId];
             }
-            
-            NSMutableArray *addresses = [NSMutableArray new];
-            for (int i = startX; i < endX; i+=5) {
-                for (int j = startY; j < endY; j+=5) {
-                    NSError *error = nil;
-                    PFUIElement *newElement = [PFUIElement elementAtPoint:NSMakePoint(i, j) withDelegate:nil error:&error];
-                    if ([val caseInsensitiveCompare:newElement.AXRole] == NSOrderedSame) {
-                        NSString *addr = [NSString stringWithFormat:@"%p", &newElement];
-                        
-                        if (![addresses containsObject:addr]) {
-                            session.elementIndex++;
-                            NSString *myKey = [NSString stringWithFormat:@"%d", session.elementIndex];
-                            [session.elements setValue:newElement forKey:myKey];
-                            [elements addObject:[NSDictionary dictionaryWithObject:myKey forKey:@"ELEMENT"]];
-                            [addresses addObject:addr];
+        }
+        
+        
+        if (windowLocator != nil) {
+            NSMutableArray *windows = [NSMutableArray new];
+            [windowLocator findAllUsingBaseElement:nil results:windows statusCode:&statusCode];
+            if (windows.count > 0) {
+                PFUIElement *mainWindow = [windows objectAtIndex:0];
+                int startX = mainWindow.AXPosition.pointValue.x;
+                int startY = mainWindow.AXPosition.pointValue.y;
+                int endX = startX + mainWindow.AXSize.pointValue.x;
+                int endY = startY + mainWindow.AXSize.pointValue.y;
+                
+                
+                NSString* val = value;
+                if ([using caseInsensitiveCompare:@"xpath"] == NSOrderedSame) {
+                    val = [value stringByReplacingOccurrencesOfString:@"/" withString:@""];
+                }
+                
+                NSMutableArray *addresses = [NSMutableArray new];
+                for (int i = startX; i < endX; i+=20) {
+                    for (int j = startY; j < endY; j+=20) {
+                        NSError *error = nil;
+                        PFUIElement *newElement = [PFUIElement elementAtPoint:NSMakePoint(i, j) withDelegate:nil error:&error];
+                        if ([val caseInsensitiveCompare:newElement.AXRole] == NSOrderedSame) {
+                            NSString *addr = [NSString stringWithFormat:@"%p", &newElement];
+                            
+                            if (![addresses containsObject:addr]) {
+                                session.elementIndex++;
+                                NSString *myKey = [NSString stringWithFormat:@"%d", session.elementIndex];
+                                [session.elements setValue:newElement forKey:myKey];
+                                [elements addObject:[NSDictionary dictionaryWithObject:myKey forKey:@"ELEMENT"]];
+                                [addresses addObject:addr];
+                            }
                         }
                     }
                 }
+                if (elements.count > 0) {
+                    return [self respondWithJson:elements status:kAfMStatusCodeSuccess session:sessionId];
+                }
             }
-            if (elements.count > 0)
-                return [self respondWithJson:elements status:kAfMStatusCodeSuccess session:sessionId];
         }
+        
+        [NSThread sleepForTimeInterval:intervalMs/1000];
+    } while ([endDate compare:[NSDate date]] == NSOrderedDescending);
+    
+    if (elements.count == 0) {
+        return [self respondWithJson:elements status:kAfMStatusCodeSuccess session:sessionId];
     }
-
+    
     return [self respondWithJsonError:statusCode session:sessionId];
 }
 
@@ -555,34 +602,49 @@
 	// initialize status as though no element were found
 	int statusCode = kAfMStatusCodeNoSuchElement;
 	
+    float intervalMs = 50;
+    int numberOfRetries = 1;
+    if (session.implicitWaitMs > -1) {
+        numberOfRetries = session.implicitWaitMs/intervalMs+1;
+    }
+    
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
+    [offsetComponents setSecond:session.implicitWaitMs/1000];
+    NSDate *endDate = [gregorian dateByAddingComponents:offsetComponents toDate: [NSDate date] options:0];
+    
 	if (locator != nil)
 	{
-		PFUIElement *element = [locator findUsingBaseElement:rootElement statusCode:&statusCode];
-        if (element != nil)
+        do
         {
-            session.elementIndex++;
-            NSString *myKey = [NSString stringWithFormat:@"%d", session.elementIndex];
-            [session.elements setValue:element forKey:myKey];
-            if ([element.AXRole caseInsensitiveCompare:@"AXScrollBar"] == NSOrderedSame) {
-                NSValue* pos = element.AXPosition;
-                NSPoint pnt = pos.pointValue;
+            PFUIElement *element = [locator findUsingBaseElement:rootElement statusCode:&statusCode];
+            if (element != nil)
+            {
+                session.elementIndex++;
+                NSString *myKey = [NSString stringWithFormat:@"%d", session.elementIndex];
+                [session.elements setValue:element forKey:myKey];
+                if ([element.AXRole caseInsensitiveCompare:@"AXScrollBar"] == NSOrderedSame) {
+                    NSValue* pos = element.AXPosition;
+                    NSPoint pnt = pos.pointValue;
 
-                CGEventRef event = CGEventCreate(NULL);
-                CGPoint pt = CGEventGetLocation(event);
-                pt.x = pnt.x+2;
-                pt.y = pnt.y+2;
+                    CGEventRef event = CGEventCreate(NULL);
+                    CGPoint pt = CGEventGetLocation(event);
+                    pt.x = pnt.x+2;
+                    pt.y = pnt.y+2;
                 
-                CGEventRef click1_move = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, pt, kCGMouseButtonLeft);
-                CGEventPost(kCGHIDEventTap, click1_move);
-                CFRelease(click1_move);
+                    CGEventRef click1_move = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, pt, kCGMouseButtonLeft);
+                    CGEventPost(kCGHIDEventTap, click1_move);
+                    CFRelease(click1_move);
                 
-                CGEventRef scroll1_scroll = CGEventCreateScrollWheelEvent(NULL, kCGScrollEventUnitPixel, 1, -10);
-                CGEventPost(kCGHIDEventTap, scroll1_scroll);
-                CFRelease(scroll1_scroll);
-
+                    CGEventRef scroll1_scroll = CGEventCreateScrollWheelEvent(NULL, kCGScrollEventUnitPixel, 1, -10);
+                    CGEventPost(kCGHIDEventTap, scroll1_scroll);
+                    CFRelease(scroll1_scroll);
+                }
+                return [self respondWithJson:[NSDictionary dictionaryWithObject:myKey forKey:@"ELEMENT"] status:kAfMStatusCodeSuccess session:sessionId];
             }
-            return [self respondWithJson:[NSDictionary dictionaryWithObject:myKey forKey:@"ELEMENT"] status:kAfMStatusCodeSuccess session:sessionId];
+            [NSThread sleepForTimeInterval:intervalMs/1000];
         }
+        while ([endDate compare:[NSDate date]] == NSOrderedDescending);
 	}
 
     return [self respondWithJsonError:statusCode session:sessionId];
@@ -604,22 +666,38 @@
 	// initialize status as though no element were found
 	int statusCode = kAfMStatusCodeNoSuchElement;
 
+    float intervalMs = 50;
+    int numberOfRetries = 1;
+    if (session.implicitWaitMs > -1) {
+        numberOfRetries = session.implicitWaitMs/intervalMs+1;
+    }
+    
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
+    [offsetComponents setSecond:session.implicitWaitMs/1000];
+    NSDate *endDate = [gregorian dateByAddingComponents:offsetComponents toDate: [NSDate date] options:0];
+    
 	if (locator != nil)
 	{
-		NSMutableArray *matches = [NSMutableArray new];
-		[locator findAllUsingBaseElement:rootElement results:matches statusCode:&statusCode];
-        if (matches.count > 0)
+        do
         {
-			NSMutableArray *elements = [NSMutableArray new];
-			for(PFUIElement *element in matches)
-			{
-				session.elementIndex++;
-				NSString *myKey = [NSString stringWithFormat:@"%d", session.elementIndex];
-				[session.elements setValue:element forKey:myKey];
-				[elements addObject:[NSDictionary dictionaryWithObject:myKey forKey:@"ELEMENT"]];
-			}
-			return [self respondWithJson:elements status:kAfMStatusCodeSuccess session:sessionId];
-        }
+            NSMutableArray *matches = [NSMutableArray new];
+            [locator findAllUsingBaseElement:rootElement results:matches statusCode:&statusCode];
+            if (matches.count > 0)
+            {
+                NSMutableArray *elements = [NSMutableArray new];
+                for(PFUIElement *element in matches)
+                {
+                    session.elementIndex++;
+                    NSString *myKey = [NSString stringWithFormat:@"%d", session.elementIndex];
+                    [session.elements setValue:element forKey:myKey];
+                    [elements addObject:[NSDictionary dictionaryWithObject:myKey forKey:@"ELEMENT"]];
+                }
+                return [self respondWithJson:elements status:kAfMStatusCodeSuccess session:sessionId];
+            }
+            
+            [NSThread sleepForTimeInterval:intervalMs/1000];
+        } while ([endDate compare:[NSDate date]] == NSOrderedDescending);
 	}
 
     return [self respondWithJsonError:statusCode session:sessionId];
@@ -727,19 +805,19 @@
 
 	// check the element is valid
 	int status = [self checkElement:element forSession:session];
-	if (status != kAfMStatusCodeSuccess)
+	if (status != kAfMStatusCodeSuccess && status != kAfMStatusCodeElementNotVisible)
 	{
 		[self respondWithJsonError:status session:sessionId];
 	}
 	
 	id valueAttribute = element.AXValue;
-	if (valueAttribute != nil)
-	{
+//	if (valueAttribute != nil)
+//	{
 		NSString *text = [NSString stringWithFormat:@"%@", valueAttribute];
 			return [self respondWithJson:text status:kAfMStatusCodeSuccess session: sessionId];
-	}
+//	}
 
-    return [self respondWithJson:nil status:kAfMStatusCodeUnknownError session: sessionId];
+//    return [self respondWithJson:nil status:kAfMStatusCodeUnknownError session: sessionId];
 }
 
 // POST /session/:sessionId/element/:id/value
@@ -755,45 +833,6 @@
 	// get the element
     PFUIElement *element = [session.elements objectForKey:elementId];
     
-    
-    
-    ///////////////////////
-    
-    NSValue* pos = element.AXPosition;
-    NSPoint pnt = pos.pointValue;
-    
-    PFUIElement* parent = element.AXParent;
-    
-    while ([@"AXApplication" isEqualToString:parent.AXRole]) {
-        pnt.x += parent.AXPosition.pointValue.x;
-        pnt.y += parent.AXPosition.pointValue.y;
-        
-        parent = parent.AXParent;
-    }
-    
-    int statusCode = kAfMStatusCodeSuccess;        // The data structure CGPoint represents a point in a two-dimensional
-    // coordinate system.  Here, X and Y distance from upper left, in pixels.
-    //
-    CGEventRef event = CGEventCreate(NULL);
-    CGPoint pt = CGEventGetLocation(event);
-    pt.x = pnt.x;
-    pt.y = pnt.y;
-    
-    CGEventRef click1_move = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, pt, kCGMouseButtonLeft);
-    CGEventRef click1_down = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, pt, kCGMouseButtonLeft);
-    CGEventRef click1_up = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseUp, pt, kCGMouseButtonLeft);
-    
-    CGEventPost(kCGHIDEventTap, click1_move);
-    CGEventPost(kCGHIDEventTap, click1_down);
-    CGEventPost(kCGHIDEventTap, click1_up);
-    
-    // Release the events
-    CFRelease(click1_up);
-    CFRelease(click1_down);
-    CFRelease(click1_move);
-    
-    ///////////////////////
-    
 	// check the element is valid
 	int status = [self checkElement:element forSession:session];
 	if (status != kAfMStatusCodeSuccess)
@@ -801,37 +840,80 @@
 		[self respondWithJsonError:status session:sessionId];
 	}
     
-	// set the value
-    [element setAXValue:[value componentsJoinedByString:@""]];
+    NSString *stringValue = [value componentsJoinedByString:@""];
+    if ([stringValue caseInsensitiveCompare:@""] != NSOrderedSame) {
+        // set the value
+        [element setAXValue:[value componentsJoinedByString:@""]];
 
-    NSMutableDictionary *errorDict = [NSMutableDictionary new];
+        NSMutableDictionary *errorDict = [NSMutableDictionary new];
 
-    NSAppleScript *appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 1\nend tell"];
-    NSString *statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
+        NSAppleScript *appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 1\nend tell"];
+        NSString *statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
     
-    appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 1\nend tell"];
-    statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
-    appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 1\nend tell"];
-    statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
-    appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 1\nend tell"];
-    statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
-    appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 1\nend tell"];
-    statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
-    appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 1\nend tell"];
-    statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
-    appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 51\nend tell"];
-    statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
-    appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 51\nend tell"];
-    statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
-    appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 51\nend tell"];
-    statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
-    appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 51\nend tell"];
-    statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
-    appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 51\nend tell"];
-    statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
-    appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 51\nend tell"];
-    statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
+        appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 1\nend tell"];
+        statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
+        appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 1\nend tell"];
+        statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
+        appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 1\nend tell"];
+        statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
+        appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 1\nend tell"];
+        statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
+        appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 1\nend tell"];
+        statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
+        appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 51\nend tell"];
+        statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
+        appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 51\nend tell"];
+        statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
+        appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 51\nend tell"];
+        statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
+        appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 51\nend tell"];
+        statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
+        appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 51\nend tell"];
+        statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
+        appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 51\nend tell"];
+        statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
+    }
+    else
+    {
+        ///////////////////////
     
+        NSValue* pos = element.AXPosition;
+        NSPoint pnt = pos.pointValue;
+    
+        PFUIElement* parent = element.AXParent;
+    
+        while ([@"AXApplication" isEqualToString:parent.AXRole]) {
+            pnt.x += parent.AXPosition.pointValue.x;
+            pnt.y += parent.AXPosition.pointValue.y;
+        
+            parent = parent.AXParent;
+        }
+
+        CGEventRef event = CGEventCreate(NULL);
+        CGPoint pt = CGEventGetLocation(event);
+        pt.x = pnt.x-20;
+        pt.y = pnt.y-20;
+    
+        CGEventRef click1_move = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, pt, kCGMouseButtonLeft);
+//    CGEventRef click1_down = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, pt, kCGMouseButtonLeft);
+//    CGEventRef click1_up = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseUp, pt, kCGMouseButtonLeft);
+    
+        CGEventPost(kCGHIDEventTap, click1_move);
+    
+        pt.x += 40;
+        pt.y += 40;
+        click1_move = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, pt, kCGMouseButtonLeft);
+        CGEventPost(kCGHIDEventTap, click1_move);
+//    CGEventPost(kCGHIDEventTap, click1_down);
+//    CGEventPost(kCGHIDEventTap, click1_up);
+    
+    // Release the events
+//    CFRelease(click1_up);
+//    CFRelease(click1_down);
+//    CFRelease(click1_move);
+    
+    ///////////////////////
+    }
     return [self respondWithJson:nil status:kAfMStatusCodeSuccess session: sessionId];
 }
 

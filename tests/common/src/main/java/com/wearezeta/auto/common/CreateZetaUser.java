@@ -41,18 +41,18 @@ public class CreateZetaUser {
 	 *            = "https://armada-dev.z-infra.com" (old backend) <br>
 	 *            https://dev-nginz-https.zinfra.io (new backend)
 	 */
-//	private static String mail;
-//	private static String password;
-//	private static String backend_url;
-//	public static void main(String[] args) {
-//	  
-//	  mail = "smoketester@wearezeta.com"; 				// smoketester@wearezeta.com
-//	  password = "aqa123456"; 							// aqa123456
-//	  backend_url = "dev-nginz-https.zinfra.io"; 	//new backend:https://dev-nginz-https.zinfra.io
-//	  													//old backend: https://armada-dev.z-infra.com
-//	  String test=registerUserAndReturnMail(mail, password, backend_url);
-//	  System.out.println("Registerd mail: "+test); 
-//	  }
+	private static String mail;
+	private static String password;
+	private static String backend_url;
+	public static void main(String[] args) {
+	  
+	  mail = "smoketester@wearezeta.com"; 				// smoketester@wearezeta.com
+	  password = "aqa123456"; 							// aqa123456
+	  backend_url = "https://dev-nginz-https.zinfra.io"; 	//new backend:https://dev-nginz-https.zinfra.io
+	  													//old backend: https://armada-dev.z-infra.com
+	  String test=registerUserAndReturnMail(mail, password, backend_url);
+	  System.out.println("Registerd mail: "+test); 
+	  }
 	public static String registerUserAndReturnMail(String mail, String password, String backendUrl) {
 		String lastSuffix = null;
 		String nextSuffixId = "1";

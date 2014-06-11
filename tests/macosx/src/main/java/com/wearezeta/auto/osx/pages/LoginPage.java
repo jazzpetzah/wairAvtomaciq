@@ -61,8 +61,9 @@ public class LoginPage extends OSXPage {
 	}
 
 	public void setLogin(String login) {
-		driver.getPageSource();
+		DriverUtils.setImplicitWaitValue(driver, 1);
 		loginField.sendKeys(login);
+		DriverUtils.setDefaultImplicitWait(driver);
 	}
 
 	public String getPassword() {
@@ -70,12 +71,16 @@ public class LoginPage extends OSXPage {
 	}
 
 	public void setPassword(String password) {
+		DriverUtils.turnOffImplicitWait(driver);
 		passwordField.sendKeys(password);
+		DriverUtils.setDefaultImplicitWait(driver);
 	}
 	
 	public boolean waitForLogin() {
-		 
-		 return DriverUtils.waitUntilElementDissapear(driver, By.name(OSXLocators.nameSignInButton));
+		DriverUtils.turnOffImplicitWait(driver);
+		boolean noSignIn = DriverUtils.waitUntilElementDissapear(driver, By.name(OSXLocators.nameSignInButton));
+		DriverUtils.setDefaultImplicitWait(driver);
+		return noSignIn;
 	}
 	
 	public Boolean isLoginFinished(String contact) {

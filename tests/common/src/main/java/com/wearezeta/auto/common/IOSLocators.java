@@ -35,5 +35,19 @@ public final class IOSLocators {
 	public static final String nameTextInput = "ComposeControllerTextView";
 	
 	public static final String xpathLastMessageFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]/UIATextView[1]";
+	
+	public static final String nameOtherUserNameField = "ProfileOtherNameField";
+	
+	public static final String namePickerSearch = "textViewSearch";
+	
+	public static final String namePickerClearButton = "PeoplePickerClearButton";
+	
+	public static final String classConnectToLabel = "UIATextField";
+	
+	public static final String nameSendConnectButton = "SEND";
+	
+	public static final String nameConnectInput = "Type your first message to [%s]...";
+	
+	public static final String xpathConnectCloseButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]";
 
 }

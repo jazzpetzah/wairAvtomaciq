@@ -26,6 +26,9 @@ public class ContactListPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idContactEntry)
 	private List<WebElement> contactsTextFields;
 	
+	@FindBy(how = How.ID, using = OSXLocators.idAddConversationButton)
+	private WebElement addConversationButton;
+	
 	@FindBy(how = How.NAME, using = OSXLocators.nameSignOutMenuItem)
 	private WebElement signOutMenuItem;
 
@@ -45,18 +48,13 @@ public class ContactListPage extends OSXPage {
 		driver.navigate().to("ZClient");
 	}
 	
+	public void openPeoplePicker() {
+		addConversationButton.click();
+	}
+	
 	public boolean isContactWithNameExists(String name) {
-		boolean isFound = false;
-		if (contactsTextFields.isEmpty()) {
-			contactsTextFields = driver.findElements(By.id(OSXLocators.idContactEntry));
-		}
-		for (WebElement cl: contactsTextFields) {
-			if (cl.getText().equals(name)) {
-				isFound = true;
-				break;
-			}
-		}
-		return isFound;
+		String xpath = String.format(OSXLocators.xpathFormatContactEntryWithName, name);
+		return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath));
 	}
 	
 	public boolean openConversation(String conversationName) {
@@ -70,7 +68,10 @@ public class ContactListPage extends OSXPage {
 	}
 	
 	public boolean waitForSignOut() {
-		return DriverUtils.waitUntilElementDissapear(driver, By.id(OSXLocators.idContactEntry));
+		DriverUtils.setImplicitWaitValue(driver, 1);
+		boolean noContactList = DriverUtils.waitUntilElementDissapear(driver, By.id(OSXLocators.idContactEntry));
+		DriverUtils.setDefaultImplicitWait(driver);
+		return noContactList;
 	}
 	
 	public Boolean isSignOutFinished() {

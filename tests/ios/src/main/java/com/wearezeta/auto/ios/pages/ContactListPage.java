@@ -54,10 +54,31 @@ public class ContactListPage extends IOSPage {
 			 findNameInContactList(name);
 		 }
 		return contact;
-	 }
+	 }	
 
 	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) {
-		return null;
+	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
+		
+		IOSPage page = null;
+		switch (direction){
+			case DOWN:
+			{
+				page = new PeoplePickerPage(url, path);
+				break;
+			}
+			case UP:
+			{
+				break;
+			}
+			case LEFT:
+			{
+				break;
+			}
+			case RIGHT:
+			{
+				break;
+			}
+		}	
+		return page;
 	}
 }

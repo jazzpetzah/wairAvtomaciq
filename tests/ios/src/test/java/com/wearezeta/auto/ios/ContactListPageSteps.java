@@ -22,11 +22,23 @@ public class ContactListPageSteps {
 		PagesCollection.iOSPage = PagesCollection.contactListPage.tapOnName(name);
 	}
 	
+	@When("^I swipe down contact list$")
+	public void I_swipe_down_contact_list() throws Throwable {
+	    //TODO Express the Regexp above with the code you wish you had
+	    throw new Exception();
+	}
+	
 	@Then ("Contact list appears with my name (.*)")
 	public void ThenContactListAppears(String value) {
 		 
 		Assert.assertTrue("Login finished", PagesCollection.loginPage.waitForLogin());		 
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(value));		 
+	}
+	
+	@Then("^I see contact list loaded with User name (.*) first in list$")
+	public void I_see_User_name_first_in_contact_list(String value) throws Throwable {
+	    //TODO Express the Regexp above with the code you wish you had
+	    throw new Exception();
 	}
 
 }

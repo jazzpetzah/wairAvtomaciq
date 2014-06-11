@@ -31,6 +31,8 @@
 @property FinderApplication *finder;
 @property SystemEventsApplication *systemEvents;
 
+@property float implicitWaitMs;
+
 -(void) activateApplication;
 -(BOOL) activateWindow;
 -(NSString*) applicationNameForProcessName:(NSString*)processName;

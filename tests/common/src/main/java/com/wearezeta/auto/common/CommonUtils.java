@@ -41,6 +41,11 @@ public class CommonUtils {
         return getValueFromConfig(c, "Url");
 	}
 	
+	public static Boolean getisSimulatorFomConfig(Class c) throws IOException {
+
+        return (getValueFromConfig(c, "isSimulator").equals("true"));
+	}
+	
 	public static String getAppPathFromConfig(Class c) throws IOException {
 
         return getValueFromConfig(c, "appPath");

@@ -62,6 +62,12 @@ public abstract class IOSPage extends BasePage {
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 	
+	public IOSPage swipeDownSimulator(int time) throws IOException
+	{
+		DriverUtils.swipeDown(driver, content, time);
+		return returnBySwipe(SwipeDirection.DOWN);
+	}
+	
 	public static void clearPagesCollection()
 	{
 		PagesCollection.iOSPage = null;
@@ -70,6 +76,8 @@ public abstract class IOSPage extends BasePage {
 		PagesCollection.welcomePage = null;
 		PagesCollection.contactListPage = null;
 		PagesCollection.dialogPage = null;
+		PagesCollection.otherUserPersonalInfoPage = null;
+		PagesCollection.peoplePickerPage = null;
 
 	}
 }

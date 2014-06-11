@@ -1,0 +1,144 @@
+package com.wearezeta.auto.osx.pages;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
+
+import com.wearezeta.auto.common.DriverUtils;
+import com.wearezeta.auto.osx.locators.OSXLocators;
+import com.wearezeta.auto.osx.util.NSPoint;
+
+public class PeoplePickerPage extends OSXPage {
+
+	@FindBy(how = How.ID, using = OSXLocators.idMainWindow)
+	private WebElement mainWindow;
+
+	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerDismissButton)
+	private WebElement cancelButton;
+	
+//	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerSearchField)
+	private WebElement searchField = findSearchField();
+	
+	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerSearchResultEntry)
+	private List<WebElement> searchResults;
+	
+	@FindBy(how = How.NAME, using = OSXLocators.nameQuitZClientMenuItem)
+	private WebElement quitZClientMenuItem;
+	
+	public PeoplePickerPage(String URL, String path) throws MalformedURLException {
+		super(URL, path);
+	}
+	
+	private WebElement findSearchField() {
+		List<WebElement> textAreaCandidates = driver.findElements(By.xpath("//AXTextArea"));
+    	for (WebElement textArea: textAreaCandidates) {
+    		if (textArea.getText().equals("")) {
+    			return textArea;
+    		}
+    	}
+        return null;
+	}
+	
+	public void searchForText(String text) {
+		if (searchField == null) {
+			searchField = findSearchField();
+		}
+		searchField.sendKeys(text);
+	}
+	
+	public boolean sendInvitationToUserIfRequested() {
+        try {
+        	WebElement sendButton = driver.findElement(By.name(OSXLocators.nameSendInvitationButton));
+        	sendButton.click();
+       	} catch (NoSuchElementException e) {
+       		return false;
+       	}
+        return true;
+	}
+	
+	public boolean areSearchResultsContainUser(String username) {
+		String xpath = String.format(OSXLocators.xpathFormatPeoplePickerSearchResultUser, username);
+		
+		DriverUtils.setImplicitWaitValue(driver, 60);
+		boolean result = DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath));
+		DriverUtils.setDefaultImplicitWait(driver);
+		return result;
+	}
+	
+	public void scrollToUserInSearchResults(String user) {
+    	NSPoint mainPosition = NSPoint.fromString(mainWindow.getAttribute("AXPosition"));
+    	NSPoint mainSize = NSPoint.fromString(mainWindow.getAttribute("AXSize"));
+    	
+    	NSPoint latestPoint =
+    			new NSPoint(mainPosition.x() + mainSize.x(), mainPosition.y() + mainSize.y());
+
+    	//get scrollbar for contact list
+    	WebElement peopleDecrementSB = null;
+    	WebElement peopleIncrementSB = null;
+
+    	WebElement scrollArea = driver.findElement(By.xpath(OSXLocators.xpathSearchResultsScrollArea));
+   
+    	WebElement userContact = null;
+    	boolean isFoundPeople = false;
+		try {
+			for (WebElement contact: searchResults) {
+				if (contact.getText().equals(user)) {
+					isFoundPeople = true;
+					userContact = contact;
+				}
+			}
+		} catch (NoSuchElementException e) {
+			isFoundPeople = false;
+		}
+		
+        NSPoint userPosition = NSPoint.fromString(userContact.getAttribute("AXPosition"));
+        if (userPosition.y() > latestPoint.y() && userPosition.y() < mainPosition.y()) {
+        	if (isFoundPeople) {
+    			WebElement scrollBar = scrollArea.findElement(By.xpath("//AXScrollBar"));
+    			List<WebElement> scrollButtons = scrollBar.findElements(By.xpath("//AXButton"));
+    			for (WebElement scrollButton: scrollButtons) {
+    				String subrole = scrollButton.getAttribute("AXSubrole");
+    				if (subrole.equals("AXDecrementPage")) {
+    					peopleDecrementSB = scrollButton;
+    				}
+    				if (subrole.equals("AXIncrementPage")) {
+    					peopleIncrementSB = scrollButton;
+    				}
+    			}
+    		}
+        	
+            while (userPosition.y() > latestPoint.y()) {
+            	peopleIncrementSB.click();
+            	userPosition = NSPoint.fromString(userContact.getAttribute("AXPosition"));
+            }
+            while (userPosition.y() < mainPosition.y()) {
+            	peopleDecrementSB.click();
+            	userPosition = NSPoint.fromString(userContact.getAttribute("AXPosition"));
+            }
+        }
+		
+	}
+	
+	public void chooseUserInSearchResults(String user) {
+		for (WebElement userEntry: searchResults) {
+			if (userEntry.getText().equals(user)) {
+				userEntry.click();
+				break;
+			}
+		}
+	}
+	
+	@Override
+	public void Close() throws IOException {
+		try {
+			quitZClientMenuItem.click();
+		} catch (Exception e) { }
+		super.Close();
+	}
+}

@@ -32,13 +32,19 @@ public class DialogPage extends IOSPage{
 	}
 
 	public void waitForCursorInputVisible(){
-		
+		ScrollToLastMessage();
 		wait.until(ExpectedConditions.visibilityOf(cursorInput));
 	}
 	
 	public void tapOnCursorInput()
 	{
 		cursorInput.click();
+
+	}
+	
+	public void multiTapOnCursorInput() throws InterruptedException{
+		
+		DriverUtils.iOSMultiTap(driver, cursorInput, 3);
 	}
 	
 	public void waitForTextMessageInputVisible(){
@@ -55,6 +61,10 @@ public class DialogPage extends IOSPage{
 		WebElement el = driver.findElementByXPath(lastMessageXPath);
 		String lastMessage = el.getText();
 		return lastMessage;
+	}
+	
+	public void ScrollToLastMessage(){
+		DriverUtils.scrollToElement(driver, messagesList.get(messagesList.size()-1));
 	}
 
 	public String getLastMessageFromDialog()
@@ -76,7 +86,7 @@ public class DialogPage extends IOSPage{
 			}
 			case LEFT:
 			{
-				
+				page = new OtherUserPersonalInfoPage(url, path);
 				break;
 			}
 			case RIGHT:
