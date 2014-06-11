@@ -320,16 +320,9 @@
     {
         i++;
 		GDataXMLElement *childElement = [GDataXMLElement elementWithName:child.AXRole];
-		[self xmlPageSourceHelperFromElement:child element:childElement path:[path stringByAppendingFormat:@"/*[%d]", i+1] pathMap:pathMap];
+		[self xmlPageSourceHelperFromElement:child element:childElement path:[path stringByAppendingFormat:@"/*[%d]", i] pathMap:pathMap];
 		[element addChild:childElement];
     }
-/*	for (int i=0; i < root.AXChildren.count; i++)
-	{
-		PFUIElement *child = [root.AXChildren objectAtIndex:i];
-		GDataXMLElement *childElement = [GDataXMLElement elementWithName:child.AXRole];
-		[self xmlPageSourceHelperFromElement:child element:childElement path:[path stringByAppendingFormat:@"/*[%d]", i+1] pathMap:pathMap];
-		[element addChild:childElement];
-	}*/
 }
 
 @end
