@@ -3,6 +3,7 @@ package com.wearezeta.auto.common;
 
 import io.appium.java_client.AppiumDriver;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
@@ -150,7 +151,12 @@ public class DriverUtils {
 	        }
 	 }
 	 
-	 public static void iOSMultiTap(AppiumDriver driver,WebElement element, int tapNumber) throws InterruptedException {
+	 public static void iOSSimulatorSwipeDown(String scriptPath) throws IOException{
+		 Runtime.getRuntime().exec("/usr/bin/open -a Terminal " + scriptPath);
+	 }
+	 
+	 public static void iOSMultiTap(AppiumDriver driver,WebElement element, int tapNumber) throws InterruptedException
+	 {
 		 Point coords = element.getLocation();
 			Dimension elementSize = element.getSize();
 			

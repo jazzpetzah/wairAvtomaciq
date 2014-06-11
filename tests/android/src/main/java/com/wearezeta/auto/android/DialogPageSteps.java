@@ -17,8 +17,8 @@ public class DialogPageSteps{
 		PagesCollection.dialogPage.waitForCursorInputVisible();
 	}
 
-	@When("^I tap on bottom part of the screen$")
-	public void WhenITapOnBottomPartOfTheScreen() throws Throwable {
+	@When("^I tap on text input$")
+	public void WhenITapOnTextInput() throws Throwable {
 		PagesCollection.dialogPage.tapOnCursorInput();
 	}
 
@@ -33,13 +33,13 @@ public class DialogPageSteps{
 		PagesCollection.dialogPage.typeMessage("\\n");
 	}
 	
-	@When("^I multi tap on bottom part of the screen$")
-	public void WhenIMultiTapOnBottomPartOfTheScreen() throws Throwable {
+	@When("^I multi tap on text input$")
+	public void WhenIMultiTapOnTextInput() throws Throwable {
 		PagesCollection.dialogPage.multiTapOnCursorInput();
 	}
 	
-	@When("^I swipe on bottom part of the screen$")
-	public void WhenISwipeOnBottomPartOfTheScreen() throws Throwable {
+	@When("^I swipe on text input$")
+	public void WhenISwipeOnTextInput() throws Throwable {
 		PagesCollection.dialogPage.SwipeOnCursorInput();
 	}
 
