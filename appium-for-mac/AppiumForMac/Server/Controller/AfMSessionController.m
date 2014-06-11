@@ -291,7 +291,10 @@
 		[element addAttribute:[GDataXMLElement attributeWithName:@"AXValue" stringValue:[NSString stringWithFormat:@"%@",root.AXValue]]];
 	 }
 
-	NSString *identifier = [root valueForAttribute:@"AXIdentifer"];
+    CFTypeRef identifierRef = nil;
+    AXUIElementCopyAttributeValue(root.elementRef, (__bridge CFStringRef)@"AXIdentifier", &identifierRef);
+	NSString *identifier = (__bridge NSString*)identifierRef;
+
 	if (identifier != nil)
 	{
 		[element addAttribute:[GDataXMLElement attributeWithName:@"AXIdentifier" stringValue:[NSString stringWithFormat:@"%@",[root valueForAttribute:@"AXIdentifier"]]]];
@@ -310,13 +313,23 @@
 
     if ([root.AXRole caseInsensitiveCompare:@"AXUnknown"] == NSOrderedSame) return;
     
-	for (int i=0; i < root.AXChildren.count; i++)
+    NSArray *children = root.AXChildren;
+    PFUIElement *child;
+    int i = 0;
+    for (child in children)
+    {
+        i++;
+		GDataXMLElement *childElement = [GDataXMLElement elementWithName:child.AXRole];
+		[self xmlPageSourceHelperFromElement:child element:childElement path:[path stringByAppendingFormat:@"/*[%d]", i+1] pathMap:pathMap];
+		[element addChild:childElement];
+    }
+/*	for (int i=0; i < root.AXChildren.count; i++)
 	{
 		PFUIElement *child = [root.AXChildren objectAtIndex:i];
 		GDataXMLElement *childElement = [GDataXMLElement elementWithName:child.AXRole];
 		[self xmlPageSourceHelperFromElement:child element:childElement path:[path stringByAppendingFormat:@"/*[%d]", i+1] pathMap:pathMap];
 		[element addChild:childElement];
-	}
+	}*/
 }
 
 @end

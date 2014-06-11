@@ -84,8 +84,12 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_VERBOSE;
 
     // /session/:sessionId/timeouts
     // /session/:sessionId/timeouts/async_script
-    // /session/:sessionId/timeouts/implicit_wait
-
+    // POST /session/:sessionId/timeouts/implicit_wait
+    if (pathComponents.count == 4 && [[pathComponents objectAtIndex:0] isEqualToString:@"session"] && [[pathComponents objectAtIndex:2] isEqualToString:@"timeouts"] && [[pathComponents objectAtIndex:3] isEqualToString:@"implicit_wait"] && [method isEqualToString:@"POST"])
+	{
+        return [SERVER.handler postImplicitWait:path data:[request body]];
+	}
+    
     // GET /session/:sessionId/window_handle
     if (pathComponents.count == 3 && [[pathComponents objectAtIndex:0] isEqualToString:@"session"] && [[pathComponents objectAtIndex:2] isEqualToString:@"window_handle"] && [method isEqualToString:@"GET"])
 	{
