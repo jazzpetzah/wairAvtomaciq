@@ -10,6 +10,7 @@ import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.common.BasePage;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.common.IOSLocators;
 import com.wearezeta.auto.common.SwipeDirection;
@@ -58,16 +59,15 @@ public abstract class IOSPage extends BasePage {
 	@Override
 	public IOSPage swipeDown(int time) throws IOException
 	{
-		DriverUtils.swipeDown(driver, content, time);
+		if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class)){
+			DriverUtils.iOSSimulatorSwipeDown(CommonUtils.getSwipeScriptPath(IOSPage.class));
+		}
+		else {
+			DriverUtils.swipeDown(driver, content, time);
+		}
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
-	
-	public IOSPage swipeDownSimulator(int time) throws IOException
-	{
-		DriverUtils.swipeDown(driver, content, time);
-		return returnBySwipe(SwipeDirection.DOWN);
-	}
-	
+
 	public static void clearPagesCollection()
 	{
 		PagesCollection.iOSPage = null;
