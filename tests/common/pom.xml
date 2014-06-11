@@ -35,7 +35,6 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.11</version>
-      <scope>test</scope>
     </dependency>
     
 	<dependency>
@@ -54,28 +53,20 @@
         <groupId>info.cukes</groupId>
         <artifactId>cucumber-picocontainer</artifactId>
         <version>1.1.5</version>
-        <scope>test</scope>
     </dependency>
     
     <dependency>
         <groupId>info.cukes</groupId>
         <artifactId>cucumber-junit</artifactId>
         <version>1.1.5</version>
-        <scope>test</scope>
     </dependency>
     
     <dependency>
-    	<groupId>info.cukes</groupId>
-    	<artifactId>gherkin</artifactId>
-    	<version>2.12.1</version>
-	</dependency>
-	
-        <dependency>
-            <!-- SLF4J is distributed under the MIT license. The MIT license is known to be compatible with the Apache 2.0 license. -->
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>1.6.4</version>
-        </dependency>
+      <!-- SLF4J is distributed under the MIT license. The MIT license is known to be compatible with the Apache 2.0 license. -->
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>1.6.4</version>
+    </dependency>
     
     <dependency>
         <groupId>com.atlassian.jira</groupId>

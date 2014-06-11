@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 
@@ -36,5 +37,12 @@ public class DialogPageSteps {
 	    String dialogLastMessage = PagesCollection.dialogPage.getLastMessageFromDialog();
 	    Assert.assertEquals(message, dialogLastMessage);
 	}
+	
+	@Then("^I see Pending Connect to (.*) dialog$")
+	public void I_see_Pending_Connect_dialog(String user) throws Throwable {
+	    //TODO Express the Regexp above with the code you wish you had
+	    throw new Exception();
+	}
+
 
 }

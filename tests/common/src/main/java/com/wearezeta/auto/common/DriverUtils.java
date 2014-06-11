@@ -149,4 +149,20 @@ public class DriverUtils {
 	        	Thread.sleep(100);
 	        }
 	 }
+	 
+	 public static void iOSMultiTap(AppiumDriver driver,WebElement element, int tapNumber) throws InterruptedException
+	 {
+		 Point coords = element.getLocation();
+			Dimension elementSize = element.getSize();
+			
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			HashMap<String, Double> tapObject = new HashMap<String, Double>();
+			tapObject.put("tapCount", (double) tapNumber);
+			tapObject.put("touchCount", (double) 1);
+			tapObject.put("duration", 0.2);
+			tapObject.put("x", (double) (coords.x + elementSize.width/2));
+			tapObject.put("y", (double) (coords.y + elementSize.height/2));
+	        
+			js.executeScript("mobile: tap", tapObject);
+	 }
 }
