@@ -6,7 +6,7 @@ Feature: Conversation
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And I tap on bottom part of the screen
+    And I tap on text input
     And I type the message
     And I press send
     Then I see my message in the dialog
@@ -20,7 +20,7 @@ Feature: Conversation
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And I multi tap on bottom part of the screen
+    And I multi tap on text input
     Then I see Hello message in the dialog
 
     Examples: 
@@ -32,7 +32,7 @@ Feature: Conversation
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And I swipe on bottom part of the screen
+    And I swipe on text input
     And I press Add Picture button
     And I press "Take Photo" button
     And I press "Confirm" button
