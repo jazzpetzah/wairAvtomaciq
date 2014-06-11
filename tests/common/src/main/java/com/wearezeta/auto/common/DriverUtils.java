@@ -150,8 +150,7 @@ public class DriverUtils {
 	        }
 	 }
 	 
-	 public static void iOSMultiTap(AppiumDriver driver,WebElement element, int tapNumber) throws InterruptedException
-	 {
+	 public static void iOSMultiTap(AppiumDriver driver,WebElement element, int tapNumber) throws InterruptedException {
 		 Point coords = element.getLocation();
 			Dimension elementSize = element.getSize();
 			
@@ -164,5 +163,17 @@ public class DriverUtils {
 			tapObject.put("y", (double) (coords.y + elementSize.height/2));
 	        
 			js.executeScript("mobile: tap", tapObject);
+	 }
+
+	 public static void turnOffImplicitWait(RemoteWebDriver driver) {
+		 driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+	 }
+	 
+	 public static void setDefaultImplicitWait(RemoteWebDriver driver) {
+		 driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+	 }
+	 
+	 public static void setImplicitWaitValue(RemoteWebDriver driver, int seconds) {
+		 driver.manage().timeouts().implicitlyWait(seconds, TimeUnit.SECONDS);
 	 }
 }

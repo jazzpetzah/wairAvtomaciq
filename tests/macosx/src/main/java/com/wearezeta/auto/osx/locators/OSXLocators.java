@@ -12,15 +12,30 @@ public final class OSXLocators {
 	public static final String xpathPasswordField = "//AXTextField[@AXPlaceholderValue='password']";
 
 	public static final String idContactEntry = "clListItemNameField";
-			
+	public static final String idAddImageButton = "AddImageButton";
+	public static final String idAddConversationButton = "addConversationButton";
+	public static final String idPeoplePickerSearchField = "people_picker_searchfield";
+	public static final String idPeoplePickerDismissButton = "people_picker_cancel_button";
+	public static final String idPeoplePickerSearchResultEntry = "people_picker_result_namefield";
+	
 	public static final String nameSayHelloMenuItem = "“Hello”";
 	public static final String nameSignOutMenuItem = "Sign Out";
 	public static final String nameQuitZClientMenuItem = "Quit ZClient";
+	public static final String nameSendInvitationButton = "Send";
 	
 	public static final String xpathMessageEntry = "//AXGroup/AXStaticText";
 	public static final String xpathNewMessageTextArea = "//AXTextArea";
+	public static final String xpathFileListScrollArea = "//AXScrollArea";
+	public static final String xpathConversationImageEntry = "//AXGroup/AXImage";
+	public static final String xpathSearchResultsScrollArea = "//AXScrollArea[AXTable[@AXIdentifier='people_picker_searchresult']]";
 
+	public static final String xpathFormatContactEntryWithName = "//AXStaticText[@AXIdentifier='clListItemNameField'][@AXValue='%s']";
+	public static final String xpathFormatSpecificMessageEntry = "//AXGroup/AXStaticText[@AXValue='%s']";
+	public static final String xpathFormatPeoplePickerSearchResultUser = "//AXStaticText[@AXIdentifier='people_picker_result_namefield'][@AXValue='%s']";
 	public static final String YOU_KNOCKED_MESSAGE = "YOU KNOCKED";
+	
+	public static final String idChooseImageCancelButton = "_NS:53";
+	public static final String idChooseImageOpenButton = "_NS:55";
 	
 	
 }

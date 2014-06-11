@@ -6,9 +6,9 @@ import java.net.MalformedURLException;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-import com.wearezeta.auto.common.BaseOSXPage;
+import com.wearezeta.auto.common.BasePage;
 
-public class OSXPage extends BaseOSXPage {
+public class OSXPage extends BasePage {
 	
 	public OSXPage(String URL, String path) throws MalformedURLException {
 		DesiredCapabilities capabilities = new DesiredCapabilities(); 
@@ -23,4 +23,10 @@ public class OSXPage extends BaseOSXPage {
 	public void Close() throws IOException {
 		super.Close();
 	}
+
+	//not used in OS X
+	@Override public BasePage swipeLeft(int time) throws IOException { return null; }
+	@Override public BasePage swipeRight(int time) throws IOException { return null; }
+	@Override public BasePage swipeUp(int time) throws IOException { return null; }
+	@Override public BasePage swipeDown(int time) throws IOException { return null; }
 }

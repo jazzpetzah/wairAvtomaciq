@@ -24,7 +24,6 @@ public class LoginPageSteps {
 			loginPage.setPassword(password);
 			loginPage.SignIn();
 			Assert.assertTrue("Failed to login", loginPage.waitForLogin());
-			loginPage.Close();
 		} catch (NoSuchElementException e) { }
 		
 		CommonSteps.senderPages.setContactListPage(new ContactListPage(
@@ -33,7 +32,7 @@ public class LoginPageSteps {
 	 }
 	
 	 @When("I press Sign In button")
-	 public void WhenIPressSignInButton() throws IOException {	 
+	 public void WhenIPressSignInButton() throws IOException {
 		 CommonSteps.senderPages.getLoginPage().SignIn();
 	 }
 	 

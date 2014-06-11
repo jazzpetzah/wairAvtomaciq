@@ -7,9 +7,11 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.osx.pages.ConversationPage;
+import com.wearezeta.auto.osx.pages.PeoplePickerPage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 
 public class ContactListPageSteps {
 	@Given ("I see Contact list with name (.*)")
@@ -30,4 +32,12 @@ public class ContactListPageSteps {
 				CommonUtils.getUrlFromConfig(ConversationPage.class),
 				CommonUtils.getAppPathFromConfig(ConversationPage.class)));
 	 }
+	
+	@When("I open People Picker from contact list")
+	public void WhenIOpenPeoplePickerFromContactList() throws MalformedURLException, IOException {
+		CommonSteps.senderPages.getContactListPage().openPeoplePicker();
+		CommonSteps.senderPages.setPeoplePickerPage(new PeoplePickerPage(
+				CommonUtils.getUrlFromConfig(PeoplePickerPage.class),
+				CommonUtils.getAppPathFromConfig(PeoplePickerPage.class)));
+	}
 }

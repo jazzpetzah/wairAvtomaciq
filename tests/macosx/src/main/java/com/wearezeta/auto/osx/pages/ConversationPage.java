@@ -3,12 +3,18 @@ package com.wearezeta.auto.osx.pages;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 
+import com.google.common.base.Function;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class ConversationPage extends OSXPage {
@@ -24,6 +30,9 @@ public class ConversationPage extends OSXPage {
 	
 	@FindBy(how = How.NAME, using = OSXLocators.nameSayHelloMenuItem)
 	private WebElement sayHelloMenuItem;
+
+	@FindBy(how = How.ID, using = OSXLocators.idAddImageButton)
+	private WebElement addImageButton;
 	
 	@FindBy(how = How.NAME, using = OSXLocators.nameSignOutMenuItem)
 	private WebElement signOutMenuItem;
@@ -60,7 +69,6 @@ public class ConversationPage extends OSXPage {
 	}
 	
 	public boolean isMessageExist(String message) {
-//		messageEntries = driver.findElements(By.xpath(OSXLocators.xpathMessageEntry));
 		for (WebElement entry: messageEntries) {
 			if (entry.equals(message)) {
 				return true;
@@ -80,26 +88,44 @@ public class ConversationPage extends OSXPage {
 		newMessageTextArea.submit();
 	}
 
-	public int calcMessageEntries(String message) {
-		int result = 0;
-//		messageEntries = driver.findElements(By.xpath(OSXLocators.xpathMessageEntry));
-		for (WebElement entry: messageEntries) {
-			if (entry.getText() != null && entry.getText().equals(message)) {
-				result++;
-			}
+	public void openChooseImageDialog() {
+		if (addImageButton == null) {
+			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+			       .withTimeout(10, TimeUnit.SECONDS)
+			       .pollingEvery(2, TimeUnit.SECONDS)
+			       .ignoring(NoSuchElementException.class);
+		 
+			addImageButton = wait.until(new Function<WebDriver, WebElement>() {
+				public WebElement apply(WebDriver driver) {
+					return driver.findElement(By.name(OSXLocators.nameSignInButton));
+				}
+			});
 		}
-		return result;
+		addImageButton.click();
+	}
+	
+	public int getNumberOfMessageEntries(String message) {
+		String xpath = String.format(OSXLocators.xpathFormatSpecificMessageEntry, message);
+		List<WebElement> messageEntries = driver.findElements(By.xpath(xpath));
+		return messageEntries.size();
+	}
+	
+	public int getNumberOfImageEntries() {
+		List<WebElement> conversationImages =
+				driver.findElements(By.xpath(OSXLocators.xpathConversationImageEntry));
+		return conversationImages.size();
 	}
 	
 	public boolean isMessageSent(String message) {
 		boolean isSend = false;
-		for (WebElement entry: messageEntries) {
-			if (entry.getAttribute("AXValue").equals(message)) {
-				isSend = true;
-			}
+		String xpath = String.format(OSXLocators.xpathFormatSpecificMessageEntry, message);
+		WebElement element = driver.findElement(By.xpath(xpath));
+		if (element != null) {
+			isSend = true;
 		}
 		return isSend;
 	}
+	
 	@Override
 	public void Close() throws IOException {
 		try {
