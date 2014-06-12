@@ -1,12 +1,13 @@
 Feature: Send Message
 
-  Scenario Outline: Send Message to user from my contact list
+  Scenario Outline: Send Message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I tap on name <Contact>
+    When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
-    And I type the message and send it
+    And I type the message
+    And I press send
     Then I see my message in the dialog
 
     Examples:     

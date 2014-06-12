@@ -15,33 +15,44 @@ public class DialogPageSteps {
 	private String message;
 	
 	@When("^I see dialog page$")
-	public void I_see_dialog_page() throws Throwable {
+	public void WhenISeeDialogPage() throws Throwable {
 	    PagesCollection.dialogPage = (DialogPage) PagesCollection.iOSPage;
 	    PagesCollection.dialogPage.waitForCursorInputVisible();
 	}
 
 	@When("^I tap on text input$")
-	public void I_tap_on_text_input() throws Throwable {
+	public void WhenITapOnTextInput() throws Throwable {
 	    PagesCollection.dialogPage.tapOnCursorInput();
+	}
+	
+	@When("^I type the message$")
+	public void WhenITypeTheMessage() throws Throwable {
+		message = CommonUtils.generateGUID();
+		PagesCollection.dialogPage.typeMessage(message);
+	}
+	
+	@When("^I press send$")
+	public void WhenIPressSend() throws Throwable {
+		PagesCollection.dialogPage.typeMessage("\\n");
 	}
 
 	@When("^I type the message and send it$")
-	public void I_type_the_message() throws Throwable {
+	public void ITypeTheMessageAndSendIt() throws Throwable {
 		PagesCollection.dialogPage.waitForTextMessageInputVisible();
 	    message = CommonUtils.generateGUID();
 	    PagesCollection.dialogPage.typeMessage(message + "\n");
 	}
 
 	@Then("^I see my message in the dialog$")
-	public void I_see_my_message_in_the_dialog() throws Throwable {
+	public void ThenISeeMyMessageInTheDialog() throws Throwable {
 	    String dialogLastMessage = PagesCollection.dialogPage.getLastMessageFromDialog();
-	    Assert.assertEquals(message, dialogLastMessage);
+	    Assert.assertTrue(dialogLastMessage.equals((message).trim()));
 	}
 	
-	@Then("^I see Pending Connect to (.*) dialog$")
-	public void I_see_Pending_Connect_dialog(String user) throws Throwable {
-	    //TODO Express the Regexp above with the code you wish you had
-	    throw new Exception();
+	@Then("^I see Pending Connect to (.*) message on Dialog page$")
+	public void ISeePendingConnectMessage(String user) throws Throwable {
+		Assert.assertTrue(PagesCollection.dialogPage.isConnectMessageValid(user));
+		Assert.assertTrue(PagesCollection.dialogPage.isPendingButtonVisible());
 	}
 
 

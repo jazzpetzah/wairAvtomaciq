@@ -118,7 +118,7 @@ public class LoginPage extends IOSPage {
 		return null;
 	}
 	
-	public Boolean isWelcomeButtonsExist() {
+	public Boolean isLoginButtonVisible() {
 		
 		return (ExpectedConditions.visibilityOf(signInButton) != null);
 	}

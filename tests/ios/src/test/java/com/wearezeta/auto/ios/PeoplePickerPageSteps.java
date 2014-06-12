@@ -1,7 +1,8 @@
 package com.wearezeta.auto.ios;
 
-import java.io.IOException;
+import org.junit.Assert;
 
+import com.wearezeta.auto.ios.pages.ConnectToPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 
 import cucumber.api.java.en.When;
@@ -9,51 +10,35 @@ import cucumber.api.java.en.When;
 public class PeoplePickerPageSteps {
 	
 	@When("^I see People picker page$")
-	public void I_see_People_picker_page() throws Throwable {
-	    //TODO Express the Regexp above with the code you wish you had
-	    throw new Exception();
+	public void WhenISeePeoplePickerPage() throws Throwable {
+		 Assert.assertTrue(PagesCollection.peoplePickerPage.isPeoplePickerPageVisible());
 	}
 	
 	@When("^I tap on Search input on People picker page$")
-	public void I_tap_on_Search_input_on_People_picker_page() throws Throwable {
-	    //TODO Express the Regexp above with the code you wish you had
-	    throw new Exception();
+	public void WhenITapOnSearchInputOnPeoplePickerPage() throws Throwable {
+	    PagesCollection.peoplePickerPage.tapOnPeoplePickerSearch();
 	}
 	
 	@When("^I input in search field user name to connect to (.*)$")
-	public void I_input_in_search_field_user_name_to_connect_to(String contact) throws Throwable {
-	    //TODO Express the Regexp above with the code you wish you had
-	    throw new Exception();
+	public void WhenIInputInSearchFieldUserNameToConnectTo(String contact) throws Throwable {
+	    PagesCollection.peoplePickerPage.fillTextInPeoplePickerSearch(contact);
 	}
 	
 	@When("^I see user (.*) found on People picker page$")
-	public void I_see_user_Piotr_mqa_found(String contact) throws Throwable {
-	    //TODO Express the Regexp above with the code you wish you had
-	    throw new Exception();
+	public void WhenISeeUserFoundOnPeoplePickerPage(String contact) throws Throwable {
+	    PagesCollection.peoplePickerPage.waitUserPickerFindUser(contact);
 	}
 	
-	@When("^I tap on user name (.*) on People picker page$")
-	public void I_tap_on_user_name_Piotr_mqa(String contact) throws Throwable {
-	    //TODO Express the Regexp above with the code you wish you had
-	    throw new Exception();
+	@When("^I tap on user name found on People picker page (.*)$")
+	public void WhenITapOnUserNameFoundOnPeoplePickerPage(String contact) throws Throwable {
+		PagesCollection.connectToPage = (ConnectToPage)(PagesCollection.peoplePickerPage.clickOnFoundUser());
 	}
 	
-	@When("^I see connect to (.*) dialog$")
-	public void I_see_connect_to_Piotr_mqa_dialog(String contact) throws Throwable {
-	    //TODO Express the Regexp above with the code you wish you had
-	    throw new Exception();
+	@When("^I search for user name (.*) and tap on it on People picker page$")
+	public void WhenISearchForUserNameAndTapOnItOnPeoplePickerPage(String contact) throws Throwable {
+	    PagesCollection.peoplePickerPage.pickUserAndTap(contact);
 	}
 	
-	@When("^I input message in connect dialog$")
-	public void I_input_message_in_connect_dialog() throws Throwable {
-	    //TODO Express the Regexp above with the code you wish you had
-	    throw new Exception();
-	}
-	
-	@When("^I tap on Send button below connect dialog$")
-	public void I_tap_on_Send_button_below_connect_dialog() throws Throwable {
-	    //TODO Express the Regexp above with the code you wish you had
-	    throw new Exception();
-	}
+
 
 }

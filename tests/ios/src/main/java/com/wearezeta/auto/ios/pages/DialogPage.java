@@ -3,6 +3,8 @@ package com.wearezeta.auto.ios.pages;
 import java.io.IOException;
 import java.util.List;
 
+import junit.framework.Assert;
+
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -21,6 +23,12 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameDialogMessages)
 	private List<WebElement> messagesList;
 	
+	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameConnectMessageLabel)
+	private WebElement connectMessageLabel;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.namePendingButton)
+	private WebElement pendingButton;
+	
 	private String url;
 	private String path;
 	
@@ -36,10 +44,8 @@ public class DialogPage extends IOSPage{
 		wait.until(ExpectedConditions.visibilityOf(cursorInput));
 	}
 	
-	public void tapOnCursorInput()
-	{
+	public void tapOnCursorInput(){
 		cursorInput.click();
-
 	}
 	
 	public void multiTapOnCursorInput() throws InterruptedException{
@@ -55,14 +61,7 @@ public class DialogPage extends IOSPage{
 	{
 		textInput.sendKeys(message);
 	}
-	
-	private String GetLastMessage(List<WebElement> chatList) {
-		String lastMessageXPath = String.format(IOSLocators.xpathLastMessageFormat, chatList.size());
-		WebElement el = driver.findElementByXPath(lastMessageXPath);
-		String lastMessage = el.getText();
-		return lastMessage;
-	}
-	
+		
 	public void ScrollToLastMessage(){
 		DriverUtils.scrollToElement(driver, messagesList.get(messagesList.size()-1));
 	}
@@ -70,6 +69,14 @@ public class DialogPage extends IOSPage{
 	public String getLastMessageFromDialog()
 	{
 		return GetLastMessage(messagesList);
+	}
+		
+	public boolean isConnectMessageValid(String username){
+		return getConnectMessageLabel().equals("Connect to " + username);
+	}
+	
+	public boolean isPendingButtonVisible(){
+		return pendingButton.isDisplayed();
 	}
 	
 	@Override
@@ -96,6 +103,17 @@ public class DialogPage extends IOSPage{
 			}
 		}	
 		return page;
+	}
+	
+	private String getConnectMessageLabel(){
+		return connectMessageLabel.getText();
+	}
+	
+	private String GetLastMessage(List<WebElement> chatList) {
+		String lastMessageXPath = String.format(IOSLocators.xpathLastMessageFormat, chatList.size());
+		WebElement el = driver.findElementByXPath(lastMessageXPath);
+		String lastMessage = el.getText();
+		return lastMessage;
 	}
 
 }
