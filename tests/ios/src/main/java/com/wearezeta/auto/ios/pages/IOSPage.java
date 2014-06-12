@@ -78,6 +78,7 @@ public abstract class IOSPage extends BasePage {
 		PagesCollection.dialogPage = null;
 		PagesCollection.otherUserPersonalInfoPage = null;
 		PagesCollection.peoplePickerPage = null;
+		PagesCollection.connectToPage = null;
 
 	}
 }

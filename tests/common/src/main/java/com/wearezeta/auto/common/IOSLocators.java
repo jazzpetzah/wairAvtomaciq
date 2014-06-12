@@ -42,12 +42,22 @@ public final class IOSLocators {
 	
 	public static final String namePickerClearButton = "PeoplePickerClearButton";
 	
-	public static final String classConnectToLabel = "UIATextField";
-	
 	public static final String nameSendConnectButton = "SEND";
 	
-	public static final String nameConnectInput = "Type your first message to [%s]...";
+	public static final String clasNameConnectDialogLabel = "UIATextField";
+	
+	public static final String classNameConnectDialogInput = "UIATextView";
 	
 	public static final String xpathConnectCloseButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]";
+
+	public static final String xpathFirstInContactList = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[2]/UIAStaticText[1]";
+	
+	public static final String classNameConnectMessageLabel = "UIATextField";
+	
+	public static final String xpathUnicUserPickerSearchResult = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[2]/UIACollectionCell[1]";
+	
+	public static final String namePendingButton = "PENDING";
+	
+	public static final String nameSignOutButton = "Sign out";
 
 }

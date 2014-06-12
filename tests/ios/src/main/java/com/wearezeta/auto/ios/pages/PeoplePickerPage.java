@@ -9,6 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.common.IOSLocators;
 import com.wearezeta.auto.common.SwipeDirection;
 
@@ -23,81 +24,52 @@ public class PeoplePickerPage extends IOSPage{
 	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameContactListNames)
 	private List<WebElement> resultList;
 	
-	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classConnectToLabel)
-	private WebElement connectToLabel;
-	
-	@FindBy(how = How.NAME, using = IOSLocators.nameSendConnectButton)
-	private WebElement sendButton;
-	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathConnectCloseButton)
-	private WebElement closeConnectDialoButon;
-	
-	@FindBy(how = How.NAME, using = IOSLocators.nameConnectInput)
-	private WebElement connectTextInput;
-	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathUnicUserPickerSearchResult)
+	private WebElement userPickerSearchResult;
 	
 	private String url;
 	private String path;
-	private String inviteMessage = "Hello!";
 	
-
 	public PeoplePickerPage(String URL, String path) throws MalformedURLException {
 		super(URL, path);
 		url = URL;
 		this.path = path;
-
 	}
 	
-	public void TapOnPeoplePickerSearch(){
+	public Boolean isPeoplePickerPageVisible(){
+		return peoplePickerClearBtn.isDisplayed();
+	}
+	
+	public void tapOnPeoplePickerSearch(){
 		peoplePickerSearch.click();
 	}
 	
-	public void TapOnPeoplePickerClearBtn(){
+	public void tapOnPeoplePickerClearBtn(){
 		peoplePickerClearBtn.click();
 	}
 	
-	private void FillTextInPeoplePickerSearch(String text){
+	public void fillTextInPeoplePickerSearch(String text){
 		peoplePickerSearch.sendKeys(text);
 	}
 	
-	private WebElement PickUser(String name){
-
-		FillTextInPeoplePickerSearch(name);
-		return driver.findElement(By.name(name));
+	public void waitUserPickerFindUser(String user){
+		DriverUtils.waitUntilElementAppears(driver, By.name(user));
 	}
 	
-	public void PickerUserAndTap(String name){
+	public ConnectToPage clickOnFoundUser() throws MalformedURLException{
+		userPickerSearchResult.click();
+		return new ConnectToPage(url, path);
+	}
+	
+	public void pickUserAndTap(String name){
 		PickUser(name).click();
 	}
 	
-	public IOSPage dismissPeoplePicker() throws IOException{
-		IOSPage page = null;
+	public ContactListPage dismissPeoplePicker() throws IOException{
 		peoplePickerClearBtn.click();
-		page = new ContactListPage(url, path);
-		return page;
+		return new ContactListPage(url, path);
+	}
 		
-	}
-	
-	public void FillTextInConnectDialog(String message){
-		connectTextInput.sendKeys(message);
-	}
-	
-	public void ClickSendButton(){
-		sendButton.click();
-	}
-	
-	public IOSPage SendInvitation() throws IOException{
-		IOSPage page = null;
-		FillTextInConnectDialog(inviteMessage);
-		ClickSendButton();
-		page = new ContactListPage(url, path);
-		return page;
-	}
-	
-	public void CloseConnectDialog(){
-		closeConnectDialoButon.click();
-	}
-	
 	@Override
 	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
 		
@@ -122,6 +94,15 @@ public class PeoplePickerPage extends IOSPage{
 			}
 		}	
 		return page;
+	}
+	
+	private WebElement PickUser(String name){
+		WebElement user=null;
+		fillTextInPeoplePickerSearch(name);
+		waitUserPickerFindUser(name);
+		user = driver.findElementByXPath(IOSLocators.xpathUnicUserPickerSearchResult);
+
+		return user;
 	}
 
 }

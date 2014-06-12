@@ -16,6 +16,10 @@ public class ContactListPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameWelcomeLabel)
 	private List<WebElement> welcomeLabel;
 	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathFirstInContactList)
+	private WebElement firstContactListDialog;
+
+	
 
 	private String url;
 	private String path;
@@ -37,6 +41,11 @@ public class ContactListPage extends IOSPage {
 		}
 		return page;
 	}
+	
+	public String getFirstDialogName(){
+		return firstContactListDialog.getText();
+	}
+	
 	private WebElement findNameInContactList(String name)
 	 {
 		 Boolean flag = true;

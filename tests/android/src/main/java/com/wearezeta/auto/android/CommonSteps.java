@@ -26,6 +26,7 @@ public class CommonSteps {
 	    if ( PagesCollection.loginPage == null){
 	        	PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(CommonSteps.class), path);
 	    }
+	    
 	    if(Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class)) && !CommonUtils.yourUserState.equals(UsersState.AllContactsConnected)){
 	    	AndroidTestPreparation.createContactLinks();
 	    }

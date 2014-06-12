@@ -10,4 +10,5 @@ public class PagesCollection {
 	 public static DialogPage dialogPage = null;
 	 public static OtherUserPersonalInfoPage otherUserPersonalInfoPage = null;
 	 public static PeoplePickerPage peoplePickerPage = null;
+	 public static ConnectToPage connectToPage = null;
 }

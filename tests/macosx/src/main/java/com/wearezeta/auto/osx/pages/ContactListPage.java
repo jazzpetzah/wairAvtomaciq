@@ -23,6 +23,9 @@ public class ContactListPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idMainWindow)
 	private WebElement viewPager;
 
+	@FindBy(how = How.ID, using = OSXLocators.idAcceptInvitationButton)
+	private WebElement acceptInvitationButton;
+	
 	@FindBy(how = How.ID, using = OSXLocators.idContactEntry)
 	private List<WebElement> contactsTextFields;
 	
@@ -87,6 +90,17 @@ public class ContactListPage extends OSXPage {
 			 }
 		 });
 		return el != null;
+	}
+	
+	public void acceptAllInvitations() {
+		boolean isInivitationExist = true;
+		while (isInivitationExist) {
+			try {
+				acceptInvitationButton.click();
+			} catch (NoSuchElementException e) {
+				isInivitationExist = false;
+			}
+		}
 	}
 	
 	@Override
