@@ -17,6 +17,7 @@ public final class OSXLocators {
 	public static final String idPeoplePickerSearchField = "people_picker_searchfield";
 	public static final String idPeoplePickerDismissButton = "people_picker_cancel_button";
 	public static final String idPeoplePickerSearchResultEntry = "people_picker_result_namefield";
+	public static final String idAcceptInvitationButton = "_NS:14";
 	
 	public static final String nameSayHelloMenuItem = "“Hello”";
 	public static final String nameSignOutMenuItem = "Sign Out";

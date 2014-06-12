@@ -61,7 +61,7 @@ public class CommonUtils {
         return getValueFromConfig(c, "activity");
 	}
 	
-	public static String getAndroidGenerateUsersFlagFromConfig(Class c) throws IOException {
+	public static String getGenerateUsersFlagFromConfig(Class c) throws IOException {
 
         return getValueFromConfig(c, "generateUsers");
 	}
