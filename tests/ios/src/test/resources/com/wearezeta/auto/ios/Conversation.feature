@@ -1,4 +1,4 @@
-Feature: Send Message
+Feature: Conversation
 
   Scenario Outline: Send Message to contact
     Given I Sign in using login <Login> and password <Password>
