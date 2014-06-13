@@ -10,7 +10,7 @@ Scenario Outline: Send message to conversation
 	
 Examples:
     |  Login                              | Password          | Name                | User   |
-    |  Kyrylo.Aleksandrov@wearezeta.com   | 123456            | Kirill Aleksandrov  | Sergey |
+    |  Kyrylo.Aleksandrov@wearezeta.com   | 123456            | Kirill Aleksandrov  | aqa51  |
 
 Scenario Outline: Send hello to conversation
     Given I Sign in using login <Login> and password <Password>
@@ -21,7 +21,7 @@ Scenario Outline: Send hello to conversation
 
 Examples:
     |  Login                              | Password          | Name                | User   |
-    |  Kyrylo.Aleksandrov@wearezeta.com   | 123456            | Kirill Aleksandrov  | Sergey |
+    |  Kyrylo.Aleksandrov@wearezeta.com   | 123456            | Kirill Aleksandrov  | aqa51  |
 
 #Scenario Outline: Send hey to conversation
 #    Given I Sign in using login <Login> and password <Password>
@@ -45,4 +45,4 @@ Scenario Outline: Send picture to conversation
 
 Examples:
     |  Login                              | Password          | Name                | User   |
-    |  Kyrylo.Aleksandrov@wearezeta.com   | 123456            | Kirill Aleksandrov  | Sergey |
+    |  Kyrylo.Aleksandrov@wearezeta.com   | 123456            | Kirill Aleksandrov  | aqa51  |

@@ -34,6 +34,9 @@ public class MacOSXTestPreparation {
 	}
 	
 	private static void logIn(String userName, String userPassword) throws IOException {
+		ContactListPage clPage = new ContactListPage(CommonUtils.getUrlFromConfig(CommonSteps.class),
+				CommonUtils.getAppPathFromConfig(CommonSteps.class));
+		clPage.SignOut();
 		LoginPage loginPage = new LoginPage(CommonUtils.getUrlFromConfig(CommonSteps.class),
 				CommonUtils.getAppPathFromConfig(CommonSteps.class));
 		CommonSteps.senderPages.setLoginPage(loginPage);
