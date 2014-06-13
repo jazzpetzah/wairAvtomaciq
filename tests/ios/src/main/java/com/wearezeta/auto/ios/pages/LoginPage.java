@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -10,6 +11,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.wearezeta.auto.ios.IOSTestPreparation;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.common.IOSLocators;
@@ -37,6 +39,9 @@ public class LoginPage extends IOSPage {
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameAlertOK)
 	private WebElement alertOk;
+	
+	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classUIATextView)
+	private List<WebElement> userName;
 	
 	private String login;
 	
@@ -96,19 +101,24 @@ public class LoginPage extends IOSPage {
 		 return DriverUtils.waitUntilElementDissapear(driver, By.name(IOSLocators.nameLoginField));
 	}
 	
-	public Boolean isLoginFinished(String contact) {
-		
-		try {
-			DriverUtils.waitUntilElementAppears(driver, By.className(IOSLocators.classNameAlert));
-			if(alert != null) {
-				alertOk.click();
+	public Boolean isLoginFinished(String contact) throws IOException {
+		WebElement el = null;
+		if(IOSTestPreparation.iOSAutoRun){
+			catchLoginAllert();
+			el = driver.findElement(By.name(contact));
+		}
+		else{
+			for(WebElement name : userName)
+			{
+				if(name.getText().equals(contact))
+				{
+					el = name;
+					swipeRight(500);
+					swipeRight(500);
+					IOSTestPreparation.iOSAutoRun = false;
+				}
 			}
 		}
-		catch(NoSuchElementException ex) {
-			//Do nothing
-		}
-		WebElement el = driver.findElement(By.name(contact));
-		
 		return el != null;
 	}
 
@@ -121,6 +131,18 @@ public class LoginPage extends IOSPage {
 	public Boolean isLoginButtonVisible() {
 		
 		return (ExpectedConditions.visibilityOf(signInButton) != null);
+	}
+
+	public void catchLoginAllert() {
+		try {
+			DriverUtils.waitUntilElementAppears(driver, By.className(IOSLocators.classNameAlert));
+			if(alert != null) {
+				alertOk.click();
+			}
+		}
+		catch(Exception ex) {
+		}
+		
 	}
 
 }

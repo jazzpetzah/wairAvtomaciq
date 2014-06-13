@@ -2,10 +2,8 @@ package com.wearezeta.auto.ios;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.ios.pages.ConnectToPage;
-import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
-import com.wearezeta.auto.ios.pages.PeoplePickerPage;
+
 
 import cucumber.api.java.en.When;
 

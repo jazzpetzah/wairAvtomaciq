@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
@@ -13,6 +14,9 @@ public class WelcomePage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.nameWelcomeLabel)
 	private WebElement welcomeLabel;
 	
+	@FindBy(how = How.NAME, using = IOSLocators.nameAcceptConnectionButton)
+	private List<WebElement> acceptBtnList;
+	
 	private String url;
 	private String path;
 	
@@ -20,6 +24,16 @@ public class WelcomePage extends IOSPage{
 		super(URL, path);
 		url = URL;
 		this.path = path;				
+	}
+	
+	public void acceptAllConnections() {
+		for(WebElement connectBtn : acceptBtnList){
+			try {
+				connectBtn.click();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	@Override

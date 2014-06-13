@@ -59,5 +59,9 @@ public final class IOSLocators {
 	public static final String namePendingButton = "PENDING";
 	
 	public static final String nameSignOutButton = "Sign out";
+	
+	public static final String nameAcceptConnectionButton = "ACCEPT";
+	
+	public static final String classUIATextView = "UIATextView";
 
 }

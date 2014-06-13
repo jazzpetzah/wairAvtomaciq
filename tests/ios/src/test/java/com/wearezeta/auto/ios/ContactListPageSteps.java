@@ -4,21 +4,14 @@ import java.io.IOException;
 
 import org.junit.Assert;
 
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+import cucumber.api.java.en.*;
 
-import com.gargoylesoftware.htmlunit.Page;
-import com.gargoylesoftware.htmlunit.PageCreator;
-import com.wearezeta.auto.ios.pages.DialogPage;
-import com.wearezeta.auto.ios.pages.IOSPage;
-import com.wearezeta.auto.ios.pages.PagesCollection;
-import com.wearezeta.auto.ios.pages.PeoplePickerPage;
+import com.wearezeta.auto.ios.pages.*;
 
 public class ContactListPageSteps {
 	
 	@Given("^I see Contact list with my name (.*)$")
-	public void GivenISeeContactListWithMyName(String name){
+	public void GivenISeeContactListWithMyName(String name) throws IOException{
 		 Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 	}
 	
@@ -45,7 +38,7 @@ public class ContactListPageSteps {
 	}
 	
 	@Then ("Contact list appears with my name (.*)")
-	public void ThenContactListAppears(String value) {
+	public void ThenContactListAppears(String value) throws IOException {
 		 
 		Assert.assertTrue("Login finished", PagesCollection.loginPage.waitForLogin());		 
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(value));		 

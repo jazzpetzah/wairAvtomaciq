@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios;
 
 import java.io.IOException;
-import java.sql.Driver;
 
 import com.wearezeta.auto.ios.pages.PagesCollection;
 

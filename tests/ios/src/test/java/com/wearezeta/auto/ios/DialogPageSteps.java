@@ -3,9 +3,8 @@ package com.wearezeta.auto.ios;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.DriverUtils;
-import com.wearezeta.auto.ios.pages.DialogPage;
-import com.wearezeta.auto.ios.pages.PagesCollection;
+
+import com.wearezeta.auto.ios.pages.*;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;

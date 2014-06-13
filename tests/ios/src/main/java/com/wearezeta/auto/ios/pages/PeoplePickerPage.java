@@ -61,8 +61,9 @@ public class PeoplePickerPage extends IOSPage{
 		return new ConnectToPage(url, path);
 	}
 	
-	public void pickUserAndTap(String name){
+	public  ConnectToPage pickUserAndTap(String name) throws MalformedURLException{
 		PickUser(name).click();
+		return new ConnectToPage(url, path);
 	}
 	
 	public ContactListPage dismissPeoplePicker() throws IOException{

@@ -122,7 +122,7 @@ public class DriverUtils {
 	 public static void swipeUp(AppiumDriver driver,WebElement element, int time) {
 		 Point coords = element.getLocation();
 		 Dimension elementSize = element.getSize();
-		 driver.swipe(coords.x+elementSize.width / 2, coords.y + elementSize.height - 200, coords.x + elementSize.width / 2, coords.y + 150, time);
+		 driver.swipe(coords.x+elementSize.width / 2, coords.y + elementSize.height - 170, coords.x + elementSize.width / 2, coords.y + 120, time);
 	 }
 	 
 	 public static void swipeDown(AppiumDriver driver,WebElement element, int time) {
