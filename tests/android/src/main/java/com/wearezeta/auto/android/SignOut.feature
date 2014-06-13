@@ -1,4 +1,4 @@
-@torun
+
 Feature: Sign Out
 
   Scenario Outline: Sign out from ZClient

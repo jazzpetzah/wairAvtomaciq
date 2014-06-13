@@ -61,7 +61,6 @@ public class DialogPageSteps{
 		  }
 	}
 	
-
 	@Then("^I see Hello message in the dialog$")
 	public void ThenISeeHelloMessageInTheDialog() throws Throwable {
 		Assert.assertTrue(PagesCollection.dialogPage.isknockAnimationExist());
@@ -78,4 +77,11 @@ public class DialogPageSteps{
 	    Assert.assertTrue(PagesCollection.dialogPage.isImageExists());
 	}
 
+	@Then("^I see Pending Connect to (.*) message on Dialog page$")
+	public void ISeePendingConnectMessage(String user) throws Throwable {
+		PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
+		Assert.assertTrue(PagesCollection.dialogPage.isConnectMessageVisible());
+		Assert.assertTrue(PagesCollection.dialogPage.isConnectUserValid(user));
+		Assert.assertTrue(PagesCollection.dialogPage.isPendingButtonVisible());
+	}
 }

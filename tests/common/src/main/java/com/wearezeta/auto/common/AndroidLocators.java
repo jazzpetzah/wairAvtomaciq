@@ -44,7 +44,15 @@ public final class AndroidLocators {
 	
 	public static final String idConnectToSend = "com.waz.zclient:id/send";
 	
-	public static final String idInstructionsConnectRequestDialog = "com.waz.zclient:id/connect_request_root";
+	public static final String idConnectToMessage = "com.waz.zclient:id/message";
+	
+	public static final String idConnectRequestDialog = "com.waz.zclient:id/connect_request_root";
+	
+	public static final String idConnectRequestMessage = "com.waz.zclient:id/contact_request_message";
+	
+	public static final String idConnectRequestConnectTo = "com.waz.zclient:id/user_name";
+	
+	public static final String idConnectRequestPending = "com.waz.zclient:id/contact_request_pending";
 	
 	public static final String idInstructionsRequestIgnoreBtn = "com.waz.zclient:id/button_block";
 	
