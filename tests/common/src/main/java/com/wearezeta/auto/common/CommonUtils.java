@@ -51,6 +51,11 @@ public class CommonUtils {
         return getValueFromConfig(c, "swipeScriptPath");
 	}
 	
+	public static String getPhotoScriptPath(Class c)throws IOException {
+
+        return getValueFromConfig(c, "photoScriptPath");
+	}
+	
 	public static String getAppPathFromConfig(Class c) throws IOException {
 
         return getValueFromConfig(c, "appPath");

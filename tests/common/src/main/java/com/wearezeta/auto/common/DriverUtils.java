@@ -155,6 +155,10 @@ public class DriverUtils {
 		 Runtime.getRuntime().exec("/usr/bin/open -a Terminal " + scriptPath);
 	 }
 	 
+	 public static void iOSSimulatorCameraRoll(String scriptPath) throws IOException{
+		 Runtime.getRuntime().exec("/usr/bin/open -a Terminal " + scriptPath);
+	 }
+	 
 	 public static void iOSMultiTap(AppiumDriver driver,WebElement element, int tapNumber) throws InterruptedException
 	 {
 		 Point coords = element.getLocation();

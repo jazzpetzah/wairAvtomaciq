@@ -31,6 +31,31 @@ public class DialogPageSteps {
 	    message = CommonUtils.generateGUID();
 	    PagesCollection.dialogPage.typeMessage(message + "\n");
 	}
+	
+	@When("^I swipe the text input curser$")
+	public void ISwipeTheTextInputCurser() throws Throwable {
+		PagesCollection.dialogPage.swipeInputCurser();
+	}
+	
+	@When("^I press Add Picture button$")
+	public void IPressAddPictureButton() throws Throwable {
+		PagesCollection.dialogPage.pressAddPictureButton();
+	}
+	
+	@When("^I press Camera Roll button$")
+	public void IPressCameraRollButton() throws Throwable {
+		PagesCollection.dialogPage.pressCameraRollButton();
+	}
+	
+	@When("^I choose a picture from camera roll$")
+	public void IChooseAPictureFromCameraRoll() throws Throwable {
+		PagesCollection.dialogPage.openCameraRoll();
+	}
+	
+	@When("^I press Confirm button$")
+	public void IPressConfirmButton() throws Throwable {
+		PagesCollection.dialogPage.pressConfirmButton();
+	}
 
 	@Then("^I see my message in the dialog$")
 	public void I_see_my_message_in_the_dialog() throws Throwable {
@@ -42,6 +67,13 @@ public class DialogPageSteps {
 	public void I_see_Pending_Connect_dialog(String user) throws Throwable {
 	    //TODO Express the Regexp above with the code you wish you had
 	    throw new Exception();
+	}
+	
+	@Then("^I see new photo in the dialog$")
+	public void ISeeNewPhotoInTheDialog() throws Throwable {
+	    //how to verify the picture? 
+		//find out what the message type is?
+		//do we have screenshot taking and comparison in yet?
 	}
 
 

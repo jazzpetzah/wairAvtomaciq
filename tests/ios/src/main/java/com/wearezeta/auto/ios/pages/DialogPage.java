@@ -21,6 +21,12 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameDialogMessages)
 	private List<WebElement> messagesList;
 	
+	@FindBy(how = How.NAME, using = IOSLocators.nameAddPictureButton)
+	private WebElement addPictureButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameCameraRollButton)
+	private WebElement cameraRollButton;
+	
 	private String url;
 	private String path;
 	
@@ -70,6 +76,26 @@ public class DialogPage extends IOSPage{
 	public String getLastMessageFromDialog()
 	{
 		return GetLastMessage(messagesList);
+	}
+	
+	public void swipeInputCurser(){
+		DriverUtils.swipeRight(driver, cursorInput, 1000);
+	}
+	
+	public void pressAddPictureButton(){
+		addPictureButton.click();
+	}
+	
+	public void pressCameraRollButton(){
+		cameraRollButton.click();
+	}
+	
+	public void openCameraRoll() throws IOException{
+		DriverUtils.iOSSimulatorCameraRoll("/Users/julianereschke/Projects/zautomation/tests/tools/push_photo_to_simulator.sh\" 7.1");
+	}
+	
+	public void pressConfirmButton(){
+		
 	}
 	
 	@Override
