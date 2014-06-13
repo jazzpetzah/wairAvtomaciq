@@ -14,13 +14,11 @@ public class LoginPageSteps {
 	 
 	 @Given ("I see sign in screen")
 	 public void GiveniSeeSignInScreen() {
-
 		 Assert.assertNotNull(PagesCollection.loginPage.isVisible());
 	 }
 	 
 	 @Given("^I Sign in using login (.*) and password (.*)$")
-	 public void GivenISignIn(String login, String password) throws IOException  {
-		
+	 public void GivenISignIn(String login, String password) throws IOException  {		
 		 Assert.assertNotNull(PagesCollection.loginPage.isVisible());
 		 PagesCollection.loginPage =(LoginPage)(PagesCollection.loginPage.SignIn());
 		 PagesCollection.loginPage.setLogin(login);
@@ -46,13 +44,10 @@ public class LoginPageSteps {
 		 
 		 PagesCollection.loginPage.setPassword(value);
 	 }	
-	 
-	
-	 
+	  
 	 @Then("^I see login in screen$")
 	 public void ThenISeeLogInScreen() {
-		 
-		 Assert.assertTrue("I don't see login screen", PagesCollection.loginPage.isWelcomeButtonsExist());
+		 Assert.assertTrue("I don't see login screen", PagesCollection.loginPage.isLoginButtonVisible());
 	 }
 	 
 	 

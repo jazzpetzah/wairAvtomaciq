@@ -18,12 +18,19 @@ public class PersonalInfoPage extends IOSPage{
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathUserProfileName)
 	private WebElement profileNameField;
 	
-	@FindBy(how = How.NAME, using = IOSLocators.classNameUIAButton)
+	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameUIAButton)
 	private List<WebElement> optionsButtons;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameSignOutButton)
+	private WebElement signoutButton;
 	
 	public PersonalInfoPage(String URL, String path) throws IOException {
 		super(URL, path);
 
+	}
+	
+	public void SignoutBtnClick(){
+		signoutButton.click();
 	}
 	
 	public void waitForEmailFieldVisible(){

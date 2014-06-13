@@ -8,7 +8,12 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
+import com.gargoylesoftware.htmlunit.Page;
+import com.gargoylesoftware.htmlunit.PageCreator;
+import com.wearezeta.auto.ios.pages.DialogPage;
+import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
+import com.wearezeta.auto.ios.pages.PeoplePickerPage;
 
 public class ContactListPageSteps {
 	
@@ -17,15 +22,26 @@ public class ContactListPageSteps {
 		 Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 	}
 	
-	@When("^I tap on name (.*)$")
-	public void WhenITapOnName(String name) throws IOException  {
+	@When("^I tap on my name (.*)$")
+	public void WhenITapOnMyName(String name) throws IOException  {
 		PagesCollection.iOSPage = PagesCollection.contactListPage.tapOnName(name);
 	}
 	
+	@When("^I tap on contact name (.*)$")
+	public void WhenITapOnContactName(String name) throws IOException  {
+		IOSPage page = PagesCollection.contactListPage.tapOnName(name);
+		
+		if(page instanceof DialogPage)
+		{
+			PagesCollection.dialogPage = (DialogPage) page;
+		}
+		
+		PagesCollection.iOSPage = page;
+	}
+	
 	@When("^I swipe down contact list$")
-	public void I_swipe_down_contact_list() throws Throwable {
-	    //TODO Express the Regexp above with the code you wish you had
-	    throw new Exception();
+	public void ISwipeDownContactList() throws Throwable {
+		PagesCollection.peoplePickerPage= (PeoplePickerPage)PagesCollection.contactListPage.swipeDown(500);
 	}
 	
 	@Then ("Contact list appears with my name (.*)")
@@ -36,9 +52,8 @@ public class ContactListPageSteps {
 	}
 	
 	@Then("^I see contact list loaded with User name (.*) first in list$")
-	public void I_see_User_name_first_in_contact_list(String value) throws Throwable {
-	    //TODO Express the Regexp above with the code you wish you had
-	    throw new Exception();
+	public void ISeeUserNameFirstInContactList(String value) throws Throwable {
+	    Assert.assertEquals(value, PagesCollection.contactListPage.getFirstDialogName());
 	}
 
 }
