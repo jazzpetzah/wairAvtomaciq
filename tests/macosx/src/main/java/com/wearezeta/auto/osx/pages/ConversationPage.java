@@ -15,6 +15,7 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
 import com.google.common.base.Function;
+import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class ConversationPage extends OSXPage {
@@ -78,8 +79,14 @@ public class ConversationPage extends OSXPage {
 	}
 	
 	public void writeNewMessage(String message) {
-		if (newMessageTextArea == null) {
-			findNewMessageTextArea();
+		int i = 0;
+		while (newMessageTextArea == null) {
+			System.out.println("here " + i);
+			newMessageTextArea = findNewMessageTextArea();
+			if (++i > 10) {
+				break;
+			}
+			try { Thread.sleep(1000); } catch (InterruptedException e) { }
 		}
 		newMessageTextArea.sendKeys(message);
 	}
@@ -119,6 +126,7 @@ public class ConversationPage extends OSXPage {
 	public boolean isMessageSent(String message) {
 		boolean isSend = false;
 		String xpath = String.format(OSXLocators.xpathFormatSpecificMessageEntry, message);
+		DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath));
 		WebElement element = driver.findElement(By.xpath(xpath));
 		if (element != null) {
 			isSend = true;

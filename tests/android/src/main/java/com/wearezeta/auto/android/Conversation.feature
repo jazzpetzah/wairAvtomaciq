@@ -1,6 +1,6 @@
 
 Feature: Conversation
-@torun
+
   Scenario Outline: Send Message to contact
     Given I Sign in using login <Login> and password <Password> 
     And I see Contact list with my name <Name>

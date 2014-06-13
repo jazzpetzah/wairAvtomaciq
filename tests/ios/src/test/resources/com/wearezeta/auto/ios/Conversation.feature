@@ -15,13 +15,15 @@ Feature: Conversation
     |	piotr.iazadji@wearezeta.com	|	asdfer123	|	Piotr Iazadji	|	Piotr.mqa2	|
 
 
-    Scenario Outline: Say Hello to user from contact list
-		Given I Sign in using login <Login> and password <Password>
+    Scenario Outline: Send Hello to contact
+		Given I Sign in using login <Login> and password <Password> 
     	And I see Contact list with my name <Name>
-    	When I tap on name <Contact>
+    	When I tap on contact name <Contact>
     	And I see dialog page
-    	And I multi tap on text input on dialog screen
+    	And I multi tap on text input
     	Then I see Hello message in the dialog
+    	And I multi tap on text input
+    	Then I see Hey message in the dialog
     	
 	Examples: 
     |	Login						|	Password	|	Name			|	Contact		|

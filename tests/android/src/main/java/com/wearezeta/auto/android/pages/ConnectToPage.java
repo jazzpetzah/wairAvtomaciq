@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android.pages;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -12,8 +13,14 @@ import com.wearezeta.auto.common.SwipeDirection;
 
 public class ConnectToPage extends AndroidPage {
 
+	@FindBy(how = How.ID, using = AndroidLocators.idContactListNames)
+	private List<WebElement> contactListNames;
+	
 	@FindBy(how = How.ID, using = AndroidLocators.idConnectToSend)
 	private WebElement sendRequest;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idConnectToMessage)
+	private WebElement message;
 	
 	private String url;
 	private String path;
@@ -27,6 +34,7 @@ public class ConnectToPage extends AndroidPage {
 
 	public ContactListPage tapSend() throws IOException{
 		sendRequest.click();
+		wait.until(ExpectedConditions.visibilityOfAllElements(contactListNames));
 		return new ContactListPage(url, path);
 	}
 	
@@ -34,12 +42,22 @@ public class ConnectToPage extends AndroidPage {
 		wait.until(ExpectedConditions.visibilityOf(sendRequest));
 	}
 	
+	public boolean isSendRequestVisible()
+	{
+		return sendRequest.isDisplayed();
+	}
 	
 	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction)
 			throws IOException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void fillTextInConnectDialog(String messageText) {
+		message.clear();
+		message.sendKeys(messageText);
+		
 	}
 
 }

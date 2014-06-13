@@ -36,6 +36,10 @@
 	{
 		return [[AfMElementLocator alloc] initWithSession:session strategy:AppiumMacLocatoryStrategyTagName value:value];
 	}
+    else if ([using isEqualToString:@"class name"])
+	{
+		return [[AfMElementLocator alloc] initWithSession:session strategy:AppiumMacLocatoryStrategyClassName value:value];
+	}
 	else if ([using isEqualToString:@"xpath"])
 	{
 		return [[AfMElementLocator alloc] initWithSession:session strategy:AppiumMacLocatoryStrategyXPath value:value];
@@ -176,6 +180,48 @@
         return;
 	}
 
+    //and another different one for class name
+    if (self.strategy == AppiumMacLocatoryStrategyClassName)
+    {
+        AfMElementLocator *windowLocator = [AfMElementLocator locatorWithSession:self.session using:@"xpath" value:@"//AXWindow"];
+        
+        if (windowLocator != nil) {
+            NSMutableArray *windows = [NSMutableArray new];
+            [windowLocator findAllUsingBaseElement:nil results:windows statusCode:statusCode];
+            if (windows.count > 0) {
+                PFUIElement *mainWindow = [windows objectAtIndex:0];
+                int startX = mainWindow.AXPosition.pointValue.x;
+                int startY = mainWindow.AXPosition.pointValue.y;
+                int endX = startX + mainWindow.AXSize.pointValue.x;
+                int endY = startY + mainWindow.AXSize.pointValue.y;
+                
+                NSMutableArray *addresses = [NSMutableArray new];
+                for (int i = startX; i < endX; i+=20) {
+                    for (int j = startY; j < endY; j+=20) {
+                        NSError *error = nil;
+                        PFUIElement *newElement = [PFUIElement elementAtPoint:NSMakePoint(i, j) withDelegate:nil error:&error];
+                        if ([self.value caseInsensitiveCompare:newElement.AXRole] == NSOrderedSame) {
+                            NSString *addr = [NSString stringWithFormat:@"%p", &newElement];
+                            
+                            if (![addresses containsObject:addr]) {
+                                [results addObject:newElement];
+                                [addresses addObject:addr];
+                            }
+                        }
+                    }
+                }
+            } else {
+                *statusCode = kAfMStatusCodeNoSuchWindow;
+            }
+            if (results.count < 1) {
+                *statusCode = kAfMStatusCodeNoSuchElement;
+                return;
+            }
+            return;
+        }
+
+    }
+    
     // check if this the element we are looking for
     if ([self matchesElement:baseElement])
     {

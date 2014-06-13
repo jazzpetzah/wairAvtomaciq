@@ -14,7 +14,7 @@ public class InstructionsPage extends AndroidPage {
 
 	@FindBy(how = How.ID, using = AndroidLocators.idInstructions)
 	private WebElement instructions;
-	@FindBy(how = How.ID, using = AndroidLocators.idInstructionsConnectRequestDialog)
+	@FindBy(how = How.ID, using = AndroidLocators.idConnectRequestDialog)
 	private WebElement connectDilog;
 	@FindBy(how = How.ID, using = AndroidLocators.idInstructionsRequestIgnoreBtn)
 	private List<WebElement> ignoreBtnList;

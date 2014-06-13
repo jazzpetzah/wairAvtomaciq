@@ -13,4 +13,4 @@ Scenario Outline: Add contact
 	
 Examples:
     |  Login                              | Password          | Name                | User   |
-    |  Kyrylo.Aleksandrov@wearezeta.com   | 123456            | Kirill Aleksandrov  | mqa9   |
+    |  Kyrylo.Aleksandrov@wearezeta.com   | 123456            | Kirill Aleksandrov  | aqa50  |

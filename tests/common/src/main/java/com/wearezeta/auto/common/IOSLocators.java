@@ -58,6 +58,12 @@ public final class IOSLocators {
 	
 	public static final String nameSignOutButton = "Sign out";
 	
+	public static final String nameConnectInput = "Type your first message to [%s]...";
+	
+	//public static final String xpathHelloMessageFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]/UIAStaticText[1]";
+	
+	public static final String xpathHeyMessageFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]/UIAStaticText[1]";
+	
 	public static final String nameProfileOtherUserNameField = "ProfileOtherNameField";
 	
 	public static final String classNameProfileOtherUserEmailField = "UIATextField";

@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.PagesCollection;
+import com.wearezeta.auto.android.pages.PeoplePickerPage;
 import com.wearezeta.auto.common.CommonUtils;
 
 import cucumber.api.java.en.Given;
@@ -54,5 +55,20 @@ public class ContactListPageSteps {
 		 }
 		 
 	 }
+	
+	@When("^I swipe down contact list$")
+	public void ISwipeDownContactList() throws Throwable {
+		PagesCollection.peoplePickerPage= (PeoplePickerPage)PagesCollection.contactListPage.swipeDown(500);
+	}
+	
+	@Then("^I see contact list loaded with User name (.*)$")
+	public void ISeeUserNameFirstInContactList(String value) throws Throwable {
+		if(value.contains("aqaUser")){
+			Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(CommonUtils.getContactName(CommonUtils.contacts.firstKey())));
+		}
+		else{
+		 Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(value));
+		}
+	}
 
 }

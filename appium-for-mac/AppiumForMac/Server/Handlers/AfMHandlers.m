@@ -491,8 +491,6 @@
     NSString *value = (NSString*)[postParams objectForKey:@"value"];
 
 	AfMElementLocator *locator = [AfMElementLocator locatorWithSession:session using:using value:value];
-
-	AfMElementLocator *windowLocator = [AfMElementLocator locatorWithSession:session using:@"xpath" value:@"//AXWindow"];
     
     // initialize status as though no element were found
 	int statusCode = kAfMStatusCodeNoSuchElement;
@@ -529,47 +527,6 @@
                 }
                 
                 return [self respondWithJson:elements status:kAfMStatusCodeSuccess session:sessionId];
-            }
-        }
-        
-        
-        if (windowLocator != nil) {
-            NSMutableArray *windows = [NSMutableArray new];
-            [windowLocator findAllUsingBaseElement:nil results:windows statusCode:&statusCode];
-            if (windows.count > 0) {
-                PFUIElement *mainWindow = [windows objectAtIndex:0];
-                int startX = mainWindow.AXPosition.pointValue.x;
-                int startY = mainWindow.AXPosition.pointValue.y;
-                int endX = startX + mainWindow.AXSize.pointValue.x;
-                int endY = startY + mainWindow.AXSize.pointValue.y;
-                
-                
-                NSString* val = value;
-                if ([using caseInsensitiveCompare:@"xpath"] == NSOrderedSame) {
-                    val = [value stringByReplacingOccurrencesOfString:@"/" withString:@""];
-                }
-                
-                NSMutableArray *addresses = [NSMutableArray new];
-                for (int i = startX; i < endX; i+=20) {
-                    for (int j = startY; j < endY; j+=20) {
-                        NSError *error = nil;
-                        PFUIElement *newElement = [PFUIElement elementAtPoint:NSMakePoint(i, j) withDelegate:nil error:&error];
-                        if ([val caseInsensitiveCompare:newElement.AXRole] == NSOrderedSame) {
-                            NSString *addr = [NSString stringWithFormat:@"%p", &newElement];
-                            
-                            if (![addresses containsObject:addr]) {
-                                session.elementIndex++;
-                                NSString *myKey = [NSString stringWithFormat:@"%d", session.elementIndex];
-                                [session.elements setValue:newElement forKey:myKey];
-                                [elements addObject:[NSDictionary dictionaryWithObject:myKey forKey:@"ELEMENT"]];
-                                [addresses addObject:addr];
-                            }
-                        }
-                    }
-                }
-                if (elements.count > 0) {
-                    return [self respondWithJson:elements status:kAfMStatusCodeSuccess session:sessionId];
-                }
             }
         }
         
@@ -785,9 +742,47 @@
 		[self respondWithJsonError:status session:sessionId];
 	}
     
+    NSValue* pos = element.AXPosition;
+    NSPoint pnt = pos.pointValue;
+        
+    PFUIElement* parent = element.AXParent;
+        
+    while ([@"AXApplication" isEqualToString:parent.AXRole]) {
+        pnt.x += parent.AXPosition.pointValue.x;
+        pnt.y += parent.AXPosition.pointValue.y;
+            
+        parent = parent.AXParent;
+    }
+        
+    CGEventRef event = CGEventCreate(NULL);
+    CGPoint pt = CGEventGetLocation(event);
+    pt.x = pnt.x;
+    pt.y = pnt.y;
+        
+    CGEventRef click1_move = CGEventCreateMouseEvent(
+                                                         NULL, kCGEventMouseMoved,
+                                                         pt,
+                                                         kCGMouseButtonLeft);
+        
+    CGEventPost(kCGHIDEventTap, click1_move);
+        
+    CGEventRef click2_move = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, pt, kCGMouseButtonLeft);
+    CGEventRef click1_down = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, pt, kCGMouseButtonLeft);
+    CGEventRef click1_up = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseUp, pt, kCGMouseButtonLeft);
+        
+    CGEventPost(kCGHIDEventTap, click2_move);
+    CGEventPost(kCGHIDEventTap, click1_down);
+    CGEventPost(kCGHIDEventTap, click1_up);
+        
+    // Release the events
+    CFRelease(click1_up);
+    CFRelease(click1_down);
+    CFRelease(click1_move);
+
     NSMutableDictionary *errorDict = [NSMutableDictionary new];
 
     NSAppleScript *appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 36\nend tell"];
+    
     NSString *statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
 
     return [self respondWithJson:nil status:kAfMStatusCodeSuccess session: sessionId];
