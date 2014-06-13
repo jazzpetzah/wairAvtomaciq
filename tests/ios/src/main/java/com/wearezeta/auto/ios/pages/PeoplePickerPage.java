@@ -5,9 +5,11 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.common.IOSLocators;
@@ -26,6 +28,12 @@ public class PeoplePickerPage extends IOSPage{
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathUnicUserPickerSearchResult)
 	private WebElement userPickerSearchResult;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameAddToConversationButton)
+	private WebElement addToConversationsButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameCreateConversationButton)
+	private WebElement createConverstaionButton;
 	
 	private String url;
 	private String path;
@@ -56,9 +64,25 @@ public class PeoplePickerPage extends IOSPage{
 		DriverUtils.waitUntilElementAppears(driver, By.name(user));
 	}
 	
-	public ConnectToPage clickOnFoundUser() throws MalformedURLException{
-		userPickerSearchResult.click();
-		return new ConnectToPage(url, path);
+	public IOSPage clickOnFoundUser(String name) throws MalformedURLException{
+		
+		driver.findElementByName(name).click();
+		
+		IOSPage page = null;
+		
+		try
+		{
+			if(driver.findElement(By.name(IOSLocators.nameSendConnectButton)) != null)
+			{
+				page = new ConnectToPage(url, path);
+			}
+		}
+		catch(NoSuchElementException ex)
+		{
+			page = this;
+		}
+		
+		return page;
 	}
 	
 	public void pickUserAndTap(String name){
@@ -68,6 +92,15 @@ public class PeoplePickerPage extends IOSPage{
 	public ContactListPage dismissPeoplePicker() throws IOException{
 		peoplePickerClearBtn.click();
 		return new ContactListPage(url, path);
+	}
+	
+	public boolean isAddToConversationBtnVisible(){
+		return addToConversationsButton.isDisplayed();
+	}
+	
+	public GroupChatPage clickOnAddToCoversationButton() throws IOException{
+		addToConversationsButton.click();
+		return new GroupChatPage(url, path);
 	}
 		
 	@Override

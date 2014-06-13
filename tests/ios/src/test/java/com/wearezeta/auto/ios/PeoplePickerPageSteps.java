@@ -1,9 +1,14 @@
 package com.wearezeta.auto.ios;
 
+import java.io.IOException;
+
 import org.junit.Assert;
 
 import com.wearezeta.auto.ios.pages.ConnectToPage;
+import com.wearezeta.auto.ios.pages.GroupChatPage;
+import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
+import com.wearezeta.auto.ios.pages.PeoplePickerPage;
 
 import cucumber.api.java.en.When;
 
@@ -19,8 +24,8 @@ public class PeoplePickerPageSteps {
 	    PagesCollection.peoplePickerPage.tapOnPeoplePickerSearch();
 	}
 	
-	@When("^I input in search field user name to connect to (.*)$")
-	public void WhenIInputInSearchFieldUserNameToConnectTo(String contact) throws Throwable {
+	@When("^I input in People picker search field user name(.*)$")
+	public void WhenIInputInPeoplePickerSearchFieldUserName(String contact) throws Throwable {
 	    PagesCollection.peoplePickerPage.fillTextInPeoplePickerSearch(contact);
 	}
 	
@@ -31,7 +36,15 @@ public class PeoplePickerPageSteps {
 	
 	@When("^I tap on user name found on People picker page (.*)$")
 	public void WhenITapOnUserNameFoundOnPeoplePickerPage(String contact) throws Throwable {
-		PagesCollection.connectToPage = (ConnectToPage)(PagesCollection.peoplePickerPage.clickOnFoundUser());
+		IOSPage page = PagesCollection.peoplePickerPage.clickOnFoundUser(contact);
+		
+		if(page instanceof ConnectToPage) {
+			PagesCollection.connectToPage = (ConnectToPage)page;
+		}
+		
+		else {
+			PagesCollection.peoplePickerPage = (PeoplePickerPage)page;
+		}
 	}
 	
 	@When("^I search for user name (.*) and tap on it on People picker page$")
@@ -39,6 +52,15 @@ public class PeoplePickerPageSteps {
 	    PagesCollection.peoplePickerPage.pickUserAndTap(contact);
 	}
 	
+	@When("^I see Add to conversation button$")
+	public void WhenISeeAddToConversationButton(){
+		Assert.assertTrue("Add to conversation button is not visible", PagesCollection.peoplePickerPage.isAddToConversationBtnVisible());
+	}
+	
+	@When("^I click on Add to conversation button$")
+	public void WhenIClickOnAddToConversationButton() throws IOException{
+		PagesCollection.groupChatPage = (GroupChatPage)PagesCollection.peoplePickerPage.clickOnAddToCoversationButton();
+	}
 
 
 }

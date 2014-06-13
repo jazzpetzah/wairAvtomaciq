@@ -1,10 +1,13 @@
 package com.wearezeta.auto.ios;
 
+import java.io.IOException;
+
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.ios.pages.DialogPage;
+import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 
 import cucumber.api.java.en.Then;
@@ -28,12 +31,12 @@ public class DialogPageSteps {
 	@When("^I type the message$")
 	public void WhenITypeTheMessage() throws Throwable {
 		message = CommonUtils.generateGUID();
-		PagesCollection.dialogPage.typeMessage(message);
+		PagesCollection.dialogPage.typeMessage(message + "\n");
 	}
 	
 	@When("^I press send$")
 	public void WhenIPressSend() throws Throwable {
-		PagesCollection.dialogPage.typeMessage("\\n");
+		//PagesCollection.dialogPage.typeMessage("\\n");
 	}
 
 	@When("^I type the message and send it$")
@@ -41,6 +44,11 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.waitForTextMessageInputVisible();
 	    message = CommonUtils.generateGUID();
 	    PagesCollection.dialogPage.typeMessage(message + "\n");
+	}
+	
+	@When("^I swipe left on dialog page$")
+	public void WhenISwipeLeftOnDialogPage() throws IOException{
+		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage)PagesCollection.dialogPage.swipeLeft(1000);
 	}
 
 	@Then("^I see my message in the dialog$")

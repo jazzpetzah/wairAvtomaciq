@@ -11,4 +11,6 @@ public class PagesCollection {
 	 public static OtherUserPersonalInfoPage otherUserPersonalInfoPage = null;
 	 public static PeoplePickerPage peoplePickerPage = null;
 	 public static ConnectToPage connectToPage = null;
+	 public static GroupChatPage groupChatPage = null;
+	 public static GroupChatInfoPage groupChatInfoPage = null;  
 }

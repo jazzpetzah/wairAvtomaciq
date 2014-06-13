@@ -36,8 +36,6 @@ public final class IOSLocators {
 	
 	public static final String xpathLastMessageFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]/UIATextView[1]";
 	
-	public static final String nameOtherUserNameField = "ProfileOtherNameField";
-	
 	public static final String namePickerSearch = "textViewSearch";
 	
 	public static final String namePickerClearButton = "PeoplePickerClearButton";
@@ -59,5 +57,13 @@ public final class IOSLocators {
 	public static final String namePendingButton = "PENDING";
 	
 	public static final String nameSignOutButton = "Sign out";
+	
+	public static final String nameProfileOtherUserNameField = "ProfileOtherNameField";
+	
+	public static final String classNameProfileOtherUserEmailField = "UIATextField";
+	
+	public static final String nameCreateConversationButton = "CREATE CONVERSATION";
+	
+	public static final String nameAddToConversationButton = "ADD TO CONVERSATION";
 
 }
