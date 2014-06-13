@@ -25,6 +25,12 @@ public class DialogPage extends IOSPage{
 	
 	@FindBy(how = How.NAME, using = IOSLocators.namePendingButton)
 	private WebElement pendingButton;
+
+/*	@FindBy(how = How.XPATH, using = IOSLocators.xpathHelloMessageFormat)
+	private WebElement helloMessage;*/
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathHeyMessageFormat)
+	private WebElement heyMessage;
 	
 	private String url;
 	private String path;
@@ -75,6 +81,18 @@ public class DialogPage extends IOSPage{
 	public boolean isPendingButtonVisible(){
 		return pendingButton.isDisplayed();
 	}
+	
+/*	private String GetHeyMessage(List<WebElement> chatList) {
+		String heyMessageXPath = String.format(IOSLocators.xpathHeyMessageFormat, chatList.size());
+		WebElement el = driver.findElementByXPath(heyMessageXPath);
+		//String heyMessage = el.getTagName();
+		String heyMessage = el.getText();  //I dont get HEY FROM PIOTR here
+		return heyMessage;
+	}
+
+	public String getHeyMessageFromDialog() {
+		return GetHeyMessage(messagesList);
+	} */
 	
 	@Override
 	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {

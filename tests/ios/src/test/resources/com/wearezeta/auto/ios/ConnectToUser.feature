@@ -6,7 +6,7 @@ Feature: Connect to User
 		When I swipe down contact list
 		And I see People picker page
 		And I tap on Search input on People picker page
-		And I input in search field user name to connect to <Contact>
+		And I input in People picker search field user name <Contact>
 		And I see user <Contact> found on People picker page
 		And I tap on user name found on People picker page <Contact>
 		And I see connect to <Contact> dialog
