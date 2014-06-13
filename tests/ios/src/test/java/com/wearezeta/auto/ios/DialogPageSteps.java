@@ -36,6 +36,21 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.typeMessage("\\n");
 	}
 
+	@When("^I multi tap on text input$")
+	public void WhenIMultiTapOnTextInput() throws Throwable {
+		PagesCollection.dialogPage.multiTapOnCursorInput();
+	}
+	
+	@Then("^I see Hello message in the dialog$")
+	public void ISeeHelloMessageInTheDialog() throws Throwable {
+		//TODO: implement check that HELLO message appear
+	}
+	
+	@Then("^I see Hey message in the dialog$")
+	public void ISeeHeyMessageInTheDialog() throws Throwable {
+		//TODO: implement check that HEY message appear
+	}
+
 	@When("^I type the message and send it$")
 	public void ITypeTheMessageAndSendIt() throws Throwable {
 		PagesCollection.dialogPage.waitForTextMessageInputVisible();
