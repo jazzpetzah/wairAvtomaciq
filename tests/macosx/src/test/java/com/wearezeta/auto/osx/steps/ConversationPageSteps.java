@@ -61,9 +61,17 @@ public class ConversationPageSteps {
 	 public void ThenISeePictureInConversation() {
 		 int afterNumberOfImages = CommonSteps.senderPages.getConversationPage().getNumberOfImageEntries();
 		 
+		 boolean isNumberIncreased = false;
+		 for (int i = 0; i < 20; i++) {
+			 if (afterNumberOfImages == beforeNumberOfImages + 2) {
+				 isNumberIncreased = true;
+				 break;
+			 }
+			 try { Thread.sleep(1000); } catch (InterruptedException e) { }
+		 }
+		 
 		 Assert.assertTrue("Incorrect images count: before - "
-				 + beforeNumberOfImages + ", after - " + afterNumberOfImages,
-				 	afterNumberOfImages == beforeNumberOfImages+2);
+				 + beforeNumberOfImages + ", after - " + afterNumberOfImages, isNumberIncreased);
 	 }
 	 
 	 @When("I am knocking to user")
@@ -79,9 +87,10 @@ public class ConversationPageSteps {
 	 @Then("I see message (.*) in conversation")
 	 public void ThenISeeMessageInConversation(String message) {
 		 if (message.equals(OSXLocators.YOU_KNOCKED_MESSAGE)) {
-			 int afterNumberOfKnocks = CommonSteps.senderPages.getConversationPage().getNumberOfMessageEntries(message);
 			 boolean isNumberIncreased = false;
-			 for (int i = 0; i < 10; i++) {
+			 int afterNumberOfKnocks = -1;
+			 for (int i = 0; i < 20; i++) {
+				 afterNumberOfKnocks = CommonSteps.senderPages.getConversationPage().getNumberOfMessageEntries(message);
 				 if (afterNumberOfKnocks == beforeNumberOfKnocks + 1) {
 					 isNumberIncreased = true;
 					 break;

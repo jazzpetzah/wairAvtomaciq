@@ -35,10 +35,10 @@ public class PeoplePickerPage extends OSXPage {
 		super(URL, path);
 	}
 	
-	private WebElement findSearchField() {
-		List<WebElement> textAreaCandidates = driver.findElements(By.xpath("//AXTextArea"));
+	public WebElement findSearchField() {
+		List<WebElement> textAreaCandidates = driver.findElements(By.className("AXTextArea"));
     	for (WebElement textArea: textAreaCandidates) {
-    		if (textArea.getText().equals("")) {
+    		if (textArea.getAttribute("AXIdentifier").equals("people_picker_searchfield")) {
     			return textArea;
     		}
     	}
@@ -46,8 +46,11 @@ public class PeoplePickerPage extends OSXPage {
 	}
 	
 	public void searchForText(String text) {
-		if (searchField == null) {
+		int i = 0;
+		while (searchField == null) {
 			searchField = findSearchField();
+			if (++i == 10) break;
+			try { Thread.sleep(1000); } catch (InterruptedException e) { } 
 		}
 		searchField.sendKeys(text);
 	}

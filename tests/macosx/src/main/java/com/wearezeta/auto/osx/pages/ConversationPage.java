@@ -78,8 +78,14 @@ public class ConversationPage extends OSXPage {
 	}
 	
 	public void writeNewMessage(String message) {
-		if (newMessageTextArea == null) {
-			findNewMessageTextArea();
+		int i = 0;
+		while (newMessageTextArea == null) {
+			System.out.println("here " + i);
+			newMessageTextArea = findNewMessageTextArea();
+			if (++i > 10) {
+				break;
+			}
+			try { Thread.sleep(1000); } catch (InterruptedException e) { }
 		}
 		newMessageTextArea.sendKeys(message);
 	}
