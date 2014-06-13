@@ -59,10 +59,11 @@ public class ConversationPageSteps {
 	 
 	 @Then("I see picture in conversation")
 	 public void ThenISeePictureInConversation() {
-		 int afterNumberOfImages = CommonSteps.senderPages.getConversationPage().getNumberOfImageEntries();
+		 int afterNumberOfImages = -1;
 		 
 		 boolean isNumberIncreased = false;
-		 for (int i = 0; i < 20; i++) {
+		 for (int i = 0; i < 60; i++) {
+			 afterNumberOfImages = CommonSteps.senderPages.getConversationPage().getNumberOfImageEntries();
 			 if (afterNumberOfImages == beforeNumberOfImages + 2) {
 				 isNumberIncreased = true;
 				 break;
@@ -89,7 +90,7 @@ public class ConversationPageSteps {
 		 if (message.equals(OSXLocators.YOU_KNOCKED_MESSAGE)) {
 			 boolean isNumberIncreased = false;
 			 int afterNumberOfKnocks = -1;
-			 for (int i = 0; i < 20; i++) {
+			 for (int i = 0; i < 60; i++) {
 				 afterNumberOfKnocks = CommonSteps.senderPages.getConversationPage().getNumberOfMessageEntries(message);
 				 if (afterNumberOfKnocks == beforeNumberOfKnocks + 1) {
 					 isNumberIncreased = true;
