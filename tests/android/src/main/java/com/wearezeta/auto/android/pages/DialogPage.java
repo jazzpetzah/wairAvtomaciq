@@ -31,6 +31,19 @@ public class DialogPage extends AndroidPage{
 	@FindBy(how = How.ID, using = AndroidLocators.idDialogImages)
 	private WebElement imagesList;
 	
+	@FindBy(how = How.ID, using = AndroidLocators.idConnectRequestDialog)
+	private WebElement connectRequestDialog;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idConnectRequestPending)
+	private WebElement connectRequestPending;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idConnectRequestMessage)
+	private WebElement connectRequestMessage;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idConnectRequestConnectTo)
+	private WebElement connectRequestConnectTo;
+	
+	
 	private String url;
 	private String path;
 	private int initMessageCount;
@@ -134,4 +147,22 @@ public class DialogPage extends AndroidPage{
 	public void takePhoto() {
 		takePhotoButton.click();
 	}
+
+	public boolean isConnectMessageVisible() {
+		return connectRequestDialog.isDisplayed();
+	}
+
+	public boolean isPendingButtonVisible() {
+		return connectRequestPending.isDisplayed();
+	}
+
+	public boolean isConnectMessageValid(String message) {
+		
+		return connectRequestMessage.getText().toLowerCase().contains(message.toLowerCase());
+	}
+
+	public boolean isConnectUserValid(String user) {
+		return connectRequestConnectTo.getText().toLowerCase().contains(user.toLowerCase());
+	}
+	
 }

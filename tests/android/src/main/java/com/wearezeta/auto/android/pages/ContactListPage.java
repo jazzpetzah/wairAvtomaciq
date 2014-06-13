@@ -5,6 +5,7 @@ import java.util.*;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.*;
 
@@ -12,6 +13,9 @@ public class ContactListPage extends AndroidPage {
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idContactListNames)
 	private List<WebElement> contactListNames;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idCursorInput)
+	private WebElement cursorInput;
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idInstructions)
 	private List<WebElement> instructions;
@@ -37,6 +41,7 @@ public class ContactListPage extends AndroidPage {
 		}
 		else{
 			page = new DialogPage(url, path);
+			wait.until(ExpectedConditions.visibilityOf(cursorInput));
 		}
 		return page;
 		
@@ -85,5 +90,4 @@ public class ContactListPage extends AndroidPage {
 		}	
 		return page;
 	}
-
 }

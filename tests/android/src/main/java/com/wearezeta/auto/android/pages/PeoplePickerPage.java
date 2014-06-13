@@ -3,14 +3,9 @@ package com.wearezeta.auto.android.pages;
 import java.io.IOException;
 import java.util.List;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
-
-import com.wearezeta.auto.common.AndroidLocators;
-import com.wearezeta.auto.common.DriverUtils;
-import com.wearezeta.auto.common.SwipeDirection;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.*;
+import com.wearezeta.auto.common.*;
 
 public class PeoplePickerPage extends AndroidPage {
 
@@ -40,6 +35,7 @@ public class PeoplePickerPage extends AndroidPage {
 	{
 		DriverUtils.waitUntilElementAppears(driver,By.id(AndroidLocators.idPickerSearch));
 	}
+	
 	public void tapPeopleSearch()
 	{
 		pickerSearch.click();
@@ -86,5 +82,29 @@ public class PeoplePickerPage extends AndroidPage {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 	
+	public boolean isPeoplePickerPageVisible() {
+		return pickerSearch.isDisplayed();
+	}
+
+
+	public void waitUserPickerFindUser(String contactName) throws InterruptedException {
+		
+		for(int i= 0; i<5; i++){
+			List<WebElement> users = pickerTextViews;
+			for(WebElement element : users)
+			{
+				try{
+					if(element.getText().toLowerCase().equals(contactName.toLowerCase())){
+					return;
+				 }
+			 }	
+				catch(Exception ex){
+				 	continue;
+				}
+			}
+			Thread.sleep(500);
+		}
+	}
 }
