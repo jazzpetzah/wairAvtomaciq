@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.UsersState;
 import com.wearezeta.auto.ios.pages.IOSPage;
+import com.wearezeta.auto.ios.pages.IOSTestPreparation;
 import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 

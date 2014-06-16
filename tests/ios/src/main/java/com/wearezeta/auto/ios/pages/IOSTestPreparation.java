@@ -1,4 +1,4 @@
-package com.wearezeta.auto.ios;
+package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
 import java.util.Map.Entry;
