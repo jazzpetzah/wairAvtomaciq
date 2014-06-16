@@ -62,6 +62,12 @@ public abstract class IOSPage extends BasePage {
 	{
 		if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class)){
 			DriverUtils.iOSSimulatorSwipeDown(CommonUtils.getSwipeScriptPath(IOSPage.class));
+			try {
+				Thread.sleep(10000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		else {
 			DriverUtils.swipeDown(driver, content, time);
