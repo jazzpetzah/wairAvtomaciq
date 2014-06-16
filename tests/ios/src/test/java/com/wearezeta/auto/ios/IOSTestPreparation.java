@@ -62,7 +62,6 @@ public class IOSTestPreparation {
 			String contactName = CommonUtils.getContactName(login);
 			System.out.println("Sending request to " + login);
 			PagesCollection.peoplePickerPage = (PeoplePickerPage) (PagesCollection.contactListPage.swipeDown(500));
-			Thread.sleep(10000);
 			PagesCollection.peoplePickerPage.tapOnPeoplePickerSearch();
 			PagesCollection.connectToPage = PagesCollection.peoplePickerPage.pickUserAndTap(contactName);
 			PagesCollection.contactListPage = (ContactListPage) PagesCollection.connectToPage.sendInvitation("");

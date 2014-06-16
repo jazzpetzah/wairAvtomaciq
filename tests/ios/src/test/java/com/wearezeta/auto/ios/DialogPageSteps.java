@@ -27,6 +27,7 @@ public class DialogPageSteps {
 	
 	@When("^I type the message$")
 	public void WhenITypeTheMessage() throws Throwable {
+		PagesCollection.dialogPage.waitForTextMessageInputVisible();
 		message = CommonUtils.generateGUID();
 		PagesCollection.dialogPage.typeMessage(message + "\n");
 	}
