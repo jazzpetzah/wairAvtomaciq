@@ -41,7 +41,7 @@ Feature: Send Message
     
     	Examples: 
     	|	Login						|	Password	|	Name			|	Contact		|
-    	|	piotr.iazadji@wearezeta.com	|	asdfer123	|	Piotr Iazadji	|	Piotr.mqa2	|
+    	|	piotr.iazadji@wearezeta.com	|	asdfer123	|	Piotr Iazadji	|	Piotr.mqa3, Piotr.mqa2	|
     
 #	Scenario Outline: Start group chat with users from contact list
 #		Given I Sign in using login <Login> and password <Password>

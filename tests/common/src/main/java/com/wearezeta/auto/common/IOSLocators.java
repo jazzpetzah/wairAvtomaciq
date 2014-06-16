@@ -53,5 +53,9 @@ public final class IOSLocators {
 	public static final String nameAddPictureButton = "ComposeControllerPictureButton";
 	
 	public static final String nameCameraRollButton = "FullScreenCameraRightButton";
+	
+	public static final String xpathCameraRollAlertOK = "//UIAApplication[1]/UIAWindow[4]/UIAAlert[1]/UIATableView[2]/UIATableCell[1]";
+	
+	public static final String nameCameraRollCancel = "Cancel";
 
 }

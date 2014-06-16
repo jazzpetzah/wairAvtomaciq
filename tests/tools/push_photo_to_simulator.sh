@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "photo script opend"
+
 if [ -z "$1" ]; then
     echo "Error: No iPhone Simulator version supplied. Usage: $0 [version]"
     exit -1
