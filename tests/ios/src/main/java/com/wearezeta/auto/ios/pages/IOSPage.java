@@ -25,6 +25,7 @@ public abstract class IOSPage extends BasePage {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("platformName", "iOS");
         capabilities.setCapability("app", path);
+        capabilities.setCapability("fullReset", "true");
         super.InitConnection(URL, capabilities);
 	}
 
