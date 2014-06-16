@@ -103,7 +103,7 @@ public class LoginPage extends IOSPage {
 	
 	public Boolean isLoginFinished(String contact) throws IOException {
 		WebElement el = null;
-		if(IOSTestPreparation.iOSAutoRun){
+		if(!IOSTestPreparation.iOSAutoRun){
 			catchLoginAllert();
 			el = driver.findElement(By.name(contact));
 		}
