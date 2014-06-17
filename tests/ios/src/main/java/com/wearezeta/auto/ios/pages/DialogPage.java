@@ -86,7 +86,7 @@ public class DialogPage extends IOSPage{
 	
 	public void swipeInputCurser() throws IOException, InterruptedException{
 		DriverUtils.swipeRight(driver, cursorInput, 1000);
-		DriverUtils.iOSSimulatorCameraRoll("/Users/julianereschke/Projects/zautomation/tests/tools/push_photo_to_simulator.sh");
+		//DriverUtils.iOSSimulatorCameraRoll("/Users/julianereschke/Projects/zautomation/tests/tools/push_photo_to_simulator.sh");
 	}
 	
 	public void pressAddPictureButton() throws IOException{
