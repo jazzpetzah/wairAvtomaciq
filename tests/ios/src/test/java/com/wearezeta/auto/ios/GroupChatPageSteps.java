@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios;
 
-import com.wearezeta.auto.ios.pages.GroupChatPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 
 import cucumber.api.java.en.When;

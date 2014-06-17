@@ -1,11 +1,11 @@
 package com.wearezeta.auto.android;
 
+import java.io.IOException;
+
 import org.junit.Assert;
 
-import com.wearezeta.auto.android.pages.ConnectToPage;
-import com.wearezeta.auto.android.pages.PagesCollection;
+import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.CommonUtils;
-
 import cucumber.api.java.en.When;
 
 public class PeoplePickerPageSteps {
@@ -18,6 +18,16 @@ public class PeoplePickerPageSteps {
 	@When("^I tap on Search input on People picker page$")
 	public void WhenITapOnSearchInputOnPeoplePickerPage() throws Throwable {
 	    PagesCollection.peoplePickerPage.tapPeopleSearch();
+	}
+	
+	@When("^I input in People picker search field user name (.*)$")
+	public void WhenIInputInPeoplePickerSearchFieldUserName(String contact) throws Throwable {
+		if(contact.contains("aqaUser")){
+			PagesCollection.peoplePickerPage.typeTextInPeopleSearch(CommonUtils.getContactName(CommonUtils.contacts.firstKey()));
+		}
+		else{
+			PagesCollection.peoplePickerPage.typeTextInPeopleSearch(contact);
+		}
 	}
 	
 	@When("^I input in search field user name to connect to (.*)$")
@@ -42,12 +52,26 @@ public class PeoplePickerPageSteps {
 	
 	@When("^I tap on user name found on People picker page (.*)$")
 	public void WhenITapOnUserNameFoundOnPeoplePickerPage(String contact) throws Throwable {
+		AndroidPage page = null;
 		if(contact.contains("aqaUser")){
-			PagesCollection.connectToPage = (ConnectToPage)(PagesCollection.peoplePickerPage.selectContact(CommonUtils.getContactName(CommonUtils.contacts.firstKey())));
+			page = PagesCollection.peoplePickerPage.selectContact(CommonUtils.getContactName(CommonUtils.contacts.firstKey()));
 		}
 		else{
-			PagesCollection.connectToPage = (ConnectToPage)(PagesCollection.peoplePickerPage.selectContact(contact));
+			page = PagesCollection.peoplePickerPage.selectContact(contact);
 		}
+		if(page instanceof ConnectToPage) {
+			PagesCollection.connectToPage = (ConnectToPage) page;
+		}
+	}
+	
+	@When("^I see Add to conversation button$")
+	public void WhenISeeAddToConversationButton(){
+		Assert.assertTrue("Add to conversation button is not visible", PagesCollection.peoplePickerPage.isAddToConversationBtnVisible());
+	}
+	
+	@When("^I click on Add to conversation button$")
+	public void WhenIClickOnAddToConversationButton() throws IOException{
+		PagesCollection.groupChatPage = (GroupChatPage)PagesCollection.peoplePickerPage.clickOnAddToCoversationButton();
 	}
 	
 }

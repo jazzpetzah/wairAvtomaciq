@@ -84,5 +84,7 @@ public abstract class AndroidPage extends BasePage {
 		PagesCollection.personalInfoPaga = null;
 		PagesCollection.peoplePickerPage = null;
 		PagesCollection.connectToPage = null;
+		PagesCollection.otherUserPersonalInfoPage = null;
+		PagesCollection.groupChatPage = null;
 	}
 }

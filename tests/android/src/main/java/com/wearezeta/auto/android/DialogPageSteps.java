@@ -1,9 +1,12 @@
 package com.wearezeta.auto.android;
 
+import java.io.IOException;
+
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.CommonUtils;
+
 
 import cucumber.api.java.en.*;
 
@@ -81,7 +84,17 @@ public class DialogPageSteps{
 	public void ISeePendingConnectMessage(String user) throws Throwable {
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
 		Assert.assertTrue(PagesCollection.dialogPage.isConnectMessageVisible());
-		Assert.assertTrue(PagesCollection.dialogPage.isConnectUserValid(user));
+		if(user.contains("aqaUser")){
+			Assert.assertTrue(PagesCollection.dialogPage.isConnectUserValid(CommonUtils.getContactName(CommonUtils.contacts.firstKey())));
+		}
+		else{
+			Assert.assertTrue(PagesCollection.dialogPage.isConnectUserValid(user));
+		}
 		Assert.assertTrue(PagesCollection.dialogPage.isPendingButtonVisible());
+	}
+	
+	@When("^I swipe left on dialog page$")
+	public void WhenISwipeLeftOnDialogPage() throws IOException{
+		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage)PagesCollection.dialogPage.swipeLeft(1000);
 	}
 }

@@ -7,7 +7,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-
 import com.wearezeta.auto.common.*;
 
 public class DialogPage extends AndroidPage{
@@ -111,7 +110,7 @@ public class DialogPage extends AndroidPage{
 			}
 			case LEFT:
 			{
-				
+				page = new OtherUserPersonalInfoPage(url, path);
 				break;
 			}
 			case RIGHT:

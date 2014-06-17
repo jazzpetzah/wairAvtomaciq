@@ -40,6 +40,8 @@ public final class AndroidLocators {
 	
 	public static final String idPickerUsersUnselected = "com.waz.zclient:id/pick_user_chathead_unselected";
 	
+	public static final String idPickerBtnDone = "com.waz.zclient:id/button_done";
+	
 	public static final String idPickerSearch = "com.waz.zclient:id/pick_user_search";
 	
 	public static final String idConnectToSend = "com.waz.zclient:id/send";
@@ -58,5 +60,6 @@ public final class AndroidLocators {
 	
 	public static final String idInstructionsRequestConnectBtn = "com.waz.zclient:id/button_connect";
 	
+	public static final String idOtherUserPersonalInfoName = "com.waz.zclient:id/metaHeader";
 	
 }

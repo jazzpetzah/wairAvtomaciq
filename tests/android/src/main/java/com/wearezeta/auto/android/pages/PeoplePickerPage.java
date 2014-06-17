@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.*;
+
 import com.wearezeta.auto.common.*;
 
 public class PeoplePickerPage extends AndroidPage {
@@ -27,6 +28,9 @@ public class PeoplePickerPage extends AndroidPage {
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idPickerSearch)
 	private WebElement pickerSearch;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idPickerBtnDone)
+	private WebElement addToConversationsButton;
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idConnectToSend)
 	private List<WebElement> sendRequests;
@@ -58,7 +62,6 @@ public class PeoplePickerPage extends AndroidPage {
 			 try{
 				 if(element.getText().toLowerCase().equals(contactName.toLowerCase())){
 					 element.click();
-					 DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.idPickerSearch));
 					 break;
 				 }
 			 }
@@ -67,8 +70,12 @@ public class PeoplePickerPage extends AndroidPage {
 			 }
 		 }
 		
-		if(sendRequests.size() > 0 && sendRequests.get(0).isDisplayed()){
+		if(sendRequests.size() > 0 && isVisible(sendRequests.get(0))){
 			page = new ConnectToPage(url, path);
+		}
+		else if(isVisible(addToConversationsButton))
+		{
+			page = this;
 		}
 		else{
 			page = new DialogPage(url, path);
@@ -107,4 +114,29 @@ public class PeoplePickerPage extends AndroidPage {
 			Thread.sleep(500);
 		}
 	}
+	
+	public boolean isAddToConversationBtnVisible(){
+		return addToConversationsButton.isDisplayed();
+	}
+	
+	public GroupChatPage clickOnAddToCoversationButton() throws IOException{
+		addToConversationsButton.click();
+		return new GroupChatPage(url, path);
+	}
+	
+	private boolean isVisible(WebElement element)
+	{
+		boolean value = false;
+		try{
+			element.isDisplayed();
+			value = true;
+		}
+		catch(NoSuchElementException ex)
+		{
+			value = false;
+		}
+		return value;
+		
+	}
+	
 }

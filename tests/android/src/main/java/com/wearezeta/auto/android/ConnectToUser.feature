@@ -18,4 +18,4 @@ Feature: Connect to User
 		
 	Examples:     
     |	Login							|	Password	|	Name		|	Contact		| Message |
-    | smoketester+aqa387@wearezeta.com  | aqa123456	    | aqa387		|	aqa46		| Hello   |
+    | smoketester+aqa101@wearezeta.com  | aqa123456	    | aqa101		|	aqa50		| Hello   |

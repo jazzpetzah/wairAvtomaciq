@@ -1,8 +1,7 @@
-
 Feature: Conversation
 
   Scenario Outline: Send Message to contact
-    Given I Sign in using login <Login> and password <Password> 
+    Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -13,10 +12,10 @@ Feature: Conversation
 
     Examples: 
       | Login                           | Password | Name            | Contact |
-   	  | sergeii.khyzhniak@wearezeta.com | 123456   | Sergey Hizhnyak | Piotr   |
+      | sergeii.khyzhniak@wearezeta.com | 123456   | Sergey Hizhnyak | Piotr   |
 
   Scenario Outline: Send Hello to contact
-    Given I Sign in using login <Login> and password <Password> 
+    Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -28,7 +27,7 @@ Feature: Conversation
       | sergeii.khyzhniak@wearezeta.com | 123456   | Sergey Hizhnyak | Piotr   |
 
   Scenario Outline: Send Camera picture to contact
-    Given I Sign in using login <Login> and password <Password> 
+    Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -39,5 +38,29 @@ Feature: Conversation
     Then I see new photo in the dialog
 
     Examples: 
-      | Login                           | Password | Name            | Contact	| 
-      | sergeii.khyzhniak@wearezeta.com | 123456   | Sergey Hizhnyak | Volodymyr|
+      | Login                           | Password | Name            | Contact   |
+      | sergeii.khyzhniak@wearezeta.com | 123456   | Sergey Hizhnyak | Volodymyr |
+
+  Scenario Outline: Start group chat with users from contact list
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I swipe left on dialog page
+    And I see <Contact1> user profile page
+    And I swipe down other user profile page
+    And I see People picker page
+    And I input in People picker search field user name <Contact2>
+    And I see user <Contact2> found on People picker page
+    And I tap on user name found on People picker page <Contact2>
+    And I see Add to conversation button
+    And I click on Add to conversation button
+    And I see group chat page with users <Contact1> <Contact2>
+    And I tap on text input
+    And I type the message
+    And I press send
+    Then I see my message in the dialog
+
+    Examples: 
+      | Login                            | Password  | Name   | Contact1 | Contact2 |
+      | smoketester+aqa387@wearezeta.com | aqa123456 | aqa387 | aqa47    | aqa46    |

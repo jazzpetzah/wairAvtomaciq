@@ -40,6 +40,7 @@ def swipe(startX, startY, endX, endY):
     for i in range(1,(endY - startY)):
          mousedrag(endX, y)
          y+=1
+         time.sleep(0.01)
     mouseclickup(endX, endY)
     time.sleep(1)
     mousemove(int(currentpos.x),int(currentpos.y)) # Restore mouse position
@@ -97,7 +98,7 @@ def swipeInWindow(windowName, startX, startY, endX, endY):
     swipeRelative(startX,startY,endX,endY,dim[0],dim[1])
     
 def main():
-	swipeInWindow("iOS Simulator",0.75,0.1,0.75,0.9)
+	swipeInWindow("iOS Simulator",0.65,0.1,0.65,0.85)
 
     # Process args
     #if (len(sys.argv) < 6):
