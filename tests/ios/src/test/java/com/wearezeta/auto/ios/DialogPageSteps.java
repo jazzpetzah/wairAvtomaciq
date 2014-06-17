@@ -71,9 +71,9 @@ public class DialogPageSteps {
 	
 	@Then("^I see new photo in the dialog$")
 	public void ISeeNewPhotoInTheDialog() throws Throwable {
-	    //how to verify the picture? 
-		//find out what the message type is?
-		//do we have screenshot taking and comparison in yet?
+		String dialogLastMessage = PagesCollection.dialogPage.getImageCellFromDialog();
+		String imageCell = "ImageCell";
+		Assert.assertEquals(imageCell, dialogLastMessage);
 	}
 
 

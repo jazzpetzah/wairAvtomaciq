@@ -122,6 +122,18 @@ public class DialogPage extends IOSPage{
 		Thread.sleep(1000);
 	}
 	
+	private String GetImageCell(List<WebElement> chatList) {
+		String lastMessageXPath = String.format(IOSLocators.xpathLastMessageFormat, chatList.size());
+		WebElement el = driver.findElementByXPath(lastMessageXPath);
+		String lastMessage = el.getAttribute("name");
+		return lastMessage;
+	}
+
+	public String getImageCellFromDialog()
+	{
+		return GetImageCell(messagesList);
+	}
+	
 	@Override
 	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
 		IOSPage page = null;
