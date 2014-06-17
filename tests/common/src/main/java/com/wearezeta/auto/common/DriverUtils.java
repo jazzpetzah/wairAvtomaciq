@@ -155,10 +155,13 @@ public class DriverUtils {
 		 Runtime.getRuntime().exec("/usr/bin/open -a Terminal " + scriptPath);
 	 }
 	 
-	 public static void iOSSimulatorCameraRoll(String scriptPath) throws IOException{
-		 String[] env = {"PATH=/bin:/user/bin/"};
-		 String cmd = "/usr/bin/open -a Terminal " + scriptPath + " 7.1";
-		 Runtime.getRuntime().exec(cmd, env);
+	 public static void iOSSimulatorCameraRoll(String scriptPath) throws IOException, InterruptedException{
+		 //String[] env = {"PATH=/bin:/usr/bin/"};
+		 String [] cmd =new String []{"/bin/bash", scriptPath, "7.1"};
+		 //String cmd = scriptPath + " 7.1";
+		 Process process = Runtime.getRuntime().exec(cmd);
+		 System.out.print("Process Code"+ process.waitFor());
+		 //process.waitFor();
 		 //Runtime.getRuntime().exec("/usr/bin/open -a Terminal " + scriptPath);
 	 }
 	 

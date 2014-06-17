@@ -84,7 +84,7 @@ public class DialogPage extends IOSPage{
 		return GetLastMessage(messagesList);
 	}
 	
-	public void swipeInputCurser() throws IOException{
+	public void swipeInputCurser() throws IOException, InterruptedException{
 		DriverUtils.swipeRight(driver, cursorInput, 1000);
 		DriverUtils.iOSSimulatorCameraRoll("/Users/julianereschke/Projects/zautomation/tests/tools/push_photo_to_simulator.sh");
 	}
@@ -99,9 +99,10 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public void openCameraRoll() throws IOException, InterruptedException{
-		//DriverUtils.iOSSimulatorCameraRoll("/Users/julianereschke/Projects/zautomation/tests/tools/push_photo_to_simulator.sh");
+		
 		System.out.print("CAMERA ROLL");
 		cameraRollAlertOK.click();
+		//DriverUtils.iOSSimulatorCameraRoll("/Users/julianereschke/Projects/zautomation/tests/tools/push_photo_to_simulator.sh");
 		Thread.sleep(5000);
 		cameraRollCancel.click();
 	}
