@@ -40,7 +40,7 @@ def swipe(startX, startY, endX, endY):
     for i in range(1,(endY - startY)):
          mousedrag(endX, y)
          y+=1
-         time.sleep(0.01)
+         time.sleep(0.001)
     mouseclickup(endX, endY)
     time.sleep(1)
     mousemove(int(currentpos.x),int(currentpos.y)) # Restore mouse position
