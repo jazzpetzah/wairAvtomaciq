@@ -33,6 +33,15 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.nameCameraRollCancel)
 	private WebElement cameraRollCancel;
 	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathCameraRollTableCell)
+	private WebElement cameraRollTableCell;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathCameraRollPicture)
+	private WebElement cameraRollPicture;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameConfirmPictureButton)
+	private WebElement confirmPictureButton;
+	
 	private String url;
 	private String path;
 	
@@ -86,12 +95,10 @@ public class DialogPage extends IOSPage{
 	
 	public void swipeInputCurser() throws IOException, InterruptedException{
 		DriverUtils.swipeRight(driver, cursorInput, 1000);
-		//DriverUtils.iOSSimulatorCameraRoll("/Users/julianereschke/Projects/zautomation/tests/tools/push_photo_to_simulator.sh");
 	}
 	
 	public void pressAddPictureButton() throws IOException{
 		addPictureButton.click();
-		//DriverUtils.iOSSimulatorCameraRoll("/Users/julianereschke/Projects/zautomation/tests/tools/push_photo_to_simulator.sh");
 	}
 	
 	public void pressCameraRollButton(){
@@ -102,13 +109,17 @@ public class DialogPage extends IOSPage{
 		
 		System.out.print("CAMERA ROLL");
 		cameraRollAlertOK.click();
-		//DriverUtils.iOSSimulatorCameraRoll("/Users/julianereschke/Projects/zautomation/tests/tools/push_photo_to_simulator.sh");
-		Thread.sleep(5000);
-		cameraRollCancel.click();
+		Thread.sleep(2000);
+		cameraRollTableCell.click();
+		Thread.sleep(1000);
+		cameraRollPicture.click();
+		Thread.sleep(3000);
+
 	}
 	
-	public void pressConfirmButton(){
-		
+	public void pressConfirmButton() throws InterruptedException{
+		confirmPictureButton.click();
+		Thread.sleep(1000);
 	}
 	
 	@Override
