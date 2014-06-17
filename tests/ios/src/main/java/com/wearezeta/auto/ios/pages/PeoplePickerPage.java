@@ -66,7 +66,12 @@ public class PeoplePickerPage extends IOSPage{
 	
 	public IOSPage clickOnFoundUser(String name) throws MalformedURLException{
 		
-		userPickerSearchResult.click();
+		try{
+			userPickerSearchResult.click();
+		}
+		catch(Exception ex){
+			driver.findElement(By.name(name)).click();
+		}
 		
 		IOSPage page = null;
 		
