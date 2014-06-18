@@ -17,11 +17,12 @@ import org.openqa.selenium.support.ui.Wait;
 import com.google.common.base.Function;
 import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.osx.locators.OSXLocators;
+import com.wearezeta.auto.osx.util.NSPoint;
 
 public class ContactListPage extends OSXPage {
 	
 	@FindBy(how = How.ID, using = OSXLocators.idMainWindow)
-	private WebElement viewPager;
+	private WebElement mainWindow;
 
 	@FindBy(how = How.ID, using = OSXLocators.idAcceptInvitationButton)
 	private WebElement acceptInvitationButton;
@@ -43,7 +44,7 @@ public class ContactListPage extends OSXPage {
 	}
 	
 	public Boolean isVisible() {
-		return viewPager != null;
+		return mainWindow != null;
 	}
 	
 	public void SignOut() {
@@ -61,6 +62,7 @@ public class ContactListPage extends OSXPage {
 	}
 	
 	public boolean openConversation(String conversationName) {
+		scrollToConversationInList(conversationName);
 		for (WebElement contact: this.contactsTextFields) {
 			if (contact.getText().equals(conversationName)) {
 				contact.click();
@@ -109,5 +111,59 @@ public class ContactListPage extends OSXPage {
 			quitZClientMenuItem.click();
 		} catch (Exception e) { }
 		super.Close();
+	}
+	
+	public void scrollToConversationInList(String conversationName) {
+    	NSPoint mainPosition = NSPoint.fromString(mainWindow.getAttribute("AXPosition"));
+    	NSPoint mainSize = NSPoint.fromString(mainWindow.getAttribute("AXSize"));
+    	
+    	NSPoint latestPoint =
+    			new NSPoint(mainPosition.x() + mainSize.x(), mainPosition.y() + mainSize.y());
+
+    	//get scrollbar for contact list
+    	WebElement peopleDecrementSB = null;
+    	WebElement peopleIncrementSB = null;
+
+    	WebElement scrollArea = driver.findElement(By.xpath(OSXLocators.xpathConversationListScrollArea));
+   
+    	WebElement userContact = null;
+    	boolean isFoundPeople = false;
+		try {
+			for (WebElement contact: contactsTextFields) {
+				if (contact.getText().equals(conversationName)) {
+					isFoundPeople = true;
+					userContact = contact;
+				}
+			}
+		} catch (NoSuchElementException e) {
+			isFoundPeople = false;
+		}
+		
+        NSPoint userPosition = NSPoint.fromString(userContact.getAttribute("AXPosition"));
+        if (userPosition.y() > latestPoint.y() || userPosition.y() < mainPosition.y()) {
+        	if (isFoundPeople) {
+    			WebElement scrollBar = scrollArea.findElement(By.xpath("//AXScrollBar"));
+    			List<WebElement> scrollButtons = scrollBar.findElements(By.xpath("//AXButton"));
+    			for (WebElement scrollButton: scrollButtons) {
+    				String subrole = scrollButton.getAttribute("AXSubrole");
+    				if (subrole.equals("AXDecrementPage")) {
+    					peopleDecrementSB = scrollButton;
+    				}
+    				if (subrole.equals("AXIncrementPage")) {
+    					peopleIncrementSB = scrollButton;
+    				}
+    			}
+    		}
+        	
+        	while (userPosition.y() > latestPoint.y()) {
+            	peopleIncrementSB.click();
+            	userPosition = NSPoint.fromString(userContact.getAttribute("AXPosition"));
+            }
+            while (userPosition.y() < mainPosition.y()) {
+            	peopleDecrementSB.click();
+            	userPosition = NSPoint.fromString(userContact.getAttribute("AXPosition"));
+            }
+        }
+		
 	}
 }

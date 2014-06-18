@@ -15,7 +15,7 @@ public class NSPoint {
 	public int y() { return y; }
 
 	public static NSPoint fromString(String coords) {
-		java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(".*\\{([0-9]*),\\s([0-9]*)\\}");
+		java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(".*\\{([0-9]*)\\.*.*,\\s([0-9]*)\\.*.*\\}");
 		Matcher matcher = pattern.matcher(coords);
 		while (matcher.find()) {
 			return new NSPoint(Integer.parseInt(matcher.group(1)),Integer.parseInt(matcher.group(2)));

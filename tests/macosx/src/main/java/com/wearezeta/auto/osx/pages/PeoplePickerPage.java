@@ -22,6 +22,9 @@ public class PeoplePickerPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerDismissButton)
 	private WebElement cancelButton;
 	
+	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerAddToConversationButton)
+	private WebElement addToConversationButton;
+	
 //	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerSearchField)
 	private WebElement searchField = findSearchField();
 	
@@ -101,7 +104,7 @@ public class PeoplePickerPage extends OSXPage {
 		}
 		
         NSPoint userPosition = NSPoint.fromString(userContact.getAttribute("AXPosition"));
-        if (userPosition.y() > latestPoint.y() && userPosition.y() < mainPosition.y()) {
+        if (userPosition.y() > latestPoint.y() || userPosition.y() < mainPosition.y()) {
         	if (isFoundPeople) {
     			WebElement scrollBar = scrollArea.findElement(By.xpath("//AXScrollBar"));
     			List<WebElement> scrollButtons = scrollBar.findElements(By.xpath("//AXButton"));
@@ -135,6 +138,17 @@ public class PeoplePickerPage extends OSXPage {
 				break;
 			}
 		}
+		DriverUtils.setImplicitWaitValue(driver, 3);
+		try {
+			addSelectedUsersToConversation();
+		} catch (NoSuchElementException e) {
+		} finally {
+			DriverUtils.setDefaultImplicitWait(driver);
+		}
+	}
+	
+	public void addSelectedUsersToConversation() {
+		addToConversationButton.click();
 	}
 	
 	@Override

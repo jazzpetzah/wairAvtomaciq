@@ -3,6 +3,8 @@ package com.wearezeta.auto.osx.pages;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -19,6 +21,11 @@ public class OSXPage extends BasePage {
         driver.navigate().to(path);
 	}
 
+	public void takeScreenshot() {
+		 byte[] scrImage = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES);
+		 //TODO: implement screenshot taking
+	}
+	
 	@Override
 	public void Close() throws IOException {
 		super.Close();

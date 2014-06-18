@@ -2,6 +2,7 @@ package com.wearezeta.auto.osx.pages;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -34,6 +35,9 @@ public class ConversationPage extends OSXPage {
 
 	@FindBy(how = How.ID, using = OSXLocators.idAddImageButton)
 	private WebElement addImageButton;
+	
+	@FindBy(how = How.ID, using = OSXLocators.idPeopleButton)
+	private WebElement peopleButton;
 	
 	@FindBy(how = How.NAME, using = OSXLocators.nameSignOutMenuItem)
 	private WebElement signOutMenuItem;
@@ -70,18 +74,27 @@ public class ConversationPage extends OSXPage {
 	}
 	
 	public boolean isMessageExist(String message) {
-		for (WebElement entry: messageEntries) {
-			if (entry.equals(message)) {
-				return true;
+		boolean isExist = false;
+		if (message.contains(OSXLocators.YOU_ADDED_MESSAGE)) {
+			List<WebElement> els = driver.findElements(By.xpath(OSXLocators.xpathMessageEntry));
+			Collections.reverse(els);
+			for (WebElement el: els) {
+				if (el.getText().contains(OSXLocators.YOU_ADDED_MESSAGE)) {
+					isExist = true;
+				}
 			}
+		} else {
+			String xpath = String.format(OSXLocators.xpathFormatSpecificMessageEntry, message);
+			WebElement el = driver.findElement(By.xpath(xpath));
+			if (el == null) isExist = false;
+			else isExist = true;
 		}
-		return false;
+		return isExist;
 	}
 	
 	public void writeNewMessage(String message) {
 		int i = 0;
 		while (newMessageTextArea == null) {
-			System.out.println("here " + i);
 			newMessageTextArea = findNewMessageTextArea();
 			if (++i > 10) {
 				break;
@@ -95,6 +108,10 @@ public class ConversationPage extends OSXPage {
 		newMessageTextArea.submit();
 	}
 
+	public void openConversationPeoplePicker() {
+		peopleButton.click();
+	}
+	
 	public void openChooseImageDialog() {
 		if (addImageButton == null) {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)

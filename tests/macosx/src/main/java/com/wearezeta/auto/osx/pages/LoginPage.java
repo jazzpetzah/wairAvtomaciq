@@ -62,8 +62,12 @@ public class LoginPage extends OSXPage {
 
 	public void setLogin(String login) {
 		DriverUtils.setImplicitWaitValue(driver, 1);
-		loginField.sendKeys(login);
-		DriverUtils.setDefaultImplicitWait(driver);
+		try {
+			loginField.sendKeys(login);
+		} catch (NoSuchElementException e) {
+		} finally {
+			DriverUtils.setDefaultImplicitWait(driver);
+		}
 	}
 
 	public String getPassword() {
@@ -72,8 +76,12 @@ public class LoginPage extends OSXPage {
 
 	public void setPassword(String password) {
 		DriverUtils.turnOffImplicitWait(driver);
-		passwordField.sendKeys(password);
-		DriverUtils.setDefaultImplicitWait(driver);
+		try {
+			passwordField.sendKeys(password);
+		} catch (NoSuchElementException e) {
+		} finally {
+			DriverUtils.setDefaultImplicitWait(driver);
+		}
 	}
 	
 	public boolean waitForLogin() {

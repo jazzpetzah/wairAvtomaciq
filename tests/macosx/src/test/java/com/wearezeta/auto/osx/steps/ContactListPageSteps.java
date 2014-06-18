@@ -8,6 +8,7 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.osx.pages.ConversationPage;
 import com.wearezeta.auto.osx.pages.PeoplePickerPage;
+import com.wearezeta.auto.osx.pages.UserProfilePage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -29,15 +30,23 @@ public class ContactListPageSteps {
 	public void GivenIOpenConversationWith(String value) throws MalformedURLException, IOException {
 		Assert.assertTrue(CommonSteps.senderPages.getContactListPage().openConversation(value));
 		CommonSteps.senderPages.setConversationPage(new ConversationPage(
-				CommonUtils.getUrlFromConfig(ConversationPage.class),
-				CommonUtils.getAppPathFromConfig(ConversationPage.class)));
+				CommonUtils.getUrlFromConfig(ContactListPageSteps.class),
+				CommonUtils.getAppPathFromConfig(ContactListPageSteps.class)));
 	 }
 	
 	@When("I open People Picker from contact list")
 	public void WhenIOpenPeoplePickerFromContactList() throws MalformedURLException, IOException {
 		CommonSteps.senderPages.getContactListPage().openPeoplePicker();
 		CommonSteps.senderPages.setPeoplePickerPage(new PeoplePickerPage(
-				CommonUtils.getUrlFromConfig(PeoplePickerPage.class),
-				CommonUtils.getAppPathFromConfig(PeoplePickerPage.class)));
+				CommonUtils.getUrlFromConfig(ContactListPageSteps.class),
+				CommonUtils.getAppPathFromConfig(ContactListPageSteps.class)));
+	}
+	
+	@Given("I go to user (.*) profile") 
+	public void GivenIGoToUserProfile(String user) throws MalformedURLException, IOException {
+		GivenIOpenConversationWith(user);
+		CommonSteps.senderPages.setUserProfilePage(new UserProfilePage(
+				CommonUtils.getUrlFromConfig(ContactListPageSteps.class),
+				CommonUtils.getAppPathFromConfig(ContactListPageSteps.class)));
 	}
 }

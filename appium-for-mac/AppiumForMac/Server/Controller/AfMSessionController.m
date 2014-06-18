@@ -310,13 +310,21 @@
 		[pathMap setValue:root forKey:path];
 		[element addAttribute:[GDataXMLElement attributeWithName:@"path" stringValue:path]];
 	}
-
-    if ([root.AXRole caseInsensitiveCompare:@"AXUnknown"] == NSOrderedSame) return;
     
     NSArray *children = root.AXChildren;
-    PFUIElement *child;
+    if ([root.AXRole caseInsensitiveCompare:@"AXUnknown"] == NSOrderedSame) {
+        NSMutableArray *filtered = [NSMutableArray new];
+        for (PFUIElement* val in children) {
+            if ([val.AXRole caseInsensitiveCompare:@"AXUnknown"] != NSOrderedSame)
+            {
+                [filtered addObject:val];
+            }
+        }
+        children = [filtered copy];
+    }
+    
     int i = 0;
-    for (child in children)
+    for (PFUIElement *child in children)
     {
         i++;
 		GDataXMLElement *childElement = [GDataXMLElement elementWithName:child.AXRole];
