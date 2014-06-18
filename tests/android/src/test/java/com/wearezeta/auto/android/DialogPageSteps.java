@@ -84,8 +84,11 @@ public class DialogPageSteps{
 	public void ISeePendingConnectMessage(String user) throws Throwable {
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
 		Assert.assertTrue(PagesCollection.dialogPage.isConnectMessageVisible());
-		if(user.contains("aqaUser")){
-			Assert.assertTrue(PagesCollection.dialogPage.isConnectUserValid(CommonUtils.getContactName(CommonUtils.contacts.firstKey())));
+		if(user.contains(CommonUtils.CONTACT_1)){
+			Assert.assertTrue(PagesCollection.dialogPage.isConnectUserValid(CommonUtils.contacts.get(0).getName()));
+		}
+		else if(user.contains(CommonUtils.YOUR_USER_2)){
+			Assert.assertTrue(PagesCollection.dialogPage.isConnectUserValid(CommonUtils.yourUsers.get(1).getName()));
 		}
 		else{
 			Assert.assertTrue(PagesCollection.dialogPage.isConnectUserValid(user));

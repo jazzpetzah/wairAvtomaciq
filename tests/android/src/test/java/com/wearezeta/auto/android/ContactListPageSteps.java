@@ -13,11 +13,11 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ContactListPageSteps {
-	
+
 	@Given("^I see Contact list with my name (.*)$")
 	public void GivenISeeContactListWithMyName(String name){
-		if(name.contains("aqaUser")){
-			Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(CommonUtils.getContactName(CommonUtils.yourUserName)));
+		if(name.contains(CommonUtils.YOUR_USER_1)){
+			Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(CommonUtils.yourUsers.get(0).getName()));
 		}
 		else{
 			Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
@@ -26,48 +26,54 @@ public class ContactListPageSteps {
 
 	@When("^I tap on contact name (.*)$")
 	public void WhenITapOnContactName(String name) throws IOException  {
-		if(name.contains("aqaUser")){
-			PagesCollection.androidPage = PagesCollection.contactListPage.tapOnName(CommonUtils.getContactName(CommonUtils.contacts.firstKey()));
+		if(name.contains(CommonUtils.CONTACT_1)){
+			PagesCollection.androidPage = PagesCollection.contactListPage.tapOnName(CommonUtils.contacts.get(0).getName());
+		}
+		else if(name.contains(CommonUtils.YOUR_USER_2)){
+			PagesCollection.androidPage = PagesCollection.contactListPage.tapOnName(CommonUtils.yourUsers.get(1).getName());
 		}
 		else{
 			PagesCollection.androidPage = PagesCollection.contactListPage.tapOnName(name);
 		}
 	}
-	
+
 	@When("^I tap on my name (.*)$")
 	public void WhenITapOnMyName(String name) throws IOException  {
-		if(name.contains("aqaUser")){
-			PagesCollection.androidPage = PagesCollection.contactListPage.tapOnName(CommonUtils.getContactName(CommonUtils.yourUserName));
+		if(name.contains(CommonUtils.YOUR_USER_1)){
+			PagesCollection.androidPage = PagesCollection.contactListPage.tapOnName(CommonUtils.yourUsers.get(0).getName());
 		}
 		else{
 			PagesCollection.androidPage = PagesCollection.contactListPage.tapOnName(name);
 		}
 	}
-	
+
 	@Then ("Contact list appears with my name (.*)")
-	 public void ThenContactListAppears(String name) {
-		 Assert.assertTrue("Login finished", PagesCollection.loginPage.waitForLogin());
-		 if(name.contains("aqaUser")){
-			 Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(CommonUtils.getContactName(CommonUtils.yourUserName)));
-		 }
-		 else{
-			 Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
-		 }
-		 
-	 }
-	
+	public void ThenContactListAppears(String name) {
+		Assert.assertTrue("Login finished", PagesCollection.loginPage.waitForLogin());
+		if(name.contains(CommonUtils.YOUR_USER_1)){
+			Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(CommonUtils.yourUsers.get(0).getName()));
+		}
+		else{
+			Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
+		}
+
+	}
+
 	@When("^I swipe down contact list$")
 	public void ISwipeDownContactList() throws Throwable {
 		PagesCollection.peoplePickerPage= (PeoplePickerPage)PagesCollection.contactListPage.swipeDown(500);
 	}
-	
+
 	@Then("^I see contact list loaded with User name (.*)$")
 	public void ISeeUserNameFirstInContactList(String value) throws Throwable {
-		if(value.contains("aqaUser")){
-			Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(CommonUtils.getContactName(CommonUtils.contacts.firstKey())));
+		if(value.contains(CommonUtils.CONTACT_1)){
+			Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(CommonUtils.contacts.get(0).getName()));
+		}
+		else if(value.contains(CommonUtils.YOUR_USER_2)){
+			Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(CommonUtils.yourUsers.get(1).getName()));
 		}
 		else{
-		 Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(value));
+			Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(value));
 		}
 	}
 

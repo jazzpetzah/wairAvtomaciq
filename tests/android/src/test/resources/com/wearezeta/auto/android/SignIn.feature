@@ -1,4 +1,3 @@
-
 Feature: Sign In
 
   Scenario Outline: Sign in to ZClient
@@ -10,5 +9,5 @@ Feature: Sign In
     Then Contact list appears with my name <Name>
 
     Examples: 
-      | Login                           | Password | Name            |
-      | sergeii.khyzhniak@wearezeta.com | 123456   | Sergey Hizhnyak |
+      | Login   | Password | Name    |
+      | aqaUser | aqaUser  | aqaUser |

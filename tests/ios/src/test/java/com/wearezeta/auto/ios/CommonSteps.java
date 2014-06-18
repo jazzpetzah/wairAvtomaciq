@@ -1,9 +1,9 @@
 package com.wearezeta.auto.ios;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.TestPreparation;
 import com.wearezeta.auto.common.UsersState;
 import com.wearezeta.auto.ios.pages.IOSPage;
-import com.wearezeta.auto.ios.pages.IOSTestPreparation;
 import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 
@@ -14,8 +14,9 @@ public class CommonSteps {
 	
 	@Before
 	 public void setUp() throws Exception {
-		if(Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class)) && !CommonUtils.yourUserState.equals(UsersState.AllContactsConnected)){
+		if(Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class)) &&  (CommonUtils.yourUsers.size()==0 || !CommonUtils.yourUsers.get(0).getUserState().equals(UsersState.AllContactsConnected))){
 			CommonUtils.generateUsers(2);
+	    	TestPreparation.createContactLinks();
 		}
 		
 		String path = CommonUtils.getAppPathFromConfig(TestRun.class);
@@ -24,10 +25,6 @@ public class CommonSteps {
 		{
 			PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(TestRun.class), path);
 		}
-		
-	    if(Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class)) && !CommonUtils.yourUserState.equals(UsersState.AllContactsConnected)){
-	    	IOSTestPreparation.createContactLinks();
-	    }
 	 }
 	 
 	 @After

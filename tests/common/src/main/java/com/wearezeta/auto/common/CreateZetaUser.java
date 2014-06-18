@@ -53,6 +53,7 @@ public class CreateZetaUser {
 	  String test=registerUserAndReturnMail(mail, password, backend_url);
 	  System.out.println("Registerd mail: "+test); 
 	  }
+	
 	public static String registerUserAndReturnMail(String mail, String password, String backendUrl) {
 		String lastSuffix = null;
 		String nextSuffixId = "1";

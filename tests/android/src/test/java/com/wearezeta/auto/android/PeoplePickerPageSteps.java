@@ -22,8 +22,11 @@ public class PeoplePickerPageSteps {
 	
 	@When("^I input in People picker search field user name (.*)$")
 	public void WhenIInputInPeoplePickerSearchFieldUserName(String contact) throws Throwable {
-		if(contact.contains("aqaUser")){
-			PagesCollection.peoplePickerPage.typeTextInPeopleSearch(CommonUtils.getContactName(CommonUtils.contacts.firstKey()));
+		if(contact.contains(CommonUtils.CONTACT_1)){
+			PagesCollection.peoplePickerPage.typeTextInPeopleSearch(CommonUtils.contacts.get(0).getName());
+		}
+		else if(contact.contains(CommonUtils.CONTACT_2)){
+			PagesCollection.peoplePickerPage.typeTextInPeopleSearch(CommonUtils.contacts.get(1).getName());
 		}
 		else{
 			PagesCollection.peoplePickerPage.typeTextInPeopleSearch(contact);
@@ -32,8 +35,11 @@ public class PeoplePickerPageSteps {
 	
 	@When("^I input in search field user name to connect to (.*)$")
 	public void WhenIInputInSearchFieldUserNameToConnectTo(String contact) throws Throwable {
-		if(contact.contains("aqaUser")){
-			PagesCollection.peoplePickerPage.typeTextInPeopleSearch(CommonUtils.getContactName(CommonUtils.contacts.firstKey()));
+		if(contact.contains(CommonUtils.CONTACT_1)){
+			PagesCollection.peoplePickerPage.typeTextInPeopleSearch(CommonUtils.contacts.get(0).getName());
+		}
+		else if(contact.contains(CommonUtils.YOUR_USER_2)){
+			PagesCollection.peoplePickerPage.typeTextInPeopleSearch(CommonUtils.yourUsers.get(1).getName());
 		}
 		else{
 			PagesCollection.peoplePickerPage.typeTextInPeopleSearch(contact);
@@ -42,8 +48,14 @@ public class PeoplePickerPageSteps {
 	
 	@When("^I see user (.*) found on People picker page$")
 	public void WhenISeeUserFoundOnPeoplePickerPage(String contact) throws Throwable {
-		if(contact.contains("aqaUser")){
-		    PagesCollection.peoplePickerPage.waitUserPickerFindUser(CommonUtils.getContactName(CommonUtils.contacts.firstKey()));
+		if(contact.contains(CommonUtils.CONTACT_1)){
+		    PagesCollection.peoplePickerPage.waitUserPickerFindUser(CommonUtils.contacts.get(0).getName());
+		}
+		else if(contact.contains(CommonUtils.CONTACT_2)){
+		    PagesCollection.peoplePickerPage.waitUserPickerFindUser(CommonUtils.contacts.get(1).getName());
+		}
+		else if(contact.contains(CommonUtils.YOUR_USER_2)){
+			 PagesCollection.peoplePickerPage.waitUserPickerFindUser(CommonUtils.yourUsers.get(1).getName());
 		}
 		else{
 		    PagesCollection.peoplePickerPage.waitUserPickerFindUser(contact);	
@@ -53,8 +65,14 @@ public class PeoplePickerPageSteps {
 	@When("^I tap on user name found on People picker page (.*)$")
 	public void WhenITapOnUserNameFoundOnPeoplePickerPage(String contact) throws Throwable {
 		AndroidPage page = null;
-		if(contact.contains("aqaUser")){
-			page = PagesCollection.peoplePickerPage.selectContact(CommonUtils.getContactName(CommonUtils.contacts.firstKey()));
+		if(contact.contains(CommonUtils.CONTACT_1)){
+			page = PagesCollection.peoplePickerPage.selectContact(CommonUtils.contacts.get(0).getName());
+		}
+		else if(contact.contains(CommonUtils.CONTACT_2)){
+			page = PagesCollection.peoplePickerPage.selectContact(CommonUtils.contacts.get(1).getName());
+		}
+		else if(contact.contains(CommonUtils.YOUR_USER_2)){
+			page = PagesCollection.peoplePickerPage.selectContact(CommonUtils.yourUsers.get(1).getName());
 		}
 		else{
 			page = PagesCollection.peoplePickerPage.selectContact(contact);

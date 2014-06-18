@@ -11,9 +11,9 @@ public class GroupChatPageSteps {
 	@When("^I see group chat page with users (.*) (.*)$")
 	public void WhenISeeGroupChatPage(String name1, String name2) throws Throwable {
 		PagesCollection.groupChatPage.isGroupChatDialogVisible();
-		if(name1.contains("aqaUser") && name2.contains("aqaUser")){
-			PagesCollection.groupChatPage.isGroupChatDialogContainsNames(CommonUtils.getContactName(CommonUtils.contacts.firstKey())
-					, CommonUtils.getContactName(CommonUtils.contacts.lastKey()));
+		if(name1.contains(CommonUtils.CONTACT_1) && name2.contains(CommonUtils.CONTACT_2)){
+			PagesCollection.groupChatPage.isGroupChatDialogContainsNames(CommonUtils.contacts.get(0).getName()
+					, CommonUtils.contacts.get(1).getName());
 		}
 		else{
 		    PagesCollection.groupChatPage.isGroupChatDialogContainsNames(name1, name2);
