@@ -2,10 +2,12 @@ package com.wearezeta.auto.osx.pages;
 
 import java.net.MalformedURLException;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class ChoosePicturePage extends OSXPage {
@@ -28,7 +30,11 @@ public class ChoosePicturePage extends OSXPage {
 	}
 	
 	public void searchForImage(String imageName) {
-		fileListArea.sendKeys(imageName);
+		DriverUtils.setDefaultImplicitWait(driver);
+		String xpath = String.format(OSXLocators.xpathFormatFinderImageFile, imageName);
+
+		WebElement el = driver.findElement(By.xpath(xpath));
+		el.click();
 	}
 	
 	public boolean isOpenButtonEnabled() {
@@ -41,7 +47,7 @@ public class ChoosePicturePage extends OSXPage {
 		return false;
 	}
 	
-	public void openImage() {
-		openButton.click();
+	public void openImage(String filename) {
+		searchForImage(filename);
 	}
 }

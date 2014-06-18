@@ -12,5 +12,5 @@ Scenario Outline: Add contact
 	Then I see Contact list with name <User>
 	
 Examples:
-    |  Login                              | Password          | Name                | User   |
-    |  Kyrylo.Aleksandrov@wearezeta.com   | 123456            | Kirill Aleksandrov  | aqa50  |
+    |  Login							| Password	| Name		| User   |
+    |  smoketester+aqa31@wearezeta.com	| aqa123456	| aqa31		| aqa34  |

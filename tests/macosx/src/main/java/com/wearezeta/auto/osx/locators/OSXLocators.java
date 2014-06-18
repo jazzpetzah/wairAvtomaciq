@@ -13,6 +13,7 @@ public final class OSXLocators {
 
 	public static final String idContactEntry = "clListItemNameField";
 	public static final String idAddImageButton = "AddImageButton";
+	public static final String idPeopleButton = "PeopleButton";
 	public static final String idAddConversationButton = "addConversationButton";
 	public static final String idPeoplePickerSearchField = "people_picker_searchfield";
 	public static final String idPeoplePickerDismissButton = "people_picker_cancel_button";
@@ -33,10 +34,28 @@ public final class OSXLocators {
 	public static final String xpathFormatContactEntryWithName = "//AXStaticText[@AXIdentifier='clListItemNameField'][@AXValue='%s']";
 	public static final String xpathFormatSpecificMessageEntry = "//AXGroup/AXStaticText[@AXValue='%s']";
 	public static final String xpathFormatPeoplePickerSearchResultUser = "//AXStaticText[@AXIdentifier='people_picker_result_namefield'][@AXValue='%s']";
+	public static final String xpathConversationListScrollArea = "//AXScrollArea[@AXIdentifier='conversationList']";
+	
 	public static final String YOU_KNOCKED_MESSAGE = "YOU KNOCKED";
+	public static final String YOU_ADDED_MESSAGE = "YOU ADDED";
+	public static final String YOU_REMOVED_MESSAGE = "YOU REMOVED";
 	
 	public static final String idChooseImageCancelButton = "_NS:53";
 	public static final String idChooseImageOpenButton = "_NS:55";
+	public static final String xpathFormatFinderImageFile = "//AXTextField[@AXValue='%s']";
 	
+	public static final String idAddPeopleButtonGroupChat = "addButton";
+	public static final String idConfirmationViewConfirmButton = "ConfirmationViewConfirmButton";
+	public static final String idAddPeopleButtonSingleChat = "userProfileViewButtonOnTheLeft";
+	public static final String idPeoplePickerAddToConversationButton = "people_picker_confirm_button";
+	public static final String idLeaveConversationButton = "leaveButton";
+	public static final String idRemoveUserFromConversation = "userProfileViewButtonOnTheRight";
+	public static final String idConversationScrollArea = "ConversationScrollArea";
 	
+	public static final String xpathPictureFromImageFile = "//AXCheckBox[1]";
+	public static final String xpathPictureFromCamera = "//AXCheckBox[2]";
+	public static final String xpathPictureConfirmationButton = "//AXCheckBox[1]";
+	public static final String xpathDoCameraShotButton = "//AXCheckBox[1]";
+	
+	public static final String xpathFormatPeoplePickerUserCell = "//AXUnknown[AXStaticText[@AXValue='%s']]";
 }
