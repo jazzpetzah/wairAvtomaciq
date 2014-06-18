@@ -47,6 +47,22 @@ public final class IOSLocators {
 	public static final String classNameConnectDialogInput = "UIATextView";
 	
 	public static final String xpathConnectCloseButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]";
+	
+	public static final String xpathOtherConversationCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]";
+	
+	public static final String nameAddPictureButton = "ComposeControllerPictureButton";
+	
+	public static final String nameCameraRollButton = "FullScreenCameraRightButton";
+	
+	public static final String xpathCameraRollAlertOK = "//UIAApplication[1]/UIAWindow[4]/UIAAlert[1]/UIATableView[2]/UIATableCell[1]";
+	
+	public static final String nameCameraRollCancel = "Cancel";
+	
+	public static final String xpathCameraRollTableCell = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]";
+	
+	public static final String xpathCameraRollPicture = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[1]";
+	
+	public static final String nameConfirmPictureButton = "ImageConfirmerConfirmButton";
 
 	public static final String xpathFirstInContactList = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[2]/UIAStaticText[1]";
 	

@@ -155,6 +155,16 @@ public class DriverUtils {
 		 Runtime.getRuntime().exec("/usr/bin/open -a Terminal " + scriptPath);
 	 }
 	 
+	 public static void iOSSimulatorCameraRoll(String scriptPath) throws IOException, InterruptedException{
+		 //String[] env = {"PATH=/bin:/usr/bin/"};
+		 String [] cmd =new String []{"/bin/bash", scriptPath, "7.1"};
+		 //String cmd = scriptPath + " 7.1";
+		 Process process = Runtime.getRuntime().exec(cmd);
+		 System.out.print("Process Code"+ process.waitFor());
+		 //process.waitFor();
+		 //Runtime.getRuntime().exec("/usr/bin/open -a Terminal " + scriptPath);
+	 }
+	 
 	 public static void iOSMultiTap(AppiumDriver driver,WebElement element, int tapNumber) throws InterruptedException
 	 {
 		 Point coords = element.getLocation();
