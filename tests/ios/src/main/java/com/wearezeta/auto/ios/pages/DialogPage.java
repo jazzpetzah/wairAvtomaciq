@@ -25,12 +25,12 @@ public class DialogPage extends IOSPage{
 	
 	@FindBy(how = How.NAME, using = IOSLocators.namePendingButton)
 	private WebElement pendingButton;
-
-/*	@FindBy(how = How.XPATH, using = IOSLocators.xpathHelloMessageFormat)
-	private WebElement helloMessage;*/
 	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathHeyMessageFormat)
-	private WebElement heyMessage;
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathHelloCellFormat)
+	private WebElement helloCell;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathHeyCellFormat)
+	private WebElement heyCell;
 	
 	private String url;
 	private String path;
@@ -82,17 +82,25 @@ public class DialogPage extends IOSPage{
 		return pendingButton.isDisplayed();
 	}
 	
-/*	private String GetHeyMessage(List<WebElement> chatList) {
-		String heyMessageXPath = String.format(IOSLocators.xpathHeyMessageFormat, chatList.size());
-		WebElement el = driver.findElementByXPath(heyMessageXPath);
-		//String heyMessage = el.getTagName();
-		String heyMessage = el.getText();  //I dont get HEY FROM PIOTR here
-		return heyMessage;
+	private String GetHelloCell(List<WebElement> chatList) {
+		String helloCellText = helloCell.getAttribute("name");  //I dont get HEY FROM PIOTR here
+		return helloCellText;
 	}
 
-	public String getHeyMessageFromDialog() {
-		return GetHeyMessage(messagesList);
-	} */
+	public String getHelloCellFromDialog()
+	{
+		return GetHelloCell(messagesList);
+	}
+	
+	private String GetHeyCell(List<WebElement> chatList) {
+		String heyCellText = heyCell.getAttribute("name");  //I dont get HEY FROM PIOTR here
+		return heyCellText;
+	}
+
+	public String getHeyCellFromDialog()
+	{
+		return GetHeyCell(messagesList);
+	}
 	
 	@Override
 	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
