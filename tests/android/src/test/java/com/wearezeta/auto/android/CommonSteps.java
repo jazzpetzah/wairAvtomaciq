@@ -23,8 +23,7 @@ public class CommonSteps {
 	    	TestPreparation.createContactLinks();
 		}
 		
-	    File app = new File(CommonUtils.getAppPathFromConfig(CommonSteps.class));
-	    path = app.getAbsolutePath();
+	    path = CommonUtils.getAppPathFromConfig(CommonSteps.class);
 	    if ( PagesCollection.loginPage == null){
 	        	PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(CommonSteps.class), path);
 	    }
