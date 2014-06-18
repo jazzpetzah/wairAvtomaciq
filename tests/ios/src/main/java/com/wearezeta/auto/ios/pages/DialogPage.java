@@ -42,6 +42,9 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.nameConfirmPictureButton)
 	private WebElement confirmPictureButton;
 	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherConversationCellFormat)
+	private WebElement imageCell;
+	
 	private String url;
 	private String path;
 	
@@ -94,7 +97,7 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public void swipeInputCurser() throws IOException, InterruptedException{
-		DriverUtils.swipeRight(driver, cursorInput, 1000);
+		DriverUtils.swipeRight(driver, cursorInput, 700);
 	}
 	
 	public void pressAddPictureButton() throws IOException{
@@ -123,9 +126,7 @@ public class DialogPage extends IOSPage{
 	}
 	
 	private String GetImageCell(List<WebElement> chatList) {
-		String lastMessageXPath = String.format(IOSLocators.xpathLastMessageFormat, chatList.size());
-		WebElement el = driver.findElementByXPath(lastMessageXPath);
-		String lastMessage = el.getAttribute("name");
+		String lastMessage = imageCell.getAttribute("name");
 		return lastMessage;
 	}
 
