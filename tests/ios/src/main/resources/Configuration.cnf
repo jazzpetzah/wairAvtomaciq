@@ -1,14 +1,9 @@
 #Configuration file for IOS tests
 #Configure before running tests
 Url=http://127.0.0.1:4723/wd/hub
-<<<<<<< HEAD
-appPath=/Project/ZClient.app
-isSimulator=false
-generateUsers=false
-swipeScriptPath=/Users/admin/./swipeInWindow.py
-=======
 appPath=/Users/julianereschke/Library/Developer/Xcode/DerivedData/ZClient-fxsmvhgghphimdebxcatdyrafqyx/Build/Products/Debug-iphonesimulator/ZClient.app
 isSimulator=true
+generateUsers=false
 swipeScriptPath=/Users/admin/./swipeInWindow.py
 photoScriptPath=/Users/julianereschke/Projects/zautomation/tests/tools/push_photo_to_simulator.sh
->>>>>>> ios-test-sendpicture
+
