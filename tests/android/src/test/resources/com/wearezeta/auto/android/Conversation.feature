@@ -11,8 +11,8 @@ Feature: Conversation
     Then I see my message in the dialog
 
     Examples: 
-      | Login                           | Password | Name            | Contact |
-      | sergeii.khyzhniak@wearezeta.com | 123456   | Sergey Hizhnyak | Piotr   |
+      | Login   | Password | Name    | Contact     |
+      | aqaUser | aqaUser  | aqaUser | aqaContact1 |
 
   Scenario Outline: Send Hello to contact
     Given I Sign in using login <Login> and password <Password>
@@ -23,8 +23,8 @@ Feature: Conversation
     Then I see Hello message in the dialog
 
     Examples: 
-      | Login                           | Password | Name            | Contact |
-      | sergeii.khyzhniak@wearezeta.com | 123456   | Sergey Hizhnyak | Piotr   |
+      | Login   | Password | Name    | Contact     |
+      | aqaUser | aqaUser  | aqaUser | aqaContact1 |
 
   Scenario Outline: Send Camera picture to contact
     Given I Sign in using login <Login> and password <Password>
@@ -38,8 +38,8 @@ Feature: Conversation
     Then I see new photo in the dialog
 
     Examples: 
-      | Login                           | Password | Name            | Contact   |
-      | sergeii.khyzhniak@wearezeta.com | 123456   | Sergey Hizhnyak | Volodymyr |
+      | Login   | Password | Name    | Contact     |
+      | aqaUser | aqaUser  | aqaUser | aqaContact1 |
 
   Scenario Outline: Start group chat with users from contact list
     Given I Sign in using login <Login> and password <Password>
@@ -62,5 +62,5 @@ Feature: Conversation
     Then I see my message in the dialog
 
     Examples: 
-      | Login                            | Password  | Name   | Contact1 | Contact2 |
-      | smoketester+aqa387@wearezeta.com | aqa123456 | aqa387 | aqa47    | aqa46    |
+      | Login   | Password | Name    | Contact1    | Contact2    |
+      | aqaUser | aqaUser  | aqaUser | aqaContact1 | aqaContact2 |

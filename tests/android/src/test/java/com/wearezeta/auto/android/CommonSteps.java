@@ -5,6 +5,7 @@ import java.io.File;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.LoginPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
+import com.wearezeta.auto.common.TestPreparation;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.UsersState;
 
@@ -17,18 +18,15 @@ public class CommonSteps {
 	
 	@Before
 	 public void setUp() throws Exception {
-		if(Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class)) && !CommonUtils.yourUserState.equals(UsersState.AllContactsConnected)){
+		if(Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class)) &&  (CommonUtils.yourUsers.size()==0 || !CommonUtils.yourUsers.get(0).getUserState().equals(UsersState.AllContactsConnected))){
 			CommonUtils.generateUsers(2);
+	    	TestPreparation.createContactLinks();
 		}
 		
 	    File app = new File(CommonUtils.getAppPathFromConfig(CommonSteps.class));
 	    path = app.getAbsolutePath();
 	    if ( PagesCollection.loginPage == null){
 	        	PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(CommonSteps.class), path);
-	    }
-	    
-	    if(Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class)) && !CommonUtils.yourUserState.equals(UsersState.AllContactsConnected)){
-	    	AndroidTestPreparation.createContactLinks();
 	    }
 	 }
 	 

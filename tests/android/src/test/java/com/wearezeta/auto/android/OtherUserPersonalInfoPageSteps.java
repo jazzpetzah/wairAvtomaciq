@@ -11,8 +11,8 @@ public class OtherUserPersonalInfoPageSteps {
 
 	@When("^I see (.*) user profile page$")
 	public void WhenISeeOherUserProfilePage(String name){
-		if(name.contains("aqaUser")){
-			PagesCollection.otherUserPersonalInfoPage.isOtherUserNameVisible(CommonUtils.getContactName(CommonUtils.contacts.firstKey()));
+		if(name.contains(CommonUtils.CONTACT_1)){
+			PagesCollection.otherUserPersonalInfoPage.isOtherUserNameVisible(CommonUtils.contacts.get(0).getName());
 		}
 		else{
 			PagesCollection.otherUserPersonalInfoPage.isOtherUserNameVisible(name);

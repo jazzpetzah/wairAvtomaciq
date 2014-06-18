@@ -7,12 +7,9 @@ import org.junit.Assert;
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.LoginPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.CreateZetaUser;
+import com.wearezeta.auto.common.*;
 
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+import cucumber.api.java.en.*;
 
 public class LoginPageSteps {
 	 
@@ -25,12 +22,17 @@ public class LoginPageSteps {
 	 public void GivenISignIn(String login,String password) throws IOException  {
 		 Assert.assertNotNull(PagesCollection.loginPage.isVisible());
 		 PagesCollection.loginPage =(LoginPage)(PagesCollection.loginPage.SignIn());
-		 if(login.contains("aqaUser")){
-			 PagesCollection.loginPage.setLogin(CommonUtils.yourUserName);
-			 PagesCollection.loginPage.setPassword(CreateZetaUser.defaultPassword);
+		 if(login.contains(CommonUtils.YOUR_USER_1)){
+			 PagesCollection.loginPage.setLogin(CommonUtils.yourUsers.get(0).getEmail());
+		 }
+		 else
+		 {
+			 PagesCollection.loginPage.setLogin(login);
+		 }
+		 if(password.contains(CommonUtils.YOUR_PASS)){
+			 PagesCollection.loginPage.setPassword(CommonUtils.yourUsers.get(0).getPassword());
 		 }
 		 else{
-			 PagesCollection.loginPage.setLogin(login);
 			 PagesCollection.loginPage.setPassword(password);
 		 }
 		 PagesCollection.contactListPage =(ContactListPage)(PagesCollection.loginPage.SignIn());
@@ -44,8 +46,8 @@ public class LoginPageSteps {
 	 
 	 @When ("I have entered login (.*)")
 	 public void WhenIHaveEnteredLogin(String login) {
-		 if(login.contains("aqaUser")){
-			 PagesCollection.loginPage.setLogin(CommonUtils.yourUserName);
+		 if(login.contains(CommonUtils.YOUR_USER_1)){
+			 PagesCollection.loginPage.setLogin(CommonUtils.yourUsers.get(0).getEmail());
 		 }
 		 else{
 			 PagesCollection.loginPage.setLogin(login);
@@ -54,8 +56,8 @@ public class LoginPageSteps {
 	 
 	 @When ("I have entered password (.*)")
 	 public void WhenIHaveEnteredPassword(String password) {
-		 if(password.contains("aqaPass")){
-			 PagesCollection.loginPage.setPassword(CreateZetaUser.defaultPassword);
+		 if(password.contains(CommonUtils.YOUR_PASS)){
+			 PagesCollection.loginPage.setPassword(CommonUtils.yourUsers.get(0).getPassword());
 		 }
 		 else{
 			 PagesCollection.loginPage.setPassword(password);
