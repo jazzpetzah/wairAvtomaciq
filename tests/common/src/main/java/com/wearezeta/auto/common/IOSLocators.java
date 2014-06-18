@@ -96,4 +96,6 @@ public final class IOSLocators {
 	
 	public static final String xpathHeyCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]";
 	
+	public static final String xpathPersonalInfoPage = "//UIAApplication[1]/UIAWindow[3]";
+	
 }

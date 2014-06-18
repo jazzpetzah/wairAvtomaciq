@@ -26,7 +26,7 @@ Feature: Send Message
     |	Login						|	Password	|	Name			|	Contact		|
     |	piotr.iazadji@wearezeta.com	|	asdfer123	|	Piotr Iazadji	|	Piotr.mqa2	|
     
-@torun
+
     Scenario Outline: Send a camera roll picture to user from contact list
     	Given I Sign in using login <Login> and password <Password>
     	And I see Contact list with my name <Name>

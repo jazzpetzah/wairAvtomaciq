@@ -17,5 +17,10 @@ public class PersonalInfoPageSteps {
 	public void WhenIPressOptionsButton(String buttonName) throws Throwable {
 		PagesCollection.personalInfoPage.tapOptionsButtonByText(buttonName);
 	}
+	
+	@When("^I tap on personal screen$")
+	public void ITapOnPersonalScreen(){
+		PagesCollection.personalInfoPage.tapOnPersonalPage();
+	}
 
 }
