@@ -275,7 +275,14 @@
     {
         NSArray *objectsToPaste = [pasteboard readObjectsForClasses:classArray options:options];
         NSImage *image = [objectsToPaste objectAtIndex:0];
-        NSString *base64Image = [[image TIFFRepresentation] base64EncodedString];
+        CGImageRef cgRef = [image CGImageForProposedRect:NULL
+                                                 context:nil
+                                                   hints:nil];
+        NSBitmapImageRep *newRep = [[NSBitmapImageRep alloc] initWithCGImage:cgRef];
+        [newRep setSize:[image size]];   // if you want the same resolution
+        NSData *pngData = [newRep representationUsingType:NSPNGFileType properties:nil];
+        
+        NSString *base64Image = [pngData base64EncodedString];
         return [self respondWithJson:base64Image status:kAfMStatusCodeSuccess session:[Utility getSessionIDFromPath:path]];
     }
     else
@@ -680,10 +687,28 @@
 	}
     
     BOOL result = [session clickElement:element];
-
-    if (!result || [element.AXFilename isEqualToString:@"test.jpg"]) {
+    
+    NSArray* arr = element.actions;
+    BOOL containsAxOpen = NO;
+    for (NSString *str in arr) {
+        if ([str caseInsensitiveCompare:@"AXOpen"])
+        {
+            containsAxOpen = YES;
+            break;
+        }
+    }
+    
+    if (containsAxOpen)
+    {
+        [element performAction:@"AXOpen"];
+    }
+    
+    if (!result) {
         NSValue* pos = element.AXPosition;
+        NSValue* axSize = element.AXSize;
+        
         NSPoint pnt = pos.pointValue;
+        NSPoint axSizePnt = axSize.pointValue;
         
         PFUIElement* parent = element.AXParent;
         
@@ -696,8 +721,8 @@
         
         CGEventRef event = CGEventCreate(NULL);
         CGPoint pt = CGEventGetLocation(event);
-        pt.x = pnt.x;
-        pt.y = pnt.y;
+        pt.x = pnt.x+axSizePnt.x/2;
+        pt.y = pnt.y+axSizePnt.y/2;
         
         CGEventRef click1_move = CGEventCreateMouseEvent(
                                                          NULL, kCGEventMouseMoved,
