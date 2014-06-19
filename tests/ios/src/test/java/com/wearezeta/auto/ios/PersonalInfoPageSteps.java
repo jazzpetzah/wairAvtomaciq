@@ -19,8 +19,15 @@ public class PersonalInfoPageSteps {
 	}
 	
 	@When("^I tap on personal screen$")
-	public void ITapOnPersonalScreen(){
+	public void ITapOnPersonalScreen() throws InterruptedException{
 		PagesCollection.personalInfoPage.tapOnPersonalPage();
+		Thread.sleep(2000);
+	}
+	
+	@When("^I press Camera button$")
+	public void IPressCameraButton() throws InterruptedException{
+	  PagesCollection.personalInfoPage.pressCameraButton();
+	  Thread.sleep(2000);
 	}
 
 }

@@ -27,6 +27,9 @@ public class PersonalInfoPage extends IOSPage{
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathPersonalInfoPage)
 	private WebElement personalPage;
 	
+	@FindBy(how = How.NAME, using = IOSLocators.nameCameraButton)
+	private WebElement cameraButton;
+	
 	public PersonalInfoPage(String URL, String path) throws IOException {
 		super(URL, path);
 
@@ -55,6 +58,10 @@ public class PersonalInfoPage extends IOSPage{
 	
 	public void tapOnPersonalPage(){
 		personalPage.click();
+	}
+	
+	public void pressCameraButton(){
+		cameraButton.click();
 	}
 
 	@Override
