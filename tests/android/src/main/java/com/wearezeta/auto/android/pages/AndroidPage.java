@@ -86,5 +86,6 @@ public abstract class AndroidPage extends BasePage {
 		PagesCollection.connectToPage = null;
 		PagesCollection.otherUserPersonalInfoPage = null;
 		PagesCollection.groupChatPage = null;
+		PagesCollection.registrationPage = null;
 	}
 }
