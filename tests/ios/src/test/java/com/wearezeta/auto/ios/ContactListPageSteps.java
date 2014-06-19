@@ -13,16 +13,20 @@ public class ContactListPageSteps {
 	
 	@Given("^I see Contact list with my name (.*)$")
 	public void GivenISeeContactListWithMyName(String name) throws IOException {
+		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 	}
 	
 	@When("^I tap on my name (.*)$")
 	public void WhenITapOnMyName(String name) throws IOException  {
+		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		PagesCollection.iOSPage = PagesCollection.contactListPage.tapOnName(name);
 	}
 	
 	@When("^I tap on contact name (.*)$")
 	public void WhenITapOnContactName(String name) throws IOException  {
+		
+		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		IOSPage page = PagesCollection.contactListPage.tapOnName(name);
 		
 		if(page instanceof DialogPage)
@@ -48,6 +52,8 @@ public class ContactListPageSteps {
 	
 	@Then("^I see contact list loaded with User name (.*) first in list$")
 	public void ISeeUserNameFirstInContactList(String value) throws Throwable {
+		
+		value = CommonUtils.retrieveRealUserContactPasswordValue(value);
 	    Assert.assertEquals(value, PagesCollection.contactListPage.getFirstDialogName());
 	}
 

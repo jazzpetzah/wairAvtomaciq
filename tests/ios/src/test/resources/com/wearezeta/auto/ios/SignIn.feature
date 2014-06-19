@@ -9,5 +9,5 @@ Scenario Outline: Sign in to ZClient
 	Then Contact list appears with my name <Name>
 	
 Examples:
-    |	Login									|	Password	|	Name			|
-    |	piotr.iazadji+mqa2@wearezeta.com		|	asdfer123	|	Piotr.mqa2		|
+    |	Login					|	Password	|	Name			|
+    |	aqaUser            		|	aqaPassword	|	aqaUser 		|

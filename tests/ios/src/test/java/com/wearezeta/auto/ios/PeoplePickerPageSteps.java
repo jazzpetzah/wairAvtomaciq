@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.ios.pages.ConnectToPage;
 import com.wearezeta.auto.ios.pages.GroupChatPage;
 import com.wearezeta.auto.ios.pages.IOSPage;
@@ -26,16 +27,22 @@ public class PeoplePickerPageSteps {
 	
 	@When("^I input in People picker search field user name (.*)$")
 	public void WhenIInputInPeoplePickerSearchFieldUserName(String contact) throws Throwable {
+		
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 	    PagesCollection.peoplePickerPage.fillTextInPeoplePickerSearch(contact);
 	}
 	
 	@When("^I see user (.*) found on People picker page$")
 	public void WhenISeeUserFoundOnPeoplePickerPage(String contact) throws Throwable {
+		
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 	    PagesCollection.peoplePickerPage.waitUserPickerFindUser(contact);
 	}
 	
 	@When("^I tap on user name found on People picker page (.*)$")
 	public void WhenITapOnUserNameFoundOnPeoplePickerPage(String contact) throws Throwable {
+		
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 		IOSPage page = PagesCollection.peoplePickerPage.clickOnFoundUser(contact);
 		
 		if(page instanceof ConnectToPage) {
@@ -49,6 +56,8 @@ public class PeoplePickerPageSteps {
 	
 	@When("^I search for user name (.*) and tap on it on People picker page$")
 	public void WhenISearchForUserNameAndTapOnItOnPeoplePickerPage(String contact) throws Throwable {
+		
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 	    PagesCollection.peoplePickerPage.pickUserAndTap(contact);
 	}
 	

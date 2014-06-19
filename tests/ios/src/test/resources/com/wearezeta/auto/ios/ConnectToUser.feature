@@ -17,5 +17,5 @@ Feature: Connect to User
 		And I see Pending Connect to <Contact> message on Dialog page
 		
 	Examples:     
-    |	Login								|	Password	|	Name		|	Contact		|
-    |	piotr.iazadji+mqa4@wearezeta.com	|	asdfer123	|	Piotr.mqa4	|	aqa207		|
+    |	Login	|	Password	|	Name	|	Contact		|
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	yourUser	|

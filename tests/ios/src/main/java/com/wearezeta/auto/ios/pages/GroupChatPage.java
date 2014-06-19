@@ -2,16 +2,20 @@ package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
 
-import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 
-import com.wearezeta.auto.common.DriverUtils;
+import com.wearezeta.auto.common.IOSLocators;
 import com.wearezeta.auto.common.SwipeDirection;
 
 public class GroupChatPage extends DialogPage {
 	
 	private String url;
 	private String path;
-	private String firstGroupChatMessage = "YOU ADDED %s, %s";
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathLastGroupChatMessage)
+	private WebElement lastMessage;
 
 	public GroupChatPage(String URL, String path) throws IOException {
 		super(URL, path);
@@ -19,8 +23,9 @@ public class GroupChatPage extends DialogPage {
 		this.path = path;
 	}
 	
-	public boolean isGroupChatDialogVisible(String name1, String name2){
-		return DriverUtils.waitUntilElementAppears(driver, By.name(String.format(firstGroupChatMessage, name1.toUpperCase(), name2.toUpperCase())));
+	public boolean areRequiredContactsAddedToChat(String name1, String name2){
+		
+		return lastMessage.getText().contains(name1) && lastMessage.getText().contains(name2);
 	}
 	
 	@Override

@@ -10,9 +10,9 @@ Feature: Conversation
     And I press send
     Then I see my message in the dialog
 
-    Examples:     
-    |	Login						|	Password	|	Name			|	Contact		|
-    |	piotr.iazadji@wearezeta.com	|	asdfer123	|	Piotr Iazadji	|	Piotr.mqa2	|
+	Examples: 
+    |	Login	|	Password	|	Name	|	Contact		|
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
 
 
     Scenario Outline: Send Hello to contact
@@ -26,10 +26,10 @@ Feature: Conversation
     	Then I see Hey message in the dialog
     	
 	Examples: 
-    |	Login						|	Password	|	Name			|	Contact		|
-    |	piotr.iazadji@wearezeta.com	|	asdfer123	|	Piotr Iazadji	|	Piotr.mqa2	|
+    |	Login	|	Password	|	Name	|	Contact		|
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
     
- 
+ @torun
 	Scenario Outline: Start group chat with users from contact list
 		Given I Sign in using login <Login> and password <Password>
     	And I see Contact list with my name <Name>
@@ -52,6 +52,6 @@ Feature: Conversation
 	   	
 	   	
 	Examples: 
-    |	Login						|	Password	|	Name			|	Contact1	|	Contact2	|
-    |	piotr.iazadji@wearezeta.com	|	asdfer123	|	Piotr Iazadji	|	Piotr.mqa2	| 	Piotr.mqa3	| 
+    |	Login		|	Password	|	Name	|	Contact1	|	Contact2	|
+    |	aqaUser 	|	aqaPassword	|	aqaUser	|	aqaContact1	| 	aqaContact2	| 
 

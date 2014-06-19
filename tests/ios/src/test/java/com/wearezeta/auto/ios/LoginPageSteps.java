@@ -4,6 +4,7 @@ import org.junit.Assert;
 
 import java.io.IOException;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
@@ -19,6 +20,11 @@ public class LoginPageSteps {
 	 
 	 @Given("^I Sign in using login (.*) and password (.*)$")
 	 public void GivenISignIn(String login, String password) throws IOException  {		
+		 
+		 if (login.equals(CommonUtils.YOUR_USER_1)) {
+			 login = CommonUtils.yourUsers.get(0).getEmail();
+		 }
+		 password = CommonUtils.retrieveRealUserContactPasswordValue(password);
 		 Assert.assertNotNull(PagesCollection.loginPage.isVisible());
 		 PagesCollection.loginPage =(LoginPage)(PagesCollection.loginPage.signIn());
 		 PagesCollection.loginPage.setLogin(login);
@@ -42,12 +48,16 @@ public class LoginPageSteps {
 	 @When ("I have entered login (.*)")
 	 public void WhenIHaveEnteredLogin(String value) {
 		 
+		 if (value.equals(CommonUtils.YOUR_USER_1)) {
+			 value = CommonUtils.yourUsers.get(0).getEmail();
+		 }
 		 PagesCollection.loginPage.setLogin(value);
 	 }
 	 
 	 @When ("I have entered password (.*)")
 	 public void WhenIHaveEnteredPassword(String value) {
 		 
+		 value = CommonUtils.retrieveRealUserContactPasswordValue(value);
 		 PagesCollection.loginPage.setPassword(value);
 	 }	
 	  

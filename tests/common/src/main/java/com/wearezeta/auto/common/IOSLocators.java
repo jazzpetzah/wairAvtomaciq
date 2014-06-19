@@ -100,6 +100,8 @@ public final class IOSLocators {
 	public static final String nameContinueButton = "CONTINUE";
 	
 	public static final String nameCreateAccountButton = "RegistrationCreateAccountButton";
+	
+	public static final String xpathLastGroupChatMessage = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]/UIATextView[last()]";
 
 
 }

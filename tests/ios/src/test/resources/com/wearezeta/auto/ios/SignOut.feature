@@ -11,5 +11,5 @@ Feature: Sign Out
 	Then I see login in screen
 		
 	Examples:
-    |	Login							|	Password	|	Name			|	OptionsButton	|
-    |	piotr.iazadji@wearezeta.com		|	asdfer123	|	Piotr Iazadji	|	Sign out		|
+    |	Login		|	Password	|	Name			|	OptionsButton	|
+    |	aqaUser   	|	aqaPassword	|	aqaUser      	|	Sign out		|
