@@ -76,8 +76,30 @@ public final class IOSLocators {
 	
 	public static final String classUIATextView = "UIATextView";
 	
+
 	public static final String xpathHelloCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]";
 	
 	public static final String xpathHeyCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]";
 	
+	public static final String nameCameraButton = "CameraButton";
+	
+	public static final String namePhotoButton = "PhotoLibraryButton";
+	
+	public static final String nameAlbum = "Saved Photos";
+	
+	public static final String classNamePhotos = "UIACollectionCell";
+	
+	public static final String nameConfirmImageButton = "ImageConfirmerConfirmButton";
+	
+	public static final String xpathYourName = "//UIAApplication[1]/UIAWindow[1]/UIAElement[1]/UIATextView[1]";
+	
+	public static final String nameYourEmail = "RegistrationEmailField";
+	
+	public static final String nameYourPassword = "RegistrationPasswordField";
+	
+	public static final String nameContinueButton = "CONTINUE";
+	
+	public static final String nameCreateAccountButton = "RegistrationCreateAccountButton";
+
+
 }

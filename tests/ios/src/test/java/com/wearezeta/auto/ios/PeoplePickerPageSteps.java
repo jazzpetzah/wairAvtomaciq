@@ -24,7 +24,7 @@ public class PeoplePickerPageSteps {
 	    PagesCollection.peoplePickerPage.tapOnPeoplePickerSearch();
 	}
 	
-	@When("^I input in People picker search field user name(.*)$")
+	@When("^I input in People picker search field user name (.*)$")
 	public void WhenIInputInPeoplePickerSearchFieldUserName(String contact) throws Throwable {
 	    PagesCollection.peoplePickerPage.fillTextInPeoplePickerSearch(contact);
 	}

@@ -20,17 +20,23 @@ public class LoginPageSteps {
 	 @Given("^I Sign in using login (.*) and password (.*)$")
 	 public void GivenISignIn(String login, String password) throws IOException  {		
 		 Assert.assertNotNull(PagesCollection.loginPage.isVisible());
-		 PagesCollection.loginPage =(LoginPage)(PagesCollection.loginPage.SignIn());
+		 PagesCollection.loginPage =(LoginPage)(PagesCollection.loginPage.signIn());
 		 PagesCollection.loginPage.setLogin(login);
 		 PagesCollection.loginPage.setPassword(password);
-		 PagesCollection.contactListPage =(ContactListPage)(PagesCollection.loginPage.SignIn());
+		 PagesCollection.contactListPage =(ContactListPage)(PagesCollection.loginPage.signIn());
 		 Assert.assertTrue("Login finished", PagesCollection.loginPage.waitForLogin());
 	}
 	 
 	 @When("I press Sign in button")
 	 public void WhenIPressSignInButton() throws IOException {
 		 
-		 PagesCollection.loginPage.SignIn();
+		 PagesCollection.loginPage.signIn();
+	 }
+	 
+	 @When("I press Join button")
+	 public void WhenIPressJoinButton() throws IOException {
+		 
+		 PagesCollection.registrationPage = PagesCollection.loginPage.join();
 	 }
 	 
 	 @When ("I have entered login (.*)")

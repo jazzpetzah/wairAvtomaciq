@@ -6,13 +6,14 @@ import org.junit.Assert;
 
 import cucumber.api.java.en.*;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.ios.pages.*;
 
 public class ContactListPageSteps {
 	
 	@Given("^I see Contact list with my name (.*)$")
-	public void GivenISeeContactListWithMyName(String name) throws IOException{
-		 Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
+	public void GivenISeeContactListWithMyName(String name) throws IOException {
+		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 	}
 	
 	@When("^I tap on my name (.*)$")
@@ -40,6 +41,7 @@ public class ContactListPageSteps {
 	@Then ("Contact list appears with my name (.*)")
 	public void ThenContactListAppears(String value) throws IOException {
 		 
+		value = CommonUtils.retrieveRealUserContactPasswordValue(value);
 		Assert.assertTrue("Login finished", PagesCollection.loginPage.waitForLogin());		 
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(value));		 
 	}
