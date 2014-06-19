@@ -10,6 +10,15 @@ public class ClientUser {
 	private String tokenType = null;
 	private UsersState userState = UsersState.NotCreated;
 	
+	public ClientUser() { }
+	
+	public ClientUser(String email, String password, String name, UsersState userState) {
+		this.email = email;
+		this.password = password;
+		this.name = name;
+		this.userState = userState;
+	}
+	
 	public String getEmail() {
 		return email;
 	}

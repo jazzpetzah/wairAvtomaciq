@@ -76,12 +76,16 @@ public class ConversationPage extends OSXPage {
 	public boolean isMessageExist(String message) {
 		boolean isExist = false;
 		if (message.contains(OSXLocators.YOU_ADDED_MESSAGE)) {
-			List<WebElement> els = driver.findElements(By.xpath(OSXLocators.xpathMessageEntry));
-			Collections.reverse(els);
-			for (WebElement el: els) {
-				if (el.getText().contains(OSXLocators.YOU_ADDED_MESSAGE)) {
-					isExist = true;
-				}
+			for (int i = 0; i < 10; i++) {
+				List<WebElement> els = driver.findElements(By.xpath(OSXLocators.xpathMessageEntry));
+				Collections.reverse(els);
+				for (WebElement el: els) {
+					if (el.getText().contains(OSXLocators.YOU_ADDED_MESSAGE)) {
+							isExist = true;
+					}
+				} 
+				if (isExist) break;
+				try { Thread.sleep(1000); } catch (InterruptedException e) { }
 			}
 		} else {
 			String xpath = String.format(OSXLocators.xpathFormatSpecificMessageEntry, message);

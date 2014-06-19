@@ -11,12 +11,31 @@ public class CommonUtils {
 
 	public static final String YOUR_USER_1 = "aqaUser";
 	public static final String YOUR_USER_2 = "yourUser";
-	public static final String YOUR_PASS = "aqaUser";
+	public static final String YOUR_PASS = "aqaPassword";
 	public static final String CONTACT_1 = "aqaContact1";
 	public static final String CONTACT_2 = "aqaContact2";
 	public static List<ClientUser> yourUsers = new ArrayList<ClientUser>();
 	public static List<ClientUser> contacts = new ArrayList<ClientUser>();
 
+	public static String retrieveRealUserContactPasswordValue(String value) {
+		if (value.contains(YOUR_USER_1)) {
+			value = value.replace(YOUR_USER_1, yourUsers.get(0).getName());
+		}
+		if (value.contains(YOUR_USER_2)) {
+			value = value.replace(YOUR_USER_2, yourUsers.get(1).getName());
+		}
+		if (value.contains(YOUR_PASS)) {
+			value = value.replace(YOUR_PASS, yourUsers.get(0).getPassword());
+		}
+		if (value.contains(CONTACT_1)) {
+			value = value.replace(CONTACT_1, contacts.get(0).getName());
+		}
+		if (value.contains(CONTACT_2)) {
+			value = value.replace(CONTACT_2, contacts.get(1).getName());
+		}
+		return value;
+	}
+	
 	private static String getValueFromConfig(Class c, String key) throws IOException {
 
 		String val = "";
@@ -155,6 +174,19 @@ public class CommonUtils {
 				throw new NullPointerException("Contact was not created");
 			}
 		}
+	}
+	
+	public static void usePrecreatedUsers() {
+		ClientUser contact2 = new ClientUser("smoketester+aqa33@wearezeta.com", "aqa123456", "aqa33", UsersState.AllContactsConnected);
+		ClientUser contact1 = new ClientUser("smoketester+aqa32@wearezeta.com", "aqa123456", "aqa32", UsersState.AllContactsConnected);
+		ClientUser yourUser2 = new ClientUser("smoketester+aqa34@wearezeta.com", "aqa123456", "aqa34", UsersState.AllContactsConnected);
+		ClientUser yourUser1 = new ClientUser("smoketester+aqa31@wearezeta.com", "aqa123456", "aqa31", UsersState.AllContactsConnected);
+		yourUsers = new ArrayList<ClientUser>();
+		contacts = new ArrayList<ClientUser>();
+		yourUsers.add(yourUser1);
+		yourUsers.add(yourUser2);
+		contacts.add(contact1);
+		contacts.add(contact2);
 	}
 
 }

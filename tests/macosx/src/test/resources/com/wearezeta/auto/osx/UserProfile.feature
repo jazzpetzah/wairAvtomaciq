@@ -9,8 +9,8 @@ Scenario Outline: Change user picture from image file
 #	Then I see changed user picture
 
 Examples:
-    |  Login							| Password	| Name		|
-    |  smoketester+aqa31@wearezeta.com	| aqa123456	| aqa31		|
+	|	Login			|	Password		|	Name		|
+	|	aqaUser			|	aqaPassword		|	aqaUser		|
 
 Scenario Outline: Change user picture from camera
     Given I Sign in using login <Login> and password <Password>
@@ -21,5 +21,5 @@ Scenario Outline: Change user picture from camera
 #	Then I see changed user picture
 
 Examples:
-    |  Login							| Password	| Name		|
-    |  smoketester+aqa31@wearezeta.com	| aqa123456	| aqa31		|
+	|	Login			|	Password		|	Name		|
+	|	aqaUser			|	aqaPassword		|	aqaUser		|
