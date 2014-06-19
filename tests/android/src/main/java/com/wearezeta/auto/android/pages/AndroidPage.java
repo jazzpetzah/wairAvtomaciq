@@ -26,9 +26,9 @@ public abstract class AndroidPage extends BasePage {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("platformName", "Android");
         capabilities.setCapability("app", path);
-        capabilities.setCapability("app-package", CommonUtils.getAndroidPackageFromConfig(AndroidPage.class));
-        capabilities.setCapability("app-activity", CommonUtils.getAndroidActivityFromConfig(AndroidPage.class));
-        capabilities.setCapability("app-wait-activity", CommonUtils.getAndroidActivityFromConfig(AndroidPage.class));
+        capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(AndroidPage.class));
+        capabilities.setCapability("appActivity", CommonUtils.getAndroidActivityFromConfig(AndroidPage.class));
+        capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidActivityFromConfig(AndroidPage.class));
         super.InitConnection(URL, capabilities);
 	}
 
