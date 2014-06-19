@@ -39,7 +39,45 @@ public class CommonUtils {
 
 		return val;
 	}
+	
+	private static String getValueFromComonConfig(Class c, String key) throws IOException {
 
+		String val = "";
+		InputStream configFileStream = null;
+
+		try {
+			URL configFile = c.getClass().getResource("/ComonConfiguration.cnf");
+			configFileStream = configFile.openStream();
+			Properties p = new Properties();
+			p.load(configFileStream);
+
+
+			val = (String)p.get(key);
+		}
+		finally {
+			if (configFileStream != null) {
+				configFileStream.close();
+			}
+		}
+
+		return val;
+	}
+
+	public static String getDefaultEmailFromConfig(Class c) throws IOException {
+
+		return getValueFromComonConfig(c, "defaultEmail");
+	}
+	
+	public static String getDefaultPasswordFromConfig(Class c) throws IOException {
+
+		return getValueFromComonConfig(c, "defaultPassword");
+	}
+	
+	public static String getDefaultBackEndUrlFromConfig(Class c) throws IOException {
+
+		return getValueFromComonConfig(c, "defaultBackEndUrl");
+	}
+	
 	public static String getUrlFromConfig(Class c) throws IOException {
 
 		return getValueFromConfig(c, "Url");
@@ -89,12 +127,12 @@ public class CommonUtils {
 		return secondParts[0];
 	}
 
-	public static void generateUsers(int contactNumber)
+	public static void generateUsers(int contactNumber) throws IOException
 	{
 		for(int i  = 0; i < 2; i++){
 			ClientUser user = new ClientUser();
-			user.setEmail(CreateZetaUser.registerUserAndReturnMail(CreateZetaUser.defaultEmail, CreateZetaUser.defaultPassword, CreateZetaUser.defaultBackEndUrl));
-			user.setPassword(CreateZetaUser.defaultPassword);
+			user.setEmail(CreateZetaUser.registerUserAndReturnMail());
+			user.setPassword(getDefaultPasswordFromConfig(CommonUtils.class));
 			if( user.getEmail() != null){
 				user.setUserState(UsersState.Created);
 				yourUsers.add(user);
@@ -105,11 +143,11 @@ public class CommonUtils {
 		}
 
 		for(int i  = 0; i < contactNumber; i++){
-			String contact = CreateZetaUser.registerUserAndReturnMail(CreateZetaUser.defaultEmail, CreateZetaUser.defaultPassword, CreateZetaUser.defaultBackEndUrl);
+			String contact = CreateZetaUser.registerUserAndReturnMail();
 			if(contact != null){
 				ClientUser user = new ClientUser();
 				user.setEmail(contact);
-				user.setPassword(CreateZetaUser.defaultPassword);
+				user.setPassword(getDefaultPasswordFromConfig(CommonUtils.class));
 				user.setUserState(UsersState.Created);
 				contacts.add(user);
 			}

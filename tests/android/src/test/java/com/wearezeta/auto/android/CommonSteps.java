@@ -1,7 +1,5 @@
 package com.wearezeta.auto.android;
 
-import java.io.File;
-
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.LoginPage;
 import com.wearezeta.auto.android.pages.PagesCollection;

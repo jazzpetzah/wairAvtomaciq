@@ -1,9 +1,11 @@
 package com.wearezeta.auto.common;
 
+import java.io.IOException;
 import java.net.URI;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriBuilderException;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -144,7 +146,45 @@ public class BackEndREST {
 		}
 	}
 
-	private static URI getBaseURI() {
-		return UriBuilder.fromUri(CreateZetaUser.defaultBackEndUrl).build();
+	public static void registerNewUser(String email, String userName, String password)
+	{
+		try {
+
+			WebResource webResource = client.resource(getBaseURI() + "/register");
+			String input =  "{\"email\": \"" + email + "\",\"name\": \"" + userName + "\",\"password\": \"" + password + "\"}";
+			ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, input);
+			if (response.getStatus() != 201) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}	       
+			String output = response.getEntity(String.class);
+			JSONObject jsonObj =  new JSONObject(output);
+			jsonObj.getString("id");
+			System.out.println("Output from Server .... ");
+			System.out.println(output + "\n");
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+	}
+	
+	public static void activateNewUser(String key, String code){
+		try {
+			WebResource webResource = client.resource(getBaseURI() + "/activate?code=" + code + "&key=" + key + "");
+			ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
+			if (response.getStatus() != 200) {  throw new RuntimeException("Failed : HTTP error code : "	+ response.getStatus());}
+
+			System.out.println("Output from Server .... ");
+			System.out.println("User activated\n");
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+	}
+	
+	private static URI getBaseURI() throws IllegalArgumentException, UriBuilderException, IOException {
+		return UriBuilder.fromUri(CommonUtils.getDefaultBackEndUrlFromConfig(CommonUtils.class)).build();
 	}
 }
