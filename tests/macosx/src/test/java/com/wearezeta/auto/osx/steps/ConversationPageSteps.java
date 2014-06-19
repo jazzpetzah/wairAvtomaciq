@@ -102,10 +102,12 @@ public class ConversationPageSteps {
 					 + beforeNumberOfKnocks + ", after - " + afterNumberOfKnocks, isNumberIncreased);
 			 
 		} else if (message.contains(OSXLocators.YOU_ADDED_MESSAGE)) {
+			message = CommonUtils.retrieveRealUserContactPasswordValue(message);
 			message = message.toUpperCase();
 			Assert.assertTrue("User was not added to conversation. Message " + message + " not found.", 
 					CommonSteps.senderPages.getConversationPage().isMessageExist(message));
 	 	} else if (message.contains(OSXLocators.YOU_REMOVED_MESSAGE)) {
+	 		message = CommonUtils.retrieveRealUserContactPasswordValue(message);
 			message = message.toUpperCase();
 			Assert.assertTrue("User was not removed from conversation. Message " + message + " not found.", 
 					CommonSteps.senderPages.getConversationPage().isMessageExist(message));
@@ -138,6 +140,8 @@ public class ConversationPageSteps {
 	 
 	 @Given("I create group chat with (.*) and (.*)")
 	 public void WhenICreateGroupChatWithUser1AndUser2(String user1, String user2) throws MalformedURLException, IOException {
+		 user1 = CommonUtils.retrieveRealUserContactPasswordValue(user1);
+		 user2 = CommonUtils.retrieveRealUserContactPasswordValue(user2);
 		 ContactListPageSteps clSteps = new ContactListPageSteps();
 		 PeoplePickerPageSteps ppSteps = new PeoplePickerPageSteps();
 		 clSteps.GivenIOpenConversationWith(user1);

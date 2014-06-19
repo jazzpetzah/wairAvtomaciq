@@ -17,6 +17,10 @@ import cucumber.api.java.en.When;
 public class LoginPageSteps {
 	@Given ("I Sign in using login (.*) and password (.*)")
 	public void GivenISignInUsingLoginAndPassword(String login, String password) throws IOException {
+		 if (login.equals(CommonUtils.YOUR_USER_1)) {
+			 login = CommonUtils.yourUsers.get(0).getEmail();
+		 }
+		password = CommonUtils.retrieveRealUserContactPasswordValue(password);
 		try {
 			LoginPage loginPage = CommonSteps.senderPages.getLoginPage();
 			Assert.assertNotNull(loginPage.isVisible());
@@ -37,13 +41,17 @@ public class LoginPageSteps {
 	 }
 	 
 	 @When ("I have entered login (.*)")
-	 public void WhenIHaveEnteredLogin(String value) {
-		 CommonSteps.senderPages.getLoginPage().setLogin(value);
+	 public void WhenIHaveEnteredLogin(String login) {
+		 if (login.equals(CommonUtils.YOUR_USER_1)) {
+			 login = CommonUtils.yourUsers.get(0).getEmail();
+		 }
+		 CommonSteps.senderPages.getLoginPage().setLogin(login);
 	 }
 	 
 	 @When ("I have entered password (.*)")
-	 public void WhenIHaveEnteredPassword(String value) {
-		 CommonSteps.senderPages.getLoginPage().setPassword(value);
+	 public void WhenIHaveEnteredPassword(String password) {
+		 password = CommonUtils.retrieveRealUserContactPasswordValue(password);
+		 CommonSteps.senderPages.getLoginPage().setPassword(password);
 	 }
 	 
 	 @Given ("I see Sign In screen")
