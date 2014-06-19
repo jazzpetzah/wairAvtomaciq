@@ -7,5 +7,5 @@ Scenario Outline: Sign out from ZClient
 	Then I have returned to Sign In screen
 	
 Examples:
-    |  Login							| Password	| Name		|
-    |  smoketester+aqa31@wearezeta.com	| aqa123456	| aqa31		|
+    |  Login		| Password		| Name			|
+    |  aqaUser		| aqaPassword	| aqaUser		|

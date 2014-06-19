@@ -10,5 +10,5 @@ Feature: Sign Out
     Then I see welcome screen
 
     Examples: 
-      | Login   | Password | Name    | OptionsButton |
-      | aqaUser | aqaUser  | aqaUser | Sign out      |
+      | Login   | Password     | Name    | OptionsButton |
+      | aqaUser | aqaPassword  | aqaUser | Sign out      |
