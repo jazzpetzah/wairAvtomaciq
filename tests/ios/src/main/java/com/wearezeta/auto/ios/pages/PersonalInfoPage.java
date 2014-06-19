@@ -30,9 +30,14 @@ public class PersonalInfoPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.nameCameraButton)
 	private WebElement cameraButton;
 	
+	
+	private String url;
+	private String path;
+	
 	public PersonalInfoPage(String URL, String path) throws IOException {
 		super(URL, path);
-
+		url = URL;
+		this.path = path;
 	}
 	
 	public void SignoutBtnClick(){
@@ -60,8 +65,13 @@ public class PersonalInfoPage extends IOSPage{
 		personalPage.click();
 	}
 	
-	public void pressCameraButton(){
+	public DialogPage pressCameraButton() throws IOException{
+		
+		DialogPage page;
+		page = new DialogPage(url, path);
 		cameraButton.click();
+		
+		return page;
 	}
 
 	@Override

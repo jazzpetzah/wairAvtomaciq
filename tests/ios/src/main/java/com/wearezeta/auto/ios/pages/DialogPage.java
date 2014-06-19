@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
 import java.util.List;
+
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -134,8 +135,9 @@ public class DialogPage extends IOSPage{
 		addPictureButton.click();
 	}
 	
-	public void pressCameraRollButton(){
+	public void pressCameraRollButton() throws InterruptedException{
 		cameraRollButton.click();
+		Thread.sleep(1000);
 	}
 	
 	public void openCameraRoll() throws IOException, InterruptedException{
@@ -152,7 +154,7 @@ public class DialogPage extends IOSPage{
 	
 	public void pressConfirmButton() throws InterruptedException{
 		confirmPictureButton.click();
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 	}
 	
 	private String GetImageCell(List<WebElement> chatList) {
