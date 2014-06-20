@@ -23,7 +23,14 @@
       <version>1.0-SNAPSHOT</version>
       <type>jar</type>
     </dependency>
-	
+
+	<dependency>
+      <groupId>org.sikuli</groupId>
+      <artifactId>sikuli-java</artifactId>
+      <version>0.10.2</version>
+      <type>jar</type>
+    </dependency>
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
