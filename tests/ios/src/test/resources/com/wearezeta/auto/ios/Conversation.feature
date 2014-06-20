@@ -65,4 +65,23 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
     
+ @torun   
+Scenario Outline: Leave from group chat
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+	When I create group chat with <Contact1> and <Contact2>
+   	And I swipe left on group chat page
+	And I swipe up on group chat info page
+	And I press leave converstation button 
+	And I see leave conversation alert 
+	Then I press leave
+	And I open archived conversations
+	And I see <Contact1> and <Contact2> chat in contact list
+	And I tap on a group chat with <Contact1> and <Contact2>
+	And I can see You Have Left
+		
+Examples:
+    |  Login		| Password		| Name			| Contact1		| Contact2		|
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
+    
 
