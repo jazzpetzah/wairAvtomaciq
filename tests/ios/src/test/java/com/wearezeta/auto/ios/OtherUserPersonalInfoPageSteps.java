@@ -18,7 +18,8 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 	
 	@When("^I swipe down other user profile page$")
-	public void WhenISwipeDownOtherUserProfilePage() throws IOException{
+	public void WhenISwipeDownOtherUserProfilePage() throws IOException, InterruptedException {
+		Thread.sleep(5000);
 		PagesCollection.peoplePickerPage = (PeoplePickerPage)PagesCollection.otherUserPersonalInfoPage.swipeDown(1000);
 	}
 

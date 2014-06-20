@@ -16,6 +16,9 @@ public class GroupChatPage extends DialogPage {
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathLastGroupChatMessage)
 	private WebElement lastMessage;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameYouHaveLeft)
+	private WebElement youLeft;
 
 	public GroupChatPage(String URL, String path) throws IOException {
 		super(URL, path);
@@ -26,6 +29,11 @@ public class GroupChatPage extends DialogPage {
 	public boolean areRequiredContactsAddedToChat(String name1, String name2){
 		
 		return lastMessage.getText().contains(name1) && lastMessage.getText().contains(name2);
+	}
+	
+	public boolean isYouHaveLeftVisible()
+	{
+		return youLeft.isDisplayed();
 	}
 	
 	@Override

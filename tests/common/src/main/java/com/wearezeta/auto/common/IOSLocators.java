@@ -71,7 +71,6 @@ public final class IOSLocators {
 	public static final String nameAcceptConnectionButton = "ACCEPT";
 	
 	public static final String classUIATextView = "UIATextView";
-	
 
 	public static final String xpathHelloCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[last()]";
 	
@@ -98,6 +97,12 @@ public final class IOSLocators {
 	public static final String nameCreateAccountButton = "RegistrationCreateAccountButton";
 	
 	public static final String xpathLastGroupChatMessage = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]/UIATextView[last()]";
+	
+	public static final String nameLeaveConversation = "Leave conversation";
+	
+	public static final String nameLeaveConversationAlert = "Leave conversation?";
 
-
+	public static final String nameLeaveConversationButton = "LEAVE";
+	
+	public static final String nameYouHaveLeft = "YOU HAVE LEFT";
 }

@@ -3,16 +3,45 @@ package com.wearezeta.auto.ios.pages;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
+
+import com.wearezeta.auto.common.DriverUtils;
+import com.wearezeta.auto.common.IOSLocators;
 import com.wearezeta.auto.common.SwipeDirection;
 
 public class GroupChatInfoPage extends IOSPage{
 	private String url;
 	private String path;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameLeaveConversation)
+	private WebElement leaveChat;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameLeaveConversationAlert)
+	private WebElement leaveChatAlertMessage;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameLeaveConversationButton)
+	private WebElement leaveChatButton;
 
 	public GroupChatInfoPage(String URL, String path) throws MalformedURLException {
 		super(URL, path);
 		this.url = URL;
 		this.path = path;
+	}
+	
+	public void leaveConversation() {
+		leaveChat.click();
+	}
+	
+	public void confirmLeaveConversation() {
+		leaveChatButton.click();
+	}
+	
+	public boolean isLeaveConversationAlertVisible() {
+		
+		return DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameLeaveConversationAlert));
 	}
 	
 	@Override
@@ -25,6 +54,7 @@ public class GroupChatInfoPage extends IOSPage{
 			}
 			case UP:
 			{
+				page = new GroupChatInfoPage(url, path);
 				break;
 			}
 			case LEFT:
