@@ -29,7 +29,7 @@ Feature: Conversation
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
     
- @torun
+    
 	Scenario Outline: Start group chat with users from contact list
 		Given I Sign in using login <Login> and password <Password>
     	And I see Contact list with my name <Name>
@@ -44,14 +44,25 @@ Feature: Conversation
 	   	And I tap on user name found on People picker page <Contact2>
 	   	And I see Add to conversation button
 	   	And I click on Add to conversation button
-	   	And I see group chat page with users <Contact1> <Contact2>
-	   	And I tap on text input
-    	And I type the message
-    	And I press send
-    	Then I see my message in the dialog
+	   	Then I see group chat page with users <Contact1> <Contact2>
 	   	
 	   	
 	Examples: 
     |	Login		|	Password	|	Name	|	Contact1	|	Contact2	|
     |	aqaUser 	|	aqaPassword	|	aqaUser	|	aqaContact1	| 	aqaContact2	| 
+
+   
+Scenario Outline: Send message to group chat
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+	When I create group chat with <Contact1> and <Contact2>
+   	And I tap on text input
+	And I type the message
+	And I press send
+	Then I see my message in the dialog
+		
+Examples:
+    |  Login		| Password		| Name			| Contact1		| Contact2		|
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
+    
 

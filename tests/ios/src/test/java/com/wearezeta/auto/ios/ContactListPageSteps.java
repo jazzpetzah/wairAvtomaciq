@@ -56,5 +56,30 @@ public class ContactListPageSteps {
 		value = CommonUtils.retrieveRealUserContactPasswordValue(value);
 	    Assert.assertEquals(value, PagesCollection.contactListPage.getFirstDialogName());
 	}
+	
+	@When("^I create group chat with (.*) and (.*)$")
+	public void ICreateGroupChat(String contact1, String contact2) throws Throwable {
+		
+		contact1 = CommonUtils.retrieveRealUserContactPasswordValue(contact1);
+		contact2 = CommonUtils.retrieveRealUserContactPasswordValue(contact2);
+		WhenITapOnContactName(contact1);
+		DialogPageSteps dialogSteps = new DialogPageSteps();
+		dialogSteps.WhenISeeDialogPage();
+		dialogSteps.WhenISwipeLeftOnDialogPage();
+		
+		OtherUserPersonalInfoPageSteps infoPageSteps = new OtherUserPersonalInfoPageSteps();
+		infoPageSteps.WhenISeeOherUserProfilePage(contact1);
+		infoPageSteps.WhenISwipeDownOtherUserProfilePage();
+		
+		PeoplePickerPageSteps pickerSteps = new PeoplePickerPageSteps();
+		pickerSteps.WhenISeePeoplePickerPage();
+		pickerSteps.WhenIInputInPeoplePickerSearchFieldUserName(contact2);
+		pickerSteps.WhenISeeUserFoundOnPeoplePickerPage(contact2);
+		pickerSteps.WhenITapOnUserNameFoundOnPeoplePickerPage(contact2);
+		pickerSteps.WhenIClickOnAddToConversationButton();
+		
+		GroupChatPageSteps groupChatSteps = new GroupChatPageSteps();
+		groupChatSteps.ThenISeeGroupChatPage(contact1, contact2);
+	}
 
 }
