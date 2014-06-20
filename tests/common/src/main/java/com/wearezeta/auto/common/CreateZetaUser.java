@@ -122,7 +122,8 @@ public class CreateZetaUser {
 				headers.setXZetaPurpose(message.getHeader("X-Zeta-Purpose")[0]);
 				headers.setXZetaKey(message.getHeader("X-Zeta-Key")[0]);
 				headers.setXZetaCode(message.getHeader("X-Zeta-Code")[0]);
-
+				folder.close(false);
+				store.close();
 			}
 		} catch (Exception ex) {
 			System.out.println("Exception! " + ex.getMessage());

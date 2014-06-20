@@ -19,8 +19,6 @@ public class ContactListPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathFirstInContactList)
 	private WebElement firstContactListDialog;
 
-	
-
 	private String url;
 	private String path;
 	
@@ -64,6 +62,44 @@ public class ContactListPage extends IOSPage {
 		 }
 		return contact;
 	 }	
+	
+	public boolean isGroupChatAvailableInContactList() {
+		boolean flag = false;
+		
+		for (WebElement el: contactListNames) {
+			if(el.getAttribute("name").contains(","))
+			{
+				flag = true;
+				break;
+			}
+		}
+		
+		return flag;
+	}
+	
+	public GroupChatPage tapOnGroupChat(String contact1, String contact2) throws IOException {
+		
+		findChatInContactList(contact1, contact2).click();
+
+		return new GroupChatPage(url, path);
+	}
+	
+	private WebElement findChatInContactList(String contact1, String contact2) {
+
+		String contact = "";
+		WebElement el = null;
+		
+		for (WebElement element: contactListNames) {
+			contact = element.getAttribute("name");
+			if(contact.contains(",") && contact.contains(contact1) && contact.contains(contact2))
+			{
+				el = element;
+				break;
+			}
+		}
+		
+		return el;
+	}
 
 	@Override
 	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {

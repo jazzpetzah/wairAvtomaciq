@@ -60,10 +60,6 @@ public final class IOSLocators {
 	
 	public static final String nameConnectInput = "Type your first message to [%s]...";
 	
-	//public static final String xpathHelloMessageFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]/UIAStaticText[1]";
-	
-	public static final String xpathHeyMessageFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]/UIAStaticText[1]";
-	
 	public static final String nameProfileOtherUserNameField = "ProfileOtherNameField";
 	
 	public static final String classNameProfileOtherUserEmailField = "UIATextField";
@@ -75,11 +71,10 @@ public final class IOSLocators {
 	public static final String nameAcceptConnectionButton = "ACCEPT";
 	
 	public static final String classUIATextView = "UIATextView";
-	
 
-	public static final String xpathHelloCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]";
+	public static final String xpathHelloCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[last()]";
 	
-	public static final String xpathHeyCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]";
+	public static final String xpathHeyCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[last()]";
 	
 	public static final String nameCameraButton = "CameraButton";
 	
@@ -102,6 +97,12 @@ public final class IOSLocators {
 	public static final String nameCreateAccountButton = "RegistrationCreateAccountButton";
 	
 	public static final String xpathLastGroupChatMessage = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]/UIATextView[last()]";
+	
+	public static final String nameLeaveConversation = "Leave conversation";
+	
+	public static final String nameLeaveConversationAlert = "Leave conversation?";
 
-
+	public static final String nameLeaveConversationButton = "LEAVE";
+	
+	public static final String nameYouHaveLeft = "YOU HAVE LEFT";
 }

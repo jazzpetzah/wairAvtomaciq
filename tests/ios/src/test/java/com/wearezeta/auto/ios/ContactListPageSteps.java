@@ -39,7 +39,12 @@ public class ContactListPageSteps {
 	
 	@When("^I swipe down contact list$")
 	public void ISwipeDownContactList() throws Throwable {
-		PagesCollection.peoplePickerPage= (PeoplePickerPage)PagesCollection.contactListPage.swipeDown(500);
+		if(CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
+			PagesCollection.peoplePickerPage = (PeoplePickerPage)PagesCollection.contactListPage.swipeDown(500);
+		}
+		else {
+			PagesCollection.peoplePickerPage = (PeoplePickerPage)PagesCollection.contactListPage.swipeDownSimulator();
+		}
 	}
 	
 	@Then ("Contact list appears with my name (.*)")
@@ -80,6 +85,28 @@ public class ContactListPageSteps {
 		
 		GroupChatPageSteps groupChatSteps = new GroupChatPageSteps();
 		groupChatSteps.ThenISeeGroupChatPage(contact1, contact2);
+	}
+	
+	@Then("^I see (.*) and (.*) chat in contact list$")
+	public void ISeeGroupChatInContactList(String contact1, String contact2) throws InterruptedException{
+		
+		contact1 = CommonUtils.retrieveRealUserContactPasswordValue(contact1);
+		contact2 = CommonUtils.retrieveRealUserContactPasswordValue(contact2);
+		Assert.assertTrue(PagesCollection.contactListPage.isGroupChatAvailableInContactList());
+	}
+	
+	@Then("^I tap on a group chat with (.*) and (.*)$")
+	public void ITapOnGroupChat(String contact1, String contact2) throws IOException{
+		
+		contact1 = CommonUtils.retrieveRealUserContactPasswordValue(contact1);
+		contact2 = CommonUtils.retrieveRealUserContactPasswordValue(contact2);
+		PagesCollection.contactListPage.tapOnGroupChat(contact1, contact2);
+	}
+	
+	@Then("^I open archived conversations$")
+	public void IOpenArchivedConversations() throws IOException, InterruptedException {
+		Thread.sleep(3000);
+		PagesCollection.contactListPage.swipeUp(500);
 	}
 
 }

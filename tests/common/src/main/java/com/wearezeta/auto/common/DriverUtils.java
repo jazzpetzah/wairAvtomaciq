@@ -181,7 +181,11 @@ public class DriverUtils {
 			tapObject.put("x", (double) (coords.x + elementSize.width/2));
 			tapObject.put("y", (double) (coords.y + elementSize.height/2));
 	        
-			js.executeScript("mobile: tap", tapObject);
+			for(int i=0;i<tapNumber;i++)
+	        { 
+	        	js.executeScript("mobile: tap", tapObject);
+	        	Thread.sleep(100);
+	        }
 	 }
 
 	 public static void turnOffImplicitWait(RemoteWebDriver driver) {
