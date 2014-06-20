@@ -14,7 +14,7 @@ Feature: Conversation
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
 
-
+ @torun
     Scenario Outline: Send Hello to contact
 		Given I Sign in using login <Login> and password <Password> 
     	And I see Contact list with my name <Name>
