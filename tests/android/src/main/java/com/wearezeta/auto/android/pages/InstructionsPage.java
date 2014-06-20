@@ -20,10 +20,10 @@ public class InstructionsPage extends AndroidPage {
 	private List<WebElement> ignoreBtnList;
 	@FindBy(how = How.ID, using = AndroidLocators.idInstructionsRequestConnectBtn)
 	private List<WebElement> connectBtnList;
-	
+
 	private String url;
 	private String path;
-	
+
 	public InstructionsPage(String URL, String path) throws IOException {
 		super(URL, path);
 		url = URL;
@@ -34,42 +34,49 @@ public class InstructionsPage extends AndroidPage {
 	{
 		wait.until(ExpectedConditions.visibilityOf(connectDilog));
 	}
-	
+
 	public void acceptAllConnections()
 	{
 		for(WebElement connectBtn : connectBtnList){
 			connectBtn.click();
 		}
 	}
+
+	public void waitInstructionsPage()
+	{
+		wait.until(ExpectedConditions.visibilityOf(instructions));
+	}
+	
 	public void ignoreAllConnections()
 	{
 		for(WebElement ignoreBtn : connectBtnList){
 			ignoreBtn.click();
 		}
 	}
+	
 	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws IOException {
-		
+
 		AndroidPage page = null;
 		switch (direction){
-			case DOWN:
-			{
-				break;
-			}
-			case UP:
-			{
-				break;
-			}
-			case LEFT:
-			{
-				page = new PersonalInfoPage(url, path);
-				break;
-			}
-			case RIGHT:
-			{
-				page = new ContactListPage(url, path);
-				break;
-			}
+		case DOWN:
+		{
+			break;
+		}
+		case UP:
+		{
+			break;
+		}
+		case LEFT:
+		{
+			page = new PersonalInfoPage(url, path);
+			break;
+		}
+		case RIGHT:
+		{
+			page = new ContactListPage(url, path);
+			break;
+		}
 		}	
 		return page;
 	}

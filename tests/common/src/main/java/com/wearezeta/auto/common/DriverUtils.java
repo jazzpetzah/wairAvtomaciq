@@ -28,6 +28,19 @@ public class DriverUtils {
 		    return s == null || s.length() == 0;
 	 }
 	 
+	 public static boolean isElementDisplayed(WebElement element)
+		{
+			boolean flag = true;
+			try{
+				element.isDisplayed();
+			}
+			catch(Exception ex)
+			{
+				flag = false;
+			}
+			return flag;
+		}
+	 
 	 public static boolean waitUntilElementDissapear(RemoteWebDriver driver, final By by) {
 	 
 		 Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
@@ -168,7 +181,11 @@ public class DriverUtils {
 			tapObject.put("x", (double) (coords.x + elementSize.width/2));
 			tapObject.put("y", (double) (coords.y + elementSize.height/2));
 	        
-			js.executeScript("mobile: tap", tapObject);
+			for(int i=0;i<tapNumber;i++)
+	        { 
+	        	js.executeScript("mobile: tap", tapObject);
+	        	Thread.sleep(100);
+	        }
 	 }
 
 	 public static void turnOffImplicitWait(RemoteWebDriver driver) {

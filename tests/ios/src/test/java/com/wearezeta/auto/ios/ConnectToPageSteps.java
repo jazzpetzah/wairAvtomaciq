@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios;
 
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 
 
@@ -11,6 +12,8 @@ public class ConnectToPageSteps {
 	
 	@When("^I see connect to (.*) dialog$")
 	public void WhenISeeConnectToUserDialog(String contact) throws Throwable {
+		
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 	    Assert.assertEquals("Connect to "+ contact, PagesCollection.connectToPage.getConnectToUserLabelValue());
 		Assert.assertTrue("Connect dialog is not visible", PagesCollection.connectToPage.waitForConnectDialog());
 		

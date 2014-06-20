@@ -1,7 +1,7 @@
 #Configuration file for IOS tests
 #Configure before running tests
 Url=http://127.0.0.1:4723/wd/hub
-appPath=/Project/ZClient.app
-isSimulator=false
-generateUsers=false
+appPath=/Users/admin/Downloads/ZClient.app
+isSimulator=true
+generateUsers=true
 swipeScriptPath=/Users/admin/./swipeInWindow.py

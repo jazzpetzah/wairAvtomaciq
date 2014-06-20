@@ -42,14 +42,14 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.multiTapOnCursorInput();
 	}
 	
-	@Then("^I see Hello message from me in the dialog$")
+	@Then("^I see Hello message in the dialog$")
 	public void ISeeHelloMessageFromMeInTheDialog() throws Throwable {
 		String hellomessage = "HELLO FROM";
 		String dialogHelloMessage = PagesCollection.dialogPage.getHelloCellFromDialog();
 		Assert.assertTrue("Message \"" + dialogHelloMessage + "\" is not correct HELLO FROM message.", dialogHelloMessage.contains(hellomessage));
 	}
 	
-	@Then("^I see Hey message from me in the dialog$")
+	@Then("^I see Hey message in the dialog$")
 	public void ISeeHeyMessageFromMeInTheDialog() throws Throwable {
 		String heymessage = "HEY FROM";
 		String dialogHeyMessage = PagesCollection.dialogPage.getHeyCellFromDialog();
@@ -76,6 +76,8 @@ public class DialogPageSteps {
 	
 	@Then("^I see Pending Connect to (.*) message on Dialog page$")
 	public void ISeePendingConnectMessage(String user) throws Throwable {
+		
+		user = CommonUtils.retrieveRealUserContactPasswordValue(user);
 		Assert.assertTrue(PagesCollection.dialogPage.isConnectMessageValid(user));
 		Assert.assertTrue(PagesCollection.dialogPage.isPendingButtonVisible());
 	}
