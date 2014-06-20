@@ -30,7 +30,7 @@ Feature: Send Message
     Scenario Outline: Send a camera roll picture to user from contact list
     	Given I Sign in using login <Login> and password <Password>
     	And I see Contact list with my name <Name>
-    	When I tap on name <Contact>
+    	When I tap on contact name <Contact>
     	And I see dialog page
     	And I swipe the text input curser
     	And I press Add Picture button

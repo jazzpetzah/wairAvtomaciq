@@ -36,11 +36,12 @@ public class PersonalInfoPageSteps {
 	
 	@When("^I return to personal page$")
 	public void IReturnToPersonalPage() throws Throwable {
-
+		PagesCollection.personalInfoPage.tapOnPersonalPage();
+		Thread.sleep(2000);
 	}
 
 	@Then("^I see new profile picture in place$")
-	public void I_see_new_profile_picture_in_place() throws Throwable {
+	public void ISeeNewProfilePictureInPlace() throws Throwable {
 		
 	}
 
