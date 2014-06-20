@@ -6,15 +6,10 @@ import java.util.Map;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.android.pages.ContactListPage;
-import com.wearezeta.auto.android.pages.PagesCollection;
-import com.wearezeta.auto.common.ClientUser;
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.CreateZetaUser;
-import com.wearezeta.auto.common.UsersState;
+import com.wearezeta.auto.android.pages.*;
+import com.wearezeta.auto.common.*;
 
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+import cucumber.api.java.en.*;
 
 public class RegistrationPageSteps {
 

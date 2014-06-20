@@ -60,10 +60,6 @@ public final class IOSLocators {
 	
 	public static final String nameConnectInput = "Type your first message to [%s]...";
 	
-	//public static final String xpathHelloMessageFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]/UIAStaticText[1]";
-	
-	public static final String xpathHeyMessageFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]/UIAStaticText[1]";
-	
 	public static final String nameProfileOtherUserNameField = "ProfileOtherNameField";
 	
 	public static final String classNameProfileOtherUserEmailField = "UIATextField";
@@ -76,9 +72,9 @@ public final class IOSLocators {
 	
 	public static final String classUIATextView = "UIATextView";
 
-	public static final String xpathHelloCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]";
+	public static final String xpathHelloCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[last()]";
 	
-	public static final String xpathHeyCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]";
+	public static final String xpathHeyCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[last()]";
 	
 	public static final String nameCameraButton = "CameraButton";
 	

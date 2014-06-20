@@ -72,4 +72,8 @@ public final class AndroidLocators {
 	
 	public static final String idOtherUserPersonalInfoName = "com.waz.zclient:id/metaHeader";
 	
+	public static final String idLeaveConversationConfirmationMenu = "com.waz.zclient:id/meta_confirmation_menu";
+	
+	public static final String idConfirmBtn = "com.waz.zclient:id/confirm"; 
+	
 }

@@ -12,4 +12,5 @@ public class PagesCollection {
 	public static OtherUserPersonalInfoPage otherUserPersonalInfoPage = null;
 	public static GroupChatPage groupChatPage = null;
 	public static RegistrationPage registrationPage = null;
+	public static GroupChatInfoPage groupChatInfoPage = null; 
 }
