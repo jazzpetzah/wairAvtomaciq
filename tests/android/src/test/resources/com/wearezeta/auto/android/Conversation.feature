@@ -40,8 +40,7 @@ Feature: Conversation
     Examples: 
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
-      
-@torun
+
   Scenario Outline: Start group chat with users from contact list
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -58,12 +57,10 @@ Feature: Conversation
     And I click on Add to conversation button
     Then I see group chat page with users <Contact1> <Contact2>
 
-
     Examples: 
       | Login   | Password    | Name    | Contact1    | Contact2    |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
-      
-@torun
+
   Scenario Outline: Send message to group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -72,6 +69,22 @@ Feature: Conversation
     And I type the message
     And I press send
     Then I see my message in the dialog
+
+    Examples: 
+      | Login   | Password    | Name    | Contact1    | Contact2    |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
+
+  @torun
+  Scenario Outline: Leave group conversation
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I create group chat with <Contact1> and <Contact2>
+    And I swipe left on group dialog page
+    And I swipe up group chat info page
+    And I press Leave conversation button
+    And I confirm leaving
+    And I swipe right on group chat info page
+    Then I see message that I left chat
 
     Examples: 
       | Login   | Password    | Name    | Contact1    | Contact2    |

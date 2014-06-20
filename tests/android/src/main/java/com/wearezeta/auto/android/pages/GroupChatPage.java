@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android.pages;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -13,29 +14,68 @@ import com.wearezeta.auto.common.SwipeDirection;
 
 public class GroupChatPage  extends AndroidPage{
 
+	public static final String  I_LEFT_CHAT_MESSAGE = "YOU HAVE LEFT";
+	
 	@FindBy(how = How.ID, using = AndroidLocators.idDialogMessages)
 	private WebElement message;
+
+	@FindBy(how = How.ID, using = AndroidLocators.idDialogMessages)
+	private List<WebElement> messages;
 	
-	
+	private String url;
+	private String path;
+
 	public GroupChatPage(String URL, String path) throws IOException {
 		super(URL, path);
-		// TODO Auto-generated constructor stub
+		this.url = URL;
+		this.path = path;
 	}
 
 	@Override
-	public AndroidPage returnBySwipe(SwipeDirection direction)
-			throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+	public AndroidPage returnBySwipe(SwipeDirection direction) throws IOException{
+
+		AndroidPage page = null;
+		switch (direction){
+		case DOWN:
+		{
+			break;
+		}
+		case UP:
+		{
+			break;
+		}
+		case LEFT:
+		{
+			page = new GroupChatInfoPage(url,path);
+			break;
+		}
+		case RIGHT:
+		{
+			break;
+		}
+		}	
+		return page;
 	}
 
 	public boolean isGroupChatDialogVisible(){
 		return DriverUtils.waitUntilElementAppears(driver, By.id(AndroidLocators.idDialogMessages));
 	}
-	
+
 	public boolean isGroupChatDialogContainsNames(String name1, String name2)
 	{
 		return (message.getText().toLowerCase().contains(name1.toLowerCase()) && message.getText().toLowerCase().contains(name2.toLowerCase()));
+	}
+	
+	public boolean isMessageExists(String messageText){
+		boolean flag = false;
+		for(WebElement element : messages)
+		{
+			if(element.getText().equals(messageText))
+			{
+				flag = true;
+			}
+		}
+		return flag;
 	}
 
 }
