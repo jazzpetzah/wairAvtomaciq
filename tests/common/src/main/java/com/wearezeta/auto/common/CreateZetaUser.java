@@ -3,8 +3,10 @@ package com.wearezeta.auto.common;
 import javax.mail.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -45,12 +47,16 @@ public class CreateZetaUser {
 		String regMail = null;
 		Map<String,String> user = new LinkedHashMap<String, String>();
 
-		EmailHeaders mailContent = getLastMailHeaders(mail,	password);
-		lastSuffix = RegExUtil.getStringByRegEx(mailContent.getLastUserEmail(), "\\+.*@", true);
-		if (lastSuffix != null){			
-			lastSuffixId = RegExUtil.getStringByRegEx(lastSuffix,	"\\d+", true);
-		}
-		nextSuffixId = Integer.toString(Integer.valueOf(lastSuffixId) + 1);
+		List<EmailHeaders> mailsContent = getLastMailHeaders(mail,password, 5);
+		for(EmailHeaders mailContent : mailsContent){
+			lastSuffix = RegExUtil.getStringByRegEx(mailContent.getLastUserEmail(), "\\+.*@", true);
+			if (lastSuffix != null && lastSuffix.contains(suffixName)){			
+				lastSuffixId = RegExUtil.getStringByRegEx(lastSuffix,	"\\d+", true);
+				if(Integer.valueOf(nextSuffixId) <= Integer.valueOf(lastSuffixId)){
+					nextSuffixId = Integer.toString(Integer.valueOf(lastSuffixId) + 1);
+				}
+			}
+		}	
 		nextSuffix = suffixName.concat(nextSuffixId);
 		regMail = setRegMail(mail, nextSuffix);
 		System.out.println(regMail);
@@ -63,12 +69,17 @@ public class CreateZetaUser {
 		boolean activationState = false;
 		for(int i=0; i<5; i++)
 		{
-			EmailHeaders newMailContent = getLastMailHeaders(mail,
-					password);
-			if(newMailContent.getLastUserEmail().equals(registeredUserMail))
-			{
-				BackEndREST.activateNewUser(newMailContent.getXZetaKey(),newMailContent.getXZetaCode());
-				activationState = true;
+			List<EmailHeaders> newMails = getLastMailHeaders(mail,
+					password, 5);
+			for(EmailHeaders newMailContent: newMails){
+				if(newMailContent.getLastUserEmail().equals(registeredUserMail))
+				{
+					BackEndREST.activateNewUser(newMailContent.getXZetaKey(),newMailContent.getXZetaCode());
+					activationState = true;
+					break;
+				}
+			}
+			if(activationState){
 				break;
 			}
 			sleep(timeout);
@@ -76,12 +87,12 @@ public class CreateZetaUser {
 		return activationState;
 	}
 
-	public static EmailHeaders getLastMailHeaders(String user, String password) {
+	public static List<EmailHeaders> getLastMailHeaders(String user, String password, int messageCount) {
 
 		String protocol = MAIL_PROTOCOL;
 		String host = MAIL_SERVER;
 		String mbox = null;
-		EmailHeaders headers = new EmailHeaders();
+		List<EmailHeaders> headersList = new ArrayList<EmailHeaders>();
 		try {
 			Properties props = System.getProperties();
 			Session session = Session.getInstance(props, null);
@@ -115,13 +126,16 @@ public class CreateZetaUser {
 				store.close();
 			}
 			else{
-				Message message = folder.getMessage(lastMessage);
-
-				headers.setLastUserEmail(message.getHeader("Delivered-To")[0]);
-				headers.setMailSubject(message.getHeader("Subject")[0]);
-				headers.setXZetaPurpose(message.getHeader("X-Zeta-Purpose")[0]);
-				headers.setXZetaKey(message.getHeader("X-Zeta-Key")[0]);
-				headers.setXZetaCode(message.getHeader("X-Zeta-Code")[0]);
+				Message[] messages = folder.getMessages((lastMessage-messageCount),lastMessage);
+				for(Message message : messages){
+					EmailHeaders headers = new EmailHeaders();
+					headers.setLastUserEmail(message.getHeader("Delivered-To")[0]);
+					headers.setMailSubject(message.getHeader("Subject")[0]);
+					headers.setXZetaPurpose(message.getHeader("X-Zeta-Purpose")[0]);
+					headers.setXZetaKey(message.getHeader("X-Zeta-Key")[0]);
+					headers.setXZetaCode(message.getHeader("X-Zeta-Code")[0]);
+					headersList.add(headers);
+				}
 				folder.close(false);
 				store.close();
 			}
@@ -129,7 +143,7 @@ public class CreateZetaUser {
 			System.out.println("Exception! " + ex.getMessage());
 			ex.printStackTrace();
 		}
-		return headers;
+		return headersList;
 	}
 
 	private static String setRegMail(String basemail, String suffix) {
