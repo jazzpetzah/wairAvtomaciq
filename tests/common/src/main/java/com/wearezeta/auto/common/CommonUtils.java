@@ -93,7 +93,7 @@ public class CommonUtils {
 	
 	public static String getDriverTimeoutFromConfig(Class c) throws IOException {
 
-		return getValueFromComonConfig(c, "driverTimeoutSeconds");
+		return getValueFromConfig(c, "driverTimeoutSeconds");
 	}
 	
 	public static String getDefaultPasswordFromConfig(Class c) throws IOException {
