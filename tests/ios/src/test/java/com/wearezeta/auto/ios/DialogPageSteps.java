@@ -9,6 +9,7 @@ import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
+import com.wearezeta.auto.ios.pages.CameraRollPage;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -78,10 +79,11 @@ public class DialogPageSteps {
 	
 	@When("^I press Add Picture button$")
 	public void IPressAddPictureButton() throws Throwable {
-		PagesCollection.dialogPage.pressAddPictureButton();
+		CameraRollPage page = PagesCollection.dialogPage.pressAddPictureButton();
+		PagesCollection.cameraRollPage = (CameraRollPage) page;
 	}
 	
-	@When("^I press Camera Roll button$")
+	/*@When("^I press Camera Roll button$")
 	public void IPressCameraRollButton() throws Throwable {
 		PagesCollection.cameraRollPage.pressCameraRollButton();
 	}
@@ -94,7 +96,7 @@ public class DialogPageSteps {
 	@When("^I press Confirm button$")
 	public void IPressConfirmButton() throws Throwable {
 		PagesCollection.cameraRollPage.pressConfirmButton();
-	}
+	}*/
 
 	@Then("^I see my message in the dialog$")
 	public void ThenISeeMyMessageInTheDialog() throws Throwable {

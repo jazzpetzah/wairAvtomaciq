@@ -113,9 +113,19 @@ public class DialogPage extends IOSPage{
 		DriverUtils.swipeRight(driver, cursorInput, 700);
 	}
 	
-	public void pressAddPictureButton() throws IOException{
+	/*public void pressAddPictureButton() throws IOException{
 		addPictureButton.click();
+	}*/
+	
+	public CameraRollPage pressAddPictureButton() throws IOException{
+		
+		CameraRollPage page;
+		page = new CameraRollPage(url, path);
+		addPictureButton.click();
+		
+		return page;
 	}
+
 	
 	private String GetImageCell(List<WebElement> chatList) {
 		String lastMessage = imageCell.getAttribute("name");
