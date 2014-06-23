@@ -21,8 +21,9 @@ public abstract class BasePage {
 		if(null == driver) {
 			
 			driver = new AppiumDriver(new URL(URL), capabilities);
-			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 			try {
+				driver.manage().timeouts().implicitlyWait(Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(getClass())), TimeUnit.SECONDS);
+			
 				wait = new WebDriverWait(driver, Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(getClass())));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
