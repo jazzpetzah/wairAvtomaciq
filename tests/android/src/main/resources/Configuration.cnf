@@ -7,3 +7,4 @@ appPath=C:\\Selendroid\\zclient-release-57.apk
 package=com.waz.zclient
 activity=.StartupScreenActivity
 generateUsers=true
+driverTimeoutSeconds=10
