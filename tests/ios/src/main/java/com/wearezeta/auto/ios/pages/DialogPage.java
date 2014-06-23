@@ -43,7 +43,6 @@ public class DialogPage extends IOSPage{
 	}
 
 	public void waitForCursorInputVisible(){
-		ScrollToLastMessage();
 		wait.until(ExpectedConditions.visibilityOf(cursorInput));
 	}
 	
