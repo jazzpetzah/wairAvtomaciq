@@ -1,8 +1,5 @@
 package com.wearezeta.auto.osx.steps;
 
-import java.util.ArrayList;
-
-import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.TestPreparation;
 import com.wearezeta.auto.common.UsersState;

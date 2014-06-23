@@ -39,7 +39,7 @@ Scenario Outline: Send picture to conversation
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with name <Name>
 	And I open conversation with <Contact>
-	When I send picture test.jpg
+	When I send picture testing.jpg
 	Then I see picture in conversation
 
 Examples:
@@ -54,7 +54,8 @@ Scenario Outline: Create group chat from 1on1 conversation
 	And I search for user <Contact2>
 	And I see user <Contact2> in search results
 	And I add user <Contact2> from search results
-	Then I see message YOU ADDED <Contact2>, <Contact1> in conversation
+	Then I open conversation with <Contact1>, <Contact2>
+	And I see message YOU ADDED <Contact2>, <Contact1> in conversation
 
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
@@ -90,7 +91,7 @@ Examples:
 #	And I see Contact list with name <Name>
 #	And I create group chat with <Contact1> and <Contact2>
 #	And I open conversation with <Contact1>, <Contact2>
-#	When I send picture
+#	When I send picture testing.jpg
 #	Then I see picture in conversation
 #		
 #Examples:
