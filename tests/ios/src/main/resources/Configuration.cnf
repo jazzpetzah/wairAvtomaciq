@@ -6,3 +6,4 @@ isSimulator=true
 generateUsers=true
 swipeScriptPath=/Users/admin/./swipeInWindow.py
 photoScriptPath=/Users/admin/push_photo_to_simulator.sh
+driverTimeoutSeconds=10

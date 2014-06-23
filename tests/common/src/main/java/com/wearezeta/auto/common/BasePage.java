@@ -22,7 +22,12 @@ public abstract class BasePage {
 			
 			driver = new AppiumDriver(new URL(URL), capabilities);
 			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-			wait = new WebDriverWait(driver, 10);
+			try {
+				wait = new WebDriverWait(driver, Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(getClass())));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		PageFactory.initElements(driver, this);
 	}

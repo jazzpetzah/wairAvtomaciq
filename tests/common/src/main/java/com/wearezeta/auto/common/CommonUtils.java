@@ -91,6 +91,11 @@ public class CommonUtils {
 		return getValueFromComonConfig(c, "defaultEmail");
 	}
 	
+	public static String getDriverTimeoutFromConfig(Class c) throws IOException {
+
+		return getValueFromComonConfig(c, "driverTimeoutSeconds");
+	}
+	
 	public static String getDefaultPasswordFromConfig(Class c) throws IOException {
 
 		return getValueFromComonConfig(c, "defaultPassword");
