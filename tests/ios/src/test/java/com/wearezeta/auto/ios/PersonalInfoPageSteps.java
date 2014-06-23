@@ -2,8 +2,7 @@ package com.wearezeta.auto.ios;
 
 import java.io.IOException;
 
-import com.wearezeta.auto.ios.pages.DialogPage;
-import com.wearezeta.auto.ios.pages.IOSPage;
+import com.wearezeta.auto.ios.pages.CameraRollPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 
 import cucumber.api.java.en.Then;
@@ -29,8 +28,8 @@ public class PersonalInfoPageSteps {
 	
 	@When("^I press Camera button$")
 	public void IPressCameraButton() throws InterruptedException, IOException{
-		DialogPage page = PagesCollection.personalInfoPage.pressCameraButton();
-		PagesCollection.dialogPage = (DialogPage) page;
+		CameraRollPage page = PagesCollection.personalInfoPage.pressCameraButton();
+		PagesCollection.cameraRollPage = (CameraRollPage) page;
 	  Thread.sleep(2000);
 	}
 	

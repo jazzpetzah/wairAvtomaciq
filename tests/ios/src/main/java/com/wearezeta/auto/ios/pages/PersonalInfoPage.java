@@ -65,10 +65,10 @@ public class PersonalInfoPage extends IOSPage{
 		personalPage.click();
 	}
 	
-	public DialogPage pressCameraButton() throws IOException{
+	public CameraRollPage pressCameraButton() throws IOException{
 		
-		DialogPage page;
-		page = new DialogPage(url, path);
+		CameraRollPage page;
+		page = new CameraRollPage(url, path);
 		cameraButton.click();
 		
 		return page;

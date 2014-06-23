@@ -83,17 +83,17 @@ public class DialogPageSteps {
 	
 	@When("^I press Camera Roll button$")
 	public void IPressCameraRollButton() throws Throwable {
-		PagesCollection.dialogPage.pressCameraRollButton();
+		PagesCollection.cameraRollPage.pressCameraRollButton();
 	}
 	
 	@When("^I choose a picture from camera roll$")
 	public void IChooseAPictureFromCameraRoll() throws Throwable {
-		PagesCollection.dialogPage.openCameraRoll();
+		PagesCollection.cameraRollPage.openCameraRoll();
 	}
 	
 	@When("^I press Confirm button$")
 	public void IPressConfirmButton() throws Throwable {
-		PagesCollection.dialogPage.pressConfirmButton();
+		PagesCollection.cameraRollPage.pressConfirmButton();
 	}
 
 	@Then("^I see my message in the dialog$")
