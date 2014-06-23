@@ -6,7 +6,6 @@ import java.net.URL;
 import java.util.*;
 
 
-
 public class CommonUtils {
 
 	public static final String YOUR_USER_1 = "aqaUser";
@@ -34,6 +33,11 @@ public class CommonUtils {
 			value = value.replace(CONTACT_2, contacts.get(1).getName());
 		}
 		return value;
+	}
+	
+	private static String getPhotoScriptPath(Class c)throws IOException {
+
+        return getValueFromConfig(c, "photoScriptPath");
 	}
 	
 	private static String getValueFromConfig(Class c, String key) throws IOException {
@@ -176,6 +180,16 @@ public class CommonUtils {
 		}
 	}
 	
+	 public static void iOSSimulatorCameraRoll() throws IOException, InterruptedException{
+		 
+		 String scriptPath = CommonUtils.getPhotoScriptPath(CommonUtils.class);
+		 
+		 String [] cmd =new String []{"/bin/bash", scriptPath, "7.1"};
+		 
+		 Process process = Runtime.getRuntime().exec(cmd);
+		 System.out.print("Process Code"+ process.waitFor());
+	}
+	 
 	public static void usePrecreatedUsers() {
 		ClientUser contact2 = new ClientUser("smoketester+aqa33@wearezeta.com", "aqa123456", "aqa33", UsersState.AllContactsConnected);
 		ClientUser contact1 = new ClientUser("smoketester+aqa32@wearezeta.com", "aqa123456", "aqa32", UsersState.AllContactsConnected);
