@@ -47,7 +47,8 @@ public final class OSXLocators {
 	public static final String idAddPeopleButtonGroupChat = "addButton";
 	public static final String idConfirmationViewConfirmButton = "ConfirmationViewConfirmButton";
 	public static final String idAddPeopleButtonSingleChat = "userProfileViewButtonOnTheLeft";
-	public static final String idPeoplePickerAddToConversationButton = "people_picker_confirm_button";
+	//OLD: public static final String idPeoplePickerAddToConversationButton = "people_picker_confirm_button";
+	public static final String idPeoplePickerAddToConversationButton = "ConfirmationBarViewConfirmButton";
 	public static final String idLeaveConversationButton = "leaveButton";
 	public static final String idRemoveUserFromConversation = "userProfileViewButtonOnTheRight";
 	public static final String idConversationScrollArea = "ConversationScrollArea";
@@ -58,4 +59,6 @@ public final class OSXLocators {
 	public static final String xpathDoCameraShotButton = "//AXCheckBox[1]";
 	
 	public static final String xpathFormatPeoplePickerUserCell = "//AXUnknown[AXStaticText[@AXValue='%s']]";
+
+	public static final String xpathPictureSettingsCloseButton = "//AXWindow[@AXRoleDescription='floating window']/AXButton[@AXRoleDescription='close button']";
 }
