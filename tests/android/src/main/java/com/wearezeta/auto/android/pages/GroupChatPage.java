@@ -14,7 +14,7 @@ import com.wearezeta.auto.common.SwipeDirection;
 
 public class GroupChatPage  extends AndroidPage{
 
-	public static final String  I_LEFT_CHAT_MESSAGE = "YOU HAVE LEFT";
+	public static final String I_LEFT_CHAT_MESSAGE = "YOU HAVE LEFT";
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idDialogMessages)
 	private WebElement message;
@@ -51,6 +51,7 @@ public class GroupChatPage  extends AndroidPage{
 		}
 		case RIGHT:
 		{
+			page = new ContactListPage(url,path);
 			break;
 		}
 		}	
@@ -68,14 +69,15 @@ public class GroupChatPage  extends AndroidPage{
 	
 	public boolean isMessageExists(String messageText){
 		boolean flag = false;
+		
 		for(WebElement element : messages)
 		{
-			if(element.getText().equals(messageText))
+			String text = element.getText();
+			if(text.equals(messageText))
 			{
 				flag = true;
 			}
 		}
 		return flag;
 	}
-
 }
