@@ -1,8 +1,9 @@
 #Configuration file for IOS tests
 #Configure before running tests
-Url=http://127.0.0.1:4723/wd/hub
-appPath=/Project/ZClient.app
+Url=http://192.168.159.128:4723/wd/hub
+appPath=/Users/admin/Downloads/ZClient.app
 isSimulator=true
 generateUsers=true
 swipeScriptPath=/Users/admin/./swipeInWindow.py
 photoScriptPath=/Users/admin/push_photo_to_simulator.sh
+driverTimeoutSeconds=10

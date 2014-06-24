@@ -16,7 +16,12 @@ public class CommonSteps {
 	 public void setUp() throws Exception {
 		
 
-		CommonUtils.iOSSimulatorCameraRoll();
+		try {
+			CommonUtils.iOSSimulatorCameraRoll();
+		}
+		catch(Exception ex){
+			System.out.println("Failed to deploy pictures into simulator");
+		}
 		
 		if(Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class)) &&  (CommonUtils.yourUsers.size()==0 || !CommonUtils.yourUsers.get(0).getUserState().equals(UsersState.AllContactsConnected))){
 			CommonUtils.generateUsers(2);

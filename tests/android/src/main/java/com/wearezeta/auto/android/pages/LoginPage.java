@@ -57,7 +57,7 @@ public class LoginPage extends AndroidPage {
 			signInButton.click();
 			page = this;
 		}
-		catch(NoSuchElementException ex) {
+		catch(Exception ex) {
 			confirmSignInButton.click();
 			page = new ContactListPage(url, path);
 		}

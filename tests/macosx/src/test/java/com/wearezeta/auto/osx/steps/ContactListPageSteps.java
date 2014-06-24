@@ -31,7 +31,13 @@ public class ContactListPageSteps {
 	@Given("I open conversation with (.*)")
 	public void GivenIOpenConversationWith(String contact) throws MalformedURLException, IOException {
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
-		Assert.assertTrue(CommonSteps.senderPages.getContactListPage().openConversation(contact));
+		boolean isConversationExist = false;
+		for (int i = 0; i < 10; i++) {
+			isConversationExist = CommonSteps.senderPages.getContactListPage().openConversation(contact);
+			if(isConversationExist) break;
+			try {Thread.sleep(1000); } catch (InterruptedException e) { }
+		}
+		Assert.assertTrue("Conversation with name " + contact + " was not found.", isConversationExist);
 		CommonSteps.senderPages.setConversationPage(new ConversationPage(
 				CommonUtils.getUrlFromConfig(ContactListPageSteps.class),
 				CommonUtils.getAppPathFromConfig(ContactListPageSteps.class)));

@@ -6,6 +6,8 @@ public final class AndroidLocators {
 	
 	public static final String classNameTextView = "android.widget.TextView";
 	
+	public static final String xpathImagesFrameLayout = "//android.widget.GridView/android.widget.FrameLayout";
+	
 	public static final String idSignInButton = "com.waz.zclient:id/button_sign_in";
 	
 	public static final String idSignUpButton = "com.waz.zclient:id/button_new_user";
@@ -76,4 +78,7 @@ public final class AndroidLocators {
 	
 	public static final String idConfirmBtn = "com.waz.zclient:id/confirm"; 
 	
+	public static final String idChangePhotoBtn = "com.waz.zclient:id/button_change";
+	
+	public static final String idGalleryBtn = "com.waz.zclient:id/button_gallery";
 }

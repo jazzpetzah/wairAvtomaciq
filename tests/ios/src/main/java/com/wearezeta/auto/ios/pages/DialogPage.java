@@ -11,7 +11,7 @@ import com.wearezeta.auto.common.*;
 public class DialogPage extends IOSPage{
 
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameCursorInput)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathCursorInput)
 	private WebElement cursorInput;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameTextInput)

@@ -4,13 +4,11 @@ import javax.mail.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import com.wearezeta.auto.common.misc.RegExUtil;
 
 public class CreateZetaUser {
 
@@ -39,28 +37,14 @@ public class CreateZetaUser {
 
 	public static Map<String,String> generateNextUser(String mail, String password)
 	{
-		String suffixName = "aqa";
-		String nextSuffixId = "1";
-		String nextSuffix = null;
-		String lastSuffixId = null;
-		String lastSuffix = null;
+		String suffix = CommonUtils.generateGUID();
+		suffix = suffix.replace("-", "");
 		String regMail = null;
 		Map<String,String> user = new LinkedHashMap<String, String>();
-
-		List<EmailHeaders> mailsContent = getLastMailHeaders(mail,password, 5);
-		for(EmailHeaders mailContent : mailsContent){
-			lastSuffix = RegExUtil.getStringByRegEx(mailContent.getLastUserEmail(), "\\+.*@", true);
-			if (lastSuffix != null && lastSuffix.contains(suffixName)){			
-				lastSuffixId = RegExUtil.getStringByRegEx(lastSuffix,	"\\d+", true);
-				if(Integer.valueOf(nextSuffixId) <= Integer.valueOf(lastSuffixId)){
-					nextSuffixId = Integer.toString(Integer.valueOf(lastSuffixId) + 1);
-				}
-			}
-		}	
-		nextSuffix = suffixName.concat(nextSuffixId);
-		regMail = setRegMail(mail, nextSuffix);
+		
+		regMail = setRegMail(mail, suffix);
 		System.out.println(regMail);
-		user.put(nextSuffix, regMail);
+		user.put(suffix, regMail);
 		return user;
 	}
 
