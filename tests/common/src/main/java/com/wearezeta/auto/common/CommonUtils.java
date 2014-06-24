@@ -7,7 +7,8 @@ import java.util.*;
 
 
 public class CommonUtils {
-
+	
+	public static final String FIRST_OS_NAME = "Windows";
 	public static final String YOUR_USER_1 = "aqaUser";
 	public static final String YOUR_USER_2 = "yourUser";
 	public static final String YOUR_PASS = "aqaPassword";
@@ -16,28 +17,53 @@ public class CommonUtils {
 	public static List<ClientUser> yourUsers = new ArrayList<ClientUser>();
 	public static List<ClientUser> contacts = new ArrayList<ClientUser>();
 
+	public static String getOsName(){
+		return System.getProperty("os.name");
+	}
+	
+	public static void uploadPhotoToAndroid() throws IOException{
+		if(getOsName().contains(FIRST_OS_NAME)){
+		    Runtime.getRuntime().exec("cmd /C adb push " + getWindowsImagePath(CommonUtils.class) + "/mnt/sdcard/DCIM/Camera/userpicture.jpg");
+		    Runtime.getRuntime().exec("cmd /C adb -d shell \"am broadcast -a android.intent.action.MEDIA_MOUNTED -d file:///sdcard \"Broadcasting: Intent { act=android.intent.action.MEDIA_MOUNTED dat=file:///sdcard }");
+		}
+	}
+	public static void killAndroidClient() throws IOException
+	{
+		if(getOsName().contains(FIRST_OS_NAME)){
+			Runtime.getRuntime().exec("cmd /C adb shell am force-stop com.waz.zclient");
+		}
+	}
+	
 	public static String retrieveRealUserContactPasswordValue(String value) {
-		if (value.contains(YOUR_USER_1)) {
-			value = value.replace(YOUR_USER_1, yourUsers.get(0).getName());
-		}
-		if (value.contains(YOUR_USER_2)) {
-			value = value.replace(YOUR_USER_2, yourUsers.get(1).getName());
-		}
-		if (value.contains(YOUR_PASS)) {
-			value = value.replace(YOUR_PASS, yourUsers.get(0).getPassword());
-		}
-		if (value.contains(CONTACT_1)) {
-			value = value.replace(CONTACT_1, contacts.get(0).getName());
-		}
-		if (value.contains(CONTACT_2)) {
-			value = value.replace(CONTACT_2, contacts.get(1).getName());
+		if (yourUsers.size() > 0) {
+			if (value.contains(YOUR_USER_1)) {
+				value = value.replace(YOUR_USER_1, yourUsers.get(0).getName());
+			}
+			if (value.contains(YOUR_USER_2)) {
+				value = value.replace(YOUR_USER_2, yourUsers.get(1).getName());
+			}
+			if (value.contains(YOUR_PASS)) {
+				value = value.replace(YOUR_PASS, yourUsers.get(0).getPassword());
+			}
+		} if (contacts.size() > 0) {
+			if (value.contains(CONTACT_1)) {
+				value = value.replace(CONTACT_1, contacts.get(0).getName());
+			}
+			if (value.contains(CONTACT_2)) {
+				value = value.replace(CONTACT_2, contacts.get(1).getName());
+			}
 		}
 		return value;
 	}
 	
-	private static String getPhotoScriptPath(Class c)throws IOException {
+	public static String getPhotoScriptPath(Class c)throws IOException {
 
         return getValueFromConfig(c, "photoScriptPath");
+	}
+	
+	private static String getWindowsImagePath(Class c)throws IOException {
+
+        return getValueFromConfig(c, "defaultWindowsImagePath");
 	}
 	
 	private static String getValueFromConfig(Class c, String key) throws IOException {

@@ -32,6 +32,30 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathHeyCellFormat)
 	private WebElement heyCell;
 	
+	@FindBy(how = How.NAME, using = IOSLocators.nameAddPictureButton)
+	private WebElement addPictureButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameCameraRollButton)
+	private WebElement cameraRollButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathCameraRollAlertOK)
+	private WebElement cameraRollAlertOK;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameCameraRollCancel)
+	private WebElement cameraRollCancel;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathCameraRollTableCell)
+	private WebElement cameraRollTableCell;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathCameraRollPicture)
+	private WebElement cameraRollPicture;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameConfirmPictureButton)
+	private WebElement confirmPictureButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherConversationCellFormat)
+	private WebElement imageCell;
+
 	private String url;
 	private String path;
 	
@@ -101,6 +125,45 @@ public class DialogPage extends IOSPage{
 		return GetHeyCell(messagesList);
 	}
 	
+	public void swipeInputCursor() throws IOException, InterruptedException{
+		DriverUtils.swipeRight(driver, cursorInput, 700);
+	}
+	
+	public void pressAddPictureButton() throws IOException{
+		addPictureButton.click();
+	}
+	
+	public void pressCameraRollButton(){
+		cameraRollButton.click();
+	}
+	
+	public void openCameraRoll() throws IOException, InterruptedException{
+		
+		System.out.print("CAMERA ROLL");
+		cameraRollAlertOK.click();
+		Thread.sleep(2000);
+		cameraRollTableCell.click();
+		Thread.sleep(1000);
+		cameraRollPicture.click();
+		Thread.sleep(3000);
+
+	}
+	
+	public void pressConfirmButton() throws InterruptedException{
+		confirmPictureButton.click();
+		Thread.sleep(1000);
+	}
+	
+	private String GetImageCell(List<WebElement> chatList) {
+		String lastMessage = imageCell.getAttribute("name");
+		return lastMessage;
+	}
+
+	public String getImageCellFromDialog()
+	{
+		return GetImageCell(messagesList);
+	}
+
 	@Override
 	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
 		IOSPage page = null;
