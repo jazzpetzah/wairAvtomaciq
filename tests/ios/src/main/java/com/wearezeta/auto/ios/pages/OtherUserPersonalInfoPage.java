@@ -14,8 +14,14 @@ public class OtherUserPersonalInfoPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.nameProfileOtherUserNameField)
 	private WebElement otherUserName;
 	
-	@FindBy(how = How.NAME, using = IOSLocators.classNameProfileOtherUserEmailField)
+	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameProfileOtherUserEmailField)
 	private WebElement otherUserEmail;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameRemoveFromConversation)
+	private WebElement removeFromChat;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameComfirmRemoveButton)
+	private WebElement confirmRemove;
 	
 	private String url;
 	private String path;
@@ -35,8 +41,20 @@ public class OtherUserPersonalInfoPage extends IOSPage{
 		return otherUserEmail.getText();
 	}
 	
+	public void removeFromConversation() {
+		removeFromChat.click();
+	}
+	
 	public boolean isOtherUserNameVisible(String name){
 		return getOtherUserProfileName().equals(name);
+	}
+	
+	public boolean isRemoveFromConversationAlertVisible() {
+		return confirmRemove.isDisplayed();
+	}
+	
+	public void confirmRemove() {
+		confirmRemove.click();
 	}
 
 	@Override
@@ -50,7 +68,7 @@ public class OtherUserPersonalInfoPage extends IOSPage{
 		}
 		case UP:
 		{
-			break;
+			return this;
 		}
 		case LEFT:
 		{

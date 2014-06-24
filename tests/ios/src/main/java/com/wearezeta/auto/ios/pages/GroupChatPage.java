@@ -2,10 +2,14 @@ package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotVisibleException;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.common.IOSLocators;
 import com.wearezeta.auto.common.SwipeDirection;
 
@@ -34,6 +38,29 @@ public class GroupChatPage extends DialogPage {
 	public boolean isYouHaveLeftVisible()
 	{
 		return youLeft.isDisplayed();
+	}
+	
+	public boolean isContactAvailableInChat(String contact) {
+		WebElement el = null;
+		boolean result = false;
+		
+		try {
+			el = driver.findElementByName(contact);
+		}
+		catch (NoSuchElementException ex)
+		{
+			el = null;
+		}
+		finally {
+			result = el != null;
+		}
+		
+		return result;
+	}
+	
+	public boolean waitForContactToDisappear(String contact) {
+		
+		return DriverUtils.waitUntilElementDissapear(driver, By.name(contact));
 	}
 	
 	@Override
