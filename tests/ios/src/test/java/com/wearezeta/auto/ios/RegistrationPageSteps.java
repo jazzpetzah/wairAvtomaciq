@@ -90,6 +90,23 @@ public class RegistrationPageSteps {
 		 }
 	 }
 	 
+	 @When("^I attempt to enter an email with spaces (.*)$")
+	 public void IEnterEmailWithSpaces(String email) throws IOException{
+		 	if (email.equals(CommonUtils.YOUR_USER_1)) {
+			 email=aqaEmail;
+		 }
+		 	//what if email is less than 1 character?
+		PagesCollection.registrationPage.setEmail(new StringBuilder(email).insert(email.length()-1,"          ").toString());
+		 }
+	 
+	 @Then("^I verify no spaces are present in email$")
+	 public void CheckForSpacesInEmail() throws IOException{
+		 PagesCollection.registrationPage.typeEmail();
+		 String realEmailText = PagesCollection.registrationPage.getEmailFieldValue();
+		 String initialEmailText = PagesCollection.registrationPage.getEmail();
+		 Assert.assertTrue(initialEmailText.replace(" ", "").equals(realEmailText));
+	 }
+	 
 	 @When("^I enter password (.*)$")
 	 public void IEnterPassword(String password) throws IOException {
 		 

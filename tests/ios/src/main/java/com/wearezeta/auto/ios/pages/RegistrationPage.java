@@ -99,6 +99,17 @@ public class RegistrationPage extends IOSPage {
 		createAccountButton.click();
 	}
 	
+	public void typeEmail() //change name?
+	{
+		yourName.sendKeys(getName() + "\n");
+		yourEmail.sendKeys(getEmail());
+	}
+	
+	public String getEmailFieldValue()
+	{
+		return yourEmail.getText();		
+	}
+	
 	public boolean isPictureSelected()
 	{
 		return confirmImageButton.isDisplayed();
