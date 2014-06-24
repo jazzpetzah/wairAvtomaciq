@@ -49,7 +49,7 @@ public class BackEndREST {
 			user.setAccessToken(jsonObj.getString("access_token"));
 			user.setTokenType(jsonObj.getString("token_type"));
 
-			System.out.println("Output from Server .... ");
+			System.out.println("Output from Server ....  login By User " + user.getEmail());
 			System.out.println(output + "\n");
 		} catch (Exception e) {
 
@@ -73,7 +73,7 @@ public class BackEndREST {
 			user.setId(jsonObj.getString("id"));
 
 			// display response
-			System.out.println("Output from Server .... ");
+			System.out.println("Output from Server .... get User Info " + user.getEmail());
 			System.out.println(output + "\n");
 
 		} catch (Exception e) {
@@ -95,7 +95,7 @@ public class BackEndREST {
 			}	       
 			String output = response.getEntity(String.class);
 
-			System.out.println("Output from Server .... ");
+			System.out.println("Output from Server .... send Connect Request by" + user.getEmail());
 			System.out.println(output + "\n");
 		} catch (Exception e) {
 
@@ -112,7 +112,7 @@ public class BackEndREST {
 
 			String output = response.getEntity(String.class);
 
-			System.out.println("Output from Server .... ");
+			System.out.println("Output from Server ....  accept All Connections " + user.getEmail());
 			System.out.println(output + "\n");
 
 			JSONArray newJArray = new JSONArray(output);
@@ -138,7 +138,7 @@ public class BackEndREST {
 
 			String output = response.getEntity(String.class);
 
-			System.out.println("Output from Server .... ");
+			System.out.println("Output from Server ....  change Connect Request Status " + user.getEmail());
 			System.out.println(output + "\n");
 		} catch (Exception e) {
 
@@ -159,7 +159,7 @@ public class BackEndREST {
 			String output = response.getEntity(String.class);
 			JSONObject jsonObj =  new JSONObject(output);
 			jsonObj.getString("id");
-			System.out.println("Output from Server .... ");
+			System.out.println("Output from Server .... register New User "  + email);
 			System.out.println(output + "\n");
 		} catch (Exception e) {
 
@@ -174,7 +174,7 @@ public class BackEndREST {
 			ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
 			if (response.getStatus() != 200) {  throw new RuntimeException("Failed : HTTP error code : "	+ response.getStatus());}
 
-			System.out.println("Output from Server .... ");
+			System.out.println("Output from Server .... activate New User");
 			System.out.println("User activated\n");
 
 		} catch (Exception e) {
