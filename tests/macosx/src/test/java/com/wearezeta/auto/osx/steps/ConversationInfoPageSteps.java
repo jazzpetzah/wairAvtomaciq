@@ -11,6 +11,7 @@ import cucumber.api.java.en.When;
 public class ConversationInfoPageSteps {
 	@When("I choose user (.*) in Conversation info")
 	public void WhenIChooseUserInConversationInfo(String user) throws MalformedURLException, IOException {
+		user = CommonUtils.retrieveRealUserContactPasswordValue(user);
 		CommonSteps.senderPages.setConversationInfoPage(new ConversationInfoPage(
 				 CommonUtils.getUrlFromConfig(ConversationInfoPage.class),
 				 CommonUtils.getAppPathFromConfig(ConversationInfoPage.class)

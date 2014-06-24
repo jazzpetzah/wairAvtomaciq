@@ -3,16 +3,23 @@ package com.wearezeta.auto.common;
 
 import io.appium.java_client.AppiumDriver;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
+
+import javax.imageio.ImageIO;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -27,6 +34,19 @@ public class DriverUtils {
 	 public static boolean isNullOrEmpty(String s) {
 		    return s == null || s.length() == 0;
 	 }
+	 
+	 public static boolean isElementDisplayed(WebElement element)
+		{
+			boolean flag = true;
+			try{
+				element.isDisplayed();
+			}
+			catch(Exception ex)
+			{
+				flag = false;
+			}
+			return flag;
+		}
 	 
 	 public static boolean waitUntilElementDissapear(RemoteWebDriver driver, final By by) {
 	 
@@ -178,7 +198,11 @@ public class DriverUtils {
 			tapObject.put("x", (double) (coords.x + elementSize.width/2));
 			tapObject.put("y", (double) (coords.y + elementSize.height/2));
 	        
-			js.executeScript("mobile: tap", tapObject);
+			for(int i=0;i<tapNumber;i++)
+	        { 
+	        	js.executeScript("mobile: tap", tapObject);
+	        	Thread.sleep(100);
+	        }
 	 }
 
 	 public static void turnOffImplicitWait(RemoteWebDriver driver) {
@@ -192,4 +216,11 @@ public class DriverUtils {
 	 public static void setImplicitWaitValue(RemoteWebDriver driver, int seconds) {
 		 driver.manage().timeouts().implicitlyWait(seconds, TimeUnit.SECONDS);
 	 }
+
+	public static BufferedImage takeScreenshot(RemoteWebDriver driver) throws IOException {
+		byte[] scrImage = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES);
+		InputStream in = new ByteArrayInputStream(scrImage);
+		BufferedImage bImageFromConvert = ImageIO.read(in);
+		return bImageFromConvert;
+	}
 }

@@ -27,6 +27,9 @@ public class LoginPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameLoginButton)
 	private WebElement confirmSignInButton;
 	
+	@FindBy(how = How.NAME, using = IOSLocators.nameSignUpButton)
+	private WebElement signUpButton;
+	
 	@FindBy(how = How.NAME, using = IOSLocators.nameLoginField)
 	private WebElement loginField;
 	
@@ -62,7 +65,7 @@ public class LoginPage extends IOSPage {
 		return viewPager != null;
 	}
 	
-	public IOSPage SignIn() throws IOException{
+	public IOSPage signIn() throws IOException{
 		
 		IOSPage page = null;
 		
@@ -75,6 +78,13 @@ public class LoginPage extends IOSPage {
 			page = new ContactListPage(url, path);
 		}
 		return page;
+	}
+	
+	public RegistrationPage join() throws IOException{
+		
+		signUpButton.click();
+
+		return new RegistrationPage(url, path);
 	}
 
 	public String getLogin() {

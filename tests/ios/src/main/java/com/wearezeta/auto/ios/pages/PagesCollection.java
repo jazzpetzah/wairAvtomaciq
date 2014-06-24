@@ -13,5 +13,6 @@ public class PagesCollection {
 	 public static ConnectToPage connectToPage = null;
 	 public static GroupChatPage groupChatPage = null;
 	 public static GroupChatInfoPage groupChatInfoPage = null;  
+	 public static RegistrationPage registrationPage = null;
 	 public static CameraRollPage cameraRollPage = null;
 }

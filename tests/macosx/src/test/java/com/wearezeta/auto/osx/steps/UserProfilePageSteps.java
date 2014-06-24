@@ -1,12 +1,16 @@
 package com.wearezeta.auto.osx.steps;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;
+import com.wearezeta.auto.osx.pages.OSXPage;
+import com.wearezeta.auto.osx.pages.UserProfilePage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -47,9 +51,18 @@ public class UserProfilePageSteps {
 		CommonSteps.senderPages.getUserProfilePage().doPhotoInCamera();
 		CommonSteps.senderPages.getUserProfilePage().confirmPictureChoice();
 	}
-	
-	@Then("I see changed picture")
-	public void ThenISeeChangedPicture() {
-		//TODO: implement changed picture comparison
+
+	@Then("I see changed user picture (.*)")
+	public void ThenISeeChangedUserPicture(String filename) throws IOException {
+		UserProfilePage userProfile = CommonSteps.senderPages.getUserProfilePage();
+		userProfile.openPictureSettings();
+		BufferedImage referenceImage = userProfile.takeScreenshot();
+
+		BufferedImage templateImage = ImageUtil.readImageFromFile(OSXPage.imagesPath + filename);
+		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);
+		Assert.assertTrue(
+				"Overlap between two images has no enough score. Expected >= 0.55, current = " + score,
+				score >= 0.55d);
+		
 	}
 }

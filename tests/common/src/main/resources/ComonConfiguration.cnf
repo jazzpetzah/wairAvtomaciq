@@ -1,0 +1,6 @@
+#Common configuration file
+defaultEmail=smoketester@wearezeta.com
+defaultPassword=aqa123456
+defaultBackEndUrl=https://dev-nginz-https.zinfra.io
+defaultWindowsImagePath=C:\\WearezetaRepo\\zautomation\\tests\\tools\\img\\userpicture.jpg
+ 

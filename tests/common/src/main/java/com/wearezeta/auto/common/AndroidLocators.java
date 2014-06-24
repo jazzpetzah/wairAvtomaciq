@@ -6,13 +6,17 @@ public final class AndroidLocators {
 	
 	public static final String classNameTextView = "android.widget.TextView";
 	
+	public static final String xpathImagesFrameLayout = "//android.widget.GridView/android.widget.FrameLayout";
+	
 	public static final String idSignInButton = "com.waz.zclient:id/button_sign_in";
+	
+	public static final String idSignUpButton = "com.waz.zclient:id/button_new_user";
 	
 	public static final String idLoginButton = "com.waz.zclient:id/button_login";
 	
 	public static final String idLoginField = "com.waz.zclient:id/username_or_email";
 	
-	public static final String idPasswodField = "com.waz.zclient:id/password";
+	public static final String idPasswordField = "com.waz.zclient:id/password";
 	
 	public static final String idLoginProgressBar = "com.waz.zclient:id/progressBar1";
 	
@@ -24,6 +28,14 @@ public final class AndroidLocators {
 
 	public static final String idEmailField = "com.waz.zclient:id/email";
 	
+	public static final String idNameField = "com.waz.zclient:id/name";
+	
+	public static final String idCreateUserBtn = "com.waz.zclient:id/create_user";
+	
+	public static final String idVerifyEmailBtn = "com.waz.zclient:id/button_verify_email";
+	
+	public static final String idNewPasswordField = "com.waz.zclient:id/new_password";
+		
 	public static final String idWelcomeButtonsContainer = "com.waz.zclient:id/welcome_buttons";
 	
 	public static final String idCursorInput = "com.waz.zclient:id/cursor_input";
@@ -62,4 +74,11 @@ public final class AndroidLocators {
 	
 	public static final String idOtherUserPersonalInfoName = "com.waz.zclient:id/metaHeader";
 	
+	public static final String idLeaveConversationConfirmationMenu = "com.waz.zclient:id/meta_confirmation_menu";
+	
+	public static final String idConfirmBtn = "com.waz.zclient:id/confirm"; 
+	
+	public static final String idChangePhotoBtn = "com.waz.zclient:id/button_change";
+	
+	public static final String idGalleryBtn = "com.waz.zclient:id/button_gallery";
 }

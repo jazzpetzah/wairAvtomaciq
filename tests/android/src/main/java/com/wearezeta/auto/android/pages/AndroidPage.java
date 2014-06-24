@@ -34,7 +34,7 @@ public abstract class AndroidPage extends BasePage {
 
 	@Override
 	public void Close() throws IOException {
-		Runtime.getRuntime().exec("cmd /C adb shell am force-stop com.waz.zclient");
+		CommonUtils.killAndroidClient();
 		super.Close();
 	}
 	
@@ -86,5 +86,7 @@ public abstract class AndroidPage extends BasePage {
 		PagesCollection.connectToPage = null;
 		PagesCollection.otherUserPersonalInfoPage = null;
 		PagesCollection.groupChatPage = null;
+		PagesCollection.registrationPage = null;
+		PagesCollection.groupChatInfoPage = null;
 	}
 }

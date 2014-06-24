@@ -44,6 +44,12 @@ public class LoginPageSteps {
 		 PagesCollection.loginPage.SignIn();
 	 }
 	 
+	 @When("I press Join button")
+	 public void WhenIPressJoinButton() throws IOException {
+		 
+		 PagesCollection.registrationPage = PagesCollection.loginPage.join();
+	 }
+	 
 	 @When ("I have entered login (.*)")
 	 public void WhenIHaveEnteredLogin(String login) {
 		 if(login.contains(CommonUtils.YOUR_USER_1)){

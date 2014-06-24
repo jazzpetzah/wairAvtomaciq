@@ -8,15 +8,31 @@ import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.AndroidLocators;
+import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.common.SwipeDirection;
 
 public class PersonalInfoPage extends AndroidPage
 {
 	@FindBy(how = How.ID, using = AndroidLocators.idEmailField)
 	private WebElement emailField;
+
+	@FindBy(how = How.ID, using = AndroidLocators.idChangePhotoBtn)
+	private WebElement changePhotoBtn;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idGalleryBtn)
+	private WebElement galleryBtn;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idDialogOkButton)
+	private WebElement confirmBtn;
 	
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameTextView)
 	private List<WebElement> optionsButtons;
+	
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameLoginPage)
+	private WebElement page;
+	
+	@FindBy(how = How.XPATH, using = AndroidLocators.xpathImagesFrameLayout)
+	private List<WebElement> frameLayouts;
 	
 	public PersonalInfoPage(String URL, String path) throws IOException {
 		super(URL, path);
@@ -26,6 +42,26 @@ public class PersonalInfoPage extends AndroidPage
 	public void waitForEmailFieldVisible(){
 		
 		wait.until(ExpectedConditions.visibilityOf(emailField));
+	}
+	
+	public void clickOnPage() throws InterruptedException{
+		DriverUtils.androidMultiTap(driver, page,1);
+	}
+	
+	public void selectPhoto(){
+		frameLayouts.get(0).click();
+	}
+	
+	public void tapChangePhotoButton(){
+		changePhotoBtn.click();
+	}
+	
+	public void tapGalleryButton(){
+		galleryBtn.click();
+	}
+	
+	public void tapConfirmButton(){
+		confirmBtn.click();
 	}
 	
 	public void tapOptionsButtonByText(String buttonText){

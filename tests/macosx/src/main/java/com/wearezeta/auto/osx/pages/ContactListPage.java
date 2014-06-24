@@ -57,16 +57,55 @@ public class ContactListPage extends OSXPage {
 	}
 	
 	public boolean isContactWithNameExists(String name) {
-		String xpath = String.format(OSXLocators.xpathFormatContactEntryWithName, name);
-		return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath));
+		if (name.contains(",")) {
+			String[] exContacts = name.split(",");
+
+			for (WebElement contact: this.contactsTextFields) {
+				boolean isFound = true;
+				String realContact = contact.getText();
+				for (String exContact: exContacts) {
+					if (!realContact.contains(exContact.trim())) {
+						isFound = false;
+					}
+				}
+				if (isFound) {
+					return true;
+				}
+			}
+		} else {
+			String xpath = String.format(OSXLocators.xpathFormatContactEntryWithName, name);
+			return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath));
+		}
+		return false;
 	}
 	
 	public boolean openConversation(String conversationName) {
-		scrollToConversationInList(conversationName);
-		for (WebElement contact: this.contactsTextFields) {
-			if (contact.getText().equals(conversationName)) {
-				contact.click();
-				return true;
+
+		if (conversationName.contains(",")) {
+			String[] exContacts = conversationName.split(",");
+
+			for (WebElement contact: this.contactsTextFields) {
+				boolean isFound = true;
+				String realContact = contact.getText();
+				for (String exContact: exContacts) {
+					if (!realContact.contains(exContact.trim())) {
+						isFound = false;
+					}
+				}
+				if (isFound) {
+					scrollToConversationInList(contact);
+
+					contact.click();
+					return true;
+				}
+			}
+		} else {
+			for (WebElement contact: this.contactsTextFields) {
+				if (contact.getText().equals(conversationName)) {
+					scrollToConversationInList(contact);
+					contact.click();
+					return true;
+				}
 			}
 		}
 		return false;
@@ -113,7 +152,7 @@ public class ContactListPage extends OSXPage {
 		super.Close();
 	}
 	
-	public void scrollToConversationInList(String conversationName) {
+	public void scrollToConversationInList(WebElement conversation) {
     	NSPoint mainPosition = NSPoint.fromString(mainWindow.getAttribute("AXPosition"));
     	NSPoint mainSize = NSPoint.fromString(mainWindow.getAttribute("AXSize"));
     	
@@ -125,20 +164,10 @@ public class ContactListPage extends OSXPage {
     	WebElement peopleIncrementSB = null;
 
     	WebElement scrollArea = driver.findElement(By.xpath(OSXLocators.xpathConversationListScrollArea));
-   
-    	WebElement userContact = null;
+    
+    	WebElement userContact = conversation;
     	boolean isFoundPeople = false;
-		try {
-			for (WebElement contact: contactsTextFields) {
-				if (contact.getText().equals(conversationName)) {
-					isFoundPeople = true;
-					userContact = contact;
-				}
-			}
-		} catch (NoSuchElementException e) {
-			isFoundPeople = false;
-		}
-		
+
         NSPoint userPosition = NSPoint.fromString(userContact.getAttribute("AXPosition"));
         if (userPosition.y() > latestPoint.y() || userPosition.y() < mainPosition.y()) {
         	if (isFoundPeople) {

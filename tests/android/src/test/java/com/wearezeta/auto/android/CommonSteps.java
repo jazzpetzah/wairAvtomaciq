@@ -1,7 +1,5 @@
 package com.wearezeta.auto.android;
 
-import java.io.File;
-
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.LoginPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
@@ -13,25 +11,32 @@ import cucumber.api.java.After;
 import cucumber.api.java.Before;
 
 public class CommonSteps {
-	
+
 	private String path;
-	
+
 	@Before
-	 public void setUp() throws Exception {
+	public void setUp() throws Exception {
+
 		if(Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class)) &&  (CommonUtils.yourUsers.size()==0 || !CommonUtils.yourUsers.get(0).getUserState().equals(UsersState.AllContactsConnected))){
 			CommonUtils.generateUsers(2);
-	    	TestPreparation.createContactLinks();
+			TestPreparation.createContactLinks();
 		}
-		
-	    path = CommonUtils.getAppPathFromConfig(CommonSteps.class);
-	    if ( PagesCollection.loginPage == null){
-	        	PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(CommonSteps.class), path);
-	    }
-	 }
-	 
-	 @After
-	 public void tearDown() throws Exception {
-		 PagesCollection.loginPage.Close();
-		 AndroidPage.clearPagesCollection();
-	 }
+
+		path = CommonUtils.getAppPathFromConfig(CommonSteps.class);
+		if ( PagesCollection.loginPage == null){
+			PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(CommonSteps.class), path);
+		}
+		try {
+			CommonUtils.uploadPhotoToAndroid();
+		}
+		catch(Exception ex){
+			System.out.println("Failed to deploy pictures into simulator");
+		}
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		PagesCollection.loginPage.Close();
+		AndroidPage.clearPagesCollection();
+	}
 }

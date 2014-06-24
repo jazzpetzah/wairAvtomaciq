@@ -15,6 +15,15 @@ public class CommonSteps {
 	
 	@Before
 	 public void setUp() throws Exception {
+		
+
+		try {
+			CommonUtils.iOSSimulatorCameraRoll();
+		}
+		catch(Exception ex){
+			System.out.println("Failed to deploy pictures into simulator");
+		}
+		
 		if(Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class)) &&  (CommonUtils.yourUsers.size()==0 || !CommonUtils.yourUsers.get(0).getUserState().equals(UsersState.AllContactsConnected))){
 			CommonUtils.generateUsers(2);
 	    	TestPreparation.createContactLinks();
@@ -29,6 +38,7 @@ public class CommonSteps {
 		{
 			PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(TestRun.class), path);
 		}
+
 	 }
 	 
 	 @After

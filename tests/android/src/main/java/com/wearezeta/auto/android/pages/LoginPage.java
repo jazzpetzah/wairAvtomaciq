@@ -17,13 +17,16 @@ public class LoginPage extends AndroidPage {
 	@FindBy(how = How.ID, using = AndroidLocators.idSignInButton)
 	private WebElement signInButton;
 	
+	@FindBy(how = How.ID, using = AndroidLocators.idSignUpButton)
+	private WebElement signUpButton;
+	
 	@FindBy(how = How.ID, using = AndroidLocators.idLoginButton)
 	private WebElement confirmSignInButton;
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idLoginField)
 	private WebElement loginField;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idPasswodField)
+	@FindBy(how = How.ID, using = AndroidLocators.idPasswordField)
 	private WebElement passwordField;
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idWelcomeButtonsContainer)
@@ -54,7 +57,7 @@ public class LoginPage extends AndroidPage {
 			signInButton.click();
 			page = this;
 		}
-		catch(NoSuchElementException ex) {
+		catch(Exception ex) {
 			confirmSignInButton.click();
 			page = new ContactListPage(url, path);
 		}
@@ -99,6 +102,12 @@ public class LoginPage extends AndroidPage {
 	public AndroidPage returnBySwipe(SwipeDirection direction) {
 		// no need to swipe
 		return null;
+	}
+
+	public RegistrationPage join() throws IOException {
+		signUpButton.click();
+
+		return new RegistrationPage(url, path);
 	}
 
 }

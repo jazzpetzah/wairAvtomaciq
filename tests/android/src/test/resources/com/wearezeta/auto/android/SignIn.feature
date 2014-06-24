@@ -9,5 +9,5 @@ Feature: Sign In
     Then Contact list appears with my name <Name>
 
     Examples: 
-      | Login   | Password | Name    |
-      | aqaUser | aqaUser  | aqaUser |
+      | Login   | Password     | Name    |
+      | aqaUser | aqaPassword  | aqaUser |
