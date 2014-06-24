@@ -24,14 +24,19 @@ public class CommonSteps {
 			System.out.println("Failed to deploy pictures into simulator");
 		}
 		
-		if(Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class)) &&  (CommonUtils.yourUsers.size()==0 || !CommonUtils.yourUsers.get(0).getUserState().equals(UsersState.AllContactsConnected))){
-			CommonUtils.generateUsers(2);
-	    	TestPreparation.createContactLinks();
+		boolean generateUsersFlag = Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class));
+		
+		if ((CommonUtils.yourUsers.size() == 0 
+				|| !CommonUtils.yourUsers.get(0).getUserState().equals(UsersState.AllContactsConnected))) {
+			
+			if (generateUsersFlag) {
+				CommonUtils.generateUsers(2);
+				TestPreparation.createContactLinks();
+			} else {
+				CommonUtils.usePrecreatedUsers();
+			}
 		}
-		
-		String photoScriptPath = CommonUtils.getPhotoScriptPath(CommonSteps.class);
-		DriverUtils.iOSSimulatorCameraRoll(photoScriptPath);
-		
+
 		String path = CommonUtils.getAppPathFromConfig(TestRun.class);
 		
 		if ( PagesCollection.loginPage == null)

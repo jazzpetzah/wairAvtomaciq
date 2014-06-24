@@ -1,7 +1,10 @@
 package com.wearezeta.auto.ios;
 
+import java.io.IOException;
+
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 
 import cucumber.api.java.en.Then;
@@ -28,5 +31,12 @@ public class GroupChatInfoPageSteps {
 	@Then("^I press leave$")
 	public void IPressLeave() throws Throwable {
 		PagesCollection.groupChatInfoPage.confirmLeaveConversation();
+	}
+	
+	@When("^I select contact (.*)$")
+	public void ISelectContact(String name) throws IOException {
+		
+		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		PagesCollection.otherUserPersonalInfoPage = PagesCollection.groupChatInfoPage.selectContactByName(name);
 	}
 }

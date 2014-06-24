@@ -39,6 +39,12 @@ public class GroupChatInfoPage extends IOSPage{
 		leaveChatButton.click();
 	}
 	
+	public OtherUserPersonalInfoPage selectContactByName(String name) throws IOException {
+		driver.findElementByName(name.toUpperCase()).click();
+		
+		return new OtherUserPersonalInfoPage(url, path);
+	}
+	
 	public boolean isLeaveConversationAlertVisible() {
 		
 		return DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameLeaveConversationAlert));

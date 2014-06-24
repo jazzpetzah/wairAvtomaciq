@@ -120,4 +120,37 @@ public class DialogPageSteps {
 	}
 
 
+	
+	@When("^I swipe the text input cursor$")
+	public void ISwipeTheTextInputCursor() throws Throwable {
+		PagesCollection.dialogPage.swipeInputCursor();
+	}
+	
+	@When("^I press Add Picture button$")
+	public void IPressAddPictureButton() throws Throwable {
+		PagesCollection.dialogPage.pressAddPictureButton();
+	}
+	
+	@When("^I press Camera Roll button$")
+	public void IPressCameraRollButton() throws Throwable {
+		PagesCollection.dialogPage.pressCameraRollButton();
+	}
+	
+	@When("^I choose a picture from camera roll$")
+	public void IChooseAPictureFromCameraRoll() throws Throwable {
+		PagesCollection.dialogPage.openCameraRoll();
+	}
+	
+	@When("^I press Confirm button$")
+	public void IPressConfirmButton() throws Throwable {
+		PagesCollection.dialogPage.pressConfirmButton();
+	}
+
+	@Then("^I see new photo in the dialog$")
+	public void ISeeNewPhotoInTheDialog() throws Throwable {
+		String dialogLastMessage = PagesCollection.dialogPage.getImageCellFromDialog();
+		String imageCell = "ImageCell";
+		Assert.assertEquals(imageCell, dialogLastMessage);
+	}
+
 }

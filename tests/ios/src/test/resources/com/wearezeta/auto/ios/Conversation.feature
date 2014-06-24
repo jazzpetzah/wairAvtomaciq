@@ -14,7 +14,7 @@ Feature: Conversation
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
 
-
+ 
     Scenario Outline: Send Hello to contact
 		Given I Sign in using login <Login> and password <Password> 
     	And I see Contact list with my name <Name>
@@ -41,11 +41,6 @@ Feature: Conversation
     	And I choose a picture from camera roll
     	And I press Confirm button
     	Then I see new photo in the dialog
-    
-    	Examples: 
-    	|	Login	|	Password	|	Name	|	Contact		|
-   	    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
-    
     
 	Scenario Outline: Start group chat with users from contact list
 		Given I Sign in using login <Login> and password <Password>
@@ -82,7 +77,22 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
     
-   
+
+Scenario Outline: Send a camera roll picture to user from contact list
+	Given I Sign in using login <Login> and password <Password>
+	And I see Contact list with my name <Name>
+	When I tap on contact name <Contact>
+	And I see dialog page
+	And I swipe the text input cursor
+ 	And I press Add Picture button
+ 	And I press Camera Roll button
+ 	And I choose a picture from camera roll
+ 	And I press Confirm button
+ 	Then I see new photo in the dialog
+    
+Examples: 
+	|	Login		|	Password		|	Name		|	Contact			|
+	|	aqaUser		|	aqaPassword		|	aqaUser		|	aqaContact1		|
 Scenario Outline: Leave from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -100,5 +110,23 @@ Scenario Outline: Leave from group chat
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
+    
+
+ Scenario Outline: Remove from group chat
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+	When I create group chat with <Contact1> and <Contact2>
+	And I swipe left on group chat page
+	And I select contact <Contact2>
+	And I swipe up on other user profile page
+	And I click Remove
+	And I see warning message 
+	And I confirm remove
+	Then I see that <Contact2> is not present on group chat page
+	
+		
+Examples:
+    |  Login		| Password		| Name			| Contact1		| Contact2		|
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
     
 

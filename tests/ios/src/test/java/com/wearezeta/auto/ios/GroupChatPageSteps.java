@@ -32,4 +32,9 @@ public class GroupChatPageSteps {
 		Assert.assertTrue(PagesCollection.groupChatPage.isYouHaveLeftVisible());
 	}
 
+	@Then("^I see that (.*) is not present on group chat page$")
+	public void ISeeContactIsNotPresentOnGroupChatPage(String contact) throws InterruptedException {
+
+		Assert.assertTrue(PagesCollection.groupChatPage.waitForContactToDisappear(contact));
+	}
 }
