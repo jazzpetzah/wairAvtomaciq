@@ -17,5 +17,5 @@ Scenario Outline: Change your profile picture
 	
 	
 	Examples:
-    |	Login							|	Password	|	Name			|
-    |	piotr.iazadji@wearezeta.com		|	asdfer123	|	Piotr Iazadji	|
+    |	Login		|	Password	|	Name			|
+    |	aqaUser		|	aqaPassword	|	aqaUser	|

@@ -5,5 +5,5 @@ appPath=/Users/julianereschke/Library/Developer/Xcode/DerivedData/ZClient-fxsmvh
 isSimulator=true
 generateUsers=true
 swipeScriptPath=/Users/admin/./swipeInWindow.py
-photoScriptPath=/Users/admin/push_photo_to_simulator.sh
+photoScriptPath=/Users/julianereschke/Projects/zautomation/tests/tools/push_photo_to_simulator.sh
 driverTimeoutSeconds=10

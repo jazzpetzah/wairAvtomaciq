@@ -53,11 +53,6 @@ public class CommonUtils {
 		return value;
 	}
 	
-	private static String getPhotoScriptPath(Class c)throws IOException {
-
-        return getValueFromConfig(c, "photoScriptPath");
-	}
-	
 	private static String getWindowsImagePath(Class c)throws IOException {
 
         return getValueFromConfig(c, "defaultWindowsImagePath");

@@ -92,8 +92,6 @@ public final class IOSLocators {
 	
 	public static final String xpathHeyCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[last()]";
 	
-	public static final String nameCameraButton = "CameraButton";
-	
 	public static final String namePhotoButton = "PhotoLibraryButton";
 	
 	public static final String nameAlbum = "Saved Photos";
@@ -121,6 +119,7 @@ public final class IOSLocators {
 	public static final String nameLeaveConversationButton = "LEAVE";
 	
 	public static final String nameYouHaveLeft = "YOU HAVE LEFT";
+	
 	public static final String xpathPersonalInfoPage = "//UIAApplication[1]/UIAWindow[1]";
 	
 	public static final String nameCameraButton = "cameraButton";
