@@ -46,7 +46,7 @@ public class ContactListPageSteps {
 			PagesCollection.androidPage = PagesCollection.contactListPage.tapOnName(name);
 		}
 	}
-
+	
 	@Then ("Contact list appears with my name (.*)")
 	public void ThenContactListAppears(String name) {
 		Assert.assertTrue("Login finished", PagesCollection.loginPage.waitForLogin());

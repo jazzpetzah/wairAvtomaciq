@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.*;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.*;
 
 import com.wearezeta.auto.common.*;

@@ -60,7 +60,7 @@ public class PersonalInfoPage extends AndroidPage
 		galleryBtn.click();
 	}
 	
-	public void tapConfirmButton(){
+	public void tapConfirmButton() throws IOException{
 		confirmBtn.click();
 	}
 	

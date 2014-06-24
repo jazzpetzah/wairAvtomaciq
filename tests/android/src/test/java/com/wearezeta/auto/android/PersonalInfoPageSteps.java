@@ -1,9 +1,15 @@
 package com.wearezeta.auto.android;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import com.wearezeta.auto.android.pages.PagesCollection;
+import org.junit.Assert;
 
+import com.wearezeta.auto.android.pages.PagesCollection;
+import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.ImageUtil;
+
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class PersonalInfoPageSteps {
@@ -41,6 +47,19 @@ public class PersonalInfoPageSteps {
 	@When("^I press Confirm button$")
 	public void WhenIPressConfirmButton() throws Throwable {
 		PagesCollection.personalInfoPaga.tapConfirmButton();
+	}
+	
+	@Then("I see changed user picture")
+	public void ThenISeeChangedUserPicture() throws IOException {
+
+		BufferedImage referenceImage = PagesCollection.personalInfoPaga.takeScreenshot();
+		String path = CommonUtils.getWindowsImagePath(PersonalInfoPageSteps.class);
+		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
+		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);
+		Assert.assertTrue(
+				"Overlap between two images has no enough score. Expected >= 0.55, current = " + score,
+				score >= 0.55d);
+		
 	}
 	
 }
