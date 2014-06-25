@@ -20,9 +20,7 @@ Feature: Register new user
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
     
-    
-@torun
-    Scenario Outline: Attempt to register an email with spaces
+  Scenario Outline: Attempt to register an email with spaces
     Given I see sign in screen
 	When I press Join button
 	And I press Picture button
@@ -36,3 +34,18 @@ Feature: Register new user
     Examples:     
     |	Email				    |	Password	        |  Name			    |
     |	aqaUser           	    |	aqaPassword	        |  aqaUser      	|
+        
+  Scenario Outline: Attempt to register an email with incorrect format
+    Given I see sign in screen
+	When I press Join button
+	And I press Picture button
+	And I choose photo from album
+	And I See selected picture
+	And I confirm selection
+	And I enter name <Name>
+	And I attempt to enter emails with known incorrect formats
+	Then I verify that the app does not let me continue
+
+    Examples:     
+    |  Name			    |
+    |  aqaUser      	|

@@ -123,4 +123,7 @@ public final class IOSLocators {
 	public static final String xpathCameraRollPicture = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[1]";
 	
 	public static final String nameConfirmPictureButton = "ImageConfirmerConfirmButton";
-}
+	
+	public static final String nameProvideValidEmailMessage = "PLEASE PROVIDE A VALID EMAIL ADDRESS";
+	//public static final String xpathProvideValidEmailMessage = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]"; //"//UIAButton[contains(@label, \"%s\")]";
+	}

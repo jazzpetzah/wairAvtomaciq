@@ -54,10 +54,15 @@ public class RegistrationPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameContinueButton)
 	private WebElement continueButton;
 	
+	@FindBy(how = How.NAME, using = IOSLocators.nameProvideValidEmailMessage)//@FindBy(how = How.XPATH, using = IOSLocators.xpathProvideValidEmailMessage)
+	private WebElement provideValidEmailMessage;
+	
 	private String name;
 	private String email;
 	private String password;
 
+	private String[] listOfEmails;
+	
 	public RegistrationPage(String URL, String path)
 			throws MalformedURLException {
 		super(URL, path);
@@ -103,6 +108,20 @@ public class RegistrationPage extends IOSPage {
 	{
 		yourName.sendKeys(getName() + "\n");
 		yourEmail.sendKeys(getEmail());
+	}
+	
+	
+	public boolean typeAllInvalidEmails()
+	{
+		yourName.sendKeys(getName() + "\n");
+		for(int i=0; i<listOfEmails.length;i++){
+			yourEmail.sendKeys(listOfEmails[i]+"\n");
+			if(!provideValidEmailMessage.isDisplayed()){
+			return false;
+			}
+
+		}
+		return true; //returns true if all emails are found to be invalid
 	}
 	
 	public String getEmailFieldValue()
@@ -165,5 +184,12 @@ public class RegistrationPage extends IOSPage {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
+	
+	public String[] getListOfEmails() {
+		return listOfEmails;
+	}
+	
+	public void setListOfEmails(String[] list){
+		this.listOfEmails = list;
+	}
 }
