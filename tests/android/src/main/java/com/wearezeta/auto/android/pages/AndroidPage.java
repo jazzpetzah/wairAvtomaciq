@@ -34,7 +34,11 @@ public abstract class AndroidPage extends BasePage {
 
 	@Override
 	public void Close() throws IOException {
-		CommonUtils.killAndroidClient();
+		try {
+			CommonUtils.killAndroidClient();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		super.Close();
 	}
 	

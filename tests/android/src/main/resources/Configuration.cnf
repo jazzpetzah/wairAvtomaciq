@@ -8,3 +8,5 @@ package=com.waz.zclient
 activity=.StartupScreenActivity
 generateUsers=true
 driverTimeoutSeconds=10
+defaultWindowsImagePath=C:\\WearezetaRepo\\zautomation\\tests\\tools\\img\\userpicture.jpg
+defaultOsXImagePath=/Users/Jenkins/Documents/userpicture.jpg

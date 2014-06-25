@@ -4,6 +4,8 @@ public final class AndroidLocators {
 	
 	public static final String classNameLoginPage = "android.support.v4.view.ViewPager";
 	
+	public static final String classNameFrameLayout = "android.widget.FrameLayout";
+	
 	public static final String classNameTextView = "android.widget.TextView";
 	
 	public static final String xpathImagesFrameLayout = "//android.widget.GridView/android.widget.FrameLayout";
@@ -76,9 +78,13 @@ public final class AndroidLocators {
 	
 	public static final String idLeaveConversationConfirmationMenu = "com.waz.zclient:id/meta_confirmation_menu";
 	
+	public static final String idUserProfileConfirmationMenu = "com.waz.zclient:id/user_profile_confirmation_menu";
+	
 	public static final String idConfirmBtn = "com.waz.zclient:id/confirm"; 
 	
 	public static final String idChangePhotoBtn = "com.waz.zclient:id/button_change";
 	
 	public static final String idGalleryBtn = "com.waz.zclient:id/button_gallery";
+	
+	public static final String idGroupChatUserName = "com.waz.zclient:id/pick_user_textView";
 }

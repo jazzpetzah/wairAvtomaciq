@@ -21,17 +21,29 @@ public class CommonUtils {
 		return System.getProperty("os.name");
 	}
 	
-	public static void uploadPhotoToAndroid() throws IOException{
+	public static void uploadPhotoToAndroid() throws Exception{
 		if(getOsName().contains(FIRST_OS_NAME)){
 		    Runtime.getRuntime().exec("cmd /C adb push " + getWindowsImagePath(CommonUtils.class) + "/mnt/sdcard/DCIM/Camera/userpicture.jpg");
 		    Runtime.getRuntime().exec("cmd /C adb -d shell \"am broadcast -a android.intent.action.MEDIA_MOUNTED -d file:///sdcard \"Broadcasting: Intent { act=android.intent.action.MEDIA_MOUNTED dat=file:///sdcard }");
 		}
+		else{
+			executeOsXCommand(new String[]{"/bin/bash", "-c", "adb push", getOsXImagePath(CommonUtils.class),"/mnt/sdcard/DCIM/Camera/userpicture.jpg"});
+			executeOsXCommand(new String[]{"/bin/bash", "-c", "adb shell am broadcast -a android.intent.action.MEDIA_MOUNTED -d file:///sdcard Broadcasting: Intent { act=android.intent.action.MEDIA_MOUNTED dat=file:///sdcard }"});
+		}
 	}
-	public static void killAndroidClient() throws IOException
+	public static void killAndroidClient() throws Exception
 	{
 		if(getOsName().contains(FIRST_OS_NAME)){
 			Runtime.getRuntime().exec("cmd /C adb shell am force-stop com.waz.zclient");
 		}
+		else{
+			executeOsXCommand(new String[]{"/bin/bash", "-c", "adb shell am force-stop com.waz.zclient"});
+		}
+	}
+	
+	private static void executeOsXCommand(String [] cmd) throws Exception{
+		Process process = Runtime.getRuntime().exec(cmd);
+		 System.out.print("Process Code"+ process.waitFor());
 	}
 	
 	public static String retrieveRealUserContactPasswordValue(String value) {
@@ -61,9 +73,14 @@ public class CommonUtils {
         return getValueFromConfig(c, "photoScriptPath");
 	}
 	
-	private static String getWindowsImagePath(Class c)throws IOException {
+	public static String getWindowsImagePath(Class c)throws IOException {
 
         return getValueFromConfig(c, "defaultWindowsImagePath");
+	}
+	
+	public static String getOsXImagePath(Class c)throws IOException {
+
+        return getValueFromConfig(c, "defaultOsXImagePath");
 	}
 	
 	private static String getValueFromConfig(Class c, String key) throws IOException {

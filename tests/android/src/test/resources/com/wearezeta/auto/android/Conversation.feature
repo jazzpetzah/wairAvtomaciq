@@ -40,7 +40,7 @@ Feature: Conversation
     Examples: 
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
-  
+
   Scenario Outline: Start group chat with users from contact list
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -74,7 +74,6 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
 
-
   Scenario Outline: Leave group conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -89,3 +88,21 @@ Feature: Conversation
     Examples: 
       | Login   | Password    | Name    | Contact1    | Contact2    |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
+      
+@torun
+  Scenario Outline: Remove from group chat
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I create group chat with <Contact1> and <Contact2>
+    And I swipe left on group dialog page
+    And I select contact <Contact2>
+    And I swipe up on other user profile page
+    And I click Remove
+    And I see warning message
+    And I confirm remove
+    And I swipe right on group chat info page
+    Then I see that <Contact2> is not present on group chat page
+
+    Examples: 
+      | Login   | Password    | Name    | Contact1    | Contact2    |
+      | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 |
