@@ -19,3 +19,20 @@ Feature: Register new user
     Examples:     
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
+    
+    
+@torun
+  Scenario Outline: Register new user using >72 character username
+	Given I see sign in screen
+	When I press Join button
+	And I press Picture button
+	And I choose photo from album
+	And I See selected picture
+	And I confirm selection
+	And I enter a username as long as the character limit
+	Then I verify that my username is as long as the character limit
+	
+	 Examples:     
+    |	Email						|	Password	    |
+    |	aqaUser             	    |	aqaPassword	    |
+    
