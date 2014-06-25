@@ -13,12 +13,8 @@ public class OtherUserPersonalInfoPageSteps {
 
 	@When("^I see (.*) user profile page$")
 	public void WhenISeeOherUserProfilePage(String name){
-		if(name.contains(CommonUtils.CONTACT_1)){
-			PagesCollection.otherUserPersonalInfoPage.isOtherUserNameVisible(CommonUtils.contacts.get(0).getName());
-		}
-		else{
-			PagesCollection.otherUserPersonalInfoPage.isOtherUserNameVisible(name);
-		}
+		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		PagesCollection.otherUserPersonalInfoPage.isOtherUserNameVisible(name);
 	}
 	
 	@When("^I swipe down other user profile page$")

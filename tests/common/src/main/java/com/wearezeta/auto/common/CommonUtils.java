@@ -11,6 +11,7 @@ public class CommonUtils {
 	public static final String FIRST_OS_NAME = "Windows";
 	public static final String YOUR_USER_1 = "aqaUser";
 	public static final String YOUR_USER_2 = "yourUser";
+	public static final String YOUR_USER_3 = "yourContact";
 	public static final String YOUR_PASS = "aqaPassword";
 	public static final String CONTACT_1 = "aqaContact1";
 	public static final String CONTACT_2 = "aqaContact2";
@@ -53,6 +54,9 @@ public class CommonUtils {
 			}
 			if (value.contains(YOUR_USER_2)) {
 				value = value.replace(YOUR_USER_2, yourUsers.get(1).getName());
+			}
+			if (value.contains(YOUR_USER_3)) {
+				value = value.replace(YOUR_USER_3, yourUsers.get(2).getName());
 			}
 			if (value.contains(YOUR_PASS)) {
 				value = value.replace(YOUR_PASS, yourUsers.get(0).getPassword());
@@ -200,7 +204,7 @@ public class CommonUtils {
 
 	public static void generateUsers(int contactNumber) throws IOException
 	{
-		for(int i  = 0; i < 2; i++){
+		for(int i  = 0; i < 3; i++){
 			ClientUser user = new ClientUser();
 			user.setEmail(CreateZetaUser.registerUserAndReturnMail());
 			user.setPassword(getDefaultPasswordFromConfig(CommonUtils.class));

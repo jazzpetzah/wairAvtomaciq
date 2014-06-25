@@ -82,17 +82,10 @@ public class DialogPageSteps{
 
 	@Then("^I see Pending Connect to (.*) message on Dialog page$")
 	public void ISeePendingConnectMessage(String user) throws Throwable {
+		user = CommonUtils.retrieveRealUserContactPasswordValue(user);
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
 		Assert.assertTrue(PagesCollection.dialogPage.isConnectMessageVisible());
-		if(user.contains(CommonUtils.CONTACT_1)){
-			Assert.assertTrue(PagesCollection.dialogPage.isConnectUserValid(CommonUtils.contacts.get(0).getName()));
-		}
-		else if(user.contains(CommonUtils.YOUR_USER_2)){
-			Assert.assertTrue(PagesCollection.dialogPage.isConnectUserValid(CommonUtils.yourUsers.get(1).getName()));
-		}
-		else{
-			Assert.assertTrue(PagesCollection.dialogPage.isConnectUserValid(user));
-		}
+		Assert.assertTrue(PagesCollection.dialogPage.isConnectUserValid(user));
 		Assert.assertTrue(PagesCollection.dialogPage.isPendingButtonVisible());
 	}
 	
