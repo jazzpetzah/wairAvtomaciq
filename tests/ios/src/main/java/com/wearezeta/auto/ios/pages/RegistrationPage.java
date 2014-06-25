@@ -130,6 +130,15 @@ public class RegistrationPage extends IOSPage {
 		}
 		
 	}
+	
+	public void typeUsername() {
+		yourName.sendKeys(getName());
+		
+		}
+	
+	public String getUsernameFieldValue()  {
+		return yourName.getText();
+		}
 
 	public String getName() {
 		return name;

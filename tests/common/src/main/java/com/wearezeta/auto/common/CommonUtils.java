@@ -192,6 +192,16 @@ public class CommonUtils {
 	{
 		return UUID.randomUUID().toString();
 	}
+	
+	public static String generateRandomString(int len) {
+		final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+		Random rnd = new Random();
+	   StringBuilder sb = new StringBuilder( len );
+	   for( int i = 0; i < len; i++ ) 
+	      sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );
+	   return sb.toString();
+	}
+	
 
 	public static String getContactName(String login)
 	{

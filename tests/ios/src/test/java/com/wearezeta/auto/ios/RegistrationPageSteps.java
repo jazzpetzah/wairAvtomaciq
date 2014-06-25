@@ -9,6 +9,7 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.CreateZetaUser;
+import com.wearezeta.auto.common.IOSLocators;
 import com.wearezeta.auto.common.UsersState;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 
@@ -77,6 +78,22 @@ public class RegistrationPageSteps {
 			 PagesCollection.registrationPage.setName(name);
 		 }
 	 }
+	 
+	 @When("^I enter a username as long as the character limit$")
+	 public void IEnterNameWithCharacterLimit() throws IOException {
+		 PagesCollection.registrationPage.setName (CommonUtils.generateRandomString(IOSLocators.usernameCharacterLimit));
+	 }
+	 
+	 
+	 @Then ("^I verify that my username is as long as the character limit$")
+	 public void IVerifyUsernameLength() throws IOException {
+		 PagesCollection.registrationPage.typeUsername(); 
+		 Assert.assertTrue(IOSLocators.usernameCharacterLimit==PagesCollection.registrationPage.getUsernameFieldValue().length());
+	 }
+
+
+	 
+	 
 	 
 	 @When("^I enter email (.*)$")
 	 public void IEnterEmail(String email) throws IOException {
