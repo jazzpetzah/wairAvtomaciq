@@ -54,7 +54,8 @@ public class RegistrationPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameContinueButton)
 	private WebElement continueButton;
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameProvideValidEmailMessage)//@FindBy(how = How.XPATH, using = IOSLocators.xpathProvideValidEmailMessage)
+	//@FindBy(how = How.NAME, using = IOSLocators.nameProvideValidEmailMessage)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathProvideValidEmailMessage)
 	private WebElement provideValidEmailMessage;
 	
 	private String name;
