@@ -87,14 +87,11 @@ public class RegistrationPageSteps {
 	 
 	 @Then ("^I verify that my username is as long as the character limit$")
 	 public void IVerifyUsernameLength() throws IOException {
-		 PagesCollection.registrationPage.typeUsername(); 
-		 Assert.assertTrue(IOSLocators.usernameCharacterLimit==PagesCollection.registrationPage.getUsernameFieldValue().length());
+		 PagesCollection.registrationPage.typeUsername();
+		 Assert.assertTrue(IOSLocators.usernameCharacterLimit == PagesCollection.registrationPage.getUsernameFieldValue().length());
 	 }
 
 
-	 
-	 
-	 
 	 @When("^I enter email (.*)$")
 	 public void IEnterEmail(String email) throws IOException {
 		 
