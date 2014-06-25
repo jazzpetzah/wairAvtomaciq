@@ -32,7 +32,6 @@ public class GroupChatInfoPageSteps {
 
 	@When("^I select contact (.*)$")
 	public void WhenISelectContact(String name) throws Throwable {
-
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		PagesCollection.groupChatInfoPage.renameGroupChat(GROUP_CHAT_NAME);
 		PagesCollection.otherUserPersonalInfoPage = PagesCollection.groupChatInfoPage.selectContactByName(name);

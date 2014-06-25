@@ -88,8 +88,7 @@ Feature: Conversation
     Examples: 
       | Login   | Password    | Name    | Contact1    | Contact2    |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
-      
-@torun
+
   Scenario Outline: Remove from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -106,3 +105,18 @@ Feature: Conversation
     Examples: 
       | Login   | Password    | Name    | Contact1    | Contact2    |
       | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 |
+
+  @torun
+  Scenario Outline: Accept connection request
+    Given connection request is sended to me
+    And I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    And I see connection request from <Contact>
+    And I confirm connection request
+    And I swipe from Instructions page to Contact list page
+    Then I see contact list loaded with User name <Contact>
+
+    Examples: 
+      | Login   | Password    | Name    | Contact     |
+      | aqaUser | aqaPassword | aqaUser | yourContact |
