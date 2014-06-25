@@ -13,7 +13,6 @@ public class InstructionsPageSteps {
 
 	@When("^I swipe to personal info screen$")
 	public void WhenISwipeToPersonalInfoScreen() throws IOException {
-		PagesCollection.instructionsPage = (InstructionsPage) PagesCollection.androidPage;
 		PagesCollection.personalInfoPaga = (PersonalInfoPage)(PagesCollection.instructionsPage.swipeLeft(500));
 		PagesCollection.personalInfoPaga.waitForEmailFieldVisible();
 	}
