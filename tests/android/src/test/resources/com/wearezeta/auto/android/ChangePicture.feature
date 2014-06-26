@@ -10,7 +10,7 @@ Feature: Change picture
     And I press Gallery button
     And I select picture
     And I press Confirm button
-    #Then I see changed user picture
+	#Then I see changed user picture
     Examples: 
       | Login   | Password     | Name    | OptionsButton |
       | aqaUser | aqaPassword  | aqaUser | Sign out      |

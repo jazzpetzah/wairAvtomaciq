@@ -30,16 +30,8 @@ public class ContactListPageSteps {
 	@When("^I tap on my name (.*)$")
 	public void WhenITapOnMyName(String name) throws IOException  {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
-		PagesCollection.instructionsPage = (InstructionsPage) PagesCollection.contactListPage.tapOnName(name);
+		PagesCollection.personalInfoPaga = (PersonalInfoPage) PagesCollection.contactListPage.tapOnName(name);
 	}
-	
-	@Then ("Contact list appears with my name (.*)")
-	public void ThenContactListAppears(String name) {
-		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
-		Assert.assertTrue("Login finished", PagesCollection.loginPage.waitForLogin());
-		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
-	}
-
 	@When("^I swipe down contact list$")
 	public void ISwipeDownContactList() throws Throwable {
 		PagesCollection.peoplePickerPage= (PeoplePickerPage)PagesCollection.contactListPage.swipeDown(500);
@@ -70,6 +62,13 @@ public class ContactListPageSteps {
 		groupChatSteps.ThenISeeGroupChatPage(contact1, contact2);
 	}
 
+	@Then ("Contact list appears with my name (.*)")
+	public void ThenContactListAppears(String name) {
+		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
+	}
+
+	
 	@Then("^I see contact list loaded with User name (.*)$")
 	public void ISeeUserNameFirstInContactList(String value) throws Throwable {
 		value = CommonUtils.retrieveRealUserContactPasswordValue(value);
