@@ -119,6 +119,39 @@ public class DriverUtils {
 		    }
 		 return usersList;
 	 }
+	 
+	 public static HashMap<String,Integer> waitForElementWithTextById(String id, RemoteWebDriver driver)
+	 {
+		 Boolean flag = true;
+		 int counter = 0;
+		 HashMap<String,Integer> usersList = new HashMap<String,Integer>();
+		 try {
+		        while (flag) {		
+		        	counter ++;
+		        	ArrayList<WebElement> textFields =  (ArrayList<WebElement>) driver.findElementsById(id);
+		        	if(!textFields.isEmpty())
+		        	{
+		        		for (int i = 0; i < textFields.size(); i++)
+		        		{
+		        			String text = textFields.get(i).getText(); 
+		        			
+		        			if (!text.isEmpty())
+		        			{
+		        				usersList.put(text, i);
+		        			}
+		        		}
+		        	}
+		            Thread.sleep(500);
+		            if(counter == 10)
+		            {
+		            	flag = false;
+		            }
+		        }
+		    } catch (InterruptedException e) {
+		        e.printStackTrace();
+		    }
+		 return usersList;
+	 }
 
 	 public static void scrollToElement(RemoteWebDriver driver, WebElement element) {
 		 JavascriptExecutor js = (JavascriptExecutor) driver;
