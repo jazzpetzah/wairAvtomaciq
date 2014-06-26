@@ -106,7 +106,6 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    |
       | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 |
 
-  @torun
   Scenario Outline: Accept connection request
     Given connection request is sended to me
     And I Sign in using login <Login> and password <Password>

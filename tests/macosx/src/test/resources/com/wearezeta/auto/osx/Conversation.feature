@@ -124,3 +124,31 @@ Scenario Outline: Remove user from group chat
 Examples:
 	|  Login		| Password		| Name			| Contact1		| Contact2		|
 	|  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
+
+#Scenario Outline: Mute conversation
+#    Given I Sign in using login <Login> and password <Password>
+#    And I see Contact list with name <Name>
+#    And I open conversation with <Contact>
+#	When I mute conversation
+#	And I go to user <Name> profile
+#	And <Contact> sends message to conversation with <Name>
+#	Then I do not see any notifications in <Contact> conversation
+	
+#Examples:
+#    |  Login		| Password			| Name			| Contact   		|
+#    |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
+
+#Scenario Outline: Unmute conversation
+#    Given I Sign in using login <Login> and password <Password>
+#    And I see Contact list with name <Name>
+#    And I open conversation with <Contact>
+#    And I mute conversation
+#	When I unmute conversation
+#	And I go to user <Name> profile
+#	And <Contact> sends message to conversation with <Name>
+#	Then I see notification in <Contact> conversation
+#
+#Examples:
+#    |  Login		| Password			| Name			| Contact   		|
+#    |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
+	

@@ -6,19 +6,30 @@ public final class AndroidLocators {
 	
 	public static final String classNameFrameLayout = "android.widget.FrameLayout";
 	
+	public static final String classGlyphTextView = "GlyphTextView";
+	
 	public static final String classNameTextView = "android.widget.TextView";
+	
+	
+	public static final String xpathOptionsButton = "//android.widget.LinearLayout/android.widget.TextView";
 	
 	public static final String xpathImagesFrameLayout = "//android.widget.GridView/android.widget.FrameLayout";
 	
-	public static final String idSignInButton = "com.waz.zclient:id/button_sign_in";
+	public static final String idSignOutBtn = "com.waz.zclient:id/ttv__profile__settings_box__signout";
 	
-	public static final String idSignUpButton = "com.waz.zclient:id/button_new_user";
+	public static final String idPersonalInfoForm ="com.waz.zclient:id/ll_self_form";
 	
-	public static final String idLoginButton = "com.waz.zclient:id/button_login";
+	public static final String idSelfUserName =  "com.waz.zclient:id/tet__self_user__guided";
 	
-	public static final String idLoginField = "com.waz.zclient:id/username_or_email";
+	public static final String idSignInButton = "com.waz.zclient:id/ttv__confirmation__confirm";
 	
-	public static final String idPasswordField = "com.waz.zclient:id/password";
+	public static final String idSignUpButton = "com.waz.zclient:id/ttv__confirmation__cancel";
+	
+	public static final String idLoginButton = "com.waz.zclient:id/btn_signin_sign_in";
+	
+	public static final String idLoginField = "com.waz.zclient:id/ifv_signin_username_or_email";
+	
+	public static final String idPasswordField = "com.waz.zclient:id/ifv_signin_password";
 	
 	public static final String idLoginProgressBar = "com.waz.zclient:id/progressBar1";
 	
@@ -38,7 +49,7 @@ public final class AndroidLocators {
 	
 	public static final String idNewPasswordField = "com.waz.zclient:id/new_password";
 		
-	public static final String idWelcomeButtonsContainer = "com.waz.zclient:id/welcome_buttons";
+	public static final String idWelcomeButtonsContainer = "com.waz.zclient:id/cm__choose";
 	
 	public static final String idCursorInput = "com.waz.zclient:id/cursor_input";
 	

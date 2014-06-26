@@ -20,7 +20,17 @@ public class ContactListPageSteps {
 	@When("^I tap on my name (.*)$")
 	public void WhenITapOnMyName(String name) throws IOException  {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
-		PagesCollection.iOSPage = PagesCollection.contactListPage.tapOnName(name);
+		IOSPage page = PagesCollection.contactListPage.tapOnName(name);
+		
+		if(page instanceof PersonalInfoPage)
+		{
+			PagesCollection.personalInfoPage = (PersonalInfoPage) page;
+			PagesCollection.personalInfoPage.waitForEmailFieldVisible();
+		}
+		else
+		{
+			PagesCollection.dialogPage = (DialogPage) page;
+		}
 	}
 	
 	@When("^I tap on contact name (.*)$")
@@ -70,11 +80,11 @@ public class ContactListPageSteps {
 		WhenITapOnContactName(contact1);
 		DialogPageSteps dialogSteps = new DialogPageSteps();
 		dialogSteps.WhenISeeDialogPage();
-		dialogSteps.WhenISwipeLeftOnDialogPage();
+		dialogSteps.WhenISwipeUpOnDialogPage();
 		
 		OtherUserPersonalInfoPageSteps infoPageSteps = new OtherUserPersonalInfoPageSteps();
-		infoPageSteps.WhenISeeOherUserProfilePage(contact1);
-		infoPageSteps.WhenISwipeDownOtherUserProfilePage();
+		infoPageSteps.WhenISeeOtherUserProfilePage(contact1);
+		infoPageSteps.WhenIPressAddButton();
 		
 		PeoplePickerPageSteps pickerSteps = new PeoplePickerPageSteps();
 		pickerSteps.WhenISeePeoplePickerPage();
@@ -104,9 +114,14 @@ public class ContactListPageSteps {
 	}
 	
 	@Then("^I open archived conversations$")
-	public void IOpenArchivedConversations() throws IOException, InterruptedException {
-		Thread.sleep(3000);
-		PagesCollection.contactListPage.swipeUp(500);
+	public void IOpenArchivedConversations() throws Exception {
+		
+		if(CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
+			PagesCollection.peoplePickerPage = (PeoplePickerPage)PagesCollection.contactListPage.swipeUp(1000);
+		}
+		else {
+			PagesCollection.contactListPage.swipeUpSimulator();
+		}
 	}
 
 }

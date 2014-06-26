@@ -1,5 +1,7 @@
 package com.wearezeta.auto.common;
 
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
@@ -11,6 +13,9 @@ import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Core.MinMaxLocResult;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
+import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
 
 public class ImageUtil {
@@ -26,8 +31,36 @@ public class ImageUtil {
 		return imageMat;
 	}
 	
+	private static BufferedImage convertToBufferedImageOfType(BufferedImage original, int type) {
+	    if (original == null) {
+	        throw new IllegalArgumentException("original == null");
+	    }
+
+	    // Don't convert if it already has correct type
+	    if (original.getType() == type) {
+	        return original;
+	    }
+
+	    // Create a buffered image
+	    BufferedImage image = new BufferedImage(original.getWidth(), original.getHeight(), type);
+
+	    // Draw the image onto the new buffer
+	    Graphics2D g = image.createGraphics();
+	    try {
+	        g.setComposite(AlphaComposite.Src);
+	        g.drawImage(original, 0, 0, null);
+	    }
+	    finally {
+	        g.dispose();
+	    }
+
+	    return image;
+	}
+	
 	public static double getOverlapScore(BufferedImage refImage, BufferedImage tplImage) {
 		//convert images to matrixes
+		refImage = convertToBufferedImageOfType(refImage, BufferedImage.TYPE_3BYTE_BGR);
+		tplImage = convertToBufferedImageOfType(tplImage, BufferedImage.TYPE_3BYTE_BGR);
 	    Mat ref = convertImageToOpenCVMat(refImage);
 	    Mat tpl = convertImageToOpenCVMat(tplImage);
 	    if (ref.empty() || tpl.empty()) {
