@@ -9,8 +9,6 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-
-
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.DriverUtils;
@@ -48,7 +46,8 @@ public class PeoplePickerPage extends IOSPage{
 	
 	public Boolean isPeoplePickerPageVisible() {
 		
-		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.name(IOSLocators.namePickerClearButton)));
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.name(IOSLocators.namePickerClearButton)));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.name(IOSLocators.namePickerClearButton)));
 		return peoplePickerClearBtn.isDisplayed();
 	}
 	
@@ -61,11 +60,17 @@ public class PeoplePickerPage extends IOSPage{
 	}
 	
 	public void fillTextInPeoplePickerSearch(String text){
+		
+		peoplePickerSearch.sendKeys("1111");
+		peoplePickerSearch.clear();
 		peoplePickerSearch.sendKeys(text);
 	}
 	
 	public void waitUserPickerFindUser(String user){
-		DriverUtils.waitUntilElementAppears(driver, By.name(user));
+
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.name(user)));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.name(user)));
+		//DriverUtils.waitUntilElementAppears(driver, By.name(user));
 	}
 	
 	public IOSPage clickOnFoundUser(String name) throws MalformedURLException{

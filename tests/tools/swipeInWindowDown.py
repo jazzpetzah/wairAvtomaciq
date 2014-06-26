@@ -105,15 +105,15 @@ def swipeInWindow(windowName, startX, startY, endX, endY):
     swipeRelative(startX,startY,endX,endY,dim[0],dim[1])
     
 def main():
-	#swipeInWindow("iOS Simulator",0.65,0.1,0.65,0.85)
+	swipeInWindow("iOS Simulator",0.65,0.15,0.65,0.85)
 
      #Process args
-    if (len(sys.argv) < 5):
-       print usageExit
-       sys.exit(1)
+    #if (len(sys.argv) < 5):
+    #   print usageExit
+    #   sys.exit(1)
     
-    swipeInWindow("iOS Simulator", float(sys.argv[1]), float(sys.argv[2]), float(sys.argv[3]), float(sys.argv[4]))
-    print "Done"
+    #swipeInWindow("iOS Simulator", float(sys.argv[1]), float(sys.argv[2]), float(sys.argv[3]), float(sys.argv[4]))
+    #print "Done"
 
 if __name__ == "__main__":
     main()

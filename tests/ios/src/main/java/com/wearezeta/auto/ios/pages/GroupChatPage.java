@@ -34,6 +34,11 @@ public class GroupChatPage extends DialogPage {
 		return lastMessage.getText().contains(name1) && lastMessage.getText().contains(name2);
 	}
 	
+	public boolean isGroupChatPageVisible(){
+		
+		return DriverUtils.waitUntilElementAppears(driver, By.xpath(IOSLocators.xpathCursorInput));
+	}
+	
 	public boolean isYouHaveLeftVisible(String name)
 	{
 		return driver.findElement(By.name(name.toUpperCase() + " HAS LEFT")).isDisplayed();

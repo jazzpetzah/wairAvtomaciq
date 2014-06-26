@@ -24,7 +24,9 @@ public class GroupChatPageSteps {
 	}
 	
 	@When("^I swipe up on group chat page$")
-	public void ISwipeUpOnGroupChatPage() throws IOException{
+	public void ISwipeUpOnGroupChatPage() throws IOException, InterruptedException{
+		
+		PagesCollection.groupChatPage.isGroupChatPageVisible();
 		PagesCollection.groupChatInfoPage = (GroupChatInfoPage)PagesCollection.groupChatPage.swipeUp(1000);
 	}
 	
