@@ -10,5 +10,5 @@ Feature: Sign Out
     Then I see welcome screen
 
     Examples: 
-      | Login                          | Password | Name  | OptionsButton |
-      | maksym.kuvshynov@wearezeta.com | 25ef24ss | Maxim | Sign out      |
+      | Login   | Password    | Name    |
+      | aqaUser | aqaPassword | aqaUser |

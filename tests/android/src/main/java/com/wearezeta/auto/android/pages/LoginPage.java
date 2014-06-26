@@ -76,7 +76,7 @@ public class LoginPage extends AndroidPage {
 
 	public void setPassword(String password) throws InterruptedException {
 
-		DriverUtils.setTextForChildByClassName(passwordField, "android.widget.EditText", password);
+		DriverUtils.setTextForChildByClassName(passwordField, "android.widget.EditText", password + "\n" );
 		Thread.sleep(500);
 	}
 
