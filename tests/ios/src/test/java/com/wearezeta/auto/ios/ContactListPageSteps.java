@@ -115,7 +115,7 @@ public class ContactListPageSteps {
 	
 	@Then("^I open archived conversations$")
 	public void IOpenArchivedConversations() throws Exception {
-		
+		Thread.sleep(3000);
 		if(CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
 			PagesCollection.peoplePickerPage = (PeoplePickerPage)PagesCollection.contactListPage.swipeUp(1000);
 		}
