@@ -171,8 +171,12 @@ public class DriverUtils {
 	        }
 	 }
 	 
-	 public static void iOSSimulatorSwipeDown(String scriptPath) throws IOException{
-		 Runtime.getRuntime().exec("/usr/bin/open -a Terminal " + scriptPath);
+	 public static void iOSSimulatorSwipeDown(String scriptPath) throws Exception{
+		 CommonUtils.executeOsXCommand(new String[]{"/bin/bash", "-c", "python", scriptPath,"0.65", "0.1", "0.65", "0.7"});
+	 }
+	 
+	 public static void iOSSimulatorSwipeUp(String scriptPath) throws Exception{
+		 CommonUtils.executeOsXCommand(new String[]{"/bin/bash", "-c", "python", scriptPath,"0.65", "0.95", "0.65", "0.7"});
 	 }
 	 
 	 public static void iOSMultiTap(AppiumDriver driver,WebElement element, int tapNumber) throws InterruptedException

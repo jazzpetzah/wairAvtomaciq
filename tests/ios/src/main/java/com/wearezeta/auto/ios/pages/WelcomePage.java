@@ -11,7 +11,7 @@ import com.wearezeta.auto.common.*;
 
 public class WelcomePage extends IOSPage{
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameWelcomeLabel)
+	@FindBy(how = How.NAME, using = IOSLocators.nameProfileName)
 	private WebElement welcomeLabel;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameAcceptConnectionButton)

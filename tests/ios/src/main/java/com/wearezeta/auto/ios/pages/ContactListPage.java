@@ -3,8 +3,10 @@ package com.wearezeta.auto.ios.pages;
 import java.io.IOException;
 import java.util.*;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.*;
 
@@ -13,8 +15,8 @@ public class ContactListPage extends IOSPage {
 	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameContactListNames)
 	private List<WebElement> contactListNames;
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameWelcomeLabel)
-	private List<WebElement> welcomeLabel;
+	@FindBy(how = How.NAME, using = IOSLocators.nameProfileName)
+	private WebElement profileName;
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathFirstInContactList)
 	private WebElement firstContactListDialog;
@@ -27,12 +29,25 @@ public class ContactListPage extends IOSPage {
 		url = URL;
 		this.path = path;
 	}
+	
+	private boolean isProfilePageVisible() {
+		boolean result = false;
+		
+		try {
+			result = profileName.isDisplayed();
+		}
+		catch (org.openqa.selenium.NoSuchElementException ex) {
+			//do nothing
+		}
+		
+		return result;
+	}
 
 	public IOSPage tapOnName(String name) throws IOException {
 		IOSPage page = null;
 		findNameInContactList(name).click();
-		if(welcomeLabel.size() > 0  && welcomeLabel.get(0).isDisplayed()){
-			page = new WelcomePage(url, path);
+		if(isProfilePageVisible()){
+			page = new PersonalInfoPage(url, path);
 		}
 		else{
 			page = new DialogPage(url, path);
@@ -82,6 +97,10 @@ public class ContactListPage extends IOSPage {
 		findChatInContactList(contact1, contact2).click();
 
 		return new GroupChatPage(url, path);
+	}
+	
+	public void waitForContactListToLoad() {
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(IOSLocators.xpathFirstInContactList)));
 	}
 	
 	private WebElement findChatInContactList(String contact1, String contact2) {

@@ -11,6 +11,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
 import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.common.IOSLocators;
 import com.wearezeta.auto.common.SwipeDirection;
@@ -44,7 +46,9 @@ public class PeoplePickerPage extends IOSPage{
 		this.path = path;
 	}
 	
-	public Boolean isPeoplePickerPageVisible(){
+	public Boolean isPeoplePickerPageVisible() {
+		
+		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.name(IOSLocators.namePickerClearButton)));
 		return peoplePickerClearBtn.isDisplayed();
 	}
 	
