@@ -17,8 +17,8 @@ public class ContactListPage extends AndroidPage {
 	@FindBy(how = How.ID, using = AndroidLocators.idCursorInput)
 	private WebElement cursorInput;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idInstructions)
-	private List<WebElement> instructions;
+	@FindBy(how = How.ID, using = AndroidLocators.idSelfUserName)
+	private List<WebElement> selfUserName;
 	
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameLoginPage)
 	private WebElement mainControl;
@@ -36,16 +36,17 @@ public class ContactListPage extends AndroidPage {
 		AndroidPage page = null;
 		
 		findNameInContactList(name, contactListNames).click();
-		if(instructions.size() > 0 && instructions.get(0).isDisplayed()){
-			page = new InstructionsPage(url, path);
+		if(selfUserName.size() > 0 && selfUserName.get(0).isDisplayed()){
+			page = new PersonalInfoPage(url, path);
 		}
 		else{
 			page = new DialogPage(url, path);
 			wait.until(ExpectedConditions.visibilityOf(cursorInput));
 		}
 		return page;
-		
 	}
+	
+	
 	private WebElement findNameInContactList(String name, List<WebElement> contacts)
 	 {
 		 Boolean flag = true;
