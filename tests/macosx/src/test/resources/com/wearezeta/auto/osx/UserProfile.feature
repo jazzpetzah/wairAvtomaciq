@@ -1,6 +1,5 @@
 Feature: User Profile
 
-@torun
 Scenario Outline: Change user picture from image file
     Given I Sign in using login <Login> and password <Password>
     And I go to user <Name> profile
@@ -14,9 +13,9 @@ Examples:
 	|	aqaUser			|	aqaPassword		|	aqaUser		|
 
 #Scenario Outline: Change user picture from camera
-#    Given I Sign in using login <Login> and password <Password>
-#    And I go to user <Name> profile
-#    And I open picture settings
+#	Given I Sign in using login <Login> and password <Password>
+#	And I go to user <Name> profile
+#	And I open picture settings
 #	When I choose to select picture from camera
 #	And I shoot picture using camera
 #	Then I see changed user picture from camera

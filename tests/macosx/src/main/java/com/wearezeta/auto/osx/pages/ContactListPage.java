@@ -144,6 +144,13 @@ public class ContactListPage extends OSXPage {
 		}
 	}
 	
+	public int numberOfContacts() {
+		DriverUtils.setImplicitWaitValue(driver, 3);
+		int result = contactsTextFields.size();
+		DriverUtils.setDefaultImplicitWait(driver);
+		return result;
+	}
+	
 	@Override
 	public void Close() throws IOException {
 		try {
@@ -194,5 +201,16 @@ public class ContactListPage extends OSXPage {
             }
         }
 		
+	}
+	
+	public void goToContactActionsMenu() {
+		WebElement toggleMenu = driver.findElement(By.id(OSXLocators.idToggleMenu));
+		toggleMenu.click();
+	}
+	
+	public void changeMuteStateForSelectedConversation() {
+		goToContactActionsMenu();
+		WebElement muteButton = driver.findElement(By.id(OSXLocators.idMuteButton));
+		muteButton.click();
 	}
 }
