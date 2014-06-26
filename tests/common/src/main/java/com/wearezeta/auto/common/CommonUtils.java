@@ -44,7 +44,7 @@ public class CommonUtils {
 	
 	public static void executeOsXCommand(String [] cmd) throws Exception{
 		Process process = Runtime.getRuntime().exec(cmd);
-		 System.out.print("Process Code"+ process.waitFor());
+		System.out.println("Process Code "+ process.waitFor()); 
 	}
 	
 	public static String retrieveRealUserContactPasswordValue(String value) {
