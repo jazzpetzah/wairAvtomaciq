@@ -13,8 +13,8 @@ Feature: Register new user
 	And I submit registration data
 	Then I see confirmation page 
 	And I verify registration address
-	And I press continue registration
-	And Contact list appears with my name <Name>
+	#And I press continue registration
+	#And Contact list appears with my name <Name>
 
     Examples:     
     |	Email						|	Password	    |	Name			|

@@ -51,8 +51,8 @@ public class RegistrationPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameCreateAccountButton)
 	private WebElement createAccountButton;
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameContinueButton)
-	private WebElement continueButton;
+	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameConfirmationMessage)
+	private WebElement confirmationText;
 	
 	private String name;
 	private String email;
@@ -106,12 +106,7 @@ public class RegistrationPage extends IOSPage {
 	
 	public boolean isConfirmationVisible()
 	{
-		return continueButton.isDisplayed();
-	}
-	
-	public void continueRegistration()
-	{
-		continueButton.click();
+		return confirmationText.isDisplayed();
 	}
 	
 	public void confirmPicture()

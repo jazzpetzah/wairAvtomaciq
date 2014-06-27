@@ -71,7 +71,8 @@ public class DialogPageSteps {
 	@Then("^I see my message in the dialog$")
 	public void ThenISeeMyMessageInTheDialog() throws Throwable {
 	    String dialogLastMessage = PagesCollection.dialogPage.getLastMessageFromDialog();
-	    Assert.assertTrue(dialogLastMessage.equals((message).trim()));
+	    Assert.assertTrue("Message is different, actual :" + dialogLastMessage +
+	    		" expected: " + message, dialogLastMessage.equals((message).trim()));
 	}
 	
 	@Then("^I see Pending Connect to (.*) message on Dialog page$")

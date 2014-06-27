@@ -118,16 +118,7 @@ public class RegistrationPageSteps {
 	 @Then("^I verify registration address$")
 	 public void IVerifyRegistrationAddress() throws Throwable {
 		 
-		 CreateZetaUser.activateRegisteredUser(aqaEmail, 10, aqaEmail, aqaPassword);
-	 }
-	 
-	 @Then("^I press continue registration$")
-	 public void IPressContinue() throws Throwable {
-		 
-		 PagesCollection.registrationPage.continueRegistration();
-		 ClientUser myContact = new ClientUser(aqaEmail, aqaPassword, aqaName, UsersState.AllContactsConnected);
-		 CommonUtils.yourUsers = new ArrayList<ClientUser>();
-		 CommonUtils.yourUsers.add(myContact);
+		 Assert.assertTrue(CreateZetaUser.activateRegisteredUser(aqaEmail, 10, aqaEmail, aqaPassword));
 	 }
 	 
 }

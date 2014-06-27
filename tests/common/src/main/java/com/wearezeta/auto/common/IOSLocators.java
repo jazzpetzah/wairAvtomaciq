@@ -88,7 +88,7 @@ public final class IOSLocators {
 	
 	public static final String nameYourPassword = "RegistrationPasswordField";
 	
-	public static final String nameContinueButton = "CONTINUE";
+	public static final String classNameConfirmationMessage = "UIATextView";
 	
 	public static final String nameCreateAccountButton = "RegistrationCreateAccountButton";
 	
@@ -125,4 +125,8 @@ public final class IOSLocators {
 	public static final String xpathAddContactToChatButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[7]";
 	
 	public static final String xpathOtherUserName = "//UIAApplication[1]/UIAWindow[1]/UIATextField[@value='%s']";
+	
+	public static final String xpathMutedIcon = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[@name='%s']/UIAImage[1]";
+	
+	public static final String nameMuteButton = "ConvCellMuteButton";
 }

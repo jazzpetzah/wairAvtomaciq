@@ -52,6 +52,8 @@ public class PeoplePickerPage extends IOSPage{
 	}
 	
 	public void tapOnPeoplePickerSearch(){
+		
+		driver.tap(1, 20, 20, 1);//workaround for people picker activation
 		peoplePickerSearch.click();
 	}
 	

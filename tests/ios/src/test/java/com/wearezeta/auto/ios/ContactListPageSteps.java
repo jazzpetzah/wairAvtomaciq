@@ -113,6 +113,34 @@ public class ContactListPageSteps {
 		PagesCollection.contactListPage.tapOnGroupChat(contact1, contact2);
 	}
 	
+	
+	@When("^I swipe right on a (.*)$")
+	public void ISwipeRightOnContact(String contact) throws IOException {
+		
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		PagesCollection.contactListPage.swipeRightOnContact(500, contact);
+	}
+	
+	@When("^I click mute conversation$")
+	public void IClickMuteConversation() throws IOException, InterruptedException {
+		
+		PagesCollection.contactListPage.muteConversation();
+	}
+	
+	@Then("^Contact (.*) is muted$")
+	public void ContactIsMuted(String contact) throws IOException {
+		
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		Assert.assertTrue(PagesCollection.contactListPage.isContactMuted(contact));
+	}
+	
+	@Then("^Contact (.*) is not muted$")
+	public void ContactIsNotMuted(String contact) throws IOException {
+		
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		Assert.assertFalse(PagesCollection.contactListPage.isContactMuted(contact));
+	}
+	
 	@Then("^I open archived conversations$")
 	public void IOpenArchivedConversations() throws Exception {
 		Thread.sleep(3000);
