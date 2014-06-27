@@ -36,11 +36,18 @@ def swipe(startX, startY, endX, endY):
     currentpos=CGEventGetLocation(ourEvent) # Save current mouse position
     mouseclickdn(startX, startY)
     y = startY
-    time.sleep(1)
-    for i in range(1,(endY - startY)):
-         mousedrag(endX, y)
-         y+=1
-         time.sleep(0.001)
+    if (startY < endY):
+        time.sleep(1)
+        for i in range(1,(endY - startY)):
+            mousedrag(endX, y)
+            y+=1
+            time.sleep(0.001)
+    if (endY < startY):
+        time.sleep(1)
+        for i in range(1,(startY - endY)):
+            mousedrag(endX, y)
+            y-=1
+            time.sleep(0.001)
     mouseclickup(endX, endY)
     time.sleep(1)
     mousemove(int(currentpos.x),int(currentpos.y)) # Restore mouse position
@@ -94,18 +101,20 @@ def swipeInWindow(windowName, startX, startY, endX, endY):
     print dim[0]
     print dim[1]
     moveWindowToZero(windowName)
+    time.sleep(0.5)
     activateWindow(windowName)
+    time.sleep(0.5)
     swipeRelative(startX,startY,endX,endY,dim[0],dim[1])
     
 def main():
-	swipeInWindow("iOS Simulator",0.65,0.1,0.65,0.85)
+	swipeInWindow("iOS Simulator",0.65,0.95,0.65,0.4)
 
-    # Process args
-    #if (len(sys.argv) < 6):
-    #   print usageExit
-    #   sys.exit(1)
+     #Process args
+    #if (len(sys.argv) < 5):
+     #  print usageExit
+     #  sys.exit(1)
     
-    #swipeInWindow(sys.argv[1], float(sys.argv[2]), float(sys.argv[3]), float(sys.argv[4]), float(sys.argv[5]))
+    #swipeInWindow("iOS Simulator", float(sys.argv[1]), float(sys.argv[2]), float(sys.argv[3]), float(sys.argv[4]))
     #print "Done"
 
 if __name__ == "__main__":

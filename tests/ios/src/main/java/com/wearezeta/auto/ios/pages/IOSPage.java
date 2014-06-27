@@ -57,7 +57,7 @@ public abstract class IOSPage extends BasePage {
 		return returnBySwipe(SwipeDirection.UP);
 	}
 	
-	public IOSPage swipeDownSimulator() throws IOException {
+	public IOSPage swipeDownSimulator() throws Exception {
 		DriverUtils.iOSSimulatorSwipeDown(CommonUtils.getSwipeScriptPath(IOSPage.class));
 		try {
 			Thread.sleep(10000);
@@ -67,6 +67,18 @@ public abstract class IOSPage extends BasePage {
 		}
 		
 		return returnBySwipe(SwipeDirection.DOWN);
+	}
+	
+	public IOSPage swipeUpSimulator() throws Exception {
+		DriverUtils.iOSSimulatorSwipeUp(CommonUtils.getSwipeScriptPath(IOSPage.class));
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			
+			e.printStackTrace();
+		}
+		
+		return returnBySwipe(SwipeDirection.UP);
 	}
 	
 	@Override

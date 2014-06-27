@@ -17,7 +17,7 @@ public class PeoplePickerPageSteps {
 	
 	@When("^I see People picker page$")
 	public void WhenISeePeoplePickerPage() throws Throwable {
-		 Assert.assertTrue(PagesCollection.peoplePickerPage.isPeoplePickerPageVisible());
+		Assert.assertTrue(PagesCollection.peoplePickerPage.isPeoplePickerPageVisible());
 	}
 	
 	@When("^I tap on Search input on People picker page$")

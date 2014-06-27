@@ -34,9 +34,14 @@ public class GroupChatPage extends DialogPage {
 		return lastMessage.getText().contains(name1) && lastMessage.getText().contains(name2);
 	}
 	
-	public boolean isYouHaveLeftVisible()
+	public boolean isGroupChatPageVisible(){
+		
+		return DriverUtils.waitUntilElementAppears(driver, By.xpath(IOSLocators.xpathCursorInput));
+	}
+	
+	public boolean isYouHaveLeftVisible(String name)
 	{
-		return youLeft.isDisplayed();
+		return driver.findElement(By.name(name.toUpperCase() + " HAS LEFT")).isDisplayed();
 	}
 	
 	public boolean isContactAvailableInChat(String contact) {
@@ -72,11 +77,11 @@ public class GroupChatPage extends DialogPage {
 			}
 			case UP:
 			{
+				page = new GroupChatInfoPage(url, path);
 				break;
 			}
 			case LEFT:
 			{
-				page = new GroupChatInfoPage(url, path);
 				break;
 			}
 			case RIGHT:
