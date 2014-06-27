@@ -7,6 +7,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriBuilderException;
 
+import org.codehaus.jettison.json.JSONException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -29,8 +30,14 @@ public class BackEndREST {
 
 	public static void autoTestAcceptAllRequest(ClientUser user)
 	{
-		loginByUser(user);
+		 user = loginByUser(user);
 		acceptAllConnections(user);
+	}
+	
+	public static void sendDialogMessage(ClientUser fromUser, ClientUser toUser, String message) throws Exception{
+		fromUser = loginByUser(fromUser);
+		String id = getConversationWithSingleUser(fromUser,toUser);
+		sendConversationMessage(fromUser, id, message);
 	}
 
 	public static ClientUser loginByUser(ClientUser user)
@@ -182,6 +189,74 @@ public class BackEndREST {
 			e.printStackTrace();
 
 		}
+	}
+	
+	private static String getConversationWithSingleUser(ClientUser fromUser, ClientUser toUser) throws Exception{
+		String conversationId = null;
+		boolean flag = false;
+		JSONArray jsonArray = getConversations(fromUser);
+		for(int i = 0 ; i < jsonArray.length(); i++){
+			 JSONObject conversation =  (JSONObject) jsonArray.get(i);
+			 conversationId =  conversation.getString("id");
+			 conversation = (JSONObject) conversation.get("members");
+			 JSONArray otherArray = (JSONArray) conversation.get("others");
+			 if(otherArray.length() == 1){
+				 String id = ((JSONObject)otherArray.get(0)).getString("id");
+				 if(id.equals(toUser.getId())){
+					 flag = true;
+					 break;
+				 }
+			 }
+			 if(flag){
+				 break;
+			 }
+		 }
+		return conversationId;
+	}
+	
+	private static void sendConversationMessage(ClientUser user, String convId, String message ){
+		try {
+     
+			String nonce = CommonUtils.generateGUID();
+			
+			WebResource webResource = client.resource(getBaseURI() + "/conversations/" + convId + "/messages");
+			String input =  "{\"content\": \"" + message + "\", \"nonce\": \"" + nonce + "\"}";
+			ClientResponse response = webResource.accept("application/json").type("application/json").header(HttpHeaders.AUTHORIZATION, user.getTokenType() + " " + user.getAccessToken()).post(ClientResponse.class, input);
+			if (response.getStatus() != 201) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}	       
+			String output = response.getEntity(String.class);
+
+			System.out.println("Output from Server ....");
+			System.out.println(output + "\n");
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+	}
+	
+	private static JSONArray getConversations(ClientUser user) throws Exception
+	{
+		JSONObject jsonObj = null;
+		try {
+			WebResource webResource = client.resource(getBaseURI() + "/conversations");
+			ClientResponse response = webResource.accept("application/json").header(HttpHeaders.AUTHORIZATION, user.getTokenType() + " " + user.getAccessToken()).get(ClientResponse.class);
+			if (response.getStatus() != 200) {  throw new RuntimeException("Failed : HTTP error code : "	+ response.getStatus());}
+
+			String output = response.getEntity(String.class);
+			
+			jsonObj =  new JSONObject(output);
+						 
+			// display response
+			System.out.println("Output from Server .... get User Info ");
+			System.out.println(output + "\n");
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return (JSONArray) jsonObj.get("conversations");
 	}
 	
 	private static URI getBaseURI() throws IllegalArgumentException, UriBuilderException, IOException {
