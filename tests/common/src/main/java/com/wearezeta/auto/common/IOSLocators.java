@@ -122,6 +122,9 @@ public final class IOSLocators {
 	
 	public static final String nameConfirmPictureButton = "ImageConfirmerConfirmButton";
 	
+	//public static final String nameProvideValidEmailMessage = "PLEASE PROVIDE A VALID EMAIL ADDRESS ";//final space is very important...
+	public static final String xpathProvideValidEmailMessage = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]"; //"//UIAButton[contains(@label, \"%s\")]";
+
 	public static final String xpathAddContactToChatButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[7]";
 	
 	public static final String xpathOtherUserName = "//UIAApplication[1]/UIAWindow[1]/UIATextField[@value='%s']";
