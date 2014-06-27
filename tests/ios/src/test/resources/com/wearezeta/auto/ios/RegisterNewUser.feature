@@ -1,5 +1,5 @@
 Feature: Register new user
-	
+
   Scenario Outline: Register new user using front camera
 	Given I see sign in screen
 	When I press Join button
@@ -22,17 +22,18 @@ Feature: Register new user
     
     
 @torun
-  Scenario Outline: Register new user using >72 character username
+  Scenario Outline: Register new user using 72 character username
 	Given I see sign in screen
 	When I press Join button
 	And I press Picture button
 	And I choose photo from album
 	And I See selected picture
 	And I confirm selection
-	And I enter a username as long as the character limit
-	Then I verify that my username is as long as the character limit
+	And I enter a username which is 72 characters long from Arabic alphabet
+	Then I verify that my username is 72 characters long
 	
 	 Examples:     
     |	Email						|	Password	    |
     |	aqaUser             	    |	aqaPassword	    |
     
+  

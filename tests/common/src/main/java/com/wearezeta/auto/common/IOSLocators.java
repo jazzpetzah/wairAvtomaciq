@@ -123,7 +123,17 @@ public final class IOSLocators {
 	public static final String xpathCameraRollPicture = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[1]";
 	
 	public static final String nameConfirmPictureButton = "ImageConfirmerConfirmButton";
-	
-	public static final int usernameCharacterLimit = 72;
+		
+	public String character;
+	public void Language(String characters){
+		this.character=characters;
+	}
+	public enum Language {
+		GERMAN(),
+		MANDARIN(),
+		ENGLISH();
+		
+		char[] characters = {'a', '\uE403'};
+	}
 	
 }

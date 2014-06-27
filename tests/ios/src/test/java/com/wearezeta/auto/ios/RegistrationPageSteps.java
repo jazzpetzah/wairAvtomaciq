@@ -79,16 +79,19 @@ public class RegistrationPageSteps {
 		 }
 	 }
 	 
-	 @When("^I enter a username as long as the character limit$")
-	 public void IEnterNameWithCharacterLimit() throws IOException {
-		 PagesCollection.registrationPage.setName (CommonUtils.generateRandomString(IOSLocators.usernameCharacterLimit));
+	 @When("^I enter a username which is (\\d+) characters long from (\\w+) alphabet$")
+	 public void IEnterNameWithCharacterLimit(int charactersLimit, String alphabetName) throws Throwable {
+		 String nameToType = CommonUtils.generateRandomString(charactersLimit, alphabetName);
+		 PagesCollection.registrationPage.setName (nameToType);
 	 }
 	 
 	 
-	 @Then ("^I verify that my username is as long as the character limit$")
-	 public void IVerifyUsernameLength() throws IOException {
+	 @Then("^I verify that my username is (\\d+) characters long$")
+	 public void IVerifyUsernameLength(int charactersLimit) throws IOException {
 		 PagesCollection.registrationPage.typeUsername();
-		 Assert.assertTrue(IOSLocators.usernameCharacterLimit == PagesCollection.registrationPage.getUsernameFieldValue().length());
+		 String realUserName = PagesCollection.registrationPage.getUsernameFieldValue();
+		 int usernameLength = CommonUtils.getUnicodeStringAsCharList(realUserName).size();
+		 Assert.assertTrue(charactersLimit == usernameLength);
 	 }
 
 
