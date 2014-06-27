@@ -20,7 +20,7 @@ public final class IOSLocators {
 	
 	public static final String classNameContactListNames = "UIAStaticText";
 	
-	public static final String nameWelcomeLabel = "Welcome Thank you for joining us, you are now ready to go.";
+	public static final String nameProfileName = "ProfileSelfNameField";
 
 	public static final String classNameUIAButton = "UIAButton";
 	
@@ -60,10 +60,6 @@ public final class IOSLocators {
 	
 	public static final String nameConnectInput = "Type your first message to [%s]...";
 	
-	public static final String nameProfileOtherUserNameField = "ProfileOtherNameField";
-	
-	public static final String classNameProfileOtherUserEmailField = "UIATextField";
-	
 	public static final String nameCreateConversationButton = "CREATE CONVERSATION";
 	
 	public static final String nameAddToConversationButton = "ADD TO CONVERSATION";
@@ -98,7 +94,7 @@ public final class IOSLocators {
 	
 	public static final String xpathLastGroupChatMessage = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]/UIATextView[last()]";
 	
-	public static final String nameLeaveConversation = "Leave conversation";
+	public static final String xpathLeaveConversation = "//UIAApplication[1]/UIAWindow[1]/UIAButton[8]";
 	
 	public static final String nameLeaveConversationAlert = "Leave conversation?";
 
@@ -106,10 +102,12 @@ public final class IOSLocators {
 	
 	public static final String nameYouHaveLeft = "YOU HAVE LEFT";
 
-	public static final String nameRemoveFromConversation = "Remove";
+	public static final String xpathRemoveFromConversation = "//UIAApplication[1]/UIAWindow[1]/UIAButton[9]";
+	
 	public static final String xpathOtherConversationCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[last()]";
 
 	public static final String nameComfirmRemoveButton = "REMOVE";
+	
 	public static final String nameAddPictureButton = "ComposeControllerPictureButton";
 	
 	public static final String nameCameraRollButton = "FullScreenCameraRightButton";
@@ -123,4 +121,14 @@ public final class IOSLocators {
 	public static final String xpathCameraRollPicture = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[1]";
 	
 	public static final String nameConfirmPictureButton = "ImageConfirmerConfirmButton";
+	
+<<<<<<< HEAD
+	//public static final String nameProvideValidEmailMessage = "PLEASE PROVIDE A VALID EMAIL ADDRESS ";//final space is very important...
+	public static final String xpathProvideValidEmailMessage = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]"; //"//UIAButton[contains(@label, \"%s\")]";
+	}
+=======
+	public static final String xpathAddContactToChatButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[7]";
+	
+	public static final String xpathOtherUserName = "//UIAApplication[1]/UIAWindow[1]/UIATextField[@value='%s']";
 }
+>>>>>>> e7de26d682e56d25200889386b31b6f6cb1add46

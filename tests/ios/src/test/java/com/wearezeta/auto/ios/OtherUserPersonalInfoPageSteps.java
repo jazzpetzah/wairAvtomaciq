@@ -13,16 +13,16 @@ import cucumber.api.java.en.When;
 public class OtherUserPersonalInfoPageSteps {
 	
 	@When("^I see (.*) user profile page$")
-	public void WhenISeeOherUserProfilePage(String name){
+	public void WhenISeeOtherUserProfilePage(String name){
 		
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
-		PagesCollection.otherUserPersonalInfoPage.isOtherUserNameVisible(name);
+		PagesCollection.otherUserPersonalInfoPage.isOtherUserProfileEmailVisible(name);
 	}
 	
-	@When("^I swipe down other user profile page$")
-	public void WhenISwipeDownOtherUserProfilePage() throws IOException, InterruptedException {
-		Thread.sleep(5000);
-		PagesCollection.peoplePickerPage = (PeoplePickerPage)PagesCollection.otherUserPersonalInfoPage.swipeDown(1000);
+	@When("^I press Add button$")
+	public void WhenIPressAddButton() throws IOException, InterruptedException {
+		
+		PagesCollection.peoplePickerPage = (PeoplePickerPage)PagesCollection.otherUserPersonalInfoPage.addContactToChat();
 	}
 	
 	@When("^I swipe up on other user profile page$")

@@ -90,6 +90,36 @@ public class RegistrationPageSteps {
 		 }
 	 }
 	 
+	 @When("^I attempt to enter an email with spaces (.*)$")
+	 public void IEnterEmailWithSpaces(String email) throws IOException{
+		 	if (email.equals(CommonUtils.YOUR_USER_1)) {
+			 email=aqaEmail;
+		 }
+		 	//what if email is less than 1 character?
+		PagesCollection.registrationPage.setEmail(new StringBuilder(email).insert(email.length()-1,"          ").toString());
+		 }
+	 
+	 @Then("^I verify no spaces are present in email$")
+	 public void CheckForSpacesInEmail() throws IOException{
+		 PagesCollection.registrationPage.typeEmail();
+		 String realEmailText = PagesCollection.registrationPage.getEmailFieldValue();
+		 String initialEmailText = PagesCollection.registrationPage.getEmail();
+		 Assert.assertTrue(initialEmailText.replace(" ", "").equals(realEmailText));
+	 }
+	 
+	 @When("^I attempt to enter emails with known incorrect formats$")
+	 public void IEnterEmailWithIncorrectFormat() throws IOException{
+		 //current design has basic email requirements: contains single @, contains a domain name with a dot + domain extension(min 2 characters)
+		 String[] listOfInvalidEmails = {"abc.example.com","abc@example@.com","example@zeta","abc@example.","abc@example.c"};
+		 //test fails because minimum 2 character domain extension is not implemented(allows for only 1)
+		 PagesCollection.registrationPage.setListOfEmails(listOfInvalidEmails);
+	 }
+	 
+	 @Then ("^I verify that the app does not let me continue$")
+	 public void IVerifyIncorrectFormatMessage() throws IOException{
+		 Assert.assertTrue(PagesCollection.registrationPage.typeAllInvalidEmails());
+	 }
+	 
 	 @When("^I enter password (.*)$")
 	 public void IEnterPassword(String password) throws IOException {
 		 

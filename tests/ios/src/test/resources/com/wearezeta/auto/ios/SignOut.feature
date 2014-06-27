@@ -5,7 +5,6 @@ Feature: Sign Out
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with my name <Name>
 	When I tap on my name <Name>
-	And I swipe left to personal screen
 	And I swipe up for options
 	And I press options button <OptionsButton>
 	Then I see login in screen

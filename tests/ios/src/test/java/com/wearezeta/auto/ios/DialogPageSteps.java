@@ -63,9 +63,9 @@ public class DialogPageSteps {
 	    PagesCollection.dialogPage.typeMessage(message + "\n");
 	}
 	
-	@When("^I swipe left on dialog page$")
-	public void WhenISwipeLeftOnDialogPage() throws IOException{
-		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage)PagesCollection.dialogPage.swipeLeft(1000);
+	@When("^I swipe up on dialog page$")
+	public void WhenISwipeUpOnDialogPage() throws IOException{
+		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage)PagesCollection.dialogPage.swipeUp(1000);
 	}
 
 	@Then("^I see my message in the dialog$")
