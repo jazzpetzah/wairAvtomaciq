@@ -29,7 +29,7 @@ def prepare_options_parser():
     usage = 'usage: %prog [options] <project_key> <build_type> <build_number>'
     parser = optparse.OptionParser(usage)
     parser.add_option('-v', '--verbose', action='store_true', default=False,
-                      help='Enable vebose logging', dest="verbose")
+                      help='Enable verbose logging', dest="verbose")
     return parser
 
 
@@ -71,11 +71,10 @@ def start():
     PROJECT_KEY = args[0]
     BUILD_TYPE = args[1]
     BUILD_NUMBER = args[2]
-
     if options.verbose:
-        logging.basicConfig(level=logging.INFO)
+        logging.getLogger().setLevel(logging.INFO)
     else:
-        logging.basicConfig(level=logging.WARNING)
+        logging.getLogger().setLevel(logging.WARNING)
 
     ver_name = '{0}.{1}'.format(BUILD_TYPE, BUILD_NUMBER)
     logging.info('Adding the new version "{0}" to the project "{1}"...'.\
@@ -93,7 +92,9 @@ def start():
         active_sprint = get_active_sprint_name(jc, project_name)
         logging.info('Found active sprint "{0}"...'.format(active_sprint))
     except Exception:
-        traceback.print_exc()
+        # traceback.print_exc()
+        logging.warning('Active sprint name for the project "{0}" has not been found. '\
+                        'Will use an empty value instead.'.format(PROJECT_KEY))
         active_sprint = None
 
     if active_sprint:
