@@ -29,11 +29,13 @@ Feature: Register new user
 	And I choose photo from album
 	And I See selected picture
 	And I confirm selection
-	And I enter a username which is 72 characters long from Arabic alphabet
+	And I enter a username which is 72 characters long from English alphabet
 	Then I verify that my username is 72 characters long
 	
 	 Examples:     
     |	Email						|	Password	    |
     |	aqaUser             	    |	aqaPassword	    |
+    
+  
     
   

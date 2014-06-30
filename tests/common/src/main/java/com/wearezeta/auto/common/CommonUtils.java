@@ -214,7 +214,8 @@ public class CommonUtils {
 		return UUID.randomUUID().toString();
 	}
 	
-	
+	//BEGIN: For parsing the XML files of other languages and inputting them in the character test as per multiple iOS user stories
+	//Currently not used, available for when international keyboards on the iOS Simulator will run in automation
 	private static String getLanguageAlphabet(String languageName) throws Throwable {
 		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
 				.newInstance();
@@ -302,7 +303,7 @@ public class CommonUtils {
 		}
 		return characters;
 	}
-	
+
 	
 	public static String generateRandomString(int len, String languageName) throws Throwable {
 		String alphabet = getLanguageAlphabet(languageName);
@@ -314,6 +315,8 @@ public class CommonUtils {
 		}
 		return sb.toString();
 	}
+	
+	//END
 	
 	public static String getContactName(String login) 
 	{

@@ -124,16 +124,4 @@ public final class IOSLocators {
 	
 	public static final String nameConfirmPictureButton = "ImageConfirmerConfirmButton";
 		
-	public String character;
-	public void Language(String characters){
-		this.character=characters;
-	}
-	public enum Language {
-		GERMAN(),
-		MANDARIN(),
-		ENGLISH();
-		
-		char[] characters = {'a', '\uE403'};
-	}
-	
 }

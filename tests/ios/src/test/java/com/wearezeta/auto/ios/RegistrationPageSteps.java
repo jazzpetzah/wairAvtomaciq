@@ -91,7 +91,7 @@ public class RegistrationPageSteps {
 		 PagesCollection.registrationPage.typeUsername();
 		 String realUserName = PagesCollection.registrationPage.getUsernameFieldValue();
 		 int usernameLength = CommonUtils.getUnicodeStringAsCharList(realUserName).size();
-		 Assert.assertTrue(charactersLimit == usernameLength);
+		 Assert.assertTrue(charactersLimit >= usernameLength);
 	 }
 
 
