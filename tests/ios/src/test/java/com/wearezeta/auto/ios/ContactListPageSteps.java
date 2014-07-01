@@ -65,11 +65,11 @@ public class ContactListPageSteps {
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(value));		 
 	}
 	
-	@Then("^I see contact list loaded with User name (.*) first in list$")
+	@Then("^I see contact list loaded with User name (.*)$")
 	public void ISeeUserNameFirstInContactList(String value) throws Throwable {
 		
 		value = CommonUtils.retrieveRealUserContactPasswordValue(value);
-	    Assert.assertEquals(value, PagesCollection.contactListPage.getFirstDialogName());
+	    Assert.assertEquals(value, PagesCollection.contactListPage.getFirstDialogName(value));
 	}
 	
 	@When("^I create group chat with (.*) and (.*)$")
@@ -111,6 +111,34 @@ public class ContactListPageSteps {
 		contact1 = CommonUtils.retrieveRealUserContactPasswordValue(contact1);
 		contact2 = CommonUtils.retrieveRealUserContactPasswordValue(contact2);
 		PagesCollection.contactListPage.tapOnGroupChat(contact1, contact2);
+	}
+	
+	
+	@When("^I swipe right on a (.*)$")
+	public void ISwipeRightOnContact(String contact) throws IOException {
+		
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		PagesCollection.contactListPage.swipeRightOnContact(500, contact);
+	}
+	
+	@When("^I click mute conversation$")
+	public void IClickMuteConversation() throws IOException, InterruptedException {
+		
+		PagesCollection.contactListPage.muteConversation();
+	}
+	
+	@Then("^Contact (.*) is muted$")
+	public void ContactIsMuted(String contact) throws IOException {
+		
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		Assert.assertTrue(PagesCollection.contactListPage.isContactMuted(contact));
+	}
+	
+	@Then("^Contact (.*) is not muted$")
+	public void ContactIsNotMuted(String contact) throws IOException {
+		
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		Assert.assertFalse(PagesCollection.contactListPage.isContactMuted(contact));
 	}
 	
 	@Then("^I open archived conversations$")

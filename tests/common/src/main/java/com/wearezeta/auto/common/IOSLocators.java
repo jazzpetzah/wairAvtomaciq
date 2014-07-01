@@ -64,8 +64,6 @@ public final class IOSLocators {
 	
 	public static final String nameAddToConversationButton = "ADD TO CONVERSATION";
 	
-	public static final String nameAcceptConnectionButton = "ACCEPT";
-	
 	public static final String classUIATextView = "UIATextView";
 
 	public static final String xpathHelloCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[last()]";
@@ -92,7 +90,7 @@ public final class IOSLocators {
 	
 	public static final String xpathHidePasswordButton = "//UIAApplication[1]/UIAWindow[1]/UIATextField[1]/UIAButton[1]";
 	
-	public static final String nameContinueButton = "CONTINUE";
+	public static final String classNameConfirmationMessage = "UIATextView";
 	
 	public static final String nameCreateAccountButton = "RegistrationCreateAccountButton";
 	
@@ -139,4 +137,13 @@ public final class IOSLocators {
 	public static final String xpathConversationNameTextField = "//UIAApplication[1]/UIAWindow[1]/UIATextField[1]";
 	
 	
+=======
+	public static final String xpathMutedIcon = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[@name='%s']/UIAImage[1]";
+	
+	public static final String nameMuteButton = "ConvCellMuteButton";
+	
+	public static final String nameConnectAlert = "Connect With";
+	
+	public static final String nameConnectAlertYes = "Yes";
+>>>>>>> 9b723bfb0a796f3acc7345f9255617541b4ecbf8
 }

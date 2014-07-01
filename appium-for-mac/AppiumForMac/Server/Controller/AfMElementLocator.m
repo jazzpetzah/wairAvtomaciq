@@ -93,6 +93,47 @@
 		return matchedElement;
 	}
 
+    if (self.strategy == AppiumMacLocatoryStrategyClassName)
+    {
+        AfMElementLocator *windowLocator = [AfMElementLocator locatorWithSession:self.session using:@"xpath" value:@"//AXWindow"];
+        
+        PFUIElement *matchedElement = nil;
+        if (windowLocator != nil) {
+            NSMutableArray *windows = [NSMutableArray new];
+            [windowLocator findAllUsingBaseElement:nil results:windows statusCode:statusCode];
+            if (windows.count > 0) {
+                PFUIElement *mainWindow = [windows objectAtIndex:0];
+                int startX = mainWindow.AXPosition.pointValue.x;
+                int startY = mainWindow.AXPosition.pointValue.y;
+                int endX = startX + mainWindow.AXSize.pointValue.x;
+                int endY = startY + mainWindow.AXSize.pointValue.y;
+
+                for (int i = startX; i < endX; i+=20) {
+                    for (int j = startY; j < endY; j+=20) {
+                        NSError *error = nil;
+                        PFUIElement *newElement = [PFUIElement elementAtPoint:NSMakePoint(i, j) withDelegate:nil error:&error];
+                        if ([self.value caseInsensitiveCompare:newElement.AXRole] == NSOrderedSame) {
+                            matchedElement = newElement;
+                            
+                            *statusCode = kAfMStatusCodeSuccess;
+                            return matchedElement;
+                        }
+                    }
+                }
+            } else {
+                *statusCode = kAfMStatusCodeNoSuchWindow;
+                return nil;
+            }
+            if (matchedElement == nil) {
+                *statusCode = kAfMStatusCodeNoSuchElement;
+                return nil;
+            }
+            *statusCode = kAfMStatusCodeUnknownError;
+            return nil;
+        }
+        
+    }
+    
     // check if this the element we are looking for
     if ([self matchesElement:baseElement])
     {
@@ -195,17 +236,29 @@
                 int endX = startX + mainWindow.AXSize.pointValue.x;
                 int endY = startY + mainWindow.AXSize.pointValue.y;
                 
-                NSMutableArray *addresses = [NSMutableArray new];
+                NSMutableArray *rects = [NSMutableArray new];
                 for (int i = startX; i < endX; i+=20) {
                     for (int j = startY; j < endY; j+=20) {
                         NSError *error = nil;
                         PFUIElement *newElement = [PFUIElement elementAtPoint:NSMakePoint(i, j) withDelegate:nil error:&error];
                         if ([self.value caseInsensitiveCompare:newElement.AXRole] == NSOrderedSame) {
-                            NSString *addr = [NSString stringWithFormat:@"%p", &newElement];
-                            
-                            if (![addresses containsObject:addr]) {
+                            NSRect currentRect = NSMakeRect(
+                                        newElement.AXPosition.pointValue.x,
+                                        newElement.AXPosition.pointValue.y,
+                                        newElement.AXSize.pointValue.x,
+                                        newElement.AXSize.pointValue.y);
+                            BOOL existingElement = NO;
+                            for (NSValue *value in rects)
+                            {
+                                NSRect rect = value.rectValue;
+                                if (NSPointInRect(NSMakePoint(i,j), rect))
+                                {
+                                    existingElement = YES;
+                                }
+                            }
+                            if (!existingElement) {
                                 [results addObject:newElement];
-                                [addresses addObject:addr];
+                                [rects addObject:[NSValue valueWithRect: currentRect]];
                             }
                         }
                     }
