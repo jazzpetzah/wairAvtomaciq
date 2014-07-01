@@ -64,7 +64,7 @@ Scenario Outline: Send message to group chat
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
- 
+
 Scenario Outline: Send a camera roll picture to user from contact list
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with my name <Name>
@@ -80,7 +80,7 @@ Scenario Outline: Send a camera roll picture to user from contact list
 Examples: 
 	|	Login		|	Password		|	Name		|	Contact			|
 	|	aqaUser		|	aqaPassword		|	aqaUser		|	aqaContact1		|
-	
+
 Scenario Outline: Leave from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -116,7 +116,7 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
 
-@torun   
+  
 Scenario Outline: Mute conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

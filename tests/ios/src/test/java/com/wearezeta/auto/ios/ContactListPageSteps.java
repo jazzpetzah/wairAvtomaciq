@@ -65,11 +65,11 @@ public class ContactListPageSteps {
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(value));		 
 	}
 	
-	@Then("^I see contact list loaded with User name (.*) first in list$")
+	@Then("^I see contact list loaded with User name (.*)$")
 	public void ISeeUserNameFirstInContactList(String value) throws Throwable {
 		
 		value = CommonUtils.retrieveRealUserContactPasswordValue(value);
-	    Assert.assertEquals(value, PagesCollection.contactListPage.getFirstDialogName());
+	    Assert.assertEquals(value, PagesCollection.contactListPage.getFirstDialogName(value));
 	}
 	
 	@When("^I create group chat with (.*) and (.*)$")

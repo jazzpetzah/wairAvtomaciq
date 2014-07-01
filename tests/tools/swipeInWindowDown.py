@@ -101,9 +101,9 @@ def swipeInWindow(windowName, startX, startY, endX, endY):
     print dim[0]
     print dim[1]
     moveWindowToZero(windowName)
-    time.sleep(0.5)
+    time.sleep(0.9)
     activateWindow(windowName)
-    time.sleep(0.5)
+    time.sleep(0.9)
     swipeRelative(startX,startY,endX,endY,dim[0],dim[1])
     
 def main():

@@ -6,4 +6,4 @@ isSimulator=true
 generateUsers=true
 swipeScriptPath=/Users/shiznyak/zautomation/tests/tools/./swipeInWindow
 photoScriptPath=/Users/shiznyak/zautomation/tests/tools/push_photo_to_simulator.sh
-driverTimeoutSeconds=6
+driverTimeoutSeconds=10

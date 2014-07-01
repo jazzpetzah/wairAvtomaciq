@@ -48,7 +48,7 @@ public final class IOSLocators {
 	
 	public static final String xpathConnectCloseButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]";
 
-	public static final String xpathFirstInContactList = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[2]/UIAStaticText[1]";
+	public static final String xpathFirstInContactList = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[2]/UIAStaticText[@name='%s']";
 	
 	public static final String classNameConnectMessageLabel = "UIATextField";
 	
@@ -63,8 +63,6 @@ public final class IOSLocators {
 	public static final String nameCreateConversationButton = "CREATE CONVERSATION";
 	
 	public static final String nameAddToConversationButton = "ADD TO CONVERSATION";
-	
-	public static final String nameAcceptConnectionButton = "ACCEPT";
 	
 	public static final String classUIATextView = "UIATextView";
 
@@ -122,7 +120,6 @@ public final class IOSLocators {
 	
 	public static final String nameConfirmPictureButton = "ImageConfirmerConfirmButton";
 	
-	//public static final String nameProvideValidEmailMessage = "PLEASE PROVIDE A VALID EMAIL ADDRESS ";//final space is very important...
 	public static final String xpathProvideValidEmailMessage = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]"; //"//UIAButton[contains(@label, \"%s\")]";
 
 	public static final String xpathAddContactToChatButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[7]";
@@ -132,4 +129,8 @@ public final class IOSLocators {
 	public static final String xpathMutedIcon = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[@name='%s']/UIAImage[1]";
 	
 	public static final String nameMuteButton = "ConvCellMuteButton";
+	
+	public static final String nameConnectAlert = "Connect With";
+	
+	public static final String nameConnectAlertYes = "Yes";
 }

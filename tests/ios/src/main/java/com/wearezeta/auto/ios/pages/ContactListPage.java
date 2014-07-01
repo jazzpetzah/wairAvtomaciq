@@ -18,11 +18,11 @@ public class ContactListPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameProfileName)
 	private WebElement profileName;
 	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathFirstInContactList)
-	private WebElement firstContactListDialog;
-	
 	@FindBy(how = How.NAME, using = IOSLocators.nameMuteButton)
 	private List<WebElement> muteButtons;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameConnectAlertYes)
+	private WebElement connectAlertButton;
 
 	private String url;
 	private String path;
@@ -61,6 +61,10 @@ public class ContactListPage extends IOSPage {
 		
 		return result;
 	}
+	
+	public void acceptConnectionRequest() {
+		connectAlertButton.click();
+	}
 
 	public IOSPage tapOnName(String name) throws IOException {
 		IOSPage page = null;
@@ -74,8 +78,11 @@ public class ContactListPage extends IOSPage {
 		return page;
 	}
 	
-	public String getFirstDialogName(){
-		return firstContactListDialog.getText();
+	public String getFirstDialogName(String name){
+		
+		DriverUtils.waitUntilElementAppears(driver, By.xpath(String.format(IOSLocators.xpathFirstInContactList, name)));
+		WebElement contact = driver.findElement(By.xpath(String.format(IOSLocators.xpathFirstInContactList, name)));
+		return contact.getText();
 	}
 	
 	private WebElement findNameInContactList(String name)
@@ -144,6 +151,11 @@ public class ContactListPage extends IOSPage {
 		}
 		
 		return el;
+	}
+	
+	public boolean waitForConnectionAllert() {
+			
+		return DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameConnectAlert));
 	}
 
 	@Override

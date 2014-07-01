@@ -2,10 +2,12 @@ package com.wearezeta.auto.ios;
 
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.BackEndREST;
+import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 
-
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
 public class ConnectToPageSteps {
@@ -32,6 +34,28 @@ public class ConnectToPageSteps {
 	@When("^I tap connect dialog Send button$")
 	public void WhenITapOnSendButtonBelowConnectDialog() throws Throwable {
 		PagesCollection.connectToPage.clickSendButton();
+	}
+	
+	@Given("^I have connection request from (.*)$")
+	public void IHaveConnectionRequest(String contact) {
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		for (ClientUser user : CommonUtils.yourUsers) {
+			if(user.getName().equals(contact)) {
+				BackEndREST.sendConnectRequest(user, CommonUtils.yourUsers.get(0), "CONNECT TO " + contact, "Hello");
+			}
+		}
+	}
+	
+	@When("^I see connection request from (.*)$")
+	public void IReceiveInvitationMessage(String contact) throws Throwable {
+		
+		Assert.assertTrue(PagesCollection.contactListPage.waitForConnectionAllert());
+	}
+	
+	@When("^I confirm connection request$")
+	public void IAcceptInvitationMessage() {
+		
+		PagesCollection.contactListPage.acceptConnectionRequest();
 	}
 
 }
