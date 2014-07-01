@@ -50,7 +50,7 @@ public class RegistrationPage extends IOSPage {
 	//private WebElement yourSecurePassword;
 	
 	//@FindBy(how = How.XPATH, using = IOSLocators.xpathYourVisiblePassword)
-	//private WebElement yourVisiblePassword;
+	//private WebElement yourVisiblePassword; 
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameYourPassword)
 	private WebElement yourPassword;

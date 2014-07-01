@@ -66,3 +66,29 @@ Feature: Register new user
     Examples:     
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
+    
+    @torun
+  Scenario Outline: Can return to email page to change email if input incorrectly
+	Given I see sign in screen
+	When I press Join button
+	And I press Picture button
+	And I choose photo from album
+	And I See selected picture
+	And I confirm selection
+	And I enter name <Name>
+	And I enter email <Email>
+	And I enter password <Password>
+	And I submit registration data
+	Then I see error page
+	And I return to the email page
+	Then I enter the correcr email
+	And I verify the email is correct by registering 
+	#And I press continue registration
+	#And Contact list appears with my name <Name>
+
+    Examples:     
+    |	Email						                    |	Password	    |	Name			            |
+    |  chad.bettencourt@wearezeta.com	                |	aqaPassword	    |	Chad Bettencourt        	|
+    
+    
+    
