@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -45,8 +46,20 @@ public class RegistrationPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameYourEmail)
 	private WebElement yourEmail;
 	
+	//@FindBy(how = How.XPATH, using = IOSLocators.xpathYourSecurePassword)
+	//private WebElement yourSecurePassword;
+	
+	//@FindBy(how = How.XPATH, using = IOSLocators.xpathYourVisiblePassword)
+	//private WebElement yourVisiblePassword;
+	
 	@FindBy(how = How.NAME, using = IOSLocators.nameYourPassword)
 	private WebElement yourPassword;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathRevealPasswordButton)
+	private WebElement revealPasswordButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathHidePasswordButton)
+	private WebElement hidePasswordButton;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameCreateAccountButton)
 	private WebElement createAccountButton;
@@ -54,13 +67,22 @@ public class RegistrationPage extends IOSPage {
 	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameConfirmationMessage)
 	private WebElement confirmationText;
 	
-	//@FindBy(how = How.NAME, using = IOSLocators.nameProvideValidEmailMessage)
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathProvideValidEmailMessage)
 	private WebElement provideValidEmailMessage;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameBackToWelcomeButton)
+	private WebElement backToWelcomeButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameForwardWelcomeButton)
+	private WebElement ForwardWelcomeButton;
 	
 	private String name;
 	private String email;
 	private String password;
+	
+	private String usernameTextFieldValue;
+	private String emailTextFieldValue;
+	private String passwordTextFieldValue;
 
 	private String[] listOfEmails;
 	
@@ -105,12 +127,11 @@ public class RegistrationPage extends IOSPage {
 		createAccountButton.click();
 	}
 	
-	public void typeEmail() //change name?
+	public void typeEmail()
 	{
 		yourName.sendKeys(getName() + "\n");
 		yourEmail.sendKeys(getEmail());
 	}
-	
 	
 	public boolean typeAllInvalidEmails()
 	{
@@ -123,6 +144,57 @@ public class RegistrationPage extends IOSPage {
 
 		}
 		return true; //returns true if all emails are found to be invalid
+	}
+	
+	public void typePassword()
+	{
+		yourName.sendKeys(getName() + "\n");
+		yourEmail.sendKeys(getEmail() + "\n");
+		yourPassword.sendKeys(getPassword());
+	}
+	
+	public void typeAndStoreAllValues()
+	{
+		yourName.sendKeys(getName());
+		usernameTextFieldValue = yourName.getText();
+		yourName.sendKeys(getName()+"\n");
+		yourEmail.sendKeys(getEmail());
+		emailTextFieldValue = yourEmail.getText();
+		yourEmail.sendKeys(getEmail()+"\n");
+		yourPassword.sendKeys(getPassword());
+		driver.tap(1, revealPasswordButton.getLocation().x + 1, revealPasswordButton.getLocation().y + 1, 1);
+		passwordTextFieldValue = yourPassword.getText();
+	}
+	
+	public void navigateToWelcomePage()
+	{
+		while(backToWelcomeButton.isDisplayed()){
+			backToWelcomeButton.click();
+		}
+	}
+	
+	public boolean verifyUserInputIsPresent()
+	//this test skips photo verification
+	{
+		
+		PagesCollection.loginPage.clickJoinButton();
+		ForwardWelcomeButton.click(); //skip photo
+		if(!yourName.getText().equals(usernameTextFieldValue)){
+			return false;
+		}
+		ForwardWelcomeButton.click();
+		if(!yourEmail.getText().equals(emailTextFieldValue)){
+			return false;
+		}
+		ForwardWelcomeButton.click();
+		if(!yourPassword.getText().equals(passwordTextFieldValue)){
+			driver.tap(1, revealPasswordButton.getLocation().x + 1, revealPasswordButton.getLocation().y + 1, 1);
+			if(!yourPassword.getText().equals(passwordTextFieldValue)){
+			return false;
+			}
+		}
+		System.out.println("password verified\n");
+		return true;
 	}
 	
 	public String getEmailFieldValue()

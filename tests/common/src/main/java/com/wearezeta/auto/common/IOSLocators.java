@@ -35,7 +35,7 @@ public final class IOSLocators {
 	public static final String nameTextInput = "ComposeControllerTextView";
 	
 	public static final String xpathLastMessageFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]/UIATextView[1]";
-	
+
 	public static final String namePickerSearch = "textViewSearch";
 	
 	public static final String namePickerClearButton = "PeoplePickerClearButton";
@@ -48,7 +48,7 @@ public final class IOSLocators {
 	
 	public static final String xpathConnectCloseButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]";
 
-	public static final String xpathFirstInContactList = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[2]/UIAStaticText[@name='%s']";
+	public static final String xpathFirstInContactList = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[2]/UIAStaticText[1]";
 	
 	public static final String classNameConnectMessageLabel = "UIATextField";
 	
@@ -85,6 +85,10 @@ public final class IOSLocators {
 	public static final String nameYourEmail = "RegistrationEmailField";
 	
 	public static final String nameYourPassword = "RegistrationPasswordField";
+
+	public static final String xpathRevealPasswordButton = "//UIAApplication[1]/UIAWindow[1]/UIASecureTextField[1]/UIAButton[1]";
+	
+	public static final String xpathHidePasswordButton = "//UIAApplication[1]/UIAWindow[1]/UIATextField[1]/UIAButton[1]";
 	
 	public static final String classNameConfirmationMessage = "UIATextView";
 	
@@ -120,11 +124,17 @@ public final class IOSLocators {
 	
 	public static final String nameConfirmPictureButton = "ImageConfirmerConfirmButton";
 	
-	public static final String xpathProvideValidEmailMessage = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]"; //"//UIAButton[contains(@label, \"%s\")]";
-
+	public static final String xpathProvideValidEmailMessage = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]"; 
+	
 	public static final String xpathAddContactToChatButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[7]";
 	
 	public static final String xpathOtherUserName = "//UIAApplication[1]/UIAWindow[1]/UIATextField[@value='%s']";
+	
+	public static final String nameBackToWelcomeButton = "BackToWelcomeButton";
+	
+	public static final String nameForwardWelcomeButton = "ForwardWelcomeButton";
+	
+	public static final String xpathConversationNameTextField = "//UIAApplication[1]/UIAWindow[1]/UIATextField[1]";
 	
 	public static final String xpathMutedIcon = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[@name='%s']/UIAImage[1]";
 	

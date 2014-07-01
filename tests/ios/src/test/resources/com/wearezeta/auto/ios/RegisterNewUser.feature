@@ -19,7 +19,7 @@ Feature: Register new user
     Examples:     
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
-    
+
   Scenario Outline: Attempt to register an email with spaces
     Given I see sign in screen
 	When I press Join button
@@ -34,7 +34,7 @@ Feature: Register new user
     Examples:     
     |	Email				    |	Password	        |  Name			    |
     |	aqaUser           	    |	aqaPassword	        |  aqaUser      	|
-        
+
   Scenario Outline: Attempt to register an email with incorrect format
     Given I see sign in screen
 	When I press Join button
@@ -49,3 +49,20 @@ Feature: Register new user
     Examples:     
     |  Name			    |
     |  aqaUser      	|
+    
+  Scenario Outline: Conserve user input throughout registration
+	Given I see sign in screen
+	When I press Join button
+	And I press Picture button
+	And I choose photo from album
+	And I See selected picture
+	And I confirm selection
+	And I enter name <Name>
+	And I enter email <Email>
+	And I enter password <Password>
+	Then I navigate throughout the registration pages and see my input
+
+
+    Examples:     
+    |	Email						|	Password	    |	Name			|
+    |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
