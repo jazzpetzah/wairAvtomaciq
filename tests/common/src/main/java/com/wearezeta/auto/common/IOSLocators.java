@@ -49,8 +49,6 @@ public final class IOSLocators {
 	
 	public static final String xpathConnectCloseButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]";
 	
-	public static final String xpathOtherConversationCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[last()]";
-	
 	public static final String nameAddPictureButton = "ComposeControllerPictureButton";
 	
 	public static final String nameCameraRollButton = "FullScreenCameraRightButton";

@@ -33,6 +33,11 @@ public class ContactListPageSteps {
 		}
 	}
 	
+	@When("^I swipe left to personal screen$")
+	public void ISwipeLeftToPersonalScreen() throws Throwable {
+		
+	}
+	
 	@When("^I tap on contact name (.*)$")
 	public void WhenITapOnContactName(String name) throws IOException  {
 		
