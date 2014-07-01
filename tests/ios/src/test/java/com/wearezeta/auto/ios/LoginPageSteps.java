@@ -22,16 +22,6 @@ public class LoginPageSteps {
 		 Assert.assertNotNull(PagesCollection.loginPage.isVisible());
 	 }
 	 
-	 @Given("^Users are generated who I am not connected to$")
-	 public void GivenNonConnectedUsers()
-	 {
-		 ClientUser unconnectedUser = new ClientUser("unconnectedTest:"+CommonUtils.generateGUID().toString()+"@wearezeta.com", "password123","user:"+CommonUtils.generateGUID().toString(), UsersState.Created);
-		 
-		 
-		 BackEndREST.registerNewUser("example@example.com", "userName", "password");
-		 CreateZetaUser.activateRegisteredUser("example@example.com",10, "userName","password");
-	 }
-	 
 	 @Given("^I Sign in using login (.*) and password (.*)$")
 	 public void GivenISignIn(String login, String password) throws IOException  {		
 		 

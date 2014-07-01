@@ -162,11 +162,8 @@ public class RegistrationPage extends IOSPage {
 		emailTextFieldValue = yourEmail.getText();
 		yourEmail.sendKeys(getEmail()+"\n");
 		yourPassword.sendKeys(getPassword());
-		//revealPasswordButton.click();
-		passwordTextFieldValue = "testpassword"; //yourVisiblePassword.getText();
-		
-		System.out.println("test\n");
-		System.out.println("username:"+usernameTextFieldValue+"\nemail:"+emailTextFieldValue+"\npassword:"+passwordTextFieldValue);
+		driver.tap(1, revealPasswordButton.getLocation().x + 1, revealPasswordButton.getLocation().y + 1, 1);
+		passwordTextFieldValue = yourPassword.getText();
 	}
 	
 	public void navigateToWelcomePage()
@@ -174,29 +171,27 @@ public class RegistrationPage extends IOSPage {
 		while(backToWelcomeButton.isDisplayed()){
 			backToWelcomeButton.click();
 		}
-	//Assert.assertNotNull(PagesCollection.loginPage.isVisible());
 	}
 	
 	public boolean verifyUserInputIsPresent()
+	//this test skips photo verification
 	{
 		
 		PagesCollection.loginPage.clickJoinButton();
-		ForwardWelcomeButton.click(); //skip photo verification
+		ForwardWelcomeButton.click(); //skip photo
 		if(!yourName.getText().equals(usernameTextFieldValue)){
-			System.out.println("username verification failed\n");
 			return false;
 		}
-		System.out.println("username verified\n");
 		ForwardWelcomeButton.click();
 		if(!yourEmail.getText().equals(emailTextFieldValue)){
-			System.out.println("email verification failed\n");
 			return false;
 		}
-		System.out.println("email verified\n");
 		ForwardWelcomeButton.click();
-		if("testpassword"!=passwordTextFieldValue){ //if(!yourPassword.getText().equals(passwordTextFieldValue)){
-			System.out.println("password verification failed\n");
+		if(!yourPassword.getText().equals(passwordTextFieldValue)){
+			driver.tap(1, revealPasswordButton.getLocation().x + 1, revealPasswordButton.getLocation().y + 1, 1);
+			if(!yourPassword.getText().equals(passwordTextFieldValue)){
 			return false;
+			}
 		}
 		System.out.println("password verified\n");
 		return true;

@@ -3,7 +3,7 @@
 Url=http://127.0.0.1:4723/wd/hub
 appPath=/Users/haydenchristensen/Desktop/Automation/ZClient.app
 isSimulator=true
-generateUsers=true
+generateUsers=false
 swipeScriptPath=/Users/haydenchristensen/zautomation/tests/tools/swipeInWindow.py
 photoScriptPath=/Users/haydenchristensen/zautomation/tests/tools/push_photo_to_simulator.sh
 driverTimeoutSeconds=6

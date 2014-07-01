@@ -86,13 +86,9 @@ public final class IOSLocators {
 	
 	public static final String nameYourEmail = "RegistrationEmailField";
 	
-	
 	public static final String nameYourPassword = "RegistrationPasswordField";
-	//public static final String xpathYourSecurePassword = "//UIAApplication[1]/UIAWindow[1]/UIASecureTextField[1]";
-	
-	//public static final String xpathYourVisiblePassword  = "//UIAApplication[1]/UIAWindow[1]/UIATextField[1]";
-	
-	public static final String xpathRevealPasswordButton = "//UIAApplication[1]/UIAWindow[1]/UIASecureTextField[1]/UIAButton[1]"; //UIAApplication[1]/UIAWindow[1]/UIATextField[1]/UIAButton[1]";
+
+	public static final String xpathRevealPasswordButton = "//UIAApplication[1]/UIAWindow[1]/UIASecureTextField[1]/UIAButton[1]";
 	
 	public static final String xpathHidePasswordButton = "//UIAApplication[1]/UIAWindow[1]/UIATextField[1]/UIAButton[1]";
 	

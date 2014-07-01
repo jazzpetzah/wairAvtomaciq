@@ -16,9 +16,9 @@ if [ ! -d "$media_base" ]; then
     mkdir -p "$photo_dir"
 fi
 
-kate_pic="$photo_dir/kate.jpg"
+cat_pic="$photo_dir/cat.jpg"
 
-if [ ! -f "$kate_pic" ]; then
+if [ ! -f "$cat_pic" ]; then
     pushd `pwd`
     if [ -d "$photo_data" ]; then
         cd "$photo_data"
@@ -30,12 +30,11 @@ if [ ! -f "$kate_pic" ]; then
     fi
     popd
   
-    #get a kate
-    curl -L -o "$kate_pic" file:///Users/haydenchristensen/Desktop/kate-upton-by-yu-tsai-1791080246.jpg
-
+    #get a cat
+    curl -L -o "$cat_pic" http://thecatapi.com/api/images/get?type=jpg
 
     if [ $? -ne 0 ]; then
-        echo "Error: could not download image" 
+        echo "Error: could not download image"
         exit -1
     fi
 fi

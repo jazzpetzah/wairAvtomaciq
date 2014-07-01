@@ -84,8 +84,6 @@ public class LoginPage extends IOSPage {
 		signUpButton.click();
 	}
 	
-	
-	
 	public RegistrationPage join() throws IOException{
 		
 		signUpButton.click();

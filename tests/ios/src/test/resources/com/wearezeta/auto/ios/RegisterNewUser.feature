@@ -50,7 +50,6 @@ Feature: Register new user
     |  Name			    |
     |  aqaUser      	|
     
-
   Scenario Outline: Conserve user input throughout registration
 	Given I see sign in screen
 	When I press Join button
