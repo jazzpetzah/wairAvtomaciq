@@ -88,7 +88,7 @@ public class GroupChatPage extends DialogPage {
 		
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
-		driver.swipe(coords.x +10, coords.y + elementSize.height / 2, coords.x + elementSize.width / 2, coords.y + elementSize.height / 2, time);
+		driver.swipe(coords.x +10, coords.y + 30, coords.x + elementSize.width / 2 + 20, coords.y + 30, time);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 	
