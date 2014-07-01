@@ -53,9 +53,9 @@ public class CommonUtils {
 		}
 	}
 	
-	private static void executeOsXCommand(String [] cmd) throws Exception{
+	public static void executeOsXCommand(String [] cmd) throws Exception{
 		Process process = Runtime.getRuntime().exec(cmd);
-		 System.out.print("Process Code"+ process.waitFor());
+		System.out.println("Process Code "+ process.waitFor()); 
 	}
 	
 	public static String retrieveRealUserContactPasswordValue(String value) {
@@ -343,7 +343,7 @@ public class CommonUtils {
 		 String [] cmd =new String []{"/bin/bash", scriptPath, "7.1"};
 		 
 		 Process process = Runtime.getRuntime().exec(cmd);
-		 System.out.print("Process Code"+ process.waitFor());
+		 System.out.println("Process Code "+ process.waitFor());
 	}
 	 
 	public static void usePrecreatedUsers() {

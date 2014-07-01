@@ -12,11 +12,6 @@ import cucumber.api.java.en.When;
 
 public class GroupChatInfoPageSteps {
 	
-	@When("^I swipe up on group chat info page$")
-	public void ISwipeUpOnGroupChatInfoPage() throws Throwable {
-	    PagesCollection.groupChatInfoPage.swipeUp(500);
-	}
-
 	@When("^I press leave converstation button$")
 	public void IPressLeaveConverstationButton() throws Throwable {
 		PagesCollection.groupChatInfoPage.leaveConversation();
@@ -31,6 +26,7 @@ public class GroupChatInfoPageSteps {
 	@Then("^I press leave$")
 	public void IPressLeave() throws Throwable {
 		PagesCollection.groupChatInfoPage.confirmLeaveConversation();
+		PagesCollection.contactListPage.waitForContactListToLoad();
 	}
 	
 	@When("^I select contact (.*)$")

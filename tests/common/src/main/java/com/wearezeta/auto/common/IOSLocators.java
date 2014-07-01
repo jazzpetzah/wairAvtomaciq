@@ -20,7 +20,7 @@ public final class IOSLocators {
 	
 	public static final String classNameContactListNames = "UIAStaticText";
 	
-	public static final String nameWelcomeLabel = "Welcome Thank you for joining us, you are now ready to go.";
+	public static final String nameProfileName = "ProfileSelfNameField";
 
 	public static final String classNameUIAButton = "UIAButton";
 	
@@ -35,7 +35,7 @@ public final class IOSLocators {
 	public static final String nameTextInput = "ComposeControllerTextView";
 	
 	public static final String xpathLastMessageFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]/UIATextView[1]";
-	
+
 	public static final String namePickerSearch = "textViewSearch";
 	
 	public static final String namePickerClearButton = "PeoplePickerClearButton";
@@ -60,15 +60,9 @@ public final class IOSLocators {
 	
 	public static final String nameConnectInput = "Type your first message to [%s]...";
 	
-	public static final String nameProfileOtherUserNameField = "ProfileOtherNameField";
-	
-	public static final String classNameProfileOtherUserEmailField = "UIATextField";
-	
 	public static final String nameCreateConversationButton = "CREATE CONVERSATION";
 	
 	public static final String nameAddToConversationButton = "ADD TO CONVERSATION";
-	
-	public static final String nameAcceptConnectionButton = "ACCEPT";
 	
 	public static final String classUIATextView = "UIATextView";
 
@@ -91,14 +85,18 @@ public final class IOSLocators {
 	public static final String nameYourEmail = "RegistrationEmailField";
 	
 	public static final String nameYourPassword = "RegistrationPasswordField";
+
+	public static final String xpathRevealPasswordButton = "//UIAApplication[1]/UIAWindow[1]/UIASecureTextField[1]/UIAButton[1]";
 	
-	public static final String nameContinueButton = "CONTINUE";
+	public static final String xpathHidePasswordButton = "//UIAApplication[1]/UIAWindow[1]/UIATextField[1]/UIAButton[1]";
+	
+	public static final String classNameConfirmationMessage = "UIATextView";
 	
 	public static final String nameCreateAccountButton = "RegistrationCreateAccountButton";
 	
 	public static final String xpathLastGroupChatMessage = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]/UIATextView[last()]";
 	
-	public static final String nameLeaveConversation = "Leave conversation";
+	public static final String xpathLeaveConversation = "//UIAApplication[1]/UIAWindow[1]/UIAButton[8]";
 	
 	public static final String nameLeaveConversationAlert = "Leave conversation?";
 
@@ -106,10 +104,12 @@ public final class IOSLocators {
 	
 	public static final String nameYouHaveLeft = "YOU HAVE LEFT";
 
-	public static final String nameRemoveFromConversation = "Remove";
+	public static final String xpathRemoveFromConversation = "//UIAApplication[1]/UIAWindow[1]/UIAButton[9]";
+	
 	public static final String xpathOtherConversationCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[last()]";
 
 	public static final String nameComfirmRemoveButton = "REMOVE";
+	
 	public static final String nameAddPictureButton = "ComposeControllerPictureButton";
 	
 	public static final String nameCameraRollButton = "FullScreenCameraRightButton";
@@ -123,5 +123,31 @@ public final class IOSLocators {
 	public static final String xpathCameraRollPicture = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[1]";
 	
 	public static final String nameConfirmPictureButton = "ImageConfirmerConfirmButton";
+<<<<<<< HEAD
 		
+=======
+	
+	public static final String xpathProvideValidEmailMessage = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]"; 
+	
+	public static final String xpathAddContactToChatButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[7]";
+	
+	public static final String xpathOtherUserName = "//UIAApplication[1]/UIAWindow[1]/UIATextField[@value='%s']";
+	
+	public static final String nameBackToWelcomeButton = "BackToWelcomeButton";
+	
+	public static final String nameForwardWelcomeButton = "ForwardWelcomeButton";
+	
+	public static final String xpathConversationNameTextField = "//UIAApplication[1]/UIAWindow[1]/UIATextField[1]";
+	
+	
+=======
+	public static final String xpathMutedIcon = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[@name='%s']/UIAImage[1]";
+	
+	public static final String nameMuteButton = "ConvCellMuteButton";
+	
+	public static final String nameConnectAlert = "Connect With";
+	
+	public static final String nameConnectAlertYes = "Yes";
+>>>>>>> 9b723bfb0a796f3acc7345f9255617541b4ecbf8
+>>>>>>> 4d530cbcb624cc7f446554f94d3947c5ffeb68dd
 }

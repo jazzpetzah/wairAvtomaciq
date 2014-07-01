@@ -16,11 +16,8 @@ public class GroupChatInfoPage extends IOSPage{
 	private String url;
 	private String path;
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameLeaveConversation)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathLeaveConversation)
 	private WebElement leaveChat;
-	
-	@FindBy(how = How.NAME, using = IOSLocators.nameLeaveConversationAlert)
-	private WebElement leaveChatAlertMessage;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameLeaveConversationButton)
 	private WebElement leaveChatButton;

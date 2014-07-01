@@ -105,6 +105,35 @@ public class RegistrationPageSteps {
 		 }
 	 }
 	 
+	 @When("^I attempt to enter an email with spaces (.*)$")
+	 public void IEnterEmailWithSpaces(String email) throws IOException{
+		 	if (email.equals(CommonUtils.YOUR_USER_1)) {
+			 email=aqaEmail;
+		 }
+		PagesCollection.registrationPage.setEmail(new StringBuilder(email).insert(email.length()-1,"          ").toString());
+		 }
+	 
+	 @Then("^I verify no spaces are present in email$")
+	 public void CheckForSpacesInEmail() throws IOException{
+		 PagesCollection.registrationPage.typeEmail();
+		 String realEmailText = PagesCollection.registrationPage.getEmailFieldValue();
+		 String initialEmailText = PagesCollection.registrationPage.getEmail();
+		 Assert.assertTrue(initialEmailText.replace(" ", "").equals(realEmailText));
+	 }
+	 
+	 @When("^I attempt to enter emails with known incorrect formats$")
+	 public void IEnterEmailWithIncorrectFormat() throws IOException{
+		 //current design has basic email requirements: contains single @, contains a domain name with a dot + domain extension(min 2 characters)
+		 String[] listOfInvalidEmails = {"abc.example.com","abc@example@.com","example@zeta","abc@example.","abc@example.c"};
+		 //test fails because minimum 2 character domain extension is not implemented(allows for only 1)
+		 PagesCollection.registrationPage.setListOfEmails(listOfInvalidEmails);
+	 }
+	 
+	 @Then ("^I verify that the app does not let me continue$")
+	 public void IVerifyIncorrectFormatMessage() throws IOException{
+		 Assert.assertTrue(PagesCollection.registrationPage.typeAllInvalidEmails());
+	 }
+	 
 	 @When("^I enter password (.*)$")
 	 public void IEnterPassword(String password) throws IOException {
 		 
@@ -115,6 +144,13 @@ public class RegistrationPageSteps {
 			 aqaPassword = password;
 			 PagesCollection.registrationPage.setPassword(password);
 		 }
+	 }
+	 
+	 @Then ("^I navigate throughout the registration pages and see my input$")
+	 public void NavigateAndVerifyInput() throws IOException {
+		 PagesCollection.registrationPage.typeAndStoreAllValues();
+		 PagesCollection.registrationPage.navigateToWelcomePage();
+		 Assert.assertTrue(PagesCollection.registrationPage.verifyUserInputIsPresent());
 	 }
 	 
 	 @When("^I submit registration data$")
@@ -133,16 +169,7 @@ public class RegistrationPageSteps {
 	 @Then("^I verify registration address$")
 	 public void IVerifyRegistrationAddress() throws Throwable {
 		 
-		 CreateZetaUser.activateRegisteredUser(aqaEmail, 10, aqaEmail, aqaPassword);
-	 }
-	 
-	 @Then("^I press continue registration$")
-	 public void IPressContinue() throws Throwable {
-		 
-		 PagesCollection.registrationPage.continueRegistration();
-		 ClientUser myContact = new ClientUser(aqaEmail, aqaPassword, aqaName, UsersState.AllContactsConnected);
-		 CommonUtils.yourUsers = new ArrayList<ClientUser>();
-		 CommonUtils.yourUsers.add(myContact);
+		 Assert.assertTrue(CreateZetaUser.activateRegisteredUser(aqaEmail, 10, aqaEmail, aqaPassword));
 	 }
 	 
 }

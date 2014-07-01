@@ -7,8 +7,10 @@ import org.junit.Assert;
 import org.openqa.selenium.NoSuchElementException;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.LoginPage;
+import com.wearezeta.auto.osx.pages.OSXPage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -24,6 +26,7 @@ public class LoginPageSteps {
 		try {
 			LoginPage loginPage = CommonSteps.senderPages.getLoginPage();
 			Assert.assertNotNull(loginPage.isVisible());
+			loginPage.SignIn();
 			loginPage.setLogin(login);
 			loginPage.setPassword(password);
 			loginPage.SignIn();
@@ -37,7 +40,12 @@ public class LoginPageSteps {
 	
 	 @When("I press Sign In button")
 	 public void WhenIPressSignInButton() throws IOException {
-		 CommonSteps.senderPages.getLoginPage().SignIn();
+
+		 OSXPage page = CommonSteps.senderPages.getLoginPage().SignIn();
+		 Assert.assertNotNull("After sign in button click Login page or Contact List page should appear. Page couldn't be null", page);
+		 if (page instanceof ContactListPage) {
+			 CommonSteps.senderPages.setContactListPage((ContactListPage)page);
+		 }
 	 }
 	 
 	 @When ("I have entered login (.*)")
@@ -64,7 +72,11 @@ public class LoginPageSteps {
 		 CommonSteps.senderPages.setContactListPage(new ContactListPage(
 					CommonUtils.getUrlFromConfig(ContactListPage.class),
 					CommonUtils.getAppPathFromConfig(ContactListPage.class)));
-		 CommonSteps.senderPages.getContactListPage().SignOut();
+
+		int num = CommonSteps.senderPages.getContactListPage().numberOfContacts();
+		if (num > 0) {
+			CommonSteps.senderPages.getContactListPage().SignOut();
+		}
 	 }
 	 
 	 @Then("I have returned to Sign In screen")

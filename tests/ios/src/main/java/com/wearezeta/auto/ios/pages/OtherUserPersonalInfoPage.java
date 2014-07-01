@@ -1,27 +1,27 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.common.IOSLocators;
 import com.wearezeta.auto.common.SwipeDirection;
 
 public class OtherUserPersonalInfoPage extends IOSPage{
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameProfileOtherUserNameField)
-	private WebElement otherUserName;
-	
-	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameProfileOtherUserEmailField)
-	private WebElement otherUserEmail;
-	
-	@FindBy(how = How.NAME, using = IOSLocators.nameRemoveFromConversation)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathRemoveFromConversation)
 	private WebElement removeFromChat;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameComfirmRemoveButton)
 	private WebElement confirmRemove;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathAddContactToChatButton)
+	private WebElement addButton;
 	
 	private String url;
 	private String path;
@@ -33,20 +33,20 @@ public class OtherUserPersonalInfoPage extends IOSPage{
 
 	}
 	
-	public String getOtherUserProfileName(){
-		return otherUserName.getText();
+	public PeoplePickerPage addContactToChat() throws MalformedURLException {
+		addButton.click();
+		return new PeoplePickerPage(url, path);
 	}
 	
-	public String getOtherUserProfileEmail(){
-		return otherUserEmail.getText();
+	public boolean isOtherUserProfileEmailVisible(String name) {
+		
+		WebElement otherUserEmail = driver.findElementByXPath(String.format(IOSLocators.xpathOtherUserName, name));
+		return otherUserEmail.isDisplayed();
 	}
 	
 	public void removeFromConversation() {
+		
 		removeFromChat.click();
-	}
-	
-	public boolean isOtherUserNameVisible(String name){
-		return getOtherUserProfileName().equals(name);
 	}
 	
 	public boolean isRemoveFromConversationAlertVisible() {
@@ -63,7 +63,6 @@ public class OtherUserPersonalInfoPage extends IOSPage{
 		switch (direction){
 		case DOWN:
 		{
-			page = new PeoplePickerPage(url, path);
 			break;
 		}
 		case UP:
