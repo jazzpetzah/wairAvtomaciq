@@ -7,6 +7,7 @@ import com.wearezeta.auto.common.BackEndREST;
 import com.wearezeta.auto.common.TestPreparation;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.UsersState;
+import com.wearezeta.auto.common.ZetaFormatter;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -29,6 +30,7 @@ public class CommonSteps {
 		path = CommonUtils.getAppPathFromConfig(CommonSteps.class);
 		if ( PagesCollection.loginPage == null){
 			PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(CommonSteps.class), path);
+			ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
 		}
 		try {
 			CommonUtils.uploadPhotoToAndroid();

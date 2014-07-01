@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.TestPreparation;
 import com.wearezeta.auto.common.UsersState;
+import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
@@ -38,9 +39,10 @@ public class CommonSteps {
 
 		String path = CommonUtils.getAppPathFromConfig(TestRun.class);
 		
-		if ( PagesCollection.loginPage == null)
+		if (PagesCollection.loginPage == null)
 		{
 			PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(TestRun.class), path);
+			ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
 		}
 
 	 }
