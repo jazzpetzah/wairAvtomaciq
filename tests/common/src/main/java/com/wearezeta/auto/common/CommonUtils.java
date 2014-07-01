@@ -10,24 +10,14 @@ import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
-
-
-
-
-
-
-
-//import org.testng.annotations.DataProvider;
-//import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
 
 public class CommonUtils {
+	
+	public static final String ENGLISH_LANG_NAME = "english";
 	
 	public static final String FIRST_OS_NAME = "Windows";
 	public static final String YOUR_USER_1 = "aqaUser";
@@ -214,8 +204,10 @@ public class CommonUtils {
 		return UUID.randomUUID().toString();
 	}
 	
-	//BEGIN: For parsing the XML files of other languages and inputting them in the character test as per multiple iOS user stories
-	//Currently not used, available for when international keyboards on the iOS Simulator will run in automation
+	/* BEGIN: For parsing the XML files of other languages and inputting
+	 * them in the character test as per multiple iOS user stories
+	 * Currently only being used for the English language 
+	 */
 	private static String getLanguageAlphabet(String languageName) throws Throwable {
 		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
 				.newInstance();
@@ -239,18 +231,9 @@ public class CommonUtils {
 						"Failed to load %s from resources", languageFilePath));
 			}
 			Document doc = docBuilder.parse(languageFileStream);
-
-			// normalize text representation
 			doc.getDocumentElement().normalize();
-			System.out.println("Root element of the doc is "
-					+ doc.getDocumentElement().getNodeName());
-
 			NodeList characterTypes = doc
 					.getElementsByTagName("exemplarCharacters");
-			int totalTypes = characterTypes.getLength();
-			System.out.println("Total no of exemplar character types: "
-					+ totalTypes);
-
 			StringBuilder alphabet = new StringBuilder(100);
 			for (int i = 0; i < characterTypes.getLength(); i++) {
 				Node firstTypeNode = characterTypes.item(i);
@@ -262,20 +245,11 @@ public class CommonUtils {
 							 continue;
 						 }
 					 }
-
-					// -------
-					// NodeList firstNameList =
-					// firstElement.getElementsByTagName("");
-					// Element firstNameElement =
-					// (Element)firstNameList.item(0);
-
 					NodeList textFNList = firstElement.getChildNodes();
 					String characters = ((Node) textFNList.item(0))
 							.getNodeValue().trim();
-					System.out.println("characters: " + characters);
 					String[] charactersArr = characters.replaceAll("^\\[|\\]$", "").split("\\s");
 					for (String chr : charactersArr) {
-						// Parse Unicode code points in format \\uXXXX
 					    if (chr.length() == 6 && chr.substring(0, 2).equals("\\u")) {
 					    	int c = Integer.parseInt(chr.substring(2, 6), 16);
 					    	alphabet.append(Character.toString((char)c));
@@ -285,7 +259,7 @@ public class CommonUtils {
 					}
 				}
 
-			}// end of for loop with s VAR
+			}
 			return alphabet.toString();
 		} finally {
 			if (languageFileStream != null) {
@@ -296,7 +270,7 @@ public class CommonUtils {
 	
 	public static List<String> getUnicodeStringAsCharList(String str) {
 		List<String> characters = new ArrayList<String>();
-		Pattern pat = Pattern.compile("\\p{L}\\p{M}*");
+		Pattern pat = Pattern.compile("\\p{L}\\p{M}*|\\W");
 		Matcher matcher = pat.matcher(str);
 		while (matcher.find()) {
 			characters.add(matcher.group());
@@ -304,10 +278,19 @@ public class CommonUtils {
 		return characters;
 	}
 
-	
 	public static String generateRandomString(int len, String languageName) throws Throwable {
 		String alphabet = getLanguageAlphabet(languageName);
 		List<String> characters = getUnicodeStringAsCharList(alphabet);
+		// Appium does not type characters beyond standard ASCII set, we have to cut those characters
+		if (languageName.toLowerCase().equals(ENGLISH_LANG_NAME)) {
+			List<String> ascii_characters = new ArrayList<String>();
+			for (String chr: characters) {
+				if (chr.length() == 1 && (int)chr.charAt(0) <= 127) {
+					ascii_characters.add(chr);
+				}
+			}
+			characters = ascii_characters;
+		}
 		Random rnd = new Random();
 		StringBuilder sb = new StringBuilder(len);
 		for (int i = 0; i < len; i++) {
@@ -316,10 +299,7 @@ public class CommonUtils {
 		return sb.toString();
 	}
 	
-	//END
-	
-	public static String getContactName(String login) 
-	{
+	public static String getContactName(String login) {
 		String[] firstParts = null;
 		String[] secondParts = null;
 		firstParts = login.split("\\+");
@@ -327,8 +307,7 @@ public class CommonUtils {
 		return secondParts[0];
 	}
 
-	public static void generateUsers(int contactNumber) throws IOException
-	{
+	public static void generateUsers(int contactNumber) throws IOException {
 		for(int i  = 0; i < 3; i++){
 			ClientUser user = new ClientUser();
 			user.setEmail(CreateZetaUser.registerUserAndReturnMail());

@@ -22,20 +22,17 @@ Feature: Register new user
     
     
 @torun
-  Scenario Outline: Register new user using 72 character username
+  Scenario Outline: Register new user using username with maximum characters allowed
 	Given I see sign in screen
 	When I press Join button
 	And I press Picture button
 	And I choose photo from album
 	And I See selected picture
 	And I confirm selection
-	And I enter a username which is 72 characters long from English alphabet
-	Then I verify that my username is 72 characters long
+	And I enter a username which is at most <MaxChars> characters long from <Language> alphabet 
+	Then I verify that my username is at most <MaxChars> characters long
 	
 	 Examples:     
-    |	Email						|	Password	    |
-    |	aqaUser             	    |	aqaPassword	    |
-    
-  
-    
+    |	Email 					    |	Password	    |    MaxChars    |    Language   |
+    |	aqaUser             	    |	aqaPassword	    |    72          |    English    |
   
