@@ -3,6 +3,9 @@ package com.wearezeta.auto.ios.pages;
 import java.io.IOException;
 import java.util.List;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -137,6 +140,17 @@ public class DialogPage extends IOSPage{
 	}
 	
 	@Override
+	public IOSPage swipeUp(int time) throws IOException
+	{
+		WebElement element =  driver.findElement(By.name(IOSLocators.nameLoginPage));
+		
+		Point coords = element.getLocation();
+		Dimension elementSize = element.getSize();
+		driver.swipe(coords.x + elementSize.width / 2, coords.y + elementSize.height - 170, coords.x + elementSize.width / 2, coords.y + 40, time);
+		return returnBySwipe(SwipeDirection.UP);
+	}
+
+	@Override
 	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
 		IOSPage page = null;
 		switch (direction){
@@ -146,6 +160,7 @@ public class DialogPage extends IOSPage{
 			}
 			case UP:
 			{
+				page = new OtherUserPersonalInfoPage(url, path);
 				break;
 			}
 			case LEFT:

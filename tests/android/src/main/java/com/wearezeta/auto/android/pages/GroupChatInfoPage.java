@@ -24,6 +24,12 @@ public class GroupChatInfoPage extends AndroidPage {
 	@FindBy(how = How.ID, using = AndroidLocators.idConfirmBtn)
 	private List<WebElement> confirmButtons;
 	
+	@FindBy(how = How.ID, using = AndroidLocators.idGroupChatUserName)
+	private List<WebElement> groupChatUsersNames;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idOtherUserPersonalInfoName)
+	private WebElement groupChatName;
+	
 	private String url;
 	private String path;
 	
@@ -81,6 +87,27 @@ public class GroupChatInfoPage extends AndroidPage {
 				 break;
 			 }
 		}
+	}
+
+	public void renameGroupChat(String chatName){
+		groupChatName.sendKeys(chatName + "\n");
+	}
+	public OtherUserPersonalInfoPage selectContactByName(String contactName) throws IOException {
+		
+		for(WebElement element : groupChatUsersNames)
+		 {
+			 try{
+				 if(element.getText().toLowerCase().equals(contactName.toLowerCase())){
+					 element.click();
+					 break;
+				 }
+			 }
+			 catch(Exception ex){
+				 	continue;
+			 }
+		 }
+		
+		return new OtherUserPersonalInfoPage(url, path);
 	}
 
 }

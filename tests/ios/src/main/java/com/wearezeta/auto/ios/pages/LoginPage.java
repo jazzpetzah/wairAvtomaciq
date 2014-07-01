@@ -7,6 +7,7 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -60,8 +61,11 @@ public class LoginPage extends IOSPage {
 		this.path = path;
 	}
 	
+	public RemoteWebDriver getDriver() {
+		return driver;
+	}
+	
 	public Boolean isVisible() {
-		
 		return viewPager != null;
 	}
 	
@@ -78,6 +82,11 @@ public class LoginPage extends IOSPage {
 			page = new ContactListPage(url, path);
 		}
 		return page;
+	}
+	
+	public void clickJoinButton()
+	{
+		signUpButton.click();
 	}
 	
 	public RegistrationPage join() throws IOException{

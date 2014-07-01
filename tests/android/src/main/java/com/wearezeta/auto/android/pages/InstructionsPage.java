@@ -20,7 +20,9 @@ public class InstructionsPage extends AndroidPage {
 	private List<WebElement> ignoreBtnList;
 	@FindBy(how = How.ID, using = AndroidLocators.idInstructionsRequestConnectBtn)
 	private List<WebElement> connectBtnList;
-
+	@FindBy(how = How.ID, using = AndroidLocators.idConnectRequestConnectTo)
+	private WebElement requestHeader;
+	
 	private String url;
 	private String path;
 
@@ -30,9 +32,10 @@ public class InstructionsPage extends AndroidPage {
 		this.path = path;				
 	}
 
-	public void waitConnectRequestDialog()
+	public boolean isConnectDialogDispalayed()
 	{
 		wait.until(ExpectedConditions.visibilityOf(connectDilog));
+		return connectDilog.isDisplayed();
 	}
 
 	public void acceptAllConnections()
@@ -42,6 +45,10 @@ public class InstructionsPage extends AndroidPage {
 		}
 	}
 
+	public String getConnectionRequestHeader()
+	{
+		return requestHeader.getText();
+	}
 	public void waitInstructionsPage()
 	{
 		wait.until(ExpectedConditions.visibilityOf(instructions));

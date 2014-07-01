@@ -20,7 +20,17 @@ public class ContactListPageSteps {
 	@When("^I tap on my name (.*)$")
 	public void WhenITapOnMyName(String name) throws IOException  {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
-		PagesCollection.iOSPage = PagesCollection.contactListPage.tapOnName(name);
+		IOSPage page = PagesCollection.contactListPage.tapOnName(name);
+		
+		if(page instanceof PersonalInfoPage)
+		{
+			PagesCollection.personalInfoPage = (PersonalInfoPage) page;
+			PagesCollection.personalInfoPage.waitForEmailFieldVisible();
+		}
+		else
+		{
+			PagesCollection.dialogPage = (DialogPage) page;
+		}
 	}
 	
 	@When("^I tap on contact name (.*)$")
@@ -55,11 +65,11 @@ public class ContactListPageSteps {
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(value));		 
 	}
 	
-	@Then("^I see contact list loaded with User name (.*) first in list$")
+	@Then("^I see contact list loaded with User name (.*)$")
 	public void ISeeUserNameFirstInContactList(String value) throws Throwable {
 		
 		value = CommonUtils.retrieveRealUserContactPasswordValue(value);
-	    Assert.assertEquals(value, PagesCollection.contactListPage.getFirstDialogName());
+	    Assert.assertEquals(value, PagesCollection.contactListPage.getFirstDialogName(value));
 	}
 	
 	@When("^I create group chat with (.*) and (.*)$")
@@ -70,11 +80,11 @@ public class ContactListPageSteps {
 		WhenITapOnContactName(contact1);
 		DialogPageSteps dialogSteps = new DialogPageSteps();
 		dialogSteps.WhenISeeDialogPage();
-		dialogSteps.WhenISwipeLeftOnDialogPage();
+		dialogSteps.WhenISwipeUpOnDialogPage();
 		
 		OtherUserPersonalInfoPageSteps infoPageSteps = new OtherUserPersonalInfoPageSteps();
-		infoPageSteps.WhenISeeOherUserProfilePage(contact1);
-		infoPageSteps.WhenISwipeDownOtherUserProfilePage();
+		infoPageSteps.WhenISeeOtherUserProfilePage(contact1);
+		infoPageSteps.WhenIPressAddButton();
 		
 		PeoplePickerPageSteps pickerSteps = new PeoplePickerPageSteps();
 		pickerSteps.WhenISeePeoplePickerPage();
@@ -103,10 +113,43 @@ public class ContactListPageSteps {
 		PagesCollection.contactListPage.tapOnGroupChat(contact1, contact2);
 	}
 	
+	
+	@When("^I swipe right on a (.*)$")
+	public void ISwipeRightOnContact(String contact) throws IOException {
+		
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		PagesCollection.contactListPage.swipeRightOnContact(500, contact);
+	}
+	
+	@When("^I click mute conversation$")
+	public void IClickMuteConversation() throws IOException, InterruptedException {
+		
+		PagesCollection.contactListPage.muteConversation();
+	}
+	
+	@Then("^Contact (.*) is muted$")
+	public void ContactIsMuted(String contact) throws IOException {
+		
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		Assert.assertTrue(PagesCollection.contactListPage.isContactMuted(contact));
+	}
+	
+	@Then("^Contact (.*) is not muted$")
+	public void ContactIsNotMuted(String contact) throws IOException {
+		
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		Assert.assertFalse(PagesCollection.contactListPage.isContactMuted(contact));
+	}
+	
 	@Then("^I open archived conversations$")
-	public void IOpenArchivedConversations() throws IOException, InterruptedException {
+	public void IOpenArchivedConversations() throws Exception {
 		Thread.sleep(3000);
-		PagesCollection.contactListPage.swipeUp(500);
+		if(CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
+			PagesCollection.peoplePickerPage = (PeoplePickerPage)PagesCollection.contactListPage.swipeUp(1000);
+		}
+		else {
+			PagesCollection.contactListPage.swipeUpSimulator();
+		}
 	}
 
 }

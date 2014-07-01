@@ -7,3 +7,4 @@ generateUsers=true
 swipeScriptPath=/Users/admin/./swipeInWindow.py
 photoScriptPath=/Users/julianereschke/Projects/zautomation/tests/tools/push_photo_to_simulator.sh
 driverTimeoutSeconds=10
+pictureResultsPath=/Users/shiznyak/Downloads/

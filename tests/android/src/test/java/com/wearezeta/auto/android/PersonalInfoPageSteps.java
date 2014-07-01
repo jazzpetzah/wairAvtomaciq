@@ -1,21 +1,30 @@
 package com.wearezeta.auto.android;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 
-import com.wearezeta.auto.android.pages.PagesCollection;
+import javax.imageio.ImageIO;
 
+import org.junit.Assert;
+
+import com.wearezeta.auto.android.pages.PagesCollection;
+import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.ImageUtil;
+
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class PersonalInfoPageSteps {
-
-	@When("^I pull up for options$")
-	public void WhenIPullUpForOptions() throws IOException {
-		PagesCollection.personalInfoPaga.swipeUp(1000);
+	
+	@When("^I tap options button$")
+	public void WhenITapOptionsButton() throws Throwable {
+		PagesCollection.personalInfoPaga.tapOptionsButton();
 	}
 
-	@When("^I press options button (.*)$")
-	public void WhenIPressOptionsButton(String buttonName) throws Throwable {
-		PagesCollection.personalInfoPaga.tapOptionsButtonByText(buttonName);
+	@When("^I tap sign out button$")
+	public void WhenITapSignOutButton() throws Throwable {
+		PagesCollection.personalInfoPaga.tapSignOutBtn();
 	}
 	
 	@When("^I tap on personal info screen$")
@@ -41,6 +50,19 @@ public class PersonalInfoPageSteps {
 	@When("^I press Confirm button$")
 	public void WhenIPressConfirmButton() throws Throwable {
 		PagesCollection.personalInfoPaga.tapConfirmButton();
+	}
+	
+	@Then("I see changed user picture")
+	public void ThenISeeChangedUserPicture() throws IOException {
+		BufferedImage referenceImage = PagesCollection.personalInfoPaga.takeScreenshot();
+
+		String path = CommonUtils.getWindowsImagePath(PersonalInfoPageSteps.class);
+		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
+		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);
+		Assert.assertTrue(
+				"Overlap between two images has no enough score. Expected >= 0.55, current = " + score,
+				score >= 0.55d);
+		
 	}
 	
 }

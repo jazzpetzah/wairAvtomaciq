@@ -12,10 +12,23 @@ Feature: Connect to User
 		And I see connect to <Contact> dialog
 		And I input message in connect to dialog
 		And I tap connect dialog Send button
-		Then I see contact list loaded with User name <Contact> first in list
+		Then I see contact list loaded with User name <Contact>
 		And I tap on contact name <Contact>
 		And I see Pending Connect to <Contact> message on Dialog page
 		
 	Examples:     
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	yourUser	|
+    
+ 
+ Scenario Outline: Get invitation message from user
+ 		Given I have connection request from <Contact>
+ 		And I Sign in using login <Login> and password <Password>
+    	And I see Contact list with my name <Name>
+    	When I see connection request from <Contact>
+    	And I confirm connection request
+    	Then I see contact list loaded with User name <Contact>
+		
+	Examples:     
+    |	Login	|	Password	|	Name	|	Contact		|
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	yourContact	|

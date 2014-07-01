@@ -2,6 +2,7 @@ package com.wearezeta.auto.common;
 
 import io.appium.java_client.AppiumDriver;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -39,6 +40,10 @@ public abstract class BasePage {
 			driver.quit();
 			driver = null;
 		}
+	}
+	
+	public BufferedImage takeScreenshot() throws IOException{
+		return DriverUtils.takeScreenshot(driver);
 	}
 	
 	public abstract BasePage swipeLeft(int time) throws IOException;

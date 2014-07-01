@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationPage;
 import com.wearezeta.auto.osx.pages.PeoplePickerPage;
 import com.wearezeta.auto.osx.pages.UserProfilePage;
@@ -58,5 +59,11 @@ public class ContactListPageSteps {
 		CommonSteps.senderPages.setUserProfilePage(new UserProfilePage(
 				CommonUtils.getUrlFromConfig(ContactListPageSteps.class),
 				CommonUtils.getAppPathFromConfig(ContactListPageSteps.class)));
+	}
+	
+	@When("I mute conversation")
+	public void IMuteConversation() {
+		ContactListPage contactList = CommonSteps.senderPages.getContactListPage();
+		contactList.changeMuteStateForSelectedConversation();
 	}
 }

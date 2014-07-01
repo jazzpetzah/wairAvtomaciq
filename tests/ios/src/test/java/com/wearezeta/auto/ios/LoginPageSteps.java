@@ -4,7 +4,11 @@ import org.junit.Assert;
 
 import java.io.IOException;
 
+import com.wearezeta.auto.common.BackEndREST;
+import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.CreateZetaUser;
+import com.wearezeta.auto.common.UsersState;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
