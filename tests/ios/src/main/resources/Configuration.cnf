@@ -4,7 +4,7 @@ Url=http://127.0.0.1:4723/wd/hub
 <<<<<<< HEAD
 appPath=/Users/haydenchristensen/Desktop/Automation/ZClient.app
 isSimulator=true
-generateUsers=false
+generateUsers=true
 swipeScriptPath=/Users/haydenchristensen/zautomation/tests/tools/swipeInWindow.py
 photoScriptPath=/Users/haydenchristensen/zautomation/tests/tools/push_photo_to_simulator_kateupton.sh
 driverTimeoutSeconds=6

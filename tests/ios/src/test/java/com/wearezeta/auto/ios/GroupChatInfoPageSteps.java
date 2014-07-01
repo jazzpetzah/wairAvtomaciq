@@ -17,6 +17,22 @@ public class GroupChatInfoPageSteps {
 		PagesCollection.groupChatInfoPage.leaveConversation();
 	}
 	
+	@When("^I change the conversation name$")
+	public void IChangeConversationName() throws IOException{
+	PagesCollection.groupChatInfoPage.changeConversationNameToRandom();
+	}
+
+	@Then("^I see the conversation name changed$")
+	public void IVerifyConversationNameChange() throws IOException{
+		Assert.assertTrue(PagesCollection.groupChatInfoPage.verifyConversationNameChange());
+	}
+	
+	@When("^I exit the group info page$")
+	//may require reworking when the UI changes
+	public void IExitGroupInfoPage(){
+		PagesCollection.groupChatInfoPage.exitGroupInfoPage();
+	}
+
 	@When("^I see leave conversation alert$")
 	public void ISeeLeaveConversationAlert() throws Throwable {
 		

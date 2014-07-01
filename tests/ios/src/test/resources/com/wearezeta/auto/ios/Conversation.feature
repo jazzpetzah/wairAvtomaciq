@@ -115,3 +115,22 @@ Examples:
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
+    
+    @torun
+    Scenario Outline: I can edit the conversation name
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+	When I create group chat with <Contact1> and <Contact2>
+	And I swipe up on group chat page
+	And I change the conversation name
+	Then I see the conversation name changed
+	And I exit the group info page
+	And I see the new conversation name displayed in in conversation
+	And I return to the chat list
+	And I see the group conversation name changed in the chat list	
+		
+Examples:
+    |  Login		| Password		| Name			| Contact1		| Contact2		|
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
+    
+    

@@ -134,8 +134,6 @@ public final class IOSLocators {
 	
 	public static final String nameForwardWelcomeButton = "ForwardWelcomeButton";
 	
-	public static final String xpathConversationNameTextField = "//UIAApplication[1]/UIAWindow[1]/UIATextField[1]";
-	
 	public static final String xpathMutedIcon = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[@name='%s']/UIAImage[1]";
 	
 	public static final String nameMuteButton = "ConvCellMuteButton";
@@ -143,4 +141,12 @@ public final class IOSLocators {
 	public static final String nameConnectAlert = "Connect With";
 	
 	public static final String nameConnectAlertYes = "Yes";
-}
+	
+	public static final String xpathConversationNameTextField = "//UIAApplication[1]/UIAWindow[1]/UIATextField[1]";
+	
+	public static final String xpathNewGroupConversationNameChangeTextField = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[2]/UIATextView[1]";
+	
+	public static final String xpathExitGroupInfoPageButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[6]";
+	
+	public static final String xpathFirstChatInChatListTextField = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[2]/UIAStaticText[1]";
+}                                                         
