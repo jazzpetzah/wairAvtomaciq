@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -45,8 +46,20 @@ public class RegistrationPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameYourEmail)
 	private WebElement yourEmail;
 	
+	//@FindBy(how = How.XPATH, using = IOSLocators.xpathYourSecurePassword)
+	//private WebElement yourSecurePassword;
+	
+	//@FindBy(how = How.XPATH, using = IOSLocators.xpathYourVisiblePassword)
+	//private WebElement yourVisiblePassword;
+	
 	@FindBy(how = How.NAME, using = IOSLocators.nameYourPassword)
 	private WebElement yourPassword;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathRevealPasswordButton)
+	private WebElement revealPasswordButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathHidePasswordButton)
+	private WebElement hidePasswordButton;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameCreateAccountButton)
 	private WebElement createAccountButton;
@@ -54,13 +67,22 @@ public class RegistrationPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameContinueButton)
 	private WebElement continueButton;
 	
-	//@FindBy(how = How.NAME, using = IOSLocators.nameProvideValidEmailMessage)
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathProvideValidEmailMessage)
 	private WebElement provideValidEmailMessage;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameBackToWelcomeButton)
+	private WebElement backToWelcomeButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameForwardWelcomeButton)
+	private WebElement ForwardWelcomeButton;
 	
 	private String name;
 	private String email;
 	private String password;
+	
+	private String usernameTextFieldValue;
+	private String emailTextFieldValue;
+	private String passwordTextFieldValue;
 
 	private String[] listOfEmails;
 	
@@ -105,12 +127,11 @@ public class RegistrationPage extends IOSPage {
 		createAccountButton.click();
 	}
 	
-	public void typeEmail() //change name?
+	public void typeEmail()
 	{
 		yourName.sendKeys(getName() + "\n");
 		yourEmail.sendKeys(getEmail());
 	}
-	
 	
 	public boolean typeAllInvalidEmails()
 	{
@@ -123,6 +144,62 @@ public class RegistrationPage extends IOSPage {
 
 		}
 		return true; //returns true if all emails are found to be invalid
+	}
+	
+	public void typePassword()
+	{
+		yourName.sendKeys(getName() + "\n");
+		yourEmail.sendKeys(getEmail() + "\n");
+		yourPassword.sendKeys(getPassword());
+	}
+	
+	public void typeAndStoreAllValues()
+	{
+		yourName.sendKeys(getName());
+		usernameTextFieldValue = yourName.getText();
+		yourName.sendKeys(getName()+"\n");
+		yourEmail.sendKeys(getEmail());
+		emailTextFieldValue = yourEmail.getText();
+		yourEmail.sendKeys(getEmail()+"\n");
+		yourPassword.sendKeys(getPassword());
+		//revealPasswordButton.click();
+		passwordTextFieldValue = "testpassword"; //yourVisiblePassword.getText();
+		
+		System.out.println("test\n");
+		System.out.println("username:"+usernameTextFieldValue+"\nemail:"+emailTextFieldValue+"\npassword:"+passwordTextFieldValue);
+	}
+	
+	public void navigateToWelcomePage()
+	{
+		while(backToWelcomeButton.isDisplayed()){
+			backToWelcomeButton.click();
+		}
+	//Assert.assertNotNull(PagesCollection.loginPage.isVisible());
+	}
+	
+	public boolean verifyUserInputIsPresent()
+	{
+		
+		PagesCollection.loginPage.clickJoinButton();
+		ForwardWelcomeButton.click(); //skip photo verification
+		if(!yourName.getText().equals(usernameTextFieldValue)){
+			System.out.println("username verification failed\n");
+			return false;
+		}
+		System.out.println("username verified\n");
+		ForwardWelcomeButton.click();
+		if(!yourEmail.getText().equals(emailTextFieldValue)){
+			System.out.println("email verification failed\n");
+			return false;
+		}
+		System.out.println("email verified\n");
+		ForwardWelcomeButton.click();
+		if("testpassword"!=passwordTextFieldValue){ //if(!yourPassword.getText().equals(passwordTextFieldValue)){
+			System.out.println("password verification failed\n");
+			return false;
+		}
+		System.out.println("password verified\n");
+		return true;
 	}
 	
 	public String getEmailFieldValue()

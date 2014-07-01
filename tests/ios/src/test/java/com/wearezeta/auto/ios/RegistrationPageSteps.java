@@ -95,7 +95,6 @@ public class RegistrationPageSteps {
 		 	if (email.equals(CommonUtils.YOUR_USER_1)) {
 			 email=aqaEmail;
 		 }
-		 	//what if email is less than 1 character?
 		PagesCollection.registrationPage.setEmail(new StringBuilder(email).insert(email.length()-1,"          ").toString());
 		 }
 	 
@@ -130,6 +129,13 @@ public class RegistrationPageSteps {
 			 aqaPassword = password;
 			 PagesCollection.registrationPage.setPassword(password);
 		 }
+	 }
+	 
+	 @Then ("^I navigate throughout the registration pages and see my input$")
+	 public void NavigateAndVerifyInput() throws IOException {
+		 PagesCollection.registrationPage.typeAndStoreAllValues();
+		 PagesCollection.registrationPage.navigateToWelcomePage();
+		 Assert.assertTrue(PagesCollection.registrationPage.verifyUserInputIsPresent());
 	 }
 	 
 	 @When("^I submit registration data$")

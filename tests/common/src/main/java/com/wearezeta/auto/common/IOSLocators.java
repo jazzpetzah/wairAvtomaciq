@@ -35,7 +35,7 @@ public final class IOSLocators {
 	public static final String nameTextInput = "ComposeControllerTextView";
 	
 	public static final String xpathLastMessageFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]/UIATextView[1]";
-	
+
 	public static final String namePickerSearch = "textViewSearch";
 	
 	public static final String namePickerClearButton = "PeoplePickerClearButton";
@@ -86,7 +86,15 @@ public final class IOSLocators {
 	
 	public static final String nameYourEmail = "RegistrationEmailField";
 	
+	
 	public static final String nameYourPassword = "RegistrationPasswordField";
+	//public static final String xpathYourSecurePassword = "//UIAApplication[1]/UIAWindow[1]/UIASecureTextField[1]";
+	
+	//public static final String xpathYourVisiblePassword  = "//UIAApplication[1]/UIAWindow[1]/UIATextField[1]";
+	
+	public static final String xpathRevealPasswordButton = "//UIAApplication[1]/UIAWindow[1]/UIASecureTextField[1]/UIAButton[1]"; //UIAApplication[1]/UIAWindow[1]/UIATextField[1]/UIAButton[1]";
+	
+	public static final String xpathHidePasswordButton = "//UIAApplication[1]/UIAWindow[1]/UIATextField[1]/UIAButton[1]";
 	
 	public static final String nameContinueButton = "CONTINUE";
 	
@@ -122,13 +130,17 @@ public final class IOSLocators {
 	
 	public static final String nameConfirmPictureButton = "ImageConfirmerConfirmButton";
 	
-<<<<<<< HEAD
-	//public static final String nameProvideValidEmailMessage = "PLEASE PROVIDE A VALID EMAIL ADDRESS ";//final space is very important...
-	public static final String xpathProvideValidEmailMessage = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]"; //"//UIAButton[contains(@label, \"%s\")]";
-	}
-=======
+	public static final String xpathProvideValidEmailMessage = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]"; 
+	
 	public static final String xpathAddContactToChatButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[7]";
 	
 	public static final String xpathOtherUserName = "//UIAApplication[1]/UIAWindow[1]/UIATextField[@value='%s']";
+	
+	public static final String nameBackToWelcomeButton = "BackToWelcomeButton";
+	
+	public static final String nameForwardWelcomeButton = "ForwardWelcomeButton";
+	
+	public static final String xpathConversationNameTextField = "//UIAApplication[1]/UIAWindow[1]/UIATextField[1]";
+	
+	
 }
->>>>>>> e7de26d682e56d25200889386b31b6f6cb1add46

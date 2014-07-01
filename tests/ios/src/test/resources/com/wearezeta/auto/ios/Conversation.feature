@@ -81,7 +81,6 @@ Examples:
 	|	Login		|	Password		|	Name		|	Contact			|
 	|	aqaUser		|	aqaPassword		|	aqaUser		|	aqaContact1		|
 	
-@torun
 Scenario Outline: Leave from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -99,7 +98,7 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
     
-     
+
  Scenario Outline: Remove from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -112,6 +111,43 @@ Examples:
 	And I confirm remove
 	Then I see that <Contact2> is not present on group chat page
 	
+		
+Examples:
+    |  Login		| Password		| Name			| Contact1		| Contact2		|
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
+    
+    
+ Scenario Outline: Connect with user from participants page
+    Given Users are generated who I am not connected to
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+	When //I enter a group chat
+	And I swipe up on group chat page
+	And //I click a contact I am not connected to
+	And //I do not see the user's email
+	And //I click Connect
+	And //I see connect to user dialog
+	And I input message in connect to dialog
+	And //I tap connect dialog Send button
+	Then //I see contact list loaded with User name first in list
+	And //I tap on contact name
+	And //I see Pending Connect to user message on Dialog page
+	
+		
+Examples:
+    |  Login		| Password		| Name			| 
+    |  aqaUser		| aqaPassword	| aqaUser		| 
+
+@torun
+ Scenario Outline: I can edit the conversation name
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+	When I create group chat with <Contact1> and <Contact2>
+	And I swipe up on group chat page
+	And --I change the conversation name
+	Then --I see the conversation name changed
+	And --I see the new conversation name displayed in in conversation
+	And --I see the conversation name changed in the chats view	
 		
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|

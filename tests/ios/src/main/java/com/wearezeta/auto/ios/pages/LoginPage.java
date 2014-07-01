@@ -61,7 +61,6 @@ public class LoginPage extends IOSPage {
 	}
 	
 	public Boolean isVisible() {
-		
 		return viewPager != null;
 	}
 	
@@ -79,6 +78,13 @@ public class LoginPage extends IOSPage {
 		}
 		return page;
 	}
+	
+	public void clickJoinButton()
+	{
+		signUpButton.click();
+	}
+	
+	
 	
 	public RegistrationPage join() throws IOException{
 		
