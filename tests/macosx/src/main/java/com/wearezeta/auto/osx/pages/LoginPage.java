@@ -21,10 +21,10 @@ public class LoginPage extends OSXPage {
 	@FindBy(how = How.NAME, using = OSXLocators.nameSignInButton)
 	private WebElement signInButton;
 
-	@FindBy(how = How.XPATH, using = OSXLocators.xpathLoginField)
+	@FindBy(how = How.ID, using = OSXLocators.idLoginField)
 	private WebElement loginField;
 
-	@FindBy(how = How.XPATH, using = OSXLocators.xpathPasswordField)
+	@FindBy(how = How.ID, using = OSXLocators.idPasswordField)
 	private WebElement passwordField;
 	
 	@FindBy(how = How.NAME, using = OSXLocators.nameQuitZClientMenuItem)
@@ -51,8 +51,19 @@ public class LoginPage extends OSXPage {
 	
 	public OSXPage SignIn() throws IOException {
 		OSXPage page = null;
+		boolean isLoginForm = false;
+		try {
+			loginField.isDisplayed();
+			isLoginForm = true;
+		} catch (NoSuchElementException e) {
+			isLoginForm = false;
+		}
 		signInButton.click();
-		page = new ContactListPage(url, path);
+		if (isLoginForm) {
+			page = new ContactListPage(url, path);
+		} else {
+			page = this;
+		}
 		return page;
 	}
 

@@ -5,11 +5,12 @@ public final class OSXLocators {
 	public static final String idLoginPage = "_NS:6";
 	public static final String idMainWindow = "Main";
 	
-	public static final String nameSignInButton = "Sign In";
+	public static final String nameSignInButton = "SIGN IN";
 
-	public static final String xpathLoginField = "//AXTextField[@AXPlaceholderValue='username']";
-	
-	public static final String xpathPasswordField = "//AXTextField[@AXPlaceholderValue='password']";
+	public static final String idLoginField = "TempLoginViewControllerUsernameField";
+//	public static final String xpathLoginField = "//AXTextField[@AXPlaceholderValue='username']";
+	public static final String idPasswordField ="TempLoginViewControllerPasswordField";
+//	public static final String xpathPasswordField = "//AXTextField[@AXPlaceholderValue='password']";
 
 	public static final String idContactEntry = "clListItemNameField";
 	public static final String idAddImageButton = "AddImageButton";
@@ -19,6 +20,8 @@ public final class OSXLocators {
 	public static final String idPeoplePickerDismissButton = "people_picker_cancel_button";
 	public static final String idPeoplePickerSearchResultEntry = "people_picker_result_namefield";
 	public static final String idAcceptInvitationButton = "_NS:14";
+	public static final String idToggleMenu = "ToggleMenu";
+	public static final String idMuteButton = "muteButton";
 	
 	public static final String nameSayHelloMenuItem = "“Hello”";
 	public static final String nameSignOutMenuItem = "Sign Out";

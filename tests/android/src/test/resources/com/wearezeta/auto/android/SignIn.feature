@@ -5,7 +5,7 @@ Feature: Sign In
     When I press Sign in button
     And I have entered login <Login>
     And I have entered password <Password>
-    And I press Sign in button
+    And I press Log in button
     Then Contact list appears with my name <Name>
 
     Examples: 

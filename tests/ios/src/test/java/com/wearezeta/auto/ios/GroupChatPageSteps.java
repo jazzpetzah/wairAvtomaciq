@@ -17,24 +17,28 @@ public class GroupChatPageSteps {
 	@Then("^I see group chat page with users (.*) (.*)$")
 	public void ThenISeeGroupChatPage(String name1, String name2) throws Throwable {
 		
+		Thread.sleep(2000);
 		name1 = CommonUtils.retrieveRealUserContactPasswordValue(name1);
 		name2 = CommonUtils.retrieveRealUserContactPasswordValue(name2);
 	    PagesCollection.groupChatPage.areRequiredContactsAddedToChat(name1, name2);
 	}
 	
-	@When("^I swipe left on group chat page$")
-	public void ISwipeLeftOnGroupChatPage() throws IOException{
-		PagesCollection.groupChatInfoPage = (GroupChatInfoPage)PagesCollection.groupChatPage.swipeLeft(1000);
+	@When("^I swipe up on group chat page$")
+	public void ISwipeUpOnGroupChatPage() throws IOException, InterruptedException{
+		
+		PagesCollection.groupChatPage.isGroupChatPageVisible();
+		PagesCollection.groupChatInfoPage = (GroupChatInfoPage)PagesCollection.groupChatPage.swipeUp(1000);
 	}
 	
-	@Then("^I can see You Have Left$")
-	public void ICanSeeYouHaveLeft() throws IOException{
-		Assert.assertTrue(PagesCollection.groupChatPage.isYouHaveLeftVisible());
+	@Then("^I can see (.*) Have Left$")
+	public void ICanSeeYouHaveLeft(String name) throws IOException{
+		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		Assert.assertTrue(PagesCollection.groupChatPage.isYouHaveLeftVisible(name));
 	}
 
 	@Then("^I see that (.*) is not present on group chat page$")
 	public void ISeeContactIsNotPresentOnGroupChatPage(String contact) throws InterruptedException {
-
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 		Assert.assertTrue(PagesCollection.groupChatPage.waitForContactToDisappear(contact));
 	}
 }

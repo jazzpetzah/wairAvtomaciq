@@ -119,6 +119,39 @@ public class DriverUtils {
 		    }
 		 return usersList;
 	 }
+	 
+	 public static HashMap<String,Integer> waitForElementWithTextById(String id, RemoteWebDriver driver)
+	 {
+		 Boolean flag = true;
+		 int counter = 0;
+		 HashMap<String,Integer> usersList = new HashMap<String,Integer>();
+		 try {
+		        while (flag) {		
+		        	counter ++;
+		        	ArrayList<WebElement> textFields =  (ArrayList<WebElement>) driver.findElementsById(id);
+		        	if(!textFields.isEmpty())
+		        	{
+		        		for (int i = 0; i < textFields.size(); i++)
+		        		{
+		        			String text = textFields.get(i).getText(); 
+		        			
+		        			if (!text.isEmpty())
+		        			{
+		        				usersList.put(text, i);
+		        			}
+		        		}
+		        	}
+		            Thread.sleep(500);
+		            if(counter == 10)
+		            {
+		            	flag = false;
+		            }
+		        }
+		    } catch (InterruptedException e) {
+		        e.printStackTrace();
+		    }
+		 return usersList;
+	 }
 
 	 public static void scrollToElement(RemoteWebDriver driver, WebElement element) {
 		 JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -171,8 +204,14 @@ public class DriverUtils {
 	        }
 	 }
 	 
-	 public static void iOSSimulatorSwipeDown(String scriptPath) throws IOException{
-		 Runtime.getRuntime().exec("/usr/bin/open -a Terminal " + scriptPath);
+	 public static void iOSSimulatorSwipeDown(String scriptPath) throws Exception{
+		 //CommonUtils.executeOsXCommand(new String[]{"/bin/bash", "-c", "python", scriptPath,"0.65", "0.1", "0.65", "0.7"});
+		 Runtime.getRuntime().exec("/usr/bin/open -a Terminal " + scriptPath + "Down.py");
+	 }
+	 
+	 public static void iOSSimulatorSwipeUp(String scriptPath) throws Exception{
+		 //CommonUtils.executeOsXCommand(new String[]{"/bin/bash", "-c", "python", scriptPath,"0.65", "0.95", "0.65", "0.7"});
+		 Runtime.getRuntime().exec("/usr/bin/open -a Terminal " + scriptPath + "Up.py");
 	 }
 	 
 	 public static void iOSMultiTap(AppiumDriver driver,WebElement element, int tapNumber) throws InterruptedException

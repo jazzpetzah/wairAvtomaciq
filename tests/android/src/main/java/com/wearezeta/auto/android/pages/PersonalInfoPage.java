@@ -18,67 +18,65 @@ public class PersonalInfoPage extends AndroidPage
 
 	@FindBy(how = How.ID, using = AndroidLocators.idChangePhotoBtn)
 	private WebElement changePhotoBtn;
-	
+
 	@FindBy(how = How.ID, using = AndroidLocators.idGalleryBtn)
 	private WebElement galleryBtn;
-	
+
 	@FindBy(how = How.ID, using = AndroidLocators.idDialogOkButton)
 	private WebElement confirmBtn;
-	
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameTextView)
-	private List<WebElement> optionsButtons;
-	
+
+	@FindBy(how = How.XPATH, using = AndroidLocators.xpathOptionsButton)
+	private WebElement optionsButton;
+
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameLoginPage)
 	private WebElement page;
-	
+
 	@FindBy(how = How.XPATH, using = AndroidLocators.xpathImagesFrameLayout)
 	private List<WebElement> frameLayouts;
-	
+
+	@FindBy(how = How.ID, using = AndroidLocators.idSignOutBtn)
+	private WebElement signOutBtn;
+
+
+
 	public PersonalInfoPage(String URL, String path) throws IOException {
 		super(URL, path);
 
 	}
-	
+
 	public void waitForEmailFieldVisible(){
-		
+
 		wait.until(ExpectedConditions.visibilityOf(emailField));
 	}
-	
+
 	public void clickOnPage() throws InterruptedException{
 		DriverUtils.androidMultiTap(driver, page,1);
 	}
-	
+
 	public void selectPhoto(){
 		frameLayouts.get(0).click();
 	}
-	
+
 	public void tapChangePhotoButton(){
 		changePhotoBtn.click();
 	}
-	
+
 	public void tapGalleryButton(){
 		galleryBtn.click();
 	}
-	
-	public void tapConfirmButton(){
+
+	public void tapConfirmButton() throws IOException{
 		confirmBtn.click();
 	}
-	
-	public void tapOptionsButtonByText(String buttonText){
-		
-		 for(WebElement button : optionsButtons)
-		 {
-			 if (button.getText().equals(buttonText))
-			 {
-				 button.click();
-				 break;
-			 }
-		 }
+
+	public void tapSignOutBtn(){
+
+		signOutBtn.click();
 	}
 
 	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction) {
-		
+
 		AndroidPage page = null;
 		switch (direction){
 		case DOWN:
@@ -98,8 +96,12 @@ public class PersonalInfoPage extends AndroidPage
 		{
 			break;
 		}
-	}	
+		}	
 		return page;
+	}
+
+	public void tapOptionsButton() throws InterruptedException {
+		optionsButton.click();
 	}
 
 }
