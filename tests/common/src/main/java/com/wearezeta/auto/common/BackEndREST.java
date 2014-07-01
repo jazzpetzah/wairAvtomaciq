@@ -2,12 +2,12 @@ package com.wearezeta.auto.common;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.List;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriBuilderException;
 
-import org.codehaus.jettison.json.JSONException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -188,6 +188,38 @@ public class BackEndREST {
 
 			e.printStackTrace();
 
+		}
+	}
+	
+	public static void createGroupConveration(ClientUser user, List<ClientUser> contacts, String conversationName ){
+		loginByUser(user);
+		try{
+			WebResource webResource = client.resource(getBaseURI() + "/conversations/");
+
+			StringBuilder sb = new StringBuilder();
+			for(int i = 0; i < contacts.size(); i++){
+				sb.append("\"");
+				sb.append(contacts.get(i).getId());
+				if(i == (contacts.size()-1)){
+					sb.append("\"");
+				}
+				else{
+					sb.append("\",");
+				}
+			}
+
+			String input =  "{\"users\": [ " + sb.toString() + " ],\"name\": \"" + conversationName + "\" }";
+			ClientResponse response = webResource.accept("application/json").type("application/json").header(HttpHeaders.AUTHORIZATION, user.getTokenType() + " " + user.getAccessToken()).post(ClientResponse.class, input);
+			if (response.getStatus() != 201) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}	       
+			String output = response.getEntity(String.class);
+
+			System.out.println("Output from Server ....");
+			System.out.println(output + "\n");
+		} catch (Exception e) {
+
+			e.printStackTrace();
 		}
 	}
 	

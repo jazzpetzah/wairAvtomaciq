@@ -87,6 +87,11 @@ public class CommonUtils {
         return getValueFromConfig(c, "defaultOsXImagePath");
 	}
 	
+	public static String getPictureResultsPathFromConfig(Class c)throws IOException {
+
+        return getValueFromConfig(c, "pictureResultsPath");
+	}
+	
 	private static String getValueFromConfig(Class c, String key) throws IOException {
 
 		String val = "";

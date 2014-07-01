@@ -13,3 +13,4 @@ driverTimeoutSeconds=10
 defaultWindowsImagePath=/Users/mkuvshinov/zautomation/tests/tools/img/userpicture.jpg
 #defaultWindowsImagePath=C:\\WearezetaRepo\\zautomation\\tests\\tools\\img\\userpicture.jpg
 defaultOsXImagePath=/Users/Jenkins/Documents/userpicture.jpg
+pictureResultsPath=/Users/shiznyak/Downloads/

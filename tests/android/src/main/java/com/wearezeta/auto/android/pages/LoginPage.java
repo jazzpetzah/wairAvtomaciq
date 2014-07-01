@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.*;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.*;
 
 import com.wearezeta.auto.common.*;
@@ -44,6 +45,10 @@ public class LoginPage extends AndroidPage {
 		super(URL, path);
 		this.url = URL;
 		this.path = path;
+	}
+	
+	public RemoteWebDriver getDriver() {
+		return driver;
 	}
 
 	public Boolean isVisible() {
