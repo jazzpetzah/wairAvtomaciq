@@ -7,7 +7,6 @@ import org.junit.Assert;
 import org.openqa.selenium.NoSuchElementException;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.LoginPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
@@ -75,7 +74,7 @@ public class LoginPageSteps {
 
 		int num = CommonSteps.senderPages.getContactListPage().numberOfContacts();
 		if (num > 0) {
-			CommonSteps.senderPages.getContactListPage().SignOut();
+			CommonSteps.senderPages.getMainMenuPage().SignOut();
 		}
 	 }
 	 
@@ -83,5 +82,10 @@ public class LoginPageSteps {
 	 public void ThenISeeSignInScreen() {
 		 Assert.assertTrue("Failed to logout", CommonSteps.senderPages.getContactListPage().waitForSignOut());
 		 Assert.assertTrue(CommonSteps.senderPages.getContactListPage().isSignOutFinished());
+	 }
+	 
+	 @When("I start registration")
+	 public void IStartRegistration() throws MalformedURLException {
+		 CommonSteps.senderPages.getLoginPage().startRegistration();
 	 }
 }

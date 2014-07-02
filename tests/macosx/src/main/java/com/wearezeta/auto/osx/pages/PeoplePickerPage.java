@@ -1,6 +1,5 @@
 package com.wearezeta.auto.osx.pages;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
 
@@ -30,9 +29,6 @@ public class PeoplePickerPage extends OSXPage {
 	
 	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerSearchResultEntry)
 	private List<WebElement> searchResults;
-	
-	@FindBy(how = How.NAME, using = OSXLocators.nameQuitZClientMenuItem)
-	private WebElement quitZClientMenuItem;
 	
 	public PeoplePickerPage(String URL, String path) throws MalformedURLException {
 		super(URL, path);
@@ -149,13 +145,5 @@ public class PeoplePickerPage extends OSXPage {
 	
 	public void addSelectedUsersToConversation() {
 		addToConversationButton.click();
-	}
-	
-	@Override
-	public void Close() throws IOException {
-		try {
-			quitZClientMenuItem.click();
-		} catch (Exception e) { }
-		super.Close();
 	}
 }

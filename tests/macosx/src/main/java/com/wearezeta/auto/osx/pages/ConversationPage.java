@@ -1,6 +1,5 @@
 package com.wearezeta.auto.osx.pages;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Collections;
 import java.util.List;
@@ -38,12 +37,6 @@ public class ConversationPage extends OSXPage {
 	
 	@FindBy(how = How.ID, using = OSXLocators.idPeopleButton)
 	private WebElement peopleButton;
-	
-	@FindBy(how = How.NAME, using = OSXLocators.nameSignOutMenuItem)
-	private WebElement signOutMenuItem;
-
-	@FindBy(how = How.NAME, using = OSXLocators.nameQuitZClientMenuItem)
-	private WebElement quitZClientMenuItem;
 
 	public ConversationPage(String URL, String path) throws MalformedURLException {
 		
@@ -53,10 +46,6 @@ public class ConversationPage extends OSXPage {
 	public Boolean isVisible() {
 		
 		return viewPager != null;
-	}
-	
-	public void SignOut() {
-		signOutMenuItem.click();
 	}
 	
 	private WebElement findNewMessageTextArea() {
@@ -153,13 +142,5 @@ public class ConversationPage extends OSXPage {
 			isSend = true;
 		}
 		return isSend;
-	}
-	
-	@Override
-	public void Close() throws IOException {
-		try {
-			quitZClientMenuItem.click();
-		} catch (Exception e) { }
-		super.Close();
 	}
 }

@@ -22,11 +22,17 @@ public class ContactListPageSteps {
 		Assert.assertTrue(CommonSteps.senderPages.getContactListPage().isContactWithNameExists(name));
 	}
 	
+	@Given ("I do not see conversation (.*) in contact list")
+	public void IDoNotSeeConversationInContactList(String conversation) throws IOException {
+		conversation = CommonUtils.retrieveRealUserContactPasswordValue(conversation);
+		Assert.assertTrue(CommonSteps.senderPages.getContactListPage().isContactWithNameDoesNotExist(conversation));
+	}
+	
 	@Then ("Contact list appears with my name (.*)")
 	public void ThenContactListAppears(String name) {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		Assert.assertTrue("Login finished", CommonSteps.senderPages.getLoginPage().waitForLogin());
-		Assert.assertTrue(CommonSteps.senderPages.getLoginPage().isLoginFinished(name));
+		Assert.assertTrue(name + " were not found in contact list", CommonSteps.senderPages.getLoginPage().isLoginFinished(name));
 	}
 	
 	@Given("I open conversation with (.*)")
@@ -61,9 +67,51 @@ public class ContactListPageSteps {
 				CommonUtils.getAppPathFromConfig(ContactListPageSteps.class)));
 	}
 	
-	@When("I mute conversation")
-	public void IMuteConversation() {
+	@When("I change conversation mute state")
+	public void IChangeConversationMuteState() {
 		ContactListPage contactList = CommonSteps.senderPages.getContactListPage();
 		contactList.changeMuteStateForSelectedConversation();
+	}
+	
+	@Then("I see conversation (.*) is muted")
+	public void ISeeConversationIsMuted(String conversation) {
+		conversation = CommonUtils.retrieveRealUserContactPasswordValue(conversation);
+		ContactListPage contactList = CommonSteps.senderPages.getContactListPage();
+		Assert.assertTrue(
+				"Conversation with name " + conversation + " were not muted.",
+				contactList.isConversationMutedButtonExist(conversation));
+	}
+	
+	@Then("I see conversation (.*) is unmuted")
+	public void ISeeConversationIsUnmuted(String conversation) {
+		conversation = CommonUtils.retrieveRealUserContactPasswordValue(conversation);
+		ContactListPage contactList = CommonSteps.senderPages.getContactListPage();
+		Assert.assertFalse(
+				"Conversation with name " + conversation + " is still muted.",
+				contactList.isConversationMutedButtonExist(conversation));
+	}
+	
+	@When("I see connect invitation")
+	public void ISeeConnectInvitation() {
+		ContactListPage contactList = CommonSteps.senderPages.getContactListPage();
+		Assert.assertTrue("No connect requests found.", contactList.isInvitationExist());
+	}
+	
+	@When("I accept invitation")
+	public void IAcceptInvitation() {
+		ContactListPage contactList = CommonSteps.senderPages.getContactListPage();
+		contactList.acceptAllInvitations();
+	}
+	
+	@When("I archive conversation")
+	public void IArchiveConversation() {
+		ContactListPage contactList = CommonSteps.senderPages.getContactListPage();
+		contactList.moveSelectedConversationToArchive();
+	}
+	
+	@When("I go to archive")
+	public void IGoToArchive() {
+		ContactListPage contactList = CommonSteps.senderPages.getContactListPage();
+		contactList.showArchivedConversations();
 	}
 }

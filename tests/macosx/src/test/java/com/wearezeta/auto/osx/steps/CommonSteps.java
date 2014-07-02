@@ -3,7 +3,9 @@ package com.wearezeta.auto.osx.steps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.TestPreparation;
 import com.wearezeta.auto.common.UsersState;
+import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.osx.pages.LoginPage;
+import com.wearezeta.auto.osx.pages.MainMenuPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
 
 import cucumber.api.java.After;
@@ -30,7 +32,10 @@ public class CommonSteps {
 		String path = CommonUtils.getAppPathFromConfig(CommonSteps.class);
 		senderPages = new PagesCollection();
 		
+		senderPages.setMainMenuPage(new MainMenuPage(CommonUtils.getUrlFromConfig(CommonSteps.class), path));
 		senderPages.setLoginPage(new LoginPage(CommonUtils.getUrlFromConfig(CommonSteps.class), path));
+		ZetaFormatter.setDriver(senderPages.getLoginPage().getDriver());
+		senderPages.getLoginPage().sendProblemReportIfFound();
 	}
 	
 	@After
