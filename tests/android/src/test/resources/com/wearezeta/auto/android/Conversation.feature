@@ -1,5 +1,7 @@
 Feature: Conversation
 
+@smoke
+@regression
   Scenario Outline: Send Message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -13,6 +15,8 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
+@smoke
+@regression
   Scenario Outline: Send Hello to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -25,6 +29,8 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
+@smoke
+@regression
   Scenario Outline: Send Camera picture to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -40,6 +46,8 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
  
+@smoke
+@regression
   Scenario Outline: Start group chat with users from contact list
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -62,6 +70,8 @@ Feature: Conversation
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
 
 
+@smoke
+@regression
   Scenario Outline: Send message to group chat
   	Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2> 
     And I Sign in using login <Login> and password <Password>
@@ -77,6 +87,8 @@ Feature: Conversation
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | SendMessGroupChat |
 
 
+@smoke
+@regression
   Scenario Outline: Leave group conversation
   	Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2> 
     And I Sign in using login <Login> and password <Password>
@@ -92,6 +104,8 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | LeaveGroupChat |
 
+@smoke
+@regression
   Scenario Outline: Remove from group chat
   	Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2> 
     And I Sign in using login <Login> and password <Password>
@@ -108,6 +122,8 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName     |
       | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | RemoveFromGroupChat |
 
+@smoke
+@regression
   Scenario Outline: Accept connection request
     Given connection request is sended to me
     And I Sign in using login <Login> and password <Password>
