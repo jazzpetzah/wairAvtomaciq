@@ -77,6 +77,11 @@ public class CommonUtils {
         return getValueFromConfig(c, "defaultWindowsImagePath");
 	}
 	
+	public static String getResultImagePath(Class c)throws IOException {
+
+        return getValueFromConfig(c, "resultImage");
+	}
+	
 	public static String getOsXImagePath(Class c)throws IOException {
 
         return getValueFromConfig(c, "defaultOsXImagePath");
@@ -241,7 +246,7 @@ public class CommonUtils {
 		 
 		 String scriptPath = CommonUtils.getPhotoScriptPath(CommonUtils.class);
 		 
-		 String [] cmd =new String []{"/bin/bash", scriptPath, "7.1"};
+		 String [] cmd = new String []{"/bin/bash", scriptPath, "7.1"};
 		 
 		 Process process = Runtime.getRuntime().exec(cmd);
 		 System.out.println("Process Code "+ process.waitFor());

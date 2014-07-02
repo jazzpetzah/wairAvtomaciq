@@ -4,6 +4,7 @@ import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.LoginPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.BackEndREST;
+import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.TestPreparation;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.UsersState;
@@ -50,4 +51,14 @@ public class CommonSteps {
 	public void GivenConnectionRequestIsSendedToMe() throws Throwable {
 		BackEndREST.sendConnectRequest(CommonUtils.yourUsers.get(2), CommonUtils.yourUsers.get(0), CONNECTION_NAME + CommonUtils.yourUsers.get(2).getName(), CONNECTION_MESSAGE);
 	}
+	
+	@Given("^I have group chat with name (.*) with (.*) and (.*)$")
+	public void GivenConnectionRequestIsSendedToMe(String chatName, String contact1, String contac2) throws Throwable {
+		contact1 = CommonUtils.retrieveRealUserContactPasswordValue(contact1);
+		for (ClientUser user : CommonUtils.contacts) {
+			if(user.getName().equals(contact1)) {
+				BackEndREST.createGroupConveration(CommonUtils.yourUsers.get(0), CommonUtils.contacts, chatName);
+			}
+		}
+	}	
 }

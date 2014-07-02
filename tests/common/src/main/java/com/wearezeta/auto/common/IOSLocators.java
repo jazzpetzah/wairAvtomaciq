@@ -122,7 +122,7 @@ public final class IOSLocators {
     
     public static final String nameComfirmRemoveButton = "REMOVE";
 
-	public static final String xpathRemoveFromConversation = "//UIAApplication[1]/UIAWindow[1]/UIAButton[9]";
+	public static final String nameRemoveFromConversation = "metaControllerRightButton";
 	
 	public static final String xpathOtherConversationCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[last()]";
 	
@@ -132,7 +132,7 @@ public final class IOSLocators {
 	
 	public static final String xpathProvideValidEmailMessage = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]"; 
 	
-	public static final String xpathAddContactToChatButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[7]";
+	public static final String nameAddContactToChatButton = "metaControllerLeftButton";
 	
 	public static final String xpathOtherUserName = "//UIAApplication[1]/UIAWindow[1]/UIATextField[@value='%s']";
 	

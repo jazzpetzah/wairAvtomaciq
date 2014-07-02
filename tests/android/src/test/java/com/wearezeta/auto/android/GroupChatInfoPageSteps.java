@@ -20,6 +20,11 @@ public class GroupChatInfoPageSteps {
 		PagesCollection.groupChatPage =	(GroupChatPage) PagesCollection.groupChatInfoPage.swipeRight(500);
 	}
 
+	@When("^I press back on group chat info page$")
+	public void WhenIPressBackOnGroupChatInfoPage() throws Throwable {
+		PagesCollection.groupChatPage =	(GroupChatPage) PagesCollection.groupChatInfoPage.tabBackButton();
+	}
+	
 	@When("^I press Leave conversation button$")
 	public void WhenIPressLeaveConversationButton() throws Throwable {
 		PagesCollection.groupChatInfoPage.pressLeaveConversationButton();
@@ -33,7 +38,6 @@ public class GroupChatInfoPageSteps {
 	@When("^I select contact (.*)$")
 	public void WhenISelectContact(String name) throws Throwable {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
-		PagesCollection.groupChatInfoPage.renameGroupChat(GROUP_CHAT_NAME);
 		PagesCollection.otherUserPersonalInfoPage = PagesCollection.groupChatInfoPage.selectContactByName(name);
 	}
 

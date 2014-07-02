@@ -1,5 +1,7 @@
 Feature: Conversation
 
+@smoke
+@regression
 Scenario Outline: Send message to conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -12,6 +14,8 @@ Examples:
     |  Login		| Password			| Name			| Contact   		|
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
 
+@smoke
+@regression
 Scenario Outline: Send hello to conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -23,6 +27,8 @@ Examples:
     |  Login		| Password			| Name			| Contact   		|
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
 
+#@smoke
+#@regression
 #Scenario Outline: Send hey to conversation
 #    Given I Sign in using login <Login> and password <Password>
 #    And I see Contact list with name <Name>
@@ -35,6 +41,8 @@ Examples:
 #    |  Login		| Password			| Name			| Contact   		|
 #    |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
 
+@smoke
+@regression
 Scenario Outline: Send picture to conversation
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with name <Name>
@@ -46,6 +54,8 @@ Examples:
     |  Login		| Password			| Name			| Contact   		|
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
 
+@smoke
+@regression
 Scenario Outline: Create group chat from 1on1 conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -61,6 +71,8 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
+@smoke
+@regression
 Scenario Outline: Send message to group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -74,6 +86,8 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
+#@smoke
+#@regression
 #Scenario Outline: Send hello to group chat
 #	Given I Sign in using login <Login> and password <Password>
 #	And I see Contact list with name <Name>
@@ -86,6 +100,8 @@ Examples:
 #    |  Login		| Password		| Name			| Contact1		| Contact2		|
 #    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 #
+#@smoke
+#@regression
 #Scenario Outline: Send picture to group chat
 #	Given I Sign in using login <Login> and password <Password>
 #	And I see Contact list with name <Name>
@@ -98,6 +114,8 @@ Examples:
 #    |  Login		| Password		| Name			| Contact1		| Contact2		|
 #    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
+@smoke
+@regression
 Scenario Outline: Leave group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -111,6 +129,8 @@ Examples:
 	|  Login		| Password		| Name			| Contact1		| Contact2		|
 	|  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
+@smoke
+@regression
 Scenario Outline: Remove user from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -125,30 +145,37 @@ Examples:
 	|  Login		| Password		| Name			| Contact1		| Contact2		|
 	|  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-#Scenario Outline: Mute conversation
-#    Given I Sign in using login <Login> and password <Password>
-#    And I see Contact list with name <Name>
-#    And I open conversation with <Contact>
-#	When I mute conversation
-#	And I go to user <Name> profile
-#	And <Contact> sends message to conversation with <Name>
-#	Then I do not see any notifications in <Contact> conversation
+@smoke
+@regression
+Scenario Outline: Mute and unmute conversation
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with name <Name>
+    When I open conversation with <Contact>
+	And I change conversation mute state
+	And I go to user <Name> profile
+	Then I see conversation <Contact> is muted
+	When I open conversation with <Contact>
+	And I change conversation mute state
+	And I go to user <Name> profile
+	Then I see conversation <Contact> is unmuted
 	
-#Examples:
-#    |  Login		| Password			| Name			| Contact   		|
-#    |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
+Examples:
+    |  Login		| Password			| Name			| Contact   		|
+    |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
 
-#Scenario Outline: Unmute conversation
-#    Given I Sign in using login <Login> and password <Password>
-#    And I see Contact list with name <Name>
-#    And I open conversation with <Contact>
-#    And I mute conversation
-#	When I unmute conversation
-#	And I go to user <Name> profile
-#	And <Contact> sends message to conversation with <Name>
-#	Then I see notification in <Contact> conversation
-#
-#Examples:
-#    |  Login		| Password			| Name			| Contact   		|
-#    |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
+@smoke
+@regression
+Scenario Outline: Archive and unarchive conversation
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with name <Name>
+    When I open conversation with <Contact>
+	And I archive conversation
+	And I go to user <Name> profile
+	Then I do not see conversation <Contact> in contact list
+	When I go to archive
+	And I open conversation with <Contact>
+	Then I see Contact list with name <Contact>
 	
+Examples:
+    |  Login		| Password			| Name			| Contact   		|
+    |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|

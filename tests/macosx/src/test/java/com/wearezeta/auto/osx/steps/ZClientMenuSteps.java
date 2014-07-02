@@ -7,6 +7,6 @@ import cucumber.api.java.en.When;
 public class ZClientMenuSteps {
 	 @When("I am signing out")
 	 public void WhenIAmSigningOut() throws IOException {
-		 CommonSteps.senderPages.getContactListPage().SignOut();
+		 CommonSteps.senderPages.getMainMenuPage().SignOut();
 	 }
 }
