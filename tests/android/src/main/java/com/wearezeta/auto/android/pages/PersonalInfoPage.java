@@ -15,6 +15,9 @@ public class PersonalInfoPage extends AndroidPage
 {
 	@FindBy(how = How.ID, using = AndroidLocators.idEmailField)
 	private WebElement emailField;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idNameField)
+	private WebElement nameField;
 
 	@FindBy(how = How.ID, using = AndroidLocators.idChangePhotoBtn)
 	private WebElement changePhotoBtn;
@@ -22,7 +25,7 @@ public class PersonalInfoPage extends AndroidPage
 	@FindBy(how = How.ID, using = AndroidLocators.idGalleryBtn)
 	private WebElement galleryBtn;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idDialogOkButton)
+	@FindBy(how = How.ID, using = AndroidLocators.idConfirmButton)
 	private WebElement confirmBtn;
 
 	@FindBy(how = How.XPATH, using = AndroidLocators.xpathOptionsButton)
@@ -50,7 +53,7 @@ public class PersonalInfoPage extends AndroidPage
 	}
 
 	public void clickOnPage() throws InterruptedException{
-		DriverUtils.androidMultiTap(driver, page,1);
+		DriverUtils.androidMultiTap(driver, page,1,0.2);
 	}
 
 	public void selectPhoto(){
@@ -102,6 +105,14 @@ public class PersonalInfoPage extends AndroidPage
 
 	public void tapOptionsButton() throws InterruptedException {
 		optionsButton.click();
+	}
+	
+	public void waitForConfirmBtn(){
+		wait.until(ExpectedConditions.visibilityOf(confirmBtn));
+	}
+
+	public void tapOnMyName() {
+		nameField.click();
 	}
 
 }

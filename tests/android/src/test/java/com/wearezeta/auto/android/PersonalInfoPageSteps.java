@@ -1,11 +1,7 @@
 package com.wearezeta.auto.android;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.PagesCollection;
@@ -20,6 +16,11 @@ public class PersonalInfoPageSteps {
 	@When("^I tap options button$")
 	public void WhenITapOptionsButton() throws Throwable {
 		PagesCollection.personalInfoPaga.tapOptionsButton();
+	}
+	
+	@When("^I tap on my name$")
+	public void WhenITapOnMyName() throws Throwable {
+		PagesCollection.personalInfoPaga.tapOnMyName();
 	}
 
 	@When("^I tap sign out button$")
@@ -54,14 +55,14 @@ public class PersonalInfoPageSteps {
 	
 	@Then("I see changed user picture")
 	public void ThenISeeChangedUserPicture() throws IOException {
+		PagesCollection.personalInfoPaga.waitForConfirmBtn();
 		BufferedImage referenceImage = PagesCollection.personalInfoPaga.takeScreenshot();
-
-		String path = CommonUtils.getWindowsImagePath(PersonalInfoPageSteps.class);
+		String path = CommonUtils.getResultImagePath(PersonalInfoPageSteps.class);
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
 		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);
 		Assert.assertTrue(
-				"Overlap between two images has no enough score. Expected >= 0.55, current = " + score,
-				score >= 0.55d);
+				"Overlap between two images has no enough score. Expected >= 0.75, current = " + score,
+				score >= 0.75d);
 		
 	}
 	

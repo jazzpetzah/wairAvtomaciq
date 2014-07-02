@@ -6,16 +6,23 @@ public final class AndroidLocators {
 	
 	public static final String classNameFrameLayout = "android.widget.FrameLayout";
 	
-	public static final String classGlyphTextView = "GlyphTextView";
+	public static final String classEditText = "android.widget.EditText";
 	
 	public static final String classNameTextView = "android.widget.TextView";
 	
+	public static final String classNameLinearLayout = "android.widget.LinearLayout";
+	
+	public static final String classListView = "android.widget.ListView";
 	
 	public static final String xpathOptionsButton = "//android.widget.LinearLayout/android.widget.TextView";
 	
 	public static final String xpathImagesFrameLayout = "//android.widget.GridView/android.widget.FrameLayout";
 	
+	public static final String idWelcomeSlogan = "com.waz.zclient:id/tv__welcome__slogan" ; 
+	
 	public static final String idSignOutBtn = "com.waz.zclient:id/ttv__profile__settings_box__signout";
+	
+	public static final String idPeoplePickerClearbtn = "com.waz.zclient:id/gtv_pickuser__clearbutton";
 	
 	public static final String idPersonalInfoForm ="com.waz.zclient:id/ll_self_form";
 	
@@ -39,9 +46,9 @@ public final class AndroidLocators {
 	
 	public static final String idContent = "com.waz.zclient:id/content";
 
-	public static final String idEmailField = "com.waz.zclient:id/email";
+	public static final String idEmailField = "com.waz.zclient:id/ttv__profile__email";
 	
-	public static final String idNameField = "com.waz.zclient:id/name";
+	public static final String idNameField = "com.waz.zclient:id/ttv__profile__name";
 	
 	public static final String idCreateUserBtn = "com.waz.zclient:id/create_user";
 	
@@ -53,25 +60,43 @@ public final class AndroidLocators {
 	
 	public static final String idCursorInput = "com.waz.zclient:id/cursor_input";
 	
-	public static final String idDialogMessages = "com.waz.zclient:id/message";
-	
 	public static final String idKnockAnimation = "com.waz.zclient:id/knock_anim";
 	
-	public static final String idDialogTakePhotoButton = "com.waz.zclient:id/button_take_picture";
+	public static final String idDialogTakePhotoButton = "com.waz.zclient:id/gtv__camera_control__take_a_picture";
 	
-	public static final String idDialogOkButton = "com.waz.zclient:id/button_ok";
+	public static final String idDialogPageBottomFrameLayout = "com.waz.zclient:id/cv";
+	
+	public static final String idDialogPageContainer = "com.waz.zclient:id/ptopc__conversation__list_view_container";
+	
+	public static final String idCreateConversation = "com.waz.zclient:id/ll_pickuser_confirmbutton";
+	
+	public static final String idCreateConversationTitle = "com.waz.zclient:id/ttv_pickuser_confirmbutton__title";
+	
+	public static final String idCreateConversationIcon = "com.waz.zclient:id/gtv_pickuser_confirmbutton__icon";
+	
+	public static final String idConfirmButton = "com.waz.zclient:id/ttv__confirmation__confirm";
+	
+	public static final String idConfirmBtn = "com.waz.zclient:id/confirm";
 	
 	public static final String idDialogImages = "com.waz.zclient:id/image_message_view";
+	
+	public static final String idAddContactBtn = "com.waz.zclient:id/gtv__participants__left__action";
 	
 	public static final String idPickerUsersUnselected = "com.waz.zclient:id/pick_user_chathead_unselected";
 	
 	public static final String idPickerBtnDone = "com.waz.zclient:id/button_done";
 	
-	public static final String idPickerSearch = "com.waz.zclient:id/pick_user_search";
+	public static final String idPickerSearch = "com.waz.zclient:id/puet_pickuser__searchbox";
+	
+	public static final String idPickerGrid = "com.waz.zclient:id/gv_pickuser__topresult__gridview";
 	
 	public static final String idConnectToSend = "com.waz.zclient:id/send";
 	
-	public static final String idConnectToMessage = "com.waz.zclient:id/message";
+	public static final String idMessage = "com.waz.zclient:id/ltv__row_conversation__message";
+	
+	public static final String idPickerSearchUsers = "com.waz.zclient:id/ttv_pickuser__searchuser_name";
+	
+	public static final String idPickerRows = "com.waz.zclient:id/ll_pickuser__rowview_searchuser";
 	
 	public static final String idConnectRequestDialog = "com.waz.zclient:id/connect_request_root";
 	
@@ -79,23 +104,21 @@ public final class AndroidLocators {
 	
 	public static final String idConnectRequestConnectTo = "com.waz.zclient:id/user_name";
 	
-	public static final String idConnectRequestPending = "com.waz.zclient:id/contact_request_pending";
-	
 	public static final String idInstructionsRequestIgnoreBtn = "com.waz.zclient:id/button_block";
 	
 	public static final String idInstructionsRequestConnectBtn = "com.waz.zclient:id/button_connect";
 	
-	public static final String idOtherUserPersonalInfoName = "com.waz.zclient:id/metaHeader";
+	public static final String idOtherUserPersonalInfoName = "com.waz.zclient:id/taet__participants__header";
 	
 	public static final String idLeaveConversationConfirmationMenu = "com.waz.zclient:id/meta_confirmation_menu";
 	
+	public static final String idLeaveConversationButton = "com.waz.zclient:id/gtv__participants__right__action";
+	
 	public static final String idUserProfileConfirmationMenu = "com.waz.zclient:id/user_profile_confirmation_menu";
 	
-	public static final String idConfirmBtn = "com.waz.zclient:id/confirm"; 
+	public static final String idChangePhotoBtn = "com.waz.zclient:id/gtv__camera_control__change_image_source";
 	
-	public static final String idChangePhotoBtn = "com.waz.zclient:id/button_change";
+	public static final String idGalleryBtn = "com.waz.zclient:id/gtv__camera_control__pick_from_gallery";
 	
-	public static final String idGalleryBtn = "com.waz.zclient:id/button_gallery";
-	
-	public static final String idGroupChatUserName = "com.waz.zclient:id/pick_user_textView";
+	public static final String idGroupChatUserGrid = "com.waz.zclient:id/gv__participants__group__users";
 }

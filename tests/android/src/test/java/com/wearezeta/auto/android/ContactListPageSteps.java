@@ -9,6 +9,8 @@ import com.wearezeta.auto.common.CommonUtils;
 
 
 
+
+
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -16,9 +18,10 @@ import cucumber.api.java.en.When;
 public class ContactListPageSteps {
 
 	@Given("^I see Contact list with my name (.*)$")
-	public void GivenISeeContactListWithMyName(String name){
+	public void GivenISeeContactListWithMyName(String name) throws InterruptedException{
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
+		
 	}
 
 	@When("^I tap on contact name (.*)$")
@@ -34,7 +37,11 @@ public class ContactListPageSteps {
 	}
 	@When("^I swipe down contact list$")
 	public void ISwipeDownContactList() throws Throwable {
-		PagesCollection.peoplePickerPage= (PeoplePickerPage)PagesCollection.contactListPage.swipeDown(500);
+		PagesCollection.peoplePickerPage = (PeoplePickerPage)PagesCollection.contactListPage.swipeDown(1000);
+		PagesCollection.peoplePickerPage.navigateBack();
+		PagesCollection.peoplePickerPage = (PeoplePickerPage)PagesCollection.contactListPage.swipeDown(1000);
+		
+
 	}
 	
 	@When("^I create group chat with (.*) and (.*)$")
@@ -63,7 +70,7 @@ public class ContactListPageSteps {
 	}
 
 	@Then ("Contact list appears with my name (.*)")
-	public void ThenContactListAppears(String name) {
+	public void ThenContactListAppears(String name) throws InterruptedException {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 	}

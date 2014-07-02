@@ -82,6 +82,11 @@ public class CommonUtils {
         return getValueFromConfig(c, "defaultWindowsImagePath");
 	}
 	
+	public static String getResultImagePath(Class c)throws IOException {
+
+        return getValueFromConfig(c, "resultImage");
+	}
+	
 	public static String getOsXImagePath(Class c)throws IOException {
 
         return getValueFromConfig(c, "defaultOsXImagePath");

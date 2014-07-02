@@ -14,7 +14,7 @@ public class ContactListPage extends AndroidPage {
 	@FindBy(how = How.ID, using = AndroidLocators.idContactListNames)
 	private List<WebElement> contactListNames;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idCursorInput)
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classEditText)
 	private WebElement cursorInput;
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idSelfUserName)
@@ -42,6 +42,7 @@ public class ContactListPage extends AndroidPage {
 		else{
 			page = new DialogPage(url, path);
 			wait.until(ExpectedConditions.visibilityOf(cursorInput));
+			PagesCollection.groupChatPage = new GroupChatPage(url, path);
 		}
 		return page;
 	}

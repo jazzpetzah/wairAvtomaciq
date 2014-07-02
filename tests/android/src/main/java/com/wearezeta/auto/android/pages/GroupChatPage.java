@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -16,10 +18,13 @@ public class GroupChatPage  extends AndroidPage{
 
 	public static final String I_LEFT_CHAT_MESSAGE = "YOU HAVE LEFT";
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idDialogMessages)
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classListView)
+	private WebElement container;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idMessage)
 	private WebElement message;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idDialogMessages)
+	@FindBy(how = How.ID, using = AndroidLocators.idMessage)
 	private List<WebElement> messages;
 	
 	private String url;
@@ -32,6 +37,13 @@ public class GroupChatPage  extends AndroidPage{
 	}
 
 	@Override
+	public AndroidPage swipeUp(int time) throws IOException
+	{
+		dialogsPagesSwipeUp(time);
+		return returnBySwipe(SwipeDirection.UP);
+	}
+	
+	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws IOException{
 
 		AndroidPage page = null;
@@ -42,11 +54,12 @@ public class GroupChatPage  extends AndroidPage{
 		}
 		case UP:
 		{
+			page = new GroupChatInfoPage(url,path);
 			break;
 		}
 		case LEFT:
 		{
-			page = new GroupChatInfoPage(url,path);
+			
 			break;
 		}
 		case RIGHT:
@@ -59,7 +72,7 @@ public class GroupChatPage  extends AndroidPage{
 	}
 
 	public boolean isGroupChatDialogVisible(){
-		return DriverUtils.waitUntilElementAppears(driver, By.id(AndroidLocators.idDialogMessages));
+		return DriverUtils.waitUntilElementAppears(driver, By.id(AndroidLocators.idMessage));
 	}
 
 	public boolean isGroupChatDialogContainsNames(String name1, String name2)

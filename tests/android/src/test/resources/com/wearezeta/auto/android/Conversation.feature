@@ -6,8 +6,7 @@ Feature: Conversation
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
-    And I type the message
-    And I press send
+    And I type the message and send it
     Then I see my message in the dialog
 
     Examples: 
@@ -20,8 +19,8 @@ Feature: Conversation
     When I tap on contact name <Contact>
     And I see dialog page
     And I multi tap on text input
-    Then I see Hello message in the dialog
-
+    #Then I see Hello message in the dialog
+    
     Examples: 
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
@@ -35,76 +34,79 @@ Feature: Conversation
     And I press Add Picture button
     And I press "Take Photo" button
     And I press "Confirm" button
-    Then I see new photo in the dialog
-
+    #Then I see new photo in the dialog
+    
     Examples: 
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
-
+ 
   Scenario Outline: Start group chat with users from contact list
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I swipe left on dialog page
+    And I swipe up on dialog page
     And I see <Contact1> user profile page
-    And I swipe down other user profile page
-    And I see People picker page
-    And I input in People picker search field user name <Contact2>
-    And I see user <Contact2> found on People picker page
-    And I tap on user name found on People picker page <Contact2>
-    And I see Add to conversation button
-    And I click on Add to conversation button
-    Then I see group chat page with users <Contact1> <Contact2>
+    And I press add contact button
 
+    #And I see People picker page
+    #And I input in People picker search field user name <Contact2>
+    #And I see user <Contact2> found on People picker page
+    #And I tap on user name found on People picker page <Contact2>
+    #And I see Add to conversation button
+    #And I click on Add to conversation button
+    #Then I see group chat page with users <Contact1> <Contact2>
+    
     Examples: 
       | Login   | Password    | Name    | Contact1    | Contact2    |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
 
+
   Scenario Outline: Send message to group chat
-    Given I Sign in using login <Login> and password <Password>
+  	Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2> 
+    And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I create group chat with <Contact1> and <Contact2>
+    When I tap on contact name <GroupChatName>
+    And I see dialog page
     And I tap on text input
-    And I type the message
-    And I press send
+    And I type the message and send it
     Then I see my message in the dialog
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
+      | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName     |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | SendMessGroupChat |
+
 
   Scenario Outline: Leave group conversation
-    Given I Sign in using login <Login> and password <Password>
+  	Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2> 
+    And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I create group chat with <Contact1> and <Contact2>
-    And I swipe left on group dialog page
-    And I swipe up group chat info page
+    When I tap on contact name <GroupChatName>
+    And I swipe up on group dialog page
     And I press Leave conversation button
     And I confirm leaving
-    And I swipe right on group chat info page
-    Then I see message that I left chat
+    And  I tap on contact name <GroupChatName>
+    Then I see that <Name> is not present on group chat page
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
+      | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName     |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | LeaveGroupChat |
 
   Scenario Outline: Remove from group chat
-    Given I Sign in using login <Login> and password <Password>
+  	Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2> 
+    And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I create group chat with <Contact1> and <Contact2>
-    And I swipe left on group dialog page
+    When I tap on contact name <GroupChatName>
+    And I swipe up on group dialog page
     And I select contact <Contact2>
-    And I swipe up on other user profile page
     And I click Remove
-    And I see warning message
     And I confirm remove
-    And I swipe right on group chat info page
+    And I press back on group chat info page
     Then I see that <Contact2> is not present on group chat page
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 |
+      | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName     |
+      | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | RemoveFromGroupChat |
 
   Scenario Outline: Accept connection request
     Given connection request is sended to me

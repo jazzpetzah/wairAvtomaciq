@@ -183,8 +183,9 @@ public class DriverUtils {
 		 driver.swipe(coords.x + elementSize.width / 2, coords.y + 150, coords.x + elementSize.width / 2, coords.y + elementSize.height - 200, time);
 	 }
 	 
-	 public static void androidMultiTap(AppiumDriver driver,WebElement element, int tapNumber) throws InterruptedException
+	 public static void androidMultiTap(AppiumDriver driver,WebElement element, int tapNumber, double duration) throws InterruptedException
 	 {
+<<<<<<< Updated upstream
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
 		
@@ -201,6 +202,31 @@ public class DriverUtils {
 			js.executeScript("mobile: tap", tapObject);
 			Thread.sleep(100);
 		}
+=======
+		 Point coords = element.getLocation();
+			Dimension elementSize = element.getSize();
+			
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			HashMap<String, Double> tapObject = new HashMap<String, Double>();
+			tapObject.put("tapCount", (double) 1);
+			tapObject.put("touchCount", (double) 1);
+			tapObject.put("duration", duration);
+			tapObject.put("x", (double) (coords.x + elementSize.width/2));
+			tapObject.put("y", (double) (coords.y + elementSize.height/2));
+	        
+	        for(int i=0;i<tapNumber;i++)
+	        { 
+	        	js.executeScript("mobile: tap", tapObject);
+	        	Thread.sleep(100);
+	        }
+>>>>>>> Stashed changes
+	 }
+	 
+	 public static void androidLongClick(AppiumDriver driver, WebElement element){
+	       JavascriptExecutor js = (JavascriptExecutor) driver;
+	        HashMap<String, String> tapObject = new HashMap<String, String>();
+	        tapObject.put("element", ((RemoteWebElement) element).getId());
+	        js.executeScript("mobile: longClick", tapObject);
 	 }
 	 
 	 public static void iOSSimulatorSwipeDown(String scriptPath) throws Exception{
