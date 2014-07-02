@@ -1,5 +1,7 @@
 Feature: User Profile
 
+@smoke
+@regression
 Scenario Outline: Change user picture from image file
     Given I Sign in using login <Login> and password <Password>
     And I go to user <Name> profile
@@ -12,6 +14,8 @@ Examples:
 	|	Login			|	Password		|	Name		|
 	|	aqaUser			|	aqaPassword		|	aqaUser		|
 
+#@smoke
+#@regression
 #Scenario Outline: Change user picture from camera
 #	Given I Sign in using login <Login> and password <Password>
 #	And I go to user <Name> profile

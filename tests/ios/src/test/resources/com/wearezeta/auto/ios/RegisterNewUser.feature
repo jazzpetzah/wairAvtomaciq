@@ -1,5 +1,7 @@
 Feature: Register new user
 
+@smoke
+@regression
   Scenario Outline: Register new user using front camera
 	Given I see sign in screen
 	When I press Join button
@@ -20,6 +22,8 @@ Feature: Register new user
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
 
+@smoke
+@regression
   Scenario Outline: Attempt to register an email with spaces
     Given I see sign in screen
 	When I press Join button
@@ -35,6 +39,8 @@ Feature: Register new user
     |	Email				    |	Password	        |  Name			    |
     |	aqaUser           	    |	aqaPassword	        |  aqaUser      	|
 
+@smoke
+@regression   
   Scenario Outline: Attempt to register an email with incorrect format
     Given I see sign in screen
 	When I press Join button

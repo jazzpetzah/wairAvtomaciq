@@ -16,10 +16,13 @@ public class GroupChatPage  extends AndroidPage{
 
 	public static final String I_LEFT_CHAT_MESSAGE = "YOU HAVE LEFT";
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idDialogMessages)
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classListView)
+	private WebElement container;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idMessage)
 	private WebElement message;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idDialogMessages)
+	@FindBy(how = How.ID, using = AndroidLocators.idMessage)
 	private List<WebElement> messages;
 	
 	private String url;
@@ -32,6 +35,13 @@ public class GroupChatPage  extends AndroidPage{
 	}
 
 	@Override
+	public AndroidPage swipeUp(int time) throws IOException
+	{
+		dialogsPagesSwipeUp(time);
+		return returnBySwipe(SwipeDirection.UP);
+	}
+	
+	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws IOException{
 
 		AndroidPage page = null;
@@ -42,11 +52,12 @@ public class GroupChatPage  extends AndroidPage{
 		}
 		case UP:
 		{
+			page = new GroupChatInfoPage(url,path);
 			break;
 		}
 		case LEFT:
 		{
-			page = new GroupChatInfoPage(url,path);
+			
 			break;
 		}
 		case RIGHT:
@@ -59,7 +70,7 @@ public class GroupChatPage  extends AndroidPage{
 	}
 
 	public boolean isGroupChatDialogVisible(){
-		return DriverUtils.waitUntilElementAppears(driver, By.id(AndroidLocators.idDialogMessages));
+		return DriverUtils.waitUntilElementAppears(driver, By.id(AndroidLocators.idMessage));
 	}
 
 	public boolean isGroupChatDialogContainsNames(String name1, String name2)

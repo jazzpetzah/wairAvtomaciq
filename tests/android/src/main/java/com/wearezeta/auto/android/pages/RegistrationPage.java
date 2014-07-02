@@ -16,7 +16,7 @@ public class RegistrationPage extends AndroidPage {
 	@FindBy(how = How.ID, using = AndroidLocators.idDialogTakePhotoButton)
 	private WebElement cameraButton;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idDialogOkButton)
+	@FindBy(how = How.ID, using = AndroidLocators.idConfirmButton)
 	private WebElement confirmImageButton;
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idNameField)

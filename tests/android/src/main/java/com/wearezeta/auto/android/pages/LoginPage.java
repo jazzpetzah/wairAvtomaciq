@@ -16,6 +16,9 @@ public class LoginPage extends AndroidPage {
 
 	@FindBy(how = How.ID, using = AndroidLocators.idSignInButton)
 	private WebElement signInButton;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idWelcomeSlogan)
+	private WebElement welcomeSlogan;
 
 	@FindBy(how = How.ID, using = AndroidLocators.idSignUpButton)
 	private WebElement signUpButton;
@@ -53,7 +56,7 @@ public class LoginPage extends AndroidPage {
 
 	public Boolean isVisible() {
 
-		return viewPager != null;
+		return welcomeSlogan != null;
 	}
 
 	public LoginPage SignIn() throws IOException {
@@ -90,10 +93,9 @@ public class LoginPage extends AndroidPage {
 		return DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.idLoginProgressBar));
 	}
 
-	public Boolean isLoginFinished(String contact) {
+	public Boolean isLoginFinished(String contact) throws InterruptedException {
 
 		HashMap<String,Integer> usersMap = DriverUtils.waitForElementWithTextById(AndroidLocators.idContactListNames, driver);
-
 		return usersMap.containsKey(contact);
 	}
 
