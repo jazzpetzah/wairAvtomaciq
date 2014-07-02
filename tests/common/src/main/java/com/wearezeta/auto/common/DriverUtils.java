@@ -35,8 +35,7 @@ public class DriverUtils {
 		    return s == null || s.length() == 0;
 	 }
 	 
-	 public static boolean isElementDisplayed(WebElement element)
-		{
+	 public static boolean isElementDisplayed(WebElement element) {
 			boolean flag = true;
 			try{
 				element.isDisplayed();
@@ -46,7 +45,7 @@ public class DriverUtils {
 				flag = false;
 			}
 			return flag;
-		}
+	 }
 	 
 	 public static boolean waitUntilElementDissapear(RemoteWebDriver driver, final By by) {
 	 
@@ -163,45 +162,45 @@ public class DriverUtils {
 	 public static void swipeLeft(AppiumDriver driver, WebElement element, int time) {
 		 Point coords = element.getLocation();
 		 Dimension elementSize = element.getSize();
-		 driver.swipe(coords.x+elementSize.width - 20, coords.y+elementSize.height / 2, coords.x + 20, coords.y + elementSize.height / 2, time);
+		 driver.swipe(coords.x + elementSize.width - 20, coords.y + elementSize.height / 2, coords.x + 20, coords.y + elementSize.height / 2, time);
 	 }
 	 
 	 public static void swipeRight(AppiumDriver driver, WebElement element, int time) {
 		 Point coords = element.getLocation();
 		 Dimension elementSize = element.getSize();
-		 driver.swipe(coords.x, coords.y + elementSize.height / 2, coords.x + elementSize.width-20, coords.y + elementSize.height / 2, time);
+		 driver.swipe(coords.x, coords.y + elementSize.height / 2, coords.x + elementSize.width - 20, coords.y + elementSize.height / 2, time);
 	 }
 	 
 	 public static void swipeUp(AppiumDriver driver,WebElement element, int time) {
 		 Point coords = element.getLocation();
 		 Dimension elementSize = element.getSize();
-		 driver.swipe(coords.x+elementSize.width / 2, coords.y + elementSize.height - 170, coords.x + elementSize.width / 2, coords.y + 120, time);
+		 driver.swipe(coords.x + elementSize.width / 2, coords.y + elementSize.height - 170, coords.x + elementSize.width / 2, coords.y + 120, time);
 	 }
 	 
 	 public static void swipeDown(AppiumDriver driver,WebElement element, int time) {
 		 Point coords = element.getLocation();
 		 Dimension elementSize = element.getSize();
-		 driver.swipe(coords.x+elementSize.width / 2, coords.y + 150, coords.x + elementSize.width / 2, coords.y + elementSize.height - 200, time);
+		 driver.swipe(coords.x + elementSize.width / 2, coords.y + 150, coords.x + elementSize.width / 2, coords.y + elementSize.height - 200, time);
 	 }
 	 
 	 public static void androidMultiTap(AppiumDriver driver,WebElement element, int tapNumber) throws InterruptedException
 	 {
-		 Point coords = element.getLocation();
-			Dimension elementSize = element.getSize();
-			
-			JavascriptExecutor js = (JavascriptExecutor) driver;
-			HashMap<String, Double> tapObject = new HashMap<String, Double>();
-			tapObject.put("tapCount", (double) 1);
-			tapObject.put("touchCount", (double) 1);
-			tapObject.put("duration", 0.2);
-			tapObject.put("x", (double) (coords.x + elementSize.width/2));
-			tapObject.put("y", (double) (coords.y + elementSize.height/2));
-	        
-	        for(int i=0;i<tapNumber;i++)
-	        { 
-	        	js.executeScript("mobile: tap", tapObject);
-	        	Thread.sleep(100);
-	        }
+		Point coords = element.getLocation();
+		Dimension elementSize = element.getSize();
+		
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		HashMap<String, Double> tapObject = new HashMap<String, Double>();
+		tapObject.put("tapCount", (double) 1);
+		tapObject.put("touchCount", (double) 1);
+		tapObject.put("duration", 0.2);
+		tapObject.put("x", (double) (coords.x + elementSize.width/2));
+		tapObject.put("y", (double) (coords.y + elementSize.height/2));
+		
+		for(int i=0;i<tapNumber;i++)
+		{ 
+			js.executeScript("mobile: tap", tapObject);
+			Thread.sleep(100);
+		}
 	 }
 	 
 	 public static void iOSSimulatorSwipeDown(String scriptPath) throws Exception{
@@ -216,30 +215,35 @@ public class DriverUtils {
 	 
 	 public static void iOSMultiTap(AppiumDriver driver,WebElement element, int tapNumber) throws InterruptedException
 	 {
-		 Point coords = element.getLocation();
-			Dimension elementSize = element.getSize();
-			
-			JavascriptExecutor js = (JavascriptExecutor) driver;
-			HashMap<String, Double> tapObject = new HashMap<String, Double>();
-			tapObject.put("tapCount", (double) tapNumber);
-			tapObject.put("touchCount", (double) 1);
-			tapObject.put("duration", 0.2);
-			tapObject.put("x", (double) (coords.x + elementSize.width/2));
-			tapObject.put("y", (double) (coords.y + elementSize.height/2));
-	        
-			for(int i=0;i<tapNumber;i++)
-	        { 
-	        	js.executeScript("mobile: tap", tapObject);
-	        	Thread.sleep(100);
-	        }
+		Point coords = element.getLocation();
+		Dimension elementSize = element.getSize();
+		
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		HashMap<String, Double> tapObject = new HashMap<String, Double>();
+		tapObject.put("tapCount", (double) tapNumber);
+		tapObject.put("touchCount", (double) 1);
+		tapObject.put("duration", 0.2);
+		tapObject.put("x", (double) (coords.x + elementSize.width/2));
+		tapObject.put("y", (double) (coords.y + elementSize.height/2));
+		
+		for(int i = 0; i<tapNumber; i++)
+		{ 
+			js.executeScript("mobile: tap", tapObject);
+			Thread.sleep(100);
+		}
 	 }
 
 	 public static void turnOffImplicitWait(RemoteWebDriver driver) {
 		 driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
 	 }
 	 
-	 public static void setDefaultImplicitWait(RemoteWebDriver driver) {
-		 driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+	 public static void setDefaultImplicitWait(RemoteWebDriver driver) { 
+		 try {
+			driver.manage().timeouts().implicitlyWait(Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(BasePage.class)), 
+					 TimeUnit.SECONDS);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
 	 }
 	 
 	 public static void setImplicitWaitValue(RemoteWebDriver driver, int seconds) {

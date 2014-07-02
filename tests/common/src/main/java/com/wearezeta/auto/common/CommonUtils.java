@@ -241,7 +241,7 @@ public class CommonUtils {
 		 
 		 String scriptPath = CommonUtils.getPhotoScriptPath(CommonUtils.class);
 		 
-		 String [] cmd =new String []{"/bin/bash", scriptPath, "7.1"};
+		 String [] cmd = new String []{"/bin/bash", scriptPath, "7.1"};
 		 
 		 Process process = Runtime.getRuntime().exec(cmd);
 		 System.out.println("Process Code "+ process.waitFor());
