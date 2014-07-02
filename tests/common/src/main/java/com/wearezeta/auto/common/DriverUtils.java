@@ -116,45 +116,9 @@ public class DriverUtils {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-	 
-	 public static boolean waitUntilElementDissapear(RemoteWebDriver driver, final By by) {
-	 
-		 Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-			       .withTimeout(30, TimeUnit.SECONDS)
-			       .pollingEvery(2, TimeUnit.SECONDS)
-			       .ignoring(NoSuchElementException.class);
-		 
-		 Boolean bool = wait.until(new Function<WebDriver, Boolean>() {
-			 
-			 public Boolean apply(WebDriver driver) {
-			       return (driver.findElements(by).size() == 0);
-			     }
-		 });
-		 
-		 return bool;
-	 }
-	 
-	 public static boolean waitUntilElementAppears(RemoteWebDriver driver, final By by) {
-		 
-		 Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-			       .withTimeout(30, TimeUnit.SECONDS)
-			       .pollingEvery(2, TimeUnit.SECONDS)
-			       .ignoring(NoSuchElementException.class);
-		 
-		 Boolean bool = wait.until(new Function<WebDriver, Boolean>() {
-			 
-			 public Boolean apply(WebDriver driver) {
-			       return (driver.findElements(by).size() > 0);
-			     }
-		 });
-		 
-		 return bool;
-	 }
-	 
-	 public static void setTextForChildByClassName(WebElement parent, String childClassName, String value)
-	 {
-		 parent.findElement(By.className(childClassName)).sendKeys(value);
-	 }
+		
+		return usersList;
+	}
 	
 	
 	public static void androidLongClick(AppiumDriver driver, WebElement element){

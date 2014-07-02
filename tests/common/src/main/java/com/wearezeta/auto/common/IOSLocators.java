@@ -118,8 +118,6 @@ public final class IOSLocators {
 	
 	public static final String nameYouHaveLeft = "YOU HAVE LEFT";
     
-    public static final String nameRemoveFromConversation = "Remove";
-    
     public static final String nameComfirmRemoveButton = "REMOVE";
 
 	public static final String nameRemoveFromConversation = "metaControllerRightButton";
