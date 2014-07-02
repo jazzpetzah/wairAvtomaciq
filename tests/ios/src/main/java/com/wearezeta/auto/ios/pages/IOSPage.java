@@ -39,21 +39,21 @@ public abstract class IOSPage extends BasePage {
 	@Override
 	public IOSPage swipeLeft(int time) throws IOException
 	{
-		DriverUtils.swipeLeft(driver, content, time);
+		//DriverUtils.swipeLeft(driver, content, time);
 		return returnBySwipe(SwipeDirection.LEFT);
 	}
 	
 	@Override
 	public IOSPage swipeRight(int time) throws IOException
 	{
-		DriverUtils.swipeRight(driver, content, time);
+		//DriverUtils.swipeRight(driver, content, time);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 	
 	@Override
 	public IOSPage swipeUp(int time) throws IOException
 	{
-		DriverUtils.swipeUp(driver, content, time);
+		//DriverUtils.swipeUp(driver, content, time);
 		return returnBySwipe(SwipeDirection.UP);
 	}
 	
@@ -84,7 +84,7 @@ public abstract class IOSPage extends BasePage {
 	@Override
 	public IOSPage swipeDown(int time) throws IOException
 	{
-		DriverUtils.swipeDown(driver, content, time);
+		//DriverUtils.swipeDown(driver, content, time);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 

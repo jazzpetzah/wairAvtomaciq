@@ -98,7 +98,7 @@ public class ContactListPage extends IOSPage {
 			 }
 		 }
 		 if(flag) {
-			 DriverUtils.scrollToElement(driver,contactListNames.get(contactListNames.size() - 1));
+			 //DriverUtils.scrollToElement(driver,contactListNames.get(contactListNames.size() - 1));
 			 findNameInContactList(name);
 		 }
 		return contact;
@@ -121,7 +121,7 @@ public class ContactListPage extends IOSPage {
 	public IOSPage swipeRightOnContact(int time, String contact) throws IOException
 	{
 		oldLocation = driver.findElementByXPath(String.format(IOSLocators.xpathMutedIcon, contact)).getLocation().x;
-		DriverUtils.swipeRight(driver, findNameInContactList(contact), time);
+		//DriverUtils.swipeRight(driver, findNameInContactList(contact), time);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 	
