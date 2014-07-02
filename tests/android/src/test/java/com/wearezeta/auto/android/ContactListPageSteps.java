@@ -20,6 +20,8 @@ public class ContactListPageSteps {
 	@Given("^I see Contact list with my name (.*)$")
 	public void GivenISeeContactListWithMyName(String name) throws InterruptedException{
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		//TODO remove thread.sleep
+		Thread.sleep(150000);
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 		
 	}

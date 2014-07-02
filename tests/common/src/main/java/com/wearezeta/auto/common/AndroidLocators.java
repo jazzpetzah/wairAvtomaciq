@@ -18,6 +18,8 @@ public final class AndroidLocators {
 	
 	public static final String xpathImagesFrameLayout = "//android.widget.GridView/android.widget.FrameLayout";
 	
+	public static final String idBackgroundOverlay = "com.waz.zclient:id/v_background_dark_overlay";
+	
 	public static final String idWelcomeSlogan = "com.waz.zclient:id/tv__welcome__slogan" ; 
 	
 	public static final String idSignOutBtn = "com.waz.zclient:id/ttv__profile__settings_box__signout";
