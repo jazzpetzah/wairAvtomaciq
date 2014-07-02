@@ -112,6 +112,7 @@ public class PersonalInfoPage extends AndroidPage
 	}
 
 	public void tapOnMyName() {
+		wait.until(ExpectedConditions.visibilityOf(nameField));
 		nameField.click();
 	}
 
