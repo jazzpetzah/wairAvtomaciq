@@ -10,6 +10,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.LoginPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
+import com.wearezeta.auto.osx.pages.RegistrationPage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -86,6 +87,7 @@ public class LoginPageSteps {
 	 
 	 @When("I start registration")
 	 public void IStartRegistration() throws MalformedURLException {
-		 CommonSteps.senderPages.getLoginPage().startRegistration();
+		 RegistrationPage registration = CommonSteps.senderPages.getLoginPage().startRegistration();
+		 CommonSteps.senderPages.setRegistrationPage(registration);
 	 }
 }

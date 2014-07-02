@@ -13,7 +13,6 @@ import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.osx.locators.OSXLocators;
-import com.wearezeta.auto.osx.steps.CommonSteps;
 
 public class LoginPage extends OSXPage {
 	
@@ -121,10 +120,10 @@ public class LoginPage extends OSXPage {
 		return el != null;
 	}
 	
-	public void startRegistration() throws MalformedURLException {
+	public RegistrationPage startRegistration() throws MalformedURLException {
 		registerButton.click();
 		RegistrationPage page = new RegistrationPage(url, path);
-		CommonSteps.senderPages.setRegistrationPage(page);
+		return page;
 	}
 	
 	public void sendProblemReportIfFound() {
