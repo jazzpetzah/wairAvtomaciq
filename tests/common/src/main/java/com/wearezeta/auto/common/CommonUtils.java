@@ -197,6 +197,11 @@ public class CommonUtils {
 
 		return getValueFromConfig(c, "package");
 	}
+	
+	public static String getUserPicturPathFromConfig(Class c) throws IOException {
+
+		return getValueFromConfig(c, "pathToUserpic");
+	}
 
 	public static String generateGUID()
 	{
