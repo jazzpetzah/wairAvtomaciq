@@ -103,6 +103,7 @@ public class PeoplePickerPage extends AndroidPage {
 
 
 	public boolean isPeoplePickerPageVisible() throws InterruptedException, IOException {
+		driver.getPageSource();//TODO workaround
 		return DriverUtils.waitUntilElementAppears(driver,By.className(AndroidLocators.classEditText));
 	}
 

@@ -23,7 +23,7 @@ Feature: Conversation
     When I tap on contact name <Contact>
     And I see dialog page
     And I multi tap on text input
-    #Then I see Hello message in the dialog
+    Then I see Hello message in the dialog
     
     Examples: 
       | Login   | Password    | Name    | Contact     |
@@ -40,7 +40,7 @@ Feature: Conversation
     And I press Add Picture button
     And I press "Take Photo" button
     And I press "Confirm" button
-    #Then I see new photo in the dialog
+    Then I see new photo in the dialog
     
     Examples: 
       | Login   | Password    | Name    | Contact     |

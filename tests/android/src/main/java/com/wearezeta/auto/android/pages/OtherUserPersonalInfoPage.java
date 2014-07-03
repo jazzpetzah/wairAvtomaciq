@@ -1,8 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
 import java.io.IOException;
-import java.util.List;
-
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -92,6 +90,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	
 	public GroupChatInfoPage pressRemoveConfirmBtn() throws IOException
 	{
+		driver.getPageSource();//TODO workaround
+		wait.until(ExpectedConditions.elementToBeClickable(confirmBtn));
 		confirmBtn.click();
 		return new GroupChatInfoPage(url, path);
 	}

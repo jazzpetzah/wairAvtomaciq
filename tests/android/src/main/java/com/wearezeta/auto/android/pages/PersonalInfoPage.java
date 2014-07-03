@@ -28,7 +28,7 @@ public class PersonalInfoPage extends AndroidPage
 	@FindBy(how = How.ID, using = AndroidLocators.idConfirmButton)
 	private WebElement confirmBtn;
 
-	@FindBy(how = How.XPATH, using = AndroidLocators.xpathOptionsButton)
+	@FindBy(how = How.ID, using = AndroidLocators.idProfileOptionsButton)
 	private WebElement optionsButton;
 
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameLoginPage)
@@ -40,8 +40,12 @@ public class PersonalInfoPage extends AndroidPage
 	@FindBy(how = How.ID, using = AndroidLocators.idSignOutBtn)
 	private WebElement signOutBtn;
 
-
-
+	@FindBy(how = How.ID, using = AndroidLocators.idOpenFrom)
+	private List<WebElement> openFrom;
+	
+	@FindBy(how = How.XPATH, using = AndroidLocators.xpathImage)
+	private List<WebElement> image;
+	
 	public PersonalInfoPage(String URL, String path) throws IOException {
 		super(URL, path);
 
@@ -57,7 +61,19 @@ public class PersonalInfoPage extends AndroidPage
 	}
 
 	public void selectPhoto(){
-		frameLayouts.get(0).click();
+		driver.getPageSource();
+		try{
+			for(WebElement el : openFrom){
+				if(el.getText().contains("Photos")){
+					el.click();
+					image.get(0).click();
+					break;
+				}
+			}
+		}
+		catch(Exception ex){
+			frameLayouts.get(0).click();
+		}
 	}
 
 	public void tapChangePhotoButton(){

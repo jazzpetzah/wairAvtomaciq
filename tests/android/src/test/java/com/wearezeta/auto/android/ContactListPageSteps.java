@@ -21,7 +21,7 @@ public class ContactListPageSteps {
 	public void GivenISeeContactListWithMyName(String name) throws InterruptedException{
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		//TODO remove thread.sleep
-		Thread.sleep(150000);
+		Thread.sleep(60000);
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 		
 	}
@@ -37,13 +37,10 @@ public class ContactListPageSteps {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		PagesCollection.personalInfoPaga = (PersonalInfoPage) PagesCollection.contactListPage.tapOnName(name);
 	}
+	
 	@When("^I swipe down contact list$")
 	public void ISwipeDownContactList() throws Throwable {
 		PagesCollection.peoplePickerPage = (PeoplePickerPage)PagesCollection.contactListPage.swipeDown(1000);
-		PagesCollection.peoplePickerPage.navigateBack();
-		PagesCollection.peoplePickerPage = (PeoplePickerPage)PagesCollection.contactListPage.swipeDown(1000);
-		
-
 	}
 	
 	@When("^I create group chat with (.*) and (.*)$")
