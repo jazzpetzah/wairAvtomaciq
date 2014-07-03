@@ -12,7 +12,7 @@ Scenario Outline: Change your profile picture
     And I choose a picture from camera roll
     And I press Confirm button
     And I return to personal page
-    Then I see new profile picture in place
+    Then I see changed user picture userpicture_mobile_check.jpg
 	
 	
 	

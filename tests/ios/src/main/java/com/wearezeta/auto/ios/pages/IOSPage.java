@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
@@ -16,6 +17,8 @@ import com.wearezeta.auto.common.IOSLocators;
 import com.wearezeta.auto.common.SwipeDirection;
 
 public abstract class IOSPage extends BasePage {
+	
+	public static String imagesPath = System.getProperty("user.home") + "/Projects/zautomation/tests/tools/img/";
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameLoginPage)
 	private WebElement content;
@@ -100,5 +103,9 @@ public abstract class IOSPage extends BasePage {
 		PagesCollection.connectToPage = null;
 		PagesCollection.groupChatPage = null;
 		PagesCollection.groupChatInfoPage = null;
+	}
+	
+	public BufferedImage takeScreenshot() throws IOException {
+		return DriverUtils.takeScreenshot(driver);
 	}
 }
