@@ -2,6 +2,10 @@ package com.wearezeta.auto.common;
 
 public final class AndroidLocators {
 	
+	public static final String idOpenFrom = "android:id/title";
+	
+	public static final String xpathImage = "//android.widget.LinearLayout/android.view.View";
+	
 	public static final String classNameLoginPage = "android.support.v4.view.ViewPager";
 	
 	public static final String classNameFrameLayout = "android.widget.FrameLayout";
@@ -14,9 +18,11 @@ public final class AndroidLocators {
 	
 	public static final String classListView = "android.widget.ListView";
 	
-	public static final String xpathOptionsButton = "//android.widget.LinearLayout/android.widget.TextView";
+	public static final String classNameGridView = "android.widget.GridView";
 	
 	public static final String xpathImagesFrameLayout = "//android.widget.GridView/android.widget.FrameLayout";
+	
+	public static final String idProfileOptionsButton = "com.waz.zclient:id/gtv__profile__settings_button";
 	
 	public static final String idBackgroundOverlay = "com.waz.zclient:id/v_background_dark_overlay";
 	
@@ -28,13 +34,15 @@ public final class AndroidLocators {
 	
 	public static final String idPersonalInfoForm ="com.waz.zclient:id/ll_self_form";
 	
-	public static final String idSelfUserName =  "com.waz.zclient:id/tet__self_user__guided";
+	public static final String idSelfUserName =  "com.waz.zclient:id/ttv__profile__name";
 	
 	public static final String idSignInButton = "com.waz.zclient:id/ttv__confirmation__confirm";
 	
 	public static final String idSignUpButton = "com.waz.zclient:id/ttv__confirmation__cancel";
 	
-	public static final String idLoginButton = "com.waz.zclient:id/btn_signin_sign_in";
+	public static final String idLoginButton = "com.waz.zclient:id/ttv__sign_in__button";
+	
+	public static final String idLoginPasswordInput = "com.waz.zclient:id/tet__profile__guided";
 	
 	public static final String idLoginField = "com.waz.zclient:id/ifv_signin_username_or_email";
 	
@@ -80,7 +88,7 @@ public final class AndroidLocators {
 	
 	public static final String idConfirmBtn = "com.waz.zclient:id/confirm";
 	
-	public static final String idDialogImages = "com.waz.zclient:id/image_message_view";
+	public static final String idDialogImages = "com.waz.zclient:id/iv__row_conversation__message_image";
 	
 	public static final String idAddContactBtn = "com.waz.zclient:id/gtv__participants__left__action";
 	
