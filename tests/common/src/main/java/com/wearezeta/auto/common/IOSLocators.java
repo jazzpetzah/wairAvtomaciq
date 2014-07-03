@@ -144,4 +144,6 @@ public final class IOSLocators {
 	
 	public static final String nameConnectAlertYes = "Yes";
 	
+	public static final String nameErrorPageButton = "BACK";
+	
 }

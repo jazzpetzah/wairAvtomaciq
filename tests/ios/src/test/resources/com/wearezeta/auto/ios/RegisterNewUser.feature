@@ -81,8 +81,8 @@ Feature: Register new user
 	And I submit registration data
 	Then I see error page
 	And I return to the email page
-	Then I enter the correcr email
-	And I verify the email is correct by registering 
+	Then --I enter the correct email
+	And --I verify the email is correct by registering 
 	#And I press continue registration
 	#And Contact list appears with my name <Name>
 

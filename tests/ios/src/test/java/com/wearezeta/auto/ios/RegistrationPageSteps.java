@@ -144,6 +144,17 @@ public class RegistrationPageSteps {
 		 PagesCollection.registrationPage.createAccount();
 	 }
 	 
+	 @When ("^I see error page$")
+	 public void ISeeErrorPage() throws IOException{
+		 Assert.assertTrue(PagesCollection.registrationPage.confirmErrorPage());
+	 }
+	 
+	 @Then("^I return to the email page$")
+	 public void IReturntoEmailPage() throws IOException
+	 {
+		PagesCollection.registrationPage.navigateToWelcomePage();
+	 }
+	 
 	 @Then("^I see confirmation page$")
 	 public void ISeeConfirmationPage()
 	 {

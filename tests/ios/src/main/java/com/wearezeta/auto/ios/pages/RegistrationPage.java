@@ -46,12 +46,6 @@ public class RegistrationPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameYourEmail)
 	private WebElement yourEmail;
 	
-	//@FindBy(how = How.XPATH, using = IOSLocators.xpathYourSecurePassword)
-	//private WebElement yourSecurePassword;
-	
-	//@FindBy(how = How.XPATH, using = IOSLocators.xpathYourVisiblePassword)
-	//private WebElement yourVisiblePassword; 
-	
 	@FindBy(how = How.NAME, using = IOSLocators.nameYourPassword)
 	private WebElement yourPassword;
 	
@@ -75,6 +69,12 @@ public class RegistrationPage extends IOSPage {
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameForwardWelcomeButton)
 	private WebElement ForwardWelcomeButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameErrorPageButton)
+	private WebElement errorPageButton; 
+
+	
+	
 	
 	private String name;
 	private String email;
@@ -125,6 +125,8 @@ public class RegistrationPage extends IOSPage {
 		yourPassword.sendKeys(getPassword());
 		
 		createAccountButton.click();
+		
+		
 	}
 	
 	public void typeEmail()
@@ -215,6 +217,19 @@ public class RegistrationPage extends IOSPage {
 	public void confirmPicture()
 	{
 		confirmImageButton.click();
+	}
+	
+	
+	public boolean confirmErrorPage() 
+	{
+		return errorPageButton.isDisplayed();
+	}
+	
+	public void backToEmailPage()
+	{
+		while(yourEmail == null){
+			backToWelcomeButton.click();
+		}
 	}
 	
 	public void catchLoginAlert() {
