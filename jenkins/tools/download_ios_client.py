@@ -17,11 +17,11 @@ def main():
         print "No parameters received.\nUsing default parameters: latest s3://z-lohika/ --output_name ZClient_ios.app --path ./ --overwrite"
         build_num = "latest"
         sys.argv = ["", "latest", "s3://z-lohika/", "--output_name", "ZClient_ios.app", "--path", "./", "--overwrite"]
-    if len(sys.argv) < 3:
+    if len(sys.argv) == 2:
         print "Only build number parameter received.\nDownloading build {0} with default parameters: {0} s3://z-lohika/ --output_name ZClient_ios.app --path ./ --overwrite".format(sys.argv[1])
         build_num = sys.argv[1]
         sys.argv = ["", build_num, "s3://z-lohika/", "--output_name", "ZClient_ios.app", "--path", "./", "--overwrite"]
-    if len(sys.argv) < 5:
+    if len(sys.argv) == 5:
         print "Only build number and path parameters received.\nDownloading build {0} to {1}".format(sys.argv[1], sys.argv[3])
         build_num = sys.argv[1]
         path = sys.argv[3]
