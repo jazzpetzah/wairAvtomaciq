@@ -21,10 +21,10 @@ public class GroupChatInfoPageSteps {
 	public void IChangeConversationName() throws IOException{
 	PagesCollection.groupChatInfoPage.changeConversationNameToRandom();
 	}
-
-	@Then("^I see the conversation name changed$")
-	public void IVerifyConversationNameChange() throws IOException{
-		Assert.assertTrue(PagesCollection.groupChatInfoPage.verifyConversationNameChange());
+	
+	@Then("^I see that the conversation name is correct with (.*) and (.*)$")
+	public void IVerifyCorrectConversationName(String contact1, String contact2) throws IOException{
+		Assert.assertTrue(PagesCollection.groupChatInfoPage.verifyCorrectConversationName(contact1, contact2));
 	}
 	
 	@When("^I exit the group info page$")

@@ -149,4 +149,8 @@ public final class IOSLocators {
 	public static final String xpathExitGroupInfoPageButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[6]";
 	
 	public static final String xpathFirstChatInChatListTextField = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[2]/UIAStaticText[1]";
+	
+	public static final String xpathParticipantAvatar = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[%s]";
+	
+	public static final String xpathParticipantName = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[%s]/UIAStaticText[%s]";
 }                                                         
