@@ -2,11 +2,12 @@ package com.wearezeta.auto.osx.pages;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
@@ -18,17 +19,20 @@ public class LoginPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idLoginPage)
 	private WebElement viewPager;
 	
+	@FindBy(how = How.NAME, using = OSXLocators.nameRegisterButton)
+	private WebElement registerButton;
+
 	@FindBy(how = How.NAME, using = OSXLocators.nameSignInButton)
 	private WebElement signInButton;
 
-	@FindBy(how = How.ID, using = OSXLocators.idLoginField)
+	@FindBy(how = How.CLASS_NAME, using = OSXLocators.classNameLoginField)
 	private WebElement loginField;
 
 	@FindBy(how = How.ID, using = OSXLocators.idPasswordField)
 	private WebElement passwordField;
 	
-	@FindBy(how = How.NAME, using = OSXLocators.nameQuitZClientMenuItem)
-	private WebElement quitZClientMenuItem;
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathFailedApplicationDialogSend)
+	private WebElement sendProblemReportButton;
 	
 	private String login;
 	
@@ -53,9 +57,11 @@ public class LoginPage extends OSXPage {
 		OSXPage page = null;
 		boolean isLoginForm = false;
 		try {
-			loginField.isDisplayed();
+			loginField.getText();
 			isLoginForm = true;
 		} catch (NoSuchElementException e) {
+			isLoginForm = false;
+		} catch (NoSuchWindowException e) {
 			isLoginForm = false;
 		}
 		signInButton.click();
@@ -103,25 +109,34 @@ public class LoginPage extends OSXPage {
 	}
 	
 	public Boolean isLoginFinished(String contact) {
+		String xpath = String.format(OSXLocators.xpathFormatContactEntryWithName, contact);
 		WebElement el = null;
-        List<WebElement> cells = driver.findElements(By.id(OSXLocators.idContactEntry)); 
-        for (WebElement cell: cells) { 
-            try { 
-                if (cell.getText().equals(contact)) { 
-                    el = cell;
-                    break; 
-                } 
-            } catch (NoSuchElementException e) { el = null; } 
-        } 
+		try {
+			el = driver.findElement(By.xpath(xpath));
+		} catch (NoSuchElementException e) {
+			el = null;
+		}
 		
 		return el != null;
 	}
 	
-	@Override
-	public void Close() throws IOException {
+	public RegistrationPage startRegistration() throws MalformedURLException {
+		registerButton.click();
+		RegistrationPage page = new RegistrationPage(url, path);
+		return page;
+	}
+	
+	public void sendProblemReportIfFound() {
+		DriverUtils.setImplicitWaitValue(driver, 1);
 		try {
-			quitZClientMenuItem.click();
-		} catch (Exception e) { }
-		super.Close();
+			sendProblemReportButton.click();
+		} catch (NoSuchElementException e) {
+		} finally {
+			DriverUtils.setDefaultImplicitWait(driver);
+		}
+	}
+	
+	public RemoteWebDriver getDriver() {
+		return driver;
 	}
 }

@@ -6,21 +6,19 @@ import java.net.MalformedURLException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.common.IOSLocators;
 import com.wearezeta.auto.common.SwipeDirection;
 
 public class OtherUserPersonalInfoPage extends IOSPage{
 	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathRemoveFromConversation)
+	@FindBy(how = How.NAME, using = IOSLocators.nameRemoveFromConversation)
 	private WebElement removeFromChat;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameComfirmRemoveButton)
 	private WebElement confirmRemove;
 	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathAddContactToChatButton)
+	@FindBy(how = How.NAME, using = IOSLocators.nameAddContactToChatButton)
 	private WebElement addButton;
 	
 	private String url;

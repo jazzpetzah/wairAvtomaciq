@@ -39,6 +39,11 @@ public class OtherUserPersonalInfoPageSteps {
 	
 	@When("^I confirm remove$")
 	public void WhenIConfirmRemove() throws Throwable {
-		PagesCollection.otherUserPersonalInfoPage.pressRemoveBtn();
+		PagesCollection.otherUserPersonalInfoPage.pressRemoveConfirmBtn();
+	}
+	
+	@When("^I press add contact button$")
+	public void WhenIPressAddContactButton() throws IOException{
+		 PagesCollection.otherUserPersonalInfoPage.tapAddContactBtn();
 	}
 }

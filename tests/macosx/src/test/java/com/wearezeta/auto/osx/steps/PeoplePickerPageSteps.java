@@ -2,8 +2,10 @@ package com.wearezeta.auto.osx.steps;
 
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.BackEndREST;
 import com.wearezeta.auto.common.CommonUtils;
 
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
 public class PeoplePickerPageSteps {
@@ -32,5 +34,12 @@ public class PeoplePickerPageSteps {
 	@When("I send invitation to user")
 	public void WhenISendInvitationToUser() {
 		CommonSteps.senderPages.getPeoplePickerPage().sendInvitationToUserIfRequested();
+	}
+	
+	@Given("I send invitation to (.*) by (.*)")
+	public void ISendInvitationToUserByContact(String user, String contact) {
+		user = CommonUtils.retrieveRealUserContactPasswordValue(user);
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		BackEndREST.autoTestSendRequest(CommonUtils.yourUsers.get(2), CommonUtils.yourUsers.get(0));
 	}
 }

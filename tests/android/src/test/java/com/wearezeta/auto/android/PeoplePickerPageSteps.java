@@ -12,12 +12,17 @@ public class PeoplePickerPageSteps {
 
 	@When("^I see People picker page$")
 	public void WhenISeePeoplePickerPage() throws Throwable {
-		 Assert.assertTrue(PagesCollection.peoplePickerPage.isPeoplePickerPageVisible());
+ 		 Assert.assertTrue(PagesCollection.peoplePickerPage.isPeoplePickerPageVisible());
 	}
 	
 	@When("^I tap on Search input on People picker page$")
 	public void WhenITapOnSearchInputOnPeoplePickerPage() throws Throwable {
 	    PagesCollection.peoplePickerPage.tapPeopleSearch();
+	}
+	
+	@When("^I tap on create conversation$")
+	public void WhenITapOnCreateConversation() throws Throwable {
+	   PagesCollection.dialogPage = PagesCollection.peoplePickerPage.tapCreateConversation();
 	}
 	
 	@When("^I input in People picker search field user name (.*)$")
@@ -43,9 +48,6 @@ public class PeoplePickerPageSteps {
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 		AndroidPage page = null;
 		page = PagesCollection.peoplePickerPage.selectContact(contact);
-		if(page instanceof ConnectToPage) {
-			PagesCollection.connectToPage = (ConnectToPage) page;
-		}
 	}
 	
 	@When("^I see Add to conversation button$")

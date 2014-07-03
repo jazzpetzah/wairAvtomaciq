@@ -1,5 +1,7 @@
 Feature: Conversation
 
+  @smoke
+  @regression
   Scenario Outline: Send Message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -14,7 +16,8 @@ Feature: Conversation
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
 
- 
+  @smoke
+  @regression
     Scenario Outline: Send Hello to contact
 		Given I Sign in using login <Login> and password <Password> 
     	And I see Contact list with my name <Name>
@@ -29,7 +32,8 @@ Feature: Conversation
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
     
-    
+  @smoke
+  @regression
 	Scenario Outline: Start group chat with users from contact list
 		Given I Sign in using login <Login> and password <Password>
     	And I see Contact list with my name <Name>
@@ -51,7 +55,8 @@ Feature: Conversation
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 	   	
 
-
+  @smoke
+  @regression
 Scenario Outline: Send message to group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -65,6 +70,8 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
  
+  @smoke
+  @regression
 Scenario Outline: Send a camera roll picture to user from contact list
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with my name <Name>
@@ -81,6 +88,8 @@ Examples:
 	|	Login		|	Password		|	Name		|	Contact			|
 	|	aqaUser		|	aqaPassword		|	aqaUser		|	aqaContact1		|
 	
+  @smoke
+  @regression
 Scenario Outline: Leave from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -98,8 +107,14 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
     
+<<<<<<< HEAD
 
 Scenario Outline: Remove from group chat
+=======
+  @smoke
+  @regression
+ Scenario Outline: Remove from group chat
+>>>>>>> 405d978c4d61fd925f1e1356a93f0476c08cb694
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
 	When I create group chat with <Contact1> and <Contact2>
@@ -114,6 +129,7 @@ Scenario Outline: Remove from group chat
 		
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
+<<<<<<< HEAD
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
 Scenario Outline: I can edit the conversation name
@@ -133,3 +149,22 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
     
     
+=======
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
+    
+  @smoke
+  @regression
+ Scenario Outline: Mute conversation
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact1>
+    And I click mute conversation
+    Then Contact <Contact1> is muted
+    When I swipe right on a <Contact1>
+    And I click mute conversation
+    Then Contact <Contact1> is not muted
+Examples:
+    |  Login		| Password		| Name			| Contact1    |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |
+ 
+>>>>>>> 405d978c4d61fd925f1e1356a93f0476c08cb694
