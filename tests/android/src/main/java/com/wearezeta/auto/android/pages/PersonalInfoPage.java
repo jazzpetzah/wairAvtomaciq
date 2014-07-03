@@ -62,14 +62,18 @@ public class PersonalInfoPage extends AndroidPage
 
 	public void selectPhoto(){
 		driver.getPageSource();
-		for(WebElement el : openFrom){
-			if(el.getText().contains("Photos")){
-				el.click();
-				break;
+		try{
+			for(WebElement el : openFrom){
+				if(el.getText().contains("Photos")){
+					el.click();
+					image.get(0).click();
+					break;
+				}
 			}
-			
 		}
-		image.get(0).click();
+		catch(Exception ex){
+			frameLayouts.get(0).click();
+		}
 	}
 
 	public void tapChangePhotoButton(){
