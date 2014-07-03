@@ -57,10 +57,10 @@ public class PersonalInfoPageSteps {
 		
 		BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage.imagesPath + filename);
 		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);
-		//System.out.print("SCORE: " + score);
-		/*Assert.assertTrue(
+		System.out.print("SCORE: " + score);
+		Assert.assertTrue(
 				"Overlap between two images has no enough score. Expected >= 0.75, current = " + score,
-				score >= 0.75d);*/
+				score >= 0.75d);
 		
 	}
 
