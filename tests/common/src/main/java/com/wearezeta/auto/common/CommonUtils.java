@@ -15,6 +15,7 @@ public class CommonUtils {
 	public static final String YOUR_PASS = "aqaPassword";
 	public static final String CONTACT_1 = "aqaContact1";
 	public static final String CONTACT_2 = "aqaContact2";
+	public static final String CONTACT_PICTURE = "aqaPictureContact";
 	public static List<ClientUser> yourUsers = new ArrayList<ClientUser>();
 	public static List<ClientUser> contacts = new ArrayList<ClientUser>();
 
@@ -68,6 +69,15 @@ public class CommonUtils {
 			if (value.contains(CONTACT_2)) {
 				value = value.replace(CONTACT_2, contacts.get(1).getName());
 			}
+		}
+		if(value=="aqaPictureContact"){
+			value = "aqaPictureContact";
+		}
+		if(value=="aqaPictureContactEmail"){
+			value = "aqaPictureContact@wearezeta.com";
+		}
+		if(value=="aqaPictureContactPassword"){
+			value = "picture123";
 		}
 		return value;
 	}
@@ -239,6 +249,12 @@ public class CommonUtils {
 			else{
 				throw new NullPointerException("Contact was not created");
 			}
+			
+		ClientUser pictureUser = new ClientUser();
+		pictureUser.setEmail(CommonUtils.retrieveRealUserContactPasswordValue("aqaPictureContactEmail"));
+		pictureUser.setPassword(CommonUtils.retrieveRealUserContactPasswordValue("aqaPictureContactPassword"));
+		pictureUser.setUserState(UsersState.Created);
+		contacts.add(pictureUser);
 		}
 	}
 	

@@ -47,15 +47,15 @@ public class GroupChatInfoPage extends IOSPage{
 
 	public boolean verifyCorrectConversationName(String contact1, String contact2){
 		if(conversationName==null){
+			System.out.println("conversationName is null");
 			if(contact1.equals(CommonUtils.CONTACT_1)){
 				contact1 = CommonUtils.retrieveRealUserContactPasswordValue(contact1);
 				System.out.println("contact 1 is now"+contact1);
 			}
-			if(contact2.equals(CommonUtils.CONTACT_2)){
+			if(contact2.equals(CommonUtils.CONTACT_2)||contact2.equals("aqaPictureContact")){
 				contact2 = CommonUtils.retrieveRealUserContactPasswordValue(contact2);
 				System.out.println("contact 2 is now"+contact2);
 			}
-			System.out.println("conversationName is null");
 			conversationName = contact1+", "+contact2;
 		}
 		if(!conversationNameTextField.getText().equals(conversationName)){

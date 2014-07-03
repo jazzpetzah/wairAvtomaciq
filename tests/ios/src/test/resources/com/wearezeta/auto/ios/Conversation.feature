@@ -106,15 +106,10 @@ Scenario Outline: Leave from group chat
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
-    
-<<<<<<< HEAD
 
-Scenario Outline: Remove from group chat
-=======
   @smoke
   @regression
  Scenario Outline: Remove from group chat
->>>>>>> 405d978c4d61fd925f1e1356a93f0476c08cb694
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
 	When I create group chat with <Contact1> and <Contact2>
@@ -129,7 +124,6 @@ Scenario Outline: Remove from group chat
 		
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
-<<<<<<< HEAD
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
 Scenario Outline: I can edit the conversation name
@@ -146,11 +140,7 @@ Scenario Outline: I can edit the conversation name
 		
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
-    
-    
-=======
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
     
   @smoke
   @regression
@@ -166,5 +156,15 @@ Examples:
 Examples:
     |  Login		| Password		| Name			| Contact1    |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |
- 
->>>>>>> 405d978c4d61fd925f1e1356a93f0476c08cb694
+
+
+Scenario Outline: Verify correct group info page information
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+	When I create group chat with <Contact1> and <Contact2>
+	And I swipe up on group chat page
+	Then I see that the conversation name is correct with <Contact1> and <Contact2>
+		
+Examples:
+    |  Login		| Password		| Name			| Contact1		| Contact2		|
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaPictureContact	|

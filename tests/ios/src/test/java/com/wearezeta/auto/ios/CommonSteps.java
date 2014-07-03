@@ -1,6 +1,8 @@
 package com.wearezeta.auto.ios;
 
+import com.wearezeta.auto.common.BackEndREST;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.CreateZetaUser;
 import com.wearezeta.auto.common.TestPreparation;
 import com.wearezeta.auto.common.UsersState;
 import com.wearezeta.auto.common.ZetaFormatter;
@@ -25,6 +27,9 @@ public class CommonSteps {
 		}
 		
 		boolean generateUsersFlag = Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class));
+		
+		BackEndREST.registerNewUser("aqaPictureContact@wearezeta.com","aqaPictureContact","picture123");
+		CreateZetaUser.activateRegisteredUser("aqaPictureContact@wearezeta.com",10, "aqaPictureContact","picture123");
 		
 		if ((CommonUtils.yourUsers.size() == 0 
 				|| !CommonUtils.yourUsers.get(0).getUserState().equals(UsersState.AllContactsConnected))) {
