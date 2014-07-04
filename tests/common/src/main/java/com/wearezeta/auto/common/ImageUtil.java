@@ -15,6 +15,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.Core.MinMaxLocResult;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
 
@@ -57,6 +58,18 @@ public class ImageUtil {
 	    return image;
 	}
 	
+	public static Mat resizeTemplateMatrixIfRequired(Mat tpl, Mat ref, int etWidth, int etHeight) {
+		Mat result;
+		if (tpl.width() > ref.width() || tpl.height() > ref.height()) {
+			result = new Mat();
+			Size sz = new Size((tpl.width()*ref.width())/etWidth, (tpl.height()*ref.height())/etHeight);
+			Imgproc.resize(tpl, result, sz);
+		} else {
+			result = tpl;
+		}
+		return result;
+	}
+	
 	public static double getOverlapScore(BufferedImage refImage, BufferedImage tplImage) {
 		//convert images to matrixes
 		refImage = convertToBufferedImageOfType(refImage, BufferedImage.TYPE_3BYTE_BGR);
@@ -69,6 +82,7 @@ public class ImageUtil {
 	        return Double.NaN;
 	    }
 
+	    tpl = resizeTemplateMatrixIfRequired(tpl, ref, 1080, 1920);
 	    //get grayscale images for matching template
 	    Mat gref = new Mat(), gtpl = new Mat();
 	    Imgproc.cvtColor(ref, gref, Imgproc.COLOR_BGR2GRAY);
