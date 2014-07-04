@@ -92,7 +92,7 @@ public class DialogPage extends AndroidPage{
 	
 	public void typeMessage(String message)
 	{
-		cursorInput.sendKeys(message);
+		cursorInput.sendKeys(message );
 		DriverUtils.mobileTapByCoordinates(driver, backgroundOverlay);
 	}
 

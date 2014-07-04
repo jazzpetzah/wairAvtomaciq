@@ -70,6 +70,8 @@ public final class AndroidLocators {
 	
 	public static final String idNameField = "com.waz.zclient:id/ttv__profile__name";
 	
+	public static final String idNameEdit ="com.waz.zclient:id/tet__profile__guided";
+	
 	public static final String idCreateUserBtn = "com.waz.zclient:id/create_user";
 	
 	public static final String idVerifyEmailBtn = "com.waz.zclient:id/button_verify_email";
