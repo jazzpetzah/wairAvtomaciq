@@ -1,7 +1,6 @@
 Feature: Conversation
 
-@smoke
-@regression
+  @smoke @regression
   Scenario Outline: Send Message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -15,22 +14,20 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-@smoke
-@regression
+  @smoke @regression
   Scenario Outline: Send Hello to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
     And I multi tap on text input
-    #Then I see Hello message in the dialog
-    
+    Then I see Hello message in the dialog
+
     Examples: 
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-@smoke
-@regression
+  @smoke @regression
   Scenario Outline: Send Camera picture to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -40,14 +37,13 @@ Feature: Conversation
     And I press Add Picture button
     And I press "Take Photo" button
     And I press "Confirm" button
-    #Then I see new photo in the dialog
-    
+    Then I see new photo in the dialog
+
     Examples: 
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
- 
-@smoke
-@regression
+
+  @smoke @regression
   Scenario Outline: Start group chat with users from contact list
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -64,16 +60,13 @@ Feature: Conversation
     #And I see Add to conversation button
     #And I click on Add to conversation button
     #Then I see group chat page with users <Contact1> <Contact2>
-    
     Examples: 
       | Login   | Password    | Name    | Contact1    | Contact2    |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
 
-
-@smoke
-@regression
+  @smoke @regression
   Scenario Outline: Send message to group chat
-  	Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2> 
+    Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <GroupChatName>
@@ -86,28 +79,25 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | SendMessGroupChat |
 
-
-@smoke
-@regression
+  @smoke @regression
   Scenario Outline: Leave group conversation
-  	Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2> 
+    Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <GroupChatName>
     And I swipe up on group dialog page
     And I press Leave conversation button
     And I confirm leaving
-    And  I tap on contact name <GroupChatName>
+    And I tap on contact name <GroupChatName>
     Then I see that <Name> is not present on group chat page
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName     |
+      | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName  |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | LeaveGroupChat |
 
-@smoke
-@regression
+  @smoke @regression
   Scenario Outline: Remove from group chat
-  	Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2> 
+    Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <GroupChatName>
@@ -119,11 +109,10 @@ Feature: Conversation
     Then I see that <Contact2> is not present on group chat page
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName     |
+      | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName       |
       | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | RemoveFromGroupChat |
 
-@smoke
-@regression
+  @smoke @regression
   Scenario Outline: Accept connection request
     Given connection request is sended to me
     And I Sign in using login <Login> and password <Password>
@@ -137,3 +126,18 @@ Feature: Conversation
     Examples: 
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | yourContact |
+
+  @smoke @regression
+  Scenario Outline: Mute conversation
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact1>
+    And I click mute conversation
+    Then Contact <Contact1> is muted
+    When I swipe right on a <Contact1>
+    And I click mute conversation
+    Then Contact <Contact1> is not muted
+
+    Examples: 
+      | Login   | Password    | Name    | Contact1    |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
