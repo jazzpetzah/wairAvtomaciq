@@ -47,11 +47,8 @@ public class CameraRollPage extends IOSPage{
 		
 		System.out.print("CAMERA ROLL");
 		cameraRollAlertOK.click();
-		Thread.sleep(2000);
 		cameraRollTableCell.click();
-		Thread.sleep(1000);
 		cameraRollPicture.click();
-		Thread.sleep(3000);
 
 	}
 	

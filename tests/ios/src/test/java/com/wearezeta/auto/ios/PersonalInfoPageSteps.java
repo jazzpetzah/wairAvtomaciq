@@ -4,7 +4,10 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import org.junit.Assert;
+import org.openqa.selenium.By;
 
+import com.wearezeta.auto.common.AndroidLocators;
+import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.ios.pages.CameraRollPage;
 import com.wearezeta.auto.ios.pages.IOSPage;
@@ -44,12 +47,10 @@ public class PersonalInfoPageSteps {
 	public void IReturnToPersonalPage() throws Throwable {
 		
 		PagesCollection.personalInfoPage.tapOnPersonalPage();
-		Thread.sleep(2000);
 		PagesCollection.personalInfoPage.tapOnPersonalPage();
-		Thread.sleep(2000);
 		referenceImage = PagesCollection.personalInfoPage.takeScreenshot();
 		PagesCollection.personalInfoPage.tapOnPersonalPage();
-		Thread.sleep(2000);
+
 	}
 
 	@Then("I see changed user picture (.*)")
