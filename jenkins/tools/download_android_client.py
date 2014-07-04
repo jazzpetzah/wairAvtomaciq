@@ -14,27 +14,26 @@ def main():
     build_number_file_name = "ZClient_android_build.txt"
 
     if len(sys.argv) < 2:
-        print "No parameters received.\nUsing default parameters: latest s3://z-lohika/android/ --output_name ZClient.apk --path ./ --overwrite"
+        print "No parameters received.\nUsing default parameters: latest s3://z-lohika/android/dev/ --output_name ZClient.apk --path ./"
         build_num = "latest"
-        sys.argv = ["", "latest", "s3://z-lohika/android/", "--output_name", "ZClient.apk", "--path", "./", "--overwrite"]
+        sys.argv = ["", "latest", "s3://z-lohika/android/", "--output_name", "ZClient.apk", "--path", "./"]
     if len(sys.argv) == 2:
-        print "Only build number parameter received.\nDownloading build {0} with default parameters: {0} s3://z-lohika/android/ --output_name ZClient.apk --path ./ --overwrite".format(sys.argv[1])
+        print "Only build number parameter received.\nDownloading build {0} with default parameters: {0} s3://z-lohika/android/dev/ --output_name ZClient.apk --path ./".format(sys.argv[1])
         build_num = sys.argv[1]
-        sys.argv = ["", build_num, "s3://z-lohika/android/", "--output_name", "ZClient.apk", "--path", "./", "--overwrite"]
+        sys.argv = ["", build_num, "s3://z-lohika/android/", "--output_name", "ZClient.apk", "--path", "./"]
         
     if len(sys.argv) == 4:
         print "Only build number and path parameters received.\nDownloading build {0} to {1}".format(sys.argv[1], sys.argv[3])
         build_num = sys.argv[1]
         path = sys.argv[3]
-        sys.argv = ["", build_num, "s3://z-lohika/android/", "--output_name", "ZClient.apk", "--path", path, "--overwrite"]
+        sys.argv = ["", build_num, "s3://z-lohika/android/", "--output_name", "ZClient.apk", "--path", path]
 
     parser = argparse.ArgumentParser(description="Download latest client")
     parser.add_argument('build_num', help="The build to download, set it to  \"latest\" to get the last one")
     parser.add_argument('bucket_path', help="The S3 path to search for releases")
     parser.add_argument('--output_name', help="What to call the unpacked app")
     parser.add_argument('--path', help="Where to store unpacked app")
-    parser.add_argument('--overwrite', action="store_true", help="When set, the local file will be overwritten")
-    
+
 
     options = parser.parse_args()
     bucket_path = options.bucket_path
@@ -67,11 +66,7 @@ def main():
     local_file_name=store_path+"/"+local_file_name
 
     if os.path.exists(local_file_name):
-        if options.overwrite:
-            os.remove(local_file_name)
-        else:
-            print "Error: File {0} already exists".format(local_file_name)
-            sys.exit(1)
+        os.remove(local_file_name)
 
     full_remote_file_name = bucket_path + remote_file_name
 
