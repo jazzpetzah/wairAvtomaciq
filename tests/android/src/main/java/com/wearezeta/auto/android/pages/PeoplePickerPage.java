@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.*;
 
@@ -70,7 +71,10 @@ public class PeoplePickerPage extends AndroidPage {
 	public AndroidPage selectContact(String contactName) throws IOException, InterruptedException
 	{
 		AndroidPage page = null;
-		for(WebElement element : linearLayout)
+		WebElement el = driver.findElementByXPath(String.format(AndroidLocators.xpathPeoplePickerContact,contactName));
+		el.click();
+		
+		/*for(WebElement element : linearLayout)
 		{
 			List<WebElement> elementTexts = element.findElements(By.className(AndroidLocators.classNameTextView));
 			for(WebElement el : elementTexts){
@@ -80,7 +84,7 @@ public class PeoplePickerPage extends AndroidPage {
 					break;
 				}
 			}
-		}
+		}*/
 		if(isVisible(createConversation)){
 			page = this;
 		}
@@ -104,12 +108,13 @@ public class PeoplePickerPage extends AndroidPage {
 
 	public boolean isPeoplePickerPageVisible() throws InterruptedException, IOException {
 		driver.getPageSource();//TODO workaround
-		return DriverUtils.waitUntilElementAppears(driver,By.className(AndroidLocators.classEditText));
+		//return DriverUtils.waitUntilElementAppears(driver,By.className(AndroidLocators.classEditText));
+		wait.until(ExpectedConditions.elementToBeClickable(pickerSearch));
+		return pickerSearch.isEnabled();
 	}
 
 
 	public void waitUserPickerFindUser(String contactName){
-
 		for(int i= 0; i<5; i++){
 			List<WebElement> elements = pickerSearchUsers;
 			for(WebElement element : elements)

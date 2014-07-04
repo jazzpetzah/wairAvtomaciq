@@ -46,8 +46,7 @@ public class PeoplePickerPageSteps {
 	@When("^I tap on user name found on People picker page (.*)$")
 	public void WhenITapOnUserNameFoundOnPeoplePickerPage(String contact) throws Throwable {
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
-		AndroidPage page = null;
-		page = PagesCollection.peoplePickerPage.selectContact(contact);
+		PagesCollection.peoplePickerPage.selectContact(contact);
 	}
 	
 	@When("^I see Add to conversation button$")

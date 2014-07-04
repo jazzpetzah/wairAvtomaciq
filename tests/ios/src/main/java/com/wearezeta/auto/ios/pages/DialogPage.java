@@ -110,7 +110,7 @@ public class DialogPage extends IOSPage{
 	}
 	
 	private String GetHelloCell(List<WebElement> chatList) {
-		String helloCellText = helloCell.getAttribute("name");  //I dont get HEY FROM PIOTR here
+		String helloCellText = helloCell.getAttribute("name");  
 		return helloCellText;
 	}
 

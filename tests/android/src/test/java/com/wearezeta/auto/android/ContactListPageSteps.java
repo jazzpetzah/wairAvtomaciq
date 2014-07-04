@@ -15,10 +15,12 @@ import cucumber.api.java.en.When;
 public class ContactListPageSteps {
 
 	@Given("^I see Contact list with my name (.*)$")
-	public void GivenISeeContactListWithMyName(String name) throws InterruptedException{
+	public void GivenISeeContactListWithMyName(String name) throws InterruptedException, IOException{
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		//TODO remove thread.sleep
 		Thread.sleep(120000);
+		PagesCollection.contactListPage.swipeDown(1000);
+		PagesCollection.contactListPage.navigateBack();
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 
 	}
