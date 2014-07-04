@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -47,6 +45,9 @@ public class DialogPage extends AndroidPage{
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idDialogPageBottomFrameLayout)
 	private WebElement dialogPageBottomFrameLayout;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idBackgroundOverlay)
+	private WebElement backgroundOverlay;
 	
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classListView)
 	private WebElement container;
@@ -91,7 +92,8 @@ public class DialogPage extends AndroidPage{
 	
 	public void typeMessage(String message)
 	{
-		cursorInput.sendKeys(message + "\n");
+		cursorInput.sendKeys(message);
+		DriverUtils.mobileTapByCoordinates(driver, backgroundOverlay);
 	}
 
 	public String getLastMessageFromDialog()
@@ -107,7 +109,7 @@ public class DialogPage extends AndroidPage{
 	@Override
 	public AndroidPage swipeUp(int time) throws IOException
 	{
-		dialogsPagesSwipeUp(time);
+		dialogsPagesSwipeUp(time);//TODO workaround
 		return returnBySwipe(SwipeDirection.UP);
 	}
 	
@@ -151,14 +153,17 @@ public class DialogPage extends AndroidPage{
 	
 	public boolean isImageExists()
 	{
+		driver.getPageSource();//TODO workaround
 		return DriverUtils.waitUntilElementAppears(driver,By.id(AndroidLocators.idDialogImages));
 	}
 
 	public void confirm() {
+		driver.getPageSource();//TODO workaround
 		okButton.click();
 	}
 
 	public void takePhoto() {
+		driver.getPageSource();//TODO workaround
 		takePhotoButton.click();
 	}
 

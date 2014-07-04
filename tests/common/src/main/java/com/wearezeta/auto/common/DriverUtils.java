@@ -204,6 +204,18 @@ public class DriverUtils {
 
 	}
 
+	public static void mobileTapByCoordinates(AppiumDriver driver, WebElement element){
+		Point coords = element.getLocation();
+		Dimension elementSize = element.getSize();
+		
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		HashMap<String, Double> tapObject = new HashMap<String, Double>();
+		tapObject.put("x", (double) (coords.x + elementSize.width - 20)); // in pixels from left
+		tapObject.put("y", (double) (coords.y + elementSize.height - 20));// in pixels from top
+		js.executeScript("mobile: tap", tapObject);
+	}
+	
+	
 	public static void androidLongClick(AppiumDriver driver, WebElement element){
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		HashMap<String, String> tapObject = new HashMap<String, String>();

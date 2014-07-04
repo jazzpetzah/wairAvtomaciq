@@ -29,7 +29,7 @@ public class CommonUtils {
 		}
 		else{
 			executeOsXCommand(new String[]{"/bin/bash", "-c", "adb push", getOsXImagePath(CommonUtils.class),"/mnt/sdcard/DCIM/Camera/userpicture.jpg"});
-			executeOsXCommand(new String[]{"/bin/bash", "-c", "adb shell am broadcast -a android.intent.action.MEDIA_MOUNTED -d file:///sdcard Broadcasting: Intent { act=android.intent.action.MEDIA_MOUNTED dat=file:///sdcard }"});
+			executeOsXCommand(new String[]{"/bin/bash", "-c", "adb shell \"am broadcast -a android.intent.action.MEDIA_MOUNTED -d file:///sdcard \"Broadcasting: Intent { act=android.intent.action.MEDIA_MOUNTED dat=file:///sdcard }"});
 		}
 	}
 	public static void killAndroidClient() throws Exception

@@ -26,11 +26,8 @@ public class LoginPage extends AndroidPage {
 	@FindBy(how = How.ID, using = AndroidLocators.idLoginButton)
 	private WebElement confirmSignInButton;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idLoginField)
-	private WebElement loginField;
-
-	@FindBy(how = How.ID, using = AndroidLocators.idPasswordField)
-	private WebElement passwordField;
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classEditText)
+	private List<WebElement> loginPasswordField;
 
 	@FindBy(how = How.ID, using = AndroidLocators.idWelcomeButtonsContainer)
 	private List<WebElement> welcomeButtonsContainer;
@@ -75,7 +72,13 @@ public class LoginPage extends AndroidPage {
 
 	public void setLogin(String login) {
 
-		DriverUtils.setTextForChildByClassName(loginField, "android.widget.EditText", login);
+		for(WebElement el: loginPasswordField){
+			if(el.getText().equals("Email")){
+				el.click();
+				el.sendKeys(login);
+				break;
+			}
+		}
 	}
 
 	public String getPassword() {
@@ -84,8 +87,13 @@ public class LoginPage extends AndroidPage {
 
 	public void setPassword(String password) throws InterruptedException {
 
-		DriverUtils.setTextForChildByClassName(passwordField, "android.widget.EditText", password + "\n" );
-		Thread.sleep(500);
+		for(WebElement el: loginPasswordField){
+			if(el.getText() == null || el.getText().isEmpty() ){
+				el.click();
+				el.sendKeys(password);
+				break;
+			}
+		}
 	}
 
 	public boolean waitForLogin() {
