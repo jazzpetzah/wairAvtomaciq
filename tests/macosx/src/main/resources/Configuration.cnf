@@ -1,7 +1,7 @@
 #Configuration file for OS X tests
 #Configure before running tests
-Url=http://127.0.0.1:4622/wd/hub
-appPath=ZClient
-generateUsers=true
-driverTimeoutSeconds=10
-pictureResultsPath=/Users/kaleksandrov/ZETA_Run_Screens/
+Url=${Url}
+appPath=${appPath}
+generateUsers=${generateUsers}
+driverTimeoutSeconds=${driverTimeoutSeconds}
+pictureResultsPath=${pictureResultsPath}
