@@ -34,6 +34,9 @@ public class GroupChatInfoPage extends IOSPage{
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathExitGroupInfoPageButton)
 	private WebElement exitGroupInfoPageButton;
 	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathNumberOfParticipantsText)
+	private WebElement numberOfParticipantsText;
+	
 	public GroupChatInfoPage(String URL, String path) throws MalformedURLException {
 		super(URL, path);
 		this.url = URL;
@@ -47,65 +50,51 @@ public class GroupChatInfoPage extends IOSPage{
 
 	public boolean verifyCorrectConversationName(String contact1, String contact2){
 		if(conversationName==null){
-			System.out.println("conversationName is null");
 			if(contact1.equals(CommonUtils.CONTACT_1)){
 				contact1 = CommonUtils.retrieveRealUserContactPasswordValue(contact1);
-				System.out.println("contact 1 is now"+contact1);
 			}
 			if(contact2.equals(CommonUtils.CONTACT_2)||contact2.equals("aqaPictureContact")){
 				contact2 = CommonUtils.retrieveRealUserContactPasswordValue(contact2);
-				System.out.println("contact 2 is now"+contact2);
 			}
 			conversationName = contact1+", "+contact2;
 		}
 		if(!conversationNameTextField.getText().equals(conversationName)){
 			conversationName = contact2+", "+contact1;
 		}
-		System.out.println("conversationName is now "+conversationName);
 		return conversationNameTextField.getText().equals(conversationName);
 	}
-	//may use later
-	public List<String> getShownParticipantUsernames(){
-		List<String> currentParticipantUsernames= new ArrayList<String>();
-		int numberOfParticipants=1;
-		String xpathOfCurrentParticipantUsername1 = String.format(IOSLocators.xpathParticipantName, numberOfParticipants,"1");
-		String xpathOfCurrentParticipantUsername2 = String.format(IOSLocators.xpathParticipantName, numberOfParticipants,"2");
-		WebElement currentParticipantUsername1 = driver.findElementByXPath(xpathOfCurrentParticipantUsername1);
-		WebElement currentParticipantUsername2 = driver.findElementByXPath(xpathOfCurrentParticipantUsername2);
-		System.out.println(currentParticipantUsername1.getAttribute("value"));
-		System.out.println("and again 2nd username: "+currentParticipantUsername2.getAttribute("value"));
-		
-			while(currentParticipantUsername1!=null) {
-				try{
-					xpathOfCurrentParticipantUsername1 = String.format(IOSLocators.xpathParticipantName, numberOfParticipants,"1");
-					xpathOfCurrentParticipantUsername2 = String.format(IOSLocators.xpathParticipantName, numberOfParticipants,"2");
-					System.out.println("set new user names:"+numberOfParticipants);
-					currentParticipantUsername1 = driver.findElementByXPath(xpathOfCurrentParticipantUsername1);
-					currentParticipantUsername2 = driver.findElementByXPath(xpathOfCurrentParticipantUsername2);
-					System.out.println("set new elements:"+numberOfParticipants);
-						if(currentParticipantUsername2!=null){
-							currentParticipantUsernames.add(currentParticipantUsername2.getText());
-							System.out.println("and again 2nd username: "+currentParticipantUsername2.getAttribute("value"));
-						}else{
-					currentParticipantUsernames.add(currentParticipantUsername1.getText());
-						}
-					numberOfParticipants = numberOfParticipants+1;
-				}catch (NoSuchElementException e){
-					currentParticipantUsername1=null;
-				}
-			}
-		return currentParticipantUsernames;
+
+	public boolean verifyNumberOfParticipants(int correctNumber){
+		int givenNumberOfParticipants = Integer.parseInt(numberOfParticipantsText.getText().replaceAll("\\D+",""));
+		return givenNumberOfParticipants == correctNumber;
 	}
-	//may use later
-	public List<WebElement> getCurrentParticipants(){
+	
+	public boolean verifyParticipantAvatars(int participants){
+		List<WebElement> participantAvatars = getCurrentParticipants(participants);
+		for(WebElement avatar : participantAvatars){
+			if(avatar.getAttribute("name")=="AQAPICTURECONTACT"){
+				//compare picture to cat
+			}
+			if(avatar.getAttribute("name")==CommonUtils.CONTACT_1){
+				//compare to image with contact 1's first letter inside
+			}
+			if(avatar.getAttribute("name")==CommonUtils.YOUR_USER_1){
+				//compare to own user image/first character in username
+			}
+
+		}
+		return true;
+	}
+	
+	public List<WebElement> getCurrentParticipants(int participants){
 		List<WebElement> currentParticipants= new ArrayList<WebElement>();
-		int numberOfParticipants=1;
-		String xpathOfCurrentParticipant = String.format(IOSLocators.xpathParticipantAvatar, numberOfParticipants);
+		int participantNumber=1;
+		String xpathOfCurrentParticipant = String.format(IOSLocators.xpathParticipantAvatar, participantNumber);
 		WebElement currentParticipant = driver.findElementByXPath(xpathOfCurrentParticipant);
-		while(currentParticipant!=null){
+		for(int i=1;i<participants;i++){
 		currentParticipants.add(currentParticipant);
-		numberOfParticipants = numberOfParticipants+1;
-		xpathOfCurrentParticipant = String.format(IOSLocators.xpathParticipantAvatar, numberOfParticipants);
+		participantNumber = participantNumber+1;
+		xpathOfCurrentParticipant = String.format(IOSLocators.xpathParticipantAvatar, participantNumber);
 		currentParticipant = driver.findElementByXPath(xpathOfCurrentParticipant);
 		}
 		return currentParticipants;

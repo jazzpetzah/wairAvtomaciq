@@ -1,5 +1,4 @@
 Feature: Register new user
-@torun
 @smoke
 @regression
   Scenario Outline: Register new user using front camera
@@ -20,7 +19,8 @@ Feature: Register new user
 
     Examples:     
     |	Email						|	Password	    |	Name			|
-    |	aqaPictureContact@wearezeta.com             	    |	picture123	    |	aqaPictureContact       	|
+    |	aqaUser            	        |	aqaPassword	    |	aqaUser       	|
+
 
 @smoke
 @regression

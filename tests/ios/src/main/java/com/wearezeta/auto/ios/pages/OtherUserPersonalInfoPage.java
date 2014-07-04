@@ -18,7 +18,7 @@ public class OtherUserPersonalInfoPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.nameComfirmRemoveButton)
 	private WebElement confirmRemove;
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameAddContactToChatButton)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathAddContactToChatButton)
 	private WebElement addButton;
 	
 	private String url;

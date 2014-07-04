@@ -157,14 +157,15 @@ Examples:
     |  Login		| Password		| Name			| Contact1    |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |
 
-
+@torun
 Scenario Outline: Verify correct group info page information
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
 	When I create group chat with <Contact1> and <Contact2>
 	And I swipe up on group chat page
 	Then I see that the conversation name is correct with <Contact1> and <Contact2>
+	And I see the correct number of participants in the title <ParticipantNumber>
+	And I see the correct participant avatars <ParticipantNumber>
 		
-Examples:
-    |  Login		| Password		| Name			| Contact1		| Contact2		|
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaPictureContact	|
+    |  Login		| Password		| Name			| Contact1		| Contact2	     	|ParticipantNumber|
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaPictureContact	|       3         |

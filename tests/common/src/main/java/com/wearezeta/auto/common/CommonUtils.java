@@ -74,7 +74,7 @@ public class CommonUtils {
 			value = "aqaPictureContact";
 		}
 		if(value=="aqaPictureContactEmail"){
-			value = "aqaPictureContact@wearezeta.com";
+			value = "qa1+aqaPictureContact@wearezeta.com";
 		}
 		if(value=="aqaPictureContactPassword"){
 			value = "picture123";

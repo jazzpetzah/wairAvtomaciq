@@ -27,6 +27,16 @@ public class GroupChatInfoPageSteps {
 		Assert.assertTrue(PagesCollection.groupChatInfoPage.verifyCorrectConversationName(contact1, contact2));
 	}
 	
+	@When("^I see the correct number of participants in the title (.*)$")
+	public void IVerifyParticipantNumber(String realNumberOfParticipants) throws IOException{
+		Assert.assertTrue(PagesCollection.groupChatInfoPage.verifyNumberOfParticipants(Integer.parseInt(realNumberOfParticipants)));
+		}
+	
+	@When("^I see the correct participant avatars (.*)$")
+	public void IVerifyCorrectParticipantAvatars(String participants){
+		Assert.assertTrue(PagesCollection.groupChatInfoPage.verifyParticipantAvatars(Integer.parseInt(participants)));
+	}
+	
 	@When("^I exit the group info page$")
 	//may require reworking when the UI changes
 	public void IExitGroupInfoPage(){

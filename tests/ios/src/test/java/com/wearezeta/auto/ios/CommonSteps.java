@@ -28,9 +28,6 @@ public class CommonSteps {
 		
 		boolean generateUsersFlag = Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class));
 		
-		BackEndREST.registerNewUser("aqaPictureContact@wearezeta.com","aqaPictureContact","picture123");
-		CreateZetaUser.activateRegisteredUser("aqaPictureContact@wearezeta.com",10, "aqaPictureContact","picture123");
-		
 		if ((CommonUtils.yourUsers.size() == 0 
 				|| !CommonUtils.yourUsers.get(0).getUserState().equals(UsersState.AllContactsConnected))) {
 			
