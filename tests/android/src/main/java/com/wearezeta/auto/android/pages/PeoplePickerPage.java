@@ -160,4 +160,9 @@ public class PeoplePickerPage extends AndroidPage {
 		return new DialogPage(url, path);
 	}
 
+	public ContactListPage tapClearButton() throws IOException {
+		pickerClearBtn.click();
+		return new ContactListPage(url, path);
+	}
+
 }
