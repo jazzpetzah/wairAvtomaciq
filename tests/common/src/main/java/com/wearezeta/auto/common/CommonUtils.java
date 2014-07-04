@@ -260,4 +260,9 @@ public class CommonUtils {
 		contacts.add(contact2);
 	}
 
+	public static String getAndroidDeviceNameFromConfig(Class c) throws IOException {
+
+		return getValueFromConfig(c, "deviceName");
+	}
+
 }

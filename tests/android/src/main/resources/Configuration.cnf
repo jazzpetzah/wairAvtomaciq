@@ -8,6 +8,7 @@ package=com.waz.zclient
 #activity=.StartupScreenActivity
 activity=.MainActivity
 generateUsers=true
+deviceName=04d4feb243a9271b
 driverTimeoutSeconds=10
 defaultImagePath=/Users/mkuvshinov/zautomation/tests/tools/img/userpicture.jpg
 resultImage=/Users/mkuvshinov/zautomation/tests/tools/img/userpicture_mobile_check.jpg
