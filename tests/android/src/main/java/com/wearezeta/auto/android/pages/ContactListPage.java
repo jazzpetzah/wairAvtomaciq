@@ -3,7 +3,7 @@ package com.wearezeta.auto.android.pages;
 import java.io.IOException;
 import java.util.*;
 
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -17,8 +17,14 @@ public class ContactListPage extends AndroidPage {
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classEditText)
 	private WebElement cursorInput;
 	
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameFrameLayout)
+	private List<WebElement> frameLayout;
+	
 	@FindBy(how = How.ID, using = AndroidLocators.idSelfUserName)
 	private List<WebElement> selfUserName;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idContactListMute)
+	private WebElement muteBtn;
 	
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameLoginPage)
 	private WebElement mainControl;
@@ -67,6 +73,18 @@ public class ContactListPage extends AndroidPage {
 		return contact;
 	 }
 
+	public void swipeRightOnContact(int time, String contact) throws IOException
+	{
+		findNameInContactList(contact,contactListNames);
+		WebElement el = driver.findElementByXPath(String.format(AndroidLocators.xpathContactFrame,contact));
+		DriverUtils.swipeRight(driver, el, time);					
+	}
+	
+	public void clickOnMute()
+	{
+		muteBtn.click();
+	}
+	
 	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws IOException {
 		

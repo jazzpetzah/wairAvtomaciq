@@ -22,13 +22,13 @@ public class CommonUtils {
 		return System.getProperty("os.name");
 	}
 	
-	public static void uploadPhotoToAndroid() throws Exception{
+	public static void uploadPhotoToAndroid(String photoPathOnDevice) throws Exception{
 		if(getOsName().contains(FIRST_OS_NAME)){
-		    Runtime.getRuntime().exec("cmd /C adb push " + getWindowsImagePath(CommonUtils.class) + "/mnt/sdcard/DCIM/Camera/userpicture.jpg");
+		    Runtime.getRuntime().exec("cmd /C adb push " + getImagePath(CommonUtils.class) + " " + photoPathOnDevice);
 		    Runtime.getRuntime().exec("cmd /C adb -d shell \"am broadcast -a android.intent.action.MEDIA_MOUNTED -d file:///sdcard \"Broadcasting: Intent { act=android.intent.action.MEDIA_MOUNTED dat=file:///sdcard }");
 		}
 		else{
-			executeOsXCommand(new String[]{"/bin/bash", "-c", "adb push", getOsXImagePath(CommonUtils.class),"/mnt/sdcard/DCIM/Camera/userpicture.jpg"});
+			executeOsXCommand(new String[]{"/bin/bash", "-c", "adb push", getImagePath(CommonUtils.class),photoPathOnDevice});
 			executeOsXCommand(new String[]{"/bin/bash", "-c", "adb shell \"am broadcast -a android.intent.action.MEDIA_MOUNTED -d file:///sdcard \"Broadcasting: Intent { act=android.intent.action.MEDIA_MOUNTED dat=file:///sdcard }"});
 		}
 	}
@@ -77,19 +77,14 @@ public class CommonUtils {
         return getValueFromConfig(c, "photoScriptPath");
 	}
 	
-	public static String getWindowsImagePath(Class c)throws IOException {
+	public static String getImagePath(Class c)throws IOException {
 
-        return getValueFromConfig(c, "defaultWindowsImagePath");
+        return getValueFromConfig(c, "defaultImagePath");
 	}
 	
 	public static String getResultImagePath(Class c)throws IOException {
 
         return getValueFromConfig(c, "resultImage");
-	}
-	
-	public static String getOsXImagePath(Class c)throws IOException {
-
-        return getValueFromConfig(c, "defaultOsXImagePath");
 	}
 	
 	public static String getPictureResultsPathFromConfig(Class c)throws IOException {

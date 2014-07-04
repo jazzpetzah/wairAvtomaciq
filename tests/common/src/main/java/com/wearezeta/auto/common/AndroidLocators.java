@@ -6,6 +6,8 @@ public final class AndroidLocators {
 	
 	public static final String xpathImage = "//android.widget.LinearLayout/android.view.View";
 	
+	public static final String xpathContacListUser = "//android.widget.TextView[text()='%s']";
+	
 	public static final String classNameLoginPage = "android.support.v4.view.ViewPager";
 	
 	public static final String classNameFrameLayout = "android.widget.FrameLayout";
@@ -19,6 +21,10 @@ public final class AndroidLocators {
 	public static final String classListView = "android.widget.ListView";
 	
 	public static final String classNameGridView = "android.widget.GridView";
+	
+	public static final String xpathContactFrame = "//android.widget.FrameLayout[child::android.widget.TextView[@text='%s']]";
+	
+	public static final String xpathContacts = "//android.widget.TextView[@text='%s']"; 
 	
 	public static final String xpathImagesFrameLayout = "//android.widget.GridView/android.widget.FrameLayout";
 	
@@ -51,6 +57,8 @@ public final class AndroidLocators {
 	public static final String idLoginProgressBar = "com.waz.zclient:id/progressBar1";
 	
 	public static final String idContactListNames = "com.waz.zclient:id/tv_conv_list_topic";
+	
+	public static final String idContactListMute = "com.waz.zclient:id/tv_conv_list_menu_mute";
 	
 	public static final String idInstructions  = "com.waz.zclient:id/instructions";
 	
