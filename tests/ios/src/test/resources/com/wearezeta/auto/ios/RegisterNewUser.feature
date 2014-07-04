@@ -76,19 +76,19 @@ Feature: Register new user
 	And I See selected picture
 	And I confirm selection
 	And I enter name <Name>
-	And I enter email <Email>
+	And I enter an incorrect email <Incorrect>
 	And I enter password <Password>
 	And I submit registration data
 	Then I see error page
 	And I return to the email page
-	Then --I enter the correct email
-	And --I verify the email is correct by registering 
+	And I enter email <Correct>
+	And I retype email
+	And I confirm registration
 	#And I press continue registration
 	#And Contact list appears with my name <Name>
 
     Examples:     
-    |	Email						                    |	Password	    |	Name			            |
-    |  chad.bettencourt@wearezeta.com	                |	aqaPassword	    |	Chad Bettencourt        	|
-    
+    |	Correct				    |	Password	        |	Name	        |   Incorrect           |
+    |   aqaUser	                |	aqaPassword	        |	aqaUser         |   error@wearezeta.com |
     
     

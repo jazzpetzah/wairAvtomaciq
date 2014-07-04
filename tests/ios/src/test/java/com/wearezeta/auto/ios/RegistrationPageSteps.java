@@ -98,6 +98,11 @@ public class RegistrationPageSteps {
 		PagesCollection.registrationPage.setEmail(new StringBuilder(email).insert(email.length()-1,"          ").toString());
 		 }
 	 
+	 @When("^I enter an incorrect email (.*)$")
+	 public void IEnterIncorrectEmail(String email) throws IOException{
+		 PagesCollection.registrationPage.setEmail(email);
+	 }
+	 
 	 @Then("^I verify no spaces are present in email$")
 	 public void CheckForSpacesInEmail() throws IOException{
 		 PagesCollection.registrationPage.typeEmail();
@@ -152,7 +157,19 @@ public class RegistrationPageSteps {
 	 @Then("^I return to the email page$")
 	 public void IReturntoEmailPage() throws IOException
 	 {
-		PagesCollection.registrationPage.navigateToWelcomePage();
+		PagesCollection.registrationPage.backToEmailPage();
+	 }
+	 
+	 @When("^I retype email$")
+	 public void IRetypeEmail() throws IOException
+	 {
+		 PagesCollection.registrationPage.retypeEmail();
+	 }
+	 
+	 @Then("^I confirm registration$")
+	 public void IConfirmRegistration()
+	 {
+		 PagesCollection.registrationPage.returnToConfirmRegistration();
 	 }
 	 
 	 @Then("^I see confirmation page$")

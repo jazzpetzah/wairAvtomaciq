@@ -72,9 +72,6 @@ public class RegistrationPage extends IOSPage {
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameErrorPageButton)
 	private WebElement errorPageButton; 
-
-	
-	
 	
 	private String name;
 	private String email;
@@ -117,22 +114,38 @@ public class RegistrationPage extends IOSPage {
 		photos.get(0).click();
 	}
 	
-	
 	public void createAccount()
 	{
-		yourName.sendKeys(getName() + "\n");
-		yourEmail.sendKeys(getEmail() + "\n");
-		yourPassword.sendKeys(getPassword());
+		if(ExpectedConditions.presenceOfElementLocated(By.xpath(IOSLocators.xpathYourName)) != null) {
+			yourName.sendKeys(getName() + "\n");
+		}
+		if(ExpectedConditions.presenceOfElementLocated(By.name(IOSLocators.nameYourEmail)) != null) {
+			yourEmail.sendKeys(getEmail() + "\n");
+		}
+		if(ExpectedConditions.presenceOfElementLocated(By.name(IOSLocators.nameYourPassword)) != null) {
+			yourPassword.sendKeys(getPassword());
+		}
 		
 		createAccountButton.click();
-		
-		
-	}
+	}	
 	
 	public void typeEmail()
 	{
 		yourName.sendKeys(getName() + "\n");
 		yourEmail.sendKeys(getEmail());
+	}
+	
+	public void retypeEmail()
+	{
+		if(ExpectedConditions.presenceOfElementLocated(By.name(IOSLocators.nameYourEmail)) != null) {
+		yourEmail.sendKeys(getEmail());
+		}
+	}
+	
+	public void returnToConfirmRegistration ()
+	{
+		ForwardWelcomeButton.click();
+		createAccountButton.click();
 	}
 	
 	public boolean typeAllInvalidEmails()
@@ -199,6 +212,11 @@ public class RegistrationPage extends IOSPage {
 		return true;
 	}
 	
+	public void navigateToCreateAccount()
+	{
+		ForwardWelcomeButton.click();
+	}
+	
 	public String getEmailFieldValue()
 	{
 		return yourEmail.getText();		
@@ -219,7 +237,6 @@ public class RegistrationPage extends IOSPage {
 		confirmImageButton.click();
 	}
 	
-	
 	public boolean confirmErrorPage() 
 	{
 		return errorPageButton.isDisplayed();
@@ -227,9 +244,11 @@ public class RegistrationPage extends IOSPage {
 	
 	public void backToEmailPage()
 	{
-		while(yourEmail == null){
+		{
+			backToWelcomeButton.click();
 			backToWelcomeButton.click();
 		}
+		wait.until(ExpectedConditions.visibilityOf(yourEmail));
 	}
 	
 	public void catchLoginAlert() {
@@ -259,7 +278,7 @@ public class RegistrationPage extends IOSPage {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
+	
 	public String getPassword() {
 		return password;
 	}
