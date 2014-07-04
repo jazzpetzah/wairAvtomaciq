@@ -35,8 +35,8 @@ def main():
     parser.add_argument('--path', help="Where to store unpacked app")
 
     options = parser.parse_args()
-    bucket_path = options.bucket_path
     build_num = options.build_num
+    bucket_path = options.bucket_path
     if not bucket_path.startswith("s3://"):
         print "Error: Bucket name needs to start with s3://"
         sys.exit(1)
