@@ -125,7 +125,6 @@ public class RegistrationPage extends IOSPage {
 		if(ExpectedConditions.presenceOfElementLocated(By.name(IOSLocators.nameYourPassword)) != null) {
 			yourPassword.sendKeys(getPassword());
 		}
-		
 		createAccountButton.click();
 	}	
 	
@@ -134,16 +133,15 @@ public class RegistrationPage extends IOSPage {
 		yourName.sendKeys(getName() + "\n");
 		yourEmail.sendKeys(getEmail());
 	}
-	
-	public void retypeEmail()
-	{
-		if(ExpectedConditions.presenceOfElementLocated(By.name(IOSLocators.nameYourEmail)) != null) {
-		yourEmail.sendKeys(getEmail());
+
+	public void retypeEmail() {
+		if (ExpectedConditions.presenceOfElementLocated(By
+				.name(IOSLocators.nameYourEmail)) != null) {
+			yourEmail.sendKeys(getEmail());
 		}
 	}
-	
-	public void returnToConfirmRegistration ()
-	{
+
+	public void returnToConfirmRegistration() {
 		ForwardWelcomeButton.click();
 		createAccountButton.click();
 	}
@@ -242,8 +240,7 @@ public class RegistrationPage extends IOSPage {
 		return errorPageButton.isDisplayed();
 	}
 	
-	public void backToEmailPage()
-	{
+	public void backToEmailPage() {
 		{
 			backToWelcomeButton.click();
 			backToWelcomeButton.click();
