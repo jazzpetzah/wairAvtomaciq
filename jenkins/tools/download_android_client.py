@@ -8,29 +8,42 @@ import os.path
 import shutil
 import re
 
-build_number_file_name = "./ZClient_android_build.txt"
-build_num = "latest" #latest or specific build num
 
 def main():
 
+    build_number_file_name = "ZClient_android_build.txt"
+
     if len(sys.argv) < 2:
-        print "No parameters received.\nUsing default parameters: latest s3://z-lohika/android/ --output_name ./ZClient.apk --overwrite"
+        print "No parameters received.\nUsing default parameters: latest s3://z-lohika/android/dev/ --path ./"
         build_num = "latest"
-        sys.argv = ["", "latest", "s3://z-lohika/android/", "--output_name", "./ZClient.apk", "--overwrite"]
-    if len(sys.argv) < 3:
-        print "Only build number parameter received.\nDownloading build {0} with default parameters: {0} s3://z-lohika/android/ --output_name ./ZClient.apk --overwrite".format(sys.argv[1])
+        sys.argv = ["", "latest", "s3://z-lohika/android/", "--path", "./"]
+    if len(sys.argv) == 2:
+        print "Only build number parameter received.\nDownloading build {0} with default parameters: {0} s3://z-lohika/android/dev/ --path ./".format(sys.argv[1])
         build_num = sys.argv[1]
-        sys.argv = ["", build_num, "s3://z-lohika/android/", "--output_name", "./ZClient.apk", "--overwrite"]
+        sys.argv = ["", build_num, "s3://z-lohika/android/", "--path", "./"]
+        
+    if len(sys.argv) == 4:
+        print "Only build number and path parameters received.\nDownloading build {0} to {1}".format(sys.argv[1], sys.argv[3])
+        build_num = sys.argv[1]
+        path = sys.argv[3]
+        sys.argv = ["", build_num, "s3://z-lohika/android/", "--path", path]
 
     parser = argparse.ArgumentParser(description="Download latest client")
     parser.add_argument('build_num', help="The build to download, set it to  \"latest\" to get the last one")
     parser.add_argument('bucket_path', help="The S3 path to search for releases")
-    parser.add_argument('--output_name', help="What to call the unpacked app")
-    parser.add_argument('--overwrite', action="store_true", help="When set, the local file will be overwritten")
+    parser.add_argument('--path', help="Where to store unpacked app")
+
 
     options = parser.parse_args()
     bucket_path = options.bucket_path
     build_num = options.build_num
+    
+    if options.path:
+        store_path = options.path
+        build_number_file_name=store_path+"/"+build_number_file_name
+    else:
+        store_path = "./"
+    
     if not bucket_path.startswith("s3://"):
         print "Error: Bucket name needs to start with s3://"
         sys.exit(1)
@@ -45,19 +58,10 @@ def main():
         remote_file_name = get_specific_app(bucket_path, build_num)
         latest_build_number = build_num
 
-    if options.output_name:
-        local_file_name = options.output_name
-    else:
-        local_file_name = "ZClient"+remote_file_name
-
-    save_build_number(latest_build_number)
+    local_file_name=store_path+"/"+"ZClient.apk"
 
     if os.path.exists(local_file_name):
-        if options.overwrite:
-            os.remove(local_file_name)
-        else:
-            print "Error: File {0} already exists".format(local_file_name)
-            sys.exit(1)
+        os.remove(local_file_name)
 
     full_remote_file_name = bucket_path + remote_file_name
 
@@ -71,6 +75,8 @@ def main():
         subprocess.call(prepare_command, shell=True)
         copy_command = "cp -a {0} {1}".format(local_file_name, local_file_name_with_build)
         subprocess.call(copy_command, shell=True)
+
+    save_build_number(latest_build_number, build_number_file_name)
 
 def get_latest_app(bucket_path):
     command = "/usr/local/bin/aws s3 ls {0}".format(bucket_path)
@@ -116,7 +122,7 @@ def get_latest_build_number(bucket_path):
 
   return build_number
   
-def save_build_number(build_number):
+def save_build_number(build_number, build_number_file_name):
   if not os.path.exists(build_number_file_name):
     with file(build_number_file_name, 'a'):
       os.utime(build_number_file_name, None)

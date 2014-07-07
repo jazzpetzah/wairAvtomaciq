@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.AndroidLocators;
 import com.wearezeta.auto.common.SwipeDirection;
@@ -20,7 +21,10 @@ public class GroupChatInfoPage extends AndroidPage {
 	@FindBy(how = How.ID, using = AndroidLocators.idConfirmBtn)
 	private WebElement confirmButton;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idGroupChatUserGrid)
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameLinearLayout)
+	private List<WebElement> linearLayout;
+	
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameGridView)
 	private WebElement groupChatUsersGrid;
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idOtherUserPersonalInfoName)
@@ -62,35 +66,33 @@ public class GroupChatInfoPage extends AndroidPage {
 	}
 
 	public void pressLeaveConversationButton() {
-
+		driver.getPageSource();//TODO workaround
+		wait.until(ExpectedConditions.elementToBeClickable(leaveConversationButton));
 		leaveConversationButton.click();
 
 	}
 
 	public void pressConfirmButton() {
+		driver.getPageSource();//TODO workaround
 		confirmButton.click();
 	}
 
 	public void renameGroupChat(String chatName){
 		groupChatName.sendKeys(chatName + "\n");
 	}
-	public OtherUserPersonalInfoPage selectContactByName(String contactName) throws IOException {
+	public OtherUserPersonalInfoPage selectContactByName(String contactName) throws IOException, InterruptedException {
 		boolean flag = false;
-		List<WebElement> users = groupChatUsersGrid.findElements(By.className(AndroidLocators.classNameLinearLayout));
-		for(WebElement user : users)
+		System.out.println(driver.getPageSource());
+		
+		for(WebElement user : linearLayout)
 		{
 			List<WebElement> elements = user.findElements(By.className(AndroidLocators.classNameTextView));
 			for(WebElement element : elements){
-				try{
-					if(element.getText().toLowerCase().equals(contactName.toLowerCase())){
+					if(element.getText() != null && element.getText().equals((contactName.toUpperCase()))){
 						user.click();
 						flag = true;
 						break;
 					}
-				}
-				catch(Exception ex){
-					continue;
-				}
 			}
 			if(flag){
 				break;

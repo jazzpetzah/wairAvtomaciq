@@ -25,6 +25,11 @@ public class PeoplePickerPageSteps {
 	   PagesCollection.dialogPage = PagesCollection.peoplePickerPage.tapCreateConversation();
 	}
 	
+	@When("^I press Clear button$")
+	public void WhenIPressClearButton() throws Throwable {
+	   PagesCollection.contactListPage = PagesCollection.peoplePickerPage.tapClearButton();
+	}
+	
 	@When("^I input in People picker search field user name (.*)$")
 	public void WhenIInputInPeoplePickerSearchFieldUserName(String contact) throws Throwable {
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
@@ -46,8 +51,7 @@ public class PeoplePickerPageSteps {
 	@When("^I tap on user name found on People picker page (.*)$")
 	public void WhenITapOnUserNameFoundOnPeoplePickerPage(String contact) throws Throwable {
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
-		AndroidPage page = null;
-		page = PagesCollection.peoplePickerPage.selectContact(contact);
+		PagesCollection.peoplePickerPage.selectContact(contact);
 	}
 	
 	@When("^I see Add to conversation button$")

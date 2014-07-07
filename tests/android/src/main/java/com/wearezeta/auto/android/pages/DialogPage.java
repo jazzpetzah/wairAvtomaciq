@@ -92,7 +92,7 @@ public class DialogPage extends AndroidPage{
 	
 	public void typeMessage(String message)
 	{
-		cursorInput.sendKeys(message);
+		cursorInput.sendKeys(message );
 		DriverUtils.mobileTapByCoordinates(driver, backgroundOverlay);
 	}
 
@@ -109,7 +109,7 @@ public class DialogPage extends AndroidPage{
 	@Override
 	public AndroidPage swipeUp(int time) throws IOException
 	{
-		dialogsPagesSwipeUp(time);
+		dialogsPagesSwipeUp(time);//TODO workaround
 		return returnBySwipe(SwipeDirection.UP);
 	}
 	
@@ -153,14 +153,17 @@ public class DialogPage extends AndroidPage{
 	
 	public boolean isImageExists()
 	{
+		driver.getPageSource();//TODO workaround
 		return DriverUtils.waitUntilElementAppears(driver,By.id(AndroidLocators.idDialogImages));
 	}
 
 	public void confirm() {
+		driver.getPageSource();//TODO workaround
 		okButton.click();
 	}
 
 	public void takePhoto() {
+		driver.getPageSource();//TODO workaround
 		takePhotoButton.click();
 	}
 

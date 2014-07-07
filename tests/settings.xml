@@ -1,0 +1,57 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                      http://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <localRepository/>
+  <interactiveMode/>
+  <usePluginRegistry/>
+  <offline/>
+  <pluginGroups/>
+  <servers/>
+  <mirrors/>
+  <proxies/>
+    <profiles>
+    <!-- Config for iOS tests -->
+    <profile>
+      <id>iOS</id>
+      <properties>
+	<Url>http://127.0.0.1:4723/wd/hub</Url>
+        <appPath>/Users/shiznyak/Downloads/ZClient.app</appPath>
+	<isSimulator>true</isSimulator>
+	<generateUsers>true</generateUsers>
+	<swipeScriptPath>/Users/shiznyak/zautomation/tests/tools/./swipeInWindow</swipeScriptPath>
+	<photoScriptPath>/Users/shiznyak/zautomation/tests/tools/push_photo_to_simulator.sh</photoScriptPath>
+	<driverTimeoutSeconds>10</driverTimeoutSeconds>
+	<pictureResultsPath>/Users/shiznyak/Downloads/</pictureResultsPath>
+	<iosImagesPath></iosImagesPath>
+      </properties>
+    </profile>
+    <!-- Config for Android tests -->
+    <profile>
+      <id>Android</id>
+      <properties>
+        <Url>http://127.0.0.1:4723/wd/hub</Url>
+        <appPath>/Users/mkuvshinov/clients/zclient-release-2082.apk</appPath>
+	<package>com.waz.zclient</package>
+	<generateUsers>true</generateUsers>
+	<activity>.MainActivity</activity>
+	<driverTimeoutSeconds>10</driverTimeoutSeconds>
+	<pictureResultsPath>/Users/mkuvshinov/Downloads/</pictureResultsPath>
+	<resultImage>/Users/mkuvshinov/zautomation/tests/tools/img/userpicture_mobile_check.jpg</resultImage>
+	<defaultImagePath>/Users/mkuvshinov/zautomation/tests/tools/img/userpicture.jpg</defaultImagePath>
+      </properties>
+    </profile>
+    <!-- Config for OSX tests -->
+    <profile>
+      <id>OSX</id>
+      <properties>
+        <Url>http://127.0.0.1:4723/wd/hub</Url>
+        <appPath>ZClient</appPath>
+	<generateUsers>true</generateUsers>
+	<driverTimeoutSeconds>10</driverTimeoutSeconds>
+	<pictureResultsPath>/Users/kaleksandrov/ZETA_Run_Screens/</pictureResultsPath>
+      </properties>
+    </profile>
+  </profiles>
+  <activeProfiles/>
+</settings>

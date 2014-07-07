@@ -8,33 +8,44 @@ import os.path
 import shutil
 import re
 
-build_number_file_name = "./ZClient_osx_build.txt"
-build_num = "latest" #latest or specific build num
 
 def main():
 
-    if len(sys.argv) < 2:
-        print "No parameters received.\nUsing default parameters: latest s3://z-lohika/ --output_name ./ZClient_osx --overwrite"
-        build_num = "latest"
-        sys.argv = ["", "latest", "s3://z-lohika/", "--output_name", "./ZClient_osx", "--overwrite"]
+    build_number_file_name = "ZClient_osx_build.txt"
 
-    if len(sys.argv) < 3:
-        print "Only build number parameter received.\nDownloading build {0} with default parameters: {0} s3://z-lohika/ --output_name ./ZClient_osx --overwrite".format(sys.argv[1])
+    if len(sys.argv) < 2:
+        print "No parameters received.\nUsing default parameters: latest s3://z-lohika/osx/dev/ --path ./"
+        build_num = "latest"
+        sys.argv = ["", "latest", "s3://z-lohika/osx/dev/", "--path", "./"]
+
+    if len(sys.argv) == 2:
+        print "Only build number parameter received.\nDownloading build {0} with default parameters: {0} s3://z-lohika/osx/dev/ --path ./".format(sys.argv[1])
         build_num = sys.argv[1]
-        sys.argv = ["", build_num, "s3://z-lohika/", "--output_name", "./ZClient_osx", "--overwrite"]
+        sys.argv = ["", build_num, "s3://z-lohika/osx/dev/", "--path", "./"]
+
+    if len(sys.argv) == 4:
+        print "Only build number and path parameters received.\nDownloading build {0} to {1}".format(sys.argv[1], sys.argv[3])
+        build_num = sys.argv[1]
+        path = sys.argv[3]
+        sys.argv = ["", build_num, "s3://z-lohika/osx/dev/", "--path", path]
 
     parser = argparse.ArgumentParser(description="Download latest client")
     parser.add_argument('build_num', help="The build to download, set it to  \"latest\" to get the last one")
     parser.add_argument('bucket_path', help="The S3 path to search for releases")
-    parser.add_argument('--output_name', help="What to call the unpacked app")
-    parser.add_argument('--overwrite', action="store_true", help="When set, the local file will be overwritten")
+    parser.add_argument('--path', help="Where to store unpacked app")
 
     options = parser.parse_args()
-    bucket_path = options.bucket_path
     build_num = options.build_num
+    bucket_path = options.bucket_path
     if not bucket_path.startswith("s3://"):
         print "Error: Bucket name needs to start with s3://"
         sys.exit(1)
+
+    if options.path:
+        store_path = options.path
+        build_number_file_name=store_path+"/"+build_number_file_name
+    else:
+        store_path = "./"
 
     if bucket_path[-1] != "/":
         bucket_path += "/"
@@ -46,45 +57,41 @@ def main():
         remote_file_name = get_specific_app(bucket_path, build_num)
         latest_build_number = build_num
 
-    if options.output_name:
-        local_file_name = options.output_name
-    else:
-        local_file_name = remote_file_name[:-(len(".cpio"))]
+    local_file_name=store_path+"/"+remote_file_name[:-(len(".cpio"))]
 
     if os.path.exists(local_file_name):
-        if options.overwrite:
-            shutil.rmtree(local_file_name)
-        else:
-            print "Error: File {0} already exists".format(local_file_name)
-            sys.exit(1)
+        shutil.rmtree(local_file_name)
 
     full_remote_file_name = bucket_path + remote_file_name
 
-    command = "/usr/local/bin/aws s3 cp {0} ~app_osx_download_temp.cpio".format(full_remote_file_name)
+    command = "/usr/local/bin/aws s3 cp {0} {1}/~app_osx_download_temp.cpio".format(full_remote_file_name, store_path)
     subprocess.call(command, shell=True)
 
     mkdir_p(local_file_name)
 
-    extract_command = "pushd \"{0}\"; cpio -id < ../~app_osx_download_temp.cpio; popd".format(local_file_name)
+    if store_path == "./":
+        extract_command = "pushd \"{0}\"; cpio -id < .{1}~app_osx_download_temp.cpio; popd".format(local_file_name, store_path)
+    else:
+        extract_command = "pushd \"{0}\"; cpio -id < {1}/~app_osx_download_temp.cpio; popd".format(local_file_name, store_path)
     subprocess.call(extract_command, shell=True)
 
-    if os.path.exists("./~app_osx_download_temp.cpio"):
-        os.remove("./~app_osx_download_temp.cpio")
+    if os.path.exists(store_path+"/~app_osx_download_temp.cpio"):
+        os.remove(store_path+"/~app_osx_download_temp.cpio")
 
-    prepare_command = "rm -rf ./ZClient.app"
+    prepare_command = "rm -rf {0}/ZClient.app".format(store_path)
     subprocess.call(prepare_command, shell=True)
     
-    save_build_number(latest_build_number)
+    save_build_number(latest_build_number, build_number_file_name)
 
-    copy_command = "cp -a {0}/Products/Applications/ZClient.app ./ZClient.app".format(local_file_name)
+    copy_command = "cp -a {0}/Products/Applications/ZClient.app {1}/ZClient.app".format(local_file_name, store_path)
     subprocess.call(copy_command, shell=True)
     
 
     if build_num != "latest":
-        prepare_command2 = "rm -rf ./ZClient+{0}.app".format(latest_build_number)
+        prepare_command2 = "rm -rf {0}/ZClient+{1}.app".format(store_path, latest_build_number)
         subprocess.call(prepare_command2, shell=True)
-        print "Saving additional file with name: ./ZClient+{0}.app".format(latest_build_number)
-        copy_command2 = "cp -a ./ZClient.app ./ZClient+{0}.app".format(latest_build_number)
+        print "Saving additional file with name: {0}/ZClient+{1}.app".format(store_path, latest_build_number)
+        copy_command2 = "cp -a {0}/ZClient.app {0}/ZClient+{1}.app".format(store_path, latest_build_number)
         subprocess.call(copy_command2, shell=True)
     
     clean_command = "rm -rf {0}".format(local_file_name)
@@ -134,7 +141,7 @@ def get_latest_build_number(bucket_path):
 
   return build_number
   
-def save_build_number(build_number):
+def save_build_number(build_number, build_number_file_name):
   with open(build_number_file_name, 'w') as f:
     build_number_string = str(build_number)
     print "Saving to txt file build number: {0}".format(build_number)
