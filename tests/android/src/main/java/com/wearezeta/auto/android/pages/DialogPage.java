@@ -7,15 +7,16 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+
 import com.wearezeta.auto.common.*;
 
 public class DialogPage extends AndroidPage{
 
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idCursorInput)
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classEditText)
 	private WebElement cursorInput;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idDialogMessages)
+	@FindBy(how = How.ID, using = AndroidLocators.idMessage)
 	private List<WebElement> messagesList;
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idKnockAnimation)
@@ -24,7 +25,7 @@ public class DialogPage extends AndroidPage{
 	@FindBy(how = How.ID, using = AndroidLocators.idDialogTakePhotoButton)
 	private WebElement takePhotoButton;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idDialogOkButton)
+	@FindBy(how = How.ID, using = AndroidLocators.idConfirmButton)
 	private WebElement okButton;
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idDialogImages)
@@ -33,8 +34,8 @@ public class DialogPage extends AndroidPage{
 	@FindBy(how = How.ID, using = AndroidLocators.idConnectRequestDialog)
 	private WebElement connectRequestDialog;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idConnectRequestPending)
-	private WebElement connectRequestPending;
+	@FindBy(how = How.ID, using = AndroidLocators.idMessage)
+	private WebElement conversationMessage;
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idConnectRequestMessage)
 	private WebElement connectRequestMessage;
@@ -42,6 +43,14 @@ public class DialogPage extends AndroidPage{
 	@FindBy(how = How.ID, using = AndroidLocators.idConnectRequestConnectTo)
 	private WebElement connectRequestConnectTo;
 	
+	@FindBy(how = How.ID, using = AndroidLocators.idDialogPageBottomFrameLayout)
+	private WebElement dialogPageBottomFrameLayout;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idBackgroundOverlay)
+	private WebElement backgroundOverlay;
+	
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classListView)
+	private WebElement container;
 	
 	private String url;
 	private String path;
@@ -67,7 +76,7 @@ public class DialogPage extends AndroidPage{
 	
 	public void multiTapOnCursorInput() throws InterruptedException
 	{
-		DriverUtils.androidMultiTap(driver, cursorInput, 3);
+		DriverUtils.androidMultiTap(driver, cursorInput, 2,0.2);
 	}
 	
 	public void SwipeOnCursorInput()
@@ -77,12 +86,14 @@ public class DialogPage extends AndroidPage{
 	
 	public void tapAddPictureBtn(int index)
 	{
-		tapButtonByClassNameAndIndex(cursorInput,AndroidLocators.classNameTextView,0);
+		WebElement el = dialogPageBottomFrameLayout.findElement(By.className(AndroidLocators.classNameTextView));
+		el.click();
 	}
 	
 	public void typeMessage(String message)
 	{
-		cursorInput.sendKeys(message);
+		cursorInput.sendKeys(message );
+		DriverUtils.mobileTapByCoordinates(driver, backgroundOverlay);
 	}
 
 	public String getLastMessageFromDialog()
@@ -95,6 +106,12 @@ public class DialogPage extends AndroidPage{
 		return knockAnimation.size() > 0;
 	}
 
+	@Override
+	public AndroidPage swipeUp(int time) throws IOException
+	{
+		dialogsPagesSwipeUp(time);//TODO workaround
+		return returnBySwipe(SwipeDirection.UP);
+	}
 	
 	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws IOException {
@@ -106,11 +123,11 @@ public class DialogPage extends AndroidPage{
 			}
 			case UP:
 			{
+				page = new OtherUserPersonalInfoPage(url, path);
 				break;
 			}
 			case LEFT:
 			{
-				page = new OtherUserPersonalInfoPage(url, path);
 				break;
 			}
 			case RIGHT:
@@ -136,32 +153,28 @@ public class DialogPage extends AndroidPage{
 	
 	public boolean isImageExists()
 	{
+		driver.getPageSource();//TODO workaround
 		return DriverUtils.waitUntilElementAppears(driver,By.id(AndroidLocators.idDialogImages));
 	}
 
 	public void confirm() {
+		driver.getPageSource();//TODO workaround
 		okButton.click();
 	}
 
 	public void takePhoto() {
+		driver.getPageSource();//TODO workaround
 		takePhotoButton.click();
 	}
 
 	public boolean isConnectMessageVisible() {
-		return connectRequestDialog.isDisplayed();
+		return conversationMessage.isDisplayed();
 	}
-
-	public boolean isPendingButtonVisible() {
-		return connectRequestPending.isDisplayed();
-	}
-
+	
 	public boolean isConnectMessageValid(String message) {
 		
-		return connectRequestMessage.getText().toLowerCase().contains(message.toLowerCase());
+		return conversationMessage.getText().toLowerCase().contains(message.toLowerCase());
 	}
 
-	public boolean isConnectUserValid(String user) {
-		return connectRequestConnectTo.getText().toLowerCase().contains(user.toLowerCase());
-	}
 	
 }

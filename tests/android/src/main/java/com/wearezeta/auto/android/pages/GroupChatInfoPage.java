@@ -15,17 +15,17 @@ public class GroupChatInfoPage extends AndroidPage {
 	public static final String LEAVE_CONVERSATION_BUTTON = "Leave conversation";
 	public static final String LEAVE_BUTTON = "LEAVE";
 	
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameTextView)
-	private List<WebElement> optionsButtons;
-	
-	@FindBy(how = How.ID, using = AndroidLocators.idLeaveConversationConfirmationMenu)
-	private WebElement leaveConversationConfirmationMenu;
+	@FindBy(how = How.ID, using = AndroidLocators.idLeaveConversationButton)
+	private WebElement leaveConversationButton;
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idConfirmBtn)
-	private List<WebElement> confirmButtons;
+	private WebElement confirmButton;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idGroupChatUserName)
-	private List<WebElement> groupChatUsersNames;
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameLinearLayout)
+	private List<WebElement> linearLayout;
+	
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameGridView)
+	private WebElement groupChatUsersGrid;
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idOtherUserPersonalInfoName)
 	private WebElement groupChatName;
@@ -66,48 +66,45 @@ public class GroupChatInfoPage extends AndroidPage {
 	}
 
 	public void pressLeaveConversationButton() {
-		for(WebElement button : optionsButtons)
-		 {
-			 if (button.getText().equals(LEAVE_CONVERSATION_BUTTON))
-			 {
-				 button.click();
-				 break;
-			 }
-		 }
-		
+		driver.getPageSource();//TODO workaround
+		wait.until(ExpectedConditions.elementToBeClickable(leaveConversationButton));
+		leaveConversationButton.click();
+
 	}
 
 	public void pressConfirmButton() {
-		wait.until(ExpectedConditions.visibilityOf(leaveConversationConfirmationMenu));
-		for(WebElement button : confirmButtons)
-		{
-			if (button.getText().equals(LEAVE_BUTTON))
-			 {
-				 button.click();
-				 break;
-			 }
-		}
+		driver.getPageSource();//TODO workaround
+		confirmButton.click();
 	}
 
 	public void renameGroupChat(String chatName){
 		groupChatName.sendKeys(chatName + "\n");
 	}
-	public OtherUserPersonalInfoPage selectContactByName(String contactName) throws IOException {
+	public OtherUserPersonalInfoPage selectContactByName(String contactName) throws IOException, InterruptedException {
+		boolean flag = false;
+		System.out.println(driver.getPageSource());
 		
-		for(WebElement element : groupChatUsersNames)
-		 {
-			 try{
-				 if(element.getText().toLowerCase().equals(contactName.toLowerCase())){
-					 element.click();
-					 break;
-				 }
-			 }
-			 catch(Exception ex){
-				 	continue;
-			 }
-		 }
-		
+		for(WebElement user : linearLayout)
+		{
+			List<WebElement> elements = user.findElements(By.className(AndroidLocators.classNameTextView));
+			for(WebElement element : elements){
+					if(element.getText() != null && element.getText().equals((contactName.toUpperCase()))){
+						user.click();
+						flag = true;
+						break;
+					}
+			}
+			if(flag){
+				break;
+			}
+		}
+
 		return new OtherUserPersonalInfoPage(url, path);
+	}
+
+	public GroupChatPage tabBackButton() throws IOException {
+		driver.navigate().back();
+		return new GroupChatPage(url, path);
 	}
 
 }

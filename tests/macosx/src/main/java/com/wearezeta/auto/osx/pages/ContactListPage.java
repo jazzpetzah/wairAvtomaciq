@@ -1,6 +1,5 @@
 package com.wearezeta.auto.osx.pages;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -24,7 +23,7 @@ public class ContactListPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idMainWindow)
 	private WebElement mainWindow;
 
-	@FindBy(how = How.ID, using = OSXLocators.idAcceptInvitationButton)
+	@FindBy(how = How.ID, using = OSXLocators.idAcceptConnectionRequestButton)
 	private WebElement acceptInvitationButton;
 	
 	@FindBy(how = How.ID, using = OSXLocators.idContactEntry)
@@ -33,11 +32,8 @@ public class ContactListPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idAddConversationButton)
 	private WebElement addConversationButton;
 	
-	@FindBy(how = How.NAME, using = OSXLocators.nameSignOutMenuItem)
-	private WebElement signOutMenuItem;
-
-	@FindBy(how = How.NAME, using = OSXLocators.nameQuitZClientMenuItem)
-	private WebElement quitZClientMenuItem;
+	@FindBy(how = How.ID, using = OSXLocators.idShowArchivedButton)
+	private WebElement showArchivedButton;
 
 	public ContactListPage(String URL, String path) throws MalformedURLException {
 		super(URL, path);
@@ -45,11 +41,6 @@ public class ContactListPage extends OSXPage {
 	
 	public Boolean isVisible() {
 		return mainWindow != null;
-	}
-	
-	public void SignOut() {
-		signOutMenuItem.click();
-		driver.navigate().to("ZClient");
 	}
 	
 	public void openPeoplePicker() {
@@ -77,6 +68,29 @@ public class ContactListPage extends OSXPage {
 			return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath));
 		}
 		return false;
+	}
+	
+	public boolean isContactWithNameDoesNotExist(String name) {
+		if (name.contains(",")) {
+			String[] exContacts = name.split(",");
+
+			for (WebElement contact: this.contactsTextFields) {
+				boolean isFound = true;
+				String realContact = contact.getText();
+				for (String exContact: exContacts) {
+					if (!realContact.contains(exContact.trim())) {
+						isFound = false;
+					}
+				}
+				if (isFound) {
+					return false;
+				}
+			}
+		} else {
+			String xpath = String.format(OSXLocators.xpathFormatContactEntryWithName, name);
+			return DriverUtils.waitUntilElementDissapear(driver, By.xpath(xpath));
+		}
+		return true;
 	}
 	
 	public boolean openConversation(String conversationName) {
@@ -132,6 +146,10 @@ public class ContactListPage extends OSXPage {
 		 });
 		return el != null;
 	}
+
+	public boolean isInvitationExist() {
+		return DriverUtils.waitUntilElementAppears(driver, By.id(OSXLocators.idAcceptConnectionRequestButton));
+	}
 	
 	public void acceptAllInvitations() {
 		boolean isInivitationExist = true;
@@ -149,14 +167,6 @@ public class ContactListPage extends OSXPage {
 		int result = contactsTextFields.size();
 		DriverUtils.setDefaultImplicitWait(driver);
 		return result;
-	}
-	
-	@Override
-	public void Close() throws IOException {
-		try {
-			quitZClientMenuItem.click();
-		} catch (Exception e) { }
-		super.Close();
 	}
 	
 	public void scrollToConversationInList(WebElement conversation) {
@@ -208,9 +218,30 @@ public class ContactListPage extends OSXPage {
 		toggleMenu.click();
 	}
 	
+	public boolean isConversationMutedButtonExist(String conversation) {
+		boolean isExist = false;
+		try {
+			driver.findElement(By.xpath(String.format(OSXLocators.xpathFormatMutedButton, conversation)));
+			isExist = true;
+		} catch (Exception e) {
+			isExist = false;
+		}
+		return isExist;
+	}
+	
 	public void changeMuteStateForSelectedConversation() {
 		goToContactActionsMenu();
 		WebElement muteButton = driver.findElement(By.id(OSXLocators.idMuteButton));
 		muteButton.click();
+	}
+	
+	public void moveSelectedConversationToArchive() {
+		goToContactActionsMenu();
+		WebElement archiveButton = driver.findElement(By.id(OSXLocators.idArchiveButton));
+		archiveButton.click();
+	}
+	
+	public void showArchivedConversations() {
+		showArchivedButton.click();
 	}
 }

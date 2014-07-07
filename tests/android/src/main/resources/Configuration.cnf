@@ -1,15 +1,11 @@
 #Configuration file for Android tests
 #Configure before running tests
-Url=http://127.0.0.1:4723/wd/hub
-#Url=http://192.168.178.44:4723/wd/hub
-#appPath=/Project/zclient.apk
-#appPath=C:\\Selendroid\\zclient-release-2051.apk
-appPath=/Users/mkuvshinov/clients/zclient-release-2053.apk
-package=com.waz.zclient
-#activity=.StartupScreenActivity
-activity=.MainActivity
-generateUsers=false
-driverTimeoutSeconds=10
-defaultWindowsImagePath=/Users/mkuvshinov/zautomation/tests/tools/img/userpicture.jpg
-#defaultWindowsImagePath=C:\\WearezetaRepo\\zautomation\\tests\\tools\\img\\userpicture.jpg
-defaultOsXImagePath=/Users/Jenkins/Documents/userpicture.jpg
+Url=${Url}
+appPath=${appPath}
+package=${package}
+activity=${activity}
+generateUsers=${generateUsers}
+driverTimeoutSeconds=${driverTimeoutSeconds}
+resultImage=${resultImage}
+defaultImagePath=${defaultImagePath}
+pictureResultsPath=${pictureResultsPath}

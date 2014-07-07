@@ -47,6 +47,20 @@ public final class IOSLocators {
 	public static final String classNameConnectDialogInput = "UIATextView";
 	
 	public static final String xpathConnectCloseButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]";
+	
+	public static final String nameAddPictureButton = "ComposeControllerPictureButton";
+	
+	public static final String nameCameraRollButton = "FullScreenCameraRightButton";
+	
+	public static final String xpathCameraRollAlertOK = "//UIAApplication[1]/UIAWindow[4]/UIAAlert[1]/UIATableView[2]/UIATableCell[1]";
+	
+	public static final String nameCameraRollCancel = "Cancel";
+	
+	public static final String xpathCameraRollTableCell = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]";
+	
+	public static final String xpathCameraRollPicture = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[1]";
+	
+	public static final String nameConfirmPictureButton = "ImageConfirmerConfirmButton";
 
 	public static final String xpathFirstInContactList = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[2]/UIAStaticText[1]";
 	
@@ -70,8 +84,6 @@ public final class IOSLocators {
 	
 	public static final String xpathHeyCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[last()]";
 	
-	public static final String nameCameraButton = "CameraButton";
-	
 	public static final String namePhotoButton = "PhotoLibraryButton";
 	
 	public static final String nameAlbum = "Saved Photos";
@@ -88,6 +100,7 @@ public final class IOSLocators {
 
 	public static final String xpathRevealPasswordButton = "//UIAApplication[1]/UIAWindow[1]/UIASecureTextField[1]/UIAButton[1]";
 	
+	public static final String nameContinueButton = "CONTINUE";
 	public static final String xpathHidePasswordButton = "//UIAApplication[1]/UIAWindow[1]/UIATextField[1]/UIAButton[1]";
 	
 	public static final String classNameConfirmationMessage = "UIATextView";
@@ -103,30 +116,20 @@ public final class IOSLocators {
 	public static final String nameLeaveConversationButton = "LEAVE";
 	
 	public static final String nameYouHaveLeft = "YOU HAVE LEFT";
+    
+    public static final String nameComfirmRemoveButton = "REMOVE";
 
-	public static final String xpathRemoveFromConversation = "//UIAApplication[1]/UIAWindow[1]/UIAButton[9]";
+	public static final String nameRemoveFromConversation = "metaControllerRightButton";
 	
 	public static final String xpathOtherConversationCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[last()]";
-
-	public static final String nameComfirmRemoveButton = "REMOVE";
 	
-	public static final String nameAddPictureButton = "ComposeControllerPictureButton";
+	public static final String xpathPersonalInfoPage = "//UIAApplication[1]/UIAWindow[1]";
 	
-	public static final String nameCameraRollButton = "FullScreenCameraRightButton";
-	
-	public static final String xpathCameraRollAlertOK = "//UIAApplication[1]/UIAWindow[4]/UIAAlert[1]/UIATableView[2]/UIATableCell[1]";
-	
-	public static final String nameCameraRollCancel = "Cancel";
-	
-	public static final String xpathCameraRollTableCell = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]";
-	
-	public static final String xpathCameraRollPicture = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[1]";
-	
-	public static final String nameConfirmPictureButton = "ImageConfirmerConfirmButton";
+	public static final String nameCameraButton = "cameraButton";
 	
 	public static final String xpathProvideValidEmailMessage = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]"; 
 	
-	public static final String xpathAddContactToChatButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[7]";
+	public static final String nameAddContactToChatButton = "metaControllerLeftButton";
 	
 	public static final String xpathOtherUserName = "//UIAApplication[1]/UIAWindow[1]/UIATextField[@value='%s']";
 	
@@ -143,7 +146,10 @@ public final class IOSLocators {
 	public static final String nameConnectAlert = "Connect With";
 	
 	public static final String nameConnectAlertYes = "Yes";
+<<<<<<< HEAD
 	
 	public static final String nameErrorPageButton = "BACK";
 	
+=======
+>>>>>>> 1571a45c23c2aaa871fdffd09fc4bc4a6db87689
 }

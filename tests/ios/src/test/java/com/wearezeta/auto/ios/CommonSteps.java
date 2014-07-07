@@ -3,9 +3,13 @@ package com.wearezeta.auto.ios;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.TestPreparation;
 import com.wearezeta.auto.common.UsersState;
+import com.wearezeta.auto.common.DriverUtils;
+import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
+import com.wearezeta.auto.ios.tools.IOSSimulatorPhotoLibHelper;
+
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -17,7 +21,9 @@ public class CommonSteps {
 		
 
 		try {
-			CommonUtils.iOSSimulatorCameraRoll();
+			String[] picturepath = new String[] {CommonUtils.getUserPicturPathFromConfig(CommonSteps.class)};
+			IOSSimulatorPhotoLibHelper.CreateSimulatorPhotoLib("7.1", picturepath, true);
+			//CommonUtils.iOSSimulatorCameraRoll();
 		}
 		catch(Exception ex){
 			System.out.println("Failed to deploy pictures into simulator");
@@ -38,9 +44,10 @@ public class CommonSteps {
 
 		String path = CommonUtils.getAppPathFromConfig(TestRun.class);
 		
-		if ( PagesCollection.loginPage == null)
+		if (PagesCollection.loginPage == null)
 		{
 			PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(TestRun.class), path);
+			ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
 		}
 
 	 }

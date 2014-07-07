@@ -25,11 +25,11 @@ public class RegistrationPageSteps {
 	 
 	 boolean generateUsers = false;
 	
-	 @When("^I press Camera button$")
+	/* @When("^I press Camera button$")
 	 public void WhenIPressCameraButton() throws IOException {
 		 
 		 PagesCollection.registrationPage.takePhoto();
-	 }
+	 }*/
 	 
 	 @When("^I press Picture button$")
 	 public void WhenIPressPictureButton() throws IOException {

@@ -1,5 +1,7 @@
 Feature: Conversation
 
+  @smoke
+  @regression
   Scenario Outline: Send Message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -14,7 +16,8 @@ Feature: Conversation
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
 
- 
+  @smoke
+  @regression
     Scenario Outline: Send Hello to contact
 		Given I Sign in using login <Login> and password <Password> 
     	And I see Contact list with my name <Name>
@@ -28,8 +31,9 @@ Feature: Conversation
 	Examples: 
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
-    
-    
+
+  @smoke
+  @regression
 	Scenario Outline: Start group chat with users from contact list
 		Given I Sign in using login <Login> and password <Password>
     	And I see Contact list with my name <Name>
@@ -45,13 +49,14 @@ Feature: Conversation
 	   	And I see Add to conversation button
 	   	And I click on Add to conversation button
 	   	Then I see group chat page with users <Contact1> <Contact2>
-	   	
+
 	Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
-	   	
 
 
+  @smoke
+  @regression
 Scenario Outline: Send message to group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -64,7 +69,10 @@ Scenario Outline: Send message to group chat
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
- 
+
+  @torun
+  @smoke
+  @regression
 Scenario Outline: Send a camera roll picture to user from contact list
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with my name <Name>
@@ -76,11 +84,13 @@ Scenario Outline: Send a camera roll picture to user from contact list
  	And I choose a picture from camera roll
  	And I press Confirm button
  	Then I see new photo in the dialog
-    
+
 Examples: 
 	|	Login		|	Password		|	Name		|	Contact			|
 	|	aqaUser		|	aqaPassword		|	aqaUser		|	aqaContact1		|
-	
+
+  @smoke
+  @regression
 Scenario Outline: Leave from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -93,12 +103,13 @@ Scenario Outline: Leave from group chat
 	And I see <Contact1> and <Contact2> chat in contact list
 	And I tap on a group chat with <Contact1> and <Contact2>
 	And I can see <Name> Have Left
-		
+
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
-    
 
+  @smoke
+  @regression
  Scenario Outline: Remove from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -110,8 +121,23 @@ Examples:
 	And I see warning message 
 	And I confirm remove
 	Then I see that <Contact2> is not present on group chat page
-	
-		
+
+
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
+
+  @smoke
+  @regression
+ Scenario Outline: Mute conversation
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact1>
+    And I click mute conversation
+    Then Contact <Contact1> is muted
+    When I swipe right on a <Contact1>
+    And I click mute conversation
+    Then Contact <Contact1> is not muted
+Examples:
+    |  Login		| Password		| Name			| Contact1    |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |

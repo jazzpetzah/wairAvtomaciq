@@ -6,12 +6,21 @@ public final class OSXLocators {
 	public static final String idMainWindow = "Main";
 	
 	public static final String nameSignInButton = "SIGN IN";
-
+	public static final String nameRegisterButton = "JOIN";
+	
 	public static final String idLoginField = "TempLoginViewControllerUsernameField";
+	public static final String classNameLoginField = "AXTextArea";
 //	public static final String xpathLoginField = "//AXTextField[@AXPlaceholderValue='username']";
 	public static final String idPasswordField ="TempLoginViewControllerPasswordField";
 //	public static final String xpathPasswordField = "//AXTextField[@AXPlaceholderValue='password']";
 
+	public static final String idRegistrationTakePictureButton = "RegistrationTakePictureButton";
+	public static final String idRegistrationPickImageButton = "RegistrationPickImageButton";
+	public static final String idSubmitRegistrationButton = "RegistrationCreateButton";
+	public static final String idConfirmationRequestedText = "_NS:30";
+	public static final String xpathRegistrationPictureConfirmationButton = "//AXButton[1]";
+	public static final String idRegistrationEmailField = "RegistrationEmailField";
+	
 	public static final String idContactEntry = "clListItemNameField";
 	public static final String idAddImageButton = "AddImageButton";
 	public static final String idPeopleButton = "PeopleButton";
@@ -19,9 +28,10 @@ public final class OSXLocators {
 	public static final String idPeoplePickerSearchField = "people_picker_searchfield";
 	public static final String idPeoplePickerDismissButton = "people_picker_cancel_button";
 	public static final String idPeoplePickerSearchResultEntry = "people_picker_result_namefield";
-	public static final String idAcceptInvitationButton = "_NS:14";
 	public static final String idToggleMenu = "ToggleMenu";
 	public static final String idMuteButton = "muteButton";
+	public static final String idArchiveButton = "archiveButton";
+	public static final String idShowArchivedButton = "showArchivedButton";
 	
 	public static final String nameSayHelloMenuItem = "“Hello”";
 	public static final String nameSignOutMenuItem = "Sign Out";
@@ -59,9 +69,19 @@ public final class OSXLocators {
 	public static final String xpathPictureFromImageFile = "//AXCheckBox[1]";
 	public static final String xpathPictureFromCamera = "//AXCheckBox[2]";
 	public static final String xpathPictureConfirmationButton = "//AXCheckBox[1]";
-	public static final String xpathDoCameraShotButton = "//AXCheckBox[1]";
+	public static final String xpathDoCameraShotButton = "//AXCheckBox[@AXValue='1']";
 	
 	public static final String xpathFormatPeoplePickerUserCell = "//AXUnknown[AXStaticText[@AXValue='%s']]";
 
 	public static final String xpathPictureSettingsCloseButton = "//AXWindow[@AXRoleDescription='floating window']/AXButton[@AXRoleDescription='close button']";
+
+	public static final String xpathFormatMutedButton = "//AXCell[AXStaticText[@AXValue='%s']]/AXButton[@AXTitle='']";
+
+	public static final String xpathFailedApplicationDialogCancel = "//AXWindow[@AXIdentifier='_NS:162']/AXButton[@AXIdentifier='_NS:9']";
+	public static final String xpathFailedApplicationDialogSend = "//AXWindow[@AXIdentifier='_NS:162']/AXButton[@AXIdentifier='_NS:13']";
+
+	public static final String idAcceptConnectionRequestButton = "_NS:14";
+	public static final String idIgnoreConnectionRequestButton = "_NS:10";
+	
+	public static final String xpathPleaseProvideEmailAddress = "//AXStaticText[@AXValue='PLEASE PROVIDE A VALID EMAIL ADDRESS']";
 }
