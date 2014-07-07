@@ -31,7 +31,7 @@ Feature: Conversation
 	Examples: 
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
-    
+
   @smoke
   @regression
 	Scenario Outline: Start group chat with users from contact list
@@ -49,11 +49,11 @@ Feature: Conversation
 	   	And I see Add to conversation button
 	   	And I click on Add to conversation button
 	   	Then I see group chat page with users <Contact1> <Contact2>
-	   	
+
 	Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
-	   	
+
 
   @smoke
   @regression
@@ -69,7 +69,8 @@ Scenario Outline: Send message to group chat
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
- 
+
+  @torun
   @smoke
   @regression
 Scenario Outline: Send a camera roll picture to user from contact list
@@ -83,11 +84,11 @@ Scenario Outline: Send a camera roll picture to user from contact list
  	And I choose a picture from camera roll
  	And I press Confirm button
  	Then I see new photo in the dialog
-    
+
 Examples: 
 	|	Login		|	Password		|	Name		|	Contact			|
 	|	aqaUser		|	aqaPassword		|	aqaUser		|	aqaContact1		|
-	
+
   @smoke
   @regression
 Scenario Outline: Leave from group chat
@@ -102,11 +103,11 @@ Scenario Outline: Leave from group chat
 	And I see <Contact1> and <Contact2> chat in contact list
 	And I tap on a group chat with <Contact1> and <Contact2>
 	And I can see <Name> Have Left
-		
+
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
-    
+
   @smoke
   @regression
  Scenario Outline: Remove from group chat
@@ -120,8 +121,8 @@ Examples:
 	And I see warning message 
 	And I confirm remove
 	Then I see that <Contact2> is not present on group chat page
-	
-		
+
+
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
@@ -140,4 +141,3 @@ Examples:
 Examples:
     |  Login		| Password		| Name			| Contact1    |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |
- 
