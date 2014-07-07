@@ -70,7 +70,6 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-  @torun
   @smoke
   @regression
 Scenario Outline: Send a camera roll picture to user from contact list
@@ -108,13 +107,8 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-<<<<<<< HEAD
   @smoke
   @regression
-=======
-  @no-smoke
-  @no-regression
->>>>>>> da9bef78a4c75112d2eb1eeb3f0e5ba1d13668e6
  Scenario Outline: Remove from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -130,7 +124,6 @@ Examples:
 
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
-<<<<<<< HEAD
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
 Scenario Outline: I can edit the conversation name
@@ -151,12 +144,6 @@ Examples:
     
   @smoke
   @regression
-=======
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
-
-  @no-smoke
-  @no-regression
->>>>>>> da9bef78a4c75112d2eb1eeb3f0e5ba1d13668e6
  Scenario Outline: Mute conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -169,7 +156,6 @@ Examples:
 Examples:
     |  Login		| Password		| Name			| Contact1    |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |
-<<<<<<< HEAD
 
 @torun
 Scenario Outline: Verify correct group info page information
@@ -183,5 +169,3 @@ Scenario Outline: Verify correct group info page information
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2	     	|ParticipantNumber|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaPictureContact	|       3         |
-=======
->>>>>>> da9bef78a4c75112d2eb1eeb3f0e5ba1d13668e6
