@@ -8,3 +8,4 @@ swipeScriptPath=${swipeScriptPath}
 photoScriptPath=${photoScriptPath}
 driverTimeoutSeconds=${driverTimeoutSeconds}
 pictureResultsPath=${pictureResultsPath}
+iosImagesPath=${iosImagesPath}

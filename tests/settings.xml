@@ -23,6 +23,7 @@
 	<photoScriptPath>/Users/shiznyak/zautomation/tests/tools/push_photo_to_simulator.sh</photoScriptPath>
 	<driverTimeoutSeconds>10</driverTimeoutSeconds>
 	<pictureResultsPath>/Users/shiznyak/Downloads/</pictureResultsPath>
+	<iosImagesPath></iosImagesPath>
       </properties>
     </profile>
     <!-- Config for Android tests -->

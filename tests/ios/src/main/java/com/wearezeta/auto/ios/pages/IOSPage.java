@@ -20,8 +20,15 @@ public abstract class IOSPage extends BasePage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameLoginPage)
 	private WebElement content;
 	
+	private static String imagesPath = "";//System.getProperty("user.home") + "/Projects/zautomation/tests/tools/img/";
+	
 	public IOSPage(String URL, String path) throws MalformedURLException {
 		
+		try {
+			setImagesPath(CommonUtils.getSimulatorImagesPathFromConfig(this.getClass()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("platformName", "iOS");
         capabilities.setCapability("app", path);
@@ -100,5 +107,13 @@ public abstract class IOSPage extends BasePage {
 		PagesCollection.connectToPage = null;
 		PagesCollection.groupChatPage = null;
 		PagesCollection.groupChatInfoPage = null;
+	}
+
+	public static String getImagesPath() {
+		return imagesPath;
+	}
+
+	public static void setImagesPath(String imagesPath) {
+		IOSPage.imagesPath = imagesPath;
 	}
 }
