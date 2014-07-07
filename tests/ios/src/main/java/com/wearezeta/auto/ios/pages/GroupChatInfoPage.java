@@ -1,11 +1,14 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.awt.Point;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -14,6 +17,7 @@ import org.openqa.selenium.support.How;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.common.IOSLocators;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.SwipeDirection;
 
 public class GroupChatInfoPage extends IOSPage{
@@ -69,19 +73,29 @@ public class GroupChatInfoPage extends IOSPage{
 		return givenNumberOfParticipants == correctNumber;
 	}
 	
-	public boolean verifyParticipantAvatars(int participants){
+	public BufferedImage getElementScreenshot(WebElement element) throws IOException{
+		BufferedImage screenshot = takeScreenshot();
+		org.openqa.selenium.Point elementLocation = element.getLocation();
+		Dimension elementSize = element.getSize();
+		return screenshot.getSubimage(elementLocation.x, elementLocation.y, elementSize.width, elementSize.height);
+	}
+	
+	public boolean verifyParticipantAvatars(int participants) throws IOException{
 		List<WebElement> participantAvatars = getCurrentParticipants(participants);
+		BufferedImage avatarIcon = null;
 		for(WebElement avatar : participantAvatars){
-			if(avatar.getAttribute("name")=="AQAPICTURECONTACT"){
-				//compare picture to cat
+			System.out.println(avatar.getAttribute("name"));
+			if(avatar.getAttribute("name").equals("AQAPICTURECONTACT")){
+				avatarIcon = getElementScreenshot(avatar);
+				BufferedImage realImage = ImageUtil.readImageFromFile("/Users/haydenchristensen/Automation/catTestAvatar.png");
+				System.out.println(ImageUtil.getOverlapScore(avatarIcon, realImage));
 			}
-			if(avatar.getAttribute("name")==CommonUtils.CONTACT_1){
+			if(avatar.getAttribute("name")=="aqaAvatar TestContact"){
 				//compare to image with contact 1's first letter inside
 			}
-			if(avatar.getAttribute("name")==CommonUtils.YOUR_USER_1){
-				//compare to own user image/first character in username
-			}
-
+			//if(1.0 >= ImageUtil.getOverlapScore()){
+				
+			//}
 		}
 		return true;
 	}
@@ -159,7 +173,14 @@ public class GroupChatInfoPage extends IOSPage{
 	public void setConversationName(String newName){
 		conversationName = newName;
 	}
+	
+	public BufferedImage takeScreenShot() throws IOException{
+		return DriverUtils.takeScreenshot(driver);
+	}
+	
+	
 }
+
 
 	
 	

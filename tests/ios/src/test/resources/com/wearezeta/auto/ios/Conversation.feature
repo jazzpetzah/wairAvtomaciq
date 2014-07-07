@@ -166,6 +166,6 @@ Scenario Outline: Verify correct group info page information
 	Then I see that the conversation name is correct with <Contact1> and <Contact2>
 	And I see the correct number of participants in the title <ParticipantNumber>
 	And I see the correct participant avatars <ParticipantNumber>
-		
+Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2	     	|ParticipantNumber|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaPictureContact	|       3         |

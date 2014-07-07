@@ -33,7 +33,7 @@ public class GroupChatInfoPageSteps {
 		}
 	
 	@When("^I see the correct participant avatars (.*)$")
-	public void IVerifyCorrectParticipantAvatars(String participants){
+	public void IVerifyCorrectParticipantAvatars(String participants) throws IOException{
 		Assert.assertTrue(PagesCollection.groupChatInfoPage.verifyParticipantAvatars(Integer.parseInt(participants)));
 	}
 	
