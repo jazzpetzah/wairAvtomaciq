@@ -11,6 +11,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.WebDriverException;
 
 import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.common.IOSLocators;
@@ -116,15 +118,26 @@ public class RegistrationPage extends IOSPage {
 	
 	public void createAccount()
 	{
-		if(ExpectedConditions.presenceOfElementLocated(By.xpath(IOSLocators.xpathYourName)) != null) {
+		WebDriverWait mywait = new WebDriverWait(driver, 1, 100);
+		try {
+			mywait.until(ExpectedConditions.visibilityOf(yourName));
 			yourName.sendKeys(getName() + "\n");
+		} catch (WebDriverException e) {
+			// Ignore it
 		}
-		if(ExpectedConditions.presenceOfElementLocated(By.name(IOSLocators.nameYourEmail)) != null) {
+		try {
+			mywait.until(ExpectedConditions.visibilityOf(yourEmail));
 			yourEmail.sendKeys(getEmail() + "\n");
+		} catch (WebDriverException e) {
+			// Ignore it
 		}
-		if(ExpectedConditions.presenceOfElementLocated(By.name(IOSLocators.nameYourPassword)) != null) {
+		try {
+			mywait.until(ExpectedConditions.visibilityOf(yourPassword));
 			yourPassword.sendKeys(getPassword());
+		} catch (WebDriverException e) {
+			// Ignore it
 		}
+
 		createAccountButton.click();
 	}	
 	
@@ -132,18 +145,6 @@ public class RegistrationPage extends IOSPage {
 	{
 		yourName.sendKeys(getName() + "\n");
 		yourEmail.sendKeys(getEmail());
-	}
-
-	public void retypeEmail() {
-		if (ExpectedConditions.presenceOfElementLocated(By
-				.name(IOSLocators.nameYourEmail)) != null) {
-			yourEmail.sendKeys(getEmail());
-		}
-	}
-
-	public void returnToConfirmRegistration() {
-		ForwardWelcomeButton.click();
-		createAccountButton.click();
 	}
 	
 	public boolean typeAllInvalidEmails()
@@ -241,11 +242,15 @@ public class RegistrationPage extends IOSPage {
 	}
 	
 	public void backToEmailPage() {
-		{
-			backToWelcomeButton.click();
-			backToWelcomeButton.click();
+		WebDriverWait mywait = new WebDriverWait(driver, 1, 100);
+		while (true) {
+			try {
+				mywait.until(ExpectedConditions.visibilityOf(yourEmail));
+				return;
+			} catch (WebDriverException e) {
+				backToWelcomeButton.click();
+			}	
 		}
-		wait.until(ExpectedConditions.visibilityOf(yourEmail));
 	}
 	
 	public void catchLoginAlert() {

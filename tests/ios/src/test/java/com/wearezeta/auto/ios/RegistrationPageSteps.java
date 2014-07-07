@@ -160,18 +160,6 @@ public class RegistrationPageSteps {
 		PagesCollection.registrationPage.backToEmailPage();
 	 }
 	 
-	 @When("^I retype email$")
-	 public void IRetypeEmail() throws IOException
-	 {
-		 PagesCollection.registrationPage.retypeEmail();
-	 }
-	 
-	 @Then("^I confirm registration$")
-	 public void IConfirmRegistration()
-	 {
-		 PagesCollection.registrationPage.returnToConfirmRegistration();
-	 }
-	 
 	 @Then("^I see confirmation page$")
 	 public void ISeeConfirmationPage()
 	 {

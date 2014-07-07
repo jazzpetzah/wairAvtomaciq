@@ -82,8 +82,9 @@ Feature: Register new user
 	Then I see error page
 	And I return to the email page
 	And I enter email <Correct>
-	And I retype email
-	And I confirm registration
+	And I submit registration data
+	#And I retype email
+	#And I confirm registration
 	#And I press continue registration
 	#And Contact list appears with my name <Name>
 
