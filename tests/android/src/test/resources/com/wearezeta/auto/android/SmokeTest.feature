@@ -1,5 +1,5 @@
 Feature: SmokeTest
-@smoke @regression
+@smoke @regression @torun
   Scenario Outline: Open/Close People picker
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -12,7 +12,7 @@ Feature: SmokeTest
       | Login   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |
 
- @smoke @regression
+ @smoke @regression @torun
   Scenario Outline: Send Long Message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -27,7 +27,7 @@ Feature: SmokeTest
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
 
- @smoke @regression
+@smoke @regression @torun
   Scenario Outline: Send Upper and Lower case to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -41,7 +41,7 @@ Feature: SmokeTest
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
     
-@smoke @regression
+@smoke @regression @torun
   Scenario Outline: ZClient change name
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
