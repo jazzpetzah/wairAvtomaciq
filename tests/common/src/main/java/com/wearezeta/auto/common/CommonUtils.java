@@ -187,6 +187,10 @@ public class CommonUtils {
 
 		return getValueFromConfig(c, "activity");
 	}
+	
+	public static String getSimulatorImagesPathFromConfig(Class c) throws IOException {
+		return getValueFromConfig(c, "iosImagesPath");
+	}
 
 	public static String getGenerateUsersFlagFromConfig(Class c) throws IOException {
 
