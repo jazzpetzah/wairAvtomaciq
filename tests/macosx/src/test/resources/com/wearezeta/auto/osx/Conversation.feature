@@ -163,8 +163,8 @@ Examples:
     |  Login		| Password			| Name			| Contact   		|
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
 
-@smoke
-@regression
+@no-smoke
+@no-regression
 Scenario Outline: Archive and unarchive conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>

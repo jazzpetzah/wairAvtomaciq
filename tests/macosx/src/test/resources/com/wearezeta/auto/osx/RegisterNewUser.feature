@@ -55,7 +55,7 @@ Examples:
     |	Email										    |
     |	email with spaces@weare zeta.com           	    |
 
-@regression
+@no-regression
 Scenario: Fail registration on incorrect email
 	Given I am signed out from ZClient
 	And I see Sign In screen
