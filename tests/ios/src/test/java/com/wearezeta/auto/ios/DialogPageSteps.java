@@ -80,7 +80,7 @@ public class DialogPageSteps {
 	}
 	
 	@When("^I swipe the text input cursor$")
-	public void ISwipeTheTextInputCurser() throws Throwable {
+	public void ISwipeTheTextInputCursor() throws Throwable {
 		PagesCollection.dialogPage.swipeInputCursor();
 	}
 	
