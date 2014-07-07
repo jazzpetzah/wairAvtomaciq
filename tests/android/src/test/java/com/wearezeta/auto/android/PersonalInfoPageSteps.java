@@ -1,10 +1,7 @@
 package com.wearezeta.auto.android;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import org.junit.Assert;
 
@@ -20,6 +17,11 @@ public class PersonalInfoPageSteps {
 	@When("^I tap options button$")
 	public void WhenITapOptionsButton() throws Throwable {
 		PagesCollection.personalInfoPaga.tapOptionsButton();
+	}
+	
+	@When("^I tap on my name$")
+	public void WhenITapOnMyName() throws Throwable {
+		PagesCollection.personalInfoPaga.tapOnMyName();
 	}
 
 	@When("^I tap sign out button$")
@@ -52,16 +54,30 @@ public class PersonalInfoPageSteps {
 		PagesCollection.personalInfoPaga.tapConfirmButton();
 	}
 	
+	@When("^I change (.*) to (.*)$")
+	public void IChangeNameTo(String name, String newName) throws Throwable {
+		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		PagesCollection.personalInfoPaga.changeName(name, newName);
+	}
+
+	@Then("^I see my new name (.*) and return old (.*)$")
+	public void ISeeMyNewName(String name, String oldName) throws Throwable {
+	    Assert.assertTrue(name.equals(PagesCollection.personalInfoPaga.getUserName()));
+	    oldName = CommonUtils.retrieveRealUserContactPasswordValue(oldName);
+		PagesCollection.personalInfoPaga.changeName(name, oldName);
+	    
+	}
+	
 	@Then("I see changed user picture")
 	public void ThenISeeChangedUserPicture() throws IOException {
+		PagesCollection.personalInfoPaga.waitForConfirmBtn();
 		BufferedImage referenceImage = PagesCollection.personalInfoPaga.takeScreenshot();
-
-		String path = CommonUtils.getWindowsImagePath(PersonalInfoPageSteps.class);
+		String path = CommonUtils.getResultImagePath(PersonalInfoPageSteps.class);
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
 		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);
 		Assert.assertTrue(
-				"Overlap between two images has no enough score. Expected >= 0.55, current = " + score,
-				score >= 0.55d);
+				"Overlap between two images has no enough score. Expected >= 0.75, current = " + score,
+				score >= 0.75d);
 		
 	}
 	

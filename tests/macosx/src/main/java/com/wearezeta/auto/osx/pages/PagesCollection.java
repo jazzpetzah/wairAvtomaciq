@@ -10,8 +10,11 @@ public class PagesCollection {
 	private PeoplePickerPage peoplePickerPage = null;
 	private ConversationInfoPage conversationInfoPage = null;
 	private UserProfilePage userProfilePage = null;
+	private RegistrationPage registrationPage = null;
+	private MainMenuPage mainMenuPage = null;
 	
 	public void closeAllPages() throws IOException {
+		if (mainMenuPage != null) mainMenuPage.Close();
 		if (loginPage != null) loginPage.Close();
 		if (contactListPage != null) contactListPage.Close();
 		if (conversationPage != null) conversationPage.Close();
@@ -19,6 +22,7 @@ public class PagesCollection {
 		if (peoplePickerPage != null) peoplePickerPage.Close();
 		if (conversationInfoPage != null) conversationInfoPage.Close();
 		if (userProfilePage != null) userProfilePage.Close();
+		if (registrationPage != null) registrationPage.Close();
 	}
 	
 	public LoginPage getLoginPage() {
@@ -76,4 +80,23 @@ public class PagesCollection {
 	public void setUserProfilePage(UserProfilePage userProfilePage) {
 		this.userProfilePage = userProfilePage;
 	}
+
+	public RegistrationPage getRegistrationPage() {
+		return registrationPage;
+	}
+
+	public void setRegistrationPage(RegistrationPage registrationPage) {
+		this.registrationPage = registrationPage;
+	}
+
+	public MainMenuPage getMainMenuPage() {
+		return mainMenuPage;
+	}
+
+	public void setMainMenuPage(MainMenuPage mainMenuPage) {
+		this.mainMenuPage = mainMenuPage;
+	}
+	
+	
+	
 }

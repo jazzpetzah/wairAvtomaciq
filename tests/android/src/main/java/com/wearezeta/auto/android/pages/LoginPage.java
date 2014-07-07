@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.*;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.*;
 
 import com.wearezeta.auto.common.*;
@@ -15,6 +16,9 @@ public class LoginPage extends AndroidPage {
 
 	@FindBy(how = How.ID, using = AndroidLocators.idSignInButton)
 	private WebElement signInButton;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idWelcomeSlogan)
+	private WebElement welcomeSlogan;
 
 	@FindBy(how = How.ID, using = AndroidLocators.idSignUpButton)
 	private WebElement signUpButton;
@@ -22,11 +26,8 @@ public class LoginPage extends AndroidPage {
 	@FindBy(how = How.ID, using = AndroidLocators.idLoginButton)
 	private WebElement confirmSignInButton;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idLoginField)
-	private WebElement loginField;
-
-	@FindBy(how = How.ID, using = AndroidLocators.idPasswordField)
-	private WebElement passwordField;
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classEditText)
+	private List<WebElement> loginPasswordField;
 
 	@FindBy(how = How.ID, using = AndroidLocators.idWelcomeButtonsContainer)
 	private List<WebElement> welcomeButtonsContainer;
@@ -45,10 +46,14 @@ public class LoginPage extends AndroidPage {
 		this.url = URL;
 		this.path = path;
 	}
+	
+	public RemoteWebDriver getDriver() {
+		return driver;
+	}
 
 	public Boolean isVisible() {
 
-		return viewPager != null;
+		return welcomeSlogan != null;
 	}
 
 	public LoginPage SignIn() throws IOException {
@@ -67,7 +72,13 @@ public class LoginPage extends AndroidPage {
 
 	public void setLogin(String login) {
 
-		DriverUtils.setTextForChildByClassName(loginField, "android.widget.EditText", login);
+		for(WebElement el: loginPasswordField){
+			if(el.getText().equals("Email")){
+				el.click();
+				el.sendKeys(login);
+				break;
+			}
+		}
 	}
 
 	public String getPassword() {
@@ -76,8 +87,13 @@ public class LoginPage extends AndroidPage {
 
 	public void setPassword(String password) throws InterruptedException {
 
-		DriverUtils.setTextForChildByClassName(passwordField, "android.widget.EditText", password + "\n" );
-		Thread.sleep(500);
+		for(WebElement el: loginPasswordField){
+			if(el.getText() == null || el.getText().isEmpty() ){
+				el.click();
+				el.sendKeys(password);
+				break;
+			}
+		}
 	}
 
 	public boolean waitForLogin() {
@@ -85,10 +101,9 @@ public class LoginPage extends AndroidPage {
 		return DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.idLoginProgressBar));
 	}
 
-	public Boolean isLoginFinished(String contact) {
-
+	public Boolean isLoginFinished(String contact) throws InterruptedException {
+		driver.getPageSource();
 		HashMap<String,Integer> usersMap = DriverUtils.waitForElementWithTextById(AndroidLocators.idContactListNames, driver);
-
 		return usersMap.containsKey(contact);
 	}
 

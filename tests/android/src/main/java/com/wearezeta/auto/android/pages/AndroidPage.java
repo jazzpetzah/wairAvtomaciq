@@ -4,16 +4,14 @@ import java.io.IOException;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-import com.wearezeta.auto.common.AndroidLocators;
-import com.wearezeta.auto.common.BasePage;
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.DriverUtils;
-import com.wearezeta.auto.common.SwipeDirection;
+import com.wearezeta.auto.common.*;
 
 
 public abstract class AndroidPage extends BasePage {
@@ -21,10 +19,14 @@ public abstract class AndroidPage extends BasePage {
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameLoginPage)
 	private WebElement content;
 	
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classListView)
+	private WebElement container;
+	
 	public AndroidPage(String URL, String path) throws IOException {
 		
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("platformName", "Android");
+        capabilities.setCapability("deviceName", CommonUtils.getAndroidDeviceNameFromConfig(AndroidPage.class));
         capabilities.setCapability("app", path);
         capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(AndroidPage.class));
         capabilities.setCapability("appActivity", CommonUtils.getAndroidActivityFromConfig(AndroidPage.class));
@@ -32,6 +34,10 @@ public abstract class AndroidPage extends BasePage {
         super.InitConnection(URL, capabilities);
 	}
 
+	
+	public void navigateBack(){
+		driver.navigate().back();
+	}
 	@Override
 	public void Close() throws IOException {
 		try {
@@ -63,6 +69,12 @@ public abstract class AndroidPage extends BasePage {
 	{
 		DriverUtils.swipeUp(driver, content, time);
 		return returnBySwipe(SwipeDirection.UP);
+	}
+	
+	public void dialogsPagesSwipeUp(int time){
+		Point coords = container.getLocation();
+		 Dimension elementSize = container.getSize();
+		 driver.swipe(coords.x+elementSize.width / 2, coords.y + elementSize.height - 300, coords.x + elementSize.width / 2, coords.y, time);
 	}
 	
 	@Override

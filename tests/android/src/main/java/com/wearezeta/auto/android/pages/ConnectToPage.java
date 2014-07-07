@@ -19,7 +19,7 @@ public class ConnectToPage extends AndroidPage {
 	@FindBy(how = How.ID, using = AndroidLocators.idConnectToSend)
 	private WebElement sendRequest;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idConnectToMessage)
+	@FindBy(how = How.ID, using = AndroidLocators.idMessage)
 	private WebElement message;
 	
 	private String url;

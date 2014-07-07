@@ -1,6 +1,5 @@
 package com.wearezeta.auto.osx.pages;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 
 import org.openqa.selenium.By;
@@ -31,9 +30,6 @@ public class UserProfilePage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathPictureSettingsCloseButton)
 	private WebElement pictureSettingsCloseButton;
 	
-	@FindBy(how = How.NAME, using = OSXLocators.nameQuitZClientMenuItem)
-	private WebElement quitZClientMenuItem;
-	
 	public UserProfilePage(String URL, String path) throws MalformedURLException {
 		super(URL, path);
 	}
@@ -59,13 +55,5 @@ public class UserProfilePage extends OSXPage {
 		confirmPictureChoiceButton.click();
 		pictureSettingsCloseButton.click();
 		DriverUtils.waitUntilElementDissapear(driver, By.xpath(OSXLocators.xpathPictureFromImageFile));
-	}
-	
-	@Override
-	public void Close() throws IOException {
-		try {
-			quitZClientMenuItem.click();
-		} catch (Exception e) { }
-		super.Close();
 	}
 }

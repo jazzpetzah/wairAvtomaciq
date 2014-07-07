@@ -16,9 +16,9 @@ public class GroupChatPageSteps {
 	
 	public static final String userRemovedMessage = "YOU REMOVED ";
 	
-	@When("^I swipe left on group dialog page$")
-	public void WhenISwipeLeftOnGroupDialogPage() throws Throwable {
-		PagesCollection.groupChatInfoPage = (GroupChatInfoPage) PagesCollection.groupChatPage.swipeLeft(500);
+	@When("^I swipe up on group dialog page$")
+	public void WhenISwipeUpOnGroupDialogPage() throws Throwable {
+		PagesCollection.groupChatInfoPage = (GroupChatInfoPage) PagesCollection.groupChatPage.swipeUp(500);
 	}
 	
 	@When("^I swipe right on group dialog page$")
