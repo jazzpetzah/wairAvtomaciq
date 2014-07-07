@@ -24,9 +24,20 @@ public class PersonalInfoPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.nameSignOutButton)
 	private WebElement signoutButton;
 	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathPersonalInfoPage)
+	private WebElement personalPage;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameCameraButton)
+	private WebElement cameraButton;
+	
+	
+	private String url;
+	private String path;
+	
 	public PersonalInfoPage(String URL, String path) throws IOException {
 		super(URL, path);
-
+		url = URL;
+		this.path = path;
 	}
 	
 	public void SignoutBtnClick(){
@@ -48,6 +59,19 @@ public class PersonalInfoPage extends IOSPage{
 				 break;
 			 }
 		 }
+	}
+	
+	public void tapOnPersonalPage(){
+		personalPage.click();
+	}
+	
+	public CameraRollPage pressCameraButton() throws IOException{
+		
+		CameraRollPage page;
+		page = new CameraRollPage(url, path);
+		cameraButton.click();
+		
+		return page;
 	}
 
 	@Override

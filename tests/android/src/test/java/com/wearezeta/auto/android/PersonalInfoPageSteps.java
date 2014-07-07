@@ -2,6 +2,7 @@ package com.wearezeta.auto.android;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.PagesCollection;
@@ -51,6 +52,20 @@ public class PersonalInfoPageSteps {
 	@When("^I press Confirm button$")
 	public void WhenIPressConfirmButton() throws Throwable {
 		PagesCollection.personalInfoPaga.tapConfirmButton();
+	}
+	
+	@When("^I change (.*) to (.*)$")
+	public void IChangeNameTo(String name, String newName) throws Throwable {
+		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		PagesCollection.personalInfoPaga.changeName(name, newName);
+	}
+
+	@Then("^I see my new name (.*) and return old (.*)$")
+	public void ISeeMyNewName(String name, String oldName) throws Throwable {
+	    Assert.assertTrue(name.equals(PagesCollection.personalInfoPaga.getUserName()));
+	    oldName = CommonUtils.retrieveRealUserContactPasswordValue(oldName);
+		PagesCollection.personalInfoPaga.changeName(name, oldName);
+	    
 	}
 	
 	@Then("I see changed user picture")

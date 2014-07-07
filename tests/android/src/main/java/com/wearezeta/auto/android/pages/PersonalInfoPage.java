@@ -13,12 +13,23 @@ import com.wearezeta.auto.common.SwipeDirection;
 
 public class PersonalInfoPage extends AndroidPage
 {
+	
+	private String url;
+	private String path;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idBackgroundOverlay)
+	private WebElement backgroundOverlay;
+	
 	@FindBy(how = How.ID, using = AndroidLocators.idEmailField)
 	private WebElement emailField;
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idNameField)
 	private WebElement nameField;
 
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idNameEdit)
+	private WebElement nameEdit;
+	
 	@FindBy(how = How.ID, using = AndroidLocators.idChangePhotoBtn)
 	private WebElement changePhotoBtn;
 
@@ -48,6 +59,8 @@ public class PersonalInfoPage extends AndroidPage
 	
 	public PersonalInfoPage(String URL, String path) throws IOException {
 		super(URL, path);
+		this.url = URL;
+		this.path = path;
 
 	}
 
@@ -94,7 +107,7 @@ public class PersonalInfoPage extends AndroidPage
 	}
 
 	@Override
-	public AndroidPage returnBySwipe(SwipeDirection direction) {
+	public AndroidPage returnBySwipe(SwipeDirection direction) throws IOException {
 
 		AndroidPage page = null;
 		switch (direction){
@@ -113,6 +126,7 @@ public class PersonalInfoPage extends AndroidPage
 		}
 		case RIGHT:
 		{
+			page = new ContactListPage(url,path);
 			break;
 		}
 		}	
@@ -130,6 +144,20 @@ public class PersonalInfoPage extends AndroidPage
 	public void tapOnMyName() {
 		wait.until(ExpectedConditions.visibilityOf(nameField));
 		nameField.click();
+	}
+
+	public void changeName(String name, String newName) {
+		for(int i=0; i<name.length();i++)
+		{
+			driver.sendKeyEvent(67);
+		}
+		nameEdit.sendKeys(newName);
+		DriverUtils.mobileTapByCoordinates(driver, backgroundOverlay);
+	}
+
+	public String getUserName() {
+		driver.getPageSource();
+		return nameField.getText();
 	}
 
 }

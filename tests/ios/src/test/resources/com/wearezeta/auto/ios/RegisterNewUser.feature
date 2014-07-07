@@ -39,8 +39,8 @@ Feature: Register new user
     |	Email				    |	Password	        |  Name			    |
     |	aqaUser           	    |	aqaPassword	        |  aqaUser      	|
 
-@smoke
-@regression   
+@no-smoke
+@no-regression   
   Scenario Outline: Attempt to register an email with incorrect format
     Given I see sign in screen
 	When I press Join button

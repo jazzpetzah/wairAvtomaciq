@@ -82,9 +82,9 @@ public class CommonUtils {
 		return value;
 	}
 	
-	public static String getPhotoScriptPath(Class c)throws IOException {
+	private static String getWindowsImagePath(Class c)throws IOException {
 
-        return getValueFromConfig(c, "photoScriptPath");
+        return getValueFromConfig(c, "defaultWindowsImagePath");
 	}
 	
 	public static String getImagePath(Class c)throws IOException {
@@ -192,6 +192,10 @@ public class CommonUtils {
 
 		return getValueFromConfig(c, "activity");
 	}
+	
+	public static String getSimulatorImagesPathFromConfig(Class c) throws IOException {
+		return getValueFromConfig(c, "iosImagesPath");
+	}
 
 	public static String getGenerateUsersFlagFromConfig(Class c) throws IOException {
 
@@ -201,6 +205,11 @@ public class CommonUtils {
 	public static String getAndroidPackageFromConfig(Class c) throws IOException {
 
 		return getValueFromConfig(c, "package");
+	}
+	
+	public static String getUserPicturePathFromConfig(Class c) throws IOException {
+
+		return getValueFromConfig(c, "pathToUserpic");
 	}
 
 	public static String generateGUID()
@@ -253,7 +262,7 @@ public class CommonUtils {
 		}
 	}
 	
-	 public static void iOSSimulatorCameraRoll() throws IOException, InterruptedException{
+	 /*public static void iOSSimulatorCameraRoll() throws IOException, InterruptedException{
 		 
 		 String scriptPath = CommonUtils.getPhotoScriptPath(CommonUtils.class);
 		 
@@ -261,7 +270,7 @@ public class CommonUtils {
 		 
 		 Process process = Runtime.getRuntime().exec(cmd);
 		 System.out.println("Process Code "+ process.waitFor());
-	}
+	}*/
 	 
 	public static void usePrecreatedUsers() {
 		ClientUser contact2 = new ClientUser("smoketester+aqa33@wearezeta.com", "aqa123456", "aqa33", UsersState.AllContactsConnected);

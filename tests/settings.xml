@@ -20,9 +20,10 @@
 	<isSimulator>true</isSimulator>
 	<generateUsers>true</generateUsers>
 	<swipeScriptPath>/Users/shiznyak/zautomation/tests/tools/./swipeInWindow</swipeScriptPath>
-	<photoScriptPath>/Users/shiznyak/zautomation/tests/tools/push_photo_to_simulator.sh</photoScriptPath>
+	<pathToUserpic>/Users/shiznyak/zautomation/tests/tools/img/userpicture_landscape.jpg</pathToUserpic>
 	<driverTimeoutSeconds>10</driverTimeoutSeconds>
 	<pictureResultsPath>/Users/shiznyak/Downloads/</pictureResultsPath>
+	<iosImagesPath>/Users/shiznyak/zautomation/tests/tools/img/</iosImagesPath>
       </properties>
     </profile>
     <!-- Config for Android tests -->
@@ -44,7 +45,7 @@
     <profile>
       <id>OSX</id>
       <properties>
-        <Url>http://127.0.0.1:4723/wd/hub</Url>
+        <Url>http://127.0.0.1:4622/wd/hub</Url>
         <appPath>ZClient</appPath>
 	<generateUsers>true</generateUsers>
 	<driverTimeoutSeconds>10</driverTimeoutSeconds>

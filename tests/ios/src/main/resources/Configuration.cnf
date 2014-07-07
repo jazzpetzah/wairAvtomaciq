@@ -21,7 +21,11 @@ appPath=${appPath}
 isSimulator=${isSimulator}
 generateUsers=${generateUsers}
 swipeScriptPath=${swipeScriptPath}
-photoScriptPath=${photoScriptPath}
+pathToUserpic=${pathToUserpic}
 driverTimeoutSeconds=${driverTimeoutSeconds}
 pictureResultsPath=${pictureResultsPath}
+<<<<<<< HEAD
 >>>>>>> 20f57ea8ac9726a3150a6d50214cf775799cf4e2
+=======
+iosImagesPath=${iosImagesPath}
+>>>>>>> da9bef78a4c75112d2eb1eeb3f0e5ba1d13668e6

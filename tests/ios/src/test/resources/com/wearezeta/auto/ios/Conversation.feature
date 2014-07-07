@@ -31,7 +31,7 @@ Feature: Conversation
 	Examples: 
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
-    
+
   @smoke
   @regression
 	Scenario Outline: Start group chat with users from contact list
@@ -49,11 +49,11 @@ Feature: Conversation
 	   	And I see Add to conversation button
 	   	And I click on Add to conversation button
 	   	Then I see group chat page with users <Contact1> <Contact2>
-	   	
+
 	Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
-	   	
+
 
   @smoke
   @regression
@@ -69,7 +69,8 @@ Scenario Outline: Send message to group chat
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
- 
+
+  @torun
   @smoke
   @regression
 Scenario Outline: Send a camera roll picture to user from contact list
@@ -83,13 +84,13 @@ Scenario Outline: Send a camera roll picture to user from contact list
  	And I choose a picture from camera roll
  	And I press Confirm button
  	Then I see new photo in the dialog
-    
+
 Examples: 
 	|	Login		|	Password		|	Name		|	Contact			|
 	|	aqaUser		|	aqaPassword		|	aqaUser		|	aqaContact1		|
-	
-  @smoke
-  @regression
+
+  @no-smoke
+  @no-regression
 Scenario Outline: Leave from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -102,13 +103,18 @@ Scenario Outline: Leave from group chat
 	And I see <Contact1> and <Contact2> chat in contact list
 	And I tap on a group chat with <Contact1> and <Contact2>
 	And I can see <Name> Have Left
-		
+
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
+<<<<<<< HEAD
   @smoke
   @regression
+=======
+  @no-smoke
+  @no-regression
+>>>>>>> da9bef78a4c75112d2eb1eeb3f0e5ba1d13668e6
  Scenario Outline: Remove from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -120,10 +126,11 @@ Examples:
 	And I see warning message 
 	And I confirm remove
 	Then I see that <Contact2> is not present on group chat page
-	
-		
+
+
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
+<<<<<<< HEAD
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
 Scenario Outline: I can edit the conversation name
@@ -144,6 +151,12 @@ Examples:
     
   @smoke
   @regression
+=======
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
+
+  @no-smoke
+  @no-regression
+>>>>>>> da9bef78a4c75112d2eb1eeb3f0e5ba1d13668e6
  Scenario Outline: Mute conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -156,6 +169,7 @@ Examples:
 Examples:
     |  Login		| Password		| Name			| Contact1    |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |
+<<<<<<< HEAD
 
 @torun
 Scenario Outline: Verify correct group info page information
@@ -169,3 +183,5 @@ Scenario Outline: Verify correct group info page information
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2	     	|ParticipantNumber|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaPictureContact	|       3         |
+=======
+>>>>>>> da9bef78a4c75112d2eb1eeb3f0e5ba1d13668e6
