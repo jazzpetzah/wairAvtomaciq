@@ -12,7 +12,7 @@ import cucumber.api.java.en.*;
 public class DialogPageSteps{
 
 	private String message; 
-
+	
 	@When("^I see dialog page$")
 	public void WhenISeeDialogPage() throws Throwable {
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
@@ -27,6 +27,18 @@ public class DialogPageSteps{
 	@When("^I type the message and send it$")
 	public void WhenITypeTheMessageAndSendIt() throws Throwable {
 		message = CommonUtils.generateGUID();
+		PagesCollection.dialogPage.typeMessage(message);
+	}
+	
+	@When("^I type long message and send it$")
+	public void WhenITypeLongMessageAndSendIt() throws Throwable {
+		message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sed lorem dignissim lacus tincidunt scelerisque nec sed sem. Nunc lacinia non tortor a fringilla. Fusce cursus neque at posuere viverra. Duis ultricies ipsum ac leo mattis, a aliquet neque consequat. Vestibulum ut eros eu risus mattis iaculis quis ac eros. Nam sit amet venenatis felis. Vestibulum blandit nisi felis, id hendrerit quam viverra at. Curabitur nec facilisis felis.";
+		PagesCollection.dialogPage.typeMessage(message);
+	}
+	
+	@When("^I type Upper/Lower case message and send it$")
+	public void WhenITypeUpperLowerCaseAndSendIt() throws Throwable {
+		message = "Lorem ipsum dolor sit amet";
 		PagesCollection.dialogPage.typeMessage(message);
 	}
 	

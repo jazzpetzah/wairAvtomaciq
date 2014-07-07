@@ -39,27 +39,9 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.nameAddPictureButton)
 	private WebElement addPictureButton;
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameCameraRollButton)
-	private WebElement cameraRollButton;
-	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathCameraRollAlertOK)
-	private WebElement cameraRollAlertOK;
-	
-	@FindBy(how = How.NAME, using = IOSLocators.nameCameraRollCancel)
-	private WebElement cameraRollCancel;
-	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathCameraRollTableCell)
-	private WebElement cameraRollTableCell;
-	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathCameraRollPicture)
-	private WebElement cameraRollPicture;
-	
-	@FindBy(how = How.NAME, using = IOSLocators.nameConfirmPictureButton)
-	private WebElement confirmPictureButton;
-	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherConversationCellFormat)
 	private WebElement imageCell;
-
+	
 	private String url;
 	private String path;
 	
@@ -93,7 +75,7 @@ public class DialogPage extends IOSPage{
 	}
 		
 	public void ScrollToLastMessage(){
-		DriverUtils.scrollToElement(driver, messagesList.get(messagesList.size()-1));
+		//DriverUtils.scrollToElement(driver, messagesList.get(messagesList.size()-1));
 	}
 
 	public String getLastMessageFromDialog()
@@ -110,7 +92,7 @@ public class DialogPage extends IOSPage{
 	}
 	
 	private String GetHelloCell(List<WebElement> chatList) {
-		String helloCellText = helloCell.getAttribute("name");  //I dont get HEY FROM PIOTR here
+		String helloCellText = helloCell.getAttribute("name");  
 		return helloCellText;
 	}
 
@@ -133,30 +115,15 @@ public class DialogPage extends IOSPage{
 		DriverUtils.swipeRight(driver, cursorInput, 700);
 	}
 	
-	public void pressAddPictureButton() throws IOException{
-		addPictureButton.click();
-	}
-	
-	public void pressCameraRollButton(){
-		cameraRollButton.click();
-	}
-	
-	public void openCameraRoll() throws IOException, InterruptedException{
+	public CameraRollPage pressAddPictureButton() throws IOException{
 		
-		System.out.print("CAMERA ROLL");
-		cameraRollAlertOK.click();
-		Thread.sleep(2000);
-		cameraRollTableCell.click();
-		Thread.sleep(1000);
-		cameraRollPicture.click();
-		Thread.sleep(3000);
+		CameraRollPage page;
+		page = new CameraRollPage(url, path);
+		addPictureButton.click();
+		
+		return page;
+	}
 
-	}
-	
-	public void pressConfirmButton() throws InterruptedException{
-		confirmPictureButton.click();
-		Thread.sleep(1000);
-	}
 	
 	private String GetImageCell(List<WebElement> chatList) {
 		String lastMessage = imageCell.getAttribute("name");
@@ -194,6 +161,7 @@ public class DialogPage extends IOSPage{
 			}
 			case LEFT:
 			{
+				page = new OtherUserPersonalInfoPage(url, path);
 				break;
 			}
 			case RIGHT:

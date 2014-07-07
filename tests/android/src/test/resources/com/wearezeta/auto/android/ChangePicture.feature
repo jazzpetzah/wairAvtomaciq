@@ -1,5 +1,5 @@
 Feature: Change picture
-@torun
+
 @smoke
 @regression
   Scenario Outline: Change user picture
