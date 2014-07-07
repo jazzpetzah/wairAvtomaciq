@@ -1,6 +1,5 @@
 Feature: Sign In
 
-@torun
 @smoke
 @regression
   Scenario Outline: Sign in to ZClient
