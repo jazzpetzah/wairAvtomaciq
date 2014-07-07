@@ -1,6 +1,5 @@
 #Configuration file for IOS tests
 #Configure before running tests
-<<<<<<< HEAD
 Url=http://127.0.0.1:4723/wd/hub
 appPath=/Users/Chad/ZClient 2.app
 isSimulator=true

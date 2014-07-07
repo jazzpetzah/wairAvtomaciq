@@ -1,6 +1,5 @@
 Feature: Change Profile Picture
 
-@torun
 Scenario Outline: Change your profile picture  
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with my name <Name>

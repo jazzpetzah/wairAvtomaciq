@@ -70,9 +70,6 @@ public class RegistrationPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameForwardWelcomeButton)
 	private WebElement ForwardWelcomeButton;
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameErrorPageButton)
-	private WebElement errorPageButton; 
-	
 	private String name;
 	private String email;
 	private String password;
@@ -215,6 +212,17 @@ public class RegistrationPage extends IOSPage {
 		ForwardWelcomeButton.click();
 	}
 	
+	public void typeUsername() 
+	{
+		yourName.sendKeys(getName());
+	}
+	
+	public String getUsernameFieldValue()  
+	{
+		return yourName.getText();
+	}
+
+	
 	public String getEmailFieldValue()
 	{
 		return yourEmail.getText();		
@@ -233,11 +241,6 @@ public class RegistrationPage extends IOSPage {
 	public void confirmPicture()
 	{
 		confirmImageButton.click();
-	}
-	
-	public boolean confirmErrorPage() 
-	{
-		return errorPageButton.isDisplayed();
 	}
 	
 	public void backToEmailPage() {
