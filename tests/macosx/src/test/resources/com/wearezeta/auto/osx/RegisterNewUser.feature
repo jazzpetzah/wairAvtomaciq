@@ -41,28 +41,26 @@ Examples:
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|	userpicture_landscape.jpg	|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|	userpicture_portrait.jpg	|
 
-@smoke
 @regression
   Scenario Outline: Do not accept email with spaces
 	Given I am signed out from ZClient
 	And I see Sign In screen
 	When I start registration
-	And I choose register using camera
-	And I take registration picture from camera
+	And I choose register with image
+	And I take registration picture from image file userpicture_portrait.jpg
 	And I enter email <Email>
-	Then I see email <Email> without spaces
+	Then I see that email invalid
 
     Examples:     
     |	Email										    |
     |	email with spaces@weare zeta.com           	    |
 
-@smoke
 @regression
 Scenario: Fail registration on incorrect email
 	Given I am signed out from ZClient
 	And I see Sign In screen
 	When I start registration
-	And I choose register using camera
-	And I take registration picture from camera
+	And I choose register with image
+	And I take registration picture from image file userpicture_portrait.jpg
 	And I enter invalid emails
 	Then I see that all emails not accepted
