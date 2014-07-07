@@ -1,10 +1,11 @@
 #Configuration file for IOS tests
 #Configure before running tests
-Url=http://127.0.0.1:4723/wd/hub
-appPath=/Users/Chad/ZClient 2.app
-isSimulator=true
-generateUsers=false
-swipeScriptPath=/Users/Chad/zautomation/tests/tools/swipeInWindow.py
-photoScriptPath=/Users/Chad/zautomation/tests/tools/push_photo_to_simulator.sh
-driverTimeoutSeconds=6
+appPath=${appPath}
+isSimulator=${isSimulator}
+generateUsers=${generateUsers}
+swipeScriptPath=${swipeScriptPath}
+photoScriptPath=${photoScriptPath}
+driverTimeoutSeconds=${driverTimeoutSeconds}
+pictureResultsPath=${pictureResultsPath}
+iosImagesPath=${iosImagesPath}
 
