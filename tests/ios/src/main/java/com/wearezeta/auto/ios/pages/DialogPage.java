@@ -111,13 +111,9 @@ public class DialogPage extends IOSPage{
 		return GetHeyCell(messagesList);
 	}
 	
-	public void swipeInputCurser() throws IOException, InterruptedException{
-		//DriverUtils.swipeRight(driver, cursorInput, 700);
+	public void swipeInputCursor() throws IOException, InterruptedException{
+		DriverUtils.swipeRight(driver, cursorInput, 700);
 	}
-	
-	/*public void pressAddPictureButton() throws IOException{
-		addPictureButton.click();
-	}*/
 	
 	public CameraRollPage pressAddPictureButton() throws IOException{
 		
