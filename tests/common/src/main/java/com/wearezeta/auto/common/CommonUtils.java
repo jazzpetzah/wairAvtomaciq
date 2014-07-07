@@ -72,7 +72,12 @@ public class CommonUtils {
 		return value;
 	}
 	
-	public static String getPhotoScriptPath(Class c)throws IOException {
+	private static String getWindowsImagePath(Class c)throws IOException {
+
+        return getValueFromConfig(c, "defaultWindowsImagePath");
+	}
+
+    public static String getPhotoScriptPath(Class c)throws IOException {
 
         return getValueFromConfig(c, "photoScriptPath");
 	}
@@ -191,6 +196,11 @@ public class CommonUtils {
 	public static String getAndroidPackageFromConfig(Class c) throws IOException {
 
 		return getValueFromConfig(c, "package");
+	}
+	
+	public static String getUserPicturPathFromConfig(Class c) throws IOException {
+
+		return getValueFromConfig(c, "pathToUserpic");
 	}
 
 	public static String generateGUID()
