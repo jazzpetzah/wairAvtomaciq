@@ -125,16 +125,11 @@ public final class IOSLocators {
 	
 	public static final String xpathPersonalInfoPage = "//UIAApplication[1]/UIAWindow[1]";
 	
-<<<<<<< HEAD
-	public static final String xpathCameraRollPicture = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[1]";
+	public static final String xpathCameraRollPicture1 = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[1]";
 	
-	public static final String nameConfirmPictureButton = "ImageConfirmerConfirmButton";
-<<<<<<< HEAD
-		
-=======
-=======
+	public static final String nameConfirmPictureButton1 = "ImageConfirmerConfirmButton";
+	
 	public static final String nameCameraButton = "cameraButton";
->>>>>>> 1571a45c23c2aaa871fdffd09fc4bc4a6db87689
 	
 	public static final String xpathProvideValidEmailMessage = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]"; 
 	
@@ -155,9 +150,4 @@ public final class IOSLocators {
 	public static final String nameConnectAlert = "Connect With";
 	
 	public static final String nameConnectAlertYes = "Yes";
-<<<<<<< HEAD
->>>>>>> 9b723bfb0a796f3acc7345f9255617541b4ecbf8
->>>>>>> 4d530cbcb624cc7f446554f94d3947c5ffeb68dd
-=======
->>>>>>> 1571a45c23c2aaa871fdffd09fc4bc4a6db87689
 }

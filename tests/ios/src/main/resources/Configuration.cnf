@@ -2,38 +2,10 @@
 #Configure before running tests
 <<<<<<< HEAD
 Url=http://127.0.0.1:4723/wd/hub
-<<<<<<< HEAD
 appPath=/Users/Chad/ZClient 2.app
 isSimulator=true
 generateUsers=false
 swipeScriptPath=/Users/Chad/zautomation/tests/tools/swipeInWindow.py
 photoScriptPath=/Users/Chad/zautomation/tests/tools/push_photo_to_simulator.sh
 driverTimeoutSeconds=6
-=======
-<<<<<<< HEAD
-appPath=/Users/haydenchristensen/Desktop/Automation/ZClient.app
-isSimulator=true
-generateUsers=false
-swipeScriptPath=/Users/haydenchristensen/zautomation/tests/tools/swipeInWindow.py
-photoScriptPath=/Users/haydenchristensen/zautomation/tests/tools/push_photo_to_simulator.sh
-driverTimeoutSeconds=6
-=======
-appPath=/Users/shiznyak/Downloads/ZClient.app
-isSimulator=true
-generateUsers=true
-swipeScriptPath=/Users/shiznyak/zautomation/tests/tools/./swipeInWindow
-photoScriptPath=/Users/shiznyak/zautomation/tests/tools/push_photo_to_simulator.sh
-driverTimeoutSeconds=10
->>>>>>> 9b723bfb0a796f3acc7345f9255617541b4ecbf8
->>>>>>> 4d530cbcb624cc7f446554f94d3947c5ffeb68dd
-=======
-Url=${Url}
-appPath=${appPath}
-isSimulator=${isSimulator}
-generateUsers=${generateUsers}
-swipeScriptPath=${swipeScriptPath}
-photoScriptPath=${photoScriptPath}
-driverTimeoutSeconds=${driverTimeoutSeconds}
-pictureResultsPath=${pictureResultsPath}
-iosImagesPath=${iosImagesPath}
->>>>>>> 1571a45c23c2aaa871fdffd09fc4bc4a6db87689
+
