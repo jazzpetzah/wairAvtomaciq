@@ -125,7 +125,7 @@ Examples:
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
-    
+
   @smoke
   @regression
  Scenario Outline: Mute conversation
