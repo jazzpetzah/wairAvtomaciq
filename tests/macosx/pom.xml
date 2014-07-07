@@ -18,7 +18,12 @@
 
   <dependencies>
     
-	<!-- NON-REPOSITORY DEPS -->
+	<dependency>
+      <groupId>org.sikuli</groupId>
+      <artifactId>sikuli-java</artifactId>
+      <version>1.0.1</version>
+      <type>jar</type>
+    </dependency>
 	
 	<dependency>
       <groupId>com.wearezeta.auto</groupId>

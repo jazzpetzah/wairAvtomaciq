@@ -1,6 +1,5 @@
 Feature: Register new user
 
-@torun
 @smoke
 @regression
   Scenario Outline: Register new user using front camera
