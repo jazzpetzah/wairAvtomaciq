@@ -21,7 +21,7 @@ public class CommonSteps {
 		
 
 		try {
-			String[] picturepath = new String[] {CommonUtils.getUserPicturPathFromConfig(CommonSteps.class)};
+			String[] picturepath = new String[] {CommonUtils.getUserPicturePathFromConfig(CommonSteps.class)};
 			IOSSimulatorPhotoLibHelper.CreateSimulatorPhotoLib("7.1", picturepath, true);
 			//CommonUtils.iOSSimulatorCameraRoll();
 		}

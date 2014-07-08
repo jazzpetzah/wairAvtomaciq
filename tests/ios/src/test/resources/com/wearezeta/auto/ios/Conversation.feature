@@ -70,7 +70,6 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-  @torun
   @smoke
   @regression
 Scenario Outline: Send a camera roll picture to user from contact list
@@ -107,19 +106,10 @@ Scenario Outline: Leave from group chat
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
-<<<<<<< HEAD
-    
-<<<<<<< HEAD
 
-Scenario Outline: Remove from group chat
-=======
-=======
-
->>>>>>> 1571a45c23c2aaa871fdffd09fc4bc4a6db87689
   @smoke
   @regression
  Scenario Outline: Remove from group chat
->>>>>>> 405d978c4d61fd925f1e1356a93f0476c08cb694
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
 	When I create group chat with <Contact1> and <Contact2>
@@ -130,13 +120,10 @@ Scenario Outline: Remove from group chat
 	And I see warning message 
 	And I confirm remove
 	Then I see that <Contact2> is not present on group chat page
-
-
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
-<<<<<<< HEAD
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
-
+@torun
 Scenario Outline: I can edit the conversation name
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -151,11 +138,7 @@ Scenario Outline: I can edit the conversation name
 		
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
-    
-    
-=======
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
   @smoke
   @regression
@@ -171,8 +154,3 @@ Examples:
 Examples:
     |  Login		| Password		| Name			| Contact1    |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |
-<<<<<<< HEAD
- 
->>>>>>> 405d978c4d61fd925f1e1356a93f0476c08cb694
-=======
->>>>>>> 1571a45c23c2aaa871fdffd09fc4bc4a6db87689
