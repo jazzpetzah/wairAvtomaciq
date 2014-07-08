@@ -79,7 +79,7 @@ public class ContactListPageSteps {
 		ContactListPage contactList = CommonSteps.senderPages.getContactListPage();
 		Assert.assertTrue(
 				"Conversation with name " + conversation + " were not muted.",
-				contactList.isConversationMutedButtonExist(conversation));
+				contactList.isConversationMutedButtonVisible(conversation));
 	}
 	
 	@Then("I see conversation (.*) is unmuted")
@@ -88,7 +88,7 @@ public class ContactListPageSteps {
 		ContactListPage contactList = CommonSteps.senderPages.getContactListPage();
 		Assert.assertFalse(
 				"Conversation with name " + conversation + " is still muted.",
-				contactList.isConversationMutedButtonExist(conversation));
+				contactList.isConversationMutedButtonVisible(conversation));
 	}
 	
 	@When("I see connect invitation")
