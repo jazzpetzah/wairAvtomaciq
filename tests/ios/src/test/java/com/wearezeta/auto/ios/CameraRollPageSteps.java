@@ -22,7 +22,4 @@ public class CameraRollPageSteps {
 		PagesCollection.cameraRollPage.pressConfirmButton();
 	}
 	
-
-
-
 }

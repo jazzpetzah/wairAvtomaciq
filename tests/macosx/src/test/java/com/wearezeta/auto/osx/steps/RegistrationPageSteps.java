@@ -139,6 +139,12 @@ public class RegistrationPageSteps {
 		
 	}
 	
+	@Then("I see that email invalid")
+	public void ISeeThatEmailInvalid() {
+		RegistrationPage registrationPage = CommonSteps.senderPages.getRegistrationPage();
+		Assert.assertTrue("Email accepted but shouldn't be.", registrationPage.isInvalidEmailMessageAppear());
+	}
+	
 	@Then("I see email (.*) without spaces")
 	public void ISeeEmailWithoutSpaces(String email) {
 		System.out.println(email);
