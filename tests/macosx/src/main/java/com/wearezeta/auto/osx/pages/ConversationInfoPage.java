@@ -1,6 +1,7 @@
 package com.wearezeta.auto.osx.pages;
 
 import java.awt.HeadlessException;
+import java.io.IOException;
 import java.net.MalformedURLException;
 
 import org.openqa.selenium.By;
@@ -13,6 +14,7 @@ import org.sikuli.script.Env;
 import org.sikuli.script.FindFailed;
 import org.sikuli.script.Screen;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
@@ -48,10 +50,10 @@ public class ConversationInfoPage extends OSXPage {
 		el.click();
 	}
 	
-	public void selectUserIfNotSelected(String user) {
+	public void selectUserIfNotSelected(String user) throws IOException {
 		Screen s = new Screen();
 		try {
-    		App.focus("ZClient");
+    		App.focus(CommonUtils.getAppPathFromConfig(ConversationInfoPage.class));
 			s.click(Env.getMouseLocation());
 			s.click(Env.getMouseLocation());
 		} catch (HeadlessException e) {
