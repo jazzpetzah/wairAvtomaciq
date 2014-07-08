@@ -1,7 +1,7 @@
 Feature: Register new user
 
-@smoke
-@regression
+@no-smoke
+@no-regression
 Scenario Outline: Register new user using front camera
 	Given I am signed out from ZClient
 	And I see Sign In screen
