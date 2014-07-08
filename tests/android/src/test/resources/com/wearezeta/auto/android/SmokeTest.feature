@@ -41,7 +41,7 @@ Feature: SmokeTest
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
     
-@smoke @regression @torun
+@smoke @regression
   Scenario Outline: ZClient change name
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
