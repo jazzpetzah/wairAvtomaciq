@@ -72,3 +72,24 @@ Feature: Register new user
     Examples:     
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
+@torun
+ Scenario Outline: Can re-send verification email from verification screen 
+	Given I see sign in screen
+	When I press Join button
+	And I press Picture button
+	And I choose photo from album
+	And I See selected picture
+	And I confirm selection
+	And I enter name <Name>
+	And I enter email <Email>
+	And I enter password <Password>
+	And I submit registration data
+	Then I see confirmation page
+	And I confirm that I received first email
+	And I resend verification email
+	And I confirm that I recieve second email
+
+    Examples:     
+    |	Email						|	Password	    |	Name			|
+    |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
+    

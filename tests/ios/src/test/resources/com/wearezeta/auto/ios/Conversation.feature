@@ -70,7 +70,7 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-  @torun
+  
   @smoke
   @regression
 Scenario Outline: Send a camera roll picture to user from contact list

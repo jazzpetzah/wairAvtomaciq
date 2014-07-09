@@ -3,14 +3,19 @@ package com.wearezeta.auto.ios.pages;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
+import java.util.ArrayList;
 
 import org.junit.Assert;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.CreateZetaUser;
 import com.wearezeta.auto.common.DriverUtils;
+import com.wearezeta.auto.common.EmailHeaders;
 import com.wearezeta.auto.common.IOSLocators;
 import com.wearezeta.auto.common.SwipeDirection;
 
@@ -44,12 +49,6 @@ public class RegistrationPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameYourEmail)
 	private WebElement yourEmail;
 	
-	//@FindBy(how = How.XPATH, using = IOSLocators.xpathYourSecurePassword)
-	//private WebElement yourSecurePassword;
-	
-	//@FindBy(how = How.XPATH, using = IOSLocators.xpathYourVisiblePassword)
-	//private WebElement yourVisiblePassword;
-	
 	@FindBy(how = How.NAME, using = IOSLocators.nameYourPassword)
 	private WebElement yourPassword;
 	
@@ -73,6 +72,9 @@ public class RegistrationPage extends IOSPage {
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameForwardWelcomeButton)
 	private WebElement ForwardWelcomeButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathReSendButton)
+	private WebElement reSendButton;
 	
 	private String name;
 	private String email;
@@ -258,4 +260,26 @@ public class RegistrationPage extends IOSPage {
 	public void setListOfEmails(String[] list){
 		this.listOfEmails = list;
 	}
+	
+	public void reSendEmail() {
+		driver.tap(1, (reSendButton.getLocation().x)+(reSendButton.getSize().width / 2), (reSendButton.getLocation().y)+(reSendButton.getSize().height-5) ,1);
+	}
+	int test =1;
+	public List<EmailHeaders> confirmEmailReceived() throws IOException{
+	  System.out.println("test:"+test++);
+	  List<EmailHeaders> headersList = new ArrayList<EmailHeaders>();
+      headersList = CreateZetaUser.getLastMailHeaders(CommonUtils.getDefaultEmailFromConfig(CreateZetaUser.class),CommonUtils.getDefaultPasswordFromConfig(CreateZetaUser.class),0);
+      if(!headersList.isEmpty()){
+    	  for(EmailHeaders emailHeader: headersList){
+    		  System.out.println("user email: "+emailHeader.getLastUserEmail());
+    	      System.out.println("mail subject: "+emailHeader.getMailSubject());
+    	      System.out.println("zeta purpose: "+emailHeader.getXZetaPurpose());
+    	      System.out.println("zeta key: "+emailHeader.getXZetaKey());
+    	      System.out.println("zeta code: "+emailHeader.getXZetaCode()+"\n");
+    	  	}
+      }else{System.out.println("empty list");}
+      return headersList;
+	}
+	
+
 }

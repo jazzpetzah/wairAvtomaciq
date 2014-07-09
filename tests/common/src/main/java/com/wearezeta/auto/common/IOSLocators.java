@@ -146,4 +146,8 @@ public final class IOSLocators {
 	public static final String nameConnectAlert = "Connect With";
 	
 	public static final String nameConnectAlertYes = "Yes";
+	
+	public static final String xpathReSendButton = "//UIAApplication[1]/UIAWindow[1]/UIATextView[1]";
+
 }
+

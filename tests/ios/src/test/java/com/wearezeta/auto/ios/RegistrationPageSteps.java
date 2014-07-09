@@ -141,6 +141,23 @@ public class RegistrationPageSteps {
 		 PagesCollection.registrationPage.createAccount();
 	 }
 	 
+	 @Then("^I confirm that I received first email$")
+	 public void IReceivedFirstEmail() throws IOException{
+		 PagesCollection.registrationPage.confirmEmailReceived();
+	 }
+	 
+	 @Then("^I resend verification email$")
+	 public void IResendVerificationEmail()
+	 {
+		 PagesCollection.registrationPage.reSendEmail();
+	 }
+	 
+	 @Then("^I confirm that I recieve second email$")
+	 public void IReceivedSecondEmail() throws IOException
+	 {
+		 PagesCollection.registrationPage.confirmEmailReceived();
+	 }
+
 	 @Then("^I see confirmation page$")
 	 public void ISeeConfirmationPage()
 	 {
