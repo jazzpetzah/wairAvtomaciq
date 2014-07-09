@@ -55,7 +55,10 @@ public final class OSXLocators {
 	
 	public static final String idChooseImageCancelButton = "_NS:53";
 	public static final String idChooseImageOpenButton = "_NS:55";
+	public static final String idChooseDirectoryPopUp = "_NS:40";
 	public static final String xpathFormatFinderImageFile = "//AXTextField[@AXValue='%s']";
+	public static final String xpathFormatFavoritesFolderPopUp = "//AXStaticText[@AXValue='%s']";
+	public static final String xpathSelectColumnViewButton = "//AXRadioButton[@AXDescription='column view']";
 	
 	public static final String idAddPeopleButtonGroupChat = "addButton";
 	public static final String idConfirmationViewConfirmButton = "ConfirmationViewConfirmButton";
@@ -84,4 +87,6 @@ public final class OSXLocators {
 	public static final String idIgnoreConnectionRequestButton = "_NS:10";
 	
 	public static final String xpathPleaseProvideEmailAddress = "//AXStaticText[@AXValue='PLEASE PROVIDE A VALID EMAIL ADDRESS']";
+
+	public static final String IMAGES_SOURCE_DIRECTORY = "Documents";
 }
