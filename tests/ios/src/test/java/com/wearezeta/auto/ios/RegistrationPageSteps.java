@@ -7,11 +7,8 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.CreateZetaUser;
-<<<<<<< HEAD
 import com.wearezeta.auto.common.IOSLocators;
 import com.wearezeta.auto.common.UsersState;
-=======
->>>>>>> 0cc9dfdff1b7302807a7eca8b3fb7db151cab5b5
 import com.wearezeta.auto.ios.pages.PagesCollection;
 
 import cucumber.api.java.en.Then;
