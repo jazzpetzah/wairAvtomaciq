@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class MainMenuPage extends OSXPage {
@@ -21,9 +22,9 @@ public class MainMenuPage extends OSXPage {
 		super(URL, path);
 	}
 
-	public void SignOut() {
+	public void SignOut() throws IOException {
 		signOutMenuItem.click();
-		driver.navigate().to("ZClient");
+		driver.navigate().to(CommonUtils.getAppPathFromConfig(ConversationInfoPage.class));
 	}
 	
 	@Override

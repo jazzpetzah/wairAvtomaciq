@@ -87,11 +87,6 @@ public class CommonUtils {
 
         return getValueFromConfig(c, "defaultWindowsImagePath");
 	}
-
-    public static String getPhotoScriptPath(Class c)throws IOException {
-
-        return getValueFromConfig(c, "photoScriptPath");
-	}
 	
 	public static String getImagePath(Class c)throws IOException {
 
@@ -213,7 +208,7 @@ public class CommonUtils {
 		return getValueFromConfig(c, "package");
 	}
 	
-	public static String getUserPicturPathFromConfig(Class c) throws IOException {
+	public static String getUserPicturePathFromConfig(Class c) throws IOException {
 
 		return getValueFromConfig(c, "pathToUserpic");
 	}
@@ -355,7 +350,7 @@ public class CommonUtils {
 		}
 	}
 	
-	 public static void iOSSimulatorCameraRoll() throws IOException, InterruptedException{
+	 /*public static void iOSSimulatorCameraRoll() throws IOException, InterruptedException{
 		 
 		 String scriptPath = CommonUtils.getPhotoScriptPath(CommonUtils.class);
 		 
@@ -363,7 +358,7 @@ public class CommonUtils {
 		 
 		 Process process = Runtime.getRuntime().exec(cmd);
 		 System.out.println("Process Code "+ process.waitFor());
-	}
+	}*/
 	 
 	public static void usePrecreatedUsers() {
 		ClientUser contact2 = new ClientUser("smoketester+aqa33@wearezeta.com", "aqa123456", "aqa33", UsersState.AllContactsConnected);

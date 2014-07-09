@@ -1,5 +1,10 @@
 Feature: Register new user
 
+<<<<<<< HEAD
+=======
+@smoke
+@regression
+>>>>>>> 0cc9dfdff1b7302807a7eca8b3fb7db151cab5b5
   Scenario Outline: Register new user using front camera
 	Given I see sign in screen
 	When I press Join button
@@ -34,7 +39,13 @@ Feature: Register new user
     Examples:     
     |	Email				    |	Password	        |  Name			    |
     |	aqaUser           	    |	aqaPassword	        |  aqaUser      	|
+<<<<<<< HEAD
   
+=======
+
+@no-smoke
+@no-regression   
+>>>>>>> 0cc9dfdff1b7302807a7eca8b3fb7db151cab5b5
   Scenario Outline: Attempt to register an email with incorrect format
     Given I see sign in screen
 	When I press Join button

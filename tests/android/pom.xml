@@ -14,6 +14,12 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	<skipTests>true</skipTests>
 	<TestRun>DevRun</TestRun>
+	<Url>http://127.0.0.1:4723/wd/hub</Url>
+    <appPath>/Project/zclient.apk</appPath>
+	<package>com.waz.zclient</package>
+	<generateUsers>true</generateUsers>
+	<activity>.MainActivity</activity>
+	<driverTimeoutSeconds>10</driverTimeoutSeconds>
   </properties>
 
   <dependencies>
@@ -76,6 +82,7 @@
 		  <includes>
 			<include>**/${TestRun}.java</include>
           </includes>
+          <argLine>-Djava.library.path=../common/native_lib</argLine>
         </configuration>
       </plugin>
        <plugin>

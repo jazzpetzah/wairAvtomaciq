@@ -77,6 +77,11 @@ Examples:
 	|	Login		|	Password		|	Name		|	Contact			|
 	|	aqaUser		|	aqaPassword		|	aqaUser		|	aqaContact1		|
 
+<<<<<<< HEAD
+=======
+  @no-smoke
+  @no-regression
+>>>>>>> 0cc9dfdff1b7302807a7eca8b3fb7db151cab5b5
 Scenario Outline: Leave from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -94,6 +99,11 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
+<<<<<<< HEAD
+=======
+  @no-smoke
+  @no-regression
+>>>>>>> 0cc9dfdff1b7302807a7eca8b3fb7db151cab5b5
  Scenario Outline: Remove from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -111,6 +121,11 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
 
+<<<<<<< HEAD
+=======
+  @no-smoke
+  @no-regression
+>>>>>>> 0cc9dfdff1b7302807a7eca8b3fb7db151cab5b5
  Scenario Outline: Mute conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
