@@ -12,7 +12,7 @@ import com.wearezeta.auto.common.DriverUtils;
 
 public class OSXPage extends BasePage {
 
-	public static String imagesPath = System.getProperty("user.home") + "/Desktop/";
+	public static String imagesPath = System.getProperty("user.home") + "/Documents/";
 	
 	public OSXPage(String URL, String path) throws MalformedURLException {
 		DesiredCapabilities capabilities = new DesiredCapabilities(); 
