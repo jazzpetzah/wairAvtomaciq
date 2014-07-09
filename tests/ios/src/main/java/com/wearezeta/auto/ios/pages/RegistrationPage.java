@@ -9,12 +9,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-
 
 import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.common.IOSLocators;
@@ -50,6 +44,12 @@ public class RegistrationPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameYourEmail)
 	private WebElement yourEmail;
 	
+	//@FindBy(how = How.XPATH, using = IOSLocators.xpathYourSecurePassword)
+	//private WebElement yourSecurePassword;
+	
+	//@FindBy(how = How.XPATH, using = IOSLocators.xpathYourVisiblePassword)
+	//private WebElement yourVisiblePassword;
+	
 	@FindBy(how = How.NAME, using = IOSLocators.nameYourPassword)
 	private WebElement yourPassword;
 	
@@ -73,9 +73,6 @@ public class RegistrationPage extends IOSPage {
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameForwardWelcomeButton)
 	private WebElement ForwardWelcomeButton;
-	
-	@FindBy(how = How.NAME, using = IOSLocators.nameErrorPageButton)
-	private WebElement errorPageButton; 
 	
 	private String name;
 	private String email;
@@ -118,56 +115,20 @@ public class RegistrationPage extends IOSPage {
 		photos.get(0).click();
 	}
 	
+	
 	public void createAccount()
 	{
-		WebDriverWait mywait = new WebDriverWait(driver, 1, 100);
-		try {
-			mywait.until(ExpectedConditions.visibilityOf(yourName));
-			yourName.sendKeys(getName() + "\n");
-		} catch (WebDriverException e) {
-			// Ignore it
-		}
-		try {
-			mywait.until(ExpectedConditions.visibilityOf(yourEmail));
-			yourEmail.sendKeys(getEmail() + "\n");
-		} catch (WebDriverException e) {
-			// Ignore it
-		}
-		try {
-			mywait.until(ExpectedConditions.visibilityOf(yourPassword));
-			yourPassword.sendKeys(getPassword());
-		} catch (WebDriverException e) {
-			// Ignore it
-		}
-
-		if(ExpectedConditions.presenceOfElementLocated(By.xpath(IOSLocators.xpathYourName)) != null) {
-			yourName.sendKeys(getName() + "\n");
-		}
-		if(ExpectedConditions.presenceOfElementLocated(By.name(IOSLocators.nameYourEmail)) != null) {
-			yourEmail.sendKeys(getEmail() + "\n");
-		}
-		if(ExpectedConditions.presenceOfElementLocated(By.name(IOSLocators.nameYourPassword)) != null) {
-			yourPassword.sendKeys(getPassword());
-		}
+		yourName.sendKeys(getName() + "\n");
+		yourEmail.sendKeys(getEmail() + "\n");
+		yourPassword.sendKeys(getPassword());
+		
 		createAccountButton.click();
-	}	
+	}
 	
 	public void typeEmail()
 	{
 		yourName.sendKeys(getName() + "\n");
 		yourEmail.sendKeys(getEmail());
-	}
-
-	public void retypeEmail() {
-		if (ExpectedConditions.presenceOfElementLocated(By
-				.name(IOSLocators.nameYourEmail)) != null) {
-			yourEmail.sendKeys(getEmail());
-		}
-	}
-
-	public void returnToConfirmRegistration() {
-		ForwardWelcomeButton.click();
-		createAccountButton.click();
 	}
 	
 	public boolean typeAllInvalidEmails()
@@ -234,21 +195,6 @@ public class RegistrationPage extends IOSPage {
 		return true;
 	}
 	
-	public void navigateToCreateAccount()
-	{
-		ForwardWelcomeButton.click();
-	}
-
-	public void typeUsername() 
-	{
-		yourName.sendKeys(getName());
-	}
-	
-	public String getUsernameFieldValue()  
-	{
-		return yourName.getText();
-	}
-
 	public String getEmailFieldValue()
 	{
 		return yourEmail.getText();		
@@ -267,23 +213,6 @@ public class RegistrationPage extends IOSPage {
 	public void confirmPicture()
 	{
 		confirmImageButton.click();
-	}
-	
-	public boolean confirmErrorPage() 
-	{
-		return errorPageButton.isDisplayed();
-	}
-	
-	public void backToEmailPage() {
-		WebDriverWait mywait = new WebDriverWait(driver, 1, 100);
-		while (true) {
-			try {
-				mywait.until(ExpectedConditions.visibilityOf(yourEmail));
-				return;
-			} catch (WebDriverException e) {
-				backToWelcomeButton.click();
-			}	
-		}
 	}
 	
 	public void catchLoginAlert() {
@@ -313,7 +242,7 @@ public class RegistrationPage extends IOSPage {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	public String getPassword() {
 		return password;
 	}

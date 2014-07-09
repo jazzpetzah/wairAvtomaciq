@@ -97,11 +97,6 @@ public class ContactListPageSteps {
 		groupChatSteps.ThenISeeGroupChatPage(contact1, contact2);
 	}
 	
-	@When("^I see the group conversation name changed in the chat list$")
-	public void ISeeGroupNameChangeInChatList(){
-		Assert.assertTrue(PagesCollection.contactListPage.verifyChangedGroupNameInChatList());
-	}
-	
 	@Then("^I see (.*) and (.*) chat in contact list$")
 	public void ISeeGroupChatInContactList(String contact1, String contact2) throws InterruptedException{
 		

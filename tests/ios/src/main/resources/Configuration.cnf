@@ -9,4 +9,3 @@ pathToUserpic=${pathToUserpic}
 driverTimeoutSeconds=${driverTimeoutSeconds}
 pictureResultsPath=${pictureResultsPath}
 iosImagesPath=${iosImagesPath}
-

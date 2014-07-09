@@ -1,5 +1,7 @@
 Feature: Conversation
 
+  @smoke
+  @regression
   Scenario Outline: Send Message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -14,6 +16,8 @@ Feature: Conversation
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
 
+  @smoke
+  @regression
     Scenario Outline: Send Hello to contact
 		Given I Sign in using login <Login> and password <Password> 
     	And I see Contact list with my name <Name>
@@ -28,6 +32,8 @@ Feature: Conversation
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
 
+  @smoke
+  @regression
 	Scenario Outline: Start group chat with users from contact list
 		Given I Sign in using login <Login> and password <Password>
     	And I see Contact list with my name <Name>
@@ -48,6 +54,9 @@ Feature: Conversation
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
+
+  @smoke
+  @regression
 Scenario Outline: Send message to group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -61,6 +70,7 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
+  @torun
   @smoke
   @regression
 Scenario Outline: Send a camera roll picture to user from contact list
@@ -79,7 +89,8 @@ Examples:
 	|	Login		|	Password		|	Name		|	Contact			|
 	|	aqaUser		|	aqaPassword		|	aqaUser		|	aqaContact1		|
 
-
+  @no-smoke
+  @no-regression
 Scenario Outline: Leave from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -97,7 +108,8 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-
+  @no-smoke
+  @no-regression
  Scenario Outline: Remove from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -109,27 +121,14 @@ Examples:
 	And I see warning message 
 	And I confirm remove
 	Then I see that <Contact2> is not present on group chat page
-Examples:
-    |  Login		| Password		| Name			| Contact1		| Contact2		|
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
-@torun
-Scenario Outline: I can edit the conversation name
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-	When I create group chat with <Contact1> and <Contact2>
-	And I swipe up on group chat page
-	And I change the conversation name
-	Then I see that the conversation name is correct with <Contact1> and <Contact2>
-	And I exit the group info page
-	And I see the new conversation name displayed in in conversation
-	And I return to the chat list
-	And I see the group conversation name changed in the chat list	
-		
-Examples:
-    |  Login		| Password		| Name			| Contact1		| Contact2		|
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
 
+Examples:
+    |  Login		| Password		| Name			| Contact1		| Contact2		|
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
+
+  @no-smoke
+  @no-regression
  Scenario Outline: Mute conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

@@ -7,8 +7,6 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.CreateZetaUser;
-import com.wearezeta.auto.common.IOSLocators;
-import com.wearezeta.auto.common.UsersState;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 
 import cucumber.api.java.en.Then;
@@ -77,20 +75,6 @@ public class RegistrationPageSteps {
 		 }
 	 }
 	 
-	 @When("^I enter a username which is at most (\\d+) characters long from (\\w+) alphabet$")
-	 public void IEnterNameWithCharacterLimit(int charactersLimit, String alphabetName) throws Throwable {
-		 String nameToType = CommonUtils.generateRandomString(charactersLimit, alphabetName);
-		 PagesCollection.registrationPage.setName (nameToType);
-	 }
-	 
-	 @Then("^I verify that my username is at most (\\d+) characters long$")
-	 public void IVerifyUsernameLength(int charactersLimit) throws IOException {
-		 PagesCollection.registrationPage.typeUsername();
-		 String realUserName = PagesCollection.registrationPage.getUsernameFieldValue();
-		 int usernameLength = CommonUtils.getUnicodeStringAsCharList(realUserName).size();
-		 Assert.assertTrue(charactersLimit >= usernameLength);
-	 }
-
 	 @When("^I enter email (.*)$")
 	 public void IEnterEmail(String email) throws IOException {
 		 
@@ -110,11 +94,6 @@ public class RegistrationPageSteps {
 		 }
 		PagesCollection.registrationPage.setEmail(new StringBuilder(email).insert(email.length()-1,"          ").toString());
 		 }
-	 
-	 @When("^I enter an incorrect email (.*)$")
-	 public void IEnterIncorrectEmail(String email) throws IOException{
-		 PagesCollection.registrationPage.setEmail(email);
-	 }
 	 
 	 @Then("^I verify no spaces are present in email$")
 	 public void CheckForSpacesInEmail() throws IOException{
@@ -160,17 +139,6 @@ public class RegistrationPageSteps {
 	 public void ISubmitRegistrationData()
 	 {
 		 PagesCollection.registrationPage.createAccount();
-	 }
-	 
-	 @When ("^I see error page$")
-	 public void ISeeErrorPage() throws IOException{
-		 Assert.assertTrue(PagesCollection.registrationPage.confirmErrorPage());
-	 }
-	 
-	 @Then("^I return to the email page$")
-	 public void IReturntoEmailPage() throws IOException
-	 {
-		PagesCollection.registrationPage.backToEmailPage();
 	 }
 	 
 	 @Then("^I see confirmation page$")

@@ -24,9 +24,6 @@ public class ContactListPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameConnectAlertYes)
 	private WebElement connectAlertButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathFirstChatInChatListTextField)
-	private WebElement firstChatInChatListTextField;
-	
 	private String url;
 	private String path;
 	private int oldLocation = 0;
@@ -126,10 +123,6 @@ public class ContactListPage extends IOSPage {
 		oldLocation = driver.findElementByXPath(String.format(IOSLocators.xpathMutedIcon, contact)).getLocation().x;
 		DriverUtils.swipeRight(driver, findNameInContactList(contact), time);
 		return returnBySwipe(SwipeDirection.RIGHT);
-	}
-	
-	public boolean verifyChangedGroupNameInChatList(){
-		return firstChatInChatListTextField.getText().equals(PagesCollection.groupChatInfoPage.getConversationName());
 	}
 	
 	public GroupChatPage tapOnGroupChat(String contact1, String contact2) throws IOException {

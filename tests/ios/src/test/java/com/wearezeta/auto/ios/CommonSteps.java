@@ -3,7 +3,6 @@ package com.wearezeta.auto.ios;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.TestPreparation;
 import com.wearezeta.auto.common.UsersState;
-import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
@@ -22,7 +21,7 @@ public class CommonSteps {
 
 		try {
 			String[] picturepath = new String[] {CommonUtils.getUserPicturePathFromConfig(CommonSteps.class)};
-			IOSSimulatorPhotoLibHelper.CreateSimulatorPhotoLib("7.1", picturepath, true);
+			IOSSimulatorPhotoLibHelper.CreateSimulatorPhotoLib("7.1-64", picturepath, true);
 			//CommonUtils.iOSSimulatorCameraRoll();
 		}
 		catch(Exception ex){
