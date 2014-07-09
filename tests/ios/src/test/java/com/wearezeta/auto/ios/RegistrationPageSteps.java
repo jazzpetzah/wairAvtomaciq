@@ -1,15 +1,12 @@
 package com.wearezeta.auto.ios;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Map;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.CreateZetaUser;
-import com.wearezeta.auto.common.UsersState;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 
 import cucumber.api.java.en.Then;
