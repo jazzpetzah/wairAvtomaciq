@@ -50,6 +50,11 @@ public class ConversationPageSteps {
 		 
 		 choosePicturePage.openImage(imageFilename);
 	 }
+
+	 @Then("^I see HD picture in conversation")
+	 public void ThenISeeHDPictureInConversation() throws Throwable {
+	     
+	 }
 	 
 	 @Then("I see random message in conversation")
 	 public void ThenISeeRandomMessageInConversation() {

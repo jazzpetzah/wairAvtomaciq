@@ -62,7 +62,7 @@ Scenario Outline: Send HD picture to conversation
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with name <Name>
 	And I open conversation with <Contact>
-	When I send HD picture hdpicture.jpg
+	When I send picture hdpicture.jpg
 	Then I see HD picture in conversation
 
 Examples:
