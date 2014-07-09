@@ -159,4 +159,6 @@ public final class IOSLocators {
 	
 	// vv currently does not have a name vv
 	public static final String xpathAvatarCollectionView = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]";
+	
+	public static final String nameErrorPageButton = "BACK";
 }                                                         
