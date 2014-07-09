@@ -18,9 +18,9 @@ public class ContactListPageSteps {
 	public void GivenISeeContactListWithMyName(String name) throws InterruptedException, IOException{
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		//TODO remove thread.sleep
-		Thread.sleep(30000);
-		PagesCollection.contactListPage.swipeDown(500);
-		PagesCollection.contactListPage.navigateBack();
+		//Thread.sleep(30000);
+		//PagesCollection.contactListPage.swipeDown(500);
+		//PagesCollection.contactListPage.navigateBack();
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 
 	}

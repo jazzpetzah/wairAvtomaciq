@@ -89,8 +89,8 @@ Examples:
 	|	Login		|	Password		|	Name		|	Contact			|
 	|	aqaUser		|	aqaPassword		|	aqaUser		|	aqaContact1		|
 
-  @smoke
-  @regression
+  @no-smoke
+  @no-regression
 Scenario Outline: Leave from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -108,8 +108,8 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-  @smoke
-  @regression
+  @no-smoke
+  @no-regression
  Scenario Outline: Remove from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -127,8 +127,8 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
 
-  @smoke
-  @regression
+  @no-smoke
+  @no-regression
  Scenario Outline: Mute conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
