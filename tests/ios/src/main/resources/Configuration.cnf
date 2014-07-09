@@ -1,5 +1,6 @@
 #Configuration file for IOS tests
 #Configure before running tests
+Url=${Url}
 appPath=${appPath}
 isSimulator=${isSimulator}
 generateUsers=${generateUsers}
@@ -8,4 +9,5 @@ pathToUserpic=${pathToUserpic}
 driverTimeoutSeconds=${driverTimeoutSeconds}
 pictureResultsPath=${pictureResultsPath}
 iosImagesPath=${iosImagesPath}
+
 

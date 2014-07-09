@@ -125,10 +125,6 @@ public final class IOSLocators {
 	
 	public static final String xpathPersonalInfoPage = "//UIAApplication[1]/UIAWindow[1]";
 	
-	public static final String xpathCameraRollPicture1 = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[1]";
-	
-	public static final String nameConfirmPictureButton1 = "ImageConfirmerConfirmButton";
-	
 	public static final String nameCameraButton = "cameraButton";
 	
 	public static final String xpathProvideValidEmailMessage = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]"; 
