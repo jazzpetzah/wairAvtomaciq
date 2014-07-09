@@ -21,6 +21,9 @@ public class ChoosePicturePage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathFileListScrollArea)
 	private WebElement fileListArea;
 	
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathSelectColumnViewButton)
+	private WebElement selectColumnViewButton;
+	
 	public ChoosePicturePage(String URL, String path) throws MalformedURLException {
 		super(URL, path);
 	}
@@ -37,6 +40,16 @@ public class ChoosePicturePage extends OSXPage {
 		el.click();
 	}
 	
+	public void selectColumnView() {
+		selectColumnViewButton.click();
+	}
+	
+	public void goToSelectedFavoritesFolder(String folderName) {
+		String xpath = String.format(OSXLocators.xpathFormatFavoritesFolderPopUp, folderName);
+		WebElement folder = driver.findElement(By.xpath(xpath));
+		folder.click();
+	}
+	
 	public boolean isOpenButtonEnabled() {
 		String value = openButton.getAttribute("AXEnabled");
 		if (value.equals("0")) {
@@ -48,6 +61,8 @@ public class ChoosePicturePage extends OSXPage {
 	}
 	
 	public void openImage(String filename) {
+		selectColumnView();
+		goToSelectedFavoritesFolder(OSXLocators.IMAGES_SOURCE_DIRECTORY);
 		searchForImage(filename);
 	}
 }
