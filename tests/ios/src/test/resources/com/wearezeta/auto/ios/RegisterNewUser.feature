@@ -73,14 +73,21 @@ Feature: Register new user
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
     
+<<<<<<< HEAD
     @torun
   Scenario Outline: Can return to email page to change email if input incorrectly
+=======
+    
+@torun
+  Scenario Outline: Register new user using username with maximum characters allowed
+>>>>>>> 72Characterlimit
 	Given I see sign in screen
 	When I press Join button
 	And I press Picture button
 	And I choose photo from album
 	And I See selected picture
 	And I confirm selection
+<<<<<<< HEAD
 	And I enter name <Name>
 	And I enter an incorrect email <Incorrect>
 	And I enter password <Password>
@@ -99,3 +106,12 @@ Feature: Register new user
     |   aqaUser	                |	aqaPassword	        |	aqaUser         |   error@wearezeta.com |
     
     
+=======
+	And I enter a username which is at most <MaxChars> characters long from <Language> alphabet 
+	Then I verify that my username is at most <MaxChars> characters long
+	
+	 Examples:     
+    |	Email 					    |	Password	    |    MaxChars    |    Language   |
+    |	aqaUser             	    |	aqaPassword	    |    72          |    English    |
+  
+>>>>>>> 72Characterlimit

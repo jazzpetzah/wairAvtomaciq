@@ -9,10 +9,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+<<<<<<< HEAD
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.WebDriverException;
+=======
+import org.openqa.selenium.support.ui.ExpectedConditions;
+>>>>>>> 72Characterlimit
 
 import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.common.IOSLocators;
@@ -118,6 +122,7 @@ public class RegistrationPage extends IOSPage {
 	
 	public void createAccount()
 	{
+<<<<<<< HEAD
 		WebDriverWait mywait = new WebDriverWait(driver, 1, 100);
 		try {
 			mywait.until(ExpectedConditions.visibilityOf(yourName));
@@ -138,6 +143,17 @@ public class RegistrationPage extends IOSPage {
 			// Ignore it
 		}
 
+=======
+		if(ExpectedConditions.presenceOfElementLocated(By.xpath(IOSLocators.xpathYourName)) != null) {
+			yourName.sendKeys(getName() + "\n");
+		}
+		if(ExpectedConditions.presenceOfElementLocated(By.name(IOSLocators.nameYourEmail)) != null) {
+			yourEmail.sendKeys(getEmail() + "\n");
+		}
+		if(ExpectedConditions.presenceOfElementLocated(By.name(IOSLocators.nameYourPassword)) != null) {
+			yourPassword.sendKeys(getPassword());
+		}
+>>>>>>> 72Characterlimit
 		createAccountButton.click();
 	}	
 	
@@ -145,6 +161,18 @@ public class RegistrationPage extends IOSPage {
 	{
 		yourName.sendKeys(getName() + "\n");
 		yourEmail.sendKeys(getEmail());
+	}
+
+	public void retypeEmail() {
+		if (ExpectedConditions.presenceOfElementLocated(By
+				.name(IOSLocators.nameYourEmail)) != null) {
+			yourEmail.sendKeys(getEmail());
+		}
+	}
+
+	public void returnToConfirmRegistration() {
+		ForwardWelcomeButton.click();
+		createAccountButton.click();
 	}
 	
 	public boolean typeAllInvalidEmails()
@@ -216,6 +244,20 @@ public class RegistrationPage extends IOSPage {
 		ForwardWelcomeButton.click();
 	}
 	
+<<<<<<< HEAD
+=======
+	public void typeUsername() 
+	{
+		yourName.sendKeys(getName());
+	}
+	
+	public String getUsernameFieldValue()  
+	{
+		return yourName.getText();
+	}
+
+	
+>>>>>>> 72Characterlimit
 	public String getEmailFieldValue()
 	{
 		return yourEmail.getText();		
@@ -236,6 +278,7 @@ public class RegistrationPage extends IOSPage {
 		confirmImageButton.click();
 	}
 	
+<<<<<<< HEAD
 	public boolean confirmErrorPage() 
 	{
 		return errorPageButton.isDisplayed();
@@ -251,6 +294,14 @@ public class RegistrationPage extends IOSPage {
 				backToWelcomeButton.click();
 			}	
 		}
+=======
+	public void backToEmailPage() {
+		{
+			backToWelcomeButton.click();
+			backToWelcomeButton.click();
+		}
+		wait.until(ExpectedConditions.visibilityOf(yourEmail));
+>>>>>>> 72Characterlimit
 	}
 	
 	public void catchLoginAlert() {

@@ -7,6 +7,8 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.CreateZetaUser;
+import com.wearezeta.auto.common.IOSLocators;
+import com.wearezeta.auto.common.UsersState;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 
 import cucumber.api.java.en.Then;
@@ -75,6 +77,20 @@ public class RegistrationPageSteps {
 		 }
 	 }
 	 
+	 @When("^I enter a username which is at most (\\d+) characters long from (\\w+) alphabet$")
+	 public void IEnterNameWithCharacterLimit(int charactersLimit, String alphabetName) throws Throwable {
+		 String nameToType = CommonUtils.generateRandomString(charactersLimit, alphabetName);
+		 PagesCollection.registrationPage.setName (nameToType);
+	 }
+	 
+	 @Then("^I verify that my username is at most (\\d+) characters long$")
+	 public void IVerifyUsernameLength(int charactersLimit) throws IOException {
+		 PagesCollection.registrationPage.typeUsername();
+		 String realUserName = PagesCollection.registrationPage.getUsernameFieldValue();
+		 int usernameLength = CommonUtils.getUnicodeStringAsCharList(realUserName).size();
+		 Assert.assertTrue(charactersLimit >= usernameLength);
+	 }
+
 	 @When("^I enter email (.*)$")
 	 public void IEnterEmail(String email) throws IOException {
 		 
