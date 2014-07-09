@@ -54,6 +54,20 @@ Scenario Outline: Send picture to conversation
 Examples:
     |  Login		| Password			| Name			| Contact   		|
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
+    
+@smoke
+@regression
+@torun
+Scenario Outline: Send HD picture to conversation
+	Given I Sign in using login <Login> and password <Password>
+	And I see Contact list with name <Name>
+	And I open conversation with <Contact>
+	When I send HD picture hdpicture.jpg
+	Then I see HD picture in conversation
+
+Examples:
+    |  Login		| Password			| Name			| Contact   		|
+    |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
 
 @smoke
 @regression

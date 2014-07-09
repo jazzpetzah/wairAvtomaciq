@@ -2,7 +2,7 @@ Feature: User Profile
 
 @no-smoke
 @no-regression
-@torun
+
 Scenario Outline: Change user picture from image file
     Given I Sign in using login <Login> and password <Password>
     And I go to user <Name> profile
