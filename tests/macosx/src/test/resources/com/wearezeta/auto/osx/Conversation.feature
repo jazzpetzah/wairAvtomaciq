@@ -41,7 +41,7 @@ Examples:
 #    |  Login		| Password			| Name			| Contact   		|
 #    |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
 
-
+@torun
 @smoke
 @regression
 Scenario Outline: Send picture to conversation
