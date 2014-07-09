@@ -157,6 +157,7 @@ Examples:
     |  Login		| Password		| Name			| Contact1    |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |
 
+#just needs working avatar verification
 @torun
 Scenario Outline: Verify correct group info page information
     Given I Sign in using login <Login> and password <Password>
