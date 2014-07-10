@@ -5,8 +5,10 @@ import java.io.IOException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
+import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class OtherUserPersonalInfoPageSteps {
@@ -45,5 +47,20 @@ public class OtherUserPersonalInfoPageSteps {
 	@When("^I press add contact button$")
 	public void WhenIPressAddContactButton() throws IOException{
 		 PagesCollection.otherUserPersonalInfoPage.tapAddContactBtn();
+	}
+	
+	@Then("^I see (.*) user name and email$")
+	public void ISeeUserNameAndEmail(String contact) {
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		String email = "";
+		for (ClientUser user : CommonUtils.contacts) {
+			if (user.getName().equals(contact)) {
+				email = user.getEmail();
+				break;
+			}
+		}
+		
+		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage.isOtherUserNameVisible(contact));
+		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage.isOtherUserMailVisible(email));
 	}
 }
