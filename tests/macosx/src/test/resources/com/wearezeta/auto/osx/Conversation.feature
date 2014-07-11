@@ -129,6 +129,7 @@ Examples:
 	|  Login		| Password		| Name			| Contact1		| Contact2		|
 	|  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
+@mute
 @smoke
 @regression
 Scenario Outline: Remove user from group chat
