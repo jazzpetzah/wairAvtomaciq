@@ -114,12 +114,15 @@ public class ZetaFormatter implements Formatter, Reporter {
 
 	@Override
 	public void result(Result arg0) {	
+		
+		String currentStep = step.poll();
+		System.out.println(currentStep + ", " + arg0.getStatus());
 		if (driver != null) {
 			try {
 				BufferedImage image = DriverUtils.takeScreenshot(driver);
 				String picturePath = CommonUtils.getPictureResultsPathFromConfig(this.getClass());
 				File outputfile = new File(picturePath + feature + "/" +
-						scenario + "/" + step.poll() + ".png");
+						scenario + "/" + currentStep + ".png");
 				
 				if (!outputfile.getParentFile().exists()) {
 					outputfile.getParentFile().mkdirs();

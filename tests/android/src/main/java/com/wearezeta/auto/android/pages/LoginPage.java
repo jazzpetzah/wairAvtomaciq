@@ -102,7 +102,7 @@ public class LoginPage extends AndroidPage {
 	}
 
 	public Boolean isLoginFinished(String contact) throws InterruptedException {
-		driver.getPageSource();
+		refreshUITree();
 		HashMap<String,Integer> usersMap = DriverUtils.waitForElementWithTextById(AndroidLocators.idContactListNames, driver);
 		return usersMap.containsKey(contact);
 	}

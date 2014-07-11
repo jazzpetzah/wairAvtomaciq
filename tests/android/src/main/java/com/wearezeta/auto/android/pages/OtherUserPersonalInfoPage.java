@@ -17,6 +17,9 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	@FindBy(how = How.ID, using = AndroidLocators.idOtherUserPersonalInfoName)
 	private WebElement otherUserName;
 	
+	@FindBy(how = How.ID, using = AndroidLocators.idOtherUserPersonalInfoMail)
+	private WebElement otherUserMail;
+	
 	@FindBy(how = How.ID, using = AndroidLocators.idUserProfileConfirmationMenu)
 	private WebElement confirmMenu;
 	
@@ -72,16 +75,23 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		return page;
 	}
 
-	@Override
+	/*@Override
 	public AndroidPage swipeUp(int time) throws IOException
 	{
 		DriverUtils.swipeUp(driver, frameLayout, time);
 		return returnBySwipe(SwipeDirection.UP);
-	}
+	}*/
 	
 	public boolean isOtherUserNameVisible(String name) {
+		refreshUITree();//workaround to refresh UI tree
 		wait.until(ExpectedConditions.visibilityOf(otherUserName));
 		return otherUserName.getText().equals(name);
+	}
+	
+	public boolean isOtherUserMailVisible(String mail) {
+		refreshUITree();//workaround to refresh UI tree
+		wait.until(ExpectedConditions.visibilityOf(otherUserMail));
+		return otherUserMail.getText().equals(mail);
 	}
 
 	public boolean isRemoveFromConversationAlertVisible() {
@@ -90,7 +100,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	
 	public GroupChatInfoPage pressRemoveConfirmBtn() throws IOException
 	{
-		driver.getPageSource();//TODO workaround
+		refreshUITree();//TODO workaround
 		wait.until(ExpectedConditions.elementToBeClickable(confirmBtn));
 		confirmBtn.click();
 		return new GroupChatInfoPage(url, path);
