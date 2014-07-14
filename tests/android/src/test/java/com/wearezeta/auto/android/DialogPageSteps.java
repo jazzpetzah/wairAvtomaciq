@@ -30,6 +30,13 @@ public class DialogPageSteps{
 		PagesCollection.dialogPage.typeMessage(message);
 	}
 	
+	@When("^I type (.*) message and send it$")
+	public void ITypeTheMessageAndSendIt(String myMessage) throws Throwable {
+		message = myMessage;
+		
+		PagesCollection.dialogPage.typeMessage(myMessage);
+	}
+	
 	@When("^I type long message and send it$")
 	public void WhenITypeLongMessageAndSendIt() throws Throwable {
 		message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sed lorem dignissim lacus tincidunt scelerisque nec sed sem. Nunc lacinia non tortor a fringilla. Fusce cursus neque at posuere viverra. Duis ultricies ipsum ac leo mattis, a aliquet neque consequat. Vestibulum ut eros eu risus mattis iaculis quis ac eros. Nam sit amet venenatis felis. Vestibulum blandit nisi felis, id hendrerit quam viverra at. Curabitur nec facilisis felis.";
@@ -62,6 +69,8 @@ public class DialogPageSteps{
 		 switch(buttonName.toLowerCase())
 		  {
 		  case "take photo":
+			  PagesCollection.dialogPage.changeCamera();
+			  Thread.sleep(1000);
 			  PagesCollection.dialogPage.takePhoto();
 			  break;
 		  case "confirm":

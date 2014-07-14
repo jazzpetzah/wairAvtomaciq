@@ -31,7 +31,13 @@ public abstract class AndroidPage extends BasePage {
         capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(AndroidPage.class));
         capabilities.setCapability("appActivity", CommonUtils.getAndroidActivityFromConfig(AndroidPage.class));
         capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidActivityFromConfig(AndroidPage.class));
+        //capabilities.setCapability("unicodeKeyboard", true);
+        capabilities.setCapability("resetKeyboard", true);
         super.InitConnection(URL, capabilities);
+	}
+	
+	public void refreshUITree() {
+		driver.getPageSource();
 	}
 
 	

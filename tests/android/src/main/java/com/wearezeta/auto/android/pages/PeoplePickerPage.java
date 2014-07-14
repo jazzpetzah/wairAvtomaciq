@@ -107,7 +107,7 @@ public class PeoplePickerPage extends AndroidPage {
 
 
 	public boolean isPeoplePickerPageVisible() throws InterruptedException, IOException {
-		driver.getPageSource();//TODO workaround
+		refreshUITree();//TODO workaround
 		//return DriverUtils.waitUntilElementAppears(driver,By.className(AndroidLocators.classEditText));
 		wait.until(ExpectedConditions.elementToBeClickable(pickerSearch));
 		return pickerSearch.isEnabled();

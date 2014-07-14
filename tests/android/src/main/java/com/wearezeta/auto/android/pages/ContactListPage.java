@@ -40,7 +40,7 @@ public class ContactListPage extends AndroidPage {
 
 	public AndroidPage tapOnName(String name) throws IOException{
 		AndroidPage page = null;
-		
+		refreshUITree();//TODO: workaround
 		findNameInContactList(name, contactListNames).click();
 		if(selfUserName.size() > 0 && selfUserName.get(0).isDisplayed()){
 			page = new PersonalInfoPage(url, path);

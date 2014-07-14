@@ -66,23 +66,24 @@ public class GroupChatInfoPage extends AndroidPage {
 	}
 
 	public void pressLeaveConversationButton() {
-		driver.getPageSource();//TODO workaround
+		refreshUITree();//TODO workaround
 		wait.until(ExpectedConditions.elementToBeClickable(leaveConversationButton));
 		leaveConversationButton.click();
 
 	}
 
 	public void pressConfirmButton() {
-		driver.getPageSource();//TODO workaround
+		refreshUITree();//TODO workaround
 		confirmButton.click();
 	}
 
 	public void renameGroupChat(String chatName){
 		groupChatName.sendKeys(chatName + "\n");
 	}
+	
 	public OtherUserPersonalInfoPage selectContactByName(String contactName) throws IOException, InterruptedException {
 		boolean flag = false;
-		System.out.println(driver.getPageSource());
+		refreshUITree();
 		
 		for(WebElement user : linearLayout)
 		{
