@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -24,6 +25,9 @@ public class DialogPage extends AndroidPage{
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idDialogTakePhotoButton)
 	private WebElement takePhotoButton;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idDialogChangeCameraButton)
+	private WebElement changeCameraButton;
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idConfirmButton)
 	private WebElement okButton;
@@ -92,7 +96,7 @@ public class DialogPage extends AndroidPage{
 	
 	public void typeMessage(String message)
 	{
-		cursorInput.sendKeys(message );
+		cursorInput.sendKeys(message + "\\n"); 
 		DriverUtils.mobileTapByCoordinates(driver, backgroundOverlay);
 	}
 
@@ -153,18 +157,23 @@ public class DialogPage extends AndroidPage{
 	
 	public boolean isImageExists()
 	{
-		driver.getPageSource();//TODO workaround
+		refreshUITree();//TODO workaround
 		return DriverUtils.waitUntilElementAppears(driver,By.id(AndroidLocators.idDialogImages));
 	}
 
 	public void confirm() {
-		driver.getPageSource();//TODO workaround
+		refreshUITree();//TODO workaround
 		okButton.click();
 	}
 
 	public void takePhoto() {
-		driver.getPageSource();//TODO workaround
+		refreshUITree();//TODO workaround
 		takePhotoButton.click();
+	}
+	
+	public void changeCamera() {
+		refreshUITree();//TODO workaround
+		changeCameraButton.click();
 	}
 
 	public boolean isConnectMessageVisible() {

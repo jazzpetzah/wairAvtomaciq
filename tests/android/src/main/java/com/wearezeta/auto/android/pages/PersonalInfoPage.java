@@ -74,7 +74,7 @@ public class PersonalInfoPage extends AndroidPage
 	}
 
 	public void selectPhoto(){
-		driver.getPageSource();
+		refreshUITree();
 		try{
 			for(WebElement el : openFrom){
 				if(el.getText().contains("Photos")){
@@ -156,7 +156,7 @@ public class PersonalInfoPage extends AndroidPage
 	}
 
 	public String getUserName() {
-		driver.getPageSource();
+		refreshUITree();
 		return nameField.getText();
 	}
 

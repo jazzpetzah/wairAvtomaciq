@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.PagesCollection;
+import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 
@@ -64,6 +65,7 @@ public class PersonalInfoPageSteps {
 	public void ISeeMyNewName(String name, String oldName) throws Throwable {
 	    Assert.assertTrue(name.equals(PagesCollection.personalInfoPaga.getUserName()));
 	    oldName = CommonUtils.retrieveRealUserContactPasswordValue(oldName);
+	    PagesCollection.personalInfoPaga.tapOnMyName();
 		PagesCollection.personalInfoPaga.changeName(name, oldName);
 	    
 	}
@@ -76,7 +78,7 @@ public class PersonalInfoPageSteps {
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
 		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);
 		Assert.assertTrue(
-				"Overlap between two images has no enough score. Expected >= 0.75, current = " + score,
+				"Overlap between two images has not enough score. Expected >= 0.75, current = " + score,
 				score >= 0.75d);
 		
 	}

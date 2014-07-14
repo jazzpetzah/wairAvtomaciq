@@ -86,6 +86,8 @@ public final class AndroidLocators {
 	
 	public static final String idDialogTakePhotoButton = "com.waz.zclient:id/gtv__camera_control__take_a_picture";
 	
+	public static final String idDialogChangeCameraButton = "com.waz.zclient:id/gtv__camera__top_control__back_camera";
+	
 	public static final String idDialogPageBottomFrameLayout = "com.waz.zclient:id/cv";
 	
 	public static final String idDialogPageContainer = "com.waz.zclient:id/ptopc__conversation__list_view_container";
@@ -131,6 +133,8 @@ public final class AndroidLocators {
 	public static final String idInstructionsRequestConnectBtn = "com.waz.zclient:id/button_connect";
 	
 	public static final String idOtherUserPersonalInfoName = "com.waz.zclient:id/taet__participants__header";
+	
+	public static final String idOtherUserPersonalInfoMail = "com.waz.zclient:id/ttv__participants__sub_header";
 	
 	public static final String idLeaveConversationConfirmationMenu = "com.waz.zclient:id/meta_confirmation_menu";
 	
