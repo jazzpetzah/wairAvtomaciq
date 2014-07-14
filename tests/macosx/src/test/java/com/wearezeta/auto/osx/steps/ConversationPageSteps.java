@@ -53,6 +53,24 @@ public class ConversationPageSteps {
 
 	 @Then("^I see HD picture in conversation")
 	 public void ThenISeeHDPictureInConversation() throws Throwable {
+		 
+		 //fist check, if there is a picture sent
+		 int afterNumberOfImages = -1;
+		 
+		 boolean isNumberIncreased = false;
+		 for (int i = 0; i < 60; i++) {
+			 afterNumberOfImages = CommonSteps.senderPages.getConversationPage().getNumberOfImageEntries();
+			 if (afterNumberOfImages == beforeNumberOfImages + 2) {
+				 isNumberIncreased = true;
+				 break;
+			 }
+			 try { Thread.sleep(1000); } catch (InterruptedException e) { }
+		 }
+		 
+		 Assert.assertTrue("Incorrect images count: before - "
+				 + beforeNumberOfImages + ", after - " + afterNumberOfImages, isNumberIncreased);
+		 
+		 //second check, if that picture is a HD one and got right down scaled
 	     
 	 }
 	 

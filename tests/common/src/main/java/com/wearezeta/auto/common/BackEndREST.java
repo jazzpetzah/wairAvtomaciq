@@ -294,4 +294,14 @@ public class BackEndREST {
 	private static URI getBaseURI() throws IllegalArgumentException, UriBuilderException, IOException {
 		return UriBuilder.fromUri(CommonUtils.getDefaultBackEndUrlFromConfig(CommonUtils.class)).build();
 	}
+	
+	private static String getPictureAssetFromConversation(String convID, String assetID){
+		
+		//convID = getConver
+		//assetID =
+		
+		String pictureAssetInfo = null;
+		return pictureAssetInfo;
+		
+	}
 }
