@@ -9,6 +9,7 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriBuilderException;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.sun.jersey.api.client.Client;
@@ -295,13 +296,58 @@ public class BackEndREST {
 		return UriBuilder.fromUri(CommonUtils.getDefaultBackEndUrlFromConfig(CommonUtils.class)).build();
 	}
 	
-	private static String getPictureAssetFromConversation(String convID, String assetID){
+	private static JSONArray getEventsfromConversation(String convID, ClientUser user) throws JSONException{
 		
-		//convID = getConver
-		//assetID =
+		JSONObject jsonObj = null;
+		try {
+			WebResource webResource = client.resource(getBaseURI() + "/conversations/" + convID + "/events");
+			ClientResponse response = webResource.accept("application/json").header(HttpHeaders.AUTHORIZATION, user.getTokenType() + " " + user.getAccessToken()).get(ClientResponse.class);
+			if (response.getStatus() != 200) {  throw new RuntimeException("Failed : HTTP error code : "	+ response.getStatus());}
+
+			String output = response.getEntity(String.class);
+			
+			jsonObj =  new JSONObject(output);
+						 
+			// display response
+			System.out.println("Output from Server .... get Events of Conversation ");
+			System.out.println(output + "\n");
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+		return (JSONArray) jsonObj.get("events");
+	}
+	
+private static String getAssetsDownloadURL(String convID, String assetID, ClientUser user){
+		String downloadLink = null;
+		return downloadLink;
+	}
+	
+	public static void getPictureAssetFromConversation() throws Exception{
 		
-		String pictureAssetInfo = null;
-		return pictureAssetInfo;
+		ClientUser fromUser = CommonUtils.yourUsers.get(0);
+		ClientUser toUser = CommonUtils.contacts.get(0);
+		String convID = getConversationWithSingleUser(fromUser, toUser);
+
+		String assetID = null;
+		JSONArray eventsOfConv = getEventsfromConversation(convID, fromUser);
+		for(int i = 0 ; i < eventsOfConv.length(); i++){
+			JSONObject event =  (JSONObject) eventsOfConv.get(i);
+			String type = event.getString("type");
+			if (type.equals("conversation.asset-add")){
+				JSONObject data = (JSONObject) event.get("data");
+				JSONObject info = (JSONObject) data.get("info");
+					String tag = info.getString("tag");
+					if (tag.equals("medium")){
+						assetID = (String) data.get("id");
+					}
+				}
+			}
+		
+		String pictureAssetDownloadLink = null;
+		pictureAssetDownloadLink = getAssetsDownloadURL(convID, assetID, fromUser);
 		
 	}
 }

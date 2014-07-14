@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.BackEndREST;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;
@@ -71,6 +72,7 @@ public class ConversationPageSteps {
 				 + beforeNumberOfImages + ", after - " + afterNumberOfImages, isNumberIncreased);
 		 
 		 //second check, if that picture is a HD one and got right down scaled
+		 BackEndREST.getPictureAssetFromConversation();
 	     
 	 }
 	 
