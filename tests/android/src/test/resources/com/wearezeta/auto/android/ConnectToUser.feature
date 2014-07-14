@@ -1,5 +1,6 @@
 Feature: Connect to User
 
+@mute
 @smoke
 @regression
   Scenario Outline: Send invitation message to a user

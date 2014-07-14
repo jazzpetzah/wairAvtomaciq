@@ -1,5 +1,6 @@
 Feature: Change picture
 
+@mute
 @smoke
 @regression
   Scenario Outline: Change user picture
