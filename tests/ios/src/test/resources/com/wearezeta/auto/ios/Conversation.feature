@@ -15,8 +15,8 @@ Feature: Conversation
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
 
-  @mute
   # Muted due to the bug https://wearezeta.atlassian.net/browse/IOS-947
+  @mute
   @smoke
     Scenario Outline: Send Hello to contact
 		Given I Sign in using login <Login> and password <Password> 
@@ -85,8 +85,8 @@ Examples:
 	|	Login		|	Password		|	Name		|	Contact			|
 	|	aqaUser		|	aqaPassword		|	aqaUser		|	aqaContact1		|
 
-  @mute
   # Not stable
+  @mute
   @smoke
 Scenario Outline: Leave from group chat
     Given I Sign in using login <Login> and password <Password>
@@ -105,8 +105,8 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-  @mute
   # Not stable
+  @mute
   @smoke
  Scenario Outline: Remove from group chat
     Given I Sign in using login <Login> and password <Password>
@@ -125,8 +125,8 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
 
-  @mute
   # Not stable
+  @mute
   @smoke
 Scenario Outline: I can edit the conversation name
     Given I Sign in using login <Login> and password <Password>
@@ -145,8 +145,8 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
 
-  @mute
   # Not stable
+  @mute
   @smoke
  Scenario Outline: Mute conversation
     Given I Sign in using login <Login> and password <Password>

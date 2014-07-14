@@ -37,8 +37,8 @@ Feature: Register new user
     |	Email				    |	Password	        |  Name			    |
     |	aqaUser           	    |	aqaPassword	        |  aqaUser      	|
 
-  @mute
   # Not stable
+  @mute
   @regression
   Scenario Outline: Attempt to register an email with incorrect format
     Given I see sign in screen
