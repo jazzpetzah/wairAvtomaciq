@@ -1,5 +1,5 @@
 Feature: SmokeTest
-@smoke @regression 
+@smoke
   Scenario Outline: Open/Close People picker
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -12,8 +12,8 @@ Feature: SmokeTest
       | Login   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |
 
- @mute
- @smoke @regression
+@mute
+@regression
   Scenario Outline: Send Long Message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -29,7 +29,7 @@ Feature: SmokeTest
 
 
 @mute
-@smoke @regression
+@regression
   Scenario Outline: Send Upper and Lower case to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -44,7 +44,7 @@ Feature: SmokeTest
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
      
 @mute
-@smoke @regression
+@regression
   Scenario Outline: Send special chars message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -59,7 +59,7 @@ Feature: SmokeTest
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |ÄäÖöÜüß simple message in english|
    
 @mute
-@smoke @regression
+@regression
   Scenario Outline: Send emoji message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -74,7 +74,7 @@ Feature: SmokeTest
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |:) ;) :( |
   
 @mute
-@smoke @regression
+@smoke
   Scenario Outline: ZClient change name
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -88,7 +88,7 @@ Feature: SmokeTest
       | aqaUser | aqaPassword | aqaUser | NewTestName |
       
  
-@smoke @regression
+@smoke
   Scenario Outline: Check contact personal info
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
