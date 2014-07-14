@@ -13,8 +13,8 @@ Examples:
     |  Login		| Password			| Name			| Contact   		|
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
 
-@mute
 # Not stable
+@mute
 @smoke
 Scenario Outline: Send hello to conversation
     Given I Sign in using login <Login> and password <Password>
@@ -27,8 +27,8 @@ Examples:
     |  Login		| Password			| Name			| Contact   		|
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
 
-@mute
 # Not stable
+@mute
 @smoke
 Scenario Outline: Send hey to conversation
     Given I Sign in using login <Login> and password <Password>
@@ -84,8 +84,8 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-@mute
 # Not stable
+@mute
 @regression
 Scenario Outline: Send hello to group chat
 	Given I Sign in using login <Login> and password <Password>
@@ -99,8 +99,8 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-@mute
 # Not stable
+@mute
 @smoke
 Scenario Outline: Send picture to group chat
 	Given I Sign in using login <Login> and password <Password>
@@ -128,8 +128,8 @@ Examples:
 	|  Login		| Password		| Name			| Contact1		| Contact2		|
 	|  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-@mute
 # Not stable
+@mute
 @smoke
 Scenario Outline: Remove user from group chat
     Given I Sign in using login <Login> and password <Password>
@@ -162,8 +162,8 @@ Examples:
     |  Login		| Password			| Name			| Contact   		|
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
 
-@mute
 # Not stable
+@mute
 @smoke
 Scenario Outline: Archive and unarchive conversation
     Given I Sign in using login <Login> and password <Password>

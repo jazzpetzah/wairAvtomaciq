@@ -1,7 +1,7 @@
 Feature: User Profile
 
-@mute
 # Not stable
+@mute
 @smoke
 Scenario Outline: Change user picture from image file
     Given I Sign in using login <Login> and password <Password>
@@ -15,8 +15,8 @@ Examples:
 	|	Login			|	Password		|	Name		|
 	|	aqaUser			|	aqaPassword		|	aqaUser		|
 
-@mute
 # Not stable
+@mute
 @regression
 Scenario Outline: Change user picture from camera
 	Given I Sign in using login <Login> and password <Password>

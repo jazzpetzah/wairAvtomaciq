@@ -1,7 +1,7 @@
 Feature: Register new user
 
-@mute
 # Not stable
+@mute
 @regression
 Scenario Outline: Register new user using front camera
 	Given I am signed out from ZClient
@@ -55,8 +55,8 @@ Scenario Outline: Do not accept email with spaces
     |	Email										    |
     |	email with spaces@weare zeta.com           	    |
 
-@mute
 # Not stable
+@mute
 @regression
 Scenario: Fail registration on incorrect email
 	Given I am signed out from ZClient
