@@ -3,7 +3,9 @@ package com.wearezeta.auto.ios.pages;
 import java.io.IOException;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -19,6 +21,9 @@ public class GroupChatPage extends DialogPage {
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathLastGroupChatMessage)
 	private WebElement lastMessage;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathNewGroupConversationNameChangeTextField)
+	private WebElement newGroupConversationNameChangeTextField;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameYouHaveLeft)
 	private WebElement youLeft;
@@ -37,6 +42,15 @@ public class GroupChatPage extends DialogPage {
 	public boolean isGroupChatPageVisible(){
 		
 		return DriverUtils.waitUntilElementAppears(driver, By.xpath(IOSLocators.xpathCursorInput));
+	}
+	
+	public boolean isConversationChangedInChat(){
+		
+		System.out.println(newGroupConversationNameChangeTextField.getText());
+		System.out.println(PagesCollection.groupChatInfoPage.getConversationName());
+		
+		String groupChatName = PagesCollection.groupChatInfoPage.getConversationName();
+		return newGroupConversationNameChangeTextField.getText().contains(groupChatName);
 	}
 	
 	public boolean isYouHaveLeftVisible(String name)
@@ -65,6 +79,17 @@ public class GroupChatPage extends DialogPage {
 	public boolean waitForContactToDisappear(String contact) {
 		
 		return DriverUtils.waitUntilElementDissapear(driver, By.name(contact));
+	}
+	
+    @Override
+	public IOSPage swipeRight(int time) throws IOException
+	{
+		WebElement element =  driver.findElement(By.name(IOSLocators.nameLoginPage));
+		
+		Point coords = element.getLocation();
+		Dimension elementSize = element.getSize();
+		driver.swipe(coords.x +10, coords.y + 30, coords.x + elementSize.width / 2 + 20, coords.y + 30, time);
+		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 	
 	@Override
