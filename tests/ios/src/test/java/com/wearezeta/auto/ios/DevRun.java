@@ -6,7 +6,7 @@ import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(format = {"html:target/report", "json:target/report.json"}, tags = { "~@mute", "@smoke" })
+@CucumberOptions(format = {"html:target/report", "json:target/report.json"}, tags = { "~@mute", "@torun" })
 public class DevRun {
 
 }
