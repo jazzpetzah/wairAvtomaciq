@@ -1,8 +1,7 @@
 Feature: Sign In
 
-@smoke
-@regression
-Scenario Outline: Sign in to ZClient
+  @smoke
+  Scenario Outline: Sign in to ZClient
 	Given I see sign in screen
 	When I press Sign in button
 	And I have entered login <Login>
@@ -10,6 +9,6 @@ Scenario Outline: Sign in to ZClient
 	And I press Sign in button 
 	Then Contact list appears with my name <Name>
 	
-Examples:
+  Examples:
     |	Login					|	Password	|	Name			|
     |	aqaUser            		|	aqaPassword	|	aqaUser 		|

@@ -1,7 +1,6 @@
 Feature: Conversation
 
   @smoke
-  @regression
   Scenario Outline: Send Message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -19,7 +18,6 @@ Feature: Conversation
   @mute
   # Muted due to the bug https://wearezeta.atlassian.net/browse/IOS-947
   @smoke
-  @regression
     Scenario Outline: Send Hello to contact
 		Given I Sign in using login <Login> and password <Password> 
     	And I see Contact list with my name <Name>
@@ -35,7 +33,6 @@ Feature: Conversation
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
 
   @smoke
-  @regression
 	Scenario Outline: Start group chat with users from contact list
 		Given I Sign in using login <Login> and password <Password>
     	And I see Contact list with my name <Name>
@@ -58,7 +55,6 @@ Feature: Conversation
 
 
   @smoke
-  @regression
 Scenario Outline: Send message to group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -73,7 +69,6 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
   @smoke
-  @regression
 Scenario Outline: Send a camera roll picture to user from contact list
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with my name <Name>
@@ -90,8 +85,9 @@ Examples:
 	|	Login		|	Password		|	Name		|	Contact			|
 	|	aqaUser		|	aqaPassword		|	aqaUser		|	aqaContact1		|
 
-  @no-smoke
-  @no-regression
+  @mute
+  # Not stable
+  @smoke
 Scenario Outline: Leave from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -109,8 +105,9 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-  @no-smoke
-  @no-regression
+  @mute
+  # Not stable
+  @smoke
  Scenario Outline: Remove from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -128,6 +125,9 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
 
+  @mute
+  # Not stable
+  @smoke
 Scenario Outline: I can edit the conversation name
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -145,8 +145,9 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
 
-  @no-smoke
-  @no-regression
+  @mute
+  # Not stable
+  @smoke
  Scenario Outline: Mute conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

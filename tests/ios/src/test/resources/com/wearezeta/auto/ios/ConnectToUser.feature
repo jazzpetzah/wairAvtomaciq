@@ -1,7 +1,6 @@
 Feature: Connect to User 
 
-@smoke
-@regression
+    @smoke
 	Scenario Outline: Send invitation message to a user
 		Given I Sign in using login <Login> and password <Password>
     	And I see Contact list with my name <Name>
@@ -22,8 +21,9 @@ Feature: Connect to User
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	yourUser	|
     
- 
- Scenario Outline: Get invitation message from user
+
+    @smoke
+    Scenario Outline: Get invitation message from user
  		Given I have connection request from <Contact>
  		And I Sign in using login <Login> and password <Password>
     	And I see Contact list with my name <Name>

@@ -1,7 +1,6 @@
 Feature: Register new user
 
 @smoke
-@regression
   Scenario Outline: Register new user using front camera
 	Given I see sign in screen
 	When I press Join button
@@ -22,7 +21,6 @@ Feature: Register new user
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
 
-@smoke
 @regression
   Scenario Outline: Attempt to register an email with spaces
     Given I see sign in screen
@@ -39,8 +37,9 @@ Feature: Register new user
     |	Email				    |	Password	        |  Name			    |
     |	aqaUser           	    |	aqaPassword	        |  aqaUser      	|
 
-@no-smoke
-@no-regression   
+  @mute
+  # Not stable
+  @regression
   Scenario Outline: Attempt to register an email with incorrect format
     Given I see sign in screen
 	When I press Join button
@@ -55,7 +54,8 @@ Feature: Register new user
     Examples:     
     |  Name			    |
     |  aqaUser      	|
-    
+
+  @regression
   Scenario Outline: Conserve user input throughout registration
 	Given I see sign in screen
 	When I press Join button
@@ -74,7 +74,7 @@ Feature: Register new user
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
     
     
-@torun
+  @regression
   Scenario Outline: Can return to email page to change email if input incorrectly
 	Given I see sign in screen
 	When I press Join button
@@ -95,7 +95,9 @@ Feature: Register new user
     Examples:     
     |	Correct				    |	Password	        |	Name	        |   Incorrect           |
     |   aqaUser	                |	aqaPassword	        |	aqaUser         |   error@wearezeta.com |
-    
+
+
+  @regression
   Scenario Outline: Register new user using username with maximum characters allowed
 	Given I see sign in screen
 	When I press Join button
