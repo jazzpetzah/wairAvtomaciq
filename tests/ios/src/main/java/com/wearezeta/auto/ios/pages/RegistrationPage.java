@@ -9,6 +9,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.common.IOSLocators;
@@ -115,13 +116,17 @@ public class RegistrationPage extends IOSPage {
 		photos.get(0).click();
 	}
 	
-	
 	public void createAccount()
 	{
-		yourName.sendKeys(getName() + "\n");
-		yourEmail.sendKeys(getEmail() + "\n");
-		yourPassword.sendKeys(getPassword());
-		
+		if(ExpectedConditions.presenceOfElementLocated(By.xpath(IOSLocators.xpathYourName)) != null) {
+			yourName.sendKeys(getName() + "\n");
+		}
+		if(ExpectedConditions.presenceOfElementLocated(By.name(IOSLocators.nameYourEmail)) != null) {
+			yourEmail.sendKeys(getEmail() + "\n");
+		}
+		if(ExpectedConditions.presenceOfElementLocated(By.name(IOSLocators.nameYourPassword)) != null) {
+			yourPassword.sendKeys(getPassword());
+		}
 		createAccountButton.click();
 	}
 	
@@ -129,6 +134,18 @@ public class RegistrationPage extends IOSPage {
 	{
 		yourName.sendKeys(getName() + "\n");
 		yourEmail.sendKeys(getEmail());
+	}
+
+	public void retypeEmail() {
+		if (ExpectedConditions.presenceOfElementLocated(By
+				.name(IOSLocators.nameYourEmail)) != null) {
+			yourEmail.sendKeys(getEmail());
+		}
+	}
+
+	public void returnToConfirmRegistration() {
+		ForwardWelcomeButton.click();
+		createAccountButton.click();
 	}
 	
 	public boolean typeAllInvalidEmails()
@@ -195,6 +212,22 @@ public class RegistrationPage extends IOSPage {
 		return true;
 	}
 	
+	public void navigateToCreateAccount()
+	{
+		ForwardWelcomeButton.click();
+	}
+	
+	public void typeUsername() 
+	{
+		yourName.sendKeys(getName());
+	}
+	
+	public String getUsernameFieldValue()  
+	{
+		return yourName.getText();
+	}
+
+	
 	public String getEmailFieldValue()
 	{
 		return yourEmail.getText();		
@@ -213,6 +246,14 @@ public class RegistrationPage extends IOSPage {
 	public void confirmPicture()
 	{
 		confirmImageButton.click();
+	}
+	
+	public void backToEmailPage() {
+		{
+			backToWelcomeButton.click();
+			backToWelcomeButton.click();
+		}
+		wait.until(ExpectedConditions.visibilityOf(yourEmail));
 	}
 	
 	public void catchLoginAlert() {
