@@ -1,7 +1,7 @@
 Feature: Register new user
 
-@smoke
-@regression
+@mute
+@smoke @regression
   Scenario Outline: Register new user using front camera
     Given I see sign in screen
     When I press Join button
