@@ -16,6 +16,8 @@ Feature: Conversation
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
 
+  @mute
+  # Muted due to the bug https://wearezeta.atlassian.net/browse/IOS-947
   @smoke
   @regression
     Scenario Outline: Send Hello to contact
