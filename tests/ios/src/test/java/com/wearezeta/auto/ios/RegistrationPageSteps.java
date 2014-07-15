@@ -99,7 +99,7 @@ public class RegistrationPageSteps {
 		 }
 		 else {
 			 aqaEmail = email;
-			 PagesCollection.registrationPage.setEmail(email);
+			 PagesCollection.registrationPage.setEmail(email + "\n");
 		 }
 	 }
 	 
@@ -110,6 +110,11 @@ public class RegistrationPageSteps {
 		 }
 		PagesCollection.registrationPage.setEmail(new StringBuilder(email).insert(email.length()-1,"          ").toString());
 		 }
+	 
+	 @When("^I enter an incorrect email (.*)$")
+	 public void IEnterIncorrectEmail(String email) throws IOException{
+		 PagesCollection.registrationPage.setEmail(email);
+	 }
 	 
 	 @Then("^I verify no spaces are present in email$")
 	 public void CheckForSpacesInEmail() throws IOException{
@@ -155,6 +160,17 @@ public class RegistrationPageSteps {
 	 public void ISubmitRegistrationData()
 	 {
 		 PagesCollection.registrationPage.createAccount();
+	 }
+	 
+	 @When ("^I see error page$")
+	 public void ISeeErrorPage() throws IOException{
+		 Assert.assertTrue(PagesCollection.registrationPage.confirmErrorPage());
+	 }
+	 
+	 @Then("^I return to the email page$")
+	 public void IReturntoEmailPage() throws IOException
+	 {
+		PagesCollection.registrationPage.backToEmailPage();
 	 }
 	 
 	 @Then("^I see confirmation page$")

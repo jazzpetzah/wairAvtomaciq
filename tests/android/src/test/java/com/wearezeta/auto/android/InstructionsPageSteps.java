@@ -8,13 +8,13 @@ import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.CommonUtils;
 
 import cucumber.api.java.en.When;
-
+//TODO: remove this class
 public class InstructionsPageSteps {
 
 	@When("^I swipe to personal info screen$")
 	public void WhenISwipeToPersonalInfoScreen() throws IOException {
-		PagesCollection.personalInfoPaga = (PersonalInfoPage)(PagesCollection.instructionsPage.swipeLeft(500));
-		PagesCollection.personalInfoPaga.waitForEmailFieldVisible();
+		PagesCollection.personalInfoPage = (PersonalInfoPage)(PagesCollection.instructionsPage.swipeLeft(500));
+		PagesCollection.personalInfoPage.waitForEmailFieldVisible();
 	}
 	
 	@When("^I see connection request from (.*)$")

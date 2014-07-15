@@ -41,7 +41,7 @@ public class ContactListPageSteps {
 	@When("^I tap on my name (.*)$")
 	public void WhenITapOnMyName(String name) throws IOException  {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
-		PagesCollection.personalInfoPaga = (PersonalInfoPage) PagesCollection.contactListPage.tapOnName(name);
+		PagesCollection.personalInfoPage = (PersonalInfoPage) PagesCollection.contactListPage.tapOnName(name);
 	}
 
 	@When("^I swipe down contact list$")

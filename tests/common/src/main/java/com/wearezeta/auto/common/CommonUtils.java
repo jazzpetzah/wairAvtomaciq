@@ -362,14 +362,16 @@ public class CommonUtils {
 	}*/
 	 
 	public static void usePrecreatedUsers() {
-		ClientUser contact2 = new ClientUser("smoketester+aqa33@wearezeta.com", "aqa123456", "aqa33", UsersState.AllContactsConnected);
-		ClientUser contact1 = new ClientUser("smoketester+aqa32@wearezeta.com", "aqa123456", "aqa32", UsersState.AllContactsConnected);
-		ClientUser yourUser2 = new ClientUser("smoketester+aqa34@wearezeta.com", "aqa123456", "aqa34", UsersState.AllContactsConnected);
-		ClientUser yourUser1 = new ClientUser("smoketester+aqa31@wearezeta.com", "aqa123456", "aqa31", UsersState.AllContactsConnected);
+		ClientUser contact2 = new ClientUser("smoketester+34a6a8a88a6e4f9aa1bc77b94ec7ae3a@wearezeta.com", "aqa123456", "34a6a8a88a6e4f9aa1bc77b94ec7ae3a", UsersState.AllContactsConnected);
+		ClientUser contact1 = new ClientUser("smoketester+3e54e65b95cc46608d970b3e949e4773@wearezeta.com", "aqa123456", "3e54e65b95cc46608d970b3e949e4773", UsersState.AllContactsConnected);
+		ClientUser yourUser3 = new ClientUser("smoketester+bbf79363bd3d4ff3ae6a835ed27fe274@wearezeta.com", "aqa123456", "bbf79363bd3d4ff3ae6a835ed27fe274", UsersState.AllContactsConnected);
+		ClientUser yourUser2 = new ClientUser("smoketester+50d287c2407e4c5e8af578979d436c88@wearezeta.com", "aqa123456", "50d287c2407e4c5e8af578979d436c88", UsersState.AllContactsConnected);
+		ClientUser yourUser1 = new ClientUser("smoketester+1f91773deae943948da19b86cd818388@wearezeta.com", "aqa123456", "1f91773deae943948da19b86cd818388", UsersState.AllContactsConnected);
 		yourUsers = new ArrayList<ClientUser>();
 		contacts = new ArrayList<ClientUser>();
 		yourUsers.add(yourUser1);
 		yourUsers.add(yourUser2);
+		yourUsers.add(yourUser3);
 		contacts.add(contact1);
 		contacts.add(contact2);
 	}
