@@ -333,18 +333,16 @@ public class BackEndREST {
 		//By following the returned link, the asset can be downloaded.
 		
 			String downloadLink = null;
-			JSONObject jsonObj = null;
 			try {
 				WebResource webResource = client.resource(getBaseURI() + "/assets/" + assetID + "?conv_id=" + convID);
-				ClientResponse response = webResource.accept("application/json").header(HttpHeaders.AUTHORIZATION, user.getTokenType() + " " + user.getAccessToken()).get(ClientResponse.class);
+				ClientResponse response = webResource.header(HttpHeaders.AUTHORIZATION, user.getTokenType() + " " + user.getAccessToken()).get(ClientResponse.class);
 				if (response.getStatus() != 200) {  throw new RuntimeException("Failed : HTTP error code : "	+ response.getStatus());}
 
 				downloadLink = response.getEntity(String.class);
-				jsonObj =  new JSONObject(downloadLink);
 							 
 				// display response
 				System.out.println("Output from Server .... get Asset Download URL ");
-				System.out.println(jsonObj + "\n");
+				System.out.println(downloadLink + "\n");
 
 			} catch (Exception e) {
 
