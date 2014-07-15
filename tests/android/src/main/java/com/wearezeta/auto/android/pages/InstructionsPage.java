@@ -9,7 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.AndroidLocators;
 import com.wearezeta.auto.common.SwipeDirection;
-
+//TODO: remove this page
 public class InstructionsPage extends AndroidPage {
 
 	@FindBy(how = How.ID, using = AndroidLocators.idInstructions)

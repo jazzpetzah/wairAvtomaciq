@@ -44,7 +44,7 @@ Feature: SmokeTest
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
      
 @mute
-@regression
+@regression 
   Scenario Outline: Send special chars message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -74,13 +74,16 @@ Feature: SmokeTest
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |:) ;) :( |
   
 @mute
-@smoke
+@smoke 
   Scenario Outline: ZClient change name
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I tap on my name
     And I change <Name> to <NewName> 
+    And I swipe right to contact list
+    Then I see contact list loaded with User name <NewName>
+    When I tap on my name <NewName>
     Then I see my new name <NewName> and return old <Name>
 
     Examples: 
