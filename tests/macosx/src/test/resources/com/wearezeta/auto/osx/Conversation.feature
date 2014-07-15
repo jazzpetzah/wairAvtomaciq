@@ -63,7 +63,7 @@ Scenario Outline: Send HD picture to conversation
 	And I see Contact list with name <Name>
 	And I open conversation with <Contact>
 	When I send picture hdpicture.jpg
-	Then I see HD picture in conversation
+	Then I see HD picture hdpicture.jpg in conversation
 
 Examples:
     |  Login		| Password			| Name			| Contact   		|

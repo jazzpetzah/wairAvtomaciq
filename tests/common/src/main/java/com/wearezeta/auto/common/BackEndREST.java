@@ -18,6 +18,8 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 
+import java.awt.image.BufferedImage;
+
 public class BackEndREST {
 	ClientConfig config = new DefaultClientConfig();
 	static Client client = Client.create();
@@ -320,39 +322,29 @@ public class BackEndREST {
 		return (JSONArray) jsonObj.get("events");
 	}
 	
-	private static String getAssetsDownloadURL(String convID, String assetID, ClientUser user){
-			
-		//To download an asset (or more precisely, to receive a download link for an asset), send a GET request to the /assets/{id}?conv_id={convId} endpoint, 
-		//including an asset ID and conversation ID, specifying the asset to retrieve and the conversational context, respectively
+	private static BufferedImage getAssetsDownload(String convID, String assetID, ClientUser user){
 		
-		//GET assets/02be406e-32bf-53f3-833b-5b0de3a7b9a5?conv_id=f2e0702c-df1c-4b09-bad3-179201b7ddfb HTTP/1.1
-		//GET assets/assetID?conv_id=convID
-		
-		//A successful response will be a 302 redirect with a 'Location' header. The targeted URL is a CloudFront URL that can be used to download the asset from
-		//a CloudFront edge location. For security reasons, the URL is signed and valid only for a short time frame.
-		//By following the returned link, the asset can be downloaded.
-		
-			String downloadLink = null;
+			BufferedImage assetDownload = null;
 			try {
 				WebResource webResource = client.resource(getBaseURI() + "/assets/" + assetID + "?conv_id=" + convID);
 				ClientResponse response = webResource.header(HttpHeaders.AUTHORIZATION, user.getTokenType() + " " + user.getAccessToken()).get(ClientResponse.class);
 				if (response.getStatus() != 200) {  throw new RuntimeException("Failed : HTTP error code : "	+ response.getStatus());}
 
-				downloadLink = response.getEntity(String.class);
+				assetDownload = response.getEntity(BufferedImage.class);
 							 
 				// display response
 				System.out.println("Output from Server .... get Asset Download URL ");
-				System.out.println(downloadLink + "\n");
+				System.out.println("ASSET PIC: " + assetDownload + "\n");
 
 			} catch (Exception e) {
 
 				e.printStackTrace();
 
 			}
-			return downloadLink;
+			return assetDownload;
 		}
 	
-	public static String getPictureAssetFromConversation() throws Exception{
+	public static BufferedImage getPictureAssetFromConversation() throws Exception{
 		
 		ClientUser fromUser = CommonUtils.yourUsers.get(0);
 		ClientUser toUser = CommonUtils.contacts.get(0);
@@ -373,10 +365,10 @@ public class BackEndREST {
 				}
 			}
 		
-		String pictureAssetDownloadLink = null;
-		pictureAssetDownloadLink = getAssetsDownloadURL(convID, assetID, fromUser);
+		BufferedImage pictureAssetDownload = null;
+		pictureAssetDownload = getAssetsDownload(convID, assetID, fromUser);
 		
-		return pictureAssetDownloadLink;
+		return pictureAssetDownload;
 		
 	}
 }

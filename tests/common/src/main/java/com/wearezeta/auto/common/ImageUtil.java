@@ -67,6 +67,20 @@ public class ImageUtil {
 		return result;
 	}
 	
+	public static Mat resizeHDTemplateMatrixIfRequired(Mat tpl, Mat ref) {
+		Mat result;
+		if (tpl.width() > ref.width() || tpl.height() > ref.height()) {
+			result = new Mat();
+			Size sz = new Size(ref.width(), ref.height());
+			Imgproc.resize(tpl, result, sz);
+		} else {
+			result = tpl;
+		}
+		return result;
+	}
+	
+	
+	
 	public static double getOverlapScore(BufferedImage refImage, BufferedImage tplImage) {
 		//convert images to matrixes
 		refImage = convertToBufferedImageOfType(refImage, BufferedImage.TYPE_3BYTE_BGR);
@@ -93,7 +107,35 @@ public class ImageUtil {
         return minMaxLocResult.maxVal;
 	}
 	
+	public static double getOverlapScoreHDPicture(BufferedImage refImage, BufferedImage tplImage) {
+		//convert images to matrixes
+		refImage = convertToBufferedImageOfType(refImage, BufferedImage.TYPE_3BYTE_BGR);
+		tplImage = convertToBufferedImageOfType(tplImage, BufferedImage.TYPE_3BYTE_BGR);
+	    Mat ref = convertImageToOpenCVMat(refImage);
+	    Mat tpl = convertImageToOpenCVMat(tplImage);
+	    if (ref.empty() || tpl.empty()) {
+	    	if (ref.empty()) { System.out.println("ERROR: No reference image found."); }
+	    	if (tpl.empty()) { System.out.println("ERROR: No template image found."); }
+	        return Double.NaN;
+	    }
+
+	    tpl = resizeHDTemplateMatrixIfRequired(tpl, ref);
+	    //get grayscale images for matching template
+	    Mat gref = new Mat(), gtpl = new Mat();
+	    Imgproc.cvtColor(ref, gref, Imgproc.COLOR_BGR2GRAY);
+	    Imgproc.cvtColor(tpl, gtpl, Imgproc.COLOR_BGR2GRAY);
+
+	    //matching template
+	    Mat res = new Mat(ref.rows()-tpl.rows()+1, ref.cols()-tpl.cols()+1, CvType.CV_32FC1);
+	    Imgproc.matchTemplate(gref, gtpl, res, Imgproc.TM_CCOEFF_NORMED);
+
+        MinMaxLocResult minMaxLocResult = Core.minMaxLoc(res);
+        return minMaxLocResult.maxVal;
+	}
+	
 	public static BufferedImage readImageFromFile(String filePath) throws IOException {
 		return ImageIO.read(new File(filePath));
 	}
+	
+	
 }
