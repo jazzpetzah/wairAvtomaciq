@@ -72,7 +72,7 @@ public class ConversationPageSteps {
 				 + beforeNumberOfImages + ", after - " + afterNumberOfImages, isNumberIncreased);
 		 
 		 //second check, if that picture is a HD one and got right down scaled
-		 BackEndREST.getPictureAssetFromConversation();
+		 String pictureAssetURL = BackEndREST.getPictureAssetFromConversation();
 	     
 	 }
 	 

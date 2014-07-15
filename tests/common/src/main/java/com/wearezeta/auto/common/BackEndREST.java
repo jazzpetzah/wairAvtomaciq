@@ -320,12 +320,41 @@ public class BackEndREST {
 		return (JSONArray) jsonObj.get("events");
 	}
 	
-private static String getAssetsDownloadURL(String convID, String assetID, ClientUser user){
-		String downloadLink = null;
-		return downloadLink;
-	}
+	private static String getAssetsDownloadURL(String convID, String assetID, ClientUser user){
+			
+		//To download an asset (or more precisely, to receive a download link for an asset), send a GET request to the /assets/{id}?conv_id={convId} endpoint, 
+		//including an asset ID and conversation ID, specifying the asset to retrieve and the conversational context, respectively
+		
+		//GET assets/02be406e-32bf-53f3-833b-5b0de3a7b9a5?conv_id=f2e0702c-df1c-4b09-bad3-179201b7ddfb HTTP/1.1
+		//GET assets/assetID?conv_id=convID
+		
+		//A successful response will be a 302 redirect with a 'Location' header. The targeted URL is a CloudFront URL that can be used to download the asset from
+		//a CloudFront edge location. For security reasons, the URL is signed and valid only for a short time frame.
+		//By following the returned link, the asset can be downloaded.
+		
+			String downloadLink = null;
+			JSONObject jsonObj = null;
+			try {
+				WebResource webResource = client.resource(getBaseURI() + "/assets/" + assetID + "?conv_id=" + convID);
+				ClientResponse response = webResource.accept("application/json").header(HttpHeaders.AUTHORIZATION, user.getTokenType() + " " + user.getAccessToken()).get(ClientResponse.class);
+				if (response.getStatus() != 200) {  throw new RuntimeException("Failed : HTTP error code : "	+ response.getStatus());}
+
+				downloadLink = response.getEntity(String.class);
+				jsonObj =  new JSONObject(downloadLink);
+							 
+				// display response
+				System.out.println("Output from Server .... get Asset Download URL ");
+				System.out.println(jsonObj + "\n");
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+
+			}
+			return downloadLink;
+		}
 	
-	public static void getPictureAssetFromConversation() throws Exception{
+	public static String getPictureAssetFromConversation() throws Exception{
 		
 		ClientUser fromUser = CommonUtils.yourUsers.get(0);
 		ClientUser toUser = CommonUtils.contacts.get(0);
@@ -348,6 +377,8 @@ private static String getAssetsDownloadURL(String convID, String assetID, Client
 		
 		String pictureAssetDownloadLink = null;
 		pictureAssetDownloadLink = getAssetsDownloadURL(convID, assetID, fromUser);
+		
+		return pictureAssetDownloadLink;
 		
 	}
 }
