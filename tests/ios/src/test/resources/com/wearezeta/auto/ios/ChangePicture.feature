@@ -1,6 +1,7 @@
 Feature: Change Profile Picture
 
-@mute #need to add a delay before "I see changed user picture userpicture_mobile_check.jpg" step
+#need to add a delay before "I see changed user picture userpicture_mobile_check.jpg" step
+@mute
 @smoke
 Scenario Outline: Change your profile picture  
 	Given I Sign in using login <Login> and password <Password>
