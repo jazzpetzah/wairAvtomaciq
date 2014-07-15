@@ -6,7 +6,7 @@ import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(format = {"pretty", "html:target/report", "json:target/report.json", "com.wearezeta.auto.common.ZetaFormatter"}, tags = {"@torun"})
+@CucumberOptions(format = {"html:target/report", "json:target/report.json"}, tags = { "~@mute", "@torun" })
 public class DevRun {
 
 }

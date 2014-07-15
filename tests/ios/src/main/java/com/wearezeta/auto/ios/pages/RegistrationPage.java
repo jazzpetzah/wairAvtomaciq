@@ -6,9 +6,13 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.common.IOSLocators;
@@ -74,6 +78,9 @@ public class RegistrationPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameForwardWelcomeButton)
 	private WebElement ForwardWelcomeButton;
 	
+	@FindBy(how = How.NAME, using = IOSLocators.nameErrorPageButton)
+	private WebElement errorPageButton; 
+	
 	private String name;
 	private String email;
 	private String password;
@@ -115,13 +122,20 @@ public class RegistrationPage extends IOSPage {
 		photos.get(0).click();
 	}
 	
-	
 	public void createAccount()
 	{
-		yourName.sendKeys(getName() + "\n");
-		yourEmail.sendKeys(getEmail() + "\n");
-		yourPassword.sendKeys(getPassword());
-		
+		try {
+			if(ExpectedConditions.presenceOfElementLocated(By.xpath(IOSLocators.xpathYourName)) != null) {
+				yourName.sendKeys(getName() + "\n");
+			}
+		} catch (NoSuchElementException e) {
+		}
+		if(ExpectedConditions.presenceOfElementLocated(By.name(IOSLocators.nameYourEmail)) != null) {
+			yourEmail.sendKeys(getEmail() + "\n");
+		}
+		if(ExpectedConditions.presenceOfElementLocated(By.name(IOSLocators.nameYourPassword)) != null) {
+			yourPassword.sendKeys(getPassword());
+		}
 		createAccountButton.click();
 	}
 	
@@ -129,6 +143,18 @@ public class RegistrationPage extends IOSPage {
 	{
 		yourName.sendKeys(getName() + "\n");
 		yourEmail.sendKeys(getEmail());
+	}
+
+	public void retypeEmail() {
+		if (ExpectedConditions.presenceOfElementLocated(By
+				.name(IOSLocators.nameYourEmail)) != null) {
+			yourEmail.sendKeys(getEmail());
+		}
+	}
+
+	public void returnToConfirmRegistration() {
+		ForwardWelcomeButton.click();
+		createAccountButton.click();
 	}
 	
 	public boolean typeAllInvalidEmails()
@@ -195,6 +221,22 @@ public class RegistrationPage extends IOSPage {
 		return true;
 	}
 	
+	public void navigateToCreateAccount()
+	{
+		ForwardWelcomeButton.click();
+	}
+	
+	public void typeUsername() 
+	{
+		yourName.sendKeys(getName());
+	}
+	
+	public String getUsernameFieldValue()  
+	{
+		return yourName.getText();
+	}
+
+	
 	public String getEmailFieldValue()
 	{
 		return yourEmail.getText();		
@@ -213,6 +255,23 @@ public class RegistrationPage extends IOSPage {
 	public void confirmPicture()
 	{
 		confirmImageButton.click();
+	}
+
+	public boolean confirmErrorPage() 
+	{
+		return errorPageButton.isDisplayed();
+	}
+	
+	public void backToEmailPage() {
+		WebDriverWait mywait = new WebDriverWait(driver, 1, 100);
+		while (true) {
+			try {
+				mywait.until(ExpectedConditions.visibilityOf(yourEmail));
+				return;
+			} catch (WebDriverException e) {
+				backToWelcomeButton.click();
+			}	
+		}
 	}
 	
 	public void catchLoginAlert() {

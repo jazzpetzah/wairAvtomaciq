@@ -1,7 +1,6 @@
 Feature: People Picker
 
 @smoke
-@regression
 Scenario Outline: Add contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>

@@ -48,7 +48,7 @@ public final class AndroidLocators {
 	
 	public static final String idSignUpButton = "com.waz.zclient:id/ttv__confirmation__cancel";
 	
-	public static final String idLoginButton = "com.waz.zclient:id/ttv__sign_in__button";
+	public static final String idLoginButton = "com.waz.zclient:id/zb__sign_in__button";
 	
 	public static final String idLoginPasswordInput = "com.waz.zclient:id/tet__profile__guided";
 	
