@@ -5,6 +5,8 @@ import java.io.IOException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.SwipeDirection;
+import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.GroupChatInfoPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 
@@ -29,6 +31,11 @@ public class GroupChatPageSteps {
 		PagesCollection.groupChatInfoPage = (GroupChatInfoPage)PagesCollection.groupChatPage.swipeUp(1000);
 	}
 	
+	@When("^I see the new conversation name displayed in in conversation$")
+	public void IVerifyConversationNameInChat() throws IOException{
+		Assert.assertTrue(PagesCollection.groupChatPage.isConversationChangedInChat());
+	}
+	
 	@Then("^I can see (.*) Have Left$")
 	public void ICanSeeYouHaveLeft(String name) throws IOException{
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
@@ -40,4 +47,12 @@ public class GroupChatPageSteps {
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 		Assert.assertTrue(PagesCollection.groupChatPage.waitForContactToDisappear(contact));
 	}
+	
+	@When("^I return to the chat list$")
+	public void IReturnToChatList() throws IOException{
+		PagesCollection.contactListPage = (ContactListPage)PagesCollection.groupChatPage.swipeRight(1000);
+		System.out.println("swiped right");
+	}
+	
+	
 }

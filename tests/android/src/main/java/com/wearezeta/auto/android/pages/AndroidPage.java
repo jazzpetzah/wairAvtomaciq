@@ -31,7 +31,7 @@ public abstract class AndroidPage extends BasePage {
         capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(AndroidPage.class));
         capabilities.setCapability("appActivity", CommonUtils.getAndroidActivityFromConfig(AndroidPage.class));
         capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidActivityFromConfig(AndroidPage.class));
-        //capabilities.setCapability("unicodeKeyboard", true);
+        capabilities.setCapability("unicodeKeyboard", true);
         capabilities.setCapability("resetKeyboard", true);
         super.InitConnection(URL, capabilities);
 	}
@@ -103,7 +103,7 @@ public abstract class AndroidPage extends BasePage {
 		PagesCollection.dialogPage = null;
 		PagesCollection.instructionsPage = null;
 		PagesCollection.loginPage = null;
-		PagesCollection.personalInfoPaga = null;
+		PagesCollection.personalInfoPage = null;
 		PagesCollection.peoplePickerPage = null;
 		PagesCollection.connectToPage = null;
 		PagesCollection.otherUserPersonalInfoPage = null;
