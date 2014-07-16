@@ -8,6 +8,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.ios.pages.PeoplePickerPage;
 
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class OtherUserPersonalInfoPageSteps {
@@ -43,6 +44,17 @@ public class OtherUserPersonalInfoPageSteps {
 	@When("^I confirm remove$")
 	public void IConfirmRemove() throws Throwable {
 		PagesCollection.otherUserPersonalInfoPage.confirmRemove();
+	}
+	
+	@Then("^I see the user profile from (.*)$")
+	public void ISeeTheUserProfileFrom(String contact) throws Throwable {
+		
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		
+		boolean isShown = PagesCollection.otherUserPersonalInfoPage.isOtherUserProfileEmailVisible(contact);
+		
+		Assert.assertTrue("I can see the contacts email on the user profile page", isShown);
+	    
 	}
 
 }

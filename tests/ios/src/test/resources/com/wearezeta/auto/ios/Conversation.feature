@@ -145,6 +145,20 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
 
+   @torun
+Scenario Outline: I can see the individual user profile if I select someone in participants view
+	 Given I Sign in using login <Login> and password <Password>
+     And I see Contact list with my name <Name>
+     When I create group chat with <Contact1> and <Contact2>
+     And I swipe up on group chat page
+     And I select contact <Contact2>
+     Then I see the user profile from <Contact2>
+     
+Examples:
+    |  Login		| Password		| Name			| Contact1		| Contact2		|
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
+
+
   # Not stable
   @mute
   @smoke
