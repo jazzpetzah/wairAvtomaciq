@@ -26,6 +26,7 @@ public class CommonUtils {
 	public static final String YOUR_PASS = "aqaPassword";
 	public static final String CONTACT_1 = "aqaContact1";
 	public static final String CONTACT_2 = "aqaContact2";
+	public static final String CONTACT_3 = "aqaContact3";
 	public static List<ClientUser> yourUsers = new ArrayList<ClientUser>();
 	public static List<ClientUser> contacts = new ArrayList<ClientUser>();
 
@@ -78,6 +79,9 @@ public class CommonUtils {
 			}
 			if (value.contains(CONTACT_2)) {
 				value = value.replace(CONTACT_2, contacts.get(1).getName());
+			}
+			if (value.contains(CONTACT_3)) {
+				value = value.replace(CONTACT_3, contacts.get(2).getName());
 			}
 		}
 		return value;
@@ -362,6 +366,7 @@ public class CommonUtils {
 	}*/
 	 
 	public static void usePrecreatedUsers() {
+		ClientUser contact3 = new ClientUser("smoketester+bbf79363bd3d4ff3ae6a835ed27fe274@wearezeta.com", "aqa123456", "34a6a8a88a6e4f9aa1bc77b94ec7ae3a", UsersState.AllContactsConnected);
 		ClientUser contact2 = new ClientUser("smoketester+34a6a8a88a6e4f9aa1bc77b94ec7ae3a@wearezeta.com", "aqa123456", "34a6a8a88a6e4f9aa1bc77b94ec7ae3a", UsersState.AllContactsConnected);
 		ClientUser contact1 = new ClientUser("smoketester+3e54e65b95cc46608d970b3e949e4773@wearezeta.com", "aqa123456", "3e54e65b95cc46608d970b3e949e4773", UsersState.AllContactsConnected);
 		ClientUser yourUser3 = new ClientUser("smoketester+bbf79363bd3d4ff3ae6a835ed27fe274@wearezeta.com", "aqa123456", "bbf79363bd3d4ff3ae6a835ed27fe274", UsersState.AllContactsConnected);
@@ -374,6 +379,7 @@ public class CommonUtils {
 		yourUsers.add(yourUser3);
 		contacts.add(contact1);
 		contacts.add(contact2);
+		contacts.add(contact3);
 	}
 
 	public static String getAndroidDeviceNameFromConfig(Class c) throws IOException {
