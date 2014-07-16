@@ -111,6 +111,53 @@
 	return kAfMStatusCodeSuccess;
 }
 
+-(NSString *) pressEnter:(PFUIElement*) element
+{
+    NSValue* pos = element.AXPosition;
+    NSPoint pnt = pos.pointValue;
+    
+    PFUIElement* parent = element.AXParent;
+    
+    while ([@"AXApplication" isEqualToString:parent.AXRole]) {
+        pnt.x += parent.AXPosition.pointValue.x;
+        pnt.y += parent.AXPosition.pointValue.y;
+        
+        parent = parent.AXParent;
+    }
+    
+    CGEventRef event = CGEventCreate(NULL);
+    CGPoint pt = CGEventGetLocation(event);
+    pt.x = pnt.x + 10;
+    pt.y = pnt.y + 10;
+    
+    CGEventRef click1_move = CGEventCreateMouseEvent(
+                                                     NULL, kCGEventMouseMoved,
+                                                     pt,
+                                                     kCGMouseButtonLeft);
+    
+    CGEventPost(kCGHIDEventTap, click1_move);
+    
+    CGEventRef click2_move = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, pt, kCGMouseButtonLeft);
+    CGEventRef click1_down = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, pt, kCGMouseButtonLeft);
+    CGEventRef click1_up = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseUp, pt, kCGMouseButtonLeft);
+    
+    CGEventPost(kCGHIDEventTap, click2_move);
+    CGEventPost(kCGHIDEventTap, click1_down);
+    CGEventPost(kCGHIDEventTap, click1_up);
+    
+    // Release the events
+    CFRelease(click1_up);
+    CFRelease(click1_down);
+    CFRelease(click1_move);
+    
+    NSMutableDictionary *errorDict = [NSMutableDictionary new];
+    
+    NSAppleScript *appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 36\nend tell"];
+    
+    return [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
+
+}
+
 // GET /status
 -(AppiumMacHTTPJSONResponse*) getStatus:(NSString*)path
 {
@@ -767,49 +814,8 @@
 		[self respondWithJsonError:status session:sessionId];
 	}
     
-    NSValue* pos = element.AXPosition;
-    NSPoint pnt = pos.pointValue;
-        
-    PFUIElement* parent = element.AXParent;
-        
-    while ([@"AXApplication" isEqualToString:parent.AXRole]) {
-        pnt.x += parent.AXPosition.pointValue.x;
-        pnt.y += parent.AXPosition.pointValue.y;
-            
-        parent = parent.AXParent;
-    }
-        
-    CGEventRef event = CGEventCreate(NULL);
-    CGPoint pt = CGEventGetLocation(event);
-    pt.x = pnt.x;
-    pt.y = pnt.y;
-        
-    CGEventRef click1_move = CGEventCreateMouseEvent(
-                                                         NULL, kCGEventMouseMoved,
-                                                         pt,
-                                                         kCGMouseButtonLeft);
-        
-    CGEventPost(kCGHIDEventTap, click1_move);
-        
-    CGEventRef click2_move = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, pt, kCGMouseButtonLeft);
-    CGEventRef click1_down = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, pt, kCGMouseButtonLeft);
-    CGEventRef click1_up = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseUp, pt, kCGMouseButtonLeft);
-        
-    CGEventPost(kCGHIDEventTap, click2_move);
-    CGEventPost(kCGHIDEventTap, click1_down);
-    CGEventPost(kCGHIDEventTap, click1_up);
-        
-    // Release the events
-    CFRelease(click1_up);
-    CFRelease(click1_down);
-    CFRelease(click1_move);
-
-    NSMutableDictionary *errorDict = [NSMutableDictionary new];
-
-    NSAppleScript *appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 36\nend tell"];
-    
-    NSString *statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
-
+    NSString *result = [self pressEnter:element];
+    NSLog(@"%@", result);
     return [self respondWithJson:nil status:kAfMStatusCodeSuccess session: sessionId];
 }
 
@@ -861,9 +867,18 @@
 	}
     
     NSString *stringValue = [value componentsJoinedByString:@""];
+    NSLog(@"%@", stringValue);
+    BOOL pressEnter = NO;
+    if ([stringValue hasSuffix:@"\\n"]) {
+        pressEnter = YES;
+        NSRange lastEnterRange = NSMakeRange(0, stringValue.length - 2
+                                             );
+        stringValue = [stringValue substringWithRange:lastEnterRange];
+        NSLog(@"%@", stringValue);
+    }
     if ([stringValue caseInsensitiveCompare:@""] != NSOrderedSame) {
         // set the value
-        [element setAXValue:[value componentsJoinedByString:@""]];
+        [element setAXValue:stringValue];
 
         NSMutableDictionary *errorDict = [NSMutableDictionary new];
 
@@ -892,6 +907,11 @@
         statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
         appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 51\nend tell"];
         statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
+        
+        if (pressEnter) {
+            NSString *result = [self pressEnter:element];
+            NSLog(@"%@", result);
+        }
     }
     else
     {

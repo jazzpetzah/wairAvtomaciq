@@ -13,7 +13,7 @@ Feature: SmokeTest
       | aqaUser | aqaPassword | aqaUser |
 
 @mute
-@regression
+@regression @torun
   Scenario Outline: Send Long Message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -29,7 +29,7 @@ Feature: SmokeTest
 
 
 @mute
-@regression
+@regression @torun
   Scenario Outline: Send Upper and Lower case to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -44,14 +44,14 @@ Feature: SmokeTest
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
      
 @mute
-@regression 
+@regression @torun
   Scenario Outline: Send special chars message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
-    And I type <Message> message and send it
+    And I input <Message> message and send it
     Then I see my message in the dialog
 
     Examples: 
@@ -66,7 +66,7 @@ Feature: SmokeTest
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
-    And I type <Message> message and send it
+    And I input <Message> message and send it
     Then I see my message in the dialog
 
     Examples: 
@@ -74,7 +74,7 @@ Feature: SmokeTest
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |:) ;) :( |
   
 @mute
-@smoke 
+@smoke @torun
   Scenario Outline: ZClient change name
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -91,7 +91,7 @@ Feature: SmokeTest
       | aqaUser | aqaPassword | aqaUser | NewTestName |
       
  
-@smoke
+@smoke 
   Scenario Outline: Check contact personal info
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

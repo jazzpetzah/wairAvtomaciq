@@ -2,9 +2,9 @@ package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Date;
 import java.util.List;
 
-import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriverException;
@@ -128,8 +128,7 @@ public class RegistrationPage extends IOSPage {
 			if(ExpectedConditions.presenceOfElementLocated(By.xpath(IOSLocators.xpathYourName)) != null) {
 				yourName.sendKeys(getName() + "\n");
 			}
-		} catch (NoSuchElementException e) {
-		}
+		} catch (NoSuchElementException e) { }
 		if(ExpectedConditions.presenceOfElementLocated(By.name(IOSLocators.nameYourEmail)) != null) {
 			yourEmail.sendKeys(getEmail() + "\n");
 		}
@@ -257,21 +256,13 @@ public class RegistrationPage extends IOSPage {
 		confirmImageButton.click();
 	}
 
-	public boolean confirmErrorPage() 
-	{
+	public boolean confirmErrorPage() {
 		return errorPageButton.isDisplayed();
 	}
 	
-	public void backToEmailPage() {
-		WebDriverWait mywait = new WebDriverWait(driver, 1, 100);
-		while (true) {
-			try {
-				mywait.until(ExpectedConditions.visibilityOf(yourEmail));
-				return;
-			} catch (WebDriverException e) {
-				backToWelcomeButton.click();
-			}	
-		}
+	public void backToEmailPageFromErrorPage() {
+		backToWelcomeButton.click();
+		backToWelcomeButton.click();
 	}
 	
 	public void catchLoginAlert() {
