@@ -17,7 +17,11 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 public class ImageUtil {
-
+	public static final int RESIZE_NORESIZE = 0;
+	public static final int RESIZE_FROM1920x1080OPTIMIZED = 1;
+	public static final int RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION = 2;
+	public static final int RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION = 3;
+	
 	static {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 	}
@@ -55,7 +59,7 @@ public class ImageUtil {
 	    return image;
 	}
 	
-	public static Mat resizeTemplateMatrixIfRequired(Mat tpl, Mat ref, int etWidth, int etHeight) {
+	public static Mat resizeTemplateMatrixFromOptimizedForResolution(Mat tpl, Mat ref, int etWidth, int etHeight) {
 		Mat result;
 		if (tpl.width() > ref.width() || tpl.height() > ref.height()) {
 			result = new Mat();
@@ -67,7 +71,23 @@ public class ImageUtil {
 		return result;
 	}
 	
+	public static Mat resizeFirstMatrixToSecondMatrixResolution(Mat first, Mat second) {
+		Mat result;
+		if (first.width() != second.width() || first.height() != second.height()) {
+			result = new Mat();
+			Size sz = new Size(second.width(), second.height());
+			Imgproc.resize(first, result, sz);
+		} else {
+			result = first;
+		}
+		return result;
+	}
+	
 	public static double getOverlapScore(BufferedImage refImage, BufferedImage tplImage) {
+		return getOverlapScore(refImage, tplImage, RESIZE_FROM1920x1080OPTIMIZED);
+	}
+	
+	public static double getOverlapScore(BufferedImage refImage, BufferedImage tplImage, int resizeMode) {
 		//convert images to matrixes
 		refImage = convertToBufferedImageOfType(refImage, BufferedImage.TYPE_3BYTE_BGR);
 		tplImage = convertToBufferedImageOfType(tplImage, BufferedImage.TYPE_3BYTE_BGR);
@@ -79,7 +99,14 @@ public class ImageUtil {
 	        return Double.NaN;
 	    }
 
-	    tpl = resizeTemplateMatrixIfRequired(tpl, ref, 1080, 1920);
+	    if (resizeMode == RESIZE_FROM1920x1080OPTIMIZED) {
+	    	tpl = resizeTemplateMatrixFromOptimizedForResolution(tpl, ref, 1080, 1920);
+	    } else if (resizeMode == RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION) {
+	    	tpl = resizeFirstMatrixToSecondMatrixResolution(tpl, ref);
+	    } else if (resizeMode == RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION) {
+	    	ref = resizeFirstMatrixToSecondMatrixResolution(ref, tpl);
+	    }
+	    
 	    //get grayscale images for matching template
 	    Mat gref = new Mat(), gtpl = new Mat();
 	    Imgproc.cvtColor(ref, gref, Imgproc.COLOR_BGR2GRAY);
