@@ -167,10 +167,10 @@ public class RegistrationPageSteps {
 		 Assert.assertTrue(PagesCollection.registrationPage.confirmErrorPage());
 	 }
 	 
-	 @Then("^I return to the email page$")
-	 public void IReturntoEmailPage() throws IOException
+	 @Then("^I return to the email page from error page$")
+	 public void IReturntoEmailPageFromErrorPage() throws IOException
 	 {
-		PagesCollection.registrationPage.backToEmailPage();
+		PagesCollection.registrationPage.backToEmailPageFromErrorPage();
 	 }
 	 
 	 @Then("^I see confirmation page$")

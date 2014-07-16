@@ -4,6 +4,7 @@ package com.wearezeta.auto.common;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -31,6 +32,9 @@ public class ZetaFormatter implements Formatter, Reporter {
 	private String scenario = "";
 	private Queue<String> step = new LinkedList<String>();
 
+	private long startDate;
+	private long endDate;
+	
 	@Override
 	public void background(Background arg0) {
 		
@@ -110,13 +114,14 @@ public class ZetaFormatter implements Formatter, Reporter {
 	@Override
 	public void match(Match arg0) {
 		
+		startDate = new Date().getTime();
 	}
 
 	@Override
-	public void result(Result arg0) {	
-		
+	public void result(Result arg0) {
+		endDate = new Date().getTime();
 		String currentStep = step.poll();
-		System.out.println(currentStep + ", " + arg0.getStatus());
+		System.out.println(currentStep + " (status: " + arg0.getStatus() + ", time: " + (endDate-startDate) + "ms)");
 		if (driver != null) {
 			try {
 				BufferedImage image = DriverUtils.takeScreenshot(driver);

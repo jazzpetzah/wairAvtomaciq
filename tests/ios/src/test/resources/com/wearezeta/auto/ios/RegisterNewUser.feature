@@ -87,7 +87,7 @@ Feature: Register new user
 	And I enter password <Password>
 	And I submit registration data
 	Then I see error page
-	And I return to the email page
+	And I return to the email page from error page
 	And I enter email <Correct>
 	And I submit registration data
 	And I verify registration address
