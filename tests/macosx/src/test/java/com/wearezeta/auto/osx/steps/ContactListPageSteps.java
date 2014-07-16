@@ -7,6 +7,7 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.osx.pages.ContactListPage;
+import com.wearezeta.auto.osx.pages.ConversationInfoPage;
 import com.wearezeta.auto.osx.pages.ConversationPage;
 import com.wearezeta.auto.osx.pages.PeoplePickerPage;
 import com.wearezeta.auto.osx.pages.UserProfilePage;
@@ -16,9 +17,18 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ContactListPageSteps {
+	
+	public static final String RANDOM_KEYWORD = "RANDOM";
+	
+	public String conversationName;
+	
 	@Given ("I see Contact list with name (.*)")
 	public void GivenISeeContactListWithName(String name) throws IOException {
-		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		if (name.equals(RANDOM_KEYWORD)) {
+			name = conversationName;
+		} else {
+			name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		}
 		Assert.assertTrue(CommonSteps.senderPages.getContactListPage().isContactWithNameExists(name));
 	}
 	
@@ -113,5 +123,16 @@ public class ContactListPageSteps {
 	public void IGoToArchive() {
 		ContactListPage contactList = CommonSteps.senderPages.getContactListPage();
 		contactList.showArchivedConversations();
+	}
+	
+	@When("I set name (.*) for conversation")
+	public void ISetRandomNameForConversation(String name) throws MalformedURLException, IOException {
+		if (name.equals(RANDOM_KEYWORD)) {
+			conversationName = CommonUtils.generateGUID();
+		} else {
+			conversationName = name;
+		}
+		ConversationInfoPage conversationInfo = CommonSteps.senderPages.getConversationInfoPage();
+		conversationInfo.setNewConversationName(conversationName);
 	}
 }

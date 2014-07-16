@@ -88,5 +88,13 @@ public final class OSXLocators {
 	
 	public static final String xpathPleaseProvideEmailAddress = "//AXStaticText[@AXValue='PLEASE PROVIDE A VALID EMAIL ADDRESS']";
 
+	public static final String xpathConversationNameEdit = "//AXPopover/AXScrollArea/AXTextArea";
+	
+	public static final String xpathUserAvatar = "//AXPopover/AXScrollArea/AXGrid/AXUnknown";
+	
+	public static final String xpathNumberOfPeopleInChat = "//AXPopover/AXStaticText";
+	
+	public static final String peopleCountTextSubstring = " PEOPLE";
+	
 	public static final String IMAGES_SOURCE_DIRECTORY = "Documents";
 }
