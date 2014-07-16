@@ -40,11 +40,9 @@ public final class IOSLocators {
 	
 	public static final String namePickerClearButton = "PeoplePickerClearButton";
 	
-	public static final String nameSendConnectButton = "SEND";
+	public static final String xpathTypeYourMessage = "//UIAApplication[1]/UIAWindow[1]/UIATextView[2]/UIAStaticText[1]";
 	
 	public static final String clasNameConnectDialogLabel = "UIATextField";
-	
-	public static final String classNameConnectDialogInput = "UIATextView";
 	
 	public static final String xpathConnectCloseButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]";
 	
@@ -161,4 +159,8 @@ public final class IOSLocators {
 	public static final String xpathAvatarCollectionView = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]";
 	
 	public static final String nameErrorPageButton = "BACK";
+	
+	public static final String xpathConnectionMessageInput = "//UIAApplication[1]/UIAWindow[1]/UIATextView[2]";
+	
+	public static String CONNECT_TO_MESSAGE = "Type your first message to";
 }           

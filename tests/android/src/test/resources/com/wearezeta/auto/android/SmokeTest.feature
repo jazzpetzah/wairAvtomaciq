@@ -51,7 +51,7 @@ Feature: SmokeTest
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
-    And I type <Message> message and send it
+    And I input <Message> message and send it
     Then I see my message in the dialog
 
     Examples: 
@@ -66,7 +66,7 @@ Feature: SmokeTest
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
-    And I type <Message> message and send it
+    And I input <Message> message and send it
     Then I see my message in the dialog
 
     Examples: 

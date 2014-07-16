@@ -85,11 +85,13 @@ public class PeoplePickerPage extends IOSPage{
 		
 		IOSPage page = null;
 		
-		try
-		{
-			if(driver.findElement(By.name(IOSLocators.nameSendConnectButton)) != null)
-			{
+		try {
+			WebElement el = driver.findElement(By.xpath(IOSLocators.xpathTypeYourMessage));
+			if( el.getText().contains(IOSLocators.CONNECT_TO_MESSAGE)) {
 				page = new ConnectToPage(url, path);
+			}
+			else {
+				page = this;
 			}
 		}
 		catch(NoSuchElementException ex)
