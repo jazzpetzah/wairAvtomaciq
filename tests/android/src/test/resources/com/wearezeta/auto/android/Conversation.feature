@@ -1,7 +1,7 @@
 Feature: Conversation
 
 @mute
-@smoke
+@smoke @torun
   Scenario Outline: Send Message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -30,7 +30,7 @@ Feature: Conversation
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
 @mute
-@smoke
+@smoke @torun
   Scenario Outline: Send Camera picture to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -45,8 +45,9 @@ Feature: Conversation
     Examples: 
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
-
-@smoke
+      
+#test is not implemented yet, functionality is not available in the client
+@smoke @mute
   Scenario Outline: Start group chat with users from contact list
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
