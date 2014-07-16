@@ -25,12 +25,12 @@ public class DialogPageSteps{
 	}
 
 	@When("^I type the message and send it$")
-	public void WhenITypeTheMessageAndSendIt() throws Throwable {
+	public void WhenITypeRandomMessageAndSendIt() throws Throwable {
 		message = CommonUtils.generateGUID();
 		PagesCollection.dialogPage.typeMessage(message);
 	}
 	
-	@When("^I type (.*) message and send it$")
+	@When("^I input (.*) message and send it$")
 	public void ITypeTheMessageAndSendIt(String myMessage) throws Throwable {
 		message = myMessage;
 		

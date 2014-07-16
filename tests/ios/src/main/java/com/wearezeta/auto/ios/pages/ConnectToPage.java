@@ -14,17 +14,14 @@ import com.wearezeta.auto.common.SwipeDirection;
 
 public class ConnectToPage extends IOSPage {
 	
-	@FindBy(how = How.CLASS_NAME, using = IOSLocators.clasNameConnectDialogLabel)
-	private WebElement connectLabel;
-	
-	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameConnectDialogInput)
-	private WebElement connectInput;
-	
-	@FindBy(how = How.NAME, using = IOSLocators.nameSendConnectButton)
-	private WebElement sendButton;
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathTypeYourMessage)
+	private WebElement typeYourMessage;
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathConnectCloseButton)
 	private WebElement closeConnectDialoButon;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathConnectionMessageInput)
+	private WebElement messageInput;
 	
 	private String url;
 	private String path;
@@ -38,26 +35,23 @@ public class ConnectToPage extends IOSPage {
 	}
 	
 	public Boolean isConnectToUserDialogVisible(){
-		return connectLabel.isDisplayed();
+		return typeYourMessage.isDisplayed();
 	}
 	
 	public String getConnectToUserLabelValue(){
-		return connectLabel.getText();
+		return typeYourMessage.getText();
 	}
 	
-	public void fillTextInConnectDialog(){
-		connectInput.sendKeys(inviteMessage);
-	}
-	
-	public ContactListPage clickSendButton() throws IOException{
-		sendButton.click();
+	public ContactListPage fillTextInConnectDialog() throws IOException {
+		messageInput.click();
+		messageInput.sendKeys(inviteMessage + "\\n");
+		
 		return new ContactListPage(url, path);
 	}
 	
-	public IOSPage sendInvitation(String name) throws IOException{
-		IOSPage page = null;
+	public ContactListPage sendInvitation(String name) throws IOException{
+		ContactListPage page = null;
 		fillTextInConnectDialog();
-		clickSendButton();
 		page = new ContactListPage(url, path);
 		return page;
 	}

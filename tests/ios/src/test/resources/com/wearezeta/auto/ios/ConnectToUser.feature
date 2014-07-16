@@ -1,6 +1,6 @@
 Feature: Connect to User 
 
-    @smoke
+    @smoke 
 	Scenario Outline: Send invitation message to a user
 		Given I Sign in using login <Login> and password <Password>
     	And I see Contact list with my name <Name>
@@ -12,7 +12,6 @@ Feature: Connect to User
 		And I tap on user name found on People picker page <Contact>
 		And I see connect to <Contact> dialog
 		And I input message in connect to dialog
-		And I tap connect dialog Send button
 		Then I see contact list loaded with User name <Contact>
 		And I tap on contact name <Contact>
 		And I see Pending Connect to <Contact> message on Dialog page
