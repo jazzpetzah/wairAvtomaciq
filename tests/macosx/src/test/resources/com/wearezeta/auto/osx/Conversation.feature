@@ -159,8 +159,6 @@ Examples:
 	|  Login		| Password		| Name			| Contact1		| Contact2		|
 	|  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-# Not stable
-@mute
 @smoke
 Scenario Outline: Remove user from group chat
     Given I Sign in using login <Login> and password <Password>
