@@ -1,15 +1,19 @@
 package com.wearezeta.auto.osx.steps;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.BackEndREST;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationInfoPage;
+import com.wearezeta.auto.osx.pages.OSXPage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -49,6 +53,37 @@ public class ConversationPageSteps {
 		 Assert.assertTrue(choosePicturePage.isVisible());
 		 
 		 choosePicturePage.openImage(imageFilename);
+	 }
+
+	 @Then("^I see HD picture (.*) in conversation")
+	 public void ThenISeeHDPictureInConversation(String filename) throws Throwable {
+		 
+		 //fist check, if there is a picture sent
+		 int afterNumberOfImages = -1;
+		 
+		 boolean isNumberIncreased = false;
+		 for (int i = 0; i < 60; i++) {
+			 afterNumberOfImages = CommonSteps.senderPages.getConversationPage().getNumberOfImageEntries();
+			 if (afterNumberOfImages == beforeNumberOfImages + 2) {
+				 isNumberIncreased = true;
+				 break;
+			 }
+			 try { Thread.sleep(1000); } catch (InterruptedException e) { }
+		 }
+		 
+		 Assert.assertTrue("Incorrect images count: before - "
+				 + beforeNumberOfImages + ", after - " + afterNumberOfImages, isNumberIncreased);
+		 
+		 //second check, if that picture is the expected HD picture and not just any picture
+		 BufferedImage pictureAssetFromConv = BackEndREST.getPictureAssetFromConversation(
+				 CommonUtils.yourUsers.get(0),
+				 CommonUtils.contacts.get(0));
+		 BufferedImage origSentPicture = ImageUtil.readImageFromFile(OSXPage.imagesPath + filename);
+		 
+		 double score = ImageUtil.getOverlapScore(pictureAssetFromConv, origSentPicture, ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
+		 Assert.assertTrue(
+					"Overlap between two images has no enough score. Expected >= 0.98, current = " + score,
+					score >= 0.98d);
 	 }
 	 
 	 @Then("I see random message in conversation")
