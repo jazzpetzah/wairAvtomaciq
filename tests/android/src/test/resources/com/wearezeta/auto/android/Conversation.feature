@@ -1,7 +1,6 @@
 Feature: Conversation
 
-@mute
-@smoke @torun
+@smoke 
   Scenario Outline: Send Message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -29,8 +28,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-@mute
-@smoke @torun
+@smoke 
   Scenario Outline: Send Camera picture to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -151,8 +149,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
       
-@mute
-@regression @torun
+@regression 
   Scenario Outline: Send Long Message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -166,8 +163,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-@mute
-@regression @torun
+@regression 
   Scenario Outline: Send Upper and Lower case to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -181,8 +177,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
      
-@mute
-@regression @torun
+@regression 
   Scenario Outline: Send special chars message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
