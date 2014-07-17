@@ -34,7 +34,7 @@ public class CommonSteps {
 				|| !CommonUtils.yourUsers.get(0).getUserState().equals(UsersState.AllContactsConnected))) {
 			
 			if (generateUsersFlag) {
-				CommonUtils.generateUsers(2);
+				CommonUtils.generateUsers(3);
 				TestPreparation.createContactLinks();
 			} else {
 				CommonUtils.usePrecreatedUsers();
