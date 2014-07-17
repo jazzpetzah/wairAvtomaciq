@@ -38,6 +38,10 @@ public final class AndroidLocators {
 	
 	public static final String idSignOutBtn = "com.waz.zclient:id/ttv__profile__settings_box__signout";
 	
+	public static final String idSettingsBtn = "com.waz.zclient:id/ttv__profile__settings_box__settings";
+	
+	public static final String xpathSettingPageTitle = "//android.widget.ListView[1]/android.widget.TextView[@text='Settings']";
+	
 	public static final String idPeoplePickerClearbtn = "com.waz.zclient:id/gtv_pickuser__clearbutton";
 	
 	public static final String idPersonalInfoForm ="com.waz.zclient:id/ll_self_form";
