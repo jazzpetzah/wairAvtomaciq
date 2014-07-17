@@ -88,13 +88,29 @@ Examples:
 @torun
 Scenario Outline: Add user to a group conversation
 	Given I Sign in using login <Login> and password <Password>
-	And I see Contact list with my name <Name>
-	And I swipe down contact list
-	When I see People picker page
+    And I see Contact list with my name <Name>
+	When I create group chat with <Contact1> and <Contact2>
+	And I return to the chat list
+	And I see <Contact1> and <Contact2> chat in contact list
+	And I tap on a group chat with <Contact1> and <Contact2>
+	And I swipe up on group chat page
+	And I press Add button
+	And I press Continue button
+	And I see People picker page
+	And I input in People picker search field user name <Contact3>
+	And I see user <Contact3> found on People picker page
+	And I tap on user name found on People picker page <Contact3>
+	And I see Add to conversation button
+    And I click on Add to conversation button
+	#Then I see that conversation has <Number> people
+	#And I see <Number> participants avatars
+    When I exit the group info page
+    And I can see <Name> Added <Contact3>
+	
 	
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		| Contact3		|
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| aqaContact3	|
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| aqaContact3	| 
 
   # Not stable
   @mute

@@ -58,6 +58,10 @@ public class GroupChatPage extends DialogPage {
 		return driver.findElement(By.name(name.toUpperCase() + " HAS LEFT")).isDisplayed();
 	}
 	
+	public boolean isUserAddedContactVisible(String user, String contact){
+		return driver.findElement(By.name(user.toUpperCase() + " ADDED " + contact.toUpperCase())).isDisplayed();
+	}
+	
 	public boolean isContactAvailableInChat(String contact) {
 		WebElement el = null;
 		boolean result = false;
