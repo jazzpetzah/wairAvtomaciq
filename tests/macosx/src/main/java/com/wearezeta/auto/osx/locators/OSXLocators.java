@@ -33,7 +33,7 @@ public final class OSXLocators {
 	public static final String idArchiveButton = "archiveButton";
 	public static final String idShowArchivedButton = "showArchivedButton";
 	
-	public static final String nameSayHelloMenuItem = "“Hello”";
+	public static final String nameSayHelloMenuItem = "Knock";
 	public static final String nameSignOutMenuItem = "Sign Out";
 	public static final String nameQuitZClientMenuItem = "Quit ZClient";
 	public static final String nameSendInvitationButton = "Send";
@@ -95,6 +95,8 @@ public final class OSXLocators {
 	public static final String xpathNumberOfPeopleInChat = "//AXPopover/AXStaticText";
 	
 	public static final String peopleCountTextSubstring = " PEOPLE";
+	
+	public static final String xpathOpenUserPictureSettingsButton = "//AXWindow/AXButton[6]";
 	
 	public static final String IMAGES_SOURCE_DIRECTORY = "Documents";
 }
