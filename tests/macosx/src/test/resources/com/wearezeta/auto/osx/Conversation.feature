@@ -159,6 +159,8 @@ Examples:
 	|  Login		| Password		| Name			| Contact1		| Contact2		|
 	|  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
+# Do not work on Parallels VM (step "I choose user <Contact1> in Conversation info" returns java.awt.HeadlessException)
+@mute
 @smoke
 @torun
 Scenario Outline: Remove user from group chat
