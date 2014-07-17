@@ -85,6 +85,17 @@ Examples:
 	|	Login		|	Password		|	Name		|	Contact			|
 	|	aqaUser		|	aqaPassword		|	aqaUser		|	aqaContact1		|
 
+@torun
+Scenario Outline: Add user to a group conversation
+	Given I Sign in using login <Login> and password <Password>
+	And I see Contact list with my name <Name>
+	And I swipe down contact list
+	When I see People picker page
+	
+Examples:
+    |  Login		| Password		| Name			| Contact1		| Contact2		| Contact3		|
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| aqaContact3	|
+
   # Not stable
   @mute
   @smoke
