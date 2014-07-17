@@ -51,4 +51,12 @@ public class GroupChatInfoPageSteps {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		PagesCollection.otherUserPersonalInfoPage = PagesCollection.groupChatInfoPage.selectContactByName(name);
 	}
+	
+	@Then("^I see that conversation has (.*) people$")
+	public void ISeeThatConversationHasNumberPeople(int number) throws Throwable {
+	}
+
+	@When("^I see (.*) participants avatars$")
+	public void ISeeNumberParticipantsAvatars(int number) throws Throwable {
+	}    
 }

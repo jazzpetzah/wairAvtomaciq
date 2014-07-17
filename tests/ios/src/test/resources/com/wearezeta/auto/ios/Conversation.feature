@@ -102,15 +102,15 @@ Scenario Outline: Add user to a group conversation
 	And I tap on user name found on People picker page <Contact3>
 	And I see Add to conversation button
     And I click on Add to conversation button
-	#Then I see that conversation has <Number> people
-	#And I see <Number> participants avatars
+	Then I see that conversation has <Number> people
+	And I see <Number> participants avatars
     When I exit the group info page
     And I can see <Name> Added <Contact3>
 	
 	
 Examples:
-    |  Login		| Password		| Name			| Contact1		| Contact2		| Contact3		|
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| aqaContact3	| 
+    |  Login		| Password		| Name			| Contact1		| Contact2		| Contact3		| Number  |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| aqaContact3	| 4		  |
 
   # Not stable
   @mute
