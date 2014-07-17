@@ -41,8 +41,11 @@ public final class IOSLocators {
 	public static final String namePickerClearButton = "PeoplePickerClearButton";
 	
 	public static final String xpathTypeYourMessage = "//UIAApplication[1]/UIAWindow[1]/UIATextView[2]/UIAStaticText[1]";
+	public static final String nameSendConnectButton = "SEND";
 	
 	public static final String clasNameConnectDialogLabel = "UIATextField";
+	
+	public static final String classNameConnectDialogInput = "UIATextView";
 	
 	public static final String xpathConnectCloseButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]";
 	
@@ -59,6 +62,8 @@ public final class IOSLocators {
 	public static final String xpathCameraRollPicture = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[1]";
 	
 	public static final String nameConfirmPictureButton = "ImageConfirmerConfirmButton";
+	
+	public static final String xpathMyUserInContactList = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[1]/UIAStaticText[1]";
 
 	public static final String xpathFirstInContactList = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[2]/UIAStaticText[1]";
 	
@@ -90,6 +95,8 @@ public final class IOSLocators {
 	
 	public static final String nameConfirmImageButton = "ImageConfirmerConfirmButton";
 	
+	public static final String nameCancelImageButton = "ImageConfirmerCancelButton";
+	
 	public static final String xpathYourName = "//UIAApplication[1]/UIAWindow[1]/UIAElement[1]/UIATextView[1]";
 	
 	public static final String nameYourEmail = "RegistrationEmailField";
@@ -99,6 +106,7 @@ public final class IOSLocators {
 	public static final String xpathRevealPasswordButton = "//UIAApplication[1]/UIAWindow[1]/UIASecureTextField[1]/UIAButton[1]";
 	
 	public static final String nameContinueButton = "CONTINUE";
+	
 	public static final String xpathHidePasswordButton = "//UIAApplication[1]/UIAWindow[1]/UIATextField[1]/UIAButton[1]";
 	
 	public static final String classNameConfirmationMessage = "UIATextView";
@@ -125,7 +133,7 @@ public final class IOSLocators {
 	
 	public static final String nameCameraButton = "cameraButton";
 	
-	public static final String xpathProvideValidEmailMessage = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]"; 
+	public static final String idProvideValidEmailMessage = "PLEASE PROVIDE A VALID EMAIL ADDRESS"; 
 	
 	public static final String nameAddContactToChatButton = "metaControllerLeftButton";
 	
@@ -148,6 +156,14 @@ public final class IOSLocators {
 	public static final String xpathNewGroupConversationNameChangeTextField = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[2]/UIATextView[1]";
 	
 	public static final String nameExitGroupInfoPageButton = "metaControllerCancelButton";
+	public static final String xpathAlbum = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]/UIAStaticText[1]";
+	
+	///////////////////////
+	//Camera page locators
+	///////////////////////
+	public static final String xpathTakePhotoSmile = "//UIAApplication[1]/UIAWindow[1]/UIAImage[1]";
+	
+	public static final String nameTakePhotoHintLabel = "TAKE A PICTURE, OR CHOOSE ONE";
 	
 	public static final String xpathFirstChatInChatListTextField = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[2]/UIAStaticText[1]";
 	
@@ -160,7 +176,27 @@ public final class IOSLocators {
 	
 	public static final String nameErrorPageButton = "BACK";
 	
+	public static final String nameCameraCloseButton = "CameraCloseButton";
+
+	public static final String nameCameraShootButton = "CameraShootButton";
+	
+	public static final String nameCameraFlashButton = "CameraFlashButton";
+	
+	public static final String nameSwitchCameraButton = "CameraSwitchButton";
+	
+	public static final String nameCameraPhotoLibraryButton = "CameraLibraryButton";
+	
+	public static final String nameRegistrationCameraButton = "CameraButton";
+	
 	public static final String xpathConnectionMessageInput = "//UIAApplication[1]/UIAWindow[1]/UIATextView[2]";
 	
-	public static String CONNECT_TO_MESSAGE = "Type your first message to";
-}           
+	public static String CONNECT_TO_MESSAGE = "Type your first message to";	
+	
+	public static final String nameRegistrationNextButton = "ForwardWelcomeButton";
+		
+	public static final String nameKeyboardNextButton = "Next";
+		
+	public static final String nameVignetteOverlay = "••••";
+	
+	public static final String xpathCloseColorModeButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[4]";
+}

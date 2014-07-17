@@ -11,6 +11,7 @@ import java.util.Queue;
 
 import javax.imageio.ImageIO;
 
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import gherkin.formatter.Formatter;
@@ -64,11 +65,13 @@ public class ZetaFormatter implements Formatter, Reporter {
 	@Override
 	public void feature(Feature arg0) {
 		feature = arg0.getName();
+		System.out.println("Feature: " + feature);
 	}
 
 	@Override
 	public void scenario(Scenario arg0) {
 		scenario = arg0.getName();
+		System.out.println("\n\nScenario: " + scenario);
 	}
 
 	@Override
@@ -135,6 +138,11 @@ public class ZetaFormatter implements Formatter, Reporter {
 			    ImageIO.write(image, "png", outputfile);
 
 			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			catch (WebDriverException  e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
