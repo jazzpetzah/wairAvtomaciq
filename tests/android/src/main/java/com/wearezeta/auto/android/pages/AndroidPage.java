@@ -39,7 +39,6 @@ public abstract class AndroidPage extends BasePage {
 	public void refreshUITree() {
 		driver.getPageSource();
 	}
-
 	
 	public void navigateBack(){
 		driver.navigate().back();

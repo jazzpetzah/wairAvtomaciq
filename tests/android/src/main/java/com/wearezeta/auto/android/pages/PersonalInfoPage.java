@@ -26,6 +26,8 @@ public class PersonalInfoPage extends AndroidPage
 	@FindBy(how = How.ID, using = AndroidLocators.idNameField)
 	private WebElement nameField;
 
+	@FindBy(how = How.ID, using = AndroidLocators.idSettingsBtn)
+	private WebElement settingsButton;
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idNameEdit)
 	private WebElement nameEdit;
@@ -62,6 +64,11 @@ public class PersonalInfoPage extends AndroidPage
 		this.url = URL;
 		this.path = path;
 
+	}
+	
+	public boolean isPersonalInfoVisible() {
+		
+		return emailField.isDisplayed();
 	}
 
 	public void waitForEmailFieldVisible(){
@@ -102,7 +109,8 @@ public class PersonalInfoPage extends AndroidPage
 	}
 
 	public void tapSignOutBtn(){
-
+		
+		refreshUITree();
 		signOutBtn.click();
 	}
 
@@ -135,6 +143,13 @@ public class PersonalInfoPage extends AndroidPage
 
 	public void tapOptionsButton() throws InterruptedException {
 		optionsButton.click();
+	}
+	
+	public SettingsPage tapSettingsButton() throws IOException {
+		
+		refreshUITree();
+		settingsButton.click();
+		return new SettingsPage (url, path);
 	}
 	
 	public void waitForConfirmBtn(){
