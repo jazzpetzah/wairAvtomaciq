@@ -145,7 +145,7 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
 
-   @torun
+   @regression
 Scenario Outline: I can see the individual user profile if I select someone in participants view
 	 Given I Sign in using login <Login> and password <Password>
      And I see Contact list with my name <Name>
