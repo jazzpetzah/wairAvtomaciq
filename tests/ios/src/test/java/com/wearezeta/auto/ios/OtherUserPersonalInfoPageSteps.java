@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.ios.pages.PeoplePickerPage;
 
@@ -24,6 +25,12 @@ public class OtherUserPersonalInfoPageSteps {
 	public void WhenIPressAddButton() throws IOException, InterruptedException {
 		
 		PagesCollection.peoplePickerPage = (PeoplePickerPage)PagesCollection.otherUserPersonalInfoPage.addContactToChat();
+	}
+	
+	@When("^I press Continue button$")
+	public void WhenIPressContinueButton(){
+		
+	 PagesCollection.otherUserPersonalInfoPage.continueToAddUser();
 	}
 	
 	@When("^I swipe up on other user profile page$")

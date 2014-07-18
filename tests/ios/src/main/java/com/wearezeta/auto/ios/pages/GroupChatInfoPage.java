@@ -60,6 +60,23 @@ public class GroupChatInfoPage extends IOSPage{
 					&& currentConversationName.contains(", ");
 		}
 	}
+	
+	public int numberOfPeopleInConversation() {
+		int result = -1;
+		List<WebElement> elements = driver.findElements(By.xpath(IOSLocators.xpathNumberPeopleText));
+		for (WebElement element: elements) {
+			String value = element.getText();
+			if (value.contains(IOSLocators.peopleCountTextSubstring)) {
+				result = Integer.parseInt(value.substring(0, value.indexOf(IOSLocators.peopleCountTextSubstring)));
+			}
+		}
+		return result;
+	}
+	
+	public int numberOfParticipantsAvatars() {
+		List<WebElement> elements = driver.findElements(By.xpath(IOSLocators.xpathParticipantAvatarView));
+		return elements.size();
+	}
 
 	// use later
 	public List<WebElement> getCurrentParticipants() {
