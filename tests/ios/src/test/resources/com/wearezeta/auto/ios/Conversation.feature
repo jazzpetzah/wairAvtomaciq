@@ -85,7 +85,7 @@ Examples:
 	|	Login		|	Password		|	Name		|	Contact			|
 	|	aqaUser		|	aqaPassword		|	aqaUser		|	aqaContact1		|
 
-@torun
+@regression
 Scenario Outline: Add user to a group conversation
 	Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
