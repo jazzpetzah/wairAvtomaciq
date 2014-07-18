@@ -63,7 +63,7 @@ public class GroupChatInfoPage extends IOSPage{
 	
 	public int numberOfPeopleInConversation() {
 		int result = -1;
-		List<WebElement> elements = driver.findElements(By.xpath(IOSLocators.xpathNumberPeopleText)); //check if this works right, getting number of participants
+		List<WebElement> elements = driver.findElements(By.xpath(IOSLocators.xpathNumberPeopleText));
 		for (WebElement element: elements) {
 			String value = element.getText();
 			if (value.contains(IOSLocators.peopleCountTextSubstring)) {
@@ -74,7 +74,7 @@ public class GroupChatInfoPage extends IOSPage{
 	}
 	
 	public int numberOfParticipantsAvatars() {
-		List<WebElement> elements = driver.findElements(By.xpath(IOSLocators.xpathParticipantAvatar));
+		List<WebElement> elements = driver.findElements(By.xpath(IOSLocators.xpathParticipantAvatarView));
 		return elements.size();
 	}
 

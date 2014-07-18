@@ -151,9 +151,9 @@ public final class IOSLocators {
 	
 	public static final String xpathFirstChatInChatListTextField = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[2]/UIAStaticText[1]";
 	
-	public static final String xpathParticipantAvatar = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell";
+	public static final String xpathParticipantAvatar = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[%s]";
 	
-	public static final String xpathParticipantAvatarView = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]";
+	public static final String xpathParticipantAvatarView = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell";
 	
 	public static final String xpathParticipantName = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[%s]/UIAStaticText[%s]";
 	
