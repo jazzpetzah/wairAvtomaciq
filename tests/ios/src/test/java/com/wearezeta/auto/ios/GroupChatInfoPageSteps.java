@@ -7,6 +7,7 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 
+
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -54,9 +55,19 @@ public class GroupChatInfoPageSteps {
 	
 	@Then("^I see that conversation has (.*) people$")
 	public void ISeeThatConversationHasNumberPeople(int number) throws Throwable {
+		
+		int actualNumberOfPeople = PagesCollection.groupChatInfoPage.numberOfPeopleInConversation();
+		Assert.assertTrue("Actual number of people in chat (" + actualNumberOfPeople
+				+ ") is not the same as expected (" + number +")",
+				actualNumberOfPeople == number);
 	}
 
 	@When("^I see (.*) participants avatars$")
 	public void ISeeNumberParticipantsAvatars(int number) throws Throwable {
+		
+		int actual = PagesCollection.groupChatInfoPage.numberOfParticipantsAvatars();
+		Assert.assertTrue("Actual number of avatars (" + actual
+				+ ") is not the same as expected (" + number +")",
+				actual == number);
 	}    
 }

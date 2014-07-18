@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -13,6 +14,7 @@ import org.openqa.selenium.support.How;
 import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.common.IOSLocators;
 import com.wearezeta.auto.common.SwipeDirection;
+
 
 public class GroupChatPage extends DialogPage {
 	
@@ -61,6 +63,7 @@ public class GroupChatPage extends DialogPage {
 	public boolean isUserAddedContactVisible(String user, String contact){
 		return driver.findElement(By.name(user.toUpperCase() + " ADDED " + contact.toUpperCase())).isDisplayed();
 	}
+	
 	
 	public boolean isContactAvailableInChat(String contact) {
 		WebElement el = null;

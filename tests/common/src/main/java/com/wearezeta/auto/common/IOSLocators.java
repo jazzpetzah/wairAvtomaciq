@@ -151,7 +151,9 @@ public final class IOSLocators {
 	
 	public static final String xpathFirstChatInChatListTextField = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[2]/UIAStaticText[1]";
 	
-	public static final String xpathParticipantAvatar = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[%s]";
+	public static final String xpathParticipantAvatar = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell";
+	
+	public static final String xpathParticipantAvatarView = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]";
 	
 	public static final String xpathParticipantName = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[%s]/UIAStaticText[%s]";
 	
@@ -163,4 +165,8 @@ public final class IOSLocators {
 	public static final String xpathConnectionMessageInput = "//UIAApplication[1]/UIAWindow[1]/UIATextView[2]";
 	
 	public static String CONNECT_TO_MESSAGE = "Type your first message to";
+	
+	public static String xpathNumberPeopleText = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[3]";
+	
+	public static final String peopleCountTextSubstring = " people";
 }           
