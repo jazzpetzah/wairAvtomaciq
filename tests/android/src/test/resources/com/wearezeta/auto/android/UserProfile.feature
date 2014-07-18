@@ -19,7 +19,6 @@ Feature: User Profile
       | aqaUser | aqaPassword | aqaUser | NewTestName |
   
   @staging
-  @torun  
   Scenario Outline: Open and Close settings page
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
