@@ -169,6 +169,8 @@ public final class IOSLocators {
 	
 	public static final String xpathParticipantAvatar = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[%s]";
 	
+	public static final String xpathParticipantAvatarView = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell";
+	
 	public static final String xpathParticipantName = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[%s]/UIAStaticText[%s]";
 	
 	// vv currently does not have a name vv
@@ -199,4 +201,9 @@ public final class IOSLocators {
 	public static final String nameVignetteOverlay = "••••";
 	
 	public static final String xpathCloseColorModeButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[4]";
+
+	public static String xpathNumberPeopleText = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[3]";
+	
+	public static final String peopleCountTextSubstring = " people";
+
 }

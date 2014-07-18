@@ -54,5 +54,14 @@ public class GroupChatPageSteps {
 		System.out.println("swiped right");
 	}
 	
+	@When("^I can see (.*) Added (.*)$")
+	public void ICanSeeUserAddedContact(String user, String contact) throws Throwable {
+		
+		user = CommonUtils.retrieveRealUserContactPasswordValue(user);
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		Assert.assertTrue(PagesCollection.groupChatPage.isUserAddedContactVisible(user,contact));
+	    
+	}
+	
 	
 }

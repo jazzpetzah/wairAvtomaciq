@@ -15,37 +15,39 @@
     <profile>
       <id>iOS</id>
       <properties>
+	<Root>/Users/shiznyak/zautomation/tests/tools/</Root>
 	<Url>http://127.0.0.1:4723/wd/hub</Url>
         <appPath>/Users/shiznyak/Downloads/ZClient.app</appPath>
 	<isSimulator>true</isSimulator>
 	<generateUsers>true</generateUsers>
-	<swipeScriptPath>/Users/shiznyak/zautomation/tests/tools/./swipeInWindow</swipeScriptPath>
-	<pathToUserpic>/Users/shiznyak/zautomation/tests/tools/img/userpicture_landscape.jpg</pathToUserpic>
+	<swipeScriptPath>./swipeInWindow</swipeScriptPath> <!-- no need to change -->
+	<pathToUserpic>img/userpicture_landscape.jpg</pathToUserpic> <!-- no need to change -->
 	<driverTimeoutSeconds>10</driverTimeoutSeconds>
 	<pictureResultsPath>/Users/shiznyak/Downloads/</pictureResultsPath>
-	<iosImagesPath>/Users/shiznyak/zautomation/tests/tools/img/</iosImagesPath>
+	<iosImagesPath>img/</iosImagesPath> <!-- no need to change -->
       </properties>
     </profile>
     <!-- Config for Android tests -->
     <profile>
       <id>Android</id>
       <properties>
+	<Root>/Users/shiznyak/zautomation/tests/tools/</Root>
         <Url>http://127.0.0.1:4723/wd/hub</Url>
-        <appPath>/Users/mkuvshinov/clients/zclient-release-2082.apk</appPath>
+        <appPath>/Users/shiznyak/Downloads/zclient-release.apk</appPath>
 	<package>com.waz.zclient</package>
 	<generateUsers>true</generateUsers>
 	<activity>.MainActivity</activity>
 	<driverTimeoutSeconds>10</driverTimeoutSeconds>
-	<pictureResultsPath>/Users/mkuvshinov/Downloads/</pictureResultsPath>
-	<resultImage>/Users/mkuvshinov/zautomation/tests/tools/img/userpicture_mobile_check.jpg</resultImage>
-	<defaultImagePath>/Users/mkuvshinov/zautomation/tests/tools/img/userpicture.jpg</defaultImagePath>
+	<pictureResultsPath>/Users/shiznyak/Downloads/</pictureResultsPath>
+	<resultImage>img/userpicture_mobile_check.jpg</resultImage> <!-- no need to change -->
+	<defaultImagePath>img/userpicture.jpg</defaultImagePath> <!-- no need to change -->
       </properties>
     </profile>
     <!-- Config for OSX tests -->
     <profile>
       <id>OSX</id>
       <properties>
-        <Url>http://127.0.0.1:4622/wd/hub</Url>
+        <Url>http://127.0.0.1:4723/wd/hub</Url>
         <appPath>ZClient</appPath>
 	<generateUsers>true</generateUsers>
 	<driverTimeoutSeconds>10</driverTimeoutSeconds>
