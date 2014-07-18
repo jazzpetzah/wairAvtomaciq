@@ -13,6 +13,7 @@ import com.wearezeta.auto.common.ZetaFormatter;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.When;
 
 public class CommonSteps {
 
@@ -72,4 +73,11 @@ public class CommonSteps {
 			}
 		}
 	}	
+	
+	@When("^I press back button$")
+	public void PressBackButton() {
+		if (PagesCollection.loginPage != null) {
+			PagesCollection.loginPage.navigateBack();
+		}
+	}
 }

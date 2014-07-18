@@ -23,6 +23,9 @@ public class ContactListPage extends IOSPage {
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameConnectAlertYes)
 	private WebElement connectAlertButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathMyUserInContactList)
+	private WebElement myUserNameInContactList;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathFirstChatInChatListTextField)
 	private WebElement firstChatInChatListTextField;
@@ -35,6 +38,10 @@ public class ContactListPage extends IOSPage {
 		super(URL, path);
 		url = URL;
 		this.path = path;
+	}
+	
+	public boolean isMyUserNameDisplayedFirstInContactList(String name){
+		return myUserNameInContactList.getText().equals(name);
 	}
 	
 	public void muteConversation() {
@@ -140,7 +147,7 @@ public class ContactListPage extends IOSPage {
 	}
 	
 	public void waitForContactListToLoad() {
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(IOSLocators.xpathFirstInContactList)));
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(IOSLocators.xpathMyUserInContactList)));
 	}
 	
 	private WebElement findChatInContactList(String contact1, String contact2) {

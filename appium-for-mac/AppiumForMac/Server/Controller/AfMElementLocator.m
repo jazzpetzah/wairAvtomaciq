@@ -69,6 +69,18 @@
 	}
 }
 
+/*
+- (NSRect) screenResolution {
+    NSArray *activeScreens = [NSScreen screens];
+    NSRect result;
+    for (NSScreen *screen in activeScreens)
+    {
+        result = [screen visibleFrame];
+        NSLog(@"Rectangle: %f,%f", result.size.width, result.size.height);
+    }
+    return result;
+}*/
+
 -(PFUIElement*) findUsingBaseElement:(PFUIElement*)baseElement statusCode:(int *)statusCode
 {
 	if (self.strategy == AppiumMacLocatoryStrategyXPath)
@@ -103,11 +115,13 @@
             [windowLocator findAllUsingBaseElement:nil results:windows statusCode:statusCode];
             if (windows.count > 0) {
                 PFUIElement *mainWindow = [windows objectAtIndex:0];
-                int startX = mainWindow.AXPosition.pointValue.x;
-                int startY = mainWindow.AXPosition.pointValue.y;
-                int endX = startX + mainWindow.AXSize.pointValue.x;
-                int endY = startY + mainWindow.AXSize.pointValue.y;
-
+                NSString *windowTitle = mainWindow.AXTitle;
+                
+                int startX = mainWindow.AXPosition.pointValue.x-100;
+                int startY = mainWindow.AXPosition.pointValue.y-100;
+                int endX = startX + mainWindow.AXSize.pointValue.x+100;
+                int endY = startY + mainWindow.AXSize.pointValue.y+100;
+                
                 for (int i = startX; i < endX; i+=20) {
                     for (int j = startY; j < endY; j+=20) {
                         NSError *error = nil;
@@ -115,11 +129,25 @@
                         if ([self.value caseInsensitiveCompare:newElement.AXRole] == NSOrderedSame) {
                             matchedElement = newElement;
                             
+                            BOOL isParentOK = NO;
+                            NSArray *parents = newElement.parentPath;
+                            for (PFUIElement * parent in parents)
+                            {
+                                if ([parent.AXTitle isEqualToString:windowTitle])
+                                {
+                                    isParentOK = true;
+                                    break;
+                                }
+                            }
+                            if (!isParentOK) continue;
+                            
                             *statusCode = kAfMStatusCodeSuccess;
                             return matchedElement;
                         }
                     }
                 }
+                *statusCode = kAfMStatusCodeNoSuchElement;
+                return nil;
             } else {
                 *statusCode = kAfMStatusCodeNoSuchWindow;
                 return nil;
@@ -231,17 +259,31 @@
             [windowLocator findAllUsingBaseElement:nil results:windows statusCode:statusCode];
             if (windows.count > 0) {
                 PFUIElement *mainWindow = [windows objectAtIndex:0];
-                int startX = mainWindow.AXPosition.pointValue.x;
-                int startY = mainWindow.AXPosition.pointValue.y;
-                int endX = startX + mainWindow.AXSize.pointValue.x;
-                int endY = startY + mainWindow.AXSize.pointValue.y;
+                NSString *windowTitle = mainWindow.AXTitle;
+                int startX = mainWindow.AXPosition.pointValue.x-100;
+                int startY = mainWindow.AXPosition.pointValue.y-100;
+                int endX = startX + mainWindow.AXSize.pointValue.x+100;
+                int endY = startY + mainWindow.AXSize.pointValue.y+100;
                 
                 NSMutableArray *rects = [NSMutableArray new];
                 for (int i = startX; i < endX; i+=20) {
                     for (int j = startY; j < endY; j+=20) {
                         NSError *error = nil;
                         PFUIElement *newElement = [PFUIElement elementAtPoint:NSMakePoint(i, j) withDelegate:nil error:&error];
-                        if ([self.value caseInsensitiveCompare:newElement.AXRole] == NSOrderedSame) {
+                        if ([self.value caseInsensitiveCompare:newElement.AXRole] == NSOrderedSame)
+                        {
+                            BOOL isParentOK = NO;
+                            NSArray *parents = newElement.parentPath;
+                            for (PFUIElement * parent in parents)
+                            {
+                                if ([parent.AXTitle isEqualToString:windowTitle])
+                                {
+                                    isParentOK = true;
+                                    break;
+                                }
+                            }
+                            if (!isParentOK) continue;
+                            
                             NSRect currentRect = NSMakeRect(
                                         newElement.AXPosition.pointValue.x,
                                         newElement.AXPosition.pointValue.y,

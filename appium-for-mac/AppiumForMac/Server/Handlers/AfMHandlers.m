@@ -226,7 +226,6 @@
     NSDictionary *postParams = [self dictionaryFromPostData:postData];
     NSString *ms = (NSString*)[postParams objectForKey:@"ms"];
     session.implicitWaitMs = [ms floatValue];
-    NSLog(@"Implicit wait is set to: %f", session.implicitWaitMs);
     return [self respondWithJson:nil status:kAfMStatusCodeSuccess session: sessionId];
 }
 

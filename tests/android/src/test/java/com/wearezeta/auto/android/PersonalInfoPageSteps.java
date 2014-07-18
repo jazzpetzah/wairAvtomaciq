@@ -7,7 +7,6 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
-import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 
@@ -29,6 +28,11 @@ public class PersonalInfoPageSteps {
 	@When("^I tap sign out button$")
 	public void WhenITapSignOutButton() throws Throwable {
 		PagesCollection.personalInfoPage.tapSignOutBtn();
+	}
+	
+	@When("^I tap settings button$")
+	public void WhenITapSettingsButton() throws Throwable {
+		PagesCollection.settingsPage = PagesCollection.personalInfoPage.tapSettingsButton();
 	}
 	
 	@When("^I tap on personal info screen$")
@@ -75,6 +79,11 @@ public class PersonalInfoPageSteps {
 	    PagesCollection.personalInfoPage.tapOnMyName();
 		PagesCollection.personalInfoPage.changeName(name, oldName);
 	    
+	}
+	
+	@Then("^I see personal info page$")
+	public void ISeePersonalInfoPage() {
+	    Assert.assertTrue(PagesCollection.personalInfoPage.isPersonalInfoVisible());	    
 	}
 	
 	@Then("I see changed user picture")

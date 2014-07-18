@@ -12,6 +12,10 @@ import cucumber.api.java.After;
 import cucumber.api.java.Before;
 
 public class CommonSteps {
+	static {
+		System.setProperty("java.awt.headless", "false");
+	}
+	
 	public static PagesCollection senderPages;
 	
 	@Before
