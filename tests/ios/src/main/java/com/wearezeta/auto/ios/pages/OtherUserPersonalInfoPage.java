@@ -21,6 +21,9 @@ public class OtherUserPersonalInfoPage extends IOSPage{
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathAddContactToChatButton)
 	private WebElement addButton;
 	
+	@FindBy(how = How.NAME, using = IOSLocators.nameContinueButton)
+	private WebElement continueButton;
+	
 	private String url;
 	private String path;
 	
@@ -40,6 +43,10 @@ public class OtherUserPersonalInfoPage extends IOSPage{
 		
 		WebElement otherUserEmail = driver.findElementByXPath(String.format(IOSLocators.xpathOtherUserName, name));
 		return otherUserEmail.isDisplayed();
+	}
+	
+	public void continueToAddUser(){
+		continueButton.click();
 	}
 	
 	public void removeFromConversation() {

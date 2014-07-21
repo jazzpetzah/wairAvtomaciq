@@ -12,6 +12,10 @@ import cucumber.api.java.After;
 import cucumber.api.java.Before;
 
 public class CommonSteps {
+	static {
+		System.setProperty("java.awt.headless", "false");
+	}
+	
 	public static PagesCollection senderPages;
 	
 	@Before
@@ -22,7 +26,7 @@ public class CommonSteps {
 				|| !CommonUtils.yourUsers.get(0).getUserState().equals(UsersState.AllContactsConnected))) {
 			
 			if (generateUsersFlag) {
-				CommonUtils.generateUsers(2);
+				CommonUtils.generateUsers(3);
 				TestPreparation.createContactLinks();
 			} else {
 				CommonUtils.usePrecreatedUsers();

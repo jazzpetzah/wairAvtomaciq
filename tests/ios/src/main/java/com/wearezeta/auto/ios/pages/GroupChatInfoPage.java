@@ -24,34 +24,42 @@ public class GroupChatInfoPage extends IOSPage{
 	private String url;
 	private String path;
 	
-	private String conversationName=null;
-	
+	private String conversationName = null;
+
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathLeaveConversation)
 	private WebElement leaveChat;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameLeaveConversationButton)
 	private WebElement leaveChatButton;
-	
+
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathConversationNameTextField)
 	private WebElement conversationNameTextField;
-	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathExitGroupInfoPageButton)
+
+	@FindBy(how = How.NAME, using = IOSLocators.nameExitGroupInfoPageButton)
 	private WebElement exitGroupInfoPageButton;
+<<<<<<< HEAD
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathNumberOfParticipantsText)
 	private WebElement numberOfParticipantsText;
 	
+=======
+
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathAvatarCollectionView)
+	private WebElement avatarCollectionView;
+
+>>>>>>> df304841929fa3b66bd31c2802a1ae12bbe2d4b6
 	public GroupChatInfoPage(String URL, String path) throws MalformedURLException {
 		super(URL, path);
 		this.url = URL;
 		this.path = path;
 	}
 	
-	public void changeConversationNameToRandom(){
-		conversationName = CommonUtils.generateGUID().substring(0,15);
-		conversationNameTextField.sendKeys(conversationName+"\n");
+	public void changeConversationNameToRandom() {
+		conversationName = CommonUtils.generateGUID().substring(0, 15);
+		conversationNameTextField.sendKeys(conversationName + "\n");
 	}
 
+<<<<<<< HEAD
 	public boolean verifyCorrectConversationName(String contact1, String contact2){
 		if(conversationName==null){
 			if(contact1.equals(CommonUtils.CONTACT_1)){
@@ -112,12 +120,47 @@ public class GroupChatInfoPage extends IOSPage{
 		currentParticipant = driver.findElementByXPath(xpathOfCurrentParticipant);
 		}
 		return currentParticipants;
+=======
+	public boolean verifyCorrectConversationName(String contact1,
+			String contact2) {
+		if (conversationNameTextField.getText().equals(conversationName)) {
+			return true;
+		} else {
+			String currentConversationName = conversationNameTextField
+					.getText();
+			return currentConversationName.contains(contact1)
+					&& currentConversationName.contains(contact2)
+					&& currentConversationName.contains(", ");
 		}
-	
-	public void exitGroupInfoPage(){
-		exitGroupInfoPageButton.click();
 	}
 	
+	public int numberOfPeopleInConversation() {
+		int result = -1;
+		List<WebElement> elements = driver.findElements(By.xpath(IOSLocators.xpathNumberPeopleText));
+		for (WebElement element: elements) {
+			String value = element.getText();
+			if (value.contains(IOSLocators.peopleCountTextSubstring)) {
+				result = Integer.parseInt(value.substring(0, value.indexOf(IOSLocators.peopleCountTextSubstring)));
+			}
+>>>>>>> df304841929fa3b66bd31c2802a1ae12bbe2d4b6
+		}
+		return result;
+	}
+	
+	public int numberOfParticipantsAvatars() {
+		List<WebElement> elements = driver.findElements(By.xpath(IOSLocators.xpathParticipantAvatarView));
+		return elements.size();
+	}
+
+	// use later
+	public List<WebElement> getCurrentParticipants() {
+		return avatarCollectionView.findElements(By.name("element name"));
+	}
+
+	public void exitGroupInfoPage() {
+		exitGroupInfoPageButton.click();
+	}
+
 	public void leaveConversation() {
 		leaveChat.click();
 	}
@@ -163,14 +206,12 @@ public class GroupChatInfoPage extends IOSPage{
 		}	
 		return page;
 	}
-	
-	
-	
-	public String getConversationName(){
+
+	public String getConversationName() {
 		return conversationName;
 	}
 
-	public void setConversationName(String newName){
+	public void setConversationName(String newName) {
 		conversationName = newName;
 	}
 	
@@ -180,8 +221,11 @@ public class GroupChatInfoPage extends IOSPage{
 	
 	
 }
+<<<<<<< HEAD
 
 
 	
 	
 	
+=======
+>>>>>>> df304841929fa3b66bd31c2802a1ae12bbe2d4b6

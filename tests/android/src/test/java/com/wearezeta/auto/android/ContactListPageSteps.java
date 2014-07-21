@@ -18,15 +18,22 @@ public class ContactListPageSteps {
 	public void GivenISeeContactListWithMyName(String name) throws InterruptedException, IOException{
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		//TODO remove thread.sleep
-		Thread.sleep(30000);
-		PagesCollection.contactListPage.swipeDown(500);
-		PagesCollection.contactListPage.navigateBack();
+		//T chread.sleep(30000);
+		//PagesCollection.contactListPage.swipeDown(500);
+		//PagesCollection.contactListPage.navigateBack();
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 
 	}
 
 	@When("^I tap on contact name (.*)$")
-	public void WhenITapOnContactName(String name) throws IOException  {
+	public void WhenITapOnContactName(String name) throws Throwable  {
+		//workaround for unknown contacts, start
+		ISwipeDownContactList();
+		PeoplePickerPageSteps pickerSteps = new PeoplePickerPageSteps();
+		pickerSteps.WhenISeePeoplePickerPage();
+		pickerSteps.WhenIPressClearButton();
+		//workaround for unknown contacts, end
+		
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		PagesCollection.androidPage = PagesCollection.contactListPage.tapOnName(name);
 	}
@@ -34,7 +41,7 @@ public class ContactListPageSteps {
 	@When("^I tap on my name (.*)$")
 	public void WhenITapOnMyName(String name) throws IOException  {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
-		PagesCollection.personalInfoPaga = (PersonalInfoPage) PagesCollection.contactListPage.tapOnName(name);
+		PagesCollection.personalInfoPage = (PersonalInfoPage) PagesCollection.contactListPage.tapOnName(name);
 	}
 
 	@When("^I swipe down contact list$")

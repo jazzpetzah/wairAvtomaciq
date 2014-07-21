@@ -25,9 +25,16 @@ public class DialogPageSteps{
 	}
 
 	@When("^I type the message and send it$")
-	public void WhenITypeTheMessageAndSendIt() throws Throwable {
+	public void WhenITypeRandomMessageAndSendIt() throws Throwable {
 		message = CommonUtils.generateGUID();
 		PagesCollection.dialogPage.typeMessage(message);
+	}
+	
+	@When("^I input (.*) message and send it$")
+	public void ITypeTheMessageAndSendIt(String myMessage) throws Throwable {
+		message = myMessage;
+		
+		PagesCollection.dialogPage.typeMessage(myMessage);
 	}
 	
 	@When("^I type long message and send it$")
@@ -62,6 +69,8 @@ public class DialogPageSteps{
 		 switch(buttonName.toLowerCase())
 		  {
 		  case "take photo":
+			  PagesCollection.dialogPage.changeCamera();
+			  Thread.sleep(1000);
 			  PagesCollection.dialogPage.takePhoto();
 			  break;
 		  case "confirm":

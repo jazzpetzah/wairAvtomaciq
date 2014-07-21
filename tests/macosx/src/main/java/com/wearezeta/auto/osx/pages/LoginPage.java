@@ -128,10 +128,15 @@ public class LoginPage extends OSXPage {
 	
 	public void sendProblemReportIfFound() {
 		DriverUtils.setImplicitWaitValue(driver, 1);
+		boolean isProblemReported = false;
 		try {
 			sendProblemReportButton.click();
+			isProblemReported = true;
 		} catch (NoSuchElementException e) {
 		} finally {
+			if (isProblemReported) {
+				System.out.println("ZClient were crashed on previous run.");
+			}
 			DriverUtils.setDefaultImplicitWait(driver);
 		}
 	}

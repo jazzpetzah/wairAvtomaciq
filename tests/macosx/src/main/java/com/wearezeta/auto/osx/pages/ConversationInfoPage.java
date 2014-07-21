@@ -1,7 +1,9 @@
 package com.wearezeta.auto.osx.pages;
 
 import java.awt.HeadlessException;
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -13,13 +15,17 @@ import org.sikuli.script.Env;
 import org.sikuli.script.FindFailed;
 import org.sikuli.script.Screen;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class ConversationInfoPage extends OSXPage {
 	
 	@FindBy(how = How.ID, using = OSXLocators.idAddPeopleButtonSingleChat)
-	private WebElement addPeopleButton;
+	private WebElement singleChatAddPeopleButton;
+	
+	@FindBy(how = How.ID, using = OSXLocators.idAddPeopleButtonGroupChat)
+	private WebElement groupChatAddPeopleButton;
 	
 	@FindBy(how = How.ID, using = OSXLocators.idConfirmationViewConfirmButton)
 	private WebElement confirmationViewConfirmButton;
@@ -32,6 +38,9 @@ public class ConversationInfoPage extends OSXPage {
 	
 	@FindBy(how = How.ID, using = OSXLocators.idConversationScrollArea)
 	private WebElement conversationScrollArea;
+	
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathConversationNameEdit)
+	private WebElement conversationNameEdit;
 	
 	private String url;
 	private String path;
@@ -48,10 +57,10 @@ public class ConversationInfoPage extends OSXPage {
 		el.click();
 	}
 	
-	public void selectUserIfNotSelected(String user) {
+	public void selectUserIfNotSelected(String user) throws IOException {
 		Screen s = new Screen();
 		try {
-    		App.focus("ZClient");
+    		App.focus(CommonUtils.getAppPathFromConfig(ConversationInfoPage.class));
 			s.click(Env.getMouseLocation());
 			s.click(Env.getMouseLocation());
 		} catch (HeadlessException e) {
@@ -72,7 +81,11 @@ public class ConversationInfoPage extends OSXPage {
 	}
 	
 	public PeoplePickerPage openPeoplePicker() throws MalformedURLException {
-		addPeopleButton.click();
+		try {
+			singleChatAddPeopleButton.click();
+		} catch (NoSuchElementException e) {
+			groupChatAddPeopleButton.click();
+		}
 		confirmIfRequested();
 		return new PeoplePickerPage(url, path);
 	}
@@ -86,5 +99,54 @@ public class ConversationInfoPage extends OSXPage {
 	public void leaveConversation() {
 		leaveConversationButton.click();
 		confirmIfRequested();
+	}
+	
+	private String latestSetConversationName;
+	
+	public void setNewConversationName(String name) {
+		latestSetConversationName = name;
+		conversationNameEdit.sendKeys(latestSetConversationName + "\\n");
+	}
+	
+	public String getlatestSetConversationName() {
+		return latestSetConversationName;
+	}
+	
+	public int numberOfPeopleInConversation() {
+		int result = -1;
+		List<WebElement> elements = driver.findElements(By.xpath(OSXLocators.xpathNumberOfPeopleInChat));
+		for (WebElement element: elements) {
+			String value = element.getText();
+			if (value.contains(OSXLocators.peopleCountTextSubstring)) {
+				result = Integer.parseInt(value.substring(0, value.indexOf(OSXLocators.peopleCountTextSubstring)));
+			}
+		}
+		return result;
+	}
+	
+	public int numberOfParticipantsAvatars() {
+		List<WebElement> elements = driver.findElements(By.xpath(OSXLocators.xpathUserAvatar));
+		return elements.size();
+	}
+	
+	public boolean isConversationNameEquals(String expectedName) {
+		boolean result = false;
+		String actualName = conversationNameEdit.getText();
+		if (expectedName.contains(",")) {
+			String[] exContacts = expectedName.split(",");
+
+			boolean isFound = true;
+			for (String exContact: exContacts) {
+				if (!actualName.contains(exContact.trim())) {
+					isFound = false;
+				}
+				if (isFound) {
+					result = true;
+				}
+			}
+		} else {
+			result = (actualName == expectedName);
+		}
+		return result;
 	}
 }

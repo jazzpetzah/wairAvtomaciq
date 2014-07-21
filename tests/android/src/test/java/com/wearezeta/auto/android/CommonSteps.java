@@ -13,6 +13,7 @@ import com.wearezeta.auto.common.ZetaFormatter;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.When;
 
 public class CommonSteps {
 
@@ -31,11 +32,19 @@ public class CommonSteps {
 			System.out.println("Failed to deploy pictures into simulator");
 		}
 		
-		if(Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class)) &&  (CommonUtils.yourUsers.size()==0 || !CommonUtils.yourUsers.get(0).getUserState().equals(UsersState.AllContactsConnected))){
-			CommonUtils.generateUsers(2);
-			TestPreparation.createContactLinks();
+		boolean generateUsersFlag = Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class));
+		
+		if ((CommonUtils.yourUsers.size() == 0 
+				|| !CommonUtils.yourUsers.get(0).getUserState().equals(UsersState.AllContactsConnected))) {
+			
+			if (generateUsersFlag) {
+				CommonUtils.generateUsers(2);
+				TestPreparation.createContactLinks();
+			} else {
+				CommonUtils.usePrecreatedUsers();
+			}
 		}
-
+		
 		path = CommonUtils.getAppPathFromConfig(CommonSteps.class);
 		if ( PagesCollection.loginPage == null){
 			PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(CommonSteps.class), path);
@@ -64,4 +73,11 @@ public class CommonSteps {
 			}
 		}
 	}	
+	
+	@When("^I press back button$")
+	public void PressBackButton() {
+		if (PagesCollection.loginPage != null) {
+			PagesCollection.loginPage.navigateBack();
+		}
+	}
 }

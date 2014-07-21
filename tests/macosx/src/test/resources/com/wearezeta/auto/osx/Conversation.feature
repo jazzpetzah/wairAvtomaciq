@@ -1,7 +1,6 @@
 Feature: Conversation
 
 @smoke
-@regression
 Scenario Outline: Send message to conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -14,8 +13,9 @@ Examples:
     |  Login		| Password			| Name			| Contact   		|
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
 
+# Not stable
+@mute
 @smoke
-@regression
 Scenario Outline: Send hello to conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -27,22 +27,22 @@ Examples:
     |  Login		| Password			| Name			| Contact   		|
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
 
-#@smoke
-#@regression
-#Scenario Outline: Send hey to conversation
-#    Given I Sign in using login <Login> and password <Password>
-#    And I see Contact list with name <Name>
-#    And I open conversation with <Contact>
-#	 When I am knocking to user
-#	 And I am knocking to user
-#	 Then I see message YOU KNOCKED in conversation
+# Not stable
+@mute
+@smoke
+Scenario Outline: Send hey to conversation
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with name <Name>
+    And I open conversation with <Contact>
+    When I am knocking to user
+    And I am knocking to user
+    Then I see message YOU KNOCKED in conversation
 
-#Examples:
-#    |  Login		| Password			| Name			| Contact   		|
-#    |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
+Examples:
+    |  Login		| Password			| Name			| Contact   		|
+    |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
 
 @smoke
-@regression
 Scenario Outline: Send picture to conversation
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with name <Name>
@@ -53,9 +53,21 @@ Scenario Outline: Send picture to conversation
 Examples:
     |  Login		| Password			| Name			| Contact   		|
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
+    
+@staging
+Scenario Outline: Send HD picture to conversation
+	Given I Sign in using login <Login> and password <Password>
+	And I see Contact list with name <Name>
+	And I open conversation with <Contact>
+	When I send picture hdpicture.jpg
+	Then I see HD picture hdpicture.jpg in conversation
 
+Examples:
+    |  Login		| Password			| Name			| Contact   		|
+    |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
+
+@torun
 @smoke
-@regression
 Scenario Outline: Create group chat from 1on1 conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -71,8 +83,26 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
+@staging
+Scenario Outline: Add user to group conversation
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with name <Name>
+	And I create group chat with <Contact1> and <Contact2>
+	And I open conversation with <Contact1>, <Contact2> 
+	When I open People Picker from conversation
+	And I search for user <Contact3>
+	And I see user <Contact3> in search results
+	And I add user <Contact3> from search results
+	Then I open conversation with <Contact1>, <Contact2>, <Contact3>
+	And I see message YOU ADDED <Contact3> in conversation
+	And I open Conversation info
+	And I see that conversation has 4 people
+
+Examples:
+    |  Login		| Password		| Name			| Contact1		| Contact2		| Contact3			|
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| aqaContact3		|
+
 @smoke
-@regression
 Scenario Outline: Send message to group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -86,36 +116,37 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-#@smoke
-#@regression
-#Scenario Outline: Send hello to group chat
-#	Given I Sign in using login <Login> and password <Password>
-#	And I see Contact list with name <Name>
-#	And I create group chat with <Contact1> and <Contact2>
-#	And I open conversation with <Contact1>, <Contact2>
-#	When I am knocking to user
-#	Then I see message YOU KNOCKED in conversation
-#		
-#Examples:
-#    |  Login		| Password		| Name			| Contact1		| Contact2		|
-#    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
-#
-#@smoke
-#@regression
-#Scenario Outline: Send picture to group chat
-#	Given I Sign in using login <Login> and password <Password>
-#	And I see Contact list with name <Name>
-#	And I create group chat with <Contact1> and <Contact2>
-#	And I open conversation with <Contact1>, <Contact2>
-#	When I send picture testing.jpg
-#	Then I see picture in conversation
-#		
-#Examples:
-#    |  Login		| Password		| Name			| Contact1		| Contact2		|
-#    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
+# Not stable
+@mute
+@regression
+Scenario Outline: Send hello to group chat
+	Given I Sign in using login <Login> and password <Password>
+	And I see Contact list with name <Name>
+	And I create group chat with <Contact1> and <Contact2>
+	And I open conversation with <Contact1>, <Contact2>
+	When I am knocking to user
+	Then I see message YOU KNOCKED in conversation
+		
+Examples:
+    |  Login		| Password		| Name			| Contact1		| Contact2		|
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
+
+# Not stable
+@mute
+@smoke
+Scenario Outline: Send picture to group chat
+	Given I Sign in using login <Login> and password <Password>
+	And I see Contact list with name <Name>
+	And I create group chat with <Contact1> and <Contact2>
+	And I open conversation with <Contact1>, <Contact2>
+	When I send picture testing.jpg
+	Then I see picture in conversation
+		
+Examples:
+    |  Login		| Password		| Name			| Contact1		| Contact2		|
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
 @smoke
-@regression
 Scenario Outline: Leave group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -130,7 +161,6 @@ Examples:
 	|  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
 @smoke
-@regression
 Scenario Outline: Remove user from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -146,7 +176,6 @@ Examples:
 	|  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
 @smoke
-@regression
 Scenario Outline: Mute and unmute conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -163,8 +192,9 @@ Examples:
     |  Login		| Password			| Name			| Contact   		|
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
 
+# Not stable
+@mute
 @smoke
-@regression
 Scenario Outline: Archive and unarchive conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -178,4 +208,4 @@ Scenario Outline: Archive and unarchive conversation
 	
 Examples:
     |  Login		| Password			| Name			| Contact   		|
-    |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
+    |  aqaUser		| aqaPassword		| aqaUser		| aqaContact3		|

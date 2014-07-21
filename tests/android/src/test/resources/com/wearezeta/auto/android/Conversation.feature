@@ -1,6 +1,6 @@
 Feature: Conversation
 
-  @smoke @regression
+@smoke 
   Scenario Outline: Send Message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -14,7 +14,8 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @smoke @regression
+@mute	  
+@smoke
   Scenario Outline: Send Hello to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -27,7 +28,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @smoke @regression
+@smoke 
   Scenario Outline: Send Camera picture to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -42,8 +43,9 @@ Feature: Conversation
     Examples: 
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
-
-  @smoke @regression
+      
+#test is not implemented yet, functionality is not available in the client
+@smoke @mute
   Scenario Outline: Start group chat with users from contact list
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -64,7 +66,8 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
 
-  @smoke @regression
+@mute
+@smoke
   Scenario Outline: Send message to group chat
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -79,7 +82,8 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | SendMessGroupChat |
 
-  @smoke @regression
+@mute
+@smoke
   Scenario Outline: Leave group conversation
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -95,7 +99,8 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName  |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | LeaveGroupChat |
 
-  @smoke @regression
+@mute
+@smoke
   Scenario Outline: Remove from group chat
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -112,7 +117,8 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName       |
       | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | RemoveFromGroupChat |
 
-  @smoke @regression
+@mute
+@smoke
   Scenario Outline: Accept connection request
     Given connection request is sended to me
     And I Sign in using login <Login> and password <Password>
@@ -127,7 +133,8 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | yourContact |
 
-  @smoke @regression
+@mute
+@smoke
   Scenario Outline: Mute conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -141,3 +148,74 @@ Feature: Conversation
     Examples: 
       | Login   | Password    | Name    | Contact1    |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+      
+@regression 
+  Scenario Outline: Send Long Message to contact
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I tap on text input
+    And I type long message and send it
+    Then I see my message in the dialog
+
+    Examples: 
+      | Login   | Password    | Name    | Contact     |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+
+@regression 
+  Scenario Outline: Send Upper and Lower case to contact
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I tap on text input
+    And I type Upper/Lower case message and send it
+    Then I see my message in the dialog
+
+    Examples: 
+      | Login   | Password    | Name    | Contact     |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+     
+@regression 
+  Scenario Outline: Send special chars message to contact
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I tap on text input
+    And I input <Message> message and send it
+    Then I see my message in the dialog
+
+    Examples: 
+      | Login   | Password    | Name    | Contact     | Message                         |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 |ÄäÖöÜüß simple message in english|
+   
+@mute
+@regression
+  Scenario Outline: Send emoji message to contact
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I tap on text input
+    And I input <Message> message and send it
+    Then I see my message in the dialog
+
+    Examples: 
+      | Login   | Password    | Name    | Contact     | Message |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 |:) ;) :( |
+  
+@smoke 
+  Scenario Outline: Check contact personal info
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I swipe up on dialog page
+    Then I see <Contact> user name and email
+
+    Examples: 
+      | Login   | Password    | Name    | Contact     |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+

@@ -7,5 +7,5 @@ activity=${activity}
 generateUsers=${generateUsers}
 driverTimeoutSeconds=${driverTimeoutSeconds}
 resultImage=${resultImage}
-defaultImagePath=${defaultImagePath}
-pictureResultsPath=${pictureResultsPath}
+defaultImagePath=${Root}/${defaultImagePath}
+pictureResultsPath=${Root}/${pictureResultsPath}
