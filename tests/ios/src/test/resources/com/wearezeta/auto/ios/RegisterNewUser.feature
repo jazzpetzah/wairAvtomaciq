@@ -1,9 +1,5 @@
 Feature: Register new user
-<<<<<<< HEAD
-=======
 
-@mute
->>>>>>> df304841929fa3b66bd31c2802a1ae12bbe2d4b6
 @smoke
   Scenario Outline: Register new user using front camera (Real Device)
 	Given I see sign in screen
@@ -17,7 +13,6 @@ Feature: Register new user
 	And I input password <Password> and hit Enter
 	Then I see confirmation page 
 	And I verify registration address
-<<<<<<< HEAD
 	And I press continue registration
 	And Contact list appears with my name <Name>
 
@@ -27,15 +22,6 @@ Feature: Register new user
 
 
 @smoke
-=======
-	And Contact list loads with only my name
-
-    Examples:     
-    |	Email						|	Password	    |	Name			|
-    |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
-    
-    
->>>>>>> df304841929fa3b66bd31c2802a1ae12bbe2d4b6
 @regression
   Scenario Outline: Attempt to register an email with spaces
     Given I see sign in screen

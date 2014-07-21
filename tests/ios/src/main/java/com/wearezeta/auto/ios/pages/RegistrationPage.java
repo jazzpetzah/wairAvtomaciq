@@ -306,7 +306,7 @@ public class RegistrationPage extends IOSPage {
 			}
 
 		}
-		return true; //returns true if all emails are found to be invalid
+		return true;
 	}
 	
 	

@@ -41,6 +41,7 @@ public final class IOSLocators {
 	public static final String namePickerClearButton = "PeoplePickerClearButton";
 	
 	public static final String xpathTypeYourMessage = "//UIAApplication[1]/UIAWindow[1]/UIATextView[2]/UIAStaticText[1]";
+	
 	public static final String nameSendConnectButton = "SEND";
 	
 	public static final String clasNameConnectDialogLabel = "UIATextField";
@@ -51,7 +52,7 @@ public final class IOSLocators {
 	
 	public static final String nameAddPictureButton = "ComposeControllerPictureButton";
 	
-	public static final String nameCameraRollButton = "FullScreenCameraRightButton";
+	public static final String nameCameraRollButton = "CameraLibraryButton"; //"FullScreenCameraRightButton";
 	
 	public static final String xpathCameraRollAlertOK = "//UIAApplication[1]/UIAWindow[4]/UIAAlert[1]/UIATableView[2]/UIATableCell[1]";
 	
@@ -135,7 +136,7 @@ public final class IOSLocators {
 	
 	public static final String idProvideValidEmailMessage = "PLEASE PROVIDE A VALID EMAIL ADDRESS"; 
 	
-	public static final String xpathAddContactToChatButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[7]";
+	public static final String nameAddContactToChatButton = "metaControllerLeftButton";
 	
 	public static final String xpathOtherUserName = "//UIAApplication[1]/UIAWindow[1]/UIATextField[@value='%s']";
 	
@@ -156,6 +157,7 @@ public final class IOSLocators {
 	public static final String xpathNewGroupConversationNameChangeTextField = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[2]/UIATextView[1]";
 	
 	public static final String nameExitGroupInfoPageButton = "metaControllerCancelButton";
+	
 	public static final String xpathAlbum = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]/UIAStaticText[1]";
 	
 	///////////////////////
@@ -169,13 +171,10 @@ public final class IOSLocators {
 	
 	public static final String xpathParticipantAvatar = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[%s]";
 	
-<<<<<<< HEAD
 	public static final String xpathParticipantNameText = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[%s]/UIAStaticText[%s]";
 	
-	public static final String xpathNumberOfParticipantsText =  "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[2]";
-
-}                                                         
-=======
+	public static final String xpathNumberOfParticipantsText =  "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[3]";
+                                                        
 	public static final String xpathParticipantAvatarView = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell";
 	
 	public static final String xpathParticipantName = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[%s]/UIAStaticText[%s]";
@@ -214,4 +213,3 @@ public final class IOSLocators {
 	public static final String peopleCountTextSubstring = " people";
 
 }
->>>>>>> df304841929fa3b66bd31c2802a1ae12bbe2d4b6

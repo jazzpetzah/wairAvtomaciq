@@ -107,7 +107,6 @@ Scenario Outline: Add user to a group conversation
     When I exit the group info page
     And I can see <Name> Added <Contact3>
 	
-	
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		| Contact3		| Number  |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| aqaContact3	| 4		  |
@@ -132,14 +131,9 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-<<<<<<< HEAD
-  @smoke
-  @regression
-=======
   # Not stable
   @mute
   @smoke
->>>>>>> df304841929fa3b66bd31c2802a1ae12bbe2d4b6
  Scenario Outline: Remove from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -152,14 +146,10 @@ Examples:
 	And I confirm remove
 	Then I see that <Contact2> is not present on group chat page
 
-
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
-<<<<<<< HEAD
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
-=======
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
->>>>>>> df304841929fa3b66bd31c2802a1ae12bbe2d4b6
+
 
   # Not stable
   @mute
@@ -179,12 +169,6 @@ Scenario Outline: I can edit the conversation name
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
-<<<<<<< HEAD
-    
-  @smoke
-  @regression
-=======
-
 
    @regression
 Scenario Outline: I can see the individual user profile if I select someone in participants view
@@ -203,7 +187,6 @@ Examples:
   # Not stable
   @mute
   @smoke
->>>>>>> df304841929fa3b66bd31c2802a1ae12bbe2d4b6
  Scenario Outline: Mute conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -216,7 +199,6 @@ Examples:
 Examples:
     |  Login		| Password		| Name			| Contact1    |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |
-<<<<<<< HEAD
 
 #just needs working avatar verification
 @torun
@@ -231,5 +213,3 @@ Scenario Outline: Verify correct group info page information
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2	     	|ParticipantNumber|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaPictureContact	|       3         |
-=======
->>>>>>> df304841929fa3b66bd31c2802a1ae12bbe2d4b6

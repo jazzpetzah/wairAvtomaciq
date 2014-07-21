@@ -37,17 +37,14 @@ public class GroupChatInfoPage extends IOSPage{
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameExitGroupInfoPageButton)
 	private WebElement exitGroupInfoPageButton;
-<<<<<<< HEAD
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathNumberOfParticipantsText)
 	private WebElement numberOfParticipantsText;
-	
-=======
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathAvatarCollectionView)
 	private WebElement avatarCollectionView;
 
->>>>>>> df304841929fa3b66bd31c2802a1ae12bbe2d4b6
+
 	public GroupChatInfoPage(String URL, String path) throws MalformedURLException {
 		super(URL, path);
 		this.url = URL;
@@ -57,23 +54,6 @@ public class GroupChatInfoPage extends IOSPage{
 	public void changeConversationNameToRandom() {
 		conversationName = CommonUtils.generateGUID().substring(0, 15);
 		conversationNameTextField.sendKeys(conversationName + "\n");
-	}
-
-<<<<<<< HEAD
-	public boolean verifyCorrectConversationName(String contact1, String contact2){
-		if(conversationName==null){
-			if(contact1.equals(CommonUtils.CONTACT_1)){
-				contact1 = CommonUtils.retrieveRealUserContactPasswordValue(contact1);
-			}
-			if(contact2.equals(CommonUtils.CONTACT_2)||contact2.equals("aqaPictureContact")){
-				contact2 = CommonUtils.retrieveRealUserContactPasswordValue(contact2);
-			}
-			conversationName = contact1+", "+contact2;
-		}
-		if(!conversationNameTextField.getText().equals(conversationName)){
-			conversationName = contact2+", "+contact1;
-		}
-		return conversationNameTextField.getText().equals(conversationName);
 	}
 
 	public boolean verifyNumberOfParticipants(int correctNumber){
@@ -93,11 +73,11 @@ public class GroupChatInfoPage extends IOSPage{
 		BufferedImage avatarIcon = null;
 		for(WebElement avatar : participantAvatars){
 			System.out.println(avatar.getAttribute("name"));
-			if(avatar.getAttribute("name").equals("AQAPICTURECONTACT")){
+			//if(avatar.getAttribute("name").equals("AQAPICTURECONTACT")){
 				avatarIcon = getElementScreenshot(avatar);
-				BufferedImage realImage = ImageUtil.readImageFromFile("/Users/haydenchristensen/Automation/catTestAvatar.png");
+				BufferedImage realImage = ImageUtil.readImageFromFile("/Users/haydenchristensen/Automation/catTestAvatar.jpg");
 				System.out.println(ImageUtil.getOverlapScore(avatarIcon, realImage));
-			}
+			//}
 			if(avatar.getAttribute("name")=="aqaAvatar TestContact"){
 				//compare to image with contact 1's first letter inside
 			}
@@ -120,14 +100,16 @@ public class GroupChatInfoPage extends IOSPage{
 		currentParticipant = driver.findElementByXPath(xpathOfCurrentParticipant);
 		}
 		return currentParticipants;
-=======
+	}
+
 	public boolean verifyCorrectConversationName(String contact1,
 			String contact2) {
 		if (conversationNameTextField.getText().equals(conversationName)) {
 			return true;
 		} else {
-			String currentConversationName = conversationNameTextField
-					.getText();
+			contact1 = CommonUtils.retrieveRealUserContactPasswordValue(contact1);
+			contact2 = CommonUtils.retrieveRealUserContactPasswordValue(contact2);
+			String currentConversationName = conversationNameTextField.getText();
 			return currentConversationName.contains(contact1)
 					&& currentConversationName.contains(contact2)
 					&& currentConversationName.contains(", ");
@@ -142,7 +124,6 @@ public class GroupChatInfoPage extends IOSPage{
 			if (value.contains(IOSLocators.peopleCountTextSubstring)) {
 				result = Integer.parseInt(value.substring(0, value.indexOf(IOSLocators.peopleCountTextSubstring)));
 			}
->>>>>>> df304841929fa3b66bd31c2802a1ae12bbe2d4b6
 		}
 		return result;
 	}
@@ -221,11 +202,3 @@ public class GroupChatInfoPage extends IOSPage{
 	
 	
 }
-<<<<<<< HEAD
-
-
-	
-	
-	
-=======
->>>>>>> df304841929fa3b66bd31c2802a1ae12bbe2d4b6

@@ -1,11 +1,8 @@
 Feature: Change Profile Picture
 
-<<<<<<< HEAD
-=======
 #need to add a delay before "I see changed user picture userpicture_mobile_check.jpg" step
 @mute
 @smoke
->>>>>>> df304841929fa3b66bd31c2802a1ae12bbe2d4b6
 Scenario Outline: Change your profile picture  
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with my name <Name>
@@ -18,9 +15,6 @@ Scenario Outline: Change your profile picture
     And I press Confirm button
     And I return to personal page
     Then I see changed user picture userpicture_mobile_check.jpg
-	
-	
-	
 	
 	Examples:
     |	Login		|	Password	|	Name	|

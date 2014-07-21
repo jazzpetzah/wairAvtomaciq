@@ -26,11 +26,8 @@ public class CommonUtils {
 	public static final String YOUR_PASS = "aqaPassword";
 	public static final String CONTACT_1 = "aqaContact1";
 	public static final String CONTACT_2 = "aqaContact2";
-<<<<<<< HEAD
 	public static final String CONTACT_PICTURE = "aqaPictureContact";
-=======
 	public static final String CONTACT_3 = "aqaContact3";
->>>>>>> df304841929fa3b66bd31c2802a1ae12bbe2d4b6
 	public static List<ClientUser> yourUsers = new ArrayList<ClientUser>();
 	public static List<ClientUser> contacts = new ArrayList<ClientUser>();
 
