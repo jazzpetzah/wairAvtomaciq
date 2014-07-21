@@ -205,5 +205,13 @@ public final class IOSLocators {
 	public static String xpathNumberPeopleText = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[3]";
 	
 	public static final String peopleCountTextSubstring = " people";
+	
+	public static final String nameMediaBarPlayPauseButton = "mediabarPlayPauseButton";
+	
+	public static final String nameMediaBarCloseButton = "mediabarCloseButton";
+	
+	public static final String nameMediaBarTitle = "playingMediaTitle";
+	
+	public static final String nameMediaCellPlayButton = "mediaCellButton";
 
 }
