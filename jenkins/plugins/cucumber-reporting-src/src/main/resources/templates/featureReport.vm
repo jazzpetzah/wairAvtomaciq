@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Cucumber-JVM Html Reports - Feature: $feature.getRawName() </title>
+	<link rel="stylesheet" href="blue/css/style.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="blue/css/skin/style.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="blue/css/960.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="blue/css/reset.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="blue/css/text.css" type="text/css" media="screen" />
+	<link rel="shortcut icon" href="blue/favicon.ico" />
+    #if($artifactsEnabled)
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.min.js"></script>
+        <link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css" rel="stylesheet" />
+        <link rel="stylesheet" href="CodeMirror-2.33/theme/eclipse.css">
+        <link rel="stylesheet" href="CodeMirror-2.33/lib/codemirror.css">
+         <script src="CodeMirror-2.33/lib/codemirror.js"></script>
+         <script src="CodeMirror-2.33/mode/xml/xml.js"></script>
+
+        <script type="text/javascript">
+
+            editorArray = new Array();
+
+                     function getEditor(id){
+                         var editor = CodeMirror.fromTextArea(document.getElementById(id), {
+                           mode: {name: "xml", alignCDATA: true},
+                           lineNumbers: true,
+                           theme: 'eclipse'
+                         });
+                         editorArray[id] = editor;
+                     }
+
+                      function applyArtifact(id,artifactFile){
+                          for (var i in editorArray) {
+                             var el = editorArray[i].getWrapperElement();
+                             $(el).remove();
+                          }
+
+                          $('#' + id).load(artifactFile, function(data) {
+                              getEditor(id);
+                              editorArray[id].setValue(data);
+                          });
+                          $('#' + id).dialog();
+                       }
+
+        </script>
+    #end
+<script>
+                       function showHide(id, button) {
+                         if (document.getElementById(id).style.display == 'block') {
+                           document.getElementById(id).style.display = 'none';
+                           button.innerHTML = 'Show Screenshot';
+                         } else {
+                           document.getElementById(id).style.display = 'block';
+                           button.innerHTML = 'Hide Screenshot';
+                         }
+                       }
+</script>
+<style>
+    .CodeMirror-scroll {
+      height: auto;
+      overflow-y: hidden;
+      overflow-x: auto;
+    }
+
+.feature-keyword{font-weight:bold;}
+.feature-description{padding-left:15px;font-style:italic;background-color:beige;}
+.feature-role{font-weight:bold;}
+.feature-action{font-weight:bold;}
+.feature-value{font-weight:bold;}
+.feature-tags{padding-top:10px;padding-left:15px;color:darkblue;}
+.scenario-keyword{font-weight:bold;padding-left:15px;}
+.scenario-scenario_name{padding-left:15px;}
+.step-keyword{font-weight:bold;padding-left:50px;}
+.step-error-message{background-color:#FFEEEE;padding-left:50px;border: 1px solid #D88A8A;}
+.step-duration{float:right;padding-right:15px;}
+.passed{background-color:#C5D88A;}
+.failed{background-color:#D88A8A;}
+.skipped{background-color:#2DEAEC;}
+.undefined{background-color: #ebcc81;}
+
+table.stats-table {
+color:black;
+border-width: 1px;
+border-spacing: 2px;
+border-style: outset;
+border-color: gray;
+border-collapse: collapse;
+background-color: white;
+}
+table.stats-table th {
+color:black;
+border-width: 1px;
+padding: 5px;
+border-style: inset;
+border-color: gray;
+background-color: #66CCEE;
+-moz-border-radius: ;
+}
+table.stats-table td {
+color:black;
+text-align: center;
+border-width: 1px;
+padding: 5px;
+border-style: inset;
+border-color: gray;
+background-color: white;
+-moz-border-radius: ;
+}
+
+table.data-table {
+    color: black;
+    border-width: 1px;
+    border-spacing: 2px;
+    border-style: outset;
+    border-color: #d6d6d6;
+    border-collapse: collapse;
+    background-color: beige;
+}
+table.data-table th {
+    color:black;
+    border-width: 1px;
+    padding: 5px;
+    border-style: inset;
+    border-color: #d6d6d6;
+    background-color: #66CCEE;
+}
+table.data-table td {
+    color:black;
+    text-align: center;
+    border-width: 1px;
+    padding: 5px;
+    border-style: inset;
+    border-color: #d6d6d6;
+    background-color: beige;
+}
+
+.data {
+   padding-left:50px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.output-data {
+    padding-left:50px;
+    background-color: beige;
+}
+
+.doc-string {
+    width:auto;
+    display:inline-block;
+    margin: 10px auto 10px 70px;
+    padding: 10px;
+    background-color:rgba(255,255,255,0.35);
+    border-radius: 10px;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 95%;
+}
+.step-show-screenshot {
+	float:right;padding-right:15px;
+	color: black;
+	text-decoration: underline;
+}
+.step-screenshot {
+	display: none;
+}
+</style>
+
+</head>
+<body id="top">
+	<div id="fullwidth_header">
+		<div class="container_12">
+			<h1 class="grid_4 logo"><a href="feature-overview.html" class='ie6fix'>Cucumber</a></h1>
+			<div class="grid_6" id="nav">
+				<ul>
+					#if($fromJenkins)
+						<li><a href="${jenkins_base}job/$build_project/$build_number">Back To Jenkins</a></li>
+					#end
+					<li><a href="tag-overview.html">Tag Overview</a></li>
+					<li><a href="feature-overview.html">Feature Overview</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div id="fullwidth_gradient">
+		<div class="container_12">
+			<div class="grid_9 heading">
+				<h2 id="feature-title">Feature Result for Build: $build_number</h2>
+			</div>
+		</div>
+	</div>
+
+	<div class="container_12">
+		<div class="grid_12">
+
+            <div>
+                <table class="stats-table">
+                    #include("/templates/tableHeader.vm")
+                    #set($sf = $feature.getRawName())
+
+                    <tr>
+                        <td><a id="stats-$sf" href="$feature.getFileName()">$feature.getRawName()</a></td>
+                        <td id="stats-number-scenarios-$sf">$feature.getNumberOfScenarios()</td>
+                        <td id="stats-number-scenarios-passed-$sf">$feature.getNumberOfScenariosPassed()</td>
+                        <td id="stats-number-scenarios-failed-$sf">$feature.getNumberOfScenariosFailed()</td>
+                        <td id="stats-number-steps-$sf">$feature.getNumberOfSteps()</td>
+                        <td id="stats-number-steps-passed-$sf">$feature.getNumberOfPasses()</td>
+                        <td id="stats-number-steps-failed-$sf">$feature.getNumberOfFailures()</td>
+                        <td id="stats-number-steps-skipped-$sf">$feature.getNumberOfSkipped()</td>
+                        <td id="stats-number-steps-pending-$sf">$feature.getNumberOfPending()</td>
+                        <td id="stats-duration-$sf">$feature.getDurationOfSteps()</td>
+                        <td id="stats-status-$sf" style="background-color: $report_status_colour;">$feature.getRawStatus()</td></tr>
+
+                </table>
+
+            </div>
+
+		<div style="color:black;">
+		
+			$feature.getTagsList()
+            $feature.getName()
+            $feature.getDescription()
+
+            #foreach($scenario in $scenarios)
+                $scenario.getTagsList()
+                $scenario.getName()
+                #foreach($step in $scenario.getSteps().toList())
+                	$step.getName($feature.getRawName(), $scenario.getRawName())
+                    $step.getDocStringOrNothing()
+                    #if($step.hasRows())
+                    	<div class="data $step.getDataTableClass()">
+                        <table class="data-table">
+                        #foreach($row in $step.getRows())
+                        	<tr>
+                        	#foreach($cell in $row.getCells())
+                        		<td>$esc.html($cell)</td>
+                        	#end
+                        	</tr>
+                        #end
+                        </table>
+                        </div>
+                    #end
+                   	<div class="output-data">$step.getOutput()</div>
+                #end
+            #end
+
+	</div>
+	</div>
+
+
+	<div class="container_12">
+		<div class="grid_12 hr"></div>
+		<div class="grid_12 footer">
+            <p style="text-align:center;">Cucumber-JVM Jenkins Report Plugin - version: $version - $time_stamp</p>
+		</div>
+	</div>
+	<div class="clear"></div>
+</body>

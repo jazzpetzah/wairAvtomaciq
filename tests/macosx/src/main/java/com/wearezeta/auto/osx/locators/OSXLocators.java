@@ -50,6 +50,7 @@ public final class OSXLocators {
 	public static final String xpathConversationListScrollArea = "//AXScrollArea[@AXIdentifier='conversationList']";
 	
 	public static final String YOU_KNOCKED_MESSAGE = "YOU KNOCKED";
+	public static final String YOU_HOT_KNOCKED_MESSAGE = "YOU HOT KNOCKED";
 	public static final String YOU_ADDED_MESSAGE = "YOU ADDED";
 	public static final String YOU_REMOVED_MESSAGE = "YOU REMOVED";
 	

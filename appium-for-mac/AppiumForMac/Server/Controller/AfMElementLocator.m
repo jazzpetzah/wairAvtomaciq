@@ -119,8 +119,8 @@
                 
                 int startX = mainWindow.AXPosition.pointValue.x-100;
                 int startY = mainWindow.AXPosition.pointValue.y-100;
-                int endX = startX + mainWindow.AXSize.pointValue.x+100;
-                int endY = startY + mainWindow.AXSize.pointValue.y+100;
+                int endX = startX + mainWindow.AXSize.pointValue.x+200;
+                int endY = startY + mainWindow.AXSize.pointValue.y+200;
                 
                 for (int i = startX; i < endX; i+=20) {
                     for (int j = startY; j < endY; j+=20) {
@@ -262,14 +262,22 @@
                 NSString *windowTitle = mainWindow.AXTitle;
                 int startX = mainWindow.AXPosition.pointValue.x-100;
                 int startY = mainWindow.AXPosition.pointValue.y-100;
-                int endX = startX + mainWindow.AXSize.pointValue.x+100;
-                int endY = startY + mainWindow.AXSize.pointValue.y+100;
+                int endX = startX + mainWindow.AXSize.pointValue.x+200;
+                int endY = startY + mainWindow.AXSize.pointValue.y+200;
                 
                 NSMutableArray *rects = [NSMutableArray new];
                 for (int i = startX; i < endX; i+=20) {
                     for (int j = startY; j < endY; j+=20) {
                         NSError *error = nil;
                         PFUIElement *newElement = [PFUIElement elementAtPoint:NSMakePoint(i, j) withDelegate:nil error:&error];
+                        
+                        //DEBUG
+//                       CFTypeRef identifierRef = nil;
+//                       AXUIElementCopyAttributeValue(newElement.elementRef, (__bridge CFStringRef)@"AXIdentifier", &identifierRef);
+//                        NSString *identifier = (__bridge NSString*)identifierRef;
+//                        NSLog(@"[%d,%d] %@: %@", i, j, newElement.AXRole, identifier);
+                        //DEBUG
+                        
                         if ([self.value caseInsensitiveCompare:newElement.AXRole] == NSOrderedSame)
                         {
                             BOOL isParentOK = NO;

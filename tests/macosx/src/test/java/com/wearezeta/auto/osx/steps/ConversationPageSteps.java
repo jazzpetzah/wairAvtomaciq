@@ -22,6 +22,7 @@ import cucumber.api.java.en.When;
 public class ConversationPageSteps {
 	 private String randomMessage;
 	 private int beforeNumberOfKnocks = -1;
+	 private int beforeNumberOfHotKnocks = -1;
 	 private int beforeNumberOfImages = -1;
 	 
 	 @When("I write random message")
@@ -116,6 +117,11 @@ public class ConversationPageSteps {
 				 CommonSteps.senderPages.getConversationPage()
 				 		.getNumberOfMessageEntries(OSXLocators.YOU_KNOCKED_MESSAGE);
 		 }
+		 if (beforeNumberOfHotKnocks < 0) {
+			 beforeNumberOfHotKnocks =
+					 CommonSteps.senderPages.getConversationPage()
+					 		.getNumberOfMessageEntries(OSXLocators.YOU_HOT_KNOCKED_MESSAGE);
+		 }
 		 CommonSteps.senderPages.getConversationPage().knock();
 	 }
 	 
@@ -135,6 +141,21 @@ public class ConversationPageSteps {
 			 
 			 Assert.assertTrue("Incorrect messages count: before - "
 					 + beforeNumberOfKnocks + ", after - " + afterNumberOfKnocks, isNumberIncreased);
+			 
+		} else if (message.equals(OSXLocators.YOU_HOT_KNOCKED_MESSAGE)) {
+			 boolean isNumberIncreased = false;
+			 int afterNumberOfHotKnocks = -1;
+			 for (int i = 0; i < 60; i++) {
+				 afterNumberOfHotKnocks = CommonSteps.senderPages.getConversationPage().getNumberOfMessageEntries(message);
+				 if (afterNumberOfHotKnocks == beforeNumberOfHotKnocks + 1) {
+					 isNumberIncreased = true;
+					 break;
+				 }
+				 try { Thread.sleep(1000); } catch (InterruptedException e) { }
+			 }
+			 
+			 Assert.assertTrue("Incorrect messages count: before - "
+					 + beforeNumberOfHotKnocks + ", after - " + afterNumberOfHotKnocks, isNumberIncreased);
 			 
 		} else if (message.contains(OSXLocators.YOU_ADDED_MESSAGE)) {
 			message = CommonUtils.retrieveRealUserContactPasswordValue(message);
