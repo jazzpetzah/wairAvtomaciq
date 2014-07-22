@@ -67,7 +67,7 @@ public class PersonalInfoPage extends AndroidPage
 	@FindBy(how = How.XPATH, using = AndroidLocators.xpathImage)
 	private List<WebElement> image;
 	
-	public PersonalInfoPage(String URL, String path) throws IOException {
+	public PersonalInfoPage(String URL, String path) throws Exception {
 		super(URL, path);
 		this.url = URL;
 		this.path = path;
@@ -123,7 +123,7 @@ public class PersonalInfoPage extends AndroidPage
 	}
 
 	@Override
-	public AndroidPage returnBySwipe(SwipeDirection direction) throws IOException {
+	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
 
 		AndroidPage page = null;
 		switch (direction){
@@ -153,7 +153,7 @@ public class PersonalInfoPage extends AndroidPage
 		optionsButton.click();
 	}
 	
-	public SettingsPage tapSettingsButton() throws IOException {
+	public SettingsPage tapSettingsButton() throws Exception {
 		
 		refreshUITree();
 		settingsButton.click();
@@ -183,7 +183,7 @@ public class PersonalInfoPage extends AndroidPage
 		return nameField.getText();
 	}
 
-	public AboutPage tapAboutButton() throws IOException {
+	public AboutPage tapAboutButton() throws Exception {
 		refreshUITree();
 		aboutButton.click();
 		return new AboutPage(url, path);

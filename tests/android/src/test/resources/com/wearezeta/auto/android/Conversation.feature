@@ -1,6 +1,7 @@
 Feature: Conversation
 
 @smoke 
+@nonUnicode
   Scenario Outline: Send Message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -16,6 +17,7 @@ Feature: Conversation
 
 @mute	  
 @smoke
+@nonUnicode
   Scenario Outline: Send Hello to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -29,6 +31,7 @@ Feature: Conversation
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
 @smoke 
+@nonUnicode
   Scenario Outline: Send Camera picture to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -45,7 +48,7 @@ Feature: Conversation
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
       
 #test is not implemented yet, functionality is not available in the client
-@smoke @mute
+@smoke @mute @nonUnicode
   Scenario Outline: Start group chat with users from contact list
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -67,6 +70,7 @@ Feature: Conversation
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
 
 @mute
+@nonUnicode
 @smoke
   Scenario Outline: Send message to group chat
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
@@ -83,6 +87,7 @@ Feature: Conversation
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | SendMessGroupChat |
 
 @mute
+@nonUnicode
 @smoke
   Scenario Outline: Leave group conversation
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
@@ -100,6 +105,7 @@ Feature: Conversation
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | LeaveGroupChat |
 
 @mute
+@nonUnicode
 @smoke
   Scenario Outline: Remove from group chat
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
@@ -118,6 +124,7 @@ Feature: Conversation
       | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | RemoveFromGroupChat |
 
 @mute
+@nonUnicode
 @smoke
   Scenario Outline: Accept connection request
     Given connection request is sended to me
@@ -134,6 +141,7 @@ Feature: Conversation
       | aqaUser | aqaPassword | aqaUser | yourContact |
 
 @mute
+@nonUnicode
 @smoke
   Scenario Outline: Mute conversation
     Given I Sign in using login <Login> and password <Password>
@@ -148,7 +156,8 @@ Feature: Conversation
     Examples: 
       | Login   | Password    | Name    | Contact1    |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
-      
+
+@nonUnicode      
 @regression 
   Scenario Outline: Send Long Message to contact
     Given I Sign in using login <Login> and password <Password>
@@ -163,6 +172,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
+@nonUnicode
 @regression 
   Scenario Outline: Send Upper and Lower case to contact
     Given I Sign in using login <Login> and password <Password>
@@ -176,7 +186,8 @@ Feature: Conversation
     Examples: 
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
-     
+
+@nonUnicode     
 @regression 
   Scenario Outline: Send special chars message to contact
     Given I Sign in using login <Login> and password <Password>
@@ -192,6 +203,7 @@ Feature: Conversation
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |ÄäÖöÜüß simple message in english|
    
 @mute
+@nonUnicode
 @regression
   Scenario Outline: Send emoji message to contact
     Given I Sign in using login <Login> and password <Password>
@@ -205,7 +217,8 @@ Feature: Conversation
     Examples: 
       | Login   | Password    | Name    | Contact     | Message |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |:) ;) :( |
-  
+      
+@nonUnicode  
 @smoke 
   Scenario Outline: Check contact personal info
     Given I Sign in using login <Login> and password <Password>
@@ -219,9 +232,8 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-@torun
 @unicode
-@regression 
+@staging 
   Scenario Outline: Send double byte chars
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

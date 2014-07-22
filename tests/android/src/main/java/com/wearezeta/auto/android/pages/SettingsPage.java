@@ -14,7 +14,7 @@ public class SettingsPage extends AndroidPage {
 	@FindBy(how = How.XPATH, using = AndroidLocators.xpathSettingPageTitle)
 	private WebElement settingsTitle;
 	
-	public SettingsPage(String URL, String path) throws IOException {
+	public SettingsPage(String URL, String path) throws Exception {
 		super(URL, path);
 		// TODO Auto-generated constructor stub
 	}

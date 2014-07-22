@@ -67,7 +67,7 @@ public class PersonalInfoPageSteps {
 	}
 	
 	@When("^I swipe right to contact list$")
-	public void ISwipeRightToContactList() throws IOException {
+	public void ISwipeRightToContactList() throws Exception {
 		
 		PagesCollection.contactListPage = (ContactListPage) PagesCollection.personalInfoPage.swipeRight(1000);
 	}

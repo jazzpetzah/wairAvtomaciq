@@ -18,7 +18,7 @@ public class LoginPageSteps {
 	}
 
 	@Given("^I Sign in using login (.*) and password (.*)$")
-	public void GivenISignIn(String login,String password) throws IOException, InterruptedException  {
+	public void GivenISignIn(String login,String password) throws Exception  {
 		if (login.equals(CommonUtils.YOUR_USER_1)) {
 			login = CommonUtils.yourUsers.get(0).getEmail();
 			password = CommonUtils.retrieveRealUserContactPasswordValue(password);
@@ -37,12 +37,12 @@ public class LoginPageSteps {
 	}
 
 	@When("I press Log in button")
-	public void WhenIPressLogInButton() throws IOException {	 
+	public void WhenIPressLogInButton() throws Exception {	 
 		PagesCollection.loginPage.LogIn();
 	}
 
 	@When("I press Join button")
-	public void WhenIPressJoinButton() throws IOException {
+	public void WhenIPressJoinButton() throws Exception {
 
 		PagesCollection.registrationPage = PagesCollection.loginPage.join();
 	}

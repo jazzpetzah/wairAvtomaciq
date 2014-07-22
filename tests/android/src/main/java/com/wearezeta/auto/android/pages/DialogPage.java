@@ -1,10 +1,7 @@
 package com.wearezeta.auto.android.pages;
 
-import java.io.IOException;
 import java.util.List;
-
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -61,7 +58,7 @@ public class DialogPage extends AndroidPage{
 	private String path;
 	private int initMessageCount;
 	
-	public DialogPage(String URL, String path) throws IOException {
+	public DialogPage(String URL, String path) throws Exception {
 		super(URL, path);
 		
 		this.url = URL;
@@ -112,14 +109,14 @@ public class DialogPage extends AndroidPage{
 	}
 
 	@Override
-	public AndroidPage swipeUp(int time) throws IOException
+	public AndroidPage swipeUp(int time) throws Exception
 	{
 		dialogsPagesSwipeUp(time);//TODO workaround
 		return returnBySwipe(SwipeDirection.UP);
 	}
 	
 	@Override
-	public AndroidPage returnBySwipe(SwipeDirection direction) throws IOException {
+	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
 		AndroidPage page = null;
 		switch (direction){
 			case DOWN:

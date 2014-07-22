@@ -1,7 +1,5 @@
 package com.wearezeta.auto.android;
 
-import java.io.IOException;
-
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
@@ -106,12 +104,12 @@ public class DialogPageSteps{
 	}
 	
 	@When("^I swipe left on dialog page$")
-	public void WhenISwipeLeftOnDialogPage() throws IOException{
+	public void WhenISwipeLeftOnDialogPage() throws Exception{
 		PagesCollection.dialogPage.swipeLeft(1000);
 	}
 	
 	@When("^I swipe up on dialog page$")
-	public void WhenISwipeUpOnDialogPage() throws IOException{
+	public void WhenISwipeUpOnDialogPage() throws Exception{
 		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.dialogPage.swipeUp(1000);
 	}
 }

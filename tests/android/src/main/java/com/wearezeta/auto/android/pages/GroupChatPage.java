@@ -1,8 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
-import java.io.IOException;
 import java.util.List;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -28,21 +26,21 @@ public class GroupChatPage  extends AndroidPage{
 	private String url;
 	private String path;
 
-	public GroupChatPage(String URL, String path) throws IOException {
+	public GroupChatPage(String URL, String path) throws Exception {
 		super(URL, path);
 		this.url = URL;
 		this.path = path;
 	}
 
 	@Override
-	public AndroidPage swipeUp(int time) throws IOException
+	public AndroidPage swipeUp(int time) throws Exception
 	{
 		dialogsPagesSwipeUp(time);
 		return returnBySwipe(SwipeDirection.UP);
 	}
 	
 	@Override
-	public AndroidPage returnBySwipe(SwipeDirection direction) throws IOException{
+	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception{
 
 		AndroidPage page = null;
 		switch (direction){

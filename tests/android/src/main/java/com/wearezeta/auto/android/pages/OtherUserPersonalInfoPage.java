@@ -1,14 +1,11 @@
 package com.wearezeta.auto.android.pages;
 
-import java.io.IOException;
-
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
-import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.common.SwipeDirection;
 
 public class OtherUserPersonalInfoPage extends AndroidPage {
@@ -40,7 +37,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	private String path;
 	
 	public OtherUserPersonalInfoPage(String URL, String path)
-			throws IOException {
+			throws Exception {
 		super(URL, path);
 		this.url = URL;
 		this.path = path;
@@ -52,7 +49,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	
 	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction)
-			throws IOException {
+			throws Exception {
 		AndroidPage page = null;
 		switch (direction){
 			case DOWN:
@@ -99,7 +96,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		return confirmMenu.isDisplayed();
 	}
 	
-	public GroupChatInfoPage pressRemoveConfirmBtn() throws IOException
+	public GroupChatInfoPage pressRemoveConfirmBtn() throws Exception
 	{
 		refreshUITree();//TODO workaround
 		wait.until(ExpectedConditions.elementToBeClickable(confirmBtn));

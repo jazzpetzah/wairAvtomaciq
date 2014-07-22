@@ -1,6 +1,5 @@
 package com.wearezeta.auto.android.pages;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.openqa.selenium.*;
@@ -33,7 +32,7 @@ public class GroupChatInfoPage extends AndroidPage {
 	private String url;
 	private String path;
 	
-	public GroupChatInfoPage(String URL, String path) throws IOException {
+	public GroupChatInfoPage(String URL, String path) throws Exception {
 		super(URL, path);
 		this.url = URL;
 		this.path = path;
@@ -41,7 +40,7 @@ public class GroupChatInfoPage extends AndroidPage {
 
 	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction)
-			throws IOException {
+			throws Exception {
 		AndroidPage page = null;
 		switch (direction){
 		case DOWN:
@@ -81,7 +80,7 @@ public class GroupChatInfoPage extends AndroidPage {
 		groupChatName.sendKeys(chatName + "\n");
 	}
 	
-	public OtherUserPersonalInfoPage selectContactByName(String contactName) throws IOException, InterruptedException {
+	public OtherUserPersonalInfoPage selectContactByName(String contactName) throws Exception, InterruptedException {
 		boolean flag = false;
 		refreshUITree();
 		
@@ -103,7 +102,7 @@ public class GroupChatInfoPage extends AndroidPage {
 		return new OtherUserPersonalInfoPage(url, path);
 	}
 
-	public GroupChatPage tabBackButton() throws IOException {
+	public GroupChatPage tabBackButton() throws Exception {
 		driver.navigate().back();
 		return new GroupChatPage(url, path);
 	}

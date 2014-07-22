@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-import com.wearezeta.auto.common.AndroidLocators;
+import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.SwipeDirection;
 
 public class AboutPage extends AndroidPage {
@@ -19,7 +19,7 @@ public class AboutPage extends AndroidPage {
 	@FindBy(how = How.ID, using = AndroidLocators.idAboutVersion)
 	private WebElement aboutVersion;
 	
-	public AboutPage(String URL, String path) throws IOException {
+	public AboutPage(String URL, String path) throws Exception {
 		super(URL, path);
 		this.url = URL;
 		this.path = path;
@@ -37,7 +37,7 @@ public class AboutPage extends AndroidPage {
 		
 	}
 
-	public PersonalInfoPage tapOnVersion() throws IOException {
+	public PersonalInfoPage tapOnVersion() throws Exception {
 		aboutVersion.click();
 		return new PersonalInfoPage(url, path);
 	}

@@ -1,6 +1,5 @@
 package com.wearezeta.auto.android.pages;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.openqa.selenium.WebElement;
@@ -26,7 +25,7 @@ public class InstructionsPage extends AndroidPage {
 	private String url;
 	private String path;
 
-	public InstructionsPage(String URL, String path) throws IOException {
+	public InstructionsPage(String URL, String path) throws Exception {
 		super(URL, path);
 		url = URL;
 		this.path = path;				
@@ -62,7 +61,7 @@ public class InstructionsPage extends AndroidPage {
 	}
 	
 	@Override
-	public AndroidPage returnBySwipe(SwipeDirection direction) throws IOException {
+	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
 
 		AndroidPage page = null;
 		switch (direction){

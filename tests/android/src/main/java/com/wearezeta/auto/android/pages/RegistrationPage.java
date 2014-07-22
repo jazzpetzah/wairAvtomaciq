@@ -36,7 +36,7 @@ public class RegistrationPage extends AndroidPage {
 	private String url;
 	private String path;
 	
-	public RegistrationPage(String URL, String path) throws IOException {
+	public RegistrationPage(String URL, String path) throws Exception {
 		super(URL, path);
 		this.url = URL;
 		this.path = path;
@@ -97,7 +97,7 @@ public class RegistrationPage extends AndroidPage {
 		return DriverUtils.isElementDisplayed(verifyEmailBtn);
 	}
 
-	public InstructionsPage continueRegistration() throws IOException {
+	public InstructionsPage continueRegistration() throws Exception {
 		verifyEmailBtn.click();
 		return new InstructionsPage(url, path);
 	}

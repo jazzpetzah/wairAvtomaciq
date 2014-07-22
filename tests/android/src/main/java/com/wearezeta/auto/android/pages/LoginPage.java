@@ -41,12 +41,20 @@ public class LoginPage extends AndroidPage {
 	private String url;
 	private String path;
 
-	public LoginPage(String URL, String path) throws IOException {
+	public LoginPage(String URL, String path) throws Exception {
 
 		super(URL, path);
 		this.url = URL;
 		this.path = path;
 	}
+	
+	public LoginPage(String URL, String path, boolean isUnicode) throws Exception {
+
+		super(URL, path, isUnicode);
+		this.url = URL;
+		this.path = path;
+	}
+	
 	
 	public RemoteWebDriver getDriver() {
 		return driver;
@@ -63,7 +71,7 @@ public class LoginPage extends AndroidPage {
 		return this;
 	}
 
-	public ContactListPage LogIn() throws IOException {
+	public ContactListPage LogIn() throws Exception {
 		confirmSignInButton.click();
 		return new ContactListPage(url, path);
 	}
@@ -118,7 +126,7 @@ public class LoginPage extends AndroidPage {
 		return null;
 	}
 
-	public RegistrationPage join() throws IOException {
+	public RegistrationPage join() throws Exception {
 		signUpButton.click();
 
 		return new RegistrationPage(url, path);

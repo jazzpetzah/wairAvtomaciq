@@ -25,14 +25,14 @@ public class ConnectToPage extends AndroidPage {
 	private String url;
 	private String path;
 	
-	public ConnectToPage(String URL, String path) throws IOException {
+	public ConnectToPage(String URL, String path) throws Exception {
 		super(URL, path);
 		
 		this.url = URL;
 		this.path = path;
 	}
 
-	public ContactListPage tapSend() throws IOException{
+	public ContactListPage tapSend() throws Exception{
 		sendRequest.click();
 		wait.until(ExpectedConditions.visibilityOfAllElements(contactListNames));
 		return new ContactListPage(url, path);

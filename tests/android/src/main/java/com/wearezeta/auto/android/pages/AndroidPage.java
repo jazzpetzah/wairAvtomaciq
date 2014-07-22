@@ -11,7 +11,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.PageFactory;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.*;
@@ -29,7 +28,12 @@ public abstract class AndroidPage extends BasePage {
 	
 	private String url;
 	
-	public AndroidPage(String URL, String path) throws IOException {
+	public AndroidPage(String URL, String path) throws Exception {
+		this(URL,path,false);
+	}
+	
+	
+	public AndroidPage(String URL, String path, boolean isUnicode) throws Exception {
 		
         url = URL;
         
@@ -40,19 +44,22 @@ public abstract class AndroidPage extends BasePage {
         capabilities.setCapability("appActivity", CommonUtils.getAndroidActivityFromConfig(AndroidPage.class));
         capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidActivityFromConfig(AndroidPage.class));
         
-        if(driver!=null){
-    		PageFactory.initElements(driver, this);
+        if(isUnicode){
+        	initUnicodeDriver();
+        }
+        else{
+        	initNoneUnicodeDriver();
         }
 	}
 	
-	public void initUnicodeDriver() throws Exception
+	private void initUnicodeDriver() throws Exception
 	{
 		capabilities.setCapability("unicodeKeyboard", true);
         capabilities.setCapability("resetKeyboard", false);
         super.InitConnection(url, capabilities);
 	}
 	
-	public void initNoneUnicodeDriver() throws MalformedURLException
+	private void initNoneUnicodeDriver() throws MalformedURLException
 	{
 		capabilities.setCapability("unicodeKeyboard", false);
         capabilities.setCapability("resetKeyboard", true);
@@ -76,24 +83,24 @@ public abstract class AndroidPage extends BasePage {
 		super.Close();
 	}
 	
-	public abstract AndroidPage returnBySwipe (SwipeDirection direction) throws IOException;
+	public abstract AndroidPage returnBySwipe (SwipeDirection direction) throws Exception;
 	
 	@Override
-	public AndroidPage swipeLeft(int time) throws IOException
+	public AndroidPage swipeLeft(int time) throws Exception
 	{
 		DriverUtils.swipeLeft(driver, content, time);
 		return returnBySwipe(SwipeDirection.LEFT);
 	}
 	
 	@Override
-	public AndroidPage swipeRight(int time) throws IOException
+	public AndroidPage swipeRight(int time) throws Exception
 	{
 		DriverUtils.swipeRight(driver, content, time);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 	
 	@Override
-	public AndroidPage swipeUp(int time) throws IOException
+	public AndroidPage swipeUp(int time) throws Exception
 	{
 		DriverUtils.swipeUp(driver, content, time);
 		return returnBySwipe(SwipeDirection.UP);
@@ -106,7 +113,7 @@ public abstract class AndroidPage extends BasePage {
 	}
 	
 	@Override
-	public AndroidPage swipeDown(int time) throws IOException
+	public AndroidPage swipeDown(int time) throws Exception
 	{
 		
 		DriverUtils.swipeDown(driver, content, time);

@@ -33,13 +33,13 @@ public class ContactListPage extends AndroidPage {
 	private String url;
 	private String path;
 	
-	public ContactListPage(String URL, String path) throws IOException {
+	public ContactListPage(String URL, String path) throws Exception {
 		super(URL, path);
 		this.url = URL;
 		this.path = path;
 	}
 
-	public AndroidPage tapOnName(String name) throws IOException{
+	public AndroidPage tapOnName(String name) throws Exception{
 		AndroidPage page = null;
 		refreshUITree();//TODO: workaround
 		findNameInContactList(name, contactListNames).click();
@@ -87,7 +87,7 @@ public class ContactListPage extends AndroidPage {
 	}
 	
 	@Override
-	public AndroidPage returnBySwipe(SwipeDirection direction) throws IOException {
+	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
 		
 		AndroidPage page = null;
 		switch (direction){

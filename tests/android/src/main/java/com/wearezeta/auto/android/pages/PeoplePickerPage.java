@@ -15,7 +15,7 @@ public class PeoplePickerPage extends AndroidPage {
 	private String url;
 	private String path;
 
-	public PeoplePickerPage(String URL, String path) throws IOException {
+	public PeoplePickerPage(String URL, String path) throws Exception {
 		super(URL, path);
 
 		this.url = URL;
@@ -69,7 +69,7 @@ public class PeoplePickerPage extends AndroidPage {
 		driver.navigate().back();
 	}
 
-	public AndroidPage selectContact(String contactName) throws IOException, InterruptedException
+	public AndroidPage selectContact(String contactName) throws Exception
 	{
 		AndroidPage page = null;
 		WebElement el = driver.findElementByXPath(String.format(AndroidLocators.xpathPeoplePickerContact,contactName));
@@ -136,7 +136,7 @@ public class PeoplePickerPage extends AndroidPage {
 		return addToConversationsButton.isDisplayed();
 	}
 
-	public GroupChatPage clickOnAddToCoversationButton() throws IOException{
+	public GroupChatPage clickOnAddToCoversationButton() throws Exception{
 		addToConversationsButton.click();
 		return new GroupChatPage(url, path);
 	}
@@ -156,12 +156,12 @@ public class PeoplePickerPage extends AndroidPage {
 
 	}
 
-	public DialogPage tapCreateConversation() throws IOException {
+	public DialogPage tapCreateConversation() throws Exception {
 		DriverUtils.swipeRight(driver,createConversation, 1000);
 		return new DialogPage(url, path);
 	}
 
-	public ContactListPage tapClearButton() throws IOException {
+	public ContactListPage tapClearButton() throws Exception {
 		pickerClearBtn.click();
 		return new ContactListPage(url, path);
 	}

@@ -31,7 +31,6 @@ public class CommonSteps {
 		
 		if ( PagesCollection.loginPage == null){
 			PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(CommonSteps.class), path);
-			PagesCollection.loginPage.initNoneUnicodeDriver();
 			ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
 		}
 	}
@@ -42,8 +41,7 @@ public class CommonSteps {
 		commonBefore();
 		
 		if ( PagesCollection.loginPage == null){
-			PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(CommonSteps.class), path);
-			PagesCollection.loginPage.initUnicodeDriver();
+			PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(CommonSteps.class), path,true);
 			ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
 		}
 	}
