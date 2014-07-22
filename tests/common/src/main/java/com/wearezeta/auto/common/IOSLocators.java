@@ -171,16 +171,12 @@ public final class IOSLocators {
 	
 	public static final String xpathParticipantAvatar = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[%s]";
 	
-	public static final String xpathParticipantNameText = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[%s]/UIAStaticText[%s]";
-	
 	public static final String xpathNumberOfParticipantsText =  "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[3]";
-                                                        
-	public static final String xpathParticipantAvatarView = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell";
-	
-	public static final String xpathParticipantName = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[%s]/UIAStaticText[%s]";
-	
-	// vv currently does not have a name vv
+
+	//needs name
 	public static final String xpathAvatarCollectionView = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]";
+    
+	public static final String xpathParticipantAvatarCell = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell";
 	
 	public static final String nameErrorPageButton = "BACK";
 	

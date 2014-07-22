@@ -29,7 +29,12 @@ public class CommonUtils {
 	public static final String CONTACT_3 = "aqaContact3";
 	public static List<ClientUser> yourUsers = new ArrayList<ClientUser>();
 	public static List<ClientUser> contacts = new ArrayList<ClientUser>();
-
+	
+	public static final String CONTACT_PICTURE_EMAIL = "qa1+aqaPictureContact@wearezeta.com";
+	public static final String CONTACT_PICTURE_PASSWORD = "picture123";
+	public static final String CONTACT_AVATAR_EMAIL = "qa1+aqaAvatarTestContact@wearezeta.com";
+	public static final String CONTACT_AVATAR_PASSWORD = "avatar123";
+	
 	public static String getOsName(){
 		return System.getProperty("os.name");
 	}
@@ -85,16 +90,16 @@ public class CommonUtils {
 			}
 		}
 		if(value=="aqaPictureContactEmail"){
-			value = "qa1+aqaPictureContact@wearezeta.com";
+			value = CONTACT_PICTURE_EMAIL;
 		}
 		if(value=="aqaPictureContactPassword"){
-			value = "picture123";
+			value = CONTACT_PICTURE_PASSWORD;
 		}
 		if(value=="aqaAvatarTestContactEmail"){
-			value = "qa1+aqaAvatarTestContact@wearezeta.com";
+			value = CONTACT_AVATAR_EMAIL;
 		}
 		if(value=="aqaAvatarTestContactPassword"){
-			value = "avatar123";
+			value = CONTACT_AVATAR_PASSWORD;
 		}
 		return value;
 	}
@@ -337,6 +342,21 @@ public class CommonUtils {
 		return secondParts[0];
 	}
 
+	public static void generateAdditionalContacts(){
+		//insert values of the user in "CommonUtils.retrieveRealUserContactPasswordValue" first
+		String[][] credentials = new String[][] {
+				{"aqaPictureContactEmail", "aqaPictureContactPassword"},
+				{"aqaAvatarTestContactEmail", "aqaAvatarTestContactPassword"},
+		};
+		for (String[] credential: credentials) {
+			ClientUser user = new ClientUser();
+			user.setEmail(CommonUtils.retrieveRealUserContactPasswordValue(credential[0]));
+			user.setPassword(CommonUtils.retrieveRealUserContactPasswordValue(credential[1]));
+			user.setUserState(UsersState.Created);
+			contacts.add(user);
+		}
+	}
+	
 	public static void generateUsers(int contactNumber) throws IOException
 	{
 		for(int i  = 0; i < 3; i++){
@@ -364,17 +384,7 @@ public class CommonUtils {
 			else{
 				throw new NullPointerException("Contact was not created");
 			}
-			
-		ClientUser pictureUser = new ClientUser();
-		pictureUser.setEmail(CommonUtils.retrieveRealUserContactPasswordValue("aqaPictureContactEmail"));
-		pictureUser.setPassword(CommonUtils.retrieveRealUserContactPasswordValue("aqaPictureContactPassword"));
-		pictureUser.setUserState(UsersState.Created);
-		contacts.add(pictureUser);
-		ClientUser avatarUser = new ClientUser();
-		avatarUser.setEmail(CommonUtils.retrieveRealUserContactPasswordValue("aqaAvatarTestContactEmail"));
-		avatarUser.setPassword(CommonUtils.retrieveRealUserContactPasswordValue("aqaAvatarTestContactPassword"));
-		avatarUser.setUserState(UsersState.Created);
-		contacts.add(avatarUser);
+		generateAdditionalContacts();
 		}
 	}
 	

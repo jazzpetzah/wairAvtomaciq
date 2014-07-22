@@ -26,6 +26,7 @@ import com.wearezeta.auto.common.SwipeDirection;
 public class GroupChatInfoPage extends IOSPage{
 	private String url;
 	private String path;
+	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.95;
 	
 	private String conversationName = null;
 
@@ -66,7 +67,6 @@ public class GroupChatInfoPage extends IOSPage{
 	
 	public BufferedImage getElementScreenshot(WebElement element) throws IOException{
 		BufferedImage screenshot = takeScreenshot();
-		ImageIO.write(screenshot, "png", new File("/Users/haydenchristensen/Automation/pictures/screenshot.png"));
 		org.openqa.selenium.Point elementLocation = element.getLocation();
 		Dimension elementSize = element.getSize();
 		return screenshot.getSubimage(elementLocation.x*2, elementLocation.y*2, elementSize.width*2, elementSize.height*2);
@@ -76,19 +76,20 @@ public class GroupChatInfoPage extends IOSPage{
 		List<WebElement> participantAvatars = getCurrentParticipants();
 		BufferedImage avatarIcon = null;
 		for(WebElement avatar : participantAvatars){
-			System.out.println(avatar.getAttribute("name"));
 			avatarIcon = getElementScreenshot(avatar);
-			if(avatar.getAttribute("name").equals("AQAPICTURECONTACT")){
-				BufferedImage realImage = ImageUtil.readImageFromFile("/Users/haydenchristensen/Automation/avatarPictureTest.png");
+			String avatarName = avatar.getAttribute("name");
+			if(avatarName.equalsIgnoreCase("AQAPICTURECONTACT")){
+				BufferedImage realImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()+"avatarPictureTest.png");
 				double score = ImageUtil.getOverlapScore(realImage, avatarIcon);
-				if(score<=0.95){
+				if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
 					return false;
 				}
 			}
-			if(avatar.getAttribute("name").equalsIgnoreCase("AT")){
-				BufferedImage realImage = ImageUtil.readImageFromFile("/Users/haydenchristensen/Automation/avatarTest.png");
+			if(avatarName.equalsIgnoreCase("AT")){
+				//must be a yellow user with initials AT
+				BufferedImage realImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()+"avatarTest.png");
 				double score = ImageUtil.getOverlapScore(realImage, avatarIcon);
-				if(score<=0.95){
+				if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
 					return false;
 				}
 			}
@@ -129,7 +130,7 @@ public class GroupChatInfoPage extends IOSPage{
 	}
 	
 	public int numberOfParticipantsAvatars() {
-		List<WebElement> elements = driver.findElements(By.xpath(IOSLocators.xpathParticipantAvatarView));
+		List<WebElement> elements = driver.findElements(By.xpath(IOSLocators.xpathParticipantAvatarCell));
 		return elements.size();
 	}
 
