@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-import com.wearezeta.auto.common.AndroidLocators;
+import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.SwipeDirection;
 
 public class SettingsPage extends AndroidPage {

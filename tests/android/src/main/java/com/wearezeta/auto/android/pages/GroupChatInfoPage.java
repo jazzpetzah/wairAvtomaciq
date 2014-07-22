@@ -7,7 +7,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.wearezeta.auto.common.AndroidLocators;
+import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.SwipeDirection;
 
 public class GroupChatInfoPage extends AndroidPage {

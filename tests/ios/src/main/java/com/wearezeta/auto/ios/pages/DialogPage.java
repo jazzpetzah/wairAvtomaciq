@@ -11,6 +11,7 @@ import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class DialogPage extends IOSPage{
 

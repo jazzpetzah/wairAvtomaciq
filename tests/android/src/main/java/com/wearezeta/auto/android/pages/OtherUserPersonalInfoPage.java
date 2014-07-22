@@ -1,12 +1,13 @@
 package com.wearezeta.auto.android.pages;
 
 import java.io.IOException;
+
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.wearezeta.auto.common.AndroidLocators;
+import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.common.SwipeDirection;
 
