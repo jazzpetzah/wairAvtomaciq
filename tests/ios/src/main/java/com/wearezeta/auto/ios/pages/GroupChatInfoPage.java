@@ -19,7 +19,6 @@ import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.DriverUtils;
-import com.wearezeta.auto.common.IOSLocators;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
@@ -61,7 +60,7 @@ public class GroupChatInfoPage extends IOSPage{
 		conversationNameTextField.sendKeys(conversationName + "\n");
 	}
 
-	public boolean verifyNumberOfParticipants(int correctNumber){
+	public boolean isNumberOfParticipants(int correctNumber){
 		int givenNumberOfParticipants = Integer.parseInt(numberOfParticipantsText.getText().replaceAll("\\D+",""));
 		return givenNumberOfParticipants == correctNumber;
 	}
@@ -73,7 +72,7 @@ public class GroupChatInfoPage extends IOSPage{
 		return screenshot.getSubimage(elementLocation.x*2, elementLocation.y*2, elementSize.width*2, elementSize.height*2);
 	}
 	
-	public boolean verifyParticipantAvatars() throws IOException{
+	public boolean isParticipantAvatars() throws IOException{
 		List<WebElement> participantAvatars = getCurrentParticipants();
 		BufferedImage avatarIcon = null;
 		for(WebElement avatar : participantAvatars){
@@ -98,7 +97,7 @@ public class GroupChatInfoPage extends IOSPage{
 		return true;
 	}
 
-	public boolean verifyCorrectConversationName(String contact1,
+	public boolean isCorrectConversationName(String contact1,
 			String contact2) {
 		if (conversationNameTextField.getText().equals(conversationName)) {
 			return true;

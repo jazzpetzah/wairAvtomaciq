@@ -183,7 +183,6 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-
   # Not stable
   @mute
   @smoke
@@ -200,7 +199,7 @@ Examples:
     |  Login		| Password		| Name			| Contact1    |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |
 
-@torun
+@staging
 Scenario Outline: Verify correct group info page information
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
