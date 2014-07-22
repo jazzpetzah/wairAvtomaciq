@@ -61,8 +61,6 @@ public abstract class AndroidPage extends BasePage {
 	
 	private void initNoneUnicodeDriver() throws MalformedURLException
 	{
-		/*capabilities.setCapability("unicodeKeyboard", false);
-        capabilities.setCapability("resetKeyboard", true);*/
         super.InitConnection(url, capabilities);
 	}
 	
