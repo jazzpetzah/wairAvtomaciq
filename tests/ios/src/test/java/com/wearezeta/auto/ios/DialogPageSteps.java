@@ -103,5 +103,25 @@ public class DialogPageSteps {
 		String imageCell = "ImageCell";
 		Assert.assertEquals(imageCell, dialogLastMessage);
 	}
+	
+	@When("^I post media link$")
+	public void IPostMediaLink() throws Throwable {
+		PagesCollection.dialogPage.waitForTextMessageInputVisible();
+	    message = "https://soundcloud.com/klinke-auf-cinch/04-whats-happening-boytalk-remix";
+	    PagesCollection.dialogPage.typeMessage(message + "\n");
+	    PagesCollection.dialogPage.typeMessage(message + "\n");
+	}
+	
+	@When("^I tap media link$")
+	public void ITapMediaLink() throws Throwable {
+		PagesCollection.dialogPage.startMediaContent();
+		Thread.sleep(5000);
+	}
+	
+	@When("^I scroll media out of sight until media bar appears$")
+	public void IScrollMediaOutOfSightUntilMediaBarAppears() throws Exception{
+		PagesCollection.dialogPage.scrollDownTilMediaBarAppears();
+	 
+	}
 
 }

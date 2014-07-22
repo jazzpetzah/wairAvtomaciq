@@ -201,3 +201,19 @@ Examples:
 Examples:
     |  Login		| Password		| Name			| Contact1    |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |
+ 
+@torun
+Scenario Outline: Play/pause media from the media bar
+	Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I tap on text input
+    And I post media link
+    And I tap media link
+    And I scroll media out of sight until media bar appears
+    
+Examples:
+    |  Login		| Password		| Name			| Contact1    |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |
+    

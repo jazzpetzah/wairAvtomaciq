@@ -213,5 +213,7 @@ public final class IOSLocators {
 	public static final String nameMediaBarTitle = "playingMediaTitle";
 	
 	public static final String nameMediaCellPlayButton = "mediaCellButton";
+	
+	public static final String xpathMediaConversationCell = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[last()]/UIAWebView[1]";
 
 }

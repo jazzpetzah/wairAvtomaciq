@@ -107,7 +107,7 @@ def swipeInWindow(windowName, startX, startY, endX, endY):
     swipeRelative(startX,startY,endX,endY,dim[0],dim[1])
     
 def main():
-	swipeInWindow("iOS Simulator",0.65,0.15,0.65,0.85)
+	swipeInWindow("iOS Simulator",0.88,0.09,0.88,0.70)
 
      #Process args
     #if (len(sys.argv) < 5):

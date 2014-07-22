@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.pages;
 import java.io.IOException;
 import java.util.List;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -41,6 +42,13 @@ public class DialogPage extends IOSPage{
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherConversationCellFormat)
 	private WebElement imageCell;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathMediaConversationCell)
+	private WebElement mediaLinkCell;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameMediaBarPlayPauseButton)
+	private WebElement mediabarPlayPauseButton;
+	
 	
 	private String url;
 	private String path;
@@ -133,6 +141,19 @@ public class DialogPage extends IOSPage{
 	public String getImageCellFromDialog()
 	{
 		return GetImageCell(messagesList);
+	}
+	
+	public void startMediaContent(){
+		mediaLinkCell.click();
+	}
+	
+	public void scrollDownTilMediaBarAppears() throws Exception{
+		
+		//DriverUtils.scrollToElement(driver, mediabarPlayPauseButton);
+		PagesCollection.iOSPage.swipeDownSimulator();
+		PagesCollection.iOSPage.swipeDownSimulator();
+		PagesCollection.iOSPage.swipeDownSimulator();
+		//Assert.assertTrue(DriverUtils.isElementDisplayed(mediabarPlayPauseButton));
 	}
 	
 	@Override
