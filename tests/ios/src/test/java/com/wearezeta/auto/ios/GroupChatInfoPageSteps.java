@@ -33,9 +33,9 @@ public class GroupChatInfoPageSteps {
 		Assert.assertTrue(PagesCollection.groupChatInfoPage.verifyNumberOfParticipants(Integer.parseInt(realNumberOfParticipants)));
 		}
 	
-	@When("^I see the correct participant avatars (.*)$")
-	public void IVerifyCorrectParticipantAvatars(String participants) throws IOException{
-		Assert.assertTrue(PagesCollection.groupChatInfoPage.verifyParticipantAvatars(Integer.parseInt(participants)));
+	@When("^I see the correct participant avatars$")
+	public void IVerifyCorrectParticipantAvatars() throws IOException{
+		Assert.assertTrue(PagesCollection.groupChatInfoPage.verifyParticipantAvatars());
 	}
 	
 	@When("^I exit the group info page$")

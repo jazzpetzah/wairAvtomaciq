@@ -2,10 +2,13 @@ package com.wearezeta.auto.ios.pages;
 
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -63,43 +66,34 @@ public class GroupChatInfoPage extends IOSPage{
 	
 	public BufferedImage getElementScreenshot(WebElement element) throws IOException{
 		BufferedImage screenshot = takeScreenshot();
+		ImageIO.write(screenshot, "png", new File("/Users/haydenchristensen/Automation/pictures/screenshot.png"));
 		org.openqa.selenium.Point elementLocation = element.getLocation();
 		Dimension elementSize = element.getSize();
-		return screenshot.getSubimage(elementLocation.x, elementLocation.y, elementSize.width, elementSize.height);
+		return screenshot.getSubimage(elementLocation.x*2, elementLocation.y*2, elementSize.width*2, elementSize.height*2);
 	}
 	
-	public boolean verifyParticipantAvatars(int participants) throws IOException{
-		List<WebElement> participantAvatars = getCurrentParticipants(participants);
+	public boolean verifyParticipantAvatars() throws IOException{
+		List<WebElement> participantAvatars = getCurrentParticipants();
 		BufferedImage avatarIcon = null;
 		for(WebElement avatar : participantAvatars){
 			System.out.println(avatar.getAttribute("name"));
-			//if(avatar.getAttribute("name").equals("AQAPICTURECONTACT")){
-				avatarIcon = getElementScreenshot(avatar);
-				BufferedImage realImage = ImageUtil.readImageFromFile("/Users/haydenchristensen/Automation/catTestAvatar.jpg");
-				System.out.println(ImageUtil.getOverlapScore(avatarIcon, realImage));
-			//}
-			if(avatar.getAttribute("name")=="aqaAvatar TestContact"){
-				//compare to image with contact 1's first letter inside
+			avatarIcon = getElementScreenshot(avatar);
+			if(avatar.getAttribute("name").equals("AQAPICTURECONTACT")){
+				BufferedImage realImage = ImageUtil.readImageFromFile("/Users/haydenchristensen/Automation/avatarPictureTest.png");
+				double score = ImageUtil.getOverlapScore(realImage, avatarIcon);
+				if(score<=0.95){
+					return false;
+				}
 			}
-			//if(1.0 >= ImageUtil.getOverlapScore()){
-				
-			//}
+			if(avatar.getAttribute("name").equalsIgnoreCase("AT")){
+				BufferedImage realImage = ImageUtil.readImageFromFile("/Users/haydenchristensen/Automation/avatarTest.png");
+				double score = ImageUtil.getOverlapScore(realImage, avatarIcon);
+				if(score<=0.95){
+					return false;
+				}
+			}
 		}
 		return true;
-	}
-	
-	public List<WebElement> getCurrentParticipants(int participants){
-		List<WebElement> currentParticipants= new ArrayList<WebElement>();
-		int participantNumber=1;
-		String xpathOfCurrentParticipant = String.format(IOSLocators.xpathParticipantAvatar, participantNumber);
-		WebElement currentParticipant = driver.findElementByXPath(xpathOfCurrentParticipant);
-		for(int i=1;i<participants;i++){
-		currentParticipants.add(currentParticipant);
-		participantNumber = participantNumber+1;
-		xpathOfCurrentParticipant = String.format(IOSLocators.xpathParticipantAvatar, participantNumber);
-		currentParticipant = driver.findElementByXPath(xpathOfCurrentParticipant);
-		}
-		return currentParticipants;
 	}
 
 	public boolean verifyCorrectConversationName(String contact1,
@@ -109,6 +103,12 @@ public class GroupChatInfoPage extends IOSPage{
 		} else {
 			contact1 = CommonUtils.retrieveRealUserContactPasswordValue(contact1);
 			contact2 = CommonUtils.retrieveRealUserContactPasswordValue(contact2);
+			if(contact1.contains(" ")){
+			contact1 = contact1.substring(0, contact1.indexOf(" "));
+			}
+			if(contact2.contains(" ")){
+			contact2 = contact2.substring(0, contact2.indexOf(" "));
+			}
 			String currentConversationName = conversationNameTextField.getText();
 			return currentConversationName.contains(contact1)
 					&& currentConversationName.contains(contact2)
@@ -133,9 +133,8 @@ public class GroupChatInfoPage extends IOSPage{
 		return elements.size();
 	}
 
-	// use later
 	public List<WebElement> getCurrentParticipants() {
-		return avatarCollectionView.findElements(By.name("element name"));
+		return avatarCollectionView.findElements(By.className("UIACollectionCell"));
 	}
 
 	public void exitGroupInfoPage() {

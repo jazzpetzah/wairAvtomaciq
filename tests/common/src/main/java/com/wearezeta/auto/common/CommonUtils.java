@@ -26,7 +26,6 @@ public class CommonUtils {
 	public static final String YOUR_PASS = "aqaPassword";
 	public static final String CONTACT_1 = "aqaContact1";
 	public static final String CONTACT_2 = "aqaContact2";
-	public static final String CONTACT_PICTURE = "aqaPictureContact";
 	public static final String CONTACT_3 = "aqaContact3";
 	public static List<ClientUser> yourUsers = new ArrayList<ClientUser>();
 	public static List<ClientUser> contacts = new ArrayList<ClientUser>();
@@ -85,14 +84,17 @@ public class CommonUtils {
 				value = value.replace(CONTACT_3, contacts.get(2).getName());
 			}
 		}
-		if(value=="aqaPictureContact"){
-			value = "aqaPictureContact";
-		}
 		if(value=="aqaPictureContactEmail"){
 			value = "qa1+aqaPictureContact@wearezeta.com";
 		}
 		if(value=="aqaPictureContactPassword"){
 			value = "picture123";
+		}
+		if(value=="aqaAvatarTestContactEmail"){
+			value = "qa1+aqaAvatarTestContact@wearezeta.com";
+		}
+		if(value=="aqaAvatarTestContactPassword"){
+			value = "avatar123";
 		}
 		return value;
 	}
@@ -368,6 +370,11 @@ public class CommonUtils {
 		pictureUser.setPassword(CommonUtils.retrieveRealUserContactPasswordValue("aqaPictureContactPassword"));
 		pictureUser.setUserState(UsersState.Created);
 		contacts.add(pictureUser);
+		ClientUser avatarUser = new ClientUser();
+		avatarUser.setEmail(CommonUtils.retrieveRealUserContactPasswordValue("aqaAvatarTestContactEmail"));
+		avatarUser.setPassword(CommonUtils.retrieveRealUserContactPasswordValue("aqaAvatarTestContactPassword"));
+		avatarUser.setUserState(UsersState.Created);
+		contacts.add(avatarUser);
 		}
 	}
 	

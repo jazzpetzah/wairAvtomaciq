@@ -200,7 +200,6 @@ Examples:
     |  Login		| Password		| Name			| Contact1    |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |
 
-#just needs working avatar verification
 @torun
 Scenario Outline: Verify correct group info page information
     Given I Sign in using login <Login> and password <Password>
@@ -209,7 +208,7 @@ Scenario Outline: Verify correct group info page information
 	And I swipe up on group chat page
 	Then I see that the conversation name is correct with <Contact1> and <Contact2>
 	And I see the correct number of participants in the title <ParticipantNumber>
-	And I see the correct participant avatars <ParticipantNumber>
+	And I see the correct participant avatars
 Examples:
-    |  Login		| Password		| Name			| Contact1		| Contact2	     	|ParticipantNumber|
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaPictureContact	|       3         |
+    |  Login		| Password		| Name			| Contact1		        | Contact2	     	    | ParticipantNumber |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaPictureContact	    | aqaAvatar TestContact	| 		 3			|
