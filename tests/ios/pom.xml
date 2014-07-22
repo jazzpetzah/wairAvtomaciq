@@ -18,7 +18,10 @@
     <appPath>/Project/ZClient_ios.app</appPath>
 	<isSimulator>true</isSimulator>
 	<generateUsers>true</generateUsers>
-	<driverTimeoutSeconds>10</driverTimeoutSeconds>
+	<driverTimeoutSeconds>30</driverTimeoutSeconds>
+	<pathToUserpic>img/userpicture_landscape.jpg</pathToUserpic>
+	<iosImagesPath>img/</iosImagesPath> 
+	<swipeScriptPath>swipeInWindow</swipeScriptPath>
   </properties>
 
   <dependencies>

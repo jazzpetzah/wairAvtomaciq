@@ -19,7 +19,9 @@
 	<package>com.waz.zclient</package>
 	<generateUsers>true</generateUsers>
 	<activity>.MainActivity</activity>
-	<driverTimeoutSeconds>10</driverTimeoutSeconds>
+	<driverTimeoutSeconds>30</driverTimeoutSeconds>
+	<resultImage>img/userpicture_mobile_check.jpg</resultImage>
+	<defaultImagePath>img/userpicture.jpg</defaultImagePath>
   </properties>
 
   <dependencies>
