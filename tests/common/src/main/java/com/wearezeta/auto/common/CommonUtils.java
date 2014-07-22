@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -343,14 +344,13 @@ public class CommonUtils {
 
 	public static void generateAdditionalContacts(){
 		//insert values of the user in "CommonUtils.retrieveRealUserContactPasswordValue" first
-		String[][] credentials = new String[][] {
-				{"aqaPictureContactEmail", "aqaPictureContactPassword"},
-				{"aqaAvatarTestContactEmail", "aqaAvatarTestContactPassword"},
-		};
-		for (String[] credential: credentials) {
+		Map <String,String>  creds= new HashMap <String,String>();
+		creds.put("aqaPictureContactEmail", "aqaPictureContactPassword");
+		creds.put("aqaAvatarTestContactEmail", "aqaAvatarTestContactPassword");
+		for(Map.Entry<String, String> entry: creds.entrySet()){
 			ClientUser user = new ClientUser();
-			user.setEmail(CommonUtils.retrieveRealUserContactPasswordValue(credential[0]));
-			user.setPassword(CommonUtils.retrieveRealUserContactPasswordValue(credential[1]));
+			user.setEmail(CommonUtils.retrieveRealUserContactPasswordValue(entry.getKey()));
+			user.setPassword(CommonUtils.retrieveRealUserContactPasswordValue(entry.getValue()));
 			user.setUserState(UsersState.Created);
 			contacts.add(user);
 		}

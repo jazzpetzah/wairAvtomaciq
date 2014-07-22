@@ -100,7 +100,7 @@ public class BackEndREST {
 			WebResource webResource = client.resource(getBaseURI() + "/self/connections");
 			String input =  "{\"user\": \"" + contact.getId() + "\",\"name\": \"" + connectName + "\",\"message\": \"" + message + "\"}";
 			ClientResponse response = webResource.accept("application/json").type("application/json").header(HttpHeaders.AUTHORIZATION, user.getTokenType() + " " + user.getAccessToken()).post(ClientResponse.class, input);
-			if (response.getStatus() != 201) {
+			if (response.getStatus() != 201 && response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
 			}	       
 			String output = response.getEntity(String.class);

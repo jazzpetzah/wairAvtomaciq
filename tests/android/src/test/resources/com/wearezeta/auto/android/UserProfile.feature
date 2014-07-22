@@ -46,7 +46,7 @@ Feature: User Profile
     Examples: 
       | Login   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |
- 
+
   @staging @nonUnicode
   Scenario Outline: Can not open Settings page when editing user name
     Given I Sign in using login <Login> and password <Password>

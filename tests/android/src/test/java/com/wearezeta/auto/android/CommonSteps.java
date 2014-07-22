@@ -41,7 +41,7 @@ public class CommonSteps {
 		commonBefore();
 		
 		if ( PagesCollection.loginPage == null){
-			PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(CommonSteps.class), path,true);
+			PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(CommonSteps.class), path, true);
 			ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
 		}
 	}

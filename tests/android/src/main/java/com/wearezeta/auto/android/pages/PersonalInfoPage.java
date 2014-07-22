@@ -196,6 +196,7 @@ public class PersonalInfoPage extends AndroidPage
 
 	public boolean isSettingsButtonNotVisible() {
 		boolean flag = false;
+		refreshUITree();
 		if(settingsButtonList == null || settingsButtonList.isEmpty())
 		{
 			flag = true;
