@@ -219,3 +219,19 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
+@torun
+@unicode
+@regression 
+  Scenario Outline: Send double byte chars
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I tap on text input
+    And I input <Message> message and send it
+    Then I see my message in the dialog
+
+    Examples: 
+      | Login   | Password    | Name    | Contact     | Message                       |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | 畑 はたけ hatake field of crops |
+

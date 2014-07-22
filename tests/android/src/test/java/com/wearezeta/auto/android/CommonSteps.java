@@ -1,5 +1,7 @@
 package com.wearezeta.auto.android;
 
+import java.io.IOException;
+
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.LoginPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
@@ -22,37 +24,31 @@ public class CommonSteps {
 	public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
 	private String path;
 
-	@Before
+	@Before("@nonUnicode")
 	public void setUp() throws Exception {
 
-		try {
-			CommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
-		}
-		catch(Exception ex){
-			System.out.println("Failed to deploy pictures into simulator");
-		}
+		commonBefore();
 		
-		boolean generateUsersFlag = Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class));
-		
-		if ((CommonUtils.yourUsers.size() == 0 
-				|| !CommonUtils.yourUsers.get(0).getUserState().equals(UsersState.AllContactsConnected))) {
-			
-			if (generateUsersFlag) {
-				CommonUtils.generateUsers(2);
-				TestPreparation.createContactLinks();
-			} else {
-				CommonUtils.usePrecreatedUsers();
-			}
-		}
-		
-		path = CommonUtils.getAppPathFromConfig(CommonSteps.class);
 		if ( PagesCollection.loginPage == null){
 			PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(CommonSteps.class), path);
+			PagesCollection.loginPage.initNoneUnicodeDriver();
 			ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
 		}
-
 	}
 
+	@Before("@unicode")
+	public void setUpUnicode() throws Exception {
+
+		commonBefore();
+		
+		if ( PagesCollection.loginPage == null){
+			PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(CommonSteps.class), path);
+			PagesCollection.loginPage.initUnicodeDriver();
+			ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
+		}
+	}
+
+	
 	@After
 	public void tearDown() throws Exception {
 		PagesCollection.loginPage.Close();
@@ -79,5 +75,29 @@ public class CommonSteps {
 		if (PagesCollection.loginPage != null) {
 			PagesCollection.loginPage.navigateBack();
 		}
+	}
+	
+	private void commonBefore() throws IOException, InterruptedException{
+		
+		try {
+			CommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
+		}
+		catch(Exception ex){
+			System.out.println("Failed to deploy pictures into simulator");
+		}
+		
+		boolean generateUsersFlag = Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class));
+		
+		if ((CommonUtils.yourUsers.size() == 0 
+				|| !CommonUtils.yourUsers.get(0).getUserState().equals(UsersState.AllContactsConnected))) {
+			
+			if (generateUsersFlag) {
+				CommonUtils.generateUsers(2);
+				TestPreparation.createContactLinks();
+			} else {
+				CommonUtils.usePrecreatedUsers();
+			}
+		}
+		path = CommonUtils.getAppPathFromConfig(CommonSteps.class);
 	}
 }

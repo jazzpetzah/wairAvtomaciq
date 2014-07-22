@@ -2,11 +2,19 @@ package com.wearezeta.auto.android.locators;
 
 public final class AndroidLocators {
 	
+	public static final String idAboutLogo ="com.waz.zclient:id/gtv__about__logo";
+	
+	public static final String idAboutVersion = "com.waz.zclient:id/ttv__about__version_text";
+	
+	public static final String idSettingsBox = "com.waz.zclient:id/ll__settings_box_container";
+	
 	public static final String idOpenFrom = "android:id/title";
 	
 	public static final String xpathImage = "//android.widget.LinearLayout/android.view.View";
 	
 	public static final String xpathContacListUser = "//android.widget.TextView[text()='%s']";
+	
+	public static final String xpathNameLoginPage = "//android.support.v4.view.ViewPager";
 	
 	public static final String classNameLoginPage = "android.support.v4.view.ViewPager";
 	
@@ -103,6 +111,8 @@ public final class AndroidLocators {
 	public static final String idCreateConversationIcon = "com.waz.zclient:id/gtv_pickuser_confirmbutton__icon";
 	
 	public static final String idConfirmButton = "com.waz.zclient:id/ttv__confirmation__confirm";
+	
+	public static final String idAboutButton = "com.waz.zclient:id/ttv__profile__settings_box__about";
 	
 	public static final String idConfirmBtn = "com.waz.zclient:id/confirm";
 	

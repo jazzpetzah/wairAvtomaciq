@@ -71,6 +71,11 @@ public class PersonalInfoPageSteps {
 		
 		PagesCollection.contactListPage = (ContactListPage) PagesCollection.personalInfoPage.swipeRight(1000);
 	}
+	
+	@When("^I tap about button$")
+	public void WhenITapAboutButton() throws Throwable {
+		PagesCollection.aboutPage = PagesCollection.personalInfoPage.tapAboutButton();
+	}
 
 	@Then("^I see my new name (.*) and return old (.*)$")
 	public void ISeeMyNewName(String name, String oldName) throws Throwable {
@@ -96,7 +101,15 @@ public class PersonalInfoPageSteps {
 		Assert.assertTrue(
 				"Overlap between two images has not enough score. Expected >= 0.75, current = " + score,
 				score >= 0.75d);
-		
 	}
 	
+	@Then("^I see Settings$")
+	public void ThenISeeSettings() throws Throwable {
+		Assert.assertTrue(PagesCollection.personalInfoPage.isSettingsVisible());	    
+	}
+	
+	@Then("^Settings button is unreachable$")
+	public void ThenSettingsButtonIsUnreachable() throws Throwable {
+		Assert.assertTrue(PagesCollection.personalInfoPage.isSettingsButtonNotVisible());	    
+	}
 }

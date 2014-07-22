@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.ContactListPage;
-import com.wearezeta.auto.android.pages.LoginPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.*;
 
@@ -25,7 +24,7 @@ public class LoginPageSteps {
 			password = CommonUtils.retrieveRealUserContactPasswordValue(password);
 		}
 		Assert.assertNotNull(PagesCollection.loginPage.isVisible());
-		PagesCollection.loginPage =(LoginPage)(PagesCollection.loginPage.SignIn());
+		PagesCollection.loginPage.SignIn();
 		PagesCollection.loginPage.setLogin(login);
 		PagesCollection.loginPage.setPassword(password);
 		PagesCollection.contactListPage =(ContactListPage)(PagesCollection.loginPage.LogIn());

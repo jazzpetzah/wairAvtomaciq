@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android.pages;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -10,6 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.*;
@@ -17,24 +19,44 @@ import com.wearezeta.auto.common.*;
 
 public abstract class AndroidPage extends BasePage {
 	
+	private DesiredCapabilities capabilities = new DesiredCapabilities();
+	
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameLoginPage)
 	private WebElement content;
 	
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classListView)
 	private WebElement container;
 	
+	private String url;
+	
 	public AndroidPage(String URL, String path) throws IOException {
 		
-        DesiredCapabilities capabilities = new DesiredCapabilities();
+        url = URL;
+        
         capabilities.setCapability("platformName", "Android");
         capabilities.setCapability("deviceName", CommonUtils.getAndroidDeviceNameFromConfig(AndroidPage.class));
         capabilities.setCapability("app", path);
         capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(AndroidPage.class));
         capabilities.setCapability("appActivity", CommonUtils.getAndroidActivityFromConfig(AndroidPage.class));
         capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidActivityFromConfig(AndroidPage.class));
-        //capabilities.setCapability("unicodeKeyboard", true);
+        
+        if(driver!=null){
+    		PageFactory.initElements(driver, this);
+        }
+	}
+	
+	public void initUnicodeDriver() throws Exception
+	{
+		capabilities.setCapability("unicodeKeyboard", true);
+        capabilities.setCapability("resetKeyboard", false);
+        super.InitConnection(url, capabilities);
+	}
+	
+	public void initNoneUnicodeDriver() throws MalformedURLException
+	{
+		capabilities.setCapability("unicodeKeyboard", false);
         capabilities.setCapability("resetKeyboard", true);
-        super.InitConnection(URL, capabilities);
+        super.InitConnection(url, capabilities);
 	}
 	
 	public void refreshUITree() {
@@ -86,6 +108,7 @@ public abstract class AndroidPage extends BasePage {
 	@Override
 	public AndroidPage swipeDown(int time) throws IOException
 	{
+		
 		DriverUtils.swipeDown(driver, content, time);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
@@ -110,5 +133,6 @@ public abstract class AndroidPage extends BasePage {
 		PagesCollection.groupChatPage = null;
 		PagesCollection.registrationPage = null;
 		PagesCollection.groupChatInfoPage = null;
+		PagesCollection.aboutPage = null;
 	}
 }

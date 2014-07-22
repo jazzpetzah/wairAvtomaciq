@@ -6,7 +6,6 @@ import java.util.*;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.common.SwipeDirection;
@@ -19,6 +18,9 @@ public class PersonalInfoPage extends AndroidPage
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idBackgroundOverlay)
 	private WebElement backgroundOverlay;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idSettingsBox)
+	private WebElement settingBox;
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idEmailField)
 	private WebElement emailField;
@@ -43,6 +45,9 @@ public class PersonalInfoPage extends AndroidPage
 
 	@FindBy(how = How.ID, using = AndroidLocators.idProfileOptionsButton)
 	private WebElement optionsButton;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idAboutButton)
+	private WebElement aboutButton;
 
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameLoginPage)
 	private WebElement page;
@@ -55,6 +60,9 @@ public class PersonalInfoPage extends AndroidPage
 
 	@FindBy(how = How.ID, using = AndroidLocators.idOpenFrom)
 	private List<WebElement> openFrom;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idProfileOptionsButton)
+	private List<WebElement> settingsButtonList;
 	
 	@FindBy(how = How.XPATH, using = AndroidLocators.xpathImage)
 	private List<WebElement> image;
@@ -173,6 +181,26 @@ public class PersonalInfoPage extends AndroidPage
 	public String getUserName() {
 		refreshUITree();
 		return nameField.getText();
+	}
+
+	public AboutPage tapAboutButton() throws IOException {
+		refreshUITree();
+		aboutButton.click();
+		return new AboutPage(url, path);
+	}
+
+	public boolean isSettingsVisible() {
+		
+		return settingBox.isDisplayed();
+	}
+
+	public boolean isSettingsButtonNotVisible() {
+		boolean flag = false;
+		if(settingsButtonList == null || settingsButtonList.isEmpty())
+		{
+			flag = true;
+		}
+		return flag;
 	}
 
 }
