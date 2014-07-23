@@ -1,5 +1,6 @@
 Feature: Register new user
 
+@mute
 @smoke
   Scenario Outline: Register new user using front camera (Real Device)
 	Given I see sign in screen
