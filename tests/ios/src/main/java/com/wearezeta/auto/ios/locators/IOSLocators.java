@@ -21,6 +21,8 @@ public final class IOSLocators {
 	public static final String classNameContactListNames = "UIAStaticText";
 	
 	public static final String nameProfileName = "ProfileSelfNameField";
+	
+	public static final String nameProfileSettingsButton = "SettingsButton";
 
 	public static final String classNameUIAButton = "UIAButton";
 	
@@ -35,6 +37,8 @@ public final class IOSLocators {
 	public static final String nameTextInput = "ComposeControllerTextView";
 	
 	public static final String xpathLastMessageFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]/UIATextView[1]";
+	
+	public static final String xpathLastVideoFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]/UIAWebView[1]";
 
 	public static final String namePickerSearch = "textViewSearch";
 	
@@ -87,6 +91,8 @@ public final class IOSLocators {
 	public static final String xpathHelloCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[last()]";
 	
 	public static final String xpathHeyCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[last()]";
+	
+	public static final String classNameVideoContainer = "UIAWebView";
 	
 	public static final String namePhotoButton = "PhotoLibraryButton";
 	
@@ -207,5 +213,23 @@ public final class IOSLocators {
 	public static String xpathNumberPeopleText = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[3]";
 	
 	public static final String peopleCountTextSubstring = " people";
-
+	
+	///////////////////////
+	//Video Player Locators
+	///////////////////////
+	
+	public static final String nameVideoMainPage = "Video";
+	
+	public static final String nameVideoDoneButton = "Done";
+	
+	public static final String nameVideoSlider = "Track position";
+	
+	public static final String nameVideoFullScreenButton = "Full screen";
+	
+	public static final String nameVideoPreviousButton = "Previous track";
+	
+	public static final String nameVideoPauseButton = "Pause";
+	
+	public static final String nameVideoNextButton = "Next track";
+	
 }

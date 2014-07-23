@@ -277,7 +277,7 @@ Feature: Register new user
 
     Examples:     
     |	Email						|	Password	    |	Name			|
-    |	aqaUser             	    |	12345		    |	aqaUser       	|   
+    |	aqaUser             	    |	1234567		    |	aqaUser       	|   
 
 
 @staging
@@ -304,4 +304,26 @@ Feature: Register new user
 	
  	Examples:	
 	|	Email						|	Password	    |	Name			|
+    |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
+    
+
+  Scenario Outline: Verify photo made by rear camera during registration is not flipped (Real Device)
+	Given I see sign in screen
+	When I press Join button
+	And I dismiss Vignette overlay
+	And I take photo by rear camera	
+	And I confirm selection
+	And I input name <Name> and hit Enter
+	And I input email <Email> and hit Enter
+	And I input password <Password> and hit Enter
+	And I see confirmation page 
+	And I verify registration address
+	And Contact list loads with only my name
+	And I tap on my name <Name>
+	And I tap on personal screen
+	Then I see profile image is same as template
+	
+
+    Examples:     
+    |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|

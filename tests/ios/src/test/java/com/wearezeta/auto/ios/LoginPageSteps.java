@@ -20,10 +20,27 @@ public class LoginPageSteps {
 	 
 	 @Given("^I Sign in using login (.*) and password (.*)$")
 	 public void GivenISignIn(String login, String password) throws IOException  {		
-		 
-		 if (login.equals(CommonUtils.YOUR_USER_1)) {
+		 switch (login) {
+		 case CommonUtils.YOUR_USER_1:
 			 login = CommonUtils.yourUsers.get(0).getEmail();
+			 break;
+		 case CommonUtils.YOUR_USER_2:
+			 login = CommonUtils.yourUsers.get(1).getEmail();
+			 break;
+		 case CommonUtils.YOUR_USER_3:
+			 login = CommonUtils.yourUsers.get(2).getEmail();
+			 break;
+		 case CommonUtils.CONTACT_1:
+			 login = CommonUtils.contacts.get(0).getEmail();
+			 break;
+		 case CommonUtils.CONTACT_2:
+			 login = CommonUtils.contacts.get(1).getEmail();
+			 break;
+		 case CommonUtils.CONTACT_3:
+			 login = CommonUtils.contacts.get(2).getEmail();
+			 break;
 		 }
+		 
 		 password = CommonUtils.retrieveRealUserContactPasswordValue(password);
 		 Assert.assertNotNull(PagesCollection.loginPage.isVisible());
 		 PagesCollection.loginPage =(LoginPage)(PagesCollection.loginPage.signIn());

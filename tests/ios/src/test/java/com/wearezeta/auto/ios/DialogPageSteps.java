@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
@@ -103,5 +104,33 @@ public class DialogPageSteps {
 		String imageCell = "ImageCell";
 		Assert.assertEquals(imageCell, dialogLastMessage);
 	}
+	
+	@When("I type and send youtube link (.*)")
+	public void ITypeAndSendYoutubeLink(String link){
+		PagesCollection.dialogPage.waitForTextMessageInputVisible();
+		PagesCollection.dialogPage.typeMessage(link + "\n");
+	}
+	
+	@Then("I see yotube link (.*) and video in dialog")
+	public void ISeeYoutubeLinkAndVideoInDialog(String link){
+		Assert.assertEquals(link, PagesCollection.dialogPage.getLastMessageFromDialog());
+		Assert.assertTrue("Video is missing in dialog", PagesCollection.dialogPage.isVideoContainerVisible());
+	}
+	
+	@When("I click video container for the first time")
+	public void IPlayVideoFirstTime() throws IOException{
+		PagesCollection.dialogPage.clickOnVideoContainerFirstTime();
+	}
+	
+	@When("I tap on dialog window")
+	public void ITapOnDialogWindow(){
+		PagesCollection.dialogPage.tapDialogWindow();
+	}
+	
+	@When("I swipe right on Dialog page")
+	public void ISwipeRightOnDialogPage() throws IOException{
+		PagesCollection.dialogPage.swipeRight(500);
+	}
+
 
 }

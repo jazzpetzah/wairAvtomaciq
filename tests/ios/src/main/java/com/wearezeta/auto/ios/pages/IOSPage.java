@@ -107,6 +107,8 @@ public abstract class IOSPage extends BasePage {
 		PagesCollection.connectToPage = null;
 		PagesCollection.groupChatPage = null;
 		PagesCollection.groupChatInfoPage = null;
+		PagesCollection.videoPlayerPage = null;
+		PagesCollection.cameraRollPage = null;
 	}
 
 	public static String getImagesPath() {

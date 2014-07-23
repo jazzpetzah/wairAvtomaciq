@@ -199,6 +199,7 @@ Examples:
     |  Login		| Password		| Name			| Contact1    |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |
 
+
 @staging
 Scenario Outline: Verify correct group info page information
     Given I Sign in using login <Login> and password <Password>
@@ -211,3 +212,47 @@ Scenario Outline: Verify correct group info page information
 Examples:
     |  Login		| Password		| Name			| Contact1		        | Contact2	     	    | ParticipantNumber |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaPictureContact	    | aqaAvatar TestContact	| 		 3			|
+
+
+@staging   
+  Scenario Outline: I can send and play inline youtube link
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I tap on text input
+    And I type and send youtube link <YouTubeLink>
+    Then I see yotube link <YouTubeLink> and video in dialog
+    And I click video container for the first time
+    And I see video player page is opened
+
+	Examples: 
+    |	Login	|	Password	|	Name	|	Contact		| YouTubeLink	|
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| http://www.youtube.com/watch?v=Bb1RhktcugU |
+
+
+#crash after relogin due to defect IOS-959
+@mute   
+@staging  
+   Scenario Outline: I am able to play inline YouTube link poster by others
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I tap on text input
+    And I type and send youtube link <YouTubeLink>
+    And I tap on dialog window
+    And I swipe right on Dialog page
+    And I tap on my name <Name>
+    And I click on Settings button on personal page
+    And I click Sign out button from personal page
+    And I see sign in screen
+    And I Sign in using login <Contact> and password <Password>
+    And I tap on contact name <Name>
+    Then I see yotube link <YouTubeLink> and video in dialog
+    And I click video container for the first time
+    And I see video player page is opened
+
+	Examples: 
+    |	Login	|	Password	|	Name	|	Contact		| YouTubeLink	|
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| http://www.youtube.com/watch?v=Bb1RhktcugU |  
