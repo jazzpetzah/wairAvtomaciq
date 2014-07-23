@@ -46,6 +46,15 @@ public class DriverUtils {
 		}
 		return flag;
 	}
+	
+	public static boolean isVisible(WebElement element) {
+		boolean flag = false;
+		if(element != null){
+			
+			flag = true;
+		}
+		return flag;
+	}
 
 	public static boolean waitUntilElementDissapear(RemoteWebDriver driver, final By by) {
 

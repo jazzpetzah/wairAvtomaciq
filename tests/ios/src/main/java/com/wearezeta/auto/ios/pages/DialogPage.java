@@ -49,6 +49,9 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.nameMediaBarPlayPauseButton)
 	private WebElement mediabarPlayPauseButton;
 	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathConversationPage)
+	private WebElement conversationPage;
+	
 	
 	private String url;
 	private String path;
@@ -149,10 +152,17 @@ public class DialogPage extends IOSPage{
 	
 	public void scrollDownTilMediaBarAppears() throws Exception{
 		
-		//DriverUtils.scrollToElement(driver, mediabarPlayPauseButton);
-		PagesCollection.iOSPage.swipeDownSimulator();
-		PagesCollection.iOSPage.swipeDownSimulator();
-		PagesCollection.iOSPage.swipeDownSimulator();
+		boolean buttonIsShownA = DriverUtils.isVisible(mediabarPlayPauseButton);
+		System.out.print("BUTTON BEFORE SCROLLING: " + buttonIsShownA);
+		
+		DriverUtils.swipeDown(driver, conversationPage, 500);
+		DriverUtils.swipeDown(driver, conversationPage, 500);
+		DriverUtils.swipeDown(driver, conversationPage, 500);
+		
+		boolean buttonIsShownB = DriverUtils.isVisible(mediabarPlayPauseButton);
+		System.out.print("BUTTON AFTER SCROLLING: " + buttonIsShownB);
+		
+		
 		//Assert.assertTrue(DriverUtils.isElementDisplayed(mediabarPlayPauseButton));
 	}
 	
