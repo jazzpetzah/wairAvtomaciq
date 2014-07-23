@@ -306,7 +306,7 @@ Feature: Register new user
 	|	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
     
-
+@staging
   Scenario Outline: Verify photo made by rear camera during registration is not flipped (Real Device)
 	Given I see sign in screen
 	When I press Join button
