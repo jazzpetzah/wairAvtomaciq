@@ -27,8 +27,8 @@ public class CommonUtils {
 	public static final String CONTACT_1 = "aqaContact1";
 	public static final String CONTACT_2 = "aqaContact2";
 	public static final String CONTACT_3 = "aqaContact3";
-	public static List<ClientUser> yourUsers = new ArrayList<ClientUser>();
-	public static List<ClientUser> contacts = new ArrayList<ClientUser>();
+	public static LinkedList<ClientUser> yourUsers = new LinkedList<ClientUser>();
+	public static LinkedList<ClientUser> contacts = new LinkedList<ClientUser>();
 	
 	public static final String CONTACT_PICTURE_EMAIL = "qa1+aqaPictureContact@wearezeta.com";
 	public static final String CONTACT_PICTURE_PASSWORD = "picture123";
@@ -89,17 +89,17 @@ public class CommonUtils {
 				value = value.replace(CONTACT_3, contacts.get(2).getName());
 			}
 		}
-		if(value=="aqaPictureContactEmail"){
-			value = CONTACT_PICTURE_EMAIL;
+		if(value.equals("aqaPictureContactEmail")){
+			value = value.replace("aqaPictureContactEmail", CONTACT_PICTURE_EMAIL);
 		}
-		if(value=="aqaPictureContactPassword"){
-			value = CONTACT_PICTURE_PASSWORD;
+		if(value.equals("aqaPictureContactPassword")){
+			value = value.replace("aqaPictureContactPassword", CONTACT_PICTURE_PASSWORD);
 		}
-		if(value=="aqaAvatarTestContactEmail"){
-			value = CONTACT_AVATAR_EMAIL;
+		if(value.equals("aqaAvatarTestContactEmail")){
+			value = value.replace("aqaAvatarTestContactEmail",CONTACT_AVATAR_EMAIL);
 		}
-		if(value=="aqaAvatarTestContactPassword"){
-			value = CONTACT_AVATAR_PASSWORD;
+		if(value.equals("aqaAvatarTestContactPassword")){
+			value = value.replace("aqaAvatarTestContactPassword",CONTACT_AVATAR_PASSWORD);
 		}
 		return value;
 	}
@@ -114,6 +114,10 @@ public class CommonUtils {
         return getValueFromConfig(c, "defaultImagePath");
 	}
 	
+	public static String getImagesPath(Class c)throws IOException {
+
+        return getValueFromConfig(c, "defaultImagesPath");
+	}
 	public static String getResultImagePath(Class c)throws IOException {
 
         return getValueFromConfig(c, "resultImage");
@@ -352,7 +356,7 @@ public class CommonUtils {
 			user.setEmail(CommonUtils.retrieveRealUserContactPasswordValue(entry.getKey()));
 			user.setPassword(CommonUtils.retrieveRealUserContactPasswordValue(entry.getValue()));
 			user.setUserState(UsersState.Created);
-			contacts.add(user);
+			contacts.addLast(user);
 		}
 	}
 	
@@ -364,7 +368,7 @@ public class CommonUtils {
 			user.setPassword(getDefaultPasswordFromConfig(CommonUtils.class));
 			if( user.getEmail() != null){
 				user.setUserState(UsersState.Created);
-				yourUsers.add(user);
+				yourUsers.addLast(user);
 			}
 			else{
 				throw new NullPointerException("User was not created");
@@ -378,13 +382,13 @@ public class CommonUtils {
 				user.setEmail(contact);
 				user.setPassword(getDefaultPasswordFromConfig(CommonUtils.class));
 				user.setUserState(UsersState.Created);
-				contacts.add(user);
+				contacts.addLast(user);
 			}
 			else{
 				throw new NullPointerException("Contact was not created");
 			}
-		generateAdditionalContacts();
 		}
+		generateAdditionalContacts();
 	}
 	
 	 /*public static void iOSSimulatorCameraRoll() throws IOException, InterruptedException{
@@ -404,14 +408,14 @@ public class CommonUtils {
 		ClientUser yourUser3 = new ClientUser("smoketester+bbf79363bd3d4ff3ae6a835ed27fe274@wearezeta.com", "aqa123456", "bbf79363bd3d4ff3ae6a835ed27fe274", UsersState.AllContactsConnected);
 		ClientUser yourUser2 = new ClientUser("smoketester+50d287c2407e4c5e8af578979d436c88@wearezeta.com", "aqa123456", "50d287c2407e4c5e8af578979d436c88", UsersState.AllContactsConnected);
 		ClientUser yourUser1 = new ClientUser("smoketester+1f91773deae943948da19b86cd818388@wearezeta.com", "aqa123456", "1f91773deae943948da19b86cd818388", UsersState.AllContactsConnected);
-		yourUsers = new ArrayList<ClientUser>();
-		contacts = new ArrayList<ClientUser>();
-		yourUsers.add(yourUser1);
-		yourUsers.add(yourUser2);
-		yourUsers.add(yourUser3);
-		contacts.add(contact1);
-		contacts.add(contact2);
-		contacts.add(contact3);
+		yourUsers = new LinkedList<ClientUser>();
+		contacts = new LinkedList<ClientUser>();
+		yourUsers.addLast(yourUser1);
+		yourUsers.addLast(yourUser2);
+		yourUsers.addLast(yourUser3);
+		contacts.addLast(contact1);
+		contacts.addLast(contact2);
+		contacts.addLast(contact3);
 	}
 
 	public static String getAndroidDeviceNameFromConfig(Class c) throws IOException {

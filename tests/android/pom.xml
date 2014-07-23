@@ -22,6 +22,7 @@
 	<driverTimeoutSeconds>30</driverTimeoutSeconds>
 	<resultImage>img/userpicture_mobile_check.jpg</resultImage>
 	<defaultImagePath>img/userpicture.jpg</defaultImagePath>
+	<defaultImagesPath>img/</defaultImagesPath> 
   </properties>
 
   <dependencies>

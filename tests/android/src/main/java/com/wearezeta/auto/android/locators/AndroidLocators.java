@@ -2,6 +2,8 @@ package com.wearezeta.auto.android.locators;
 
 public final class AndroidLocators {
 	
+	public static final String idParticipantsSubHeader = "com.waz.zclient.dev:id/ttv__participants__sub_header";
+	
 	public static final String idAboutLogo ="com.waz.zclient.dev:id/gtv__about__logo";
 	
 	public static final String idAboutVersion = "com.waz.zclient.dev:id/ttv__about__version_text";
@@ -11,8 +13,6 @@ public final class AndroidLocators {
 	public static final String idOpenFrom = "android:id/title";
 	
 	public static final String xpathImage = "//android.widget.LinearLayout/android.view.View";
-	
-	public static final String xpathContacListUser = "//android.widget.TextView[text()='%s']";
 	
 	public static final String xpathNameLoginPage = "//android.support.v4.view.ViewPager";
 	
@@ -29,6 +29,8 @@ public final class AndroidLocators {
 	public static final String classListView = "android.widget.ListView";
 	
 	public static final String classNameGridView = "android.widget.GridView";
+	
+	public static final String xpathGroupChatInfoContacts = "//android.widget.LinearLayout[%1$s]/android.widget.TextView[%2$s]";
 	
 	public static final String xpathContactFrame = "//android.widget.FrameLayout[child::android.widget.TextView[@text='%s']]";
 	
