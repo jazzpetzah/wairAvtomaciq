@@ -43,10 +43,11 @@ public class LoginPageSteps {
 		 
 		 password = CommonUtils.retrieveRealUserContactPasswordValue(password);
 		 Assert.assertNotNull(PagesCollection.loginPage.isVisible());
-		 PagesCollection.loginPage =(LoginPage)(PagesCollection.loginPage.signIn());
+		 PagesCollection.loginPage = (LoginPage)(PagesCollection.loginPage.signIn());
 		 PagesCollection.loginPage.setLogin(login);
 		 PagesCollection.loginPage.setPassword(password);
 		 PagesCollection.contactListPage =(ContactListPage)(PagesCollection.loginPage.login());
+		 
 		 Assert.assertTrue("Login finished", PagesCollection.loginPage.waitForLogin());
 	}
 	 
