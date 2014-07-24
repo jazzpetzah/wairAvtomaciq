@@ -160,13 +160,14 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public void scrollDownTilMediaBarAppears() throws Exception{
-		
-		while(DriverUtils.isVisible(mediabarPlayPauseButton) == false){
-			DriverUtils.swipeDown(driver, conversationPage, 500);
+		boolean buttonIsShown = mediabarPlayPauseButton.isDisplayed();
+		while(!(buttonIsShown)){
+		DriverUtils.swipeDown(driver, conversationPage, 500);
+		buttonIsShown = mediabarPlayPauseButton.isDisplayed();
 		}
-		Assert.assertTrue(DriverUtils.isVisible(mediabarPlayPauseButton));
+		Assert.assertTrue(mediabarPlayPauseButton.isDisplayed());
 	}
-	
+
 	public void pauseMediaContent(){
 		mediabarPlayPauseButton.click();
 	}

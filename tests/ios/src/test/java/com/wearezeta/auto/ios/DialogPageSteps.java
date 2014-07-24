@@ -142,7 +142,6 @@ public class DialogPageSteps {
 	@When("^I tap media link$")
 	public void ITapMediaLink() throws Throwable {
 		PagesCollection.dialogPage.startMediaContent();
-		Thread.sleep(5000);
 	}
 	
 	@When("^I scroll media out of sight until media bar appears$")

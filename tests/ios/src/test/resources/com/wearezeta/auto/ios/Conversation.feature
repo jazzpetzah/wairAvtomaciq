@@ -251,7 +251,7 @@ Examples:
     |	Login	|	Password	|	Name	|	Contact		| YouTubeLink	|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| http://www.youtube.com/watch?v=Bb1RhktcugU |  
  
-@torun
+@staging
 Scenario Outline: Play/pause media from the media bar
 	Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
