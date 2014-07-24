@@ -49,7 +49,7 @@ public class DriverUtils {
 	
 	public static boolean isVisible(WebElement element) {
 		boolean flag = false;
-		if(element != null){
+		if(element.isDisplayed()){
 			
 			flag = true;
 		}

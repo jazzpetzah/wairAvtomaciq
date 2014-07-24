@@ -151,19 +151,17 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public void scrollDownTilMediaBarAppears() throws Exception{
-		
-		boolean buttonIsShownA = DriverUtils.isVisible(mediabarPlayPauseButton);
-		System.out.print("BUTTON BEFORE SCROLLING: " + buttonIsShownA);
-		
-		DriverUtils.swipeDown(driver, conversationPage, 500);
-		DriverUtils.swipeDown(driver, conversationPage, 500);
-		DriverUtils.swipeDown(driver, conversationPage, 500);
-		
-		boolean buttonIsShownB = DriverUtils.isVisible(mediabarPlayPauseButton);
-		System.out.print("BUTTON AFTER SCROLLING: " + buttonIsShownB);
-		
-		
-		//Assert.assertTrue(DriverUtils.isElementDisplayed(mediabarPlayPauseButton));
+		boolean buttonIsShown = DriverUtils.isVisible(mediabarPlayPauseButton);
+		while(DriverUtils.isVisible(mediabarPlayPauseButton) == false){
+			System.out.print("BUTTON IS SHOWN: " + buttonIsShown);
+			DriverUtils.swipeDown(driver, conversationPage, 500);
+		}
+		System.out.print("BUTTON IS SHOWN: " + buttonIsShown);
+		Assert.assertTrue(DriverUtils.isVisible(mediabarPlayPauseButton));
+	}
+	
+	public void pauseMediaContent(){
+		mediabarPlayPauseButton.click();
 	}
 	
 	@Override

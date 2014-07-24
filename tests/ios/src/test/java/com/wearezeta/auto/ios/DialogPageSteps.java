@@ -123,5 +123,12 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.scrollDownTilMediaBarAppears();
 	 
 	}
+	
+	@When("^I pause playing the media$")
+	public void IPausePlayingTheMedia() throws Exception{
+		PagesCollection.dialogPage.pauseMediaContent();
+	 
+	}
+	
 
 }
