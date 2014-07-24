@@ -7,11 +7,12 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
+import javax.swing.text.StyledEditorKit.BoldAction;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -46,6 +47,7 @@ public class DriverUtils {
 		}
 		return flag;
 	}
+	
 
 	public static boolean waitUntilElementDissapear(RemoteWebDriver driver, final By by) {
 
@@ -89,26 +91,17 @@ public class DriverUtils {
 		parent.findElement(By.className(childClassName)).sendKeys(value);
 	}
 
-	public static HashMap<String,Integer> waitForElementWithTextByClassName(String className, RemoteWebDriver driver)
+	public static boolean waitForElementWithTextByXPath(String xpath,String name, RemoteWebDriver driver) throws InterruptedException
 	{
-		Boolean flag = true;
+		boolean flag = true;
+		boolean found = false;
 		int counter = 0;
-		HashMap<String,Integer> usersList = new HashMap<String,Integer>();
-		try {
 			while (flag) {		
 				counter ++;
-				ArrayList<WebElement> textFields =  (ArrayList<WebElement>) driver.findElementsByClassName(className);
-				if(!textFields.isEmpty())
-				{
-					for (int i = 0; i < textFields.size(); i++)
-					{
-						String text = textFields.get(i).getText(); 
-
-						if (!text.isEmpty())
-						{
-							usersList.put(text, i);
-						}
-					}
+				List<WebElement> contactsList = driver.findElements(By.xpath(String.format(xpath, name)));
+				if(contactsList.size()>0){
+					found = true;
+					break;
 				}
 				Thread.sleep(500);
 				if(counter == 10)
@@ -116,43 +109,7 @@ public class DriverUtils {
 					flag = false;
 				}
 			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		return usersList;
-	}
-
-	public static HashMap<String,Integer> waitForElementWithTextById(String id, RemoteWebDriver driver)
-	{
-		Boolean flag = true;
-		int counter = 0;
-		HashMap<String,Integer> usersList = new HashMap<String,Integer>();
-		try {
-			while (flag) {		
-				counter ++;
-				ArrayList<WebElement> textFields =  (ArrayList<WebElement>) driver.findElementsById(id);
-				if(!textFields.isEmpty())
-				{
-					for (int i = 0; i < textFields.size(); i++)
-					{
-						String text = textFields.get(i).getText(); 
-
-						if (!text.isEmpty())
-						{
-							usersList.put(text, i);
-						}
-					}
-				}
-				Thread.sleep(500);
-				if(counter == 10)
-				{
-					flag = false;
-				}
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		return usersList;
+		return found;
 	}
 
 	public static void scrollToElement(RemoteWebDriver driver, WebElement element) {
