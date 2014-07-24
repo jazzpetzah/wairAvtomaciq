@@ -49,7 +49,7 @@ public class DriverUtils {
 
 	public static boolean waitUntilElementDissapear(RemoteWebDriver driver, final By by) {
 
-		driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
 				.withTimeout(20, TimeUnit.SECONDS)
 				.pollingEvery(1, TimeUnit.SECONDS)
@@ -67,7 +67,7 @@ public class DriverUtils {
 
 	public static boolean waitUntilElementAppears(RemoteWebDriver driver, final By by) {
 
-		driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
 				.withTimeout(20, TimeUnit.SECONDS)
 				.pollingEvery(1, TimeUnit.SECONDS)
