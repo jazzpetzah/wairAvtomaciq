@@ -21,7 +21,7 @@ Feature: Connect to User
     |	aqaUser	|	aqaPassword	|	aqaUser	|	yourUser	|
     
 
-    @smoke
+    @smoke 
     Scenario Outline: Get invitation message from user
  		Given I have connection request from <Contact>
  		And I Sign in using login <Login> and password <Password>

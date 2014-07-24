@@ -149,10 +149,6 @@ public final class IOSLocators {
 	public static final String xpathMutedIcon = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[@name='%s']/UIAButton[3]";
 	
 	public static final String nameMuteButton = "ConvCellMuteButton";
-	
-	public static final String nameConnectAlert = "Connect With";
-	
-	public static final String nameConnectAlertYes = "Yes";
 
 	public static final String xpathNewGroupConversationNameChangeTextField = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[2]/UIATextView[1]";
 	
