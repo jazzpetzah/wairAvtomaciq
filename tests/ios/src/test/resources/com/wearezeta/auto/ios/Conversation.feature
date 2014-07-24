@@ -212,7 +212,10 @@ Scenario Outline: Play/pause media from the media bar
     And I post media link
     And I tap media link
     And I scroll media out of sight until media bar appears
-    And I pause playing the media
+    And I pause playing the media in media bar
+    And I press play in media bar
+    And I stop media in media bar
+    
     
 Examples:
     |  Login		| Password		| Name			| Contact1    |

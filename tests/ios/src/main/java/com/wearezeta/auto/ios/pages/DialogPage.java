@@ -52,6 +52,9 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathConversationPage)
 	private WebElement conversationPage;
 	
+	@FindBy(how = How.NAME, using = IOSLocators.nameMediaBarCloseButton)
+	private WebElement mediabarStopCloseButton;
+	
 	
 	private String url;
 	private String path;
@@ -151,17 +154,23 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public void scrollDownTilMediaBarAppears() throws Exception{
-		boolean buttonIsShown = DriverUtils.isVisible(mediabarPlayPauseButton);
+		
 		while(DriverUtils.isVisible(mediabarPlayPauseButton) == false){
-			System.out.print("BUTTON IS SHOWN: " + buttonIsShown);
 			DriverUtils.swipeDown(driver, conversationPage, 500);
 		}
-		System.out.print("BUTTON IS SHOWN: " + buttonIsShown);
 		Assert.assertTrue(DriverUtils.isVisible(mediabarPlayPauseButton));
 	}
 	
 	public void pauseMediaContent(){
 		mediabarPlayPauseButton.click();
+	}
+	
+	public void playMediaContent(){
+		mediabarPlayPauseButton.click();
+	}
+	
+	public void stopMediaContent(){
+		mediabarStopCloseButton.click();
 	}
 	
 	@Override

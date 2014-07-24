@@ -124,10 +124,19 @@ public class DialogPageSteps {
 	 
 	}
 	
-	@When("^I pause playing the media$")
-	public void IPausePlayingTheMedia() throws Exception{
+	@When("^I pause playing the media in media bar$")
+	public void IPausePlayingTheMediaInMediaBar() throws Exception{
 		PagesCollection.dialogPage.pauseMediaContent();
-	 
+	}
+	
+	@When("^I press play in media bar$")
+	public void IPressPlayInMediaBar() throws Exception{
+		PagesCollection.dialogPage.playMediaContent();
+	}
+	
+	@When("^I stop media in media bar$")
+	public void IStopMediaInMediaBar() throws Exception{
+		PagesCollection.dialogPage.stopMediaContent();
 	}
 	
 
