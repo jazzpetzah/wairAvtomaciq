@@ -8,4 +8,5 @@ generateUsers=${generateUsers}
 driverTimeoutSeconds=${driverTimeoutSeconds}
 resultImage=${resultImage}
 defaultImagePath=${Root}/${defaultImagePath}
-pictureResultsPath=${Root}/${pictureResultsPath}
+defaultImagesPath=${Root}/${defaultImagesPath}
+pictureResultsPath=${pictureResultsPath}

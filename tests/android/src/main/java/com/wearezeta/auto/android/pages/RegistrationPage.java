@@ -6,9 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-import com.wearezeta.auto.common.AndroidLocators;
+import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.DriverUtils;
-import com.wearezeta.auto.common.IOSLocators;
 import com.wearezeta.auto.common.SwipeDirection;
 
 public class RegistrationPage extends AndroidPage {
@@ -37,7 +36,7 @@ public class RegistrationPage extends AndroidPage {
 	private String url;
 	private String path;
 	
-	public RegistrationPage(String URL, String path) throws IOException {
+	public RegistrationPage(String URL, String path) throws Exception {
 		super(URL, path);
 		this.url = URL;
 		this.path = path;
@@ -98,7 +97,7 @@ public class RegistrationPage extends AndroidPage {
 		return DriverUtils.isElementDisplayed(verifyEmailBtn);
 	}
 
-	public InstructionsPage continueRegistration() throws IOException {
+	public InstructionsPage continueRegistration() throws Exception {
 		verifyEmailBtn.click();
 		return new InstructionsPage(url, path);
 	}

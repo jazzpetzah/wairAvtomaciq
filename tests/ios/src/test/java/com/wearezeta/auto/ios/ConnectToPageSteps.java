@@ -5,7 +5,7 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.BackEndREST;
 import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.IOSLocators;
+import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 
 import cucumber.api.java.en.Given;
@@ -49,13 +49,13 @@ public class ConnectToPageSteps {
 	@When("^I see connection request from (.*)$")
 	public void IReceiveInvitationMessage(String contact) throws Throwable {
 		
-		Assert.assertTrue(PagesCollection.contactListPage.waitForConnectionAllert());
+		//Not needed since we auto accept all alerts
 	}
 	
 	@When("^I confirm connection request$")
 	public void IAcceptInvitationMessage() {
 		
-		PagesCollection.contactListPage.acceptConnectionRequest();
+		//Not needed since we auto accept all alerts
 	}
 
 }

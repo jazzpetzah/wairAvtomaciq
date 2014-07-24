@@ -24,6 +24,7 @@ public class RegistrationPageSteps {
 	 private String aqaPassword;
 	 
 	 boolean generateUsers = false;
+	 public static BufferedImage basePhoto;
 	 BufferedImage templateImage;	 
 	 BufferedImage referenceImage;
 	 BufferedImage profileImage;
@@ -52,8 +53,10 @@ public class RegistrationPageSteps {
 	 }
 	 
 	 @When("^I take photo by rear camera$")
-	 public void WhenITakePhotoByRearCamera() throws IOException {
+	 public void WhenITakePhotoByRearCamera() throws IOException, InterruptedException {
 		 PagesCollection.registrationPage.takePhotoByRearCamera();
+		 basePhoto = PagesCollection.registrationPage.takeScreenshot();
+		 Thread.sleep(3000);
 	 }
 	 
 	 @When("^I See photo taken$")
@@ -294,7 +297,6 @@ public class RegistrationPageSteps {
 	 @Then("Contact list loads with only my name")
 	 public void ContactListLoadsWithOnlyMyName() throws Throwable{
 		 PagesCollection.contactListPage = new ContactListPage(CommonUtils.getUrlFromConfig(ContactListPage.class), CommonUtils.getAppPathFromConfig(ContactListPage.class));
-		 PagesCollection.registrationPage.catchLoginAlert();
 		 PagesCollection.contactListPage.waitForContactListToLoad();		 
 		 Assert.assertTrue(PagesCollection.contactListPage.isMyUserNameDisplayedFirstInContactList(aqaName));
 	 }

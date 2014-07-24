@@ -9,6 +9,7 @@ import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class ContactListPage extends IOSPage {
 	
@@ -20,9 +21,6 @@ public class ContactListPage extends IOSPage {
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameMuteButton)
 	private List<WebElement> muteButtons;
-	
-	@FindBy(how = How.NAME, using = IOSLocators.nameConnectAlertYes)
-	private WebElement connectAlertButton;
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathMyUserInContactList)
 	private WebElement myUserNameInContactList;
@@ -70,10 +68,6 @@ public class ContactListPage extends IOSPage {
 		}
 		
 		return result;
-	}
-	
-	public void acceptConnectionRequest() {
-		connectAlertButton.click();
 	}
 
 	public IOSPage tapOnName(String name) throws IOException {
@@ -165,11 +159,6 @@ public class ContactListPage extends IOSPage {
 		}
 		
 		return el;
-	}
-	
-	public boolean waitForConnectionAllert() {
-			
-		return DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameConnectAlert));
 	}
 
 	@Override

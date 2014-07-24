@@ -85,7 +85,7 @@ Examples:
 	|	Login		|	Password		|	Name		|	Contact			|
 	|	aqaUser		|	aqaPassword		|	aqaUser		|	aqaContact1		|
 
-@regression
+@regression 
 Scenario Outline: Add user to a group conversation
 	Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -107,12 +107,11 @@ Scenario Outline: Add user to a group conversation
     When I exit the group info page
     And I can see <Name> Added <Contact3>
 	
-	
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		| Contact3		| Number  |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| aqaContact3	| 4		  |
 
-  # Not stable
+  # when you leave group chat - it disappears from contact list
   @mute
   @smoke
 Scenario Outline: Leave from group chat
@@ -132,8 +131,6 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-  # Not stable
-  @mute
   @smoke
  Scenario Outline: Remove from group chat
     Given I Sign in using login <Login> and password <Password>
@@ -147,14 +144,12 @@ Examples:
 	And I confirm remove
 	Then I see that <Contact2> is not present on group chat page
 
-
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-  # Not stable
-  @mute
-  @smoke
+
+  @smoke 
 Scenario Outline: I can edit the conversation name
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -171,7 +166,6 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-
    @regression
 Scenario Outline: I can see the individual user profile if I select someone in participants view
 	 Given I Sign in using login <Login> and password <Password>
@@ -185,9 +179,6 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-
-  # Not stable
-  @mute
   @smoke
  Scenario Outline: Mute conversation
     Given I Sign in using login <Login> and password <Password>
@@ -201,6 +192,64 @@ Examples:
 Examples:
     |  Login		| Password		| Name			| Contact1    |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |
+
+
+@staging
+Scenario Outline: Verify correct group info page information
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+	When I create group chat with <Contact1> and <Contact2>
+	And I swipe up on group chat page
+	Then I see that the conversation name is correct with <Contact1> and <Contact2>
+	And I see the correct number of participants in the title <ParticipantNumber>
+	And I see the correct participant avatars
+Examples:
+    |  Login		| Password		| Name			| Contact1		        | Contact2	     	    | ParticipantNumber |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaPictureContact	    | aqaAvatar TestContact	| 		 3			|
+
+
+@staging   
+  Scenario Outline: I can send and play inline youtube link
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I tap on text input
+    And I type and send youtube link <YouTubeLink>
+    Then I see yotube link <YouTubeLink> and video in dialog
+    And I click video container for the first time
+    And I see video player page is opened
+
+	Examples: 
+    |	Login	|	Password	|	Name	|	Contact		| YouTubeLink	|
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| http://www.youtube.com/watch?v=Bb1RhktcugU |
+
+
+#crash after relogin due to defect IOS-959
+@mute   
+@staging  
+   Scenario Outline: I am able to play inline YouTube link poster by others
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I tap on text input
+    And I type and send youtube link <YouTubeLink>
+    And I tap on dialog window
+    And I swipe right on Dialog page
+    And I tap on my name <Name>
+    And I click on Settings button on personal page
+    And I click Sign out button from personal page
+    And I see sign in screen
+    And I Sign in using login <Contact> and password <Password>
+    And I tap on contact name <Name>
+    Then I see yotube link <YouTubeLink> and video in dialog
+    And I click video container for the first time
+    And I see video player page is opened
+
+	Examples: 
+    |	Login	|	Password	|	Name	|	Contact		| YouTubeLink	|
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| http://www.youtube.com/watch?v=Bb1RhktcugU |  
  
 @torun
 Scenario Outline: Play/pause media from the media bar

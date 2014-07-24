@@ -2,6 +2,7 @@ package com.wearezeta.auto.android;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Map;
 
 import org.junit.Assert;
@@ -122,7 +123,7 @@ public class RegistrationPageSteps {
 
 		PagesCollection.instructionsPage = PagesCollection.registrationPage.continueRegistration();
 		ClientUser myContact = new ClientUser(aqaEmail, aqaPassword, aqaName, UsersState.AllContactsConnected);
-		CommonUtils.yourUsers = new ArrayList<ClientUser>();
+		CommonUtils.yourUsers = new LinkedList<ClientUser>();
 		CommonUtils.yourUsers.add(myContact);
 	}
 

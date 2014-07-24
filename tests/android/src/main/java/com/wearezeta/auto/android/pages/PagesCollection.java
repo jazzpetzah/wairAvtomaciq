@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
+
 public class PagesCollection {
 	public static AndroidPage androidPage = null;
 	public static LoginPage loginPage = null;
@@ -13,5 +14,6 @@ public class PagesCollection {
 	public static GroupChatPage groupChatPage = null;
 	public static RegistrationPage registrationPage = null;
 	public static GroupChatInfoPage groupChatInfoPage = null; 
-	public static SettingsPage settingsPage = null; 
+	public static SettingsPage settingsPage = null;
+	public static AboutPage aboutPage = null; 
 }

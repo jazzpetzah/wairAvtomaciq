@@ -8,11 +8,11 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.DriverUtils;
-import com.wearezeta.auto.common.IOSLocators;
 import com.wearezeta.auto.common.SwipeDirection;
 
 public abstract class IOSPage extends BasePage {
@@ -20,7 +20,7 @@ public abstract class IOSPage extends BasePage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameLoginPage)
 	private WebElement content;
 	
-	private static String imagesPath = "";//System.getProperty("user.home") + "/Projects/zautomation/tests/tools/img/";
+	private static String imagesPath = "";
 	
 	public IOSPage(String URL, String path) throws MalformedURLException {
 		
@@ -31,6 +31,7 @@ public abstract class IOSPage extends BasePage {
 		}
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("platformName", "iOS");
+        capabilities.setCapability("autoAcceptAlerts", true);
         capabilities.setCapability("app", path);
         capabilities.setCapability("deviceName", "iPhone");
         super.InitConnection(URL, capabilities);
@@ -107,6 +108,8 @@ public abstract class IOSPage extends BasePage {
 		PagesCollection.connectToPage = null;
 		PagesCollection.groupChatPage = null;
 		PagesCollection.groupChatInfoPage = null;
+		PagesCollection.videoPlayerPage = null;
+		PagesCollection.cameraRollPage = null;
 	}
 
 	public static String getImagesPath() {

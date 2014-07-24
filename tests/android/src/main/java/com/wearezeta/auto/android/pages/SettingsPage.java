@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-import com.wearezeta.auto.common.AndroidLocators;
+import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.SwipeDirection;
 
 public class SettingsPage extends AndroidPage {
@@ -14,7 +14,7 @@ public class SettingsPage extends AndroidPage {
 	@FindBy(how = How.XPATH, using = AndroidLocators.xpathSettingPageTitle)
 	private WebElement settingsTitle;
 	
-	public SettingsPage(String URL, String path) throws IOException {
+	public SettingsPage(String URL, String path) throws Exception {
 		super(URL, path);
 		// TODO Auto-generated constructor stub
 	}

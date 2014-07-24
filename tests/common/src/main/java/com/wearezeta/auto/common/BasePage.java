@@ -46,12 +46,12 @@ public abstract class BasePage {
 		return DriverUtils.takeScreenshot(driver);
 	}
 	
-	public abstract BasePage swipeLeft(int time) throws IOException;
+	public abstract BasePage swipeLeft(int time) throws IOException, Exception;;
 	
-	public abstract BasePage swipeRight(int time) throws IOException;
+	public abstract BasePage swipeRight(int time) throws IOException, Exception;
 	
-	public abstract BasePage swipeUp(int time) throws IOException;
+	public abstract BasePage swipeUp(int time) throws IOException, Exception;
 	
-	public abstract BasePage swipeDown(int time) throws IOException;
+	public abstract BasePage swipeDown(int time) throws IOException, Exception;
 
 }

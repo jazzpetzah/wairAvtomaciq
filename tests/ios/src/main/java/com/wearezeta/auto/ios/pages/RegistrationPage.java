@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
 
-import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -12,9 +11,9 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.common.DriverUtils;
-import com.wearezeta.auto.common.IOSLocators;
 import com.wearezeta.auto.common.SwipeDirection;
 
 public class RegistrationPage extends IOSPage {
@@ -34,12 +33,6 @@ public class RegistrationPage extends IOSPage {
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameCameraFlashButton)
 	private WebElement cameraFlashButton;
-	
-	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameAlert)
-	private WebElement alert;
-	
-	@FindBy(how = How.NAME, using = IOSLocators.nameAlertOK)
-	private WebElement alertOk;
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathAlbum)
 	private WebElement photoAlbum;
@@ -185,10 +178,7 @@ public class RegistrationPage extends IOSPage {
 		
 	}
 	
-	public void chooseFirstPhoto()
-	{
-		catchLoginAlert();
-		
+	public void chooseFirstPhoto() {
 		photoAlbum.click();
 		photos.get(0).click();
 	}
@@ -239,7 +229,7 @@ public class RegistrationPage extends IOSPage {
 	
 	
 	//////////////////////
-	// Inptuts fulfilling
+	// Inputs fulfilling
 	//////////////////////
 	
 	public void hideKeyboard(){
@@ -306,7 +296,7 @@ public class RegistrationPage extends IOSPage {
 			}
 
 		}
-		return true; //returns true if all emails are found to be invalid
+		return true;
 	}
 	
 	
@@ -425,20 +415,7 @@ public class RegistrationPage extends IOSPage {
 	///////////////
 	//common
 	///////////////
-	
-	
-		
-	public void catchLoginAlert() {
-		try {
-			DriverUtils.waitUntilElementAppears(driver, By.className(IOSLocators.classNameAlert));
-			if(alert != null) {
-				alertOk.click();
-			}
-		}
-		catch(Exception ex) {
-		}
-		
-	}
+
 
 	public String getName() {
 		return name;
