@@ -27,13 +27,18 @@ public class CommonUtils {
 	public static final String CONTACT_1 = "aqaContact1";
 	public static final String CONTACT_2 = "aqaContact2";
 	public static final String CONTACT_3 = "aqaContact3";
+	public static final String CONTACT_4 = "aqaPictureContact";
+	public static final String CONTACT_5 = "aqaAvatar TestContact";
 	public static LinkedList<ClientUser> yourUsers = new LinkedList<ClientUser>();
 	public static LinkedList<ClientUser> contacts = new LinkedList<ClientUser>();
 
+	public static final String CONTACT_PICTURE_NAME = "AQAPICTURECONTACT";
 	public static final String CONTACT_PICTURE_EMAIL = "qa1+aqaPictureContact@wearezeta.com";
 	public static final String CONTACT_PICTURE_PASSWORD = "picture123";
+	public static final String CONTACT_AVATAR_NAME = "AQAAVATAR TESTCONTACT";
 	public static final String CONTACT_AVATAR_EMAIL = "qa1+aqaAvatarTestContact@wearezeta.com";
 	public static final String CONTACT_AVATAR_PASSWORD = "avatar123";
+	
 	private static final String USER_IMAGE = "userpicture.jpg";
 	private static final String RESULT_USER_IMAGE = "userpicture_mobile_check.jpg";
 	public static String getOsName() {
@@ -88,6 +93,7 @@ public class CommonUtils {
 				value = value
 						.replace(YOUR_PASS, yourUsers.get(0).getPassword());
 			}
+			
 		}
 		if (contacts.size() > 0) {
 			if (value.contains(CONTACT_1)) {
@@ -98,6 +104,12 @@ public class CommonUtils {
 			}
 			if (value.contains(CONTACT_3)) {
 				value = value.replace(CONTACT_3, contacts.get(2).getName());
+			}
+			if (value.equals(CONTACT_4)) {
+				value = value.replace(CONTACT_4, CONTACT_PICTURE_NAME);
+			}
+			if (value.equals(CONTACT_5)) {
+				value = value.replace(CONTACT_5, CONTACT_AVATAR_NAME);
 			}
 		}
 		if (value.equals("aqaPictureContactEmail")) {

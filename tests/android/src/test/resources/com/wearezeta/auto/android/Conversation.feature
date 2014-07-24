@@ -226,6 +226,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     | Message                     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | 畑 はたけ hatake field of crops |
 
+@torun
  @nonUnicode @staging
   Scenario Outline: Verify correct group info page information
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
@@ -235,7 +236,7 @@ Feature: Conversation
     And I swipe up on group dialog page
     Then I see that the conversation name is <GroupChatName>
     And I see the correct number of participants in the title <ParticipantNumber>
-    And I see the correct participant avatars
+    And I see the correct participant <Contact1> and <Contact2> avatars
 
     Examples: 
       | Login   | Password    | Name    | Contact1          | Contact2              | ParticipantNumber | GroupChatName  |

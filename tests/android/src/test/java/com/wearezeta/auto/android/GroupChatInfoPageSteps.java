@@ -51,9 +51,10 @@ public class GroupChatInfoPageSteps {
 		Assert.assertEquals(PagesCollection.groupChatInfoPage.getConversationName(), name);
 	}
 	
-	@Then("^I see the correct participant avatars$")
-	public void ISeeCorrectParticipantAvatars() throws IOException{
-		Assert.assertTrue(PagesCollection.groupChatInfoPage.isParticipantAvatars());
+	@Then("^I see the correct participant (.*) and (.*) avatars$")
+	public void ISeeCorrectParticipantAvatars(String contact1, String contact2) throws IOException{
+		Assert.assertTrue(PagesCollection.groupChatInfoPage.isParticipantAvatars(CommonUtils.retrieveRealUserContactPasswordValue(contact1),
+				CommonUtils.retrieveRealUserContactPasswordValue(contact2)));
 	}
 	
 	@Then("^I see the correct number of participants in the title (.*)$")
