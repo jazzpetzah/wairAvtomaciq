@@ -56,7 +56,7 @@ public class LoginPageSteps {
 		 PagesCollection.loginPage.signIn();
 	 }
 	 
-	 @When("I press Sign in button again")
+	 @When("I press Login button")
 	 public void WhenIPressSignInButtonAgain() throws IOException {
 		 
 		 PagesCollection.loginPage.login();
