@@ -42,7 +42,7 @@ public class CommonSteps {
 				CommonUtils.usePrecreatedUsers();
 			}
 		}
-
+		
 		String path = CommonUtils.getAppPathFromConfig(TestRun.class);
 		
 		if (PagesCollection.loginPage == null)

@@ -20,12 +20,10 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.CreateZetaUser;
 import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.common.EmailHeaders;
-import com.wearezeta.auto.common.IMAPMailbox;
-import com.wearezeta.auto.common.IOSLocators;
+import com.wearezeta.auto.common.IMAPSMailbox;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.common.DriverUtils;
->>>>>>> 64fd2294c4afa4dca8dd62772ee823045b208671
 import com.wearezeta.auto.common.SwipeDirection;
 
 public class RegistrationPage extends IOSPage {
@@ -450,21 +448,24 @@ public class RegistrationPage extends IOSPage {
 						+ (reSendButton.getSize().height - 5), 1);
 	}
 	
-	public boolean emailInboxCount() throws IOException {
-	  List<EmailHeaders> messageHeaders = CreateZetaUser.getLastMailHeaders(CommonUtils.getDefaultEmailFromConfig(CreateZetaUser.class),CommonUtils.getDefaultPasswordFromConfig(CreateZetaUser.class),0);
-      String inboxCount = messageHeaders.get(messageHeaders.size()).getLastUserEmail();
-    if (inboxCount.equals(null)){
-    	return false;
-    }
-    else {
-    	System.out.println(inboxCount);
-    	return true;
-    }
-    	  
+	public boolean emailInboxCount() throws IOException, MessagingException {
+		List<EmailHeaders> messageHeaders = CreateZetaUser.getLastMailHeaders(
+				CommonUtils.getDefaultEmailFromConfig(CreateZetaUser.class),
+				CommonUtils.getDefaultPasswordFromConfig(CreateZetaUser.class),
+				0);
+		String inboxCount = messageHeaders.get(messageHeaders.size())
+				.getLastUserEmail();
+		if (inboxCount.equals(null)) {
+			return false;
+		} else {
+			System.out.println(inboxCount);
+			return true;
+		}
+
     }
 	
 	 public int getRecentEmailsCountForRecipient(int allRecentEmailsCnt, String expectedRecipient) throws MessagingException, IOException {
-	     IMAPMailbox mailbox = new IMAPMailbox(CreateZetaUser.MAIL_SERVER, CreateZetaUser.MAILS_FOLDER,
+	     IMAPSMailbox mailbox = new IMAPSMailbox(CreateZetaUser.MAIL_SERVER, CreateZetaUser.MAILS_FOLDER,
 	    		 CommonUtils.getDefaultEmailFromConfig(RegistrationPage.class), 
 	    		 CommonUtils.getDefaultPasswordFromConfig(RegistrationPage.class));
 		 int actualCnt = 0;

@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.mail.MessagingException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -31,7 +32,7 @@ public class CommonUtils {
 	public static final String CONTACT_5 = "aqaAvatar TestContact";
 	public static LinkedList<ClientUser> yourUsers = new LinkedList<ClientUser>();
 	public static LinkedList<ClientUser> contacts = new LinkedList<ClientUser>();
-
+	
 	public static final String CONTACT_PICTURE_NAME = "AQAPICTURECONTACT";
 	public static final String CONTACT_PICTURE_EMAIL = "qa1+aqaPictureContact@wearezeta.com";
 	public static final String CONTACT_PICTURE_PASSWORD = "picture123";
@@ -128,6 +129,7 @@ public class CommonUtils {
 			value = value.replace("aqaAvatarTestContactPassword",
 					CONTACT_AVATAR_PASSWORD);
 		}
+		
 		return value;
 	}
 
@@ -394,7 +396,7 @@ public class CommonUtils {
 	}
 
 	public static void generateAdditionalContacts() {
-		// insert values of the user in
+		// insert values of the contact in
 		// "CommonUtils.retrieveRealUserContactPasswordValue" first
 		Map<String, String> creds = new HashMap<String, String>();
 		creds.put("aqaPictureContactEmail", "aqaPictureContactPassword");
@@ -410,7 +412,7 @@ public class CommonUtils {
 		}
 	}
 
-	public static void generateUsers(int contactNumber) throws IOException {
+	public static void generateUsers(int contactNumber) throws IOException, MessagingException {
 		for (int i = 0; i < 3; i++) {
 			ClientUser user = new ClientUser();
 			user.setEmail(CreateZetaUser.registerUserAndReturnMail());
@@ -437,6 +439,7 @@ public class CommonUtils {
 		}
 		generateAdditionalContacts();
 	}
+	
 
 	/*
 	 * public static void iOSSimulatorCameraRoll() throws IOException,

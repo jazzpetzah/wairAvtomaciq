@@ -15,7 +15,7 @@ import com.thoughtworks.selenium.Wait;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.CreateZetaUser;
 import com.wearezeta.auto.common.EmailHeaders;
-import com.wearezeta.auto.common.IMAPMailbox;
+import com.wearezeta.auto.common.IMAPSMailbox;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
@@ -334,18 +334,17 @@ public class RegistrationPageSteps {
 	 
 	 @Then("^I confirm that (\\d+) recent emails in inbox contain (\\d+) for current recipient$")
 	 public void VerifyRecipientsCount(final int recentEmailsCnt, final int expectedCnt) throws Throwable {
-		 String expectedRecipient = CommonUtils.yourUsers.get(0).getEmail();
-		 //int actualCnt = PagesCollection.registrationPage.getRecentEmailsCountForRecipient(recentEmailsCnt, expectedRecipient);
+		 String expectedRecipient = aqaEmail;
 		 int checksCnt = 0;
 		 int actualCnt = 0;
 		 while (checksCnt < 2) {
 			  actualCnt = PagesCollection.registrationPage.getRecentEmailsCountForRecipient(recentEmailsCnt, expectedRecipient);
-		      if (actualCnt == expectedCnt) {
+		      if (actualCnt == expectedCnt) { 
 		    	  break;
 		      } 
 		      checksCnt++;
 		 }
-		 Assert.assertTrue(true);
+		 Assert.assertTrue(actualCnt == expectedCnt);
 	 }
 	 
 	 @Then("^I resend verification email$")
@@ -354,13 +353,6 @@ public class RegistrationPageSteps {
 		 PagesCollection.registrationPage.reSendEmail();
 	 }
 	 
-	 @Then("^I confirm number of emails in inbox is two$")
-	 public void IReceivedSecondEmail() throws IOException
-	 {
-		 PagesCollection.registrationPage.emailInboxCount();
-	 }
-
-=======
 	 @When ("^I see error page$")
 	 public void ISeeErrorPage() throws IOException{
 		 Assert.assertTrue(PagesCollection.registrationPage.confirmErrorPage());

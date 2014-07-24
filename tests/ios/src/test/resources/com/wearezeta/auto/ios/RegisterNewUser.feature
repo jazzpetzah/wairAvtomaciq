@@ -338,12 +338,11 @@ Feature: Register new user
 	And I enter name <Name>
 	And I enter email <Email>
 	And I enter password <Password>
-    Then I confirm that <EmailCount> recent emails in inbox contain 1 for current recipient 
+    Then I confirm that <EmailCount> recent emails in inbox contain 0 for current recipient 
 	And I submit registration data
-	Then I see confirmation page
-	Then I confirm that <EmailCount> recent emails in inbox contain 2 for current recipient
+	Then I confirm that <EmailCount> recent emails in inbox contain 1 for current recipient
 	And I resend verification email
-	Then I confirm that <EmailCount> recent emails in inbox contain 3 for current recipient
+	Then I confirm that <EmailCount> recent emails in inbox contain 2 for current recipient
 	
 	Examples:     
     |	Email						|	Password	    |	Name			|   EmailCount   |

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Properties;
 import javax.mail.*;
 
-public class IMAPMailbox {
+public class IMAPSMailbox {
 	
 	private final String MAIL_PROTOCOL = "imaps";
 	private String mailServer;
@@ -17,7 +17,7 @@ public class IMAPMailbox {
 	
 	
 	
-	public IMAPMailbox(String mailServer, String mailFolder, String user, String password) throws MessagingException {
+	public IMAPSMailbox(String mailServer, String mailFolder, String user, String password) throws MessagingException {
 		this.mailServer = mailServer;
 		this.mailFolder = mailFolder;
 		this.user = user;

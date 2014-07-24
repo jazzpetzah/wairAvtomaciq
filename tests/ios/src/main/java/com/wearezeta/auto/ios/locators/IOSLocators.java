@@ -221,13 +221,9 @@ public final class IOSLocators {
 	public static final String nameVideoPauseButton = "Pause";
 	
 	public static final String nameVideoNextButton = "Next track";
-	
-<<<<<<< HEAD:tests/common/src/main/java/com/wearezeta/auto/common/IOSLocators.java
+
 	public static final String nameConnectAlertYes = "Yes";
 	
 	public static final String xpathReSendButton = "//UIAApplication[1]/UIAWindow[1]/UIATextView[1]";
-
-=======
->>>>>>> 64fd2294c4afa4dca8dd62772ee823045b208671:tests/ios/src/main/java/com/wearezeta/auto/ios/locators/IOSLocators.java
 }
 
