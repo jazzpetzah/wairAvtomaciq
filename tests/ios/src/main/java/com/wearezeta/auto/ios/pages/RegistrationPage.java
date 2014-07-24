@@ -112,10 +112,14 @@ public class RegistrationPage extends IOSPage {
 
 	private String[] listOfEmails;
 	
+	private String url;
+	private String path;
+	
 	public RegistrationPage(String URL, String path)
 			throws MalformedURLException {
 		super(URL, path);
-		// TODO Auto-generated constructor stub
+		this.url = URL;
+		this.path = path;
 	}
 
 	@Override
@@ -172,10 +176,10 @@ public class RegistrationPage extends IOSPage {
 			clickSwitchCameraButton();
 		}
 	
-	public void selectPicture()
+	public CameraRollPage selectPicture() throws IOException
 	{
 		photoButton.click();
-		
+		return new CameraRollPage(url, path);
 	}
 	
 	public void chooseFirstPhoto() {
