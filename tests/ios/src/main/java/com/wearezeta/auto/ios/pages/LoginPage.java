@@ -105,9 +105,9 @@ public class LoginPage extends IOSPage {
 		passwordField.sendKeys(password);
 	}
 	
-	public boolean waitForLogin() {
+	public boolean waitForLogin() throws InterruptedException {
 		 
-		 return DriverUtils.waitUntilElementDissapear(driver, By.name(IOSLocators.nameLoginField));
+		return DriverUtils.waitUntilElementDissapear(driver, By.name(IOSLocators.nameLoginField));
 	}
 	
 	public Boolean isLoginFinished(String contact) throws IOException {
