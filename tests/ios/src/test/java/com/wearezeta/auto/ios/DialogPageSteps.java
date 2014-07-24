@@ -111,10 +111,10 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.typeMessage(link + "\n");
 	}
 	
-	@Then("I see yotube link (.*) and video in dialog")
-	public void ISeeYoutubeLinkAndVideoInDialog(String link){
+	@Then("I see media link (.*) and media in dialog")
+	public void ISeeMediaLinkAndMediaInDialog(String link){
 		Assert.assertEquals(link, PagesCollection.dialogPage.getLastMessageFromDialog());
-		Assert.assertTrue("Video is missing in dialog", PagesCollection.dialogPage.isVideoContainerVisible());
+		Assert.assertTrue("Media is missing in dialog", PagesCollection.dialogPage.isMediaContainerVisible());
 	}
 	
 	@When("I click video container for the first time")
@@ -132,12 +132,11 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.swipeRight(500);
 	}
 	
-	@When("^I post media link$")
-	public void IPostMediaLink() throws Throwable {
+	@When("^I post soundcloud media link (.*)$")
+	public void IPostMediaLink(String link) throws Throwable {
 		PagesCollection.dialogPage.waitForTextMessageInputVisible();
-	    message = "https://soundcloud.com/klinke-auf-cinch/04-whats-happening-boytalk-remix";
-	    PagesCollection.dialogPage.typeMessage(message + "\n");
-	    PagesCollection.dialogPage.typeMessage(message + "\n");
+	    PagesCollection.dialogPage.typeMessage(link + "\n");
+	    PagesCollection.dialogPage.typeMessage(link + "\n");
 	}
 	
 	@When("^I tap media link$")

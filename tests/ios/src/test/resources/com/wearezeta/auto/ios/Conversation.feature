@@ -216,7 +216,7 @@ Examples:
     And I see dialog page
     And I tap on text input
     And I type and send youtube link <YouTubeLink>
-    Then I see yotube link <YouTubeLink> and video in dialog
+    Then I see media link <YouTubeLink> and media in dialog
     And I click video container for the first time
     And I see video player page is opened
 
@@ -243,7 +243,7 @@ Examples:
     And I see sign in screen
     And I Sign in using login <Contact> and password <Password>
     And I tap on contact name <Name>
-    Then I see yotube link <YouTubeLink> and video in dialog
+    Then I see media link <YouTubeLink> and media in dialog
     And I click video container for the first time
     And I see video player page is opened
 
@@ -258,7 +258,8 @@ Scenario Outline: Play/pause media from the media bar
     When I tap on contact name <Contact1>
     And I see dialog page
     And I tap on text input
-    And I post media link
+    And I post soundcloud media link <SoundCloudLink>
+    Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
     And I pause playing the media in media bar
@@ -267,6 +268,6 @@ Scenario Outline: Play/pause media from the media bar
     
     
 Examples:
-    |  Login		| Password		| Name			| Contact1    |
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |
+    |  Login		| Password		| Name			| Contact1    | SoundCloudLink |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/klinke-auf-cinch/04-whats-happening-boytalk-remix |
     

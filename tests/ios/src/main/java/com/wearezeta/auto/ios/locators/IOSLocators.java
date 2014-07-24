@@ -86,7 +86,7 @@ public final class IOSLocators {
 	
 	public static final String xpathHeyCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[last()]";
 	
-	public static final String classNameVideoContainer = "UIAWebView";
+	public static final String classNameMediaContainer = "UIAWebView";
 	
 	public static final String namePhotoButton = "PhotoLibraryButton";
 	
