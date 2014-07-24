@@ -1,271 +1,143 @@
-#!/bin/bash
+#!/bin/sh
 
-####################################################################################################
-# Creates pref file for Java 8 that has setting which turns off the auto update check feature
-####################################################################################################
-####################################################################################################
+# Java Plugin Location
+javaPlugin="/Library/Internet Plug-Ins/JavaAppletPlugin.plugin"
 
-/bin/echo "Beginning running disable_java_updates script"
+# Config File Location
+configFile="/Library/Application Support/Oracle/Java/Deployment/deployment.config"
 
-####################################################################################################
-# Get number variable needed to set suppression of update reminder
-####################################################################################################
+# Properties File Location
+propFile="/Library/Application Support/Oracle/Java/Deployment/deployment.properties"
 
-NUMBER=`/bin/cat /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Enabled.plist |grep ';deploy=' |cut -d"=" -f2 |cut -d"<" -f1`
-echo The number for suppression of this version of Java is "$NUMBER"
+# Folder Location
+folderLoc="/Library/Application Support/Oracle/Java/Deployment/"
 
-# Verify that it received a numeric value
-case "$NUMBER" in
-[0-9]*)
-echo "Entry is a numeric value. Continuing..."
-;;
-* )
-echo "Error: This entry is not a number. Will fail to properly suppress update pop up."
-;;
-esac
+# Checks if Java Plugin is installed
+if [ -e "$javaPlugin" ]; then
 
-####################################################################################################
-# Remove Updater Launch Agent Sym Link that gets created during updates
-####################################################################################################
+	/bin/echo "Java Plugin is installed..."
 
-/bin/echo "Checking to see if Launch Agent sym link exists..."
+	# Checks if config file is present
+	if [ ! -f "$configFile" ]; then
 
-if [ -f /Library/LaunchAgents/com.oracle.java.Java-Updater.plist ]; then
-/bin/echo "Launch Agent exists. Removing."
+		/bin/echo "The deployment.config file does not yet exist. Will create..."
 
-sudo rm /Library/LaunchAgents/com.oracle.java.Java-Updater.plist
-/bin/echo "Removed Update Launch Agent Sym Link"
+			# Create path
+			/bin/mkdir -p "$folderLoc"
 
-else
-/bin/echo "Launch Agent does not exist."
-fi
+			# Create deployment.config file
+			/usr/bin/touch "$configFile"
 
-####################################################################################################
-# Remove Updater Launch Daemon Sym Link that gets created during updates
-####################################################################################################
+			/bin/echo "Created deployment.config file"
 
-/bin/echo "Checking to see if Launch Daemon sym link exists..."
+			# Change ownership on this new file
+			/usr/sbin/chown root:wheel "$configFile"
 
-if [ -f /Library/LaunchDaemons/com.oracle.java.Helper-Tool.plist ]; then
-/bin/echo "Launch Daemon exists. Removing."
+			/bin/echo "Changed ownership on deployment.config file"
 
-sudo rm /Library/LaunchDaemons/com.oracle.java.Helper-Tool.plist
-/bin/echo "Removed Update Launch Daemon Sym Link"
+			# Write contents of this file
+			/bin/echo deployment.system.config=file\://$propFile >> "$configFile"
+			/bin/echo deployment.system.config.mandatory=false >> "$configFile"
 
-else
-/bin/echo "Launch Daemon does not exist."
-fi
+			/bin/echo "Wrote content to deployment.config file."
 
-####################################################################################################
-####################################################################################################
+	else
 
-# Check to see if Java Plugin exists
-if [ -d /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home ]; then
-echo "Java Plugin is installed, continuing..."
+		/bin/echo "deployment.config file already exists. Removing and building new version..."
 
-if [ ! -f /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.properties ]; then
-/bin/echo "The deployment.properties file does not yet exist. Will create..."
+			# Delete existing version of the file
+			/bin/rm -f "$configFile"
 
-# Create deployment.properties file
-sudo touch /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.properties
-/bin/echo "Created deployment.properties file"
+			/bin/echo "Deleted previous deployment.config file"
 
-# Create deployment.config file
-sudo touch /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.config
-/bin/echo "Created deployment.config file"
+			# Create deployment.config file
+			/usr/bin/touch "$configFile"
 
+			/bin/echo "Created deployment.config file"
 
-# Change ownership on this new file
-sudo chown root:wheel /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.properties
-/bin/echo "Changed ownership on deployment.properties file"
+			# Change ownership on this new file
+			/usr/sbin/chown root:wheel "$configFile"
 
-# Change ownership on this new file
-sudo chown root:wheel /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.config
-/bin/echo "Changed ownership on deployment.config file"
+			/bin/echo "Changed ownership on deployment.config file"
 
-# Change permissions on this file
-sudo chmod 755 /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.properties
-/bin/echo "Changed permissions on deployment.properties file"
+			# Write contents of this file
+			/bin/echo deployment.system.config=file\://$propFile >> "$configFile"
+			/bin/echo deployment.system.config.mandatory=false >> "$configFile"
 
-sudo chmod 755 /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.config
-/bin/echo "Changed permissions on deployment.config file"
+			/bin/echo "Wrote content to deployment.config file."
 
+	fi
 
-# Write contents of this file
-/bin/echo '#deployment.properties' > /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.properties
-/bin/echo deployment.macosx.check.update.locked >> /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.properties
-/bin/echo deployment.macosx.check.update=false >> /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.properties
-/bin/echo deployment.expiration.decision.suppression."$NUMBER".locked >> /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.properties
-/bin/echo deployment.expiration.decision.suppression."$NUMBER"=true >> /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.properties
-/bin/echo deployment.expiration.decision."$NUMBER".locked >> /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.properties
-/bin/echo deployment.expiration.decision."$NUMBER"=later >> /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.properties
-/bin/echo deployment.expiration.check.enabled.locked >> /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.properties
-/bin/echo deployment.expiration.check.enabled=false >> /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.properties
-/bin/echo "Wrote content to deployment.properties file. Have a wonderful day."\
+	# Checks if properties file is present
+	if [ ! -f "$propFile" ]; then
 
-/bin/echo deployment.system.config.mandatory=false >> /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.config
-/bin/echo deployment.system.config=/Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.properties >> /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.config
-/bin/echo "Wrote content to deployment.config file. Have a wonderful day."\
+		/bin/echo "The deployment.properties file does not yet exist. Will create..."
 
+			# Create path
+			/bin/mkdir -p "$folderLoc"
+			
+			# Create deployment.properties file
+			/usr/bin/touch "$propFile"
 
-### Addition from java.com
-# Create deployment.properties file
-sudo touch /Library/Application\ Support/Oracle/Java/Deployment/deployment.properties
-/bin/echo "Created deployment.properties file"
+			/bin/echo "Created deployment.properties file"
 
-# Create deployment.config file
-sudo touch /Library/Application\ Support/Oracle/Java/Deployment/deployment.config
-/bin/echo "Created deployment.config file"
+			# Change ownership on this new file
+			/usr/sbin/chown root:wheel "$propFile"
 
+			/bin/echo "Changed ownership on deployment.properties file"
 
-# Change ownership on this new file
-sudo chown root:wheel /Library/Application\ Support/Oracle/Java/Deployment/deployment.properties
-/bin/echo "Changed ownership on deployment.properties file"
+			# Write contents of this file
+			/bin/echo '#deployment.properties' > "$propFile"
+			/bin/echo deployment.security.validation.ocsp=false >> "$propFile"
+			/bin/echo deployment.security.validation.ocsp.locked >> "$propFile"
+			/bin/echo deployment.macosx.check.update=false >> "$propFile"
+			/bin/echo deployment.macosx.check.update.locked >> "$propFile"
+			/bin/echo deployment.expiration.check.enabled=false >> "$propFile"
+			/bin/echo deployment.expiration.check.enabled.locked >> "$propFile"
+			/bin/echo deployment.console.startup.mode=HIDE >> "$propFile"
 
-# Change ownership on this new file
-sudo chown root:wheel /Library/Application\ Support/Oracle/Java/Deployment/deployment.config
-/bin/echo "Changed ownership on deployment.config file"
+			/bin/echo "Wrote content to deployment.properties file."
 
-# Change permissions on this file
-sudo chmod 755 /Library/Application\ Support/Oracle/Java/Deployment/deployment.properties
-/bin/echo "Changed permissions on deployment.properties file"
+	else
 
-sudo chmod 755 /Library/Application\ Support/Oracle/Java/Deployment/deployment.config
-/bin/echo "Changed permissions on deployment.config file"
+		/bin/echo "deployment.properties file already exists. Removing and building new version..."
 
+			# Delete existing version of the file
+			/bin/rm -f "$propFile"
 
-# Write contents of this file
-/bin/echo '#deployment.properties' > /Library/Application\ Support/Oracle/Java/Deployment/deployment.properties
-/bin/echo deployment.macosx.check.update.locked >> /Library/Application\ Support/Oracle/Java/Deployment/deployment.properties
-/bin/echo deployment.macosx.check.update=false >> /Library/Application\ Support/Oracle/Java/Deployment/deployment.properties
-/bin/echo deployment.expiration.decision.suppression."$NUMBER".locked >> /Library/Application\ Support/Oracle/Java/Deployment/deployment.properties
-/bin/echo deployment.expiration.decision.suppression."$NUMBER"=true >> /Library/Application\ Support/Oracle/Java/Deployment/deployment.properties
-/bin/echo deployment.expiration.decision."$NUMBER".locked >> /Library/Application\ Support/Oracle/Java/Deployment/deployment.properties
-/bin/echo deployment.expiration.decision."$NUMBER"=later >> /Library/Application\ Support/Oracle/Java/Deployment/deployment.properties
-/bin/echo deployment.expiration.check.enabled.locked >> /Library/Application\ Support/Oracle/Java/Deployment/deployment.properties
-/bin/echo deployment.expiration.check.enabled=false >> /Library/Application\ Support/Oracle/Java/Deployment/deployment.properties
-/bin/echo "Wrote content to deployment.properties file. Have a wonderful day."\
+			# Create deployment.properties file
+			/usr/bin/touch "$propFile"
 
-/bin/echo deployment.system.config.mandatory=false >> /Library/Application\ Support/Oracle/Java/Deployment/deployment.config
-/bin/echo deployment.system.config=/Library/Application\ Support/Oracle/Java/Deployment/deployment.properties >> /Library/Application\ Support/Oracle/Java/Deployment/deployment.config
-/bin/echo "Wrote content to deployment.config file. Have a wonderful day."\
+			/bin/echo "Created deployment.properties file"
 
+			# Change ownership on this new file
+			/usr/sbin/chown root:wheel "$propFile"
+
+			/bin/echo "Changed ownership on deployment.properties file"
+
+			# Write contents of this file
+			/bin/echo '#deployment.properties' > "$propFile"
+			/bin/echo deployment.security.validation.ocsp=false >> "$propFile"
+			/bin/echo deployment.security.validation.ocsp.locked >> "$propFile"
+			/bin/echo deployment.macosx.check.update=false >> "$propFile"
+			/bin/echo deployment.macosx.check.update.locked >> "$propFile"
+			/bin/echo deployment.expiration.check.enabled=false >> "$propFile"
+			/bin/echo deployment.expiration.check.enabled.locked >> "$propFile"
+			/bin/echo deployment.console.startup.mode=HIDE >> "$propFile"
+
+			/bin/echo "Wrote content to deployment.properties file."
+
+	fi
+
+	# Change the auto updater preference
+	/usr/bin/defaults write /Library/Preferences/com.oracle.java.Java-Updater JavaAutoUpdateEnabled -bool false
+
+	/bin/echo "Changed the auto updater preference file."
+	/bin/echo "Java settings have been deployed. Exiting"
 
 else
-/bin/echo "deployment.properties file already exists. Removing and building new version..."
 
-
-# Delete existing version of the file
-sudo rm -f /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.properties
-/bin/echo "Deleted previous deployment.properties file"
-
-sudo rm -f /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.config
-/bin/echo "Deleted previous deployment.config file"
-
-
-# Create deployment.properties file
-sudo touch /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.properties
-/bin/echo "Created deployment.properties file"
-
-# Create deployment.config file
-sudo touch /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.config
-/bin/echo "Created deployment.config file"
-
-
-# Change ownership on this new file
-sudo chown root:wheel /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.properties
-/bin/echo "Changed ownership on deployment.properties file"
-
-# Change ownership on this new file
-sudo chown root:wheel /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.config
-/bin/echo "Changed ownership on deployment.config file"
-
-
-# Change permissions on this file
-sudo chmod 755 /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.properties
-/bin/echo "Changed permissions on deployment.properties file"
-
-# Change permissions on this file
-sudo chmod 755 /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.config
-/bin/echo "Changed permissions on deployment.config file"
-
-
-# Write contents of this file
-/bin/echo '#deployment.properties' > /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.properties
-/bin/echo deployment.macosx.check.update.locked >> /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.properties
-/bin/echo deployment.macosx.check.update=false >> /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.properties
-/bin/echo deployment.expiration.decision.suppression."$NUMBER".locked >> /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.properties
-/bin/echo deployment.expiration.decision.suppression."$NUMBER"=true >> /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.properties
-/bin/echo deployment.expiration.decision."$NUMBER".locked >> /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.properties
-/bin/echo deployment.expiration.decision."$NUMBER"=later >> /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.properties
-/bin/echo deployment.expiration.check.enabled.locked >> /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.properties
-/bin/echo deployment.expiration.check.enabled=false >> /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.properties
-/bin/echo "Wrote content to deployment.properties file. Have a wonderful day."\
-
-/bin/echo deployment.system.config.mandatory=false >> /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.config
-/bin/echo deployment.system.config=/Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.properties >> /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/deployment.config
-/bin/echo "Wrote content to deployment.config file. Have a wonderful day."\
-
-###Addition from Java.com
-# Delete existing version of the file
-sudo rm -f /Library/Application\ Support/Oracle/Java/Deployment/deployment.properties
-/bin/echo "Deleted previous deployment.properties file"
-
-sudo rm -f /Library/Application\ Support/Oracle/Java/Deployment/deployment.config
-/bin/echo "Deleted previous deployment.config file"
-
-
-# Create deployment.properties file
-sudo touch /Library/Application\ Support/Oracle/Java/Deployment/deployment.properties
-/bin/echo "Created deployment.properties file"
-
-# Create deployment.config file
-sudo touch /Library/Application\ Support/Oracle/Java/Deployment/deployment.config
-/bin/echo "Created deployment.config file"
-
-
-# Change ownership on this new file
-sudo chown root:wheel /Library/Application\ Support/Oracle/Java/Deployment/deployment.properties
-/bin/echo "Changed ownership on deployment.properties file"
-
-# Change ownership on this new file
-sudo chown root:wheel /Library/Application\ Support/Oracle/Java/Deployment/deployment.config
-/bin/echo "Changed ownership on deployment.config file"
-
-
-# Change permissions on this file
-sudo chmod 755 /Library/Application\ Support/Oracle/Java/Deployment/deployment.properties
-/bin/echo "Changed permissions on deployment.properties file"
-
-# Change permissions on this file
-sudo chmod 755 /Library/Application\ Support/Oracle/Java/Deployment/deployment.config
-/bin/echo "Changed permissions on deployment.config file"
-
-
-# Write contents of this file
-/bin/echo '#deployment.properties' > /Library/Application\ Support/Oracle/Java/Deployment/deployment.properties
-/bin/echo deployment.macosx.check.update.locked >> /Library/Application\ Support/Oracle/Java/Deployment/deployment.properties
-/bin/echo deployment.macosx.check.update=false >> /Library/Application\ Support/Oracle/Java/Deployment/deployment.properties
-/bin/echo deployment.expiration.decision.suppression."$NUMBER".locked >> /Library/Application\ Support/Oracle/Java/Deployment/deployment.properties
-/bin/echo deployment.expiration.decision.suppression."$NUMBER"=true >> /Library/Application\ Support/Oracle/Java/Deployment/deployment.properties
-/bin/echo deployment.expiration.decision."$NUMBER".locked >> /Library/Application\ Support/Oracle/Java/Deployment/deployment.properties
-/bin/echo deployment.expiration.decision."$NUMBER"=later >> /Library/Application\ Support/Oracle/Java/Deployment/deployment.properties
-/bin/echo deployment.expiration.check.enabled.locked >> /Library/Application\ Support/Oracle/Java/Deployment/deployment.properties
-/bin/echo deployment.expiration.check.enabled=false >> /Library/Application\ Support/Oracle/Java/Deployment/deployment.properties
-/bin/echo "Wrote content to deployment.properties file. Have a wonderful day."\
-
-/bin/echo deployment.system.config.mandatory=false >> /Library/Application\ Support/Oracle/Java/Deployment/deployment.config
-/bin/echo deployment.system.config=/Library/Application\ Support/Oracle/Java/Deployment/deployment.properties >> /Library/Application\ Support/Oracle/Java/Deployment/deployment.config
-/bin/echo "Wrote content to deployment.config file. Have a wonderful day."\
+	echo "Error: Failure to find Java Plugin path. Either Java is not installed, or the path within the plugin has changed. Exiting"
+	exit 1
 
 fi
-
-else
-echo "Error: Failure to find Java Plugin path. Either Java is not installed, or the path within the plugin has changed. Exiting"
-
-fi
-
-/bin/echo "Finished running disable_java_updates script"
-
-####################################################################################################
-####################################################################################################
