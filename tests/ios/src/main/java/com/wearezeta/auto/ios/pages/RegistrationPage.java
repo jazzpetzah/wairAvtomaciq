@@ -5,8 +5,10 @@ import java.net.MalformedURLException;
 import java.util.List;
 import java.util.ArrayList;
 
-import org.junit.Assert;
+import javax.mail.MessagingException;
 
+import org.apache.xalan.xsltc.runtime.MessageHandler;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -16,6 +18,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.CreateZetaUser;
 import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.common.EmailHeaders;
+import com.wearezeta.auto.common.IMAPMailbox;
 import com.wearezeta.auto.common.IOSLocators;
 import com.wearezeta.auto.common.SwipeDirection;
 
@@ -85,6 +88,7 @@ public class RegistrationPage extends IOSPage {
 	private String passwordTextFieldValue;
 
 	private String[] listOfEmails;
+	private String recipientInboxCount;
 	
 	public RegistrationPage(String URL, String path)
 			throws MalformedURLException {
@@ -262,24 +266,43 @@ public class RegistrationPage extends IOSPage {
 	}
 	
 	public void reSendEmail() {
-		driver.tap(1, (reSendButton.getLocation().x)+(reSendButton.getSize().width / 2), (reSendButton.getLocation().y)+(reSendButton.getSize().height-5) ,1);
-	}
-	int test =1;
-	public List<EmailHeaders> confirmEmailReceived() throws IOException{
-	  System.out.println("test:"+test++);
-	  List<EmailHeaders> headersList = new ArrayList<EmailHeaders>();
-      headersList = CreateZetaUser.getLastMailHeaders(CommonUtils.getDefaultEmailFromConfig(CreateZetaUser.class),CommonUtils.getDefaultPasswordFromConfig(CreateZetaUser.class),0);
-      if(!headersList.isEmpty()){
-    	  for(EmailHeaders emailHeader: headersList){
-    		  System.out.println("user email: "+emailHeader.getLastUserEmail());
-    	      System.out.println("mail subject: "+emailHeader.getMailSubject());
-    	      System.out.println("zeta purpose: "+emailHeader.getXZetaPurpose());
-    	      System.out.println("zeta key: "+emailHeader.getXZetaKey());
-    	      System.out.println("zeta code: "+emailHeader.getXZetaCode()+"\n");
-    	  	}
-      }else{System.out.println("empty list");}
-      return headersList;
+		driver.tap(1, (reSendButton.getLocation().x)
+				+ (reSendButton.getSize().width / 2),
+				(reSendButton.getLocation().y)
+						+ (reSendButton.getSize().height - 5), 1);
 	}
 	
-
+	public boolean emailInboxCount() throws IOException {
+	  List<EmailHeaders> messageHeaders = CreateZetaUser.getLastMailHeaders(CommonUtils.getDefaultEmailFromConfig(CreateZetaUser.class),CommonUtils.getDefaultPasswordFromConfig(CreateZetaUser.class),0);
+      String inboxCount = messageHeaders.get(messageHeaders.size()).getLastUserEmail();
+    if (inboxCount.equals(null)){
+    	return false;
+    }
+    else {
+    	System.out.println(inboxCount);
+    	return true;
+    }
+    	  
+    }
+	
+	 public int getRecentEmailsCountForRecipient(int allRecentEmailsCnt, String expectedRecipient) throws MessagingException, IOException {
+	     IMAPMailbox mailbox = new IMAPMailbox(CreateZetaUser.MAIL_SERVER, CreateZetaUser.MAILS_FOLDER,
+	    		 CommonUtils.getDefaultEmailFromConfig(RegistrationPage.class), 
+	    		 CommonUtils.getDefaultPasswordFromConfig(RegistrationPage.class));
+		 int actualCnt = 0;
+		 try {
+			 mailbox.open();
+			 List<EmailHeaders> allEmailsHeaders = mailbox.getLastMailHeaders(allRecentEmailsCnt);
+			 for (EmailHeaders emailHeaders: allEmailsHeaders) {
+				 if (emailHeaders.getLastUserEmail().equals(expectedRecipient)) {
+					 actualCnt++; 
+				 }
+			 }
+		 } finally {
+			 mailbox.close();
+		 }
+		 return actualCnt;
+	 }
+	
 }
+ 

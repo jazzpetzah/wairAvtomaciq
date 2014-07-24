@@ -12,9 +12,8 @@ import java.util.Properties;
 
 public class CreateZetaUser {
 
-	private static final String MAILS_FOLDER = "Inbox";
-	private static final String MAIL_SERVER = "imap.gmail.com";
-	private static final String MAIL_PROTOCOL= "imaps";
+	public static final String MAILS_FOLDER = "Inbox";
+	public static final String MAIL_SERVER = "imap.gmail.com";
 
 	public static String registerUserAndReturnMail() throws IOException {
 		String nextSuffix = null;
@@ -73,7 +72,7 @@ public class CreateZetaUser {
 
 	public static List<EmailHeaders> getLastMailHeaders(String user, String password, int messageCount) {
 
-		String protocol = MAIL_PROTOCOL;
+		String protocol = "imap";
 		String host = MAIL_SERVER;
 		String mbox = null;
 		List<EmailHeaders> headersList = new ArrayList<EmailHeaders>();
@@ -128,8 +127,9 @@ public class CreateZetaUser {
 			ex.printStackTrace();
 		}
 		return headersList;
-	}
 
+	}
+	
 	private static String setRegMail(String basemail, String suffix) {
 		String genmail = basemail.split("@")[0].concat("+").concat(suffix)
 				.concat("@").concat(basemail.split("@")[1]);

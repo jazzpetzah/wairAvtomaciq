@@ -1,12 +1,20 @@
 package com.wearezeta.auto.ios;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import javax.mail.MessagingException;
 
 import org.junit.Assert;
 
+import com.thoughtworks.selenium.Wait;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.CreateZetaUser;
+import com.wearezeta.auto.common.EmailHeaders;
+import com.wearezeta.auto.common.IMAPMailbox;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 
 import cucumber.api.java.en.Then;
@@ -141,9 +149,20 @@ public class RegistrationPageSteps {
 		 PagesCollection.registrationPage.createAccount();
 	 }
 	 
-	 @Then("^I confirm that I received first email$")
-	 public void IReceivedFirstEmail() throws IOException{
-		 PagesCollection.registrationPage.confirmEmailReceived();
+	 @Then("^I confirm that (\\d+) recent emails in inbox contain (\\d+) for current recipient$")
+	 public void VerifyRecipientsCount(final int recentEmailsCnt, final int expectedCnt) throws Throwable {
+		 String expectedRecipient = CommonUtils.yourUsers.get(0).getEmail();
+		 //int actualCnt = PagesCollection.registrationPage.getRecentEmailsCountForRecipient(recentEmailsCnt, expectedRecipient);
+		 int checksCnt = 0;
+		 int actualCnt = 0;
+		 while (checksCnt < 2) {
+			  actualCnt = PagesCollection.registrationPage.getRecentEmailsCountForRecipient(recentEmailsCnt, expectedRecipient);
+		      if (actualCnt == expectedCnt) {
+		    	  break;
+		      } 
+		      checksCnt++;
+		 }
+		 Assert.assertTrue(true);
 	 }
 	 
 	 @Then("^I resend verification email$")
@@ -152,10 +171,10 @@ public class RegistrationPageSteps {
 		 PagesCollection.registrationPage.reSendEmail();
 	 }
 	 
-	 @Then("^I confirm that I recieve second email$")
+	 @Then("^I confirm number of emails in inbox is two$")
 	 public void IReceivedSecondEmail() throws IOException
 	 {
-		 PagesCollection.registrationPage.confirmEmailReceived();
+		 PagesCollection.registrationPage.emailInboxCount();
 	 }
 
 	 @Then("^I see confirmation page$")
