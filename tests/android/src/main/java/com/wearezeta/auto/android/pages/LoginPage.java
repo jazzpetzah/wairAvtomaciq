@@ -112,8 +112,7 @@ public class LoginPage extends AndroidPage {
 
 	public Boolean isLoginFinished(String contact) throws InterruptedException {
 		refreshUITree();
-		HashMap<String,Integer> usersMap = DriverUtils.waitForElementWithTextById(AndroidLocators.idContactListNames, driver);
-		return usersMap.containsKey(contact);
+		return DriverUtils.waitForElementWithTextByXPath(AndroidLocators.xpathContacts,contact,driver);
 	}
 
 	public Boolean isWelcomeButtonsExist(){
