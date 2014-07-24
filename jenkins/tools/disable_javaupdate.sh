@@ -1,8 +1,7 @@
 #!/bin/bash
 
 ####################################################################################################
-# Creates pref file for Java 7 that has setting which turns off the auto update check feature
-# Created by AS (3-2-13)
+# Creates pref file for Java 8 that has setting which turns off the auto update check feature
 ####################################################################################################
 ####################################################################################################
 
