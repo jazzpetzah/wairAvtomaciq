@@ -86,7 +86,7 @@ public final class IOSLocators {
 	
 	public static final String xpathHeyCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[last()]";
 	
-	public static final String classNameVideoContainer = "UIAWebView";
+	public static final String classNameMediaContainer = "UIAWebView";
 	
 	public static final String namePhotoButton = "PhotoLibraryButton";
 	
@@ -225,5 +225,18 @@ public final class IOSLocators {
 	public static final String nameConnectAlertYes = "Yes";
 	
 	public static final String xpathReSendButton = "//UIAApplication[1]/UIAWindow[1]/UIATextView[1]";
+	
+	public static final String nameMediaBarPlayPauseButton = "mediabarPlayPauseButton";
+	
+	public static final String nameMediaBarCloseButton = "mediabarCloseButton";
+	
+	public static final String nameMediaBarTitle = "playingMediaTitle";
+	
+	public static final String nameMediaCellPlayButton = "mediaCellButton";
+	
+	public static final String xpathMediaConversationCell = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[last()]/UIAWebView[1]";
+	
+	public static final String xpathConversationPage = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]";
+
 }
 

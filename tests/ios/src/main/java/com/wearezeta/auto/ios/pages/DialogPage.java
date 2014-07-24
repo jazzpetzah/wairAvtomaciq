@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.pages;
 import java.io.IOException;
 import java.util.List;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -45,8 +46,21 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherConversationCellFormat)
 	private WebElement imageCell;
 	
-	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameVideoContainer)
-	private WebElement videoContainer;
+	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameMediaContainer)
+	private WebElement mediaContainer;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathMediaConversationCell)
+	private WebElement mediaLinkCell;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameMediaBarPlayPauseButton)
+	private WebElement mediabarPlayPauseButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathConversationPage)
+	private WebElement conversationPage;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameMediaBarCloseButton)
+	private WebElement mediabarStopCloseButton;
+	
 	
 	private String url;
 	private String path;
@@ -141,6 +155,31 @@ public class DialogPage extends IOSPage{
 		return GetImageCell(messagesList);
 	}
 	
+	public void startMediaContent(){
+		mediaLinkCell.click();
+	}
+	
+	public void scrollDownTilMediaBarAppears() throws Exception{
+		boolean buttonIsShown = mediabarPlayPauseButton.isDisplayed();
+		while(!(buttonIsShown)){
+		DriverUtils.swipeDown(driver, conversationPage, 500);
+		buttonIsShown = mediabarPlayPauseButton.isDisplayed();
+		}
+		Assert.assertTrue(mediabarPlayPauseButton.isDisplayed());
+	}
+
+	public void pauseMediaContent(){
+		mediabarPlayPauseButton.click();
+	}
+	
+	public void playMediaContent(){
+		mediabarPlayPauseButton.click();
+	}
+	
+	public void stopMediaContent(){
+		mediabarStopCloseButton.click();
+	}
+	
 	@Override
 	public IOSPage swipeUp(int time) throws IOException
 	{
@@ -179,13 +218,13 @@ public class DialogPage extends IOSPage{
 		return page;
 	}
 	
-	public boolean isVideoContainerVisible(){
-		return videoContainer.isDisplayed();
+	public boolean isMediaContainerVisible(){
+		return mediaContainer.isDisplayed();
 	}
 	
 	public VideoPlayerPage clickOnVideoContainerFirstTime() throws IOException{
 		VideoPlayerPage page = null;
-		videoContainer.click();
+		mediaContainer.click();
 		page = new VideoPlayerPage(url, path);
 		return page;
 	}

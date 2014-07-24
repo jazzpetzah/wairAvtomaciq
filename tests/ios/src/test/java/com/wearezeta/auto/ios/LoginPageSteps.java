@@ -19,7 +19,7 @@ public class LoginPageSteps {
 	 }
 	 
 	 @Given("^I Sign in using login (.*) and password (.*)$")
-	 public void GivenISignIn(String login, String password) throws IOException  {		
+	 public void GivenISignIn(String login, String password) throws IOException, InterruptedException  {		
 		 switch (login) {
 		 case CommonUtils.YOUR_USER_1:
 			 login = CommonUtils.yourUsers.get(0).getEmail();
@@ -43,10 +43,11 @@ public class LoginPageSteps {
 		 
 		 password = CommonUtils.retrieveRealUserContactPasswordValue(password);
 		 Assert.assertNotNull(PagesCollection.loginPage.isVisible());
-		 PagesCollection.loginPage =(LoginPage)(PagesCollection.loginPage.signIn());
+		 PagesCollection.loginPage = (LoginPage)(PagesCollection.loginPage.signIn());
 		 PagesCollection.loginPage.setLogin(login);
 		 PagesCollection.loginPage.setPassword(password);
-		 PagesCollection.contactListPage =(ContactListPage)(PagesCollection.loginPage.login());
+		 PagesCollection.contactListPage = (ContactListPage)(PagesCollection.loginPage.login());
+		 
 		 Assert.assertTrue("Login finished", PagesCollection.loginPage.waitForLogin());
 	}
 	 

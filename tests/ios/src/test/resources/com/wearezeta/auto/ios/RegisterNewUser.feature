@@ -21,14 +21,15 @@ Feature: Register new user
     |	Email						|	Password	    |	Name			|
     |	aqaUser            	        |	aqaPassword	    |	aqaUser       	|
 
-
-@smoke
+#https://wearezeta.atlassian.net/browse/IOS-965
+@mute 
+@smoke 
 @regression
   Scenario Outline: Attempt to register an email with spaces
     Given I see sign in screen
 	When I press Join button
 	And I press Picture button
-	And I choose photo from album
+	And I choose a picture from camera roll
 	And I See selected picture
 	And I confirm selection
 	And I enter name <Name>
@@ -47,7 +48,7 @@ Feature: Register new user
     Given I see sign in screen
 	When I press Join button
 	And I press Picture button
-	And I choose photo from album
+	And I choose a picture from camera roll
 	And I See selected picture
 	And I confirm selection
 	And I enter name <Name>
@@ -64,7 +65,7 @@ Feature: Register new user
 	Given I see sign in screen
 	When I press Join button
 	And I press Picture button
-	And I choose photo from album
+	And I choose a picture from camera roll
 	And I See selected picture
 	And I confirm selection
 	And I enter name <Name>
@@ -82,7 +83,7 @@ Feature: Register new user
 	Given I see sign in screen
 	When I press Join button
 	And I press Picture button
-	And I choose photo from album
+	And I choose a picture from camera roll
 	And I See selected picture
 	And I confirm selection
 	And I enter name <Name>
@@ -105,7 +106,7 @@ Feature: Register new user
 	Given I see sign in screen
 	When I press Join button
 	And I press Picture button
-	And I choose photo from album
+	And I choose a picture from camera roll
 	And I See selected picture
 	And I confirm selection
 	And I enter a username which is at most <MaxChars> characters long from <Language> alphabet 
@@ -121,7 +122,7 @@ Feature: Register new user
 	Given I see sign in screen
 	When I press Join button
 	And I press Picture button
-	And I choose photo from album
+	And I choose a picture from camera roll
 	And I See selected picture
 	And I confirm selection
 	And I enter name <Name>
@@ -173,7 +174,7 @@ Feature: Register new user
 	Given I see sign in screen
 	When I press Join button
 	And I press Picture button
-	And I choose photo from album
+	And I choose a picture from camera roll
 	And I confirm selection
 	And I click Back button
 	Then I don't see Take or select photo label and smile
@@ -204,7 +205,7 @@ Feature: Register new user
   	Given I see sign in screen
 	When I press Join button
 	And I press Picture button
-	And I choose photo from album
+	And I choose a picture from camera roll
 	And I See selected picture
 	And I confirm selection
 	And I don't see Next button
@@ -227,7 +228,7 @@ Feature: Register new user
   	Given I see sign in screen
 	When I press Join button
 	And I press Picture button
-	And I choose photo from album
+	And I choose a picture from camera roll
 	And I See selected picture
 	And I confirm selection
 	And I input name <Name> and hit Enter
@@ -266,7 +267,7 @@ Feature: Register new user
 	Given I see sign in screen
 	When I press Join button
 	And I press Picture button
-	And I choose photo from album
+	And I choose a picture from camera roll
 	And I See selected picture
 	And I confirm selection
 	And I enter name <Name>
@@ -285,7 +286,7 @@ Feature: Register new user
 	Given I see sign in screen
 	When I press Join button
 	And I press Picture button
-	And I choose photo from album
+	And I choose a picture from camera roll
 	And I See selected picture
 	And I reject selected picture
 	And I see Take or select photo label and smile
