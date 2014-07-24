@@ -69,11 +69,11 @@ public class CommonSteps {
 		contact2 = CommonUtils.retrieveRealUserContactPasswordValue(contact2);
 		List<ClientUser> chatContacts = new LinkedList<ClientUser>();
 		for (ClientUser user : CommonUtils.contacts) {
-			if(user.getName().equals(contact1)) {
+			if(user.getName().toLowerCase().equals(contact1.toLowerCase())) {
 				chatContacts.add(user);
 				flag1 = true;
 			}
-			if(user.getName().equals(contact2)) {
+			if(user.getName().toLowerCase().equals(contact2.toLowerCase())) {
 				chatContacts.add(user);
 				flag2 = true;
 			}

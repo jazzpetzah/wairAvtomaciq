@@ -116,29 +116,39 @@ public class GroupChatInfoPage extends AndroidPage {
 		return new GroupChatPage(url, path);
 	}
 
-	public boolean isParticipantAvatars() throws IOException {
+	public boolean isParticipantAvatars(String contact1, String contact2) throws IOException {
+		boolean flag1 = false;
+		boolean flag2 = false;
+		boolean commonFlag = false;
 		BufferedImage avatarIcon = null;
 		String path = CommonUtils.getImagesPath(CommonUtils.class);
 		for(int i = 1; i < linearLayout.size()+1;i++){
 			avatarIcon = getElementScreenshot(driver.findElement(By.xpath(String.format(AndroidLocators.xpathGroupChatInfoContacts, i,1))));
 			String avatarName = driver.findElement(By.xpath(String.format(AndroidLocators.xpathGroupChatInfoContacts, i,2))).getText();
-			if(avatarName.equalsIgnoreCase("AQAPICTURECONTACT")){
+			if(avatarName.equalsIgnoreCase(contact1)){
 				BufferedImage realImage = ImageUtil.readImageFromFile(path+AVATAR_WITH_IMAGE);
 				double score = ImageUtil.getOverlapScore(realImage, avatarIcon);
 				if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
 					return false;
 				}
+				flag1 = true;
 			}
-			if(avatarName.equalsIgnoreCase("AQAAVATAR TESTCONTACT")){
+			if(avatarName.equalsIgnoreCase(contact2)){
 				//must be a yellow user with initials AT
 				BufferedImage realImage = ImageUtil.readImageFromFile(path+AVATAR_NO_IMAGE);
 				double score = ImageUtil.getOverlapScore(realImage, avatarIcon);
 				if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
 					return false;
 				}
+				flag2 = true;
 			}
 		}
-		return true;
+		if(flag1 && flag2)
+		{
+			commonFlag = true;
+		}
+		
+		return commonFlag;
 	}
 	
 	public BufferedImage getElementScreenshot(WebElement element) throws IOException{
