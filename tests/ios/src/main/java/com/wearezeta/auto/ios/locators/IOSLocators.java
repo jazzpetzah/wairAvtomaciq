@@ -14,10 +14,6 @@ public final class IOSLocators {
 	
 	public static final String namePasswordField = "SignInPassword";
 	
-	public static final String classNameAlert = "UIAAlert";
-	
-	public static final String nameAlertOK = "OK";
-	
 	public static final String classNameContactListNames = "UIAStaticText";
 	
 	public static final String nameProfileName = "ProfileSelfNameField";
@@ -57,8 +53,6 @@ public final class IOSLocators {
 	public static final String nameAddPictureButton = "ComposeControllerPictureButton";
 	
 	public static final String nameCameraRollButton = "CameraLibraryButton"; //"FullScreenCameraRightButton";
-	
-	public static final String xpathCameraRollAlertOK = "//UIAApplication[1]/UIAWindow[4]/UIAAlert[1]/UIATableView[2]/UIATableCell[1]";
 	
 	public static final String nameCameraRollCancel = "Cancel";
 	
@@ -122,7 +116,7 @@ public final class IOSLocators {
 	
 	public static final String xpathLastGroupChatMessage = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]/UIATextView[last()]";
 	
-	public static final String xpathLeaveConversation = "//UIAApplication[1]/UIAWindow[1]/UIAButton[8]";
+	public static final String nameLeaveConversation = "metaControllerRightButton";
 	
 	public static final String nameLeaveConversationAlert = "Leave conversation?";
 
@@ -151,8 +145,8 @@ public final class IOSLocators {
 	public static final String nameForwardWelcomeButton = "ForwardWelcomeButton";
 	
 	public static final String xpathConversationNameTextField = "//UIAApplication[1]/UIAWindow[1]/UIATextField[1]";
-	
-	public static final String xpathMutedIcon = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[@name='%s']/UIAImage[1]";
+
+	public static final String xpathMutedIcon = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[@name='%s']/UIAButton[3]";
 	
 	public static final String nameMuteButton = "ConvCellMuteButton";
 	

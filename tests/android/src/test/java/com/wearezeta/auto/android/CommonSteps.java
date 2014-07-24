@@ -1,6 +1,9 @@
 package com.wearezeta.auto.android;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.LoginPage;
@@ -59,13 +62,26 @@ public class CommonSteps {
 	}
 	
 	@Given("^I have group chat with name (.*) with (.*) and (.*)$")
-	public void GivenConnectionRequestIsSendedToMe(String chatName, String contact1, String contac2) throws Throwable {
+	public void GivenIHaveGroupChatWith(String chatName, String contact1, String contact2) throws Throwable {
+		boolean flag1 = false;
+		boolean flag2 = false;
 		contact1 = CommonUtils.retrieveRealUserContactPasswordValue(contact1);
+		contact2 = CommonUtils.retrieveRealUserContactPasswordValue(contact2);
+		List<ClientUser> chatContacts = new LinkedList<ClientUser>();
 		for (ClientUser user : CommonUtils.contacts) {
 			if(user.getName().equals(contact1)) {
-				BackEndREST.createGroupConveration(CommonUtils.yourUsers.get(0), CommonUtils.contacts, chatName);
+				chatContacts.add(user);
+				flag1 = true;
+			}
+			if(user.getName().equals(contact2)) {
+				chatContacts.add(user);
+				flag2 = true;
+			}
+			if(flag1 && flag2){
+				break;
 			}
 		}
+		BackEndREST.createGroupConveration(CommonUtils.yourUsers.get(0), chatContacts, chatName);
 	}	
 	
 	@When("^I press back button$")

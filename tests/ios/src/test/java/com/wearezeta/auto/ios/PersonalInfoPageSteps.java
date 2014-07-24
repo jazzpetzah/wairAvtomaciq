@@ -53,7 +53,9 @@ public class PersonalInfoPageSteps {
 	public void IReturnToPersonalPage() throws Throwable {
 		
 		PagesCollection.personalInfoPage.tapOnPersonalPage();
+		Thread.sleep(2000);
 		PagesCollection.personalInfoPage.tapOnPersonalPage();
+		Thread.sleep(2000);
 		referenceImage = PagesCollection.personalInfoPage.takeScreenshot();
 		PagesCollection.personalInfoPage.tapOnPersonalPage();
 
@@ -66,8 +68,8 @@ public class PersonalInfoPageSteps {
 		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);
 		System.out.print("SCORE: " + score);
 		Assert.assertTrue(
-				"Overlap between two images has no enough score. Expected >= 0.75, current = " + score,
-				score >= 0.75d);
+				"Overlap between two images has no enough score. Expected >= 0.65, current = " + score,
+				score >= 0.65d);
 	}
 	
 	@Then("I see profile image is same as template")

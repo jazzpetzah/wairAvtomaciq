@@ -1,7 +1,5 @@
 Feature: Change Profile Picture
 
-#need to add a delay before "I see changed user picture userpicture_mobile_check.jpg" step
-@mute
 @smoke
 Scenario Outline: Change your profile picture  
 	Given I Sign in using login <Login> and password <Password>
@@ -14,8 +12,8 @@ Scenario Outline: Change your profile picture
     And I choose a picture from camera roll
     And I press Confirm button
     And I return to personal page
-    Then I see changed user picture userpicture_mobile_check.jpg
+    Then I see changed user picture <Picture>
 	
 	Examples:
-    |	Login		|	Password	|	Name	|
-    |	aqaUser		|	aqaPassword	|	aqaUser	|
+    |	Login		|	Password	|	Name	| Picture |
+    |	aqaUser		|	aqaPassword	|	aqaUser	| userpicture_mobile_check.jpg |

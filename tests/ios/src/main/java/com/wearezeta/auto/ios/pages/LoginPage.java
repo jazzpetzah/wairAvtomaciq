@@ -37,12 +37,6 @@ public class LoginPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.namePasswordField)
 	private WebElement passwordField;
 	
-	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameAlert)
-	private WebElement alert;
-	
-	@FindBy(how = How.NAME, using = IOSLocators.nameAlertOK)
-	private WebElement alertOk;
-	
 	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classUIATextView)
 	private List<WebElement> userName;
 	
@@ -71,17 +65,14 @@ public class LoginPage extends IOSPage {
 	
 	public IOSPage signIn() throws IOException{
 		
-		IOSPage page = null;
+		signInButton.click();
+		return this;
+	}
+	
+	public IOSPage login() throws IOException {
 		
-		try {
-			signInButton.click();
-			page = this;
-		}
-		catch(NoSuchElementException ex) {
-			confirmSignInButton.click();
-			page = new ContactListPage(url, path);
-		}
-		return page;
+		confirmSignInButton.click();
+		return new ContactListPage(url, path);
 	}
 	
 	public void clickJoinButton()
@@ -121,7 +112,6 @@ public class LoginPage extends IOSPage {
 	
 	public Boolean isLoginFinished(String contact) throws IOException {
 		WebElement el = null;
-		catchLoginAllert();
 		el = driver.findElement(By.name(contact));
 		return el != null;
 	}
@@ -135,18 +125,6 @@ public class LoginPage extends IOSPage {
 	public Boolean isLoginButtonVisible() {
 		
 		return (ExpectedConditions.visibilityOf(signInButton) != null);
-	}
-
-	public void catchLoginAllert() {
-		try {
-			DriverUtils.waitUntilElementAppears(driver, By.className(IOSLocators.classNameAlert));
-			if(alert != null) {
-				alertOk.click();
-			}
-		}
-		catch(Exception ex) {
-		}
-		
 	}
 
 }

@@ -1,9 +1,14 @@
 package com.wearezeta.auto.android;
 
+import java.io.IOException;
+
+import org.junit.Assert;
+
 import com.wearezeta.auto.android.pages.GroupChatPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.CommonUtils;
 
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class GroupChatInfoPageSteps {
@@ -41,4 +46,18 @@ public class GroupChatInfoPageSteps {
 		PagesCollection.otherUserPersonalInfoPage = PagesCollection.groupChatInfoPage.selectContactByName(name);
 	}
 
+	@Then("^I see that the conversation name is (.*)$")
+	public void IVerifyCorrectConversationName(String name) throws IOException{
+		Assert.assertEquals(PagesCollection.groupChatInfoPage.getConversationName(), name);
+	}
+	
+	@Then("^I see the correct participant avatars$")
+	public void ISeeCorrectParticipantAvatars() throws IOException{
+		Assert.assertTrue(PagesCollection.groupChatInfoPage.isParticipantAvatars());
+	}
+	
+	@Then("^I see the correct number of participants in the title (.*)$")
+	public void IVerifyParticipantNumber(String realNumberOfParticipants) throws IOException{
+		Assert.assertEquals(PagesCollection.groupChatInfoPage.getSubHeader(), realNumberOfParticipants + " people");
+		}
 }

@@ -46,7 +46,7 @@ public class LoginPageSteps {
 		 PagesCollection.loginPage =(LoginPage)(PagesCollection.loginPage.signIn());
 		 PagesCollection.loginPage.setLogin(login);
 		 PagesCollection.loginPage.setPassword(password);
-		 PagesCollection.contactListPage =(ContactListPage)(PagesCollection.loginPage.signIn());
+		 PagesCollection.contactListPage =(ContactListPage)(PagesCollection.loginPage.login());
 		 Assert.assertTrue("Login finished", PagesCollection.loginPage.waitForLogin());
 	}
 	 
@@ -54,6 +54,12 @@ public class LoginPageSteps {
 	 public void WhenIPressSignInButton() throws IOException {
 		 
 		 PagesCollection.loginPage.signIn();
+	 }
+	 
+	 @When("I press Sign in button again")
+	 public void WhenIPressSignInButtonAgain() throws IOException {
+		 
+		 PagesCollection.loginPage.login();
 	 }
 	 
 	 @When("I press Join button")

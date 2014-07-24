@@ -85,7 +85,7 @@ Examples:
 	|	Login		|	Password		|	Name		|	Contact			|
 	|	aqaUser		|	aqaPassword		|	aqaUser		|	aqaContact1		|
 
-@regression
+@regression 
 Scenario Outline: Add user to a group conversation
 	Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -111,7 +111,7 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		| Contact3		| Number  |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| aqaContact3	| 4		  |
 
-  # Not stable
+  # when you leave group chat - it disappears from contact list
   @mute
   @smoke
 Scenario Outline: Leave from group chat
@@ -131,8 +131,6 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-  # Not stable
-  @mute
   @smoke
  Scenario Outline: Remove from group chat
     Given I Sign in using login <Login> and password <Password>
@@ -151,9 +149,7 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
 
-  # Not stable
-  @mute
-  @smoke
+  @smoke 
 Scenario Outline: I can edit the conversation name
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -183,8 +179,6 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-  # Not stable
-  @mute
   @smoke
  Scenario Outline: Mute conversation
     Given I Sign in using login <Login> and password <Password>
