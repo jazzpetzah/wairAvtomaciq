@@ -68,14 +68,14 @@ public class RegistrationPageSteps {
 	 @When("^I press Picture button$")
 	 public void WhenIPressPictureButton() throws IOException {
 		 
-		 PagesCollection.registrationPage.selectPicture();
+		 PagesCollection.cameraRollPage = PagesCollection.registrationPage.selectPicture();
 	 }
 	 
-	 @When("^I choose photo from album$")
-	 public void WhenIPressChoosePhoto() throws IOException {
-		 
-		 PagesCollection.registrationPage.chooseFirstPhoto();
-	 }
+//	 @When("^I choose photo from album$")
+//	 public void WhenIPressChoosePhoto() throws IOException {
+//		 
+//		 PagesCollection.registrationPage.chooseFirstPhoto();
+//	 }
 
 	 @When("^I See selected picture$")
 	 public void ISeeSelectedPicture() throws IOException {
@@ -297,7 +297,6 @@ public class RegistrationPageSteps {
 	 @Then("Contact list loads with only my name")
 	 public void ContactListLoadsWithOnlyMyName() throws Throwable{
 		 PagesCollection.contactListPage = new ContactListPage(CommonUtils.getUrlFromConfig(ContactListPage.class), CommonUtils.getAppPathFromConfig(ContactListPage.class));
-		 PagesCollection.registrationPage.catchLoginAlert();
 		 PagesCollection.contactListPage.waitForContactListToLoad();		 
 		 Assert.assertTrue(PagesCollection.contactListPage.isMyUserNameDisplayedFirstInContactList(aqaName));
 	 }

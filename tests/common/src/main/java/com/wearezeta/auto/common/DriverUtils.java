@@ -50,9 +50,10 @@ public class DriverUtils {
 
 	public static boolean waitUntilElementDissapear(RemoteWebDriver driver, final By by) {
 
+		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-				.withTimeout(30, TimeUnit.SECONDS)
-				.pollingEvery(2, TimeUnit.SECONDS)
+				.withTimeout(20, TimeUnit.SECONDS)
+				.pollingEvery(1, TimeUnit.SECONDS)
 				.ignoring(NoSuchElementException.class);
 
 		Boolean bool = wait.until(new Function<WebDriver, Boolean>() {
@@ -61,15 +62,16 @@ public class DriverUtils {
 				return (driver.findElements(by).size() == 0);
 			}
 		});
-
+		setDefaultImplicitWait(driver);
 		return bool;
 	}
 
 	public static boolean waitUntilElementAppears(RemoteWebDriver driver, final By by) {
 
+		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-				.withTimeout(30, TimeUnit.SECONDS)
-				.pollingEvery(2, TimeUnit.SECONDS)
+				.withTimeout(20, TimeUnit.SECONDS)
+				.pollingEvery(1, TimeUnit.SECONDS)
 				.ignoring(NoSuchElementException.class);
 
 		Boolean bool = wait.until(new Function<WebDriver, Boolean>() {
@@ -79,6 +81,7 @@ public class DriverUtils {
 			}
 		});
 
+		setDefaultImplicitWait(driver);
 		return bool;
 	}
 

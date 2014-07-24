@@ -20,7 +20,7 @@ public abstract class IOSPage extends BasePage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameLoginPage)
 	private WebElement content;
 	
-	private static String imagesPath = "";//System.getProperty("user.home") + "/Projects/zautomation/tests/tools/img/";
+	private static String imagesPath = "";
 	
 	public IOSPage(String URL, String path) throws MalformedURLException {
 		
@@ -31,6 +31,7 @@ public abstract class IOSPage extends BasePage {
 		}
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("platformName", "iOS");
+        capabilities.setCapability("autoAcceptAlerts", true);
         capabilities.setCapability("app", path);
         capabilities.setCapability("deviceName", "iPhone");
         super.InitConnection(URL, capabilities);

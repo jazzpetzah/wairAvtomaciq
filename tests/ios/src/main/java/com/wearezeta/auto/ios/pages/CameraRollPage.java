@@ -13,9 +13,6 @@ public class CameraRollPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.nameCameraRollButton)
 	private WebElement cameraRollButton;
 	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathCameraRollAlertOK)
-	private WebElement cameraRollAlertOK;
-	
 	@FindBy(how = How.NAME, using = IOSLocators.nameCameraRollCancel)
 	private WebElement cameraRollCancel;
 	
@@ -46,8 +43,6 @@ public class CameraRollPage extends IOSPage{
 	
 	public void openCameraRoll() throws IOException, InterruptedException{
 		
-		System.out.print("CAMERA ROLL");
-		cameraRollAlertOK.click();
 		cameraRollTableCell.click();
 		cameraRollPicture.click();
 

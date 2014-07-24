@@ -30,7 +30,7 @@ public class GroupChatInfoPage extends IOSPage{
 	
 	private String conversationName = null;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathLeaveConversation)
+	@FindBy(how = How.NAME, using = IOSLocators.nameLeaveConversation)
 	private WebElement leaveChat;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameLeaveConversationButton)
