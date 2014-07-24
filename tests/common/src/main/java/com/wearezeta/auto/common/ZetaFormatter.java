@@ -4,12 +4,14 @@ package com.wearezeta.auto.common;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
 import javax.imageio.ImageIO;
 
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import gherkin.formatter.Formatter;
@@ -31,6 +33,9 @@ public class ZetaFormatter implements Formatter, Reporter {
 	private String scenario = "";
 	private Queue<String> step = new LinkedList<String>();
 
+	private long startDate;
+	private long endDate;
+	
 	@Override
 	public void background(Background arg0) {
 		
@@ -60,11 +65,13 @@ public class ZetaFormatter implements Formatter, Reporter {
 	@Override
 	public void feature(Feature arg0) {
 		feature = arg0.getName();
+		System.out.println("Feature: " + feature);
 	}
 
 	@Override
 	public void scenario(Scenario arg0) {
 		scenario = arg0.getName();
+		System.out.println("\n\nScenario: " + scenario);
 	}
 
 	@Override
@@ -110,16 +117,20 @@ public class ZetaFormatter implements Formatter, Reporter {
 	@Override
 	public void match(Match arg0) {
 		
+		startDate = new Date().getTime();
 	}
 
 	@Override
-	public void result(Result arg0) {	
+	public void result(Result arg0) {
+		endDate = new Date().getTime();
+		String currentStep = step.poll();
+		System.out.println(currentStep + " (status: " + arg0.getStatus() + ", time: " + (endDate-startDate) + "ms)");
 		if (driver != null) {
 			try {
 				BufferedImage image = DriverUtils.takeScreenshot(driver);
 				String picturePath = CommonUtils.getPictureResultsPathFromConfig(this.getClass());
 				File outputfile = new File(picturePath + feature + "/" +
-						scenario + "/" + step.poll() + ".png");
+						scenario + "/" + currentStep + ".png");
 				
 				if (!outputfile.getParentFile().exists()) {
 					outputfile.getParentFile().mkdirs();
@@ -127,6 +138,11 @@ public class ZetaFormatter implements Formatter, Reporter {
 			    ImageIO.write(image, "png", outputfile);
 
 			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			catch (WebDriverException  e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

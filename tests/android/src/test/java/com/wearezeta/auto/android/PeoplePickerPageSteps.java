@@ -1,11 +1,10 @@
 package com.wearezeta.auto.android;
 
-import java.io.IOException;
-
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.CommonUtils;
+
 import cucumber.api.java.en.When;
 
 public class PeoplePickerPageSteps {
@@ -60,7 +59,7 @@ public class PeoplePickerPageSteps {
 	}
 	
 	@When("^I click on Add to conversation button$")
-	public void WhenIClickOnAddToConversationButton() throws IOException{
+	public void WhenIClickOnAddToConversationButton() throws Exception{
 		PagesCollection.groupChatPage = (GroupChatPage)PagesCollection.peoplePickerPage.clickOnAddToCoversationButton();
 	}
 	

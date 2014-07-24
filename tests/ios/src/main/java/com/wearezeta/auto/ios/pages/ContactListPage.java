@@ -9,6 +9,7 @@ import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class ContactListPage extends IOSPage {
 	
@@ -21,9 +22,12 @@ public class ContactListPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameMuteButton)
 	private List<WebElement> muteButtons;
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameConnectAlertYes)
-	private WebElement connectAlertButton;
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathMyUserInContactList)
+	private WebElement myUserNameInContactList;
 
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathFirstChatInChatListTextField)
+	private WebElement firstChatInChatListTextField;
+	
 	private String url;
 	private String path;
 	private int oldLocation = 0;
@@ -32,6 +36,10 @@ public class ContactListPage extends IOSPage {
 		super(URL, path);
 		url = URL;
 		this.path = path;
+	}
+	
+	public boolean isMyUserNameDisplayedFirstInContactList(String name){
+		return myUserNameInContactList.getText().equals(name);
 	}
 	
 	public void muteConversation() {
@@ -60,10 +68,6 @@ public class ContactListPage extends IOSPage {
 		}
 		
 		return result;
-	}
-	
-	public void acceptConnectionRequest() {
-		connectAlertButton.click();
 	}
 
 	public IOSPage tapOnName(String name) throws IOException {
@@ -125,6 +129,10 @@ public class ContactListPage extends IOSPage {
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 	
+	public boolean verifyChangedGroupNameInChatList(){
+		return firstChatInChatListTextField.getText().equals(PagesCollection.groupChatInfoPage.getConversationName());
+	}
+	
 	public GroupChatPage tapOnGroupChat(String contact1, String contact2) throws IOException {
 		
 		findChatInContactList(contact1, contact2).click();
@@ -133,7 +141,7 @@ public class ContactListPage extends IOSPage {
 	}
 	
 	public void waitForContactListToLoad() {
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(IOSLocators.xpathFirstInContactList)));
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(IOSLocators.xpathMyUserInContactList)));
 	}
 	
 	private WebElement findChatInContactList(String contact1, String contact2) {
@@ -151,11 +159,6 @@ public class ContactListPage extends IOSPage {
 		}
 		
 		return el;
-	}
-	
-	public boolean waitForConnectionAllert() {
-			
-		return DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameConnectAlert));
 	}
 
 	@Override

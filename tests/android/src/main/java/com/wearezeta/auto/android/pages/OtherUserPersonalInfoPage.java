@@ -1,13 +1,11 @@
 package com.wearezeta.auto.android.pages;
 
-import java.io.IOException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.wearezeta.auto.common.AndroidLocators;
-import com.wearezeta.auto.common.DriverUtils;
+import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.SwipeDirection;
 
 public class OtherUserPersonalInfoPage extends AndroidPage {
@@ -16,6 +14,9 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idOtherUserPersonalInfoName)
 	private WebElement otherUserName;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idOtherUserPersonalInfoMail)
+	private WebElement otherUserMail;
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idUserProfileConfirmationMenu)
 	private WebElement confirmMenu;
@@ -36,7 +37,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	private String path;
 	
 	public OtherUserPersonalInfoPage(String URL, String path)
-			throws IOException {
+			throws Exception {
 		super(URL, path);
 		this.url = URL;
 		this.path = path;
@@ -48,7 +49,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	
 	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction)
-			throws IOException {
+			throws Exception {
 		AndroidPage page = null;
 		switch (direction){
 			case DOWN:
@@ -72,25 +73,32 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		return page;
 	}
 
-	@Override
+	/*@Override
 	public AndroidPage swipeUp(int time) throws IOException
 	{
 		DriverUtils.swipeUp(driver, frameLayout, time);
 		return returnBySwipe(SwipeDirection.UP);
-	}
+	}*/
 	
 	public boolean isOtherUserNameVisible(String name) {
+		refreshUITree();//workaround to refresh UI tree
 		wait.until(ExpectedConditions.visibilityOf(otherUserName));
 		return otherUserName.getText().equals(name);
+	}
+	
+	public boolean isOtherUserMailVisible(String mail) {
+		refreshUITree();//workaround to refresh UI tree
+		wait.until(ExpectedConditions.visibilityOf(otherUserMail));
+		return otherUserMail.getText().equals(mail);
 	}
 
 	public boolean isRemoveFromConversationAlertVisible() {
 		return confirmMenu.isDisplayed();
 	}
 	
-	public GroupChatInfoPage pressRemoveConfirmBtn() throws IOException
+	public GroupChatInfoPage pressRemoveConfirmBtn() throws Exception
 	{
-		driver.getPageSource();//TODO workaround
+		refreshUITree();//TODO workaround
 		wait.until(ExpectedConditions.elementToBeClickable(confirmBtn));
 		confirmBtn.click();
 		return new GroupChatInfoPage(url, path);

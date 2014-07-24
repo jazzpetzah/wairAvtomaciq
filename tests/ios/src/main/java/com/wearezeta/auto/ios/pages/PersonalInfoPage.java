@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.*;
 
 import org.openqa.selenium.WebElement;
@@ -8,7 +9,7 @@ import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.SwipeDirection;
-import com.wearezeta.auto.common.IOSLocators;
+import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class PersonalInfoPage extends IOSPage{
 	
@@ -20,6 +21,9 @@ public class PersonalInfoPage extends IOSPage{
 	
 	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameUIAButton)
 	private List<WebElement> optionsButtons;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameProfileSettingsButton)
+	private WebElement settingsButton;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameSignOutButton)
 	private WebElement signoutButton;
@@ -40,8 +44,16 @@ public class PersonalInfoPage extends IOSPage{
 		this.path = path;
 	}
 	
-	public void SignoutBtnClick(){
+	public PersonalInfoPage clickOnSettingsButton(){
+		settingsButton.click();
+		return this;
+	}
+	
+	public LoginPage clickSignoutButton() throws MalformedURLException{
+		LoginPage page;
 		signoutButton.click();
+		page = new LoginPage(url, path);
+		return page;
 	}
 	
 	public void waitForEmailFieldVisible(){
@@ -85,7 +97,6 @@ public class PersonalInfoPage extends IOSPage{
 		}
 		case UP:
 		{
-			page = this;
 			break;
 		}
 		case LEFT:

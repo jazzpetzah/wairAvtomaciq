@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.ContactListPage;
-import com.wearezeta.auto.android.pages.LoginPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.*;
 
@@ -19,13 +18,13 @@ public class LoginPageSteps {
 	}
 
 	@Given("^I Sign in using login (.*) and password (.*)$")
-	public void GivenISignIn(String login,String password) throws IOException, InterruptedException  {
+	public void GivenISignIn(String login,String password) throws Exception  {
 		if (login.equals(CommonUtils.YOUR_USER_1)) {
 			login = CommonUtils.yourUsers.get(0).getEmail();
 			password = CommonUtils.retrieveRealUserContactPasswordValue(password);
 		}
 		Assert.assertNotNull(PagesCollection.loginPage.isVisible());
-		PagesCollection.loginPage =(LoginPage)(PagesCollection.loginPage.SignIn());
+		PagesCollection.loginPage.SignIn();
 		PagesCollection.loginPage.setLogin(login);
 		PagesCollection.loginPage.setPassword(password);
 		PagesCollection.contactListPage =(ContactListPage)(PagesCollection.loginPage.LogIn());
@@ -38,12 +37,12 @@ public class LoginPageSteps {
 	}
 
 	@When("I press Log in button")
-	public void WhenIPressLogInButton() throws IOException {	 
+	public void WhenIPressLogInButton() throws Exception {	 
 		PagesCollection.loginPage.LogIn();
 	}
 
 	@When("I press Join button")
-	public void WhenIPressJoinButton() throws IOException {
+	public void WhenIPressJoinButton() throws Exception {
 
 		PagesCollection.registrationPage = PagesCollection.loginPage.join();
 	}

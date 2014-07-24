@@ -1,7 +1,8 @@
 Feature: Connect to User
 
+@mute
 @smoke
-@regression
+@nonUnicode
   Scenario Outline: Send invitation message to a user
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

@@ -1,7 +1,6 @@
 Feature: Conversation
 
   @smoke
-  @regression
   Scenario Outline: Send Message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -16,8 +15,9 @@ Feature: Conversation
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
 
+  # Muted due to the bug https://wearezeta.atlassian.net/browse/IOS-947
+  @mute
   @smoke
-  @regression
     Scenario Outline: Send Hello to contact
 		Given I Sign in using login <Login> and password <Password> 
     	And I see Contact list with my name <Name>
@@ -32,8 +32,7 @@ Feature: Conversation
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
 
-  @smoke
-  @regression
+  @smoke 
 	Scenario Outline: Start group chat with users from contact list
 		Given I Sign in using login <Login> and password <Password>
     	And I see Contact list with my name <Name>
@@ -56,7 +55,6 @@ Feature: Conversation
 
 
   @smoke
-  @regression
 Scenario Outline: Send message to group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -72,7 +70,6 @@ Examples:
 
   
   @smoke
-  @regression
 Scenario Outline: Send a camera roll picture to user from contact list
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with my name <Name>
@@ -89,8 +86,35 @@ Examples:
 	|	Login		|	Password		|	Name		|	Contact			|
 	|	aqaUser		|	aqaPassword		|	aqaUser		|	aqaContact1		|
 
-  @no-smoke
-  @no-regression
+@regression 
+Scenario Outline: Add user to a group conversation
+	Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+	When I create group chat with <Contact1> and <Contact2>
+	And I return to the chat list
+	And I see <Contact1> and <Contact2> chat in contact list
+	And I tap on a group chat with <Contact1> and <Contact2>
+	And I swipe up on group chat page
+	And I press Add button
+	And I press Continue button
+	And I see People picker page
+	And I input in People picker search field user name <Contact3>
+	And I see user <Contact3> found on People picker page
+	And I tap on user name found on People picker page <Contact3>
+	And I see Add to conversation button
+    And I click on Add to conversation button
+	Then I see that conversation has <Number> people
+	And I see <Number> participants avatars
+    When I exit the group info page
+    And I can see <Name> Added <Contact3>
+	
+Examples:
+    |  Login		| Password		| Name			| Contact1		| Contact2		| Contact3		| Number  |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| aqaContact3	| 4		  |
+
+  # when you leave group chat - it disappears from contact list
+  @mute
+  @smoke
 Scenario Outline: Leave from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -108,8 +132,7 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-  @no-smoke
-  @no-regression
+  @smoke
  Scenario Outline: Remove from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -122,13 +145,42 @@ Examples:
 	And I confirm remove
 	Then I see that <Contact2> is not present on group chat page
 
-
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-  @no-smoke
-  @no-regression
+
+  @smoke 
+Scenario Outline: I can edit the conversation name
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+	When I create group chat with <Contact1> and <Contact2>
+	And I swipe up on group chat page
+	And I change the conversation name
+	Then I see that the conversation name is correct with <Contact1> and <Contact2>
+	And I exit the group info page
+	And I see the new conversation name displayed in in conversation
+	And I return to the chat list
+	And I see the group conversation name changed in the chat list	
+		
+Examples:
+    |  Login		| Password		| Name			| Contact1		| Contact2		|
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
+
+   @regression
+Scenario Outline: I can see the individual user profile if I select someone in participants view
+	 Given I Sign in using login <Login> and password <Password>
+     And I see Contact list with my name <Name>
+     When I create group chat with <Contact1> and <Contact2>
+     And I swipe up on group chat page
+     And I select contact <Contact2>
+     Then I see the user profile from <Contact2>
+     
+Examples:
+    |  Login		| Password		| Name			| Contact1		| Contact2		|
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
+
+  @smoke
  Scenario Outline: Mute conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -141,3 +193,61 @@ Examples:
 Examples:
     |  Login		| Password		| Name			| Contact1    |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |
+
+
+@staging
+Scenario Outline: Verify correct group info page information
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+	When I create group chat with <Contact1> and <Contact2>
+	And I swipe up on group chat page
+	Then I see that the conversation name is correct with <Contact1> and <Contact2>
+	And I see the correct number of participants in the title <ParticipantNumber>
+	And I see the correct participant avatars
+Examples:
+    |  Login		| Password		| Name			| Contact1		        | Contact2	     	    | ParticipantNumber |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaPictureContact	    | aqaAvatar TestContact	| 		 3			|
+
+
+@staging   
+  Scenario Outline: I can send and play inline youtube link
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I tap on text input
+    And I type and send youtube link <YouTubeLink>
+    Then I see yotube link <YouTubeLink> and video in dialog
+    And I click video container for the first time
+    And I see video player page is opened
+
+	Examples: 
+    |	Login	|	Password	|	Name	|	Contact		| YouTubeLink	|
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| http://www.youtube.com/watch?v=Bb1RhktcugU |
+
+
+#crash after relogin due to defect IOS-959
+@mute   
+@staging  
+   Scenario Outline: I am able to play inline YouTube link poster by others
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I tap on text input
+    And I type and send youtube link <YouTubeLink>
+    And I tap on dialog window
+    And I swipe right on Dialog page
+    And I tap on my name <Name>
+    And I click on Settings button on personal page
+    And I click Sign out button from personal page
+    And I see sign in screen
+    And I Sign in using login <Contact> and password <Password>
+    And I tap on contact name <Name>
+    Then I see yotube link <YouTubeLink> and video in dialog
+    And I click video container for the first time
+    And I see video player page is opened
+
+	Examples: 
+    |	Login	|	Password	|	Name	|	Contact		| YouTubeLink	|
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| http://www.youtube.com/watch?v=Bb1RhktcugU |  

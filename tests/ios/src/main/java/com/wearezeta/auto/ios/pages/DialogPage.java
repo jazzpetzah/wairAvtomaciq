@@ -11,9 +11,12 @@ import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class DialogPage extends IOSPage{
-
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameLoginPage)
+	private WebElement dialogWindow;
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathCursorInput)
 	private WebElement cursorInput;
@@ -41,6 +44,9 @@ public class DialogPage extends IOSPage{
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherConversationCellFormat)
 	private WebElement imageCell;
+	
+	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameVideoContainer)
+	private WebElement videoContainer;
 	
 	private String url;
 	private String path;
@@ -171,6 +177,21 @@ public class DialogPage extends IOSPage{
 			}
 		}	
 		return page;
+	}
+	
+	public boolean isVideoContainerVisible(){
+		return videoContainer.isDisplayed();
+	}
+	
+	public VideoPlayerPage clickOnVideoContainerFirstTime() throws IOException{
+		VideoPlayerPage page = null;
+		videoContainer.click();
+		page = new VideoPlayerPage(url, path);
+		return page;
+	}
+	
+	public void tapDialogWindow(){
+		driver.tap(1, 1, 1, 500);
 	}
 	
 	private String getConnectMessageLabel(){

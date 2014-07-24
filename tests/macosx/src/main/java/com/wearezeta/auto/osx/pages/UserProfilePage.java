@@ -15,6 +15,9 @@ public class UserProfilePage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idMainWindow)
 	private WebElement mainWindow;
 
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathOpenUserPictureSettingsButton)
+	private WebElement userPictureButton;
+	
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathPictureFromImageFile)
 	private WebElement choosePictureFromImageFileButton;
 
@@ -36,6 +39,7 @@ public class UserProfilePage extends OSXPage {
 
 	public void openPictureSettings() {
 		mainWindow.click();
+		userPictureButton.click();
 		DriverUtils.waitUntilElementAppears(driver, By.xpath(OSXLocators.xpathPictureFromImageFile));
 	}
 	

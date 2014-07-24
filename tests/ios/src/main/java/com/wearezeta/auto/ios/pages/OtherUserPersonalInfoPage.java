@@ -7,8 +7,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-import com.wearezeta.auto.common.IOSLocators;
 import com.wearezeta.auto.common.SwipeDirection;
+import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class OtherUserPersonalInfoPage extends IOSPage{
 	
@@ -20,6 +20,9 @@ public class OtherUserPersonalInfoPage extends IOSPage{
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameAddContactToChatButton)
 	private WebElement addButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameContinueButton)
+	private WebElement continueButton;
 	
 	private String url;
 	private String path;
@@ -40,6 +43,10 @@ public class OtherUserPersonalInfoPage extends IOSPage{
 		
 		WebElement otherUserEmail = driver.findElementByXPath(String.format(IOSLocators.xpathOtherUserName, name));
 		return otherUserEmail.isDisplayed();
+	}
+	
+	public void continueToAddUser(){
+		continueButton.click();
 	}
 	
 	public void removeFromConversation() {

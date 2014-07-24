@@ -11,8 +11,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.wearezeta.auto.common.IOSLocators;
 import com.wearezeta.auto.common.SwipeDirection;
+import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class PeoplePickerPage extends IOSPage{
 	
@@ -85,11 +85,13 @@ public class PeoplePickerPage extends IOSPage{
 		
 		IOSPage page = null;
 		
-		try
-		{
-			if(driver.findElement(By.name(IOSLocators.nameSendConnectButton)) != null)
-			{
+		try {
+			WebElement el = driver.findElement(By.xpath(IOSLocators.xpathTypeYourMessage));
+			if( el.getText().contains(IOSLocators.CONNECT_TO_MESSAGE)) {
 				page = new ConnectToPage(url, path);
+			}
+			else {
+				page = this;
 			}
 		}
 		catch(NoSuchElementException ex)

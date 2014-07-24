@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.MalformedURLException;
 
 import org.junit.Assert;
 
@@ -27,6 +28,16 @@ public class PersonalInfoPageSteps {
 		PagesCollection.personalInfoPage.tapOptionsButtonByText(buttonName);
 	}
 	
+	@When("I click on Settings button on personal page")
+	public void WhenIClickOnSettingsButtonOnPersonalPage(){
+		PagesCollection.personalInfoPage.clickOnSettingsButton();
+	}
+	
+	@When("I click Sign out button from personal page")
+	public void IClickSignOutButtonFromPersonalPage() throws MalformedURLException{
+		PagesCollection.personalInfoPage.clickSignoutButton();
+	}
+	
 	@When("^I tap on personal screen$")
 	public void ITapOnPersonalScreen() throws InterruptedException {
 		PagesCollection.personalInfoPage.tapOnPersonalPage();
@@ -42,7 +53,9 @@ public class PersonalInfoPageSteps {
 	public void IReturnToPersonalPage() throws Throwable {
 		
 		PagesCollection.personalInfoPage.tapOnPersonalPage();
+		Thread.sleep(2000);
 		PagesCollection.personalInfoPage.tapOnPersonalPage();
+		Thread.sleep(2000);
 		referenceImage = PagesCollection.personalInfoPage.takeScreenshot();
 		PagesCollection.personalInfoPage.tapOnPersonalPage();
 
@@ -55,7 +68,15 @@ public class PersonalInfoPageSteps {
 		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);
 		System.out.print("SCORE: " + score);
 		Assert.assertTrue(
-				"Overlap between two images has no enough score. Expected >= 0.75, current = " + score,
-				score >= 0.75d);
+				"Overlap between two images has no enough score. Expected >= 0.65, current = " + score,
+				score >= 0.65d);
+	}
+	
+	@Then("I see profile image is same as template")
+	public void ThenISeeProfileImageIsSameAsSelected(String filename) throws IOException{
+		BufferedImage profileImage = PagesCollection.personalInfoPage.takeScreenshot();
+		double score = ImageUtil.getOverlapScore(RegistrationPageSteps.basePhoto, profileImage);
+		System.out.println("SCORE: " + score);
+		Assert.assertTrue("Images are differen. Expected score >= 0.75, current = " + score, score >= 0.75d);
 	}
 }

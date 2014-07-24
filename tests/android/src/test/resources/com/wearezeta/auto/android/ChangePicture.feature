@@ -1,7 +1,8 @@
 Feature: Change picture
 
+@mute
 @smoke
-@regression
+@nonUnicode
   Scenario Outline: Change user picture
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

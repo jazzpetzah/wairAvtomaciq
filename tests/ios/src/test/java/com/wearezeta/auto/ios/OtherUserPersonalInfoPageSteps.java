@@ -5,9 +5,11 @@ import java.io.IOException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.ios.pages.PeoplePickerPage;
 
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class OtherUserPersonalInfoPageSteps {
@@ -23,6 +25,12 @@ public class OtherUserPersonalInfoPageSteps {
 	public void WhenIPressAddButton() throws IOException, InterruptedException {
 		
 		PagesCollection.peoplePickerPage = (PeoplePickerPage)PagesCollection.otherUserPersonalInfoPage.addContactToChat();
+	}
+	
+	@When("^I press Continue button$")
+	public void WhenIPressContinueButton(){
+		
+	 PagesCollection.otherUserPersonalInfoPage.continueToAddUser();
 	}
 	
 	@When("^I swipe up on other user profile page$")
@@ -43,6 +51,17 @@ public class OtherUserPersonalInfoPageSteps {
 	@When("^I confirm remove$")
 	public void IConfirmRemove() throws Throwable {
 		PagesCollection.otherUserPersonalInfoPage.confirmRemove();
+	}
+	
+	@Then("^I see the user profile from (.*)$")
+	public void ISeeTheUserProfileFrom(String contact) throws Throwable {
+		
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		
+		boolean isShown = PagesCollection.otherUserPersonalInfoPage.isOtherUserProfileEmailVisible(contact);
+		
+		Assert.assertTrue("I can see the contacts email on the user profile page", isShown);
+	    
 	}
 
 }

@@ -7,6 +7,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.*;
 
+import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.*;
 
 public class LoginPage extends AndroidPage {
@@ -40,12 +41,20 @@ public class LoginPage extends AndroidPage {
 	private String url;
 	private String path;
 
-	public LoginPage(String URL, String path) throws IOException {
+	public LoginPage(String URL, String path) throws Exception {
 
 		super(URL, path);
 		this.url = URL;
 		this.path = path;
 	}
+	
+	public LoginPage(String URL, String path, boolean isUnicode) throws Exception {
+
+		super(URL, path, isUnicode);
+		this.url = URL;
+		this.path = path;
+	}
+	
 	
 	public RemoteWebDriver getDriver() {
 		return driver;
@@ -62,7 +71,7 @@ public class LoginPage extends AndroidPage {
 		return this;
 	}
 
-	public ContactListPage LogIn() throws IOException {
+	public ContactListPage LogIn() throws Exception {
 		confirmSignInButton.click();
 		return new ContactListPage(url, path);
 	}
@@ -102,7 +111,7 @@ public class LoginPage extends AndroidPage {
 	}
 
 	public Boolean isLoginFinished(String contact) throws InterruptedException {
-		driver.getPageSource();
+		refreshUITree();
 		HashMap<String,Integer> usersMap = DriverUtils.waitForElementWithTextById(AndroidLocators.idContactListNames, driver);
 		return usersMap.containsKey(contact);
 	}
@@ -117,7 +126,7 @@ public class LoginPage extends AndroidPage {
 		return null;
 	}
 
-	public RegistrationPage join() throws IOException {
+	public RegistrationPage join() throws Exception {
 		signUpButton.click();
 
 		return new RegistrationPage(url, path);

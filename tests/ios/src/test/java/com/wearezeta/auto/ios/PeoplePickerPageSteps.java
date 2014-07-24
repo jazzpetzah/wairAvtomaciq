@@ -71,5 +71,9 @@ public class PeoplePickerPageSteps {
 		PagesCollection.groupChatPage = (GroupChatPage)PagesCollection.peoplePickerPage.clickOnAddToCoversationButton();
 	}
 
+	@When("^I click clear button$")
+	public void WhenIClickClearButton() throws IOException{
+		PagesCollection.peoplePickerPage.dismissPeoplePicker();
+	}
 
 }

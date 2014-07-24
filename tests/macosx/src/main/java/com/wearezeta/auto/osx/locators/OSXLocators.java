@@ -33,7 +33,7 @@ public final class OSXLocators {
 	public static final String idArchiveButton = "archiveButton";
 	public static final String idShowArchivedButton = "showArchivedButton";
 	
-	public static final String nameSayHelloMenuItem = "“Hello”";
+	public static final String nameSayHelloMenuItem = "Knock";
 	public static final String nameSignOutMenuItem = "Sign Out";
 	public static final String nameQuitZClientMenuItem = "Quit ZClient";
 	public static final String nameSendInvitationButton = "Send";
@@ -50,6 +50,7 @@ public final class OSXLocators {
 	public static final String xpathConversationListScrollArea = "//AXScrollArea[@AXIdentifier='conversationList']";
 	
 	public static final String YOU_KNOCKED_MESSAGE = "YOU KNOCKED";
+	public static final String YOU_HOT_KNOCKED_MESSAGE = "YOU HOT KNOCKED";
 	public static final String YOU_ADDED_MESSAGE = "YOU ADDED";
 	public static final String YOU_REMOVED_MESSAGE = "YOU REMOVED";
 	
@@ -88,5 +89,15 @@ public final class OSXLocators {
 	
 	public static final String xpathPleaseProvideEmailAddress = "//AXStaticText[@AXValue='PLEASE PROVIDE A VALID EMAIL ADDRESS']";
 
+	public static final String xpathConversationNameEdit = "//AXPopover/AXScrollArea/AXTextArea";
+	
+	public static final String xpathUserAvatar = "//AXPopover/AXScrollArea/AXGrid/AXUnknown";
+	
+	public static final String xpathNumberOfPeopleInChat = "//AXPopover/AXStaticText";
+	
+	public static final String peopleCountTextSubstring = " PEOPLE";
+	
+	public static final String xpathOpenUserPictureSettingsButton = "//AXWindow/AXButton[6]";
+	
 	public static final String IMAGES_SOURCE_DIRECTORY = "Documents";
 }
