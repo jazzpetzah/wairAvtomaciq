@@ -50,13 +50,13 @@ public class PeoplePickerPage extends IOSPage{
 		return peoplePickerClearBtn.isDisplayed();
 	}
 	
-	public void tapOnPeoplePickerSearch(){
+	public void tapOnPeoplePickerSearch() { 
 		
 		driver.tap(1, peoplePickerSearch.getLocation().x + 20, peoplePickerSearch.getLocation().y + 20, 1);//workaround for people picker activation
 		peoplePickerSearch.click();
 	}
 	
-	public void tapOnPeoplePickerClearBtn(){
+	public void tapOnPeoplePickerClearBtn() {
 		peoplePickerClearBtn.click();
 	}
 	
