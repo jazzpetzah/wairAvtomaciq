@@ -57,7 +57,12 @@ public class IMAPSMailbox {
 	public void open() throws MessagingException {
 		Properties props = System.getProperties();
 		Session session = Session.getInstance(props, null);
-	    store = session.getStore(MAIL_PROTOCOL);
+	    //store = session.getStore(MAIL_PROTOCOL);
+		Store store = null;
+		if (MAIL_PROTOCOL != null)
+		store = session.getStore(MAIL_PROTOCOL);
+		else
+		store = session.getStore();
 
 		if (mailServer != null || user != null || password != null)
 			store.connect(mailServer, -1, user, password);

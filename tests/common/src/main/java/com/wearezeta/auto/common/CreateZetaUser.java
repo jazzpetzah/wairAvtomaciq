@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class CreateZetaUser {
 
-	public static final String MAILS_FOLDER = "Inbox";
+	public static final String MAIL_FOLDER = "Inbox";
 	// TODO: Move constant to global config
 	public static final String MAIL_SERVER = "imap.gmail.com";
 
@@ -70,7 +70,7 @@ public class CreateZetaUser {
 	}
 
 	public static List<EmailHeaders> getLastMailHeaders(String user, String password, int messageCount) throws MessagingException {
-		IMAPSMailbox mbox = new IMAPSMailbox(MAILS_FOLDER, MAIL_SERVER, user, password);
+		IMAPSMailbox mbox = new IMAPSMailbox(MAIL_SERVER, MAIL_FOLDER, user, password);
 		mbox.open();
 		try {
 			return mbox.getLastMailHeaders(messageCount);

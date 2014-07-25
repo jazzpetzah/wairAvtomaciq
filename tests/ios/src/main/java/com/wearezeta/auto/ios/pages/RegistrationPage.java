@@ -469,7 +469,7 @@ public class RegistrationPage extends IOSPage {
     }
 	
 	 public int getRecentEmailsCountForRecipient(int allRecentEmailsCnt, String expectedRecipient) throws MessagingException, IOException {
-	     IMAPSMailbox mailbox = new IMAPSMailbox(CreateZetaUser.MAIL_SERVER, CreateZetaUser.MAILS_FOLDER,
+	     IMAPSMailbox mailbox = new IMAPSMailbox(CreateZetaUser.MAIL_SERVER, CreateZetaUser.MAIL_FOLDER,
 	    		 CommonUtils.getDefaultEmailFromConfig(RegistrationPage.class), 
 	    		 CommonUtils.getDefaultPasswordFromConfig(RegistrationPage.class));
 		 int actualCnt = 0;

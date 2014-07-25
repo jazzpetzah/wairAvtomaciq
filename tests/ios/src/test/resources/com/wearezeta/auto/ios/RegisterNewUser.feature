@@ -333,7 +333,7 @@ Feature: Register new user
 	Given I see sign in screen
 	When I press Join button
 	And I press Picture button
-	And I choose photo from album
+	And I choose a picture from camera roll
 	And I See selected picture
 	And I confirm selection
 	And I enter name <Name>
@@ -347,5 +347,5 @@ Feature: Register new user
 	
 	Examples:     
     |	Email						|	Password	    |	Name			|   EmailCount   |
-    |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|      10        |
+    |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|      20        |
     
