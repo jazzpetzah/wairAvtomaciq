@@ -1,6 +1,6 @@
 Feature: Conversation
 
-  @smoke
+  @smoke 
   Scenario Outline: Send Message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -54,7 +54,7 @@ Feature: Conversation
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
 
-  @smoke
+  @smoke 
 Scenario Outline: Send message to group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -68,7 +68,7 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-  @smoke
+  @smoke 
 Scenario Outline: Send a camera roll picture to user from contact list
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with my name <Name>
@@ -131,7 +131,7 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-  @smoke
+  @smoke 
  Scenario Outline: Remove from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -164,7 +164,7 @@ Scenario Outline: I can edit the conversation name
 		
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
 
    @regression
 Scenario Outline: I can see the individual user profile if I select someone in participants view

@@ -13,7 +13,6 @@ import java.util.Properties;
 public class CreateZetaUser {
 
 	private static final String MAILS_FOLDER = "Inbox";
-	private static final String MAIL_SERVER = "imap.gmail.com";
 	private static final String MAIL_PROTOCOL= "imaps";
 
 	public static String registerUserAndReturnMail() throws IOException {
@@ -48,7 +47,7 @@ public class CreateZetaUser {
 		return user;
 	}
 
-	public static boolean activateRegisteredUser(String registeredUserMail,int timeout, String mail, String password )
+	public static boolean activateRegisteredUser(String registeredUserMail,int timeout, String mail, String password ) throws IOException
 	{
 		boolean activationState = false;
 		for(int i=0; i<5; i++)
@@ -71,10 +70,10 @@ public class CreateZetaUser {
 		return activationState;
 	}
 
-	public static List<EmailHeaders> getLastMailHeaders(String user, String password, int messageCount) {
+	public static List<EmailHeaders> getLastMailHeaders(String user, String password, int messageCount) throws IOException {
 
 		String protocol = MAIL_PROTOCOL;
-		String host = MAIL_SERVER;
+		String host = CommonUtils.getDefaultEmailServerFromConfig(CreateZetaUser.class);
 		String mbox = null;
 		List<EmailHeaders> headersList = new ArrayList<EmailHeaders>();
 		try {

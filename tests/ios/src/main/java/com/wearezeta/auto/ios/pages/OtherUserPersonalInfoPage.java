@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.pages;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -34,8 +35,19 @@ public class OtherUserPersonalInfoPage extends IOSPage{
 
 	}
 	
+	public void catchContinueAlert() {
+		try {
+			WebElement el = driver.findElementByName(IOSLocators.nameContinueButton);
+			el.click();
+		}
+		catch (NoSuchElementException ex) {
+			//do nothing
+		}
+	}
+	
 	public PeoplePickerPage addContactToChat() throws MalformedURLException {
 		addButton.click();
+		catchContinueAlert();
 		return new PeoplePickerPage(url, path);
 	}
 	
