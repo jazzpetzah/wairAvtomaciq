@@ -10,6 +10,7 @@ import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.ios.pages.CameraRollPage;
+import com.wearezeta.auto.ios.locators.IOSLocators;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -168,24 +169,23 @@ public class DialogPageSteps {
 	
 	@Then("The playing media is paused")
 	public void ThePlayingMediaIsPaused(){
-		String pausedState = "paused";
+		String pausedState = IOSLocators.MEDIA_STATE_PAUSED;
 		mediaState = PagesCollection.dialogPage.getMediaState();
 		Assert.assertEquals(pausedState, mediaState);
 	}
 	
 	@Then("The media is playing")
 	public void TheMediaIsPlaying(){
-		String playingState = "playing";
+		String playingState = IOSLocators.MEDIA_STATE_PLAYING;
 		mediaState = PagesCollection.dialogPage.getMediaState();
 		Assert.assertEquals(playingState, mediaState);
 	}
 	
 	@Then("The media stopps playing")
 	public void TheMediaStoppsPlaying(){
-		//BLOCKED because of bug Jira IOS-963: media restarts playing
-//		String endedState = "ended";
-//		mediaState = PagesCollection.dialogPage.getMediaState();
-//		Assert.assertEquals(endedState, mediaState);
+		String endedState = IOSLocators.MEDIA_STATE_STOPPED;
+		mediaState = PagesCollection.dialogPage.getMediaState();
+		Assert.assertEquals(endedState, mediaState);
 	}
 
 
