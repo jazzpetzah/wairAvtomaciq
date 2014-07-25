@@ -21,8 +21,6 @@ Feature: Register new user
     |	Email						|	Password	    |	Name			|
     |	aqaUser            	        |	aqaPassword	    |	aqaUser       	|
 
-#https://wearezeta.atlassian.net/browse/IOS-965
-@mute 
 @smoke 
 @regression
   Scenario Outline: Attempt to register an email with spaces
