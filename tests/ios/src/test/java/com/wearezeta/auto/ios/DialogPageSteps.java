@@ -10,6 +10,7 @@ import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.ios.pages.CameraRollPage;
+import com.wearezeta.auto.ios.locators.IOSLocators;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -17,6 +18,7 @@ import cucumber.api.java.en.When;
 public class DialogPageSteps {
 	
 	private String message;
+	private String mediaState;
 	
 	@When("^I see dialog page$")
 	public void WhenISeeDialogPage() throws Throwable {
@@ -165,6 +167,26 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.stopMediaContent();
 	}
 	
+	@Then("The playing media is paused")
+	public void ThePlayingMediaIsPaused(){
+		String pausedState = IOSLocators.MEDIA_STATE_PAUSED;
+		mediaState = PagesCollection.dialogPage.getMediaState();
+		Assert.assertEquals(pausedState, mediaState);
+	}
+	
+	@Then("The media is playing")
+	public void TheMediaIsPlaying(){
+		String playingState = IOSLocators.MEDIA_STATE_PLAYING;
+		mediaState = PagesCollection.dialogPage.getMediaState();
+		Assert.assertEquals(playingState, mediaState);
+	}
+	
+	@Then("The media stopps playing")
+	public void TheMediaStoppsPlaying(){
+		String endedState = IOSLocators.MEDIA_STATE_STOPPED;
+		mediaState = PagesCollection.dialogPage.getMediaState();
+		Assert.assertEquals(endedState, mediaState);
+	}
 
 
 }

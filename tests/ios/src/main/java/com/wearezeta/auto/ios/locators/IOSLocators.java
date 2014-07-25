@@ -222,6 +222,9 @@ public final class IOSLocators {
 	
 	public static final String nameVideoNextButton = "Next track";
 	
+	///////////////////////
+	//Media Bar Locators
+	///////////////////////
 	
 	public static final String nameMediaBarPlayPauseButton = "mediabarPlayPauseButton";
 	
@@ -234,5 +237,11 @@ public final class IOSLocators {
 	public static final String xpathMediaConversationCell = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[last()]/UIAWebView[1]";
 	
 	public static final String xpathConversationPage = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]";
+	
+	public static final String MEDIA_STATE_PLAYING = "playing";
+	
+	public static final String MEDIA_STATE_PAUSED = "paused";
+	
+	public static final String MEDIA_STATE_STOPPED = "ended";
 
 }
