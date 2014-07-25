@@ -212,7 +212,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @unicode @staging
+  @unicode @staging 
   Scenario Outline: Send double byte chars
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -226,7 +226,6 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     | Message                     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | 畑 はたけ hatake field of crops |
 
-@torun
  @nonUnicode @staging
   Scenario Outline: Verify correct group info page information
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
