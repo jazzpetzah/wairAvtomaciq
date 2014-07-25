@@ -10,7 +10,9 @@ import javax.mail.MessagingException;
 import org.apache.xalan.xsltc.runtime.MessageHandler;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -446,27 +448,10 @@ public class RegistrationPage extends IOSPage {
 	}
 	
 	public void reSendEmail() {
-		driver.tap(1, (reSendButton.getLocation().x)
-				+ (reSendButton.getSize().width / 2),
-				(reSendButton.getLocation().y)
-						+ (reSendButton.getSize().height - 5), 1);
+		Point p = reSendButton.getLocation();
+		Dimension k = reSendButton.getSize();
+		driver.tap(1, (p.x) + (k.width / 2), (p.y) + (k.height - 5), 1);
 	}
-	
-	public boolean emailInboxCount() throws IOException, MessagingException {
-		List<EmailHeaders> messageHeaders = CreateZetaUser.getLastMailHeaders(
-				CommonUtils.getDefaultEmailFromConfig(CreateZetaUser.class),
-				CommonUtils.getDefaultPasswordFromConfig(CreateZetaUser.class),
-				0);
-		String inboxCount = messageHeaders.get(messageHeaders.size())
-				.getLastUserEmail();
-		if (inboxCount.equals(null)) {
-			return false;
-		} else {
-			System.out.println(inboxCount);
-			return true;
-		}
-
-    }
 	
 	 public int getRecentEmailsCountForRecipient(int allRecentEmailsCnt, String expectedRecipient) throws MessagingException, IOException {
 	     IMAPSMailbox mailbox = new IMAPSMailbox(CreateZetaUser.MAIL_SERVER, CreateZetaUser.MAIL_FOLDER,

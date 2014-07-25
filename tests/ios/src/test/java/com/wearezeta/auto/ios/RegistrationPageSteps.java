@@ -31,6 +31,8 @@ public class RegistrationPageSteps {
 	 
 	 private String aqaPassword;
 	 
+	 public static final int maxCheckCnt = 2;
+	 
 	 boolean generateUsers = false;
 	 public static BufferedImage basePhoto;
 	 BufferedImage templateImage;	 
@@ -336,8 +338,8 @@ public class RegistrationPageSteps {
 	 public void VerifyRecipientsCount(final int recentEmailsCnt, final int expectedCnt) throws Throwable {
 		 String expectedRecipient = aqaEmail;
 		 int checksCnt = 0;
-		 int actualCnt = 0;
-		 while (checksCnt < 2) {
+		 int actualCnt = 0; 
+		 while (checksCnt < maxCheckCnt) {
 			  actualCnt = PagesCollection.registrationPage.getRecentEmailsCountForRecipient(recentEmailsCnt, expectedRecipient);
 		      if (actualCnt == expectedCnt) { 
 		    	  break;
