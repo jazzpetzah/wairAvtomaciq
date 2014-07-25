@@ -274,3 +274,21 @@ Examples:
     |  Login		| Password		| Name			| Contact1    | SoundCloudLink |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/klinke-auf-cinch/04-whats-happening-boytalk-remix |
     
+
+Scenario Outline: Conversation gets scrolled back to playing media when clicking on media bar
+	Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I tap on text input
+    And I post soundcloud media link <SoundCloudLink>
+    Then I see media link <SoundCloudLink> and media in dialog
+    And I tap media link
+    And I scroll media out of sight until media bar appears
+    And I tap on the media bar
+    Then I see conversation view is scrolled back to the playing media link <SoundCloudLink>
+    
+Examples:
+    |  Login		| Password		| Name			| Contact1    | SoundCloudLink |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/klinke-auf-cinch/04-whats-happening-boytalk-remix |
+    

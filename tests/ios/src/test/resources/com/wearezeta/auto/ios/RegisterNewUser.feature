@@ -326,7 +326,7 @@ Feature: Register new user
     Examples:     
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
-@torun    
+   
 @staging
  Scenario Outline: Can re-send verification email from verification screen 
 	Given I see sign in screen

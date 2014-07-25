@@ -189,6 +189,10 @@ public class DialogPage extends IOSPage{
 		return mediaState;
 	}
 	
+	public void tapOnMediaBar(){
+		mediabarBarTitle.click();
+	}
+	
 	@Override
 	public IOSPage swipeUp(int time) throws IOException
 	{
