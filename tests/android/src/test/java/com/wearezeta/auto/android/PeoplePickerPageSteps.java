@@ -63,4 +63,20 @@ public class PeoplePickerPageSteps {
 		PagesCollection.groupChatPage = (GroupChatPage)PagesCollection.peoplePickerPage.clickOnAddToCoversationButton();
 	}
 	
+	@When("^I tap on edit connect request field$")
+	public void WhenITapOnEditConnectRequestFieldn(){
+		PagesCollection.peoplePickerPage.tapEditConnectionRequies();
+	}
+	
+	@When("^I type Connect request (.*)$")
+	public void WhenITypeConnectRequest(String message){
+		PagesCollection.peoplePickerPage.typeConnectionRequies(message);
+	}
+	
+	@When("^I press Connect button$")
+	public void WhenIPressConnectButton() throws Exception{
+		PagesCollection.contactListPage = PagesCollection.peoplePickerPage.pressConnectButton();
+	}
+	
+	
 }

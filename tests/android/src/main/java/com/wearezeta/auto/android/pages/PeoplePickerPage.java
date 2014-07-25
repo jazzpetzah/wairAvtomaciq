@@ -57,7 +57,13 @@ public class PeoplePickerPage extends AndroidPage {
 
 	@FindBy(how = How.ID, using = AndroidLocators.idCreateConversationTitle)
 	private WebElement createConversationTitle;
-
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idConnectionRequiesMessage)
+	private WebElement connectionRequestMessage;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idSendConnectionRequestButton)
+	private WebElement sendConnectionRequestButton;
+	
 	public void tapPeopleSearch()
 	{
 		pickerSearch.click();
@@ -74,22 +80,8 @@ public class PeoplePickerPage extends AndroidPage {
 		AndroidPage page = null;
 		WebElement el = driver.findElementByXPath(String.format(AndroidLocators.xpathPeoplePickerContact,contactName));
 		el.click();
-		
-		/*for(WebElement element : linearLayout)
-		{
-			List<WebElement> elementTexts = element.findElements(By.className(AndroidLocators.classNameTextView));
-			for(WebElement el : elementTexts){
-				String text = el.getText();
-				if(text.equals(contactName)){
-					DriverUtils.androidLongClick(driver,element);
-					break;
-				}
-			}
-		}*/
-		if(isVisible(createConversation)){
-			page = this;
-		}
-		else if(isVisible(addToConversationsButton))
+	
+		if(isVisible(addToConversationsButton))
 		{
 			page = this;
 		}
@@ -163,6 +155,21 @@ public class PeoplePickerPage extends AndroidPage {
 
 	public ContactListPage tapClearButton() throws Exception {
 		pickerClearBtn.click();
+		return new ContactListPage(url, path);
+	}
+
+	public void tapEditConnectionRequies() {
+		refreshUITree();
+		connectionRequestMessage.click();
+	}
+
+	public void typeConnectionRequies(String message) {
+		connectionRequestMessage.sendKeys(message);
+		
+	}
+
+	public ContactListPage pressConnectButton() throws Exception {
+		sendConnectionRequestButton.click();
 		return new ContactListPage(url, path);
 	}
 
