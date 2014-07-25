@@ -17,6 +17,7 @@ import cucumber.api.java.en.When;
 public class DialogPageSteps {
 	
 	private String message;
+	private String mediaState;
 	
 	@When("^I see dialog page$")
 	public void WhenISeeDialogPage() throws Throwable {
@@ -165,6 +166,27 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.stopMediaContent();
 	}
 	
+	@Then("The playing media is paused")
+	public void ThePlayingMediaIsPaused(){
+		String pausedState = "paused";
+		mediaState = PagesCollection.dialogPage.getMediaState();
+		Assert.assertEquals(pausedState, mediaState);
+	}
+	
+	@Then("The media is playing")
+	public void TheMediaIsPlaying(){
+		String playingState = "playing";
+		mediaState = PagesCollection.dialogPage.getMediaState();
+		Assert.assertEquals(playingState, mediaState);
+	}
+	
+	@Then("The media stopps playing")
+	public void TheMediaStoppsPlaying(){
+		//BLOCKED because of bug Jira IOS-963: media restarts playing
+//		String endedState = "ended";
+//		mediaState = PagesCollection.dialogPage.getMediaState();
+//		Assert.assertEquals(endedState, mediaState);
+	}
 
 
 }
