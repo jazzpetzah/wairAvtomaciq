@@ -206,15 +206,10 @@ public class CommonUtils {
 
 		return getValueFromCommonConfig(c, "defaultEmail");
 	}
-	
-	public static String getDefaultEmailServerFromConfig(Class c) throws IOException {
-
-		return getValueFromCommonConfig(c, "defaultEmailServer");
-	}
 
 	public static String getDefaultEmailServerFromConfig(Class c) throws IOException {
 
-		return getValueFromComonConfig(c, "defaultEmailServer");}
+		return getValueFromCommonConfig(c, "defaultEmailServer");}
 	
 	public static String getDriverTimeoutFromConfig(Class c) throws IOException {
 

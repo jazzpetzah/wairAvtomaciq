@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class CreateZetaUser {
 
-	private static final String MAILS_FOLDER = "Inbox";
+	public static final String MAILS_FOLDER = "Inbox";
 	private static final String MAIL_PROTOCOL= "imaps";
 
 
@@ -70,7 +70,7 @@ public class CreateZetaUser {
 	}
 
 	public static List<EmailHeaders> getLastMailHeaders(String user, String password, int messageCount) throws MessagingException, IOException {
-		IMAPSMailbox mbox = new IMAPSMailbox(CommonUtils.getDefaultEmailServerFromConfig(CreateZetaUser.class), MAIL_FOLDER, user, password);
+		IMAPSMailbox mbox = new IMAPSMailbox(CommonUtils.getDefaultEmailServerFromConfig(CreateZetaUser.class), MAILS_FOLDER, user, password);
 		mbox.open();
 		try {
 			return mbox.getLastMailHeaders(messageCount);
