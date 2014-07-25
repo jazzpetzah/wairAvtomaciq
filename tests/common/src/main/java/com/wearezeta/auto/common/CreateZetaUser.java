@@ -11,8 +11,7 @@ import java.util.Map;
 public class CreateZetaUser {
 
 	public static final String MAIL_FOLDER = "Inbox";
-	// TODO: Move constant to global config
-	public static final String MAIL_SERVER = "imap.gmail.com";
+
 
 	public static String registerUserAndReturnMail() throws IOException, MessagingException {
 		String nextSuffix = null;
@@ -46,7 +45,7 @@ public class CreateZetaUser {
 		return user;
 	}
 
-	public static boolean activateRegisteredUser(String registeredUserMail,int timeout, String mail, String password ) throws MessagingException
+	public static boolean activateRegisteredUser(String registeredUserMail,int timeout, String mail, String password ) throws MessagingException, IOException
 	{
 		boolean activationState = false;
 		for(int i=0; i<5; i++)
@@ -69,8 +68,8 @@ public class CreateZetaUser {
 		return activationState;
 	}
 
-	public static List<EmailHeaders> getLastMailHeaders(String user, String password, int messageCount) throws MessagingException {
-		IMAPSMailbox mbox = new IMAPSMailbox(MAIL_SERVER, MAIL_FOLDER, user, password);
+	public static List<EmailHeaders> getLastMailHeaders(String user, String password, int messageCount) throws MessagingException, IOException {
+		IMAPSMailbox mbox = new IMAPSMailbox(CommonUtils.getDefaultEmailServerFromConfig(CreateZetaUser.class), MAIL_FOLDER, user, password);
 		mbox.open();
 		try {
 			return mbox.getLastMailHeaders(messageCount);

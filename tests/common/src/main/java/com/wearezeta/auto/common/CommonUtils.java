@@ -207,6 +207,10 @@ public class CommonUtils {
 		return getValueFromComonConfig(c, "defaultEmail");
 	}
 
+	public static String getDefaultEmailServerFromConfig(Class c) throws IOException {
+
+		return getValueFromComonConfig(c, "defaultEmailServer");}
+	
 	public static String getDriverTimeoutFromConfig(Class c) throws IOException {
 
 		return getValueFromConfig(c, "driverTimeoutSeconds");
