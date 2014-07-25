@@ -2,12 +2,20 @@ package com.wearezeta.auto.ios;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import javax.mail.MessagingException;
 
 import org.junit.Assert;
 
+import com.thoughtworks.selenium.Wait;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.CreateZetaUser;
+import com.wearezeta.auto.common.EmailHeaders;
+import com.wearezeta.auto.common.IMAPSMailbox;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
@@ -22,6 +30,8 @@ public class RegistrationPageSteps {
 	 private String aqaEmail;
 	 
 	 private String aqaPassword;
+	 
+	 public static final int maxCheckCnt = 2;
 	 
 	 boolean generateUsers = false;
 	 public static BufferedImage basePhoto;
@@ -322,6 +332,27 @@ public class RegistrationPageSteps {
 	 public void ISubmitRegistrationData()
 	 {
 		 PagesCollection.registrationPage.createAccount();
+	 }
+	 
+	 @Then("^I confirm that (\\d+) recent emails in inbox contain (\\d+) for current recipient$")
+	 public void VerifyRecipientsCount(final int recentEmailsCnt, final int expectedCnt) throws Throwable {
+		 String expectedRecipient = aqaEmail;
+		 int checksCnt = 0;
+		 int actualCnt = 0; 
+		 while (checksCnt < maxCheckCnt) {
+			  actualCnt = PagesCollection.registrationPage.getRecentEmailsCountForRecipient(recentEmailsCnt, expectedRecipient);
+		      if (actualCnt == expectedCnt) { 
+		    	  break;
+		      } 
+		      checksCnt++;
+		 }
+		 Assert.assertTrue(actualCnt == expectedCnt);
+	 }
+	 
+	 @Then("^I resend verification email$")
+	 public void IResendVerificationEmail()
+	 {
+		 PagesCollection.registrationPage.reSendEmail();
 	 }
 	 
 	 @When ("^I see error page$")

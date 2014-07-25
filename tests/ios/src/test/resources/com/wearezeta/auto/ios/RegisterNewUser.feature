@@ -21,7 +21,6 @@ Feature: Register new user
     |	Email						|	Password	    |	Name			|
     |	aqaUser            	        |	aqaPassword	    |	aqaUser       	|
 
-#mute
 @smoke 
 @regression
   Scenario Outline: Attempt to register an email with spaces
@@ -99,9 +98,9 @@ Feature: Register new user
     |	Correct				    |	Password	        |	Name	        |   Incorrect           |
     |   aqaUser	                |	aqaPassword	        |	aqaUser         |   error@wearezeta.com |
 
-
+  
   @regression
-  Scenario Outline: Register new user using username with maximum characters allowed
+  Scenario Outline: Register new user using username with maximum characters allowed, Deutch, Double-byte (Chinese), and emoji Characters
 	Given I see sign in screen
 	When I press Join button
 	And I press Picture button
@@ -327,3 +326,25 @@ Feature: Register new user
     Examples:     
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
+@torun    
+@staging
+ Scenario Outline: Can re-send verification email from verification screen 
+	Given I see sign in screen
+	When I press Join button
+	And I press Picture button
+	And I choose a picture from camera roll
+	And I See selected picture
+	And I confirm selection
+	And I enter name <Name>
+	And I enter email <Email>
+	And I enter password <Password>
+    Then I confirm that <EmailCount> recent emails in inbox contain 0 for current recipient 
+	And I submit registration data
+	Then I confirm that <EmailCount> recent emails in inbox contain 1 for current recipient
+	And I resend verification email
+	Then I confirm that <EmailCount> recent emails in inbox contain 2 for current recipient
+	
+	Examples:     
+    |	Email						|	Password	    |	Name			|   EmailCount   |
+    |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|      20        |
+    

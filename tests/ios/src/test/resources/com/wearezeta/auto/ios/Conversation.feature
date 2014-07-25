@@ -1,6 +1,6 @@
 Feature: Conversation
 
-  @smoke
+  @smoke 
   Scenario Outline: Send Message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -32,7 +32,7 @@ Feature: Conversation
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
 
-  @smoke 
+  @smoke
 	Scenario Outline: Start group chat with users from contact list
 		Given I Sign in using login <Login> and password <Password>
     	And I see Contact list with my name <Name>
@@ -54,7 +54,7 @@ Feature: Conversation
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
 
-  @smoke
+  @smoke 
 Scenario Outline: Send message to group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -68,7 +68,7 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-  @smoke
+  @smoke 
 Scenario Outline: Send a camera roll picture to user from contact list
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with my name <Name>
@@ -131,7 +131,7 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-  @smoke
+  @smoke 
  Scenario Outline: Remove from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -164,7 +164,7 @@ Scenario Outline: I can edit the conversation name
 		
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
 
    @regression
 Scenario Outline: I can see the individual user profile if I select someone in participants view
@@ -216,7 +216,7 @@ Examples:
     And I see dialog page
     And I tap on text input
     And I type and send youtube link <YouTubeLink>
-    Then I see yotube link <YouTubeLink> and video in dialog
+    Then I see media link <YouTubeLink> and media in dialog
     And I click video container for the first time
     And I see video player page is opened
 
@@ -243,10 +243,34 @@ Examples:
     And I see sign in screen
     And I Sign in using login <Contact> and password <Password>
     And I tap on contact name <Name>
-    Then I see yotube link <YouTubeLink> and video in dialog
+    Then I see media link <YouTubeLink> and media in dialog
     And I click video container for the first time
     And I see video player page is opened
 
 	Examples: 
     |	Login	|	Password	|	Name	|	Contact		| YouTubeLink	|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| http://www.youtube.com/watch?v=Bb1RhktcugU |  
+ 
+@staging
+Scenario Outline: Play/pause SoundCloud media link from the media bar
+	Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I tap on text input
+    And I post soundcloud media link <SoundCloudLink>
+    Then I see media link <SoundCloudLink> and media in dialog
+    And I tap media link
+    And I scroll media out of sight until media bar appears
+    And I pause playing the media in media bar
+    Then The playing media is paused
+    And I press play in media bar
+    Then The media is playing
+    And I stop media in media bar
+    Then The media stopps playing
+    
+    
+Examples:
+    |  Login		| Password		| Name			| Contact1    | SoundCloudLink |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/klinke-auf-cinch/04-whats-happening-boytalk-remix |
+    

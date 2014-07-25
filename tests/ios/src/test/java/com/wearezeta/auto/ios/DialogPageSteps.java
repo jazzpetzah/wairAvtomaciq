@@ -10,6 +10,7 @@ import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.ios.pages.CameraRollPage;
+import com.wearezeta.auto.ios.locators.IOSLocators;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -17,6 +18,7 @@ import cucumber.api.java.en.When;
 public class DialogPageSteps {
 	
 	private String message;
+	private String mediaState;
 	
 	@When("^I see dialog page$")
 	public void WhenISeeDialogPage() throws Throwable {
@@ -111,10 +113,10 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.typeMessage(link + "\n");
 	}
 	
-	@Then("I see yotube link (.*) and video in dialog")
-	public void ISeeYoutubeLinkAndVideoInDialog(String link){
+	@Then("I see media link (.*) and media in dialog")
+	public void ISeeMediaLinkAndMediaInDialog(String link){
 		Assert.assertEquals(link, PagesCollection.dialogPage.getLastMessageFromDialog());
-		Assert.assertTrue("Video is missing in dialog", PagesCollection.dialogPage.isVideoContainerVisible());
+		Assert.assertTrue("Media is missing in dialog", PagesCollection.dialogPage.isMediaContainerVisible());
 	}
 	
 	@When("I click video container for the first time")
@@ -130,6 +132,60 @@ public class DialogPageSteps {
 	@When("I swipe right on Dialog page")
 	public void ISwipeRightOnDialogPage() throws IOException{
 		PagesCollection.dialogPage.swipeRight(500);
+	}
+	
+	@When("^I post soundcloud media link (.*)$")
+	public void IPostMediaLink(String link) throws Throwable {
+		PagesCollection.dialogPage.waitForTextMessageInputVisible();
+	    PagesCollection.dialogPage.typeMessage(link + "\n");
+	    PagesCollection.dialogPage.typeMessage(link + "\n");
+	}
+	
+	@When("^I tap media link$")
+	public void ITapMediaLink() throws Throwable {
+		PagesCollection.dialogPage.startMediaContent();
+	}
+	
+	@When("^I scroll media out of sight until media bar appears$")
+	public void IScrollMediaOutOfSightUntilMediaBarAppears() throws Exception{
+		PagesCollection.dialogPage.scrollDownTilMediaBarAppears();
+	 
+	}
+	
+	@When("^I pause playing the media in media bar$")
+	public void IPausePlayingTheMediaInMediaBar() throws Exception{
+		PagesCollection.dialogPage.pauseMediaContent();
+	}
+	
+	@When("^I press play in media bar$")
+	public void IPressPlayInMediaBar() throws Exception{
+		PagesCollection.dialogPage.playMediaContent();
+	}
+	
+	@When("^I stop media in media bar$")
+	public void IStopMediaInMediaBar() throws Exception{
+		PagesCollection.dialogPage.stopMediaContent();
+	}
+	
+	@Then("The playing media is paused")
+	public void ThePlayingMediaIsPaused(){
+		String pausedState = IOSLocators.MEDIA_STATE_PAUSED;
+		mediaState = PagesCollection.dialogPage.getMediaState();
+		Assert.assertEquals(pausedState, mediaState);
+	}
+	
+	@Then("The media is playing")
+	public void TheMediaIsPlaying(){
+		String playingState = IOSLocators.MEDIA_STATE_PLAYING;
+		mediaState = PagesCollection.dialogPage.getMediaState();
+		Assert.assertEquals(playingState, mediaState);
+	}
+	
+	@Then("The media stopps playing")
+	public void TheMediaStoppsPlaying(){
+		String endedState = IOSLocators.MEDIA_STATE_STOPPED;
+		mediaState = PagesCollection.dialogPage.getMediaState();
+		Assert.assertEquals(endedState, mediaState);
 	}
 
 

@@ -3,14 +3,26 @@ package com.wearezeta.auto.ios.pages;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
+import java.util.ArrayList;
 
+import javax.mail.MessagingException;
+
+import org.apache.xalan.xsltc.runtime.MessageHandler;
+import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.CreateZetaUser;
+import com.wearezeta.auto.common.DriverUtils;
+import com.wearezeta.auto.common.EmailHeaders;
+import com.wearezeta.auto.common.IMAPSMailbox;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.common.DriverUtils;
@@ -51,12 +63,6 @@ public class RegistrationPage extends IOSPage {
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameYourEmail)
 	private WebElement yourEmail;
-	
-	//@FindBy(how = How.XPATH, using = IOSLocators.xpathYourSecurePassword)
-	//private WebElement yourSecurePassword;
-	
-	//@FindBy(how = How.XPATH, using = IOSLocators.xpathYourVisiblePassword)
-	//private WebElement yourVisiblePassword;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameYourPassword)
 	private WebElement yourPassword;
@@ -100,6 +106,9 @@ public class RegistrationPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathCloseColorModeButton)
 	private WebElement closeColorModeButton;
 	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathReSendButton)
+	private WebElement reSendButton;
+	
 	private String name;
 	private String email;
 	private String password;
@@ -111,6 +120,7 @@ public class RegistrationPage extends IOSPage {
 	private String confirmMessage = "We sent an email to %s. Check your Inbox and follow the link to verify your address. You won’t be able to use Zeta until you do.\n\nDidn’t get the message?\n\nRe-send";
 
 	private String[] listOfEmails;
+	private String recipientInboxCount;
 	
 	private String url;
 	private String path;
@@ -129,9 +139,6 @@ public class RegistrationPage extends IOSPage {
 	}
 	
 	
-	///////////////////////////////
-	//take Photo(select image) page
-	///////////////////////////////
 	
 	public boolean isTakePhotoSmileDisplayed(){
 		return takePhotoSmile.isEnabled();
@@ -230,11 +237,6 @@ public class RegistrationPage extends IOSPage {
 		cancelImageButton.click();
 	}
 	
-	
-	
-	//////////////////////
-	// Inputs fulfilling
-	//////////////////////
 	
 	public void hideKeyboard(){
 		driver.hideKeyboard();
@@ -393,9 +395,6 @@ public class RegistrationPage extends IOSPage {
 		backToWelcomeButton.click();
 	}
 	
-	/////////////////////////
-	// Navigation
-	////////////////////////
 	
 	public void navigateToWelcomePage()
 	{
@@ -415,11 +414,6 @@ public class RegistrationPage extends IOSPage {
 	public void tapForwardButton(){
 		forwardWelcomeButton.click();
 	}
-	
-	///////////////
-	//common
-	///////////////
-
 
 	public String getName() {
 		return name;
@@ -452,4 +446,31 @@ public class RegistrationPage extends IOSPage {
 	public void setListOfEmails(String[] list){
 		this.listOfEmails = list;
 	}
+	
+	public void reSendEmail() {
+		Point p = reSendButton.getLocation();
+		Dimension k = reSendButton.getSize();
+		driver.tap(1, (p.x) + (k.width / 2), (p.y) + (k.height - 5), 1);
+	}
+	
+	 public int getRecentEmailsCountForRecipient(int allRecentEmailsCnt, String expectedRecipient) throws MessagingException, IOException {
+	     IMAPSMailbox mailbox = new IMAPSMailbox(CommonUtils.getDefaultEmailServerFromConfig(RegistrationPage.class), CreateZetaUser.MAILS_FOLDER,
+	    		 CommonUtils.getDefaultEmailFromConfig(RegistrationPage.class), 
+	    		 CommonUtils.getDefaultPasswordFromConfig(RegistrationPage.class));
+		 int actualCnt = 0;
+		 try {
+			 mailbox.open();
+			 List<EmailHeaders> allEmailsHeaders = mailbox.getLastMailHeaders(allRecentEmailsCnt);
+			 for (EmailHeaders emailHeaders: allEmailsHeaders) {
+				 if (emailHeaders.getLastUserEmail().equals(expectedRecipient)) {
+					 actualCnt++; 
+				 }
+			 }
+		 } finally {
+			 mailbox.close();
+		 }
+		 return actualCnt;
+	 }
+	
 }
+ 

@@ -72,7 +72,9 @@ public class ContactListPage extends IOSPage {
 
 	public IOSPage tapOnName(String name) throws IOException {
 		IOSPage page = null;
-		findNameInContactList(name).click();
+		WebElement el = findNameInContactList(name);
+		wait.until(ExpectedConditions.elementToBeClickable(el));
+		el.click();
 		if(isProfilePageVisible()){
 			page = new PersonalInfoPage(url, path);
 		}

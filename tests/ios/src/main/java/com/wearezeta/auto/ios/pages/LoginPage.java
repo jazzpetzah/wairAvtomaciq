@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
@@ -105,12 +106,21 @@ public class LoginPage extends IOSPage {
 		passwordField.sendKeys(password);
 	}
 	
-	public boolean waitForLogin() {
+	public boolean waitForLogin() throws InterruptedException {
 		 
-		 return DriverUtils.waitUntilElementDissapear(driver, By.name(IOSLocators.nameLoginField));
+		return DriverUtils.waitUntilElementDissapear(driver, By.name(IOSLocators.nameLoginField));
 	}
 	
 	public Boolean isLoginFinished(String contact) throws IOException {
+		
+		try {
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.name(contact)));
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.name(contact)));
+		}
+		catch (WebDriverException ex)
+		{
+			System.out.println(ex.getMessage());
+		}
 		WebElement el = null;
 		el = driver.findElement(By.name(contact));
 		return el != null;

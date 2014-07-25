@@ -28,7 +28,6 @@ public class ConnectToPageSteps {
 		//TODO: workaround, should return to Contact list page automatically
 		PeoplePickerPageSteps pick = new PeoplePickerPageSteps();
 		pick.WhenIClickClearButton();
-		pick.WhenIClickClearButton();
 	}
 	
 	@When("^I input message in connect to dialog and click Send button$")

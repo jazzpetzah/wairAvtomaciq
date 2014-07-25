@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.mail.MessagingException;
+
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.LoginPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
@@ -91,7 +93,7 @@ public class CommonSteps {
 		}
 	}
 	
-	private void commonBefore() throws IOException, InterruptedException{
+	private void commonBefore() throws IOException, InterruptedException, MessagingException{
 		
 		try {
 			CommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
