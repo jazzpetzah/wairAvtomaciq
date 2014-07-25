@@ -100,9 +100,9 @@ Feature: Register new user
     |	Correct				    |	Password	        |	Name	        |   Incorrect           |
     |   aqaUser	                |	aqaPassword	        |	aqaUser         |   error@wearezeta.com |
 
-
+  
   @regression
-  Scenario Outline: Register new user using username with maximum characters allowed
+  Scenario Outline: Register new user using username with maximum characters allowed, Deutch, Double-byte (Chinese), and emoji Characters
 	Given I see sign in screen
 	When I press Join button
 	And I press Picture button
@@ -328,7 +328,8 @@ Feature: Register new user
     Examples:     
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
-@torun
+    
+
  Scenario Outline: Can re-send verification email from verification screen 
 	Given I see sign in screen
 	When I press Join button
