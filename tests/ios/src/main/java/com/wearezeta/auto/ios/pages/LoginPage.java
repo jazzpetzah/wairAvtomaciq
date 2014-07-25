@@ -112,8 +112,8 @@ public class LoginPage extends IOSPage {
 	
 	public Boolean isLoginFinished(String contact) throws IOException {
 		
-		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.name(contact)));
-		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.name(contact)));
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.name(contact)));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.name(contact)));
 		WebElement el = null;
 		el = driver.findElement(By.name(contact));
 		return el != null;
