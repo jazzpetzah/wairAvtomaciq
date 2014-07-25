@@ -1,106 +1,47 @@
-#!/bin/sh
+#!/bin/bash -e
+
+if [ "$(id -u)" != "0" ]; then
+   echo "This script must be run as root" 1>&2
+   exit 1
+fi
 
 # Java Plugin Location
-javaPlugin="/Library/Internet Plug-Ins/JavaAppletPlugin.plugin"
-
-# Config File Location
-configFile="/Library/Application Support/Oracle/Java/Deployment/deployment.config"
-
-# Properties File Location
-propFile="/Library/Application Support/Oracle/Java/Deployment/deployment.properties"
-
+JAVA_PLUGIN="/Library/Internet Plug-Ins/JavaAppletPlugin.plugin"
 # Folder Location
-folderLoc="/Library/Application Support/Oracle/Java/Deployment/"
+FOLDER_LOC="/Library/Application Support/Oracle/Java/Deployment"
+# Config
+CONFIG_FILE_NAME="deployment.config"
+CONFIG_FILE="$FOLDER_LOC/$CONFIG_FILE_NAME"
+# Properties
+PROP_FILE_NAME="deployment.properties"
+PROP_FILE="$FOLDER_LOC/$PROP_FILE_NAME"
 
-# Checks if Java Plugin is installed
-if [ -e "$javaPlugin" ]; then
-
-	/bin/echo "Java Plugin is installed..."
-
-	# Checks if config file is present
-	if [ ! -f "$configFile" ]; then
-
-		/bin/echo "The deployment.config file does not yet exist. Will create..."
-
-		# Create path
-		/bin/mkdir -p "$folderLoc"
-
-	else
-
-		/bin/echo "deployment.config file already exists. Removing and building new version..."
-
-		# Delete existing version of the file
-		/bin/rm -f "$configFile"
-
-		/bin/echo "Deleted previous deployment.config file"
-
-	fi
+if [ -e "$JAVA_PLUGIN" ]; then
+	echo "Java Plugin is installed..."
+    echo "Processing the $CONFIG_FILE_NAME file..."
+    mkdir -p "$FOLDER_LOC"
+	echo "deployment.system.config=file\://$PROP_FILE" > "$CONFIG_FILE"
+	echo "deployment.system.config.mandatory=false" >> "$CONFIG_FILE"
+	echo "Wrote content to $CONFIG_FILE_NAME file."
+	chown root:wheel "$CONFIG_FILE"
 	
-	# Create deployment.config file
-	/usr/bin/touch "$configFile"
+	echo "Processing the $PROP_FILE_NAME file..."
+	echo '#deployment.properties' > "$PROP_FILE"
+	echo deployment.security.validation.ocsp=false >> "$PROP_FILE"
+	echo deployment.security.validation.ocsp.locked >> "$PROP_FILE"
+	echo deployment.macosx.check.update=false >> "$PROP_FILE"
+	echo deployment.macosx.check.update.locked >> "$PROP_FILE"
+	echo deployment.expiration.check.enabled=false >> "$PROP_FILE"
+	echo deployment.expiration.check.enabled.locked >> "$PROP_FILE"
+	echo deployment.console.startup.mode=HIDE >> "$PROP_FILE"
+	echo "Wrote content to $PROP_FILE_NAME file."
+	chown root:wheel "$PROP_FILE"
 
-	/bin/echo "Created deployment.config file"
-
-	# Change ownership on this new file
-	/usr/sbin/chown root:wheel "$configFile"
-
-	/bin/echo "Changed ownership on deployment.config file"
-
-	# Write contents of this file
-	/bin/echo deployment.system.config=file\://$propFile >> "$configFile"
-	/bin/echo deployment.system.config.mandatory=false >> "$configFile"
-
-	/bin/echo "Wrote content to deployment.config file."
-	
-
-	# Checks if properties file is present
-	if [ ! -f "$propFile" ]; then
-
-		/bin/echo "The deployment.properties file does not yet exist. Will create..."
-		
-		# Create path
-		/bin/mkdir -p "$folderLoc"
-		
-	else
-
-		/bin/echo "deployment.properties file already exists. Removing and building new version..."
-
-		# Delete existing version of the file
-		/bin/rm -f "$propFile"
-
-	fi
-
-	# Create deployment.properties file
-	/usr/bin/touch "$propFile"
-
-	/bin/echo "Created deployment.properties file"
-
-	# Change ownership on this new file
-	/usr/sbin/chown root:wheel "$propFile"
-
-	/bin/echo "Changed ownership on deployment.properties file"
-
-	# Write contents of this file
-	/bin/echo '#deployment.properties' > "$propFile"
-	/bin/echo deployment.security.validation.ocsp=false >> "$propFile"
-	/bin/echo deployment.security.validation.ocsp.locked >> "$propFile"
-	/bin/echo deployment.macosx.check.update=false >> "$propFile"
-	/bin/echo deployment.macosx.check.update.locked >> "$propFile"
-	/bin/echo deployment.expiration.check.enabled=false >> "$propFile"
-	/bin/echo deployment.expiration.check.enabled.locked >> "$propFile"
-	/bin/echo deployment.console.startup.mode=HIDE >> "$propFile"
-
-	/bin/echo "Wrote content to deployment.properties file."
-
-	# Change the auto updater preference
-	/usr/bin/defaults write /Library/Preferences/com.oracle.java.Java-Updater JavaAutoUpdateEnabled -bool false
-
-	/bin/echo "Changed the auto updater preference file."
-	/bin/echo "Java settings have been deployed. Exiting"
-
+	echo "Fixing the auto updater preference file..."
+	defaults write /Library/Preferences/com.oracle.java.Java-Updater JavaAutoUpdateEnabled -bool false
+	echo "Changed the auto updater preference file."
+	echo "Java settings have been deployed. Exiting"
 else
-
-	echo "Error: Failure to find Java Plugin path. Either Java is not installed, or the path within the plugin has changed. Exiting"
+	echo "Error: Failure to find Java Plugin path. Either Java is not installed, or the path within the plugin has changed."
 	exit 1
-
 fi
