@@ -68,8 +68,7 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-  
-  @smoke
+  @smoke 
 Scenario Outline: Send a camera roll picture to user from contact list
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with my name <Name>
@@ -253,7 +252,7 @@ Examples:
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| http://www.youtube.com/watch?v=Bb1RhktcugU |  
  
 @staging
-Scenario Outline: Play/pause media from the media bar
+Scenario Outline: Play/pause SoundCloud media link from the media bar
 	Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
@@ -264,8 +263,11 @@ Scenario Outline: Play/pause media from the media bar
     And I tap media link
     And I scroll media out of sight until media bar appears
     And I pause playing the media in media bar
+    Then The playing media is paused
     And I press play in media bar
+    Then The media is playing
     And I stop media in media bar
+    Then The media stopps playing
     
     
 Examples:

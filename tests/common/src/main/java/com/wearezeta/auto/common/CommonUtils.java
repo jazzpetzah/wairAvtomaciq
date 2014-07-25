@@ -179,7 +179,7 @@ public class CommonUtils {
 		return val;
 	}
 
-	private static String getValueFromComonConfig(Class c, String key)
+	private static String getValueFromCommonConfig(Class c, String key)
 			throws IOException {
 
 		String val = "";
@@ -187,7 +187,7 @@ public class CommonUtils {
 
 		try {
 			URL configFile = c.getClass()
-					.getResource("/ComonConfiguration.cnf");
+					.getResource("/CommonConfiguration.cnf");
 			configFileStream = configFile.openStream();
 			Properties p = new Properties();
 			p.load(configFileStream);
@@ -204,7 +204,12 @@ public class CommonUtils {
 
 	public static String getDefaultEmailFromConfig(Class c) throws IOException {
 
-		return getValueFromComonConfig(c, "defaultEmail");
+		return getValueFromCommonConfig(c, "defaultEmail");
+	}
+	
+	public static String getDefaultEmailServerFromConfig(Class c) throws IOException {
+
+		return getValueFromCommonConfig(c, "defaultEmailServer");
 	}
 
 	public static String getDefaultEmailServerFromConfig(Class c) throws IOException {
@@ -219,13 +224,13 @@ public class CommonUtils {
 	public static String getDefaultPasswordFromConfig(Class c)
 			throws IOException {
 
-		return getValueFromComonConfig(c, "defaultPassword");
+		return getValueFromCommonConfig(c, "defaultPassword");
 	}
 
 	public static String getDefaultBackEndUrlFromConfig(Class c)
 			throws IOException {
 
-		return getValueFromComonConfig(c, "defaultBackEndUrl");
+		return getValueFromCommonConfig(c, "defaultBackEndUrl");
 	}
 
 	public static String getUrlFromConfig(Class c) throws IOException {

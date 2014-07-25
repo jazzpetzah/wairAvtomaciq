@@ -10,7 +10,8 @@ import java.util.Map;
 
 public class CreateZetaUser {
 
-	public static final String MAIL_FOLDER = "Inbox";
+	private static final String MAILS_FOLDER = "Inbox";
+	private static final String MAIL_PROTOCOL= "imaps";
 
 
 	public static String registerUserAndReturnMail() throws IOException, MessagingException {

@@ -225,6 +225,9 @@ public final class IOSLocators {
 	public static final String nameConnectAlertYes = "Yes";
 	
 	public static final String xpathReSendButton = "//UIAApplication[1]/UIAWindow[1]/UIATextView[1]";
+	///////////////////////
+	//Media Bar Locators
+	///////////////////////
 	
 	public static final String nameMediaBarPlayPauseButton = "mediabarPlayPauseButton";
 	
@@ -237,6 +240,12 @@ public final class IOSLocators {
 	public static final String xpathMediaConversationCell = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[last()]/UIAWebView[1]";
 	
 	public static final String xpathConversationPage = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]";
+	
+	public static final String MEDIA_STATE_PLAYING = "playing";
+	
+	public static final String MEDIA_STATE_PAUSED = "paused";
+	
+	public static final String MEDIA_STATE_STOPPED = "ended";
 
 }
 

@@ -61,6 +61,9 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.nameMediaBarCloseButton)
 	private WebElement mediabarStopCloseButton;
 	
+	@FindBy(how = How.NAME, using = IOSLocators.nameMediaBarTitle)
+	private WebElement mediabarBarTitle;
+	
 	
 	private String url;
 	private String path;
@@ -178,6 +181,12 @@ public class DialogPage extends IOSPage{
 	
 	public void stopMediaContent(){
 		mediabarStopCloseButton.click();
+	}
+	
+	public String getMediaState(){
+		
+		String mediaState = mediabarBarTitle.getAttribute("value");
+		return mediaState;
 	}
 	
 	@Override

@@ -48,7 +48,7 @@ public class LoginPageSteps {
 		 PagesCollection.loginPage.setPassword(password);
 		 PagesCollection.contactListPage = (ContactListPage)(PagesCollection.loginPage.login());
 		 
-		 Assert.assertTrue("Login finished", PagesCollection.loginPage.waitForLogin());
+		 //Assert.assertTrue("Login finished", PagesCollection.loginPage.waitForLogin());
 	}
 	 
 	 @When("I press Sign in button")
