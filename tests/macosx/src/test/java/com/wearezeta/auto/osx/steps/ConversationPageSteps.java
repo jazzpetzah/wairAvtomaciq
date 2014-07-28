@@ -206,4 +206,24 @@ public class ConversationPageSteps {
 		 ppSteps.WhenISeeUserFromSearchResults(user2);
 		 ppSteps.WhenIAddUserFromSearchResults(user2);
 	 }
+	 
+	 @Given("^I post media link (.*)$")
+	 public void WhenIPostMediaLink(String link) throws Throwable { 
+		 CommonSteps.senderPages.getConversationPage().writeNewMessage(link);
+	 }
+
+	 @Then("^I see media link (.*) and media in dialog$")
+	 public void ThenISeeMediaLinkAndMediaInDialog(String link) throws Throwable {
+	     
+	 }
+
+	 @When("^I tap media link$")
+	 public void WhenITapMediaLink() throws Throwable {
+	   
+	 }
+
+	 @Then("^I see the embedded media is playing$")
+	 public void ThenISeeTheEmbeddedMediaIsPlaying() throws Throwable {
+	    
+	 }
 }
