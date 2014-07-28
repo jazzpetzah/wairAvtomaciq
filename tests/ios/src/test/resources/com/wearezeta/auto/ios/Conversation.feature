@@ -251,7 +251,7 @@ Examples:
 	Examples: 
     |	Login	|	Password	|	Name	|	Contact		| YouTubeLink	|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| http://www.youtube.com/watch?v=Bb1RhktcugU |  
- 
+
 @staging
 @id383
 Scenario Outline: Play/pause SoundCloud media link from the media bar
@@ -275,7 +275,7 @@ Scenario Outline: Play/pause SoundCloud media link from the media bar
 Examples:
     |  Login		| Password		| Name			| Contact1    | SoundCloudLink |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/klinke-auf-cinch/04-whats-happening-boytalk-remix |
-    
+      
 @staging
 @id384
 Scenario Outline: Conversation gets scrolled back to playing media when clicking on media bar
