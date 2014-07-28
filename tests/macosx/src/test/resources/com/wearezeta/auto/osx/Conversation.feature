@@ -48,13 +48,14 @@ Scenario Outline: Send picture to conversation
 	And I see Contact list with name <Name>
 	And I open conversation with <Contact>
 	When I send picture testing.jpg
-	Then I see picture in conversation
+	Then I see fpicture in conversation
 
 Examples:
     |  Login		| Password			| Name			| Contact   		|
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
     
 @staging
+@id455
 Scenario Outline: Send HD picture to conversation
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with name <Name>
