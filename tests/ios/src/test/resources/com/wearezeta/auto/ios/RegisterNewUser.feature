@@ -1,3 +1,5 @@
+
+
 Feature: Register new user
 
 @mute

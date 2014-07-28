@@ -1,3 +1,5 @@
+
+
 Feature: Conversation
 
   @smoke 
@@ -85,7 +87,7 @@ Examples:
 	|	Login		|	Password		|	Name		|	Contact			|
 	|	aqaUser		|	aqaPassword		|	aqaUser		|	aqaContact1		|
 
-@regression 
+@regression
 Scenario Outline: Add user to a group conversation
 	Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -95,7 +97,6 @@ Scenario Outline: Add user to a group conversation
 	And I tap on a group chat with <Contact1> and <Contact2>
 	And I swipe up on group chat page
 	And I press Add button
-	And I press Continue button
 	And I see People picker page
 	And I input in People picker search field user name <Contact3>
 	And I see user <Contact3> found on People picker page
