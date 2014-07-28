@@ -55,6 +55,7 @@ Examples:
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
     
 @staging
+@id455
 Scenario Outline: Send HD picture to conversation
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with name <Name>
@@ -66,7 +67,6 @@ Examples:
     |  Login		| Password			| Name			| Contact   		|
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
 
-@torun
 @smoke
 Scenario Outline: Create group chat from 1on1 conversation
     Given I Sign in using login <Login> and password <Password>

@@ -187,6 +187,21 @@ public class DialogPageSteps {
 		mediaState = PagesCollection.dialogPage.getMediaState();
 		Assert.assertEquals(endedState, mediaState);
 	}
+	
+	@When("^I tap on the media bar$")
+	public void ITapOnMediaBar() throws Exception{
+		PagesCollection.dialogPage.tapOnMediaBar();
+	}
+	
+	@Then("I see conversation view is scrolled back to the playing media link (.*)")
+	public void ISeeConversationViewIsScrolledBackToThePlayingMedia(String link){
+		Assert.assertEquals(link, PagesCollection.dialogPage.getLastMessageFromDialog());
+		Assert.assertTrue("View did not scroll back", PagesCollection.dialogPage.isMediaContainerVisible());
+		String playingState = IOSLocators.MEDIA_STATE_PLAYING;
+		mediaState = PagesCollection.dialogPage.getMediaState();
+		Assert.assertEquals(playingState, mediaState);
+	}
+	
 
 
 }

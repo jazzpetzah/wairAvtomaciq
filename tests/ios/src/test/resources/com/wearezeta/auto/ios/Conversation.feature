@@ -1,6 +1,9 @@
+
+
 Feature: Conversation
 
   @smoke 
+  @id330
   Scenario Outline: Send Message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -33,6 +36,7 @@ Feature: Conversation
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
 
   @smoke
+  @id333
 	Scenario Outline: Start group chat with users from contact list
 		Given I Sign in using login <Login> and password <Password>
     	And I see Contact list with my name <Name>
@@ -85,7 +89,8 @@ Examples:
 	|	Login		|	Password		|	Name		|	Contact			|
 	|	aqaUser		|	aqaPassword		|	aqaUser		|	aqaContact1		|
 
-@regression 
+@regression
+@id489
 Scenario Outline: Add user to a group conversation
 	Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -95,7 +100,6 @@ Scenario Outline: Add user to a group conversation
 	And I tap on a group chat with <Contact1> and <Contact2>
 	And I swipe up on group chat page
 	And I press Add button
-	And I press Continue button
 	And I see People picker page
 	And I input in People picker search field user name <Contact3>
 	And I see user <Contact3> found on People picker page
@@ -167,6 +171,7 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
 
    @regression
+   @id531
 Scenario Outline: I can see the individual user profile if I select someone in participants view
 	 Given I Sign in using login <Login> and password <Password>
      And I see Contact list with my name <Name>
@@ -252,6 +257,7 @@ Examples:
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| http://www.youtube.com/watch?v=Bb1RhktcugU |  
  
 @staging
+@id383
 Scenario Outline: Play/pause SoundCloud media link from the media bar
 	Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -269,6 +275,25 @@ Scenario Outline: Play/pause SoundCloud media link from the media bar
     And I stop media in media bar
     Then The media stopps playing
     
+    
+Examples:
+    |  Login		| Password		| Name			| Contact1    | SoundCloudLink |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/klinke-auf-cinch/04-whats-happening-boytalk-remix |
+    
+@staging
+@id384
+Scenario Outline: Conversation gets scrolled back to playing media when clicking on media bar
+	Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I tap on text input
+    And I post soundcloud media link <SoundCloudLink>
+    Then I see media link <SoundCloudLink> and media in dialog
+    And I tap media link
+    And I scroll media out of sight until media bar appears
+    And I tap on the media bar
+    Then I see conversation view is scrolled back to the playing media link <SoundCloudLink>
     
 Examples:
     |  Login		| Password		| Name			| Contact1    | SoundCloudLink |

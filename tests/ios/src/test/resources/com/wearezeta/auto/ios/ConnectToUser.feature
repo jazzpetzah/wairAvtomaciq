@@ -1,6 +1,9 @@
+
+
 Feature: Connect to User 
    
     @smoke
+    @id345
 	Scenario Outline: Send invitation message to a user
 		Given I Sign in using login <Login> and password <Password>
     	And I see Contact list with my name <Name>

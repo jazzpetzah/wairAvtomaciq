@@ -1,7 +1,10 @@
+
+
 Feature: Register new user
 
 @mute
 @smoke
+@id274
   Scenario Outline: Register new user using front camera (Real Device)
 	Given I see sign in screen
 	When I press Join button
@@ -261,6 +264,7 @@ Feature: Register new user
     
 
 @staging
+@id305
   Scenario Outline: Minimum 8 chars password requirement validation
 	Given I see sign in screen
 	When I press Join button
@@ -326,7 +330,7 @@ Feature: Register new user
     Examples:     
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
-@torun    
+   
 @staging
  Scenario Outline: Can re-send verification email from verification screen 
 	Given I see sign in screen
