@@ -48,7 +48,7 @@ Scenario Outline: Send picture to conversation
 	And I see Contact list with name <Name>
 	And I open conversation with <Contact>
 	When I send picture testing.jpg
-	Then I see fpicture in conversation
+	Then I see picture in conversation
 
 Examples:
     |  Login		| Password			| Name			| Contact   		|
