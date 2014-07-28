@@ -1,6 +1,6 @@
 Feature: Connect to User
 
-  @torun@smoke @nonUnicode
+@smoke @nonUnicode
   Scenario Outline: Send invitation message to a user
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

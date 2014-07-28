@@ -1,13 +1,17 @@
 package com.wearezeta.auto.common;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriBuilderException;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,7 +21,7 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-
+import com.wearezeta.auto.image_send.*;
 import java.awt.image.BufferedImage;
 
 public class BackEndREST {
@@ -194,6 +198,40 @@ public class BackEndREST {
 		}
 	}
 	
+	public static void sendPictureToSingleUserConversation(ClientUser userFrom, ClientUser userTo,String imagePath) throws Throwable
+	{
+		String MIME_TYPE = "image/" + FilenameUtils.getExtension(imagePath);
+		
+		if(MIME_TYPE.equals("image/jpg")){
+			MIME_TYPE = "image/jpeg";
+		}
+		String convId = getConversationWithSingleUser(userFrom,userTo);
+		userFrom = loginByUser(userFrom);
+		ZImageSender sender = new ZImageSender(userFrom.getAccessToken(), userFrom.getTokenType());
+		FileInputStream fis = new FileInputStream(imagePath);
+		try {
+			final byte[] SRC_IMG_AS_BYTE_ARRAY = IOUtils.toByteArray(fis);
+			ImageAssetData srcImgData = new ImageAssetData(convId,
+					SRC_IMG_AS_BYTE_ARRAY, MIME_TYPE);
+			srcImgData.setIsPublic(true);
+			ImageAssetProcessor imgProcessor = new ImageAssetProcessor(
+					srcImgData);
+			ImageAssetRequestBuilder reqBuilder = new ImageAssetRequestBuilder(
+					imgProcessor);
+			List<Map<String, String>> reqResponses = sender.send(reqBuilder
+					.getRequests());
+			for (Map<String, String> response : reqResponses) {
+				for (Map.Entry<String, String> entry : response.entrySet()) {
+					System.out.println(String.format("%s: %s", entry.getKey(),
+							(entry.getValue().length() == 0 ? "No JSON response"
+									: entry.getValue())));
+				}
+			}
+		} finally {
+			fis.close();
+		}
+	}
+	
 	public static void createGroupConveration(ClientUser user, List<ClientUser> contacts, String conversationName ){
 		loginByUser(user);
 		try{
@@ -294,7 +332,7 @@ public class BackEndREST {
 		return (JSONArray) jsonObj.get("conversations");
 	}
 	
-	private static URI getBaseURI() throws IllegalArgumentException, UriBuilderException, IOException {
+	public static URI getBaseURI() throws IllegalArgumentException, UriBuilderException, IOException {
 		return UriBuilder.fromUri(CommonUtils.getDefaultBackEndUrlFromConfig(CommonUtils.class)).build();
 	}
 	

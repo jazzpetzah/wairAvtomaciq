@@ -3,6 +3,7 @@
 Feature: Conversation
 
   @smoke 
+  @id330
   Scenario Outline: Send Message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -35,6 +36,7 @@ Feature: Conversation
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
 
   @smoke
+  @id333
 	Scenario Outline: Start group chat with users from contact list
 		Given I Sign in using login <Login> and password <Password>
     	And I see Contact list with my name <Name>
