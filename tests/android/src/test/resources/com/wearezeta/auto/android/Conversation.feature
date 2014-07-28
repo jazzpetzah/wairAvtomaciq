@@ -212,7 +212,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @unicode @staging
+  @unicode @staging 
   Scenario Outline: Send double byte chars
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

@@ -8,34 +8,34 @@ public class EmailHeaders {
  	private String xZetaKey = null;
  	private String xZetaCode = null;
 
-	String getLastUserEmail() {
+	public String getLastUserEmail() {
 		return lastUserEmail;
 	}
-	void setLastUserEmail(String lastUserEmail) {
+	public void setLastUserEmail(String lastUserEmail) {
 		this.lastUserEmail = lastUserEmail;
 	}
-	String getMailSubject() {
+	public String getMailSubject() {
 		return mailSubject;
 	}
-	void setMailSubject(String mailSubject) {
+	public void setMailSubject(String mailSubject) {
 		this.mailSubject = mailSubject;
 	}
-	String getXZetaPurpose() {
+	public String getXZetaPurpose() {
 		return xZetaPurpose;
 	}
-	void setXZetaPurpose(String xZetaPurpose) {
+	public void setXZetaPurpose(String xZetaPurpose) {
 		this.xZetaPurpose = xZetaPurpose;
 	}
-	String getXZetaKey() {
+	public String getXZetaKey() {
 		return xZetaKey;
 	}
-	void setXZetaKey(String xZetaKey) {
+	public void setXZetaKey(String xZetaKey) {
 		this.xZetaKey = xZetaKey;
 	}
-	String getXZetaCode() {
+	public String getXZetaCode() {
 		return xZetaCode;
 	}
-	void setXZetaCode(String xZetaCode) {
+	public void setXZetaCode(String xZetaCode) {
 		this.xZetaCode = xZetaCode;
 	}
 }

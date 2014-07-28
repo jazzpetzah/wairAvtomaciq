@@ -221,7 +221,10 @@ public final class IOSLocators {
 	public static final String nameVideoPauseButton = "Pause";
 	
 	public static final String nameVideoNextButton = "Next track";
+
+	public static final String nameConnectAlertYes = "Yes";
 	
+	public static final String xpathReSendButton = "//UIAApplication[1]/UIAWindow[1]/UIATextView[1]";
 	///////////////////////
 	//Media Bar Locators
 	///////////////////////
@@ -245,3 +248,4 @@ public final class IOSLocators {
 	public static final String MEDIA_STATE_STOPPED = "ended";
 
 }
+

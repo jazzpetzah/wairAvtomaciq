@@ -32,7 +32,7 @@ Feature: User Profile
       | Login   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |
 
-  @staging @nonUnicode
+  @staging @nonUnicode 
   Scenario Outline: Open Close About page from Settings page
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

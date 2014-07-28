@@ -10,6 +10,10 @@ public final class AndroidLocators {
 	
 	public static final String idSettingsBox = "com.waz.zclient.dev:id/ll__settings_box_container";
 	
+	public static final String idConnectionRequiesMessage = "com.waz.zclient.dev:id/cet__send_connect_request__first_message";
+	
+	public static final String idSendConnectionRequestButton = "com.waz.zclient.dev:id/zb__send_connect_request__connect_button";
+	
 	public static final String idOpenFrom = "android:id/title";
 	
 	public static final String xpathImage = "//android.widget.LinearLayout/android.view.View";
