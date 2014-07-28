@@ -34,8 +34,6 @@ public class ZImageSender {
 			throws IOException {
 		List<Map<String, String>> result = new ArrayList<Map<String, String>>();
 		Client client = Client.create();
-
-		// TODO: debugging stuff
 		client.addFilter(new LoggingFilter(System.out));
 
 		for (AssetRequest request : requests) {
@@ -51,8 +49,6 @@ public class ZImageSender {
 							request.getContentDisposition())
 					.header("Content-Length", request.getContentLength())
 					.post(ClientResponse.class, request.getPayload());
-			// assert(response.getStatus() == 201);
-
 			Map<String, String> responseResult = new HashMap<String, String>();
 			responseResult.put(String.format("%d (%s)", response.getStatus(),
 					response.getStatusInfo().getReasonPhrase()), response

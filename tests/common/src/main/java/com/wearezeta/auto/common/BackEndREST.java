@@ -1,7 +1,6 @@
 package com.wearezeta.auto.common;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
@@ -214,8 +213,6 @@ public class BackEndREST {
 			final byte[] SRC_IMG_AS_BYTE_ARRAY = IOUtils.toByteArray(fis);
 			ImageAssetData srcImgData = new ImageAssetData(convId,
 					SRC_IMG_AS_BYTE_ARRAY, MIME_TYPE);
-			// srcImgData.setName(new File(SRC_IMAGE_PATH).getName());
-			// srcImgData.setNonce(String.valueOf(UUID.randomUUID()));
 			srcImgData.setIsPublic(true);
 			ImageAssetProcessor imgProcessor = new ImageAssetProcessor(
 					srcImgData);
@@ -335,7 +332,7 @@ public class BackEndREST {
 		return (JSONArray) jsonObj.get("conversations");
 	}
 	
-	private static URI getBaseURI() throws IllegalArgumentException, UriBuilderException, IOException {
+	public static URI getBaseURI() throws IllegalArgumentException, UriBuilderException, IOException {
 		return UriBuilder.fromUri(CommonUtils.getDefaultBackEndUrlFromConfig(CommonUtils.class)).build();
 	}
 	
