@@ -200,6 +200,7 @@ Examples:
 
 
 @staging
+@id392
 Scenario Outline: Verify correct group info page information
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
