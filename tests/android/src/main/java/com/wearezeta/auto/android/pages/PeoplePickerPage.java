@@ -1,12 +1,14 @@
 package com.wearezeta.auto.android.pages;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.wearezeta.auto.android.common.KeyboardMapper;
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.*;
 
@@ -52,7 +54,7 @@ public class PeoplePickerPage extends AndroidPage {
 	@FindBy(how = How.ID, using = AndroidLocators.idPickerBtnDone)
 	private WebElement addToConversationsButton;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idCreateConversation)
+	@FindBy(how = How.ID, using = AndroidLocators.idCreateConversationIcon)
 	private WebElement createConversation;
 
 	@FindBy(how = How.ID, using = AndroidLocators.idCreateConversationTitle)
@@ -74,7 +76,15 @@ public class PeoplePickerPage extends AndroidPage {
 		pickerSearch.sendKeys(contactName);
 		driver.navigate().back();
 	}
-
+	
+	public void addTextToPeopleSearch(String contactName) throws InterruptedException
+	{
+		for(char ch : contactName.toCharArray()){
+			int keyCode = KeyboardMapper.getPrimaryKeyCode(ch);
+			driver.sendKeyEvent(keyCode);
+		}
+		
+	}
 	public AndroidPage selectContact(String contactName) throws Exception
 	{
 		AndroidPage page = null;
@@ -164,9 +174,13 @@ public class PeoplePickerPage extends AndroidPage {
 
 	}
 
-	public DialogPage tapCreateConversation() throws Exception {
-		DriverUtils.swipeRight(driver,createConversation, 1000);
-		return new DialogPage(url, path);
+	public List<AndroidPage> tapCreateConversation() throws Exception {
+		refreshUITree();
+		DriverUtils.androidMultiTap(driver, createConversation,1,0.3);
+		List<AndroidPage>  pages = new LinkedList<AndroidPage>();
+		pages.add(new DialogPage(url, path));
+		pages.add(new GroupChatPage(url, path));
+		return  pages;
 	}
 
 	public ContactListPage tapClearButton() throws Exception {
@@ -195,5 +209,13 @@ public class PeoplePickerPage extends AndroidPage {
 	
 	public boolean groupIsVisible(String contact) {
 		return isVisible(driver.findElement(By.xpath(String.format(AndroidLocators.xpathPeoplePickerGroup, contact))));	
+	}
+
+	public PeoplePickerPage selectContactByLongTap(String contact) {
+		refreshUITree();
+		WebElement el = driver.findElementByXPath(String.format(AndroidLocators.xpathPeoplePickerContact,contact));
+		DriverUtils.androidLongClick(driver, el);
+		return this;
+		
 	}
 }
