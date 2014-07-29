@@ -40,6 +40,8 @@ public final class AndroidLocators {
 	
 	public static final String xpathPeoplePickerContact = "//android.widget.LinearLayout[child::android.widget.TextView[@resource-id='com.waz.zclient.dev:id/ttv_pickuser__searchuser_name' and @text='%s']]";
 	
+	public static final String xpathPeoplePickerGroup = "//android.widget.LinearLayout[child::android.widget.TextView[@resource-id='com.waz.zclient.dev:id/ttv_pickuser_searchconversation_name' and @text='%s']]";
+	
 	public static final String xpathContacts = "//android.widget.TextView[@text='%s']"; 
 	
 	public static final String xpathImagesFrameLayout = "//android.widget.GridView/android.widget.FrameLayout";
