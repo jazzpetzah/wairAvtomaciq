@@ -108,8 +108,8 @@ public final class OSXLocators {
 	public static final String idMediaBarTitelButton = "mediaBarTitelButton";
 	public static final String idMediaBarCloseButton = "mediaBarCloseButton";
 	
-	public static final String xpathSoundcloudPlayButton = "//AXGroup/AXGroup/AXButton[@AXTitle='Play']";
-	public static final String xpathSoundcloudPauseButton = "//AXGroup/AXGroup/AXButton";
+	public static final String xpathSoundCloudPlayButton = "//AXGroup/AXGroup/AXButton[@AXTitle='Play']";
+	public static final String xpathSoundCloudPauseButton = "//AXGroup/AXGroup/AXButton";
 	public static final String xpathSoundCloudMediaContainer = "//AXGroup/AXLink/AXImage";
 	
 }

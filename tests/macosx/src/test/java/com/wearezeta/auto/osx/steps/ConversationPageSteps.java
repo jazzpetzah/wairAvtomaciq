@@ -225,8 +225,6 @@ public class ConversationPageSteps {
 
 	 @Then("^I see the embedded media is playing$")
 	 public void ThenISeeTheEmbeddedMediaIsPlaying() throws Throwable {
-//		 String expectedButtonState = "Pause";
-//		 String actualState = CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState();
-//	     Assert.assertEquals(expectedButtonState, actualState);
+
 	 }
 }

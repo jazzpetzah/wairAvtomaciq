@@ -38,10 +38,10 @@ public class ConversationPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idPeopleButton)
 	private WebElement peopleButton;
 	
-	@FindBy(how = How.XPATH, using = OSXLocators.xpathSoundcloudPlayButton)
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathSoundCloudPlayButton)
 	private WebElement soundCloudPlayButton;
 	
-	@FindBy(how = How.XPATH, using = OSXLocators.xpathSoundcloudPauseButton)
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathSoundCloudPauseButton)
 	private WebElement soundCloudPauseButton;
 	
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathSoundCloudMediaContainer)
