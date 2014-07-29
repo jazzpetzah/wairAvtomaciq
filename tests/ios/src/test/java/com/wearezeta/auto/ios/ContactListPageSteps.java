@@ -17,6 +17,11 @@ public class ContactListPageSteps {
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 	}
 	
+	@Given("^I have group chat named (.*) with an unconnected user, made by (.*)$")
+	public void GivenGroupChatWithName(String chatName, String groupCreator) throws IOException  {
+		PagesCollection.contactListPage.createGroupChatWithUnconnecteduser(chatName, groupCreator);
+	}
+	
 	@When("^I tap on my name (.*)$")
 	public void WhenITapOnMyName(String name) throws IOException  {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
@@ -46,6 +51,19 @@ public class ContactListPageSteps {
 		
 		PagesCollection.iOSPage = page;
 	}
+	
+	@When("^I tap on group chat with name (.*)$")
+	public void WhenITapOnGroupChatName(String chatName) throws IOException {
+
+		IOSPage page = PagesCollection.contactListPage.tapOnGroupChat(chatName);
+		
+		if(page instanceof GroupChatPage)
+		{
+			PagesCollection.groupChatPage = (GroupChatPage) page;
+		}
+		PagesCollection.iOSPage = page;
+	}
+
 	
 	@When("^I swipe down contact list$")
 	public void ISwipeDownContactList() throws Throwable {
@@ -115,7 +133,7 @@ public class ContactListPageSteps {
 		
 		contact1 = CommonUtils.retrieveRealUserContactPasswordValue(contact1);
 		contact2 = CommonUtils.retrieveRealUserContactPasswordValue(contact2);
-		PagesCollection.contactListPage.tapOnGroupChat(contact1, contact2);
+		PagesCollection.contactListPage.tapOnUnnamedGroupChat(contact1, contact2);
 	}
 	
 	

@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
@@ -17,6 +18,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.common.ImageUtil;
@@ -65,18 +67,11 @@ public class GroupChatInfoPage extends IOSPage{
 		return givenNumberOfParticipants == correctNumber;
 	}
 	
-	public BufferedImage getElementScreenshot(WebElement element) throws IOException{
-		BufferedImage screenshot = takeScreenshot();
-		org.openqa.selenium.Point elementLocation = element.getLocation();
-		Dimension elementSize = element.getSize();
-		return screenshot.getSubimage(elementLocation.x*2, elementLocation.y*2, elementSize.width*2, elementSize.height*2);
-	}
-	
-	public boolean isParticipantAvatars() throws IOException{
+	public boolean areParticipantAvatarsCorrect() throws IOException{
 		List<WebElement> participantAvatars = getCurrentParticipants();
 		BufferedImage avatarIcon = null;
 		for(WebElement avatar : participantAvatars){
-			avatarIcon = getElementScreenshot(avatar);
+			avatarIcon = CommonUtils.getElementScreenshot(avatar, driver);
 			String avatarName = avatar.getAttribute("name");
 			if(avatarName.equalsIgnoreCase("AQAPICTURECONTACT")){
 				BufferedImage realImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()+"avatarPictureTest.png");
@@ -97,6 +92,51 @@ public class GroupChatInfoPage extends IOSPage{
 		return true;
 	}
 
+	public void tapAndCheckAllParticipants() throws IOException{
+		List<WebElement> participants = getCurrentParticipants();
+		for(WebElement participant: participants){
+			ClientUser participantUser = getParticipantUser(participant);
+			PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) tapOnParticipant(getParticipantName(participant));
+			Assert.assertTrue("Participant Name is incorrect and/or not displayed", PagesCollection.otherUserPersonalInfoPage.getNameFieldValue().equalsIgnoreCase(participantUser.getName()) );
+			if(participantUser.getName().equalsIgnoreCase(CommonUtils.findUserNamed(CommonUtils.YOUR_UNCONNECTED_USER).getName())){
+				Assert.assertTrue("Unconnected user's email is displayed", PagesCollection.otherUserPersonalInfoPage.getEmailFieldValue().equals(""));
+			}else{
+				Assert.assertTrue("Participant Email is incorrect and/or not displayed", PagesCollection.otherUserPersonalInfoPage.getEmailFieldValue().equalsIgnoreCase(participantUser.getEmail()) );
+			}
+			
+			//No implementation for viewing participant profile picture
+			//Assert.assertTrue("Participant Profile picture is incorrect or not displayed, INSERT CHECK );
+
+			PagesCollection.groupChatInfoPage = (GroupChatInfoPage) PagesCollection.otherUserPersonalInfoPage.leavePageToGroupInfoPage();
+		}
+	}
+	
+	public String getParticipantName(WebElement participant){
+		if(participant.findElements(By.className("UIAStaticText")).get(0).getAttribute("name").length()==1){
+			return participant.findElements(By.className("UIAStaticText")).get(1).getAttribute("name");
+		}
+		else{
+			return participant.findElements(By.className("UIAStaticText")).get(0).getAttribute("name");
+		}
+	}
+	
+	public ClientUser getParticipantUser(WebElement participant){
+		return CommonUtils.findUserNamed(getParticipantName(participant));
+	}
+	
+	public IOSPage tapOnParticipant(String participantName) throws IOException{
+		IOSPage page = null;
+		participantName = CommonUtils.retrieveRealUserContactPasswordValue(participantName);
+		List<WebElement> participants = getCurrentParticipants();
+		for(WebElement participant: participants){
+			if(getParticipantName(participant).equalsIgnoreCase(participantName)){
+				participant.click();
+				page = new OtherUserPersonalInfoPage(url, path);
+			}
+		}
+		return page;
+	}
+	
 	public boolean isCorrectConversationName(String contact1,
 			String contact2) {
 		if (conversationNameTextField.getText().equals(conversationName)) {
@@ -199,6 +239,4 @@ public class GroupChatInfoPage extends IOSPage{
 	public BufferedImage takeScreenShot() throws IOException{
 		return DriverUtils.takeScreenshot(driver);
 	}
-	
-	
 }

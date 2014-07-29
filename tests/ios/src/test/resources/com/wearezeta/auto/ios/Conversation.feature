@@ -194,7 +194,6 @@ Examples:
     |  Login		| Password		| Name			| Contact1    |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |
 
-
 @staging
 Scenario Outline: Verify correct group info page information
     Given I Sign in using login <Login> and password <Password>
@@ -294,4 +293,19 @@ Scenario Outline: Conversation gets scrolled back to playing media when clicking
 Examples:
     |  Login		| Password		| Name			| Contact1    | SoundCloudLink |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/klinke-auf-cinch/04-whats-happening-boytalk-remix |
+
+@staging
+Scenario Outline: Tap on participant profiles in group info page participant view
+    Given I Sign in using login <Login> and password <Password>
+    Given I have group chat named <GroupChatName> with an unconnected user, made by <GroupCreator>
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+	And I swipe up on group chat page
+	And I tap on all of the participants and check their emails and names
+	#And I tap on all of the participants and check their profile pictures
+	#^This step can be added to the final step^
+	
+Examples:
+    |  Login		| Password		| Name			| GroupCreator	        |  GroupChatName    |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaPictureContact	    |     TESTCHAT		|
     

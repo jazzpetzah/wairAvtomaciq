@@ -32,6 +32,8 @@ public class ContactListPage extends IOSPage {
 	private String path;
 	private int oldLocation = 0;
 	
+	private final String CONNECTION_CONSTANT = "CONNECT TO ";
+	
 	public ContactListPage(String URL, String path) throws IOException {
 		super(URL, path);
 		url = URL;
@@ -135,11 +137,29 @@ public class ContactListPage extends IOSPage {
 		return firstChatInChatListTextField.getText().equals(PagesCollection.groupChatInfoPage.getConversationName());
 	}
 	
-	public GroupChatPage tapOnGroupChat(String contact1, String contact2) throws IOException {
+	public GroupChatPage tapOnUnnamedGroupChat(String contact1, String contact2) throws IOException {
 		
 		findChatInContactList(contact1, contact2).click();
 
 		return new GroupChatPage(url, path);
+	}
+	
+	public IOSPage tapOnGroupChat(String chatName) throws IOException {
+		findNameInContactList(chatName).click();
+		return new GroupChatPage(url, path);
+	}
+	
+	public void createGroupChatWithUnconnecteduser(String chatName, String groupCreator){
+		ClientUser groupCreatorUser = CommonUtils.findUserNamed(groupCreator);
+		ClientUser unconnectedUser = CommonUtils.yourUsers.get(2);
+		ClientUser selfUser = CommonUtils.yourUsers.get(0);
+		
+		BackEndREST.sendConnectRequest(groupCreatorUser, unconnectedUser, CONNECTION_CONSTANT+groupCreatorUser.getName(), chatName);
+		BackEndREST.acceptAllConnections(unconnectedUser);
+		List<ClientUser> users = new ArrayList<ClientUser>();
+		users.add(selfUser); //add self
+		users.add(unconnectedUser); 
+		BackEndREST.createGroupConveration(groupCreatorUser, users, chatName);
 	}
 	
 	public void waitForContactListToLoad() {
