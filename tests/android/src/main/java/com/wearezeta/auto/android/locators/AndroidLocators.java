@@ -2,6 +2,12 @@ package com.wearezeta.auto.android.locators;
 
 public final class AndroidLocators {
 	
+	public static final String idConfirmDialogHeader = "com.waz.zclient.dev:id/ttv__confirm_dialog__header";
+	
+	public static final String idConfirmCancelButton = "com.waz.zclient.dev:id/zb__confirm_dialog__cancel_button";
+	
+	public static final String idConfirmConfirmButton = "com.waz.zclient.dev:id/zb__confirm_dialog__confirm_button";
+	
 	public static final String idParticipantsSubHeader = "com.waz.zclient.dev:id/ttv__participants__sub_header";
 	
 	public static final String idAboutLogo ="com.waz.zclient.dev:id/gtv__about__logo";
