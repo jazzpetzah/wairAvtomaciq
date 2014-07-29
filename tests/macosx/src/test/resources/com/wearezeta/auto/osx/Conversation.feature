@@ -217,6 +217,7 @@ Scenario Outline: Play embedded SoundCloud link in conversation
     And I see Contact list with name <Name>
     And I open conversation with <Contact>
     And I post media link <SoundCloudLink>
+    And I send message
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     Then I see the embedded media is playing
