@@ -46,6 +46,10 @@ public abstract class BasePage {
 		return DriverUtils.takeScreenshot(driver);
 	}
 	
+	public void refreshUITree() {
+		driver.getPageSource();
+	}
+	
 	public abstract BasePage swipeLeft(int time) throws IOException, Exception;;
 	
 	public abstract BasePage swipeRight(int time) throws IOException, Exception;
