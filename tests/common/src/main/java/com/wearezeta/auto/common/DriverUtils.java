@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
-import javax.swing.text.StyledEditorKit.BoldAction;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;

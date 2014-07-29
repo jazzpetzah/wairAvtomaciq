@@ -2,6 +2,12 @@ package com.wearezeta.auto.android.locators;
 
 public final class AndroidLocators {
 	
+	public static final String idConfirmDialogHeader = "com.waz.zclient.dev:id/ttv__confirm_dialog__header";
+	
+	public static final String idConfirmCancelButton = "com.waz.zclient.dev:id/zb__confirm_dialog__cancel_button";
+	
+	public static final String idConfirmConfirmButton = "com.waz.zclient.dev:id/zb__confirm_dialog__confirm_button";
+	
 	public static final String idParticipantsSubHeader = "com.waz.zclient.dev:id/ttv__participants__sub_header";
 	
 	public static final String idAboutLogo ="com.waz.zclient.dev:id/gtv__about__logo";
@@ -39,6 +45,8 @@ public final class AndroidLocators {
 	public static final String xpathContactFrame = "//android.widget.FrameLayout[child::android.widget.TextView[@text='%s']]";
 	
 	public static final String xpathPeoplePickerContact = "//android.widget.LinearLayout[child::android.widget.TextView[@resource-id='com.waz.zclient.dev:id/ttv_pickuser__searchuser_name' and @text='%s']]";
+	
+	public static final String xpathPeoplePickerGroup = "//android.widget.LinearLayout[child::android.widget.TextView[@resource-id='com.waz.zclient.dev:id/ttv_pickuser_searchconversation_name' and @text='%s']]";
 	
 	public static final String xpathContacts = "//android.widget.TextView[@text='%s']"; 
 	

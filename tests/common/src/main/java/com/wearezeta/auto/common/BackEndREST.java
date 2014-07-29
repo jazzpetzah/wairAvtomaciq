@@ -1,13 +1,17 @@
 package com.wearezeta.auto.common;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriBuilderException;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,7 +21,7 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-
+import com.wearezeta.auto.image_send.*;
 import java.awt.image.BufferedImage;
 
 public class BackEndREST {
@@ -40,6 +44,12 @@ public class BackEndREST {
 	public static void sendDialogMessage(ClientUser fromUser, ClientUser toUser, String message) throws Exception{
 		fromUser = loginByUser(fromUser);
 		String id = getConversationWithSingleUser(fromUser,toUser);
+		sendConversationMessage(fromUser, id, message);
+	}
+	
+	public static void sendDialogMessageByChatName(ClientUser fromUser, String chatName, String message) throws Exception{
+		fromUser = loginByUser(fromUser);
+		String id = getConversationByName(fromUser,chatName);
 		sendConversationMessage(fromUser, id, message);
 	}
 
@@ -194,6 +204,15 @@ public class BackEndREST {
 		}
 	}
 	
+	public static void sendPictureToSingleUserConversation(ClientUser userFrom, ClientUser userTo,String imagePath) throws Throwable {
+		sendPicture(userFrom,imagePath, getConversationWithSingleUser(userFrom,userTo));
+	}
+	
+	public static void sendPictureToChatByName(ClientUser userFrom, String chatName,String imagePath)throws Throwable {
+		
+		sendPicture(userFrom,imagePath, getConversationByName(userFrom,chatName));
+	}
+	
 	public static void createGroupConveration(ClientUser user, List<ClientUser> contacts, String conversationName ){
 		loginByUser(user);
 		try{
@@ -226,6 +245,40 @@ public class BackEndREST {
 		}
 	}
 	
+	private static void sendPicture(ClientUser userFrom, String imagePath, String convId) throws Throwable
+	{
+		String MIME_TYPE = "image/" + FilenameUtils.getExtension(imagePath);
+		
+		if(MIME_TYPE.equals("image/jpg")){
+			MIME_TYPE = "image/jpeg";
+		}
+		
+		userFrom = loginByUser(userFrom);
+		ZImageSender sender = new ZImageSender(userFrom.getAccessToken(), userFrom.getTokenType());
+		FileInputStream fis = new FileInputStream(imagePath);
+		try {
+			final byte[] SRC_IMG_AS_BYTE_ARRAY = IOUtils.toByteArray(fis);
+			ImageAssetData srcImgData = new ImageAssetData(convId,
+					SRC_IMG_AS_BYTE_ARRAY, MIME_TYPE);
+			srcImgData.setIsPublic(true);
+			ImageAssetProcessor imgProcessor = new ImageAssetProcessor(
+					srcImgData);
+			ImageAssetRequestBuilder reqBuilder = new ImageAssetRequestBuilder(
+					imgProcessor);
+			List<Map<String, String>> reqResponses = sender.send(reqBuilder
+					.getRequests());
+			for (Map<String, String> response : reqResponses) {
+				for (Map.Entry<String, String> entry : response.entrySet()) {
+					System.out.println(String.format("%s: %s", entry.getKey(),
+							(entry.getValue().length() == 0 ? "No JSON response"
+									: entry.getValue())));
+				}
+			}
+		} finally {
+			fis.close();
+		}
+	}
+	
 	private static String getConversationWithSingleUser(ClientUser fromUser, ClientUser toUser) throws Exception{
 		String conversationId = null;
 		boolean flag = false;
@@ -249,6 +302,25 @@ public class BackEndREST {
 		return conversationId;
 	}
 	
+	private static String getConversationByName(ClientUser fromUser,String conversationName) throws Exception{
+		String conversationId = null;
+		boolean flag = false;
+		JSONArray jsonArray = getConversations(fromUser);
+		for(int i = 0 ; i < jsonArray.length(); i++){
+			 JSONObject conversation =  (JSONObject) jsonArray.get(i);
+			 conversationId =  conversation.getString("id");
+			 String name = conversation.getString("name");
+			 if(name.equals(conversationName))
+			 {
+				 flag = true;
+				 break;
+			 }
+			 if(flag){
+				 break;
+			 }
+		 }
+		return conversationId;
+	}
 	private static void sendConversationMessage(ClientUser user, String convId, String message ){
 		try {
      
@@ -294,7 +366,7 @@ public class BackEndREST {
 		return (JSONArray) jsonObj.get("conversations");
 	}
 	
-	private static URI getBaseURI() throws IllegalArgumentException, UriBuilderException, IOException {
+	public static URI getBaseURI() throws IllegalArgumentException, UriBuilderException, IOException {
 		return UriBuilder.fromUri(CommonUtils.getDefaultBackEndUrlFromConfig(CommonUtils.class)).build();
 	}
 	

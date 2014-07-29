@@ -1,10 +1,13 @@
 package com.wearezeta.auto.android;
 
+import java.util.List;
+
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.CommonUtils;
 
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class PeoplePickerPageSteps {
@@ -21,7 +24,9 @@ public class PeoplePickerPageSteps {
 	
 	@When("^I tap on create conversation$")
 	public void WhenITapOnCreateConversation() throws Throwable {
-	   PagesCollection.dialogPage = PagesCollection.peoplePickerPage.tapCreateConversation();
+	   List<AndroidPage> list = PagesCollection.peoplePickerPage.tapCreateConversation();
+	   PagesCollection.dialogPage = (DialogPage) list.get(0);
+	   PagesCollection.groupChatPage = (GroupChatPage) list.get(1);
 	}
 	
 	@When("^I press Clear button$")
@@ -35,10 +40,23 @@ public class PeoplePickerPageSteps {
 		PagesCollection.peoplePickerPage.typeTextInPeopleSearch(contact);
 	}
 	
+	@When("^I input in search field part (.*) of user name to connect to (.*)$")
+	public void WhenIInputInPeoplePickerSearchFieldPartOfUserName(String part, String contact) throws Throwable {
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		String[] list = contact.split("(?<=\\G.{"+ part +"})");
+		PagesCollection.peoplePickerPage.typeTextInPeopleSearch(list[0]);
+	}
+	
 	@When("^I input in search field user name to connect to (.*)$")
 	public void WhenIInputInSearchFieldUserNameToConnectTo(String contact) throws Throwable {
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 		PagesCollection.peoplePickerPage.typeTextInPeopleSearch(contact);
+	}
+	
+	@When("^I add in search field user name to connect to (.*)$")
+	public void WhenIAddInSearchFieldUserNameToConnectTo(String contact) throws Throwable {
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		PagesCollection.peoplePickerPage.addTextToPeopleSearch(contact);
 	}
 	
 	@When("^I see user (.*) found on People picker page$")
@@ -51,6 +69,18 @@ public class PeoplePickerPageSteps {
 	public void WhenITapOnUserNameFoundOnPeoplePickerPage(String contact) throws Throwable {
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 		PagesCollection.peoplePickerPage.selectContact(contact);
+	}
+	
+	@When("^I  long tap on user name found on People picker page (.*)$")
+	public void WhenILongTapOnUserNameFoundOnPeoplePickerPage(String contact) throws Throwable {
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		PagesCollection.peoplePickerPage.selectContactByLongTap(contact);
+	}
+	
+	@When("^I tap on group name found on People picker page (.*)$")
+	public void WhenITapOnGroupNameFoundOnPeoplePickerPage(String contact) throws Throwable {
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		PagesCollection.peoplePickerPage.selectGroup(contact);
 	}
 	
 	@When("^I see Add to conversation button$")
@@ -78,5 +108,15 @@ public class PeoplePickerPageSteps {
 		PagesCollection.contactListPage = PagesCollection.peoplePickerPage.pressConnectButton();
 	}
 	
+	@Then("^I see user (.*)  in People picker$")
+	public void ThenISeeUserInPeoplePicker(String contact) throws Throwable {
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+	    Assert.assertTrue(PagesCollection.peoplePickerPage.userIsVisible(contact));	
+	}
 	
+	@Then("^I see group (.*)  in People picker$")
+	public void ThenISeeGroupInPeoplePicker(String contact) throws Throwable {
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+	    Assert.assertTrue(PagesCollection.peoplePickerPage.groupIsVisible(contact));	
+	}
 }

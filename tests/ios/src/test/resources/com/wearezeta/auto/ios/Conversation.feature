@@ -3,6 +3,7 @@
 Feature: Conversation
 
   @smoke 
+  @id330
   Scenario Outline: Send Message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -35,6 +36,7 @@ Feature: Conversation
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
 
   @smoke
+  @id333
 	Scenario Outline: Start group chat with users from contact list
 		Given I Sign in using login <Login> and password <Password>
     	And I see Contact list with my name <Name>
@@ -88,6 +90,7 @@ Examples:
 	|	aqaUser		|	aqaPassword		|	aqaUser		|	aqaContact1		|
 
 @regression
+@id489
 Scenario Outline: Add user to a group conversation
 	Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -168,6 +171,7 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
 
    @regression
+   @id531
 Scenario Outline: I can see the individual user profile if I select someone in participants view
 	 Given I Sign in using login <Login> and password <Password>
      And I see Contact list with my name <Name>
@@ -196,6 +200,7 @@ Examples:
 
 
 @staging
+@id392
 Scenario Outline: Verify correct group info page information
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

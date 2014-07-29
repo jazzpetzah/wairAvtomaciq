@@ -91,23 +91,9 @@ public class ContactListPage extends IOSPage {
 		return contact.getText();
 	}
 	
-	private WebElement findNameInContactList(String name)
-	 {
-		 Boolean flag = true;
-		 WebElement contact = null;
-		 for(WebElement listName : contactListNames )
-		 {
-			 if(listName.getText().equals(name)) {
-				 contact = listName;
-				 flag = false;
-				 break;
-			 }
-		 }
-		 if(flag) {
-			 DriverUtils.scrollToElement(driver,contactListNames.get(contactListNames.size() - 1));
-			 findNameInContactList(name);
-		 }
-		return contact;
+	private WebElement findNameInContactList(String name) {
+		refreshUITree();
+		return driver.findElementByXPath(String.format("//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[@name='%s']/UIAStaticText[1]", name));
 	 }	
 	
 	public boolean isGroupChatAvailableInContactList() {

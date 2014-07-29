@@ -33,10 +33,10 @@ public class CommonUtils {
 	public static LinkedList<ClientUser> yourUsers = new LinkedList<ClientUser>();
 	public static LinkedList<ClientUser> contacts = new LinkedList<ClientUser>();
 	
-	public static final String CONTACT_PICTURE_NAME = "AQAPICTURECONTACT";
+	public static final String CONTACT_PICTURE_NAME = "aqaPictureContact";
 	public static final String CONTACT_PICTURE_EMAIL = "qa1+aqaPictureContact@wearezeta.com";
 	public static final String CONTACT_PICTURE_PASSWORD = "picture123";
-	public static final String CONTACT_AVATAR_NAME = "AQAAVATAR TESTCONTACT";
+	public static final String CONTACT_AVATAR_NAME = "aqaAvatar TestContact";
 	public static final String CONTACT_AVATAR_EMAIL = "qa1+aqaAvatarTestContact@wearezeta.com";
 	public static final String CONTACT_AVATAR_PASSWORD = "avatar123";
 	
