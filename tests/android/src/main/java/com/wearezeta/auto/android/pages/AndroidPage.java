@@ -64,10 +64,6 @@ public abstract class AndroidPage extends BasePage {
         super.InitConnection(url, capabilities);
 	}
 	
-	public void refreshUITree() {
-		driver.getPageSource();
-	}
-	
 	public void navigateBack(){
 		driver.navigate().back();
 	}
