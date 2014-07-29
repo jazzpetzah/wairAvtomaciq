@@ -55,6 +55,7 @@ Examples:
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
     
 @staging
+@id455
 Scenario Outline: Send HD picture to conversation
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with name <Name>

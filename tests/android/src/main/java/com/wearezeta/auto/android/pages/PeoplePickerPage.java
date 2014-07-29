@@ -91,6 +91,22 @@ public class PeoplePickerPage extends AndroidPage {
 		return page;
 	}
 
+	public AndroidPage selectGroup(String contactName) throws Exception
+	{
+		AndroidPage page = null;
+		WebElement el = driver.findElementByXPath(String.format(AndroidLocators.xpathPeoplePickerGroup,contactName));
+		el.click();
+	
+		if(isVisible(addToConversationsButton))
+		{
+			page = this;
+		}
+		else{
+			page = new DialogPage(url, path);
+		}
+		return page;
+	}
+	
 	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction)
 			throws IOException {
@@ -173,4 +189,11 @@ public class PeoplePickerPage extends AndroidPage {
 		return new ContactListPage(url, path);
 	}
 
+	public boolean userIsVisible(String contact) {
+		return isVisible(driver.findElement(By.xpath(String.format(AndroidLocators.xpathPeoplePickerContact, contact))));	
+	}
+	
+	public boolean groupIsVisible(String contact) {
+		return isVisible(driver.findElement(By.xpath(String.format(AndroidLocators.xpathPeoplePickerGroup, contact))));	
+	}
 }
