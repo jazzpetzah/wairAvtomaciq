@@ -219,7 +219,7 @@ Scenario Outline: Play embedded SoundCloud link in conversation
     And I post media link <SoundCloudLink>
     And I send message
     Then I see media link <SoundCloudLink> and media in dialog
-    And I tap media link
+    And I tap SoundCloud link
     Then I see the embedded media is playing
     
 Examples:

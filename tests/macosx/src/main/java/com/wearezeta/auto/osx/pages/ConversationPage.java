@@ -37,6 +37,15 @@ public class ConversationPage extends OSXPage {
 	
 	@FindBy(how = How.ID, using = OSXLocators.idPeopleButton)
 	private WebElement peopleButton;
+	
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathSoundcloudPlayButton)
+	private WebElement soundCloudPlayButton;
+	
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathSoundcloudPauseButton)
+	private WebElement soundCloudPauseButton;
+	
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathSoundCloudMediaContainer)
+	private WebElement soundCloudMediaContainer;
 
 	public ConversationPage(String URL, String path) throws MalformedURLException {
 		
@@ -143,4 +152,20 @@ public class ConversationPage extends OSXPage {
 		}
 		return isSend;
 	}
+	
+	public void tapOnSoundCloudMessage(){
+		soundCloudPlayButton.click();
+	}
+	
+	public boolean isSoundCloudContainerVisible(){
+		
+		return soundCloudMediaContainer.isDisplayed();
+	}
+	
+	public String getSoundCloudButtonState(){
+		String soundCloudButtonState = soundCloudPauseButton.getAttribute("AXTitle");
+		return soundCloudButtonState;
+	}
+	
+	
 }

@@ -214,16 +214,19 @@ public class ConversationPageSteps {
 
 	 @Then("^I see media link (.*) and media in dialog$")
 	 public void ThenISeeMediaLinkAndMediaInDialog(String link) throws Throwable {
-	     
+		 boolean mediaVisible = CommonSteps.senderPages.getConversationPage().isSoundCloudContainerVisible();
+		 Assert.assertTrue("SoundCloud Container is missing in dialog", mediaVisible);  
 	 }
 
-	 @When("^I tap media link$")
-	 public void WhenITapMediaLink() throws Throwable {
-	   
+	 @When("^I tap SoundCloud link$")
+	 public void WhenITapSoundCloudLink() throws Throwable {
+		 CommonSteps.senderPages.getConversationPage().tapOnSoundCloudMessage(); 
 	 }
 
 	 @Then("^I see the embedded media is playing$")
 	 public void ThenISeeTheEmbeddedMediaIsPlaying() throws Throwable {
-	    
+		 String expectedButtonState = "Pause";
+		 String actualState = CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState();
+	     Assert.assertEquals(expectedButtonState, actualState);
 	 }
 }
