@@ -11,7 +11,6 @@ import javax.ws.rs.core.HttpHeaders;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.filter.LoggingFilter;
 
 public class ZImageSender {
 	private String accessToken;
@@ -34,12 +33,13 @@ public class ZImageSender {
 			throws IOException {
 		List<Map<String, String>> result = new ArrayList<Map<String, String>>();
 		Client client = Client.create();
-		client.addFilter(new LoggingFilter(System.out));
+		
+		// Uncomment it to debug requests 
+		// client.addFilter(new LoggingFilter(System.out));
 
 		for (AssetRequest request : requests) {
 			WebResource assetResource = client.resource(String.format("%s/%s",
 					request.getHost(), request.getEndpoint()));
-			System.out.println(request.getContentDisposition());
 			ClientResponse response = assetResource
 					.type(request.getContentType())
 					.header(HttpHeaders.AUTHORIZATION,

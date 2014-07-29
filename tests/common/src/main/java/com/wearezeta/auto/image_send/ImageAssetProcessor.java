@@ -6,7 +6,6 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,12 +15,11 @@ import java.util.UUID;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.FileUtils;
 
 public class ImageAssetProcessor extends AssetProcessor {
 	public static final long MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 	public static final long MAX_NON_GIF_IMAGE_SIZE = 310 * 1024;
-	public static final long MAX_INLINE_ITEM_SIZE = 8 * 1024;
+	public static final long MAX_INLINE_ITEM_SIZE = 30 * 1024;
 	public static final String MEDIUM_TAG = "medium";
 	private static final int MEDIUM_DIMENSION = 1448;
 	public static final String PREVIEW_TAG = "preview";
@@ -30,7 +28,7 @@ public class ImageAssetProcessor extends AssetProcessor {
 	public static final String MIME_TYPE_GIF = "image/gif";
 	public static final String MIME_TYPE_PNG = "image/png";
 	public static final String[] ACCEPTABLE_IMAGE_TYPES = new String[] {
-		MIME_TYPE_JPEG, MIME_TYPE_PNG, MIME_TYPE_GIF };
+			MIME_TYPE_JPEG, MIME_TYPE_PNG, MIME_TYPE_GIF };
 
 	public class MimeTypeNotSupportedException extends Exception {
 		private static final long serialVersionUID = -5727468348824499790L;
@@ -164,8 +162,18 @@ public class ImageAssetProcessor extends AssetProcessor {
 		final byte[] processedImageData = getScaledImage(originalImage,
 				mimeType, imageData.length, MEDIUM_DIMENSION);
 
-		ImageAssetData resultAssetData = new ImageAssetData(convId,
-				processedImageData, mimeType);
+		if (originalImageAsset.getIsInline() == true
+				&& processedImageData.length > MAX_INLINE_ITEM_SIZE) {
+			originalImageAsset.setIsInline(false);
+		}
+		ImageAssetData resultAssetData;
+		if (originalImageAsset.getIsInline() == true) {
+			resultAssetData = new ImageAssetData(convId,
+					Base64.encodeBase64(processedImageData), mimeType);
+		} else {
+			resultAssetData = new ImageAssetData(convId, processedImageData,
+					mimeType);
+		}
 		final BufferedImage processedImage = ImageIO
 				.read(new ByteArrayInputStream(processedImageData));
 		resultAssetData.setWidth(processedImage.getWidth());
@@ -176,9 +184,15 @@ public class ImageAssetProcessor extends AssetProcessor {
 		resultAssetData.setTag(MEDIUM_TAG);
 		resultAssetData.setCorrelationId(correlationId);
 		resultAssetData.setIsInline(originalImageAsset.getIsInline());
-		resultAssetData.setIsPublic(originalImageAsset.getIsPublic());
+		if (originalImageAsset.getIsPublic() == null) {
+			resultAssetData.setIsPublic(true);
+		} else {
+			resultAssetData.setIsPublic(originalImageAsset.getIsPublic());
+		}
 		if (originalImageAsset.getNonce() == null) {
 			resultAssetData.setNonce(String.valueOf(UUID.randomUUID()));
+		} else {
+			resultAssetData.setNonce(originalImageAsset.getNonce());
 		}
 		resultAssetData.setNativePush(originalImageAsset.getNativePush());
 		return resultAssetData;
@@ -216,27 +230,19 @@ public class ImageAssetProcessor extends AssetProcessor {
 
 	@Override
 	protected List<AssetData> processAsset() throws IOException,
-	MimeTypeNotSupportedException {
-
-		String property = "java.io.tmpdir";
-		String tempDir = System.getProperty(property);
-
+			MimeTypeNotSupportedException {
 		List<AssetData> resultList = new ArrayList<AssetData>();
 
-		final String correlationId = (this.getInData().getCorrelationId() == null) ?
-				String.valueOf(UUID.randomUUID()) : this.getInData().getCorrelationId();
+		final String correlationId = (this.getInData().getCorrelationId() == null) ? String
+				.valueOf(UUID.randomUUID()) : this.getInData()
+				.getCorrelationId();
 
-				ImageAssetData previewImage = getPreviewImage(correlationId);
-				FileUtils.writeByteArrayToFile(new File( tempDir +
-						"/preview.jpg"), previewImage.getImageData());
-				resultList.add(previewImage);
+		ImageAssetData previewImage = getPreviewImage(correlationId);
+		resultList.add(previewImage);
 
-				ImageAssetData mediumImage = getMediumImage(correlationId);
-				FileUtils.writeByteArrayToFile(
-						new File(tempDir + "/medium.jpg"),
-						mediumImage.getImageData());
-				resultList.add(mediumImage);
+		ImageAssetData mediumImage = getMediumImage(correlationId);
+		resultList.add(mediumImage);
 
-				return resultList;
+		return resultList;
 	}
 }
