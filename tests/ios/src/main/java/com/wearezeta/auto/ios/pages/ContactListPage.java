@@ -104,7 +104,10 @@ public class ContactListPage extends IOSPage {
 			 }
 		 }
 		 if(flag) {
-			 DriverUtils.scrollToElement(driver,contactListNames.get(contactListNames.size() - 1));
+			 WebElement el = contactListNames.get(contactListNames.size() - 1);
+			 wait.until(ExpectedConditions.visibilityOf(el));
+			 wait.until(ExpectedConditions.elementToBeClickable(el));
+			 DriverUtils.scrollToElement(driver, el);
 			 findNameInContactList(name);
 		 }
 		return contact;
