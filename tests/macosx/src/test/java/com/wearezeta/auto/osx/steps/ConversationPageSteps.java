@@ -239,4 +239,39 @@ public class ConversationPageSteps {
 		 CommonSteps.senderPages.getConversationPage().writeNewMessage(link);
 		 WhenISendMessage();
 	 }
+	 
+	 @When("^I scroll media out of sight until media bar appears$")
+	 public void WhenIScrollMediaOutOfSightUntilMediaBarAppears() throws Throwable {
+	     
+	 }
+
+	 @When("^I pause playing the media in media bar$")
+	 public void WhenIPausePlayingTheMediaInMediaBar() throws Throwable {
+	     
+	 }
+
+	 @Then("^The playing media is paused")
+	 public void ThenThePlayingMediaIsPaused() throws Throwable {
+	     
+	 }
+
+	 @When("^I press play in media bar$")
+	 public void WhenIPressPlayInMediaBar() throws Throwable {
+	     
+	 }
+
+	 @Then("^The media is playing")
+	 public void ThenTheMediaIsPlaying() throws Throwable {
+	     
+	 }
+
+	 @When("^I stop media in media bar$")
+	 public void WhenIStopMediaInMediaBar() throws Throwable {
+	     
+	 }
+
+	 @Then("^The media stopps playing")
+	 public void ThenTheMediaStoppsPlaying() throws Throwable {
+	     
+	 }
 }
