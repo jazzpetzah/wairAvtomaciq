@@ -225,3 +225,22 @@ Scenario Outline: Play embedded SoundCloud link in conversation
 Examples:
     |  Login		| Password			| Name			| Contact   		| SoundCloudLink   |
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		| https://soundcloud.com/edherbst/throwaway-3 |
+
+@torun    
+@staging
+@id379
+Scenario Outline: Play/pause SoundCloud media link from the media bar
+	Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with name <Name>
+    And I open conversation with <Contact>
+    And I post messages and media link <SoundCloudLink>
+    #And I send message
+    #And I post media link <SoundCloudLink>
+    #And I send message
+    Then I see media link <SoundCloudLink> and media in dialog
+    And I tap SoundCloud link
+    Then I see the embedded media is playing
+    
+Examples:
+    |  Login		| Password			| Name			| Contact   		| SoundCloudLink   							  | 
+    |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		| https://soundcloud.com/sam-silverstone/sets/kygos-remixes-just-wow |

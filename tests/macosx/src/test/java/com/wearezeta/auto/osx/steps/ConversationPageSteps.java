@@ -227,4 +227,14 @@ public class ConversationPageSteps {
 	 public void ThenISeeTheEmbeddedMediaIsPlaying() throws Throwable {
 
 	 }
+	 
+	 @Given("^I post messages and media link (.*)$")
+	 public void WhenIPostMessagesAndMediaLink(String link) throws Throwable { 
+		 for (int i = 0; i <= 5; i++){
+			 WhenIWriteRandomMessage();
+			 WhenISendMessage();
+		 }
+		 CommonSteps.senderPages.getConversationPage().writeNewMessage(link);
+		 WhenISendMessage();
+	 }
 }
