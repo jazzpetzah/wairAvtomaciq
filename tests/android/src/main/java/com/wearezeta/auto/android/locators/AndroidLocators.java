@@ -40,6 +40,8 @@ public final class AndroidLocators {
 	
 	public static final String classNameGridView = "android.widget.GridView";
 	
+	public static final String xpathGroupChatContact = "//android.widget.LinearLayout[child::android.widget.TextView[@text='%s']]";;
+	
 	public static final String xpathGroupChatInfoContacts = "//android.widget.LinearLayout[%1$s]/android.widget.TextView[%2$s]";
 	
 	public static final String xpathContactFrame = "//android.widget.FrameLayout[child::android.widget.TextView[@text='%s']]";
@@ -160,9 +162,9 @@ public final class AndroidLocators {
 	
 	public static final String idInstructionsRequestConnectBtn = "com.waz.zclient.dev:id/button_connect";
 	
-	public static final String idOtherUserPersonalInfoName = "com.waz.zclient.dev:id/ttv__participants__header";
+	public static final String idOtherUserPersonalInfoName = "com.waz.zclient.dev:id/ttv__single_participants__header";
 	
-	public static final String idOtherUserPersonalInfoMail = "com.waz.zclient.dev:id/ttv__participants__sub_header";
+	public static final String idOtherUserPersonalInfoMail = "com.waz.zclient.dev:id/ttv__single_participants__sub_header";
 	
 	public static final String idLeaveConversationConfirmationMenu = "com.waz.zclient.dev:id/meta_confirmation_menu";
 	
