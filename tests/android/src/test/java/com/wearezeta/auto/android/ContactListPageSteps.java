@@ -87,6 +87,7 @@ public class ContactListPageSteps {
 	@Then ("Contact list appears with my name (.*)")
 	public void ThenContactListAppears(String name) throws InterruptedException {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		PagesCollection.contactListPage.pressLaterButton();
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 	}
 
