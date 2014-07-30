@@ -4,13 +4,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.mail.MessagingException;
+import javax.ws.rs.core.UriBuilderException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.json.JSONException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -21,27 +26,31 @@ public class CommonUtils {
 	public static final String ENGLISH_LANG_NAME = "english";
 
 	public static final String FIRST_OS_NAME = "Windows";
+	public static final int USERS_COUNT = 3;
 	public static final String YOUR_USER_1 = "aqaUser";
 	public static final String YOUR_USER_2 = "yourUser";
 	public static final String YOUR_USER_3 = "yourContact";
 	public static final String YOUR_PASS = "aqaPassword";
+	public static final int CONTACTS_COUNT = 5;
 	public static final String CONTACT_1 = "aqaContact1";
 	public static final String CONTACT_2 = "aqaContact2";
 	public static final String CONTACT_3 = "aqaContact3";
 	public static final String CONTACT_4 = "aqaPictureContact";
 	public static final String CONTACT_5 = "aqaAvatar TestContact";
+	public static final int USERS_CREATION_TIMEOUT = 60; // seconds
 	public static LinkedList<ClientUser> yourUsers = new LinkedList<ClientUser>();
 	public static LinkedList<ClientUser> contacts = new LinkedList<ClientUser>();
-	
+
 	public static final String CONTACT_PICTURE_NAME = "aqaPictureContact";
 	public static final String CONTACT_PICTURE_EMAIL = "qa1+aqaPictureContact@wearezeta.com";
 	public static final String CONTACT_PICTURE_PASSWORD = "picture123";
 	public static final String CONTACT_AVATAR_NAME = "aqaAvatar TestContact";
 	public static final String CONTACT_AVATAR_EMAIL = "qa1+aqaAvatarTestContact@wearezeta.com";
 	public static final String CONTACT_AVATAR_PASSWORD = "avatar123";
-	
+
 	private static final String USER_IMAGE = "userpicture.jpg";
 	private static final String RESULT_USER_IMAGE = "userpicture_mobile_check.jpg";
+
 	public static String getOsName() {
 		return System.getProperty("os.name");
 	}
@@ -53,14 +62,14 @@ public class CommonUtils {
 					"cmd /C adb push " + getImagePath(CommonUtils.class) + " "
 							+ photoPathOnDevice);
 			Runtime.getRuntime()
-			.exec("cmd /C adb -d shell \"am broadcast -a android.intent.action.MEDIA_MOUNTED -d file:///sdcard \"Broadcasting: Intent { act=android.intent.action.MEDIA_MOUNTED dat=file:///sdcard }");
+					.exec("cmd /C adb -d shell \"am broadcast -a android.intent.action.MEDIA_MOUNTED -d file:///sdcard \"Broadcasting: Intent { act=android.intent.action.MEDIA_MOUNTED dat=file:///sdcard }");
 		} else {
 			executeOsXCommand(new String[] { "/bin/bash", "-c", "adb push",
 					getImagePath(CommonUtils.class), photoPathOnDevice });
 			executeOsXCommand(new String[] {
 					"/bin/bash",
 					"-c",
-			"adb shell \"am broadcast -a android.intent.action.MEDIA_MOUNTED -d file:///sdcard \"Broadcasting: Intent { act=android.intent.action.MEDIA_MOUNTED dat=file:///sdcard }" });
+					"adb shell \"am broadcast -a android.intent.action.MEDIA_MOUNTED -d file:///sdcard \"Broadcasting: Intent { act=android.intent.action.MEDIA_MOUNTED dat=file:///sdcard }" });
 		}
 	}
 
@@ -70,7 +79,7 @@ public class CommonUtils {
 					"cmd /C adb shell am force-stop com.waz.zclient");
 		} else {
 			executeOsXCommand(new String[] { "/bin/bash", "-c",
-			"adb shell am force-stop com.waz.zclient" });
+					"adb shell am force-stop com.waz.zclient" });
 		}
 	}
 
@@ -94,7 +103,7 @@ public class CommonUtils {
 				value = value
 						.replace(YOUR_PASS, yourUsers.get(0).getPassword());
 			}
-			
+
 		}
 		if (contacts.size() > 0) {
 			if (value.contains(CONTACT_1)) {
@@ -129,35 +138,34 @@ public class CommonUtils {
 			value = value.replace("aqaAvatarTestContactPassword",
 					CONTACT_AVATAR_PASSWORD);
 		}
-		
+
 		return value;
 	}
 
-	public static String getImagePath(Class c) throws IOException {
-		String path = getValueFromConfig(c, "defaultImagesPath")
-				+ USER_IMAGE;
+	public static String getImagePath(Class<?> c) throws IOException {
+		String path = getValueFromConfig(c, "defaultImagesPath") + USER_IMAGE;
 		return path;
 	}
 
-	public static String getImagesPath(Class c) throws IOException {
+	public static String getImagesPath(Class<?> c) throws IOException {
 
 		return getValueFromConfig(c, "defaultImagesPath");
 	}
 
-	public static String getResultImagePath(Class c) throws IOException {
+	public static String getResultImagePath(Class<?> c) throws IOException {
 
 		String path = getValueFromConfig(c, "defaultImagesPath")
 				+ RESULT_USER_IMAGE;
 		return path;
 	}
 
-	public static String getPictureResultsPathFromConfig(Class c)
+	public static String getPictureResultsPathFromConfig(Class<?> c)
 			throws IOException {
 
 		return getValueFromConfig(c, "pictureResultsPath");
 	}
 
-	private static String getValueFromConfig(Class c, String key)
+	private static String getValueFromConfig(Class<?> c, String key)
 			throws IOException {
 
 		String val = "";
@@ -179,15 +187,15 @@ public class CommonUtils {
 		return val;
 	}
 
-	private static String getValueFromCommonConfig(Class c, String key)
+	private static String getValueFromCommonConfig(Class<?> c, String key)
 			throws IOException {
 
 		String val = "";
 		InputStream configFileStream = null;
 
 		try {
-			URL configFile = c.getClass()
-					.getResource("/CommonConfiguration.cnf");
+			URL configFile = c.getClass().getResource(
+					"/CommonConfiguration.cnf");
 			configFileStream = configFile.openStream();
 			Properties p = new Properties();
 			p.load(configFileStream);
@@ -202,76 +210,81 @@ public class CommonUtils {
 		return val;
 	}
 
-	public static String getDefaultEmailFromConfig(Class c) throws IOException {
+	public static String getDefaultEmailFromConfig(Class<?> c)
+			throws IOException {
 
 		return getValueFromCommonConfig(c, "defaultEmail");
 	}
 
-	public static String getDefaultEmailServerFromConfig(Class c) throws IOException {
+	public static String getDefaultEmailServerFromConfig(Class<?> c)
+			throws IOException {
 
-		return getValueFromCommonConfig(c, "defaultEmailServer");}
-	
-	public static String getDriverTimeoutFromConfig(Class c) throws IOException {
+		return getValueFromCommonConfig(c, "defaultEmailServer");
+	}
+
+	public static String getDriverTimeoutFromConfig(Class<?> c)
+			throws IOException {
 
 		return getValueFromConfig(c, "driverTimeoutSeconds");
 	}
 
-	public static String getDefaultPasswordFromConfig(Class c)
+	public static String getDefaultPasswordFromConfig(Class<?> c)
 			throws IOException {
 
 		return getValueFromCommonConfig(c, "defaultPassword");
 	}
 
-	public static String getDefaultBackEndUrlFromConfig(Class c)
+	public static String getDefaultBackEndUrlFromConfig(Class<?> c)
 			throws IOException {
 
 		return getValueFromCommonConfig(c, "defaultBackEndUrl");
 	}
 
-	public static String getUrlFromConfig(Class c) throws IOException {
+	public static String getUrlFromConfig(Class<?> c) throws IOException {
 
 		return getValueFromConfig(c, "Url");
 	}
 
-	public static Boolean getIsSimulatorFromConfig(Class c) throws IOException {
+	public static Boolean getIsSimulatorFromConfig(Class<?> c)
+			throws IOException {
 
 		return (getValueFromConfig(c, "isSimulator").equals("true"));
 	}
 
-	public static String getSwipeScriptPath(Class c) throws IOException {
+	public static String getSwipeScriptPath(Class<?> c) throws IOException {
 
 		return getValueFromConfig(c, "swipeScriptPath");
 	}
 
-	public static String getAppPathFromConfig(Class c) throws IOException {
+	public static String getAppPathFromConfig(Class<?> c) throws IOException {
 
 		return getValueFromConfig(c, "appPath");
 	}
 
-	public static String getAndroidActivityFromConfig(Class c)
+	public static String getAndroidActivityFromConfig(Class<?> c)
 			throws IOException {
 
 		return getValueFromConfig(c, "activity");
 	}
 
-	public static String getSimulatorImagesPathFromConfig(Class c)
+	public static String getSimulatorImagesPathFromConfig(Class<?> c)
 			throws IOException {
 		return getValueFromConfig(c, "iosImagesPath");
 	}
 
-	public static String getGenerateUsersFlagFromConfig(Class c)
+	public static String getGenerateUsersFlagFromConfig(Class<?> c)
 			throws IOException {
 
 		return getValueFromConfig(c, "generateUsers");
 	}
 
-	public static String getAndroidPackageFromConfig(Class c)
+	public static String getAndroidPackageFromConfig(Class<?> c)
 			throws IOException {
 
 		return getValueFromConfig(c, "package");
 	}
 
-	public static String getUserPicturePathFromConfig(Class c)
+	public static String getUserPicturePathFromConfig(Class<?> c)
 			throws IOException {
 
 		return getValueFromConfig(c, "pathToUserpic");
@@ -297,13 +310,13 @@ public class CommonUtils {
 		docBuilderFactory.setFeature("http://xml.org/sax/features/validation",
 				false);
 		docBuilderFactory
-		.setFeature(
-				"http://apache.org/xml/features/nonvalidating/load-dtd-grammar",
-				false);
+				.setFeature(
+						"http://apache.org/xml/features/nonvalidating/load-dtd-grammar",
+						false);
 		docBuilderFactory
-		.setFeature(
-				"http://apache.org/xml/features/nonvalidating/load-external-dtd",
-				false);
+				.setFeature(
+						"http://apache.org/xml/features/nonvalidating/load-external-dtd",
+						false);
 		DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 
 		InputStream languageFileStream = null;
@@ -399,7 +412,7 @@ public class CommonUtils {
 		return secondParts[0];
 	}
 
-	public static void generateAdditionalContacts() {
+	private static void generateAdditionalContacts() {
 		// insert values of the contact in
 		// "CommonUtils.retrieveRealUserContactPasswordValue" first
 		Map<String, String> creds = new HashMap<String, String>();
@@ -416,46 +429,47 @@ public class CommonUtils {
 		}
 	}
 
-	public static void generateUsers(int contactNumber) throws IOException, MessagingException {
-		for (int i = 0; i < 3; i++) {
-			ClientUser user = new ClientUser();
-			user.setEmail(CreateZetaUser.registerUserAndReturnMail());
-			user.setPassword(getDefaultPasswordFromConfig(CommonUtils.class));
-			if (user.getEmail() != null) {
-				user.setUserState(UsersState.Created);
-				yourUsers.addLast(user);
-			} else {
-				throw new NullPointerException("User was not created");
-			}
+	public static void generateUsers(int contactNumber) throws IOException,
+			MessagingException, IllegalArgumentException, UriBuilderException,
+			JSONException, BackendRequestException, InterruptedException {
+		ExecutorService executor = Executors.newFixedThreadPool(USERS_COUNT
+				+ CONTACTS_COUNT);
+		for (int i = 0; i < USERS_COUNT + CONTACTS_COUNT; i++) {
+			final boolean isContact = (i >= USERS_COUNT);
+			Runnable worker = new Thread(new Runnable() {
+				public void run() {
+					try {
+						final String email = CreateZetaUser
+								.registerUserAndReturnMail();
+						if (email == null)
+							return;
+						ClientUser user = new ClientUser();
+						user.setEmail(email);
+						user.setPassword(getDefaultPasswordFromConfig(CommonUtils.class));
+						user.setUserState(UsersState.Created);
+						// TODO: Use thread-safe collections
+						if (isContact) {
+							contacts.addLast(user);
+						} else {
+							yourUsers.addLast(user);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			executor.execute(worker);
+		}
+		executor.shutdown();
+		executor.awaitTermination(USERS_CREATION_TIMEOUT, TimeUnit.SECONDS);
+		if (yourUsers.size() != USERS_COUNT
+				|| contacts.size() != CONTACTS_COUNT) {
+			throw new BackendRequestException(
+					"Failed to create new users or contacts on the backend");
 		}
 
-		for (int i = 0; i < contactNumber; i++) {
-			String contact = CreateZetaUser.registerUserAndReturnMail();
-			if (contact != null) {
-				ClientUser user = new ClientUser();
-				user.setEmail(contact);
-				user.setPassword(getDefaultPasswordFromConfig(CommonUtils.class));
-				user.setUserState(UsersState.Created);
-				contacts.addLast(user);
-			} else {
-				throw new NullPointerException("Contact was not created");
-			}
-		}
 		generateAdditionalContacts();
 	}
-	
-
-	/*
-	 * public static void iOSSimulatorCameraRoll() throws IOException,
-	 * InterruptedException{
-	 * 
-	 * String scriptPath = CommonUtils.getPhotoScriptPath(CommonUtils.class);
-	 * 
-	 * String [] cmd = new String []{"/bin/bash", scriptPath, "7.1"};
-	 * 
-	 * Process process = Runtime.getRuntime().exec(cmd);
-	 * System.out.println("Process Code "+ process.waitFor()); }
-	 */
 
 	public static void usePrecreatedUsers() {
 		ClientUser contact3 = new ClientUser(
@@ -492,9 +506,8 @@ public class CommonUtils {
 		contacts.addLast(contact3);
 	}
 
-	public static String getAndroidDeviceNameFromConfig(Class c)
+	public static String getAndroidDeviceNameFromConfig(Class<?> c)
 			throws IOException {
-
 		return getValueFromConfig(c, "deviceName");
 	}
 
