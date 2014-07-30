@@ -163,7 +163,7 @@ public class ConversationPage extends OSXPage {
 	}
 	
 	public String getSoundCloudButtonState(){
-		String soundCloudButtonState = soundCloudPauseButton.getAttribute("AXTitle");
+		String soundCloudButtonState = soundCloudPauseButton.getAttribute("value");
 		return soundCloudButtonState;
 	}
 	

@@ -210,6 +210,7 @@ Examples:
     |  Login		| Password			| Name			| Contact   		|
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact3		|
 
+@torun
 @staging
 @id81
 Scenario Outline: Play embedded SoundCloud link in conversation
