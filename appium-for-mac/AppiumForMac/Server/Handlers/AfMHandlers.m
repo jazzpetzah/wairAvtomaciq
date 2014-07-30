@@ -835,7 +835,7 @@
 		[self respondWithJsonError:status session:sessionId];
 	}
 	
-	id valueAttribute = element.AXValue;
+	id valueAttribute = element.AXValue; 
 //	if (valueAttribute != nil)
 //	{
 		NSString *text = [NSString stringWithFormat:@"%@", valueAttribute];
@@ -1073,9 +1073,20 @@
 	{
 		[self respondWithJsonError:status session:sessionId];
 	}
-	
-	id attributeValue = [element valueForAttribute:attributeName];
-		return [self respondWithJson:[NSString stringWithFormat:@"%@", attributeValue] status:0 session: sessionId];
+    
+    id valueAttribute = 0;
+    if ([attributeName  isEqual: @"AXTitle"])
+    {
+        valueAttribute = element.AXTitle;
+    }
+    else
+    {
+        valueAttribute = [element valueForAttribute:attributeName];
+    }
+    
+
+    NSString *text = [NSString stringWithFormat:@"%@", valueAttribute];
+    return [self respondWithJson:text status:kAfMStatusCodeSuccess session: sessionId];
 }
 
 // GET /session/:sessionId/element/:id/equals/:other
