@@ -1075,14 +1075,8 @@
 	}
     
     id valueAttribute = 0;
-    if ([attributeName  isEqual: @"AXTitle"])
-    {
-        valueAttribute = element.AXTitle;
-    }
-    else
-    {
-        valueAttribute = [element valueForAttribute:attributeName];
-    }
+
+    valueAttribute = [element valueForAttribute:attributeName];
     
 
     NSString *text = [NSString stringWithFormat:@"%@", valueAttribute];
