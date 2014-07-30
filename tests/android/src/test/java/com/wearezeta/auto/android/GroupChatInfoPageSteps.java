@@ -15,6 +15,11 @@ public class GroupChatInfoPageSteps {
 
 	public static final String GROUP_CHAT_NAME = "TempTestChat";
 
+	@When("^I tap on group chat contact (.*)$")
+	public void WhenITapOnGroupChatContact(String contact) throws Throwable {
+		PagesCollection.otherUserPersonalInfoPage = PagesCollection.groupChatInfoPage.tapOnContact(contact);
+	}
+	
 	@When("^I swipe up group chat info page$")
 	public void WhenISwipeUpGroupChatInfoPage() throws Throwable {	
 		PagesCollection.groupChatInfoPage.swipeUp(500);

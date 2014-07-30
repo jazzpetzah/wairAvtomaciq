@@ -65,7 +65,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
 
- @mute @nonUnicode @smoke
+  @mute @nonUnicode @smoke
   Scenario Outline: Send message to group chat
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -212,7 +212,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @unicode @staging 
+  @unicode @staging
   Scenario Outline: Send double byte chars
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -226,7 +226,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     | Message                     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | 畑 はたけ hatake field of crops |
 
- @nonUnicode @staging
+  @nonUnicode @staging
   Scenario Outline: Verify correct group info page information
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -240,3 +240,18 @@ Feature: Conversation
     Examples: 
       | Login   | Password    | Name    | Contact1          | Contact2              | ParticipantNumber | GroupChatName  |
       | aqaUser | aqaPassword | aqaUser | aqaPictureContact | aqaAvatar TestContact | 3                 | GroupInfoCheck |
+
+  @nonUnicode @staging
+  Scenario Outline: I can access user details page from group chat and see user name, email and photo
+    Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
+    And I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <GroupChatName>
+    And I swipe up on group dialog page
+    And I tap on group chat contact <Contact1>
+    Then I see <Contact1> user name and email
+    And I see correct background image
+
+    Examples: 
+      | Login   | Password    | Name    | Contact1          | Contact2              | GroupChatName  |
+      | aqaUser | aqaPassword | aqaUser | aqaPictureContact | aqaAvatar TestContact | GroupInfoCheck |

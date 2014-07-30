@@ -8,6 +8,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -44,6 +47,13 @@ public abstract class BasePage {
 	
 	public BufferedImage takeScreenshot() throws IOException{
 		return DriverUtils.takeScreenshot(driver);
+	}
+	
+	public BufferedImage getElementScreenshot(WebElement element) throws IOException{
+		BufferedImage screenshot = takeScreenshot();
+		Point elementLocation = element.getLocation();
+		Dimension elementSize = element.getSize();
+		return screenshot.getSubimage(elementLocation.x, elementLocation.y, elementSize.width, elementSize.height);
 	}
 	
 	public void refreshUITree() {

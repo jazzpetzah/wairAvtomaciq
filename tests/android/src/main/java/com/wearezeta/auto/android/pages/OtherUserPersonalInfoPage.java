@@ -1,16 +1,26 @@
 package com.wearezeta.auto.android.pages;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
+import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.SwipeDirection;
 
 public class OtherUserPersonalInfoPage extends AndroidPage {
 
 	public static final String REMOVE_FROM_CONVERSATION_BUTTON = "Remove";
+	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.95;
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idOtherUserPersonalInfoName)
 	private WebElement otherUserName;
@@ -26,6 +36,9 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameFrameLayout)
 	private WebElement frameLayout;
+	
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameLoginPage)
+	private WebElement backGround;
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idConfirmBtn)
 	private WebElement confirmBtn;
@@ -83,13 +96,15 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	public boolean isOtherUserNameVisible(String name) {
 		refreshUITree();//workaround to refresh UI tree
 		wait.until(ExpectedConditions.visibilityOf(otherUserName));
-		return otherUserName.getText().equals(name);
+		String text = otherUserName.getText().toLowerCase();
+		return text.equals(name.toLowerCase());
 	}
 	
 	public boolean isOtherUserMailVisible(String mail) {
 		refreshUITree();//workaround to refresh UI tree
 		wait.until(ExpectedConditions.visibilityOf(otherUserMail));
-		return otherUserMail.getText().equals(mail);
+		String text = otherUserMail.getText().toLowerCase();
+		return text.equals(mail.toLowerCase());
 	}
 
 	public boolean isRemoveFromConversationAlertVisible() {
@@ -107,6 +122,20 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	public void tapAddContactBtn() {
 		addContactBtn.click();
 		
+	}
+
+	public boolean isBackGroundImageCorrect(String imageName) throws IOException {
+		BufferedImage bgImage = null;
+		boolean flag = false;
+		bgImage = getElementScreenshot(backGround);
+		String path = CommonUtils.getImagesPath(CommonUtils.class);
+		BufferedImage realImage = ImageUtil.readImageFromFile(path+imageName);
+		double score = ImageUtil.getOverlapScore(realImage, bgImage);
+		System.out.println(score);
+		if (score >= MIN_ACCEPTABLE_IMAGE_VALUE) {
+			flag = true;
+		}
+		return flag;
 	}
 
 }
