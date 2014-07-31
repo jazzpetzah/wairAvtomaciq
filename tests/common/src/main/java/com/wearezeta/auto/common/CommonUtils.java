@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -434,6 +435,7 @@ public class CommonUtils {
 			MessagingException, IllegalArgumentException, UriBuilderException,
 			JSONException, BackendRequestException, InterruptedException {
 		ExecutorService executor = Executors.newFixedThreadPool(MAX_PARALLEL_USER_CREATION_TASKS);
+		final ReentrantLock lock = new ReentrantLock();
 		for (int i = 0; i < USERS_COUNT + CONTACTS_COUNT; i++) {
 			final boolean isContact = (i >= USERS_COUNT);
 			Runnable worker = new Thread(new Runnable() {
@@ -447,11 +449,15 @@ public class CommonUtils {
 						user.setEmail(email);
 						user.setPassword(getDefaultPasswordFromConfig(CommonUtils.class));
 						user.setUserState(UsersState.Created);
-						// TODO: Use thread-safe collections
-						if (isContact) {
-							contacts.addLast(user);
-						} else {
-							yourUsers.addLast(user);
+						lock.lock();
+						try {
+							if (isContact) {
+								contacts.addLast(user);
+							} else {
+								yourUsers.addLast(user);
+							}
+						} finally {
+							lock.unlock();
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
