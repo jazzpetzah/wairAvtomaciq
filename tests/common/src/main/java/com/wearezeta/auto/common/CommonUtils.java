@@ -38,7 +38,7 @@ public class CommonUtils {
 	public static final String CONTACT_3 = "aqaContact3";
 	public static final String CONTACT_4 = "aqaPictureContact";
 	public static final String CONTACT_5 = "aqaAvatar TestContact";
-	public static final int USERS_CREATION_TIMEOUT = 60; // seconds
+	public static final int USERS_CREATION_TIMEOUT = 90; // seconds
 	public static LinkedList<ClientUser> yourUsers = new LinkedList<ClientUser>();
 	public static LinkedList<ClientUser> contacts = new LinkedList<ClientUser>();
 	public static final int MAX_PARALLEL_USER_CREATION_TASKS = 6;
