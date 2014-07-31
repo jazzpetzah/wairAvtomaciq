@@ -27,6 +27,9 @@ public class ContactListPage extends AndroidPage {
 	@FindBy(how = How.ID, using = AndroidLocators.idContactListMute)
 	private WebElement muteBtn;
 
+	@FindBy(how = How.ID, using = AndroidLocators.idConfirmCancelButton)
+	private List<WebElement> laterBtn;
+	
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameLoginPage)
 	private WebElement mainControl;
 
@@ -101,5 +104,12 @@ public class ContactListPage extends AndroidPage {
 		}
 		}
 		return page;
+	}
+
+	public ContactListPage pressLaterButton() {
+		if(laterBtn.size()>0){
+			laterBtn.get(0).click();
+		}
+		return this;
 	}
 }

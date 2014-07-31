@@ -2,6 +2,12 @@ package com.wearezeta.auto.android.locators;
 
 public final class AndroidLocators {
 	
+	public static final String idConfirmDialogHeader = "com.waz.zclient.dev:id/ttv__confirm_dialog__header";
+	
+	public static final String idConfirmCancelButton = "com.waz.zclient.dev:id/zb__confirm_dialog__cancel_button";
+	
+	public static final String idConfirmConfirmButton = "com.waz.zclient.dev:id/zb__confirm_dialog__confirm_button";
+	
 	public static final String idParticipantsSubHeader = "com.waz.zclient.dev:id/ttv__participants__sub_header";
 	
 	public static final String idAboutLogo ="com.waz.zclient.dev:id/gtv__about__logo";
@@ -33,6 +39,8 @@ public final class AndroidLocators {
 	public static final String classListView = "android.widget.ListView";
 	
 	public static final String classNameGridView = "android.widget.GridView";
+	
+	public static final String xpathGroupChatContact = "//android.widget.LinearLayout[child::android.widget.TextView[@text='%s']]";;
 	
 	public static final String xpathGroupChatInfoContacts = "//android.widget.LinearLayout[%1$s]/android.widget.TextView[%2$s]";
 	
@@ -154,9 +162,9 @@ public final class AndroidLocators {
 	
 	public static final String idInstructionsRequestConnectBtn = "com.waz.zclient.dev:id/button_connect";
 	
-	public static final String idOtherUserPersonalInfoName = "com.waz.zclient.dev:id/ttv__participants__header";
+	public static final String idOtherUserPersonalInfoName = "com.waz.zclient.dev:id/ttv__single_participants__header";
 	
-	public static final String idOtherUserPersonalInfoMail = "com.waz.zclient.dev:id/ttv__participants__sub_header";
+	public static final String idOtherUserPersonalInfoMail = "com.waz.zclient.dev:id/ttv__single_participants__sub_header";
 	
 	public static final String idLeaveConversationConfirmationMenu = "com.waz.zclient.dev:id/meta_confirmation_menu";
 	

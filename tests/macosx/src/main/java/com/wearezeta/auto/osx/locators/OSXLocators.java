@@ -100,4 +100,18 @@ public final class OSXLocators {
 	public static final String xpathOpenUserPictureSettingsButton = "//AXWindow/AXButton[6]";
 	
 	public static final String IMAGES_SOURCE_DIRECTORY = "Documents";
+	
+	///////////////////////
+	//Media Locators
+	///////////////////////
+	public static final String idMediaBarPlayPauseButton = "mediaBarPlayButton";
+	public static final String idMediaBarTitelButton = "mediaBarTitelButton";
+	public static final String idMediaBarCloseButton = "mediaBarCloseButton";
+	
+	public static final String xpathSoundCloudPlayButton = "//AXGroup/AXGroup/AXButton[@AXTitle='Play']";
+	public static final String xpathSoundCloudPauseButton = "//AXGroup/AXGroup/AXButton[@AXTitle='Pause']";
+	public static final String xpathSoundCloudMediaContainer = "//AXGroup/AXLink/AXImage";
+	
+	public static final String SOUNDCLOUD_BUTTON_STATE = "Pause";
+	
 }

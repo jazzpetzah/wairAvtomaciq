@@ -232,7 +232,7 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public boolean isMediaContainerVisible(){
-		return mediaContainer.isDisplayed();
+		return mediaLinkCell.isDisplayed();
 	}
 	
 	public VideoPlayerPage clickOnVideoContainerFirstTime() throws IOException{

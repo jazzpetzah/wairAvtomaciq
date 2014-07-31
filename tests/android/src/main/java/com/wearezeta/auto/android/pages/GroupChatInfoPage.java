@@ -3,6 +3,7 @@ package com.wearezeta.auto.android.pages;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
+
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -150,13 +151,6 @@ public class GroupChatInfoPage extends AndroidPage {
 		
 		return commonFlag;
 	}
-	
-	public BufferedImage getElementScreenshot(WebElement element) throws IOException{
-		BufferedImage screenshot = takeScreenshot();
-		Point elementLocation = element.getLocation();
-		Dimension elementSize = element.getSize();
-		return screenshot.getSubimage(elementLocation.x, elementLocation.y, elementSize.width, elementSize.height);
-	}
 
 	public String getSubHeader() {
 		return participantsSubHeader.getText();
@@ -165,5 +159,12 @@ public class GroupChatInfoPage extends AndroidPage {
 	public String getConversationName() {
 		refreshUITree();
 		return groupChatName.getText();
+	}
+
+	public OtherUserPersonalInfoPage tapOnContact(String contact) throws Exception {
+		refreshUITree();
+		WebElement cn = driver.findElement(By.xpath(String.format(AndroidLocators.xpathGroupChatContact, contact.toUpperCase())));
+		cn.click();
+		return new OtherUserPersonalInfoPage(url, path);
 	}	
 }

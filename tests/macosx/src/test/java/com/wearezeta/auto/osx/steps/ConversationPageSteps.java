@@ -206,4 +206,27 @@ public class ConversationPageSteps {
 		 ppSteps.WhenISeeUserFromSearchResults(user2);
 		 ppSteps.WhenIAddUserFromSearchResults(user2);
 	 }
+	 
+	 @Given("^I post media link (.*)$")
+	 public void WhenIPostMediaLink(String link) throws Throwable { 
+		 CommonSteps.senderPages.getConversationPage().writeNewMessage(link);
+	 }
+
+	 @Then("^I see media link (.*) and media in dialog$")
+	 public void ThenISeeMediaLinkAndMediaInDialog(String link) throws Throwable {
+		 boolean mediaVisible = CommonSteps.senderPages.getConversationPage().isSoundCloudContainerVisible();
+		 Assert.assertTrue("SoundCloud Container is missing in dialog", mediaVisible);  
+	 }
+
+	 @When("^I tap SoundCloud link$")
+	 public void WhenITapSoundCloudLink() throws Throwable {
+		 CommonSteps.senderPages.getConversationPage().tapOnSoundCloudMessage(); 
+	 }
+
+	 @Then("^I see the embedded media is playing$")
+	 public void ThenISeeTheEmbeddedMediaIsPlaying() throws Throwable {
+		 String expectedButtonState = OSXLocators.SOUNDCLOUD_BUTTON_STATE;
+		 String actualState = CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState();
+		 Assert.assertEquals(expectedButtonState, actualState);
+	 }
 }

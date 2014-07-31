@@ -209,3 +209,19 @@ Scenario Outline: Archive and unarchive conversation
 Examples:
     |  Login		| Password			| Name			| Contact   		|
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact3		|
+
+@staging
+@id81
+Scenario Outline: Play embedded SoundCloud link in conversation
+	Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with name <Name>
+    And I open conversation with <Contact>
+    And I post media link <SoundCloudLink>
+    And I send message
+    Then I see media link <SoundCloudLink> and media in dialog
+    And I tap SoundCloud link
+    Then I see the embedded media is playing
+    
+Examples:
+    |  Login		| Password			| Name			| Contact   		| SoundCloudLink   |
+    |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		| https://soundcloud.com/edherbst/throwaway-3 |

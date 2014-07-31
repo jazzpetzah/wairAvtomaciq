@@ -17,14 +17,11 @@ public class ContactListPageSteps {
 	@Given("^I see Contact list with my name (.*)$")
 	public void GivenISeeContactListWithMyName(String name) throws InterruptedException, IOException{
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
-		//TODO remove thread.sleep
-		//T chread.sleep(30000);
-		//PagesCollection.contactListPage.swipeDown(500);
-		//PagesCollection.contactListPage.navigateBack();
+		PagesCollection.contactListPage.pressLaterButton();
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 
 	}
-
+	
 	@When("^I tap on contact name (.*)$")
 	public void WhenITapOnContactName(String name) throws Throwable  {
 		//workaround for unknown contacts, start
@@ -90,6 +87,7 @@ public class ContactListPageSteps {
 	@Then ("Contact list appears with my name (.*)")
 	public void ThenContactListAppears(String name) throws InterruptedException {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		PagesCollection.contactListPage.pressLaterButton();
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 	}
 
