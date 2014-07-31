@@ -107,9 +107,9 @@ public class CommonUtils {
 
 	public static String retrieveRealUserContactPasswordValue(String value) {
 		Map<String, String> usernameConstantAndUsernameReal = new HashMap<String, String>();
-		usernameConstantAndUsernameReal.put(YOUR_USER, yourUsers.get(0)
+		usernameConstantAndUsernameReal.put(YOUR_USER_1, yourUsers.get(0)
 				.getName());
-		usernameConstantAndUsernameReal.put(YOUR_USER_1, yourUsers.get(1)
+		usernameConstantAndUsernameReal.put(YOUR_USER_2, yourUsers.get(1)
 				.getName());
 		usernameConstantAndUsernameReal.put(YOUR_UNCONNECTED_USER, yourUsers
 				.get(2).getName());

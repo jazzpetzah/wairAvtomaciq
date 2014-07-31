@@ -162,7 +162,7 @@ public class ContactListPage extends IOSPage {
 		ClientUser groupCreatorUser = CommonUtils.findUserNamed(groupCreator);
 		ClientUser unconnectedUser = CommonUtils
 				.findUserNamed(CommonUtils.YOUR_UNCONNECTED_USER);
-		ClientUser selfUser = CommonUtils.findUserNamed(CommonUtils.YOUR_USER);
+		ClientUser selfUser = CommonUtils.findUserNamed(CommonUtils.YOUR_USER_1);
 
 		BackEndREST.sendConnectRequest(groupCreatorUser, unconnectedUser,
 				CONNECTION_CONSTANT + groupCreatorUser.getName(), chatName);
