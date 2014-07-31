@@ -155,6 +155,8 @@ public class BackEndREST {
 				output = httpPost(webResource, input, new int[] { HttpStatus.SC_OK });
 				break;
 			} catch (BackendRequestException e) {
+				// TODO: Replace with smart logger
+				e.printStackTrace();
 				// retry login
 				Thread.sleep(300);
 				savedException = e;
