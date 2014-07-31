@@ -27,8 +27,8 @@ public class CommonUtils {
 	public static final String ENGLISH_LANG_NAME = "english";
 
 	public static final String FIRST_OS_NAME = "Windows";
-	public static final String YOUR_USER = "aqaUser";
-	public static final String YOUR_USER_1 = "yourUser";
+	public static final String YOUR_USER_1 = "aqaUser";
+	public static final String YOUR_USER_2 = "yourUser";
 	public static final String YOUR_UNCONNECTED_USER = "yourContact";
 	public static final String YOUR_PASS = "aqaPassword";
 	public static final String CONTACT_1 = "aqaContact1";
