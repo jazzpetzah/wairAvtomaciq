@@ -21,13 +21,13 @@ public class LoginPageSteps {
 	 @Given("^I Sign in using login (.*) and password (.*)$")
 	 public void GivenISignIn(String login, String password) throws IOException, InterruptedException  {		
 		 switch (login) {
-		 case CommonUtils.YOUR_USER_1:
+		 case CommonUtils.YOUR_USER:
 			 login = CommonUtils.yourUsers.get(0).getEmail();
 			 break;
-		 case CommonUtils.YOUR_USER_2:
+		 case CommonUtils.YOUR_USER_1:
 			 login = CommonUtils.yourUsers.get(1).getEmail();
 			 break;
-		 case CommonUtils.YOUR_USER_3:
+		 case CommonUtils.YOUR_UNCONNECTED_USER:
 			 login = CommonUtils.yourUsers.get(2).getEmail();
 			 break;
 		 case CommonUtils.CONTACT_1:
