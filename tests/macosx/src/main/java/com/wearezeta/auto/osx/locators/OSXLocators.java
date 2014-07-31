@@ -113,5 +113,6 @@ public final class OSXLocators {
 	public static final String xpathSoundCloudMediaContainer = "//AXGroup/AXLink/AXImage";
 	
 	public static final String SOUNDCLOUD_BUTTON_STATE = "Pause";
+	public static final String xpathConversationWebScrollArea = "//AXScrollArea/AXWebArea";
 	
 }

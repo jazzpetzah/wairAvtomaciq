@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -46,6 +47,18 @@ public class ConversationPage extends OSXPage {
 	
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathSoundCloudMediaContainer)
 	private WebElement soundCloudMediaContainer;
+	
+	@FindBy(how = How.ID, using = OSXLocators.idMediaBarPlayPauseButton)
+	private WebElement mediabarPlayPauseButton;
+	
+	@FindBy(how = How.ID, using = OSXLocators.idMediaBarTitelButton)
+	private WebElement mediabarStopCloseButton;
+	
+	@FindBy(how = How.ID, using = OSXLocators.idMediaBarCloseButton)
+	private WebElement mediabarBarTitle;
+	
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathConversationWebScrollArea)
+	private WebElement conversationView;
 
 	public ConversationPage(String URL, String path) throws MalformedURLException {
 		
@@ -165,6 +178,14 @@ public class ConversationPage extends OSXPage {
 	public String getSoundCloudButtonState(){
 		String soundCloudButtonState = soundCloudPauseButton.getAttribute("AXTitle");
 		return soundCloudButtonState;
+	}
+	
+	public void scrollDownTilMediaBarAppears() throws Exception{
+		
+		boolean playButtonIsShown = mediabarPlayPauseButton.isDisplayed();
+		System.out.print("BUTTON IS SHOWN: " + playButtonIsShown);
+		//DriverUtils.swipeDown(driver, conversationView, 500);
+		
 	}
 	
 	
