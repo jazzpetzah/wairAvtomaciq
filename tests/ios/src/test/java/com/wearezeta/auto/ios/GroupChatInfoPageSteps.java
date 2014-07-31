@@ -33,9 +33,14 @@ public class GroupChatInfoPageSteps {
 		Assert.assertTrue(PagesCollection.groupChatInfoPage.isNumberOfParticipants(Integer.parseInt(realNumberOfParticipants)));
 		}
 	
+	@When("^I tap on all of the participants and check their emails and names$")
+	public void ITapAllParticipantsAndCheckElements() throws IOException{
+		PagesCollection.groupChatInfoPage.tapAndCheckAllParticipants();
+	}
+	
 	@When("^I see the correct participant avatars$")
 	public void IVerifyCorrectParticipantAvatars() throws IOException{
-		Assert.assertTrue(PagesCollection.groupChatInfoPage.isParticipantAvatars());
+		Assert.assertTrue(PagesCollection.groupChatInfoPage.areParticipantAvatarsCorrect());
 	}
 	
 	@When("^I exit the group info page$")
