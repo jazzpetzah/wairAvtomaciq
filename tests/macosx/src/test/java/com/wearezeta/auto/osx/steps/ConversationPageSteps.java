@@ -57,7 +57,7 @@ public class ConversationPageSteps {
 		 choosePicturePage.openImage(imageFilename);
 	 }
 
-	 @Then("^I see HD picture (.*) in conversation")
+	 @Then("^I see HD picture (.*) in conversation$")
 	 public void ThenISeeHDPictureInConversation(String filename) throws Throwable {
 		 
 		 //fist check, if there is a picture sent
@@ -88,12 +88,12 @@ public class ConversationPageSteps {
 					score >= 0.98d);
 	 }
 	 
-	 @Then("I see random message in conversation")
+	 @Then("I see random message in conversation$")
 	 public void ThenISeeRandomMessageInConversation() {
 		 Assert.assertTrue(CommonSteps.senderPages.getConversationPage().isMessageSent(randomMessage));
 	 }
 	 
-	 @Then("I see picture in conversation")
+	 @Then("I see picture in conversation$")
 	 public void ThenISeePictureInConversation() {
 		 int afterNumberOfImages = -1;
 		 
@@ -126,7 +126,7 @@ public class ConversationPageSteps {
 		 CommonSteps.senderPages.getConversationPage().knock();
 	 }
 	 
-	 @Then("I see message (.*) in conversation")
+	 @Then("I see message (.*) in conversation$")
 	 public void ThenISeeMessageInConversation(String message) {
 		 if (message.equals(OSXLocators.YOU_KNOCKED_MESSAGE)) {
 			 boolean isNumberIncreased = false;
@@ -251,7 +251,7 @@ public class ConversationPageSteps {
 	     
 	 }
 
-	 @Then("^The playing media is paused")
+	 @Then("^The playing media is paused$")
 	 public void ThenThePlayingMediaIsPaused() throws Throwable {
 	     
 	 }
@@ -261,7 +261,7 @@ public class ConversationPageSteps {
 	     
 	 }
 
-	 @Then("^The media is playing")
+	 @Then("^The media is playing$")
 	 public void ThenTheMediaIsPlaying() throws Throwable {
 	     
 	 }
@@ -271,7 +271,7 @@ public class ConversationPageSteps {
 	     
 	 }
 
-	 @Then("^The media stopps playing")
+	 @Then("^The media stopps playing$")
 	 public void ThenTheMediaStoppsPlaying() throws Throwable {
 	     
 	 }
