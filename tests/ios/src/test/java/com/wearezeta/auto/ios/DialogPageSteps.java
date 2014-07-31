@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.SwipeDirection;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
@@ -35,12 +36,12 @@ public class DialogPageSteps {
 	public void WhenITypeTheMessage() throws Throwable {
 		PagesCollection.dialogPage.waitForTextMessageInputVisible();
 		message = CommonUtils.generateGUID();
-		PagesCollection.dialogPage.typeMessage(message + "\n");
+		PagesCollection.dialogPage.typeMessage(message);
 	}
 	
 	@When("^I press send$")
 	public void WhenIPressSend() throws Throwable {
-		//PagesCollection.dialogPage.typeMessage("\\n");
+		PagesCollection.dialogPage.typeMessage("\n");
 	}
 
 	@When("^I multi tap on text input$")
@@ -200,6 +201,16 @@ public class DialogPageSteps {
 		String playingState = IOSLocators.MEDIA_STATE_PLAYING;
 		mediaState = PagesCollection.dialogPage.getMediaState();
 		Assert.assertEquals(playingState, mediaState);
+	}
+	
+	@Then("^I scroll away the keyboard$")
+	public void IScrollKeyboardAway() throws Exception {
+		PagesCollection.dialogPage.swipeDown(1000);
+	}
+	
+	@Then("^I navigate back to conversations view$")
+	public void INavigateToConversationsView() throws IOException {
+		PagesCollection.dialogPage.swipeRight(1000);
 	}
 	
 

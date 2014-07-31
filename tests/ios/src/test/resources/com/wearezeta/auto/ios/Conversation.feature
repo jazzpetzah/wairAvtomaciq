@@ -257,7 +257,7 @@ Examples:
     |	Login	|	Password	|	Name	|	Contact		| YouTubeLink	|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| http://www.youtube.com/watch?v=Bb1RhktcugU |  
 
-@torun
+
 @staging
 @id383
 Scenario Outline: Play/pause SoundCloud media link from the media bar
@@ -300,4 +300,24 @@ Scenario Outline: Conversation gets scrolled back to playing media when clicking
 Examples:
     |  Login		| Password		| Name			| Contact1    | SoundCloudLink |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/klinke-auf-cinch/04-whats-happening-boytalk-remix |
+    
+  @torun
+  Scenario Outline: Send Message to contact after navigating away from chat page
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I tap on text input
+    And I type the message
+    And I scroll away the keyboard
+    And I navigate back to conversations view
+    Then I tap on contact name <Contact>
+    And I tap on text input
+    And I press send
+    Then I see my message in the dialog
+
+	Examples: 
+    |	Login	|	Password	|	Name	|	Contact		|
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaAvatar	|
+    
     
