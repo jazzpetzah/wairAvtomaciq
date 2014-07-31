@@ -40,6 +40,7 @@ public class CommonUtils {
 	public static final int USERS_CREATION_TIMEOUT = 60; // seconds
 	public static LinkedList<ClientUser> yourUsers = new LinkedList<ClientUser>();
 	public static LinkedList<ClientUser> contacts = new LinkedList<ClientUser>();
+	public static final int MAX_PARALLEL_USER_CREATION_TASKS = 6;
 
 	public static final String CONTACT_PICTURE_NAME = "aqaPictureContact";
 	public static final String CONTACT_PICTURE_EMAIL = "qa1+aqaPictureContact@wearezeta.com";
@@ -432,8 +433,7 @@ public class CommonUtils {
 	public static void generateUsers(int contactNumber) throws IOException,
 			MessagingException, IllegalArgumentException, UriBuilderException,
 			JSONException, BackendRequestException, InterruptedException {
-		ExecutorService executor = Executors.newFixedThreadPool(USERS_COUNT
-				+ CONTACTS_COUNT);
+		ExecutorService executor = Executors.newFixedThreadPool(MAX_PARALLEL_USER_CREATION_TASKS);
 		for (int i = 0; i < USERS_COUNT + CONTACTS_COUNT; i++) {
 			final boolean isContact = (i >= USERS_COUNT);
 			Runnable worker = new Thread(new Runnable() {

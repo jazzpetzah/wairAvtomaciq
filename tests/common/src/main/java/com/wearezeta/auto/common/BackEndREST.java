@@ -36,7 +36,7 @@ public class BackEndREST {
 
 	public static void autoTestSendRequest(ClientUser user, ClientUser contact)
 			throws IllegalArgumentException, UriBuilderException, IOException,
-			JSONException, BackendRequestException {
+			JSONException, BackendRequestException, InterruptedException {
 		user = loginByUser(user);
 		user = getUserInfo(user);
 		sendConnectRequest(user, contact, "NewConnect", "Hello!!!");
@@ -44,7 +44,7 @@ public class BackEndREST {
 
 	public static void autoTestAcceptAllRequest(ClientUser user)
 			throws IllegalArgumentException, UriBuilderException, IOException,
-			JSONException, BackendRequestException {
+			JSONException, BackendRequestException, InterruptedException {
 		user = loginByUser(user);
 		acceptAllConnections(user);
 	}
@@ -66,8 +66,14 @@ public class BackEndREST {
 	private static void VerifyRequestResult(int currentResponseCode,
 			int[] acceptableResponseCodes) throws BackendRequestException {
 		if (acceptableResponseCodes.length > 0) {
-			if (!Arrays.asList(acceptableResponseCodes).contains(
-					currentResponseCode)) {
+			boolean isResponseCodeAcceptable = false;
+			for (int code : acceptableResponseCodes) {
+				if (code == currentResponseCode) {
+					isResponseCodeAcceptable = true;
+					break;
+				}
+			}
+			if (!isResponseCodeAcceptable) {
 				throw new BackendRequestException(
 						String.format(
 								"Backend request failed. Request return code is: %d. Expected codes are: %s",
@@ -81,6 +87,13 @@ public class BackEndREST {
 			int[] acceptableResponseCodes) throws BackendRequestException {
 		ClientResponse response = webResource
 				.post(ClientResponse.class, entity);
+		VerifyRequestResult(response.getStatus(), acceptableResponseCodes);
+		return response.getEntity(String.class);
+	}
+
+	private static String httpPut(Builder webResource, Object entity,
+			int[] acceptableResponseCodes) throws BackendRequestException {
+		ClientResponse response = webResource.put(ClientResponse.class, entity);
 		VerifyRequestResult(response.getStatus(), acceptableResponseCodes);
 		return response.getEntity(String.class);
 	}
@@ -126,14 +139,30 @@ public class BackEndREST {
 
 	public static ClientUser loginByUser(ClientUser user)
 			throws IllegalArgumentException, UriBuilderException, IOException,
-			JSONException, BackendRequestException {
+			JSONException, BackendRequestException, InterruptedException {
 		Builder webResource = buildDefaultRequest("login",
 				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
 		final String input = String.format(
 				"{\"email\":\"%s\",\"password\":\"%s\",\"label\":\"\"}",
 				user.getEmail(), user.getPassword());
-		final String output = httpPost(webResource, input,
-				new int[] { HttpStatus.SC_OK });
+		// Sometimes the backend may fail to process login request if 
+		// user creation was done just recently
+		final int LOGIN_ATTEMPTS = 3;
+		String output = "";
+		BackendRequestException savedException = null;
+		for (int attempt = 0; attempt < LOGIN_ATTEMPTS; attempt++) {
+			try {
+				output = httpPost(webResource, input, new int[] { HttpStatus.SC_OK });
+				break;
+			} catch (BackendRequestException e) {
+				// retry login
+				Thread.sleep(300);
+				savedException = e;
+			}
+		}
+		if (output.length() == 0) {
+			throw savedException; 
+		}
 		JSONObject jsonObj = new JSONObject(output);
 		user.setAccessToken(jsonObj.getString("access_token"));
 		user.setTokenType(jsonObj.getString("token_type"));
@@ -205,10 +234,11 @@ public class BackEndREST {
 			throws BackendRequestException, IllegalArgumentException,
 			UriBuilderException, IOException {
 		Builder webResource = buildDefaultRequestWithAuth(
-				"self/connections/" + connectionId, MediaType.APPLICATION_JSON,
-				user).type(MediaType.APPLICATION_JSON);
-		final String input = String.format("{  \"status\": \"%s\"}", newStatus);
-		final String output = httpPost(webResource, input,
+				String.format("self/connections/%s", connectionId),
+				MediaType.APPLICATION_JSON, user).type(
+				MediaType.APPLICATION_JSON);
+		final String input = String.format("{\"status\": \"%s\"}", newStatus);
+		final String output = httpPut(webResource, input,
 				new int[] { HttpStatus.SC_OK });
 
 		writeLog(new String[] {
@@ -264,7 +294,7 @@ public class BackEndREST {
 	public static void createGroupConveration(ClientUser user,
 			List<ClientUser> contacts, String conversationName)
 			throws IllegalArgumentException, UriBuilderException, IOException,
-			JSONException, BackendRequestException {
+			JSONException, BackendRequestException, InterruptedException {
 		loginByUser(user);
 		List<String> quotedContacts = new ArrayList<String>();
 		for (ClientUser contact : contacts) {
@@ -273,7 +303,7 @@ public class BackEndREST {
 		final String input = String.format(
 				"{\"users\": [ %s ],\"name\": \"%s\" }",
 				StringUtils.join(quotedContacts, ", "), conversationName);
-		Builder webResource = buildDefaultRequestWithAuth("conversations/",
+		Builder webResource = buildDefaultRequestWithAuth("conversations",
 				MediaType.APPLICATION_JSON, user).type(
 				MediaType.APPLICATION_JSON);
 		final String output = httpPost(webResource, input,
@@ -288,31 +318,28 @@ public class BackEndREST {
 		final String imageMimeType = Files.probeContentType(Paths
 				.get(imagePath));
 		FileInputStream fis = new FileInputStream(imagePath);
+		byte[] srcImageAsByteArray;
 		try {
-			final byte[] SRC_IMG_AS_BYTE_ARRAY = IOUtils.toByteArray(fis);
-			ImageAssetData srcImgData = new ImageAssetData(convId,
-					SRC_IMG_AS_BYTE_ARRAY, imageMimeType);
-			srcImgData.setIsPublic(true);
-			ImageAssetProcessor imgProcessor = new ImageAssetProcessor(
-					srcImgData);
-			ImageAssetRequestBuilder reqBuilder = new ImageAssetRequestBuilder(
-					imgProcessor);
-			for (AssetRequest request : reqBuilder.getRequests()) {
-				Builder webResource = buildDefaultRequestWithAuth(
-						request.getEndpoint(), MediaType.APPLICATION_JSON,
-						userFrom)
-						.type(request.getContentType())
-						.header("Content-Disposition",
-								request.getContentDisposition())
-						.header("Content-Length", request.getContentLength());
-				String output = httpPost(webResource, request.getPayload(),
-						new int[] { HttpStatus.SC_CREATED });
-				writeLog(new String[] { "Output from Server ....",
-						output + "\n" });
-
-			}
+			srcImageAsByteArray = IOUtils.toByteArray(fis);
 		} finally {
 			fis.close();
+		}
+		ImageAssetData srcImgData = new ImageAssetData(convId,
+				srcImageAsByteArray, imageMimeType);
+		srcImgData.setIsPublic(true);
+		ImageAssetProcessor imgProcessor = new ImageAssetProcessor(srcImgData);
+		ImageAssetRequestBuilder reqBuilder = new ImageAssetRequestBuilder(
+				imgProcessor);
+		for (AssetRequest request : reqBuilder.getRequests()) {
+			Builder webResource = buildDefaultRequestWithAuth(
+					request.getEndpoint(), MediaType.APPLICATION_JSON, userFrom)
+					.type(request.getContentType())
+					.header("Content-Disposition",
+							request.getContentDisposition())
+					.header("Content-Length", request.getContentLength());
+			String output = httpPost(webResource, request.getPayload(),
+					new int[] { HttpStatus.SC_CREATED });
+			writeLog(new String[] { "Output from Server ....", output + "\n" });
 		}
 	}
 
