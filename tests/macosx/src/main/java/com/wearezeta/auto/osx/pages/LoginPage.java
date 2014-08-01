@@ -11,7 +11,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-import com.wearezeta.auto.common.DriverUtils;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class LoginPage extends OSXPage {

@@ -11,7 +11,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.wearezeta.auto.common.SwipeDirection;
+import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class PeoplePickerPage extends IOSPage{

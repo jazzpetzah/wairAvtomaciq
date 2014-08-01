@@ -12,6 +12,8 @@ import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class ContactListPage extends IOSPage {

@@ -20,13 +20,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.CreateZetaUser;
-import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.common.EmailHeaders;
 import com.wearezeta.auto.common.IMAPSMailbox;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.IOSPage;
-import com.wearezeta.auto.common.DriverUtils;
-import com.wearezeta.auto.common.SwipeDirection;
+import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.SwipeDirection;
 
 public class RegistrationPage extends IOSPage {
 	

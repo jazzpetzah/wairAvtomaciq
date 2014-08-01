@@ -256,7 +256,6 @@ Examples:
     |	Login	|	Password	|	Name	|	Contact		| YouTubeLink	|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| http://www.youtube.com/watch?v=Bb1RhktcugU |  
 
-@torun
 @staging
 @id383
 Scenario Outline: Play/pause SoundCloud media link from the media bar

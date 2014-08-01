@@ -7,7 +7,7 @@ import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
-import com.wearezeta.auto.common.SwipeDirection;
+import com.wearezeta.auto.common.driver.SwipeDirection;
 //TODO: remove this page
 public class InstructionsPage extends AndroidPage {
 

@@ -1,6 +1,5 @@
 package com.wearezeta.auto.common;
 
-import com.wearezeta.auto.common.DriverUtils;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -27,6 +26,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import com.wearezeta.auto.common.driver.DriverUtils;
 
 public class CommonUtils {
 

@@ -1,7 +1,8 @@
-package com.wearezeta.auto.common;
+package com.wearezeta.auto.common.driver;
 
 
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.NetworkConnectionSetting;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -28,6 +29,8 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
 import com.google.common.base.Function;
+import com.wearezeta.auto.common.BasePage;
+import com.wearezeta.auto.common.CommonUtils;
 
 public class DriverUtils {
 
@@ -249,5 +252,12 @@ public class DriverUtils {
 		InputStream in = new ByteArrayInputStream(scrImage);
 		BufferedImage bImageFromConvert = ImageIO.read(in);
 		return bImageFromConvert;
+	}
+	
+	public static void ToggleNetworkConnectionAndroid(AppiumDriver driver, boolean airplane, boolean wifi, boolean data) {
+		
+		NetworkConnectionSetting connection = new NetworkConnectionSetting(airplane, wifi, data); 
+
+		driver.setNetworkConnection(connection);
 	}
 }

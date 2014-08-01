@@ -6,9 +6,10 @@ import java.util.*;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+
 import com.wearezeta.auto.android.locators.AndroidLocators;
-import com.wearezeta.auto.common.DriverUtils;
-import com.wearezeta.auto.common.SwipeDirection;
+import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.SwipeDirection;
 
 public class PersonalInfoPage extends AndroidPage
 {
