@@ -3,6 +3,11 @@
 
 Incredible automation for zeta
 
+##Source
+All source code and the test architecture can you find in Github:
+
+* [wearezeta/zautomation](https://github.com/wearezeta/zautomation) 
+
 
 ##Preperations
 You have to have node.js and homebrew installed to run Appium properly.
@@ -21,23 +26,33 @@ Download Appium from here:
 * [Appium for Mac](https://bitbucket.org/appium/appium.app/downloads/) 
 
 When Appium is opened, configure it by clicking in the Apple symbole. If you want to run the test on the simulator add the AppPath to ZClient.app like from here or where ever the simulator build is: (~/Library/Developer/Xcode/DerivedData/ZClient-fxsmvhgghphimdebxcatdyrafqyx/Build/Products/Debug-iphonesimulator/ZClient.app)
+Set Platform version to 7.1
 
 Press 'Launch' to connect Appium to the simulator to run tests on it.
 
-You can run the tests as well on the Device, therefore leave AppPath empty and enable BundleID with com.wearezeta.zclient-alpha and your UDID of your device.
+You can run the tests as well on the Device, therefore provide AppPath to ipa file of the debug-iphone build and enable BundleID with com.wearezeta.zclient-alpha and your UDID of your device and change platform version to 7.1.1.
 
-##Source
-All source code and the test architecture can you find in Github:
+##Eclipse
+Download Eclipse.
+Configure Eclipse for testing by adding Maven and Cucumber Add-Ons.
+Maven: go to Help -> Install New Software, search for m2e
+For better reading of Cucumber files, Cucumber Plug-In: go to Help -> Install New Software, search for cucumber
 
-* [wearezeta/zautomation](https://github.com/wearezeta/zautomation) 
+All needed project structure, base classes and utilities are already ready to use. Just open the zautomation/tests folder in Eclipse (File -> Import -> existing Maven Project -> select the /tests folder). There the test architecture for every platform is in.
 
-All needed project structure, base classes and utilities are already ready to use. Just open the /test folder in Eclipse (File -> Import -> existing Maven Project -> select the test folder). There the test architecture for every platform is in.
-Follow the existing tests to write your own test cases.
-You just have to configure one more file: Configuration.cnf (platform-you-want-to-work-on/src/main/resources)like this:
+You have to configure settings.xml file: An example of this file is in zautomation/tests/settings.xml Create ~/.m2 folder and create settings.xml file. Change root and appPath (same like in Appium) and all other needed values of this file according to your local values
 
-e.g. URL to local and like in Appium Path to your simulator build .app file
-Url=http://127.0.0.1:4723/wd/hub
-appPath=/Users/Library/Developer/Xcode/DerivedData/ZClient-fxsmvhgghphimdebxcatdyrafqyx/Build/Products/Debug-iphonesimulator/ZClient.app
+Configure Maven builds:
+In Eclipse create new Maven Debug configuration (Run -> Debug Configurations…)
+![Debug Configuration](http://github.com/Downloads/MVN.png)
+ For the Base directory – select a project you want to debug (iOS, android, macosx). Profile – according to the selected project. Profile name should be the same as set in settings.xml file.
+ Create another debug configuration, this time for Remote Java Application
+ ![Remote Java Application](http://github.com/Downloads/Remote.png)
+ 
+Now, to run your tests, do the following: run your Maven configuration and wait for condole output 
+"Listening for transport dt_socket at address: 5005"
+Then run your Remote Java Configuration.
+
 
 ##Test writing architecture
 ####Cucumber feature file

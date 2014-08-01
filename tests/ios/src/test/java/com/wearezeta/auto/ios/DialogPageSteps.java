@@ -33,7 +33,7 @@ public class DialogPageSteps {
 	
 	@When("^I type the message$")
 	public void WhenITypeTheMessage() throws Throwable {
-		PagesCollection.dialogPage.waitForCursorInputVisible();
+		//PagesCollection.dialogPage.waitForCursorInputVisible();
 		message = CommonUtils.generateGUID();
 		PagesCollection.dialogPage.typeMessage(message + "\n");
 	}
@@ -64,7 +64,7 @@ public class DialogPageSteps {
 
 	@When("^I type the message and send it$")
 	public void ITypeTheMessageAndSendIt() throws Throwable {
-		PagesCollection.dialogPage.waitForTextMessageInputVisible();
+		//PagesCollection.dialogPage.waitForTextMessageInputVisible();
 	    message = CommonUtils.generateGUID();
 	    PagesCollection.dialogPage.typeMessage(message + "\n");
 	}
