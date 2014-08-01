@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.SwipeDirection;
+import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.GroupChatInfoPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;

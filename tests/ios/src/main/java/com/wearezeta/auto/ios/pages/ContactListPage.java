@@ -9,6 +9,8 @@ import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class ContactListPage extends IOSPage {
@@ -85,7 +87,7 @@ public class ContactListPage extends IOSPage {
 	}
 	
 	public String getFirstDialogName(String name){
-		
+		//TODO: xpath is incorrect
 		DriverUtils.waitUntilElementAppears(driver, By.xpath(String.format(IOSLocators.xpathFirstInContactList, name)));
 		WebElement contact = driver.findElement(By.xpath(String.format(IOSLocators.xpathFirstInContactList, name)));
 		return contact.getText();
@@ -93,6 +95,7 @@ public class ContactListPage extends IOSPage {
 	
 	private WebElement findNameInContactList(String name) {
 		refreshUITree();
+		//TODO: check if alert is visible, move xpath to locators
 		return driver.findElementByXPath(String.format("//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[@name='%s']/UIAStaticText[1]", name));
 	 }	
 	

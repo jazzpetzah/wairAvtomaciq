@@ -16,7 +16,7 @@ import org.sikuli.script.FindFailed;
 import org.sikuli.script.Screen;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.DriverUtils;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class ConversationInfoPage extends OSXPage {

@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
-import com.wearezeta.auto.common.SwipeDirection;
+import com.wearezeta.auto.common.driver.SwipeDirection;
 
 public class AboutPage extends AndroidPage {
 
