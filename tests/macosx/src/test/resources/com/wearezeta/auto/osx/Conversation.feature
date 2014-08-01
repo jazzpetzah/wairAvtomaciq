@@ -250,4 +250,4 @@ Scenario Outline: Play/pause SoundCloud media link from the media bar
     
 Examples:
     |  Login		| Password			| Name			| Contact   		| SoundCloudLink   							  | 
-    |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		| https://soundcloud.com/sam-silverstone/sets/kygos-remixes-just-wow |
+    |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		| https://soundcloud.com/edherbst/throwaway-3 |

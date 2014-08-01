@@ -233,7 +233,7 @@ public class ConversationPageSteps {
 	 
 	 @Given("^I post messages and media link (.*)$")
 	 public void WhenIPostMessagesAndMediaLink(String link) throws Throwable { 
-		 for (int i = 0; i <= 5; i++){
+		 for (int i = 0; i <= 20; i++){
 			 WhenIWriteRandomMessage();
 			 WhenISendMessage();
 		 }
@@ -243,6 +243,8 @@ public class ConversationPageSteps {
 	 
 	 @When("^I scroll media out of sight until media bar appears$")
 	 public void WhenIScrollMediaOutOfSightUntilMediaBarAppears() throws Throwable {
+		 CommonSteps.senderPages.getConversationPage().scrollDownTilMediaBarAppears();
+		 CommonSteps.senderPages.getConversationPage().scrollDownTilMediaBarAppears();
 		 CommonSteps.senderPages.getConversationPage().scrollDownTilMediaBarAppears();
 	 }
 

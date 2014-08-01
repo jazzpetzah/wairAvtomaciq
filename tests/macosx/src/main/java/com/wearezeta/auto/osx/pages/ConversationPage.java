@@ -18,6 +18,7 @@ import org.openqa.selenium.support.ui.Wait;
 import com.google.common.base.Function;
 import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.osx.locators.OSXLocators;
+import com.wearezeta.auto.osx.util.NSPoint;
 
 public class ConversationPage extends OSXPage {
 	
@@ -57,7 +58,7 @@ public class ConversationPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idMediaBarCloseButton)
 	private WebElement mediabarBarTitle;
 	
-	@FindBy(how = How.XPATH, using = OSXLocators.xpathConversationWebScrollArea)
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathConversationViewScrollArea)
 	private WebElement conversationView;
 
 	public ConversationPage(String URL, String path) throws MalformedURLException {
@@ -182,11 +183,50 @@ public class ConversationPage extends OSXPage {
 	
 	public void scrollDownTilMediaBarAppears() throws Exception{
 		
-		boolean playButtonIsShown = mediabarPlayPauseButton.isDisplayed();
-		System.out.print("BUTTON IS SHOWN: " + playButtonIsShown);
-		//DriverUtils.swipeDown(driver, conversationView, 500);
+		boolean mediaBarButtonIsShown = mediabarPlayPauseButton.isDisplayed();
 		
-	}
-	
-	
+		System.out.print("BUTTON IS SHOWN: " + mediaBarButtonIsShown);	
+		
+		NSPoint mainPosition = NSPoint.fromString(viewPager.getAttribute("AXPosition"));
+    	NSPoint mainSize = NSPoint.fromString(viewPager.getAttribute("AXSize"));
+    	
+    	NSPoint soundcloudPosition = NSPoint.fromString(soundCloudPauseButton.getAttribute("AXPosition"));
+    	NSPoint textInputPosition = NSPoint.fromString(newMessageTextArea.getAttribute("AXPosition"));
+    	//NSPoint latestPoint =
+    			//new NSPoint(mainPosition.x() + mainSize.x(), mainPosition.y() + mainSize.y());
+    	System.out.print("POSITION SOUNDCLOUD: " + soundcloudPosition.y());
+    	System.out.print("POSITION TEXTINPUT: " + textInputPosition.y());
+
+    	//get scrollbar for conversation view
+    	WebElement conversationDecrementSB = null;
+    	WebElement conversationIncrementSB = null;
+
+    	WebElement scrollArea = driver.findElement(By.id(OSXLocators.idConversationScrollArea));
+    
+    	//WebElement soundcloudLink = mediaLinkPlayButton;
+    	//boolean isMediaBarShown = false;
+
+        
+        if (soundcloudPosition.y() < textInputPosition.y()) {
+    			WebElement scrollBar = scrollArea.findElement(By.xpath("//AXScrollBar"));
+    			List<WebElement> scrollButtons = scrollBar.findElements(By.xpath("//AXButton"));
+    			for (WebElement scrollButton: scrollButtons) {
+    				String subrole = scrollButton.getAttribute("AXSubrole");
+    				if (subrole.equals("AXDecrementPage")) {
+    					conversationDecrementSB = scrollButton;
+    				}
+    				if (subrole.equals("AXIncrementPage")) {
+    					conversationIncrementSB = scrollButton;
+    				}
+    		}
+        	
+        	while (soundcloudPosition.y() < textInputPosition.y()) {
+        		conversationDecrementSB.click();
+            	soundcloudPosition = NSPoint.fromString(soundCloudPauseButton.getAttribute("AXPosition"));
+            }
+            
+        }
+     
+		//Assert.assertTrue(mediabarPlayPauseButton.isDisplayed());
+  }
 }
