@@ -45,7 +45,7 @@ public class CommonUtils {
 	public static final String CONTACT_3 = "aqaContact3";
 	public static final String CONTACT_4 = "aqaPictureContact";
 	public static final String CONTACT_5 = "aqaAvatar TestContact";
-	public static final int USERS_CREATION_TIMEOUT = 90; // seconds
+	public static final int USERS_CREATION_TIMEOUT = 60 * 5; // seconds
 	public static LinkedList<ClientUser> yourUsers = new LinkedList<ClientUser>();
 	public static LinkedList<ClientUser> contacts = new LinkedList<ClientUser>();
 	public static final int MAX_PARALLEL_USER_CREATION_TASKS = 3;
@@ -502,7 +502,12 @@ public class CommonUtils {
 			executor.execute(worker);
 		}
 		executor.shutdown();
-		executor.awaitTermination(USERS_CREATION_TIMEOUT, TimeUnit.SECONDS);
+		if (!executor.awaitTermination(USERS_CREATION_TIMEOUT, TimeUnit.SECONDS)) {
+			throw new BackendRequestException(
+					String.format(
+							"The backend has failed to prepare predefined users within %d seconds timeout",
+							USERS_CREATION_TIMEOUT));
+		}
 		if (yourUsers.size() != USERS_COUNT
 				|| contacts.size() != CONTACTS_COUNT) {
 			throw new BackendRequestException(
