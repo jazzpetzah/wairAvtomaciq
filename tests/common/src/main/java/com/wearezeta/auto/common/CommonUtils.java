@@ -40,7 +40,6 @@ public class CommonUtils {
 	public static final String YOUR_USER_3 = "yourContact";
 	public static final String YOUR_UNCONNECTED_USER = YOUR_USER_3;
 	public static final String YOUR_PASS = "aqaPassword";
-	public static final int CONTACTS_COUNT = 5;
 	public static final String CONTACT_1 = "aqaContact1";
 	public static final String CONTACT_2 = "aqaContact2";
 	public static final String CONTACT_3 = "aqaContact3";
@@ -471,7 +470,7 @@ public class CommonUtils {
 			MessagingException, IllegalArgumentException, UriBuilderException,
 			JSONException, BackendRequestException, InterruptedException {
 		ExecutorService executor = Executors.newFixedThreadPool(MAX_PARALLEL_USER_CREATION_TASKS);
-		for (int i = 0; i < USERS_COUNT + CONTACTS_COUNT; i++) {
+		for (int i = 0; i < USERS_COUNT + contactNumber; i++) {
 			final boolean isContact = (i >= USERS_COUNT);
 			Runnable worker = new Thread(new Runnable() {
 				public void run() {
@@ -505,7 +504,7 @@ public class CommonUtils {
 		}
 		// Thread.sleep(1000);
 		if (yourUsers.size() != USERS_COUNT
-				|| contacts.size() != CONTACTS_COUNT) {
+				|| contacts.size() != contactNumber) {
 			throw new BackendRequestException(
 					"Failed to create new users or contacts on the backend");
 		}
