@@ -2,7 +2,7 @@
 
 Feature: Conversation
 
-#need to update xpath in tests to text input
+#Bug in client. text input is not visible
   @mute
   @smoke 
   @id330
@@ -37,7 +37,7 @@ Feature: Conversation
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
 
-#need to update xpath in tests to text input
+#Bug in client. text input is not visible
   @mute
   @smoke
   @id333
@@ -62,7 +62,7 @@ Feature: Conversation
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
 
-#need to update xpath in tests to text input
+#Bug in client. text input is not visible
   @mute
   @smoke 
 Scenario Outline: Send message to group chat
@@ -78,7 +78,7 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-#need to update xpath in tests to text input
+#Bug in client. text input is not visible
   @mute
   @smoke 
 Scenario Outline: Send a camera roll picture to user from contact list
@@ -144,7 +144,7 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-#need to update xpath in tests to text input
+#Bug in client. text input is not visible
   @mute
 	@smoke 
  Scenario Outline: Remove from group chat
@@ -163,7 +163,7 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-#need to update xpath in tests to text input
+#Bug in client. text input is not visible
   @mute
   @smoke 
 Scenario Outline: I can edit the conversation name
