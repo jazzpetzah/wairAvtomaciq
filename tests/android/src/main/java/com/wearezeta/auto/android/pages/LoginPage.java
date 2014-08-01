@@ -9,6 +9,8 @@ import org.openqa.selenium.support.*;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.SwipeDirection;
 
 public class LoginPage extends AndroidPage {
 
