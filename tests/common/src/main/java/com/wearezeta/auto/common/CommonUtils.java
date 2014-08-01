@@ -6,10 +6,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,8 +47,8 @@ public class CommonUtils {
 	public static final String CONTACT_4 = "aqaPictureContact";
 	public static final String CONTACT_5 = "aqaAvatar TestContact";
 	public static final int USERS_CREATION_TIMEOUT = 60 * 5; // seconds
-	public static LinkedList<ClientUser> yourUsers = new LinkedList<ClientUser>();
-	public static LinkedList<ClientUser> contacts = new LinkedList<ClientUser>();
+	public static List<ClientUser> yourUsers = new CopyOnWriteArrayList<ClientUser>();
+	public static List<ClientUser> contacts = new CopyOnWriteArrayList<ClientUser>();
 	public static final int MAX_PARALLEL_USER_CREATION_TASKS = 5;
 
 	public static final String CONTACT_PICTURE_NAME = "aqaPictureContact";
@@ -463,7 +463,7 @@ public class CommonUtils {
 			user.setPassword(CommonUtils
 					.retrieveRealUserContactPasswordValue(entry.getValue()));
 			user.setUserState(UsersState.Created);
-			contacts.addLast(user);
+			contacts.add(user);
 		}
 	}
 
@@ -471,7 +471,6 @@ public class CommonUtils {
 			MessagingException, IllegalArgumentException, UriBuilderException,
 			JSONException, BackendRequestException, InterruptedException {
 		ExecutorService executor = Executors.newFixedThreadPool(MAX_PARALLEL_USER_CREATION_TASKS);
-		final ReentrantLock lock = new ReentrantLock();
 		for (int i = 0; i < USERS_COUNT + CONTACTS_COUNT; i++) {
 			final boolean isContact = (i >= USERS_COUNT);
 			Runnable worker = new Thread(new Runnable() {
@@ -485,15 +484,10 @@ public class CommonUtils {
 						user.setEmail(email);
 						user.setPassword(getDefaultPasswordFromConfig(CommonUtils.class));
 						user.setUserState(UsersState.Created);
-						lock.lock();
-						try {
-							if (isContact) {
-								contacts.addLast(user);
-							} else {
-								yourUsers.addLast(user);
-							}
-						} finally {
-							lock.unlock();
+						if (isContact) {
+							contacts.add(user);
+						} else {
+							yourUsers.add(user);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -509,7 +503,7 @@ public class CommonUtils {
 							"The backend has failed to prepare predefined users within %d seconds timeout",
 							USERS_CREATION_TIMEOUT));
 		}
-		Thread.sleep(1000);
+		// Thread.sleep(1000);
 		if (yourUsers.size() != USERS_COUNT
 				|| contacts.size() != CONTACTS_COUNT) {
 			throw new BackendRequestException(
@@ -546,12 +540,12 @@ public class CommonUtils {
 				UsersState.AllContactsConnected);
 		yourUsers = new LinkedList<ClientUser>();
 		contacts = new LinkedList<ClientUser>();
-		yourUsers.addLast(yourUser1);
-		yourUsers.addLast(yourUser2);
-		yourUsers.addLast(yourUser3);
-		contacts.addLast(contact1);
-		contacts.addLast(contact2);
-		contacts.addLast(contact3);
+		yourUsers.add(yourUser1);
+		yourUsers.add(yourUser2);
+		yourUsers.add(yourUser3);
+		contacts.add(contact1);
+		contacts.add(contact2);
+		contacts.add(contact3);
 	}
 
 	public static String getAndroidDeviceNameFromConfig(Class<?> c)
