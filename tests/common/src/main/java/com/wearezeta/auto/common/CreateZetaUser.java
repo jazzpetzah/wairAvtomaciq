@@ -16,7 +16,7 @@ public class CreateZetaUser {
 
 	public static String registerUserAndReturnMail() throws IOException,
 			MessagingException, IllegalArgumentException, UriBuilderException,
-			JSONException, BackendRequestException {
+			JSONException, BackendRequestException, InterruptedException {
 		String nextSuffix = null;
 		String regMail = null;
 		String mail = CommonUtils
@@ -53,7 +53,7 @@ public class CreateZetaUser {
 	public static boolean activateRegisteredUser(String registeredUserMail,
 			int timeout, String mail, String password)
 			throws MessagingException, IOException, IllegalArgumentException,
-			UriBuilderException, BackendRequestException {
+			UriBuilderException, BackendRequestException, InterruptedException {
 		final int ATTEMPS_NUMBER = 5;
 		for (int i = 0; i < ATTEMPS_NUMBER; i++) {
 			List<EmailHeaders> newMails = getLastMailHeaders(mail, password, 5);
@@ -72,7 +72,7 @@ public class CreateZetaUser {
 
 	public static List<EmailHeaders> getLastMailHeaders(String user,
 			String password, int messageCount) throws MessagingException,
-			IOException {
+			IOException, InterruptedException {
 		IMAPSMailbox mbox = new IMAPSMailbox(
 				CommonUtils
 						.getDefaultEmailServerFromConfig(CreateZetaUser.class),

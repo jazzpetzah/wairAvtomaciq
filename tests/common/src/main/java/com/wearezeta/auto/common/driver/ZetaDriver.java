@@ -37,7 +37,7 @@ public class ZetaDriver extends AppiumDriver implements WebDriver {
 		try {
 			result = super.findElements(by);
 		}
-		catch (Exception ex)
+		catch (RuntimeException ex)
 		{
 			log.error(ex.getMessage());
 			log.error(stackTraceToString(ex));
@@ -54,7 +54,7 @@ public class ZetaDriver extends AppiumDriver implements WebDriver {
 		try {
 			result = super.findElement(by);
 		}
-		catch (Exception ex)
+		catch (RuntimeException ex)
 		{
 			log.error(ex.getMessage());
 			log.error(stackTraceToString(ex));
@@ -71,7 +71,7 @@ public class ZetaDriver extends AppiumDriver implements WebDriver {
 		try {
 			super.swipe(startx, starty, endx, endy, duration);
 		}
-		catch (Exception ex) {
+		catch (RuntimeException ex) {
 			log.error(ex.getMessage());
 			log.error(stackTraceToString(ex));
 			throw ex;
@@ -85,7 +85,7 @@ public class ZetaDriver extends AppiumDriver implements WebDriver {
 		try {
 			super.tap(fingers, x, y, duration);
 		}
-		catch (Exception ex) {
+		catch (RuntimeException ex) {
 			log.error(ex.getMessage());
 			log.error(stackTraceToString(ex));
 			throw ex;
@@ -94,13 +94,12 @@ public class ZetaDriver extends AppiumDriver implements WebDriver {
 	
 	@Override
 	public void tap(int fingers, WebElement element, int duration) {
-		
 		log.debug("tap fingers=" + Integer.toString(fingers) + " element=" + element.toString() +
 				" duration=" + Integer.toString(duration));
 		try {
 			super.tap(fingers, element, duration);
 		}
-		catch (Exception ex) {
+		catch (RuntimeException ex) {
 			log.error(ex.getMessage());
 			log.error(stackTraceToString(ex));
 			throw ex;
