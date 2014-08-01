@@ -48,8 +48,7 @@ public class ConnectToPageSteps {
 
 	@Given("^I have connection request from (.*)$")
 	public void IHaveConnectionRequest(String contact)
-			throws IllegalArgumentException, UriBuilderException, IOException,
-			BackendRequestException {
+			throws Throwable {
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 		for (ClientUser user : CommonUtils.yourUsers) {
 			if (user.getName().equals(contact)) {
