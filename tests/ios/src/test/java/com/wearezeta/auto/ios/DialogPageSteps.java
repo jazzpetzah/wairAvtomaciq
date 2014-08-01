@@ -33,7 +33,7 @@ public class DialogPageSteps {
 	
 	@When("^I type the message$")
 	public void WhenITypeTheMessage() throws Throwable {
-		PagesCollection.dialogPage.waitForTextMessageInputVisible();
+		PagesCollection.dialogPage.waitForCursorInputVisible();
 		message = CommonUtils.generateGUID();
 		PagesCollection.dialogPage.typeMessage(message + "\n");
 	}
@@ -109,7 +109,7 @@ public class DialogPageSteps {
 	
 	@When("I type and send youtube link (.*)")
 	public void ITypeAndSendYoutubeLink(String link){
-		PagesCollection.dialogPage.waitForTextMessageInputVisible();
+		PagesCollection.dialogPage.waitForCursorInputVisible();
 		PagesCollection.dialogPage.typeMessage(link + "\n");
 	}
 	
@@ -136,7 +136,7 @@ public class DialogPageSteps {
 	
 	@When("^I post soundcloud media link (.*)$")
 	public void IPostMediaLink(String link) throws Throwable {
-		PagesCollection.dialogPage.waitForTextMessageInputVisible();
+		PagesCollection.dialogPage.waitForCursorInputVisible();
 	    PagesCollection.dialogPage.typeMessage(link + "\n");
 	    PagesCollection.dialogPage.typeMessage(link + "\n");
 	}
