@@ -48,7 +48,7 @@ public class CommonUtils {
 	public static final int USERS_CREATION_TIMEOUT = 90; // seconds
 	public static LinkedList<ClientUser> yourUsers = new LinkedList<ClientUser>();
 	public static LinkedList<ClientUser> contacts = new LinkedList<ClientUser>();
-	public static final int MAX_PARALLEL_USER_CREATION_TASKS = 6;
+	public static final int MAX_PARALLEL_USER_CREATION_TASKS = 3;
 
 	public static final String CONTACT_PICTURE_NAME = "aqaPictureContact";
 	public static final String CONTACT_PICTURE_EMAIL = "qa1+aqaPictureContact@wearezeta.com";
