@@ -1,5 +1,8 @@
 package com.wearezeta.auto.common;
 
+import com.wearezeta.auto.common.DriverUtils;
+
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -17,6 +20,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.json.JSONException;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -31,6 +37,7 @@ public class CommonUtils {
 	public static final String YOUR_USER_1 = "aqaUser";
 	public static final String YOUR_USER_2 = "yourUser";
 	public static final String YOUR_USER_3 = "yourContact";
+	public static final String YOUR_UNCONNECTED_USER = YOUR_USER_3;
 	public static final String YOUR_PASS = "aqaPassword";
 	public static final int CONTACTS_COUNT = 5;
 	public static final String CONTACT_1 = "aqaContact1";
@@ -90,6 +97,25 @@ public class CommonUtils {
 		System.out.println("Process Code " + process.waitFor());
 	}
 
+	public static ClientUser findUserNamed(String username) {
+		// searches yourUsers and contacts lists only.
+		// Can be used to replace Example: CommonUtils.yourUser.get(0) with
+		// findUserNamed(aqaUser)
+		username = retrieveRealUserContactPasswordValue(username);
+		for (ClientUser user : yourUsers) {
+			if (user.getName().equalsIgnoreCase(username)) {
+				return user;
+ 			}
+ 		}
+		for (ClientUser user : contacts) {
+			if (user.getName().equalsIgnoreCase(username)) {
+				return user;
+			}
+		}
+		throw new NoSuchElementException("No user with username: " + username
+				+ " is in an available list");
+	}
+	
 	public static String retrieveRealUserContactPasswordValue(String value) {
 		if (yourUsers.size() > 0) {
 			if (value.contains(YOUR_USER_1)) {
@@ -144,6 +170,7 @@ public class CommonUtils {
 		return value;
 	}
 
+	
 	public static String getImagePath(Class<?> c) throws IOException {
 		String path = getValueFromConfig(c, "defaultImagesPath") + USER_IMAGE;
 		return path;
@@ -220,13 +247,11 @@ public class CommonUtils {
 
 	public static String getDefaultEmailServerFromConfig(Class<?> c)
 			throws IOException {
-
 		return getValueFromCommonConfig(c, "defaultEmailServer");
 	}
 
-	public static String getDriverTimeoutFromConfig(Class<?> c)
-			throws IOException {
 
+	public static String getDriverTimeoutFromConfig(Class<?> c) throws IOException {
 		return getValueFromConfig(c, "driverTimeoutSeconds");
 	}
 
@@ -404,6 +429,16 @@ public class CommonUtils {
 			sb.append(characters.get(rnd.nextInt(characters.size())));
 		}
 		return sb.toString();
+	}
+
+	public static BufferedImage getElementScreenshot(WebElement element,
+			RemoteWebDriver driver) throws IOException {
+		BufferedImage screenshot = DriverUtils.takeScreenshot(driver);
+		org.openqa.selenium.Point elementLocation = element.getLocation();
+		Dimension elementSize = element.getSize();
+		return screenshot.getSubimage(elementLocation.x * 2,
+				elementLocation.y * 2, elementSize.width * 2,
+				elementSize.height * 2);
 	}
 
 	public static String getContactName(String login) {
