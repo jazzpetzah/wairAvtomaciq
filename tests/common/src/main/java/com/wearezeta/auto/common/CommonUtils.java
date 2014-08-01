@@ -509,6 +509,7 @@ public class CommonUtils {
 							"The backend has failed to prepare predefined users within %d seconds timeout",
 							USERS_CREATION_TIMEOUT));
 		}
+		Thread.sleep(1000);
 		if (yourUsers.size() != USERS_COUNT
 				|| contacts.size() != CONTACTS_COUNT) {
 			throw new BackendRequestException(
