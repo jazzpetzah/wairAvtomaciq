@@ -66,22 +66,27 @@ public class IMAPSMailbox {
 	}
 
 	private List<EmailHeaders> getPredefinedHeadersFromMessages(
-			Message[] messages) throws MessagingException {
-		List<EmailHeaders> headersList = new ArrayList<EmailHeaders>();
-		for (Message message : messages) {
-			EmailHeaders headers = new EmailHeaders();
-			headers.setLastUserEmail(message.getHeader("Delivered-To")[0]);
-			headers.setMailSubject(message.getHeader("Subject")[0]);
-			headers.setXZetaPurpose(message.getHeader("X-Zeta-Purpose")[0]);
-			headers.setXZetaKey(message.getHeader("X-Zeta-Key")[0]);
-			headers.setXZetaCode(message.getHeader("X-Zeta-Code")[0]);
-			headersList.add(headers);
+			Message[] messages) throws MessagingException, InterruptedException {
+		semaphore.acquire();
+		try {
+			List<EmailHeaders> headersList = new ArrayList<EmailHeaders>();
+			for (Message message : messages) {
+				EmailHeaders headers = new EmailHeaders();
+				headers.setLastUserEmail(message.getHeader("Delivered-To")[0]);
+				headers.setMailSubject(message.getHeader("Subject")[0]);
+				headers.setXZetaPurpose(message.getHeader("X-Zeta-Purpose")[0]);
+				headers.setXZetaKey(message.getHeader("X-Zeta-Key")[0]);
+				headers.setXZetaCode(message.getHeader("X-Zeta-Code")[0]);
+				headersList.add(headers);
+			}
+			return headersList;
+		} finally {
+			semaphore.release();
 		}
-		return headersList;
 	}
 
 	public List<EmailHeaders> getLastMailHeaders(int messageCount)
-			throws MessagingException {
+			throws MessagingException, InterruptedException {
 		int allMsgsCount = folder.getMessageCount();
 		int msgsCntToFetch = messageCount;
 		if (allMsgsCount == 0) {
