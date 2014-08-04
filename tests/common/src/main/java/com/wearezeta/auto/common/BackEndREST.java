@@ -139,32 +139,13 @@ public class BackEndREST {
 
 	public static ClientUser loginByUser(ClientUser user)
 			throws IllegalArgumentException, UriBuilderException, IOException,
-			JSONException, BackendRequestException, InterruptedException {
+			JSONException, BackendRequestException {
 		Builder webResource = buildDefaultRequest("login",
 				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
 		final String input = String.format(
 				"{\"email\":\"%s\",\"password\":\"%s\",\"label\":\"\"}",
 				user.getEmail(), user.getPassword());
-		// Sometimes the backend may fail to process login request if 
-		// user creation was done just recently
-		final int LOGIN_ATTEMPTS = 3;
-		String output = "";
-		BackendRequestException savedException = null;
-		for (int attempt = 0; attempt < LOGIN_ATTEMPTS; attempt++) {
-			try {
-				output = httpPost(webResource, input, new int[] { HttpStatus.SC_OK });
-				break;
-			} catch (BackendRequestException e) {
-				// TODO: Replace with smart logger
-				e.printStackTrace();
-				// retry login
-				Thread.sleep(300);
-				savedException = e;
-			}
-		}
-		if (output.length() == 0) {
-			throw savedException; 
-		}
+		final String output = httpPost(webResource, input, new int[] { HttpStatus.SC_OK });
 		JSONObject jsonObj = new JSONObject(output);
 		user.setAccessToken(jsonObj.getString("access_token"));
 		user.setTokenType(jsonObj.getString("token_type"));
