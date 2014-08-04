@@ -1,5 +1,10 @@
 package com.wearezeta.auto.ios.tools;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.regex.Pattern;
+
 import com.wearezeta.auto.common.driver.ZetaDriver;
 
 public class IOSKeyboard {
@@ -7,16 +12,50 @@ public class IOSKeyboard {
  
 
 	private static enum KeyboardState {
-		UNKNOWN(0), ALPHA(1), ALPHA_CAPS(2), NUMBER_PUNCTUATION(3);
+		UNKNOWN(0), ALPHA(1), ALPHA_CAPS(2), NUMBER_PUNCTUATION(3), SPECIAL_CHAR(4);
+		private static final String ALPHA_CHARS = "[a-z]";
+		private static final String ALPHA_CHARS_CAPS = "[A-Z]";
+		private static final String[] SPECIAL_CHARS_IN_NUMBERS_ARR = new String[]{"-","/",":",";","(",")","$","&","@","\"",".",",","?","!","'"};
+		private static String SPECIAL_CHARS_IN_NUMBERS = "";
+		static {
+			SPECIAL_CHARS_IN_NUMBERS = String.format("[0-9%s]", charArrayToPattern(SPECIAL_CHARS_IN_NUMBERS_ARR));
+		}
+		private static final String[] SPECIAL_CHARS_ARR = new String[]{"[", "]","{","}","#","%","^","*","+","=","_","\\","|","~","<",">","¥","☻","£","€"};
+		private static String SPECIAL_CHARS = "";
+		static {
+			SPECIAL_CHARS = String.format("[%s]", charArrayToPattern(SPECIAL_CHARS_ARR));
+		}
+		
+		private static String charArrayToPattern(String[] arr) {
+			StringBuilder result = new StringBuilder();
+			for (String chr: arr) {
+				result.append(Pattern.quote(chr)); 
+			}
+			return result.toString();	
+		}
+		
+		public static KeyboardState getStateForCharacter(char c) {
+			
+			Map<KeyboardState,String> stateMapping = new HashMap<KeyboardState,String>();
+			stateMapping.put(ALPHA, ALPHA_CHARS);
+			stateMapping.put(ALPHA_CAPS, ALPHA_CHARS_CAPS);
+			stateMapping.put(NUMBER_PUNCTUATION, SPECIAL_CHARS_IN_NUMBERS);
+			stateMapping.put(SPECIAL_CHAR, SPECIAL_CHARS);
+			String messageChar = "" + c;
+
+			for(Entry<KeyboardState, String> entry: stateMapping.entrySet()) {
+				if (messageChar.matches(entry.getValue())) {
+					return entry.getKey();
+				}
+			}
+			return KeyboardState.UNKNOWN;
+		}
+
 
 		private int value;
 
 		private KeyboardState(int value) {
 			this.value = value;
-		}
-
-		public int getValue() {
-			return value;
 		}
 	}
 
@@ -27,6 +66,7 @@ public class IOSKeyboard {
 		this.driver = driver;
 
 	}
+	
 
 	private KeyboardState getState() {
 		final String emptyElement = "[object UIAElementNil]";
@@ -62,7 +102,7 @@ public class IOSKeyboard {
 			char c = message.charAt(i);
 			String messageChar = Character.toString(c);
 
-			if (messageChar.matches("[a-z]")
+			if (KeyboardState.getStateForCharacter(c) == KeyboardState.ALPHA
 					&& keyboardState == KeyboardState.ALPHA_CAPS
 					&& !isAllCapital) {
 				driver.executeScript(String.format(TAP_KEYBOARD_BUTTON, "shift"));
