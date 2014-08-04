@@ -44,7 +44,7 @@ You have to configure settings.xml file: An example of this file is in zautomati
 
 Configure Maven builds:
 In Eclipse create new Maven Debug configuration (Run -> Debug Configurations…). Picture:
-![Debug Configuration](../Downloads/MVN.png?raw=true)
+![Debug Configuration](/Downloads/MVN.png?raw=true)
  For the Base directory – select a project you want to debug (iOS, android, macosx). Profile – according to the selected project. Profile name should be the same as set in settings.xml file.
  Create another debug configuration, this time for Remote Java Application. Picture:
  ![Remote Java Application](https://imageshack.com/f/ipeUyUzop)
