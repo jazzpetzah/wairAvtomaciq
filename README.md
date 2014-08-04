@@ -44,18 +44,16 @@ You have to configure settings.xml file: An example of this file is in zautomati
 
 Configure Maven builds:
 In Eclipse create new Maven Debug configuration (Run -> Debug Configurations…). Picture:
-![Debug Configuration](http://postimg.org/image/817fjcyp5/)
+![Debug Configuration](https://imageshack.com/f/kpdNHCaJp)
  For the Base directory – select a project you want to debug (iOS, android, macosx). Profile – according to the selected project. Profile name should be the same as set in settings.xml file.
  Create another debug configuration, this time for Remote Java Application. Picture:
- ![Remote Java Application](http://postimg.org/image/wizj7919l/)
+ ![Remote Java Application](https://imageshack.com/f/ipeUyUzop)
  
 Now, to run your tests, do the following: run your Maven configuration and wait for condole output 
 "Listening for transport dt_socket at address: 5005"
 Then run your Remote Java Configuration.
 
-[url=http://postimg.org/image/817fjcyp5/][img]http://s28.postimg.org/817fjcyp5/MVN.png[/img][/url]
 
-[url=http://postimg.org/image/wizj7919l/][img]http://s28.postimg.org/wizj7919l/Remote.png[/img][/url]
 
 ##Test writing architecture
 ####Cucumber feature file
