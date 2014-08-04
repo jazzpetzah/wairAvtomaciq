@@ -58,7 +58,7 @@ public class CommonUtils {
 	public static final String CONTACT_AVATAR_EMAIL = "qa1+aqaAvatarTestContact@wearezeta.com";
 	public static final String CONTACT_AVATAR_PASSWORD = "avatar123";
 
-	private static final String USER_IMAGE = "userpicture.jpg";
+	private static final String USER_IMAGE = "userpicture_landscape.jpg";
 	private static final String RESULT_USER_IMAGE = "userpicture_mobile_check.jpg";
 
 	public static String getOsName() {

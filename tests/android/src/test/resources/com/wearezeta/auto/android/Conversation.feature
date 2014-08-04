@@ -14,18 +14,20 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @mute @smoke @nonUnicode
+@smoke @nonUnicode
   Scenario Outline: Send Hello to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
     And I multi tap on text input
-    Then I see Hello message in the dialog
+    Then I see Hello-Hey message <Message1> in the dialog
+    And I multi tap on text input again
+    And I see Hello-Hey message <Message2> in the dialog
 
     Examples: 
-      | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+      | Login   | Password    | Name    | Contact     | Message1    | Message2        |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | YOU KNOCKED | YOU HOT KNOCKED |
 
   @smoke @nonUnicode
   Scenario Outline: Send Camera picture to contact
@@ -45,7 +47,7 @@ Feature: Conversation
 
   #test is not implemented yet, functionality is not available in the client
   @smoke @mute @nonUnicode
-  Scenario Outline: Start group chat with users from contact list
+  Scenario Outline: Add people to 1:1 chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
@@ -65,7 +67,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
 
-  @mute @nonUnicode @smoke
+  @nonUnicode @smoke
   Scenario Outline: Send message to group chat
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -113,7 +115,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName       |
       | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | RemoveFromGroupChat |
 
-  @mute @nonUnicode @smoke
+ @mute @nonUnicode @smoke
   Scenario Outline: Accept connection request
     Given connection request is sended to me
     And I Sign in using login <Login> and password <Password>
@@ -171,7 +173,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @nonUnicode @regression
+ @unicode @regression
   Scenario Outline: Send special chars message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
