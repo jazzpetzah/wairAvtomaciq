@@ -30,6 +30,8 @@ public final class IOSLocators {
 
 	public static final String xpathCursorInput = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[last()]";//"TAP OR SLIDE  ";
 	
+	public static final String nameConversationCursorInput = "ConversationTextInputField";
+	
 	public static final String nameTextInput = "ComposeControllerTextView";
 	
 	public static final String xpathLastMessageFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]/UIATextView[1]";
@@ -138,7 +140,7 @@ public final class IOSLocators {
 	
 	public static final String nameAddContactToChatButton = "metaControllerLeftButton";
 	
-	public static final String xpathOtherUserName = "//UIAApplication[1]/UIAWindow[1]/UIATextField[@value='%s']";
+	public static final String xpathOtherUserName = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[@value='%s']";
 	
 	public static final String nameBackToWelcomeButton = "BackToWelcomeButton";
 	
@@ -154,7 +156,13 @@ public final class IOSLocators {
 	
 	public static final String nameExitGroupInfoPageButton = "metaControllerCancelButton";
 	
+	public static final String nameExitOtherUserPersonalInfoPageButton = "ProfileOtherCloseButton";
+	
 	public static final String xpathAlbum = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]/UIAStaticText[1]";
+	
+	public static final String nameOtherPersonalInfoPageNameField = "ProfileOtherNameField";
+	
+	public static final String nameOtherPersonalInfoPageEmailField = "ProfileOtherEmailField";
 	
 	///////////////////////
 	//Camera page locators
