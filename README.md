@@ -43,11 +43,9 @@ All needed project structure, base classes and utilities are already ready to us
 You have to configure settings.xml file: An example of this file is in zautomation/tests/settings.xml Create ~/.m2 folder and create settings.xml file. Change root and appPath (same like in Appium) and all other needed values of this file according to your local values
 
 Configure Maven builds:
-In Eclipse create new Maven Debug configuration (Run -> Debug Configurations…). Picture:
-![Debug Configuration](/Downloads/MVN.png?raw=true)
+In Eclipse create new Maven Debug configuration (Run -> Debug Configurations…).Pictures of the configurations are found in the Wiki (Setting up Eclipse project ).
  For the Base directory – select a project you want to debug (iOS, android, macosx). Profile – according to the selected project. Profile name should be the same as set in settings.xml file.
- Create another debug configuration, this time for Remote Java Application. Picture:
- ![Remote Java Application](https://imageshack.com/f/ipeUyUzop)
+ Create another debug configuration, this time for Remote Java Application.
  
 Now, to run your tests, do the following: run your Maven configuration and wait for condole output 
 "Listening for transport dt_socket at address: 5005"
