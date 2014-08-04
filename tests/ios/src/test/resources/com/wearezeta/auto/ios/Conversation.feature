@@ -2,7 +2,7 @@
 
 Feature: Conversation
 
-  @torun
+  #@torun
   @smoke 
   @id330
   Scenario Outline: Send Message to contact
