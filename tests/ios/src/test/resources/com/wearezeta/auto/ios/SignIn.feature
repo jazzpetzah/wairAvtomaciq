@@ -2,7 +2,7 @@
 
 Feature: Sign In
 
-  @smoke 
+  @smoke
   Scenario Outline: Sign in to ZClient
 	Given I see sign in screen
 	When I press Sign in button

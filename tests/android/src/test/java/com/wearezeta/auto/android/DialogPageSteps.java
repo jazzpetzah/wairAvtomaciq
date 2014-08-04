@@ -77,9 +77,9 @@ public class DialogPageSteps{
 		  }
 	}
 	
-	@Then("^I see Hello message in the dialog$")
-	public void ThenISeeHelloMessageInTheDialog() throws Throwable {
-		Assert.assertTrue(PagesCollection.dialogPage.isknockAnimationExist());
+	@Then("^I see Hello-Hey message (.*) in the dialog$")
+	public void ThenISeeHelloHeyMessageInTheDialog(String message) throws Throwable {
+		Assert.assertEquals(message.toUpperCase(), PagesCollection.dialogPage.getKnockMessageText());
 	}
 
 	@Then("^I see my message in the dialog$")
@@ -101,6 +101,11 @@ public class DialogPageSteps{
 		String chatMessage = user + " ADDED " + contact;
 		Assert.assertTrue(PagesCollection.dialogPage.isConnectMessageVisible());
 		Assert.assertTrue(PagesCollection.dialogPage.isConnectMessageValid(chatMessage));
+	}
+	
+	@Then("^I multi tap on text input again$")
+	public void ThenIMultiTapOnTextInputAgain() throws Throwable {
+		PagesCollection.dialogPage.multiTapOnCursorInput();
 	}
 	
 	@When("^I swipe left on dialog page$")

@@ -19,7 +19,7 @@ public class ContactListPageSteps {
 
 	@Given("^I have group chat named (.*) with an unconnected user, made by (.*)$")
 	public void GivenGroupChatWithName(String chatName, String groupCreator)
-			throws IOException {
+			throws Throwable {
 		PagesCollection.contactListPage.createGroupChatWithUnconnecteduser(
 				chatName, groupCreator);
 	}

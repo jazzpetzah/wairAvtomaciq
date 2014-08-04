@@ -37,7 +37,7 @@ public class PeoplePickerPageSteps {
 	}
 	
 	@Given("I send invitation to (.*) by (.*)")
-	public void ISendInvitationToUserByContact(String user, String contact) {
+	public void ISendInvitationToUserByContact(String user, String contact) throws Throwable {
 		user = CommonUtils.retrieveRealUserContactPasswordValue(user);
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 		BackEndREST.autoTestSendRequest(CommonUtils.yourUsers.get(2), CommonUtils.yourUsers.get(0));

@@ -14,6 +14,8 @@ import javax.imageio.ImageIO;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
+
 import gherkin.formatter.Formatter;
 import gherkin.formatter.Reporter;
 import gherkin.formatter.model.Background;

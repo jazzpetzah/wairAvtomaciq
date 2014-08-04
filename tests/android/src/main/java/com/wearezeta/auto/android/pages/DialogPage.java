@@ -1,6 +1,8 @@
 package com.wearezeta.auto.android.pages;
 
+import java.util.LinkedList;
 import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
@@ -8,6 +10,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.SwipeDirection;
 
 public class DialogPage extends AndroidPage{
 
@@ -18,8 +22,8 @@ public class DialogPage extends AndroidPage{
 	@FindBy(how = How.ID, using = AndroidLocators.idMessage)
 	private List<WebElement> messagesList;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idKnockAnimation)
-	private List<WebElement> knockAnimation;
+	@FindBy(how = How.ID, using = AndroidLocators.idKnockMessage)
+	private WebElement knockMessages;
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idDialogTakePhotoButton)
 	private WebElement takePhotoButton;
@@ -104,9 +108,6 @@ public class DialogPage extends AndroidPage{
 		return messagesList.get(messagesList.size()-1).getText();
 	}
 	
-	public Boolean isknockAnimationExist(){
-		return knockAnimation.size() > 0;
-	}
 
 	@Override
 	public AndroidPage swipeUp(int time) throws Exception
@@ -181,6 +182,11 @@ public class DialogPage extends AndroidPage{
 	public boolean isConnectMessageValid(String message) {
 		
 		return conversationMessage.getText().toLowerCase().contains(message.toLowerCase());
+	}
+
+	public String getKnockMessageText() {
+		refreshUITree();
+		return knockMessages.getText().toUpperCase();
 	}
 
 	

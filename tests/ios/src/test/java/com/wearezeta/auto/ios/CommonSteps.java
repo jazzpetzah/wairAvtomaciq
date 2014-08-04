@@ -1,8 +1,6 @@
 package com.wearezeta.auto.ios;
 
-import com.wearezeta.auto.common.BackEndREST;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.CreateZetaUser;
 import com.wearezeta.auto.common.TestPreparation;
 import com.wearezeta.auto.common.UsersState;
 import com.wearezeta.auto.common.ZetaFormatter;

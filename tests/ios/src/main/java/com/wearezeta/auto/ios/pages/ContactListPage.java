@@ -3,12 +3,17 @@ package com.wearezeta.auto.ios.pages;
 import java.io.IOException;
 import java.util.*;
 
+import javax.ws.rs.core.UriBuilderException;
+
+import org.json.JSONException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class ContactListPage extends IOSPage {
@@ -158,11 +163,14 @@ public class ContactListPage extends IOSPage {
 	}
 
 	public void createGroupChatWithUnconnecteduser(String chatName,
-			String groupCreator) {
+			String groupCreator) throws IllegalArgumentException,
+			UriBuilderException, IOException, BackendRequestException,
+			JSONException, InterruptedException {
 		ClientUser groupCreatorUser = CommonUtils.findUserNamed(groupCreator);
 		ClientUser unconnectedUser = CommonUtils
 				.findUserNamed(CommonUtils.YOUR_UNCONNECTED_USER);
-		ClientUser selfUser = CommonUtils.findUserNamed(CommonUtils.YOUR_USER_1);
+		ClientUser selfUser = CommonUtils
+				.findUserNamed(CommonUtils.YOUR_USER_1);
 
 		BackEndREST.sendConnectRequest(groupCreatorUser, unconnectedUser,
 				CONNECTION_CONSTANT + groupCreatorUser.getName(), chatName);
