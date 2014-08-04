@@ -32,7 +32,7 @@ Feature: Connect to User
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @223 @staging @nonUnicode
+ @223 @staging @nonUnicode
   Scenario Outline: I can do partial name search for existing 1:1
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -61,8 +61,8 @@ Feature: Connect to User
       | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName          |
       | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | PeoplePicker GroupChat |
 
-  @225 @nonUnicode @staging
-  Scenario Outline: I can do full name search for existing group convo(non-archive)
+ @225 @nonUnicode @staging
+  Scenario Outline: I can do partial name search for existing group convo(non-archive)
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

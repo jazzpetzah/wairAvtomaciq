@@ -20,7 +20,7 @@ import com.wearezeta.auto.common.driver.SwipeDirection;
 public class OtherUserPersonalInfoPage extends AndroidPage {
 
 	public static final String REMOVE_FROM_CONVERSATION_BUTTON = "Remove";
-	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.95;
+	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.90;
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idOtherUserPersonalInfoName)
 	private WebElement otherUserName;
