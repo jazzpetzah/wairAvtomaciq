@@ -6,6 +6,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
@@ -15,6 +16,7 @@ import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
+import com.wearezeta.auto.ios.tools.IOSKeyboard;
 
 public class DialogPage extends IOSPage{
 	
@@ -99,9 +101,7 @@ public class DialogPage extends IOSPage{
 	
 	public void typeMessage(String message) throws InterruptedException
 	{
-		//conversationInput.click();
-		Thread.sleep(1000);
-		conversationInput.sendKeys(message);
+		new IOSKeyboard(driver).typeString(message);
 	}
 		
 	public void ScrollToLastMessage(){
