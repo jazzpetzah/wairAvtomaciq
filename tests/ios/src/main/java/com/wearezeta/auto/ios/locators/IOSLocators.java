@@ -140,7 +140,7 @@ public final class IOSLocators {
 	
 	public static final String nameAddContactToChatButton = "metaControllerLeftButton";
 	
-	public static final String xpathOtherUserName = "//UIAApplication[1]/UIAWindow[1]/UIATextField[@value='%s']";
+	public static final String xpathOtherUserName = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[@value='%s']";
 	
 	public static final String nameBackToWelcomeButton = "BackToWelcomeButton";
 	
