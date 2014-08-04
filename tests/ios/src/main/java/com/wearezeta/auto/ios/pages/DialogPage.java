@@ -97,9 +97,10 @@ public class DialogPage extends IOSPage{
 		wait.until(ExpectedConditions.visibilityOf(conversationInput));
 	}
 	
-	public void typeMessage(String message)
+	public void typeMessage(String message) throws InterruptedException
 	{
-		conversationInput.click();
+		//conversationInput.click();
+		Thread.sleep(1000);
 		conversationInput.sendKeys(message);
 	}
 		

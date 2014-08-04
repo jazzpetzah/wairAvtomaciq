@@ -108,7 +108,7 @@ public class DialogPageSteps {
 	}
 	
 	@When("I type and send youtube link (.*)")
-	public void ITypeAndSendYoutubeLink(String link){
+	public void ITypeAndSendYoutubeLink(String link) throws InterruptedException{
 		PagesCollection.dialogPage.waitForCursorInputVisible();
 		PagesCollection.dialogPage.typeMessage(link + "\n");
 	}
