@@ -14,7 +14,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-@smoke @nonUnicode
+  @smoke @nonUnicode
   Scenario Outline: Send Hello to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -115,20 +115,19 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName       |
       | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | RemoveFromGroupChat |
 
- @mute @nonUnicode @smoke
+  @nonUnicode @smoke
   Scenario Outline: Accept connection request
-    Given connection request is sended to me
+    Given <Contact> connection request is sended to me
     And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I tap on my name <Name>
-    And I see connection request from <Contact>
-    And I confirm connection request
-    And I swipe from Instructions page to Contact list page
-    Then I see contact list loaded with User name <Contact>
+    When I tap on contact name <WaitingMess>
+    And I see connect to <Contact> dialog
+    And I Connect with contact by pressing button
+    Then I see Connect to <Contact> Dialog page
 
     Examples: 
-      | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | yourContact |
+      | Login   | Password    | Name    | Contact     | WaitingMess      |
+      | aqaUser | aqaPassword | aqaUser | yourContact | 1 person waiting |
 
   @mute @nonUnicode @smoke
   Scenario Outline: Mute conversation
@@ -173,7 +172,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
- @unicode @regression
+  @unicode @regression
   Scenario Outline: Send special chars message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

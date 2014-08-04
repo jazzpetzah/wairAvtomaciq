@@ -2,6 +2,15 @@ package com.wearezeta.auto.android.locators;
 
 public final class AndroidLocators {
 	
+	public static final String idSimpleDialogPageText = "com.waz.zclient.dev:id/ttv__simple_dialog__text"; 
+	
+	public static final String idConnectToHeader = "com.waz.zclient.dev:id/taet__participants__header";
+	
+	public static final String idConnectRequestAccept = "com.waz.zclient.dev:id/zb__connect_request__accept_button";
+	
+	public static final String idConnectRequestChatLabel = "com.waz.zclient.dev:id/ttv__row_conversation__connect_request__chathead_footer__label";
+	
+	public static final String idConnectRequestChatUserName = "com.waz.zclient.dev:id/ttv__row_conversation__connect_request__chathead_footer__username";
 	
 	public static final String idKnockMessage = "com.waz.zclient.dev:id/ttv__row_conversation__knock_message";
 	
@@ -176,6 +185,8 @@ public final class AndroidLocators {
 	public static final String idChangePhotoBtn = "com.waz.zclient.dev:id/gtv__camera_control__change_image_source";
 	
 	public static final String idGalleryBtn = "com.waz.zclient.dev:id/gtv__camera_control__pick_from_gallery";
+	
+	public static final String idGroupChatInfoName = "com.waz.zclient.dev:id/ttv__participants__header";
 	
 	public static final String idGroupChatUserGrid = "com.waz.zclient.dev:id/gv__participants__group__users";
 }

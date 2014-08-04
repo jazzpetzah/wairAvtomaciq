@@ -33,7 +33,7 @@ public class GroupChatInfoPage extends AndroidPage {
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameGridView)
 	private WebElement groupChatUsersGrid;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idOtherUserPersonalInfoName)
+	@FindBy(how = How.ID, using = AndroidLocators.idGroupChatInfoName)
 	private WebElement groupChatName;
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idParticipantsSubHeader)
