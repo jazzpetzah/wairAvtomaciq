@@ -73,7 +73,7 @@ public class DialogPage extends AndroidPage{
 	}
 	
 	public void waitForCursorInputVisible(){
-		
+		refreshUITree();
 		wait.until(ExpectedConditions.visibilityOf(cursorInput));
 		initMessageCount = messagesList.size();
 	}

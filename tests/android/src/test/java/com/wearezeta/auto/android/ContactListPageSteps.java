@@ -23,14 +23,7 @@ public class ContactListPageSteps {
 	}
 	
 	@When("^I tap on contact name (.*)$")
-	public void WhenITapOnContactName(String name) throws Throwable  {
-		//workaround for unknown contacts, start
-		/*ISwipeDownContactList();
-		PeoplePickerPageSteps pickerSteps = new PeoplePickerPageSteps();
-		pickerSteps.WhenISeePeoplePickerPage();
-		pickerSteps.WhenIPressClearButton();*/
-		//workaround for unknown contacts, end
-		
+	public void WhenITapOnContactName(String name) throws Throwable  {		
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		PagesCollection.androidPage = PagesCollection.contactListPage.tapOnName(name);
 	}
