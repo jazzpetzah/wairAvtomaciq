@@ -21,8 +21,11 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.nameLoginPage)
 	private WebElement dialogWindow;
 	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathCursorInput)
-	private WebElement cursorInput;
+//	@FindBy(how = How.XPATH, using = IOSLocators.xpathCursorInput)
+//	private WebElement cursorInput;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameConversationCursorInput)
+	private WebElement conversationInput;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameTextInput)
 	private WebElement textInput;
@@ -78,25 +81,27 @@ public class DialogPage extends IOSPage{
 	}
 
 	public void waitForCursorInputVisible(){
-		wait.until(ExpectedConditions.visibilityOf(cursorInput));
+		wait.until(ExpectedConditions.visibilityOf(conversationInput));
 	}
 	
 	public void tapOnCursorInput(){
-		cursorInput.click();
+		conversationInput.click();
 	}
 	
 	public void multiTapOnCursorInput() throws InterruptedException{
 		
-		DriverUtils.iOSMultiTap(driver, cursorInput, 3);
+		DriverUtils.iOSMultiTap(driver, conversationInput, 3);
 	}
 	
 	public void waitForTextMessageInputVisible(){
-		wait.until(ExpectedConditions.visibilityOf(textInput));
+		wait.until(ExpectedConditions.visibilityOf(conversationInput));
 	}
 	
-	public void typeMessage(String message)
+	public void typeMessage(String message) throws InterruptedException
 	{
-		textInput.sendKeys(message);
+		//conversationInput.click();
+		Thread.sleep(1000);
+		conversationInput.sendKeys(message);
 	}
 		
 	public void ScrollToLastMessage(){
@@ -137,7 +142,7 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public void swipeInputCursor() throws IOException, InterruptedException{
-		DriverUtils.swipeRight(driver, cursorInput, 700);
+		DriverUtils.swipeRight(driver, conversationInput, 700);
 	}
 	
 	public CameraRollPage pressAddPictureButton() throws IOException{

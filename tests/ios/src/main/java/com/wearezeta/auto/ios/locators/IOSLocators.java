@@ -30,6 +30,8 @@ public final class IOSLocators {
 
 	public static final String xpathCursorInput = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[last()]";//"TAP OR SLIDE  ";
 	
+	public static final String nameConversationCursorInput = "ConversationTextInputField";
+	
 	public static final String nameTextInput = "ComposeControllerTextView";
 	
 	public static final String xpathLastMessageFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]/UIATextView[1]";

@@ -2,6 +2,7 @@
 
 Feature: Conversation
 
+  #@torun
   @smoke 
   @id330
   Scenario Outline: Send Message to contact
@@ -57,7 +58,7 @@ Feature: Conversation
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-
+  
   @smoke 
 Scenario Outline: Send message to group chat
     Given I Sign in using login <Login> and password <Password>
