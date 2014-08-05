@@ -1,139 +1,93 @@
 package com.wearezeta.auto.ios.tools;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.wearezeta.auto.common.driver.ZetaDriver;
 
 public class IOSKeyboard {
 	private static final String TAP_KEYBOARD_BUTTON = "target.frontMostApp().keyboard().elements()[\"%s\"].tap();";
- 
+	private static final KeyboardState UNKNOWN_STATE = new KeyboardStateUnknown();
+	private static final int TAP_DELAY = 10;
+	private List<KeyboardState> CACHED_STATES = new ArrayList<KeyboardState>();
+	private static final String DEFAULT_RETURN_NAME = "Return";
+	
+	private String returnName = DEFAULT_RETURN_NAME;
 
-	private static enum KeyboardState {
-		UNKNOWN(0), ALPHA(1), ALPHA_CAPS(2), NUMBER_PUNCTUATION(3), SPECIAL_CHAR(4);
-		private static final String ALPHA_CHARS = "[a-z]";
-		private static final String ALPHA_CHARS_CAPS = "[A-Z]";
-		private static final String[] SPECIAL_CHARS_IN_NUMBERS_ARR = new String[]{"-","/",":",";","(",")","$","&","@","\"",".",",","?","!","'"};
-		private static String SPECIAL_CHARS_IN_NUMBERS = "";
-		static {
-			SPECIAL_CHARS_IN_NUMBERS = String.format("[0-9%s]", charArrayToPattern(SPECIAL_CHARS_IN_NUMBERS_ARR));
+	public String getReturnName() {
+		return returnName;
+	}
+
+	public void setReturnName(String returnName) {
+		this.returnName = returnName;
+	}
+
+	private List<KeyboardState> getStatesList() {
+		if (CACHED_STATES.size() == 0) {
+			CACHED_STATES.add(new KeyboardStateAlpha(driver));
+			CACHED_STATES.add(new KeyboardStateAlphaCaps(driver));
+			CACHED_STATES.add(new KeyboardStateNumbers(driver));
+			CACHED_STATES.add(new KeyboardStateSpecial(driver));
 		}
-		private static final String[] SPECIAL_CHARS_ARR = new String[]{"[", "]","{","}","#","%","^","*","+","=","_","\\","|","~","<",">","¥","☻","£","€"};
-		private static String SPECIAL_CHARS = "";
-		static {
-			SPECIAL_CHARS = String.format("[%s]", charArrayToPattern(SPECIAL_CHARS_ARR));
-		}
-		
-		private static String charArrayToPattern(String[] arr) {
-			StringBuilder result = new StringBuilder();
-			for (String chr: arr) {
-				result.append(Pattern.quote(chr)); 
+		return CACHED_STATES;
+	}
+
+	private KeyboardState getFinalState(char c) {
+		String messageChar = "" + c;
+
+		for (KeyboardState state : getStatesList()) {
+			if (messageChar.matches(state.getCharacterSetPattern())) {
+				return state;
 			}
-			return result.toString();	
 		}
-		
-		public static KeyboardState getStateForCharacter(char c) {
-			
-			Map<KeyboardState,String> stateMapping = new HashMap<KeyboardState,String>();
-			stateMapping.put(ALPHA, ALPHA_CHARS);
-			stateMapping.put(ALPHA_CAPS, ALPHA_CHARS_CAPS);
-			stateMapping.put(NUMBER_PUNCTUATION, SPECIAL_CHARS_IN_NUMBERS);
-			stateMapping.put(SPECIAL_CHAR, SPECIAL_CHARS);
-			String messageChar = "" + c;
-
-			for(Entry<KeyboardState, String> entry: stateMapping.entrySet()) {
-				if (messageChar.matches(entry.getValue())) {
-					return entry.getKey();
-				}
-			}
-			return KeyboardState.UNKNOWN;
-		}
-
-
-		private int value;
-
-		private KeyboardState(int value) {
-			this.value = value;
-		}
+		return UNKNOWN_STATE;
 	}
 
 	private ZetaDriver driver = null;
 
 	public IOSKeyboard(ZetaDriver driver) {
-
 		this.driver = driver;
-
 	}
-	
 
-	private KeyboardState getState() {
+	private KeyboardState getInitialState() {
 		final String emptyElement = "[object UIAElementNil]";
 		final String getStateTemplate = "target.frontMostApp().keyboard().keys().firstWithName(\"%s\").toString()";
-		if (driver.executeScript(String.format(getStateTemplate, "a"))
-				.toString() != emptyElement) {
-			return KeyboardState.ALPHA;
-		} else if (driver.executeScript(String.format(getStateTemplate, "A"))
-				.toString() != emptyElement) {
-			return KeyboardState.ALPHA_CAPS;
-		} else if (driver.executeScript(String.format(getStateTemplate, "1"))
-				.toString() != emptyElement) {
-			return KeyboardState.NUMBER_PUNCTUATION;
+		for (KeyboardState state : getStatesList()) {
+			final String firstStateChar = state.getFirstCharacter();
+			final String firstCharResponse = driver.executeScript(
+					String.format(getStateTemplate, firstStateChar)).toString();
+			if (!firstCharResponse.equals(emptyElement)) {
+				return state;
+			}
 		}
 
-		return KeyboardState.UNKNOWN;
-
+		return UNKNOWN_STATE;
 	}
 
-	public void typeString(String message, Boolean shouldSend) {
-		typeString(message);
-		if (shouldSend) {
-			driver.executeScript(String.format(TAP_KEYBOARD_BUTTON,"Return"));
-		}
-	}
-	
-	public void typeString(String message) {
-
-		KeyboardState keyboardState = getState();
-		boolean isAllCapital = KeyboardState.ALPHA_CAPS == keyboardState;
-
+	public void typeString(String message) throws InterruptedException {
+		KeyboardState currentState = new KeyboardStateAlpha(driver);
 		for (int i = 0; i < message.length(); i++) {
 			char c = message.charAt(i);
 			String messageChar = Character.toString(c);
 
-			if (KeyboardState.getStateForCharacter(c) == KeyboardState.ALPHA
-					&& keyboardState == KeyboardState.ALPHA_CAPS
-					&& !isAllCapital) {
-				driver.executeScript(String.format(TAP_KEYBOARD_BUTTON, "shift"));
-				keyboardState = KeyboardState.ALPHA;
-			} else if (messageChar.matches("[A-Z]")
-					&& keyboardState == KeyboardState.ALPHA) {
-				driver.executeScript(String.format(TAP_KEYBOARD_BUTTON, "shift"));
-				keyboardState = KeyboardState.ALPHA_CAPS;
-			} else if (messageChar.matches("[A-z]")
-					&& keyboardState == KeyboardState.NUMBER_PUNCTUATION) {
-				driver.executeScript(String.format(TAP_KEYBOARD_BUTTON,
-						"more, letters"));
-				keyboardState = KeyboardState.ALPHA;
-			} else if (messageChar.matches("[0-9]")
-					&& keyboardState != KeyboardState.NUMBER_PUNCTUATION) {
-				driver.executeScript(String.format(TAP_KEYBOARD_BUTTON,
-						"more, numbers"));
-				keyboardState = KeyboardState.NUMBER_PUNCTUATION;
+			KeyboardState finalState = getFinalState(c);
+			if (currentState != finalState) {
+				if ((finalState instanceof KeyboardStateAlpha && currentState instanceof KeyboardStateAlphaCaps)
+						|| (finalState instanceof KeyboardStateAlphaCaps && currentState instanceof KeyboardStateAlpha)) {
+					currentState = getInitialState();
+				}
+				currentState.switchTo(finalState);
+				Thread.sleep(TAP_DELAY);
+				currentState = finalState;
 			}
 
-			if (messageChar.matches("[a-z]")
-					&& keyboardState == KeyboardState.ALPHA_CAPS) {
-				messageChar = messageChar.toUpperCase();
-			}
 			if (messageChar.equals(" ")) {
-				driver.executeScript(String.format(TAP_KEYBOARD_BUTTON, "space"));
-			} else if(messageChar.equals("\n")){
-				driver.executeScript(String.format(TAP_KEYBOARD_BUTTON,"Return"));
-			}
-			else if (messageChar.matches("[0-9]")) 
-			{
+				driver.executeScript(String
+						.format(TAP_KEYBOARD_BUTTON, "space"));
+			}else if (messageChar.equals("\n")) {
+				driver.executeScript(String
+							.format(TAP_KEYBOARD_BUTTON, getReturnName()));
+			} else if (messageChar.matches("[0-9]")) {
 				if (messageChar.equals("0")) {
 					messageChar = "9";
 				} else {
@@ -145,6 +99,8 @@ public class IOSKeyboard {
 				driver.executeScript(String.format(TAP_KEYBOARD_BUTTON,
 						messageChar));
 			}
+
+			Thread.sleep(TAP_DELAY);
 		}
 
 	}

@@ -2,7 +2,7 @@
 
 Feature: Conversation
 
-  #@torun
+
   @smoke 
   @id330
   Scenario Outline: Send Message to contact
@@ -210,7 +210,6 @@ Scenario Outline: Verify correct group info page information
 Examples:
     |  Login		| Password		| Name			| Contact1		        | Contact2	     	    | ParticipantNumber |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaPictureContact	    | aqaAvatar TestContact	| 		 3			|
-
 @torun
 @staging   
   Scenario Outline: I can send and play inline youtube link
@@ -254,8 +253,8 @@ Examples:
 	Examples: 
     |	Login	|	Password	|	Name	|	Contact		| YouTubeLink	|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| http://www.youtube.com/watch?v=Bb1RhktcugU |  
+    
 
-@torun
 @staging
 @id383
 Scenario Outline: Play/pause SoundCloud media link from the media bar
