@@ -117,7 +117,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName       | Message     |
       | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | RemoveFromGroupChat | YOU REMOVED |
 
-  @nonUnicode @smoke
+  @nonUnicode @smoke @torun
   Scenario Outline: Accept connection request
     Given <Contact> connection request is sended to me
     And I Sign in using login <Login> and password <Password>
