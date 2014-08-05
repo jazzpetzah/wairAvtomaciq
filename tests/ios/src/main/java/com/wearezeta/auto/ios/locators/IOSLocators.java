@@ -28,7 +28,7 @@ public final class IOSLocators {
 	
 	public static final String classNameDialogMessages = "UIATableCell";
 
-	public static final String xpathCursorInput = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[last()]";//"TAP OR SLIDE  ";
+//	public static final String xpathCursorInput = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[last()]";//"TAP OR SLIDE  ";
 	
 	public static final String nameConversationCursorInput = "ConversationTextInputField";
 	
@@ -140,7 +140,7 @@ public final class IOSLocators {
 	
 	public static final String nameAddContactToChatButton = "metaControllerLeftButton";
 	
-	public static final String xpathOtherUserName = "//UIAApplication[1]/UIAWindow[1]/UIATextField[@value='%s']";
+	public static final String xpathOtherUserName = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[@value='%s']";
 	
 	public static final String nameBackToWelcomeButton = "BackToWelcomeButton";
 	
@@ -175,7 +175,7 @@ public final class IOSLocators {
 	
 	public static final String xpathParticipantAvatar = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[%s]";
 	
-	public static final String xpathNumberOfParticipantsText =  "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[3]";
+	public static final String xpathNumberOfParticipantsText =  "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[2]";
 
 	//needs name
 	public static final String xpathAvatarCollectionView = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]";
@@ -208,7 +208,7 @@ public final class IOSLocators {
 	
 	public static final String xpathCloseColorModeButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[4]";
 
-	public static String xpathNumberPeopleText = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[3]";
+	public static String xpathNumberPeopleText = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[2]";
 	
 	public static final String peopleCountTextSubstring = " people";
 	
