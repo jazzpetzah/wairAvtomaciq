@@ -82,7 +82,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | SendMessGroupChat |
 
-  @mute @nonUnicode @smoke
+  @nonUnicode @smoke
   Scenario Outline: Leave group conversation
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -91,14 +91,15 @@ Feature: Conversation
     And I swipe up on group dialog page
     And I press Leave conversation button
     And I confirm leaving
-    And I tap on contact name <GroupChatName>
-    Then I see that <Name> is not present on group chat page
+    Then I do not see <Login> on group chat info page
+    And I return to group chat page
+    Then I see message that I left chat
 
     Examples: 
       | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName  |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | LeaveGroupChat |
 
-  @mute @nonUnicode @smoke 
+  @nonUnicode @smoke 
   Scenario Outline: Remove from group chat
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -108,12 +109,13 @@ Feature: Conversation
     And I select contact <Contact2>
     And I click Remove
     And I confirm remove
-    And I press back on group chat info page
-    Then I see that <Contact2> is not present on group chat page
+    Then I do not see <Contact2> on group chat info page
+    And I return to group chat page
+    Then I see  message <Message> contact <Contact2> on group page
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName       |
-      | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | RemoveFromGroupChat |
+      | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName       | Message     |
+      | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | RemoveFromGroupChat | YOU REMOVED |
 
   @nonUnicode @smoke
   Scenario Outline: Accept connection request

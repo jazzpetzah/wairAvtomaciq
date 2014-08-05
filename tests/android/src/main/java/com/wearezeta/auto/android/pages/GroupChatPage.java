@@ -79,13 +79,14 @@ public class GroupChatPage  extends AndroidPage{
 	
 	public boolean isMessageExists(String messageText){
 		boolean flag = false;
-		
+		refreshUITree();
 		for(WebElement element : messages)
 		{
 			String text = element.getText();
 			if(text.equals(messageText))
 			{
 				flag = true;
+				break;
 			}
 		}
 		return flag;
