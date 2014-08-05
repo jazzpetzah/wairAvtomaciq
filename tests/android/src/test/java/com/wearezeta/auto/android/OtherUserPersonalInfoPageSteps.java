@@ -12,6 +12,8 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class OtherUserPersonalInfoPageSteps {
+	
+	private final String BG_IMAGE_NAME = "aqaPictureContactBG.png";
 
 	@When("^I see (.*) user profile page$")
 	public void WhenISeeOherUserProfilePage(String name){
@@ -62,5 +64,10 @@ public class OtherUserPersonalInfoPageSteps {
 		
 		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage.isOtherUserNameVisible(contact));
 		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage.isOtherUserMailVisible(email));
+	}
+	
+	@Then("^I see correct background image$")
+	public void ThenISeeCorrectBackgroundImage() throws Throwable {
+	   Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage.isBackGroundImageCorrect(BG_IMAGE_NAME));
 	}
 }

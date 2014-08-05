@@ -15,6 +15,11 @@ public class GroupChatInfoPageSteps {
 
 	public static final String GROUP_CHAT_NAME = "TempTestChat";
 
+	@When("^I tap on group chat contact (.*)$")
+	public void WhenITapOnGroupChatContact(String contact) throws Throwable {
+		PagesCollection.otherUserPersonalInfoPage = PagesCollection.groupChatInfoPage.tapOnContact(contact);
+	}
+	
 	@When("^I swipe up group chat info page$")
 	public void WhenISwipeUpGroupChatInfoPage() throws Throwable {	
 		PagesCollection.groupChatInfoPage.swipeUp(500);
@@ -61,4 +66,15 @@ public class GroupChatInfoPageSteps {
 	public void IVerifyParticipantNumber(String realNumberOfParticipants) throws IOException{
 		Assert.assertEquals(PagesCollection.groupChatInfoPage.getSubHeader(), realNumberOfParticipants + " people");
 		}
+	
+	@Then("^I do not see (.*) on group chat info page$")
+	public void ThenIDoNotSeeOnGroupChatInfoPage(String contact) throws Throwable {
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+	    Assert.assertFalse(PagesCollection.groupChatInfoPage.isContactExists(contact));
+	}
+	
+	@Then("^I return to group chat page$")
+	public void ThenIReturnToGroupChatPage() throws Throwable {
+		PagesCollection.groupChatPage =	(GroupChatPage) PagesCollection.groupChatInfoPage.tabBackButton();
+	}
 }

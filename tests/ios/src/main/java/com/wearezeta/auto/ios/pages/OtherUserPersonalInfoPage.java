@@ -8,7 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-import com.wearezeta.auto.common.SwipeDirection;
+import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class OtherUserPersonalInfoPage extends IOSPage{
@@ -24,6 +24,15 @@ public class OtherUserPersonalInfoPage extends IOSPage{
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameContinueButton)
 	private WebElement continueButton;
+
+	@FindBy(how = How.NAME, using = IOSLocators.nameExitOtherUserPersonalInfoPageButton)
+	private WebElement exitOtherPersonalInfoPageButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameOtherPersonalInfoPageNameField )
+	private WebElement nameField;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameOtherPersonalInfoPageEmailField )
+	private WebElement emailField;
 	
 	private String url;
 	private String path;
@@ -43,6 +52,11 @@ public class OtherUserPersonalInfoPage extends IOSPage{
 		catch (NoSuchElementException ex) {
 			//do nothing
 		}
+	}
+	
+	public IOSPage leavePageToGroupInfoPage() throws IOException{
+		exitOtherPersonalInfoPageButton.click();
+		return new GroupChatInfoPage(url, path);
 	}
 	
 	public PeoplePickerPage addContactToChat() throws MalformedURLException {
@@ -74,6 +88,14 @@ public class OtherUserPersonalInfoPage extends IOSPage{
 		confirmRemove.click();
 	}
 
+	public String getNameFieldValue() {
+		return nameField.getAttribute("value");
+	}
+	
+	public String getEmailFieldValue() {
+		return emailField.getAttribute("value");
+	}
+	
 	@Override
 	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
 		IOSPage page = null;

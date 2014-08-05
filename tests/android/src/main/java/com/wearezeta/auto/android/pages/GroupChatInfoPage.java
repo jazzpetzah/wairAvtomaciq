@@ -3,6 +3,7 @@ package com.wearezeta.auto.android.pages;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
+
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -10,7 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
-import com.wearezeta.auto.common.SwipeDirection;
+import com.wearezeta.auto.common.driver.SwipeDirection;
 
 public class GroupChatInfoPage extends AndroidPage {
 
@@ -32,7 +33,7 @@ public class GroupChatInfoPage extends AndroidPage {
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameGridView)
 	private WebElement groupChatUsersGrid;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idOtherUserPersonalInfoName)
+	@FindBy(how = How.ID, using = AndroidLocators.idGroupChatInfoName)
 	private WebElement groupChatName;
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idParticipantsSubHeader)
@@ -150,13 +151,6 @@ public class GroupChatInfoPage extends AndroidPage {
 		
 		return commonFlag;
 	}
-	
-	public BufferedImage getElementScreenshot(WebElement element) throws IOException{
-		BufferedImage screenshot = takeScreenshot();
-		Point elementLocation = element.getLocation();
-		Dimension elementSize = element.getSize();
-		return screenshot.getSubimage(elementLocation.x, elementLocation.y, elementSize.width, elementSize.height);
-	}
 
 	public String getSubHeader() {
 		return participantsSubHeader.getText();
@@ -165,5 +159,32 @@ public class GroupChatInfoPage extends AndroidPage {
 	public String getConversationName() {
 		refreshUITree();
 		return groupChatName.getText();
+	}
+
+	public OtherUserPersonalInfoPage tapOnContact(String contact) throws Exception {
+		refreshUITree();
+		WebElement cn = driver.findElement(By.xpath(String.format(AndroidLocators.xpathGroupChatContact, contact.toUpperCase())));
+		cn.click();
+		return new OtherUserPersonalInfoPage(url, path);
+	}
+
+	public boolean isContactExists(String contact) {
+		boolean flag = false;
+		refreshUITree();
+		
+		for(WebElement user : linearLayout)
+		{
+			List<WebElement> elements = user.findElements(By.className(AndroidLocators.classNameTextView));
+			for(WebElement element : elements){
+					if(element.getText() != null && element.getText().equals((contact.toUpperCase()))){
+						flag = true;
+						break;
+					}
+			}
+			if(flag){
+				break;
+			}
+		}
+		return flag;
 	}	
 }

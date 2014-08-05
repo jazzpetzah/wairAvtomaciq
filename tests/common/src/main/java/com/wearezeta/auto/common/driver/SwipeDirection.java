@@ -1,4 +1,4 @@
-package com.wearezeta.auto.common;
+package com.wearezeta.auto.common.driver;
 
 public enum SwipeDirection { 
 	UP,

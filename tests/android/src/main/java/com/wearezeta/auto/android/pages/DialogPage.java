@@ -7,7 +7,8 @@ import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
-import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.SwipeDirection;
 
 public class DialogPage extends AndroidPage{
 
@@ -18,8 +19,8 @@ public class DialogPage extends AndroidPage{
 	@FindBy(how = How.ID, using = AndroidLocators.idMessage)
 	private List<WebElement> messagesList;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idKnockAnimation)
-	private List<WebElement> knockAnimation;
+	@FindBy(how = How.ID, using = AndroidLocators.idKnockMessage)
+	private WebElement knockMessages;
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idDialogTakePhotoButton)
 	private WebElement takePhotoButton;
@@ -54,6 +55,12 @@ public class DialogPage extends AndroidPage{
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classListView)
 	private WebElement container;
 	
+	@FindBy(how = How.ID, using = AndroidLocators.idConnectRequestChatLabel)
+	private WebElement connectRequestChatLabel;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idConnectRequestChatUserName)
+	private WebElement connectRequestChatUserName;
+	
 	private String url;
 	private String path;
 	private int initMessageCount;
@@ -66,7 +73,7 @@ public class DialogPage extends AndroidPage{
 	}
 	
 	public void waitForCursorInputVisible(){
-		
+		refreshUITree();
 		wait.until(ExpectedConditions.visibilityOf(cursorInput));
 		initMessageCount = messagesList.size();
 	}
@@ -104,9 +111,6 @@ public class DialogPage extends AndroidPage{
 		return messagesList.get(messagesList.size()-1).getText();
 	}
 	
-	public Boolean isknockAnimationExist(){
-		return knockAnimation.size() > 0;
-	}
 
 	@Override
 	public AndroidPage swipeUp(int time) throws Exception
@@ -181,6 +185,21 @@ public class DialogPage extends AndroidPage{
 	public boolean isConnectMessageValid(String message) {
 		
 		return conversationMessage.getText().toLowerCase().contains(message.toLowerCase());
+	}
+
+	public String getKnockMessageText() {
+		refreshUITree();
+		return knockMessages.getText().toUpperCase();
+	}
+
+	public String getConnectRequestChatLabel() {
+		refreshUITree();
+		return connectRequestChatLabel.getText().toLowerCase().trim();
+	}
+
+	public String getConnectRequestChatUserName() {
+
+		return connectRequestChatUserName.getText().toLowerCase();
 	}
 
 	

@@ -6,34 +6,35 @@ import java.util.*;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+
 import com.wearezeta.auto.android.locators.AndroidLocators;
-import com.wearezeta.auto.common.DriverUtils;
-import com.wearezeta.auto.common.SwipeDirection;
+import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.SwipeDirection;
 
 public class PersonalInfoPage extends AndroidPage
 {
-	
+
 	private String url;
 	private String path;
-	
+
 	@FindBy(how = How.ID, using = AndroidLocators.idBackgroundOverlay)
 	private WebElement backgroundOverlay;
-	
+
 	@FindBy(how = How.ID, using = AndroidLocators.idSettingsBox)
 	private WebElement settingBox;
-	
+
 	@FindBy(how = How.ID, using = AndroidLocators.idEmailField)
 	private WebElement emailField;
-	
+
 	@FindBy(how = How.ID, using = AndroidLocators.idNameField)
 	private WebElement nameField;
 
 	@FindBy(how = How.ID, using = AndroidLocators.idSettingsBtn)
 	private WebElement settingsButton;
-	
+
 	@FindBy(how = How.ID, using = AndroidLocators.idNameEdit)
 	private WebElement nameEdit;
-	
+
 	@FindBy(how = How.ID, using = AndroidLocators.idChangePhotoBtn)
 	private WebElement changePhotoBtn;
 
@@ -45,7 +46,7 @@ public class PersonalInfoPage extends AndroidPage
 
 	@FindBy(how = How.ID, using = AndroidLocators.idProfileOptionsButton)
 	private WebElement optionsButton;
-	
+
 	@FindBy(how = How.ID, using = AndroidLocators.idAboutButton)
 	private WebElement aboutButton;
 
@@ -60,22 +61,22 @@ public class PersonalInfoPage extends AndroidPage
 
 	@FindBy(how = How.ID, using = AndroidLocators.idOpenFrom)
 	private List<WebElement> openFrom;
-	
+
 	@FindBy(how = How.ID, using = AndroidLocators.idProfileOptionsButton)
 	private List<WebElement> settingsButtonList;
-	
+
 	@FindBy(how = How.XPATH, using = AndroidLocators.xpathImage)
 	private List<WebElement> image;
-	
+
 	public PersonalInfoPage(String URL, String path) throws Exception {
 		super(URL, path);
 		this.url = URL;
 		this.path = path;
 
 	}
-	
+
 	public boolean isPersonalInfoVisible() {
-		
+
 		return emailField.isDisplayed();
 	}
 
@@ -91,16 +92,18 @@ public class PersonalInfoPage extends AndroidPage
 	public void selectPhoto(){
 		refreshUITree();
 		try{
-			for(WebElement el : openFrom){
-				if(el.getText().contains("Photos")){
-					el.click();
-					image.get(0).click();
-					break;
-				}
-			}
+			frameLayouts.get(0).click();
+			return;
+		}
+		catch(Exception ex)
+		{
+
+		}
+		try{
+			image.get(0).click();
+			return;
 		}
 		catch(Exception ex){
-			frameLayouts.get(0).click();
 		}
 	}
 
@@ -117,7 +120,7 @@ public class PersonalInfoPage extends AndroidPage
 	}
 
 	public void tapSignOutBtn(){
-		
+
 		refreshUITree();
 		signOutBtn.click();
 	}
@@ -152,14 +155,14 @@ public class PersonalInfoPage extends AndroidPage
 	public void tapOptionsButton() throws InterruptedException {
 		optionsButton.click();
 	}
-	
+
 	public SettingsPage tapSettingsButton() throws Exception {
-		
+
 		refreshUITree();
 		settingsButton.click();
 		return new SettingsPage (url, path);
 	}
-	
+
 	public void waitForConfirmBtn(){
 		wait.until(ExpectedConditions.visibilityOf(confirmBtn));
 	}
@@ -190,7 +193,7 @@ public class PersonalInfoPage extends AndroidPage
 	}
 
 	public boolean isSettingsVisible() {
-		
+
 		return settingBox.isDisplayed();
 	}
 

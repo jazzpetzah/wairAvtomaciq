@@ -27,7 +27,7 @@ public class LoginPageSteps {
 		 case CommonUtils.YOUR_USER_2:
 			 login = CommonUtils.yourUsers.get(1).getEmail();
 			 break;
-		 case CommonUtils.YOUR_USER_3:
+		 case CommonUtils.YOUR_UNCONNECTED_USER:
 			 login = CommonUtils.yourUsers.get(2).getEmail();
 			 break;
 		 case CommonUtils.CONTACT_1:

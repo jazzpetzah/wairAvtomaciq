@@ -1,15 +1,8 @@
 package com.wearezeta.auto.image_send;
 
-import java.io.IOException;
-
-import javax.ws.rs.core.UriBuilderException;
-
-import com.wearezeta.auto.common.BackEndREST;
-
 public class AssetRequest {
 	private String endpoint = "assets";
 
-	private String host = "";
 	private String method = "POST";
 	private String contentType;
 	private String contentDisposition;
@@ -62,18 +55,6 @@ public class AssetRequest {
 
 	public void setEndpoint(String endpoint) {
 		this.endpoint = endpoint;
-	}
-
-	public String getHost() throws IllegalArgumentException, UriBuilderException, IOException {
-		if (host.equals(""))
-		{
-			setHost();
-		}
-		return host;
-	}
-
-	public void setHost() throws IllegalArgumentException, UriBuilderException, IOException {
-		host = BackEndREST.getBaseURI().toString();
 	}
 	
 	public AssetRequest() {
