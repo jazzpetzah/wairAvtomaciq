@@ -459,6 +459,7 @@ public class BackEndREST {
 					result = getAssetsDownload(convID, (String) data.get("id"),
 							fromUser);
 					if (currentIndex == index) return result;
+					currentIndex++;
 				}
 			}
 		}
