@@ -33,7 +33,7 @@ public class GroupChatInfoPage extends AndroidPage {
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameGridView)
 	private WebElement groupChatUsersGrid;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idOtherUserPersonalInfoName)
+	@FindBy(how = How.ID, using = AndroidLocators.idGroupChatInfoName)
 	private WebElement groupChatName;
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idParticipantsSubHeader)
@@ -166,5 +166,25 @@ public class GroupChatInfoPage extends AndroidPage {
 		WebElement cn = driver.findElement(By.xpath(String.format(AndroidLocators.xpathGroupChatContact, contact.toUpperCase())));
 		cn.click();
 		return new OtherUserPersonalInfoPage(url, path);
+	}
+
+	public boolean isContactExists(String contact) {
+		boolean flag = false;
+		refreshUITree();
+		
+		for(WebElement user : linearLayout)
+		{
+			List<WebElement> elements = user.findElements(By.className(AndroidLocators.classNameTextView));
+			for(WebElement element : elements){
+					if(element.getText() != null && element.getText().equals((contact.toUpperCase()))){
+						flag = true;
+						break;
+					}
+			}
+			if(flag){
+				break;
+			}
+		}
+		return flag;
 	}	
 }

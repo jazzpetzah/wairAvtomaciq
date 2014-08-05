@@ -1,15 +1,12 @@
 package com.wearezeta.auto.android.pages;
 
-import java.util.LinkedList;
 import java.util.List;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
-import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 
@@ -58,6 +55,12 @@ public class DialogPage extends AndroidPage{
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classListView)
 	private WebElement container;
 	
+	@FindBy(how = How.ID, using = AndroidLocators.idConnectRequestChatLabel)
+	private WebElement connectRequestChatLabel;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idConnectRequestChatUserName)
+	private WebElement connectRequestChatUserName;
+	
 	private String url;
 	private String path;
 	private int initMessageCount;
@@ -70,7 +73,7 @@ public class DialogPage extends AndroidPage{
 	}
 	
 	public void waitForCursorInputVisible(){
-		
+		refreshUITree();
 		wait.until(ExpectedConditions.visibilityOf(cursorInput));
 		initMessageCount = messagesList.size();
 	}
@@ -187,6 +190,16 @@ public class DialogPage extends AndroidPage{
 	public String getKnockMessageText() {
 		refreshUITree();
 		return knockMessages.getText().toUpperCase();
+	}
+
+	public String getConnectRequestChatLabel() {
+		refreshUITree();
+		return connectRequestChatLabel.getText().toLowerCase().trim();
+	}
+
+	public String getConnectRequestChatUserName() {
+
+		return connectRequestChatUserName.getText().toLowerCase();
 	}
 
 	
