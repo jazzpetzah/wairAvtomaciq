@@ -210,7 +210,7 @@ Scenario Outline: Verify correct group info page information
 Examples:
     |  Login		| Password		| Name			| Contact1		        | Contact2	     	    | ParticipantNumber |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaPictureContact	    | aqaAvatar TestContact	| 		 3			|
-@torun
+
 @staging   
   Scenario Outline: I can send and play inline youtube link
     Given I Sign in using login <Login> and password <Password>

@@ -23,9 +23,6 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.nameLoginPage)
 	private WebElement dialogWindow;
 	
-//	@FindBy(how = How.XPATH, using = IOSLocators.xpathCursorInput)
-//	private WebElement cursorInput;
-	
 	@FindBy(how = How.NAME, using = IOSLocators.nameConversationCursorInput)
 	private WebElement conversationInput;
 	
