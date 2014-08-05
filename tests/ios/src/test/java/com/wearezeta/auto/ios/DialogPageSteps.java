@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
@@ -102,7 +101,6 @@ public class DialogPageSteps {
 	
 	@When("I type and send youtube link (.*)")
 	public void ITypeAndSendYoutubeLink(String link) throws InterruptedException{
-		//PagesCollection.dialogPage.waitForCursorInputVisible();
 		PagesCollection.dialogPage.typeMessage(link + "\n");
 	}
 	
