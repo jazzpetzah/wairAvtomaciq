@@ -76,7 +76,7 @@ public class ConversationPageSteps {
 				 + beforeNumberOfImages + ", after - " + afterNumberOfImages, isNumberIncreased);
 		 
 		 //second check, if that picture is the expected HD picture and not just any picture
-		 BufferedImage pictureAssetFromConv = BackEndREST.getPictureAssetFromConversation(
+		 BufferedImage pictureAssetFromConv = BackEndREST.getLastPictureAssetFromConversation(
 				 CommonUtils.yourUsers.get(0),
 				 CommonUtils.contacts.get(0));
 		 BufferedImage origSentPicture = ImageUtil.readImageFromFile(OSXPage.imagesPath + filename);
