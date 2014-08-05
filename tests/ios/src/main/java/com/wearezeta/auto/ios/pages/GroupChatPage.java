@@ -43,7 +43,7 @@ public class GroupChatPage extends DialogPage {
 	
 	public boolean isGroupChatPageVisible(){
 		
-		return DriverUtils.waitUntilElementAppears(driver, By.xpath(IOSLocators.xpathCursorInput));
+		return DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameConversationCursorInput));
 	}
 	
 	public boolean isConversationChangedInChat(){
