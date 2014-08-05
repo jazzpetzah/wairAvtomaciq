@@ -173,7 +173,7 @@ public class ConversationPage extends OSXPage {
 	
 	public boolean isSoundCloudContainerVisible(){
 		
-		return soundCloudMediaContainer.isDisplayed();
+		return DriverUtils.waitUntilElementAppears(driver, By.xpath(OSXLocators.xpathSoundCloudMediaContainer));
 	}
 	
 	public String getSoundCloudButtonState(){

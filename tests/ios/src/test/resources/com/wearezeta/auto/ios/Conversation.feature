@@ -2,7 +2,7 @@
 
 Feature: Conversation
 
-  #@torun
+
   @smoke 
   @id330
   Scenario Outline: Send Message to contact
@@ -12,7 +12,6 @@ Feature: Conversation
     And I see dialog page
     And I tap on text input
     And I type the message
-    And I press send
     Then I see my message in the dialog
 
 	Examples: 
@@ -66,7 +65,6 @@ Scenario Outline: Send message to group chat
 	When I create group chat with <Contact1> and <Contact2>
    	And I tap on text input
 	And I type the message
-	And I press send
 	Then I see my message in the dialog
 	
 Examples:
@@ -213,7 +211,6 @@ Examples:
     |  Login		| Password		| Name			| Contact1		        | Contact2	     	    | ParticipantNumber |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaPictureContact	    | aqaAvatar TestContact	| 		 3			|
 
-
 @staging   
   Scenario Outline: I can send and play inline youtube link
     Given I Sign in using login <Login> and password <Password>
@@ -256,6 +253,7 @@ Examples:
 	Examples: 
     |	Login	|	Password	|	Name	|	Contact		| YouTubeLink	|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| http://www.youtube.com/watch?v=Bb1RhktcugU |  
+    
 
 @staging
 @id383

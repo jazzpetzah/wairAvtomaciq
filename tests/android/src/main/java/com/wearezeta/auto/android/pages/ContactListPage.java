@@ -34,6 +34,10 @@ public class ContactListPage extends AndroidPage {
 	
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameLoginPage)
 	private WebElement mainControl;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idConnectToHeader)
+	private List<WebElement> connectToHeader;
+	
 
 	private String url;
 	private String path;
@@ -48,7 +52,10 @@ public class ContactListPage extends AndroidPage {
 		AndroidPage page = null;
 		refreshUITree();// TODO: workaround
 		findInContactList(name, 5).click();
-		if (selfUserName.size() > 0 && selfUserName.get(0).isDisplayed()) {
+		if(connectToHeader.size() > 0 && connectToHeader.get(0).isDisplayed()){
+			page = new ConnectToPage(url, path);
+		}
+		else if (selfUserName.size() > 0 && selfUserName.get(0).isDisplayed()) {
 			page = new PersonalInfoPage(url, path);
 		} else {
 			page = new DialogPage(url, path);
@@ -112,6 +119,7 @@ public class ContactListPage extends AndroidPage {
 		if(laterBtn.size()>0){
 			laterBtn.get(0).click();
 		}
+		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.idSimpleDialogPageText));
 		return this;
 	}
 }

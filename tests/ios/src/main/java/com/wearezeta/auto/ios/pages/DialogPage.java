@@ -15,14 +15,12 @@ import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
+import com.wearezeta.auto.ios.tools.IOSKeyboard;
 
 public class DialogPage extends IOSPage{
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameLoginPage)
 	private WebElement dialogWindow;
-	
-//	@FindBy(how = How.XPATH, using = IOSLocators.xpathCursorInput)
-//	private WebElement cursorInput;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameConversationCursorInput)
 	private WebElement conversationInput;
@@ -99,9 +97,7 @@ public class DialogPage extends IOSPage{
 	
 	public void typeMessage(String message) throws InterruptedException
 	{
-		//conversationInput.click();
-		Thread.sleep(1000);
-		conversationInput.sendKeys(message);
+		new IOSKeyboard(driver).typeString(message);
 	}
 		
 	public void ScrollToLastMessage(){

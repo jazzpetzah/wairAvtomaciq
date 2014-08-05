@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
@@ -26,21 +25,15 @@ public class DialogPageSteps {
 	    PagesCollection.dialogPage.waitForCursorInputVisible();
 	}
 
-	@When("^I tap on text input$")
+	@When("^I tap on text input$")	
 	public void WhenITapOnTextInput() throws Throwable {
 	    PagesCollection.dialogPage.tapOnCursorInput();
 	}
 	
 	@When("^I type the message$")
 	public void WhenITypeTheMessage() throws Throwable {
-		//PagesCollection.dialogPage.waitForCursorInputVisible();
 		message = CommonUtils.generateGUID();
 		PagesCollection.dialogPage.typeMessage(message + "\n");
-	}
-	
-	@When("^I press send$")
-	public void WhenIPressSend() throws Throwable {
-		//PagesCollection.dialogPage.typeMessage("\\n");
 	}
 
 	@When("^I multi tap on text input$")
@@ -64,7 +57,6 @@ public class DialogPageSteps {
 
 	@When("^I type the message and send it$")
 	public void ITypeTheMessageAndSendIt() throws Throwable {
-		//PagesCollection.dialogPage.waitForTextMessageInputVisible();
 	    message = CommonUtils.generateGUID();
 	    PagesCollection.dialogPage.typeMessage(message + "\n");
 	}
@@ -109,7 +101,6 @@ public class DialogPageSteps {
 	
 	@When("I type and send youtube link (.*)")
 	public void ITypeAndSendYoutubeLink(String link) throws InterruptedException{
-		PagesCollection.dialogPage.waitForCursorInputVisible();
 		PagesCollection.dialogPage.typeMessage(link + "\n");
 	}
 	
@@ -136,7 +127,6 @@ public class DialogPageSteps {
 	
 	@When("^I post soundcloud media link (.*)$")
 	public void IPostMediaLink(String link) throws Throwable {
-		PagesCollection.dialogPage.waitForCursorInputVisible();
 	    PagesCollection.dialogPage.typeMessage(link + "\n");
 	    PagesCollection.dialogPage.typeMessage(link + "\n");
 	}
