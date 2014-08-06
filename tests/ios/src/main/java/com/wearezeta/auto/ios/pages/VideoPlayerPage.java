@@ -2,10 +2,12 @@ package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 
 import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
@@ -42,6 +44,10 @@ public class VideoPlayerPage extends IOSPage{
 		this.path = path;
 	}
 	
+	public void waitForVideoPlayerPage(){
+		DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameVideoFullScreenButton));
+	}
+	
 	public boolean isVideoPlayerPageOpened(){
 		return videoPlayerMainWindow.isDisplayed();
 	}
@@ -52,6 +58,10 @@ public class VideoPlayerPage extends IOSPage{
 		page = new DialogPage(url, path);
 		return page;
 		
+	}
+	
+	public void clickPauseButton(){
+		videoPauseButton.click();
 	}
 	
 	@Override

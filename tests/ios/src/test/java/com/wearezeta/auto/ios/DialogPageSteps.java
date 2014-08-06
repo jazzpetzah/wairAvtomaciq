@@ -1,16 +1,20 @@
 package com.wearezeta.auto.ios;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
+import com.wearezeta.auto.ios.pages.ImageFullScreenPage;
 import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.ios.pages.CameraRollPage;
 import com.wearezeta.auto.ios.locators.IOSLocators;
+import com.wearezeta.auto.ios.pages.VideoPlayerPage;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -18,12 +22,25 @@ import cucumber.api.java.en.When;
 public class DialogPageSteps {
 	
 	private String message;
+	private String longMessage = "Lorem ipsum dolor sit amet, \n consectetur adipisicing elit,\n"
+								+ "sed do eiusmod tempor \n incididunt ut labore \n et dolore magna aliqua.\n"
+								+ " Ut enim ad minim veniam,\n quis nostrud \n"
+								+ "exercitation ullamco laboris \n"
+								+ "nisi ut aliquip ex \n ea commodo consequat.\n";
+
 	private String mediaState;
+	public static String sendDate;
+
 	
 	@When("^I see dialog page$")
 	public void WhenISeeDialogPage() throws Throwable {
 	    PagesCollection.dialogPage = (DialogPage) PagesCollection.iOSPage;
 	    PagesCollection.dialogPage.waitForCursorInputVisible();
+	}
+	
+	@When("I tap on dialog page")
+	public void ITapOnDialogPage(){
+		PagesCollection.dialogPage.tapDialogWindow();
 	}
 
 	@When("^I tap on text input$")
@@ -33,14 +50,8 @@ public class DialogPageSteps {
 	
 	@When("^I type the message$")
 	public void WhenITypeTheMessage() throws Throwable {
-		//PagesCollection.dialogPage.waitForCursorInputVisible();
 		message = CommonUtils.generateGUID();
 		PagesCollection.dialogPage.typeMessage(message + "\n");
-	}
-	
-	@When("^I press send$")
-	public void WhenIPressSend() throws Throwable {
-		//PagesCollection.dialogPage.typeMessage("\\n");
 	}
 
 	@When("^I multi tap on text input$")
@@ -64,7 +75,6 @@ public class DialogPageSteps {
 
 	@When("^I type the message and send it$")
 	public void ITypeTheMessageAndSendIt() throws Throwable {
-		//PagesCollection.dialogPage.waitForTextMessageInputVisible();
 	    message = CommonUtils.generateGUID();
 	    PagesCollection.dialogPage.typeMessage(message + "\n");
 	}
@@ -109,8 +119,17 @@ public class DialogPageSteps {
 	
 	@When("I type and send youtube link (.*)")
 	public void ITypeAndSendYoutubeLink(String link) throws InterruptedException{
-		PagesCollection.dialogPage.waitForCursorInputVisible();
 		PagesCollection.dialogPage.typeMessage(link + "\n");
+	}
+	
+	@When("I type and send long message and youtube link (.*)")
+	public void ITypeAndSendLongTextAndYoutubeLink(String link) throws InterruptedException{
+		PagesCollection.dialogPage.typeMessage(longMessage + link + "\n");
+	}
+	
+	@When("^I memorize message send time$")
+	public void IMemorizeMessageSendTime(){
+		sendDate = PagesCollection.dialogPage.getSendTime();
 	}
 	
 	@Then("I see media link (.*) and media in dialog")
@@ -120,8 +139,8 @@ public class DialogPageSteps {
 	}
 	
 	@When("I click video container for the first time")
-	public void IPlayVideoFirstTime() throws IOException{
-		PagesCollection.dialogPage.clickOnVideoContainerFirstTime();
+	public void IPlayVideoFirstTime() throws IOException, InterruptedException{
+		PagesCollection.videoPlayerPage = (VideoPlayerPage)PagesCollection.dialogPage.clickOnVideoContainerFirstTime();
 	}
 	
 	@When("I tap on dialog window")
@@ -134,10 +153,14 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.swipeRight(500);
 	}
 	
+	@When("I send long message")
+	public void ISendLongMessage() throws InterruptedException{
+		PagesCollection.dialogPage.typeMessage(longMessage);
+	}
+	
 	@When("^I post soundcloud media link (.*)$")
 	public void IPostMediaLink(String link) throws Throwable {
 		PagesCollection.dialogPage.waitForCursorInputVisible();
-	    PagesCollection.dialogPage.typeMessage(link + "\n");
 	    PagesCollection.dialogPage.typeMessage(link + "\n");
 	}
 	
@@ -148,7 +171,7 @@ public class DialogPageSteps {
 	
 	@When("^I scroll media out of sight until media bar appears$")
 	public void IScrollMediaOutOfSightUntilMediaBarAppears() throws Exception{
-		PagesCollection.dialogPage.scrollDownTilMediaBarAppears();
+		PagesCollection.dialogPage = PagesCollection.dialogPage.scrollDownTilMediaBarAppears();
 	 
 	}
 	
@@ -167,14 +190,14 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.stopMediaContent();
 	}
 	
-	@Then("The playing media is paused")
+	@Then("I see playing media is paused")
 	public void ThePlayingMediaIsPaused(){
 		String pausedState = IOSLocators.MEDIA_STATE_PAUSED;
 		mediaState = PagesCollection.dialogPage.getMediaState();
 		Assert.assertEquals(pausedState, mediaState);
 	}
 	
-	@Then("The media is playing")
+	@Then("I see media is playing")
 	public void TheMediaIsPlaying(){
 		String playingState = IOSLocators.MEDIA_STATE_PLAYING;
 		mediaState = PagesCollection.dialogPage.getMediaState();
@@ -188,9 +211,24 @@ public class DialogPageSteps {
 		Assert.assertEquals(endedState, mediaState);
 	}
 	
+	@When("I wait (.*) seconds for media to stop playing")
+	public void IWaitForMediaStopPlaying(int time) throws Throwable{
+		Thread.sleep(time*1000);
+	}
+		
+	@Then("I dont see media bar on dialog page")
+	public void ISeeMediaBarDisappear(){
+		Assert.assertFalse(PagesCollection.dialogPage.isMediaBarDisplayed());
+	}
+	
 	@When("^I tap on the media bar$")
 	public void ITapOnMediaBar() throws Exception{
 		PagesCollection.dialogPage.tapOnMediaBar();
+	}
+	
+	@When("I scroll back to media container")
+	public void IScrollUpOnDialogPage() throws Throwable{
+		PagesCollection.dialogPage.scollUpToMediaContainer();
 	}
 	
 	@Then("I see conversation view is scrolled back to the playing media link (.*)")
@@ -202,6 +240,10 @@ public class DialogPageSteps {
 		Assert.assertEquals(playingState, mediaState);
 	}
 	
-
+	@When("I tap and hold image to open full screen")
+		public void ITapImageToOpenFullScreen() throws Throwable{
+		PagesCollection.imageFullScreenPage = (ImageFullScreenPage)PagesCollection.dialogPage.tapImageToOpen();
+	}
+	
 
 }

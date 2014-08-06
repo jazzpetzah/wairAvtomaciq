@@ -433,6 +433,18 @@ public class BackEndREST {
 
 	public static BufferedImage getPictureAssetFromConversation(
 			ClientUser fromUser, ClientUser toUser) throws Exception {
+		return getPictureAssetFromConversation(fromUser, toUser, 0);
+	}
+	
+	public static BufferedImage getLastPictureAssetFromConversation(
+			ClientUser fromUser, ClientUser toUser) throws Exception {
+		return getPictureAssetFromConversation(fromUser, toUser, Integer.MAX_VALUE);
+	}
+	
+	public static BufferedImage getPictureAssetFromConversation(
+			ClientUser fromUser, ClientUser toUser, int index) throws Exception {
+		BufferedImage result = null;
+		int currentIndex = 0;
 		String convID = getConversationWithSingleUser(fromUser, toUser);
 
 		JSONArray eventsOfConv = getEventsfromConversation(convID, fromUser);
@@ -444,13 +456,19 @@ public class BackEndREST {
 				JSONObject info = (JSONObject) data.get("info");
 				String tag = info.getString("tag");
 				if (tag.equals("medium")) {
-					return getAssetsDownload(convID, (String) data.get("id"),
+					result = getAssetsDownload(convID, (String) data.get("id"),
 							fromUser);
+					if (currentIndex == index) return result;
+					currentIndex++;
 				}
 			}
 		}
 
-		// TODO: Raise exception
-		return null;
+		if (Integer.MAX_VALUE == index) {
+			return result;
+		} else {
+			// TODO: Raise exception
+			return null;
+		}
 	}
 }

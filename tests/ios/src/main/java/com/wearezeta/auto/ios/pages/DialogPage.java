@@ -1,6 +1,9 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Assert;
@@ -93,14 +96,8 @@ public class DialogPage extends IOSPage{
 		DriverUtils.iOSMultiTap(driver, conversationInput, 3);
 	}
 	
-	public void waitForTextMessageInputVisible(){
-		wait.until(ExpectedConditions.visibilityOf(conversationInput));
-	}
-	
 	public void typeMessage(String message) throws InterruptedException
 	{
-		//conversationInput.click();
-		Thread.sleep(1000);
 		conversationInput.sendKeys(message);
 	}
 		
@@ -169,13 +166,25 @@ public class DialogPage extends IOSPage{
 		mediaLinkCell.click();
 	}
 	
-	public void scrollDownTilMediaBarAppears() throws Exception{
+	public DialogPage scrollDownTilMediaBarAppears() throws Exception{
+		DialogPage page = null;
+		int count = 0;
 		boolean buttonIsShown = mediabarPlayPauseButton.isDisplayed();
-		while(!(buttonIsShown)){
-		DriverUtils.swipeDown(driver, conversationPage, 500);
-		buttonIsShown = mediabarPlayPauseButton.isDisplayed();
+		while(!(buttonIsShown) & (count<5)){
+			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true){
+				DriverUtils.swipeDown(driver, conversationPage, 500);
+				page = this;
+			}
+			else {
+				swipeDownSimulator();
+				page = this;
+			}
+			buttonIsShown = mediabarPlayPauseButton.isDisplayed();
+			count++;
 		}
+		
 		Assert.assertTrue(mediabarPlayPauseButton.isDisplayed());
+		return page;
 	}
 
 	public void pauseMediaContent(){
@@ -262,6 +271,46 @@ public class DialogPage extends IOSPage{
 		WebElement el = driver.findElementByXPath(lastMessageXPath);
 		String lastMessage = el.getText();
 		return lastMessage;
+	}
+
+	public String getSendTime() {
+		String formattedDate;
+		DateFormat dateFormat = new SimpleDateFormat("EEEE, MMMM dd, yyyy '∙' h:mm a");
+		Date date = new Date();
+		formattedDate=dateFormat.format(date);
+		return formattedDate;
+	}
+
+	public boolean isMediaBarDisplayed() {
+		boolean flag = mediabarPlayPauseButton.isDisplayed();
+		return flag;
+	}
+
+	public DialogPage scollUpToMediaContainer() throws Throwable {
+		DialogPage page = null;
+		int count = 0;
+		boolean mediaContainerShown = mediaContainer.isDisplayed();
+		while(!(mediaContainerShown) & (count<5)){
+			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true){
+				DriverUtils.swipeUp(driver, conversationPage, 500);
+				page = this;
+			}
+			else {
+				swipeUpSimulator();
+				page = this;
+			}
+			mediaContainerShown = mediabarPlayPauseButton.isDisplayed();
+			count++;
+		}		
+		Assert.assertTrue(mediabarPlayPauseButton.isDisplayed());
+		return page;
+	}
+
+	public ImageFullScreenPage tapImageToOpen() throws Throwable {
+		ImageFullScreenPage page = null;
+		imageCell.click();
+		page = new ImageFullScreenPage(url, path);
+		return page;
 	}
 
 }
