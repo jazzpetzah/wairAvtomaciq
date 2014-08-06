@@ -103,7 +103,7 @@ public class ConversationPage extends OSXPage {
 			}
 			try { Thread.sleep(1000); } catch (InterruptedException e) { }
 		}
-		newMessageTextArea.sendKeys(message);
+		newMessageTextArea.sendKeys(message + "\\n");
 	}
 	
 	public void sendNewMessage() {
