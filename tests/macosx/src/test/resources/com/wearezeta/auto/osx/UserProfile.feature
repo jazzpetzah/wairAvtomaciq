@@ -1,5 +1,7 @@
 Feature: User Profile
 
+#Not stable
+@mute
 @smoke
 @id180
 Scenario Outline: Change user picture from image file
