@@ -1,7 +1,5 @@
 Feature: User Profile
 
-# Not stable
-@mute
 @smoke
 @id180
 Scenario Outline: Change user picture from image file
@@ -10,14 +8,12 @@ Scenario Outline: Change user picture from image file
     When I open picture settings
 	And I choose to select picture from image file
 	And I select image file userpicture_landscape.jpg
-	Then I see changed user picture userpicture_landscape.jpg
+	Then I see changed user picture from image userpicture_landscape.jpg
 
 Examples:
 	|	Login			|	Password		|	Name		|
 	|	aqaUser			|	aqaPassword		|	aqaUser		|
 
-# Not stable
-@mute
 @regression
 @id425
 Scenario Outline: Change user picture from camera
