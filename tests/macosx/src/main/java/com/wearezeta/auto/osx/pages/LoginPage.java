@@ -13,7 +13,6 @@ import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.osx.locators.OSXLocators;
-import com.wearezeta.auto.osx.steps.CommonSteps;
 
 public class LoginPage extends OSXPage {
 	
@@ -138,7 +137,8 @@ public class LoginPage extends OSXPage {
 			driver.findElement(By.id(OSXLocators.idLoginPage));
 		} catch (NoSuchElementException e) {
 			System.out.println("Logging out because previous user is signed in.");
-			CommonSteps.senderPages.getMainMenuPage().SignOut();
+			MainMenuPage menu = new MainMenuPage(url, path);
+			menu.SignOut();
 		} finally {
 			DriverUtils.setDefaultImplicitWait(driver);
 		}
