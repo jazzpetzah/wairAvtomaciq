@@ -182,5 +182,15 @@ public class ContactListPageSteps {
 			PagesCollection.contactListPage.swipeUpSimulator();
 		}
 	}
+	
+	@When("I see play/pause button next to username (.*) in contact list")
+	public void ISeePlayPauseButtonNextToUserName(String contact){
+		PagesCollection.contactListPage.isPlayPauseButtonVisible(contact);
+	}
+	
+	@When("I tap on play/pause button in contact list")
+	public void ITapOnPlayPauseButtonInContactList(){
+		PagesCollection.contactListPage.tapPlayPauseButton();
+	}
 
 }

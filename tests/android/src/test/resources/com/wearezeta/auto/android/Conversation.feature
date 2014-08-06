@@ -99,7 +99,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName  |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | LeaveGroupChat |
 
-  @nonUnicode @smoke 
+  @nonUnicode @smoke
   Scenario Outline: Remove from group chat
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -117,7 +117,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName       | Message     |
       | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | RemoveFromGroupChat | YOU REMOVED |
 
-  @nonUnicode @smoke @torun
+  @nonUnicode @smoke
   Scenario Outline: Accept connection request
     Given <Contact> connection request is sended to me
     And I Sign in using login <Login> and password <Password>

@@ -8,7 +8,6 @@ import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
-import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 
@@ -74,6 +73,7 @@ public class ContactListPage extends AndroidPage {
 		} else {
 			if (cyclesNumber > 0) {
 				System.out.println(cyclesNumber);
+				cyclesNumber--;
 				DriverUtils.swipeUp(driver, mainControl, 500);
 				contact = findInContactList(name, cyclesNumber);
 			}
@@ -121,5 +121,9 @@ public class ContactListPage extends AndroidPage {
 		}
 		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.idSimpleDialogPageText));
 		return this;
+	}
+	
+	public Boolean isContactExists(String name){
+		return findInContactList(name,0) != null;
 	}
 }
