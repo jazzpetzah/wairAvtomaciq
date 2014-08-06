@@ -1,7 +1,5 @@
 Feature: Register new user
 
-# Not stable
-@mute
 @regression
 @id77
 Scenario Outline: Register new user using front camera

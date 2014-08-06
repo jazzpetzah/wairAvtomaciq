@@ -58,7 +58,8 @@ public class UserProfilePage extends OSXPage {
 		doCameraShotButton.click();
 	}
 
-	public void confirmPictureChoice() {
+	public void confirmPictureChoice() throws InterruptedException {
+		Thread.sleep(3000);
 		confirmPictureChoiceButton.click();
 		pictureSettingsCloseButton.click();
 		DriverUtils.waitUntilElementDissapear(driver, By.xpath(OSXLocators.xpathPictureFromImageFile));

@@ -81,7 +81,7 @@ public class RegistrationPageSteps {
 	}
 	
 	@When("I take registration picture from camera")
-	public void ITakeRegistrationPictureFromCamera() {
+	public void ITakeRegistrationPictureFromCamera() throws InterruptedException {
 		CommonSteps.senderPages.getRegistrationPage().chooseToTakePicture();
 		CommonSteps.senderPages.getRegistrationPage().acceptTakenPicture();
 	}
@@ -92,7 +92,7 @@ public class RegistrationPageSteps {
 	}
 	
 	@When("I take registration picture from image file (.*)")
-	public void ITakeRegistrationPictureFromImageFile(String imageFile) throws MalformedURLException, IOException {
+	public void ITakeRegistrationPictureFromImageFile(String imageFile) throws MalformedURLException, IOException, InterruptedException {
 		ChoosePicturePage choosePicturePage = new ChoosePicturePage(
 				 CommonUtils.getUrlFromConfig(RegistrationPageSteps.class),
 				 CommonUtils.getAppPathFromConfig(RegistrationPageSteps.class)
