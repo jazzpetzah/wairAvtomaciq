@@ -11,6 +11,7 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.CreateZetaUser;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;
+import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.RegistrationPage;
 
 import cucumber.api.java.en.Then;
@@ -105,6 +106,9 @@ public class RegistrationPageSteps {
 	
 	@Then("I see contact list of registered user")
 	public void ISeeContactListOfRegisteredUser() throws IOException {
+		CommonSteps.senderPages.setContactListPage(new ContactListPage(
+				CommonUtils.getUrlFromConfig(RegistrationPageSteps.class),
+				CommonUtils.getAppPathFromConfig(RegistrationPageSteps.class)));
 		ContactListPageSteps clSteps = new ContactListPageSteps();
 		clSteps.GivenISeeContactListWithName(aqaName);
 	}

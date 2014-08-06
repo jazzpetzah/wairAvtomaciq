@@ -69,14 +69,7 @@ public class LoginPageSteps {
 	 
 	 @Given ("I am signed out from ZClient")
 	 public void GivenIAmSignedOutFromZClient() throws MalformedURLException, IOException {
-		 CommonSteps.senderPages.setContactListPage(new ContactListPage(
-					CommonUtils.getUrlFromConfig(ContactListPage.class),
-					CommonUtils.getAppPathFromConfig(ContactListPage.class)));
-
-		int num = CommonSteps.senderPages.getContactListPage().numberOfContacts();
-		if (num > 0) {
-			CommonSteps.senderPages.getMainMenuPage().SignOut();
-		}
+		 CommonSteps.senderPages.getLoginPage().logoutIfNotSignInPage();
 	 }
 	 
 	 @Then("I have returned to Sign In screen")
