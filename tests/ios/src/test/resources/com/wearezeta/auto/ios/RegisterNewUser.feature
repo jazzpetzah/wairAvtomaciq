@@ -160,6 +160,7 @@ Feature: Register new user
     
 
 @staging
+@id25
   Scenario Outline: Take or select a photo label validation
   	Given I see sign in screen
 	When I press Join button
@@ -225,6 +226,7 @@ Feature: Register new user
     
 
 @staging
+@id30
   Scenario Outline: Automatic email verification
   	Given I see sign in screen
 	When I press Join button
@@ -284,6 +286,7 @@ Feature: Register new user
 
 
 @staging
+@id38
   Scenario Outline: Change selected image during registratrion (Real Device)
 	Given I see sign in screen
 	When I press Join button
@@ -310,6 +313,7 @@ Feature: Register new user
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
     
 @staging
+@id27
   Scenario Outline: Verify photo made by rear camera during registration is not flipped (Real Device)
 	Given I see sign in screen
 	When I press Join button

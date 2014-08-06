@@ -32,7 +32,13 @@ public class ContactListPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathFirstChatInChatListTextField)
 	private WebElement firstChatInChatListTextField;
-
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameContactListLoadBar)
+	private WebElement loadBar;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameMediaCellPlayButton)
+	private WebElement playPauseButton;
+	
 	private String url;
 	private String path;
 	private int oldLocation = 0;
@@ -65,6 +71,17 @@ public class ContactListPage extends IOSPage {
 		return driver.findElementByXPath(
 				String.format(IOSLocators.xpathMutedIcon, contact))
 				.getLocation().x < oldLocation;
+	}
+	
+	public boolean isPlayPauseButtonVisible(String contact){
+		boolean flag = false;
+		WebElement playPauseBtn = driver.findElementByXPath(String.format(IOSLocators.xpathContactListPlayPauseButton, contact));
+		flag = playPauseBtn.isDisplayed();
+		return flag;
+	}
+	
+	public void tapPlayPauseButton(){
+		playPauseButton.click();
 	}
 
 	private boolean isProfilePageVisible() {
