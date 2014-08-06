@@ -13,13 +13,14 @@ Feature: Sign In
       | Login   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |
 
- @209 @smoke @nonUnicode 
+ @209 @smoke @nonUnicode
   Scenario Outline: I can change sign in user
     Given I Sign in using login <Login1> and password <Password>
     And I see Contact list with my name <Login1>
     When I tap on my name <Login1>
     And I tap options button
     And I tap sign out button
+    And I see sign in and join buttons
     And I press Sign in button
     And I clear login and password fields
     And I have entered login <Login2>

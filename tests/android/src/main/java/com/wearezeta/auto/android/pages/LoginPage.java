@@ -1,12 +1,16 @@
 package com.wearezeta.auto.android.pages;
 
+import io.appium.java_client.MobileElement;
+
 import java.io.IOException;
 import java.util.*;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.*;
+
 import com.wearezeta.auto.android.locators.AndroidLocators;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 
@@ -92,9 +96,16 @@ public class LoginPage extends AndroidPage {
 	
 	public void clearLoginPassword() throws InterruptedException{
 		for(WebElement el: loginPasswordField){
-			DriverUtils.androidMultiTap(driver, el, 2, 0.3);
-			driver.sendKeyEvent(67);
-			el.clear();
+			if(el.getText().isEmpty()){
+				el.click();
+				for(int i = 0; i < CommonUtils.retrieveRealUserContactPasswordValue(CommonUtils.YOUR_PASS).length();i++){
+					driver.sendKeyEvent(67);
+				}
+			}
+			else{
+				DriverUtils.androidMultiTap(driver, el, 2, 0.5);
+				driver.sendKeyEvent(67);
+			}
 		}
 	}
 	public String getPassword() {

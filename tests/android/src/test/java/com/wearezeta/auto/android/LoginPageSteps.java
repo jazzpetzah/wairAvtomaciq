@@ -77,6 +77,11 @@ public class LoginPageSteps {
 		PagesCollection.loginPage.clearLoginPassword();
 	}
 
+	@When("^I see sign in and join buttons$")
+	public void WhenISeeSignInAndJoinButton() {
+		Assert.assertTrue("We don't see sign in buttons", PagesCollection.loginPage.isWelcomeButtonsExist());
+	}
+	
 	@Then("^I see welcome screen$")
 	public void ThenISeeWelcomeScreen() {
 		Assert.assertTrue("We don't see welcome buttons", PagesCollection.loginPage.isWelcomeButtonsExist());
