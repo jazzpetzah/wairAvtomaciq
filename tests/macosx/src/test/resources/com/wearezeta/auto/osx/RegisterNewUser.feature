@@ -3,6 +3,7 @@ Feature: Register new user
 # Not stable
 @mute
 @regression
+@id77
 Scenario Outline: Register new user using front camera
 	Given I am signed out from ZClient
 	And I see Sign In screen
@@ -22,6 +23,7 @@ Examples:
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
 
 @smoke
+@id177
 Scenario Outline: Register new user with image
 	Given I am signed out from ZClient
 	And I see Sign In screen
@@ -42,6 +44,7 @@ Examples:
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|	userpicture_portrait.jpg	|
 
 @regression
+@id171
 Scenario Outline: Do not accept email with spaces
 	Given I am signed out from ZClient
 	And I see Sign In screen
@@ -58,6 +61,7 @@ Scenario Outline: Do not accept email with spaces
 # Not stable
 @mute
 @regression
+@id171
 Scenario: Fail registration on incorrect email
 	Given I am signed out from ZClient
 	And I see Sign In screen
