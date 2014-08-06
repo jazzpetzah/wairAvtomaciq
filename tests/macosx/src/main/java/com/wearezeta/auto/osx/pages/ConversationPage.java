@@ -191,19 +191,14 @@ public class ConversationPage extends OSXPage {
 	}
 
 	public String getSoundCloudButtonState() {
-		String soundCloudButtonState = soundCloudLinkButton
-				.getAttribute("AXTitle");
+		String soundCloudButtonState = soundCloudLinkButton.getAttribute("AXTitle");
 		return soundCloudButtonState;
 	}
 
 	public void scrollDownTilMediaBarAppears() throws Exception {
 
-		boolean mediaBarButtonIsShown = mediabarPlayPauseButton.isDisplayed();
-
-		NSPoint soundcloudPosition = NSPoint.fromString(soundCloudLinkButton
-				.getAttribute("AXPosition"));
-		NSPoint textInputPosition = NSPoint.fromString(newMessageTextArea
-				.getAttribute("AXPosition"));
+		NSPoint soundcloudPosition = NSPoint.fromString(soundCloudLinkButton.getAttribute("AXPosition"));
+		NSPoint textInputPosition = NSPoint.fromString(newMessageTextArea.getAttribute("AXPosition"));
 
 		// get scrollbar for conversation view
 		WebElement conversationDecrementSB = null;
@@ -227,10 +222,7 @@ public class ConversationPage extends OSXPage {
 				conversationDecrementSB.click();
 				soundcloudPosition = NSPoint.fromString(soundCloudLinkButton.getAttribute("AXPosition"));
 			}
-
 		}
-
-		// Assert.assertTrue(mediabarPlayPauseButton.isDisplayed());
 	}
 
 	public void pressPlayPauseButton() {
