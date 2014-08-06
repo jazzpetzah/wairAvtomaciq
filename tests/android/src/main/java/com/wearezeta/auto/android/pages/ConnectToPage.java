@@ -17,6 +17,11 @@ public class ConnectToPage extends AndroidPage {
 	@FindBy(how = How.ID, using = AndroidLocators.idConnectRequestAccept)
 	private WebElement connectAcceptBtn;
 
+	@FindBy(how = How.ID, using = AndroidLocators.idConnectRequestIgnore)
+	private WebElement connectIgnoreBtn;
+	
+	
+	
 	private String url;
 	private String path;
 	
@@ -42,6 +47,11 @@ public class ConnectToPage extends AndroidPage {
 	public DialogPage pressConnectButton() throws Exception {
 		connectAcceptBtn.click();
 		return new DialogPage(url, path);
+	}
+
+	public ContactListPage pressIgnorButton() throws Exception {
+		connectIgnoreBtn.click();
+		return new ContactListPage(url, path);
 	}
 
 }

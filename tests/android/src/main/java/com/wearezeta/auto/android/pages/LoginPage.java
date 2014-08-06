@@ -6,9 +6,7 @@ import java.util.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.*;
-
 import com.wearezeta.auto.android.locators.AndroidLocators;
-import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 
@@ -91,7 +89,14 @@ public class LoginPage extends AndroidPage {
 			}
 		}
 	}
-
+	
+	public void clearLoginPassword() throws InterruptedException{
+		for(WebElement el: loginPasswordField){
+			DriverUtils.androidMultiTap(driver, el, 2, 0.3);
+			driver.sendKeyEvent(67);
+			el.clear();
+		}
+	}
 	public String getPassword() {
 		return password;
 	}
@@ -132,5 +137,4 @@ public class LoginPage extends AndroidPage {
 
 		return new RegistrationPage(url, path);
 	}
-
 }

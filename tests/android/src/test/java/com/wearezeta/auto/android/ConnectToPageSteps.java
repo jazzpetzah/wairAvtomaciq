@@ -21,4 +21,10 @@ public class ConnectToPageSteps {
 	public void WhenIConnectWithContactByPressionButton() throws Exception{
 		PagesCollection.dialogPage = PagesCollection.connectToPage.pressConnectButton();	
 	}
+	
+	
+	@When("^I press Ignore connect button$")
+	public void WhenIPressIgnoreConnectButton() throws Exception{
+		PagesCollection.contactListPage = PagesCollection.connectToPage.pressIgnorButton();	
+	}
 }

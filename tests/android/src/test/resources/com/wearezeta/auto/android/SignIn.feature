@@ -1,7 +1,6 @@
 Feature: Sign In
 
-@smoke
-@nonUnicode
+  @smoke @nonUnicode
   Scenario Outline: Sign in to ZClient
     Given I see sign in screen
     When I press Sign in button
@@ -11,11 +10,28 @@ Feature: Sign In
     Then Contact list appears with my name <Name>
 
     Examples: 
-      | Login   | Password     | Name    |
-      | aqaUser | aqaPassword  | aqaUser |
-      
-@smoke
-@nonUnicode
+      | Login   | Password    | Name    |
+      | aqaUser | aqaPassword | aqaUser |
+
+ @209 @smoke @nonUnicode 
+  Scenario Outline: I can change sign in user
+    Given I Sign in using login <Login1> and password <Password>
+    And I see Contact list with my name <Login1>
+    When I tap on my name <Login1>
+    And I tap options button
+    And I tap sign out button
+    And I press Sign in button
+    And I clear login and password fields
+    And I have entered login <Login2>
+    And I have entered password <Password>
+    And I press Log in button
+    Then Contact list appears with my name <Login2>
+
+    Examples: 
+      | Login1  | Password    | Login2   |
+      | aqaUser | aqaPassword | yourUser |
+
+  @smoke @nonUnicode
   Scenario Outline: Open/Close People picker
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -27,4 +43,3 @@ Feature: Sign In
     Examples: 
       | Login   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |
- 

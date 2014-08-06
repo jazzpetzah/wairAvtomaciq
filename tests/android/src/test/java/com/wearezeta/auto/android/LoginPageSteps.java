@@ -19,9 +19,13 @@ public class LoginPageSteps {
 
 	@Given("^I Sign in using login (.*) and password (.*)$")
 	public void GivenISignIn(String login,String password) throws Exception  {
-		if (login.equals(CommonUtils.YOUR_USER_1)) {
-			login = CommonUtils.yourUsers.get(0).getEmail();
-			password = CommonUtils.retrieveRealUserContactPasswordValue(password);
+		login = CommonUtils.retrieveRealUserContactPasswordValue(login);
+		for (ClientUser user : CommonUtils.yourUsers) {
+			if (user.getName().toLowerCase().equals(login.toLowerCase())) {
+				login = user.getEmail();
+				password = CommonUtils.retrieveRealUserContactPasswordValue(password);
+				break;
+			}
 		}
 		Assert.assertNotNull(PagesCollection.loginPage.isVisible());
 		PagesCollection.loginPage.SignIn();
@@ -50,8 +54,12 @@ public class LoginPageSteps {
 
 	@When ("I have entered login (.*)")
 	public void WhenIHaveEnteredLogin(String login) {
-		if (login.equals(CommonUtils.YOUR_USER_1)) {
-			login = CommonUtils.yourUsers.get(0).getEmail();
+		login = CommonUtils.retrieveRealUserContactPasswordValue(login);
+		for (ClientUser user : CommonUtils.yourUsers) {
+			if (user.getName().toLowerCase().equals(login.toLowerCase())) {
+				login = user.getEmail();
+				break;
+			}
 		}
 		PagesCollection.loginPage.setLogin(login);
 	}
@@ -62,6 +70,11 @@ public class LoginPageSteps {
 			password = CommonUtils.retrieveRealUserContactPasswordValue(password);
 		}
 		PagesCollection.loginPage.setPassword(password);
+	}
+	
+	@When("^I clear login and password fields")
+	public void WhenIClearLoginAndPasswrdFields() throws InterruptedException{
+		PagesCollection.loginPage.clearLoginPassword();
 	}
 
 	@Then("^I see welcome screen$")

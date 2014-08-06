@@ -67,10 +67,12 @@ public class CommonSteps {
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 		for (ClientUser user : CommonUtils.yourUsers) {
 			if (user.getName().toLowerCase().equals(contact.toLowerCase())) {
+				BackEndREST.loginByUser(user);
 				BackEndREST.sendConnectRequest(user,
 						CommonUtils.yourUsers.get(0), CONNECTION_NAME
 						+ user.getName(),
 						CONNECTION_MESSAGE);
+				break;
 			}
 
 		}

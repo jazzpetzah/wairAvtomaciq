@@ -8,6 +8,8 @@ public final class AndroidLocators {
 	
 	public static final String idConnectRequestAccept = "com.waz.zclient.dev:id/zb__connect_request__accept_button";
 	
+	public static final String idConnectRequestIgnore = "com.waz.zclient.dev:id/zb__connect_request__ignore_button";
+	
 	public static final String idConnectRequestChatLabel = "com.waz.zclient.dev:id/ttv__row_conversation__connect_request__chathead_footer__label";
 	
 	public static final String idConnectRequestChatUserName = "com.waz.zclient.dev:id/ttv__row_conversation__connect_request__chathead_footer__username";
