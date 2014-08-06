@@ -241,7 +241,7 @@ Scenario Outline: Play/pause SoundCloud media link from the media bar
     And I tap SoundCloud link
     Then I see the embedded media is playing
     And I scroll media out of sight until media bar appears
-    And I pause playing the media in media bar
+    And I pause playing media in media bar
     Then The playing media is paused
     And I press play in media bar
     Then The media is playing
