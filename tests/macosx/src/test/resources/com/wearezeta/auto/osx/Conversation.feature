@@ -1,6 +1,7 @@
 Feature: Conversation
 
 @smoke
+@id466
 Scenario Outline: Send message to conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -16,6 +17,7 @@ Examples:
 # Not stable
 @mute
 @smoke
+@id467
 Scenario Outline: Send hello to conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -30,6 +32,7 @@ Examples:
 # Not stable
 @mute
 @smoke
+@id467
 Scenario Outline: Send hey to conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -43,6 +46,7 @@ Examples:
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
 
 @smoke
+@id449
 Scenario Outline: Send picture to conversation
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with name <Name>
@@ -55,7 +59,7 @@ Examples:
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
     
 @staging
-@id455
+@id444
 Scenario Outline: Send HD picture to conversation
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with name <Name>
@@ -68,6 +72,7 @@ Examples:
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
 
 @smoke
+@id103
 Scenario Outline: Create group chat from 1on1 conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -84,6 +89,7 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
 @staging
+@id102
 Scenario Outline: Add user to group conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -103,6 +109,7 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| aqaContact3		|
 
 @smoke
+@id470
 Scenario Outline: Send message to group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -147,6 +154,7 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
 @smoke
+@id471
 Scenario Outline: Leave group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -161,6 +169,7 @@ Examples:
 	|  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
 @smoke
+@id492
 Scenario Outline: Remove user from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -176,6 +185,7 @@ Examples:
 	|  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
 @smoke
+@id474 @id481
 Scenario Outline: Mute and unmute conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>

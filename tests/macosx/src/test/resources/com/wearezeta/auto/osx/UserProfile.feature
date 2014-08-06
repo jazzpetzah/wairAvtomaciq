@@ -1,8 +1,7 @@
 Feature: User Profile
 
-# Not stable
-@mute
 @smoke
+@id180
 Scenario Outline: Change user picture from image file
     Given I Sign in using login <Login> and password <Password>
     And I go to user <Name> profile
@@ -18,6 +17,7 @@ Examples:
 # Not stable
 @mute
 @regression
+@id425
 Scenario Outline: Change user picture from camera
 	Given I Sign in using login <Login> and password <Password>
 	And I go to user <Name> profile
