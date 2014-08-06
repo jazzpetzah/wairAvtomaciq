@@ -32,13 +32,16 @@ public class UserProfilePage extends OSXPage {
 	
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathPictureSettingsCloseButton)
 	private WebElement pictureSettingsCloseButton;
+
+	@FindBy(how = How.ID, using = OSXLocators.idSelfProfileSettingsButton)
+	private WebElement selfProfileViewSettingsButton;
 	
 	public UserProfilePage(String URL, String path) throws MalformedURLException {
 		super(URL, path);
 	}
 
 	public void openPictureSettings() {
-		mainWindow.click();
+		selfProfileViewSettingsButton.sendKeys("");
 		userPictureButton.click();
 		DriverUtils.waitUntilElementAppears(driver, By.xpath(OSXLocators.xpathPictureFromImageFile));
 	}
