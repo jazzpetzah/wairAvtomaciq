@@ -21,11 +21,13 @@ import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.util.NSPoint;
 
 public class ConversationPage extends OSXPage {
+	
+	static final String SOUNDCLOUD_BUTTON_ATT_TITLE = "AXTitle";
+	static String SOUNDCLOUD_BUTTON_STATE;
 
 	@FindBy(how = How.ID, using = OSXLocators.idMainWindow)
 	private WebElement viewPager;
 
-	// @FindBy(how = How.ID, using = OSXLocators.xpathNewMessageTextArea)
 	private WebElement newMessageTextArea = findNewMessageTextArea();
 
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathMessageEntry)
@@ -84,8 +86,7 @@ public class ConversationPage extends OSXPage {
 		sayHelloMenuItem.click();
 	}
 
-	public boolean isMessageExist(String message) {
-		boolean isExist = false;
+	public boolean isMessageExist(String message) throws InterruptedException {
 		if (message.contains(OSXLocators.YOU_ADDED_MESSAGE)) {
 			for (int i = 0; i < 10; i++) {
 				List<WebElement> els = driver.findElements(By
@@ -93,26 +94,18 @@ public class ConversationPage extends OSXPage {
 				Collections.reverse(els);
 				for (WebElement el : els) {
 					if (el.getText().contains(OSXLocators.YOU_ADDED_MESSAGE)) {
-						isExist = true;
+						return true;
 					}
 				}
-				if (isExist)
-					break;
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-				}
+				Thread.sleep(1000);
 			}
 		} else {
 			String xpath = String.format(
 					OSXLocators.xpathFormatSpecificMessageEntry, message);
 			WebElement el = driver.findElement(By.xpath(xpath));
-			if (el == null)
-				isExist = false;
-			else
-				isExist = true;
+			return (el != null);
 		}
-		return isExist;
+		return false;
 	}
 
 	public void writeNewMessage(String message) {
@@ -191,36 +184,39 @@ public class ConversationPage extends OSXPage {
 	}
 
 	public String getSoundCloudButtonState() {
-		String soundCloudButtonState = soundCloudLinkButton.getAttribute("AXTitle");
-		return soundCloudButtonState;
+		SOUNDCLOUD_BUTTON_STATE = soundCloudLinkButton
+				.getAttribute(SOUNDCLOUD_BUTTON_ATT_TITLE);
+		return SOUNDCLOUD_BUTTON_STATE;
 	}
 
 	public void scrollDownTilMediaBarAppears() throws Exception {
 
-		NSPoint soundcloudPosition = NSPoint.fromString(soundCloudLinkButton.getAttribute("AXPosition"));
-		NSPoint textInputPosition = NSPoint.fromString(newMessageTextArea.getAttribute("AXPosition"));
+		NSPoint soundcloudPosition = NSPoint.fromString(soundCloudLinkButton
+				.getAttribute("AXPosition"));
+		NSPoint textInputPosition = NSPoint.fromString(newMessageTextArea
+				.getAttribute("AXPosition"));
 
 		// get scrollbar for conversation view
 		WebElement conversationDecrementSB = null;
-		WebElement conversationIncrementSB = null;
 
-		WebElement scrollArea = driver.findElement(By.id(OSXLocators.idConversationScrollArea));
+		WebElement scrollArea = driver.findElement(By
+				.id(OSXLocators.idConversationScrollArea));
 
 		if (soundcloudPosition.y() < textInputPosition.y()) {
-			WebElement scrollBar = scrollArea.findElement(By.xpath("//AXScrollBar"));
-			List<WebElement> scrollButtons = scrollBar.findElements(By.xpath("//AXButton"));
+			WebElement scrollBar = scrollArea.findElement(By
+					.xpath("//AXScrollBar"));
+			List<WebElement> scrollButtons = scrollBar.findElements(By
+					.xpath("//AXButton"));
 			for (WebElement scrollButton : scrollButtons) {
 				String subrole = scrollButton.getAttribute("AXSubrole");
 				if (subrole.equals("AXDecrementPage")) {
 					conversationDecrementSB = scrollButton;
 				}
-				if (subrole.equals("AXIncrementPage")) {
-					conversationIncrementSB = scrollButton;
-				}
 			}
 			while (soundcloudPosition.y() < textInputPosition.y()) {
 				conversationDecrementSB.click();
-				soundcloudPosition = NSPoint.fromString(soundCloudLinkButton.getAttribute("AXPosition"));
+				soundcloudPosition = NSPoint.fromString(soundCloudLinkButton
+						.getAttribute("AXPosition"));
 			}
 		}
 	}
@@ -236,5 +232,7 @@ public class ConversationPage extends OSXPage {
 	public void pressMediaTitle() {
 		mediabarBarTitle.click();
 	}
+	
+	
 
 }

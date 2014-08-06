@@ -25,8 +25,6 @@ public class ConversationPageSteps {
 	 private int beforeNumberOfKnocks = -1;
 	 private int beforeNumberOfHotKnocks = -1;
 	 private int beforeNumberOfImages = -1;
-	 private String expectedButtonState;
-	 private String actualButtonState;
 	 
 	 @When("I write random message")
 	 public void WhenIWriteRandomMessage() {	
@@ -129,7 +127,7 @@ public class ConversationPageSteps {
 	 }
 	 
 	 @Then("I see message (.*) in conversation$")
-	 public void ThenISeeMessageInConversation(String message) {
+	 public void ThenISeeMessageInConversation(String message) throws InterruptedException {
 		 if (message.equals(OSXLocators.YOU_KNOCKED_MESSAGE)) {
 			 boolean isNumberIncreased = false;
 			 int afterNumberOfKnocks = -1;
@@ -228,14 +226,13 @@ public class ConversationPageSteps {
 
 	 @Then("^I see the embedded media is playing$")
 	 public void ThenISeeTheEmbeddedMediaIsPlaying() throws Throwable {
-		 expectedButtonState = OSXLocators.SOUNDCLOUD_BUTTON_STATE_PAUSE;
-		 actualButtonState = CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState();
-		 Assert.assertEquals(expectedButtonState, actualButtonState);
+		 verifySoundCloudButtonState(OSXLocators.SOUNDCLOUD_BUTTON_STATE_PAUSE);
 	 }
 	 
 	 @Given("^I post messages and media link (.*)$")
 	 public void WhenIPostMessagesAndMediaLink(String link) throws Throwable { 
-		 for (int i = 0; i <= 20; i++){
+		 final int RANDOM_MESSAGE_COUNT =20;
+		 for (int i = 0; i <= RANDOM_MESSAGE_COUNT; i++){
 			 WhenIWriteRandomMessage();
 			 WhenISendMessage();
 		 }
@@ -243,7 +240,7 @@ public class ConversationPageSteps {
 		 WhenISendMessage();
 	 }
 	 
-	 @When("^I scroll media out of sight until media bar appears$")
+	 @When("^I scroll media out of sight till media bar appears$")
 	 public void WhenIScrollMediaOutOfSightUntilMediaBarAppears() throws Throwable {
 		 CommonSteps.senderPages.getConversationPage().scrollDownTilMediaBarAppears();
 	 }
@@ -255,9 +252,7 @@ public class ConversationPageSteps {
 
 	 @Then("^The playing media is paused$")
 	 public void ThenThePlayingMediaIsPaused() throws Throwable {
-		 expectedButtonState = OSXLocators.SOUNDCLOUD_BUTTON_STATE_PLAY;
-		 actualButtonState = CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState();
-		 Assert.assertEquals(expectedButtonState, actualButtonState);    
+		 verifySoundCloudButtonState(OSXLocators.SOUNDCLOUD_BUTTON_STATE_PLAY);    
 	 }
 
 	 @When("^I press play in media bar$")
@@ -267,9 +262,7 @@ public class ConversationPageSteps {
 
 	 @Then("^The media is playing$")
 	 public void ThenTheMediaIsPlaying() throws Throwable {
-		 expectedButtonState = OSXLocators.SOUNDCLOUD_BUTTON_STATE_PAUSE;
-		 actualButtonState = CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState();
-		 Assert.assertEquals(expectedButtonState, actualButtonState);
+		 verifySoundCloudButtonState(OSXLocators.SOUNDCLOUD_BUTTON_STATE_PAUSE);
 	 }
 
 	 @When("^I stop media in media bar$")
@@ -277,10 +270,12 @@ public class ConversationPageSteps {
 		 CommonSteps.senderPages.getConversationPage().pressStopButton();
 	 }
 
-	 @Then("^The media stopps playing$")
+	 @Then("^The media stops playing$")
 	 public void ThenTheMediaStoppsPlaying() throws Throwable {
-		 expectedButtonState = OSXLocators.SOUNDCLOUD_BUTTON_STATE_PLAY;
-		 actualButtonState = CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState();
-		 Assert.assertEquals(expectedButtonState, actualButtonState);
+		 verifySoundCloudButtonState(OSXLocators.SOUNDCLOUD_BUTTON_STATE_PLAY);
+	 }
+	 
+	 private void verifySoundCloudButtonState(String expectedState){
+		 Assert.assertEquals(expectedState, CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState());
 	 }
 }
