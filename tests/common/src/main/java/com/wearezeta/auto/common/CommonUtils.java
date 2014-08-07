@@ -78,7 +78,7 @@ public class CommonUtils {
 
 	public static String retrieveRealUserContactPasswordValue(String value) {
 		// TODO: This method requires better optimization
-		Map<String, String> replacementMap = new HashMap<String, String>();
+		Map<String, String> replacementMap = new LinkedHashMap<String, String>();
 		if (yourUsers.size() > 0) {
 			replacementMap.put(YOUR_USER_1, yourUsers.get(0).getName());
 			replacementMap.put(YOUR_USER_2, yourUsers.get(1).getName());
