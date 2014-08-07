@@ -189,6 +189,7 @@ public class DialogPage extends AndroidPage{
 
 	public String getKnockMessageText() {
 		refreshUITree();
+		wait.until(ExpectedConditions.visibilityOf(knockMessages));
 		return knockMessages.getText().toUpperCase();
 	}
 

@@ -22,10 +22,10 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	public static final String REMOVE_FROM_CONVERSATION_BUTTON = "Remove";
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.80;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idOtherUserPersonalInfoName)
+	@FindBy(how = How.ID, using = AndroidLocators.idOtherUserPersonalInfoSingleName)
 	private WebElement otherUserName;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idOtherUserPersonalInfoMail)
+	@FindBy(how = How.ID, using = AndroidLocators.idOtherUserPersonalInfoSingleMail)
 	private WebElement otherUserMail;
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idUserProfileConfirmationMenu)

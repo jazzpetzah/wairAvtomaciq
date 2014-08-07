@@ -42,6 +42,9 @@ public class ConversationInfoPage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathConversationNameEdit)
 	private WebElement conversationNameEdit;
 	
+	@FindBy(how = How.ID, using = OSXLocators.idUserProfileViewBackButton)
+	private WebElement userProfileViewBackButton;
+	
 	private String url;
 	private String path;
 	
@@ -96,6 +99,19 @@ public class ConversationInfoPage extends OSXPage {
 		conversationScrollArea.click();
 	}
 	
+	public void tryRemoveUser() {
+		removeUserFromConversationButton.click();
+	}
+	
+	public boolean isRemoveUserConfirmationAppear() {
+		try {
+			confirmationViewConfirmButton.click();
+			return true;
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+	}
+	
 	public void leaveConversation() {
 		leaveConversationButton.click();
 		confirmIfRequested();
@@ -148,5 +164,16 @@ public class ConversationInfoPage extends OSXPage {
 			result = (actualName == expectedName);
 		}
 		return result;
+	}
+	
+	public void goBackFromUserProfileView() {
+		userProfileViewBackButton.click();
+	}
+	
+	public boolean isContactPersonalInfoAppear(String contact) {
+		String xpath = String.format(OSXLocators.xpathFormatUserProfileViewContactName, contact);
+		WebElement el = driver.findElement(By.xpath(xpath));
+		if (el != null) return true;
+		else return false;
 	}
 }

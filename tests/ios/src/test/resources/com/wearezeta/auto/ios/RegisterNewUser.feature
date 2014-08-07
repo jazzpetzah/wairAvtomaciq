@@ -118,7 +118,7 @@ Feature: Register new user
     |	aqaUser             	    |	aqaPassword	    |    72          |    English    |
     
 
-@staging
+@regression
   Scenario Outline: Register new user using photo album
 	Given I see sign in screen
 	When I press Join button
@@ -159,7 +159,8 @@ Feature: Register new user
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
     
 
-@staging
+@regression
+@id25
   Scenario Outline: Take or select a photo label validation
   	Given I see sign in screen
 	When I press Join button
@@ -170,7 +171,7 @@ Feature: Register new user
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
     
 
-@staging
+@regression
   Scenario Outline: Take or select a photo label not visible when picture is selected
 	Given I see sign in screen
 	When I press Join button
@@ -201,7 +202,7 @@ Feature: Register new user
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
  
 
-@staging
+@regression
   Scenario Outline: Next Button should not be visible on first registration step visit
   	Given I see sign in screen
 	When I press Join button
@@ -224,7 +225,8 @@ Feature: Register new user
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	| 
     
 
-@staging
+@regression
+@id30
   Scenario Outline: Automatic email verification
   	Given I see sign in screen
 	When I press Join button
@@ -263,7 +265,7 @@ Feature: Register new user
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
     
 
-@staging
+@regression
 @id305
   Scenario Outline: Minimum 8 chars password requirement validation
 	Given I see sign in screen
@@ -284,6 +286,7 @@ Feature: Register new user
 
 
 @staging
+@id38
   Scenario Outline: Change selected image during registratrion (Real Device)
 	Given I see sign in screen
 	When I press Join button
@@ -310,6 +313,7 @@ Feature: Register new user
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
     
 @staging
+@id27
   Scenario Outline: Verify photo made by rear camera during registration is not flipped (Real Device)
 	Given I see sign in screen
 	When I press Join button

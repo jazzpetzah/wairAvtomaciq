@@ -14,8 +14,8 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @smoke @nonUnicode
-  Scenario Outline: Send Hello to contact
+  @mute @smoke @nonUnicode
+  Scenario Outline: Send Hello and Hey to contact DEFECT AN-605
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -29,8 +29,8 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     | Message1    | Message2        |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | YOU KNOCKED | YOU HOT KNOCKED |
 
-  @smoke @nonUnicode
-  Scenario Outline: Send Camera picture to contact
+  @mute @smoke @nonUnicode
+  Scenario Outline: Send Camera picture to contact DEFECT AN-605
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -99,7 +99,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName  |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | LeaveGroupChat |
 
-  @nonUnicode @smoke 
+  @nonUnicode @smoke
   Scenario Outline: Remove from group chat
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -117,7 +117,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName       | Message     |
       | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | RemoveFromGroupChat | YOU REMOVED |
 
-  @nonUnicode @smoke @mute
+  @nonUnicode @smoke
   Scenario Outline: Accept connection request
     Given <Contact> connection request is sended to me
     And I Sign in using login <Login> and password <Password>
@@ -215,7 +215,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @unicode @staging
+  @unicode @regression
   Scenario Outline: Send double byte chars
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -229,7 +229,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     | Message                     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | 畑 はたけ hatake field of crops |
 
-  @nonUnicode @staging
+  @nonUnicode @regression
   Scenario Outline: Verify correct group info page information
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -244,7 +244,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1          | Contact2              | ParticipantNumber | GroupChatName  |
       | aqaUser | aqaPassword | aqaUser | aqaPictureContact | aqaAvatar TestContact | 3                 | GroupInfoCheck |
 
-  @nonUnicode @staging
+  @nonUnicode @regression
   Scenario Outline: I can access user details page from group chat and see user name, email and photo
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -256,5 +256,5 @@ Feature: Conversation
     And I see correct background image
 
     Examples: 
-      | Login   | Password    | Name    | Contact1          | Contact2              | GroupChatName  |
-      | aqaUser | aqaPassword | aqaUser | aqaPictureContact | aqaAvatar TestContact | GroupInfoCheck |
+      | Login   | Password    | Name    | Contact1          | Contact2    | GroupChatName  |
+      | aqaUser | aqaPassword | aqaUser | aqaPictureContact | aqaContact1 | GroupInfoCheck |
