@@ -1,5 +1,7 @@
 Feature: Sign Out
 
+#Muted till new sync engine client stabilization
+@mute
 @smoke
 @id479
 Scenario Outline: Sign out from ZClient

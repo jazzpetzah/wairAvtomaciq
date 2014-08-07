@@ -1,5 +1,7 @@
 Feature: User Profile
 
+#Muted till new sync engine client stabilization
+@mute
 @smoke
 @id180
 Scenario Outline: Change user picture from image file

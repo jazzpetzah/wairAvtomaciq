@@ -1,5 +1,7 @@
 Feature: Participants View
 
+#Muted till new sync engine client stabilization
+@mute
 @regression
 @id95
 Scenario Outline: Change conversation name
@@ -16,6 +18,8 @@ Examples:
 	|  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| RANDOM								|
 	|  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| ÄäÖöÜüß conv							|
 
+#Muted till new sync engine client stabilization
+@mute
 @regression
 @id100
 Scenario Outline: Display conversation info correctly
