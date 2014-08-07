@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
+import java.util.Map.Entry;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -66,7 +67,7 @@ public class CommonUtils {
 		// findUserNamed(aqaUser)
 		username = retrieveRealUserContactPasswordValue(username);
 		for (Object item : ListUtils.union(yourUsers, contacts)) {
-			ClientUser user = (ClientUser)item;
+			ClientUser user = (ClientUser) item;
 			if (user.getName().equalsIgnoreCase(username)) {
 				return user;
 			}
@@ -76,61 +77,39 @@ public class CommonUtils {
 	}
 
 	public static String retrieveRealUserContactPasswordValue(String value) {
-		// TODO: Understand and refactor this method 
+		// TODO: This method requires better optimization
+		Map<String, String> replacementMap = new HashMap<String, String>();
 		if (yourUsers.size() > 0) {
-			if (value.contains(YOUR_USER_1)) {
-				value = value.replace(YOUR_USER_1, yourUsers.get(0).getName());
-			}
-			if (value.contains(YOUR_USER_2)) {
-				value = value.replace(YOUR_USER_2, yourUsers.get(1).getName());
-			}
-			if (value.contains(YOUR_USER_3)) {
-				value = value.replace(YOUR_USER_3, yourUsers.get(2).getName());
-			}
-			if (value.contains(YOUR_USER_4)) {
-				value = value.replace(YOUR_USER_4, yourUsers.get(3).getName());
-			}
-			if (value.contains(YOUR_PASS)) {
-				value = value
-						.replace(YOUR_PASS, yourUsers.get(0).getPassword());
-			}
-
+			replacementMap.put(YOUR_USER_1, yourUsers.get(0).getName());
+			replacementMap.put(YOUR_USER_2, yourUsers.get(1).getName());
+			replacementMap.put(YOUR_USER_3, yourUsers.get(2).getName());
+			replacementMap.put(YOUR_USER_4, yourUsers.get(3).getName());
+			replacementMap.put(YOUR_PASS, yourUsers.get(0).getPassword());
 		}
 		if (contacts.size() > 0) {
-			if (value.contains(CONTACT_1)) {
-				value = value.replace(CONTACT_1, contacts.get(0).getName());
-			}
-			if (value.contains(CONTACT_2)) {
-				value = value.replace(CONTACT_2, contacts.get(1).getName());
-			}
-			if (value.contains(CONTACT_3)) {
-				value = value.replace(CONTACT_3, contacts.get(2).getName());
-			}
-			if (value.equals(CONTACT_4)) {
-				value = value.replace(CONTACT_4, CONTACT_PICTURE_NAME);
-			}
-			if (value.equals(CONTACT_5)) {
-				value = value.replace(CONTACT_5, CONTACT_AVATAR_NAME);
-			}
+			replacementMap.put(CONTACT_1, contacts.get(0).getName());
+			replacementMap.put(CONTACT_2, contacts.get(1).getName());
+			replacementMap.put(CONTACT_3, contacts.get(2).getName());
+			replacementMap.put(CONTACT_4, CONTACT_PICTURE_NAME);
+			replacementMap.put(CONTACT_5, CONTACT_AVATAR_NAME);
 		}
-		if (value.equals("aqaPictureContactEmail")) {
-			value = value.replace("aqaPictureContactEmail",
-					CONTACT_PICTURE_EMAIL);
-		}
-		if (value.equals("aqaPictureContactPassword")) {
-			value = value.replace("aqaPictureContactPassword",
-					CONTACT_PICTURE_PASSWORD);
-		}
-		if (value.equals("aqaAvatarTestContactEmail")) {
-			value = value.replace("aqaAvatarTestContactEmail",
-					CONTACT_AVATAR_EMAIL);
-		}
-		if (value.equals("aqaAvatarTestContactPassword")) {
-			value = value.replace("aqaAvatarTestContactPassword",
-					CONTACT_AVATAR_PASSWORD);
-		}
+		// TODO: Magic strings 
+		replacementMap.put("aqaPictureContactEmail", CONTACT_PICTURE_EMAIL);
+		replacementMap.put("aqaPictureContactPassword",
+				CONTACT_PICTURE_PASSWORD);
+		replacementMap.put("aqaAvatarTestContactEmail", CONTACT_AVATAR_EMAIL);
+		replacementMap.put("aqaAvatarTestContactPassword",
+				CONTACT_AVATAR_PASSWORD);
 
-		return value;
+		String result = value;
+		for (Entry<String, String> replacementEntry : replacementMap.entrySet()) {
+			if (result.contains(replacementEntry.getKey())) {
+				// TODO: Should we continue replacements or we can return entry.value immediately?
+				result = result.replace(replacementEntry.getKey(),
+						replacementEntry.getValue());
+			}
+		}
+		return result;
 	}
 
 	public static String getImagePath(Class<?> c) throws IOException {
@@ -153,8 +132,8 @@ public class CommonUtils {
 		return getValueFromConfig(c, "pictureResultsPath");
 	}
 
-	private static String getValueFromConfigFile(Class<?> c, String key, String resourcePath)
-			throws IOException {
+	private static String getValueFromConfigFile(Class<?> c, String key,
+			String resourcePath) throws IOException {
 		String val = "";
 		InputStream configFileStream = null;
 		try {
@@ -175,7 +154,7 @@ public class CommonUtils {
 			throws IOException {
 		return getValueFromConfigFile(c, key, "Configuration.cnf");
 	}
-	
+
 	private static String getValueFromCommonConfig(Class<?> c, String key)
 			throws IOException {
 		return getValueFromConfigFile(c, key, "CommonConfiguration.cnf");
@@ -334,12 +313,11 @@ public class CommonUtils {
 	}
 
 	public static void usePrecreatedUsers() {
-		// TODO: maybe these contacts are global?
+		// TODO: maybe these constants are global?
 		final String DEFAULT_PASSWORD = "aqa123456";
 		final String EMAIL_TEMPLATE = "smoketester+%s@wearezeta.com";
 
-		String[] userIds = new String[] {
-				"1f91773deae943948da19b86cd818388",
+		String[] userIds = new String[] { "1f91773deae943948da19b86cd818388",
 				"50d287c2407e4c5e8af578979d436c88",
 				"bbf79363bd3d4ff3ae6a835ed27fe274" };
 		for (String userId : userIds) {
