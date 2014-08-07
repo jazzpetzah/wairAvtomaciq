@@ -12,6 +12,7 @@ public class PagesCollection {
 	private UserProfilePage userProfilePage = null;
 	private RegistrationPage registrationPage = null;
 	private MainMenuPage mainMenuPage = null;
+	private CommonPage commonPage = null;
 	
 	public void closeAllPages() throws IOException {
 		if (mainMenuPage != null) mainMenuPage.Close();
@@ -23,6 +24,7 @@ public class PagesCollection {
 		if (conversationInfoPage != null) conversationInfoPage.Close();
 		if (userProfilePage != null) userProfilePage.Close();
 		if (registrationPage != null) registrationPage.Close();
+		if (commonPage !=null) commonPage.Close();
 	}
 	
 	public LoginPage getLoginPage() {
@@ -97,6 +99,13 @@ public class PagesCollection {
 		this.mainMenuPage = mainMenuPage;
 	}
 	
+	public CommonPage getCommonPage() {
+		return commonPage;
+	}
+
+	public void setCommonPage(CommonPage commonPage) {
+		this.commonPage = commonPage;
+	}
 	
 	
 }
