@@ -14,8 +14,8 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @smoke @nonUnicode
-  Scenario Outline: Send Hello and Hey to contact
+   @mute @smoke @nonUnicode
+  Scenario Outline: Send Hello and Hey to contact DEFECT AN-605
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -29,8 +29,8 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     | Message1    | Message2        |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | YOU KNOCKED | YOU HOT KNOCKED |
 
-  @smoke @nonUnicode
-  Scenario Outline: Send Camera picture to contact
+  @mute @smoke @nonUnicode
+  Scenario Outline: Send Camera picture to contact DEFECT AN-605
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -215,7 +215,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @unicode @staging
+  @unicode @regression
   Scenario Outline: Send double byte chars
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -229,7 +229,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     | Message                     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | 畑 はたけ hatake field of crops |
 
-  @nonUnicode @staging
+  @nonUnicode @regression
   Scenario Outline: Verify correct group info page information
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
