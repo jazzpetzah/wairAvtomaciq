@@ -11,6 +11,7 @@ import com.wearezeta.auto.common.BackendRequestException;
 import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.ios.locators.IOSLocators;
+import com.wearezeta.auto.ios.pages.ConnectToPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 
 import cucumber.api.java.en.Given;
@@ -63,11 +64,19 @@ public class ConnectToPageSteps {
 	public void IReceiveInvitationMessage(String contact) throws Throwable {
 
 		// Not needed since we auto accept all alerts
+		ContactListPageSteps clSteps = new ContactListPageSteps();
+		clSteps.ThenContactListAppears("One person waiting");
 	}
 
 	@When("^I confirm connection request$")
-	public void IAcceptInvitationMessage() {
+	public void IAcceptInvitationMessage() throws IOException {
 
+		ContactListPageSteps clSteps = new ContactListPageSteps();
+		clSteps.WhenITapOnContactName("One person waiting");
+		PagesCollection.connectToPage = new ConnectToPage(
+				CommonUtils.getUrlFromConfig(ConnectToPage.class),
+				CommonUtils.getAppPathFromConfig(ConnectToPage.class));
+		PagesCollection.connectToPage.acceptInvitation();
 		// Not needed since we auto accept all alerts
 	}
 
