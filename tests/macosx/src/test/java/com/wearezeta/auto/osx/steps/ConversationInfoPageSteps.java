@@ -56,4 +56,31 @@ public class ConversationInfoPageSteps {
 				+ ") is not the same as expected (" + number +")",
 				actual == number);
 	}
+	
+	@When("I select to remove user from group chat")
+	public void ISelectToRemoveUserFromGroupChat() {
+		ConversationInfoPage conversationInfo = CommonSteps.senderPages.getConversationInfoPage();
+		conversationInfo.tryRemoveUser();
+	}
+	
+	@Then("I see confirmation request about removing user")
+	public void ISeeConfirmationRequestAboutRemovingUser() {
+		ConversationInfoPage conversationInfo = CommonSteps.senderPages.getConversationInfoPage();
+		Assert.assertTrue(
+				"There is no confirmation request on removing user from group chat",
+				conversationInfo.isRemoveUserConfirmationAppear());
+	}
+	
+	@Then("I see user (.*) personal info")
+	public void ISeeUserPersonalInfo(String contact) {
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		ConversationInfoPage conversationInfo = CommonSteps.senderPages.getConversationInfoPage();
+		conversationInfo.isContactPersonalInfoAppear(contact);
+	}
+	
+	@When("I return to participant view from personal info")
+	public void IReturnToParticipantViewFromPersonalInfo() {
+		ConversationInfoPage conversationInfo = CommonSteps.senderPages.getConversationInfoPage();
+		conversationInfo.goBackFromUserProfileView();
+	}
 }

@@ -116,4 +116,8 @@ public final class OSXLocators {
 	
 	public static final String idSelfProfileSettingsButton = "selfProfileViewSettingsButton";
 	
+	public static final String idUserProfileViewBackButton = "userProfileViewBackButton";
+	
+	public static final String xpathFormatUserProfileViewContactName = "//AXWindow/AXPopover/AXScrollArea/AXTextArea[@AXValue='%s']";
+	
 }
