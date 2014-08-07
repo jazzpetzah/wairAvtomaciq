@@ -20,6 +20,7 @@ Feature: Conversation
   # Muted due to the bug https://wearezeta.atlassian.net/browse/IOS-947
   @mute
   @smoke
+  @id331
     Scenario Outline: Send Hello to contact
 		Given I Sign in using login <Login> and password <Password> 
     	And I see Contact list with my name <Name>
@@ -58,6 +59,7 @@ Feature: Conversation
 
   
   @smoke 
+  @id334
 Scenario Outline: Send message to group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -70,6 +72,7 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
 @smoke 
+@id460
 Scenario Outline: Send a camera roll picture to user from contact list
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with my name <Name>
@@ -115,6 +118,7 @@ Examples:
   # when you leave group chat - it disappears from contact list
   @mute
   @smoke
+  @id335
 Scenario Outline: Leave from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -133,6 +137,7 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
   @smoke 
+  @id336
  Scenario Outline: Remove from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -151,6 +156,7 @@ Examples:
 
 
   @smoke 
+  @id404
 Scenario Outline: I can edit the conversation name
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -182,6 +188,7 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
   @smoke
+  @id338
  Scenario Outline: Mute conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -195,7 +202,7 @@ Examples:
     |  Login		| Password		| Name			| Contact1    |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |
 
-@staging
+@regression
 @id392
 Scenario Outline: Verify correct group info page information
     Given I Sign in using login <Login> and password <Password>
