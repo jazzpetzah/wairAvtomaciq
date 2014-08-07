@@ -19,6 +19,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
+@SuppressWarnings("deprecation")
 public class ConversationInfoPage extends OSXPage {
 	
 	@FindBy(how = How.ID, using = OSXLocators.idAddPeopleButtonSingleChat)

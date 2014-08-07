@@ -2,12 +2,9 @@ package com.wearezeta.auto.ios;
 
 import java.io.IOException;
 
-import javax.ws.rs.core.UriBuilderException;
-
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.BackEndREST;
-import com.wearezeta.auto.common.BackendRequestException;
 import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.ios.locators.IOSLocators;
