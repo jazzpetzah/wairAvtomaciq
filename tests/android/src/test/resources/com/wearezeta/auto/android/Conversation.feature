@@ -14,7 +14,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-   @mute @smoke @nonUnicode
+  @mute @smoke @nonUnicode
   Scenario Outline: Send Hello and Hey to contact DEFECT AN-605
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -244,7 +244,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1          | Contact2              | ParticipantNumber | GroupChatName  |
       | aqaUser | aqaPassword | aqaUser | aqaPictureContact | aqaAvatar TestContact | 3                 | GroupInfoCheck |
 
-  @nonUnicode @staging
+  @nonUnicode @regression
   Scenario Outline: I can access user details page from group chat and see user name, email and photo
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -256,5 +256,5 @@ Feature: Conversation
     And I see correct background image
 
     Examples: 
-      | Login   | Password    | Name    | Contact1          | Contact2              | GroupChatName  |
-      | aqaUser | aqaPassword | aqaUser | aqaPictureContact | aqaAvatar TestContact | GroupInfoCheck |
+      | Login   | Password    | Name    | Contact1          | Contact2    | GroupChatName  |
+      | aqaUser | aqaPassword | aqaUser | aqaPictureContact | aqaContact1 | GroupInfoCheck |
