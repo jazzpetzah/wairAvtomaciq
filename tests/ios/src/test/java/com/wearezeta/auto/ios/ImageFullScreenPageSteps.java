@@ -35,7 +35,7 @@ public class ImageFullScreenPageSteps {
 		PagesCollection.imageFullScreenPage = PagesCollection.imageFullScreenPage.tapOnFullScreenPage();
 	}
 	
-	@When("I see sender first name of sender (.*) on fullscreen page")
+	@When("I see sender first name (.*) on fullscreen page")
 	public void ISeeSenderName(String sender){
 		String senderFirstName = CommonUtils.retrieveRealUserContactPasswordValue(sender).split(" ")[0].toUpperCase();
 		Assert.assertEquals(senderFirstName, PagesCollection.imageFullScreenPage.getSenderName());

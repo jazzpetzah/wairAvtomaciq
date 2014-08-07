@@ -220,7 +220,7 @@ Examples:
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
-    And I type and send youtube link <YouTubeLink>
+    And I post media link <YouTubeLink>
     Then I see media link <YouTubeLink> and media in dialog
     And I click video container for the first time
     And I see video player page is opened
@@ -240,7 +240,7 @@ Examples:
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
-    And I type and send youtube link <YouTubeLink>
+    And I post media link <YouTubeLink>
     And I tap on dialog window
     And I swipe right on Dialog page
     And I tap on my name <Name>
@@ -265,7 +265,7 @@ Scenario Outline: Play/pause SoundCloud media link from the media bar
     When I tap on contact name <Contact1>
     And I see dialog page
     And I tap on text input
-    And I post soundcloud media link <SoundCloudLink>
+    And I post media link <SoundCloudLink>
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -289,7 +289,7 @@ Scenario Outline: Conversation gets scrolled back to playing media when clicking
     When I tap on contact name <Contact1>
     And I see dialog page
     And I tap on text input
-    And I post soundcloud media link <SoundCloudLink>
+    And I post media link <SoundCloudLink>
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -314,9 +314,10 @@ Examples:
     |  Login		| Password		| Name			| GroupCreator	        |  GroupChatName    |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaPictureContact	    |     TESTCHAT		|
     
-@mute
+
 @staging
-Scenario Outline: Conversation imagee in fullscreen
+@id:488
+Scenario Outline: Verify you can see conversation images in fullscreen
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with my name <Name>
 	When I tap on contact name <Contact1>
@@ -327,18 +328,15 @@ Scenario Outline: Conversation imagee in fullscreen
  	And I choose a picture from camera roll
  	And I press Confirm button
  	And I see new photo in the dialog
+ 	And I memorize message send time
  	And I tap and hold image to open full screen
  	And I see Full Screen Page opened
- 	#And I see expected image in fullscreen
- 	#And I zoom image in fullscreen and see it is zoomed
- 	#And I tap on fullscreen page
- 	#And I see sender name <Name> on fullscreen page
- 	#And I see send date on fullscreen page
+ 	And I see sender first name <Name> on fullscreen page
+ 	And I see send date on fullscreen page
  	And I see download button shown on fullscreen page
- 	#And I tap download button on fullscreen page
- 	#And I verify image is downloaded and is same as original
  	And I tap on fullscreen page
  	And I verify image caption and download button are not shown
+ 	And I tap on fullscreen page
  	And I tap close fullscreen page button
  	Then I see new photo in the dialog
  	
@@ -347,7 +345,7 @@ Examples:
     |  Login		| Password		| Name			| Contact1   |
  	|  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |
 
-#muted due to overlay appearing in dialog issue IOS-959
+#muted due to issue IOS-959
 @mute
 @staging
 @id:504
@@ -356,7 +354,7 @@ Examples:
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And I type and send long message and youtube link <YouTubeLink>
+    And I type and send long message and media link <YouTubeLink>
     And I see media link <YouTubeLink> and media in dialog
     And I click video container for the first time
     And I see video player page is opened
@@ -372,3 +370,77 @@ Examples:
 	Examples: 
     |	Login	|	Password	|	Name	|	Contact		| YouTubeLink	|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| http://www.youtube.com/watch?v=Bb1RhktcugU |
+ 
+    
+#muted due to issue IOS-959
+@mute   
+@staging
+@id387
+Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation (SoundCloud)
+	Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I type and send long message and media link <SoundCloudLink>
+    And I see media link <SoundCloudLink> and media in dialog
+    And I tap media link
+    And I swipe right on Dialog page
+    And I see play/pause button next to username <Contact1> in contact list
+    And I tap on contact name <Contact2>
+    And I type and send long message and media link <SoundCloudLink>
+    And I see media link <SoundCloudLink> and media in dialog
+    And I tap media link
+    And I swipe right on Dialog page
+    And I dont see play/pause button next to username <Contact1> in contact list
+    And I see play/pause button next to username <Contact2> in contact list
+    And I tap on play/pause button in contact list
+    And I tap on contact name <Contact2>
+    And I scroll media out of sight until media bar appears
+    Then I see playing media is paused
+    
+Examples:
+    |  Login		| Password		| Name			| Contact1    | Contact2    |SoundCloudLink |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | aqaContact2 |https://soundcloud.com/klinke-auf-cinch/04-whats-happening-boytalk-remix |
+
+
+#muted due to issue IOS-959
+@mute    
+@staging
+@id:386   
+Scenario Outline: Verify the Media Bar disappears when playing media is back in view (SoundCloud)
+	Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I type and send long message and media link <SoundCloudLink>
+    And I see media link <SoundCloudLink> and media in dialog
+    And I tap media link
+    And I scroll media out of sight until media bar appears
+    And I scroll back to media container
+    Then I dont see media bar on dialog page
+    
+Examples:
+    |  Login		| Password		| Name			| Contact1    | SoundCloudLink |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/klinke-auf-cinch/04-whats-happening-boytalk-remix |
+    
+    
+#muted due to issue IOS-959
+@mute
+@staging
+@id:385
+  Scenario Outline: Verify the Media Bar dissapears after playback finishes (SoundCloud)
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I type and send long message and media link <SoundCloudLink>
+    And I see media link <SoundCloudLink> and media in dialog
+    And I tap media link
+    And I scroll media out of sight until media bar appears
+    And I see media bar on dialog page
+    And I wait <time> seconds for media to stop playing
+    Then I dont see media bar on dialog page
+
+	Examples: 
+    |	Login	|	Password	|	Name	|	Contact1		| SoundCloudLink 								| time |
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| https://soundcloud.com/carl-cox/carl-cox-nexus| 28   |

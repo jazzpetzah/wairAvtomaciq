@@ -117,13 +117,8 @@ public class DialogPageSteps {
 		Assert.assertEquals(imageCell, dialogLastMessage);
 	}
 	
-	@When("I type and send youtube link (.*)")
-	public void ITypeAndSendYoutubeLink(String link) throws InterruptedException{
-		PagesCollection.dialogPage.typeMessage(link + "\n");
-	}
-	
-	@When("I type and send long message and youtube link (.*)")
-	public void ITypeAndSendLongTextAndYoutubeLink(String link) throws InterruptedException{
+	@When("I type and send long message and media link (.*)")
+	public void ITypeAndSendLongTextAndMediaLink(String link) throws InterruptedException{
 		PagesCollection.dialogPage.typeMessage(longMessage + link + "\n");
 	}
 	
@@ -158,9 +153,8 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.typeMessage(longMessage);
 	}
 	
-	@When("^I post soundcloud media link (.*)$")
+	@When("^I post media link (.*)$")
 	public void IPostMediaLink(String link) throws Throwable {
-		PagesCollection.dialogPage.waitForCursorInputVisible();
 	    PagesCollection.dialogPage.typeMessage(link + "\n");
 	}
 	
@@ -214,6 +208,11 @@ public class DialogPageSteps {
 	@When("I wait (.*) seconds for media to stop playing")
 	public void IWaitForMediaStopPlaying(int time) throws Throwable{
 		Thread.sleep(time*1000);
+	}
+	
+	@Then("I see media bar on dialog page")
+	public void ISeeMediaBarInDialog(){
+		Assert.assertTrue(PagesCollection.dialogPage.isMediaBarDisplayed());
 	}
 		
 	@Then("I dont see media bar on dialog page")
