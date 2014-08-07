@@ -10,7 +10,6 @@ Feature: Conversation
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And I tap on text input
     And I type the message
     Then I see my message in the dialog
 
@@ -63,7 +62,6 @@ Scenario Outline: Send message to group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
 	When I create group chat with <Contact1> and <Contact2>
-   	And I tap on text input
 	And I type the message
 	Then I see my message in the dialog
 	
@@ -219,7 +217,6 @@ Examples:
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And I tap on text input
     And I post media link <YouTubeLink>
     Then I see media link <YouTubeLink> and media in dialog
     And I click video container for the first time
@@ -239,7 +236,6 @@ Examples:
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And I tap on text input
     And I post media link <YouTubeLink>
     And I tap on dialog window
     And I swipe right on Dialog page
@@ -264,7 +260,6 @@ Scenario Outline: Play/pause SoundCloud media link from the media bar
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I tap on text input
     And I post media link <SoundCloudLink>
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
@@ -288,7 +283,6 @@ Scenario Outline: Conversation gets scrolled back to playing media when clicking
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I tap on text input
     And I post media link <SoundCloudLink>
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
