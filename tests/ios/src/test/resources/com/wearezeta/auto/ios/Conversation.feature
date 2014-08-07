@@ -195,7 +195,7 @@ Examples:
     |  Login		| Password		| Name			| Contact1    |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |
 
-@staging
+@regression
 @id392
 Scenario Outline: Verify correct group info page information
     Given I Sign in using login <Login> and password <Password>
