@@ -1,5 +1,7 @@
 Feature: People Picker
 
+#Muted till new sync engine client stabilization
+@mute
 @smoke
 Scenario Outline: Add contact
     Given I Sign in using login <Login> and password <Password>

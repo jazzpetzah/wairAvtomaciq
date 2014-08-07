@@ -28,7 +28,8 @@ Feature: Connect to User
 
 #Need to rework test according to updates in UI
 	@mute
-    @smoke 
+    @smoke
+    @id337
     Scenario Outline: Get invitation message from user
  		Given I have connection request from <Contact>
  		And I Sign in using login <Login> and password <Password>

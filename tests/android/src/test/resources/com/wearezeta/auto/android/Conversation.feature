@@ -1,6 +1,6 @@
 Feature: Conversation
 
-  @smoke @nonUnicode
+ @316 @smoke @nonUnicode
   Scenario Outline: Send Message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -14,7 +14,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @mute @smoke @nonUnicode
+  @317 @mute @smoke @nonUnicode
   Scenario Outline: Send Hello and Hey to contact DEFECT AN-605
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -29,7 +29,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     | Message1    | Message2        |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | YOU KNOCKED | YOU HOT KNOCKED |
 
-  @mute @smoke @nonUnicode
+  @318 @mute @smoke @nonUnicode
   Scenario Outline: Send Camera picture to contact DEFECT AN-605
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -67,7 +67,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
 
-  @nonUnicode @smoke
+  @320 @nonUnicode @smoke
   Scenario Outline: Send message to group chat
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -82,7 +82,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | SendMessGroupChat |
 
-  @nonUnicode @smoke
+  @321 @nonUnicode @smoke
   Scenario Outline: Leave group conversation
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -99,7 +99,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName  |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | LeaveGroupChat |
 
-  @nonUnicode @smoke
+  @322 @nonUnicode @smoke
   Scenario Outline: Remove from group chat
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -117,7 +117,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName       | Message     |
       | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | RemoveFromGroupChat | YOU REMOVED |
 
-  @nonUnicode @smoke
+  @323 @nonUnicode @smoke
   Scenario Outline: Accept connection request
     Given <Contact> connection request is sended to me
     And I Sign in using login <Login> and password <Password>
@@ -131,7 +131,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     | WaitingMess      |
       | aqaUser | aqaPassword | aqaUser | yourContact | 1 person waiting |
 
-  @mute @nonUnicode @smoke
+  @324 @mute @nonUnicode @smoke
   Scenario Outline: Mute conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -146,7 +146,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @nonUnicode @regression
+  @143 @nonUnicode @regression
   Scenario Outline: Send Long Message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -160,7 +160,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @nonUnicode @regression
+  @145 @nonUnicode @regression
   Scenario Outline: Send Upper and Lower case to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -174,7 +174,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @unicode @regression
+  @146 @unicode @regression
   Scenario Outline: Send special chars message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -202,7 +202,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     | Message  |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | :) ;) :( |
 
-  @nonUnicode @smoke
+  @325 @nonUnicode @smoke
   Scenario Outline: Check contact personal info
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -215,7 +215,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @unicode @regression
+  @147 @unicode @regression
   Scenario Outline: Send double byte chars
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -244,7 +244,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1          | Contact2              | ParticipantNumber | GroupChatName  |
       | aqaUser | aqaPassword | aqaUser | aqaPictureContact | aqaAvatar TestContact | 3                 | GroupInfoCheck |
 
-  @nonUnicode @regression
+  @83 @87 @nonUnicode @regression
   Scenario Outline: I can access user details page from group chat and see user name, email and photo
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>

@@ -26,6 +26,7 @@ Feature: Register new user
 
 @smoke 
 @regression
+@id304
   Scenario Outline: Attempt to register an email with spaces
     Given I see sign in screen
 	When I press Join button
@@ -45,6 +46,7 @@ Feature: Register new user
   # Not stable    
   @mute
   @regression
+  @id304
   Scenario Outline: Attempt to register an email with incorrect format
     Given I see sign in screen
 	When I press Join button
@@ -62,6 +64,7 @@ Feature: Register new user
     
 
   @regression
+  @id284
   Scenario Outline: Conserve user input throughout registration
 	Given I see sign in screen
 	When I press Join button
@@ -80,6 +83,7 @@ Feature: Register new user
     
     
   @regression
+  @id282
   Scenario Outline: Can return to email page to change email if input incorrectly
 	Given I see sign in screen
 	When I press Join button
@@ -103,6 +107,7 @@ Feature: Register new user
 
   
   @regression
+  @id346
   Scenario Outline: Register new user using username with maximum characters allowed, Deutch, Double-byte (Chinese), and emoji Characters
 	Given I see sign in screen
 	When I press Join button
@@ -140,6 +145,7 @@ Feature: Register new user
 
 
 @staging
+@id288
   Scenario Outline: Switch between vignette overlay and full color (Real Device)
 	Given I see sign in screen
 	When I press Join button
@@ -160,7 +166,7 @@ Feature: Register new user
     
 
 @regression
-@id25
+@id286
   Scenario Outline: Take or select a photo label validation
   	Given I see sign in screen
 	When I press Join button
@@ -172,6 +178,7 @@ Feature: Register new user
     
 
 @regression
+@id285
   Scenario Outline: Take or select a photo label not visible when picture is selected
 	Given I see sign in screen
 	When I press Join button
@@ -187,6 +194,7 @@ Feature: Register new user
     
 
 @staging
+@id285
   Scenario Outline: Take or select a photo label not visible when picture is selected (Real Device)
 	Given I see sign in screen
 	When I press Join button
@@ -203,6 +211,7 @@ Feature: Register new user
  
 
 @regression
+@id273
   Scenario Outline: Next Button should not be visible on first registration step visit
   	Given I see sign in screen
 	When I press Join button
@@ -226,7 +235,7 @@ Feature: Register new user
     
 
 @regression
-@id30
+@id290
   Scenario Outline: Automatic email verification
   	Given I see sign in screen
 	When I press Join button
@@ -247,6 +256,7 @@ Feature: Register new user
 
 
 @staging
+@id275
   Scenario Outline: Register new user using rear camera (Real Device)
 	Given I see sign in screen
 	When I press Join button
@@ -286,7 +296,7 @@ Feature: Register new user
 
 
 @staging
-@id38
+@id297
   Scenario Outline: Change selected image during registratrion (Real Device)
 	Given I see sign in screen
 	When I press Join button
@@ -313,7 +323,7 @@ Feature: Register new user
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
     
 @staging
-@id27
+@id287
   Scenario Outline: Verify photo made by rear camera during registration is not flipped (Real Device)
 	Given I see sign in screen
 	When I press Join button
@@ -336,6 +346,7 @@ Feature: Register new user
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
    
 @staging
+@id298
  Scenario Outline: Can re-send verification email from verification screen 
 	Given I see sign in screen
 	When I press Join button
