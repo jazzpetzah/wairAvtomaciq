@@ -15,7 +15,7 @@ Feature: Conversation
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
   @smoke @nonUnicode
-  Scenario Outline: Send Hello to contact
+  Scenario Outline: Send Hello and Hey to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>

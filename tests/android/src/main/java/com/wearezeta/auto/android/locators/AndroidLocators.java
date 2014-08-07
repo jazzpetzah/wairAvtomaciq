@@ -174,6 +174,10 @@ public final class AndroidLocators {
 	
 	public static final String idInstructionsRequestConnectBtn = "com.waz.zclient.dev:id/button_connect";
 	
+	public static final String idOtherUserPersonalInfoSingleName = "com.waz.zclient.dev:id/ttv__single_participants__header";
+	
+	public static final String idOtherUserPersonalInfoSingleMail = "com.waz.zclient.dev:id/ttv__single_participants__sub_header";
+	
 	public static final String idOtherUserPersonalInfoName = "com.waz.zclient.dev:id/ttv__participants__header";
 	
 	public static final String idOtherUserPersonalInfoMail = "com.waz.zclient.dev:id/ttv__participants__sub_header";
