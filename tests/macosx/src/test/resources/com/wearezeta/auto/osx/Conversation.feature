@@ -58,7 +58,7 @@ Examples:
     |  Login		| Password			| Name			| Contact   		|
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
     
-@staging
+@regression
 @id444
 Scenario Outline: Send HD picture to conversation
 	Given I Sign in using login <Login> and password <Password>
@@ -88,7 +88,7 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-@staging
+@regression
 @id102
 Scenario Outline: Add user to group conversation
     Given I Sign in using login <Login> and password <Password>
@@ -220,7 +220,7 @@ Examples:
     |  Login		| Password			| Name			| Contact   		|
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact3		|
 
-@staging
+@regression
 @id81
 Scenario Outline: Play embedded SoundCloud link in conversation
 	Given I Sign in using login <Login> and password <Password>

@@ -185,7 +185,14 @@ public class ContactListPageSteps {
 	
 	@When("I see play/pause button next to username (.*) in contact list")
 	public void ISeePlayPauseButtonNextToUserName(String contact){
-		PagesCollection.contactListPage.isPlayPauseButtonVisible(contact);
+		String name = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		Assert.assertTrue(PagesCollection.contactListPage.isPlayPauseButtonVisible(name));
+	}
+	
+	@When("I dont see play/pause button next to username (.*) in contact list")
+	public void IDontSeePlayPauseButtonNextToUserName(String contact){
+		String name = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		Assert.assertFalse(PagesCollection.contactListPage.isPlayPauseButtonVisible(name));
 	}
 	
 	@When("I tap on play/pause button in contact list")

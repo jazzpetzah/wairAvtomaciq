@@ -77,7 +77,8 @@ public class RegistrationPage extends OSXPage {
 		pickImageButton.click();
 	}
 	
-	public void acceptTakenPicture() {
+	public void acceptTakenPicture() throws InterruptedException {
+		Thread.sleep(1000);
 		confirmChosenPictureButton.click();
 	}
 	

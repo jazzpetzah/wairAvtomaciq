@@ -1,6 +1,6 @@
 Feature: Participants View
 
-@staging
+@regression
 @id95
 Scenario Outline: Change conversation name
     Given I Sign in using login <Login> and password <Password>
@@ -16,7 +16,7 @@ Examples:
 	|  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| RANDOM								|
 	|  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| ÄäÖöÜüß conv							|
 
-@staging
+@regression
 @id100
 Scenario Outline: Display conversation info correctly
     Given I Sign in using login <Login> and password <Password>

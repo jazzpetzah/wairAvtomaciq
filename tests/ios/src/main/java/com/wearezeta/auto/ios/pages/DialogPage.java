@@ -275,7 +275,7 @@ public class DialogPage extends IOSPage{
 
 	public String getSendTime() {
 		String formattedDate;
-		DateFormat dateFormat = new SimpleDateFormat("EEEE, MMMM dd, yyyy '∙' h:mm a");
+		DateFormat dateFormat = new SimpleDateFormat("EEEE, MMMM d, yyyy '∙' h:mm a");
 		Date date = new Date();
 		formattedDate=dateFormat.format(date);
 		return formattedDate;

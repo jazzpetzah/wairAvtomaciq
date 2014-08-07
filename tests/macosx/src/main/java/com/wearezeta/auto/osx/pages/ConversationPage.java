@@ -120,7 +120,7 @@ public class ConversationPage extends OSXPage {
 			} catch (InterruptedException e) {
 			}
 		}
-		newMessageTextArea.sendKeys(message);
+		newMessageTextArea.sendKeys(message + "\\n");
 	}
 
 	public void sendNewMessage() {
