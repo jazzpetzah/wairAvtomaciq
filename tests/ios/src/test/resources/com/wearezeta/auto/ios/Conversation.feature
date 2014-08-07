@@ -2,6 +2,7 @@
 
 Feature: Conversation
 
+
   @smoke 
   @id330
   Scenario Outline: Send Message to contact
@@ -9,7 +10,8 @@ Feature: Conversation
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And I type the message
+    And I type the message 
+    And I send the message
     Then I see my message in the dialog
 
 	Examples: 
@@ -64,6 +66,7 @@ Scenario Outline: Send message to group chat
     And I see Contact list with my name <Name>
 	When I create group chat with <Contact1> and <Contact2>
 	And I type the message
+	And I send the message
 	Then I see my message in the dialog
 	
 Examples:
@@ -266,7 +269,7 @@ Scenario Outline: Play/pause SoundCloud media link from the media bar
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I post media link <SoundCloudLink>
+    And I type and send long message and media link <SoundCloudLink>
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -289,7 +292,7 @@ Scenario Outline: Conversation gets scrolled back to playing media when clicking
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I post media link <SoundCloudLink>
+    And I type and send long message and media link <SoundCloudLink>
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -446,18 +449,18 @@ Examples:
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| https://soundcloud.com/carl-cox/carl-cox-nexus| 28   | 
 
  @torun
+ @staging
+ @id415
   Scenario Outline: Send Message to contact after navigating away from chat page
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And I tap on text input
     And I type the message
     And I scroll away the keyboard
     And I navigate back to conversations view
     Then I tap on contact name <Contact>
-    And I tap on text input
-    And I press send
+    And I send the message
     Then I see my message in the dialog
 
 	Examples: 

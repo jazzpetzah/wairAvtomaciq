@@ -48,7 +48,7 @@ public class DialogPageSteps {
 	@When("^I type the message$")
 	public void WhenITypeTheMessage() throws Throwable {
 		message = CommonUtils.generateGUID();
-		PagesCollection.dialogPage.typeMessage(message + "\n");
+		PagesCollection.dialogPage.typeMessage(message);
 	}
 
 	@When("^I multi tap on text input$")
@@ -74,6 +74,11 @@ public class DialogPageSteps {
 	public void ITypeTheMessageAndSendIt() throws Throwable {
 	    message = CommonUtils.generateGUID();
 	    PagesCollection.dialogPage.typeMessage(message + "\n");
+	}
+	
+	@When("^I send the message$")
+	public void WhenISendTheMessage() throws Throwable {
+		PagesCollection.dialogPage.sendMessage("\n");
 	}
 	
 	@When("^I swipe up on dialog page$")
