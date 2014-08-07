@@ -5,11 +5,16 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.mail.MessagingException;
+import javax.ws.rs.core.UriBuilderException;
 
+import org.json.JSONException;
+
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.LoginPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.BackEndREST;
+import com.wearezeta.auto.common.BackendRequestException;
 import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.TestPreparation;
 import com.wearezeta.auto.common.CommonUtils;
@@ -32,9 +37,10 @@ public class CommonSteps {
 	public void setUp() throws Exception {
 
 		commonBefore();
-		
-		if ( PagesCollection.loginPage == null){
-			PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(CommonSteps.class), path);
+
+		if (PagesCollection.loginPage == null) {
+			PagesCollection.loginPage = new LoginPage(
+					CommonUtils.getUrlFromConfig(CommonSteps.class), path);
 			ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
 		}
 	}
@@ -43,71 +49,86 @@ public class CommonSteps {
 	public void setUpUnicode() throws Exception {
 
 		commonBefore();
-		
-		if ( PagesCollection.loginPage == null){
-			PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(CommonSteps.class), path, true);
+
+		if (PagesCollection.loginPage == null) {
+			PagesCollection.loginPage = new LoginPage(
+					CommonUtils.getUrlFromConfig(CommonSteps.class), path, true);
 			ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
 		}
 	}
 
-	
 	@After
 	public void tearDown() throws Exception {
 		PagesCollection.loginPage.Close();
 		AndroidPage.clearPagesCollection();
 	}
-	
-	@Given("^connection request is sended to me$")
-	public void GivenConnectionRequestIsSendedToMe() throws Throwable {
-		BackEndREST.sendConnectRequest(CommonUtils.yourUsers.get(2), CommonUtils.yourUsers.get(0), CONNECTION_NAME + CommonUtils.yourUsers.get(2).getName(), CONNECTION_MESSAGE);
+
+	@Given("^(.*) connection request is sended to me$")
+	public void GivenConnectionRequestIsSendedToMe(String contact) throws Throwable {
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		for (ClientUser user : CommonUtils.yourUsers) {
+			if (user.getName().toLowerCase().equals(contact.toLowerCase())) {
+				BackEndREST.loginByUser(user);
+				BackEndREST.sendConnectRequest(user,
+						CommonUtils.yourUsers.get(0), CONNECTION_NAME
+						+ user.getName(),
+						CONNECTION_MESSAGE);
+				break;
+			}
+
+		}
+
 	}
-	
+
 	@Given("^I have group chat with name (.*) with (.*) and (.*)$")
-	public void GivenIHaveGroupChatWith(String chatName, String contact1, String contact2) throws Throwable {
+	public void GivenIHaveGroupChatWith(String chatName, String contact1,
+			String contact2) throws Throwable {
 		boolean flag1 = false;
 		boolean flag2 = false;
 		contact1 = CommonUtils.retrieveRealUserContactPasswordValue(contact1);
 		contact2 = CommonUtils.retrieveRealUserContactPasswordValue(contact2);
 		List<ClientUser> chatContacts = new LinkedList<ClientUser>();
 		for (ClientUser user : CommonUtils.contacts) {
-			if(user.getName().toLowerCase().equals(contact1.toLowerCase())) {
+			if (user.getName().toLowerCase().equals(contact1.toLowerCase())) {
 				chatContacts.add(user);
 				flag1 = true;
 			}
-			if(user.getName().toLowerCase().equals(contact2.toLowerCase())) {
+			if (user.getName().toLowerCase().equals(contact2.toLowerCase())) {
 				chatContacts.add(user);
 				flag2 = true;
 			}
-			if(flag1 && flag2){
+			if (flag1 && flag2) {
 				break;
 			}
 		}
-		BackEndREST.createGroupConveration(CommonUtils.yourUsers.get(0), chatContacts, chatName);
-	}	
-	
+		BackEndREST.createGroupConveration(CommonUtils.yourUsers.get(0),
+				chatContacts, chatName);
+	}
+
 	@When("^I press back button$")
 	public void PressBackButton() {
 		if (PagesCollection.loginPage != null) {
 			PagesCollection.loginPage.navigateBack();
 		}
 	}
-	
-	private void commonBefore() throws IOException, InterruptedException, MessagingException{
-		
+
+	private void commonBefore() throws IOException, InterruptedException,
+	MessagingException, IllegalArgumentException, UriBuilderException,
+	JSONException, BackendRequestException {
 		try {
-			CommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
-		}
-		catch(Exception ex){
+			AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
+		} catch (Exception ex) {
 			System.out.println("Failed to deploy pictures into simulator");
 		}
-		
-		boolean generateUsersFlag = Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class));
-		
-		if ((CommonUtils.yourUsers.size() == 0 
-				|| !CommonUtils.yourUsers.get(0).getUserState().equals(UsersState.AllContactsConnected))) {
-			
+
+		boolean generateUsersFlag = Boolean.valueOf(CommonUtils
+				.getGenerateUsersFlagFromConfig(CommonSteps.class));
+
+		if ((CommonUtils.yourUsers.size() == 0 || !CommonUtils.yourUsers.get(0)
+				.getUserState().equals(UsersState.AllContactsConnected))) {
+
 			if (generateUsersFlag) {
-				CommonUtils.generateUsers(2);
+				CommonUtils.generateUsers(3);
 				TestPreparation.createContactLinks();
 			} else {
 				CommonUtils.usePrecreatedUsers();

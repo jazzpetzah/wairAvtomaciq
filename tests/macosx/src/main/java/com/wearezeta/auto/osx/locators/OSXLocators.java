@@ -97,7 +97,7 @@ public final class OSXLocators {
 	
 	public static final String peopleCountTextSubstring = " PEOPLE";
 	
-	public static final String xpathOpenUserPictureSettingsButton = "//AXWindow/AXButton[6]";
+	public static final String xpathOpenUserPictureSettingsButton = "//AXWindow/AXButton[@AXIdentifier='addConversationButton']/following-sibling::AXButton[1]";
 	
 	public static final String IMAGES_SOURCE_DIRECTORY = "Documents";
 	
@@ -113,5 +113,11 @@ public final class OSXLocators {
 	public static final String xpathSoundCloudMediaContainer = "//AXGroup/AXLink/AXImage";
 	
 	public static final String SOUNDCLOUD_BUTTON_STATE = "Pause";
+	
+	public static final String idSelfProfileSettingsButton = "selfProfileViewSettingsButton";
+	
+	public static final String idUserProfileViewBackButton = "userProfileViewBackButton";
+	
+	public static final String xpathFormatUserProfileViewContactName = "//AXWindow/AXPopover/AXScrollArea/AXTextArea[@AXValue='%s']";
 	
 }

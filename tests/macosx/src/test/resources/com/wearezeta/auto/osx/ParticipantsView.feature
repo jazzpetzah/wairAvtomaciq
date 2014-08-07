@@ -1,6 +1,9 @@
 Feature: Participants View
 
-@staging
+#Muted till new sync engine client stabilization
+@mute
+@regression
+@id95
 Scenario Outline: Change conversation name
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -15,7 +18,10 @@ Examples:
 	|  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| RANDOM								|
 	|  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| ÄäÖöÜüß conv							|
 
-@staging
+#Muted till new sync engine client stabilization
+@mute
+@regression
+@id100
 Scenario Outline: Display conversation info correctly
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>

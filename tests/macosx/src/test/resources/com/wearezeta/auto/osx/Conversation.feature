@@ -1,6 +1,9 @@
 Feature: Conversation
 
+#Muted till new sync engine client stabilization
+@mute
 @smoke
+@id466
 Scenario Outline: Send message to conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -8,7 +11,7 @@ Scenario Outline: Send message to conversation
 	When I write random message
 	And I send message
 	Then I see random message in conversation
-	
+
 Examples:
     |  Login		| Password			| Name			| Contact   		|
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
@@ -16,6 +19,7 @@ Examples:
 # Not stable
 @mute
 @smoke
+@id467
 Scenario Outline: Send hello to conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -30,6 +34,7 @@ Examples:
 # Not stable
 @mute
 @smoke
+@id467
 Scenario Outline: Send hey to conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -42,7 +47,10 @@ Examples:
     |  Login		| Password			| Name			| Contact   		|
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
 
+#Muted till new sync engine client stabilization
+@mute
 @smoke
+@id449
 Scenario Outline: Send picture to conversation
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with name <Name>
@@ -53,9 +61,11 @@ Scenario Outline: Send picture to conversation
 Examples:
     |  Login		| Password			| Name			| Contact   		|
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
-    
-@staging
-@id455
+
+#Muted till new sync engine client stabilization
+@mute
+@regression
+@id444
 Scenario Outline: Send HD picture to conversation
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with name <Name>
@@ -67,7 +77,10 @@ Examples:
     |  Login		| Password			| Name			| Contact   		|
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		|
 
+#Muted till new sync engine client stabilization
+@mute
 @smoke
+@id103
 Scenario Outline: Create group chat from 1on1 conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -83,7 +96,10 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-@staging
+#Muted till new sync engine client stabilization
+@mute
+@regression
+@id102
 Scenario Outline: Add user to group conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -102,7 +118,10 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		| Contact3			|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| aqaContact3		|
 
+#Muted till new sync engine client stabilization
+@mute
 @smoke
+@id470
 Scenario Outline: Send message to group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -146,7 +165,10 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
+#Muted till new sync engine client stabilization
+@mute
 @smoke
+@id471
 Scenario Outline: Leave group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -160,7 +182,10 @@ Examples:
 	|  Login		| Password		| Name			| Contact1		| Contact2		|
 	|  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
+#Muted till new sync engine client stabilization
+@mute
 @smoke
+@id492
 Scenario Outline: Remove user from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -175,7 +200,10 @@ Examples:
 	|  Login		| Password		| Name			| Contact1		| Contact2		|
 	|  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
+#Muted till new sync engine client stabilization
+@mute
 @smoke
+@id474 @id481
 Scenario Outline: Mute and unmute conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -210,7 +238,9 @@ Examples:
     |  Login		| Password			| Name			| Contact   		|
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact3		|
 
-@staging
+#Muted till new sync engine client stabilization
+@mute
+@regression
 @id81
 Scenario Outline: Play embedded SoundCloud link in conversation
 	Given I Sign in using login <Login> and password <Password>

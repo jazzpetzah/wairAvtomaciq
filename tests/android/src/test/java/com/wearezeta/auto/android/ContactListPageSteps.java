@@ -22,15 +22,14 @@ public class ContactListPageSteps {
 
 	}
 	
+	@Given("^I do not see Contact list with name (.*)$")
+	public void GivenIDoNotSeeContactListWithName(String value) throws Throwable {
+		value = CommonUtils.retrieveRealUserContactPasswordValue(value);
+		Assert.assertFalse(PagesCollection.contactListPage.isContactExists(value));
+	}
+	
 	@When("^I tap on contact name (.*)$")
-	public void WhenITapOnContactName(String name) throws Throwable  {
-		//workaround for unknown contacts, start
-		ISwipeDownContactList();
-		PeoplePickerPageSteps pickerSteps = new PeoplePickerPageSteps();
-		pickerSteps.WhenISeePeoplePickerPage();
-		pickerSteps.WhenIPressClearButton();
-		//workaround for unknown contacts, end
-		
+	public void WhenITapOnContactName(String name) throws Throwable  {		
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		PagesCollection.androidPage = PagesCollection.contactListPage.tapOnName(name);
 	}
@@ -106,8 +105,14 @@ public class ContactListPageSteps {
 	}
 
 	@Then("^Contact (.*) is not muted$")
-	public void ContactIsNotMuted(String contact) throws Throwable {
+	public void ThenContactIsNotMuted(String contact) throws Throwable {
 		// Express the Regexp above with the code you wish you had
 		throw new PendingException();
+	}
+	
+	@Then("^Contact name (.*) is not in list$")
+	public void ThenContactNameIsNotInList(String value) throws Throwable {
+		value = CommonUtils.retrieveRealUserContactPasswordValue(value);
+		Assert.assertFalse(PagesCollection.contactListPage.isContactExists(value));
 	}
 }

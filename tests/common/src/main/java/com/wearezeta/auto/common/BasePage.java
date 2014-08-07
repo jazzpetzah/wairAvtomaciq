@@ -1,7 +1,5 @@
 package com.wearezeta.auto.common;
 
-import io.appium.java_client.AppiumDriver;
-
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -15,16 +13,19 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaDriver;
+
 public abstract class BasePage {
 	
-	protected static AppiumDriver driver = null;
+	protected static ZetaDriver driver = null;
 	protected static WebDriverWait wait;
 	
 	protected void InitConnection(String URL, DesiredCapabilities capabilities) throws MalformedURLException {
 		
 		if(null == driver) {
 			
-			driver = new AppiumDriver(new URL(URL), capabilities);
+			driver = new ZetaDriver(new URL(URL), capabilities);
 			try {
 				driver.manage().timeouts().implicitlyWait(Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(getClass())), TimeUnit.SECONDS);
 			

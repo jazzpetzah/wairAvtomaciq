@@ -1,6 +1,5 @@
 Feature: Change picture
-
-@mute
+@207
 @smoke
 @nonUnicode
   Scenario Outline: Change user picture

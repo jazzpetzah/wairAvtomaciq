@@ -11,7 +11,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-import com.wearezeta.auto.common.DriverUtils;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class LoginPage extends OSXPage {
@@ -49,8 +49,13 @@ public class LoginPage extends OSXPage {
 	}
 	
 	public Boolean isVisible() {
-		
-		return viewPager != null;
+		WebElement page = null;
+		try {
+			page = driver.findElement(By.id(OSXLocators.idLoginPage));
+		} catch (NoSuchElementException e) {
+			page = null;
+		}
+		return page != null;
 	}
 	
 	public OSXPage SignIn() throws IOException {
@@ -124,6 +129,19 @@ public class LoginPage extends OSXPage {
 		registerButton.click();
 		RegistrationPage page = new RegistrationPage(url, path);
 		return page;
+	}
+	
+	public void logoutIfNotSignInPage() throws IOException {
+		DriverUtils.setImplicitWaitValue(driver, 1);
+		try {
+			driver.findElement(By.id(OSXLocators.idLoginPage));
+		} catch (NoSuchElementException e) {
+			System.out.println("Logging out because previous user is signed in.");
+			MainMenuPage menu = new MainMenuPage(url, path);
+			menu.SignOut();
+		} finally {
+			DriverUtils.setDefaultImplicitWait(driver);
+		}
 	}
 	
 	public void sendProblemReportIfFound() {

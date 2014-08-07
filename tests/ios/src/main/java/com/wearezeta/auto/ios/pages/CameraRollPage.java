@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 
-import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class CameraRollPage extends IOSPage{

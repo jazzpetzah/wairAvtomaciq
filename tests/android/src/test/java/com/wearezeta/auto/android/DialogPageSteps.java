@@ -77,9 +77,9 @@ public class DialogPageSteps{
 		  }
 	}
 	
-	@Then("^I see Hello message in the dialog$")
-	public void ThenISeeHelloMessageInTheDialog() throws Throwable {
-		Assert.assertTrue(PagesCollection.dialogPage.isknockAnimationExist());
+	@Then("^I see Hello-Hey message (.*) in the dialog$")
+	public void ThenISeeHelloHeyMessageInTheDialog(String message) throws Throwable {
+		Assert.assertEquals(message.toUpperCase(), PagesCollection.dialogPage.getKnockMessageText());
 	}
 
 	@Then("^I see my message in the dialog$")
@@ -103,6 +103,11 @@ public class DialogPageSteps{
 		Assert.assertTrue(PagesCollection.dialogPage.isConnectMessageValid(chatMessage));
 	}
 	
+	@Then("^I multi tap on text input again$")
+	public void ThenIMultiTapOnTextInputAgain() throws Throwable {
+		PagesCollection.dialogPage.multiTapOnCursorInput();
+	}
+	
 	@When("^I swipe left on dialog page$")
 	public void WhenISwipeLeftOnDialogPage() throws Exception{
 		PagesCollection.dialogPage.swipeLeft(1000);
@@ -111,5 +116,13 @@ public class DialogPageSteps{
 	@When("^I swipe up on dialog page$")
 	public void WhenISwipeUpOnDialogPage() throws Exception{
 		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.dialogPage.swipeUp(1000);
+	}
+	
+	@Then("^I see Connect to (.*) Dialog page$")
+	public void ThenIseeConnectToDialogPage(String contact)
+	{
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		Assert.assertEquals("connected to", PagesCollection.dialogPage.getConnectRequestChatLabel());
+		Assert.assertEquals(contact.toLowerCase(), PagesCollection.dialogPage.getConnectRequestChatUserName());
 	}
 }

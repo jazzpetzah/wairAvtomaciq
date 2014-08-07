@@ -19,7 +19,7 @@ public class ContactListPageSteps {
 
 	@Given("^I have group chat named (.*) with an unconnected user, made by (.*)$")
 	public void GivenGroupChatWithName(String chatName, String groupCreator)
-			throws IOException {
+			throws Throwable {
 		PagesCollection.contactListPage.createGroupChatWithUnconnecteduser(
 				chatName, groupCreator);
 	}
@@ -181,6 +181,23 @@ public class ContactListPageSteps {
 		} else {
 			PagesCollection.contactListPage.swipeUpSimulator();
 		}
+	}
+	
+	@When("I see play/pause button next to username (.*) in contact list")
+	public void ISeePlayPauseButtonNextToUserName(String contact){
+		String name = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		Assert.assertTrue(PagesCollection.contactListPage.isPlayPauseButtonVisible(name));
+	}
+	
+	@When("I dont see play/pause button next to username (.*) in contact list")
+	public void IDontSeePlayPauseButtonNextToUserName(String contact){
+		String name = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		Assert.assertFalse(PagesCollection.contactListPage.isPlayPauseButtonVisible(name));
+	}
+	
+	@When("I tap on play/pause button in contact list")
+	public void ITapOnPlayPauseButtonInContactList(){
+		PagesCollection.contactListPage.tapPlayPauseButton();
 	}
 
 }

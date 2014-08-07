@@ -1,6 +1,6 @@
 Feature: Connect to User
 
-  @smoke @nonUnicode
+  @191 @193 @smoke @nonUnicode
   Scenario Outline: Send invitation message to a user
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -18,7 +18,7 @@ Feature: Connect to User
       | Login   | Password    | Name    | Contact  | Message       |
       | aqaUser | aqaPassword | aqaUser | yourUser | Hellow friend |
 
-  @218 @staging @nonUnicode
+  @218 @regression @nonUnicode
   Scenario Outline: I can do full name search for existing 1:1(non-archive)
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -32,7 +32,7 @@ Feature: Connect to User
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @223 @staging @nonUnicode
+  @223 @regression @nonUnicode
   Scenario Outline: I can do partial name search for existing 1:1
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -46,7 +46,7 @@ Feature: Connect to User
       | Login   | Password    | Name    | Contact     | Size |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | 4    |
 
-  @220 @nonUnicode @staging
+  @220 @nonUnicode @regression
   Scenario Outline: I can do full name search for existing group convo(non-archive)
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -61,8 +61,8 @@ Feature: Connect to User
       | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName          |
       | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | PeoplePicker GroupChat |
 
-  @225 @nonUnicode @staging
-  Scenario Outline: I can do full name search for existing group convo(non-archive)
+  @225 @nonUnicode @regression
+  Scenario Outline: I can do partial name search for existing group convo(non-archive)
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -76,7 +76,7 @@ Feature: Connect to User
       | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName          | Size |
       | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | PeoplePicker GroupChat | 5    |
 
-  @319 @nonUnicode @staging
+  @319 @nonUnicode @regression
   Scenario Outline: I can create group chat from People picker
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -93,3 +93,19 @@ Feature: Connect to User
     Examples: 
       | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName          |
       | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | PeoplePicker GroupChat |
+
+  @536 @nonUnicode @regression
+  Scenario Outline: I can see a new inbox for connection when receive new connection request
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    And I do not see Contact list with name <WaitingMess>
+    And <Contact> connection request is sended to me
+    When I tap on contact name <WaitingMess>
+    And I see connect to <Contact> dialog
+    And I press Ignore connect button
+    Then I see contact list loaded with User name <Name>
+	Then Contact name <WaitingMess> is not in list
+	
+    Examples: 
+      | Login   | Password    | Name    | Contact        | WaitingMess      |
+      | aqaUser | aqaPassword | aqaUser | yourNotContact | 1 person waiting |

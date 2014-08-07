@@ -1,6 +1,9 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Assert;
@@ -12,6 +15,8 @@ import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class DialogPage extends IOSPage{
@@ -19,8 +24,11 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.nameLoginPage)
 	private WebElement dialogWindow;
 	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathCursorInput)
-	private WebElement cursorInput;
+//	@FindBy(how = How.XPATH, using = IOSLocators.xpathCursorInput)
+//	private WebElement cursorInput;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameConversationCursorInput)
+	private WebElement conversationInput;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameTextInput)
 	private WebElement textInput;
@@ -76,25 +84,21 @@ public class DialogPage extends IOSPage{
 	}
 
 	public void waitForCursorInputVisible(){
-		wait.until(ExpectedConditions.visibilityOf(cursorInput));
+		wait.until(ExpectedConditions.visibilityOf(conversationInput));
 	}
 	
 	public void tapOnCursorInput(){
-		cursorInput.click();
+		conversationInput.click();
 	}
 	
 	public void multiTapOnCursorInput() throws InterruptedException{
 		
-		DriverUtils.iOSMultiTap(driver, cursorInput, 3);
+		DriverUtils.iOSMultiTap(driver, conversationInput, 3);
 	}
 	
-	public void waitForTextMessageInputVisible(){
-		wait.until(ExpectedConditions.visibilityOf(textInput));
-	}
-	
-	public void typeMessage(String message)
+	public void typeMessage(String message) throws InterruptedException
 	{
-		textInput.sendKeys(message);
+		conversationInput.sendKeys(message);
 	}
 		
 	public void ScrollToLastMessage(){
@@ -135,7 +139,7 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public void swipeInputCursor() throws IOException, InterruptedException{
-		DriverUtils.swipeRight(driver, cursorInput, 700);
+		DriverUtils.swipeRight(driver, conversationInput, 700);
 	}
 	
 	public CameraRollPage pressAddPictureButton() throws IOException{
@@ -162,13 +166,25 @@ public class DialogPage extends IOSPage{
 		mediaLinkCell.click();
 	}
 	
-	public void scrollDownTilMediaBarAppears() throws Exception{
+	public DialogPage scrollDownTilMediaBarAppears() throws Exception{
+		DialogPage page = null;
+		int count = 0;
 		boolean buttonIsShown = mediabarPlayPauseButton.isDisplayed();
-		while(!(buttonIsShown)){
-		DriverUtils.swipeDown(driver, conversationPage, 500);
-		buttonIsShown = mediabarPlayPauseButton.isDisplayed();
+		while(!(buttonIsShown) & (count<5)){
+			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true){
+				DriverUtils.swipeDown(driver, conversationPage, 500);
+				page = this;
+			}
+			else {
+				swipeDownSimulator();
+				page = this;
+			}
+			buttonIsShown = mediabarPlayPauseButton.isDisplayed();
+			count++;
 		}
+		
 		Assert.assertTrue(mediabarPlayPauseButton.isDisplayed());
+		return page;
 	}
 
 	public void pauseMediaContent(){
@@ -255,6 +271,46 @@ public class DialogPage extends IOSPage{
 		WebElement el = driver.findElementByXPath(lastMessageXPath);
 		String lastMessage = el.getText();
 		return lastMessage;
+	}
+
+	public String getSendTime() {
+		String formattedDate;
+		DateFormat dateFormat = new SimpleDateFormat("EEEE, MMMM d, yyyy '∙' h:mm a");
+		Date date = new Date();
+		formattedDate=dateFormat.format(date);
+		return formattedDate;
+	}
+
+	public boolean isMediaBarDisplayed() {
+		boolean flag = mediabarPlayPauseButton.isDisplayed();
+		return flag;
+	}
+
+	public DialogPage scollUpToMediaContainer() throws Throwable {
+		DialogPage page = null;
+		int count = 0;
+		boolean mediaContainerShown = mediaContainer.isDisplayed();
+		while(!(mediaContainerShown) & (count<5)){
+			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true){
+				DriverUtils.swipeUp(driver, conversationPage, 500);
+				page = this;
+			}
+			else {
+				swipeUpSimulator();
+				page = this;
+			}
+			mediaContainerShown = mediabarPlayPauseButton.isDisplayed();
+			count++;
+		}		
+		Assert.assertTrue(mediabarPlayPauseButton.isDisplayed());
+		return page;
+	}
+
+	public ImageFullScreenPage tapImageToOpen() throws Throwable {
+		ImageFullScreenPage page = null;
+		imageCell.click();
+		page = new ImageFullScreenPage(url, path);
+		return page;
 	}
 
 }

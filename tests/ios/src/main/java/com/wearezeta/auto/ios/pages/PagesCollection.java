@@ -15,4 +15,5 @@ public class PagesCollection {
 	 public static RegistrationPage registrationPage = null;
 	 public static CameraRollPage cameraRollPage = null;
 	 public static VideoPlayerPage videoPlayerPage = null;
+	 public static ImageFullScreenPage imageFullScreenPage = null;
 }

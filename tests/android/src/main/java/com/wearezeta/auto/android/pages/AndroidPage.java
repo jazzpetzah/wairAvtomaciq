@@ -12,8 +12,11 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.SwipeDirection;
 
 
 public abstract class AndroidPage extends BasePage {
@@ -70,7 +73,7 @@ public abstract class AndroidPage extends BasePage {
 	@Override
 	public void Close() throws IOException {
 		try {
-			CommonUtils.killAndroidClient();
+			AndroidCommonUtils.killAndroidClient();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

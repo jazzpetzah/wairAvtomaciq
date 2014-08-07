@@ -2,6 +2,20 @@ package com.wearezeta.auto.android.locators;
 
 public final class AndroidLocators {
 	
+	public static final String idSimpleDialogPageText = "com.waz.zclient.dev:id/ttv__simple_dialog__text"; 
+	
+	public static final String idConnectToHeader = "com.waz.zclient.dev:id/taet__participants__header";
+	
+	public static final String idConnectRequestAccept = "com.waz.zclient.dev:id/zb__connect_request__accept_button";
+	
+	public static final String idConnectRequestIgnore = "com.waz.zclient.dev:id/zb__connect_request__ignore_button";
+	
+	public static final String idConnectRequestChatLabel = "com.waz.zclient.dev:id/ttv__row_conversation__connect_request__chathead_footer__label";
+	
+	public static final String idConnectRequestChatUserName = "com.waz.zclient.dev:id/ttv__row_conversation__connect_request__chathead_footer__username";
+	
+	public static final String idKnockMessage = "com.waz.zclient.dev:id/ttv__row_conversation__knock_message";
+	
 	public static final String idConfirmDialogHeader = "com.waz.zclient.dev:id/ttv__confirm_dialog__header";
 	
 	public static final String idConfirmCancelButton = "com.waz.zclient.dev:id/zb__confirm_dialog__cancel_button";
@@ -20,7 +34,7 @@ public final class AndroidLocators {
 	
 	public static final String idSendConnectionRequestButton = "com.waz.zclient.dev:id/zb__send_connect_request__connect_button";
 	
-	public static final String idOpenFrom = "android:id/title";
+	public static final String idOpenFrom = "com.google.android.apps.plus:id/tiles";
 	
 	public static final String xpathImage = "//android.widget.LinearLayout/android.view.View";
 	
@@ -52,7 +66,7 @@ public final class AndroidLocators {
 	
 	public static final String xpathContacts = "//android.widget.TextView[@text='%s']"; 
 	
-	public static final String xpathImagesFrameLayout = "//android.widget.GridView/android.widget.FrameLayout";
+	public static final String xpathImagesFrameLayout = "//android.widget.GridView[@resource-id='com.android.documentsui:id/grid']/android.widget.FrameLayout";
 	
 	public static final String idProfileOptionsButton = "com.waz.zclient.dev:id/gtv__profile__settings_button";
 	
@@ -110,8 +124,6 @@ public final class AndroidLocators {
 	
 	public static final String idCursorInput = "com.waz.zclient.dev:id/cursor_input";
 	
-	public static final String idKnockAnimation = "com.waz.zclient.dev:id/knock_anim";
-	
 	public static final String idDialogTakePhotoButton = "com.waz.zclient.dev:id/gtv__camera_control__take_a_picture";
 	
 	public static final String idDialogChangeCameraButton = "com.waz.zclient.dev:id/gtv__camera__top_control__back_camera";
@@ -162,9 +174,13 @@ public final class AndroidLocators {
 	
 	public static final String idInstructionsRequestConnectBtn = "com.waz.zclient.dev:id/button_connect";
 	
-	public static final String idOtherUserPersonalInfoName = "com.waz.zclient.dev:id/ttv__single_participants__header";
+	public static final String idOtherUserPersonalInfoSingleName = "com.waz.zclient.dev:id/ttv__single_participants__header";
 	
-	public static final String idOtherUserPersonalInfoMail = "com.waz.zclient.dev:id/ttv__single_participants__sub_header";
+	public static final String idOtherUserPersonalInfoSingleMail = "com.waz.zclient.dev:id/ttv__single_participants__sub_header";
+	
+	public static final String idOtherUserPersonalInfoName = "com.waz.zclient.dev:id/ttv__participants__header";
+	
+	public static final String idOtherUserPersonalInfoMail = "com.waz.zclient.dev:id/ttv__participants__sub_header";
 	
 	public static final String idLeaveConversationConfirmationMenu = "com.waz.zclient.dev:id/meta_confirmation_menu";
 	
@@ -175,6 +191,8 @@ public final class AndroidLocators {
 	public static final String idChangePhotoBtn = "com.waz.zclient.dev:id/gtv__camera_control__change_image_source";
 	
 	public static final String idGalleryBtn = "com.waz.zclient.dev:id/gtv__camera_control__pick_from_gallery";
+	
+	public static final String idGroupChatInfoName = "com.waz.zclient.dev:id/ttv__participants__header";
 	
 	public static final String idGroupChatUserGrid = "com.waz.zclient.dev:id/gv__participants__group__users";
 }

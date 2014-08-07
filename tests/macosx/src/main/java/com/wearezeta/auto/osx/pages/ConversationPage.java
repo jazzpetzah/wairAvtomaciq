@@ -15,7 +15,7 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
 import com.google.common.base.Function;
-import com.wearezeta.auto.common.DriverUtils;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class ConversationPage extends OSXPage {
@@ -103,7 +103,7 @@ public class ConversationPage extends OSXPage {
 			}
 			try { Thread.sleep(1000); } catch (InterruptedException e) { }
 		}
-		newMessageTextArea.sendKeys(message);
+		newMessageTextArea.sendKeys(message + "\\n");
 	}
 	
 	public void sendNewMessage() {
@@ -159,7 +159,7 @@ public class ConversationPage extends OSXPage {
 	
 	public boolean isSoundCloudContainerVisible(){
 		
-		return soundCloudMediaContainer.isDisplayed();
+		return DriverUtils.waitUntilElementAppears(driver, By.xpath(OSXLocators.xpathSoundCloudMediaContainer));
 	}
 	
 	public String getSoundCloudButtonState(){

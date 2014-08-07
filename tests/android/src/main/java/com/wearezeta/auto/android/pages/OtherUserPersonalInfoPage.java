@@ -1,12 +1,8 @@
 package com.wearezeta.auto.android.pages;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
-
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -15,17 +11,17 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
-import com.wearezeta.auto.common.SwipeDirection;
+import com.wearezeta.auto.common.driver.SwipeDirection;
 
 public class OtherUserPersonalInfoPage extends AndroidPage {
 
 	public static final String REMOVE_FROM_CONVERSATION_BUTTON = "Remove";
-	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.95;
+	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.80;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idOtherUserPersonalInfoName)
+	@FindBy(how = How.ID, using = AndroidLocators.idOtherUserPersonalInfoSingleName)
 	private WebElement otherUserName;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idOtherUserPersonalInfoMail)
+	@FindBy(how = How.ID, using = AndroidLocators.idOtherUserPersonalInfoSingleMail)
 	private WebElement otherUserMail;
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idUserProfileConfirmationMenu)

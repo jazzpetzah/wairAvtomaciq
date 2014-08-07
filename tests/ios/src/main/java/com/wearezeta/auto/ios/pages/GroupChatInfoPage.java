@@ -1,18 +1,12 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.List;
-
-import javax.imageio.ImageIO;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -20,9 +14,9 @@ import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.DriverUtils;
 import com.wearezeta.auto.common.ImageUtil;
-import com.wearezeta.auto.common.SwipeDirection;
+import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class GroupChatInfoPage extends IOSPage {

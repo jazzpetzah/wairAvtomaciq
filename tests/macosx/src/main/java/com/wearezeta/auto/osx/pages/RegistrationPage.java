@@ -9,7 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-import com.wearezeta.auto.common.DriverUtils;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class RegistrationPage extends OSXPage {
@@ -77,7 +77,8 @@ public class RegistrationPage extends OSXPage {
 		pickImageButton.click();
 	}
 	
-	public void acceptTakenPicture() {
+	public void acceptTakenPicture() throws InterruptedException {
+		Thread.sleep(1000);
 		confirmChosenPictureButton.click();
 	}
 	
