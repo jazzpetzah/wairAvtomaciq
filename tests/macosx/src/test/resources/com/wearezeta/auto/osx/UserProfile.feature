@@ -14,6 +14,8 @@ Examples:
 	|	Login			|	Password		|	Name		|
 	|	aqaUser			|	aqaPassword		|	aqaUser		|
 
+#Not stable
+@mute
 @regression
 @id425
 Scenario Outline: Change user picture from camera
