@@ -50,7 +50,7 @@ Examples:
 #Muted till new sync engine client stabilization
 @mute
 @smoke
-@id449
+@id468
 Scenario Outline: Send picture to conversation
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with name <Name>
@@ -169,7 +169,7 @@ Examples:
 @mute
 @smoke
 @id471
-Scenario Outline: Leave group chat
+Scenario Outline: Leave group conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
 	And I create group chat with <Contact1> and <Contact2>

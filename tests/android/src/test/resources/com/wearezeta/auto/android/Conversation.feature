@@ -119,7 +119,7 @@ Feature: Conversation
 
   @323 @nonUnicode @smoke
   Scenario Outline: Accept connection request
-    Given <Contact> connection request is sended to me
+    Given <Contact> connection request is sended to me <Login>
     And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <WaitingMess>
@@ -189,6 +189,7 @@ Feature: Conversation
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | ÄäÖöÜüß simple message in english |
 
   @mute @nonUnicode @regression
+  @id149
   Scenario Outline: Send emoji message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
