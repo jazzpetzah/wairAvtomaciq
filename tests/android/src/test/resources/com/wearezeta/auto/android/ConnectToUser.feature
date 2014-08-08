@@ -108,7 +108,7 @@ Feature: Connect to User
 
     Examples: 
       | Login   | Password    | Name    | Contact        | WaitingMess      |
-      | aqaUser | aqaPassword | aqaUser | yourNotContac1 | 1 person waiting |
+      | aqaUser | aqaPassword | aqaUser | yourNotContact1 | 1 person waiting |
 
   @id539 @id543 @nonUnicode @regression @mute 
   Scenario Outline: I can see a inbox count increasing/decreasing correctly + I ignore someone from people picker and clear my inbox
