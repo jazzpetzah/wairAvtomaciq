@@ -5,6 +5,7 @@ import net.masterthought.cucumber.charts.JsChartUtil;
 import net.masterthought.cucumber.json.Feature;
 import net.masterthought.cucumber.util.UnzipUtils;
 import net.masterthought.cucumber.util.Util;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.velocity.Template;
@@ -16,6 +17,8 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import javassist.compiler.ast.Variable;
 
 public class ReportBuilder {
 
@@ -29,6 +32,9 @@ public class ReportBuilder {
     private boolean artifactsEnabled;
     private boolean highCharts;
     private boolean parsingError;
+    private String realBuildNumber;
+    private String coverage;
+    private String customDescription;
 
     public Map<String, String> getCustomHeader() {
         return customHeader;
@@ -42,7 +48,7 @@ public class ReportBuilder {
 
     private final String VERSION = "cucumber-reporting-0.0.23";
 
-    public ReportBuilder(List<String> jsonReports, File reportDirectory, String pluginUrlPath, String buildNumber, String buildProject, boolean skippedFails, boolean undefinedFails, boolean flashCharts, boolean runWithJenkins, boolean artifactsEnabled, String artifactConfig, boolean highCharts) throws Exception {
+    public ReportBuilder(List<String> jsonReports, File reportDirectory, String customDescription, String coverage, String realBuildNumber, String pluginUrlPath, String buildNumber, String buildProject, boolean skippedFails, boolean undefinedFails, boolean flashCharts, boolean runWithJenkins, boolean artifactsEnabled, String artifactConfig, boolean highCharts) throws Exception {
 
         try {
             this.reportDirectory = reportDirectory;
@@ -53,6 +59,9 @@ public class ReportBuilder {
             this.runWithJenkins = runWithJenkins;
             this.artifactsEnabled = artifactsEnabled;
             this.highCharts = highCharts;
+            this.realBuildNumber = realBuildNumber;
+            this.coverage = coverage;
+            this.customDescription = customDescription;
 
             ConfigurationOptions.setSkippedFailsBuild(skippedFails);
             ConfigurationOptions.setUndefinedFailsBuild(undefinedFails);
@@ -269,11 +278,40 @@ public class ReportBuilder {
 
     private HashMap<String, Object> getGeneralParameters() {
         HashMap<String, Object> result = new HashMap<String, Object>();
+        
+        if (customDescription != null && !customDescription.isEmpty())
+       	{
+        	if (realBuildNumber != null && !realBuildNumber.isEmpty())
+       			if(customDescription.contains(" "))
+       				realBuildNumber = customDescription.substring(0, customDescription.indexOf(" ")).concat(" build #").concat(realBuildNumber);
+       	       	else
+       	       		realBuildNumber = customDescription.concat(" build #").concat(realBuildNumber);
+       	}
+        else
+        	if (realBuildNumber != null && !realBuildNumber.isEmpty())
+        	{
+        		customDescription = "Feature Overview";
+        		realBuildNumber = "Application build #".concat(realBuildNumber);
+        	}
+        	else 
+        	{
+        		customDescription = "Feature Overview";
+        		realBuildNumber = "";
+        	}
+        
+        if (coverage != null && !coverage.isEmpty())
+        	coverage = "COVERAGE: ".concat(coverage);
+        else
+        	coverage = "";
+        
         result.put("version", VERSION);
         result.put("fromJenkins", runWithJenkins);
         result.put("jenkins_base", pluginUrlPath);
         result.put("build_project", buildProject);
         result.put("build_number", buildNumber);
+        result.put("custom_description", customDescription);
+        result.put("coverage", coverage);
+        result.put("real_build_number", realBuildNumber);
         return result;
     }
 }

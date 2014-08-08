@@ -233,6 +233,10 @@ public class ConversationPage extends OSXPage {
 		mediabarBarTitle.click();
 	}
 	
+	public String getLastConversationNameChangeMessage() {
+		WebElement el = driver.findElement(By.xpath(OSXLocators.xpathConversationLastNewNameEntry));
+		return el.getAttribute("AXValue");
+	}
 	
 
 }

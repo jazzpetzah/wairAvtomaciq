@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationInfoPage;
 import com.wearezeta.auto.osx.pages.ConversationPage;
@@ -18,21 +19,17 @@ import cucumber.api.java.en.When;
 
 public class ContactListPageSteps {
 	
-	public static final String RANDOM_KEYWORD = "RANDOM";
-	
-	public String conversationName;
-	
 	@Given ("I see Contact list with name (.*)")
 	public void GivenISeeContactListWithName(String name) throws IOException {
-		if (name.equals(RANDOM_KEYWORD)) {
-			name = conversationName;
+		if (name.equals(OSXLocators.RANDOM_KEYWORD)) {
+			name = CommonSteps.senderPages.getConversationInfoPage().getCurrentConversationName();
 		} else {
 			name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		}
 		Assert.assertTrue(CommonSteps.senderPages.getContactListPage().isContactWithNameExists(name));
 	}
 	
-	@Given ("I do not see conversation (.*) in contact list")
+	@Given ("I do not see conversation {1}(.*) {1}in contact list")
 	public void IDoNotSeeConversationInContactList(String conversation) throws IOException {
 		conversation = CommonUtils.retrieveRealUserContactPasswordValue(conversation);
 		Assert.assertTrue(CommonSteps.senderPages.getContactListPage().isContactWithNameDoesNotExist(conversation));
@@ -125,14 +122,15 @@ public class ContactListPageSteps {
 		contactList.showArchivedConversations();
 	}
 	
-	@When("I set name (.*) for conversation")
+	@When("I set name {1}(.*) {1}for conversation")
 	public void ISetRandomNameForConversation(String name) throws MalformedURLException, IOException {
-		if (name.equals(RANDOM_KEYWORD)) {
-			conversationName = CommonUtils.generateGUID();
-		} else {
-			conversationName = name;
-		}
+		System.out.println("\"" + name + "\"");
 		ConversationInfoPage conversationInfo = CommonSteps.senderPages.getConversationInfoPage();
-		conversationInfo.setNewConversationName(conversationName);
+		if (name.equals(OSXLocators.RANDOM_KEYWORD)) {
+			conversationInfo.setCurrentConversationName(CommonUtils.generateGUID());
+		} else {
+			conversationInfo.setCurrentConversationName(name);
+		}
+		conversationInfo.setNewConversationName(conversationInfo.getCurrentConversationName());
 	}
 }
