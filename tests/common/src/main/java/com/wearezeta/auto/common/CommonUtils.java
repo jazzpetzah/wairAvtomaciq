@@ -32,10 +32,6 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 
 public class CommonUtils {
 	public static final String OS_NAME_WINDOWS = "Windows";
-
-	public static final String ENGLISH_LANG_NAME = "english";
-
-	public static final String FIRST_OS_NAME = "Windows";
 	public static final int USERS_COUNT = 7;
 	public static final String YOUR_USER_1 = "aqaUser";
 	public static final String YOUR_USER_2 = "yourUser";
@@ -98,6 +94,9 @@ public class CommonUtils {
 			replacementMap.put(YOUR_USER_2, yourUsers.get(1).getName());
 			replacementMap.put(YOUR_USER_3, yourUsers.get(2).getName());
 			replacementMap.put(YOUR_USER_4, yourUsers.get(3).getName());
+			replacementMap.put(YOUR_USER_5, yourUsers.get(4).getName());
+			replacementMap.put(YOUR_USER_6, yourUsers.get(5).getName());
+			replacementMap.put(YOUR_USER_7, yourUsers.get(6).getName());
 			replacementMap.put(YOUR_PASS, yourUsers.get(0).getPassword());
 		}
 		if (contacts.size() > 0) {
