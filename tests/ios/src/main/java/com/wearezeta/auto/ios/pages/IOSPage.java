@@ -1,8 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 
 import org.openqa.selenium.WebElement;
@@ -89,11 +87,7 @@ public abstract class IOSPage extends BasePage {
 	}
 
 	public static void clearPagesCollection() throws IllegalArgumentException, IllegalAccessException {
-		for (Field f : PagesCollection.class.getFields()) {
-			if (Modifier.isStatic(f.getModifiers()) && IOSPage.class.isAssignableFrom(f.getType())) {
-				f.set(null, null);
-			}
-		}
+		clearPagesCollection(PagesCollection.class, IOSPage.class);
 	}
 
 	public static String getImagesPath() {

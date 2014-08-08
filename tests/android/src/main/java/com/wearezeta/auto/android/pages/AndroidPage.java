@@ -124,20 +124,7 @@ public abstract class AndroidPage extends BasePage {
 		buttonsList.get(index).click();
 	}
 	
-	public static void clearPagesCollection()
-	{
-		PagesCollection.androidPage = null;
-		PagesCollection.contactListPage = null;
-		PagesCollection.dialogPage = null;
-		PagesCollection.instructionsPage = null;
-		PagesCollection.loginPage = null;
-		PagesCollection.personalInfoPage = null;
-		PagesCollection.peoplePickerPage = null;
-		PagesCollection.connectToPage = null;
-		PagesCollection.otherUserPersonalInfoPage = null;
-		PagesCollection.groupChatPage = null;
-		PagesCollection.registrationPage = null;
-		PagesCollection.groupChatInfoPage = null;
-		PagesCollection.aboutPage = null;
+	public static void clearPagesCollection() throws IllegalArgumentException, IllegalAccessException {
+		clearPagesCollection(PagesCollection.class, AndroidPage.class);
 	}
 }
