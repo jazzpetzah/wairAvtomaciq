@@ -3,12 +3,9 @@ package com.wearezeta.auto.ios.pages;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
-import java.util.ArrayList;
 
 import javax.mail.MessagingException;
 
-import org.apache.xalan.xsltc.runtime.MessageHandler;
-import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
@@ -118,7 +115,6 @@ public class RegistrationPage extends IOSPage {
 	private String confirmMessage = "We sent an email to %s. Check your Inbox and follow the link to verify your address. You won’t be able to use Zeta until you do.\n\nDidn’t get the message?\n\nRe-send";
 
 	private String[] listOfEmails;
-	private String recipientInboxCount;
 
 	private String url;
 	private String path;

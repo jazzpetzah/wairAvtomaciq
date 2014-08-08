@@ -17,8 +17,12 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class UserProfilePageSteps {
+	
+	private BufferedImage userProfileBefore = null;
+	
 	@Given("I open picture settings")
-	public void GivenIOpenPictureSettings() {
+	public void GivenIOpenPictureSettings() throws IOException {
+		userProfileBefore = CommonSteps.senderPages.getUserProfilePage().takeScreenshot();
 		CommonSteps.senderPages.getUserProfilePage().openPictureSettings();
 	}
 	
@@ -37,7 +41,7 @@ public class UserProfilePageSteps {
 	}
 	
 	@When("I select image file (.*)")
-	public void WhenISelectImageFile(String imageFilename) {
+	public void WhenISelectImageFile(String imageFilename) throws InterruptedException {
 		ChoosePicturePage choosePicturePage = CommonSteps.senderPages.getChoosePicturePage();
 		Assert.assertTrue(choosePicturePage.isVisible());
 		
@@ -47,13 +51,13 @@ public class UserProfilePageSteps {
 	}
 	
 	@When("I shoot picture using camera")
-	public void WhenIShootPictureUsingCamera() {
+	public void WhenIShootPictureUsingCamera() throws InterruptedException {
 		CommonSteps.senderPages.getUserProfilePage().doPhotoInCamera();
 		CommonSteps.senderPages.getUserProfilePage().confirmPictureChoice();
 	}
 
-	@Then("I see changed user picture (.*)")
-	public void ThenISeeChangedUserPicture(String filename) throws IOException {
+	@Then("I see changed user picture from image (.*)")
+	public void ThenISeeChangedUserPictureFromImage(String filename) throws IOException {
 		UserProfilePage userProfile = CommonSteps.senderPages.getUserProfilePage();
 		userProfile.openPictureSettings();
 		BufferedImage referenceImage = userProfile.takeScreenshot();
@@ -63,6 +67,16 @@ public class UserProfilePageSteps {
 		Assert.assertTrue(
 				"Overlap between two images has no enough score. Expected >= 0.55, current = " + score,
 				score >= 0.55d);
-		
+	}
+	
+	@Then("I see changed user picture from camera")
+	public void ThenISeeChangedUserPictureFromCamera() throws IOException {
+		UserProfilePage userProfile = CommonSteps.senderPages.getUserProfilePage();
+		BufferedImage userProfileAfter = userProfile.takeScreenshot();
+
+		double score = ImageUtil.getOverlapScore(userProfileAfter, userProfileBefore, ImageUtil.RESIZE_NORESIZE);
+		Assert.assertFalse(
+				"Overlap between two images has no enough score. Expected >= 0.9, current = " + score,
+				score >= 0.9d);
 	}
 }

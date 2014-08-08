@@ -8,7 +8,6 @@ import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
-import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 
@@ -34,6 +33,10 @@ public class ContactListPage extends AndroidPage {
 	
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameLoginPage)
 	private WebElement mainControl;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idConnectToHeader)
+	private List<WebElement> connectToHeader;
+	
 
 	private String url;
 	private String path;
@@ -48,7 +51,10 @@ public class ContactListPage extends AndroidPage {
 		AndroidPage page = null;
 		refreshUITree();// TODO: workaround
 		findInContactList(name, 5).click();
-		if (selfUserName.size() > 0 && selfUserName.get(0).isDisplayed()) {
+		if(connectToHeader.size() > 0 && connectToHeader.get(0).isDisplayed()){
+			page = new ConnectToPage(url, path);
+		}
+		else if (selfUserName.size() > 0 && selfUserName.get(0).isDisplayed()) {
 			page = new PersonalInfoPage(url, path);
 		} else {
 			page = new DialogPage(url, path);
@@ -67,6 +73,7 @@ public class ContactListPage extends AndroidPage {
 		} else {
 			if (cyclesNumber > 0) {
 				System.out.println(cyclesNumber);
+				cyclesNumber--;
 				DriverUtils.swipeUp(driver, mainControl, 500);
 				contact = findInContactList(name, cyclesNumber);
 			}
@@ -112,6 +119,11 @@ public class ContactListPage extends AndroidPage {
 		if(laterBtn.size()>0){
 			laterBtn.get(0).click();
 		}
+		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.idSimpleDialogPageText));
 		return this;
+	}
+	
+	public Boolean isContactExists(String name){
+		return findInContactList(name,0) != null;
 	}
 }

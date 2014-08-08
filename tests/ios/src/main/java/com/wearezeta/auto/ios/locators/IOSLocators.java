@@ -28,7 +28,7 @@ public final class IOSLocators {
 	
 	public static final String classNameDialogMessages = "UIATableCell";
 
-	public static final String xpathCursorInput = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[last()]";//"TAP OR SLIDE  ";
+//	public static final String xpathCursorInput = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[last()]";//"TAP OR SLIDE  ";
 	
 	public static final String nameConversationCursorInput = "ConversationTextInputField";
 	
@@ -45,6 +45,10 @@ public final class IOSLocators {
 	public static final String xpathTypeYourMessage = "//UIAApplication[1]/UIAWindow[1]/UIATextView[2]/UIAStaticText[1]";
 	
 	public static final String nameSendConnectButton = "SEND";
+	
+	public static final String nameConnectOtherUserButton = "CONNECT";
+	
+	public static final String nameIgnoreOtherUserButton = "IGNORE";
 	
 	public static final String clasNameConnectDialogLabel = "UIATextField";
 	
@@ -140,7 +144,9 @@ public final class IOSLocators {
 	
 	public static final String nameAddContactToChatButton = "metaControllerLeftButton";
 	
-	public static final String xpathOtherUserName = "//UIAApplication[1]/UIAWindow[1]/UIATextField[@value='%s']";
+	public static final String nameOtherUserEmailField = "ProfileOtherEmailField";
+	
+	public static final String xpathOtherUserName = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[@value='%s']";
 	
 	public static final String nameBackToWelcomeButton = "BackToWelcomeButton";
 	
@@ -149,6 +155,8 @@ public final class IOSLocators {
 	public static final String xpathConversationNameTextField = "//UIAApplication[1]/UIAWindow[1]/UIATextField[1]";
 
 	public static final String xpathMutedIcon = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[@name='%s']/UIAButton[3]";
+	
+	public static final String xpathContactListPlayPauseButton = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[@name='%s']/UIAButton[3]";
 	
 	public static final String nameMuteButton = "ConvCellMuteButton";
 
@@ -175,7 +183,7 @@ public final class IOSLocators {
 	
 	public static final String xpathParticipantAvatar = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[%s]";
 	
-	public static final String xpathNumberOfParticipantsText =  "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[3]";
+	public static final String xpathNumberOfParticipantsText =  "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[2]";
 
 	//needs name
 	public static final String xpathAvatarCollectionView = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]";
@@ -208,7 +216,7 @@ public final class IOSLocators {
 	
 	public static final String xpathCloseColorModeButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[4]";
 
-	public static String xpathNumberPeopleText = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[3]";
+	public static String xpathNumberPeopleText = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[2]";
 	
 	public static final String peopleCountTextSubstring = " people";
 	
@@ -254,6 +262,25 @@ public final class IOSLocators {
 	public static final String MEDIA_STATE_PAUSED = "paused";
 	
 	public static final String MEDIA_STATE_STOPPED = "ended";
+	
+	
+	/////////////////////////////
+	//Image Full screen Locators
+	/////////////////////////////
+	
+	public static final String nameImageInDialog = "ImageCell";
+	
+	public static final String nameImageFullScreenPage = "fullScreenPage";
+	
+	public static final String nameFullScreenCloseButton = "fullScreenCloseButton";
+	
+	public static final String nameFullScreenDownloadButton = "fullScreenDownloadButton";
+	
+	public static final String nameFullScreenSenderName = "fullScreenSenderName";
+	
+	public static final String nameFullScreenTimeStamp = "fullScreenTimeStamp";
+	
+	public static final String nameContactListLoadBar = "LoadBar";
 
 }
 

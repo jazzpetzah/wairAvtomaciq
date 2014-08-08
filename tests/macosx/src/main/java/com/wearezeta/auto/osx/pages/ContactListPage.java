@@ -16,6 +16,7 @@ import org.openqa.selenium.support.ui.Wait;
 import com.google.common.base.Function;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.osx.locators.OSXLocators;
+import com.wearezeta.auto.osx.steps.CommonSteps;
 import com.wearezeta.auto.osx.util.NSPoint;
 
 public class ContactListPage extends OSXPage {
@@ -108,7 +109,6 @@ public class ContactListPage extends OSXPage {
 				}
 				if (isFound) {
 					scrollToConversationInList(contact);
-
 					contact.click();
 					return true;
 				}

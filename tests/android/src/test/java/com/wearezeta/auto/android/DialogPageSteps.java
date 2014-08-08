@@ -117,4 +117,12 @@ public class DialogPageSteps{
 	public void WhenISwipeUpOnDialogPage() throws Exception{
 		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.dialogPage.swipeUp(1000);
 	}
+	
+	@Then("^I see Connect to (.*) Dialog page$")
+	public void ThenIseeConnectToDialogPage(String contact)
+	{
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		Assert.assertEquals("connected to", PagesCollection.dialogPage.getConnectRequestChatLabel());
+		Assert.assertEquals(contact.toLowerCase(), PagesCollection.dialogPage.getConnectRequestChatUserName());
+	}
 }

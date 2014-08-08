@@ -9,6 +9,7 @@ import javax.ws.rs.core.UriBuilderException;
 
 import org.json.JSONException;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.LoginPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
@@ -62,12 +63,29 @@ public class CommonSteps {
 		AndroidPage.clearPagesCollection();
 	}
 
-	@Given("^connection request is sended to me$")
-	public void GivenConnectionRequestIsSendedToMe() throws Throwable {
-		BackEndREST.sendConnectRequest(CommonUtils.yourUsers.get(2),
-				CommonUtils.yourUsers.get(0), CONNECTION_NAME
-						+ CommonUtils.yourUsers.get(2).getName(),
-				CONNECTION_MESSAGE);
+	@Given("^(.*) connection request is sended to me (.*)$")
+	public void GivenConnectionRequestIsSendedToMe(String contact, String me) throws Throwable {
+		ClientUser yourUser = null;
+		me = CommonUtils.retrieveRealUserContactPasswordValue(me);
+		for (ClientUser user : CommonUtils.yourUsers) {
+			if (user.getName().toLowerCase().equals(me.toLowerCase())) {
+				yourUser = user;
+			}
+		}
+
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		for (ClientUser user : CommonUtils.yourUsers) {
+			if (user.getName().toLowerCase().equals(contact.toLowerCase())) {
+				BackEndREST.loginByUser(user);
+				BackEndREST.sendConnectRequest(user,
+						yourUser, CONNECTION_NAME
+						+ user.getName(),
+						CONNECTION_MESSAGE);
+				break;
+			}
+
+		}
+
 	}
 
 	@Given("^I have group chat with name (.*) with (.*) and (.*)$")
@@ -103,10 +121,10 @@ public class CommonSteps {
 	}
 
 	private void commonBefore() throws IOException, InterruptedException,
-			MessagingException, IllegalArgumentException, UriBuilderException,
-			JSONException, BackendRequestException {
+	MessagingException, IllegalArgumentException, UriBuilderException,
+	JSONException, BackendRequestException {
 		try {
-			CommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
+			AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
 		} catch (Exception ex) {
 			System.out.println("Failed to deploy pictures into simulator");
 		}

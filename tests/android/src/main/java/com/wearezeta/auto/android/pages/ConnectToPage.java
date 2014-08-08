@@ -1,7 +1,5 @@
 package com.wearezeta.auto.android.pages;
 
-import java.io.IOException;
-import java.util.List;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -13,14 +11,16 @@ import com.wearezeta.auto.common.driver.SwipeDirection;
 
 public class ConnectToPage extends AndroidPage {
 
-	@FindBy(how = How.ID, using = AndroidLocators.idContactListNames)
-	private List<WebElement> contactListNames;
+	@FindBy(how = How.ID, using = AndroidLocators.idConnectToHeader)
+	private WebElement connectToHeader;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idConnectToSend)
-	private WebElement sendRequest;
+	@FindBy(how = How.ID, using = AndroidLocators.idConnectRequestAccept)
+	private WebElement connectAcceptBtn;
+
+	@FindBy(how = How.ID, using = AndroidLocators.idConnectRequestIgnore)
+	private WebElement connectIgnoreBtn;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idMessage)
-	private WebElement message;
+	
 	
 	private String url;
 	private String path;
@@ -32,32 +32,27 @@ public class ConnectToPage extends AndroidPage {
 		this.path = path;
 	}
 
-	public ContactListPage tapSend() throws Exception{
-		sendRequest.click();
-		wait.until(ExpectedConditions.visibilityOfAllElements(contactListNames));
-		return new ContactListPage(url, path);
-	}
-	
-	public void waitForConnectToPage(){
-		wait.until(ExpectedConditions.visibilityOf(sendRequest));
-	}
-	
-	public boolean isSendRequestVisible()
-	{
-		return sendRequest.isDisplayed();
-	}
-	
 	@Override
-	public AndroidPage returnBySwipe(SwipeDirection direction)
-			throws IOException {
+	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public void fillTextInConnectDialog(String messageText) {
-		message.clear();
-		message.sendKeys(messageText);
-		
+	public String getConnectToHeader() {
+		refreshUITree();
+	    wait.until(ExpectedConditions.visibilityOf(connectToHeader));
+		return connectToHeader.getText().toLowerCase();
+	}
+
+	public DialogPage pressConnectButton() throws Exception {
+		connectAcceptBtn.click();
+		return new DialogPage(url, path);
+	}
+
+	public ContactListPage pressIgnorButton() throws Exception {
+		refreshUITree();
+		connectIgnoreBtn.click();
+		return new ContactListPage(url, path);
 	}
 
 }

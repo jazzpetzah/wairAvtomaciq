@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -43,7 +42,7 @@ public class GroupChatPage extends DialogPage {
 	
 	public boolean isGroupChatPageVisible(){
 		
-		return DriverUtils.waitUntilElementAppears(driver, By.xpath(IOSLocators.xpathCursorInput));
+		return DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameConversationCursorInput));
 	}
 	
 	public boolean isConversationChangedInChat(){

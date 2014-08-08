@@ -13,6 +13,9 @@ import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class OtherUserPersonalInfoPage extends IOSPage{
 	
+	@FindBy(how = How.NAME, using = IOSLocators.nameOtherUserEmailField)
+	private WebElement otherUserEmail;
+	
 	@FindBy(how = How.NAME, using = IOSLocators.nameRemoveFromConversation)
 	private WebElement removeFromChat;
 	
