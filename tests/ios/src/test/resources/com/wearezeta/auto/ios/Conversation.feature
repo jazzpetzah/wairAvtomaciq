@@ -10,7 +10,8 @@ Feature: Conversation
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And I type the message
+    And I type the message 
+    And I send the message
     Then I see my message in the dialog
 
 	Examples: 
@@ -20,6 +21,7 @@ Feature: Conversation
   # Muted due to the bug https://wearezeta.atlassian.net/browse/IOS-947
   @mute
   @smoke
+  @id331
     Scenario Outline: Send Hello to contact
 		Given I Sign in using login <Login> and password <Password> 
     	And I see Contact list with my name <Name>
@@ -58,11 +60,13 @@ Feature: Conversation
 
   
   @smoke 
+  @id334
 Scenario Outline: Send message to group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
 	When I create group chat with <Contact1> and <Contact2>
 	And I type the message
+	And I send the message
 	Then I see my message in the dialog
 	
 Examples:
@@ -70,6 +74,7 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
 @smoke 
+@id460
 Scenario Outline: Send a camera roll picture to user from contact list
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with my name <Name>
@@ -115,6 +120,7 @@ Examples:
   # when you leave group chat - it disappears from contact list
   @mute
   @smoke
+  @id335
 Scenario Outline: Leave from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -133,6 +139,7 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
   @smoke 
+  @id336
  Scenario Outline: Remove from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -151,6 +158,7 @@ Examples:
 
 
   @smoke 
+  @id404
 Scenario Outline: I can edit the conversation name
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -182,6 +190,7 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
   @smoke
+  @id338
  Scenario Outline: Mute conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -195,7 +204,7 @@ Examples:
     |  Login		| Password		| Name			| Contact1    |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |
 
-@staging
+@regression
 @id392
 Scenario Outline: Verify correct group info page information
     Given I Sign in using login <Login> and password <Password>
@@ -260,7 +269,7 @@ Scenario Outline: Play/pause SoundCloud media link from the media bar
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I post media link <SoundCloudLink>
+    And I type and send long message and media link <SoundCloudLink>
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -283,7 +292,7 @@ Scenario Outline: Conversation gets scrolled back to playing media when clicking
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I post media link <SoundCloudLink>
+    And I type and send long message and media link <SoundCloudLink>
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -437,4 +446,24 @@ Examples:
 
 	Examples: 
     |	Login	|	Password	|	Name	|	Contact1		| SoundCloudLink 								| time |
-    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| https://soundcloud.com/carl-cox/carl-cox-nexus| 28   |
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| https://soundcloud.com/carl-cox/carl-cox-nexus| 28   | 
+
+ @staging
+ @id415
+  Scenario Outline: Send Message to contact after navigating away from chat page
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I type the message
+    And I scroll away the keyboard
+    And I navigate back to conversations view
+    Then I tap on contact name <Contact>
+    And I send the message
+    Then I see my message in the dialog
+
+	Examples: 
+    |	Login	|	Password	|	Name	|	Contact		|
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaAvatar	|
+    
+    

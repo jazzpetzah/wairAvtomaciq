@@ -25,6 +25,10 @@ public class ConnectToPageSteps {
 	
 	@When("^I press Ignore connect button$")
 	public void WhenIPressIgnoreConnectButton() throws Exception{
+		if(PagesCollection.connectToPage == null)
+		{
+			PagesCollection.connectToPage = (ConnectToPage) PagesCollection.androidPage;
+		}
 		PagesCollection.contactListPage = PagesCollection.connectToPage.pressIgnorButton();	
 	}
 }

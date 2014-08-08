@@ -76,7 +76,7 @@ public class UserProfilePageSteps {
 
 		double score = ImageUtil.getOverlapScore(userProfileAfter, userProfileBefore, ImageUtil.RESIZE_NORESIZE);
 		Assert.assertFalse(
-				"Overlap between two images has no enough score. Expected >= 0.55, current = " + score,
+				"Overlap between two images has no enough score. Expected >= 0.9, current = " + score,
 				score >= 0.9d);
 	}
 }

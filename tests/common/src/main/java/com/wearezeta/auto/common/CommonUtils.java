@@ -1,11 +1,11 @@
 package com.wearezeta.auto.common;
 
-
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
+import java.util.Map.Entry;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -18,6 +18,7 @@ import javax.ws.rs.core.UriBuilderException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.commons.collections.ListUtils;
 import org.json.JSONException;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
@@ -30,15 +31,15 @@ import org.w3c.dom.NodeList;
 import com.wearezeta.auto.common.driver.DriverUtils;
 
 public class CommonUtils {
-
-	public static final String ENGLISH_LANG_NAME = "english";
-
-	public static final String FIRST_OS_NAME = "Windows";
-	public static final int USERS_COUNT = 4;
+	public static final String OS_NAME_WINDOWS = "Windows";
+	public static final int USERS_COUNT = 7;
 	public static final String YOUR_USER_1 = "aqaUser";
 	public static final String YOUR_USER_2 = "yourUser";
 	public static final String YOUR_USER_3 = "yourContact";
-	public static final String YOUR_USER_4 = "yourNotContact";
+	public static final String YOUR_USER_4 = "yourNotContact1";
+	public static final String YOUR_USER_5 = "yourNotContact2";
+	public static final String YOUR_USER_6 = "yourNotContact3";
+	public static final String YOUR_USER_7 = "yourNotContact4";
 	public static final String YOUR_UNCONNECTED_USER = YOUR_USER_3;
 	public static final String YOUR_PASS = "aqaPassword";
 	public static final String CONTACT_1 = "aqaContact1";
@@ -65,34 +66,6 @@ public class CommonUtils {
 		return System.getProperty("os.name");
 	}
 
-	public static void uploadPhotoToAndroid(String photoPathOnDevice)
-			throws Exception {
-		if (getOsName().contains(FIRST_OS_NAME)) {
-			Runtime.getRuntime().exec(
-					"cmd /C adb push " + getImagePath(CommonUtils.class) + " "
-							+ photoPathOnDevice);
-			Runtime.getRuntime()
-					.exec("cmd /C adb -d shell \"am broadcast -a android.intent.action.MEDIA_MOUNTED -d file:///sdcard \"Broadcasting: Intent { act=android.intent.action.MEDIA_MOUNTED dat=file:///sdcard }");
-		} else {
-			executeOsXCommand(new String[] { "/bin/bash", "-c", "adb push",
-					getImagePath(CommonUtils.class), photoPathOnDevice });
-			executeOsXCommand(new String[] {
-					"/bin/bash",
-					"-c",
-					"adb shell \"am broadcast -a android.intent.action.MEDIA_MOUNTED -d file:///sdcard \"Broadcasting: Intent { act=android.intent.action.MEDIA_MOUNTED dat=file:///sdcard }" });
-		}
-	}
-
-	public static void killAndroidClient() throws Exception {
-		if (getOsName().contains(FIRST_OS_NAME)) {
-			Runtime.getRuntime().exec(
-					"cmd /C adb shell am force-stop com.waz.zclient");
-		} else {
-			executeOsXCommand(new String[] { "/bin/bash", "-c",
-					"adb shell am force-stop com.waz.zclient" });
-		}
-	}
-
 	public static void executeOsXCommand(String[] cmd) throws Exception {
 		Process process = Runtime.getRuntime().exec(cmd);
 		System.out.println("Process Code " + process.waitFor());
@@ -103,12 +76,8 @@ public class CommonUtils {
 		// Can be used to replace Example: CommonUtils.yourUser.get(0) with
 		// findUserNamed(aqaUser)
 		username = retrieveRealUserContactPasswordValue(username);
-		for (ClientUser user : yourUsers) {
-			if (user.getName().equalsIgnoreCase(username)) {
-				return user;
- 			}
- 		}
-		for (ClientUser user : contacts) {
+		for (Object item : ListUtils.union(yourUsers, contacts)) {
+			ClientUser user = (ClientUser) item;
 			if (user.getName().equalsIgnoreCase(username)) {
 				return user;
 			}
@@ -116,77 +85,56 @@ public class CommonUtils {
 		throw new NoSuchElementException("No user with username: " + username
 				+ " is in an available list");
 	}
-	
-	public static String retrieveRealUserContactPasswordValue(String value) {
-		if (yourUsers.size() > 0) {
-			if (value.contains(YOUR_USER_1)) {
-				value = value.replace(YOUR_USER_1, yourUsers.get(0).getName());
-			}
-			if (value.contains(YOUR_USER_2)) {
-				value = value.replace(YOUR_USER_2, yourUsers.get(1).getName());
-			}
-			if (value.contains(YOUR_USER_3)) {
-				value = value.replace(YOUR_USER_3, yourUsers.get(2).getName());
-			}
-			if (value.contains(YOUR_USER_4)) {
-				value = value.replace(YOUR_USER_4, yourUsers.get(3).getName());
-			}
-			if (value.contains(YOUR_PASS)) {
-				value = value
-						.replace(YOUR_PASS, yourUsers.get(0).getPassword());
-			}
 
+	public static String retrieveRealUserContactPasswordValue(String value) {
+		// TODO: This method requires better optimization
+		Map<String, String> replacementMap = new LinkedHashMap<String, String>();
+		if (yourUsers.size() > 0) {
+			replacementMap.put(YOUR_USER_1, yourUsers.get(0).getName());
+			replacementMap.put(YOUR_USER_2, yourUsers.get(1).getName());
+			replacementMap.put(YOUR_USER_3, yourUsers.get(2).getName());
+			replacementMap.put(YOUR_USER_4, yourUsers.get(3).getName());
+			replacementMap.put(YOUR_USER_5, yourUsers.get(4).getName());
+			replacementMap.put(YOUR_USER_6, yourUsers.get(5).getName());
+			replacementMap.put(YOUR_USER_7, yourUsers.get(6).getName());
+			replacementMap.put(YOUR_PASS, yourUsers.get(0).getPassword());
 		}
 		if (contacts.size() > 0) {
-			if (value.contains(CONTACT_1)) {
-				value = value.replace(CONTACT_1, contacts.get(0).getName());
-			}
-			if (value.contains(CONTACT_2)) {
-				value = value.replace(CONTACT_2, contacts.get(1).getName());
-			}
-			if (value.contains(CONTACT_3)) {
-				value = value.replace(CONTACT_3, contacts.get(2).getName());
-			}
-			if (value.equals(CONTACT_4)) {
-				value = value.replace(CONTACT_4, CONTACT_PICTURE_NAME);
-			}
-			if (value.equals(CONTACT_5)) {
-				value = value.replace(CONTACT_5, CONTACT_AVATAR_NAME);
-			}
+			replacementMap.put(CONTACT_1, contacts.get(0).getName());
+			replacementMap.put(CONTACT_2, contacts.get(1).getName());
+			replacementMap.put(CONTACT_3, contacts.get(2).getName());
+			replacementMap.put(CONTACT_4, CONTACT_PICTURE_NAME);
+			replacementMap.put(CONTACT_5, CONTACT_AVATAR_NAME);
 		}
-		if (value.equals("aqaPictureContactEmail")) {
-			value = value.replace("aqaPictureContactEmail",
-					CONTACT_PICTURE_EMAIL);
-		}
-		if (value.equals("aqaPictureContactPassword")) {
-			value = value.replace("aqaPictureContactPassword",
-					CONTACT_PICTURE_PASSWORD);
-		}
-		if (value.equals("aqaAvatarTestContactEmail")) {
-			value = value.replace("aqaAvatarTestContactEmail",
-					CONTACT_AVATAR_EMAIL);
-		}
-		if (value.equals("aqaAvatarTestContactPassword")) {
-			value = value.replace("aqaAvatarTestContactPassword",
-					CONTACT_AVATAR_PASSWORD);
-		}
+		// TODO: Magic strings 
+		replacementMap.put("aqaPictureContactEmail", CONTACT_PICTURE_EMAIL);
+		replacementMap.put("aqaPictureContactPassword",
+				CONTACT_PICTURE_PASSWORD);
+		replacementMap.put("aqaAvatarTestContactEmail", CONTACT_AVATAR_EMAIL);
+		replacementMap.put("aqaAvatarTestContactPassword",
+				CONTACT_AVATAR_PASSWORD);
 
-		return value;
+		String result = value;
+		for (Entry<String, String> replacementEntry : replacementMap.entrySet()) {
+			if (result.contains(replacementEntry.getKey())) {
+				// TODO: Should we continue replacements or we can return entry.value immediately?
+				result = result.replace(replacementEntry.getKey(),
+						replacementEntry.getValue());
+			}
+		}
+		return result;
 	}
 
-	
 	public static String getImagePath(Class<?> c) throws IOException {
 		String path = getValueFromConfig(c, "defaultImagesPath") + USER_IMAGE;
 		return path;
 	}
 
 	public static String getImagesPath(Class<?> c) throws IOException {
-
 		return getValueFromConfig(c, "defaultImagesPath");
 	}
 
 	public static String getResultImagePath(Class<?> c) throws IOException {
-
 		String path = getValueFromConfig(c, "defaultImagesPath")
 				+ RESULT_USER_IMAGE;
 		return path;
@@ -194,58 +142,39 @@ public class CommonUtils {
 
 	public static String getPictureResultsPathFromConfig(Class<?> c)
 			throws IOException {
-
 		return getValueFromConfig(c, "pictureResultsPath");
+	}
+
+	private static String getValueFromConfigFile(Class<?> c, String key,
+			String resourcePath) throws IOException {
+		String val = "";
+		InputStream configFileStream = null;
+		try {
+			URL configFile = c.getClass().getResource("/" + resourcePath);
+			configFileStream = configFile.openStream();
+			Properties p = new Properties();
+			p.load(configFileStream);
+			val = (String) p.get(key);
+		} finally {
+			if (configFileStream != null) {
+				configFileStream.close();
+			}
+		}
+		return val;
 	}
 
 	private static String getValueFromConfig(Class<?> c, String key)
 			throws IOException {
-
-		String val = "";
-		InputStream configFileStream = null;
-
-		try {
-			URL configFile = c.getClass().getResource("/Configuration.cnf");
-			configFileStream = configFile.openStream();
-			Properties p = new Properties();
-			p.load(configFileStream);
-
-			val = (String) p.get(key);
-		} finally {
-			if (configFileStream != null) {
-				configFileStream.close();
-			}
-		}
-
-		return val;
+		return getValueFromConfigFile(c, key, "Configuration.cnf");
 	}
 
 	private static String getValueFromCommonConfig(Class<?> c, String key)
 			throws IOException {
-
-		String val = "";
-		InputStream configFileStream = null;
-
-		try {
-			URL configFile = c.getClass().getResource(
-					"/CommonConfiguration.cnf");
-			configFileStream = configFile.openStream();
-			Properties p = new Properties();
-			p.load(configFileStream);
-
-			val = (String) p.get(key);
-		} finally {
-			if (configFileStream != null) {
-				configFileStream.close();
-			}
-		}
-
-		return val;
+		return getValueFromConfigFile(c, key, "CommonConfiguration.cnf");
 	}
 
 	public static String getDefaultEmailFromConfig(Class<?> c)
 			throws IOException {
-
 		return getValueFromCommonConfig(c, "defaultEmail");
 	}
 
@@ -254,47 +183,40 @@ public class CommonUtils {
 		return getValueFromCommonConfig(c, "defaultEmailServer");
 	}
 
-
-	public static String getDriverTimeoutFromConfig(Class<?> c) throws IOException {
+	public static String getDriverTimeoutFromConfig(Class<?> c)
+			throws IOException {
 		return getValueFromConfig(c, "driverTimeoutSeconds");
 	}
 
 	public static String getDefaultPasswordFromConfig(Class<?> c)
 			throws IOException {
-
 		return getValueFromCommonConfig(c, "defaultPassword");
 	}
 
 	public static String getDefaultBackEndUrlFromConfig(Class<?> c)
 			throws IOException {
-
 		return getValueFromCommonConfig(c, "defaultBackEndUrl");
 	}
 
 	public static String getUrlFromConfig(Class<?> c) throws IOException {
-
 		return getValueFromConfig(c, "Url");
 	}
 
 	public static Boolean getIsSimulatorFromConfig(Class<?> c)
 			throws IOException {
-
 		return (getValueFromConfig(c, "isSimulator").equals("true"));
 	}
 
 	public static String getSwipeScriptPath(Class<?> c) throws IOException {
-
 		return getValueFromConfig(c, "swipeScriptPath");
 	}
 
 	public static String getAppPathFromConfig(Class<?> c) throws IOException {
-
 		return getValueFromConfig(c, "appPath");
 	}
 
 	public static String getAndroidActivityFromConfig(Class<?> c)
 			throws IOException {
-
 		return getValueFromConfig(c, "activity");
 	}
 
@@ -305,134 +227,21 @@ public class CommonUtils {
 
 	public static String getGenerateUsersFlagFromConfig(Class<?> c)
 			throws IOException {
-
 		return getValueFromConfig(c, "generateUsers");
 	}
 
 	public static String getAndroidPackageFromConfig(Class<?> c)
 			throws IOException {
-
 		return getValueFromConfig(c, "package");
 	}
 
 	public static String getUserPicturePathFromConfig(Class<?> c)
 			throws IOException {
-
 		return getValueFromConfig(c, "pathToUserpic");
 	}
 
 	public static String generateGUID() {
 		return UUID.randomUUID().toString();
-	}
-
-	/*
-	 * BEGIN: For parsing the XML files of other languages and inputting them in
-	 * the character test as per multiple iOS user stories Currently only being
-	 * used for the English language
-	 */
-	private static String getLanguageAlphabet(String languageName)
-			throws Throwable {
-		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
-				.newInstance();
-		docBuilderFactory.setValidating(false);
-		docBuilderFactory.setNamespaceAware(true);
-		docBuilderFactory.setFeature("http://xml.org/sax/features/namespaces",
-				false);
-		docBuilderFactory.setFeature("http://xml.org/sax/features/validation",
-				false);
-		docBuilderFactory
-				.setFeature(
-						"http://apache.org/xml/features/nonvalidating/load-dtd-grammar",
-						false);
-		docBuilderFactory
-				.setFeature(
-						"http://apache.org/xml/features/nonvalidating/load-external-dtd",
-						false);
-		DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-
-		InputStream languageFileStream = null;
-		String languageFilePath = String.format("/LanguageFiles/%s.xml",
-				languageName.toLowerCase());
-		try {
-			URL languageFile = CommonUtils.class.getResource(languageFilePath);
-			languageFileStream = languageFile.openStream();
-
-			if (languageFileStream == null) {
-				throw new Exception(String.format(
-						"Failed to load %s from resources", languageFilePath));
-			}
-			Document doc = docBuilder.parse(languageFileStream);
-			doc.getDocumentElement().normalize();
-			NodeList characterTypes = doc
-					.getElementsByTagName("exemplarCharacters");
-			StringBuilder alphabet = new StringBuilder(100);
-			for (int i = 0; i < characterTypes.getLength(); i++) {
-				Node firstTypeNode = characterTypes.item(i);
-				if (firstTypeNode.getNodeType() == Node.ELEMENT_NODE) {
-					Element firstElement = (Element) firstTypeNode;
-
-					if (null != firstElement.getAttribute("type")) {
-						if (firstElement.getAttribute("type").equals(
-								"auxiliary")) {
-							continue;
-						}
-					}
-					NodeList textFNList = firstElement.getChildNodes();
-					String characters = ((Node) textFNList.item(0))
-							.getNodeValue().trim();
-					String[] charactersArr = characters.replaceAll("^\\[|\\]$",
-							"").split("\\s");
-					for (String chr : charactersArr) {
-						if (chr.length() == 6
-								&& chr.substring(0, 2).equals("\\u")) {
-							int c = Integer.parseInt(chr.substring(2, 6), 16);
-							alphabet.append(Character.toString((char) c));
-						} else {
-							alphabet.append(chr);
-						}
-					}
-				}
-
-			}
-			return alphabet.toString();
-		} finally {
-			if (languageFileStream != null) {
-				languageFileStream.close();
-			}
-		}
-	}
-
-	public static List<String> getUnicodeStringAsCharList(String str) {
-		List<String> characters = new ArrayList<String>();
-		Pattern pat = Pattern.compile("\\p{L}\\p{M}*|\\W");
-		Matcher matcher = pat.matcher(str);
-		while (matcher.find()) {
-			characters.add(matcher.group());
-		}
-		return characters;
-	}
-
-	public static String generateRandomString(int len, String languageName)
-			throws Throwable {
-		String alphabet = getLanguageAlphabet(languageName);
-		List<String> characters = getUnicodeStringAsCharList(alphabet);
-		// Appium does not type characters beyond standard ASCII set, we have to
-		// cut those characters
-		if (languageName.toLowerCase().equals(ENGLISH_LANG_NAME)) {
-			List<String> ascii_characters = new ArrayList<String>();
-			for (String chr : characters) {
-				if (chr.length() == 1 && (int) chr.charAt(0) <= 127) {
-					ascii_characters.add(chr);
-				}
-			}
-			characters = ascii_characters;
-		}
-		Random rnd = new Random();
-		StringBuilder sb = new StringBuilder(len);
-		for (int i = 0; i < len; i++) {
-			sb.append(characters.get(rnd.nextInt(characters.size())));
-		}
-		return sb.toString();
 	}
 
 	public static BufferedImage getElementScreenshot(WebElement element,
@@ -473,7 +282,8 @@ public class CommonUtils {
 	public static void generateUsers(int contactNumber) throws IOException,
 			MessagingException, IllegalArgumentException, UriBuilderException,
 			JSONException, BackendRequestException, InterruptedException {
-		ExecutorService executor = Executors.newFixedThreadPool(MAX_PARALLEL_USER_CREATION_TASKS);
+		ExecutorService executor = Executors
+				.newFixedThreadPool(MAX_PARALLEL_USER_CREATION_TASKS);
 		for (int i = 0; i < USERS_COUNT + contactNumber; i++) {
 			final boolean isContact = (i >= USERS_COUNT);
 			Runnable worker = new Thread(new Runnable() {
@@ -500,14 +310,14 @@ public class CommonUtils {
 			executor.execute(worker);
 		}
 		executor.shutdown();
-		if (!executor.awaitTermination(USERS_CREATION_TIMEOUT, TimeUnit.SECONDS)) {
+		if (!executor
+				.awaitTermination(USERS_CREATION_TIMEOUT, TimeUnit.SECONDS)) {
 			throw new BackendRequestException(
 					String.format(
 							"The backend has failed to prepare predefined users within %d seconds timeout",
 							USERS_CREATION_TIMEOUT));
 		}
-		if (yourUsers.size() != USERS_COUNT
-				|| contacts.size() != contactNumber) {
+		if (yourUsers.size() != USERS_COUNT || contacts.size() != contactNumber) {
 			throw new BackendRequestException(
 					"Failed to create new users or contacts on the backend");
 		}
@@ -516,38 +326,30 @@ public class CommonUtils {
 	}
 
 	public static void usePrecreatedUsers() {
-		ClientUser contact3 = new ClientUser(
-				"smoketester+bbf79363bd3d4ff3ae6a835ed27fe274@wearezeta.com",
-				"aqa123456", "34a6a8a88a6e4f9aa1bc77b94ec7ae3a",
-				UsersState.AllContactsConnected);
-		ClientUser contact2 = new ClientUser(
-				"smoketester+34a6a8a88a6e4f9aa1bc77b94ec7ae3a@wearezeta.com",
-				"aqa123456", "34a6a8a88a6e4f9aa1bc77b94ec7ae3a",
-				UsersState.AllContactsConnected);
-		ClientUser contact1 = new ClientUser(
-				"smoketester+3e54e65b95cc46608d970b3e949e4773@wearezeta.com",
-				"aqa123456", "3e54e65b95cc46608d970b3e949e4773",
-				UsersState.AllContactsConnected);
-		ClientUser yourUser3 = new ClientUser(
-				"smoketester+bbf79363bd3d4ff3ae6a835ed27fe274@wearezeta.com",
-				"aqa123456", "bbf79363bd3d4ff3ae6a835ed27fe274",
-				UsersState.AllContactsConnected);
-		ClientUser yourUser2 = new ClientUser(
-				"smoketester+50d287c2407e4c5e8af578979d436c88@wearezeta.com",
-				"aqa123456", "50d287c2407e4c5e8af578979d436c88",
-				UsersState.AllContactsConnected);
-		ClientUser yourUser1 = new ClientUser(
-				"smoketester+1f91773deae943948da19b86cd818388@wearezeta.com",
-				"aqa123456", "1f91773deae943948da19b86cd818388",
-				UsersState.AllContactsConnected);
-		yourUsers = new LinkedList<ClientUser>();
-		contacts = new LinkedList<ClientUser>();
-		yourUsers.add(yourUser1);
-		yourUsers.add(yourUser2);
-		yourUsers.add(yourUser3);
-		contacts.add(contact1);
-		contacts.add(contact2);
-		contacts.add(contact3);
+		// TODO: maybe these constants are global?
+		final String DEFAULT_PASSWORD = "aqa123456";
+		final String EMAIL_TEMPLATE = "smoketester+%s@wearezeta.com";
+
+		String[] userIds = new String[] { "1f91773deae943948da19b86cd818388",
+				"50d287c2407e4c5e8af578979d436c88",
+				"bbf79363bd3d4ff3ae6a835ed27fe274" };
+		for (String userId : userIds) {
+			ClientUser user = new ClientUser(String.format(EMAIL_TEMPLATE,
+					userId), DEFAULT_PASSWORD, userId,
+					UsersState.AllContactsConnected);
+			yourUsers.add(user);
+		}
+
+		String[] contactIds = new String[] {
+				"3e54e65b95cc46608d970b3e949e4773",
+				"34a6a8a88a6e4f9aa1bc77b94ec7ae3a",
+				"34a6a8a88a6e4f9aa1bc77b94ec7ae3a" };
+		for (String contactId : contactIds) {
+			ClientUser contact = new ClientUser(String.format(EMAIL_TEMPLATE,
+					contactId), DEFAULT_PASSWORD, contactId,
+					UsersState.AllContactsConnected);
+			contacts.add(contact);
+		}
 	}
 
 	public static String getAndroidDeviceNameFromConfig(Class<?> c)

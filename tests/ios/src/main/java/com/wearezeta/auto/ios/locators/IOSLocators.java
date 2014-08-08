@@ -46,6 +46,10 @@ public final class IOSLocators {
 	
 	public static final String nameSendConnectButton = "SEND";
 	
+	public static final String nameConnectOtherUserButton = "CONNECT";
+	
+	public static final String nameIgnoreOtherUserButton = "IGNORE";
+	
 	public static final String clasNameConnectDialogLabel = "UIATextField";
 	
 	public static final String classNameConnectDialogInput = "UIATextView";

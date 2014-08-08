@@ -23,6 +23,15 @@ public class ConnectToPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathConnectionMessageInput)
 	private WebElement messageInput;
 	
+	@FindBy(how = How.NAME, using = IOSLocators.nameSendConnectButton)
+	private WebElement sendConnectButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameConnectOtherUserButton)
+	private WebElement connectOtherUserButton;
+
+	@FindBy(how = How.NAME, using = IOSLocators.nameIgnoreOtherUserButton)
+	private WebElement ignoreOtherUserButton;
+	
 	private String url;
 	private String path;
 	private String inviteMessage = "Hello";
@@ -52,6 +61,7 @@ public class ConnectToPage extends IOSPage {
 	public ContactListPage sendInvitation(String name) throws IOException{
 		ContactListPage page = null;
 		fillTextInConnectDialog();
+		sendConnectButton.click();
 		page = new ContactListPage(url, path);
 		return page;
 	}
@@ -69,6 +79,10 @@ public class ConnectToPage extends IOSPage {
 	
 	public boolean waitForConnectDialog(){
 		return DriverUtils.waitUntilElementAppears(driver, By.className(IOSLocators.clasNameConnectDialogLabel));
+	}
+	
+	public void acceptInvitation() {
+		connectOtherUserButton.click();
 	}
 
 }

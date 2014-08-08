@@ -1,5 +1,7 @@
 Feature: Register new user
 
+#Muted till new sync engine client stabilization
+@mute
 @regression
 @id77
 Scenario Outline: Register new user using front camera
@@ -20,6 +22,8 @@ Examples:
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
 
+#Muted till new sync engine client stabilization
+@mute
 @smoke
 @id177
 Scenario Outline: Register new user with image
@@ -41,6 +45,8 @@ Examples:
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|	userpicture_landscape.jpg	|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|	userpicture_portrait.jpg	|
 
+#Muted till new sync engine client stabilization
+@mute
 @regression
 @id171
 Scenario Outline: Do not accept email with spaces

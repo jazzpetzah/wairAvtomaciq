@@ -1,13 +1,10 @@
 package com.wearezeta.auto.ios;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.pages.ImageFullScreenPage;
 import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
@@ -30,6 +27,7 @@ public class DialogPageSteps {
 
 	private String mediaState;
 	public static String sendDate;
+	private static final int SWIPE_DURATION = 1000;
 
 	
 	@When("^I see dialog page$")
@@ -51,7 +49,7 @@ public class DialogPageSteps {
 	@When("^I type the message$")
 	public void WhenITypeTheMessage() throws Throwable {
 		message = CommonUtils.generateGUID();
-		PagesCollection.dialogPage.typeMessage(message + "\n");
+		PagesCollection.dialogPage.typeMessage(message);
 	}
 
 	@When("^I multi tap on text input$")
@@ -77,6 +75,11 @@ public class DialogPageSteps {
 	public void ITypeTheMessageAndSendIt() throws Throwable {
 	    message = CommonUtils.generateGUID();
 	    PagesCollection.dialogPage.typeMessage(message + "\n");
+	}
+	
+	@When("^I send the message$")
+	public void WhenISendTheMessage() throws Throwable {
+		PagesCollection.dialogPage.sendMessage("\n");
 	}
 	
 	@When("^I swipe up on dialog page$")
@@ -242,6 +245,16 @@ public class DialogPageSteps {
 	@When("I tap and hold image to open full screen")
 		public void ITapImageToOpenFullScreen() throws Throwable{
 		PagesCollection.imageFullScreenPage = (ImageFullScreenPage)PagesCollection.dialogPage.tapImageToOpen();
+	}
+	
+	@Then("^I scroll away the keyboard$")
+	public void IScrollKeyboardAway() throws Exception {
+		PagesCollection.dialogPage.swipeDown(SWIPE_DURATION);
+	}
+	
+	@Then("^I navigate back to conversations view$")
+	public void INavigateToConversationsView() throws IOException {
+		PagesCollection.dialogPage.swipeRight(SWIPE_DURATION);
 	}
 	
 
