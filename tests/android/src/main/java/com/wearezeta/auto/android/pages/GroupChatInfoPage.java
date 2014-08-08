@@ -163,6 +163,7 @@ public class GroupChatInfoPage extends AndroidPage {
 
 	public OtherUserPersonalInfoPage tapOnContact(String contact) throws Exception {
 		refreshUITree();
+		wait.until(ExpectedConditions.visibilityOf(groupChatName));
 		WebElement cn = driver.findElement(By.xpath(String.format(AndroidLocators.xpathContacts, contact.toUpperCase())));
 		cn.click();
 		return new OtherUserPersonalInfoPage(url, path);

@@ -106,7 +106,7 @@ Feature: Conversation
     And I see Contact list with my name <Name>
     When I tap on contact name <GroupChatName>
     And I swipe up on group dialog page
-    And I select contact <Contact2>
+    And I tap on group chat contact <Contact2>
     And I click Remove
     And I confirm remove
     Then I do not see <Contact2> on group chat info page
