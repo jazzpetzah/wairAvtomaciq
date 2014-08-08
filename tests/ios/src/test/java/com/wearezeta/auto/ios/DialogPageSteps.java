@@ -27,6 +27,7 @@ public class DialogPageSteps {
 
 	private String mediaState;
 	public static String sendDate;
+	private static final int SWIPE_DURATION = 1000;
 
 	
 	@When("^I see dialog page$")
@@ -248,12 +249,12 @@ public class DialogPageSteps {
 	
 	@Then("^I scroll away the keyboard$")
 	public void IScrollKeyboardAway() throws Exception {
-		PagesCollection.dialogPage.swipeDown(1000);
+		PagesCollection.dialogPage.swipeDown(SWIPE_DURATION);
 	}
 	
 	@Then("^I navigate back to conversations view$")
 	public void INavigateToConversationsView() throws IOException {
-		PagesCollection.dialogPage.swipeRight(1000);
+		PagesCollection.dialogPage.swipeRight(SWIPE_DURATION);
 	}
 	
 

@@ -50,7 +50,7 @@ public class IOSKeyboard {
 	}
 
 	private static IOSKeyboard instance = null;
-	public static IOSKeyboard getInstance(ZetaDriver driver) {
+	public static synchronized IOSKeyboard getInstance(ZetaDriver driver) {
 		if(instance == null) {
 			instance = new IOSKeyboard(driver);
 		}
