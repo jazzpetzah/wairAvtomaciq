@@ -39,6 +39,8 @@ public final class OSXLocators {
 	public static final String nameSendInvitationButton = "Send";
 	
 	public static final String xpathMessageEntry = "//AXGroup/AXStaticText";
+	public static final String xpathFormatConversationNewNameEntry = "//AXHeading/AXStaticText[@AXValue='%s']";
+	public static final String xpathConversationLastNewNameEntry = "//AXHeading/AXStaticText[last()]";
 	public static final String xpathNewMessageTextArea = "//AXTextArea";
 	public static final String xpathFileListScrollArea = "//AXScrollArea";
 	public static final String xpathConversationImageEntry = "//AXGroup/AXImage";
@@ -120,5 +122,7 @@ public final class OSXLocators {
 	public static final String idUserProfileViewBackButton = "userProfileViewBackButton";
 	
 	public static final String xpathFormatUserProfileViewContactName = "//AXWindow/AXPopover/AXScrollArea/AXTextArea[@AXValue='%s']";
+	
+	public static final String RANDOM_KEYWORD = "RANDOM";
 	
 }

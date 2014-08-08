@@ -278,4 +278,15 @@ public class ConversationPageSteps {
 	 private void verifySoundCloudButtonState(String expectedState){
 		 Assert.assertEquals(expectedState, CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState());
 	 }
+	 
+	 @Then("^I see conversation name (.*) in conversation$")
+	 public void ISeeConversationNameInConversation(String name) {
+		 if (name.equals(OSXLocators.RANDOM_KEYWORD)) {
+			 name = CommonSteps.senderPages.getConversationInfoPage().getCurrentConversationName();
+		 }
+		 String result = CommonSteps.senderPages.getConversationPage().getLastConversationNameChangeMessage();
+		 Assert.assertTrue(
+				 "New conversation name '" + result + "' does not equal to expected '" + name + "'",
+				 result.equals(name));
+	 }
 }
