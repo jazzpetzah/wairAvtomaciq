@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android.pages;
 
 import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
@@ -202,6 +203,10 @@ public class DialogPage extends AndroidPage{
 
 		return connectRequestChatUserName.getText().toLowerCase();
 	}
-
+	
+	public ContactListPage navigateBack() throws Exception{
+		driver.navigate().back();
+		return new ContactListPage(url, path);
+	}
 	
 }

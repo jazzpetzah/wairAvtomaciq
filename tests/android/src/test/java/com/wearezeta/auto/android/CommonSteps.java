@@ -114,7 +114,7 @@ public class CommonSteps {
 	}
 
 	@When("^I press back button$")
-	public void PressBackButton() {
+	public void PressBackButton() throws Exception {
 		if (PagesCollection.loginPage != null) {
 			PagesCollection.loginPage.navigateBack();
 		}

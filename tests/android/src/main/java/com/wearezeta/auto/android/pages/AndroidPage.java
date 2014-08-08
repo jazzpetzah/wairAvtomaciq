@@ -67,8 +67,9 @@ public abstract class AndroidPage extends BasePage {
         super.InitConnection(url, capabilities);
 	}
 	
-	public void navigateBack(){
+	public AndroidPage navigateBack() throws Exception{
 		driver.navigate().back();
+		return null;
 	}
 	@Override
 	public void Close() throws IOException {
