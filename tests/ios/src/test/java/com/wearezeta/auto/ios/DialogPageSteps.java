@@ -1,13 +1,10 @@
 package com.wearezeta.auto.ios;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.pages.ImageFullScreenPage;
 import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;

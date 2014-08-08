@@ -1,13 +1,9 @@
 package com.wearezeta.auto.android.pages;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import javax.imageio.ImageIO;
-
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;

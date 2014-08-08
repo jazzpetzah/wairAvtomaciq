@@ -1,7 +1,5 @@
 package com.wearezeta.auto.android.pages;
 
-import io.appium.java_client.MobileElement;
-
 import java.io.IOException;
 import java.util.*;
 
