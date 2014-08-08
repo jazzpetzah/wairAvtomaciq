@@ -50,6 +50,7 @@ public class ConnectToPage extends AndroidPage {
 	}
 
 	public ContactListPage pressIgnorButton() throws Exception {
+		refreshUITree();
 		connectIgnoreBtn.click();
 		return new ContactListPage(url, path);
 	}
