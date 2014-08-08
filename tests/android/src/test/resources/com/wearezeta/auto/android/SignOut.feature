@@ -1,5 +1,5 @@
 Feature: Sign Out
-@329
+@id329
 @smoke 
 @nonUnicode
   Scenario Outline: Sign out from ZClient

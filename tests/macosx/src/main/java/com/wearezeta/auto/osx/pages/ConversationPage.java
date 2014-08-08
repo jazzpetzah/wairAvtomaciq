@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -233,6 +232,10 @@ public class ConversationPage extends OSXPage {
 		mediabarBarTitle.click();
 	}
 	
+	public String getLastConversationNameChangeMessage() {
+		WebElement el = driver.findElement(By.xpath(OSXLocators.xpathConversationLastNewNameEntry));
+		return el.getAttribute("AXValue");
+	}
 	
 
 }

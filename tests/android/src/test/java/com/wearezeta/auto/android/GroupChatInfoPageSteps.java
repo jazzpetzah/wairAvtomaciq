@@ -17,6 +17,7 @@ public class GroupChatInfoPageSteps {
 
 	@When("^I tap on group chat contact (.*)$")
 	public void WhenITapOnGroupChatContact(String contact) throws Throwable {
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 		PagesCollection.otherUserPersonalInfoPage = PagesCollection.groupChatInfoPage.tapOnContact(contact);
 	}
 	

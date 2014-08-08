@@ -68,7 +68,7 @@ public class PeoplePickerPageSteps {
 	@When("^I tap on user name found on People picker page (.*)$")
 	public void WhenITapOnUserNameFoundOnPeoplePickerPage(String contact) throws Throwable {
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
-		PagesCollection.peoplePickerPage.selectContact(contact);
+		PagesCollection.androidPage = PagesCollection.peoplePickerPage.selectContact(contact);
 	}
 	
 	@When("^I  long tap on user name found on People picker page (.*)$")
@@ -80,7 +80,7 @@ public class PeoplePickerPageSteps {
 	@When("^I tap on group name found on People picker page (.*)$")
 	public void WhenITapOnGroupNameFoundOnPeoplePickerPage(String contact) throws Throwable {
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
-		PagesCollection.peoplePickerPage.selectGroup(contact);
+		PagesCollection.androidPage = PagesCollection.peoplePickerPage.selectGroup(contact);
 	}
 	
 	@When("^I see Add to conversation button$")
