@@ -34,11 +34,14 @@ public class CommonUtils {
 	public static final String ENGLISH_LANG_NAME = "english";
 
 	public static final String FIRST_OS_NAME = "Windows";
-	public static final int USERS_COUNT = 4;
+	public static final int USERS_COUNT = 7;
 	public static final String YOUR_USER_1 = "aqaUser";
 	public static final String YOUR_USER_2 = "yourUser";
 	public static final String YOUR_USER_3 = "yourContact";
-	public static final String YOUR_USER_4 = "yourNotContact";
+	public static final String YOUR_USER_4 = "yourNotContact1";
+	public static final String YOUR_USER_5 = "yourNotContact2";
+	public static final String YOUR_USER_6 = "yourNotContact3";
+	public static final String YOUR_USER_7 = "yourNotContact4";
 	public static final String YOUR_UNCONNECTED_USER = YOUR_USER_3;
 	public static final String YOUR_PASS = "aqaPassword";
 	public static final String CONTACT_1 = "aqaContact1";
@@ -130,6 +133,15 @@ public class CommonUtils {
 			}
 			if (value.contains(YOUR_USER_4)) {
 				value = value.replace(YOUR_USER_4, yourUsers.get(3).getName());
+			}
+			if (value.contains(YOUR_USER_5)) {
+				value = value.replace(YOUR_USER_5, yourUsers.get(4).getName());
+			}
+			if (value.contains(YOUR_USER_6)) {
+				value = value.replace(YOUR_USER_6, yourUsers.get(5).getName());
+			}
+			if (value.contains(YOUR_USER_7)) {
+				value = value.replace(YOUR_USER_7, yourUsers.get(6).getName());
 			}
 			if (value.contains(YOUR_PASS)) {
 				value = value

@@ -62,14 +62,22 @@ public class CommonSteps {
 		AndroidPage.clearPagesCollection();
 	}
 
-	@Given("^(.*) connection request is sended to me$")
-	public void GivenConnectionRequestIsSendedToMe(String contact) throws Throwable {
+	@Given("^(.*) connection request is sended to me (.*)$")
+	public void GivenConnectionRequestIsSendedToMe(String contact, String me) throws Throwable {
+		ClientUser yourUser = null;
+		me = CommonUtils.retrieveRealUserContactPasswordValue(me);
+		for (ClientUser user : CommonUtils.yourUsers) {
+			if (user.getName().toLowerCase().equals(me.toLowerCase())) {
+				yourUser = user;
+			}
+		}
+
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 		for (ClientUser user : CommonUtils.yourUsers) {
 			if (user.getName().toLowerCase().equals(contact.toLowerCase())) {
 				BackEndREST.loginByUser(user);
 				BackEndREST.sendConnectRequest(user,
-						CommonUtils.yourUsers.get(0), CONNECTION_NAME
+						yourUser, CONNECTION_NAME
 						+ user.getName(),
 						CONNECTION_MESSAGE);
 				break;

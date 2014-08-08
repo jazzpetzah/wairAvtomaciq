@@ -3,6 +3,7 @@ package com.wearezeta.auto.android.pages;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -22,11 +23,17 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	public static final String REMOVE_FROM_CONVERSATION_BUTTON = "Remove";
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.80;
 	
+	@FindBy(how = How.ID, using = AndroidLocators.idOtherUserPersonalInfoName)
+	private List<WebElement> otherUserName;
+	
+	@FindBy(how = How.ID, using = AndroidLocators.idOtherUserPersonalInfoMail)
+	private List<WebElement> otherUserMail;
+	
 	@FindBy(how = How.ID, using = AndroidLocators.idOtherUserPersonalInfoSingleName)
-	private WebElement otherUserName;
+	private List<WebElement> otherUserSingleName;
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idOtherUserPersonalInfoSingleMail)
-	private WebElement otherUserMail;
+	private List<WebElement> otherUserSingleMail;
 	
 	@FindBy(how = How.ID, using = AndroidLocators.idUserProfileConfirmationMenu)
 	private WebElement confirmMenu;
@@ -95,15 +102,25 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	
 	public boolean isOtherUserNameVisible(String name) {
 		refreshUITree();//workaround to refresh UI tree
-		wait.until(ExpectedConditions.visibilityOf(otherUserName));
-		String text = otherUserName.getText().toLowerCase();
+		String text;
+		if(otherUserName.size() > 0){
+			text = otherUserName.get(0).getText().toLowerCase();
+		}
+		else{
+			text = otherUserSingleName.get(0).getText().toLowerCase();
+		}
 		return text.equals(name.toLowerCase());
 	}
 	
 	public boolean isOtherUserMailVisible(String mail) {
 		refreshUITree();//workaround to refresh UI tree
-		wait.until(ExpectedConditions.visibilityOf(otherUserMail));
-		String text = otherUserMail.getText().toLowerCase();
+		String text;
+		if(otherUserName.size() > 0){
+			text = otherUserMail.get(0).getText().toLowerCase();
+		}
+		else{
+			text = otherUserSingleMail.get(0).getText().toLowerCase();
+		}
 		return text.equals(mail.toLowerCase());
 	}
 
