@@ -97,6 +97,4 @@ public class PagesCollection {
 		this.mainMenuPage = mainMenuPage;
 	}
 	
-	
-	
 }

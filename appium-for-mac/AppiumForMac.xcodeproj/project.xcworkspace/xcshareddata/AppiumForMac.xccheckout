@@ -10,29 +10,29 @@
 	<string>AppiumForMac</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>599217F9-7E4D-48D8-8391-83A167A20E75</key>
+		<key>F13691CEFC380D2B1A7CF85029FFB22C30374F23</key>
 		<string>https://github.com/wearezeta/zautomation.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>appium-for-mac/AppiumForMac.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>599217F9-7E4D-48D8-8391-83A167A20E75</key>
+		<key>F13691CEFC380D2B1A7CF85029FFB22C30374F23</key>
 		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/wearezeta/zautomation.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>599217F9-7E4D-48D8-8391-83A167A20E75</string>
+	<string>F13691CEFC380D2B1A7CF85029FFB22C30374F23</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>599217F9-7E4D-48D8-8391-83A167A20E75</string>
+			<string>F13691CEFC380D2B1A7CF85029FFB22C30374F23</string>
 			<key>IDESourceControlWCCName</key>
 			<string>zautomation</string>
 		</dict>

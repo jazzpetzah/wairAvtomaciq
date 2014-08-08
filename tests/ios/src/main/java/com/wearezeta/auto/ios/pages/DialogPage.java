@@ -18,6 +18,7 @@ import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
+import com.wearezeta.auto.ios.tools.IOSKeyboard;
 
 public class DialogPage extends IOSPage{
 	
@@ -99,6 +100,11 @@ public class DialogPage extends IOSPage{
 	public void typeMessage(String message) throws InterruptedException
 	{
 		conversationInput.sendKeys(message);
+	}
+	
+	public void sendMessage(String returnKey) throws InterruptedException{
+		IOSKeyboard keyboard = IOSKeyboard.getInstance(driver);
+		keyboard.typeString(returnKey);
 	}
 		
 	public void ScrollToLastMessage(){
