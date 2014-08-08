@@ -165,13 +165,17 @@ public final class IOSLocators {
 	public static final String nameExitGroupInfoPageButton = "metaControllerCancelButton";
 	
 	public static final String nameExitOtherUserPersonalInfoPageButton = "ProfileOtherCloseButton";
+	public static final String xpathExitOtherUserPersonalInfoPageButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[6]";
 	
 	public static final String xpathAlbum = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]/UIAStaticText[1]";
 	
-	public static final String nameOtherPersonalInfoPageNameField = "ProfileOtherNameField";
+	//public static final String nameOtherPersonalInfoPageNameField = "ProfileOtherNameField";
 	
-	public static final String nameOtherPersonalInfoPageEmailField = "ProfileOtherEmailField";
+	//public static final String nameOtherPersonalInfoPageEmailField = "ProfileOtherEmailField";
 	
+	public static final String xpathOtherPersonalInfoPageNameField = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[3]";
+	
+	public static final String xpathOtherPersonalInfoPageEmailField = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[4]";
 	///////////////////////
 	//Camera page locators
 	///////////////////////

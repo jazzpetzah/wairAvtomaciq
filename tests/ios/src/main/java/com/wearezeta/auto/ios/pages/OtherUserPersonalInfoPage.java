@@ -28,13 +28,13 @@ public class OtherUserPersonalInfoPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.nameContinueButton)
 	private WebElement continueButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameExitOtherUserPersonalInfoPageButton)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathExitOtherUserPersonalInfoPageButton)
 	private WebElement exitOtherPersonalInfoPageButton;
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameOtherPersonalInfoPageNameField )
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherPersonalInfoPageNameField )
 	private WebElement nameField;
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameOtherPersonalInfoPageEmailField )
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherPersonalInfoPageEmailField )
 	private WebElement emailField;
 	
 	private String url;

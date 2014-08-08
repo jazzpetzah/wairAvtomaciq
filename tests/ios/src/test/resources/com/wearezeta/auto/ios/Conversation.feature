@@ -303,6 +303,8 @@ Examples:
     |  Login		| Password		| Name			| Contact1    | SoundCloudLink |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/klinke-auf-cinch/04-whats-happening-boytalk-remix |
 
+#fails to check email of first user due to defect IOS-990
+@mute
 @staging
 @id:395
 Scenario Outline: Tap on participant profiles in group info page participant view
