@@ -1,5 +1,6 @@
 Feature: Change picture
-@207
+
+@205
 @smoke
 @nonUnicode
   Scenario Outline: Change user picture

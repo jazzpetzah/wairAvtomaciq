@@ -189,6 +189,7 @@ Feature: Conversation
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | ÄäÖöÜüß simple message in english |
 
   @mute @nonUnicode @regression
+  @id149
   Scenario Outline: Send emoji message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
