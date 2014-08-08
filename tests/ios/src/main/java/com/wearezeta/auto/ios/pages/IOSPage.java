@@ -1,6 +1,8 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 
 import org.openqa.selenium.WebElement;
@@ -16,101 +18,82 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 
 public abstract class IOSPage extends BasePage {
+
+	private static final int SWIPE_DELAY = 10 * 1000; //milliseconds
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameLoginPage)
 	private WebElement content;
-	
+
 	private static String imagesPath = "";
-	
+
 	public IOSPage(String URL, String path) throws MalformedURLException {
-		
+
 		try {
-			setImagesPath(CommonUtils.getSimulatorImagesPathFromConfig(this.getClass()));
+			setImagesPath(CommonUtils.getSimulatorImagesPathFromConfig(this
+					.getClass()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("platformName", "iOS");
-        capabilities.setCapability("autoAcceptAlerts", true);
-        capabilities.setCapability("app", path);
-        capabilities.setCapability("deviceName", "iPhone");
-        super.InitConnection(URL, capabilities);
+		DesiredCapabilities capabilities = new DesiredCapabilities();
+		capabilities.setCapability("platformName", "iOS");
+		capabilities.setCapability("autoAcceptAlerts", true);
+		capabilities.setCapability("app", path);
+		capabilities.setCapability("deviceName", "iPhone");
+		super.InitConnection(URL, capabilities);
 	}
 
 	@Override
 	public void Close() throws IOException {
 		super.Close();
 	}
-	
-	public abstract IOSPage returnBySwipe (SwipeDirection direction) throws IOException;
-	
+
+	public abstract IOSPage returnBySwipe(SwipeDirection direction)
+			throws IOException;
+
 	@Override
-	public IOSPage swipeLeft(int time) throws IOException
-	{
+	public IOSPage swipeLeft(int time) throws IOException {
 		DriverUtils.swipeLeft(driver, content, time);
 		return returnBySwipe(SwipeDirection.LEFT);
 	}
-	
+
 	@Override
-	public IOSPage swipeRight(int time) throws IOException
-	{
+	public IOSPage swipeRight(int time) throws IOException {
 		DriverUtils.swipeRight(driver, content, time);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
-	
+
 	@Override
-	public IOSPage swipeUp(int time) throws IOException
-	{
+	public IOSPage swipeUp(int time) throws IOException {
 		DriverUtils.swipeUp(driver, content, time);
 		return returnBySwipe(SwipeDirection.UP);
 	}
-	
+
 	public IOSPage swipeDownSimulator() throws Exception {
-		DriverUtils.iOSSimulatorSwipeDown(CommonUtils.getSwipeScriptPath(IOSPage.class));
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			
-			e.printStackTrace();
-		}
-		
+		DriverUtils.iOSSimulatorSwipeDown(CommonUtils
+				.getSwipeScriptPath(IOSPage.class));
+		Thread.sleep(SWIPE_DELAY);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
-	
+
 	public IOSPage swipeUpSimulator() throws Exception {
-		DriverUtils.iOSSimulatorSwipeUp(CommonUtils.getSwipeScriptPath(IOSPage.class));
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			
-			e.printStackTrace();
-		}
-		
+		DriverUtils.iOSSimulatorSwipeUp(CommonUtils
+				.getSwipeScriptPath(IOSPage.class));
+		Thread.sleep(SWIPE_DELAY);
 		return returnBySwipe(SwipeDirection.UP);
 	}
-	
+
 	@Override
-	public IOSPage swipeDown(int time) throws IOException
-	{
+	public IOSPage swipeDown(int time) throws IOException {
 		DriverUtils.swipeDown(driver, content, time);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
-	public static void clearPagesCollection()
-	{
-		PagesCollection.iOSPage = null;
-		PagesCollection.loginPage = null;
-		PagesCollection.personalInfoPage = null;
-		PagesCollection.contactListPage = null;
-		PagesCollection.dialogPage = null;
-		PagesCollection.otherUserPersonalInfoPage = null;
-		PagesCollection.peoplePickerPage = null;
-		PagesCollection.connectToPage = null;
-		PagesCollection.groupChatPage = null;
-		PagesCollection.groupChatInfoPage = null;
-		PagesCollection.videoPlayerPage = null;
-		PagesCollection.cameraRollPage = null;
-		PagesCollection.imageFullScreenPage = null;
+	public static void clearPagesCollection() throws IllegalArgumentException, IllegalAccessException {
+		for (Field f : PagesCollection.class.getFields()) {
+			if (Modifier.isStatic(f.getModifiers()) && IOSPage.class.isAssignableFrom(f.getType())) {
+				f.set(null, null);
+			}
+		}
 	}
 
 	public static String getImagesPath() {
