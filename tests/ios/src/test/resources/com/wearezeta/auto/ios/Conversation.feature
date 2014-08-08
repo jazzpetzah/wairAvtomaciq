@@ -138,6 +138,8 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
+#Not stable
+  @mute
   @smoke 
   @id336
  Scenario Outline: Remove from group chat
@@ -146,7 +148,7 @@ Examples:
 	When I create group chat with <Contact1> and <Contact2>
 	And I swipe up on group chat page
 	And I select contact <Contact2>
-	And I swipe up on other user profile page
+#	And I swipe up on other user profile page
 	And I click Remove
 	And I see warning message 
 	And I confirm remove
