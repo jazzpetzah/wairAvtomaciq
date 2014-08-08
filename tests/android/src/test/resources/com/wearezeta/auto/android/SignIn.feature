@@ -1,6 +1,6 @@
 Feature: Sign In
 
- @326 @smoke @nonUnicode
+ @id326 @smoke @nonUnicode
   Scenario Outline: Sign in to ZClient
     Given I see sign in screen
     When I press Sign in button
@@ -13,7 +13,7 @@ Feature: Sign In
       | Login   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |
 
- @209 @smoke @nonUnicode
+ @id209 @smoke @nonUnicode
   Scenario Outline: I can change sign in user
     Given I Sign in using login <Login1> and password <Password>
     And I see Contact list with my name <Login1>
@@ -32,7 +32,7 @@ Feature: Sign In
       | Login1  | Password    | Login2   |
       | aqaUser | aqaPassword | yourUser |
 
-  @327 @smoke @nonUnicode
+  @id327 @smoke @nonUnicode
   Scenario Outline: Open/Close People picker
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

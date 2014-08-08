@@ -220,7 +220,7 @@ Examples:
 
 
 @staging
-@id:526   
+@id526   
   Scenario Outline: I can send and play inline youtube link
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -239,7 +239,6 @@ Examples:
 #crash after relogin due to defect IOS-959
 @mute   
 @staging
-@id:169  
    Scenario Outline: I am able to play inline YouTube link poster by others
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -304,7 +303,7 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/klinke-auf-cinch/04-whats-happening-boytalk-remix |
 
 @staging
-@id:395
+@id395
 Scenario Outline: Tap on participant profiles in group info page participant view
     Given I Sign in using login <Login> and password <Password>
     Given I have group chat named <GroupChatName> with an unconnected user, made by <GroupCreator>
@@ -319,7 +318,7 @@ Examples:
     
 
 @staging
-@id:488
+@id488
 Scenario Outline: Verify you can see conversation images in fullscreen
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with my name <Name>
@@ -351,7 +350,7 @@ Examples:
 #muted due to issue IOS-959
 @mute
 @staging
-@id:504
+@id504
   Scenario Outline: Verify you can play/pause media from the Media Bar (YouTube)
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -409,7 +408,7 @@ Examples:
 #muted due to issue IOS-959
 @mute    
 @staging
-@id:386   
+@id386   
 Scenario Outline: Verify the Media Bar disappears when playing media is back in view (SoundCloud)
 	Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -430,7 +429,7 @@ Examples:
 #muted due to issue IOS-959
 @mute
 @staging
-@id:385
+@id385
   Scenario Outline: Verify the Media Bar dissapears after playback finishes (SoundCloud)
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
