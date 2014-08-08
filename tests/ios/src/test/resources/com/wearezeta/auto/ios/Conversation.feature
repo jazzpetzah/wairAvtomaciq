@@ -58,7 +58,8 @@ Feature: Conversation
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-  
+#unstable behaviour when send the message (should be investigated)
+  @mute
   @smoke 
   @id334
 Scenario Outline: Send message to group chat
