@@ -54,9 +54,11 @@ public final class AndroidLocators {
 	
 	public static final String classNameGridView = "android.widget.GridView";
 	
+	public static final String xpathGroupChatInfoLinearLayout = "//android.widget.GridView/android.widget.LinearLayout";
+	
 	public static final String xpathGroupChatContact = "//android.widget.LinearLayout[child::android.widget.TextView[@text='%s']]";;
 	
-	public static final String xpathGroupChatInfoContacts = "//android.widget.LinearLayout[%1$s]/android.widget.TextView[%2$s]";
+	public static final String xpathGroupChatInfoContacts = "//android.widget.GridView/android.widget.LinearLayout[%1$s]/android.widget.TextView[%2$s]";
 	
 	public static final String xpathContactFrame = "//android.widget.FrameLayout[child::android.widget.TextView[@text='%s']]";
 	
