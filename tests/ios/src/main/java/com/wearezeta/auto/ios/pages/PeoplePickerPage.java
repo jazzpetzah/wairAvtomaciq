@@ -61,9 +61,6 @@ public class PeoplePickerPage extends IOSPage{
 	}
 	
 	public void fillTextInPeoplePickerSearch(String text){
-		
-		peoplePickerSearch.sendKeys("1111");
-		peoplePickerSearch.clear();
 		peoplePickerSearch.sendKeys(text);
 	}
 	

@@ -5,6 +5,8 @@ import java.io.IOException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.ios.pages.ConnectToPage;
+import com.wearezeta.auto.ios.pages.GroupChatPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 
 
@@ -21,6 +23,11 @@ public class GroupChatInfoPageSteps {
 	@When("^I change the conversation name$")
 	public void IChangeConversationName() throws IOException{
 	PagesCollection.groupChatInfoPage.changeConversationNameToRandom();
+	}
+	
+	@When("I change conversation name to (.*)")
+	public void IChangeConversationNameTo(String name){
+		PagesCollection.groupChatInfoPage.changeConversationName(name);
 	}
 	
 	@Then("^I see that the conversation name is correct with (.*) and (.*)$")
@@ -68,6 +75,12 @@ public class GroupChatInfoPageSteps {
 		PagesCollection.otherUserPersonalInfoPage = PagesCollection.groupChatInfoPage.selectContactByName(name);
 	}
 	
+	@When("I tap on not connected contact (.*)")
+	public void ITapOnNotConnectedContact(String name) throws IOException{
+		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		PagesCollection.connectToPage = (ConnectToPage)PagesCollection.groupChatInfoPage.selectNotConnectedUser(name);
+	}
+	
 	@Then("^I see that conversation has (.*) people$")
 	public void ISeeThatConversationHasNumberPeople(int number) throws Throwable {
 		
@@ -85,4 +98,9 @@ public class GroupChatInfoPageSteps {
 				+ ") is not the same as expected (" + number +")",
 				actual == number);
 	}    
+	
+	@When("I swipe down on group chat info page")
+	public void ISwipeUpOnGroupChatInfoPage() throws IOException{
+		PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.groupChatInfoPage.swipeDown(500);
+	}
 }

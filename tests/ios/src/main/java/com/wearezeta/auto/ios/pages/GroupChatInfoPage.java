@@ -55,6 +55,10 @@ public class GroupChatInfoPage extends IOSPage {
 		conversationName = CommonUtils.generateGUID().substring(0, 15);
 		conversationNameTextField.sendKeys(conversationName + "\n");
 	}
+	
+	public void changeConversationName(String name){
+		conversationNameTextField.sendKeys(name + "\n");
+	}
 
 	public boolean isNumberOfParticipants(int correctNumber) {
 		int givenNumberOfParticipants = Integer
@@ -211,11 +215,16 @@ public class GroupChatInfoPage extends IOSPage {
 		leaveChatButton.click();
 	}
 
-	public OtherUserPersonalInfoPage selectContactByName(String name)
-			throws IOException {
+	public OtherUserPersonalInfoPage selectContactByName(String name) throws IOException {
 		driver.findElementByName(name.toUpperCase()).click();
 
 		return new OtherUserPersonalInfoPage(url, path);
+	}
+	
+	public ConnectToPage selectNotConnectedUser(String name) throws IOException {
+		driver.findElementByName(name.toUpperCase()).click();
+		
+		return new ConnectToPage(url, path);
 	}
 
 	public boolean isLeaveConversationAlertVisible() {
@@ -229,10 +238,10 @@ public class GroupChatInfoPage extends IOSPage {
 		IOSPage page = null;
 		switch (direction) {
 		case DOWN: {
+			page = new GroupChatPage(url, path);
 			break;
 		}
 		case UP: {
-			page = new GroupChatInfoPage(url, path);
 			break;
 		}
 		case LEFT: {

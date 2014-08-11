@@ -77,8 +77,6 @@ public class ContactListPageSteps {
 			InterruptedException {
 
 		value = CommonUtils.retrieveRealUserContactPasswordValue(value);
-		// Assert.assertTrue("Login finished",
-		// PagesCollection.loginPage.waitForLogin());
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(value));
 	}
 

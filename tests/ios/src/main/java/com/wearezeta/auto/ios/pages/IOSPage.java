@@ -19,7 +19,7 @@ public abstract class IOSPage extends BasePage {
 
 	private static final int SWIPE_DELAY = 10 * 1000; //milliseconds
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameLoginPage)
+	@FindBy(how = How.NAME, using = IOSLocators.nameMainWindow)
 	private WebElement content;
 
 	private static String imagesPath = "";

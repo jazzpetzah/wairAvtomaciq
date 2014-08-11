@@ -19,7 +19,7 @@ import com.wearezeta.auto.common.driver.SwipeDirection;
 
 public class LoginPage extends IOSPage {
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameLoginPage)
+	@FindBy(how = How.NAME, using = IOSLocators.nameMainWindow)
 	private WebElement viewPager;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameSignInButton)
