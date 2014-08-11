@@ -8,7 +8,6 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.BackEndREST;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;

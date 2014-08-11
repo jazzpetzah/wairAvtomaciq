@@ -1,7 +1,9 @@
 package com.wearezeta.auto.android.pages;
 
+import com.wearezeta.auto.common.AbstractPagesCollection;
 
-public class PagesCollection {
+
+public class PagesCollection extends AbstractPagesCollection{
 	public static AndroidPage androidPage = null;
 	public static LoginPage loginPage = null;
 	public static ContactListPage contactListPage = null;

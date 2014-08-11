@@ -1,8 +1,11 @@
 package com.wearezeta.auto.osx.pages;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 
-public class PagesCollection {
+import com.wearezeta.auto.common.AbstractPagesCollection;
+
+public class PagesCollection extends AbstractPagesCollection {
 	private LoginPage loginPage = null;
 	private ContactListPage contactListPage = null;
 	private ConversationPage conversationPage = null;
@@ -13,16 +16,16 @@ public class PagesCollection {
 	private RegistrationPage registrationPage = null;
 	private MainMenuPage mainMenuPage = null;
 	
-	public void closeAllPages() throws IOException {
-		if (mainMenuPage != null) mainMenuPage.Close();
-		if (loginPage != null) loginPage.Close();
-		if (contactListPage != null) contactListPage.Close();
-		if (conversationPage != null) conversationPage.Close();
-		if (choosePicturePage != null) choosePicturePage.Close();
-		if (peoplePickerPage != null) peoplePickerPage.Close();
-		if (conversationInfoPage != null) conversationInfoPage.Close();
-		if (userProfilePage != null) userProfilePage.Close();
-		if (registrationPage != null) registrationPage.Close();
+	public void closeAllPages() throws IOException, IllegalArgumentException, IllegalAccessException {
+		for (Field f : this.getClass().getFields()) {
+			f.setAccessible(true);
+			if (OSXPage.class.isAssignableFrom(f.getType())) {
+				OSXPage page = (OSXPage) f.get(this);
+				if (page != null) {
+					page.Close();
+				}
+			}
+		}
 	}
 	
 	public LoginPage getLoginPage() {
