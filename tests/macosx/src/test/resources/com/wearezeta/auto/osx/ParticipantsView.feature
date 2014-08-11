@@ -88,27 +88,7 @@ Examples:
 
 @staging
 @id96
-Scenario Outline: Do not accept erroneous input as group conversation name
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
-	And I create group chat with <Contact1> and <Contact2>
-	When I open conversation with <Contact1>, <Contact2>
-	And I open Conversation info
-	And I set name \u0020\u0020\u0020\u0020\u0020 for conversation
-	Then I see Contact list with name <Contact1>, <Contact2>
-	When I set name \n\n\n\n\n for conversation
-	Then I see Contact list with name <Contact1>, <Contact2>
-	When I set name \u0020\u0020TestLeadingSpaces\u0020\u0020 for conversation
-	Then I see Contact list with name <Contact1>, <Contact2>
-
-Examples:
-	|  Login		| Password		| Name			| Contact1		| Contact2		|
-	|  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
-
-@torun
-@staging
-@id96
-Scenario Outline: Do not accept erroneous input as group conversation name
+Scenario Outline: Do not accept erroneous input as group conversation name (only spaces)
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
 	And I create group chat with <Contact1> and <Contact2>
@@ -124,7 +104,7 @@ Examples:
 
 @staging
 @id96
-Scenario Outline: Do not accept erroneous input as group conversation name
+Scenario Outline: Do not accept erroneous input as group conversation name (line breaks)
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
 	And I create group chat with <Contact1> and <Contact2>
@@ -140,7 +120,7 @@ Examples:
 
 @staging
 @id96
-Scenario Outline: Do not accept erroneous input as group conversation name
+Scenario Outline: Do not accept erroneous input as group conversation name (leading spaces)
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
 	And I create group chat with <Contact1> and <Contact2>
