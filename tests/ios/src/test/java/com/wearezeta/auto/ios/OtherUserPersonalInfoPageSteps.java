@@ -62,5 +62,10 @@ public class OtherUserPersonalInfoPageSteps {
 		Assert.assertTrue("I can see the contacts email on the user profile page", isShown);
 	    
 	}
+	
+	@When("I tap on start dialog button on other user profile page")
+	public void ITapStartDialogOnOtherUserPage() throws Throwable{
+		PagesCollection.dialogPage = PagesCollection.otherUserPersonalInfoPage.clickOnStartDialogButton();
+	}
 
 }

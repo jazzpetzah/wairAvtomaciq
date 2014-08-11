@@ -82,7 +82,7 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.sendMessage("\n");
 	}
 	
-	@When("^I swipe up on dialog page$")
+	@When("^I swipe up on dialog page to open other user personal page$")
 	public void WhenISwipeUpOnDialogPage() throws IOException{
 		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage)PagesCollection.dialogPage.swipeUp(1000);
 	}

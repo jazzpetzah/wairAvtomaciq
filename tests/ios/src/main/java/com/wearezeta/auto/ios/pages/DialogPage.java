@@ -22,7 +22,7 @@ import com.wearezeta.auto.ios.tools.IOSKeyboard;
 
 public class DialogPage extends IOSPage{
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameLoginPage)
+	@FindBy(how = How.NAME, using = IOSLocators.nameMainWindow)
 	private WebElement dialogWindow;
 	
 //	@FindBy(how = How.XPATH, using = IOSLocators.xpathCursorInput)
@@ -218,7 +218,7 @@ public class DialogPage extends IOSPage{
 	@Override
 	public IOSPage swipeUp(int time) throws IOException
 	{
-		WebElement element =  driver.findElement(By.name(IOSLocators.nameLoginPage));
+		WebElement element =  driver.findElement(By.name(IOSLocators.nameMainWindow));
 		
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
