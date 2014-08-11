@@ -67,6 +67,9 @@ public class PeoplePickerPage extends AndroidPage {
 	@FindBy(how = How.ID, using = AndroidLocators.idSendConnectionRequestButton)
 	private WebElement sendConnectionRequestButton;
 	
+	@FindBy(how = How.ID, using = AndroidLocators.idConnectToHeader)
+	private List<WebElement> connectToHeader;
+	
 	public void tapPeopleSearch()
 	{
 		pickerSearch.click();
@@ -91,8 +94,10 @@ public class PeoplePickerPage extends AndroidPage {
 		AndroidPage page = null;
 		WebElement el = driver.findElementByXPath(String.format(AndroidLocators.xpathPeoplePickerContact,contactName));
 		el.click();
-	
-		if(isVisible(addToConversationsButton))
+		if(connectToHeader.size() > 0 && connectToHeader.get(0).isDisplayed()){
+			page = new ConnectToPage(url, path);
+		}
+		else if(isVisible(addToConversationsButton))
 		{
 			page = this;
 		}

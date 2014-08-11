@@ -56,7 +56,7 @@ public class ConversationPageSteps {
 		 choosePicturePage.openImage(imageFilename);
 	 }
 
-	 @Then("^I see HD picture (.*) in conversation")
+	 @Then("^I see HD picture (.*) in conversation$")
 	 public void ThenISeeHDPictureInConversation(String filename) throws Throwable {
 		 
 		 //fist check, if there is a picture sent
@@ -87,12 +87,12 @@ public class ConversationPageSteps {
 					score >= 0.98d);
 	 }
 	 
-	 @Then("I see random message in conversation")
+	 @Then("I see random message in conversation$")
 	 public void ThenISeeRandomMessageInConversation() {
 		 Assert.assertTrue(CommonSteps.senderPages.getConversationPage().isMessageSent(randomMessage));
 	 }
 	 
-	 @Then("I see picture in conversation")
+	 @Then("I see picture in conversation$")
 	 public void ThenISeePictureInConversation() {
 		 int afterNumberOfImages = -1;
 		 
@@ -125,8 +125,8 @@ public class ConversationPageSteps {
 		 CommonSteps.senderPages.getConversationPage().knock();
 	 }
 	 
-	 @Then("I see message (.*) in conversation")
-	 public void ThenISeeMessageInConversation(String message) {
+	 @Then("I see message (.*) in conversation$")
+	 public void ThenISeeMessageInConversation(String message) throws InterruptedException {
 		 if (message.equals(OSXLocators.YOU_KNOCKED_MESSAGE)) {
 			 boolean isNumberIncreased = false;
 			 int afterNumberOfKnocks = -1;
@@ -225,8 +225,67 @@ public class ConversationPageSteps {
 
 	 @Then("^I see the embedded media is playing$")
 	 public void ThenISeeTheEmbeddedMediaIsPlaying() throws Throwable {
-		 String expectedButtonState = OSXLocators.SOUNDCLOUD_BUTTON_STATE;
-		 String actualState = CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState();
-		 Assert.assertEquals(expectedButtonState, actualState);
+		 verifySoundCloudButtonState(OSXLocators.SOUNDCLOUD_BUTTON_STATE_PAUSE);
+	 }
+	 
+	 @Given("^I post messages and media link (.*)$")
+	 public void WhenIPostMessagesAndMediaLink(String link) throws Throwable { 
+		 final int RANDOM_MESSAGE_COUNT =20;
+		 for (int i = 0; i <= RANDOM_MESSAGE_COUNT; i++){
+			 WhenIWriteRandomMessage();
+			 WhenISendMessage();
+		 }
+		 CommonSteps.senderPages.getConversationPage().writeNewMessage(link);
+		 WhenISendMessage();
+	 }
+	 
+	 @When("^I scroll media out of sight till media bar appears$")
+	 public void WhenIScrollMediaOutOfSightUntilMediaBarAppears() throws Throwable {
+		 CommonSteps.senderPages.getConversationPage().scrollDownTilMediaBarAppears();
+	 }
+
+	 @When("^I pause playing media in media bar$")
+	 public void WhenIPausePlayingTheMediaInMediaBar() throws Throwable {
+	     CommonSteps.senderPages.getConversationPage().pressPlayPauseButton();   
+	 }
+
+	 @Then("^The playing media is paused$")
+	 public void ThenThePlayingMediaIsPaused() throws Throwable {
+		 verifySoundCloudButtonState(OSXLocators.SOUNDCLOUD_BUTTON_STATE_PLAY);    
+	 }
+
+	 @When("^I press play in media bar$")
+	 public void WhenIPressPlayInMediaBar() throws Throwable {
+		 CommonSteps.senderPages.getConversationPage().pressPlayPauseButton();
+	 }
+
+	 @Then("^The media is playing$")
+	 public void ThenTheMediaIsPlaying() throws Throwable {
+		 verifySoundCloudButtonState(OSXLocators.SOUNDCLOUD_BUTTON_STATE_PAUSE);
+	 }
+
+	 @When("^I stop media in media bar$")
+	 public void WhenIStopMediaInMediaBar() throws Throwable {
+		 CommonSteps.senderPages.getConversationPage().pressStopButton();
+	 }
+
+	 @Then("^The media stops playing$")
+	 public void ThenTheMediaStoppsPlaying() throws Throwable {
+		 verifySoundCloudButtonState(OSXLocators.SOUNDCLOUD_BUTTON_STATE_PLAY);
+	 }
+	 
+	 private void verifySoundCloudButtonState(String expectedState){
+		 Assert.assertEquals(expectedState, CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState());
+	 }
+	 
+	 @Then("^I see conversation name (.*) in conversation$")
+	 public void ISeeConversationNameInConversation(String name) {
+		 if (name.equals(OSXLocators.RANDOM_KEYWORD)) {
+			 name = CommonSteps.senderPages.getConversationInfoPage().getCurrentConversationName();
+		 }
+		 String result = CommonSteps.senderPages.getConversationPage().getLastConversationNameChangeMessage();
+		 Assert.assertTrue(
+				 "New conversation name '" + result + "' does not equal to expected '" + name + "'",
+				 result.equals(name));
 	 }
 }

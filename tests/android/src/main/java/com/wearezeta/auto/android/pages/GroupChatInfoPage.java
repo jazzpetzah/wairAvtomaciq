@@ -27,7 +27,7 @@ public class GroupChatInfoPage extends AndroidPage {
 	@FindBy(how = How.ID, using = AndroidLocators.idConfirmBtn)
 	private WebElement confirmButton;
 	
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameLinearLayout)
+	@FindBy(how = How.XPATH, using = AndroidLocators.xpathGroupChatInfoLinearLayout)
 	private List<WebElement> linearLayout;
 	
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameGridView)

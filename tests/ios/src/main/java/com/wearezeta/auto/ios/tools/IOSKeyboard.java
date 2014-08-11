@@ -45,10 +45,18 @@ public class IOSKeyboard {
 
 	private ZetaDriver driver = null;
 
-	public IOSKeyboard(ZetaDriver driver) {
+	protected IOSKeyboard(ZetaDriver driver) {
 		this.driver = driver;
 	}
 
+	private static IOSKeyboard instance = null;
+	public static synchronized IOSKeyboard getInstance(ZetaDriver driver) {
+		if(instance == null) {
+			instance = new IOSKeyboard(driver);
+		}
+		return instance;
+	}
+	
 	private KeyboardState getInitialState() {
 		final String emptyElement = "[object UIAElementNil]";
 		final String getStateTemplate = "target.frontMostApp().keyboard().keys().firstWithName(\"%s\").toString()";
@@ -71,7 +79,7 @@ public class IOSKeyboard {
 			String messageChar = Character.toString(c);
 
 			KeyboardState finalState = getFinalState(c);
-			if (currentState != finalState) {
+			if (currentState.getClass() != finalState.getClass()) {
 				if ((finalState instanceof KeyboardStateAlpha && currentState instanceof KeyboardStateAlphaCaps)
 						|| (finalState instanceof KeyboardStateAlphaCaps && currentState instanceof KeyboardStateAlpha)) {
 					currentState = getInitialState();

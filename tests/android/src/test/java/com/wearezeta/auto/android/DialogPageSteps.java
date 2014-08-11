@@ -118,6 +118,11 @@ public class DialogPageSteps{
 		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.dialogPage.swipeUp(1000);
 	}
 	
+	@When("^I navigate back from dialog page$")
+	public void WhenINavigateBackFromDialogPage() throws Exception{
+		PagesCollection.contactListPage = PagesCollection.dialogPage.navigateBack();
+	}
+	
 	@Then("^I see Connect to (.*) Dialog page$")
 	public void ThenIseeConnectToDialogPage(String contact)
 	{

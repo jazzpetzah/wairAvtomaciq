@@ -107,10 +107,10 @@ Feature: Connect to User
     Then Contact name <WaitingMess> is not in list
 
     Examples: 
-      | Login   | Password    | Name    | Contact        | WaitingMess      |
+      | Login   | Password    | Name    | Contact         | WaitingMess      |
       | aqaUser | aqaPassword | aqaUser | yourNotContact1 | 1 person waiting |
 
-  @id539 @id543 @nonUnicode @regression @mute 
+  @id539 @id543 @nonUnicode @regression @mute
   Scenario Outline: I can see a inbox count increasing/decreasing correctly + I ignore someone from people picker and clear my inbox
     Given <Contact1> connection request is sended to me <Login>
     And I Sign in using login <Login> and password <Password>
@@ -122,7 +122,11 @@ Feature: Connect to User
     And <Contact3> connection request is sended to me <Login>
     And <Contact4> connection request is sended to me <Login>
     And I see contact list loaded with User name <WaitingMess3>
-    And I tap on contact name <WaitingMess3>
+    And I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in search field user name to connect to <Contact3>
+    And I tap on user name found on People picker page <Contact3>
     And I press Ignore connect button
     And I see contact list loaded with User name <WaitingMess2>
     And I tap on contact name <WaitingMess2>
@@ -135,3 +139,25 @@ Feature: Connect to User
     Examples: 
       | Login    | Password    | Contact1        | WaitingMess1     | Contact2        | WaitingMess2     | Contact3        | Contact4        | WaitingMess3     |
       | yourUser | aqaPassword | yourNotContact1 | 1 person waiting | yourNotContact2 | 2 people waiting | yourNotContact3 | yourNotContact4 | 3 people waiting |
+
+  @id544 @nonUnicode @regression
+  Scenario Outline: I accept someone from people picker and -1 from inbox as well
+    Given <Contact1> connection request is sended to me <Login>
+    And I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Login>
+    And <Contact2> connection request is sended to me <Login>
+    When I see contact list loaded with User name <WaitingMess1>
+    And I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in search field user name to connect to <Contact2>
+    And I tap on user name found on People picker page <Contact2>
+    And I see connect to <Contact2> dialog
+    And I Connect with contact by pressing button
+    Then I see Connect to <Contact2> Dialog page
+    And I navigate back from dialog page
+    And I see contact list loaded with User name <WaitingMess2>
+
+    Examples: 
+      | Login       | Password    | Contact1        | Contact2        | WaitingMess1     | WaitingMess2     |
+      | yourContact | aqaPassword | yourNotContact1 | yourNotContact2 | 2 people waiting | 1 person waiting |

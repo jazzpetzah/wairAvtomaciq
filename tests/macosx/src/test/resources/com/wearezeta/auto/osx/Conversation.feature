@@ -50,7 +50,7 @@ Examples:
 #Muted till new sync engine client stabilization
 @mute
 @smoke
-@id449
+@id468
 Scenario Outline: Send picture to conversation
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with name <Name>
@@ -169,7 +169,7 @@ Examples:
 @mute
 @smoke
 @id471
-Scenario Outline: Leave group chat
+Scenario Outline: Leave group conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
 	And I create group chat with <Contact1> and <Contact2>
@@ -254,4 +254,26 @@ Scenario Outline: Play embedded SoundCloud link in conversation
     
 Examples:
     |  Login		| Password			| Name			| Contact   		| SoundCloudLink   |
+    |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		| https://soundcloud.com/edherbst/throwaway-3 |
+
+@staging
+@id379
+Scenario Outline: Play/pause SoundCloud media link from the media bar
+	Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with name <Name>
+    And I open conversation with <Contact>
+    And I post messages and media link <SoundCloudLink>
+    Then I see media link <SoundCloudLink> and media in dialog
+    And I tap SoundCloud link
+    Then I see the embedded media is playing
+    And I scroll media out of sight till media bar appears
+    And I pause playing media in media bar
+    Then The playing media is paused
+    And I press play in media bar
+    Then The media is playing
+    And I stop media in media bar
+    Then The media stops playing
+    
+Examples:
+    |  Login		| Password			| Name			| Contact   		| SoundCloudLink   							  | 
     |  aqaUser		| aqaPassword		| aqaUser		| aqaContact1		| https://soundcloud.com/edherbst/throwaway-3 |

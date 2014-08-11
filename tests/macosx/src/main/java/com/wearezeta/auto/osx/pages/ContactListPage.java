@@ -108,7 +108,6 @@ public class ContactListPage extends OSXPage {
 				}
 				if (isFound) {
 					scrollToConversationInList(contact);
-
 					contact.click();
 					return true;
 				}

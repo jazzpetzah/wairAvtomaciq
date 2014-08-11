@@ -18,9 +18,11 @@ public final class AndroidLocators {
 	
 	public static final String idConfirmDialogHeader = "com.waz.zclient.dev:id/ttv__confirm_dialog__header";
 	
-	public static final String idConfirmCancelButton = "com.waz.zclient.dev:id/zb__confirm_dialog__cancel_button";
+	public static final String idConfirmCancelButton = "com.waz.zclient.dev:id/zb__confirm__cancel_button";
 	
-	public static final String idConfirmConfirmButton = "com.waz.zclient.dev:id/zb__confirm_dialog__confirm_button";
+	public static final String idConfirmDialogCancelButton = "com.waz.zclient.dev:id/zb__confirm_dialog__cancel_button";
+	
+	public static final String idConfirmDialogConfirmButton = "com.waz.zclient.dev:id/zb__confirm_dialog__confirm_button";
 	
 	public static final String idParticipantsSubHeader = "com.waz.zclient.dev:id/ttv__participants__sub_header";
 	
@@ -54,9 +56,11 @@ public final class AndroidLocators {
 	
 	public static final String classNameGridView = "android.widget.GridView";
 	
+	public static final String xpathGroupChatInfoLinearLayout = "//android.widget.GridView/android.widget.LinearLayout";
+	
 	public static final String xpathGroupChatContact = "//android.widget.LinearLayout[child::android.widget.TextView[@text='%s']]";;
 	
-	public static final String xpathGroupChatInfoContacts = "//android.widget.LinearLayout[%1$s]/android.widget.TextView[%2$s]";
+	public static final String xpathGroupChatInfoContacts = "//android.widget.GridView/android.widget.LinearLayout[%1$s]/android.widget.TextView[%2$s]";
 	
 	public static final String xpathContactFrame = "//android.widget.FrameLayout[child::android.widget.TextView[@text='%s']]";
 	

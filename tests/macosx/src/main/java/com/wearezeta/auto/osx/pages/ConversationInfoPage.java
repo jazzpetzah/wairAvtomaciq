@@ -19,6 +19,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
+@SuppressWarnings("deprecation")
 public class ConversationInfoPage extends OSXPage {
 	
 	@FindBy(how = How.ID, using = OSXLocators.idAddPeopleButtonSingleChat)
@@ -44,6 +45,8 @@ public class ConversationInfoPage extends OSXPage {
 	
 	@FindBy(how = How.ID, using = OSXLocators.idUserProfileViewBackButton)
 	private WebElement userProfileViewBackButton;
+	
+	public String currentConversationName;
 	
 	private String url;
 	private String path;
@@ -175,5 +178,13 @@ public class ConversationInfoPage extends OSXPage {
 		WebElement el = driver.findElement(By.xpath(xpath));
 		if (el != null) return true;
 		else return false;
+	}
+
+	public String getCurrentConversationName() {
+		return currentConversationName;
+	}
+	
+	public void setCurrentConversationName(String name) {
+		currentConversationName = name;
 	}
 }

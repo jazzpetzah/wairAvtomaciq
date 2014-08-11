@@ -24,7 +24,6 @@ Feature: Register new user
     |	Email						|	Password	    |	Name			|
     |	aqaUser            	        |	aqaPassword	    |	aqaUser       	|
 
-@smoke 
 @regression
 @id304
   Scenario Outline: Attempt to register an email with spaces
