@@ -14,8 +14,8 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @id317 @mute @smoke @nonUnicode
-  Scenario Outline: Send Hello and Hey to contact DEFECT AN-605
+  @id317 @smoke @nonUnicode 
+  Scenario Outline: Send Hello and Hey to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -29,8 +29,8 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     | Message1    | Message2        |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | YOU KNOCKED | YOU HOT KNOCKED |
 
-  @id318 @mute @smoke @nonUnicode
-  Scenario Outline: Send Camera picture to contact DEFECT AN-605
+  @id318 @smoke @nonUnicode 
+  Scenario Outline: Send Camera picture to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>

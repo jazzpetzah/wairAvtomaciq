@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 import com.wearezeta.auto.common.AbstractPagesCollection;
 
 public class PagesCollection extends AbstractPagesCollection {
+	private MainMenuPage mainMenuPage = null;
 	private LoginPage loginPage = null;
 	private ContactListPage contactListPage = null;
 	private ConversationPage conversationPage = null;
@@ -14,10 +15,9 @@ public class PagesCollection extends AbstractPagesCollection {
 	private ConversationInfoPage conversationInfoPage = null;
 	private UserProfilePage userProfilePage = null;
 	private RegistrationPage registrationPage = null;
-	private MainMenuPage mainMenuPage = null;
 	
 	public void closeAllPages() throws IOException, IllegalArgumentException, IllegalAccessException {
-		for (Field f : this.getClass().getFields()) {
+		for (Field f : this.getClass().getDeclaredFields()) {
 			f.setAccessible(true);
 			if (OSXPage.class.isAssignableFrom(f.getType())) {
 				OSXPage page = (OSXPage) f.get(this);

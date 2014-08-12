@@ -2,7 +2,7 @@ package com.wearezeta.auto.ios.locators;
 
 public final class IOSLocators {
 	
-	public static final String nameLoginPage = "ZClientMainWindow";
+	public static final String nameMainWindow = "ZClientMainWindow";
 	
 	public static final String nameSignInButton = "SignIn";
 	

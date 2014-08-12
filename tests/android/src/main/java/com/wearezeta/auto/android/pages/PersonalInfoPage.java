@@ -3,6 +3,7 @@ package com.wearezeta.auto.android.pages;
 import java.io.IOException;
 import java.util.*;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -205,6 +206,11 @@ public class PersonalInfoPage extends AndroidPage
 			flag = true;
 		}
 		return flag;
+	}
+	
+	public boolean waitForSettingsDissapear() {
+
+		return DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.idProfileOptionsButton));
 	}
 
 }

@@ -43,7 +43,7 @@ Feature: Conversation
     	And I see Contact list with my name <Name>
 	   	When I tap on contact name <Contact1>
     	And I see dialog page
-	   	And I swipe up on dialog page
+	   	And I swipe up on dialog page to open other user personal page
 	   	And I see <Contact1> user profile page
 	   	And I press Add button
 	   	And I see People picker page
@@ -240,6 +240,7 @@ Examples:
 #crash after relogin due to defect IOS-959
 @mute   
 @staging
+@id169  
    Scenario Outline: I am able to play inline YouTube link poster by others
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -262,6 +263,8 @@ Examples:
     |	Login	|	Password	|	Name	|	Contact		| YouTubeLink	|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| http://www.youtube.com/watch?v=Bb1RhktcugU |  
 
+#muted due to issue IOS-959
+@mute  
 @staging
 @id383
 Scenario Outline: Play/pause SoundCloud media link from the media bar
@@ -274,9 +277,9 @@ Scenario Outline: Play/pause SoundCloud media link from the media bar
     And I tap media link
     And I scroll media out of sight until media bar appears
     And I pause playing the media in media bar
-    Then The playing media is paused
+    Then I see playing media is paused
     And I press play in media bar
-    Then The media is playing
+    Then I see media is playing
     And I stop media in media bar
     Then The media stopps playing
     
@@ -471,3 +474,46 @@ Examples:
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaAvatar	|
     
     
+    
+@staging 
+@id393
+Scenario Outline: Verify you can start 1:1 conversation from a group conversation profile
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+	When I create group chat with <Contact1> and <Contact2>
+	And I swipe up on group chat page
+	And I select contact <Contact1>
+	And I tap on start dialog button on other user profile page
+	And I type the message and send it
+	Then I see my message in the dialog
+	
+	Examples:
+    |  Login		| Password		| Name			| Contact1		| Contact2		|
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
+      
+@staging
+@id393
+Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+	When I create group chat with <Contact1> and <Contact2>
+	And I swipe up on group chat page
+	And I change conversation name to <ChatName>
+	And I swipe down on group chat info page
+	And I swipe right on Dialog page
+	And I tap on my name <Name>
+	And I click on Settings button on personal page
+	And I click Sign out button from personal page
+	And I Sign in using login <Contact1> and password <Password>
+	And I see Personal page
+	And I swipe right on the personal page
+	And I tap on group chat with name <ChatName>
+	And I swipe up on group chat page	
+	And I tap on not connected contact <Contact2>
+	Then I see connect to <Contact2> dialog
+	
+	
+	
+	Examples:
+    |  Login		| Password		| Name			| Contact1		| Contact2		| ChatName   |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| QAtestChat |

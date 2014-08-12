@@ -1,6 +1,8 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -10,6 +12,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
@@ -19,6 +22,9 @@ public class GroupChatPage extends DialogPage {
 	
 	private String url;
 	private String path;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameMainWindow)
+	private WebElement groupChatWindow;
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathLastGroupChatMessage)
 	private WebElement lastMessage;
@@ -87,10 +93,21 @@ public class GroupChatPage extends DialogPage {
 		return DriverUtils.waitUntilElementDissapear(driver, By.name(contact));
 	}
 	
+	@Override
+	public IOSPage swipeUp(int time) throws IOException
+	{
+		WebElement element =  driver.findElement(By.name(IOSLocators.nameMainWindow));
+		
+		Point coords = element.getLocation();
+		Dimension elementSize = element.getSize();
+		driver.swipe(coords.x + elementSize.width / 2, coords.y + elementSize.height - 170, coords.x + elementSize.width / 2, coords.y + 40, time);
+		return returnBySwipe(SwipeDirection.UP);
+	}
+	
     @Override
 	public IOSPage swipeRight(int time) throws IOException
 	{
-		WebElement element =  driver.findElement(By.name(IOSLocators.nameLoginPage));
+		WebElement element =  driver.findElement(By.name(IOSLocators.nameMainWindow));
 		
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
