@@ -7,8 +7,8 @@ import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
+import com.wearezeta.auto.ios.tools.IOSKeyboard;
 import com.wearezeta.auto.ios.tools.IOSSimulatorPhotoLibHelper;
-
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -22,7 +22,6 @@ public class CommonSteps {
 		try {
 			String[] picturepath = new String[] {CommonUtils.getUserPicturePathFromConfig(CommonSteps.class)};
 			IOSSimulatorPhotoLibHelper.CreateSimulatorPhotoLib("7.1-64", picturepath, true);
-			//CommonUtils.iOSSimulatorCameraRoll();
 		}
 		catch(Exception ex){
 			System.out.println("Failed to deploy pictures into simulator");
@@ -56,6 +55,7 @@ public class CommonSteps {
 
 		 PagesCollection.loginPage.Close();
 		 IOSPage.clearPagesCollection();
+		 IOSKeyboard.dispose();
 	 }
 
 }

@@ -103,8 +103,8 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public void sendMessage(String returnKey) throws InterruptedException{
-		IOSKeyboard keyboard = IOSKeyboard.getInstance(driver);
-		keyboard.typeString(returnKey);
+		IOSKeyboard keyboard = IOSKeyboard.getInstance();
+		keyboard.typeString(returnKey, driver);
 	}
 		
 	public void ScrollToLastMessage(){

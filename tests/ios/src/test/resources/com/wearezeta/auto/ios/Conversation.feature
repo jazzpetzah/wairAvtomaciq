@@ -3,7 +3,7 @@
 Feature: Conversation
 
 
-  @smoke 
+  @smoke
   @id330
   Scenario Outline: Send Message to contact
     Given I Sign in using login <Login> and password <Password>
@@ -36,7 +36,7 @@ Feature: Conversation
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
 
-  @smoke
+  @smoke 
   @id333
 	Scenario Outline: Start group chat with users from contact list
 		Given I Sign in using login <Login> and password <Password>
@@ -58,8 +58,6 @@ Feature: Conversation
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-#unstable behaviour when send the message (should be investigated)
-  @mute
   @smoke 
   @id334
 Scenario Outline: Send message to group chat
@@ -222,7 +220,7 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaPictureContact	    | aqaAvatar TestContact	| 		 3			|
 
 
-@staging
+@staging 
 @id526   
   Scenario Outline: I can send and play inline youtube link
     Given I Sign in using login <Login> and password <Password>
@@ -454,7 +452,7 @@ Examples:
     |	Login	|	Password	|	Name	|	Contact1		| SoundCloudLink 								| time |
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| https://soundcloud.com/carl-cox/carl-cox-nexus| 28   | 
 
- @staging
+ @staging 
  @id415
   Scenario Outline: Send Message to contact after navigating away from chat page
     Given I Sign in using login <Login> and password <Password>
