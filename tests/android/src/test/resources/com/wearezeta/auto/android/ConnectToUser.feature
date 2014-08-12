@@ -1,6 +1,7 @@
 Feature: Connect to User
 
-  @id191 @id193 @smoke @nonUnicode
+	#DEFECT AN-639
+  @id191 @id193 @smoke @mute
   Scenario Outline: Send invitation message to a user
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -18,7 +19,7 @@ Feature: Connect to User
       | Login   | Password    | Name    | Contact  | Message       |
       | aqaUser | aqaPassword | aqaUser | yourUser | Hellow friend |
 
-  @id218 @regression @nonUnicode
+  @id218 @regression 
   Scenario Outline: I can do full name search for existing 1:1(non-archive)
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -32,7 +33,7 @@ Feature: Connect to User
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @id223 @regression @nonUnicode
+  @id223 @regression 
   Scenario Outline: I can do partial name search for existing 1:1
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -46,7 +47,7 @@ Feature: Connect to User
       | Login   | Password    | Name    | Contact     | Size |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | 4    |
 
-  @id220 @nonUnicode @regression
+  @id220 @regression
   Scenario Outline: I can do full name search for existing group convo(non-archive)
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -61,7 +62,7 @@ Feature: Connect to User
       | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName          |
       | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | PeoplePicker GroupChat |
 
-  @id225 @nonUnicode @regression
+  @id225 @regression
   Scenario Outline: I can do partial name search for existing group convo(non-archive)
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -76,7 +77,7 @@ Feature: Connect to User
       | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName          | Size |
       | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | PeoplePicker GroupChat | 5    |
 
-  @id319 @nonUnicode @regression
+  @id319 @regression
   Scenario Outline: I can create group chat from People picker
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -94,7 +95,7 @@ Feature: Connect to User
       | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName          |
       | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | PeoplePicker GroupChat |
 
-  @id536 @nonUnicode @regression
+  @id536 @regression
   Scenario Outline: I can see a new inbox for connection when receive new connection request
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -110,7 +111,7 @@ Feature: Connect to User
       | Login   | Password    | Name    | Contact         | WaitingMess      |
       | aqaUser | aqaPassword | aqaUser | yourNotContact1 | 1 person waiting |
 
-  @id539 @id543 @nonUnicode @regression @mute
+  @id539 @id543 @regression @mute
   Scenario Outline: I can see a inbox count increasing/decreasing correctly + I ignore someone from people picker and clear my inbox
     Given <Contact1> connection request is sended to me <Login>
     And I Sign in using login <Login> and password <Password>
@@ -140,7 +141,7 @@ Feature: Connect to User
       | Login    | Password    | Contact1        | WaitingMess1     | Contact2        | WaitingMess2     | Contact3        | Contact4        | WaitingMess3     |
       | yourUser | aqaPassword | yourNotContact1 | 1 person waiting | yourNotContact2 | 2 people waiting | yourNotContact3 | yourNotContact4 | 3 people waiting |
 
-  @id544 @nonUnicode @regression
+  @id544 @regression
   Scenario Outline: I accept someone from people picker and -1 from inbox as well
     Given <Contact1> connection request is sended to me <Login>
     And I Sign in using login <Login> and password <Password>
