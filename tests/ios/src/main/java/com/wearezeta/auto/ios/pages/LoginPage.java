@@ -55,6 +55,13 @@ public class LoginPage extends IOSPage {
 		this.path = path;
 	}
 	
+	public LoginPage(String URL, String path, boolean acceptAlerts) throws MalformedURLException {
+		
+		super(URL, path, acceptAlerts);
+		this.url = URL;
+		this.path = path;
+	}
+	
 	public RemoteWebDriver getDriver() {
 		return driver;
 	}

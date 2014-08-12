@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios;
 
+
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.TestPreparation;
 import com.wearezeta.auto.common.UsersState;
@@ -15,10 +16,35 @@ import cucumber.api.java.Before;
 
 public class CommonSteps {
 	
-	@Before
-	 public void setUp() throws Exception {
+	@Before ("~@noAcceptAlert")
+	public void setUpAcceptAlerts() throws Exception {
+		commonBefore();
 		
+		String path = CommonUtils.getAppPathFromConfig(TestRun.class);
+		
+		if (PagesCollection.loginPage == null)
+		{
+			PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(TestRun.class), path);
+			ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
+		}
 
+	}
+	
+	@Before ("@noAcceptAlert")
+	public void setUpNoAlerts() throws Exception {
+		commonBefore();
+		
+		String path = CommonUtils.getAppPathFromConfig(TestRun.class);
+		
+		if (PagesCollection.loginPage == null)
+		{
+			PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(TestRun.class), path, false);
+			ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
+		}
+
+	}
+	
+	private void commonBefore() throws Exception {
 		try {
 			String[] picturepath = new String[] {CommonUtils.getUserPicturePathFromConfig(CommonSteps.class)};
 			IOSSimulatorPhotoLibHelper.CreateSimulatorPhotoLib("7.1-64", picturepath, true);
@@ -39,16 +65,7 @@ public class CommonSteps {
 				CommonUtils.usePrecreatedUsers();
 			}
 		}
-		
-		String path = CommonUtils.getAppPathFromConfig(TestRun.class);
-		
-		if (PagesCollection.loginPage == null)
-		{
-			PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(TestRun.class), path);
-			ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
-		}
-
-	 }
+	}
 	 
 	 @After
 	 public void tearDown() throws Exception {
