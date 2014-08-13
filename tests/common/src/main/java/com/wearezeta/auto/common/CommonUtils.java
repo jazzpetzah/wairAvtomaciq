@@ -225,9 +225,12 @@ public class CommonUtils {
 		return getValueFromConfig(c, "generateUsers");
 	}
 
-	public static String getAndroidPackageFromConfig(Class<?> c)
-			throws IOException {
-		return getValueFromConfig(c, "package");
+	public static String getAndroidPackageFromConfig(Class<?> c) {
+		try {
+			return getValueFromConfig(c, "package");
+		} catch (IOException e) {
+			return null;
+		}
 	}
 
 	public static String getUserPicturePathFromConfig(Class<?> c)

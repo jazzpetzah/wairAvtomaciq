@@ -10,10 +10,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
+import com.wearezeta.auto.common.locators.ZetaFindBy;
 
 public class ContactListPage extends AndroidPage {
 
-	@FindBy(how = How.ID, using = AndroidLocators.idContactListNames)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idContactListNames")
 	private List<WebElement> contactListNames;
 
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classEditText)
@@ -22,19 +23,19 @@ public class ContactListPage extends AndroidPage {
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameFrameLayout)
 	private List<WebElement> frameLayout;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idSelfUserName)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idSelfUserName")
 	private List<WebElement> selfUserName;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idContactListMute)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idContactListMute")
 	private WebElement muteBtn;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idConfirmCancelButton)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConfirmCancelButton")
 	private List<WebElement> laterBtn;
 	
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameLoginPage)
 	private WebElement mainControl;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idConnectToHeader)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConnectToHeader")
 	private List<WebElement> connectToHeader;
 	
 

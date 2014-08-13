@@ -3,7 +3,6 @@ package com.wearezeta.auto.android;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 import javax.mail.MessagingException;
 import javax.ws.rs.core.UriBuilderException;

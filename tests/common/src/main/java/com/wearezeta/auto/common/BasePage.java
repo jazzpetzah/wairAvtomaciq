@@ -13,10 +13,14 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.pagefactory.ElementLocatorFactory;
+import org.openqa.selenium.support.pagefactory.FieldDecorator;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaDriver;
+import com.wearezeta.auto.common.locators.ZetaElementLocatorFactory;
+import com.wearezeta.auto.common.locators.ZetaFieldDecorator;
 
 public abstract class BasePage {
 
@@ -42,7 +46,9 @@ public abstract class BasePage {
 				e.printStackTrace();
 			}
 		}
-		PageFactory.initElements(driver, this);
+		ElementLocatorFactory zetaLocatorFactory = new ZetaElementLocatorFactory(driver);
+		FieldDecorator zetaFieldDecorator = new ZetaFieldDecorator(zetaLocatorFactory);
+		PageFactory.initElements(zetaFieldDecorator, this);
 	}
 
 	public synchronized void Close() throws IOException {

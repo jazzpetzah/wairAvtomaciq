@@ -10,6 +10,7 @@ import org.openqa.selenium.support.How;
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
+import com.wearezeta.auto.common.locators.ZetaFindBy;
 
 public class GroupChatPage  extends AndroidPage{
 
@@ -18,10 +19,10 @@ public class GroupChatPage  extends AndroidPage{
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classListView)
 	private WebElement container;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idMessage)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idMessage")
 	private WebElement message;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idMessage)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idMessage")
 	private List<WebElement> messages;
 	
 	private String url;
