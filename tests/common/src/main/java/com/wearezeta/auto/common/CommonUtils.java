@@ -54,6 +54,9 @@ public class CommonUtils {
 	private static final String USER_IMAGE = "userpicture_landscape.jpg";
 	private static final String RESULT_USER_IMAGE = "userpicture_mobile_check.jpg";
 
+	private static final Random rand = new Random();
+	public static final int BACKEND_SYNC_TIMEOUT = 1000 + rand.nextInt(4000); // milliseconds
+
 	public static String getOsName() {
 		return System.getProperty("os.name");
 	}

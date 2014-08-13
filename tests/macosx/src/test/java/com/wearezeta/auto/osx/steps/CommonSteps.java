@@ -27,6 +27,7 @@ public class CommonSteps {
 			
 			if (generateUsersFlag) {
 				CommonUtils.generateUsers(3);
+				Thread.sleep(CommonUtils.BACKEND_SYNC_TIMEOUT);
 				TestPreparation.createContactLinks();
 			} else {
 				CommonUtils.usePrecreatedUsers();

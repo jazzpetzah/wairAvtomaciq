@@ -3,6 +3,7 @@ package com.wearezeta.auto.android;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import javax.mail.MessagingException;
 import javax.ws.rs.core.UriBuilderException;
@@ -137,6 +138,7 @@ public class CommonSteps {
 
 			if (generateUsersFlag) {
 				CommonUtils.generateUsers(3);
+				Thread.sleep(CommonUtils.BACKEND_SYNC_TIMEOUT);
 				TestPreparation.createContactLinks();
 			} else {
 				CommonUtils.usePrecreatedUsers();
