@@ -33,7 +33,7 @@ public class CommonSteps {
 	public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
 	private String path;
 
-	@Before("@nonUnicode")
+	@Before("~@unicode")
 	public void setUp() throws Exception {
 
 		commonBefore();
@@ -137,6 +137,7 @@ public class CommonSteps {
 
 			if (generateUsersFlag) {
 				CommonUtils.generateUsers(3);
+				Thread.sleep(CommonUtils.BACKEND_SYNC_TIMEOUT);
 				TestPreparation.createContactLinks();
 			} else {
 				CommonUtils.usePrecreatedUsers();

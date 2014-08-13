@@ -12,6 +12,7 @@ import com.wearezeta.auto.android.common.KeyboardMapper;
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
+import com.wearezeta.auto.common.locators.ZetaFindBy;
 
 public class PeoplePickerPage extends AndroidPage {
 
@@ -34,40 +35,40 @@ public class PeoplePickerPage extends AndroidPage {
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classEditText)
 	private WebElement editText;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idPickerSearchUsers)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idPickerSearchUsers")
 	private List<WebElement> pickerSearchUsers;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idPeoplePickerClearbtn)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idPeoplePickerClearbtn")
 	private WebElement pickerClearBtn;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idPickerRows)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idPickerRows")
 	private List<WebElement> pickerSearchRows;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idPickerUsersUnselected)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idPickerUsersUnselected")
 	private List<WebElement> pickerUsersUnselected;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idPickerSearch)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idPickerSearch")
 	private WebElement pickerSearch;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idPickerGrid)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idPickerGrid")
 	private WebElement pickerGrid;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idPickerBtnDone)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idPickerBtnDone")
 	private WebElement addToConversationsButton;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idCreateConversationIcon)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idCreateConversationIcon")
 	private WebElement createConversation;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idCreateConversationTitle)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idCreateConversationTitle")
 	private WebElement createConversationTitle;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idConnectionRequiesMessage)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConnectionRequiesMessage")
 	private WebElement connectionRequestMessage;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idSendConnectionRequestButton)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idSendConnectionRequestButton")
 	private WebElement sendConnectionRequestButton;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idConnectToHeader)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConnectToHeader")
 	private List<WebElement> connectToHeader;
 	
 	public void tapPeopleSearch()

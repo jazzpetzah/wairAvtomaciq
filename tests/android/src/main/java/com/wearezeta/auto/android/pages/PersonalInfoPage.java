@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
+import com.wearezeta.auto.common.locators.ZetaFindBy;
 
 public class PersonalInfoPage extends AndroidPage
 {
@@ -18,37 +19,37 @@ public class PersonalInfoPage extends AndroidPage
 	private String url;
 	private String path;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idBackgroundOverlay)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idBackgroundOverlay")
 	private WebElement backgroundOverlay;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idSettingsBox)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idSettingsBox")
 	private WebElement settingBox;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idEmailField)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idEmailField")
 	private WebElement emailField;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idNameField)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idNameField")
 	private WebElement nameField;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idSettingsBtn)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idSettingsBtn")
 	private WebElement settingsButton;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idNameEdit)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idNameEdit")
 	private WebElement nameEdit;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idChangePhotoBtn)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idChangePhotoBtn")
 	private WebElement changePhotoBtn;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idGalleryBtn)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idGalleryBtn")
 	private WebElement galleryBtn;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idConfirmButton)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConfirmButton")
 	private WebElement confirmBtn;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idProfileOptionsButton)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idProfileOptionsButton")
 	private WebElement optionsButton;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idAboutButton)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idAboutButton")
 	private WebElement aboutButton;
 
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameLoginPage)
@@ -57,13 +58,13 @@ public class PersonalInfoPage extends AndroidPage
 	@FindBy(how = How.XPATH, using = AndroidLocators.xpathImagesFrameLayout)
 	private List<WebElement> frameLayouts;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idSignOutBtn)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idSignOutBtn")
 	private WebElement signOutBtn;
 
 	@FindBy(how = How.ID, using = AndroidLocators.idOpenFrom)
 	private List<WebElement> openFrom;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idProfileOptionsButton)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idProfileOptionsButton")
 	private List<WebElement> settingsButtonList;
 
 	@FindBy(how = How.XPATH, using = AndroidLocators.xpathImage)

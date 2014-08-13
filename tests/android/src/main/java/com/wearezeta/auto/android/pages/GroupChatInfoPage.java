@@ -12,6 +12,7 @@ import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.SwipeDirection;
+import com.wearezeta.auto.common.locators.ZetaFindBy;
 
 public class GroupChatInfoPage extends AndroidPage {
 
@@ -21,10 +22,10 @@ public class GroupChatInfoPage extends AndroidPage {
 	private static final String AVATAR_NO_IMAGE = "avatarTestAndroid.png";
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.95;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idLeaveConversationButton)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idLeaveConversationButton")
 	private WebElement leaveConversationButton;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idConfirmBtn)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConfirmBtn")
 	private WebElement confirmButton;
 	
 	@FindBy(how = How.XPATH, using = AndroidLocators.xpathGroupChatInfoLinearLayout)
@@ -33,10 +34,10 @@ public class GroupChatInfoPage extends AndroidPage {
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameGridView)
 	private WebElement groupChatUsersGrid;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idGroupChatInfoName)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idGroupChatInfoName")
 	private WebElement groupChatName;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idParticipantsSubHeader)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idParticipantsSubHeader")
 	private WebElement participantsSubHeader;
 	
 	private String url;

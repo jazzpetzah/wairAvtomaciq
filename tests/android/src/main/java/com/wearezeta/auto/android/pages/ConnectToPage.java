@@ -2,22 +2,22 @@ package com.wearezeta.auto.android.pages;
 
 
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.SwipeDirection;
+import com.wearezeta.auto.common.locators.ZetaFindBy;
 
 public class ConnectToPage extends AndroidPage {
 
-	@FindBy(how = How.ID, using = AndroidLocators.idConnectToHeader)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConnectToHeader")
 	private WebElement connectToHeader;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idConnectRequestAccept)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConnectRequestAccept")
 	private WebElement connectAcceptBtn;
 
-	@FindBy(how = How.ID, using = AndroidLocators.idConnectRequestIgnore)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConnectRequestIgnore")
 	private WebElement connectIgnoreBtn;
 	
 	

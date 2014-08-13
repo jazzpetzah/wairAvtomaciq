@@ -13,28 +13,29 @@ import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.SwipeDirection;
+import com.wearezeta.auto.common.locators.ZetaFindBy;
 
 public class OtherUserPersonalInfoPage extends AndroidPage {
 
 	public static final String REMOVE_FROM_CONVERSATION_BUTTON = "Remove";
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.80;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idOtherUserPersonalInfoName)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idOtherUserPersonalInfoName")
 	private List<WebElement> otherUserName;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idOtherUserPersonalInfoMail)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idOtherUserPersonalInfoMail")
 	private List<WebElement> otherUserMail;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idOtherUserPersonalInfoSingleName)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idOtherUserPersonalInfoSingleName")
 	private List<WebElement> otherUserSingleName;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idOtherUserPersonalInfoSingleMail)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idOtherUserPersonalInfoSingleMail")
 	private List<WebElement> otherUserSingleMail;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idUserProfileConfirmationMenu)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idUserProfileConfirmationMenu")
 	private WebElement confirmMenu;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idLeaveConversationButton)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idLeaveConversationButton")
 	private WebElement removeBtn;
 	
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameFrameLayout)
@@ -43,10 +44,10 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameLoginPage)
 	private WebElement backGround;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idConfirmBtn)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConfirmBtn")
 	private WebElement confirmBtn;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idAddContactBtn)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idAddContactBtn")
 	private WebElement addContactBtn;
 	
 	private String url;

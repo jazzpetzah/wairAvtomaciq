@@ -3,34 +3,34 @@ package com.wearezeta.auto.android.pages;
 import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
+import com.wearezeta.auto.common.locators.ZetaFindBy;
 
 public class RegistrationPage extends AndroidPage {
 
-	@FindBy(how = How.ID, using = AndroidLocators.idDialogTakePhotoButton)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idDialogTakePhotoButton")
 	private WebElement cameraButton;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idConfirmButton)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConfirmButton")
 	private WebElement confirmImageButton;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idNameField)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idNameField")
 	private WebElement nameField;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idEmailField)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idEmailField")
 	private WebElement emailField;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idNewPasswordField)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idNewPasswordField")
 	private WebElement passwordField;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idCreateUserBtn)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idCreateUserBtn")
 	private WebElement createUserBtn;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idVerifyEmailBtn)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idVerifyEmailBtn")
 	private WebElement verifyEmailBtn;
 	
 	private String url;
