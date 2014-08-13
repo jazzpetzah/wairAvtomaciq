@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
+import com.wearezeta.auto.common.locators.ZetaFindBy;
 
 public class DialogPage extends AndroidPage{
 
@@ -17,49 +18,49 @@ public class DialogPage extends AndroidPage{
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classEditText)
 	private WebElement cursorInput;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idMessage)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idMessage")
 	private List<WebElement> messagesList;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idKnockMessage)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idKnockMessage")
 	private WebElement knockMessages;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idDialogTakePhotoButton)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idDialogTakePhotoButton")
 	private WebElement takePhotoButton;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idDialogChangeCameraButton)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idDialogChangeCameraButton")
 	private WebElement changeCameraButton;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idConfirmButton)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConfirmButton")
 	private WebElement okButton;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idDialogImages)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idDialogImages")
 	private WebElement imagesList;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idConnectRequestDialog)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConnectRequestDialog")
 	private WebElement connectRequestDialog;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idMessage)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idMessage")
 	private WebElement conversationMessage;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idConnectRequestMessage)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConnectRequestMessage")
 	private WebElement connectRequestMessage;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idConnectRequestConnectTo)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConnectRequestConnectTo")
 	private WebElement connectRequestConnectTo;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idDialogPageBottomFrameLayout)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idDialogPageBottomFrameLayout")
 	private WebElement dialogPageBottomFrameLayout;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idBackgroundOverlay)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idBackgroundOverlay")
 	private WebElement backgroundOverlay;
 	
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classListView)
 	private WebElement container;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idConnectRequestChatLabel)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConnectRequestChatLabel")
 	private WebElement connectRequestChatLabel;
 	
-	@FindBy(how = How.ID, using = AndroidLocators.idConnectRequestChatUserName)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConnectRequestChatUserName")
 	private WebElement connectRequestChatUserName;
 	
 	private String url;

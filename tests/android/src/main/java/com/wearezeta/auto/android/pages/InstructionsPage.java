@@ -8,18 +8,19 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.SwipeDirection;
+import com.wearezeta.auto.common.locators.ZetaFindBy;
 //TODO: remove this page
 public class InstructionsPage extends AndroidPage {
 
-	@FindBy(how = How.ID, using = AndroidLocators.idInstructions)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idInstructions")
 	private WebElement instructions;
-	@FindBy(how = How.ID, using = AndroidLocators.idConnectRequestDialog)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConnectRequestDialog")
 	private WebElement connectDilog;
-	@FindBy(how = How.ID, using = AndroidLocators.idInstructionsRequestIgnoreBtn)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idInstructionsRequestIgnoreBtn")
 	private List<WebElement> ignoreBtnList;
-	@FindBy(how = How.ID, using = AndroidLocators.idInstructionsRequestConnectBtn)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idInstructionsRequestConnectBtn")
 	private List<WebElement> connectBtnList;
-	@FindBy(how = How.ID, using = AndroidLocators.idConnectRequestConnectTo)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConnectRequestConnectTo")
 	private WebElement requestHeader;
 	
 	private String url;
