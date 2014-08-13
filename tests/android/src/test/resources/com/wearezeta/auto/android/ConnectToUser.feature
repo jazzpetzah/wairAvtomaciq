@@ -162,3 +162,28 @@ Feature: Connect to User
     Examples: 
       | Login       | Password    | Contact1        | Contact2        | WaitingMess1     | WaitingMess2     |
       | yourContact | aqaPassword | yourNotContact1 | yourNotContact2 | 2 people waiting | 1 person waiting |
+
+  @id540 @regression @mute
+  Scenario Outline: I can ignore a connect request and reconnect later
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Login>
+    And Contact name <WaitingMess> is not in list
+    And <Contact> connection request is sended to me <Login>
+    When I see contact list loaded with User name <WaitingMess>
+    And I tap on contact name <WaitingMess>
+    And I press Ignore connect button
+    And Contact name <WaitingMess> is not in list
+    And I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in search field user name to connect to <Contact>
+    And I tap on user name found on People picker page <Contact>
+    And I see connect to <Contact> dialog
+    And I Connect with contact by pressing button
+    Then I see Connect to <Contact> Dialog page
+    And I navigate back from dialog page
+    And Contact name <WaitingMess> is not in list
+
+    Examples: 
+      | Login    | Password    | Contact  | WaitingMess      |
+      | aqaUser | aqaPassword | yourNotContact1 | 1 person waiting |
