@@ -1,9 +1,10 @@
 package com.wearezeta.auto.ios;
 
 
+import java.io.IOException;
+
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.TestPreparation;
-import com.wearezeta.auto.common.UsersState;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
@@ -43,6 +44,9 @@ public class CommonSteps {
 		}
 
 	}
+
+	private static boolean isFirstRun = true;
+	private static boolean isFirstRunPassed = false;
 	
 	private void commonBefore() throws Exception {
 		try {
@@ -55,9 +59,8 @@ public class CommonSteps {
 		
 		boolean generateUsersFlag = Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class));
 		
-		if ((CommonUtils.yourUsers.size() == 0 
-				|| !CommonUtils.yourUsers.get(0).getUserState().equals(UsersState.AllContactsConnected))) {
-			
+		if (isFirstRun) {
+			isFirstRun = false;
 			if (generateUsersFlag) {
 				CommonUtils.generateUsers(3);
 				Thread.sleep(CommonUtils.BACKEND_SYNC_TIMEOUT);
@@ -65,6 +68,12 @@ public class CommonSteps {
 			} else {
 				CommonUtils.usePrecreatedUsers();
 			}
+
+			isFirstRunPassed = true;
+		}
+
+		if (!isFirstRunPassed) {
+			throw new IOException("Skipped due to error in users creation.");
 		}
 	}
 	 

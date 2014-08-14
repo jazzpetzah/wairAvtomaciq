@@ -18,7 +18,6 @@ import com.wearezeta.auto.common.BackendRequestException;
 import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.TestPreparation;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.UsersState;
 import com.wearezeta.auto.common.ZetaFormatter;
 
 import cucumber.api.java.After;
@@ -120,6 +119,9 @@ public class CommonSteps {
 		}
 	}
 
+	private static boolean isFirstRun = true;
+	private static boolean isFirstRunPassed = false;
+	
 	private void commonBefore() throws IOException, InterruptedException,
 	MessagingException, IllegalArgumentException, UriBuilderException,
 	JSONException, BackendRequestException {
@@ -132,9 +134,8 @@ public class CommonSteps {
 		boolean generateUsersFlag = Boolean.valueOf(CommonUtils
 				.getGenerateUsersFlagFromConfig(CommonSteps.class));
 
-		if ((CommonUtils.yourUsers.size() == 0 || !CommonUtils.yourUsers.get(0)
-				.getUserState().equals(UsersState.AllContactsConnected))) {
-
+		if (isFirstRun) {
+			isFirstRun = false;
 			if (generateUsersFlag) {
 				CommonUtils.generateUsers(3);
 				Thread.sleep(CommonUtils.BACKEND_SYNC_TIMEOUT);
@@ -142,7 +143,14 @@ public class CommonSteps {
 			} else {
 				CommonUtils.usePrecreatedUsers();
 			}
+
+			isFirstRunPassed = true;
 		}
+
+		if (!isFirstRunPassed) {
+			throw new IOException("Skipped due to error in users creation.");
+		}
+	
 		path = CommonUtils.getAppPathFromConfig(CommonSteps.class);
 	}
 }
