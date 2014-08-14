@@ -112,10 +112,11 @@ public class IOSKeyboard {
 					} 
 					break;
 			}
+			Thread.sleep(TAP_DELAY);
 			driver.executeScript(String.format(TAP_KEYBOARD_BUTTON,
 					messageChar));
 		}
-		Thread.sleep(TAP_DELAY);
+		
 
 	}
 

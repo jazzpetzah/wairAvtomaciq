@@ -531,3 +531,48 @@ Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat i
 	Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		| ChatName   |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| QAtestChat |
+    
+   
+ @staging 
+ @id407
+  Scenario Outline: Send more than 200 chars message
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+	And I input 200 chars message and send it
+    And I see my message in the dialog
+	And I swipe right on Dialog page
+    And I tap on my name <Name>
+	And I click on Settings button on personal page
+	And I click Sign out button from personal page
+	And I Sign in using login <Contact> and password <Password>
+	And I see Personal page
+	And I swipe right on the personal page
+    And I tap on contact name <Name>
+    Then I see my message in the dialog
+    
+	Examples: 
+    |	Login	|	Password	|	Name	|	Contact		|
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
+    
+        
+ @staging 
+ @id414
+  Scenario Outline: Send a text containing spaces
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+	And I try to send message with only spaces
+    And I see message with only spaces is not send
+	And I input message with leading empty spaces
+    And I send the message
+	And I see my message in the dialog
+	And I input message with trailing emtpy spaces
+	And I send the message
+	And I see my message in the dialog
+    
+	Examples: 
+    |	Login	|	Password	|	Name	|	Contact		|
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
