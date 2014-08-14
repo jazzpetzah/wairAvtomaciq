@@ -13,14 +13,18 @@ import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Core.MinMaxLocResult;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
 import org.opencv.core.Size;
+import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
 
 public class ImageUtil {
 	public static final int RESIZE_NORESIZE = 0;
-	public static final int RESIZE_FROM1920x1080OPTIMIZED = 1;
-	public static final int RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION = 2;
-	public static final int RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION = 3;
+	public static final int RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION = 1;
+	public static final int RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION = 2;
+	public static final int RESIZE_FROM1920x1080OPTIMIZED = 3;
+	public static final int RESIZE_FROM2560x1600OPTIMIZED = 4;
 	
 	static {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -105,6 +109,8 @@ public class ImageUtil {
 	    	tpl = resizeFirstMatrixToSecondMatrixResolution(tpl, ref);
 	    } else if (resizeMode == RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION) {
 	    	ref = resizeFirstMatrixToSecondMatrixResolution(ref, tpl);
+	    } else if (resizeMode == RESIZE_FROM2560x1600OPTIMIZED) {
+	    	tpl = resizeTemplateMatrixFromOptimizedForResolution(tpl, ref, 1600, 2560);
 	    }
 	    
 	    //get grayscale images for matching template

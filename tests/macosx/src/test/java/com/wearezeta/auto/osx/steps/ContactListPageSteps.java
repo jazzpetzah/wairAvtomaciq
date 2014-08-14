@@ -44,7 +44,12 @@ public class ContactListPageSteps {
 	
 	@Given("I open conversation with (.*)")
 	public void GivenIOpenConversationWith(String contact) throws MalformedURLException, IOException {
-		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		if (contact.equals(OSXLocators.RANDOM_KEYWORD)) {
+			contact = CommonSteps.senderPages.getConversationInfoPage().getCurrentConversationName();
+		} else {
+			contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		}
+		
 		boolean isConversationExist = false;
 		for (int i = 0; i < 10; i++) {
 			isConversationExist = CommonSteps.senderPages.getContactListPage().openConversation(contact);
@@ -124,7 +129,6 @@ public class ContactListPageSteps {
 	
 	@When("I set name {1}(.*) {1}for conversation")
 	public void ISetRandomNameForConversation(String name) throws MalformedURLException, IOException {
-		System.out.println("\"" + name + "\"");
 		ConversationInfoPage conversationInfo = CommonSteps.senderPages.getConversationInfoPage();
 		if (name.equals(OSXLocators.RANDOM_KEYWORD)) {
 			conversationInfo.setCurrentConversationName(CommonUtils.generateGUID());
