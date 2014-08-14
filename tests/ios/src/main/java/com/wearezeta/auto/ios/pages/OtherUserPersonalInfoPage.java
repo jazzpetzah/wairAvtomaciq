@@ -37,6 +37,9 @@ public class OtherUserPersonalInfoPage extends IOSPage{
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherPersonalInfoPageEmailField )
 	private WebElement emailField;
 	
+	@FindBy(how = How.NAME, using = IOSLocators.nameAddContactToChatButton)
+	private WebElement startDialogButton;
+	
 	private String url;
 	private String path;
 	
@@ -97,6 +100,13 @@ public class OtherUserPersonalInfoPage extends IOSPage{
 	
 	public String getEmailFieldValue() {
 		return emailField.getAttribute("value");
+	}
+	
+	public DialogPage clickOnStartDialogButton() throws Throwable{
+		DialogPage page = null;
+		startDialogButton.click();
+		page = new DialogPage(url, path);
+		return page;
 	}
 	
 	@Override

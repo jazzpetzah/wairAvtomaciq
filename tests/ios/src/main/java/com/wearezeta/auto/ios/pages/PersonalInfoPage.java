@@ -4,10 +4,11 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.*;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
@@ -44,6 +45,16 @@ public class PersonalInfoPage extends IOSPage{
 		this.path = path;
 	}
 	
+	public String getUserNameValue(){
+		String name = profileNameField.getText();
+		return name;
+	}
+	
+	public String getUserEmailVaue(){
+		String email = emailField.getText();
+		return email;
+	}
+	
 	public PersonalInfoPage clickOnSettingsButton(){
 		settingsButton.click();
 		return this;
@@ -56,9 +67,12 @@ public class PersonalInfoPage extends IOSPage{
 		return page;
 	}
 	
+	public void waitForSettingsButtonAppears(){
+		DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameProfileSettingsButton));
+	}
+	
 	public void waitForEmailFieldVisible(){
-		
-		wait.until(ExpectedConditions.visibilityOf(emailField));
+		DriverUtils.waitUntilElementAppears(driver, By.xpath(IOSLocators.xpathEmailField));
 	}
 	
 	public void tapOptionsButtonByText(String buttonText){
@@ -87,7 +101,7 @@ public class PersonalInfoPage extends IOSPage{
 	}
 
 	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) {
+	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
 		
 		IOSPage page = null;
 		switch (direction){
@@ -105,6 +119,7 @@ public class PersonalInfoPage extends IOSPage{
 		}
 		case RIGHT:
 		{
+			page = new ContactListPage(url, path);
 			break;
 		}
 	}	

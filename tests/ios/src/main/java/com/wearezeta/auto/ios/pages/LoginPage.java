@@ -19,7 +19,7 @@ import com.wearezeta.auto.common.driver.SwipeDirection;
 
 public class LoginPage extends IOSPage {
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameLoginPage)
+	@FindBy(how = How.NAME, using = IOSLocators.nameMainWindow)
 	private WebElement viewPager;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameSignInButton)
@@ -51,6 +51,13 @@ public class LoginPage extends IOSPage {
 	public LoginPage(String URL, String path) throws MalformedURLException {
 		
 		super(URL, path);
+		this.url = URL;
+		this.path = path;
+	}
+	
+	public LoginPage(String URL, String path, boolean acceptAlerts) throws MalformedURLException {
+		
+		super(URL, path, acceptAlerts);
 		this.url = URL;
 		this.path = path;
 	}

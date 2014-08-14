@@ -52,8 +52,7 @@ public class ConnectToPage extends IOSPage {
 	}
 	
 	public ContactListPage fillTextInConnectDialog() throws IOException {
-		messageInput.click();
-		messageInput.sendKeys(inviteMessage + "\\n");
+		messageInput.sendKeys(inviteMessage + "\n");
 		
 		return new ContactListPage(url, path);
 	}

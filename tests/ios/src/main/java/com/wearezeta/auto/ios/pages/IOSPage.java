@@ -19,12 +19,20 @@ public abstract class IOSPage extends BasePage {
 
 	private static final int SWIPE_DELAY = 10 * 1000; //milliseconds
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameLoginPage)
+	DesiredCapabilities capabilities = new DesiredCapabilities();
+	
+	private String url = "";
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameMainWindow)
 	private WebElement content;
 
 	private static String imagesPath = "";
 
 	public IOSPage(String URL, String path) throws MalformedURLException {
+		this (URL, path, true);
+	}
+	
+	public IOSPage(String URL, String path, boolean acceptAlerts) throws MalformedURLException {
 
 		try {
 			setImagesPath(CommonUtils.getSimulatorImagesPathFromConfig(this
@@ -32,12 +40,27 @@ public abstract class IOSPage extends BasePage {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		DesiredCapabilities capabilities = new DesiredCapabilities();
+		url = URL;
 		capabilities.setCapability("platformName", "iOS");
-		capabilities.setCapability("autoAcceptAlerts", true);
+		
 		capabilities.setCapability("app", path);
 		capabilities.setCapability("deviceName", "iPhone");
-		super.InitConnection(URL, capabilities);
+		if (false == acceptAlerts) {
+			initWithoutAutoAccept();
+		}
+		else {
+			initWithAutoAccept();
+		}
+	}
+	
+	private void initWithAutoAccept() throws MalformedURLException {
+		capabilities.setCapability("autoAcceptAlerts", true);
+		super.InitConnection(url, capabilities);
+	}
+	
+	private void initWithoutAutoAccept() throws MalformedURLException {
+		
+		super.InitConnection(url, capabilities);
 	}
 
 	@Override

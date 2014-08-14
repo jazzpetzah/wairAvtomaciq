@@ -24,6 +24,8 @@ Feature: Register new user
     |	Email						|	Password	    |	Name			|
     |	aqaUser            	        |	aqaPassword	    |	aqaUser       	|
 
+#Muted till new sync engine client stabilization
+@mute
 @regression
 @id304
   Scenario Outline: Attempt to register an email with spaces
@@ -61,7 +63,8 @@ Feature: Register new user
     |  Name			    |
     |  aqaUser      	|
     
-
+  #Muted till new sync engine client stabilization
+  @mute
   @regression
   @id284
   Scenario Outline: Conserve user input throughout registration
@@ -79,8 +82,9 @@ Feature: Register new user
     Examples:     
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
-    
-    
+
+  #Muted till new sync engine client stabilization
+  @mute
   @regression
   @id282
   Scenario Outline: Can return to email page to change email if input incorrectly
@@ -104,7 +108,8 @@ Feature: Register new user
     |	Correct				    |	Password	        |	Name	        |   Incorrect           |
     |   aqaUser	                |	aqaPassword	        |	aqaUser         |   error@wearezeta.com |
 
-  
+  #Muted till new sync engine client stabilization
+  @mute
   @regression
   @id346
   Scenario Outline: Register new user using username with maximum characters allowed, Deutch, Double-byte (Chinese), and emoji Characters
@@ -121,7 +126,8 @@ Feature: Register new user
     |	Email 					    |	Password	    |    MaxChars    |    Language   |
     |	aqaUser             	    |	aqaPassword	    |    72          |    English    |
     
-
+#Muted till new sync engine client stabilization
+@mute
 @regression
   Scenario Outline: Register new user using photo album
 	Given I see sign in screen
@@ -163,7 +169,8 @@ Feature: Register new user
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
     
-
+#Muted till new sync engine client stabilization
+@mute
 @regression
 @id286
   Scenario Outline: Take or select a photo label validation
@@ -175,7 +182,8 @@ Feature: Register new user
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
     
-
+#Muted till new sync engine client stabilization
+@mute
 @regression
 @id285
   Scenario Outline: Take or select a photo label not visible when picture is selected
@@ -208,7 +216,8 @@ Feature: Register new user
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
  
-
+#Muted till new sync engine client stabilization
+@mute
 @regression
 @id273
   Scenario Outline: Next Button should not be visible on first registration step visit
@@ -232,7 +241,8 @@ Feature: Register new user
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	| 
     
-
+#Muted till new sync engine client stabilization
+@mute
 @regression
 @id290
   Scenario Outline: Automatic email verification
@@ -273,7 +283,8 @@ Feature: Register new user
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
     
-
+#Muted till new sync engine client stabilization
+@mute
 @regression
 @id305
   Scenario Outline: Minimum 8 chars password requirement validation

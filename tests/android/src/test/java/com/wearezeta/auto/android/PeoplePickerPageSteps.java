@@ -119,4 +119,10 @@ public class PeoplePickerPageSteps {
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 	    Assert.assertTrue(PagesCollection.peoplePickerPage.groupIsVisible(contact));	
 	}
+	
+	@Then("^I see counter value (.*)$")
+	public void ThenISeeCounterValue(int value) throws Throwable {
+		Assert.assertEquals(value, PagesCollection.peoplePickerPage.getCharCounterValue());
+	}
+
 }

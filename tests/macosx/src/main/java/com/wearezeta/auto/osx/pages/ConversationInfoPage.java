@@ -25,6 +25,9 @@ public class ConversationInfoPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idAddPeopleButtonSingleChat)
 	private WebElement singleChatAddPeopleButton;
 	
+	@FindBy(how = How.ID, using = OSXLocators.idBlockUserButtonSingleChat)
+	private WebElement singleChatBlockUserButton;
+	
 	@FindBy(how = How.ID, using = OSXLocators.idAddPeopleButtonGroupChat)
 	private WebElement groupChatAddPeopleButton;
 	
@@ -180,6 +183,22 @@ public class ConversationInfoPage extends OSXPage {
 		else return false;
 	}
 
+	public boolean isAddPeopleButtonExists() {
+		return singleChatAddPeopleButton.isDisplayed();
+	}
+	
+	public boolean isBlockUserButtonExists() {
+		return singleChatBlockUserButton.isDisplayed();
+	}
+	
+	public boolean isUserNameDisplayed(String name) {
+		return DriverUtils.waitUntilElementAppears(driver, By.xpath(OSXLocators.xpathSingleChatUserNameField));
+	}
+	
+	public boolean isEmailButtonExists(String email) {
+		return DriverUtils.waitUntilElementAppears(driver, By.xpath(OSXLocators.xpathSingleChatUserEmailButton));
+	}
+	
 	public String getCurrentConversationName() {
 		return currentConversationName;
 	}

@@ -133,3 +133,59 @@ Scenario Outline: Do not accept erroneous input as group conversation name (lead
 Examples:
 	|  Login		| Password		| Name			| Contact1		| Contact2		|
 	|  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
+
+@staging
+@id100
+Scenario Outline: Access proﬁle information for the other participant in a 1on1 conversation
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with name <Name>
+	When I open conversation with <Contact1>
+	And I open Conversation info
+	Then I see <Contact1> name in Conversation info
+	And I see <Contact1> email in Conversation info
+	And I see aqaPictureContact600_800.jpg photo in Conversation info
+	And I see add new people button
+	And I see block a person button
+
+Examples:
+	|  Login		| Password		| Name			| Contact1				| 
+	|  aqaUser		| aqaPassword	| aqaUser		| aqaPictureContact		|
+	
+@staging
+@id535
+Scenario Outline: Remove then add the same participant in group chat
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with name <Name>
+	And I create group chat with <Contact1> and <Contact2>
+	And I open conversation with <Contact1>, <Contact2>
+	And I open Conversation info
+	And I choose user <Contact1> in Conversation info
+	And I remove selected user from conversation
+	And I see message YOU REMOVED <Contact1> in conversation
+	And I open People Picker from conversation
+	And I search for user <Contact1>
+	And I see user <Contact1> in search results
+	And I add user <Contact1> from search results
+	Then I open conversation with <Contact1>, <Contact2>
+	And I see message YOU ADDED <Contact3> in conversation
+
+Examples:
+	|  Login		| Password		| Name			| Contact1		| Contact2		|			
+	|  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
+
+@staging
+@id188
+Scenario Outline: Group conversation name is displayed
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with name <Name>
+	And I create group chat with <Contact1> and <Contact2>
+	And I open conversation with <Contact1>, <Contact2>
+	And I open Conversation info
+	And I set name <NewName> for conversation
+    And I open conversation with <NewName>
+	And I open Conversation info
+	Then I see conversation name <NewName> in conversation info
+
+Examples:
+	|  Login		| Password		| Name			| Contact1		| Contact2		|	NewName		|		
+	|  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|	RANDOM		|

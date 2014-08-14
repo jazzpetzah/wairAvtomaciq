@@ -8,7 +8,7 @@ import com.wearezeta.auto.common.driver.ZetaDriver;
 public class IOSKeyboard {
 	private static final String TAP_KEYBOARD_BUTTON = "target.frontMostApp().keyboard().elements()[\"%s\"].tap();";
 	private static final KeyboardState UNKNOWN_STATE = new KeyboardStateUnknown();
-	private static final int TAP_DELAY = 10;
+	private static final int TAP_DELAY = 20;
 	private List<KeyboardState> CACHED_STATES = new ArrayList<KeyboardState>();
 	private static final String DEFAULT_RETURN_NAME = "Return";
 	
@@ -45,16 +45,20 @@ public class IOSKeyboard {
 
 	private ZetaDriver driver = null;
 
-	protected IOSKeyboard(ZetaDriver driver) {
-		this.driver = driver;
+	protected IOSKeyboard() {
+		
 	}
 
 	private static IOSKeyboard instance = null;
-	public static synchronized IOSKeyboard getInstance(ZetaDriver driver) {
+	public static synchronized IOSKeyboard getInstance() {
 		if(instance == null) {
-			instance = new IOSKeyboard(driver);
+			instance = new IOSKeyboard();
 		}
 		return instance;
+	}
+	
+	public static synchronized void dispose() {
+		instance = null;
 	}
 	
 	private KeyboardState getInitialState() {
@@ -72,11 +76,13 @@ public class IOSKeyboard {
 		return UNKNOWN_STATE;
 	}
 
-	public void typeString(String message) throws InterruptedException {
-		KeyboardState currentState = new KeyboardStateAlpha(driver);
+	public void typeString(String message, ZetaDriver driver) throws InterruptedException {
+		this.driver = driver;
+		KeyboardState currentState = getInitialState();
+		String messageChar = "";
 		for (int i = 0; i < message.length(); i++) {
 			char c = message.charAt(i);
-			String messageChar = Character.toString(c);
+			messageChar = Character.toString(c);
 
 			KeyboardState finalState = getFinalState(c);
 			if (currentState.getClass() != finalState.getClass()) {
@@ -88,28 +94,28 @@ public class IOSKeyboard {
 				Thread.sleep(TAP_DELAY);
 				currentState = finalState;
 			}
-
-			if (messageChar.equals(" ")) {
-				driver.executeScript(String
-						.format(TAP_KEYBOARD_BUTTON, "space"));
-			}else if (messageChar.equals("\n")) {
-				driver.executeScript(String
-							.format(TAP_KEYBOARD_BUTTON, getReturnName()));
-			} else if (messageChar.matches("[0-9]")) {
-				if (messageChar.equals("0")) {
-					messageChar = "9";
-				} else {
-					messageChar = "" + (char) ((int) messageChar.charAt(0) - 1);
-				}
-				driver.executeScript(String.format(TAP_KEYBOARD_BUTTON,
-						messageChar));
-			} else {
-				driver.executeScript(String.format(TAP_KEYBOARD_BUTTON,
-						messageChar));
+			
+			switch (messageChar) {
+				case " " : 
+					messageChar = "space";
+					break;
+				case "\n" : 
+					messageChar = getReturnName();
+					break;
+				default : 
+					if (messageChar.matches("[0-9]")) {
+						if (messageChar.equals("0")) {
+							messageChar = "9";
+						} else {
+							messageChar = "" + (char) ((int) messageChar.charAt(0) - 1);
+						}
+					} 
+					break;
 			}
-
-			Thread.sleep(TAP_DELAY);
+			driver.executeScript(String.format(TAP_KEYBOARD_BUTTON,
+					messageChar));
 		}
+		Thread.sleep(TAP_DELAY);
 
 	}
 

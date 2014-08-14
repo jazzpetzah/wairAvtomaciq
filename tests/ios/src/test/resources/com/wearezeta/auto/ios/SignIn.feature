@@ -15,23 +15,21 @@ Feature: Sign In
   Examples:
     |	Login					|	Password	|	Name			|
     |	aqaUser            		|	aqaPassword	|	aqaUser 		|
-  
-   #Bug IOS-959-Zclient crashes after re-login  
-   @id524
+    
+   #Known issue is IOS-989, once it is fixed test should be updated
    @staging
-  Scenario Outline: I can log out of one account and into another and the information switches properly
+   @id524
+  Scenario Outline: I can change sign in user on iOS
 	Given I Sign in using login <Login> and password <Password>
-	And I see Contact list with my name <Name>
-	And I tap on my name <Name>
+	And I see Contact list with my name <UserA>
+	And I tap on my name <UserA>
 	And I click on Settings button on personal page
 	And I click Sign out button from personal page
-	Then I see sign in screen
-    And I Sign in using login <NewLogin> and password <NewPassword>
-	Then I see Contact list with my name <NewName>
-	And I see contact list loaded with User name <Contact>
-	Then I tap on my name <NewName>
-	And I see <NewName> user profile page
+	And I Sign in using login <UserB> and password <Password>
+	Then I see Personal page
+	And I see name <UserB> on Personal page
+	And I see email <UserB> on Personal page
 	
   Examples:
-    |	Login					|	Password	|	Name			|   NewLogin                                |  NewPassword   |      NewName          |  Contact           |
-    |	aqaUser            		|	aqaPassword	|	aqaUser 		| smoketester+changeusertest@wearezeta.com  |   changeuser   |   aqaChangeUserTest   |  Chad Bettencourt  |
+    |	Login					|	Password	|	UserA			| UserB			|
+    |	aqaUser            		|	aqaPassword	|	aqaUser 		| aqaContact1	|

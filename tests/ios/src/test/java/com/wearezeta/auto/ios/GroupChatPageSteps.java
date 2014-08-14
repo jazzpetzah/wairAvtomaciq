@@ -25,8 +25,7 @@ public class GroupChatPageSteps {
 	
 	@When("^I swipe up on group chat page$")
 	public void ISwipeUpOnGroupChatPage() throws IOException, InterruptedException{
-		PagesCollection.groupChatPage.isGroupChatPageVisible();
-		PagesCollection.groupChatInfoPage = (GroupChatInfoPage)PagesCollection.groupChatPage.swipeUp(1000);
+		PagesCollection.groupChatInfoPage = (GroupChatInfoPage)PagesCollection.groupChatPage.swipeUp(500);
 	}
 	
 	@When("^I see the new conversation name displayed in in conversation$")
@@ -58,8 +57,6 @@ public class GroupChatPageSteps {
 		user = CommonUtils.retrieveRealUserContactPasswordValue(user);
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 		Assert.assertTrue(PagesCollection.groupChatPage.isUserAddedContactVisible(user,contact));
-	    
 	}
-	
 	
 }

@@ -1,7 +1,7 @@
 Feature: User Profile
 
   #muted because related story still not closed
-  @id328 @mute @smoke @nonUnicode
+  @id328 @mute @smoke
   Scenario Outline: ZClient change name
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -17,7 +17,7 @@ Feature: User Profile
       | Login   | Password    | Name    | NewName     |
       | aqaUser | aqaPassword | aqaUser | NewTestName |
 
- @id67 @id68 @regression @nonUnicode
+ @id67 @id68 @regression
   Scenario Outline: Open and Close settings page
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -32,7 +32,7 @@ Feature: User Profile
       | Login   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |
 
-  @id91 @id92 @regression @nonUnicode 
+  @id91 @id92 @regression
   Scenario Outline: Open Close About page from Settings page
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -47,7 +47,7 @@ Feature: User Profile
       | Login   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |
 
- @id71 @regression @nonUnicode
+ @id71 @regression
   Scenario Outline: Can not open Settings page when editing user name
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

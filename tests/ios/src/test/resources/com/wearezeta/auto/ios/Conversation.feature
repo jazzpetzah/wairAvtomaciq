@@ -1,9 +1,8 @@
-
-
 Feature: Conversation
 
-
-  @smoke 
+  #Muted till new sync engine client stabilization
+  @mute
+  @smoke
   @id330
   Scenario Outline: Send Message to contact
     Given I Sign in using login <Login> and password <Password>
@@ -35,15 +34,17 @@ Feature: Conversation
 	Examples: 
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
-
-  @smoke
+    
+  #Muted till new sync engine client stabilization
+  @mute
+  @smoke 
   @id333
 	Scenario Outline: Start group chat with users from contact list
 		Given I Sign in using login <Login> and password <Password>
     	And I see Contact list with my name <Name>
 	   	When I tap on contact name <Contact1>
     	And I see dialog page
-	   	And I swipe up on dialog page
+	   	And I swipe up on dialog page to open other user personal page
 	   	And I see <Contact1> user profile page
 	   	And I press Add button
 	   	And I see People picker page
@@ -58,7 +59,7 @@ Feature: Conversation
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-#unstable behaviour when send the message (should be investigated)
+  #Muted till new sync engine client stabilization
   @mute
   @smoke 
   @id334
@@ -74,6 +75,8 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
+#Muted till new sync engine client stabilization
+@mute
 @smoke 
 @id460
 Scenario Outline: Send a camera roll picture to user from contact list
@@ -92,6 +95,8 @@ Examples:
 	|	Login		|	Password		|	Name		|	Contact			|
 	|	aqaUser		|	aqaPassword		|	aqaUser		|	aqaContact1		|
 
+#Muted till new sync engine client stabilization
+@mute
 @regression
 @id489
 Scenario Outline: Add user to a group conversation
@@ -159,7 +164,8 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-
+  #Muted till new sync engine client stabilization
+  @mute
   @smoke 
   @id404
 Scenario Outline: I can edit the conversation name
@@ -178,6 +184,8 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
 
+   #Muted till new sync engine client stabilization
+   @mute
    @regression
    @id531
 Scenario Outline: I can see the individual user profile if I select someone in participants view
@@ -192,6 +200,8 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
+  #Muted till new sync engine client stabilization
+  @mute
   @smoke
   @id338
  Scenario Outline: Mute conversation
@@ -207,6 +217,8 @@ Examples:
     |  Login		| Password		| Name			| Contact1    |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |
 
+#Muted till new sync engine client stabilization
+@mute
 @regression
 @id392
 Scenario Outline: Verify correct group info page information
@@ -222,7 +234,7 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaPictureContact	    | aqaAvatar TestContact	| 		 3			|
 
 
-@staging
+@staging 
 @id526   
   Scenario Outline: I can send and play inline youtube link
     Given I Sign in using login <Login> and password <Password>
@@ -242,6 +254,7 @@ Examples:
 #crash after relogin due to defect IOS-959
 @mute   
 @staging
+@id169  
    Scenario Outline: I am able to play inline YouTube link poster by others
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -264,6 +277,8 @@ Examples:
     |	Login	|	Password	|	Name	|	Contact		| YouTubeLink	|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| http://www.youtube.com/watch?v=Bb1RhktcugU |  
 
+#muted due to issue IOS-959
+@mute  
 @staging
 @id383
 Scenario Outline: Play/pause SoundCloud media link from the media bar
@@ -276,9 +291,9 @@ Scenario Outline: Play/pause SoundCloud media link from the media bar
     And I tap media link
     And I scroll media out of sight until media bar appears
     And I pause playing the media in media bar
-    Then The playing media is paused
+    Then I see playing media is paused
     And I press play in media bar
-    Then The media is playing
+    Then I see media is playing
     And I stop media in media bar
     Then The media stopps playing
     
@@ -454,7 +469,7 @@ Examples:
     |	Login	|	Password	|	Name	|	Contact1		| SoundCloudLink 								| time |
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| https://soundcloud.com/carl-cox/carl-cox-nexus| 28   | 
 
- @staging
+ @staging 
  @id415
   Scenario Outline: Send Message to contact after navigating away from chat page
     Given I Sign in using login <Login> and password <Password>
@@ -473,3 +488,46 @@ Examples:
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaAvatar	|
     
     
+    
+@staging 
+@id393
+Scenario Outline: Verify you can start 1:1 conversation from a group conversation profile
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+	When I create group chat with <Contact1> and <Contact2>
+	And I swipe up on group chat page
+	And I select contact <Contact1>
+	And I tap on start dialog button on other user profile page
+	And I type the message and send it
+	Then I see my message in the dialog
+	
+	Examples:
+    |  Login		| Password		| Name			| Contact1		| Contact2		|
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
+      
+@staging
+@id393
+Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+	When I create group chat with <Contact1> and <Contact2>
+	And I swipe up on group chat page
+	And I change conversation name to <ChatName>
+	And I swipe down on group chat info page
+	And I swipe right on Dialog page
+	And I tap on my name <Name>
+	And I click on Settings button on personal page
+	And I click Sign out button from personal page
+	And I Sign in using login <Contact1> and password <Password>
+	And I see Personal page
+	And I swipe right on the personal page
+	And I tap on group chat with name <ChatName>
+	And I swipe up on group chat page	
+	And I tap on not connected contact <Contact2>
+	Then I see connect to <Contact2> dialog
+	
+	
+	
+	Examples:
+    |  Login		| Password		| Name			| Contact1		| Contact2		| ChatName   |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| QAtestChat |

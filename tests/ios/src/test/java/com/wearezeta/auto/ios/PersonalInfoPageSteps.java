@@ -6,8 +6,10 @@ import java.net.MalformedURLException;
 
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.ios.pages.CameraRollPage;
+import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 
@@ -78,5 +80,25 @@ public class PersonalInfoPageSteps {
 		double score = ImageUtil.getOverlapScore(RegistrationPageSteps.basePhoto, profileImage);
 		System.out.println("SCORE: " + score);
 		Assert.assertTrue("Images are differen. Expected score >= 0.75, current = " + score, score >= 0.75d);
+	}
+	
+	@When("I see Personal page")
+	public void ISeePersonalPage(){
+		PagesCollection.personalInfoPage.waitForSettingsButtonAppears();
+	}
+	
+	@When("I see name (.*) on Personal page")
+	public void ISeeMyNameOnPersonalPage(String name){
+		Assert.assertTrue(PagesCollection.personalInfoPage.getUserNameValue().equals(CommonUtils.findUserNamed(name).getName()));
+	}
+	
+	@When("I see email (.*) on Personal page")
+	public void ISeeMyEmailOnPersonalPage(String name){
+		Assert.assertEquals(CommonUtils.findUserNamed(name).getEmail(), PagesCollection.personalInfoPage.getUserEmailVaue());
+	}
+	
+	@When("I swipe right on the personal page")
+	public void ISwipeRightOnPersonalPage() throws IOException{
+		PagesCollection.contactListPage = (ContactListPage)PagesCollection.personalInfoPage.swipeRight(500);
 	}
 }
