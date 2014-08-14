@@ -1,6 +1,6 @@
 Feature: Connect to User
 
-	#DEFECT AN-639
+  #DEFECT AN-639
   @id191 @id193 @smoke @mute
   Scenario Outline: Send invitation message to a user
     Given I Sign in using login <Login> and password <Password>
@@ -19,7 +19,7 @@ Feature: Connect to User
       | Login   | Password    | Name    | Contact  | Message       |
       | aqaUser | aqaPassword | aqaUser | yourUser | Hellow friend |
 
-  @id218 @regression 
+  @id218 @regression
   Scenario Outline: I can do full name search for existing 1:1(non-archive)
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -33,7 +33,7 @@ Feature: Connect to User
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @id223 @regression 
+  @id223 @regression
   Scenario Outline: I can do partial name search for existing 1:1
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -185,5 +185,43 @@ Feature: Connect to User
     And Contact name <WaitingMess> is not in list
 
     Examples: 
-      | Login    | Password    | Contact  | WaitingMess      |
+      | Login   | Password    | Contact         | WaitingMess      |
       | aqaUser | aqaPassword | yourNotContact1 | 1 person waiting |
+
+  @id542 @regression
+  Scenario Outline: I want to be taken to the connect inbox right away if the person I select already sent me a connect request
+    Given <Contact> connection request is sended to me <Login>
+    And I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Login>
+    When I see contact list loaded with User name <WaitingMess>
+    And I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in search field user name to connect to <Contact>
+    And I tap on user name found on People picker page <Contact>
+    And I see connect to <Contact> dialog
+    And I Connect with contact by pressing button
+    Then I see Connect to <Contact> Dialog page
+
+    Examples: 
+      | Login   | Password    | Contact         | WaitingMess      |
+      | aqaUser | aqaPassword | yourNotContact2 | 1 person waiting |
+
+  @id547 @regression
+  Scenario Outline: I can see the char counter changes when writing the first connect message
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Login>
+    And I swipe down contact list
+    And I see People picker page
+    When I tap on Search input on People picker page
+    And I input in search field user name to connect to <Contact>
+    And I tap on user name found on People picker page <Contact>
+    And I see connect to <Contact> dialog
+    And I tap on edit connect request field
+    Then I see counter value <CounterValue1>
+    And I type Connect request <Message>
+    And I see counter value <CounterValue2>
+
+    Examples: 
+      | Login   | Password    | Contact         | CounterValue1 | Message | CounterValue2 |
+      | aqaUser | aqaPassword | yourNotContact3 | 140           | test    | 136           |

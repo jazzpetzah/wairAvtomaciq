@@ -7,6 +7,8 @@ public final class AndroidLocators {
 	public static final String LOCATORS_PACKAGE = CommonUtils.getAndroidPackageFromConfig(AndroidLocators.class);
 	public static final String CLASS_NAME = "com.wearezeta.auto.android.locators.AndroidLocators";
 	
+	public static final String idConnectToCharCounter = LOCATORS_PACKAGE + ":id/ttv__send_connect_request__connect_button__character_counter";
+	
 	public static final String idSimpleDialogPageText = LOCATORS_PACKAGE + ":id/ttv__simple_dialog__text"; 
 	
 	public static final String idConnectToHeader = LOCATORS_PACKAGE + ":id/taet__participants__header";
