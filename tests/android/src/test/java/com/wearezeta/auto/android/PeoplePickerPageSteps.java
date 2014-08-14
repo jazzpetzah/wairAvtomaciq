@@ -98,7 +98,7 @@ public class PeoplePickerPageSteps {
 		PagesCollection.peoplePickerPage.tapEditConnectionRequies();
 	}
 	
-	@When("^I type Connect request (.*)$")
+	@When("^I type Connect request \"(.*)\"$")
 	public void WhenITypeConnectRequest(String message){
 		PagesCollection.peoplePickerPage.typeConnectionRequies(message);
 	}
@@ -120,6 +120,11 @@ public class PeoplePickerPageSteps {
 	    Assert.assertTrue(PagesCollection.peoplePickerPage.groupIsVisible(contact));	
 	}
 	
+	@Then("^I see connect button enabled state is (.*)$")
+	public void ThenISeeConnectButtonIsDisabled(boolean state) throws Throwable {
+		Assert.assertEquals(state, PagesCollection.peoplePickerPage.getConnectButtonState());
+	}
+
 	@Then("^I see counter value (.*)$")
 	public void ThenISeeCounterValue(int value) throws Throwable {
 		Assert.assertEquals(value, PagesCollection.peoplePickerPage.getCharCounterValue());
