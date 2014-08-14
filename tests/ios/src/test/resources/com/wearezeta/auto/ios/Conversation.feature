@@ -1,8 +1,7 @@
-
-
 Feature: Conversation
 
-
+  #Muted till new sync engine client stabilization
+  @mute
   @smoke
   @id330
   Scenario Outline: Send Message to contact
@@ -35,7 +34,9 @@ Feature: Conversation
 	Examples: 
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
-
+    
+  #Muted till new sync engine client stabilization
+  @mute
   @smoke 
   @id333
 	Scenario Outline: Start group chat with users from contact list
@@ -58,6 +59,8 @@ Feature: Conversation
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
+  #Muted till new sync engine client stabilization
+  @mute
   @smoke 
   @id334
 Scenario Outline: Send message to group chat
@@ -72,6 +75,8 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
+#Muted till new sync engine client stabilization
+@mute
 @smoke 
 @id460
 Scenario Outline: Send a camera roll picture to user from contact list
@@ -90,6 +95,8 @@ Examples:
 	|	Login		|	Password		|	Name		|	Contact			|
 	|	aqaUser		|	aqaPassword		|	aqaUser		|	aqaContact1		|
 
+#Muted till new sync engine client stabilization
+@mute
 @regression
 @id489
 Scenario Outline: Add user to a group conversation
@@ -157,7 +164,8 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-
+  #Muted till new sync engine client stabilization
+  @mute
   @smoke 
   @id404
 Scenario Outline: I can edit the conversation name
@@ -176,6 +184,8 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
 
+   #Muted till new sync engine client stabilization
+   @mute
    @regression
    @id531
 Scenario Outline: I can see the individual user profile if I select someone in participants view
@@ -190,6 +200,8 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
+  #Muted till new sync engine client stabilization
+  @mute
   @smoke
   @id338
  Scenario Outline: Mute conversation
@@ -205,6 +217,8 @@ Examples:
     |  Login		| Password		| Name			| Contact1    |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |
 
+#Muted till new sync engine client stabilization
+@mute
 @regression
 @id392
 Scenario Outline: Verify correct group info page information
