@@ -1,12 +1,17 @@
 package com.wearezeta.auto.osx.steps;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ConversationInfoPage;
+import com.wearezeta.auto.osx.pages.OSXPage;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -35,7 +40,11 @@ public class ConversationInfoPageSteps {
 	
 	@Then("I see conversation name (.*) in conversation info")
 	public void ISeeConversationNameInConversationInfo(String contact) {
-		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		if (contact.equals(OSXLocators.RANDOM_KEYWORD)) {
+			contact = CommonSteps.senderPages.getConversationInfoPage().getCurrentConversationName();
+		} else {
+			contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		}
 		Assert.assertTrue(CommonSteps.senderPages.getConversationInfoPage().isConversationNameEquals(contact));
 	}
 	
@@ -83,4 +92,49 @@ public class ConversationInfoPageSteps {
 		ConversationInfoPage conversationInfo = CommonSteps.senderPages.getConversationInfoPage();
 		conversationInfo.goBackFromUserProfileView();
 	}
+	
+	@Then("^I see (.*) name in Conversation info$")
+	public void ISeeContactNameInConversationInfo(String contact) throws Throwable {
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		ConversationInfoPage conversationInfo = CommonSteps.senderPages.getConversationInfoPage();
+		Assert.assertTrue(conversationInfo.isUserNameDisplayed(contact));
+	}
+
+	@Then("^I see (.*) email in Conversation info$")
+	public void ISeeContactEmailInConversationInfo(String contact) throws Throwable {
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		String email = null;
+		for (ClientUser clUser: CommonUtils.contacts) {
+			if (clUser.getName().equals(contact)) {
+				email = clUser.getEmail();
+			}
+		}
+		Assert.assertNotNull("Can't find an e-mail for contact user " + contact, email);
+		ConversationInfoPage conversationInfo = CommonSteps.senderPages.getConversationInfoPage();
+		Assert.assertTrue(conversationInfo.isEmailButtonExists(email));
+	}
+
+	@Then("^I see (.*) photo in Conversation info$")
+	public void ISeeContactPhotoInConversationInfo(String photo) throws Throwable {
+		ConversationInfoPage conversationInfo = CommonSteps.senderPages.getConversationInfoPage();
+		BufferedImage screen = conversationInfo.takeScreenshot();
+		BufferedImage picture = ImageUtil.readImageFromFile(OSXPage.imagesPath + photo);
+		double score = ImageUtil.getOverlapScore(screen, picture, ImageUtil.RESIZE_FROM2560x1600OPTIMIZED);
+		System.out.println(score);
+		Assert.assertTrue(
+				"Overlap between two images has no enough score. Expected >= 0.55, current = " + score,
+				score >= 0.55d);
+	}
+
+	@Then("^I see add new people button$")
+	public void ISeeAddNewPeopleButton() throws Throwable {
+	    Assert.assertTrue(CommonSteps.senderPages.getConversationInfoPage().isAddPeopleButtonExists());
+	}
+
+	@Then("^I see block a person button$")
+	public void ISeeBlockAPersonButton() throws Throwable {
+	    Assert.assertTrue(CommonSteps.senderPages.getConversationInfoPage().isBlockUserButtonExists());
+	}
+
+
 }

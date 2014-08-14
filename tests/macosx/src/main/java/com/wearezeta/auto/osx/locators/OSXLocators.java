@@ -66,6 +66,7 @@ public final class OSXLocators {
 	public static final String idAddPeopleButtonGroupChat = "addButton";
 	public static final String idConfirmationViewConfirmButton = "ConfirmationViewConfirmButton";
 	public static final String idAddPeopleButtonSingleChat = "userProfileViewButtonOnTheLeft";
+	public static final String idBlockUserButtonSingleChat = "userProfileViewButtonOnTheRight";
 	//OLD: public static final String idPeoplePickerAddToConversationButton = "people_picker_confirm_button";
 	public static final String idPeoplePickerAddToConversationButton = "ConfirmationBarViewConfirmButton";
 	public static final String idLeaveConversationButton = "leaveButton";
@@ -125,4 +126,7 @@ public final class OSXLocators {
 	
 	public static final String RANDOM_KEYWORD = "RANDOM";
 	
+
+	public static final String xpathSingleChatUserNameField = "//AXPopover/AXScrollArea/AXTextArea[@AXValue='%s']";
+	public static final String xpathSingleChatUserEmailButton = "//AXPopover/AXButton[@AXTitle='mailto:%s']";
 }
