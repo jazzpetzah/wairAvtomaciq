@@ -16,8 +16,6 @@ import com.wearezeta.auto.ios.pages.VideoPlayerPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-import org.apache.commons.lang3.RandomStringUtils;
-
 public class DialogPageSteps {
 	
 	private String message;
