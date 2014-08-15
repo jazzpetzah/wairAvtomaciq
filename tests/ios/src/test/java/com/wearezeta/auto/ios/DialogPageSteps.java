@@ -279,6 +279,12 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.inputStringFromKeyboard(message);
 	}
 	
+	@When("I input message with lower case and upper case")
+	public void IInputMessageWithLowerAndUpperCase() throws Throwable{
+		message = CommonUtils.generateRandomString(7).toLowerCase() + CommonUtils.generateRandomString(7).toUpperCase();
+		PagesCollection.dialogPage.sendStringToInput(message);
+	}
+	
 	@When("I input 200 chars message and send it")
 	public void ISend200CharsMessage() throws Exception{
 		message = CommonUtils.generateRandomString(200).toLowerCase().replace("x", " ");
