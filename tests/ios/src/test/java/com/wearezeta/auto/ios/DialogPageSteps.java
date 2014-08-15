@@ -16,8 +16,6 @@ import com.wearezeta.auto.ios.pages.VideoPlayerPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-import org.apache.commons.lang3.RandomStringUtils;
-
 public class DialogPageSteps {
 	
 	private String message;
@@ -279,6 +277,12 @@ public class DialogPageSteps {
 	public void IInputMessageWithTrailingEmptySpace() throws Throwable{
 		message = CommonUtils.generateRandomString(10).toLowerCase() + "." + onlySpacesMessage;
 		PagesCollection.dialogPage.inputStringFromKeyboard(message);
+	}
+	
+	@When("I input message with lower case and upper case")
+	public void IInputMessageWithLowerAndUpperCase() throws Throwable{
+		message = CommonUtils.generateRandomString(7).toLowerCase() + CommonUtils.generateRandomString(7).toUpperCase();
+		PagesCollection.dialogPage.sendStringToInput(message);
 	}
 	
 	@When("I input 200 chars message and send it")

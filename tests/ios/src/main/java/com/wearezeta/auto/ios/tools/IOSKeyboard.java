@@ -8,7 +8,7 @@ import com.wearezeta.auto.common.driver.ZetaDriver;
 public class IOSKeyboard {
 	private static final String TAP_KEYBOARD_BUTTON = "target.frontMostApp().keyboard().elements()[\"%s\"].tap();";
 	private static final KeyboardState UNKNOWN_STATE = new KeyboardStateUnknown();
-	private static final int TAP_DELAY = 20;
+	private static final int TAP_DELAY = 10;
 	private List<KeyboardState> CACHED_STATES = new ArrayList<KeyboardState>();
 	private static final String DEFAULT_RETURN_NAME = "Return";
 	
@@ -78,9 +78,10 @@ public class IOSKeyboard {
 
 	public void typeString(String message, ZetaDriver driver) throws InterruptedException {
 		this.driver = driver;
-		KeyboardState currentState = getInitialState();
 		String messageChar = "";
+
 		for (int i = 0; i < message.length(); i++) {
+			KeyboardState currentState = getInitialState();
 			char c = message.charAt(i);
 			messageChar = Character.toString(c);
 
@@ -112,11 +113,11 @@ public class IOSKeyboard {
 					} 
 					break;
 			}
-			Thread.sleep(TAP_DELAY);
+
 			driver.executeScript(String.format(TAP_KEYBOARD_BUTTON,
 					messageChar));
+			Thread.sleep(TAP_DELAY);
 		}
-		
 
 	}
 
