@@ -5,7 +5,10 @@ import com.wearezeta.auto.common.CommonUtils;
 public final class AndroidLocators {
 
 	public static final String LOCATORS_PACKAGE = CommonUtils.getAndroidPackageFromConfig(AndroidLocators.class);
+	
 	public static final String CLASS_NAME = "com.wearezeta.auto.android.locators.AndroidLocators";
+	
+	public static final String idPaticipantsPendingLabel = LOCATORS_PACKAGE + ":id/ttv__participants__pending_label";
 	
 	public static final String idConnectToCharCounter = LOCATORS_PACKAGE + ":id/ttv__send_connect_request__connect_button__character_counter";
 	

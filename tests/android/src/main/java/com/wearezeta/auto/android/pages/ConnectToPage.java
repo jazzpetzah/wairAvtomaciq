@@ -1,6 +1,8 @@
 package com.wearezeta.auto.android.pages;
 
 
+import java.util.List;
+
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -20,7 +22,8 @@ public class ConnectToPage extends AndroidPage {
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConnectRequestIgnore")
 	private WebElement connectIgnoreBtn;
 	
-	
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idPaticipantsPendingLabel")
+	private List<WebElement> pendingText;
 	
 	private String url;
 	private String path;
@@ -55,4 +58,7 @@ public class ConnectToPage extends AndroidPage {
 		return new ContactListPage(url, path);
 	}
 
+	public boolean isPending() {
+		return pendingText.size() > 0;
+	}
 }

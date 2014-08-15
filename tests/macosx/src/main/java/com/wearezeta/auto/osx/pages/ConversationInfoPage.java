@@ -167,7 +167,7 @@ public class ConversationInfoPage extends OSXPage {
 				}
 			}
 		} else {
-			result = (actualName == expectedName);
+			result = (actualName.equals(expectedName));
 		}
 		return result;
 	}

@@ -112,6 +112,18 @@ public class CommonSteps {
 				chatContacts, chatName);
 	}
 
+	@When("^(.*) ignore all requests$")
+	public void IgnoreConnectRequest(String contact) throws IllegalArgumentException, UriBuilderException, IOException, JSONException, BackendRequestException{
+		ClientUser yourСontact = null;
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		for (ClientUser user : CommonUtils.yourUsers) {
+			if (user.getName().toLowerCase().equals(contact.toLowerCase())) {
+				yourСontact = user;
+			}
+		}
+		BackEndREST.ignoreAllConnections(yourСontact);
+	}
+	
 	@When("^I press back button$")
 	public void PressBackButton() throws Exception {
 		if (PagesCollection.loginPage != null) {
