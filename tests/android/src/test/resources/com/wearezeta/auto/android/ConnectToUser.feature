@@ -1,7 +1,6 @@
 Feature: Connect to User
 
-  #DEFECT AN-639
-  @id191 @id193 @smoke @mute
+  @id191 @id193 @smoke
   Scenario Outline: Send invitation message to a user
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -11,7 +10,7 @@ Feature: Connect to User
     And I input in search field user name to connect to <Contact>
     And I tap on user name found on People picker page <Contact>
     And I tap on edit connect request field
-    And I type Connect request <Message>
+    And I type Connect request "<Message>"
     And I press Connect button
     Then I see contact list loaded with User name <Contact>
 
@@ -188,7 +187,7 @@ Feature: Connect to User
       | Login   | Password    | Contact         | WaitingMess      |
       | aqaUser | aqaPassword | yourNotContact1 | 1 person waiting |
 
-  @id542 @regression
+  @id542 @regression @mute
   Scenario Outline: I want to be taken to the connect inbox right away if the person I select already sent me a connect request
     Given <Contact> connection request is sended to me <Login>
     And I Sign in using login <Login> and password <Password>
@@ -219,9 +218,30 @@ Feature: Connect to User
     And I see connect to <Contact> dialog
     And I tap on edit connect request field
     Then I see counter value <CounterValue1>
-    And I type Connect request <Message>
+    And I see connect button enabled state is <FirstState>
+    And I type Connect request "<Message>"
     And I see counter value <CounterValue2>
+    And I see connect button enabled state is <SecondState>
 
     Examples: 
-      | Login   | Password    | Contact         | CounterValue1 | Message | CounterValue2 |
-      | aqaUser | aqaPassword | yourNotContact3 | 140           | test    | 136           |
+      | Login   | Password    | Contact         | CounterValue1 | Message | CounterValue2 | FirstState | SecondState |
+      | aqaUser | aqaPassword | yourNotContact3 | 140           | test    | 136           | false      | true        |
+
+  @id548 @regression
+  Scenario Outline: I can not send first message with space only
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Login>
+    And I swipe down contact list
+    And I see People picker page
+    When I tap on Search input on People picker page
+    And I input in search field user name to connect to <Contact>
+    And I tap on user name found on People picker page <Contact>
+    And I see connect to <Contact> dialog
+    And I tap on edit connect request field
+    And I type Connect request "    "
+    Then I see counter value <CounterValue>
+    And I see connect button enabled state is <FirstState>
+
+    Examples: 
+      | Login   | Password    | Contact         | CounterValue | FirstState |
+      | aqaUser | aqaPassword | yourNotContact3 | 136          | false      |

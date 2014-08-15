@@ -230,8 +230,13 @@ public class PeoplePickerPage extends AndroidPage {
 		return this;
 		
 	}
+	
+	public boolean getConnectButtonState() {
+		String state =  sendConnectionRequestButton.getAttribute("enabled");
+		return Boolean.parseBoolean(state);
+	}
 
-	public int getCharCounterValue() {		
+	public int getCharCounterValue() {
 		return Integer.parseInt(connectCharCounter.getText());
 	}
 

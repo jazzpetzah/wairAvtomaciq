@@ -97,12 +97,12 @@ public class DialogPage extends IOSPage{
 		DriverUtils.iOSMultiTap(driver, conversationInput, 3);
 	}
 	
-	public void typeMessage(String message) throws InterruptedException
+	public void sendStringToInput(String message) throws InterruptedException
 	{
 		conversationInput.sendKeys(message);
 	}
 	
-	public void sendMessage(String returnKey) throws InterruptedException{
+	public void inputStringFromKeyboard(String returnKey) throws InterruptedException{
 		IOSKeyboard keyboard = IOSKeyboard.getInstance();
 		keyboard.typeString(returnKey, driver);
 	}
