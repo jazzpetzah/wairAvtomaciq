@@ -571,7 +571,22 @@ Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat i
 	And I see my message in the dialog
 	And I input message with trailing emtpy spaces
 	And I send the message
-	And I see my message in the dialog
+	Then I see my message in the dialog
+    
+	Examples: 
+    |	Login	|	Password	|	Name	|	Contact		|
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
+    
+ @staging 
+ @id408 
+  Scenario Outline: Send one line message with lower case and upper case
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+	And I input message with lower case and upper case
+	And I send the message
+	Then I see my message in the dialog
     
 	Examples: 
     |	Login	|	Password	|	Name	|	Contact		|
