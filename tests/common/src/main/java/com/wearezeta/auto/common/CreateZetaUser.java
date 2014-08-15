@@ -56,7 +56,7 @@ public class CreateZetaUser {
 			UriBuilderException, BackendRequestException, InterruptedException {
 		final int ATTEMPS_NUMBER = 5;
 		for (int i = 0; i < ATTEMPS_NUMBER; i++) {
-			List<EmailHeaders> newMails = getLastMailHeaders(mail, password, 5);
+			List<EmailHeaders> newMails = getLastMailHeaders(mail, password, 20);
 			for (EmailHeaders newMailContent : newMails) {
 				if (newMailContent.getLastUserEmail()
 						.equals(registeredUserMail)) {
