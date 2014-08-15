@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import org.junit.Assert;
 import org.openqa.selenium.NoSuchElementException;
 
+import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.LoginPage;
@@ -19,10 +20,14 @@ import cucumber.api.java.en.When;
 public class LoginPageSteps {
 	@Given ("I Sign in using login (.*) and password (.*)")
 	public void GivenISignInUsingLoginAndPassword(String login, String password) throws IOException {
-		 if (login.equals(CommonUtils.YOUR_USER_1)) {
-			 login = CommonUtils.yourUsers.get(0).getEmail();
-		 }
-		password = CommonUtils.retrieveRealUserContactPasswordValue(password);
+		login = CommonUtils.retrieveRealUserContactPasswordValue(login);
+		for (ClientUser user : CommonUtils.yourUsers) {
+			if (user.getName().toLowerCase().equals(login.toLowerCase())) {
+				login = user.getEmail();
+				password = CommonUtils.retrieveRealUserContactPasswordValue(password);
+				break;
+			}
+		}
 		try {
 			LoginPage loginPage = CommonSteps.senderPages.getLoginPage();
 			Assert.assertNotNull(loginPage.isVisible());
