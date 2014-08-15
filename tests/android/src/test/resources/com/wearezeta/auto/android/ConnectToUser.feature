@@ -1,6 +1,6 @@
 Feature: Connect to User
 
-  @id191 @id193 @smoke
+  @id191 @id193 @smoke @mute
   Scenario Outline: Send invitation message to a user
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -162,7 +162,7 @@ Feature: Connect to User
       | Login       | Password    | Contact1        | Contact2        | WaitingMess1     | WaitingMess2     |
       | yourContact | aqaPassword | yourNotContact1 | yourNotContact2 | 2 people waiting | 1 person waiting |
 
-  @id540 @regression @mute
+  @id540 @regression @mute 
   Scenario Outline: I can ignore a connect request and reconnect later
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
@@ -187,7 +187,7 @@ Feature: Connect to User
       | Login   | Password    | Contact         | WaitingMess      |
       | aqaUser | aqaPassword | yourNotContact1 | 1 person waiting |
 
-  @id542 @regression @mute
+  @id542 @regression @mute 
   Scenario Outline: I want to be taken to the connect inbox right away if the person I select already sent me a connect request
     Given <Contact> connection request is sended to me <Login>
     And I Sign in using login <Login> and password <Password>
@@ -206,7 +206,7 @@ Feature: Connect to User
       | Login   | Password    | Contact         | WaitingMess      |
       | aqaUser | aqaPassword | yourNotContact2 | 1 person waiting |
 
-  @id547 @regression
+  @id547 @regression @mute 
   Scenario Outline: I can see the char counter changes when writing the first connect message
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
@@ -227,7 +227,7 @@ Feature: Connect to User
       | Login   | Password    | Contact         | CounterValue1 | Message | CounterValue2 | FirstState | SecondState |
       | aqaUser | aqaPassword | yourNotContact3 | 140           | test    | 136           | false      | true        |
 
-  @id548 @regression
+  @id548 @regression @mute
   Scenario Outline: I can not send first message with space only
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
@@ -245,3 +245,24 @@ Feature: Connect to User
     Examples: 
       | Login   | Password    | Contact         | CounterValue | FirstState |
       | aqaUser | aqaPassword | yourNotContact3 | 136          | false      |
+
+  @id554 @regression @mute
+  Scenario Outline: I would not know other person has ignored my connection request
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Login>
+    And I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in search field user name to connect to <Contact>
+    And I tap on user name found on People picker page <Contact>
+    And I see connect to <Contact> dialog
+    And I tap on edit connect request field
+    And I type Connect request "<Message>"
+    And I press Connect button
+    When <Contact> ignore all requests
+    Then I tap on contact name <Contact>
+    And I see that connection is pending
+
+    Examples: 
+      | Login   | Password    | Contact    | Message |
+      | aqaUser | aqaPassword | yourIgnore | Test    |

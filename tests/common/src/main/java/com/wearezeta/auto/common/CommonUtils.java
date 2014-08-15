@@ -25,7 +25,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 
 public class CommonUtils {
 	public static final String OS_NAME_WINDOWS = "Windows";
-	public static final int USERS_COUNT = 7;
+	public static final int USERS_COUNT = 8;
 	public static final String YOUR_USER_1 = "aqaUser";
 	public static final String YOUR_USER_2 = "yourUser";
 	public static final String YOUR_USER_3 = "yourContact";
@@ -33,6 +33,7 @@ public class CommonUtils {
 	public static final String YOUR_USER_5 = "yourNotContact2";
 	public static final String YOUR_USER_6 = "yourNotContact3";
 	public static final String YOUR_USER_7 = "yourNotContact4";
+	public static final String YOUR_USER_8 = "yourIgnore";
 	public static final String YOUR_UNCONNECTED_USER = YOUR_USER_3;
 	public static final String YOUR_PASS = "aqaPassword";
 	public static final String CONTACT_1 = "aqaContact1";
@@ -93,6 +94,7 @@ public class CommonUtils {
 			replacementMap.put(YOUR_USER_5, yourUsers.get(4).getName());
 			replacementMap.put(YOUR_USER_6, yourUsers.get(5).getName());
 			replacementMap.put(YOUR_USER_7, yourUsers.get(6).getName());
+			replacementMap.put(YOUR_USER_8, yourUsers.get(7).getName());
 			replacementMap.put(YOUR_PASS, yourUsers.get(0).getPassword());
 		}
 		if (contacts.size() > 0) {
