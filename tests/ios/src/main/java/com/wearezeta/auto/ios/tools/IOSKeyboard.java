@@ -3,12 +3,13 @@ package com.wearezeta.auto.ios.tools;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaDriver;
 
 public class IOSKeyboard {
 	private static final String TAP_KEYBOARD_BUTTON = "target.frontMostApp().keyboard().elements()[\"%s\"].tap();";
 	private static final KeyboardState UNKNOWN_STATE = new KeyboardStateUnknown();
-	private static final int TAP_DELAY = 10;
+	private static final int TAP_DELAY = 20;
 	private List<KeyboardState> CACHED_STATES = new ArrayList<KeyboardState>();
 	private static final String DEFAULT_RETURN_NAME = "Return";
 	
@@ -64,6 +65,7 @@ public class IOSKeyboard {
 	private KeyboardState getInitialState() {
 		final String emptyElement = "[object UIAElementNil]";
 		final String getStateTemplate = "target.frontMostApp().keyboard().keys().firstWithName(\"%s\").toString()";
+		
 		for (KeyboardState state : getStatesList()) {
 			final String firstStateChar = state.getFirstCharacter();
 			final String firstCharResponse = driver.executeScript(
@@ -87,10 +89,6 @@ public class IOSKeyboard {
 
 			KeyboardState finalState = getFinalState(c);
 			if (currentState.getClass() != finalState.getClass()) {
-				if ((finalState instanceof KeyboardStateAlpha && currentState instanceof KeyboardStateAlphaCaps)
-						|| (finalState instanceof KeyboardStateAlphaCaps && currentState instanceof KeyboardStateAlpha)) {
-					currentState = getInitialState();
-				}
 				currentState.switchTo(finalState);
 				Thread.sleep(TAP_DELAY);
 				currentState = finalState;
@@ -116,9 +114,8 @@ public class IOSKeyboard {
 
 			driver.executeScript(String.format(TAP_KEYBOARD_BUTTON,
 					messageChar));
-			Thread.sleep(TAP_DELAY);
 		}
-
+		Thread.sleep(TAP_DELAY);
 	}
 
 }
