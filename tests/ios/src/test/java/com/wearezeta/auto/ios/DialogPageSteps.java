@@ -16,6 +16,8 @@ import com.wearezeta.auto.ios.pages.VideoPlayerPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
 public class DialogPageSteps {
 	
 	private String message;
@@ -28,6 +30,7 @@ public class DialogPageSteps {
 	private String mediaState;
 	public static String sendDate;
 	private static final int SWIPE_DURATION = 1000;
+	private static String onlySpacesMessage="     ";
 
 	
 	@When("^I see dialog page$")
@@ -49,7 +52,7 @@ public class DialogPageSteps {
 	@When("^I type the message$")
 	public void WhenITypeTheMessage() throws Throwable {
 		message = CommonUtils.generateGUID();
-		PagesCollection.dialogPage.typeMessage(message);
+		PagesCollection.dialogPage.sendStringToInput(message);
 	}
 
 	@When("^I multi tap on text input$")
@@ -74,12 +77,12 @@ public class DialogPageSteps {
 	@When("^I type the message and send it$")
 	public void ITypeTheMessageAndSendIt() throws Throwable {
 	    message = CommonUtils.generateGUID();
-	    PagesCollection.dialogPage.typeMessage(message + "\n");
+	    PagesCollection.dialogPage.sendStringToInput(message + "\n");
 	}
 	
 	@When("^I send the message$")
 	public void WhenISendTheMessage() throws Throwable {
-		PagesCollection.dialogPage.sendMessage("\n");
+		PagesCollection.dialogPage.inputStringFromKeyboard("\n");
 	}
 	
 	@When("^I swipe up on dialog page to open other user personal page$")
@@ -90,8 +93,7 @@ public class DialogPageSteps {
 	@Then("^I see my message in the dialog$")
 	public void ThenISeeMyMessageInTheDialog() throws Throwable {
 	    String dialogLastMessage = PagesCollection.dialogPage.getLastMessageFromDialog();
-	    Assert.assertTrue("Message is different, actual :" + dialogLastMessage +
-	    		" expected: " + message, dialogLastMessage.equals((message).trim()));
+	    Assert.assertTrue("Message is different, actual :" + dialogLastMessage + " expected: " + message, dialogLastMessage.equals((message).trim()));
 	}
 	
 	@When("^I swipe the text input cursor$")
@@ -122,7 +124,7 @@ public class DialogPageSteps {
 	
 	@When("I type and send long message and media link (.*)")
 	public void ITypeAndSendLongTextAndMediaLink(String link) throws InterruptedException{
-		PagesCollection.dialogPage.typeMessage(longMessage + link + "\n");
+		PagesCollection.dialogPage.sendStringToInput(longMessage + link + "\n");
 	}
 	
 	@When("^I memorize message send time$")
@@ -153,12 +155,12 @@ public class DialogPageSteps {
 	
 	@When("I send long message")
 	public void ISendLongMessage() throws InterruptedException{
-		PagesCollection.dialogPage.typeMessage(longMessage);
+		PagesCollection.dialogPage.sendStringToInput(longMessage);
 	}
 	
 	@When("^I post media link (.*)$")
 	public void IPostMediaLink(String link) throws Throwable {
-	    PagesCollection.dialogPage.typeMessage(link + "\n");
+	    PagesCollection.dialogPage.sendStringToInput(link + "\n");
 	}
 	
 	@When("^I tap media link$")
@@ -257,5 +259,32 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.swipeRight(SWIPE_DURATION);
 	}
 	
+	@When("I try to send message with only spaces")
+	public void ISendMessageWithOnlySpaces() throws Throwable{
+		PagesCollection.dialogPage.sendStringToInput(onlySpacesMessage+ "\n");
+	}
+	
+	@Then("I see message with only spaces is not send")
+	public void ISeeMessageWithOnlySpacesIsNotSend(){
+		Assert.assertFalse(onlySpacesMessage.equals(PagesCollection.dialogPage.getLastMessageFromDialog()));
+	}
+	
+	@When("I input message with leading empty spaces")
+	public void IInpuMessageWithLeadingEmptySpace() throws Throwable{
+		message = onlySpacesMessage + CommonUtils.generateRandomString(10).toLowerCase();
+		PagesCollection.dialogPage.inputStringFromKeyboard(message);
+	}
+	
+	@When("I input message with trailing emtpy spaces")
+	public void IInputMessageWithTrailingEmptySpace() throws Throwable{
+		message = CommonUtils.generateRandomString(10).toLowerCase() + "." + onlySpacesMessage;
+		PagesCollection.dialogPage.inputStringFromKeyboard(message);
+	}
+	
+	@When("I input 200 chars message and send it")
+	public void ISend200CharsMessage() throws Exception{
+		message = CommonUtils.generateRandomString(200).toLowerCase().replace("x", " ");
+		PagesCollection.dialogPage.sendStringToInput(message + "\n");
+	}
 
 }

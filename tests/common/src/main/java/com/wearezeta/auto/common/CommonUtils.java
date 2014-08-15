@@ -15,6 +15,7 @@ import javax.mail.MessagingException;
 import javax.ws.rs.core.UriBuilderException;
 
 import org.apache.commons.collections.ListUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.json.JSONException;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
@@ -240,6 +241,10 @@ public class CommonUtils {
 
 	public static String generateGUID() {
 		return UUID.randomUUID().toString();
+	}
+	
+	public static String generateRandomString(int lengh){
+		return RandomStringUtils.randomAlphanumeric(lengh);
 	}
 
 	public static BufferedImage getElementScreenshot(WebElement element,
