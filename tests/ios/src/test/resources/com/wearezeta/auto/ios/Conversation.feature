@@ -504,7 +504,8 @@ Scenario Outline: Verify you can start 1:1 conversation from a group conversatio
 	Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
-      
+
+     
 @staging
 @id393
 Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
@@ -540,7 +541,7 @@ Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat i
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-	And I input 200 chars message and send it
+	And I input more than 200 chars message and send it
     And I see my message in the dialog
 	And I swipe right on Dialog page
     And I tap on my name <Name>
@@ -591,3 +592,45 @@ Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat i
 	Examples: 
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
+    
+   
+ @staging 
+ @id416
+  Scenario Outline: Keyboard up and navigate to main convo list
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+	And I tap on text input
+	And I see keyboard
+	And I scroll away the keyboard
+	And I dont see keyboard
+    
+	Examples: 
+    |	Login	|	Password	|	Name	|	Contact		|
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
+    
+
+ @staging 
+ @id413
+  Scenario Outline: Copy and paste to send the message
+    Given I see sign in screen
+	When I press Sign in button
+	And I have entered login <text>
+	And I tap and hold on Email input
+	And I click on popup SelectAll item
+	And I click on popup Copy item
+	And I have entered login <Login>
+	And I have entered password <Password>
+	And I press Login button
+	And I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
+    And I see dialog page
+    And I tap and hold on message input
+    And I click on popup Paste item
+	And I send the message
+	Then I see last message in dialog is expected message <text>
+    
+	Examples: 
+    |	Login	|	Password	|	Name	|	Contact		| text 		|
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| TextToCopy|
