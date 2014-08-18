@@ -94,6 +94,13 @@ public class DialogPageSteps {
 	    Assert.assertTrue("Message is different, actual :" + dialogLastMessage + " expected: " + message, dialogLastMessage.equals((message).trim()));
 	}
 	
+	@Then("^I see last message in the dialog$")
+	public void ThenISeeLastMessageInTheDialog() throws Throwable {
+	    String dialogLastMessage = PagesCollection.dialogPage.getLastMessageFromDialog();
+	    String lastLine = "ea commodo consequat.";
+	    Assert.assertTrue("Message is different, actual :" + dialogLastMessage + " expected: " + lastLine, dialogLastMessage.equals((lastLine).trim()));
+	}
+	
 	@When("^I swipe the text input cursor$")
 	public void ISwipeTheTextInputCursor() throws Throwable {
 		PagesCollection.dialogPage.swipeInputCursor();
@@ -289,6 +296,11 @@ public class DialogPageSteps {
 	public void ISend200CharsMessage() throws Exception{
 		message = CommonUtils.generateRandomString(200).toLowerCase().replace("x", " ");
 		PagesCollection.dialogPage.sendStringToInput(message + "\n");
+	}
+	
+	@When("^I scroll to the beginning of the conversation$")
+	public void IScrollToTheBeginningOfTheConversation() throws Throwable {
+		PagesCollection.dialogPage.scrollToBeginningOfConversation();
 	}
 
 }

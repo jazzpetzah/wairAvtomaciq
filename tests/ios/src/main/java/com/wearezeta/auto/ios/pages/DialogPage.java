@@ -73,6 +73,9 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.nameMediaBarTitle)
 	private WebElement mediabarBarTitle;
 	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathYouAddedMessageCellFormat)
+	private WebElement youAddedCell;
+	
 	
 	private String url;
 	private String path;
@@ -316,6 +319,27 @@ public class DialogPage extends IOSPage{
 		ImageFullScreenPage page = null;
 		imageCell.click();
 		page = new ImageFullScreenPage(url, path);
+		return page;
+	}
+	
+	public DialogPage scrollToBeginningOfConversation() throws Throwable, Exception{
+		DialogPage page = null;
+		int count = 0;
+		boolean beginningConversation = youAddedCell.isDisplayed();
+		while(!(beginningConversation) & (count<5)){
+			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true){
+				DriverUtils.swipeDown(driver, conversationPage, 500);
+				page = this;
+			}
+			else {
+				swipeDownSimulator();
+				page = this;
+			}
+			beginningConversation = youAddedCell.isDisplayed();
+			count++;
+		}
+		
+		Assert.assertTrue(youAddedCell.isDisplayed());
 		return page;
 	}
 

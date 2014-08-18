@@ -591,3 +591,21 @@ Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat i
 	Examples: 
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
+    
+@torun
+@staging
+@id394
+ Scenario Outline: Tap the cursor to get to the end of the conversation
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I send long message
+    And I scroll to the beginning of the conversation
+    And I tap on text input
+    Then I see last message in the dialog
+    
+    Examples: 
+    |	Login	|	Password	|	Name	|	Contact		|
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
+ 
