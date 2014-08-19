@@ -1,7 +1,5 @@
 Feature: Conversation
 
-  #Muted till new sync engine client stabilization
-  @mute
   @smoke
   @id330
   Scenario Outline: Send Message to contact
@@ -75,8 +73,6 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-#Muted till new sync engine client stabilization
-@mute
 @smoke 
 @id460
 Scenario Outline: Send a camera roll picture to user from contact list
@@ -164,8 +160,6 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-  #Muted till new sync engine client stabilization
-  @mute
   @smoke 
   @id404
 Scenario Outline: I can edit the conversation name
@@ -235,7 +229,7 @@ Examples:
 
 
 @staging 
-@id526   
+@id526  
   Scenario Outline: I can send and play inline youtube link
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
