@@ -109,6 +109,31 @@ public class LoginPageSteps {
 	 public void IClickPopupPaste(){
 		 PagesCollection.loginPage.clickPopupPasteButton();
 	 }
+	 
+	 @Given("^I press Terms of Service link$")
+	 public void I_press_Terms_of_Service_link() throws Throwable {
+	    
+	 }
+
+	 @Then("^I see the terms info page$")
+	 public void I_see_the_terms_info_page() throws Throwable {
+	     
+	 }
+
+	 @Then("^I return to welcome page$")
+	 public void I_return_to_welcome_page() throws Throwable {
+	    
+	 }
+
+	 @Then("^I press Privacy Policy link$")
+	 public void I_press_Privacy_Policy_link() throws Throwable {
+	     
+	 }
+
+	 @Then("^I see the privacy info page$")
+	 public void I_see_the_privacy_info_page() throws Throwable {
+	    
+	 }
 
 
 }
