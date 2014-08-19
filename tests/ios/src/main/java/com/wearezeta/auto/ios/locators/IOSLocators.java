@@ -136,6 +136,8 @@ public final class IOSLocators {
 	
 	public static final String xpathOtherConversationCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[last()]";
 	
+	public static final String xpathYouAddedMessageCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]";
+	
 	public static final String xpathPersonalInfoPage = "//UIAApplication[1]/UIAWindow[1]";
 	
 	public static final String nameCameraButton = "cameraButton";

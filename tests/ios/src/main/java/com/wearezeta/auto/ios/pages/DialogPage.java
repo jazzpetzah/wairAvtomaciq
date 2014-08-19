@@ -75,6 +75,9 @@ public class DialogPage extends IOSPage{
 	
 	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameKeyboard)
 	private WebElement keyboard;
+
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathYouAddedMessageCellFormat)
+	private List<WebElement> youAddedCell;
 	
 	
 	private String url;
@@ -342,6 +345,28 @@ public class DialogPage extends IOSPage{
 	
 	public void tapHoldTextInput(){
 		driver.tap(1, driver.findElement(By.name(IOSLocators.nameConversationCursorInput)), 1000);
+	}
+	
+	public DialogPage scrollToBeginningOfConversation() throws Throwable, Exception{
+		DialogPage page = null;
+		int count = 0;
+		if(youAddedCell.size() > 0){
+		boolean beginningConversation = youAddedCell.get(0).isDisplayed();
+		while(!(beginningConversation) & (count<5)){
+			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true){
+				DriverUtils.swipeDown(driver, conversationPage, 500);
+				page = this;
+			}
+			else {
+				swipeDownSimulator();
+				page = this;
+			}
+			beginningConversation = youAddedCell.get(0).isDisplayed();
+			count++;
+		}
+	   }
+		Assert.assertTrue(youAddedCell.get(0).isDisplayed());
+		return page;
 	}
 
 }

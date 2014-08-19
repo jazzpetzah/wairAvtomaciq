@@ -25,6 +25,7 @@ public class DialogPageSteps {
 								+ "exercitation ullamco laboris \n"
 								+ "nisi ut aliquip ex \n ea commodo consequat.\n";
 
+	private String lastLine = "ea commodo consequat.";
 	private String mediaState;
 	public static String sendDate;
 	private static final int SWIPE_DURATION = 1000;
@@ -98,6 +99,12 @@ public class DialogPageSteps {
 	public void ThenISeeLasMessageInTheDialogIsExpected(String msg) throws Throwable {
 	    String dialogLastMessage = PagesCollection.dialogPage.getLastMessageFromDialog();
 	    Assert.assertTrue("Message is different, actual :" + dialogLastMessage + " expected: " + msg, dialogLastMessage.equals((msg).trim()));
+	}
+	
+	@Then("^I see last message in the dialog$")
+	public void ThenISeeLastMessageInTheDialog() throws Throwable {
+	    String dialogLastMessage = PagesCollection.dialogPage.getLastMessageFromDialog();
+	    Assert.assertTrue("Message is different, actual :" + dialogLastMessage + " expected: " + lastLine, dialogLastMessage.equals((lastLine).trim()));
 	}
 	
 	@When("^I swipe the text input cursor$")
@@ -310,6 +317,11 @@ public class DialogPageSteps {
 	@When("I tap and hold on message input")
 	public void ITapHoldTextInput(){
 		PagesCollection.dialogPage.tapHoldTextInput();
+	}
+	
+	@When("^I scroll to the beginning of the conversation$")
+	public void IScrollToTheBeginningOfTheConversation() throws Throwable {
+		PagesCollection.dialogPage.scrollToBeginningOfConversation();
 	}
 
 }
