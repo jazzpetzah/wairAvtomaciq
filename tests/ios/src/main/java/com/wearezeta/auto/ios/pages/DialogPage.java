@@ -73,6 +73,9 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.nameMediaBarTitle)
 	private WebElement mediabarBarTitle;
 	
+	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameKeyboard)
+	private WebElement keyboard;
+	
 	
 	private String url;
 	private String path;
@@ -225,6 +228,19 @@ public class DialogPage extends IOSPage{
 		driver.swipe(coords.x + elementSize.width / 2, coords.y + elementSize.height - 170, coords.x + elementSize.width / 2, coords.y + 40, time);
 		return returnBySwipe(SwipeDirection.UP);
 	}
+	
+	public DialogPage swipeDialogPageDown(int time) throws Throwable {		
+		DialogPage page = null;
+		if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true){
+			DriverUtils.swipeDown(driver, conversationPage, time);
+			page = this;
+		}
+		else {
+			swipeDownSimulator();
+			page = this;
+		}
+		return page;
+	}
 
 	@Override
 	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
@@ -232,6 +248,7 @@ public class DialogPage extends IOSPage{
 		switch (direction){
 			case DOWN:
 			{
+				page= new DialogPage(url, path);
 				break;
 			}
 			case UP:
@@ -292,7 +309,7 @@ public class DialogPage extends IOSPage{
 		return flag;
 	}
 
-	public DialogPage scollUpToMediaContainer() throws Throwable {
+	public DialogPage scrollUpToMediaContainer() throws Throwable {
 		DialogPage page = null;
 		int count = 0;
 		boolean mediaContainerShown = mediaContainer.isDisplayed();
@@ -317,6 +334,14 @@ public class DialogPage extends IOSPage{
 		imageCell.click();
 		page = new ImageFullScreenPage(url, path);
 		return page;
+	}
+	
+	public boolean isKeyboardVisible(){
+		return DriverUtils.isElementDisplayed(keyboard);
+	}
+	
+	public void tapHoldTextInput(){
+		driver.tap(1, driver.findElement(By.name(IOSLocators.nameConversationCursorInput)), 1000);
 	}
 
 }
