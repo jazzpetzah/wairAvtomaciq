@@ -77,7 +77,7 @@ public class DialogPage extends IOSPage{
 	private WebElement keyboard;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathYouAddedMessageCellFormat)
-	private WebElement youAddedCell;
+	private List<WebElement> youAddedCell;
 	
 	
 	private String url;
@@ -350,7 +350,8 @@ public class DialogPage extends IOSPage{
 	public DialogPage scrollToBeginningOfConversation() throws Throwable, Exception{
 		DialogPage page = null;
 		int count = 0;
-		boolean beginningConversation = youAddedCell.isDisplayed();
+		if(youAddedCell.size() > 0){
+		boolean beginningConversation = youAddedCell.get(0).isDisplayed();
 		while(!(beginningConversation) & (count<5)){
 			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true){
 				DriverUtils.swipeDown(driver, conversationPage, 500);
@@ -360,11 +361,11 @@ public class DialogPage extends IOSPage{
 				swipeDownSimulator();
 				page = this;
 			}
-			beginningConversation = youAddedCell.isDisplayed();
+			beginningConversation = youAddedCell.get(0).isDisplayed();
 			count++;
 		}
-		
-		Assert.assertTrue(youAddedCell.isDisplayed());
+	   }
+		Assert.assertTrue(youAddedCell.get(0).isDisplayed());
 		return page;
 	}
 

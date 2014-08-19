@@ -629,8 +629,9 @@ Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat i
     |	Login	|	Password	|	Name	|	Contact		| text 		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| TextToCopy|
     
+
 #muted due to issue ZIOS-1893    
-#@mute
+@mute
 @staging
 @id394
  Scenario Outline: Tap the cursor to get to the end of the conversation
