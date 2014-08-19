@@ -40,7 +40,8 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @smoke @id468
+  #Muted till new sync engine client stabilization
+  @mute @smoke @id468
   Scenario Outline: Send picture to conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -52,7 +53,8 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @regression @id444
+  #Muted till new sync engine client stabilization
+  @mute @regression @id444
   Scenario Outline: Send HD picture to conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
