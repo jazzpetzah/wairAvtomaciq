@@ -25,6 +25,7 @@ public class DialogPageSteps {
 								+ "exercitation ullamco laboris \n"
 								+ "nisi ut aliquip ex \n ea commodo consequat.\n";
 
+	private String lastLine = "ea commodo consequat.";
 	private String mediaState;
 	public static String sendDate;
 	private static final int SWIPE_DURATION = 1000;
@@ -97,7 +98,6 @@ public class DialogPageSteps {
 	@Then("^I see last message in the dialog$")
 	public void ThenISeeLastMessageInTheDialog() throws Throwable {
 	    String dialogLastMessage = PagesCollection.dialogPage.getLastMessageFromDialog();
-	    String lastLine = "ea commodo consequat.";
 	    Assert.assertTrue("Message is different, actual :" + dialogLastMessage + " expected: " + lastLine, dialogLastMessage.equals((lastLine).trim()));
 	}
 	

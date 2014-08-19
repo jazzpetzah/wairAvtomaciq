@@ -591,8 +591,9 @@ Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat i
 	Examples: 
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
-    
-@torun
+
+#muted due to issue ZIOS-1893    
+@mute
 @staging
 @id394
  Scenario Outline: Tap the cursor to get to the end of the conversation
