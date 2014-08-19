@@ -48,6 +48,8 @@ public class LoginPage extends IOSPage {
 	
 	private String path;
 	
+	public String message;
+	
 	public LoginPage(String URL, String path) throws MalformedURLException {
 		
 		super(URL, path);
@@ -141,6 +143,11 @@ public class LoginPage extends IOSPage {
 	public Boolean isLoginButtonVisible() {
 		
 		return (ExpectedConditions.visibilityOf(signInButton) != null);
+	}
+	
+	public void tapHoldEmailInput(){
+		message = driver.findElement(By.name(IOSLocators.nameLoginField)).getText();
+		driver.tap(1, driver.findElement(By.name(IOSLocators.nameLoginField)), 1000);
 	}
 
 }

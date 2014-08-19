@@ -287,6 +287,22 @@ public final class IOSLocators {
 	public static final String nameFullScreenTimeStamp = "fullScreenTimeStamp";
 	
 	public static final String nameContactListLoadBar = "LoadBar";
+	
+	public static final String classNameKeyboard = "UIAKeyboard";
+	
+	
+	////////////////////////////
+	//Editing menu
+	////////////////////////////
 
+	public static final String nameEditingItemSelect = "Select";
+	
+	public static final String nameEditingItemSelectAll = "Select All";
+	
+	public static final String nameEditingItemCopy = "Copy";
+	
+	public static final String nameEditingItemCut = "Cut";
+	
+	public static final String nameEditingItemPaste = "Paste";
 }
 
