@@ -13,6 +13,7 @@ import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationInfoPage;
+import com.wearezeta.auto.osx.pages.ConversationPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
 
 import cucumber.api.java.en.Given;
@@ -65,7 +66,7 @@ public class ConversationPageSteps {
 		 boolean isNumberIncreased = false;
 		 for (int i = 0; i < 60; i++) {
 			 afterNumberOfImages = CommonSteps.senderPages.getConversationPage().getNumberOfImageEntries();
-			 if (afterNumberOfImages == beforeNumberOfImages + 2) {
+			 if (afterNumberOfImages == beforeNumberOfImages + 1) {
 				 isNumberIncreased = true;
 				 break;
 			 }
@@ -99,7 +100,7 @@ public class ConversationPageSteps {
 		 boolean isNumberIncreased = false;
 		 for (int i = 0; i < 60; i++) {
 			 afterNumberOfImages = CommonSteps.senderPages.getConversationPage().getNumberOfImageEntries();
-			 if (afterNumberOfImages == beforeNumberOfImages + 2) {
+			 if (afterNumberOfImages == beforeNumberOfImages + 1) {
 				 isNumberIncreased = true;
 				 break;
 			 }
@@ -186,12 +187,15 @@ public class ConversationPageSteps {
 	 
 	 @When("I open Conversation info")
 	 public void WhenIOpenConversationInfo() throws MalformedURLException, IOException {
-		 CommonSteps.senderPages.getConversationPage().writeNewMessage("");
-		 CommonSteps.senderPages.getConversationPage().openConversationPeoplePicker();
-		 CommonSteps.senderPages.setConversationInfoPage(new ConversationInfoPage(
-				 CommonUtils.getUrlFromConfig(ConversationInfoPage.class),
-				 CommonUtils.getAppPathFromConfig(ConversationInfoPage.class)
-				 ));
+		 ConversationPage conversationPage = CommonSteps.senderPages.getConversationPage();
+		 conversationPage.writeNewMessage("");
+		 conversationPage.openConversationPeoplePicker();
+		 if (CommonSteps.senderPages.getConversationInfoPage() == null) {
+			 CommonSteps.senderPages.setConversationInfoPage(new ConversationInfoPage(
+					 CommonUtils.getUrlFromConfig(ConversationInfoPage.class),
+					 CommonUtils.getAppPathFromConfig(ConversationInfoPage.class)
+					 ));
+		 }
 	 }
 	 
 	 @Given("I create group chat with (.*) and (.*)")

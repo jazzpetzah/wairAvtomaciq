@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.tools;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaDriver;
 
 public class IOSKeyboard {
@@ -64,6 +65,7 @@ public class IOSKeyboard {
 	private KeyboardState getInitialState() {
 		final String emptyElement = "[object UIAElementNil]";
 		final String getStateTemplate = "target.frontMostApp().keyboard().keys().firstWithName(\"%s\").toString()";
+		
 		for (KeyboardState state : getStatesList()) {
 			final String firstStateChar = state.getFirstCharacter();
 			final String firstCharResponse = driver.executeScript(
@@ -78,18 +80,15 @@ public class IOSKeyboard {
 
 	public void typeString(String message, ZetaDriver driver) throws InterruptedException {
 		this.driver = driver;
-		KeyboardState currentState = getInitialState();
 		String messageChar = "";
+
 		for (int i = 0; i < message.length(); i++) {
+			KeyboardState currentState = getInitialState();
 			char c = message.charAt(i);
 			messageChar = Character.toString(c);
 
 			KeyboardState finalState = getFinalState(c);
 			if (currentState.getClass() != finalState.getClass()) {
-				if ((finalState instanceof KeyboardStateAlpha && currentState instanceof KeyboardStateAlphaCaps)
-						|| (finalState instanceof KeyboardStateAlphaCaps && currentState instanceof KeyboardStateAlpha)) {
-					currentState = getInitialState();
-				}
 				currentState.switchTo(finalState);
 				Thread.sleep(TAP_DELAY);
 				currentState = finalState;
@@ -112,12 +111,11 @@ public class IOSKeyboard {
 					} 
 					break;
 			}
-			Thread.sleep(TAP_DELAY);
+
 			driver.executeScript(String.format(TAP_KEYBOARD_BUTTON,
 					messageChar));
 		}
-		
-
+		Thread.sleep(TAP_DELAY);
 	}
 
 }

@@ -212,6 +212,25 @@ public class BackEndREST {
 		}
 	}
 
+	public static void ignoreAllConnections(ClientUser user)
+			throws IllegalArgumentException, UriBuilderException, IOException,
+			BackendRequestException, JSONException {
+		Builder webResource = buildDefaultRequestWithAuth("self/connections",
+				MediaType.APPLICATION_JSON, user);
+		final String output = httpGet(webResource,
+				new int[] { HttpStatus.SC_OK });
+
+		writeLog(new String[] {
+				"Output from Server ....  ignore All Connections "
+						+ user.getEmail(), output + "\n" });
+
+		JSONArray newJArray = new JSONArray(output);
+		for (int i = 0; i < newJArray.length(); i++) {
+			String to = ((JSONObject) newJArray.get(i)).getString("to");
+			changeConnectRequestStatus(user, to, "ignored");
+		}
+	}
+	
 	public static void changeConnectRequestStatus(ClientUser user,
 			String connectionId, String newStatus)
 			throws BackendRequestException, IllegalArgumentException,

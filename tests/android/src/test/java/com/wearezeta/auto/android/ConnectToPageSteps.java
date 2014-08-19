@@ -6,6 +6,7 @@ import com.wearezeta.auto.android.pages.ConnectToPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.CommonUtils;
 
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ConnectToPageSteps {
@@ -30,5 +31,14 @@ public class ConnectToPageSteps {
 			PagesCollection.connectToPage = (ConnectToPage) PagesCollection.androidPage;
 		}
 		PagesCollection.contactListPage = PagesCollection.connectToPage.pressIgnorButton();	
+	}
+	
+	@Then("^I see that connection is pending")
+	public void ThenConnectionIsPending(){
+		if(PagesCollection.connectToPage == null)
+		{
+			PagesCollection.connectToPage =(ConnectToPage) PagesCollection.androidPage;
+		}
+		Assert.assertTrue(PagesCollection.connectToPage.isPending());
 	}
 }

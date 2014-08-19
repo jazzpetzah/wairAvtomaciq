@@ -305,6 +305,11 @@
         [element addAttribute:[GDataXMLElement attributeWithName:@"AXPlaceholderValue" stringValue:[NSString stringWithFormat:@"%@",[root valueForAttribute:@"AXPlaceholderValue"]]]];
     }
     
+    NSString* axHelp = [root valueForAttribute:@"AXHelp"];
+    if (axHelp != nil) {
+        [element addAttribute:[GDataXMLElement attributeWithName:@"AXHelp" stringValue:[NSString stringWithFormat:@"%@",[root valueForAttribute:@"AXHelp"]]]];
+    }
+    
 	if (pathMap != nil)
 	{
 		[pathMap setValue:root forKey:path];

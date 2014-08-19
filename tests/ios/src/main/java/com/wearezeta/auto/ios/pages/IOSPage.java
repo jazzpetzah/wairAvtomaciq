@@ -25,6 +25,21 @@ public abstract class IOSPage extends BasePage {
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameMainWindow)
 	private WebElement content;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameEditingItemSelect)
+	private WebElement popupSelect;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameEditingItemSelectAll)
+	private WebElement popupSelectAll;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameEditingItemCopy)
+	private WebElement popupCopy;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameEditingItemCut)
+	private WebElement popupCut;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameEditingItemPaste)
+	private WebElement popupPaste;
 
 	private static String imagesPath = "";
 
@@ -119,5 +134,17 @@ public abstract class IOSPage extends BasePage {
 
 	public static void setImagesPath(String imagesPath) {
 		IOSPage.imagesPath = imagesPath;
+	}
+	
+	public void clickPopupSelectAllButton(){
+		popupSelectAll.click();
+	}
+	
+	public void clickPopupCopyButton(){
+		popupCopy.click();
+	}
+	
+	public void clickPopupPasteButton(){
+		popupPaste.click();
 	}
 }

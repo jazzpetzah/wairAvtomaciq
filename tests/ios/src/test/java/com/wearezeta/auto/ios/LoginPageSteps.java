@@ -60,7 +60,7 @@ public class LoginPageSteps {
 	 @When("I press Login button")
 	 public void WhenIPressSignInButtonAgain() throws IOException {
 		 
-		 PagesCollection.loginPage.login();
+		 PagesCollection.contactListPage = (ContactListPage)(PagesCollection.loginPage.login());
 	 }
 	 
 	 @When("I press Join button")
@@ -90,6 +90,25 @@ public class LoginPageSteps {
 		 Assert.assertTrue("I don't see login screen", PagesCollection.loginPage.isLoginButtonVisible());
 	 }
 	 
+	 @When("I tap and hold on Email input")
+	 public void ITapHoldEmailInput(){
+		 PagesCollection.loginPage.tapHoldEmailInput();
+	 }
 	 
+	 @When("I click on popup SelectAll item")
+	 public void IClickPopupSelectAll(){
+		 PagesCollection.loginPage.clickPopupSelectAllButton();
+	 }
+	 
+	 @When("I click on popup Copy item")
+	 public void IClickPopupCopy(){
+		 PagesCollection.loginPage.clickPopupCopyButton();
+	 }
+	 
+	 @When("I click on popup Paste item")
+	 public void IClickPopupPaste(){
+		 PagesCollection.loginPage.clickPopupPasteButton();
+	 }
+
 
 }

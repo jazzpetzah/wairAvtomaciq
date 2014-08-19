@@ -94,6 +94,12 @@ public class DialogPageSteps {
 	    Assert.assertTrue("Message is different, actual :" + dialogLastMessage + " expected: " + message, dialogLastMessage.equals((message).trim()));
 	}
 	
+	@Then("I see last message in dialog is expected message (.*)")
+	public void ThenISeeLasMessageInTheDialogIsExpected(String msg) throws Throwable {
+	    String dialogLastMessage = PagesCollection.dialogPage.getLastMessageFromDialog();
+	    Assert.assertTrue("Message is different, actual :" + dialogLastMessage + " expected: " + msg, dialogLastMessage.equals((msg).trim()));
+	}
+	
 	@When("^I swipe the text input cursor$")
 	public void ISwipeTheTextInputCursor() throws Throwable {
 		PagesCollection.dialogPage.swipeInputCursor();
@@ -230,7 +236,7 @@ public class DialogPageSteps {
 	
 	@When("I scroll back to media container")
 	public void IScrollUpOnDialogPage() throws Throwable{
-		PagesCollection.dialogPage.scollUpToMediaContainer();
+		PagesCollection.dialogPage.scrollUpToMediaContainer();
 	}
 	
 	@Then("I see conversation view is scrolled back to the playing media link (.*)")
@@ -248,8 +254,8 @@ public class DialogPageSteps {
 	}
 	
 	@Then("^I scroll away the keyboard$")
-	public void IScrollKeyboardAway() throws Exception {
-		PagesCollection.dialogPage.swipeDown(SWIPE_DURATION);
+	public void IScrollKeyboardAway() throws Throwable {
+		PagesCollection.dialogPage.swipeDialogPageDown(500);
 	}
 	
 	@Then("^I navigate back to conversations view$")
@@ -279,10 +285,31 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.inputStringFromKeyboard(message);
 	}
 	
-	@When("I input 200 chars message and send it")
+	@When("I input message with lower case and upper case")
+	public void IInputMessageWithLowerAndUpperCase() throws Throwable{
+		message = CommonUtils.generateRandomString(7).toLowerCase() + CommonUtils.generateRandomString(7).toUpperCase();
+		PagesCollection.dialogPage.sendStringToInput(message);
+	}
+	
+	@When("I input more than 200 chars message and send it")
 	public void ISend200CharsMessage() throws Exception{
-		message = CommonUtils.generateRandomString(200).toLowerCase().replace("x", " ");
+		message = CommonUtils.generateRandomString(210).toLowerCase().replace("x", " ");
 		PagesCollection.dialogPage.sendStringToInput(message + "\n");
+	}
+	
+	@When("I see keyboard")
+	public void ISeeKeyboard(){
+		Assert.assertTrue(PagesCollection.dialogPage.isKeyboardVisible());
+	}
+	
+	@When("I dont see keyboard")
+	public void IDontSeeKeyboard(){
+		Assert.assertFalse(PagesCollection.dialogPage.isKeyboardVisible());
+	}
+	
+	@When("I tap and hold on message input")
+	public void ITapHoldTextInput(){
+		PagesCollection.dialogPage.tapHoldTextInput();
 	}
 
 }
