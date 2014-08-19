@@ -66,7 +66,7 @@ public class ConversationPageSteps {
 		 boolean isNumberIncreased = false;
 		 for (int i = 0; i < 60; i++) {
 			 afterNumberOfImages = CommonSteps.senderPages.getConversationPage().getNumberOfImageEntries();
-			 if (afterNumberOfImages == beforeNumberOfImages + 2) {
+			 if (afterNumberOfImages == beforeNumberOfImages + 1) {
 				 isNumberIncreased = true;
 				 break;
 			 }
@@ -100,7 +100,7 @@ public class ConversationPageSteps {
 		 boolean isNumberIncreased = false;
 		 for (int i = 0; i < 60; i++) {
 			 afterNumberOfImages = CommonSteps.senderPages.getConversationPage().getNumberOfImageEntries();
-			 if (afterNumberOfImages == beforeNumberOfImages + 2) {
+			 if (afterNumberOfImages == beforeNumberOfImages + 1) {
 				 isNumberIncreased = true;
 				 break;
 			 }
