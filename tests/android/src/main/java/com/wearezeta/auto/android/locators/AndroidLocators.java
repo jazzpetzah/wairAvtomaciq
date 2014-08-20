@@ -112,7 +112,7 @@ public final class AndroidLocators {
 	
 	public static final String idPasswordField = LOCATORS_PACKAGE + ":id/ifv_signin_password";
 	
-	public static final String idLoginProgressBar = LOCATORS_PACKAGE + ":id/progressBar1";
+	public static final String idLoginProgressBar = LOCATORS_PACKAGE + ":id/pv__sign_in__preview";
 	
 	public static final String idContactListNames = LOCATORS_PACKAGE + ":id/tv_conv_list_topic";
 	
