@@ -48,3 +48,16 @@ Feature: Sign In
   	Examples: 
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
+
+@torun
+@staging
+@id314
+ Scenario Outline: Notification if SignIn credentials are wrong
+ 	Given I see sign in screen
+ 	When I press Sign in button
+ 	
+ 	Examples: 
+    |	Login	|	Password	|	Name	|	WrongMail		| WrongPassword |
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	wrong@wrong.com	| wrong			|
+ 	
+ 	
