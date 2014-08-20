@@ -137,6 +137,21 @@ public class LoginPageSteps {
 		 Assert.assertTrue("I don't see privacy policy page", PagesCollection.loginPage.isTermsPrivacyColseButtonVisible());
 		//TODO:verify correct content as far as copywrite is in
 	 }
+	 
+	 @When("^I enter wrong email (.*)")
+	 public void IEnterWrongEmail(String wrongMail){
+
+	 }
+
+	 @When("^I enter wrong password (.*)")
+	 public void IEnterWrongPassword(String wrongPassword){
+	    
+	 }
+
+	 @Then("^I see wrong credentials notification$")
+	 public void ISeeWrongCredentialsNotification(){
+	     
+	 }
 
 
 }

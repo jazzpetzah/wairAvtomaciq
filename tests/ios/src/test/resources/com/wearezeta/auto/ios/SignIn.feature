@@ -55,6 +55,9 @@ Feature: Sign In
  Scenario Outline: Notification if SignIn credentials are wrong
  	Given I see sign in screen
  	When I press Sign in button
+ 	And I enter wrong email <WrongMail>
+ 	And I enter wrong password <WrongPassword>
+ 	Then I see wrong credentials notification
  	
  	Examples: 
     |	Login	|	Password	|	Name	|	WrongMail		| WrongPassword |
