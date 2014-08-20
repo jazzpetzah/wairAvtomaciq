@@ -71,11 +71,6 @@ public class LoginPageSteps {
 		}
 		PagesCollection.loginPage.setPassword(password);
 	}
-	
-	@When("^I clear login and password fields")
-	public void WhenIClearLoginAndPasswrdFields() throws InterruptedException{
-		PagesCollection.loginPage.clearLoginPassword();
-	}
 
 	@When("^I see sign in and join buttons$")
 	public void WhenISeeSignInAndJoinButton() {

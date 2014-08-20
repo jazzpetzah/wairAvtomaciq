@@ -8,34 +8,31 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.*;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
 
 public class LoginPage extends AndroidPage {
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameLoginPage)
-	private WebElement viewPager;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idSignInButton")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idSignInButton")
 	private WebElement signInButton;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idWelcomeSlogan")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idWelcomeSlogan")
 	private WebElement welcomeSlogan;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idSignUpButton")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idSignUpButton")
 	private WebElement signUpButton;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idLoginButton")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idLoginButton")
 	private WebElement confirmSignInButton;
 
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classEditText)
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idLoginPasswordInput")
 	private List<WebElement> loginPasswordField;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idWelcomeButtonsContainer")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idWelcomeButtonsContainer")
 	private List<WebElement> welcomeButtonsContainer;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idContactListNames")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idContactListNames")
 	private WebElement contactListNames;
 
 	private String login;
@@ -92,20 +89,6 @@ public class LoginPage extends AndroidPage {
 		}
 	}
 	
-	public void clearLoginPassword() throws InterruptedException{
-		for(WebElement el: loginPasswordField){
-			if(el.getText().isEmpty()){
-				el.click();
-				for(int i = 0; i < CommonUtils.retrieveRealUserContactPasswordValue(CommonUtils.YOUR_PASS).length();i++){
-					driver.sendKeyEvent(67);
-				}
-			}
-			else{
-				DriverUtils.androidMultiTap(driver, el, 2, 0.5);
-				driver.sendKeyEvent(67);
-			}
-		}
-	}
 	public String getPassword() {
 		return password;
 	}
@@ -123,12 +106,12 @@ public class LoginPage extends AndroidPage {
 
 	public boolean waitForLogin() {
 
-		return DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.idLoginProgressBar));
+		return DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.LoginPage.idLoginProgressBar));
 	}
 
 	public Boolean isLoginFinished(String contact) throws InterruptedException {
 		refreshUITree();
-		return DriverUtils.waitForElementWithTextByXPath(AndroidLocators.xpathContacts,contact,driver);
+		return DriverUtils.waitForElementWithTextByXPath(AndroidLocators.ContactListPage.xpathContacts,contact,driver);
 	}
 
 	public Boolean isWelcomeButtonsExist(){

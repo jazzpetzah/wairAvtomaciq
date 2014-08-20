@@ -23,10 +23,10 @@ public abstract class AndroidPage extends BasePage {
 	
 	private DesiredCapabilities capabilities = new DesiredCapabilities();
 	
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameLoginPage)
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameLoginPage)
 	private WebElement content;
 	
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classListView)
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classListView)
 	private WebElement container;
 	
 	private String url;
