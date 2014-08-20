@@ -11,7 +11,7 @@ import com.wearezeta.auto.common.driver.SwipeDirection;
 
 public class SettingsPage extends AndroidPage {
 
-	@FindBy(how = How.XPATH, using = AndroidLocators.xpathSettingPageTitle)
+	@FindBy(how = How.XPATH, using = AndroidLocators.SettingsPage.xpathSettingPageTitle)
 	private WebElement settingsTitle;
 	
 	public SettingsPage(String URL, String path) throws Exception {

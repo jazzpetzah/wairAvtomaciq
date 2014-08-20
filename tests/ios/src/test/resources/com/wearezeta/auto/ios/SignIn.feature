@@ -32,4 +32,19 @@ Feature: Sign In
 	
   Examples:
     |	Login					|	Password	|	UserA			| UserB			|
-    |	aqaUser            		|	aqaPassword	|	aqaUser 		| aqaContact1	|
+    |	aqaUser            		|	aqaPassword	|	aqaUser 		| aqaContact1	|    
+    
+@staging
+@id300
+ Scenario Outline: Open and close the terms of service on the welcome screen
+  	Given I see sign in screen
+  	And I press Terms of Service link
+  	Then I see the terms info page
+  	And I return to welcome page
+ 	And I press Privacy Policy link
+ 	Then I see the privacy info page
+  	And I return to welcome page
+  	
+  	Examples: 
+    |	Login	|	Password	|	Name	|	Contact		|
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|

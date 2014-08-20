@@ -5,6 +5,8 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -39,6 +41,15 @@ public class LoginPage extends IOSPage {
 	
 	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classUIATextView)
 	private List<WebElement> userName;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathTermsPrivacyLinks)
+	private WebElement termsButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathTermsPrivacyLinks)
+	private WebElement privacyButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathTermsPrivacyCloseButton)
+	private WebElement termsPrivacyCloseButton;
 	
 	private String login;
 	
@@ -148,6 +159,27 @@ public class LoginPage extends IOSPage {
 	public void tapHoldEmailInput(){
 		message = driver.findElement(By.name(IOSLocators.nameLoginField)).getText();
 		driver.tap(1, driver.findElement(By.name(IOSLocators.nameLoginField)), 1000);
+	}
+	
+	public void openTermsLink(){
+		Point p = termsButton.getLocation();
+		Dimension k = termsButton.getSize();
+		driver.tap(1, (p.x) + (k.width -70), (p.y) + (k.height -16), 1);
+	}
+	
+	public void openPrivacyLink(){
+		Point p = privacyButton.getLocation();
+		Dimension k = privacyButton.getSize();
+		driver.tap(1, (p.x) + (k.width/3), (p.y) + (k.height -8), 1);
+	}
+	
+	public void closeTermsPrivacyController(){
+		termsPrivacyCloseButton.click();
+	}
+	
+	public Boolean isTermsPrivacyColseButtonVisible() {
+		
+		return (ExpectedConditions.visibilityOf(termsPrivacyCloseButton) != null);
 	}
 
 }
