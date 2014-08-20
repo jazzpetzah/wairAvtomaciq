@@ -103,6 +103,11 @@ public class RegistrationPageSteps {
 		 PagesCollection.registrationPage.tapBackButton();
 	 }
 	 
+	 @When("^I verify back button$")
+	 public void IVerifyBackButton(){
+		 Assert.assertTrue("I don't see the back button", PagesCollection.registrationPage.isBackButtonVisible());
+	 }
+	 
 	 @When("I click Forward Button")
 	 public void IClickForwardButton(){
 		 PagesCollection.registrationPage.tapForwardButton();

@@ -377,3 +377,26 @@ Feature: Register new user
     |	Email						|	Password	    |	Name			|   EmailCount   |
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|      20        |
     
+@torun
+@staging
+@id302
+ Scenario Outline: Verify back button during registration process
+ 	Given I see sign in screen
+	When I press Join button
+	And I verify back button
+	And I press Picture button
+	And I choose a picture from camera roll
+	And I See selected picture
+	And I confirm selection
+	And I verify back button
+	And I input name <Name> and hit Enter
+	And I verify back button
+	And I input email <Email> and hit Enter
+	And I verify back button
+	And I enter password <Password>
+	And I click Back button
+	And I verify back button
+
+	Examples:     
+    |	Email						|	Password	    |	Name			|
+    |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
