@@ -1,7 +1,6 @@
 Feature: Conversation
 
-  #Muted till new sync engine client stabilization
-  @mute @smoke @id466
+  @smoke @id466
   Scenario Outline: Send message to conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -213,8 +212,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact3 |
 
-  #Muted till new sync engine client stabilization
-  @mute @regression @id81
+  @regression @id81
   Scenario Outline: Play embedded SoundCloud link in conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>

@@ -109,6 +109,34 @@ public class LoginPageSteps {
 	 public void IClickPopupPaste(){
 		 PagesCollection.loginPage.clickPopupPasteButton();
 	 }
+	 
+	 @When("^I press Terms of Service link$")
+	 public void IPressTermsOfServiceLink() throws Throwable {
+		 PagesCollection.loginPage.openTermsLink();
+	 }
+
+	 @Then("^I see the terms info page$")
+	 public void ISeeTheTermsInfoPage() throws Throwable {
+		 Assert.assertTrue("I don't see terms of service page", PagesCollection.loginPage.isTermsPrivacyColseButtonVisible());
+		//TODO:verify correct content as far as copywrite is in
+	 }
+
+	 @When("^I return to welcome page$")
+	 public void IReturnToWelcomePage() throws Throwable {
+		 PagesCollection.loginPage.closeTermsPrivacyController(); 
+		 Assert.assertTrue("I don't see login screen", PagesCollection.loginPage.isLoginButtonVisible());
+	 }
+
+	 @When("^I press Privacy Policy link$")
+	 public void IPressPrivacyPolicyLink() throws Throwable {
+		 PagesCollection.loginPage.openPrivacyLink(); 
+	 }
+
+	 @Then("^I see the privacy info page$")
+	 public void ISeeThePrivacyInfoPage() throws Throwable {
+		 Assert.assertTrue("I don't see privacy policy page", PagesCollection.loginPage.isTermsPrivacyColseButtonVisible());
+		//TODO:verify correct content as far as copywrite is in
+	 }
 
 
 }
