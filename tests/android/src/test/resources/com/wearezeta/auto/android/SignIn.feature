@@ -22,7 +22,6 @@ Feature: Sign In
     And I tap sign out button
     And I see sign in and join buttons
     And I press Sign in button
-    And I clear login and password fields
     And I have entered login <Login2>
     And I have entered password <Password>
     And I press Log in button

@@ -26,8 +26,7 @@ public class ConnectToPageSteps {
 	
 	@When("^I press Ignore connect button$")
 	public void WhenIPressIgnoreConnectButton() throws Exception{
-		if(PagesCollection.connectToPage == null)
-		{
+		if(PagesCollection.connectToPage == null) {
 			PagesCollection.connectToPage = (ConnectToPage) PagesCollection.androidPage;
 		}
 		PagesCollection.contactListPage = PagesCollection.connectToPage.pressIgnorButton();	
@@ -35,8 +34,7 @@ public class ConnectToPageSteps {
 	
 	@Then("^I see that connection is pending")
 	public void ThenConnectionIsPending(){
-		if(PagesCollection.connectToPage == null)
-		{
+		if(PagesCollection.connectToPage == null) {
 			PagesCollection.connectToPage =(ConnectToPage) PagesCollection.androidPage;
 		}
 		Assert.assertTrue(PagesCollection.connectToPage.isPending());

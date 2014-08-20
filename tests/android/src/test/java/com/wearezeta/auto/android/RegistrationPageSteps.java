@@ -119,8 +119,8 @@ public class RegistrationPageSteps {
 
 	@Then("^I press continue registration$")
 	public void IPressContinue() throws Throwable {
-
-		PagesCollection.instructionsPage = PagesCollection.registrationPage.continueRegistration();
+		//TODO: need to handle returned page
+		PagesCollection.registrationPage.continueRegistration();
 		ClientUser myContact = new ClientUser(aqaEmail, aqaPassword, aqaName, UsersState.AllContactsConnected);
 		CommonUtils.yourUsers = new LinkedList<ClientUser>();
 		CommonUtils.yourUsers.add(myContact);

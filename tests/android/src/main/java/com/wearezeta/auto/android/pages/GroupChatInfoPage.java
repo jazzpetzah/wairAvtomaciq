@@ -22,22 +22,22 @@ public class GroupChatInfoPage extends AndroidPage {
 	private static final String AVATAR_NO_IMAGE = "avatarTestAndroid.png";
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.95;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idLeaveConversationButton")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.GroupChatInfoPage.CLASS_NAME, locatorKey = "idLeaveConversationButton")
 	private WebElement leaveConversationButton;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConfirmBtn")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idConfirmBtn")
 	private WebElement confirmButton;
 	
-	@FindBy(how = How.XPATH, using = AndroidLocators.xpathGroupChatInfoLinearLayout)
+	@FindBy(how = How.XPATH, using = AndroidLocators.GroupChatInfoPage.xpathGroupChatInfoLinearLayout)
 	private List<WebElement> linearLayout;
 	
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameGridView)
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.GroupChatInfoPage.classNameGridView)
 	private WebElement groupChatUsersGrid;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idGroupChatInfoName")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.GroupChatInfoPage.CLASS_NAME, locatorKey = "idGroupChatInfoName")
 	private WebElement groupChatName;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idParticipantsSubHeader")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.GroupChatInfoPage.CLASS_NAME, locatorKey = "idParticipantsSubHeader")
 	private WebElement participantsSubHeader;
 	
 	private String url;
@@ -97,7 +97,7 @@ public class GroupChatInfoPage extends AndroidPage {
 		
 		for(WebElement user : linearLayout)
 		{
-			List<WebElement> elements = user.findElements(By.className(AndroidLocators.classNameTextView));
+			List<WebElement> elements = user.findElements(By.className(AndroidLocators.CommonLocators.classNameTextView));
 			for(WebElement element : elements){
 					if(element.getText() != null && element.getText().equals((contactName.toUpperCase()))){
 						user.click();
@@ -125,8 +125,8 @@ public class GroupChatInfoPage extends AndroidPage {
 		BufferedImage avatarIcon = null;
 		String path = CommonUtils.getImagesPath(CommonUtils.class);
 		for(int i = 1; i < linearLayout.size()+1;i++){
-			avatarIcon = getElementScreenshot(driver.findElement(By.xpath(String.format(AndroidLocators.xpathGroupChatInfoContacts, i,1))));
-			String avatarName = driver.findElement(By.xpath(String.format(AndroidLocators.xpathGroupChatInfoContacts, i,2))).getText();
+			avatarIcon = getElementScreenshot(driver.findElement(By.xpath(String.format(AndroidLocators.GroupChatInfoPage.xpathGroupChatInfoContacts, i,1))));
+			String avatarName = driver.findElement(By.xpath(String.format(AndroidLocators.GroupChatInfoPage.xpathGroupChatInfoContacts, i,2))).getText();
 			if(avatarName.equalsIgnoreCase(contact1)){
 				BufferedImage realImage = ImageUtil.readImageFromFile(path+AVATAR_WITH_IMAGE);
 				double score = ImageUtil.getOverlapScore(realImage, avatarIcon);
@@ -165,7 +165,7 @@ public class GroupChatInfoPage extends AndroidPage {
 	public OtherUserPersonalInfoPage tapOnContact(String contact) throws Exception {
 		refreshUITree();
 		wait.until(ExpectedConditions.visibilityOf(groupChatName));
-		WebElement cn = driver.findElement(By.xpath(String.format(AndroidLocators.xpathContacts, contact.toUpperCase())));
+		WebElement cn = driver.findElement(By.xpath(String.format(AndroidLocators.ContactListPage.xpathContacts, contact.toUpperCase())));
 		cn.click();
 		return new OtherUserPersonalInfoPage(url, path);
 	}
@@ -176,7 +176,7 @@ public class GroupChatInfoPage extends AndroidPage {
 		
 		for(WebElement user : linearLayout)
 		{
-			List<WebElement> elements = user.findElements(By.className(AndroidLocators.classNameTextView));
+			List<WebElement> elements = user.findElements(By.className(AndroidLocators.CommonLocators.classNameTextView));
 			for(WebElement element : elements){
 					if(element.getText() != null && element.getText().equals((contact.toUpperCase()))){
 						flag = true;

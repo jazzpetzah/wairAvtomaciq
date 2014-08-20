@@ -20,34 +20,34 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	public static final String REMOVE_FROM_CONVERSATION_BUTTON = "Remove";
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.80;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idOtherUserPersonalInfoName")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idOtherUserPersonalInfoName")
 	private List<WebElement> otherUserName;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idOtherUserPersonalInfoMail")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idOtherUserPersonalInfoMail")
 	private List<WebElement> otherUserMail;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idOtherUserPersonalInfoSingleName")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idOtherUserPersonalInfoSingleName")
 	private List<WebElement> otherUserSingleName;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idOtherUserPersonalInfoSingleMail")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idOtherUserPersonalInfoSingleMail")
 	private List<WebElement> otherUserSingleMail;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idUserProfileConfirmationMenu")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idUserProfileConfirmationMenu")
 	private WebElement confirmMenu;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idLeaveConversationButton")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.GroupChatInfoPage.CLASS_NAME, locatorKey = "idLeaveConversationButton")
 	private WebElement removeBtn;
 	
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameFrameLayout)
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameFrameLayout)
 	private WebElement frameLayout;
 	
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameLoginPage)
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameLoginPage)
 	private WebElement backGround;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConfirmBtn")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idConfirmBtn")
 	private WebElement confirmBtn;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idAddContactBtn")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idAddContactBtn")
 	private WebElement addContactBtn;
 	
 	private String url;
@@ -89,13 +89,6 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		}	
 		return page;
 	}
-
-	/*@Override
-	public AndroidPage swipeUp(int time) throws IOException
-	{
-		DriverUtils.swipeUp(driver, frameLayout, time);
-		return returnBySwipe(SwipeDirection.UP);
-	}*/
 	
 	public boolean isOtherUserNameVisible(String name) {
 		refreshUITree();//workaround to refresh UI tree
