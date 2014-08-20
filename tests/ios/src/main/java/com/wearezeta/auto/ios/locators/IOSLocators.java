@@ -14,9 +14,9 @@ public final class IOSLocators {
 	
 	public static final String namePasswordField = "SignInPassword";
 	
-	public static final String xpathTermsPrivacyLinks = "//UIAApplication[1]/UIAWindow[1]/UIATextView[1]";
+	public static final String xpathTermsPrivacyLinks = "//UIAApplication[1]/UIAWindow[1]/UIATextView[1]"; //TODO:put ID for new stable build
 	
-	public static final String xpathTermsPrivacyCloseButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]";
+	public static final String xpathTermsPrivacyCloseButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]"; //TODO:put ID for new stable build
 	
 	public static final String classNameContactListNames = "UIAStaticText";
 	
