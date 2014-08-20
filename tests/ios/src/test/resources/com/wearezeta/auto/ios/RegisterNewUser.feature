@@ -377,7 +377,6 @@ Feature: Register new user
     |	Email						|	Password	    |	Name			|   EmailCount   |
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|      20        |
     
-@torun
 @staging
 @id302
  Scenario Outline: Verify back button during registration process
