@@ -110,29 +110,30 @@ public class LoginPageSteps {
 		 PagesCollection.loginPage.clickPopupPasteButton();
 	 }
 	 
-	 @Given("^I press Terms of Service link$")
-	 public void I_press_Terms_of_Service_link() throws Throwable {
-	    
+	 @When("^I press Terms of Service link$")
+	 public void IPressTermsOfServiceLink() throws Throwable {
+		 PagesCollection.loginPage.openTermsLink();
 	 }
 
 	 @Then("^I see the terms info page$")
-	 public void I_see_the_terms_info_page() throws Throwable {
-	     
+	 public void ISeeTheTermsInfoPage() throws Throwable {
+		 Assert.assertTrue("I don't see terms of service page", PagesCollection.loginPage.isTermsPrivacyColseButtonVisible());
 	 }
 
-	 @Then("^I return to welcome page$")
-	 public void I_return_to_welcome_page() throws Throwable {
-	    
+	 @When("^I return to welcome page$")
+	 public void IReturnToWelcomePage() throws Throwable {
+		 PagesCollection.loginPage.closeTermsPrivacyController(); 
+		 Assert.assertTrue("I don't see login screen", PagesCollection.loginPage.isLoginButtonVisible());
 	 }
 
-	 @Then("^I press Privacy Policy link$")
-	 public void I_press_Privacy_Policy_link() throws Throwable {
-	     
+	 @When("^I press Privacy Policy link$")
+	 public void IPressPrivacyPolicyLink() throws Throwable {
+		 PagesCollection.loginPage.openPrivacyLink();
 	 }
 
 	 @Then("^I see the privacy info page$")
-	 public void I_see_the_privacy_info_page() throws Throwable {
-	    
+	 public void ISeeThePrivacyInfoPage() throws Throwable {
+		 Assert.assertTrue("I don't see privacy policy page", PagesCollection.loginPage.isTermsPrivacyColseButtonVisible());
 	 }
 
 
