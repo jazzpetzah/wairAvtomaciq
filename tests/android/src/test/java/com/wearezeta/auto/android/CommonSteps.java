@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -125,6 +126,37 @@ public class CommonSteps {
 		BackEndREST.createGroupConveration(yourContact,users, chatName);
 	}
 
+	@Given("^User (.*) is connected with (.*)")
+	public void GivenUserIsConnectedWith(String contact1, String contact2) throws IllegalArgumentException, UriBuilderException, IOException, JSONException, BackendRequestException, InterruptedException{
+		contact1 = CommonUtils.retrieveRealUserContactPasswordValue(contact1);
+		contact2 = CommonUtils.retrieveRealUserContactPasswordValue(contact2);
+		ClientUser contactInfo1 = null;
+		ClientUser contactInfo2 = null;
+		boolean flag1 = false;
+		boolean flag2 = false;
+		List<ClientUser> newList = new ArrayList<ClientUser>();
+		newList.addAll(CommonUtils.contacts);
+		newList.addAll( CommonUtils.yourUsers);
+		
+		for (ClientUser user : newList) {
+			if (user.getName().toLowerCase().equals(contact1.toLowerCase())) {
+				contactInfo1 = user;
+				flag1 = true;
+			}
+			if (user.getName().toLowerCase().equals(contact2.toLowerCase())) {
+				contactInfo2 = user;
+				flag2 = true;
+			}
+			if (flag1 && flag2) {
+				break;
+			}
+		}
+		
+		contactInfo1 = BackEndREST.loginByUser(contactInfo1);
+		BackEndREST.autoTestSendRequest(contactInfo1,contactInfo2);
+		BackEndREST.autoTestAcceptAllRequest(contactInfo2);	
+	}
+	
 	@Given("^I have group chat with name (.*) with (.*) and (.*)$")
 	public void GivenIHaveGroupChatWith(String chatName, String contact1,
 			String contact2) throws Throwable {
@@ -173,6 +205,7 @@ public class CommonSteps {
 		}
 		BackEndREST.acceptAllConnections(yourСontact);
 	}
+	
 	@When("^I press back button$")
 	public void PressBackButton() throws Exception {
 		if (PagesCollection.loginPage != null) {
