@@ -160,6 +160,8 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
+  #Muted till new sync engine client stabilization
+  @mute
   @smoke 
   @id404
 Scenario Outline: I can edit the conversation name
