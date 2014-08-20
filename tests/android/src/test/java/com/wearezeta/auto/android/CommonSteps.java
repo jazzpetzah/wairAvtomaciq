@@ -86,6 +86,44 @@ public class CommonSteps {
 		}
 
 	}
+	
+	@Given("My Contact (.*) has group chat with me (.*) and his Contact (.*) with name (.*)")
+	public void GivenMyContactCreateGroupChatWithMeAndHisContact(String contact1, String me, String contact2, String chatName) throws IllegalArgumentException, UriBuilderException, IOException, JSONException, BackendRequestException, InterruptedException
+	{
+		ClientUser yourUser = null;
+		ClientUser yourContact = null;
+		ClientUser contactContact = null;
+		boolean flag1 = false;
+		boolean flag2 = false;
+		me = CommonUtils.retrieveRealUserContactPasswordValue(me);
+		contact1 = CommonUtils.retrieveRealUserContactPasswordValue(contact1);
+		contact2 = CommonUtils.retrieveRealUserContactPasswordValue(contact2);		
+		
+		for (ClientUser user : CommonUtils.yourUsers) {
+			if (user.getName().toLowerCase().equals(me.toLowerCase())) {
+				yourUser = user;
+				flag1 = true;
+			}
+			
+			if (user.getName().toLowerCase().equals(contact2.toLowerCase())) {
+				contactContact = user;
+				flag2 = true;
+			}
+			if (flag1 && flag2) {
+				break;
+			}
+		}
+		for (ClientUser user : CommonUtils.contacts) {
+			if (user.getName().toLowerCase().equals(contact1.toLowerCase())) {
+				yourContact=user;
+				break;
+			}
+		}
+		List<ClientUser> users = new LinkedList<ClientUser>();
+		users.add(yourUser);
+		users.add(contactContact);
+		BackEndREST.createGroupConveration(yourContact,users, chatName);
+	}
 
 	@Given("^I have group chat with name (.*) with (.*) and (.*)$")
 	public void GivenIHaveGroupChatWith(String chatName, String contact1,
@@ -124,6 +162,17 @@ public class CommonSteps {
 		BackEndREST.ignoreAllConnections(yourСontact);
 	}
 	
+	@When("^(.*) accept all requests$")
+	public void AcceptConnectRequest(String contact) throws IllegalArgumentException, UriBuilderException, IOException, JSONException, BackendRequestException{
+		ClientUser yourСontact = null;
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		for (ClientUser user : CommonUtils.yourUsers) {
+			if (user.getName().toLowerCase().equals(contact.toLowerCase())) {
+				yourСontact = user;
+			}
+		}
+		BackEndREST.acceptAllConnections(yourСontact);
+	}
 	@When("^I press back button$")
 	public void PressBackButton() throws Exception {
 		if (PagesCollection.loginPage != null) {

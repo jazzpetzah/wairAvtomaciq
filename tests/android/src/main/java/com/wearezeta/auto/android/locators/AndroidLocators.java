@@ -8,6 +8,8 @@ public final class AndroidLocators {
 	
 	public static final String CLASS_NAME = "com.wearezeta.auto.android.locators.AndroidLocators";
 	
+	public static final String idParticipantsClose = LOCATORS_PACKAGE + ":id/gtv__participants__close";
+	
 	public static final String idPaticipantsPendingLabel = LOCATORS_PACKAGE + ":id/ttv__participants__pending_label";
 	
 	public static final String idConnectToCharCounter = LOCATORS_PACKAGE + ":id/ttv__send_connect_request__connect_button__character_counter";
@@ -112,7 +114,7 @@ public final class AndroidLocators {
 	
 	public static final String idPasswordField = LOCATORS_PACKAGE + ":id/ifv_signin_password";
 	
-	public static final String idLoginProgressBar = LOCATORS_PACKAGE + ":id/progressBar1";
+	public static final String idLoginProgressBar = LOCATORS_PACKAGE + ":id/pv__sign_in__preview";
 	
 	public static final String idContactListNames = LOCATORS_PACKAGE + ":id/tv_conv_list_topic";
 	

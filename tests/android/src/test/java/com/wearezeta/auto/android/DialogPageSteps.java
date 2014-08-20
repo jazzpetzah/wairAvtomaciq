@@ -1,5 +1,7 @@
 package com.wearezeta.auto.android;
 
+import java.io.IOException;
+
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
@@ -74,9 +76,15 @@ public class DialogPageSteps{
 		  case "confirm":
 			  PagesCollection.dialogPage.confirm();
 			  break;
+		  case  "gallery":
+			  PagesCollection.dialogPage.openGallery();
 		  }
 	}
 	
+	@When("^I select picture for dialog$")
+	public void WhenISelectPicture() throws Throwable {
+		PagesCollection.dialogPage.selectPhoto();
+	}
 	@Then("^I see Hello-Hey message (.*) in the dialog$")
 	public void ThenISeeHelloHeyMessageInTheDialog(String message) throws Throwable {
 		Assert.assertEquals(message.toUpperCase(), PagesCollection.dialogPage.getKnockMessageText());
@@ -126,8 +134,19 @@ public class DialogPageSteps{
 	@Then("^I see Connect to (.*) Dialog page$")
 	public void ThenIseeConnectToDialogPage(String contact)
 	{
+		if(PagesCollection.dialogPage == null)
+		{
+			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
+		}
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 		Assert.assertEquals("connected to", PagesCollection.dialogPage.getConnectRequestChatLabel());
 		Assert.assertEquals(contact.toLowerCase(), PagesCollection.dialogPage.getConnectRequestChatUserName());
+	}
+	
+	
+
+	@Then("I see uploaded picture")
+	public void ThenISeeChangedUserPicture() throws IOException {
+		Assert.assertTrue(PagesCollection.dialogPage.dialogImageCompare());
 	}
 }

@@ -1,5 +1,7 @@
 package com.wearezeta.auto.android.pages;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -8,6 +10,8 @@ import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
+import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
@@ -34,7 +38,7 @@ public class DialogPage extends AndroidPage{
 	private WebElement okButton;
 	
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idDialogImages")
-	private WebElement imagesList;
+	private WebElement image;
 	
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConnectRequestDialog")
 	private WebElement connectRequestDialog;
@@ -63,9 +67,14 @@ public class DialogPage extends AndroidPage{
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConnectRequestChatUserName")
 	private WebElement connectRequestChatUserName;
 	
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idGalleryBtn")
+	private WebElement galleryBtn;
+	
 	private String url;
 	private String path;
 	private int initMessageCount;
+	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.95;
+	private final String DIALOG_IMAGE = "android_dialog_sendpicture_result.png";
 	
 	public DialogPage(String URL, String path) throws Exception {
 		super(URL, path);
@@ -208,6 +217,25 @@ public class DialogPage extends AndroidPage{
 	public ContactListPage navigateBack() throws Exception{
 		driver.navigate().back();
 		return new ContactListPage(url, path);
+	}
+
+	public void openGallery() {
+		refreshUITree();
+		galleryBtn.click();
+		
+	}
+	
+	public boolean dialogImageCompare() throws IOException
+	{
+		boolean flag = false;
+		BufferedImage dialogImage = getElementScreenshot(image);
+		BufferedImage realImage =  ImageUtil.readImageFromFile(CommonUtils.getImagesPath(CommonUtils.class) + DIALOG_IMAGE);
+		double score = ImageUtil.getOverlapScore(realImage, dialogImage);
+		if (score >= MIN_ACCEPTABLE_IMAGE_VALUE) {
+			flag = true;
+		}
+		
+		return flag;
 	}
 	
 }

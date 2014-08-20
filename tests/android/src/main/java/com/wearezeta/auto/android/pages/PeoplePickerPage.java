@@ -74,7 +74,8 @@ public class PeoplePickerPage extends AndroidPage {
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConnectToCharCounter")
 	private WebElement connectCharCounter;
 
-	
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idParticipantsClose")
+	private WebElement closeButton;	
 	
 	public void tapPeopleSearch()
 	{
@@ -240,4 +241,8 @@ public class PeoplePickerPage extends AndroidPage {
 		return Integer.parseInt(connectCharCounter.getText());
 	}
 
+	public PeoplePickerPage clickCloseButton() throws Exception {
+		closeButton.click();
+		return this;
+	}
 }

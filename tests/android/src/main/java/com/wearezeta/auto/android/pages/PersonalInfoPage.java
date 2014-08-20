@@ -55,9 +55,6 @@ public class PersonalInfoPage extends AndroidPage
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameLoginPage)
 	private WebElement page;
 
-	@FindBy(how = How.XPATH, using = AndroidLocators.xpathImagesFrameLayout)
-	private List<WebElement> frameLayouts;
-
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idSignOutBtn")
 	private WebElement signOutBtn;
 
@@ -66,9 +63,6 @@ public class PersonalInfoPage extends AndroidPage
 
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idProfileOptionsButton")
 	private List<WebElement> settingsButtonList;
-
-	@FindBy(how = How.XPATH, using = AndroidLocators.xpathImage)
-	private List<WebElement> image;
 
 	public PersonalInfoPage(String URL, String path) throws Exception {
 		super(URL, path);
@@ -91,23 +85,6 @@ public class PersonalInfoPage extends AndroidPage
 		DriverUtils.androidMultiTap(driver, page,1,0.2);
 	}
 
-	public void selectPhoto(){
-		refreshUITree();
-		try{
-			frameLayouts.get(0).click();
-			return;
-		}
-		catch(Exception ex)
-		{
-
-		}
-		try{
-			image.get(0).click();
-			return;
-		}
-		catch(Exception ex){
-		}
-	}
 
 	public void tapChangePhotoButton(){
 		changePhotoBtn.click();

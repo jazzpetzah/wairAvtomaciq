@@ -1,6 +1,6 @@
 Feature: Conversation
 
- @id316 @smoke 
+  @id316 @smoke
   Scenario Outline: Send Message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -14,7 +14,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @id317 @smoke 
+  @id317 @smoke
   Scenario Outline: Send Hello and Hey to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -29,7 +29,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     | Message1    | Message2        |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | YOU KNOCKED | YOU HOT KNOCKED |
 
-  @id318 @smoke  
+  @id318 @smoke
   Scenario Outline: Send Camera picture to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -46,7 +46,7 @@ Feature: Conversation
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
   #test is not implemented yet, functionality is not available in the client
-  @smoke @mute 
+  @smoke @mute
   Scenario Outline: Add people to 1:1 chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -188,8 +188,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     | Message                           |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | ÄäÖöÜüß simple message in english |
 
-  @mute @regression
-  @id149
+  @mute @regression @id149
   Scenario Outline: Send emoji message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -259,3 +258,21 @@ Feature: Conversation
     Examples: 
       | Login   | Password    | Name    | Contact1          | Contact2    | GroupChatName  |
       | aqaUser | aqaPassword | aqaUser | aqaPictureContact | aqaContact1 | GroupInfoCheck |
+
+  @staging 
+  Scenario Outline: Send picture from gallery into 1:1 conversation
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I swipe on text input
+    And I press Add Picture button
+    And I press "Gallery" button
+    And I select picture for dialog
+	And I press "Confirm" button
+    Then I see new photo in the dialog
+    Then I see uploaded picture
+
+    Examples: 
+      | Login   | Password    | Name    | Contact     |
+      | aqaUser | aqaPassword | aqaUser | aqaContact2 |

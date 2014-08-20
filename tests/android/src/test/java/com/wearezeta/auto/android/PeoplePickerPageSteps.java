@@ -129,5 +129,10 @@ public class PeoplePickerPageSteps {
 	public void ThenISeeCounterValue(int value) throws Throwable {
 		Assert.assertEquals(value, PagesCollection.peoplePickerPage.getCharCounterValue());
 	}
-
+	
+	@Then("I close Connect To dialog")
+	public void ThenCloseConnectToDialog() throws Exception
+	{
+		PagesCollection.peoplePickerPage = PagesCollection.peoplePickerPage.clickCloseButton();
+	}
 }
