@@ -137,8 +137,7 @@ public class DialogPageSteps{
 	}
 	
 	@Then("^I see Connect to (.*) Dialog page$")
-	public void ThenIseeConnectToDialogPage(String contact)
-	{
+	public void ThenIseeConnectToDialogPage(String contact) {
 		if(PagesCollection.dialogPage == null)
 		{
 			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
