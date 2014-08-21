@@ -51,6 +51,12 @@ public class LoginPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathTermsPrivacyCloseButton)
 	private WebElement termsPrivacyCloseButton;
 	
+	@FindBy(how = How.NAME, using = IOSLocators.nameErrorMailNotification)
+	private WebElement errorMailNotification;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameWrongCredentialsNotification)
+	private WebElement wrongCredentialsNotification;
+	
 	private String login;
 	
 	private String password;
@@ -180,6 +186,22 @@ public class LoginPage extends IOSPage {
 	public Boolean isTermsPrivacyColseButtonVisible() {
 		
 		return (ExpectedConditions.visibilityOf(termsPrivacyCloseButton) != null);
+	}
+	
+	public void tapPasswordField(){
+		passwordField.click();
+	}
+	
+	public Boolean errorMailNotificationIsShown(){
+		return (ExpectedConditions.visibilityOf(errorMailNotification) != null);
+	}
+	
+	public Boolean errorMailNotificationIsNotShown(){
+		return (ExpectedConditions.visibilityOf(errorMailNotification) == null);
+	}
+	
+	public Boolean wrongCredentialsNotificationIsShown(){
+		return (ExpectedConditions.visibilityOf(wrongCredentialsNotification) != null);
 	}
 
 }

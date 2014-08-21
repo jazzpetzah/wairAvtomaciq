@@ -137,6 +137,32 @@ public class LoginPageSteps {
 		 Assert.assertTrue("I don't see privacy policy page", PagesCollection.loginPage.isTermsPrivacyColseButtonVisible());
 		//TODO:verify correct content as far as copywrite is in
 	 }
+	 
+	 @When("^I enter wrong email (.*)")
+	 public void IEnterWrongEmail(String wrongMail){
+		 PagesCollection.loginPage.setLogin(wrongMail);
+		 PagesCollection.loginPage.tapPasswordField();
+	 }
+	 
+	 @Then("^I see error with email notification$")
+	 public void ISeeErrorWithEmailNotification(){
+		 Assert.assertTrue("I don't see error mail notification", PagesCollection.loginPage.errorMailNotificationIsShown());
+	 }
+
+	 @Then("^I see no error notification$")
+	 public void ISeeNoErrorNotification(){
+		 Assert.assertFalse("I see error mail notification", PagesCollection.loginPage.errorMailNotificationIsNotShown());
+	 }
+
+	 @When("^I enter wrong password (.*)")
+	 public void IEnterWrongPassword(String wrongPassword){
+		 PagesCollection.loginPage.setPassword(wrongPassword);
+	 }
+
+	 @Then("^I see wrong credentials notification$")
+	 public void ISeeWrongCredentialsNotification(){
+		 Assert.assertTrue("I don't see wrong credentials notification", PagesCollection.loginPage.wrongCredentialsNotificationIsShown());
+	 }
 
 
 }
