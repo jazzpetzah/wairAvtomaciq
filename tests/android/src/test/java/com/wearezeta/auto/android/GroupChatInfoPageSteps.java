@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.GroupChatPage;
+import com.wearezeta.auto.android.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.CommonUtils;
 
@@ -18,7 +19,7 @@ public class GroupChatInfoPageSteps {
 	@When("^I tap on group chat contact (.*)$")
 	public void WhenITapOnGroupChatContact(String contact) throws Throwable {
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
-		PagesCollection.otherUserPersonalInfoPage = PagesCollection.groupChatInfoPage.tapOnContact(contact);
+		PagesCollection.androidPage = PagesCollection.groupChatInfoPage.tapOnContact(contact);
 	}
 	
 	@When("^I swipe up group chat info page$")
@@ -49,7 +50,7 @@ public class GroupChatInfoPageSteps {
 	@When("^I select contact (.*)$")
 	public void WhenISelectContact(String name) throws Throwable {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
-		PagesCollection.otherUserPersonalInfoPage = PagesCollection.groupChatInfoPage.selectContactByName(name);
+		PagesCollection.androidPage = PagesCollection.groupChatInfoPage.selectContactByName(name);
 	}
 
 	@Then("^I see that the conversation name is (.*)$")

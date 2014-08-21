@@ -29,6 +29,12 @@ public abstract class AndroidPage extends BasePage {
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classListView)
 	private WebElement container;
 	
+	@FindBy(how = How.XPATH, using = AndroidLocators.CommonLocators.xpathImagesFrameLayout)
+	private List<WebElement> frameLayouts;
+	
+	@FindBy(how = How.XPATH, using = AndroidLocators.CommonLocators.xpathImage)
+	private List<WebElement> image;
+	
 	private String url;
 	
 	public AndroidPage(String URL, String path) throws Exception {
@@ -65,6 +71,24 @@ public abstract class AndroidPage extends BasePage {
 	private void initNoneUnicodeDriver() throws MalformedURLException
 	{
         super.InitConnection(url, capabilities);
+	}
+	
+	public void selectPhoto(){
+		refreshUITree();
+		try{
+			frameLayouts.get(0).click();
+			return;
+		}
+		catch(Exception ex)
+		{
+
+		}
+		try{
+			image.get(0).click();
+			return;
+		}
+		catch(Exception ex){
+		}
 	}
 	
 	public AndroidPage navigateBack() throws Exception{

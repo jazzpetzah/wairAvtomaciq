@@ -9,6 +9,7 @@ Feature: Connect to User
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
     And I tap on user name found on People picker page <Contact>
+    And I see connect to <Contact> dialog
     And I tap on edit connect request field
     And I type Connect request "<Message>"
     And I press Connect button
@@ -162,7 +163,7 @@ Feature: Connect to User
       | Login       | Password    | Contact1        | Contact2        | WaitingMess1     | WaitingMess2     |
       | yourContact | aqaPassword | yourNotContact1 | yourNotContact2 | 2 people waiting | 1 person waiting |
 
-  @id540 @regression @mute 
+  @id540 @regression @mute
   Scenario Outline: I can ignore a connect request and reconnect later
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
@@ -187,7 +188,7 @@ Feature: Connect to User
       | Login   | Password    | Contact         | WaitingMess      |
       | aqaUser | aqaPassword | yourNotContact1 | 1 person waiting |
 
-  @id542 @regression @mute 
+  @id542 @regression @mute
   Scenario Outline: I want to be taken to the connect inbox right away if the person I select already sent me a connect request
     Given <Contact> connection request is sended to me <Login>
     And I Sign in using login <Login> and password <Password>
@@ -206,7 +207,7 @@ Feature: Connect to User
       | Login   | Password    | Contact         | WaitingMess      |
       | aqaUser | aqaPassword | yourNotContact2 | 1 person waiting |
 
-  @id547 @regression @mute 
+  @id547 @regression @mute
   Scenario Outline: I can see the char counter changes when writing the first connect message
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
@@ -282,3 +283,62 @@ Feature: Connect to User
     Examples: 
 	  | Login   | Password    | Name    | Contact      | WaitingMess      |
       | aqaUser | aqaPassword | aqaUser | yourIgnore   | 1 person waiting |
+
+  @id553 @regression @mute
+  Scenario Outline: I want to see that the other person has accepted the connect request in the conversation view
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Login>
+    And I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in search field user name to connect to <Contact>
+    And I tap on user name found on People picker page <Contact>
+    And I see connect to <Contact> dialog
+    And I tap on edit connect request field
+    And I type Connect request "<Message>"
+    And I press Connect button
+    When <Contact> accept all requests
+    Then I tap on contact name <Contact>
+    And I see Connect to <Contact> Dialog page
+
+    Examples: 
+      | Login   | Password    | Contact    | Message |
+      | aqaUser | aqaPassword | yourAccept | Test    |
+
+  @id552 @regression @mute
+  Scenario Outline: I want to discard the new connect request (sending) by returning to the search results after selecting someone I’m not connected to
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Login>
+    And I swipe down contact list
+    And I see People picker page
+    When I tap on Search input on People picker page
+    And I input in search field user name to connect to <Contact>
+    And I tap on user name found on People picker page <Contact>
+    And I see connect to <Contact> dialog
+    And I tap on edit connect request field
+    Then I close Connect To dialog
+    And I see People picker page
+
+    Examples: 
+      | Login   | Password    | Contact         |
+      | aqaUser | aqaPassword | yourNotContact3 |
+
+  @id550 @regression @mute 
+  Scenario Outline: I want to initiate a connect request by selecting someone from within a group conversation
+    Given User <Contact1> is connected with <Contact2>
+    And My Contact <Contact1> has group chat with me <Login> and his Contact <Contact2> with name <ChatName>
+    And I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Login>
+    When I tap on contact name <ChatName>
+    And I swipe up on group dialog page
+    And I tap on group chat contact <Contact2>
+    And I see connect to <Contact2> dialog
+    And I tap on edit connect request field
+    And I type Connect request "Message"
+    And I press Connect button
+	And I press back on group chat info page
+	And I navigate back from group chat page
+	And I see contact list loaded with User name <Contact2>
+    Examples: 
+      | Login   | Password    | Contact1    | Contact2      | ChatName         |
+      | aqaUser | aqaPassword | aqaContact3 | yourGroupChat | ContactGroupChat |

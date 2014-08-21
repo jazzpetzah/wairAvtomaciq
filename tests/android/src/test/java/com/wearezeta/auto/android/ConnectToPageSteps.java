@@ -25,7 +25,7 @@ public class ConnectToPageSteps {
 	
 	@When("^I Connect with contact by pressing button$")
 	public void WhenIConnectWithContactByPressionButton() throws Exception{
-		PagesCollection.dialogPage = PagesCollection.connectToPage.pressConnectButton();	
+		PagesCollection.dialogPage = PagesCollection.connectToPage.pressAcceptConnectButton();	
 	}
 	
 	
@@ -43,5 +43,36 @@ public class ConnectToPageSteps {
 			PagesCollection.connectToPage =(ConnectToPage) PagesCollection.androidPage;
 		}
 		Assert.assertTrue(PagesCollection.connectToPage.isPending());
+	}
+	
+	@When("^I tap on edit connect request field$")
+	public void WhenITapOnEditConnectRequestFieldn(){
+		PagesCollection.connectToPage.tapEditConnectionRequies();
+	}
+	
+	@When("^I type Connect request \"(.*)\"$")
+	public void WhenITypeConnectRequest(String message){
+		PagesCollection.connectToPage.typeConnectionRequies(message);
+	}
+	
+	@When("^I press Connect button$")
+	public void WhenIPressConnectButton() throws Exception{
+		PagesCollection.contactListPage = PagesCollection.connectToPage.pressConnectButton();
+	}
+	
+	@Then("^I see connect button enabled state is (.*)$")
+	public void ThenISeeConnectButtonIsDisabled(boolean state) throws Throwable {
+		Assert.assertEquals(state, PagesCollection.connectToPage.getConnectButtonState());
+	}
+
+	@Then("^I see counter value (.*)$")
+	public void ThenISeeCounterValue(int value) throws Throwable {
+		Assert.assertEquals(value, PagesCollection.connectToPage.getCharCounterValue());
+	}
+	
+	@Then("I close Connect To dialog")
+	public void ThenCloseConnectToDialog() throws Exception
+	{
+		PagesCollection.peoplePickerPage = PagesCollection.connectToPage.clickCloseButton();
 	}
 }

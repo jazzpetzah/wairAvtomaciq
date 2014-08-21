@@ -40,6 +40,10 @@ public class GroupChatInfoPage extends AndroidPage {
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.GroupChatInfoPage.CLASS_NAME, locatorKey = "idParticipantsSubHeader")
 	private WebElement participantsSubHeader;
 	
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectToHeader")
+	private List<WebElement> connectToHeader;
+	
+	
 	private String url;
 	private String path;
 	
@@ -91,28 +95,32 @@ public class GroupChatInfoPage extends AndroidPage {
 		groupChatName.sendKeys(chatName + "\n");
 	}
 	
-	public OtherUserPersonalInfoPage selectContactByName(String contactName) throws Exception, InterruptedException {
+	public AndroidPage selectContactByName(String contactName) throws Exception, InterruptedException {
 		boolean flag = false;
 		refreshUITree();
-		
+
 		for(WebElement user : linearLayout)
 		{
 			List<WebElement> elements = user.findElements(By.className(AndroidLocators.CommonLocators.classNameTextView));
 			for(WebElement element : elements){
-					if(element.getText() != null && element.getText().equals((contactName.toUpperCase()))){
-						user.click();
-						flag = true;
-						break;
-					}
+				if(element.getText() != null && element.getText().equals((contactName.toUpperCase()))){
+					user.click();
+					flag = true;
+					break;
+				}
 			}
 			if(flag){
 				break;
 			}
 		}
-
-		return new OtherUserPersonalInfoPage(url, path);
+		if(connectToHeader.size()>0){
+			return new ConnectToPage(url, path);
+		}
+		else{
+			return new OtherUserPersonalInfoPage(url, path);
+		}
 	}
-
+	
 	public GroupChatPage tabBackButton() throws Exception {
 		driver.navigate().back();
 		return new GroupChatPage(url, path);
@@ -162,12 +170,17 @@ public class GroupChatInfoPage extends AndroidPage {
 		return groupChatName.getText();
 	}
 
-	public OtherUserPersonalInfoPage tapOnContact(String contact) throws Exception {
+	public AndroidPage tapOnContact(String contact) throws Exception {
 		refreshUITree();
 		wait.until(ExpectedConditions.visibilityOf(groupChatName));
 		WebElement cn = driver.findElement(By.xpath(String.format(AndroidLocators.ContactListPage.xpathContacts, contact.toUpperCase())));
 		cn.click();
-		return new OtherUserPersonalInfoPage(url, path);
+		if(connectToHeader.size()>0){
+			return new ConnectToPage(url, path);
+		}
+		else{
+			return new OtherUserPersonalInfoPage(url, path);
+		}
 	}
 
 	public boolean isContactExists(String contact) {

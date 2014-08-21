@@ -17,6 +17,10 @@ public class OtherUserPersonalInfoPageSteps {
 
 	@When("^I see (.*) user profile page$")
 	public void WhenISeeOherUserProfilePage(String name){
+		if(PagesCollection.otherUserPersonalInfoPage == null)
+		{
+			PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage)PagesCollection.androidPage;
+		}
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		PagesCollection.otherUserPersonalInfoPage.isOtherUserNameVisible(name);
 	}

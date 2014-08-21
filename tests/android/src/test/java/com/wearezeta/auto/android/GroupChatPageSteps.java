@@ -47,8 +47,11 @@ public class GroupChatPageSteps {
 	public void ThenISeeMessageContactOnGroupPage(String message, String contact) throws Throwable {
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact).toUpperCase();
 		
-		Assert.assertTrue(PagesCollection.groupChatPage.isMessageExists(message + " " + contact));
-		
+		Assert.assertTrue(PagesCollection.groupChatPage.isMessageExists(message + " " + contact));	
 	}
 
+	@Then("^I navigate back from group chat page$")
+	public void ThenINavigateBackFromGroupChatPage() throws Exception{
+		PagesCollection.contactListPage = (ContactListPage) PagesCollection.groupChatPage.navigateBack();
+	}
 }
