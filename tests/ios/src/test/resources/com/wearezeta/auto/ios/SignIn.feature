@@ -49,18 +49,24 @@ Feature: Sign In
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
 
-@torun
 @staging
 @id314
  Scenario Outline: Notification if SignIn credentials are wrong
  	Given I see sign in screen
  	When I press Sign in button
  	And I enter wrong email <WrongMail>
+ 	Then I see error with email notification
+ 	And I have entered login <Login>
+ 	Then I see no error notification
  	And I enter wrong password <WrongPassword>
+ 	And I press Login button
  	Then I see wrong credentials notification
+ 	And I have entered password <Password>
+ 	And I press Login button
+ 	And I see Contact list with my name <Name>
  	
  	Examples: 
     |	Login	|	Password	|	Name	|	WrongMail		| WrongPassword |
-    |	aqaUser	|	aqaPassword	|	aqaUser	|	wrong@wrong.com	| wrong			|
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	wrongwrong	    | wrong			|
  	
  	
