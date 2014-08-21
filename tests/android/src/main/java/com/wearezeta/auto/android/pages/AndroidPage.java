@@ -29,10 +29,10 @@ public abstract class AndroidPage extends BasePage {
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classListView)
 	private WebElement container;
 	
-	@FindBy(how = How.XPATH, using = AndroidLocators.xpathImagesFrameLayout)
+	@FindBy(how = How.XPATH, using = AndroidLocators.CommonLocators.xpathImagesFrameLayout)
 	private List<WebElement> frameLayouts;
 	
-	@FindBy(how = How.XPATH, using = AndroidLocators.xpathImage)
+	@FindBy(how = How.XPATH, using = AndroidLocators.CommonLocators.xpathImage)
 	private List<WebElement> image;
 	
 	private String url;

@@ -94,21 +94,6 @@ public class PeoplePickerPageSteps {
 		PagesCollection.groupChatPage = (GroupChatPage)PagesCollection.peoplePickerPage.clickOnAddToCoversationButton();
 	}
 	
-	@When("^I tap on edit connect request field$")
-	public void WhenITapOnEditConnectRequestFieldn(){
-		PagesCollection.peoplePickerPage.tapEditConnectionRequies();
-	}
-	
-	@When("^I type Connect request \"(.*)\"$")
-	public void WhenITypeConnectRequest(String message){
-		PagesCollection.peoplePickerPage.typeConnectionRequies(message);
-	}
-	
-	@When("^I press Connect button$")
-	public void WhenIPressConnectButton() throws Exception{
-		PagesCollection.contactListPage = PagesCollection.peoplePickerPage.pressConnectButton();
-	}
-	
 	@Then("^I see user (.*)  in People picker$")
 	public void ThenISeeUserInPeoplePicker(String contact) throws Throwable {
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
@@ -121,19 +106,5 @@ public class PeoplePickerPageSteps {
 	    Assert.assertTrue(PagesCollection.peoplePickerPage.groupIsVisible(contact));	
 	}
 	
-	@Then("^I see connect button enabled state is (.*)$")
-	public void ThenISeeConnectButtonIsDisabled(boolean state) throws Throwable {
-		Assert.assertEquals(state, PagesCollection.peoplePickerPage.getConnectButtonState());
-	}
-
-	@Then("^I see counter value (.*)$")
-	public void ThenISeeCounterValue(int value) throws Throwable {
-		Assert.assertEquals(value, PagesCollection.peoplePickerPage.getCharCounterValue());
-	}
 	
-	@Then("I close Connect To dialog")
-	public void ThenCloseConnectToDialog() throws Exception
-	{
-		PagesCollection.peoplePickerPage = PagesCollection.peoplePickerPage.clickCloseButton();
-	}
 }

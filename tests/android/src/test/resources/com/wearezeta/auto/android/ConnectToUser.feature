@@ -9,6 +9,7 @@ Feature: Connect to User
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
     And I tap on user name found on People picker page <Contact>
+    And I see connect to <Contact> dialog
     And I tap on edit connect request field
     And I type Connect request "<Message>"
     And I press Connect button
@@ -246,7 +247,7 @@ Feature: Connect to User
       | Login   | Password    | Contact         | CounterValue | FirstState |
       | aqaUser | aqaPassword | yourNotContact3 | 136          | false      |
 
-  @id554 @regression @mute @torun
+  @id554 @regression @mute
   Scenario Outline: I would not know other person has ignored my connection request
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
@@ -306,10 +307,22 @@ Feature: Connect to User
       | Login   | Password    | Contact         |
       | aqaUser | aqaPassword | yourNotContact3 |
 
-  @id550 @regression @mute
+  @id550 @regression @mute 
   Scenario Outline: I want to initiate a connect request by selecting someone from within a group conversation
-    
+    Given User <Contact1> is connected with <Contact2>
+    And My Contact <Contact1> has group chat with me <Login> and his Contact <Contact2> with name <ChatName>
+    And I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Login>
+    When I tap on contact name <ChatName>
+    And I swipe up on group dialog page
+    And I tap on group chat contact <Contact2>
+    And I see connect to <Contact2> dialog
+    And I tap on edit connect request field
+    And I type Connect request "Message"
+    And I press Connect button
+	And I press back on group chat info page
+	And I navigate back from group chat page
+	And I see contact list loaded with User name <Contact2>
     Examples: 
-      | Login   | Password    | Contact1         | Contact2 |
-      | aqaUser | aqaPassword | yourNotContact3 |			|
-
+      | Login   | Password    | Contact1    | Contact2      | ChatName         |
+      | aqaUser | aqaPassword | aqaContact3 | yourGroupChat | ContactGroupChat |

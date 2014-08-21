@@ -40,20 +40,9 @@ public class PeoplePickerPage extends AndroidPage {
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idCreateConversationIcon")
 	private WebElement createConversation;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idConnectionRequiesMessage")
-	private WebElement connectionRequestMessage;
-	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idSendConnectionRequestButton")
-	private WebElement sendConnectionRequestButton;
-	
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectToHeader")
 	private List<WebElement> connectToHeader;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectToCharCounter")
-	private WebElement connectCharCounter;
-
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idParticipantsClose")
-	private WebElement closeButton;	
 	private String url;
 	private String path;
 
@@ -182,20 +171,7 @@ public class PeoplePickerPage extends AndroidPage {
 		return new ContactListPage(url, path);
 	}
 
-	public void tapEditConnectionRequies() {
-		refreshUITree();
-		connectionRequestMessage.click();
-	}
 
-	public void typeConnectionRequies(String message) {
-		connectionRequestMessage.sendKeys(message);
-		
-	}
-
-	public ContactListPage pressConnectButton() throws Exception {
-		sendConnectionRequestButton.click();
-		return new ContactListPage(url, path);
-	}
 
 	public boolean userIsVisible(String contact) {
 		return isVisible(driver.findElement(By.xpath(String.format(AndroidLocators.PeoplePickerPage.xpathPeoplePickerContact, contact))));	
@@ -213,17 +189,4 @@ public class PeoplePickerPage extends AndroidPage {
 		
 	}
 	
-	public boolean getConnectButtonState() {
-		String state =  sendConnectionRequestButton.getAttribute("enabled");
-		return Boolean.parseBoolean(state);
-	}
-
-	public int getCharCounterValue() {
-		return Integer.parseInt(connectCharCounter.getText());
-	}
-
-	public PeoplePickerPage clickCloseButton() throws Exception {
-		closeButton.click();
-		return this;
-	}
 }

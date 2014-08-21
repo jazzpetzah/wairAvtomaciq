@@ -8,9 +8,6 @@ public final class AndroidLocators {
 	
 	public static final String CLASS_NAME = "com.wearezeta.auto.android.locators.AndroidLocators";
 	
-	public static final String idParticipantsClose = LOCATORS_PACKAGE + ":id/gtv__participants__close";
-	
-	public static final String idPaticipantsPendingLabel = LOCATORS_PACKAGE + ":id/ttv__participants__pending_label";
 	public static final class SettingsPage {
 		
 		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME + "$SettingsPage";
@@ -101,6 +98,12 @@ public final class AndroidLocators {
 		public static final String classEditText = "android.widget.EditText";
 		
 		public static final String classNameTextView = "android.widget.TextView";
+		
+		public static final String xpathImagesFrameLayout = "//android.widget.GridView[@resource-id='com.android.documentsui:id/grid']/android.widget.FrameLayout";
+		
+		public static final String xpathImage = "//android.widget.LinearLayout/android.view.View";
+		
+		public static final String idGalleryBtn = LOCATORS_PACKAGE + ":id/gtv__camera_control__pick_from_gallery";
 	}
 	
 	public static final class DialogPage {
@@ -171,6 +174,8 @@ public final class AndroidLocators {
 	
 	public static final class PeoplePickerPage {
 		
+		public static final String idParticipantsClose = LOCATORS_PACKAGE + ":id/gtv__participants__close";
+		
 		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME + "$PeoplePickerPage";
 		
 		public static final String idPickerUsersUnselected = LOCATORS_PACKAGE + ":id/pick_user_chathead_unselected";
@@ -226,9 +231,6 @@ public final class AndroidLocators {
 		
 		public static final String idOpenFrom = "com.google.android.apps.plus:id/tiles";
 		
-		public static final String xpathImage = "//android.widget.LinearLayout/android.view.View";
-		
-		public static final String xpathImagesFrameLayout = "//android.widget.GridView[@resource-id='com.android.documentsui:id/grid']/android.widget.FrameLayout";
 	}
 	
 	public static final class RegistractionPage {
