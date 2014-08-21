@@ -266,3 +266,19 @@ Feature: Connect to User
     Examples: 
       | Login   | Password    | Contact    | Message |
       | aqaUser | aqaPassword | yourIgnore | Test    |
+      
+  @id541 @staging 
+  Scenario Outline: I can receive new connection request when app in background
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Login>
+    When I minimize the application
+    And <Contact> connection request is sended to me <Login>
+    And I restore the application
+    And I see contact list loaded with User name <WaitingMess>
+    And I tap on contact name <WaitingMess>
+    Then I see connect to <Contact> dialog
+    And I see Accept and Ignore buttons
+
+    Examples: 
+	  | Login   | Password    | Name    | Contact      | WaitingMess      |
+      | aqaUser | aqaPassword | aqaUser | yourIgnore   | 1 person waiting |

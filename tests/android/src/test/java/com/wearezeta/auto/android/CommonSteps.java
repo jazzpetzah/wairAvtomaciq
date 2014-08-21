@@ -124,6 +124,20 @@ public class CommonSteps {
 		BackEndREST.ignoreAllConnections(yourСontact);
 	}
 	
+	@When("^I minimize the application$")
+	public void IMimizeApllication() throws InterruptedException {
+		if (PagesCollection.loginPage != null) {
+			PagesCollection.loginPage.minimizeApplication();
+		}
+	}
+	
+	@When("^I restore the application$")
+	public void IRestoreApllication() {
+		if (PagesCollection.loginPage != null) {
+			PagesCollection.loginPage.restoreApplication();
+		}
+	}
+	
 	@When("^I press back button$")
 	public void PressBackButton() throws Exception {
 		if (PagesCollection.loginPage != null) {

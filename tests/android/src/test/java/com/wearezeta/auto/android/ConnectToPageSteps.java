@@ -18,6 +18,11 @@ public class ConnectToPageSteps {
 		Assert.assertEquals(contact.toLowerCase(),PagesCollection.connectToPage.getConnectToHeader());
 	}
 	
+	@Then("^I see Accept and Ignore buttons$")
+	public void ISeeConnectAndIgnoreButtons() throws Exception {
+		Assert.assertTrue(PagesCollection.connectToPage.isIgnoreConnectButtonVisible());	
+	}
+	
 	@When("^I Connect with contact by pressing button$")
 	public void WhenIConnectWithContactByPressionButton() throws Exception{
 		PagesCollection.dialogPage = PagesCollection.connectToPage.pressConnectButton();	
@@ -29,7 +34,7 @@ public class ConnectToPageSteps {
 		if(PagesCollection.connectToPage == null) {
 			PagesCollection.connectToPage = (ConnectToPage) PagesCollection.androidPage;
 		}
-		PagesCollection.contactListPage = PagesCollection.connectToPage.pressIgnorButton();	
+		PagesCollection.contactListPage = PagesCollection.connectToPage.pressIgnoreButton();	
 	}
 	
 	@Then("^I see that connection is pending")

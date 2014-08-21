@@ -71,6 +71,18 @@ public abstract class AndroidPage extends BasePage {
 		driver.navigate().back();
 		return null;
 	}
+	
+	public void minimizeApplication () throws InterruptedException {
+
+		driver.sendKeyEvent(3);
+		Thread.sleep(1000);
+	}
+	
+	public void restoreApplication() {
+		
+		driver.runAppInBackground(10);
+	}
+	
 	@Override
 	public void Close() throws IOException {
 		try {
