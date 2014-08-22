@@ -1,6 +1,6 @@
 Feature: Connect to User
 
-  @id191 @id193 @smoke @mute
+  @id191 @id193 @smoke
   Scenario Outline: Send invitation message to a user
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -207,7 +207,7 @@ Feature: Connect to User
       | Login   | Password    | Contact         | WaitingMess      |
       | aqaUser | aqaPassword | yourNotContact2 | 1 person waiting |
 
-  @id547 @regression @mute
+  @id547 @regression 
   Scenario Outline: I can see the char counter changes when writing the first connect message
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
@@ -228,7 +228,7 @@ Feature: Connect to User
       | Login   | Password    | Contact         | CounterValue1 | Message | CounterValue2 | FirstState | SecondState |
       | aqaUser | aqaPassword | yourNotContact3 | 140           | test    | 136           | false      | true        |
 
-  @id548 @regression @mute
+  @id548 @regression 
   Scenario Outline: I can not send first message with space only
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
@@ -247,7 +247,7 @@ Feature: Connect to User
       | Login   | Password    | Contact         | CounterValue | FirstState |
       | aqaUser | aqaPassword | yourNotContact3 | 136          | false      |
 
-  @id554 @regression @mute
+  @id554 @regression
   Scenario Outline: I would not know other person has ignored my connection request
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
@@ -267,6 +267,22 @@ Feature: Connect to User
     Examples: 
       | Login   | Password    | Contact    | Message |
       | aqaUser | aqaPassword | yourIgnore | Test    |
+      
+  @id541 @staging 
+  Scenario Outline: I can receive new connection request when app in background
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Login>
+    When I minimize the application
+    And <Contact> connection request is sended to me <Login>
+    And I restore the application
+    And I see contact list loaded with User name <WaitingMess>
+    And I tap on contact name <WaitingMess>
+    Then I see connect to <Contact> dialog
+    And I see Accept and Ignore buttons
+
+    Examples: 
+	  | Login   | Password    | Name    | Contact      | WaitingMess      |
+      | aqaUser | aqaPassword | aqaUser | yourIgnore   | 1 person waiting |
 
   @id553 @regression @mute
   Scenario Outline: I want to see that the other person has accepted the connect request in the conversation view

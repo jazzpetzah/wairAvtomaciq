@@ -64,10 +64,15 @@ public class ConnectToPage extends AndroidPage {
 		return new DialogPage(url, path);
 	}
 
-	public ContactListPage pressIgnorButton() throws Exception {
+	public ContactListPage pressIgnoreButton() throws Exception {
 		refreshUITree();
 		connectIgnoreBtn.click();
 		return new ContactListPage(url, path);
+	}
+	
+	public boolean isIgnoreConnectButtonVisible() throws Exception {
+
+		return connectIgnoreBtn.isDisplayed() && connectAcceptBtn.isDisplayed();
 	}
 
 	public boolean isPending() {

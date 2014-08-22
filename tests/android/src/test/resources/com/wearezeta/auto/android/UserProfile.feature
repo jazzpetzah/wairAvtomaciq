@@ -1,7 +1,6 @@
 Feature: User Profile
 
-  #muted because related story still not closed
-  @id328 @mute @smoke
+  @id328 @smoke
   Scenario Outline: ZClient change name
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

@@ -93,8 +93,7 @@ public class PersonalInfoPageSteps {
 	
 	@Then("I see changed user picture")
 	public void ThenISeeChangedUserPicture() throws IOException {
-		PagesCollection.personalInfoPage.waitForConfirmBtn();
-		BufferedImage referenceImage = PagesCollection.dialogPage.takeScreenshot();
+		BufferedImage referenceImage = PagesCollection.personalInfoPage.takeScreenshot();
 		String path = CommonUtils.getResultImagePath(PersonalInfoPageSteps.class);
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
 		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);

@@ -194,6 +194,20 @@ public class CommonSteps {
 		BackEndREST.ignoreAllConnections(yourСontact);
 	}
 	
+	@When("^I minimize the application$")
+	public void IMimizeApllication() throws InterruptedException {
+		if (PagesCollection.loginPage != null) {
+			PagesCollection.loginPage.minimizeApplication();
+		}
+	}
+	
+	@When("^I restore the application$")
+	public void IRestoreApllication() {
+		if (PagesCollection.loginPage != null) {
+			PagesCollection.loginPage.restoreApplication();
+		}
+	}
+		
 	@When("^(.*) accept all requests$")
 	public void AcceptConnectRequest(String contact) throws IllegalArgumentException, UriBuilderException, IOException, JSONException, BackendRequestException{
 		ClientUser yourСontact = null;
