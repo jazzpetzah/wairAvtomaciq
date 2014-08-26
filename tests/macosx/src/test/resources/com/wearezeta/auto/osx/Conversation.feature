@@ -247,6 +247,24 @@ Feature: Conversation
     Examples: 
       | Login   | Password    | Name    | Contact     | SoundCloudLink                              |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/edherbst/throwaway-3 |
+      
+  @torun @staging @id380
+  Scenario Outline: Conversation scrolls back to playing media when clicked on the media bar
+  	Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with name <Name>
+    And I open conversation with <Contact>
+    And I post messages and media link <SoundCloudLink>
+    Then I see media link <SoundCloudLink> and media in dialog
+    And I tap SoundCloud link
+    Then I see the embedded media is playing
+    And I scroll media out of sight till media bar appears
+    And I press the media bar title
+    Then I see media link <SoundCloudLink> and media in dialog
+    Then I see the embedded media is playing
+  
+  	Examples: 
+      | Login   | Password    | Name    | Contact     | SoundCloudLink                              |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/edherbst/throwaway-3 |
 
   @staging @id618
   Scenario Outline: Verify the new conversation is created on the other end
