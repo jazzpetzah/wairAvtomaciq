@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
@@ -31,9 +32,11 @@ import org.openqa.selenium.support.ui.Wait;
 import com.google.common.base.Function;
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class DriverUtils {
-
+	private static final Logger log = ZetaLogger.getLog(DriverUtils.class.getSimpleName());
+	
 	public static boolean isNullOrEmpty(String s) {
 		return s == null || s.length() == 0;
 	}
@@ -80,7 +83,7 @@ public class DriverUtils {
 	public static boolean waitUntilElementAppears(RemoteWebDriver driver, final By by) {
 
 		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-		Boolean bool = true;
+		Boolean bool = false;
 		try {
 		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
 				.withTimeout(20, TimeUnit.SECONDS)

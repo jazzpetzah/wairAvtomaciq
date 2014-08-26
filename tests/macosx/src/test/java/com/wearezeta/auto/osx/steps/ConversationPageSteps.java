@@ -4,11 +4,13 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.BackEndREST;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.ContactListPage;
@@ -21,6 +23,8 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ConversationPageSteps {
+	private static final Logger log = ZetaLogger.getLog(ConversationPageSteps.class.getSimpleName());
+	
 	 private String randomMessage;
 	 private int beforeNumberOfKnocks = -1;
 	 private int beforeNumberOfHotKnocks = -1;
@@ -198,7 +202,7 @@ public class ConversationPageSteps {
 		 }
 	 }
 	 
-	 @Given("I create group chat with (.*) and (.*)")
+	 @Given("^I create group chat with (.*) and (.*)$")
 	 public void WhenICreateGroupChatWithUser1AndUser2(String user1, String user2) throws MalformedURLException, IOException {
 		 user1 = CommonUtils.retrieveRealUserContactPasswordValue(user1);
 		 user2 = CommonUtils.retrieveRealUserContactPasswordValue(user2);

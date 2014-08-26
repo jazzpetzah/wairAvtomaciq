@@ -28,6 +28,16 @@ public class ConversationInfoPageSteps {
 		CommonSteps.senderPages.getConversationInfoPage().selectUserIfNotSelected(user);
 	}
 	
+	@Then("I do not see user (.*) in Conversation info")
+	public void IDontSeeUserInConversationInfo(String user) throws MalformedURLException, IOException {
+		user = CommonUtils.retrieveRealUserContactPasswordValue(user);
+		CommonSteps.senderPages.setConversationInfoPage(new ConversationInfoPage(
+				 CommonUtils.getUrlFromConfig(ConversationInfoPage.class),
+				 CommonUtils.getAppPathFromConfig(ConversationInfoPage.class)
+				 ));
+		Assert.assertTrue(CommonSteps.senderPages.getConversationInfoPage().userIsNotExistInConversation(user));
+	}
+	
 	@When("I remove selected user from conversation")
 	public void WhenIRemoveSelectedUserFromConversation() {
 		CommonSteps.senderPages.getConversationInfoPage().removeUser();

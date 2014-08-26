@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;
@@ -69,14 +70,65 @@ public class UserProfilePageSteps {
 				score >= 0.55d);
 	}
 	
-	@Then("I see changed user picture from camera")
-	public void ThenISeeChangedUserPictureFromCamera() throws IOException {
+	@Then("^I see changed user picture$")
+	public void ThenISeeChangedUserPicture() throws IOException {
 		UserProfilePage userProfile = CommonSteps.senderPages.getUserProfilePage();
 		BufferedImage userProfileAfter = userProfile.takeScreenshot();
 
 		double score = ImageUtil.getOverlapScore(userProfileAfter, userProfileBefore, ImageUtil.RESIZE_NORESIZE);
 		Assert.assertFalse(
-				"Overlap between two images has no enough score. Expected >= 0.9, current = " + score,
-				score >= 0.9d);
+				"Overlap between two images has no enough score. Expected >= 0.95, current = " + score,
+				score >= 0.95d);
 	}
+	
+	@When("I select to remove photo")
+	public void ISelectToRemovePhoto() {
+		UserProfilePage userProfile = CommonSteps.senderPages.getUserProfilePage();
+		userProfile.chooseToRemovePhoto();
+	}
+	
+	@When("I confirm photo removing")
+	public void IConfirmPhotoRemoving() {
+		UserProfilePage userProfile = CommonSteps.senderPages.getUserProfilePage();
+		userProfile.confirmPhotoRemoving();
+	}
+	
+	@When("I cancel photo removing")
+	public void ICancelPhotoRemoving() {
+		UserProfilePage userProfile = CommonSteps.senderPages.getUserProfilePage();
+		userProfile.cancelPhotoRemoving();
+	}
+	
+	@Then("I see user profile picture is not set")
+	public void ISeeUserProfilePictureIsNotSet() throws IOException {
+		ThenISeeChangedUserPicture();
+	}
+	
+	@When("I see photo in User profile")
+	public void ISeePhotoInUserProfile() throws IOException {
+		userProfileBefore = CommonSteps.senderPages.getUserProfilePage().takeScreenshot();
+	}
+	
+
+    @Then("I see name (.*) in User profile")
+    public void ISeeNameInUserProfile(String name) {
+    	name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		UserProfilePage userProfile = CommonSteps.senderPages.getUserProfilePage();
+		userProfile.selfProfileNameEquals(name);
+    }
+    
+    @Then("I see email of (.*) in User profile")
+    public void ISeeEmailOfUserInUserProfile(String name) {
+    	name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+    	String email = null;
+    	for (ClientUser user : CommonUtils.yourUsers) {
+			if (user.getName().toLowerCase().equals(name.toLowerCase())) {
+				email = user.getEmail();
+				break;
+			}
+		}
+		UserProfilePage userProfile = CommonSteps.senderPages.getUserProfilePage();
+		userProfile.selfProfileEmailEquals(email);
+    	
+    }
 }
