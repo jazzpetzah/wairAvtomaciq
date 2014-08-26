@@ -7,6 +7,7 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.FindBy;
@@ -104,7 +105,12 @@ public abstract class AndroidPage extends BasePage {
 	
 	public void restoreApplication() {
 		
-		driver.runAppInBackground(10);
+		try {
+			driver.runAppInBackground(10);
+		}
+		catch (WebDriverException ex) {
+			//do nothing, sometimes after restoring the app we have this exception, Appium bug
+		}
 	}
 	
 	@Override
