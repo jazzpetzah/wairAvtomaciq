@@ -296,4 +296,20 @@ public class ConversationPageSteps {
 				 "New conversation name '" + result + "' does not equal to expected '" + name + "'",
 				 result.equals(name));
 	 }
+	 
+	 @When("^I wait till playback finishes$")
+	 public void WhenIWaitTillPlaybackFinishes(){
+	    String currentState = CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState();
+	    String wantedState = OSXLocators.SOUNDCLOUD_BUTTON_STATE_PLAY;
+	    while(currentState != wantedState){
+	    	Assert.assertEquals("Pause", currentState);
+	    	currentState = CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState();
+	    }
+	    Assert.assertEquals("Play", currentState); 
+	 }
+
+	 @Then("^I see media bar disappears$")
+	 public void ThenISeeMediaBarDisappears(){
+	   
+	 }
 }
