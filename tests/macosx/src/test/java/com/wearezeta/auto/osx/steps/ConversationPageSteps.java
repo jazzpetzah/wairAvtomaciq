@@ -245,13 +245,11 @@ public class ConversationPageSteps {
 		 }
 		 CommonSteps.senderPages.getConversationPage().writeNewMessage(link);
 		 WhenISendMessage();
-		 Thread.sleep(2000);
 	 }
 	 
 	 @When("^I scroll media out of sight till media bar appears$")
 	 public void WhenIScrollMediaOutOfSightUntilMediaBarAppears() throws Throwable {
 		 CommonSteps.senderPages.getConversationPage().scrollDownTilMediaBarAppears();
-		 Thread.sleep(2000);
 	 }
 
 	 @When("^I pause playing media in media bar$")
