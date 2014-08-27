@@ -3,11 +3,13 @@ package com.wearezeta.auto.osx.steps;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.NoSuchElementException;
 
 import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.LoginPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
@@ -18,6 +20,8 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class LoginPageSteps {
+	private static final Logger log = ZetaLogger.getLog(LoginPageSteps.class.getSimpleName());
+	
 	@Given ("I Sign in using login (.*) and password (.*)")
 	public void GivenISignInUsingLoginAndPassword(String login, String password) throws IOException {
 		login = CommonUtils.retrieveRealUserContactPasswordValue(login);
@@ -28,6 +32,16 @@ public class LoginPageSteps {
 				break;
 			}
 		}
+		
+		for (ClientUser user: CommonUtils.contacts) {
+			if (user.getName().toLowerCase().equals(login.toLowerCase())) {
+				login = user.getEmail();
+				password = CommonUtils.retrieveRealUserContactPasswordValue(password);
+				break;
+			}
+		}
+		
+		log.debug("Starting to Sign in using login " + login + " and password " + password);
 		try {
 			LoginPage loginPage = CommonSteps.senderPages.getLoginPage();
 			Assert.assertNotNull(loginPage.isVisible());

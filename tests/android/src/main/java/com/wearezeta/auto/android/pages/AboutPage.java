@@ -14,9 +14,9 @@ public class AboutPage extends AndroidPage {
 	private String url;
 	private String path;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idAboutLogo")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.AboutPage.CLASS_NAME, locatorKey = "idAboutLogo")
 	private WebElement aboutLogo;
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idAboutVersion")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.AboutPage.CLASS_NAME, locatorKey = "idAboutVersion")
 	private WebElement aboutVersion;
 	
 	public AboutPage(String URL, String path) throws Exception {

@@ -3,7 +3,10 @@ package com.wearezeta.auto.common;
 import javax.mail.*;
 import javax.ws.rs.core.UriBuilderException;
 
+import org.apache.log4j.Logger;
 import org.json.JSONException;
+
+import com.wearezeta.auto.common.log.ZetaLogger;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -11,6 +14,9 @@ import java.util.List;
 import java.util.Map;
 
 public class CreateZetaUser {
+
+	private static final Logger log = ZetaLogger.getLog(CreateZetaUser.class.getSimpleName());
+	
 	public static final String MAILS_FOLDER = "Inbox";
 	public static final int ACTIVATION_TIMEOUT = 10; 
 
@@ -45,8 +51,10 @@ public class CreateZetaUser {
 		Map<String, String> user = new LinkedHashMap<String, String>();
 
 		regMail = setRegMail(mail, suffix);
-		System.out.println(regMail);
 		user.put(suffix, regMail);
+		
+		log.debug("Generated credentials for new user registration: " + mail + ":" + password);
+		
 		return user;
 	}
 
@@ -54,6 +62,7 @@ public class CreateZetaUser {
 			int timeout, String mail, String password)
 			throws MessagingException, IOException, IllegalArgumentException,
 			UriBuilderException, BackendRequestException, InterruptedException {
+		log.debug("Activating user " + mail + ":" + password + " (with timeout: " + timeout + ")");
 		final int ATTEMPS_NUMBER = 5;
 		for (int i = 0; i < ATTEMPS_NUMBER; i++) {
 			List<EmailHeaders> newMails = getLastMailHeaders(mail, password, 20);

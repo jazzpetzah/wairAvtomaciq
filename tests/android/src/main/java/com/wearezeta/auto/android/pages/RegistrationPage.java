@@ -12,25 +12,25 @@ import com.wearezeta.auto.common.locators.ZetaFindBy;
 
 public class RegistrationPage extends AndroidPage {
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idDialogTakePhotoButton")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogTakePhotoButton")
 	private WebElement cameraButton;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConfirmButton")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConfirmButton")
 	private WebElement confirmImageButton;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idNameField")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idNameField")
 	private WebElement nameField;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idEmailField")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idEmailField")
 	private WebElement emailField;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idNewPasswordField")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.RegistractionPage.CLASS_NAME, locatorKey = "idNewPasswordField")
 	private WebElement passwordField;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idCreateUserBtn")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.RegistractionPage.CLASS_NAME, locatorKey = "idCreateUserBtn")
 	private WebElement createUserBtn;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idVerifyEmailBtn")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.RegistractionPage.CLASS_NAME, locatorKey = "idVerifyEmailBtn")
 	private WebElement verifyEmailBtn;
 	
 	private String url;
@@ -97,9 +97,10 @@ public class RegistrationPage extends AndroidPage {
 		return DriverUtils.isElementDisplayed(verifyEmailBtn);
 	}
 
-	public InstructionsPage continueRegistration() throws Exception {
+	public AndroidPage continueRegistration() throws Exception {
+		//TODO : need to update this method
 		verifyEmailBtn.click();
-		return new InstructionsPage(url, path);
+		return null;
 	}
 
 }

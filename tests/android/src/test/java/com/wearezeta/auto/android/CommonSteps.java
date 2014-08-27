@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,7 +27,11 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
 public class CommonSteps {
-
+	static {
+		System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
+		System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http", "warn");
+	}
+	
 	public static final String CONNECTION_NAME = "CONNECT TO ";
 	public static final String CONNECTION_MESSAGE = "Hello!";
 	public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
@@ -86,7 +91,76 @@ public class CommonSteps {
 		}
 
 	}
+	
+	@Given("My Contact (.*) has group chat with me (.*) and his Contact (.*) with name (.*)")
+	public void GivenMyContactCreateGroupChatWithMeAndHisContact(String contact1, String me, String contact2, String chatName) throws IllegalArgumentException, UriBuilderException, IOException, JSONException, BackendRequestException, InterruptedException
+	{
+		ClientUser yourUser = null;
+		ClientUser yourContact = null;
+		ClientUser contactContact = null;
+		boolean flag1 = false;
+		boolean flag2 = false;
+		me = CommonUtils.retrieveRealUserContactPasswordValue(me);
+		contact1 = CommonUtils.retrieveRealUserContactPasswordValue(contact1);
+		contact2 = CommonUtils.retrieveRealUserContactPasswordValue(contact2);		
+		
+		for (ClientUser user : CommonUtils.yourUsers) {
+			if (user.getName().toLowerCase().equals(me.toLowerCase())) {
+				yourUser = user;
+				flag1 = true;
+			}
+			
+			if (user.getName().toLowerCase().equals(contact2.toLowerCase())) {
+				contactContact = user;
+				flag2 = true;
+			}
+			if (flag1 && flag2) {
+				break;
+			}
+		}
+		for (ClientUser user : CommonUtils.contacts) {
+			if (user.getName().toLowerCase().equals(contact1.toLowerCase())) {
+				yourContact=user;
+				break;
+			}
+		}
+		List<ClientUser> users = new LinkedList<ClientUser>();
+		users.add(yourUser);
+		users.add(contactContact);
+		BackEndREST.createGroupConveration(yourContact,users, chatName);
+	}
 
+	@Given("^User (.*) is connected with (.*)")
+	public void GivenUserIsConnectedWith(String contact1, String contact2) throws IllegalArgumentException, UriBuilderException, IOException, JSONException, BackendRequestException, InterruptedException{
+		contact1 = CommonUtils.retrieveRealUserContactPasswordValue(contact1);
+		contact2 = CommonUtils.retrieveRealUserContactPasswordValue(contact2);
+		ClientUser contactInfo1 = null;
+		ClientUser contactInfo2 = null;
+		boolean flag1 = false;
+		boolean flag2 = false;
+		List<ClientUser> newList = new ArrayList<ClientUser>();
+		newList.addAll(CommonUtils.contacts);
+		newList.addAll( CommonUtils.yourUsers);
+		
+		for (ClientUser user : newList) {
+			if (user.getName().toLowerCase().equals(contact1.toLowerCase())) {
+				contactInfo1 = user;
+				flag1 = true;
+			}
+			if (user.getName().toLowerCase().equals(contact2.toLowerCase())) {
+				contactInfo2 = user;
+				flag2 = true;
+			}
+			if (flag1 && flag2) {
+				break;
+			}
+		}
+		
+		contactInfo1 = BackEndREST.loginByUser(contactInfo1);
+		BackEndREST.autoTestSendRequest(contactInfo1,contactInfo2);
+		BackEndREST.autoTestAcceptAllRequest(contactInfo2);	
+	}
+	
 	@Given("^I have group chat with name (.*) with (.*) and (.*)$")
 	public void GivenIHaveGroupChatWith(String chatName, String contact1,
 			String contact2) throws Throwable {
@@ -122,6 +196,32 @@ public class CommonSteps {
 			}
 		}
 		BackEndREST.ignoreAllConnections(yourСontact);
+	}
+	
+	@When("^I minimize the application$")
+	public void IMimizeApllication() throws InterruptedException {
+		if (PagesCollection.loginPage != null) {
+			PagesCollection.loginPage.minimizeApplication();
+		}
+	}
+	
+	@When("^I restore the application$")
+	public void IRestoreApllication() {
+		if (PagesCollection.loginPage != null) {
+			PagesCollection.loginPage.restoreApplication();
+		}
+	}
+		
+	@When("^(.*) accept all requests$")
+	public void AcceptConnectRequest(String contact) throws IllegalArgumentException, UriBuilderException, IOException, JSONException, BackendRequestException{
+		ClientUser yourСontact = null;
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		for (ClientUser user : CommonUtils.yourUsers) {
+			if (user.getName().toLowerCase().equals(contact.toLowerCase())) {
+				yourСontact = user;
+			}
+		}
+		BackEndREST.acceptAllConnections(yourСontact);
 	}
 	
 	@When("^I press back button$")

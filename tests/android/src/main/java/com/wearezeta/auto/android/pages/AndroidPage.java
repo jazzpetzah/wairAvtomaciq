@@ -7,6 +7,7 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.FindBy;
@@ -23,11 +24,17 @@ public abstract class AndroidPage extends BasePage {
 	
 	private DesiredCapabilities capabilities = new DesiredCapabilities();
 	
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameLoginPage)
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameLoginPage)
 	private WebElement content;
 	
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classListView)
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classListView)
 	private WebElement container;
+	
+	@FindBy(how = How.XPATH, using = AndroidLocators.CommonLocators.xpathImagesFrameLayout)
+	private List<WebElement> frameLayouts;
+	
+	@FindBy(how = How.XPATH, using = AndroidLocators.CommonLocators.xpathImage)
+	private List<WebElement> image;
 	
 	private String url;
 	
@@ -67,10 +74,45 @@ public abstract class AndroidPage extends BasePage {
         super.InitConnection(url, capabilities);
 	}
 	
+	public void selectPhoto(){
+		refreshUITree();
+		try{
+			frameLayouts.get(0).click();
+			return;
+		}
+		catch(Exception ex)
+		{
+
+		}
+		try{
+			image.get(0).click();
+			return;
+		}
+		catch(Exception ex){
+		}
+	}
+	
 	public AndroidPage navigateBack() throws Exception{
 		driver.navigate().back();
 		return null;
 	}
+	
+	public void minimizeApplication () throws InterruptedException {
+
+		driver.sendKeyEvent(3);
+		Thread.sleep(1000);
+	}
+	
+	public void restoreApplication() {
+		
+		try {
+			driver.runAppInBackground(10);
+		}
+		catch (WebDriverException ex) {
+			//do nothing, sometimes after restoring the app we have this exception, Appium bug
+		}
+	}
+	
 	@Override
 	public void Close() throws IOException {
 		try {

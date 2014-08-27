@@ -36,6 +36,18 @@ public class UserProfilePage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idSelfProfileSettingsButton)
 	private WebElement selfProfileViewSettingsButton;
 	
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathRemoveUserPictureCheckBox)
+	private WebElement removeUserPictureCheckBox;
+	
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathRemoveUserPictureConfirmation)
+	private WebElement removeUserPictureConfirmationButton;
+	
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathRemoveUserPictureCancel)
+	private WebElement removeUserPictureCancelButton;
+	
+	@FindBy(how = How.ID, using = OSXLocators.idSelfProfileEmailTextField)
+	private WebElement selfProfileEmailTextField;
+	
 	public UserProfilePage(String URL, String path) throws MalformedURLException {
 		super(URL, path);
 	}
@@ -63,5 +75,29 @@ public class UserProfilePage extends OSXPage {
 		confirmPictureChoiceButton.click();
 		pictureSettingsCloseButton.click();
 		DriverUtils.waitUntilElementDissapear(driver, By.xpath(OSXLocators.xpathPictureFromImageFile));
+	}
+
+	public void chooseToRemovePhoto() {
+		removeUserPictureCheckBox.click();
+	}
+
+	public void confirmPhotoRemoving() {
+		removeUserPictureConfirmationButton.click();
+		pictureSettingsCloseButton.click();
+		DriverUtils.waitUntilElementDissapear(driver, By.xpath(OSXLocators.xpathPictureFromImageFile));
+	}
+
+	public void cancelPhotoRemoving() {
+		removeUserPictureCancelButton.click();
+	}
+	
+	public boolean selfProfileEmailEquals(String email) {
+		return email.equals(selfProfileEmailTextField.getText());
+	}
+	
+	public boolean selfProfileNameEquals(String name) {
+		String xpath = String.format(OSXLocators.xpathFormatSelfProfileNameTextField, name);
+		WebElement element = driver.findElement(By.xpath(xpath));
+		return name.equals(element.getText());
 	}
 }

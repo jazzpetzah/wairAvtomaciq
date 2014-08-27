@@ -1,5 +1,7 @@
 package com.wearezeta.auto.android.pages;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -8,6 +10,8 @@ import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
+import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
@@ -15,57 +19,59 @@ import com.wearezeta.auto.common.locators.ZetaFindBy;
 public class DialogPage extends AndroidPage{
 
 	
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classEditText)
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classEditText)
 	private WebElement cursorInput;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idMessage")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMessage")
 	private List<WebElement> messagesList;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idKnockMessage")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idKnockMessage")
 	private WebElement knockMessages;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idDialogTakePhotoButton")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogTakePhotoButton")
 	private WebElement takePhotoButton;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idDialogChangeCameraButton")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogChangeCameraButton")
 	private WebElement changeCameraButton;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConfirmButton")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConfirmButton")
 	private WebElement okButton;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idDialogImages")
-	private WebElement imagesList;
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogImages")
+	private WebElement image;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConnectRequestDialog")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConnectRequestDialog")
 	private WebElement connectRequestDialog;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idMessage")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMessage")
 	private WebElement conversationMessage;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConnectRequestMessage")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConnectRequestMessage")
 	private WebElement connectRequestMessage;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConnectRequestConnectTo")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConnectRequestConnectTo")
 	private WebElement connectRequestConnectTo;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idDialogPageBottomFrameLayout")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogPageBottomFrameLayout")
 	private WebElement dialogPageBottomFrameLayout;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idBackgroundOverlay")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idBackgroundOverlay")
 	private WebElement backgroundOverlay;
 	
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classListView)
-	private WebElement container;
-	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConnectRequestChatLabel")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConnectRequestChatLabel")
 	private WebElement connectRequestChatLabel;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConnectRequestChatUserName")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConnectRequestChatUserName")
 	private WebElement connectRequestChatUserName;
+	
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idGalleryBtn")
+	private WebElement galleryBtn;
 	
 	private String url;
 	private String path;
 	private int initMessageCount;
+	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.95;
+	private final String DIALOG_IMAGE = "android_dialog_sendpicture_result.png";
 	
 	public DialogPage(String URL, String path) throws Exception {
 		super(URL, path);
@@ -97,7 +103,7 @@ public class DialogPage extends AndroidPage{
 	
 	public void tapAddPictureBtn(int index)
 	{
-		WebElement el = dialogPageBottomFrameLayout.findElement(By.className(AndroidLocators.classNameTextView));
+		WebElement el = dialogPageBottomFrameLayout.findElement(By.className(AndroidLocators.CommonLocators.classNameTextView));
 		el.click();
 	}
 	
@@ -162,7 +168,7 @@ public class DialogPage extends AndroidPage{
 	public boolean isImageExists()
 	{
 		refreshUITree();//TODO workaround
-		return DriverUtils.waitUntilElementAppears(driver,By.id(AndroidLocators.idDialogImages));
+		return DriverUtils.waitUntilElementAppears(driver,By.id(AndroidLocators.DialogPage.idDialogImages));
 	}
 
 	public void confirm() {
@@ -208,6 +214,25 @@ public class DialogPage extends AndroidPage{
 	public ContactListPage navigateBack() throws Exception{
 		driver.navigate().back();
 		return new ContactListPage(url, path);
+	}
+
+	public void openGallery() {
+		refreshUITree();
+		galleryBtn.click();
+		
+	}
+	
+	public boolean dialogImageCompare() throws IOException
+	{
+		boolean flag = false;
+		BufferedImage dialogImage = getElementScreenshot(image);
+		BufferedImage realImage =  ImageUtil.readImageFromFile(CommonUtils.getImagesPath(CommonUtils.class) + DIALOG_IMAGE);
+		double score = ImageUtil.getOverlapScore(realImage, dialogImage);
+		if (score >= MIN_ACCEPTABLE_IMAGE_VALUE) {
+			flag = true;
+		}
+		
+		return flag;
 	}
 	
 }

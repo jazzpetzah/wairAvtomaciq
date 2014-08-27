@@ -5,7 +5,6 @@ import java.util.*;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.*;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -14,28 +13,28 @@ import com.wearezeta.auto.common.locators.ZetaFindBy;
 
 public class ContactListPage extends AndroidPage {
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idContactListNames")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idContactListNames")
 	private List<WebElement> contactListNames;
 
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classEditText)
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classEditText)
 	private WebElement cursorInput;
 
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameFrameLayout)
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameFrameLayout)
 	private List<WebElement> frameLayout;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idSelfUserName")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idSelfUserName")
 	private List<WebElement> selfUserName;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idContactListMute")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idContactListMute")
 	private WebElement muteBtn;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConfirmCancelButton")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConfirmCancelButton")
 	private List<WebElement> laterBtn;
 	
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameLoginPage)
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameLoginPage)
 	private WebElement mainControl;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConnectToHeader")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectToHeader")
 	private List<WebElement> connectToHeader;
 	
 
@@ -52,6 +51,7 @@ public class ContactListPage extends AndroidPage {
 		AndroidPage page = null;
 		refreshUITree();// TODO: workaround
 		findInContactList(name, 5).click();
+		DriverUtils.setImplicitWaitValue(driver, 5);
 		if(connectToHeader.size() > 0 && connectToHeader.get(0).isDisplayed()){
 			page = new ConnectToPage(url, path);
 		}
@@ -59,21 +59,20 @@ public class ContactListPage extends AndroidPage {
 			page = new PersonalInfoPage(url, path);
 		} else {
 			page = new DialogPage(url, path);
-			wait.until(ExpectedConditions.visibilityOf(cursorInput));
 			PagesCollection.groupChatPage = new GroupChatPage(url, path);
 		}
+		DriverUtils.setDefaultImplicitWait(driver);
 		return page;
 	}
 
 	private WebElement findInContactList(String name, int cyclesNumber) {
 		WebElement contact = null;
 		List<WebElement> contactsList = driver.findElements(By.xpath(String
-				.format(AndroidLocators.xpathContacts, name)));
+				.format(AndroidLocators.ContactListPage.xpathContacts, name)));
 		if (contactsList.size() > 0) {
 			contact = contactsList.get(0);
 		} else {
 			if (cyclesNumber > 0) {
-				System.out.println(cyclesNumber);
 				cyclesNumber--;
 				DriverUtils.swipeUp(driver, mainControl, 500);
 				contact = findInContactList(name, cyclesNumber);
@@ -86,7 +85,7 @@ public class ContactListPage extends AndroidPage {
 			throws IOException {
 		findInContactList(contact, 5);
 		WebElement el = driver.findElementByXPath(String.format(
-				AndroidLocators.xpathContactFrame, contact));
+				AndroidLocators.ContactListPage.xpathContactFrame, contact));
 		DriverUtils.swipeRight(driver, el, time);
 	}
 
@@ -117,12 +116,12 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	public ContactListPage pressLaterButton() {
-		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.idProfileOptionsButton));
+		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.PersonalInfoPage.idProfileOptionsButton));
 		
 		if(laterBtn.size()>0){
 			laterBtn.get(0).click();
 		}
-		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.idSimpleDialogPageText));
+		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.ContactListPage.idSimpleDialogPageText));
 		return this;
 	}
 	

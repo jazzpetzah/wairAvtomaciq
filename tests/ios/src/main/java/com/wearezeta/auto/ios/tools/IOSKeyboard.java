@@ -3,7 +3,6 @@ package com.wearezeta.auto.ios.tools;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaDriver;
 
 public class IOSKeyboard {

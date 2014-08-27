@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
@@ -16,13 +15,10 @@ public class GroupChatPage  extends AndroidPage{
 
 	public static final String I_LEFT_CHAT_MESSAGE = "YOU HAVE LEFT";
 	
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classListView)
-	private WebElement container;
-	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idMessage")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMessage")
 	private WebElement message;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idMessage")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMessage")
 	private List<WebElement> messages;
 	
 	private String url;
@@ -70,7 +66,7 @@ public class GroupChatPage  extends AndroidPage{
 	}
 
 	public boolean isGroupChatDialogVisible(){
-		return DriverUtils.waitUntilElementAppears(driver, By.id(AndroidLocators.idMessage));
+		return DriverUtils.waitUntilElementAppears(driver, By.id(AndroidLocators.DialogPage.idMessage));
 	}
 
 	public boolean isGroupChatDialogContainsNames(String name1, String name2)

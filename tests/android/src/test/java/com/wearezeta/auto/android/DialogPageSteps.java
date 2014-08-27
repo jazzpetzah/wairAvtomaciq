@@ -1,5 +1,7 @@
 package com.wearezeta.auto.android;
 
+import java.io.IOException;
+
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
@@ -9,6 +11,11 @@ import cucumber.api.java.en.*;
 
 public class DialogPageSteps{
 
+	private static final String ANDROID_LONG_MESSAGE = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
+			+ "Maecenas sed lorem dignissim lacus tincidunt scelerisque nec sed sem. Nunc lacinia non tortor a fringilla. "
+			+ "Fusce cursus neque at posuere viverra. Duis ultricies ipsum ac leo mattis, a aliquet neque consequat. "
+			+ "Vestibulum ut eros eu risus mattis iaculis quis ac eros. Nam sit amet venenatis felis. "
+			+ "Vestibulum blandit nisi felis, id hendrerit quam viverra at. Curabitur nec facilisis felis.";
 	private String message; 
 	
 	@When("^I see dialog page$")
@@ -37,13 +44,13 @@ public class DialogPageSteps{
 	
 	@When("^I type long message and send it$")
 	public void WhenITypeLongMessageAndSendIt() throws Throwable {
-		message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sed lorem dignissim lacus tincidunt scelerisque nec sed sem. Nunc lacinia non tortor a fringilla. Fusce cursus neque at posuere viverra. Duis ultricies ipsum ac leo mattis, a aliquet neque consequat. Vestibulum ut eros eu risus mattis iaculis quis ac eros. Nam sit amet venenatis felis. Vestibulum blandit nisi felis, id hendrerit quam viverra at. Curabitur nec facilisis felis.";
+		message = ANDROID_LONG_MESSAGE;
 		PagesCollection.dialogPage.typeMessage(message);
 	}
 	
 	@When("^I type Upper/Lower case message and send it$")
 	public void WhenITypeUpperLowerCaseAndSendIt() throws Throwable {
-		message = "Lorem ipsum dolor sit amet";
+		message = CommonUtils.generateRandomString(5).toLowerCase() + " " + CommonUtils.generateRandomString(5).toUpperCase();
 		PagesCollection.dialogPage.typeMessage(message);
 	}
 	
@@ -74,9 +81,15 @@ public class DialogPageSteps{
 		  case "confirm":
 			  PagesCollection.dialogPage.confirm();
 			  break;
+		  case  "gallery":
+			  PagesCollection.dialogPage.openGallery();
 		  }
 	}
 	
+	@When("^I select picture for dialog$")
+	public void WhenISelectPicture() throws Throwable {
+		PagesCollection.dialogPage.selectPhoto();
+	}
 	@Then("^I see Hello-Hey message (.*) in the dialog$")
 	public void ThenISeeHelloHeyMessageInTheDialog(String message) throws Throwable {
 		Assert.assertEquals(message.toUpperCase(), PagesCollection.dialogPage.getKnockMessageText());
@@ -124,10 +137,20 @@ public class DialogPageSteps{
 	}
 	
 	@Then("^I see Connect to (.*) Dialog page$")
-	public void ThenIseeConnectToDialogPage(String contact)
-	{
+	public void ThenIseeConnectToDialogPage(String contact) {
+		if(PagesCollection.dialogPage == null)
+		{
+			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
+		}
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 		Assert.assertEquals("connected to", PagesCollection.dialogPage.getConnectRequestChatLabel());
 		Assert.assertEquals(contact.toLowerCase(), PagesCollection.dialogPage.getConnectRequestChatUserName());
+	}
+	
+	
+
+	@Then("I see uploaded picture")
+	public void ThenISeeChangedUserPicture() throws IOException {
+		Assert.assertTrue(PagesCollection.dialogPage.dialogImageCompare());
 	}
 }

@@ -389,6 +389,11 @@ public class RegistrationPage extends IOSPage {
 		backToWelcomeButton.click();
 	}
 
+	public Boolean isBackButtonVisible() {
+
+		return (ExpectedConditions.visibilityOf(backToWelcomeButton) != null);
+	}
+
 	public void tapForwardButton() {
 		forwardWelcomeButton.click();
 	}

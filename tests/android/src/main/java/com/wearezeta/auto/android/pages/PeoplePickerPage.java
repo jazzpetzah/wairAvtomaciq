@@ -16,6 +16,33 @@ import com.wearezeta.auto.common.locators.ZetaFindBy;
 
 public class PeoplePickerPage extends AndroidPage {
 
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerSearchUsers")
+	private List<WebElement> pickerSearchUsers;
+
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPeoplePickerClearbtn")
+	private WebElement pickerClearBtn;
+
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerRows")
+	private List<WebElement> pickerSearchRows;
+
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerUsersUnselected")
+	private List<WebElement> pickerUsersUnselected;
+
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerSearch")
+	private WebElement pickerSearch;
+
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerGrid")
+	private WebElement pickerGrid;
+
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerBtnDone")
+	private WebElement addToConversationsButton;
+
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idCreateConversationIcon")
+	private WebElement createConversation;
+	
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectToHeader")
+	private List<WebElement> connectToHeader;
+	
 	private String url;
 	private String path;
 
@@ -25,59 +52,9 @@ public class PeoplePickerPage extends AndroidPage {
 		this.url = URL;
 		this.path = path;
 	}
-
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameLinearLayout)
-	private List<WebElement> linearLayout;
-
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classNameTextView)
-	private List<WebElement> textView;
-
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.classEditText)
-	private WebElement editText;
-	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idPickerSearchUsers")
-	private List<WebElement> pickerSearchUsers;
-
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idPeoplePickerClearbtn")
-	private WebElement pickerClearBtn;
-
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idPickerRows")
-	private List<WebElement> pickerSearchRows;
-
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idPickerUsersUnselected")
-	private List<WebElement> pickerUsersUnselected;
-
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idPickerSearch")
-	private WebElement pickerSearch;
-
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idPickerGrid")
-	private WebElement pickerGrid;
-
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idPickerBtnDone")
-	private WebElement addToConversationsButton;
-
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idCreateConversationIcon")
-	private WebElement createConversation;
-
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idCreateConversationTitle")
-	private WebElement createConversationTitle;
-	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConnectionRequiesMessage")
-	private WebElement connectionRequestMessage;
-	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idSendConnectionRequestButton")
-	private WebElement sendConnectionRequestButton;
-	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConnectToHeader")
-	private List<WebElement> connectToHeader;
-	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CLASS_NAME, locatorKey = "idConnectToCharCounter")
-	private WebElement connectCharCounter;
-
 	
 	
-	public void tapPeopleSearch()
-	{
+	public void tapPeopleSearch() {
 		pickerSearch.click();
 	}
 
@@ -89,38 +66,34 @@ public class PeoplePickerPage extends AndroidPage {
 	
 	public void addTextToPeopleSearch(String contactName) throws InterruptedException
 	{
-		for(char ch : contactName.toCharArray()){
+		for(char ch : contactName.toCharArray()) {
 			int keyCode = KeyboardMapper.getPrimaryKeyCode(ch);
 			driver.sendKeyEvent(keyCode);
 		}
 		
 	}
-	public AndroidPage selectContact(String contactName) throws Exception
-	{
+	public AndroidPage selectContact(String contactName) throws Exception {
 		AndroidPage page = null;
-		WebElement el = driver.findElementByXPath(String.format(AndroidLocators.xpathPeoplePickerContact,contactName));
+		WebElement el = driver.findElementByXPath(String.format(AndroidLocators.PeoplePickerPage.xpathPeoplePickerContact,contactName));
 		el.click();
-		if(connectToHeader.size() > 0 && connectToHeader.get(0).isDisplayed()){
+		if(connectToHeader.size() > 0 && connectToHeader.get(0).isDisplayed()) {
 			page = new ConnectToPage(url, path);
 		}
-		else if(isVisible(addToConversationsButton))
-		{
+		else if(isVisible(addToConversationsButton)) {
 			page = this;
 		}
-		else{
+		else {
 			page = new DialogPage(url, path);
 		}
 		return page;
 	}
 
-	public AndroidPage selectGroup(String contactName) throws Exception
-	{
+	public AndroidPage selectGroup(String contactName) throws Exception {
 		AndroidPage page = null;
-		WebElement el = driver.findElementByXPath(String.format(AndroidLocators.xpathPeoplePickerGroup,contactName));
+		WebElement el = driver.findElementByXPath(String.format(AndroidLocators.PeoplePickerPage.xpathPeoplePickerGroup,contactName));
 		el.click();
 	
-		if(isVisible(addToConversationsButton))
-		{
+		if(isVisible(addToConversationsButton)) {
 			page = this;
 		}
 		else{
@@ -139,17 +112,15 @@ public class PeoplePickerPage extends AndroidPage {
 
 	public boolean isPeoplePickerPageVisible() throws InterruptedException, IOException {
 		refreshUITree();//TODO workaround
-		//return DriverUtils.waitUntilElementAppears(driver,By.className(AndroidLocators.classEditText));
 		wait.until(ExpectedConditions.elementToBeClickable(pickerSearch));
 		return pickerSearch.isEnabled();
 	}
 
 
 	public void waitUserPickerFindUser(String contactName){
-		for(int i= 0; i<5; i++){
+		for(int i = 0; i < 5; i++){
 			List<WebElement> elements = pickerSearchUsers;
-			for(WebElement element : elements)
-			{
+			for(WebElement element : elements) {
 				try{
 					if(element.getText().toLowerCase().equals(contactName.toLowerCase())){
 						return;
@@ -170,9 +141,8 @@ public class PeoplePickerPage extends AndroidPage {
 		addToConversationsButton.click();
 		return new GroupChatPage(url, path);
 	}
-
-	private boolean isVisible(WebElement element)
-	{
+	//TODO: move this to some base page
+	private boolean isVisible(WebElement element) {
 		boolean value = false;
 		try{
 			element.isDisplayed();
@@ -188,6 +158,7 @@ public class PeoplePickerPage extends AndroidPage {
 
 	public List<AndroidPage> tapCreateConversation() throws Exception {
 		refreshUITree();
+		wait.until(ExpectedConditions.visibilityOf(createConversation));
 		DriverUtils.androidMultiTap(driver, createConversation,1,0.3);
 		List<AndroidPage>  pages = new LinkedList<AndroidPage>();
 		pages.add(new DialogPage(url, path));
@@ -200,44 +171,22 @@ public class PeoplePickerPage extends AndroidPage {
 		return new ContactListPage(url, path);
 	}
 
-	public void tapEditConnectionRequies() {
-		refreshUITree();
-		connectionRequestMessage.click();
-	}
 
-	public void typeConnectionRequies(String message) {
-		connectionRequestMessage.sendKeys(message);
-		
-	}
-
-	public ContactListPage pressConnectButton() throws Exception {
-		sendConnectionRequestButton.click();
-		return new ContactListPage(url, path);
-	}
 
 	public boolean userIsVisible(String contact) {
-		return isVisible(driver.findElement(By.xpath(String.format(AndroidLocators.xpathPeoplePickerContact, contact))));	
+		return isVisible(driver.findElement(By.xpath(String.format(AndroidLocators.PeoplePickerPage.xpathPeoplePickerContact, contact))));	
 	}
 	
 	public boolean groupIsVisible(String contact) {
-		return isVisible(driver.findElement(By.xpath(String.format(AndroidLocators.xpathPeoplePickerGroup, contact))));	
+		return isVisible(driver.findElement(By.xpath(String.format(AndroidLocators.PeoplePickerPage.xpathPeoplePickerGroup, contact))));	
 	}
 
 	public PeoplePickerPage selectContactByLongTap(String contact) {
 		refreshUITree();
-		WebElement el = driver.findElementByXPath(String.format(AndroidLocators.xpathPeoplePickerContact,contact));
+		WebElement el = driver.findElementByXPath(String.format(AndroidLocators.PeoplePickerPage.xpathPeoplePickerContact,contact));
 		DriverUtils.androidLongClick(driver, el);
 		return this;
 		
 	}
 	
-	public boolean getConnectButtonState() {
-		String state =  sendConnectionRequestButton.getAttribute("enabled");
-		return Boolean.parseBoolean(state);
-	}
-
-	public int getCharCounterValue() {
-		return Integer.parseInt(connectCharCounter.getText());
-	}
-
 }

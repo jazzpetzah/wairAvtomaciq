@@ -13,6 +13,8 @@ import cucumber.api.java.Before;
 public class CommonSteps {
 	static {
 		System.setProperty("java.awt.headless", "false");
+		System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
+		System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http", "warn");
 	}
 	
 	public static PagesCollection senderPages;
