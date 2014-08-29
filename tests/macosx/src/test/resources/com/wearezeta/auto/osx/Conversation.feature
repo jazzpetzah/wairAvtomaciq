@@ -343,7 +343,7 @@ Feature: Conversation
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap SoundCloud link
     Then I see the embedded media is playing
-    #And I scroll media out of sight till media bar appears
+    And I scroll media out of sight till media bar appears
     And I wait till playback finishes
     Then I see media bar disappears
 

@@ -255,9 +255,7 @@ public class ConversationPage extends OSXPage {
 		return el.getAttribute("AXValue");
 	}
 	
-	public void waitUntilButtonHasState(String state) throws InterruptedException{
-		String currentState = getSoundCloudButtonState();
-		String wantedState = state;
-		
+	public boolean isMediaBarVisible(){
+		return mediabarBarTitle.isDisplayed();
 	}
 }

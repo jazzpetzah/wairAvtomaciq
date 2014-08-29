@@ -299,22 +299,24 @@ public class ConversationPageSteps {
 	 
 	 @When("^I wait till playback finishes$")
 	 public void WhenIWaitTillPlaybackFinishes() throws InterruptedException{
+		Thread.sleep(1000);
 	    String currentState = CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState();
-	    Thread.sleep(1000);
 	    String wantedState = OSXLocators.SOUNDCLOUD_BUTTON_STATE_PLAY;
-	    while(currentState != wantedState){
+	    while(!currentState.equals(wantedState)){
 	    	Assert.assertEquals("Pause", currentState);
-	    	currentState = CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState();
 	    	Thread.sleep(1000);
+	    	currentState = CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState();
 	    }
 	    Thread.sleep(1000);
 	    currentState = CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState();
-	    Thread.sleep(1000);
 	    Assert.assertEquals("Play", currentState); 
 	 }
 
 	 @Then("^I see media bar disappears$")
 	 public void ThenISeeMediaBarDisappears(){
+		 
+		 boolean mediaBarIsNotShown = CommonSteps.senderPages.getConversationPage().isMediaBarVisible();
+		 Assert.assertTrue("Media bar is shown", mediaBarIsNotShown);
 	   
 	 }
 }
