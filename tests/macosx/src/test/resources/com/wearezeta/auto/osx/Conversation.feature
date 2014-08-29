@@ -370,3 +370,23 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     | SoundCloudLink                              		   |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/20sekunder/isakkkkkk-pcb-sesh-1 |
   
+  @staging @id378    
+  Scenario Outline: Media bar disappears when playing media is back in view
+  	Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with name <Name>
+    And I open conversation with <Contact>
+    And I post messages and media link <SoundCloudLink>
+    Then I see media link <SoundCloudLink> and media in dialog
+    And I tap SoundCloud link
+    Then I see the embedded media is playing
+    And I scroll media out of sight till media bar appears
+    And I press the media bar title
+    Then I see media link <SoundCloudLink> and media in dialog
+    Then I see the embedded media is playing
+    Then I see media bar disappears
+    
+    Examples: 
+      | Login   | Password    | Name    | Contact     | SoundCloudLink                              |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/edherbst/throwaway-3 |
+    
+  
