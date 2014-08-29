@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -20,6 +21,7 @@ import com.google.common.base.Function;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
+import com.wearezeta.auto.osx.steps.CommonSteps;
 import com.wearezeta.auto.osx.util.NSPoint;
 
 public class ConversationPage extends OSXPage {
@@ -253,4 +255,9 @@ public class ConversationPage extends OSXPage {
 		return el.getAttribute("AXValue");
 	}
 	
+	public void waitUntilButtonHasState(String state) throws InterruptedException{
+		String currentState = getSoundCloudButtonState();
+		String wantedState = state;
+		
+	}
 }
