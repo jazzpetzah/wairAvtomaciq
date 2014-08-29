@@ -12,5 +12,6 @@
 		<module>android</module>
 		<module>audio</module>
 		<module>macosx</module>
+		<module>cmdclient</module>
     </modules>
 </project>
