@@ -6,12 +6,14 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
@@ -19,6 +21,7 @@ import com.google.common.base.Function;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
+import com.wearezeta.auto.osx.steps.CommonSteps;
 import com.wearezeta.auto.osx.util.NSPoint;
 
 public class ConversationPage extends OSXPage {
@@ -252,5 +255,7 @@ public class ConversationPage extends OSXPage {
 		return el.getAttribute("AXValue");
 	}
 	
-
+	public boolean isMediaBarVisible(){
+		return mediabarBarTitle.isDisplayed();
+	}
 }
