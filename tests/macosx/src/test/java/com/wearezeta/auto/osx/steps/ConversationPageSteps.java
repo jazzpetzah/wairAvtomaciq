@@ -286,6 +286,11 @@ public class ConversationPageSteps {
 		 Assert.assertEquals(expectedState, CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState());
 	 }
 	 
+	 @When("^I press the media bar title$")
+	 public void WhenIPressTheMediaBarTitle(){
+		 CommonSteps.senderPages.getConversationPage().pressMediaTitle();
+	 }
+	 
 	 @Then("^I see conversation name (.*) in conversation$")
 	 public void ISeeConversationNameInConversation(String name) {
 		 if (name.equals(OSXLocators.RANDOM_KEYWORD)) {
