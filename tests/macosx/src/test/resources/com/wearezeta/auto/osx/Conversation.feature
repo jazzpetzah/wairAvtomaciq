@@ -353,7 +353,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    | SoundCloudLink                              |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | https://soundcloud.com/edherbst/throwaway-3 |
       
-  @torun @staging @id381
+  @staging @id381
   Scenario Outline: The media bar disappears after playback finishes
   	Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
