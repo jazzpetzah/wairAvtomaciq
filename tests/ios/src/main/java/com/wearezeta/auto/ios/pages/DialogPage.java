@@ -94,6 +94,10 @@ public class DialogPage extends IOSPage{
 		wait.until(ExpectedConditions.visibilityOf(conversationInput));
 	}
 	
+	public void waitForYouAddedCellVisible(){
+		wait.until(ExpectedConditions.visibilityOf(youAddedCell.get(0)));
+	}
+	
 	public void tapOnCursorInput(){
 		conversationInput.click();
 	}
