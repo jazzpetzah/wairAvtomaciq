@@ -65,7 +65,7 @@ public class CreateZetaUser {
 		log.debug("Activating user " + mail + ":" + password + " (with timeout: " + timeout + ")");
 		final int ATTEMPS_NUMBER = 5;
 		for (int i = 0; i < ATTEMPS_NUMBER; i++) {
-			List<EmailHeaders> newMails = getLastMailHeaders(mail, password, 20);
+			List<EmailHeaders> newMails = getLastMailHeaders(mail, password, 15);
 			for (EmailHeaders newMailContent : newMails) {
 				if (newMailContent.getLastUserEmail()
 						.equals(registeredUserMail)) {
