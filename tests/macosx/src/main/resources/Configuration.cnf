@@ -5,3 +5,4 @@ appPath=${appPath}
 generateUsers=${generateUsers}
 driverTimeoutSeconds=${driverTimeoutSeconds}
 pictureResultsPath=${pictureResultsPath}
+defaultEmail=${defaultEmail}
