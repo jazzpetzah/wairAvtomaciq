@@ -18,4 +18,5 @@ public class PagesCollection extends AbstractPagesCollection{
 	 public static CameraRollPage cameraRollPage = null;
 	 public static VideoPlayerPage videoPlayerPage = null;
 	 public static ImageFullScreenPage imageFullScreenPage = null;
+	 public static PendingRequestsPage pendingRequestsPage = null;
 }

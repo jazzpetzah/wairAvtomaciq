@@ -7,6 +7,8 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.GroupChatInfoPage;
+import com.wearezeta.auto.ios.pages.GroupChatPage;
+import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 
 import cucumber.api.java.en.Then;
@@ -57,6 +59,27 @@ public class GroupChatPageSteps {
 		user = CommonUtils.retrieveRealUserContactPasswordValue(user);
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 		Assert.assertTrue(PagesCollection.groupChatPage.isUserAddedContactVisible(user,contact));
+	}
+	
+	@When("I swipe down on group chat page")
+	public void ISwipeDownOnGroupChat() throws Throwable{
+		if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true){
+			PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.groupChatPage.swipeDown(500);
+		}
+		else{
+			PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.groupChatPage.swipeDownSimulator();
+		}
+	}
+	
+	@When("I see message in group chat (.*)")
+	public void ISeeMessageInGroupChat(String message){
+		PagesCollection.groupChatPage = (GroupChatPage)PagesCollection.iOSPage;
+		Assert.assertTrue(PagesCollection.groupChatPage.isMessageShownInGroupChat(message));
+	}
+	
+	@When("I swipe up on group chat page in simulator")
+	public void ISwipeUpInGroupChatWithSimulator() throws Throwable{
+		PagesCollection.groupChatInfoPage = (GroupChatInfoPage) PagesCollection.groupChatPage.swipeUpSimulator();
 	}
 	
 }

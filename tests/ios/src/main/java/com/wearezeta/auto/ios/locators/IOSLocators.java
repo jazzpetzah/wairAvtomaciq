@@ -50,7 +50,7 @@ public final class IOSLocators {
 	
 	public static final String namePickerClearButton = "PeoplePickerClearButton";
 	
-	public static final String xpathTypeYourMessage = "//UIAApplication[1]/UIAWindow[1]/UIATextView[2]/UIAStaticText[1]";
+	public static final String xpathTypeYourMessage = "//UIAApplication[1]/UIAWindow[1]/UIATextView[1]";
 	
 	public static final String nameSendConnectButton = "SEND";
 	
@@ -218,7 +218,7 @@ public final class IOSLocators {
 	
 	public static final String nameRegistrationCameraButton = "CameraButton";
 	
-	public static final String xpathConnectionMessageInput = "//UIAApplication[1]/UIAWindow[1]/UIATextView[2]";
+	public static final String xpathConnectionMessageInput = "//UIAApplication[1]/UIAWindow[1]/UIATextView[1]";
 	
 	public static String CONNECT_TO_MESSAGE = "Type your first message to";	
 	
@@ -300,7 +300,7 @@ public final class IOSLocators {
 	
 	
 	////////////////////////////
-	//Editing menu
+	//Editing menu (right click)
 	////////////////////////////
 
 	public static final String nameEditingItemSelect = "Select";
@@ -312,5 +312,30 @@ public final class IOSLocators {
 	public static final String nameEditingItemCut = "Cut";
 	
 	public static final String nameEditingItemPaste = "Paste";
+	
+	
+	///////////////////////////
+	//Group chat page locators
+	///////////////////////////
+	public static final String nameAddPeopleDialogHeader = "Add people and share history?";
+	public static final String nameAddPeopleCancelButton = "CANCEL";
+	public static final String nameAddPeopleContinueButton = "CONTINUE";
+	
+	
+	////////////////////////////
+	//Contact list locator
+	////////////////////////////
+	
+	public static final String namePendingRequest = "One person waiting";
+	
+	////////////////////////////////
+	//Pending requests page locators
+	//////////////////////////////////
+	
+	public static final String namePendingRequestIgnoreButton = "IGNORE";
+	public static final String namePendingRequestConnectButton = "CONNECT";
+	
+	
+	
 }
 

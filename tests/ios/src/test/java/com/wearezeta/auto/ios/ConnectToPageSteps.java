@@ -18,23 +18,20 @@ public class ConnectToPageSteps {
 
 	@When("^I see connect to (.*) dialog$")
 	public void WhenISeeConnectToUserDialog(String contact) throws Throwable {
-
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
-		Assert.assertTrue("Connect dialog is not visible",
-				PagesCollection.connectToPage.waitForConnectDialog());
-		Assert.assertTrue(PagesCollection.connectToPage
-				.getConnectToUserLabelValue().contains(
-						IOSLocators.CONNECT_TO_MESSAGE));
+		PagesCollection.connectToPage = (ConnectToPage) PagesCollection.iOSPage;
+		Assert.assertTrue(PagesCollection.connectToPage.getConnectToUserLabelValue().contains(IOSLocators.CONNECT_TO_MESSAGE));
 	}
 
 	@When("^I input message in connect to dialog$")
-	public void WhenIInputMessageInConnectToDialog() throws Throwable {
-		PagesCollection.contactListPage = PagesCollection.connectToPage
-				.fillTextInConnectDialog();
-
-		// TODO: workaround, should return to Contact list page automatically
-		PeoplePickerPageSteps pick = new PeoplePickerPageSteps();
-		pick.WhenIClickClearButton();
+	public void WhenIInputMessageInConnectToDialog() {
+		PagesCollection.connectToPage = (ConnectToPage) PagesCollection.iOSPage;
+		PagesCollection.connectToPage.fillTextInConnectDialog();
+	}
+	
+	@When("I click Send button on connect to dialog")
+	public void IClickSendButtonConnectDialog() throws Throwable{
+		PagesCollection.peoplePickerPage = PagesCollection.connectToPage.clickSendButton();
 	}
 
 	@When("^I input message in connect to dialog and click Send button$")

@@ -83,8 +83,8 @@ public class PeoplePickerPage extends IOSPage{
 		IOSPage page = null;
 		
 		try {
-			WebElement el = driver.findElement(By.xpath(IOSLocators.xpathTypeYourMessage));
-			if( el.getText().contains(IOSLocators.CONNECT_TO_MESSAGE)) {
+			WebElement el = driver.findElement(By.name(IOSLocators.nameSendConnectButton));
+			if( el.getText()==IOSLocators.nameSendConnectButton) {
 				page = new ConnectToPage(url, path);
 			}
 			else {
@@ -116,6 +116,13 @@ public class PeoplePickerPage extends IOSPage{
 	public GroupChatPage clickOnAddToCoversationButton() throws IOException{
 		addToConversationsButton.click();
 		return new GroupChatPage(url, path);
+	}
+	
+	public GroupChatInfoPage clickOnUserToAddToExistingGroupChat(String name) throws Throwable{
+		GroupChatInfoPage page = null;
+		driver.findElement(By.name(name)).click();
+		page = new GroupChatInfoPage(url, path);
+		return page;
 	}
 		
 	@Override
