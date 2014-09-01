@@ -18,7 +18,7 @@ public final class IOSLocators {
 	
 	public static final String nameWrongCredentialsNotification = "WRONG ADDRESS OR PASSWORD. PLEASE TRY AGAIN.";
 	
-	public static final String xpathTermsPrivacyLinks = "//UIAApplication[1]/UIAWindow[1]/UIATextView[1]"; //TODO:put ID for new stable build
+	public static final String nameTermsPrivacyLinks = "TermsPrivacyTextView";
 	
 	public static final String xpathTermsPrivacyCloseButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]"; //TODO:put ID for new stable build
 	
