@@ -247,3 +247,146 @@ Feature: Conversation
     Examples: 
       | Login   | Password    | Name    | Contact     | SoundCloudLink                              |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/edherbst/throwaway-3 |
+   
+  #muted, not stable due to sync engine and bug ZOSX-931, have a look at the comments, conversation gets refreshed and that breaks the media bar   
+  @mute @staging @id380
+  Scenario Outline: Conversation scrolls back to playing media when clicked on the media bar
+  	Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with name <Name>
+    And I open conversation with <Contact>
+    And I post messages and media link <SoundCloudLink>
+    Then I see media link <SoundCloudLink> and media in dialog
+    And I tap SoundCloud link
+    Then I see the embedded media is playing
+    And I scroll media out of sight till media bar appears
+    And I press the media bar title
+    Then I see media link <SoundCloudLink> and media in dialog
+    Then I see the embedded media is playing
+  
+  	Examples: 
+      | Login   | Password    | Name    | Contact     | SoundCloudLink                              |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/edherbst/throwaway-3 |
+
+  @staging @id618
+  Scenario Outline: Verify the new conversation is created on the other end
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with name <Name>
+    And I create group chat with <Contact1> and <Contact2>
+    And I open conversation with <Contact1>, <Contact2>
+    And I see message YOU ADDED <Contact2>, <Contact1> in conversation
+    When I am signing out
+    And I Sign in using login <Contact1> and password <Password>
+    Then I see Contact list with name <Login>, <Contact2>
+    And I open conversation with <Login>, <Contact2>
+    And I see message <Login> ADDED <Contact2>, <Contact1> in conversation
+    And I am signing out
+    And I Sign in using login <Contact2> and password <Password>
+    Then I see Contact list with name <Login>, <Contact1>
+    And I open conversation with <Login>, <Contact1>
+    And I see message <Login> ADDED <Contact2>, <Contact1> in conversation
+
+    Examples: 
+      | Login   | Password    | Name    | Contact1    | Contact2    |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
+
+  @staging @id624
+  Scenario Outline: Text message sent to group chat is visible on other end
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with name <Name>
+    And I create group chat with <Contact1> and <Contact2>
+    And I open conversation with <Contact1>, <Contact2>
+    And I write random message
+    And I send message
+    And I see random message in conversation
+    When I am signing out
+    And I Sign in using login <Contact1> and password <Password>
+    And I open conversation with <Login>, <Contact2>
+    Then I see random message in conversation
+    And I am signing out
+    And I Sign in using login <Contact2> and password <Password>
+    And I open conversation with <Login>, <Contact1>
+    Then I see random message in conversation
+
+    Examples: 
+      | Login   | Password    | Name    | Contact1    | Contact2    |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
+
+  @staging @id623
+  Scenario Outline: Image sent to group chat is visible on other end
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with name <Name>
+    And I create group chat with <Contact1> and <Contact2>
+    And I open conversation with <Contact1>, <Contact2>
+    And I send picture testing.jpg
+    And I see picture in conversation
+    When I am signing out
+    And I Sign in using login <Contact1> and password <Password>
+    And I open conversation with <Login>, <Contact2>
+    Then I see picture in conversation
+    And I am signing out
+    And I Sign in using login <Contact2> and password <Password>
+    And I open conversation with <Login>, <Contact1>
+    Then I see picture in conversation
+
+    Examples: 
+      | Login   | Password    | Name    | Contact1    | Contact2    |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
+
+  @staging @id625
+  Scenario Outline: Multimedia message sent to group chat is visible on other end
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with name <Name>
+    And I create group chat with <Contact1> and <Contact2>
+    And I open conversation with <Contact1>, <Contact2>
+    When I post media link <SoundCloudLink>
+    And I see media link <SoundCloudLink> and media in dialog
+    And I am signing out
+    And I Sign in using login <Contact1> and password <Password>
+    And I open conversation with <Login>, <Contact2>
+    Then I see media link <SoundCloudLink> and media in dialog
+    And I am signing out
+    And I Sign in using login <Contact2> and password <Password>
+    And I open conversation with <Login>, <Contact1>
+    Then I see media link <SoundCloudLink> and media in dialog
+
+    Examples: 
+      | Login   | Password    | Name    | Contact1    | Contact2    | SoundCloudLink                              |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | https://soundcloud.com/edherbst/throwaway-3 |
+      
+  @staging @id381
+  Scenario Outline: The media bar disappears after playback finishes
+  	Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with name <Name>
+    And I open conversation with <Contact>
+    And I post messages and media link <SoundCloudLink>
+    Then I see media link <SoundCloudLink> and media in dialog
+    And I tap SoundCloud link
+    Then I see the embedded media is playing
+    And I scroll media out of sight till media bar appears
+    And I wait till playback finishes
+    Then I see media bar disappears
+
+    Examples: 
+      | Login   | Password    | Name    | Contact     | SoundCloudLink                              		   |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/20sekunder/isakkkkkk-pcb-sesh-1 |
+  
+  @staging @id378    
+  Scenario Outline: Media bar disappears when playing media is back in view
+  	Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with name <Name>
+    And I open conversation with <Contact>
+    And I post messages and media link <SoundCloudLink>
+    Then I see media link <SoundCloudLink> and media in dialog
+    And I tap SoundCloud link
+    Then I see the embedded media is playing
+    And I scroll media out of sight till media bar appears
+    And I press the media bar title
+    Then I see media link <SoundCloudLink> and media in dialog
+    Then I see the embedded media is playing
+    Then I see media bar disappears
+    
+    Examples: 
+      | Login   | Password    | Name    | Contact     | SoundCloudLink                              |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/edherbst/throwaway-3 |
+    
+  

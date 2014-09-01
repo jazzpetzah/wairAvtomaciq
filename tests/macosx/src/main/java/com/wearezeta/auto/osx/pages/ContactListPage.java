@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -15,10 +16,12 @@ import org.openqa.selenium.support.ui.Wait;
 
 import com.google.common.base.Function;
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.util.NSPoint;
 
 public class ContactListPage extends OSXPage {
+	private static final Logger log = ZetaLogger.getLog(ContactListPage.class.getSimpleName());
 	
 	@FindBy(how = How.ID, using = OSXLocators.idMainWindow)
 	private WebElement mainWindow;
@@ -48,6 +51,7 @@ public class ContactListPage extends OSXPage {
 	}
 	
 	public boolean isContactWithNameExists(String name) {
+		log.debug("Looking for contact with name '" + name + "'");
 		if (name.contains(",")) {
 			String[] exContacts = name.split(",");
 

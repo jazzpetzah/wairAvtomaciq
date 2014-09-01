@@ -3,9 +3,11 @@ package com.wearezeta.auto.osx.steps;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationInfoPage;
@@ -18,6 +20,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ContactListPageSteps {
+	private static final Logger log = ZetaLogger.getLog(ContactListPageSteps.class.getSimpleName());
 	
 	@Given ("I see Contact list with name (.*)")
 	public void GivenISeeContactListWithName(String name) throws IOException {
@@ -104,9 +107,8 @@ public class ContactListPageSteps {
 	}
 	
 	@When("I see connect invitation")
-	public void ISeeConnectInvitation() {
-		ContactListPage contactList = CommonSteps.senderPages.getContactListPage();
-		Assert.assertTrue("No connect requests found.", contactList.isInvitationExist());
+	public void ISeeConnectInvitation() throws IOException {
+		GivenISeeContactListWithName(OSXLocators.CONTACT_LIST_ONE_CONNECT_REQUEST);
 	}
 	
 	@When("I accept invitation")

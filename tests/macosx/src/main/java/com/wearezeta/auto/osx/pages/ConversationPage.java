@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -16,10 +17,12 @@ import org.openqa.selenium.support.ui.Wait;
 
 import com.google.common.base.Function;
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.util.NSPoint;
 
 public class ConversationPage extends OSXPage {
+	private static final Logger log = ZetaLogger.getLog(ConversationPage.class.getSimpleName());
 	
 	static final String SOUNDCLOUD_BUTTON_ATT_TITLE = "AXTitle";
 	static String SOUNDCLOUD_BUTTON_STATE;
@@ -93,6 +96,18 @@ public class ConversationPage extends OSXPage {
 				Collections.reverse(els);
 				for (WebElement el : els) {
 					if (el.getText().contains(OSXLocators.YOU_ADDED_MESSAGE)) {
+						return true;
+					}
+				}
+				Thread.sleep(1000);
+			}
+		} else if (message.contains(OSXLocators.USER_ADDED_MESSAGE_FORMAT)) {
+			for (int i = 0; i < 10; i++) {
+				List<WebElement> els = driver.findElements(By
+						.xpath(OSXLocators.xpathMessageEntry));
+				Collections.reverse(els);
+				for (WebElement el : els) {
+					if (el.getText().contains(OSXLocators.USER_ADDED_MESSAGE_FORMAT)) {
 						return true;
 					}
 				}
@@ -237,5 +252,7 @@ public class ConversationPage extends OSXPage {
 		return el.getAttribute("AXValue");
 	}
 	
-
+	public boolean isMediaBarVisible(){
+		return mediabarBarTitle.isDisplayed();
+	}
 }

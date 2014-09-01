@@ -55,6 +55,7 @@ public final class OSXLocators {
 	public static final String YOU_HOT_KNOCKED_MESSAGE = "YOU HOT KNOCKED";
 	public static final String YOU_ADDED_MESSAGE = "YOU ADDED";
 	public static final String YOU_REMOVED_MESSAGE = "YOU REMOVED";
+	public static final String USER_ADDED_MESSAGE_FORMAT = " ADDED ";
 	
 	public static final String idChooseImageCancelButton = "_NS:53";
 	public static final String idChooseImageOpenButton = "_NS:55";
@@ -87,7 +88,7 @@ public final class OSXLocators {
 	public static final String xpathFailedApplicationDialogCancel = "//AXWindow[@AXIdentifier='_NS:162']/AXButton[@AXIdentifier='_NS:9']";
 	public static final String xpathFailedApplicationDialogSend = "//AXWindow[@AXIdentifier='_NS:162']/AXButton[@AXIdentifier='_NS:13']";
 
-	public static final String idAcceptConnectionRequestButton = "_NS:14";
+	public static final String idAcceptConnectionRequestButton = "connect";
 	public static final String idIgnoreConnectionRequestButton = "_NS:10";
 	
 	public static final String xpathPleaseProvideEmailAddress = "//AXStaticText[@AXValue='PLEASE PROVIDE A VALID EMAIL ADDRESS']";
@@ -119,7 +120,8 @@ public final class OSXLocators {
 	public static final String xpathConversationViewScrollArea = "//AXScrollArea";
 	
 	public static final String idSelfProfileSettingsButton = "selfProfileViewSettingsButton";
-	
+	public static final String xpathFormatSelfProfileNameTextField = "//AXTextArea[@AXValue='%s']";
+	public static final String idSelfProfileEmailTextField = "phoneTextField";
 	public static final String idUserProfileViewBackButton = "userProfileViewBackButton";
 	
 	public static final String xpathFormatUserProfileViewContactName = "//AXWindow/AXPopover/AXScrollArea/AXTextArea[@AXValue='%s']";
@@ -129,4 +131,10 @@ public final class OSXLocators {
 
 	public static final String xpathSingleChatUserNameField = "//AXPopover/AXScrollArea/AXTextArea[@AXValue='%s']";
 	public static final String xpathSingleChatUserEmailButton = "//AXPopover/AXButton[@AXTitle='mailto:%s']";
+
+	public static final String xpathRemoveUserPictureCheckBox = "//AXCheckBox[@AXHelp='Remove picture']";
+	public static final String xpathRemoveUserPictureConfirmation = "//AXButton[@AXTitle='DELETE']";
+	public static final String xpathRemoveUserPictureCancel = "//AXButton[@AXTitle='CANCEL']";
+	
+	public static final String CONTACT_LIST_ONE_CONNECT_REQUEST = "One person waiting";
 }

@@ -177,7 +177,7 @@ public class CommonUtils {
 
 	public static String getDefaultEmailFromConfig(Class<?> c)
 			throws IOException {
-		return getValueFromCommonConfig(c, "defaultEmail");
+		return getValueFromConfig(c, "defaultEmail");
 	}
 
 	public static String getDefaultEmailServerFromConfig(Class<?> c)

@@ -16,6 +16,10 @@ import cucumber.api.java.After;
 import cucumber.api.java.Before;
 
 public class CommonSteps {
+	static {
+		System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
+		System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http", "warn");
+	}
 	
 	@Before ("~@noAcceptAlert")
 	public void setUpAcceptAlerts() throws Exception {

@@ -4,6 +4,7 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.BackEndREST;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.osx.pages.PeoplePickerPage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
@@ -31,6 +32,14 @@ public class PeoplePickerPageSteps {
 		CommonSteps.senderPages.getPeoplePickerPage().chooseUserInSearchResults(user);
 	}
 	
+	 @Given("^I select user (.*) from search results")
+	 public void ISelectUserFromSearchResults(String user) {
+		 user = CommonUtils.retrieveRealUserContactPasswordValue(user);
+		 PeoplePickerPage page = CommonSteps.senderPages.getPeoplePickerPage();
+		 page.selectUserInSearchResults(user);
+		 
+	 }
+	 
 	@When("I send invitation to user")
 	public void WhenISendInvitationToUser() {
 		CommonSteps.senderPages.getPeoplePickerPage().sendInvitationToUserIfRequested();

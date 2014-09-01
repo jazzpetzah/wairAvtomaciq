@@ -17,6 +17,7 @@ import javax.ws.rs.core.UriBuilderException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,11 +27,15 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.image_send.*;
 
 import java.awt.image.BufferedImage;
 
 public class BackEndREST {
+
+	private static final Logger log = ZetaLogger.getLog(BackEndREST.class.getSimpleName());
+
 	ClientConfig config = new DefaultClientConfig();
 	static Client client = Client.create();
 
@@ -133,7 +138,7 @@ public class BackEndREST {
 	private synchronized static void writeLog(String[] lines) {
 		// TODO: Replace with smart logger
 		for (String line : lines) {
-			System.out.println(line);
+			log.debug(line);
 		}
 	}
 
@@ -155,6 +160,18 @@ public class BackEndREST {
 				output + "\n" });
 
 		return user;
+	}
+	
+	public static String getUserNameByID(String id, ClientUser user)
+			throws IllegalArgumentException, UriBuilderException, IOException,
+			JSONException, BackendRequestException {
+		Builder webResource = buildDefaultRequestWithAuth("users/" + id,
+				MediaType.APPLICATION_JSON, user);
+		final String output = httpGet(webResource,
+				new int[] { HttpStatus.SC_OK });
+		JSONObject jsonObj = new JSONObject(output);
+		
+		return jsonObj.getString("name");
 	}
 
 	public static ClientUser getUserInfo(ClientUser user)
@@ -252,32 +269,35 @@ public class BackEndREST {
 			String password) throws IllegalArgumentException,
 			UriBuilderException, IOException, JSONException,
 			BackendRequestException {
+		log.debug("Request for 'Registering New User'");
 		Builder webResource = buildDefaultRequest("register",
 				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
 		final String input = String.format(
 				"{\"email\": \"%s\",\"name\": \"%s\",\"password\": \"%s\"}",
 				email, userName, password);
+		log.debug("Input data: " + input);
 		final String output = httpPost(webResource, input,
 				new int[] { HttpStatus.SC_CREATED });
 		JSONObject jsonObj = new JSONObject(output);
 		jsonObj.getString("id");
 
 		writeLog(new String[] {
-				"Output from Server .... register New User " + email,
-				output + "\n" });
+				"Output for 'Registering New User' - " + email,
+				output });
 	}
 
 	public static void activateNewUser(String key, String code)
 			throws BackendRequestException, IllegalArgumentException,
 			UriBuilderException, IOException {
+		log.debug("Request for 'User Activation'");
 		Builder webResource = buildDefaultRequest(
 				String.format("activate?code=%s&key=%s", code, key),
 				MediaType.APPLICATION_JSON);
 		final String output = httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
 
-		writeLog(new String[] { "Output from Server .... activate New User",
-				output + "\n" });
+		writeLog(new String[] { "Output for 'User Activation'",
+				(output.trim().isEmpty()?"<EMPTY OUTPUT>":output) });
 	}
 
 	public static void sendPictureToSingleUserConversation(ClientUser userFrom,
@@ -372,8 +392,24 @@ public class BackEndREST {
 			JSONObject conversation = (JSONObject) jsonArray.get(i);
 			conversationId = conversation.getString("id");
 			String name = conversation.getString("name");
+			if (name.equals("null")) {
+				conversation = (JSONObject) conversation.get("members");
+				JSONArray otherArray = (JSONArray) conversation.get("others");
+				if (otherArray.length() == 1) {
+					String id = ((JSONObject) otherArray.get(0)).getString("id");
+					String contactName = BackEndREST.getUserNameByID(id, fromUser);
+					if (contactName.equals(conversationName)) 
+					{
+						return conversationId;
+					}
+				}
+
+			}
 			if (name.equals(conversationName)) {
 				return conversationId;
+			}
+			else {
+				conversationId = "";
 			}
 		}
 		return conversationId;

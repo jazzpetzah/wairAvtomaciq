@@ -22,6 +22,7 @@
 	<pathToUserpic>img/userpicture_landscape.jpg</pathToUserpic>
 	<iosImagesPath>img/</iosImagesPath> 
 	<swipeScriptPath>swipeInWindow</swipeScriptPath>
+	<defaultEmail>smoketester.ios@wearezeta.com</defaultEmail>
   </properties>
 
   <dependencies>

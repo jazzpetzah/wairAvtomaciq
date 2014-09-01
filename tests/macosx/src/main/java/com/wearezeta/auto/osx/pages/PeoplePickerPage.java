@@ -127,13 +127,17 @@ public class PeoplePickerPage extends OSXPage {
 		
 	}
 	
-	public void chooseUserInSearchResults(String user) {
+	public void selectUserInSearchResults(String user) {
 		for (WebElement userEntry: searchResults) {
 			if (userEntry.getText().equals(user)) {
 				userEntry.click();
 				break;
 			}
 		}
+	}
+	
+	public void chooseUserInSearchResults(String user) {
+		selectUserInSearchResults(user);
 		DriverUtils.setImplicitWaitValue(driver, 3);
 		try {
 			addSelectedUsersToConversation();

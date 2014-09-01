@@ -4,11 +4,13 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.BackEndREST;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.ContactListPage;
@@ -21,6 +23,8 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ConversationPageSteps {
+	private static final Logger log = ZetaLogger.getLog(ConversationPageSteps.class.getSimpleName());
+	
 	 private String randomMessage;
 	 private int beforeNumberOfKnocks = -1;
 	 private int beforeNumberOfHotKnocks = -1;
@@ -198,7 +202,7 @@ public class ConversationPageSteps {
 		 }
 	 }
 	 
-	 @Given("I create group chat with (.*) and (.*)")
+	 @Given("^I create group chat with (.*) and (.*)$")
 	 public void WhenICreateGroupChatWithUser1AndUser2(String user1, String user2) throws MalformedURLException, IOException {
 		 user1 = CommonUtils.retrieveRealUserContactPasswordValue(user1);
 		 user2 = CommonUtils.retrieveRealUserContactPasswordValue(user2);
@@ -282,6 +286,11 @@ public class ConversationPageSteps {
 		 Assert.assertEquals(expectedState, CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState());
 	 }
 	 
+	 @When("^I press the media bar title$")
+	 public void WhenIPressTheMediaBarTitle(){
+		 CommonSteps.senderPages.getConversationPage().pressMediaTitle();
+	 }
+	 
 	 @Then("^I see conversation name (.*) in conversation$")
 	 public void ISeeConversationNameInConversation(String name) {
 		 if (name.equals(OSXLocators.RANDOM_KEYWORD)) {
@@ -291,5 +300,28 @@ public class ConversationPageSteps {
 		 Assert.assertTrue(
 				 "New conversation name '" + result + "' does not equal to expected '" + name + "'",
 				 result.equals(name));
+	 }
+	 
+	 @When("^I wait till playback finishes$")
+	 public void WhenIWaitTillPlaybackFinishes() throws InterruptedException{
+		Thread.sleep(1000);
+	    String currentState = CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState();
+	    String wantedState = OSXLocators.SOUNDCLOUD_BUTTON_STATE_PLAY;
+	    while(!currentState.equals(wantedState)){
+	    	Assert.assertEquals("Pause", currentState);
+	    	Thread.sleep(1000);
+	    	currentState = CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState();
+	    }
+	    Thread.sleep(1000);
+	    currentState = CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState();
+	    Assert.assertEquals("Play", currentState); 
+	 }
+
+	 @Then("^I see media bar disappears$")
+	 public void ThenISeeMediaBarDisappears(){
+		 
+		 boolean mediaBarIsNotShown = CommonSteps.senderPages.getConversationPage().isMediaBarVisible();
+		 Assert.assertTrue("Media bar is shown", mediaBarIsNotShown);
+	   
 	 }
 }

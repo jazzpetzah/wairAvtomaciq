@@ -150,12 +150,16 @@ Feature: Participants View
     And I choose user <Contact1> in Conversation info
     And I remove selected user from conversation
     And I see message YOU REMOVED <Contact1> in conversation
+    And I open Conversation info
+    And I see that conversation has 2 people
     And I open People Picker from conversation
     And I search for user <Contact1>
     And I see user <Contact1> in search results
     And I add user <Contact1> from search results
     Then I open conversation with <Contact1>, <Contact2>
-    And I see message YOU ADDED <Contact3> in conversation
+    And I see message YOU ADDED <Contact1> in conversation
+    And I open Conversation info
+    And I see that conversation has 3 people
 
     Examples: 
       | Login   | Password    | Name    | Contact1    | Contact2    |
@@ -176,3 +180,32 @@ Feature: Participants View
     Examples: 
       | Login   | Password    | Name    | Contact1    | Contact2    | NewName |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | RANDOM  |
+
+  @staging @id621
+  Scenario Outline: Leave group chat - second end verification
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with name <Name>
+    And I create group chat with <Contact1> and <Contact2>
+    And I open conversation with <Contact1>, <Contact2>
+    When I open People Picker from conversation
+    And I search for user <Contact3>
+    And I see user <Contact3> in search results
+    And I add user <Contact3> from search results
+    And I open conversation with <Contact1>, <Contact2>, <Contact3>
+    And I see message YOU ADDED <Contact3> in conversation
+    And I open Conversation info
+    And I see that conversation has 4 people
+    And I set name <NewName> for conversation
+    And I leave conversation
+    And I see message YOU LEFT in conversation
+    Then I am signing out
+    And I Sign in using login <Contact1> and password <Password>
+    And I open conversation with <NewName>
+    And I see message <Name> LEFT in conversation
+    And I open Conversation info
+    And I do not see user <Name> in Conversation info
+    And I see that conversation has 3 people
+
+    Examples: 
+      | Login   | Password    | Name    | Contact1    | Contact2    | Contact3    | NewName |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | aqaContact3 | RANDOM  |

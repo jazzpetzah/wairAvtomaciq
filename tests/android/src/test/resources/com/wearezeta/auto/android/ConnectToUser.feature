@@ -279,6 +279,7 @@ Feature: Connect to User
     And I tap on contact name <WaitingMess>
     Then I see connect to <Contact> dialog
     And I see Accept and Ignore buttons
+    And I press Ignore connect button
 
     Examples: 
 	  | Login   | Password    | Name    | Contact      | WaitingMess      |

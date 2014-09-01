@@ -60,6 +60,11 @@ public class ConversationInfoPage extends OSXPage {
 		this.path = path;
 	}
 	
+	public boolean userIsNotExistInConversation(String user) {
+		String xpath = String.format(OSXLocators.xpathFormatPeoplePickerUserCell, user);
+		return DriverUtils.waitUntilElementDissapear(driver, By.xpath(xpath));
+	}
+	
 	public void selectUser(String user) {
 		String xpath = String.format(OSXLocators.xpathFormatPeoplePickerUserCell, user);
 		WebElement el = driver.findElement(By.xpath(xpath));
