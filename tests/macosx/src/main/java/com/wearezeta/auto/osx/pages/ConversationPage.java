@@ -258,4 +258,13 @@ public class ConversationPage extends OSXPage {
 	public boolean isMediaBarVisible(){
 		return mediabarBarTitle.isDisplayed();
 	}
+	
+	public void waitForSoundcloudButtonState(String currentState, String wantedState) throws InterruptedException{
+		Thread.sleep(1000);
+		while(!currentState.equals(wantedState)){
+	    	Assert.assertEquals(currentState, currentState);
+	    	Thread.sleep(1000);
+	    	currentState = CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState();
+	    }	
+	}
 }
