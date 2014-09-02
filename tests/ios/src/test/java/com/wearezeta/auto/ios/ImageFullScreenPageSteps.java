@@ -1,8 +1,12 @@
 package com.wearezeta.auto.ios;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.ios.IOSConstants;
+import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 
 import cucumber.api.java.en.When;
@@ -11,14 +15,20 @@ import org.junit.Assert;
 
 public class ImageFullScreenPageSteps {
 	
+	BufferedImage referenceImage;
+	
 	@When("^I see Full Screen Page opened$")
 	public void ISeeFullScreenPage(){
 		Assert.assertTrue(PagesCollection.imageFullScreenPage.isImageFullScreenShown());
 	}
 	
-	@When("I see expected image in fullscreen")
-	public void ISeeExpectedImageInFullScreen(){
-		//TODO Piotr iamge comparison
+	@When("I see expected image in fullscreen (.*)")
+	public void ISeeExpectedImageInFullScreen(String filename) throws Throwable{
+		referenceImage = PagesCollection.imageFullScreenPage.takeScreenshot();
+		BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath() + filename);
+		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);
+		System.out.print("SCORE: " + score);
+		Assert.assertTrue("Overlap between two images has no enough score. Expected >= " + IOSConstants.MIN_IMG_SCORE +" , current = " + score, score >= IOSConstants.MIN_IMG_SCORE);
 	}
 	
 	@When("I zoom image in fullscreen and see it is zoomed")

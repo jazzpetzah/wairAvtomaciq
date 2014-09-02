@@ -1,8 +1,11 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.FindBy;
@@ -147,4 +150,18 @@ public abstract class IOSPage extends BasePage {
 	public void clickPopupPasteButton(){
 		popupPaste.click();
 	}
+	
+	@Override
+	public BufferedImage getElementScreenshot(WebElement element)
+			throws IOException {
+		BufferedImage screenshot = takeScreenshot();
+		Point elementLocation = element.getLocation();
+		Dimension elementSize = element.getSize();
+		int x = elementLocation.x*2;
+		int y = elementLocation.y*2;
+		int w = elementSize.width*2; if (x+w>screenshot.getWidth()) w = screenshot.getWidth()-x;
+		int h = elementSize.height*2; if (y+h>screenshot.getHeight()) h = screenshot.getHeight()-y;
+		return screenshot.getSubimage(x, y, w, h);
+	}
+
 }

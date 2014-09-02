@@ -43,6 +43,18 @@ public class GroupChatInfoPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathAvatarCollectionView)
 	private WebElement avatarCollectionView;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameAddContactToChatButton)
+	private WebElement addContactButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameAddPeopleDialogHeader)
+	private WebElement addDialogHeader;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameAddPeopleCancelButton)
+	private WebElement addDialogCancelButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameAddPeopleContinueButton)
+	private WebElement addDialogContinueButton;
 
 	public GroupChatInfoPage(String URL, String path)
 			throws MalformedURLException {
@@ -266,5 +278,21 @@ public class GroupChatInfoPage extends IOSPage {
 
 	public BufferedImage takeScreenShot() throws IOException {
 		return DriverUtils.takeScreenshot(driver);
+	}
+	
+	public void clickOnAddButton(){
+		addContactButton.click();
+	}
+	
+	public boolean isAddDialogHeaderVisible(){
+		boolean flag = DriverUtils.isElementDisplayed(addDialogHeader);
+		return flag;	
+	}
+	
+	public PeoplePickerPage clickOnAddDialogContinueButton() throws Throwable{
+		PeoplePickerPage page = null;
+		addDialogContinueButton.click();
+		page = new PeoplePickerPage(url, path);
+		return page;		
 	}
 }

@@ -73,7 +73,13 @@ public class PeoplePickerPageSteps {
 
 	@When("^I click clear button$")
 	public void WhenIClickClearButton() throws IOException{
-		PagesCollection.peoplePickerPage.dismissPeoplePicker();
+		PagesCollection.contactListPage = PagesCollection.peoplePickerPage.dismissPeoplePicker();
+	}
+	
+	@When("I click on user icon to add it to existing group chat")
+	public void IClickOnUserIconToAddItToExistingGroupChat(String contact) throws Throwable{
+		String name = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		PagesCollection.groupChatInfoPage = PagesCollection.peoplePickerPage.clickOnUserToAddToExistingGroupChat(name);
 	}
 
 }

@@ -1,11 +1,17 @@
 package com.wearezeta.auto.ios;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.ios.pages.DialogPage;
+import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.ImageFullScreenPage;
 import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
@@ -110,6 +116,7 @@ public class DialogPageSteps {
 	
 	@When("^I swipe the text input cursor$")
 	public void ISwipeTheTextInputCursor() throws Throwable {
+		PagesCollection.dialogPage = (DialogPage) PagesCollection.iOSPage;
 		PagesCollection.dialogPage.swipeInputCursor();
 	}
 	
@@ -172,6 +179,7 @@ public class DialogPageSteps {
 	
 	@When("^I post media link (.*)$")
 	public void IPostMediaLink(String link) throws Throwable {
+		PagesCollection.dialogPage = (DialogPage) PagesCollection.iOSPage;
 	    PagesCollection.dialogPage.sendStringToInput(link + "\n");
 	}
 	
@@ -323,6 +331,27 @@ public class DialogPageSteps {
 	@When("^I scroll to the beginning of the conversation$")
 	public void IScrollToTheBeginningOfTheConversation() throws Throwable {
 		PagesCollection.dialogPage.scrollToBeginningOfConversation();
+	}
+	
+	@When("^I send predefined message (.*)$")
+	public void ISendPredefinedMessage(String message) throws Throwable {
+		PagesCollection.dialogPage = (DialogPage) PagesCollection.iOSPage;
+	    PagesCollection.dialogPage.sendStringToInput(message + "\n");
+	}
+	
+	@When("I verify image in dialog is same as template (.*)")
+	public void IVerifyImageInDialogSameAsTemplate(String filename) throws Throwable{
+		BufferedImage templateImage  = PagesCollection.dialogPage.takeImageScreenshot();
+		BufferedImage referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath() + filename);
+		double score = ImageUtil.getOverlapScore(referenceImage, templateImage, ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
+		System.out.println("SCORE: " + score);
+		Assert.assertTrue("Overlap between two images has no enough score. Expected >= " + IOSConstants.MIN_IMG_SCORE + ", current = " + score, 
+				score >= IOSConstants.MIN_IMG_SCORE);
+	}
+	
+	@When("I scroll to image in dialog")
+	public void IScrollToIMageInDIalog() throws Throwable{
+		PagesCollection.dialogPage = PagesCollection.dialogPage.scrollToImage();
 	}
 
 }

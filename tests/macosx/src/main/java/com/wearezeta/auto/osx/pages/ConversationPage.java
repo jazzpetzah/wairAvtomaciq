@@ -13,7 +13,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
@@ -21,7 +20,6 @@ import com.google.common.base.Function;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
-import com.wearezeta.auto.osx.steps.CommonSteps;
 import com.wearezeta.auto.osx.util.NSPoint;
 
 public class ConversationPage extends OSXPage {
@@ -257,5 +255,14 @@ public class ConversationPage extends OSXPage {
 	
 	public boolean isMediaBarVisible(){
 		return mediabarBarTitle.isDisplayed();
+	}
+	
+	public void waitForSoundcloudButtonState(String currentState, String wantedState) throws InterruptedException{
+		Thread.sleep(1000);
+		while(!currentState.equals(wantedState)){
+	    	Assert.assertEquals(currentState, currentState);
+	    	Thread.sleep(1000);
+	    	currentState = getSoundCloudButtonState();
+	    }	
 	}
 }

@@ -197,5 +197,38 @@ public class ContactListPageSteps {
 	public void ITapOnPlayPauseButtonInContactList(){
 		PagesCollection.contactListPage.tapPlayPauseButton();
 	}
+	
+	@When("I see in contact list group chat named (.*)")
+	public void ISeeInContactListGroupChatWithName(String name){
+		Assert.assertTrue(PagesCollection.contactListPage.isChatInContactList(name));
+	}
+	
+	@When("I click on Pending request link in contact list")
+	public void ICcickPendingRequestLinkContactList() throws Throwable{
+		PagesCollection.pendingRequestsPage = PagesCollection.contactListPage.clickPendingRequest();
+	}
+	
+	@When("I see Pending request link in contact list")
+	
+	public void ISeePendingRequestLinkInContacts(){
+		Assert.assertTrue(PagesCollection.contactListPage.isPendingRequestInContactList());
+	}
+	
+	@When("I dont see Pending request link in contact list")
+	public void IDontSeePendingRequestLinkInContacts(){
+		Assert.assertFalse(PagesCollection.contactListPage.isPendingRequestInContactList());
+	}
+	
+	@When("I see conversation with not connected user (.*)")
+	public void ISeeConversationWithUser(String name){
+		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		Assert.assertTrue(PagesCollection.contactListPage.isDisplayedInContactList(name));
+	}
+	
+	@When("I don't see conversation with not connected user (.*)")
+	public void IDontSeeConversationWithUser(String name){
+		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		Assert.assertFalse(PagesCollection.contactListPage.isDisplayedInContactList(name));
+	}
 
 }
