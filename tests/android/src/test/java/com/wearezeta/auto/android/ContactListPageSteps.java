@@ -15,9 +15,14 @@ import cucumber.api.java.en.When;
 public class ContactListPageSteps {
 
 	@Given("^I see Contact list with my name (.*)$")
-	public void GivenISeeContactListWithMyName(String name) throws InterruptedException, IOException{
+	public void GivenISeeContactListWithMyName(String name) throws Exception{
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		PagesCollection.contactListPage.pressLaterButton();
+		//TODO: revisit later
+		Thread.sleep(1000);
+		if (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
+			PagesCollection.peoplePickerPage.tapClearButton();
+		}
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 
 	}
@@ -84,9 +89,14 @@ public class ContactListPageSteps {
 	}
 
 	@Then ("Contact list appears with my name (.*)")
-	public void ThenContactListAppears(String name) throws InterruptedException {
+	public void ThenContactListAppears(String name) throws Exception {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		PagesCollection.contactListPage.pressLaterButton();
+		//TODO: revisit later
+		Thread.sleep(1000);
+		if (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
+			PagesCollection.peoplePickerPage.tapClearButton();
+		}
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 	}
 

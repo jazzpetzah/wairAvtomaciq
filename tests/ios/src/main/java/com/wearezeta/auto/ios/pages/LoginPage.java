@@ -42,13 +42,13 @@ public class LoginPage extends IOSPage {
 	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classUIATextView)
 	private List<WebElement> userName;
 	
-	@FindBy(how = How.XPATH, using = IOSLocators.nameTermsPrivacyLinks)
+	@FindBy(how = How.NAME, using = IOSLocators.nameTermsPrivacyLinks)
 	private WebElement termsButton;
 	
-	@FindBy(how = How.XPATH, using = IOSLocators.nameTermsPrivacyLinks)
+	@FindBy(how = How.NAME, using = IOSLocators.nameTermsPrivacyLinks)
 	private WebElement privacyButton;
 	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathTermsPrivacyCloseButton)
+	@FindBy(how = How.NAME, using = IOSLocators.nameTermsPrivacyCloseButton)
 	private WebElement termsPrivacyCloseButton;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameErrorMailNotification)

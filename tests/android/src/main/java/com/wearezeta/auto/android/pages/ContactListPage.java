@@ -115,13 +115,15 @@ public class ContactListPage extends AndroidPage {
 		return page;
 	}
 
-	public ContactListPage pressLaterButton() {
+	public ContactListPage pressLaterButton() throws Exception {
 		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.PersonalInfoPage.idProfileOptionsButton));
 		
 		if(laterBtn.size()>0){
 			laterBtn.get(0).click();
 		}
 		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.ContactListPage.idSimpleDialogPageText));
+		//TODO: we need this as sometimes we see people picker after login
+		PagesCollection.peoplePickerPage = new PeoplePickerPage (url, path);
 		return this;
 	}
 	
