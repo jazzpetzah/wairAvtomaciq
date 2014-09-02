@@ -335,7 +335,13 @@ public final class IOSLocators {
 	public static final String namePendingRequestIgnoreButton = "IGNORE";
 	public static final String namePendingRequestConnectButton = "CONNECT";
 	
+	/////////////////////////////
+	//People picker
+	///////////////////////////
 	
+	public static final String namePeoplePickerContactsLabel = "CONTACTS";
+	public static final String namePeoplePickerOtheraLabel = "OTHERS";
+	public static final String NamePeoplePickerTopPeopleLabel = "TOP PEOPLE";
 	
 }
 
