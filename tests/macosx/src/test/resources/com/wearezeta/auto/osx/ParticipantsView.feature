@@ -79,20 +79,22 @@ Feature: Participants View
       | Login   | Password    | Name    | Contact1    | Contact2    | NewName |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | RANDOM  |
 
-  @staging @id96
+  @torun @staging @id96
   Scenario Outline: Do not accept erroneous input as group conversation name (only spaces)
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
     And I create group chat with <Contact1> and <Contact2>
     When I open conversation with <Contact1>, <Contact2>
     And I open Conversation info
-    And I set name       for conversation
-    Then I do not see conversation       in contact list
+    And I set name <NewName> for conversation
+    Then I do not see conversation <NewName> in contact list
     And I see Contact list with name <Contact1>, <Contact2>
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
+      | Login   | Password    | Name    | Contact1    | Contact2    | NewName 		|
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |		  		|
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | \n\n\n\n\n	|
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |   TestLeadingSpaces  	|
 
   @staging @id96
   Scenario Outline: Do not accept erroneous input as group conversation name (line breaks)
