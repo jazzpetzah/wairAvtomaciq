@@ -67,8 +67,11 @@ public abstract class BasePage {
 		BufferedImage screenshot = takeScreenshot();
 		Point elementLocation = element.getLocation();
 		Dimension elementSize = element.getSize();
-		return screenshot.getSubimage(elementLocation.x, elementLocation.y,
-				elementSize.width, elementSize.height);
+		int x = elementLocation.x;
+		int y = elementLocation.y;
+		int w = elementSize.width;
+		int h = elementSize.height;
+		return screenshot.getSubimage(x, y, w, h);
 	}
 
 	public void refreshUITree() {

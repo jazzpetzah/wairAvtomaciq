@@ -21,6 +21,7 @@
 	<activity>com.waz.zclient.MainActivity</activity>
 	<driverTimeoutSeconds>15</driverTimeoutSeconds>
 	<defaultImagesPath>img/</defaultImagesPath> 
+	<defaultEmail>smoketester.android@wearezeta.com</defaultEmail>
   </properties>
 
   <dependencies>

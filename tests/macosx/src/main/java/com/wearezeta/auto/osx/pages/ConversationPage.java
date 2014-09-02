@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -252,5 +253,16 @@ public class ConversationPage extends OSXPage {
 		return el.getAttribute("AXValue");
 	}
 	
-
+	public boolean isMediaBarVisible(){
+		return mediabarBarTitle.isDisplayed();
+	}
+	
+	public void waitForSoundcloudButtonState(String currentState, String wantedState) throws InterruptedException{
+		Thread.sleep(1000);
+		while(!currentState.equals(wantedState)){
+	    	Assert.assertEquals(currentState, currentState);
+	    	Thread.sleep(1000);
+	    	currentState = getSoundCloudButtonState();
+	    }	
+	}
 }

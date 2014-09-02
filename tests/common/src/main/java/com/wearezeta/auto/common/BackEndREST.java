@@ -161,6 +161,18 @@ public class BackEndREST {
 
 		return user;
 	}
+	
+	public static String getUserNameByID(String id, ClientUser user)
+			throws IllegalArgumentException, UriBuilderException, IOException,
+			JSONException, BackendRequestException {
+		Builder webResource = buildDefaultRequestWithAuth("users/" + id,
+				MediaType.APPLICATION_JSON, user);
+		final String output = httpGet(webResource,
+				new int[] { HttpStatus.SC_OK });
+		JSONObject jsonObj = new JSONObject(output);
+		
+		return jsonObj.getString("name");
+	}
 
 	public static ClientUser getUserInfo(ClientUser user)
 			throws IllegalArgumentException, UriBuilderException, IOException,
@@ -380,8 +392,24 @@ public class BackEndREST {
 			JSONObject conversation = (JSONObject) jsonArray.get(i);
 			conversationId = conversation.getString("id");
 			String name = conversation.getString("name");
+			if (name.equals("null")) {
+				conversation = (JSONObject) conversation.get("members");
+				JSONArray otherArray = (JSONArray) conversation.get("others");
+				if (otherArray.length() == 1) {
+					String id = ((JSONObject) otherArray.get(0)).getString("id");
+					String contactName = BackEndREST.getUserNameByID(id, fromUser);
+					if (contactName.equals(conversationName)) 
+					{
+						return conversationId;
+					}
+				}
+
+			}
 			if (name.equals(conversationName)) {
 				return conversationId;
+			}
+			else {
+				conversationId = "";
 			}
 		}
 		return conversationId;

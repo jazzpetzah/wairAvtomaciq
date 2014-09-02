@@ -51,10 +51,13 @@ public class ConnectToPage extends IOSPage {
 		return typeYourMessage.getText();
 	}
 	
-	public ContactListPage fillTextInConnectDialog() throws IOException {
-		messageInput.sendKeys(inviteMessage + "\n");
-		
-		return new ContactListPage(url, path);
+	public void fillTextInConnectDialog() {
+		messageInput.sendKeys(inviteMessage);
+	}
+	
+	public PeoplePickerPage clickSendButton() throws Throwable {
+		sendConnectButton.click();
+		return new PeoplePickerPage(url, path);	
 	}
 	
 	public ContactListPage sendInvitation(String name) throws IOException{
@@ -82,6 +85,12 @@ public class ConnectToPage extends IOSPage {
 	
 	public void acceptInvitation() {
 		connectOtherUserButton.click();
+	}
+	
+	public boolean isSendButtonVisible(){
+		boolean flag=false;
+		flag = DriverUtils.isElementDisplayed(sendConnectButton);
+		return flag;
 	}
 
 }

@@ -247,6 +247,25 @@ Feature: Conversation
     Examples: 
       | Login   | Password    | Name    | Contact     | SoundCloudLink                              |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/edherbst/throwaway-3 |
+   
+  #muted, not stable due to sync engine and bug ZOSX-931, have a look at the comments, conversation gets refreshed and that breaks the media bar   
+  @mute @staging @id380
+  Scenario Outline: Conversation scrolls back to playing media when clicked on the media bar
+  	Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with name <Name>
+    And I open conversation with <Contact>
+    And I post messages and media link <SoundCloudLink>
+    Then I see media link <SoundCloudLink> and media in dialog
+    And I tap SoundCloud link
+    Then I see the embedded media is playing
+    And I scroll media out of sight till media bar appears
+    And I press the media bar title
+    Then I see media link <SoundCloudLink> and media in dialog
+    Then I see the embedded media is playing
+  
+  	Examples: 
+      | Login   | Password    | Name    | Contact     | SoundCloudLink                              |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/edherbst/throwaway-3 |
 
   @staging @id618
   Scenario Outline: Verify the new conversation is created on the other end
@@ -333,3 +352,41 @@ Feature: Conversation
     Examples: 
       | Login   | Password    | Name    | Contact1    | Contact2    | SoundCloudLink                              |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | https://soundcloud.com/edherbst/throwaway-3 |
+      
+  @staging @id381
+  Scenario Outline: The media bar disappears after playback finishes
+  	Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with name <Name>
+    And I open conversation with <Contact>
+    And I post messages and media link <SoundCloudLink>
+    Then I see media link <SoundCloudLink> and media in dialog
+    And I tap SoundCloud link
+    Then I see the embedded media is playing
+    And I scroll media out of sight till media bar appears
+    And I wait till playback finishes
+    Then I see media bar disappears
+
+    Examples: 
+      | Login   | Password    | Name    | Contact     | SoundCloudLink                              		   |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/20sekunder/isakkkkkk-pcb-sesh-1 |
+  
+  @staging @id378    
+  Scenario Outline: Media bar disappears when playing media is back in view
+  	Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with name <Name>
+    And I open conversation with <Contact>
+    And I post messages and media link <SoundCloudLink>
+    Then I see media link <SoundCloudLink> and media in dialog
+    And I tap SoundCloud link
+    Then I see the embedded media is playing
+    And I scroll media out of sight till media bar appears
+    And I press the media bar title
+    Then I see media link <SoundCloudLink> and media in dialog
+    Then I see the embedded media is playing
+    Then I see media bar disappears
+    
+    Examples: 
+      | Login   | Password    | Name    | Contact     | SoundCloudLink                              |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/edherbst/throwaway-3 |
+    
+  

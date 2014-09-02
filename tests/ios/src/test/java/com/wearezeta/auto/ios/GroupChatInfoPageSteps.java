@@ -103,4 +103,32 @@ public class GroupChatInfoPageSteps {
 	public void ISwipeUpOnGroupChatInfoPage() throws IOException{
 		PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.groupChatInfoPage.swipeDown(500);
 	}
+	
+	@When("I tap on add button on group chat info page")
+	public void ITapAddButtonOnGroupChatInfoPage(){
+		PagesCollection.groupChatInfoPage.clickOnAddButton();
+	}
+	
+	@When("I see Add people to group chat dialog")
+	public void ISeeAddPeopleToGroupChatDialog(){
+		Assert.assertTrue(PagesCollection.groupChatInfoPage.isAddDialogHeaderVisible());
+	}
+	
+	@When("I click on Continue button in Add people to group chat dialog")
+	public void IClickOnContinueButtonInAddPeopleToGroupChatDialog() throws Throwable{
+		PagesCollection.peoplePickerPage = PagesCollection.groupChatInfoPage.clickOnAddDialogContinueButton();
+	}
+	
+	@When("I add to existing group chat contact (.*)")
+	public void IAddToExistingChatContact(String contact) throws Throwable{
+		ITapAddButtonOnGroupChatInfoPage();
+		IClickOnContinueButtonInAddPeopleToGroupChatDialog();
+		
+		PeoplePickerPageSteps pickerSteps = new PeoplePickerPageSteps();
+		pickerSteps.WhenISeePeoplePickerPage();
+		pickerSteps.WhenIInputInPeoplePickerSearchFieldUserName(contact);
+		pickerSteps.WhenISeeUserFoundOnPeoplePickerPage(contact);
+		pickerSteps.WhenITapOnUserNameFoundOnPeoplePickerPage(contact);
+		pickerSteps.WhenIClickOnAddToConversationButton();	
+	}
 }

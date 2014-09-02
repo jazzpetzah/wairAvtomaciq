@@ -9,3 +9,4 @@ pathToUserpic=${Root}/${pathToUserpic}
 driverTimeoutSeconds=${driverTimeoutSeconds}
 pictureResultsPath=${pictureResultsPath}
 iosImagesPath=${Root}/${iosImagesPath}
+defaultEmail=${defaultEmail}

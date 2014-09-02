@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -372,5 +373,24 @@ public class DialogPage extends IOSPage{
 		Assert.assertTrue(youAddedCell.get(0).isDisplayed());
 		return page;
 	}
+	
+	private static final int IMAGE_CONTROL_IN_CONVERSATION_HEIGHT = 472;
+	private static final int IMAGE_IN_CONVERSATION_HEIGHT = 427;
+	public BufferedImage takeImageScreenshot() throws Throwable{
+		BufferedImage image;
+		image= getElementScreenshot(imageCell);
+		if (image.getHeight()>IMAGE_IN_CONVERSATION_HEIGHT){
+			image= image.getSubimage(0, image.getHeight()-IMAGE_CONTROL_IN_CONVERSATION_HEIGHT, image.getWidth(), IMAGE_IN_CONVERSATION_HEIGHT);
+		}
+		return image;
+	}
+	
+	public DialogPage scrollToImage() throws Throwable{
+		WebElement el = driver.findElement(By.xpath(IOSLocators.xpathOtherConversationCellFormat));
+		DriverUtils.scrollToElement(driver, el);
+		DialogPage page = new DialogPage(url, path);
+		return page;
+	}
+
 
 }

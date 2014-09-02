@@ -39,6 +39,9 @@ public class ContactListPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameMediaCellPlayButton)
 	private WebElement playPauseButton;
 	
+	@FindBy(how = How.NAME, using = IOSLocators.namePendingRequest)
+	private WebElement pendingRequest;
+	
 	private String url;
 	private String path;
 	private int oldLocation = 0;
@@ -137,6 +140,11 @@ public class ContactListPage extends IOSPage {
 			findNameInContactList(name);
 		}
 		return contact;
+	}
+	
+	public boolean isChatInContactList(String name){
+		boolean flag = findNameInContactList(name) != null;
+		return flag;
 	}
 
 	public boolean isGroupChatAvailableInContactList() {
@@ -240,5 +248,19 @@ public class ContactListPage extends IOSPage {
 		}
 		}
 		return page;
+	}
+	
+	public boolean isPendingRequestInContactList(){
+		boolean flag = DriverUtils.isElementDisplayed(pendingRequest);
+		return flag;
+	}
+	
+	public PendingRequestsPage clickPendingRequest() throws Throwable{
+		pendingRequest.click();
+		return new PendingRequestsPage(url, path);
+	}
+	
+	public boolean isDisplayedInContactList(String name){
+		return DriverUtils.isElementDisplayed(driver.findElement(By.name(name)));
 	}
 }

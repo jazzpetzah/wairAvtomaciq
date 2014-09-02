@@ -123,7 +123,7 @@ public class DriverUtils {
 					found = true;
 					break;
 				}
-				Thread.sleep(500);
+				Thread.sleep(200);
 				if(counter == 10)
 				{
 					flag = false;

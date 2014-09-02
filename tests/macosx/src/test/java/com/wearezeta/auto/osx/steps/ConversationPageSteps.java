@@ -286,6 +286,11 @@ public class ConversationPageSteps {
 		 Assert.assertEquals(expectedState, CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState());
 	 }
 	 
+	 @When("^I press the media bar title$")
+	 public void WhenIPressTheMediaBarTitle(){
+		 CommonSteps.senderPages.getConversationPage().pressMediaTitle();
+	 }
+	 
 	 @Then("^I see conversation name (.*) in conversation$")
 	 public void ISeeConversationNameInConversation(String name) {
 		 if (name.equals(OSXLocators.RANDOM_KEYWORD)) {
@@ -295,5 +300,24 @@ public class ConversationPageSteps {
 		 Assert.assertTrue(
 				 "New conversation name '" + result + "' does not equal to expected '" + name + "'",
 				 result.equals(name));
+	 }
+	 
+	 @When("^I wait till playback finishes$")
+	 public void WhenIWaitTillPlaybackFinishes() throws InterruptedException{
+		CommonSteps.senderPages.getConversationPage().waitForSoundcloudButtonState(OSXLocators.SOUNDCLOUD_BUTTON_STATE_PLAY, OSXLocators.SOUNDCLOUD_BUTTON_STATE_PAUSE);
+		String currentState = CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState();
+	    String wantedState = OSXLocators.SOUNDCLOUD_BUTTON_STATE_PLAY;
+		CommonSteps.senderPages.getConversationPage().waitForSoundcloudButtonState(currentState, wantedState);
+	    Thread.sleep(1000);
+	    currentState = CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState();
+	    Assert.assertEquals("Play", currentState); 
+	 }
+
+	 @Then("^I see media bar disappears$")
+	 public void ThenISeeMediaBarDisappears(){
+		 
+		 boolean mediaBarIsNotShown = CommonSteps.senderPages.getConversationPage().isMediaBarVisible();
+		 Assert.assertTrue("Media bar is shown", mediaBarIsNotShown);
+	   
 	 }
 }

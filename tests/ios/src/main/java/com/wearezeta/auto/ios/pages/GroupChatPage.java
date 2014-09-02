@@ -66,6 +66,12 @@ public class GroupChatPage extends DialogPage {
 		return driver.findElement(By.name(user.toUpperCase() + " ADDED " + contact.toUpperCase())).isDisplayed();
 	}
 	
+	public boolean isMessageShownInGroupChat(String message){
+		boolean flag = false;
+		flag = DriverUtils.isElementDisplayed(driver.findElement(By.name(message)));
+		return flag;
+	}
+	
 	
 	public boolean isContactAvailableInChat(String contact) {
 		WebElement el = null;
@@ -118,6 +124,7 @@ public class GroupChatPage extends DialogPage {
 		switch (direction){
 			case DOWN:
 			{
+				page = this;
 				break;
 			}
 			case UP:
