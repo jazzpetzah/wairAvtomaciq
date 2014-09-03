@@ -19,7 +19,7 @@ public class ContactListPageSteps {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		PagesCollection.contactListPage.pressLaterButton();
 		//TODO: revisit later
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 		if (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
 			PagesCollection.peoplePickerPage.tapClearButton();
 		}
@@ -93,7 +93,7 @@ public class ContactListPageSteps {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		PagesCollection.contactListPage.pressLaterButton();
 		//TODO: revisit later
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 		if (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
 			PagesCollection.peoplePickerPage.tapClearButton();
 		}

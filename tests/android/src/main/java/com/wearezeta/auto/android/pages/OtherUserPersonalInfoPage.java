@@ -18,7 +18,7 @@ import com.wearezeta.auto.common.locators.ZetaFindBy;
 public class OtherUserPersonalInfoPage extends AndroidPage {
 
 	public static final String REMOVE_FROM_CONVERSATION_BUTTON = "Remove";
-	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.80;
+	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.75;
 	
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idOtherUserPersonalInfoName")
 	private List<WebElement> otherUserName;
