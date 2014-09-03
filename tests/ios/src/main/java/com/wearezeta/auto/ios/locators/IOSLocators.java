@@ -18,9 +18,9 @@ public final class IOSLocators {
 	
 	public static final String nameWrongCredentialsNotification = "WRONG ADDRESS OR PASSWORD. PLEASE TRY AGAIN.";
 	
-	public static final String nameTermsPrivacyLinks = "TermsPrivacyTextView";
+	public static final String nameTermsPrivacyLinks = "TermsPrivacyTextView"; 
 	
-	public static final String xpathTermsPrivacyCloseButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]"; //TODO:put ID for new stable build
+	public static final String nameTermsPrivacyCloseButton = "WebViewCloseButton";
 	
 	public static final String classNameContactListNames = "UIAStaticText";
 	
@@ -335,7 +335,13 @@ public final class IOSLocators {
 	public static final String namePendingRequestIgnoreButton = "IGNORE";
 	public static final String namePendingRequestConnectButton = "CONNECT";
 	
+	/////////////////////////////
+	//People picker
+	///////////////////////////
 	
+	public static final String namePeoplePickerContactsLabel = "CONTACTS";
+	public static final String namePeoplePickerOtheraLabel = "OTHERS";
+	public static final String NamePeoplePickerTopPeopleLabel = "TOP PEOPLE";
 	
 }
 

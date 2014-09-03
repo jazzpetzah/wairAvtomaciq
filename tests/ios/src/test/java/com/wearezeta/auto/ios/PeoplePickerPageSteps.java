@@ -81,5 +81,31 @@ public class PeoplePickerPageSteps {
 		String name = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 		PagesCollection.groupChatInfoPage = PagesCollection.peoplePickerPage.clickOnUserToAddToExistingGroupChat(name);
 	}
+	
+	@When("I see contact list on People picker page")
+	public void ISeeContactListOnPeoplePickerPage(){
+		Assert.assertTrue("Contacts label is not shown", PagesCollection.peoplePickerPage.isContactsLabelVisible());
+	}
+	
+	@When("I see top people list on People picker page")
+	public void ISeeTopPeopleListOnPeoplePickerPage(){
+		Assert.assertTrue("Top People label is not shown", PagesCollection.peoplePickerPage.isTopPeopleLabelVisible());
+	}
+	
+	@When("I select user (.*) on People picker page")
+	public void ISelectUserOnPeoplePickerPage(String name){
+		name = CommonUtils.retrieveRealUserContactPasswordValue(name).toUpperCase();
+		PagesCollection.peoplePickerPage.selectUser(name);
+	}
+	
+	@When("I see Create Conversation button on People picker page")
+	public void ISeeCreateConversationButton(){
+		Assert.assertTrue("Create Conversation button is not visible.", PagesCollection.peoplePickerPage.isCreateConversationButtonVisible());
+	}
+	
+	@When("I click Create Conversation button  on People picker page")
+	public void IClickCreateConversationButton() throws Throwable{
+		PagesCollection.groupChatPage = PagesCollection.peoplePickerPage.clickCreateConversationButton();
+	}
 
 }

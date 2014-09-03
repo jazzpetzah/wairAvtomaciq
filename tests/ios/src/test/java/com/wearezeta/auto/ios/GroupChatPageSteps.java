@@ -82,4 +82,9 @@ public class GroupChatPageSteps {
 		PagesCollection.groupChatInfoPage = (GroupChatInfoPage) PagesCollection.groupChatPage.swipeUpSimulator();
 	}
 	
+	@When("I swipe right on group chat page")
+	public void ISwipeRightOnGroupChatPage() throws Throwable{
+		PagesCollection.contactListPage = (ContactListPage) PagesCollection.groupChatPage.swipeRight(500);
+	}
+	
 }

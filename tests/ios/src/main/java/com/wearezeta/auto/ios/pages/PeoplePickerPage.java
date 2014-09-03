@@ -11,6 +11,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
@@ -33,6 +34,16 @@ public class PeoplePickerPage extends IOSPage{
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameCreateConversationButton)
 	private WebElement createConverstaionButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.namePeoplePickerContactsLabel)
+	private WebElement contactsLabel;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.namePeoplePickerOtheraLabel)
+	private WebElement othersLabel;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.NamePeoplePickerTopPeopleLabel)
+	private WebElement topPeopleLabel;
+	
 	
 	private String url;
 	private String path;
@@ -158,6 +169,31 @@ public class PeoplePickerPage extends IOSPage{
 		user = driver.findElementByXPath(IOSLocators.xpathUnicUserPickerSearchResult);
 
 		return user;
+	}
+	
+	public void clearInputField(){
+		peoplePickerSearch.clear();
+	}
+	
+	public boolean isContactsLabelVisible(){
+		return DriverUtils.isElementDisplayed(contactsLabel);
+	}
+
+	public void selectUser(String name) {
+		driver.findElement(By.name(name)).click();
+	}
+	
+	public boolean isCreateConversationButtonVisible(){
+		return DriverUtils.isElementDisplayed(createConverstaionButton);
+	}
+	
+	public GroupChatPage clickCreateConversationButton() throws Throwable{
+		createConverstaionButton.click();
+		return new GroupChatPage(url, path);
+	}
+	
+	public boolean isTopPeopleLabelVisible(){
+		return DriverUtils.isElementDisplayed(topPeopleLabel);
 	}
 
 }
