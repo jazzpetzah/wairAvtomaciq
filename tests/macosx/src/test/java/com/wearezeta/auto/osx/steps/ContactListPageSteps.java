@@ -129,7 +129,7 @@ public class ContactListPageSteps {
 		contactList.showArchivedConversations();
 	}
 	
-	@When("I set name {1}(.*) {1}for conversation")
+	@When("I set name {1}(.*) {1}for conversation$")
 	public void ISetRandomNameForConversation(String name) throws MalformedURLException, IOException {
 		ConversationInfoPage conversationInfo = CommonSteps.senderPages.getConversationInfoPage();
 		if (name.equals(OSXLocators.RANDOM_KEYWORD)) {
