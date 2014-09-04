@@ -13,7 +13,7 @@ Feature: Sign In
       | Login   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |
 
- @id209 @smoke
+ @id209 @smoke @mute
   Scenario Outline: I can change sign in user
     Given I Sign in using login <Login1> and password <Password>
     And I see Contact list with my name <Login1>
