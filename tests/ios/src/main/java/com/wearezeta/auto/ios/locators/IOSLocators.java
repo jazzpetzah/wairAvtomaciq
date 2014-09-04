@@ -86,7 +86,7 @@ public final class IOSLocators {
 	
 	public static final String namePendingButton = "PENDING";
 	
-	public static final String nameSignOutButton = "Sign out";
+	public static final String nameSignOutButton = "SignOutButton";
 	
 	public static final String nameConnectInput = "Type your first message to [%s]...";
 	
@@ -342,6 +342,12 @@ public final class IOSLocators {
 	public static final String namePeoplePickerContactsLabel = "CONTACTS";
 	public static final String namePeoplePickerOtheraLabel = "OTHERS";
 	public static final String NamePeoplePickerTopPeopleLabel = "TOP PEOPLE";
+	
+	//////////////////
+	//Connect to page
+	//////////////////
+	
+	public static final String nameSendConnectionInputField = "SendConnectionRequestMessageView";
 	
 }
 
