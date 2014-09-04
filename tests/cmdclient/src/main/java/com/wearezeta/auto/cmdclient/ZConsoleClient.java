@@ -1,36 +1,51 @@
 package com.wearezeta.auto.cmdclient;
 
+import java.util.Date;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.wearezeta.auto.common.BackEndREST;
 import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.UsersState;
+import com.wearezeta.auto.common.log.ZetaLogger;
 
 
 public class ZConsoleClient 
 {
+	private static final Logger log = ZetaLogger.getLog(ZConsoleClient.class.getSimpleName());
+	private static final Logger backendLog = ZetaLogger.getLog(BackEndREST.class.getSimpleName());
+	
 	public static void sendMessageWithInterval(ClientUser user, String contact, int interval, int messageCount) throws Exception {
 		if (messageCount != -1) {
 			for (int i = 0; i < messageCount; i++) {
 				
-				System.out.println("Sending message " + Integer.toString(i + 1) + " of " + Integer.toString(messageCount) + 
+				log.info("Sending message " + Integer.toString(i + 1) + " of " + Integer.toString(messageCount) + 
 						" to contact " + contact);
-				BackEndREST.sendDialogMessageByChatName(user, contact, CommonUtils.generateGUID());
+				BackEndREST.sendDialogMessageByChatName(user, contact, Integer.toString(i + 1) + " " + CommonUtils.generateGUID());
 				Thread.sleep(interval * 1000);
 			}
+			
+			log.info("Total messages sent - " + Integer.toString(messageCount));
 		}
 		else {
+			int count = 1;
 			while (true) {
 				
-				System.out.println("Sending message to contact " + contact);
+				log.info("Sending message " + Integer.toString(count) + " to contact " + contact);
 				
-				BackEndREST.sendDialogMessageByChatName(user, contact, CommonUtils.generateGUID());
+				BackEndREST.sendDialogMessageByChatName(user, contact, Integer.toString(count) + " " + CommonUtils.generateGUID());
+				count++;
 				Thread.sleep(interval * 1000);
 			}
 		}
 	}
     public static void main( String[] args ) throws Exception
     {
-    	System.out.println("Valid arguments :\n"
+    	backendLog.setLevel(Level.INFO);
+    	
+    	log.info("Valid arguments :\n"
     			+ "-m your zeta client email\n"
     			+ "-p your zeta client password\n"
     			+ "-u chat or contact name who will receive messages\n"
@@ -38,7 +53,7 @@ public class ZConsoleClient
     			+ "-i (optional) interval between messages (seconds), default is 0");
     	
     	if (args.length % 2 == 1 || args.length == 0) {
-    		System.out.println("Invalid number of arguments");
+    		log.info("Invalid number of arguments");
     		
     		return;
     	}
@@ -71,6 +86,12 @@ public class ZConsoleClient
 
 		ClientUser yourСontact = new ClientUser(login, password, "ZConsoleClient", UsersState.AllContactsConnected);
 			
+		long startDate = new Date().getTime();
+
 		sendMessageWithInterval(yourСontact, contact, interval, messageCount);
+		
+		long endDate = new Date().getTime();
+		
+		log.info("Total execution time - " + (endDate - startDate) / 1000 + " seconds");
     }
 }
