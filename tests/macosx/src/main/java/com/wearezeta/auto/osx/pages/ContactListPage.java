@@ -155,12 +155,12 @@ public class ContactListPage extends OSXPage {
 	}
 	
 	public void acceptAllInvitations() {
-		boolean isInivitationExist = true;
-		while (isInivitationExist) {
+		List<WebElement> connectButtons = driver.findElements(By.id(OSXLocators.idAcceptConnectionRequestButton));
+		for (WebElement connectButton: connectButtons) {
 			try {
-				acceptInvitationButton.click();
+				connectButton.click();
 			} catch (NoSuchElementException e) {
-				isInivitationExist = false;
+				log.error(e.getMessage());
 			}
 		}
 	}
