@@ -39,7 +39,7 @@ public class DialogPageSteps {
 	public void WhenISeeDialogPage() throws Throwable {
 	    PagesCollection.dialogPage = (DialogPage) PagesCollection.iOSPage;
 	    PagesCollection.dialogPage.waitForCursorInputVisible();
-	    PagesCollection.dialogPage.waitForYouAddedCellVisible();
+	    //PagesCollection.dialogPage.waitForYouAddedCellVisible();
 	}
 	
 	@When("I tap on dialog page")
