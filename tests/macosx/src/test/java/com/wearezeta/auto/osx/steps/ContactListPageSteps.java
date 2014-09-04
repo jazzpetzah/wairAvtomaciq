@@ -8,6 +8,7 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.TableUnixStringParser;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationInfoPage;
@@ -132,6 +133,7 @@ public class ContactListPageSteps {
 	@When("I set name {1}(.*) {1}for conversation$")
 	public void ISetRandomNameForConversation(String name) throws MalformedURLException, IOException {
 		ConversationInfoPage conversationInfo = CommonSteps.senderPages.getConversationInfoPage();
+		name = TableUnixStringParser.convertStringToUnixCode(name);
 		if (name.equals(OSXLocators.RANDOM_KEYWORD)) {
 			conversationInfo.setCurrentConversationName(CommonUtils.generateGUID());
 		} else {
