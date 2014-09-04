@@ -46,6 +46,7 @@ public class CommonSteps {
 			PagesCollection.loginPage = new LoginPage(
 					CommonUtils.getUrlFromConfig(CommonSteps.class), path);
 			ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
+			PagesCollection.loginPage.dismissUpdate();
 		}
 	}
 
