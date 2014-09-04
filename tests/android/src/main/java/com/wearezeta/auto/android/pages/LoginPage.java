@@ -1,11 +1,14 @@
 package com.wearezeta.auto.android.pages;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.*;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -35,6 +38,9 @@ public class LoginPage extends AndroidPage {
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idContactListNames")
 	private WebElement contactListNames;
 
+	@FindBy(how = How.ID, using = "android:id/button2")
+	private WebElement dismissUpdateButton;
+	
 	private String login;
 	private String password;
 	private String url;
@@ -128,5 +134,13 @@ public class LoginPage extends AndroidPage {
 		signUpButton.click();
 
 		return new RegistrationPage(url, path);
+	}
+	
+	public void dismissUpdate() {
+		try {
+			dismissUpdateButton.click();
+		} catch (NoSuchElementException e) {
+			
+		}
 	}
 }
