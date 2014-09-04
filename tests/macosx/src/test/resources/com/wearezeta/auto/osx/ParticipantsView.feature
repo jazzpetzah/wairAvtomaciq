@@ -92,10 +92,10 @@ Feature: Participants View
 
     Examples: 
       | Login   | Password    | Name    | Contact1    | Contact2    | NewName 		|
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |               |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | \n\n\n\n      |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | \u0020        |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | \n\n\n        |
 
-  @staging @id96
+ @torun @staging @id96
   Scenario Outline: Do not accept erroneous input as group conversation name (only spaces)
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -110,7 +110,7 @@ Feature: Participants View
       | Login   | Password    | Name    | Contact1    | Contact2    |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
       
-  @staging @id96
+ @torun @staging @id96
   Scenario Outline: Do not accept erroneous input as group conversation name (line breaks)
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
