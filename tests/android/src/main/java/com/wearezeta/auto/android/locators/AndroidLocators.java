@@ -81,6 +81,8 @@ public final class AndroidLocators {
 		
 		public static final String idSimpleDialogPageText = LOCATORS_PACKAGE + ":id/ttv__simple_dialog__text"; 
 		
+		public static final String idSearchHintClose = LOCATORS_PACKAGE + ":id/gtv__search_hint__close";
+		
 	}
 	
 	public static final class CommonLocators {

@@ -37,6 +37,9 @@ public class ContactListPage extends AndroidPage {
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectToHeader")
 	private List<WebElement> connectToHeader;
 	
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idSearchHintClose")
+	private WebElement closeHintBtn;
+	
 
 	private String url;
 	private String path;
@@ -91,6 +94,10 @@ public class ContactListPage extends AndroidPage {
 
 	public void clickOnMute() {
 		muteBtn.click();
+	}
+	
+	public void closeHint() {
+		closeHintBtn.click();
 	}
 
 	@Override
