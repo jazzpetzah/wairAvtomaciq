@@ -35,6 +35,13 @@ public class PendingRequestsPage extends IOSPage {
 		return page;
 	}
 	
+	public ContactListPage clickConnectButton() throws Throwable{
+		ContactListPage page = null;
+		connectRequestButton.click();
+		page = new ContactListPage(url, path);
+		return page;
+	}
+	
 	@Override
 	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
 		

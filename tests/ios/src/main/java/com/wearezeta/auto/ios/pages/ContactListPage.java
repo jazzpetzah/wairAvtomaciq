@@ -261,6 +261,6 @@ public class ContactListPage extends IOSPage {
 	}
 	
 	public boolean isDisplayedInContactList(String name){
-		return DriverUtils.isElementDisplayed(driver.findElement(By.name(name)));
+		return DriverUtils.waitUntilElementAppears(driver, By.name(name));
 	}
 }
