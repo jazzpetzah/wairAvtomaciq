@@ -12,9 +12,9 @@ import com.wearezeta.auto.common.UsersState;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 
-public class ZConsoleClient 
+public class ZBender 
 {
-	private static final Logger log = ZetaLogger.getLog(ZConsoleClient.class.getSimpleName());
+	private static final Logger log = ZetaLogger.getLog(ZBender.class.getSimpleName());
 	private static final Logger backendLog = ZetaLogger.getLog(BackEndREST.class.getSimpleName());
 	
 	public static void sendMessageWithInterval(ClientUser user, String contact, int interval, int messageCount) throws Exception {

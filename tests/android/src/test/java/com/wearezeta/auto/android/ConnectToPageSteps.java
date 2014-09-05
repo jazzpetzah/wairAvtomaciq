@@ -3,6 +3,7 @@ package com.wearezeta.auto.android;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.ConnectToPage;
+import com.wearezeta.auto.android.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.CommonUtils;
 
@@ -37,10 +38,10 @@ public class ConnectToPageSteps {
 		PagesCollection.contactListPage = PagesCollection.connectToPage.pressIgnoreButton();	
 	}
 	
-	@Then("^I see that connection is pending")
+	@Then("^I see that connection is pending$")
 	public void ThenConnectionIsPending(){
 		if(PagesCollection.connectToPage == null) {
-			PagesCollection.connectToPage =(ConnectToPage) PagesCollection.androidPage;
+			PagesCollection.connectToPage = (ConnectToPage) PagesCollection.androidPage;
 		}
 		Assert.assertTrue(PagesCollection.connectToPage.isPending());
 	}
@@ -68,6 +69,17 @@ public class ConnectToPageSteps {
 	@Then("^I see counter value (.*)$")
 	public void ThenISeeCounterValue(int value) throws Throwable {
 		Assert.assertEquals(value, PagesCollection.connectToPage.getCharCounterValue());
+	}
+	
+	@When("^I Press Block button on connect to page$")
+	public void IPressBlockButton() {
+		PagesCollection.connectToPage.clickBlockBtn();
+		
+	}
+	
+	@When("^I confirm block on connect to page$")
+	public void WhenIConfirmBlock() throws Throwable {
+		PagesCollection.connectToPage.pressConfirmBtn();
 	}
 	
 	@Then("I close Connect To dialog")

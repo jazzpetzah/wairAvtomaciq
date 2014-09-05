@@ -37,6 +37,12 @@ public class ConnectToPage extends AndroidPage {
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idParticipantsClose")
 	private WebElement closeButton;	
 	
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idBlockUserBtn")
+	private WebElement blockButton; 
+	
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idConfirmBtn")
+	private WebElement confirmBtn;
+	
 	private String url;
 	private String path;
 	
@@ -49,8 +55,17 @@ public class ConnectToPage extends AndroidPage {
 
 	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
-		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public void clickBlockBtn() {
+		blockButton.click();
+	}
+	
+	public void pressConfirmBtn() throws Exception {
+		refreshUITree();
+		wait.until(ExpectedConditions.elementToBeClickable(confirmBtn));
+		confirmBtn.click();
 	}
 
 	public String getConnectToHeader() {

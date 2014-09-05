@@ -170,6 +170,10 @@ public final class AndroidLocators {
 		public static final String idUserProfileConfirmationMenu = LOCATORS_PACKAGE + ":id/user_profile_confirmation_menu";
 		
 		public static final String idAddContactBtn = LOCATORS_PACKAGE + ":id/gtv__participants__left__action";
+		
+		public static final String idBlockUserBtn = LOCATORS_PACKAGE + ":id/gtv__participants__right__action";
+		
+		public static final String idUnblockBtn = LOCATORS_PACKAGE + ":id/zb__connect_request__unblock_button";
 	}
 	
 	public static final class PeoplePickerPage {
