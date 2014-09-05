@@ -34,7 +34,6 @@ public class DialogPageSteps {
 	private static final int SWIPE_DURATION = 1000;
 	private static String onlySpacesMessage="     ";
 
-	
 	@When("^I see dialog page$")
 	public void WhenISeeDialogPage() throws Throwable {
 	    PagesCollection.dialogPage = (DialogPage) PagesCollection.iOSPage;
@@ -56,6 +55,11 @@ public class DialogPageSteps {
 	public void WhenITypeTheMessage() throws Throwable {
 		message = CommonUtils.generateGUID();
 		PagesCollection.dialogPage.sendStringToInput(message);
+	}
+	
+	@When("I input message from keyboard (.*)")
+	public void IInputMessageFromKeyboard(String message) throws Throwable{
+		PagesCollection.dialogPage.inputStringFromKeyboard(message);
 	}
 
 	@When("^I multi tap on text input$")

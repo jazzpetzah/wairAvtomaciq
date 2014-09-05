@@ -16,16 +16,13 @@ import cucumber.api.java.en.When;
 
 public class ConnectToPageSteps {
 
-	@When("^I see connect to (.*) dialog$")
-	public void WhenISeeConnectToUserDialog(String contact) throws Throwable {
-		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
-		PagesCollection.connectToPage = (ConnectToPage) PagesCollection.iOSPage;
-		Assert.assertTrue(PagesCollection.connectToPage.getConnectToUserLabelValue().contains(IOSLocators.CONNECT_TO_MESSAGE));
+	@When("^I see connect to dialog$")
+	public void WhenISeeConnectToUserDialog() throws Throwable {
+		Assert.assertTrue("Connection input is not visible", PagesCollection.connectToPage.isConnectToUserDialogVisible());
 	}
 
 	@When("^I input message in connect to dialog$")
 	public void WhenIInputMessageInConnectToDialog() {
-		PagesCollection.connectToPage = (ConnectToPage) PagesCollection.iOSPage;
 		PagesCollection.connectToPage.fillTextInConnectDialog();
 	}
 	
@@ -59,14 +56,14 @@ public class ConnectToPageSteps {
 
 		// Not needed since we auto accept all alerts
 		ContactListPageSteps clSteps = new ContactListPageSteps();
-		clSteps.ThenContactListAppears("One person waiting");
+		clSteps.ISeeUserNameFirstInContactList(IOSLocators.namePendingRequest);
 	}
 
 	@When("^I confirm connection request$")
 	public void IAcceptInvitationMessage() throws IOException {
 
 		ContactListPageSteps clSteps = new ContactListPageSteps();
-		clSteps.WhenITapOnContactName("One person waiting");
+		clSteps.WhenITapOnContactName(IOSLocators.namePendingRequest);
 		PagesCollection.connectToPage = new ConnectToPage(
 				CommonUtils.getUrlFromConfig(ConnectToPage.class),
 				CommonUtils.getAppPathFromConfig(ConnectToPage.class));

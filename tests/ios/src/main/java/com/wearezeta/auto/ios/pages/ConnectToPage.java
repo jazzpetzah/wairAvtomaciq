@@ -20,9 +20,6 @@ public class ConnectToPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathConnectCloseButton)
 	private WebElement closeConnectDialoButon;
 	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathConnectionMessageInput)
-	private WebElement messageInput;
-	
 	@FindBy(how = How.NAME, using = IOSLocators.nameSendConnectButton)
 	private WebElement sendConnectButton;
 	
@@ -31,6 +28,9 @@ public class ConnectToPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameIgnoreOtherUserButton)
 	private WebElement ignoreOtherUserButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameSendConnectionInputField)
+	private WebElement sendConecttionInput;
 	
 	private String url;
 	private String path;
@@ -52,7 +52,7 @@ public class ConnectToPage extends IOSPage {
 	}
 	
 	public void fillTextInConnectDialog() {
-		messageInput.sendKeys(inviteMessage);
+		sendConecttionInput.sendKeys(inviteMessage);
 	}
 	
 	public PeoplePickerPage clickSendButton() throws Throwable {
@@ -91,6 +91,10 @@ public class ConnectToPage extends IOSPage {
 		boolean flag=false;
 		flag = DriverUtils.isElementDisplayed(sendConnectButton);
 		return flag;
+	}
+	
+	public boolean isSendConnectionInputVisible(){
+		return DriverUtils.isElementDisplayed(sendConecttionInput);
 	}
 
 }

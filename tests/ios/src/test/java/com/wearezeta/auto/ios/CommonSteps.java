@@ -118,5 +118,12 @@ public class CommonSteps {
 			BackEndREST.createGroupConveration(CommonUtils.yourUsers.get(0),
 					chatContacts, chatName);
 		}
+	 
+		@Given("I send invitation to (.*) by (.*)")
+		public void ISendInvitationToUserByContact(String user, String contact) throws Throwable {
+			user = CommonUtils.retrieveRealUserContactPasswordValue(user);
+			contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+			BackEndREST.autoTestSendRequest(CommonUtils.findUserNamed(contact), CommonUtils.findUserNamed(user));
+		}
 
 }
