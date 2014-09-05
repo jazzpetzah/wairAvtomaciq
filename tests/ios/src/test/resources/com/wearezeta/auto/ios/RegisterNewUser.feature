@@ -18,7 +18,7 @@ Feature: Register new user
 	Then I see confirmation page 
 	And I verify registration address
 	And I press continue registration
-	And Contact list appears with my name <Name>
+	And I see Contact list with my name <Name>
 
     Examples:     
     |	Email						|	Password	    |	Name			|

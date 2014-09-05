@@ -97,10 +97,10 @@ Examples:
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| http://www.youtube.com/watch?v=Bb1RhktcugU |
 
 
-#crash after relogin due to defect IOS-959
-@mute   
+#Muted due relogin issue
+@mute  
 @staging
-@id169  
+@id614
    Scenario Outline: I am able to play inline YouTube link poster by others
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -114,6 +114,8 @@ Examples:
     And I click Sign out button from personal page
     And I see sign in screen
     And I Sign in using login <Contact> and password <Password>
+    And I see Personal page
+    And I swipe right on the personal page
     And I tap on contact name <Name>
     Then I see media link <YouTubeLink> and media in dialog
     And I click video container for the first time

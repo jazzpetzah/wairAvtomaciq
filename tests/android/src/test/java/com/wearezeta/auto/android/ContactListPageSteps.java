@@ -23,6 +23,7 @@ public class ContactListPageSteps {
 		if (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
 			PagesCollection.peoplePickerPage.tapClearButton();
 		}
+		
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 
 	}
@@ -97,6 +98,8 @@ public class ContactListPageSteps {
 		if (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
 			PagesCollection.peoplePickerPage.tapClearButton();
 		}
+		
+		PagesCollection.contactListPage.closeHint();
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 	}
 

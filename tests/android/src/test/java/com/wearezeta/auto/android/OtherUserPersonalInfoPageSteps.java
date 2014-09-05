@@ -50,9 +50,20 @@ public class OtherUserPersonalInfoPageSteps {
 		PagesCollection.otherUserPersonalInfoPage.pressRemoveConfirmBtn();
 	}
 	
+	@When("^I confirm block$")
+	public void WhenIConfirmBlock() throws Throwable {
+		PagesCollection.otherUserPersonalInfoPage.pressRemoveConfirmBtn();
+	}
+	
 	@When("^I press add contact button$")
 	public void WhenIPressAddContactButton() throws IOException{
 		 PagesCollection.otherUserPersonalInfoPage.tapAddContactBtn();
+	}
+	
+	@When("^I Press Block button$")
+	public void IPressBlockButton() {
+		PagesCollection.otherUserPersonalInfoPage.clickBlockBtn();
+		
 	}
 	
 	@Then("^I see (.*) user name and email$")
@@ -68,6 +79,16 @@ public class OtherUserPersonalInfoPageSteps {
 		
 		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage.isOtherUserNameVisible(contact));
 		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage.isOtherUserMailVisible(email));
+	}
+	
+	@Then("^User info should be shown with Block button$")
+	public void UserShouldBeShownWithUnBlockButton() throws Throwable {
+		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage.isUnblockBtnVisible());
+	}
+	
+	@Then("^I click Unblock button$")
+	public void IClickUnblockButton() throws Throwable {
+		PagesCollection.androidPage = PagesCollection.otherUserPersonalInfoPage.clickUnblockBtn();
 	}
 	
 	@Then("^I see correct background image$")

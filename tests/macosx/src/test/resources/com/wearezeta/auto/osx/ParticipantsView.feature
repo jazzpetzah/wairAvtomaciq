@@ -86,28 +86,13 @@ Feature: Participants View
     And I create group chat with <Contact1> and <Contact2>
     When I open conversation with <Contact1>, <Contact2>
     And I open Conversation info
-    And I set name       for conversation
-    Then I do not see conversation       in contact list
+    And I set name <NewName> for conversation
+    Then I do not see conversation <NewName> in contact list
     And I see Contact list with name <Contact1>, <Contact2>
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
-
-  @staging @id96
-  Scenario Outline: Do not accept erroneous input as group conversation name (line breaks)
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
-    And I create group chat with <Contact1> and <Contact2>
-    When I open conversation with <Contact1>, <Contact2>
-    And I open Conversation info
-    And I set name \n\n\n\n\n for conversation
-    Then I do not see conversation \n\n\n\n\n in contact list
-    And I see Contact list with name <Contact1>, <Contact2>
-
-    Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
+      | Login   | Password    | Name    | Contact1    | Contact2    | NewName 		|
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | \\u0020       |
 
   @staging @id96
   Scenario Outline: Do not accept erroneous input as group conversation name (leading spaces)
@@ -116,13 +101,14 @@ Feature: Participants View
     And I create group chat with <Contact1> and <Contact2>
     When I open conversation with <Contact1>, <Contact2>
     And I open Conversation info
-    And I set name    TestLeadingSpaces    for conversation
-    Then I do not see conversation    TestLeadingSpaces    in contact list
-    And I see Contact list with name <Contact1>, <Contact2>
+    And I set name <NewName> for conversation
+    Then I see Contact list with name <NewName>
+    And I see message YOU RENAMED THE CONVERSATION in conversation
+    And I see conversation name Test Leading Spaces in conversation
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
+      | Login   | Password    | Name    | Contact1    | Contact2    | NewName  				 |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | Test   Leading   Spaces|
 
   @staging @id100
   Scenario Outline: Access proﬁle information for the other participant in a 1on1 conversation

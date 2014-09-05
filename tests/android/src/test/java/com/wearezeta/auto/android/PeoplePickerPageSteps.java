@@ -70,6 +70,10 @@ public class PeoplePickerPageSteps {
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 	    PagesCollection.peoplePickerPage.waitUserPickerFindUser(contact);
 		PagesCollection.androidPage = PagesCollection.peoplePickerPage.selectContact(contact);
+		
+		if (PagesCollection.androidPage instanceof OtherUserPersonalInfoPage) {
+			PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.androidPage;
+		}
 	}
 	
 	@When("^I  long tap on user name found on People picker page (.*)$")

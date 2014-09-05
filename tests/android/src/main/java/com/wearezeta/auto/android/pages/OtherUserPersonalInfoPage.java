@@ -35,6 +35,12 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idUserProfileConfirmationMenu")
 	private WebElement confirmMenu;
 	
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idBlockUserBtn")
+	private WebElement blockButton; 
+	
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idUnblockBtn")
+	private WebElement unblockButton; 
+	
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.GroupChatInfoPage.CLASS_NAME, locatorKey = "idLeaveConversationButton")
 	private WebElement removeBtn;
 	
@@ -60,8 +66,21 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		this.path = path;
 	}
 
-	public void clickRemoveBtn(){
+	public void clickRemoveBtn() {
 		removeBtn.click();
+	}
+	
+	public void clickBlockBtn() {
+		blockButton.click();
+	}
+	
+	public AndroidPage clickUnblockBtn() throws Exception {
+		unblockButton.click();
+		return new DialogPage(url, path);
+	}
+	
+	public boolean isUnblockBtnVisible() {
+		return unblockButton.isDisplayed();
 	}
 	
 	@Override

@@ -76,7 +76,11 @@ public class PeoplePickerPage extends AndroidPage {
 		AndroidPage page = null;
 		WebElement el = driver.findElementByXPath(String.format(AndroidLocators.PeoplePickerPage.xpathPeoplePickerContact,contactName));
 		el.click();
-		if(connectToHeader.size() > 0 && connectToHeader.get(0).isDisplayed()) {
+		
+		if(driver.findElementsById(AndroidLocators.OtherUserPersonalInfoPage.idUnblockBtn).size() > 0) {
+			page = new OtherUserPersonalInfoPage(url, path);
+		}
+		else if(connectToHeader.size() > 0 && connectToHeader.get(0).isDisplayed()) {
 			page = new ConnectToPage(url, path);
 		}
 		else if(isVisible(addToConversationsButton)) {

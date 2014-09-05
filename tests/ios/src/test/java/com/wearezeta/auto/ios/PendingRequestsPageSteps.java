@@ -10,5 +10,10 @@ public class PendingRequestsPageSteps {
 	public void IClickOnIgnoreButtonPendingRequests() throws Throwable{
 		PagesCollection.contactListPage = PagesCollection.pendingRequestsPage.clickIgnoreButton();
 	}
+	
+	@When("I click Connect button on Pending request page")
+	public void IClickOnConnectButtonPendingRequest() throws Throwable {
+		PagesCollection.contactListPage = PagesCollection.pendingRequestsPage.clickConnectButton();
+	}
 
 }

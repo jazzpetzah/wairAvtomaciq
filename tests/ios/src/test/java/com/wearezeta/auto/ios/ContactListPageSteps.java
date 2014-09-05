@@ -72,15 +72,7 @@ public class ContactListPageSteps {
 		}
 	}
 
-	@Then("Contact list appears with my name (.*)")
-	public void ThenContactListAppears(String value) throws IOException,
-			InterruptedException {
-
-		value = CommonUtils.retrieveRealUserContactPasswordValue(value);
-		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(value));
-	}
-
-	@Then("^I see contact list loaded with User name (.*)$")
+	@Then("^I see first item in contact list named (.*)$")
 	public void ISeeUserNameFirstInContactList(String value) throws Throwable {
 
 		value = CommonUtils.retrieveRealUserContactPasswordValue(value);

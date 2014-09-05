@@ -54,11 +54,8 @@ public class PeoplePickerPage extends IOSPage{
 		this.path = path;
 	}
 	
-	public Boolean isPeoplePickerPageVisible() {
-		
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.name(IOSLocators.namePickerClearButton)));
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.name(IOSLocators.namePickerClearButton)));
-		return peoplePickerClearBtn.isDisplayed();
+	public Boolean isPeoplePickerPageVisible() {	
+		return DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.namePickerClearButton));
 	}
 	
 	public void tapOnPeoplePickerSearch() { 
@@ -94,8 +91,8 @@ public class PeoplePickerPage extends IOSPage{
 		IOSPage page = null;
 		
 		try {
-			WebElement el = driver.findElement(By.name(IOSLocators.nameSendConnectButton));
-			if( el.getText()==IOSLocators.nameSendConnectButton) {
+			WebElement el = driver.findElement(By.name(IOSLocators.nameSendConnectionInputField));
+			if(DriverUtils.isElementDisplayed(el)) {
 				page = new ConnectToPage(url, path);
 			}
 			else {
