@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.PageFactory;
@@ -75,7 +76,13 @@ public abstract class BasePage {
 	}
 
 	public void refreshUITree() {
-		driver.getPageSource();
+		
+		try {
+			driver.getPageSource();
+		}
+		catch (WebDriverException ex){
+			
+		}
 	}
 
 	public abstract BasePage swipeLeft(int time) throws IOException, Exception;;
