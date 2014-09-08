@@ -98,8 +98,12 @@ public class ContactListPageSteps {
 		if (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
 			PagesCollection.peoplePickerPage.tapClearButton();
 		}
+
+		Thread.sleep(2000);
+		if (PagesCollection.contactListPage.isHintVisible()) {
+			PagesCollection.contactListPage.closeHint();
+		}
 		
-		PagesCollection.contactListPage.closeHint();
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 	}
 

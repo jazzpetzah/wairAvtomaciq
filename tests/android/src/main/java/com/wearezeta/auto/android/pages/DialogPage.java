@@ -2,9 +2,12 @@ package com.wearezeta.auto.android.pages;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -66,6 +69,9 @@ public class DialogPage extends AndroidPage{
 	
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idGalleryBtn")
 	private WebElement galleryBtn;
+	
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idSearchHintClose")
+	private WebElement closeHintBtn;
 	
 	private String url;
 	private String path;
@@ -214,6 +220,20 @@ public class DialogPage extends AndroidPage{
 	public ContactListPage navigateBack() throws Exception{
 		driver.navigate().back();
 		return new ContactListPage(url, path);
+	}
+
+	public boolean isHintVisible() throws InterruptedException, IOException {
+		refreshUITree();//TODO workaround
+		try {
+			wait.until(ExpectedConditions.elementToBeClickable(closeHintBtn));
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+		return closeHintBtn.isEnabled();
+	}
+	
+	public void closeHint() {
+		closeHintBtn.click();
 	}
 
 	public void openGallery() {
