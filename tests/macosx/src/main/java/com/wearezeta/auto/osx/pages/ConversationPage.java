@@ -27,6 +27,7 @@ public class ConversationPage extends OSXPage {
 	
 	static final String SOUNDCLOUD_BUTTON_ATT_TITLE = "AXTitle";
 	static String SOUNDCLOUD_BUTTON_STATE;
+	int numberSoundCloudButtons;
 
 	@FindBy(how = How.ID, using = OSXLocators.idMainWindow)
 	private WebElement viewPager;
@@ -44,8 +45,10 @@ public class ConversationPage extends OSXPage {
 
 	@FindBy(how = How.ID, using = OSXLocators.idPeopleButton)
 	private WebElement peopleButton;
-
+	
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathSoundCloudLinkButton)
+	private List<WebElement> soundCloudButtons;
+
 	private WebElement soundCloudLinkButton;
 
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathSoundCloudMediaContainer)
@@ -62,7 +65,7 @@ public class ConversationPage extends OSXPage {
 
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathConversationViewScrollArea)
 	private WebElement conversationView;
-
+	
 	public ConversationPage(String URL, String path)
 			throws MalformedURLException {
 
@@ -187,8 +190,14 @@ public class ConversationPage extends OSXPage {
 		}
 		return isSend;
 	}
+	
+	public void setLastSoundCloudButtonToUse(){
+		numberSoundCloudButtons = soundCloudButtons.size();
+		soundCloudLinkButton = soundCloudButtons.get(numberSoundCloudButtons - 1);
+	}
 
 	public void tapOnSoundCloudMessage() {
+		setLastSoundCloudButtonToUse();
 		soundCloudLinkButton.click();
 	}
 
@@ -199,6 +208,7 @@ public class ConversationPage extends OSXPage {
 	}
 
 	public String getSoundCloudButtonState() {
+		setLastSoundCloudButtonToUse();
 		SOUNDCLOUD_BUTTON_STATE = soundCloudLinkButton
 				.getAttribute(SOUNDCLOUD_BUTTON_ATT_TITLE);
 		return SOUNDCLOUD_BUTTON_STATE;
