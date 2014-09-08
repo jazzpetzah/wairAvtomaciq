@@ -49,6 +49,11 @@ public class ContactListPageSteps {
 	public void WhenITapOnMyName(String name) throws Exception  {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		PagesCollection.personalInfoPage = (PersonalInfoPage) PagesCollection.contactListPage.tapOnName(name);
+		
+		Thread.sleep(2000);
+		if (PagesCollection.contactListPage.isHintVisible()) {
+			PagesCollection.contactListPage.closeHint();
+		}
 	}
 
 	@When("^I swipe down contact list$")

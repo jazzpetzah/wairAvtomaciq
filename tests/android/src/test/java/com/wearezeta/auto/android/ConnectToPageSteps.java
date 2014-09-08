@@ -3,7 +3,6 @@ package com.wearezeta.auto.android;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.ConnectToPage;
-import com.wearezeta.auto.android.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.CommonUtils;
 
@@ -16,6 +15,12 @@ public class ConnectToPageSteps {
 	public void WhenISeeConnectToUserDialog(String contact) throws Throwable {
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 		PagesCollection.connectToPage = (ConnectToPage) PagesCollection.androidPage;
+		
+		Thread.sleep(2000);
+		if (PagesCollection.contactListPage.isHintVisible()) {
+			PagesCollection.contactListPage.closeHint();
+		}
+		
 		Assert.assertEquals(contact.toLowerCase(),PagesCollection.connectToPage.getConnectToHeader());
 	}
 	

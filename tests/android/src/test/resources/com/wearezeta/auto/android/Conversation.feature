@@ -88,6 +88,7 @@ Feature: Conversation
     And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <GroupChatName>
+    And I see dialog page
     And I swipe up on group dialog page
     And I press Leave conversation button
     And I confirm leaving
@@ -105,6 +106,7 @@ Feature: Conversation
     And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <GroupChatName>
+    And I see dialog page
     And I swipe up on group dialog page
     And I tap on group chat contact <Contact2>
     And I click Remove
