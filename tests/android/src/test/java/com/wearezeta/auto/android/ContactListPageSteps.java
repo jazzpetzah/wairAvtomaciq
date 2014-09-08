@@ -14,14 +14,19 @@ import cucumber.api.java.en.When;
 
 public class ContactListPageSteps {
 
-	private void disableHint() throws Throwable {
+	private void disableHint(String name) throws Throwable {
 		Thread.sleep(2000);
 		if (PagesCollection.contactListPage.isHintVisible()) {
 			PagesCollection.contactListPage.closeHint();
+			Thread.sleep(1000);
 			ISwipeDownContactList();
 			if (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
 				PagesCollection.peoplePickerPage.tapClearButton();
 			}
+			
+			WhenITapOnMyName(name);
+			PagesCollection.contactListPage.navigateBack();
+			Thread.sleep(1000);
 		}
 	}
 	
@@ -35,7 +40,7 @@ public class ContactListPageSteps {
 			PagesCollection.peoplePickerPage.tapClearButton();
 		}
 		
-		disableHint();
+		disableHint(name);
 		
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 
@@ -117,7 +122,7 @@ public class ContactListPageSteps {
 			PagesCollection.peoplePickerPage.tapClearButton();
 		}
 
-		disableHint();
+		disableHint(name);
 		
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 	}
