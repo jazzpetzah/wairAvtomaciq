@@ -24,6 +24,11 @@ public class ContactListPageSteps {
 			PagesCollection.peoplePickerPage.tapClearButton();
 		}
 		
+		Thread.sleep(2000);
+		if (PagesCollection.contactListPage.isHintVisible()) {
+			PagesCollection.contactListPage.closeHint();
+		}
+		
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 
 	}
