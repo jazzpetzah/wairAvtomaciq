@@ -22,6 +22,11 @@ public class DialogPageSteps{
 	public void WhenISeeDialogPage() throws Throwable {
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
 		PagesCollection.dialogPage.waitForCursorInputVisible();
+		
+		Thread.sleep(2000);
+		if (PagesCollection.contactListPage.isHintVisible()) {
+			PagesCollection.contactListPage.closeHint();
+		}
 	}
 
 	@When("^I tap on text input$")

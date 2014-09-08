@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.*;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -37,7 +39,7 @@ public class ContactListPage extends AndroidPage {
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectToHeader")
 	private List<WebElement> connectToHeader;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idSearchHintClose")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idSearchHintClose")
 	private WebElement closeHintBtn;
 	
 
@@ -94,6 +96,16 @@ public class ContactListPage extends AndroidPage {
 
 	public void clickOnMute() {
 		muteBtn.click();
+	}
+	
+	public boolean isHintVisible() throws InterruptedException, IOException {
+		refreshUITree();//TODO workaround
+		try {
+			wait.until(ExpectedConditions.elementToBeClickable(closeHintBtn));
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+		return closeHintBtn.isEnabled();
 	}
 	
 	public void closeHint() {
