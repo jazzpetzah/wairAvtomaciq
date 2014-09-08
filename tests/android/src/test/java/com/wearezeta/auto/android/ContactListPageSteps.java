@@ -14,8 +14,24 @@ import cucumber.api.java.en.When;
 
 public class ContactListPageSteps {
 
+	private void disableHint(String name) throws Throwable {
+		Thread.sleep(2000);
+		if (PagesCollection.contactListPage.isHintVisible()) {
+			PagesCollection.contactListPage.closeHint();
+			Thread.sleep(1000);
+			ISwipeDownContactList();
+			if (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
+				PagesCollection.peoplePickerPage.tapClearButton();
+			}
+			
+			WhenITapOnMyName(name);
+			PagesCollection.contactListPage.navigateBack();
+			Thread.sleep(1000);
+		}
+	}
+	
 	@Given("^I see Contact list with my name (.*)$")
-	public void GivenISeeContactListWithMyName(String name) throws Exception{
+	public void GivenISeeContactListWithMyName(String name) throws Throwable{
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		PagesCollection.contactListPage.pressLaterButton();
 		//TODO: revisit later
@@ -24,10 +40,7 @@ public class ContactListPageSteps {
 			PagesCollection.peoplePickerPage.tapClearButton();
 		}
 		
-		Thread.sleep(2000);
-		if (PagesCollection.contactListPage.isHintVisible()) {
-			PagesCollection.contactListPage.closeHint();
-		}
+		disableHint(name);
 		
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 
@@ -49,6 +62,11 @@ public class ContactListPageSteps {
 	public void WhenITapOnMyName(String name) throws Exception  {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		PagesCollection.personalInfoPage = (PersonalInfoPage) PagesCollection.contactListPage.tapOnName(name);
+		
+		Thread.sleep(2000);
+		if (PagesCollection.contactListPage.isHintVisible()) {
+			PagesCollection.contactListPage.closeHint();
+		}
 	}
 
 	@When("^I swipe down contact list$")
@@ -95,7 +113,7 @@ public class ContactListPageSteps {
 	}
 
 	@Then ("Contact list appears with my name (.*)")
-	public void ThenContactListAppears(String name) throws Exception {
+	public void ThenContactListAppears(String name) throws Throwable {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		PagesCollection.contactListPage.pressLaterButton();
 		//TODO: revisit later
@@ -104,10 +122,7 @@ public class ContactListPageSteps {
 			PagesCollection.peoplePickerPage.tapClearButton();
 		}
 
-		Thread.sleep(2000);
-		if (PagesCollection.contactListPage.isHintVisible()) {
-			PagesCollection.contactListPage.closeHint();
-		}
+		disableHint(name);
 		
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 	}
