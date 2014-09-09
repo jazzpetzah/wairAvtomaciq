@@ -30,11 +30,11 @@ public class CommonSteps {
 	public void setUpAcceptAlerts() throws Exception {
 		commonBefore();
 		
-		String path = CommonUtils.getAppPathFromConfig(TestRun.class);
+		String path = CommonUtils.getIosApplicationPathFromConfig(TestRun.class);
 		
 		if (PagesCollection.loginPage == null)
 		{
-			PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(TestRun.class), path);
+			PagesCollection.loginPage = new LoginPage(CommonUtils.getIosAppiumUrlFromConfig(TestRun.class), path);
 			ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
 		}
 
@@ -44,11 +44,11 @@ public class CommonSteps {
 	public void setUpNoAlerts() throws Exception {
 		commonBefore();
 		
-		String path = CommonUtils.getAppPathFromConfig(TestRun.class);
+		String path = CommonUtils.getIosApplicationPathFromConfig(TestRun.class);
 		
 		if (PagesCollection.loginPage == null)
 		{
-			PagesCollection.loginPage = new LoginPage(CommonUtils.getUrlFromConfig(TestRun.class), path, false);
+			PagesCollection.loginPage = new LoginPage(CommonUtils.getIosAppiumUrlFromConfig(TestRun.class), path, false);
 			ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
 		}
 
@@ -115,7 +115,7 @@ public class CommonSteps {
 					break;
 				}
 			}
-			BackEndREST.createGroupConveration(CommonUtils.yourUsers.get(0),
+			BackEndREST.createGroupConversation(CommonUtils.yourUsers.get(0),
 					chatContacts, chatName);
 		}
 	 

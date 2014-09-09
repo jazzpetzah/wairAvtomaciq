@@ -53,8 +53,8 @@ public class LoginPageSteps {
 		} catch (NoSuchElementException e) { }
 		
 		CommonSteps.senderPages.setContactListPage(new ContactListPage(
-				CommonUtils.getUrlFromConfig(ContactListPage.class),
-				CommonUtils.getAppPathFromConfig(ContactListPage.class)));
+				CommonUtils.getOsxAppiumUrlFromConfig(ContactListPage.class),
+				CommonUtils.getOsxApplicationPathFromConfig(ContactListPage.class)));
 	 }
 	
 	 @When("I press Sign In button")

@@ -1,7 +1,7 @@
 #Configuration file for IOS tests
 #Configure before running tests
-Url=${Url}
-appPath=${appPath}
+iosAppiumUrl=${Url}
+iosApplicationPath=${appPath}
 isSimulator=${isSimulator}
 generateUsers=${generateUsers}
 swipeScriptPath=${Root}/${swipeScriptPath}

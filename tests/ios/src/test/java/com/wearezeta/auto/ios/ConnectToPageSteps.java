@@ -65,8 +65,8 @@ public class ConnectToPageSteps {
 		ContactListPageSteps clSteps = new ContactListPageSteps();
 		clSteps.WhenITapOnContactName(IOSLocators.namePendingRequest);
 		PagesCollection.connectToPage = new ConnectToPage(
-				CommonUtils.getUrlFromConfig(ConnectToPage.class),
-				CommonUtils.getAppPathFromConfig(ConnectToPage.class));
+				CommonUtils.getIosAppiumUrlFromConfig(ConnectToPage.class),
+				CommonUtils.getIosApplicationPathFromConfig(ConnectToPage.class));
 		PagesCollection.connectToPage.acceptInvitation();
 		// Not needed since we auto accept all alerts
 	}

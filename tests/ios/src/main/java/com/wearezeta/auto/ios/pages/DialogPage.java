@@ -4,8 +4,10 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -18,6 +20,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
+import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.tools.IOSKeyboard;
 
@@ -390,6 +393,25 @@ public class DialogPage extends IOSPage{
 		DriverUtils.scrollToElement(driver, el);
 		DialogPage page = new DialogPage(url, path);
 		return page;
+	}
+	
+	public ArrayList<MessageEntry> listAllMessages() {
+		Pattern messagesPattern = Pattern.compile("[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}");
+		ArrayList<MessageEntry> listResult = new ArrayList<MessageEntry>();
+		long startDate = new Date().getTime();
+		List<WebElement> messages = driver.findElements(By.className(IOSLocators.classNameDialogMessages));
+		long endDate = new Date().getTime();
+		System.out.println("time to retrieve messages: " + (endDate-startDate));
+		for (WebElement message: messages) {
+			try {
+				String messageText = message.getAttribute("name");
+				if (messagesPattern.matcher(messageText).matches()) {
+					listResult.add(new MessageEntry("text", messageText, CommonUtils.PLATFORM_NAME_IOS, new Date()));
+				}
+			} catch (ClassCastException e) {
+			}
+		}
+		return listResult;
 	}
 
 

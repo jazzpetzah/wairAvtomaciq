@@ -94,8 +94,8 @@ public class RegistrationPageSteps {
 	@When("I take registration picture from image file (.*)")
 	public void ITakeRegistrationPictureFromImageFile(String imageFile) throws MalformedURLException, IOException, InterruptedException {
 		ChoosePicturePage choosePicturePage = new ChoosePicturePage(
-				 CommonUtils.getUrlFromConfig(RegistrationPageSteps.class),
-				 CommonUtils.getAppPathFromConfig(RegistrationPageSteps.class)
+				 CommonUtils.getOsxAppiumUrlFromConfig(RegistrationPageSteps.class),
+				 CommonUtils.getOsxApplicationPathFromConfig(RegistrationPageSteps.class)
 				 );
 		Assert.assertTrue(choosePicturePage.isVisible());
 		
@@ -107,8 +107,8 @@ public class RegistrationPageSteps {
 	@Then("I see contact list of registered user")
 	public void ISeeContactListOfRegisteredUser() throws IOException {
 		CommonSteps.senderPages.setContactListPage(new ContactListPage(
-				CommonUtils.getUrlFromConfig(RegistrationPageSteps.class),
-				CommonUtils.getAppPathFromConfig(RegistrationPageSteps.class)));
+				CommonUtils.getOsxAppiumUrlFromConfig(RegistrationPageSteps.class),
+				CommonUtils.getOsxApplicationPathFromConfig(RegistrationPageSteps.class)));
 		ContactListPageSteps clSteps = new ContactListPageSteps();
 		clSteps.GivenISeeContactListWithName(aqaName);
 	}

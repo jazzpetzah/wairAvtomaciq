@@ -1,9 +1,12 @@
 package com.wearezeta.auto.osx.pages;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -17,8 +20,10 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
 import com.google.common.base.Function;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.util.NSPoint;
 
@@ -174,8 +179,10 @@ public class ConversationPage extends OSXPage {
 	}
 
 	public int getNumberOfImageEntries() {
+		DriverUtils.setImplicitWaitValue(driver, 1);
 		List<WebElement> conversationImages = driver.findElements(By
 				.xpath(OSXLocators.xpathConversationImageEntry));
+		DriverUtils.setDefaultImplicitWait(driver);
 		return conversationImages.size();
 	}
 
@@ -274,5 +281,18 @@ public class ConversationPage extends OSXPage {
 	    	Thread.sleep(1000);
 	    	currentState = getSoundCloudButtonState();
 	    }	
+	}
+	
+	public ArrayList<MessageEntry> listAllMessages() {
+		Pattern messagesPattern = Pattern.compile("[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}");
+		ArrayList<MessageEntry> listResult = new ArrayList<MessageEntry>();
+		List<WebElement> messages = driver.findElements(By.xpath(OSXLocators.xpathConversationTextMessageEntry));
+		for (WebElement message: messages) {
+			String messageText = message.getText();
+			if (messagesPattern.matcher(messageText).matches()) {
+				listResult.add(new MessageEntry("text", messageText, CommonUtils.PLATFORM_NAME_OSX, new Date()));
+			}
+		}
+		return listResult;
 	}
 }

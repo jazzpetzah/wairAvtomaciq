@@ -74,7 +74,7 @@ public class ConversationInfoPage extends OSXPage {
 	public void selectUserIfNotSelected(String user) throws IOException {
 		Screen s = new Screen();
 		try {
-    		App.focus(CommonUtils.getAppPathFromConfig(ConversationInfoPage.class));
+    		App.focus(CommonUtils.getOsxApplicationPathFromConfig(ConversationInfoPage.class));
 			s.click(Env.getMouseLocation());
 			s.click(Env.getMouseLocation());
 		} catch (HeadlessException e) {

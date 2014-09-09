@@ -62,16 +62,16 @@ public class ContactListPageSteps {
 		}
 		Assert.assertTrue("Conversation with name " + contact + " was not found.", isConversationExist);
 		CommonSteps.senderPages.setConversationPage(new ConversationPage(
-				CommonUtils.getUrlFromConfig(ContactListPageSteps.class),
-				CommonUtils.getAppPathFromConfig(ContactListPageSteps.class)));
+				CommonUtils.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
+				CommonUtils.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
 	 }
 	
 	@When("I open People Picker from contact list")
 	public void WhenIOpenPeoplePickerFromContactList() throws MalformedURLException, IOException {
 		CommonSteps.senderPages.getContactListPage().openPeoplePicker();
 		CommonSteps.senderPages.setPeoplePickerPage(new PeoplePickerPage(
-				CommonUtils.getUrlFromConfig(ContactListPageSteps.class),
-				CommonUtils.getAppPathFromConfig(ContactListPageSteps.class)));
+				CommonUtils.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
+				CommonUtils.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
 	}
 	
 	@Given("I go to user (.*) profile") 
@@ -79,8 +79,8 @@ public class ContactListPageSteps {
 		user = CommonUtils.retrieveRealUserContactPasswordValue(user);
 		GivenIOpenConversationWith(user);
 		CommonSteps.senderPages.setUserProfilePage(new UserProfilePage(
-				CommonUtils.getUrlFromConfig(ContactListPageSteps.class),
-				CommonUtils.getAppPathFromConfig(ContactListPageSteps.class)));
+				CommonUtils.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
+				CommonUtils.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
 	}
 	
 	@When("I change conversation mute state")
