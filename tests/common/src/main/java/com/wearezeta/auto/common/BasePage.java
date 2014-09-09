@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.Dimension;
@@ -25,42 +26,48 @@ import com.wearezeta.auto.common.locators.ZetaFieldDecorator;
 
 public abstract class BasePage {
 
-	protected static ZetaDriver driver = null;
-	protected static WebDriverWait wait;
-
+	protected static HashMap<String, ZetaDriver> drivers = new HashMap<String, ZetaDriver>();
+	protected static HashMap<String, WebDriverWait> waits = new HashMap<String, WebDriverWait>();
+	
+	private String pagePlatform;
+	
 	protected synchronized void InitConnection(String URL, DesiredCapabilities capabilities)
 			throws MalformedURLException {
-		if (null == driver) {
-			driver = new ZetaDriver(new URL(URL), capabilities);
+		String platform = (String) capabilities.getCapability("platformName");
+		if (null == drivers || drivers.isEmpty() || drivers.get(platform) == null) {
+			drivers.put(platform, new ZetaDriver(new URL(URL), capabilities));
 			try {
-				driver.manage()
+				drivers.get(platform).manage()
 						.timeouts()
 						.implicitlyWait(
 								Integer.parseInt(CommonUtils
 										.getDriverTimeoutFromConfig(getClass())),
 								TimeUnit.SECONDS);
 
-				wait = new WebDriverWait(driver, Integer.parseInt(CommonUtils
-						.getDriverTimeoutFromConfig(getClass())));
+				waits.put(platform, new WebDriverWait(drivers.get(platform), Integer.parseInt(CommonUtils
+						.getDriverTimeoutFromConfig(getClass()))));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		ElementLocatorFactory zetaLocatorFactory = new ZetaElementLocatorFactory(driver);
+		
+		pagePlatform = platform;
+				
+		ElementLocatorFactory zetaLocatorFactory = new ZetaElementLocatorFactory(drivers.get(platform));
 		FieldDecorator zetaFieldDecorator = new ZetaFieldDecorator(zetaLocatorFactory);
 		PageFactory.initElements(zetaFieldDecorator, this);
 	}
 
 	public synchronized void Close() throws IOException {
-		if (driver != null) {
-			driver.quit();
-			driver = null;
+		if (drivers.get(pagePlatform) != null) {
+			drivers.get(pagePlatform).quit();
+			drivers.put(pagePlatform, null);
 		}
 	}
 
 	public BufferedImage takeScreenshot() throws IOException {
-		return DriverUtils.takeScreenshot(driver);
+		return DriverUtils.takeScreenshot(drivers.get(pagePlatform));
 	}
 
 	public BufferedImage getElementScreenshot(WebElement element)
@@ -76,11 +83,9 @@ public abstract class BasePage {
 	}
 
 	public void refreshUITree() {
-		
 		try {
-			driver.getPageSource();
-		}
-		catch (WebDriverException ex){
+			drivers.get(pagePlatform).getPageSource();
+		} catch (WebDriverException ex) {
 			
 		}
 	}
@@ -104,4 +109,7 @@ public abstract class BasePage {
 		}
 	}
 
+	public static ZetaDriver getDriver(String id) {
+		return drivers.get(id);
+	}
 }

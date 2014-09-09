@@ -44,7 +44,7 @@ public class CommonSteps {
 
 		if (PagesCollection.loginPage == null) {
 			PagesCollection.loginPage = new LoginPage(
-					CommonUtils.getUrlFromConfig(CommonSteps.class), path);
+					CommonUtils.getAndroidAppiumUrlFromConfig(CommonSteps.class), path);
 			ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
 			PagesCollection.loginPage.dismissUpdate();
 		}
@@ -57,7 +57,7 @@ public class CommonSteps {
 
 		if (PagesCollection.loginPage == null) {
 			PagesCollection.loginPage = new LoginPage(
-					CommonUtils.getUrlFromConfig(CommonSteps.class), path, true);
+					CommonUtils.getAndroidAppiumUrlFromConfig(CommonSteps.class), path, true);
 			ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
 		}
 	}
@@ -128,7 +128,7 @@ public class CommonSteps {
 		List<ClientUser> users = new LinkedList<ClientUser>();
 		users.add(yourUser);
 		users.add(contactContact);
-		BackEndREST.createGroupConveration(yourContact,users, chatName);
+		BackEndREST.createGroupConversation(yourContact,users, chatName);
 	}
 
 	@Given("^User (.*) is connected with (.*)")
@@ -183,7 +183,7 @@ public class CommonSteps {
 				break;
 			}
 		}
-		BackEndREST.createGroupConveration(CommonUtils.yourUsers.get(0),
+		BackEndREST.createGroupConversation(CommonUtils.yourUsers.get(0),
 				chatContacts, chatName);
 	}
 
@@ -264,6 +264,6 @@ public class CommonSteps {
 			throw new IOException("Skipped due to error in users creation.");
 		}
 	
-		path = CommonUtils.getAppPathFromConfig(CommonSteps.class);
+		path = CommonUtils.getAndroidApplicationPathFromConfig(CommonSteps.class);
 	}
 }

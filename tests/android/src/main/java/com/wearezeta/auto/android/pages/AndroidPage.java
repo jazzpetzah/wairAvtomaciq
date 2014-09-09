@@ -12,15 +12,19 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
+import com.wearezeta.auto.common.driver.ZetaDriver;
 
 
 public abstract class AndroidPage extends BasePage {
+	protected static ZetaDriver driver;
+	protected static WebDriverWait wait;
 	
 	private DesiredCapabilities capabilities = new DesiredCapabilities();
 	
@@ -47,17 +51,17 @@ public abstract class AndroidPage extends BasePage {
 		
         url = URL;
         
-        capabilities.setCapability("platformName", "Android");
+        capabilities.setCapability("platformName", CommonUtils.PLATFORM_NAME_ANDROID);
         capabilities.setCapability("deviceName", CommonUtils.getAndroidDeviceNameFromConfig(AndroidPage.class));
         capabilities.setCapability("app", path);
         capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(AndroidPage.class));
         capabilities.setCapability("appActivity", CommonUtils.getAndroidActivityFromConfig(AndroidPage.class));
         capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidActivityFromConfig(AndroidPage.class));
         
-        if(isUnicode){
+        if (isUnicode) {
         	initUnicodeDriver();
         }
-        else{
+        else {
         	initNoneUnicodeDriver();
         }
 	}
@@ -67,11 +71,20 @@ public abstract class AndroidPage extends BasePage {
 		capabilities.setCapability("unicodeKeyboard", true);
         capabilities.setCapability("resetKeyboard", true);
         super.InitConnection(url, capabilities);
+
+        storeDriverAndWait();
 	}
 	
 	private void initNoneUnicodeDriver() throws MalformedURLException
 	{
         super.InitConnection(url, capabilities);
+        
+        storeDriverAndWait();
+	}
+	
+	private void storeDriverAndWait() {
+        driver = drivers.get(CommonUtils.PLATFORM_NAME_ANDROID);
+        wait = waits.get(CommonUtils.PLATFORM_NAME_ANDROID);
 	}
 	
 	public void selectPhoto(){

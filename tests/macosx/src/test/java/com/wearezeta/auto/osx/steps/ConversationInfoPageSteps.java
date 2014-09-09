@@ -21,8 +21,8 @@ public class ConversationInfoPageSteps {
 	public void WhenIChooseUserInConversationInfo(String user) throws MalformedURLException, IOException {
 		user = CommonUtils.retrieveRealUserContactPasswordValue(user);
 		CommonSteps.senderPages.setConversationInfoPage(new ConversationInfoPage(
-				 CommonUtils.getUrlFromConfig(ConversationInfoPage.class),
-				 CommonUtils.getAppPathFromConfig(ConversationInfoPage.class)
+				 CommonUtils.getOsxAppiumUrlFromConfig(ConversationInfoPage.class),
+				 CommonUtils.getOsxApplicationPathFromConfig(ConversationInfoPage.class)
 				 ));
 		CommonSteps.senderPages.getConversationInfoPage().selectUser(user);
 		CommonSteps.senderPages.getConversationInfoPage().selectUserIfNotSelected(user);
@@ -32,8 +32,8 @@ public class ConversationInfoPageSteps {
 	public void IDontSeeUserInConversationInfo(String user) throws MalformedURLException, IOException {
 		user = CommonUtils.retrieveRealUserContactPasswordValue(user);
 		CommonSteps.senderPages.setConversationInfoPage(new ConversationInfoPage(
-				 CommonUtils.getUrlFromConfig(ConversationInfoPage.class),
-				 CommonUtils.getAppPathFromConfig(ConversationInfoPage.class)
+				 CommonUtils.getOsxAppiumUrlFromConfig(ConversationInfoPage.class),
+				 CommonUtils.getOsxApplicationPathFromConfig(ConversationInfoPage.class)
 				 ));
 		Assert.assertTrue(CommonSteps.senderPages.getConversationInfoPage().userIsNotExistInConversation(user));
 	}

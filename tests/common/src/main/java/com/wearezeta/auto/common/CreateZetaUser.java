@@ -19,7 +19,8 @@ public class CreateZetaUser {
 	
 	public static final String MAILS_FOLDER = "Inbox";
 	public static final int ACTIVATION_TIMEOUT = 10; 
-
+	public static final int NUMBER_OF_MAILS_TO_CHECK = 20;
+	
 	public static String registerUserAndReturnMail() throws IOException,
 			MessagingException, IllegalArgumentException, UriBuilderException,
 			JSONException, BackendRequestException, InterruptedException {
@@ -65,7 +66,7 @@ public class CreateZetaUser {
 		log.debug("Activating user " + mail + ":" + password + " (with timeout: " + timeout + ")");
 		final int ATTEMPS_NUMBER = 5;
 		for (int i = 0; i < ATTEMPS_NUMBER; i++) {
-			List<EmailHeaders> newMails = getLastMailHeaders(mail, password, 15);
+			List<EmailHeaders> newMails = getLastMailHeaders(mail, password, NUMBER_OF_MAILS_TO_CHECK);
 			for (EmailHeaders newMailContent : newMails) {
 				if (newMailContent.getLastUserEmail()
 						.equals(registeredUserMail)) {

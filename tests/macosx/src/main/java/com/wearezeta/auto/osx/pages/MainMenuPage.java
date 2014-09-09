@@ -24,7 +24,7 @@ public class MainMenuPage extends OSXPage {
 
 	public void SignOut() throws IOException {
 		signOutMenuItem.click();
-		driver.navigate().to(CommonUtils.getAppPathFromConfig(MainMenuPage.class));
+		driver.navigate().to(CommonUtils.getOsxApplicationPathFromConfig(MainMenuPage.class));
 	}
 	
 	@Override

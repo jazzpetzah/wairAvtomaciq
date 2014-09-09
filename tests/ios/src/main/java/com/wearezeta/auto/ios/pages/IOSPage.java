@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.PagesCollection;
@@ -17,9 +18,12 @@ import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
+import com.wearezeta.auto.common.driver.ZetaDriver;
 
 public abstract class IOSPage extends BasePage {
-
+	protected static ZetaDriver driver;
+	protected static WebDriverWait wait;
+	
 	private static final int SWIPE_DELAY = 10 * 1000; //milliseconds
 	
 	DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -74,13 +78,22 @@ public abstract class IOSPage extends BasePage {
 	private void initWithAutoAccept() throws MalformedURLException {
 		capabilities.setCapability("autoAcceptAlerts", true);
 		super.InitConnection(url, capabilities);
+
+        storeDriverAndWait();
 	}
 	
 	private void initWithoutAutoAccept() throws MalformedURLException {
 		
 		super.InitConnection(url, capabilities);
+		
+        storeDriverAndWait();
 	}
 
+	private void storeDriverAndWait() {
+        driver = drivers.get(CommonUtils.PLATFORM_NAME_IOS);
+        wait = waits.get(CommonUtils.PLATFORM_NAME_IOS);
+	}
+	
 	@Override
 	public void Close() throws IOException {
 		super.Close();

@@ -269,7 +269,7 @@ public class BackEndREST {
 			String password) throws IllegalArgumentException,
 			UriBuilderException, IOException, JSONException,
 			BackendRequestException {
-		log.debug("Request for 'Registering New User'");
+		log.debug("Request for 'Register New User'");
 		Builder webResource = buildDefaultRequest("register",
 				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
 		final String input = String.format(
@@ -281,23 +281,22 @@ public class BackEndREST {
 		JSONObject jsonObj = new JSONObject(output);
 		jsonObj.getString("id");
 
-		writeLog(new String[] {
-				"Output for 'Registering New User' - " + email,
-				output });
+		writeLog(new String[] { "Output for 'Register New User' - " + email
+				+ "\n\t" + output });
 	}
 
 	public static void activateNewUser(String key, String code)
 			throws BackendRequestException, IllegalArgumentException,
 			UriBuilderException, IOException {
-		log.debug("Request for 'User Activation'");
+		log.debug("Request for 'User Activation' (key: " + key + "; code: " + code + ")");
 		Builder webResource = buildDefaultRequest(
 				String.format("activate?code=%s&key=%s", code, key),
 				MediaType.APPLICATION_JSON);
 		final String output = httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
 
-		writeLog(new String[] { "Output for 'User Activation'",
-				(output.trim().isEmpty()?"<EMPTY OUTPUT>":output) });
+		writeLog(new String[] { "Output for 'User Activation'\n\t"
+				+ (output.trim().isEmpty() ? "<EMPTY OUTPUT>" : output) });
 	}
 
 	public static void sendPictureToSingleUserConversation(ClientUser userFrom,
@@ -313,7 +312,7 @@ public class BackEndREST {
 				getConversationByName(userFrom, chatName));
 	}
 
-	public static void createGroupConveration(ClientUser user,
+	public static void createGroupConversation(ClientUser user,
 			List<ClientUser> contacts, String conversationName)
 			throws IllegalArgumentException, UriBuilderException, IOException,
 			JSONException, BackendRequestException, InterruptedException {
@@ -331,7 +330,7 @@ public class BackEndREST {
 		final String output = httpPost(webResource, input,
 				new int[] { HttpStatus.SC_CREATED });
 
-		writeLog(new String[] { "Output from Server ....", output + "\n" });
+		writeLog(new String[] { "Output for 'Create Group Chat'" + "\n\t" + output });
 	}
 
 	private static void sendPicture(ClientUser userFrom, String imagePath,
@@ -429,7 +428,7 @@ public class BackEndREST {
 		final String output = httpPost(webResource, input,
 				new int[] { HttpStatus.SC_CREATED });
 
-		writeLog(new String[] { "Output from Server ....", output + "\n" });
+		writeLog(new String[] { "Output from Server ....\n\t" + output });
 	}
 
 	private static JSONArray getConversations(ClientUser user) throws Exception {
@@ -439,8 +438,7 @@ public class BackEndREST {
 				new int[] { HttpStatus.SC_OK });
 		final JSONObject jsonObj = new JSONObject(output);
 
-		writeLog(new String[] { "Output from Server .... get User Info ",
-				output + "\n" });
+		writeLog(new String[] { "Output for 'Get Conversations' \n\t" + output });
 
 		return (JSONArray) jsonObj.get("conversations");
 	}
