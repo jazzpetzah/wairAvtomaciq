@@ -1,6 +1,6 @@
 Feature: Conversation
 
-  @id316 @smoke
+  @id316 @smoke @torun
   Scenario Outline: Send Message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -22,12 +22,10 @@ Feature: Conversation
     And I see dialog page
     And I multi tap on text input
     Then I see Hello-Hey message <Message1> in the dialog
-    And I multi tap on text input again
-    And I see Hello-Hey message <Message2> in the dialog
 
     Examples: 
-      | Login   | Password    | Name    | Contact     | Message1    | Message2        |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | YOU KNOCKED | YOU HOT KNOCKED |
+      | Login   | Password    | Name    | Contact     | Message1   | 
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | YOU PINGED | 
 
   @id318 @smoke
   Scenario Outline: Send Camera picture to contact
