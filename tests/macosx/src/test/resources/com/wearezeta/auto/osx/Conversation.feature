@@ -40,8 +40,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  #Muted till new sync engine client stabilization
-  @mute @smoke @id468
+  @smoke @id468
   Scenario Outline: Send picture to conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -66,8 +65,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  #Muted till new sync engine client stabilization
-  @mute @smoke @id103
+  @smoke @id103
   Scenario Outline: Create group chat from 1on1 conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -83,8 +81,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
 
-  #Muted till new sync engine client stabilization
-  @mute @regression @id102
+  @regression @id102
   Scenario Outline: Add user to group conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -146,8 +143,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
 
-  #Muted till new sync engine client stabilization
-  @mute @smoke @id471
+  @smoke @id471
   Scenario Outline: Leave group conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -161,8 +157,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
 
-  #Muted till new sync engine client stabilization
-  @mute @smoke @id492
+  @smoke @id492
   Scenario Outline: Remove user from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
