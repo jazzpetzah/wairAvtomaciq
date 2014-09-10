@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -20,11 +21,13 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.tools.IOSKeyboard;
 
 public class DialogPage extends IOSPage{
+	private static final Logger log = ZetaLogger.getLog(DialogPage.class.getSimpleName());
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameMainWindow)
 	private WebElement dialogWindow;
@@ -398,21 +401,19 @@ public class DialogPage extends IOSPage{
 	public ArrayList<MessageEntry> listAllMessages() {
 		Pattern messagesPattern = Pattern.compile("[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}");
 		ArrayList<MessageEntry> listResult = new ArrayList<MessageEntry>();
-		long startDate = new Date().getTime();
-		List<WebElement> messages = driver.findElements(By.className(IOSLocators.classNameDialogMessages));
-		long endDate = new Date().getTime();
-		System.out.println("time to retrieve messages: " + (endDate-startDate));
+		List<WebElement> messages = driver.findElements(By.xpath(IOSLocators.xpathDialogTextMessage));
+		Date receivedDate = new Date();
 		for (WebElement message: messages) {
 			try {
 				String messageText = message.getAttribute("name");
 				if (messagesPattern.matcher(messageText).matches()) {
-					listResult.add(new MessageEntry("text", messageText, CommonUtils.PLATFORM_NAME_IOS, new Date()));
+					listResult.add(new MessageEntry("text", messageText, CommonUtils.PLATFORM_NAME_IOS, receivedDate));
 				}
 			} catch (ClassCastException e) {
+				log.debug(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 		return listResult;
 	}
-
-
 }

@@ -261,10 +261,11 @@ public class DialogPage extends AndroidPage{
 		Pattern messagesPattern = Pattern.compile("[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}");
 		ArrayList<MessageEntry> listResult = new ArrayList<MessageEntry>();
 		List<WebElement> elements = driver.findElements(By.id(AndroidLocators.DialogPage.idMessage));
+		Date receivedDate = new Date();
 		for (WebElement element: elements) {
 			String messageText = element.getText();
 			if (messagesPattern.matcher(messageText).matches()) {
-				listResult.add(new MessageEntry("text", messageText, CommonUtils.PLATFORM_NAME_ANDROID, new Date()));
+				listResult.add(new MessageEntry("text", messageText, CommonUtils.PLATFORM_NAME_ANDROID, receivedDate));
 			}
 		}
 		return listResult;
