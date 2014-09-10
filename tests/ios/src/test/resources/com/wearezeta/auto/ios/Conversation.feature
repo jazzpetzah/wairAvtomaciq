@@ -1,7 +1,5 @@
 Feature: Conversation
 
-#Muted till new sync engine client stabilization
-@mute
 @smoke
 @id330
 Scenario Outline: Send Message to contact
@@ -37,9 +35,6 @@ Scenario Outline: Send Hello to contact
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
     
 
-
-#Muted till new sync engine client stabilization
-@mute
 @smoke 
 @id460
 Scenario Outline: Send a camera roll picture to user from contact list

@@ -61,6 +61,10 @@ public class CommonUtils {
 	private static final Random rand = new Random();
 	public static final int BACKEND_SYNC_TIMEOUT = 5000 + rand.nextInt(4000); // milliseconds
 
+	public static final String PLATFORM_NAME_OSX = "Mac";
+	public static final String PLATFORM_NAME_ANDROID = "Android";
+	public static final String PLATFORM_NAME_IOS = "iOS";
+	
 	public static String getOsName() {
 		return System.getProperty("os.name");
 	}
@@ -165,12 +169,12 @@ public class CommonUtils {
 		return val;
 	}
 
-	private static String getValueFromConfig(Class<?> c, String key)
+	public static String getValueFromConfig(Class<?> c, String key)
 			throws IOException {
 		return getValueFromConfigFile(c, key, "Configuration.cnf");
 	}
 
-	private static String getValueFromCommonConfig(Class<?> c, String key)
+	public static String getValueFromCommonConfig(Class<?> c, String key)
 			throws IOException {
 		return getValueFromConfigFile(c, key, "CommonConfiguration.cnf");
 	}
@@ -200,10 +204,18 @@ public class CommonUtils {
 		return getValueFromCommonConfig(c, "defaultBackEndUrl");
 	}
 
-	public static String getUrlFromConfig(Class<?> c) throws IOException {
-		return getValueFromConfig(c, "Url");
+	public static String getOsxAppiumUrlFromConfig(Class<?> c) throws IOException {
+		return getValueFromConfig(c, "osxAppiumUrl");
 	}
 
+	public static String getAndroidAppiumUrlFromConfig(Class<?> c) throws IOException {
+		return getValueFromConfig(c, "androidAppiumUrl");
+	}
+	
+	public static String getIosAppiumUrlFromConfig(Class<?> c) throws IOException {
+		return getValueFromConfig(c, "iosAppiumUrl");
+	}
+	
 	public static Boolean getIsSimulatorFromConfig(Class<?> c)
 			throws IOException {
 		return (getValueFromConfig(c, "isSimulator").equals("true"));
@@ -213,10 +225,18 @@ public class CommonUtils {
 		return getValueFromConfig(c, "swipeScriptPath");
 	}
 
-	public static String getAppPathFromConfig(Class<?> c) throws IOException {
-		return getValueFromConfig(c, "appPath");
+	public static String getOsxApplicationPathFromConfig(Class<?> c) throws IOException {
+		return getValueFromConfig(c, "osxApplicationPath");
 	}
 
+	public static String getAndroidApplicationPathFromConfig(Class<?> c) throws IOException {
+		return getValueFromConfig(c, "androidApplicationPath");
+	}
+	
+	public static String getIosApplicationPathFromConfig(Class<?> c) throws IOException {
+		return getValueFromConfig(c, "iosApplicationPath");
+	}
+	
 	public static String getAndroidActivityFromConfig(Class<?> c)
 			throws IOException {
 		return getValueFromConfig(c, "activity");

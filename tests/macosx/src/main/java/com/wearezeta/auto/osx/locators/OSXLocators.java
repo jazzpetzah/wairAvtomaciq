@@ -113,7 +113,7 @@ public final class OSXLocators {
 	public static final String idMediaBarCloseButton = "mediaBarCloseButton";
 	
 	public static final String xpathSoundCloudLinkButton = "//AXGroup/AXGroup/AXGroup/AXButton";
-	public static final String xpathSoundCloudMediaContainer = "//AXGroup/AXLink/AXImage";
+	public static final String xpathSoundCloudMediaContainer = "//AXGroup/AXLink[last()]/AXImage";
 	
 	public static final String SOUNDCLOUD_BUTTON_STATE_PAUSE = "Pause";
 	public static final String SOUNDCLOUD_BUTTON_STATE_PLAY = "Play";
@@ -137,4 +137,6 @@ public final class OSXLocators {
 	public static final String xpathRemoveUserPictureCancel = "//AXButton[@AXTitle='CANCEL']";
 	
 	public static final String CONTACT_LIST_ONE_CONNECT_REQUEST = "One person waiting";
+	
+	public static final String xpathConversationTextMessageEntry = "//AXWebArea/AXGroup/AXStaticText";
 }

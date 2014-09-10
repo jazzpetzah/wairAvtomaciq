@@ -33,7 +33,12 @@ public class ConversationPageSteps {
 	 @When("I write random message")
 	 public void WhenIWriteRandomMessage() {	
 		 randomMessage = CommonUtils.generateGUID();
-		 CommonSteps.senderPages.getConversationPage().writeNewMessage(randomMessage);
+		 IWriteMessage(randomMessage);
+	 }
+	 
+	 @When("I write message (.*)")
+	 public void IWriteMessage(String message) {
+		 CommonSteps.senderPages.getConversationPage().writeNewMessage(message);
 	 }
 	 
 	 @When("I send message")
@@ -51,8 +56,8 @@ public class ConversationPageSteps {
 		 CommonSteps.senderPages.getConversationPage().writeNewMessage("");
 		 CommonSteps.senderPages.getConversationPage().openChooseImageDialog();
 		 CommonSteps.senderPages.setChoosePicturePage(new ChoosePicturePage(
-				 CommonUtils.getUrlFromConfig(ContactListPage.class),
-				 CommonUtils.getAppPathFromConfig(ContactListPage.class)
+				 CommonUtils.getOsxAppiumUrlFromConfig(ContactListPage.class),
+				 CommonUtils.getOsxApplicationPathFromConfig(ContactListPage.class)
 				 ));
 		 
 		 ChoosePicturePage choosePicturePage = CommonSteps.senderPages.getChoosePicturePage();
@@ -182,8 +187,8 @@ public class ConversationPageSteps {
 		 CommonSteps.senderPages.getConversationPage().writeNewMessage("");
 		 CommonSteps.senderPages.getConversationPage().openConversationPeoplePicker();
 		 CommonSteps.senderPages.setConversationInfoPage(new ConversationInfoPage(
-				 CommonUtils.getUrlFromConfig(ConversationInfoPage.class),
-				 CommonUtils.getAppPathFromConfig(ConversationInfoPage.class)
+				 CommonUtils.getOsxAppiumUrlFromConfig(ConversationInfoPage.class),
+				 CommonUtils.getOsxApplicationPathFromConfig(ConversationInfoPage.class)
 				 ));
 		 ConversationInfoPage conversationPeople = CommonSteps.senderPages.getConversationInfoPage();
 		 CommonSteps.senderPages.setPeoplePickerPage(conversationPeople.openPeoplePicker());
@@ -196,8 +201,8 @@ public class ConversationPageSteps {
 		 conversationPage.openConversationPeoplePicker();
 		 if (CommonSteps.senderPages.getConversationInfoPage() == null) {
 			 CommonSteps.senderPages.setConversationInfoPage(new ConversationInfoPage(
-					 CommonUtils.getUrlFromConfig(ConversationInfoPage.class),
-					 CommonUtils.getAppPathFromConfig(ConversationInfoPage.class)
+					 CommonUtils.getOsxAppiumUrlFromConfig(ConversationInfoPage.class),
+					 CommonUtils.getOsxApplicationPathFromConfig(ConversationInfoPage.class)
 					 ));
 		 }
 	 }

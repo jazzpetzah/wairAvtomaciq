@@ -24,8 +24,6 @@ Feature: Register new user
     |	Email						|	Password	    |	Name			|
     |	aqaUser            	        |	aqaPassword	    |	aqaUser       	|
 
-#Muted till new sync engine client stabilization
-@mute
 @regression
 @id304
   Scenario Outline: Attempt to register an email with spaces
@@ -108,8 +106,7 @@ Feature: Register new user
     |	Correct				    |	Password	        |	Name	        |   Incorrect           |
     |   aqaUser	                |	aqaPassword	        |	aqaUser         |   error@wearezeta.com |
 
-  #Muted till new sync engine client stabilization
-  @mute
+
   @regression
   @id346
   Scenario Outline: Register new user using username with maximum characters allowed, Deutch, Double-byte (Chinese), and emoji Characters
@@ -169,8 +166,7 @@ Feature: Register new user
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
     
-#Muted till new sync engine client stabilization
-@mute
+
 @regression
 @id286
   Scenario Outline: Take or select a photo label validation
@@ -182,8 +178,7 @@ Feature: Register new user
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
     
-#Muted till new sync engine client stabilization
-@mute
+
 @regression
 @id285
   Scenario Outline: Take or select a photo label not visible when picture is selected

@@ -1,9 +1,12 @@
 package com.wearezeta.auto.osx.pages;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -17,8 +20,10 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
 import com.google.common.base.Function;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.util.NSPoint;
 
@@ -27,6 +32,7 @@ public class ConversationPage extends OSXPage {
 	
 	static final String SOUNDCLOUD_BUTTON_ATT_TITLE = "AXTitle";
 	static String SOUNDCLOUD_BUTTON_STATE;
+	int numberSoundCloudButtons;
 
 	@FindBy(how = How.ID, using = OSXLocators.idMainWindow)
 	private WebElement viewPager;
@@ -44,8 +50,10 @@ public class ConversationPage extends OSXPage {
 
 	@FindBy(how = How.ID, using = OSXLocators.idPeopleButton)
 	private WebElement peopleButton;
-
+	
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathSoundCloudLinkButton)
+	private List<WebElement> soundCloudButtons;
+
 	private WebElement soundCloudLinkButton;
 
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathSoundCloudMediaContainer)
@@ -62,7 +70,7 @@ public class ConversationPage extends OSXPage {
 
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathConversationViewScrollArea)
 	private WebElement conversationView;
-
+	
 	public ConversationPage(String URL, String path)
 			throws MalformedURLException {
 
@@ -171,8 +179,10 @@ public class ConversationPage extends OSXPage {
 	}
 
 	public int getNumberOfImageEntries() {
+		DriverUtils.setImplicitWaitValue(driver, 1);
 		List<WebElement> conversationImages = driver.findElements(By
 				.xpath(OSXLocators.xpathConversationImageEntry));
+		DriverUtils.setDefaultImplicitWait(driver);
 		return conversationImages.size();
 	}
 
@@ -187,8 +197,14 @@ public class ConversationPage extends OSXPage {
 		}
 		return isSend;
 	}
+	
+	public void setLastSoundCloudButtonToUse(){
+		numberSoundCloudButtons = soundCloudButtons.size();
+		soundCloudLinkButton = soundCloudButtons.get(numberSoundCloudButtons - 1);
+	}
 
 	public void tapOnSoundCloudMessage() {
+		setLastSoundCloudButtonToUse();
 		soundCloudLinkButton.click();
 	}
 
@@ -199,6 +215,7 @@ public class ConversationPage extends OSXPage {
 	}
 
 	public String getSoundCloudButtonState() {
+		setLastSoundCloudButtonToUse();
 		SOUNDCLOUD_BUTTON_STATE = soundCloudLinkButton
 				.getAttribute(SOUNDCLOUD_BUTTON_ATT_TITLE);
 		return SOUNDCLOUD_BUTTON_STATE;
@@ -264,5 +281,19 @@ public class ConversationPage extends OSXPage {
 	    	Thread.sleep(1000);
 	    	currentState = getSoundCloudButtonState();
 	    }	
+	}
+	
+	public ArrayList<MessageEntry> listAllMessages() {
+		Pattern messagesPattern = Pattern.compile("[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}");
+		ArrayList<MessageEntry> listResult = new ArrayList<MessageEntry>();
+		List<WebElement> messages = driver.findElements(By.xpath(OSXLocators.xpathConversationTextMessageEntry));
+		Date receivedDate = new Date();
+		for (WebElement message: messages) {
+			String messageText = message.getText();
+			if (messagesPattern.matcher(messageText).matches()) {
+				listResult.add(new MessageEntry("text", messageText, CommonUtils.PLATFORM_NAME_OSX, receivedDate));
+			}
+		}
+		return listResult;
 	}
 }

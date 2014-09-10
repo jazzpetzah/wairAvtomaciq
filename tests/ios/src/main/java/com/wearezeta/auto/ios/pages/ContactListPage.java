@@ -203,7 +203,7 @@ public class ContactListPage extends IOSPage {
 		List<ClientUser> users = new ArrayList<ClientUser>();
 		users.add(selfUser); // add self
 		users.add(unconnectedUser);
-		BackEndREST.createGroupConveration(groupCreatorUser, users, chatName);
+		BackEndREST.createGroupConversation(groupCreatorUser, users, chatName);
 	}
 
 	public void waitForContactListToLoad() {
