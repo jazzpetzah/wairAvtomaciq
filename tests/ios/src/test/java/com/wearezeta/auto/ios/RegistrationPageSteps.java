@@ -334,8 +334,8 @@ public class RegistrationPageSteps {
 	@Then("Contact list loads with only my name")
 	public void ContactListLoadsWithOnlyMyName() throws Throwable {
 		PagesCollection.contactListPage = new ContactListPage(
-				CommonUtils.getUrlFromConfig(ContactListPage.class),
-				CommonUtils.getAppPathFromConfig(ContactListPage.class));
+				CommonUtils.getIosAppiumUrlFromConfig(ContactListPage.class),
+				CommonUtils.getIosApplicationPathFromConfig(ContactListPage.class));
 		PagesCollection.contactListPage.waitForContactListToLoad();
 		Assert.assertTrue(PagesCollection.contactListPage
 				.isMyUserNameDisplayedFirstInContactList(aqaName));

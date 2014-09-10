@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -18,6 +19,7 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
+import com.wearezeta.auto.common.misc.MessageEntry;
 
 public class DialogPage extends AndroidPage{
 
@@ -255,4 +257,17 @@ public class DialogPage extends AndroidPage{
 		return flag;
 	}
 	
+	public ArrayList<MessageEntry> listAllMessages() {
+		Pattern messagesPattern = Pattern.compile("[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}");
+		ArrayList<MessageEntry> listResult = new ArrayList<MessageEntry>();
+		List<WebElement> elements = driver.findElements(By.id(AndroidLocators.DialogPage.idMessage));
+		Date receivedDate = new Date();
+		for (WebElement element: elements) {
+			String messageText = element.getText();
+			if (messagesPattern.matcher(messageText).matches()) {
+				listResult.add(new MessageEntry("text", messageText, CommonUtils.PLATFORM_NAME_ANDROID, receivedDate));
+			}
+		}
+		return listResult;
+	}	
 }

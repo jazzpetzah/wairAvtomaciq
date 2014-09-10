@@ -137,4 +137,6 @@ public final class OSXLocators {
 	public static final String xpathRemoveUserPictureCancel = "//AXButton[@AXTitle='CANCEL']";
 	
 	public static final String CONTACT_LIST_ONE_CONNECT_REQUEST = "One person waiting";
+	
+	public static final String xpathConversationTextMessageEntry = "//AXWebArea/AXGroup/AXStaticText";
 }

@@ -1,7 +1,7 @@
 #Configuration file for Android tests
 #Configure before running tests
-Url=${Url}
-appPath=${appPath}
+androidAppiumUrl=${Url}
+androidApplicationPath=${appPath}
 package=${package}
 activity=${activity}
 generateUsers=${generateUsers}

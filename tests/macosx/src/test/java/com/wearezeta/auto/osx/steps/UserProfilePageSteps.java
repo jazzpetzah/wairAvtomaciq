@@ -31,8 +31,8 @@ public class UserProfilePageSteps {
 	public void WhenIChooseToSelectPictureFromImageFile() throws MalformedURLException, IOException {
 		CommonSteps.senderPages.getUserProfilePage().openChooseImageFileDialog();
 		CommonSteps.senderPages.setChoosePicturePage(new ChoosePicturePage(
-				 CommonUtils.getUrlFromConfig(UserProfilePageSteps.class),
-				 CommonUtils.getAppPathFromConfig(UserProfilePageSteps.class)
+				 CommonUtils.getOsxAppiumUrlFromConfig(UserProfilePageSteps.class),
+				 CommonUtils.getOsxApplicationPathFromConfig(UserProfilePageSteps.class)
 				 ));
 	}
 	

@@ -1,7 +1,7 @@
 #Configuration file for OS X tests
 #Configure before running tests
-Url=${Url}
-appPath=${appPath}
+osxAppiumUrl=${Url}
+osxApplicationPath=${appPath}
 generateUsers=${generateUsers}
 driverTimeoutSeconds=${driverTimeoutSeconds}
 pictureResultsPath=${pictureResultsPath}

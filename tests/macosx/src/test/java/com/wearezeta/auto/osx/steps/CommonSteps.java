@@ -42,11 +42,11 @@ public class CommonSteps {
 			throw new Exception("Skipped due to error in users creation.");
 		}
 		
-		String path = CommonUtils.getAppPathFromConfig(CommonSteps.class);
+		String path = CommonUtils.getOsxApplicationPathFromConfig(CommonSteps.class);
 		senderPages = new PagesCollection();
 		
-		senderPages.setMainMenuPage(new MainMenuPage(CommonUtils.getUrlFromConfig(CommonSteps.class), path));
-		senderPages.setLoginPage(new LoginPage(CommonUtils.getUrlFromConfig(CommonSteps.class), path));
+		senderPages.setMainMenuPage(new MainMenuPage(CommonUtils.getOsxAppiumUrlFromConfig(CommonSteps.class), path));
+		senderPages.setLoginPage(new LoginPage(CommonUtils.getOsxAppiumUrlFromConfig(CommonSteps.class), path));
 		ZetaFormatter.setDriver(senderPages.getLoginPage().getDriver());
 		senderPages.getLoginPage().sendProblemReportIfFound();
 	}
