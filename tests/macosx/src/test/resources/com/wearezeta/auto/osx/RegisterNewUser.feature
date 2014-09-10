@@ -1,7 +1,6 @@
 Feature: Register new user
 
-  #Muted till new sync engine client stabilization
-  @mute @regression @id77
+  @regression @id77
   Scenario Outline: Register new user using front camera
     Given I am signed out from ZClient
     And I see Sign In screen
@@ -20,8 +19,7 @@ Feature: Register new user
       | Email   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |
 
-  #Muted till new sync engine client stabilization
-  @mute @smoke @id177
+  @smoke @id177
   Scenario Outline: Register new user with image
     Given I am signed out from ZClient
     And I see Sign In screen
