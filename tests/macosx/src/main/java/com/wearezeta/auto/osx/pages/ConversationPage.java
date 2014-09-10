@@ -287,10 +287,11 @@ public class ConversationPage extends OSXPage {
 		Pattern messagesPattern = Pattern.compile("[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}");
 		ArrayList<MessageEntry> listResult = new ArrayList<MessageEntry>();
 		List<WebElement> messages = driver.findElements(By.xpath(OSXLocators.xpathConversationTextMessageEntry));
+		Date receivedDate = new Date();
 		for (WebElement message: messages) {
 			String messageText = message.getText();
 			if (messagesPattern.matcher(messageText).matches()) {
-				listResult.add(new MessageEntry("text", messageText, CommonUtils.PLATFORM_NAME_OSX, new Date()));
+				listResult.add(new MessageEntry("text", messageText, CommonUtils.PLATFORM_NAME_OSX, receivedDate));
 			}
 		}
 		return listResult;
