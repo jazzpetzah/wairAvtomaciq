@@ -36,7 +36,7 @@ public class ConversationPage extends OSXPage {
 	static String SOUNDCLOUD_BUTTON_STATE;
 	int numberSoundCloudButtons;
 
-	@FindBy(how = How.ID, using = OSXLocators.idMainWindow)
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathMainWindow)
 	private WebElement viewPager;
 
 	private WebElement newMessageTextArea = findNewMessageTextArea();

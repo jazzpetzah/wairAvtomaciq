@@ -3,7 +3,7 @@ package com.wearezeta.auto.osx.locators;
 public final class OSXLocators {
 	
 	public static final String idLoginPage = "_NS:6";
-	public static final String idMainWindow = "Main";
+	public static final String xpathMainWindow = "//AXWindow[@AXRoleDescription='standard window']";
 	
 	public static final String nameSignInButton = "SIGN IN";
 	public static final String nameRegisterButton = "JOIN";
