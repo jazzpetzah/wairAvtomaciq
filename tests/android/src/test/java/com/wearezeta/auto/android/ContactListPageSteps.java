@@ -72,6 +72,7 @@ public class ContactListPageSteps {
 	@When("^I swipe down contact list$")
 	public void ISwipeDownContactList() throws Throwable {
 		PagesCollection.peoplePickerPage = (PeoplePickerPage)PagesCollection.contactListPage.swipeDown(1000);
+		PagesCollection.contactListPage.pressLaterButton();
 	}
 
 	@When("^I create group chat with (.*) and (.*)$")

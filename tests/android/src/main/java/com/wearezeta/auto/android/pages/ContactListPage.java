@@ -33,6 +33,9 @@ public class ContactListPage extends AndroidPage {
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConfirmCancelButton")
 	private List<WebElement> laterBtn;
 	
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConfirmCancelButtonPicker")
+	private List<WebElement> laterBtnPicker;
+	
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameLoginPage)
 	private WebElement mainControl;
 	
@@ -137,8 +140,12 @@ public class ContactListPage extends AndroidPage {
 	public ContactListPage pressLaterButton() throws Exception {
 		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.PersonalInfoPage.idProfileOptionsButton));
 		
-		if(laterBtn.size()>0){
+		if (laterBtn.size() > 0) {
 			laterBtn.get(0).click();
+		}
+		
+		else if (laterBtnPicker.size() > 0) {
+			laterBtnPicker.get(0).click();
 		}
 		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.ContactListPage.idSimpleDialogPageText));
 		//TODO: we need this as sometimes we see people picker after login
