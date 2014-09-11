@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
+import org.jboss.netty.handler.timeout.TimeoutException;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -28,13 +29,14 @@ import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.util.NSPoint;
 
 public class ConversationPage extends OSXPage {
-	private static final Logger log = ZetaLogger.getLog(ConversationPage.class.getSimpleName());
-	
+	private static final Logger log = ZetaLogger.getLog(ConversationPage.class
+			.getSimpleName());
+
 	static final String SOUNDCLOUD_BUTTON_ATT_TITLE = "AXTitle";
 	static String SOUNDCLOUD_BUTTON_STATE;
 	int numberSoundCloudButtons;
 
-	@FindBy(how = How.ID, using = OSXLocators.idMainWindow)
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathMainWindow)
 	private WebElement viewPager;
 
 	private WebElement newMessageTextArea = findNewMessageTextArea();
@@ -50,7 +52,7 @@ public class ConversationPage extends OSXPage {
 
 	@FindBy(how = How.ID, using = OSXLocators.idPeopleButton)
 	private WebElement peopleButton;
-	
+
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathSoundCloudLinkButton)
 	private List<WebElement> soundCloudButtons;
 
@@ -70,7 +72,7 @@ public class ConversationPage extends OSXPage {
 
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathConversationViewScrollArea)
 	private WebElement conversationView;
-	
+
 	public ConversationPage(String URL, String path)
 			throws MalformedURLException {
 
@@ -116,7 +118,8 @@ public class ConversationPage extends OSXPage {
 						.xpath(OSXLocators.xpathMessageEntry));
 				Collections.reverse(els);
 				for (WebElement el : els) {
-					if (el.getText().contains(OSXLocators.USER_ADDED_MESSAGE_FORMAT)) {
+					if (el.getText().contains(
+							OSXLocators.USER_ADDED_MESSAGE_FORMAT)) {
 						return true;
 					}
 				}
@@ -197,10 +200,11 @@ public class ConversationPage extends OSXPage {
 		}
 		return isSend;
 	}
-	
-	public void setLastSoundCloudButtonToUse(){
+
+	public void setLastSoundCloudButtonToUse() {
 		numberSoundCloudButtons = soundCloudButtons.size();
-		soundCloudLinkButton = soundCloudButtons.get(numberSoundCloudButtons - 1);
+		soundCloudLinkButton = soundCloudButtons
+				.get(numberSoundCloudButtons - 1);
 	}
 
 	public void tapOnSoundCloudMessage() {
@@ -264,34 +268,50 @@ public class ConversationPage extends OSXPage {
 	public void pressMediaTitle() {
 		mediabarBarTitle.click();
 	}
-	
+
 	public String getLastConversationNameChangeMessage() {
-		WebElement el = driver.findElement(By.xpath(OSXLocators.xpathConversationLastNewNameEntry));
+		WebElement el = driver.findElement(By
+				.xpath(OSXLocators.xpathConversationLastNewNameEntry));
 		return el.getAttribute("AXValue");
 	}
-	
-	public boolean isMediaBarVisible(){
+
+	public boolean isMediaBarVisible() {
 		return mediabarBarTitle.isDisplayed();
 	}
-	
-	public void waitForSoundcloudButtonState(String currentState, String wantedState) throws InterruptedException{
+
+	private static int STATE_CHANGE_TIMEOUT = 60 * 2;
+
+	public void waitForSoundcloudButtonState(String currentState,
+			String wantedState) throws InterruptedException {
 		Thread.sleep(1000);
-		while(!currentState.equals(wantedState)){
-	    	Assert.assertEquals(currentState, currentState);
-	    	Thread.sleep(1000);
-	    	currentState = getSoundCloudButtonState();
-	    }	
+		int secondsElapsed = 0;
+		while (!currentState.equals(wantedState)
+				&& secondsElapsed < STATE_CHANGE_TIMEOUT) {
+			Assert.assertEquals(currentState, currentState);
+			Thread.sleep(1000);
+			currentState = getSoundCloudButtonState();
+			secondsElapsed++;
+		}
+		if (secondsElapsed >= STATE_CHANGE_TIMEOUT) {
+			throw new TimeoutException(
+					String.format(
+							"The Soundcloud button have not changed its state from \"%s\" to \"%s\" within %d seconds timeout",
+							currentState, wantedState, STATE_CHANGE_TIMEOUT));
+		}
 	}
-	
+
 	public ArrayList<MessageEntry> listAllMessages() {
-		Pattern messagesPattern = Pattern.compile("[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}");
+		Pattern messagesPattern = Pattern
+				.compile("[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}");
 		ArrayList<MessageEntry> listResult = new ArrayList<MessageEntry>();
-		List<WebElement> messages = driver.findElements(By.xpath(OSXLocators.xpathConversationTextMessageEntry));
+		List<WebElement> messages = driver.findElements(By
+				.xpath(OSXLocators.xpathConversationTextMessageEntry));
 		Date receivedDate = new Date();
-		for (WebElement message: messages) {
+		for (WebElement message : messages) {
 			String messageText = message.getText();
 			if (messagesPattern.matcher(messageText).matches()) {
-				listResult.add(new MessageEntry("text", messageText, CommonUtils.PLATFORM_NAME_OSX, receivedDate));
+				listResult.add(new MessageEntry("text", messageText,
+						CommonUtils.PLATFORM_NAME_OSX, receivedDate));
 			}
 		}
 		return listResult;

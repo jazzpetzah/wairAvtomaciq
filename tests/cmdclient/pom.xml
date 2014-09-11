@@ -42,7 +42,7 @@
       <configuration>
         <archive>
           <manifest>
-            <mainClass>com.wearezeta.auto.cmdclient.ZConsoleClient</mainClass>
+            <mainClass>com.wearezeta.auto.cmdclient.ZBender</mainClass>
           </manifest>
         </archive>
         <descriptorRefs>

@@ -1,5 +1,6 @@
 package com.wearezeta.auto.cmdclient;
 
+import java.io.InputStream;
 import java.util.Date;
 
 import org.apache.log4j.Level;
@@ -16,6 +17,47 @@ public class ZBender
 {
 	private static final Logger log = ZetaLogger.getLog(ZBender.class.getSimpleName());
 	private static final Logger backendLog = ZetaLogger.getLog(BackEndREST.class.getSimpleName());
+	
+	private static final String IMG = "/bender.jpg";
+	
+	private static void sendPicture(ClientUser user, String contact, String path) throws Throwable {
+		InputStream configFileStream = null;
+		if (path.equals("default")) {
+		
+			configFileStream = ZBender.class.getClass().getResourceAsStream(IMG);
+		}
+		
+		BackEndREST.sendPictureToChatByName(user, contact, path, configFileStream);
+		
+		if (configFileStream != null) {
+			configFileStream.close();
+		}
+	}
+	
+	public static void sendPictureWithInterval(ClientUser user, String contact, int interval, int messageCount, String path) throws Throwable {
+		if (messageCount != -1) {
+			for (int i = 0; i < messageCount; i++) {
+				
+				log.info("Sending image " + Integer.toString(i + 1) + " of " + Integer.toString(messageCount) + 
+						" to contact " + contact);
+				sendPicture(user, contact, path);
+				Thread.sleep(interval * 1000);
+			}
+			
+			log.info("Total images sent - " + Integer.toString(messageCount));
+		}
+		else {
+			int count = 1;
+			while (true) {
+				
+				log.info("Sending image " + Integer.toString(count) + " to contact " + contact);
+				
+				sendPicture(user, contact, path);
+				count++;
+				Thread.sleep(interval * 1000);
+			}
+		}
+	}
 	
 	public static void sendMessageWithInterval(ClientUser user, String contact, int interval, int messageCount) throws Exception {
 		if (messageCount != -1) {
@@ -41,7 +83,8 @@ public class ZBender
 			}
 		}
 	}
-    public static void main( String[] args ) throws Exception
+	
+    public static void main( String[] args ) throws Throwable
     {
     	backendLog.setLevel(Level.INFO);
     	
@@ -49,8 +92,9 @@ public class ZBender
     			+ "-m your zeta client email\n"
     			+ "-p your zeta client password\n"
     			+ "-u chat or contact name who will receive messages\n"
-    			+ "-c (optional) number of messages to send, default is 1\n"
-    			+ "-i (optional) interval between messages (seconds), default is 0");
+    			+ "-img full path to image file or -1 for default image"
+    			+ "-c (optional) number of messages/images to send, default is 1\n"
+    			+ "-i (optional) interval between messages/images (seconds), default is 0\n");
     	
     	if (args.length % 2 == 1 || args.length == 0) {
     		log.info("Invalid number of arguments");
@@ -58,7 +102,8 @@ public class ZBender
     		return;
     	}
     	
-    	String login = "", password = "", contact = "";
+    	String login = "", password = "", contact = "", imgPath = "";
+    	Boolean sendImg = false;
     	int messageCount = 1, interval = 0;
     	for (int i = 0; i < args.length; i = i + 2) {
     		switch (args[i]) {
@@ -81,14 +126,27 @@ public class ZBender
 			case "-i" :
 				interval = Integer.parseInt(args[i+1]);
 				break;
+				
+			case "-img" :
+				imgPath = args[i+1];
+				sendImg = true;
+				break;
 			}
     	}
 
-		ClientUser yourСontact = new ClientUser(login, password, "ZConsoleClient", UsersState.AllContactsConnected);
-			
-		long startDate = new Date().getTime();
+		ClientUser yourСontact = new ClientUser(login, password, "ZBender", UsersState.AllContactsConnected);
 
-		sendMessageWithInterval(yourСontact, contact, interval, messageCount);
+		long startDate = new Date().getTime();
+		
+		if (true == sendImg) {
+			
+			sendMessageWithInterval(yourСontact, contact, interval, messageCount / 2);
+			sendPictureWithInterval(yourСontact, contact, interval, messageCount / 2, imgPath);
+		}
+		else {
+			
+			sendMessageWithInterval(yourСontact, contact, interval, messageCount);
+		}
 		
 		long endDate = new Date().getTime();
 		

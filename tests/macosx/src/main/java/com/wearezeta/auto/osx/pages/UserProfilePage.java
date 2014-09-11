@@ -12,7 +12,7 @@ import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class UserProfilePage extends OSXPage {
 	
-	@FindBy(how = How.ID, using = OSXLocators.idMainWindow)
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathMainWindow)
 	private WebElement mainWindow;
 
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathOpenUserPictureSettingsButton)

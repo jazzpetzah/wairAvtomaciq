@@ -75,7 +75,7 @@ Examples:
 
 
 
-@staging 
+@regression 
 @id526  
   Scenario Outline: I can send and play inline youtube link
     Given I Sign in using login <Login> and password <Password>
@@ -296,7 +296,7 @@ Examples:
 	Examples: 
     |	Login	|	Password	|	Name	|	Contact1		| SoundCloudLink 								| time |
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| https://soundcloud.com/carl-cox/carl-cox-nexus| 28   | 
-
+ 
  @staging 
  @id415
   Scenario Outline: Send Message to contact after navigating away from chat page
@@ -312,8 +312,8 @@ Examples:
     Then I see my message in the dialog
 
 	Examples: 
-    |	Login	|	Password	|	Name	|	Contact		|
-    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaAvatar	|
+    |	Login	|	Password	|	Name	|	Contact					|
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaAvatar TestContact	|
 
    
  @staging 
@@ -361,7 +361,7 @@ Examples:
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
   
     
- @staging 
+ @regression 
  @id408 
   Scenario Outline: Send one line message with lower case and upper case
     Given I Sign in using login <Login> and password <Password>
@@ -377,7 +377,7 @@ Examples:
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
     
    
- @staging 
+ @regression 
  @id416
   Scenario Outline: Keyboard up and navigate to main convo list
     Given I Sign in using login <Login> and password <Password>
@@ -394,7 +394,7 @@ Examples:
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
     
 
- @staging 
+ @regression 
  @id413
   Scenario Outline: Copy and paste to send the message
     Given I see sign in screen

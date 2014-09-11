@@ -372,7 +372,7 @@ Feature: Register new user
     |	Email						|	Password	    |	Name			|   EmailCount   |
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|      20        |
     
-@staging
+@regression
 @id302
  Scenario Outline: Verify back button during registration process
  	Given I see sign in screen
