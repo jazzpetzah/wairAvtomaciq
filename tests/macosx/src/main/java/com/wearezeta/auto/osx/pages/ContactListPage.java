@@ -23,7 +23,7 @@ import com.wearezeta.auto.osx.util.NSPoint;
 public class ContactListPage extends OSXPage {
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class.getSimpleName());
 	
-	@FindBy(how = How.ID, using = OSXLocators.idMainWindow)
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathMainWindow)
 	private WebElement mainWindow;
 
 	@FindBy(how = How.ID, using = OSXLocators.idAcceptConnectionRequestButton)
@@ -41,11 +41,7 @@ public class ContactListPage extends OSXPage {
 	public ContactListPage(String URL, String path) throws MalformedURLException {
 		super(URL, path);
 	}
-	
-	public Boolean isVisible() {
-		return mainWindow != null;
-	}
-	
+
 	public void openPeoplePicker() {
 		addConversationButton.click();
 	}
