@@ -1,10 +1,11 @@
 package com.wearezeta.auto.common;
 
+import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -301,15 +302,18 @@ public class BackEndREST {
 
 	public static void sendPictureToSingleUserConversation(ClientUser userFrom,
 			ClientUser userTo, String imagePath) throws Throwable {
+		
+		userFrom = loginByUser(userFrom);
 		sendPicture(userFrom, imagePath,
-				getConversationWithSingleUser(userFrom, userTo));
+				getConversationWithSingleUser(userFrom, userTo), null);
 	}
 
 	public static void sendPictureToChatByName(ClientUser userFrom,
-			String chatName, String imagePath) throws Throwable {
-
+			String chatName, String imagePath, InputStream src) throws Throwable {
+		
+		userFrom = loginByUser(userFrom);
 		sendPicture(userFrom, imagePath,
-				getConversationByName(userFrom, chatName));
+				getConversationByName(userFrom, chatName), src);
 	}
 
 	public static void createGroupConversation(ClientUser user,
@@ -334,17 +338,37 @@ public class BackEndREST {
 	}
 
 	private static void sendPicture(ClientUser userFrom, String imagePath,
-			String convId) throws Throwable {
-		userFrom = loginByUser(userFrom);
-		final String imageMimeType = Files.probeContentType(Paths
-				.get(imagePath));
-		FileInputStream fis = new FileInputStream(imagePath);
-		byte[] srcImageAsByteArray;
-		try {
-			srcImageAsByteArray = IOUtils.toByteArray(fis);
-		} finally {
-			fis.close();
+			String convId, InputStream src) throws Throwable {
+		
+		String imageMimeType = "";
+		if (null == src) {
+			InputStream is = new BufferedInputStream(new FileInputStream(imagePath));
+			imageMimeType = URLConnection.guessContentTypeFromStream(is);
+			is.close();
 		}
+		else {
+			imageMimeType = URLConnection.guessContentTypeFromStream(src);
+			
+			if (imageMimeType == null) {
+				//hardcode as there is no good way to check it when reading a resource from jar
+				imageMimeType = "image/jpeg";
+			}
+		}
+		byte[] srcImageAsByteArray;
+		
+		if (null == src) {
+			FileInputStream fis = new FileInputStream(imagePath);
+			
+			try {
+				srcImageAsByteArray = IOUtils.toByteArray(fis);
+			} finally {
+				fis.close();
+			}
+		}
+		else {
+			srcImageAsByteArray = IOUtils.toByteArray(src);
+		}
+		
 		ImageAssetData srcImgData = new ImageAssetData(convId,
 				srcImageAsByteArray, imageMimeType);
 		srcImgData.setIsPublic(true);
