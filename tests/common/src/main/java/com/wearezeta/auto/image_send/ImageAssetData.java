@@ -8,7 +8,7 @@ public class ImageAssetData extends AssetData {
 	private Integer height = null;
 	private Integer originalWidth = null;
 	private Integer originalHeight = null;
-	private Boolean isInline = null;
+	private Boolean isInline = false;
 	private Boolean isPublic = null;
 	private String correlationId = null;
 	private String tag = null;

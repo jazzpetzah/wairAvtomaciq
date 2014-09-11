@@ -49,7 +49,7 @@ Feature: Sign In
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
 
-@staging
+@regression
 @id314
  Scenario Outline: Notification if SignIn credentials are wrong
  	Given I see sign in screen

@@ -15,7 +15,7 @@ import com.wearezeta.auto.osx.util.NSPoint;
 
 public class PeoplePickerPage extends OSXPage {
 
-	@FindBy(how = How.ID, using = OSXLocators.idMainWindow)
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathMainWindow)
 	private WebElement mainWindow;
 
 	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerDismissButton)
