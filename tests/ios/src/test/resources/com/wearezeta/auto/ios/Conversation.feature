@@ -296,7 +296,7 @@ Examples:
 	Examples: 
     |	Login	|	Password	|	Name	|	Contact1		| SoundCloudLink 								| time |
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| https://soundcloud.com/carl-cox/carl-cox-nexus| 28   | 
-
+ 
  @staging 
  @id415
   Scenario Outline: Send Message to contact after navigating away from chat page
@@ -312,8 +312,8 @@ Examples:
     Then I see my message in the dialog
 
 	Examples: 
-    |	Login	|	Password	|	Name	|	Contact		|
-    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaAvatar	|
+    |	Login	|	Password	|	Name	|	Contact					|
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaAvatar TestContact	|
 
    
  @staging 
