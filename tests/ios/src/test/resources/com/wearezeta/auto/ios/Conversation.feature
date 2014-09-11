@@ -75,7 +75,7 @@ Examples:
 
 
 
-@staging 
+@regression 
 @id526  
   Scenario Outline: I can send and play inline youtube link
     Given I Sign in using login <Login> and password <Password>
@@ -361,7 +361,7 @@ Examples:
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
   
     
- @staging 
+ @regression 
  @id408 
   Scenario Outline: Send one line message with lower case and upper case
     Given I Sign in using login <Login> and password <Password>
@@ -377,7 +377,7 @@ Examples:
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
     
    
- @staging 
+ @regression 
  @id416
   Scenario Outline: Keyboard up and navigate to main convo list
     Given I Sign in using login <Login> and password <Password>
@@ -394,7 +394,7 @@ Examples:
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
     
 
- @staging 
+ @regression 
  @id413
   Scenario Outline: Copy and paste to send the message
     Given I see sign in screen
