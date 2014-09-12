@@ -1,6 +1,6 @@
 Feature: Conversation
 
-  @id316 @smoke @torun
+  @id316 @smoke
   Scenario Outline: Send Message to contact
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

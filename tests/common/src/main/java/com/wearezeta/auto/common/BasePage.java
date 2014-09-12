@@ -33,8 +33,9 @@ public abstract class BasePage {
 	
 	protected synchronized void InitConnection(String URL, DesiredCapabilities capabilities)
 			throws MalformedURLException {
+
 		String platform = (String) capabilities.getCapability("platformName");
-		if (null == drivers || drivers.isEmpty() || drivers.get(platform) == null) {
+		if (null == drivers || drivers.isEmpty() || drivers.get(platform) == null || drivers.get(platform).isSessionLost()) {
 			drivers.put(platform, new ZetaDriver(new URL(URL), capabilities));
 			try {
 				drivers.get(platform).manage()
