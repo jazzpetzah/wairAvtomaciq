@@ -2,41 +2,41 @@
 
 ### DERIVED PARAMS ###
 driverTimeoutSeconds=${driverTimeoutSeconds}
-defaultEmail=smoketester@wearezeta.com
-pictureResultsPath=/Users/kaleksandrov/pictureResultsPath/
+defaultEmail=${defaultEmail}
+pictureResultsPath=${pictureResultsPath}
 
 ### ACCEPTANCE TEST PARAMS ###
-acceptance.messages.count=2
-acceptance.sending.timeout.sec=5
-acceptance.max.send.interval.sec=2
+acceptance.messages.count=${acceptance.messages.count}
+acceptance.sending.timeout.sec=${acceptance.sending.timeout.sec}
+acceptance.max.send.interval.sec=${acceptance.max.send.interval.sec}
 
 ### COMMON CONFIG ###
-common.generate.users=true
-common.same.user=false
+common.generate.users=${common.generate.users}
+common.same.user=${common.same.user}
 
 ### OSX CONFIG ###
-osx.client.enabled=true
-osx.backend.sender=true
-osxAppiumUrl=http://localhost:4622/wd/hub/
-osxApplicationPath=ZClient+1086
+osx.client.enabled=${osx.client.enabled}
+osx.backend.sender=${osx.backend.sender}
+osxAppiumUrl=${osxAppiumUrl}
+osxApplicationPath=${osxApplicationPath}
 
 ### ANDROID CONFIG ###
-android.client.enabled=true
-android.backend.sender=true
-androidAppiumUrl=http://127.0.0.1:4824/wd/hub
-androidApplicationPath=/Users/kaleksandrov/ZClient+2308.apk
-package=com.waz.zclient.dev
-activity=com.waz.zclient.MainActivity
-resultImage=/Users/kaleksandrov/results/
-defaultImagePath=/Users/kaleksandrov/zautomation/tests/tools/img/
-defaultImagesPath=/Users/kaleksandrov/zautomation/tests/tools/img/
+android.client.enabled=${android.client.enabled}
+android.backend.sender=${android.backend.sender}
+androidAppiumUrl=${androidAppiumUrl}
+androidApplicationPath=${androidApplicationPath}
+package=${package}
+activity=${activity}
+resultImage=${resultImage}
+defaultImagePath=${defaultImagePath}
+defaultImagesPath=${defaultImagesPath}
 
 ### IOS CONFIG ###
-ios.client.enabled=true
-ios.backend.sender=true
-iosAppiumUrl=http://127.0.0.1:4723/wd/hub
-iosApplicationPath=/Users/kaleksandrov/ZClient+992.app
-isSimulator=true
-swipeScriptPath=/Users/kaleksandrov/zautomation/tests/tools/./swipeInWindow
-pathToUserpic=/Users/kaleksandrov/zautomation/tests/tools/img/userpicture_portrait.jpg
-iosImagesPath=/Users/kaleksandrov/Images/
+ios.client.enabled=${ios.client.enabled}
+ios.backend.sender=${ios.backend.sender}
+iosAppiumUrl=${iosAppiumUrl}
+iosApplicationPath=${iosApplicationPath}
+isSimulator=${isSimulator}
+swipeScriptPath=${swipeScriptPath}
+pathToUserpic=${pathToUserpic}
+iosImagesPath=${iosImagesPath}
