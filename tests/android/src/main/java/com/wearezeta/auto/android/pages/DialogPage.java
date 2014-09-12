@@ -111,7 +111,7 @@ public class DialogPage extends AndroidPage{
 	
 	public void tapAddPictureBtn(int index)
 	{
-		WebElement el = dialogPageBottomFrameLayout.findElement(By.className(AndroidLocators.CommonLocators.classNameTextView));
+		WebElement el = driver.findElement(By.xpath(AndroidLocators.CommonLocators.classNameTextView));
 		el.click();
 	}
 	
