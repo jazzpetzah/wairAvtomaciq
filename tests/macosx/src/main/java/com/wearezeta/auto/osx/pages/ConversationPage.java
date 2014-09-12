@@ -257,6 +257,52 @@ public class ConversationPage extends OSXPage {
 		}
 	}
 
+	public void scrollDownToLastMessage() throws Exception {
+		NSPoint lastGroupPosition = null;
+		WebElement lastGroup = null;
+		List<WebElement> groups = driver.findElements(By
+				.xpath(OSXLocators.xpathConversationMessageGroup));
+		int lastPosition = 0;
+		for (WebElement group : groups) {
+			NSPoint position = NSPoint.fromString(group
+					.getAttribute("AXPosition"));
+			NSPoint size = NSPoint.fromString(group.getAttribute("AXSize"));
+			if (position.y() + size.y() > lastPosition) {
+				lastPosition = position.y() + size.y();
+				lastGroupPosition = new NSPoint(position.x(), position.y()
+						+ size.y());
+				lastGroup = group;
+			}
+		}
+
+		NSPoint textInputPosition = NSPoint.fromString(newMessageTextArea
+				.getAttribute("AXPosition"));
+
+		// get scrollbar for conversation view
+		WebElement conversationIncrementSB = null;
+
+		WebElement scrollArea = driver.findElement(By
+				.id(OSXLocators.idConversationScrollArea));
+
+		if (lastGroupPosition.y() > textInputPosition.y()) {
+			WebElement scrollBar = scrollArea.findElement(By
+					.xpath("//AXScrollBar"));
+			List<WebElement> scrollButtons = scrollBar.findElements(By
+					.xpath("//AXButton"));
+			for (WebElement scrollButton : scrollButtons) {
+				String subrole = scrollButton.getAttribute("AXSubrole");
+				if (subrole.equals("AXIncrementPage")) {
+					conversationIncrementSB = scrollButton;
+				}
+			}
+			while (lastGroupPosition.y() > textInputPosition.y()) {
+				conversationIncrementSB.click();
+				lastGroupPosition = NSPoint.fromString(lastGroup
+						.getAttribute("AXPosition"));
+			}
+		}
+	}
+
 	public void pressPlayPauseButton() {
 		mediabarPlayPauseButton.click();
 	}
