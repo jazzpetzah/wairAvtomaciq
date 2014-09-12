@@ -140,8 +140,16 @@ public class ZBender
 		
 		if (true == sendImg) {
 			
-			sendMessageWithInterval(yourСontact, contact, interval, messageCount / 2);
-			sendPictureWithInterval(yourСontact, contact, interval, messageCount / 2, imgPath);
+			if (messageCount != -1) {
+				sendMessageWithInterval(yourСontact, contact, interval, messageCount / 2);
+				sendPictureWithInterval(yourСontact, contact, interval, messageCount / 2, imgPath);
+			}
+			else {
+				while (true) {
+					sendMessageWithInterval(yourСontact, contact, interval, 1);
+					sendPictureWithInterval(yourСontact, contact, interval, 1, imgPath);
+				}
+			}
 		}
 		else {
 			

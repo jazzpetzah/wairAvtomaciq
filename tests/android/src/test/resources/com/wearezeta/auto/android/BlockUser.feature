@@ -1,6 +1,6 @@
  Feature: Block user
  
- @id676 @staging 
+ @id676 @staging
  Scenario Outline: I want to block a person from 1:1 conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -23,7 +23,7 @@
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
       
-@id673 @staging 
+@id673 @staging
  Scenario Outline: I want to unblock someone from their Profile view
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -42,8 +42,24 @@
  Examples: 
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+ 
+ @staging @id720
+ Scenario Outline: I do not want to be seen in the search results of someone I blocked
+    Given User <Contact> blocks user <Login>
+    And I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in search field user name to connect to <Contact>
+    And I wait for 30 seconds
+   	Then I see than no results found
+
+ Examples: 
+      | Login   | Password    | Name    | Contact     |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 |      
       
-@id680 @staging       
+@id680 @staging    
 Scenario Outline: I want to see user has been blocked within the Start UI
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

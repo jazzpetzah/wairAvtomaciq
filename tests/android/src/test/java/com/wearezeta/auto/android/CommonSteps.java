@@ -212,6 +212,34 @@ public class CommonSteps {
 			PagesCollection.loginPage.restoreApplication();
 		}
 	}
+	
+	@When ("^I wait for (.*) seconds$")
+	public void WaitForTime(String seconds) throws NumberFormatException, InterruptedException {
+		Thread.sleep(Integer.parseInt(seconds) * 1000);
+	}
+	
+	@When("^User (.*) blocks user (.*)$")
+	public void BlockContact(String contact, String login) throws Exception {
+		ClientUser yourUser = null;
+		login = CommonUtils.retrieveRealUserContactPasswordValue(login);
+		for (ClientUser user : CommonUtils.yourUsers) {
+			if (user.getName().toLowerCase().equals(login.toLowerCase())) {
+				yourUser = user;
+				break;
+			}
+		}
+		BackEndREST.loginByUser(yourUser);
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		for (ClientUser user : CommonUtils.contacts) {
+			if (user.getName().toLowerCase().equals(contact.toLowerCase())) {
+				BackEndREST.loginByUser(user);
+				
+				BackEndREST.changeConnectRequestStatus(user, yourUser.getId(), "blocked");
+				break;
+			}
+
+		}
+	}
 		
 	@When("^(.*) accept all requests$")
 	public void AcceptConnectRequest(String contact) throws IllegalArgumentException, UriBuilderException, IOException, JSONException, BackendRequestException{

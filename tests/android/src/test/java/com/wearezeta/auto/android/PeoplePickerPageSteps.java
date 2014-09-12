@@ -65,6 +65,11 @@ public class PeoplePickerPageSteps {
 	    PagesCollection.peoplePickerPage.waitUserPickerFindUser(contact);	
 	}
 	
+	@Then("^I see than no results found$")
+	public void ISeeNoResultsFound() {
+		Assert.assertTrue(PagesCollection.peoplePickerPage.isNoResultsFoundVisible());
+	}
+	
 	@When("^I tap on user name found on People picker page (.*)$")
 	public void WhenITapOnUserNameFoundOnPeoplePickerPage(String contact) throws Throwable {
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
