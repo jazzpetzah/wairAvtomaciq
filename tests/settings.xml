@@ -15,32 +15,32 @@
     <profile>
       <id>iOS</id>
       <properties>
-	<Root>/Users/shiznyak/zautomation/tests/tools/</Root>
-	<Url>http://127.0.0.1:4723/wd/hub</Url>
+        <Root>/Users/shiznyak/zautomation/tests/tools/</Root>
+        <Url>http://127.0.0.1:4723/wd/hub</Url>
         <appPath>/Users/shiznyak/Downloads/ZClient.app</appPath>
-	<isSimulator>true</isSimulator>
-	<generateUsers>true</generateUsers>
-	<swipeScriptPath>swipeInWindow</swipeScriptPath> <!-- no need to change -->
-	<pathToUserpic>img/userpicture_landscape.jpg</pathToUserpic> <!-- no need to change -->
-	<driverTimeoutSeconds>10</driverTimeoutSeconds>
-	<pictureResultsPath>/Users/shiznyak/Downloads/</pictureResultsPath>
-	<iosImagesPath>img/</iosImagesPath> <!-- no need to change -->
+        <isSimulator>true</isSimulator>
+        <generateUsers>true</generateUsers>
+        <swipeScriptPath>swipeInWindow</swipeScriptPath> <!-- no need to change -->
+        <pathToUserpic>img/userpicture_landscape.jpg</pathToUserpic> <!-- no need to change -->
+        <driverTimeoutSeconds>10</driverTimeoutSeconds>
+        <pictureResultsPath>/Users/shiznyak/Downloads/</pictureResultsPath>
+        <iosImagesPath>img/</iosImagesPath> <!-- no need to change -->
       </properties>
     </profile>
     <!-- Config for Android tests -->
     <profile>
       <id>Android</id>
       <properties>
-	<Root>/Users/shiznyak/zautomation/tests/tools/</Root>
+        <Root>/Users/shiznyak/zautomation/tests/tools/</Root>
         <Url>http://127.0.0.1:4723/wd/hub</Url>
         <appPath>/Users/shiznyak/Downloads/zclient-release.apk</appPath>
-	<package>com.waz.zclient</package>
-	<generateUsers>true</generateUsers>
-	<activity>.MainActivity</activity>
-	<driverTimeoutSeconds>10</driverTimeoutSeconds>
-	<pictureResultsPath>/Users/shiznyak/Downloads/</pictureResultsPath>
-	<resultImage>img/userpicture_mobile_check.jpg</resultImage> <!-- no need to change -->
-	<defaultImagePath>img/userpicture.jpg</defaultImagePath> <!-- no need to change -->
+        <package>com.waz.zclient</package>
+        <generateUsers>true</generateUsers>
+        <activity>.MainActivity</activity>
+        <driverTimeoutSeconds>10</driverTimeoutSeconds>
+        <pictureResultsPath>/Users/shiznyak/Downloads/</pictureResultsPath>
+        <resultImage>img/userpicture_mobile_check.jpg</resultImage> <!-- no need to change -->
+        <defaultImagePath>img/userpicture.jpg</defaultImagePath> <!-- no need to change -->
       </properties>
     </profile>
     <!-- Config for OSX tests -->
@@ -49,9 +49,49 @@
       <properties>
         <Url>http://127.0.0.1:4723/wd/hub</Url>
         <appPath>ZClient</appPath>
-	<generateUsers>true</generateUsers>
-	<driverTimeoutSeconds>10</driverTimeoutSeconds>
-	<pictureResultsPath>/Users/kaleksandrov/ZETA_Run_Screens/</pictureResultsPath>
+        <generateUsers>true</generateUsers>
+        <driverTimeoutSeconds>10</driverTimeoutSeconds>
+        <pictureResultsPath>/Users/kaleksandrov/ZETA_Run_Screens/</pictureResultsPath>
+      </properties>
+    </profile>
+    <!-- Config for Sync Engine tests -->
+    <profile>
+      <id>SyncEngine</id>
+      <properties>
+        <driverTimeoutSeconds>10</driverTimeoutSeconds>
+        <defaultEmail>smoketester@wearezeta.com</defaultEmail>
+        <pictureResultsPath>/Users/kaleksandrov/pictureResultsPath/</pictureResultsPath>
+        <!-- Acceptance Config -->
+        <acceptance.messages.count>2</acceptance.messages.count>
+        <acceptance.sending.timeout.sec>5</acceptance.sending.timeout.sec>
+        <acceptance.max.send.interval.sec>2</acceptance.max.send.interval.sec>
+        <!-- Common Config -->
+        <common.generate.users>true</common.generate.users>
+        <common.same.user>false</common.same.user>
+        <!-- OSX Config -->
+        <osx.client.enabled>true</osx.client.enabled>
+        <osx.backend.sender>true</osx.backend.sender>
+        <osxAppiumUrl>http://127.0.0.1:4622/wd/hub/</osxAppiumUrl>
+        <osxApplicationPath>ZClient+1086</osxApplicationPath>
+        <!-- Android Config -->
+        <android.client.enabled>true</android.client.enabled>
+        <android.backend.sender>true</android.backend.sender>
+        <androidAppiumUrl>http://127.0.0.1:4824/wd/hub</androidAppiumUrl>
+        <androidApplicationPath>/Users/kaleksandrov/ZClient+2308.apk</androidApplicationPath>
+        <package>com.waz.zclient.dev</package>
+        <activity>com.waz.zclient.MainActivity</activity>
+        <resultImage>/Users/kaleksandrov/results/</resultImage>
+        <defaultImagePath>/Users/kaleksandrov/zautomation/tests/tools/img/</defaultImagePath>
+        <defaultImagesPath>/Users/kaleksandrov/zautomation/tests/tools/img/</defaultImagesPath>
+        <!-- IOS Config -->
+        <ios.client.enabled>true</ios.client.enabled>
+        <ios.backend.sender>true</ios.backend.sender>
+        <iosAppiumUrl>http://127.0.0.1:4723/wd/hub</iosAppiumUrl>
+        <iosApplicationPath>/Users/kaleksandrov/ZClient+992.app</iosApplicationPath>
+        <isSimulator>true</isSimulator>
+        <swipeScriptPath>/Users/kaleksandrov/zautomation/tests/tools/./swipeInWindow</swipeScriptPath>
+        <pathToUserpic>/Users/kaleksandrov/zautomation/tests/tools/img/userpicture_portrait.jpg</pathToUserpic>
+        <iosImagesPath>/Users/kaleksandrov/Images/</iosImagesPath>
       </properties>
     </profile>
   </profiles>
