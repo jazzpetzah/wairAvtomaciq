@@ -55,4 +55,30 @@ public class CommonSteps {
 	public void tearDown() throws Exception {
 		senderPages.closeAllPages();
 	}
+	
+	@Given("^I have group chat with name (.*) with (.*) and (.*)$")
+	public void GivenIHaveGroupChatWith(String chatName, String contact1,
+			String contact2) throws Throwable {
+		boolean flag1 = false;
+		boolean flag2 = false;
+		contact1 = CommonUtils.retrieveRealUserContactPasswordValue(contact1);
+		contact2 = CommonUtils.retrieveRealUserContactPasswordValue(contact2);
+		List<ClientUser> chatContacts = new LinkedList<ClientUser>();
+		for (ClientUser user : CommonUtils.contacts) {
+			if (user.getName().toLowerCase().equals(contact1.toLowerCase())) {
+				chatContacts.add(user);
+				flag1 = true;
+			}
+			if (user.getName().toLowerCase().equals(contact2.toLowerCase())) {
+				chatContacts.add(user);
+				flag2 = true;
+			}
+			if (flag1 && flag2) {
+				break;
+			}
+		}
+		BackEndREST.createGroupConversation(CommonUtils.yourUsers.get(0),
+				chatContacts, chatName);
+	}
+
 }
