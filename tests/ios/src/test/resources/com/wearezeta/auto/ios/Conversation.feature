@@ -34,7 +34,8 @@ Scenario Outline: Send Hello to contact
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
     
-
+# Muted, needs jenkins investigation, not reproducable on manually Automation execution   
+@mute
 @smoke 
 @id460
 Scenario Outline: Send a camera roll picture to user from contact list
