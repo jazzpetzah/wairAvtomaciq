@@ -120,6 +120,11 @@ public class ConversationPageSteps {
 				 + beforeNumberOfImages + ", after - " + afterNumberOfImages, isNumberIncreased);
 	 }
 	 
+	 @When("I scroll down to conversation")
+	 public void IScrollDownToConversation() throws Exception {
+			CommonSteps.senderPages.getConversationPage().scrollDownToLastMessage();
+	 }
+	 
 	 @When("I am knocking to user")
 	 public void WhenIAmKnockingToUser() {
 		 if (beforeNumberOfKnocks < 0) {
@@ -183,7 +188,8 @@ public class ConversationPageSteps {
 	 }
 	 
 	 @When("I open People Picker from conversation")
-	 public void WhenIOpenPeoplePickerFromConversation() throws MalformedURLException, IOException {
+	 public void WhenIOpenPeoplePickerFromConversation() throws Exception {
+		 IScrollDownToConversation();
 		 CommonSteps.senderPages.getConversationPage().writeNewMessage("");
 		 CommonSteps.senderPages.getConversationPage().openConversationPeoplePicker();
 		 CommonSteps.senderPages.setConversationInfoPage(new ConversationInfoPage(
@@ -208,7 +214,7 @@ public class ConversationPageSteps {
 	 }
 	 
 	 @Given("^I create group chat with (.*) and (.*)$")
-	 public void WhenICreateGroupChatWithUser1AndUser2(String user1, String user2) throws MalformedURLException, IOException {
+	 public void WhenICreateGroupChatWithUser1AndUser2(String user1, String user2) throws Exception {
 		 user1 = CommonUtils.retrieveRealUserContactPasswordValue(user1);
 		 user2 = CommonUtils.retrieveRealUserContactPasswordValue(user2);
 		 ContactListPageSteps clSteps = new ContactListPageSteps();

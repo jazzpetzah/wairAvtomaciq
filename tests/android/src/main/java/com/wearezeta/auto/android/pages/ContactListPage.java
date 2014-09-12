@@ -140,6 +140,7 @@ public class ContactListPage extends AndroidPage {
 	public ContactListPage pressLaterButton() throws Exception {
 		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.PersonalInfoPage.idProfileOptionsButton));
 		
+		refreshUITree();
 		if (laterBtn.size() > 0) {
 			laterBtn.get(0).click();
 		}

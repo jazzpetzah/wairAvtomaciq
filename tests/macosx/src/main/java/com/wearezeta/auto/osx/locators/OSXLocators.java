@@ -45,6 +45,7 @@ public final class OSXLocators {
 	public static final String xpathFileListScrollArea = "//AXScrollArea";
 	public static final String xpathConversationImageEntry = "//AXGroup/AXImage";
 	public static final String xpathSearchResultsScrollArea = "//AXScrollArea[AXTable[@AXIdentifier='people_picker_searchresult']]";
+	public static final String xpathConversationMessageGroup = "//AXWebArea/AXGroup";
 
 	public static final String xpathFormatContactEntryWithName = "//AXStaticText[@AXIdentifier='clListItemNameField'][@AXValue='%s']";
 	public static final String xpathFormatSpecificMessageEntry = "//AXGroup/AXStaticText[@AXValue='%s']";
