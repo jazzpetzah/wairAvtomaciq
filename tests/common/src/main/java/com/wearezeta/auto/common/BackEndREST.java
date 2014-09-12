@@ -388,7 +388,7 @@ public class BackEndREST {
 		}
 	}
 
-	private static String getConversationWithSingleUser(ClientUser fromUser,
+	public static String getConversationWithSingleUser(ClientUser fromUser,
 			ClientUser toUser) throws Exception {
 		String conversationId = null;
 		JSONArray jsonArray = getConversations(fromUser);

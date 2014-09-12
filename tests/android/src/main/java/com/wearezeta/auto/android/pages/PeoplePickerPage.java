@@ -40,6 +40,9 @@ public class PeoplePickerPage extends AndroidPage {
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idCreateConversationIcon")
 	private WebElement createConversation;
 	
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idNoResultsFound")
+	private WebElement noResults;
+	
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectToHeader")
 	private List<WebElement> connectToHeader;
 	
@@ -71,6 +74,12 @@ public class PeoplePickerPage extends AndroidPage {
 			driver.sendKeyEvent(keyCode);
 		}
 		
+	}
+	
+	public boolean isNoResultsFoundVisible() {
+		
+		refreshUITree();
+		return noResults.isDisplayed();
 	}
 	public AndroidPage selectContact(String contactName) throws Exception {
 		AndroidPage page = null;

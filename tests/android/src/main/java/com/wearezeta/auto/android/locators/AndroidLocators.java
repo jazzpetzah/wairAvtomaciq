@@ -75,6 +75,8 @@ public final class AndroidLocators {
 		
 		public static final String idConfirmCancelButton = LOCATORS_PACKAGE + ":id/zb__confirm__cancel_button";
 		
+		public static final String idConfirmCancelButtonPicker = LOCATORS_PACKAGE + ":id/zb__confirm_dialog__cancel_button";
+		
 		public static final String xpathContactFrame = "//android.widget.FrameLayout[child::android.widget.TextView[@text='%s']]";
 		
 		public static final String xpathContacts = "//android.widget.TextView[@text='%s']"; 
@@ -202,6 +204,8 @@ public final class AndroidLocators {
 		public static final String idConnectionRequiesMessage = LOCATORS_PACKAGE + ":id/cet__send_connect_request__first_message";
 		
 		public static final String idSendConnectionRequestButton = LOCATORS_PACKAGE + ":id/zb__send_connect_request__connect_button";
+		
+		public static final String idNoResultsFound = LOCATORS_PACKAGE + ":id/ttv_pickuser__error_message";
 		
 		public static final String xpathPeoplePickerGroup = "//android.widget.LinearLayout[child::android.widget.TextView[@resource-id='" + LOCATORS_PACKAGE + ":id/ttv_pickuser_searchconversation_name' and @text='%s']]";
 		

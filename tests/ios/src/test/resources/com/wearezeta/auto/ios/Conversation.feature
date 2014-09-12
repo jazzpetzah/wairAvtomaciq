@@ -33,7 +33,7 @@ Scenario Outline: Send Hello to contact
 	Examples: 
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
-
+    
 # Muted, needs jenkins investigation, not reproducable on manually Automation execution   
 @mute
 @smoke 

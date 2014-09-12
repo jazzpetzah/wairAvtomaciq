@@ -250,11 +250,16 @@ public class DriverUtils {
 		driver.manage().timeouts().implicitlyWait(seconds, TimeUnit.SECONDS);
 	}
 
-	public static BufferedImage takeScreenshot(RemoteWebDriver driver) throws IOException {
-		byte[] scrImage = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES);
-		InputStream in = new ByteArrayInputStream(scrImage);
-		BufferedImage bImageFromConvert = ImageIO.read(in);
-		return bImageFromConvert;
+	public static BufferedImage takeScreenshot(ZetaDriver driver) throws IOException {
+		if (!driver.isSessionLost()) {
+			byte[] scrImage = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES);
+			InputStream in = new ByteArrayInputStream(scrImage);
+			BufferedImage bImageFromConvert = ImageIO.read(in);
+			return bImageFromConvert;
+		}
+		else {
+			return null;
+		}
 	}
 	
 	public static void ToggleNetworkConnectionAndroid(AppiumDriver driver, boolean airplane, boolean wifi, boolean data) {
