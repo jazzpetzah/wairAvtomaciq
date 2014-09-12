@@ -15,6 +15,7 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaDriver;
 
 import gherkin.formatter.Formatter;
 import gherkin.formatter.Reporter;
@@ -129,7 +130,7 @@ public class ZetaFormatter implements Formatter, Reporter {
 		System.out.println(currentStep + " (status: " + arg0.getStatus() + ", time: " + (endDate-startDate) + "ms)");
 		if (driver != null) {
 			try {
-				BufferedImage image = DriverUtils.takeScreenshot(driver);
+				BufferedImage image = DriverUtils.takeScreenshot((ZetaDriver) driver);
 				String picturePath = CommonUtils.getPictureResultsPathFromConfig(this.getClass());
 				File outputfile = new File(picturePath + feature + "/" +
 						scenario + "/" + currentStep + ".png");
@@ -142,6 +143,10 @@ public class ZetaFormatter implements Formatter, Reporter {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}
+			
+			catch (org.openqa.selenium.remote.SessionNotFoundException ex) {
+				((ZetaDriver) driver).setSessionLost(true);
 			}
 			
 			catch (WebDriverException  e) {

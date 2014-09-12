@@ -17,6 +17,8 @@ public class ZetaDriver extends AppiumDriver implements WebDriver {
 	
 	private static final Logger log = ZetaLogger.getLog(ZetaDriver.class.getSimpleName());
 
+	private boolean isSessionLost = false;
+	
 	public ZetaDriver(URL remoteAddress, Capabilities desiredCapabilities) {
 		super(remoteAddress, desiredCapabilities);
 	}
@@ -37,8 +39,13 @@ public class ZetaDriver extends AppiumDriver implements WebDriver {
 		try {
 			result = super.findElements(by);
 		}
-		catch (RuntimeException ex)
-		{
+		catch (org.openqa.selenium.remote.UnreachableBrowserException ex) {
+			setSessionLost(true);
+		}
+		catch (org.openqa.selenium.remote.SessionNotFoundException ex ) {
+			setSessionLost(true);
+		}
+		catch (RuntimeException ex) {
 //			log.error(ex.getMessage() + "\n" + stackTraceToString(ex));
 			throw ex;
 		}
@@ -52,8 +59,13 @@ public class ZetaDriver extends AppiumDriver implements WebDriver {
 		try {
 			result = super.findElement(by);
 		}
-		catch (RuntimeException ex)
-		{
+		catch (org.openqa.selenium.remote.UnreachableBrowserException ex) {
+			setSessionLost(true);
+		}
+		catch (org.openqa.selenium.remote.SessionNotFoundException ex ) {
+			setSessionLost(true);
+		}
+		catch (RuntimeException ex) {
 //			log.error(ex.getMessage() + "\n" + stackTraceToString(ex));
 			throw ex;
 		}
@@ -108,6 +120,14 @@ public class ZetaDriver extends AppiumDriver implements WebDriver {
 	@Override
 	public void quit() {
 		super.quit();
+	}
+
+	public boolean isSessionLost() {
+		return isSessionLost;
+	}
+
+	public void setSessionLost(boolean isSesstionLost) {
+		this.isSessionLost = isSesstionLost;
 	}
 
 }

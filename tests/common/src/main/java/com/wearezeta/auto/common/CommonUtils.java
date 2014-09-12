@@ -22,6 +22,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaDriver;
 
 public class CommonUtils {
 	public static final String OS_NAME_WINDOWS = "Windows";
@@ -275,7 +276,7 @@ public class CommonUtils {
 
 	public static BufferedImage getElementScreenshot(WebElement element,
 			RemoteWebDriver driver) throws IOException {
-		BufferedImage screenshot = DriverUtils.takeScreenshot(driver);
+		BufferedImage screenshot = DriverUtils.takeScreenshot((ZetaDriver) driver);
 		org.openqa.selenium.Point elementLocation = element.getLocation();
 		Dimension elementSize = element.getSize();
 		return screenshot.getSubimage(elementLocation.x * 2,

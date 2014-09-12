@@ -84,6 +84,10 @@ public class CommonSteps {
 		if (!isFirstRunPassed) {
 			throw new IOException("Skipped due to error in users creation.");
 		}
+		
+		if (PagesCollection.loginPage != null && PagesCollection.loginPage.getDriver().isSessionLost()) {
+			IOSPage.clearPagesCollection();
+		}
 	}
 	 
 	 @After
