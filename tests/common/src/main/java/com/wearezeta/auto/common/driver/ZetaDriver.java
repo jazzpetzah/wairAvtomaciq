@@ -123,7 +123,7 @@ public class ZetaDriver extends AppiumDriver implements WebDriver {
 			super.quit();
 		}
 		catch (org.openqa.selenium.remote.SessionNotFoundException ex ) {
-			//setSessionLost(true);
+			setSessionLost(true);
 		}
 	}
 

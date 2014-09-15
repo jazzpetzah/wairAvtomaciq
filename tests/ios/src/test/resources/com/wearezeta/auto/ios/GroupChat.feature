@@ -171,7 +171,6 @@ Examples:
     
     
 #fails to check email of first user due to defect IOS-990
-@mute
 @staging
 @id395
 Scenario Outline: Tap on participant profiles in group info page participant view
@@ -186,8 +185,7 @@ Examples:
     |  Login		| Password		| Name			| GroupCreator	        |  GroupChatName    |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaPictureContact	    |     TESTCHAT		|
 
-#Mute due to SE issue, MEC-270, not possible to create group from 1:1    
-@mute        
+#Mute due to SE issue, MEC-270, not possible to create group from 1:1           
 @staging 
 @id393
 Scenario Outline: Verify you can start 1:1 conversation from a group conversation profile
@@ -204,8 +202,7 @@ Scenario Outline: Verify you can start 1:1 conversation from a group conversatio
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-#Mute due to SE issue, MEC-270, not possible to create group from 1:1     
-@mute   
+#Mute due to SE issue, MEC-270, not possible to create group from 1:1      
 @staging
 @id393
 Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
@@ -235,7 +232,6 @@ Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat i
     
     
 #Known issue ZIOS-1711. Muted test due to crash after relogin.
-@mute
 @staging
 @id597
 Scenario Outline: Verify the new conversation is created on the other end (1:1 source)
@@ -267,7 +263,6 @@ Scenario Outline: Verify the new conversation is created on the other end (1:1 s
 
     
 #Muted due to app quit on logout workaround
-@mute
 @staging
 @id602
 Scenario Outline: Verify new users are added to a group conversation on the other end
@@ -298,7 +293,6 @@ Scenario Outline: Verify new users are added to a group conversation on the othe
     
 
 #Muted due to app quit on logout workaround
-@mute
 @staging
 @id608
 Scenario Outline: Verify you can see image, which was sent into a group conversation, on the second end
@@ -340,8 +334,7 @@ Scenario Outline: Verify you can see image, which was sent into a group conversa
     |  Login		| Password		| Name			| Contact1		| Contact2		|  ChatName		| Picture                   |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|  QAtestChat 	| userpicture_landscape.jpg |
     
-#Muted due to app quit on logout workaround
-@mute    
+#Muted due to app quit on logout workaround 
 @staging
 @id606
 Scenario Outline: Verify you can see text message, which was sent into a group conversation, on the second end
@@ -378,7 +371,6 @@ Scenario Outline: Verify you can see text message, which was sent into a group c
 
     
 #Muted due to app quit on logout workaround
-@mute
 @staging
 @id607
 Scenario Outline: Verify you can see multimedia message, which was sent into a group conversation, on the second end
