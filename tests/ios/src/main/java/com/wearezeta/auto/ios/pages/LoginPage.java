@@ -180,6 +180,7 @@ public class LoginPage extends IOSPage {
 	}
 	
 	public void closeTermsPrivacyController(){
+		wait.until(ExpectedConditions.elementToBeClickable(termsPrivacyCloseButton));
 		termsPrivacyCloseButton.click();
 	}
 	

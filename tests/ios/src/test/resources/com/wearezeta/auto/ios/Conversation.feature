@@ -94,7 +94,6 @@ Examples:
 
 
 #Muted due relogin issue
-@mute  
 @staging
 @id614
    Scenario Outline: I am able to play inline YouTube link poster by others
@@ -123,7 +122,6 @@ Examples:
 
 
 #muted due to issue IOS-959
-@mute  
 @staging
 @id383
 Scenario Outline: Play/pause SoundCloud media link from the media bar
@@ -147,8 +145,7 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/klinke-auf-cinch/04-whats-happening-boytalk-remix |
     
     
-#muted due to defact IOS-985, still needs checking of mediabar and scrolling on simulator
-@mute      
+#muted due to defact IOS-985, still needs checking of mediabar and scrolling on simulator     
 @staging
 @id384
 Scenario Outline: Conversation gets scrolled back to playing media when clicking on media bar
@@ -199,7 +196,6 @@ Examples:
 
 
 #muted due to issue IOS-959
-@mute
 @staging
 @id504
   Scenario Outline: Verify you can play/pause media from the Media Bar (YouTube)
@@ -225,8 +221,7 @@ Examples:
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| http://www.youtube.com/watch?v=Bb1RhktcugU |
  
     
-#muted due to issue IOS-959
-@mute   
+#muted due to issue IOS-959 
 @staging
 @id387
 Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation (SoundCloud)
@@ -256,8 +251,7 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | aqaContact2 |https://soundcloud.com/klinke-auf-cinch/04-whats-happening-boytalk-remix |
 
 
-#muted due to issue IOS-959
-@mute    
+#muted due to issue IOS-959 
 @staging
 @id386   
 Scenario Outline: Verify the Media Bar disappears when playing media is back in view (SoundCloud)
@@ -278,7 +272,6 @@ Examples:
     
     
 #muted due to issue IOS-959
-@mute
 @staging
 @id385
   Scenario Outline: Verify the Media Bar dissapears after playback finishes (SoundCloud)
