@@ -146,9 +146,9 @@ Feature: Conversation
 
   @smoke @id471
   Scenario Outline: Leave group conversation
-    Given I Sign in using login <Login> and password <Password>
+    Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
+    And I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
-    And I have group chat with name <ChatName> with <Contact1> and <Contact2>
     When I open conversation with <ChatName>
     And I open Conversation info
     And I leave conversation
@@ -160,9 +160,9 @@ Feature: Conversation
 
   @smoke @id492
   Scenario Outline: Remove user from group chat
-    Given I Sign in using login <Login> and password <Password>
+    Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
+    And I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
-    And I have group chat with name <ChatName> with <Contact1> and <Contact2>
     When I open conversation with <ChatName>
     And I open Conversation info
     And I choose user <Contact1> in Conversation info
