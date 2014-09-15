@@ -1,16 +1,28 @@
 package com.wearezeta.auto.osx.steps;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+
+import com.wearezeta.auto.common.BackEndREST;
+import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.CreateZetaUser;
 import com.wearezeta.auto.common.TestPreparation;
 import com.wearezeta.auto.common.ZetaFormatter;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.pages.LoginPage;
 import com.wearezeta.auto.osx.pages.MainMenuPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
+import cucumber.api.java.en.Given;
 
 public class CommonSteps {
+	public static final Logger log = ZetaLogger.getLog(CommonSteps.class.getSimpleName());
+	
 	static {
 		System.setProperty("java.awt.headless", "false");
 		System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
