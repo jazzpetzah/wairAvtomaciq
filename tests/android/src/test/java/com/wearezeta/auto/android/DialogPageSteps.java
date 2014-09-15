@@ -22,11 +22,6 @@ public class DialogPageSteps{
 	public void WhenISeeDialogPage() throws Throwable {
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
 		PagesCollection.dialogPage.waitForCursorInputVisible();
-		
-		Thread.sleep(2000);
-		if (PagesCollection.contactListPage.isHintVisible()) {
-			PagesCollection.contactListPage.closeHint();
-		}
 	}
 
 	@When("^I tap on text input$")
@@ -67,6 +62,11 @@ public class DialogPageSteps{
 	@When("^I swipe on text input$")
 	public void WhenISwipeOnTextInput() throws Throwable {
 		PagesCollection.dialogPage.SwipeOnCursorInput();
+	}
+	
+	@When("^I swipe left on text input$")
+	public void WhenISwipeLeftOnTextInput() throws Throwable {
+		PagesCollection.dialogPage.SwipeLeftOnCursorInput();
 	}
 
 	@When("^I press Add Picture button$")

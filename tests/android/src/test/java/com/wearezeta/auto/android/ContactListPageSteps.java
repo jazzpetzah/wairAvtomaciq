@@ -26,7 +26,25 @@ public class ContactListPageSteps {
 			
 			WhenITapOnMyName(name);
 			PagesCollection.contactListPage.navigateBack();
-			Thread.sleep(1000);
+			
+			String contactName = "aqaContact1";
+			WhenITapOnContactName(contactName);
+			
+			if (PagesCollection.contactListPage.isHintVisible()) {
+				PagesCollection.contactListPage.closeHint();
+			}
+			PagesCollection.contactListPage.navigateBack();
+			
+			WhenITapOnContactName(contactName);
+			
+			if (PagesCollection.contactListPage.isHintVisible()) {
+				PagesCollection.contactListPage.closeHint();
+			}
+			DialogPageSteps steps = new DialogPageSteps();
+			steps.WhenISeeDialogPage();
+			steps.WhenISwipeOnTextInput();
+			steps.WhenISwipeLeftOnTextInput();
+			PagesCollection.contactListPage.navigateBack();
 		}
 	}
 	
@@ -62,11 +80,6 @@ public class ContactListPageSteps {
 	public void WhenITapOnMyName(String name) throws Exception  {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		PagesCollection.personalInfoPage = (PersonalInfoPage) PagesCollection.contactListPage.tapOnName(name);
-		
-		Thread.sleep(2000);
-		if (PagesCollection.contactListPage.isHintVisible()) {
-			PagesCollection.contactListPage.closeHint();
-		}
 	}
 
 	@When("^I swipe down contact list$")
