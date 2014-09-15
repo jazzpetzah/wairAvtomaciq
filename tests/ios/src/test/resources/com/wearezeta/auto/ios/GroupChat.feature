@@ -186,7 +186,8 @@ Examples:
     |  Login		| Password		| Name			| GroupCreator	        |  GroupChatName    |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaPictureContact	    |     TESTCHAT		|
     
-        
+#Mute due to SE issue, MEC-270, not possible to create group from 1:1     
+@mute        
 @staging 
 @id393
 Scenario Outline: Verify you can start 1:1 conversation from a group conversation profile
@@ -203,7 +204,8 @@ Scenario Outline: Verify you can start 1:1 conversation from a group conversatio
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
     
-    
+#Mute due to SE issue, MEC-270, not possible to create group from 1:1     
+@mute    
 @staging
 @id393
 Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
