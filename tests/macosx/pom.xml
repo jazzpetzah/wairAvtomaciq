@@ -16,21 +16,21 @@
     <TestRun>DevRun</TestRun>
     <Url>http://127.0.0.1:4622/wd/hub</Url>
     <appPath>ZClient</appPath>
-	<generateUsers>true</generateUsers>
-	<driverTimeoutSeconds>10</driverTimeoutSeconds>
-	<defaultEmail>smoketester.osx@wearezeta.com</defaultEmail>
+    <generateUsers>true</generateUsers>
+    <driverTimeoutSeconds>10</driverTimeoutSeconds>
+    <defaultEmail>smoketester.osx@wearezeta.com</defaultEmail>
   </properties>
 
   <dependencies>
     
-	<dependency>
+    <dependency>
       <groupId>org.sikuli</groupId>
       <artifactId>sikuli-java</artifactId>
       <version>1.0.1</version>
       <type>jar</type>
     </dependency>
-	
-	<dependency>
+    
+    <dependency>
       <groupId>com.wearezeta.auto</groupId>
       <artifactId>auto-common</artifactId>
       <version>1.0-SNAPSHOT</version>
@@ -43,13 +43,13 @@
       <version>4.11</version>
     </dependency>
     
-	<dependency>
-	  <groupId>org.seleniumhq.selenium</groupId>
-	  <artifactId>selenium-java</artifactId>
-	  <version>2.42.2</version>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-java</artifactId>
+      <version>2.42.2</version>
     </dependency>
     
-	<dependency>
+    <dependency>
         <groupId>info.cukes</groupId>
         <artifactId>cucumber-picocontainer</artifactId>
         <version>1.1.5</version>
@@ -61,11 +61,11 @@
      </dependency>
     
     <dependency>
-		<groupId>io.appium</groupId>
-		<artifactId>java-client</artifactId>
-		<version>1.6.1</version>
-	</dependency>
-	
+        <groupId>io.appium</groupId>
+        <artifactId>java-client</artifactId>
+        <version>1.6.1</version>
+    </dependency>
+    
   </dependencies>
   
   <build>
@@ -93,14 +93,14 @@
         </configuration>
       </plugin>
         <plugin>
-		 <groupId>org.apache.maven.plugins</groupId>
-		 <artifactId>maven-resources-plugin</artifactId>
-		 <version>2.6</version>
-		 <configuration>
-		   <!-- specify UTF-8, ISO-8859-1 or any other file encoding -->
-		   <encoding>UTF-8</encoding>
-		 </configuration>
-		</plugin>
+         <groupId>org.apache.maven.plugins</groupId>
+         <artifactId>maven-resources-plugin</artifactId>
+         <version>2.6</version>
+         <configuration>
+           <!-- specify UTF-8, ISO-8859-1 or any other file encoding -->
+           <encoding>UTF-8</encoding>
+         </configuration>
+        </plugin>
     </plugins>
     
     <resources>

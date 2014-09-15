@@ -161,16 +161,16 @@ Feature: Conversation
   Scenario Outline: Remove user from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
-    And I create group chat with <Contact1> and <Contact2>
-    When I open conversation with <Contact1>, <Contact2>
+    And I have group chat with name <ChatName> with <Contact1> and <Contact2>
+    When I open conversation with <ChatName>
     And I open Conversation info
     And I choose user <Contact1> in Conversation info
     And I remove selected user from conversation
     Then I see message YOU REMOVED <Contact1> in conversation
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
+      | Login   | Password    | Name    | Contact1    | Contact2    | ChatName       |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | RemoveUserChat |
 
   #Muted till new sync engine client stabilization
   @mute @smoke @id474 @id481
@@ -242,11 +242,11 @@ Feature: Conversation
     Examples: 
       | Login   | Password    | Name    | Contact     | SoundCloudLink                              |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/edherbst/throwaway-3 |
-   
-  #muted, not stable due to sync engine and bug ZOSX-931, have a look at the comments, conversation gets refreshed and that breaks the media bar   
+
+  #muted, not stable due to sync engine and bug ZOSX-931, have a look at the comments, conversation gets refreshed and that breaks the media bar
   @mute @staging @id380
   Scenario Outline: Conversation scrolls back to playing media when clicked on the media bar
-  	Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
     And I open conversation with <Contact>
     And I post messages and media link <SoundCloudLink>
@@ -257,8 +257,8 @@ Feature: Conversation
     And I press the media bar title
     Then I see media link <SoundCloudLink> and media in dialog
     Then I see the embedded media is playing
-  
-  	Examples: 
+
+    Examples: 
       | Login   | Password    | Name    | Contact     | SoundCloudLink                              |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/edherbst/throwaway-3 |
 
@@ -347,10 +347,10 @@ Feature: Conversation
     Examples: 
       | Login   | Password    | Name    | Contact1    | Contact2    | SoundCloudLink                              |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | https://soundcloud.com/edherbst/throwaway-3 |
-      
+
   @staging @id381
   Scenario Outline: The media bar disappears after playback finishes
-  	Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
     And I open conversation with <Contact>
     And I post messages and media link <SoundCloudLink>
@@ -362,12 +362,12 @@ Feature: Conversation
     Then I see media bar disappears
 
     Examples: 
-      | Login   | Password    | Name    | Contact     | SoundCloudLink                              		   |
+      | Login   | Password    | Name    | Contact     | SoundCloudLink                                         |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/20sekunder/isakkkkkk-pcb-sesh-1 |
-  
-  @staging @id378    
+
+  @staging @id378
   Scenario Outline: Media bar disappears when playing media is back in view
-  	Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
     And I open conversation with <Contact>
     And I post messages and media link <SoundCloudLink>
@@ -379,9 +379,7 @@ Feature: Conversation
     Then I see media link <SoundCloudLink> and media in dialog
     Then I see the embedded media is playing
     Then I see media bar disappears
-    
+
     Examples: 
       | Login   | Password    | Name    | Contact     | SoundCloudLink                              |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/edherbst/throwaway-3 |
-    
-  

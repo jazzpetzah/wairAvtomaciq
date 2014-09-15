@@ -14,22 +14,47 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <skipTests>true</skipTests>
     <TestRun>DevRun</TestRun>
-    <Url>http://127.0.0.1:4622/wd/hub</Url>
-    <appPath>ZClient+850</appPath>
-	<generateUsers>true</generateUsers>
-	<driverTimeoutSeconds>10</driverTimeoutSeconds>
+    <driverTimeoutSeconds>10</driverTimeoutSeconds>
+    <defaultEmail>smoketester@wearezeta.com</defaultEmail>
+    <pictureResultsPath>$CUCUMBER_REPORTS/Images</pictureResultsPath>
+    <acceptance.messages.count>2</acceptance.messages.count>
+    <acceptance.sending.timeout.sec>5</acceptance.sending.timeout.sec>
+    <acceptance.max.send.interval.sec>2</acceptance.max.send.interval.sec>
+    <common.generate.users>true</common.generate.users>
+    <common.same.user>false</common.same.user>
+    <osx.client.enabled>true</osx.client.enabled>
+    <osx.backend.sender>true</osx.backend.sender>
+    <osxAppiumUrl>http://127.0.0.1:4622/wd/hub/</osxAppiumUrl>
+    <osxApplicationPath>ZClient</osxApplicationPath>
+    <android.client.enabled>true</android.client.enabled>
+    <android.backend.sender>true</android.backend.sender>
+    <androidAppiumUrl>http://127.0.0.1:4824/wd/hub</androidAppiumUrl>
+    <androidApplicationPath>/Project/zclient.apk</androidApplicationPath>
+    <package>com.waz.zclient.dev</package>
+    <activity>com.waz.zclient.MainActivity</activity>
+    <resultImage>$CUCUMBER_REPORTS/Images</resultImage>
+    <defaultImagePath>img/</defaultImagePath>
+    <defaultImagesPath>img/</defaultImagesPath>
+    <ios.client.enabled>true</ios.client.enabled>
+    <ios.backend.sender>true</ios.backend.sender>
+    <iosAppiumUrl>http://127.0.0.1:4723/wd/hub</iosAppiumUrl>
+    <iosApplicationPath>/Project/ZClient_ios.app</iosApplicationPath>
+    <isSimulator>true</isSimulator>
+    <swipeScriptPath>swipeInWindow</swipeScriptPath>
+    <pathToUserpic>img/userpicture_portrait.jpg</pathToUserpic>
+    <iosImagesPath>img/</iosImagesPath>
   </properties>
 
   <dependencies>
     
-	<dependency>
+    <dependency>
       <groupId>org.sikuli</groupId>
       <artifactId>sikuli-java</artifactId>
       <version>1.0.1</version>
       <type>jar</type>
     </dependency>
-	
-	<dependency>
+    
+    <dependency>
       <groupId>com.wearezeta.auto</groupId>
       <artifactId>auto-common</artifactId>
       <version>1.0-SNAPSHOT</version>
@@ -42,13 +67,13 @@
       <version>4.11</version>
     </dependency>
     
-	<dependency>
-	  <groupId>org.seleniumhq.selenium</groupId>
-	  <artifactId>selenium-java</artifactId>
-	  <version>2.42.2</version>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-java</artifactId>
+      <version>2.42.2</version>
     </dependency>
     
-	<dependency>
+    <dependency>
         <groupId>info.cukes</groupId>
         <artifactId>cucumber-picocontainer</artifactId>
         <version>1.1.5</version>
@@ -60,11 +85,11 @@
      </dependency>
     
     <dependency>
-		<groupId>io.appium</groupId>
-		<artifactId>java-client</artifactId>
-		<version>1.6.1</version>
-	</dependency>
-	
+        <groupId>io.appium</groupId>
+        <artifactId>java-client</artifactId>
+        <version>1.6.1</version>
+    </dependency>
+    
   </dependencies>
   
   <build>
@@ -92,14 +117,14 @@
         </configuration>
       </plugin>
         <plugin>
-		 <groupId>org.apache.maven.plugins</groupId>
-		 <artifactId>maven-resources-plugin</artifactId>
-		 <version>2.6</version>
-		 <configuration>
-		   <!-- specify UTF-8, ISO-8859-1 or any other file encoding -->
-		   <encoding>UTF-8</encoding>
-		 </configuration>
-		</plugin>
+         <groupId>org.apache.maven.plugins</groupId>
+         <artifactId>maven-resources-plugin</artifactId>
+         <version>2.6</version>
+         <configuration>
+           <!-- specify UTF-8, ISO-8859-1 or any other file encoding -->
+           <encoding>UTF-8</encoding>
+         </configuration>
+        </plugin>
     </plugins>
     
     <resources>
