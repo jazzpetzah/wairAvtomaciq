@@ -50,7 +50,7 @@ Feature: Conversation
 
     Examples: 
       | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+      | aqaUser | aqaPassword | aqaUser | aqaContact2 |
 
   #Muted till new sync engine client stabilization
   @mute @regression @id444
