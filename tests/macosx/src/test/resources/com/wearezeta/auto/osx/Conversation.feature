@@ -65,7 +65,8 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @smoke @id103
+  #Muted till new sync engine client stabilization
+  @mute @smoke @id103
   Scenario Outline: Create group chat from 1on1 conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -147,15 +148,15 @@ Feature: Conversation
   Scenario Outline: Leave group conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
-    And I create group chat with <Contact1> and <Contact2>
-    When I open conversation with <Contact1>, <Contact2>
+    And I have group chat with name <ChatName> with <Contact1> and <Contact2>
+    When I open conversation with <ChatName>
     And I open Conversation info
     And I leave conversation
     Then I see message YOU LEFT in conversation
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
+      | Login   | Password    | Name    | Contact1    | Contact2    | ChatName       |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | LeaveGroupChat |
 
   @smoke @id492
   Scenario Outline: Remove user from group chat
