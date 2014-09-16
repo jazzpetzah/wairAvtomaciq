@@ -21,7 +21,6 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
 import com.google.common.base.Function;
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
@@ -215,7 +214,7 @@ public class ConversationPage extends OSXPage {
 	public boolean isSoundCloudContainerVisible() {
 
 		return DriverUtils.waitUntilElementAppears(driver,
-				By.xpath(OSXLocators.xpathSoundCloudMediaContainer));
+				By.xpath(OSXLocators.xpathSoundCloudMediaContainerWithoutImage));
 	}
 
 	public String getSoundCloudButtonState() {
@@ -357,9 +356,18 @@ public class ConversationPage extends OSXPage {
 			String messageText = message.getText();
 			if (messagesPattern.matcher(messageText).matches()) {
 				listResult.add(new MessageEntry("text", messageText,
-						CommonUtils.PLATFORM_NAME_OSX, receivedDate));
+						receivedDate));
 			}
 		}
 		return listResult;
+	}
+
+	public MessageEntry receiveMessage(String message) {
+		WebElement messageElement = driver.findElement(By.xpath(String.format(
+				OSXLocators.xpathFormatSpecificMessageEntry, message)));
+		if (messageElement != null) {
+			return new MessageEntry("text", message, new Date());
+		}
+		return null;
 	}
 }

@@ -70,5 +70,3 @@ Feature: Sign In
  	Examples: 
     |	Login	|	Password	|	Name	|	WrongMail		| WrongPassword |
     |	aqaUser	|	aqaPassword	|	aqaUser	|	wrongwrong	    | wrong			|
- 	
- 	

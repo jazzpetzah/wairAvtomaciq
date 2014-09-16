@@ -37,6 +37,7 @@ public final class IOSLocators {
 	public static final String classNameDialogMessages = "UIATableCell";
 
 	public static final String xpathDialogTextMessage = "//UIATableCell/UIATextView";
+	public static final String xpathFormatDialogTextMessage = "//UIATableCell/UIATextView[@value='%s']";
 	
 //	public static final String xpathCursorInput = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[last()]";//"TAP OR SLIDE  ";
 	
@@ -298,8 +299,6 @@ public final class IOSLocators {
 	
 	public static final String nameContactListLoadBar = "LoadBar";
 	
-	public static final String classNameKeyboard = "UIAKeyboard";
-	
 	
 	////////////////////////////
 	//Editing menu (right click)
@@ -344,12 +343,23 @@ public final class IOSLocators {
 	public static final String namePeoplePickerContactsLabel = "CONTACTS";
 	public static final String namePeoplePickerOtheraLabel = "OTHERS";
 	public static final String NamePeoplePickerTopPeopleLabel = "TOP PEOPLE";
+	public static final String xpathPeoplePickerUserAvatar = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell/UIAStaticText[@name='%s']/..";
+	public static final String namePeoplePickerAddToConversationButton = "ADD TO CONVERSATION";
 	
 	//////////////////
 	//Connect to page
 	//////////////////
 	
 	public static final String nameSendConnectionInputField = "SendConnectionRequestMessageView";
+	
+	
+	//////////////////
+	//Keyboard
+	//////////////////
+	
+	public static final String classNameKeyboard = "UIAKeyboard";
+	
+	public static final String nameKeyboardDeleteButton = "Delete";
 	
 }
 

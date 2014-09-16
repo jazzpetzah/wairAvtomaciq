@@ -12,7 +12,7 @@ Feature: Connect to User
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
-    And I tap on user name found on People picker page <Contact>
+    And I tap on NOT connected user name on People picker page <Contact>
     And I see connect to <Contact> dialog
     And I input message in connect to dialog
     Then I see first item in contact list named <Contact>
@@ -49,7 +49,7 @@ Feature: Connect to User
     And I see People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
-    And I tap on user name found on People picker page <Contact>
+    And I tap on NOT connected user name on People picker page <Contact>
     And I see connect to <Contact> dialog
     And I input message in connect to dialog
     And I click Send button on connect to dialog

@@ -21,6 +21,9 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.sync.client.ZetaInstance;
 import com.wearezeta.auto.sync.client.ZetaSender;
+import com.wearezeta.auto.sync.ExecutionContext;
+import com.wearezeta.auto.sync.ReportGenerator;
+import com.wearezeta.auto.sync.SyncEngineUtil;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -62,8 +65,10 @@ public class CommonSteps {
 		}
 
 		// init platform clients
+		int i = 0;
 		for (String platform : SyncEngineUtil.platforms) {
 			ZetaInstance client = new ZetaInstance(platform);
+			client.setUserInstance(SyncEngineUtil.usersList.get(i++));
 			ExecutionContext.clients.put(platform, client);
 		}
 
@@ -85,7 +90,7 @@ public class CommonSteps {
 									.getClass()), osxPath));
 			long endDate = new Date().getTime();
 			ExecutionContext.osxZeta().setStartupTimeMs(endDate-startDate);
-			log.debug("OSX application startup time is equals to: "
+			log.debug("OSX application startup time: "
 					+ ExecutionContext.osxZeta().getStartupTimeMs() + "ms");
 			ZetaFormatter.setDriver(osxSenderPages.getLoginPage().getDriver());
 			osxSenderPages.getLoginPage().sendProblemReportIfFound();
@@ -102,7 +107,7 @@ public class CommonSteps {
 								.getClass()), androidPath);
 				long endDate = new Date().getTime();
 				ExecutionContext.androidZeta().setStartupTimeMs(endDate-startDate);
-				log.debug("Android application startup time is equals to: "
+				log.debug("Android application startup time: "
 						+ ExecutionContext.androidZeta().getStartupTimeMs() + "ms");
 				PagesCollection.loginPage.dismissUpdate();
 			}
@@ -118,7 +123,7 @@ public class CommonSteps {
 						iosPath);
 				long endDate = new Date().getTime();
 				ExecutionContext.iosZeta().setStartupTimeMs(endDate-startDate);
-				log.debug("iOS application startup time is equals to: "
+				log.debug("iOS application startup time: "
 						+ ExecutionContext.iosZeta().getStartupTimeMs() + "ms");
 			}
 		}
@@ -148,7 +153,7 @@ public class CommonSteps {
 	}
 
 	@Given("I start sync engine test")
-	public void AndroidIStartSyncEngineTest() throws Exception {
+	public void IStartSyncEngineTest() throws Exception {
 		log.debug("Starting sync engine");
 		ExecutorService executor = Executors.newFixedThreadPool(10);
 
@@ -157,8 +162,6 @@ public class CommonSteps {
 			ZetaInstance client = ExecutionContext.clients.get(platform);
 			if (client.isEnabled()) {
 				log.debug("Init client for platform: " + platform);
-				client.createSender();
-				client.createListener();
 				client.setUserInstance(SyncEngineUtil.usersList.get(i++));
 				executor.execute(client.sender());
 				executor.execute(client.listener());
@@ -174,7 +177,94 @@ public class CommonSteps {
 			throw new Exception("Work was not finished in useful time.");
 		}
 	}
-
+	
+	@Given("I run serial sync engine test")
+	public void IRunSerialSyncEngineTest() {
+		//send ios, receive osx and android
+		if (ExecutionContext.isIosEnabled()) {
+			for (int i = 0; i < ExecutionContext.iosZeta().getMessagesToSend(); i++) {
+				final String message = CommonUtils.generateGUID();
+				ExecutionContext.iosZeta().sender().sendTextMessage(SyncEngineUtil.CHAT_NAME, message);
+				ExecutorService executor = Executors.newFixedThreadPool(2);
+				if (ExecutionContext.isOsxEnabled()) {
+				executor.execute(new Runnable() {
+					public void run() {
+						ExecutionContext.osxZeta().listener().waitForMessageOsx(message);
+					}
+				});
+				}
+				if (ExecutionContext.isAndroidEnabled()) {
+				executor.execute(new Runnable() {
+					public void run() {
+						ExecutionContext.androidZeta().listener().waitForMessageAndroid(message);
+					}
+				});
+				}
+				
+				try {
+					Thread.sleep(ExecutionContext.iosZeta().getMessagesSendingInterval()*1000);
+				} catch (InterruptedException e) {
+				}
+			}
+		}
+		
+		//send osx, receive ios and android
+		if (ExecutionContext.isOsxEnabled()) {
+			for (int i = 0; i < ExecutionContext.osxZeta().getMessagesToSend(); i++) {
+				final String message = CommonUtils.generateGUID();
+				ExecutionContext.osxZeta().sender().sendTextMessage(SyncEngineUtil.CHAT_NAME, message);
+				ExecutorService executor = Executors.newFixedThreadPool(2);
+				if (ExecutionContext.isIosEnabled()) {
+				executor.execute(new Runnable() {
+					public void run() {
+						ExecutionContext.iosZeta().listener().waitForMessageIos(message);
+					}
+				});
+				}
+				if (ExecutionContext.isAndroidEnabled()) {
+				executor.execute(new Runnable() {
+					public void run() {
+						ExecutionContext.androidZeta().listener().waitForMessageAndroid(message);
+					}
+				});
+				}
+				try {
+					Thread.sleep(ExecutionContext.osxZeta().getMessagesSendingInterval()*1000);
+				} catch (InterruptedException e) {
+				}
+				
+			}
+		}
+		
+		//send android, receive ios and osx
+		if (ExecutionContext.isAndroidEnabled()) {
+			for (int i = 0; i < ExecutionContext.androidZeta().getMessagesToSend(); i++) {
+				final String message = CommonUtils.generateGUID();
+				ExecutionContext.androidZeta().sender().sendTextMessage(SyncEngineUtil.CHAT_NAME, message);
+				ExecutorService executor = Executors.newFixedThreadPool(2);
+				if (ExecutionContext.isOsxEnabled()) {
+				executor.execute(new Runnable() {
+					public void run() {
+						ExecutionContext.osxZeta().listener().waitForMessageOsx(message);
+					}
+				});
+				}
+				if (ExecutionContext.isIosEnabled()) {
+				executor.execute(new Runnable() {
+					public void run() {
+						ExecutionContext.iosZeta().listener().waitForMessageIos(message);
+					}
+				});
+				}
+				try {
+					Thread.sleep(ExecutionContext.androidZeta().getMessagesSendingInterval()*1000);
+				} catch (InterruptedException e) {
+				}
+				
+			}
+		}
+	}
+	
 	@Given("I analyze registered data")
 	public void IAnalyzeRegisteredData() {
 		ReportGenerator.chatUsers = new ArrayList<String>();
@@ -185,11 +275,11 @@ public class CommonSteps {
 
 		ReportGenerator.loggedInUsers = new HashMap<String, String>();
 		ReportGenerator.startupTimes = new HashMap<String, Long>();
+
 		for (Map.Entry<String, ZetaInstance> client : ExecutionContext.clients
 				.entrySet()) {
 			if (client.getValue().isEnabled()) {
-				ReportGenerator.loggedInUsers.put(client.getKey(), client
-						.getValue().getUserInstance().getName());
+				ReportGenerator.loggedInUsers.put(client.getKey(), client.getValue().getUserInstance().getName());
 				ReportGenerator.startupTimes.put(client.getKey(), client.getValue().getStartupTimeMs());
 			} else {
 				ReportGenerator.loggedInUsers.put(client.getKey(),
@@ -198,11 +288,24 @@ public class CommonSteps {
 		}
 
 		ReportGenerator.sentMessages = ExecutionContext.sentMessages;
+		if (ExecutionContext.iosZeta().isEnabled()) {
+			ReportGenerator.iosReceivedMessages = new LinkedHashMap<String, MessageEntry>();
+			for (Map.Entry<String, MessageEntry> message : ExecutionContext
+					.iosZeta().listener().registeredMessages.entrySet()) {
+				log.debug(message);
+				if (message.getValue().appearanceDate
+						.after(ZetaSender.sendingStartDate)) {
 
+					ReportGenerator.iosReceivedMessages.put(message.getKey(), message.getValue());
+				}
+			}
+		}
+		
 		if (ExecutionContext.androidZeta().isEnabled()) {
 			ReportGenerator.androidReceivedMessages = new LinkedHashMap<String, MessageEntry>();
 			for (Map.Entry<String, MessageEntry> message : ExecutionContext
 					.androidZeta().listener().registeredMessages.entrySet()) {
+				log.debug(message);
 				if (message.getValue().appearanceDate
 						.after(ZetaSender.sendingStartDate)) {
 					ReportGenerator.androidReceivedMessages.put(message.getKey(), message.getValue());
@@ -213,21 +316,11 @@ public class CommonSteps {
 			ReportGenerator.osxReceivedMessages = new LinkedHashMap<String, MessageEntry>();
 			for (Map.Entry<String, MessageEntry> message : ExecutionContext
 					.osxZeta().listener().registeredMessages.entrySet()) {
+				log.debug(message);
 				if (message.getValue().appearanceDate
 						.after(ZetaSender.sendingStartDate)) {
 
 					ReportGenerator.osxReceivedMessages.put(message.getKey(), message.getValue());
-				}
-			}
-		}
-		if (ExecutionContext.iosZeta().isEnabled()) {
-			ReportGenerator.iosReceivedMessages = new LinkedHashMap<String, MessageEntry>();
-			for (Map.Entry<String, MessageEntry> message : ExecutionContext
-					.iosZeta().listener().registeredMessages.entrySet()) {
-				if (message.getValue().appearanceDate
-						.after(ZetaSender.sendingStartDate)) {
-
-					ReportGenerator.iosReceivedMessages.put(message.getKey(), message.getValue());
 				}
 			}
 		}

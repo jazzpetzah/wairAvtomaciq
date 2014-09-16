@@ -1,8 +1,7 @@
 package com.wearezeta.auto.sync;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import org.apache.log4j.Logger;
 
@@ -17,31 +16,10 @@ public class ExecutionContext {
 	
 	public static HashMap<String, ZetaInstance> clients = new HashMap<String, ZetaInstance>();
 
-	public static int sendingInterval = 0;
-	public static int messagesCount = -1;
-	
-	public static ArrayList<MessageEntry> sentMessages = new ArrayList<MessageEntry>();
+	public static LinkedHashMap<String, MessageEntry> sentMessages = new LinkedHashMap<String, MessageEntry>();
 	
 	public static synchronized void addNewSentTextMessage(MessageEntry message) {
-		sentMessages.add(message);
-	}
-	
-	static {
-		try {
-			sendingInterval = SyncEngineUtil.getAcceptanceMaxSendingIntervalFromConfig(ExecutionContext.class);
-			
-		} catch (IOException e) {
-			sendingInterval = 0;
-			log.warn("Failed to read property acceptance.max.sending.interval.sec from config file. Set to '0' by default");
-		}
-		
-		try {
-			messagesCount = SyncEngineUtil.getClientMessagesCount(ExecutionContext.class);
-			
-		} catch (IOException e) {
-			messagesCount = -1;
-			log.warn("Failed to read property acceptance.messages.count from config file. Set to '0' by default");
-		}
+		sentMessages.put(message.messageContent, message);
 	}
 	
 	public static boolean isAndroidEnabled() { return clients.get(CommonUtils.PLATFORM_NAME_ANDROID).isEnabled(); }
@@ -51,8 +29,7 @@ public class ExecutionContext {
 	public static ZetaInstance androidZeta() { return clients.get(CommonUtils.PLATFORM_NAME_ANDROID); }
 	public static ZetaInstance iosZeta() { return clients.get(CommonUtils.PLATFORM_NAME_IOS); }
 	public static ZetaInstance osxZeta() { return clients.get(CommonUtils.PLATFORM_NAME_OSX); }
-	
-	
+
 	public static boolean allInstancesFinishSending() {
 		boolean result = true;
 		for (ZetaInstance client: clients.values()) {

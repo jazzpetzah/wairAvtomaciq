@@ -84,6 +84,11 @@ public class LoginPageSteps {
 		 value = CommonUtils.retrieveRealUserContactPasswordValue(value);
 		 PagesCollection.loginPage.setPassword(value);
 	 }	
+	 
+	 @When("I fill in email input (.*)")
+	 public void IFillInEmailInput(String text){
+		 PagesCollection.loginPage.setLogin(text);
+	 }
 	  
 	 @Then("^I see login in screen$")
 	 public void ThenISeeLogInScreen() {
@@ -102,6 +107,13 @@ public class LoginPageSteps {
 	 
 	 @When("I click on popup Copy item")
 	 public void IClickPopupCopy(){
+		 PagesCollection.loginPage.clickPopupCopyButton();
+	 }
+	 
+	 @When("I copy email input field content")
+	 public void ICopyEmailInputContent(){
+		 PagesCollection.loginPage.tapHoldEmailInput();
+		 PagesCollection.loginPage.clickPopupSelectAllButton();
 		 PagesCollection.loginPage.clickPopupCopyButton();
 	 }
 	 

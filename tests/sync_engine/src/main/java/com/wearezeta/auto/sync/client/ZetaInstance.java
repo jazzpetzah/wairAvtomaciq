@@ -12,7 +12,15 @@ import com.wearezeta.auto.sync.SyncEngineUtil;
 
 public class ZetaInstance {
 	private static final Logger log = ZetaLogger.getLog(ZetaInstance.class.getSimpleName());
+	//settings
+	private boolean isEnabled = false;
+	private boolean isSendUsingBackend = false;
+	private int messagesToSend = -1;
+	private int messagesSendingInterval = 0;
+
+	private String platform;
 	
+	//state
 	private InstanceState state = InstanceState.CREATED;
 
 	private ZetaSender sender;
@@ -20,12 +28,10 @@ public class ZetaInstance {
 	
 	private ClientUser userInstance;
 	
-	private String platform;
-
-	private boolean isEnabled = false;
-	private boolean isSendUsingBackend = false;
-	
+	//results
 	private long startupTimeMs;
+	private long loginAndContactListLoadingTimeMs;
+	private long conversationLoadingTimeMs;
 	
 	public ZetaInstance(String platform) {
 		this.platform = platform;
@@ -83,14 +89,35 @@ public class ZetaInstance {
 		} else {
 			state = InstanceState.ERROR_WRONG_PLATFORM;
 		}
+		
+		try {
+			messagesSendingInterval = SyncEngineUtil.getAcceptanceMaxSendingIntervalFromConfig(ExecutionContext.class);
+			
+		} catch (IOException e) {
+			messagesSendingInterval = 0;
+			log.warn("Failed to read property acceptance.max.sending.interval.sec from config file. Set to '0' by default");
+		}
+		
+		try {
+			messagesToSend = SyncEngineUtil.getClientMessagesCount(ExecutionContext.class);
+			
+		} catch (IOException e) {
+			messagesToSend = -1;
+			log.warn("Failed to read property acceptance.messages.count from config file. Set to '0' by default");
+		}
+		
+		if (isEnabled) {
+			createSender();
+			createListener();
+		}
 	}
 	
 	public void createSender() {
-		sender = new ZetaSender(this, platform, ExecutionContext.messagesCount);
+		sender = new ZetaSender(this, messagesToSend);
 	}
 	
 	public void createListener() {
-		listener = new ZetaListener(this, platform);
+		listener = new ZetaListener(this);
 	}
 	
 	public ZetaSender sender() {
@@ -147,5 +174,21 @@ public class ZetaInstance {
 
 	public void setStartupTimeMs(long startupTimeMs) {
 		this.startupTimeMs = startupTimeMs;
+	}
+
+	public int getMessagesToSend() {
+		return messagesToSend;
+	}
+
+	public void setMessagesToSend(int messagesToSend) {
+		this.messagesToSend = messagesToSend;
+	}
+
+	public int getMessagesSendingInterval() {
+		return messagesSendingInterval;
+	}
+
+	public void setMessagesSendingInterval(int messagesSendingInterval) {
+		this.messagesSendingInterval = messagesSendingInterval;
 	}
 }

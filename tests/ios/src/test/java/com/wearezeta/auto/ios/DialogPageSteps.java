@@ -1,5 +1,7 @@
 package com.wearezeta.auto.ios;
 
+
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -7,6 +9,7 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.ImageFullScreenPage;
@@ -100,19 +103,19 @@ public class DialogPageSteps {
 	@Then("^I see my message in the dialog$")
 	public void ThenISeeMyMessageInTheDialog() throws Throwable {
 	    String dialogLastMessage = PagesCollection.dialogPage.getLastMessageFromDialog();
-	    Assert.assertTrue("Message is different, actual :" + dialogLastMessage + " expected: " + message, dialogLastMessage.equals((message).trim()));
+	    Assert.assertTrue("Message is different, actual: " + dialogLastMessage + " expected: " + message, dialogLastMessage.equals((message).trim()));
 	}
 	
 	@Then("I see last message in dialog is expected message (.*)")
 	public void ThenISeeLasMessageInTheDialogIsExpected(String msg) throws Throwable {
 	    String dialogLastMessage = PagesCollection.dialogPage.getLastMessageFromDialog();
-	    Assert.assertTrue("Message is different, actual :" + dialogLastMessage + " expected: " + msg, dialogLastMessage.equals((msg).trim()));
+	    Assert.assertTrue("Message is different, actual: " + dialogLastMessage + " expected: " + msg, dialogLastMessage.equals((msg).trim()));
 	}
 	
 	@Then("^I see last message in the dialog$")
 	public void ThenISeeLastMessageInTheDialog() throws Throwable {
 	    String dialogLastMessage = PagesCollection.dialogPage.getLastMessageFromDialog();
-	    Assert.assertTrue("Message is different, actual :" + dialogLastMessage + " expected: " + lastLine, dialogLastMessage.equals((lastLine).trim()));
+	    Assert.assertTrue("Message is different, actual: " + dialogLastMessage + " expected: " + lastLine, dialogLastMessage.equals((lastLine).trim()));
 	}
 	
 	@When("^I swipe the text input cursor$")
@@ -170,7 +173,7 @@ public class DialogPageSteps {
 	
 	@When("I swipe right on Dialog page")
 	public void ISwipeRightOnDialogPage() throws IOException{
-		PagesCollection.dialogPage.swipeRight(500);
+		PagesCollection.contactListPage = (ContactListPage) PagesCollection.dialogPage.swipeRight(500);
 	}
 	
 	@When("I send long message")
@@ -314,16 +317,6 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.sendStringToInput(message + "\n");
 	}
 	
-	@When("I see keyboard")
-	public void ISeeKeyboard(){
-		Assert.assertTrue(PagesCollection.dialogPage.isKeyboardVisible());
-	}
-	
-	@When("I dont see keyboard")
-	public void IDontSeeKeyboard(){
-		Assert.assertFalse(PagesCollection.dialogPage.isKeyboardVisible());
-	}
-	
 	@When("I tap and hold on message input")
 	public void ITapHoldTextInput(){
 		PagesCollection.dialogPage.tapHoldTextInput();
@@ -336,7 +329,6 @@ public class DialogPageSteps {
 	
 	@When("^I send predefined message (.*)$")
 	public void ISendPredefinedMessage(String message) throws Throwable {
-		PagesCollection.dialogPage = (DialogPage) PagesCollection.iOSPage;
 	    PagesCollection.dialogPage.sendStringToInput(message + "\n");
 	}
 	

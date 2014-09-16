@@ -1,5 +1,8 @@
 package com.wearezeta.auto.common;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -385,6 +388,13 @@ public class CommonUtils {
 	public static String getAndroidDeviceNameFromConfig(Class<?> c)
 			throws IOException {
 		return getValueFromConfig(c, "deviceName");
+	}
+	
+	public static void putStringToClipboard(String data){
+		StringSelection stringSelection;
+		stringSelection = new StringSelection(data);
+		Clipboard clipboard = new Clipboard("iOS simulator clipboard");
+		clipboard.setContents(stringSelection, stringSelection);
 	}
 
 }

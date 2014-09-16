@@ -5,7 +5,7 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -30,7 +30,7 @@ public class PeoplePickerPage extends IOSPage{
 	private WebElement userPickerSearchResult;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameKeyboardGoButton)
-	private WebElement addToConversationsButton;
+	private WebElement goButton;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameCreateConversationButton)
 	private WebElement createConverstaionButton;
@@ -43,6 +43,9 @@ public class PeoplePickerPage extends IOSPage{
 	
 	@FindBy(how = How.NAME, using = IOSLocators.NamePeoplePickerTopPeopleLabel)
 	private WebElement topPeopleLabel;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.namePeoplePickerAddToConversationButton)
+	private WebElement addToConversationBtn;
 	
 	
 	private String url;
@@ -79,31 +82,10 @@ public class PeoplePickerPage extends IOSPage{
 		//DriverUtils.waitUntilElementAppears(driver, By.name(user));
 	}
 	
-	public IOSPage clickOnFoundUser(String name) throws MalformedURLException{
-		
-		try{
-			userPickerSearchResult.click();
-		}
-		catch(Exception ex){
-			driver.findElement(By.name(name)).click();
-		}
-		
-		IOSPage page = null;
-		
-		try {
-			WebElement el = driver.findElement(By.name(IOSLocators.nameSendConnectionInputField));
-			if(DriverUtils.isElementDisplayed(el)) {
-				page = new ConnectToPage(url, path);
-			}
-			else {
-				page = this;
-			}
-		}
-		catch(NoSuchElementException ex)
-		{
-			page = this;
-		}
-		
+	public ConnectToPage clickOnNotConnectedUser(String name) throws MalformedURLException{
+		ConnectToPage page;
+		driver.findElement(By.name(name)).click();
+		page = new ConnectToPage(url, path);
 		return page;
 	}
 	
@@ -118,11 +100,23 @@ public class PeoplePickerPage extends IOSPage{
 	}
 	
 	public boolean isAddToConversationBtnVisible(){
-		return addToConversationsButton.isDisplayed();
+		return DriverUtils.isElementDisplayed(addToConversationBtn);
 	}
 	
-	public GroupChatPage clickOnAddToCoversationButton() throws IOException{
-		addToConversationsButton.click();
+	public boolean addToConversationNotVisible(){
+		boolean flag;
+		try{
+			addToConversationBtn.click();
+			flag = false;
+		}
+		catch(Exception e){
+			flag = true;
+		}
+		return flag;
+	}
+	
+	public GroupChatPage clickOnGoButton() throws IOException{
+		goButton.click();
 		return new GroupChatPage(url, path);
 	}
 	
@@ -145,6 +139,7 @@ public class PeoplePickerPage extends IOSPage{
 			}
 			case UP:
 			{
+				page = this;
 				break;
 			}
 			case LEFT:
@@ -191,6 +186,26 @@ public class PeoplePickerPage extends IOSPage{
 	
 	public boolean isTopPeopleLabelVisible(){
 		return DriverUtils.isElementDisplayed(topPeopleLabel);
+	}
+
+	public boolean isUserSelected(String name) {
+		WebElement el = driver.findElement(By.xpath(String.format(IOSLocators.xpathPeoplePickerUserAvatar, name)));
+		boolean flag = el.getAttribute("value").equals("1");
+		return flag;
+	}
+	
+	public void clickConnectedUserAvatar(String name){
+		WebElement el = driver.findElement(By.xpath(String.format(IOSLocators.xpathPeoplePickerUserAvatar, name)));
+		el.click();
+	}
+	
+	public void hitDeleteButton(){
+		peoplePickerSearch.sendKeys(Keys.DELETE);
+	}
+	
+	public GroupChatPage clickAddToCoversationButton() throws Throwable{
+		addToConversationBtn.click();
+		return new GroupChatPage(url, path);
 	}
 
 }

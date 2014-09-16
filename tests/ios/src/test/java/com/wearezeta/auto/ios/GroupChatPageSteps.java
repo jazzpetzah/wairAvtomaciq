@@ -25,6 +25,14 @@ public class GroupChatPageSteps {
 	    PagesCollection.groupChatPage.areRequiredContactsAddedToChat(name1, name2);
 	}
 	
+	@Then("^I see group chat page with 3 users (.*) (.*) (.*)$")
+	public void ThenISeeGroupChatPage3Users(String name1, String name2, String name3) throws Throwable {
+		name1 = CommonUtils.retrieveRealUserContactPasswordValue(name1);
+		name2 = CommonUtils.retrieveRealUserContactPasswordValue(name2);
+		name3 = CommonUtils.retrieveRealUserContactPasswordValue(name3);
+	    Assert.assertTrue(PagesCollection.groupChatPage.areRequired3ContactsAddedToChat(name1, name2, name3));
+	}
+	
 	@When("^I swipe up on group chat page$")
 	public void ISwipeUpOnGroupChatPage() throws IOException, InterruptedException{
 		PagesCollection.groupChatInfoPage = (GroupChatInfoPage)PagesCollection.groupChatPage.swipeUp(500);

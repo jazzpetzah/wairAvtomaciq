@@ -79,9 +79,6 @@ public class DialogPage extends IOSPage{
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameMediaBarTitle)
 	private WebElement mediabarBarTitle;
-	
-	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameKeyboard)
-	private WebElement keyboard;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathYouAddedMessageCellFormat)
 	private List<WebElement> youAddedCell;
@@ -117,11 +114,6 @@ public class DialogPage extends IOSPage{
 	public void sendStringToInput(String message) throws InterruptedException
 	{
 		conversationInput.sendKeys(message);
-	}
-	
-	public void inputStringFromKeyboard(String returnKey) throws InterruptedException{
-		IOSKeyboard keyboard = IOSKeyboard.getInstance();
-		keyboard.typeString(returnKey, driver);
 	}
 		
 	public void ScrollToLastMessage(){
@@ -350,10 +342,6 @@ public class DialogPage extends IOSPage{
 		return page;
 	}
 	
-	public boolean isKeyboardVisible(){
-		return DriverUtils.isElementDisplayed(keyboard);
-	}
-	
 	public void tapHoldTextInput(){
 		driver.tap(1, driver.findElement(By.name(IOSLocators.nameConversationCursorInput)), 1000);
 	}
@@ -407,7 +395,7 @@ public class DialogPage extends IOSPage{
 			try {
 				String messageText = message.getAttribute("name");
 				if (messagesPattern.matcher(messageText).matches()) {
-					listResult.add(new MessageEntry("text", messageText, CommonUtils.PLATFORM_NAME_IOS, receivedDate));
+					listResult.add(new MessageEntry("text", messageText, receivedDate));
 				}
 			} catch (ClassCastException e) {
 				log.debug(e.getMessage());
@@ -415,5 +403,13 @@ public class DialogPage extends IOSPage{
 			}
 		}
 		return listResult;
+	}
+	
+	public MessageEntry receiveMessage(String message) {
+		WebElement messageElement = driver.findElement(By.xpath(String.format(IOSLocators.xpathFormatDialogTextMessage, message)));
+		if (messageElement != null) {
+			return new MessageEntry("text", message, new Date());
+		}
+		return null;
 	}
 }

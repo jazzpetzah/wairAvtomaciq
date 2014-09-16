@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.junit.Assert;
+import org.openqa.selenium.Keys;
+
 import com.wearezeta.auto.common.BackEndREST;
 import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
@@ -19,6 +22,7 @@ import com.wearezeta.auto.ios.tools.IOSSimulatorPhotoLibHelper;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.When;
 
 public class CommonSteps {
 	static {
@@ -128,6 +132,26 @@ public class CommonSteps {
 			user = CommonUtils.retrieveRealUserContactPasswordValue(user);
 			contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 			BackEndREST.autoTestSendRequest(CommonUtils.findUserNamed(contact), CommonUtils.findUserNamed(user));
+		}
+				
+		@When("I see keyboard")
+		public void ISeeKeyboard(){
+			Assert.assertTrue(PagesCollection.dialogPage.isKeyboardVisible());
+		}
+		
+		@When("I dont see keyboard")
+		public void IDontSeeKeyboard(){
+			Assert.assertFalse(PagesCollection.dialogPage.isKeyboardVisible());
+		}
+		
+		@When("I press keyboard Delete button")
+		public void IPressKeyboardDeleteBtn(){
+			PagesCollection.iOSPage.clickKeyboardDeleteButton();
+		}
+		
+		@When("I scroll up page a bit")
+		public void IScrollUpPageABit(){
+			PagesCollection.iOSPage.smallScrollUp();
 		}
 
 }

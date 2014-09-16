@@ -59,6 +59,7 @@ public class CommonSteps {
 			PagesCollection.loginPage = new LoginPage(
 					CommonUtils.getAndroidAppiumUrlFromConfig(CommonSteps.class), path, true);
 			ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
+			PagesCollection.loginPage.dismissUpdate();
 		}
 	}
 
