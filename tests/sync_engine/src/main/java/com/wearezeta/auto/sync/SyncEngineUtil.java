@@ -183,4 +183,10 @@ public class SyncEngineUtil {
 		}
 		return result;
 	}
+	
+	public static boolean isPlatformCorrect(String platform) {
+		return platform.equals(CommonUtils.PLATFORM_NAME_ANDROID) ||
+				platform.equals(CommonUtils.PLATFORM_NAME_IOS) ||
+				platform.equals(CommonUtils.PLATFORM_NAME_OSX);
+	}
 }

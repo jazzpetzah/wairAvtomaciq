@@ -42,6 +42,7 @@ public class CommonSteps {
 			isFirstRun = false;
 			if (generateUsersFlag) {
 				CommonUtils.generateUsers(3);
+				log.debug("Following users are failed to be activated: " + CreateZetaUser.failedToActivate);
 				Thread.sleep(CommonUtils.BACKEND_SYNC_TIMEOUT);
 				TestPreparation.createContactLinks();
 			} else {

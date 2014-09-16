@@ -273,9 +273,17 @@ public class DialogPage extends AndroidPage{
 		for (WebElement element: elements) {
 			String messageText = element.getText();
 			if (messagesPattern.matcher(messageText).matches()) {
-				listResult.add(new MessageEntry("text", messageText, CommonUtils.PLATFORM_NAME_ANDROID, receivedDate));
+				listResult.add(new MessageEntry("text", messageText, receivedDate));
 			}
 		}
 		return listResult;
-	}	
+	}
+	
+	public MessageEntry receiveMessage(String message) {
+		WebElement messageElement = driver.findElement(By.xpath(String.format(AndroidLocators.DialogPage.xpathFormatSpecificMessage, message)));
+		if (messageElement != null) {
+			return new MessageEntry("text", message, new Date());
+		}
+		return null;
+	}
 }

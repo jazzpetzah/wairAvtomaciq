@@ -84,22 +84,22 @@ Feature: Conversation
 
   @regression @id102
   Scenario Outline: Add user to group conversation
+    Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
-    And I create group chat with <Contact1> and <Contact2>
-    And I open conversation with <Contact1>, <Contact2>
+    And I open conversation with <ChatName>
     When I open People Picker from conversation
     And I search for user <Contact3>
     And I see user <Contact3> in search results
     And I add user <Contact3> from search results
-    Then I open conversation with <Contact1>, <Contact2>, <Contact3>
+    Then I open conversation with <ChatName>
     And I see message YOU ADDED <Contact3> in conversation
     And I open Conversation info
     And I see that conversation has 4 people
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | Contact3    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | aqaContact3 |
+      | Login   | Password    | Name    | Contact1    | Contact2    | Contact3    | ChatName           |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | aqaContact3 | AddUserToGroupChat |
 
   #Muted till new sync engine client stabilization
   @mute @smoke @id470

@@ -395,7 +395,7 @@ public class DialogPage extends IOSPage{
 			try {
 				String messageText = message.getAttribute("name");
 				if (messagesPattern.matcher(messageText).matches()) {
-					listResult.add(new MessageEntry("text", messageText, CommonUtils.PLATFORM_NAME_IOS, receivedDate));
+					listResult.add(new MessageEntry("text", messageText, receivedDate));
 				}
 			} catch (ClassCastException e) {
 				log.debug(e.getMessage());
@@ -403,5 +403,13 @@ public class DialogPage extends IOSPage{
 			}
 		}
 		return listResult;
+	}
+	
+	public MessageEntry receiveMessage(String message) {
+		WebElement messageElement = driver.findElement(By.xpath(String.format(IOSLocators.xpathFormatDialogTextMessage, message)));
+		if (messageElement != null) {
+			return new MessageEntry("text", message, new Date());
+		}
+		return null;
 	}
 }

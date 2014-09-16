@@ -119,6 +119,8 @@ public final class AndroidLocators {
 		
 		public static final String idMessage = LOCATORS_PACKAGE + ":id/ltv__row_conversation__message";
 		
+		public static final String xpathFormatSpecificMessage = "//android.widget.TextView[@resource-id='" + LOCATORS_PACKAGE + ":id/ltv__row_conversation__message' and @text='%s']";
+	
 		public static final String idDialogTakePhotoButton = LOCATORS_PACKAGE + ":id/gtv__camera_control__take_a_picture";
 		
 		public static final String idDialogChangeCameraButton = LOCATORS_PACKAGE + ":id/gtv__camera__top_control__back_camera";
