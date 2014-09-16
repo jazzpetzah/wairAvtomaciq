@@ -120,9 +120,13 @@ public abstract class AndroidPage extends BasePage {
 		
 		try {
 			driver.runAppInBackground(10);
+			Thread.sleep(1000);
 		}
 		catch (WebDriverException ex) {
 			//do nothing, sometimes after restoring the app we have this exception, Appium bug
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
