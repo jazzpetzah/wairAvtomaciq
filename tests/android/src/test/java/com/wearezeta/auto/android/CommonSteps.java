@@ -271,6 +271,13 @@ public class CommonSteps {
 		} catch (Exception ex) {
 			System.out.println("Failed to deploy pictures into simulator");
 		}
+		
+		try {
+			AndroidCommonUtils.disableHints();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		boolean generateUsersFlag = Boolean.valueOf(CommonUtils
 				.getGenerateUsersFlagFromConfig(CommonSteps.class));

@@ -138,6 +138,8 @@ public final class AndroidLocators {
 		public static final String idConnectRequestChatLabel = LOCATORS_PACKAGE + ":id/ttv__row_conversation__connect_request__chathead_footer__label";
 		
 		public static final String idConnectRequestChatUserName = LOCATORS_PACKAGE + ":id/ttv__row_conversation__connect_request__chathead_footer__username";
+		
+		public static final String xpathCloseCursor = "//android.support.v4.view.ViewPager[1]/android.widget.ListView[1]/android.widget.FrameLayout[1]";
 	}
 	
 	public static final class GroupChatInfoPage {

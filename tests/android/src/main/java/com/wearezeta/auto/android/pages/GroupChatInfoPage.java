@@ -131,6 +131,7 @@ public class GroupChatInfoPage extends AndroidPage {
 		boolean flag2 = false;
 		boolean commonFlag = false;
 		BufferedImage avatarIcon = null;
+		refreshUITree();
 		String path = CommonUtils.getImagesPath(CommonUtils.class);
 		for(int i = 1; i < linearLayout.size()+1;i++){
 			avatarIcon = getElementScreenshot(driver.findElement(By.xpath(String.format(AndroidLocators.GroupChatInfoPage.xpathGroupChatInfoContacts, i,1))));

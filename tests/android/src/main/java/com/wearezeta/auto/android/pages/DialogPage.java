@@ -27,6 +27,9 @@ public class DialogPage extends AndroidPage{
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classEditText)
 	private WebElement cursorInput;
 	
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.DialogPage.xpathCloseCursor)
+	private WebElement closeCursor;
+	
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMessage")
 	private List<WebElement> messagesList;
 	
@@ -107,6 +110,11 @@ public class DialogPage extends AndroidPage{
 	public void SwipeOnCursorInput()
 	{
 		DriverUtils.swipeRight(driver, cursorInput, 1000);
+	}
+	
+	public void SwipeLeftOnCursorInput()
+	{
+		DriverUtils.swipeLeft(driver, closeCursor, 1000);
 	}
 	
 	public void tapAddPictureBtn(int index)

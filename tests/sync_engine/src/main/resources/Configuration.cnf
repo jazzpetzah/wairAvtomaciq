@@ -28,8 +28,8 @@ androidApplicationPath=${androidApplicationPath}
 package=${package}
 activity=${activity}
 resultImage=${resultImage}
-defaultImagePath=${defaultImagePath}
-defaultImagesPath=${defaultImagesPath}
+defaultImagePath=${Root}/${defaultImagePath}
+defaultImagesPath=${Root}/${defaultImagesPath}
 
 ### IOS CONFIG ###
 ios.client.enabled=${ios.client.enabled}
@@ -38,5 +38,5 @@ iosAppiumUrl=${iosAppiumUrl}
 iosApplicationPath=${iosApplicationPath}
 isSimulator=${isSimulator}
 swipeScriptPath=${swipeScriptPath}
-pathToUserpic=${pathToUserpic}
-iosImagesPath=${iosImagesPath}
+pathToUserpic=${Root}/${pathToUserpic}
+iosImagesPath=${Root}/${iosImagesPath}
