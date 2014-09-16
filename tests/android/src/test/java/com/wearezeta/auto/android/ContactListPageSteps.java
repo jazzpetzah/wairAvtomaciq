@@ -58,7 +58,7 @@ public class ContactListPageSteps {
 			PagesCollection.peoplePickerPage.tapClearButton();
 		}
 		
-		disableHint(name);
+		//disableHint(name);
 		
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 

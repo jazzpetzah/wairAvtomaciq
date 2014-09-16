@@ -20,6 +20,16 @@ public class AndroidCommonUtils extends CommonUtils {
 					"adb shell \"am broadcast -a android.intent.action.MEDIA_MOUNTED -d file:///sdcard \"Broadcasting: Intent { act=android.intent.action.MEDIA_MOUNTED dat=file:///sdcard }" });
 		}
 	}
+	
+	public static void disableHints() throws Exception {
+		if (getOsName().contains(OS_NAME_WINDOWS)) {
+			Runtime.getRuntime().exec(
+					"cmd /C adb shell touch /sdcard/disableOnBoardingHints");
+		} else {
+			executeOsXCommand(new String[] { "/bin/bash", "-c",
+					"adb shell touch /sdcard/disableOnBoardingHints" });
+		}
+	}
 
 	public static void killAndroidClient() throws Exception {
 		if (getOsName().contains(OS_NAME_WINDOWS)) {
