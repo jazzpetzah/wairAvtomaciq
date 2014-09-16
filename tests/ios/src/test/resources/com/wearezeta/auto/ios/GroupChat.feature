@@ -15,9 +15,9 @@ Feature: Group Chat
 	   	And I see People picker page
 	   	And I input in People picker search field user name <Contact2>
 	   	And I see user <Contact2> found on People picker page
-	   	And I tap on user name found on People picker page <Contact2>
+	   	And I tap on connected user <Contact2> on People picker page
 	   	And I see Add to conversation button
-	   	And I click on Add to conversation button
+	   	And I click on Go button
 	   	Then I see group chat page with users <Contact1> <Contact2>
 
 	Examples:
@@ -58,9 +58,9 @@ Scenario Outline: Add user to a group conversation
 	And I see People picker page
 	And I input in People picker search field user name <Contact3>
 	And I see user <Contact3> found on People picker page
-	And I tap on user name found on People picker page <Contact3>
+	And I tap on connected user <Contact3> on People picker page
 	And I see Add to conversation button
-    And I click on Add to conversation button
+    And I click on Go button
 	Then I see that conversation has <Number> people
 	And I see <Number> participants avatars
     When I exit the group info page
@@ -424,8 +424,8 @@ Scenario Outline: Verify the new conversation is created on the other end (Searc
     And I click clear button
     And I swipe down contact list
     And I see top people list on People picker page
-    And I select user <Contact1> on People picker page
-    And I select user <Contact2> on People picker page
+    And I tap on connected user <Contact1> on People picker page
+    And I tap on connected user <Contact2> on People picker page
     And I see Create Conversation button on People picker page
     And I click Create Conversation button  on People picker page
     And I see group chat page with users <Contact1> <Contact2>

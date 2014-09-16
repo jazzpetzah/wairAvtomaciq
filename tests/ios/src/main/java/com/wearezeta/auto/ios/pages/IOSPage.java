@@ -1,10 +1,14 @@
 package com.wearezeta.auto.ios.pages;
 
+import io.appium.java_client.AppiumDriver;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -14,6 +18,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.PagesCollection;
+import com.wearezeta.auto.ios.tools.IOSKeyboard;
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -47,6 +52,12 @@ public abstract class IOSPage extends BasePage {
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameEditingItemPaste)
 	private WebElement popupPaste;
+	
+	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameKeyboard)
+	private WebElement keyboard;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameKeyboardDeleteButton)
+	private WebElement keyboardDeleteBtn;
 
 	private static String imagesPath = "";
 
@@ -139,6 +150,14 @@ public abstract class IOSPage extends BasePage {
 		DriverUtils.swipeDown(driver, content, time);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
+	
+	public void smallScrollUp() {
+		driver.swipe(10, 220, 10, 200, 500);
+	}
+	
+	public void smallScrollDown() {
+		driver.swipe(10, 200, 10, 220, 500);
+	}
 
 	public static void clearPagesCollection() throws IllegalArgumentException, IllegalAccessException {
 		clearPagesCollection(PagesCollection.class, IOSPage.class);
@@ -175,6 +194,25 @@ public abstract class IOSPage extends BasePage {
 		int w = elementSize.width*2; if (x+w>screenshot.getWidth()) w = screenshot.getWidth()-x;
 		int h = elementSize.height*2; if (y+h>screenshot.getHeight()) h = screenshot.getHeight()-y;
 		return screenshot.getSubimage(x, y, w, h);
+	}
+	
+	public void pasteStringToInput(WebElement element, String text){
+		DriverUtils.iOSLongTap(driver, element);
+		CommonUtils.putStringToClipboard(text);
+		clickPopupPasteButton();
+	}
+	
+	public void inputStringFromKeyboard(String returnKey) throws InterruptedException{
+		IOSKeyboard keyboard = IOSKeyboard.getInstance();
+		keyboard.typeString(returnKey, driver);
+	}
+	
+	public boolean isKeyboardVisible(){
+		return DriverUtils.isElementDisplayed(keyboard);
+	}
+	
+	public void clickKeyboardDeleteButton(){
+		keyboardDeleteBtn.click();
 	}
 
 }

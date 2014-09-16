@@ -118,7 +118,7 @@ public class LoginPage extends IOSPage {
 	}
 
 	public void setLogin(String login) {
-
+		DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameLoginField));
 		loginField.sendKeys(login);
 	}
 

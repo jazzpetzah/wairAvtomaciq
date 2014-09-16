@@ -115,6 +115,7 @@ public class OtherUserPersonalInfoPage extends IOSPage{
 		switch (direction){
 		case DOWN:
 		{
+			page = new ContactListPage(url, path);
 			break;
 		}
 		case UP:

@@ -79,9 +79,6 @@ public class DialogPage extends IOSPage{
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameMediaBarTitle)
 	private WebElement mediabarBarTitle;
-	
-	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameKeyboard)
-	private WebElement keyboard;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathYouAddedMessageCellFormat)
 	private List<WebElement> youAddedCell;
@@ -117,11 +114,6 @@ public class DialogPage extends IOSPage{
 	public void sendStringToInput(String message) throws InterruptedException
 	{
 		conversationInput.sendKeys(message);
-	}
-	
-	public void inputStringFromKeyboard(String returnKey) throws InterruptedException{
-		IOSKeyboard keyboard = IOSKeyboard.getInstance();
-		keyboard.typeString(returnKey, driver);
 	}
 		
 	public void ScrollToLastMessage(){
@@ -348,10 +340,6 @@ public class DialogPage extends IOSPage{
 		imageCell.click();
 		page = new ImageFullScreenPage(url, path);
 		return page;
-	}
-	
-	public boolean isKeyboardVisible(){
-		return DriverUtils.isElementDisplayed(keyboard);
 	}
 	
 	public void tapHoldTextInput(){

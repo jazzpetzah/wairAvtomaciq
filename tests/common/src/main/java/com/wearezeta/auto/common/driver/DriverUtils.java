@@ -268,4 +268,8 @@ public class DriverUtils {
 
 		driver.setNetworkConnection(connection);
 	}
+	
+	public static void iOSLongTap(AppiumDriver driver, WebElement element){
+		driver.tap(1, element, 1000);
+	}
 }
