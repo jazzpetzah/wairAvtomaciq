@@ -9,6 +9,7 @@ import org.json.JSONException;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,8 @@ public class CreateZetaUser {
 	public static final int ACTIVATION_TIMEOUT = 10; 
 	public static final int NUMBER_OF_MAILS_TO_CHECK = 20;
 	
+	public static final ArrayList<String> failedToActivate = new ArrayList<String>();
+
 	public static String registerUserAndReturnMail() throws IOException,
 			MessagingException, IllegalArgumentException, UriBuilderException,
 			JSONException, BackendRequestException, InterruptedException {
@@ -63,7 +66,7 @@ public class CreateZetaUser {
 			int timeout, String mail, String password)
 			throws MessagingException, IOException, IllegalArgumentException,
 			UriBuilderException, BackendRequestException, InterruptedException {
-		log.debug("Activating user " + mail + ":" + password + " (with timeout: " + timeout + ")");
+		log.debug("Activating user " + registeredUserMail + ":" + password + " (with timeout: " + timeout + ")");
 		final int ATTEMPS_NUMBER = 5;
 		for (int i = 0; i < ATTEMPS_NUMBER; i++) {
 			List<EmailHeaders> newMails = getLastMailHeaders(mail, password, NUMBER_OF_MAILS_TO_CHECK);
@@ -72,8 +75,15 @@ public class CreateZetaUser {
 						.equals(registeredUserMail)) {
 					BackEndREST.activateNewUser(newMailContent.getXZetaKey(),
 							newMailContent.getXZetaCode());
+					log.debug("User " + registeredUserMail
+							+  " is activated on attempt #" + (i+1));
 					return true;
 				}
+			}
+			log.debug("Can't find mail for " + registeredUserMail
+					+ " in attempt #" + (i + 1) + ". Trying again.");
+			if ((i + 1) == ATTEMPS_NUMBER) {
+				failedToActivate.add(registeredUserMail);
 			}
 			sleep(timeout);
 		}

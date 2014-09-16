@@ -14,25 +14,27 @@ import com.wearezeta.auto.sync.ExecutionContext;
 import com.wearezeta.auto.sync.SyncEngineUtil;
 
 public class ZetaSender extends Thread {
-
 	private static final Logger log = ZetaLogger.getLog(ZetaSender.class
 			.getSimpleName());
 
 	private ZetaInstance parent;
 	private int toSend;
-	private String platform;
+	private String platform() { return parent.getPlatform(); }
 
 	public static Date sendingStartDate = null;
 	
-	public ZetaSender(ZetaInstance parent, String platform, int numberOfMessages) {
+	public ZetaSender(ZetaInstance parent, int numberOfMessages) {
 		this.parent = parent;
 		this.toSend = numberOfMessages;
-		this.platform = platform;
 	}
 
 	@Override
 	public void run() {
 		while (toSend > 0) {
+			if (!SyncEngineUtil.isPlatformCorrect(platform())) {
+				log.debug("Incorrect platform is set for client: " + platform());
+			}
+			
 			if (parent.getState() != InstanceState.SENDING) {
 				try {
 					Thread.sleep(100);
@@ -42,54 +44,16 @@ public class ZetaSender extends Thread {
 				continue;
 			}
 
-			log.debug(toSend + " messages to send from " + platform);
+			log.debug(toSend + " messages to send from " + platform());
 			
-			if (sendingStartDate == null) {
-				sendingStartDate = new Date();
-			}
 
 			String message = CommonUtils.generateGUID();
-			if (parent.getIsSendUsingBackend()) {
-				backendSendTextMessage(SyncEngineUtil.CHAT_NAME, message);
-				toSend--;
-			}
-			else if (platform.equals(CommonUtils.PLATFORM_NAME_ANDROID)) {
-				com.wearezeta.auto.android.DialogPageSteps steps = new com.wearezeta.auto.android.DialogPageSteps();
-				try {
-					steps.ITypeTheMessageAndSendIt(message);
-				} catch (Throwable e) {
-					e.printStackTrace();
-				} finally {
-					toSend--;
-				}
-			} else if (platform.equals(CommonUtils.PLATFORM_NAME_OSX)) {
-				com.wearezeta.auto.osx.steps.ConversationPageSteps steps = new com.wearezeta.auto.osx.steps.ConversationPageSteps();
-				steps.IWriteMessage(message);
-				steps.WhenISendMessage();
-				toSend--;
-			} else if (platform.equals(CommonUtils.PLATFORM_NAME_IOS)) {
-				try {
-					com.wearezeta.auto.ios.DialogPageSteps steps = new com.wearezeta.auto.ios.DialogPageSteps();
-					steps.ISendPredefinedMessage(message);
-				} catch (Throwable e) {
-					log.error(e.getMessage());
-					e.printStackTrace();
-				} finally {
-					toSend--;
-				}
-			} else {
-				log.error("Unknown platform name " + platform
-						+ ". Thread stopped.");
-				break;
-			}
-
-			MessageEntry entry = new MessageEntry("text", message,
-					platform, new Date());
-			ExecutionContext.addNewSentTextMessage(entry);
+			sendTextMessage("SyncEngineTest", message);
+			toSend--;
 			
-			if (ExecutionContext.sendingInterval > 0) {
+			if (parent.getMessagesSendingInterval() > 0) {
 				try {
-					Thread.sleep(ExecutionContext.sendingInterval * 1000);
+					Thread.sleep(parent.getMessagesSendingInterval() * 1000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -98,25 +62,56 @@ public class ZetaSender extends Thread {
 		log.debug("All messages sent. Waiting for listener.");
 		parent.setState(InstanceState.FINAL_LISTENING);
 	}
-
+	
 	private ClientUser backendClient() {
-		if (platform.equals(CommonUtils.PLATFORM_NAME_ANDROID)) {
-			return ExecutionContext.androidZeta().getUserInstance();
-		} else if (platform.equals(CommonUtils.PLATFORM_NAME_IOS)) {
-			return ExecutionContext.iosZeta().getUserInstance();
-		} else if (platform.equals(CommonUtils.PLATFORM_NAME_OSX)) {
-			return ExecutionContext.osxZeta().getUserInstance();
-		} else {
-			return null;
-		}
+		return parent.getUserInstance();
 	}
 
-	private void backendSendTextMessage(String chat, String message) {
-			try {
-				BackEndREST.sendDialogMessageByChatName(backendClient(), chat,
-						message);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+	public void sendTextMessage(String chat, String message) {
+		if (sendingStartDate == null) {
+			sendingStartDate = new Date();
+		}
+		try {
+		if (parent.getIsSendUsingBackend()) {
+			sendTextMessageBackend(SyncEngineUtil.CHAT_NAME, message);
+		}
+		else if (platform().equals(CommonUtils.PLATFORM_NAME_ANDROID)) {
+			sendTextMessageAndroid(message);
+		} else if (platform().equals(CommonUtils.PLATFORM_NAME_OSX)) {
+			sendTextMessageOsx(message);
+		} else if (platform().equals(CommonUtils.PLATFORM_NAME_IOS)) {
+			sendTextMessageIos(message);
+		}
+		} catch (Throwable e) {
+			//TODO: register error
+			log.error(e.getMessage());
+			e.printStackTrace();
+		}
+
+		MessageEntry entry = new MessageEntry("text", message,
+				platform(), new Date());
+		ExecutionContext.addNewSentTextMessage(entry);
+	}
+	
+	private void sendTextMessageAndroid(String message) throws Throwable {
+		com.wearezeta.auto.android.DialogPageSteps steps = new com.wearezeta.auto.android.DialogPageSteps();
+		steps.ITypeTheMessageAndSendIt(message);
+	}
+	
+	private void sendTextMessageOsx(String message) {
+		com.wearezeta.auto.osx.steps.ConversationPageSteps steps = new com.wearezeta.auto.osx.steps.ConversationPageSteps();
+		steps.IWriteMessage(message);
+		steps.WhenISendMessage();
+	}
+	
+	private void sendTextMessageIos(String message) throws Throwable {
+		com.wearezeta.auto.ios.DialogPageSteps steps = new com.wearezeta.auto.ios.DialogPageSteps();
+		com.wearezeta.auto.ios.pages.DialogPage page = com.wearezeta.auto.ios.pages.PagesCollection.dialogPage;
+		page.ScrollToLastMessage();
+		steps.ISendPredefinedMessage(message);
+	}
+	
+	private void sendTextMessageBackend(String chat, String message) throws Exception {
+		BackEndREST.sendDialogMessageByChatName(backendClient(), chat, message);
 	}
 }

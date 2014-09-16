@@ -4,6 +4,8 @@ import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.sync.ExecutionContext;
+import com.wearezeta.auto.sync.SyncEngineUtil;
 
 import cucumber.api.java.en.Given;
 

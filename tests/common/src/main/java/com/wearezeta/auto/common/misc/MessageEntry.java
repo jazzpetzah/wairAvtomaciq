@@ -15,7 +15,18 @@ public class MessageEntry {
 		this.appearanceDate = date;
 	}
 	
+	public MessageEntry(String type, String content, Date date) {
+		this.messageType = type;
+		this.messageContent = content;
+		this.appearanceDate = date;
+	}
+	
 	public String toString() {
-		return messageType + ": " + messageContent + " (" + appearanceDate + ", sent - " + sender + ")";
+		if (sender == null || sender.isEmpty()) {
+			return messageType + ": " + messageContent + " (" + appearanceDate + ")";
+			
+		} else {
+			return messageType + ": " + messageContent + " (" + appearanceDate + ", sent from - " + sender + ")";
+		}
 	}
 }

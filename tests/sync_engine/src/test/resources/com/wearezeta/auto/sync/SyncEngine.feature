@@ -7,7 +7,7 @@ Feature: Sync Engine
     And Android I open conversation with <ConversationName>
     And IOS I Sign in using login <IOSLogin> and password <IOSPassword>
     And IOS I open conversation with <ConversationName>
-    And I start sync engine test
+    And I run serial sync engine test
     And I analyze registered data
 
     Examples: 

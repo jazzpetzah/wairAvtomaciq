@@ -20,7 +20,7 @@ Feature: Register new user
       | aqaUser | aqaPassword | aqaUser |
 
   @smoke @id177
-  Scenario Outline: Register new user with image
+  Scenario Outline: Register new user with image - landscape image
     Given I am signed out from ZClient
     And I see Sign In screen
     When I start registration
@@ -37,8 +37,25 @@ Feature: Register new user
     Examples: 
       | Email   | Password    | Name    | ImageFile                 |
       | aqaUser | aqaPassword | aqaUser | userpicture_landscape.jpg |
-      | aqaUser | aqaPassword | aqaUser | userpicture_portrait.jpg  |
 
+  @smoke @id177
+  Scenario Outline: Register new user with image - portrait image
+    Given I am signed out from ZClient
+    And I see Sign In screen
+    When I start registration
+    And I choose register with image
+    And I take registration picture from image file <ImageFile>
+    And I enter name <Name>
+    And I enter email <Email>
+    And I enter password <Password>
+    And I submit registration data
+    Then I see confirmation page
+    And I verify registration address
+    And I see contact list of registered user
+
+      | Email   | Password    | Name    | ImageFile                 |
+      | aqaUser | aqaPassword | aqaUser | userpicture_portrait.jpg  |
+      
   #Muted till new sync engine client stabilization
   @mute @regression @id171
   Scenario Outline: Do not accept email with spaces

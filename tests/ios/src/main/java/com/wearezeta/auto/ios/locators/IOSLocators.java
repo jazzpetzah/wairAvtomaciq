@@ -37,6 +37,7 @@ public final class IOSLocators {
 	public static final String classNameDialogMessages = "UIATableCell";
 
 	public static final String xpathDialogTextMessage = "//UIATableCell/UIATextView";
+	public static final String xpathFormatDialogTextMessage = "//UIATableCell/UIATextView[@value='%s']";
 	
 //	public static final String xpathCursorInput = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[last()]";//"TAP OR SLIDE  ";
 	
