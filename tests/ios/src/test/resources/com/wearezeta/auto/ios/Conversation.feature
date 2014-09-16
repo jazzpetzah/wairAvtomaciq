@@ -290,7 +290,8 @@ Examples:
 	Examples: 
     |	Login	|	Password	|	Name	|	Contact1		| SoundCloudLink 								| time |
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| https://soundcloud.com/carl-cox/carl-cox-nexus| 28   | 
- 
+
+
  @staging 
  @id415
   Scenario Outline: Send Message to contact after navigating away from chat page
@@ -306,8 +307,8 @@ Examples:
     Then I see my message in the dialog
 
 	Examples: 
-    |	Login	|	Password	|	Name	|	Contact					|
-    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaAvatar TestContact	|
+    |	Login	|	Password	|	Name	|	Contact		|
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
 
    
  @staging 
@@ -428,3 +429,151 @@ Examples:
     Examples: 
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
+
+#Muted due to special chars verification problems on ios
+@mute
+@staging
+@id409
+Scenario Outline: Send special chars (German)
+	Given I press Sign in button
+	And I fill in email input <Text>
+	And I copy email input field content
+	And I have entered login <Login>
+	And I have entered password <Password>
+	And I press Login button
+	And I see Contact list with my name <Name>
+	And I tap on contact name <Contact>
+	And I see dialog page
+	And I tap and hold on message input
+	And I click on popup Paste item
+	And I send the message
+	Then I see last message in dialog is expected message <Text>
+    
+Examples: 
+    |	Login	|	Password	|	Name	|	Contact		| Text 				|
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|ÄäÖöÜüß & latin chars|
+
+    
+@staging
+@id555
+Scenario Outline: Verify you can add people from 1:1 people view (view functionality)
+	Given I Sign in using login <Login> and password <Password>
+	And I see Contact list with my name <Name>
+	When I tap on contact name <Contact1>
+	And I see dialog page
+	And I swipe up on dialog page to open other user personal page
+	And I see <Contact1> user profile page
+	And I press Add button
+	And I see People picker page
+	And I see keyboard
+	And I don't see Add to conversation button
+	And I tap on connected user <Contact2> on People picker page
+	And I see user <Contact2> on People picker page is selected
+	And I tap on connected user <Contact2> on People picker page
+	And I see user <Contact2> on People picker page is NOT selected
+	And I tap on connected user <Contact2> on People picker page
+	And I press keyboard Delete button
+	And I see user <Contact2> on People picker page is NOT selected
+	And I tap on connected user <Contact2> on People picker page
+	And I scroll up page a bit
+	And I dont see keyboard
+	And I see Add to conversation button
+	And I tap on Search input on People picker page
+	And I see keyboard
+	And I don't see Add to conversation button
+	   	
+Examples:
+    |  Login		| Password		| Name			| Contact1		| Contact2		|
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
+
+
+#Muted due to ZIOS-2049
+@mute
+@staging
+@id556
+Scenario Outline: Verify you can add people from 1:1 people view (via Add to Conversation button)
+	Given I Sign in using login <Login> and password <Password>
+	And I see Contact list with my name <Name>
+	When I tap on contact name <Contact1>
+	And I see dialog page
+	And I swipe up on dialog page to open other user personal page
+	And I see <Contact1> user profile page
+	And I press Add button
+	And I see People picker page
+	And I scroll up page a bit
+	And I tap on connected user <Contact2> on People picker page
+	And I tap on connected user <Contact3> on People picker page
+	And I see Add to conversation button
+	And I click on Add to conversation button
+	And I see group chat page with 3 users <Contact1> <Contact2> <Contact3>
+	And I swipe right on group chat page
+	And I see Contact list with my name <Name>
+	And I see in contact list group chat with <Contact1> <Contact2> <Contact3>
+	   	
+Examples:
+    |  Login		| Password		| Name			| Contact1		| Contact2		| Contact3 |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| aqaContact3 |
+    
+    
+#Muted due to ZIOS-2049
+@mute    
+@staging
+@id557
+Scenario Outline: Verify you can add people from 1:1 people view (via keyboard button)
+	Given I Sign in using login <Login> and password <Password>
+	And I see Contact list with my name <Name>
+	When I tap on contact name <Contact1>
+	And I see dialog page
+	And I swipe up on dialog page to open other user personal page
+	And I see <Contact1> user profile page
+	And I press Add button
+	And I see People picker page
+	And I input in People picker search field user name <Contact2>
+	And I see user <Contact2> found on People picker page
+	And I don't see Add to conversation button
+	And I click on connected user <Contact2> avatar on People picker page
+	And I click on connected user <Contact3> avatar on People picker page   	
+	And I click on Go button
+	And I see group chat page with 3 users <Contact1> <Contact2> <Contact3>
+	And I swipe right on group chat page
+	And I see Contact list with my name <Name>
+	And I see in contact list group chat with <Contact1> <Contact2> <Contact3>
+	   	
+Examples:
+    |  Login		| Password		| Name			| Contact1		| Contact2		| Contact3 |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| aqaContact3 |
+    
+
+@staging
+@id559
+Scenario Outline: Verify you can add people from 1:1 people view (cancel view)
+	Given I Sign in using login <Login> and password <Password>
+	And I see Contact list with my name <Name>
+	When I tap on contact name <Contact1>
+	And I see dialog page
+	And I swipe up on dialog page to open other user personal page
+	And I see <Contact1> user profile page
+	And I press Add button
+	And I see People picker page
+	And I scroll up page a bit
+	And I dont see keyboard
+	And I see Add to conversation button
+	And I tap on connected user <Contact2> on People picker page
+	And I tap on connected user <Contact3> on People picker page
+	And I click close button to dismiss people view
+	And I see <Contact1> user profile page
+	And I press Add button
+	And I see People picker page
+	And I see user <Contact2> on People picker page is NOT selected
+	And I see user <Contact3> on People picker page is NOT selected
+	And I click close button to dismiss people view
+	And I see <Contact1> user profile page
+	And I swipe down on other user profile page
+	And I see dialog page
+	And I swipe right on Dialog page
+	And I see Contact list with my name <Name>
+	And I don't see in contact list group chat with <Contact1> <Contact2> <Contact3> 
+	   	
+Examples:
+    |  Login		| Password		| Name			| Contact1		| Contact2		| Contact3 |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| aqaContact3 |

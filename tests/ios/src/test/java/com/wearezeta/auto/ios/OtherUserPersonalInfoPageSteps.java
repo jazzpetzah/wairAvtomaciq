@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.ios.pages.PeoplePickerPage;
 
@@ -15,7 +16,6 @@ public class OtherUserPersonalInfoPageSteps {
 	
 	@When("^I see (.*) user profile page$")
 	public void WhenISeeOtherUserProfilePage(String name){
-		
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		PagesCollection.otherUserPersonalInfoPage.isOtherUserProfileEmailVisible(name);
 	}
@@ -66,6 +66,11 @@ public class OtherUserPersonalInfoPageSteps {
 	@When("I tap on start dialog button on other user profile page")
 	public void ITapStartDialogOnOtherUserPage() throws Throwable{
 		PagesCollection.dialogPage = PagesCollection.otherUserPersonalInfoPage.clickOnStartDialogButton();
+	}
+	
+	@When("^I swipe down on other user profile page$")
+	public void ISwipeDownOnUserProfilePage() throws IOException {
+		PagesCollection.contactListPage = (ContactListPage) PagesCollection.otherUserPersonalInfoPage.swipeDown(5000);
 	}
 
 }

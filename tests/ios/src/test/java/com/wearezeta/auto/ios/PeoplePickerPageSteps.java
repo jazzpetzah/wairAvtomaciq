@@ -5,12 +5,8 @@ import java.io.IOException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.ios.pages.ConnectToPage;
 import com.wearezeta.auto.ios.pages.GroupChatPage;
-import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
-import com.wearezeta.auto.ios.pages.PeoplePickerPage;
-
 import cucumber.api.java.en.When;
 
 public class PeoplePickerPageSteps {
@@ -27,7 +23,6 @@ public class PeoplePickerPageSteps {
 	
 	@When("^I input in People picker search field user name (.*)$")
 	public void WhenIInputInPeoplePickerSearchFieldUserName(String contact) throws Throwable {
-		
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 	    PagesCollection.peoplePickerPage.fillTextInPeoplePickerSearch(contact);
 	}
@@ -39,19 +34,10 @@ public class PeoplePickerPageSteps {
 	    PagesCollection.peoplePickerPage.waitUserPickerFindUser(contact);
 	}
 	
-	@When("^I tap on user name found on People picker page (.*)$")
+	@When("^I tap on NOT connected user name on People picker page (.*)$")
 	public void WhenITapOnUserNameFoundOnPeoplePickerPage(String contact) throws Throwable {
-		
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
-		IOSPage page = PagesCollection.peoplePickerPage.clickOnFoundUser(contact);
-		
-		if(page instanceof ConnectToPage) {
-			PagesCollection.connectToPage = (ConnectToPage)page;
-		}
-		
-		else {
-			PagesCollection.peoplePickerPage = (PeoplePickerPage)page;
-		}
+		PagesCollection.connectToPage = PagesCollection.peoplePickerPage.clickOnNotConnectedUser(contact);
 	}
 	
 	@When("^I search for user name (.*) and tap on it on People picker page$")
@@ -66,9 +52,14 @@ public class PeoplePickerPageSteps {
 		Assert.assertTrue("Add to conversation button is not visible", PagesCollection.peoplePickerPage.isAddToConversationBtnVisible());
 	}
 	
-	@When("^I click on Add to conversation button$")
-	public void WhenIClickOnAddToConversationButton() throws IOException{
-		PagesCollection.groupChatPage = (GroupChatPage)PagesCollection.peoplePickerPage.clickOnAddToCoversationButton();
+	@When("^I don't see Add to conversation button$")
+	public void WhenIDontSeeAddToConversationButton(){
+		Assert.assertTrue("Add to conversation button is visible", PagesCollection.peoplePickerPage.addToConversationNotVisible());
+	}
+	
+	@When("^I click on Go button$")
+	public void WhenIClickOnGoButton() throws IOException{
+		PagesCollection.groupChatPage = (GroupChatPage)PagesCollection.peoplePickerPage.clickOnGoButton();
 	}
 
 	@When("^I click clear button$")
@@ -76,10 +67,10 @@ public class PeoplePickerPageSteps {
 		PagesCollection.contactListPage = PagesCollection.peoplePickerPage.dismissPeoplePicker();
 	}
 	
-	@When("I click on user icon to add it to existing group chat")
+	@When("I click on connected user (.*) avatar on People picker page")
 	public void IClickOnUserIconToAddItToExistingGroupChat(String contact) throws Throwable{
 		String name = CommonUtils.retrieveRealUserContactPasswordValue(contact);
-		PagesCollection.groupChatInfoPage = PagesCollection.peoplePickerPage.clickOnUserToAddToExistingGroupChat(name);
+		PagesCollection.peoplePickerPage.clickConnectedUserAvatar(name);
 	}
 	
 	@When("I see contact list on People picker page")
@@ -92,9 +83,9 @@ public class PeoplePickerPageSteps {
 		Assert.assertTrue("Top People label is not shown", PagesCollection.peoplePickerPage.isTopPeopleLabelVisible());
 	}
 	
-	@When("I select user (.*) on People picker page")
+	@When("I tap on connected user (.*) on People picker page")
 	public void ISelectUserOnPeoplePickerPage(String name){
-		name = CommonUtils.retrieveRealUserContactPasswordValue(name).toUpperCase();
+		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		PagesCollection.peoplePickerPage.selectUser(name);
 	}
 	
@@ -106,6 +97,38 @@ public class PeoplePickerPageSteps {
 	@When("I click Create Conversation button  on People picker page")
 	public void IClickCreateConversationButton() throws Throwable{
 		PagesCollection.groupChatPage = PagesCollection.peoplePickerPage.clickCreateConversationButton();
+	}
+	
+	@When("I see user (.*) on People picker page is selected")
+	public void ISeeUserIsSelectedOnPeoplePickerPage(String name){
+		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		Assert.assertTrue(PagesCollection.peoplePickerPage.isUserSelected(name));
+	}
+	
+	@When("I see user (.*) on People picker page is NOT selected")
+	public void ISeeUserIsNotSelectedOnPeoplePickerPage(String name){
+		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		Assert.assertFalse(PagesCollection.peoplePickerPage.isUserSelected(name));
+	}
+	
+	@When("I press backspace button")
+	public void IPressBackspaceBtn(){
+		PagesCollection.peoplePickerPage.hitDeleteButton();
+	}
+	
+	@When("I swipe up on People picker page")
+	public void ISwipeUpPeoplePickerPage() throws Throwable{
+		PagesCollection.peoplePickerPage.swipeUp(500);
+	}
+	
+	@When("^I click on Add to conversation button$")
+	public void WhenIClickOnAddToConversationButton() throws Throwable{
+		PagesCollection.groupChatPage = (GroupChatPage)PagesCollection.peoplePickerPage.clickAddToCoversationButton();
+	}
+	
+	@When("I click close button to dismiss people view")
+	public void IClickCloseButtonDismissPeopleView(){
+		PagesCollection.peoplePickerPage.tapOnPeoplePickerClearBtn();
 	}
 
 }

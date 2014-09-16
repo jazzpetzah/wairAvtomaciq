@@ -43,6 +43,11 @@ public class GroupChatPage extends DialogPage {
 		return lastMessage.getText().contains(name1) && lastMessage.getText().contains(name2);
 	}
 	
+	public boolean areRequired3ContactsAddedToChat(String name1, String name2, String name3){
+		boolean flag = lastMessage.getText().contains(name1) && lastMessage.getText().contains(name2) && lastMessage.getText().contains(name3);
+		return flag;
+	}
+	
 	public boolean isGroupChatPageVisible(){
 		
 		return DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameConversationCursorInput));

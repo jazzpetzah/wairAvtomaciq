@@ -222,5 +222,23 @@ public class ContactListPageSteps {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		Assert.assertFalse(PagesCollection.contactListPage.isDisplayedInContactList(name));
 	}
+	
+	@When("I see in contact list group chat with (.*) (.*) (.*)")
+	public void ISeeInContactsGroupChatWith(String name1, String name2, String name3){
+		name1=CommonUtils.retrieveRealUserContactPasswordValue(name1);
+		name2=CommonUtils.retrieveRealUserContactPasswordValue(name2);
+		name3=CommonUtils.retrieveRealUserContactPasswordValue(name3);
+		String chatname = name1 + ", " + name2 + ", " + name3;
+		Assert.assertTrue(PagesCollection.contactListPage.isDisplayedInContactList(chatname));
+	}
+	
+	@When("I don't see in contact list group chat with (.*) (.*) (.*)")
+	public void IDontSeeInContactsGroupChatWith(String name1, String name2, String name3){
+		name1=CommonUtils.retrieveRealUserContactPasswordValue(name1);
+		name2=CommonUtils.retrieveRealUserContactPasswordValue(name2);
+		name3=CommonUtils.retrieveRealUserContactPasswordValue(name3);
+		String chatname = name1 + ", " + name2 + ", " + name3;
+		Assert.assertFalse(PagesCollection.contactListPage.isDisplayedInContactList(chatname));
+	}
 
 }
