@@ -21,6 +21,7 @@ public class ZetaDriver extends AppiumDriver implements WebDriver {
 	
 	public ZetaDriver(URL remoteAddress, Capabilities desiredCapabilities) {
 		super(remoteAddress, desiredCapabilities);
+		isSessionLost = false;
 	}
 	
 	private String stackTraceToString(Throwable e) {
@@ -40,9 +41,11 @@ public class ZetaDriver extends AppiumDriver implements WebDriver {
 			result = super.findElements(by);
 		}
 		catch (org.openqa.selenium.remote.UnreachableBrowserException ex) {
+			log.error(ex.getMessage() + "\n" + stackTraceToString(ex));
 			setSessionLost(true);
 		}
 		catch (org.openqa.selenium.remote.SessionNotFoundException ex ) {
+			log.error(ex.getMessage() + "\n" + stackTraceToString(ex));
 			setSessionLost(true);
 		}
 		catch (RuntimeException ex) {
@@ -60,9 +63,11 @@ public class ZetaDriver extends AppiumDriver implements WebDriver {
 			result = super.findElement(by);
 		}
 		catch (org.openqa.selenium.remote.UnreachableBrowserException ex) {
+			log.error(ex.getMessage() + "\n" + stackTraceToString(ex));
 			setSessionLost(true);
 		}
 		catch (org.openqa.selenium.remote.SessionNotFoundException ex ) {
+			log.error(ex.getMessage() + "\n" + stackTraceToString(ex));
 			setSessionLost(true);
 		}
 		catch (RuntimeException ex) {
@@ -123,6 +128,7 @@ public class ZetaDriver extends AppiumDriver implements WebDriver {
 			super.quit();
 		}
 		catch (org.openqa.selenium.remote.SessionNotFoundException ex ) {
+			log.error(ex.getMessage() + "\n" + stackTraceToString(ex));
 			setSessionLost(true);
 		}
 	}
