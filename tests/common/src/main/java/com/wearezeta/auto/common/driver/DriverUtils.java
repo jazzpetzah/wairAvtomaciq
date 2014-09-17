@@ -232,6 +232,10 @@ public class DriverUtils {
 			Thread.sleep(100);
 		}
 	}
+	
+	public static void iOS3FingerTap(AppiumDriver driver,WebElement element, int fingerNumber){
+		driver.tap(fingerNumber, element, 1);	
+	}
 
 	public static void turnOffImplicitWait(RemoteWebDriver driver) {
 		driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
