@@ -42,6 +42,9 @@ public class ContactListPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.namePendingRequest)
 	private WebElement pendingRequest;
 	
+	@FindBy(how = How.NAME, using = IOSLocators.nameTutorialOKButton)
+	private WebElement tutorialOKButton;
+	
 	private String url;
 	private String path;
 	private int oldLocation = 0;
@@ -262,5 +265,16 @@ public class ContactListPage extends IOSPage {
 	
 	public boolean isDisplayedInContactList(String name){
 		return DriverUtils.waitUntilElementAppears(driver, By.name(name));
+	}
+	
+	public boolean isTutorialShown(){
+		boolean tutorialShown = DriverUtils.isElementDisplayed(tutorialOKButton);
+		return tutorialShown;
+	}
+	
+	public void dismissTutorial(){
+		
+		WebElement tutorialView = driver.findElement(By.name(IOSLocators.nameTutorialView));
+		DriverUtils.iOS3FingerTap(driver, tutorialView, 3);
 	}
 }

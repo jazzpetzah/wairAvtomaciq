@@ -14,6 +14,10 @@ public class ContactListPageSteps {
 	@Given("^I see Contact list with my name (.*)$")
 	public void GivenISeeContactListWithMyName(String name) throws IOException {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		boolean tutorialIsVisible = PagesCollection.contactListPage.isTutorialShown();
+		if(tutorialIsVisible){
+			PagesCollection.contactListPage.dismissTutorial();
+		}
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 	}
 
