@@ -361,5 +361,12 @@ public final class IOSLocators {
 	
 	public static final String nameKeyboardDeleteButton = "Delete";
 	
+	////////////////
+	//Tutorial
+	////////////////
+	
+	public static final String nameTutorialOKButton = "OK";
+	public static final String nameTutorialView = "ZClientNotificationWindow";
+	
 }
 
