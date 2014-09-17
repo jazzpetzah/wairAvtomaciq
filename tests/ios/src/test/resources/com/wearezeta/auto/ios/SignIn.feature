@@ -49,6 +49,8 @@ Feature: Sign In
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
 
+#Muted due to missing notification support from sync engine    
+@mute
 @regression
 @id314
  Scenario Outline: Notification if SignIn credentials are wrong
