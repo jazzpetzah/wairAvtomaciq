@@ -21,6 +21,7 @@ public class ZetaDriver extends AppiumDriver implements WebDriver {
 	
 	public ZetaDriver(URL remoteAddress, Capabilities desiredCapabilities) {
 		super(remoteAddress, desiredCapabilities);
+		isSessionLost = false;
 	}
 	
 	private String stackTraceToString(Throwable e) {
