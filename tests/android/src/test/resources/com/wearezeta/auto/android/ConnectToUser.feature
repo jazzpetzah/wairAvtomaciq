@@ -268,7 +268,7 @@ Feature: Connect to User
       | Login   | Password    | Contact    | Message |
       | aqaUser | aqaPassword | yourIgnore | Test    |
       
-  @id541 @regression 
+  @id541 @regression @mute
   Scenario Outline: I can receive new connection request when app in background
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
