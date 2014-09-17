@@ -229,7 +229,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     | Message                     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | 畑 はたけ hatake field of crops |
 
-  @regression
+  @regression @mute
   Scenario Outline: Verify correct group info page information
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
