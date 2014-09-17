@@ -12,8 +12,9 @@ import com.wearezeta.auto.ios.pages.*;
 public class ContactListPageSteps {
 
 	@Given("^I see Contact list with my name (.*)$")
-	public void GivenISeeContactListWithMyName(String name) throws IOException {
+	public void GivenISeeContactListWithMyName(String name) throws IOException, InterruptedException {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		Thread.sleep(1000);
 		boolean tutorialIsVisible = PagesCollection.contactListPage.isTutorialShown();
 		if(tutorialIsVisible){
 			PagesCollection.contactListPage.dismissTutorial();
