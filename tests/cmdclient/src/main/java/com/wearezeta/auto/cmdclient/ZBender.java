@@ -103,7 +103,7 @@ public class ZBender
     	}
     	
     	String login = "", password = "", contact = "", imgPath = "";
-    	Boolean sendImg = false;
+    	Boolean sendImg = false, showContacts = false;
     	int messageCount = 1, interval = 0;
     	for (int i = 0; i < args.length; i = i + 2) {
     		switch (args[i]) {
@@ -131,10 +131,24 @@ public class ZBender
 				imgPath = args[i+1];
 				sendImg = true;
 				break;
-			}
+    		
+    		case "-contacts" :
+    			showContacts = true;
+    			break;
+    		}
     	}
 
 		ClientUser yourСontact = new ClientUser(login, password, "ZBender", UsersState.AllContactsConnected);
+		
+		if (showContacts) {
+			BackEndREST.loginByUser(yourСontact);
+			log.info("================================");
+			String [] contacts = BackEndREST.getConversationsAsStringArray(yourСontact);
+			for (int i = 0; i < contacts.length; i++) {
+				log.info(contacts[i]);
+			}
+			log.info("================================");
+		}
 
 		long startDate = new Date().getTime();
 		
