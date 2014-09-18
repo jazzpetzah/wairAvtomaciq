@@ -34,7 +34,7 @@ Feature: Sign In
     |	Login					|	Password	|	UserA			| UserB			|
     |	aqaUser            		|	aqaPassword	|	aqaUser 		| aqaContact1	|    
     
-@staging
+@regression
 @id300
  Scenario Outline: Open and close the terms of service on the welcome screen
   	Given I see sign in screen
