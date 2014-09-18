@@ -12,14 +12,13 @@ import com.wearezeta.auto.ios.pages.*;
 public class ContactListPageSteps {
 
 	@Given("^I see Contact list with my name (.*)$")
-	public void GivenISeeContactListWithMyName(String name) throws IOException, InterruptedException {
+	public void GivenISeeContactListWithMyName(String name) throws IOException {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
-		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
-		Thread.sleep(2000);
 		boolean tutorialIsVisible = PagesCollection.contactListPage.isTutorialShown();
-		if(tutorialIsVisible){
+		if(tutorialIsVisible) {
 			PagesCollection.contactListPage.dismissTutorial();
 		}
+		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 	}
 
 	@Given("^I have group chat named (.*) with an unconnected user, made by (.*)$")

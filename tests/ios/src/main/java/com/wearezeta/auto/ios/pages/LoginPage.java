@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -18,8 +19,10 @@ import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaDriver;
+import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class LoginPage extends IOSPage {
+	private static final Logger log = ZetaLogger.getLog(LoginPage.class.getSimpleName());
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameMainWindow)
 	private WebElement viewPager;
@@ -98,6 +101,10 @@ public class LoginPage extends IOSPage {
 	public IOSPage login() throws IOException {
 		
 		confirmSignInButton.click();
+		PersonalInfoPage personalInfo = new PersonalInfoPage(url, path);
+		if (personalInfo.isSettingsButtonVisible()) {
+			swipeRight(500);
+		}
 		return new ContactListPage(url, path);
 	}
 	
@@ -144,7 +151,7 @@ public class LoginPage extends IOSPage {
 		}
 		catch (WebDriverException ex)
 		{
-			System.out.println(ex.getMessage());
+			log.debug(ex.getMessage());
 		}
 		WebElement el = null;
 		el = driver.findElement(By.name(contact));
