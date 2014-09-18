@@ -102,8 +102,8 @@ public class ZBender
     		return;
     	}
     	
-    	String login = "", password = "", contact = "", imgPath = "";
-    	Boolean sendImg = false;
+    	String login = "error", password = "error", contact = "", imgPath = "";
+    	Boolean sendImg = false, showContacts = false;
     	int messageCount = 1, interval = 0;
     	for (int i = 0; i < args.length; i = i + 2) {
     		switch (args[i]) {
@@ -131,10 +131,31 @@ public class ZBender
 				imgPath = args[i+1];
 				sendImg = true;
 				break;
-			}
+    		
+    		case "-contacts" :
+    			showContacts = true;
+    			break;
+    		}
+    	}
+    	
+    	if (login.equals("error") || password.equals("error")) {
+    		log.error("invalid credentials");
+    		return;
     	}
 
 		ClientUser yourСontact = new ClientUser(login, password, "ZBender", UsersState.AllContactsConnected);
+		
+		if (showContacts) {
+			BackEndREST.loginByUser(yourСontact);
+			log.info("================================");
+			String [] contacts = BackEndREST.getConversationsAsStringArray(yourСontact);
+			for (int i = 0; i < contacts.length; i++) {
+				log.info(contacts[i]);
+			}
+			log.info("================================");
+			
+			return;
+		}
 
 		long startDate = new Date().getTime();
 		

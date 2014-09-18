@@ -45,7 +45,7 @@ Feature: Connect to User
 
     Examples: 
       | Login   | Password    | Name    | Contact     | Size |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | 4    |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | 6    |
 
   @id220 @regression
   Scenario Outline: I can do full name search for existing group convo(non-archive)
