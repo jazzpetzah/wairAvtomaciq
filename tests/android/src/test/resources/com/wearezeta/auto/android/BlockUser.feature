@@ -59,7 +59,7 @@
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |      
       
-@id680 @regression    
+@id680 @regression   
 Scenario Outline: I want to see user has been blocked within the Start UI
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -77,8 +77,17 @@ Scenario Outline: I want to see user has been blocked within the Start UI
     And I see that connection is pending
 	And I Press Block button on connect to page
     And I confirm block on connect to page
+    And I wait for 5 seconds
     Then I do not see Contact list with name <Contact>
+    And I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in search field user name to connect to <Contact>
+   	And I see user <Contact> found on People picker page
+   	And I tap on user name found on People picker page <Contact>
+    Then User info should be shown with Block button
+    And I click Unblock button
     
  Examples: 
-      | Login   | Password    | Name    | Contact    | Message       |
-      | aqaUser | aqaPassword | aqaUser | yourIgnore | Hello friend |
+      | Login   | Password    | Name    | Contact    | Message      | 
+      | aqaUser | aqaPassword | aqaUser | yourIgnore | Hello friend | 

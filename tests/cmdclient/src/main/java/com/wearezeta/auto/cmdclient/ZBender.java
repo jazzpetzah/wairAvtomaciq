@@ -102,7 +102,7 @@ public class ZBender
     		return;
     	}
     	
-    	String login = "", password = "", contact = "", imgPath = "";
+    	String login = "error", password = "error", contact = "", imgPath = "";
     	Boolean sendImg = false, showContacts = false;
     	int messageCount = 1, interval = 0;
     	for (int i = 0; i < args.length; i = i + 2) {
@@ -137,6 +137,11 @@ public class ZBender
     			break;
     		}
     	}
+    	
+    	if (login.equals("error") || password.equals("error")) {
+    		log.error("invalid credentials");
+    		return;
+    	}
 
 		ClientUser yourСontact = new ClientUser(login, password, "ZBender", UsersState.AllContactsConnected);
 		
@@ -148,6 +153,8 @@ public class ZBender
 				log.info(contacts[i]);
 			}
 			log.info("================================");
+			
+			return;
 		}
 
 		long startDate = new Date().getTime();
