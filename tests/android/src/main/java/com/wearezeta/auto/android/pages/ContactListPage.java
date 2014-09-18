@@ -57,9 +57,7 @@ public class ContactListPage extends AndroidPage {
 
 	public AndroidPage tapOnName(String name) throws Exception {
 		AndroidPage page = null;
-		refreshUITree();// TODO: workaround
 		findInContactList(name, 5).click();
-		refreshUITree();
 		DriverUtils.setImplicitWaitValue(driver, 5);
 		if(connectToHeader.size() > 0 && connectToHeader.get(0).isDisplayed()){
 			page = new ConnectToPage(url, path);
@@ -76,6 +74,7 @@ public class ContactListPage extends AndroidPage {
 
 	private WebElement findInContactList(String name, int cyclesNumber) {
 		WebElement contact = null;
+		refreshUITree();
 		List<WebElement> contactsList = driver.findElements(By.xpath(String
 				.format(AndroidLocators.ContactListPage.xpathContacts, name)));
 		if (contactsList.size() > 0) {

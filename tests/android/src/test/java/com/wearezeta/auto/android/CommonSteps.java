@@ -82,7 +82,7 @@ public class CommonSteps {
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 		for (ClientUser user : CommonUtils.yourUsers) {
 			if (user.getName().toLowerCase().equals(contact.toLowerCase())) {
-				BackEndREST.loginByUser(user);
+				user = BackEndREST.loginByUser(user);
 				BackEndREST.sendConnectRequest(user,
 						yourUser, CONNECTION_NAME
 						+ user.getName(),
@@ -197,6 +197,7 @@ public class CommonSteps {
 				yourСontact = user;
 			}
 		}
+		yourСontact = BackEndREST.loginByUser(yourСontact);
 		BackEndREST.ignoreAllConnections(yourСontact);
 	}
 	
@@ -229,11 +230,11 @@ public class CommonSteps {
 				break;
 			}
 		}
-		BackEndREST.loginByUser(yourUser);
+		yourUser = BackEndREST.loginByUser(yourUser);
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 		for (ClientUser user : CommonUtils.contacts) {
 			if (user.getName().toLowerCase().equals(contact.toLowerCase())) {
-				BackEndREST.loginByUser(user);
+				user = BackEndREST.loginByUser(user);
 				
 				BackEndREST.changeConnectRequestStatus(user, yourUser.getId(), "blocked");
 				break;
@@ -251,6 +252,7 @@ public class CommonSteps {
 				yourСontact = user;
 			}
 		}
+		yourСontact = BackEndREST.loginByUser(yourСontact);
 		BackEndREST.acceptAllConnections(yourСontact);
 	}
 	
