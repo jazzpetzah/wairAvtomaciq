@@ -45,7 +45,7 @@ Feature: Connect to User
 
     Examples: 
       | Login   | Password    | Name    | Contact     | Size |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | 4    |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | 6    |
 
   @id220 @regression
   Scenario Outline: I can do full name search for existing group convo(non-archive)
@@ -163,7 +163,7 @@ Feature: Connect to User
       | Login       | Password    | Contact1        | Contact2        | WaitingMess1     | WaitingMess2     |
       | yourContact | aqaPassword | yourNotContact1 | yourNotContact2 | 2 people waiting | 1 person waiting |
 
-  @id540 @regression @mute
+  @id540 @regression
   Scenario Outline: I can ignore a connect request and reconnect later
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
@@ -188,7 +188,7 @@ Feature: Connect to User
       | Login   | Password    | Contact         | WaitingMess      |
       | aqaUser | aqaPassword | yourNotContact1 | 1 person waiting |
 
-  @id542 @regression @mute
+  @id542 @regression
   Scenario Outline: I want to be taken to the connect inbox right away if the person I select already sent me a connect request
     Given <Contact> connection request is sended to me <Login>
     And I Sign in using login <Login> and password <Password>
@@ -285,7 +285,7 @@ Feature: Connect to User
 	  | Login   | Password    | Name    | Contact      | WaitingMess      |
       | aqaUser | aqaPassword | aqaUser | yourIgnore   | 1 person waiting |
 
-  @id553 @regression @mute
+  @id553 @regression
   Scenario Outline: I want to see that the other person has accepted the connect request in the conversation view
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>

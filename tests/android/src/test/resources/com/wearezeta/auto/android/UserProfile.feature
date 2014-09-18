@@ -1,6 +1,6 @@
 Feature: User Profile
 
-  @id328 @smoke
+  @id328 @smoke @mute
   Scenario Outline: ZClient change name
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
