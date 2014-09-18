@@ -55,6 +55,10 @@ public class PersonalInfoPage extends IOSPage{
 		return email;
 	}
 	
+	public boolean isSettingsButtonVisible() {
+		return DriverUtils.isElementDisplayed(settingsButton);
+	}
+	
 	public PersonalInfoPage clickOnSettingsButton(){
 		settingsButton.click();
 		return this;
