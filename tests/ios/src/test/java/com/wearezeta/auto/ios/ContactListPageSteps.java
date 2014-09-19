@@ -2,22 +2,36 @@ package com.wearezeta.auto.ios;
 
 import java.io.IOException;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import cucumber.api.java.en.*;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.pages.*;
 
 public class ContactListPageSteps {
-
+	private static final Logger log = ZetaLogger.getLog(ContactListPageSteps.class.getSimpleName());
+	
 	@Given("^I see Contact list with my name (.*)$")
 	public void GivenISeeContactListWithMyName(String name) throws IOException {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		boolean tutorialIsVisible = PagesCollection.contactListPage.isTutorialShown();
 		if(tutorialIsVisible) {
 			PagesCollection.contactListPage.dismissTutorial();
+		} else {
+			log.debug("No tutorial is shown");
 		}
+
+		if (PagesCollection.personalInfoPage.isSettingsButtonVisible()) {
+			log.debug("Self profile page appears after login. Trying to go back to contact list.");
+			try {Thread.sleep(1000); } catch (Exception e) { }
+			PagesCollection.personalInfoPage.swipeRight(500);
+		} else {
+			log.debug("No self profile is shown");
+		}
+		
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 	}
 

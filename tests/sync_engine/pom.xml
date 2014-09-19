@@ -15,7 +15,7 @@
     <skipTests>true</skipTests>
     <TestRun>DevRun</TestRun>
     <driverTimeoutSeconds>10</driverTimeoutSeconds>
-    <defaultEmail>smoketester@wearezeta.com</defaultEmail>
+    <defaultEmail>smoketester.osx@wearezeta.com</defaultEmail>
     <pictureResultsPath>$CUCUMBER_REPORTS/Images</pictureResultsPath>
     <acceptance.messages.count>2</acceptance.messages.count>
     <acceptance.sending.timeout.sec>5</acceptance.sending.timeout.sec>

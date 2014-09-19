@@ -28,6 +28,7 @@ import com.wearezeta.auto.sync.SyncEngineUtil;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 
 public class CommonSteps {
 	static {
@@ -179,7 +180,7 @@ public class CommonSteps {
 	}
 	
 	@Given("I run serial sync engine test")
-	public void IRunSerialSyncEngineTest() {
+	public void IRunSerialSyncEngineTest() throws InterruptedException, Exception {
 		//send ios, receive osx and android
 		if (ExecutionContext.isIosEnabled()) {
 			for (int i = 0; i < ExecutionContext.iosZeta().getMessagesToSend(); i++) {
@@ -200,7 +201,10 @@ public class CommonSteps {
 					}
 				});
 				}
-				
+				executor.shutdown();
+				if (!executor.awaitTermination(10, TimeUnit.MINUTES)) {
+					throw new Exception("Work was not finished in useful time.");
+				}
 				try {
 					Thread.sleep(ExecutionContext.iosZeta().getMessagesSendingInterval()*1000);
 				} catch (InterruptedException e) {
@@ -227,6 +231,10 @@ public class CommonSteps {
 						ExecutionContext.androidZeta().listener().waitForMessageAndroid(message);
 					}
 				});
+				}
+				executor.shutdown();
+				if (!executor.awaitTermination(10, TimeUnit.MINUTES)) {
+					throw new Exception("Work was not finished in useful time.");
 				}
 				try {
 					Thread.sleep(ExecutionContext.osxZeta().getMessagesSendingInterval()*1000);
@@ -255,6 +263,10 @@ public class CommonSteps {
 						ExecutionContext.iosZeta().listener().waitForMessageIos(message);
 					}
 				});
+				}
+				executor.shutdown();
+				if (!executor.awaitTermination(10, TimeUnit.MINUTES)) {
+					throw new Exception("Work was not finished in useful time.");
 				}
 				try {
 					Thread.sleep(ExecutionContext.androidZeta().getMessagesSendingInterval()*1000);
