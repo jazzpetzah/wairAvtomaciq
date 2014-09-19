@@ -247,7 +247,7 @@ Feature: Connect to User
       | Login   | Password    | Contact         | CounterValue | FirstState |
       | aqaUser | aqaPassword | yourNotContact3 | 136          | false      |
 
-  @id554 @regression @mute
+  @id554 @regression
   Scenario Outline: I would not know other person has ignored my connection request
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
