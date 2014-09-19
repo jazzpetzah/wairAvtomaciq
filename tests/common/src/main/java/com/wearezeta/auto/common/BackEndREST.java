@@ -323,6 +323,7 @@ public class BackEndREST {
 		user = loginByUser(user);
 		List<String> quotedContacts = new ArrayList<String>();
 		for (ClientUser contact : contacts) {
+			contact = loginByUser(contact);
 			quotedContacts.add(String.format("\"%s\"", contact.getId()));
 		}
 		final String input = String.format(
