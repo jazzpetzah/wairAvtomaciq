@@ -81,6 +81,7 @@ public class PeoplePickerPage extends AndroidPage {
 		refreshUITree();
 		return noResults.isDisplayed();
 	}
+	
 	public AndroidPage selectContact(String contactName) throws Exception {
 		AndroidPage page = null;
 		WebElement el = driver.findElementByXPath(String.format(AndroidLocators.PeoplePickerPage.xpathPeoplePickerContact,contactName));
@@ -191,6 +192,7 @@ public class PeoplePickerPage extends AndroidPage {
 
 
 	public boolean userIsVisible(String contact) {
+		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.PeoplePickerPage.idNoResultsFound));
 		return isVisible(driver.findElement(By.xpath(String.format(AndroidLocators.PeoplePickerPage.xpathPeoplePickerContact, contact))));	
 	}
 	
@@ -199,6 +201,8 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public PeoplePickerPage selectContactByLongTap(String contact) {
+		refreshUITree();
+		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.PeoplePickerPage.idNoResultsFound));
 		refreshUITree();
 		WebElement el = driver.findElementByXPath(String.format(AndroidLocators.PeoplePickerPage.xpathPeoplePickerContact,contact));
 		DriverUtils.androidLongClick(driver, el);
