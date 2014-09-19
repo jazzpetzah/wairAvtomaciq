@@ -1,4 +1,4 @@
- Feature: Block user
+ Feature: User Block user
  
  @id676 @regression
  Scenario Outline: I want to block a person from 1:1 conversation
@@ -52,7 +52,7 @@
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
-    And I wait for 30 seconds
+    And I wait for 60 seconds
    	Then I see than no results found
 
  Examples: 

@@ -320,10 +320,12 @@ public class BackEndREST {
 			List<ClientUser> contacts, String conversationName)
 			throws IllegalArgumentException, UriBuilderException, IOException,
 			JSONException, BackendRequestException, InterruptedException {
-		user = loginByUser(user);
 		List<String> quotedContacts = new ArrayList<String>();
 		for (ClientUser contact : contacts) {
-			quotedContacts.add(String.format("\"%s\"", contact.getId()));
+			ClientUser newUser = contact;
+			newUser = loginByUser(newUser);
+			newUser = getUserInfo(newUser);
+			quotedContacts.add(String.format("\"%s\"", newUser.getId()));
 		}
 		final String input = String.format(
 				"{\"users\": [ %s ],\"name\": \"%s\" }",

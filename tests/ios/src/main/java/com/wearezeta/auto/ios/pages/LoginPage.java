@@ -105,6 +105,7 @@ public class LoginPage extends IOSPage {
 		if (personalInfo.isSettingsButtonVisible()) {
 			swipeRight(500);
 		}
+		PagesCollection.personalInfoPage = personalInfo;
 		return new ContactListPage(url, path);
 	}
 	

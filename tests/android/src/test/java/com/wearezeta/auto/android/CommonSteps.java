@@ -127,8 +127,11 @@ public class CommonSteps {
 			}
 		}
 		List<ClientUser> users = new LinkedList<ClientUser>();
+		yourUser = BackEndREST.loginByUser(yourUser);
+		yourContact = BackEndREST.loginByUser(yourUser);
 		users.add(yourUser);
 		users.add(contactContact);
+		
 		BackEndREST.createGroupConversation(yourContact,users, chatName);
 	}
 
@@ -184,7 +187,9 @@ public class CommonSteps {
 				break;
 			}
 		}
-		BackEndREST.createGroupConversation(CommonUtils.yourUsers.get(0),
+		ClientUser user = CommonUtils.yourUsers.get(0);
+		user = BackEndREST.loginByUser(user);
+		BackEndREST.createGroupConversation(user,
 				chatContacts, chatName);
 	}
 
