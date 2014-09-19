@@ -101,7 +101,11 @@ public class LoginPage extends IOSPage {
 	public IOSPage login() throws IOException {
 		
 		confirmSignInButton.click();
-		PagesCollection.personalInfoPage = new PersonalInfoPage(url, path);
+		PersonalInfoPage personalInfo = new PersonalInfoPage(url, path);
+		if (personalInfo.isSettingsButtonVisible()) {
+			swipeRight(500);
+		}
+		PagesCollection.personalInfoPage = personalInfo;
 		return new ContactListPage(url, path);
 	}
 	
