@@ -145,8 +145,8 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/klinke-auf-cinch/04-whats-happening-boytalk-remix |
     
     
-#muted due to defact IOS-985, still needs checking of mediabar and scrolling on simulator     
-@staging
+#muted due to defact IOS-985, still needs checking of mediabar and scrolling on simulator 
+@regression
 @id384
 Scenario Outline: Conversation gets scrolled back to playing media when clicking on media bar
 	Given I Sign in using login <Login> and password <Password>
@@ -164,8 +164,7 @@ Examples:
     |  Login		| Password		| Name			| Contact1    | SoundCloudLink |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/klinke-auf-cinch/04-whats-happening-boytalk-remix |
     
-
-@staging
+@regression
 @id488
 Scenario Outline: Verify you can see conversation images in fullscreen
 	Given I Sign in using login <Login> and password <Password>
@@ -271,8 +270,7 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/klinke-auf-cinch/04-whats-happening-boytalk-remix |
     
     
-#muted due to issue IOS-959
-@staging
+@regression
 @id385
   Scenario Outline: Verify the Media Bar dissapears after playback finishes (SoundCloud)
     Given I Sign in using login <Login> and password <Password>
@@ -310,7 +308,6 @@ Examples:
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
 
-   
  @staging 
  @id407
   Scenario Outline: Send more than 200 chars message
@@ -334,8 +331,7 @@ Examples:
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
     
-        
- @staging 
+ @regression 
  @id414
   Scenario Outline: Send a text containing spaces
     Given I Sign in using login <Login> and password <Password>
@@ -412,8 +408,7 @@ Examples:
 	Examples: 
     |	Login	|	Password	|	Name	|	Contact		| text 		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| TextToCopy|
-
-    
+   
  @staging   
  @id394
  Scenario Outline: Tap the cursor to get to the end of the conversation
@@ -453,8 +448,7 @@ Examples:
     |	Login	|	Password	|	Name	|	Contact		| Text 				|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|ÄäÖöÜüß & latin chars|
 
-    
-@staging
+@regression
 @id555
 Scenario Outline: Verify you can add people from 1:1 people view (view functionality)
 	Given I Sign in using login <Login> and password <Password>
