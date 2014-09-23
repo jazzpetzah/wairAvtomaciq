@@ -49,8 +49,12 @@ public class ImageFullScreenPageSteps {
 	}
 	
 	@When("I see send date on fullscreen page")
-	public void ISeeSendDate(){
-		Assert.assertEquals(DialogPageSteps.sendDate, PagesCollection.imageFullScreenPage.getTimeStamp());
+	public void ISeeSendDate() {
+		Assert.assertEquals("Expected date " + DialogPageSteps.sendDate
+				+ " is different from actual - "
+				+ PagesCollection.imageFullScreenPage.getTimeStamp(),
+				DialogPageSteps.sendDate.toUpperCase(),
+				PagesCollection.imageFullScreenPage.getTimeStamp().toUpperCase());
 	}
 	
 	@When("I see download button shown on fullscreen page")
