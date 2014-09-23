@@ -57,7 +57,7 @@
 
  Examples: 
       | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 |      
+      | aqaUser | aqaPassword | aqaUser | aqaBlock 	  |      
       
 @id680 @regression   
 Scenario Outline: I want to see user has been blocked within the Start UI
