@@ -15,7 +15,7 @@ public class TestPreparation {
 			yourUser = BackEndREST.loginByUser(yourUser);
 			yourUser = BackEndREST.getUserInfo(yourUser);
 		}
-		for(int i = 0; i<2; i++){
+		for(int i = 0; i<3; i++){
 			for (ClientUser contact : CommonUtils.contacts) {
 				BackEndREST.autoTestSendRequest(contact,
 						CommonUtils.yourUsers.get(i));
