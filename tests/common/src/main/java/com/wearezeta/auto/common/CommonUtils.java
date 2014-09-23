@@ -47,6 +47,7 @@ public class CommonUtils {
 	public static final String CONTACT_3 = "aqaContact3";
 	public static final String CONTACT_4 = "aqaPictureContact";
 	public static final String CONTACT_5 = "aqaAvatar TestContact";
+	public static final String CONTACT_6 = "aqaBlock";
 	public static final int USERS_CREATION_TIMEOUT = 60 * 5; // seconds
 	public static List<ClientUser> yourUsers = new CopyOnWriteArrayList<ClientUser>();
 	public static List<ClientUser> contacts = new CopyOnWriteArrayList<ClientUser>();
@@ -115,6 +116,7 @@ public class CommonUtils {
 			replacementMap.put(CONTACT_3, contacts.get(2).getName());
 			replacementMap.put(CONTACT_4, CONTACT_PICTURE_NAME);
 			replacementMap.put(CONTACT_5, CONTACT_AVATAR_NAME);
+			replacementMap.put(CONTACT_6, contacts.get(3).getName());
 		}
 		// TODO: Magic strings 
 		replacementMap.put("aqaPictureContactEmail", CONTACT_PICTURE_EMAIL);

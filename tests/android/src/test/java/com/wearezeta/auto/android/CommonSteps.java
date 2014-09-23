@@ -293,7 +293,7 @@ public class CommonSteps {
 		if (isFirstRun) {
 			isFirstRun = false;
 			if (generateUsersFlag) {
-				CommonUtils.generateUsers(3);
+				CommonUtils.generateUsers(4);
 				Thread.sleep(CommonUtils.BACKEND_SYNC_TIMEOUT);
 				TestPreparation.createContactLinks();
 			} else {
