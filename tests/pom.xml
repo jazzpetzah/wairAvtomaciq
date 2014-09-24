@@ -13,5 +13,6 @@
 		<module>audio</module>
 		<module>macosx</module>
 		<module>cmdclient</module>
+		<module>perf-helper</module>
     </modules>
 </project>

@@ -45,7 +45,7 @@ public class BackEndREST {
 			JSONException, BackendRequestException, InterruptedException {
 		user = loginByUser(user);
 		user = getUserInfo(user);
-		sendConnectRequest(user, contact, "NewConnect", "Hello!!!");
+		sendConnectRequest(user, contact, contact.getName(), "Hello!!!");
 	}
 
 	public static void autoTestAcceptAllRequest(ClientUser user)

@@ -20,7 +20,7 @@ public class ZBender
 	
 	private static final String IMG = "/bender.jpg";
 	
-	private static void sendPicture(ClientUser user, String contact, String path) throws Throwable {
+	public static void sendPicture(ClientUser user, String contact, String path) throws Throwable {
 		InputStream configFileStream = null;
 		if (path.equals("default")) {
 		

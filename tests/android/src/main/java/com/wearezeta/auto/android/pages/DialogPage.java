@@ -33,8 +33,8 @@ public class DialogPage extends AndroidPage{
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMessage")
 	private List<WebElement> messagesList;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idKnockMessage")
-	private WebElement knockMessages;
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idKnockIcon")
+	private WebElement knockIcon;
 	
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogTakePhotoButton")
 	private WebElement takePhotoButton;
@@ -211,12 +211,13 @@ public class DialogPage extends AndroidPage{
 		return conversationMessage.getText().toLowerCase().contains(message.toLowerCase());
 	}
 
-	public String getKnockMessageText() {
+	public Boolean isKnockIconVisible()
+	{
 		refreshUITree();
-		wait.until(ExpectedConditions.visibilityOf(knockMessages));
-		return knockMessages.getText().toUpperCase();
+		wait.until(ExpectedConditions.visibilityOf(knockIcon));
+		return knockIcon.isDisplayed();
 	}
-
+	
 	public String getConnectRequestChatLabel() {
 		refreshUITree();
 		return connectRequestChatLabel.getText().toLowerCase().trim();
