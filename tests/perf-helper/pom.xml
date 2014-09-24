@@ -1,24 +1,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  
   <groupId>com.wearezeta.auto</groupId>
-  <artifactId>perf-helper</artifactId>
+  <artifactId>perfhelper</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>perf-helper</name>
   
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	<defaultEmail>smoketester@wearezeta.com</defaultEmail>
   </properties>
   
- <dependencies>
-  
+ <dependencies> 
   <dependency>
       <groupId> com.wearezeta.auto</groupId>
       <artifactId>cmdclient</artifactId>
       <version>1.0-SNAPSHOT</version>
       <type>jar</type>
     </dependency>
-
   </dependencies>
   
     <build>
@@ -38,7 +36,7 @@
       <configuration>
         <archive>
           <manifest>
-            <mainClass>com.wearezeta.auto.cmdclient.ZBender</mainClass>
+            <mainClass>com.wearezeta.auto.perfhelper.PerfHelper</mainClass>
           </manifest>
         </archive>
         <descriptorRefs>
