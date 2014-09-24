@@ -97,7 +97,7 @@ public class DialogPageSteps{
 	}
 	@Then("^I see Hello-Hey message (.*) in the dialog$")
 	public void ThenISeeHelloHeyMessageInTheDialog(String message) throws Throwable {
-		Assert.assertEquals(message.toUpperCase(), PagesCollection.dialogPage.getKnockMessageText());
+		Assert.assertTrue(PagesCollection.dialogPage.isKnockIconVisible());
 	}
 
 	@Then("^I see my message in the dialog$")

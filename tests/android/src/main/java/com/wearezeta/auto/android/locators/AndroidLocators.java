@@ -115,7 +115,7 @@ public final class AndroidLocators {
 		
 		public static final String idBackgroundOverlay = LOCATORS_PACKAGE + ":id/v_background_dark_overlay";
 		
-		public static final String idKnockMessage = LOCATORS_PACKAGE + ":id/ttv__row_conversation__knock_message";
+		public static final String idKnockIcon = LOCATORS_PACKAGE + ":id/gtv__knock_icon";
 		
 		public static final String idMessage = LOCATORS_PACKAGE + ":id/ltv__row_conversation__message";
 		
