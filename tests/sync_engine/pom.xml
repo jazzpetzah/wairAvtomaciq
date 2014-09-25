@@ -20,14 +20,16 @@
     <acceptance.messages.count>2</acceptance.messages.count>
     <acceptance.sending.timeout.sec>5</acceptance.sending.timeout.sec>
     <acceptance.max.send.interval.sec>2</acceptance.max.send.interval.sec>
+    <acceptance.parallel.mode>false</acceptance.parallel.mode>
+    <acceptance.report.path>$CUCUMBER_REPORTS/SyncEngineReport.html</acceptance.report.path>
     <common.generate.users>true</common.generate.users>
     <common.same.user>false</common.same.user>
     <osx.client.enabled>true</osx.client.enabled>
-    <osx.backend.sender>true</osx.backend.sender>
+    <osx.backend.sender>false</osx.backend.sender>
     <osxAppiumUrl>http://127.0.0.1:4622/wd/hub/</osxAppiumUrl>
     <osxApplicationPath>ZClient</osxApplicationPath>
     <android.client.enabled>true</android.client.enabled>
-    <android.backend.sender>true</android.backend.sender>
+    <android.backend.sender>false</android.backend.sender>
     <androidAppiumUrl>http://127.0.0.1:4824/wd/hub</androidAppiumUrl>
     <androidApplicationPath>/Project/zclient.apk</androidApplicationPath>
     <package>com.waz.zclient.dev</package>
@@ -36,7 +38,7 @@
     <defaultImagePath>img/</defaultImagePath>
     <defaultImagesPath>img/</defaultImagesPath>
     <ios.client.enabled>true</ios.client.enabled>
-    <ios.backend.sender>true</ios.backend.sender>
+    <ios.backend.sender>false</ios.backend.sender>
     <iosAppiumUrl>http://127.0.0.1:4723/wd/hub</iosAppiumUrl>
     <iosApplicationPath>/Project/ZClient_ios.app</iosApplicationPath>
     <isSimulator>true</isSimulator>
@@ -132,6 +134,11 @@
         <version>1.6.1</version>
     </dependency>
     
+    <dependency>
+		<groupId>xstream</groupId>
+		<artifactId>xstream</artifactId>
+		<version>1.2.2</version>
+	</dependency>
   </dependencies>
   
   <build>
