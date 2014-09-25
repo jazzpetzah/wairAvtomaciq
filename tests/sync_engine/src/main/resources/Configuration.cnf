@@ -9,6 +9,8 @@ pictureResultsPath=${pictureResultsPath}
 acceptance.messages.count=${acceptance.messages.count}
 acceptance.sending.timeout.sec=${acceptance.sending.timeout.sec}
 acceptance.max.send.interval.sec=${acceptance.max.send.interval.sec}
+acceptance.parallel.mode=${acceptance.parallel.mode}
+acceptance.report.path=${acceptance.report.path}
 
 ### COMMON CONFIG ###
 common.generate.users=${common.generate.users}

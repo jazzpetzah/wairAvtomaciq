@@ -11,6 +11,8 @@ import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.sync.client.InstanceState;
 import com.wearezeta.auto.sync.client.ZetaInstance;
 
+import com.wearezeta.auto.sync.report.ReportData;
+
 public class ExecutionContext {
 	private static final Logger log = ZetaLogger.getLog(ExecutionContext.class.getSimpleName());
 	
@@ -45,4 +47,13 @@ public class ExecutionContext {
 		}
 		return result;
 	}
+	
+	public static boolean messagesOrderCorrect() {
+		//TODO: implement workaround for android
+		return /*androidZeta().isOrderCorrect()
+				&& */osxZeta().isOrderCorrect()
+				&& iosZeta().isOrderCorrect();
+	}
+	
+	public static ReportData report = new ReportData();
 }

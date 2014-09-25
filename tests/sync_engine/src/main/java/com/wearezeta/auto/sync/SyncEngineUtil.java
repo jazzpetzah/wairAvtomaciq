@@ -155,6 +155,11 @@ public class SyncEngineUtil {
 		return Boolean.parseBoolean(CommonUtils.getValueFromConfig(c, "ios.backend.sender"));
 	}
 	
+	public static String getAcceptanceReportPathFromConfig(Class<?> c)
+			throws IOException {
+		return CommonUtils.getValueFromConfig(c, "acceptance.report.path");
+	}
+
 	public static int getAcceptanceMaxSendingIntervalFromConfig(Class<?> c)
 			throws IOException {
 		return Integer.parseInt(CommonUtils.getValueFromConfig(c, "acceptance.max.send.interval.sec"));

@@ -3,15 +3,14 @@ package com.wearezeta.auto.sync;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.BackEndREST;
 import com.wearezeta.auto.common.ClientUser;
@@ -20,9 +19,9 @@ import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.sync.client.ZetaInstance;
-import com.wearezeta.auto.sync.client.ZetaSender;
+import com.wearezeta.auto.sync.report.ReportData;
+import com.wearezeta.auto.sync.report.ReportGenerator;
 import com.wearezeta.auto.sync.ExecutionContext;
-import com.wearezeta.auto.sync.ReportGenerator;
 import com.wearezeta.auto.sync.SyncEngineUtil;
 
 import cucumber.api.java.After;
@@ -99,6 +98,12 @@ public class CommonSteps {
 
 		// Android initialization
 		if (ExecutionContext.isAndroidEnabled()) {
+			try {
+				AndroidCommonUtils.disableHints();
+			} catch (Exception e) {
+				log.fatal("Failed to create disable hints config.\n" + e.getMessage());
+				e.printStackTrace();
+			}
 			String androidPath = CommonUtils
 					.getAndroidApplicationPathFromConfig(this.getClass());
 			if (com.wearezeta.auto.android.pages.PagesCollection.loginPage == null) {
@@ -277,66 +282,90 @@ public class CommonSteps {
 		}
 	}
 	
-	@Given("I analyze registered data")
-	public void IAnalyzeRegisteredData() {
-		ReportGenerator.chatUsers = new ArrayList<String>();
-		for (int i = 0; i < 3; i++) {
-			ReportGenerator.chatUsers.add(SyncEngineUtil.usersList.get(i)
-					.getName());
-		}
-
-		ReportGenerator.loggedInUsers = new HashMap<String, String>();
-		ReportGenerator.startupTimes = new HashMap<String, Long>();
-
-		for (Map.Entry<String, ZetaInstance> client : ExecutionContext.clients
-				.entrySet()) {
-			if (client.getValue().isEnabled()) {
-				ReportGenerator.loggedInUsers.put(client.getKey(), client.getValue().getUserInstance().getName());
-				ReportGenerator.startupTimes.put(client.getKey(), client.getValue().getStartupTimeMs());
-			} else {
-				ReportGenerator.loggedInUsers.put(client.getKey(),
-						"-==DISABLED==-");
+	@Given("I collect messages order data")
+	public void ICollectMessagesOrderData() {
+		ArrayList<MessageEntry> iosMessages = ExecutionContext.iosZeta().listener().receiveChatMessages();
+		ArrayList<MessageEntry> osxMessages = ExecutionContext.osxZeta().listener().receiveChatMessages();
+		ArrayList<MessageEntry> androidMessages = ExecutionContext.androidZeta().listener().receiveChatMessages();
+		
+		ArrayList<MessageEntry> sentMessages = new ArrayList<MessageEntry>(ExecutionContext.sentMessages.values());
+		
+		boolean iosOrderCorrect = true;
+		boolean osxOrderCorrect = true;
+		boolean androidOrderCorrect = true;
+		
+		for (int i = 0; i < sentMessages.size(); i++) {
+			try {
+				if (!sentMessages.get(i).messageContent.equals(osxMessages.get(i).messageContent))
+					osxOrderCorrect = false;
+			} catch (Exception e) {
+				osxOrderCorrect = false;
+				log.debug(sentMessages);
+				log.debug(osxMessages);
 			}
-		}
-
-		ReportGenerator.sentMessages = ExecutionContext.sentMessages;
-		if (ExecutionContext.iosZeta().isEnabled()) {
-			ReportGenerator.iosReceivedMessages = new LinkedHashMap<String, MessageEntry>();
-			for (Map.Entry<String, MessageEntry> message : ExecutionContext
-					.iosZeta().listener().registeredMessages.entrySet()) {
-				log.debug(message);
-				if (message.getValue().appearanceDate
-						.after(ZetaSender.sendingStartDate)) {
-
-					ReportGenerator.iosReceivedMessages.put(message.getKey(), message.getValue());
-				}
+			try {
+				if (!sentMessages.get(i).messageContent.equals(iosMessages.get(i).messageContent))
+					iosOrderCorrect = false;
+			} catch (Exception e) {
+				iosOrderCorrect = false;
+				log.debug(sentMessages);
+				log.debug(iosMessages);
+			}
+			try {
+				if (!sentMessages.get(i).messageContent.equals(androidMessages.get(i).messageContent))
+					androidOrderCorrect = false;
+			} catch (Exception e) {
+				androidOrderCorrect = false;
+				log.debug(sentMessages);
+				log.debug(androidMessages);
 			}
 		}
 		
-		if (ExecutionContext.androidZeta().isEnabled()) {
-			ReportGenerator.androidReceivedMessages = new LinkedHashMap<String, MessageEntry>();
-			for (Map.Entry<String, MessageEntry> message : ExecutionContext
-					.androidZeta().listener().registeredMessages.entrySet()) {
-				log.debug(message);
-				if (message.getValue().appearanceDate
-						.after(ZetaSender.sendingStartDate)) {
-					ReportGenerator.androidReceivedMessages.put(message.getKey(), message.getValue());
-				}
-			}
-		}
-		if (ExecutionContext.osxZeta().isEnabled()) {
-			ReportGenerator.osxReceivedMessages = new LinkedHashMap<String, MessageEntry>();
-			for (Map.Entry<String, MessageEntry> message : ExecutionContext
-					.osxZeta().listener().registeredMessages.entrySet()) {
-				log.debug(message);
-				if (message.getValue().appearanceDate
-						.after(ZetaSender.sendingStartDate)) {
-
-					ReportGenerator.osxReceivedMessages.put(message.getKey(), message.getValue());
-				}
-			}
-		}
-		log.debug(ReportGenerator.generate());
+		ExecutionContext.iosZeta().setOrderCorrect(iosOrderCorrect);
+		ExecutionContext.osxZeta().setOrderCorrect(osxOrderCorrect);
+		ExecutionContext.androidZeta().setOrderCorrect(androidOrderCorrect);
+	}
+	
+	@Given("I build results report")
+	public void IBuildResultsReport() throws IOException {
+		ExecutionContext.report.fillReportInfo();
+		log.debug(ReportData.toXml(ExecutionContext.report));
+		ReportGenerator.generate(ExecutionContext.report);
 	}
 
+	@Then("I perform acceptance checks")
+	public void IPerformAcceptanceChecks() {
+		boolean isTestPassed = true;
+		String comment = "Acceptance checks results:\n";
+		
+		if (!ExecutionContext.report.areClientsStable) {
+			isTestPassed = false;
+			comment += "\tClients stability check - failed\n";
+		} else {
+			comment += "\tClients stability check - passed\n";
+		}
+		
+		if (!ExecutionContext.report.areMessagesReceived) {
+			isTestPassed = false;
+			comment += "\tMessages receiving check - failed\n";
+		} else {
+			comment += "\tMessages receiving check - passed\n";
+		}
+		
+		if (!ExecutionContext.report.areMessagesReceiveTimeCorrect) {
+			isTestPassed = false;
+			comment += "\tMessages receive time check - failed\n";
+		} else {
+			comment += "\tMessages receive time check - passed\n";
+		}
+		
+		if (!ExecutionContext.report.areMessagesOrderCorrect) {
+			isTestPassed = false;
+			comment += "\tMessages order check - failed\n";
+		} else {
+			comment += "\tMessages order check - passed\n";
+		}
+		
+		Assert.assertTrue(comment, isTestPassed);
+	}
 }

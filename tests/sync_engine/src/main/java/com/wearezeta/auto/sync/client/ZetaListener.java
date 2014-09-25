@@ -20,7 +20,8 @@ public class ZetaListener extends Thread {
 	private String platform() { return parent.getPlatform(); }
 	
 	public LinkedHashMap<String, MessageEntry> registeredMessages = new LinkedHashMap<String, MessageEntry>();
-
+	public LinkedHashMap<String, MessageEntry> notReceivedMessages = new LinkedHashMap<String, MessageEntry>();
+	
 	public ZetaListener(ZetaInstance parent) {
 		this.parent = parent;
 	}
@@ -52,7 +53,7 @@ public class ZetaListener extends Thread {
 		}
 	}
 
-	private ArrayList<MessageEntry> receiveChatMessages() {
+	public ArrayList<MessageEntry> receiveChatMessages() {
 		try {
 		if (platform().equals(CommonUtils.PLATFORM_NAME_ANDROID)) {
 			return receiveChatMessagesAndroid();
@@ -72,24 +73,39 @@ public class ZetaListener extends Thread {
 	public void waitForMessageAndroid(String message) {
 		com.wearezeta.auto.android.pages.DialogPage dialogPage = 
 				com.wearezeta.auto.android.pages.PagesCollection.dialogPage;
-		registeredMessages.put(message, dialogPage.receiveMessage(message));
+		MessageEntry entry = dialogPage.receiveMessage(message);
+		if (entry != null) {
+			registeredMessages.put(message, entry);
+		} else {
+			notReceivedMessages.put(message, ExecutionContext.sentMessages.get(message));
+		}
 	}
 	
 	public void waitForMessageIos(String message) {
 		com.wearezeta.auto.ios.pages.DialogPage dialogPage = 
 				com.wearezeta.auto.ios.pages.PagesCollection.dialogPage;
-		registeredMessages.put(message, dialogPage.receiveMessage(message));
+		MessageEntry entry = dialogPage.receiveMessage(message);
+		if (entry != null) {
+			registeredMessages.put(message, entry);
+		} else {
+			notReceivedMessages.put(message, ExecutionContext.sentMessages.get(message));
+		}
 	}
 
 	public void waitForMessageOsx(String message) {
 		try {
-		com.wearezeta.auto.osx.steps.CommonSteps.senderPages.setConversationPage(
+			com.wearezeta.auto.osx.steps.CommonSteps.senderPages.setConversationPage(
 				new com.wearezeta.auto.osx.pages.ConversationPage(
 						CommonUtils.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
 						CommonUtils.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
-		com.wearezeta.auto.osx.pages.ConversationPage conversationPage =
+			com.wearezeta.auto.osx.pages.ConversationPage conversationPage =
 				com.wearezeta.auto.osx.steps.CommonSteps.senderPages.getConversationPage();
-		registeredMessages.put(message, conversationPage.receiveMessage(message));
+			MessageEntry entry = conversationPage.receiveMessage(message);
+			if (entry != null) {
+				registeredMessages.put(message, entry);
+			} else {
+				notReceivedMessages.put(message, ExecutionContext.sentMessages.get(message));
+			}
 		} catch (Exception e) {
 			//TODO: process exception
 			log.error(e.getMessage());

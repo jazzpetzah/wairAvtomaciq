@@ -24,11 +24,20 @@ public class ContactListPageSteps {
 	private static final Logger log = ZetaLogger.getLog(ContactListPageSteps.class.getSimpleName());
 	
 	@Given ("I see Contact list with name (.*)")
-	public void GivenISeeContactListWithName(String name) throws IOException {
+	public void GivenISeeContactListWithName(String name) throws Exception {
 		if (name.equals(OSXLocators.RANDOM_KEYWORD)) {
 			name = CommonSteps.senderPages.getConversationInfoPage().getCurrentConversationName();
 		} else {
 			name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		}
+		CommonSteps.senderPages.getContactListPage().pressLaterButton();
+		Thread.sleep(1000);
+		CommonSteps.senderPages.setPeoplePickerPage(new PeoplePickerPage(
+				CommonUtils.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
+				CommonUtils.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
+		PeoplePickerPage peoplePickerPage = CommonSteps.senderPages.getPeoplePickerPage();
+		if (peoplePickerPage.isPeoplePickerPageVisible()) {
+			peoplePickerPage.closePeoplePicker();
 		}
 		Assert.assertTrue(CommonSteps.senderPages.getContactListPage().isContactWithNameExists(name));
 	}
@@ -108,7 +117,7 @@ public class ContactListPageSteps {
 	}
 	
 	@When("I see connect invitation")
-	public void ISeeConnectInvitation() throws IOException {
+	public void ISeeConnectInvitation() throws Exception {
 		GivenISeeContactListWithName(OSXLocators.CONTACT_LIST_ONE_CONNECT_REQUEST);
 	}
 	

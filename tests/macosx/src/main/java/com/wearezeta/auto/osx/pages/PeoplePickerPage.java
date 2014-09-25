@@ -1,5 +1,6 @@
 package com.wearezeta.auto.osx.pages;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
 
@@ -18,8 +19,8 @@ public class PeoplePickerPage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathMainWindow)
 	private WebElement mainWindow;
 
-	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerDismissButton)
-	private WebElement cancelButton;
+//	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerDismissButton)
+	private WebElement cancelButton = findCancelButton();
 	
 	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerAddToConversationButton)
 	private WebElement addToConversationButton;
@@ -39,6 +40,18 @@ public class PeoplePickerPage extends OSXPage {
     	for (WebElement textArea: textAreaCandidates) {
     		if (textArea.getAttribute("AXIdentifier").equals("people_picker_searchfield")) {
     			return textArea;
+    		}
+    	}
+        return null;
+	}
+	
+	public WebElement findCancelButton() {
+		System.out.println(driver.getPageSource());
+		List<WebElement> buttonCandidates = driver.findElements(By.className("AXButton"));
+    	for (WebElement button: buttonCandidates) {
+    		System.out.println(button.getAttribute("AXIdentifier"));
+    		if (button.getAttribute("AXIdentifier").equals(OSXLocators.idPeoplePickerDismissButton)) {
+    			return button;
     		}
     	}
         return null;
@@ -125,6 +138,18 @@ public class PeoplePickerPage extends OSXPage {
             }
         }
 		
+	}
+	
+	public boolean isPeoplePickerPageVisible() throws InterruptedException, IOException {
+		if (findSearchField() == null) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	public void closePeoplePicker() {
+		findCancelButton().click();
 	}
 	
 	public void selectUserInSearchResults(String user) {

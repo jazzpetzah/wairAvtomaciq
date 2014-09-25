@@ -32,6 +32,7 @@ public class ZetaInstance {
 	private long startupTimeMs;
 	private long loginAndContactListLoadingTimeMs;
 	private long conversationLoadingTimeMs;
+	private boolean isOrderCorrect;
 	
 	public ZetaInstance(String platform) {
 		this.platform = platform;
@@ -190,5 +191,13 @@ public class ZetaInstance {
 
 	public void setMessagesSendingInterval(int messagesSendingInterval) {
 		this.messagesSendingInterval = messagesSendingInterval;
+	}
+
+	public boolean isOrderCorrect() {
+		return isOrderCorrect;
+	}
+
+	public void setOrderCorrect(boolean isOrderCorrect) {
+		this.isOrderCorrect = isOrderCorrect;
 	}
 }
