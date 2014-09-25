@@ -105,7 +105,7 @@ public class RegistrationPageSteps {
 	}
 	
 	@Then("I see contact list of registered user")
-	public void ISeeContactListOfRegisteredUser() throws IOException {
+	public void ISeeContactListOfRegisteredUser() throws Exception {
 		CommonSteps.senderPages.setContactListPage(new ContactListPage(
 				CommonUtils.getOsxAppiumUrlFromConfig(RegistrationPageSteps.class),
 				CommonUtils.getOsxApplicationPathFromConfig(RegistrationPageSteps.class)));
