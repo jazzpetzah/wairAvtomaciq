@@ -14,8 +14,7 @@ Feature: Connect to user
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | yourContact |
 
-  #Muted till new sync engine client stabilization
-  @staging @id616
+  @regression @id616
   Scenario Outline: Conversation created on second end after user accept connection request
     Given I send invitation to <Name> by <Contact>
     When I Sign in using login <Login> and password <Password>

@@ -85,7 +85,7 @@ Feature: Conversation
   @regression @id102
   Scenario Outline: Add user to group conversation
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    And I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
     And I open conversation with <ChatName>
     When I open People Picker from conversation
@@ -223,7 +223,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     | SoundCloudLink                              |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/edherbst/throwaway-3 |
 
-  @staging @id379
+  @regression @id379
   Scenario Outline: Play/pause SoundCloud media link from the media bar
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -244,8 +244,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     | SoundCloudLink                              |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/edherbst/throwaway-3 |
 
-  #muted, not stable due to sync engine and bug ZOSX-931, have a look at the comments, conversation gets refreshed and that breaks the media bar
-  @mute @staging @id380
+  @regression @id380
   Scenario Outline: Conversation scrolls back to playing media when clicked on the media bar
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -285,71 +284,71 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
 
-  @staging @id624
+  @regression @id624
   Scenario Outline: Text message sent to group chat is visible on other end
-    Given I Sign in using login <Login> and password <Password>
+    Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
+    And I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
-    And I create group chat with <Contact1> and <Contact2>
-    And I open conversation with <Contact1>, <Contact2>
+    And I open conversation with <ChatName>
     And I write random message
     And I send message
     And I see random message in conversation
     When I am signing out
     And I Sign in using login <Contact1> and password <Password>
-    And I open conversation with <Login>, <Contact2>
+    And I open conversation with <ChatName>
     Then I see random message in conversation
     And I am signing out
     And I Sign in using login <Contact2> and password <Password>
-    And I open conversation with <Login>, <Contact1>
+    And I open conversation with <ChatName>
     Then I see random message in conversation
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
+      | Login   | Password    | Name    | Contact1    | Contact2    | ChatName          |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | SecondEndTextChat |
 
-  @staging @id623
+  @regression @id623
   Scenario Outline: Image sent to group chat is visible on other end
-    Given I Sign in using login <Login> and password <Password>
+    Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
+    And I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
-    And I create group chat with <Contact1> and <Contact2>
-    And I open conversation with <Contact1>, <Contact2>
+    And I open conversation with <ChatName>
     And I send picture testing.jpg
     And I see picture in conversation
     When I am signing out
     And I Sign in using login <Contact1> and password <Password>
-    And I open conversation with <Login>, <Contact2>
+    And I open conversation with <ChatName>
     Then I see picture in conversation
     And I am signing out
     And I Sign in using login <Contact2> and password <Password>
-    And I open conversation with <Login>, <Contact1>
+    And I open conversation with <ChatName>
     Then I see picture in conversation
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
+      | Login   | Password    | Name    | Contact1    | Contact2    | ChatName           |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | SecondEndImageChat |
 
-  @staging @id625
+  @regression @id625
   Scenario Outline: Multimedia message sent to group chat is visible on other end
-    Given I Sign in using login <Login> and password <Password>
+    Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
+    And I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
-    And I create group chat with <Contact1> and <Contact2>
-    And I open conversation with <Contact1>, <Contact2>
+    And I open conversation with <ChatName>
     When I post media link <SoundCloudLink>
     And I see media link <SoundCloudLink> and media in dialog
     And I am signing out
     And I Sign in using login <Contact1> and password <Password>
-    And I open conversation with <Login>, <Contact2>
+    And I open conversation with <ChatName>
     Then I see media link <SoundCloudLink> and media in dialog
     And I am signing out
     And I Sign in using login <Contact2> and password <Password>
-    And I open conversation with <Login>, <Contact1>
+    And I open conversation with <ChatName>
     Then I see media link <SoundCloudLink> and media in dialog
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | SoundCloudLink                              |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | https://soundcloud.com/edherbst/throwaway-3 |
+      | Login   | Password    | Name    | Contact1    | Contact2    | SoundCloudLink                              | ChatName        |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | https://soundcloud.com/edherbst/throwaway-3 | SecondEndMMChat |
 
-  @staging @id381
+  @regression @id381
   Scenario Outline: The media bar disappears after playback finishes
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -366,7 +365,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     | SoundCloudLink                                         |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/20sekunder/isakkkkkk-pcb-sesh-1 |
 
-  @staging @id378
+  @regression @id378
   Scenario Outline: Media bar disappears when playing media is back in view
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
