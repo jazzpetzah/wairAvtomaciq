@@ -10,9 +10,9 @@ public class OSXClientSteps {
 	@Given("^OSX I Sign in using login (.*) and password (.*)$")
 	public void OSXISignInUsingLoginAndPassword(String login, String password)
 			throws Exception {
-		String name = login;
 		if (ExecutionContext.isOsxEnabled()) {
 			login = SyncEngineUtil.retrieveRealUserContactPasswordValue(login);
+			String name = login;
 			for (ClientUser myUser : SyncEngineUtil.usersList) {
 				if (myUser.getName().equals(login)) {
 					login = myUser.getEmail();
