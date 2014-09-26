@@ -124,9 +124,9 @@ public class ReportData {
 			}
 		}
 		
-		if (osxNotReceivedMessages.isEmpty()
-				&& iosNotReceivedMessages.isEmpty()
-				&& androidNotReceivedMessages.isEmpty()) {
+		if (osxReceivedMessages.size() == ExecutionContext.osxZeta().getMessagesToSend()*2
+				&& iosReceivedMessages.size() == ExecutionContext.osxZeta().getMessagesToSend()*2
+				&& androidReceivedMessages.size() == ExecutionContext.osxZeta().getMessagesToSend()*2) {
 			areMessagesReceived = true;
 		} else {
 			areMessagesReceived = false;
@@ -250,7 +250,7 @@ public class ReportData {
 					&& report.isOsxReceiveTimeOK) {
 				areMessagesReceiveTimeCorrect = true;
 			} else {
-				areMessagesReceiveTimeCorrect = true;
+				areMessagesReceiveTimeCorrect = false;
 			}
 			areClientsStable = true;
 			areMessagesOrderCorrect = ExecutionContext.messagesOrderCorrect();
