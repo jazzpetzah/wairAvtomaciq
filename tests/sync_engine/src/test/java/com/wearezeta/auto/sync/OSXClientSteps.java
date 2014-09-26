@@ -1,7 +1,5 @@
 package com.wearezeta.auto.sync;
 
-import java.io.IOException;
-
 import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.sync.ExecutionContext;
 import com.wearezeta.auto.sync.SyncEngineUtil;
@@ -11,7 +9,8 @@ import cucumber.api.java.en.Given;
 public class OSXClientSteps {
 	@Given("^OSX I Sign in using login (.*) and password (.*)$")
 	public void OSXISignInUsingLoginAndPassword(String login, String password)
-			throws IOException {
+			throws Exception {
+		String name = login;
 		if (ExecutionContext.isOsxEnabled()) {
 			login = SyncEngineUtil.retrieveRealUserContactPasswordValue(login);
 			for (ClientUser myUser : SyncEngineUtil.usersList) {
@@ -24,6 +23,8 @@ public class OSXClientSteps {
 			com.wearezeta.auto.osx.steps.LoginPageSteps osxLoginPageSteps = new com.wearezeta.auto.osx.steps.LoginPageSteps();
 			osxLoginPageSteps
 					.GivenISignInUsingLoginAndPassword(login, password);
+			com.wearezeta.auto.osx.steps.ContactListPageSteps osxClPageSteps = new com.wearezeta.auto.osx.steps.ContactListPageSteps();
+			osxClPageSteps.GivenISeeContactListWithName(name);
 		}
 	}
 
