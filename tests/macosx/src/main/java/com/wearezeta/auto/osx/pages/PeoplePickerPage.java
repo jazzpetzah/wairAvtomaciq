@@ -46,10 +46,8 @@ public class PeoplePickerPage extends OSXPage {
 	}
 	
 	public WebElement findCancelButton() {
-		System.out.println(driver.getPageSource());
 		List<WebElement> buttonCandidates = driver.findElements(By.className("AXButton"));
     	for (WebElement button: buttonCandidates) {
-    		System.out.println(button.getAttribute("AXIdentifier"));
     		if (button.getAttribute("AXIdentifier").equals(OSXLocators.idPeoplePickerDismissButton)) {
     			return button;
     		}
