@@ -37,6 +37,7 @@ public class ContactListPageSteps {
 				CommonUtils.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
 		PeoplePickerPage peoplePickerPage = CommonSteps.senderPages.getPeoplePickerPage();
 		if (peoplePickerPage.isPeoplePickerPageVisible()) {
+			log.debug("People picker appears. Closing it.");
 			peoplePickerPage.closePeoplePicker();
 		}
 		Assert.assertTrue(CommonSteps.senderPages.getContactListPage().isContactWithNameExists(name));
