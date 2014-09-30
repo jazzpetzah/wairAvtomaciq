@@ -37,15 +37,14 @@ public final class IOSLocators {
 	public static final String classNameDialogMessages = "UIATableCell";
 
 	public static final String xpathDialogTextMessage = "//UIATableCell/UIATextView";
-	public static final String xpathFormatDialogTextMessage = "//UIATableCell/UIATextView[@value='%s']";
 	
-//	public static final String xpathCursorInput = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[last()]";//"TAP OR SLIDE  ";
+	public static final String xpathFormatDialogTextMessage = "//UIATableCell/UIATextView[@value='%s']";
 	
 	public static final String nameConversationCursorInput = "ConversationTextInputField";
 	
 	public static final String nameTextInput = "ComposeControllerTextView";
 	
-	public static final String xpathLastMessageFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]/UIATextView[1]";
+	public static final String xpathLastMessageFormat = "//UIAApplication[1]/UIAWindow[2]/UIATableView[1]/UIATableCell[%s]/UIATextView[1]";
 	
 	public static final String xpathLastVideoFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]/UIAWebView[1]";
 

@@ -363,11 +363,17 @@ public class ConversationPage extends OSXPage {
 	}
 
 	public MessageEntry receiveMessage(String message) {
-		WebElement messageElement = driver.findElement(By.xpath(String.format(
+		DriverUtils.setImplicitWaitValue(driver, 120);
+		try {
+			WebElement messageElement = driver.findElement(By.xpath(String.format(
 				OSXLocators.xpathFormatSpecificMessageEntry, message)));
-		if (messageElement != null) {
-			return new MessageEntry("text", message, new Date());
+			if (messageElement != null) {
+				return new MessageEntry("text", message, new Date());
+			}
+		} finally {
+			DriverUtils.setDefaultImplicitWait(driver);
 		}
 		return null;
+
 	}
 }

@@ -313,14 +313,10 @@ public class ConversationPageSteps {
 				 result.equals(name));
 	 }
 	 
-	 @When("^I wait till playback finishes$")
-	 public void WhenIWaitTillPlaybackFinishes() throws InterruptedException{
-		CommonSteps.senderPages.getConversationPage().waitForSoundcloudButtonState(OSXLocators.SOUNDCLOUD_BUTTON_STATE_PLAY, OSXLocators.SOUNDCLOUD_BUTTON_STATE_PAUSE);
-		String currentState = CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState();
-	    String wantedState = OSXLocators.SOUNDCLOUD_BUTTON_STATE_PLAY;
-		CommonSteps.senderPages.getConversationPage().waitForSoundcloudButtonState(currentState, wantedState);
-	    Thread.sleep(1000);
-	    currentState = CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState();
+	 @When("^I wait (.*) seconds till playback finishes$")
+	 public void WhenIWaitTillPlaybackFinishes(int time) throws InterruptedException{
+		Thread.sleep(time*1000);
+	    String currentState = CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState();
 	    Assert.assertEquals("Play", currentState); 
 	 }
 

@@ -358,12 +358,12 @@ Feature: Conversation
     And I tap SoundCloud link
     Then I see the embedded media is playing
     And I scroll media out of sight till media bar appears
-    And I wait till playback finishes
+    And I wait <time> seconds till playback finishes
     Then I see media bar disappears
 
     Examples: 
-      | Login   | Password    | Name    | Contact     | SoundCloudLink                                         |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/20sekunder/isakkkkkk-pcb-sesh-1 |
+      | Login   | Password    | Name    | Contact     | SoundCloudLink                                         | time |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/20sekunder/isakkkkkk-pcb-sesh-1 | 20	  |
 
   @regression @id378
   Scenario Outline: Media bar disappears when playing media is back in view

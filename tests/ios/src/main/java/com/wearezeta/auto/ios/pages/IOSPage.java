@@ -74,6 +74,7 @@ public abstract class IOSPage extends BasePage {
 		
 		capabilities.setCapability("app", path);
 		capabilities.setCapability("deviceName", "iPhone");
+		capabilities.setCapability("platformVersion", "8.0");
 		if (false == acceptAlerts) {
 			initWithoutAutoAccept();
 		}

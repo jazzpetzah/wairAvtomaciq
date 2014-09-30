@@ -38,7 +38,7 @@ public class ContactListPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idShowArchivedButton)
 	private WebElement showArchivedButton;
 
-	@FindBy(how = How.XPATH, using = OSXLocators.xpathShareContactsLaterButton)
+	@FindBy(how = How.ID, using = OSXLocators.idShareContactsLaterButton)
 	private List<WebElement> shareContactsLaterButton;
 	
 	public ContactListPage(String URL, String path) throws MalformedURLException {
@@ -169,7 +169,7 @@ public class ContactListPage extends OSXPage {
 			shareContactsLaterButton.get(0).click();
 		}
 
-		DriverUtils.waitUntilElementDissapear(driver, By.xpath(OSXLocators.xpathShareContactsLaterButton));
+		DriverUtils.waitUntilElementDissapear(driver, By.xpath(OSXLocators.idShareContactsLaterButton));
 	}
 	
 	public int numberOfContacts() {
