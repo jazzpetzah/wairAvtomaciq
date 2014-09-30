@@ -152,6 +152,8 @@ Feature: Conversation
     When I open conversation with <ChatName>
     And I open Conversation info
     And I leave conversation
+    And I go to archive
+    And I open conversation with <ChatName>
     Then I see message YOU LEFT in conversation
 
     Examples: 
