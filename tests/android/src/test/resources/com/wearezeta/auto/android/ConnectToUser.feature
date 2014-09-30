@@ -155,8 +155,7 @@ Feature: Connect to User
     And I tap on user name found on People picker page <Contact2>
     And I see connect to <Contact2> dialog
     And I Connect with contact by pressing button
-    Then I see Connect to <Contact2> Dialog page
-    And I navigate back from dialog page
+    Then I navigate back from dialog page
     And I see contact list loaded with User name <WaitingMess2>
 
     Examples: 
