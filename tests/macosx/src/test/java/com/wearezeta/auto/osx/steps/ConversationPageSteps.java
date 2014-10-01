@@ -294,7 +294,11 @@ public class ConversationPageSteps {
 	 }
 	 
 	 private void verifySoundCloudButtonState(String expectedState){
-		 Assert.assertEquals(expectedState, CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState());
+		 Assert.assertEquals(
+				 "SoundCloud button state "
+						 + CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState()
+						 + " differs from expected " + expectedState,
+				expectedState, CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState());
 	 }
 	 
 	 @When("^I press the media bar title$")

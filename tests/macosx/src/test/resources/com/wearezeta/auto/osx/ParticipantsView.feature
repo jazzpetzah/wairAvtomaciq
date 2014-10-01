@@ -186,6 +186,7 @@ Feature: Participants View
     And I see message YOU LEFT in conversation
     Then I am signing out
     And I Sign in using login <Contact1> and password <Password>
+    And I see Contact list with name <Contact1>
     And I open conversation with <NewName>
     And I see message <Name> LEFT in conversation
     And I open Conversation info
