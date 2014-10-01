@@ -31,7 +31,7 @@ public final class OSXLocators {
 	public static final String idToggleMenu = "ToggleMenu";
 	public static final String idMuteButton = "muteButton";
 	public static final String idArchiveButton = "archiveButton";
-	public static final String idShowArchivedButton = "showArchivedButton";
+	public static final String idShowArchivedButton = "openArchiveButton";
 	
 	public static final String nameSayHelloMenuItem = "Knock";
 	public static final String nameSignOutMenuItem = "Sign Out";
