@@ -167,9 +167,9 @@ public class ContactListPage extends OSXPage {
 	public void pressLaterButton() throws Exception {
 		if (shareContactsLaterButton.size() > 0) {
 			shareContactsLaterButton.get(0).click();
-		}
 
-		DriverUtils.waitUntilElementDissapear(driver, By.xpath(OSXLocators.idShareContactsLaterButton));
+			DriverUtils.waitUntilElementDissapear(driver, By.xpath(OSXLocators.idShareContactsLaterButton));
+		}
 	}
 	
 	public int numberOfContacts() {

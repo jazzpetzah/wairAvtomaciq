@@ -293,8 +293,18 @@ public class ConversationPageSteps {
 		 verifySoundCloudButtonState(OSXLocators.SOUNDCLOUD_BUTTON_STATE_PLAY);
 	 }
 	 
-	 private void verifySoundCloudButtonState(String expectedState){
-		 Assert.assertEquals(expectedState, CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState());
+	 private void verifySoundCloudButtonState(String expectedState) {
+		 String actualState = "";
+		 for (int i = 0; i < 3; i++) {
+		 	actualState = CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState();
+		 	if (actualState.equals(expectedState)) break;
+		 	try { Thread.sleep(1000); } catch (InterruptedException e) { }
+		 }
+		 Assert.assertEquals(
+				 "SoundCloud button state "
+						 + actualState
+						 + " differs from expected " + expectedState,
+				expectedState, actualState);
 	 }
 	 
 	 @When("^I press the media bar title$")
