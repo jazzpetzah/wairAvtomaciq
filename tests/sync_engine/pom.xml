@@ -17,9 +17,9 @@
     <driverTimeoutSeconds>10</driverTimeoutSeconds>
     <defaultEmail>smoketester.osx@wearezeta.com</defaultEmail>
     <pictureResultsPath>$CUCUMBER_REPORTS/Images</pictureResultsPath>
-    <acceptance.messages.count>2</acceptance.messages.count>
+    <acceptance.messages.count>20</acceptance.messages.count>
     <acceptance.sending.timeout.sec>5</acceptance.sending.timeout.sec>
-    <acceptance.max.send.interval.sec>2</acceptance.max.send.interval.sec>
+    <acceptance.max.send.interval.sec>-1</acceptance.max.send.interval.sec>
     <acceptance.parallel.mode>false</acceptance.parallel.mode>
     <acceptance.report.path>$CUCUMBER_REPORTS/SyncEngineReport.html</acceptance.report.path>
     <common.generate.users>true</common.generate.users>
