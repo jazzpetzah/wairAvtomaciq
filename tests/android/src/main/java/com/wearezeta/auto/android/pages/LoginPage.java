@@ -38,7 +38,7 @@ public class LoginPage extends AndroidPage {
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idContactListNames")
 	private WebElement contactListNames;
 
-	@FindBy(how = How.ID, using = "android:id/button2")
+	@FindBy(how = How.ID, using = AndroidLocators.CommonLocators.idDismissUpdateButton)
 	private WebElement dismissUpdateButton;
 	
 	private String login;
@@ -142,5 +142,9 @@ public class LoginPage extends AndroidPage {
 		} catch (NoSuchElementException e) {
 			
 		}
+	}
+	
+	public boolean isDismissUpdateVisible() {
+		return DriverUtils.waitUntilElementAppears(driver, By.id(AndroidLocators.CommonLocators.idDismissUpdateButton));
 	}
 }

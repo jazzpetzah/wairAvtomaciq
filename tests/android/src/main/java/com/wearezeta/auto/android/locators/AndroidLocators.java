@@ -107,6 +107,8 @@ public final class AndroidLocators {
 		public static final String idGalleryBtn = LOCATORS_PACKAGE + ":id/gtv__camera_control__pick_from_gallery";
 		
 		public static final String idSearchHintClose = LOCATORS_PACKAGE + ":id/zb__search_hint__close_button";
+		
+		public static final String idDismissUpdateButton = "android:id/button2";
 	}
 	
 	public static final class DialogPage {
