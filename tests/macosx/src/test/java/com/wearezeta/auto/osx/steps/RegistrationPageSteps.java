@@ -110,6 +110,7 @@ public class RegistrationPageSteps {
 				CommonUtils.getOsxAppiumUrlFromConfig(RegistrationPageSteps.class),
 				CommonUtils.getOsxApplicationPathFromConfig(RegistrationPageSteps.class)));
 		ContactListPageSteps clSteps = new ContactListPageSteps();
+		Assert.assertTrue(CommonSteps.senderPages.getContactListPage().waitUntilMainWindowAppears());
 		clSteps.GivenISeeContactListWithName(aqaName);
 	}
 	
