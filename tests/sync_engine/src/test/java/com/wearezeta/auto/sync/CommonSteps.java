@@ -115,7 +115,6 @@ public class CommonSteps {
 				ExecutionContext.androidZeta().setStartupTimeMs(endDate-startDate);
 				log.debug("Android application startup time: "
 						+ ExecutionContext.androidZeta().getStartupTimeMs() + "ms");
-				PagesCollection.loginPage.dismissUpdate();
 			}
 		}
 		// iOS initialization
