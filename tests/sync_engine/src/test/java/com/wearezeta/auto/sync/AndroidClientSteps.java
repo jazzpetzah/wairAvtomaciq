@@ -27,6 +27,9 @@ public class AndroidClientSteps {
 			}
 			password = SyncEngineUtil
 					.retrieveRealUserContactPasswordValue(password);
+			if (com.wearezeta.auto.android.pages.PagesCollection.loginPage.isDismissUpdateVisible()) {
+				com.wearezeta.auto.android.pages.PagesCollection.loginPage.dismissUpdate();
+			}
 			com.wearezeta.auto.android.LoginPageSteps androidLoginPageSteps = new com.wearezeta.auto.android.LoginPageSteps();
 			androidLoginPageSteps.GivenISignIn(login, password);
 			com.wearezeta.auto.android.ContactListPageSteps androidContactListPageSteps = new com.wearezeta.auto.android.ContactListPageSteps();
