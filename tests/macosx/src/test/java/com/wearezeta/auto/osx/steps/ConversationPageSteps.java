@@ -293,8 +293,18 @@ public class ConversationPageSteps {
 		 verifySoundCloudButtonState(OSXLocators.SOUNDCLOUD_BUTTON_STATE_PLAY);
 	 }
 	 
-	 private void verifySoundCloudButtonState(String expectedState){
-		 Assert.assertEquals(expectedState, CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState());
+	 private void verifySoundCloudButtonState(String expectedState) {
+		 String actualState = "";
+		 for (int i = 0; i < 3; i++) {
+		 	actualState = CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState();
+		 	if (actualState.equals(expectedState)) break;
+		 	try { Thread.sleep(1000); } catch (InterruptedException e) { }
+		 }
+		 Assert.assertEquals(
+				 "SoundCloud button state "
+						 + actualState
+						 + " differs from expected " + expectedState,
+				expectedState, actualState);
 	 }
 	 
 	 @When("^I press the media bar title$")
@@ -317,7 +327,9 @@ public class ConversationPageSteps {
 	 public void WhenIWaitTillPlaybackFinishes(int time) throws InterruptedException{
 		Thread.sleep(time*1000);
 	    String currentState = CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState();
-	    Assert.assertEquals("Play", currentState); 
+	    Assert.assertEquals(
+	    		"Current state \"" + currentState + "\" is not equal to expected \"Play\"",
+	    		"Play", currentState); 
 	 }
 
 	 @Then("^I see media bar disappears$")

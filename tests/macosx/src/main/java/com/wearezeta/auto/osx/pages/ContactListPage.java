@@ -49,6 +49,10 @@ public class ContactListPage extends OSXPage {
 		addConversationButton.click();
 	}
 	
+	public boolean waitUntilMainWindowAppears() {
+		return DriverUtils.waitUntilElementAppears(driver, By.xpath(OSXLocators.xpathMainWindow));
+	}
+	
 	public boolean isContactWithNameExists(String name) {
 		log.debug("Looking for contact with name '" + name + "'");
 		if (name.contains(",")) {
@@ -167,9 +171,9 @@ public class ContactListPage extends OSXPage {
 	public void pressLaterButton() throws Exception {
 		if (shareContactsLaterButton.size() > 0) {
 			shareContactsLaterButton.get(0).click();
-		}
 
-		DriverUtils.waitUntilElementDissapear(driver, By.xpath(OSXLocators.idShareContactsLaterButton));
+			DriverUtils.waitUntilElementDissapear(driver, By.xpath(OSXLocators.idShareContactsLaterButton));
+		}
 	}
 	
 	public int numberOfContacts() {

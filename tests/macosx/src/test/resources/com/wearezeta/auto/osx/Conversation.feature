@@ -297,10 +297,12 @@ Feature: Conversation
     And I see random message in conversation
     When I am signing out
     And I Sign in using login <Contact1> and password <Password>
+    And I see Contact list with name <Contact1>
     And I open conversation with <ChatName>
     Then I see random message in conversation
     And I am signing out
     And I Sign in using login <Contact2> and password <Password>
+    And I see Contact list with name <Contact2>
     And I open conversation with <ChatName>
     Then I see random message in conversation
 
@@ -318,10 +320,12 @@ Feature: Conversation
     And I see picture in conversation
     When I am signing out
     And I Sign in using login <Contact1> and password <Password>
+    And I see Contact list with name <Contact1>
     And I open conversation with <ChatName>
     Then I see picture in conversation
     And I am signing out
     And I Sign in using login <Contact2> and password <Password>
+    And I see Contact list with name <Contact2>
     And I open conversation with <ChatName>
     Then I see picture in conversation
 
@@ -339,10 +343,12 @@ Feature: Conversation
     And I see media link <SoundCloudLink> and media in dialog
     And I am signing out
     And I Sign in using login <Contact1> and password <Password>
+    And I see Contact list with name <Contact1>
     And I open conversation with <ChatName>
     Then I see media link <SoundCloudLink> and media in dialog
     And I am signing out
     And I Sign in using login <Contact2> and password <Password>
+    And I see Contact list with name <Contact2>
     And I open conversation with <ChatName>
     Then I see media link <SoundCloudLink> and media in dialog
 
@@ -365,7 +371,7 @@ Feature: Conversation
 
     Examples: 
       | Login   | Password    | Name    | Contact     | SoundCloudLink                                         | time |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/20sekunder/isakkkkkk-pcb-sesh-1 | 20	  |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/20sekunder/isakkkkkk-pcb-sesh-1 | 25	  |
 
   @regression @id378
   Scenario Outline: Media bar disappears when playing media is back in view
