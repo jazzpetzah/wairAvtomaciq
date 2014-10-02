@@ -209,9 +209,10 @@ public class CommonSteps {
 				if (!executor.awaitTermination(10, TimeUnit.MINUTES)) {
 					throw new Exception("Work was not finished in useful time.");
 				}
-				try {
-					Thread.sleep(ExecutionContext.iosZeta().getMessagesSendingInterval()*1000);
-				} catch (InterruptedException e) {
+				if (ExecutionContext.iosZeta().getMessagesSendingInterval() > 0) {
+					try {
+						Thread.sleep(ExecutionContext.iosZeta().getMessagesSendingInterval()*1000);
+					} catch (InterruptedException e) { }
 				}
 			}
 		}
@@ -240,11 +241,11 @@ public class CommonSteps {
 				if (!executor.awaitTermination(10, TimeUnit.MINUTES)) {
 					throw new Exception("Work was not finished in useful time.");
 				}
-				try {
-					Thread.sleep(ExecutionContext.osxZeta().getMessagesSendingInterval()*1000);
-				} catch (InterruptedException e) {
+				if (ExecutionContext.osxZeta().getMessagesSendingInterval() > 0) {
+					try {
+						Thread.sleep(ExecutionContext.osxZeta().getMessagesSendingInterval()*1000);
+					} catch (InterruptedException e) { }
 				}
-				
 			}
 		}
 		
@@ -272,11 +273,11 @@ public class CommonSteps {
 				if (!executor.awaitTermination(10, TimeUnit.MINUTES)) {
 					throw new Exception("Work was not finished in useful time.");
 				}
-				try {
-					Thread.sleep(ExecutionContext.androidZeta().getMessagesSendingInterval()*1000);
-				} catch (InterruptedException e) {
+				if (ExecutionContext.androidZeta().getMessagesSendingInterval() > 0) {
+					try {
+						Thread.sleep(ExecutionContext.androidZeta().getMessagesSendingInterval()*1000);
+					} catch (InterruptedException e) { }
 				}
-				
 			}
 		}
 	}
