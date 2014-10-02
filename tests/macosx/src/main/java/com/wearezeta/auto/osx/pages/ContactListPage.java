@@ -49,6 +49,10 @@ public class ContactListPage extends OSXPage {
 		addConversationButton.click();
 	}
 	
+	public boolean waitUntilMainWindowAppears() {
+		return DriverUtils.waitUntilElementAppears(driver, By.xpath(OSXLocators.xpathMainWindow));
+	}
+	
 	public boolean isContactWithNameExists(String name) {
 		log.debug("Looking for contact with name '" + name + "'");
 		if (name.contains(",")) {
