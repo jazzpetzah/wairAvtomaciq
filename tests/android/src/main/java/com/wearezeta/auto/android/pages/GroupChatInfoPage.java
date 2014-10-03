@@ -99,10 +99,9 @@ public class GroupChatInfoPage extends AndroidPage {
 		boolean flag = false;
 		refreshUITree();
 
-		for(WebElement user : linearLayout)
-		{
+		for(WebElement user : linearLayout) {
 			List<WebElement> elements = user.findElements(By.className(AndroidLocators.CommonLocators.classNameTextView));
-			for(WebElement element : elements){
+			for(WebElement element : elements) {
 				if(element.getText() != null && element.getText().equals((contactName.toUpperCase()))){
 					user.click();
 					flag = true;

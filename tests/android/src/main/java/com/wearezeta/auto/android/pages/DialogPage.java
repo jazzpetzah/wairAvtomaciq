@@ -78,6 +78,12 @@ public class DialogPage extends AndroidPage{
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idSearchHintClose")
 	private WebElement closeHintBtn;
 	
+	@FindBy(how = How.XPATH, using = AndroidLocators.DialogPage.xpathAddPicture)
+	private WebElement addPictureBtn;
+	
+	@FindBy(how = How.XPATH, using = AndroidLocators.DialogPage.xpathPing)
+	private WebElement pingBtn;
+	
 	private String url;
 	private String path;
 	private int initMessageCount;
@@ -97,48 +103,44 @@ public class DialogPage extends AndroidPage{
 		initMessageCount = messagesList.size();
 	}
 	
-	public void tapOnCursorInput()
-	{
+	public void tapOnCursorInput() {
 		cursorInput.click();
 	}
 	
-	public void multiTapOnCursorInput() throws InterruptedException
-	{
+	public void multiTapOnCursorInput() throws InterruptedException {
 		DriverUtils.androidMultiTap(driver, cursorInput, 2,0.2);
 	}
 	
-	public void SwipeOnCursorInput()
-	{
+	public void SwipeOnCursorInput() {
 		DriverUtils.swipeRight(driver, cursorInput, 1000);
 	}
 	
-	public void SwipeLeftOnCursorInput()
-	{
+	public void SwipeLeftOnCursorInput() {
 		DriverUtils.swipeLeft(driver, closeCursor, 1000);
 	}
 	
-	public void tapAddPictureBtn(int index)
-	{
-		WebElement el = driver.findElement(By.xpath(AndroidLocators.CommonLocators.classNameTextView));
-		el.click();
+	public void tapAddPictureBtn() {
+		
+		addPictureBtn.click();
 	}
 	
-	public void typeMessage(String message)
-	{
+	public void tapPingBtn() {
+
+		pingBtn.click();
+	}
+	
+	public void typeMessage(String message) {
 		cursorInput.sendKeys(message + "\\n"); 
 		DriverUtils.mobileTapByCoordinates(driver, backgroundOverlay);
 	}
 
-	public String getLastMessageFromDialog()
-
-	{
+	public String getLastMessageFromDialog() {
 		return messagesList.get(messagesList.size()-1).getText();
 	}
 	
 
 	@Override
-	public AndroidPage swipeUp(int time) throws Exception
-	{
+	public AndroidPage swipeUp(int time) throws Exception {
 		dialogsPagesSwipeUp(time);//TODO workaround
 		return returnBySwipe(SwipeDirection.UP);
 	}
@@ -169,20 +171,16 @@ public class DialogPage extends AndroidPage{
 		return page;
 	}
 
-	public void waitForMessage() throws InterruptedException
-	{
-		for(int i = 0; i < 10 ; i++)
-		{
-			if(initMessageCount < messagesList.size())
-			{
+	public void waitForMessage() throws InterruptedException {
+		for(int i = 0; i < 10 ; i++) {
+			if(initMessageCount < messagesList.size()) {
 				break;
 			}
 			Thread.sleep(200);
 		}
 	}
 	
-	public boolean isImageExists()
-	{
+	public boolean isImageExists() {
 		refreshUITree();//TODO workaround
 		return DriverUtils.waitUntilElementAppears(driver,By.id(AndroidLocators.DialogPage.idDialogImages));
 	}

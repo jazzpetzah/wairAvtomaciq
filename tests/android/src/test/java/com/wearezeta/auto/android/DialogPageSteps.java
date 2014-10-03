@@ -71,7 +71,12 @@ public class DialogPageSteps{
 
 	@When("^I press Add Picture button$")
 	public void WhenIPressAddPictureButton() throws Throwable {
-		PagesCollection.dialogPage.tapAddPictureBtn(0);
+		PagesCollection.dialogPage.tapAddPictureBtn();
+	}
+	
+	@When("^I press Ping button$")
+	public void WhenIPressPButton() throws Throwable {
+		PagesCollection.dialogPage.tapPingBtn();
 	}
 
 	@When("^I press \"(.*)\" button$")
