@@ -82,10 +82,15 @@ public class IOSKeyboard {
 		String messageChar = "";
 
 		for (int i = 0; i < message.length(); i++) {
-			KeyboardState currentState = getInitialState();
+			
 			char c = message.charAt(i);
 			messageChar = Character.toString(c);
-
+			
+			KeyboardState currentState = new KeyboardStateAlpha(driver);
+			if (!messageChar.equals("\n")) {
+				currentState = getInitialState();
+			}
+			
 			KeyboardState finalState = getFinalState(c);
 			if (currentState.getClass() != finalState.getClass()) {
 				currentState.switchTo(finalState);
