@@ -20,7 +20,8 @@ Feature: Conversation
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And I multi tap on text input
+    And I swipe on text input
+    And I press Ping button
     Then I see Hello-Hey message <Message1> in the dialog
 
     Examples: 

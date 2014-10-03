@@ -98,7 +98,7 @@ public final class AndroidLocators {
 		
 		public static final String classEditText = "android.widget.EditText";
 		
-		public static final String classNameTextView = "//android.support.v4.view.ViewPager[1]/android.widget.LinearLayout[1]/android.widget.TextView[1]";
+		public static final String classNameTextView = "//android.support.v4.view.ViewPager[1]/android.widget.LinearLayout[1]/android.widget.TextView";
 		
 		public static final String xpathImagesFrameLayout = "//android.widget.GridView[@resource-id='com.android.documentsui:id/grid']/android.widget.FrameLayout";
 		
@@ -114,6 +114,10 @@ public final class AndroidLocators {
 	public static final class DialogPage {
 		
 		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME + "$DialogPage";
+		
+		public static final String xpathAddPicture = "//android.support.v4.view.ViewPager[1]/android.widget.LinearLayout[1]/android.widget.TextView[1]";
+		
+		public static final String xpathPing = "//android.support.v4.view.ViewPager[1]/android.widget.LinearLayout[1]/android.widget.TextView[2]";
 		
 		public static final String idBackgroundOverlay = LOCATORS_PACKAGE + ":id/v_background_dark_overlay";
 		
