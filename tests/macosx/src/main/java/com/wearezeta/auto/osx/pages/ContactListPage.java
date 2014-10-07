@@ -41,6 +41,9 @@ public class ContactListPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idShareContactsLaterButton)
 	private List<WebElement> shareContactsLaterButton;
 	
+	@FindBy(how = How.ID, using = OSXLocators.idMainWindowMinimizeButton)
+	private WebElement minimizeWindowButton;
+	
 	public ContactListPage(String URL, String path) throws MalformedURLException {
 		super(URL, path);
 	}
@@ -51,6 +54,10 @@ public class ContactListPage extends OSXPage {
 	
 	public boolean waitUntilMainWindowAppears() {
 		return DriverUtils.waitUntilElementAppears(driver, By.xpath(OSXLocators.xpathMainWindow));
+	}
+	
+	public void minimizeZClient(){
+		minimizeWindowButton.click();
 	}
 	
 	public boolean isContactWithNameExists(String name) {
