@@ -24,6 +24,7 @@ public class IOSClientSteps {
 					log.debug(login);
 				}
 			}
+			log.debug("iOS: sign in using name " + name);
 			password = SyncEngineUtil
 					.retrieveRealUserContactPasswordValue(password);
 			com.wearezeta.auto.ios.LoginPageSteps iosLoginPageSteps = new com.wearezeta.auto.ios.LoginPageSteps();

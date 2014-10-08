@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
@@ -345,19 +346,18 @@ public class ConversationPage extends OSXPage {
 		}
 	}
 
+	private static final String UUID_TEXT_MESSAGE_PATTERN = "<AXGroup[^>]*>\\s*<AXStaticText[^>]*AXValue=\"([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\"[^>]*/>\\s*</AXGroup>";
 	public ArrayList<MessageEntry> listAllMessages() {
-		Pattern messagesPattern = Pattern
-				.compile("[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}");
-		ArrayList<MessageEntry> listResult = new ArrayList<MessageEntry>();
-		List<WebElement> messages = driver.findElements(By
-				.xpath(OSXLocators.xpathConversationTextMessageEntry));
+		long startDate = new Date().getTime();
 		Date receivedDate = new Date();
-		for (WebElement message : messages) {
-			String messageText = message.getText();
-			if (messagesPattern.matcher(messageText).matches()) {
-				listResult.add(new MessageEntry("text", messageText,
-						receivedDate));
-			}
+		String source = driver.getPageSource();
+		long endDate = new Date().getTime();
+		log.debug("Time to get page source: " + (endDate-startDate) + "ms");
+		ArrayList<MessageEntry> listResult = new ArrayList<MessageEntry>();
+		Pattern pattern = Pattern.compile(UUID_TEXT_MESSAGE_PATTERN);
+		Matcher matcher = pattern.matcher(source);
+		while (matcher.find()) {
+			listResult.add(new MessageEntry("text", matcher.group(1), receivedDate));
 		}
 		return listResult;
 	}

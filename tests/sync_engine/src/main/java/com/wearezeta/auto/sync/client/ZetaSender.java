@@ -48,7 +48,7 @@ public class ZetaSender extends Thread {
 			
 
 			String message = CommonUtils.generateGUID();
-			sendTextMessage("SyncEngineTest", message);
+			sendTextMessage(SyncEngineUtil.CHAT_NAME, message);
 			toSend--;
 			
 			if (parent.getMessagesSendingInterval() > 0) {
@@ -108,7 +108,18 @@ public class ZetaSender extends Thread {
 		com.wearezeta.auto.ios.DialogPageSteps steps = new com.wearezeta.auto.ios.DialogPageSteps();
 		com.wearezeta.auto.ios.pages.DialogPage page = com.wearezeta.auto.ios.pages.PagesCollection.dialogPage;
 		page.ScrollToLastMessage();
-		steps.ISendPredefinedMessage(message);
+		steps.ISendUsingScriptPredefinedMessage(message);
+	}
+	
+	public void sendAllMessagesIos(String messages[]) {
+		com.wearezeta.auto.ios.pages.DialogPage dialogPage = com.wearezeta.auto.ios.pages.PagesCollection.dialogPage;
+		Date sendDate = new Date();
+		dialogPage.sendMessagesUsingScript(messages);
+		for (int j = 0; j < messages.length; j++) {
+			MessageEntry entry = new MessageEntry("text", messages[j],
+				platform(),sendDate);
+			ExecutionContext.addNewSentTextMessage(entry);
+		}
 	}
 	
 	private void sendTextMessageBackend(String chat, String message) throws Exception {

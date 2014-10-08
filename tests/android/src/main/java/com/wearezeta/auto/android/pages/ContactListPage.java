@@ -72,6 +72,19 @@ public class ContactListPage extends AndroidPage {
 		return page;
 	}
 
+	public AndroidPage tapOnContactByPosition(List<WebElement> contacts, int id) throws Exception{
+		AndroidPage page = null;
+		refreshUITree();
+		contacts.get(id).click();
+		page = new DialogPage(url, path);
+		return page;
+	}
+	
+	public List<WebElement> GetVisibleContacts(){
+		refreshUITree();
+		return contactListNames;
+	}
+	
 	private WebElement findInContactList(String name, int cyclesNumber) {
 		WebElement contact = null;
 		refreshUITree();
