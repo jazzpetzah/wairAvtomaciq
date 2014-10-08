@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
@@ -24,7 +25,6 @@ import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.ios.locators.IOSLocators;
-import com.wearezeta.auto.ios.tools.IOSKeyboard;
 
 public class DialogPage extends IOSPage{
 	private static final Logger log = ZetaLogger.getLog(DialogPage.class.getSimpleName());
@@ -386,21 +386,19 @@ public class DialogPage extends IOSPage{
 		return page;
 	}
 	
+	public static final String UUID_TEXT_MESSAGE_PATTERN = "<UIATextView[^>]*value=\"([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\"[^>]*>\\s*</UIATextView>";
+	
 	public ArrayList<MessageEntry> listAllMessages() {
-		Pattern messagesPattern = Pattern.compile("[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}");
-		ArrayList<MessageEntry> listResult = new ArrayList<MessageEntry>();
-		List<WebElement> messages = driver.findElements(By.xpath(IOSLocators.xpathDialogTextMessage));
+		long startDate = new Date().getTime();
 		Date receivedDate = new Date();
-		for (WebElement message: messages) {
-			try {
-				String messageText = message.getAttribute("name");
-				if (messagesPattern.matcher(messageText).matches()) {
-					listResult.add(new MessageEntry("text", messageText, receivedDate));
-				}
-			} catch (ClassCastException e) {
-				log.debug(e.getMessage());
-				e.printStackTrace();
-			}
+		String source = driver.getPageSource();
+		long endDate = new Date().getTime();
+		System.out.println("Time to get page source: " + (endDate-startDate) + "ms");
+		ArrayList<MessageEntry> listResult = new ArrayList<MessageEntry>();
+		Pattern pattern = Pattern.compile(UUID_TEXT_MESSAGE_PATTERN);
+		Matcher matcher = pattern.matcher(source);
+		while (matcher.find()) {
+			listResult.add(new MessageEntry("text", matcher.group(1), receivedDate));
 		}
 		return listResult;
 	}
@@ -411,5 +409,23 @@ public class DialogPage extends IOSPage{
 			return new MessageEntry("text", message, new Date());
 		}
 		return null;
+	}
+	
+	public void sendMessageUsingScript(String message) { 
+		String script = String.format(
+				IOSLocators.scriptCursorInputPath + ".setValue(\"%s\");" +
+						IOSLocators.scriptKeyboardReturnKeyPath + ".tap();", message);
+		driver.executeScript(script);
+	}
+	
+	public void sendMessagesUsingScript(String[] messages) {
+		String script = "";
+		for (int i = 0; i < messages.length; i++) {
+			script +=
+					String.format(
+							IOSLocators.scriptCursorInputPath + ".setValue(\"%s\");" +
+									IOSLocators.scriptKeyboardReturnKeyPath + ".tap();", messages[i]);
+		}
+		driver.executeScript(script);
 	}
 }

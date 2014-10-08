@@ -367,5 +367,8 @@ public final class IOSLocators {
 	public static final String nameTutorialOKButton = "OK";
 	public static final String nameTutorialView = "ZClientNotificationWindow";
 	
+	//UIAutomation locators
+	public static final String scriptCursorInputPath = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textViews()[\"ConversationTextInputField\"]";
+	public static final String scriptKeyboardReturnKeyPath = "target.frontMostApp().keyboard().elements()[\"Return\"]";
 }
 

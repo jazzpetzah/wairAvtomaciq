@@ -245,6 +245,10 @@ public class ReportData {
 			averageAndroidReceiveTime = (androidSumReceiveTime / (double)androidReceivedMessages.size())/1000d;
 			averageOsxReceiveTime = (osxSumReceiveTime / (double)osxReceivedMessages.size())/1000d;
 			
+			averageIosReceiveTime = Math.round(averageIosReceiveTime*1000)/1000.0d;
+			averageAndroidReceiveTime = Math.round(averageAndroidReceiveTime*1000)/1000.0d;
+			averageOsxReceiveTime = Math.round(averageOsxReceiveTime*1000)/1000.0d;
+			
 			if (report.isIosReceiveTimeOK
 					&& report.isAndroidReceiveTimeOK
 					&& report.isOsxReceiveTimeOK) {

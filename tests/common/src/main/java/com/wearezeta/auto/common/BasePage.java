@@ -110,6 +110,10 @@ public abstract class BasePage {
 		}
 	}
 
+	public String getPageSource() {
+		return drivers.get(pagePlatform).getPageSource();
+	}
+	
 	public static ZetaDriver getDriver(String id) {
 		return drivers.get(id);
 	}

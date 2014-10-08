@@ -56,7 +56,10 @@ public class PersonalInfoPage extends IOSPage{
 	}
 	
 	public boolean isSettingsButtonVisible() {
-		return DriverUtils.isElementDisplayed(settingsButton);
+		DriverUtils.setImplicitWaitValue(driver, 3);
+		boolean result = DriverUtils.isElementDisplayed(settingsButton);
+		DriverUtils.setDefaultImplicitWait(driver);
+		return result;
 	}
 	
 	public PersonalInfoPage clickOnSettingsButton(){

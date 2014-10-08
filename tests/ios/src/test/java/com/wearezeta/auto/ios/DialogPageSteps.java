@@ -332,6 +332,12 @@ public class DialogPageSteps {
 	    PagesCollection.dialogPage.sendStringToInput(message + "\n");
 	}
 	
+	@When("^I send using script predefined message (.*)$")
+	public void ISendUsingScriptPredefinedMessage(String message) throws Throwable {
+	    PagesCollection.dialogPage.sendMessageUsingScript(message);
+	    PagesCollection.dialogPage.inputStringFromKeyboard("\n");
+	}
+	
 	@When("I verify image in dialog is same as template (.*)")
 	public void IVerifyImageInDialogSameAsTemplate(String filename) throws Throwable{
 		BufferedImage templateImage  = PagesCollection.dialogPage.takeImageScreenshot();
