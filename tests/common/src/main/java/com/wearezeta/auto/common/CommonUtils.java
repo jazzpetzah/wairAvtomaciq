@@ -1,9 +1,9 @@
 package com.wearezeta.auto.common;
 
-import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -19,6 +19,8 @@ import javax.ws.rs.core.UriBuilderException;
 
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.log4j.Logger;
+import org.eclipse.jetty.util.log.Log;
 import org.json.JSONException;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
@@ -26,10 +28,13 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaDriver;
+import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class CommonUtils {
 	public static final String OS_NAME_WINDOWS = "Windows";
 	public static final int USERS_COUNT = 10;
+	public static final String PERFORMANCE_USER = "perfUser";
+	public static final String PERFORMANCE_PASS = "perfPass";
 	public static final String YOUR_USER_1 = "aqaUser";
 	public static final String YOUR_USER_2 = "yourUser";
 	public static final String YOUR_USER_3 = "yourContact";
@@ -49,8 +54,11 @@ public class CommonUtils {
 	public static final String CONTACT_5 = "aqaAvatar TestContact";
 	public static final String CONTACT_6 = "aqaBlock";
 	public static final int USERS_CREATION_TIMEOUT = 60 * 5; // seconds
+	public static ClientUser perfUser = new ClientUser();
 	public static List<ClientUser> yourUsers = new CopyOnWriteArrayList<ClientUser>();
 	public static List<ClientUser> contacts = new CopyOnWriteArrayList<ClientUser>();
+	public static List<ClientUser> additionalUsers = new CopyOnWriteArrayList<ClientUser>();
+	public static List<ConvPair> user_chats = new CopyOnWriteArrayList<ConvPair>();
 	public static final int MAX_PARALLEL_USER_CREATION_TASKS = 5;
 
 	public static final String CONTACT_PICTURE_NAME = "aqaPictureContact";
@@ -69,6 +77,7 @@ public class CommonUtils {
 	public static final String PLATFORM_NAME_OSX = "Mac";
 	public static final String PLATFORM_NAME_ANDROID = "Android";
 	public static final String PLATFORM_NAME_IOS = "iOS";
+	private static final Logger log = ZetaLogger.getLog(BackEndREST.class.getSimpleName());
 	
 	public static String getOsName() {
 		return System.getProperty("os.name");
@@ -96,43 +105,55 @@ public class CommonUtils {
 
 	public static String retrieveRealUserContactPasswordValue(String value) {
 		// TODO: This method requires better optimization
-		Map<String, String> replacementMap = new LinkedHashMap<String, String>();
-		if (yourUsers.size() > 0) {
-			replacementMap.put(YOUR_USER_1, yourUsers.get(0).getName());
-			replacementMap.put(YOUR_USER_2, yourUsers.get(1).getName());
-			replacementMap.put(YOUR_USER_3, yourUsers.get(2).getName());
-			replacementMap.put(YOUR_USER_4, yourUsers.get(3).getName());
-			replacementMap.put(YOUR_USER_5, yourUsers.get(4).getName());
-			replacementMap.put(YOUR_USER_6, yourUsers.get(5).getName());
-			replacementMap.put(YOUR_USER_7, yourUsers.get(6).getName());
-			replacementMap.put(YOUR_USER_8, yourUsers.get(7).getName());
-			replacementMap.put(YOUR_USER_9, yourUsers.get(8).getName());
-			replacementMap.put(YOUR_USER_10, yourUsers.get(9).getName());
-			replacementMap.put(YOUR_PASS, yourUsers.get(0).getPassword());
-		}
-		if (contacts.size() > 0) {
-			replacementMap.put(CONTACT_1, contacts.get(0).getName());
-			replacementMap.put(CONTACT_2, contacts.get(1).getName());
-			replacementMap.put(CONTACT_3, contacts.get(2).getName());
-			replacementMap.put(CONTACT_4, CONTACT_PICTURE_NAME);
-			replacementMap.put(CONTACT_5, CONTACT_AVATAR_NAME);
-			replacementMap.put(CONTACT_6, contacts.get(3).getName());
-		}
-		// TODO: Magic strings 
-		replacementMap.put("aqaPictureContactEmail", CONTACT_PICTURE_EMAIL);
-		replacementMap.put("aqaPictureContactPassword",
-				CONTACT_PICTURE_PASSWORD);
-		replacementMap.put("aqaAvatarTestContactEmail", CONTACT_AVATAR_EMAIL);
-		replacementMap.put("aqaAvatarTestContactPassword",
-				CONTACT_AVATAR_PASSWORD);
-
-		String result = value;
-		for (Entry<String, String> replacementEntry : replacementMap.entrySet()) {
-			if (result.contains(replacementEntry.getKey())) {
-				// TODO: Should we continue replacements or we can return entry.value immediately?
-				result = result.replace(replacementEntry.getKey(),
-						replacementEntry.getValue());
+		String result;
+		if (value.toLowerCase().equals(
+				CommonUtils.PERFORMANCE_USER.toLowerCase())) {
+			result = perfUser.getName();
+		} else if (value.equals(CommonUtils.PERFORMANCE_PASS)) {
+			result = perfUser.getPassword();
+		} else {
+			Map<String, String> replacementMap = new LinkedHashMap<String, String>();
+			if (yourUsers.size() > 0) {
+				replacementMap.put(YOUR_USER_1, yourUsers.get(0).getName());
+				replacementMap.put(YOUR_USER_2, yourUsers.get(1).getName());
+				replacementMap.put(YOUR_USER_3, yourUsers.get(2).getName());
+				replacementMap.put(YOUR_USER_4, yourUsers.get(3).getName());
+				replacementMap.put(YOUR_USER_5, yourUsers.get(4).getName());
+				replacementMap.put(YOUR_USER_6, yourUsers.get(5).getName());
+				replacementMap.put(YOUR_USER_7, yourUsers.get(6).getName());
+				replacementMap.put(YOUR_USER_8, yourUsers.get(7).getName());
+				replacementMap.put(YOUR_USER_9, yourUsers.get(8).getName());
+				replacementMap.put(YOUR_USER_10, yourUsers.get(9).getName());
+				replacementMap.put(YOUR_PASS, yourUsers.get(0).getPassword());
 			}
+			if (contacts.size() > 0) {
+				replacementMap.put(CONTACT_1, contacts.get(0).getName());
+				replacementMap.put(CONTACT_2, contacts.get(1).getName());
+				replacementMap.put(CONTACT_3, contacts.get(2).getName());
+				replacementMap.put(CONTACT_4, CONTACT_PICTURE_NAME);
+				replacementMap.put(CONTACT_5, CONTACT_AVATAR_NAME);
+				replacementMap.put(CONTACT_6, contacts.get(3).getName());
+			}
+			// TODO: Magic strings
+			replacementMap.put("aqaPictureContactEmail", CONTACT_PICTURE_EMAIL);
+			replacementMap.put("aqaPictureContactPassword",
+					CONTACT_PICTURE_PASSWORD);
+			replacementMap.put("aqaAvatarTestContactEmail",
+					CONTACT_AVATAR_EMAIL);
+			replacementMap.put("aqaAvatarTestContactPassword",
+					CONTACT_AVATAR_PASSWORD);
+
+			result = value;
+			for (Entry<String, String> replacementEntry : replacementMap
+					.entrySet()) {
+				if (result.contains(replacementEntry.getKey())) {
+					// TODO: Should we continue replacements or we can return
+					// entry.value immediately?
+					result = result.replace(replacementEntry.getKey(),
+							replacementEntry.getValue());
+				}
+			}
+
 		}
 		return result;
 	}
@@ -210,18 +231,21 @@ public class CommonUtils {
 		return getValueFromCommonConfig(c, "defaultBackEndUrl");
 	}
 
-	public static String getOsxAppiumUrlFromConfig(Class<?> c) throws IOException {
+	public static String getOsxAppiumUrlFromConfig(Class<?> c)
+			throws IOException {
 		return getValueFromConfig(c, "osxAppiumUrl");
 	}
 
-	public static String getAndroidAppiumUrlFromConfig(Class<?> c) throws IOException {
+	public static String getAndroidAppiumUrlFromConfig(Class<?> c)
+			throws IOException {
 		return getValueFromConfig(c, "androidAppiumUrl");
 	}
-	
-	public static String getIosAppiumUrlFromConfig(Class<?> c) throws IOException {
+
+	public static String getIosAppiumUrlFromConfig(Class<?> c)
+			throws IOException {
 		return getValueFromConfig(c, "iosAppiumUrl");
 	}
-	
+
 	public static Boolean getIsSimulatorFromConfig(Class<?> c)
 			throws IOException {
 		return (getValueFromConfig(c, "isSimulator").equals("true"));
@@ -231,18 +255,21 @@ public class CommonUtils {
 		return getValueFromConfig(c, "swipeScriptPath");
 	}
 
-	public static String getOsxApplicationPathFromConfig(Class<?> c) throws IOException {
+	public static String getOsxApplicationPathFromConfig(Class<?> c)
+			throws IOException {
 		return getValueFromConfig(c, "osxApplicationPath");
 	}
 
-	public static String getAndroidApplicationPathFromConfig(Class<?> c) throws IOException {
+	public static String getAndroidApplicationPathFromConfig(Class<?> c)
+			throws IOException {
 		return getValueFromConfig(c, "androidApplicationPath");
 	}
-	
-	public static String getIosApplicationPathFromConfig(Class<?> c) throws IOException {
+
+	public static String getIosApplicationPathFromConfig(Class<?> c)
+			throws IOException {
 		return getValueFromConfig(c, "iosApplicationPath");
 	}
-	
+
 	public static String getAndroidActivityFromConfig(Class<?> c)
 			throws IOException {
 		return getValueFromConfig(c, "activity");
@@ -274,14 +301,15 @@ public class CommonUtils {
 	public static String generateGUID() {
 		return UUID.randomUUID().toString();
 	}
-	
-	public static String generateRandomString(int lengh){
+
+	public static String generateRandomString(int lengh) {
 		return RandomStringUtils.randomAlphanumeric(lengh);
 	}
 
 	public static BufferedImage getElementScreenshot(WebElement element,
 			RemoteWebDriver driver) throws IOException {
-		BufferedImage screenshot = DriverUtils.takeScreenshot((ZetaDriver) driver);
+		BufferedImage screenshot = DriverUtils
+				.takeScreenshot((ZetaDriver) driver);
 		org.openqa.selenium.Point elementLocation = element.getLocation();
 		Dimension elementSize = element.getSize();
 		return screenshot.getSubimage(elementLocation.x * 2,
@@ -360,6 +388,117 @@ public class CommonUtils {
 		generateAdditionalContacts();
 	}
 
+	public static void generateNUsers(int usersNum) {
+		ExecutorService executor = Executors
+				.newFixedThreadPool(MAX_PARALLEL_USER_CREATION_TASKS);
+		for (int i = 0; i < usersNum; i++) {
+			Runnable worker = new Thread(new Runnable() {
+				public void run() {
+					try {
+						String email = CreateZetaUser
+								.registerUserAndReturnMail();
+						if (email == null)
+							return;
+						ClientUser user = new ClientUser();
+						user.setEmail(email);
+						user.setPassword(CommonUtils
+								.getDefaultPasswordFromConfig(CommonUtils.class));
+						additionalUsers.add(user);
+
+					} catch (Exception e) {
+						log.debug("error" + e.getMessage());
+					}
+				}
+			});
+			executor.submit(worker);
+		}
+		executor.shutdown();
+		try {
+			executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+		} catch (InterruptedException e) {
+			log.debug(e.getMessage());
+		}
+	}
+
+	public static void sendConnectionRequestInThreads(final ClientUser yourUser)
+			throws IllegalArgumentException, UriBuilderException, IOException,
+			JSONException, BackendRequestException, InterruptedException {
+		ExecutorService executor = Executors
+				.newFixedThreadPool(MAX_PARALLEL_USER_CREATION_TASKS);
+		for (int i = 0; i < additionalUsers.size(); i++) {
+			final ClientUser user = additionalUsers.get(i);
+			Runnable worker = new Thread(new Runnable() {
+				public void run() {
+					try {
+						BackEndREST.autoTestSendRequest(user, yourUser);
+						ConvPair pair = new ConvPair();
+						pair.setContact(user);
+						pair.setConvName(yourUser.getName());
+						user_chats.add(pair);
+					} catch (Exception e) {
+						log.debug(e.getMessage());
+					}
+				}
+			});
+			executor.submit(worker);
+		}
+		executor.shutdown();
+		try {
+			executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+		} catch (InterruptedException e) {
+			log.debug(e.getMessage());
+		}
+	}
+
+	public static void sendRandomMessagesToUser(int messCount) {
+		Random random = new Random();
+		if (messCount > user_chats.size()) {
+			messCount = user_chats.size();
+		}
+		ExecutorService executor = Executors
+				.newFixedThreadPool(MAX_PARALLEL_USER_CREATION_TASKS);
+		for (int i = 0; i < messCount; i++) {
+			ConvPair pair = user_chats
+					.get(random.nextInt(user_chats.size() - 1));
+			final ClientUser user = pair.getContact();
+			final String contact = pair.getConvName();
+			Runnable worker = new Thread(new Runnable() {
+				public void run() {
+					try {
+						BackEndREST.sendDialogMessageByChatName(user, contact,
+								CommonUtils.generateGUID());
+					} catch (Throwable e) {
+						log.debug(e.getMessage());
+					}
+				}
+			});
+			executor.submit(worker);
+		}
+		executor.shutdown();
+		try {
+			executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+		} catch (InterruptedException e) {
+			log.debug(e.getMessage());
+		}
+	}
+
+	public static void sendDefaultImageToUser(int imagesCount) throws Throwable {
+		InputStream configFileStream = null;
+		Random random = new Random();
+		configFileStream = new FileInputStream(getImagePath(CommonUtils.class));
+		for (int i = 0; i < imagesCount; i++) {
+			ConvPair pair = user_chats
+					.get(random.nextInt(user_chats.size() - 1));
+			final ClientUser user = pair.getContact();
+			final String contact = pair.getConvName();
+			BackEndREST.sendPictureToChatByName(user, contact, "default",
+					configFileStream);
+		}
+		if (configFileStream != null) {
+			configFileStream.close();
+		}
+	}
+
 	public static void usePrecreatedUsers() {
 		// TODO: maybe these constants are global?
 		final String DEFAULT_PASSWORD = "aqa123456";
@@ -391,12 +530,26 @@ public class CommonUtils {
 			throws IOException {
 		return getValueFromConfig(c, "deviceName");
 	}
-	
-	public static void putStringToClipboard(String data){
+
+	public static void putStringToClipboard(String data) {
 		StringSelection stringSelection;
 		stringSelection = new StringSelection(data);
 		Clipboard clipboard = new Clipboard("iOS simulator clipboard");
 		clipboard.setContents(stringSelection, stringSelection);
+	}
+
+	public static void generatePerformanceUser()
+			throws IllegalArgumentException, UriBuilderException, IOException,
+			MessagingException, JSONException, BackendRequestException,
+			InterruptedException {
+		String email = CreateZetaUser.registerUserAndReturnMail();
+		if (email == null)
+			return;
+		perfUser.setEmail(email);
+		perfUser.setPassword(getDefaultPasswordFromConfig(CommonUtils.class));
+		perfUser = BackEndREST.loginByUser(perfUser);
+		perfUser = BackEndREST.getUserInfo(perfUser);
+		yourUsers.add(perfUser);
 	}
 
 }
