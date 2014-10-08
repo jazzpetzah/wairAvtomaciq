@@ -38,7 +38,7 @@ public class PeoplePickerPage extends OSXPage {
 	public WebElement findSearchField() {
 		List<WebElement> textAreaCandidates = driver.findElements(By.className("AXTextArea"));
     	for (WebElement textArea: textAreaCandidates) {
-    		if (textArea.getAttribute("AXIdentifier").equals("people_picker_searchfield")) {
+    		if (textArea.getAttribute("AXIdentifier").equals(OSXLocators.idPeoplePickerSearchField)) {
     			return textArea;
     		}
     	}
@@ -139,7 +139,8 @@ public class PeoplePickerPage extends OSXPage {
 	}
 	
 	public boolean isPeoplePickerPageVisible() throws InterruptedException, IOException {
-		if (findSearchField() == null) {
+		cancelButton = findCancelButton();
+		if (cancelButton == null) {
 			return false;
 		} else {
 			return true;
@@ -147,7 +148,8 @@ public class PeoplePickerPage extends OSXPage {
 	}
 	
 	public void closePeoplePicker() {
-		findCancelButton().click();
+		if(cancelButton != null) cancelButton.click();
+		else findCancelButton().click();
 	}
 	
 	public void selectUserInSearchResults(String user) {

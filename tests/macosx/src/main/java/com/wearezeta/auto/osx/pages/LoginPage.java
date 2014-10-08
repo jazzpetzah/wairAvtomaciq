@@ -3,6 +3,7 @@ package com.wearezeta.auto.osx.pages;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.NoSuchWindowException;
@@ -12,9 +13,11 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class LoginPage extends OSXPage {
+	private static final Logger log = ZetaLogger.getLog(LoginPage.class.getSimpleName());
 	
 	@FindBy(how = How.ID, using = OSXLocators.idLoginPage)
 	private WebElement viewPager;
@@ -153,7 +156,7 @@ public class LoginPage extends OSXPage {
 		} catch (NoSuchElementException e) {
 		} finally {
 			if (isProblemReported) {
-				System.out.println("ZClient were crashed on previous run.");
+				log.debug("ZClient were crashed on previous run.");
 			}
 			DriverUtils.setDefaultImplicitWait(driver);
 		}
