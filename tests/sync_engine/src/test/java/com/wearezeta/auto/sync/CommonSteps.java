@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
+import org.openqa.selenium.NoSuchElementException;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.common.BackEndREST;
@@ -172,7 +173,7 @@ public class CommonSteps {
 					long startDate = new Date().getTime();
 					try {
 						com.wearezeta.auto.ios.pages.PagesCollection.loginPage = new com.wearezeta.auto.ios.pages.LoginPage(
-								iosAppiumPath, iosPath);
+								iosAppiumPath, iosPath, false);
 					} catch (MalformedURLException e) {
 					}
 					long endDate = new Date().getTime();
@@ -183,6 +184,12 @@ public class CommonSteps {
 							+ "ms");
 					ZetaFormatter.setDriver(com.wearezeta.auto.ios.pages.PagesCollection.loginPage
 							.getDriver());
+					
+					try {
+						com.wearezeta.auto.ios.pages.PagesCollection.loginPage.ignoreUpdate();
+					} catch (NoSuchElementException e) {
+						log.debug("No update notification.");
+					}
 				}
 			}
 		});

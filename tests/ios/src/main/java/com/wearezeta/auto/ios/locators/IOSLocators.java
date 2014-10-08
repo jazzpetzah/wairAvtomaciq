@@ -18,6 +18,8 @@ public final class IOSLocators {
 	
 	public static final String nameWrongCredentialsNotification = "WRONG ADDRESS OR PASSWORD. PLEASE TRY AGAIN.";
 	
+	public static final String nameIgnoreUpdateButton = "Ignore";
+
 	public static final String nameTermsPrivacyLinks = "TermsPrivacyTextView"; 
 	
 	public static final String nameTermsPrivacyCloseButton = "WebViewCloseButton";

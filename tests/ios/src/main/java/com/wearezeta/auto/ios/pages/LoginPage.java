@@ -60,6 +60,9 @@ public class LoginPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameWrongCredentialsNotification)
 	private WebElement wrongCredentialsNotification;
 	
+	@FindBy(how = How.NAME, using = IOSLocators.nameIgnoreUpdateButton)
+	private WebElement ignoreUpdateButton;
+	
 	private String login;
 	
 	private String password;
@@ -213,4 +216,7 @@ public class LoginPage extends IOSPage {
 		return (ExpectedConditions.visibilityOf(wrongCredentialsNotification) != null);
 	}
 
+	public void ignoreUpdate() {
+		ignoreUpdateButton.click();
+	}
 }

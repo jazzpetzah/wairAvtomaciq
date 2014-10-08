@@ -393,7 +393,7 @@ public class DialogPage extends IOSPage{
 		Date receivedDate = new Date();
 		String source = driver.getPageSource();
 		long endDate = new Date().getTime();
-		System.out.println("Time to get page source: " + (endDate-startDate) + "ms");
+		log.debug("Time to get page source: " + (endDate-startDate) + "ms");
 		ArrayList<MessageEntry> listResult = new ArrayList<MessageEntry>();
 		Pattern pattern = Pattern.compile(UUID_TEXT_MESSAGE_PATTERN);
 		Matcher matcher = pattern.matcher(source);
