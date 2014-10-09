@@ -57,8 +57,16 @@ public class ContactListPage extends AndroidPage {
 
 	public AndroidPage tapOnName(String name) throws Exception {
 		AndroidPage page = null;
-		findInContactList(name, 5).click();
+		WebElement el = findInContactList(name, 5);
+		driver.tap(1, el, 1);
+		refreshUITree();
 		DriverUtils.setImplicitWaitValue(driver, 5);
+		
+		el = findInContactList(name, 0);
+		if (null != el && DriverUtils.isElementDisplayed(el)) {
+			driver.tap(1, el, 1);
+		}
+		
 		if(connectToHeader.size() > 0 && connectToHeader.get(0).isDisplayed()){
 			page = new ConnectToPage(url, path);
 		}
