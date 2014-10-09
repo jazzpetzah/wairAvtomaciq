@@ -1,11 +1,16 @@
 package com.wearezeta.auto.osx.steps;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.ws.rs.core.UriBuilderException;
+
 import org.apache.log4j.Logger;
+import org.json.JSONException;
 
 import com.wearezeta.auto.common.BackEndREST;
+import com.wearezeta.auto.common.BackendRequestException;
 import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.CreateZetaUser;
@@ -92,6 +97,25 @@ public class CommonSteps {
 		}
 		BackEndREST.createGroupConversation(CommonUtils.yourUsers.get(0),
 				chatContacts, chatName);
+	}
+	
+	@Given("^Generate (\\d+) and connect to (.*) contacts$")
+	public void GivenGenerateAndConnectAdditionalUsers(int usersNum,
+			String userName) throws IllegalArgumentException,
+			UriBuilderException, IOException, JSONException,
+			BackendRequestException, InterruptedException {
+		ClientUser yourUser = null;
+		userName = CommonUtils.retrieveRealUserContactPasswordValue(userName);
+		for (ClientUser user : CommonUtils.yourUsers) {
+			if (user.getName().toLowerCase().equals(userName.toLowerCase())) {
+				yourUser = user;
+				break;
+			}
+		}
+		CommonUtils.generateNUsers(usersNum);
+		CommonUtils.sendConnectionRequestInThreads(yourUser);
+		yourUser = BackEndREST.loginByUser(yourUser);
+		BackEndREST.acceptAllConnections(yourUser);
 	}
 
 }

@@ -1,11 +1,12 @@
 Feature: Performance
  @torun
  Scenario Outline: Normal usage performance testing
- 	Given I Sign in using login <Login> and password <Password>
- 	And I see Contact list with name <Name>
- 	And Start testing cycle
+    Given Generate <UsersNumber> and connect to <Login> contacts
+ 	And I Sign in using login <Login> and password <Password>
+ 	And I see Contact list with name <Login>
+ 	And I <Login> start testing cycle for <Time> minutes
  	
  	
  	Examples: 
-      | Login   | Password    | Name    | Contact     | Count  |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | 3	   |
+      | Login    | Password    | UsersNumber | Time  |
+      | aqaUser  | aqaPassword | 10          | 60    |
