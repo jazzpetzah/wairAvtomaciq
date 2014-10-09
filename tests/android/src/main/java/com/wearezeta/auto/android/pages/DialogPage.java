@@ -33,6 +33,10 @@ public class DialogPage extends AndroidPage{
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMessage")
 	private List<WebElement> messagesList;
 	
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idCursorFrame")
+	private WebElement cursurFrame;
+	
+	
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idKnockIcon")
 	private WebElement knockIcon;
 	
@@ -107,6 +111,9 @@ public class DialogPage extends AndroidPage{
 		cursorInput.click();
 	}
 	
+	public void tapOnCursorFrame() {
+		cursurFrame.click();
+	}
 	public void multiTapOnCursorInput() throws InterruptedException {
 		DriverUtils.androidMultiTap(driver, cursorInput, 2,0.2);
 	}
@@ -120,7 +127,7 @@ public class DialogPage extends AndroidPage{
 	}
 	
 	public void tapAddPictureBtn() {
-		
+		refreshUITree();
 		addPictureBtn.click();
 	}
 	
@@ -130,6 +137,7 @@ public class DialogPage extends AndroidPage{
 	}
 	
 	public void typeMessage(String message) {
+		refreshUITree();
 		cursorInput.sendKeys(message + "\\n"); 
 		DriverUtils.mobileTapByCoordinates(driver, backgroundOverlay);
 	}
@@ -250,7 +258,15 @@ public class DialogPage extends AndroidPage{
 		galleryBtn.click();
 		
 	}
-	
+	public void sendFrontCameraImage() throws InterruptedException{
+		SwipeOnCursorInput();
+		tapAddPictureBtn();
+		changeCamera();
+		Thread.sleep(1000);
+		takePhoto();
+		Thread.sleep(1000);
+		confirm();
+	}
 	public boolean dialogImageCompare() throws IOException
 	{
 		boolean flag = false;
