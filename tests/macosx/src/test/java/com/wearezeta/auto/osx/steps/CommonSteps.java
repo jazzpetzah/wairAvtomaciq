@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.mail.MessagingException;
 import javax.ws.rs.core.UriBuilderException;
 
 import org.apache.log4j.Logger;
@@ -38,6 +39,19 @@ public class CommonSteps {
 	
 	private static boolean isFirstRun = true;
 	private static boolean isFirstRunPassed = false;
+	
+	@Before("@performance")
+	public void setUpPerformance() throws Exception, UriBuilderException, IOException, MessagingException, JSONException, BackendRequestException, InterruptedException{
+		CommonUtils.generatePerformanceUser();
+		
+		String path = CommonUtils.getOsxApplicationPathFromConfig(CommonSteps.class);
+		senderPages = new PagesCollection();
+		
+		senderPages.setMainMenuPage(new MainMenuPage(CommonUtils.getOsxAppiumUrlFromConfig(CommonSteps.class), path));
+		senderPages.setLoginPage(new LoginPage(CommonUtils.getOsxAppiumUrlFromConfig(CommonSteps.class), path));
+		ZetaFormatter.setDriver(senderPages.getLoginPage().getDriver());
+		senderPages.getLoginPage().sendProblemReportIfFound();
+	}
 	
 	@Before
 	public void setUp() throws Exception {
