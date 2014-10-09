@@ -60,6 +60,11 @@ public class ContactListPage extends OSXPage {
 		minimizeWindowButton.click();
 	}
 	
+	public void restoreZClient() throws InterruptedException{
+		driver.runAppInBackground(10);
+		Thread.sleep(1000);
+	}
+	
 	public boolean isContactWithNameExists(String name) {
 		log.debug("Looking for contact with name '" + name + "'");
 		if (name.contains(",")) {

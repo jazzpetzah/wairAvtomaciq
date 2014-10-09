@@ -1,5 +1,5 @@
 Feature: Performance
- @torun @performance
+ @performance
  Scenario Outline: Normal usage performance testing
     Given Generate <UsersNumber> and connect to <Login> contacts
  	And I Sign in using login <Login> and password <Password>
@@ -9,4 +9,4 @@ Feature: Performance
  	
  	Examples: 
       | Login     | Password | UsersNumber | Time  |
-      | perfUser  | perfPass | 10          | 60    |
+      | perfUser  | perfPass | 10          | 5    |

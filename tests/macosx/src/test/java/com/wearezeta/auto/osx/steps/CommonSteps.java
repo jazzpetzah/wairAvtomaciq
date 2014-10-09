@@ -53,10 +53,10 @@ public class CommonSteps {
 		senderPages.getLoginPage().sendProblemReportIfFound();
 	}
 	
-	@Before
+	@Before("~@performance")
 	public void setUp() throws Exception {
 		boolean generateUsersFlag = Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class));
-	
+		
 		if (isFirstRun) {
 			isFirstRun = false;
 			if (generateUsersFlag) {

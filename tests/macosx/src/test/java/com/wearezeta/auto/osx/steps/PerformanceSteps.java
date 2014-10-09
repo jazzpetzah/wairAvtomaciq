@@ -3,6 +3,7 @@ package com.wearezeta.auto.osx.steps;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Random;
+import java.time.LocalDateTime;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ZetaFormatter;
@@ -16,9 +17,11 @@ public class PerformanceSteps {
 	
 	private static final int MIN_WAIT_VALUE_IN_MIN = 1;
 	private static final int MAX_WAIT_VALUE_IN_MIN = 5;
+	private static final int BACK_END_MESSAGE_COUNT = 5;
 	
 	@When("Start testing cycle")
 	 public void StartTestingCycle() throws Exception{	
+		
 		ScrollAndReadConversationForTimes(5);
 		MinimizeZClient();
 		SetRandomSleepInterval();
@@ -27,10 +30,25 @@ public class PerformanceSteps {
 	
 	@When("^I (.*) start testing cycle for (\\d+) minutes$")
 	public void WhenIStartTestingCycleForMinutes(String user, int time) throws Throwable {
-		ScrollAndReadConversationForTimes(5);
-		MinimizeZClient();
-		SetRandomSleepInterval();
-		RestoreZClient();
+		LocalDateTime startDateTime = LocalDateTime.now();
+		long diffInMinutes = 0;
+	
+		user = CommonUtils.retrieveRealUserContactPasswordValue(user);
+		while (diffInMinutes < time) {
+			
+			CommonUtils.sendRandomMessagesToUser(BACK_END_MESSAGE_COUNT);
+			CommonUtils.sendDefaultImageToUser((int) Math
+			.floor(BACK_END_MESSAGE_COUNT / 5));
+		
+			ScrollAndReadConversationForTimes(5);
+			MinimizeZClient();
+			SetRandomSleepInterval();
+			RestoreZClient();
+			
+			LocalDateTime currentDateTime = LocalDateTime.now();
+			diffInMinutes = java.time.Duration.between(startDateTime,
+					currentDateTime).toMinutes();
+		}
 	}
 	
 	@When("Scroll and read conversations for (.*) times")
@@ -52,7 +70,6 @@ public class PerformanceSteps {
 	@When("Set random sleep interval")
 	 public void SetRandomSleepInterval() throws InterruptedException{	
 		Random random = new Random();
-		//int sleep = (((random.nextInt(MAX_WAIT_VALUE_IN_MIN - MIN_WAIT_VALUE_IN_MIN)+1)+MIN_WAIT_VALUE_IN_MIN) * 60 * 1000);
 		int sleepTimer = ((random.nextInt( MAX_WAIT_VALUE_IN_MIN) + MIN_WAIT_VALUE_IN_MIN) * 60 * 1000);
 		System.out.print(sleepTimer);
 		//Thread.sleep(sleepTimer);
@@ -60,7 +77,7 @@ public class PerformanceSteps {
 	
 	@When("Restore ZClient")
 	 public void RestoreZClient() throws Exception{
-		
+		//CommonSteps.senderPages.getContactListPage().restoreZClient();
 	 }
 
 }
