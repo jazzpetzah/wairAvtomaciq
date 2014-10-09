@@ -18,6 +18,8 @@ public final class IOSLocators {
 	
 	public static final String nameWrongCredentialsNotification = "WRONG ADDRESS OR PASSWORD. PLEASE TRY AGAIN.";
 	
+	public static final String nameIgnoreUpdateButton = "Ignore";
+
 	public static final String nameTermsPrivacyLinks = "TermsPrivacyTextView"; 
 	
 	public static final String nameTermsPrivacyCloseButton = "WebViewCloseButton";
@@ -367,5 +369,10 @@ public final class IOSLocators {
 	public static final String nameTutorialOKButton = "OK";
 	public static final String nameTutorialView = "ZClientNotificationWindow";
 	
+	//UIAutomation locators
+	public static final String scriptCursorInputPath = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textViews()[\"ConversationTextInputField\"]";
+	public static final String scriptKeyboardReturnKeyPath = "target.frontMostApp().keyboard().elements()[\"Return\"]";
+	public static final String scriptSignInEmailPath = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textFields()[\"SignInEmail\"]";
+	public static final String scriptSignInPasswordPath = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].secureTextFields()[\"SignInPassword\"]";
 }
 

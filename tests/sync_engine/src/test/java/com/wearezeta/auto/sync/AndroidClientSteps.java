@@ -15,7 +15,6 @@ public class AndroidClientSteps {
 	@Given("^Android I Sign in using login (.*) and password (.*)$")
 	public void AndroidISignInUsingLoginAndPassword(String name, String password)
 			throws Throwable {
-		log.debug("Starting Android sign in");
 		if (ExecutionContext.isAndroidEnabled()) {
 			name = SyncEngineUtil.retrieveRealUserContactPasswordValue(name);
 			String login = null;
@@ -25,6 +24,7 @@ public class AndroidClientSteps {
 					log.debug(login);
 				}
 			}
+			log.debug("Android: sign in using name " + name);
 			password = SyncEngineUtil
 					.retrieveRealUserContactPasswordValue(password);
 			if (com.wearezeta.auto.android.pages.PagesCollection.loginPage.isDismissUpdateVisible()) {

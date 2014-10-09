@@ -70,7 +70,7 @@ public class LoginPageSteps {
 	 }
 	 
 	 @When ("I have entered login (.*)")
-	 public void WhenIHaveEnteredLogin(String value) {
+	 public void WhenIHaveEnteredLogin(String value) throws IOException {
 		 
 		 if (value.equals(CommonUtils.YOUR_USER_1)) {
 			 value = CommonUtils.yourUsers.get(0).getEmail();
@@ -79,14 +79,14 @@ public class LoginPageSteps {
 	 }
 	 
 	 @When ("I have entered password (.*)")
-	 public void WhenIHaveEnteredPassword(String value) {
+	 public void WhenIHaveEnteredPassword(String value) throws IOException {
 		 
 		 value = CommonUtils.retrieveRealUserContactPasswordValue(value);
 		 PagesCollection.loginPage.setPassword(value);
 	 }	
 	 
 	 @When("I fill in email input (.*)")
-	 public void IFillInEmailInput(String text){
+	 public void IFillInEmailInput(String text) throws IOException{
 		 PagesCollection.loginPage.setLogin(text);
 	 }
 	  
@@ -151,7 +151,7 @@ public class LoginPageSteps {
 	 }
 	 
 	 @When("^I enter wrong email (.*)")
-	 public void IEnterWrongEmail(String wrongMail){
+	 public void IEnterWrongEmail(String wrongMail) throws IOException{
 		 PagesCollection.loginPage.setLogin(wrongMail);
 		 PagesCollection.loginPage.tapPasswordField();
 	 }
@@ -167,7 +167,7 @@ public class LoginPageSteps {
 	 }
 
 	 @When("^I enter wrong password (.*)")
-	 public void IEnterWrongPassword(String wrongPassword){
+	 public void IEnterWrongPassword(String wrongPassword) throws IOException {
 		 PagesCollection.loginPage.setPassword(wrongPassword);
 	 }
 

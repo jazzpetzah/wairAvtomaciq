@@ -16,6 +16,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.ContactListPage;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaDriver;
@@ -59,6 +60,9 @@ public class LoginPage extends IOSPage {
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameWrongCredentialsNotification)
 	private WebElement wrongCredentialsNotification;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameIgnoreUpdateButton)
+	private WebElement ignoreUpdateButton;
 	
 	private String login;
 	
@@ -125,18 +129,29 @@ public class LoginPage extends IOSPage {
 		return login;
 	}
 
-	public void setLogin(String login) {
-		DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameLoginField));
-		loginField.sendKeys(login);
+	public void setLogin(String login) throws IOException {
+		if (CommonUtils.getIsSimulatorFromConfig(LoginPage.class)) {
+			DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameLoginField));
+			loginField.sendKeys(login);
+		} else {
+			String script = String.format(
+					IOSLocators.scriptSignInEmailPath + ".setValue(\"%s\")", login);
+			driver.executeScript(script);
+		}
 	}
 
 	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) {
-		 
-		passwordField.sendKeys(password);
+	public void setPassword(String password) throws IOException {
+		if (CommonUtils.getIsSimulatorFromConfig(LoginPage.class)) {
+			passwordField.sendKeys(password);
+		} else {
+			String script = String.format(
+					IOSLocators.scriptSignInPasswordPath + ".setValue(\"%s\")", password);
+			driver.executeScript(script);
+		}
 	}
 	
 	public boolean waitForLogin() throws InterruptedException {
@@ -213,4 +228,7 @@ public class LoginPage extends IOSPage {
 		return (ExpectedConditions.visibilityOf(wrongCredentialsNotification) != null);
 	}
 
+	public void ignoreUpdate() {
+		ignoreUpdateButton.click();
+	}
 }

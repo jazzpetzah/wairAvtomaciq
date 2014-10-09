@@ -3,7 +3,11 @@ package com.wearezeta.auto.sync.client;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
@@ -22,38 +26,117 @@ public class ZetaListener extends Thread {
 	public LinkedHashMap<String, MessageEntry> registeredMessages = new LinkedHashMap<String, MessageEntry>();
 	public LinkedHashMap<String, MessageEntry> notReceivedMessages = new LinkedHashMap<String, MessageEntry>();
 	
+	public LinkedHashMap<Date, String> pageSources = new LinkedHashMap<Date, String>();
+	
+	public static final String ANDROID_UUID_TEXT_MESSAGE_PATTERN = "<android.widget.TextView[^>]*text=\"([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\"[^>]*/>";
+	public static final String IOS_UUID_TEXT_MESSAGE_PATTERN = "<UIATextView[^>]*value=\"([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\"[^>]*>\\s*</UIATextView>";
+	public static final String OSX_UUID_TEXT_MESSAGE_PATTERN = "<AXGroup[^>]*>\\s*<AXStaticText[^>]*AXValue=\"([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\"[^>]*/>\\s*</AXGroup>";
+	
 	public ZetaListener(ZetaInstance parent) {
 		this.parent = parent;
 	}
 	
 	@Override
 	public void run() {
-		while (parent.getState() != InstanceState.FINISHED) {
+		while (parent.getState() != InstanceState.FINISHED && parent.getState() != InstanceState.ERROR_CRASHED) {
 			boolean isLastListen = false;
 			if (ExecutionContext.allInstancesFinishSending()) {
 				isLastListen = true;
 			}
 			
-			ArrayList<MessageEntry> currentMessages = receiveChatMessages();
-
-			for (MessageEntry currentMessage: currentMessages) {
-				String text = currentMessage.messageContent;
-				if (registeredMessages.get(text) == null) {
-					registeredMessages.put(text, currentMessage);
-				}
-			}
-
+			pageSources.put(new Date(), getChatSource());
+			
 			if (isLastListen) {
-				log.debug(parent.getPlatform() + " processing is finished.");
+				log.debug(parent.getPlatform() + "listener: all messages sent, received and processed. Closing");
 				parent.setState(InstanceState.FINISHED);
 			}
 			if (parent.getState() == InstanceState.CREATED) {
 				parent.setState(InstanceState.SENDING);
 			}
+			try { Thread.sleep(50); } catch (InterruptedException e) { }
+		}
+		
+		log.debug("Parsing collected page sources...");
+		for (Entry<Date, String> pageSource: pageSources.entrySet()) {
+			if (platform().equals(CommonUtils.PLATFORM_NAME_ANDROID)) {
+				Pattern pattern = Pattern.compile(ANDROID_UUID_TEXT_MESSAGE_PATTERN);
+				Matcher matcher = pattern.matcher(pageSource.getValue());
+				while (matcher.find()) {
+					MessageEntry currentMessage = new MessageEntry("text", matcher.group(1), pageSource.getKey());
+					String text = currentMessage.messageContent;
+					if (registeredMessages.get(text) == null) {
+						registeredMessages.put(text, currentMessage);
+					}
+				}
+			} else if (platform().equals(CommonUtils.PLATFORM_NAME_OSX)) {
+				Pattern pattern = Pattern.compile(OSX_UUID_TEXT_MESSAGE_PATTERN);
+				Matcher matcher = pattern.matcher(pageSource.getValue());
+				while (matcher.find()) {
+					MessageEntry currentMessage = new MessageEntry("text", matcher.group(1), pageSource.getKey());
+					String text = currentMessage.messageContent;
+					if (registeredMessages.get(text) == null) {
+						registeredMessages.put(text, currentMessage);
+					}
+				}
+			} else if (platform().equals(CommonUtils.PLATFORM_NAME_IOS)) {
+				Pattern pattern = Pattern.compile(IOS_UUID_TEXT_MESSAGE_PATTERN);
+				Matcher matcher = pattern.matcher(pageSource.getValue());
+				while (matcher.find()) {
+					MessageEntry currentMessage = new MessageEntry("text", matcher.group(1), pageSource.getKey());
+					String text = currentMessage.messageContent;
+					if (registeredMessages.get(text) == null) {
+						registeredMessages.put(text, currentMessage);
+					}
+				}
+			}
 		}
 	}
 
+	public String getChatSource() {
+		try {
+			if (platform().equals(CommonUtils.PLATFORM_NAME_ANDROID)) {
+				com.wearezeta.auto.android.pages.DialogPage dialogPage = 
+						com.wearezeta.auto.android.pages.PagesCollection.dialogPage;
+				return dialogPage.getPageSource();
+			} else if (platform().equals(CommonUtils.PLATFORM_NAME_OSX)) {
+				com.wearezeta.auto.osx.steps.CommonSteps.senderPages.setConversationPage(
+						new com.wearezeta.auto.osx.pages.ConversationPage(
+								CommonUtils.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
+								CommonUtils.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
+				com.wearezeta.auto.osx.pages.ConversationPage conversationPage =
+						com.wearezeta.auto.osx.steps.CommonSteps.senderPages.getConversationPage();
+				return conversationPage.getPageSource();
+			} else if (platform().equals(CommonUtils.PLATFORM_NAME_IOS)) {
+				com.wearezeta.auto.ios.pages.DialogPage dialogPage =
+						com.wearezeta.auto.ios.pages.PagesCollection.dialogPage;
+				return dialogPage.getPageSource();
+			}
+			} catch (Exception e) {
+				//TODO: process exception
+				log.error(e.getMessage());
+				e.printStackTrace();
+			}
+			return "";
+	}
+	
 	public ArrayList<MessageEntry> receiveChatMessages() {
+		try {
+		if (platform().equals(CommonUtils.PLATFORM_NAME_ANDROID)) {
+			return receiveChatMessagesAndroid();
+		} else if (platform().equals(CommonUtils.PLATFORM_NAME_OSX)) {
+			return receiveChatMessagesOsx();
+		} else if (platform().equals(CommonUtils.PLATFORM_NAME_IOS)) {
+			return receiveChatMessagesIos();
+		}
+		} catch (Exception e) {
+			//TODO: process exception
+			log.error(e.getMessage());
+			e.printStackTrace();
+		}
+		return new ArrayList<MessageEntry>();
+	}
+	
+	public ArrayList<MessageEntry> receiveAllChatMessages() {
 		try {
 		if (platform().equals(CommonUtils.PLATFORM_NAME_ANDROID)) {
 			return receiveChatMessagesAndroid();

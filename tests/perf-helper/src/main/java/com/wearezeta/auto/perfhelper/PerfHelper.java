@@ -92,23 +92,23 @@ public class PerfHelper {
 		
 		if (messageCount == -1) {
 			int counter = 1;
+			int imageCounter = 1;
 			while (true) {
 				final int count =	counter; 
 				ExecutorService executor = Executors
 						.newFixedThreadPool(NUMBER_OF_THREADS);
 				for (int i = 0; i < user_chats.size(); i++) {
+					final int imageCount = imageCounter;
 					final ClientUser yourСontact = user_chats.get(i)
 							.getContact();
 					final String contact = user_chats.get(i).getConvName();
 					Runnable worker = new Thread(new Runnable() {
 						public void run() {
 							try {
-								if (sendImg) {
-											sendMessage(yourСontact, contact, 1,count);
+								sendMessage(yourСontact, contact, 1,count);
+								Thread.sleep(interval * 1000 / user_chats.size());
+								if (sendImg && imageCount == 5) {
 											sendPicture(yourСontact, contact,1, "default",count);
-								} else {
-									sendMessage(yourСontact, contact,
-											messageCount,count);
 								}
 							} catch (Throwable e) {
 								System.out.println(e.getMessage());
@@ -116,9 +116,13 @@ public class PerfHelper {
 						}
 					});
 					executor.submit(worker);
+					if(imageCounter == 5){
+						imageCounter = 1;
+					}
+					imageCounter++;
 				}
 				executor.shutdown();
-				Thread.sleep(interval * 1000);
+				
 				counter++;
 			}
 		}

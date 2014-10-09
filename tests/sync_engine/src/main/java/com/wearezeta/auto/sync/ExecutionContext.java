@@ -34,8 +34,12 @@ public class ExecutionContext {
 
 	public static boolean allInstancesFinishSending() {
 		boolean result = true;
-		for (ZetaInstance client: clients.values()) {
-			result = result && (client.getState() == InstanceState.FINAL_LISTENING || !client.isEnabled());
+		for (ZetaInstance client : clients.values()) {
+			if (client.isEnabled()) {
+				result = (result && (client.getState() == InstanceState.FINAL_LISTENING
+						|| client.getState() == InstanceState.FINISHED || client
+						.getState() == InstanceState.ERROR_CRASHED));
+			}
 		}
 		return result;
 	}

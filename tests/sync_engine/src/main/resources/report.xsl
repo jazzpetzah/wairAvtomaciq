@@ -52,6 +52,9 @@ text-align: center;
 background-color: #AAAAAA;
 text-align: center;
 }
+.time_average {
+text-align: center;
+}
 </style>
 </head>
 <body>
@@ -214,9 +217,15 @@ text-align: center;
   </xsl:for-each>
   <tr>
   	<td colspan="2" style="text-align: right; font-weight: bold;">Average time:&#160;&#160;</td>
-  	<td style="width: 13%;"><xsl:value-of select="ReportData/averageIosReceiveTime" />s</td>
-  	<td style="width: 13%;"><xsl:value-of select="ReportData/averageOsxReceiveTime" />s</td>
-  	<td style="width: 13%;"><xsl:value-of select="ReportData/averageAndroidReceiveTime" />s</td>
+  	<td style="width: 13%;">
+  		<xsl:attribute name="class">time_average</xsl:attribute>
+  		<xsl:value-of select="ReportData/averageIosReceiveTime" />s</td>
+  	<td style="width: 13%;">
+  		<xsl:attribute name="class">time_average</xsl:attribute>
+  		<xsl:value-of select="ReportData/averageOsxReceiveTime" />s</td>
+  	<td style="width: 13%;">
+  		<xsl:attribute name="class">time_average</xsl:attribute>
+  		<xsl:value-of select="ReportData/averageAndroidReceiveTime" />s</td>
   	
   </tr>
 </table></td></tr>
