@@ -141,6 +141,8 @@ public class ReportData {
 		long androidSumReceiveTime = 0;
 		long osxSumReceiveTime = 0;
 		
+		areMessagesReceiveTimeCorrect = true;
+		
 		for (Map.Entry<String, MessageEntry> entry: sentMessages.entrySet()) {
 			MessageReport report = new MessageReport();
 			report.message = entry.getKey();
@@ -253,11 +255,9 @@ public class ReportData {
 			averageAndroidReceiveTime = Math.round(averageAndroidReceiveTime*1000)/1000.0d;
 			averageOsxReceiveTime = Math.round(averageOsxReceiveTime*1000)/1000.0d;
 			
-			if (report.isIosReceiveTimeOK
-					&& report.isAndroidReceiveTimeOK
-					&& report.isOsxReceiveTimeOK) {
-				areMessagesReceiveTimeCorrect = true;
-			} else {
+			if (!report.isIosReceiveTimeOK
+					|| !report.isAndroidReceiveTimeOK
+					|| !report.isOsxReceiveTimeOK) {
 				areMessagesReceiveTimeCorrect = false;
 			}
 			areClientsStable = true;
