@@ -53,9 +53,8 @@ public class ExecutionContext {
 	}
 	
 	public static boolean messagesOrderCorrect() {
-		//TODO: implement workaround for android
-		return /*androidZeta().isOrderCorrect()
-				&& */osxZeta().isOrderCorrect()
+		return androidZeta().isOrderCorrect()
+				&& osxZeta().isOrderCorrect()
 				&& iosZeta().isOrderCorrect();
 	}
 	

@@ -172,10 +172,16 @@ public class CommonSteps {
 				if (com.wearezeta.auto.ios.pages.PagesCollection.loginPage == null) {
 					long startDate = new Date().getTime();
 					try {
-						com.wearezeta.auto.ios.pages.PagesCollection.loginPage = new com.wearezeta.auto.ios.pages.LoginPage(
-								iosAppiumPath, iosPath, false);
+						if (CommonUtils.getIsSimulatorFromConfig(CommonSteps.class)) {
+							com.wearezeta.auto.ios.pages.PagesCollection.loginPage = new com.wearezeta.auto.ios.pages.LoginPage(
+									iosAppiumPath, iosPath, true);
+						} else {
+							com.wearezeta.auto.ios.pages.PagesCollection.loginPage = new com.wearezeta.auto.ios.pages.LoginPage(
+									iosAppiumPath, iosPath, false);
+						}
 					} catch (MalformedURLException e) {
-					}
+					} catch (IOException e) { }
+					
 					long endDate = new Date().getTime();
 					ExecutionContext.iosZeta().setStartupTimeMs(
 							endDate - startDate);
@@ -510,6 +516,10 @@ public class CommonSteps {
 			}
 		}
 		
+		ExecutionContext.iosZeta().setMessagesListAfterTest(iosMessages);
+		ExecutionContext.osxZeta().setMessagesListAfterTest(osxMessages);
+		ExecutionContext.androidZeta().setMessagesListAfterTest(androidMessages);
+
 		ExecutionContext.iosZeta().setOrderCorrect(iosOrderCorrect);
 		ExecutionContext.osxZeta().setOrderCorrect(osxOrderCorrect);
 		ExecutionContext.androidZeta().setOrderCorrect(androidOrderCorrect);

@@ -4,11 +4,18 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -19,9 +26,11 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
 
 public class DialogPage extends AndroidPage{
+	private static final Logger log = ZetaLogger.getLog(DialogPage.class.getSimpleName());
 
 	
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classEditText)
@@ -280,16 +289,95 @@ public class DialogPage extends AndroidPage{
 		return flag;
 	}
 	
-	public ArrayList<MessageEntry> listAllMessages() {
-		Pattern messagesPattern = Pattern.compile("[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}");
-		ArrayList<MessageEntry> listResult = new ArrayList<MessageEntry>();
-		List<WebElement> elements = driver.findElements(By.id(AndroidLocators.DialogPage.idMessage));
-		Date receivedDate = new Date();
-		for (WebElement element: elements) {
-			String messageText = element.getText();
-			if (messagesPattern.matcher(messageText).matches()) {
-				listResult.add(new MessageEntry("text", messageText, receivedDate));
+	private static final String TEXT_MESSAGE_PATTERN = "<android.widget.TextView[^>]*text=\"([^\"]*)\"[^>]*/>";
+	private static final int TIMES_TO_SCROLL = 100;
+	
+	public boolean swipeAndCheckMessageFound(String direction, String pattern) {
+		boolean result = false;
+		
+		Point coords = new Point(0, 0);
+		Dimension elementSize = driver.manage().window().getSize();
+		switch(direction) {
+		case "up":
+			driver.swipe(
+					coords.x + elementSize.width / 2, coords.y + elementSize.height/2,
+					coords.x + elementSize.width / 2, coords.y + 120,
+					1000);
+			break;
+		case "down":
+			driver.swipe(
+					coords.x + elementSize.width / 2, coords.y + 150,
+					coords.x + elementSize.width / 2, coords.y + elementSize.height - 200,
+					1000);
+			break;
+		default:
+			log.fatal("Unknown direction");
+		}
+		String source = driver.getPageSource();
+		Pattern messagesPattern = Pattern.compile(TEXT_MESSAGE_PATTERN);
+		Matcher messagesMatcher = messagesPattern.matcher(source);
+		while (messagesMatcher.find()) {
+			String message = messagesMatcher.group(1);
+			Pattern messagePattern = Pattern.compile(pattern);
+			Matcher messageMatcher = messagePattern.matcher(message);
+			if (messageMatcher.find()) {
+				result = true;
 			}
+		}
+		return result;
+	}
+	
+	public void swipeTillTextMessageWithPattern(String direction, String pattern) {
+		boolean isAddedMessage = false;
+		int i = 0;
+		do {
+			i++;
+			isAddedMessage = swipeAndCheckMessageFound(direction, pattern);
+		} while (!isAddedMessage && i < TIMES_TO_SCROLL);
+	}
+	
+	private static final String UUID_TEXT_MESSAGE_PATTERN = "<android.widget.TextView[^>]*text=\"([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\"[^>]*/>";
+	private static final String DIALOG_START_MESSAGE_PATTERN = "^(.*)\\sADDED\\s(.*)$";
+	public ArrayList<MessageEntry> listAllMessages() {
+		try {
+			driver.hideKeyboard();
+		} catch (WebDriverException e) { }
+		
+		String lastMessage = messagesList.get(messagesList.size()-1).getText();
+		
+		swipeTillTextMessageWithPattern("down", DIALOG_START_MESSAGE_PATTERN);
+
+		LinkedHashMap<String, MessageEntry> messages = new LinkedHashMap<String, MessageEntry>();
+		
+		boolean lastMessageAppears = false;
+		boolean temp = false;
+		int i = 0;
+		do {
+			i++;
+			lastMessageAppears = temp;
+			long startDate = new Date().getTime();
+			Date receivedDate = new Date();
+			String source = driver.getPageSource();
+			long endDate = new Date().getTime();
+			log.debug("Time to get page source: " + (endDate-startDate) + "ms");
+			Pattern pattern = Pattern.compile(UUID_TEXT_MESSAGE_PATTERN);
+			Matcher matcher = pattern.matcher(source);
+			while (matcher.find()) {
+				if (messages.get(matcher.group(1)) == null) {
+					messages.put(matcher.group(1), new MessageEntry("text", matcher.group(1), receivedDate));
+				}
+			}
+			driver.getPageSource();
+			if (!lastMessageAppears) {
+				temp = swipeAndCheckMessageFound("up", lastMessage);
+			}
+		} while (!lastMessageAppears && i < TIMES_TO_SCROLL);
+		
+
+		ArrayList<MessageEntry> listResult = new ArrayList<MessageEntry>();
+		
+		for (Map.Entry<String, MessageEntry> mess: messages.entrySet()) {
+			listResult.add(mess.getValue());
 		}
 		return listResult;
 	}

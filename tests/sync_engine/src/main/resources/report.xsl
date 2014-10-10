@@ -231,6 +231,32 @@ text-align: center;
 </table></td></tr>
 </table>
 </center>
+<center>
+<tr><td><h1>Messages list (for order check)</h1></td></tr>
+<tr><td><table>
+<tr>
+    <th style="width: 25%;">Sending order</th>
+    <th style="width: 25%;">iOS</th>
+    <th style="width: 25%;">OSX</th>
+    <th style="width: 25%;">Android</th>
+  </tr>
+
+	<tr><td style="width: 25%;">
+	<table>
+	<xsl:for-each select="ReportData/messages/MessageReport">
+		<tr><td><xsl:value-of select="message"/></td></tr>
+	</xsl:for-each></table></td>
+	<td style="width: 25%;"><table><xsl:for-each select="ReportData/iosMessages/string">
+		<tr><td><xsl:value-of select="."/></td></tr>
+	</xsl:for-each></table></td>
+	<td style="width: 25%;"><table><xsl:for-each select="ReportData/osxMessages/string">
+		<tr><td><xsl:value-of select="."/></td></tr>
+	</xsl:for-each></table></td>
+	<td style="width: 25%;"><table><xsl:for-each select="ReportData/androidMessages/string">
+		<tr><td><xsl:value-of select="."/></td></tr>
+	</xsl:for-each></table></td></tr>
+</table></td></tr>
+</center>
 </body>
 </html>
 </xsl:template>

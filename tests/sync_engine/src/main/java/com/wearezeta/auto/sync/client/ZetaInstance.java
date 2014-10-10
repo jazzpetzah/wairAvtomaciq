@@ -1,12 +1,14 @@
 package com.wearezeta.auto.sync.client;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.sync.ExecutionContext;
 import com.wearezeta.auto.sync.SyncEngineUtil;
 
@@ -33,6 +35,7 @@ public class ZetaInstance {
 	private long loginAndContactListLoadingTimeMs;
 	private long conversationLoadingTimeMs;
 	private boolean isOrderCorrect;
+	private ArrayList<MessageEntry> messagesListAfterTest;
 	
 	public ZetaInstance(String platform) {
 		this.platform = platform;
@@ -199,5 +202,13 @@ public class ZetaInstance {
 
 	public void setOrderCorrect(boolean isOrderCorrect) {
 		this.isOrderCorrect = isOrderCorrect;
+	}
+
+	public ArrayList<MessageEntry> getMessagesListAfterTest() {
+		return messagesListAfterTest;
+	}
+
+	public void setMessagesListAfterTest(ArrayList<MessageEntry> messagesListAfterTest) {
+		this.messagesListAfterTest = messagesListAfterTest;
 	}
 }
