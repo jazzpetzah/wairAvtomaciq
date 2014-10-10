@@ -74,9 +74,9 @@ public final class IOSLocators {
 	
 	public static final String nameCameraRollCancel = "Cancel";
 	
-	public static final String xpathCameraRollTableCell = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]";
+	public static final String xpathCameraRollTableCell = "//UIAApplication[1]/UIAWindow[2]/UIATableView[1]/UIATableCell[1]";
 	
-	public static final String xpathCameraRollPicture = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[1]";
+	public static final String xpathCameraRollPicture = "//UIAApplication[1]/UIAWindow[2]/UIACollectionView[1]/UIACollectionCell[1]";
 	
 	public static final String nameConfirmPictureButton = "ImageConfirmerConfirmButton";
 	
