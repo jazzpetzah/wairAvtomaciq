@@ -124,8 +124,7 @@ public class CommonSteps {
 				log.debug("OSX application startup time: "
 						+ ExecutionContext.osxZeta().getStartupTimeMs()
 						+ "ms");
-				ZetaFormatter.setDriver(com.wearezeta.auto.ios.pages.PagesCollection.loginPage
-						.getDriver());
+				ZetaFormatter.setDriver(osxSenderPages.getLoginPage().getDriver());
 				osxSenderPages.getLoginPage().sendProblemReportIfFound();
 			}
 		});
