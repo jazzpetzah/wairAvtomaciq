@@ -19,7 +19,7 @@
 	<isSimulator>true</isSimulator>
 	<generateUsers>true</generateUsers>
 	<driverTimeoutSeconds>30</driverTimeoutSeconds>
-	<pathToUserpic>img/userpicture_landscape.jpg</pathToUserpic>
+	<pathToUserpic>img/Media</pathToUserpic>
 	<iosImagesPath>img/</iosImagesPath> 
 	<swipeScriptPath>swipeInWindow</swipeScriptPath>
 	<defaultEmail>smoketester.ios@wearezeta.com</defaultEmail>
