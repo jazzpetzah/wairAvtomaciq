@@ -40,6 +40,16 @@ border:none;
 .no_border_table th {
 border:none;
 }
+.test_passed {
+background-color: #C5D88A;
+text-align: center;
+border-color: black;
+}
+.test_failed {
+background-color: #D88A8A;
+text-align: center;
+border-color: black;
+}
 .time_passed {
 background-color: #C5D88A;
 text-align: center;
@@ -52,6 +62,9 @@ text-align: center;
 background-color: #AAAAAA;
 text-align: center;
 }
+.time_average {
+text-align: center;
+}
 </style>
 </head>
 <body>
@@ -60,66 +73,141 @@ text-align: center;
 <tr><td><h1>Test results</h1></td></tr>
 <tr><td>
 <table style="border: none;">
-<tr><td style="text-align: left;">
+<tr>
+      <th style="width: 40%;">&#160;</th>
+      <th style="width: 20%;">iOS</th>
+      <th style="width: 20%;">OSX</th>
+      <th style="width: 20%;">Android</th>
+    </tr>
+<tr>
+	<td style="text-align: left; width: 40%;">&#160;&#160;&#160;Client started and work stable</td>
+	<td style="width: 20%;">
 	<xsl:choose>
-		<xsl:when test="ReportData/areClientsStable = 'true'">
-		   <xsl:attribute name="class">time_passed</xsl:attribute>
+		<xsl:when test="ReportData/isIosStable = 'true'">
+		   <xsl:attribute name="class">test_passed</xsl:attribute><b>PASSED</b>
 		</xsl:when>
 		<xsl:otherwise>
-		  <xsl:attribute name="class">time_failed</xsl:attribute>
+		  <xsl:attribute name="class">test_failed</xsl:attribute><b>FAILED</b>
 		</xsl:otherwise>
 	</xsl:choose>
-    &#160;&#160;&#160;All clients started -
-    <xsl:choose>
-		<xsl:when test="ReportData/areClientsStable = 'true'"><b>PASSED</b></xsl:when>
-		<xsl:otherwise><b>FAILED</b></xsl:otherwise>
-	</xsl:choose>
-</td></tr>
-<tr><td style="text-align: left;">
+</td><td style="width: 20%;">
 	<xsl:choose>
-		<xsl:when test="ReportData/areMessagesReceived = 'true'">
-		   <xsl:attribute name="class">time_passed</xsl:attribute>
+		<xsl:when test="ReportData/isOsxStable = 'true'">
+		   <xsl:attribute name="class">test_passed</xsl:attribute><b>PASSED</b>
 		</xsl:when>
 		<xsl:otherwise>
-		  <xsl:attribute name="class">time_failed</xsl:attribute>
+		  <xsl:attribute name="class">test_failed</xsl:attribute><b>FAILED</b>
 		</xsl:otherwise>
 	</xsl:choose>
-    &#160;&#160;&#160;All messages received -
-    <xsl:choose>
-		<xsl:when test="ReportData/areMessagesReceived = 'true'"><b>PASSED</b></xsl:when>
-		<xsl:otherwise><b>FAILED</b></xsl:otherwise>
-	</xsl:choose>
-</td></tr>
-<tr><td style="text-align: left;">
+</td><td style="width: 20%;">
 	<xsl:choose>
-		<xsl:when test="ReportData/areMessagesReceiveTimeCorrect = 'true'">
-		   <xsl:attribute name="class">time_passed</xsl:attribute>
+		<xsl:when test="ReportData/isAndroidStable = 'true'">
+		   <xsl:attribute name="class">test_passed</xsl:attribute><b>PASSED</b>
 		</xsl:when>
 		<xsl:otherwise>
-		  <xsl:attribute name="class">time_failed</xsl:attribute>
+		  <xsl:attribute name="class">test_failed</xsl:attribute><b>FAILED</b>
 		</xsl:otherwise>
 	</xsl:choose>
-    &#160;&#160;&#160;All messages received in &lt; 5 sec -
-    <xsl:choose>
-		<xsl:when test="ReportData/areMessagesReceiveTimeCorrect = 'true'"><b>PASSED</b></xsl:when>
-		<xsl:otherwise><b>FAILED</b></xsl:otherwise>
-	</xsl:choose>
-</td></tr>
-<tr><td style="text-align: left;">
+</td>
+</tr>
+<tr>
+	<td style="text-align: left; width: 40%;">&#160;&#160;&#160;Messages received</td>
+	<td style="width: 20%;">
 	<xsl:choose>
-		<xsl:when test="ReportData/areMessagesOrderCorrect = 'true'">
-		   <xsl:attribute name="class">time_passed</xsl:attribute>
+		<xsl:when test="ReportData/isIosReceiveMessages = 'true'">
+		   <xsl:attribute name="class">test_passed</xsl:attribute><b>PASSED</b>
 		</xsl:when>
 		<xsl:otherwise>
-		  <xsl:attribute name="class">time_failed</xsl:attribute>
+		  <xsl:attribute name="class">test_failed</xsl:attribute><b>FAILED</b>
 		</xsl:otherwise>
 	</xsl:choose>
-    &#160;&#160;&#160;All messages are in correct order - 
-    <xsl:choose>
-		<xsl:when test="ReportData/areMessagesOrderCorrect = 'true'"><b>PASSED</b></xsl:when>
-		<xsl:otherwise><b>FAILED</b></xsl:otherwise>
+</td><td style="width: 20%;">
+	<xsl:choose>
+		<xsl:when test="ReportData/isOsxReceiveMessages = 'true'">
+		   <xsl:attribute name="class">test_passed</xsl:attribute><b>PASSED</b>
+		</xsl:when>
+		<xsl:otherwise>
+		  <xsl:attribute name="class">test_failed</xsl:attribute><b>FAILED</b>
+		</xsl:otherwise>
+	</xsl:choose>
+</td><td style="width: 20%;">
+	<xsl:choose>
+		<xsl:when test="ReportData/isAndroidReceiveMessages = 'true'">
+		   <xsl:attribute name="class">test_passed</xsl:attribute><b>PASSED</b>
+		</xsl:when>
+		<xsl:otherwise>
+		  <xsl:attribute name="class">test_failed</xsl:attribute><b>FAILED</b>
+		</xsl:otherwise>
 	</xsl:choose>
 </td></tr>
+
+
+
+
+<tr>
+
+	<td style="text-align: left; width: 40%;">&#160;&#160;&#160;Messages received in &lt; 5 sec</td>
+	<td style="width: 20%;">
+	<xsl:choose>
+		<xsl:when test="ReportData/isIosReceiveMessagesInTime = 'true'">
+		   <xsl:attribute name="class">test_passed</xsl:attribute><b>PASSED</b>
+		</xsl:when>
+		<xsl:otherwise>
+		  <xsl:attribute name="class">test_failed</xsl:attribute><b>FAILED</b>
+		</xsl:otherwise>
+	</xsl:choose>
+</td><td style="width: 20%;">
+	<xsl:choose>
+		<xsl:when test="ReportData/isOsxReceiveMessagesInTime = 'true'">
+		   <xsl:attribute name="class">test_passed</xsl:attribute><b>PASSED</b>
+		</xsl:when>
+		<xsl:otherwise>
+		  <xsl:attribute name="class">test_failed</xsl:attribute><b>FAILED</b>
+		</xsl:otherwise>
+	</xsl:choose>
+</td><td style="width: 20%;">
+	<xsl:choose>
+		<xsl:when test="ReportData/isAndroidReceiveMessagesInTime = 'true'">
+		   <xsl:attribute name="class">test_passed</xsl:attribute><b>PASSED</b>
+		</xsl:when>
+		<xsl:otherwise>
+		  <xsl:attribute name="class">test_failed</xsl:attribute><b>FAILED</b>
+		</xsl:otherwise>
+	</xsl:choose>
+</td>
+</tr>
+<tr>
+
+	<td style="text-align: left; width: 40%;">&#160;&#160;&#160;Messages are in correct order</td>
+	<td style="width: 20%;">
+	<xsl:choose>
+		<xsl:when test="ReportData/isIosMessagesOrderCorrect = 'true'">
+		   <xsl:attribute name="class">test_passed</xsl:attribute><b>PASSED</b>
+		</xsl:when>
+		<xsl:otherwise>
+		  <xsl:attribute name="class">test_failed</xsl:attribute><b>FAILED</b>
+		</xsl:otherwise>
+	</xsl:choose>
+</td><td style="width: 20%;">
+	<xsl:choose>
+		<xsl:when test="ReportData/isOsxMessagesOrderCorrect = 'true'">
+		   <xsl:attribute name="class">test_passed</xsl:attribute><b>PASSED</b>
+		</xsl:when>
+		<xsl:otherwise>
+		  <xsl:attribute name="class">test_failed</xsl:attribute><b>FAILED</b>
+		</xsl:otherwise>
+	</xsl:choose>
+</td><td style="width: 20%;">
+	<xsl:choose>
+		<xsl:when test="ReportData/isAndroidMessagesOrderCorrect = 'true'">
+		   <xsl:attribute name="class">test_passed</xsl:attribute><b>PASSED</b>
+		</xsl:when>
+		<xsl:otherwise>
+		  <xsl:attribute name="class">test_failed</xsl:attribute><b>FAILED</b>
+		</xsl:otherwise>
+	</xsl:choose>
+</td>
+</tr>
 </table>
 </td></tr>
 
@@ -156,7 +244,17 @@ text-align: center;
       <th>Sent from</th>
       <th>iOS</th>
       <th>OSX</th>
-      <th>Android</th>
+      <th>
+      	<xsl:choose>
+      		<xsl:when test="isAndroidStable = 'true'">
+      			Android
+      		</xsl:when>
+      		<xsl:otherwise>
+      		<xsl:attribute name="class">time_failed</xsl:attribute>
+      			Android<br/>(unstable)
+      		</xsl:otherwise>
+      	</xsl:choose>
+      </th>
     </tr>
   <xsl:for-each select="ReportData/messages/MessageReport">
   <tr>
@@ -196,6 +294,8 @@ text-align: center;
           </td>
           <td style="width: 13%;">
           	<xsl:choose>
+      			<xsl:when test="isAndroidStable = 'true'">
+      				<xsl:choose>
                   <xsl:when test="isAndroidReceiveTimeOK = 'true' and androidReceiveTime = '-1'">
                     <xsl:attribute name="class">time_gray</xsl:attribute>
                     -
@@ -208,19 +308,58 @@ text-align: center;
                     <xsl:attribute name="class">time_failed</xsl:attribute>
                     <xsl:value-of  select="androidReceiveTime"/>
                   </xsl:otherwise>
-                </xsl:choose>
+                	</xsl:choose>
+      			</xsl:when>
+      			<xsl:otherwise>
+      			<xsl:attribute name="class">time_gray</xsl:attribute>
+      				-
+      			</xsl:otherwise>
+      		</xsl:choose>
+          	
           </td>
   </tr>
   </xsl:for-each>
   <tr>
   	<td colspan="2" style="text-align: right; font-weight: bold;">Average time:&#160;&#160;</td>
-  	<td style="width: 13%;"><xsl:value-of select="ReportData/averageIosReceiveTime" />s</td>
-  	<td style="width: 13%;"><xsl:value-of select="ReportData/averageOsxReceiveTime" />s</td>
-  	<td style="width: 13%;"><xsl:value-of select="ReportData/averageAndroidReceiveTime" />s</td>
+  	<td style="width: 13%;">
+  		<xsl:attribute name="class">time_average</xsl:attribute>
+  		<xsl:value-of select="ReportData/averageIosReceiveTime" />s</td>
+  	<td style="width: 13%;">
+  		<xsl:attribute name="class">time_average</xsl:attribute>
+  		<xsl:value-of select="ReportData/averageOsxReceiveTime" />s</td>
+  	<td style="width: 13%;">
+  		<xsl:attribute name="class">time_average</xsl:attribute>
+  		<xsl:value-of select="ReportData/averageAndroidReceiveTime" />s</td>
   	
   </tr>
 </table></td></tr>
 </table>
+</center>
+<center>
+<tr><td><h1>Messages list (for order check)</h1></td></tr>
+<tr><td><table>
+<tr>
+    <th style="width: 25%;">Sending order</th>
+    <th style="width: 25%;">iOS</th>
+    <th style="width: 25%;">OSX</th>
+    <th style="width: 25%;">Android</th>
+  </tr>
+
+	<tr><td style="width: 25%;">
+	<table>
+	<xsl:for-each select="ReportData/messages/MessageReport">
+		<tr><td><xsl:value-of select="message"/></td></tr>
+	</xsl:for-each></table></td>
+	<td style="width: 25%;"><table><xsl:for-each select="ReportData/iosMessages/string">
+		<tr><td><xsl:value-of select="."/></td></tr>
+	</xsl:for-each></table></td>
+	<td style="width: 25%;"><table><xsl:for-each select="ReportData/osxMessages/string">
+		<tr><td><xsl:value-of select="."/></td></tr>
+	</xsl:for-each></table></td>
+	<td style="width: 25%;"><table><xsl:for-each select="ReportData/androidMessages/string">
+		<tr><td><xsl:value-of select="."/></td></tr>
+	</xsl:for-each></table></td></tr>
+</table></td></tr>
 </center>
 </body>
 </html>

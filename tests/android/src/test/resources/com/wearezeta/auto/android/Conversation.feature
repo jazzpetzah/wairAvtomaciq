@@ -260,7 +260,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1          | Contact2    | GroupChatName   |
       | aqaUser | aqaPassword | aqaUser | aqaPictureContact | aqaContact1 | GroupInfoCheck2 |
 
-  @regression
+  @regression @mute
   Scenario Outline: Send picture from gallery into 1:1 conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

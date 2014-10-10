@@ -105,6 +105,9 @@ public abstract class AndroidPage extends BasePage {
 		}
 	}
 	
+	public void hideKeyboard(){
+		driver.hideKeyboard();
+	}
 	public AndroidPage navigateBack() throws Exception{
 		driver.navigate().back();
 		return null;

@@ -1,18 +1,18 @@
 package com.wearezeta.auto.ios;
 
-
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
-import org.openqa.selenium.Keys;
 
 import com.wearezeta.auto.common.BackEndREST;
 import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.TestPreparation;
 import com.wearezeta.auto.common.ZetaFormatter;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
@@ -25,6 +25,8 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
 public class CommonSteps {
+	private static final Logger log = ZetaLogger.getLog(CommonSteps.class.getSimpleName());
+	
 	static {
 		System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
 		System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http", "warn");
@@ -64,10 +66,11 @@ public class CommonSteps {
 	private void commonBefore() throws Exception {
 		try {
 			String[] picturepath = new String[] {CommonUtils.getUserPicturePathFromConfig(CommonSteps.class)};
-			IOSSimulatorPhotoLibHelper.CreateSimulatorPhotoLib("7.1-64", picturepath, true);
+			IOSSimulatorPhotoLibHelper.CreateSimulatorPhotoLib("8.0", picturepath, true);
 		}
 		catch(Exception ex){
-			System.out.println("Failed to deploy pictures into simulator");
+			ex.printStackTrace();
+			log.error("Failed to deploy pictures into simulator.\n" + ex.getMessage());
 		}
 		
 		boolean generateUsersFlag = Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class));

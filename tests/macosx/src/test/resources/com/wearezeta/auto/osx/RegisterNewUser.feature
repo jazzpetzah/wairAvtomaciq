@@ -20,7 +20,7 @@ Feature: Register new user
       | Email   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |
 
-  @smoke @id177
+  @mute @smoke @id177
   Scenario Outline: Register new user with image - landscape image
     Given I am signed out from ZClient
     And I see Sign In screen
@@ -39,7 +39,7 @@ Feature: Register new user
       | Email   | Password    | Name    | ImageFile                 |
       | aqaUser | aqaPassword | aqaUser | userpicture_landscape.jpg |
 
-  @smoke @id177
+  @mute @smoke @id177
   Scenario Outline: Register new user with image - portrait image
     Given I am signed out from ZClient
     And I see Sign In screen
