@@ -124,6 +124,8 @@ public class CommonSteps {
 				log.debug("OSX application startup time: "
 						+ ExecutionContext.osxZeta().getStartupTimeMs()
 						+ "ms");
+				ZetaFormatter.setDriver(com.wearezeta.auto.ios.pages.PagesCollection.loginPage
+						.getDriver());
 				osxSenderPages.getLoginPage().sendProblemReportIfFound();
 			}
 		});
@@ -188,9 +190,6 @@ public class CommonSteps {
 					log.debug("iOS application startup time: "
 							+ ExecutionContext.iosZeta().getStartupTimeMs()
 							+ "ms");
-					ZetaFormatter.setDriver(com.wearezeta.auto.ios.pages.PagesCollection.loginPage
-							.getDriver());
-					
 					try {
 						com.wearezeta.auto.ios.pages.PagesCollection.loginPage.ignoreUpdate();
 					} catch (NoSuchElementException e) {
