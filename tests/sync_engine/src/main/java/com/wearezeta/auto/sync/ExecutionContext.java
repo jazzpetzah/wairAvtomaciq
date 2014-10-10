@@ -52,10 +52,8 @@ public class ExecutionContext {
 		return result;
 	}
 	
-	public static boolean messagesOrderCorrect() {
-		return androidZeta().isOrderCorrect()
-				&& osxZeta().isOrderCorrect()
-				&& iosZeta().isOrderCorrect();
+	public static boolean isPlatformMessagesOrderCorrect(String platform) {
+		return clients.get(platform).isOrderCorrect();
 	}
 	
 	public static ReportData report = new ReportData();
