@@ -124,6 +124,7 @@ public class CommonSteps {
 				log.debug("OSX application startup time: "
 						+ ExecutionContext.osxZeta().getStartupTimeMs()
 						+ "ms");
+				ZetaFormatter.setDriver(osxSenderPages.getLoginPage().getDriver());
 				osxSenderPages.getLoginPage().sendProblemReportIfFound();
 			}
 		});
@@ -188,9 +189,6 @@ public class CommonSteps {
 					log.debug("iOS application startup time: "
 							+ ExecutionContext.iosZeta().getStartupTimeMs()
 							+ "ms");
-					ZetaFormatter.setDriver(com.wearezeta.auto.ios.pages.PagesCollection.loginPage
-							.getDriver());
-					
 					try {
 						com.wearezeta.auto.ios.pages.PagesCollection.loginPage.ignoreUpdate();
 					} catch (NoSuchElementException e) {
@@ -280,9 +278,9 @@ public class CommonSteps {
 			}
 		});
 		executor.shutdown();
-		if (!executor.awaitTermination(10, TimeUnit.MINUTES)) {
+		if (!executor.awaitTermination(20, TimeUnit.MINUTES)) {
 			throw new Exception(
-					"Clients startup was not finished in useful time.");
+					"Clients sign in was not finished in 20 minutes.");
 		}
 	}
 
