@@ -280,9 +280,9 @@ public class CommonSteps {
 			}
 		});
 		executor.shutdown();
-		if (!executor.awaitTermination(10, TimeUnit.MINUTES)) {
+		if (!executor.awaitTermination(20, TimeUnit.MINUTES)) {
 			throw new Exception(
-					"Clients startup was not finished in useful time.");
+					"Clients sign in was not finished in 20 minutes.");
 		}
 	}
 
