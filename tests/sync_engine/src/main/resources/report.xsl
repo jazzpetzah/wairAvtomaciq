@@ -242,11 +242,29 @@ text-align: center;
     <tr>
       <th>Message</th>
       <th>Sent from</th>
-      <th>iOS</th>
-      <th>OSX</th>
       <th>
       	<xsl:choose>
-      		<xsl:when test="isAndroidStable = 'true'">
+      		<xsl:when test="ReportData/isIosStable = 'true'">
+      			iOS
+      		</xsl:when>
+      		<xsl:otherwise>
+      		<xsl:attribute name="class">time_failed</xsl:attribute>
+      			iOS<br/>(unstable)
+      		</xsl:otherwise>
+      	</xsl:choose>
+      </th>
+      <th>
+      	<xsl:choose>
+      		<xsl:when test="ReportData/isOsxStable = 'true'">OSX</xsl:when>
+      		<xsl:otherwise>
+      		<xsl:attribute name="class">time_failed</xsl:attribute>
+      			OSX<br/>(unstable)
+      		</xsl:otherwise>
+      	</xsl:choose>
+      </th>
+      <th>
+      	<xsl:choose>
+      		<xsl:when test="ReportData/isAndroidStable = 'true'">
       			Android
       		</xsl:when>
       		<xsl:otherwise>
@@ -261,7 +279,10 @@ text-align: center;
           <td style="width: 46%;"><xsl:value-of select="message"/></td>
           <td style="width: 15%;"><xsl:value-of select="sentFrom"/></td>
           <td style="width: 13%;">
-          	<xsl:choose>
+          
+                      <xsl:choose>
+      			<xsl:when test="ReportData/isIosStable = 'true'">
+            	<xsl:choose>
                   <xsl:when test="isIosReceiveTimeOK = 'true' and iosReceiveTime = '-1'">
                     <xsl:attribute name="class">time_gray</xsl:attribute>
                     -
@@ -275,9 +296,20 @@ text-align: center;
                     <xsl:value-of  select="iosReceiveTime"/>
                   </xsl:otherwise>
                 </xsl:choose>
+      			</xsl:when>
+      			<xsl:otherwise>
+      			<xsl:attribute name="class">time_gray</xsl:attribute>
+      				-
+      			</xsl:otherwise>
+      		</xsl:choose>
+
           </td>
           <td style="width: 13%;">
-          	<xsl:choose>
+             <xsl:choose>
+      			<xsl:when test="ReportData/isOsxStable = 'true'">
+      				          	<xsl:choose>
+          	
+          	
                   <xsl:when test="isOsxReceiveTimeOK = 'true' and osxReceiveTime = '-1'">
                     <xsl:attribute name="class">time_gray</xsl:attribute>
                     -
@@ -291,10 +323,16 @@ text-align: center;
                     <xsl:value-of  select="osxReceiveTime"/>
                   </xsl:otherwise>
                 </xsl:choose>
+      			</xsl:when>
+      			<xsl:otherwise>
+      			<xsl:attribute name="class">time_gray</xsl:attribute>
+      				-
+      			</xsl:otherwise>
+      		</xsl:choose>
           </td>
           <td style="width: 13%;">
           	<xsl:choose>
-      			<xsl:when test="isAndroidStable = 'true'">
+      			<xsl:when test="ReportData/isAndroidStable = 'true'">
       				<xsl:choose>
                   <xsl:when test="isAndroidReceiveTimeOK = 'true' and androidReceiveTime = '-1'">
                     <xsl:attribute name="class">time_gray</xsl:attribute>
