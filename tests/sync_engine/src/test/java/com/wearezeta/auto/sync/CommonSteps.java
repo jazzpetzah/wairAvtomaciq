@@ -315,19 +315,19 @@ public class CommonSteps {
 	@Given("I run serial sync engine test")
 	public void IRunSerialSyncEngineTest() throws InterruptedException, Exception {
 		//send ios, receive osx and android
-		if (ExecutionContext.isIosEnabled()) {
+		if (ExecutionContext.isIosEnabled() && ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
 			for (int i = 0; i < ExecutionContext.iosZeta().getMessagesToSend(); i++) {
 				final String message = CommonUtils.generateGUID();
 				ExecutionContext.iosZeta().sender().sendTextMessage(SyncEngineUtil.CHAT_NAME, message);
 				ExecutorService executor = Executors.newFixedThreadPool(2);
-				if (ExecutionContext.isOsxEnabled()) {
+				if (ExecutionContext.isOsxEnabled() && ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED) {
 				executor.execute(new Runnable() {
 					public void run() {
 						ExecutionContext.osxZeta().listener().waitForMessageOsx(message);
 					}
 				});
 				}
-				if (ExecutionContext.isAndroidEnabled()) {
+				if (ExecutionContext.isAndroidEnabled() && ExecutionContext.androidZeta().getState() != InstanceState.ERROR_CRASHED) {
 				executor.execute(new Runnable() {
 					public void run() {
 						ExecutionContext.androidZeta().listener().waitForMessageAndroid(message);
@@ -347,19 +347,19 @@ public class CommonSteps {
 		}
 		
 		//send osx, receive ios and android
-		if (ExecutionContext.isOsxEnabled()) {
+		if (ExecutionContext.isOsxEnabled() && ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED) {
 			for (int i = 0; i < ExecutionContext.osxZeta().getMessagesToSend(); i++) {
 				final String message = CommonUtils.generateGUID();
 				ExecutionContext.osxZeta().sender().sendTextMessage(SyncEngineUtil.CHAT_NAME, message);
 				ExecutorService executor = Executors.newFixedThreadPool(2);
-				if (ExecutionContext.isIosEnabled()) {
+				if (ExecutionContext.isIosEnabled() && ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
 				executor.execute(new Runnable() {
 					public void run() {
 						ExecutionContext.iosZeta().listener().waitForMessageIos(message);
 					}
 				});
 				}
-				if (ExecutionContext.isAndroidEnabled()) {
+				if (ExecutionContext.isAndroidEnabled() && ExecutionContext.androidZeta().getState() != InstanceState.ERROR_CRASHED) {
 				executor.execute(new Runnable() {
 					public void run() {
 						ExecutionContext.androidZeta().listener().waitForMessageAndroid(message);
@@ -379,19 +379,19 @@ public class CommonSteps {
 		}
 		
 		//send android, receive ios and osx
-		if (ExecutionContext.isAndroidEnabled()) {
+		if (ExecutionContext.isAndroidEnabled() && ExecutionContext.androidZeta().getState() != InstanceState.ERROR_CRASHED) {
 			for (int i = 0; i < ExecutionContext.androidZeta().getMessagesToSend(); i++) {
 				final String message = CommonUtils.generateGUID();
 				ExecutionContext.androidZeta().sender().sendTextMessage(SyncEngineUtil.CHAT_NAME, message);
 				ExecutorService executor = Executors.newFixedThreadPool(2);
-				if (ExecutionContext.isOsxEnabled()) {
+				if (ExecutionContext.isOsxEnabled() && ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED) {
 				executor.execute(new Runnable() {
 					public void run() {
 						ExecutionContext.osxZeta().listener().waitForMessageOsx(message);
 					}
 				});
 				}
-				if (ExecutionContext.isIosEnabled()) {
+				if (ExecutionContext.isIosEnabled() && ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
 				executor.execute(new Runnable() {
 					public void run() {
 						ExecutionContext.iosZeta().listener().waitForMessageIos(message);
