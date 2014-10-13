@@ -62,7 +62,7 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherConversationCellFormat)
 	private WebElement imageCell;
 	
-	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameMediaContainer)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathNameMediaContainer)
 	private WebElement mediaContainer;
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathMediaConversationCell)
@@ -277,7 +277,7 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public boolean isMediaContainerVisible(){
-		return mediaLinkCell.isDisplayed();
+		return mediaLinkCell != null;
 	}
 	
 	public VideoPlayerPage clickOnVideoContainerFirstTime() throws IOException{
