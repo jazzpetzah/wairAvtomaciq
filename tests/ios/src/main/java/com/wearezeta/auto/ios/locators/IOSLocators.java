@@ -48,7 +48,7 @@ public final class IOSLocators {
 	
 	public static final String xpathLastMessageFormat = "//UIAApplication[1]/UIAWindow[2]/UIATableView[1]/UIATableCell[%s]/UIATextView[1]";
 	
-	public static final String xpathLastVideoFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]/UIAWebView[1]";
+	public static final String xpathLastVideoFormat = "//UIAApplication[1]/UIAWindow[2]/UIATableView[1]/UIATableCell[%s]/UIAWebView[1]";
 
 	public static final String namePickerSearch = "textViewSearch";
 	
@@ -104,7 +104,7 @@ public final class IOSLocators {
 	
 	public static final String xpathHeyCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[last()]";
 	
-	public static final String classNameMediaContainer = "UIAWebView";
+	public static final String xpathNameMediaContainer = "//UIAApplication[1]/UIAWindow[2]/UIATableView[1]/UIATableCell[last()]";
 	
 	public static final String namePhotoButton = "PhotoLibraryButton";
 	
@@ -116,7 +116,7 @@ public final class IOSLocators {
 	
 	public static final String nameCancelImageButton = "ImageConfirmerCancelButton";
 	
-	public static final String xpathYourName = "//UIAApplication[1]/UIAWindow[1]/UIAElement[1]/UIATextView[1]";
+	public static final String xpathYourName = "//UIAApplication[1]/UIAWindow[2]/UIAElement[1]/UIATextView[1]";
 	
 	public static final String nameYourEmail = "RegistrationEmailField";
 	
@@ -146,7 +146,7 @@ public final class IOSLocators {
 
 	public static final String nameRemoveFromConversation = "metaControllerRightButton";
 	
-	public static final String xpathOtherConversationCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[last()]";
+	public static final String xpathOtherConversationCellFormat = "//UIAApplication[1]/UIAWindow[2]/UIATableView[1]/UIATableCell[last()]";
 	
 	public static final String xpathYouAddedMessageCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]";
 	
@@ -160,7 +160,7 @@ public final class IOSLocators {
 	
 	public static final String nameOtherUserEmailField = "ProfileOtherEmailField";
 	
-	public static final String xpathOtherUserName = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[@value='%s']";
+	public static final String xpathOtherUserName = "//UIAApplication[1]/UIAWindow[2]/UIAStaticText[@value='%s']";
 	
 	public static final String nameBackToWelcomeButton = "BackToWelcomeButton";
 	
@@ -193,7 +193,7 @@ public final class IOSLocators {
 	///////////////////////
 	//Camera page locators
 	///////////////////////
-	public static final String xpathTakePhotoSmile = "//UIAApplication[1]/UIAWindow[1]/UIAImage[1]";
+	public static final String xpathTakePhotoSmile = "//UIAApplication[1]/UIAWindow[2]/UIAImage[1]";
 	
 	public static final String nameTakePhotoHintLabel = "TAKE A PICTURE, OR CHOOSE ONE";
 	
@@ -271,7 +271,7 @@ public final class IOSLocators {
 	
 	public static final String nameMediaCellPlayButton = "mediaCellButton";
 	
-	public static final String xpathMediaConversationCell = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[last()]/UIAWebView[last()]";
+	public static final String xpathMediaConversationCell = "//UIAApplication[1]/UIAWindow[2]/UIATableView[1]/UIATableCell[last()]/UIAWebView[last()]";
 	
 	public static final String xpathConversationPage = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]";
 	
@@ -344,7 +344,7 @@ public final class IOSLocators {
 	public static final String namePeoplePickerContactsLabel = "CONTACTS";
 	public static final String namePeoplePickerOtheraLabel = "OTHERS";
 	public static final String NamePeoplePickerTopPeopleLabel = "TOP PEOPLE";
-	public static final String xpathPeoplePickerUserAvatar = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell/UIAStaticText[@name='%s']/..";
+	public static final String xpathPeoplePickerUserAvatar = "//UIAApplication[1]/UIAWindow[2]/UIACollectionView[1]/UIACollectionCell/UIAStaticText[@name='%s']/..";
 	public static final String namePeoplePickerAddToConversationButton = "ADD TO CONVERSATION";
 	
 	//////////////////

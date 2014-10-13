@@ -231,15 +231,15 @@ public class RegistrationPage extends IOSPage {
 	}
 
 	public void inputName() {
-		yourName.sendKeys(getName() + "\n");
+		yourName.sendKeys("\n");
 	}
 
 	public void inputEmail() {
-		yourEmail.sendKeys(getEmail() + "\n");
+		yourEmail.sendKeys("\n");
 	}
 
 	public void inputPassword() {
-		yourPassword.sendKeys(getPassword() + "\n");
+		yourPassword.sendKeys("\n");
 	}
 
 	public void clickCreateAccountButton() {
@@ -266,7 +266,6 @@ public class RegistrationPage extends IOSPage {
 	}
 
 	public void typeEmail() {
-		yourName.sendKeys(getName() + "\n");
 		yourEmail.sendKeys(getEmail());
 	}
 
@@ -283,13 +282,13 @@ public class RegistrationPage extends IOSPage {
 	}
 
 	public boolean typeAllInvalidEmails() {
-		yourName.sendKeys(getName() + "\n");
+		
 		for (int i = 0; i < listOfEmails.length; i++) {
 			yourEmail.sendKeys(listOfEmails[i] + "\n");
 			if (!provideValidEmailMessage.isDisplayed()) {
 				return false;
 			}
-
+			yourEmail.clear();
 		}
 		return true;
 	}
@@ -404,6 +403,7 @@ public class RegistrationPage extends IOSPage {
 
 	public void setName(String name) {
 		this.name = name;
+		typeUsername();
 	}
 
 	public String getEmail() {
@@ -412,14 +412,20 @@ public class RegistrationPage extends IOSPage {
 
 	public void setEmail(String email) {
 		this.email = email;
+		typeEmail();
 	}
 
 	public String getPassword() {
 		return password;
 	}
 
+	private void typePassword() {
+		yourPassword.sendKeys(getPassword());
+	}
 	public void setPassword(String password) {
 		this.password = password;
+		typePassword();
+		
 	}
 
 	public String[] getListOfEmails() {

@@ -6,7 +6,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,6 +17,7 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -62,7 +65,7 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherConversationCellFormat)
 	private WebElement imageCell;
 	
-	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameMediaContainer)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathNameMediaContainer)
 	private WebElement mediaContainer;
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathMediaConversationCell)
@@ -277,7 +280,7 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public boolean isMediaContainerVisible(){
-		return mediaLinkCell.isDisplayed();
+		return mediaLinkCell != null;
 	}
 	
 	public VideoPlayerPage clickOnVideoContainerFirstTime() throws IOException{
@@ -386,19 +389,115 @@ public class DialogPage extends IOSPage{
 		return page;
 	}
 	
-	public static final String UUID_TEXT_MESSAGE_PATTERN = "<UIATextView[^>]*value=\"([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\"[^>]*>\\s*</UIATextView>";
 	
-	public ArrayList<MessageEntry> listAllMessages() {
-		long startDate = new Date().getTime();
-		Date receivedDate = new Date();
+	private static final String TEXT_MESSAGE_PATTERN = "<UIATextView[^>]*value=\"([^\"]*)\"[^>]*>\\s*</UIATextView>";
+	private static final int TIMES_TO_SCROLL = 100;
+	
+	public boolean swipeAndCheckMessageFound(String direction, String pattern) throws IOException, Exception {
+		
+
+		boolean result = false;
+		
+		Point coords = new Point(0, 0);
+		Dimension elementSize = driver.manage().window().getSize();
+
+		switch(direction) {
+		case "up":
+			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
+				driver.swipe(
+						coords.x + elementSize.width / 2, coords.y + elementSize.height/2,
+						coords.x + elementSize.width / 2, coords.y + 120,
+						500);
+			} else {
+				DriverUtils.iOSSimulatorSwipeDialogPageUp(
+						CommonUtils.getSwipeScriptPath(IOSPage.class));
+			}
+		
+
+			break;
+		case "down":
+			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
+				driver.swipe(
+						coords.x + elementSize.width / 2, coords.y + 50,
+						coords.x + elementSize.width / 2, coords.y + elementSize.height - 100,
+						500);
+			} else {
+				DriverUtils.iOSSimulatorSwipeDialogPageDown(
+						CommonUtils.getSwipeScriptPath(IOSPage.class));
+			}
+		
+			break;
+		default:
+			log.fatal("Unknown direction");
+		}
 		String source = driver.getPageSource();
-		long endDate = new Date().getTime();
-		log.debug("Time to get page source: " + (endDate-startDate) + "ms");
+		Pattern messagesPattern = Pattern.compile(TEXT_MESSAGE_PATTERN);
+		Matcher messagesMatcher = messagesPattern.matcher(source);
+		while (messagesMatcher.find()) {
+			String message = messagesMatcher.group(1);
+			Pattern messagePattern = Pattern.compile(pattern);
+			Matcher messageMatcher = messagePattern.matcher(message);
+			if (messageMatcher.find()) {
+				result = true;
+			}
+		}
+		return result;
+	}
+	
+	public void swipeTillTextMessageWithPattern(String direction, String pattern) throws IOException, Exception {
+		boolean isAddedMessage = false;
+		int count = 0;
+		do {
+			isAddedMessage = swipeAndCheckMessageFound(direction, pattern);
+			count++;
+		} while (!isAddedMessage && count < TIMES_TO_SCROLL);
+	}
+	
+	private static final String UUID_TEXT_MESSAGE_PATTERN = "<UIATextView[^>]*value=\"([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\"[^>]*>\\s*</UIATextView>";
+	private static final String DIALOG_START_MESSAGE_PATTERN = "^(.*)\\sADDED\\s(.*)$";
+	public ArrayList<MessageEntry> listAllMessages() throws Exception, Throwable {
+		try {
+			log.debug("Trying to close keyboard");
+			driver.hideKeyboard();
+		} catch (WebDriverException e) { }
+		
+		String lastMessage = messagesList.get(messagesList.size()-1).getText();
+		
+		scrollToBeginningOfConversation();
+		
+		swipeTillTextMessageWithPattern("down", DIALOG_START_MESSAGE_PATTERN);
+
+		LinkedHashMap<String, MessageEntry> messages = new LinkedHashMap<String, MessageEntry>();
+		
+		boolean lastMessageAppears = false;
+		boolean temp = false;
+		int i = 0;
+		do {
+			i++;
+			lastMessageAppears = temp;
+			long startDate = new Date().getTime();
+			Date receivedDate = new Date();
+			String source = driver.getPageSource();
+			long endDate = new Date().getTime();
+			log.debug("Time to get page source: " + (endDate-startDate) + "ms");
+			Pattern pattern = Pattern.compile(UUID_TEXT_MESSAGE_PATTERN);
+			Matcher matcher = pattern.matcher(source);
+			while (matcher.find()) {
+				if (messages.get(matcher.group(1)) == null) {
+					messages.put(matcher.group(1), new MessageEntry("text", matcher.group(1), receivedDate));
+				}
+			}
+			driver.getPageSource();
+			if (!lastMessageAppears) {
+				temp = swipeAndCheckMessageFound("up", lastMessage);
+			}
+		} while (!lastMessageAppears && i < TIMES_TO_SCROLL);
+		
+
 		ArrayList<MessageEntry> listResult = new ArrayList<MessageEntry>();
-		Pattern pattern = Pattern.compile(UUID_TEXT_MESSAGE_PATTERN);
-		Matcher matcher = pattern.matcher(source);
-		while (matcher.find()) {
-			listResult.add(new MessageEntry("text", matcher.group(1), receivedDate));
+		
+		for (Map.Entry<String, MessageEntry> mess: messages.entrySet()) {
+			listResult.add(mess.getValue());
 		}
 		return listResult;
 	}

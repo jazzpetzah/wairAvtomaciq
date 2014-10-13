@@ -5,9 +5,11 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.NetworkConnectionSetting;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -208,6 +210,30 @@ public class DriverUtils {
 		Runtime.getRuntime().exec("/usr/bin/open -a Terminal " + scriptPath + "Down.py");
 	}
 
+	public static void iOSSimulatorSwipeDialogPageDown(String scriptPath) throws Exception{
+		Process process = Runtime.getRuntime().exec("/usr/bin/open -a Terminal " + scriptPath + "DialogPageDown.py");
+		InputStream stream = process.getErrorStream();
+		BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+		String s;
+		while (( s = br.readLine() ) != null ) {
+			log.debug(s);
+		}
+		stream.close();
+		log.debug("Process Code " + process.waitFor());
+	}
+	
+	public static void iOSSimulatorSwipeDialogPageUp(String scriptPath) throws Exception {
+		Process process = Runtime.getRuntime().exec("/usr/bin/open -a Terminal " + scriptPath + "DialogPageUp.py");
+		InputStream stream = process.getErrorStream();
+		BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+		String s;
+		while (( s = br.readLine() ) != null ) {
+			log.debug(s);
+		}
+		stream.close();
+		log.debug("Process Code " + process.waitFor());
+	}
+	
 	public static void iOSSimulatorSwipeUp(String scriptPath) throws Exception{
 		//CommonUtils.executeOsXCommand(new String[]{"/bin/bash", "-c", "python", scriptPath,"0.65", "0.95", "0.65", "0.7"});
 		Runtime.getRuntime().exec("/usr/bin/open -a Terminal " + scriptPath + "Up.py");
