@@ -219,9 +219,9 @@ public final class AndroidLocators {
 		
 		public static final String idNoResultsFound = LOCATORS_PACKAGE + ":id/ttv_pickuser__error_message";
 		
-		public static final String xpathPeoplePickerGroup = "//android.widget.LinearLayout[child::android.widget.TextView[@resource-id='" + LOCATORS_PACKAGE + ":id/ttv_pickuser_searchconversation_name' and @text='%s']]";
+		public static final String xpathPeoplePickerGroup = "//android.widget.FrameLayout[child::android.widget.TextView[@resource-id='" + LOCATORS_PACKAGE + ":id/ttv_pickuser_searchconversation_name' and @text='%s']]";
 		
-		public static final String xpathPeoplePickerContact = "//android.widget.LinearLayout[child::android.widget.TextView[@resource-id='" + LOCATORS_PACKAGE + ":id/ttv_pickuser__searchuser_name' and @text='%s']]";
+		public static final String xpathPeoplePickerContact = "//android.widget.FrameLayout[child::android.widget.TextView[@resource-id='" + LOCATORS_PACKAGE + ":id/ttv_pickuser__searchuser_name' and @text='%s']]";
 	}
 	
 	public static final class PersonalInfoPage {
