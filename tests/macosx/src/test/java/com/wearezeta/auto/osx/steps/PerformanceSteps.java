@@ -2,11 +2,18 @@ package com.wearezeta.auto.osx.steps;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Random;
 import java.time.LocalDateTime;
 
+import org.junit.Assert;
+import org.openqa.selenium.WebElement;
+
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ZetaFormatter;
+import com.wearezeta.auto.osx.pages.ChoosePicturePage;
+import com.wearezeta.auto.osx.pages.ContactListPage;
+import com.wearezeta.auto.osx.pages.ConversationPage;
 import com.wearezeta.auto.osx.pages.LoginPage;
 import com.wearezeta.auto.osx.pages.MainMenuPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
@@ -18,15 +25,11 @@ public class PerformanceSteps {
 	private static final int MIN_WAIT_VALUE_IN_MIN = 1;
 	private static final int MAX_WAIT_VALUE_IN_MIN = 5;
 	private static final int BACK_END_MESSAGE_COUNT = 5;
+	private static final int SEND_MESSAGE_NUM = 4;
+	private String randomMessage;
 	
-	@When("Start testing cycle")
-	 public void StartTestingCycle() throws Exception{	
-		
-		ScrollAndReadConversationForTimes(5);
-		MinimizeZClient();
-		SetRandomSleepInterval();
-		RestoreZClient();
-	 }
+	Random random = new Random();
+	
 	
 	@When("^I (.*) start testing cycle for (\\d+) minutes$")
 	public void WhenIStartTestingCycleForMinutes(String user, int time) throws Throwable {
@@ -34,32 +37,64 @@ public class PerformanceSteps {
 		long diffInMinutes = 0;
 	
 		user = CommonUtils.retrieveRealUserContactPasswordValue(user);
+
 		while (diffInMinutes < time) {
 			
 			CommonUtils.sendRandomMessagesToUser(BACK_END_MESSAGE_COUNT);
-			CommonUtils.sendDefaultImageToUser((int) Math
-			.floor(BACK_END_MESSAGE_COUNT / 5));
-		
-			ScrollAndReadConversationForTimes(5);
-			MinimizeZClient();
+			CommonUtils.sendDefaultImageToUser((int) Math.floor(BACK_END_MESSAGE_COUNT / 5));
+			
+			Thread.sleep(1000);
+			
+			ArrayList<WebElement> visibleContactsList = new ArrayList<WebElement>(
+					CommonSteps.senderPages.getContactListPage().getContacts());
+			for (int i = 0; i < visibleContactsList.size(); i++) {
+				if (visibleContactsList.get(i).getText().equals(user)) {
+					visibleContactsList.remove(i);
+					break;
+				}
+			}
+			Thread.sleep(1000);
+			
+			for(int j = 1; j <=SEND_MESSAGE_NUM; ++j){
+				int randomInt = random.nextInt(visibleContactsList.size() - 1);
+				String contact = visibleContactsList.get(randomInt).getText();
+				CommonSteps.senderPages.setContactListPage(new ContactListPage(
+						CommonUtils.getOsxAppiumUrlFromConfig(LoginPageSteps.class),
+						CommonUtils.getOsxApplicationPathFromConfig(LoginPageSteps.class)));
+				CommonSteps.senderPages.getContactListPage().openConversation(contact);
+				Thread.sleep(100);
+				CommonSteps.senderPages.setConversationPage(new ConversationPage(
+						CommonUtils.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
+						CommonUtils.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
+				Thread.sleep(2000);
+				randomMessage = CommonUtils.generateGUID();
+				System.out.print("Randome Message" + randomMessage);
+				CommonSteps.senderPages.getConversationPage().writeNewMessage(randomMessage);
+				Thread.sleep(2000);
+				CommonSteps.senderPages.getConversationPage().sendNewMessage();
+				
+				CommonSteps.senderPages.getConversationPage().openChooseImageDialog();
+				 CommonSteps.senderPages.setChoosePicturePage(new ChoosePicturePage(
+						 CommonUtils.getOsxAppiumUrlFromConfig(ContactListPage.class),
+						 CommonUtils.getOsxApplicationPathFromConfig(ContactListPage.class)
+						 ));
+				 
+				 ChoosePicturePage choosePicturePage = CommonSteps.senderPages.getChoosePicturePage();
+				 Assert.assertTrue(choosePicturePage.isVisible());
+				 
+				 choosePicturePage.openImage("testing.jpg");
+			}
+			
+			//MinimizeZClient();
 			SetRandomSleepInterval();
-			RestoreZClient();
+			//RestoreZClient();
 			
 			LocalDateTime currentDateTime = LocalDateTime.now();
 			diffInMinutes = java.time.Duration.between(startDateTime,
 					currentDateTime).toMinutes();
-		}
+		  }
+		
 	}
-	
-	@When("Scroll and read conversations for (.*) times")
-	 public void ScrollAndReadConversationForTimes(int n) throws MalformedURLException, IOException{	
-		for(int i = 1; i <=n; ++i){
-			System.out.print("Loop scroll and read");
-			//ContactListPageSteps clSteps = new ContactListPageSteps();
-			//String contact = CommonSteps.senderPages.getConversationInfoPage().getCurrentConversationName();
-			//clSteps.GivenIOpenConversationWith(contact);
-		}
-	 }
 	
 	@When("Minimize ZClient")
 	 public void MinimizeZClient() throws Exception{
@@ -69,7 +104,6 @@ public class PerformanceSteps {
 	
 	@When("Set random sleep interval")
 	 public void SetRandomSleepInterval() throws InterruptedException{	
-		Random random = new Random();
 		int sleepTimer = ((random.nextInt( MAX_WAIT_VALUE_IN_MIN) + MIN_WAIT_VALUE_IN_MIN) * 60 * 1000);
 		System.out.print(sleepTimer);
 		//Thread.sleep(sleepTimer);

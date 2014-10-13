@@ -195,6 +195,11 @@ public class ContactListPage extends OSXPage {
 		return result;
 	}
 	
+	public List<WebElement> getContacts(){
+		System.out.print("CONTACTS:" + contactsTextFields.get(3).getText());
+		return contactsTextFields;
+	}
+	
 	public void scrollToConversationInList(WebElement conversation) {
     	NSPoint mainPosition = NSPoint.fromString(mainWindow.getAttribute("AXPosition"));
     	NSPoint mainSize = NSPoint.fromString(mainWindow.getAttribute("AXSize"));
