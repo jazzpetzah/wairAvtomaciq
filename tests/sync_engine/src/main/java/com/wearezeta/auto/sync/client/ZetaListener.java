@@ -128,7 +128,7 @@ public class ZetaListener extends Thread {
 		} else if (platform().equals(CommonUtils.PLATFORM_NAME_IOS)) {
 			return receiveChatMessagesIos();
 		}
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			//TODO: process exception
 			log.error(e.getMessage());
 			e.printStackTrace();
@@ -145,7 +145,7 @@ public class ZetaListener extends Thread {
 		} else if (platform().equals(CommonUtils.PLATFORM_NAME_IOS)) {
 			return receiveChatMessagesIos();
 		}
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			//TODO: process exception
 			log.error(e.getMessage());
 			e.printStackTrace();
@@ -211,7 +211,7 @@ public class ZetaListener extends Thread {
 		return conversationPage.listAllMessages();
 	}
 	
-	private ArrayList<MessageEntry> receiveChatMessagesIos() {
+	private ArrayList<MessageEntry> receiveChatMessagesIos() throws Exception, Throwable {
 		com.wearezeta.auto.ios.pages.DialogPage dialogPage =
 				com.wearezeta.auto.ios.pages.PagesCollection.dialogPage;
 		return dialogPage.listAllMessages();
