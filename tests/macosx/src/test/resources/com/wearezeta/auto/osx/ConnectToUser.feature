@@ -26,7 +26,7 @@ Feature: Connect to user
     And I Sign in using login <Contact> and password <Password>
     Then I see Contact list with name <Name>
     And I open conversation with <Name>
-    And I see message YOU ADDED <Name> in conversation
+    And I see message CONNECTED TO <Name> in conversation
 
     Examples: 
       | Login   | Password    | Name    | Contact     |
