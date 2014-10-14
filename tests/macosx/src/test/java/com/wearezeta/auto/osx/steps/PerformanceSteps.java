@@ -45,7 +45,7 @@ public class PerformanceSteps {
 			
 			Thread.sleep(1000);
 			
-			ArrayList<WebElement> visibleContactsList = new ArrayList<WebElement>(
+			final ArrayList<WebElement> visibleContactsList = new ArrayList<WebElement>(
 					CommonSteps.senderPages.getContactListPage().getContacts());
 			for (int i = 0; i < visibleContactsList.size(); i++) {
 				if (visibleContactsList.get(i).getText().equals(user)) {
@@ -58,6 +58,7 @@ public class PerformanceSteps {
 			for(int j = 1; j <=SEND_MESSAGE_NUM; ++j){
 				int randomInt = random.nextInt(visibleContactsList.size() - 1);
 				String contact = visibleContactsList.get(randomInt).getText();
+				System.out.println(contact);
 				CommonSteps.senderPages.setContactListPage(new ContactListPage(
 						CommonUtils.getOsxAppiumUrlFromConfig(LoginPageSteps.class),
 						CommonUtils.getOsxApplicationPathFromConfig(LoginPageSteps.class)));
@@ -82,6 +83,7 @@ public class PerformanceSteps {
 				 ChoosePicturePage choosePicturePage = CommonSteps.senderPages.getChoosePicturePage();
 				 Assert.assertTrue(choosePicturePage.isVisible());
 				 
+				 
 				 choosePicturePage.openImage("testing.jpg");
 			}
 			
@@ -105,6 +107,7 @@ public class PerformanceSteps {
 	@When("Set random sleep interval")
 	 public void SetRandomSleepInterval() throws InterruptedException{	
 		int sleepTimer = ((random.nextInt( MAX_WAIT_VALUE_IN_MIN) + MIN_WAIT_VALUE_IN_MIN) * 60 * 1000);
+		
 		System.out.print(sleepTimer);
 		//Thread.sleep(sleepTimer);
 	 }
