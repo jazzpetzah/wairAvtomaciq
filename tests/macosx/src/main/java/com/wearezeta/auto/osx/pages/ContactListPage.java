@@ -61,7 +61,8 @@ public class ContactListPage extends OSXPage {
 	}
 	
 	public void restoreZClient() throws InterruptedException{
-		driver.runAppInBackground(10);
+		//driver.runAppInBackground(10);
+		driver.navigate().to("osxApplicationPath");
 		Thread.sleep(1000);
 	}
 	
@@ -196,7 +197,6 @@ public class ContactListPage extends OSXPage {
 	}
 	
 	public List<WebElement> getContacts(){
-		System.out.print("CONTACTS:" + contactsTextFields.get(3).getText());
 		return contactsTextFields;
 	}
 	
