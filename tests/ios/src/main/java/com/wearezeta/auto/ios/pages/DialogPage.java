@@ -466,9 +466,7 @@ public class DialogPage extends IOSPage{
 		} catch (WebDriverException e) { }
 		
 		String lastMessage = messagesList.get(messagesList.size()-1).getText();
-		
-		scrollToBeginningOfConversation();
-		
+	
 		swipeTillTextMessageWithPattern("down", DIALOG_START_MESSAGE_PATTERN);
 
 		LinkedHashMap<String, MessageEntry> messages = new LinkedHashMap<String, MessageEntry>();
