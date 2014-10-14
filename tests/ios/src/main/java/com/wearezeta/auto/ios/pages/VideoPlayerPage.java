@@ -12,7 +12,7 @@ import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class VideoPlayerPage extends IOSPage{
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameVideoMainPage)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathVideoMainPage)
 	private WebElement videoPlayerMainWindow;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameVideoDoneButton)

@@ -170,4 +170,16 @@ public class ZetaFormatter implements Formatter, Reporter {
 		ZetaFormatter.driver = driver;
 	}
 
+	@Override
+	public void startOfScenarioLifeCycle(Scenario scenario) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void endOfScenarioLifeCycle(Scenario scenario) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -283,9 +283,13 @@ public class DialogPage extends IOSPage{
 		return mediaLinkCell != null;
 	}
 	
-	public VideoPlayerPage clickOnVideoContainerFirstTime() throws IOException{
+	public VideoPlayerPage clickOnVideoContainerFirstTime() throws IOException, InterruptedException{
 		VideoPlayerPage page = null;
 		mediaContainer.click();
+		if (!mediaLinkCell.isDisplayed()) {
+			DriverUtils.mobileTapByCoordinates(driver, mediaContainer);
+		}
+		mediaLinkCell.click();
 		page = new VideoPlayerPage(url, path);
 		return page;
 	}

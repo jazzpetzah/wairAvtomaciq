@@ -46,9 +46,9 @@ public final class IOSLocators {
 	
 	public static final String nameTextInput = "ComposeControllerTextView";
 	
-	public static final String xpathLastMessageFormat = "//UIAApplication[1]/UIAWindow[2]/UIATableView[1]/UIATableCell[%s]/UIATextView[1]";
+	public static final String xpathLastMessageFormat = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[%s]/UIATextView[1]";
 	
-	public static final String xpathLastVideoFormat = "//UIAApplication[1]/UIAWindow[2]/UIATableView[1]/UIATableCell[%s]/UIAWebView[1]";
+	public static final String xpathLastVideoFormat = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[%s]/UIAWebView[1]";
 
 	public static final String namePickerSearch = "textViewSearch";
 	
@@ -74,19 +74,19 @@ public final class IOSLocators {
 	
 	public static final String nameCameraRollCancel = "Cancel";
 	
-	public static final String xpathCameraRollTableCell = "//UIAApplication[1]/UIAWindow[2]/UIATableView[1]/UIATableCell[1]";
+	public static final String xpathCameraRollTableCell = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[1]";
 	
-	public static final String xpathCameraRollPicture = "//UIAApplication[1]/UIAWindow[2]/UIACollectionView[1]/UIACollectionCell[1]";
+	public static final String xpathCameraRollPicture = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[1]";
 	
 	public static final String nameConfirmPictureButton = "ImageConfirmerConfirmButton";
 	
-	public static final String xpathMyUserInContactList = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[1]/UIAStaticText[1]";
+	public static final String xpathMyUserInContactList = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[1]/UIAStaticText[1]";
 
-	public static final String xpathFirstInContactList = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[2]/UIAStaticText[1]";
+	public static final String xpathFirstInContactList = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[2]/UIAStaticText[1]";
 	
 	public static final String classNameConnectMessageLabel = "UIATextField";
 	
-	public static final String xpathUnicUserPickerSearchResult = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[2]/UIACollectionCell[1]";
+	public static final String xpathUnicUserPickerSearchResult = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell[1]";
 	
 	public static final String namePendingButton = "PENDING";
 	
@@ -100,11 +100,11 @@ public final class IOSLocators {
 	
 	public static final String classUIATextView = "UIATextView";
 
-	public static final String xpathHelloCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[last()]";
+	public static final String xpathHelloCellFormat = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]";
 	
-	public static final String xpathHeyCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[last()]";
+	public static final String xpathHeyCellFormat = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]";
 	
-	public static final String xpathNameMediaContainer = "//UIAApplication[1]/UIAWindow[2]/UIATableView[1]/UIATableCell[last()]";
+	public static final String xpathNameMediaContainer = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]";
 	
 	public static final String namePhotoButton = "PhotoLibraryButton";
 	
@@ -116,7 +116,7 @@ public final class IOSLocators {
 	
 	public static final String nameCancelImageButton = "ImageConfirmerCancelButton";
 	
-	public static final String xpathYourName = "//UIAApplication[1]/UIAWindow[2]/UIAElement[1]/UIATextView[1]";
+	public static final String xpathYourName = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAElement[1]/UIATextView[1]";
 	
 	public static final String nameYourEmail = "RegistrationEmailField";
 	
@@ -132,7 +132,7 @@ public final class IOSLocators {
 	
 	public static final String nameCreateAccountButton = "RegistrationCreateAccountButton";
 	
-	public static final String xpathLastGroupChatMessage = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]/UIATextView[last()]";
+	public static final String xpathLastGroupChatMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[1]/UIATextView[last()]";
 	
 	public static final String nameLeaveConversation = "metaControllerRightButton";
 	
@@ -146,9 +146,9 @@ public final class IOSLocators {
 
 	public static final String nameRemoveFromConversation = "metaControllerRightButton";
 	
-	public static final String xpathOtherConversationCellFormat = "//UIAApplication[1]/UIAWindow[2]/UIATableView[1]/UIATableCell[last()]";
+	public static final String xpathOtherConversationCellFormat = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]";
 	
-	public static final String xpathYouAddedMessageCellFormat = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]";
+	public static final String xpathYouAddedMessageCellFormat = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[1]";
 	
 	public static final String xpathPersonalInfoPage = "//UIAApplication[1]/UIAWindow[1]";
 	
@@ -160,36 +160,37 @@ public final class IOSLocators {
 	
 	public static final String nameOtherUserEmailField = "ProfileOtherEmailField";
 	
-	public static final String xpathOtherUserName = "//UIAApplication[1]/UIAWindow[2]/UIAStaticText[@value='%s']";
+	public static final String xpathOtherUserName = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[@value='%s']";
 	
 	public static final String nameBackToWelcomeButton = "BackToWelcomeButton";
 	
 	public static final String nameForwardWelcomeButton = "ForwardWelcomeButton";
 	
-	public static final String xpathConversationNameTextField = "//UIAApplication[1]/UIAWindow[1]/UIATextField[1]";
+	public static final String xpathConversationNameTextField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATextField[1]";
 
-	public static final String xpathMutedIcon = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[@name='%s']/UIAButton[3]";
+	public static final String xpathMutedIcon = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[@name='%s']/UIAButton[3]";
 	
-	public static final String xpathContactListPlayPauseButton = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[@name='%s']/UIAButton[3]";
+	public static final String xpathContactListPlayPauseButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[@name='%s']/UIAButton[3]";
 	
 	public static final String nameMuteButton = "ConvCellMuteButton";
 
-	public static final String xpathNewGroupConversationNameChangeTextField = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[2]/UIATextView[1]";
+	public static final String xpathNewGroupConversationNameChangeTextField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[2]/UIATextView[1]";
 	
 	public static final String nameExitGroupInfoPageButton = "metaControllerCancelButton";
 	
 	public static final String nameExitOtherUserPersonalInfoPageButton = "ProfileOtherCloseButton";
-	public static final String xpathExitOtherUserPersonalInfoPageButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[6]";
 	
-	public static final String xpathAlbum = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]/UIAStaticText[1]";
+	public static final String xpathExitOtherUserPersonalInfoPageButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAButton[6]";
+	
+	public static final String xpathAlbum = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[1]/UIAStaticText[1]";
 	
 	//public static final String nameOtherPersonalInfoPageNameField = "ProfileOtherNameField";
 	
 	//public static final String nameOtherPersonalInfoPageEmailField = "ProfileOtherEmailField";
 	
-	public static final String xpathOtherPersonalInfoPageNameField = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[3]";
+	public static final String xpathOtherPersonalInfoPageNameField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[3]";
 	
-	public static final String xpathOtherPersonalInfoPageEmailField = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[4]";
+	public static final String xpathOtherPersonalInfoPageEmailField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[4]";
 	///////////////////////
 	//Camera page locators
 	///////////////////////
@@ -197,16 +198,16 @@ public final class IOSLocators {
 	
 	public static final String nameTakePhotoHintLabel = "TAKE A PICTURE, OR CHOOSE ONE";
 	
-	public static final String xpathFirstChatInChatListTextField = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[2]/UIAStaticText[1]";
+	public static final String xpathFirstChatInChatListTextField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[2]/UIAStaticText[1]";
 	
-	public static final String xpathParticipantAvatar = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[%s]";
+	public static final String xpathParticipantAvatar = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[%s]";
 	
-	public static final String xpathNumberOfParticipantsText =  "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[2]";
+	public static final String xpathNumberOfParticipantsText =  "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[2]";
 
 	//needs name
-	public static final String xpathAvatarCollectionView = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]";
+	public static final String xpathAvatarCollectionView = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]";
     
-	public static final String xpathParticipantAvatarCell = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell";
+	public static final String xpathParticipantAvatarCell = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell";
 	
 	public static final String nameErrorPageButton = "BACK";
 	
@@ -222,7 +223,7 @@ public final class IOSLocators {
 	
 	public static final String nameRegistrationCameraButton = "CameraButton";
 	
-	public static final String xpathConnectionMessageInput = "//UIAApplication[1]/UIAWindow[1]/UIATextView[1]";
+	public static final String xpathConnectionMessageInput = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATextView[1]";
 	
 	public static String CONNECT_TO_MESSAGE = "Type your first message to";	
 	
@@ -232,9 +233,9 @@ public final class IOSLocators {
 		
 	public static final String nameVignetteOverlay = "••••";
 	
-	public static final String xpathCloseColorModeButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[4]";
+	public static final String xpathCloseColorModeButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAButton[4]";
 
-	public static String xpathNumberPeopleText = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[2]";
+	public static String xpathNumberPeopleText = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[2]";
 	
 	public static final String peopleCountTextSubstring = " people";
 	
@@ -242,7 +243,7 @@ public final class IOSLocators {
 	//Video Player Locators
 	///////////////////////
 	
-	public static final String nameVideoMainPage = "Video";
+	public static final String xpathVideoMainPage = "//UIAWindow[UIAButton[@name='Done']]";
 	
 	public static final String nameVideoDoneButton = "Done";
 	
@@ -258,7 +259,7 @@ public final class IOSLocators {
 
 	public static final String nameConnectAlertYes = "Yes";
 	
-	public static final String xpathReSendButton = "//UIAApplication[1]/UIAWindow[1]/UIATextView[1]";
+	public static final String xpathReSendButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATextView[1]";
 	///////////////////////
 	//Media Bar Locators
 	///////////////////////
@@ -271,9 +272,9 @@ public final class IOSLocators {
 	
 	public static final String nameMediaCellPlayButton = "mediaCellButton";
 	
-	public static final String xpathMediaConversationCell = "//UIAApplication[1]/UIAWindow[2]/UIATableView[1]/UIATableCell[last()]/UIAWebView[last()]";
+	public static final String xpathMediaConversationCell = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/UIAWebView[last()]";
 	
-	public static final String xpathConversationPage = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]";
+	public static final String xpathConversationPage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]";
 	
 	public static final String MEDIA_STATE_PLAYING = "playing";
 	
@@ -344,7 +345,7 @@ public final class IOSLocators {
 	public static final String namePeoplePickerContactsLabel = "CONTACTS";
 	public static final String namePeoplePickerOtheraLabel = "OTHERS";
 	public static final String NamePeoplePickerTopPeopleLabel = "TOP PEOPLE";
-	public static final String xpathPeoplePickerUserAvatar = "//UIAApplication[1]/UIAWindow[2]/UIACollectionView[1]/UIACollectionCell/UIAStaticText[@name='%s']/..";
+	public static final String xpathPeoplePickerUserAvatar = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell/UIAStaticText[@name='%s']/..";
 	public static final String namePeoplePickerAddToConversationButton = "ADD TO CONVERSATION";
 	
 	//////////////////
