@@ -355,11 +355,19 @@ public class DialogPage extends AndroidPage{
 		do {
 			i++;
 			lastMessageAppears = temp;
-			long startDate = new Date().getTime();
 			Date receivedDate = new Date();
-			String source = driver.getPageSource();
-			long endDate = new Date().getTime();
-			log.debug("Time to get page source: " + (endDate-startDate) + "ms");
+			boolean isPageSourceRetrieved = true;
+			int tries = 0;
+			String source = "";
+			do {
+				tries++;
+				try {
+					source = driver.getPageSource();
+				} catch (WebDriverException e) {
+					log.debug("Error while getting source code for Android. Trying again.");
+					isPageSourceRetrieved = false;
+				}
+			} while (!isPageSourceRetrieved && tries < 5);
 			Pattern pattern = Pattern.compile(UUID_TEXT_MESSAGE_PATTERN);
 			Matcher matcher = pattern.matcher(source);
 			while (matcher.find()) {

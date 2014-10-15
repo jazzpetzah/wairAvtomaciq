@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.sync.ExecutionContext;
 import com.wearezeta.auto.sync.client.InstanceState;
@@ -29,9 +32,12 @@ class MessageReport {
 	public String iosReceiveTime;
 	public boolean isAndroidReceiveTimeOK;
 	public String androidReceiveTime;
+	public boolean checkTime = true;
 }
 
 public class ReportData {
+	private static final Logger log = ZetaLogger.getLog(ReportData.class.getSimpleName());
+	
 	public ArrayList<UserReport> users = new ArrayList<UserReport>();
 
 	public ArrayList<MessageReport> messages = new ArrayList<MessageReport>();
@@ -267,6 +273,16 @@ public class ReportData {
 			if (!report.isIosReceiveTimeOK) isIosReceiveMessagesInTime = false;
 			if (!report.isAndroidReceiveTimeOK) isAndroidReceiveMessagesInTime = false;
 			if (!report.isOsxReceiveTimeOK) isOsxReceiveMessagesInTime = false;
+			
+			messages.add(report);
+		}
+		
+		for (Map.Entry<String, MessageEntry> entry: ExecutionContext.sentMessagesNoTimeCheck.entrySet()) {
+			log.debug("Number of messages with no time check.");
+			MessageReport report = new MessageReport();
+			report.message = entry.getKey();
+			report.sentFrom = entry.getValue().sender;
+			report.checkTime = false;
 			
 			messages.add(report);
 		}
