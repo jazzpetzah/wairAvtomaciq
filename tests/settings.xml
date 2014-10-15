@@ -21,7 +21,7 @@
         <isSimulator>true</isSimulator>
         <generateUsers>true</generateUsers>
         <swipeScriptPath>swipeInWindow</swipeScriptPath> <!-- no need to change -->
-        <pathToUserpic>img/userpicture_landscape.jpg</pathToUserpic> <!-- no need to change -->
+        <pathToUserpic>img/Media</pathToUserpic> <!-- no need to change -->
         <driverTimeoutSeconds>10</driverTimeoutSeconds>
         <pictureResultsPath>/Users/shiznyak/Downloads/</pictureResultsPath>
         <iosImagesPath>img/</iosImagesPath> <!-- no need to change -->
