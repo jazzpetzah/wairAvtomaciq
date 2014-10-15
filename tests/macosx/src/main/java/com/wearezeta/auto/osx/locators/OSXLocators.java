@@ -143,4 +143,6 @@ public final class OSXLocators {
 	public static final String xpathConversationTextMessageEntry = "//AXWebArea/AXGroup/AXStaticText";
 
 	public static final String idShareContactsLaterButton = "ConfirmationViewCancelButton";
+	
+	public static final String idMainWindowMinimizeButton = "MainWindowMinimizeButton";
 }

@@ -509,7 +509,7 @@ public class DialogPage extends IOSPage{
 		return null;
 	}
 	
-	public void sendMessageUsingScript(String message) { 
+	public void sendMessageUsingScript(String message) {
 		String script = String.format(
 				IOSLocators.scriptCursorInputPath + ".setValue(\"%s\");" +
 						IOSLocators.scriptKeyboardReturnKeyPath + ".tap();", message);
@@ -517,13 +517,16 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public void sendMessagesUsingScript(String[] messages) {
-		String script = "";
 		for (int i = 0; i < messages.length; i++) {
-			script +=
-					String.format(
-							IOSLocators.scriptCursorInputPath + ".setValue(\"%s\");" +
-									IOSLocators.scriptKeyboardReturnKeyPath + ".tap();", messages[i]);
+			sendMessageUsingScript(messages[i]);
 		}
-		driver.executeScript(script);
+//		String script = "";
+//		for (int i = 0; i < messages.length; i++) {
+//			script +=
+//					String.format(
+//							IOSLocators.scriptCursorInputPath + ".setValue(\"%s\");" +
+//									IOSLocators.scriptKeyboardReturnKeyPath + ".tap();", messages[i]);
+//		}
+//		driver.executeScript(script);
 	}
 }
