@@ -27,6 +27,7 @@ public class PerformanceSteps {
 	private static final int BACK_END_MESSAGE_COUNT = 5;
 	private static final int SEND_MESSAGE_NUM = 4;
 	private String randomMessage;
+	private static final String picturename = "test.jpg";
 
 	Random random = new Random();
 
@@ -98,7 +99,7 @@ public class PerformanceSteps {
 						.getChoosePicturePage();
 				Assert.assertTrue(choosePicturePage.isVisible());
 
-				choosePicturePage.openImage("testing.jpg");
+				choosePicturePage.openImage(picturename);
 				
 				Thread.sleep(1000);
 				CommonSteps.senderPages.getConversationPage().scrollDownToLastMessage();
@@ -129,7 +130,6 @@ public class PerformanceSteps {
 
 		System.out.print(sleepTimer);
 		Thread.sleep(sleepTimer);
-		//Thread.sleep(1000);
 	}
 
 	@When("Restore ZClient")

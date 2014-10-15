@@ -13,7 +13,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <skipTests>true</skipTests>
-    <TestRun>PerformanceRun</TestRun>
+    <TestRun>DevRun</TestRun>
     <Url>http://127.0.0.1:4622/wd/hub</Url>
     <appPath>ZClient</appPath>
     <generateUsers>true</generateUsers>
