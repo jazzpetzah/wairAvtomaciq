@@ -27,7 +27,7 @@ public class PerformanceSteps {
 	private static final int BACK_END_MESSAGE_COUNT = 5;
 	private static final int SEND_MESSAGE_NUM = 4;
 	private String randomMessage;
-	private static final String picturename = "test.jpg";
+	private static final String picturename = "testing.jpg";
 
 	Random random = new Random();
 

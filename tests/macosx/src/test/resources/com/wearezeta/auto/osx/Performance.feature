@@ -9,4 +9,4 @@ Feature: Performance
  	
  	Examples: 
       | Login     | Password | UsersNumber | Time  |
-      | perfUser  | perfPass | 10          | 10    |
+      | perfUser  | perfPass | 10          | 30    |
