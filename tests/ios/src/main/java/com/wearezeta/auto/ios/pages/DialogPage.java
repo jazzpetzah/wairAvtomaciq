@@ -477,11 +477,8 @@ public class DialogPage extends IOSPage{
 		do {
 			i++;
 			lastMessageAppears = temp;
-			long startDate = new Date().getTime();
 			Date receivedDate = new Date();
 			String source = driver.getPageSource();
-			long endDate = new Date().getTime();
-			log.debug("Time to get page source: " + (endDate-startDate) + "ms");
 			Pattern pattern = Pattern.compile(UUID_TEXT_MESSAGE_PATTERN);
 			Matcher matcher = pattern.matcher(source);
 			while (matcher.find()) {
@@ -505,7 +502,7 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public MessageEntry receiveMessage(String message) {
-		WebElement messageElement = driver.findElement(By.xpath(String.format(IOSLocators.xpathFormatDialogTextMessage, message)));
+		WebElement messageElement = driver.findElement(By.name(message));
 		if (messageElement != null) {
 			return new MessageEntry("text", message, new Date());
 		}

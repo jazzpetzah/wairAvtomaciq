@@ -19,9 +19,14 @@ public class ExecutionContext {
 	public static HashMap<String, ZetaInstance> clients = new HashMap<String, ZetaInstance>();
 
 	public static LinkedHashMap<String, MessageEntry> sentMessages = new LinkedHashMap<String, MessageEntry>();
+	public static LinkedHashMap<String, MessageEntry> sentMessagesNoTimeCheck = new LinkedHashMap<String, MessageEntry>();
 	
-	public static synchronized void addNewSentTextMessage(MessageEntry message) {
-		sentMessages.put(message.messageContent, message);
+	public static synchronized void addNewSentTextMessage(MessageEntry message, boolean checkTime) {
+		if (checkTime) {
+			sentMessages.put(message.messageContent, message);
+		} else {
+			sentMessagesNoTimeCheck.put(message.messageContent, message);
+		}
 	}
 	
 	public static boolean isAndroidEnabled() { return clients.get(CommonUtils.PLATFORM_NAME_ANDROID).isEnabled(); }
