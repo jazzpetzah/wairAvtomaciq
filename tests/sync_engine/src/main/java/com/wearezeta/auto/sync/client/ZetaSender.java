@@ -68,6 +68,10 @@ public class ZetaSender extends Thread {
 	}
 
 	public void sendTextMessage(String chat, String message) {
+		sendTextMessage(chat, message, true);
+	}
+	
+	public void sendTextMessage(String chat, String message, boolean checkTime) {
 		if (sendingStartDate == null) {
 			sendingStartDate = new Date();
 		}
@@ -90,7 +94,7 @@ public class ZetaSender extends Thread {
 
 		MessageEntry entry = new MessageEntry("text", message,
 				platform(), new Date());
-		ExecutionContext.addNewSentTextMessage(entry);
+		ExecutionContext.addNewSentTextMessage(entry, checkTime);
 	}
 	
 	private void sendTextMessageAndroid(String message) throws Throwable {
@@ -111,14 +115,14 @@ public class ZetaSender extends Thread {
 		steps.ISendUsingScriptPredefinedMessage(message);
 	}
 	
-	public void sendAllMessagesIos(String messages[]) {
+	public void sendAllMessagesIos(String messages[], boolean checkTime) {
 		com.wearezeta.auto.ios.pages.DialogPage dialogPage = com.wearezeta.auto.ios.pages.PagesCollection.dialogPage;
 		Date sendDate = new Date();
 		dialogPage.sendMessagesUsingScript(messages);
 		for (int j = 0; j < messages.length; j++) {
 			MessageEntry entry = new MessageEntry("text", messages[j],
-				platform(),sendDate);
-			ExecutionContext.addNewSentTextMessage(entry);
+						platform(),sendDate);
+			ExecutionContext.addNewSentTextMessage(entry, checkTime);
 		}
 	}
 	
