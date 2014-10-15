@@ -510,6 +510,7 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public void sendMessageUsingScript(String message) { 
+		log.debug(driver.getPageSource());
 		String script = String.format(
 				IOSLocators.scriptCursorInputPath + ".setValue(\"%s\");" +
 						IOSLocators.scriptKeyboardReturnKeyPath + ".tap();", message);
