@@ -19,9 +19,14 @@ public class ExecutionContext {
 	public static HashMap<String, ZetaInstance> clients = new HashMap<String, ZetaInstance>();
 
 	public static LinkedHashMap<String, MessageEntry> sentMessages = new LinkedHashMap<String, MessageEntry>();
+	public static LinkedHashMap<String, MessageEntry> sentMessagesNoTimeCheck = new LinkedHashMap<String, MessageEntry>();
 	
-	public static synchronized void addNewSentTextMessage(MessageEntry message) {
-		sentMessages.put(message.messageContent, message);
+	public static synchronized void addNewSentTextMessage(MessageEntry message, boolean checkTime) {
+		if (checkTime) {
+			sentMessages.put(message.messageContent, message);
+		} else {
+			sentMessagesNoTimeCheck.put(message.messageContent, message);
+		}
 	}
 	
 	public static boolean isAndroidEnabled() { return clients.get(CommonUtils.PLATFORM_NAME_ANDROID).isEnabled(); }
@@ -52,11 +57,8 @@ public class ExecutionContext {
 		return result;
 	}
 	
-	public static boolean messagesOrderCorrect() {
-		//TODO: implement workaround for android
-		return /*androidZeta().isOrderCorrect()
-				&& */osxZeta().isOrderCorrect()
-				&& iosZeta().isOrderCorrect();
+	public static boolean isPlatformMessagesOrderCorrect(String platform) {
+		return clients.get(platform).isOrderCorrect();
 	}
 	
 	public static ReportData report = new ReportData();

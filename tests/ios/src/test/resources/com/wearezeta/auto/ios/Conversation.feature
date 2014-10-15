@@ -34,10 +34,8 @@ Scenario Outline: Send Hello to contact
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
     
-# Muted, needs jenkins investigation, not reproducable on manually Automation execution   
-@mute
 @smoke 
-@id460
+@id460 
 Scenario Outline: Send a camera roll picture to user from contact list
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with my name <Name>
@@ -77,7 +75,7 @@ Examples:
 
 
 @regression 
-@id526  
+@id526
   Scenario Outline: I can send and play inline youtube link
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -449,7 +447,7 @@ Examples:
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|ÄäÖöÜüß & latin chars|
 
 @regression
-@id555
+@id555 
 Scenario Outline: Verify you can add people from 1:1 people view (view functionality)
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with my name <Name>

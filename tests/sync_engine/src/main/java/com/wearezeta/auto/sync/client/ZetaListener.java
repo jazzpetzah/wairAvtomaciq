@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -128,7 +129,7 @@ public class ZetaListener extends Thread {
 		} else if (platform().equals(CommonUtils.PLATFORM_NAME_IOS)) {
 			return receiveChatMessagesIos();
 		}
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			//TODO: process exception
 			log.error(e.getMessage());
 			e.printStackTrace();
@@ -145,7 +146,7 @@ public class ZetaListener extends Thread {
 		} else if (platform().equals(CommonUtils.PLATFORM_NAME_IOS)) {
 			return receiveChatMessagesIos();
 		}
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			//TODO: process exception
 			log.error(e.getMessage());
 			e.printStackTrace();
@@ -211,9 +212,24 @@ public class ZetaListener extends Thread {
 		return conversationPage.listAllMessages();
 	}
 	
-	private ArrayList<MessageEntry> receiveChatMessagesIos() {
-		com.wearezeta.auto.ios.pages.DialogPage dialogPage =
-				com.wearezeta.auto.ios.pages.PagesCollection.dialogPage;
-		return dialogPage.listAllMessages();
+	private static final String UUID_TEXT_MESSAGE_PATTERN = "<UIATextView[^>]*value=\"([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\"[^>]*>\\s*</UIATextView>";
+	private ArrayList<MessageEntry> receiveChatMessagesIos() throws Exception, Throwable {
+		LinkedHashMap<String, MessageEntry> result = new LinkedHashMap<String, MessageEntry>();
+		for (Map.Entry<Date, String> source: pageSources.entrySet()) {
+			Pattern pattern = Pattern.compile(UUID_TEXT_MESSAGE_PATTERN);
+			Matcher matcher = pattern.matcher(source.getValue());
+			while (matcher.find()) {
+					result.put(matcher.group(1), new MessageEntry("text", matcher.group(1), new Date()));
+			}
+		}
+		return new ArrayList<MessageEntry>(result.values());
+	}
+
+	public LinkedHashMap<Date, String> getPageSources() {
+		return pageSources;
+	}
+
+	public void setPageSources(LinkedHashMap<Date, String> pageSources) {
+		this.pageSources = pageSources;
 	}
 }

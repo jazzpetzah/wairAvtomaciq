@@ -66,7 +66,7 @@ public class CommonSteps {
 	private void commonBefore() throws Exception {
 		try {
 			String[] picturepath = new String[] {CommonUtils.getUserPicturePathFromConfig(CommonSteps.class)};
-			IOSSimulatorPhotoLibHelper.CreateSimulatorPhotoLib("7.1-64", picturepath, true);
+			IOSSimulatorPhotoLibHelper.CreateSimulatorPhotoLib("8.0", picturepath, true);
 		}
 		catch(Exception ex){
 			ex.printStackTrace();

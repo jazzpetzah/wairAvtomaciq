@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.sync.ExecutionContext;
+import com.wearezeta.auto.sync.client.InstanceState;
 import com.wearezeta.auto.sync.client.ZetaInstance;
 import com.wearezeta.auto.sync.client.ZetaSender;
 
@@ -28,9 +32,12 @@ class MessageReport {
 	public String iosReceiveTime;
 	public boolean isAndroidReceiveTimeOK;
 	public String androidReceiveTime;
+	public boolean checkTime = true;
 }
 
 public class ReportData {
+	private static final Logger log = ZetaLogger.getLog(ReportData.class.getSimpleName());
+	
 	public ArrayList<UserReport> users = new ArrayList<UserReport>();
 
 	public ArrayList<MessageReport> messages = new ArrayList<MessageReport>();
@@ -39,10 +46,29 @@ public class ReportData {
 	public double averageOsxReceiveTime;
 	
 	public boolean areClientsStable;
+	public boolean isAndroidStable;
+	public boolean isIosStable;
+	public boolean isOsxStable;
+	
 	public boolean areMessagesReceived;
+	public boolean isAndroidReceiveMessages;
+	public boolean isOsxReceiveMessages;
+	public boolean isIosReceiveMessages;
+	
 	public boolean areMessagesReceiveTimeCorrect;
+	public boolean isAndroidReceiveMessagesInTime;
+	public boolean isIosReceiveMessagesInTime;
+	public boolean isOsxReceiveMessagesInTime;
+	
 	public boolean areMessagesOrderCorrect;
+	public boolean isAndroidMessagesOrderCorrect;
+	public boolean isIosMessagesOrderCorrect;
+	public boolean isOsxMessagesOrderCorrect;
 
+	public ArrayList<String> iosMessages;
+	public ArrayList<String> osxMessages;
+	public ArrayList<String> androidMessages;
+	
 	public void fillReportInfo() {
 		for (Map.Entry<String, ZetaInstance> client : ExecutionContext.clients
 				.entrySet()) {
@@ -124,18 +150,21 @@ public class ReportData {
 			}
 		}
 		
-		if (osxReceivedMessages.size() == ExecutionContext.osxZeta().getMessagesToSend()*2
-				&& iosReceivedMessages.size() == ExecutionContext.osxZeta().getMessagesToSend()*2
-				&& androidReceivedMessages.size() == ExecutionContext.osxZeta().getMessagesToSend()*2) {
-			areMessagesReceived = true;
-		} else {
-			areMessagesReceived = false;
-		}
+		isOsxReceiveMessages = isMessagesReceived(osxReceivedMessages, ExecutionContext.sentMessages, CommonUtils.PLATFORM_NAME_OSX);
+		isIosReceiveMessages = isMessagesReceived(iosReceivedMessages, ExecutionContext.sentMessages, CommonUtils.PLATFORM_NAME_IOS);
+		isAndroidReceiveMessages = isMessagesReceived(androidReceivedMessages, ExecutionContext.sentMessages, CommonUtils.PLATFORM_NAME_ANDROID);
+		areMessagesReceived = isOsxReceiveMessages && isIosReceiveMessages && isAndroidReceiveMessages;
+		
 		sentMessages = ExecutionContext.sentMessages;
 		
 		long iosSumReceiveTime = 0;
 		long androidSumReceiveTime = 0;
 		long osxSumReceiveTime = 0;
+		
+		areMessagesReceiveTimeCorrect = true;
+		isIosReceiveMessagesInTime = true;
+		isAndroidReceiveMessagesInTime = true;
+		isOsxReceiveMessagesInTime = true;
 		
 		for (Map.Entry<String, MessageEntry> entry: sentMessages.entrySet()) {
 			MessageReport report = new MessageReport();
@@ -241,26 +270,72 @@ public class ReportData {
 				}
 			}
 			
-			averageIosReceiveTime = (iosSumReceiveTime / (double)iosReceivedMessages.size())/1000d;
-			averageAndroidReceiveTime = (androidSumReceiveTime / (double)androidReceivedMessages.size())/1000d;
-			averageOsxReceiveTime = (osxSumReceiveTime / (double)osxReceivedMessages.size())/1000d;
+			if (!report.isIosReceiveTimeOK) isIosReceiveMessagesInTime = false;
+			if (!report.isAndroidReceiveTimeOK) isAndroidReceiveMessagesInTime = false;
+			if (!report.isOsxReceiveTimeOK) isOsxReceiveMessagesInTime = false;
 			
-			averageIosReceiveTime = Math.round(averageIosReceiveTime*1000)/1000.0d;
-			averageAndroidReceiveTime = Math.round(averageAndroidReceiveTime*1000)/1000.0d;
-			averageOsxReceiveTime = Math.round(averageOsxReceiveTime*1000)/1000.0d;
-			
-			if (report.isIosReceiveTimeOK
-					&& report.isAndroidReceiveTimeOK
-					&& report.isOsxReceiveTimeOK) {
-				areMessagesReceiveTimeCorrect = true;
-			} else {
-				areMessagesReceiveTimeCorrect = false;
-			}
-			areClientsStable = true;
-			areMessagesOrderCorrect = ExecutionContext.messagesOrderCorrect();
-
 			messages.add(report);
 		}
+		
+		for (Map.Entry<String, MessageEntry> entry: ExecutionContext.sentMessagesNoTimeCheck.entrySet()) {
+			log.debug("Number of messages with no time check.");
+			MessageReport report = new MessageReport();
+			report.message = entry.getKey();
+			report.sentFrom = entry.getValue().sender;
+			report.checkTime = false;
+			
+			messages.add(report);
+		}
+		
+		averageIosReceiveTime = (iosSumReceiveTime / (double)iosReceivedMessages.size())/1000d;
+		averageAndroidReceiveTime = (androidSumReceiveTime / (double)androidReceivedMessages.size())/1000d;
+		averageOsxReceiveTime = (osxSumReceiveTime / (double)osxReceivedMessages.size())/1000d;
+		
+		averageIosReceiveTime = Math.round(averageIosReceiveTime*1000)/1000.0d;
+		averageAndroidReceiveTime = Math.round(averageAndroidReceiveTime*1000)/1000.0d;
+		averageOsxReceiveTime = Math.round(averageOsxReceiveTime*1000)/1000.0d;
+		
+		if (!isIosReceiveMessagesInTime || !isAndroidReceiveMessagesInTime || !isOsxReceiveMessagesInTime) {
+			areMessagesReceiveTimeCorrect = false;
+		}
+		
+		isAndroidStable = (ExecutionContext.androidZeta().getState() != InstanceState.ERROR_CRASHED);
+		isIosStable = ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED;
+		isOsxStable = ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED;
+		areClientsStable = isAndroidStable && isIosStable && isOsxStable;
+		
+		isOsxMessagesOrderCorrect = ExecutionContext.isPlatformMessagesOrderCorrect(CommonUtils.PLATFORM_NAME_OSX);
+		isAndroidMessagesOrderCorrect = ExecutionContext.isPlatformMessagesOrderCorrect(CommonUtils.PLATFORM_NAME_ANDROID);
+		isIosMessagesOrderCorrect = ExecutionContext.isPlatformMessagesOrderCorrect(CommonUtils.PLATFORM_NAME_IOS);
+		areMessagesOrderCorrect = isOsxMessagesOrderCorrect && isAndroidMessagesOrderCorrect && isIosMessagesOrderCorrect;
+
+		iosMessages = new ArrayList<String>();
+		for (MessageEntry iosMessageEntry: ExecutionContext.iosZeta().getMessagesListAfterTest()) {
+			iosMessages.add(iosMessageEntry.messageContent);
+		}
+		osxMessages = new ArrayList<String>();
+		for (MessageEntry osxMessageEntry: ExecutionContext.osxZeta().getMessagesListAfterTest()) {
+			osxMessages.add(osxMessageEntry.messageContent);
+		}
+		androidMessages = new ArrayList<String>();
+		for (MessageEntry androidMessageEntry: ExecutionContext.androidZeta().getMessagesListAfterTest()) {
+			androidMessages.add(androidMessageEntry.messageContent);
+		}
+	}
+	
+	public static boolean isMessagesReceived(
+			LinkedHashMap<String, MessageEntry> receivedMessages,
+			LinkedHashMap<String, MessageEntry> sentMessages,
+			String platform) {
+		int sentFromAnotherPlatformCount = 0;
+
+		for (MessageEntry sent: sentMessages.values()) {
+			if (!sent.sender.equals(platform)) {
+				sentFromAnotherPlatformCount++;
+			}
+		}
+		
+		return sentFromAnotherPlatformCount == receivedMessages.size();
 	}
 	
 	public static final String toXml(ReportData data) {

@@ -25,7 +25,7 @@ Feature: Register new user
     |	aqaUser            	        |	aqaPassword	    |	aqaUser       	|
 
 @regression
-@id304
+@id304 
   Scenario Outline: Attempt to register an email with spaces
     Given I see sign in screen
 	When I press Join button
@@ -33,7 +33,7 @@ Feature: Register new user
 	And I choose a picture from camera roll
 	And I See selected picture
 	And I confirm selection
-	And I enter name <Name>
+	And I input name <Name> and hit Enter
 	And I attempt to enter an email with spaces <Email>
 	Then I verify no spaces are present in email
 
@@ -42,10 +42,8 @@ Feature: Register new user
     |	aqaUser           	    |	aqaPassword	        |  aqaUser      	|
   
   
-  # Not stable    
-  @mute
   @regression
-  @id304
+  @id304 
   Scenario Outline: Attempt to register an email with incorrect format
     Given I see sign in screen
 	When I press Join button
@@ -53,7 +51,7 @@ Feature: Register new user
 	And I choose a picture from camera roll
 	And I See selected picture
 	And I confirm selection
-	And I enter name <Name>
+	And I input name <Name> and hit Enter
 	And I attempt to enter emails with known incorrect formats
 	Then I verify that the app does not let me continue
 
@@ -72,7 +70,7 @@ Feature: Register new user
 	And I choose a picture from camera roll
 	And I See selected picture
 	And I confirm selection
-	And I enter name <Name>
+	And I input name <Name> and hit Enter
 	And I enter email <Email>
 	And I enter password <Password>
 	Then I navigate throughout the registration pages and see my input
@@ -92,7 +90,7 @@ Feature: Register new user
 	And I choose a picture from camera roll
 	And I See selected picture
 	And I confirm selection
-	And I enter name <Name>
+	And I input name <Name> and hit Enter
 	And I enter an incorrect email <Incorrect>
 	And I enter password <Password>
 	And I submit registration data
@@ -108,7 +106,7 @@ Feature: Register new user
 
 
   @regression
-  @id346
+  @id346 @mute
   Scenario Outline: Register new user using username with maximum characters allowed, Deutch, Double-byte (Chinese), and emoji Characters
 	Given I see sign in screen
 	When I press Join button
@@ -123,8 +121,6 @@ Feature: Register new user
     |	Email 					    |	Password	    |    MaxChars    |    Language   |
     |	aqaUser             	    |	aqaPassword	    |    72          |    English    |
     
-#Muted till new sync engine client stabilization
-@mute
 @regression
   Scenario Outline: Register new user using photo album
 	Given I see sign in screen
@@ -133,10 +129,9 @@ Feature: Register new user
 	And I choose a picture from camera roll
 	And I See selected picture
 	And I confirm selection
-	And I enter name <Name>
-	And I enter email <Email>
-	And I enter password <Password>
-	And I submit registration data
+	And I input name <Name> and hit Enter
+	And I input email <Email> and hit Enter
+	And I input password <Password> and hit Enter
 	Then I see confirmation page 
 	And I verify registration address
 	And Contact list loads with only my name
@@ -289,7 +284,7 @@ Feature: Register new user
 	And I choose a picture from camera roll
 	And I See selected picture
 	And I confirm selection
-	And I enter name <Name>
+	And I input name <Name> and hit Enter
 	And I enter email <Email>
 	And I enter password <Password>
 	And I input user data
@@ -359,7 +354,7 @@ Feature: Register new user
 	And I choose a picture from camera roll
 	And I See selected picture
 	And I confirm selection
-	And I enter name <Name>
+	And I input name <Name> and hit Enter
 	And I enter email <Email>
 	And I enter password <Password>
     Then I confirm that <EmailCount> recent emails in inbox contain 0 for current recipient 

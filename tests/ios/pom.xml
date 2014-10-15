@@ -19,7 +19,7 @@
 	<isSimulator>true</isSimulator>
 	<generateUsers>true</generateUsers>
 	<driverTimeoutSeconds>30</driverTimeoutSeconds>
-	<pathToUserpic>img/userpicture_landscape.jpg</pathToUserpic>
+	<pathToUserpic>img/Media</pathToUserpic>
 	<iosImagesPath>img/</iosImagesPath> 
 	<swipeScriptPath>swipeInWindow</swipeScriptPath>
 	<defaultEmail>smoketester.ios@wearezeta.com</defaultEmail>
@@ -55,19 +55,19 @@
 	<dependency>
         <groupId>info.cukes</groupId>
         <artifactId>cucumber-picocontainer</artifactId>
-        <version>1.1.5</version>
+        <version>1.1.8</version>
     </dependency>
 	
 	<dependency>
         <groupId>info.cukes</groupId>
         <artifactId>cucumber-java</artifactId>
-        <version>1.1.5</version>
+        <version>1.1.8</version>
     </dependency>
 	
     <dependency>
         <groupId>info.cukes</groupId>
         <artifactId>cucumber-junit</artifactId>
-        <version>1.1.5</version>
+        <version>1.1.8</version>
     </dependency>
     
   </dependencies>

@@ -73,7 +73,7 @@ public class OtherUserPersonalInfoPage extends IOSPage{
 	
 	public boolean isOtherUserProfileEmailVisible(String name) {
 		
-		WebElement otherUserEmail = driver.findElementByXPath(String.format(IOSLocators.xpathOtherUserName, name));
+		WebElement otherUserEmail = driver.findElementByXPath(String.format(IOSLocators.xpathOtherUserName, name.toUpperCase()));
 		return otherUserEmail.isDisplayed();
 	}
 	
