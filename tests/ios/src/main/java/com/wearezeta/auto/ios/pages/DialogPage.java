@@ -518,6 +518,7 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public void sendMessagesUsingScript(String[] messages) {
+		log.debug(driver.getPageSource());
 		String script = "";
 		for (int i = 0; i < messages.length; i++) {
 			script +=
