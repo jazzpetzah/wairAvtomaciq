@@ -426,7 +426,6 @@ public class CommonSteps {
 		// start sending message
 		if (ExecutionContext.isIosEnabled() && ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
 			com.wearezeta.auto.ios.pages.DialogPage page = com.wearezeta.auto.ios.pages.PagesCollection.dialogPage;
-			page.ScrollToLastMessage();
 			final String messages[] = new String[ExecutionContext.iosZeta().getMessagesToSend()];
 			for (int j = 0; j < messages.length; j++) {
 				messages[j] = CommonUtils.generateGUID();
@@ -472,10 +471,21 @@ public class CommonSteps {
 	@Given("I collect messages order data")
 	public void ICollectMessagesOrderData() {
 		ExecutionContext.iosZeta().listener().setPageSources(iosPageSources);
+
+		ArrayList<MessageEntry> iosMessages = new ArrayList<MessageEntry>();
+		if (ExecutionContext.isIosEnabled()) {
+			iosMessages = ExecutionContext.iosZeta().listener().receiveChatMessages();
+		}
 		
-		ArrayList<MessageEntry> iosMessages = ExecutionContext.iosZeta().listener().receiveChatMessages();
-		ArrayList<MessageEntry> osxMessages = ExecutionContext.osxZeta().listener().receiveChatMessages();
-		ArrayList<MessageEntry> androidMessages = ExecutionContext.androidZeta().listener().receiveChatMessages();
+		ArrayList<MessageEntry> osxMessages = new ArrayList<MessageEntry>();
+		if (ExecutionContext.isOsxEnabled()) {
+			osxMessages = ExecutionContext.osxZeta().listener().receiveChatMessages();
+		}
+		
+		ArrayList<MessageEntry> androidMessages = new ArrayList<MessageEntry>();
+		if (ExecutionContext.isAndroidEnabled()) {
+			androidMessages = ExecutionContext.androidZeta().listener().receiveChatMessages();
+		}
 		
 		ArrayList<MessageEntry> sentMessages = new ArrayList<MessageEntry>(ExecutionContext.sentMessages.values());
 		

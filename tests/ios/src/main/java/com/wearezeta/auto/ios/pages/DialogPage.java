@@ -502,6 +502,11 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public MessageEntry receiveMessage(String message) {
+		try {
+			swipeTillTextMessageWithPattern("up", message);
+		} catch (Exception e) {
+			log.debug(e.getMessage());
+		}
 		WebElement messageElement = driver.findElement(By.name(message));
 		if (messageElement != null) {
 			return new MessageEntry("text", message, new Date());
@@ -517,7 +522,23 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public void sendMessagesUsingScript(String[] messages) {
-		String script = "";
+		//swipe up workaround
+		try {
+			Point coords = new Point(0, 0);
+			Dimension elementSize = driver.manage().window().getSize();
+
+			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
+				driver.swipe(
+					coords.x + elementSize.width / 2, coords.y + elementSize.height/2,
+					coords.x + elementSize.width / 2, coords.y + 120,
+					500);
+			} else {
+				DriverUtils.iOSSimulatorSwipeDialogPageUp(
+					CommonUtils.getSwipeScriptPath(IOSPage.class));
+			}
+		} catch (Exception e) { }
+	
+		String script = IOSLocators.scriptCursorInputPath + ".tap();";
 		for (int i = 0; i < messages.length; i++) {
 			script +=
 					String.format(
