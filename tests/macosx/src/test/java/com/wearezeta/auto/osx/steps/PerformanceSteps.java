@@ -23,7 +23,7 @@ import cucumber.api.java.en.When;
 public class PerformanceSteps {
 
 	private static final int MIN_WAIT_VALUE_IN_MIN = 1;
-	private static final int MAX_WAIT_VALUE_IN_MIN = 5;
+	private static final int MAX_WAIT_VALUE_IN_MIN = 2;
 	private static final int BACK_END_MESSAGE_COUNT = 5;
 	private static final int SEND_MESSAGE_NUM = 4;
 	private String randomMessage;
@@ -52,17 +52,6 @@ public class PerformanceSteps {
 
 			Thread.sleep(1000);
 
-			// final ArrayList<WebElement> visibleContactsList = new
-			// ArrayList<WebElement>(
-			// CommonSteps.senderPages.getContactListPage().getContacts());
-			// for (int i = 0; i < visibleContactsList.size(); i++) {
-			// if (visibleContactsList.get(i).getText().equals(user)) {
-			// visibleContactsList.remove(i);
-			// break;
-			// }
-			// }
-			Thread.sleep(1000);
-
 			for (int j = 1; j <= SEND_MESSAGE_NUM; ++j) {
 				ArrayList<WebElement> visibleContactsList = new ArrayList<WebElement>(
 						CommonSteps.senderPages.getContactListPage()
@@ -73,23 +62,13 @@ public class PerformanceSteps {
 						break;
 					}
 				}
+				
 				int randomInt = random.nextInt(visibleContactsList.size() - 1);
-				for (int k = 0; k < visibleContactsList.size(); k++) {
-					System.out.println(visibleContactsList.get(k).getText());
-				}
 				String contact = visibleContactsList.get(randomInt).getText();
-				// int randomInt = random.nextInt(visibleContactsList.size() -
-				// 1);
-				// String contact =
-				// visibleContactsList.get(randomInt).getText();
-				System.out.println(contact);
-				// CommonSteps.senderPages.setContactListPage(new
-				// ContactListPage(
-				// CommonUtils.getOsxAppiumUrlFromConfig(LoginPageSteps.class),
-				// CommonUtils.getOsxApplicationPathFromConfig(LoginPageSteps.class)));
 				CommonSteps.senderPages.getContactListPage().openConversation(
 						contact);
 				Thread.sleep(100);
+				
 				CommonSteps.senderPages
 						.setConversationPage(new ConversationPage(
 								CommonUtils
@@ -97,12 +76,15 @@ public class PerformanceSteps {
 								CommonUtils
 										.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
 				Thread.sleep(2000);
+				//CommonSteps.senderPages.getConversationPage().scrollDownToLastMessage();
 				randomMessage = CommonUtils.generateGUID();
-				System.out.print("Randome Message" + randomMessage);
 				CommonSteps.senderPages.getConversationPage().writeNewMessage(
 						randomMessage);
 				Thread.sleep(2000);
 				CommonSteps.senderPages.getConversationPage().sendNewMessage();
+				Thread.sleep(1000);
+				CommonSteps.senderPages.getConversationPage().scrollDownToLastMessage();
+				Thread.sleep(1000);
 
 				CommonSteps.senderPages.getConversationPage()
 						.openChooseImageDialog();
@@ -123,9 +105,10 @@ public class PerformanceSteps {
 				CommonSteps.senderPages.getConversationPage().scrollDownToLastMessage();
 			}
 
-			//MinimizeZClient();
-			//SetRandomSleepInterval();
-			//RestoreZClient();
+			MinimizeZClient();
+			SetRandomSleepInterval();
+			RestoreZClient();
+			Thread.sleep(2000);
 
 			LocalDateTime currentDateTime = LocalDateTime.now();
 			diffInMinutes = java.time.Duration.between(startDateTime,
@@ -146,8 +129,8 @@ public class PerformanceSteps {
 		int sleepTimer = ((random.nextInt(MAX_WAIT_VALUE_IN_MIN) + MIN_WAIT_VALUE_IN_MIN) * 60 * 1000);
 
 		System.out.print(sleepTimer);
-		// Thread.sleep(sleepTimer);
-		Thread.sleep(1000);
+		Thread.sleep(sleepTimer);
+		//Thread.sleep(1000);
 	}
 
 	@When("Restore ZClient")
