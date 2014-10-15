@@ -76,7 +76,6 @@ public class PerformanceSteps {
 								CommonUtils
 										.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
 				Thread.sleep(2000);
-				//CommonSteps.senderPages.getConversationPage().scrollDownToLastMessage();
 				randomMessage = CommonUtils.generateGUID();
 				CommonSteps.senderPages.getConversationPage().writeNewMessage(
 						randomMessage);
