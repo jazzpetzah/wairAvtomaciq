@@ -319,8 +319,10 @@ public class CommonSteps {
 	
 	private void storeIosPageSource() {
 		if (ExecutionContext.isIosEnabled() && ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
-			iosPageSources.put(new Date(), ExecutionContext.iosZeta().listener().getChatSource());
 			ExecutionContext.iosZeta().listener().scrollToTheEndOfConversation();
+			String iosSource = ExecutionContext.iosZeta().listener().getChatSource();
+			iosPageSources.put(new Date(), iosSource);
+			log.debug("Current iOS source code: " + iosSource);
 		}
 	}
 	
