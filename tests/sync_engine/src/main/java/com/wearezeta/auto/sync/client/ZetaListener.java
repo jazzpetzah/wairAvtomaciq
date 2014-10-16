@@ -120,6 +120,14 @@ public class ZetaListener extends Thread {
 			return "";
 	}
 	
+	public void scrollToTheEndOfConversation() {
+		if (platform().equals(CommonUtils.PLATFORM_NAME_IOS)) {
+			com.wearezeta.auto.ios.pages.DialogPage dialogPage =
+						com.wearezeta.auto.ios.pages.PagesCollection.dialogPage;
+			dialogPage.scrollToTheEndOfConversation();
+		}
+	}
+	
 	public ArrayList<MessageEntry> receiveChatMessages() {
 		try {
 		if (platform().equals(CommonUtils.PLATFORM_NAME_ANDROID)) {
@@ -202,27 +210,26 @@ public class ZetaListener extends Thread {
 		return dialogPage.listAllMessages();
 	}
 	
-	private ArrayList<MessageEntry> receiveChatMessagesOsx() throws MalformedURLException, IOException {
-		com.wearezeta.auto.osx.steps.CommonSteps.senderPages.setConversationPage(
-				new com.wearezeta.auto.osx.pages.ConversationPage(
-						CommonUtils.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
-						CommonUtils.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
-		com.wearezeta.auto.osx.pages.ConversationPage conversationPage =
-				com.wearezeta.auto.osx.steps.CommonSteps.senderPages.getConversationPage();
-		return conversationPage.listAllMessages();
-	}
-	
-	private static final String UUID_TEXT_MESSAGE_PATTERN = "<UIATextView[^>]*value=\"([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\"[^>]*>\\s*</UIATextView>";
-	private ArrayList<MessageEntry> receiveChatMessagesIos() throws Exception, Throwable {
+	private ArrayList<MessageEntry> parsePageSources(String messagePattern) {
 		LinkedHashMap<String, MessageEntry> result = new LinkedHashMap<String, MessageEntry>();
 		for (Map.Entry<Date, String> source: pageSources.entrySet()) {
-			Pattern pattern = Pattern.compile(UUID_TEXT_MESSAGE_PATTERN);
+			Pattern pattern = Pattern.compile(messagePattern);
 			Matcher matcher = pattern.matcher(source.getValue());
 			while (matcher.find()) {
 					result.put(matcher.group(1), new MessageEntry("text", matcher.group(1), new Date()));
 			}
 		}
 		return new ArrayList<MessageEntry>(result.values());
+	}
+	
+	private static final String UUID_OSX_TEXT_MESSAGE_PATTERN = "<AXGroup[^>]*>\\s*<AXStaticText[^>]*AXValue=\"([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\"[^>]*/>\\s*</AXGroup>";
+	private ArrayList<MessageEntry> receiveChatMessagesOsx() throws MalformedURLException, IOException {
+		return parsePageSources(UUID_OSX_TEXT_MESSAGE_PATTERN);
+	}
+	
+	private static final String UUID_IOS_TEXT_MESSAGE_PATTERN = "<UIATextView[^>]*value=\"([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\"[^>]*>\\s*</UIATextView>";
+	private ArrayList<MessageEntry> receiveChatMessagesIos() throws Exception, Throwable {
+		return parsePageSources(UUID_IOS_TEXT_MESSAGE_PATTERN);
 	}
 
 	public LinkedHashMap<Date, String> getPageSources() {

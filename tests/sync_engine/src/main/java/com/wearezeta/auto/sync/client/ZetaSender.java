@@ -4,6 +4,7 @@ import java.util.Date;
 
 
 import org.apache.log4j.Logger;
+import org.openqa.selenium.WebDriverException;
 
 import com.wearezeta.auto.common.BackEndREST;
 import com.wearezeta.auto.common.ClientUser;
@@ -118,11 +119,15 @@ public class ZetaSender extends Thread {
 	public void sendAllMessagesIos(String messages[], boolean checkTime) {
 		com.wearezeta.auto.ios.pages.DialogPage dialogPage = com.wearezeta.auto.ios.pages.PagesCollection.dialogPage;
 		Date sendDate = new Date();
-		dialogPage.sendMessagesUsingScript(messages);
-		for (int j = 0; j < messages.length; j++) {
-			MessageEntry entry = new MessageEntry("text", messages[j],
-						platform(),sendDate);
-			ExecutionContext.addNewSentTextMessage(entry, checkTime);
+		try {
+			dialogPage.sendMessagesUsingScript(messages);
+			for (int j = 0; j < messages.length; j++) {
+				MessageEntry entry = new MessageEntry("text", messages[j],
+					platform(),sendDate);
+				ExecutionContext.addNewSentTextMessage(entry, checkTime);
+			}
+		} catch (WebDriverException e) {
+			log.fatal("Failed to send messages from iOS client.");
 		}
 	}
 	
