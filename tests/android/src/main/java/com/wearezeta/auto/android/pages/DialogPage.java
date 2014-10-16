@@ -292,6 +292,22 @@ public class DialogPage extends AndroidPage{
 	private static final String TEXT_MESSAGE_PATTERN = "<android.widget.TextView[^>]*text=\"([^\"]*)\"[^>]*/>";
 	private static final int TIMES_TO_SCROLL = 100;
 	
+	private String tryGetPageSourceFewTimes(int times) {
+		String source = null;
+		int tries = 0;
+		boolean isPageSourceRetrieved = true;
+		do {
+			tries++;
+			try {
+				source = driver.getPageSource();
+			} catch (WebDriverException e) {
+				log.debug("Error while getting source code for Android. Trying again.");
+				isPageSourceRetrieved = false;
+			}
+		} while (!isPageSourceRetrieved && tries < times);
+		return source;
+	}
+	
 	public boolean swipeAndCheckMessageFound(String direction, String pattern) {
 		boolean result = false;
 		
@@ -313,7 +329,7 @@ public class DialogPage extends AndroidPage{
 		default:
 			log.fatal("Unknown direction");
 		}
-		String source = driver.getPageSource();
+		String source = tryGetPageSourceFewTimes(5);
 		Pattern messagesPattern = Pattern.compile(TEXT_MESSAGE_PATTERN);
 		Matcher messagesMatcher = messagesPattern.matcher(source);
 		while (messagesMatcher.find()) {
@@ -356,18 +372,7 @@ public class DialogPage extends AndroidPage{
 			i++;
 			lastMessageAppears = temp;
 			Date receivedDate = new Date();
-			boolean isPageSourceRetrieved = true;
-			int tries = 0;
-			String source = "";
-			do {
-				tries++;
-				try {
-					source = driver.getPageSource();
-				} catch (WebDriverException e) {
-					log.debug("Error while getting source code for Android. Trying again.");
-					isPageSourceRetrieved = false;
-				}
-			} while (!isPageSourceRetrieved && tries < 5);
+			String source = tryGetPageSourceFewTimes(5);
 			Pattern pattern = Pattern.compile(UUID_TEXT_MESSAGE_PATTERN);
 			Matcher matcher = pattern.matcher(source);
 			while (matcher.find()) {
@@ -375,7 +380,6 @@ public class DialogPage extends AndroidPage{
 					messages.put(matcher.group(1), new MessageEntry("text", matcher.group(1), receivedDate));
 				}
 			}
-			driver.getPageSource();
 			if (!lastMessageAppears) {
 				temp = swipeAndCheckMessageFound("up", lastMessage);
 			}
