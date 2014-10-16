@@ -124,7 +124,8 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public void scrollToTheEndOfConversation() {
-		driver.tap(1, conversationInput, 500);
+		WebElement inputField = driver.findElement(By.name(IOSLocators.nameConversationCursorInput));
+		driver.tap(1, inputField, 500);
 //		String script = IOSLocators.scriptCursorInputPath + ".tap();";
 //		driver.executeScript(script);
 	}
