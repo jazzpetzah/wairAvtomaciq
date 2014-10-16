@@ -171,6 +171,7 @@ public class ReportData {
 			report.message = entry.getKey();
 			MessageEntry sentMessage = entry.getValue();
 			report.sentFrom = entry.getValue().sender;
+			if (!entry.getValue().checkTime) {
 			if (report.sentFrom.equals(CommonUtils.PLATFORM_NAME_OSX)) {
 				report.isOsxReceiveTimeOK = true;
 				report.osxReceiveTime = "-1";
@@ -269,21 +270,16 @@ public class ReportData {
 					report.isIosReceiveTimeOK = false;
 				}
 			}
+			} else {
+				report.isIosReceiveTimeOK = true;
+				report.isAndroidReceiveTimeOK = true;
+				report.isOsxReceiveTimeOK = true;
+			}
 			
 			if (!report.isIosReceiveTimeOK) isIosReceiveMessagesInTime = false;
 			if (!report.isAndroidReceiveTimeOK) isAndroidReceiveMessagesInTime = false;
 			if (!report.isOsxReceiveTimeOK) isOsxReceiveMessagesInTime = false;
-			
-			messages.add(report);
-		}
-		
-		for (Map.Entry<String, MessageEntry> entry: ExecutionContext.sentMessagesNoTimeCheck.entrySet()) {
-			log.debug("Number of messages with no time check.");
-			MessageReport report = new MessageReport();
-			report.message = entry.getKey();
-			report.sentFrom = entry.getValue().sender;
-			report.checkTime = false;
-			
+
 			messages.add(report);
 		}
 		

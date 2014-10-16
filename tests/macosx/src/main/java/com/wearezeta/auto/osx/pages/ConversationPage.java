@@ -347,7 +347,7 @@ public class ConversationPage extends OSXPage {
 	}
 
 	private static final String UUID_TEXT_MESSAGE_PATTERN = "<AXGroup[^>]*>\\s*<AXStaticText[^>]*AXValue=\"([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\"[^>]*/>\\s*</AXGroup>";
-	public ArrayList<MessageEntry> listAllMessages() {
+	public ArrayList<MessageEntry> listAllMessages(boolean checkTime) {
 		long startDate = new Date().getTime();
 		Date receivedDate = new Date();
 		String source = driver.getPageSource();
@@ -357,18 +357,18 @@ public class ConversationPage extends OSXPage {
 		Pattern pattern = Pattern.compile(UUID_TEXT_MESSAGE_PATTERN);
 		Matcher matcher = pattern.matcher(source);
 		while (matcher.find()) {
-			listResult.add(new MessageEntry("text", matcher.group(1), receivedDate));
+			listResult.add(new MessageEntry("text", matcher.group(1), receivedDate, checkTime));
 		}
 		return listResult;
 	}
 
-	public MessageEntry receiveMessage(String message) {
+	public MessageEntry receiveMessage(String message, boolean checkTime) {
 		DriverUtils.setImplicitWaitValue(driver, 120);
 		try {
 			WebElement messageElement = driver.findElement(By.xpath(String.format(
 				OSXLocators.xpathFormatSpecificMessageEntry, message)));
 			if (messageElement != null) {
-				return new MessageEntry("text", message, new Date());
+				return new MessageEntry("text", message, new Date(), checkTime);
 			}
 		} finally {
 			DriverUtils.setDefaultImplicitWait(driver);

@@ -94,7 +94,7 @@ public class ZetaSender extends Thread {
 		}
 
 		MessageEntry entry = new MessageEntry("text", message,
-				platform(), new Date());
+				platform(), new Date(), checkTime);
 		ExecutionContext.addNewSentTextMessage(entry, checkTime);
 	}
 	
@@ -123,7 +123,7 @@ public class ZetaSender extends Thread {
 			dialogPage.sendMessagesUsingScript(messages);
 			for (int j = 0; j < messages.length; j++) {
 				MessageEntry entry = new MessageEntry("text", messages[j],
-					platform(),sendDate);
+					platform(), sendDate, checkTime);
 				ExecutionContext.addNewSentTextMessage(entry, checkTime);
 			}
 		} catch (WebDriverException e) {

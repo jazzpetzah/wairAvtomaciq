@@ -354,7 +354,7 @@ public class DialogPage extends AndroidPage{
 	
 	private static final String UUID_TEXT_MESSAGE_PATTERN = "<android.widget.TextView[^>]*text=\"([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\"[^>]*/>";
 	private static final String DIALOG_START_MESSAGE_PATTERN = "^(.*)\\sADDED\\s(.*)$";
-	public ArrayList<MessageEntry> listAllMessages() {
+	public ArrayList<MessageEntry> listAllMessages(boolean checkTime) {
 		try {
 			driver.hideKeyboard();
 		} catch (WebDriverException e) { }
@@ -377,7 +377,7 @@ public class DialogPage extends AndroidPage{
 			Matcher matcher = pattern.matcher(source);
 			while (matcher.find()) {
 				if (messages.get(matcher.group(1)) == null) {
-					messages.put(matcher.group(1), new MessageEntry("text", matcher.group(1), receivedDate));
+					messages.put(matcher.group(1), new MessageEntry("text", matcher.group(1), receivedDate, checkTime));
 				}
 			}
 			if (!lastMessageAppears) {
@@ -394,10 +394,10 @@ public class DialogPage extends AndroidPage{
 		return listResult;
 	}
 	
-	public MessageEntry receiveMessage(String message) {
+	public MessageEntry receiveMessage(String message, boolean checkTime) {
 		WebElement messageElement = driver.findElement(By.xpath(String.format(AndroidLocators.DialogPage.xpathFormatSpecificMessage, message)));
 		if (messageElement != null) {
-			return new MessageEntry("text", message, new Date());
+			return new MessageEntry("text", message, new Date(), checkTime);
 		}
 		return null;
 	}

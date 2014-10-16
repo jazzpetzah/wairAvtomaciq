@@ -466,7 +466,7 @@ public class DialogPage extends IOSPage{
 	
 	private static final String UUID_TEXT_MESSAGE_PATTERN = "<UIATextView[^>]*value=\"([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\"[^>]*>\\s*</UIATextView>";
 	private static final String DIALOG_START_MESSAGE_PATTERN = "^(.*)\\sADDED\\s(.*)$";
-	public ArrayList<MessageEntry> listAllMessages() throws Exception, Throwable {
+	public ArrayList<MessageEntry> listAllMessages(boolean checkTime) throws Exception, Throwable {
 		try {
 			log.debug("Trying to close keyboard");
 			driver.hideKeyboard();
@@ -490,7 +490,7 @@ public class DialogPage extends IOSPage{
 			Matcher matcher = pattern.matcher(source);
 			while (matcher.find()) {
 				if (messages.get(matcher.group(1)) == null) {
-					messages.put(matcher.group(1), new MessageEntry("text", matcher.group(1), receivedDate));
+					messages.put(matcher.group(1), new MessageEntry("text", matcher.group(1), receivedDate, checkTime));
 				}
 			}
 			driver.getPageSource();
@@ -508,10 +508,10 @@ public class DialogPage extends IOSPage{
 		return listResult;
 	}
 	
-	public MessageEntry receiveMessage(String message) {
+	public MessageEntry receiveMessage(String message, boolean checkTime) {
 		WebElement messageElement = driver.findElement(By.name(message));
 		if (messageElement != null) {
-			return new MessageEntry("text", message, new Date());
+			return new MessageEntry("text", message, new Date(), checkTime);
 		}
 		return null;
 	}
