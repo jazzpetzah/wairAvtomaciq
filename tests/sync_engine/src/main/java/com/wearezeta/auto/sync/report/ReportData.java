@@ -171,7 +171,8 @@ public class ReportData {
 			report.message = entry.getKey();
 			MessageEntry sentMessage = entry.getValue();
 			report.sentFrom = entry.getValue().sender;
-			if (!entry.getValue().checkTime) {
+			report.checkTime = entry.getValue().checkTime;
+			if (report.checkTime) {
 			if (report.sentFrom.equals(CommonUtils.PLATFORM_NAME_OSX)) {
 				report.isOsxReceiveTimeOK = true;
 				report.osxReceiveTime = "-1";
