@@ -316,6 +316,7 @@ public class CommonSteps {
 	private void storeIosPageSource() {
 		if (ExecutionContext.isIosEnabled() && ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
 			iosPageSources.put(new Date(), ExecutionContext.iosZeta().listener().getChatSource());
+			ExecutionContext.iosZeta().listener().scrollToTheEndOfConversation();
 		}
 	}
 	
@@ -368,11 +369,11 @@ public class CommonSteps {
 				});
 				}
 				if (ExecutionContext.isAndroidEnabled() && ExecutionContext.androidZeta().getState() != InstanceState.ERROR_CRASHED) {
-				executor.execute(new Runnable() {
-					public void run() {
-						ExecutionContext.androidZeta().listener().waitForMessageAndroid(message);
-					}
-				});
+					executor.execute(new Runnable() {
+						public void run() {
+							ExecutionContext.androidZeta().listener().waitForMessageAndroid(message);
+						}
+					});
 				}
 				executor.shutdown();
 				if (!executor.awaitTermination(10, TimeUnit.MINUTES)) {

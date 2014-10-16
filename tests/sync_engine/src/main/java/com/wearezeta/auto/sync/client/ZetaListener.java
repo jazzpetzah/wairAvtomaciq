@@ -120,6 +120,14 @@ public class ZetaListener extends Thread {
 			return "";
 	}
 	
+	public void scrollToTheEndOfConversation() {
+		if (platform().equals(CommonUtils.PLATFORM_NAME_IOS)) {
+			com.wearezeta.auto.ios.pages.DialogPage dialogPage =
+						com.wearezeta.auto.ios.pages.PagesCollection.dialogPage;
+			dialogPage.scrollToTheEndOfConversation();
+		}
+	}
+	
 	public ArrayList<MessageEntry> receiveChatMessages() {
 		try {
 		if (platform().equals(CommonUtils.PLATFORM_NAME_ANDROID)) {

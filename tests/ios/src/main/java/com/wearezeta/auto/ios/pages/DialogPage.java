@@ -122,6 +122,12 @@ public class DialogPage extends IOSPage{
 	public void ScrollToLastMessage(){
 		//DriverUtils.scrollToElement(driver, messagesList.get(messagesList.size()-1));
 	}
+	
+	public void scrollToTheEndOfConversation() {
+		driver.tap(1, conversationInput, 500);
+//		String script = IOSLocators.scriptCursorInputPath + ".tap();";
+//		driver.executeScript(script);
+	}
 
 	public String getLastMessageFromDialog()
 	{
@@ -502,11 +508,6 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public MessageEntry receiveMessage(String message) {
-		try {
-			swipeTillTextMessageWithPattern("up", message);
-		} catch (Exception e) {
-			log.debug(e.getMessage());
-		}
 		WebElement messageElement = driver.findElement(By.name(message));
 		if (messageElement != null) {
 			return new MessageEntry("text", message, new Date());
@@ -522,23 +523,24 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public void sendMessagesUsingScript(String[] messages) {
-		//swipe up workaround
+		//swipe down workaround
 		try {
 			Point coords = new Point(0, 0);
 			Dimension elementSize = driver.manage().window().getSize();
 
 			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
 				driver.swipe(
-					coords.x + elementSize.width / 2, coords.y + elementSize.height/2,
-					coords.x + elementSize.width / 2, coords.y + 120,
+					coords.x + elementSize.width / 2, coords.y + 50,
+					coords.x + elementSize.width / 2, coords.y + elementSize.height - 100,
 					500);
 			} else {
-				DriverUtils.iOSSimulatorSwipeDialogPageUp(
-					CommonUtils.getSwipeScriptPath(IOSPage.class));
+				DriverUtils.iOSSimulatorSwipeDialogPageDown(
+						CommonUtils.getSwipeScriptPath(IOSPage.class));
 			}
 		} catch (Exception e) { }
 	
-		String script = IOSLocators.scriptCursorInputPath + ".tap();";
+		scrollToTheEndOfConversation();
+		String script = "";
 		for (int i = 0; i < messages.length; i++) {
 			script +=
 					String.format(
