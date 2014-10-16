@@ -312,11 +312,18 @@ public class CommonSteps {
 	}
 
 	private LinkedHashMap<Date, String> iosPageSources = new LinkedHashMap<Date, String>();
+	private LinkedHashMap<Date, String> osxPageSources = new LinkedHashMap<Date, String>();
 	
 	private void storeIosPageSource() {
 		if (ExecutionContext.isIosEnabled() && ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
 			iosPageSources.put(new Date(), ExecutionContext.iosZeta().listener().getChatSource());
 			ExecutionContext.iosZeta().listener().scrollToTheEndOfConversation();
+		}
+	}
+	
+	private void storeOsxPageSource() {
+		if (ExecutionContext.isOsxEnabled() && ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED) {
+			osxPageSources.put(new Date(), ExecutionContext.osxZeta().listener().getChatSource());
 		}
 	}
 	
@@ -354,6 +361,7 @@ public class CommonSteps {
 			}
 		}
 		storeIosPageSource();
+		storeOsxPageSource();
 		
 		//send osx, receive ios and android
 		if (ExecutionContext.isOsxEnabled() && ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED) {
@@ -387,6 +395,7 @@ public class CommonSteps {
 			}
 		}
 		storeIosPageSource();
+		storeOsxPageSource();
 		
 		//send android, receive ios and osx
 		if (ExecutionContext.isAndroidEnabled() && ExecutionContext.androidZeta().getState() != InstanceState.ERROR_CRASHED) {
@@ -420,6 +429,7 @@ public class CommonSteps {
 			}
 		}
 		storeIosPageSource();
+		storeOsxPageSource();
 	}
 	
 	@Given("I run fast sync engine test")
@@ -440,6 +450,7 @@ public class CommonSteps {
 			
 		}
 		storeIosPageSource();
+		storeOsxPageSource();
 		
 		if (ExecutionContext.isOsxEnabled() && ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED) {
 			for (int i = 0; i < ExecutionContext.osxZeta().getMessagesToSend(); i++) {
@@ -453,7 +464,8 @@ public class CommonSteps {
 			}
 		}
 		storeIosPageSource();
-
+		storeOsxPageSource();
+		
 		if (ExecutionContext.isAndroidEnabled() && ExecutionContext.androidZeta().getState() != InstanceState.ERROR_CRASHED) {
 			for (int i = 0; i < ExecutionContext.androidZeta()
 					.getMessagesToSend(); i++) {
@@ -467,11 +479,13 @@ public class CommonSteps {
 			}
 		}
 		storeIosPageSource();
+		storeOsxPageSource();
 	}
 	
 	@Given("I collect messages order data")
 	public void ICollectMessagesOrderData() {
 		ExecutionContext.iosZeta().listener().setPageSources(iosPageSources);
+		ExecutionContext.osxZeta().listener().setPageSources(osxPageSources);
 
 		ArrayList<MessageEntry> iosMessages = new ArrayList<MessageEntry>();
 		if (ExecutionContext.isIosEnabled()) {

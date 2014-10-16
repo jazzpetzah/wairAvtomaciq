@@ -18,6 +18,7 @@ import com.wearezeta.auto.common.CreateZetaUser;
 import com.wearezeta.auto.common.TestPreparation;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.pages.LoginPage;
 import com.wearezeta.auto.osx.pages.MainMenuPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
@@ -56,6 +57,8 @@ public class CommonSteps {
 	@Before("~@performance")
 	public void setUp() throws Exception {
 		boolean generateUsersFlag = Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class));
+		
+		OSXCommonUtils.removeAllZClientSettingsFromDefaults();
 		
 		if (isFirstRun) {
 			isFirstRun = false;
