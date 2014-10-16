@@ -133,9 +133,9 @@ public class ZetaListener extends Thread {
 		if (platform().equals(CommonUtils.PLATFORM_NAME_ANDROID)) {
 			return receiveChatMessagesAndroid(checkTime);
 		} else if (platform().equals(CommonUtils.PLATFORM_NAME_OSX)) {
-			return receiveChatMessagesOsx();
+			return receiveChatMessagesOsx(checkTime);
 		} else if (platform().equals(CommonUtils.PLATFORM_NAME_IOS)) {
-			return receiveChatMessagesIos();
+			return receiveChatMessagesIos(checkTime);
 		}
 		} catch (Throwable e) {
 			//TODO: process exception
@@ -193,26 +193,29 @@ public class ZetaListener extends Thread {
 		return dialogPage.listAllMessages(checkTime);
 	}
 	
-	private ArrayList<MessageEntry> parsePageSources(String messagePattern) {
+	private ArrayList<MessageEntry> parsePageSources(String messagePattern, boolean checkTime) {
 		LinkedHashMap<String, MessageEntry> result = new LinkedHashMap<String, MessageEntry>();
 		for (Map.Entry<Date, String> source: pageSources.entrySet()) {
 			Pattern pattern = Pattern.compile(messagePattern);
 			Matcher matcher = pattern.matcher(source.getValue());
 			while (matcher.find()) {
-					result.put(matcher.group(1), new MessageEntry("text", matcher.group(1), new Date(), false));
+					result.put(matcher.group(1), new MessageEntry("text", matcher.group(1), new Date(), checkTime));
 			}
 		}
 		return new ArrayList<MessageEntry>(result.values());
 	}
 	
 	private static final String UUID_OSX_TEXT_MESSAGE_PATTERN = "<AXGroup[^>]*>\\s*<AXStaticText[^>]*AXValue=\"([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\"[^>]*/>\\s*</AXGroup>";
-	private ArrayList<MessageEntry> receiveChatMessagesOsx() throws MalformedURLException, IOException {
-		return parsePageSources(UUID_OSX_TEXT_MESSAGE_PATTERN);
+	private ArrayList<MessageEntry> receiveChatMessagesOsx(boolean checkTime) throws MalformedURLException, IOException {
+		return parsePageSources(UUID_OSX_TEXT_MESSAGE_PATTERN, checkTime);
 	}
 	
 	private static final String UUID_IOS_TEXT_MESSAGE_PATTERN = "<UIATextView[^>]*value=\"([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\"[^>]*>\\s*</UIATextView>";
-	private ArrayList<MessageEntry> receiveChatMessagesIos() throws Exception, Throwable {
-		return parsePageSources(UUID_IOS_TEXT_MESSAGE_PATTERN);
+	private ArrayList<MessageEntry> receiveChatMessagesIos(boolean checkTime) throws Exception, Throwable {
+		com.wearezeta.auto.ios.pages.DialogPage dialogPage = 
+				com.wearezeta.auto.ios.pages.PagesCollection.dialogPage;
+		return dialogPage.listAllMessages(checkTime);
+//		return parsePageSources(UUID_IOS_TEXT_MESSAGE_PATTERN);
 	}
 
 	public LinkedHashMap<Date, String> getPageSources() {

@@ -327,7 +327,7 @@ public class ReportData {
 		int sentFromAnotherPlatformCount = 0;
 
 		for (MessageEntry sent: sentMessages.values()) {
-			if (!sent.sender.equals(platform)) {
+			if (!sent.sender.equals(platform) && sent.checkTime) {
 				sentFromAnotherPlatformCount++;
 			}
 		}
