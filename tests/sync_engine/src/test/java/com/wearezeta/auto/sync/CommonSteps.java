@@ -20,6 +20,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
+import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.sync.client.InstanceState;
 import com.wearezeta.auto.sync.client.ZetaInstance;
 import com.wearezeta.auto.sync.report.ReportData;
@@ -47,6 +48,8 @@ public class CommonSteps {
 
 	@Before
 	public void setup() throws Exception {
+		OSXCommonUtils.removeAllZClientSettingsFromDefaults();
+		
 		boolean generateUsersFlag = Boolean.valueOf(SyncEngineUtil
 				.getCommonGenerateUsersFromConfig(this.getClass()));
 
