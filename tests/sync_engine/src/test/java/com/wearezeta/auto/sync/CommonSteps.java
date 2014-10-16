@@ -368,18 +368,15 @@ public class CommonSteps {
 		
 		//fast sending of messages from iOS
 		if (ExecutionContext.isIosEnabled() && ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
-			com.wearezeta.auto.ios.pages.DialogPage page = com.wearezeta.auto.ios.pages.PagesCollection.dialogPage;
-			final String messages[] = new String[ExecutionContext.iosZeta().getMessagesToSend()];
-			for (int j = 0; j < messages.length; j++) {
-				messages[j] = CommonUtils.generateGUID();
+			for (int i = 0; i < ExecutionContext.iosZeta().getMessagesToSend(); i++) {
+				long startDate = new Date().getTime();
+				final String message = CommonUtils.generateGUID();
+				ExecutionContext.iosZeta().sender()
+						.sendTextMessage(SyncEngineUtil.CHAT_NAME, message, false);
+				long endDate = new Date().getTime();
+				log.debug("Time consumed for sending text message on ios: "
+						+ (endDate - startDate) + "ms");
 			}
-			long startDate = new Date().getTime();
-			ExecutionContext.iosZeta().sender()
-					.sendAllMessagesIos(messages, false);
-			long endDate = new Date().getTime();
-			log.debug("Time consumed for sending all text messages on ios: "
-				+ (endDate - startDate) + "ms");
-			
 		}
 		storeIosPageSource();
 		storeOsxPageSource();
