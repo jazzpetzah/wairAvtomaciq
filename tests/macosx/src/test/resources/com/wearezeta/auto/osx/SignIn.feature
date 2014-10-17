@@ -8,7 +8,7 @@ Feature: Sign In
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Sign In button
-    Then Contact list appears with my name <Name>
+    Then I see Contact list with name <Name>
 
     Examples: 
       | Login   | Password    | Name    |

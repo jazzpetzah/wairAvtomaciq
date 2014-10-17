@@ -4,8 +4,11 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.*;
 import java.util.Map.Entry;
@@ -85,7 +88,14 @@ public class CommonUtils {
 
 	public static void executeOsXCommand(String[] cmd) throws Exception {
 		Process process = Runtime.getRuntime().exec(cmd);
-		System.out.println("Process Code " + process.waitFor());
+		InputStream stream = process.getErrorStream();
+		BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+		String s;
+		while (( s = br.readLine() ) != null ) {
+			log.debug(s);
+		}
+		stream.close();
+		log.debug("Process exited with code " + process.waitFor());
 	}
 
 	public static ClientUser findUserNamed(String username) {
