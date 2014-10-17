@@ -140,7 +140,7 @@ Scenario Outline: Play/pause SoundCloud media link from the media bar
        
 Examples:
     |  Login		| Password		| Name			| Contact1    | SoundCloudLink |
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/klinke-auf-cinch/04-whats-happening-boytalk-remix |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/carl-cox/carl-cox-nexus |
     
     
 #muted due to defact IOS-985, still needs checking of mediabar and scrolling on simulator 
@@ -160,7 +160,7 @@ Scenario Outline: Conversation gets scrolled back to playing media when clicking
     
 Examples:
     |  Login		| Password		| Name			| Contact1    | SoundCloudLink |
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/klinke-auf-cinch/04-whats-happening-boytalk-remix |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/carl-cox/carl-cox-nexus |
     
 @regression
 @id488
@@ -245,7 +245,7 @@ Scenario Outline: Verify play/pause controls are visible in the list if there is
     
 Examples:
     |  Login		| Password		| Name			| Contact1    | Contact2    |SoundCloudLink |
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | aqaContact2 |https://soundcloud.com/klinke-auf-cinch/04-whats-happening-boytalk-remix |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | aqaContact2 |https://soundcloud.com/carl-cox/carl-cox-nexus |
 
 
 #muted due to issue IOS-959 
@@ -265,11 +265,11 @@ Scenario Outline: Verify the Media Bar disappears when playing media is back in 
     
 Examples:
     |  Login		| Password		| Name			| Contact1    | SoundCloudLink |
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/klinke-auf-cinch/04-whats-happening-boytalk-remix |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/carl-cox/carl-cox-nexus |
     
     
 @regression
-@id385
+@id385 
   Scenario Outline: Verify the Media Bar dissapears after playback finishes (SoundCloud)
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -285,7 +285,7 @@ Examples:
 
 	Examples: 
     |	Login	|	Password	|	Name	|	Contact1		| SoundCloudLink 								| time |
-    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| https://soundcloud.com/carl-cox/carl-cox-nexus| 28   | 
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| https://soundcloud.com/carl-cox/carl-cox-nexus    | 28   | 
 
 
  @staging 
