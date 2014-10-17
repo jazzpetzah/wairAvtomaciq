@@ -92,7 +92,7 @@ Examples:
 
 
 #Muted due relogin issue
-@staging
+@staging @mute
 @id614
    Scenario Outline: I am able to play inline YouTube link poster by others
     Given I Sign in using login <Login> and password <Password>
@@ -121,7 +121,7 @@ Examples:
 
 #muted due to issue IOS-959
 @staging
-@id383
+@id383 
 Scenario Outline: Play/pause SoundCloud media link from the media bar
 	Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -383,7 +383,7 @@ Examples:
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
     
 
- @regression 
+ @regression
  @id413
   Scenario Outline: Copy and paste to send the message
     Given I see sign in screen
@@ -405,7 +405,7 @@ Examples:
     
 	Examples: 
     |	Login	|	Password	|	Name	|	Contact		| text 		|
-    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| TextToCopy|
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact2	| TextToCopy|
    
  @staging   
  @id394
@@ -480,7 +480,6 @@ Examples:
 
 
 #Muted due to ZIOS-2049
-@mute
 @staging
 @id556
 Scenario Outline: Verify you can add people from 1:1 people view (via Add to Conversation button)
@@ -507,8 +506,7 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| aqaContact3 |
     
     
-#Muted due to ZIOS-2049
-@mute    
+#Muted due to ZIOS-2049   
 @staging
 @id557
 Scenario Outline: Verify you can add people from 1:1 people view (via keyboard button)
