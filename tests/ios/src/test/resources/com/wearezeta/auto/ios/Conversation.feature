@@ -380,7 +380,7 @@ Examples:
     
 	Examples: 
     |	Login	|	Password	|	Name	|	Contact		|
-    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact2	|
     
 
  @regression
