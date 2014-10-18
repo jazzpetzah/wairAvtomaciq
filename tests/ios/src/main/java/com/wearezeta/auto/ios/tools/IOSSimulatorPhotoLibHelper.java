@@ -108,9 +108,9 @@ public class IOSSimulatorPhotoLibHelper {
 	    			File device = new File(child.getAbsolutePath() + "/device.plist");
 	    			if (device.exists()) {
 	    				try {
-			    				if (compareDeviceNameFromPlist(device.getAbsolutePath(), SIMULATOR_DEVICE_NAME)) {
-			    					result = child.getAbsolutePath();
-			    				}
+		    				if (compareDeviceNameFromPlist(device.getAbsolutePath(), SIMULATOR_DEVICE_NAME)) {
+		    					result = child.getAbsolutePath();
+		    				}
 	    				}
 	    				catch (Exception ex) {
 	    					log.error(ex.getStackTrace());
@@ -132,6 +132,7 @@ public class IOSSimulatorPhotoLibHelper {
 			log.error(
 					String.format("IOS simulator v. %s has not been found on this system",
 					simulatorVersion));
+			return;
 		}
 		File mediaObj = new File(GetMediaPath(libPath));
 		if (mediaObj.exists()) {
