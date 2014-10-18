@@ -129,7 +129,7 @@ public class IOSSimulatorPhotoLibHelper {
 		String libPath = FindSimultorFolder(simulatorVersion) + "/data/";
 		
 		if (!new File(libPath).exists()) {
-			throw new Exception(
+			log.error(
 					String.format("IOS simulator v. %s has not been found on this system",
 					simulatorVersion));
 		}
