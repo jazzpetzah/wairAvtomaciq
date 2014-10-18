@@ -18,7 +18,7 @@ Feature: Change Profile Picture
       | Login   | Password    | Name    | Picture                      |
       | aqaUser | aqaPassword | aqaUser | userpicture_mobile_check.jpg |
 
-@torun
+@staging
 @id1055
   Scenario Outline: Attempt to enter a name with 0 chars
     Given I Sign in using login <Login> and password <Password>
@@ -28,7 +28,7 @@ Feature: Change Profile Picture
 	And I attempt to enter an empty name and press return
 	And I see error message asking for more characters
 	And I attempt to enter an empty name and tap the screen #alternative way to accept new name
-	#I see error message asking for more characters
+	I see error message asking for more characters
 	
     Examples: 
       | Login   | Password    | Name    |
