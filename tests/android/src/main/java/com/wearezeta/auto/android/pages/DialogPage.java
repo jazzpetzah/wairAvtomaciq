@@ -292,6 +292,22 @@ public class DialogPage extends AndroidPage{
 	private static final String TEXT_MESSAGE_PATTERN = "<android.widget.TextView[^>]*text=\"([^\"]*)\"[^>]*/>";
 	private static final int TIMES_TO_SCROLL = 100;
 	
+	private String tryGetPageSourceFewTimes(int times) {
+		String source = null;
+		int tries = 0;
+		boolean isPageSourceRetrieved = true;
+		do {
+			tries++;
+			try {
+				source = driver.getPageSource();
+			} catch (WebDriverException e) {
+				log.debug("Error while getting source code for Android. Trying again.");
+				isPageSourceRetrieved = false;
+			}
+		} while (!isPageSourceRetrieved && tries < times);
+		return source;
+	}
+	
 	public boolean swipeAndCheckMessageFound(String direction, String pattern) {
 		boolean result = false;
 		
@@ -313,7 +329,7 @@ public class DialogPage extends AndroidPage{
 		default:
 			log.fatal("Unknown direction");
 		}
-		String source = driver.getPageSource();
+		String source = tryGetPageSourceFewTimes(5);
 		Pattern messagesPattern = Pattern.compile(TEXT_MESSAGE_PATTERN);
 		Matcher messagesMatcher = messagesPattern.matcher(source);
 		while (messagesMatcher.find()) {
@@ -338,7 +354,7 @@ public class DialogPage extends AndroidPage{
 	
 	private static final String UUID_TEXT_MESSAGE_PATTERN = "<android.widget.TextView[^>]*text=\"([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\"[^>]*/>";
 	private static final String DIALOG_START_MESSAGE_PATTERN = "^(.*)\\sADDED\\s(.*)$";
-	public ArrayList<MessageEntry> listAllMessages() {
+	public ArrayList<MessageEntry> listAllMessages(boolean checkTime) {
 		try {
 			driver.hideKeyboard();
 		} catch (WebDriverException e) { }
@@ -355,19 +371,15 @@ public class DialogPage extends AndroidPage{
 		do {
 			i++;
 			lastMessageAppears = temp;
-			long startDate = new Date().getTime();
 			Date receivedDate = new Date();
-			String source = driver.getPageSource();
-			long endDate = new Date().getTime();
-			log.debug("Time to get page source: " + (endDate-startDate) + "ms");
+			String source = tryGetPageSourceFewTimes(5);
 			Pattern pattern = Pattern.compile(UUID_TEXT_MESSAGE_PATTERN);
 			Matcher matcher = pattern.matcher(source);
 			while (matcher.find()) {
 				if (messages.get(matcher.group(1)) == null) {
-					messages.put(matcher.group(1), new MessageEntry("text", matcher.group(1), receivedDate));
+					messages.put(matcher.group(1), new MessageEntry("text", matcher.group(1), receivedDate, checkTime));
 				}
 			}
-			driver.getPageSource();
 			if (!lastMessageAppears) {
 				temp = swipeAndCheckMessageFound("up", lastMessage);
 			}
@@ -382,10 +394,10 @@ public class DialogPage extends AndroidPage{
 		return listResult;
 	}
 	
-	public MessageEntry receiveMessage(String message) {
+	public MessageEntry receiveMessage(String message, boolean checkTime) {
 		WebElement messageElement = driver.findElement(By.xpath(String.format(AndroidLocators.DialogPage.xpathFormatSpecificMessage, message)));
 		if (messageElement != null) {
-			return new MessageEntry("text", message, new Date());
+			return new MessageEntry("text", message, new Date(), checkTime);
 		}
 		return null;
 	}

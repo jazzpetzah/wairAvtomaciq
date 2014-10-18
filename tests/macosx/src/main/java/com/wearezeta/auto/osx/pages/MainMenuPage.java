@@ -27,6 +27,10 @@ public class MainMenuPage extends OSXPage {
 		driver.navigate().to(CommonUtils.getOsxApplicationPathFromConfig(MainMenuPage.class));
 	}
 	
+	public void quitZClient() {
+		quitZClientMenuItem.click();
+	}
+	
 	@Override
 	public void Close() throws IOException {
 		try {

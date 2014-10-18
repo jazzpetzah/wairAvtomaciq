@@ -4,6 +4,11 @@ import java.net.MalformedURLException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -41,6 +46,9 @@ public class ContactListPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idShareContactsLaterButton)
 	private List<WebElement> shareContactsLaterButton;
 	
+	@FindBy(how = How.ID, using = OSXLocators.idMainWindowMinimizeButton)
+	private WebElement minimizeWindowButton;
+	
 	public ContactListPage(String URL, String path) throws MalformedURLException {
 		super(URL, path);
 	}
@@ -51,6 +59,33 @@ public class ContactListPage extends OSXPage {
 	
 	public boolean waitUntilMainWindowAppears() {
 		return DriverUtils.waitUntilElementAppears(driver, By.xpath(OSXLocators.xpathMainWindow));
+	}
+	
+	public void minimizeZClient(){
+		minimizeWindowButton.click();
+	}
+	
+	public void restoreZClient() throws InterruptedException, ScriptException{
+		final String[] scriptArr = new String[] {
+				"property bi : \"com.wearezeta.zclient.mac\"",
+				"property thisapp: \"ZClient\"",
+				"tell application id bi to activate",
+				"tell application \"System Events\"",
+				" tell process thisapp",
+				" tell menu bar 1",
+				" tell menu bar item \"Window\"",
+				" tell menu \"Window\"",
+				" click menu item \"ZClient\"",
+				" end tell",
+				" end tell",
+				" end tell",
+				" end tell",
+				"end tell"};
+		
+		final String script = StringUtils.join(scriptArr, "\n");
+		ScriptEngineManager mgr = new ScriptEngineManager();
+		ScriptEngine engine = mgr.getEngineByName("AppleScript");
+		engine.eval(script);
 	}
 	
 	public boolean isContactWithNameExists(String name) {
@@ -181,6 +216,10 @@ public class ContactListPage extends OSXPage {
 		int result = contactsTextFields.size();
 		DriverUtils.setDefaultImplicitWait(driver);
 		return result;
+	}
+	
+	public List<WebElement> getContacts(){
+		return contactsTextFields;
 	}
 	
 	public void scrollToConversationInList(WebElement conversation) {

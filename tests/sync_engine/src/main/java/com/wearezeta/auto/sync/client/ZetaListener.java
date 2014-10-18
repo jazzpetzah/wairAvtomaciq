@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -62,7 +63,7 @@ public class ZetaListener extends Thread {
 				Pattern pattern = Pattern.compile(ANDROID_UUID_TEXT_MESSAGE_PATTERN);
 				Matcher matcher = pattern.matcher(pageSource.getValue());
 				while (matcher.find()) {
-					MessageEntry currentMessage = new MessageEntry("text", matcher.group(1), pageSource.getKey());
+					MessageEntry currentMessage = new MessageEntry("text", matcher.group(1), pageSource.getKey(), true);
 					String text = currentMessage.messageContent;
 					if (registeredMessages.get(text) == null) {
 						registeredMessages.put(text, currentMessage);
@@ -72,7 +73,7 @@ public class ZetaListener extends Thread {
 				Pattern pattern = Pattern.compile(OSX_UUID_TEXT_MESSAGE_PATTERN);
 				Matcher matcher = pattern.matcher(pageSource.getValue());
 				while (matcher.find()) {
-					MessageEntry currentMessage = new MessageEntry("text", matcher.group(1), pageSource.getKey());
+					MessageEntry currentMessage = new MessageEntry("text", matcher.group(1), pageSource.getKey(), true);
 					String text = currentMessage.messageContent;
 					if (registeredMessages.get(text) == null) {
 						registeredMessages.put(text, currentMessage);
@@ -82,7 +83,7 @@ public class ZetaListener extends Thread {
 				Pattern pattern = Pattern.compile(IOS_UUID_TEXT_MESSAGE_PATTERN);
 				Matcher matcher = pattern.matcher(pageSource.getValue());
 				while (matcher.find()) {
-					MessageEntry currentMessage = new MessageEntry("text", matcher.group(1), pageSource.getKey());
+					MessageEntry currentMessage = new MessageEntry("text", matcher.group(1), pageSource.getKey(), true);
 					String text = currentMessage.messageContent;
 					if (registeredMessages.get(text) == null) {
 						registeredMessages.put(text, currentMessage);
@@ -119,14 +120,22 @@ public class ZetaListener extends Thread {
 			return "";
 	}
 	
-	public ArrayList<MessageEntry> receiveChatMessages() {
+	public void scrollToTheEndOfConversation() {
+		if (platform().equals(CommonUtils.PLATFORM_NAME_IOS)) {
+			com.wearezeta.auto.ios.pages.DialogPage dialogPage =
+						com.wearezeta.auto.ios.pages.PagesCollection.dialogPage;
+			dialogPage.scrollToTheEndOfConversation();
+		}
+	}
+	
+	public ArrayList<MessageEntry> receiveChatMessages(boolean checkTime) {
 		try {
 		if (platform().equals(CommonUtils.PLATFORM_NAME_ANDROID)) {
-			return receiveChatMessagesAndroid();
+			return receiveChatMessagesAndroid(checkTime);
 		} else if (platform().equals(CommonUtils.PLATFORM_NAME_OSX)) {
-			return receiveChatMessagesOsx();
+			return receiveChatMessagesOsx(checkTime);
 		} else if (platform().equals(CommonUtils.PLATFORM_NAME_IOS)) {
-			return receiveChatMessagesIos();
+			return receiveChatMessagesIos(checkTime);
 		}
 		} catch (Throwable e) {
 			//TODO: process exception
@@ -136,27 +145,10 @@ public class ZetaListener extends Thread {
 		return new ArrayList<MessageEntry>();
 	}
 	
-	public ArrayList<MessageEntry> receiveAllChatMessages() {
-		try {
-		if (platform().equals(CommonUtils.PLATFORM_NAME_ANDROID)) {
-			return receiveChatMessagesAndroid();
-		} else if (platform().equals(CommonUtils.PLATFORM_NAME_OSX)) {
-			return receiveChatMessagesOsx();
-		} else if (platform().equals(CommonUtils.PLATFORM_NAME_IOS)) {
-			return receiveChatMessagesIos();
-		}
-		} catch (Throwable e) {
-			//TODO: process exception
-			log.error(e.getMessage());
-			e.printStackTrace();
-		}
-		return new ArrayList<MessageEntry>();
-	}
-	
-	public void waitForMessageAndroid(String message) {
+	public void waitForMessageAndroid(String message, boolean checkTime) {
 		com.wearezeta.auto.android.pages.DialogPage dialogPage = 
 				com.wearezeta.auto.android.pages.PagesCollection.dialogPage;
-		MessageEntry entry = dialogPage.receiveMessage(message);
+		MessageEntry entry = dialogPage.receiveMessage(message, checkTime);
 		if (entry != null) {
 			registeredMessages.put(message, entry);
 		} else {
@@ -164,10 +156,10 @@ public class ZetaListener extends Thread {
 		}
 	}
 	
-	public void waitForMessageIos(String message) {
+	public void waitForMessageIos(String message, boolean checkTime) {
 		com.wearezeta.auto.ios.pages.DialogPage dialogPage = 
 				com.wearezeta.auto.ios.pages.PagesCollection.dialogPage;
-		MessageEntry entry = dialogPage.receiveMessage(message);
+		MessageEntry entry = dialogPage.receiveMessage(message, checkTime);
 		if (entry != null) {
 			registeredMessages.put(message, entry);
 		} else {
@@ -175,7 +167,7 @@ public class ZetaListener extends Thread {
 		}
 	}
 
-	public void waitForMessageOsx(String message) {
+	public void waitForMessageOsx(String message, boolean checkTime) {
 		try {
 			com.wearezeta.auto.osx.steps.CommonSteps.senderPages.setConversationPage(
 				new com.wearezeta.auto.osx.pages.ConversationPage(
@@ -183,7 +175,7 @@ public class ZetaListener extends Thread {
 						CommonUtils.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
 			com.wearezeta.auto.osx.pages.ConversationPage conversationPage =
 				com.wearezeta.auto.osx.steps.CommonSteps.senderPages.getConversationPage();
-			MessageEntry entry = conversationPage.receiveMessage(message);
+			MessageEntry entry = conversationPage.receiveMessage(message, checkTime);
 			if (entry != null) {
 				registeredMessages.put(message, entry);
 			} else {
@@ -195,25 +187,42 @@ public class ZetaListener extends Thread {
 		}
 	}
 	
-	private ArrayList<MessageEntry> receiveChatMessagesAndroid() {
+	private ArrayList<MessageEntry> receiveChatMessagesAndroid(boolean checkTime) {
 		com.wearezeta.auto.android.pages.DialogPage dialogPage = 
 				com.wearezeta.auto.android.pages.PagesCollection.dialogPage;
-		return dialogPage.listAllMessages();
+		return dialogPage.listAllMessages(checkTime);
 	}
 	
-	private ArrayList<MessageEntry> receiveChatMessagesOsx() throws MalformedURLException, IOException {
-		com.wearezeta.auto.osx.steps.CommonSteps.senderPages.setConversationPage(
-				new com.wearezeta.auto.osx.pages.ConversationPage(
-						CommonUtils.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
-						CommonUtils.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
-		com.wearezeta.auto.osx.pages.ConversationPage conversationPage =
-				com.wearezeta.auto.osx.steps.CommonSteps.senderPages.getConversationPage();
-		return conversationPage.listAllMessages();
+	private ArrayList<MessageEntry> parsePageSources(String messagePattern, boolean checkTime) {
+		LinkedHashMap<String, MessageEntry> result = new LinkedHashMap<String, MessageEntry>();
+		for (Map.Entry<Date, String> source: pageSources.entrySet()) {
+			Pattern pattern = Pattern.compile(messagePattern);
+			Matcher matcher = pattern.matcher(source.getValue());
+			while (matcher.find()) {
+					result.put(matcher.group(1), new MessageEntry("text", matcher.group(1), new Date(), checkTime));
+			}
+		}
+		return new ArrayList<MessageEntry>(result.values());
 	}
 	
-	private ArrayList<MessageEntry> receiveChatMessagesIos() throws Exception, Throwable {
-		com.wearezeta.auto.ios.pages.DialogPage dialogPage =
-				com.wearezeta.auto.ios.pages.PagesCollection.dialogPage;
-		return dialogPage.listAllMessages();
+	private static final String UUID_OSX_TEXT_MESSAGE_PATTERN = "<AXGroup[^>]*>\\s*<AXStaticText[^>]*AXValue=\"([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\"[^>]*/>\\s*</AXGroup>";
+	private ArrayList<MessageEntry> receiveChatMessagesOsx(boolean checkTime) throws MalformedURLException, IOException {
+		return parsePageSources(UUID_OSX_TEXT_MESSAGE_PATTERN, checkTime);
+	}
+	
+	private static final String UUID_IOS_TEXT_MESSAGE_PATTERN = "<UIATextView[^>]*value=\"([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\"[^>]*>\\s*</UIATextView>";
+	private ArrayList<MessageEntry> receiveChatMessagesIos(boolean checkTime) throws Exception, Throwable {
+//		com.wearezeta.auto.ios.pages.DialogPage dialogPage = 
+//				com.wearezeta.auto.ios.pages.PagesCollection.dialogPage;
+//		return dialogPage.listAllMessages(checkTime);
+		return parsePageSources(UUID_IOS_TEXT_MESSAGE_PATTERN, checkTime);
+	}
+
+	public LinkedHashMap<Date, String> getPageSources() {
+		return pageSources;
+	}
+
+	public void setPageSources(LinkedHashMap<Date, String> pageSources) {
+		this.pageSources = pageSources;
 	}
 }

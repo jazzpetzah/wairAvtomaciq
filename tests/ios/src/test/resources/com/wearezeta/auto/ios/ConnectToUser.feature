@@ -40,7 +40,7 @@ Feature: Connect to User
       | aqaUser | aqaPassword | aqaUser | yourContact |
 
 #Muted due to relogin issue
-@staging
+@staging @mute
 @id611
   Scenario Outline: Verify 1:1 conversation is not created on the second end after you ignore connection request(UI)
     Given I Sign in using login <Login> and password <Password>
@@ -82,7 +82,7 @@ Feature: Connect to User
 
 
 #Muted due to relogin issue
-@staging 
+@staging @mute
 @id611
 Scenario Outline: Verify 1:1 conversation is not created on the second end after you ignore connection request(BE)
     Given I send invitation to <Name> by <Contact>
@@ -106,7 +106,7 @@ Examples:
       
 
 #Muted due relogin issue and blank Personal page screen issue
-@staging 
+@staging @mute
 @id610
 Scenario Outline: Verify 1:1 conversation is successfully created on the second end after you accept connection request(BE)
     Given I send invitation to <Name> by <Contact>

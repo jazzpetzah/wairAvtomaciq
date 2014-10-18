@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.sync.ExecutionContext;
 import com.wearezeta.auto.sync.client.InstanceState;
@@ -29,9 +32,12 @@ class MessageReport {
 	public String iosReceiveTime;
 	public boolean isAndroidReceiveTimeOK;
 	public String androidReceiveTime;
+	public boolean checkTime = true;
 }
 
 public class ReportData {
+	private static final Logger log = ZetaLogger.getLog(ReportData.class.getSimpleName());
+	
 	public ArrayList<UserReport> users = new ArrayList<UserReport>();
 
 	public ArrayList<MessageReport> messages = new ArrayList<MessageReport>();
@@ -165,6 +171,8 @@ public class ReportData {
 			report.message = entry.getKey();
 			MessageEntry sentMessage = entry.getValue();
 			report.sentFrom = entry.getValue().sender;
+			report.checkTime = entry.getValue().checkTime;
+			if (report.checkTime) {
 			if (report.sentFrom.equals(CommonUtils.PLATFORM_NAME_OSX)) {
 				report.isOsxReceiveTimeOK = true;
 				report.osxReceiveTime = "-1";
@@ -263,11 +271,16 @@ public class ReportData {
 					report.isIosReceiveTimeOK = false;
 				}
 			}
+			} else {
+				report.isIosReceiveTimeOK = true;
+				report.isAndroidReceiveTimeOK = true;
+				report.isOsxReceiveTimeOK = true;
+			}
 			
 			if (!report.isIosReceiveTimeOK) isIosReceiveMessagesInTime = false;
 			if (!report.isAndroidReceiveTimeOK) isAndroidReceiveMessagesInTime = false;
 			if (!report.isOsxReceiveTimeOK) isOsxReceiveMessagesInTime = false;
-			
+
 			messages.add(report);
 		}
 		
@@ -314,7 +327,7 @@ public class ReportData {
 		int sentFromAnotherPlatformCount = 0;
 
 		for (MessageEntry sent: sentMessages.values()) {
-			if (!sent.sender.equals(platform)) {
+			if (!sent.sender.equals(platform) && sent.checkTime) {
 				sentFromAnotherPlatformCount++;
 			}
 		}

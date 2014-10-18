@@ -19,7 +19,7 @@ Feature: Connect to User
       | Login   | Password    | Name    | Contact  | Message       |
       | aqaUser | aqaPassword | aqaUser | yourUser | Hellow friend |
 
-  @id218 @regression
+  @id218 @regression 
   Scenario Outline: I can do full name search for existing 1:1(non-archive)
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -74,8 +74,8 @@ Feature: Connect to User
     Then I see group <GroupChatName>  in People picker
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName          | Size |
-      | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | PeoplePicker GroupChat | 5    |
+      | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName           | Size |
+      | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | PeoplePicker GroupChat1 | 5    |
 
   @id319 @regression @mute
   Scenario Outline: I can create group chat from People picker
@@ -92,8 +92,8 @@ Feature: Connect to User
     Then I see group chat page with users <Contact1> <Contact2>
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName          |
-      | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | PeoplePicker GroupChat |
+      | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName           |
+      | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | PeoplePicker GroupChat2 |
 
   @id536 @regression
   Scenario Outline: I can see a new inbox for connection when receive new connection request

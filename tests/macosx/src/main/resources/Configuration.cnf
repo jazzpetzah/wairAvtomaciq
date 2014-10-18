@@ -6,3 +6,4 @@ generateUsers=${generateUsers}
 driverTimeoutSeconds=${driverTimeoutSeconds}
 pictureResultsPath=${pictureResultsPath}
 defaultEmail=${defaultEmail}
+defaultImagesPath=${Root}/${defaultImagesPath}
