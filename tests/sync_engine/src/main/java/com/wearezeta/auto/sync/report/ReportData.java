@@ -10,6 +10,7 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.BuildVersionInfo;
 import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.sync.ExecutionContext;
 import com.wearezeta.auto.sync.client.InstanceState;
@@ -20,6 +21,7 @@ class UserReport {
 	public String name;
 	public String loggedOnPlatform;
 	public String startupTime;
+	public BuildVersionInfo buildVersion;
 	public boolean isEnabled;
 }
 
@@ -41,6 +43,7 @@ public class ReportData {
 	public ArrayList<UserReport> users = new ArrayList<UserReport>();
 
 	public ArrayList<MessageReport> messages = new ArrayList<MessageReport>();
+	
 	public double averageIosReceiveTime;
 	public double averageAndroidReceiveTime;
 	public double averageOsxReceiveTime;
@@ -77,6 +80,7 @@ public class ReportData {
 				user.name = client.getValue().getUserInstance().getEmail();
 				user.loggedOnPlatform = client.getKey();
 				user.startupTime = Double.toString(client.getValue().getStartupTimeMs()/1000d) + "s";
+				user.buildVersion = client.getValue().getVersionInfo();
 				user.isEnabled = true;
 			} else {
 				user.loggedOnPlatform = client.getKey();
@@ -340,6 +344,7 @@ public class ReportData {
 		xstream.alias("ReportData", ReportData.class);
 		xstream.alias("UserInfo", UserReport.class);
 		xstream.alias("MessageReport", MessageReport.class);
+		xstream.alias("BuildVersion", BuildVersionInfo.class);
 		String xml = xstream.toXML(data);
 		return xml;
 	}
