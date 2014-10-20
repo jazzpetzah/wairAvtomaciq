@@ -265,7 +265,7 @@ public class DialogPageSteps {
 	
 	@Then("I see conversation view is scrolled back to the playing media link (.*)")
 	public void ISeeConversationViewIsScrolledBackToThePlayingMedia(String link){
-		Assert.assertEquals(link, PagesCollection.dialogPage.getLastMessageFromDialog());
+		Assert.assertEquals(link.toLowerCase(), PagesCollection.dialogPage.getLastMessageFromDialog().toLowerCase());
 		Assert.assertTrue("View did not scroll back", PagesCollection.dialogPage.isMediaContainerVisible());
 		String playingState = IOSLocators.MEDIA_STATE_PLAYING;
 		mediaState = PagesCollection.dialogPage.getMediaState();
