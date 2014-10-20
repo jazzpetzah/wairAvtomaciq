@@ -73,9 +73,9 @@
 			</head>
 			<body>
 				<center style="width: 55%;">
-					<table>
-						<tr>
-							<td>
+					<table style="border: none;">
+						<tr style="border: none;">
+							<td style="border: none;">
 								<h1>Test results</h1>
 							</td>
 						</tr>
@@ -259,9 +259,9 @@
 							</td>
 						</tr>
 
-						<tr>
-							<td>
-								<h1>Chat users</h1>
+						<tr style="border: none;">
+							<td style="border: none;">
+								<br/><h1>Chat users</h1>
 							</td>
 						</tr>
 						<tr>
@@ -300,9 +300,39 @@
 								</table>
 							</td>
 						</tr>
-
+						<tr style="border: none;">
+							<td style="border: none;">
+								<br/><h1>Device and client information</h1>
+							</td>
+						</tr>
 						<tr>
 							<td>
+								<ul>
+									<xsl:for-each select="ReportData/users/UserInfo">
+										<xsl:choose>
+											<xsl:when test="isEnabled = 'true'">
+												<li>
+													<h3 style="margin-bottom: 0px;"><xsl:value-of select="loggedOnPlatform" />:</h3>
+						
+													<ul><li><b>Client build</b> - &#160;<xsl:value-of select="buildVersion/clientBuildNumber" /></li>
+													<li><b>zMessaging build</b> - &#160;<xsl:value-of select="buildVersion/zmessagingBuildNumber" /></li></ul>
+												</li>
+											</xsl:when>
+											<xsl:otherwise>
+												<tr>
+													<td>
+														<xsl:value-of select="loggedOnPlatform" />
+													</td>
+													<td colspan="4">Disabled</td>
+												</tr>
+											</xsl:otherwise>
+										</xsl:choose>
+									</xsl:for-each>
+								</ul>
+							</td>
+						</tr>
+						<tr style="border: none;">
+							<td style="border: none;"><br/>
 								<h1>Messages statistics</h1>
 							</td>
 						</tr>

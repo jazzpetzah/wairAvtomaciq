@@ -18,6 +18,7 @@
     <appPath>ZClient</appPath>
     <generateUsers>true</generateUsers>
     <driverTimeoutSeconds>10</driverTimeoutSeconds>
+    <osxClientInfoPlist>/Project/builds_info/Info_osx.plist</osxClientInfoPlist>
     <defaultEmail>smoketester.osx@wearezeta.com</defaultEmail>
   </properties>
 
@@ -66,6 +67,11 @@
         <version>1.6.1</version>
     </dependency>
     
+    <dependency>
+		<groupId>com.googlecode.plist</groupId>
+		<artifactId>dd-plist</artifactId>
+		<version>1.8</version> <!-- corresponds to r108 -->
+	</dependency>
   </dependencies>
   
   <build>

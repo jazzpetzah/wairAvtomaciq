@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.BuildVersionInfo;
 import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.sync.ExecutionContext;
 import com.wearezeta.auto.sync.SyncEngineUtil;
@@ -36,6 +37,8 @@ public class ZetaInstance {
 	private long conversationLoadingTimeMs;
 	private boolean isOrderCorrect;
 	private ArrayList<MessageEntry> messagesListAfterTest;
+	private BuildVersionInfo versionInfo;
+//	private ClientSystemInfo systemInfo;
 	
 	public ZetaInstance(String platform) {
 		this.platform = platform;
@@ -210,5 +213,13 @@ public class ZetaInstance {
 
 	public void setMessagesListAfterTest(ArrayList<MessageEntry> messagesListAfterTest) {
 		this.messagesListAfterTest = messagesListAfterTest;
+	}
+
+	public BuildVersionInfo getVersionInfo() {
+		return versionInfo;
+	}
+
+	public void setVersionInfo(BuildVersionInfo versionInfo) {
+		this.versionInfo = versionInfo;
 	}
 }

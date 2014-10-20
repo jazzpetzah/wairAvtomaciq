@@ -10,4 +10,6 @@ resultImage=${resultImage}
 defaultImagePath=${Root}/${defaultImagePath}
 defaultImagesPath=${Root}/${defaultImagesPath}
 pictureResultsPath=${pictureResultsPath}
+androidClientInfoPath=${androidClientInfoPath}
+androidAppiumLogPath=${androidAppiumLogPath}
 defaultEmail=${defaultEmail}
