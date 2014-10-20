@@ -75,6 +75,7 @@ public abstract class IOSPage extends BasePage {
 		capabilities.setCapability("app", path);
 		capabilities.setCapability("deviceName", "iPhone 6");
 		capabilities.setCapability("platformVersion", "8.0");
+		capabilities.setCapability("newCommandTimeout", "300");
 		if (false == acceptAlerts) {
 			initWithoutAutoAccept();
 		}
