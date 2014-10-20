@@ -24,7 +24,29 @@ public class PersonalInfoPageSteps {
 	public void WhenISwipeUpForOptions() throws IOException, Throwable {
 		PagesCollection.personalInfoPage.swipeUp(500);
 	}
+	
+	@When("I tap to edit my name")
+	public void ITapToEditName(){
+		PagesCollection.personalInfoPage.tapOnEditNameField();
+	}
+	
+	@When("I attempt to enter an empty name and press return")
+	public void EnterEmptyNameAndPressReturn(){
+		PagesCollection.personalInfoPage.clearNameField();
+		PagesCollection.personalInfoPage.pressEnterInNameField();
+	}
 
+	@When("I attempt to enter an empty name and tap the screen")
+	public void EnterEmptyNameAndTapScreen(){
+		PagesCollection.personalInfoPage.clearNameField();
+		PagesCollection.personalInfoPage.tapOnPersonalPage();
+	}
+	
+	@When("I see error message asking for more characters")
+	public void ISeeErrorMessageForMoreCharacters(){
+		Assert.assertTrue(PagesCollection.personalInfoPage.isTooShortNameErrorMessage());
+	}
+	
 	@When("^I press options button (.*)$")
 	public void WhenIPressOptionsButton(String buttonName) throws Throwable {
 		PagesCollection.personalInfoPage.tapOptionsButtonByText(buttonName);

@@ -26,8 +26,6 @@ public final class IOSLocators {
 	
 	public static final String classNameContactListNames = "UIAStaticText";
 	
-	public static final String nameProfileName = "ProfileSelfNameField";
-	
 	public static final String nameProfileSettingsButton = "SettingsButton";
 
 	public static final String classNameUIAButton = "UIAButton";
@@ -191,6 +189,17 @@ public final class IOSLocators {
 	public static final String xpathOtherPersonalInfoPageNameField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[3]";
 	
 	public static final String xpathOtherPersonalInfoPageEmailField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[4]";
+	
+	///////////////////////
+	//Self profile page
+	///////////////////////
+
+	public static final String nameProfileName = "ProfileSelfNameField";
+	
+	public static final String xpathProfileNameEditField = "//UIAApplication[1]/UIAWindow[1]/UIAElement[1]/UIATextView[1]";
+	
+	public static final String nameSelfNameTooShortError = "AT LEAST 2 CHARACTERS ";
+	
 	///////////////////////
 	//Camera page locators
 	///////////////////////
