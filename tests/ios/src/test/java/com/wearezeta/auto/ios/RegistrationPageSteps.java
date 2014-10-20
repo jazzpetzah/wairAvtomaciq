@@ -268,7 +268,6 @@ public class RegistrationPageSteps {
 
 	@Then("^I verify no spaces are present in email$")
 	public void CheckForSpacesInEmail() throws IOException {
-		PagesCollection.registrationPage.typeEmail();
 		String realEmailText = PagesCollection.registrationPage
 				.getEmailFieldValue();
 		String initialEmailText = PagesCollection.registrationPage.getEmail();
@@ -402,8 +401,8 @@ public class RegistrationPageSteps {
 	@Then("^I verify registration address$")
 	public void IVerifyRegistrationAddress() throws Throwable {
 
-		Assert.assertTrue(CreateZetaUser.activateRegisteredUser(aqaEmail, 10,
-				aqaEmail, aqaPassword));
+		Assert.assertTrue("Email: " + aqaEmail + "/Password: " + aqaPassword, CreateZetaUser.activateRegisteredUser(aqaEmail, 10,
+				CommonUtils.getDefaultEmailFromConfig(getClass()), aqaPassword));
 
 	}
 

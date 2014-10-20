@@ -23,14 +23,6 @@ public class ContactListPageSteps {
 		} else {
 			log.debug("No tutorial is shown");
 		}
-
-		if (PagesCollection.personalInfoPage.isSettingsButtonVisible()) {
-			log.debug("Self profile page appears after login. Trying to go back to contact list.");
-			try {Thread.sleep(1000); } catch (Exception e) { }
-			PagesCollection.personalInfoPage.swipeRight(500);
-		} else {
-			log.debug("No self profile is shown");
-		}
 		
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 	}
