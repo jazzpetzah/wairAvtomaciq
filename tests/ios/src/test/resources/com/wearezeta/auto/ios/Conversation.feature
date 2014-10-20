@@ -145,7 +145,7 @@ Examples:
     
 #muted due to defact IOS-985, still needs checking of mediabar and scrolling on simulator 
 @regression
-@id384
+@id384 
 Scenario Outline: Conversation gets scrolled back to playing media when clicking on media bar
 	Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -160,7 +160,7 @@ Scenario Outline: Conversation gets scrolled back to playing media when clicking
     
 Examples:
     |  Login		| Password		| Name			| Contact1    | SoundCloudLink |
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/carl-cox/carl-cox-nexus |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/carl-cox/sets/all-roads-lead-to-the |
     
 @regression
 @id488
