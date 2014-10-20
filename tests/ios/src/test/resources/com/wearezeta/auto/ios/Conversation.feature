@@ -75,7 +75,7 @@ Examples:
 
 
 @regression 
-@id526
+@id526 
   Scenario Outline: I can send and play inline youtube link
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -330,7 +330,7 @@ Examples:
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
     
  @regression 
- @id414
+ @id414 
   Scenario Outline: Send a text containing spaces
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -384,7 +384,7 @@ Examples:
     
 
  @regression
- @id413
+ @id413 
   Scenario Outline: Copy and paste to send the message
     Given I see sign in screen
 	When I press Sign in button
@@ -398,6 +398,7 @@ Examples:
 	And I see Contact list with my name <Name>
     And I tap on contact name <Contact>
     And I see dialog page
+    And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
 	And I send the message

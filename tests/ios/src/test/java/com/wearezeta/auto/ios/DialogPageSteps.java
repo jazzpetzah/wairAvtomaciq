@@ -265,7 +265,7 @@ public class DialogPageSteps {
 	
 	@Then("I see conversation view is scrolled back to the playing media link (.*)")
 	public void ISeeConversationViewIsScrolledBackToThePlayingMedia(String link){
-		Assert.assertEquals(link, PagesCollection.dialogPage.getLastMessageFromDialog());
+		Assert.assertEquals(link.toLowerCase(), PagesCollection.dialogPage.getLastMessageFromDialog().toLowerCase());
 		Assert.assertTrue("View did not scroll back", PagesCollection.dialogPage.isMediaContainerVisible());
 		String playingState = IOSLocators.MEDIA_STATE_PLAYING;
 		mediaState = PagesCollection.dialogPage.getMediaState();
@@ -299,14 +299,16 @@ public class DialogPageSteps {
 	
 	@When("I input message with leading empty spaces")
 	public void IInpuMessageWithLeadingEmptySpace() throws Throwable{
-		message = onlySpacesMessage + CommonUtils.generateRandomString(10).toLowerCase();
-		PagesCollection.dialogPage.inputStringFromKeyboard(message);
+		String randomMessage = CommonUtils.generateRandomString(10).toLowerCase();
+		message = onlySpacesMessage + randomMessage;
+		PagesCollection.dialogPage.sendStringToInput(message);
+		message = randomMessage;
 	}
 	
 	@When("I input message with trailing emtpy spaces")
 	public void IInputMessageWithTrailingEmptySpace() throws Throwable{
 		message = CommonUtils.generateRandomString(10).toLowerCase() + "." + onlySpacesMessage;
-		PagesCollection.dialogPage.inputStringFromKeyboard(message);
+		PagesCollection.dialogPage.sendStringToInput(message);
 	}
 	
 	@When("I input message with lower case and upper case")

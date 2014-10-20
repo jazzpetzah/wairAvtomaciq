@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.*;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
@@ -35,6 +36,11 @@ public class PersonalInfoPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.nameCameraButton)
 	private WebElement cameraButton;
 	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathProfileNameEditField)
+	private WebElement profileNameEditField;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameSelfNameTooShortError)
+	private WebElement nameTooShortError;
 	
 	private String url;
 	private String path;
@@ -72,6 +78,23 @@ public class PersonalInfoPage extends IOSPage{
 		signoutButton.click();
 		page = new LoginPage(url, path);
 		return page;
+	}
+	
+	public void tapOnEditNameField(){
+		profileNameEditField.click();
+		Assert.assertTrue(isKeyboardVisible());
+	}
+	
+	public boolean isTooShortNameErrorMessage(){
+		return nameTooShortError.isDisplayed();
+	}
+	
+	public void clearNameField(){
+		profileNameEditField.clear();
+	}
+	
+	public void pressEnterInNameField(){
+		profileNameEditField.sendKeys("\n");
 	}
 	
 	public void waitForSettingsButtonAppears(){
