@@ -225,4 +225,8 @@ public class ZetaListener extends Thread {
 	public void setPageSources(LinkedHashMap<Date, String> pageSources) {
 		this.pageSources = pageSources;
 	}
+	
+	public boolean isSessionLost() {
+		return com.wearezeta.auto.common.BasePage.getDriver(parent.getPlatform()).isSessionLost();
+	}
 }

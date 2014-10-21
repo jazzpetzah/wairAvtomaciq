@@ -501,7 +501,15 @@ public class CommonSteps {
 				if (ExecutionContext.isIosEnabled() && ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
 				executor.execute(new Runnable() {
 					public void run() {
-						ExecutionContext.iosZeta().listener().waitForMessageIos(message, true);
+						try {
+							ExecutionContext.iosZeta().listener().waitForMessageIos(message, true);
+						} catch (NoSuchElementException e) {
+							log.error("Failed to receive message on iOS client. Client could be crashed.");
+							if (ExecutionContext.iosZeta().listener().isSessionLost()) {
+								ExecutionContext.iosZeta().setState(InstanceState.ERROR_CRASHED);
+							}
+							
+						}
 					}
 				});
 				}
