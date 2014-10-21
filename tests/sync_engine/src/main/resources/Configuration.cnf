@@ -21,6 +21,7 @@ osx.client.enabled=${osx.client.enabled}
 osx.backend.sender=${osx.backend.sender}
 osxAppiumUrl=${osxAppiumUrl}
 osxApplicationPath=${osxApplicationPath}
+osxClientInfoPlist=${osxClientInfoPlist}
 
 ### ANDROID CONFIG ###
 android.client.enabled=${android.client.enabled}
@@ -32,6 +33,8 @@ activity=${activity}
 resultImage=${resultImage}
 defaultImagePath=${Root}/${defaultImagePath}
 defaultImagesPath=${Root}/${defaultImagesPath}
+androidClientInfoPath=${androidClientInfoPath}
+androidAppiumLogPath=${androidAppiumLogPath}
 
 ### IOS CONFIG ###
 ios.client.enabled=${ios.client.enabled}
@@ -41,4 +44,6 @@ iosApplicationPath=${iosApplicationPath}
 isSimulator=${isSimulator}
 swipeScriptPath=${swipeScriptPath}
 pathToUserpic=${Root}/${pathToUserpic}
+iosClientInfoPlist=${iosClientInfoPlist}
+iosAppiumLogPath=${iosAppiumLogPath}
 iosImagesPath=${Root}/${iosImagesPath}

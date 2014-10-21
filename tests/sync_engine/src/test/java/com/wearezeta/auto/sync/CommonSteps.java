@@ -1,5 +1,8 @@
 package com.wearezeta.auto.sync;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -8,6 +11,8 @@ import java.util.LinkedHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -19,7 +24,10 @@ import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.BuildVersionInfo;
+import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 import com.wearezeta.auto.common.misc.MessageEntry;
+import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.sync.client.InstanceState;
 import com.wearezeta.auto.sync.client.ZetaInstance;
@@ -153,9 +161,17 @@ public class CommonSteps {
 					try {
 						com.wearezeta.auto.android.pages.PagesCollection.loginPage = new com.wearezeta.auto.android.pages.LoginPage(
 								androidAppiumUrl, androidPath);
+						com.wearezeta.auto.android.pages.PagesCollection.loginPage.isVisible();
 					} catch (Exception e) {
 					}
 					long endDate = new Date().getTime();
+					try {
+						startDate = readDateFromAppiumLog(AndroidCommonUtils.getAndroidAppiumLogPathFromConfig(CommonSteps.class));
+					} catch (IOException e) {
+						log.error("Failed to read Android application startup time from Appium log.\n"
+								+ "Approximate value will be used. "
+								+ e.getMessage());
+					}
 					ExecutionContext.androidZeta().setStartupTimeMs(
 							endDate - startDate);
 					log.debug("Android application startup time: "
@@ -184,10 +200,18 @@ public class CommonSteps {
 							com.wearezeta.auto.ios.pages.PagesCollection.loginPage = new com.wearezeta.auto.ios.pages.LoginPage(
 									iosAppiumPath, iosPath, false);
 						}
+						com.wearezeta.auto.ios.pages.PagesCollection.loginPage.isLoginButtonVisible();
 					} catch (MalformedURLException e) {
 					} catch (IOException e) { }
 					
 					long endDate = new Date().getTime();
+					try {
+						startDate = readDateFromAppiumLog(IOSCommonUtils.getIosAppiumLogPathFromConfig(CommonSteps.class));
+					} catch (IOException e) {
+						log.error("Failed to read iOS application startup time from Appium log.\n"
+								+ "Approximate value will be used. "
+								+ e.getMessage());
+					}
 					ExecutionContext.iosZeta().setStartupTimeMs(
 							endDate - startDate);
 					log.debug("iOS application startup time: "
@@ -201,6 +225,35 @@ public class CommonSteps {
 				}
 			}
 		});
+	}
+	
+	private static final String LOG_STRING_WITH_LAUNCH_TIME = "Application launch is started at ([0-9]*)";
+	private long readDateFromAppiumLog(String logFile) throws IOException {
+		long result = -1;
+		
+		FileReader fileReader = null;
+		BufferedReader bufferedReader = null;
+		try {
+			File f = new File(logFile);
+			fileReader = new FileReader(f);
+			bufferedReader = new BufferedReader(fileReader);
+			String s;
+			Pattern pattern = Pattern.compile(LOG_STRING_WITH_LAUNCH_TIME);
+			Matcher matcher;
+			while ( ( s = bufferedReader.readLine() ) != null ) {
+				matcher = pattern.matcher(s);
+				if (matcher.find()) {
+					result = Long.parseLong(matcher.group(1));
+					break;
+				}
+			}
+		} catch (IOException e) {
+			log.error("Failed to read appium.log for launch time.\n" + e.getMessage());
+		} finally {
+			if (bufferedReader != null) bufferedReader.close();
+			if (fileReader != null) fileReader.close();
+		}
+		return result;
 	}
 	
 	@Given("I start all platform clients")
@@ -596,6 +649,34 @@ public class CommonSteps {
 		ReportGenerator.generate(ExecutionContext.report);
 	}
 
+	@Then("I collect builds and devices info")
+	public void ICollectBuildsAndDevicesInfo() {
+		if (ExecutionContext.isAndroidEnabled()) {
+			BuildVersionInfo androidClientInfo = new BuildVersionInfo();
+			try {
+				androidClientInfo = AndroidCommonUtils.readClientVersion();
+			} catch (InterruptedException ex) {
+				log.error(ex.getMessage());
+			} catch (IOException ioex) {
+				log.error(ioex.getMessage());
+			}
+			ExecutionContext.androidZeta().setVersionInfo(androidClientInfo);
+			
+			ClientDeviceInfo androidDeviceInfo = null;
+		}
+		
+		if (ExecutionContext.isIosEnabled()) {
+			BuildVersionInfo iosClientInfo = IOSCommonUtils.readClientVersionFromPlist();
+			ExecutionContext.iosZeta().setVersionInfo(iosClientInfo);
+		}
+		
+		if (ExecutionContext.isOsxEnabled()) {
+			BuildVersionInfo osxClientInfo = OSXCommonUtils.readClientVersionFromPlist();
+			ExecutionContext.osxZeta().setVersionInfo(osxClientInfo);
+		}
+		
+	}
+	
 	@Then("I perform acceptance checks")
 	public void IPerformAcceptanceChecks() {
 		boolean isTestPassed = true;

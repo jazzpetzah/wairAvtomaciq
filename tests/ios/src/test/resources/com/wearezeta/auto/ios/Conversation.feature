@@ -75,7 +75,7 @@ Examples:
 
 
 @regression 
-@id526
+@id526 
   Scenario Outline: I can send and play inline youtube link
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -145,7 +145,7 @@ Examples:
     
 #muted due to defact IOS-985, still needs checking of mediabar and scrolling on simulator 
 @regression
-@id384
+@id384 
 Scenario Outline: Conversation gets scrolled back to playing media when clicking on media bar
 	Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -160,7 +160,7 @@ Scenario Outline: Conversation gets scrolled back to playing media when clicking
     
 Examples:
     |  Login		| Password		| Name			| Contact1    | SoundCloudLink |
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/carl-cox/carl-cox-nexus |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/carl-cox/sets/all-roads-lead-to-the |
     
 @regression
 @id488
@@ -330,7 +330,7 @@ Examples:
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
     
  @regression 
- @id414
+ @id414 
   Scenario Outline: Send a text containing spaces
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -384,7 +384,7 @@ Examples:
     
 
  @regression
- @id413
+ @id413 
   Scenario Outline: Copy and paste to send the message
     Given I see sign in screen
 	When I press Sign in button
@@ -398,6 +398,7 @@ Examples:
 	And I see Contact list with my name <Name>
     And I tap on contact name <Contact>
     And I see dialog page
+    And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
 	And I send the message

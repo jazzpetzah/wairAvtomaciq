@@ -95,6 +95,7 @@ public class CommonSteps {
 		}
 		
 		if (PagesCollection.loginPage != null && PagesCollection.loginPage.getDriver().isSessionLost()) {
+			log.info("Session was lost, reseting pages collection");
 			IOSPage.clearPagesCollection();
 		}
 	}
