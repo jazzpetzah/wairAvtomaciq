@@ -14,6 +14,7 @@ import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class LoginPage extends OSXPage {
@@ -139,9 +140,15 @@ public class LoginPage extends OSXPage {
 		try {
 			driver.findElement(By.id(OSXLocators.idLoginPage));
 		} catch (NoSuchElementException e) {
-			System.out.println("Logging out because previous user is signed in.");
+			log.info("Logging out because previous user is signed in.");
 			MainMenuPage menu = new MainMenuPage(url, path);
-			menu.SignOut();
+			menu.quitZClient();
+			try {
+				OSXCommonUtils.removeAllZClientSettingsFromDefaults();
+			} catch (Exception ex) {
+				log.error("Can't clear ZClient settings in OSX.\n" + ex.getMessage());
+			}
+			driver.navigate().to(path);
 		} finally {
 			DriverUtils.setDefaultImplicitWait(driver);
 		}

@@ -4,8 +4,10 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.*;
 import java.util.Map.Entry;
@@ -20,7 +22,6 @@ import javax.ws.rs.core.UriBuilderException;
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
-import org.eclipse.jetty.util.log.Log;
 import org.json.JSONException;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
@@ -85,7 +86,19 @@ public class CommonUtils {
 
 	public static void executeOsXCommand(String[] cmd) throws Exception {
 		Process process = Runtime.getRuntime().exec(cmd);
-		System.out.println("Process Code " + process.waitFor());
+		outputErrorStreamToLog(process.getErrorStream());
+		log.debug("Process exited with code " + process.waitFor());
+	}
+	
+	public static void outputErrorStreamToLog(InputStream stream) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+		StringBuilder sb = new StringBuilder("\n");
+		String s;
+		while (( s = br.readLine() ) != null ) {
+			sb.append("\t" + s + "\n");
+		}
+		log.debug(sb.toString());
+		stream.close();
 	}
 
 	public static ClientUser findUserNamed(String username) {

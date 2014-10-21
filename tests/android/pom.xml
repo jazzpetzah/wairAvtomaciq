@@ -21,6 +21,8 @@
 	<activity>com.waz.zclient.MainActivity</activity>
 	<driverTimeoutSeconds>15</driverTimeoutSeconds>
 	<defaultImagesPath>img/</defaultImagesPath> 
+	<androidClientInfoPath>/Project/builds_info/classes.dex</androidClientInfoPath>
+	<androidAppiumLogPath>/Project/appium_android.log</androidAppiumLogPath>
 	<defaultEmail>smoketester.android@wearezeta.com</defaultEmail>
   </properties>
 

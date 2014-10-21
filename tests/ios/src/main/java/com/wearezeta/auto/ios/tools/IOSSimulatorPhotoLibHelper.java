@@ -8,10 +8,13 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import com.wearezeta.auto.common.log.ZetaLogger;
 
 
 public class IOSSimulatorPhotoLibHelper {
@@ -25,6 +28,8 @@ public class IOSSimulatorPhotoLibHelper {
 	public static final String PHOTO_DATA_PATH_TEMPLATE = "%s/PhotoData";
 	public static final String PHOTOS_ROOT_TEMPLATE = "%s/DCIM/100APPLE";
 	public static final String SIMULATOR_DEVICE_NAME = "iPhone 6";
+	
+	private static final Logger log = ZetaLogger.getLog(IOSSimulatorPhotoLibHelper.class.getSimpleName());
 
 	public IOSSimulatorPhotoLibHelper() {
 		// TODO Auto-generated constructor stub
@@ -102,8 +107,13 @@ public class IOSSimulatorPhotoLibHelper {
 	    		if(child.isDirectory()) {
 	    			File device = new File(child.getAbsolutePath() + "/device.plist");
 	    			if (device.exists()) {
-	    				if (compareDeviceNameFromPlist(device.getAbsolutePath(), SIMULATOR_DEVICE_NAME)) {
-	    					result = child.getAbsolutePath();
+	    				try {
+		    				if (compareDeviceNameFromPlist(device.getAbsolutePath(), SIMULATOR_DEVICE_NAME)) {
+		    					result = child.getAbsolutePath();
+		    				}
+	    				}
+	    				catch (Exception ex) {
+	    					log.error(ex.getStackTrace());
 	    				}
 	    			}
 	    		}
@@ -119,9 +129,10 @@ public class IOSSimulatorPhotoLibHelper {
 		String libPath = FindSimultorFolder(simulatorVersion) + "/data/";
 		
 		if (!new File(libPath).exists()) {
-			throw new Exception(
+			log.error(
 					String.format("IOS simulator v. %s has not been found on this system",
 					simulatorVersion));
+			return;
 		}
 		File mediaObj = new File(GetMediaPath(libPath));
 		if (mediaObj.exists()) {

@@ -59,7 +59,7 @@
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaBlock 	  |      
       
-@id680 @regression   
+@id680 @regression 
 Scenario Outline: I want to see user has been blocked within the Start UI
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -89,5 +89,5 @@ Scenario Outline: I want to see user has been blocked within the Start UI
     And I click Unblock button
     
  Examples: 
-      | Login   | Password    | Name    | Contact    | Message      | 
-      | aqaUser | aqaPassword | aqaUser | yourIgnore | Hello friend | 
+      | Login   | Password    | Name    | Contact         | Message      | 
+      | aqaUser | aqaPassword | aqaUser | yourNotContact3 | Hello friend | 

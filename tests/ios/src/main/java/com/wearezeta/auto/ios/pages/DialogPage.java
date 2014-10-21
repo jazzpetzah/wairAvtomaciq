@@ -122,6 +122,13 @@ public class DialogPage extends IOSPage{
 	public void ScrollToLastMessage(){
 		//DriverUtils.scrollToElement(driver, messagesList.get(messagesList.size()-1));
 	}
+	
+	public void scrollToTheEndOfConversation() {
+		WebElement inputField = driver.findElement(By.name(IOSLocators.nameConversationCursorInput));
+		driver.tap(1, inputField, 500);
+//		String script = IOSLocators.scriptCursorInputPath + ".tap();";
+//		driver.executeScript(script);
+	}
 
 	public String getLastMessageFromDialog()
 	{
@@ -459,7 +466,7 @@ public class DialogPage extends IOSPage{
 	
 	private static final String UUID_TEXT_MESSAGE_PATTERN = "<UIATextView[^>]*value=\"([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\"[^>]*>\\s*</UIATextView>";
 	private static final String DIALOG_START_MESSAGE_PATTERN = "^(.*)\\sADDED\\s(.*)$";
-	public ArrayList<MessageEntry> listAllMessages() throws Exception, Throwable {
+	public ArrayList<MessageEntry> listAllMessages(boolean checkTime) throws Exception, Throwable {
 		try {
 			log.debug("Trying to close keyboard");
 			driver.hideKeyboard();
@@ -483,7 +490,7 @@ public class DialogPage extends IOSPage{
 			Matcher matcher = pattern.matcher(source);
 			while (matcher.find()) {
 				if (messages.get(matcher.group(1)) == null) {
-					messages.put(matcher.group(1), new MessageEntry("text", matcher.group(1), receivedDate));
+					messages.put(matcher.group(1), new MessageEntry("text", matcher.group(1), receivedDate, checkTime));
 				}
 			}
 			driver.getPageSource();
@@ -501,10 +508,10 @@ public class DialogPage extends IOSPage{
 		return listResult;
 	}
 	
-	public MessageEntry receiveMessage(String message) {
+	public MessageEntry receiveMessage(String message, boolean checkTime) {
 		WebElement messageElement = driver.findElement(By.name(message));
 		if (messageElement != null) {
-			return new MessageEntry("text", message, new Date());
+			return new MessageEntry("text", message, new Date(), checkTime);
 		}
 		return null;
 	}
@@ -517,16 +524,30 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public void sendMessagesUsingScript(String[] messages) {
+		//swipe down workaround
+		try {
+			Point coords = new Point(0, 0);
+			Dimension elementSize = driver.manage().window().getSize();
+
+			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
+				driver.swipe(
+					coords.x + elementSize.width / 2, coords.y + 50,
+					coords.x + elementSize.width / 2, coords.y + elementSize.height - 100,
+					500);
+			} else {
+				DriverUtils.iOSSimulatorSwipeDialogPageDown(
+						CommonUtils.getSwipeScriptPath(IOSPage.class));
+			}
+		} catch (Exception e) { }
+	
+		scrollToTheEndOfConversation();
+		String script = "";
 		for (int i = 0; i < messages.length; i++) {
-			sendMessageUsingScript(messages[i]);
+			script +=
+					String.format(
+							IOSLocators.scriptCursorInputPath + ".setValue(\"%s\");" +
+									IOSLocators.scriptKeyboardReturnKeyPath + ".tap();", messages[i]);
 		}
-//		String script = "";
-//		for (int i = 0; i < messages.length; i++) {
-//			script +=
-//					String.format(
-//							IOSLocators.scriptCursorInputPath + ".setValue(\"%s\");" +
-//									IOSLocators.scriptKeyboardReturnKeyPath + ".tap();", messages[i]);
-//		}
-//		driver.executeScript(script);
+		driver.executeScript(script);
 	}
 }

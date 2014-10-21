@@ -7,18 +7,21 @@ public class MessageEntry {
 	public String messageContent;
 	public String sender;
 	public Date appearanceDate;
+	public boolean checkTime;
 	
-	public MessageEntry(String type, String content, String sender, Date date) {
+	public MessageEntry(String type, String content, String sender, Date date, boolean checkTime) {
 		this.messageType = type;
 		this.messageContent = content;
 		this.sender = sender;
 		this.appearanceDate = date;
+		this.checkTime = checkTime;
 	}
 	
-	public MessageEntry(String type, String content, Date date) {
+	public MessageEntry(String type, String content, Date date, boolean checkTime) {
 		this.messageType = type;
 		this.messageContent = content;
 		this.appearanceDate = date;
+		this.checkTime = checkTime;
 	}
 	
 	public String toString() {

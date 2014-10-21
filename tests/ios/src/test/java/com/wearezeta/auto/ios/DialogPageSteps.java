@@ -29,6 +29,10 @@ public class DialogPageSteps {
 								+ "sed do eiusmod tempor \n incididunt ut labore \n et dolore magna aliqua.\n"
 								+ " Ut enim ad minim veniam,\n quis nostrud \n"
 								+ "exercitation ullamco laboris \n"
+								+ "nisi ut aliquip ex \n ea commodo consequat.\n"
+								+ "sed do eiusmod tempor \n incididunt ut labore \n et dolore magna aliqua.\n"
+								+ " Ut enim ad minim veniam,\n quis nostrud \n"
+								+ "exercitation ullamco laboris \n"
 								+ "nisi ut aliquip ex \n ea commodo consequat.\n";
 
 	private String lastLine = "ea commodo consequat.";
@@ -157,7 +161,7 @@ public class DialogPageSteps {
 	
 	@Then("I see media link (.*) and media in dialog")
 	public void ISeeMediaLinkAndMediaInDialog(String link){
-		Assert.assertEquals(link, PagesCollection.dialogPage.getLastMessageFromDialog());
+		Assert.assertEquals(link.toLowerCase(), PagesCollection.dialogPage.getLastMessageFromDialog().toLowerCase());
 		Assert.assertTrue("Media is missing in dialog", PagesCollection.dialogPage.isMediaContainerVisible());
 	}
 	
@@ -261,7 +265,7 @@ public class DialogPageSteps {
 	
 	@Then("I see conversation view is scrolled back to the playing media link (.*)")
 	public void ISeeConversationViewIsScrolledBackToThePlayingMedia(String link){
-		Assert.assertEquals(link, PagesCollection.dialogPage.getLastMessageFromDialog());
+		Assert.assertEquals(link.toLowerCase(), PagesCollection.dialogPage.getLastMessageFromDialog().toLowerCase());
 		Assert.assertTrue("View did not scroll back", PagesCollection.dialogPage.isMediaContainerVisible());
 		String playingState = IOSLocators.MEDIA_STATE_PLAYING;
 		mediaState = PagesCollection.dialogPage.getMediaState();
@@ -276,6 +280,7 @@ public class DialogPageSteps {
 	@Then("^I scroll away the keyboard$")
 	public void IScrollKeyboardAway() throws Throwable {
 		PagesCollection.dialogPage.swipeDialogPageDown(500);
+		Thread.sleep(1000);
 	}
 	
 	@Then("^I navigate back to conversations view$")
@@ -295,14 +300,16 @@ public class DialogPageSteps {
 	
 	@When("I input message with leading empty spaces")
 	public void IInpuMessageWithLeadingEmptySpace() throws Throwable{
-		message = onlySpacesMessage + CommonUtils.generateRandomString(10).toLowerCase();
-		PagesCollection.dialogPage.inputStringFromKeyboard(message);
+		String randomMessage = CommonUtils.generateRandomString(10).toLowerCase();
+		message = onlySpacesMessage + randomMessage;
+		PagesCollection.dialogPage.sendStringToInput(message);
+		message = randomMessage;
 	}
 	
 	@When("I input message with trailing emtpy spaces")
 	public void IInputMessageWithTrailingEmptySpace() throws Throwable{
 		message = CommonUtils.generateRandomString(10).toLowerCase() + "." + onlySpacesMessage;
-		PagesCollection.dialogPage.inputStringFromKeyboard(message);
+		PagesCollection.dialogPage.sendStringToInput(message);
 	}
 	
 	@When("I input message with lower case and upper case")

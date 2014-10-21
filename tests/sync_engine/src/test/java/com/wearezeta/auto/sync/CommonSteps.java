@@ -1,5 +1,8 @@
 package com.wearezeta.auto.sync;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -8,6 +11,8 @@ import java.util.LinkedHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -19,7 +24,11 @@ import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.BuildVersionInfo;
+import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 import com.wearezeta.auto.common.misc.MessageEntry;
+import com.wearezeta.auto.ios.tools.IOSCommonUtils;
+import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.sync.client.InstanceState;
 import com.wearezeta.auto.sync.client.ZetaInstance;
 import com.wearezeta.auto.sync.report.ReportData;
@@ -47,6 +56,8 @@ public class CommonSteps {
 
 	@Before
 	public void setup() throws Exception {
+		OSXCommonUtils.removeAllZClientSettingsFromDefaults();
+		
 		boolean generateUsersFlag = Boolean.valueOf(SyncEngineUtil
 				.getCommonGenerateUsersFromConfig(this.getClass()));
 
@@ -150,9 +161,17 @@ public class CommonSteps {
 					try {
 						com.wearezeta.auto.android.pages.PagesCollection.loginPage = new com.wearezeta.auto.android.pages.LoginPage(
 								androidAppiumUrl, androidPath);
+						com.wearezeta.auto.android.pages.PagesCollection.loginPage.isVisible();
 					} catch (Exception e) {
 					}
 					long endDate = new Date().getTime();
+					try {
+						startDate = readDateFromAppiumLog(AndroidCommonUtils.getAndroidAppiumLogPathFromConfig(CommonSteps.class));
+					} catch (IOException e) {
+						log.error("Failed to read Android application startup time from Appium log.\n"
+								+ "Approximate value will be used. "
+								+ e.getMessage());
+					}
 					ExecutionContext.androidZeta().setStartupTimeMs(
 							endDate - startDate);
 					log.debug("Android application startup time: "
@@ -181,10 +200,18 @@ public class CommonSteps {
 							com.wearezeta.auto.ios.pages.PagesCollection.loginPage = new com.wearezeta.auto.ios.pages.LoginPage(
 									iosAppiumPath, iosPath, false);
 						}
+						com.wearezeta.auto.ios.pages.PagesCollection.loginPage.isLoginButtonVisible();
 					} catch (MalformedURLException e) {
 					} catch (IOException e) { }
 					
 					long endDate = new Date().getTime();
+					try {
+						startDate = readDateFromAppiumLog(IOSCommonUtils.getIosAppiumLogPathFromConfig(CommonSteps.class));
+					} catch (IOException e) {
+						log.error("Failed to read iOS application startup time from Appium log.\n"
+								+ "Approximate value will be used. "
+								+ e.getMessage());
+					}
 					ExecutionContext.iosZeta().setStartupTimeMs(
 							endDate - startDate);
 					log.debug("iOS application startup time: "
@@ -198,6 +225,35 @@ public class CommonSteps {
 				}
 			}
 		});
+	}
+	
+	private static final String LOG_STRING_WITH_LAUNCH_TIME = "Application launch is started at ([0-9]*)";
+	private long readDateFromAppiumLog(String logFile) throws IOException {
+		long result = -1;
+		
+		FileReader fileReader = null;
+		BufferedReader bufferedReader = null;
+		try {
+			File f = new File(logFile);
+			fileReader = new FileReader(f);
+			bufferedReader = new BufferedReader(fileReader);
+			String s;
+			Pattern pattern = Pattern.compile(LOG_STRING_WITH_LAUNCH_TIME);
+			Matcher matcher;
+			while ( ( s = bufferedReader.readLine() ) != null ) {
+				matcher = pattern.matcher(s);
+				if (matcher.find()) {
+					result = Long.parseLong(matcher.group(1));
+					break;
+				}
+			}
+		} catch (IOException e) {
+			log.error("Failed to read appium.log for launch time.\n" + e.getMessage());
+		} finally {
+			if (bufferedReader != null) bufferedReader.close();
+			if (fileReader != null) fileReader.close();
+		}
+		return result;
 	}
 	
 	@Given("I start all platform clients")
@@ -312,10 +368,26 @@ public class CommonSteps {
 	}
 
 	private LinkedHashMap<Date, String> iosPageSources = new LinkedHashMap<Date, String>();
+	private LinkedHashMap<Date, String> osxPageSources = new LinkedHashMap<Date, String>();
 	
 	private void storeIosPageSource() {
 		if (ExecutionContext.isIosEnabled() && ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
-			iosPageSources.put(new Date(), ExecutionContext.iosZeta().listener().getChatSource());
+			try {
+				ExecutionContext.iosZeta().listener().scrollToTheEndOfConversation();
+			} catch (NoSuchElementException e) {
+				log.error("Failed to get iOS page source. Client could be crashed.");
+				if (ExecutionContext.iosZeta().listener().isSessionLost()) {
+					ExecutionContext.iosZeta().setState(InstanceState.ERROR_CRASHED);
+				}
+			}
+			String iosSource = ExecutionContext.iosZeta().listener().getChatSource();
+			iosPageSources.put(new Date(), iosSource);
+		}
+	}
+	
+	private void storeOsxPageSource() {
+		if (ExecutionContext.isOsxEnabled() && ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED) {
+			osxPageSources.put(new Date(), ExecutionContext.osxZeta().listener().getChatSource());
 		}
 	}
 	
@@ -328,18 +400,18 @@ public class CommonSteps {
 				ExecutionContext.iosZeta().sender().sendTextMessage(SyncEngineUtil.CHAT_NAME, message);
 				ExecutorService executor = Executors.newFixedThreadPool(2);
 				if (ExecutionContext.isOsxEnabled() && ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED) {
-				executor.execute(new Runnable() {
-					public void run() {
-						ExecutionContext.osxZeta().listener().waitForMessageOsx(message);
-					}
-				});
+					executor.execute(new Runnable() {
+						public void run() {
+							ExecutionContext.osxZeta().listener().waitForMessageOsx(message, true);
+						}
+					});
 				}
 				if (ExecutionContext.isAndroidEnabled() && ExecutionContext.androidZeta().getState() != InstanceState.ERROR_CRASHED) {
-				executor.execute(new Runnable() {
-					public void run() {
-						ExecutionContext.androidZeta().listener().waitForMessageAndroid(message);
-					}
-				});
+					executor.execute(new Runnable() {
+						public void run() {
+							ExecutionContext.androidZeta().listener().waitForMessageAndroid(message, true);
+						}
+					});
 				}
 				executor.shutdown();
 				if (!executor.awaitTermination(10, TimeUnit.MINUTES)) {
@@ -353,6 +425,22 @@ public class CommonSteps {
 			}
 		}
 		storeIosPageSource();
+		storeOsxPageSource();
+		
+		//fast sending of messages from iOS
+		if (ExecutionContext.isIosEnabled() && ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
+			for (int i = 0; i < ExecutionContext.iosZeta().getMessagesToSend(); i++) {
+				long startDate = new Date().getTime();
+				final String message = CommonUtils.generateGUID();
+				ExecutionContext.iosZeta().sender()
+						.sendTextMessage(SyncEngineUtil.CHAT_NAME, message, false);
+				long endDate = new Date().getTime();
+				log.debug("Time consumed for sending text message on ios: "
+						+ (endDate - startDate) + "ms");
+			}
+		}
+		storeIosPageSource();
+		storeOsxPageSource();
 		
 		//send osx, receive ios and android
 		if (ExecutionContext.isOsxEnabled() && ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED) {
@@ -363,16 +451,16 @@ public class CommonSteps {
 				if (ExecutionContext.isIosEnabled() && ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
 				executor.execute(new Runnable() {
 					public void run() {
-						ExecutionContext.iosZeta().listener().waitForMessageIos(message);
+						ExecutionContext.iosZeta().listener().waitForMessageIos(message, true);
 					}
 				});
 				}
 				if (ExecutionContext.isAndroidEnabled() && ExecutionContext.androidZeta().getState() != InstanceState.ERROR_CRASHED) {
-				executor.execute(new Runnable() {
-					public void run() {
-						ExecutionContext.androidZeta().listener().waitForMessageAndroid(message);
-					}
-				});
+					executor.execute(new Runnable() {
+						public void run() {
+							ExecutionContext.androidZeta().listener().waitForMessageAndroid(message, true);
+						}
+					});
 				}
 				executor.shutdown();
 				if (!executor.awaitTermination(10, TimeUnit.MINUTES)) {
@@ -386,6 +474,22 @@ public class CommonSteps {
 			}
 		}
 		storeIosPageSource();
+		storeOsxPageSource();
+		
+		//fast sending of messages from OSX
+		if (ExecutionContext.isOsxEnabled() && ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED) {
+			for (int i = 0; i < ExecutionContext.osxZeta().getMessagesToSend(); i++) {
+				long startDate = new Date().getTime();
+				final String message = CommonUtils.generateGUID();
+				ExecutionContext.osxZeta().sender()
+						.sendTextMessage(SyncEngineUtil.CHAT_NAME, message, false);
+				long endDate = new Date().getTime();
+				log.debug("Time consumed for sending text message on osx: "
+						+ (endDate - startDate) + "ms");
+			}
+		}
+		storeIosPageSource();
+		storeOsxPageSource();
 		
 		//send android, receive ios and osx
 		if (ExecutionContext.isAndroidEnabled() && ExecutionContext.androidZeta().getState() != InstanceState.ERROR_CRASHED) {
@@ -396,14 +500,22 @@ public class CommonSteps {
 				if (ExecutionContext.isOsxEnabled() && ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED) {
 				executor.execute(new Runnable() {
 					public void run() {
-						ExecutionContext.osxZeta().listener().waitForMessageOsx(message);
+						ExecutionContext.osxZeta().listener().waitForMessageOsx(message, true);
 					}
 				});
 				}
 				if (ExecutionContext.isIosEnabled() && ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
 				executor.execute(new Runnable() {
 					public void run() {
-						ExecutionContext.iosZeta().listener().waitForMessageIos(message);
+						try {
+							ExecutionContext.iosZeta().listener().waitForMessageIos(message, true);
+						} catch (NoSuchElementException e) {
+							log.error("Failed to receive message on iOS client. Client could be crashed.");
+							if (ExecutionContext.iosZeta().listener().isSessionLost()) {
+								ExecutionContext.iosZeta().setState(InstanceState.ERROR_CRASHED);
+							}
+							
+						}
 					}
 				});
 				}
@@ -419,41 +531,9 @@ public class CommonSteps {
 			}
 		}
 		storeIosPageSource();
-	}
-	
-	@Given("I run fast sync engine test")
-	public void IRunFastSyncEngineTest() throws Exception {
-		// start sending message
-		if (ExecutionContext.isIosEnabled() && ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
-			com.wearezeta.auto.ios.pages.DialogPage page = com.wearezeta.auto.ios.pages.PagesCollection.dialogPage;
-			page.ScrollToLastMessage();
-			final String messages[] = new String[ExecutionContext.iosZeta().getMessagesToSend()];
-			for (int j = 0; j < messages.length; j++) {
-				messages[j] = CommonUtils.generateGUID();
-			}
-			long startDate = new Date().getTime();
-			ExecutionContext.iosZeta().sender()
-					.sendAllMessagesIos(messages, false);
-			long endDate = new Date().getTime();
-			log.debug("Time consumed for sending all text messages on ios: "
-				+ (endDate - startDate) + "ms");
-			
-		}
-		storeIosPageSource();
+		storeOsxPageSource();
 		
-		if (ExecutionContext.isOsxEnabled() && ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED) {
-			for (int i = 0; i < ExecutionContext.osxZeta().getMessagesToSend(); i++) {
-				long startDate = new Date().getTime();
-				final String message = CommonUtils.generateGUID();
-				ExecutionContext.osxZeta().sender()
-						.sendTextMessage(SyncEngineUtil.CHAT_NAME, message, false);
-				long endDate = new Date().getTime();
-				log.debug("Time consumed for sending text message on osx: "
-						+ (endDate - startDate) + "ms");
-			}
-		}
-		storeIosPageSource();
-
+		//fast sending of messages from Android
 		if (ExecutionContext.isAndroidEnabled() && ExecutionContext.androidZeta().getState() != InstanceState.ERROR_CRASHED) {
 			for (int i = 0; i < ExecutionContext.androidZeta()
 					.getMessagesToSend(); i++) {
@@ -467,15 +547,78 @@ public class CommonSteps {
 			}
 		}
 		storeIosPageSource();
+		storeOsxPageSource();
+	}
+	
+	@Given("I run fast sync engine test")
+	public void IRunFastSyncEngineTest() throws Exception {
+		// start sending message
+		if (ExecutionContext.isIosEnabled() && ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
+			com.wearezeta.auto.ios.pages.DialogPage page = com.wearezeta.auto.ios.pages.PagesCollection.dialogPage;
+			final String messages[] = new String[ExecutionContext.iosZeta().getMessagesToSend()];
+			for (int j = 0; j < messages.length; j++) {
+				messages[j] = CommonUtils.generateGUID();
+			}
+			long startDate = new Date().getTime();
+			ExecutionContext.iosZeta().sender()
+					.sendAllMessagesIos(messages, false);
+			long endDate = new Date().getTime();
+			log.debug("Time consumed for sending all text messages on ios: "
+				+ (endDate - startDate) + "ms");
+			
+		}
+		storeIosPageSource();
+		storeOsxPageSource();
+		
+		if (ExecutionContext.isOsxEnabled() && ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED) {
+			for (int i = 0; i < ExecutionContext.osxZeta().getMessagesToSend(); i++) {
+				long startDate = new Date().getTime();
+				final String message = CommonUtils.generateGUID();
+				ExecutionContext.osxZeta().sender()
+						.sendTextMessage(SyncEngineUtil.CHAT_NAME, message, false);
+				long endDate = new Date().getTime();
+				log.debug("Time consumed for sending text message on osx: "
+						+ (endDate - startDate) + "ms");
+			}
+		}
+		storeIosPageSource();
+		storeOsxPageSource();
+		
+		if (ExecutionContext.isAndroidEnabled() && ExecutionContext.androidZeta().getState() != InstanceState.ERROR_CRASHED) {
+			for (int i = 0; i < ExecutionContext.androidZeta()
+					.getMessagesToSend(); i++) {
+				long startDate = new Date().getTime();
+				final String message = CommonUtils.generateGUID();
+				ExecutionContext.androidZeta().sender()
+						.sendTextMessage(SyncEngineUtil.CHAT_NAME, message, false);
+				long endDate = new Date().getTime();
+				log.debug("Time consumed for sending text message on android: "
+						+ (endDate - startDate) + "ms");
+			}
+		}
+		storeIosPageSource();
+		storeOsxPageSource();
 	}
 	
 	@Given("I collect messages order data")
 	public void ICollectMessagesOrderData() {
 		ExecutionContext.iosZeta().listener().setPageSources(iosPageSources);
+		ExecutionContext.osxZeta().listener().setPageSources(osxPageSources);
+
+		ArrayList<MessageEntry> iosMessages = new ArrayList<MessageEntry>();
+		if (ExecutionContext.isIosEnabled()) {
+			iosMessages = ExecutionContext.iosZeta().listener().receiveChatMessages(false);
+		}
 		
-		ArrayList<MessageEntry> iosMessages = ExecutionContext.iosZeta().listener().receiveChatMessages();
-		ArrayList<MessageEntry> osxMessages = ExecutionContext.osxZeta().listener().receiveChatMessages();
-		ArrayList<MessageEntry> androidMessages = ExecutionContext.androidZeta().listener().receiveChatMessages();
+		ArrayList<MessageEntry> osxMessages = new ArrayList<MessageEntry>();
+		if (ExecutionContext.isOsxEnabled()) {
+			osxMessages = ExecutionContext.osxZeta().listener().receiveChatMessages(false);
+		}
+		
+		ArrayList<MessageEntry> androidMessages = new ArrayList<MessageEntry>();
+		if (ExecutionContext.isAndroidEnabled()) {
+			androidMessages = ExecutionContext.androidZeta().listener().receiveChatMessages(false);
+		}
 		
 		ArrayList<MessageEntry> sentMessages = new ArrayList<MessageEntry>(ExecutionContext.sentMessages.values());
 		
@@ -520,6 +663,34 @@ public class CommonSteps {
 		ReportGenerator.generate(ExecutionContext.report);
 	}
 
+	@Then("I collect builds and devices info")
+	public void ICollectBuildsAndDevicesInfo() {
+		if (ExecutionContext.isAndroidEnabled()) {
+			BuildVersionInfo androidClientInfo = new BuildVersionInfo();
+			try {
+				androidClientInfo = AndroidCommonUtils.readClientVersion();
+			} catch (InterruptedException ex) {
+				log.error(ex.getMessage());
+			} catch (IOException ioex) {
+				log.error(ioex.getMessage());
+			}
+			ExecutionContext.androidZeta().setVersionInfo(androidClientInfo);
+			
+			ClientDeviceInfo androidDeviceInfo = null;
+		}
+		
+		if (ExecutionContext.isIosEnabled()) {
+			BuildVersionInfo iosClientInfo = IOSCommonUtils.readClientVersionFromPlist();
+			ExecutionContext.iosZeta().setVersionInfo(iosClientInfo);
+		}
+		
+		if (ExecutionContext.isOsxEnabled()) {
+			BuildVersionInfo osxClientInfo = OSXCommonUtils.readClientVersionFromPlist();
+			ExecutionContext.osxZeta().setVersionInfo(osxClientInfo);
+		}
+		
+	}
+	
 	@Then("I perform acceptance checks")
 	public void IPerformAcceptanceChecks() {
 		boolean isTestPassed = true;

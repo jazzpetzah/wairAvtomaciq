@@ -75,7 +75,7 @@ Examples:
 
 
 @regression 
-@id526
+@id526 
   Scenario Outline: I can send and play inline youtube link
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -92,7 +92,7 @@ Examples:
 
 
 #Muted due relogin issue
-@staging
+@staging @mute
 @id614
    Scenario Outline: I am able to play inline YouTube link poster by others
     Given I Sign in using login <Login> and password <Password>
@@ -121,7 +121,7 @@ Examples:
 
 #muted due to issue IOS-959
 @staging
-@id383
+@id383 
 Scenario Outline: Play/pause SoundCloud media link from the media bar
 	Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -140,12 +140,12 @@ Scenario Outline: Play/pause SoundCloud media link from the media bar
        
 Examples:
     |  Login		| Password		| Name			| Contact1    | SoundCloudLink |
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/klinke-auf-cinch/04-whats-happening-boytalk-remix |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/carl-cox/carl-cox-nexus |
     
     
 #muted due to defact IOS-985, still needs checking of mediabar and scrolling on simulator 
 @regression
-@id384
+@id384 
 Scenario Outline: Conversation gets scrolled back to playing media when clicking on media bar
 	Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -160,7 +160,7 @@ Scenario Outline: Conversation gets scrolled back to playing media when clicking
     
 Examples:
     |  Login		| Password		| Name			| Contact1    | SoundCloudLink |
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/klinke-auf-cinch/04-whats-happening-boytalk-remix |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/carl-cox/sets/all-roads-lead-to-the |
     
 @regression
 @id488
@@ -245,7 +245,7 @@ Scenario Outline: Verify play/pause controls are visible in the list if there is
     
 Examples:
     |  Login		| Password		| Name			| Contact1    | Contact2    |SoundCloudLink |
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | aqaContact2 |https://soundcloud.com/klinke-auf-cinch/04-whats-happening-boytalk-remix |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | aqaContact2 |https://soundcloud.com/carl-cox/carl-cox-nexus |
 
 
 #muted due to issue IOS-959 
@@ -265,11 +265,11 @@ Scenario Outline: Verify the Media Bar disappears when playing media is back in 
     
 Examples:
     |  Login		| Password		| Name			| Contact1    | SoundCloudLink |
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/klinke-auf-cinch/04-whats-happening-boytalk-remix |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/carl-cox/carl-cox-nexus |
     
     
 @regression
-@id385
+@id385 
   Scenario Outline: Verify the Media Bar dissapears after playback finishes (SoundCloud)
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -285,7 +285,7 @@ Examples:
 
 	Examples: 
     |	Login	|	Password	|	Name	|	Contact1		| SoundCloudLink 								| time |
-    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| https://soundcloud.com/carl-cox/carl-cox-nexus| 28   | 
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact3	| https://soundcloud.com/carl-cox/carl-cox-nexus    | 38   | 
 
 
  @staging 
@@ -330,7 +330,7 @@ Examples:
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
     
  @regression 
- @id414
+ @id414 
   Scenario Outline: Send a text containing spaces
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -380,11 +380,11 @@ Examples:
     
 	Examples: 
     |	Login	|	Password	|	Name	|	Contact		|
-    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact2	|
     
 
- @regression 
- @id413
+ @regression
+ @id413 
   Scenario Outline: Copy and paste to send the message
     Given I see sign in screen
 	When I press Sign in button
@@ -398,6 +398,7 @@ Examples:
 	And I see Contact list with my name <Name>
     And I tap on contact name <Contact>
     And I see dialog page
+    And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
 	And I send the message
@@ -405,7 +406,7 @@ Examples:
     
 	Examples: 
     |	Login	|	Password	|	Name	|	Contact		| text 		|
-    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| TextToCopy|
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact2	| TextToCopy|
    
  @staging   
  @id394
@@ -447,7 +448,7 @@ Examples:
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|ÄäÖöÜüß & latin chars|
 
 @regression
-@id555 
+@id555
 Scenario Outline: Verify you can add people from 1:1 people view (view functionality)
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with my name <Name>
@@ -480,7 +481,6 @@ Examples:
 
 
 #Muted due to ZIOS-2049
-@mute
 @staging
 @id556
 Scenario Outline: Verify you can add people from 1:1 people view (via Add to Conversation button)
@@ -507,8 +507,7 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| aqaContact3 |
     
     
-#Muted due to ZIOS-2049
-@mute    
+#Muted due to ZIOS-2049   
 @staging
 @id557
 Scenario Outline: Verify you can add people from 1:1 people view (via keyboard button)
