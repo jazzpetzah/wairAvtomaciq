@@ -375,7 +375,6 @@ public class CommonSteps {
 			ExecutionContext.iosZeta().listener().scrollToTheEndOfConversation();
 			String iosSource = ExecutionContext.iosZeta().listener().getChatSource();
 			iosPageSources.put(new Date(), iosSource);
-			log.debug("Current iOS source code: " + iosSource);
 		}
 	}
 	
