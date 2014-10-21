@@ -285,7 +285,7 @@ Examples:
 
 	Examples: 
     |	Login	|	Password	|	Name	|	Contact1		| SoundCloudLink 								| time |
-    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| https://soundcloud.com/carl-cox/carl-cox-nexus    | 28   | 
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact3	| https://soundcloud.com/carl-cox/carl-cox-nexus    | 38   | 
 
 
  @staging 
@@ -448,7 +448,7 @@ Examples:
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|ÄäÖöÜüß & latin chars|
 
 @regression
-@id555 
+@id555
 Scenario Outline: Verify you can add people from 1:1 people view (view functionality)
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with my name <Name>

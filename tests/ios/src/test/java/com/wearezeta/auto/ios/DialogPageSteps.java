@@ -280,6 +280,7 @@ public class DialogPageSteps {
 	@Then("^I scroll away the keyboard$")
 	public void IScrollKeyboardAway() throws Throwable {
 		PagesCollection.dialogPage.swipeDialogPageDown(500);
+		Thread.sleep(1000);
 	}
 	
 	@Then("^I navigate back to conversations view$")
