@@ -372,10 +372,16 @@ public class CommonSteps {
 	
 	private void storeIosPageSource() {
 		if (ExecutionContext.isIosEnabled() && ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
-			ExecutionContext.iosZeta().listener().scrollToTheEndOfConversation();
+			try {
+				ExecutionContext.iosZeta().listener().scrollToTheEndOfConversation();
+			} catch (NoSuchElementException e) {
+				log.error("Failed to get iOS page source. Client could be crashed.");
+				if (ExecutionContext.iosZeta().listener().isSessionLost()) {
+					ExecutionContext.iosZeta().setState(InstanceState.ERROR_CRASHED);
+				}
+			}
 			String iosSource = ExecutionContext.iosZeta().listener().getChatSource();
 			iosPageSources.put(new Date(), iosSource);
-			log.debug("Current iOS source code: " + iosSource);
 		}
 	}
 	
@@ -501,7 +507,15 @@ public class CommonSteps {
 				if (ExecutionContext.isIosEnabled() && ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
 				executor.execute(new Runnable() {
 					public void run() {
-						ExecutionContext.iosZeta().listener().waitForMessageIos(message, true);
+						try {
+							ExecutionContext.iosZeta().listener().waitForMessageIos(message, true);
+						} catch (NoSuchElementException e) {
+							log.error("Failed to receive message on iOS client. Client could be crashed.");
+							if (ExecutionContext.iosZeta().listener().isSessionLost()) {
+								ExecutionContext.iosZeta().setState(InstanceState.ERROR_CRASHED);
+							}
+							
+						}
 					}
 				});
 				}
