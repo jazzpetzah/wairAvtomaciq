@@ -10,9 +10,14 @@ Scenario Outline: Start group chat with users from Top Connections
   And I see People picker page
   And I re-enter the people picker if top people list is not there
   And I see top people list on People picker page
- 
   And I tap on 2 top connections
+  And I click Create Conversation button  on People picker page
+  And I swipe up on group chat page
+  And I change conversation name to <ConvoName>
+  And I exit the group info page
+  And I return to the chat list
+  And I see first item in contact list named <ConvoName>
   
   Examples:
-    |  Login	 | Password	 | Name	 | Contact1	 | Contact2	 |
-    |  aqaUser	 | aqaPassword	| aqaUser	 | aqaContact1	| aqaContact2	|
+    |  Login	 | Password	    | Name	    | ConvoName    |
+    |  aqaUser	 | aqaPassword	| aqaUser   | TopGroupTest |

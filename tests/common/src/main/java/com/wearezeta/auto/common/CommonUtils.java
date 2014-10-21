@@ -59,6 +59,7 @@ public class CommonUtils {
 	public static List<ClientUser> yourUsers = new CopyOnWriteArrayList<ClientUser>();
 	public static List<ClientUser> contacts = new CopyOnWriteArrayList<ClientUser>();
 	public static List<ClientUser> additionalUsers = new CopyOnWriteArrayList<ClientUser>();
+	public static List<ClientUser> requiredContacts = new CopyOnWriteArrayList<ClientUser>();
 	public static List<ConvPair> user_chats = new CopyOnWriteArrayList<ConvPair>();
 	public static final int MAX_PARALLEL_USER_CREATION_TASKS = 5;
 
