@@ -370,19 +370,21 @@ public class CommonSteps {
 	private LinkedHashMap<Date, String> iosPageSources = new LinkedHashMap<Date, String>();
 	private LinkedHashMap<Date, String> osxPageSources = new LinkedHashMap<Date, String>();
 	
-	private void storeIosPageSource() {
+	private void storeIosPageSource(boolean last) {
 		if (ExecutionContext.isIosEnabled() && ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
-			try {
-				ExecutionContext.iosZeta().listener().scrollToTheEndOfConversation();
-			} catch (NoSuchElementException e) {
-				log.error("Failed to get iOS page source. Client could be crashed.\n" + e.getMessage());
-				if (ExecutionContext.iosZeta().listener().isSessionLost()) {
-					log.error("Session lost on iOS client. No checks for next time.");
-					ExecutionContext.iosZeta().setState(InstanceState.ERROR_CRASHED);
+			if (!last) {
+				try {
+					ExecutionContext.iosZeta().listener().scrollToTheEndOfConversation();
+				} catch (NoSuchElementException e) {
+					log.error("Failed to get iOS page source. Client could be crashed.\n" + e.getMessage());
+					if (ExecutionContext.iosZeta().listener().isSessionLost()) {
+						log.error("Session lost on iOS client. No checks for next time.");
+						ExecutionContext.iosZeta().setState(InstanceState.ERROR_CRASHED);
+					}
 				}
+				String iosSource = ExecutionContext.iosZeta().listener().getChatSource();
+				iosPageSources.put(new Date(), iosSource);
 			}
-			String iosSource = ExecutionContext.iosZeta().listener().getChatSource();
-			iosPageSources.put(new Date(), iosSource);
 		}
 	}
 	
@@ -426,7 +428,7 @@ public class CommonSteps {
 				}
 			}
 		}
-		storeIosPageSource();
+		storeIosPageSource(false);
 		storeOsxPageSource();
 		
 		//fast sending of messages from iOS
@@ -441,7 +443,7 @@ public class CommonSteps {
 						+ (endDate - startDate) + "ms");
 			}
 		}
-		storeIosPageSource();
+		storeIosPageSource(false);
 		storeOsxPageSource();
 		
 		//send osx, receive ios and android
@@ -485,7 +487,7 @@ public class CommonSteps {
 				}
 			}
 		}
-		storeIosPageSource();
+		storeIosPageSource(false);
 		storeOsxPageSource();
 		
 		//fast sending of messages from OSX
@@ -500,7 +502,7 @@ public class CommonSteps {
 						+ (endDate - startDate) + "ms");
 			}
 		}
-		storeIosPageSource();
+		storeIosPageSource(false);
 		storeOsxPageSource();
 		
 		//send android, receive ios and osx
@@ -544,7 +546,7 @@ public class CommonSteps {
 				}
 			}
 		}
-		storeIosPageSource();
+		storeIosPageSource(false);
 		storeOsxPageSource();
 		
 		//fast sending of messages from Android
@@ -560,7 +562,7 @@ public class CommonSteps {
 						+ (endDate - startDate) + "ms");
 			}
 		}
-		storeIosPageSource();
+		storeIosPageSource(true);
 		storeOsxPageSource();
 	}
 	
@@ -581,7 +583,7 @@ public class CommonSteps {
 				+ (endDate - startDate) + "ms");
 			
 		}
-		storeIosPageSource();
+		storeIosPageSource(false);
 		storeOsxPageSource();
 		
 		if (ExecutionContext.isOsxEnabled() && ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED) {
@@ -595,7 +597,7 @@ public class CommonSteps {
 						+ (endDate - startDate) + "ms");
 			}
 		}
-		storeIosPageSource();
+		storeIosPageSource(false);
 		storeOsxPageSource();
 		
 		if (ExecutionContext.isAndroidEnabled() && ExecutionContext.androidZeta().getState() != InstanceState.ERROR_CRASHED) {
@@ -610,7 +612,7 @@ public class CommonSteps {
 						+ (endDate - startDate) + "ms");
 			}
 		}
-		storeIosPageSource();
+		storeIosPageSource(true);
 		storeOsxPageSource();
 	}
 	
