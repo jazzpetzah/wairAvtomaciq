@@ -63,7 +63,9 @@ public class PerformanceSteps {
 						break;
 					}
 				}
-				
+				if (visibleContactsList.size()<= 0){
+					continue;
+				}
 				int randomInt = random.nextInt(visibleContactsList.size() - 1);
 				String contact = visibleContactsList.get(randomInt).getText();
 				CommonSteps.senderPages.getContactListPage().openConversation(
@@ -77,17 +79,32 @@ public class PerformanceSteps {
 								CommonUtils
 										.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
 				Thread.sleep(2000);
+				int numberMessages = CommonSteps.senderPages.getConversationPage().getNumberOfMessageEntries(contact);				
+				int numberPictures = CommonSteps.senderPages.getConversationPage().getNumberOfImageEntries();
+				if (numberMessages > 0 || numberPictures > 0){
+					try{
+					CommonSteps.senderPages.getConversationPage().scrollDownToLastMessage();
+					}
+					catch(Exception exep){
+						System.out.println("no need to scroll");
+					}
+				}
 				randomMessage = CommonUtils.generateGUID();
 				CommonSteps.senderPages.getConversationPage().writeNewMessage(
 						randomMessage);
 				Thread.sleep(2000);
 				CommonSteps.senderPages.getConversationPage().sendNewMessage();
-				Thread.sleep(1000);
+				Thread.sleep(2000);
+				try{
 				CommonSteps.senderPages.getConversationPage().scrollDownToLastMessage();
-				Thread.sleep(1000);
-
-				CommonSteps.senderPages.getConversationPage()
-						.openChooseImageDialog();
+				CommonSteps.senderPages.getConversationPage().scrollDownToLastMessage();
+				}
+				catch(Exception ex){
+					System.out.println("noscrolling");
+				}
+				Thread.sleep(2000);
+				try{
+				CommonSteps.senderPages.getConversationPage().shortcutCooseImageDialog();
 				CommonSteps.senderPages
 						.setChoosePicturePage(new ChoosePicturePage(
 								CommonUtils
@@ -98,11 +115,19 @@ public class PerformanceSteps {
 				ChoosePicturePage choosePicturePage = CommonSteps.senderPages
 						.getChoosePicturePage();
 				Assert.assertTrue(choosePicturePage.isVisible());
-
-				choosePicturePage.openImage(picturename);
 				
+				choosePicturePage.openImage(picturename);
+				}
+				catch(Exception ex){
+					System.out.println("image posting failed");
+				}
 				Thread.sleep(1000);
+				try{
 				CommonSteps.senderPages.getConversationPage().scrollDownToLastMessage();
+				}
+				catch(Exception exep){
+					System.out.println("no scrolling");
+				}
 			}
 
 			MinimizeZClient();

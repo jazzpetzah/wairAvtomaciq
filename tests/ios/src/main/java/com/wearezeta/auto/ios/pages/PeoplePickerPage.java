@@ -175,6 +175,12 @@ public class PeoplePickerPage extends IOSPage{
 		driver.findElement(By.name(name)).click();
 	}
 	
+	public void tapNumberOfTopConnections(int numberToTap){
+		for(int i=1;i<numberToTap+1;i++){
+			driver.findElement(By.xpath(String.format(IOSLocators.xpathPeoplePickerTopConnectionsAvatar, i))).click();
+		}
+	}
+	
 	public boolean isCreateConversationButtonVisible(){
 		return DriverUtils.isElementDisplayed(createConverstaionButton);
 	}

@@ -6,7 +6,11 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.ios.pages.GroupChatPage;
+import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
+import com.wearezeta.auto.ios.pages.PeoplePickerPage;
+
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class PeoplePickerPageSteps {
@@ -14,6 +18,18 @@ public class PeoplePickerPageSteps {
 	@When("^I see People picker page$")
 	public void WhenISeePeoplePickerPage() throws Throwable {
 		Assert.assertTrue(PagesCollection.peoplePickerPage.isPeoplePickerPageVisible());
+	}
+	
+	@When("I re-enter the people picker if top people list is not there")
+	public void IRetryPeoplePickerIfNotLoaded() throws IOException, Exception{
+		if(!PagesCollection.peoplePickerPage.isTopPeopleLabelVisible()){
+			IClickCloseButtonDismissPeopleView();
+			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
+				PagesCollection.peoplePickerPage = (PeoplePickerPage) PagesCollection.contactListPage.swipeDown(500);
+			} else {
+				PagesCollection.peoplePickerPage = (PeoplePickerPage) PagesCollection.contactListPage.swipeDownSimulator();
+			}
+		}
 	}
 	
 	@When("^I tap on Search input on People picker page$")
@@ -65,6 +81,11 @@ public class PeoplePickerPageSteps {
 	@When("^I click clear button$")
 	public void WhenIClickClearButton() throws IOException{
 		PagesCollection.contactListPage = PagesCollection.peoplePickerPage.dismissPeoplePicker();
+	}
+	
+	@Then("I tap on (.*) top connections")
+	public void WhenITapOnTopConnections(int numberOfTopConnections){
+		PagesCollection.peoplePickerPage.tapNumberOfTopConnections(numberOfTopConnections);
 	}
 	
 	@When("I click on connected user (.*) avatar on People picker page")
