@@ -170,8 +170,9 @@ public class DialogPage extends IOSPage{
 	public CameraRollPage pressAddPictureButton() throws IOException{
 		
 		CameraRollPage page;
-		page = new CameraRollPage(url, path);
 		addPictureButton.click();
+		DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameCameraLibraryButton));
+		page = new CameraRollPage(url, path);
 		
 		return page;
 	}
@@ -549,5 +550,23 @@ public class DialogPage extends IOSPage{
 									IOSLocators.scriptKeyboardReturnKeyPath + ".tap();", messages[i]);
 		}
 		driver.executeScript(script);
+	}
+	
+	public void takeCameraPhoto() throws IOException, InterruptedException{
+		swipeInputCursor();
+		CameraRollPage page = pressAddPictureButton();
+		page.pressSelectFromLibraryButton();
+		page.pressConfirmButton();
+	}
+	
+	public DialogPage sendImageFromAlbum() throws Throwable{
+		swipeInputCursor();
+		Thread.sleep(1000);
+		CameraRollPage page = pressAddPictureButton();
+		page.pressSelectFromLibraryButton();
+		page.clickFirstLibraryFolder();
+		page.clickFirstImage();
+		page.pressConfirmButton();
+		return new DialogPage(url, path);
 	}
 }

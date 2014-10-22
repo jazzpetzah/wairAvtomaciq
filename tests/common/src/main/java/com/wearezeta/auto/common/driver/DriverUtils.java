@@ -28,6 +28,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.RemoteWebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
@@ -56,53 +57,71 @@ public class DriverUtils {
 	}
 	
 
-	public static boolean waitUntilElementDissapear(RemoteWebDriver driver, final By by) {
+	public static boolean waitUntilElementDissapear(RemoteWebDriver driver,
+			final By by) {
 
 		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 		Boolean bool = true;
 		try {
-		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-				.withTimeout(20, TimeUnit.SECONDS)
-				.pollingEvery(1, TimeUnit.SECONDS)
-				.ignoring(NoSuchElementException.class);
+			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+					.withTimeout(20, TimeUnit.SECONDS)
+					.pollingEvery(1, TimeUnit.SECONDS)
+					.ignoring(NoSuchElementException.class);
 
-		bool = wait.until(new Function<WebDriver, Boolean>() {
+			bool = wait.until(new Function<WebDriver, Boolean>() {
 
-			public Boolean apply(WebDriver driver) {
-				return (driver.findElements(by).size() == 0);
-			}
-		});
-		}
-		catch (Exception ex) {
-			//do nothing
-		}
-		finally {
+				public Boolean apply(WebDriver driver) {
+					return (driver.findElements(by).size() == 0);
+				}
+			});
+		} catch (Exception ex) {
+			// do nothing
+		} finally {
 			setDefaultImplicitWait(driver);
 		}
 		return bool;
 	}
 
-	public static boolean waitUntilElementAppears(RemoteWebDriver driver, final By by) {
+	public static boolean waitUntilElementAppears(RemoteWebDriver driver,
+			final By by) {
 
 		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 		Boolean bool = false;
 		try {
-		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-				.withTimeout(20, TimeUnit.SECONDS)
-				.pollingEvery(1, TimeUnit.SECONDS)
-				.ignoring(NoSuchElementException.class);
+			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+					.withTimeout(20, TimeUnit.SECONDS)
+					.pollingEvery(1, TimeUnit.SECONDS)
+					.ignoring(NoSuchElementException.class);
 
-		bool = wait.until(new Function<WebDriver, Boolean>() {
+			bool = wait.until(new Function<WebDriver, Boolean>() {
 
-			public Boolean apply(WebDriver driver) {
-				return (driver.findElements(by).size() > 0);
-			}
-		});
+				public Boolean apply(WebDriver driver) {
+					return (driver.findElements(by).size() > 0);
+				}
+			});
+		} catch (Exception ex) {
+
+		} finally {
+			setDefaultImplicitWait(driver);
 		}
-		catch (Exception ex) {
-			
-		}
-		finally {
+		return bool;
+	}
+	
+	public static boolean waitUntilElementClickable(RemoteWebDriver driver,
+			final WebElement element) {
+
+		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+		Boolean bool = false;
+		try {
+			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+					.withTimeout(20, TimeUnit.SECONDS)
+					.pollingEvery(1, TimeUnit.SECONDS)
+					.ignoring(NoSuchElementException.class);
+
+			wait.until(ExpectedConditions.elementToBeClickable(element));
+		} catch (Exception ex) {
+
+		} finally {
 			setDefaultImplicitWait(driver);
 		}
 		return bool;
