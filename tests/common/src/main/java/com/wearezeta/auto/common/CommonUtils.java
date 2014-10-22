@@ -79,7 +79,7 @@ public class CommonUtils {
 	public static final String PLATFORM_NAME_OSX = "Mac";
 	public static final String PLATFORM_NAME_ANDROID = "Android";
 	public static final String PLATFORM_NAME_IOS = "iOS";
-	private static final Logger log = ZetaLogger.getLog(BackEndREST.class.getSimpleName());
+	private static final Logger log = ZetaLogger.getLog(CommonUtils.class.getSimpleName());
 	
 	public static String getOsName() {
 		return System.getProperty("os.name");
@@ -87,6 +87,7 @@ public class CommonUtils {
 
 	public static void executeOsXCommand(String[] cmd) throws Exception {
 		Process process = Runtime.getRuntime().exec(cmd);
+		log.debug("Process started for cmdline " + Arrays.toString(cmd));
 		outputErrorStreamToLog(process.getErrorStream());
 		log.debug("Process exited with code " + process.waitFor());
 	}
