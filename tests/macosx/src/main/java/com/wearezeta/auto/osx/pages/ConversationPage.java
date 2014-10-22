@@ -9,6 +9,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.jboss.netty.handler.timeout.TimeoutException;
 import org.junit.Assert;
@@ -172,6 +177,20 @@ public class ConversationPage extends OSXPage {
 			});
 		}
 		addImageButton.click();
+	}
+	
+	public void shortcutCooseImageDialog() throws ScriptException{
+		final String[] scriptArr = new String[] {
+				"property bi : \"com.wearezeta.zclient.mac\"",
+				"tell application id bi",
+				"activate",
+				"tell application \"System Events\" to keystroke \"p\" using {command down, shift down}",
+				"end tell"};
+		
+		final String script = StringUtils.join(scriptArr, "\n");
+		ScriptEngineManager mgr = new ScriptEngineManager();
+		ScriptEngine engine = mgr.getEngineByName("AppleScript");
+		engine.eval(script);
 	}
 
 	public int getNumberOfMessageEntries(String message) {
