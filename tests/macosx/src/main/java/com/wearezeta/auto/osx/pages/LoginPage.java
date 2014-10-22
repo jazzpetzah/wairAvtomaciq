@@ -90,7 +90,11 @@ public class LoginPage extends OSXPage {
 		DriverUtils.setImplicitWaitValue(driver, 1);
 		try {
 			loginField.sendKeys(login);
+			if (loginField.getText().isEmpty()) {
+				loginField.sendKeys(login);
+			}
 		} catch (NoSuchElementException e) {
+			log.error("Login field not found.\n" + e.getMessage());
 		} finally {
 			DriverUtils.setDefaultImplicitWait(driver);
 		}
