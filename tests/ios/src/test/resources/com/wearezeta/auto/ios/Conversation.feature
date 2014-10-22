@@ -119,7 +119,6 @@ Examples:
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| http://www.youtube.com/watch?v=Bb1RhktcugU |  
 
 
-#muted due to issue IOS-959
 @staging
 @id383 
 Scenario Outline: Play/pause SoundCloud media link from the media bar
@@ -140,7 +139,7 @@ Scenario Outline: Play/pause SoundCloud media link from the media bar
        
 Examples:
     |  Login		| Password		| Name			| Contact1    | SoundCloudLink |
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/carl-cox/carl-cox-nexus |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/carl-cox/sets/all-roads-lead-to-the |
     
     
 #muted due to defact IOS-985, still needs checking of mediabar and scrolling on simulator 
