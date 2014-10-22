@@ -382,9 +382,9 @@ public class CommonSteps {
 						ExecutionContext.iosZeta().setState(InstanceState.ERROR_CRASHED);
 					}
 				}
-				String iosSource = ExecutionContext.iosZeta().listener().getChatSource();
-				iosPageSources.put(new Date(), iosSource);
 			}
+			String iosSource = ExecutionContext.iosZeta().listener().getChatSource();
+			iosPageSources.put(new Date(), iosSource);
 		}
 	}
 	
