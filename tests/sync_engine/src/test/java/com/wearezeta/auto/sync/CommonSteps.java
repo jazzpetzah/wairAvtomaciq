@@ -375,7 +375,7 @@ public class CommonSteps {
 			try {
 				ExecutionContext.iosZeta().listener().scrollToTheEndOfConversation();
 			} catch (NoSuchElementException e) {
-				log.error("Failed to get iOS page source. Client could be crashed.");
+				log.error("Failed to get iOS page source. Client could be crashed.\n" + e.getMessage());
 				if (ExecutionContext.iosZeta().listener().isSessionLost()) {
 					log.error("Session lost on iOS client. No checks for next time.");
 					ExecutionContext.iosZeta().setState(InstanceState.ERROR_CRASHED);
@@ -456,7 +456,7 @@ public class CommonSteps {
 						try {
 							ExecutionContext.iosZeta().listener().waitForMessageIos(message, true);
 						} catch (NoSuchElementException e) {
-							log.error("Failed to receive message on iOS client. Client could be crashed.");
+							log.error("Failed to get iOS page source. Client could be crashed.\n" + e.getMessage());
 							if (ExecutionContext.iosZeta().listener().isSessionLost()) {
 								log.error("Session lost on iOS client. No checks for next time.");
 								ExecutionContext.iosZeta().setState(InstanceState.ERROR_CRASHED);
@@ -522,7 +522,7 @@ public class CommonSteps {
 						try {
 							ExecutionContext.iosZeta().listener().waitForMessageIos(message, true);
 						} catch (NoSuchElementException e) {
-							log.error("Failed to receive message on iOS client. Client could be crashed.");
+							log.error("Failed to get iOS page source. Client could be crashed.\n" + e.getMessage());
 							if (ExecutionContext.iosZeta().listener().isSessionLost()) {
 								log.error("Session lost on iOS client. No checks for next time.");
 								ExecutionContext.iosZeta().setState(InstanceState.ERROR_CRASHED);
