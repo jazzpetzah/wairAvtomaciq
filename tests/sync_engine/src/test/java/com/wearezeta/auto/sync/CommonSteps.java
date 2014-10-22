@@ -377,6 +377,7 @@ public class CommonSteps {
 			} catch (NoSuchElementException e) {
 				log.error("Failed to get iOS page source. Client could be crashed.");
 				if (ExecutionContext.iosZeta().listener().isSessionLost()) {
+					log.error("Session lost on iOS client. No checks for next time.");
 					ExecutionContext.iosZeta().setState(InstanceState.ERROR_CRASHED);
 				}
 			}
@@ -417,6 +418,7 @@ public class CommonSteps {
 				if (!executor.awaitTermination(10, TimeUnit.MINUTES)) {
 					throw new Exception("Work was not finished in useful time.");
 				}
+				log.debug("Sent message #" + i + " from iOS client");
 				if (ExecutionContext.iosZeta().getMessagesSendingInterval() > 0) {
 					try {
 						Thread.sleep(ExecutionContext.iosZeta().getMessagesSendingInterval()*1000);
@@ -435,7 +437,7 @@ public class CommonSteps {
 				ExecutionContext.iosZeta().sender()
 						.sendTextMessage(SyncEngineUtil.CHAT_NAME, message, false);
 				long endDate = new Date().getTime();
-				log.debug("Time consumed for sending text message on ios: "
+				log.debug("Time consumed for sending text message #" + i + " from iOS: "
 						+ (endDate - startDate) + "ms");
 			}
 		}
@@ -450,8 +452,17 @@ public class CommonSteps {
 				ExecutorService executor = Executors.newFixedThreadPool(2);
 				if (ExecutionContext.isIosEnabled() && ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
 				executor.execute(new Runnable() {
-					public void run() {
-						ExecutionContext.iosZeta().listener().waitForMessageIos(message, true);
+					public void run() {	
+						try {
+							ExecutionContext.iosZeta().listener().waitForMessageIos(message, true);
+						} catch (NoSuchElementException e) {
+							log.error("Failed to receive message on iOS client. Client could be crashed.");
+							if (ExecutionContext.iosZeta().listener().isSessionLost()) {
+								log.error("Session lost on iOS client. No checks for next time.");
+								ExecutionContext.iosZeta().setState(InstanceState.ERROR_CRASHED);
+							}
+						
+						}
 					}
 				});
 				}
@@ -466,6 +477,7 @@ public class CommonSteps {
 				if (!executor.awaitTermination(10, TimeUnit.MINUTES)) {
 					throw new Exception("Work was not finished in useful time.");
 				}
+				log.debug("Sent message #" + i + " from OSX client");
 				if (ExecutionContext.osxZeta().getMessagesSendingInterval() > 0) {
 					try {
 						Thread.sleep(ExecutionContext.osxZeta().getMessagesSendingInterval()*1000);
@@ -484,7 +496,7 @@ public class CommonSteps {
 				ExecutionContext.osxZeta().sender()
 						.sendTextMessage(SyncEngineUtil.CHAT_NAME, message, false);
 				long endDate = new Date().getTime();
-				log.debug("Time consumed for sending text message on osx: "
+				log.debug("Time consumed for sending text message #" + i + " from OSX: "
 						+ (endDate - startDate) + "ms");
 			}
 		}
@@ -512,6 +524,7 @@ public class CommonSteps {
 						} catch (NoSuchElementException e) {
 							log.error("Failed to receive message on iOS client. Client could be crashed.");
 							if (ExecutionContext.iosZeta().listener().isSessionLost()) {
+								log.error("Session lost on iOS client. No checks for next time.");
 								ExecutionContext.iosZeta().setState(InstanceState.ERROR_CRASHED);
 							}
 							
@@ -523,6 +536,7 @@ public class CommonSteps {
 				if (!executor.awaitTermination(10, TimeUnit.MINUTES)) {
 					throw new Exception("Work was not finished in useful time.");
 				}
+				log.debug("Sent message #" + i + " from Android client");
 				if (ExecutionContext.androidZeta().getMessagesSendingInterval() > 0) {
 					try {
 						Thread.sleep(ExecutionContext.androidZeta().getMessagesSendingInterval()*1000);
@@ -542,7 +556,7 @@ public class CommonSteps {
 				ExecutionContext.androidZeta().sender()
 						.sendTextMessage(SyncEngineUtil.CHAT_NAME, message, false);
 				long endDate = new Date().getTime();
-				log.debug("Time consumed for sending text message on android: "
+				log.debug("Time consumed for sending text message #" + i + " from Android: "
 						+ (endDate - startDate) + "ms");
 			}
 		}
