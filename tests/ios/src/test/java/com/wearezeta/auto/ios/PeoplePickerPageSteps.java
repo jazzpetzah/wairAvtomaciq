@@ -10,6 +10,7 @@ import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.ios.pages.PeoplePickerPage;
 
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class PeoplePickerPageSteps {
@@ -82,7 +83,7 @@ public class PeoplePickerPageSteps {
 		PagesCollection.contactListPage = PagesCollection.peoplePickerPage.dismissPeoplePicker();
 	}
 	
-	@When("I tap on (.*) top connections")
+	@Then("I tap on (.*) top connections")
 	public void WhenITapOnTopConnections(int numberOfTopConnections){
 		PagesCollection.peoplePickerPage.tapNumberOfTopConnections(numberOfTopConnections);
 	}

@@ -176,9 +176,8 @@ public class PeoplePickerPage extends IOSPage{
 	}
 	
 	public void tapNumberOfTopConnections(int numberToTap){
-		numberToTap = numberToTap+1;
-		for(int i=1;i<numberToTap;i++){
-			driver.findElement(By.xpath("//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell["+Integer.toString(i)+"]")).click();
+		for(int i=1;i<numberToTap+1;i++){
+			driver.findElement(By.xpath(String.format(IOSLocators.xpathPeoplePickerTopConnectionsAvatar, i))).click();
 		}
 	}
 	

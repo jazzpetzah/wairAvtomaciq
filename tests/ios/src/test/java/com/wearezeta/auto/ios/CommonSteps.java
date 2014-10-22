@@ -101,25 +101,28 @@ public class CommonSteps {
 	}
 	 
 	@Given("I have at least (.*) connections")
-	public void GivenIHaveAtMinimumConnections(int minimumConnections) throws Throwable{
-	try{
-	for(int i=0;i<minimumConnections;i++ ){
-	String email = CreateZetaUser.registerUserAndReturnMail();
-	ClientUser user = new ClientUser();
-	user.setEmail(email);
-	user.setPassword(CommonUtils.getDefaultPasswordFromConfig(CommonUtils.class));
-	user.setUserState(UsersState.Created);
-	CommonUtils.requiredContacts.add(user);
-	BackEndREST.autoTestSendRequest(user, CommonUtils.findUserNamed("aqaUser"));
-	}
-	BackEndREST.autoTestAcceptAllRequest(CommonUtils.findUserNamed("aqaUser"));
-	}catch(Exception e){
-	e.printStackTrace();
-	}
+	public void GivenIHaveAtMinimumConnections(int minimumConnections)
+			throws Throwable {
+		try {
+			for (int i = 0; i < minimumConnections; i++) {
+				String email = CreateZetaUser.registerUserAndReturnMail();
+				ClientUser user = new ClientUser();
+				user.setEmail(email);
+				user.setPassword(CommonUtils
+						.getDefaultPasswordFromConfig(CommonUtils.class));
+				user.setUserState(UsersState.Created);
+				CommonUtils.requiredContacts.add(user);
+				BackEndREST.autoTestSendRequest(user,
+						CommonUtils.findUserNamed("aqaUser"));
+			}
+			BackEndREST.autoTestAcceptAllRequest(CommonUtils
+					.findUserNamed("aqaUser"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	
-	 @After
+	@After
 	 public void tearDown() throws Exception {
 
 		 PagesCollection.loginPage.Close();
