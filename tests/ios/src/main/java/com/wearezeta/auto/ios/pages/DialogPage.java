@@ -124,10 +124,10 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public void scrollToTheEndOfConversation() {
-		WebElement inputField = driver.findElement(By.name(IOSLocators.nameConversationCursorInput));
-		driver.tap(1, inputField, 500);
-//		String script = IOSLocators.scriptCursorInputPath + ".tap();";
-//		driver.executeScript(script);
+//		WebElement inputField = driver.findElement(By.name(IOSLocators.nameConversationCursorInput));
+//		driver.tap(1, inputField, 500);
+		String script = IOSLocators.scriptCursorInputPath + ".tap();";
+		driver.executeScript(script);
 	}
 
 	public String getLastMessageFromDialog()
