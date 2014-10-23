@@ -229,6 +229,7 @@ public class LoginPage extends IOSPage {
 	}
 
 	public void ignoreUpdate() {
+		DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameIgnoreUpdateButton));
 		ignoreUpdateButton.click();
 	}
 }

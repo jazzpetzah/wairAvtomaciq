@@ -2,25 +2,27 @@ package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class CameraRollPage extends IOSPage{
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameCameraRollButton)
-	private WebElement cameraRollButton;
+	@FindBy(how = How.NAME, using = IOSLocators.nameCameraLibraryButton)
+	private WebElement cameraLibraryButton;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameCameraRollCancel)
 	private WebElement cameraRollCancel;
 	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathCameraRollTableCell)
-	private WebElement cameraRollTableCell;
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathCameraLibraryFirstFolder)
+	private WebElement cameraLibraryFirstFolder;
 	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathCameraRollPicture)
-	private WebElement cameraRollPicture;
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathLibraryFirstPicture)
+	private WebElement libraryFirstPicture;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameConfirmPictureButton)
 	private WebElement confirmPictureButton;
@@ -36,21 +38,29 @@ public class CameraRollPage extends IOSPage{
 	}
 	
 	
-	public void pressCameraRollButton() throws InterruptedException{
-		cameraRollButton.click();
-		Thread.sleep(1000);
+	public void pressSelectFromLibraryButton() throws InterruptedException{
+		DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameCameraLibraryButton));
+		cameraLibraryButton.click();
 	}
 	
-	public void openCameraRoll() throws IOException, InterruptedException{
-		
-		cameraRollTableCell.click();
-		cameraRollPicture.click();
-
+	public void selectImageFromLibrary() throws Throwable {
+		clickFirstLibraryFolder();
+		clickFirstImage();
+	}
+	
+	public void clickFirstLibraryFolder() throws Throwable{
+		DriverUtils.waitUntilElementAppears(driver, By.xpath(IOSLocators.xpathCameraLibraryFirstFolder));
+		cameraLibraryFirstFolder.click();
+	}
+	
+	public void clickFirstImage() throws Throwable{
+		DriverUtils.waitUntilElementAppears(driver, By.xpath(IOSLocators.xpathLibraryFirstPicture));
+		libraryFirstPicture.click();
 	}
 	
 	public void pressConfirmButton() throws InterruptedException{
+		DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameConfirmPictureButton));
 		confirmPictureButton.click();
-		Thread.sleep(2000);
 	}
 	
 	@Override

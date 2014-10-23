@@ -14,7 +14,7 @@ import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class ContactListPage extends IOSPage {
 
-	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameContactListNames)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathContactListNames)
 	private List<WebElement> contactListNames;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameProfileName)
@@ -253,4 +253,18 @@ public class ContactListPage extends IOSPage {
 		WebElement tutorialView = driver.findElement(By.name(IOSLocators.nameTutorialView));
 		DriverUtils.iOS3FingerTap(driver, tutorialView, 3);
 	}
+	
+	public List<WebElement> GetVisibleContacts(){
+		return contactListNames;
+	}
+	
+	public IOSPage tapOnContactByIndex(List<WebElement> contacts, int index) throws Exception{
+		IOSPage page = null;
+		DriverUtils.waitUntilElementClickable(driver, contacts.get(index));
+		contacts.get(index).click();
+		page = new DialogPage(url, path);
+		return page;
+	}
+	
+	
 }

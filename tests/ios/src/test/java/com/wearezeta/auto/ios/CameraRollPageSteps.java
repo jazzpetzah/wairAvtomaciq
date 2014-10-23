@@ -9,12 +9,12 @@ public class CameraRollPageSteps {
 	
 	@When("^I press Camera Roll button$")
 	public void IPressCameraRollButton() throws Throwable {
-		PagesCollection.cameraRollPage.pressCameraRollButton();
+		PagesCollection.cameraRollPage.pressSelectFromLibraryButton();
 	}
 	
 	@When("^I choose a picture from camera roll$")
 	public void IChooseAPictureFromCameraRoll() throws Throwable {
-		PagesCollection.cameraRollPage.openCameraRoll();
+		PagesCollection.cameraRollPage.selectImageFromLibrary();
 	}
 	
 	@When("^I press Confirm button$")
