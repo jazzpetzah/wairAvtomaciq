@@ -98,8 +98,7 @@ public class ContactListPageSteps {
 	public void ISeeUserNameFirstInContactList(String value) throws Throwable {
 
 		value = CommonUtils.retrieveRealUserContactPasswordValue(value);
-		Assert.assertEquals(value,
-				PagesCollection.contactListPage.getFirstDialogName(value));
+		Assert.assertTrue(PagesCollection.contactListPage.isChatInContactList(value));
 	}
 
 	@When("^I create group chat with (.*) and (.*)$")

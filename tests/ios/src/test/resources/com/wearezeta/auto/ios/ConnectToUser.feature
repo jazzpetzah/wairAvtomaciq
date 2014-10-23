@@ -1,6 +1,5 @@
 Feature: Connect to User
 
-  #Need to rework test according to updates in UI
   @mute
   @smoke
   @id345
@@ -15,6 +14,9 @@ Feature: Connect to User
     And I tap on NOT connected user name on People picker page <Contact>
     And I see connect to <Contact> dialog
     And I input message in connect to dialog
+    And I click Connect button on connect to dialog
+    And I see People picker page
+    And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
     And I tap on contact name <Contact>
     And I see Pending Connect to <Contact> message on Dialog page

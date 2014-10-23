@@ -83,6 +83,11 @@ public class ConnectToPage extends IOSPage {
 		return DriverUtils.waitUntilElementAppears(driver, By.className(IOSLocators.clasNameConnectDialogLabel));
 	}
 	
+	public PeoplePickerPage sendInvitation() throws MalformedURLException {
+		connectOtherUserButton.click();
+		return new PeoplePickerPage(url, path);	
+	}
+	
 	public void acceptInvitation() {
 		connectOtherUserButton.click();
 	}
