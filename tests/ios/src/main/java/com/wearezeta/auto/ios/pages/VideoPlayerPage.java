@@ -47,8 +47,8 @@ public class VideoPlayerPage extends IOSPage{
 		DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameVideoFullScreenButton));
 	}
 	
-	public boolean isVideoPlayerPageOpened(){
-		return videoPlayerMainWindow.isDisplayed();
+	public boolean isVideoPlayerPageOpened() {
+		return DriverUtils.isElementDisplayed(videoPlayerMainWindow);
 	}
 	
 	public DialogPage clickVideoDoneButton() throws IOException{
