@@ -291,14 +291,18 @@ public class DialogPage extends IOSPage{
 		return mediaLinkCell != null;
 	}
 	
-	public VideoPlayerPage clickOnVideoContainerFirstTime() throws IOException, InterruptedException{
-		VideoPlayerPage page = null;
+	public VideoPlayerPage clickOnVideoContainerFirstTime() throws IOException, InterruptedException {
+		VideoPlayerPage page = new VideoPlayerPage(url, path);
 		mediaContainer.click();
-		if (!mediaLinkCell.isDisplayed()) {
-			DriverUtils.mobileTapByCoordinates(driver, mediaContainer);
+		
+		DriverUtils.setImplicitWaitValue(driver, 5);
+		if (!page.isVideoPlayerPageOpened()) {
+			if (!mediaLinkCell.isDisplayed()) {
+				DriverUtils.mobileTapByCoordinates(driver, mediaContainer);
+			}
+			mediaLinkCell.click();
 		}
-		mediaLinkCell.click();
-		page = new VideoPlayerPage(url, path);
+		DriverUtils.setDefaultImplicitWait(driver);
 		return page;
 	}
 	
