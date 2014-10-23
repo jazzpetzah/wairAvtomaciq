@@ -170,10 +170,10 @@ public class AndroidCommonUtils extends CommonUtils {
 	
 	public static ClientDeviceInfo readDeviceInfo() throws IOException, InterruptedException {
 		String os = "Android";
-		String osBuild = null;
-		String deviceName = null;
-		String gsmNetworkType = null;
-		String isWifiEnabled = null;
+		String osBuild = getPropertyFromAdb("ro.build.version.release");
+		String deviceName = getPropertyFromAdb("ro.product.manufacturer") + " " + getPropertyFromAdb("ro.product.model");
+		String gsmNetworkType = getPropertyFromAdb("gsm.network.type");
+		String isWifiEnabled = "no info";
 		
 		return new ClientDeviceInfo(os, osBuild, deviceName, gsmNetworkType, isWifiEnabled);
 	}

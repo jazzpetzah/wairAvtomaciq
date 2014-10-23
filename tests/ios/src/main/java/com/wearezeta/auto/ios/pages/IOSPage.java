@@ -32,7 +32,7 @@ public abstract class IOSPage extends BasePage {
 	private String url = "";
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameMainWindow)
-	private WebElement content;
+	protected WebElement content;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameEditingItemSelect)
 	private WebElement popupSelect;
@@ -212,4 +212,7 @@ public abstract class IOSPage extends BasePage {
 		keyboardDeleteBtn.click();
 	}
 
+	public static Object executeScript(String script) {
+		return driver.executeScript(script);
+	}
 }

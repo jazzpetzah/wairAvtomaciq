@@ -304,6 +304,7 @@ public class CommonSteps {
 							InstanceState.ERROR_CRASHED);
 					// TODO: process crash
 				}
+				log.debug("OSX client login finished.");
 			}
 		});
 		executor.execute(new Runnable() {
@@ -318,6 +319,7 @@ public class CommonSteps {
 							InstanceState.ERROR_CRASHED);
 					// TODO: process crash
 				}
+				log.debug("Android client login finished.");
 			}
 		});
 		executor.execute(new Runnable() {
@@ -327,11 +329,12 @@ public class CommonSteps {
 							"usersPassword");
 					iosSteps.IOSIOpenConversationWith(conversationName);
 				} catch (Throwable e) {
-					log.fatal("iOS client crashed during login and opening conversation.");
+					log.error("iOS client crashed during login and opening conversation.\n" + e.toString());
 					ExecutionContext.iosZeta().setState(
 							InstanceState.ERROR_CRASHED);
 					// TODO: process crash
 				}
+				log.debug("iOS client login finished.");
 			}
 		});
 		executor.shutdown();
