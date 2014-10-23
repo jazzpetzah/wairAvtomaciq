@@ -10,6 +10,8 @@ import com.dd.plist.PropertyListParser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.BuildVersionInfo;
+import com.wearezeta.auto.common.misc.ClientDeviceInfo;
+import com.wearezeta.auto.ios.pages.IOSPage;
 
 public class IOSCommonUtils {
 	private static Logger log = ZetaLogger.getLog(IOSCommonUtils.class.getSimpleName());
@@ -28,6 +30,16 @@ public class IOSCommonUtils {
 			 log.error("Failed to read iOS client properties.\n" + ex.getMessage());
 		}
 		return new BuildVersionInfo(clientBuild, zmessagingBuild);
+	}
+	
+	public static ClientDeviceInfo readDeviceInfo() {
+		String os = "iOS";
+		String osBuild = (String) IOSPage.executeScript("UIATarget.localTarget().systemVersion();");
+		String deviceName = (String) IOSPage.executeScript("UIATarget.localTarget().name();");
+		String gsmNetworkType = "";
+		String isWifiEnabled = "no info";
+		
+		return new ClientDeviceInfo(os, osBuild, deviceName, gsmNetworkType, isWifiEnabled);
 	}
 	
 	public static String getIosClientInfoPlistFromConfig(Class<?> c)

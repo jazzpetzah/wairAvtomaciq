@@ -25,6 +25,6 @@ public class ClientDeviceInfo {
 	}
 	
 	public String toString() {
-		return String.format("OS: %s %s, Device: %s, Network: %s (Wifi: )", operatingSystemName, operatingSystemBuild, deviceName, gsmNetworkType, isWifiEnabled);
+		return String.format("OS: %s %s, Device: %s, Network: %s (Wifi: %s)", operatingSystemName, operatingSystemBuild, deviceName, gsmNetworkType, isWifiEnabled);
 	}
 }

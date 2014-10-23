@@ -10,6 +10,7 @@ import com.dd.plist.PropertyListParser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.BuildVersionInfo;
+import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 
 public class OSXCommonUtils extends CommonUtils {
 	private static final Logger log = ZetaLogger.getLog(OSXCommonUtils.class.getSimpleName());
@@ -38,6 +39,11 @@ public class OSXCommonUtils extends CommonUtils {
 			 log.error("Failed to read OSX client properties.\n" + ex.getMessage());
 		}
 		return new BuildVersionInfo(clientBuild, zmessagingBuild);
+	}
+
+	public static ClientDeviceInfo readDeviceInfo() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	public static String getOsxClientInfoPlistFromConfig(Class<?> c)
