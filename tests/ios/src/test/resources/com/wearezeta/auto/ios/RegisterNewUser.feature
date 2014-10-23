@@ -355,8 +355,8 @@ Feature: Register new user
 	And I See selected picture
 	And I confirm selection
 	And I input name <Name> and hit Enter
-	And I enter email <Email>
-	And I enter password <Password>
+	And I enter email <Email> and hit Enter
+	And I enter password <Password> and hit Enter
     Then I confirm that <EmailCount> recent emails in inbox contain 0 for current recipient 
 	And I submit registration data
 	Then I confirm that <EmailCount> recent emails in inbox contain 1 for current recipient
