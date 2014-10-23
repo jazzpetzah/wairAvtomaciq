@@ -151,7 +151,9 @@ public class CommonSteps {
 					break;
 				}
 			}
-			BackEndREST.createGroupConversation(CommonUtils.yourUsers.get(0),
+			ClientUser user = CommonUtils.yourUsers.get(0);
+			user = BackEndREST.loginByUser(user);
+			BackEndREST.createGroupConversation(user,
 					chatContacts, chatName);
 		}
 	 

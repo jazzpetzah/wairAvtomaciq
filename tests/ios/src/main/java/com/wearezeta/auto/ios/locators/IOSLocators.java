@@ -357,6 +357,7 @@ public final class IOSLocators {
 	public static final String xpathPeoplePickerUserAvatar = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell/UIAStaticText[@name='%s']/..";
 	public static final String namePeoplePickerAddToConversationButton = "ADD TO CONVERSATION";
 	public static final String xpathPeoplePickerTopConnectionsAvatar = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[%d]";
+	public static final String nameLaterButton = "LATER";
 	
 	//////////////////
 	//Connect to page

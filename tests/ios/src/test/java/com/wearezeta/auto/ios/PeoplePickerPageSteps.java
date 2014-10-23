@@ -144,7 +144,12 @@ public class PeoplePickerPageSteps {
 	
 	@When("^I click on Add to conversation button$")
 	public void WhenIClickOnAddToConversationButton() throws Throwable{
-		PagesCollection.groupChatPage = (GroupChatPage)PagesCollection.peoplePickerPage.clickAddToCoversationButton();
+		if (PagesCollection.peoplePickerPage.isKeyboardVisible()) {
+			PagesCollection.groupChatPage = PagesCollection.peoplePickerPage.clickOnGoButton();
+		}
+		else {
+			PagesCollection.groupChatPage = (GroupChatPage)PagesCollection.peoplePickerPage.clickAddToCoversationButton();
+		}
 	}
 	
 	@When("I click close button to dismiss people view")

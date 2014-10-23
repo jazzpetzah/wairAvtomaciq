@@ -47,6 +47,9 @@ public class PeoplePickerPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.namePeoplePickerAddToConversationButton)
 	private WebElement addToConversationBtn;
 	
+	@FindBy(how = How.NAME, using = IOSLocators.nameLaterButton)
+	private WebElement laterButton;
+	
 	
 	private String url;
 	private String path;
@@ -57,8 +60,17 @@ public class PeoplePickerPage extends IOSPage{
 		this.path = path;
 	}
 	
+	public void clickLaterButton() {
+		if(DriverUtils.isElementDisplayed(laterButton)) {
+			laterButton.click();
+		}
+	}
+	
 	public Boolean isPeoplePickerPageVisible() {	
-		return DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.namePickerClearButton));
+		 
+		boolean result = DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.namePickerClearButton));
+		clickLaterButton();
+		return result;
 	}
 	
 	public void tapOnPeoplePickerSearch() { 
