@@ -82,7 +82,11 @@ public class DialogPage extends IOSPage{
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameMediaBarTitle)
 	private WebElement mediabarBarTitle;
-
+	
+	
+	@FindBy(how = How.NAME, using = IOSLocators.namePingButton)
+	private WebElement pingButton;
+	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathYouAddedMessageCellFormat)
 	private List<WebElement> youAddedCell;
 	
@@ -95,6 +99,10 @@ public class DialogPage extends IOSPage{
 		
 		this.url = URL;
 		this.path = path;
+	}
+	
+	public void pressPingButton() {
+		pingButton.click();
 	}
 
 	public void waitForCursorInputVisible(){

@@ -70,6 +70,8 @@ public final class IOSLocators {
 	
 	public static final String nameAddPictureButton = "ComposeControllerPictureButton";
 	
+	public static final String namePingButton = "ComposeControllerPingButton";
+	
 	public static final String nameCameraLibraryButton = "CameraLibraryButton"; //"FullScreenCameraRightButton";
 	
 	public static final String nameCameraRollCancel = "Cancel";

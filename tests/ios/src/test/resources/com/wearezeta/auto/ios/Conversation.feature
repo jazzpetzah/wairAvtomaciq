@@ -15,9 +15,6 @@ Scenario Outline: Send Message to contact
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
 
-
-# Muted due to the bug https://wearezeta.atlassian.net/browse/IOS-947
-@mute
 @smoke
 @id331
 Scenario Outline: Send Hello to contact
@@ -25,9 +22,10 @@ Scenario Outline: Send Hello to contact
     	And I see Contact list with my name <Name>
     	When I tap on contact name <Contact>
     	And I see dialog page
-    	And I multi tap on text input
+    	And I swipe the text input cursor
+    	And I click Ping button
     	Then I see Hello message in the dialog
-    	And I multi tap on text input
+    	And I click Ping button
     	Then I see Hey message in the dialog
     	
 	Examples: 
