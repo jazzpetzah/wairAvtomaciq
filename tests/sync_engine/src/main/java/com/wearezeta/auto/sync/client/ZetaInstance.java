@@ -9,6 +9,7 @@ import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.BuildVersionInfo;
+import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.sync.ExecutionContext;
 import com.wearezeta.auto.sync.SyncEngineUtil;
@@ -38,7 +39,7 @@ public class ZetaInstance {
 	private boolean isOrderCorrect;
 	private ArrayList<MessageEntry> messagesListAfterTest;
 	private BuildVersionInfo versionInfo;
-//	private ClientSystemInfo systemInfo;
+	private ClientDeviceInfo deviceInfo;
 	
 	public ZetaInstance(String platform) {
 		this.platform = platform;
@@ -221,5 +222,13 @@ public class ZetaInstance {
 
 	public void setVersionInfo(BuildVersionInfo versionInfo) {
 		this.versionInfo = versionInfo;
+	}
+
+	public ClientDeviceInfo getDeviceInfo() {
+		return deviceInfo;
+	}
+
+	public void setDeviceInfo(ClientDeviceInfo deviceInfo) {
+		this.deviceInfo = deviceInfo;
 	}
 }

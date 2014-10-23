@@ -39,6 +39,8 @@ public class BackEndREST {
 
 	ClientConfig config = new DefaultClientConfig();
 	static Client client = Client.create();
+	
+	private final static String CONNECTION_CONSTANT = "CONNECT TO ";
 
 	public static void autoTestSendRequest(ClientUser user, ClientUser contact)
 			throws IllegalArgumentException, UriBuilderException, IOException,
@@ -314,6 +316,27 @@ public class BackEndREST {
 		userFrom = loginByUser(userFrom);
 		sendPicture(userFrom, imagePath,
 				getConversationByName(userFrom, chatName), src);
+	}
+	
+	public static void createGroupChatWithUnconnecteduser(String chatName,
+			String groupCreator) throws IllegalArgumentException,
+			UriBuilderException, IOException, BackendRequestException,
+			JSONException, InterruptedException {
+		ClientUser groupCreatorUser = CommonUtils.findUserNamed(groupCreator);
+		ClientUser unconnectedUser = CommonUtils
+				.findUserNamed(CommonUtils.YOUR_UNCONNECTED_USER);
+		ClientUser selfUser = CommonUtils
+				.findUserNamed(CommonUtils.YOUR_USER_1);
+
+		BackEndREST.sendConnectRequest(groupCreatorUser, unconnectedUser,
+				CONNECTION_CONSTANT + groupCreatorUser.getName(), chatName);
+		BackEndREST.acceptAllConnections(unconnectedUser);
+		List<ClientUser> users = new ArrayList<ClientUser>();
+		users.add(selfUser); // add self
+		users.add(unconnectedUser);
+		
+		groupCreatorUser = BackEndREST.loginByUser(groupCreatorUser);
+		BackEndREST.createGroupConversation(groupCreatorUser, users, chatName);
 	}
 
 	public static void createGroupConversation(ClientUser user,

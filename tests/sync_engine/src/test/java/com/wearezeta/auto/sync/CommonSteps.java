@@ -304,6 +304,7 @@ public class CommonSteps {
 							InstanceState.ERROR_CRASHED);
 					// TODO: process crash
 				}
+				log.debug("OSX client login finished.");
 			}
 		});
 		executor.execute(new Runnable() {
@@ -318,6 +319,7 @@ public class CommonSteps {
 							InstanceState.ERROR_CRASHED);
 					// TODO: process crash
 				}
+				log.debug("Android client login finished.");
 			}
 		});
 		executor.execute(new Runnable() {
@@ -327,11 +329,12 @@ public class CommonSteps {
 							"usersPassword");
 					iosSteps.IOSIOpenConversationWith(conversationName);
 				} catch (Throwable e) {
-					log.fatal("iOS client crashed during login and opening conversation.");
+					log.error("iOS client crashed during login and opening conversation.\n" + e.toString());
 					ExecutionContext.iosZeta().setState(
 							InstanceState.ERROR_CRASHED);
 					// TODO: process crash
 				}
+				log.debug("iOS client login finished.");
 			}
 		});
 		executor.shutdown();
@@ -370,12 +373,21 @@ public class CommonSteps {
 	private LinkedHashMap<Date, String> iosPageSources = new LinkedHashMap<Date, String>();
 	private LinkedHashMap<Date, String> osxPageSources = new LinkedHashMap<Date, String>();
 	
-	private void storeIosPageSource() {
+	private void storeIosPageSource(boolean last) {
 		if (ExecutionContext.isIosEnabled() && ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
-			ExecutionContext.iosZeta().listener().scrollToTheEndOfConversation();
+			if (!last) {
+				try {
+					ExecutionContext.iosZeta().listener().scrollToTheEndOfConversation();
+				} catch (NoSuchElementException e) {
+					log.error("Failed to get iOS page source. Client could be crashed.\n" + e.getMessage());
+					if (ExecutionContext.iosZeta().listener().isSessionLost()) {
+						log.error("Session lost on iOS client. No checks for next time.");
+						ExecutionContext.iosZeta().setState(InstanceState.ERROR_CRASHED);
+					}
+				}
+			}
 			String iosSource = ExecutionContext.iosZeta().listener().getChatSource();
 			iosPageSources.put(new Date(), iosSource);
-			log.debug("Current iOS source code: " + iosSource);
 		}
 	}
 	
@@ -411,6 +423,7 @@ public class CommonSteps {
 				if (!executor.awaitTermination(10, TimeUnit.MINUTES)) {
 					throw new Exception("Work was not finished in useful time.");
 				}
+				log.debug("Sent message #" + i + " from iOS client");
 				if (ExecutionContext.iosZeta().getMessagesSendingInterval() > 0) {
 					try {
 						Thread.sleep(ExecutionContext.iosZeta().getMessagesSendingInterval()*1000);
@@ -418,7 +431,7 @@ public class CommonSteps {
 				}
 			}
 		}
-		storeIosPageSource();
+		storeIosPageSource(false);
 		storeOsxPageSource();
 		
 		//fast sending of messages from iOS
@@ -429,11 +442,11 @@ public class CommonSteps {
 				ExecutionContext.iosZeta().sender()
 						.sendTextMessage(SyncEngineUtil.CHAT_NAME, message, false);
 				long endDate = new Date().getTime();
-				log.debug("Time consumed for sending text message on ios: "
+				log.debug("Time consumed for sending text message #" + i + " from iOS: "
 						+ (endDate - startDate) + "ms");
 			}
 		}
-		storeIosPageSource();
+		storeIosPageSource(false);
 		storeOsxPageSource();
 		
 		//send osx, receive ios and android
@@ -444,8 +457,17 @@ public class CommonSteps {
 				ExecutorService executor = Executors.newFixedThreadPool(2);
 				if (ExecutionContext.isIosEnabled() && ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
 				executor.execute(new Runnable() {
-					public void run() {
-						ExecutionContext.iosZeta().listener().waitForMessageIos(message, true);
+					public void run() {	
+						try {
+							ExecutionContext.iosZeta().listener().waitForMessageIos(message, true);
+						} catch (NoSuchElementException e) {
+							log.error("Failed to get iOS page source. Client could be crashed.\n" + e.getMessage());
+							if (ExecutionContext.iosZeta().listener().isSessionLost()) {
+								log.error("Session lost on iOS client. No checks for next time.");
+								ExecutionContext.iosZeta().setState(InstanceState.ERROR_CRASHED);
+							}
+						
+						}
 					}
 				});
 				}
@@ -460,6 +482,7 @@ public class CommonSteps {
 				if (!executor.awaitTermination(10, TimeUnit.MINUTES)) {
 					throw new Exception("Work was not finished in useful time.");
 				}
+				log.debug("Sent message #" + i + " from OSX client");
 				if (ExecutionContext.osxZeta().getMessagesSendingInterval() > 0) {
 					try {
 						Thread.sleep(ExecutionContext.osxZeta().getMessagesSendingInterval()*1000);
@@ -467,24 +490,9 @@ public class CommonSteps {
 				}
 			}
 		}
-		storeIosPageSource();
+		storeIosPageSource(false);
 		storeOsxPageSource();
-		
-		//fast sending of messages from OSX
-		if (ExecutionContext.isOsxEnabled() && ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED) {
-			for (int i = 0; i < ExecutionContext.osxZeta().getMessagesToSend(); i++) {
-				long startDate = new Date().getTime();
-				final String message = CommonUtils.generateGUID();
-				ExecutionContext.osxZeta().sender()
-						.sendTextMessage(SyncEngineUtil.CHAT_NAME, message, false);
-				long endDate = new Date().getTime();
-				log.debug("Time consumed for sending text message on osx: "
-						+ (endDate - startDate) + "ms");
-			}
-		}
-		storeIosPageSource();
-		storeOsxPageSource();
-		
+
 		//send android, receive ios and osx
 		if (ExecutionContext.isAndroidEnabled() && ExecutionContext.androidZeta().getState() != InstanceState.ERROR_CRASHED) {
 			for (int i = 0; i < ExecutionContext.androidZeta().getMessagesToSend(); i++) {
@@ -501,7 +509,16 @@ public class CommonSteps {
 				if (ExecutionContext.isIosEnabled() && ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
 				executor.execute(new Runnable() {
 					public void run() {
-						ExecutionContext.iosZeta().listener().waitForMessageIos(message, true);
+						try {
+							ExecutionContext.iosZeta().listener().waitForMessageIos(message, true);
+						} catch (NoSuchElementException e) {
+							log.error("Failed to get iOS page source. Client could be crashed.\n" + e.getMessage());
+							if (ExecutionContext.iosZeta().listener().isSessionLost()) {
+								log.error("Session lost on iOS client. No checks for next time.");
+								ExecutionContext.iosZeta().setState(InstanceState.ERROR_CRASHED);
+							}
+							
+						}
 					}
 				});
 				}
@@ -509,6 +526,7 @@ public class CommonSteps {
 				if (!executor.awaitTermination(10, TimeUnit.MINUTES)) {
 					throw new Exception("Work was not finished in useful time.");
 				}
+				log.debug("Sent message #" + i + " from Android client");
 				if (ExecutionContext.androidZeta().getMessagesSendingInterval() > 0) {
 					try {
 						Thread.sleep(ExecutionContext.androidZeta().getMessagesSendingInterval()*1000);
@@ -516,9 +534,24 @@ public class CommonSteps {
 				}
 			}
 		}
-		storeIosPageSource();
+		storeIosPageSource(false);
 		storeOsxPageSource();
-		
+
+		//fast sending of messages from OSX
+		if (ExecutionContext.isOsxEnabled() && ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED) {
+			for (int i = 0; i < ExecutionContext.osxZeta().getMessagesToSend(); i++) {
+				long startDate = new Date().getTime();
+				final String message = CommonUtils.generateGUID();
+				ExecutionContext.osxZeta().sender()
+						.sendTextMessage(SyncEngineUtil.CHAT_NAME, message, false);
+				long endDate = new Date().getTime();
+				log.debug("Time consumed for sending text message #" + i + " from OSX: "
+						+ (endDate - startDate) + "ms");
+			}
+		}
+		storeIosPageSource(false);
+		storeOsxPageSource();
+
 		//fast sending of messages from Android
 		if (ExecutionContext.isAndroidEnabled() && ExecutionContext.androidZeta().getState() != InstanceState.ERROR_CRASHED) {
 			for (int i = 0; i < ExecutionContext.androidZeta()
@@ -528,61 +561,11 @@ public class CommonSteps {
 				ExecutionContext.androidZeta().sender()
 						.sendTextMessage(SyncEngineUtil.CHAT_NAME, message, false);
 				long endDate = new Date().getTime();
-				log.debug("Time consumed for sending text message on android: "
+				log.debug("Time consumed for sending text message #" + i + " from Android: "
 						+ (endDate - startDate) + "ms");
 			}
 		}
-		storeIosPageSource();
-		storeOsxPageSource();
-	}
-	
-	@Given("I run fast sync engine test")
-	public void IRunFastSyncEngineTest() throws Exception {
-		// start sending message
-		if (ExecutionContext.isIosEnabled() && ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
-			com.wearezeta.auto.ios.pages.DialogPage page = com.wearezeta.auto.ios.pages.PagesCollection.dialogPage;
-			final String messages[] = new String[ExecutionContext.iosZeta().getMessagesToSend()];
-			for (int j = 0; j < messages.length; j++) {
-				messages[j] = CommonUtils.generateGUID();
-			}
-			long startDate = new Date().getTime();
-			ExecutionContext.iosZeta().sender()
-					.sendAllMessagesIos(messages, false);
-			long endDate = new Date().getTime();
-			log.debug("Time consumed for sending all text messages on ios: "
-				+ (endDate - startDate) + "ms");
-			
-		}
-		storeIosPageSource();
-		storeOsxPageSource();
-		
-		if (ExecutionContext.isOsxEnabled() && ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED) {
-			for (int i = 0; i < ExecutionContext.osxZeta().getMessagesToSend(); i++) {
-				long startDate = new Date().getTime();
-				final String message = CommonUtils.generateGUID();
-				ExecutionContext.osxZeta().sender()
-						.sendTextMessage(SyncEngineUtil.CHAT_NAME, message, false);
-				long endDate = new Date().getTime();
-				log.debug("Time consumed for sending text message on osx: "
-						+ (endDate - startDate) + "ms");
-			}
-		}
-		storeIosPageSource();
-		storeOsxPageSource();
-		
-		if (ExecutionContext.isAndroidEnabled() && ExecutionContext.androidZeta().getState() != InstanceState.ERROR_CRASHED) {
-			for (int i = 0; i < ExecutionContext.androidZeta()
-					.getMessagesToSend(); i++) {
-				long startDate = new Date().getTime();
-				final String message = CommonUtils.generateGUID();
-				ExecutionContext.androidZeta().sender()
-						.sendTextMessage(SyncEngineUtil.CHAT_NAME, message, false);
-				long endDate = new Date().getTime();
-				log.debug("Time consumed for sending text message on android: "
-						+ (endDate - startDate) + "ms");
-			}
-		}
-		storeIosPageSource();
+		storeIosPageSource(true);
 		storeOsxPageSource();
 	}
 	

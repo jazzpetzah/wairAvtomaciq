@@ -76,14 +76,14 @@ public class DialogPageSteps {
 	
 	@Then("^I see Hello message in the dialog$")
 	public void ISeeHelloMessageFromMeInTheDialog() throws Throwable {
-		String hellomessage = "HELLO FROM";
+		String hellomessage = "YOU PINGED";
 		String dialogHelloMessage = PagesCollection.dialogPage.getHelloCellFromDialog();
 		Assert.assertTrue("Message \"" + dialogHelloMessage + "\" is not correct HELLO FROM message.", dialogHelloMessage.contains(hellomessage));
 	}
 	
 	@Then("^I see Hey message in the dialog$")
 	public void ISeeHeyMessageFromMeInTheDialog() throws Throwable {
-		String heymessage = "HEY FROM";
+		String heymessage = "YOU PINGED AGAIN";
 		String dialogHeyMessage = PagesCollection.dialogPage.getHeyCellFromDialog();
 		Assert.assertTrue("Message \"" + dialogHeyMessage + "\" is not correct HEY FROM message.", dialogHeyMessage.contains(heymessage));
 	}
@@ -132,6 +132,11 @@ public class DialogPageSteps {
 	public void IPressAddPictureButton() throws Throwable {
 		CameraRollPage page = PagesCollection.dialogPage.pressAddPictureButton();
 		PagesCollection.cameraRollPage = (CameraRollPage) page;
+	}
+	
+	@When("^I click Ping button$")
+	public void IPressPingButton() throws Throwable {
+		PagesCollection.dialogPage.pressPingButton();
 	}
 	
 	@Then("^I see Pending Connect to (.*) message on Dialog page$")

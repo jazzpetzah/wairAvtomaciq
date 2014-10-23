@@ -82,7 +82,11 @@ public class DialogPage extends IOSPage{
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameMediaBarTitle)
 	private WebElement mediabarBarTitle;
-
+	
+	
+	@FindBy(how = How.NAME, using = IOSLocators.namePingButton)
+	private WebElement pingButton;
+	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathYouAddedMessageCellFormat)
 	private List<WebElement> youAddedCell;
 	
@@ -95,6 +99,10 @@ public class DialogPage extends IOSPage{
 		
 		this.url = URL;
 		this.path = path;
+	}
+	
+	public void pressPingButton() {
+		pingButton.click();
 	}
 
 	public void waitForCursorInputVisible(){
@@ -124,10 +132,10 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public void scrollToTheEndOfConversation() {
-		WebElement inputField = driver.findElement(By.name(IOSLocators.nameConversationCursorInput));
-		driver.tap(1, inputField, 500);
-//		String script = IOSLocators.scriptCursorInputPath + ".tap();";
-//		driver.executeScript(script);
+//		WebElement inputField = driver.findElement(By.name(IOSLocators.nameConversationCursorInput));
+//		driver.tap(1, inputField, 500);
+		String script = IOSLocators.scriptCursorInputPath + ".tap();";
+		driver.executeScript(script);
 	}
 
 	public String getLastMessageFromDialog()
@@ -164,14 +172,15 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public void swipeInputCursor() throws IOException, InterruptedException{
-		DriverUtils.swipeRight(driver, conversationInput, 700);
+		DriverUtils.swipeRight(driver, conversationInput, 500);
 	}
 	
 	public CameraRollPage pressAddPictureButton() throws IOException{
 		
 		CameraRollPage page;
-		page = new CameraRollPage(url, path);
 		addPictureButton.click();
+		DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameCameraLibraryButton));
+		page = new CameraRollPage(url, path);
 		
 		return page;
 	}
@@ -290,14 +299,18 @@ public class DialogPage extends IOSPage{
 		return mediaLinkCell != null;
 	}
 	
-	public VideoPlayerPage clickOnVideoContainerFirstTime() throws IOException, InterruptedException{
-		VideoPlayerPage page = null;
+	public VideoPlayerPage clickOnVideoContainerFirstTime() throws IOException, InterruptedException {
+		VideoPlayerPage page = new VideoPlayerPage(url, path);
 		mediaContainer.click();
-		if (!mediaLinkCell.isDisplayed()) {
-			DriverUtils.mobileTapByCoordinates(driver, mediaContainer);
+		
+		DriverUtils.setImplicitWaitValue(driver, 5);
+		if (!page.isVideoPlayerPageOpened()) {
+			if (!mediaLinkCell.isDisplayed()) {
+				DriverUtils.mobileTapByCoordinates(driver, mediaContainer);
+			}
+			mediaLinkCell.click();
 		}
-		mediaLinkCell.click();
-		page = new VideoPlayerPage(url, path);
+		DriverUtils.setDefaultImplicitWait(driver);
 		return page;
 	}
 	
@@ -549,5 +562,23 @@ public class DialogPage extends IOSPage{
 									IOSLocators.scriptKeyboardReturnKeyPath + ".tap();", messages[i]);
 		}
 		driver.executeScript(script);
+	}
+	
+	public void takeCameraPhoto() throws IOException, InterruptedException{
+		swipeInputCursor();
+		CameraRollPage page = pressAddPictureButton();
+		page.pressSelectFromLibraryButton();
+		page.pressConfirmButton();
+	}
+	
+	public DialogPage sendImageFromAlbum() throws Throwable{
+		swipeInputCursor();
+		Thread.sleep(1000);
+		CameraRollPage page = pressAddPictureButton();
+		page.pressSelectFromLibraryButton();
+		page.clickFirstLibraryFolder();
+		page.clickFirstImage();
+		page.pressConfirmButton();
+		return new DialogPage(url, path);
 	}
 }

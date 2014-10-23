@@ -172,7 +172,7 @@ Examples:
     
 #fails to check email of first user due to defect IOS-990
 @staging
-@id395
+@id395 
 Scenario Outline: Tap on participant profiles in group info page participant view
     Given I Sign in using login <Login> and password <Password>
     Given I have group chat named <GroupChatName> with an unconnected user, made by <GroupCreator>
@@ -233,7 +233,7 @@ Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat i
     
 #Known issue ZIOS-1711. Muted test due to crash after relogin.
 @staging
-@id597
+@id597 @mute
 Scenario Outline: Verify the new conversation is created on the other end (1:1 source)
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -264,7 +264,7 @@ Scenario Outline: Verify the new conversation is created on the other end (1:1 s
     
 #Muted due to app quit on logout workaround
 @staging
-@id602
+@id602 @mute
 Scenario Outline: Verify new users are added to a group conversation on the other end
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -294,7 +294,7 @@ Scenario Outline: Verify new users are added to a group conversation on the othe
 
 #Muted due to app quit on logout workaround
 @staging
-@id608
+@id608 @mute
 Scenario Outline: Verify you can see image, which was sent into a group conversation, on the second end
 	Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -336,7 +336,7 @@ Scenario Outline: Verify you can see image, which was sent into a group conversa
     
 #Muted due to app quit on logout workaround 
 @staging
-@id606
+@id606 @mute
 Scenario Outline: Verify you can see text message, which was sent into a group conversation, on the second end
 	Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -372,7 +372,7 @@ Scenario Outline: Verify you can see text message, which was sent into a group c
     
 #Muted due to app quit on logout workaround
 @staging
-@id607
+@id607 @mute
 Scenario Outline: Verify you can see multimedia message, which was sent into a group conversation, on the second end
 	Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>

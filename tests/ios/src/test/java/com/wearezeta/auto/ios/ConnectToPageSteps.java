@@ -16,8 +16,8 @@ import cucumber.api.java.en.When;
 
 public class ConnectToPageSteps {
 
-	@When("^I see connect to dialog$")
-	public void WhenISeeConnectToUserDialog() throws Throwable {
+	@When("^I see connect to (.*) dialog$")
+	public void WhenISeeConnectToUserDialog(String name) throws Throwable {
 		Assert.assertTrue("Connection input is not visible", PagesCollection.connectToPage.isConnectToUserDialogVisible());
 	}
 
@@ -29,6 +29,11 @@ public class ConnectToPageSteps {
 	@When("I click Send button on connect to dialog")
 	public void IClickSendButtonConnectDialog() throws Throwable{
 		PagesCollection.peoplePickerPage = PagesCollection.connectToPage.clickSendButton();
+	}
+	
+	@When("I click Connect button on connect to dialog")
+	public void IClickConnectButtonConnectDialog() throws Throwable{
+		PagesCollection.peoplePickerPage = PagesCollection.connectToPage.sendInvitation();
 	}
 
 	@When("^I input message in connect to dialog and click Send button$")

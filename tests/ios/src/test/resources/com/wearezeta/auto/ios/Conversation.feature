@@ -15,9 +15,6 @@ Scenario Outline: Send Message to contact
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
 
-
-# Muted due to the bug https://wearezeta.atlassian.net/browse/IOS-947
-@mute
 @smoke
 @id331
 Scenario Outline: Send Hello to contact
@@ -25,9 +22,10 @@ Scenario Outline: Send Hello to contact
     	And I see Contact list with my name <Name>
     	When I tap on contact name <Contact>
     	And I see dialog page
-    	And I multi tap on text input
+    	And I swipe the text input cursor
+    	And I click Ping button
     	Then I see Hello message in the dialog
-    	And I multi tap on text input
+    	And I click Ping button
     	Then I see Hey message in the dialog
     	
 	Examples: 
@@ -119,7 +117,6 @@ Examples:
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| http://www.youtube.com/watch?v=Bb1RhktcugU |  
 
 
-#muted due to issue IOS-959
 @staging
 @id383 
 Scenario Outline: Play/pause SoundCloud media link from the media bar
@@ -140,7 +137,7 @@ Scenario Outline: Play/pause SoundCloud media link from the media bar
        
 Examples:
     |  Login		| Password		| Name			| Contact1    | SoundCloudLink |
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/carl-cox/carl-cox-nexus |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/carl-cox/sets/all-roads-lead-to-the |
     
     
 #muted due to defact IOS-985, still needs checking of mediabar and scrolling on simulator 

@@ -3,22 +3,20 @@ package com.wearezeta.auto.ios.pages;
 import java.io.IOException;
 import java.util.*;
 
-import javax.ws.rs.core.UriBuilderException;
-
-import org.json.JSONException;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class ContactListPage extends IOSPage {
 
-	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameContactListNames)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathContactListNames)
 	private List<WebElement> contactListNames;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameProfileName)
@@ -49,7 +47,6 @@ public class ContactListPage extends IOSPage {
 	private String path;
 	private int oldLocation = 0;
 
-	private final String CONNECTION_CONSTANT = "CONNECT TO ";
 
 	public ContactListPage(String URL, String path) throws IOException {
 		super(URL, path);
@@ -190,25 +187,6 @@ public class ContactListPage extends IOSPage {
 		return new GroupChatPage(url, path);
 	}
 
-	public void createGroupChatWithUnconnecteduser(String chatName,
-			String groupCreator) throws IllegalArgumentException,
-			UriBuilderException, IOException, BackendRequestException,
-			JSONException, InterruptedException {
-		ClientUser groupCreatorUser = CommonUtils.findUserNamed(groupCreator);
-		ClientUser unconnectedUser = CommonUtils
-				.findUserNamed(CommonUtils.YOUR_UNCONNECTED_USER);
-		ClientUser selfUser = CommonUtils
-				.findUserNamed(CommonUtils.YOUR_USER_1);
-
-		BackEndREST.sendConnectRequest(groupCreatorUser, unconnectedUser,
-				CONNECTION_CONSTANT + groupCreatorUser.getName(), chatName);
-		BackEndREST.acceptAllConnections(unconnectedUser);
-		List<ClientUser> users = new ArrayList<ClientUser>();
-		users.add(selfUser); // add self
-		users.add(unconnectedUser);
-		BackEndREST.createGroupConversation(groupCreatorUser, users, chatName);
-	}
-
 	public void waitForContactListToLoad() {
 		wait.until(ExpectedConditions.presenceOfElementLocated(By
 				.xpath(IOSLocators.xpathMyUserInContactList)));
@@ -277,4 +255,25 @@ public class ContactListPage extends IOSPage {
 		WebElement tutorialView = driver.findElement(By.name(IOSLocators.nameTutorialView));
 		DriverUtils.iOS3FingerTap(driver, tutorialView, 3);
 	}
+	
+	public List<WebElement> GetVisibleContacts(){
+		return contactListNames;
+	}
+	
+	public IOSPage tapOnContactByIndex(List<WebElement> contacts, int index) throws Exception{
+		IOSPage page = null;
+		DriverUtils.waitUntilElementClickable(driver, contacts.get(index));
+		contacts.get(index).click();
+		page = new DialogPage(url, path);
+		return page;
+	}
+	
+	@Override
+	public IOSPage swipeDown(int time) throws IOException {
+		Point coords = content.getLocation();
+		Dimension elementSize = content.getSize();
+		driver.swipe(coords.x + elementSize.width / 2, coords.y + 50, coords.x + elementSize.width / 2, coords.y + elementSize.height - 150, time);
+		return returnBySwipe(SwipeDirection.DOWN);
+	}
+	
 }

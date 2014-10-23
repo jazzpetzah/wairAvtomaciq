@@ -24,7 +24,9 @@ public final class IOSLocators {
 	
 	public static final String nameTermsPrivacyCloseButton = "WebViewCloseButton";
 	
-	public static final String classNameContactListNames = "UIAStaticText";
+	public static final String classNameContactListNames = "UIACollectionCell";
+	
+	public static final String xpathContactListNames = "//UIAApplication/UIAWindow/UIACollectionView/UIACollectionCell/UIAStaticText";
 	
 	public static final String nameProfileSettingsButton = "SettingsButton";
 
@@ -68,13 +70,15 @@ public final class IOSLocators {
 	
 	public static final String nameAddPictureButton = "ComposeControllerPictureButton";
 	
-	public static final String nameCameraRollButton = "CameraLibraryButton"; //"FullScreenCameraRightButton";
+	public static final String namePingButton = "ComposeControllerPingButton";
+	
+	public static final String nameCameraLibraryButton = "CameraLibraryButton"; //"FullScreenCameraRightButton";
 	
 	public static final String nameCameraRollCancel = "Cancel";
 	
-	public static final String xpathCameraRollTableCell = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]";
+	public static final String xpathCameraLibraryFirstFolder = "//UIAApplication/UIAWindow/UIATableView/UIATableCell[1]";
 	
-	public static final String xpathCameraRollPicture = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[1]";
+	public static final String xpathLibraryFirstPicture = "//UIAApplication/UIAWindow/UIACollectionView/UIACollectionCell[1]";
 	
 	public static final String nameConfirmPictureButton = "ImageConfirmerConfirmButton";
 	
@@ -356,6 +360,8 @@ public final class IOSLocators {
 	public static final String NamePeoplePickerTopPeopleLabel = "TOP PEOPLE";
 	public static final String xpathPeoplePickerUserAvatar = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell/UIAStaticText[@name='%s']/..";
 	public static final String namePeoplePickerAddToConversationButton = "ADD TO CONVERSATION";
+	public static final String xpathPeoplePickerTopConnectionsAvatar = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[%d]";
+	public static final String nameLaterButton = "LATER";
 	
 	//////////////////
 	//Connect to page

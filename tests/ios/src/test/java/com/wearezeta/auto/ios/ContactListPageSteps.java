@@ -1,12 +1,20 @@
 package com.wearezeta.auto.ios;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.ws.rs.core.UriBuilderException;
 
 import org.apache.log4j.Logger;
+import org.json.JSONException;
 import org.junit.Assert;
 
 import cucumber.api.java.en.*;
 
+import com.wearezeta.auto.common.BackEndREST;
+import com.wearezeta.auto.common.BackendRequestException;
+import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.pages.*;
@@ -15,7 +23,7 @@ public class ContactListPageSteps {
 	private static final Logger log = ZetaLogger.getLog(ContactListPageSteps.class.getSimpleName());
 	
 	@Given("^I see Contact list with my name (.*)$")
-	public void GivenISeeContactListWithMyName(String name) throws IOException {
+	public void GivenISeeContactListWithMyName(String name) throws Throwable {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		boolean tutorialIsVisible = PagesCollection.contactListPage.isTutorialShown();
 		if(tutorialIsVisible) {
@@ -25,12 +33,16 @@ public class ContactListPageSteps {
 		}
 		
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
+		ISwipeDownContactList();
+		PeoplePickerPageSteps steps = new PeoplePickerPageSteps();
+		steps.WhenISeePeoplePickerPage();
+		steps.IClickCloseButtonDismissPeopleView();
 	}
 
 	@Given("^I have group chat named (.*) with an unconnected user, made by (.*)$")
 	public void GivenGroupChatWithName(String chatName, String groupCreator)
 			throws Throwable {
-		PagesCollection.contactListPage.createGroupChatWithUnconnecteduser(
+		BackEndREST.createGroupChatWithUnconnecteduser(
 				chatName, groupCreator);
 	}
 
@@ -86,8 +98,7 @@ public class ContactListPageSteps {
 	public void ISeeUserNameFirstInContactList(String value) throws Throwable {
 
 		value = CommonUtils.retrieveRealUserContactPasswordValue(value);
-		Assert.assertEquals(value,
-				PagesCollection.contactListPage.getFirstDialogName(value));
+		Assert.assertTrue(PagesCollection.contactListPage.isChatInContactList(value));
 	}
 
 	@When("^I create group chat with (.*) and (.*)$")
