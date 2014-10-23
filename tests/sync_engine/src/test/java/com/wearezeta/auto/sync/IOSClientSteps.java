@@ -14,7 +14,7 @@ public class IOSClientSteps {
 	
 	@Given("^IOS I Sign in using login (.*) and password (.*)$")
 	public void IOSISignInUsingLoginAndPassword(String name, String password)
-			throws Exception {
+			throws Throwable {
 		if (ExecutionContext.isIosEnabled()) {
 			name = SyncEngineUtil.retrieveRealUserContactPasswordValue(name);
 			String login = null;
