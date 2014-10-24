@@ -138,7 +138,7 @@ public final class IOSLocators {
 	
 	public static final String nameLeaveConversation = "metaControllerRightButton";
 	
-	public static final String nameLeaveConversationAlert = "Leave conversation?";
+	public static final String nameLeaveConversationAlert = "Leave the conversation?";
 
 	public static final String nameLeaveConversationButton = "LEAVE";
 	
