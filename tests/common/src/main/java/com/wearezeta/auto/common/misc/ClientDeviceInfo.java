@@ -5,18 +5,18 @@ public class ClientDeviceInfo {
 	private String operatingSystemBuild;
 	private String deviceName;
 	private String gsmNetworkType;
-	private String isWifiEnabled;
+	private Boolean isWifiEnabled;
 	
 	public ClientDeviceInfo() {
 		this.operatingSystemName = "no info";
 		this.operatingSystemBuild = "no info";
 		this.deviceName = "no info";
 		this.gsmNetworkType = "no info";
-		this.isWifiEnabled = "no info";
+		this.isWifiEnabled = null;
 	}
 	
 	
-	public ClientDeviceInfo(String os, String osBuild, String device, String carrier, String isWifi) {
+	public ClientDeviceInfo(String os, String osBuild, String device, String carrier, Boolean isWifi) {
 		this.operatingSystemName = os;
 		this.operatingSystemBuild = osBuild;
 		this.deviceName = device;

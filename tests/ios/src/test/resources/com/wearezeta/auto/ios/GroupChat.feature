@@ -1,7 +1,5 @@
 Feature: Group Chat
 
-#Muted till new sync engine client stabilization
-@mute
 @smoke 
 @id333
 	Scenario Outline: Start group chat with users from contact list
@@ -24,9 +22,6 @@ Feature: Group Chat
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-
-#Muted till new sync engine client stabilization
-@mute
 @smoke 
 @id334
 Scenario Outline: Send message to group chat
@@ -71,8 +66,6 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| aqaContact3	| 4		  |
 
 
-# when you leave group chat - it disappears from contact list
-@mute
 @smoke
 @id335
 Scenario Outline: Leave from group chat
@@ -92,9 +85,6 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-
-#Not stable
-@mute
 @smoke 
 @id336
  Scenario Outline: Remove from group chat

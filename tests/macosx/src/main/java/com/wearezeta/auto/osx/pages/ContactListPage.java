@@ -1,5 +1,6 @@
 package com.wearezeta.auto.osx.pages;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -22,6 +23,7 @@ import org.openqa.selenium.support.ui.Wait;
 import com.google.common.base.Function;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.util.NSPoint;
 
@@ -65,10 +67,10 @@ public class ContactListPage extends OSXPage {
 		minimizeWindowButton.click();
 	}
 	
-	public void restoreZClient() throws InterruptedException, ScriptException{
+	public void restoreZClient() throws InterruptedException, ScriptException, IOException {
 		final String[] scriptArr = new String[] {
 				"property bi : \"com.wearezeta.zclient.mac\"",
-				"property thisapp: \"ZClient\"",
+				"property thisapp: \"" + OSXCommonUtils.getZClientProcessName() + "\"",
 				"tell application id bi to activate",
 				"tell application \"System Events\"",
 				" tell process thisapp",

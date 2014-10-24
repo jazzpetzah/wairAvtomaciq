@@ -99,7 +99,10 @@ public class CommonUtils {
 		while (( s = br.readLine() ) != null ) {
 			sb.append("\t" + s + "\n");
 		}
-		log.debug(sb.toString());
+		String output = sb.toString();
+		if (!output.trim().isEmpty()) {
+			log.debug(output);
+		}
 		stream.close();
 	}
 

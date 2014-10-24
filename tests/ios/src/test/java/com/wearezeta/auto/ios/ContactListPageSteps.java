@@ -1,20 +1,13 @@
 package com.wearezeta.auto.ios;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.ws.rs.core.UriBuilderException;
 
 import org.apache.log4j.Logger;
-import org.json.JSONException;
 import org.junit.Assert;
 
 import cucumber.api.java.en.*;
 
 import com.wearezeta.auto.common.BackEndREST;
-import com.wearezeta.auto.common.BackendRequestException;
-import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.pages.*;

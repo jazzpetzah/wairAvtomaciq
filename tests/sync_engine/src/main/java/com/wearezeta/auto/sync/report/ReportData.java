@@ -11,6 +11,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.BuildVersionInfo;
+import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.sync.ExecutionContext;
 import com.wearezeta.auto.sync.client.InstanceState;
@@ -22,6 +23,7 @@ class UserReport {
 	public String loggedOnPlatform;
 	public String startupTime;
 	public BuildVersionInfo buildVersion;
+	public ClientDeviceInfo deviceData;
 	public boolean isEnabled;
 }
 
@@ -81,6 +83,7 @@ public class ReportData {
 				user.loggedOnPlatform = client.getKey();
 				user.startupTime = Double.toString(client.getValue().getStartupTimeMs()/1000d) + "s";
 				user.buildVersion = client.getValue().getVersionInfo();
+				user.deviceData = client.getValue().getDeviceInfo();
 				user.isEnabled = true;
 			} else {
 				user.loggedOnPlatform = client.getKey();

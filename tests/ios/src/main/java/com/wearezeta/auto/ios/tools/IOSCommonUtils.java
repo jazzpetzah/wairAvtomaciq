@@ -35,9 +35,9 @@ public class IOSCommonUtils {
 	public static ClientDeviceInfo readDeviceInfo() {
 		String os = "iOS";
 		String osBuild = (String) IOSPage.executeScript("UIATarget.localTarget().systemVersion();");
-		String deviceName = (String) IOSPage.executeScript("UIATarget.localTarget().name();");
+		String deviceName = (String) IOSPage.executeScript("UIATarget.localTarget().model();");
 		String gsmNetworkType = "";
-		String isWifiEnabled = "no info";
+		Boolean isWifiEnabled = null;
 		
 		return new ClientDeviceInfo(os, osBuild, deviceName, gsmNetworkType, isWifiEnabled);
 	}
