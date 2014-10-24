@@ -2,6 +2,7 @@ package com.wearezeta.auto.osx.pages;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -30,7 +31,7 @@ public class LoginPage extends OSXPage {
 	private WebElement signInButton;
 
 	@FindBy(how = How.CLASS_NAME, using = OSXLocators.classNameLoginField)
-	private WebElement loginField;
+	private List<WebElement> loginField;
 
 	@FindBy(how = How.ID, using = OSXLocators.idPasswordField)
 	private WebElement passwordField;
@@ -66,7 +67,7 @@ public class LoginPage extends OSXPage {
 		OSXPage page = null;
 		boolean isLoginForm = false;
 		try {
-			loginField.getText();
+			passwordField.getText();
 			isLoginForm = true;
 		} catch (NoSuchElementException e) {
 			isLoginForm = false;
@@ -89,9 +90,8 @@ public class LoginPage extends OSXPage {
 	public void setLogin(String login) {
 		DriverUtils.setImplicitWaitValue(driver, 1);
 		try {
-			loginField.sendKeys(login);
-			if (loginField.getText().isEmpty()) {
-				loginField.sendKeys(login);
+			for (int i = 0; i < loginField.size(); i++) {
+				loginField.get(i).sendKeys(login);
 			}
 		} catch (NoSuchElementException e) {
 			log.error("Login field not found.\n" + e.getMessage());
