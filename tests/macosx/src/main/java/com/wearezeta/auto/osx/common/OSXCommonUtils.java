@@ -14,12 +14,18 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.BuildVersionInfo;
 import com.wearezeta.auto.common.misc.ClientDeviceInfo;
+import com.wearezeta.auto.osx.pages.ContactListPage;
 
 public class OSXCommonUtils extends CommonUtils {
 	private static final Logger log = ZetaLogger.getLog(OSXCommonUtils.class.getSimpleName());
 	
+	public static String getZClientProcessName() throws IOException {
+		String getZClientProcess = CommonUtils.getOsxApplicationPathFromConfig(ContactListPage.class);
+		File file = new File(getZClientProcess);
+		getZClientProcess = file.getName().replace(".app", "");
+		return getZClientProcess;
+	}
 	
-
 	public static String getOsXVersion() throws Exception {
 		String command = "sw_vers -productVersion";
 		

@@ -90,8 +90,8 @@ public class LoginPage extends OSXPage {
 	public void setLogin(String login) {
 		DriverUtils.setImplicitWaitValue(driver, 1);
 		try {
-			for (int i = 0; i < loginField.size(); i++) {
-				loginField.get(i).sendKeys(login);
+			for (WebElement loginF: loginField) {
+				loginF.sendKeys(login);
 			}
 		} catch (NoSuchElementException e) {
 			log.error("Login field not found.\n" + e.getMessage());
