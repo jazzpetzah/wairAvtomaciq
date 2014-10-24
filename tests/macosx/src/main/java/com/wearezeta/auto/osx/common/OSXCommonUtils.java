@@ -1,7 +1,10 @@
 package com.wearezeta.auto.osx.common;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import org.apache.log4j.Logger;
 
@@ -14,6 +17,45 @@ import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 
 public class OSXCommonUtils extends CommonUtils {
 	private static final Logger log = ZetaLogger.getLog(OSXCommonUtils.class.getSimpleName());
+	
+	
+
+	public static String getOsXVersion() throws Exception {
+		String command = "sw_vers -productVersion";
+		
+		Process process = Runtime.getRuntime().exec(new String[] { "/bin/bash", "-c", command });
+	
+		String result = "no info";
+		
+		if (process != null) {
+			InputStream stream = null;
+			InputStreamReader isReader = null;
+			BufferedReader bufferedReader = null;
+			try {
+				stream = process.getInputStream();
+				BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+				String possibleVersion;
+		
+				while (( possibleVersion = br.readLine() ) != null ) {
+					System.out.println(possibleVersion);
+					possibleVersion = possibleVersion.trim();
+					if (!possibleVersion.isEmpty()) {
+						result = possibleVersion;
+						break;
+					}
+				}
+				outputErrorStreamToLog(process.getErrorStream());
+				log.debug("Request for osx version finished with code " + process.waitFor());
+			} catch (IOException e) {
+				log.error(e.getMessage());
+			} finally {
+				if (bufferedReader != null) bufferedReader.close();
+				if (isReader != null) isReader.close();
+				if (stream != null) stream.close();
+			}
+		}
+		return result;
+	}
 	
 	public static void removeAllZClientSettingsFromDefaults() throws Exception {
 		String command = "defaults delete com.wearezeta.zclient.mac";
@@ -41,9 +83,14 @@ public class OSXCommonUtils extends CommonUtils {
 		return new BuildVersionInfo(clientBuild, zmessagingBuild);
 	}
 
-	public static ClientDeviceInfo readDeviceInfo() {
-		// TODO Auto-generated method stub
-		return null;
+	public static ClientDeviceInfo readDeviceInfo() throws Exception {
+		String osName = "Mac OS X";
+		String osVersion = getOsXVersion();
+		String deviceName = "no info";
+		Boolean isWifiEnabled = null;
+		
+		ClientDeviceInfo result = new ClientDeviceInfo(osName, osVersion, deviceName, null, isWifiEnabled);
+		return result;
 	}
 	
 	public static String getOsxClientInfoPlistFromConfig(Class<?> c)

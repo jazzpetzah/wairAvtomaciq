@@ -149,7 +149,7 @@ public class AndroidCommonUtils extends CommonUtils {
 					}
 				}
 				outputErrorStreamToLog(process.getErrorStream());
-				log.debug("Request for package version finished with code " + process.waitFor());
+				log.debug("Request for client version finished with code " + process.waitFor());
 			} catch (IOException e) {
 				log.error(e.getMessage());
 			} finally {
@@ -168,12 +168,68 @@ public class AndroidCommonUtils extends CommonUtils {
 		return new BuildVersionInfo(clientBuild, zmessagingBuild);
 	}
 	
+	private static String capitalizeManufacturerName(String name) {
+		return name.substring(0, 1).toUpperCase() + name.substring(1);
+	}
+	
+	private static Boolean isWifiEnabled() throws IOException, InterruptedException {
+		Boolean result = null;
+		
+		String adbCommand = "adb shell dumpsys wifi";
+		Process process = null;
+		if (getOsName().contains(OS_NAME_WINDOWS)) {
+			process = Runtime.getRuntime().exec("cmd /C " + adbCommand);
+		} else {
+			process = Runtime.getRuntime().exec(new String[] { "/bin/bash", "-c", adbCommand });
+		}
+		
+		if (process != null) {
+			InputStream stream = null;
+			InputStreamReader isReader = null;
+			BufferedReader bufferedReader = null;
+			try {
+				stream = process.getInputStream();
+				BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+				String output = "";
+				String s;
+				while (( s = br.readLine() ) != null ) {
+					output += s;
+				}
+				if (output.contains("Wi-Fi is disabled")) {
+					result = false;
+				} else if (output.contains("Wi-Fi is enabled")) {
+					Pattern pattern = Pattern.compile("mNetworkInfo NetworkInfo: type: [^,]*, state: ([^,]*),");
+					Matcher matcher = pattern.matcher(output);
+					String state = "no info";
+					while (matcher.find()) {
+						state = matcher.group(1);
+						log.debug("Retrieved wifi state: " + state);
+					}
+					if (state.contains("DISCONNECTED") || state.contains("SCANNING")) {
+						result = false;
+					} else if (state.startsWith("CONNECTED")) {
+						result = true;
+					}
+				}
+				outputErrorStreamToLog(process.getErrorStream());
+			} catch (IOException e) {
+				log.error(e.getMessage());
+			} finally {
+				if (bufferedReader != null) bufferedReader.close();
+				if (isReader != null) isReader.close();
+				if (stream != null) stream.close();
+			}
+		}
+		
+		return result;
+	}
+	
 	public static ClientDeviceInfo readDeviceInfo() throws IOException, InterruptedException {
 		String os = "Android";
 		String osBuild = getPropertyFromAdb("ro.build.version.release");
-		String deviceName = getPropertyFromAdb("ro.product.manufacturer") + " " + getPropertyFromAdb("ro.product.model");
+		String deviceName = capitalizeManufacturerName(getPropertyFromAdb("ro.product.manufacturer")) + " " + getPropertyFromAdb("ro.product.model");
 		String gsmNetworkType = getPropertyFromAdb("gsm.network.type");
-		String isWifiEnabled = "no info";
+		Boolean isWifiEnabled = isWifiEnabled();
 		
 		return new ClientDeviceInfo(os, osBuild, deviceName, gsmNetworkType, isWifiEnabled);
 	}
