@@ -65,7 +65,7 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		| Contact3		| Number  |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| aqaContact3	| 4		  |
 
-
+@mute
 @smoke
 @id335
 Scenario Outline: Leave from group chat
@@ -85,6 +85,7 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
+@mute
 @smoke 
 @id336
  Scenario Outline: Remove from group chat
