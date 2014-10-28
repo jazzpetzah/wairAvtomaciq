@@ -152,7 +152,6 @@ public class RegistrationPageSteps {
 	
 	@Then("I see email (.*) without spaces")
 	public void ISeeEmailWithoutSpaces(String email) {
-		System.out.println(email);
 		RegistrationPage registrationPage = CommonSteps.senderPages.getRegistrationPage();
 		Assert.assertTrue(
 				"It was accepted to enter spaces in email '"

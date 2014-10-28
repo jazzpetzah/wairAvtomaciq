@@ -43,7 +43,6 @@ public class OSXCommonUtils extends CommonUtils {
 				String possibleVersion;
 		
 				while (( possibleVersion = br.readLine() ) != null ) {
-					System.out.println(possibleVersion);
 					possibleVersion = possibleVersion.trim();
 					if (!possibleVersion.isEmpty()) {
 						result = possibleVersion;

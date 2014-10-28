@@ -30,6 +30,7 @@ public class ContactListPageSteps {
 		} else {
 			name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		}
+		CommonSteps.senderPages.getLoginPage().sendProblemReportIfFound();
 		CommonSteps.senderPages.getContactListPage().pressLaterButton();
 		Thread.sleep(1000);
 		CommonSteps.senderPages.setPeoplePickerPage(new PeoplePickerPage(
