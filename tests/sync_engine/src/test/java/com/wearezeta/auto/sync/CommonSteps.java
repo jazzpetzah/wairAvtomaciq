@@ -651,17 +651,32 @@ public class CommonSteps {
 		}
 		
 		if (ExecutionContext.isIosEnabled()) {
-			BuildVersionInfo iosClientInfo = IOSCommonUtils.readClientVersionFromPlist();
+			BuildVersionInfo iosClientInfo = new BuildVersionInfo();
+			ClientDeviceInfo iosDeviceInfo = new ClientDeviceInfo();
+			try {
+				iosClientInfo = IOSCommonUtils.readClientVersionFromPlist();
+			} catch(Exception e) { 
+				log.error("Failed to get iOS client info from Info.plist.\n" + e.getMessage());
+			}
 			ExecutionContext.iosZeta().setVersionInfo(iosClientInfo);
-			ClientDeviceInfo iosDeviceInfo = IOSCommonUtils.readDeviceInfo();
+			try {
+				iosDeviceInfo = IOSCommonUtils.readDeviceInfo();
+			} catch (Exception e) {
+				log.error("Failed to get iOS device info. Seems like client were crashed during test.\n" + e.getMessage());
+			}
 			log.debug("Following info were taken from iOS device: " + iosDeviceInfo);
 			ExecutionContext.iosZeta().setDeviceInfo(iosDeviceInfo);
 		}
 		
 		if (ExecutionContext.isOsxEnabled()) {
-			BuildVersionInfo osxClientInfo = OSXCommonUtils.readClientVersionFromPlist();
-			ExecutionContext.osxZeta().setVersionInfo(osxClientInfo);
+			BuildVersionInfo osxClientInfo = new BuildVersionInfo();
 			ClientDeviceInfo osxDeviceInfo = new ClientDeviceInfo();
+			try {
+				osxClientInfo = OSXCommonUtils.readClientVersionFromPlist();
+			} catch (Exception e) {
+				log.error("Failed to read client info for OSX client.\n" + e.getMessage());
+			}
+			ExecutionContext.osxZeta().setVersionInfo(osxClientInfo);
 			try {
 				osxDeviceInfo = OSXCommonUtils.readDeviceInfo();
 				log.debug("Following info were taken from OSX device: " + osxDeviceInfo);
