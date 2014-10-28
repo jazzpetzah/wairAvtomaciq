@@ -4,11 +4,13 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ConversationInfoPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
@@ -17,6 +19,8 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ConversationInfoPageSteps {
+	private static final Logger log = ZetaLogger.getLog(ConversationInfoPageSteps.class.getSimpleName());
+	
 	@When("I choose user (.*) in Conversation info")
 	public void WhenIChooseUserInConversationInfo(String user) throws MalformedURLException, IOException {
 		user = CommonUtils.retrieveRealUserContactPasswordValue(user);
@@ -130,7 +134,7 @@ public class ConversationInfoPageSteps {
 		BufferedImage screen = conversationInfo.takeScreenshot();
 		BufferedImage picture = ImageUtil.readImageFromFile(OSXPage.imagesPath + photo);
 		double score = ImageUtil.getOverlapScore(screen, picture, ImageUtil.RESIZE_FROM2560x1600OPTIMIZED);
-		System.out.println(score);
+		log.debug("Score for comparison of 2 pictures = " + score);
 		Assert.assertTrue(
 				"Overlap between two images has no enough score. Expected >= 0.55, current = " + score,
 				score >= 0.55d);

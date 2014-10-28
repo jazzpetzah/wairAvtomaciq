@@ -37,7 +37,7 @@ public class ConversationPage extends OSXPage {
 	private static final Logger log = ZetaLogger.getLog(ConversationPage.class
 			.getSimpleName());
 
-	static final String SOUNDCLOUD_BUTTON_ATT_TITLE = "AXTitle";
+	static final String SOUNDCLOUD_BUTTON_ATT_TITLE = "AXDescription";
 	static String SOUNDCLOUD_BUTTON_STATE;
 	int numberSoundCloudButtons;
 
