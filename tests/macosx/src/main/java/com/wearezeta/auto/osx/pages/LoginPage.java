@@ -31,7 +31,7 @@ public class LoginPage extends OSXPage {
 	private WebElement signInButton;
 
 	@FindBy(how = How.CLASS_NAME, using = OSXLocators.classNameLoginField)
-	private List<WebElement> loginField;
+	private WebElement loginField;
 
 	@FindBy(how = How.ID, using = OSXLocators.idPasswordField)
 	private WebElement passwordField;
@@ -90,9 +90,7 @@ public class LoginPage extends OSXPage {
 	public void setLogin(String login) {
 		DriverUtils.setImplicitWaitValue(driver, 1);
 		try {
-			for (WebElement loginF: loginField) {
-				loginF.sendKeys(login);
-			}
+			loginField.sendKeys(login);
 		} catch (NoSuchElementException e) {
 			log.error("Login field not found.\n" + e.getMessage());
 		} finally {
