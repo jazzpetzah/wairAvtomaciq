@@ -206,11 +206,17 @@ public class ContactListPage extends OSXPage {
 	}
 	
 	public void pressLaterButton() throws Exception {
-		if (shareContactsLaterButton.size() > 0) {
-			shareContactsLaterButton.get(0).click();
+		int count = 0;
+		boolean isFound = false;
+		do {
+			if (shareContactsLaterButton.size() > 0) {
+				shareContactsLaterButton.get(0).click();
 
-			DriverUtils.waitUntilElementDissapear(driver, By.xpath(OSXLocators.idShareContactsLaterButton));
-		}
+				DriverUtils.waitUntilElementDissapear(driver, By.xpath(OSXLocators.idShareContactsLaterButton));
+				isFound = true;
+			}
+			count++;
+		} while (count < 10 && !isFound);
 	}
 	
 	public int numberOfContacts() {
