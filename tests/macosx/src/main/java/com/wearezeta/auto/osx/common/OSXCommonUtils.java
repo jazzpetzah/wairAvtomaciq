@@ -62,6 +62,15 @@ public class OSXCommonUtils extends CommonUtils {
 		return result;
 	}
 	
+	public static void deleteZClientLoginFromKeychain() throws Exception {
+		String command = "security delete-generic-password -s \"zeta dev-nginz-https.zinfra.io\"";
+
+		if (!getOsName().contains(OS_NAME_WINDOWS)) {
+			executeOsXCommand(new String[] { "/bin/bash", "-c", command });
+		}
+		
+	}
+	
 	public static void removeAllZClientSettingsFromDefaults() throws Exception {
 		String command = "defaults delete com.wearezeta.zclient.mac";
 
