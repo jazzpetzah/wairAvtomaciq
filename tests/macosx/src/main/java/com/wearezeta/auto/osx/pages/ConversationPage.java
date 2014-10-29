@@ -244,7 +244,7 @@ public class ConversationPage extends OSXPage {
 		return SOUNDCLOUD_BUTTON_STATE;
 	}
 
-	public void scrollDownTilMediaBarAppears() throws Exception {
+	public void scrollDownTillMediaBarAppears() throws Exception {
 
 		NSPoint soundcloudPosition = NSPoint.fromString(soundCloudLinkButton
 				.getAttribute("AXPosition"));
@@ -268,10 +268,14 @@ public class ConversationPage extends OSXPage {
 					conversationDecrementSB = scrollButton;
 				}
 			}
+			long TIMEOUT_MINUTES = 5;
+			long startDate = new Date().getTime();
 			while (soundcloudPosition.y() < textInputPosition.y()) {
 				conversationDecrementSB.click();
 				soundcloudPosition = NSPoint.fromString(soundCloudLinkButton
 						.getAttribute("AXPosition"));
+				long endDate = new Date().getTime();
+				if (endDate - startDate > TIMEOUT_MINUTES*60*1000) break;
 			}
 		}
 	}
@@ -314,10 +318,14 @@ public class ConversationPage extends OSXPage {
 					conversationIncrementSB = scrollButton;
 				}
 			}
+			long TIMEOUT_MINUTES = 5;
+			long startDate = new Date().getTime();
 			while (lastGroupPosition.y() > textInputPosition.y()) {
 				conversationIncrementSB.click();
 				lastGroupPosition = NSPoint.fromString(lastGroup
 						.getAttribute("AXPosition"));
+				long endDate = new Date().getTime();
+				if (endDate - startDate > TIMEOUT_MINUTES*60*1000) break;
 			}
 		}
 	}
