@@ -67,12 +67,15 @@ public class LoginPage extends OSXPage {
 		OSXPage page = null;
 		boolean isLoginForm = false;
 		try {
+			DriverUtils.setImplicitWaitValue(driver, 1);
 			passwordField.getText();
 			isLoginForm = true;
 		} catch (NoSuchElementException e) {
 			isLoginForm = false;
 		} catch (NoSuchWindowException e) {
 			isLoginForm = false;
+		} finally {
+			DriverUtils.setDefaultImplicitWait(driver);
 		}
 		signInButton.click();
 		if (isLoginForm) {

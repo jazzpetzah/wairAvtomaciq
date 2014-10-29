@@ -47,7 +47,7 @@ public class ContactListPage extends OSXPage {
 	private WebElement showArchivedButton;
 
 	@FindBy(how = How.ID, using = OSXLocators.idShareContactsLaterButton)
-	private List<WebElement> shareContactsLaterButton;
+	private WebElement shareContactsLaterButton;
 	
 	@FindBy(how = How.ID, using = OSXLocators.idMainWindowMinimizeButton)
 	private WebElement minimizeWindowButton;
@@ -207,12 +207,12 @@ public class ContactListPage extends OSXPage {
 		int count = 0;
 		boolean isFound = false;
 		do {
-			if (shareContactsLaterButton.size() > 0) {
-				shareContactsLaterButton.get(0).click();
+			try {
+				shareContactsLaterButton.click();
 
 				DriverUtils.waitUntilElementDissapear(driver, By.xpath(OSXLocators.idShareContactsLaterButton));
 				isFound = true;
-			}
+			} catch (NoSuchElementException e) { }
 			count++;
 		} while (count < 10 && !isFound);
 	}
