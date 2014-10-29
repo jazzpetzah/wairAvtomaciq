@@ -145,4 +145,6 @@ public final class OSXLocators {
 	public static final String idShareContactsLaterButton = "ConfirmationViewCancelButton";
 	
 	public static final String idMainWindowMinimizeButton = "MainWindowMinimizeButton";
+	
+	public static final String idMainWindowCloseButton = "MainWindowCloseButton";
 }

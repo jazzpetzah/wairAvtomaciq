@@ -151,6 +151,7 @@ public class ConversationPage extends OSXPage {
 			} catch (InterruptedException e) {
 			}
 		}
+
 		newMessageTextArea.sendKeys(message + "\\n");
 	}
 
@@ -179,7 +180,7 @@ public class ConversationPage extends OSXPage {
 		addImageButton.click();
 	}
 	
-	public void shortcutCooseImageDialog() throws ScriptException{
+	public void shortcutChooseImageDialog() throws ScriptException{
 		final String[] scriptArr = new String[] {
 				"property bi : \"com.wearezeta.zclient.mac\"",
 				"tell application id bi",

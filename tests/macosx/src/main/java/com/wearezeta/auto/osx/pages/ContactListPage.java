@@ -21,6 +21,7 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
 import com.google.common.base.Function;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
@@ -51,6 +52,9 @@ public class ContactListPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idMainWindowMinimizeButton)
 	private WebElement minimizeWindowButton;
 	
+	@FindBy(how = How.ID, using = OSXLocators.idMainWindowCloseButton)
+	private WebElement closeWindowButton;
+	
 	public ContactListPage(String URL, String path) throws MalformedURLException {
 		super(URL, path);
 	}
@@ -70,17 +74,11 @@ public class ContactListPage extends OSXPage {
 	public void restoreZClient() throws InterruptedException, ScriptException, IOException {
 		final String[] scriptArr = new String[] {
 				"property bi : \"com.wearezeta.zclient.mac\"",
-				"property thisapp: \"" + OSXCommonUtils.getZClientProcessName() + "\"",
+				"property thisapp: \"ZClient\"",
 				"tell application id bi to activate",
 				"tell application \"System Events\"",
 				" tell process thisapp",
-				" tell menu bar 1",
-				" tell menu bar item \"Window\"",
-				" tell menu \"Window\"",
-				" click menu item \"ZClient\"",
-				" end tell",
-				" end tell",
-				" end tell",
+				" click last menu item of menu \"Window\" of menu bar 1",
 				" end tell",
 				"end tell"};
 		

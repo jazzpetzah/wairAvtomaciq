@@ -111,4 +111,11 @@ public class OSXCommonUtils extends CommonUtils {
 			throws IOException {
 		return CommonUtils.getValueFromConfig(c, "osxClientInfoPlist");
 	}
+	
+	public static void startActivityMonitoringInstrument() throws Exception{
+		CommonUtils.executeOsXCommand(new String[] {
+				"/bin/bash",
+				"-c",
+				"instruments -t /Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/Resources/templates/Activity\\ Monitor.tracetemplate"});
+	}
 }

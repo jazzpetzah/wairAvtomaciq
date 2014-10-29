@@ -1,23 +1,18 @@
 package com.wearezeta.auto.osx.steps;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.time.LocalDateTime;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.ZetaFormatter;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationPage;
-import com.wearezeta.auto.osx.pages.LoginPage;
-import com.wearezeta.auto.osx.pages.MainMenuPage;
-import com.wearezeta.auto.osx.pages.PagesCollection;
-
 import cucumber.api.java.en.When;
 
 public class PerformanceSteps {
@@ -28,6 +23,7 @@ public class PerformanceSteps {
 	private static final int SEND_MESSAGE_NUM = 4;
 	private String randomMessage;
 	private static final String picturename = "testing.jpg";
+	private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class.getSimpleName());
 
 	Random random = new Random();
 
@@ -44,19 +40,30 @@ public class PerformanceSteps {
 								.getOsxAppiumUrlFromConfig(LoginPageSteps.class),
 						CommonUtils
 								.getOsxApplicationPathFromConfig(LoginPageSteps.class)));
-
+		
+		//Main cycle
 		while (diffInMinutes < time) {
+			
+			//Send messages and image by BackEnd
+			try {
+				CommonUtils.sendRandomMessagesToUser(BACK_END_MESSAGE_COUNT);
+				CommonUtils.sendDefaultImageToUser((int) Math
+						.floor(BACK_END_MESSAGE_COUNT / 5));
+			}
+			catch (Exception e) {
+				
+			}
 
-			CommonUtils.sendRandomMessagesToUser(BACK_END_MESSAGE_COUNT);
-			CommonUtils.sendDefaultImageToUser((int) Math
-					.floor(BACK_END_MESSAGE_COUNT / 5));
+			
 
 			Thread.sleep(1000);
 
+			//Send messages cycle by UI
 			for (int j = 1; j <= SEND_MESSAGE_NUM; ++j) {
 				ArrayList<WebElement> visibleContactsList = new ArrayList<WebElement>(
 						CommonSteps.senderPages.getContactListPage()
 								.getContacts());
+				//remove self user from the list
 				for (int i = 0; i < visibleContactsList.size(); i++) {
 					if (visibleContactsList.get(i).getText().equals(user)) {
 						visibleContactsList.remove(i);
@@ -100,11 +107,11 @@ public class PerformanceSteps {
 				CommonSteps.senderPages.getConversationPage().scrollDownToLastMessage();
 				}
 				catch(Exception ex){
-					System.out.println("noscrolling");
+					log.debug("Scrolling fail: ", ex);
 				}
 				Thread.sleep(2000);
 				try{
-				CommonSteps.senderPages.getConversationPage().shortcutCooseImageDialog();
+				CommonSteps.senderPages.getConversationPage().shortcutChooseImageDialog();
 				CommonSteps.senderPages
 						.setChoosePicturePage(new ChoosePicturePage(
 								CommonUtils
@@ -119,14 +126,14 @@ public class PerformanceSteps {
 				choosePicturePage.openImage(picturename);
 				}
 				catch(Exception ex){
-					System.out.println("image posting failed");
+					log.debug("Image posting failed: ", ex);
 				}
 				Thread.sleep(1000);
 				try{
 				CommonSteps.senderPages.getConversationPage().scrollDownToLastMessage();
 				}
 				catch(Exception exep){
-					System.out.println("no scrolling");
+					log.debug("Scrolling fail: ", exep);
 				}
 			}
 
@@ -147,20 +154,20 @@ public class PerformanceSteps {
 		CommonSteps.senderPages.getContactListPage()
 				.waitUntilMainWindowAppears();
 		CommonSteps.senderPages.getContactListPage().minimizeZClient();
+		log.debug("Client minimized");
 	}
 
 	@When("Set random sleep interval")
 	public void SetRandomSleepInterval() throws InterruptedException {
 		int sleepTimer = ((random.nextInt(MAX_WAIT_VALUE_IN_MIN) + MIN_WAIT_VALUE_IN_MIN) * 60 * 1000);
-
-		System.out.print(sleepTimer);
+		log.debug("Sleep time: " + sleepTimer/1000 + " sec.");
 		Thread.sleep(sleepTimer);
 	}
 
 	@When("Restore ZClient")
 	public void RestoreZClient() throws Exception {
 		CommonSteps.senderPages.getContactListPage().restoreZClient();
-		
+		log.debug("Client restored");
 	}
 
 }
