@@ -323,9 +323,20 @@ public class DialogPage extends IOSPage{
 	}
 	
 	private String GetLastMessage(List<WebElement> chatList) {
-		String lastMessageXPath = String.format(IOSLocators.xpathLastMessageFormat, chatList.size());
-		WebElement el = driver.findElementByXPath(lastMessageXPath);
-		String lastMessage = el.getText();
+		String lastMessage = null;
+		if (chatList.size() > 0) {
+			try {
+				String lastMessageXPath = String.format(
+						IOSLocators.xpathLastMessageFormat, chatList.size());
+				WebElement el = driver.findElementByXPath(lastMessageXPath);
+				lastMessage = el.getText();
+			} catch (Exception e) {
+				lastMessage = "Last message is image";
+			}
+		}
+		else {
+			lastMessage = "Empty chat";
+		}
 		return lastMessage;
 	}
 
@@ -580,5 +591,16 @@ public class DialogPage extends IOSPage{
 		page.clickFirstImage();
 		page.pressConfirmButton();
 		return new DialogPage(url, path);
+	}
+	
+	public void pasteTextToInput(String text) throws Throwable{
+		WebElement el = driver.findElement(By
+				.name(IOSLocators.nameConversationCursorInput));
+		if (isSimulator()) {
+			cmdVscript();
+			pasteStringToInput(el, text);
+		} else {
+			pasteStringToInput(el, text);
+		}
 	}
 }
