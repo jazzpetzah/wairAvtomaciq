@@ -43,8 +43,8 @@ public class ZetaFormatter implements Formatter, Reporter {
 	
 	private static final String LOGIN = "smoketester+bot@wearezeta.com";
 	private static final String PASSWORD = "aqa123456";
-	private static final String CONTACT_ANDROID = "SmokeAutomation";
-	private static final String CONTACT_IOS = "SmokeAutomation";
+	private static final String CONTACT_ANDROID = "Android Smoke Feedback";
+	private static final String CONTACT_IOS = "iOS Smoke Feedback";
 	private static final String CONTACT_OSX = "SmokeAutomation";
 	
 	@Override

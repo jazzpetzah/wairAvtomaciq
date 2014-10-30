@@ -446,6 +446,7 @@ public class BackEndREST {
 			JSONObject conversation = (JSONObject) jsonArray.get(i);
 			conversationId = conversation.getString("id");
 			String name = conversation.getString("name");
+			name = name.replaceAll("\uFFFC", "").trim();;
 			if (name.equals("null")) {
 				conversation = (JSONObject) conversation.get("members");
 				JSONArray otherArray = (JSONArray) conversation.get("others");
