@@ -18,6 +18,7 @@ import javax.ws.rs.core.UriBuilderException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,9 +35,12 @@ import com.wearezeta.auto.image_send.*;
 import java.awt.image.BufferedImage;
 
 public class BackEndREST {
-
 	private static final Logger log = ZetaLogger.getLog(BackEndREST.class.getSimpleName());
 
+	static {
+		log.setLevel(Level.INFO);
+	}
+	
 	ClientConfig config = new DefaultClientConfig();
 	static Client client = Client.create();
 	
@@ -442,6 +446,7 @@ public class BackEndREST {
 			JSONObject conversation = (JSONObject) jsonArray.get(i);
 			conversationId = conversation.getString("id");
 			String name = conversation.getString("name");
+			name = name.replaceAll("\uFFFC", "").trim();;
 			if (name.equals("null")) {
 				conversation = (JSONObject) conversation.get("members");
 				JSONArray otherArray = (JSONArray) conversation.get("others");

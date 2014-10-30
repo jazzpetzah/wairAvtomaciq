@@ -6,9 +6,11 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import org.junit.Assert;
+import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.pages.IOSPage;
@@ -67,6 +69,11 @@ public class DialogPageSteps {
 	@When("I input message from keyboard (.*)")
 	public void IInputMessageFromKeyboard(String message) throws Throwable{
 		PagesCollection.dialogPage.inputStringFromKeyboard(message);
+	}
+	
+	@When("I paste long text to input")
+	public void IPasteLongTextToInput() throws Throwable{
+		PagesCollection.dialogPage.pasteTextToInput(longMessage);
 	}
 
 	@When("^I multi tap on text input$")

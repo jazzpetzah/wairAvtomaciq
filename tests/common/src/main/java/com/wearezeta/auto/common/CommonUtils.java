@@ -549,13 +549,6 @@ public class CommonUtils {
 		return getValueFromConfig(c, "deviceName");
 	}
 
-	public static void putStringToClipboard(String data) {
-		StringSelection stringSelection;
-		stringSelection = new StringSelection(data);
-		Clipboard clipboard = new Clipboard("iOS simulator clipboard");
-		clipboard.setContents(stringSelection, stringSelection);
-	}
-
 	public static void generatePerformanceUser()
 			throws IllegalArgumentException, UriBuilderException, IOException,
 			MessagingException, JSONException, BackendRequestException,
