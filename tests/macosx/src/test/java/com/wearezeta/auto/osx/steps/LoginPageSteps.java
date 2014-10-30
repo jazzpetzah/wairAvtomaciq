@@ -2,6 +2,7 @@ package com.wearezeta.auto.osx.steps;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -45,10 +46,22 @@ public class LoginPageSteps {
 
 		try {
 			LoginPage loginPage = CommonSteps.senderPages.getLoginPage();
+			long startDate = new Date().getTime();
 			loginPage.SignIn();
+			long endDate = new Date().getTime();
+			log.debug("First sign in click takes " + (endDate - startDate) + "ms");
+			startDate = new Date().getTime();
 			loginPage.setLogin(login);
+			endDate = new Date().getTime();
+			log.debug("Setting login takes " + (endDate - startDate) + "ms");
+			startDate = new Date().getTime();
 			loginPage.setPassword(password);
+			endDate = new Date().getTime();
+			log.debug("Setting password takes " + (endDate - startDate) + "ms");
+			startDate = new Date().getTime();
 			loginPage.SignIn();
+			endDate = new Date().getTime();
+			log.debug("Sign in takes " + (endDate - startDate) + "ms");
 			Assert.assertTrue("Failed to login", loginPage.waitForLogin());
 		} catch (NoSuchElementException e) { }
 		
