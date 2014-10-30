@@ -2,7 +2,6 @@ package com.wearezeta.auto.osx.pages;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -94,7 +93,7 @@ public class LoginPage extends OSXPage {
 		try {
 			DriverUtils.waitUntilElementAppears(driver, By.id(OSXLocators.idPasswordField));
 		} catch (NoSuchElementException e) { }
-		
+		viewPager.click();
 		OSXCommonUtils.sendTextIntoFocusedElement(driver, login);
 	}
 

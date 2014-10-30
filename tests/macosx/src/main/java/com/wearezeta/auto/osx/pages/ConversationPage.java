@@ -269,7 +269,7 @@ public class ConversationPage extends OSXPage {
 					conversationDecrementSB = scrollButton;
 				}
 			}
-			long TIMEOUT_MINUTES = 5;
+			long TIMEOUT_MINUTES = 2;
 			long startDate = new Date().getTime();
 			while (soundcloudPosition.y() < textInputPosition.y()) {
 				conversationDecrementSB.click();
@@ -319,7 +319,7 @@ public class ConversationPage extends OSXPage {
 					conversationIncrementSB = scrollButton;
 				}
 			}
-			long TIMEOUT_MINUTES = 5;
+			long TIMEOUT_MINUTES = 2;
 			long startDate = new Date().getTime();
 			while (lastGroupPosition.y() > textInputPosition.y()) {
 				conversationIncrementSB.click();
