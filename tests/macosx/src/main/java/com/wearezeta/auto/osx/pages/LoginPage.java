@@ -2,6 +2,7 @@ package com.wearezeta.auto.osx.pages;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -156,6 +157,7 @@ public class LoginPage extends OSXPage {
 	}
 	
 	public void sendProblemReportIfFound() {
+		long startDate = new Date().getTime();
 		DriverUtils.setImplicitWaitValue(driver, 1);
 		boolean isProblemReported = false;
 		try {
@@ -168,6 +170,8 @@ public class LoginPage extends OSXPage {
 			}
 			DriverUtils.setDefaultImplicitWait(driver);
 		}
+		long endDate = new Date().getTime();
+		log.debug("Sending problem report took " + (endDate - startDate) + "ms");
 	}
 	
 	public RemoteWebDriver getDriver() {
