@@ -182,6 +182,10 @@ public class ConversationPageSteps {
 			message = message.toUpperCase();
 			Assert.assertTrue("User was not removed from conversation. Message " + message + " not found.", 
 					CommonSteps.senderPages.getConversationPage().isMessageExist(message));
+	 	} else if (message.contains(OSXLocators.CONNECTED_TO_MESSAGE)) {
+	 		message = CommonUtils.retrieveRealUserContactPasswordValue(message).toUpperCase();
+			Assert.assertTrue("Connected to message does not appear in conversation.", 
+					CommonSteps.senderPages.getConversationPage().isMessageExist(message));
 	 	} else {
 			 Assert.assertTrue(CommonSteps.senderPages.getConversationPage().isMessageExist(message));
 		 }
