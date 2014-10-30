@@ -188,8 +188,6 @@ Examples:
     |  Login		| Password		| Name			| Contact1   |
  	|  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |
 
-
-#muted due to issue IOS-959
 @staging
 @id504
   Scenario Outline: Verify you can play/pause media from the Media Bar (YouTube)
@@ -215,7 +213,7 @@ Examples:
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| http://www.youtube.com/watch?v=Bb1RhktcugU |
  
     
-#muted due to issue IOS-959 
+#Play-pause buttons are not presented in elements tree
 @staging
 @id387
 Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation (SoundCloud)
@@ -226,6 +224,7 @@ Scenario Outline: Verify play/pause controls are visible in the list if there is
     And I type and send long message and media link <SoundCloudLink>
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
+    And I scroll away the keyboard
     And I swipe right on Dialog page
     And I see play/pause button next to username <Contact1> in contact list
     And I tap on contact name <Contact2>

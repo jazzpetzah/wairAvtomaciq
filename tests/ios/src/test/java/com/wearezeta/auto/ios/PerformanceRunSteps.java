@@ -4,12 +4,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Random;
 
+import junit.framework.Assert;
+
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.common.CommonUtils;
+
 import cucumber.api.java.en.When;
 
 public class PerformanceRunSteps {
@@ -38,7 +41,7 @@ public class PerformanceRunSteps {
 
 				// --Get list of visible dialogs, remove self user name from
 				// this list
-				PagesCollection.contactListPage.waitForContactListToLoad();
+				Assert.assertTrue("Contact list didn't load", PagesCollection.contactListPage.waitForContactListToLoad());
 				ArrayList<WebElement> visibleContactsList = new ArrayList<WebElement>(
 						PagesCollection.contactListPage.GetVisibleContacts());
 				for (int y = 0; y < visibleContactsList.size(); y++) {
