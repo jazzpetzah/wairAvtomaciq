@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import org.apache.log4j.Logger;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.dd.plist.NSDictionary;
 import com.dd.plist.PropertyListParser;
@@ -97,6 +98,11 @@ public class OSXCommonUtils extends CommonUtils {
 		return new BuildVersionInfo(clientBuild, zmessagingBuild);
 	}
 
+	public static void sendTextIntoFocusedElement(RemoteWebDriver driver, String text) {
+		driver.executeScript(String.format("tell application \"ZClient\"\nactivate\nend tell\n" +
+				"tell application \"System Events\"\nkeystroke \"%s\"\nend tell", text));
+	}
+	
 	public static ClientDeviceInfo readDeviceInfo() throws Exception {
 		String osName = "Mac OS X";
 		String osVersion = getOsXVersion();

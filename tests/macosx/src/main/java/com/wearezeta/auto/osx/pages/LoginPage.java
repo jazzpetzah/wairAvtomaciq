@@ -91,14 +91,11 @@ public class LoginPage extends OSXPage {
 	}
 
 	public void setLogin(String login) {
-		DriverUtils.setImplicitWaitValue(driver, 1);
 		try {
-			loginField.sendKeys(login);
-		} catch (NoSuchElementException e) {
-			log.error("Login field not found.\n" + e.getMessage());
-		} finally {
-			DriverUtils.setDefaultImplicitWait(driver);
-		}
+			DriverUtils.waitUntilElementAppears(driver, By.id(OSXLocators.idPasswordField));
+		} catch (NoSuchElementException e) { }
+		
+		OSXCommonUtils.sendTextIntoFocusedElement(driver, login);
 	}
 
 	public String getPassword() {
