@@ -280,8 +280,8 @@ Examples:
     Then I dont see media bar on dialog page
 
 	Examples: 
-    |	Login	|	Password	|	Name	|	Contact1		| SoundCloudLink 								| time |
-    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact3	| https://soundcloud.com/carl-cox/carl-cox-nexus    | 38   | 
+    |	Login	|	Password	|	Name	|	Contact1	| SoundCloudLink 																		| time 	|
+    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact3	| https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download  | 129   | 
 
 
  @staging 
