@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.By.ByXPath;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -78,8 +79,7 @@ public class ContactListPage extends IOSPage {
 	
 	public boolean isPlayPauseButtonVisible(String contact){
 		boolean flag = false;
-		WebElement playPauseBtn = driver.findElementByXPath(String.format(IOSLocators.xpathContactListPlayPauseButton, contact));
-		flag = playPauseBtn.isDisplayed();
+		flag = DriverUtils.waitUntilElementAppears(driver, By.xpath(String.format(IOSLocators.xpathContactListPlayPauseButton, contact)));
 		return flag;
 	}
 	
@@ -187,9 +187,8 @@ public class ContactListPage extends IOSPage {
 		return new GroupChatPage(url, path);
 	}
 
-	public void waitForContactListToLoad() {
-		wait.until(ExpectedConditions.presenceOfElementLocated(By
-				.xpath(IOSLocators.xpathMyUserInContactList)));
+	public boolean waitForContactListToLoad() {
+		return DriverUtils.waitUntilElementAppears(driver, By.xpath(IOSLocators.xpathMyUserInContactList));
 	}
 
 	private WebElement findChatInContactList(String contact1, String contact2) {

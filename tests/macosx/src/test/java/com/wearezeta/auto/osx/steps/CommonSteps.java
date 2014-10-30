@@ -58,6 +58,7 @@ public class CommonSteps {
 	public void setUp() throws Exception {
 		boolean generateUsersFlag = Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class));
 		
+		OSXCommonUtils.deleteZClientLoginFromKeychain();
 		OSXCommonUtils.removeAllZClientSettingsFromDefaults();
 		
 		if (isFirstRun) {

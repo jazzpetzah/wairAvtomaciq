@@ -524,6 +524,7 @@
                 session.elementIndex++;
                 NSString *myKey = [NSString stringWithFormat:@"%d", session.elementIndex];
                 [session.elements setValue:element forKey:myKey];
+                NSLog(@"Found element with %@ = \"%@\" and registered with index %@", using, value, myKey);
                 return [self respondWithJson:[NSDictionary dictionaryWithObject:myKey forKey:@"ELEMENT"] status:kAfMStatusCodeSuccess session:sessionId];
             }
             [NSThread sleepForTimeInterval:intervalMs/1000];
@@ -576,6 +577,7 @@
                     session.elementIndex++;
                     NSString *myKey = [NSString stringWithFormat:@"%d", session.elementIndex];
                     [session.elements setValue:element forKey:myKey];
+                    NSLog(@"Found element in multiple search with %@ = \"%@\" and registered with index %@", using, value, myKey);
                     [elements addObject:[NSDictionary dictionaryWithObject:myKey forKey:@"ELEMENT"]];
                 }
                 
@@ -814,7 +816,6 @@
 	}
     
     NSString *result = [self pressEnter:element];
-    NSLog(@"%@", result);
     return [self respondWithJson:nil status:kAfMStatusCodeSuccess session: sessionId];
 }
 
@@ -866,7 +867,7 @@
 	}
     
     NSString *stringValue = [value componentsJoinedByString:@""];
-    NSLog(@"%@", stringValue);
+    NSLog(@"Setting value \"%@\" in element with index %@", stringValue, elementId);
     BOOL pressEnter = NO;
     if ([stringValue hasSuffix:@"\\n"]) {
         pressEnter = YES;

@@ -151,6 +151,7 @@ public class ConversationPage extends OSXPage {
 			} catch (InterruptedException e) {
 			}
 		}
+
 		newMessageTextArea.sendKeys(message + "\\n");
 	}
 
@@ -179,7 +180,7 @@ public class ConversationPage extends OSXPage {
 		addImageButton.click();
 	}
 	
-	public void shortcutCooseImageDialog() throws ScriptException{
+	public void shortcutChooseImageDialog() throws ScriptException{
 		final String[] scriptArr = new String[] {
 				"property bi : \"com.wearezeta.zclient.mac\"",
 				"tell application id bi",
@@ -244,7 +245,7 @@ public class ConversationPage extends OSXPage {
 		return SOUNDCLOUD_BUTTON_STATE;
 	}
 
-	public void scrollDownTilMediaBarAppears() throws Exception {
+	public void scrollDownTillMediaBarAppears() throws Exception {
 
 		NSPoint soundcloudPosition = NSPoint.fromString(soundCloudLinkButton
 				.getAttribute("AXPosition"));
@@ -268,10 +269,14 @@ public class ConversationPage extends OSXPage {
 					conversationDecrementSB = scrollButton;
 				}
 			}
+			long TIMEOUT_MINUTES = 2;
+			long startDate = new Date().getTime();
 			while (soundcloudPosition.y() < textInputPosition.y()) {
 				conversationDecrementSB.click();
 				soundcloudPosition = NSPoint.fromString(soundCloudLinkButton
 						.getAttribute("AXPosition"));
+				long endDate = new Date().getTime();
+				if (endDate - startDate > TIMEOUT_MINUTES*60*1000) break;
 			}
 		}
 	}
@@ -314,10 +319,14 @@ public class ConversationPage extends OSXPage {
 					conversationIncrementSB = scrollButton;
 				}
 			}
+			long TIMEOUT_MINUTES = 2;
+			long startDate = new Date().getTime();
 			while (lastGroupPosition.y() > textInputPosition.y()) {
 				conversationIncrementSB.click();
 				lastGroupPosition = NSPoint.fromString(lastGroup
 						.getAttribute("AXPosition"));
+				long endDate = new Date().getTime();
+				if (endDate - startDate > TIMEOUT_MINUTES*60*1000) break;
 			}
 		}
 	}

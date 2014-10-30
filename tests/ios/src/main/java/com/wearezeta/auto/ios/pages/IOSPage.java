@@ -4,6 +4,11 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
@@ -14,6 +19,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.PagesCollection;
+import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.ios.tools.IOSKeyboard;
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
@@ -194,8 +200,8 @@ public abstract class IOSPage extends BasePage {
 	}
 	
 	public void pasteStringToInput(WebElement element, String text){
+		IOSCommonUtils.copyToSystemClipboard(text);
 		DriverUtils.iOSLongTap(driver, element);
-		CommonUtils.putStringToClipboard(text);
 		clickPopupPasteButton();
 	}
 	
@@ -214,5 +220,24 @@ public abstract class IOSPage extends BasePage {
 
 	public static Object executeScript(String script) {
 		return driver.executeScript(script);
+	}
+	
+	public boolean isSimulator() throws Throwable{
+		return CommonUtils.getIsSimulatorFromConfig(IOSPage.class);
+	}
+	
+	public void cmdVscript() throws ScriptException{
+		final String[] scriptArr = new String[] {
+				"property thisapp: \"iOS Simulator\"",
+				"tell application \"System Events\"",
+				" tell process thisapp",
+				" click menu item \"Paste\" of menu \"Edit\" of menu bar 1",
+				" end tell",
+				"end tell"};
+		
+		final String script = StringUtils.join(scriptArr, "\n");
+		ScriptEngineManager mgr = new ScriptEngineManager();
+		ScriptEngine engine = mgr.getEngineByName("AppleScript");
+		engine.eval(script);
 	}
 }

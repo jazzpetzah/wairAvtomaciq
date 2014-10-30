@@ -2,7 +2,6 @@ package com.wearezeta.auto.osx.pages;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -31,7 +30,7 @@ public class LoginPage extends OSXPage {
 	private WebElement signInButton;
 
 	@FindBy(how = How.CLASS_NAME, using = OSXLocators.classNameLoginField)
-	private List<WebElement> loginField;
+	private WebElement loginField;
 
 	@FindBy(how = How.ID, using = OSXLocators.idPasswordField)
 	private WebElement passwordField;
@@ -67,12 +66,15 @@ public class LoginPage extends OSXPage {
 		OSXPage page = null;
 		boolean isLoginForm = false;
 		try {
+			DriverUtils.setImplicitWaitValue(driver, 1);
 			passwordField.getText();
 			isLoginForm = true;
 		} catch (NoSuchElementException e) {
 			isLoginForm = false;
 		} catch (NoSuchWindowException e) {
 			isLoginForm = false;
+		} finally {
+			DriverUtils.setDefaultImplicitWait(driver);
 		}
 		signInButton.click();
 		if (isLoginForm) {
@@ -88,16 +90,11 @@ public class LoginPage extends OSXPage {
 	}
 
 	public void setLogin(String login) {
-		DriverUtils.setImplicitWaitValue(driver, 1);
 		try {
-			for (WebElement loginF: loginField) {
-				loginF.sendKeys(login);
-			}
-		} catch (NoSuchElementException e) {
-			log.error("Login field not found.\n" + e.getMessage());
-		} finally {
-			DriverUtils.setDefaultImplicitWait(driver);
-		}
+			DriverUtils.waitUntilElementAppears(driver, By.id(OSXLocators.idPasswordField));
+		} catch (NoSuchElementException e) { }
+		viewPager.click();
+		OSXCommonUtils.sendTextIntoFocusedElement(driver, login);
 	}
 
 	public String getPassword() {

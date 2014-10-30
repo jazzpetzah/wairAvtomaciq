@@ -1,5 +1,7 @@
 package com.wearezeta.auto.ios.tools;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.io.IOException;
 
@@ -57,5 +59,10 @@ public class IOSCommonUtils {
 				"/bin/bash",
 				"-c",
 				"instruments -t /Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/Resources/templates/Activity\\ Monitor.tracetemplate -w " + deviceID});
+	}
+	
+	public static void copyToSystemClipboard(String text){
+		StringSelection str = new StringSelection(text);
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(str, null);
 	}
 }

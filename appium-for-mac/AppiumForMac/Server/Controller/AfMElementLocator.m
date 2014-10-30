@@ -122,8 +122,9 @@
                 int endX = startX + mainWindow.AXSize.pointValue.x+200;
                 int endY = startY + mainWindow.AXSize.pointValue.y+200;
                 
-                for (int i = startX; i < endX; i+=14) {
-                    for (int j = startY; j < endY; j+=14) {
+                
+                for (int j = startY; j < endY; j+=14) {
+                    for (int i = startX; i < endX; i+=14) {
                         NSError *error = nil;
                         PFUIElement *newElement = [PFUIElement elementAtPoint:NSMakePoint(i, j) withDelegate:nil error:&error];
                         if ([self.value caseInsensitiveCompare:newElement.AXRole] == NSOrderedSame) {
@@ -266,8 +267,8 @@
                 int endY = startY + mainWindow.AXSize.pointValue.y+200;
                 
                 NSMutableArray *rects = [NSMutableArray new];
-                for (int i = startX; i < endX; i+=14) {
-                    for (int j = startY; j < endY; j+=14) {
+                for (int j = startY; j < endY; j+=14) {
+                    for (int i = startX; i < endX; i+=14) {
                         NSError *error = nil;
                         PFUIElement *newElement = [PFUIElement elementAtPoint:NSMakePoint(i, j) withDelegate:nil error:&error];
                         

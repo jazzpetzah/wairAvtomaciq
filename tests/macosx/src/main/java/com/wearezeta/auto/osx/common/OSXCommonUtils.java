@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import org.apache.log4j.Logger;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.dd.plist.NSDictionary;
 import com.dd.plist.PropertyListParser;
@@ -62,6 +63,15 @@ public class OSXCommonUtils extends CommonUtils {
 		return result;
 	}
 	
+	public static void deleteZClientLoginFromKeychain() throws Exception {
+		String command = "security delete-generic-password -s \"zeta dev-nginz-https.zinfra.io\"";
+
+		if (!getOsName().contains(OS_NAME_WINDOWS)) {
+			executeOsXCommand(new String[] { "/bin/bash", "-c", command });
+		}
+		
+	}
+	
 	public static void removeAllZClientSettingsFromDefaults() throws Exception {
 		String command = "defaults delete com.wearezeta.zclient.mac";
 
@@ -88,6 +98,11 @@ public class OSXCommonUtils extends CommonUtils {
 		return new BuildVersionInfo(clientBuild, zmessagingBuild);
 	}
 
+	public static void sendTextIntoFocusedElement(RemoteWebDriver driver, String text) {
+		driver.executeScript(String.format("tell application \"ZClient\"\nactivate\nend tell\n" +
+				"tell application \"System Events\"\nkeystroke \"%s\"\nend tell", text));
+	}
+	
 	public static ClientDeviceInfo readDeviceInfo() throws Exception {
 		String osName = "Mac OS X";
 		String osVersion = getOsXVersion();
@@ -101,5 +116,12 @@ public class OSXCommonUtils extends CommonUtils {
 	public static String getOsxClientInfoPlistFromConfig(Class<?> c)
 			throws IOException {
 		return CommonUtils.getValueFromConfig(c, "osxClientInfoPlist");
+	}
+	
+	public static void startActivityMonitoringInstrument() throws Exception{
+		CommonUtils.executeOsXCommand(new String[] {
+				"/bin/bash",
+				"-c",
+				"instruments -t /Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/Resources/templates/Activity\\ Monitor.tracetemplate"});
 	}
 }

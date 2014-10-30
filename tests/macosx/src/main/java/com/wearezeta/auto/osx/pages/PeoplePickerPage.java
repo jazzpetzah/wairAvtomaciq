@@ -20,13 +20,13 @@ public class PeoplePickerPage extends OSXPage {
 	private WebElement mainWindow;
 
 //	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerDismissButton)
-	private WebElement cancelButton = findCancelButton();
+	private WebElement cancelButton;
 	
 	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerAddToConversationButton)
 	private WebElement addToConversationButton;
 	
 //	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerSearchField)
-	private WebElement searchField = findSearchField();
+	private WebElement searchField;
 	
 	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerSearchResultEntry)
 	private List<WebElement> searchResults;

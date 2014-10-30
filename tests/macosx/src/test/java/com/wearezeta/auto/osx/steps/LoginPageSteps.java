@@ -42,9 +42,9 @@ public class LoginPageSteps {
 		}
 		
 		log.debug("Starting to Sign in using login " + login + " and password " + password);
+
 		try {
 			LoginPage loginPage = CommonSteps.senderPages.getLoginPage();
-			Assert.assertNotNull(loginPage.isVisible());
 			loginPage.SignIn();
 			loginPage.setLogin(login);
 			loginPage.setPassword(password);

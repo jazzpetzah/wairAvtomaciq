@@ -260,7 +260,7 @@ public class ConversationPageSteps {
 	 
 	 @When("^I scroll media out of sight till media bar appears$")
 	 public void WhenIScrollMediaOutOfSightUntilMediaBarAppears() throws Throwable {
-		 CommonSteps.senderPages.getConversationPage().scrollDownTilMediaBarAppears();
+		 CommonSteps.senderPages.getConversationPage().scrollDownTillMediaBarAppears();
 	 }
 
 	 @When("^I pause playing media in media bar$")
