@@ -78,7 +78,7 @@ public class OtherUserPersonalInfoPageSteps {
 		}
 		
 		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage.isOtherUserNameVisible(contact));
-		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage.isOtherUserMailVisible(email));
+		//Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage.isOtherUserMailVisible(email));
 	}
 	
 	@Then("^User info should be shown with Block button$")

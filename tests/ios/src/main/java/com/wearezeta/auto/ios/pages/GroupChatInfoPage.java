@@ -69,6 +69,7 @@ public class GroupChatInfoPage extends IOSPage {
 	}
 	
 	public void changeConversationName(String name){
+		conversationNameTextField.clear();
 		conversationNameTextField.sendKeys(name + "\n");
 	}
 
