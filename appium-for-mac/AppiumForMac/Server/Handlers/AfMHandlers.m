@@ -495,7 +495,6 @@
 // POST /session/:sessionId/element
 -(AppiumMacHTTPJSONResponse*) postElement:(NSString*)path data:(NSData*)postData
 {
-    TICK;
     NSString *sessionId = [Utility getSessionIDFromPath:path];
     AfMSessionController *session = [self controllerForSession:sessionId];
     NSDictionary *postParams = [self dictionaryFromPostData:postData];
@@ -525,16 +524,13 @@
         do
         {
             NSLog(@"Looking for element with %@ = \"%@\". Instance #%d", using, value, count++);
-            TICK;
             PFUIElement *element = [locator findUsingBaseElement:nil statusCode:&statusCode];
-            TOCK;
             if (element != nil)
             {
                 session.elementIndex++;
                 NSString *myKey = [NSString stringWithFormat:@"%d", session.elementIndex];
                 [session.elements setValue:element forKey:myKey];
                 NSLog(@"Found element with %@ = \"%@\" and registered with index %@", using, value, myKey);
-                TOCK;
                 return [self respondWithJson:[NSDictionary dictionaryWithObject:myKey forKey:@"ELEMENT"] status:kAfMStatusCodeSuccess session:sessionId];
             }
             [NSThread sleepForTimeInterval:intervalMs/1000];
@@ -542,7 +538,6 @@
 	}
     
     NSLog(@"Error: Can't find element with %@ = \"%@\". Status code: %d", using, value, statusCode);
-    TOCK;
 	return [self respondWithJsonError:statusCode session:sessionId];
 }
 
