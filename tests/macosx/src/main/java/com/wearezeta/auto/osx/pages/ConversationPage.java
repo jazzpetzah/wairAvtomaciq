@@ -260,7 +260,7 @@ public class ConversationPage extends OSXPage {
 
 		if (soundcloudPosition.y() < textInputPosition.y()) {
 			WebElement scrollBar = scrollArea.findElement(By
-					.xpath("//AXScrollBar"));
+					.xpath("//AXScrollBar[2]"));
 			List<WebElement> scrollButtons = scrollBar.findElements(By
 					.xpath("//AXButton"));
 			for (WebElement scrollButton : scrollButtons) {
@@ -310,7 +310,7 @@ public class ConversationPage extends OSXPage {
 
 		if (lastGroupPosition.y() > textInputPosition.y()) {
 			WebElement scrollBar = scrollArea.findElement(By
-					.xpath("//AXScrollBar"));
+					.xpath("//AXScrollBar[2]"));
 			List<WebElement> scrollButtons = scrollBar.findElements(By
 					.xpath("//AXButton"));
 			for (WebElement scrollButton : scrollButtons) {
