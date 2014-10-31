@@ -76,17 +76,18 @@ public class ZetaSender extends Thread {
 		if (sendingStartDate == null) {
 			sendingStartDate = new Date();
 		}
+		
 		try {
-		if (parent.getIsSendUsingBackend()) {
-			sendTextMessageBackend(SyncEngineUtil.CHAT_NAME, message);
-		}
-		else if (platform().equals(CommonUtils.PLATFORM_NAME_ANDROID)) {
-			sendTextMessageAndroid(message);
-		} else if (platform().equals(CommonUtils.PLATFORM_NAME_OSX)) {
-			sendTextMessageOsx(message);
-		} else if (platform().equals(CommonUtils.PLATFORM_NAME_IOS)) {
-			sendTextMessageIos(message);
-		}
+			if (parent.getIsSendUsingBackend()) {
+				sendTextMessageBackend(SyncEngineUtil.CHAT_NAME, message);
+			}
+			else if (platform().equals(CommonUtils.PLATFORM_NAME_ANDROID)) {
+				sendTextMessageAndroid(message);
+			} else if (platform().equals(CommonUtils.PLATFORM_NAME_OSX)) {
+				sendTextMessageOsx(message);
+			} else if (platform().equals(CommonUtils.PLATFORM_NAME_IOS)) {
+				sendTextMessageIos(message);
+			}
 		} catch (Throwable e) {
 			//TODO: register error
 			log.error(e.getMessage());

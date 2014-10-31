@@ -9,6 +9,9 @@
 #import "AfMElementLocator.h"
 #import "AfMStatusCodes.h"
 
+#define TICK   NSDate *startTime = [NSDate date]
+#define TOCK   NSLog(@"%s(%d) Time: %f", __func__, __LINE__, -[startTime timeIntervalSinceNow])
+
 @implementation AfMElementLocator
 
 -(id) initWithSession:(AfMSessionController*)session strategy:(AppiumMacLocatoryStrategy)strategy value:(NSString*)value
@@ -85,10 +88,12 @@
 {
 	if (self.strategy == AppiumMacLocatoryStrategyXPath)
 	{
+        TICK;
 		NSMutableDictionary *pathMap = [NSMutableDictionary new];
 		GDataXMLDocument *doc = [self.session xmlPageSourceFromElement:baseElement pathMap:pathMap];
 		NSError *error;
 		NSArray *matches = [doc nodesForXPath:self.value error:&error];
+        TOCK;
 		if (error != nil)
 		{
 			*statusCode = kAfMStatusCodeXPathLookupError;
@@ -122,8 +127,10 @@
                 int endX = startX + mainWindow.AXSize.pointValue.x+200;
                 int endY = startY + mainWindow.AXSize.pointValue.y+200;
                 
-                for (int i = startX; i < endX; i+=14) {
-                    for (int j = startY; j < endY; j+=14) {
+                
+                for (int j = startY; j < endY; j+=15) {
+                    for (int i = startX; i < endX; i+=15) {
+
                         NSError *error = nil;
                         PFUIElement *newElement = [PFUIElement elementAtPoint:NSMakePoint(i, j) withDelegate:nil error:&error];
                         if ([self.value caseInsensitiveCompare:newElement.AXRole] == NSOrderedSame) {
@@ -266,8 +273,8 @@
                 int endY = startY + mainWindow.AXSize.pointValue.y+200;
                 
                 NSMutableArray *rects = [NSMutableArray new];
-                for (int i = startX; i < endX; i+=14) {
-                    for (int j = startY; j < endY; j+=14) {
+                for (int j = startY; j < endY; j+=15) {
+                    for (int i = startX; i < endX; i+=15) {
                         NSError *error = nil;
                         PFUIElement *newElement = [PFUIElement elementAtPoint:NSMakePoint(i, j) withDelegate:nil error:&error];
                         

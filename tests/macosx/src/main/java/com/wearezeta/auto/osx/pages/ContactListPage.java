@@ -1,5 +1,6 @@
 package com.wearezeta.auto.osx.pages;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -44,10 +45,13 @@ public class ContactListPage extends OSXPage {
 	private WebElement showArchivedButton;
 
 	@FindBy(how = How.ID, using = OSXLocators.idShareContactsLaterButton)
-	private List<WebElement> shareContactsLaterButton;
+	private WebElement shareContactsLaterButton;
 	
 	@FindBy(how = How.ID, using = OSXLocators.idMainWindowMinimizeButton)
 	private WebElement minimizeWindowButton;
+	
+	@FindBy(how = How.ID, using = OSXLocators.idMainWindowCloseButton)
+	private WebElement closeWindowButton;
 	
 	public ContactListPage(String URL, String path) throws MalformedURLException {
 		super(URL, path);
@@ -65,20 +69,14 @@ public class ContactListPage extends OSXPage {
 		minimizeWindowButton.click();
 	}
 	
-	public void restoreZClient() throws InterruptedException, ScriptException{
+	public void restoreZClient() throws InterruptedException, ScriptException, IOException {
 		final String[] scriptArr = new String[] {
 				"property bi : \"com.wearezeta.zclient.mac\"",
 				"property thisapp: \"ZClient\"",
 				"tell application id bi to activate",
 				"tell application \"System Events\"",
 				" tell process thisapp",
-				" tell menu bar 1",
-				" tell menu bar item \"Window\"",
-				" tell menu \"Window\"",
-				" click menu item \"ZClient\"",
-				" end tell",
-				" end tell",
-				" end tell",
+				" click last menu item of menu \"Window\" of menu bar 1",
 				" end tell",
 				"end tell"};
 		
@@ -204,11 +202,17 @@ public class ContactListPage extends OSXPage {
 	}
 	
 	public void pressLaterButton() throws Exception {
-		if (shareContactsLaterButton.size() > 0) {
-			shareContactsLaterButton.get(0).click();
+		int count = 0;
+		boolean isFound = false;
+		do {
+			try {
+				shareContactsLaterButton.click();
 
-			DriverUtils.waitUntilElementDissapear(driver, By.xpath(OSXLocators.idShareContactsLaterButton));
-		}
+				DriverUtils.waitUntilElementDissapear(driver, By.xpath(OSXLocators.idShareContactsLaterButton));
+				isFound = true;
+			} catch (NoSuchElementException e) { }
+			count++;
+		} while (count < 10 && !isFound);
 	}
 	
 	public int numberOfContacts() {

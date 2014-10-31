@@ -1,5 +1,7 @@
 package com.wearezeta.auto.ios.tools;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.io.IOException;
 
@@ -35,9 +37,9 @@ public class IOSCommonUtils {
 	public static ClientDeviceInfo readDeviceInfo() {
 		String os = "iOS";
 		String osBuild = (String) IOSPage.executeScript("UIATarget.localTarget().systemVersion();");
-		String deviceName = (String) IOSPage.executeScript("UIATarget.localTarget().name();");
+		String deviceName = (String) IOSPage.executeScript("UIATarget.localTarget().model();");
 		String gsmNetworkType = "";
-		String isWifiEnabled = "no info";
+		Boolean isWifiEnabled = null;
 		
 		return new ClientDeviceInfo(os, osBuild, deviceName, gsmNetworkType, isWifiEnabled);
 	}
@@ -57,5 +59,10 @@ public class IOSCommonUtils {
 				"/bin/bash",
 				"-c",
 				"instruments -t /Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/Resources/templates/Activity\\ Monitor.tracetemplate -w " + deviceID});
+	}
+	
+	public static void copyToSystemClipboard(String text){
+		StringSelection str = new StringSelection(text);
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(str, null);
 	}
 }

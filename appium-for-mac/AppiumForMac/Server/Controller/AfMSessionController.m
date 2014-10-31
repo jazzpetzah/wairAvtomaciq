@@ -9,6 +9,8 @@
 #import "AfMSessionController.h"
 #import "Utility.h"
 
+#define TICK   NSDate *startTime = [NSDate date]
+#define TOCK   NSLog(@"%s(%d) Time: %f", __func__, __LINE__, -[startTime timeIntervalSinceNow])
 
 @interface AfMSessionController()
 @property NSString *_currentApplicationName;
@@ -281,6 +283,7 @@
 
 -(void)xmlPageSourceHelperFromElement:(PFUIElement*)root element:(GDataXMLElement*) element path:(NSString*)path pathMap:(NSMutableDictionary*)pathMap
 {
+    TICK;
 	[element addAttribute:[GDataXMLElement attributeWithName:@"AXRole" stringValue:root.AXRole]];
 	[element addAttribute:[GDataXMLElement attributeWithName:@"AXTitle" stringValue:root.AXTitle]];
 	[element addAttribute:[GDataXMLElement attributeWithName:@"AXDescription" stringValue:root.AXDescription]];
@@ -336,6 +339,7 @@
 		[self xmlPageSourceHelperFromElement:child element:childElement path:[path stringByAppendingFormat:@"/*[%d]", i] pathMap:pathMap];
 		[element addChild:childElement];
     }
+    TOCK;
 }
 
 @end

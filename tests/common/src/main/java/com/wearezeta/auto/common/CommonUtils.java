@@ -99,7 +99,10 @@ public class CommonUtils {
 		while (( s = br.readLine() ) != null ) {
 			sb.append("\t" + s + "\n");
 		}
-		log.debug(sb.toString());
+		String output = sb.toString();
+		if (!output.trim().isEmpty()) {
+			log.debug(output);
+		}
 		stream.close();
 	}
 
@@ -544,13 +547,6 @@ public class CommonUtils {
 	public static String getAndroidDeviceNameFromConfig(Class<?> c)
 			throws IOException {
 		return getValueFromConfig(c, "deviceName");
-	}
-
-	public static void putStringToClipboard(String data) {
-		StringSelection stringSelection;
-		stringSelection = new StringSelection(data);
-		Clipboard clipboard = new Clipboard("iOS simulator clipboard");
-		clipboard.setContents(stringSelection, stringSelection);
 	}
 
 	public static void generatePerformanceUser()

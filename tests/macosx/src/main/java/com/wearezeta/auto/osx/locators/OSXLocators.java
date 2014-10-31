@@ -56,6 +56,7 @@ public final class OSXLocators {
 	public static final String YOU_HOT_KNOCKED_MESSAGE = "YOU HOT KNOCKED";
 	public static final String YOU_ADDED_MESSAGE = "YOU ADDED";
 	public static final String YOU_REMOVED_MESSAGE = "YOU REMOVED";
+	public static final String CONNECTED_TO_MESSAGE = "CONNECTED TO";
 	public static final String USER_ADDED_MESSAGE_FORMAT = " ADDED ";
 	
 	public static final String idChooseImageCancelButton = "_NS:53";
@@ -145,4 +146,6 @@ public final class OSXLocators {
 	public static final String idShareContactsLaterButton = "ConfirmationViewCancelButton";
 	
 	public static final String idMainWindowMinimizeButton = "MainWindowMinimizeButton";
+	
+	public static final String idMainWindowCloseButton = "MainWindowCloseButton";
 }

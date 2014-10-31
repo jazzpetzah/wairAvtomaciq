@@ -27,6 +27,7 @@ import gherkin.formatter.model.Result;
 import gherkin.formatter.model.Scenario;
 import gherkin.formatter.model.ScenarioOutline;
 import gherkin.formatter.model.Step;
+import gherkin.formatter.model.Tag;
 
 public class ZetaFormatter implements Formatter, Reporter {
 	
@@ -34,10 +35,17 @@ public class ZetaFormatter implements Formatter, Reporter {
 	
 	private String feature = "";
 	private String scenario = "";
+	private String scope = "Unknown";
 	private Queue<String> step = new LinkedList<String>();
 
 	private long startDate;
 	private long endDate;
+	
+	private static final String LOGIN = "smoketester+bot@wearezeta.com";
+	private static final String PASSWORD = "aqa123456";
+	private static final String CONTACT_ANDROID = "Android Smoke Feedback";
+	private static final String CONTACT_IOS = "iOS Smoke Feedback";
+	private static final String CONTACT_OSX = "SmokeAutomation";
 	
 	@Override
 	public void background(Background arg0) {
@@ -74,6 +82,20 @@ public class ZetaFormatter implements Formatter, Reporter {
 	@Override
 	public void scenario(Scenario arg0) {
 		scenario = arg0.getName();
+		for (Tag t : arg0.getTags()) {
+			if(t.getName().equals("@smoke")) {
+				scope = "Smoke Test";
+			}
+			
+			if(t.getName().equals("@regression")) {
+				scope = "Regression Test";
+			}
+			
+			if(t.getName().equals("@staging")) {
+				scope = "Staging Test";
+			}
+		}
+
 		System.out.println("\n\nScenario: " + scenario);
 	}
 
@@ -128,6 +150,17 @@ public class ZetaFormatter implements Formatter, Reporter {
 		endDate = new Date().getTime();
 		String currentStep = step.poll();
 		System.out.println(currentStep + " (status: " + arg0.getStatus() + ", time: " + (endDate-startDate) + "ms)");
+		//send chat notification
+		if (arg0.getStatus().equals("failed") && scope.equals("Smoke Test")) {
+			try {
+				sendNotification(driver.getCapabilities().getCapability("platformName") + " " + scope + ", Scenario: " + 
+						scenario + ", Step: " + currentStep + ": failed");
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+			}
+		}
+		//take screenshot
 		if (driver != null) {
 			try {
 				BufferedImage image = DriverUtils.takeScreenshot((ZetaDriver) driver);
@@ -159,6 +192,23 @@ public class ZetaFormatter implements Formatter, Reporter {
 	@Override
 	public void write(String arg0) {
 		// TODO Auto-generated method stub
+		
+	}
+	
+	private void sendNotification(String message) throws Exception {
+		
+		ClientUser yourСontact = new ClientUser(LOGIN, PASSWORD, "AutomationBot", UsersState.AllContactsConnected);
+		switch (driver.getCapabilities().getCapability("platformName").toString()) {
+			case "Android":
+				BackEndREST.sendDialogMessageByChatName(yourСontact, CONTACT_ANDROID, message);
+				break;
+			case "Mac":
+				BackEndREST.sendDialogMessageByChatName(yourСontact, CONTACT_OSX, message);
+				break;
+			case "iOS":
+				BackEndREST.sendDialogMessageByChatName(yourСontact, CONTACT_IOS, message);
+				break;
+		}
 		
 	}
 

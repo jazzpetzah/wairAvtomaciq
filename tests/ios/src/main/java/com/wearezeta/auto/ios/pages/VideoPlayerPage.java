@@ -48,7 +48,7 @@ public class VideoPlayerPage extends IOSPage{
 	}
 	
 	public boolean isVideoPlayerPageOpened() {
-		return DriverUtils.isElementDisplayed(videoPlayerMainWindow);
+		return DriverUtils.waitUntilElementAppears(driver, By.xpath(IOSLocators.xpathVideoMainPage));
 	}
 	
 	public DialogPage clickVideoDoneButton() throws IOException{

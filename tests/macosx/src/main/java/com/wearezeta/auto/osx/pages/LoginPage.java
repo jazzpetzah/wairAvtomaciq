@@ -2,6 +2,7 @@ package com.wearezeta.auto.osx.pages;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -66,12 +67,15 @@ public class LoginPage extends OSXPage {
 		OSXPage page = null;
 		boolean isLoginForm = false;
 		try {
-			loginField.getText();
+			DriverUtils.setImplicitWaitValue(driver, 1);
+			passwordField.getText();
 			isLoginForm = true;
 		} catch (NoSuchElementException e) {
 			isLoginForm = false;
 		} catch (NoSuchWindowException e) {
 			isLoginForm = false;
+		} finally {
+			DriverUtils.setDefaultImplicitWait(driver);
 		}
 		signInButton.click();
 		if (isLoginForm) {
@@ -87,17 +91,11 @@ public class LoginPage extends OSXPage {
 	}
 
 	public void setLogin(String login) {
-		DriverUtils.setImplicitWaitValue(driver, 1);
 		try {
-			loginField.sendKeys(login);
-			if (loginField.getText().isEmpty()) {
-				loginField.sendKeys(login);
-			}
-		} catch (NoSuchElementException e) {
-			log.error("Login field not found.\n" + e.getMessage());
-		} finally {
-			DriverUtils.setDefaultImplicitWait(driver);
-		}
+			DriverUtils.waitUntilElementAppears(driver, By.id(OSXLocators.idPasswordField));
+		} catch (NoSuchElementException e) { }
+		viewPager.click();
+		OSXCommonUtils.sendTextIntoFocusedElement(driver, login);
 	}
 
 	public String getPassword() {
@@ -159,6 +157,7 @@ public class LoginPage extends OSXPage {
 	}
 	
 	public void sendProblemReportIfFound() {
+		long startDate = new Date().getTime();
 		DriverUtils.setImplicitWaitValue(driver, 1);
 		boolean isProblemReported = false;
 		try {
@@ -171,6 +170,8 @@ public class LoginPage extends OSXPage {
 			}
 			DriverUtils.setDefaultImplicitWait(driver);
 		}
+		long endDate = new Date().getTime();
+		log.debug("Sending problem report took " + (endDate - startDate) + "ms");
 	}
 	
 	public RemoteWebDriver getDriver() {

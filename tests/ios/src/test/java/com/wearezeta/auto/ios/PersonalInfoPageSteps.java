@@ -77,9 +77,7 @@ public class PersonalInfoPageSteps {
 	public void IReturnToPersonalPage() throws Throwable {
 		
 		PagesCollection.personalInfoPage.tapOnPersonalPage();
-		Thread.sleep(2000);
-		PagesCollection.personalInfoPage.tapOnPersonalPage();
-		Thread.sleep(2000);
+		Thread.sleep(4000);
 		referenceImage = PagesCollection.personalInfoPage.takeScreenshot();
 		PagesCollection.personalInfoPage.tapOnPersonalPage();
 

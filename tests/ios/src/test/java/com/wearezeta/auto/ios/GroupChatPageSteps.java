@@ -46,7 +46,7 @@ public class GroupChatPageSteps {
 	@Then("^I can see (.*) Have Left$")
 	public void ICanSeeYouHaveLeft(String name) throws IOException{
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
-		Assert.assertTrue(PagesCollection.groupChatPage.isYouHaveLeftVisible(name));
+		Assert.assertTrue(PagesCollection.groupChatPage.isYouHaveLeftVisible());
 	}
 
 	@Then("^I see that (.*) is not present on group chat page$")

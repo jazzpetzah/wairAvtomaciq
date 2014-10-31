@@ -62,9 +62,9 @@ public class GroupChatPage extends DialogPage {
 		return newGroupConversationNameChangeTextField.getText().contains(groupChatName);
 	}
 	
-	public boolean isYouHaveLeftVisible(String name)
+	public boolean isYouHaveLeftVisible()
 	{
-		return driver.findElement(By.name(name.toUpperCase() + " HAS LEFT")).isDisplayed();
+		return youLeft.isDisplayed();
 	}
 	
 	public boolean isUserAddedContactVisible(String user, String contact){

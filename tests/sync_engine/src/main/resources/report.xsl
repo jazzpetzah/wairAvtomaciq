@@ -314,8 +314,21 @@
 												<li>
 													<h3 style="margin-bottom: 0px;"><xsl:value-of select="loggedOnPlatform" />:</h3>
 						
-													<ul><li><b>Client build</b> - &#160;<xsl:value-of select="buildVersion/clientBuildNumber" /></li>
-													<li><b>zMessaging build</b> - &#160;<xsl:value-of select="buildVersion/zmessagingBuildNumber" /></li></ul>
+													<ul>
+													<xsl:if test="loggedOnPlatform != 'Mac'"><li><b>Device</b> -&#160;<xsl:value-of select="deviceData/deviceName" /></li></xsl:if>
+													<li><b>OS version</b> -&#160;<xsl:value-of select="deviceData/operatingSystemName" />&#160;<xsl:value-of select="deviceData/operatingSystemBuild" /></li>
+													<xsl:if test="loggedOnPlatform = 'Android'">
+													<li><b>Network type</b> -
+														<xsl:choose>
+														<xsl:when test="deviceData/isWifiEnabled = 'true'">
+														WiFi&#160;<xsl:choose><xsl:when test="loggedOnPlatform != 'Mac'">(Mobile network type: <xsl:value-of select="deviceData/gsmNetworkType" />)</xsl:when>
+														</xsl:choose>
+														</xsl:when>
+														<xsl:otherwise><xsl:value-of select="deviceData/gsmNetworkType" />
+														</xsl:otherwise>
+														</xsl:choose></li></xsl:if>
+													<li><b>Client</b> -&#160;<xsl:value-of select="buildVersion/clientBuildNumber" />&#160;(<i>SyncEngine</i> - <xsl:value-of select="buildVersion/zmessagingBuildNumber" />)</li>
+													</ul>
 												</li>
 											</xsl:when>
 											<xsl:otherwise>

@@ -1,7 +1,6 @@
 Feature: Change Profile Picture
 
-  #Muted till new sync engine client stabilization
-  @mute @smoke @id344
+  @smoke @id344
   Scenario Outline: Change your profile picture
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
