@@ -382,7 +382,7 @@ public final class IOSLocators {
 	//Tutorial
 	////////////////
 	
-	public static final String nameTutorialOKButton = "OK";
+	public static final String nameTutorialOKButton = "Pull down to start";
 	public static final String nameTutorialView = "ZClientNotificationWindow";
 	
 	//UIAutomation locators
