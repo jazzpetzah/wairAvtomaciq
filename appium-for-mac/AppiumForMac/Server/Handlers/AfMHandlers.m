@@ -525,7 +525,9 @@
         do
         {
             NSLog(@"Looking for element with %@ = \"%@\". Instance #%d", using, value, count++);
+            TICK;
             PFUIElement *element = [locator findUsingBaseElement:nil statusCode:&statusCode];
+            TOCK;
             if (element != nil)
             {
                 session.elementIndex++;

@@ -60,7 +60,9 @@
 			{
 				return NO;
 			}
+            TICK;
 			NSString *identifier = [element valueForAttribute:@"AXIdentifier"];
+            TOCK;
 			return identifier != nil && [self.value isEqualToString:identifier];
 		}
 		case AppiumMacLocatoryStrategyName:
@@ -88,14 +90,10 @@
 {
 	if (self.strategy == AppiumMacLocatoryStrategyXPath)
 	{
-        TICK;
 		NSMutableDictionary *pathMap = [NSMutableDictionary new];
 		GDataXMLDocument *doc = [self.session xmlPageSourceFromElement:baseElement pathMap:pathMap];
-        TOCK;
 		NSError *error;
-        startTime = [NSDate date];
 		NSArray *matches = [doc nodesForXPath:self.value error:&error];
-        TOCK;
 		if (error != nil)
 		{
 			*statusCode = kAfMStatusCodeXPathLookupError;
