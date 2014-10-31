@@ -9,9 +9,6 @@
 #import "AfMElementLocator.h"
 #import "AfMStatusCodes.h"
 
-#define TICK   NSDate *startTime = [NSDate date]
-#define TOCK   NSLog(@"%s(%d) Time: %f", __func__, __LINE__, -[startTime timeIntervalSinceNow])
-
 @implementation AfMElementLocator
 
 -(id) initWithSession:(AfMSessionController*)session strategy:(AppiumMacLocatoryStrategy)strategy value:(NSString*)value
@@ -207,10 +204,8 @@
 	// check the children
     if (elementsToSearch != nil)
     {
-        TICK;
         for(PFUIElement* childElement in elementsToSearch)
         {
-            TICK;
             // check the child
             PFUIElement *childResult = [self findUsingBaseElement:childElement statusCode:statusCode];
 
@@ -220,9 +215,7 @@
 				*statusCode = kAfMStatusCodeSuccess;
                 return childResult;
             }
-            TOCK;
         }
-        TOCK;
     }
     // return nil because there was no match
 	*statusCode = kAfMStatusCodeNoSuchElement;
@@ -363,15 +356,11 @@
 	// check the children
     if (elementsToSearch != nil)
     {
-        TICK;
         for(PFUIElement* childElement in elementsToSearch)
         {
-            TICK;
             // check the child
             [self findAllUsingBaseElement:childElement results:results statusCode:statusCode];
-            TOCK;
         }
-        TOCK;
     }
 }
 

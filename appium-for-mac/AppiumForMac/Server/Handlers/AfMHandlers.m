@@ -15,9 +15,6 @@
 #import "Utility.h"
 #import <PFAssistive/PFAssistive.h>
 
-#define TICK   NSDate *startTime = [NSDate date]
-#define TOCK   NSLog(@"%s(%d) Time: %f", __func__, __LINE__, -[startTime timeIntervalSinceNow])
-
 @implementation AfMHandlers
 - (id)init
 {
@@ -726,7 +723,6 @@
 // POST /session/:sessionId/element/:id/click
 -(AppiumMacHTTPJSONResponse*) postElementClick:(NSString*)path
 {
-    TICK;
     NSString *sessionId = [Utility getSessionIDFromPath:path];
     AfMSessionController *session = [self controllerForSession:sessionId];
     NSString *elementId = [Utility getElementIDFromPath:path];
@@ -802,7 +798,6 @@
         CFRelease(click1_move);
         result = YES;
     }
-    TOCK;
     return result ? [self respondWithJson:nil status:kAfMStatusCodeSuccess session: sessionId] :
 	[self respondWithJsonError:kAfMStatusCodeUnknownError session:sessionId];
 }
