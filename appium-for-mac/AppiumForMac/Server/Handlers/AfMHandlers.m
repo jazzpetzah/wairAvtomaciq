@@ -15,6 +15,9 @@
 #import "Utility.h"
 #import <PFAssistive/PFAssistive.h>
 
+#define TICK   NSDate *startTime = [NSDate date]
+#define TOCK   NSLog(@"%s(%d) Time: %f", __func__, __LINE__, -[startTime timeIntervalSinceNow])
+
 @implementation AfMHandlers
 - (id)init
 {
@@ -492,6 +495,7 @@
 // POST /session/:sessionId/element
 -(AppiumMacHTTPJSONResponse*) postElement:(NSString*)path data:(NSData*)postData
 {
+    TICK;
     NSString *sessionId = [Utility getSessionIDFromPath:path];
     AfMSessionController *session = [self controllerForSession:sessionId];
     NSDictionary *postParams = [self dictionaryFromPostData:postData];
@@ -514,10 +518,13 @@
     NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
     [offsetComponents setSecond:session.implicitWaitMs/1000];
     NSDate *endDate = [gregorian dateByAddingComponents:offsetComponents toDate: [NSDate date] options:0];
+    NSLog(@"Starting to look for element with %@ = \"%@\"", using, value);
 	if (locator != nil)
 	{
+        int count = 1;
         do
         {
+            NSLog(@"Looking for element with %@ = \"%@\". Instance #%d", using, value, count++);
             PFUIElement *element = [locator findUsingBaseElement:nil statusCode:&statusCode];
             if (element != nil)
             {
@@ -525,12 +532,15 @@
                 NSString *myKey = [NSString stringWithFormat:@"%d", session.elementIndex];
                 [session.elements setValue:element forKey:myKey];
                 NSLog(@"Found element with %@ = \"%@\" and registered with index %@", using, value, myKey);
+                TOCK;
                 return [self respondWithJson:[NSDictionary dictionaryWithObject:myKey forKey:@"ELEMENT"] status:kAfMStatusCodeSuccess session:sessionId];
             }
             [NSThread sleepForTimeInterval:intervalMs/1000];
         } while ([endDate compare:[NSDate date]] == NSOrderedDescending);
 	}
-	
+    
+    NSLog(@"Error: Can't find element with %@ = \"%@\". Status code: %d", using, value, statusCode);
+    TOCK;
 	return [self respondWithJsonError:statusCode session:sessionId];
 }
 
@@ -719,10 +729,12 @@
 // POST /session/:sessionId/element/:id/click
 -(AppiumMacHTTPJSONResponse*) postElementClick:(NSString*)path
 {
+    TICK;
     NSString *sessionId = [Utility getSessionIDFromPath:path];
     AfMSessionController *session = [self controllerForSession:sessionId];
     NSString *elementId = [Utility getElementIDFromPath:path];
-
+    
+    NSLog(@"Clicking on element with id %@", elementId);
 	// get the element
     PFUIElement *element = [session.elements objectForKey:elementId];
 
@@ -793,7 +805,7 @@
         CFRelease(click1_move);
         result = YES;
     }
-    
+    TOCK;
     return result ? [self respondWithJson:nil status:kAfMStatusCodeSuccess session: sessionId] :
 	[self respondWithJsonError:kAfMStatusCodeUnknownError session:sessionId];
 }
