@@ -63,27 +63,13 @@ public class LoginPage extends OSXPage {
 		return page != null;
 	}
 	
-	public OSXPage SignIn() throws IOException {
-		OSXPage page = null;
-		boolean isLoginForm = false;
-		try {
-			DriverUtils.setImplicitWaitValue(driver, 1);
-			passwordField.getText();
-			isLoginForm = true;
-		} catch (NoSuchElementException e) {
-			isLoginForm = false;
-		} catch (NoSuchWindowException e) {
-			isLoginForm = false;
-		} finally {
-			DriverUtils.setDefaultImplicitWait(driver);
-		}
+	public void startSignIn() {
 		signInButton.click();
-		if (isLoginForm) {
-			page = new ContactListPage(url, path);
-		} else {
-			page = this;
-		}
-		return page;
+	}
+	
+	public ContactListPage confirmSignIn() throws IOException {
+		signInButton.click();
+		return new ContactListPage(url, path);
 	}
 
 	public String getLogin() {
