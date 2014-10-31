@@ -374,6 +374,10 @@ public class ConversationPage extends OSXPage {
 		}
 	}
 
+	public boolean isMediaLinkAppearsInDialog(String link) {
+		return DriverUtils.waitUntilElementAppears(driver, By.name(link));
+	}
+	
 	private static final String UUID_TEXT_MESSAGE_PATTERN = "<AXGroup[^>]*>\\s*<AXStaticText[^>]*AXValue=\"([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\"[^>]*/>\\s*</AXGroup>";
 	public ArrayList<MessageEntry> listAllMessages(boolean checkTime) {
 		long startDate = new Date().getTime();
