@@ -262,7 +262,14 @@
 
 -(GDataXMLDocument*)xmlPageSource
 {
+    NSDate *methodStart = [NSDate date];
+    
     GDataXMLDocument *result = [self xmlPageSourceFromElement:nil pathMap:nil];
+
+    NSDate *methodFinish = [NSDate date];
+    NSTimeInterval executionTime = [methodFinish timeIntervalSinceDate:methodStart];
+    NSLog(@"Time to retrieve page source - %f ms", executionTime*1000);
+    
     return result;
 }
 
