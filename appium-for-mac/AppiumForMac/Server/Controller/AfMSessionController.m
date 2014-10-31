@@ -273,6 +273,7 @@
 
 -(GDataXMLDocument*)xmlPageSourceFromElement:(PFUIElement*)rootUIElement pathMap:(NSMutableDictionary*)pathMap
 {
+    TICK;
 	if (rootUIElement == nil)
 	{
 		rootUIElement = self.currentApplication;
@@ -281,6 +282,7 @@
 	GDataXMLElement *root = [GDataXMLNode elementWithName:rootUIElement.AXRole];
 	[self xmlPageSourceHelperFromElement:rootUIElement element:root path:@"/*[1]" pathMap:pathMap];
 	GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithRootElement:root];
+    TOCK;
 	return doc;
 }
 

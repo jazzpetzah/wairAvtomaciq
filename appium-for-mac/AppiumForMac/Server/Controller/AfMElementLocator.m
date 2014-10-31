@@ -91,7 +91,9 @@
         TICK;
 		NSMutableDictionary *pathMap = [NSMutableDictionary new];
 		GDataXMLDocument *doc = [self.session xmlPageSourceFromElement:baseElement pathMap:pathMap];
+        TOCK;
 		NSError *error;
+        startTime = [NSDate date];
 		NSArray *matches = [doc nodesForXPath:self.value error:&error];
         TOCK;
 		if (error != nil)
