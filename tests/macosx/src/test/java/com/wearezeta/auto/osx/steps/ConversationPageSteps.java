@@ -237,8 +237,11 @@ public class ConversationPageSteps {
 
 	 @Then("^I see media link (.*) and media in dialog$")
 	 public void ThenISeeMediaLinkAndMediaInDialog(String link) throws Throwable {
-		 boolean mediaVisible = CommonSteps.senderPages.getConversationPage().isSoundCloudContainerVisible();
-		 Assert.assertTrue("SoundCloud Container is missing in dialog", mediaVisible);  
+		 ConversationPage page = CommonSteps.senderPages.getConversationPage();
+		boolean isLinkAppears = page.isMediaLinkAppearsInDialog(link);
+		boolean mediaVisible = page.isSoundCloudContainerVisible();
+		Assert.assertTrue("SoundCloud Container is missing in dialog", isLinkAppears);  
+		Assert.assertTrue("SoundCloud Container is missing in dialog", mediaVisible);  
 	 }
 
 	 @When("^I tap SoundCloud link$")

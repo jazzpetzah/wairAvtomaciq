@@ -41,7 +41,7 @@ public class ContactListPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.namePendingRequest)
 	private WebElement pendingRequest;
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameTutorialOKButton)
+	@FindBy(how = How.NAME, using = IOSLocators.nameTutorialText)
 	private WebElement tutorialOKButton;
 	
 	private String url;
@@ -245,7 +245,8 @@ public class ContactListPage extends IOSPage {
 	}
 	
 	public boolean isTutorialShown(){
-		boolean tutorialShown = DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameTutorialOKButton));
+		DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameTutorialText));
+		boolean tutorialShown = DriverUtils.isElementDisplayed(driver.findElementByName(IOSLocators.nameTutorialText));
 		return tutorialShown;
 	}
 	

@@ -47,7 +47,7 @@ public class LoginPageSteps {
 		try {
 			LoginPage loginPage = CommonSteps.senderPages.getLoginPage();
 			long startDate = new Date().getTime();
-			loginPage.SignIn();
+			loginPage.startSignIn();
 			long endDate = new Date().getTime();
 			log.debug("First sign in click takes " + (endDate - startDate) + "ms");
 			startDate = new Date().getTime();
@@ -59,7 +59,7 @@ public class LoginPageSteps {
 			endDate = new Date().getTime();
 			log.debug("Setting password takes " + (endDate - startDate) + "ms");
 			startDate = new Date().getTime();
-			loginPage.SignIn();
+			loginPage.confirmSignIn();
 			endDate = new Date().getTime();
 			log.debug("Sign in takes " + (endDate - startDate) + "ms");
 			Assert.assertTrue("Failed to login", loginPage.waitForLogin());
@@ -70,10 +70,14 @@ public class LoginPageSteps {
 				CommonUtils.getOsxApplicationPathFromConfig(ContactListPage.class)));
 	 }
 	
+	@When("I start Sign In") 
+	public void WhenIStartSignIn() {
+		CommonSteps.senderPages.getLoginPage().startSignIn();
+	}
+	
 	 @When("I press Sign In button")
 	 public void WhenIPressSignInButton() throws IOException {
-
-		 OSXPage page = CommonSteps.senderPages.getLoginPage().SignIn();
+		 OSXPage page = CommonSteps.senderPages.getLoginPage().confirmSignIn();
 		 Assert.assertNotNull("After sign in button click Login page or Contact List page should appear. Page couldn't be null", page);
 		 if (page instanceof ContactListPage) {
 			 CommonSteps.senderPages.setContactListPage((ContactListPage)page);

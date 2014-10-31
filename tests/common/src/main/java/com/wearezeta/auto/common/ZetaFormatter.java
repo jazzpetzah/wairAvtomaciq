@@ -83,6 +83,11 @@ public class ZetaFormatter implements Formatter, Reporter {
 	public void scenario(Scenario arg0) {
 		scenario = arg0.getName();
 		for (Tag t : arg0.getTags()) {
+			if(t.getName().equals("@torun")) {
+				scope = "Dev Test";
+				break;
+			}
+			
 			if(t.getName().equals("@smoke")) {
 				scope = "Smoke Test";
 			}
