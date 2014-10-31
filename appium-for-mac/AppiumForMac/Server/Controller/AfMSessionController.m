@@ -265,12 +265,14 @@
 
 -(GDataXMLDocument*)xmlPageSource
 {
-	return [self xmlPageSourceFromElement:nil pathMap:nil];
+    TICK;
+    GDataXMLDocument *result = [self xmlPageSourceFromElement:nil pathMap:nil];
+    TOCK;
+    return result;
 }
 
 -(GDataXMLDocument*)xmlPageSourceFromElement:(PFUIElement*)rootUIElement pathMap:(NSMutableDictionary*)pathMap
 {
-    TICK;
 	if (rootUIElement == nil)
 	{
 		rootUIElement = self.currentApplication;
@@ -279,13 +281,11 @@
 	GDataXMLElement *root = [GDataXMLNode elementWithName:rootUIElement.AXRole];
 	[self xmlPageSourceHelperFromElement:rootUIElement element:root path:@"/*[1]" pathMap:pathMap];
 	GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithRootElement:root];
-    TOCK;
 	return doc;
 }
 
 -(void)xmlPageSourceHelperFromElement:(PFUIElement*)root element:(GDataXMLElement*) element path:(NSString*)path pathMap:(NSMutableDictionary*)pathMap
 {
-    TICK;
 	[element addAttribute:[GDataXMLElement attributeWithName:@"AXRole" stringValue:root.AXRole]];
 	[element addAttribute:[GDataXMLElement attributeWithName:@"AXTitle" stringValue:root.AXTitle]];
 	[element addAttribute:[GDataXMLElement attributeWithName:@"AXDescription" stringValue:root.AXDescription]];
@@ -341,7 +341,6 @@
 		[self xmlPageSourceHelperFromElement:child element:childElement path:[path stringByAppendingFormat:@"/*[%d]", i] pathMap:pathMap];
 		[element addChild:childElement];
     }
-    TOCK;
 }
 
 @end
