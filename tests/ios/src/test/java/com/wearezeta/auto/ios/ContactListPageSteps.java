@@ -37,7 +37,7 @@ public class ContactListPageSteps {
 			if(tutorialIsVisible) {
 				PagesCollection.contactListPage.dismissTutorial();
 			} else {
-				log.debug("No tutorial is shown");
+				log.debug("No tutorial is shown again");
 			}
 		}
 		// end
