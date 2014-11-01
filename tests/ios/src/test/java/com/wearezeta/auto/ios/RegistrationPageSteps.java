@@ -34,7 +34,7 @@ public class RegistrationPageSteps {
 
 	@Then("I see Take or select photo label and smile")
 	public void ISeeTakeOrSelectPhotoLabel() {
-		// Assert.assertTrue(PagesCollection.registrationPage.isTakeOrSelectPhotoLabelVisible());
+		Assert.assertTrue(PagesCollection.registrationPage.isTakeOrSelectPhotoLabelVisible());
 		Assert.assertTrue(PagesCollection.registrationPage
 				.isTakePhotoSmileDisplayed());
 	}
