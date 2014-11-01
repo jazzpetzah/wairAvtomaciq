@@ -245,6 +245,7 @@ public class ContactListPage extends IOSPage {
 	}
 	
 	public boolean isTutorialShown(){
+		this.refreshUITree();
 		DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameTutorialText));
 		boolean tutorialShown = DriverUtils.isElementDisplayed(tutorialText);
 		return tutorialShown;
