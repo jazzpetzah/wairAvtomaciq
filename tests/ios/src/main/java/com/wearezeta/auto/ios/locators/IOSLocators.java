@@ -207,7 +207,7 @@ public final class IOSLocators {
 	///////////////////////
 	//Camera page locators
 	///////////////////////
-	public static final String xpathTakePhotoSmile = "//UIAApplication[1]/UIAWindow[2]/UIAImage[1]";
+	public static final String xpathTakePhotoSmile = "//UIAApplication[1]/UIAWindow[1]/UIAImage[1]";
 	
 	public static final String nameTakePhotoHintLabel = "TAKE A PICTURE, OR CHOOSE ONE";
 	
