@@ -34,8 +34,8 @@ public class GroupChatPageSteps {
 	}
 	
 	@When("^I swipe up on group chat page$")
-	public void ISwipeUpOnGroupChatPage() throws IOException, InterruptedException{
-		PagesCollection.groupChatInfoPage = (GroupChatInfoPage)PagesCollection.groupChatPage.swipeUp(500);
+	public void ISwipeUpOnGroupChatPage() throws Exception{
+		PagesCollection.groupChatInfoPage = (GroupChatInfoPage)PagesCollection.groupChatPage.swipeUp(1000);
 	}
 	
 	@When("^I see the new conversation name displayed in in conversation$")
@@ -58,7 +58,6 @@ public class GroupChatPageSteps {
 	@When("^I return to the chat list$")
 	public void IReturnToChatList() throws IOException{
 		PagesCollection.contactListPage = (ContactListPage)PagesCollection.groupChatPage.swipeRight(1000);
-		System.out.println("swiped right");
 	}
 	
 	@When("^I can see (.*) Added (.*)$")
