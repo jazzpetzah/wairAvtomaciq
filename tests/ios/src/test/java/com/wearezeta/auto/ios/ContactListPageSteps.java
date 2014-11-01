@@ -30,6 +30,17 @@ public class ContactListPageSteps {
 		PeoplePickerPageSteps steps = new PeoplePickerPageSteps();
 		steps.WhenISeePeoplePickerPage();
 		steps.IClickCloseButtonDismissPeopleView();
+		
+		//workaround, for some reason tutorial might still be shown
+		if (!tutorialIsVisible) {
+			tutorialIsVisible = PagesCollection.contactListPage.isTutorialShown();
+			if(tutorialIsVisible) {
+				PagesCollection.contactListPage.dismissTutorial();
+			} else {
+				log.debug("No tutorial is shown");
+			}
+		}
+		// end
 	}
 
 	@Given("^I have group chat named (.*) with an unconnected user, made by (.*)$")
@@ -54,14 +65,7 @@ public class ContactListPageSteps {
 
 	@When("^I tap on contact name (.*)$")
 	public void WhenITapOnContactName(String name) throws IOException {
-		//workaround, for some reason tutorial might still be shown
-		boolean tutorialIsVisible = PagesCollection.contactListPage.isTutorialShown();
-		if(tutorialIsVisible) {
-			PagesCollection.contactListPage.dismissTutorial();
-		} else {
-			log.debug("No tutorial is shown");
-		}
-		// end
+
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		IOSPage page = PagesCollection.contactListPage.tapOnName(name);
 

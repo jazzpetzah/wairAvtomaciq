@@ -132,7 +132,7 @@ public class ContactListPage extends IOSPage {
 			}
 		}
 		if (flag) {
-			refreshUITree();
+			//refreshUITree();
 			WebElement el = contactListNames.get(contactListNames.size() - 1);
 			wait.until(ExpectedConditions.visibilityOf(el));
 			wait.until(ExpectedConditions.elementToBeClickable(el));
@@ -245,7 +245,7 @@ public class ContactListPage extends IOSPage {
 	}
 	
 	public boolean isTutorialShown(){
-		this.refreshUITree();
+		//this.refreshUITree();
 		DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameTutorialText));
 		boolean tutorialShown = DriverUtils.isElementDisplayed(tutorialText);
 		return tutorialShown;
