@@ -18,6 +18,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
+import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.ios.tools.IOSKeyboard;
 import com.wearezeta.auto.ios.tools.IOSSimulatorPhotoLibHelper;
 
@@ -98,6 +99,8 @@ public class CommonSteps {
 			log.info("Session was lost, reseting pages collection");
 			IOSPage.clearPagesCollection();
 		}
+		
+		ZetaFormatter.setBuildNumber(IOSCommonUtils.readClientVersionFromPlist().getClientBuildNumber());
 	}
 	 
 	@Given("I have at least (.*) connections")

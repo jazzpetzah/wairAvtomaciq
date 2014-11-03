@@ -40,12 +40,15 @@ public class ZetaFormatter implements Formatter, Reporter {
 
 	private long startDate;
 	private long endDate;
+	private int lineNumber = 0;
 	
 	private static final String LOGIN = "smoketester+bot@wearezeta.com";
 	private static final String PASSWORD = "aqa123456";
 	private static final String CONTACT_ANDROID = "Android Smoke Feedback";
 	private static final String CONTACT_IOS = "iOS Smoke Feedback";
 	private static final String CONTACT_OSX = "SmokeAutomation";
+	
+	private static String buildNumber = "unknown";
 	
 	@Override
 	public void background(Background arg0) {
@@ -75,13 +78,14 @@ public class ZetaFormatter implements Formatter, Reporter {
 
 	@Override
 	public void feature(Feature arg0) {
-		feature = arg0.getName();
+		feature = arg0.getName(); 
 		System.out.println("Feature: " + feature);
 	}
 
 	@Override
 	public void scenario(Scenario arg0) {
-		scenario = arg0.getName();
+		scenario = arg0.getName(); 
+		lineNumber = arg0.getLine();
 		for (Tag t : arg0.getTags()) {
 			if(t.getName().equals("@torun")) {
 				scope = "Dev Test";
@@ -158,8 +162,15 @@ public class ZetaFormatter implements Formatter, Reporter {
 		//send chat notification
 		if (arg0.getStatus().equals("failed") && scope.equals("Smoke Test")) {
 			try {
-				sendNotification(driver.getCapabilities().getCapability("platformName") + " " + scope + ", Scenario: " + 
-						scenario + ", Step: " + currentStep + ": failed");
+				String errorMsg = arg0.getError().getMessage();
+				if (errorMsg.length() > 255) {
+					errorMsg = errorMsg.substring(0, 255);
+				}
+				
+				sendNotification(driver.getCapabilities().getCapability("platformName") + " " + scope + 
+						"(build " + buildNumber + ") \n" + "Feature: " + feature + 
+						", Scenario: " + scenario + "(line number: " + Integer.toString(lineNumber) + ")" + "\nStep: " + 
+						currentStep + ", failed with error: \n" + errorMsg + "...");
 			} catch (Exception e) {
 				
 				e.printStackTrace();
@@ -235,6 +246,14 @@ public class ZetaFormatter implements Formatter, Reporter {
 	public void endOfScenarioLifeCycle(Scenario scenario) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public static String getBuildNumber() {
+		return buildNumber;
+	}
+
+	public static void setBuildNumber(String buildNumber) {
+		ZetaFormatter.buildNumber = buildNumber;
 	}
 
 }
