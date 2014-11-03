@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -340,12 +341,11 @@ public class DialogPage extends IOSPage{
 		return lastMessage;
 	}
 
-	public String getSendTime() {
-		String formattedDate;
-		DateFormat dateFormat = new SimpleDateFormat("EEEE, MMMM d, yyyy '∙' h:mm a");
+	public long getSendTime() {
+		long currentTime;
 		Date date = new Date();
-		formattedDate=dateFormat.format(date);
-		return formattedDate;
+		currentTime = date.getTime();
+		return currentTime;
 	}
 
 	public boolean isMediaBarDisplayed() {

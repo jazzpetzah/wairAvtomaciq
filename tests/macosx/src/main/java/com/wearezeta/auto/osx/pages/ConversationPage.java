@@ -246,19 +246,16 @@ public class ConversationPage extends OSXPage {
 	}
 
 	public void scrollDownTillMediaBarAppears() throws Exception {
-
-		NSPoint soundcloudPosition = NSPoint.fromString(soundCloudLinkButton
-				.getAttribute("AXPosition"));
-		NSPoint textInputPosition = NSPoint.fromString(newMessageTextArea
-				.getAttribute("AXPosition"));
-
+		NSPoint mediaBarPosition = NSPoint.fromString(mediabarBarTitle.getAttribute("AXPosition"));
+		NSPoint windowPosition = NSPoint.fromString(viewPager.getAttribute("AXPosition"));
+		
 		// get scrollbar for conversation view
 		WebElement conversationDecrementSB = null;
 
 		WebElement scrollArea = driver.findElement(By
 				.id(OSXLocators.idConversationScrollArea));
 
-		if (soundcloudPosition.y() < textInputPosition.y()) {
+		if (mediaBarPosition.y() < windowPosition.y()) {
 			WebElement scrollBar = scrollArea.findElement(By
 					.xpath("//AXScrollBar[2]"));
 			List<WebElement> scrollButtons = scrollBar.findElements(By
@@ -271,9 +268,9 @@ public class ConversationPage extends OSXPage {
 			}
 			long TIMEOUT_MINUTES = 2;
 			long startDate = new Date().getTime();
-			while (soundcloudPosition.y() < textInputPosition.y()) {
+			while (mediaBarPosition.y() < windowPosition.y()) {
 				conversationDecrementSB.click();
-				soundcloudPosition = NSPoint.fromString(soundCloudLinkButton
+				mediaBarPosition = NSPoint.fromString(mediabarBarTitle
 						.getAttribute("AXPosition"));
 				long endDate = new Date().getTime();
 				if (endDate - startDate > TIMEOUT_MINUTES*60*1000) break;
@@ -350,7 +347,10 @@ public class ConversationPage extends OSXPage {
 	}
 
 	public boolean isMediaBarVisible() {
-		return mediabarBarTitle.isDisplayed();
+		NSPoint mediaBarPosition = NSPoint.fromString(mediabarBarTitle.getAttribute("AXPosition"));
+		NSPoint windowPosition = NSPoint.fromString(viewPager.getAttribute("AXPosition"));
+		if (mediaBarPosition.y() >= windowPosition.y()) return true;
+		else return false;
 	}
 
 	private static int STATE_CHANGE_TIMEOUT = 60 * 2;

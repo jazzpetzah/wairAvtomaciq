@@ -341,9 +341,7 @@ public class ConversationPageSteps {
 
 	 @Then("^I see media bar disappears$")
 	 public void ThenISeeMediaBarDisappears(){
-		 
-		 boolean mediaBarIsNotShown = CommonSteps.senderPages.getConversationPage().isMediaBarVisible();
-		 Assert.assertTrue("Media bar is shown", mediaBarIsNotShown);
-	   
+		 boolean isVisible = CommonSteps.senderPages.getConversationPage().isMediaBarVisible();
+		 Assert.assertFalse("Media bar is still visible", isVisible);
 	 }
 }

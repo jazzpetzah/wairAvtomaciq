@@ -2,12 +2,12 @@ package com.wearezeta.auto.ios;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.ios.IOSConstants;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
+import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 
 import cucumber.api.java.en.When;
 
@@ -50,11 +50,12 @@ public class ImageFullScreenPageSteps {
 	
 	@When("I see send date on fullscreen page")
 	public void ISeeSendDate() {
-		Assert.assertEquals("Expected date " + DialogPageSteps.sendDate
+		long actualDate = DialogPageSteps.sendDate;
+		long expectedDate = IOSCommonUtils.stringToTime(PagesCollection.imageFullScreenPage.getTimeStamp());
+		boolean flag = Math.abs(actualDate - expectedDate)<60000;
+		Assert.assertTrue("Expected date " + expectedDate
 				+ " is different from actual - "
-				+ PagesCollection.imageFullScreenPage.getTimeStamp(),
-				DialogPageSteps.sendDate.toUpperCase(),
-				PagesCollection.imageFullScreenPage.getTimeStamp().toUpperCase());
+				+ actualDate, flag);
 	}
 	
 	@When("I see download button shown on fullscreen page")

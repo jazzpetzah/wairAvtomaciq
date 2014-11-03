@@ -4,13 +4,11 @@ package com.wearezeta.auto.ios;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
+import org.apache.log4j.Logger;
 import org.junit.Assert;
-import org.openqa.selenium.WebElement;
-
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
-import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.pages.IOSPage;
@@ -25,7 +23,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class DialogPageSteps {
-	
+	private static final Logger log = ZetaLogger.getLog(DialogPageSteps.class.getSimpleName());
 	private String message;
 	private String longMessage = "Lorem ipsum dolor sit amet, \n consectetur adipisicing elit,\n"
 								+ "sed do eiusmod tempor \n incididunt ut labore \n et dolore magna aliqua.\n"
@@ -39,9 +37,10 @@ public class DialogPageSteps {
 
 	private String lastLine = "ea commodo consequat.";
 	private String mediaState;
-	public static String sendDate;
+	public static long sendDate;
 	private static final int SWIPE_DURATION = 1000;
 	private static String onlySpacesMessage="     ";
+	public static long memTime;
 
 	@When("^I see dialog page$")
 	public void WhenISeeDialogPage() throws Throwable {
@@ -206,6 +205,7 @@ public class DialogPageSteps {
 	@When("^I tap media link$")
 	public void ITapMediaLink() throws Throwable {
 		PagesCollection.dialogPage.startMediaContent();
+		memTime = System.currentTimeMillis();
 	}
 	
 	@When("^I scroll media out of sight until media bar appears$")
@@ -252,7 +252,18 @@ public class DialogPageSteps {
 	
 	@When("I wait (.*) seconds for media to stop playing")
 	public void IWaitForMediaStopPlaying(int time) throws Throwable{
-		Thread.sleep(time*1000);
+		long deltaTime = 0;
+		long currentTime = System.currentTimeMillis();
+		if ((memTime + time*1000)>currentTime){
+			deltaTime = time*1000 - (currentTime - memTime);
+			log.debug("Waiting " + deltaTime + " ms playback to finish");
+			Thread.sleep(deltaTime);
+			log.debug("Playback finished");
+		}
+		else {
+			log.debug("Playback finished");
+		}
+		
 	}
 	
 	@Then("I see media bar on dialog page")

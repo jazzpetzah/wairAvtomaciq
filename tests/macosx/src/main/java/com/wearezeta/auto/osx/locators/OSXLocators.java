@@ -28,6 +28,8 @@ public final class OSXLocators {
 	public static final String idPeoplePickerSearchField = "people_picker_searchfield";
 	public static final String idPeoplePickerDismissButton = "people_picker_cancel_button";
 	public static final String idPeoplePickerSearchResultEntry = "people_picker_result_namefield";
+	public static final String idPeoplePickerSearchResultTable = "people_picker_searchresult";
+	
 	public static final String idToggleMenu = "ToggleMenu";
 	public static final String idMuteButton = "muteButton";
 	public static final String idArchiveButton = "archiveButton";
@@ -47,7 +49,7 @@ public final class OSXLocators {
 	public static final String xpathSearchResultsScrollArea = "//AXScrollArea[AXTable[@AXIdentifier='people_picker_searchresult']]";
 	public static final String xpathConversationMessageGroup = "//AXWebArea/AXGroup";
 
-	public static final String xpathFormatContactEntryWithName = "//AXStaticText[@AXIdentifier='clListItemNameField'][@AXValue='%s']";
+	public static final String xpathFormatContactEntryWithName = "//AXStaticText[@AXIdentifier='clListItemNameField'][starts-with(@AXValue, '%s')]";
 	public static final String xpathFormatSpecificMessageEntry = "//AXGroup/AXStaticText[@AXValue='%s']";
 	public static final String xpathFormatPeoplePickerSearchResultUser = "//AXStaticText[@AXIdentifier='people_picker_result_namefield'][@AXValue='%s']";
 	public static final String xpathConversationListScrollArea = "//AXScrollArea[@AXIdentifier='conversationList']";
@@ -96,7 +98,7 @@ public final class OSXLocators {
 	public static final String xpathPleaseProvideEmailAddress = "//AXStaticText[@AXValue='PLEASE PROVIDE A VALID EMAIL ADDRESS']";
 
 	public static final String xpathConversationNameEdit = "//AXPopover/AXScrollArea/AXTextArea";
-	
+	public static final String xpathConversationVerticalScrollBar = "//AXScrollArea[@AXIdentifier='ConversationScrollArea']/AXScrollBar[2]";
 	public static final String xpathUserAvatar = "//AXPopover/AXScrollArea/AXGrid/AXUnknown";
 	
 	public static final String xpathNumberOfPeopleInChat = "//AXPopover/AXStaticText";
