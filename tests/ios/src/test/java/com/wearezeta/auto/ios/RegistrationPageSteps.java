@@ -400,10 +400,8 @@ public class RegistrationPageSteps {
 
 	@Then("^I verify registration address$")
 	public void IVerifyRegistrationAddress() throws Throwable {
-
 		Assert.assertTrue("Email: " + aqaEmail + "/Password: " + aqaPassword, CreateZetaUser.activateRegisteredUser(aqaEmail, 10,
-				CommonUtils.getDefaultEmailFromConfig(getClass()), aqaPassword));
-
+				aqaEmail, aqaPassword));
 	}
 
 	@When("I don't see Next button")

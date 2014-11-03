@@ -158,7 +158,8 @@ Scenario Outline: Conversation gets scrolled back to playing media when clicking
 Examples:
     |  Login		| Password		| Name			| Contact1    | SoundCloudLink |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/carl-cox/sets/all-roads-lead-to-the |
-    
+
+   
 @regression
 @id488
 Scenario Outline: Verify you can see conversation images in fullscreen
@@ -443,6 +444,7 @@ Examples:
     |	Login	|	Password	|	Name	|	Contact		| Text 				|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|ÄäÖöÜüß & latin chars|
 
+
 @regression
 @id555
 Scenario Outline: Verify you can add people from 1:1 people view (view functionality)
@@ -454,22 +456,18 @@ Scenario Outline: Verify you can add people from 1:1 people view (view functiona
 	And I see <Contact1> user profile page
 	And I press Add button
 	And I see People picker page
-	And I see keyboard
-	And I don't see Add to conversation button
+	And I dont see keyboard
+	And I see Add to conversation button
 	And I tap on connected user <Contact2> on People picker page
 	And I see user <Contact2> on People picker page is selected
 	And I tap on connected user <Contact2> on People picker page
-	And I see user <Contact2> on People picker page is NOT selected
+	And I see user <Contact2> on People picker page is NOT selected	
 	And I tap on connected user <Contact2> on People picker page
-	And I press keyboard Delete button
-	And I see user <Contact2> on People picker page is NOT selected
-	And I tap on connected user <Contact2> on People picker page
-	And I scroll up page a bit
-	And I dont see keyboard
-	And I see Add to conversation button
 	And I tap on Search input on People picker page
 	And I see keyboard
 	And I don't see Add to conversation button
+	And I press keyboard Delete button
+	And I see user <Contact2> on People picker page is NOT selected
 	   	
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|

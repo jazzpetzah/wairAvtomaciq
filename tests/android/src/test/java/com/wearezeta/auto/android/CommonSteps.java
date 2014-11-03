@@ -364,5 +364,7 @@ public class CommonSteps {
 
 		path = CommonUtils
 				.getAndroidApplicationPathFromConfig(CommonSteps.class);
+		
+		ZetaFormatter.setBuildNumber(AndroidCommonUtils.readClientVersionFromAdb());
 	}
 }

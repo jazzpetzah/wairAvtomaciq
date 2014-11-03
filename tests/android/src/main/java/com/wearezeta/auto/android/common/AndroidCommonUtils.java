@@ -123,7 +123,7 @@ public class AndroidCommonUtils extends CommonUtils {
 		return result;
 	}
 	
-	private static String readClientVersionFromAdb() throws IOException, InterruptedException {
+	public static String readClientVersionFromAdb() throws IOException, InterruptedException {
 		String clientBuild = "no info";
 		String adbCommand = String.format("adb shell dumpsys package %s | grep versionName", CommonUtils.getAndroidPackageFromConfig(AndroidLocators.class));
 		Process process = null;

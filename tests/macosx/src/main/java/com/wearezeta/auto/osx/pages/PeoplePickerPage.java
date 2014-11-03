@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -11,11 +12,13 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.util.NSPoint;
 
 public class PeoplePickerPage extends OSXPage {
-
+	private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class.getSimpleName());
+	
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathMainWindow)
 	private WebElement mainWindow;
 
@@ -27,6 +30,9 @@ public class PeoplePickerPage extends OSXPage {
 	
 //	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerSearchField)
 	private WebElement searchField;
+	
+	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerSearchResultTable)
+	private WebElement peoplePickerSearchResultTable;
 	
 	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerSearchResultEntry)
 	private List<WebElement> searchResults;
@@ -57,6 +63,7 @@ public class PeoplePickerPage extends OSXPage {
 	
 	public void searchForText(String text) {
 		int i = 0;
+		searchField = null;
 		while (searchField == null) {
 			searchField = findSearchField();
 			if (++i == 10) break;
@@ -139,17 +146,16 @@ public class PeoplePickerPage extends OSXPage {
 	}
 	
 	public boolean isPeoplePickerPageVisible() throws InterruptedException, IOException {
-		cancelButton = findCancelButton();
-		if (cancelButton == null) {
-			return false;
-		} else {
+		try {
+			peoplePickerSearchResultTable.click();
 			return true;
+		} catch (NoSuchElementException e) {
+			return false;
 		}
 	}
 	
 	public void closePeoplePicker() {
-		if(cancelButton != null) cancelButton.click();
-		else findCancelButton().click();
+		findCancelButton().click();
 	}
 	
 	public void selectUserInSearchResults(String user) {

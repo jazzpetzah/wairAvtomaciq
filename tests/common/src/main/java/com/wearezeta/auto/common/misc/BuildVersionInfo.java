@@ -5,17 +5,27 @@ public class BuildVersionInfo {
 	private String zmessagingBuildNumber;
 	
 	public BuildVersionInfo() {
-		this.clientBuildNumber = "no info";
+		this.setClientBuildNumber("no info");
 		this.zmessagingBuildNumber = "no info";
 	}
 	
 	
 	public BuildVersionInfo(String client, String zmessaging) {
-		this.clientBuildNumber = client;
+		this.setClientBuildNumber(client);
 		this.zmessagingBuildNumber = zmessaging;
 	}
 	
 	public String toString() {
-		return "ZClient - " + clientBuildNumber + " (zmessaging - " + zmessagingBuildNumber + ")";
+		return "ZClient - " + getClientBuildNumber() + " (zmessaging - " + zmessagingBuildNumber + ")";
+	}
+
+
+	public String getClientBuildNumber() {
+		return clientBuildNumber;
+	}
+
+
+	public void setClientBuildNumber(String clientBuildNumber) {
+		this.clientBuildNumber = clientBuildNumber;
 	}
 }
