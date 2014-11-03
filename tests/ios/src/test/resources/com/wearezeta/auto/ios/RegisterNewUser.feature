@@ -120,7 +120,8 @@ Feature: Register new user
 	 Examples:     
     |	Email 					    |	Password	    |    MaxChars    |    Language   |
     |	aqaUser             	    |	aqaPassword	    |    72          |    English    |
-    
+
+ 
 @regression
   Scenario Outline: Register new user using photo album
 	Given I see sign in screen

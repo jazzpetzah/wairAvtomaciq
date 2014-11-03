@@ -4,6 +4,10 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 
@@ -64,5 +68,18 @@ public class IOSCommonUtils {
 	public static void copyToSystemClipboard(String text){
 		StringSelection str = new StringSelection(text);
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(str, null);
+	}
+	
+	public static long stringToTime(String time){
+		long resultTime = 0;
+		SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMMM d, yyyy '∙' h:mm a");
+		try {
+			Date date = sdf.parse(time);
+			resultTime = date.getTime();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resultTime;
 	}
 }
