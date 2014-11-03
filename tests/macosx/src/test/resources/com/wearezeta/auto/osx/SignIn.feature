@@ -17,6 +17,7 @@ Feature: Sign In
   @staging @id525
   Scenario Outline: Change Sign in user
     Given I Sign in using login <Login2> and password <Password>
+    And I see Contact list with name <Name2>
     And I go to user <Name2> profile
     And I open picture settings
     And I choose to select picture from image file

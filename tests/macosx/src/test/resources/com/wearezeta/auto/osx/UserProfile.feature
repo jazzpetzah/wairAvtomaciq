@@ -4,6 +4,7 @@ Feature: User Profile
   @mute @smoke @id180
   Scenario Outline: Change user picture from image file
     Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with name <Name>
     And I go to user <Name> profile
     When I open picture settings
     And I choose to select picture from image file
@@ -18,6 +19,7 @@ Feature: User Profile
   @mute @regression @id425
   Scenario Outline: Change user picture from camera
     Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with name <Name>
     And I go to user <Name> profile
     And I open picture settings
     When I choose to select picture from camera
@@ -31,6 +33,7 @@ Feature: User Profile
   @staging @id183
   Scenario Outline: Profile photo can be deleted
     Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with name <Name>
     And I go to user <Name> profile
     When I open picture settings
     And I choose to select picture from image file
