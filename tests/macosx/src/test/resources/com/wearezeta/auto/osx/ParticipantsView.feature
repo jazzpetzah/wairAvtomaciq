@@ -79,7 +79,8 @@ Feature: Participants View
       | Login   | Password    | Name    | Contact1    | Contact2    | ChatName     | NewName |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | EditNameChat | RANDOM  |
 
-  @regression @id96
+  #MEC-484
+  @bug @regression @id96
   Scenario Outline: Do not accept erroneous input as group conversation name (only spaces)
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -94,7 +95,8 @@ Feature: Participants View
       | Login   | Password    | Name    | Contact1    | Contact2    | NewName |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | \\u0020 |
 
-  @regression @id96
+  #MEC-484
+  @bug @regression @id96
   Scenario Outline: Do not accept erroneous input as group conversation name (leading spaces)
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
