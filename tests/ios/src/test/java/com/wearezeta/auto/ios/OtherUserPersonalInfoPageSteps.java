@@ -22,7 +22,6 @@ public class OtherUserPersonalInfoPageSteps {
 	
 	@When("^I press Add button$")
 	public void WhenIPressAddButton() throws IOException, InterruptedException {
-		
 		PagesCollection.peoplePickerPage = (PeoplePickerPage)PagesCollection.otherUserPersonalInfoPage.addContactToChat();
 	}
 	

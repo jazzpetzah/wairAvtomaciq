@@ -175,6 +175,23 @@ Examples:
     |  Login		| Password		| Name			| GroupCreator	        |  GroupChatName    |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaPictureContact	    |     TESTCHAT		|
 
+@staging
+@id576 @torun
+Scenario Outline: Send connection request to unconnected participant in a group chat
+    Given I Sign in using login <Login> and password <Password>
+    Given I have group chat named <GroupChatName> with an unconnected user, made by <GroupCreator>
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+	And I swipe up on group chat page
+	And I tap on not connected contact <UnconnectedUser>
+	And I click Connect button on connect to dialog
+	And I exit the group info page
+	And I return to the chat list
+	
+Examples:
+    |  Login		| Password		| Name			| GroupCreator	        |  GroupChatName    | UnconnectedUser |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaPictureContact	    |     TESTCHAT		| yourContact     |
+
 #Mute due to SE issue, MEC-270, not possible to create group from 1:1           
 @staging 
 @id393
