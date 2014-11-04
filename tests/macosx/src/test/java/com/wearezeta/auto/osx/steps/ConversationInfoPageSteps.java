@@ -125,7 +125,8 @@ public class ConversationInfoPageSteps {
 		}
 		Assert.assertNotNull("Can't find an e-mail for contact user " + contact, email);
 		ConversationInfoPage conversationInfo = CommonSteps.senderPages.getConversationInfoPage();
-		Assert.assertTrue(conversationInfo.isEmailButtonExists(email));
+		log.debug("Looking for email " + email + " in single chat user info.");
+		Assert.assertTrue(conversationInfo.isEmailButtonExists(email.toLowerCase()));
 	}
 
 	@Then("^I see (.*) photo in Conversation info$")
