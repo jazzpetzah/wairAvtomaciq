@@ -21,6 +21,11 @@ import com.wearezeta.auto.osx.locators.OSXLocators;
 
 @SuppressWarnings("deprecation")
 public class ConversationInfoPage extends OSXPage {
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathPeoplePopover)
+	private WebElement peoplePopover;
+	
+	@FindBy(how = How.ID, using = OSXLocators.idSingleChatUserNameField)
+	private WebElement singleChatUserNameField;
 	
 	@FindBy(how = How.ID, using = OSXLocators.idAddPeopleButtonSingleChat)
 	private WebElement singleChatAddPeopleButton;
@@ -94,7 +99,11 @@ public class ConversationInfoPage extends OSXPage {
 		}
 	}
 	
-	public PeoplePickerPage openPeoplePicker() throws MalformedURLException {
+	public boolean isPeoplePopoverDisplayed() {
+		return DriverUtils.isElementDisplayed(peoplePopover);
+	}
+	
+	public PeoplePickerPage openPeoplePicker() throws MalformedURLException {		
 		try {
 			singleChatAddPeopleButton.click();
 		} catch (NoSuchElementException e) {
@@ -197,11 +206,12 @@ public class ConversationInfoPage extends OSXPage {
 	}
 	
 	public boolean isUserNameDisplayed(String name) {
-		return DriverUtils.waitUntilElementAppears(driver, By.xpath(OSXLocators.xpathSingleChatUserNameField));
+		return singleChatUserNameField.getAttribute("AXValue").equals(name);
 	}
 	
 	public boolean isEmailButtonExists(String email) {
-		return DriverUtils.waitUntilElementAppears(driver, By.xpath(OSXLocators.xpathSingleChatUserEmailButton));
+		return DriverUtils.waitUntilElementAppears(driver, By.xpath(
+				String.format(OSXLocators.xpathSingleChatUserEmailButton, email)));
 	}
 	
 	public String getCurrentConversationName() {

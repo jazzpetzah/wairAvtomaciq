@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
@@ -53,7 +54,8 @@ public class UserProfilePage extends OSXPage {
 	}
 
 	public void openPictureSettings() {
-		selfProfileViewSettingsButton.sendKeys("");
+		Actions builder = new Actions(driver);
+		builder.moveToElement(mainWindow).build().perform();
 		userPictureButton.click();
 		DriverUtils.waitUntilElementAppears(driver, By.xpath(OSXLocators.xpathPictureFromImageFile));
 	}
@@ -73,7 +75,6 @@ public class UserProfilePage extends OSXPage {
 	public void confirmPictureChoice() throws InterruptedException {
 		Thread.sleep(3000);
 		confirmPictureChoiceButton.click();
-		pictureSettingsCloseButton.click();
 		DriverUtils.waitUntilElementDissapear(driver, By.xpath(OSXLocators.xpathPictureFromImageFile));
 	}
 

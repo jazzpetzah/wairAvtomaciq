@@ -35,9 +35,9 @@ public final class OSXLocators {
 	public static final String idArchiveButton = "archiveButton";
 	public static final String idShowArchivedButton = "openArchiveButton";
 	
-	public static final String nameSayHelloMenuItem = "Knock";
+	public static final String nameSayHelloMenuItem = "Ping";
 	public static final String nameSignOutMenuItem = "Sign Out";
-	public static final String nameQuitZClientMenuItem = "Quit ZClient";
+	public static final String nameQuitZClientMenuItem = "Quit Wire";
 	public static final String nameSendInvitationButton = "Send";
 	
 	public static final String xpathMessageEntry = "//AXGroup/AXStaticText";
@@ -53,13 +53,18 @@ public final class OSXLocators {
 	public static final String xpathFormatSpecificMessageEntry = "//AXGroup/AXStaticText[@AXValue='%s']";
 	public static final String xpathFormatPeoplePickerSearchResultUser = "//AXStaticText[@AXIdentifier='people_picker_result_namefield'][@AXValue='%s']";
 	public static final String xpathConversationListScrollArea = "//AXScrollArea[@AXIdentifier='conversationList']";
+
+	public static final String xpathYouPingedMessage = "//AXGroup[AXStaticText[@AXValue='YOU'] and AXStaticText[@AXValue=' PINGED']]";
+	public static final String xpathYouPingedAgainMessage = "//AXGroup[AXStaticText[@AXValue='YOU'] and AXStaticText[@AXValue=' PINGED AGAIN']]";
 	
-	public static final String YOU_KNOCKED_MESSAGE = "YOU KNOCKED";
-	public static final String YOU_HOT_KNOCKED_MESSAGE = "YOU HOT KNOCKED";
+	public static final String YOU_PINGED_MESSAGE = "YOU PINGED";
+	public static final String YOU_PINGED_AGAIN_MESSAGE = "YOU PINGED AGAIN";
 	public static final String YOU_ADDED_MESSAGE = "YOU ADDED";
 	public static final String YOU_REMOVED_MESSAGE = "YOU REMOVED";
 	public static final String CONNECTED_TO_MESSAGE = "CONNECTED TO";
 	public static final String USER_ADDED_MESSAGE_FORMAT = " ADDED ";
+	public static final String YOU_STARTED_CONVERSATION_MESSAGE = "YOU STARTED A CONVERSATION WITH";
+	public static final String USER_STARTED_CONVERSATION_MESSAGE_FORMAT = " STARTED A CONVERSATION WITH ";
 	
 	public static final String idChooseImageCancelButton = "_NS:53";
 	public static final String idChooseImageOpenButton = "_NS:55";
@@ -105,7 +110,7 @@ public final class OSXLocators {
 	
 	public static final String peopleCountTextSubstring = " PEOPLE";
 	
-	public static final String xpathOpenUserPictureSettingsButton = "//AXWindow/AXButton[@AXIdentifier='addConversationButton']/following-sibling::AXButton[1]";
+	public static final String xpathOpenUserPictureSettingsButton = "//AXWindow/AXButton[starts-with(@AXHelp,'Change your picture')]";
 	
 	public static final String IMAGES_SOURCE_DIRECTORY = "Documents";
 	
@@ -133,9 +138,8 @@ public final class OSXLocators {
 	
 	public static final String RANDOM_KEYWORD = "RANDOM";
 	
-
-	public static final String xpathSingleChatUserNameField = "//AXPopover/AXScrollArea/AXTextArea[@AXValue='%s']";
-	public static final String xpathSingleChatUserEmailButton = "//AXPopover/AXButton[@AXTitle='mailto:%s']";
+	public static final String idSingleChatUserNameField = "userProfileNameField";
+	public static final String xpathSingleChatUserEmailButton = "//AXPopover/AXTextArea/AXLink[@AXTitle='%s']";
 
 	public static final String xpathRemoveUserPictureCheckBox = "//AXCheckBox[@AXHelp='Remove picture']";
 	public static final String xpathRemoveUserPictureConfirmation = "//AXButton[@AXTitle='DELETE']";
@@ -150,4 +154,6 @@ public final class OSXLocators {
 	public static final String idMainWindowMinimizeButton = "MainWindowMinimizeButton";
 	
 	public static final String idMainWindowCloseButton = "MainWindowCloseButton";
+	
+	public static final String xpathPeoplePopover = "//AXPopover";
 }
