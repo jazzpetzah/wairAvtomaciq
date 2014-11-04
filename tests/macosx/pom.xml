@@ -15,7 +15,7 @@
     <skipTests>true</skipTests>
     <TestRun>DevRun</TestRun>
     <Url>http://127.0.0.1:4622/wd/hub</Url>
-    <appPath>ZClient</appPath>
+    <appPath>Wire</appPath>
     <generateUsers>true</generateUsers>
     <driverTimeoutSeconds>10</driverTimeoutSeconds>
     <osxClientInfoPlist>/Project/builds_info/Info_osx.plist</osxClientInfoPlist>
