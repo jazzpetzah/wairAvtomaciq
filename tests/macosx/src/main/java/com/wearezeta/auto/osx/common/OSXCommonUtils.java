@@ -99,7 +99,7 @@ public class OSXCommonUtils extends CommonUtils {
 	}
 
 	public static void sendTextIntoFocusedElement(RemoteWebDriver driver, String text) {
-		driver.executeScript(String.format("tell application \"ZClient\"\nactivate\nend tell\n" +
+		driver.executeScript(String.format("tell application \"Wire\"\nactivate\nend tell\n" +
 				"tell application \"System Events\"\nkeystroke \"%s\"\nend tell", text));
 	}
 	
