@@ -100,7 +100,12 @@ public class CreateZetaUser {
 		mbox.open();
 		try {
 			return mbox.getLastMailHeaders(messageCount);
-		} finally {
+		} 
+		catch (FolderClosedException ex) {
+			mbox.open();
+			return mbox.getLastMailHeaders(messageCount);
+		}
+		finally {
 			mbox.close();
 		}
 	}
