@@ -102,6 +102,11 @@ public class CreateZetaUser {
 			return mbox.getLastMailHeaders(messageCount);
 		} 
 		catch (FolderClosedException ex) {
+			mbox = new IMAPSMailbox(
+					CommonUtils
+							.getDefaultEmailServerFromConfig(CreateZetaUser.class),
+					MAILS_FOLDER, user, password);
+			IMAPSMailbox.clearCaches();
 			mbox.open();
 			return mbox.getLastMailHeaders(messageCount);
 		}

@@ -86,48 +86,47 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    | Contact3    | ChatName           |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | aqaContact3 | AddUserToGroupChat |
 
-  #Muted till new sync engine client stabilization
-  @mute @smoke @id470
+  @smoke @id470
   Scenario Outline: Send message to group chat
-    Given I Sign in using login <Login> and password <Password>
+    Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
+    And I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
-    And I create group chat with <Contact1> and <Contact2>
-    And I open conversation with <Contact1>, <Contact2>
+    And I open conversation with <ChatName>
     When I write random message
     And I send message
     Then I see random message in conversation
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
+      | Login   | Password    | Name    | Contact1    | Contact2    | ChatName             |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | SendMessageGroupChat |
 
-  # Not stable
-  @mute @regression
-  Scenario Outline: Send hello to group chat
-    Given I Sign in using login <Login> and password <Password>
+  @regression
+  Scenario Outline: Ping group chat
+    Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
+    And I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
-    And I create group chat with <Contact1> and <Contact2>
-    And I open conversation with <Contact1>, <Contact2>
+    And I open conversation with <ChatName>
     When I am knocking to user
-    Then I see message YOU KNOCKED in conversation
+    Then I see message YOU PINGED in conversation
+    And I am knocking to user
+    Then I see message YOU PINGED AGAIN in conversation
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
+      | Login   | Password    | Name    | Contact1    | Contact2    | ChatName |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | PingGroupChat |
 
-  # Not stable
-  @mute @smoke
+  @regression
   Scenario Outline: Send picture to group chat
-    Given I Sign in using login <Login> and password <Password>
+    Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
+    And I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
-    And I create group chat with <Contact1> and <Contact2>
-    And I open conversation with <Contact1>, <Contact2>
+    And I open conversation with <ChatName>
     When I send picture testing.jpg
     Then I see picture in conversation
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
+      | Login   | Password    | Name    | Contact1    | Contact2    | ChatName |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | SendPictureGroupChat |
 
   @smoke @id471
   Scenario Outline: Leave group conversation
@@ -160,8 +159,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    | ChatName       |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | RemoveUserChat |
 
-  #Muted till new sync engine client stabilization
-  @mute @smoke @id474 @id481
+  @smoke @id474 @id481
   Scenario Outline: Mute and unmute conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -178,8 +176,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  # Not stable
-  @mute @smoke
+  @smoke
   Scenario Outline: Archive and unarchive conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
