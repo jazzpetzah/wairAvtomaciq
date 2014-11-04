@@ -13,28 +13,15 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  # Not stable
-  @mute @smoke @id467
-  Scenario Outline: Send hello to conversation
+  @smoke @id467
+  Scenario Outline: Ping conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
     And I open conversation with <Contact>
     When I am knocking to user
-    Then I see message YOU KNOCKED in conversation
-
-    Examples: 
-      | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
-
-  # Not stable
-  @mute @smoke @id467
-  Scenario Outline: Send hey to conversation
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
-    And I open conversation with <Contact>
-    When I am knocking to user
+    Then I see message YOU PINGED in conversation
     And I am knocking to user
-    Then I see message YOU KNOCKED in conversation
+    Then I see message YOU PINGED AGAIN in conversation
 
     Examples: 
       | Login   | Password    | Name    | Contact     |
@@ -52,8 +39,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact2 |
 
-  #Muted till new sync engine client stabilization
-  @mute @regression @id444
+  @regression @id444
   Scenario Outline: Send HD picture to conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -65,8 +51,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  #Muted till new sync engine client stabilization
-  @mute @smoke @id103
+  @smoke @id103
   Scenario Outline: Create group chat from 1on1 conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with name <Name>
@@ -76,7 +61,7 @@ Feature: Conversation
     And I see user <Contact2> in search results
     And I add user <Contact2> from search results
     Then I open conversation with <Contact1>, <Contact2>
-    And I see message YOU ADDED <Contact2>, <Contact1> in conversation
+    And I see message YOU STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
 
     Examples: 
       | Login   | Password    | Name    | Contact1    | Contact2    |
@@ -270,17 +255,17 @@ Feature: Conversation
     And I see Contact list with name <Name>
     And I create group chat with <Contact1> and <Contact2>
     And I open conversation with <Contact1>, <Contact2>
-    And I see message YOU ADDED <Contact2>, <Contact1> in conversation
+    And I see message YOU STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
     When I am signing out
     And I Sign in using login <Contact1> and password <Password>
     Then I see Contact list with name <Login>, <Contact2>
     And I open conversation with <Login>, <Contact2>
-    And I see message <Login> ADDED <Contact2>, <Contact1> in conversation
+    And I see message <Login> STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
     And I am signing out
     And I Sign in using login <Contact2> and password <Password>
     Then I see Contact list with name <Login>, <Contact1>
     And I open conversation with <Login>, <Contact1>
-    And I see message <Login> ADDED <Contact2>, <Contact1> in conversation
+    And I see message <Login> STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
 
     Examples: 
       | Login   | Password    | Name    | Contact1    | Contact2    |

@@ -129,24 +129,24 @@ public class ConversationPageSteps {
 	 public void WhenIAmKnockingToUser() {
 		 if (beforeNumberOfKnocks < 0) {
 			 beforeNumberOfKnocks =
-				 CommonSteps.senderPages.getConversationPage()
-				 		.getNumberOfMessageEntries(OSXLocators.YOU_KNOCKED_MESSAGE);
+				CommonSteps.senderPages.getConversationPage()
+				 		.getNumberOfYouPingedMessages(OSXLocators.xpathYouPingedMessage);
 		 }
 		 if (beforeNumberOfHotKnocks < 0) {
 			 beforeNumberOfHotKnocks =
-					 CommonSteps.senderPages.getConversationPage()
-					 		.getNumberOfMessageEntries(OSXLocators.YOU_HOT_KNOCKED_MESSAGE);
+				CommonSteps.senderPages.getConversationPage()
+					 	.getNumberOfYouPingedMessages(OSXLocators.xpathYouPingedAgainMessage);
 		 }
 		 CommonSteps.senderPages.getConversationPage().knock();
 	 }
 	 
 	 @Then("I see message (.*) in conversation$")
 	 public void ThenISeeMessageInConversation(String message) throws InterruptedException {
-		 if (message.equals(OSXLocators.YOU_KNOCKED_MESSAGE)) {
+		 if (message.equals(OSXLocators.YOU_PINGED_MESSAGE)) {
 			 boolean isNumberIncreased = false;
 			 int afterNumberOfKnocks = -1;
-			 for (int i = 0; i < 60; i++) {
-				 afterNumberOfKnocks = CommonSteps.senderPages.getConversationPage().getNumberOfMessageEntries(message);
+			 for (int i = 0; i < 20; i++) {
+				 afterNumberOfKnocks = CommonSteps.senderPages.getConversationPage().getNumberOfYouPingedMessages(OSXLocators.xpathYouPingedMessage);
 				 if (afterNumberOfKnocks == beforeNumberOfKnocks + 1) {
 					 isNumberIncreased = true;
 					 break;
@@ -157,11 +157,11 @@ public class ConversationPageSteps {
 			 Assert.assertTrue("Incorrect messages count: before - "
 					 + beforeNumberOfKnocks + ", after - " + afterNumberOfKnocks, isNumberIncreased);
 			 
-		} else if (message.equals(OSXLocators.YOU_HOT_KNOCKED_MESSAGE)) {
+		} else if (message.equals(OSXLocators.YOU_PINGED_AGAIN_MESSAGE)) {
 			 boolean isNumberIncreased = false;
 			 int afterNumberOfHotKnocks = -1;
-			 for (int i = 0; i < 60; i++) {
-				 afterNumberOfHotKnocks = CommonSteps.senderPages.getConversationPage().getNumberOfMessageEntries(message);
+			 for (int i = 0; i < 20; i++) {
+				 afterNumberOfHotKnocks = CommonSteps.senderPages.getConversationPage().getNumberOfYouPingedMessages(OSXLocators.xpathYouPingedAgainMessage);
 				 if (afterNumberOfHotKnocks == beforeNumberOfHotKnocks + 1) {
 					 isNumberIncreased = true;
 					 break;
@@ -173,6 +173,11 @@ public class ConversationPageSteps {
 					 + beforeNumberOfHotKnocks + ", after - " + afterNumberOfHotKnocks, isNumberIncreased);
 			 
 		} else if (message.contains(OSXLocators.YOU_ADDED_MESSAGE)) {
+			message = CommonUtils.retrieveRealUserContactPasswordValue(message);
+			message = message.toUpperCase();
+			Assert.assertTrue("User was not added to conversation. Message " + message + " not found.", 
+					CommonSteps.senderPages.getConversationPage().isMessageExist(message));
+	 	} else if (message.contains(OSXLocators.YOU_STARTED_CONVERSATION_MESSAGE)) {
 			message = CommonUtils.retrieveRealUserContactPasswordValue(message);
 			message = message.toUpperCase();
 			Assert.assertTrue("User was not added to conversation. Message " + message + " not found.", 
@@ -194,13 +199,17 @@ public class ConversationPageSteps {
 	 @When("I open People Picker from conversation")
 	 public void WhenIOpenPeoplePickerFromConversation() throws Exception {
 		 IScrollDownToConversation();
-		 CommonSteps.senderPages.getConversationPage().writeNewMessage("");
-		 CommonSteps.senderPages.getConversationPage().openConversationPeoplePicker();
+		 ConversationPage conversationPage = CommonSteps.senderPages.getConversationPage(); 
+		 conversationPage.writeNewMessage("");
+		 conversationPage.openConversationPeoplePicker();
 		 CommonSteps.senderPages.setConversationInfoPage(new ConversationInfoPage(
 				 CommonUtils.getOsxAppiumUrlFromConfig(ConversationInfoPage.class),
 				 CommonUtils.getOsxApplicationPathFromConfig(ConversationInfoPage.class)
 				 ));
 		 ConversationInfoPage conversationPeople = CommonSteps.senderPages.getConversationInfoPage();
+		 if (!conversationPeople.isPeoplePopoverDisplayed()) {
+			 conversationPage.openConversationPeoplePicker();
+		 }
 		 CommonSteps.senderPages.setPeoplePickerPage(conversationPeople.openPeoplePicker());
 	 }
 	 

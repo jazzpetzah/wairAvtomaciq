@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.script.ScriptException;
+
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -381,6 +383,12 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public void tapHoldTextInput(){
+		try {
+			cmdVscript();
+		} catch (ScriptException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		driver.tap(1, driver.findElement(By.name(IOSLocators.nameConversationCursorInput)), 1000);
 	}
 	

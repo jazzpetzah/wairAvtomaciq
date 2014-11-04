@@ -1,6 +1,6 @@
 Feature: Change Profile Picture
 
-  @smoke @id344
+  @smoke @id344 @mute
   Scenario Outline: Change your profile picture
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

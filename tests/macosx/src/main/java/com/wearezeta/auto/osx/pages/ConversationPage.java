@@ -105,26 +105,28 @@ public class ConversationPage extends OSXPage {
 	}
 
 	public boolean isMessageExist(String message) throws InterruptedException {
+		String messageText = "";
+		
+		boolean isSystemMessage = true;
 		if (message.contains(OSXLocators.YOU_ADDED_MESSAGE)) {
-			for (int i = 0; i < 10; i++) {
-				List<WebElement> els = driver.findElements(By
-						.xpath(OSXLocators.xpathMessageEntry));
-				Collections.reverse(els);
-				for (WebElement el : els) {
-					if (el.getText().contains(OSXLocators.YOU_ADDED_MESSAGE)) {
-						return true;
-					}
-				}
-				Thread.sleep(1000);
-			}
+			messageText = OSXLocators.YOU_ADDED_MESSAGE;
 		} else if (message.contains(OSXLocators.USER_ADDED_MESSAGE_FORMAT)) {
+			messageText = OSXLocators.USER_ADDED_MESSAGE_FORMAT;
+		} else if (message.contains(OSXLocators.YOU_STARTED_CONVERSATION_MESSAGE)) {
+			messageText = OSXLocators.YOU_STARTED_CONVERSATION_MESSAGE;
+		} else if (message.contains(OSXLocators.USER_STARTED_CONVERSATION_MESSAGE_FORMAT)) {
+			messageText = OSXLocators.USER_STARTED_CONVERSATION_MESSAGE_FORMAT;
+		} else {
+			isSystemMessage = false;
+		}
+
+		if (isSystemMessage) {
 			for (int i = 0; i < 10; i++) {
 				List<WebElement> els = driver.findElements(By
 						.xpath(OSXLocators.xpathMessageEntry));
 				Collections.reverse(els);
 				for (WebElement el : els) {
-					if (el.getText().contains(
-							OSXLocators.USER_ADDED_MESSAGE_FORMAT)) {
+					if (el.getText().contains(messageText)) {
 						return true;
 					}
 				}
@@ -194,6 +196,13 @@ public class ConversationPage extends OSXPage {
 		engine.eval(script);
 	}
 
+	public int getNumberOfYouPingedMessages(String xpath) {
+		List<WebElement> youPingedMessages =
+				driver.findElements(By.xpath(xpath));
+		log.debug("Retrieved number of Pings in conversation: " + youPingedMessages.size());
+		return youPingedMessages.size();
+	}
+	
 	public int getNumberOfMessageEntries(String message) {
 		String xpath = String.format(
 				OSXLocators.xpathFormatSpecificMessageEntry, message);

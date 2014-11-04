@@ -1195,7 +1195,43 @@
 -(AppiumMacHTTPJSONResponse*) postMoveTo:(NSString*)path data:(NSData*)postData
 {
     NSString *sessionId = [Utility getSessionIDFromPath:path];
-    return [self respondWithJsonError:kAfMStatusCodeUnknownError session:sessionId];
+    AfMSessionController *session = [self controllerForSession:sessionId];
+    NSDictionary *postParams = [self dictionaryFromPostData:postData];
+    NSLog(@"Dictionary: %@", [postParams description]);
+    NSString * elementId = [postParams objectForKey:@"element"];
+    NSString * xoffsetStr = [postParams objectForKey:@"xoffset"];
+    NSString * yoffsetStr = [postParams objectForKey:@"yoffset"];
+    if (elementId == nil) {
+        if (xoffsetStr == nil || yoffsetStr == nil) {
+            return [self respondWithJsonError:kAfMStatusCodeUnknownError session:sessionId];
+        } else {
+            CGEventRef event = CGEventCreate(NULL);
+            CGPoint pt = CGEventGetLocation(event);
+            NSLog(@"%f,%f", pt.x, pt.y);
+            pt.x = pt.x+[xoffsetStr intValue];
+            pt.y = pt.y+[yoffsetStr intValue];
+            
+            CGEventRef click1_move = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, pt, kCGMouseButtonLeft);
+            CGEventPost(kCGHIDEventTap, click1_move);
+            CFRelease(click1_move);
+        }
+    } else {
+        PFUIElement *element = [session.elements objectForKey:elementId];
+        NSPoint position = [element.AXPosition pointValue];
+        NSPoint size = [element.AXSize pointValue];
+        CGEventRef event = CGEventCreate(NULL);
+        CGPoint pt = CGEventGetLocation(event);
+        NSLog(@"%f,%f", pt.x, pt.y);
+        pt.x = position.x + size.x/2;
+        pt.y = position.y + size.y/2;
+        
+        NSLog(@"%f,%f", pt.x, pt.y);
+        CGEventRef click1_move = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, pt, kCGMouseButtonLeft);
+        CGEventPost(kCGHIDEventTap, click1_move);
+        CFRelease(click1_move);
+    }
+    
+    return [self respondWithJson:nil status:kAfMStatusCodeSuccess session: sessionId];
 }
 
 // POST /session/:sessionId/click
