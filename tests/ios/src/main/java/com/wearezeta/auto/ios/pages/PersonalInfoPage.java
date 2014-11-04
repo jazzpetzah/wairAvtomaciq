@@ -27,6 +27,12 @@ public class PersonalInfoPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.nameProfileSettingsButton)
 	private WebElement settingsButton;
 	
+	@FindBy(how = How.NAME, using = IOSLocators.nameSettingsAboutButton)
+	private WebElement aboutButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameTermsOfUseButton)
+	private WebElement termsOfUseButton;
+	
 	@FindBy(how = How.NAME, using = IOSLocators.nameSignOutButton)
 	private WebElement signoutButton;
 	
@@ -71,6 +77,15 @@ public class PersonalInfoPage extends IOSPage{
 	public PersonalInfoPage clickOnSettingsButton(){
 		settingsButton.click();
 		return this;
+	}
+	
+	public PersonalInfoPage clickOnAboutButton(){
+		aboutButton.click();
+		return this;
+	}
+	
+	public boolean isAboutPageVisible(){
+		return termsOfUseButton.isDisplayed();
 	}
 	
 	public LoginPage clickSignoutButton() throws MalformedURLException{

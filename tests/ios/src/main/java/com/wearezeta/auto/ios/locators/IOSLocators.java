@@ -204,6 +204,10 @@ public final class IOSLocators {
 	
 	public static final String nameSelfNameTooShortError = "AT LEAST 2 CHARACTERS ";
 	
+	public static final String nameSettingsAboutButton = "About";
+	
+	public static final String nameTermsOfUseButton = "Terms of Use";
+	
 	///////////////////////
 	//Camera page locators
 	///////////////////////
