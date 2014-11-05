@@ -125,6 +125,16 @@ public class ContactListPageSteps {
 
 		PagesCollection.contactListPage.clickOnMute();
 	}
+	
+	@Then("^I see (.*) and (.*) chat in contact list$")
+	public void ISeeGroupChatInContactList(String contact1, String contact2)
+			throws InterruptedException {
+
+		contact1 = CommonUtils.retrieveRealUserContactPasswordValue(contact1);
+		contact2 = CommonUtils.retrieveRealUserContactPasswordValue(contact2);
+		Assert.assertTrue(PagesCollection.contactListPage
+				.isContactExists(contact1 + ", " + contact2));
+	}
 
 	@Then ("Contact list appears with my name (.*)")
 	public void ThenContactListAppears(String name) throws Throwable {

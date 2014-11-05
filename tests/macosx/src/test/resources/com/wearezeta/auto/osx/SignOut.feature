@@ -4,7 +4,7 @@ Feature: Sign Out
   @mute @smoke @id479
   Scenario Outline: Sign out from ZClient
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     When I am signing out
     Then I have returned to Sign In screen
 

@@ -23,13 +23,8 @@ import cucumber.api.java.en.When;
 public class ContactListPageSteps {
 	private static final Logger log = ZetaLogger.getLog(ContactListPageSteps.class.getSimpleName());
 	
-	@Given ("I see Contact list with name (.*)")
-	public void GivenISeeContactListWithName(String name) throws Exception {
-		if (name.equals(OSXLocators.RANDOM_KEYWORD)) {
-			name = CommonSteps.senderPages.getConversationInfoPage().getCurrentConversationName();
-		} else {
-			name = CommonUtils.retrieveRealUserContactPasswordValue(name);
-		}
+	@Given ("^I see my name (.*) in Contact list$")
+	public void ISeeMyNameInContactList(String name) throws Exception {
 		CommonSteps.senderPages.getLoginPage().sendProblemReportIfFound();
 		CommonSteps.senderPages.getContactListPage().pressLaterButton();
 		Thread.sleep(1000);
@@ -41,6 +36,17 @@ public class ContactListPageSteps {
 			log.debug("People picker appears. Closing it.");
 			peoplePickerPage.closePeoplePicker();
 		}
+		GivenISeeContactListWithName(name);
+	}
+	
+	@Given ("I see Contact list with name (.*)")
+	public void GivenISeeContactListWithName(String name) throws Exception {
+		if (name.equals(OSXLocators.RANDOM_KEYWORD)) {
+			name = CommonSteps.senderPages.getConversationInfoPage().getCurrentConversationName();
+		} else {
+			name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		}
+		log.debug("Looking for contact with name " + name);
 		Assert.assertTrue(CommonSteps.senderPages.getContactListPage().isContactWithNameExists(name));
 	}
 	
