@@ -199,7 +199,7 @@ public final class AndroidLocators {
 		
 		public static final String idPickerUsersUnselected = LOCATORS_PACKAGE + ":id/pick_user_chathead_unselected";
 		
-		public static final String idPickerBtnDone = LOCATORS_PACKAGE + ":id/button_done";
+		public static final String idPickerBtnDone = LOCATORS_PACKAGE + ":id/ttv_pickuser_confirmbutton__title";
 		
 		public static final String idPickerSearch = LOCATORS_PACKAGE + ":id/puet_pickuser__searchbox";
 		

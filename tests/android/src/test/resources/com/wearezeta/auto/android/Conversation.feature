@@ -44,8 +44,8 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  #test is not implemented yet, functionality is not available in the client
-  @smoke @mute
+  @id1262
+  @smoke
   Scenario Outline: Add people to 1:1 chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -54,14 +54,15 @@ Feature: Conversation
     And I swipe up on dialog page
     And I see <Contact1> user profile page
     And I press add contact button
-
-    #And I see People picker page
-    #And I input in People picker search field user name <Contact2>
-    #And I see user <Contact2> found on People picker page
-    #And I tap on user name found on People picker page <Contact2>
-    #And I see Add to conversation button
-    #And I click on Add to conversation button
-    #Then I see group chat page with users <Contact1> <Contact2>
+    And I see People picker page
+    And I input in People picker search field user name <Contact2>
+    And I see user <Contact2> found on People picker page
+    And I tap on user name found on People picker page <Contact2>
+    And I see Add to conversation button
+    And I click on Add to conversation button
+    Then I see group chat page with users <Contact1> <Contact2>
+    And I navigate back from group chat page
+    And I see <Contact1> and <Contact2> chat in contact list
     Examples: 
       | Login   | Password    | Name    | Contact1    | Contact2    |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
