@@ -57,6 +57,16 @@ public class PersonalInfoPageSteps {
 		PagesCollection.personalInfoPage.clickOnSettingsButton();
 	}
 	
+	@When("I click on About button on personal page")
+	public void WhenIClickOnAboutButtonOnPersonalPage(){
+		PagesCollection.personalInfoPage.clickOnAboutButton();
+	}
+	
+	@Then("I see About page")
+	public void ThenISeeAboutPAge(){
+		Assert.assertTrue(PagesCollection.personalInfoPage.isAboutPageVisible());
+	}
+	
 	@When("I click Sign out button from personal page")
 	public void IClickSignOutButtonFromPersonalPage() throws MalformedURLException{
 		PagesCollection.personalInfoPage.clickSignoutButton();
