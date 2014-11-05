@@ -8,7 +8,7 @@ Feature: Sign In
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Sign In button
-    Then I see Contact list with name <Name>
+    Then I see my name <Name> in Contact list
 
     Examples: 
       | Login   | Password    | Name    |
@@ -17,7 +17,7 @@ Feature: Sign In
   @staging @id525
   Scenario Outline: Change Sign in user
     Given I Sign in using login <Login2> and password <Password>
-    And I see Contact list with name <Name2>
+    And I see my name <Name2> in Contact list
     And I go to user <Name2> profile
     And I open picture settings
     And I choose to select picture from image file
@@ -25,7 +25,7 @@ Feature: Sign In
     And I see photo in User profile
     When I am signed out from ZClient
     And I Sign in using login <Login> and password <Password>
-    Then I see Contact list with name <Name>
+    Then I see my name <Name> in Contact list
     And I see name <Name> in User profile
     And I see email of <Name> in User profile
     And I see changed user picture

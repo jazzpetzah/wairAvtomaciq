@@ -1,26 +1,24 @@
 Feature: Participants View
 
-  #Muted till new sync engine client stabilization
-  @mute @regression @id95
+  @regression @id95
   Scenario Outline: Change conversation name
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
-    And I create group chat with <Contact1> and <Contact2>
-    When I open conversation with <Contact1>, <Contact2>
+    Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
+    And I Sign in using login <Login> and password <Password>
+    And I see my name <Name> in Contact list
+    When I open conversation with <ChatName>
     And I open Conversation info
     And I set name <NewName> for conversation
     Then I see Contact list with name <NewName>
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | NewName      |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | RANDOM       |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | ÄäÖöÜüß conv |
+      | Login   | Password    | Name    | Contact1    | Contact2    | ChatName          | NewName      |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | RenameGroupChat   | RANDOM       |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | RenameSpecSymChat | ÄäÖöÜüß conv |
 
-  #Muted till new sync engine client stabilization
-  @mute @regression @id186
+  @regression @id186
   Scenario Outline: Display conversation info correctly
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     And I create group chat with <Contact1> and <Contact2>
     When I open conversation with <Contact1>, <Contact2>
     And I open Conversation info
@@ -36,7 +34,7 @@ Feature: Participants View
   Scenario Outline: Check confirmation request on removing person from group chat
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     When I open conversation with <ChatName>
     And I open Conversation info
     And I choose user <Contact1> in Conversation info
@@ -51,7 +49,7 @@ Feature: Participants View
   Scenario Outline: I can navigate forth and back between participant view and personal info
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     When I open conversation with <ChatName>
     And I open Conversation info
     And I choose user <Contact1> in Conversation info
@@ -67,7 +65,7 @@ Feature: Participants View
   Scenario Outline: Edit name of group conversation
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     When I open conversation with <ChatName>
     And I open Conversation info
     And I set name <NewName> for conversation
@@ -82,40 +80,39 @@ Feature: Participants View
   #MEC-484
   @bug @regression @id96
   Scenario Outline: Do not accept erroneous input as group conversation name (only spaces)
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
-    And I create group chat with <Contact1> and <Contact2>
-    When I open conversation with <Contact1>, <Contact2>
+    Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
+    And I Sign in using login <Login> and password <Password>
+    And I see my name <Name> in Contact list
+    When I open conversation with <ChatName>
     And I open Conversation info
     And I set name <NewName> for conversation
     Then I do not see conversation <NewName> in contact list
-    And I see Contact list with name <Contact1>, <Contact2>
+    And I see Contact list with name <ChatName>
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | NewName |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | \\u0020 |
+      | Login   | Password    | Name    | Contact1    | Contact2    | ChatName         | NewName |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | EditNameErr1Chat | \\u0020 |
 
   #MEC-484
   @bug @regression @id96
   Scenario Outline: Do not accept erroneous input as group conversation name (leading spaces)
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
-    And I create group chat with <Contact1> and <Contact2>
-    When I open conversation with <Contact1>, <Contact2>
+    Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
+    And I Sign in using login <Login> and password <Password>
+    And I see my name <Name> in Contact list
+    When I open conversation with <ChatName>
     And I open Conversation info
     And I set name <NewName> for conversation
-    Then I see Contact list with name <NewName>
-    And I see message YOU RENAMED THE CONVERSATION in conversation
-    And I see conversation name Test Leading Spaces in conversation
+    Then I do not see conversation <NewName> in contact list
+    And I see Contact list with name <ChatName>
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | NewName                 |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | Test   Leading   Spaces |
+      | Login   | Password    | Name    | Contact1    | Contact2    | ChatName         | NewName                 |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | EditNameErr2Chat | Test   Leading   Spaces |
 
   @staging @id100
   Scenario Outline: Access proﬁle information for the other participant in a 1on1 conversation
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     When I open conversation with <Contact1>
     And I open Conversation info
     Then I see <Contact1> name in Conversation info
@@ -132,7 +129,7 @@ Feature: Participants View
   Scenario Outline: Remove then add the same participant in group chat
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
     And I open Conversation info
     And I choose user <Contact1> in Conversation info
@@ -157,7 +154,7 @@ Feature: Participants View
   Scenario Outline: Group conversation name is displayed
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
     And I open Conversation info
     And I set name <NewName> for conversation
@@ -172,7 +169,7 @@ Feature: Participants View
   @staging @id621
   Scenario Outline: Leave group chat - second end verification
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     And I create group chat with <Contact1> and <Contact2>
     And I open conversation with <Contact1>, <Contact2>
     When I open People Picker from conversation
@@ -188,7 +185,7 @@ Feature: Participants View
     And I see message YOU LEFT in conversation
     Then I am signing out
     And I Sign in using login <Contact1> and password <Password>
-    And I see Contact list with name <Contact1>
+    And I see my name <Contact1> in Contact list
     And I open conversation with <NewName>
     And I see message <Name> LEFT in conversation
     And I open Conversation info

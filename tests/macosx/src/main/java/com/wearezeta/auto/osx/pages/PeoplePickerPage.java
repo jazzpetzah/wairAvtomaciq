@@ -74,7 +74,7 @@ public class PeoplePickerPage extends OSXPage {
 	
 	public boolean sendInvitationToUserIfRequested() {
         try {
-        	WebElement sendButton = driver.findElement(By.name(OSXLocators.nameSendInvitationButton));
+        	WebElement sendButton = driver.findElement(By.id(OSXLocators.idSendInvitationButton));
         	sendButton.click();
        	} catch (NoSuchElementException e) {
        		return false;
