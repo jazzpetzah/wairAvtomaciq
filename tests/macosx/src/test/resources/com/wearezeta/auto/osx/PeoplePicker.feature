@@ -1,11 +1,9 @@
 Feature: People Picker
 
-  #Muted till new sync engine client stabilization
-  @mute @smoke
+  @smoke
   Scenario Outline: Add contact
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
-    And I open conversation with <Name>
+    And I see my name <Name> in Contact list
     When I open People Picker from contact list
     And I search for user <Contact>
     And I see user <Contact> in search results

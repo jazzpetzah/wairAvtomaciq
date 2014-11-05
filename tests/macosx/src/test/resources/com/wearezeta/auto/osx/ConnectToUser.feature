@@ -4,6 +4,7 @@ Feature: Connect to user
   Scenario Outline: Receive invitation from user
     Given I send invitation to <Name> by <Contact>
     When I Sign in using login <Login> and password <Password>
+    And I see my name <Name> in Contact list
     And I see connect invitation
     And I open conversation with One person waiting
     And I accept invitation
@@ -17,12 +18,14 @@ Feature: Connect to user
   Scenario Outline: Conversation created on second end after user accept connection request
     Given I send invitation to <Name> by <Contact>
     When I Sign in using login <Login> and password <Password>
+    And I see my name <Name> in Contact list
     And I see connect invitation
     And I open conversation with One person waiting
     And I accept invitation
     And I see Contact list with name <Contact>
     And I am signing out
     And I Sign in using login <Contact> and password <Password>
+    And I see my name <Contact> in Contact list
     Then I see Contact list with name <Name>
     And I open conversation with <Name>
     And I see message CONNECTED TO <Name> in conversation

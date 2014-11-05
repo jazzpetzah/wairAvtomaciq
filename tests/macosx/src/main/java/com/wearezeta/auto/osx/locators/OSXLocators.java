@@ -38,7 +38,7 @@ public final class OSXLocators {
 	public static final String nameSayHelloMenuItem = "Ping";
 	public static final String nameSignOutMenuItem = "Sign Out";
 	public static final String nameQuitZClientMenuItem = "Quit Wire";
-	public static final String nameSendInvitationButton = "Send";
+	public static final String idSendInvitationButton = "send";
 	
 	public static final String xpathMessageEntry = "//AXGroup/AXStaticText";
 	public static final String xpathFormatConversationNewNameEntry = "//AXHeading/AXStaticText[@AXValue='%s']";
@@ -96,7 +96,9 @@ public final class OSXLocators {
 
 	public static final String xpathFailedApplicationDialogCancel = "//AXWindow[@AXIdentifier='_NS:162']/AXButton[@AXIdentifier='_NS:9']";
 	public static final String xpathFailedApplicationDialogSend = "//AXWindow[@AXIdentifier='_NS:162']/AXButton[@AXIdentifier='_NS:13']";
-
+	public static final String idSendProblemReportWindow = "_NS:162";
+	public static final String idSendProblemReportButton = "_NS:13";
+	
 	public static final String idAcceptConnectionRequestButton = "connect";
 	public static final String idIgnoreConnectionRequestButton = "_NS:10";
 	

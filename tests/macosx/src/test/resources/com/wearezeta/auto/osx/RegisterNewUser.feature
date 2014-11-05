@@ -53,6 +53,8 @@ Feature: Register new user
     Then I see confirmation page
     And I verify registration address
     And I see contact list of registered user
+
+    Examples: 
       | Email   | Password    | Name    | ImageFile                |
       | aqaUser | aqaPassword | aqaUser | userpicture_portrait.jpg |
 
