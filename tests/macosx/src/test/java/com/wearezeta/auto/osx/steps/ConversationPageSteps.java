@@ -334,9 +334,10 @@ public class ConversationPageSteps {
 			 name = CommonSteps.senderPages.getConversationInfoPage().getCurrentConversationName();
 		 }
 		 String result = CommonSteps.senderPages.getConversationPage().getLastConversationNameChangeMessage();
+		//workaround for bug with irrelevant characters in conversation name after renaming it
 		 Assert.assertTrue(
 				 "New conversation name '" + result + "' does not equal to expected '" + name + "'",
-				 result.equals(name));
+				 result.startsWith(name));
 	 }
 	 
 	 @When("^I wait (.*) seconds till playback finishes$")

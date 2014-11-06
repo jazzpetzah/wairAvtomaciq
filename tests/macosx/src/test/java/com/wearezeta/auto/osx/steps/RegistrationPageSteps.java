@@ -110,7 +110,6 @@ public class RegistrationPageSteps {
 				CommonUtils.getOsxAppiumUrlFromConfig(RegistrationPageSteps.class),
 				CommonUtils.getOsxApplicationPathFromConfig(RegistrationPageSteps.class)));
 		ContactListPageSteps clSteps = new ContactListPageSteps();
-		Assert.assertTrue(CommonSteps.senderPages.getContactListPage().waitUntilMainWindowAppears());
 		clSteps.ISeeMyNameInContactList(aqaName);
 	}
 	
@@ -118,8 +117,8 @@ public class RegistrationPageSteps {
 		"abc.example.com",
 		"abc@example@.com",
 		"example@zeta",
-		"abc@example.",
-		"abc@example.c"
+		"abc@example."/*,
+		"abc@example.c"*/
 	};
 	
 	public ArrayList<String> consideredValidEmails = new ArrayList<String>();
