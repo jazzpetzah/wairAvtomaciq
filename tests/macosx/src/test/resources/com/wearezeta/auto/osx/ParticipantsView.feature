@@ -45,7 +45,7 @@ Feature: Participants View
       | Login   | Password    | Name    | Contact1    | Contact2    | ChatName            |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | ConfirmRemovingChat |
 
-  @staging @id97
+  @regression @id97
   Scenario Outline: I can navigate forth and back between participant view and personal info
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -125,7 +125,7 @@ Feature: Participants View
       | Login   | Password    | Name    | Contact1          |
       | aqaUser | aqaPassword | aqaUser | aqaPictureContact |
 
-  @staging @id535
+  @regression @id535
   Scenario Outline: Remove then add the same participant in group chat
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -150,7 +150,7 @@ Feature: Participants View
       | Login   | Password    | Name    | Contact1    | Contact2    | ChatName          |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | RemoveAddSameChat |
 
-  @staging @id188
+  @regression @id188
   Scenario Outline: Group conversation name is displayed
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
