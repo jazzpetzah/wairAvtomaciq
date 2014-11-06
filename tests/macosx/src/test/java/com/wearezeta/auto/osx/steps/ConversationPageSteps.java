@@ -362,6 +362,13 @@ public class ConversationPageSteps {
 	 public void WhenIWaitTillPlaybackFinishes(int time) throws InterruptedException{
 		Thread.sleep(time*1000);
 	    String currentState = CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState();
+	    if (currentState.equals("Pause")) {
+	    	//if song still playing due to some lags, wait once more
+	    	log.debug("Seems like audio track still not finished to play. Waiting for finish once more. "
+	    			+ "Current playback time: "
+	    			+ CommonSteps.senderPages.getConversationPage().getCurrentPlaybackTime());
+	    	Thread.sleep(time*1000);
+	    }
 	    Assert.assertEquals(
 	    		"Current state \"" + currentState + "\" is not equal to expected \"Play\"",
 	    		"Play", currentState); 

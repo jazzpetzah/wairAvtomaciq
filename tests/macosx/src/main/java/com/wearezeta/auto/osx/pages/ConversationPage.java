@@ -364,6 +364,17 @@ public class ConversationPage extends OSXPage {
 
 	private static int STATE_CHANGE_TIMEOUT = 60 * 2;
 
+	public String getCurrentPlaybackTime() {
+		String time = "";
+		try {
+			WebElement el = driver.findElement(By.xpath(OSXLocators.xpathSoundCloundCurrentPlaybackTime));
+			time = el.getAttribute("AXValue");
+		} catch (NoSuchElementException e) {
+			log.error("No element that contains playback time");
+		}
+		return time;
+	}
+
 	public void waitForSoundcloudButtonState(String currentState,
 			String wantedState) throws InterruptedException {
 		Thread.sleep(1000);
