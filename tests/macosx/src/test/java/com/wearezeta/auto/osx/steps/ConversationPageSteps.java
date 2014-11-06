@@ -107,7 +107,7 @@ public class ConversationPageSteps {
 		 
 		 BufferedImage origSentPicture = ImageUtil.readImageFromFile(OSXPage.imagesPath + filename);
 		 
-		 Assert.assertNotNull("Can't get picture asset from conversation via backend.\n" + lastException.getMessage(), pictureAssetFromConv);
+		 Assert.assertNotNull("Can't get picture asset from conversation via backend.\n" + (lastException==null?"":lastException.getMessage()), pictureAssetFromConv);
 		 
 		 double score = ImageUtil.getOverlapScore(pictureAssetFromConv, origSentPicture, ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 		 Assert.assertTrue(
