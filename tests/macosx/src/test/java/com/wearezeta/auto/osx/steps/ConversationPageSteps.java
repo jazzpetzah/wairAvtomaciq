@@ -107,7 +107,7 @@ public class ConversationPageSteps {
 		 
 		 BufferedImage origSentPicture = ImageUtil.readImageFromFile(OSXPage.imagesPath + filename);
 		 
-		 Assert.assertNotNull("Can't get picture asset from conversation via backend.\n" + lastException.getMessage(), pictureAssetFromConv);
+		 Assert.assertNotNull("Can't get picture asset from conversation via backend.\n" + (lastException==null?"":lastException.getMessage()), pictureAssetFromConv);
 		 
 		 double score = ImageUtil.getOverlapScore(pictureAssetFromConv, origSentPicture, ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 		 Assert.assertTrue(
@@ -210,8 +210,10 @@ public class ConversationPageSteps {
 			Assert.assertTrue("Connected to message does not appear in conversation.", 
 					CommonSteps.senderPages.getConversationPage().isMessageExist(message));
 	 	} else {
-			 Assert.assertTrue(CommonSteps.senderPages.getConversationPage().isMessageExist(message));
-		 }
+	 		String updatedMessage = CommonUtils.retrieveRealUserContactPasswordValue(message);
+	 		if (!updatedMessage.equals(message)) message = updatedMessage.toUpperCase();
+			Assert.assertTrue(CommonSteps.senderPages.getConversationPage().isMessageExist(message));
+		}
 	 }
 	 
 	 @When("I open People Picker from conversation")
@@ -362,6 +364,13 @@ public class ConversationPageSteps {
 	 public void WhenIWaitTillPlaybackFinishes(int time) throws InterruptedException{
 		Thread.sleep(time*1000);
 	    String currentState = CommonSteps.senderPages.getConversationPage().getSoundCloudButtonState();
+	    if (currentState.equals("Pause")) {
+	    	//if song still playing due to some lags, wait once more
+	    	log.debug("Seems like audio track still not finished to play. Waiting for finish once more. "
+	    			+ "Current playback time: "
+	    			+ CommonSteps.senderPages.getConversationPage().getCurrentPlaybackTime());
+	    	Thread.sleep(time*1000);
+	    }
 	    Assert.assertEquals(
 	    		"Current state \"" + currentState + "\" is not equal to expected \"Play\"",
 	    		"Play", currentState); 
