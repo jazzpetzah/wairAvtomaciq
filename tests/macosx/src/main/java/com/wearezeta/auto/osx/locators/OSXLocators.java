@@ -12,6 +12,7 @@ public final class OSXLocators {
 	public static final String classNameLoginField = "AXTextArea";
 //	public static final String xpathLoginField = "//AXTextField[@AXPlaceholderValue='username']";
 	public static final String idPasswordField ="TempLoginViewControllerPasswordField";
+	public static final String relativePathLoginField = "id," + idPasswordField + ",0,-40";
 //	public static final String xpathPasswordField = "//AXTextField[@AXPlaceholderValue='password']";
 
 	public static final String idRegistrationTakePictureButton = "RegistrationTakePictureButton";

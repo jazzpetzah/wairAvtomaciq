@@ -17,7 +17,8 @@ typedef enum appiumMacLocatoryStrategy
 	AppiumMacLocatoryStrategyName,
 	AppiumMacLocatoryStrategyTagName,
 	AppiumMacLocatoryStrategyClassName,
-	AppiumMacLocatoryStrategyXPath
+	AppiumMacLocatoryStrategyXPath,
+    AppiumMacLocatoryStrategyCssSelector
 
 } AppiumMacLocatoryStrategy;
 
