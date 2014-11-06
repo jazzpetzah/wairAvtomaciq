@@ -30,7 +30,7 @@ public class LoginPage extends OSXPage {
 	@FindBy(how = How.NAME, using = OSXLocators.nameSignInButton)
 	private WebElement signInButton;
 
-	@FindBy(how = How.CLASS_NAME, using = OSXLocators.classNameLoginField)
+	@FindBy(how = How.CSS, using = OSXLocators.relativePathLoginField)
 	private WebElement loginField;
 
 	@FindBy(how = How.ID, using = OSXLocators.idPasswordField)

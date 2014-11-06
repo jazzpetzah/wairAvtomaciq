@@ -154,7 +154,7 @@ public class ContactListPage extends OSXPage {
 			}
 		} else {
 			for (WebElement contact: this.contactsTextFields) {
-				if (contact.getText().equals(conversationName)) {
+				if (contact.getText().replaceAll("\uFFFC", "").trim().equals(conversationName)) {
 					scrollToConversationInList(contact);
 					contact.click();
 					return true;

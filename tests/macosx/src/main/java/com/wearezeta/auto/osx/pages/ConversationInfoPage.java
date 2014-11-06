@@ -167,7 +167,7 @@ public class ConversationInfoPage extends OSXPage {
 	
 	public boolean isConversationNameEquals(String expectedName) {
 		boolean result = false;
-		String actualName = conversationNameEdit.getText();
+		String actualName = conversationNameEdit.getText().replaceAll("\uFFFC", "").trim();
 		if (expectedName.contains(",")) {
 			String[] exContacts = expectedName.split(",");
 

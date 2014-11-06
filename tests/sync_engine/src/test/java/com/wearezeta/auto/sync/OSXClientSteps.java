@@ -30,7 +30,7 @@ public class OSXClientSteps {
 			osxLoginPageSteps
 					.GivenISignInUsingLoginAndPassword(login, password);
 			com.wearezeta.auto.osx.steps.ContactListPageSteps osxClPageSteps = new com.wearezeta.auto.osx.steps.ContactListPageSteps();
-			osxClPageSteps.GivenISeeContactListWithName(name);
+			osxClPageSteps.ISeeMyNameInContactList(name);
 		}
 	}
 

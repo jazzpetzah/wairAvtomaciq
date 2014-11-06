@@ -44,6 +44,10 @@
 	{
 		return [[AfMElementLocator alloc] initWithSession:session strategy:AppiumMacLocatoryStrategyXPath value:value];
 	}
+    else if ([using isEqualToString:@"css selector"])
+    {
+        return [[AfMElementLocator alloc] initWithSession:session strategy:AppiumMacLocatoryStrategyCssSelector value:value];
+    }
 	return nil;
 }
 
@@ -162,6 +166,42 @@
             return nil;
         }
         
+    }
+    
+    if (self.strategy == AppiumMacLocatoryStrategyCssSelector)
+    {
+        NSArray *params = [self.value componentsSeparatedByString:@","];
+        NSLog(@"%@", params);
+        AfMElementLocator *windowLocator = [AfMElementLocator locatorWithSession:self.session using:params[0] value:params[1]];
+        
+        PFUIElement *matchedElement = nil;
+        if (windowLocator != nil) {
+            PFUIElement *window = [windowLocator findUsingBaseElement:nil statusCode:statusCode];
+            if (window != nil) {
+                int winCenterX =
+                    window.AXPosition.pointValue.x + window.AXSize.pointValue.x/2;
+                int winCenterY =
+                    window.AXPosition.pointValue.y + window.AXSize.pointValue.y/2;
+                int lookAtX = winCenterX + [params[2] intValue];
+                int lookAtY = winCenterY + [params[3] intValue];
+                
+                NSError *error = nil;
+                PFUIElement *newElement = [PFUIElement elementAtPoint:NSMakePoint(lookAtX, lookAtY) withDelegate:nil error:&error];
+                matchedElement = newElement;
+                
+                *statusCode = kAfMStatusCodeSuccess;
+                return matchedElement;
+            } else {
+                *statusCode = kAfMStatusCodeNoSuchWindow;
+                return nil;
+            }
+            if (matchedElement == nil) {
+                *statusCode = kAfMStatusCodeNoSuchElement;
+                return nil;
+            }
+            *statusCode = kAfMStatusCodeUnknownError;
+            return nil;
+        }
     }
     
     // check if this the element we are looking for
