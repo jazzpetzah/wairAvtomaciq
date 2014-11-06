@@ -12,6 +12,7 @@ public final class OSXLocators {
 	public static final String classNameLoginField = "AXTextArea";
 //	public static final String xpathLoginField = "//AXTextField[@AXPlaceholderValue='username']";
 	public static final String idPasswordField ="TempLoginViewControllerPasswordField";
+	public static final String relativePathLoginField = "id," + idPasswordField + ",0,-40";
 //	public static final String xpathPasswordField = "//AXTextField[@AXPlaceholderValue='password']";
 
 	public static final String idRegistrationTakePictureButton = "RegistrationTakePictureButton";
@@ -126,6 +127,7 @@ public final class OSXLocators {
 	public static final String xpathSoundCloudLinkButton = "//AXGroup/AXGroup/AXGroup/AXButton";
 	public static final String xpathSoundCloudMediaContainer = "//AXGroup/AXLink[last()]/AXImage";
 	public static final String xpathSoundCloudMediaContainerWithoutImage = "//AXGroup/AXLink[@AXDescription='Play on SoundCloud']";
+	public static final String xpathSoundCloundCurrentPlaybackTime = "//AXGroup/AXGroup/AXGroup[1]/AXStaticText";
 	
 	public static final String SOUNDCLOUD_BUTTON_STATE_PAUSE = "Pause";
 	public static final String SOUNDCLOUD_BUTTON_STATE_PLAY = "Play";
@@ -143,7 +145,7 @@ public final class OSXLocators {
 	public static final String idSingleChatUserNameField = "userProfileNameField";
 	public static final String xpathSingleChatUserEmailButton = "//AXPopover/AXTextArea/AXLink[@AXTitle='%s']";
 
-	public static final String xpathRemoveUserPictureCheckBox = "//AXCheckBox[@AXHelp='Remove picture']";
+	public static final String xpathRemoveUserPictureCheckBox = "//AXCheckBox[starts-with(@AXHelp,'Remove picture')]";
 	public static final String xpathRemoveUserPictureConfirmation = "//AXButton[@AXTitle='DELETE']";
 	public static final String xpathRemoveUserPictureCancel = "//AXButton[@AXTitle='CANCEL']";
 	

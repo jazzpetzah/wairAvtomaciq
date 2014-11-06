@@ -29,8 +29,8 @@ public class AndroidCommonUtils extends CommonUtils {
 			Runtime.getRuntime()
 					.exec("cmd /C adb -d shell \"am broadcast -a android.intent.action.MEDIA_MOUNTED -d file:///sdcard \"Broadcasting: Intent { act=android.intent.action.MEDIA_MOUNTED dat=file:///sdcard }");
 		} else {
-			executeOsXCommand(new String[] { "/bin/bash", "-c", "adb push",
-					getImagePath(CommonUtils.class), photoPathOnDevice });
+			executeOsXCommand(new String[] { "/bin/bash", "-c", "adb push "
+					+ getImagePath(CommonUtils.class) + " " + photoPathOnDevice });
 			executeOsXCommand(new String[] {
 					"/bin/bash",
 					"-c",

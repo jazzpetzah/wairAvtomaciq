@@ -64,6 +64,9 @@ public class LoginPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameIgnoreUpdateButton)
 	private WebElement ignoreUpdateButton;
 	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathTermsOfServiceButton)
+	private WebElement termsOfServiceButton;
+	
 	private String login;
 	
 	private String password;
@@ -119,7 +122,7 @@ public class LoginPage extends IOSPage {
 	}
 	
 	public RegistrationPage join() throws IOException{
-		
+		termsOfServiceButton.click();
 		signUpButton.click();
 
 		return new RegistrationPage(url, path);

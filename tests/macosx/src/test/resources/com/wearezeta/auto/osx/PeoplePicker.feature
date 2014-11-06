@@ -1,6 +1,6 @@
 Feature: People Picker
 
-  @smoke
+  @mute @smoke
   Scenario Outline: Add contact
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
