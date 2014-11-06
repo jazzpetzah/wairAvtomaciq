@@ -86,10 +86,27 @@ public class ConversationPageSteps {
 				 + beforeNumberOfImages + ", after - " + afterNumberOfImages, isNumberIncreased);
 		 
 		 //second check, if that picture is the expected HD picture and not just any picture
-		 BufferedImage pictureAssetFromConv = BackEndREST.getLastPictureAssetFromConversation(
-				 CommonUtils.yourUsers.get(0),
-				 CommonUtils.contacts.get(0));
+		 boolean retry = false;
+		 int retriesCount = 0;
+		 Exception lastException = null;
+		 BufferedImage pictureAssetFromConv = null;
+		 do {
+			 retry = false;
+			 try {
+				 pictureAssetFromConv = BackEndREST.getLastPictureAssetFromConversation(
+						 CommonUtils.yourUsers.get(0),
+						 CommonUtils.contacts.get(0));
+			 } catch (BackendRequestException e) {
+				 retry = true;
+				 retriesCount++;
+				 lastException = e;
+				 try { Thread.sleep(100); } catch (InterruptedException ie) {}
+			 }
+		 } while (retry == true && retriesCount < 5);
+		 
 		 BufferedImage origSentPicture = ImageUtil.readImageFromFile(OSXPage.imagesPath + filename);
+		 
+		 Assert.assertNotNull("Can't get picture asset from conversation via backend.\n" + lastException.getMessage(), pictureAssetFromConv);
 		 
 		 double score = ImageUtil.getOverlapScore(pictureAssetFromConv, origSentPicture, ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 		 Assert.assertTrue(
