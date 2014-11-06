@@ -210,8 +210,10 @@ public class ConversationPageSteps {
 			Assert.assertTrue("Connected to message does not appear in conversation.", 
 					CommonSteps.senderPages.getConversationPage().isMessageExist(message));
 	 	} else {
-			 Assert.assertTrue(CommonSteps.senderPages.getConversationPage().isMessageExist(message));
-		 }
+	 		String updatedMessage = CommonUtils.retrieveRealUserContactPasswordValue(message);
+	 		if (!updatedMessage.equals(message)) message = updatedMessage.toUpperCase();
+			Assert.assertTrue(CommonSteps.senderPages.getConversationPage().isMessageExist(message));
+		}
 	 }
 	 
 	 @When("I open People Picker from conversation")
