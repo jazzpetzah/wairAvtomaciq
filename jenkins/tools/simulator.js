@@ -7,6 +7,7 @@ var logger = require('../../server/logger.js').get('appium')
   , exec = require('child_process').exec
   , path = require('path')
   , ncp = require('ncp')
+  , mkdirp = require('mkdirp')
   , xcode = require('./xcode.js')
   , Simctl = require('./simctl.js')
   , multiResolve = require('../../helpers.js').multiResolve
@@ -146,7 +147,7 @@ Simulator.prototype.getAppDirs = function (appFile, appBundleId) {
     var bundleDirs = wrapInArray(this.getApp8Dir(appBundleId, "Bundle"));
     return dataDirs.concat(bundleDirs);
   } else {
-    return this.getApp7Dirs(appFile);
+    return this.getApp7Dirs([appFile]);
   }
 };
 
@@ -215,7 +216,7 @@ Simulator.prototype.cleanSafari = function (keepPrefs, cb) {
   if (!this.dirsExist()) {
     logger.info("Couldn't find Safari support directories to clean out old " +
                 "data. Probably there's nothing to clean out");
-    return;
+    return cb();
   }
 
   var libraryDirs = multiResolve(this.getDirs(), 'Library');
@@ -282,7 +283,7 @@ Simulator.prototype.cleanCustomApp = function (appFile, appBundleId) {
 
   if (parseFloat(this.platformVer) >= 8) {
     var toDeletes = [
-        'Library/Preferences/' + appBundleId + '.plist'
+      'Library/Preferences/' + appBundleId + '.plist'
     ];
     _.each(this.getDirs(), function (simDir) {
       _.each(toDeletes, function (relRmPath) {
@@ -294,48 +295,147 @@ Simulator.prototype.cleanCustomApp = function (appFile, appBundleId) {
   }
 };
 
-Simulator.prototype.cleanSim = function (keepKeychains) {
+Simulator.prototype.cleanSim = function (keepKeychains, tempDir, cb) {
   logger.debug("Cleaning sim data files");
-  if (!this.dirsExist()) {
-    logger.info("Couldn't find support directories to clean out old " +
-                "data. Probably there's nothing to clean out");
-    return;
-  }
-  var toDeletes = [
-    'Library/TCC',
-    'Library/Caches/locationd',
-    'Library/BackBoard/applicationState.plist'
-  ];
-  if (!keepKeychains) {
-    toDeletes.push('Library/Keychains');
-  }
-  _.each(this.getDirs(), function (simDir) {
-    _.each(toDeletes, function (relRmPath) {
-      var rmPath = path.resolve(simDir, relRmPath);
-      logger.debug("Deleting " + rmPath);
-      safeRimRafSync(rmPath);
-    });
-  });
 
-  logger.debug("Cleaning sim preferences");
-  var prefsPlist = Simulator.getSimAppPrefsFile();
-  var data = Simulator.getPlistData(prefsPlist);
-  var keysToClear = [
-    'CurrentDeviceUDID',
-    'SimulateDevice'
-  ];
-  var changed = false;
-  _.each(keysToClear, function (key) {
-    if (_.has(data, key)) {
-      logger.debug("Clearing key: " + key);
-      delete data[key];
-      changed = true;
+
+  var cleanSimVLessThanEight = function (keepKeychains, cb) {
+    if (!this.dirsExist()) {
+      logger.info("Couldn't find support directories to clean out old " +
+                  "data. Probably there's nothing to clean out");
+      return cb();
     }
-  });
-  if (changed) {
-    logger.debug("Writing new preferences plist data");
-    fs.writeFileSync(prefsPlist, bplistCreate(data));
+    var toDeletes = [
+      'Library/TCC',
+      'Library/Caches/locationd',
+      'Library/BackBoard/applicationState.plist'
+    ];
+    if (!keepKeychains) {
+      toDeletes.push('Library/Keychains');
+    }
+    _.each(this.getDirs(), function (simDir) {
+      _.each(toDeletes, function (relRmPath) {
+        var rmPath = path.resolve(simDir, relRmPath);
+        logger.debug("Deleting " + rmPath);
+        safeRimRafSync(rmPath);
+      });
+    });
+
+    logger.debug("Cleaning sim preferences");
+    var prefsPlist = Simulator.getSimAppPrefsFile();
+    var data = Simulator.getPlistData(prefsPlist);
+    var keysToClear = [
+      'CurrentDeviceUDID',
+      'SimulateDevice'
+    ];
+    var changed = false;
+    _.each(keysToClear, function (key) {
+      if (_.has(data, key)) {
+        logger.debug("Clearing key: " + key);
+        delete data[key];
+        changed = true;
+      }
+    });
+    if (changed) {
+      logger.debug("Writing new preferences plist data");
+      return fs.writeFile(prefsPlist, bplistCreate(data), cb);
+    }
+    return cb();
+  }.bind(this);
+
+//begin patch
+  var cleanSimVEight = function (keepKeychains, tempDir, cb) {
+    if (!this.dirsExist()) {
+      logger.info("Couldn't find support directories to clean out old " +
+                  "data. Probably there's nothing to clean out");
+      return cb();
+    }
+    var toDeletes = [
+      'Library/TCC',
+      'Library/Caches/locationd',
+      'Library/BackBoard/applicationState.plist'
+    ];
+    if (!keepKeychains) {
+      toDeletes.push('Library/Keychains');
+    }
+    _.each(this.getDirs(), function (simDir) {
+      _.each(toDeletes, function (relRmPath) {
+        var rmPath = path.resolve(simDir, relRmPath);
+        logger.debug("Deleting " + rmPath);
+        safeRimRafSync(rmPath);
+      });
+    });
+
+    logger.debug("Cleaning sim preferences");
+    var prefsPlist = Simulator.getSimAppPrefsFile();
+    var data = Simulator.getPlistData(prefsPlist);
+    var keysToClear = [
+      'CurrentDeviceUDID',
+      'SimulateDevice'
+    ];
+    var changed = false;
+    _.each(keysToClear, function (key) {
+      if (_.has(data, key)) {
+        logger.debug("Clearing key: " + key);
+        delete data[key];
+        changed = true;
+      }
+    });
+    if (changed) {
+      logger.debug("Writing new preferences plist data");
+      return fs.writeFile(prefsPlist, bplistCreate(data), cb);
+    }
+    return cb();
+  }.bind(this);
+
+//end patch
+
+/*
+  var cleanSimVEight = function (keepKeychains, tempDir, cb) {
+
+    var base = path.resolve(this.getRootDir(), this.udid, "data");
+    var keychainPath = path.resolve(base, "Library", "Keychains");
+    var tempKeychainPath = path.resolve(tempDir, "simkeychains_" + this.udid);
+
+    var removeKeychains = _.partial(ncp, keychainPath, tempKeychainPath);
+
+    var returnKeychains = function (err, cb) {
+      if (err) {
+        return cb(err);
+      }
+      mkdirp(keychainPath, function (err) {
+        if (err) { return cb(err); }
+        ncp(tempKeychainPath, keychainPath, cb);
+      });
+    };
+
+    var performWhileSavingKeychains = function (enclosed, cb) {
+      async.waterfall([
+        removeKeychains,
+        enclosed,
+        returnKeychains
+      ], cb);
+    };
+
+    var cleanSim = _.partial(Simctl.erase, this.udid);
+
+    if (keepKeychains) {
+      logger.debug("Resetting simulator and saving Keychains");
+      performWhileSavingKeychains(cleanSim, cb);
+    } else {
+      cleanSim(cb);
+    }
+
+  }.bind(this);
+
+*/
+
+  if (this.sdkVer >= 8) {
+    cleanSimVEight(keepKeychains, tempDir, cb);
+  } else {
+    cleanSimVLessThanEight(keepKeychains, cb);
   }
+
 };
 
 Simulator.prototype.moveBuiltInApp = function (appPath, appName, newAppDir, cb) {
@@ -438,10 +538,27 @@ Simulator.prototype.preparePreferencesApp = function (tmpDir, cb) {
   this.prepareBuiltInApp("Preferences", tmpDir, cb);
 };
 
-Simulator.prototype.deleteSim = function () {
-  var root = this.getRootDir();
-  logger.debug("Deleting simulator folder: " + root);
-  safeRimRafSync(root);
+Simulator.prototype.deleteSim = function (cb) {
+
+  var deleteSimVEight = function (cb) {
+    logger.debug('Resetting Content and Settings for Simulator');
+    Simctl.erase(this.udid, cb);
+  }.bind(this);
+
+  var deleteSimLessThanVEight = function (cb) {
+    var root = this.getRootDir();
+    logger.debug("Deleting simulator folder: " + root);
+    safeRimRafSync(root);
+    cb();
+  }.bind(this);
+
+
+  if (parseFloat(this.sdkVer) >= 8) {
+    deleteSimVEight(cb);
+  } else {
+    deleteSimLessThanVEight(cb);
+  }
+
 };
 
 Simulator.prototype.setLocale = function (language, locale, calendar) {
