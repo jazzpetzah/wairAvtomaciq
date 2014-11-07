@@ -211,7 +211,7 @@ public class DialogPageSteps {
 	@When("^I scroll media out of sight until media bar appears$")
 	public void IScrollMediaOutOfSightUntilMediaBarAppears() throws Exception{
 		PagesCollection.dialogPage = PagesCollection.dialogPage.scrollDownTilMediaBarAppears();
-	 
+		Assert.assertTrue(PagesCollection.dialogPage.isMediaBarDisplayed());
 	}
 	
 	@When("^I pause playing the media in media bar$")
