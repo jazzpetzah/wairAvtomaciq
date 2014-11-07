@@ -8,7 +8,7 @@ public final class IOSLocators {
 	
 	public static final String nameSignUpButton = "SignUp";
 	
-	public static final String xpathTermsOfServiceButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[3]";
+	public static final String xpathTermsOfServiceButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]";
 	
 	public static final String nameLoginButton = "ConfirmSignIn";
 	
