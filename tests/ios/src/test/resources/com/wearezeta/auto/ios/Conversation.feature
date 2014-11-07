@@ -157,7 +157,7 @@ Scenario Outline: Conversation gets scrolled back to playing media when clicking
     
 Examples:
     |  Login		| Password		| Name			| Contact1    | SoundCloudLink |
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/carl-cox/sets/all-roads-lead-to-the |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
    
 @regression
@@ -262,7 +262,7 @@ Scenario Outline: Verify the Media Bar disappears when playing media is back in 
     
 Examples:
     |  Login		| Password		| Name			| Contact1    | SoundCloudLink |
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2 | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
     
     
 @regression
