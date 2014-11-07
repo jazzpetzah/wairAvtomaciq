@@ -167,7 +167,7 @@ public class ZetaFormatter implements Formatter, Reporter {
 					errorMsg = errorMsg.substring(0, 255);
 				}
 				
-				sendNotification("/n============Automatic notification============\n" +
+				sendNotification("\n============Automatic notification============\n" +
 						driver.getCapabilities().getCapability("platformName") + " " + scope + 
 						"(build " + buildNumber + ") \n" + "Feature: " + feature + 
 						", Scenario: " + scenario + "(line number: " + Integer.toString(lineNumber) + ")" + "\nStep: " + 
