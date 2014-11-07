@@ -215,7 +215,7 @@ public final class IOSLocators {
 	///////////////////////
 	public static final String xpathTakePhotoSmile = "//UIAApplication[1]/UIAWindow[1]/UIAImage[1]";
 	
-	public static final String nameTakePhotoHintLabel = "TAKE A PICTURE, OR CHOOSE ONE";
+	public static final String nameTakePhotoHintLabel = "CHOOSE A PICTURE  AND PICK A COLOR";
 	
 	public static final String xpathFirstChatInChatListTextField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[2]/UIAStaticText[1]";
 	
