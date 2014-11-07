@@ -127,7 +127,7 @@ public final class OSXLocators {
 	public static final String xpathSoundCloudLinkButton = "//AXGroup/AXGroup/AXGroup/AXButton";
 	public static final String xpathSoundCloudMediaContainer = "//AXGroup/AXLink[last()]/AXImage";
 	public static final String xpathSoundCloudMediaContainerWithoutImage = "//AXGroup/AXLink[@AXDescription='Play on SoundCloud']";
-	public static final String xpathSoundCloundCurrentPlaybackTime = "//AXGroup/AXGroup/AXGroup[1]/AXStaticText";
+	public static final String xpathSoundCloudCurrentPlaybackTime = "(//AXGroup[AXGroup[AXLink]]/AXGroup/AXGroup/AXGroup[1]/AXStaticText)[last()]";
 	
 	public static final String SOUNDCLOUD_BUTTON_STATE_PAUSE = "Pause";
 	public static final String SOUNDCLOUD_BUTTON_STATE_PLAY = "Play";
