@@ -112,7 +112,7 @@ public class RegistrationPage extends IOSPage {
 	private String emailTextFieldValue;
 	private String passwordTextFieldValue;
 
-	private String confirmMessage = "We sent an email to %s. Check your Inbox and follow the link to verify your address. You won’t be able to use Zeta until you do.\n\nDidn’t get the message?\n\nRe-send";
+	private String confirmMessage = "We sent an email to %s. Check your Inbox and follow the link to verify your address. You won’t be able to use Wire until you do.\n\nDidn’t get the message?\n\nRe-send";
 
 	private String[] listOfEmails;
 
