@@ -367,7 +367,7 @@ public class ConversationPage extends OSXPage {
 	public String getCurrentPlaybackTime() {
 		String time = "";
 		try {
-			WebElement el = driver.findElement(By.xpath(OSXLocators.xpathSoundCloundCurrentPlaybackTime));
+			WebElement el = driver.findElement(By.xpath(OSXLocators.xpathSoundCloudCurrentPlaybackTime));
 			time = el.getAttribute("AXValue");
 		} catch (NoSuchElementException e) {
 			log.error("No element that contains playback time");
