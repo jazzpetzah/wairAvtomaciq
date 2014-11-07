@@ -192,7 +192,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact3 |
 
-  @regression @id81
+  @torun @regression @id81
   Scenario Outline: Play embedded SoundCloud link in conversation
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
@@ -207,7 +207,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     | SoundCloudLink                              |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/edherbst/throwaway-3 |
 
-  @regression @id379
+  @torun @regression @id379
   Scenario Outline: Play/pause SoundCloud media link from the media bar
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
@@ -228,7 +228,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     | SoundCloudLink                              |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/edherbst/throwaway-3 |
 
-  @regression @id380
+  @torun @regression @id380
   Scenario Outline: Conversation scrolls back to playing media when clicked on the media bar
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
@@ -246,7 +246,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     | SoundCloudLink                              |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/edherbst/throwaway-3 |
 
-  @regression @id618
+  @torun @regression @id618
   Scenario Outline: Verify the new conversation is created on the other end
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
@@ -340,7 +340,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    | SoundCloudLink                              | ChatName        |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | https://soundcloud.com/edherbst/throwaway-3 | SecondEndMMChat |
 
-  @regression @id381
+  @torun @regression @id381
   Scenario Outline: The media bar disappears after playback finishes
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
