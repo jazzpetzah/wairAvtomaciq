@@ -238,6 +238,8 @@ public abstract class IOSPage extends BasePage {
 		final String script = StringUtils.join(scriptArr, "\n");
 		ScriptEngineManager mgr = new ScriptEngineManager();
 		ScriptEngine engine = mgr.getEngineByName("AppleScript");
-		engine.eval(script);
+		if (null != engine) {
+			engine.eval(script);
+		}
 	}
 }
