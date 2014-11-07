@@ -120,6 +120,28 @@ public class CommonUtils {
 		throw new NoSuchElementException("No user with username: " + username
 				+ " is in an available list");
 	}
+	
+	public static String retrieveRealUserEmailValue(String contact) {
+		String email = "";
+		boolean flag = false;
+		for (ClientUser user : CommonUtils.yourUsers) {
+			if (user.getName().equals(contact)) {
+				email = user.getEmail();
+				flag = true;
+				break;
+			}
+		}
+		if(flag == false) {
+			for (ClientUser user : CommonUtils.contacts) {
+				if (user.getName().equals(contact)) {
+					email = user.getEmail();
+					break;
+				}
+			}
+		}
+		
+		return email;
+	}
 
 	public static String retrieveRealUserContactPasswordValue(String value) {
 		// TODO: This method requires better optimization
