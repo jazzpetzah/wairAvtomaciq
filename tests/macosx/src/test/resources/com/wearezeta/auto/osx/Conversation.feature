@@ -246,7 +246,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     | SoundCloudLink                              |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/edherbst/throwaway-3 |
 
-  @staging @id618
+  @regression @id618
   Scenario Outline: Verify the new conversation is created on the other end
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list

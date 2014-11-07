@@ -145,7 +145,7 @@ public final class OSXLocators {
 	public static final String idSingleChatUserNameField = "userProfileNameField";
 	public static final String xpathSingleChatUserEmailButton = "//AXPopover/AXTextArea/AXLink[@AXTitle='%s']";
 
-	public static final String xpathRemoveUserPictureCheckBox = "//AXCheckBox[@AXHelp='Remove picture']";
+	public static final String xpathRemoveUserPictureCheckBox = "//AXCheckBox[starts-with(@AXHelp,'Remove picture')]";
 	public static final String xpathRemoveUserPictureConfirmation = "//AXButton[@AXTitle='DELETE']";
 	public static final String xpathRemoveUserPictureCancel = "//AXButton[@AXTitle='CANCEL']";
 	
