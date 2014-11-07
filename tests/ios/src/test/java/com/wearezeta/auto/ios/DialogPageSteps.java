@@ -257,7 +257,7 @@ public class DialogPageSteps {
 		if ((memTime + time*1000)>currentTime){
 			deltaTime = time*1000 - (currentTime - memTime);
 			log.debug("Waiting " + deltaTime + " ms playback to finish");
-			Thread.sleep(deltaTime);
+			Thread.sleep(deltaTime+5000);
 			log.debug("Playback finished");
 		}
 		else {
