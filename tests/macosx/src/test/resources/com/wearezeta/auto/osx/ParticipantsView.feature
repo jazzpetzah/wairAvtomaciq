@@ -166,7 +166,7 @@ Feature: Participants View
       | Login   | Password    | Name    | Contact1    | Contact2    | ChatName               | NewName |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | CheckDisplayedNameChat | RANDOM  |
 
-  @staging @id621
+  @regression @id621
   Scenario Outline: Leave group chat - second end verification
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
