@@ -176,7 +176,7 @@ Feature: Register new user
     
 
 @regression
-@id285
+@id285 @mute
   Scenario Outline: Take or select a photo label not visible when picture is selected
 	Given I see sign in screen
 	When I press Join button

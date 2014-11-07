@@ -9,6 +9,7 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
@@ -31,7 +32,7 @@ public abstract class IOSPage extends BasePage {
 	protected static ZetaDriver driver;
 	protected static WebDriverWait wait;
 	
-	private static final int SWIPE_DELAY = 7 * 1000; //milliseconds
+	private static final int SWIPE_DELAY = 10 * 1000; //milliseconds
 	
 	DesiredCapabilities capabilities = new DesiredCapabilities();
 	
@@ -211,6 +212,7 @@ public abstract class IOSPage extends BasePage {
 	}
 	
 	public boolean isKeyboardVisible(){
+		DriverUtils.waitUntilElementDissapear(driver, By.className(IOSLocators.classNameKeyboard));
 		return DriverUtils.isElementDisplayed(keyboard);
 	}
 	
