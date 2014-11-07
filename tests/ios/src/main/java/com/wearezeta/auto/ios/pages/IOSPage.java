@@ -32,7 +32,7 @@ public abstract class IOSPage extends BasePage {
 	protected static ZetaDriver driver;
 	protected static WebDriverWait wait;
 	
-	private static final int SWIPE_DELAY = 7 * 1000; //milliseconds
+	private static final int SWIPE_DELAY = 10 * 1000; //milliseconds
 	
 	DesiredCapabilities capabilities = new DesiredCapabilities();
 	

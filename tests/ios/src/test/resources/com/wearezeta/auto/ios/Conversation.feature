@@ -303,7 +303,7 @@ Examples:
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
 
- @regression 
+ @staging
  @id407
   Scenario Outline: Send more than 200 chars message
     Given I Sign in using login <Login> and password <Password>
@@ -405,7 +405,7 @@ Examples:
     |	Login	|	Password	|	Name	|	Contact		| text 		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact2	| TextToCopy|
    
- @regression   
+ @staging   
  @id394 
  Scenario Outline: Tap the cursor to get to the end of the conversation
     Given I Sign in using login <Login> and password <Password>

@@ -207,17 +207,21 @@ public class DialogPage extends IOSPage{
 	public DialogPage scrollDownTilMediaBarAppears() throws Exception{
 		int count = 0;
 		boolean buttonIsShown = false;
-		while(!buttonIsShown && (count < 2)){
-			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true){
-				DriverUtils.swipeDown(driver, conversationPage, 500);
-				
+		if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true){
+			DriverUtils.swipeDown(driver, conversationPage, 500);
+			
+		}
+		else {
+			swipeDownSimulator();
+			
+		}
+		while(!buttonIsShown && (count < 20)){
+			if (mediaLinkCell.getLocation().y < dialogWindow.getSize().height) {
+				Thread.sleep(1000);
 			}
 			else {
-				swipeDownSimulator();
-				
+				buttonIsShown = true;
 			}
-			DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameMediaBarPlayPauseButton));
-			buttonIsShown = mediabarPlayPauseButton.isDisplayed();
 			count++;
 		}
 
