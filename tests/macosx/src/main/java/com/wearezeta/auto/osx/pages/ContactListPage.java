@@ -227,34 +227,33 @@ public class ContactListPage extends OSXPage {
 	}
 	
 	public void scrollToConversationInList(WebElement conversation) {
-    	NSPoint mainPosition = NSPoint.fromString(mainWindow.getAttribute("AXPosition"));
-    	NSPoint mainSize = NSPoint.fromString(mainWindow.getAttribute("AXSize"));
-    	
-    	NSPoint latestPoint =
-    			new NSPoint(mainPosition.x() + mainSize.x(), mainPosition.y() + mainSize.y());
-
-    	//get scrollbar for contact list
+		//get scrollbar for contact list
     	WebElement peopleDecrementSB = null;
     	WebElement peopleIncrementSB = null;
 
     	WebElement scrollArea = driver.findElement(By.xpath(OSXLocators.xpathConversationListScrollArea));
     
+    	NSPoint mainPosition = NSPoint.fromString(scrollArea.getAttribute("AXPosition"));
+    	NSPoint mainSize = NSPoint.fromString(scrollArea.getAttribute("AXSize"));
+    	
+    	NSPoint latestPoint =
+    			new NSPoint(mainPosition.x() + mainSize.x(), mainPosition.y() + mainSize.y());
+    	
     	WebElement userContact = conversation;
-    	boolean isFoundPeople = false;
 
         NSPoint userPosition = NSPoint.fromString(userContact.getAttribute("AXPosition"));
         if (userPosition.y() > latestPoint.y() || userPosition.y() < mainPosition.y()) {
-        	if (isFoundPeople) {
-    			WebElement scrollBar = scrollArea.findElement(By.xpath("//AXScrollBar"));
-    			List<WebElement> scrollButtons = scrollBar.findElements(By.xpath("//AXButton"));
-    			for (WebElement scrollButton: scrollButtons) {
-    				String subrole = scrollButton.getAttribute("AXSubrole");
-    				if (subrole.equals("AXDecrementPage")) {
-    					peopleDecrementSB = scrollButton;
-    				}
-    				if (subrole.equals("AXIncrementPage")) {
-    					peopleIncrementSB = scrollButton;
-    				}
+        	WebElement scrollBar = scrollArea.findElement(By.xpath("//AXScrollBar"));
+    		List<WebElement> scrollButtons = scrollBar.findElements(By.xpath("//AXButton"));
+    		for (WebElement scrollButton: scrollButtons) {
+    			String subrole = scrollButton.getAttribute("AXSubrole");
+
+    			System.out.println(subrole);
+    			if (subrole.equals("AXDecrementPage")) {
+    				peopleDecrementSB = scrollButton;
+    			}
+    			if (subrole.equals("AXIncrementPage")) {
+    				peopleIncrementSB = scrollButton;
     			}
     		}
         	
@@ -267,7 +266,6 @@ public class ContactListPage extends OSXPage {
             	userPosition = NSPoint.fromString(userContact.getAttribute("AXPosition"));
             }
         }
-		
 	}
 	
 	public void goToContactActionsMenu() {
