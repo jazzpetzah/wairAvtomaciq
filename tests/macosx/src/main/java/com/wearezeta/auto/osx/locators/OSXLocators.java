@@ -6,7 +6,8 @@ public final class OSXLocators {
 	public static final String xpathMainWindow = "//AXWindow[@AXRoleDescription='standard window']";
 	
 	public static final String nameSignInButton = "SIGN IN";
-	public static final String nameRegisterButton = "JOIN";
+	public static final String nameRegisterButton = "REGISTER";
+	public static final String xpathAcceptTermsOfServiceCheckBox = "//AXCheckBox";
 	
 	public static final String idLoginField = "TempLoginViewControllerUsernameField";
 	public static final String classNameLoginField = "AXTextArea";
