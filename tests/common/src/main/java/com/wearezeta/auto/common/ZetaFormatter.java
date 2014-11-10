@@ -190,16 +190,7 @@ public class ZetaFormatter implements Formatter, Reporter {
 				}
 			    ImageIO.write(image, "png", outputfile);
 
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			catch (org.openqa.selenium.remote.SessionNotFoundException ex) {
-				((ZetaDriver) driver).setSessionLost(true);
-			}
-			
-			catch (WebDriverException  e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
