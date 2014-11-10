@@ -24,6 +24,9 @@ public class LoginPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idLoginPage)
 	private WebElement viewPager;
 	
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathAcceptTermsOfServiceCheckBox)
+	private WebElement acceptTermOfServiceCheckBox;
+	
 	@FindBy(how = How.NAME, using = OSXLocators.nameRegisterButton)
 	private WebElement registerButton;
 
@@ -114,6 +117,10 @@ public class LoginPage extends OSXPage {
 	}
 	
 	public RegistrationPage startRegistration() throws MalformedURLException {
+		acceptTermOfServiceCheckBox.click();
+		for (int i = 0; i < 3; i++) {
+			if (registerButton.getAttribute("AXEnabled").equals("1")) break;
+		}
 		registerButton.click();
 		RegistrationPage page = new RegistrationPage(url, path);
 		return page;
