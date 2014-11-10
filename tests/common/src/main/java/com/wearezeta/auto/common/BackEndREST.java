@@ -38,7 +38,7 @@ public class BackEndREST {
 	private static final Logger log = ZetaLogger.getLog(BackEndREST.class.getSimpleName());
 
 	static {
-		log.setLevel(Level.INFO);
+		log.setLevel(Level.DEBUG);
 	}
 	
 	ClientConfig config = new DefaultClientConfig();
