@@ -133,7 +133,7 @@ public class ContactListPage extends OSXPage {
 		return true;
 	}
 	
-	public boolean openConversation(String conversationName) {
+	public boolean openConversation(String conversationName, boolean isUserProfile) {
 
 		if (conversationName.contains(",")) {
 			String[] exContacts = conversationName.split(",");
@@ -147,7 +147,7 @@ public class ContactListPage extends OSXPage {
 					}
 				}
 				if (isFound) {
-					scrollToConversationInList(contact);
+					if (!isUserProfile) scrollToConversationInList(contact);
 					contact.click();
 					return true;
 				}
@@ -155,7 +155,7 @@ public class ContactListPage extends OSXPage {
 		} else {
 			for (WebElement contact: this.contactsTextFields) {
 				if (contact.getText().replaceAll("\uFFFC", "").trim().equals(conversationName)) {
-					scrollToConversationInList(contact);
+					if (!isUserProfile) scrollToConversationInList(contact);
 					contact.click();
 					return true;
 				}
