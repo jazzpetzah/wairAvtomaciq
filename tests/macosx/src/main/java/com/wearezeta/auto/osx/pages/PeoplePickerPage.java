@@ -34,6 +34,9 @@ public class PeoplePickerPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerSearchResultTable)
 	private WebElement peoplePickerSearchResultTable;
 	
+	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerTopContactsSectionHeader)
+	private WebElement peoplePickerTopContactsSectionHeader;
+
 	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerSearchResultEntry)
 	private List<WebElement> searchResults;
 	
@@ -146,12 +149,17 @@ public class PeoplePickerPage extends OSXPage {
 	}
 	
 	public boolean isPeoplePickerPageVisible() throws InterruptedException, IOException {
+		boolean flag = false;
 		try {
 			peoplePickerSearchResultTable.click();
-			return true;
+			flag = true;
 		} catch (NoSuchElementException e) {
-			return false;
 		}
+		try {
+			peoplePickerTopContactsSectionHeader.click();
+			flag = true;
+		} catch (NoSuchElementException e) { }
+		return flag;
 	}
 	
 	public void closePeoplePicker() {
