@@ -248,7 +248,6 @@ public class ContactListPage extends OSXPage {
     		for (WebElement scrollButton: scrollButtons) {
     			String subrole = scrollButton.getAttribute("AXSubrole");
 
-    			System.out.println(subrole);
     			if (subrole.equals("AXDecrementPage")) {
     				peopleDecrementSB = scrollButton;
     			}
@@ -257,13 +256,19 @@ public class ContactListPage extends OSXPage {
     			}
     		}
         	
-        	while (userPosition.y() > latestPoint.y()) {
+    		int count = 0;
+        	while ((userPosition.y() > latestPoint.y()) && count < 10) {
+        		log.debug("User position: " + userPosition + "; latest point: " + latestPoint);
             	peopleIncrementSB.click();
             	userPosition = NSPoint.fromString(userContact.getAttribute("AXPosition"));
+            	count++;
             }
-            while (userPosition.y() < mainPosition.y()) {
+        	count = 0;
+            while ((userPosition.y() < mainPosition.y()) && count < 10) {
+        		log.debug("User position: " + userPosition + "; mainPosition point: " + mainPosition);
             	peopleDecrementSB.click();
             	userPosition = NSPoint.fromString(userContact.getAttribute("AXPosition"));
+            	count++;
             }
         }
 	}
