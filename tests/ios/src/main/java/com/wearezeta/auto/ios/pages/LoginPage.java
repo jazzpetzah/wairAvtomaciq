@@ -220,7 +220,7 @@ public class LoginPage extends IOSPage {
 	}
 	
 	public Boolean errorMailNotificationIsShown(){
-		return (ExpectedConditions.visibilityOf(errorMailNotification) != null);
+		return DriverUtils.isElementDisplayed(errorMailNotification);
 	}
 	
 	public Boolean errorMailNotificationIsNotShown(){
@@ -228,7 +228,7 @@ public class LoginPage extends IOSPage {
 	}
 	
 	public Boolean wrongCredentialsNotificationIsShown(){
-		return (ExpectedConditions.visibilityOf(wrongCredentialsNotification) != null);
+		return DriverUtils.isElementDisplayed(wrongCredentialsNotification);
 	}
 
 	public void ignoreUpdate() {

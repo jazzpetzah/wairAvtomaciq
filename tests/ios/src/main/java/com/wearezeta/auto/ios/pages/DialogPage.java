@@ -50,7 +50,7 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameDialogMessages)
 	private List<WebElement> messagesList;
 	
-	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameConnectMessageLabel)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathConnectMessageLabel)
 	private WebElement connectMessageLabel;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.namePendingButton)
@@ -96,6 +96,9 @@ public class DialogPage extends IOSPage{
 	
 	private String url;
 	private String path;
+	
+	private String connectMessage = "Hi %s,\nLet’s connect.\n%s";
+	private String connectingLabel = "CONNECTING TO %s";
 	
 	public DialogPage(String URL, String path) throws IOException {
 		super(URL, path);
@@ -145,9 +148,13 @@ public class DialogPage extends IOSPage{
 	{
 		return GetLastMessage(messagesList);
 	}
-		
-	public boolean isConnectMessageValid(String username){
-		return getConnectMessageLabel().equals("Connect to " + username);
+	
+	public String getExpectedConnectMessage(String contact, String user){
+		return String.format(connectMessage, contact, user);
+	}
+	
+	public String getExpectedConnectingLabel(String name){
+		return String.format(connectingLabel, name.toUpperCase());
 	}
 	
 	public boolean isPendingButtonVisible(){
@@ -325,7 +332,7 @@ public class DialogPage extends IOSPage{
 		driver.tap(1, 1, 1, 500);
 	}
 	
-	private String getConnectMessageLabel(){
+	public String getConnectMessageLabel(){
 		return connectMessageLabel.getText();
 	}
 	

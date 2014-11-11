@@ -4,8 +4,10 @@ package com.wearezeta.auto.ios;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+
 import org.apache.log4j.Logger;
 import org.junit.Assert;
+
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -145,12 +147,17 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.pressPingButton();
 	}
 	
-	@Then("^I see Pending Connect to (.*) message on Dialog page$")
-	public void ISeePendingConnectMessage(String user) throws Throwable {
+	@Then("^I see Pending Connect to (.*) message on Dialog page from user (.*)$")
+	public void ISeePendingConnectMessage(String contact, String user) throws Throwable {
 		
 		user = CommonUtils.retrieveRealUserContactPasswordValue(user);
-		Assert.assertTrue(PagesCollection.dialogPage.isConnectMessageValid(user));
-		Assert.assertTrue(PagesCollection.dialogPage.isPendingButtonVisible());
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		String expectedConnectingLabel = PagesCollection.dialogPage.getExpectedConnectingLabel(contact);
+		String actualConnectingLabel = PagesCollection.dialogPage.getConnectMessageLabel();
+		String lastMessage = PagesCollection.dialogPage.getLastMessageFromDialog();
+		String expectedConnectMessage = PagesCollection.dialogPage.getExpectedConnectMessage(contact, user);
+		Assert.assertEquals("Expected: " + expectedConnectingLabel + " | Actual: " + actualConnectingLabel, expectedConnectingLabel, actualConnectingLabel);
+		Assert.assertEquals("Expected: " + expectedConnectMessage + " | Actual: " + lastMessage, expectedConnectMessage, lastMessage);
 	}
 	
 	@Then("^I see new photo in the dialog$")

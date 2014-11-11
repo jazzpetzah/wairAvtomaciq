@@ -88,7 +88,7 @@ public final class IOSLocators {
 
 	public static final String xpathFirstInContactList = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[2]/UIAStaticText[1]";
 	
-	public static final String classNameConnectMessageLabel = "UIATextField";
+	public static final String xpathConnectMessageLabel = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]/UIAStaticText[1]";
 	
 	public static final String xpathUnicUserPickerSearchResult = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell[1]";
 	
@@ -356,6 +356,8 @@ public final class IOSLocators {
 	
 	public static final String namePendingRequestIgnoreButton = "IGNORE";
 	public static final String namePendingRequestConnectButton = "CONNECT";
+	public static final String xpathPendingRequesterName = "//UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIATextView[1]";
+	public static final String xpathPendingRequestMessage = "//UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIATextView[3]";
 	
 	/////////////////////////////
 	//People picker
