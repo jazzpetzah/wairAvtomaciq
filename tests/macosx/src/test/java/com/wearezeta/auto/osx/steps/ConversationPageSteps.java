@@ -101,7 +101,7 @@ public class ConversationPageSteps {
 				 retry = true;
 				 retriesCount++;
 				 lastException = e;
-				 try { Thread.sleep(100); } catch (InterruptedException ie) {}
+				 try { Thread.sleep(500); } catch (InterruptedException ie) {}
 			 }
 		 } while (retry == true && retriesCount < 5);
 		 
