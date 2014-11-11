@@ -124,20 +124,23 @@ public class ContactListPage extends IOSPage {
 	private WebElement findNameInContactList(String name) {
 		Boolean flag = true;
 		WebElement contact = null;
-		for (WebElement listName : contactListNames) {
-			if (listName.getText().equals(name)) {
-				contact = listName;
-				flag = false;
+		for (int i = 0; i < 5; i++) {
+			for (WebElement listName : contactListNames) {
+				if (listName.getText().equals(name)) {
+					contact = listName;
+					flag = false;
+					break;
+				}
+			}
+			if (flag) {
+				WebElement el = contactListNames.get(contactListNames.size() - 1);
+				wait.until(ExpectedConditions.visibilityOf(el));
+				wait.until(ExpectedConditions.elementToBeClickable(el));
+				DriverUtils.scrollToElement(driver, el);
+			}
+			else {
 				break;
 			}
-		}
-		if (flag) {
-			//refreshUITree();
-			WebElement el = contactListNames.get(contactListNames.size() - 1);
-			wait.until(ExpectedConditions.visibilityOf(el));
-			wait.until(ExpectedConditions.elementToBeClickable(el));
-			DriverUtils.scrollToElement(driver, el);
-			findNameInContactList(name);
 		}
 		return contact;
 	}
