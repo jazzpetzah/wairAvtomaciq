@@ -393,7 +393,9 @@ public class CommonSteps {
 	
 	private void storeOsxPageSource() {
 		if (ExecutionContext.isOsxEnabled() && ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED) {
-			osxPageSources.put(new Date(), ExecutionContext.osxZeta().listener().getChatSource());
+			String chatSource = ExecutionContext.osxZeta().listener().getChatSource();
+			osxPageSources.put(new Date(), chatSource);
+			log.debug(chatSource);
 		}
 	}
 	
