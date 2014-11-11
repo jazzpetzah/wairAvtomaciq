@@ -14,7 +14,8 @@ Feature: Sign In
       | Login   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |
 
-  @staging @id525
+  #Not supported functionality - Sign Out
+  @mute @regression @id525
   Scenario Outline: Change Sign in user
     Given I Sign in using login <Login2> and password <Password>
     And I see my name <Name2> in Contact list
