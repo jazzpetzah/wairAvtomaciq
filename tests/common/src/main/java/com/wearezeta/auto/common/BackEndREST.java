@@ -97,8 +97,12 @@ public class BackEndREST {
 
 	private static String httpPost(Builder webResource, Object entity,
 			int[] acceptableResponseCodes) throws BackendRequestException {
-		ClientResponse response = webResource
-				.post(ClientResponse.class, entity);
+		Object lock = new Object();
+		ClientResponse response;
+		synchronized(lock) {
+			response = webResource.post(ClientResponse.class, entity);
+		}
+		log.debug("HTTP POST request(Input data: " + entity + ", Response: " + response.toString() + ")");
 		VerifyRequestResult(response.getStatus(), acceptableResponseCodes);
 		return response.getEntity(String.class);
 	}
@@ -282,7 +286,6 @@ public class BackEndREST {
 		final String input = String.format(
 				"{\"email\": \"%s\",\"name\": \"%s\",\"password\": \"%s\"}",
 				email, userName, password);
-		log.debug("Input data: " + input);
 		final String output = httpPost(webResource, input,
 				new int[] { HttpStatus.SC_CREATED });
 		JSONObject jsonObj = new JSONObject(output);
