@@ -97,7 +97,7 @@ public class DialogPage extends IOSPage{
 	private String url;
 	private String path;
 	
-	private String connectMessage = "Hi %s,\nLet’s connect.\n%s";
+	private String connectMessage = "Hi %s,\nlet’s connect.\n%s";
 	private String connectingLabel = "CONNECTING TO %s";
 	
 	public DialogPage(String URL, String path) throws IOException {

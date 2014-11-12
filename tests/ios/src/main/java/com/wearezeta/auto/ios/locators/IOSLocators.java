@@ -210,6 +210,16 @@ public final class IOSLocators {
 	
 	public static final String nameTermsOfUseButton = "Terms of Use";
 	
+	public static final String nameOptionsSettingsButton = "Settings";
+	
+	public static final String xpathSettingsPage = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]";
+	
+	public static final String nameSoundAlertsButton = "Sound Alerts";
+	
+	public static final String xpathSoundAlertsPage = "//UIAApplication[1]/UIAWindow[1]/UIANavigationBar[1]/UIAImage[1]";
+	
+	public static final String xpathAllSoundAlertsButton = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]";
+	 
 	///////////////////////
 	//Camera page locators
 	///////////////////////

@@ -1,7 +1,7 @@
 Feature: Register new user
 
-  #Muted due to fails on Jenkins execution. Is under investigation
-  @mute @regression @id77
+  #@regression
+  @staging @id77
   Scenario Outline: Register new user using front camera
     Given I am signed out from ZClient
     And I see Sign In screen

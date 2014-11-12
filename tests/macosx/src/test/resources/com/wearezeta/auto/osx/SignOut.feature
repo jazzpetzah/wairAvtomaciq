@@ -1,6 +1,6 @@
 Feature: Sign Out
 
-  #not supported functionality
+  #not supported functionality - Sign Out
   @mute @smoke @id479
   Scenario Outline: Sign out from ZClient
     Given I Sign in using login <Login> and password <Password>
