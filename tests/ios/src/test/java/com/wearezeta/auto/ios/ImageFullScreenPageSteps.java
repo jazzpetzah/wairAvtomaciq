@@ -53,8 +53,8 @@ public class ImageFullScreenPageSteps {
 		long actualDate = DialogPageSteps.sendDate;
 		long expectedDate = IOSCommonUtils.stringToTime(PagesCollection.imageFullScreenPage.getTimeStamp());
 		boolean flag = Math.abs(actualDate - expectedDate)<IOSConstants.DELTA_SEND_TIME;
-		Assert.assertTrue("Expected date " + expectedDate
-				+ " is different from actual - "
+		Assert.assertTrue("Expected date: " + expectedDate
+				+ " is different from actual: "
 				+ actualDate, flag);
 	}
 	
