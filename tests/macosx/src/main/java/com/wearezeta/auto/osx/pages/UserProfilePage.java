@@ -3,6 +3,7 @@ package com.wearezeta.auto.osx.pages;
 import java.net.MalformedURLException;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
@@ -75,6 +76,9 @@ public class UserProfilePage extends OSXPage {
 	public void confirmPictureChoice() throws InterruptedException {
 		Thread.sleep(3000);
 		confirmPictureChoiceButton.click();
+		try {
+			pictureSettingsCloseButton.click();
+		} catch (NoSuchElementException e) { }
 		DriverUtils.waitUntilElementDissapear(driver, By.xpath(OSXLocators.xpathPictureFromImageFile));
 	}
 
@@ -84,7 +88,9 @@ public class UserProfilePage extends OSXPage {
 
 	public void confirmPhotoRemoving() {
 		removeUserPictureConfirmationButton.click();
-		pictureSettingsCloseButton.click();
+		try {
+			pictureSettingsCloseButton.click();
+		} catch (NoSuchElementException e) { }
 		DriverUtils.waitUntilElementDissapear(driver, By.xpath(OSXLocators.xpathPictureFromImageFile));
 	}
 

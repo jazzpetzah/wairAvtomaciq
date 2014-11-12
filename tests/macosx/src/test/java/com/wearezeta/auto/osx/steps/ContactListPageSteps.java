@@ -63,8 +63,7 @@ public class ContactListPageSteps {
 		Assert.assertTrue(name + " were not found in contact list", CommonSteps.senderPages.getLoginPage().isLoginFinished(name));
 	}
 	
-	@Given("I open conversation with (.*)")
-	public void GivenIOpenConversationWith(String contact) throws MalformedURLException, IOException {
+	private void clickOnContactListEntry(String contact, boolean isUserProfile) throws MalformedURLException, IOException {
 		if (contact.equals(OSXLocators.RANDOM_KEYWORD)) {
 			contact = CommonSteps.senderPages.getConversationInfoPage().getCurrentConversationName();
 		} else {
@@ -73,29 +72,33 @@ public class ContactListPageSteps {
 		
 		boolean isConversationExist = false;
 		for (int i = 0; i < 10; i++) {
-			isConversationExist = CommonSteps.senderPages.getContactListPage().openConversation(contact);
+			isConversationExist = CommonSteps.senderPages.getContactListPage().openConversation(contact, isUserProfile);
 			if(isConversationExist) break;
 			try {Thread.sleep(1000); } catch (InterruptedException e) { }
 		}
-		Assert.assertTrue("Conversation with name " + contact + " was not found.", isConversationExist);
-		CommonSteps.senderPages.setConversationPage(new ConversationPage(
-				CommonUtils.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
-				CommonUtils.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
-	 }
+		Assert.assertTrue("Contact list entry with name " + contact + " was not found.", isConversationExist);
+	}
 	
-	@When("I open People Picker from contact list")
-	public void WhenIOpenPeoplePickerFromContactList() throws MalformedURLException, IOException {
-		CommonSteps.senderPages.getContactListPage().openPeoplePicker();
-		CommonSteps.senderPages.setPeoplePickerPage(new PeoplePickerPage(
+	@Given("I open conversation with (.*)")
+	public void GivenIOpenConversationWith(String contact) throws MalformedURLException, IOException {
+		clickOnContactListEntry(contact, false);
+		CommonSteps.senderPages.setConversationPage(new ConversationPage(
 				CommonUtils.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
 				CommonUtils.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
 	}
 	
 	@Given("I go to user (.*) profile") 
 	public void GivenIGoToUserProfile(String user) throws MalformedURLException, IOException {
-		user = CommonUtils.retrieveRealUserContactPasswordValue(user);
-		GivenIOpenConversationWith(user);
+		clickOnContactListEntry(user, true);
 		CommonSteps.senderPages.setUserProfilePage(new UserProfilePage(
+				CommonUtils.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
+				CommonUtils.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
+	}
+	
+	@When("I open People Picker from contact list")
+	public void WhenIOpenPeoplePickerFromContactList() throws MalformedURLException, IOException {
+		CommonSteps.senderPages.getContactListPage().openPeoplePicker();
+		CommonSteps.senderPages.setPeoplePickerPage(new PeoplePickerPage(
 				CommonUtils.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
 				CommonUtils.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
 	}

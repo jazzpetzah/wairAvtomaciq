@@ -77,8 +77,8 @@ public class UserProfilePageSteps {
 
 		double score = ImageUtil.getOverlapScore(userProfileAfter, userProfileBefore, ImageUtil.RESIZE_NORESIZE);
 		Assert.assertFalse(
-				"Overlap between two images has no enough score. Expected >= 0.95, current = " + score,
-				score >= 0.95d);
+				"Overlap between two images has no enough score. Expected >= 0.985, current = " + score,
+				score >= 0.985d);
 	}
 	
 	@When("I select to remove photo")
