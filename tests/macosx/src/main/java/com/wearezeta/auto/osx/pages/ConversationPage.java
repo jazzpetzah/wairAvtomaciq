@@ -297,6 +297,11 @@ public class ConversationPage extends OSXPage {
 			NSPoint position = NSPoint.fromString(group
 					.getAttribute("AXPosition"));
 			NSPoint size = NSPoint.fromString(group.getAttribute("AXSize"));
+			if (position == null || size == null) {
+				log.debug("Can't get position or size for current element. Position: " + position +
+						", size: " + size);
+				continue;
+			}
 			if (position.y() + size.y() > lastPosition) {
 				lastPosition = position.y() + size.y();
 				lastGroupPosition = new NSPoint(position.x(), position.y()
