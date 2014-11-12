@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.mail.MessagingException;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
@@ -108,9 +109,7 @@ public class RegistrationPage extends IOSPage {
 	private String email;
 	private String password;
 
-	private String usernameTextFieldValue;
-	private String emailTextFieldValue;
-	private String passwordTextFieldValue;
+	private String defaultPassFieldValue = "Password";
 
 	private String confirmMessage = "We sent an email to %s. Check your Inbox and follow the link to verify your address. You won’t be able to use Wire until you do.\n\nDidn’t get the message?\n\nRe-send";
 
@@ -243,6 +242,7 @@ public class RegistrationPage extends IOSPage {
 	}
 
 	public void clickCreateAccountButton() {
+		DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameCreateAccountButton));
 		createAccountButton.click();
 	}
 
@@ -303,42 +303,17 @@ public class RegistrationPage extends IOSPage {
 		return createAccountButton.isEnabled();
 	}
 
-	public void typeAndStoreAllValues() {
-		yourName.sendKeys(getName());
-		usernameTextFieldValue = yourName.getText();
-		yourName.sendKeys(getName() + "\n");
-		yourEmail.sendKeys(getEmail());
-		emailTextFieldValue = yourEmail.getText();
-		yourEmail.sendKeys(getEmail() + "\n");
-		yourPassword.sendKeys(getPassword());
-		driver.tap(1, revealPasswordButton.getLocation().x + 1,
-				revealPasswordButton.getLocation().y + 1, 1);
-		passwordTextFieldValue = yourPassword.getText();
-	}
-
-	public boolean verifyUserInputIsPresent()
+	public void verifyUserInputIsPresent(String name, String email)
 	// this test skips photo verification
 	{
 
 		PagesCollection.loginPage.clickJoinButton();
 		forwardWelcomeButton.click(); // skip photo
-		if (!yourName.getText().equals(usernameTextFieldValue)) {
-			return false;
-		}
+		Assert.assertEquals("Name is not same as previously entered.", name, yourName.getText());
 		forwardWelcomeButton.click();
-		if (!yourEmail.getText().equals(emailTextFieldValue)) {
-			return false;
-		}
+		Assert.assertEquals("Email is not same as previously entered.", email, yourEmail.getText());
 		forwardWelcomeButton.click();
-		if (!yourPassword.getText().equals(passwordTextFieldValue)) {
-			driver.tap(1, revealPasswordButton.getLocation().x + 1,
-					revealPasswordButton.getLocation().y + 1, 1);
-			if (!yourPassword.getText().equals(passwordTextFieldValue)) {
-				return false;
-			}
-		}
-		System.out.println("password verified\n");
-		return true;
+		Assert.assertEquals("Preciously entered email shouln't be shown", defaultPassFieldValue, yourPassword.getText()); 
 	}
 
 	public void navigateToCreateAccount() {

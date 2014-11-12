@@ -6,7 +6,7 @@ public final class IOSLocators {
 	
 	public static final String nameSignInButton = "SignIn";
 	
-	public static final String nameSignUpButton = "SignUp";
+	public static final String nameRegisterButton = "SignUp";
 	
 	public static final String xpathTermsOfServiceButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]";
 	
