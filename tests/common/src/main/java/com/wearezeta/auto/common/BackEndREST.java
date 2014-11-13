@@ -110,6 +110,7 @@ public class BackEndREST {
 	private static String httpPut(Builder webResource, Object entity,
 			int[] acceptableResponseCodes) throws BackendRequestException {
 		ClientResponse response = webResource.put(ClientResponse.class, entity);
+		log.debug("HTTP PUT request(Input data: " + entity + ", Response: " + response.toString() + ")");
 		VerifyRequestResult(response.getStatus(), acceptableResponseCodes);
 		return response.getEntity(String.class);
 	}
@@ -236,7 +237,10 @@ public class BackEndREST {
 		JSONArray newJArray = new JSONArray(output);
 		for (int i = 0; i < newJArray.length(); i++) {
 			String to = ((JSONObject) newJArray.get(i)).getString("to");
-			changeConnectRequestStatus(user, to, "accepted");
+			String status = ((JSONObject) newJArray.get(i)).getString("status");
+			if (!status.equals("accepted")) {
+				changeConnectRequestStatus(user, to, "accepted");
+			}
 		}
 	}
 
