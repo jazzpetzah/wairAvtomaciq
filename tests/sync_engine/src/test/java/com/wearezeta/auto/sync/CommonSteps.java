@@ -573,8 +573,13 @@ public class CommonSteps {
 	
 	@Given("I collect messages order data")
 	public void ICollectMessagesOrderData() {
-		ExecutionContext.iosZeta().listener().setPageSources(iosPageSources);
-		ExecutionContext.osxZeta().listener().setPageSources(osxPageSources);
+		if (ExecutionContext.iosZeta().isEnabled()) {
+			ExecutionContext.iosZeta().listener().setPageSources(iosPageSources);
+		}
+		
+		if (ExecutionContext.osxZeta().isEnabled()) {
+			ExecutionContext.osxZeta().listener().setPageSources(osxPageSources);
+		}
 
 		ArrayList<MessageEntry> iosMessages = new ArrayList<MessageEntry>();
 		if (ExecutionContext.isIosEnabled()) {

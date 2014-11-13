@@ -266,7 +266,7 @@ public class ConversationPage extends OSXPage {
 
 		if (mediaBarPosition.y() < windowPosition.y()) {
 			WebElement scrollBar = scrollArea.findElement(By
-					.xpath("//AXScrollBar[2]"));
+					.xpath("//AXScrollBar[1]"));
 			List<WebElement> scrollButtons = scrollBar.findElements(By
 					.xpath("//AXButton"));
 			for (WebElement scrollButton : scrollButtons) {
