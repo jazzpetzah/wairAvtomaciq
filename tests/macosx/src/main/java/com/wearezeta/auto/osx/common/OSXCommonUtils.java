@@ -70,6 +70,11 @@ public class OSXCommonUtils extends CommonUtils {
 			executeOsXCommand(new String[] { "/bin/bash", "-c", command });
 		}
 		
+		command = "security delete-generic-password -s \"Wire: Credentials for wire.com\"";
+
+		if (!getOsName().contains(OS_NAME_WINDOWS)) {
+			executeOsXCommand(new String[] { "/bin/bash", "-c", command });
+		}
 	}
 	
 	public static void removeAllZClientSettingsFromDefaults() throws Exception {

@@ -6,10 +6,11 @@ Feature: User Profile
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I go to user <Name> profile
-    And I see photo in User profile
     When I open picture settings
+    And I see photo in User profile
     And I choose to select picture from image file
     And I select image file userpicture_landscape.jpg
+    And I open picture settings
     Then I see changed user picture
 
     Examples: 
@@ -22,8 +23,9 @@ Feature: User Profile
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I go to user <Name> profile
-    And I open picture settings
-    When I choose to select picture from camera
+    When I open picture settings
+    And I see photo in User profile
+    And I choose to select picture from camera
     And I shoot picture using camera
     Then I see changed user picture
 
