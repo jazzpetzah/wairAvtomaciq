@@ -163,6 +163,9 @@ public class ZetaFormatter implements Formatter, Reporter {
 		if (arg0.getStatus().equals("failed") && scope.equals("Smoke Test")) {
 			try {
 				String errorMsg = arg0.getError().getMessage();
+				if (errorMsg == null) {
+					errorMsg = "Error with empty message appears: " + arg0.getError();
+				}
 				if (errorMsg.length() > 255) {
 					errorMsg = errorMsg.substring(0, 255);
 				}
