@@ -237,7 +237,10 @@ public class BackEndREST {
 		JSONArray newJArray = new JSONArray(output);
 		for (int i = 0; i < newJArray.length(); i++) {
 			String to = ((JSONObject) newJArray.get(i)).getString("to");
-			changeConnectRequestStatus(user, to, "accepted");
+			String status = ((JSONObject) newJArray.get(i)).getString("status");
+			if (!status.equals("accepted")) {
+				changeConnectRequestStatus(user, to, "accepted");
+			}
 		}
 	}
 
