@@ -332,6 +332,7 @@ public class CommonSteps {
 					log.error("iOS client crashed during login and opening conversation.\n" + e.toString());
 					ExecutionContext.iosZeta().setState(
 							InstanceState.ERROR_CRASHED);
+					log.debug(ExecutionContext.iosZeta().listener().getChatSource());
 					// TODO: process crash
 				}
 				log.debug("iOS client login finished.");
