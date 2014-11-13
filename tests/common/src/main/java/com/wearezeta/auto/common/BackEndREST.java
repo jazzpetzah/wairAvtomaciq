@@ -110,6 +110,7 @@ public class BackEndREST {
 	private static String httpPut(Builder webResource, Object entity,
 			int[] acceptableResponseCodes) throws BackendRequestException {
 		ClientResponse response = webResource.put(ClientResponse.class, entity);
+		log.debug("HTTP PUT request(Input data: " + entity + ", Response: " + response.toString() + ")");
 		VerifyRequestResult(response.getStatus(), acceptableResponseCodes);
 		return response.getEntity(String.class);
 	}
