@@ -332,7 +332,6 @@ public class CommonSteps {
 					log.error("iOS client crashed during login and opening conversation.\n" + e.toString());
 					ExecutionContext.iosZeta().setState(
 							InstanceState.ERROR_CRASHED);
-					log.debug(ExecutionContext.iosZeta().listener().getChatSource());
 					// TODO: process crash
 				}
 				log.debug("iOS client login finished.");
@@ -574,8 +573,13 @@ public class CommonSteps {
 	
 	@Given("I collect messages order data")
 	public void ICollectMessagesOrderData() {
-		ExecutionContext.iosZeta().listener().setPageSources(iosPageSources);
-		ExecutionContext.osxZeta().listener().setPageSources(osxPageSources);
+		if (ExecutionContext.iosZeta().isEnabled()) {
+			ExecutionContext.iosZeta().listener().setPageSources(iosPageSources);
+		}
+		
+		if (ExecutionContext.osxZeta().isEnabled()) {
+			ExecutionContext.osxZeta().listener().setPageSources(osxPageSources);
+		}
 
 		ArrayList<MessageEntry> iosMessages = new ArrayList<MessageEntry>();
 		if (ExecutionContext.isIosEnabled()) {
