@@ -186,6 +186,7 @@ Scenario Outline: Send connection request to unconnected participant in a group 
 	And I click Connect button on connect to dialog
 	And I exit the group info page
 	And I return to the chat list
+	Then I see first item in contact list named <UnconnectedUser>
 	
 Examples:
     |  Login		| Password		| Name			| GroupCreator	        |  GroupChatName    | UnconnectedUser |
