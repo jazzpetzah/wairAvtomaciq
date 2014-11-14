@@ -318,6 +318,12 @@
         [element addAttribute:[GDataXMLElement attributeWithName:@"AXHelp" stringValue:[NSString stringWithFormat:@"%@",[root valueForAttribute:@"AXHelp"]]]];
     }
     
+    NSString* axLabel = [root valueForAttribute:@"AXLabel"];
+    if (axLabel != nil)
+    {
+        [element addAttribute:[GDataXMLElement attributeWithName:@"AXLabel" stringValue:[NSString stringWithFormat:@"%@",[root valueForAttribute:@"AXLabel"]]]];
+    }
+    
 	if (pathMap != nil)
 	{
 		[pathMap setValue:root forKey:path];

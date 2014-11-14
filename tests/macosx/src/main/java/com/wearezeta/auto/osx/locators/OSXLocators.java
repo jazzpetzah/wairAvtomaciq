@@ -74,7 +74,7 @@ public final class OSXLocators {
 	public static final String idChooseDirectoryPopUp = "_NS:40";
 	public static final String xpathFormatFinderImageFile = "//AXTextField[@AXValue='%s']";
 	public static final String xpathFormatFavoritesFolderPopUp = "//AXStaticText[@AXValue='%s']";
-	public static final String xpathSelectColumnViewButton = "//AXRadioButton[@AXDescription='column view']";
+	public static final String xpathSelectColumnViewButton = "//AXRadioButton[@AXDescription='column view' or @AXLabel='column view']";
 	
 	public static final String idAddPeopleButtonGroupChat = "addButton";
 	public static final String idConfirmationViewConfirmButton = "ConfirmationViewConfirmButton";
