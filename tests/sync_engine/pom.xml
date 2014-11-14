@@ -43,7 +43,7 @@
     <ios.client.enabled>true</ios.client.enabled>
     <ios.backend.sender>false</ios.backend.sender>
     <iosAppiumUrl>http://127.0.0.1:4723/wd/hub</iosAppiumUrl>
-    <iosApplicationPath>/Project/ZClient_ios.app</iosApplicationPath>
+    <iosApplicationPath>/Project/Wire.ipa</iosApplicationPath>
     <isSimulator>true</isSimulator>
     <swipeScriptPath>swipeInWindow</swipeScriptPath>
     <pathToUserpic>img/userpicture_portrait.jpg</pathToUserpic>
