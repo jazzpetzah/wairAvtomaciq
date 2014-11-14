@@ -163,11 +163,15 @@ public class ZetaFormatter implements Formatter, Reporter {
 		if (arg0.getStatus().equals("failed") && scope.equals("Smoke Test")) {
 			try {
 				String errorMsg = arg0.getError().getMessage();
+				if (errorMsg == null) {
+					errorMsg = "Error with empty message appears: " + arg0.getError();
+				}
 				if (errorMsg.length() > 255) {
 					errorMsg = errorMsg.substring(0, 255);
 				}
 				
-				sendNotification(driver.getCapabilities().getCapability("platformName") + " " + scope + 
+				sendNotification("\n============Automatic notification============\n" +
+						driver.getCapabilities().getCapability("platformName") + " " + scope + 
 						"(build " + buildNumber + ") \n" + "Feature: " + feature + 
 						", Scenario: " + scenario + "(line number: " + Integer.toString(lineNumber) + ")" + "\nStep: " + 
 						currentStep + ", failed with error: \n" + errorMsg + "...");
@@ -189,16 +193,7 @@ public class ZetaFormatter implements Formatter, Reporter {
 				}
 			    ImageIO.write(image, "png", outputfile);
 
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			catch (org.openqa.selenium.remote.SessionNotFoundException ex) {
-				((ZetaDriver) driver).setSessionLost(true);
-			}
-			
-			catch (WebDriverException  e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

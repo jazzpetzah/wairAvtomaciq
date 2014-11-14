@@ -67,7 +67,7 @@ Examples:
 
 
 @smoke
-@id335
+@id335 @mute
 Scenario Outline: Leave from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -85,7 +85,7 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact3	|
 
-@smoke 
+@smoke
 @id336
  Scenario Outline: Remove from group chat
     Given I Sign in using login <Login> and password <Password>
@@ -93,7 +93,6 @@ Examples:
 	When I create group chat with <Contact1> and <Contact2>
 	And I swipe up on group chat page
 	And I select contact <Contact2>
-#	And I swipe up on other user profile page
 	And I click Remove
 	And I see warning message 
 	And I confirm remove

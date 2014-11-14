@@ -31,6 +31,7 @@
 			[NSNumber numberWithBool:NO], @"locationContextEnabled",
 			@"Mac", @"browserName",
 			@"Mac", @"platform",
+            @"Mac", @"platformName",
 			[NSNumber numberWithBool:YES], @"javascriptEnabled",
 			[NSNumber numberWithBool:NO], @"databaseEnabled",
 			[NSNumber numberWithBool:YES], @"takesScreenshot",

@@ -13,6 +13,8 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
+import cucumber.api.java.en.When;
+
 public class PersonalInfoPage extends IOSPage{
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathEmailField)
@@ -26,6 +28,12 @@ public class PersonalInfoPage extends IOSPage{
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameProfileSettingsButton)
 	private WebElement settingsButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameSettingsAboutButton)
+	private WebElement aboutButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameTermsOfUseButton)
+	private WebElement termsOfUseButton;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameSignOutButton)
 	private WebElement signoutButton;
@@ -41,6 +49,18 @@ public class PersonalInfoPage extends IOSPage{
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameSelfNameTooShortError)
 	private WebElement nameTooShortError;
+
+	@FindBy(how = How.NAME, using = IOSLocators.nameOptionsSettingsButton)
+	private WebElement optionsSettingsButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameSoundAlertsButton)
+	private WebElement soundAlertsButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathSoundAlertsPage)
+	private WebElement soundAlertsPage;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathAllSoundAlertsButton)
+	private WebElement allSoundAlertsButton;
 	
 	private String url;
 	private String path;
@@ -71,6 +91,15 @@ public class PersonalInfoPage extends IOSPage{
 	public PersonalInfoPage clickOnSettingsButton(){
 		settingsButton.click();
 		return this;
+	}
+	
+	public PersonalInfoPage clickOnAboutButton(){
+		aboutButton.click();
+		return this;
+	}
+	
+	public boolean isAboutPageVisible(){
+		return termsOfUseButton.isDisplayed();
 	}
 	
 	public LoginPage clickSignoutButton() throws MalformedURLException{
@@ -155,5 +184,21 @@ public class PersonalInfoPage extends IOSPage{
 	}	
 		return page;
 	}
-
+	
+	public void tapOnSettingsButton() {
+		optionsSettingsButton.click();
+	}
+	
+	public void enterSoundAlertSettings(){
+		soundAlertsButton.click();
+	}
+	
+	public void isSoundAlertsPageVisible() {
+		soundAlertsPage.isDisplayed();
+	}
+	
+	public void isDefaultSoundValOne() {
+		allSoundAlertsButton.getAttribute("value").equals("1");
+	}
+	
 }

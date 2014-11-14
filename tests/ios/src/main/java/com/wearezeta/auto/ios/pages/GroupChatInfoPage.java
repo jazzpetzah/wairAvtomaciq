@@ -229,7 +229,7 @@ public class GroupChatInfoPage extends IOSPage {
 	}
 
 	public OtherUserPersonalInfoPage selectContactByName(String name) throws IOException {
-		driver.findElementByName(name.toUpperCase()).click();
+		DriverUtils.mobileTapByCoordinates(driver, driver.findElementByName(name.toUpperCase()));
 
 		return new OtherUserPersonalInfoPage(url, path);
 	}

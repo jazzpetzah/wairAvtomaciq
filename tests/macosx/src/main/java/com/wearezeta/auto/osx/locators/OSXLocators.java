@@ -6,12 +6,14 @@ public final class OSXLocators {
 	public static final String xpathMainWindow = "//AXWindow[@AXRoleDescription='standard window']";
 	
 	public static final String nameSignInButton = "SIGN IN";
-	public static final String nameRegisterButton = "JOIN";
+	public static final String nameRegisterButton = "REGISTER";
+	public static final String xpathAcceptTermsOfServiceCheckBox = "//AXCheckBox";
 	
 	public static final String idLoginField = "TempLoginViewControllerUsernameField";
 	public static final String classNameLoginField = "AXTextArea";
 //	public static final String xpathLoginField = "//AXTextField[@AXPlaceholderValue='username']";
 	public static final String idPasswordField ="TempLoginViewControllerPasswordField";
+	public static final String relativePathLoginField = "id," + idPasswordField + ",0,-40";
 //	public static final String xpathPasswordField = "//AXTextField[@AXPlaceholderValue='password']";
 
 	public static final String idRegistrationTakePictureButton = "RegistrationTakePictureButton";
@@ -26,6 +28,7 @@ public final class OSXLocators {
 	public static final String idPeopleButton = "PeopleButton";
 	public static final String idAddConversationButton = "addConversationButton";
 	public static final String idPeoplePickerSearchField = "people_picker_searchfield";
+	public static final String idPeoplePickerTopContactsSectionHeader = "people_picker_topcpnverstion_sectionheader";
 	public static final String idPeoplePickerDismissButton = "people_picker_cancel_button";
 	public static final String idPeoplePickerSearchResultEntry = "people_picker_result_namefield";
 	public static final String idPeoplePickerSearchResultTable = "people_picker_searchresult";
@@ -38,7 +41,7 @@ public final class OSXLocators {
 	public static final String nameSayHelloMenuItem = "Ping";
 	public static final String nameSignOutMenuItem = "Sign Out";
 	public static final String nameQuitZClientMenuItem = "Quit Wire";
-	public static final String nameSendInvitationButton = "Send";
+	public static final String idSendInvitationButton = "send";
 	
 	public static final String xpathMessageEntry = "//AXGroup/AXStaticText";
 	public static final String xpathFormatConversationNewNameEntry = "//AXHeading/AXStaticText[@AXValue='%s']";
@@ -78,7 +81,7 @@ public final class OSXLocators {
 	public static final String idAddPeopleButtonSingleChat = "userProfileViewButtonOnTheLeft";
 	public static final String idBlockUserButtonSingleChat = "userProfileViewButtonOnTheRight";
 	//OLD: public static final String idPeoplePickerAddToConversationButton = "people_picker_confirm_button";
-	public static final String idPeoplePickerAddToConversationButton = "ConfirmationBarViewConfirmButton";
+	public static final String namePeoplePickerAddToConversationButton = "ADD TO CONVERSATION";
 	public static final String idLeaveConversationButton = "leaveButton";
 	public static final String idRemoveUserFromConversation = "userProfileViewButtonOnTheRight";
 	public static final String idConversationScrollArea = "ConversationScrollArea";
@@ -96,7 +99,9 @@ public final class OSXLocators {
 
 	public static final String xpathFailedApplicationDialogCancel = "//AXWindow[@AXIdentifier='_NS:162']/AXButton[@AXIdentifier='_NS:9']";
 	public static final String xpathFailedApplicationDialogSend = "//AXWindow[@AXIdentifier='_NS:162']/AXButton[@AXIdentifier='_NS:13']";
-
+	public static final String idSendProblemReportWindow = "_NS:162";
+	public static final String idSendProblemReportButton = "_NS:13";
+	
 	public static final String idAcceptConnectionRequestButton = "connect";
 	public static final String idIgnoreConnectionRequestButton = "_NS:10";
 	
@@ -124,6 +129,7 @@ public final class OSXLocators {
 	public static final String xpathSoundCloudLinkButton = "//AXGroup/AXGroup/AXGroup/AXButton";
 	public static final String xpathSoundCloudMediaContainer = "//AXGroup/AXLink[last()]/AXImage";
 	public static final String xpathSoundCloudMediaContainerWithoutImage = "//AXGroup/AXLink[@AXDescription='Play on SoundCloud']";
+	public static final String xpathSoundCloudCurrentPlaybackTime = "(//AXGroup[AXGroup[AXLink]]/AXGroup/AXGroup/AXGroup[1]/AXStaticText)[last()]";
 	
 	public static final String SOUNDCLOUD_BUTTON_STATE_PAUSE = "Pause";
 	public static final String SOUNDCLOUD_BUTTON_STATE_PLAY = "Play";
@@ -141,7 +147,7 @@ public final class OSXLocators {
 	public static final String idSingleChatUserNameField = "userProfileNameField";
 	public static final String xpathSingleChatUserEmailButton = "//AXPopover/AXTextArea/AXLink[@AXTitle='%s']";
 
-	public static final String xpathRemoveUserPictureCheckBox = "//AXCheckBox[@AXHelp='Remove picture']";
+	public static final String xpathRemoveUserPictureCheckBox = "//AXCheckBox[starts-with(@AXHelp,'Remove picture')]";
 	public static final String xpathRemoveUserPictureConfirmation = "//AXButton[@AXTitle='DELETE']";
 	public static final String xpathRemoveUserPictureCancel = "//AXButton[@AXTitle='CANCEL']";
 	

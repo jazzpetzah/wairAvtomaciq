@@ -342,10 +342,12 @@ public class RegistrationPageSteps {
 
 	@Then("^I navigate throughout the registration pages and see my input$")
 	public void NavigateAndVerifyInput() throws IOException {
-		PagesCollection.registrationPage.typeAndStoreAllValues();
+		PagesCollection.registrationPage.verifyUserInputIsPresent(aqaName, aqaEmail);
+	}
+	
+	@When("I navigate from password screen back to Welcome screen")
+	public void NaviateFromPassScreenToWelcomeScreen(){
 		PagesCollection.registrationPage.navigateToWelcomePage();
-		Assert.assertTrue(PagesCollection.registrationPage
-				.verifyUserInputIsPresent());
 	}
 
 	@When("I input user data")

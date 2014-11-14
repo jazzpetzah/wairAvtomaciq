@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.pages;
 import java.io.IOException;
 import java.util.*;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -13,10 +14,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class ContactListPage extends IOSPage {
-
+	private static final Logger log = ZetaLogger.getLog("iOS:" + ContactListPage.class.getSimpleName());
+	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathContactListNames)
 	private List<WebElement> contactListNames;
 
@@ -124,20 +127,23 @@ public class ContactListPage extends IOSPage {
 	private WebElement findNameInContactList(String name) {
 		Boolean flag = true;
 		WebElement contact = null;
-		for (WebElement listName : contactListNames) {
-			if (listName.getText().equals(name)) {
-				contact = listName;
-				flag = false;
+		for (int i = 0; i < 5; i++) {
+			for (WebElement listName : contactListNames) {
+				if (listName.getText().equals(name)) {
+					contact = listName;
+					flag = false;
+					break;
+				}
+			}
+			if (flag) {
+				WebElement el = contactListNames.get(contactListNames.size() - 1);
+				wait.until(ExpectedConditions.visibilityOf(el));
+				wait.until(ExpectedConditions.elementToBeClickable(el));
+				DriverUtils.scrollToElement(driver, el);
+			}
+			else {
 				break;
 			}
-		}
-		if (flag) {
-			//refreshUITree();
-			WebElement el = contactListNames.get(contactListNames.size() - 1);
-			wait.until(ExpectedConditions.visibilityOf(el));
-			wait.until(ExpectedConditions.elementToBeClickable(el));
-			DriverUtils.scrollToElement(driver, el);
-			findNameInContactList(name);
 		}
 		return contact;
 	}
@@ -247,6 +253,7 @@ public class ContactListPage extends IOSPage {
 	public boolean isTutorialShown(){
 		//this.refreshUITree();
 		DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameTutorialText));
+		log.debug(driver.getPageSource());
 		boolean tutorialShown = DriverUtils.isElementDisplayed(tutorialText);
 		return tutorialShown;
 	}

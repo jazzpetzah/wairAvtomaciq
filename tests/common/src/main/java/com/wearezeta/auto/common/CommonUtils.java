@@ -64,10 +64,10 @@ public class CommonUtils {
 	public static final int MAX_PARALLEL_USER_CREATION_TASKS = 5;
 
 	public static final String CONTACT_PICTURE_NAME = "aqaPictureContact";
-	public static final String CONTACT_PICTURE_EMAIL = "qa1+aqaPictureContact@wearezeta.com";
+	public static final String CONTACT_PICTURE_EMAIL = "smoketester+aqaPictureContact@wearezeta.com";
 	public static final String CONTACT_PICTURE_PASSWORD = "picture123";
 	public static final String CONTACT_AVATAR_NAME = "aqaAvatar TestContact";
-	public static final String CONTACT_AVATAR_EMAIL = "qa1+aqaAvatarTestContact@wearezeta.com";
+	public static final String CONTACT_AVATAR_EMAIL = "smoketester+aqaAvatarTestContact@wearezeta.com";
 	public static final String CONTACT_AVATAR_PASSWORD = "avatar123";
 
 	private static final String USER_IMAGE = "userpicture_landscape.jpg";
@@ -119,6 +119,28 @@ public class CommonUtils {
 		}
 		throw new NoSuchElementException("No user with username: " + username
 				+ " is in an available list");
+	}
+	
+	public static String retrieveRealUserEmailValue(String contact) {
+		String email = "";
+		boolean flag = false;
+		for (ClientUser user : CommonUtils.yourUsers) {
+			if (user.getName().equals(contact)) {
+				email = user.getEmail();
+				flag = true;
+				break;
+			}
+		}
+		if(flag == false) {
+			for (ClientUser user : CommonUtils.contacts) {
+				if (user.getName().equals(contact)) {
+					email = user.getEmail();
+					break;
+				}
+			}
+		}
+		
+		return email;
 	}
 
 	public static String retrieveRealUserContactPasswordValue(String value) {

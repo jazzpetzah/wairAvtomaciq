@@ -3,7 +3,7 @@ Feature: Conversation
   @smoke @id466
   Scenario Outline: Send message to conversation
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     And I open conversation with <Contact>
     When I write random message
     And I send message
@@ -16,7 +16,7 @@ Feature: Conversation
   @smoke @id467
   Scenario Outline: Ping conversation
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     And I open conversation with <Contact>
     When I am knocking to user
     Then I see message YOU PINGED in conversation
@@ -30,7 +30,7 @@ Feature: Conversation
   @smoke @id468
   Scenario Outline: Send picture to conversation
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     And I open conversation with <Contact>
     When I send picture testing.jpg
     Then I see picture in conversation
@@ -42,7 +42,7 @@ Feature: Conversation
   @regression @id444
   Scenario Outline: Send HD picture to conversation
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     And I open conversation with <Contact>
     When I send picture hdpicture.jpg
     Then I see HD picture hdpicture.jpg in conversation
@@ -54,7 +54,7 @@ Feature: Conversation
   @smoke @id103
   Scenario Outline: Create group chat from 1on1 conversation
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     And I open conversation with <Contact1>
     When I open People Picker from conversation
     And I search for user <Contact2>
@@ -71,7 +71,7 @@ Feature: Conversation
   Scenario Outline: Add user to group conversation
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
     When I open People Picker from conversation
     And I search for user <Contact3>
@@ -90,7 +90,7 @@ Feature: Conversation
   Scenario Outline: Send message to group chat
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
     When I write random message
     And I send message
@@ -104,7 +104,7 @@ Feature: Conversation
   Scenario Outline: Ping group chat
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
     When I am knocking to user
     Then I see message YOU PINGED in conversation
@@ -112,27 +112,27 @@ Feature: Conversation
     Then I see message YOU PINGED AGAIN in conversation
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | ChatName |
+      | Login   | Password    | Name    | Contact1    | Contact2    | ChatName      |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | PingGroupChat |
 
   @regression
   Scenario Outline: Send picture to group chat
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
     When I send picture testing.jpg
     Then I see picture in conversation
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | ChatName |
+      | Login   | Password    | Name    | Contact1    | Contact2    | ChatName             |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | SendPictureGroupChat |
 
   @smoke @id471
   Scenario Outline: Leave group conversation
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     When I open conversation with <ChatName>
     And I open Conversation info
     And I leave conversation
@@ -148,7 +148,7 @@ Feature: Conversation
   Scenario Outline: Remove user from group chat
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     When I open conversation with <ChatName>
     And I open Conversation info
     And I choose user <Contact1> in Conversation info
@@ -162,7 +162,7 @@ Feature: Conversation
   @smoke @id474 @id481
   Scenario Outline: Mute and unmute conversation
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     When I open conversation with <Contact>
     And I change conversation mute state
     And I go to user <Name> profile
@@ -179,7 +179,7 @@ Feature: Conversation
   @smoke
   Scenario Outline: Archive and unarchive conversation
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     When I open conversation with <Contact>
     And I archive conversation
     And I go to user <Name> profile
@@ -195,7 +195,7 @@ Feature: Conversation
   @regression @id81
   Scenario Outline: Play embedded SoundCloud link in conversation
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     And I open conversation with <Contact>
     And I post media link <SoundCloudLink>
     And I send message
@@ -210,7 +210,7 @@ Feature: Conversation
   @regression @id379
   Scenario Outline: Play/pause SoundCloud media link from the media bar
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     And I open conversation with <Contact>
     And I post messages and media link <SoundCloudLink>
     Then I see media link <SoundCloudLink> and media in dialog
@@ -231,7 +231,7 @@ Feature: Conversation
   @regression @id380
   Scenario Outline: Conversation scrolls back to playing media when clicked on the media bar
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     And I open conversation with <Contact>
     And I post messages and media link <SoundCloudLink>
     Then I see media link <SoundCloudLink> and media in dialog
@@ -246,20 +246,22 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     | SoundCloudLink                              |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/edherbst/throwaway-3 |
 
-  @staging @id618
+  @regression @id618
   Scenario Outline: Verify the new conversation is created on the other end
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     And I create group chat with <Contact1> and <Contact2>
     And I open conversation with <Contact1>, <Contact2>
     And I see message YOU STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
     When I am signing out
     And I Sign in using login <Contact1> and password <Password>
+    And I see my name <Contact1> in Contact list
     Then I see Contact list with name <Login>, <Contact2>
     And I open conversation with <Login>, <Contact2>
     And I see message <Login> STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
     And I am signing out
     And I Sign in using login <Contact2> and password <Password>
+    And I see my name <Contact2> in Contact list
     Then I see Contact list with name <Login>, <Contact1>
     And I open conversation with <Login>, <Contact1>
     And I see message <Login> STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
@@ -272,19 +274,19 @@ Feature: Conversation
   Scenario Outline: Text message sent to group chat is visible on other end
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
     And I write random message
     And I send message
     And I see random message in conversation
     When I am signing out
     And I Sign in using login <Contact1> and password <Password>
-    And I see Contact list with name <Contact1>
+    And I see my name <Contact1> in Contact list
     And I open conversation with <ChatName>
     Then I see random message in conversation
     And I am signing out
     And I Sign in using login <Contact2> and password <Password>
-    And I see Contact list with name <Contact2>
+    And I see my name <Contact2> in Contact list
     And I open conversation with <ChatName>
     Then I see random message in conversation
 
@@ -296,18 +298,18 @@ Feature: Conversation
   Scenario Outline: Image sent to group chat is visible on other end
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
     And I send picture testing.jpg
     And I see picture in conversation
     When I am signing out
     And I Sign in using login <Contact1> and password <Password>
-    And I see Contact list with name <Contact1>
+    And I see my name <Contact1> in Contact list
     And I open conversation with <ChatName>
     Then I see picture in conversation
     And I am signing out
     And I Sign in using login <Contact2> and password <Password>
-    And I see Contact list with name <Contact2>
+    And I see my name <Contact2> in Contact list
     And I open conversation with <ChatName>
     Then I see picture in conversation
 
@@ -319,18 +321,18 @@ Feature: Conversation
   Scenario Outline: Multimedia message sent to group chat is visible on other end
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
     When I post media link <SoundCloudLink>
     And I see media link <SoundCloudLink> and media in dialog
     And I am signing out
     And I Sign in using login <Contact1> and password <Password>
-    And I see Contact list with name <Contact1>
+    And I see my name <Contact1> in Contact list
     And I open conversation with <ChatName>
     Then I see media link <SoundCloudLink> and media in dialog
     And I am signing out
     And I Sign in using login <Contact2> and password <Password>
-    And I see Contact list with name <Contact2>
+    And I see my name <Contact2> in Contact list
     And I open conversation with <ChatName>
     Then I see media link <SoundCloudLink> and media in dialog
 
@@ -341,7 +343,7 @@ Feature: Conversation
   @regression @id381
   Scenario Outline: The media bar disappears after playback finishes
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     And I open conversation with <Contact>
     And I post messages and media link <SoundCloudLink>
     Then I see media link <SoundCloudLink> and media in dialog
@@ -352,13 +354,13 @@ Feature: Conversation
     Then I see media bar disappears
 
     Examples: 
-      | Login   | Password    | Name    | Contact     | SoundCloudLink                                         | time |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/20sekunder/isakkkkkk-pcb-sesh-1 | 25   |
+      | Login   | Password    | Name    | Contact     | SoundCloudLink                             | time |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/20sekunder/erika-no | 30   |
 
   @regression @id378
   Scenario Outline: Media bar disappears when playing media is back in view
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with name <Name>
+    And I see my name <Name> in Contact list
     And I open conversation with <Contact>
     And I post messages and media link <SoundCloudLink>
     Then I see media link <SoundCloudLink> and media in dialog

@@ -133,7 +133,7 @@ public class ContactListPage extends OSXPage {
 		return true;
 	}
 	
-	public boolean openConversation(String conversationName) {
+	public boolean openConversation(String conversationName, boolean isUserProfile) {
 
 		if (conversationName.contains(",")) {
 			String[] exContacts = conversationName.split(",");
@@ -147,15 +147,15 @@ public class ContactListPage extends OSXPage {
 					}
 				}
 				if (isFound) {
-					scrollToConversationInList(contact);
+					if (!isUserProfile) scrollToConversationInList(contact);
 					contact.click();
 					return true;
 				}
 			}
 		} else {
 			for (WebElement contact: this.contactsTextFields) {
-				if (contact.getText().equals(conversationName)) {
-					scrollToConversationInList(contact);
+				if (contact.getText().replaceAll("\uFFFC", "").trim().equals(conversationName)) {
+					if (!isUserProfile) scrollToConversationInList(contact);
 					contact.click();
 					return true;
 				}
@@ -227,47 +227,50 @@ public class ContactListPage extends OSXPage {
 	}
 	
 	public void scrollToConversationInList(WebElement conversation) {
-    	NSPoint mainPosition = NSPoint.fromString(mainWindow.getAttribute("AXPosition"));
-    	NSPoint mainSize = NSPoint.fromString(mainWindow.getAttribute("AXSize"));
-    	
-    	NSPoint latestPoint =
-    			new NSPoint(mainPosition.x() + mainSize.x(), mainPosition.y() + mainSize.y());
-
-    	//get scrollbar for contact list
+		//get scrollbar for contact list
     	WebElement peopleDecrementSB = null;
     	WebElement peopleIncrementSB = null;
 
     	WebElement scrollArea = driver.findElement(By.xpath(OSXLocators.xpathConversationListScrollArea));
     
+    	NSPoint mainPosition = NSPoint.fromString(scrollArea.getAttribute("AXPosition"));
+    	NSPoint mainSize = NSPoint.fromString(scrollArea.getAttribute("AXSize"));
+    	
+    	NSPoint latestPoint =
+    			new NSPoint(mainPosition.x() + mainSize.x(), mainPosition.y() + mainSize.y());
+    	
     	WebElement userContact = conversation;
-    	boolean isFoundPeople = false;
 
         NSPoint userPosition = NSPoint.fromString(userContact.getAttribute("AXPosition"));
         if (userPosition.y() > latestPoint.y() || userPosition.y() < mainPosition.y()) {
-        	if (isFoundPeople) {
-    			WebElement scrollBar = scrollArea.findElement(By.xpath("//AXScrollBar"));
-    			List<WebElement> scrollButtons = scrollBar.findElements(By.xpath("//AXButton"));
-    			for (WebElement scrollButton: scrollButtons) {
-    				String subrole = scrollButton.getAttribute("AXSubrole");
-    				if (subrole.equals("AXDecrementPage")) {
-    					peopleDecrementSB = scrollButton;
-    				}
-    				if (subrole.equals("AXIncrementPage")) {
-    					peopleIncrementSB = scrollButton;
-    				}
+        	WebElement scrollBar = scrollArea.findElement(By.xpath("//AXScrollBar"));
+    		List<WebElement> scrollButtons = scrollBar.findElements(By.xpath("//AXButton"));
+    		for (WebElement scrollButton: scrollButtons) {
+    			String subrole = scrollButton.getAttribute("AXSubrole");
+
+    			if (subrole.equals("AXDecrementPage")) {
+    				peopleDecrementSB = scrollButton;
+    			}
+    			if (subrole.equals("AXIncrementPage")) {
+    				peopleIncrementSB = scrollButton;
     			}
     		}
         	
-        	while (userPosition.y() > latestPoint.y()) {
+    		int count = 0;
+        	while ((userPosition.y() > latestPoint.y()) && count < 10) {
+        		log.debug("User position: " + userPosition + "; latest point: " + latestPoint);
             	peopleIncrementSB.click();
             	userPosition = NSPoint.fromString(userContact.getAttribute("AXPosition"));
+            	count++;
             }
-            while (userPosition.y() < mainPosition.y()) {
+        	count = 0;
+            while ((userPosition.y() < mainPosition.y()) && count < 10) {
+        		log.debug("User position: " + userPosition + "; mainPosition point: " + mainPosition);
             	peopleDecrementSB.click();
             	userPosition = NSPoint.fromString(userContact.getAttribute("AXPosition"));
+            	count++;
             }
         }
-		
 	}
 	
 	public void goToContactActionsMenu() {

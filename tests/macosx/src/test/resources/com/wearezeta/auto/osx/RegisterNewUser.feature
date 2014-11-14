@@ -1,7 +1,7 @@
 Feature: Register new user
 
-  #Muted due to fails on Jenkins execution. Is under investigation
-  @mute @regression @id77
+  #@regression
+  @staging @id77
   Scenario Outline: Register new user using front camera
     Given I am signed out from ZClient
     And I see Sign In screen
@@ -20,7 +20,7 @@ Feature: Register new user
       | Email   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |
 
-  @mute @smoke @id177
+  @smoke @id177
   Scenario Outline: Register new user with image - landscape image
     Given I am signed out from ZClient
     And I see Sign In screen
@@ -39,7 +39,7 @@ Feature: Register new user
       | Email   | Password    | Name    | ImageFile                 |
       | aqaUser | aqaPassword | aqaUser | userpicture_landscape.jpg |
 
-  @mute @smoke @id177
+  @smoke @id177
   Scenario Outline: Register new user with image - portrait image
     Given I am signed out from ZClient
     And I see Sign In screen
@@ -53,11 +53,12 @@ Feature: Register new user
     Then I see confirmation page
     And I verify registration address
     And I see contact list of registered user
+
+    Examples: 
       | Email   | Password    | Name    | ImageFile                |
       | aqaUser | aqaPassword | aqaUser | userpicture_portrait.jpg |
 
-  #Muted till new sync engine client stabilization
-  @mute @regression @id171
+  @regression @id171
   Scenario Outline: Do not accept email with spaces
     Given I am signed out from ZClient
     And I see Sign In screen
@@ -71,8 +72,7 @@ Feature: Register new user
       | Email                            |
       | email with spaces@weare zeta.com |
 
-  # Not stable
-  @mute @regression @id171
+  @regression @id171
   Scenario: Fail registration on incorrect email
     Given I am signed out from ZClient
     And I see Sign In screen

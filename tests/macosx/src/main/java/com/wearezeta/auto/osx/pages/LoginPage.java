@@ -3,11 +3,11 @@ package com.wearezeta.auto.osx.pages;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
@@ -24,19 +24,22 @@ public class LoginPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idLoginPage)
 	private WebElement viewPager;
 	
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathAcceptTermsOfServiceCheckBox)
+	private WebElement acceptTermOfServiceCheckBox;
+	
 	@FindBy(how = How.NAME, using = OSXLocators.nameRegisterButton)
 	private WebElement registerButton;
 
 	@FindBy(how = How.NAME, using = OSXLocators.nameSignInButton)
 	private WebElement signInButton;
 
-	@FindBy(how = How.CLASS_NAME, using = OSXLocators.classNameLoginField)
+	@FindBy(how = How.CSS, using = OSXLocators.relativePathLoginField)
 	private WebElement loginField;
 
 	@FindBy(how = How.ID, using = OSXLocators.idPasswordField)
 	private WebElement passwordField;
 	
-	@FindBy(how = How.XPATH, using = OSXLocators.xpathFailedApplicationDialogSend)
+	@FindBy(how = How.ID, using = OSXLocators.idSendProblemReportButton)
 	private WebElement sendProblemReportButton;
 	
 	private String login;
@@ -77,11 +80,7 @@ public class LoginPage extends OSXPage {
 	}
 
 	public void setLogin(String login) {
-		try {
-			DriverUtils.waitUntilElementAppears(driver, By.id(OSXLocators.idPasswordField));
-		} catch (NoSuchElementException e) { }
-		viewPager.click();
-		OSXCommonUtils.sendTextIntoFocusedElement(driver, login);
+		loginField.sendKeys(login);
 	}
 
 	public String getPassword() {
@@ -118,6 +117,10 @@ public class LoginPage extends OSXPage {
 	}
 	
 	public RegistrationPage startRegistration() throws MalformedURLException {
+		acceptTermOfServiceCheckBox.click();
+		for (int i = 0; i < 3; i++) {
+			if (registerButton.getAttribute("AXEnabled").equals("1")) break;
+		}
 		registerButton.click();
 		RegistrationPage page = new RegistrationPage(url, path);
 		return page;
@@ -144,6 +147,23 @@ public class LoginPage extends OSXPage {
 	
 	public void sendProblemReportIfFound() {
 		long startDate = new Date().getTime();
+		boolean isReport = false;
+		for (int i = 0; i < 10; i++) {
+			List<WebElement> windows = driver.findElements(By.xpath("//AXWindow"));
+			if (windows.size() > 0) {
+				for (WebElement win: windows) {
+					if (win.getAttribute("AXIdentifier").equals(OSXLocators.idSendProblemReportWindow)) {
+						isReport = true;
+					}
+				}
+				if (!isReport) {
+					log.debug("No need to close report. Correct window opened.");
+					return;
+				}
+			}
+			try { Thread.sleep(500); } catch (InterruptedException e) { }
+		}
+
 		DriverUtils.setImplicitWaitValue(driver, 1);
 		boolean isProblemReported = false;
 		try {

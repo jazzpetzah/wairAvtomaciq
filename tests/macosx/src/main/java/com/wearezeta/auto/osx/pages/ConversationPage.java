@@ -266,7 +266,7 @@ public class ConversationPage extends OSXPage {
 
 		if (mediaBarPosition.y() < windowPosition.y()) {
 			WebElement scrollBar = scrollArea.findElement(By
-					.xpath("//AXScrollBar[2]"));
+					.xpath("//AXScrollBar[1]"));
 			List<WebElement> scrollButtons = scrollBar.findElements(By
 					.xpath("//AXButton"));
 			for (WebElement scrollButton : scrollButtons) {
@@ -297,6 +297,11 @@ public class ConversationPage extends OSXPage {
 			NSPoint position = NSPoint.fromString(group
 					.getAttribute("AXPosition"));
 			NSPoint size = NSPoint.fromString(group.getAttribute("AXSize"));
+			if (position == null || size == null) {
+				log.debug("Can't get position or size for current element. Position: " + position +
+						", size: " + size);
+				continue;
+			}
 			if (position.y() + size.y() > lastPosition) {
 				lastPosition = position.y() + size.y();
 				lastGroupPosition = new NSPoint(position.x(), position.y()
@@ -363,6 +368,17 @@ public class ConversationPage extends OSXPage {
 	}
 
 	private static int STATE_CHANGE_TIMEOUT = 60 * 2;
+
+	public String getCurrentPlaybackTime() {
+		String time = "";
+		try {
+			WebElement el = driver.findElement(By.xpath(OSXLocators.xpathSoundCloudCurrentPlaybackTime));
+			time = el.getAttribute("AXValue");
+		} catch (NoSuchElementException e) {
+			log.error("No element that contains playback time");
+		}
+		return time;
+	}
 
 	public void waitForSoundcloudButtonState(String currentState,
 			String wantedState) throws InterruptedException {

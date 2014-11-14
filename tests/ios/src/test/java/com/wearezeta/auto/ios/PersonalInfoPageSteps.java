@@ -57,6 +57,16 @@ public class PersonalInfoPageSteps {
 		PagesCollection.personalInfoPage.clickOnSettingsButton();
 	}
 	
+	@When("I click on About button on personal page")
+	public void WhenIClickOnAboutButtonOnPersonalPage(){
+		PagesCollection.personalInfoPage.clickOnAboutButton();
+	}
+	
+	@Then("I see About page")
+	public void ThenISeeAboutPAge(){
+		Assert.assertTrue(PagesCollection.personalInfoPage.isAboutPageVisible());
+	}
+	
 	@When("I click Sign out button from personal page")
 	public void IClickSignOutButtonFromPersonalPage() throws MalformedURLException{
 		PagesCollection.personalInfoPage.clickSignoutButton();
@@ -121,4 +131,25 @@ public class PersonalInfoPageSteps {
 	public void ISwipeRightOnPersonalPage() throws IOException{
 		PagesCollection.contactListPage = (ContactListPage)PagesCollection.personalInfoPage.swipeRight(500);
 	}
+	
+	@When("I click on Settings button from the options menu")
+	public void WhenIClickOnSettingsButtonFromOptionsMenu(){
+	PagesCollection.personalInfoPage.tapOnSettingsButton();
+	}
+	
+	@When("I tap on Sound Alerts")
+	public void ITapOnSoundAlerts() {
+	PagesCollection.personalInfoPage.enterSoundAlertSettings();
+	}
+	
+	@When("I see the Sound alerts page")
+	public void ISeeSoundAlertsPage() {
+	PagesCollection.personalInfoPage.isSoundAlertsPageVisible();
+	}
+	
+	@When("I verify that all is the default selected value")
+	public void IVerifyAllIsDefaultValue() {
+	PagesCollection.personalInfoPage.isDefaultSoundValOne();
+	}
+	
 }

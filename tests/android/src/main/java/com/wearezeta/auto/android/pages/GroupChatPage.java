@@ -74,6 +74,12 @@ public class GroupChatPage  extends AndroidPage{
 		return (message.getText().toLowerCase().contains(name1.toLowerCase()) && message.getText().toLowerCase().contains(name2.toLowerCase()));
 	}
 	
+	@Override
+	public AndroidPage navigateBack() throws Exception{
+		driver.navigate().back();
+		return new ContactListPage(url, path);
+	}
+	
 	public boolean isMessageExists(String messageText){
 		boolean flag = false;
 		refreshUITree();

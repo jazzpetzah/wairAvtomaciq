@@ -42,6 +42,7 @@ public class PeoplePickerPageSteps {
 	@When("^I input in People picker search field user name (.*)$")
 	public void WhenIInputInPeoplePickerSearchFieldUserName(String contact) throws Throwable {
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		String email = CommonUtils.retrieveRealUserEmailValue(contact);
 	    PagesCollection.peoplePickerPage.fillTextInPeoplePickerSearch(contact);
 	}
 	

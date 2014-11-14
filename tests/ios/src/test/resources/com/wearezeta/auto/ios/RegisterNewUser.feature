@@ -59,8 +59,7 @@ Feature: Register new user
     |  Name			    |
     |  aqaUser      	|
     
-  #Muted till new sync engine client stabilization
-  @mute
+
   @regression
   @id284
   Scenario Outline: Conserve user input throughout registration
@@ -71,8 +70,9 @@ Feature: Register new user
 	And I See selected picture
 	And I confirm selection
 	And I input name <Name> and hit Enter
-	And I enter email <Email>
+	And I input email <Email> and hit Enter
 	And I enter password <Password>
+	And I navigate from password screen back to Welcome screen
 	Then I navigate throughout the registration pages and see my input
 
     Examples:     
@@ -176,7 +176,7 @@ Feature: Register new user
     
 
 @regression
-@id285
+@id285 @mute
   Scenario Outline: Take or select a photo label not visible when picture is selected
 	Given I see sign in screen
 	When I press Join button

@@ -31,9 +31,10 @@ Scenario Outline: Send Hello to contact
 	Examples: 
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
-    
+
+
 @smoke 
-@id460 @mute
+@id460
 Scenario Outline: Send a camera roll picture to user from contact list
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with my name <Name>
@@ -51,7 +52,7 @@ Examples:
 	|	aqaUser		|	aqaPassword		|	aqaUser		|	aqaContact1		|
 
 
-  #Muted till new sync engine client stabilization
+  #Muted till new sync engine client stabilization. Mute buttons location is not possible.
   @mute
   @smoke
   @id338
@@ -67,9 +68,6 @@ Examples:
 Examples:
     |  Login		| Password		| Name			| Contact1    |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |
-
-
-
 
 
 @regression 
@@ -140,7 +138,6 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/carl-cox/sets/all-roads-lead-to-the |
     
     
-#muted due to defact IOS-985, still needs checking of mediabar and scrolling on simulator 
 @regression
 @id384 
 Scenario Outline: Conversation gets scrolled back to playing media when clicking on media bar
@@ -157,7 +154,7 @@ Scenario Outline: Conversation gets scrolled back to playing media when clicking
     
 Examples:
     |  Login		| Password		| Name			| Contact1    | SoundCloudLink |
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/carl-cox/sets/all-roads-lead-to-the |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
    
 @regression
@@ -190,7 +187,7 @@ Examples:
  	|  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |
 
 @staging
-@id504
+@id504 
   Scenario Outline: Verify you can play/pause media from the Media Bar (YouTube)
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -244,9 +241,8 @@ Examples:
     |  Login		| Password		| Name			| Contact1    | Contact2    |SoundCloudLink |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | aqaContact2 |https://soundcloud.com/carl-cox/carl-cox-nexus |
 
-
-#muted due to issue IOS-959 
-@staging
+ 
+@regression
 @id386   
 Scenario Outline: Verify the Media Bar disappears when playing media is back in view (SoundCloud)
 	Given I Sign in using login <Login> and password <Password>
@@ -257,16 +253,16 @@ Scenario Outline: Verify the Media Bar disappears when playing media is back in 
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
-    And I scroll back to media container
+    And I tap on text input
     Then I dont see media bar on dialog page
     
 Examples:
     |  Login		| Password		| Name			| Contact1    | SoundCloudLink |
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 | https://soundcloud.com/carl-cox/carl-cox-nexus |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2 | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
     
     
 @regression
-@id385 
+@id385
   Scenario Outline: Verify the Media Bar dissapears after playback finishes (SoundCloud)
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -303,7 +299,7 @@ Examples:
     |	Login	|	Password	|	Name	|	Contact		|
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
 
- @staging 
+ @staging
  @id407
   Scenario Outline: Send more than 200 chars message
     Given I Sign in using login <Login> and password <Password>
@@ -406,7 +402,7 @@ Examples:
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact2	| TextToCopy|
    
  @staging   
- @id394
+ @id394 
  Scenario Outline: Tap the cursor to get to the end of the conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -474,7 +470,6 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
 
-#Muted due to ZIOS-2049
 @staging
 @id556
 Scenario Outline: Verify you can add people from 1:1 people view (via Add to Conversation button)
@@ -500,8 +495,7 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		| Contact3 |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| aqaContact3 |
     
-    
-#Muted due to ZIOS-2049   
+      
 @staging
 @id557
 Scenario Outline: Verify you can add people from 1:1 people view (via keyboard button)

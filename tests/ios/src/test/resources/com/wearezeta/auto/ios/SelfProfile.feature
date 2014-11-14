@@ -1,6 +1,6 @@
 Feature: Change Profile Picture
 
-  @smoke @id344 @mute
+  @smoke @id344
   Scenario Outline: Change your profile picture
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -31,3 +31,32 @@ Feature: Change Profile Picture
     Examples: 
       | Login   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |
+
+  @staging @id729
+  Scenario Outline: Attempt to open About screen in settings
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on my name <Name>
+	And I click on Settings button on personal page
+	And I click on About button on personal page
+	Then I see About page
+
+    Examples: 
+      | Login   | Password    | Name    |
+      | aqaUser | aqaPassword | aqaUser |    
+      
+   @staging @id1258 
+   Scenario Outline: Verify default value for sound settings is all
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    And I tap on my name <Name>
+    And I click on Settings button on personal page
+    And I click on Settings button from the options menu
+    When I tap on Sound Alerts
+    And I see the Sound alerts page
+    Then I verify that all is the default selected value
+
+    Examples: 
+      | Login   | Password    | Name    |
+      | aqaUser | aqaPassword | aqaUser |
+  

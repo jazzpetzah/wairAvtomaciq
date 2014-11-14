@@ -37,7 +37,13 @@ public class PeoplePickerPageSteps {
 	@When("^I input in People picker search field user name (.*)$")
 	public void WhenIInputInPeoplePickerSearchFieldUserName(String contact) throws Throwable {
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
-		PagesCollection.peoplePickerPage.typeTextInPeopleSearch(contact);
+		String email = CommonUtils.retrieveRealUserEmailValue(contact);
+		if (email != "") {
+			PagesCollection.peoplePickerPage.typeTextInPeopleSearch(email);
+		}
+		else {
+			PagesCollection.peoplePickerPage.typeTextInPeopleSearch(contact);
+		}
 	}
 	
 	@When("^I input in search field part (.*) of user name to connect to (.*)$")
@@ -50,7 +56,13 @@ public class PeoplePickerPageSteps {
 	@When("^I input in search field user name to connect to (.*)$")
 	public void WhenIInputInSearchFieldUserNameToConnectTo(String contact) throws Throwable {
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
-		PagesCollection.peoplePickerPage.typeTextInPeopleSearch(contact);
+		String email = CommonUtils.retrieveRealUserEmailValue(contact);
+		if (email != "") {
+			PagesCollection.peoplePickerPage.typeTextInPeopleSearch(email);
+		}
+		else {
+			PagesCollection.peoplePickerPage.typeTextInPeopleSearch(contact);
+		}
 	}
 	
 	@When("^I add in search field user name to connect to (.*)$")
