@@ -79,8 +79,7 @@ Feature: Register new user
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
 
-  #Muted till new sync engine client stabilization
-  @mute
+
   @regression
   @id282
   Scenario Outline: Can return to email page to change email if input incorrectly
@@ -91,14 +90,14 @@ Feature: Register new user
 	And I See selected picture
 	And I confirm selection
 	And I input name <Name> and hit Enter
-	And I enter an incorrect email <Incorrect>
-	And I enter password <Password>
-	And I submit registration data
+	And I input email <Incorrect> and hit Enter
+	And I input password <Password> and hit Enter
 	Then I see error page
 	And I return to the email page from error page
-	And I enter email <Correct>
-	And I submit registration data
-	And I verify registration address
+	And I clear email input field on Registration page
+	And I input email <Correct> and hit Enter
+	And I input password <Password> and hit Enter
+	And I see confirmation page
 
     Examples:     
     |	Correct				    |	Password	        |	Name	        |   Incorrect           |
@@ -106,7 +105,7 @@ Feature: Register new user
 
 
   @regression
-  @id346 @mute
+  @id346 
   Scenario Outline: Register new user using username with maximum characters allowed, Deutch, Double-byte (Chinese), and emoji Characters
 	Given I see sign in screen
 	When I press Join button
@@ -173,10 +172,10 @@ Feature: Register new user
 	Examples:     
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
-    
+
 
 @regression
-@id285 @mute
+@id285 
   Scenario Outline: Take or select a photo label not visible when picture is selected
 	Given I see sign in screen
 	When I press Join button
