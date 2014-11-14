@@ -205,9 +205,8 @@ Feature: Register new user
 	Examples:     
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
- 
-#Muted till new sync engine client stabilization
-@mute
+
+
 @regression
 @id273
   Scenario Outline: Next Button should not be visible on first registration step visit
@@ -231,8 +230,7 @@ Feature: Register new user
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	| 
     
-#Muted till new sync engine client stabilization
-@mute
+
 @regression
 @id290
   Scenario Outline: Automatic email verification
@@ -273,8 +271,7 @@ Feature: Register new user
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
     
-#Muted till new sync engine client stabilization
-@mute
+
 @regression
 @id305
   Scenario Outline: Minimum 8 chars password requirement validation
@@ -285,9 +282,8 @@ Feature: Register new user
 	And I See selected picture
 	And I confirm selection
 	And I input name <Name> and hit Enter
-	And I enter email <Email>
+	And I input email <Email> and hit Enter
 	And I enter password <Password>
-	And I input user data
 	Then I see Create Account button disabled
 
     Examples:     
