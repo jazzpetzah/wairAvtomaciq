@@ -53,7 +53,7 @@
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
     And I wait for 60 seconds
-   	Then I see than no results found
+   	Then I see that no results found
 
  Examples: 
       | Login   | Password    | Name    | Contact     |

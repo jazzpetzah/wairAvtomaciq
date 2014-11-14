@@ -77,7 +77,7 @@ public class PeoplePickerPageSteps {
 	    PagesCollection.peoplePickerPage.waitUserPickerFindUser(contact);	
 	}
 	
-	@Then("^I see than no results found$")
+	@Then("^I see that no results found$")
 	public void ISeeNoResultsFound() {
 		Assert.assertTrue(PagesCollection.peoplePickerPage.isNoResultsFoundVisible());
 	}
