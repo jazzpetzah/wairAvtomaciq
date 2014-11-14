@@ -157,7 +157,7 @@ public class DialogPageSteps {
 		String lastMessage = PagesCollection.dialogPage.getLastMessageFromDialog();
 		String expectedConnectMessage = PagesCollection.dialogPage.getExpectedConnectMessage(contact, user);
 		Assert.assertEquals("Expected: " + expectedConnectingLabel + " | Actual: " + actualConnectingLabel, expectedConnectingLabel, actualConnectingLabel);
-		Assert.assertEquals("Expected: " + expectedConnectMessage + " | Actual: " + lastMessage, expectedConnectMessage, lastMessage);
+		Assert.assertEquals("Expected: " + expectedConnectMessage + " | Actual: " + lastMessage, expectedConnectMessage.toLowerCase(), lastMessage.toLowerCase());
 	}
 	
 	@Then("^I see new photo in the dialog$")
