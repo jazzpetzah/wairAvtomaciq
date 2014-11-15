@@ -175,10 +175,10 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaPictureContact	    |     TESTCHAT		|
 
 @staging
-@id576 @torun
+@id576
 Scenario Outline: Send connection request to unconnected participant in a group chat
     Given I Sign in using login <Login> and password <Password>
-    Given I have group chat named <GroupChatName> with an unconnected user, made by <GroupCreator>
+    And I have group chat named <GroupChatName> with an unconnected user, made by <GroupCreator>
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
 	And I swipe up on group chat page

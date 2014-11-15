@@ -26,7 +26,7 @@ public class PeoplePickerPageSteps {
 			IClickCloseButtonDismissPeopleView();
 			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
 				PagesCollection.peoplePickerPage = (PeoplePickerPage) PagesCollection.contactListPage
-						.swipeDown(500);
+						.swipeDown(1000);
 			} else {
 				PagesCollection.peoplePickerPage = (PeoplePickerPage) PagesCollection.contactListPage
 						.swipeDownSimulator();
