@@ -47,7 +47,7 @@ public class DriverUtils {
 	public static boolean isElementDisplayed(WebElement element) {
 		boolean flag = true;
 		try{
-			element.isDisplayed();
+			flag = element.isDisplayed();
 		}
 		catch(Exception ex)
 		{

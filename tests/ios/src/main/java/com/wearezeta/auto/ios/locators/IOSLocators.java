@@ -403,10 +403,11 @@ public final class IOSLocators {
 	public static final String nameTutorialText = "Pull down to start";
 	public static final String nameTutorialView = "ZClientNotificationWindow";
 	
-	//UIAutomation locators
+	//Script locators
 	public static final String scriptCursorInputPath = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textViews()[\"ConversationTextInputField\"]";
 	public static final String scriptKeyboardReturnKeyPath = "target.frontMostApp().keyboard().elements()[\"Return\"]";
 	public static final String scriptSignInEmailPath = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textFields()[\"SignInEmail\"]";
 	public static final String scriptSignInPasswordPath = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].secureTextFields()[\"SignInPassword\"]";
+	public static final String scriptRegistrationEmailInputPath = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textFields()[\"RegistrationEmailField\"]";
 }
 

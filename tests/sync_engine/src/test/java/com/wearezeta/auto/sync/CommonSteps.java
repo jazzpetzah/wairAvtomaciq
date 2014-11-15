@@ -395,7 +395,6 @@ public class CommonSteps {
 		if (ExecutionContext.isOsxEnabled() && ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED) {
 			String chatSource = ExecutionContext.osxZeta().listener().getChatSource();
 			osxPageSources.put(new Date(), chatSource);
-			log.debug(chatSource);
 		}
 	}
 	
@@ -549,6 +548,7 @@ public class CommonSteps {
 				long endDate = new Date().getTime();
 				log.debug("Time consumed for sending text message #" + i + " from OSX: "
 						+ (endDate - startDate) + "ms");
+				Thread.sleep(100);
 			}
 		}
 		storeIosPageSource(false);
