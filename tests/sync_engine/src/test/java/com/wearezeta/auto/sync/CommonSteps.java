@@ -548,7 +548,7 @@ public class CommonSteps {
 				long endDate = new Date().getTime();
 				log.debug("Time consumed for sending text message #" + i + " from OSX: "
 						+ (endDate - startDate) + "ms");
-				Thread.sleep(100);
+				Thread.sleep(1000);
 			}
 		}
 		storeIosPageSource(false);

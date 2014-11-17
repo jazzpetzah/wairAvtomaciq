@@ -207,7 +207,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     | SoundCloudLink                              |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/edherbst/throwaway-3 |
 
-  @regression @id379
+  @staging @id379
   Scenario Outline: Play/pause SoundCloud media link from the media bar
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
