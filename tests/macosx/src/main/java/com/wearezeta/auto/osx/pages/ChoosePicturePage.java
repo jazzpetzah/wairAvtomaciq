@@ -2,16 +2,20 @@ package com.wearezeta.auto.osx.pages;
 
 import java.net.MalformedURLException;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class ChoosePicturePage extends OSXPage {
-
+	private static final Logger log = ZetaLogger.getLog(ChoosePicturePage.class.getSimpleName());
+	
 	@FindBy(how = How.ID, using = OSXLocators.idChooseImageCancelButton)
 	private WebElement cancelButton;
 
@@ -41,7 +45,11 @@ public class ChoosePicturePage extends OSXPage {
 	}
 	
 	public void selectColumnView() {
-		selectColumnViewButton.click();
+		try {
+			selectColumnViewButton.click();
+		} catch (NoSuchElementException e) {
+			log.debug("Can't find column view selector.\n" + driver.getPageSource());
+		}
 	}
 	
 	public void goToSelectedFavoritesFolder(String folderName) {
