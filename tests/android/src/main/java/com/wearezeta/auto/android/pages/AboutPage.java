@@ -33,6 +33,7 @@ public class AboutPage extends AndroidPage {
 	}
 
 	public boolean aboutLogoIsVisible() {
+		refreshUITree();
 		return aboutLogo.isDisplayed();
 		
 	}

@@ -21,7 +21,7 @@
     
  Examples: 
       | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact2 |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
       
 @id673 @regression
  Scenario Outline: I want to unblock someone from their Profile view
@@ -41,7 +41,7 @@
     
  Examples: 
       | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact2 |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
  
  @regression @id720
  Scenario Outline: I do not want to be seen in the search results of someone I blocked
