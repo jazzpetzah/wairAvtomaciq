@@ -236,6 +236,23 @@ public class RegistrationPage extends IOSPage {
 	public void inputEmail() {
 		yourEmail.sendKeys("\n");
 	}
+	
+	public void scriptInputEmail(String val){
+		String script = String.format(
+				IOSLocators.scriptRegistrationEmailInputPath + ".setValue(\"%s\");", val);
+		driver.executeScript(script);
+}
+	
+	public void scriptInputAndConfirmEmail(String val){
+			String script = String.format(
+					IOSLocators.scriptRegistrationEmailInputPath + ".setValue(\"%s\");" +
+							IOSLocators.scriptKeyboardReturnKeyPath + ".tap();", val);
+			driver.executeScript(script);
+	}
+	
+	public void clearEmailInput(){
+		scriptInputEmail("");
+	}
 
 	public void inputPassword() {
 		yourPassword.sendKeys("\n");
