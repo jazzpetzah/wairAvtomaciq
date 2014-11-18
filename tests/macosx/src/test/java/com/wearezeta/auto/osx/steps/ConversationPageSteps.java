@@ -125,7 +125,7 @@ public class ConversationPageSteps {
 		 int afterNumberOfImages = -1;
 		 
 		 boolean isNumberIncreased = false;
-		 for (int i = 0; i < 60; i++) {
+		 for (int i = 0; i < 3; i++) {
 			 afterNumberOfImages = CommonSteps.senderPages.getConversationPage().getNumberOfImageEntries();
 			 if (afterNumberOfImages == beforeNumberOfImages + 1) {
 				 isNumberIncreased = true;
@@ -173,7 +173,7 @@ public class ConversationPageSteps {
 		 if (message.equals(OSXLocators.YOU_PINGED_MESSAGE)) {
 			 boolean isNumberIncreased = false;
 			 int afterNumberOfKnocks = -1;
-			 for (int i = 0; i < 20; i++) {
+			 for (int i = 0; i < 3; i++) {
 				 afterNumberOfKnocks = CommonSteps.senderPages.getConversationPage().getNumberOfYouPingedMessages(OSXLocators.xpathYouPingedMessage);
 				 if (afterNumberOfKnocks == beforeNumberOfKnocks + 1) {
 					 isNumberIncreased = true;
@@ -188,7 +188,7 @@ public class ConversationPageSteps {
 		} else if (message.equals(OSXLocators.YOU_PINGED_AGAIN_MESSAGE)) {
 			 boolean isNumberIncreased = false;
 			 int afterNumberOfHotKnocks = -1;
-			 for (int i = 0; i < 20; i++) {
+			 for (int i = 0; i < 3; i++) {
 				 afterNumberOfHotKnocks = CommonSteps.senderPages.getConversationPage().getNumberOfYouPingedMessages(OSXLocators.xpathYouPingedAgainMessage);
 				 if (afterNumberOfHotKnocks == beforeNumberOfHotKnocks + 1) {
 					 isNumberIncreased = true;
