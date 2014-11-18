@@ -38,7 +38,6 @@ Examples:
     
     
 #Muted till new sync engine client stabilization
-@mute
 @regression
 @id489
 Scenario Outline: Add user to a group conversation
@@ -54,12 +53,11 @@ Scenario Outline: Add user to a group conversation
 	And I input in People picker search field user name <Contact3>
 	And I see user <Contact3> found on People picker page
 	And I tap on connected user <Contact3> on People picker page
-	And I see Add to conversation button
     And I click on Go button
 	Then I see that conversation has <Number> people
 	And I see <Number> participants avatars
     When I exit the group info page
-    And I can see <Name> Added <Contact3>
+    And I can see You Added <Contact3> message
 	
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		| Contact3		| Number  |
