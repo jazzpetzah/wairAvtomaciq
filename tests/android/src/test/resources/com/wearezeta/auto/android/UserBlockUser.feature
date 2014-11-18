@@ -7,7 +7,7 @@
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe up on dialog page
-    And I see <Contact> user name and email
+    #And I see <Contact> user name and email
 	And I Press Block button
     And I confirm block
     Then I do not see Contact list with name <Contact>
