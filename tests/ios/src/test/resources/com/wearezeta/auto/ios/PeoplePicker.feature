@@ -1,7 +1,7 @@
 Feature: People Picker
 
 @id1150
-@staging
+@regression
 Scenario Outline: Start group chat with users from Top Connections
   Given I have at least 9 connections
   Given I Sign in using login <Login> and password <Password>
