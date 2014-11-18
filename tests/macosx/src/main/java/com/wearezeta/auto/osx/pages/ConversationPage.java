@@ -49,8 +49,11 @@ public class ConversationPage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathMessageEntry)
 	private List<WebElement> messageEntries;
 
-	@FindBy(how = How.NAME, using = OSXLocators.nameSayHelloMenuItem)
-	private WebElement sayHelloMenuItem;
+	@FindBy(how = How.NAME, using = OSXLocators.namePingMenuItem)
+	private WebElement pingMenuItem;
+	
+	@FindBy(how = How.NAME, using = OSXLocators.namePingAgainMenuItem)
+	private WebElement pingAgainMenuItem;
 
 	@FindBy(how = How.ID, using = OSXLocators.idAddImageButton)
 	private WebElement addImageButton;
@@ -100,10 +103,14 @@ public class ConversationPage extends OSXPage {
 		return null;
 	}
 
-	public void knock() {
-		sayHelloMenuItem.click();
+	public void ping() {
+		pingMenuItem.click();
 	}
 
+	public void pingAgain() {
+		pingAgainMenuItem.click();
+	}
+	
 	public boolean isMessageExist(String message) throws InterruptedException {
 		String messageText = "";
 		
