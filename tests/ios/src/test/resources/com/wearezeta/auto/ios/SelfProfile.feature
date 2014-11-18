@@ -17,7 +17,7 @@ Feature: Change Profile Picture
       | Login   | Password    | Name    | Picture                      |
       | aqaUser | aqaPassword | aqaUser | userpicture_mobile_check.jpg |
 
-  @staging @id1055
+  @regression @id1055
   Scenario Outline: Attempt to enter a name with 0 chars
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -32,7 +32,7 @@ Feature: Change Profile Picture
       | Login   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |
 
-  @staging @id729
+  @regression @id729
   Scenario Outline: Attempt to open About screen in settings
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -45,7 +45,7 @@ Feature: Change Profile Picture
       | Login   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |    
       
-   @staging @id1258 
+   @regression @id1258 
    Scenario Outline: Verify default value for sound settings is all
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
