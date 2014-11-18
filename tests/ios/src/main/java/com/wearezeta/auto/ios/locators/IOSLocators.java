@@ -264,7 +264,7 @@ public final class IOSLocators {
 	
 	public static final String xpathCloseColorModeButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAButton[4]";
 
-	public static String xpathNumberPeopleText = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[2]";
+	public static String xpathNumberPeopleText = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[3]";
 	
 	public static final String peopleCountTextSubstring = " people";
 	
@@ -352,7 +352,7 @@ public final class IOSLocators {
 	public static final String nameAddPeopleDialogHeader = "Add people and share history?";
 	public static final String nameAddPeopleCancelButton = "CANCEL";
 	public static final String nameAddPeopleContinueButton = "CONTINUE";
-	
+	public static final String nameYouAddetToGroupChatMessage = "YOU ADDED %s";
 	
 	////////////////////////////
 	//Contact list locator
