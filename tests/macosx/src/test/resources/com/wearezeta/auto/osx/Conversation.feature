@@ -18,9 +18,9 @@ Feature: Conversation
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <Contact>
-    When I am knocking to user
+    When I ping user
     Then I see message YOU PINGED in conversation
-    And I am knocking to user
+    And I ping again user
     Then I see message YOU PINGED AGAIN in conversation
 
     Examples: 
@@ -106,9 +106,9 @@ Feature: Conversation
     And I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
-    When I am knocking to user
+    When I ping user
     Then I see message YOU PINGED in conversation
-    And I am knocking to user
+    And I ping again user
     Then I see message YOU PINGED AGAIN in conversation
 
     Examples: 
@@ -207,7 +207,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     | SoundCloudLink                              |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/edherbst/throwaway-3 |
 
-  @regression @id379
+  @staging @id379
   Scenario Outline: Play/pause SoundCloud media link from the media bar
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list

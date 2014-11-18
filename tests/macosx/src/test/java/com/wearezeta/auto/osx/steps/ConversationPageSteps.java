@@ -143,8 +143,7 @@ public class ConversationPageSteps {
 			CommonSteps.senderPages.getConversationPage().scrollDownToLastMessage();
 	 }
 	 
-	 @When("I am knocking to user")
-	 public void WhenIAmKnockingToUser() {
+	 private void calcNumberOfPings() {
 		 if (beforeNumberOfKnocks < 0) {
 			 beforeNumberOfKnocks =
 				CommonSteps.senderPages.getConversationPage()
@@ -155,7 +154,18 @@ public class ConversationPageSteps {
 				CommonSteps.senderPages.getConversationPage()
 					 	.getNumberOfYouPingedMessages(OSXLocators.xpathYouPingedAgainMessage);
 		 }
-		 CommonSteps.senderPages.getConversationPage().knock();
+	 }
+	 
+	 @When("I ping user")
+	 public void WhenIPingUser() {
+		 calcNumberOfPings();
+		 CommonSteps.senderPages.getConversationPage().ping();
+	 }
+	 
+	 @When("I ping again user")
+	 public void IPingAgainUser() {
+		 calcNumberOfPings();
+		 CommonSteps.senderPages.getConversationPage().pingAgain();
 	 }
 	 
 	 @Then("I see message (.*) in conversation$")
