@@ -71,6 +71,10 @@ public class GroupChatPage extends DialogPage {
 		return driver.findElement(By.name(user.toUpperCase() + " ADDED " + contact.toUpperCase())).isDisplayed();
 	}
 	
+	public boolean isYouAddedUserMessageShown(String user){
+		return isMessageShownInGroupChat(String.format(IOSLocators.nameYouAddetToGroupChatMessage, user.toUpperCase()));
+	}
+	
 	public boolean isMessageShownInGroupChat(String message){
 		boolean flag = false;
 		flag = DriverUtils.isElementDisplayed(driver.findElement(By.name(message)));
