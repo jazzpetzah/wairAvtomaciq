@@ -31,6 +31,9 @@ public class GroupChatPage extends DialogPage {
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameYouHaveLeft)
 	private WebElement youLeft;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameYouLeftMessage)
+	private WebElement youLeftMessage;
 
 	public GroupChatPage(String URL, String path) throws IOException {
 		super(URL, path);
@@ -152,6 +155,10 @@ public class GroupChatPage extends DialogPage {
 			}
 		}	
 		return page;
+	}
+
+	public boolean isYouLeftMessageShown() {
+		return DriverUtils.isElementDisplayed(youLeftMessage);
 	}
 
 }

@@ -48,6 +48,11 @@ public class GroupChatPageSteps {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		Assert.assertTrue(PagesCollection.groupChatPage.isYouHaveLeftVisible());
 	}
+	
+	@Then("I see You Left message in group chat")
+	public void ISeeYouLeftMessage(){
+		Assert.assertTrue(PagesCollection.groupChatPage.isYouLeftMessageShown());
+	}
 
 	@Then("^I see that (.*) is not present on group chat page$")
 	public void ISeeContactIsNotPresentOnGroupChatPage(String contact) throws InterruptedException {
