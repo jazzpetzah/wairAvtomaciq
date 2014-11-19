@@ -39,7 +39,7 @@ public final class OSXLocators {
 	public static final String idShowArchivedButton = "openArchiveButton";
 	
 	public static final String namePingMenuItem = "Ping";
-	public static final String namePingAgainMenuItem = "Ping again";
+	public static final String namePingAgainMenuItem = "Ping Again";
 	public static final String nameSignOutMenuItem = "Sign Out";
 	public static final String nameQuitZClientMenuItem = "Quit Wire";
 	public static final String idSendInvitationButton = "send";
