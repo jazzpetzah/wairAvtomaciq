@@ -434,6 +434,10 @@ public class CommonUtils {
 		for (int i = 0; i < usersNum; i++) {
 			Runnable worker = new Thread(new Runnable() {
 				public void run() {
+					//workaround for error 420
+					try { Thread.sleep(1000); } catch(InterruptedException e) { }
+					//workaround for error 420
+					
 					try {
 						String email = CreateZetaUser
 								.registerUserAndReturnMail();
