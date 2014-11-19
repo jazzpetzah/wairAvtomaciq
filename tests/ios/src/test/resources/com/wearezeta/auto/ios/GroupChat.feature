@@ -37,7 +37,6 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
     
     
-#Muted till new sync engine client stabilization
 @regression
 @id489
 Scenario Outline: Add user to a group conversation
@@ -64,7 +63,7 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| aqaContact3	| 4		  |
 
 @smoke
-@id335 @mute
+@id335 
 Scenario Outline: Leave from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -76,7 +75,7 @@ Scenario Outline: Leave from group chat
 	And I open archived conversations
 	And I see <Contact1> and <Contact2> chat in contact list
 	And I tap on a group chat with <Contact1> and <Contact2>
-	And I can see <Name> Have Left
+	And I see You Left message in group chat
 
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
@@ -100,7 +99,7 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
     
     
-#Muted till new sync engine client stabilization
+#Muted due ZIOS-2724
 @mute
 @regression
 @id392
@@ -206,7 +205,7 @@ Scenario Outline: Verify you can start 1:1 conversation from a group conversatio
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-#Mute due to SE issue, MEC-270, not possible to create group from 1:1      
+   
 @staging
 @id393
 Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
