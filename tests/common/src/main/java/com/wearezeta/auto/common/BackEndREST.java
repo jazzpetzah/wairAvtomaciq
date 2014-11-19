@@ -118,6 +118,7 @@ public class BackEndREST {
 	private static Object httpGet(Builder webResource, Class<?> entityClass,
 			int[] acceptableResponseCodes) throws BackendRequestException {
 		ClientResponse response = webResource.get(ClientResponse.class);
+		log.debug("HTTP GET request(Response: " + response.toString() + ")");
 		VerifyRequestResult(response.getStatus(), acceptableResponseCodes);
 		return response.getEntity(entityClass);
 	}
@@ -125,6 +126,7 @@ public class BackEndREST {
 	private static String httpGet(Builder webResource,
 			int[] acceptableResponseCodes) throws BackendRequestException {
 		ClientResponse response = webResource.get(ClientResponse.class);
+		log.debug("HTTP GET request(Response: " + response.toString() + ")");
 		VerifyRequestResult(response.getStatus(), acceptableResponseCodes);
 		return response.getEntity(String.class);
 	}
