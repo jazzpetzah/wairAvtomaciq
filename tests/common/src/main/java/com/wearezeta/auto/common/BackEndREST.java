@@ -167,6 +167,7 @@ public class BackEndREST {
 		boolean doRetry = true;
 		int tryNum = 1;
 		String output = "";
+		int toWait = 1;
 		while (doRetry && tryNum < 5) {
 			try {
 				output = httpPost(webResource, input, new int[] { HttpStatus.SC_OK });
@@ -176,7 +177,8 @@ public class BackEndREST {
 					log.debug("Request for login number #" + tryNum + " failed.");
 					doRetry = true;
 					tryNum++;
-					try { Thread.sleep(1000); } catch(InterruptedException ex) { }
+					try { Thread.sleep(toWait*1000); } catch(InterruptedException ex) { }
+					toWait+=2;
 				}
 				else { throw e; }
 			}
