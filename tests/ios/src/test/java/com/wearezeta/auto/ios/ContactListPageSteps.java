@@ -226,7 +226,6 @@ public class ContactListPageSteps {
 	}
 	
 	@When("I see Pending request link in contact list")
-	
 	public void ISeePendingRequestLinkInContacts(){
 		Assert.assertTrue("Pending request link is not in Contact list", PagesCollection.contactListPage.isPendingRequestInContactList());
 	}

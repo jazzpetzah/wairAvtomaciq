@@ -130,3 +130,23 @@ Scenario Outline: Verify 1:1 conversation is successfully created on the second 
 Examples: 
       | Login   | Password    | Name    | Contact     		|
       | aqaUser | aqaPassword | aqaUser | yourNotContact1 	|
+      
+@staging @id579 @torun
+Scenario Outline: Verify transitions between connection requests (ignoring)
+    Given I send <SentRequests> connection requests to <Name>
+    When I Sign in using login <Name> and password <Password>
+    And I see Contact list with my name <Name>
+    And I see Pending request link in contact list
+    And I click on Pending request link in contact list
+    And I click on Ignore button on Pending requests page <SentRequests> times
+    And I dont see Pending request link in contact list
+    And I don't see conversation with not connected user <NotConnectedUser>
+    And I swipe down contact list
+    #And I tap on Search input on People picker page
+    #And I input in People picker search field user name <NotConnectedUser>
+    And I search for ignored user name <NotConnectedUser> and tap on it
+    Then I see Pending request page
+    
+Examples: 
+      | Login   | Password    | Name    | SentRequests	| NotConnectedUser |
+      | aqaUser | aqaPassword | aqaUser |      3 	    | yourNotContact1  |

@@ -41,7 +41,7 @@ public class ContactListPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameMediaCellPlayButton)
 	private WebElement playPauseButton;
 	
-	@FindBy(how = How.NAME, using = IOSLocators.namePendingRequest)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathPendingRequest)
 	private WebElement pendingRequest;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameTutorialText)
@@ -237,8 +237,11 @@ public class ContactListPage extends IOSPage {
 	}
 	
 	public boolean isPendingRequestInContactList(){
-		boolean flag = DriverUtils.isElementDisplayed(pendingRequest);
-		return flag;
+		if(pendingRequest.getAttribute("name").contains("people waiting")){
+			//boolean flag = DriverUtils.isElementDisplayed(pendingRequest);
+			return pendingRequest.isDisplayed();
+		}
+		return false;
 	}
 	
 	public PendingRequestsPage clickPendingRequest() throws Throwable{
