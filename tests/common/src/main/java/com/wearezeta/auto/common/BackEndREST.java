@@ -165,14 +165,19 @@ public class BackEndREST {
 				"{\"email\":\"%s\",\"password\":\"%s\",\"label\":\"\"}",
 				user.getEmail(), user.getPassword());
 		boolean doRetry = true;
-		int count = 0;
+		int tryNum = 1;
 		String output = "";
-		while (doRetry && count < 3) {
+		while (doRetry && tryNum < 5) {
 			try {
 				output = httpPost(webResource, input, new int[] { HttpStatus.SC_OK });
 				doRetry = false;
 			} catch (BackendRequestException e) {
-				if (count < 3) { doRetry = true; count++; }
+				if (tryNum < 4) {
+					log.debug("Request for login number #" + tryNum + " failed.");
+					doRetry = true;
+					tryNum++;
+					try { Thread.sleep(1000); } catch(InterruptedException ex) { }
+				}
 				else { throw e; }
 			}
 		}
