@@ -67,7 +67,8 @@ public class ContactListPage extends AndroidPage {
 		refreshUITree();
 		DriverUtils.setImplicitWaitValue(driver, 5);
 		//workaround for incorrect tap
-		if (DriverUtils.isElementDisplayed(el)) {
+		el = findInContactList(name, 1);
+		if (el != null && DriverUtils.isElementDisplayed(el)) {
 			el.click();
 			log.debug("tap on contact for the second time");
 		}
