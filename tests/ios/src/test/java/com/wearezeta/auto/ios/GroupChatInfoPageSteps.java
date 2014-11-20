@@ -35,6 +35,11 @@ public class GroupChatInfoPageSteps {
 		Assert.assertTrue(PagesCollection.groupChatInfoPage.isCorrectConversationName(contact1, contact2));
 	}
 	
+	@When("I see correct conversation name (.*)")
+	public void ISeeCorrectConversationName(String name){
+		Assert.assertEquals(PagesCollection.groupChatInfoPage.getGroupChatName(), name);
+	}
+	
 	@When("^I see the correct number of participants in the title (.*)$")
 	public void IVerifyParticipantNumber(String realNumberOfParticipants) throws IOException{
 		Assert.assertTrue(PagesCollection.groupChatInfoPage.isNumberOfParticipants(Integer.parseInt(realNumberOfParticipants)));

@@ -43,6 +43,11 @@ public class GroupChatPageSteps {
 		Assert.assertTrue(PagesCollection.groupChatPage.isConversationChangedInChat());
 	}
 	
+	@When("I see you renamed conversation to (.*) message shown in Group Chat")
+	public void ISeeYouRenamedMessageInGroupChat(String name){
+		Assert.assertTrue(PagesCollection.groupChatPage.isYouRenamedConversationMessageVisible(name));
+	}
+	
 	@Then("^I can see (.*) Have Left$")
 	public void ICanSeeYouHaveLeft(String name) throws IOException{
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);

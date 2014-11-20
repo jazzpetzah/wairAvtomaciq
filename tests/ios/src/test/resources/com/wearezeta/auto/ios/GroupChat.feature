@@ -118,8 +118,6 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaPictureContact	    | aqaAvatar TestContact	| 		 3			|
 
 
-#Muted till new sync engine client stabilization
-@mute
 @smoke 
 @id404
 Scenario Outline: I can edit the conversation name
@@ -127,16 +125,16 @@ Scenario Outline: I can edit the conversation name
     And I see Contact list with my name <Name>
 	When I create group chat with <Contact1> and <Contact2>
 	And I swipe up on group chat page
-	And I change the conversation name
-	Then I see that the conversation name is correct with <Contact1> and <Contact2>
+	And I change conversation name to <ChatName>
+	Then I see correct conversation name <ChatName>
 	And I exit the group info page
-	And I see the new conversation name displayed in in conversation
+	And I see you renamed conversation to <ChatName> message shown in Group Chat
 	And I return to the chat list
-	And I see the group conversation name changed in the chat list	
+	And I see in contact list group chat named <ChatName>
 		
 Examples:
-    |  Login		| Password		| Name			| Contact1		| Contact2		|
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	|
+    |  Login		| Password		| Name			| Contact1		| Contact2		| ChatName  |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	| QAtest	|
 
 
 #Muted till new sync engine client stabilization
