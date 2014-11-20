@@ -164,7 +164,7 @@ public class BackEndREST {
 		final String input = String.format(
 				"{\"email\":\"%s\",\"password\":\"%s\",\"label\":\"\"}",
 				user.getEmail(), user.getPassword());
-		boolean doRetry = false;
+		boolean doRetry = true;
 		int count = 0;
 		String output = "";
 		while (doRetry && count < 3) {
