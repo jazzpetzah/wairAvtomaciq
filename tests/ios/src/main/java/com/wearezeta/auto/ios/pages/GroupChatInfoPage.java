@@ -62,6 +62,10 @@ public class GroupChatInfoPage extends IOSPage {
 		this.url = URL;
 		this.path = path;
 	}
+	
+	public String getGroupChatName(){
+		return conversationNameTextField.getText();
+	}
 
 	public void changeConversationNameToRandom() {
 		conversationName = CommonUtils.generateGUID().substring(0, 15);
