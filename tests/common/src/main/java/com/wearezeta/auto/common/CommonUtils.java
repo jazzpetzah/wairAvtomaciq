@@ -62,7 +62,8 @@ public class CommonUtils {
 	public static List<ClientUser> requiredContacts = new CopyOnWriteArrayList<ClientUser>();
 	public static List<ConvPair> user_chats = new CopyOnWriteArrayList<ConvPair>();
 	public static final int MAX_PARALLEL_USER_CREATION_TASKS = 5;
-
+	public static final int NUMBER_OF_REGISTRATION_RETRIES = 5;
+	
 	public static final String CONTACT_PICTURE_NAME = "aqaPictureContact";
 	public static final String CONTACT_PICTURE_EMAIL = "smoketester+aqaPictureContact@wearezeta.com";
 	public static final String CONTACT_PICTURE_PASSWORD = "picture123";
@@ -391,22 +392,34 @@ public class CommonUtils {
 			final boolean isContact = (i >= USERS_COUNT);
 			Runnable worker = new Thread(new Runnable() {
 				public void run() {
-					try {
-						final String email = CreateZetaUser
+					boolean doRetry = true;
+					int count = 0;
+					int waitTime = 1;
+					while (doRetry && count < NUMBER_OF_REGISTRATION_RETRIES) {
+						try {
+							final String email = CreateZetaUser
 								.registerUserAndReturnMail();
-						if (email == null)
-							return;
-						ClientUser user = new ClientUser();
-						user.setEmail(email);
-						user.setPassword(getDefaultPasswordFromConfig(CommonUtils.class));
-						user.setUserState(UsersState.Created);
-						if (isContact) {
-							contacts.add(user);
-						} else {
-							yourUsers.add(user);
+							if (email == null)
+								return;
+							ClientUser user = new ClientUser();
+							user.setEmail(email);
+							user.setPassword(getDefaultPasswordFromConfig(CommonUtils.class));
+							user.setUserState(UsersState.Created);
+							if (isContact) {
+								contacts.add(user);
+							} else {
+								yourUsers.add(user);
+							}
+							doRetry = false;
+						} catch (Exception e) {
+							doRetry = true;
+							e.printStackTrace();
 						}
-					} catch (Exception e) {
-						e.printStackTrace();
+						if (doRetry) {
+							count++;
+							try { Thread.sleep(waitTime*1000); } catch (InterruptedException e) { }
+							waitTime += 2;
+						}
 					}
 				}
 			});

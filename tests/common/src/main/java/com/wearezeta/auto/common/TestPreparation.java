@@ -20,6 +20,7 @@ public class TestPreparation {
 				BackEndREST.autoTestSendRequest(contact,
 						CommonUtils.yourUsers.get(i));
 				contact.setUserState(UsersState.RequestSend);
+				Thread.sleep(500);
 			}
 
 			BackEndREST.autoTestAcceptAllRequest(CommonUtils.yourUsers.get(i));

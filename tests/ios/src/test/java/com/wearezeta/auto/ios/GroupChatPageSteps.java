@@ -48,6 +48,11 @@ public class GroupChatPageSteps {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		Assert.assertTrue(PagesCollection.groupChatPage.isYouHaveLeftVisible());
 	}
+	
+	@Then("I see You Left message in group chat")
+	public void ISeeYouLeftMessage(){
+		Assert.assertTrue(PagesCollection.groupChatPage.isYouLeftMessageShown());
+	}
 
 	@Then("^I see that (.*) is not present on group chat page$")
 	public void ISeeContactIsNotPresentOnGroupChatPage(String contact) throws InterruptedException {
@@ -60,12 +65,11 @@ public class GroupChatPageSteps {
 		PagesCollection.contactListPage = (ContactListPage)PagesCollection.groupChatPage.swipeRight(1000);
 	}
 	
-	@When("^I can see (.*) Added (.*)$")
-	public void ICanSeeUserAddedContact(String user, String contact) throws Throwable {
-		
-		user = CommonUtils.retrieveRealUserContactPasswordValue(user);
+	@When("^I can see You Added (.*) message$")
+	public void ICanSeeYouAddedContact(String contact) throws Throwable {
+
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
-		Assert.assertTrue(PagesCollection.groupChatPage.isUserAddedContactVisible(user,contact));
+		Assert.assertTrue(PagesCollection.groupChatPage.isYouAddedUserMessageShown(contact));
 	}
 	
 	@When("I swipe down on group chat page")

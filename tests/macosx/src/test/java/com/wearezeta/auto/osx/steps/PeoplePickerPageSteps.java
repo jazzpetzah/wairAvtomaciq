@@ -17,6 +17,13 @@ public class PeoplePickerPageSteps {
 		CommonSteps.senderPages.getPeoplePickerPage().searchForText(user);
 	}
 	
+	@When("I search by email for user (.*)")
+	public void ISearchByEmailForUser(String user) {
+		user = CommonUtils.retrieveRealUserContactPasswordValue(user);
+		String email = CommonUtils.retrieveRealUserEmailValue(user);
+		CommonSteps.senderPages.getPeoplePickerPage().searchForText(email);
+	}
+	
 	@When("I see user (.*) in search results")
 	public void WhenISeeUserFromSearchResults(String user) {
 		user = CommonUtils.retrieveRealUserContactPasswordValue(user);

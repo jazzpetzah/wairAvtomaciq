@@ -37,8 +37,6 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
     
     
-#Muted till new sync engine client stabilization
-@mute
 @regression
 @id489
 Scenario Outline: Add user to a group conversation
@@ -54,12 +52,11 @@ Scenario Outline: Add user to a group conversation
 	And I input in People picker search field user name <Contact3>
 	And I see user <Contact3> found on People picker page
 	And I tap on connected user <Contact3> on People picker page
-	And I see Add to conversation button
     And I click on Go button
 	Then I see that conversation has <Number> people
 	And I see <Number> participants avatars
     When I exit the group info page
-    And I can see <Name> Added <Contact3>
+    And I can see You Added <Contact3> message
 	
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		| Contact3		| Number  |
@@ -67,7 +64,7 @@ Examples:
 
 
 @smoke
-@id335 @mute
+@id335 
 Scenario Outline: Leave from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -79,7 +76,7 @@ Scenario Outline: Leave from group chat
 	And I open archived conversations
 	And I see <Contact1> and <Contact2> chat in contact list
 	And I tap on a group chat with <Contact1> and <Contact2>
-	And I can see <Name> Have Left
+	And I see You Left message in group chat
 
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
@@ -103,7 +100,7 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
     
     
-#Muted till new sync engine client stabilization
+#Muted due ZIOS-2724
 @mute
 @regression
 @id392
@@ -209,7 +206,7 @@ Scenario Outline: Verify you can start 1:1 conversation from a group conversatio
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
 
-#Mute due to SE issue, MEC-270, not possible to create group from 1:1      
+   
 @staging
 @id393
 Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
