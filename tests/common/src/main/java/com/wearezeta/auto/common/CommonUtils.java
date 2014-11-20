@@ -61,7 +61,7 @@ public class CommonUtils {
 	public static List<ClientUser> additionalUsers = new CopyOnWriteArrayList<ClientUser>();
 	public static List<ClientUser> requiredContacts = new CopyOnWriteArrayList<ClientUser>();
 	public static List<ConvPair> user_chats = new CopyOnWriteArrayList<ConvPair>();
-	public static final int MAX_PARALLEL_USER_CREATION_TASKS = 5;
+	public static final int MAX_PARALLEL_USER_CREATION_TASKS = 1;
 	public static final int NUMBER_OF_REGISTRATION_RETRIES = 5;
 	
 	public static final String CONTACT_PICTURE_NAME = "aqaPictureContact";
