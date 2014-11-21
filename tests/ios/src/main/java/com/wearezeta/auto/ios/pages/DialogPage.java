@@ -74,6 +74,9 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathMediaConversationCell)
 	private WebElement mediaLinkCell;
 	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathYoutubeConversationCell)
+	private WebElement youtubeCell;
+	
 	@FindBy(how = How.NAME, using = IOSLocators.nameMediaBarPlayPauseButton)
 	private WebElement mediabarPlayPauseButton;
 	
@@ -138,8 +141,6 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public void scrollToTheEndOfConversation() {
-//		WebElement inputField = driver.findElement(By.name(IOSLocators.nameConversationCursorInput));
-//		driver.tap(1, inputField, 500);
 		String script = IOSLocators.scriptCursorInputPath + ".tap();";
 		driver.executeScript(script);
 	}
@@ -285,23 +286,19 @@ public class DialogPage extends IOSPage{
 	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
 		IOSPage page = null;
 		switch (direction){
-			case DOWN:
-			{
+			case DOWN: {
 				page= new DialogPage(url, path);
 				break;
 			}
-			case UP:
-			{
+			case UP: {
 				page = new OtherUserPersonalInfoPage(url, path);
 				break;
 			}
-			case LEFT:
-			{
+			case LEFT: {
 				page = new OtherUserPersonalInfoPage(url, path);
 				break;
 			}
-			case RIGHT:
-			{
+			case RIGHT: {
 				page = new ContactListPage(url, path);
 				break;
 			}
@@ -315,16 +312,8 @@ public class DialogPage extends IOSPage{
 	
 	public VideoPlayerPage clickOnVideoContainerFirstTime() throws IOException, InterruptedException {
 		VideoPlayerPage page = new VideoPlayerPage(url, path);
-		mediaContainer.click();
+		youtubeCell.click();
 		
-		DriverUtils.setImplicitWaitValue(driver, 5);
-		if (!page.isVideoPlayerPageOpened()) {
-			if (!mediaLinkCell.isDisplayed()) {
-				DriverUtils.mobileTapByCoordinates(driver, mediaContainer);
-			}
-			mediaLinkCell.click();
-		}
-		DriverUtils.setDefaultImplicitWait(driver);
 		return page;
 	}
 	
