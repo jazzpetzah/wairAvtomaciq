@@ -9,9 +9,14 @@ import cucumber.api.java.en.When;
 
 public class PendingRequestsPageSteps {
 	
-	@When("I click on Ignore button on Pending requests page")
+	@When("^I click on Ignore button on Pending requests page$")
 	public void IClickOnIgnoreButtonPendingRequests() throws Throwable{
 		PagesCollection.contactListPage = PagesCollection.pendingRequestsPage.clickIgnoreButton();
+	}
+	
+	@When("^I click on Ignore button on Pending requests page (.*) times$")
+	public void IClickOnIgnoreButtonPendingRequests(int numberOfIgnores) throws Throwable{
+		PagesCollection.contactListPage = PagesCollection.pendingRequestsPage.clickIgnoreButtonMultiple(numberOfIgnores);
 	}
 	
 	@When("I click Connect button on Pending request page")

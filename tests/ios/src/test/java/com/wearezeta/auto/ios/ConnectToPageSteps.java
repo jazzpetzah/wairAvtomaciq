@@ -61,14 +61,14 @@ public class ConnectToPageSteps {
 
 		// Not needed since we auto accept all alerts
 		ContactListPageSteps clSteps = new ContactListPageSteps();
-		clSteps.ISeeUserNameFirstInContactList(IOSLocators.namePendingRequest);
+		clSteps.ISeeUserNameFirstInContactList(IOSLocators.xpathPendingRequest);
 	}
 
 	@When("^I confirm connection request$")
 	public void IAcceptInvitationMessage() throws IOException {
 
 		ContactListPageSteps clSteps = new ContactListPageSteps();
-		clSteps.WhenITapOnContactName(IOSLocators.namePendingRequest);
+		clSteps.WhenITapOnContactName(IOSLocators.xpathPendingRequest);
 		PagesCollection.connectToPage = new ConnectToPage(
 				CommonUtils.getIosAppiumUrlFromConfig(ConnectToPage.class),
 				CommonUtils.getIosApplicationPathFromConfig(ConnectToPage.class));

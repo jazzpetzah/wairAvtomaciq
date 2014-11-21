@@ -61,9 +61,14 @@ public class PeoplePickerPageSteps {
 	
 	@When("^I search for user name (.*) and tap on it on People picker page$")
 	public void WhenISearchForUserNameAndTapOnItOnPeoplePickerPage(String contact) throws Throwable {
-		
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 	    PagesCollection.peoplePickerPage.pickUserAndTap(contact);
+	}
+	
+	@When("^I search for ignored user name (.*) and tap on it$")
+	public void WhenISearchForIgnoredUserNameAndTapOnItOnPeoplePickerPage(String contact) throws Throwable {
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+	    PagesCollection.peoplePickerPage.pickIgnoredUserAndTap(contact);
 	}
 	
 	@When("^I see Add to conversation button$")
