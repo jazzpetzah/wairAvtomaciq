@@ -2,9 +2,6 @@ package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -224,7 +221,7 @@ public class DialogPage extends IOSPage{
 			
 		}
 		while(!buttonIsShown && (count < 20)){
-			if (mediaLinkCell.getLocation().y < dialogWindow.getSize().height) {
+			if (mediaContainer.getLocation().y < dialogWindow.getSize().height) {
 				Thread.sleep(1000);
 			}
 			else {
