@@ -237,11 +237,7 @@ public class ContactListPage extends IOSPage {
 	}
 	
 	public boolean isPendingRequestInContactList(){
-		if(pendingRequest.getAttribute("name").contains("people waiting")){
-			//boolean flag = DriverUtils.isElementDisplayed(pendingRequest);
-			return pendingRequest.isDisplayed();
-		}
-		return false;
+		return DriverUtils.waitUntilElementAppears(driver, By.xpath(IOSLocators.xpathPendingRequest));
 	}
 	
 	public PendingRequestsPage clickPendingRequest() throws Throwable{

@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
+import org.openqa.selenium.NoSuchElementException;
 
 import cucumber.api.java.en.*;
 

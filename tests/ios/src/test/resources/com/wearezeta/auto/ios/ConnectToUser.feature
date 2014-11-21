@@ -131,7 +131,7 @@ Examples:
       | Login   | Password    | Name    | Contact     		|
       | aqaUser | aqaPassword | aqaUser | yourNotContact1 	|
       
-@staging @id579 @torun
+@staging @id579
 Scenario Outline: Verify transitions between connection requests (ignoring)
     Given I send <SentRequests> connection requests to <Name>
     When I Sign in using login <Name> and password <Password>
