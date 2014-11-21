@@ -175,7 +175,7 @@ public class PeoplePickerPage extends IOSPage{
 		WebElement user = null;
 		fillTextInPeoplePickerSearch(name);
 		waitUserPickerFindUser(name);
-		user = driver.findElementByXPath(IOSLocators.xpathUnicUserPickerSearchResult);
+		user = driver.findElementByName(name);
 
 		return user;
 	}

@@ -16,9 +16,7 @@ public class PendingRequestsPageSteps {
 	
 	@When("^I click on Ignore button on Pending requests page (.*) times$")
 	public void IClickOnIgnoreButtonPendingRequests(int numberOfIgnores) throws Throwable{
-		for(int i=0;i<numberOfIgnores;i++){
-		PagesCollection.contactListPage = PagesCollection.pendingRequestsPage.clickIgnoreButton();
-		}
+		PagesCollection.contactListPage = PagesCollection.pendingRequestsPage.clickIgnoreButtonMultiple(numberOfIgnores);
 	}
 	
 	@When("I click Connect button on Pending request page")

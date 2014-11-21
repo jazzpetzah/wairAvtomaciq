@@ -138,12 +138,12 @@ Scenario Outline: Verify transitions between connection requests (ignoring)
     And I see Contact list with my name <Name>
     And I see Pending request link in contact list
     And I click on Pending request link in contact list
+    And I see Pending request page
     And I click on Ignore button on Pending requests page <SentRequests> times
     And I dont see Pending request link in contact list
     And I don't see conversation with not connected user <NotConnectedUser>
     And I swipe down contact list
-    #And I tap on Search input on People picker page
-    #And I input in People picker search field user name <NotConnectedUser>
+    And I see People picker page
     And I search for ignored user name <NotConnectedUser> and tap on it
     Then I see Pending request page
     
