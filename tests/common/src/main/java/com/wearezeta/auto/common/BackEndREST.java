@@ -164,7 +164,25 @@ public class BackEndREST {
 		final String input = String.format(
 				"{\"email\":\"%s\",\"password\":\"%s\",\"label\":\"\"}",
 				user.getEmail(), user.getPassword());
-		final String output = httpPost(webResource, input, new int[] { HttpStatus.SC_OK });
+		boolean doRetry = true;
+		int tryNum = 1;
+		String output = "";
+		int toWait = 1;
+		while (doRetry && tryNum < 5) {
+			try {
+				output = httpPost(webResource, input, new int[] { HttpStatus.SC_OK });
+				doRetry = false;
+			} catch (BackendRequestException e) {
+				if (tryNum < 4) {
+					log.debug("Request for login number #" + tryNum + " failed.");
+					doRetry = true;
+					tryNum++;
+					try { Thread.sleep(toWait*1000); } catch(InterruptedException ex) { }
+					toWait+=2;
+				}
+				else { throw e; }
+			}
+		}
 		JSONObject jsonObj = new JSONObject(output);
 		user.setAccessToken(jsonObj.getString("access_token"));
 		user.setTokenType(jsonObj.getString("token_type"));
