@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
+import org.openqa.selenium.NoSuchElementException;
 
 import cucumber.api.java.en.*;
 
@@ -226,7 +227,6 @@ public class ContactListPageSteps {
 	}
 	
 	@When("I see Pending request link in contact list")
-	
 	public void ISeePendingRequestLinkInContacts(){
 		Assert.assertTrue("Pending request link is not in Contact list", PagesCollection.contactListPage.isPendingRequestInContactList());
 	}

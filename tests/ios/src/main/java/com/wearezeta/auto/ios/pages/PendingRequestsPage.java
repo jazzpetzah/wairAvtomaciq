@@ -38,9 +38,21 @@ public class PendingRequestsPage extends IOSPage {
 		this.path = path;
 	}
 	
+	
+	
 	public ContactListPage clickIgnoreButton() throws Throwable{
 		ContactListPage page = null;
 		ignoreRequestButton.click();
+		page = new ContactListPage(url, path);
+		return page;
+	}
+	
+	public ContactListPage clickIgnoreButtonMultiple(int clicks) throws Throwable{
+		ContactListPage page = null;
+		for(int i=0;i<clicks;i++){
+			DriverUtils.waitUntilElementClickable(driver, ignoreRequestButton);
+			ignoreRequestButton.click();
+		}
 		page = new ContactListPage(url, path);
 		return page;
 	}

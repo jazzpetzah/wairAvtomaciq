@@ -166,7 +166,18 @@ public class CommonSteps {
 			contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 			BackEndREST.autoTestSendRequest(CommonUtils.findUserNamed(contact), CommonUtils.findUserNamed(user));
 		}
-				
+		
+		@Given("I send (.*) connection requests to (.*)")
+		public void ISendInvitationToUserByContact(int requests, String user) throws Throwable {
+			//limited to 4 users at time of creation to save time creating users
+			if(requests<5){
+				List<ClientUser> unconnectedUsers = CommonUtils.yourUsers.subList(3, 7);
+				for(int i=0;i<requests;i++){
+					BackEndREST.autoTestSendRequest(unconnectedUsers.get(i), CommonUtils.findUserNamed(user));
+				}
+			}
+		}
+		
 		@When("I see keyboard")
 		public void ISeeKeyboard(){
 			Assert.assertTrue(PagesCollection.dialogPage.isKeyboardVisible());
