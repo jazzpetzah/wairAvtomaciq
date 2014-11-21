@@ -303,6 +303,8 @@ public final class IOSLocators {
 	
 	public static final String xpathMediaConversationCell = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/UIAWebView[last()]";
 	
+	public static final String xpathYoutubeConversationCell = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/UIAButton[2]";
+	
 	public static final String xpathConversationPage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]";
 	
 	public static final String MEDIA_STATE_PLAYING = "playing";
@@ -360,7 +362,7 @@ public final class IOSLocators {
 	//Contact list locator
 	////////////////////////////
 	
-	public static final String namePendingRequest = "One person waiting";
+	public static final String xpathPendingRequest = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[contains(@name,'people waiting')]/UIAStaticText[1]";
 	
 	////////////////////////////////
 	//Pending requests page locators

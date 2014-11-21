@@ -106,6 +106,11 @@ public class PeoplePickerPage extends IOSPage{
 		return new ConnectToPage(url, path);
 	}
 	
+	public  PendingRequestsPage pickIgnoredUserAndTap(String name) throws MalformedURLException{
+		PickUser(name).click();
+		return new PendingRequestsPage(url, path);
+	}
+	
 	public ContactListPage dismissPeoplePicker() throws IOException{
 		peoplePickerClearBtn.click();
 		return new ContactListPage(url, path);
@@ -170,7 +175,7 @@ public class PeoplePickerPage extends IOSPage{
 		WebElement user = null;
 		fillTextInPeoplePickerSearch(name);
 		waitUserPickerFindUser(name);
-		user = driver.findElementByXPath(IOSLocators.xpathUnicUserPickerSearchResult);
+		user = driver.findElementByName(name);
 
 		return user;
 	}
