@@ -137,8 +137,6 @@ Examples:
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact1	| QAtest	|
 
 
-#Muted till new sync engine client stabilization
-@mute
 @regression
 @id531
 Scenario Outline: I can see the individual user profile if I select someone in participants view
@@ -147,7 +145,7 @@ Scenario Outline: I can see the individual user profile if I select someone in p
      When I create group chat with <Contact1> and <Contact2>
      And I swipe up on group chat page
      And I select contact <Contact2>
-     Then I see the user profile from <Contact2>
+     Then I see <Contact2> user profile page
      
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
