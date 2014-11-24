@@ -43,7 +43,20 @@ Feature: Change Profile Picture
 
     Examples: 
       | Login   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |    
+      | aqaUser | aqaPassword | aqaUser |  
+         
+   @staging @id482  
+   Scenario Outline: Verify user can access settings
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    And I click on Settings button on personal page
+    And I click on Settings button from the options menu
+	Then I see settings page
+
+    Examples: 
+      | Login   | Password    | Name    |
+      | aqaUser | aqaPassword | aqaUser |      
       
    @regression @id1258 
    Scenario Outline: Verify default value for sound settings is all

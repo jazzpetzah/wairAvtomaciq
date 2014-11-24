@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.pages;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -50,8 +51,9 @@ public class PendingRequestsPage extends IOSPage {
 	public ContactListPage clickIgnoreButtonMultiple(int clicks) throws Throwable{
 		ContactListPage page = null;
 		for(int i=0;i<clicks;i++){
-			DriverUtils.waitUntilElementClickable(driver, ignoreRequestButton);
+			DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.namePendingRequestIgnoreButton));
 			ignoreRequestButton.click();
+			DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.namePendingRequestIgnoreButton));
 		}
 		page = new ContactListPage(url, path);
 		return page;

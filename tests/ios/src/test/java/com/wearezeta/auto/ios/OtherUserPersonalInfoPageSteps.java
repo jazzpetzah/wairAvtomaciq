@@ -17,7 +17,7 @@ public class OtherUserPersonalInfoPageSteps {
 	@When("^I see (.*) user profile page$")
 	public void WhenISeeOtherUserProfilePage(String name){
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
-		PagesCollection.otherUserPersonalInfoPage.isOtherUserProfileEmailVisible(name);
+		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage.isOtherUserProfileNameVisible(name));
 	}
 	
 	@When("^I press Add button$")
