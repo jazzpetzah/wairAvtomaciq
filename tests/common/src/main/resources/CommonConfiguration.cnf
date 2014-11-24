@@ -2,5 +2,7 @@
 defaultEmail=smoketester@wearezeta.com
 defaultPassword=aqa123456
 defaultEmailServer=imap.gmail.com
-defaultBackEndUrl=https://prod-nginz-https.wire.com
+defaultBackEndUrl=https://dev-nginz-https.zinfra.io
+#staging, production, edge
+backendType=staging
  

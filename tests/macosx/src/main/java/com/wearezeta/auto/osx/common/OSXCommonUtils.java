@@ -87,6 +87,12 @@ public class OSXCommonUtils extends CommonUtils {
 		}
 	}
 	
+	public static void setZClientBackend(String bt) throws Exception {
+		String command = "defaults write com.wearezeta.zclient.mac ZMBackendEnvironmentType -string " + bt;
+		
+		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
+	}
+	
 	public static BuildVersionInfo readClientVersionFromPlist() {
 		String clientBuild = "no info";
 		String zmessagingBuild = "no info";
