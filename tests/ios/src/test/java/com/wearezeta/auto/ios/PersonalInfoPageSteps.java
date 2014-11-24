@@ -57,6 +57,11 @@ public class PersonalInfoPageSteps {
 		PagesCollection.personalInfoPage.clickOnSettingsButton();
 	}
 	
+	@When("I see settings page")
+	public void ISeeSettingsPage() {
+		PagesCollection.personalInfoPage.isSettingsPageVisible();
+	}
+	
 	@When("I click on About button on personal page")
 	public void WhenIClickOnAboutButtonOnPersonalPage(){
 		PagesCollection.personalInfoPage.clickOnAboutButton();

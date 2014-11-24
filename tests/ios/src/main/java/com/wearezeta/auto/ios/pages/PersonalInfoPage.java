@@ -50,6 +50,9 @@ public class PersonalInfoPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.nameSelfNameTooShortError)
 	private WebElement nameTooShortError;
 
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathSettingsPage)
+	private WebElement settingsPage;
+	
 	@FindBy(how = How.NAME, using = IOSLocators.nameOptionsSettingsButton)
 	private WebElement optionsSettingsButton;
 	
@@ -187,6 +190,10 @@ public class PersonalInfoPage extends IOSPage{
 	
 	public void tapOnSettingsButton() {
 		optionsSettingsButton.click();
+	}
+	
+	public void isSettingsPageVisible() {
+		settingsPage.isDisplayed();
 	}
 	
 	public void enterSoundAlertSettings(){
