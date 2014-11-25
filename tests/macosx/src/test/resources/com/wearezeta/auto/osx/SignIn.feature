@@ -1,6 +1,6 @@
 Feature: Sign In
 
-  @smoke @id476
+  @smoke @id690
   Scenario Outline: Sign in ZClient
     Given I am signed out from ZClient
     And I see Sign In screen
