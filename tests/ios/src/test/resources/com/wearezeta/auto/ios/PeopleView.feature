@@ -1,7 +1,7 @@
-Feature: Group Chat
+Feature: People View
 
 @smoke 
-@id333
+@id1393
 	Scenario Outline: Start group chat with users from contact list
 		Given I Sign in using login <Login> and password <Password>
     	And I see Contact list with my name <Name>
@@ -19,20 +19,6 @@ Feature: Group Chat
 	   	Then I see group chat page with users <Contact1> <Contact2>
 
 	Examples:
-    |  Login		| Password		| Name			| Contact1		| Contact2		|
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
-
-@smoke 
-@id334
-Scenario Outline: Send message to group chat
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-	When I create group chat with <Contact1> and <Contact2>
-	And I type the message
-	And I send the message
-	Then I see my message in the dialog
-	
-Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
     
@@ -64,7 +50,7 @@ Examples:
 
 
 @smoke
-@id335 
+@id1389
 Scenario Outline: Leave from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -82,8 +68,9 @@ Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact2	| aqaContact3	|
 
+
 @smoke
-@id336
+@id1390
  Scenario Outline: Remove from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -103,7 +90,7 @@ Examples:
 #Muted due ZIOS-2724
 @mute
 @regression
-@id392
+@id1396
 Scenario Outline: Verify correct group info page information
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -154,7 +141,7 @@ Examples:
     
 #fails to check email of first user due to defect IOS-990
 @staging
-@id395 
+@id339
 Scenario Outline: Tap on participant profiles in group info page participant view
     Given I Sign in using login <Login> and password <Password>
     Given I have group chat named <GroupChatName> with an unconnected user, made by <GroupCreator>
@@ -167,23 +154,6 @@ Examples:
     |  Login		| Password		| Name			| GroupCreator	        |  GroupChatName    |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaPictureContact	    |     TESTCHAT		|
 
-@staging
-@id576
-Scenario Outline: Send connection request to unconnected participant in a group chat
-    Given I Sign in using login <Login> and password <Password>
-    And I have group chat named <GroupChatName> with an unconnected user, made by <GroupCreator>
-    And I see Contact list with my name <Name>
-    When I tap on group chat with name <GroupChatName>
-	And I swipe up on group chat page
-	And I tap on not connected contact <UnconnectedUser>
-	And I click Connect button on connect to dialog
-	And I exit the group info page
-	And I return to the chat list
-	Then I see first item in contact list named <UnconnectedUser>
-	
-Examples:
-    |  Login		| Password		| Name			| GroupCreator	        |  GroupChatName    | UnconnectedUser |
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaPictureContact	    |     TESTCHAT		| yourContact     |
 
 #Mute due to SE issue, MEC-270, not possible to create group from 1:1           
 @staging 
@@ -223,9 +193,7 @@ Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat i
 	And I swipe up on group chat page	
 	And I tap on not connected contact <Contact2>
 	Then I see connect to <Contact2> dialog
-	
-	
-	
+		
 	Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		| ChatName   |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| QAtestChat |
@@ -290,163 +258,3 @@ Scenario Outline: Verify new users are added to a group conversation on the othe
 	Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		| Contact3   | ChatName		| message 		|
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| aqaContact3| QAtestChat 	| Test Message  |
-    
-
-#Muted due to app quit on logout workaround
-@staging
-@id608 @mute
-Scenario Outline: Verify you can see image, which was sent into a group conversation, on the second end
-	Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-	And I tap on group chat with name <ChatName>
-	And I swipe the text input cursor
- 	And I press Add Picture button
- 	And I press Camera Roll button
- 	And I choose a picture from camera roll
- 	And I press Confirm button
- 	And I see new photo in the dialog
- 	And I verify image in dialog is same as template <Picture>
-	And I swipe right on Dialog page
-	And I tap on my name <Name>
-	And I click on Settings button on personal page
-	And I click Sign out button from personal page	
-	And I Sign in using login <Contact1> and password <Password>
-	And I see Personal page
-	And I swipe right on the personal page
-	And I see in contact list group chat named <ChatName>
-	And I tap on group chat with name <ChatName>
-	And I scroll to image in dialog
-	And I verify image in dialog is same as template <Picture>
-	And I swipe right on Dialog page
-	And I tap on my name <Contact1>
-	And I click on Settings button on personal page
-	And I click Sign out button from personal page
-	And I Sign in using login <Contact2> and password <Password>
-	And I see Personal page
-	And I swipe right on the personal page
-	And I see in contact list group chat named <ChatName>
-	And I tap on group chat with name <ChatName>
-	And I scroll to image in dialog
-	And I verify image in dialog is same as template <Picture>
-	
-	Examples:
-    |  Login		| Password		| Name			| Contact1		| Contact2		|  ChatName		| Picture                   |
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|  QAtestChat 	| userpicture_landscape.jpg |
-    
-#Muted due to app quit on logout workaround 
-@staging
-@id606 @mute
-Scenario Outline: Verify you can see text message, which was sent into a group conversation, on the second end
-	Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-	And I tap on group chat with name <ChatName>
-	And I send predefined message <message>
-	And I see message in group chat <message>
-	And I swipe right on Dialog page
-	And I tap on my name <Name>
-	And I click on Settings button on personal page
-	And I click Sign out button from personal page	
-	And I Sign in using login <Contact1> and password <Password>
-	And I see Personal page
-	And I swipe right on the personal page
-	And I see in contact list group chat named <ChatName>
-	And I tap on group chat with name <ChatName>
-	And I see message in group chat <message>
-	And I swipe right on Dialog page
-	And I tap on my name <Contact1>
-	And I click on Settings button on personal page
-	And I click Sign out button from personal page	
-	And I Sign in using login <Contact2> and password <Password>
-	And I see Personal page
-	And I swipe right on the personal page
-	And I see in contact list group chat named <ChatName>
-	And I tap on group chat with name <ChatName>
-	And I see message in group chat <message>
-	
-	Examples:
-    |  Login		| Password		| Name			| Contact1		| Contact2		|  ChatName		| message 		|
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| QAtestChat 	| Test Message  |
-
-    
-#Muted due to app quit on logout workaround
-@staging
-@id607 @mute
-Scenario Outline: Verify you can see multimedia message, which was sent into a group conversation, on the second end
-	Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-	And I tap on group chat with name <ChatName>
-	And I post media link <YouTubeLink>
-    And I tap on dialog window
-	And I swipe right on Dialog page
-	And I tap on my name <Name>
-	And I click on Settings button on personal page
-	And I click Sign out button from personal page	
-	And I Sign in using login <Contact1> and password <Password>
-	And I see Personal page
-	And I swipe right on the personal page
-	And I see in contact list group chat named <ChatName>
-	And I tap on group chat with name <ChatName>
-	And I see media link <YouTubeLink> and media in dialog
-	And I click video container for the first time
-    And I see video player page is opened
-    And I tap on Done button on Video player page
-	And I swipe right on Dialog page
-	And I tap on my name <Contact1>
-	And I click on Settings button on personal page
-	And I click Sign out button from personal page	
-	And I Sign in using login <Contact2> and password <Password>
-	And I see Personal page
-	And I swipe right on the personal page
-	And I see in contact list group chat named <ChatName>
-	And I tap on group chat with name <ChatName>
-	And I see media link <YouTubeLink> and media in dialog
-	And I click video container for the first time
-    And I see video player page is opened
-    And I tap on Done button on Video player page
-	
-	Examples:
-    |  Login		| Password		| Name			| Contact1		| Contact2		|  ChatName		| YouTubeLink								 |
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| QAtestChat 	| http://www.youtube.com/watch?v=Bb1RhktcugU |  
-    
-
-#Muted due to sync engine troubles(group chat is not created and app is closed after logout)
-@mute
-@smoke
-@id600
-Scenario Outline: Verify the new conversation is created on the other end (Search UI source)
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    When I swipe down contact list
-    And I see People picker page
-    And I click clear button
-    And I swipe down contact list
-    And I see top people list on People picker page
-    And I tap on connected user <Contact1> on People picker page
-    And I tap on connected user <Contact2> on People picker page
-    And I see Create Conversation button on People picker page
-    And I click Create Conversation button  on People picker page
-    And I see group chat page with users <Contact1> <Contact2>
-    And I swipe right on group chat page
-    And I tap on my name <Name>
-    And I see Personal page
-    And I click on Settings button on personal page
-    And I click Sign out button from personal page
-    And I Sign in using login <Contact1> and password <Password>
-    And I see Personal page
-    And I swipe right on the personal page
-    And I see <Contact1> and <Contact2> chat in contact list
-    And I tap on my name <Name>
-    And I see Personal page
-    And I click on Settings button on personal page
-    And I click Sign out button from personal page
-    And I Sign in using login <Contact2> and password <Password>
-    And I see Personal page
-    And I swipe right on the personal page
-    And I see <Contact1> and <Contact2> chat in contact list
-    
-	Examples: 
-    |	Login	|	Password	|	Name	|	Contact1		| Contact2 		|
-    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1		| aqaContact2	|

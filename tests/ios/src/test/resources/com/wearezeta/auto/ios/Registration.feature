@@ -1,10 +1,8 @@
-
-
-Feature: Register new user
+Feature: Registration
 
 @mute
 @smoke
-@id274
+@id276
   Scenario Outline: Register new user using front camera (Real Device)
 	Given I see sign in screen
 	When I press Join button
@@ -120,7 +118,8 @@ Feature: Register new user
     |	Email 					    |	Password	    |    MaxChars    |    Language   |
     |	aqaUser             	    |	aqaPassword	    |    72          |    English    |
 
- 
+
+@id589 
 @regression
   Scenario Outline: Register new user using photo album
 	Given I see sign in screen
@@ -232,7 +231,7 @@ Feature: Register new user
     
 
 @regression
-@id290
+@id1392
   Scenario Outline: Automatic email verification
   	Given I see sign in screen
 	When I press Join button
@@ -292,7 +291,7 @@ Feature: Register new user
 
 
 @staging
-@id297
+@id281
   Scenario Outline: Change selected image during registratrion (Real Device)
 	Given I see sign in screen
 	When I press Join button
