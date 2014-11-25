@@ -38,7 +38,12 @@ public class PeoplePickerPageSteps {
 	public void WhenIInputInPeoplePickerSearchFieldUserName(String contact) throws Throwable {
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 		String email = CommonUtils.retrieveRealUserEmailValue(contact);
-		PagesCollection.peoplePickerPage.typeTextInPeopleSearch(email);
+		if (email != "") {
+			PagesCollection.peoplePickerPage.typeTextInPeopleSearch(email);
+		}
+		else {
+			PagesCollection.peoplePickerPage.typeTextInPeopleSearch(contact);
+		}
 	}
 	
 	@When("^I input in search field part (.*) of user name to connect to (.*)$")
@@ -52,7 +57,12 @@ public class PeoplePickerPageSteps {
 	public void WhenIInputInSearchFieldUserNameToConnectTo(String contact) throws Throwable {
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 		String email = CommonUtils.retrieveRealUserEmailValue(contact);
-		PagesCollection.peoplePickerPage.typeTextInPeopleSearch(email);
+		if (email != "") {
+			PagesCollection.peoplePickerPage.typeTextInPeopleSearch(email);
+		}
+		else {
+			PagesCollection.peoplePickerPage.typeTextInPeopleSearch(contact);
+		}
 	}
 	
 	@When("^I add in search field user name to connect to (.*)$")
@@ -67,7 +77,7 @@ public class PeoplePickerPageSteps {
 	    PagesCollection.peoplePickerPage.waitUserPickerFindUser(contact);	
 	}
 	
-	@Then("^I see than no results found$")
+	@Then("^I see that no results found$")
 	public void ISeeNoResultsFound() {
 		Assert.assertTrue(PagesCollection.peoplePickerPage.isNoResultsFoundVisible());
 	}

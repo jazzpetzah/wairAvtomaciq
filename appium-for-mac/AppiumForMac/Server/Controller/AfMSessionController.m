@@ -31,6 +31,7 @@
 			[NSNumber numberWithBool:NO], @"locationContextEnabled",
 			@"Mac", @"browserName",
 			@"Mac", @"platform",
+            @"Mac", @"platformName",
 			[NSNumber numberWithBool:YES], @"javascriptEnabled",
 			[NSNumber numberWithBool:NO], @"databaseEnabled",
 			[NSNumber numberWithBool:YES], @"takesScreenshot",
@@ -315,6 +316,12 @@
     NSString* axHelp = [root valueForAttribute:@"AXHelp"];
     if (axHelp != nil) {
         [element addAttribute:[GDataXMLElement attributeWithName:@"AXHelp" stringValue:[NSString stringWithFormat:@"%@",[root valueForAttribute:@"AXHelp"]]]];
+    }
+    
+    NSString* axLabel = [root valueForAttribute:@"AXLabel"];
+    if (axLabel != nil)
+    {
+        [element addAttribute:[GDataXMLElement attributeWithName:@"AXLabel" stringValue:[NSString stringWithFormat:@"%@",[root valueForAttribute:@"AXLabel"]]]];
     }
     
 	if (pathMap != nil)

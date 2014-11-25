@@ -393,7 +393,8 @@ public class CommonSteps {
 	
 	private void storeOsxPageSource() {
 		if (ExecutionContext.isOsxEnabled() && ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED) {
-			osxPageSources.put(new Date(), ExecutionContext.osxZeta().listener().getChatSource());
+			String chatSource = ExecutionContext.osxZeta().listener().getChatSource();
+			osxPageSources.put(new Date(), chatSource);
 		}
 	}
 	
@@ -547,6 +548,7 @@ public class CommonSteps {
 				long endDate = new Date().getTime();
 				log.debug("Time consumed for sending text message #" + i + " from OSX: "
 						+ (endDate - startDate) + "ms");
+				Thread.sleep(1000);
 			}
 		}
 		storeIosPageSource(false);
@@ -571,8 +573,13 @@ public class CommonSteps {
 	
 	@Given("I collect messages order data")
 	public void ICollectMessagesOrderData() {
-		ExecutionContext.iosZeta().listener().setPageSources(iosPageSources);
-		ExecutionContext.osxZeta().listener().setPageSources(osxPageSources);
+		if (ExecutionContext.iosZeta().isEnabled()) {
+			ExecutionContext.iosZeta().listener().setPageSources(iosPageSources);
+		}
+		
+		if (ExecutionContext.osxZeta().isEnabled()) {
+			ExecutionContext.osxZeta().listener().setPageSources(osxPageSources);
+		}
 
 		ArrayList<MessageEntry> iosMessages = new ArrayList<MessageEntry>();
 		if (ExecutionContext.isIosEnabled()) {

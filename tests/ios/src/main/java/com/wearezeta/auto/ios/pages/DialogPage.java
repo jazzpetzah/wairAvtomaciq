@@ -2,9 +2,6 @@ package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -50,7 +47,7 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameDialogMessages)
 	private List<WebElement> messagesList;
 	
-	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameConnectMessageLabel)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathConnectMessageLabel)
 	private WebElement connectMessageLabel;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.namePendingButton)
@@ -74,6 +71,9 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathMediaConversationCell)
 	private WebElement mediaLinkCell;
 	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathYoutubeConversationCell)
+	private WebElement youtubeCell;
+	
 	@FindBy(how = How.NAME, using = IOSLocators.nameMediaBarPlayPauseButton)
 	private WebElement mediabarPlayPauseButton;
 	
@@ -96,6 +96,9 @@ public class DialogPage extends IOSPage{
 	
 	private String url;
 	private String path;
+	
+	private String connectMessage = "Hi %s,\nlet’s connect.\n%s";
+	private String connectingLabel = "CONNECTING TO %s";
 	
 	public DialogPage(String URL, String path) throws IOException {
 		super(URL, path);
@@ -135,8 +138,6 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public void scrollToTheEndOfConversation() {
-//		WebElement inputField = driver.findElement(By.name(IOSLocators.nameConversationCursorInput));
-//		driver.tap(1, inputField, 500);
 		String script = IOSLocators.scriptCursorInputPath + ".tap();";
 		driver.executeScript(script);
 	}
@@ -145,9 +146,13 @@ public class DialogPage extends IOSPage{
 	{
 		return GetLastMessage(messagesList);
 	}
-		
-	public boolean isConnectMessageValid(String username){
-		return getConnectMessageLabel().equals("Connect to " + username);
+	
+	public String getExpectedConnectMessage(String contact, String user){
+		return String.format(connectMessage, contact, user);
+	}
+	
+	public String getExpectedConnectingLabel(String name){
+		return String.format(connectingLabel, name.toUpperCase());
 	}
 	
 	public boolean isPendingButtonVisible(){
@@ -216,7 +221,7 @@ public class DialogPage extends IOSPage{
 			
 		}
 		while(!buttonIsShown && (count < 20)){
-			if (mediaLinkCell.getLocation().y < dialogWindow.getSize().height) {
+			if (mediaContainer.getLocation().y < dialogWindow.getSize().height) {
 				Thread.sleep(1000);
 			}
 			else {
@@ -278,23 +283,19 @@ public class DialogPage extends IOSPage{
 	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
 		IOSPage page = null;
 		switch (direction){
-			case DOWN:
-			{
+			case DOWN: {
 				page= new DialogPage(url, path);
 				break;
 			}
-			case UP:
-			{
+			case UP: {
 				page = new OtherUserPersonalInfoPage(url, path);
 				break;
 			}
-			case LEFT:
-			{
+			case LEFT: {
 				page = new OtherUserPersonalInfoPage(url, path);
 				break;
 			}
-			case RIGHT:
-			{
+			case RIGHT: {
 				page = new ContactListPage(url, path);
 				break;
 			}
@@ -308,16 +309,8 @@ public class DialogPage extends IOSPage{
 	
 	public VideoPlayerPage clickOnVideoContainerFirstTime() throws IOException, InterruptedException {
 		VideoPlayerPage page = new VideoPlayerPage(url, path);
-		mediaContainer.click();
+		youtubeCell.click();
 		
-		DriverUtils.setImplicitWaitValue(driver, 5);
-		if (!page.isVideoPlayerPageOpened()) {
-			if (!mediaLinkCell.isDisplayed()) {
-				DriverUtils.mobileTapByCoordinates(driver, mediaContainer);
-			}
-			mediaLinkCell.click();
-		}
-		DriverUtils.setDefaultImplicitWait(driver);
 		return page;
 	}
 	
@@ -325,7 +318,7 @@ public class DialogPage extends IOSPage{
 		driver.tap(1, 1, 1, 500);
 	}
 	
-	private String getConnectMessageLabel(){
+	public String getConnectMessageLabel(){
 		return connectMessageLabel.getText();
 	}
 	

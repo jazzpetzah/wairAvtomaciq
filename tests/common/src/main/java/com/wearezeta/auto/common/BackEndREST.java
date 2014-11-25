@@ -38,7 +38,7 @@ public class BackEndREST {
 	private static final Logger log = ZetaLogger.getLog(BackEndREST.class.getSimpleName());
 
 	static {
-		log.setLevel(Level.INFO);
+		log.setLevel(Level.DEBUG);
 	}
 	
 	ClientConfig config = new DefaultClientConfig();
@@ -97,8 +97,12 @@ public class BackEndREST {
 
 	private static String httpPost(Builder webResource, Object entity,
 			int[] acceptableResponseCodes) throws BackendRequestException {
-		ClientResponse response = webResource
-				.post(ClientResponse.class, entity);
+		Object lock = new Object();
+		ClientResponse response;
+		synchronized(lock) {
+			response = webResource.post(ClientResponse.class, entity);
+		}
+		log.debug("HTTP POST request(Input data: " + entity + ", Response: " + response.toString() + ")");
 		VerifyRequestResult(response.getStatus(), acceptableResponseCodes);
 		return response.getEntity(String.class);
 	}
@@ -106,6 +110,7 @@ public class BackEndREST {
 	private static String httpPut(Builder webResource, Object entity,
 			int[] acceptableResponseCodes) throws BackendRequestException {
 		ClientResponse response = webResource.put(ClientResponse.class, entity);
+		log.debug("HTTP PUT request(Input data: " + entity + ", Response: " + response.toString() + ")");
 		VerifyRequestResult(response.getStatus(), acceptableResponseCodes);
 		return response.getEntity(String.class);
 	}
@@ -113,6 +118,7 @@ public class BackEndREST {
 	private static Object httpGet(Builder webResource, Class<?> entityClass,
 			int[] acceptableResponseCodes) throws BackendRequestException {
 		ClientResponse response = webResource.get(ClientResponse.class);
+		log.debug("HTTP GET request(Response: " + response.toString() + ")");
 		VerifyRequestResult(response.getStatus(), acceptableResponseCodes);
 		return response.getEntity(entityClass);
 	}
@@ -120,6 +126,7 @@ public class BackEndREST {
 	private static String httpGet(Builder webResource,
 			int[] acceptableResponseCodes) throws BackendRequestException {
 		ClientResponse response = webResource.get(ClientResponse.class);
+		log.debug("HTTP GET request(Response: " + response.toString() + ")");
 		VerifyRequestResult(response.getStatus(), acceptableResponseCodes);
 		return response.getEntity(String.class);
 	}
@@ -157,7 +164,25 @@ public class BackEndREST {
 		final String input = String.format(
 				"{\"email\":\"%s\",\"password\":\"%s\",\"label\":\"\"}",
 				user.getEmail(), user.getPassword());
-		final String output = httpPost(webResource, input, new int[] { HttpStatus.SC_OK });
+		boolean doRetry = true;
+		int tryNum = 1;
+		String output = "";
+		int toWait = 1;
+		while (doRetry && tryNum < 5) {
+			try {
+				output = httpPost(webResource, input, new int[] { HttpStatus.SC_OK });
+				doRetry = false;
+			} catch (BackendRequestException e) {
+				if (tryNum < 4) {
+					log.debug("Request for login number #" + tryNum + " failed.");
+					doRetry = true;
+					tryNum++;
+					try { Thread.sleep(toWait*1000); } catch(InterruptedException ex) { }
+					toWait+=2;
+				}
+				else { throw e; }
+			}
+		}
 		JSONObject jsonObj = new JSONObject(output);
 		user.setAccessToken(jsonObj.getString("access_token"));
 		user.setTokenType(jsonObj.getString("token_type"));
@@ -232,7 +257,10 @@ public class BackEndREST {
 		JSONArray newJArray = new JSONArray(output);
 		for (int i = 0; i < newJArray.length(); i++) {
 			String to = ((JSONObject) newJArray.get(i)).getString("to");
-			changeConnectRequestStatus(user, to, "accepted");
+			String status = ((JSONObject) newJArray.get(i)).getString("status");
+			if (!status.equals("accepted")) {
+				changeConnectRequestStatus(user, to, "accepted");
+			}
 		}
 	}
 
@@ -282,7 +310,6 @@ public class BackEndREST {
 		final String input = String.format(
 				"{\"email\": \"%s\",\"name\": \"%s\",\"password\": \"%s\"}",
 				email, userName, password);
-		log.debug("Input data: " + input);
 		final String output = httpPost(webResource, input,
 				new int[] { HttpStatus.SC_CREATED });
 		JSONObject jsonObj = new JSONObject(output);

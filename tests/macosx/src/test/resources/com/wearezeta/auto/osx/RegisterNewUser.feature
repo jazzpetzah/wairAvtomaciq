@@ -1,6 +1,6 @@
 Feature: Register new user
 
-  #Muted due to fails on Jenkins execution. Is under investigation
+  #no camera on some Jenkins slaves
   @mute @regression @id77
   Scenario Outline: Register new user using front camera
     Given I am signed out from ZClient
@@ -20,7 +20,8 @@ Feature: Register new user
       | Email   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |
 
-  @smoke @id177
+  #ZOSX-2857
+  @bug @smoke @id177
   Scenario Outline: Register new user with image - landscape image
     Given I am signed out from ZClient
     And I see Sign In screen
@@ -39,7 +40,8 @@ Feature: Register new user
       | Email   | Password    | Name    | ImageFile                 |
       | aqaUser | aqaPassword | aqaUser | userpicture_landscape.jpg |
 
-  @smoke @id177
+  #ZOSX-2857
+  @bug @smoke @id177
   Scenario Outline: Register new user with image - portrait image
     Given I am signed out from ZClient
     And I see Sign In screen

@@ -21,13 +21,15 @@ public class PeoplePickerPageSteps {
 	}
 	
 	@When("I re-enter the people picker if top people list is not there")
-	public void IRetryPeoplePickerIfNotLoaded() throws IOException, Exception{
-		if(!PagesCollection.peoplePickerPage.isTopPeopleLabelVisible()){
+	public void IRetryPeoplePickerIfNotLoaded() throws IOException, Exception {
+		if (!PagesCollection.peoplePickerPage.isTopPeopleLabelVisible()) {
 			IClickCloseButtonDismissPeopleView();
 			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
-				PagesCollection.peoplePickerPage = (PeoplePickerPage) PagesCollection.contactListPage.swipeDown(500);
+				PagesCollection.peoplePickerPage = (PeoplePickerPage) PagesCollection.contactListPage
+						.swipeDown(1000);
 			} else {
-				PagesCollection.peoplePickerPage = (PeoplePickerPage) PagesCollection.contactListPage.swipeDownSimulator();
+				PagesCollection.peoplePickerPage = (PeoplePickerPage) PagesCollection.contactListPage
+						.swipeDownSimulator();
 			}
 		}
 	}
@@ -59,9 +61,14 @@ public class PeoplePickerPageSteps {
 	
 	@When("^I search for user name (.*) and tap on it on People picker page$")
 	public void WhenISearchForUserNameAndTapOnItOnPeoplePickerPage(String contact) throws Throwable {
-		
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 	    PagesCollection.peoplePickerPage.pickUserAndTap(contact);
+	}
+	
+	@When("^I search for ignored user name (.*) and tap on it$")
+	public void WhenISearchForIgnoredUserNameAndTapOnItOnPeoplePickerPage(String contact) throws Throwable {
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+	    PagesCollection.peoplePickerPage.pickIgnoredUserAndTap(contact);
 	}
 	
 	@When("^I see Add to conversation button$")

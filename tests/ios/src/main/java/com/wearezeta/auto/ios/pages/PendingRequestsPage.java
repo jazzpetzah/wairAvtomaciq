@@ -3,10 +3,13 @@ package com.wearezeta.auto.ios.pages;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import com.thoughtworks.selenium.webdriven.commands.IsElementPresent;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
@@ -18,8 +21,16 @@ public class PendingRequestsPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.namePendingRequestConnectButton)
 	private WebElement connectRequestButton;
 	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathPendingRequesterName)
+	private WebElement requesterName;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathPendingRequestMessage)
+	private WebElement pendingMessage;
+	
 	private String url;
 	private String path;
+	
+	private String autoHelloMessage = "Hello";
 
 	public PendingRequestsPage(String URL, String path) throws MalformedURLException {
 		super(URL, path);
@@ -28,9 +39,22 @@ public class PendingRequestsPage extends IOSPage {
 		this.path = path;
 	}
 	
+	
+	
 	public ContactListPage clickIgnoreButton() throws Throwable{
 		ContactListPage page = null;
 		ignoreRequestButton.click();
+		page = new ContactListPage(url, path);
+		return page;
+	}
+	
+	public ContactListPage clickIgnoreButtonMultiple(int clicks) throws Throwable{
+		ContactListPage page = null;
+		for(int i=0;i<clicks;i++){
+			DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.namePendingRequestIgnoreButton));
+			ignoreRequestButton.click();
+			DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.namePendingRequestIgnoreButton));
+		}
 		page = new ContactListPage(url, path);
 		return page;
 	}
@@ -40,6 +64,22 @@ public class PendingRequestsPage extends IOSPage {
 		connectRequestButton.click();
 		page = new ContactListPage(url, path);
 		return page;
+	}
+	
+	public boolean isConnectButtonDisplayed(){
+		return DriverUtils.isElementDisplayed(connectRequestButton);
+	}
+	
+	public String getRequesterName(){
+		return requesterName.getText();
+	}
+	
+	public String getRequestMessage(){
+		return pendingMessage.getText();
+	}
+	
+	public boolean isAutoMessageCorrect(){
+		return getRequestMessage().equals(autoHelloMessage);
 	}
 	
 	@Override
@@ -61,6 +101,7 @@ public class PendingRequestsPage extends IOSPage {
 			}
 			case RIGHT:
 			{
+				page = new ContactListPage(url, path);
 				break;
 			}
 		}	

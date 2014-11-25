@@ -7,7 +7,7 @@
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe up on dialog page
-    And I see <Contact> user name and email
+    #And I see <Contact> user name and email
 	And I Press Block button
     And I confirm block
     Then I do not see Contact list with name <Contact>
@@ -53,7 +53,7 @@
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
     And I wait for 60 seconds
-   	Then I see than no results found
+   	Then I see that no results found
 
  Examples: 
       | Login   | Password    | Name    | Contact     |

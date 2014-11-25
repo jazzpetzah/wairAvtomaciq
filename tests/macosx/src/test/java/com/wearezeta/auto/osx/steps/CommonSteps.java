@@ -61,6 +61,8 @@ public class CommonSteps {
 		OSXCommonUtils.deleteZClientLoginFromKeychain();
 		OSXCommonUtils.removeAllZClientSettingsFromDefaults();
 		
+		OSXCommonUtils.setZClientBackend(CommonUtils.getBackendType(this.getClass()));
+		
 		if (isFirstRun) {
 			isFirstRun = false;
 			if (generateUsersFlag) {

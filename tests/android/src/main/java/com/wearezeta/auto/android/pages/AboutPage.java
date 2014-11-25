@@ -16,8 +16,8 @@ public class AboutPage extends AndroidPage {
 	
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.AboutPage.CLASS_NAME, locatorKey = "idAboutLogo")
 	private WebElement aboutLogo;
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.AboutPage.CLASS_NAME, locatorKey = "idAboutVersion")
-	private WebElement aboutVersion;
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.AboutPage.CLASS_NAME, locatorKey = "idAboutClose")
+	private WebElement aboutClose;
 	
 	public AboutPage(String URL, String path) throws Exception {
 		super(URL, path);
@@ -33,12 +33,13 @@ public class AboutPage extends AndroidPage {
 	}
 
 	public boolean aboutLogoIsVisible() {
+		refreshUITree();
 		return aboutLogo.isDisplayed();
 		
 	}
 
 	public PersonalInfoPage tapOnVersion() throws Exception {
-		aboutVersion.click();
+		aboutClose.click();
 		return new PersonalInfoPage(url, path);
 	}
 

@@ -18,9 +18,9 @@ Feature: Conversation
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <Contact>
-    When I am knocking to user
+    When I ping user
     Then I see message YOU PINGED in conversation
-    And I am knocking to user
+    And I ping again user
     Then I see message YOU PINGED AGAIN in conversation
 
     Examples: 
@@ -106,9 +106,9 @@ Feature: Conversation
     And I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
-    When I am knocking to user
+    When I ping user
     Then I see message YOU PINGED in conversation
-    And I am knocking to user
+    And I ping again user
     Then I see message YOU PINGED AGAIN in conversation
 
     Examples: 
@@ -192,7 +192,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact3 |
 
-  @torun @regression @id81
+  @regression @id81
   Scenario Outline: Play embedded SoundCloud link in conversation
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
@@ -207,7 +207,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     | SoundCloudLink                              |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/edherbst/throwaway-3 |
 
-  @torun @regression @id379
+  @staging @id379
   Scenario Outline: Play/pause SoundCloud media link from the media bar
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
@@ -228,7 +228,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     | SoundCloudLink                              |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/edherbst/throwaway-3 |
 
-  @torun @regression @id380
+  @regression @id380
   Scenario Outline: Conversation scrolls back to playing media when clicked on the media bar
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
@@ -246,7 +246,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     | SoundCloudLink                              |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/edherbst/throwaway-3 |
 
-  @torun @regression @id618
+  @regression @id618
   Scenario Outline: Verify the new conversation is created on the other end
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
@@ -340,7 +340,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    | SoundCloudLink                              | ChatName        |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | https://soundcloud.com/edherbst/throwaway-3 | SecondEndMMChat |
 
-  @torun @regression @id381
+  @regression @id381
   Scenario Outline: The media bar disappears after playback finishes
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
@@ -354,8 +354,8 @@ Feature: Conversation
     Then I see media bar disappears
 
     Examples: 
-      | Login   | Password    | Name    | Contact     | SoundCloudLink                                         | time |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/20sekunder/isakkkkkk-pcb-sesh-1 | 25   |
+      | Login   | Password    | Name    | Contact     | SoundCloudLink                             | time |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/20sekunder/erika-no | 30   |
 
   @regression @id378
   Scenario Outline: Media bar disappears when playing media is back in view

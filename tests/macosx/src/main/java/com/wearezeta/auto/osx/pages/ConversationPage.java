@@ -49,8 +49,11 @@ public class ConversationPage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathMessageEntry)
 	private List<WebElement> messageEntries;
 
-	@FindBy(how = How.NAME, using = OSXLocators.nameSayHelloMenuItem)
-	private WebElement sayHelloMenuItem;
+	@FindBy(how = How.NAME, using = OSXLocators.namePingMenuItem)
+	private WebElement pingMenuItem;
+	
+	@FindBy(how = How.NAME, using = OSXLocators.namePingAgainMenuItem)
+	private WebElement pingAgainMenuItem;
 
 	@FindBy(how = How.ID, using = OSXLocators.idAddImageButton)
 	private WebElement addImageButton;
@@ -100,10 +103,14 @@ public class ConversationPage extends OSXPage {
 		return null;
 	}
 
-	public void knock() {
-		sayHelloMenuItem.click();
+	public void ping() {
+		pingMenuItem.click();
 	}
 
+	public void pingAgain() {
+		pingAgainMenuItem.click();
+	}
+	
 	public boolean isMessageExist(String message) throws InterruptedException {
 		String messageText = "";
 		
@@ -266,7 +273,7 @@ public class ConversationPage extends OSXPage {
 
 		if (mediaBarPosition.y() < windowPosition.y()) {
 			WebElement scrollBar = scrollArea.findElement(By
-					.xpath("//AXScrollBar[2]"));
+					.xpath("//AXScrollBar[1]"));
 			List<WebElement> scrollButtons = scrollBar.findElements(By
 					.xpath("//AXButton"));
 			for (WebElement scrollButton : scrollButtons) {
@@ -297,6 +304,11 @@ public class ConversationPage extends OSXPage {
 			NSPoint position = NSPoint.fromString(group
 					.getAttribute("AXPosition"));
 			NSPoint size = NSPoint.fromString(group.getAttribute("AXSize"));
+			if (position == null || size == null) {
+				log.debug("Can't get position or size for current element. Position: " + position +
+						", size: " + size);
+				continue;
+			}
 			if (position.y() + size.y() > lastPosition) {
 				lastPosition = position.y() + size.y();
 				lastGroupPosition = new NSPoint(position.x(), position.y()

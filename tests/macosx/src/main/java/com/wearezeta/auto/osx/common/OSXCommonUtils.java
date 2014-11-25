@@ -70,6 +70,11 @@ public class OSXCommonUtils extends CommonUtils {
 			executeOsXCommand(new String[] { "/bin/bash", "-c", command });
 		}
 		
+		command = "security delete-generic-password -s \"Wire: Credentials for wire.com\"";
+
+		if (!getOsName().contains(OS_NAME_WINDOWS)) {
+			executeOsXCommand(new String[] { "/bin/bash", "-c", command });
+		}
 	}
 	
 	public static void removeAllZClientSettingsFromDefaults() throws Exception {
@@ -80,6 +85,12 @@ public class OSXCommonUtils extends CommonUtils {
 		} else {
 			executeOsXCommand(new String[] { "/bin/bash", "-c", command });
 		}
+	}
+	
+	public static void setZClientBackend(String bt) throws Exception {
+		String command = "defaults write com.wearezeta.zclient.mac ZMBackendEnvironmentType -string " + bt;
+		
+		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
 	}
 	
 	public static BuildVersionInfo readClientVersionFromPlist() {

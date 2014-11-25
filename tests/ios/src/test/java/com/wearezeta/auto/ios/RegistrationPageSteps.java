@@ -220,7 +220,6 @@ public class RegistrationPageSteps {
 
 	@Then("^I verify that my username is at most (\\d+) characters long$")
 	public void IVerifyUsernameLength(int charactersLimit) throws IOException {
-		PagesCollection.registrationPage.typeUsername();
 		String realUserName = PagesCollection.registrationPage
 				.getUsernameFieldValue();
 		int usernameLength = LanguageUtils.getUnicodeStringAsCharList(
@@ -232,7 +231,8 @@ public class RegistrationPageSteps {
 	public void IEnterEmail(String email) throws IOException {
 
 		if (email.equals(CommonUtils.YOUR_USER_1)) {
-			PagesCollection.registrationPage.setEmail(aqaEmail);
+			aqaEmail = CommonUtils.retrieveRealUserEmailValue(email);
+			PagesCollection.registrationPage.setEmail(aqaEmail + "\n");
 		} else {
 			aqaEmail = email;
 			PagesCollection.registrationPage.setEmail(email + "\n");
@@ -246,7 +246,6 @@ public class RegistrationPageSteps {
 			PagesCollection.registrationPage.setEmail(aqaEmail);
 			PagesCollection.registrationPage.inputEmail();
 		} else {
-			aqaEmail = email;
 			PagesCollection.registrationPage.setEmail(email);
 			PagesCollection.registrationPage.inputEmail();
 		}
@@ -264,6 +263,11 @@ public class RegistrationPageSteps {
 	@When("^I enter an incorrect email (.*)$")
 	public void IEnterIncorrectEmail(String email) throws IOException {
 		PagesCollection.registrationPage.setEmail(email);
+	}
+	
+	@When("I clear email input field on Registration page")
+	public void IClearEmailInputRegistration(){
+		PagesCollection.registrationPage.clearEmailInput();
 	}
 
 	@Then("^I verify no spaces are present in email$")
@@ -342,10 +346,12 @@ public class RegistrationPageSteps {
 
 	@Then("^I navigate throughout the registration pages and see my input$")
 	public void NavigateAndVerifyInput() throws IOException {
-		PagesCollection.registrationPage.typeAndStoreAllValues();
+		PagesCollection.registrationPage.verifyUserInputIsPresent(aqaName, aqaEmail);
+	}
+	
+	@When("I navigate from password screen back to Welcome screen")
+	public void NaviateFromPassScreenToWelcomeScreen(){
 		PagesCollection.registrationPage.navigateToWelcomePage();
-		Assert.assertTrue(PagesCollection.registrationPage
-				.verifyUserInputIsPresent());
 	}
 
 	@When("I input user data")

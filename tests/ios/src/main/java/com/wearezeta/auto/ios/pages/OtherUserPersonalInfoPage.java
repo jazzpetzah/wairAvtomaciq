@@ -78,6 +78,11 @@ public class OtherUserPersonalInfoPage extends IOSPage{
 		return otherUserEmail.isDisplayed();
 	}
 	
+	public boolean isOtherUserProfileNameVisible(String name) {
+		WebElement otherUserName = driver.findElementByName(name);
+		return DriverUtils.isElementDisplayed(otherUserName);
+	}
+	
 	public void continueToAddUser(){
 		continueButton.click();
 	}

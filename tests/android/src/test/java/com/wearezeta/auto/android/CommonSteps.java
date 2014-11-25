@@ -337,6 +337,8 @@ public class CommonSteps {
 
 		try {
 			AndroidCommonUtils.disableHints();
+			String backendJSON = AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(this.getClass()));
+			AndroidCommonUtils.deployBackendFile(backendJSON);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

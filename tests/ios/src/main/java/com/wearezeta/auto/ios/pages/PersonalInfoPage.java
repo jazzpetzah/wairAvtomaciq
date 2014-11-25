@@ -13,6 +13,8 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
+import cucumber.api.java.en.When;
+
 public class PersonalInfoPage extends IOSPage{
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathEmailField)
@@ -47,6 +49,21 @@ public class PersonalInfoPage extends IOSPage{
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameSelfNameTooShortError)
 	private WebElement nameTooShortError;
+
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathSettingsPage)
+	private WebElement settingsPage;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameOptionsSettingsButton)
+	private WebElement optionsSettingsButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameSoundAlertsButton)
+	private WebElement soundAlertsButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathSoundAlertsPage)
+	private WebElement soundAlertsPage;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathAllSoundAlertsButton)
+	private WebElement allSoundAlertsButton;
 	
 	private String url;
 	private String path;
@@ -170,5 +187,25 @@ public class PersonalInfoPage extends IOSPage{
 	}	
 		return page;
 	}
-
+	
+	public void tapOnSettingsButton() {
+		optionsSettingsButton.click();
+	}
+	
+	public void isSettingsPageVisible() {
+		settingsPage.isDisplayed();
+	}
+	
+	public void enterSoundAlertSettings(){
+		soundAlertsButton.click();
+	}
+	
+	public void isSoundAlertsPageVisible() {
+		soundAlertsPage.isDisplayed();
+	}
+	
+	public void isDefaultSoundValOne() {
+		allSoundAlertsButton.getAttribute("value").equals("1");
+	}
+	
 }

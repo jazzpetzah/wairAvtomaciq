@@ -2,13 +2,17 @@ package com.wearezeta.auto.android.common;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
@@ -18,7 +22,12 @@ import com.wearezeta.auto.common.misc.BuildVersionInfo;
 import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 
 public class AndroidCommonUtils extends CommonUtils {
+	private static final String BACKEND_JSON = "customBackend.json";
 	private static final Logger log = ZetaLogger.getLog(AndroidCommonUtils.class.getSimpleName());
+	
+	private static final String stagingBackend = "[\"https://dev-nginz-https.zinfra.io\", \"https://dev-nginz-ssl.zinfra.io/await\", \"1003090516085\"]";
+	private static final String edgeBackend = "[\"https://edge-nginz-https.zinfra.io\", \"https://edge-nginz-ssl.zinfra.io/await\", \"1003090516085\"]";
+	private static final String productionBackend = "[\"https://prod-nginz-https.wire.com\", \"https://prod-nginz-ssl.wire.com/await\", \"782078216207\"]";
 	
 	public static void uploadPhotoToAndroid(String photoPathOnDevice)
 			throws Exception {
@@ -242,5 +251,39 @@ public class AndroidCommonUtils extends CommonUtils {
 	public static String getAndroidAppiumLogPathFromConfig(Class<?> c)
 			throws IOException {
 		return CommonUtils.getValueFromConfig(c, "androidAppiumLogPath");
+	}
+	
+	public static void deployBackendFile(String fileName) throws Exception {
+		if (getOsName().contains(OS_NAME_WINDOWS)) {
+			Runtime.getRuntime().exec(
+					"cmd /C adb push " + fileName + " "
+							+ "/mnt/sdcard/customBackend.json");
+		} else {
+			executeOsXCommand(new String[] { "/bin/bash", "-c", "adb push "
+					+ fileName + " " + "/mnt/sdcard/customBackend.json" });
+		}
+	}
+	
+	public static String createBackendJSON(String bt) throws FileNotFoundException, UnsupportedEncodingException { 
+		File file = new File(BACKEND_JSON);
+		if (file.exists()) {
+			FileUtils.deleteQuietly(file);
+		}
+		PrintWriter writer = new PrintWriter(file);
+		
+		switch (bt) {
+			case "edge":
+				writer.println(edgeBackend);
+				break;
+			case "production":
+				writer.println(productionBackend);
+				break;
+			case "staging":
+				writer.println(stagingBackend);
+				break;
+		}
+		
+		writer.close();
+		return file.getAbsolutePath();
 	}
 }

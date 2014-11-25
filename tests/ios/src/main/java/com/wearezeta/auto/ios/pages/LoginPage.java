@@ -34,8 +34,8 @@ public class LoginPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameLoginButton)
 	private WebElement confirmSignInButton;
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameSignUpButton)
-	private WebElement signUpButton;
+	@FindBy(how = How.NAME, using = IOSLocators.nameRegisterButton)
+	private WebElement registerButton;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameLoginField)
 	private WebElement loginField;
@@ -118,12 +118,12 @@ public class LoginPage extends IOSPage {
 	
 	public void clickJoinButton()
 	{
-		signUpButton.click();
+		registerButton.click();
 	}
 	
 	public RegistrationPage join() throws IOException{
 		termsOfServiceButton.click();
-		signUpButton.click();
+		registerButton.click();
 
 		return new RegistrationPage(url, path);
 	}
@@ -220,7 +220,7 @@ public class LoginPage extends IOSPage {
 	}
 	
 	public Boolean errorMailNotificationIsShown(){
-		return (ExpectedConditions.visibilityOf(errorMailNotification) != null);
+		return DriverUtils.isElementDisplayed(errorMailNotification);
 	}
 	
 	public Boolean errorMailNotificationIsNotShown(){
@@ -228,7 +228,7 @@ public class LoginPage extends IOSPage {
 	}
 	
 	public Boolean wrongCredentialsNotificationIsShown(){
-		return (ExpectedConditions.visibilityOf(wrongCredentialsNotification) != null);
+		return DriverUtils.isElementDisplayed(wrongCredentialsNotification);
 	}
 
 	public void ignoreUpdate() {

@@ -1,10 +1,8 @@
-
-
-Feature: Register new user
+Feature: Registration
 
 @mute
 @smoke
-@id274
+@id276
   Scenario Outline: Register new user using front camera (Real Device)
 	Given I see sign in screen
 	When I press Join button
@@ -59,8 +57,7 @@ Feature: Register new user
     |  Name			    |
     |  aqaUser      	|
     
-  #Muted till new sync engine client stabilization
-  @mute
+
   @regression
   @id284
   Scenario Outline: Conserve user input throughout registration
@@ -71,16 +68,16 @@ Feature: Register new user
 	And I See selected picture
 	And I confirm selection
 	And I input name <Name> and hit Enter
-	And I enter email <Email>
+	And I input email <Email> and hit Enter
 	And I enter password <Password>
+	And I navigate from password screen back to Welcome screen
 	Then I navigate throughout the registration pages and see my input
 
     Examples:     
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
 
-  #Muted till new sync engine client stabilization
-  @mute
+
   @regression
   @id282
   Scenario Outline: Can return to email page to change email if input incorrectly
@@ -91,14 +88,14 @@ Feature: Register new user
 	And I See selected picture
 	And I confirm selection
 	And I input name <Name> and hit Enter
-	And I enter an incorrect email <Incorrect>
-	And I enter password <Password>
-	And I submit registration data
+	And I input email <Incorrect> and hit Enter
+	And I input password <Password> and hit Enter
 	Then I see error page
 	And I return to the email page from error page
-	And I enter email <Correct>
-	And I submit registration data
-	And I verify registration address
+	And I clear email input field on Registration page
+	And I input email <Correct> and hit Enter
+	And I input password <Password> and hit Enter
+	And I see confirmation page
 
     Examples:     
     |	Correct				    |	Password	        |	Name	        |   Incorrect           |
@@ -106,7 +103,7 @@ Feature: Register new user
 
 
   @regression
-  @id346 @mute
+  @id346 
   Scenario Outline: Register new user using username with maximum characters allowed, Deutch, Double-byte (Chinese), and emoji Characters
 	Given I see sign in screen
 	When I press Join button
@@ -121,7 +118,8 @@ Feature: Register new user
     |	Email 					    |	Password	    |    MaxChars    |    Language   |
     |	aqaUser             	    |	aqaPassword	    |    72          |    English    |
 
- 
+
+@id589 
 @regression
   Scenario Outline: Register new user using photo album
 	Given I see sign in screen
@@ -173,10 +171,10 @@ Feature: Register new user
 	Examples:     
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
-    
+
 
 @regression
-@id285 @mute
+@id285 
   Scenario Outline: Take or select a photo label not visible when picture is selected
 	Given I see sign in screen
 	When I press Join button
@@ -206,9 +204,8 @@ Feature: Register new user
 	Examples:     
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
- 
-#Muted till new sync engine client stabilization
-@mute
+
+
 @regression
 @id273
   Scenario Outline: Next Button should not be visible on first registration step visit
@@ -232,10 +229,9 @@ Feature: Register new user
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	| 
     
-#Muted till new sync engine client stabilization
-@mute
+
 @regression
-@id290
+@id1392
   Scenario Outline: Automatic email verification
   	Given I see sign in screen
 	When I press Join button
@@ -274,8 +270,7 @@ Feature: Register new user
     |	Email						|	Password	    |	Name			|
     |	aqaUser             	    |	aqaPassword	    |	aqaUser       	|
     
-#Muted till new sync engine client stabilization
-@mute
+
 @regression
 @id305
   Scenario Outline: Minimum 8 chars password requirement validation
@@ -286,9 +281,8 @@ Feature: Register new user
 	And I See selected picture
 	And I confirm selection
 	And I input name <Name> and hit Enter
-	And I enter email <Email>
+	And I input email <Email> and hit Enter
 	And I enter password <Password>
-	And I input user data
 	Then I see Create Account button disabled
 
     Examples:     
@@ -297,7 +291,7 @@ Feature: Register new user
 
 
 @staging
-@id297
+@id281
   Scenario Outline: Change selected image during registratrion (Real Device)
 	Given I see sign in screen
 	When I press Join button

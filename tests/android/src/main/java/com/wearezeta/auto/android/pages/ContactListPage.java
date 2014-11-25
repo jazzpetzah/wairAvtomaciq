@@ -3,15 +3,18 @@ package com.wearezeta.auto.android.pages;
 import java.io.IOException;
 import java.util.*;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
+import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class ContactListPage extends AndroidPage {
 
@@ -48,6 +51,7 @@ public class ContactListPage extends AndroidPage {
 
 	private String url;
 	private String path;
+	private static final Logger log = ZetaLogger.getLog(ContactListPage.class.getSimpleName());
 
 	public ContactListPage(String URL, String path) throws Exception {
 		super(URL, path);
@@ -58,15 +62,17 @@ public class ContactListPage extends AndroidPage {
 	public AndroidPage tapOnName(String name) throws Exception {
 		AndroidPage page = null;
 		WebElement el = findInContactList(name, 5);
-		driver.tap(1, el, 1);
+		wait.until(ExpectedConditions.elementToBeClickable(el));
+		el.click();
 		refreshUITree();
 		DriverUtils.setImplicitWaitValue(driver, 5);
-/*	Commented as part of SingOut test fix		
- *		el = findInContactList(name, 0);
- *		if (null != el && DriverUtils.isElementDisplayed(el)) {
- *			driver.tap(1, el, 1);
- *		}
- */		
+		//workaround for incorrect tap
+		el = findInContactList(name, 1);
+		if (el != null && DriverUtils.isElementDisplayed(el)) {
+			el.click();
+			log.debug("tap on contact for the second time");
+		}
+		//
 		if(connectToHeader.size() > 0 && connectToHeader.get(0).isDisplayed()){
 			page = new ConnectToPage(url, path);
 		}

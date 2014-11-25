@@ -1,5 +1,4 @@
 
-
 Feature: Sign In
 
   @smoke
@@ -34,22 +33,12 @@ Feature: Sign In
     |	Login					|	Password	|	UserA			| UserB			|
     |	aqaUser            		|	aqaPassword	|	aqaUser 		| aqaContact1	|    
  
-@regression
-@id300 
- Scenario Outline: Open and close the terms of service on the welcome screen
-  	Given I see sign in screen
-  	And I press Terms of Service link
-  	Then I see the terms info page
-  	And I return to welcome page
-  	
-  	Examples: 
-    |	Login	|	Password	|	Name	|	Contact		|
-    |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	|
+
 
 #Muted due to missing notification support from sync engine    
 @mute
 @regression
-@id314
+@id1398
  Scenario Outline: Notification if SignIn credentials are wrong
  	Given I see sign in screen
  	When I press Sign in button

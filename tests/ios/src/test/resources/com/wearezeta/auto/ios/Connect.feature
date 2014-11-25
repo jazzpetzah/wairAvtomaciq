@@ -1,8 +1,8 @@
-Feature: Connect to User
+Feature: Connect
 
-  @mute
+
   @smoke
-  @id345
+  @id576
   Scenario Outline: Send invitation message to a user
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -13,33 +13,54 @@ Feature: Connect to User
     And I see user <Contact> found on People picker page
     And I tap on NOT connected user name on People picker page <Contact>
     And I see connect to <Contact> dialog
-    And I input message in connect to dialog
     And I click Connect button on connect to dialog
     And I see People picker page
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
     And I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message on Dialog page
+    And I see Pending Connect to <Contact> message on Dialog page from user <Name>
 
     Examples: 
       | Login   | Password    | Name    | Contact  |
       | aqaUser | aqaPassword | aqaUser | yourUser |
 
-  #Need to rework test according to updates in UI
-  @mute 
+
   @smoke 
-  @id337
+  @id585
   Scenario Outline: Get invitation message from user
     Given I have connection request from <Contact>
     And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I see connection request from <Contact>
-    And I confirm connection request
+    And I see Pending request link in contact list
+    And I click on Pending request link in contact list
+    And I see Pending request page
+    And I see Hello connect message from user <Contact> on Pending request page
+    And I click Connect button on Pending request page
     Then I see first item in contact list named <Contact>
 
     Examples: 
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | yourContact |
+      
+      
+@staging
+@id576
+Scenario Outline: Send connection request to unconnected participant in a group chat
+    Given I Sign in using login <Login> and password <Password>
+    And I have group chat named <GroupChatName> with an unconnected user, made by <GroupCreator>
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+	And I swipe up on group chat page
+	And I tap on not connected contact <UnconnectedUser>
+	And I click Connect button on connect to dialog
+	And I exit the group info page
+	And I return to the chat list
+	Then I see first item in contact list named <UnconnectedUser>
+	
+Examples:
+    |  Login		| Password		| Name			| GroupCreator	        |  GroupChatName    | UnconnectedUser |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaPictureContact	    |     TESTCHAT		| yourContact     |      
+
 
 #Muted due to relogin issue
 @staging @mute
@@ -129,3 +150,25 @@ Scenario Outline: Verify 1:1 conversation is successfully created on the second 
 Examples: 
       | Login   | Password    | Name    | Contact     		|
       | aqaUser | aqaPassword | aqaUser | yourNotContact1 	|
+ 
+     
+@staging 
+@id579
+Scenario Outline: Verify transitions between connection requests (ignoring)
+    Given I send <SentRequests> connection requests to <Name>
+    When I Sign in using login <Name> and password <Password>
+    And I see Contact list with my name <Name>
+    And I see Pending request link in contact list
+    And I click on Pending request link in contact list
+    And I see Pending request page
+    And I click on Ignore button on Pending requests page <SentRequests> times
+    And I dont see Pending request link in contact list
+    And I don't see conversation with not connected user <NotConnectedUser>
+    And I swipe down contact list
+    And I see People picker page
+    And I search for ignored user name <NotConnectedUser> and tap on it
+    Then I see Pending request page
+    
+Examples: 
+      | Login   | Password    | Name    | SentRequests	| NotConnectedUser |
+      | aqaUser | aqaPassword | aqaUser |      3 	    | yourNotContact1  |

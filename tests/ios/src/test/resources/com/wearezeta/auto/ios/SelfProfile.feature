@@ -1,4 +1,4 @@
-Feature: Change Profile Picture
+Feature: Self Profile
 
   @smoke @id344
   Scenario Outline: Change your profile picture
@@ -17,7 +17,7 @@ Feature: Change Profile Picture
       | Login   | Password    | Name    | Picture                      |
       | aqaUser | aqaPassword | aqaUser | userpicture_mobile_check.jpg |
 
-  @staging @id1055
+  @regression @id1055
   Scenario Outline: Attempt to enter a name with 0 chars
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -31,17 +31,3 @@ Feature: Change Profile Picture
     Examples: 
       | Login   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |
-
-  @staging @id729
-  Scenario Outline: Attempt to open About screen in settings
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    When I tap on my name <Name>
-	And I click on Settings button on personal page
-	And I click on About button on personal page
-	Then I see About page
-
-    Examples: 
-      | Login   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |    
-  

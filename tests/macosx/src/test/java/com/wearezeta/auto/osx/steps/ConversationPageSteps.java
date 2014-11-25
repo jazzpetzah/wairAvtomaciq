@@ -101,7 +101,7 @@ public class ConversationPageSteps {
 				 retry = true;
 				 retriesCount++;
 				 lastException = e;
-				 try { Thread.sleep(100); } catch (InterruptedException ie) {}
+				 try { Thread.sleep(500); } catch (InterruptedException ie) {}
 			 }
 		 } while (retry == true && retriesCount < 5);
 		 
@@ -125,7 +125,7 @@ public class ConversationPageSteps {
 		 int afterNumberOfImages = -1;
 		 
 		 boolean isNumberIncreased = false;
-		 for (int i = 0; i < 60; i++) {
+		 for (int i = 0; i < 3; i++) {
 			 afterNumberOfImages = CommonSteps.senderPages.getConversationPage().getNumberOfImageEntries();
 			 if (afterNumberOfImages == beforeNumberOfImages + 1) {
 				 isNumberIncreased = true;
@@ -143,8 +143,7 @@ public class ConversationPageSteps {
 			CommonSteps.senderPages.getConversationPage().scrollDownToLastMessage();
 	 }
 	 
-	 @When("I am knocking to user")
-	 public void WhenIAmKnockingToUser() {
+	 private void calcNumberOfPings() {
 		 if (beforeNumberOfKnocks < 0) {
 			 beforeNumberOfKnocks =
 				CommonSteps.senderPages.getConversationPage()
@@ -155,7 +154,18 @@ public class ConversationPageSteps {
 				CommonSteps.senderPages.getConversationPage()
 					 	.getNumberOfYouPingedMessages(OSXLocators.xpathYouPingedAgainMessage);
 		 }
-		 CommonSteps.senderPages.getConversationPage().knock();
+	 }
+	 
+	 @When("I ping user")
+	 public void WhenIPingUser() {
+		 calcNumberOfPings();
+		 CommonSteps.senderPages.getConversationPage().ping();
+	 }
+	 
+	 @When("I ping again user")
+	 public void IPingAgainUser() {
+		 calcNumberOfPings();
+		 CommonSteps.senderPages.getConversationPage().pingAgain();
 	 }
 	 
 	 @Then("I see message (.*) in conversation$")
@@ -163,7 +173,7 @@ public class ConversationPageSteps {
 		 if (message.equals(OSXLocators.YOU_PINGED_MESSAGE)) {
 			 boolean isNumberIncreased = false;
 			 int afterNumberOfKnocks = -1;
-			 for (int i = 0; i < 20; i++) {
+			 for (int i = 0; i < 3; i++) {
 				 afterNumberOfKnocks = CommonSteps.senderPages.getConversationPage().getNumberOfYouPingedMessages(OSXLocators.xpathYouPingedMessage);
 				 if (afterNumberOfKnocks == beforeNumberOfKnocks + 1) {
 					 isNumberIncreased = true;
@@ -178,7 +188,7 @@ public class ConversationPageSteps {
 		} else if (message.equals(OSXLocators.YOU_PINGED_AGAIN_MESSAGE)) {
 			 boolean isNumberIncreased = false;
 			 int afterNumberOfHotKnocks = -1;
-			 for (int i = 0; i < 20; i++) {
+			 for (int i = 0; i < 3; i++) {
 				 afterNumberOfHotKnocks = CommonSteps.senderPages.getConversationPage().getNumberOfYouPingedMessages(OSXLocators.xpathYouPingedAgainMessage);
 				 if (afterNumberOfHotKnocks == beforeNumberOfHotKnocks + 1) {
 					 isNumberIncreased = true;

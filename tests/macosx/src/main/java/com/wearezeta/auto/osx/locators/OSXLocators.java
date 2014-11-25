@@ -6,7 +6,8 @@ public final class OSXLocators {
 	public static final String xpathMainWindow = "//AXWindow[@AXRoleDescription='standard window']";
 	
 	public static final String nameSignInButton = "SIGN IN";
-	public static final String nameRegisterButton = "JOIN";
+	public static final String nameRegisterButton = "REGISTER";
+	public static final String xpathAcceptTermsOfServiceCheckBox = "//AXCheckBox";
 	
 	public static final String idLoginField = "TempLoginViewControllerUsernameField";
 	public static final String classNameLoginField = "AXTextArea";
@@ -27,6 +28,7 @@ public final class OSXLocators {
 	public static final String idPeopleButton = "PeopleButton";
 	public static final String idAddConversationButton = "addConversationButton";
 	public static final String idPeoplePickerSearchField = "people_picker_searchfield";
+	public static final String idPeoplePickerTopContactsSectionHeader = "people_picker_topcpnverstion_sectionheader";
 	public static final String idPeoplePickerDismissButton = "people_picker_cancel_button";
 	public static final String idPeoplePickerSearchResultEntry = "people_picker_result_namefield";
 	public static final String idPeoplePickerSearchResultTable = "people_picker_searchresult";
@@ -36,7 +38,8 @@ public final class OSXLocators {
 	public static final String idArchiveButton = "archiveButton";
 	public static final String idShowArchivedButton = "openArchiveButton";
 	
-	public static final String nameSayHelloMenuItem = "Ping";
+	public static final String namePingMenuItem = "Ping";
+	public static final String namePingAgainMenuItem = "Ping Again";
 	public static final String nameSignOutMenuItem = "Sign Out";
 	public static final String nameQuitZClientMenuItem = "Quit Wire";
 	public static final String idSendInvitationButton = "send";
@@ -72,14 +75,14 @@ public final class OSXLocators {
 	public static final String idChooseDirectoryPopUp = "_NS:40";
 	public static final String xpathFormatFinderImageFile = "//AXTextField[@AXValue='%s']";
 	public static final String xpathFormatFavoritesFolderPopUp = "//AXStaticText[@AXValue='%s']";
-	public static final String xpathSelectColumnViewButton = "//AXRadioButton[@AXDescription='column view']";
+	public static final String xpathSelectColumnViewButton = "//AXRadioButton[@AXDescription='column view' or @AXLabel='column view']";
 	
 	public static final String idAddPeopleButtonGroupChat = "addButton";
 	public static final String idConfirmationViewConfirmButton = "ConfirmationViewConfirmButton";
 	public static final String idAddPeopleButtonSingleChat = "userProfileViewButtonOnTheLeft";
 	public static final String idBlockUserButtonSingleChat = "userProfileViewButtonOnTheRight";
 	//OLD: public static final String idPeoplePickerAddToConversationButton = "people_picker_confirm_button";
-	public static final String idPeoplePickerAddToConversationButton = "ConfirmationBarViewConfirmButton";
+	public static final String namePeoplePickerAddToConversationButton = "ADD TO CONVERSATION";
 	public static final String idLeaveConversationButton = "leaveButton";
 	public static final String idRemoveUserFromConversation = "userProfileViewButtonOnTheRight";
 	public static final String idConversationScrollArea = "ConversationScrollArea";

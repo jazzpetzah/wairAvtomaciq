@@ -31,6 +31,12 @@ public class GroupChatPage extends DialogPage {
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameYouHaveLeft)
 	private WebElement youLeft;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameYouLeftMessage)
+	private WebElement youLeftMessage;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameYouRenamedConversationMessage)
+	private WebElement yourRenamedMessage;
 
 	public GroupChatPage(String URL, String path) throws IOException {
 		super(URL, path);
@@ -69,6 +75,14 @@ public class GroupChatPage extends DialogPage {
 	
 	public boolean isUserAddedContactVisible(String user, String contact){
 		return driver.findElement(By.name(user.toUpperCase() + " ADDED " + contact.toUpperCase())).isDisplayed();
+	}
+	
+	public boolean isYouAddedUserMessageShown(String user){
+		return isMessageShownInGroupChat(String.format(IOSLocators.nameYouAddetToGroupChatMessage, user.toUpperCase()));
+	}
+	
+	public boolean isYouRenamedConversationMessageVisible(String name){
+		return getLastMessageFromDialog().equals(String.format(IOSLocators.nameYouRenamedConversationMessage, name));
 	}
 	
 	public boolean isMessageShownInGroupChat(String message){
@@ -148,6 +162,10 @@ public class GroupChatPage extends DialogPage {
 			}
 		}	
 		return page;
+	}
+
+	public boolean isYouLeftMessageShown() {
+		return DriverUtils.isElementDisplayed(youLeftMessage);
 	}
 
 }

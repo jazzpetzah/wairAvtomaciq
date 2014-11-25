@@ -45,7 +45,7 @@ public final class AndroidLocators {
 		
 		public static final String idAboutLogo =LOCATORS_PACKAGE + ":id/gtv__about__logo";
 		
-		public static final String idAboutVersion = LOCATORS_PACKAGE + ":id/ttv__about__version_text";
+		public static final String idAboutClose = LOCATORS_PACKAGE + ":id/gtl__about__close";
 	}
 	
 	public static final class ConnectToPage {
@@ -217,7 +217,7 @@ public final class AndroidLocators {
 		
 		public static final String idSendConnectionRequestButton = LOCATORS_PACKAGE + ":id/zb__send_connect_request__connect_button";
 		
-		public static final String idNoResultsFound = LOCATORS_PACKAGE + ":id/ttv_pickuser__error_message";
+		public static final String idNoResultsFound = LOCATORS_PACKAGE + ":id/ttv_pickuser__error_header";
 		
 		public static final String xpathPeoplePickerGroup = "//android.widget.LinearLayout[child::android.widget.TextView[@resource-id='" + LOCATORS_PACKAGE + ":id/ttv_pickuser_searchconversation_name' and @text='%s']]";
 		

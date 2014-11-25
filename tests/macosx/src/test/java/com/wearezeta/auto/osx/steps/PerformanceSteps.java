@@ -76,7 +76,7 @@ public class PerformanceSteps {
 				int randomInt = random.nextInt(visibleContactsList.size() - 1);
 				String contact = visibleContactsList.get(randomInt).getText();
 				CommonSteps.senderPages.getContactListPage().openConversation(
-						contact);
+						contact, false);
 				Thread.sleep(100);
 				
 				CommonSteps.senderPages

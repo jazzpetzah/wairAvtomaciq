@@ -57,7 +57,7 @@ public class CreateZetaUser {
 		regMail = setRegMail(mail, suffix);
 		user.put(suffix, regMail);
 		
-		log.debug("Generated credentials for new user registration: " + mail + ":" + password);
+		log.debug("Generated credentials for new user registration: " + regMail + ":" + password);
 		
 		return user;
 	}
