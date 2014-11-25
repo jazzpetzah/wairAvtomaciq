@@ -1,8 +1,6 @@
 Feature: Connect
 
-
-  @smoke
-  @id576
+  @smoke @id576
   Scenario Outline: Send invitation message to a user
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -24,9 +22,7 @@ Feature: Connect
       | Login   | Password    | Name    | Contact  |
       | aqaUser | aqaPassword | aqaUser | yourUser |
 
-
-  @smoke 
-  @id585
+  @smoke @id585
   Scenario Outline: Get invitation message from user
     Given I have connection request from <Contact>
     And I Sign in using login <Login> and password <Password>
@@ -41,30 +37,26 @@ Feature: Connect
     Examples: 
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | yourContact |
-      
-      
-@staging
-@id576
-Scenario Outline: Send connection request to unconnected participant in a group chat
+
+  @staging @id576
+  Scenario Outline: Send connection request to unconnected participant in a group chat
     Given I Sign in using login <Login> and password <Password>
     And I have group chat named <GroupChatName> with an unconnected user, made by <GroupCreator>
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
-	And I swipe up on group chat page
-	And I tap on not connected contact <UnconnectedUser>
-	And I click Connect button on connect to dialog
-	And I exit the group info page
-	And I return to the chat list
-	Then I see first item in contact list named <UnconnectedUser>
-	
-Examples:
-    |  Login		| Password		| Name			| GroupCreator	        |  GroupChatName    | UnconnectedUser |
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaPictureContact	    |     TESTCHAT		| yourContact     |      
+    And I swipe up on group chat page
+    And I tap on not connected contact <UnconnectedUser>
+    And I click Connect button on connect to dialog
+    And I exit the group info page
+    And I return to the chat list
+    Then I see first item in contact list named <UnconnectedUser>
 
+    Examples: 
+      | Login   | Password    | Name    | GroupCreator      | GroupChatName | UnconnectedUser |
+      | aqaUser | aqaPassword | aqaUser | aqaPictureContact | TESTCHAT      | yourContact     |
 
-#Muted due to relogin issue
-@staging @mute
-@id611
+  #Muted due to relogin issue
+  @staging @mute @id611
   Scenario Outline: Verify 1:1 conversation is not created on the second end after you ignore connection request(UI)
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -103,11 +95,9 @@ Examples:
       | Login   | Password    | Name    | Contact  |
       | aqaUser | aqaPassword | aqaUser | yourUser |
 
-
-#Muted due to relogin issue
-@staging @mute
-@id611
-Scenario Outline: Verify 1:1 conversation is not created on the second end after you ignore connection request(BE)
+  #Muted due to relogin issue
+  @staging @mute @id611
+  Scenario Outline: Verify 1:1 conversation is not created on the second end after you ignore connection request(BE)
     Given I send invitation to <Name> by <Contact>
     And I Sign in using login <Name> and password <Password>
     And I see Pending request link in contact list
@@ -122,16 +112,14 @@ Scenario Outline: Verify 1:1 conversation is not created on the second end after
     And I see Personal page
     And I swipe right on the personal page
     And I see conversation with not connected user <Name>
-    
-Examples: 
-      | Login   | Password    | Name    | Contact     		|
-      | aqaUser | aqaPassword | aqaUser | yourNotContact1 	|
-      
 
-#Muted due relogin issue and blank Personal page screen issue
-@staging @mute
-@id610
-Scenario Outline: Verify 1:1 conversation is successfully created on the second end after you accept connection request(BE)
+    Examples: 
+      | Login   | Password    | Name    | Contact         |
+      | aqaUser | aqaPassword | aqaUser | yourNotContact1 |
+
+  #Muted due relogin issue and blank Personal page screen issue
+  @staging @mute @id610
+  Scenario Outline: Verify 1:1 conversation is successfully created on the second end after you accept connection request(BE)
     Given I send invitation to <Name> by <Contact>
     And I Sign in using login <Name> and password <Password>
     And I see Pending request link in contact list
@@ -146,15 +134,13 @@ Scenario Outline: Verify 1:1 conversation is successfully created on the second 
     And I see Personal page
     And I swipe right on the personal page
     And I see conversation with not connected user <Name>
-    
-Examples: 
-      | Login   | Password    | Name    | Contact     		|
-      | aqaUser | aqaPassword | aqaUser | yourNotContact1 	|
- 
-     
-@staging 
-@id579
-Scenario Outline: Verify transitions between connection requests (ignoring)
+
+    Examples: 
+      | Login   | Password    | Name    | Contact         |
+      | aqaUser | aqaPassword | aqaUser | yourNotContact1 |
+
+  @staging @id579
+  Scenario Outline: Verify transitions between connection requests (ignoring)
     Given I send <SentRequests> connection requests to <Name>
     When I Sign in using login <Name> and password <Password>
     And I see Contact list with my name <Name>
@@ -168,7 +154,7 @@ Scenario Outline: Verify transitions between connection requests (ignoring)
     And I see People picker page
     And I search for ignored user name <NotConnectedUser> and tap on it
     Then I see Pending request page
-    
-Examples: 
-      | Login   | Password    | Name    | SentRequests	| NotConnectedUser |
-      | aqaUser | aqaPassword | aqaUser |      3 	    | yourNotContact1  |
+
+    Examples: 
+      | Login   | Password    | Name    | SentRequests | NotConnectedUser |
+      | aqaUser | aqaPassword | aqaUser | 3            | yourNotContact1  |
