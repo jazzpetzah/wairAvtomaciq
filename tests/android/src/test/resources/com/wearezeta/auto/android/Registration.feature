@@ -1,8 +1,6 @@
-Feature: Register new user
+Feature: Registration
 
-@mute
-@smoke
-@id9
+  @mute @smoke @id9
   Scenario Outline: Register new user using front camera
     Given I see sign in screen
     When I press Join button
