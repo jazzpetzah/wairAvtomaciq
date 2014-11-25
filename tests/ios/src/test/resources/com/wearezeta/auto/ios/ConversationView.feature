@@ -1,4 +1,4 @@
-Feature: Conversation
+Feature: Conversation View
 
 @smoke
 @id330
@@ -34,7 +34,7 @@ Scenario Outline: Send Hello to contact
 
 
 @smoke 
-@id460
+@id332
 Scenario Outline: Send a camera roll picture to user from contact list
 	Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with my name <Name>
@@ -50,25 +50,22 @@ Scenario Outline: Send a camera roll picture to user from contact list
 Examples: 
 	|	Login		|	Password		|	Name		|	Contact			|
 	|	aqaUser		|	aqaPassword		|	aqaUser		|	aqaContact1		|
-
-
-  #Muted till new sync engine client stabilization. Mute buttons location is not possible.
-  @mute
-  @smoke
-  @id338
- Scenario Outline: Mute conversation
+    
+    
+@smoke 
+@id334
+Scenario Outline: Send message to group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I swipe right on a <Contact1>
-    And I click mute conversation
-    Then Contact <Contact1> is muted
-    When I swipe right on a <Contact1>
-    And I click mute conversation
-    Then Contact <Contact1> is not muted
+	When I create group chat with <Contact1> and <Contact2>
+	And I type the message
+	And I send the message
+	Then I see my message in the dialog
+	
 Examples:
-    |  Login		| Password		| Name			| Contact1    |
-    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |
-
+    |  Login		| Password		| Name			| Contact1		| Contact2		|
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|
+    
 
 @regression 
 @id526 
@@ -88,7 +85,8 @@ Examples:
 
 
 #Muted due relogin issue
-@staging @mute
+@mute
+@staging 
 @id614
    Scenario Outline: I am able to play inline YouTube link poster by others
     Given I Sign in using login <Login> and password <Password>
@@ -187,7 +185,7 @@ Examples:
  	|  aqaUser		| aqaPassword	| aqaUser		| aqaContact1 |
 
 @staging
-@id504 
+@id1387
   Scenario Outline: Verify you can play/pause media from the Media Bar (YouTube)
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -211,9 +209,8 @@ Examples:
     |	aqaUser	|	aqaPassword	|	aqaUser	|	aqaContact1	| http://www.youtube.com/watch?v=Bb1RhktcugU |
  
     
-#Play-pause buttons are not presented in elements tree
 @staging
-@id387
+@id1388
 Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation (SoundCloud)
 	Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -556,3 +553,124 @@ Scenario Outline: Verify you can add people from 1:1 people view (cancel view)
 Examples:
     |  Login		| Password		| Name			| Contact1		| Contact2		| Contact3 |
     |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| aqaContact3 |
+    
+    
+#Muted due to app quit on logout workaround 
+@staging
+@id606 @mute
+Scenario Outline: Verify you can see text message, which was sent into a group conversation, on the second end
+	Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
+    And I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+	And I tap on group chat with name <ChatName>
+	And I send predefined message <message>
+	And I see message in group chat <message>
+	And I swipe right on Dialog page
+	And I tap on my name <Name>
+	And I click on Settings button on personal page
+	And I click Sign out button from personal page	
+	And I Sign in using login <Contact1> and password <Password>
+	And I see Personal page
+	And I swipe right on the personal page
+	And I see in contact list group chat named <ChatName>
+	And I tap on group chat with name <ChatName>
+	And I see message in group chat <message>
+	And I swipe right on Dialog page
+	And I tap on my name <Contact1>
+	And I click on Settings button on personal page
+	And I click Sign out button from personal page	
+	And I Sign in using login <Contact2> and password <Password>
+	And I see Personal page
+	And I swipe right on the personal page
+	And I see in contact list group chat named <ChatName>
+	And I tap on group chat with name <ChatName>
+	And I see message in group chat <message>
+	
+	Examples:
+    |  Login		| Password		| Name			| Contact1		| Contact2		|  ChatName		| message 		|
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| QAtestChat 	| Test Message  |
+    
+    
+#Muted due to app quit on logout workaround
+@staging
+@id607 @mute
+Scenario Outline: Verify you can see multimedia message, which was sent into a group conversation, on the second end
+	Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
+    And I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+	And I tap on group chat with name <ChatName>
+	And I post media link <YouTubeLink>
+    And I tap on dialog window
+	And I swipe right on Dialog page
+	And I tap on my name <Name>
+	And I click on Settings button on personal page
+	And I click Sign out button from personal page	
+	And I Sign in using login <Contact1> and password <Password>
+	And I see Personal page
+	And I swipe right on the personal page
+	And I see in contact list group chat named <ChatName>
+	And I tap on group chat with name <ChatName>
+	And I see media link <YouTubeLink> and media in dialog
+	And I click video container for the first time
+    And I see video player page is opened
+    And I tap on Done button on Video player page
+	And I swipe right on Dialog page
+	And I tap on my name <Contact1>
+	And I click on Settings button on personal page
+	And I click Sign out button from personal page	
+	And I Sign in using login <Contact2> and password <Password>
+	And I see Personal page
+	And I swipe right on the personal page
+	And I see in contact list group chat named <ChatName>
+	And I tap on group chat with name <ChatName>
+	And I see media link <YouTubeLink> and media in dialog
+	And I click video container for the first time
+    And I see video player page is opened
+    And I tap on Done button on Video player page
+	
+	Examples:
+    |  Login		| Password		| Name			| Contact1		| Contact2		|  ChatName		| YouTubeLink								 |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	| QAtestChat 	| http://www.youtube.com/watch?v=Bb1RhktcugU | 
+        
+
+#Muted due to app quit on logout workaround
+@staging
+@id608 @mute
+Scenario Outline: Verify you can see image, which was sent into a group conversation, on the second end
+	Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
+    And I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+	And I tap on group chat with name <ChatName>
+	And I swipe the text input cursor
+ 	And I press Add Picture button
+ 	And I press Camera Roll button
+ 	And I choose a picture from camera roll
+ 	And I press Confirm button
+ 	And I see new photo in the dialog
+ 	And I verify image in dialog is same as template <Picture>
+	And I swipe right on Dialog page
+	And I tap on my name <Name>
+	And I click on Settings button on personal page
+	And I click Sign out button from personal page	
+	And I Sign in using login <Contact1> and password <Password>
+	And I see Personal page
+	And I swipe right on the personal page
+	And I see in contact list group chat named <ChatName>
+	And I tap on group chat with name <ChatName>
+	And I scroll to image in dialog
+	And I verify image in dialog is same as template <Picture>
+	And I swipe right on Dialog page
+	And I tap on my name <Contact1>
+	And I click on Settings button on personal page
+	And I click Sign out button from personal page
+	And I Sign in using login <Contact2> and password <Password>
+	And I see Personal page
+	And I swipe right on the personal page
+	And I see in contact list group chat named <ChatName>
+	And I tap on group chat with name <ChatName>
+	And I scroll to image in dialog
+	And I verify image in dialog is same as template <Picture>
+	
+	Examples:
+    |  Login		| Password		| Name			| Contact1		| Contact2		|  ChatName		| Picture                   |
+    |  aqaUser		| aqaPassword	| aqaUser		| aqaContact1	| aqaContact2	|  QAtestChat 	| userpicture_landscape.jpg |
