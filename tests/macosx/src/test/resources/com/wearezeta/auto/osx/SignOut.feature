@@ -1,7 +1,7 @@
 Feature: Sign Out
 
   #not supported functionality - Sign Out
-  @mute @smoke @id479
+  @mute @smoke @id691
   Scenario Outline: Sign out from ZClient
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list

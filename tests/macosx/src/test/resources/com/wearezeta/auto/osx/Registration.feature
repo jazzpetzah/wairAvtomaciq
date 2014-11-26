@@ -1,7 +1,7 @@
 Feature: Register new user
 
   #no camera on some Jenkins slaves
-  @mute @regression @id77
+  @mute @regression @id1080
   Scenario Outline: Register new user using front camera
     Given I am signed out from ZClient
     And I see Sign In screen

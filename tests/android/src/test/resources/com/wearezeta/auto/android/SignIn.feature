@@ -1,6 +1,6 @@
 Feature: Sign In
 
- @id326 @smoke
+  @id326 @smoke
   Scenario Outline: Sign in to ZClient
     Given I see sign in screen
     When I press Sign in button
@@ -13,7 +13,7 @@ Feature: Sign In
       | Login   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |
 
- @id209 @smoke @mute
+  @id209 @smoke @mute
   Scenario Outline: I can change sign in user
     Given I Sign in using login <Login1> and password <Password>
     And I see Contact list with my name <Login1>
@@ -30,16 +30,3 @@ Feature: Sign In
     Examples: 
       | Login1  | Password    | Login2   |
       | aqaUser | aqaPassword | yourUser |
-
-  @id327 @smoke
-  Scenario Outline: Open/Close People picker
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    When I swipe down contact list
-    And I see People picker page
-    And I press Clear button
-    Then Contact list appears with my name <Name>
-
-    Examples: 
-      | Login   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |

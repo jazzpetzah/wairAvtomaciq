@@ -1,6 +1,5 @@
 Feature: Sign Out
 
-
   @smoke @id343 @mute
   Scenario Outline: Sign out from ZClient
     Given I Sign in using login <Login> and password <Password>

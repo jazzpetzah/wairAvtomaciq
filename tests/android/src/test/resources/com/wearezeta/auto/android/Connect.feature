@@ -1,4 +1,4 @@
-Feature: Connect to User
+Feature: Connect
 
   @id191 @id193 @smoke
   Scenario Outline: Send invitation message to a user
@@ -19,81 +19,19 @@ Feature: Connect to User
       | Login   | Password    | Name    | Contact  | Message       |
       | aqaUser | aqaPassword | aqaUser | yourUser | Hellow friend |
 
-  @id218 @regression 
-  Scenario Outline: I can do full name search for existing 1:1(non-archive)
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    When I swipe down contact list
-    And I see People picker page
-    And I tap on Search input on People picker page
-    And I input in search field user name to connect to <Contact>
-    Then I see user <Contact>  in People picker
-
-    Examples: 
-      | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
-
-  @id223 @regression
-  Scenario Outline: I can do partial name search for existing 1:1
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    When I swipe down contact list
-    And I see People picker page
-    And I tap on Search input on People picker page
-    And I input in search field part <Size> of user name to connect to <Contact>
-    Then I see user <Contact>  in People picker
-
-    Examples: 
-      | Login   | Password    | Name    | Contact     | Size |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | 12    |
-
-  @id220 @regression
-  Scenario Outline: I can do full name search for existing group convo(non-archive)
-    Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
+  @id323 @smoke
+  Scenario Outline: Accept connection request
+    Given <Contact> connection request is sended to me <Login>
     And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I swipe down contact list
-    And I see People picker page
-    And I tap on Search input on People picker page
-    And I input in search field user name to connect to <GroupChatName>
-    Then I see group <GroupChatName>  in People picker
+    When I tap on contact name <WaitingMess>
+    And I see connect to <Contact> dialog
+    And I Connect with contact by pressing button
+    Then I see Connect to <Contact> Dialog page
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName          |
-      | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | PeoplePicker GroupChat |
-
-  @id225 @regression
-  Scenario Outline: I can do partial name search for existing group convo(non-archive)
-    Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    When I swipe down contact list
-    And I see People picker page
-    And I tap on Search input on People picker page
-    And I input in search field part <Size> of user name to connect to <GroupChatName>
-    Then I see group <GroupChatName>  in People picker
-
-    Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName           | Size |
-      | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | PeoplePicker GroupChat1 | 5    |
-
-  @id319 @regression @mute
-  Scenario Outline: I can create group chat from People picker
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    When I swipe down contact list
-    And I see People picker page
-    And I tap on Search input on People picker page
-    And I input in search field user name to connect to <Contact1>
-    And I  long tap on user name found on People picker page <Contact1>
-    And I add in search field user name to connect to <Contact2>
-    And I  long tap on user name found on People picker page <Contact2>
-    And I tap on create conversation
-    Then I see group chat page with users <Contact1> <Contact2>
-
-    Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName           |
-      | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | PeoplePicker GroupChat2 |
+      | Login   | Password    | Name    | Contact     | WaitingMess      |
+      | aqaUser | aqaPassword | aqaUser | yourContact | 1 person waiting |
 
   @id536 @regression
   Scenario Outline: I can see a new inbox for connection when receive new connection request
@@ -206,7 +144,7 @@ Feature: Connect to User
       | Login   | Password    | Contact         | WaitingMess      |
       | aqaUser | aqaPassword | yourNotContact2 | 1 person waiting |
 
-  @id547 @regression 
+  @id547 @regression
   Scenario Outline: I can see the char counter changes when writing the first connect message
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
@@ -227,7 +165,7 @@ Feature: Connect to User
       | Login   | Password    | Contact         | CounterValue1 | Message | CounterValue2 | FirstState | SecondState |
       | aqaUser | aqaPassword | yourNotContact3 | 140           | test    | 136           | false      | true        |
 
-  @id548 @regression 
+  @id548 @regression
   Scenario Outline: I can not send first message with space only
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
@@ -266,7 +204,7 @@ Feature: Connect to User
     Examples: 
       | Login   | Password    | Contact    | Message |
       | aqaUser | aqaPassword | yourIgnore | Test    |
-      
+
   @id541 @regression @mute
   Scenario Outline: I can receive new connection request when app in background
     Given I Sign in using login <Login> and password <Password>
@@ -281,8 +219,8 @@ Feature: Connect to User
     And I press Ignore connect button
 
     Examples: 
-	  | Login   | Password    | Name    | Contact      | WaitingMess      |
-      | aqaUser | aqaPassword | aqaUser | yourIgnore   | 1 person waiting |
+      | Login   | Password    | Name    | Contact    | WaitingMess      |
+      | aqaUser | aqaPassword | aqaUser | yourIgnore | 1 person waiting |
 
   @id553 @regression
   Scenario Outline: I want to see that the other person has accepted the connect request in the conversation view
@@ -323,7 +261,7 @@ Feature: Connect to User
       | Login   | Password    | Contact         |
       | aqaUser | aqaPassword | yourNotContact3 |
 
-  @id550 @regression @mute 
+  @id550 @regression @mute
   Scenario Outline: I want to initiate a connect request by selecting someone from within a group conversation
     Given User <Contact1> is connected with <Contact2>
     And My Contact <Contact1> has group chat with me <Login> and his Contact <Contact2> with name <ChatName>
@@ -336,9 +274,102 @@ Feature: Connect to User
     And I tap on edit connect request field
     And I type Connect request "Message"
     And I press Connect button
-	And I press back on group chat info page
-	And I navigate back from group chat page
-	And I see contact list loaded with User name <Contact2>
+    And I press back on group chat info page
+    And I navigate back from group chat page
+    And I see contact list loaded with User name <Contact2>
+
     Examples: 
       | Login   | Password    | Contact1    | Contact2      | ChatName         |
       | aqaUser | aqaPassword | aqaContact3 | yourGroupChat | ContactGroupChat |
+
+  @id676 @regression
+  Scenario Outline: I want to block a person from 1:1 conversation
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I swipe up on dialog page
+    #And I see <Contact> user name and email
+    And I Press Block button
+    And I confirm block
+    Then I do not see Contact list with name <Contact>
+    And I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in search field user name to connect to <Contact>
+    And I see user <Contact> found on People picker page
+    And I tap on user name found on People picker page <Contact>
+    Then User info should be shown with Block button
+
+    Examples: 
+      | Login   | Password    | Name    | Contact     |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+
+  @id680 @regression
+  Scenario Outline: I want to see user has been blocked within the Start UI
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in search field user name to connect to <Contact>
+    And I tap on user name found on People picker page <Contact>
+    And I see connect to <Contact> dialog
+    And I tap on edit connect request field
+    And I type Connect request "<Message>"
+    And I press Connect button
+    Then I see contact list loaded with User name <Contact>
+    When I tap on contact name <Contact>
+    And I see that connection is pending
+    And I Press Block button on connect to page
+    And I confirm block on connect to page
+    And I wait for 5 seconds
+    Then I do not see Contact list with name <Contact>
+    And I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in search field user name to connect to <Contact>
+    And I see user <Contact> found on People picker page
+    And I tap on user name found on People picker page <Contact>
+    Then User info should be shown with Block button
+    And I click Unblock button
+
+    Examples: 
+      | Login   | Password    | Name    | Contact         | Message      |
+      | aqaUser | aqaPassword | aqaUser | yourNotContact3 | Hello friend |
+
+  @regression @id720
+  Scenario Outline: I do not want to be seen in the search results of someone I blocked
+    Given User <Contact> blocks user <Login>
+    And I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in search field user name to connect to <Contact>
+    And I wait for 60 seconds
+    Then I see that no results found
+
+    Examples: 
+      | Login   | Password    | Name    | Contact  |
+      | aqaUser | aqaPassword | aqaUser | aqaBlock |
+
+  @id723 @regression
+  Scenario Outline: I want to unblock someone from their Profile view
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    And I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in search field user name to connect to <Contact>
+    And I see user <Contact> found on People picker page
+    And I tap on user name found on People picker page <Contact>
+    Then User info should be shown with Block button
+    And I click Unblock button
+    And I see dialog page
+    And I navigate back from dialog page
+    And I see contact list loaded with User name <Contact>
+
+    Examples: 
+      | Login   | Password    | Name    | Contact     |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 |

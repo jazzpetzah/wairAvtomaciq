@@ -51,41 +51,6 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @smoke @id103
-  Scenario Outline: Create group chat from 1on1 conversation
-    Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
-    And I open conversation with <Contact1>
-    When I open People Picker from conversation
-    And I search for user <Contact2>
-    And I see user <Contact2> in search results
-    And I add user <Contact2> from search results
-    Then I open conversation with <Contact1>, <Contact2>
-    And I see message YOU STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
-
-    Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
-
-  @regression @id102
-  Scenario Outline: Add user to group conversation
-    Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
-    And I open conversation with <ChatName>
-    When I open People Picker from conversation
-    And I search for user <Contact3>
-    And I see user <Contact3> in search results
-    And I add user <Contact3> from search results
-    Then I open conversation with <ChatName>
-    And I see message YOU ADDED <Contact3> in conversation
-    And I open Conversation info
-    And I see that conversation has 4 people
-
-    Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | Contact3    | ChatName           |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | aqaContact3 | AddUserToGroupChat |
-
   @smoke @id470
   Scenario Outline: Send message to group chat
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
@@ -101,21 +66,6 @@ Feature: Conversation
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | SendMessageGroupChat |
 
   @regression
-  Scenario Outline: Ping group chat
-    Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
-    And I open conversation with <ChatName>
-    When I ping user
-    Then I see message YOU PINGED in conversation
-    And I ping again user
-    Then I see message YOU PINGED AGAIN in conversation
-
-    Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | ChatName      |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | PingGroupChat |
-
-  @regression
   Scenario Outline: Send picture to group chat
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -127,70 +77,6 @@ Feature: Conversation
     Examples: 
       | Login   | Password    | Name    | Contact1    | Contact2    | ChatName             |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | SendPictureGroupChat |
-
-  @smoke @id471
-  Scenario Outline: Leave group conversation
-    Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
-    When I open conversation with <ChatName>
-    And I open Conversation info
-    And I leave conversation
-    And I go to archive
-    And I open conversation with <ChatName>
-    Then I see message YOU LEFT in conversation
-
-    Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | ChatName       |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | LeaveGroupChat |
-
-  @smoke @id492
-  Scenario Outline: Remove user from group chat
-    Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
-    When I open conversation with <ChatName>
-    And I open Conversation info
-    And I choose user <Contact1> in Conversation info
-    And I remove selected user from conversation
-    Then I see message YOU REMOVED <Contact1> in conversation
-
-    Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | ChatName       |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | RemoveUserChat |
-
-  @smoke @id474 @id481
-  Scenario Outline: Mute and unmute conversation
-    Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
-    When I open conversation with <Contact>
-    And I change conversation mute state
-    And I go to user <Name> profile
-    Then I see conversation <Contact> is muted
-    When I open conversation with <Contact>
-    And I change conversation mute state
-    And I go to user <Name> profile
-    Then I see conversation <Contact> is unmuted
-
-    Examples: 
-      | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
-
-  @smoke
-  Scenario Outline: Archive and unarchive conversation
-    Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
-    When I open conversation with <Contact>
-    And I archive conversation
-    And I go to user <Name> profile
-    Then I do not see conversation <Contact> in contact list
-    When I go to archive
-    And I open conversation with <Contact>
-    Then I see Contact list with name <Contact>
-
-    Examples: 
-      | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact3 |
 
   @regression @id81
   Scenario Outline: Play embedded SoundCloud link in conversation
@@ -245,30 +131,6 @@ Feature: Conversation
     Examples: 
       | Login   | Password    | Name    | Contact     | SoundCloudLink                              |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/edherbst/throwaway-3 |
-
-  @regression @id618
-  Scenario Outline: Verify the new conversation is created on the other end
-    Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
-    And I create group chat with <Contact1> and <Contact2>
-    And I open conversation with <Contact1>, <Contact2>
-    And I see message YOU STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
-    When I am signing out
-    And I Sign in using login <Contact1> and password <Password>
-    And I see my name <Contact1> in Contact list
-    Then I see Contact list with name <Login>, <Contact2>
-    And I open conversation with <Login>, <Contact2>
-    And I see message <Login> STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
-    And I am signing out
-    And I Sign in using login <Contact2> and password <Password>
-    And I see my name <Contact2> in Contact list
-    Then I see Contact list with name <Login>, <Contact1>
-    And I open conversation with <Login>, <Contact1>
-    And I see message <Login> STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
-
-    Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
 
   @regression @id624
   Scenario Outline: Text message sent to group chat is visible on other end
