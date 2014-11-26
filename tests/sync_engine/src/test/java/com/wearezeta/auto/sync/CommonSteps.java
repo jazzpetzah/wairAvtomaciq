@@ -58,6 +58,14 @@ public class CommonSteps {
 	public void setup() throws Exception {
 		OSXCommonUtils.removeAllZClientSettingsFromDefaults();
 		
+		String backendType = CommonUtils.getBackendType(this.getClass());
+		
+		//setting backend configuration for all platforms
+		OSXCommonUtils.setZClientBackend(backendType);
+		
+		String androidBEFlagFilePath = AndroidCommonUtils.createBackendJSON(backendType);
+		AndroidCommonUtils.deployBackendFile(androidBEFlagFilePath);
+		
 		boolean generateUsersFlag = Boolean.valueOf(SyncEngineUtil
 				.getCommonGenerateUsersFromConfig(this.getClass()));
 
