@@ -94,7 +94,7 @@ Feature: People View
       | Login   | Password    | Name    | Contact1          | Contact2              | ParticipantNumber |
       | aqaUser | aqaPassword | aqaUser | aqaPictureContact | aqaAvatar TestContact | 3                 |
 
-  @smoke @id404
+  @smoke @id1406
   Scenario Outline: I can edit the conversation name
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
