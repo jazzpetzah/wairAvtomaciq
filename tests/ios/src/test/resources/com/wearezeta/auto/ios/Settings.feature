@@ -1,7 +1,6 @@
 Feature: Settings
 
-  @id482
-  @staging 
+  @id482 @staging
   Scenario Outline: Verify user can access settings
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -14,9 +13,7 @@ Feature: Settings
       | Login   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |
 
-
-  @id729
-  @regression 
+  @id729 @regression
   Scenario Outline: Attempt to open About screen in settings
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -28,10 +25,8 @@ Feature: Settings
     Examples: 
       | Login   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |
-  
-  
-  @id1258
-  @regression 
+
+  @id1258 @regression
   Scenario Outline: Verify default value for sound settings is all
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

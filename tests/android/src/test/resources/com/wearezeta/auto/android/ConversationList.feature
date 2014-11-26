@@ -1,7 +1,6 @@
 Feature: Conversation List
 
-  #Muted till new sync engine client stabilization. Mute buttons location is not possible.
-  @mute @smoke @id338
+  @id324 @mute @smoke
   Scenario Outline: Mute conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
