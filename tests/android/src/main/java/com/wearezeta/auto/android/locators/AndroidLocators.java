@@ -43,7 +43,7 @@ public final class AndroidLocators {
 		
 		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME + "$AboutPage";
 		
-		public static final String idAboutLogo =LOCATORS_PACKAGE + ":id/gtv__about__logo";
+		public static final String idAboutLogo =LOCATORS_PACKAGE + ":id/iv__about__logo";
 		
 		public static final String idAboutClose = LOCATORS_PACKAGE + ":id/gtl__about__close";
 	}
