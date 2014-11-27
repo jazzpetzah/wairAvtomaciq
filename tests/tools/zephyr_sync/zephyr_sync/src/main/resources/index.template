@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+  <head>    
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>{{title}}</title>
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script src="https://raw.githubusercontent.com/jedfoster/Readmore.js/master/readmore.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.4.13/d3.min.js"></script>
+
+    <style type="text/css">
+        .slice text {
+            font-size: 18pt;
+        }
+        table, th, td {
+            border: 1px solid black;
+            border-color: gray;
+        }
+        table {
+            width: 80%;
+        }
+        body {
+            font-family: Arial;
+        }
+        table h3, table h4 {
+            margin: 0px;
+        }
+        .subcategory_cell {
+            padding-left: 35px;
+        }
+    </style>
+  </head>
+  <body>
+    <h1>{{title}}</h1>
+    <table id="dataTable"></table>
+    <script type="text/javascript">
+
+    var canvasWidth = 1500, //width
+      canvasHeight = 800,   //height
+      outerRadius = 300,   //radius
+      color = d3.scale.category20(); //builtin range of colors
+
+    var dataSet = [
+      {{#dataSet}}
+      { "tcType": "{{name}}", "details": [{{#details}}"{{.}}",{{/details}}], "cnt": {{count}} },
+      {{/dataSet}}
+    ];
+    var destTable = $("#dataTable");
+    destTable.append("<tr><th>Testcases Group</th><th>Count</th></tr>");
+    for(var i = 0; i < dataSet.length; i++) {
+        var details = jQuery.map( dataSet[i].details, function( a ) {
+			return "<li>" + a + "</li>";
+		});
+		if (i == 0) {
+		    if (dataSet[i].cnt > 0) {
+                destTable.append("<tr>" + 
+                                   "<td>" + 
+                                     "<h3>" + dataSet[i].tcType + "</h3>" +
+                                     "<ul name=\"details\">" + details.join("\n") + "</ul>" + 
+                                  "</td>" + 
+                                  "<td><h3>" + dataSet[i].cnt + "</h3></td>" + 
+                                 "</tr>");
+            } else {
+                destTable.append("<tr>" + 
+                                   "<td>" + 
+                                     "<h3>" + dataSet[i].tcType + "</h3>" +
+                                  "</td>" + 
+                                  "<td><h3>" + dataSet[i].cnt + "</h3></td>" + 
+                                 "</tr>");
+            }
+        } else {
+            if (dataSet[i].cnt > 0) {
+                destTable.append("<tr>" + 
+                                   "<td class='subcategory_cell'>" + 
+                                     "<h4>" + dataSet[i].tcType + "</h4>" +
+                                     "<ul name=\"details\">" + details.join("\n") + "</ul>" + 
+                                   "</td>" + 
+                                   "<td><h4>" + dataSet[i].cnt + "</h4></td>" + 
+                                 "</tr>");
+            } else {
+                destTable.append("<tr>" + 
+                                   "<td class='subcategory_cell'>" + 
+                                     "<h4>" + dataSet[i].tcType + "</h4>" +
+                                   "</td>" + 
+                                   "<td><h4>" + dataSet[i].cnt + "</h4></td>" + 
+                                 "</tr>");
+            }
+        }
+    }
+    $('ul[name=details]').readmore({
+        heightMargin: 1,
+        maxHeight: 1,
+        sectionCSS: 'margin: 0px;',
+        moreLink: '<a href="#">Show Details</a>',
+        lessLink: '<a href="#">Hide Details</a>',
+    });
+    
+    var pieChartDataSet = [];
+    var allCnt = 0;
+    for(var i = 1; i < dataSet.length; i++) {
+        pieChartDataSet.push(dataSet[i]);
+        allCnt += dataSet[i].cnt;
+    }
+    
+    var vis = d3.select("body")
+      .append("svg:svg") //create the SVG element inside the <body>
+        .data([pieChartDataSet]) //associate our data with the document
+        .attr("width", canvasWidth) //set the width of the canvas
+        .attr("height", canvasHeight) //set the height of the canvas
+        .append("svg:g") //make a group to hold our pie chart
+          .attr("transform", "translate(" + 1.5*outerRadius + "," + 1.5*outerRadius + ")") // relocate center of pie to 'outerRadius,outerRadius'
+
+    // This will create <path> elements for us using arc data...
+    var arc = d3.svg.arc()
+      .outerRadius(outerRadius);
+
+    var pie = d3.layout.pie() //this will create arc data for us given a list of values
+      .value(function(d) { return d.cnt; }) // Binding each value to the pie
+      .sort( function(d) { return null; } );
+
+    // Select all <g> elements with class slice (there aren't any yet)
+    var arcs = vis.selectAll("g.slice")
+      // Associate the generated pie data (an array of arcs, each having startAngle,
+      // endAngle and value properties) 
+      .data(pie)
+      // This will create <g> elements for every "extra" data element that should be associated
+      // with a selection. The result is creating a <g> for every object in the data array
+      .enter()
+      // Create a group to hold each slice (we will have a <path> and a <text>
+      // element associated with each slice)
+      .append("svg:g")
+      .attr("class", "slice");    //allow us to style things in the slices (like text)
+
+    arcs.append("svg:path")
+      //set the color for each slice to be chosen from the color function defined above
+      .attr("fill", function(d, i) { return color(i); } )
+      //this creates the actual SVG path using the associated data (pie) with the arc drawing function
+      .attr("d", arc);
+
+    // Add a tcType to each arc slice...
+    arcs.append("svg:text")
+      .attr("transform", function(d) { //set the label's origin to the center of the arc
+        //we have to make sure to set these before calling arc.centroid
+        d.outerRadius = outerRadius + 45; // Set Outer Coordinate
+        d.innerRadius = outerRadius + 55; // Set Inner Coordinate
+        return "translate(" + arc.centroid(d) + ")";
+      })
+      .attr("text-anchor", "middle") //center the text on it's origin
+      .style("fill", "Purple")
+      .style("font", "bold 18px Arial")
+      .text(function(d, i) { if (pieChartDataSet[i].cnt <= 0) { return ""; } else { return pieChartDataSet[i].tcType; } }); //get the label from our original data array
+
+    // Add a cnt value to the larger arcs, translated to the arc centroid and rotated.
+    arcs.filter(function(d) { return d.endAngle - d.startAngle > .2; }).append("svg:text")
+      .attr("dy", ".35em")
+      .attr("text-anchor", "middle")
+      //.attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")rotate(" + angle(d) + ")"; })
+      .attr("transform", function(d) { //set the label's origin to the center of the arc
+        //we have to make sure to set these before calling arc.centroid
+        d.outerRadius = outerRadius; // Set Outer Coordinate
+        d.innerRadius = outerRadius/2; // Set Inner Coordinate
+        return "translate(" + arc.centroid(d) + ")rotate(" + angle(d) + ")";
+      })
+      .style("fill", "White")
+      .style("font", "bold 24px Arial")
+      .text(function(d) { return Math.floor(100 * d.data.cnt / allCnt) + "%"; });
+
+    // Computes the angle of an arc, converting from radians to degrees.
+    function angle(d) {
+      var a = (d.startAngle + d.endAngle) * 90 / Math.PI - 90;
+      return a > 90 ? a - 180 : a;
+    }
+
+        
+    </script>
+  </body>
+</html>
