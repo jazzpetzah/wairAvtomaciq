@@ -205,8 +205,13 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public void startMediaContent(){
-		DriverUtils.waitUntilElementAppears(driver, By.xpath(IOSLocators.xpathMediaConversationCell));
-		mediaLinkCell.click();
+		boolean flag = DriverUtils.waitUntilElementAppears(driver, By.xpath(IOSLocators.xpathMediaConversationCell));
+		if (flag){
+			mediaLinkCell.click();
+		}
+		else {
+			Assert.fail("Media container element is missing in elements tree");
+		}
 	}
 	
 	public DialogPage scrollDownTilMediaBarAppears() throws Exception{
@@ -547,9 +552,9 @@ public class DialogPage extends IOSPage{
 	
 	public void sendMessageUsingScript(String message) {
 		String script = String.format(
-				IOSLocators.scriptCursorInputPath + ".setValue(\"%s\");" +
-						IOSLocators.scriptKeyboardReturnKeyPath + ".tap();", message);
+				IOSLocators.scriptCursorInputPath + ".setValue(\"%s\");" , message);
 		driver.executeScript(script);
+		clickKeyboardReturnButton();
 	}
 	
 	public void sendMessagesUsingScript(String[] messages) {

@@ -61,6 +61,9 @@ public abstract class IOSPage extends BasePage {
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameKeyboardDeleteButton)
 	private WebElement keyboardDeleteBtn;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameKeyboardReturnButton)
+	private WebElement keyboardReturnBtn;
 
 	private static String imagesPath = "";
 
@@ -221,6 +224,10 @@ public abstract class IOSPage extends BasePage {
 	
 	public void clickKeyboardDeleteButton(){
 		keyboardDeleteBtn.click();
+	}
+	
+	public void clickKeyboardReturnButton(){
+		keyboardReturnBtn.click();
 	}
 
 	public static Object executeScript(String script) {
