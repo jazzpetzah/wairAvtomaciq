@@ -230,7 +230,7 @@ public class App {
 				testcasesWithMissingIds.add(executedTC);
 			}
 		}
-		// zephyrDB.syncTestcases(zephyrTestcases);
+		zephyrDB.syncTestcases(zephyrTestcases);
 
 		Map<String, List<? extends Testcase>> reportData = new LinkedHashMap<String, List<? extends Testcase>>();
 		reportData.put(ALL_EXECUTED_TESTCASES_HEADER, executedTestcases);
@@ -318,7 +318,7 @@ public class App {
 				testcasesWithMissingIds.add(executedTC);
 			}
 		}
-		// zephyrDB.syncTestcases(zephyrTestcases);
+		zephyrDB.syncTestcases(zephyrTestcases);
 
 		Map<String, List<? extends Testcase>> reportData = new LinkedHashMap<String, List<? extends Testcase>>();
 		reportData.put(ALL_EXECUTED_TESTCASES_HEADER, executedTestcases);
