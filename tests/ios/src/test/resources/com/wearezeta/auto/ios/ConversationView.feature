@@ -410,7 +410,6 @@ Feature: Conversation View
     And I see People picker page
     And I scroll up page a bit
     And I dont see keyboard
-    And I see Add to conversation button
     And I tap on connected user <Contact2> on People picker page
     And I tap on connected user <Contact3> on People picker page
     And I click close button to dismiss people view

@@ -267,7 +267,7 @@ public class DialogPage extends IOSPage{
 		
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
-		driver.swipe(coords.x + elementSize.width / 2, coords.y + elementSize.height - 170, coords.x + elementSize.width / 2, coords.y + 40, time);
+		driver.swipe(coords.x + elementSize.width / 2, coords.y + elementSize.height - 200, coords.x + elementSize.width / 2, coords.y + 40, time);
 		return returnBySwipe(SwipeDirection.UP);
 	}
 	
