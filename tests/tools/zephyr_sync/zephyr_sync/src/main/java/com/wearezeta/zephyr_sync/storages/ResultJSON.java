@@ -21,7 +21,7 @@ public class ResultJSON extends TestcasesStorage {
 		this.path = path;
 	}
 
-	private static Boolean parseIsPassed(JSONArray steps) {
+	private static boolean parseIsPassed(JSONArray steps) {
 		for (int stepIdx = 0; stepIdx < steps.length(); stepIdx++) {
 			if (!steps.getJSONObject(stepIdx).getJSONObject("result")
 					.getString("status").equals("passed")) {
@@ -31,14 +31,24 @@ public class ResultJSON extends TestcasesStorage {
 		return true;
 	}
 
-	private static Boolean parseIsSkipped(JSONArray steps) {
+	private static boolean parseIsFailed(JSONArray steps) {
 		for (int stepIdx = 0; stepIdx < steps.length(); stepIdx++) {
 			if (steps.getJSONObject(stepIdx).getJSONObject("result")
-					.getString("status").equals("skipped")) {
+					.getString("status").equals("failed")) {
 				return true;
 			}
 		}
 		return false;
+	}
+
+	private static boolean parseIsSkipped(JSONArray steps) {
+		for (int stepIdx = 0; stepIdx < steps.length(); stepIdx++) {
+			if (!steps.getJSONObject(stepIdx).getJSONObject("result")
+					.getString("status").equals("skipped")) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private static Set<String> parseTagsList(JSONArray tags) {
@@ -59,15 +69,19 @@ public class ResultJSON extends TestcasesStorage {
 			JSONObject element = elements.getJSONObject(elementIdx);
 			final String cucumberId = element.getString("id");
 			final String name = element.getString("name");
-			final Boolean isPassed = parseIsPassed(element.getJSONArray("steps"));
-			final Boolean isSkipped = parseIsSkipped(element.getJSONArray("steps"));
+			final boolean isPassed = parseIsPassed(element
+					.getJSONArray("steps"));
+			final boolean isFailed = parseIsFailed(element
+					.getJSONArray("steps"));
+			final boolean isSkipped = parseIsSkipped(element
+					.getJSONArray("steps"));
 			Set<String> tags = new LinkedHashSet<String>();
-			if(element.has("tags")) {
+			if (element.has("tags")) {
 				tags = parseTagsList(element.getJSONArray("tags"));
 			}
 			final String id = Testcase.extractIdsFromTags(tags);
 			ExecutedTestcase tc = new ExecutedTestcase(id, name, tags,
-					cucumberId, isPassed, isSkipped);
+					cucumberId, isPassed, isFailed, isSkipped);
 			parsedTestcases.add(tc);
 		}
 

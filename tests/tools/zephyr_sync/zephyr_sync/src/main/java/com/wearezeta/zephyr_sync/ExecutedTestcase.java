@@ -3,15 +3,20 @@ package com.wearezeta.zephyr_sync;
 import java.util.Set;
 
 public class ExecutedTestcase extends CucumberTestcase {
-	private Boolean isPassed;
-	private Boolean isSkipped;
-	
-	public Boolean getIsPassed() {
-		return isPassed;
+	private boolean isPassed;
+	private boolean isFailed;
+	private boolean isSkipped;
+
+	public boolean getIsPassed() {
+		return this.isPassed;
+	}
+
+	public boolean getIsFailed() {
+		return this.isFailed;
 	}
 	
-	public Boolean getIsSkipped() {
-		return isSkipped;
+	public boolean getIsSkipped() {
+		return this.isSkipped;
 	}
 
 	@Override
@@ -25,20 +30,24 @@ public class ExecutedTestcase extends CucumberTestcase {
 	}
 
 	public ExecutedTestcase(String id, String name, Set<String> tags,
-			String cucumberId, Boolean isPassed, Boolean isSkipped) {
+			String cucumberId, boolean isPassed, boolean isFailed,
+			boolean isSkipped) {
 		super(id, name, tags, cucumberId);
 		this.isPassed = isPassed;
+		this.isFailed = isFailed;
 		this.isSkipped = isSkipped;
 	}
 
 	@Override
 	public String toString() {
 		return String
-				.format("%s[\n\tid: %s\n\tname: %s\n\ttags: %s\n\tisAutomated: %s\n\t" 
-						+ "cucumberId: %s\n\tisPassed: %s\n\tisSkipped: %s\n\tisChanged: %s\n]",
-						this.getClass().getName(),
-						this.getId(), this.getName(), this.getTags().toString(),
+				.format("%s[\n\tid: %s\n\tname: %s\n\ttags: %s\n\tisAutomated: %s\n\t"
+						+ "cucumberId: %s\n\tisPassed: %s\n\tisFailed: %s\n\t"
+						+ "isSkipped: %s\n\tisChanged: %s\n]",
+						this.getClass().getName(), this.getId(),
+						this.getName(), this.getTags().toString(),
 						this.getIsAutomated(), this.getCucumberId(),
-						this.getIsPassed(), this.getIsSkipped(), this.getIsChanged());
+						this.getIsPassed(), this.getIsFailed(), 
+						this.getIsSkipped(), this.getIsChanged());
 	}
 }

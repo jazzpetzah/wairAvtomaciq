@@ -167,13 +167,10 @@ public class App {
 			zephyrTC.setIsAutomated(true);
 		}
 		Set<String> zephyrTCTags = zephyrTC.getTags();
-		if (!zephyrTCTags.contains(MUTE_TAG)) {
-			if (!executedTC.getIsPassed()
-					|| (executedTC.getIsPassed() && executedTC.getIsSkipped())) {
-				zephyrTCTags.add(MUTE_TAG);
-				zephyrTC.setTags(zephyrTCTags);
-				return true;
-			}
+		if (!zephyrTCTags.contains(MUTE_TAG) && executedTC.getIsFailed()) {
+			zephyrTCTags.add(MUTE_TAG);
+			zephyrTC.setTags(zephyrTCTags);
+			return true;
 		}
 		return false;
 	}
@@ -254,7 +251,7 @@ public class App {
 		if (!zephyrTC.getIsAutomated()) {
 			zephyrTC.setIsAutomated(true);
 		}
-		if (executedTC.getIsPassed() && !executedTC.getIsSkipped()) {
+		if (executedTC.getIsPassed()) {
 			Set<String> currentZephyrTCTags = zephyrTC.getTags();
 			if (currentZephyrTCTags.contains(MUTE_TAG)) {
 				currentZephyrTCTags.remove(MUTE_TAG);
