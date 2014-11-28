@@ -48,6 +48,8 @@ public final class IOSLocators {
 	
 	public static final String nameTextInput = "ComposeControllerTextView";
 	
+	public static final String xpathLastDialogMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]";
+	
 	public static final String xpathLastMessageFormat = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[%s]/UIATextView[1]";
 	
 	public static final String xpathLastVideoFormat = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[%s]/UIAWebView[1]";
@@ -104,9 +106,7 @@ public final class IOSLocators {
 	
 	public static final String classUIATextView = "UIATextView";
 
-	public static final String xpathHelloCellFormat = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]";
 	
-	public static final String xpathHeyCellFormat = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]";
 	
 	public static final String xpathNameMediaContainer = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]";
 	
@@ -136,7 +136,7 @@ public final class IOSLocators {
 	
 	public static final String nameCreateAccountButton = "RegistrationCreateAccountButton";
 	
-	public static final String xpathLastGroupChatMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[1]/UIATextView[last()]";
+	public static final String xpathLastChatMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/UIAStaticText";
 	
 	public static final String nameLeaveConversation = "metaControllerRightButton";
 	
@@ -399,6 +399,7 @@ public final class IOSLocators {
 	public static final String classNameKeyboard = "UIAKeyboard";
 	
 	public static final String nameKeyboardDeleteButton = "Delete";
+	public static final String nameKeyboardReturnButton = "Return";
 	
 	////////////////
 	//Tutorial
@@ -415,5 +416,7 @@ public final class IOSLocators {
 	public static final String scriptRegistrationEmailInputPath = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textFields()[\"RegistrationEmailField\"]";
 
 	public static final String nameYouLeftMessage = "YOU LEFT";
+	public static final String nameYouPingedMessage = "YOU PINGED";
+	public static final String nameYouPingedAgainMessage = "YOU PINGED AGAIN";
 }
 

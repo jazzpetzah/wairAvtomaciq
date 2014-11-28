@@ -53,11 +53,9 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.namePendingButton)
 	private WebElement pendingButton;
 	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathHelloCellFormat)
-	private WebElement helloCell;
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathLastChatMessage)
+	private WebElement lastMessage;
 	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathHeyCellFormat)
-	private WebElement heyCell;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameAddPictureButton)
 	private WebElement addPictureButton;
@@ -107,6 +105,10 @@ public class DialogPage extends IOSPage{
 		this.path = path;
 	}
 	
+	public String getLastChatMessage(){
+		return lastMessage.getText();
+	}
+	
 	public void pressPingButton() {
 		pingButton.click();
 	}
@@ -144,7 +146,7 @@ public class DialogPage extends IOSPage{
 
 	public String getLastMessageFromDialog()
 	{
-		return GetLastMessage(messagesList);
+		return getLastMessage(messagesList);
 	}
 	
 	public String getExpectedConnectMessage(String contact, String user){
@@ -157,26 +159,6 @@ public class DialogPage extends IOSPage{
 	
 	public boolean isPendingButtonVisible(){
 		return pendingButton.isDisplayed();
-	}
-	
-	private String GetHelloCell(List<WebElement> chatList) {
-		String helloCellText = helloCell.getAttribute("name");  
-		return helloCellText;
-	}
-
-	public String getHelloCellFromDialog()
-	{
-		return GetHelloCell(messagesList);
-	}
-	
-	private String GetHeyCell(List<WebElement> chatList) {
-		String heyCellText = heyCell.getAttribute("name");  //I dont get HEY FROM PIOTR here
-		return heyCellText;
-	}
-
-	public String getHeyCellFromDialog()
-	{
-		return GetHeyCell(messagesList);
 	}
 	
 	public void swipeInputCursor() throws IOException, InterruptedException{
@@ -205,8 +187,13 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public void startMediaContent(){
-		DriverUtils.waitUntilElementAppears(driver, By.xpath(IOSLocators.xpathMediaConversationCell));
-		mediaLinkCell.click();
+		boolean flag = DriverUtils.waitUntilElementAppears(driver, By.xpath(IOSLocators.xpathMediaConversationCell));
+		if (flag){
+			mediaLinkCell.click();
+		}
+		else {
+			Assert.fail("Media container element is missing in elements tree");
+		}
 	}
 	
 	public DialogPage scrollDownTilMediaBarAppears() throws Exception{
@@ -262,7 +249,7 @@ public class DialogPage extends IOSPage{
 		
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
-		driver.swipe(coords.x + elementSize.width / 2, coords.y + elementSize.height - 170, coords.x + elementSize.width / 2, coords.y + 40, time);
+		driver.swipe(coords.x + elementSize.width / 2, coords.y + elementSize.height - 200, coords.x + elementSize.width / 2, coords.y + 40, time);
 		return returnBySwipe(SwipeDirection.UP);
 	}
 	
@@ -322,7 +309,7 @@ public class DialogPage extends IOSPage{
 		return connectMessageLabel.getText();
 	}
 	
-	private String GetLastMessage(List<WebElement> chatList) {
+	private String getLastMessage(List<WebElement> chatList) {
 		String lastMessage = null;
 		if (chatList.size() > 0) {
 			try {
@@ -547,9 +534,9 @@ public class DialogPage extends IOSPage{
 	
 	public void sendMessageUsingScript(String message) {
 		String script = String.format(
-				IOSLocators.scriptCursorInputPath + ".setValue(\"%s\");" +
-						IOSLocators.scriptKeyboardReturnKeyPath + ".tap();", message);
+				IOSLocators.scriptCursorInputPath + ".setValue(\"%s\");" , message);
 		driver.executeScript(script);
+		clickKeyboardReturnButton();
 	}
 	
 	public void sendMessagesUsingScript(String[] messages) {

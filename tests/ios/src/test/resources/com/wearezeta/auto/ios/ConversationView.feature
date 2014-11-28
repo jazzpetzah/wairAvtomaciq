@@ -22,9 +22,9 @@ Feature: Conversation View
     And I see dialog page
     And I swipe the text input cursor
     And I click Ping button
-    Then I see Hello message in the dialog
+    Then I see You Pinged message in the dialog
     And I click Ping button
-    Then I see Hey message in the dialog
+    Then I see You Pinged Again message in the dialog
 
     Examples: 
       | Login   | Password    | Name    | Contact     |
@@ -78,8 +78,8 @@ Feature: Conversation View
     Then The media stopps playing
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | SoundCloudLink                                             |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/carl-cox/sets/all-roads-lead-to-the |
+      | Login   | Password    | Name    | Contact1    | SoundCloudLink                                                                       |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
   @regression @id384
   Scenario Outline: Conversation gets scrolled back to playing media when clicking on media bar
@@ -410,7 +410,6 @@ Feature: Conversation View
     And I see People picker page
     And I scroll up page a bit
     And I dont see keyboard
-    And I see Add to conversation button
     And I tap on connected user <Contact2> on People picker page
     And I tap on connected user <Contact3> on People picker page
     And I click close button to dismiss people view
