@@ -27,15 +27,7 @@ import cucumber.api.java.en.When;
 public class DialogPageSteps {
 	private static final Logger log = ZetaLogger.getLog(DialogPageSteps.class.getSimpleName());
 	private String message;
-	private String longMessage = "Lorem ipsum dolor sit amet, \n consectetur adipisicing elit,\n"
-								+ "sed do eiusmod tempor \n incididunt ut labore \n et dolore magna aliqua.\n"
-								+ " Ut enim ad minim veniam,\n quis nostrud \n"
-								+ "exercitation ullamco laboris \n"
-								+ "nisi ut aliquip ex \n ea commodo consequat.\n"
-								+ "sed do eiusmod tempor \n incididunt ut labore \n et dolore magna aliqua.\n"
-								+ " Ut enim ad minim veniam,\n quis nostrud \n"
-								+ "exercitation ullamco laboris \n"
-								+ "nisi ut aliquip ex \n ea commodo consequat.\n";
+	private String longMessage = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.";
 
 	private String lastLine = "ea commodo consequat.";
 	private String mediaState;
@@ -127,7 +119,7 @@ public class DialogPageSteps {
 	@Then("^I see last message in the dialog$")
 	public void ThenISeeLastMessageInTheDialog() throws Throwable {
 	    String dialogLastMessage = PagesCollection.dialogPage.getLastMessageFromDialog();
-	    Assert.assertTrue("Message is different, actual: " + dialogLastMessage + " expected: " + lastLine, dialogLastMessage.equals((lastLine).trim()));
+	    Assert.assertTrue("Message is different, actual: " + dialogLastMessage + " expected: " + lastLine, dialogLastMessage.equals((longMessage).trim()));
 	}
 	
 	@When("^I swipe the text input cursor$")
@@ -169,7 +161,8 @@ public class DialogPageSteps {
 	
 	@When("I type and send long message and media link (.*)")
 	public void ITypeAndSendLongTextAndMediaLink(String link) throws InterruptedException{
-		PagesCollection.dialogPage.sendStringToInput(longMessage + link + "\n");
+		PagesCollection.dialogPage.sendMessageUsingScript(longMessage);
+		PagesCollection.dialogPage.sendMessageUsingScript(link);
 	}
 	
 	@When("^I memorize message send time$")
@@ -200,7 +193,7 @@ public class DialogPageSteps {
 	
 	@When("I send long message")
 	public void ISendLongMessage() throws InterruptedException{
-		PagesCollection.dialogPage.sendStringToInput(longMessage);
+		PagesCollection.dialogPage.sendMessageUsingScript(longMessage);
 	}
 	
 	@When("^I post media link (.*)$")
@@ -372,7 +365,6 @@ public class DialogPageSteps {
 	@When("^I send using script predefined message (.*)$")
 	public void ISendUsingScriptPredefinedMessage(String message) throws Throwable {
 	    PagesCollection.dialogPage.sendMessageUsingScript(message);
-	    PagesCollection.dialogPage.inputStringFromKeyboard("\n");
 	}
 	
 	@When("I verify image in dialog is same as template (.*)")

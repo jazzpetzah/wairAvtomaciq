@@ -53,6 +53,7 @@ public class PendingRequestsPage extends IOSPage {
 		for(int i=0;i<clicks;i++){
 			DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.namePendingRequestIgnoreButton));
 			ignoreRequestButton.click();
+			Thread.sleep(500);
 			DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.namePendingRequestIgnoreButton));
 		}
 		page = new ContactListPage(url, path);
