@@ -78,8 +78,8 @@ Feature: Conversation View
     Then The media stopps playing
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | SoundCloudLink                                             |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/carl-cox/sets/all-roads-lead-to-the |
+      | Login   | Password    | Name    | Contact1    | SoundCloudLink                                                                       |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
   @regression @id384
   Scenario Outline: Conversation gets scrolled back to playing media when clicking on media bar
