@@ -103,6 +103,8 @@ public class GherkinFile extends TestcasesStorage {
 					for (String tag : updatedTCInfo.getTags()) {
 						JSONObject tagInfo = new JSONObject();
 						tagInfo.put("name", tag);
+						// actually, we don't care about the number here
+						// the parser is smart enough to renumerate all lines
 						tagInfo.put("line", 1);
 						newTags.add(tagInfo);
 					}

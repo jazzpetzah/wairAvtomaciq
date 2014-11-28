@@ -3,7 +3,9 @@ package com.wearezeta.zephyr_sync;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,9 +48,17 @@ public class App {
 		List<TestcaseGroup> tcGroups = new ArrayList<TestcaseGroup>();
 		for (Map.Entry<String, List<? extends Testcase>> entry : data
 				.entrySet()) {
-			List<String> details = new ArrayList<String>();
+			Map<String, Testcase> byNameTestcasesMapping = new HashMap<String, Testcase>();
 			for (Testcase tc : entry.getValue()) {
-				details.add(String.format("[%s] %s", tc.getId(), tc.getName()));
+				byNameTestcasesMapping.put(tc.getName(), tc);
+			}
+			List<String> details = new ArrayList<String>();
+			List<String> sortedByName = new ArrayList<String>(
+					byNameTestcasesMapping.keySet());
+			Collections.sort(sortedByName);
+			for (String name : sortedByName) {
+				details.add(String.format("[%s] %s", byNameTestcasesMapping
+						.get(name).getId(), name));
 			}
 			tcGroups.add(new TestcaseGroup(entry.getKey(), details, details
 					.size()));
