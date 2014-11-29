@@ -17,15 +17,15 @@ public abstract class Testcase {
 	private String id = "";
 	private Set<String> tags = new LinkedHashSet<String>();
 	private String name = "";
-	private Boolean isAutomated = false;
+	private boolean isAutomated = false;
 
-	private Boolean isChanged = false;
+	protected boolean isChanged = false;
 
-	public Boolean getIsAutomated() {
+	public boolean getIsAutomated() {
 		return isAutomated;
 	}
 
-	public void setIsAutomated(Boolean isAutomated) {
+	public void setIsAutomated(boolean isAutomated) {
 		this.isAutomated = isAutomated;
 		isChanged = true;
 	}
@@ -47,12 +47,12 @@ public abstract class Testcase {
 		return name;
 	}
 
-	public Boolean getIsChanged() {
+	public boolean getIsChanged() {
 		return this.isChanged;
 	}
 
 	public Testcase(String id, String name, Set<String> tags,
-			Boolean isAutomated) {
+			boolean isAutomated) {
 		this.id = id;
 		this.name = name;
 		this.tags = new LinkedHashSet<String>(tags);

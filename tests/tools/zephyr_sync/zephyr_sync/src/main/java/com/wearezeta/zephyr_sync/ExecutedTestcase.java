@@ -20,7 +20,7 @@ public class ExecutedTestcase extends CucumberTestcase {
 	}
 
 	@Override
-	public void setIsAutomated(Boolean isAutomated) {
+	public void setIsAutomated(boolean isAutomated) {
 		throw new RuntimeException("The property is read-only");
 	}
 

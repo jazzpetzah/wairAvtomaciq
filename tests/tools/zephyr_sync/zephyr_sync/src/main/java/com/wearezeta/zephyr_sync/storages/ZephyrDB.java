@@ -33,7 +33,7 @@ public class ZephyrDB extends TestcasesStorage {
 	public List<ZephyrTestcase> getTestcases() throws Throwable {
 		List<ZephyrTestcase> resultList = new ArrayList<ZephyrTestcase>();
 
-		String query = "SELECT id, name, tag, is_automated FROM testcase";
+		String query = "SELECT id, name, tag, is_automated, script_name FROM testcase";
 		Statement st = conn.createStatement();
 		ResultSet rs = st.executeQuery(query);
 		while (rs.next()) {
@@ -43,12 +43,14 @@ public class ZephyrDB extends TestcasesStorage {
 			if (tags == null) {
 				tags = "";
 			}
-			Boolean isAutomated = rs.getBoolean("is_automated");
-			if (isAutomated == null) {
-				isAutomated = false;
+			boolean isAutomated = rs.getBoolean("is_automated");
+			String scriptName = rs.getString("script_name");
+			if (scriptName == null) {
+				scriptName = "";
 			}
 			ZephyrTestcase tc = new ZephyrTestcase(Long.toString(id), name,
-					Testcase.extractTagsFromString(tags), isAutomated);
+					Testcase.extractTagsFromString(tags), isAutomated,
+					scriptName);
 			resultList.add(tc);
 		}
 		st.close();
@@ -73,7 +75,7 @@ public class ZephyrDB extends TestcasesStorage {
 	public void syncTestcases(List<? extends Testcase> testcases)
 			throws Throwable {
 		PreparedStatement prepStmt = conn
-				.prepareStatement("UPDATE testcase SET tag=?, is_automated=? WHERE id=?");
+				.prepareStatement("UPDATE testcase SET tag=?, is_automated=?, script_name=? WHERE id=?");
 		for (Testcase tc : testcases) {
 			if (!tc.getIsChanged()) {
 				continue;
@@ -91,12 +93,15 @@ public class ZephyrDB extends TestcasesStorage {
 				} else {
 					prepStmt.setNull(1, java.sql.Types.VARCHAR);
 				}
-				if (tc.getIsAutomated() == null) {
-					prepStmt.setBoolean(2, false);
+				if (tc.getIsAutomated()) {
+					prepStmt.setBoolean(2, true);
+					prepStmt.setString(3,
+							((ZephyrTestcase) tc).getAutomatedScriptName());
 				} else {
-					prepStmt.setBoolean(2, tc.getIsAutomated());
+					prepStmt.setBoolean(2, false);
+					prepStmt.setNull(3, java.sql.Types.VARCHAR);
 				}
-				prepStmt.setLong(3, id);
+				prepStmt.setLong(4, id);
 				prepStmt.executeUpdate();
 			}
 		}

@@ -65,12 +65,23 @@ public class App {
 		}
 		return new ReportModel(title, tcGroups);
 	}
-
-	private static void syncCucumberTCWithZephyr(CucumberTestcase cucumberTC,
+	
+	private static void syncAutomatedState(CucumberTestcase cucumberTC,
 			ZephyrTestcase zephyrTC) {
 		if (!zephyrTC.getIsAutomated()) {
 			zephyrTC.setIsAutomated(true);
+			zephyrTC.setAutomatedScriptName(cucumberTC.getName());
 		}
+		if (zephyrTC.getIsAutomated()
+				&& !zephyrTC.getAutomatedScriptName().equals(
+						cucumberTC.getName())) {
+			zephyrTC.setAutomatedScriptName(cucumberTC.getName());
+		}
+	}
+
+	private static void syncCucumberTCWithZephyr(CucumberTestcase cucumberTC,
+			ZephyrTestcase zephyrTC) {
+		syncAutomatedState(cucumberTC, zephyrTC);
 		Set<String> currentCucumberTCTags = cucumberTC.getTags();
 		final Set<String> currentZephyrTCTags = zephyrTC.getTags();
 		if (currentZephyrTCTags.contains(MUTE_TAG)) {
@@ -161,11 +172,9 @@ public class App {
 		return prapareReportingModel(title, reportData);
 	}
 
-	private static Boolean syncZephyrMutedWithExecutedTC(
+	private static boolean syncZephyrMutedWithExecutedTC(
 			ZephyrTestcase zephyrTC, ExecutedTestcase executedTC) {
-		if (!zephyrTC.getIsAutomated()) {
-			zephyrTC.setIsAutomated(true);
-		}
+		syncAutomatedState(executedTC, zephyrTC);
 		Set<String> zephyrTCTags = zephyrTC.getTags();
 		if (!zephyrTCTags.contains(MUTE_TAG) && executedTC.getIsFailed()) {
 			zephyrTCTags.add(MUTE_TAG);
@@ -246,11 +255,9 @@ public class App {
 		return prapareReportingModel(title, reportData);
 	}
 
-	private static Boolean syncZephyrUnmutedWithExecutedTC(
+	private static boolean syncZephyrUnmutedWithExecutedTC(
 			ZephyrTestcase zephyrTC, ExecutedTestcase executedTC) {
-		if (!zephyrTC.getIsAutomated()) {
-			zephyrTC.setIsAutomated(true);
-		}
+		syncAutomatedState(executedTC, zephyrTC);
 		if (executedTC.getIsPassed()) {
 			Set<String> currentZephyrTCTags = zephyrTC.getTags();
 			if (currentZephyrTCTags.contains(MUTE_TAG)) {
