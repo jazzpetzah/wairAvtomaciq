@@ -163,7 +163,7 @@
       })
       .style("fill", "White")
       .style("font", "bold 24px Arial")
-      .text(function(d) { return Math.floor(100 * d.data.cnt / allCnt) + "%"; });
+      .text(function(d) { return Math.round(100 * d.data.cnt / allCnt) + "%"; });
 
     // Computes the angle of an arc, converting from radians to degrees.
     function angle(d) {
