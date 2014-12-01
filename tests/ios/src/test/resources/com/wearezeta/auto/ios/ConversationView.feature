@@ -22,9 +22,9 @@ Feature: Conversation View
     And I see dialog page
     And I swipe the text input cursor
     And I click Ping button
-    Then I see Hello message in the dialog
+    Then I see You Pinged message in the dialog
     And I click Ping button
-    Then I see Hey message in the dialog
+    Then I see You Pinged Again message in the dialog
 
     Examples: 
       | Login   | Password    | Name    | Contact     |

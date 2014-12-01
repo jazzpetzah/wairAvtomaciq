@@ -53,11 +53,9 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.namePendingButton)
 	private WebElement pendingButton;
 	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathHelloCellFormat)
-	private WebElement helloCell;
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathLastChatMessage)
+	private WebElement lastMessage;
 	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathHeyCellFormat)
-	private WebElement heyCell;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameAddPictureButton)
 	private WebElement addPictureButton;
@@ -107,6 +105,10 @@ public class DialogPage extends IOSPage{
 		this.path = path;
 	}
 	
+	public String getLastChatMessage(){
+		return lastMessage.getText();
+	}
+	
 	public void pressPingButton() {
 		pingButton.click();
 	}
@@ -144,7 +146,7 @@ public class DialogPage extends IOSPage{
 
 	public String getLastMessageFromDialog()
 	{
-		return GetLastMessage(messagesList);
+		return getLastMessage(messagesList);
 	}
 	
 	public String getExpectedConnectMessage(String contact, String user){
@@ -157,26 +159,6 @@ public class DialogPage extends IOSPage{
 	
 	public boolean isPendingButtonVisible(){
 		return pendingButton.isDisplayed();
-	}
-	
-	private String GetHelloCell(List<WebElement> chatList) {
-		String helloCellText = helloCell.getAttribute("name");  
-		return helloCellText;
-	}
-
-	public String getHelloCellFromDialog()
-	{
-		return GetHelloCell(messagesList);
-	}
-	
-	private String GetHeyCell(List<WebElement> chatList) {
-		String heyCellText = heyCell.getAttribute("name");  //I dont get HEY FROM PIOTR here
-		return heyCellText;
-	}
-
-	public String getHeyCellFromDialog()
-	{
-		return GetHeyCell(messagesList);
 	}
 	
 	public void swipeInputCursor() throws IOException, InterruptedException{
@@ -327,7 +309,7 @@ public class DialogPage extends IOSPage{
 		return connectMessageLabel.getText();
 	}
 	
-	private String GetLastMessage(List<WebElement> chatList) {
+	private String getLastMessage(List<WebElement> chatList) {
 		String lastMessage = null;
 		if (chatList.size() > 0) {
 			try {
