@@ -65,7 +65,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    | ChatName             |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | SendMessageGroupChat |
 
-  @regression
+  @regression @1408
   Scenario Outline: Send picture to group chat
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -90,8 +90,8 @@ Feature: Conversation
     Then I see the embedded media is playing
 
     Examples: 
-      | Login   | Password    | Name    | Contact     | SoundCloudLink                              |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/edherbst/throwaway-3 |
+      | Login   | Password    | Name    | Contact     | SoundCloudLink                                                |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/bestemodus/ed-herbst-albert-vogt-on-my |
 
   @staging @id379
   Scenario Outline: Play/pause SoundCloud media link from the media bar
@@ -111,8 +111,8 @@ Feature: Conversation
     Then The media stops playing
 
     Examples: 
-      | Login   | Password    | Name    | Contact     | SoundCloudLink                              |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/edherbst/throwaway-3 |
+      | Login   | Password    | Name    | Contact     | SoundCloudLink                                                |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/bestemodus/ed-herbst-albert-vogt-on-my |
 
   @regression @id380
   Scenario Outline: Conversation scrolls back to playing media when clicked on the media bar
@@ -129,8 +129,8 @@ Feature: Conversation
     Then I see the embedded media is playing
 
     Examples: 
-      | Login   | Password    | Name    | Contact     | SoundCloudLink                              |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/edherbst/throwaway-3 |
+      | Login   | Password    | Name    | Contact     | SoundCloudLink                                                |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/bestemodus/ed-herbst-albert-vogt-on-my |
 
   @regression @id624
   Scenario Outline: Text message sent to group chat is visible on other end
@@ -199,8 +199,8 @@ Feature: Conversation
     Then I see media link <SoundCloudLink> and media in dialog
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | SoundCloudLink                              | ChatName        |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | https://soundcloud.com/edherbst/throwaway-3 | SecondEndMMChat |
+      | Login   | Password    | Name    | Contact1    | Contact2    | SoundCloudLink                                                | ChatName        |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | https://soundcloud.com/bestemodus/ed-herbst-albert-vogt-on-my | SecondEndMMChat |
 
   @regression @id381
   Scenario Outline: The media bar disappears after playback finishes
@@ -235,5 +235,5 @@ Feature: Conversation
     Then I see media bar disappears
 
     Examples: 
-      | Login   | Password    | Name    | Contact     | SoundCloudLink                              |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/edherbst/throwaway-3 |
+      | Login   | Password    | Name    | Contact     | SoundCloudLink                                                |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/bestemodus/ed-herbst-albert-vogt-on-my |

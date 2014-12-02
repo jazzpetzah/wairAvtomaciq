@@ -74,18 +74,18 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.multiTapOnCursorInput();
 	}
 	
-	@Then("^I see Hello message in the dialog$")
+	@Then("^I see You Pinged message in the dialog$")
 	public void ISeeHelloMessageFromMeInTheDialog() throws Throwable {
-		String hellomessage = "YOU PINGED";
-		String dialogHelloMessage = PagesCollection.dialogPage.getHelloCellFromDialog();
-		Assert.assertTrue("Message \"" + dialogHelloMessage + "\" is not correct HELLO FROM message.", dialogHelloMessage.contains(hellomessage));
+		String pingmessage = IOSLocators.nameYouPingedMessage;
+		String dialogLastMessage = PagesCollection.dialogPage.getLastChatMessage();
+		Assert.assertTrue("Actual: "+dialogLastMessage+" || Expected: "+pingmessage, dialogLastMessage.equals(pingmessage));
 	}
 	
-	@Then("^I see Hey message in the dialog$")
+	@Then("^I see You Pinged Again message in the dialog$")
 	public void ISeeHeyMessageFromMeInTheDialog() throws Throwable {
-		String heymessage = "YOU PINGED AGAIN";
-		String dialogHeyMessage = PagesCollection.dialogPage.getHeyCellFromDialog();
-		Assert.assertTrue("Message \"" + dialogHeyMessage + "\" is not correct HEY FROM message.", dialogHeyMessage.contains(heymessage));
+		String pingagainmessage = IOSLocators.nameYouPingedAgainMessage;
+		String dialogLastMessage = PagesCollection.dialogPage.getLastChatMessage();
+		Assert.assertTrue("Actual: "+dialogLastMessage+" || Expected: "+pingagainmessage, dialogLastMessage.equals(pingagainmessage));
 	}
 
 	@When("^I type the message and send it$")

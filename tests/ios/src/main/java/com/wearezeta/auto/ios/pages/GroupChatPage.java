@@ -23,8 +23,6 @@ public class GroupChatPage extends DialogPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameMainWindow)
 	private WebElement groupChatWindow;
 	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathLastGroupChatMessage)
-	private WebElement lastMessage;
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathNewGroupConversationNameChangeTextField)
 	private WebElement newGroupConversationNameChangeTextField;
@@ -46,11 +44,11 @@ public class GroupChatPage extends DialogPage {
 	
 	public boolean areRequiredContactsAddedToChat(String name1, String name2){
 		
-		return lastMessage.getText().contains(name1) && lastMessage.getText().contains(name2);
+		return getLastChatMessage().contains(name1) && getLastChatMessage().contains(name2);
 	}
 	
 	public boolean areRequired3ContactsAddedToChat(String name1, String name2, String name3){
-		boolean flag = lastMessage.getText().contains(name1) && lastMessage.getText().contains(name2) && lastMessage.getText().contains(name3);
+		boolean flag = getLastChatMessage().contains(name1) && getLastChatMessage().contains(name2) && getLastChatMessage().contains(name3);
 		return flag;
 	}
 	
