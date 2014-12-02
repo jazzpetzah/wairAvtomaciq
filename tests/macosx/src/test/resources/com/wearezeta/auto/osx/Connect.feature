@@ -34,8 +34,8 @@ Feature: Connect to user
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | yourContact |
 
-  @smoke
-  Scenario Outline: Add contact
+  @smoke @id1409
+  Scenario Outline: Verify sending a connection request to user chosen from people view
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open People Picker from contact list
