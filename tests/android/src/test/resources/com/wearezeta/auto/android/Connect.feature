@@ -33,7 +33,7 @@ Feature: Connect
       | Login   | Password    | Name    | Contact     | WaitingMess      |
       | aqaUser | aqaPassword | aqaUser | yourContact | 1 person waiting |
 
-  @id536 @regression
+  @id1411 @regression
   Scenario Outline: I can see a new inbox for connection when receive new connection request
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
