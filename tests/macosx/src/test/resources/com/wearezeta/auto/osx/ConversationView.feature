@@ -65,7 +65,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact1    | Contact2    | ChatName             |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | SendMessageGroupChat |
 
-  @regression
+  @regression @1408
   Scenario Outline: Send picture to group chat
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
