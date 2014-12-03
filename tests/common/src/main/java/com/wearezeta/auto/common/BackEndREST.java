@@ -36,6 +36,8 @@ import java.awt.image.BufferedImage;
 
 public class BackEndREST {
 	private static final Logger log = ZetaLogger.getLog(BackEndREST.class.getSimpleName());
+	
+	private static String backendUrl = "not set";
 
 	static {
 		log.setLevel(Level.DEBUG);
@@ -559,12 +561,16 @@ public class BackEndREST {
 
 		return (JSONArray) jsonObj.get("conversations");
 	}
+	
+	public static void setDefaultBackendURL(String Url) {
+		backendUrl = Url;
+	}
 
 	public static URI getBaseURI() throws IllegalArgumentException,
 			UriBuilderException, IOException {
-		return UriBuilder.fromUri(
-				CommonUtils.getDefaultBackEndUrlFromConfig(CommonUtils.class))
-				.build();
+		String backend = backendUrl.equals("not set") ? CommonUtils.getDefaultBackEndUrlFromConfig(CommonUtils.class) : backendUrl;
+		
+		return UriBuilder.fromUri(backend).build();
 	}
 
 	private static JSONArray getEventsfromConversation(String convID,
