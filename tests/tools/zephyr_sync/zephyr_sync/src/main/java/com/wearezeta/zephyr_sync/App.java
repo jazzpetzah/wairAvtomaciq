@@ -463,8 +463,9 @@ public class App {
 							+ htmlReportPath);
 			System.exit(0);
 		} catch (ParseException exp) {
+			System.out.println("Unexpected exception:" + exp.getMessage() + "\n");
 			formatter.printHelp("zephyr_sync", options);
-			System.out.println("Unexpected exception:" + exp.getMessage());
+			System.exit(1);
 		}
 	}
 }
