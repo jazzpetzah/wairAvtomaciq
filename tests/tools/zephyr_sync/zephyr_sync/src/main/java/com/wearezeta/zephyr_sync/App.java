@@ -35,9 +35,13 @@ public class App {
 	private static final String MISSING_IDS_TESTCASES_HEADER = "Testcases Without IDs";
 	private static final String CORRUPTED_IDS_TESTCASES_HEADER = "Testcases With Corrupted IDs";
 	private static final String OLD_MUTED_TESTCASES = "Existing Muted Testcases";
+	private static final String OLD_MUTED_TESTCASES_IN_ZEPHYR = "Existing Muted Testcases in Zephyr";
 	private static final String NEWLY_MUTED_TESTCASES = "Newly Muted Testcases in Zephyr";
 	private static final String NEWLY_UNMUTED_TESTCASES = "Newly Unmuted Testcases in Zephyr";
 	private static final String NON_MUTED_TESTCASES = "Non-Muted Testcases (All Other)";
+
+	private static final String JOB_URL_MUTED_TEMPLATE = "Muted by %s";
+	private static final String JOB_URL_UNMUTED_TEMPLATE = "Unmuted by %s";
 
 	private static final String EXECUTION_TYPE_FEATURES_SYNC = "features_sync";
 	private static final String EXECUTION_TYPE_RESULTS_SYNC = "results_sync";
@@ -65,7 +69,7 @@ public class App {
 		}
 		return new ReportModel(title, tcGroups);
 	}
-	
+
 	private static void syncAutomatedState(CucumberTestcase cucumberTC,
 			ZephyrTestcase zephyrTC) {
 		if (!zephyrTC.getIsAutomated()) {
@@ -173,19 +177,23 @@ public class App {
 	}
 
 	private static boolean syncZephyrMutedWithExecutedTC(
-			ZephyrTestcase zephyrTC, ExecutedTestcase executedTC) {
+			ZephyrTestcase zephyrTC, ExecutedTestcase executedTC, String jobURL) {
 		syncAutomatedState(executedTC, zephyrTC);
 		Set<String> zephyrTCTags = zephyrTC.getTags();
 		if (!zephyrTCTags.contains(MUTE_TAG) && executedTC.getIsFailed()) {
 			zephyrTCTags.add(MUTE_TAG);
 			zephyrTC.setTags(zephyrTCTags);
+			if (jobURL != null) {
+				zephyrTC.setAutomatedScriptPath(String.format(
+						JOB_URL_MUTED_TEMPLATE, jobURL));
+			}
 			return true;
 		}
 		return false;
 	}
 
 	private static ReportModel syncTestExecutionResults(String jsonReportPath,
-			String zephyrServer) throws Throwable {
+			String zephyrServer, String jobURL) throws Throwable {
 		ZephyrDB zephyrDB = new ZephyrDB(zephyrServer);
 		final List<ZephyrTestcase> zephyrTestcases = zephyrDB.getTestcases();
 
@@ -220,7 +228,7 @@ public class App {
 							previouslyMutedTestcases.add(zephyrTC);
 							isTCUntouched = false;
 						} else if (syncZephyrMutedWithExecutedTC(zephyrTC,
-								executedTC)) {
+								executedTC, jobURL)) {
 							newlyMutedTestcases.add(zephyrTC);
 							isTCUntouched = false;
 						}
@@ -256,13 +264,17 @@ public class App {
 	}
 
 	private static boolean syncZephyrUnmutedWithExecutedTC(
-			ZephyrTestcase zephyrTC, ExecutedTestcase executedTC) {
+			ZephyrTestcase zephyrTC, ExecutedTestcase executedTC, String jobURL) {
 		syncAutomatedState(executedTC, zephyrTC);
 		if (executedTC.getIsPassed()) {
 			Set<String> currentZephyrTCTags = zephyrTC.getTags();
 			if (currentZephyrTCTags.contains(MUTE_TAG)) {
 				currentZephyrTCTags.remove(MUTE_TAG);
 				zephyrTC.setTags(currentZephyrTCTags);
+				if (jobURL != null) {
+					zephyrTC.setAutomatedScriptPath(String.format(
+							JOB_URL_UNMUTED_TEMPLATE, jobURL));
+				}
 				return true;
 			}
 		}
@@ -270,7 +282,8 @@ public class App {
 	}
 
 	private static ReportModel syncTestVerificationResults(
-			String jsonReportPath, String zephyrServer) throws Throwable {
+			String jsonReportPath, String zephyrServer, String jobURL)
+			throws Throwable {
 		ZephyrDB zephyrDB = new ZephyrDB(zephyrServer);
 		final List<ZephyrTestcase> zephyrTestcases = zephyrDB.getTestcases();
 
@@ -306,7 +319,7 @@ public class App {
 							isTCUntouched = false;
 						}
 						if (syncZephyrUnmutedWithExecutedTC(zephyrTC,
-								executedTC)) {
+								executedTC, jobURL)) {
 							newlyUnmutedTestcases.add(zephyrTC);
 							isTCUntouched = false;
 						}
@@ -332,7 +345,7 @@ public class App {
 		reportData.put(MISSING_IDS_TESTCASES_HEADER, testcasesWithMissingIds);
 		reportData.put(CORRUPTED_IDS_TESTCASES_HEADER,
 				testcasesWithCorruptedIds);
-		reportData.put(OLD_MUTED_TESTCASES, previouslyMutedTestcases);
+		reportData.put(OLD_MUTED_TESTCASES_IN_ZEPHYR, previouslyMutedTestcases);
 		reportData.put(NEWLY_UNMUTED_TESTCASES, newlyUnmutedTestcases);
 		reportData.put(NON_MUTED_TESTCASES, nonMutedTestcases);
 
@@ -385,6 +398,12 @@ public class App {
 				.withDescription(
 						"the path to JSON report conatining suite execution resulsts")
 				.hasArg().create());
+		options.addOption(OptionBuilder
+				.withLongOpt("job-url")
+				.withType(String.class)
+				.withDescription(
+						"URL of Jenkins job, which generated this report (if available)")
+				.hasArg().create());
 		return options;
 	}
 
@@ -429,10 +448,10 @@ public class App {
 				}
 				if (executionType.equals(EXECUTION_TYPE_RESULTS_SYNC)) {
 					reportDataModel = syncTestExecutionResults(reportPath,
-							zephyrServer);
+							zephyrServer, line.getOptionValue("job-url"));
 				} else {
 					reportDataModel = syncTestVerificationResults(reportPath,
-							zephyrServer);
+							zephyrServer, line.getOptionValue("job-url"));
 				}
 			} else {
 				formatter.printHelp("zephyr_sync", options);
