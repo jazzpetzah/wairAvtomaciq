@@ -8,8 +8,6 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-
-import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
@@ -48,6 +46,8 @@ public class ContactListPage extends AndroidPage {
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idSearchHintClose")
 	private WebElement closeHintBtn;
 	
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMessage")
+	private List<WebElement> conversationMessage;
 
 	private String url;
 	private String path;
@@ -102,15 +102,19 @@ public class ContactListPage extends AndroidPage {
 	private WebElement findInContactList(String name, int cyclesNumber) {
 		WebElement contact = null;
 		refreshUITree();
-		List<WebElement> contactsList = driver.findElements(By.xpath(String
-				.format(AndroidLocators.ContactListPage.xpathContacts, name)));
-		if (contactsList.size() > 0) {
-			contact = contactsList.get(0);
-		} else {
-			if (cyclesNumber > 0) {
-				cyclesNumber--;
-				DriverUtils.swipeUp(driver, mainControl, 500);
-				contact = findInContactList(name, cyclesNumber);
+		if (conversationMessage.isEmpty()) {
+			List<WebElement> contactsList = driver
+					.findElements(By.xpath(String
+							.format(AndroidLocators.ContactListPage.xpathContacts,
+									name)));
+			if (contactsList.size() > 0) {
+				contact = contactsList.get(0);
+			} else {
+				if (cyclesNumber > 0) {
+					cyclesNumber--;
+					DriverUtils.swipeUp(driver, mainControl, 500);
+					contact = findInContactList(name, cyclesNumber);
+				}
 			}
 		}
 		return contact;

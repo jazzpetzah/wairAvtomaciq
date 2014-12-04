@@ -100,9 +100,10 @@ public class DialogPageSteps{
 	public void WhenISelectPicture() throws Throwable {
 		PagesCollection.dialogPage.selectPhoto();
 	}
-	@Then("^I see Hello-Hey message (.*) in the dialog$")
-	public void ThenISeeHelloHeyMessageInTheDialog(String message) throws Throwable {
-		Assert.assertTrue(PagesCollection.dialogPage.isKnockIconVisible());
+	@Then("^I see Hello-Hey message (.*) with (.*) in the dialog$")
+	public void ThenISeeHelloHeyMessageInTheDialog(String message, String action) throws Throwable {
+		message = CommonUtils.retrieveRealUserContactPasswordValue(message);
+		Assert.assertEquals("Ping message compare", message + " " + action.trim(), PagesCollection.dialogPage.getKnockText());
 	}
 
 	@Then("^I see my message in the dialog$")
@@ -155,11 +156,17 @@ public class DialogPageSteps{
 		Assert.assertEquals("connected to", PagesCollection.dialogPage.getConnectRequestChatLabel());
 		Assert.assertEquals(contact.toLowerCase(), PagesCollection.dialogPage.getConnectRequestChatUserName());
 	}
-	
-	
 
 	@Then("I see uploaded picture")
 	public void ThenISeeChangedUserPicture() throws IOException {
 		Assert.assertTrue(PagesCollection.dialogPage.dialogImageCompare());
+	}
+	
+	@Then("^I see (.*) icon$")
+	public void ThenIseeIcon(String iconLabel) throws IOException{
+		double score = PagesCollection.dialogPage.checkPingIcon(iconLabel);
+		Assert.assertTrue(
+				"Overlap between two images has not enough score. Expected >= 0.75, current = " + score,
+				score >= 0.75d);
 	}
 }
