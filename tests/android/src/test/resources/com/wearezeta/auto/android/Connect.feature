@@ -49,7 +49,7 @@ Feature: Connect
       | Login   | Password    | Name    | Contact         | WaitingMess      |
       | aqaUser | aqaPassword | aqaUser | yourNotContact1 | 1 person waiting |
 
-  @id539 @id543 @regression @mute
+  @id539 @id543 @regression
   Scenario Outline: I can see a inbox count increasing/decreasing correctly + I ignore someone from people picker and clear my inbox
     Given <Contact1> connection request is sended to me <Login>
     And I Sign in using login <Login> and password <Password>
@@ -205,7 +205,7 @@ Feature: Connect
       | Login   | Password    | Contact    | Message |
       | aqaUser | aqaPassword | yourIgnore | Test    |
 
-  @id541 @regression @mute
+  @id541 @regression
   Scenario Outline: I can receive new connection request when app in background
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
@@ -243,7 +243,7 @@ Feature: Connect
       | Login   | Password    | Contact    | Message |
       | aqaUser | aqaPassword | yourAccept | Test    |
 
-  @id552 @regression @mute
+  @id552 @regression
   Scenario Outline: I want to discard the new connect request (sending) by returning to the search results after selecting someone I’m not connected to
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
@@ -261,7 +261,7 @@ Feature: Connect
       | Login   | Password    | Contact         |
       | aqaUser | aqaPassword | yourNotContact3 |
 
-  @id550 @regression @mute
+  @id550 @regression
   Scenario Outline: I want to initiate a connect request by selecting someone from within a group conversation
     Given User <Contact1> is connected with <Contact2>
     And My Contact <Contact1> has group chat with me <Login> and his Contact <Contact2> with name <ChatName>

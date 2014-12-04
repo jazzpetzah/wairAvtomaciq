@@ -31,7 +31,7 @@ Feature: People View
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | RenameSpecSymChat | ÄäÖöÜüß conv |
 
   #MEC-484
-  @bug @regression @id96
+  @regression @id96
   Scenario Outline: Do not accept erroneous input as group conversation name (only spaces)
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -47,7 +47,7 @@ Feature: People View
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | EditNameErr1Chat | \\u0020 |
 
   #MEC-484
-  @bug @regression @id96
+  @regression @id96
   Scenario Outline: Do not accept erroneous input as group conversation name (leading spaces)
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>

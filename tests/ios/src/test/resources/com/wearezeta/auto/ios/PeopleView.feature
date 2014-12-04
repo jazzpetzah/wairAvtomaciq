@@ -46,7 +46,7 @@ Feature: People View
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | aqaContact3 | 4      |
       
 #conflicting with other contacts in contact list
-  @smoke @id1389 @mute
+  @smoke @id1389
   Scenario Outline: Leave from group chat
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -81,7 +81,7 @@ Feature: People View
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
 
   #Muted due ZIOS-2724
-  @mute @regression @id1396
+  @regression @id1396
   Scenario Outline: Verify correct group info page information
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

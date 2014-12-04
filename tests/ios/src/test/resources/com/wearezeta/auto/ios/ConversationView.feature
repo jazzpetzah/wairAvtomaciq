@@ -45,7 +45,7 @@ Feature: Conversation View
 
     Examples: 
       | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+      | aqaUser | aqaPassword | aqaUser | aqaContact2 |
 
   @smoke @id334
   Scenario Outline: Send message to group chat
@@ -202,7 +202,7 @@ Feature: Conversation View
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
   #Muted due to special chars verification problems on ios
-  @mute @staging @id409
+  @staging @id409
   Scenario Outline: Send special chars (German)
     Given I press Sign in button
     And I fill in email input <Text>

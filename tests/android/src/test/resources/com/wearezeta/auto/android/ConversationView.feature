@@ -152,7 +152,7 @@ Feature: Conversation View
       | Login   | Password    | Name    | Contact     | Message                     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | 畑 はたけ hatake field of crops |
 
-  @regression @mute @id162
+  @regression @id162
   Scenario Outline: Send picture from gallery into 1:1 conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

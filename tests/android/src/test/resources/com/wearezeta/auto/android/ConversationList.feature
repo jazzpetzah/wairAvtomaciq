@@ -1,6 +1,6 @@
 Feature: Conversation List
 
-  @id324 @mute @smoke
+  @id324 @smoke
   Scenario Outline: Mute conversation
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

@@ -1,6 +1,6 @@
 Feature: Self Profile
 
-  @id205 @smoke @mute
+  @id205 @smoke 
   Scenario Outline: Change user picture
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -30,7 +30,7 @@ Feature: Self Profile
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @id328 @smoke @mute
+  @id328 @smoke 
   Scenario Outline: ZClient change name
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

@@ -56,7 +56,7 @@ Feature: Connect
       | aqaUser | aqaPassword | aqaUser | aqaPictureContact | TESTCHAT      | yourContact     |
 
   #Muted due to relogin issue
-  @staging @mute @id611
+  @staging @id611
   Scenario Outline: Verify 1:1 conversation is not created on the second end after you ignore connection request(UI)
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -96,7 +96,7 @@ Feature: Connect
       | aqaUser | aqaPassword | aqaUser | yourUser |
 
   #Muted due to relogin issue
-  @staging @mute @id611
+  @staging @id611
   Scenario Outline: Verify 1:1 conversation is not created on the second end after you ignore connection request(BE)
     Given I send invitation to <Name> by <Contact>
     And I Sign in using login <Name> and password <Password>
@@ -118,7 +118,7 @@ Feature: Connect
       | aqaUser | aqaPassword | aqaUser | yourNotContact1 |
 
   #Muted due relogin issue and blank Personal page screen issue
-  @staging @mute @id610
+  @staging @id610
   Scenario Outline: Verify 1:1 conversation is successfully created on the second end after you accept connection request(BE)
     Given I send invitation to <Name> by <Contact>
     And I Sign in using login <Name> and password <Password>
