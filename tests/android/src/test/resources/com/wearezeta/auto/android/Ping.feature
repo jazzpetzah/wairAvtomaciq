@@ -1,3 +1,5 @@
+Feature: Ping
+ 
  @id1373 @id1374 @regression
   Scenario Outline: Verify you can send Ping & Hot Ping in a group conversation
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
