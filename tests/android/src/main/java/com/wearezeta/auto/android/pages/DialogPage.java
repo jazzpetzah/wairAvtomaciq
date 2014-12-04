@@ -32,6 +32,8 @@ import com.wearezeta.auto.common.misc.MessageEntry;
 public class DialogPage extends AndroidPage{
 	private static final Logger log = ZetaLogger.getLog(DialogPage.class.getSimpleName());
 
+	public static final String PING_LABEL = "PINGED";
+	public static final String HOT_PING_LABEL = "PINGED AGAIN";
 	
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classEditText)
 	private WebElement cursorInput;
@@ -45,6 +47,11 @@ public class DialogPage extends AndroidPage{
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idCursorFrame")
 	private WebElement cursurFrame;
 	
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idKnockMessage")
+	private WebElement knockMessage;
+	
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idKnockAction")
+	private WebElement knockAction;
 	
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idKnockIcon")
 	private WebElement knockIcon;
@@ -140,9 +147,10 @@ public class DialogPage extends AndroidPage{
 		addPictureBtn.click();
 	}
 	
-	public void tapPingBtn() {
+	public void tapPingBtn() throws InterruptedException {
 
 		pingBtn.click();
+		Thread.sleep(1000);
 	}
 	
 	public void typeMessage(String message) {
@@ -400,5 +408,24 @@ public class DialogPage extends AndroidPage{
 			return new MessageEntry("text", message, new Date(), checkTime);
 		}
 		return null;
+	}
+	
+	public double checkPingIcon(String label) throws IOException {
+		refreshUITree();
+		String path = null;
+		BufferedImage pingImage = getElementScreenshot(knockIcon);
+		if(label.equals(PING_LABEL)){
+			path = CommonUtils.getPingIconPath(GroupChatPage.class);
+		}
+		else if(label.equals(HOT_PING_LABEL)){
+			path = CommonUtils.getHotPingIconPath(GroupChatPage.class);
+		}
+		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
+		return ImageUtil.getOverlapScore(pingImage, templateImage);
+	}
+	
+	public String getKnockText(){
+		refreshUITree();
+		return knockMessage.getText() + " " + knockAction.getText();
 	}
 }

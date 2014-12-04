@@ -1,7 +1,5 @@
 package com.wearezeta.auto.common;
 
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.BufferedReader;
@@ -33,7 +31,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class CommonUtils {
 	public static final String OS_NAME_WINDOWS = "Windows";
-	public static final int USERS_COUNT = 10;
+	public static final int USERS_COUNT = 11;
 	public static final String PERFORMANCE_USER = "perfUser";
 	public static final String PERFORMANCE_PASS = "perfPass";
 	public static final String YOUR_USER_1 = "aqaUser";
@@ -46,6 +44,7 @@ public class CommonUtils {
 	public static final String YOUR_USER_8 = "yourIgnore";
 	public static final String YOUR_USER_9 = "yourAccept";
 	public static final String YOUR_USER_10 = "yourGroupChat";
+	public static final String YOUR_USER_11 = "yourNotContact5";
 	public static final String YOUR_UNCONNECTED_USER = YOUR_USER_3;
 	public static final String YOUR_PASS = "aqaPassword";
 	public static final String CONTACT_1 = "aqaContact1";
@@ -73,7 +72,9 @@ public class CommonUtils {
 
 	private static final String USER_IMAGE = "userpicture_landscape.jpg";
 	private static final String RESULT_USER_IMAGE = "userpicture_mobile_check.jpg";
-
+	private static final String PING_IMAGE = "ping_image.png";
+	private static final String HOT_PING_IMAGE = "hot_ping_image.png";
+	
 	private static final Random rand = new Random();
 	public static final int BACKEND_SYNC_TIMEOUT = 5000 + rand.nextInt(4000); // milliseconds
 
@@ -165,6 +166,7 @@ public class CommonUtils {
 				replacementMap.put(YOUR_USER_8, yourUsers.get(7).getName());
 				replacementMap.put(YOUR_USER_9, yourUsers.get(8).getName());
 				replacementMap.put(YOUR_USER_10, yourUsers.get(9).getName());
+				replacementMap.put(YOUR_USER_11, yourUsers.get(10).getName());
 				replacementMap.put(YOUR_PASS, yourUsers.get(0).getPassword());
 			}
 			if (contacts.size() > 0) {
@@ -205,6 +207,17 @@ public class CommonUtils {
 
 	public static String getImagePath(Class<?> c) throws IOException {
 		String path = getValueFromConfig(c, "defaultImagesPath") + USER_IMAGE;
+		return path;
+	}
+
+
+	public static String getPingIconPath(Class<?> c) throws IOException {
+		String path = getValueFromConfig(c, "defaultImagesPath") + PING_IMAGE;
+		return path;
+	}
+
+	public static String getHotPingIconPath(Class<?> c) throws IOException {
+		String path = getValueFromConfig(c, "defaultImagesPath") + HOT_PING_IMAGE;
 		return path;
 	}
 
