@@ -373,3 +373,26 @@ Feature: Connect
     Examples: 
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+
+  @id1405 @regression
+  Scenario Outline: Impossibility of starting 1:1 conversation with pending user (Search)
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in search field user name to connect to <Contact>
+    And I tap on user name found on People picker page <Contact>
+    And I see connect to <Contact> dialog
+    And I press Connect button
+    And I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in search field user name to connect to <Contact>
+    And I see user <Contact> found on People picker page
+    And I tap on user name found on People picker page <Contact>
+    Then I see that connection is pending
+
+    Examples: 
+      | Login   | Password    | Name    | Contact         |
+      | aqaUser | aqaPassword | aqaUser | yourNotContact5 |
