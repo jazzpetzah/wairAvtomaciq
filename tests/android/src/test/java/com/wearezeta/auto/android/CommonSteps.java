@@ -38,6 +38,7 @@ public class CommonSteps {
 	public static final String CONNECTION_NAME = "CONNECT TO ";
 	public static final String CONNECTION_MESSAGE = "Hello!";
 	public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
+	private static String pingId = null;
 	private String path;
 
 	@Before("@performance")
@@ -323,6 +324,34 @@ public class CommonSteps {
 		}
 	}
 
+	@When("^Contact (.*) ping conversation (.*)$")
+	public void userPingedConversation(String contact, String conversationName ) throws Exception{
+		ClientUser yourСontact = null;
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		for (ClientUser user : CommonUtils.contacts) {
+			if (user.getName().toLowerCase().equals(contact.toLowerCase())) {
+				yourСontact = user;
+			}
+		}
+		yourСontact = BackEndREST.loginByUser(yourСontact);
+		pingId = BackEndREST.sendPingToConversation(yourСontact, conversationName);
+		Thread.sleep(1000);
+	}
+	
+	@When("^Contact (.*) hotping conversation (.*)$")
+	public void userHotPingedConversation(String contact, String conversationName ) throws Exception{
+		ClientUser yourСontact = null;
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		for (ClientUser user : CommonUtils.contacts) {
+			if (user.getName().toLowerCase().equals(contact.toLowerCase())) {
+				yourСontact = user;
+			}
+		}
+		yourСontact = BackEndREST.loginByUser(yourСontact);
+		BackEndREST.sendHotPingToConversation(yourСontact, conversationName,pingId);
+		Thread.sleep(1000);
+	}
+	
 	private static boolean isFirstRun = true;
 	private static boolean isFirstRunPassed = false;
 

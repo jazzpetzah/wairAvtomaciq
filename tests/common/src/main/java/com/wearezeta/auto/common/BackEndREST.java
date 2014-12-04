@@ -36,6 +36,8 @@ import java.awt.image.BufferedImage;
 
 public class BackEndREST {
 	private static final Logger log = ZetaLogger.getLog(BackEndREST.class.getSimpleName());
+	
+	private static String backendUrl = "not set";
 
 	static {
 		log.setLevel(Level.DEBUG);
@@ -75,6 +77,20 @@ public class BackEndREST {
 		sendConversationMessage(fromUser, id, message);
 	}
 
+	public static String sendPingToConversation(ClientUser fromUser,
+			String chatName) throws Exception{
+		fromUser = loginByUser(fromUser);
+		String id = getConversationByName(fromUser, chatName);
+		return sendConversationPing(fromUser, id);
+	}
+	
+	public static void sendHotPingToConversation(ClientUser fromUser,
+			String chatName,String id) throws Exception{
+		fromUser = loginByUser(fromUser);
+		String conv_id = getConversationByName(fromUser, chatName);
+		sendConvertsationHotPing(fromUser,conv_id, id);
+	}
+	
 	private static void VerifyRequestResult(int currentResponseCode,
 			int[] acceptableResponseCodes) throws BackendRequestException {
 		if (acceptableResponseCodes.length > 0) {
@@ -514,6 +530,35 @@ public class BackEndREST {
 		writeLog(new String[] { "Output from Server ....\n\t" + output });
 	}
 	
+	private static String sendConversationPing(ClientUser user, String convId) throws IllegalArgumentException, UriBuilderException, IOException, BackendRequestException, JSONException{
+		String nonce = CommonUtils.generateGUID();
+		
+		Builder webResource = buildDefaultRequestWithAuth("conversations/" + convId + "/knock",
+				MediaType.APPLICATION_JSON, user).type(
+				MediaType.APPLICATION_JSON);
+		final String input = String.format(
+				"{\"nonce\": \"%s\"}", nonce);
+		final String output = httpPost(webResource, input, new int[] {
+				HttpStatus.SC_OK, HttpStatus.SC_CREATED });
+		final JSONObject jsonObj = new JSONObject(output);
+		String eventId = jsonObj.getString("id");
+		writeLog(new String[] { "Output from Server .... " + output + "\n" });
+		return eventId;
+	}
+	
+	private static void sendConvertsationHotPing(ClientUser user, String convId, String refId) throws IllegalArgumentException, UriBuilderException, IOException, BackendRequestException{
+		String nonce = CommonUtils.generateGUID();
+		
+		Builder webResource = buildDefaultRequestWithAuth("conversations/" + convId + "/hot-knock",
+				MediaType.APPLICATION_JSON, user).type(
+				MediaType.APPLICATION_JSON);
+		final String input = String.format(
+				"{\"nonce\": \"%s\", \"ref\": \"%s\"}", nonce, refId);
+		final String output = httpPost(webResource, input, new int[] {
+				HttpStatus.SC_OK, HttpStatus.SC_CREATED });
+		writeLog(new String[] { "Output from Server .... " + output + "\n" });
+	}
+
 	public static String [] getConversationsAsStringArray(ClientUser user) throws Exception {
 		JSONArray jsonArray = getConversations(user);
 		ArrayList<String> result = new ArrayList<String>(); 
@@ -559,12 +604,16 @@ public class BackEndREST {
 
 		return (JSONArray) jsonObj.get("conversations");
 	}
+	
+	public static void setDefaultBackendURL(String Url) {
+		backendUrl = Url;
+	}
 
 	public static URI getBaseURI() throws IllegalArgumentException,
 			UriBuilderException, IOException {
-		return UriBuilder.fromUri(
-				CommonUtils.getDefaultBackEndUrlFromConfig(CommonUtils.class))
-				.build();
+		String backend = backendUrl.equals("not set") ? CommonUtils.getDefaultBackEndUrlFromConfig(CommonUtils.class) : backendUrl;
+		
+		return UriBuilder.fromUri(backend).build();
 	}
 
 	private static JSONArray getEventsfromConversation(String convID,

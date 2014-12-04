@@ -73,7 +73,9 @@ public class CommonUtils {
 
 	private static final String USER_IMAGE = "userpicture_landscape.jpg";
 	private static final String RESULT_USER_IMAGE = "userpicture_mobile_check.jpg";
-
+	private static final String PING_IMAGE = "ping_image.png";
+	private static final String HOT_PING_IMAGE = "hot_ping_image.png";
+	
 	private static final Random rand = new Random();
 	public static final int BACKEND_SYNC_TIMEOUT = 5000 + rand.nextInt(4000); // milliseconds
 
@@ -205,6 +207,17 @@ public class CommonUtils {
 
 	public static String getImagePath(Class<?> c) throws IOException {
 		String path = getValueFromConfig(c, "defaultImagesPath") + USER_IMAGE;
+		return path;
+	}
+
+
+	public static String getPingIconPath(Class<?> c) throws IOException {
+		String path = getValueFromConfig(c, "defaultImagesPath") + PING_IMAGE;
+		return path;
+	}
+
+	public static String getHotPingIconPath(Class<?> c) throws IOException {
+		String path = getValueFromConfig(c, "defaultImagesPath") + HOT_PING_IMAGE;
 		return path;
 	}
 

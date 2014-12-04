@@ -33,7 +33,7 @@ public class ZephyrDB extends TestcasesStorage {
 	public List<ZephyrTestcase> getTestcases() throws Throwable {
 		List<ZephyrTestcase> resultList = new ArrayList<ZephyrTestcase>();
 
-		String query = "SELECT id, name, tag, is_automated, script_name FROM testcase";
+		String query = "SELECT id, name, tag, is_automated, script_name, script_path FROM testcase";
 		Statement st = conn.createStatement();
 		ResultSet rs = st.executeQuery(query);
 		while (rs.next()) {
@@ -48,9 +48,13 @@ public class ZephyrDB extends TestcasesStorage {
 			if (scriptName == null) {
 				scriptName = "";
 			}
+			String scriptPath = rs.getString("script_path");
+			if (scriptPath == null) {
+				scriptPath = "";
+			}
 			ZephyrTestcase tc = new ZephyrTestcase(Long.toString(id), name,
 					Testcase.extractTagsFromString(tags), isAutomated,
-					scriptName);
+					scriptName, scriptPath);
 			resultList.add(tc);
 		}
 		st.close();
@@ -75,7 +79,7 @@ public class ZephyrDB extends TestcasesStorage {
 	public void syncTestcases(List<? extends Testcase> testcases)
 			throws Throwable {
 		PreparedStatement prepStmt = conn
-				.prepareStatement("UPDATE testcase SET tag=?, is_automated=?, script_name=? WHERE id=?");
+				.prepareStatement("UPDATE testcase SET tag=?, is_automated=?, script_name=?, script_path=? WHERE id=?");
 		for (Testcase tc : testcases) {
 			if (!tc.getIsChanged()) {
 				continue;
@@ -101,7 +105,16 @@ public class ZephyrDB extends TestcasesStorage {
 					prepStmt.setBoolean(2, false);
 					prepStmt.setNull(3, java.sql.Types.VARCHAR);
 				}
-				prepStmt.setLong(4, id);
+				if (((ZephyrTestcase) tc).getAutomatedScriptPath() == null
+						|| ((ZephyrTestcase) tc).getAutomatedScriptPath()
+								.equals("")) {
+					prepStmt.setNull(4, java.sql.Types.VARCHAR);
+				} else {
+					prepStmt.setString(4,
+							((ZephyrTestcase) tc).getAutomatedScriptPath());
+				}
+
+				prepStmt.setLong(5, id);
 				prepStmt.executeUpdate();
 			}
 		}
