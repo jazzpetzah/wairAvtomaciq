@@ -1,4 +1,4 @@
- @1373 @1374 @regression
+ @id1373 @id1374 @regression
   Scenario Outline: Verify you can send Ping & Hot Ping in a group conversation
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -17,7 +17,7 @@
       | Login   | Password    | GroupChatName     | Contact1    | Contact2    | Message | Action1 | Action2      |
       | aqaUser | aqaPassword | SendPingGroupChat | aqaContact1 | aqaContact2 | YOU     | PINGED  | PINGED AGAIN |
 
-  @1373 @1374 @regression
+  @id1373 @id1374 @regression
   Scenario Outline: Verify you can receive Ping & Hot Ping in a group conversation
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
