@@ -1,6 +1,6 @@
 Feature: Archive
 
-  @smoke @id1041 @mute
+  @smoke @id1041
   Scenario Outline: Archive and unarchive conversation
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
