@@ -46,6 +46,11 @@ public class PeoplePickerPageSteps {
 	    PagesCollection.peoplePickerPage.fillTextInPeoplePickerSearch(email);
 	}
 	
+	@When("I tap go to enter conversation")
+	public void IEnterConversation(){
+		PagesCollection.peoplePickerPage.goIntoConversation();
+	}
+	
 	@When("^I see user (.*) found on People picker page$")
 	public void WhenISeeUserFoundOnPeoplePickerPage(String contact) throws Throwable {
 		

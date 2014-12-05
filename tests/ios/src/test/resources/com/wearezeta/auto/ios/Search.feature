@@ -57,3 +57,21 @@ Feature: Search
     Examples: 
       | Login   | Password    | Name    | ConvoName    |
       | aqaUser | aqaPassword | aqaUser | TopGroupTest |
+
+  @staging @id754
+  Scenario Outline: Start 1:1 chat with users from Top Connections
+    Given I have at least 9 connections
+    Given I Sign in using login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I swipe down contact list
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    Then I tap on 1 top connections
+    And I tap go to enter conversation
+  
+    Examples:
+    |  Login	 | Password	    | Name	    |
+    |  aqaUser	| aqaPassword	| aqaUser   |
+      
+      

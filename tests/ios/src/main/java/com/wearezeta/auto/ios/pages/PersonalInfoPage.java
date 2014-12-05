@@ -125,6 +125,10 @@ public class PersonalInfoPage extends IOSPage{
 		profileNameEditField.clear();
 	}
 	
+	public void enterNameInNamefield(String username){
+		profileNameEditField.sendKeys(username);
+	}
+	
 	public void pressEnterInNameField(){
 		profileNameEditField.sendKeys("\n");
 	}

@@ -226,6 +226,10 @@ public class PeoplePickerPage extends IOSPage{
 		peoplePickerSearch.sendKeys(Keys.DELETE);
 	}
 	
+	public void goIntoConversation(){
+		peoplePickerSearch.sendKeys("\n");
+	}
+	
 	public GroupChatPage clickAddToCoversationButton() throws Throwable{
 		addToConversationBtn.click();
 		return new GroupChatPage(url, path);
