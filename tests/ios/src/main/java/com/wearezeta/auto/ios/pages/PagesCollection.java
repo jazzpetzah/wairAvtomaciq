@@ -19,4 +19,5 @@ public class PagesCollection extends AbstractPagesCollection{
 	 public static VideoPlayerPage videoPlayerPage = null;
 	 public static ImageFullScreenPage imageFullScreenPage = null;
 	 public static PendingRequestsPage pendingRequestsPage = null;
+	 public static OtherUserOnPendingProfilePage otherUserOnPendingProfilePage = null;
 }

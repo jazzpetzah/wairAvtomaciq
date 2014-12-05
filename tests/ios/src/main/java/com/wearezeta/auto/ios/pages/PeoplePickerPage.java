@@ -231,4 +231,11 @@ public class PeoplePickerPage extends IOSPage{
 		return new GroupChatPage(url, path);
 	}
 
+	public OtherUserOnPendingProfilePage clickOnUserOnPending(String contact) throws Exception {
+		OtherUserOnPendingProfilePage page;
+		driver.findElement(By.name(contact)).click();
+		page = new OtherUserOnPendingProfilePage(url, path);
+		return page;
+	}
+
 }
