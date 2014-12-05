@@ -30,7 +30,6 @@ Feature: People View
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | RenameGroupChat   | RANDOM       |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | RenameSpecSymChat | ÄäÖöÜüß conv |
 
-  #MEC-484
   @regression @id96
   Scenario Outline: Do not accept erroneous input as group conversation name (only spaces)
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
@@ -46,7 +45,6 @@ Feature: People View
       | Login   | Password    | Name    | Contact1    | Contact2    | ChatName         | NewName |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | EditNameErr1Chat | \\u0020 |
 
-  #MEC-484
   @regression @id96
   Scenario Outline: Do not accept erroneous input as group conversation name (leading spaces)
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
@@ -55,12 +53,11 @@ Feature: People View
     When I open conversation with <ChatName>
     And I open Conversation info
     And I set name <NewName> for conversation
-    Then I do not see conversation <NewName> in contact list
-    And I see Contact list with name <ChatName>
+    Then I see Contact list with name <ExpectedNewName>
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | ChatName         | NewName                 |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | EditNameErr2Chat | Test   Leading   Spaces |
+      | Login   | Password    | Name    | Contact1    | Contact2    | ChatName         | NewName                                      | ExpectedNewName         |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | EditNameErr2Chat | \\u0020\\u0020\\u0020Test   Leading   Spaces | Test   Leading   Spaces |
 
   @regression @id97
   Scenario Outline: I can navigate forth and back between participant view and personal info
