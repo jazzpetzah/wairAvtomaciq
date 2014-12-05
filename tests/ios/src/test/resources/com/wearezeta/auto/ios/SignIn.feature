@@ -14,21 +14,21 @@ Feature: Sign In
       | aqaUser | aqaPassword | aqaUser |
 
   #Known issue is IOS-989, once it is fixed test should be updated
-  @staging @id524
-  Scenario Outline: I can change sign in user on iOS
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <UserA>
-    And I tap on my name <UserA>
-    And I click on Settings button on personal page
-    And I click Sign out button from personal page
-    And I Sign in using login <UserB> and password <Password>
-    Then I see Personal page
-    And I see name <UserB> on Personal page
-    And I see email <UserB> on Personal page
+  #@staging @id524
+  #Scenario Outline: I can change sign in user on iOS
+    #Given I Sign in using login <Login> and password <Password>
+    #And I see Contact list with my name <UserA>
+    #And I tap on my name <UserA>
+    #And I click on Settings button on personal page
+    #And I click Sign out button from personal page
+    #And I Sign in using login <UserB> and password <Password>
+    #Then I see Personal page
+    #And I see name <UserB> on Personal page
+    #And I see email <UserB> on Personal page
 
-    Examples: 
-      | Login   | Password    | UserA   | UserB       |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+    #Examples: 
+      #| Login   | Password    | UserA   | UserB       |
+      #| aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
   #Muted due to missing notification support from sync engine
   @regression @id1398
