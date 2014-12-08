@@ -90,8 +90,8 @@ Feature: Conversation
     Then I see the embedded media is playing
 
     Examples: 
-      | Login   | Password    | Name    | Contact     | SoundCloudLink                                                |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/bestemodus/ed-herbst-albert-vogt-on-my |
+      | Login   | Password    | Name    | Contact     | SoundCloudLink                               |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/djsliinkbbc/2-test-me |
 
   @staging @id379
   Scenario Outline: Play/pause SoundCloud media link from the media bar
@@ -111,8 +111,8 @@ Feature: Conversation
     Then The media stops playing
 
     Examples: 
-      | Login   | Password    | Name    | Contact     | SoundCloudLink                                                |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/bestemodus/ed-herbst-albert-vogt-on-my |
+      | Login   | Password    | Name    | Contact     | SoundCloudLink                               |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/djsliinkbbc/2-test-me |
 
   @regression @id380
   Scenario Outline: Conversation scrolls back to playing media when clicked on the media bar
@@ -129,8 +129,8 @@ Feature: Conversation
     Then I see the embedded media is playing
 
     Examples: 
-      | Login   | Password    | Name    | Contact     | SoundCloudLink                                                |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/bestemodus/ed-herbst-albert-vogt-on-my |
+      | Login   | Password    | Name    | Contact     | SoundCloudLink                               |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/djsliinkbbc/2-test-me |
 
   @regression @id624
   Scenario Outline: Text message sent to group chat is visible on other end
@@ -199,8 +199,8 @@ Feature: Conversation
     Then I see media link <SoundCloudLink> and media in dialog
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | SoundCloudLink                                                | ChatName        |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | https://soundcloud.com/bestemodus/ed-herbst-albert-vogt-on-my | SecondEndMMChat |
+      | Login   | Password    | Name    | Contact1    | Contact2    | SoundCloudLink                               | ChatName        |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | https://soundcloud.com/djsliinkbbc/2-test-me | SecondEndMMChat |
 
   @regression @id381
   Scenario Outline: The media bar disappears after playback finishes
@@ -235,5 +235,19 @@ Feature: Conversation
     Then I see media bar disappears
 
     Examples: 
-      | Login   | Password    | Name    | Contact     | SoundCloudLink                                                |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/bestemodus/ed-herbst-albert-vogt-on-my |
+      | Login   | Password    | Name    | Contact     | SoundCloudLink                               |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/djsliinkbbc/2-test-me |
+
+  @staging
+  Scenario Outline: Drag image to conversation
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name <Name> in Contact list
+    And I open conversation with <Contact>
+    And I count number of images in conversation
+    When I open Documents folder in Finder
+    And I drag picture testing.jpg to conversation
+    Then I see picture in conversation
+
+    Examples: 
+      | Login   | Password    | Name    | Contact     |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
