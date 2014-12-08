@@ -163,7 +163,11 @@
 -(AppiumMacHTTPJSONResponse*) postClick:(NSString*)path data:(NSData*)postData;
 
 // /session/:sessionId/buttondown
+-(AppiumMacHTTPJSONResponse*) postButtonDown:(NSString*)path data:(NSData*)postData;
+
 // /session/:sessionId/buttonup
+-(AppiumMacHTTPJSONResponse*) postButtonUp:(NSString*)path data:(NSData*)postData;
+
 // /session/:sessionId/doubleclick
 // /session/:sessionId/touch/click
 // /session/:sessionId/touch/down

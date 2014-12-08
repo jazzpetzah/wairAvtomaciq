@@ -53,9 +53,13 @@ public class ChoosePicturePage extends OSXPage {
 	}
 	
 	public void goToSelectedFavoritesFolder(String folderName) {
-		String xpath = String.format(OSXLocators.xpathFormatFavoritesFolderPopUp, folderName);
-		WebElement folder = driver.findElement(By.xpath(xpath));
-		folder.click();
+		try {
+			String xpath = String.format(OSXLocators.xpathFormatFavoritesFolderPopUp, folderName);
+			WebElement folder = driver.findElement(By.xpath(xpath));
+			folder.click();
+		} catch (NoSuchElementException e) {
+			log.debug("No " + folderName + " folder found in favorites.\n" + driver.getPageSource());
+		}
 	}
 	
 	public boolean isOpenButtonEnabled() {
