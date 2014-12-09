@@ -109,7 +109,7 @@ public class ContactListPageSteps {
 		pickerSteps.WhenITapOnUserNameFoundOnPeoplePickerPage(contact2);
 		pickerSteps.WhenIClickOnAddToConversationButton();
 
-		GroupChatPageSteps groupChatSteps = new GroupChatPageSteps();
+		DialogPageSteps groupChatSteps = new DialogPageSteps();
 		groupChatSteps.ThenISeeGroupChatPage(contact1, contact2);
 	}
 

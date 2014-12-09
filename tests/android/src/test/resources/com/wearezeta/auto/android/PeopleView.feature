@@ -33,7 +33,7 @@ Feature: People View
       | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName           |
       | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | PeoplePicker GroupChat2 |
 
-  @id321 @smoke 
+  @id321 @smoke
   Scenario Outline: Leave group conversation
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -43,15 +43,13 @@ Feature: People View
     And I swipe up on group dialog page
     And I press Leave conversation button
     And I confirm leaving
-    Then I do not see <Login> on group chat info page
-    And I return to group chat page
-    Then I see message that I left chat
+    Then I see Contact list with my name <Name>
 
     Examples: 
       | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName  |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | LeaveGroupChat |
 
-  @id322 @smoke 
+  @id322 @smoke
   Scenario Outline: Remove from group chat
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -70,7 +68,7 @@ Feature: People View
       | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName       | Message     |
       | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | RemoveFromGroupChat | YOU REMOVED |
 
-  @regression @id594
+  @regression @id594 
   Scenario Outline: Verify correct group info page information
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
