@@ -2,6 +2,7 @@ Feature: Archive
 
   @smoke @id1041
   Scenario Outline: Archive and unarchive conversation
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open conversation with <Contact>
@@ -14,4 +15,4 @@ Feature: Archive
 
     Examples: 
       | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact3 |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
