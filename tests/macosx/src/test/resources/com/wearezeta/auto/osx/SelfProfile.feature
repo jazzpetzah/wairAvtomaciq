@@ -2,6 +2,7 @@ Feature: User Profile
 
   @smoke @id180
   Scenario Outline: Change user picture from image file
+    Given I have 1 users and 0 contacts for 0 users
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I go to user <Name> profile
@@ -19,6 +20,7 @@ Feature: User Profile
   #@regression
   @staging @id425
   Scenario Outline: Change user picture from camera
+    Given I have 1 users and 0 contacts for 0 users
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I go to user <Name> profile
@@ -34,6 +36,7 @@ Feature: User Profile
 
   @staging @id183
   Scenario Outline: Profile photo can be deleted
+    Given I have 1 users and 0 contacts for 0 users
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I go to user <Name> profile

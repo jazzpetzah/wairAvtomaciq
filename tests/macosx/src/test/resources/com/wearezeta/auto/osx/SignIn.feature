@@ -2,6 +2,7 @@ Feature: Sign In
 
   @smoke @id690
   Scenario Outline: Sign in ZClient
+    Given I have 1 users and 0 contacts for 0 users
     Given I am signed out from ZClient
     And I see Sign In screen
     When I start Sign In
@@ -17,6 +18,7 @@ Feature: Sign In
   #Not supported functionality - Sign Out
   @regression @id525
   Scenario Outline: Change Sign in user
+    Given I have 2 users and 0 contacts for 0 users
     Given I Sign in using login <Login2> and password <Password>
     And I see my name <Name2> in Contact list
     And I go to user <Name2> profile
