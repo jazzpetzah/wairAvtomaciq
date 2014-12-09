@@ -12,3 +12,4 @@ iosImagesPath=${Root}/${iosImagesPath}
 iosClientInfoPlist=${iosClientInfoPlist}
 iosAppiumLogPath=${iosAppiumLogPath}
 defaultEmail=${defaultEmail}
+oldWayUsersGeneration=false

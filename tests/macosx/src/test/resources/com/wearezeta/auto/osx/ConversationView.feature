@@ -2,6 +2,7 @@ Feature: Conversation
 
   @smoke @id466
   Scenario Outline: Send message to conversation
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <Contact>
@@ -15,6 +16,7 @@ Feature: Conversation
 
   @smoke @id467
   Scenario Outline: Ping conversation
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <Contact>

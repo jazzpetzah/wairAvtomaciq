@@ -8,3 +8,5 @@ pictureResultsPath=${pictureResultsPath}
 osxClientInfoPlist=${osxClientInfoPlist}
 defaultEmail=${defaultEmail}
 defaultImagesPath=${Root}/${defaultImagesPath}
+oldWayUsersGeneration=false
+
