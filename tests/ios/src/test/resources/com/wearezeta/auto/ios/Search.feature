@@ -33,9 +33,9 @@ Feature: Search
     #And I swipe right on the personal page
     #And I see <Contact1> and <Contact2> chat in contact list
 
-    Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
+    #Examples: 
+      #| Login   | Password    | Name    | Contact1    | Contact2    |
+      #| aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
 
   @id1150 @staging
   Scenario Outline: Start group chat with users from Top Connections
