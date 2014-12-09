@@ -168,6 +168,26 @@ public class ConversationPageSteps {
 		 CommonSteps.senderPages.getConversationPage().pingAgain();
 	 }
 	 
+	 @When("^User (.*) pings in chat (.*)$")
+	 public void WhenUserPingsInChat(String user, String conversation) throws Throwable {
+	   
+	 }
+
+	 @Then("^I see User (.*) Pinged message in the conversation$")
+	 public void ThenISeeUserPingedMessageInTheConversation(String user) throws Throwable {
+	   
+	 }
+
+	 @When("^User (.*) pings again in chat (.*)$")
+	 public void WhenUserPingsAgainInChat(String user, String conversation) throws Throwable {
+	   
+	 }
+
+	 @Then("^I see User (.*) Pinged Again message in the conversation$")
+	 public void ThenISeeUserPingedAgainMessageInTheConversation(String user) throws Throwable {
+	    
+	 }
+	 
 	 @Then("I see message (.*) in conversation$")
 	 public void ThenISeeMessageInConversation(String message) throws InterruptedException {
 		 if (message.equals(OSXLocators.YOU_PINGED_MESSAGE)) {
