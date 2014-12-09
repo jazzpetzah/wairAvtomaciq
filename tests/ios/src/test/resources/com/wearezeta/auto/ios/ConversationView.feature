@@ -2,6 +2,7 @@ Feature: Conversation View
 
   @smoke @id330
   Scenario Outline: Send Message to contact
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -16,6 +17,7 @@ Feature: Conversation View
 
   @smoke @id331
   Scenario Outline: Send Hello to contact
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -32,6 +34,7 @@ Feature: Conversation View
 
   @smoke @id332
   Scenario Outline: Send a camera roll picture to user from contact list
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -45,10 +48,11 @@ Feature: Conversation View
 
     Examples: 
       | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact2 |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
   @smoke @id334
   Scenario Outline: Send message to group chat
+    Given I have 1 users and 2 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>

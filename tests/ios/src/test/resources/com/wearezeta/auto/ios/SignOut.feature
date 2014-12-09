@@ -2,6 +2,7 @@ Feature: Sign Out
 
   @smoke @id343
   Scenario Outline: Sign out from ZClient
+    Given I have 1 users and 0 contacts for 0 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     And I tap on my name <Name>
