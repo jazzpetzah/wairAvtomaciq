@@ -2,6 +2,7 @@ Feature: Connect
 
   @smoke @id576
   Scenario Outline: Send invitation message to a user
+    Given I have 2 users and 0 contacts for 0 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe down contact list
@@ -24,6 +25,7 @@ Feature: Connect
 
   @smoke @id585
   Scenario Outline: Get invitation message from user
+    Given I have 2 users and 0 contacts for 0 users
     Given I have connection request from <Contact>
     And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -36,10 +38,11 @@ Feature: Connect
 
     Examples: 
       | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | yourContact |
+      | aqaUser | aqaPassword | aqaUser | yourUser    |
 
   @staging @id576
   Scenario Outline: Send connection request to unconnected participant in a group chat
+    Given I have 2 users and 0 contacts for 0 users
     Given I Sign in using login <Login> and password <Password>
     And I have group chat named <GroupChatName> with an unconnected user, made by <GroupCreator>
     And I see Contact list with my name <Name>
@@ -53,7 +56,7 @@ Feature: Connect
 
     Examples: 
       | Login   | Password    | Name    | GroupCreator      | GroupChatName | UnconnectedUser |
-      | aqaUser | aqaPassword | aqaUser | aqaPictureContact | TESTCHAT      | yourContact     |
+      | aqaUser | aqaPassword | aqaUser | aqaPictureContact | TESTCHAT      | yourUser        |
 
   #Muted due to relogin issue
   #@staging @id611
@@ -141,6 +144,7 @@ Feature: Connect
 
   @staging @id579
   Scenario Outline: Verify transitions between connection requests (ignoring)
+    Given I have 2 users and 0 contacts for 0 users
     Given I send <SentRequests> connection requests to <Name>
     When I Sign in using login <Name> and password <Password>
     And I see Contact list with my name <Name>
@@ -157,10 +161,11 @@ Feature: Connect
 
     Examples: 
       | Login   | Password    | Name    | SentRequests | NotConnectedUser |
-      | aqaUser | aqaPassword | aqaUser | 3            | yourNotContact1  |
+      | aqaUser | aqaPassword | aqaUser | 3            | yourUser         |
 
   @staging @id1404
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (Search)
+    Given I have 2 users and 0 contacts for 0 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe down contact list
@@ -178,5 +183,5 @@ Feature: Connect
     And I see <Contact> user pending profile page
 
     Examples: 
-      | Login   | Password    | Name    | Contact         |
-      | aqaUser | aqaPassword | aqaUser | yourNotContact5 |
+      | Login   | Password    | Name    | Contact     |
+      | aqaUser | aqaPassword | aqaUser | yourUser    |

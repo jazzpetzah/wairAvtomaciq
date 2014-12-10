@@ -2,6 +2,7 @@ Feature: People View
 
   @regression @id61
   Scenario Outline: Check confirmation request on removing person from group chat
+    Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
@@ -17,6 +18,7 @@ Feature: People View
 
   @regression @id95
   Scenario Outline: Change conversation name
+    Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
@@ -32,6 +34,7 @@ Feature: People View
 
   @regression @id96
   Scenario Outline: Do not accept erroneous input as group conversation name (only spaces)
+    Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
@@ -47,6 +50,7 @@ Feature: People View
 
   @regression @id96
   Scenario Outline: Do not accept erroneous input as group conversation name (leading spaces)
+    Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
@@ -61,6 +65,7 @@ Feature: People View
 
   @regression @id97
   Scenario Outline: I can navigate forth and back between participant view and personal info
+    Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
@@ -77,6 +82,7 @@ Feature: People View
 
   @staging @id100
   Scenario Outline: Access proﬁle information for the other participant in a 1on1 conversation
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open conversation with <Contact1>
@@ -92,6 +98,7 @@ Feature: People View
 
   @regression @id102
   Scenario Outline: Add user to group conversation
+    Given I have 1 users and 3 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
@@ -111,6 +118,7 @@ Feature: People View
 
   @smoke @id103
   Scenario Outline: Create group chat from 1on1 conversation
+    Given I have 1 users and 2 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <Contact1>
@@ -127,6 +135,7 @@ Feature: People View
 
   @regression @id186
   Scenario Outline: Display conversation info correctly
+    Given I have 1 users and 2 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I create group chat with <Contact1> and <Contact2>
@@ -142,6 +151,7 @@ Feature: People View
 
   @regression @id188
   Scenario Outline: Group conversation name is displayed
+    Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
@@ -158,6 +168,7 @@ Feature: People View
 
   @smoke @id471
   Scenario Outline: Leave group conversation
+    Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
@@ -174,6 +185,7 @@ Feature: People View
 
   @smoke @id492
   Scenario Outline: Remove user from group chat
+    Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
@@ -189,6 +201,7 @@ Feature: People View
 
   @regression @id535
   Scenario Outline: Remove then add the same participant in group chat
+    Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
@@ -214,6 +227,7 @@ Feature: People View
 
   @regression @id618
   Scenario Outline: Verify the new conversation is created on the other end
+    Given I have 1 users and 2 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I create group chat with <Contact1> and <Contact2>
@@ -238,6 +252,7 @@ Feature: People View
 
   @regression @id621
   Scenario Outline: Leave group chat - second end verification
+    Given I have 1 users and 3 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list

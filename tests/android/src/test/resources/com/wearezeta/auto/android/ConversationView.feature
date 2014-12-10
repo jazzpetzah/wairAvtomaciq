@@ -2,6 +2,8 @@ Feature: Conversation View
 
   @id316 @smoke
   Scenario Outline: Send Message to contact
+    Given I have 1 users and 1 contacts for 1 users
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -16,6 +18,7 @@ Feature: Conversation View
 
   @id317 @smoke
   Scenario Outline: Send Hello and Hey to contact
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -30,6 +33,7 @@ Feature: Conversation View
 
   @id318 @smoke
   Scenario Outline: Send Camera picture to contact
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -46,6 +50,7 @@ Feature: Conversation View
 
   @id1262 @smoke
   Scenario Outline: Add people to 1:1 chat
+    Given I have 1 users and 2 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
@@ -69,6 +74,7 @@ Feature: Conversation View
 
   @id320 @smoke
   Scenario Outline: Send message to group chat
+    Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -84,6 +90,7 @@ Feature: Conversation View
 
   @id143 @regression
   Scenario Outline: Send Long Message to contact
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -98,6 +105,7 @@ Feature: Conversation View
 
   @id145 @regression
   Scenario Outline: Send Upper and Lower case to contact
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -112,6 +120,7 @@ Feature: Conversation View
 
   @id146 @unicode @regression
   Scenario Outline: Send special chars message to contact
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -126,6 +135,7 @@ Feature: Conversation View
 
   @mute @regression @id149
   Scenario Outline: Send emoji message to contact
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -140,6 +150,7 @@ Feature: Conversation View
 
   @id147 @unicode @regression
   Scenario Outline: Send double byte chars
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -154,6 +165,7 @@ Feature: Conversation View
 
   @regression @id162
   Scenario Outline: Send picture from gallery into 1:1 conversation
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -168,5 +180,5 @@ Feature: Conversation View
 
     Examples: 
       | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact2 |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
   
