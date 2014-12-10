@@ -407,13 +407,19 @@ public class CommonUtils {
 	private static void generateAdditionalContacts() {
 		// insert values of the contact in
 		// "CommonUtils.retrieveRealUserContactPasswordValue" first
+		Map<String, String> names = new HashMap<String, String>();
+		names.put("aqaPictureContactEmail", CONTACT_PICTURE_NAME);
+		names.put("aqaAvatarTestContactEmail", CONTACT_AVATAR_NAME);
+		
 		Map<String, String> creds = new HashMap<String, String>();
 		creds.put("aqaPictureContactEmail", "aqaPictureContactPassword");
 		creds.put("aqaAvatarTestContactEmail", "aqaAvatarTestContactPassword");
+		
 		for (Map.Entry<String, String> entry : creds.entrySet()) {
 			ClientUser user = new ClientUser();
 			user.setEmail(CommonUtils
 					.retrieveRealUserContactPasswordValue(entry.getKey()));
+			user.setName(names.get(entry.getKey()));
 			user.setPassword(CommonUtils
 					.retrieveRealUserContactPasswordValue(entry.getValue()));
 			user.setUserState(UsersState.Created);
