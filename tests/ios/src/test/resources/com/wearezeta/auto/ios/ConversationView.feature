@@ -66,6 +66,7 @@ Feature: Conversation View
 
   @staging @id383
   Scenario Outline: Play/pause SoundCloud media link from the media bar
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
@@ -87,6 +88,7 @@ Feature: Conversation View
 
   @regression @id384
   Scenario Outline: Conversation gets scrolled back to playing media when clicking on media bar
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
@@ -104,6 +106,7 @@ Feature: Conversation View
 
   @regression @id385
   Scenario Outline: Verify the Media Bar dissapears after playback finishes (SoundCloud)
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
@@ -118,10 +121,11 @@ Feature: Conversation View
 
     Examples: 
       | Login   | Password    | Name    | Contact1    | SoundCloudLink                                                                       | time |
-      | aqaUser | aqaPassword | aqaUser | aqaContact3 | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download | 129  |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download | 129  |
 
   @regression @id386
   Scenario Outline: Verify the Media Bar disappears when playing media is back in view (SoundCloud)
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
@@ -135,10 +139,11 @@ Feature: Conversation View
 
     Examples: 
       | Login   | Password    | Name    | Contact1    | SoundCloudLink                                                                       |
-      | aqaUser | aqaPassword | aqaUser | aqaContact2 | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
   @staging @id394
   Scenario Outline: Tap the cursor to get to the end of the conversation
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -154,6 +159,7 @@ Feature: Conversation View
 
   @staging @id415
   Scenario Outline: Send Message to contact after navigating away from chat page
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -171,6 +177,7 @@ Feature: Conversation View
 
   @staging @id407
   Scenario Outline: Send more than 200 chars message
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -193,6 +200,7 @@ Feature: Conversation View
 
   @regression @id408
   Scenario Outline: Send one line message with lower case and upper case
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -208,6 +216,7 @@ Feature: Conversation View
   #Muted due to special chars verification problems on ios
   @staging @id409
   Scenario Outline: Send special chars (German)
+    Given I have 1 users and 1 contacts for 1 users
     Given I press Sign in button
     And I fill in email input <Text>
     And I copy email input field content
@@ -228,6 +237,7 @@ Feature: Conversation View
 
   @regression @id413
   Scenario Outline: Copy and paste to send the message
+    Given I have 1 users and 1 contacts for 1 users
     Given I see sign in screen
     When I press Sign in button
     And I have entered login <text>
@@ -248,10 +258,11 @@ Feature: Conversation View
 
     Examples: 
       | Login   | Password    | Name    | Contact     | text       |
-      | aqaUser | aqaPassword | aqaUser | aqaContact2 | TextToCopy |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | TextToCopy |
 
   @regression @id414
   Scenario Outline: Send a text containing spaces
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -271,6 +282,7 @@ Feature: Conversation View
 
   @regression @id416
   Scenario Outline: Keyboard up and navigate to main convo list
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -282,10 +294,11 @@ Feature: Conversation View
 
     Examples: 
       | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact2 |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
   @regression @id488
   Scenario Outline: Verify you can see conversation images in fullscreen
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
@@ -314,6 +327,7 @@ Feature: Conversation View
 
   @regression @id526
   Scenario Outline: I can send and play inline youtube link
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -329,6 +343,7 @@ Feature: Conversation View
 
   @regression @id555
   Scenario Outline: Verify you can add people from 1:1 people view (view functionality)
+    Given I have 1 users and 2 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
@@ -355,6 +370,7 @@ Feature: Conversation View
 
   @staging @id556
   Scenario Outline: Verify you can add people from 1:1 people view (via Add to Conversation button)
+    Given I have 1 users and 3 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
@@ -379,6 +395,7 @@ Feature: Conversation View
 
   @staging @id557
   Scenario Outline: Verify you can add people from 1:1 people view (via keyboard button)
+    Given I have 1 users and 3 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
@@ -404,6 +421,7 @@ Feature: Conversation View
 
   @staging @id559
   Scenario Outline: Verify you can add people from 1:1 people view (cancel view)
+    Given I have 1 users and 3 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
@@ -577,6 +595,7 @@ Feature: Conversation View
 
   @staging @id1387
   Scenario Outline: Verify you can play/pause media from the Media Bar (YouTube)
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -600,6 +619,7 @@ Feature: Conversation View
 
   @staging @id1388
   Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation (SoundCloud)
+    Given I have 1 users and 2 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>

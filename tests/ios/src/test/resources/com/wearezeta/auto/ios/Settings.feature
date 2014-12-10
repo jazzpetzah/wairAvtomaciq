@@ -16,6 +16,7 @@ Feature: Settings
 
   @id729 @regression
   Scenario Outline: Attempt to open About screen in settings
+    Given I have 1 users and 0 contacts for 0 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
@@ -29,6 +30,7 @@ Feature: Settings
 
   @id1258 @regression
   Scenario Outline: Verify default value for sound settings is all
+    Given I have 1 users and 0 contacts for 0 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     And I tap on my name <Name>

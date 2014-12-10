@@ -24,6 +24,7 @@ Feature: People View
 
   @regression @id489
   Scenario Outline: Add user to a group conversation
+    Given I have 1 users and 3 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
@@ -64,7 +65,7 @@ Feature: People View
 
     Examples: 
       | Login   | Password    | Name    | Contact1    | Contact2    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact3 |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
 
   @smoke @id1390
   Scenario Outline: Remove from group chat
@@ -86,6 +87,7 @@ Feature: People View
   #Muted due ZIOS-2724
   @regression @id1396
   Scenario Outline: Verify correct group info page information
+    Given I have 1 users and 0 contacts for 0 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
@@ -118,6 +120,7 @@ Feature: People View
 
   @regression @id531
   Scenario Outline: I can see the individual user profile if I select someone in participants view
+    Given I have 1 users and 2 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
@@ -132,6 +135,7 @@ Feature: People View
   #fails to check email of first user due to defect IOS-990
   @staging @id339
   Scenario Outline: Tap on participant profiles in group info page participant view
+    Given I have 1 users and 0 contacts for 0 users
     Given I Sign in using login <Login> and password <Password>
     Given I have group chat named <GroupChatName> with an unconnected user, made by <GroupCreator>
     And I see Contact list with my name <Name>
@@ -146,6 +150,7 @@ Feature: People View
   #Mute due to SE issue, MEC-270, not possible to create group from 1:1
   @staging @id393
   Scenario Outline: Verify you can start 1:1 conversation from a group conversation profile
+    Given I have 1 users and 2 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
@@ -161,6 +166,7 @@ Feature: People View
 
   @staging @id393
   Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
+    Given I have 1 users and 2 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
