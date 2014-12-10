@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -19,11 +20,24 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
 	public static final String REMOVE_FROM_CONVERSATION_BUTTON = "Remove";
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.75;
+	public static final String LEAVE_CONVERSATION_BUTTON = "Leave conversation";
+	public static final String LEAVE_BUTTON = "LEAVE";
+	private static final String AVATAR_WITH_IMAGE = "avatarPictureTestAndroid.png";
+	private static final String AVATAR_NO_IMAGE = "avatarTestAndroid.png";
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idOtherUserPersonalInfoName")
+	@FindBy(how = How.XPATH, using = AndroidLocators.OtherUserPersonalInfoPage.xpathGroupChatInfoLinearLayout)
+	private List<WebElement> linearLayout;
+	
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.OtherUserPersonalInfoPage.classNameGridView)
+	private WebElement groupChatUsersGrid;
+	
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsHeader")
+	private WebElement groupChatName;
+	
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsHeader")
 	private List<WebElement> otherUserName;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idOtherUserPersonalInfoMail")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsSubHeader")
 	private List<WebElement> otherUserMail;
 	
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idOtherUserPersonalInfoSingleName")
@@ -35,14 +49,11 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idUserProfileConfirmationMenu")
 	private WebElement confirmMenu;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idBlockUserBtn")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idRightActionButton")
 	private WebElement blockButton; 
 	
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idUnblockBtn")
 	private WebElement unblockButton; 
-	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.GroupChatInfoPage.CLASS_NAME, locatorKey = "idLeaveConversationButton")
-	private WebElement removeBtn;
 	
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameFrameLayout)
 	private WebElement frameLayout;
@@ -53,8 +64,14 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idConfirmBtn")
 	private WebElement confirmBtn;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idAddContactBtn")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idLeftActionButton")
 	private WebElement addContactBtn;
+	
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsSubHeader")
+	private WebElement participantsSubHeader;
+	
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectToHeader")
+	private List<WebElement> connectToHeader;
 	
 	private String url;
 	private String path;
@@ -66,8 +83,11 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		this.path = path;
 	}
 
-	public void clickRemoveBtn() {
-		removeBtn.click();
+	public ContactListPage pressLeaveConversationButton() throws Exception {
+		refreshUITree();//TODO workaround
+		wait.until(ExpectedConditions.elementToBeClickable(blockButton));
+		blockButton.click();
+		return new ContactListPage(url, path);
 	}
 	
 	public void clickBlockBtn() {
@@ -137,12 +157,12 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		return confirmMenu.isDisplayed();
 	}
 	
-	public GroupChatInfoPage pressRemoveConfirmBtn() throws Exception
+	public OtherUserPersonalInfoPage pressRemoveConfirmBtn() throws Exception
 	{
 		refreshUITree();//TODO workaround
 		wait.until(ExpectedConditions.elementToBeClickable(confirmBtn));
 		confirmBtn.click();
-		return new GroupChatInfoPage(url, path);
+		return new OtherUserPersonalInfoPage(url, path);
 	}
 
 	public void tapAddContactBtn() {
@@ -162,6 +182,118 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 			flag = true;
 		}
 		return flag;
+	}
+	
+	public boolean isContactExists(String contact) {
+		boolean flag = false;
+		refreshUITree();
+		
+		for(WebElement user : linearLayout)
+		{
+			List<WebElement> elements = user.findElements(By.className(AndroidLocators.CommonLocators.classNameTextView));
+			for(WebElement element : elements){
+					if(element.getText() != null && element.getText().equals((contact.toUpperCase()))){
+						flag = true;
+						break;
+					}
+			}
+			if(flag){
+				break;
+			}
+		}
+		return flag;
+	}	
+	
+	public AndroidPage selectContactByName(String contactName) throws Exception, InterruptedException {
+		boolean flag = false;
+		refreshUITree();
+
+		for(WebElement user : linearLayout) {
+			List<WebElement> elements = user.findElements(By.className(AndroidLocators.CommonLocators.classNameTextView));
+			for(WebElement element : elements) {
+				if(element.getText() != null && element.getText().equals((contactName.toUpperCase()))){
+					user.click();
+					flag = true;
+					break;
+				}
+			}
+			if(flag){
+				break;
+			}
+		}
+		if(connectToHeader.size()>0){
+			return new ConnectToPage(url, path);
+		}
+		else{
+			return new OtherUserPersonalInfoPage(url, path);
+		}
+	}
+	
+	public void renameGroupChat(String chatName){
+		groupChatName.sendKeys(chatName + "\n");
+	}
+	
+	public AndroidPage tapOnContact(String contact) throws Exception {
+		refreshUITree();
+		wait.until(ExpectedConditions.visibilityOf(groupChatName));
+		WebElement cn = driver.findElement(By.xpath(String.format(AndroidLocators.ContactListPage.xpathContacts, contact.toUpperCase())));
+		cn.click();
+		if(connectToHeader.size()>0){
+			return new ConnectToPage(url, path);
+		}
+		else{
+			return new OtherUserPersonalInfoPage(url, path);
+		}
+	}
+	
+	public String getSubHeader() {
+		return participantsSubHeader.getText();
+	}
+
+	public String getConversationName() {
+		refreshUITree();
+		return groupChatName.getText();
+	}
+	
+	public DialogPage tabBackButton() throws Exception {
+		driver.navigate().back();
+		return new DialogPage(url, path);
+	}
+
+	public boolean isParticipantAvatars(String contact1, String contact2) throws IOException {
+		boolean flag1 = false;
+		boolean flag2 = false;
+		boolean commonFlag = false;
+		BufferedImage avatarIcon = null;
+		refreshUITree();
+		String path = CommonUtils.getImagesPath(CommonUtils.class);
+		for(int i = 1; i < linearLayout.size()+1;i++){
+			avatarIcon = getElementScreenshot(driver.findElement(By.xpath(String.format(AndroidLocators.OtherUserPersonalInfoPage.xpathGroupChatInfoLinearLayoutId, i))));
+			String avatarName = driver.findElement(By.xpath(String.format(AndroidLocators.OtherUserPersonalInfoPage.xpathGroupChatInfoContacts, i))).getText();
+			if(avatarName.equalsIgnoreCase(contact1)){
+				BufferedImage realImage = ImageUtil.readImageFromFile(path+AVATAR_WITH_IMAGE);
+				double score = ImageUtil.getOverlapScore(realImage, avatarIcon);
+				if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
+					return false;
+				}
+				flag1 = true;
+			}
+			if(avatarName.equalsIgnoreCase(contact2)){
+				//must be a yellow user with initials AT
+				BufferedImage realImage = ImageUtil.readImageFromFile(path+AVATAR_NO_IMAGE);
+				double score = ImageUtil.getOverlapScore(realImage, avatarIcon);
+				if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
+					return false;
+				}
+				flag2 = true;
+			}
+		}
+		if(flag1 && flag2)
+		{
+			commonFlag = true;
+		}
+		
+		return commonFlag;
 	}
 
 }
