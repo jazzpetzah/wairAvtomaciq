@@ -78,7 +78,7 @@ public class OSXCommonUtils extends CommonUtils {
 	}
 	
 	public static void removeAllZClientSettingsFromDefaults() throws Exception {
-		String command = "defaults delete com.wearezeta.zclient.mac";
+		String command = "defaults delete com.wearezeta.zclient.mac.development";
 
 		if (getOsName().contains(OS_NAME_WINDOWS)) {
 			Runtime.getRuntime().exec("cmd /C " + command);
@@ -88,7 +88,7 @@ public class OSXCommonUtils extends CommonUtils {
 	}
 	
 	public static void setZClientBackend(String bt) throws Exception {
-		String command = "defaults write com.wearezeta.zclient.mac ZMBackendEnvironmentType -string " + bt;
+		String command = "defaults write com.wearezeta.zclient.mac.development ZMBackendEnvironmentType -string " + bt;
 		
 		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
 	}
