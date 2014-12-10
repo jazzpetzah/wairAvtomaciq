@@ -132,6 +132,20 @@ public class PersonalInfoPageSteps {
 		Assert.assertEquals(CommonUtils.findUserNamed(name).getEmail(), PagesCollection.personalInfoPage.getUserEmailVaue());
 	}
 	
+	@When("I attempt to enter (.*) and press return")
+	public void EnterUsernameAndPressReturn(String username){
+		PagesCollection.personalInfoPage.clearNameField();
+		PagesCollection.personalInfoPage.enterNameInNamefield(username);
+		PagesCollection.personalInfoPage.pressEnterInNameField();
+	}
+	
+	@When("I attempt to enter (.*) and tap the screen")
+	public void EnterUsernameAndTapScreen(String username){
+		PagesCollection.personalInfoPage.clearNameField();
+		PagesCollection.personalInfoPage.enterNameInNamefield(username);
+		PagesCollection.personalInfoPage.tapOnPersonalPage();
+	}
+	
 	@When("I swipe right on the personal page")
 	public void ISwipeRightOnPersonalPage() throws IOException{
 		PagesCollection.contactListPage = (ContactListPage)PagesCollection.personalInfoPage.swipeRight(500);

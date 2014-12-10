@@ -80,7 +80,6 @@ public class ContactListPage extends AndroidPage {
 			page = new PersonalInfoPage(url, path);
 		} else {
 			page = new DialogPage(url, path);
-			PagesCollection.groupChatPage = new GroupChatPage(url, path);
 		}
 		DriverUtils.setDefaultImplicitWait(driver);
 		return page;

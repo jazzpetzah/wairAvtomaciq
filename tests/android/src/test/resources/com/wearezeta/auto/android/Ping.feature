@@ -1,6 +1,6 @@
 Feature: Ping
  
- @id1373 @regression
+  @id1373 @regression
   Scenario Outline: Verify you can send Ping & Hot Ping in a group conversation
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -9,11 +9,11 @@ Feature: Ping
     And I see dialog page
     And I swipe on text input
     And I press Ping button
-    And I see <Action1> icon
+#   And I see <Action1> icon
     And I see Hello-Hey message <Message> with <Action1> in the dialog
     And I press Ping button
-    Then I see <Action2> icon
-    And I see Hello-Hey message <Message> with <Action2> in the dialog
+#   Then I see <Action2> icon
+    Then I see Hello-Hey message <Message> with <Action2> in the dialog
 
     Examples: 
       | Login   | Password    | GroupChatName     | Contact1    | Contact2    | Message | Action1 | Action2      |
@@ -28,10 +28,10 @@ Feature: Ping
     And I see dialog page
     And Contact <Contact1> ping conversation <GroupChatName>
     And I see Hello-Hey message <Contact1> with <Action1>  in the dialog
-    And I see <Action1> icon
+#   And I see <Action1> icon
     And Contact <Contact1> hotping conversation <GroupChatName>
  	Then I see Hello-Hey message <Contact1> with <Action2>  in the dialog
- 	And I see <Action2> icon
+# 	And I see <Action2> icon
     
     Examples: 
       | Login   | Password    | GroupChatName        | Contact1    | Contact2    | Action1 | Action2      |

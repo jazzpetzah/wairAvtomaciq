@@ -169,4 +169,47 @@ public class DialogPageSteps{
 				"Overlap between two images has not enough score. Expected >= 0.75, current = " + score,
 				score >= 0.75d);
 	}
+	
+	//------- From Group Chat Page
+	public static final String userRemovedMessage = "YOU REMOVED ";
+
+	@When("^I swipe up on group dialog page$")
+	public void WhenISwipeUpOnGroupDialogPage() throws Throwable {
+		PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
+		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.dialogPage.swipeUp(500);
+	}
+
+	@When("^I swipe right on group dialog page$")
+	public void WhenISwipeRightOnGroupDialogPage() throws Throwable {
+		PagesCollection.contactListPage = (ContactListPage) PagesCollection.dialogPage.swipeRight(500);
+	}
+
+	@Then("^I see group chat page with users (.*) (.*)$")
+	public void ThenISeeGroupChatPage(String name1, String name2) throws Throwable {
+		PagesCollection.dialogPage.isDialogVisible();
+		if(name1.contains(CommonUtils.CONTACT_1) && name2.contains(CommonUtils.CONTACT_2)){
+			PagesCollection.dialogPage.isGroupChatDialogContainsNames(CommonUtils.contacts.get(0).getName()
+					, CommonUtils.contacts.get(1).getName());
+		}
+		else{
+			PagesCollection.dialogPage.isGroupChatDialogContainsNames(name1, name2);
+		}
+	}
+
+	@Then("^I see message that I left chat$")
+	public void ThenISeeMessageThatILeftChat() throws Throwable {
+		Assert.assertTrue(PagesCollection.dialogPage.isMessageExists(DialogPage.I_LEFT_CHAT_MESSAGE));
+	}
+
+	@Then("^I see  message (.*) contact (.*) on group page$")
+	public void ThenISeeMessageContactOnGroupPage(String message, String contact) throws Throwable {
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact).toUpperCase();
+		
+		Assert.assertTrue(PagesCollection.dialogPage.isMessageExists(message + " " + contact));	
+	}
+
+	@Then("^I navigate back from group chat page$")
+	public void ThenINavigateBackFromGroupChatPage() throws Exception{
+		PagesCollection.contactListPage = (ContactListPage) PagesCollection.dialogPage.navigateBack();
+	}
 }

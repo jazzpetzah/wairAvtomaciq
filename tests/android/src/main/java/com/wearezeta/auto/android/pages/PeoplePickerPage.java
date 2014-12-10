@@ -1,7 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.openqa.selenium.*;
@@ -155,9 +154,9 @@ public class PeoplePickerPage extends AndroidPage {
 		return addToConversationsButton.isDisplayed();
 	}
 
-	public GroupChatPage clickOnAddToCoversationButton() throws Exception{
+	public DialogPage clickOnAddToCoversationButton() throws Exception{
 		addToConversationsButton.click();
-		return new GroupChatPage(url, path);
+		return new DialogPage(url, path);
 	}
 	//TODO: move this to some base page
 	private boolean isVisible(WebElement element) {
@@ -174,14 +173,11 @@ public class PeoplePickerPage extends AndroidPage {
 
 	}
 
-	public List<AndroidPage> tapCreateConversation() throws Exception {
+	public AndroidPage tapCreateConversation() throws Exception {
 		refreshUITree();
 		wait.until(ExpectedConditions.visibilityOf(createConversation));
 		DriverUtils.androidMultiTap(driver, createConversation,1,0.3);
-		List<AndroidPage>  pages = new LinkedList<AndroidPage>();
-		pages.add(new DialogPage(url, path));
-		pages.add(new GroupChatPage(url, path));
-		return  pages;
+		return  new DialogPage(url, path);
 	}
 
 	public ContactListPage tapClearButton() throws Exception {

@@ -31,3 +31,20 @@ Feature: Self Profile
     Examples: 
       | Login   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |
+
+  @staging @id1056 
+  Scenario Outline: Attempt to enter a name with 1 char
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    And I tap to edit my name
+    And I attempt to enter <username> and press return
+    And I see error message asking for more characters
+    And I attempt to enter <username> and tap the screen
+    And I see error message asking for more characters
+
+    Examples: 
+      | Login   | Password    | Name    |  username  |
+      | aqaUser | aqaPassword | aqaUser |   c        |
+      
+      

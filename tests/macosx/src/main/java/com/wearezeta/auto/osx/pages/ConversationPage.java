@@ -1,5 +1,6 @@
 package com.wearezeta.auto.osx.pages;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,12 +22,15 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
 import com.google.common.base.Function;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
@@ -439,5 +443,34 @@ public class ConversationPage extends OSXPage {
 		}
 		return null;
 
+	}
+	
+	public void openFinder() {
+		 String scr0 = "tell application \"Finder\" to close every window\n" +
+					"tell application \"Finder\" to open folder \"Documents\" of home\n" +
+				"tell application \"System Events\" to tell application process \"Finder\"\n" +
+					"set frontmost to true\n" +
+					"end tell\n" +
+				"tell application \"System Events\" to tell application process \"Finder\"\n" +
+					"set position of window 1 to {0, 0}\n" +
+					"end tell";
+		 driver.executeScript(scr0);
+	}
+	
+	public void dragPictureToConversation(String picture) throws IOException {
+		WebElement target = driver.findElement(By
+				.id(OSXLocators.idConversationScrollArea));
+		driver.navigate().to("Finder");
+		try {
+			WebElement element = driver.findElement(By.name(picture));
+			Actions builder = new Actions(driver);
+
+			Action dragAndDrop = builder.clickAndHold(element)
+				.moveToElement(target).release(target).build();
+
+			dragAndDrop.perform();
+		} finally {
+			driver.navigate().to(CommonUtils.getOsxApplicationPathFromConfig(ConversationPage.class));
+		}
 	}
 }

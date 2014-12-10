@@ -318,7 +318,17 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_VERBOSE;
 	}
 
     // /session/:sessionId/buttondown
+    if (pathComponents.count == 3 && [[pathComponents objectAtIndex:0] isEqualToString:@"session"] && [[pathComponents objectAtIndex:2] isEqualToString:@"buttondown"] && [method isEqualToString:@"POST"])
+    {
+        return [SERVER.handler postButtonDown:path data:[request body]];
+    }
+    
     // /session/:sessionId/buttonup
+    if (pathComponents.count == 3 && [[pathComponents objectAtIndex:0] isEqualToString:@"session"] && [[pathComponents objectAtIndex:2] isEqualToString:@"buttonup"] && [method isEqualToString:@"POST"])
+    {
+        return [SERVER.handler postButtonUp:path data:[request body]];
+    }
+    
     // /session/:sessionId/doubleclick
     // /session/:sessionId/touch/click
     // /session/:sessionId/touch/down

@@ -1191,13 +1191,14 @@
 // /session/:sessionId/alert_text
 // /session/:sessionId/accept_alert
 // /session/:sessionId/dismiss_alert
+
 // POST /session/:sessionId/moveto
 -(AppiumMacHTTPJSONResponse*) postMoveTo:(NSString*)path data:(NSData*)postData
 {
     NSString *sessionId = [Utility getSessionIDFromPath:path];
     AfMSessionController *session = [self controllerForSession:sessionId];
     NSDictionary *postParams = [self dictionaryFromPostData:postData];
-    NSLog(@"Dictionary: %@", [postParams description]);
+    
     NSString * elementId = [postParams objectForKey:@"element"];
     NSString * xoffsetStr = [postParams objectForKey:@"xoffset"];
     NSString * yoffsetStr = [postParams objectForKey:@"yoffset"];
@@ -1207,13 +1208,14 @@
         } else {
             CGEventRef event = CGEventCreate(NULL);
             CGPoint pt = CGEventGetLocation(event);
-            NSLog(@"%f,%f", pt.x, pt.y);
             pt.x = pt.x+[xoffsetStr intValue];
             pt.y = pt.y+[yoffsetStr intValue];
             
             CGEventRef click1_move = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, pt, kCGMouseButtonLeft);
             CGEventPost(kCGHIDEventTap, click1_move);
-            CFRelease(click1_move);
+            
+            [NSThread sleepForTimeInterval:1.0];
+ //           CFRelease(click1_move);
         }
     } else {
         PFUIElement *element = [session.elements objectForKey:elementId];
@@ -1221,18 +1223,56 @@
         NSPoint size = [element.AXSize pointValue];
         CGEventRef event = CGEventCreate(NULL);
         CGPoint pt = CGEventGetLocation(event);
-        NSLog(@"%f,%f", pt.x, pt.y);
-        pt.x = position.x + size.x/2;
-        pt.y = position.y + size.y/2;
         
-        NSLog(@"%f,%f", pt.x, pt.y);
-        CGEventRef click1_move = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, pt, kCGMouseButtonLeft);
-        CGEventPost(kCGHIDEventTap, click1_move);
-        CFRelease(click1_move);
+        float endX = position.x + size.x/2;
+        float endY = position.y + size.y/2;
+        
+        if (leftMouseButtonPressed)
+        {
+            NSLog(@"Drag mouse to: %f,%f", pt.x, pt.y);
+            
+            CGEventRef click1_move;
+            while (pt.x < endX) {
+                click1_move = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDragged, pt, kCGMouseButtonLeft);
+                CGEventPost(kCGHIDEventTap, click1_move);
+                pt.x += 3;
+//                CFRelease(click1_move);
+            }
+            while (pt.y < endY) {
+                click1_move = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDragged, pt, kCGMouseButtonLeft);
+                CGEventPost(kCGHIDEventTap, click1_move);
+                pt.y += 3;
+ //               CFRelease(click1_move);
+            }
+            while (pt.x > endX) {
+                click1_move = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDragged, pt, kCGMouseButtonLeft);
+                CGEventPost(kCGHIDEventTap, click1_move);
+                pt.x -= 3;
+ //               CFRelease(click1_move);
+            }
+            while (pt.y > endY) {
+                click1_move = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDragged, pt, kCGMouseButtonLeft);
+                CGEventPost(kCGHIDEventTap, click1_move);
+                pt.y -= 3;
+  //              CFRelease(click1_move);
+            }
+
+        }
+        else
+        {
+            pt.x = endX;
+            pt.y = endY;
+            CGEventRef click1_move = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, pt, kCGMouseButtonLeft);
+            CGEventPost(kCGHIDEventTap, click1_move);
+        }
     }
+    
+    [NSThread sleepForTimeInterval:0.5];
     
     return [self respondWithJson:nil status:kAfMStatusCodeSuccess session: sessionId];
 }
+
+BOOL leftMouseButtonPressed = NO;
 
 // POST /session/:sessionId/click
 -(AppiumMacHTTPJSONResponse*) postClick:(NSString*)path data:(NSData*)postData
@@ -1242,7 +1282,45 @@
 }
 
 // /session/:sessionId/buttondown
+-(AppiumMacHTTPJSONResponse*) postButtonDown:(NSString*)path data:(NSData*)postData
+{
+    NSString *sessionId = [Utility getSessionIDFromPath:path];
+//    NSDictionary *postParams = [self dictionaryFromPostData:postData];
+
+    CGEventRef event = CGEventCreate(NULL);
+    CGPoint pt = CGEventGetLocation(event);
+    NSLog(@"Down button on: %f,%f", pt.x, pt.y);
+    CGEventRef click1_down = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, pt, kCGMouseButtonLeft);
+
+    CGEventPost(kCGHIDEventTap, click1_down);
+    
+    leftMouseButtonPressed = YES;
+    
+    [NSThread sleepForTimeInterval:0.5];
+    
+    return [self respondWithJson:nil status:kAfMStatusCodeSuccess session: sessionId];
+}
+
 // /session/:sessionId/buttonup
+-(AppiumMacHTTPJSONResponse*) postButtonUp:(NSString*)path data:(NSData*)postData
+{
+    NSString *sessionId = [Utility getSessionIDFromPath:path];
+//    NSDictionary *postParams = [self dictionaryFromPostData:postData];
+
+    CGEventRef event = CGEventCreate(NULL);
+    CGPoint pt = CGEventGetLocation(event);
+    NSLog(@"Up button on: %f,%f", pt.x, pt.y);
+    CGEventRef click1_up = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseUp, pt, kCGMouseButtonLeft);
+    
+    CGEventPost(kCGHIDEventTap, click1_up);
+    
+    leftMouseButtonPressed = NO;
+    
+    [NSThread sleepForTimeInterval:0.5];
+    
+    return [self respondWithJson:nil status:kAfMStatusCodeSuccess session: sessionId];
+}
+
 // /session/:sessionId/doubleclick
 // /session/:sessionId/touch/click
 // /session/:sessionId/touch/down

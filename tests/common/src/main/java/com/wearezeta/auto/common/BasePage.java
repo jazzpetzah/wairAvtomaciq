@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriverException;
@@ -23,11 +24,13 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.locators.ZetaElementLocatorFactory;
 import com.wearezeta.auto.common.locators.ZetaFieldDecorator;
+import com.wearezeta.auto.common.log.ZetaLogger;
 
 public abstract class BasePage {
 
 	protected static HashMap<String, ZetaDriver> drivers = new HashMap<String, ZetaDriver>();
 	protected static HashMap<String, WebDriverWait> waits = new HashMap<String, WebDriverWait>();
+	private static final Logger log = ZetaLogger.getLog(BasePage.class.getSimpleName());
 	
 	private String pagePlatform;
 	
@@ -81,6 +84,17 @@ public abstract class BasePage {
 		int w = elementSize.width;
 		int h = elementSize.height;
 		return screenshot.getSubimage(x, y, w, h);
+	}
+	
+	public BufferedImage getScreenshotByCoordinates(int x, int y, int w, int h) throws IOException{
+		BufferedImage screenshot = takeScreenshot();
+		try {
+			screenshot = screenshot.getSubimage(x, y, w, h);
+		}
+		catch (Exception e) {
+			log.debug("Screenshot object is out of borders");
+		}
+		return screenshot;
 	}
 
 	public void refreshUITree() {

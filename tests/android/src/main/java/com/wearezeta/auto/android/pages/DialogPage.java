@@ -34,6 +34,7 @@ public class DialogPage extends AndroidPage{
 
 	public static final String PING_LABEL = "PINGED";
 	public static final String HOT_PING_LABEL = "PINGED AGAIN";
+	public static final String I_LEFT_CHAT_MESSAGE = "YOU HAVE LEFT";
 	
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classEditText)
 	private WebElement cursorInput;
@@ -104,6 +105,9 @@ public class DialogPage extends AndroidPage{
 	@FindBy(how = How.XPATH, using = AndroidLocators.DialogPage.xpathPing)
 	private WebElement pingBtn;
 	
+	@FindBy(how = How.XPATH, using = AndroidLocators.OtherUserPersonalInfoPage.xpathGroupChatInfoLinearLayout)
+	private List<WebElement> linearLayout;
+	
 	private String url;
 	private String path;
 	private int initMessageCount;
@@ -167,6 +171,7 @@ public class DialogPage extends AndroidPage{
 	@Override
 	public AndroidPage swipeUp(int time) throws Exception {
 		dialogsPagesSwipeUp(time);//TODO workaround
+		Thread.sleep(1000);
 		return returnBySwipe(SwipeDirection.UP);
 	}
 	
@@ -415,10 +420,10 @@ public class DialogPage extends AndroidPage{
 		String path = null;
 		BufferedImage pingImage = getElementScreenshot(knockIcon);
 		if(label.equals(PING_LABEL)){
-			path = CommonUtils.getPingIconPath(GroupChatPage.class);
+			path = CommonUtils.getPingIconPath(DialogPage.class);
 		}
 		else if(label.equals(HOT_PING_LABEL)){
-			path = CommonUtils.getHotPingIconPath(GroupChatPage.class);
+			path = CommonUtils.getHotPingIconPath(DialogPage.class);
 		}
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
 		return ImageUtil.getOverlapScore(pingImage, templateImage);
@@ -427,5 +432,29 @@ public class DialogPage extends AndroidPage{
 	public String getKnockText(){
 		refreshUITree();
 		return knockMessage.getText() + " " + knockAction.getText();
+	}
+	
+	public boolean isMessageExists(String messageText){
+		boolean flag = false;
+		refreshUITree();
+		for(WebElement element : messagesList)
+		{
+			String text = element.getText();
+			if(text.equals(messageText))
+			{
+				flag = true;
+				break;
+			}
+		}
+		return flag;
+	}
+	
+	public boolean isGroupChatDialogContainsNames(String name1, String name2)
+	{
+		return (conversationMessage.getText().toLowerCase().contains(name1.toLowerCase()) && conversationMessage.getText().toLowerCase().contains(name2.toLowerCase()));
+	}
+	
+	public boolean isDialogVisible(){
+		return DriverUtils.waitUntilElementAppears(driver, By.id(AndroidLocators.DialogPage.idMessage));
 	}
 }

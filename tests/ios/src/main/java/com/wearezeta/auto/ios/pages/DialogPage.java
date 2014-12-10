@@ -32,6 +32,10 @@ import com.wearezeta.auto.ios.locators.IOSLocators;
 public class DialogPage extends IOSPage{
 	private static final Logger log = ZetaLogger.getLog(DialogPage.class.getSimpleName());
 	
+	public static final String PING_LABEL = "PINGED";
+	public static final String HOT_PING_LABEL = "PINGED AGAIN";
+	private static final long PING_ANIMATION_TIME = 3000;
+	
 	@FindBy(how = How.NAME, using = IOSLocators.nameMainWindow)
 	private WebElement dialogWindow;
 	
@@ -594,5 +598,37 @@ public class DialogPage extends IOSPage{
 		} else {
 			pasteStringToInput(el, text);
 		}
+	}
+
+	public double checkPingIcon(String label) throws IOException {
+		String path = null;
+		BufferedImage pingImage = getPingIconScreenShot();
+		if(label.equals(PING_LABEL)){
+			path = CommonUtils.getPingIconPathIOS(GroupChatPage.class);
+		}
+		else if(label.equals(HOT_PING_LABEL)){
+			path = CommonUtils.getHotPingIconPathIOS(GroupChatPage.class);
+		}
+		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
+		return ImageUtil.getOverlapScore(pingImage, templateImage);
+	}
+	
+	
+	private static final int PING_ICON_WIDTH = 72;
+	private static final int PING_ICON_HEIGHT = 60;
+	private static final int PING_ICON_Y_OFFSET = 7;
+	
+	private BufferedImage getPingIconScreenShot() throws IOException{
+		Point elementLocation = lastMessage.getLocation();
+		Dimension elementSize = lastMessage.getSize();
+		int x = elementLocation.x*2+elementSize.width*2;
+		int y = (elementLocation.y-PING_ICON_Y_OFFSET)*2;
+		int w = PING_ICON_WIDTH;
+		int h = PING_ICON_HEIGHT;
+		return getScreenshotByCoordinates(x, y, w, h);
+	}
+
+	public void waitPingAnimation() throws InterruptedException {
+		Thread.sleep(PING_ANIMATION_TIME);		
 	}
 }

@@ -156,41 +156,31 @@ public final class AndroidLocators {
 		public static final String xpathCloseCursor = "//android.support.v4.view.ViewPager[1]/android.widget.ListView[1]/android.widget.FrameLayout[1]";
 	}
 	
-	public static final class GroupChatInfoPage {
+	public static final class OtherUserPersonalInfoPage {
 		
-		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME + "$GroupChatInfoPage";
-		
-		public static final String idLeaveConversationButton = LOCATORS_PACKAGE + ":id/gtv__participants__right__action";
-		
-		public static final String idGroupChatInfoName = LOCATORS_PACKAGE + ":id/ttv__participants__header";
-		
-		public static final String idParticipantsSubHeader = LOCATORS_PACKAGE + ":id/ttv__participants__sub_header";
+		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME + "$OtherUserPersonalInfoPage";
 		
 		public static final String classNameGridView = "android.widget.GridView";
 		
 		public static final String xpathGroupChatInfoLinearLayout = "//android.widget.GridView/android.widget.LinearLayout";
 		
-		public static final String xpathGroupChatInfoContacts = "//android.widget.GridView/android.widget.LinearLayout[%1$s]/android.widget.TextView[%2$s]";
+		public static final String xpathGroupChatInfoLinearLayoutId = "//android.widget.GridView/android.widget.LinearLayout[%1$s]";
 		
-	}
-	
-	public static final class OtherUserPersonalInfoPage {
+		public static final String xpathGroupChatInfoContacts = "//android.widget.GridView/android.widget.LinearLayout[%1$s]/android.widget.TextView";
 		
-		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME + "$OtherUserPersonalInfoPage";
+		public static final String idParticipantsHeader = LOCATORS_PACKAGE + ":id/ttv__participants__header";
 		
-		public static final String idOtherUserPersonalInfoSingleMail = LOCATORS_PACKAGE + ":id/ttv__single_participants__sub_header";
-		
-		public static final String idOtherUserPersonalInfoName = LOCATORS_PACKAGE + ":id/ttv__participants__header";
-		
-		public static final String idOtherUserPersonalInfoMail = LOCATORS_PACKAGE + ":id/ttv__participants__sub_header";
+		public static final String idParticipantsSubHeader = LOCATORS_PACKAGE + ":id/ttv__participants__sub_header";
 		
 		public static final String idOtherUserPersonalInfoSingleName = LOCATORS_PACKAGE + ":id/ttv__single_participants__header";
 		
+		public static final String idOtherUserPersonalInfoSingleMail = LOCATORS_PACKAGE + ":id/ttv__single_participants__sub_header";
+		
 		public static final String idUserProfileConfirmationMenu = LOCATORS_PACKAGE + ":id/user_profile_confirmation_menu";
 		
-		public static final String idAddContactBtn = LOCATORS_PACKAGE + ":id/gtv__participants__left__action";
+		public static final String idLeftActionButton = LOCATORS_PACKAGE + ":id/gtv__participants__left__action";
 		
-		public static final String idBlockUserBtn = LOCATORS_PACKAGE + ":id/gtv__participants__right__action";
+		public static final String idRightActionButton = LOCATORS_PACKAGE + ":id/gtv__participants__right__action";
 		
 		public static final String idUnblockBtn = LOCATORS_PACKAGE + ":id/zb__connect_request__unblock_button";
 	}

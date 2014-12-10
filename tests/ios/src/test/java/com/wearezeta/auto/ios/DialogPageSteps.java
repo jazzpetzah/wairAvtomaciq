@@ -8,6 +8,8 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.BackEndREST;
+import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -35,6 +37,7 @@ public class DialogPageSteps {
 	private static final int SWIPE_DURATION = 1000;
 	private static String onlySpacesMessage="     ";
 	public static long memTime;
+	public String pingId;
 
 	@When("^I see dialog page$")
 	public void WhenISeeDialogPage() throws Throwable {
@@ -86,6 +89,34 @@ public class DialogPageSteps {
 		String pingagainmessage = IOSLocators.nameYouPingedAgainMessage;
 		String dialogLastMessage = PagesCollection.dialogPage.getLastChatMessage();
 		Assert.assertTrue("Actual: "+dialogLastMessage+" || Expected: "+pingagainmessage, dialogLastMessage.equals(pingagainmessage));
+	}
+	
+	@Then("^I see User (.*) Pinged message in the conversation$")
+	public void ISeeUserPingedMessageTheDialog(String user) throws Throwable {
+		String username = CommonUtils.retrieveRealUserContactPasswordValue(user);
+		String expectedPingMessage = username.toUpperCase() + " PINGED";
+		String dialogLastMessage;
+		if (PagesCollection.dialogPage != null){
+			dialogLastMessage = PagesCollection.dialogPage.getLastChatMessage();
+		}
+		else {
+			dialogLastMessage = PagesCollection.groupChatPage.getLastChatMessage();
+		}		
+		Assert.assertTrue("Actual: "+dialogLastMessage+" || Expected: "+expectedPingMessage, dialogLastMessage.equals(expectedPingMessage));
+	}
+	
+	@Then("^I see User (.*) Pinged Again message in the conversation$")
+	public void ISeeUserHotPingedMessageTheDialog(String user) throws Throwable {
+		String username = CommonUtils.retrieveRealUserContactPasswordValue(user);
+		String expectedPingMessage = username.toUpperCase() + " PINGED AGAIN";
+		String dialogLastMessage;
+		if (PagesCollection.dialogPage != null){
+			dialogLastMessage = PagesCollection.dialogPage.getLastChatMessage();
+		}
+		else {
+			dialogLastMessage = PagesCollection.groupChatPage.getLastChatMessage();
+		}
+		Assert.assertTrue("Actual: "+dialogLastMessage+" || Expected: "+expectedPingMessage, dialogLastMessage.equals(expectedPingMessage));
 	}
 
 	@When("^I type the message and send it$")
@@ -381,5 +412,49 @@ public class DialogPageSteps {
 	public void IScrollToIMageInDIalog() throws Throwable{
 		PagesCollection.dialogPage = PagesCollection.dialogPage.scrollToImage();
 	}
-
+	
+	@When("^User (.*) Ping in chat (.*) by BackEnd$")
+	public void UserPingInChatByBE(String contact, String conversationName) throws Exception{
+		ClientUser yourСontact = null;
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		for (ClientUser user : CommonUtils.contacts) {
+			if (user.getName().toLowerCase().equals(contact.toLowerCase())) {
+				yourСontact = user;
+			}
+		}
+		yourСontact = BackEndREST.loginByUser(yourСontact);
+		pingId = BackEndREST.sendPingToConversation(yourСontact, conversationName);
+		Thread.sleep(1000);
+	}
+	
+	@When("^User (.*) HotPing in chat (.*) by BackEnd$")
+	public void UserHotPingInChatByBE(String contact, String conversationName) throws Exception{
+		ClientUser yourСontact = null;
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		for (ClientUser user : CommonUtils.contacts) {
+			if (user.getName().toLowerCase().equals(contact.toLowerCase())) {
+				yourСontact = user;
+			}
+		}
+		yourСontact = BackEndREST.loginByUser(yourСontact);
+		BackEndREST.sendHotPingToConversation(yourСontact, conversationName,pingId);
+		Thread.sleep(1000);
+	}
+	
+	@Then("^I see (.*) icon in conversation$")
+	public void ThenIseeIcon(String iconLabel) throws IOException, InterruptedException{
+		double score;
+		if (PagesCollection.dialogPage != null){
+			PagesCollection.dialogPage.waitPingAnimation();
+			score = PagesCollection.dialogPage.checkPingIcon(iconLabel);
+		}
+		else {
+			PagesCollection.groupChatPage.waitPingAnimation();
+			score = PagesCollection.groupChatPage.checkPingIcon(iconLabel);
+		}
+		Assert.assertTrue(
+				"Overlap between two images has not enough score. Expected >= 0.75, current = " + score,
+				score >= 0.75d);
+	}
+			
 }

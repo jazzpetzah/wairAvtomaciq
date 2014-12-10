@@ -391,4 +391,21 @@ public class ConversationPageSteps {
 		 boolean isVisible = CommonSteps.senderPages.getConversationPage().isMediaBarVisible();
 		 Assert.assertFalse("Media bar is still visible", isVisible);
 	 }
+	 
+	 @When("I count number of images in conversation")
+	 public void ICountNumberOfImagesInConversation() {
+		 beforeNumberOfImages =
+				 CommonSteps.senderPages.getConversationPage()
+				 		.getNumberOfImageEntries();
+	 }
+	 
+	 @When("I open Documents folder in Finder")
+	 public void IOpenDocumentsFolderInFinder() {
+		 CommonSteps.senderPages.getConversationPage().openFinder();
+	 }
+	
+	 @When("I drag picture (.*) to conversation")
+	 public void IDragPictureToConversation(String picture) throws IOException {
+		 CommonSteps.senderPages.getConversationPage().dragPictureToConversation(picture);
+	 }
 }

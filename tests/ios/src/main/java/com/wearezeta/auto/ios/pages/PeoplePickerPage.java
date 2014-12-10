@@ -226,9 +226,20 @@ public class PeoplePickerPage extends IOSPage{
 		peoplePickerSearch.sendKeys(Keys.DELETE);
 	}
 	
+	public void goIntoConversation(){
+		peoplePickerSearch.sendKeys("\n");
+	}
+	
 	public GroupChatPage clickAddToCoversationButton() throws Throwable{
 		addToConversationBtn.click();
 		return new GroupChatPage(url, path);
+	}
+
+	public OtherUserOnPendingProfilePage clickOnUserOnPending(String contact) throws Exception {
+		OtherUserOnPendingProfilePage page;
+		driver.findElement(By.name(contact)).click();
+		page = new OtherUserOnPendingProfilePage(url, path);
+		return page;
 	}
 
 }

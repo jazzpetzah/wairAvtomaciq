@@ -1,7 +1,5 @@
 package com.wearezeta.auto.android;
 
-import java.util.List;
-
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
@@ -24,9 +22,7 @@ public class PeoplePickerPageSteps {
 	
 	@When("^I tap on create conversation$")
 	public void WhenITapOnCreateConversation() throws Throwable {
-	   List<AndroidPage> list = PagesCollection.peoplePickerPage.tapCreateConversation();
-	   PagesCollection.dialogPage = (DialogPage) list.get(0);
-	   PagesCollection.groupChatPage = (GroupChatPage) list.get(1);
+	   PagesCollection.dialogPage = (DialogPage) PagesCollection.peoplePickerPage.tapCreateConversation();;
 	}
 	
 	@When("^I press Clear button$")
@@ -112,7 +108,7 @@ public class PeoplePickerPageSteps {
 	
 	@When("^I click on Add to conversation button$")
 	public void WhenIClickOnAddToConversationButton() throws Exception{
-		PagesCollection.groupChatPage = (GroupChatPage)PagesCollection.peoplePickerPage.clickOnAddToCoversationButton();
+		PagesCollection.dialogPage = (DialogPage) PagesCollection.peoplePickerPage.clickOnAddToCoversationButton();
 	}
 	
 	@Then("^I see user (.*)  in People picker$")

@@ -158,3 +158,25 @@ Feature: Connect
     Examples: 
       | Login   | Password    | Name    | SentRequests | NotConnectedUser |
       | aqaUser | aqaPassword | aqaUser | 3            | yourNotContact1  |
+
+  @staging @id1404
+  Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (Search)
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I swipe down contact list
+    And I see People picker page
+    And I input in People picker search field user name <Contact>
+    And I see user <Contact> found on People picker page
+    And I tap on NOT connected user name on People picker page <Contact>
+    And I see connect to <Contact> dialog
+    And I click Connect button on connect to dialog
+    And I see People picker page
+    And I see user <Contact> found on People picker page
+    And I tap on user on pending name on People picker page <Contact>
+    And I see <Contact> user pending profile page
+    And I click on start conversation button on pending profile page
+    And I see <Contact> user pending profile page
+
+    Examples: 
+      | Login   | Password    | Name    | Contact         |
+      | aqaUser | aqaPassword | aqaUser | yourNotContact5 |
