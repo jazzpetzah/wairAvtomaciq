@@ -2,6 +2,7 @@ Feature: People View
 
   @smoke @id1393
   Scenario Outline: Start group chat with users from contact list
+    Given I have 1 users and 2 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
@@ -48,6 +49,7 @@ Feature: People View
 #conflicting with other contacts in contact list
   @smoke @id1389
   Scenario Outline: Leave from group chat
+    Given I have 1 users and 2 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
@@ -66,6 +68,7 @@ Feature: People View
 
   @smoke @id1390
   Scenario Outline: Remove from group chat
+    Given I have 1 users and 2 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
@@ -97,6 +100,7 @@ Feature: People View
 
   @smoke @id1406
   Scenario Outline: I can edit the conversation name
+    Given I have 1 users and 2 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>

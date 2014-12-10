@@ -8,14 +8,14 @@ import org.json.JSONException;
 
 public class TestPreparation {
 
-	public static void createContactLinks() throws IOException,
+	public static void createContactLinks(int linkedUsers) throws IOException,
 	InterruptedException, IllegalArgumentException,
 	UriBuilderException, JSONException, BackendRequestException {
 		for (ClientUser yourUser : CommonUtils.yourUsers) {
 			yourUser = BackEndREST.loginByUser(yourUser);
 			yourUser = BackEndREST.getUserInfo(yourUser);
 		}
-		for(int i = 0; i<3; i++){
+		for(int i = 0; i<linkedUsers; i++){
 			for (ClientUser contact : CommonUtils.contacts) {
 				BackEndREST.autoTestSendRequest(contact,
 						CommonUtils.yourUsers.get(i));

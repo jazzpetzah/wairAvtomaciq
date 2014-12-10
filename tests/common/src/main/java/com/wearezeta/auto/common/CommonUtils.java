@@ -158,26 +158,30 @@ public class CommonUtils {
 		} else {
 			Map<String, String> replacementMap = new LinkedHashMap<String, String>();
 			if (yourUsers.size() > 0) {
-				replacementMap.put(YOUR_USER_1, yourUsers.get(0).getName());
-				replacementMap.put(YOUR_USER_2, yourUsers.get(1).getName());
-				replacementMap.put(YOUR_USER_3, yourUsers.get(2).getName());
-				replacementMap.put(YOUR_USER_4, yourUsers.get(3).getName());
-				replacementMap.put(YOUR_USER_5, yourUsers.get(4).getName());
-				replacementMap.put(YOUR_USER_6, yourUsers.get(5).getName());
-				replacementMap.put(YOUR_USER_7, yourUsers.get(6).getName());
-				replacementMap.put(YOUR_USER_8, yourUsers.get(7).getName());
-				replacementMap.put(YOUR_USER_9, yourUsers.get(8).getName());
-				replacementMap.put(YOUR_USER_10, yourUsers.get(9).getName());
-				replacementMap.put(YOUR_USER_11, yourUsers.get(10).getName());
-				replacementMap.put(YOUR_PASS, yourUsers.get(0).getPassword());
+				try {
+					replacementMap.put(YOUR_USER_1, yourUsers.get(0).getName());
+					replacementMap.put(YOUR_PASS, yourUsers.get(0).getPassword());
+					replacementMap.put(YOUR_USER_2, yourUsers.get(1).getName());
+					replacementMap.put(YOUR_USER_3, yourUsers.get(2).getName());
+					replacementMap.put(YOUR_USER_4, yourUsers.get(3).getName());
+					replacementMap.put(YOUR_USER_5, yourUsers.get(4).getName());
+					replacementMap.put(YOUR_USER_6, yourUsers.get(5).getName());
+					replacementMap.put(YOUR_USER_7, yourUsers.get(6).getName());
+					replacementMap.put(YOUR_USER_8, yourUsers.get(7).getName());
+					replacementMap.put(YOUR_USER_9, yourUsers.get(8).getName());
+					replacementMap.put(YOUR_USER_10, yourUsers.get(9).getName());
+					replacementMap.put(YOUR_USER_11, yourUsers.get(10).getName());
+				} catch (ArrayIndexOutOfBoundsException e) { }
 			}
 			if (contacts.size() > 0) {
-				replacementMap.put(CONTACT_1, contacts.get(0).getName());
-				replacementMap.put(CONTACT_2, contacts.get(1).getName());
-				replacementMap.put(CONTACT_3, contacts.get(2).getName());
-				replacementMap.put(CONTACT_4, CONTACT_PICTURE_NAME);
-				replacementMap.put(CONTACT_5, CONTACT_AVATAR_NAME);
-				replacementMap.put(CONTACT_6, contacts.get(3).getName());
+				try {
+					replacementMap.put(CONTACT_1, contacts.get(0).getName());
+					replacementMap.put(CONTACT_2, contacts.get(1).getName());
+					replacementMap.put(CONTACT_3, contacts.get(2).getName());
+					replacementMap.put(CONTACT_4, CONTACT_PICTURE_NAME);
+					replacementMap.put(CONTACT_5, CONTACT_AVATAR_NAME);
+					replacementMap.put(CONTACT_6, contacts.get(3).getName());
+				} catch (ArrayIndexOutOfBoundsException e) { }
 			}
 			// TODO: Magic strings
 			replacementMap.put("aqaPictureContactEmail", CONTACT_PICTURE_EMAIL);
@@ -237,6 +241,11 @@ public class CommonUtils {
 		return getValueFromConfig(c, "defaultImagesPath");
 	}
 
+	public static String getIsOldWayUsersGeneration(Class<?> c) throws IOException {
+		String users = getValueFromConfig(c, "oldWayUsersGeneration");
+		return users;
+	}
+	
 	public static String getResultImagePath(Class<?> c) throws IOException {
 		String path = getValueFromConfig(c, "defaultImagesPath")
 				+ RESULT_USER_IMAGE;
@@ -398,27 +407,39 @@ public class CommonUtils {
 	private static void generateAdditionalContacts() {
 		// insert values of the contact in
 		// "CommonUtils.retrieveRealUserContactPasswordValue" first
+		Map<String, String> names = new HashMap<String, String>();
+		names.put("aqaPictureContactEmail", CONTACT_PICTURE_NAME);
+		names.put("aqaAvatarTestContactEmail", CONTACT_AVATAR_NAME);
+		
 		Map<String, String> creds = new HashMap<String, String>();
 		creds.put("aqaPictureContactEmail", "aqaPictureContactPassword");
 		creds.put("aqaAvatarTestContactEmail", "aqaAvatarTestContactPassword");
+		
 		for (Map.Entry<String, String> entry : creds.entrySet()) {
 			ClientUser user = new ClientUser();
 			user.setEmail(CommonUtils
 					.retrieveRealUserContactPasswordValue(entry.getKey()));
+			user.setName(names.get(entry.getKey()));
 			user.setPassword(CommonUtils
 					.retrieveRealUserContactPasswordValue(entry.getValue()));
 			user.setUserState(UsersState.Created);
 			contacts.add(user);
 		}
 	}
-
-	public static void generateUsers(int contactNumber) throws IOException,
+	
+	public static void generateUsers(int contactsNumber) throws IOException,
 			MessagingException, IllegalArgumentException, UriBuilderException,
 			JSONException, BackendRequestException, InterruptedException {
+		generateUsers(USERS_COUNT, contactsNumber);
+	}
+
+	public static void generateUsers(int usersNumber, int contactsNumber)throws IOException,
+	MessagingException, IllegalArgumentException, UriBuilderException,
+	JSONException, BackendRequestException, InterruptedException {
 		ExecutorService executor = Executors
 				.newFixedThreadPool(MAX_PARALLEL_USER_CREATION_TASKS);
-		for (int i = 0; i < USERS_COUNT + contactNumber; i++) {
-			final boolean isContact = (i >= USERS_COUNT);
+		for (int i = 0; i < usersNumber + contactsNumber; i++) {
+			final boolean isContact = (i >= usersNumber);
 			Runnable worker = new Thread(new Runnable() {
 				public void run() {
 					boolean doRetry = true;
@@ -462,7 +483,7 @@ public class CommonUtils {
 							"The backend has failed to prepare predefined users within %d seconds timeout",
 							USERS_CREATION_TIMEOUT));
 		}
-		if (yourUsers.size() != USERS_COUNT || contacts.size() != contactNumber) {
+		if (yourUsers.size() != usersNumber || contacts.size() != contactsNumber) {
 			throw new BackendRequestException(
 					"Failed to create new users or contacts on the backend");
 		}

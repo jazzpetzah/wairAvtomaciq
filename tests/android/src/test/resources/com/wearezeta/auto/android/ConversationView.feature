@@ -2,6 +2,7 @@ Feature: Conversation View
 
   @id316 @smoke
   Scenario Outline: Send Message to contact
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>

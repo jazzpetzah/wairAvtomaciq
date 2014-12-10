@@ -2,6 +2,7 @@ Feature: Connect
 
   @smoke @id576
   Scenario Outline: Send invitation message to a user
+    Given I have 2 users and 0 contacts for 0 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe down contact list
@@ -24,6 +25,7 @@ Feature: Connect
 
   @smoke @id585
   Scenario Outline: Get invitation message from user
+    Given I have 2 users and 0 contacts for 0 users
     Given I have connection request from <Contact>
     And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -36,7 +38,7 @@ Feature: Connect
 
     Examples: 
       | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | yourContact |
+      | aqaUser | aqaPassword | aqaUser | yourUser    |
 
   @staging @id576
   Scenario Outline: Send connection request to unconnected participant in a group chat
