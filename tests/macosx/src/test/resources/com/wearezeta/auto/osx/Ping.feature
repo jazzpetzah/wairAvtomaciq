@@ -1,6 +1,6 @@
 Feature: Ping
 
-  @id1290 @regression
+  @torun @id1290 @regression
   Scenario Outline: Ping group chat
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
