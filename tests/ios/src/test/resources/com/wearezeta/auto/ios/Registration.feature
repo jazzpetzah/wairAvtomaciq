@@ -1,24 +1,24 @@
 Feature: Registration
 
-  @mute @smoke @id276
-  Scenario Outline: Register new user using front camera (Real Device)
-    Given I see sign in screen
-    When I press Join button
-    And I dismiss Vignette overlay
-    And I take photo by front camera
-    And I See photo taken
-    And I confirm selection
-    And I input name <Name> and hit Enter
-    And I input email <Email> and hit Enter
-    And I input password <Password> and hit Enter
-    Then I see confirmation page
-    And I verify registration address
-    And I press continue registration
-    And I see Contact list with my name <Name>
+  #@smoke @id276
+  #Scenario Outline: Register new user using front camera (Real Device)
+    #Given I see sign in screen
+    #When I press Join button
+    #And I dismiss Vignette overlay
+    #And I take photo by front camera
+    #And I See photo taken
+    #And I confirm selection
+    #And I input name <Name> and hit Enter
+    #And I input email <Email> and hit Enter
+    #And I input password <Password> and hit Enter
+    #Then I see confirmation page
+    #And I verify registration address
+    #And I press continue registration
+    #And I see Contact list with my name <Name>
 
-    Examples: 
-      | Email   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |
+    #Examples: 
+      #| Email   | Password    | Name    |
+      #| aqaUser | aqaPassword | aqaUser |
 
   @regression @id304
   Scenario Outline: Attempt to register an email with spaces
@@ -126,24 +126,24 @@ Feature: Registration
       | Email   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |
 
-  @staging @id288
-  Scenario Outline: Switch between vignette overlay and full color (Real Device)
-    Given I see sign in screen
-    When I press Join button
-    And I dismiss Vignette overlay
-    And I take photo by front camera
-    And I confirm selection
-    And I click Back button
-    And I see Vignette overlay
-    And I dismiss Vignette overlay
-    And I don't see Vignette overlay
-    And I see full color mode
-    And I click close full color mode button
-    Then I see Vignette overlay
+  #@staging @id288
+  #Scenario Outline: Switch between vignette overlay and full color (Real Device)
+    #Given I see sign in screen
+    #When I press Join button
+    #And I dismiss Vignette overlay
+    #And I take photo by front camera
+    #And I confirm selection
+    #And I click Back button
+    #And I see Vignette overlay
+    #And I dismiss Vignette overlay
+    #And I don't see Vignette overlay
+    #And I see full color mode
+    #And I click close full color mode button
+    #Then I see Vignette overlay
 
-    Examples: 
-      | Email   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |
+    #Examples: 
+      #| Email   | Password    | Name    |
+      #| aqaUser | aqaPassword | aqaUser |
 
   @regression @id286
   Scenario Outline: Take or select a photo label validation
@@ -169,20 +169,20 @@ Feature: Registration
       | Email   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |
 
-  @staging @id285
-  Scenario Outline: Take or select a photo label not visible when picture is selected (Real Device)
-    Given I see sign in screen
-    When I press Join button
-    And I press Camera button on Registration page
-    And I click Vignette overlay
-    And I take photo by front camera
-    And I confirm selection
-    And I click Back button
-    Then I don't see Take or select photo label and smile
+  #@staging @id285
+  #Scenario Outline: Take or select a photo label not visible when picture is selected (Real Device)
+    #Given I see sign in screen
+    #When I press Join button
+    #And I press Camera button on Registration page
+    #And I click Vignette overlay
+    #And I take photo by front camera
+    #And I confirm selection
+    #And I click Back button
+    #Then I don't see Take or select photo label and smile
 
-    Examples: 
-      | Email   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |
+    #Examples: 
+      #| Email   | Password    | Name    |
+      #| aqaUser | aqaPassword | aqaUser |
 
   @regression @id273
   Scenario Outline: Next Button should not be visible on first registration step visit
@@ -225,23 +225,23 @@ Feature: Registration
       | Email   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |
 
-  @staging @id275
-  Scenario Outline: Register new user using rear camera (Real Device)
-    Given I see sign in screen
-    When I press Join button
-    And I dismiss Vignette overlay
-    And I take photo by rear camera
-    And I confirm selection
-    And I input name <Name> and hit Enter
-    And I input email <Email> and hit Enter
-    And I input password <Password> and hit Enter
-    And I see confirmation page
-    And I verify registration address
-    And Contact list loads with only my name
+  #@staging @id275
+  #Scenario Outline: Register new user using rear camera (Real Device)
+    #Given I see sign in screen
+    #When I press Join button
+    #And I dismiss Vignette overlay
+    #And I take photo by rear camera
+    #And I confirm selection
+    #And I input name <Name> and hit Enter
+    #And I input email <Email> and hit Enter
+    #And I input password <Password> and hit Enter
+    #And I see confirmation page
+    #And I verify registration address
+    #And Contact list loads with only my name
 
-    Examples: 
-      | Email   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |
+    #Examples: 
+      #| Email   | Password    | Name    |
+      #| aqaUser | aqaPassword | aqaUser |
 
   @regression @id305
   Scenario Outline: Minimum 8 chars password requirement validation
@@ -260,52 +260,52 @@ Feature: Registration
       | Email   | Password | Name    |
       | aqaUser | 1234567  | aqaUser |
 
-  @staging @id281
-  Scenario Outline: Change selected image during registratrion (Real Device)
-    Given I see sign in screen
-    When I press Join button
-    And I press Picture button
-    And I choose a picture from camera roll
-    And I See selected picture
-    And I reject selected picture
-    And I see Take or select photo label and smile
-    And I press Picture button
-    And I choose photo from album
-    And I See selected picture
-    And I confirm selection
-    And I click Back button
-    And I see selected image set as background
-    And I dismiss Vignette overlay
-    And I take photo by front camera
-    And I See photo taken
-    And I confirm selection
-    And I see photo set as background
-    Then I see background image is replaced
+  #@staging @id281
+  #Scenario Outline: Change selected image during registratrion (Real Device)
+    #Given I see sign in screen
+    #When I press Join button
+    #And I press Picture button
+    #And I choose a picture from camera roll
+    #And I See selected picture
+    #And I reject selected picture
+    #And I see Take or select photo label and smile
+    #And I press Picture button
+    #And I choose photo from album
+    #And I See selected picture
+    #And I confirm selection
+    #And I click Back button
+    #And I see selected image set as background
+    #And I dismiss Vignette overlay
+    #And I take photo by front camera
+    #And I See photo taken
+    #And I confirm selection
+    #And I see photo set as background
+    #Then I see background image is replaced
 
-    Examples: 
-      | Email   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |
+    #Examples: 
+      #| Email   | Password    | Name    |
+      #| aqaUser | aqaPassword | aqaUser |
 
-  @staging @id287
-  Scenario Outline: Verify photo made by rear camera during registration is not flipped (Real Device)
-    Given I see sign in screen
-    When I press Join button
-    And I dismiss Vignette overlay
-    And I take photo by rear camera
-    And I confirm selection
-    And I input name <Name> and hit Enter
-    And I input email <Email> and hit Enter
-    And I input password <Password> and hit Enter
-    And I see confirmation page
-    And I verify registration address
-    And Contact list loads with only my name
-    And I tap on my name <Name>
-    And I tap on personal screen
-    Then I see profile image is same as template
+  #@staging @id287
+  #Scenario Outline: Verify photo made by rear camera during registration is not flipped (Real Device)
+    #Given I see sign in screen
+    #When I press Join button
+    #And I dismiss Vignette overlay
+    #And I take photo by rear camera
+    #And I confirm selection
+    #And I input name <Name> and hit Enter
+    #And I input email <Email> and hit Enter
+    #And I input password <Password> and hit Enter
+    #And I see confirmation page
+    #And I verify registration address
+    #And Contact list loads with only my name
+    #And I tap on my name <Name>
+    #And I tap on personal screen
+    #Then I see profile image is same as template
 
-    Examples: 
-      | Email   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |
+    #Examples: 
+      #| Email   | Password    | Name    |
+      #| aqaUser | aqaPassword | aqaUser |
 
   @staging @id298
   Scenario Outline: Can re-send verification email from verification screen

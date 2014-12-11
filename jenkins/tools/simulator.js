@@ -35,7 +35,7 @@ var wrapInArray = function (res) {
 };
 
 var rmrf = function (delPath, cb) {
-  exec("rm -rf " + delPath, function (err) {
+  exec("rm -rf '" + delPath + "'", function (err) {
     cb(err);
   });
 };
@@ -45,12 +45,16 @@ var safeRimRafSync = function (delPath, tries) {
   try {
     rimraf.sync(delPath);
   } catch (e) {
-    if (e.message.indexOf("ENOTEMPTY") !== -1 && tries < 20) {
-      logger.debug("Path " + delPath + " was not empty during delete; retrying");
-      safeRimRafSync(delPath, tries + 1);
-    } else {
-      throw e;
+    if (tries < 20) {
+      if (e.message.indexOf("ENOTEMPTY") !== -1) {
+        logger.debug("Path " + delPath + " was not empty during delete; retrying");
+        return safeRimRafSync(delPath, tries + 1);
+      } else if (e.message.indexOf("ENOENT") !== -1) {
+        logger.debug("Path " + delPath + " didn't exist when we tried to delete, ignoring");
+        return safeRimRafSync(delPath, tries + 1);
+      }
     }
+    throw e;
   }
 };
 
@@ -225,7 +229,7 @@ Simulator.prototype.cleanSafari = function (keepPrefs, cb) {
     'Caches/Snapshots/com.apple.mobilesafari'
     , 'Caches/com.apple.mobilesafari/Cache.db*'
     , 'Caches/com.apple.WebAppCache/*.db'
-    , 'Safari/*.plist'
+    , 'Safari'
     , 'WebKit/LocalStorage/*.*'
     , 'WebKit/GeolocationSites.plist'
     , 'Cookies/*.binarycookies'
@@ -300,6 +304,7 @@ Simulator.prototype.cleanSim = function (keepKeychains, tempDir, cb) {
 
 
   var cleanSimVLessThanEight = function (keepKeychains, cb) {
+    cb = _.once(cb);
     if (!this.dirsExist()) {
       logger.info("Couldn't find support directories to clean out old " +
                   "data. Probably there's nothing to clean out");
@@ -308,7 +313,8 @@ Simulator.prototype.cleanSim = function (keepKeychains, tempDir, cb) {
     var toDeletes = [
       'Library/TCC',
       'Library/Caches/locationd',
-      'Library/BackBoard/applicationState.plist'
+      'Library/BackBoard/applicationState.plist',
+      'Media'
     ];
     if (!keepKeychains) {
       toDeletes.push('Library/Keychains');
@@ -317,7 +323,11 @@ Simulator.prototype.cleanSim = function (keepKeychains, tempDir, cb) {
       _.each(toDeletes, function (relRmPath) {
         var rmPath = path.resolve(simDir, relRmPath);
         logger.debug("Deleting " + rmPath);
-        safeRimRafSync(rmPath);
+        try {
+          safeRimRafSync(rmPath);
+        } catch (e) {
+          cb(e);
+        }
       });
     });
 
@@ -342,6 +352,45 @@ Simulator.prototype.cleanSim = function (keepKeychains, tempDir, cb) {
     }
     return cb();
   }.bind(this);
+
+
+  /*var cleanSimVEight = function (keepKeychains, tempDir, cb) {
+
+    var base = path.resolve(this.getRootDir(), this.udid, "data");
+    var keychainPath = path.resolve(base, "Library", "Keychains");
+    var tempKeychainPath = path.resolve(tempDir, "simkeychains_" + this.udid);
+
+    var removeKeychains = _.partial(ncp, keychainPath, tempKeychainPath);
+
+    var returnKeychains = function (err, cb) {
+      if (err) {
+        return cb(err);
+      }
+      mkdirp(keychainPath, function (err) {
+        if (err) { return cb(err); }
+        ncp(tempKeychainPath, keychainPath, cb);
+      });
+    };
+
+    var performWhileSavingKeychains = function (enclosed, cb) {
+      async.waterfall([
+        removeKeychains,
+        enclosed,
+        returnKeychains
+      ], cb);
+    };
+
+    var cleanSim = _.partial(Simctl.erase, this.udid);
+
+    if (keepKeychains) {
+      logger.debug("Resetting simulator and saving Keychains");
+      performWhileSavingKeychains(cleanSim, cb);
+    } else {
+      cleanSim(cb);
+    }
+
+  }.bind(this);
+*/
 
 //begin patch
   var cleanSimVEight = function (keepKeychains, tempDir, cb) {
@@ -390,45 +439,6 @@ Simulator.prototype.cleanSim = function (keepKeychains, tempDir, cb) {
 
 //end patch
 
-/*
-  var cleanSimVEight = function (keepKeychains, tempDir, cb) {
-
-    var base = path.resolve(this.getRootDir(), this.udid, "data");
-    var keychainPath = path.resolve(base, "Library", "Keychains");
-    var tempKeychainPath = path.resolve(tempDir, "simkeychains_" + this.udid);
-
-    var removeKeychains = _.partial(ncp, keychainPath, tempKeychainPath);
-
-    var returnKeychains = function (err, cb) {
-      if (err) {
-        return cb(err);
-      }
-      mkdirp(keychainPath, function (err) {
-        if (err) { return cb(err); }
-        ncp(tempKeychainPath, keychainPath, cb);
-      });
-    };
-
-    var performWhileSavingKeychains = function (enclosed, cb) {
-      async.waterfall([
-        removeKeychains,
-        enclosed,
-        returnKeychains
-      ], cb);
-    };
-
-    var cleanSim = _.partial(Simctl.erase, this.udid);
-
-    if (keepKeychains) {
-      logger.debug("Resetting simulator and saving Keychains");
-      performWhileSavingKeychains(cleanSim, cb);
-    } else {
-      cleanSim(cb);
-    }
-
-  }.bind(this);
-
-*/
 
   if (this.sdkVer >= 8) {
     cleanSimVEight(keepKeychains, tempDir, cb);
@@ -548,7 +558,11 @@ Simulator.prototype.deleteSim = function (cb) {
   var deleteSimLessThanVEight = function (cb) {
     var root = this.getRootDir();
     logger.debug("Deleting simulator folder: " + root);
-    safeRimRafSync(root);
+    try {
+      safeRimRafSync(root);
+    } catch (e) {
+      return cb(e);
+    }
     cb();
   }.bind(this);
 
