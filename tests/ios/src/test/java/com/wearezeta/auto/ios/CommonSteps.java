@@ -75,13 +75,15 @@ public class CommonSteps {
 	private static boolean oldWayUsersGeneration = false;
 	
 	private void commonBefore() throws Exception {
-		try {
-			String[] picturepath = new String[] {CommonUtils.getUserPicturePathFromConfig(CommonSteps.class)};
-			IOSSimulatorPhotoLibHelper.CreateSimulatorPhotoLib("8.0", picturepath, true);
-		}
-		catch(Exception ex){
-			ex.printStackTrace();
-			log.error("Failed to deploy pictures into simulator.\n" + ex.getMessage());
+		if (CommonUtils.getIsSimulatorFromConfig(CommonSteps.class)) {
+			try {
+				String[] picturepath = new String[] {CommonUtils.getUserPicturePathFromConfig(CommonSteps.class)};
+				IOSSimulatorPhotoLibHelper.CreateSimulatorPhotoLib("8.0", picturepath, true);
+			}
+			catch(Exception ex){
+				ex.printStackTrace();
+				log.error("Failed to deploy pictures into simulator.\n" + ex.getMessage());
+			}
 		}
 		
 		boolean generateUsersFlag = Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class));

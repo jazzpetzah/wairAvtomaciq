@@ -139,6 +139,9 @@ public class DialogPageSteps{
 	
 	@When("^I swipe up on dialog page$")
 	public void WhenISwipeUpOnDialogPage() throws Exception{
+		if(PagesCollection.dialogPage == null){
+			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
+		}
 		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.dialogPage.swipeUp(1000);
 	}
 	
@@ -173,13 +176,7 @@ public class DialogPageSteps{
 	//------- From Group Chat Page
 	public static final String userRemovedMessage = "YOU REMOVED ";
 
-	@When("^I swipe up on group dialog page$")
-	public void WhenISwipeUpOnGroupDialogPage() throws Throwable {
-		PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
-		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.dialogPage.swipeUp(500);
-	}
-
-	@When("^I swipe right on group dialog page$")
+	@When("^I swipe right on dialog page$")
 	public void WhenISwipeRightOnGroupDialogPage() throws Throwable {
 		PagesCollection.contactListPage = (ContactListPage) PagesCollection.dialogPage.swipeRight(500);
 	}
@@ -206,10 +203,5 @@ public class DialogPageSteps{
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact).toUpperCase();
 		
 		Assert.assertTrue(PagesCollection.dialogPage.isMessageExists(message + " " + contact));	
-	}
-
-	@Then("^I navigate back from group chat page$")
-	public void ThenINavigateBackFromGroupChatPage() throws Exception{
-		PagesCollection.contactListPage = (ContactListPage) PagesCollection.dialogPage.navigateBack();
 	}
 }

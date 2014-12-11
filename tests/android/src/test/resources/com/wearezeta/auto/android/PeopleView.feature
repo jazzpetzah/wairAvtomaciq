@@ -7,7 +7,7 @@ Feature: People View
     And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <GroupChatName>
-    And I swipe up on group dialog page
+    And I swipe up on dialog page
     And I tap on group chat contact <Contact1>
     Then I see <Contact1> user name and email
     And I see correct background image
@@ -43,7 +43,7 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on contact name <GroupChatName>
     And I see dialog page
-    And I swipe up on group dialog page
+    And I swipe up on dialog page
     And I press Leave conversation button
     And I confirm leaving
     Then I see Contact list with my name <Name>
@@ -60,7 +60,7 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on contact name <GroupChatName>
     And I see dialog page
-    And I swipe up on group dialog page
+    And I swipe up on dialog page
     And I tap on group chat contact <Contact2>
     And I click Remove
     And I confirm remove
@@ -72,14 +72,14 @@ Feature: People View
       | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName       | Message     |
       | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | RemoveFromGroupChat | YOU REMOVED |
 
-  @regression @id594 
+  @regression @id594
   Scenario Outline: Verify correct group info page information
     Given I have 1 users and 0 contacts for 0 users
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <GroupChatName>
-    And I swipe up on group dialog page
+    And I swipe up on dialog page
     Then I see that the conversation name is <GroupChatName>
     And I see the correct number of participants in the title <ParticipantNumber>
     And I see the correct participant <Contact1> and <Contact2> avatars

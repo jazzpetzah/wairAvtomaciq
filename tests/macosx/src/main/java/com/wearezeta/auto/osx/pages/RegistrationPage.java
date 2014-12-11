@@ -83,7 +83,7 @@ public class RegistrationPage extends OSXPage {
 	}
 	
 	public boolean isConfirmationRequested() {
-		return DriverUtils.waitUntilElementAppears(driver, By.id(OSXLocators.idConfirmationRequestedText));
+		return DriverUtils.waitUntilElementAppears(driver, By.id(OSXLocators.idConfirmationRequestedText), 60);
 	}
 	
 	public boolean isInvalidEmailMessageAppear() {
