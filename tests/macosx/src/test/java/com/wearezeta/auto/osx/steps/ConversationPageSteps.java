@@ -186,8 +186,26 @@ public class ConversationPageSteps {
 
 	 @Then("^I see User (.*) Pinged message in the conversation$")
 	 public void ThenISeeUserPingedMessageInTheConversation(String user) throws Throwable {
-	   
-	 }
+		 String username = CommonUtils.retrieveRealUserContactPasswordValue(user);
+		 String expectedPingMessage = username.toUpperCase() + OSXLocators.USER_PINGED_MESSAGE;
+		 String dialogLastMessage = username.toUpperCase() + " PINGED";
+		 
+		 if (dialogLastMessage.equals(expectedPingMessage)) {
+			 boolean isNumberIncreased = false;
+			 int afterNumberOfKnocks = -1;
+			 for (int i = 0; i < 3; i++) {
+				 afterNumberOfKnocks = CommonSteps.senderPages.getConversationPage().getNumberOfYouPingedMessages(OSXLocators.xpathYouPingedMessage);
+				 if (afterNumberOfKnocks == beforeNumberOfKnocks + 1) {
+					 isNumberIncreased = true;
+					 break;
+				 }
+				 try { Thread.sleep(1000); } catch (InterruptedException e) { }
+			 }
+			 
+			 Assert.assertTrue("Incorrect messages count: before - "
+					 + beforeNumberOfKnocks + ", after - " + afterNumberOfKnocks, isNumberIncreased);
+		 }
+	}
 
 	 @When("^User (.*) pings again in chat (.*)$")
 	 public void WhenUserPingsAgainInChat(String contact, String conversation) throws Throwable {

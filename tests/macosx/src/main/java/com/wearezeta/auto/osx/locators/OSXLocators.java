@@ -65,6 +65,8 @@ public final class OSXLocators {
 	
 	public static final String YOU_PINGED_MESSAGE = "YOU PINGED";
 	public static final String YOU_PINGED_AGAIN_MESSAGE = "YOU PINGED AGAIN";
+	public static final String USER_PINGED_MESSAGE = "PINGED";
+	public static final String USER_PINGED_AGAIN_MESSAGE = "PINGED AGIAN";
 	public static final String YOU_ADDED_MESSAGE = "YOU ADDED";
 	public static final String YOU_REMOVED_MESSAGE = "YOU REMOVED";
 	public static final String CONNECTED_TO_MESSAGE = "CONNECTED TO";
