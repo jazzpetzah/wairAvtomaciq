@@ -45,6 +45,7 @@ Feature: Search
 
   @id225 @regression
   Scenario Outline: I can do partial name search for existing group convo(non-archive)
+    Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -60,6 +61,7 @@ Feature: Search
 
   @id327 @smoke
   Scenario Outline: Open/Close People picker
+    Given I have 1 users and 0 contacts for 0 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe down contact list

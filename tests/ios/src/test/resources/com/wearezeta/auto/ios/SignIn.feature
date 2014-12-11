@@ -2,6 +2,7 @@ Feature: Sign In
 
   @smoke @id340
   Scenario Outline: Sign in to ZClient
+    Given I have 1 users and 0 contacts for 0 users
     Given I see sign in screen
     When I press Sign in button
     And I have entered login <Login>
@@ -33,6 +34,7 @@ Feature: Sign In
   #Muted due to missing notification support from sync engine
   @regression @id1398
   Scenario Outline: Notification if SignIn credentials are wrong
+  	Given I have 1 users and 0 contacts for 0 users
     Given I see sign in screen
     When I press Sign in button
     And I enter wrong email <WrongMail>

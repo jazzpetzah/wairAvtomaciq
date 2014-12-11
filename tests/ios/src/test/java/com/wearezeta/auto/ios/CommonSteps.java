@@ -3,11 +3,17 @@ package com.wearezeta.auto.ios;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import javax.mail.MessagingException;
+import javax.ws.rs.core.UriBuilderException;
 
 import org.apache.log4j.Logger;
+import org.json.JSONException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.BackEndREST;
+import com.wearezeta.auto.common.BackendRequestException;
 import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.CreateZetaUser;
@@ -66,24 +72,29 @@ public class CommonSteps {
 	private static boolean isFirstRun = true;
 	private static boolean isFirstRunPassed = false;
 	
+	private static boolean oldWayUsersGeneration = false;
+	
 	private void commonBefore() throws Exception {
-		try {
-			String[] picturepath = new String[] {CommonUtils.getUserPicturePathFromConfig(CommonSteps.class)};
-			IOSSimulatorPhotoLibHelper.CreateSimulatorPhotoLib("8.0", picturepath, true);
-		}
-		catch(Exception ex){
-			ex.printStackTrace();
-			log.error("Failed to deploy pictures into simulator.\n" + ex.getMessage());
+		if (CommonUtils.getIsSimulatorFromConfig(CommonSteps.class)) {
+			try {
+				String[] picturepath = new String[] {CommonUtils.getUserPicturePathFromConfig(CommonSteps.class)};
+				IOSSimulatorPhotoLibHelper.CreateSimulatorPhotoLib("8.0", picturepath, true);
+			}
+			catch(Exception ex){
+				ex.printStackTrace();
+				log.error("Failed to deploy pictures into simulator.\n" + ex.getMessage());
+			}
 		}
 		
 		boolean generateUsersFlag = Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class));
+		oldWayUsersGeneration = Boolean.valueOf(CommonUtils.getIsOldWayUsersGeneration(CommonSteps.class));
 		
 		if (isFirstRun) {
 			isFirstRun = false;
-			if (generateUsersFlag) {
+			if (generateUsersFlag && oldWayUsersGeneration) {
 				CommonUtils.generateUsers(4);
 				Thread.sleep(CommonUtils.BACKEND_SYNC_TIMEOUT);
-				TestPreparation.createContactLinks();
+				TestPreparation.createContactLinks(3);
 			} else {
 				CommonUtils.usePrecreatedUsers();
 			}
@@ -198,4 +209,16 @@ public class CommonSteps {
 			PagesCollection.iOSPage.smallScrollUp();
 		}
 
+		@Given("I have (\\d+) users and (\\d+) contacts for (\\d+) users")
+		public void IHaveUsersAndConnections(int users, int connections, int usersWithContacts) throws IllegalArgumentException, UriBuilderException, IOException, MessagingException, JSONException, BackendRequestException, InterruptedException {
+			if (!oldWayUsersGeneration) {
+				CommonUtils.yourUsers = new CopyOnWriteArrayList<ClientUser>();
+				CommonUtils.contacts = new CopyOnWriteArrayList<ClientUser>();
+			
+				CommonUtils.generateUsers(users, connections);
+				log.debug("Following users are failed to be activated: " + CreateZetaUser.failedToActivate);
+				Thread.sleep(CommonUtils.BACKEND_SYNC_TIMEOUT);
+				TestPreparation.createContactLinks(usersWithContacts);
+			}
+		}
 }

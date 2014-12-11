@@ -8,5 +8,5 @@ Feature: Welcome
     And I return to welcome page
 
     Examples: 
-      | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+      | Login   | Password    | Name    | 
+      | aqaUser | aqaPassword | aqaUser | 

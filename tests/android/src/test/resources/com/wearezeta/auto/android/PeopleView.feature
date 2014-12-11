@@ -2,6 +2,7 @@ Feature: People View
 
   @id83 @id87 @regression
   Scenario Outline: I can access user details page from group chat and see user name, email and photo
+  	Given I have 1 users and 1 contacts for 1 users
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -17,6 +18,7 @@ Feature: People View
 
   @id319 @regression
   Scenario Outline: I can create group chat from People picker
+    Given I have 1 users and 2 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe down contact list
@@ -35,6 +37,7 @@ Feature: People View
 
   @id321 @smoke
   Scenario Outline: Leave group conversation
+    Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -51,6 +54,7 @@ Feature: People View
 
   @id322 @smoke
   Scenario Outline: Remove from group chat
+    Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -70,6 +74,7 @@ Feature: People View
 
   @regression @id594
   Scenario Outline: Verify correct group info page information
+    Given I have 1 users and 0 contacts for 0 users
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

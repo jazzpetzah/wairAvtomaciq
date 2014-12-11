@@ -2,6 +2,7 @@ Feature: Sign In
 
   @id326 @smoke
   Scenario Outline: Sign in to ZClient
+    Given I have 1 users and 0 contacts for 0 users
     Given I see sign in screen
     When I press Sign in button
     And I have entered login <Login>
@@ -15,6 +16,7 @@ Feature: Sign In
 
   @id209 @smoke 
   Scenario Outline: I can change sign in user
+    Given I have 2 users and 0 contacts for 0 users
     Given I Sign in using login <Login1> and password <Password>
     And I see Contact list with my name <Login1>
     When I tap on my name <Login1>

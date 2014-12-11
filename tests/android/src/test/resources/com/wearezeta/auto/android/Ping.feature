@@ -2,6 +2,7 @@ Feature: Ping
  
   @id1373 @regression
   Scenario Outline: Verify you can send Ping & Hot Ping in a group conversation
+    Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
@@ -21,6 +22,7 @@ Feature: Ping
 
   @id1374 @regression
   Scenario Outline: Verify you can receive Ping & Hot Ping in a group conversation
+    Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>

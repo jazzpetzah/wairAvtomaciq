@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.mail.MessagingException;
 import javax.ws.rs.core.UriBuilderException;
 
+import org.apache.log4j.Logger;
 import org.json.JSONException;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
@@ -17,9 +19,11 @@ import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.BackEndREST;
 import com.wearezeta.auto.common.BackendRequestException;
 import com.wearezeta.auto.common.ClientUser;
+import com.wearezeta.auto.common.CreateZetaUser;
 import com.wearezeta.auto.common.TestPreparation;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ZetaFormatter;
+import com.wearezeta.auto.common.log.ZetaLogger;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -35,12 +39,16 @@ public class CommonSteps {
 				"warn");
 	}
 
+	private static final Logger log = ZetaLogger.getLog(CommonSteps.class.getSimpleName());
+	
 	public static final String CONNECTION_NAME = "CONNECT TO ";
 	public static final String CONNECTION_MESSAGE = "Hello!";
 	public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
 	private static String pingId = null;
 	private String path;
 
+	private static boolean oldWayUsersGeneration = false;
+	
 	@Before("@performance")
 	public void setUpPerformance() throws Exception {
 		try {
@@ -375,13 +383,15 @@ public class CommonSteps {
 
 		boolean generateUsersFlag = Boolean.valueOf(CommonUtils
 				.getGenerateUsersFlagFromConfig(CommonSteps.class));
-
+		oldWayUsersGeneration = Boolean.valueOf(CommonUtils
+				.getIsOldWayUsersGeneration(CommonSteps.class));
+		
 		if (isFirstRun) {
 			isFirstRun = false;
-			if (generateUsersFlag) {
+			if (generateUsersFlag && oldWayUsersGeneration) {
 				CommonUtils.generateUsers(4);
 				Thread.sleep(CommonUtils.BACKEND_SYNC_TIMEOUT);
-				TestPreparation.createContactLinks();
+				TestPreparation.createContactLinks(3);
 			} else {
 				CommonUtils.usePrecreatedUsers();
 			}
@@ -397,5 +407,18 @@ public class CommonSteps {
 				.getAndroidApplicationPathFromConfig(CommonSteps.class);
 		
 		ZetaFormatter.setBuildNumber(AndroidCommonUtils.readClientVersionFromAdb());
+	}
+	
+	@Given("I have (\\d+) users and (\\d+) contacts for (\\d+) users")
+	public void IHaveUsersAndConnections(int users, int connections, int usersWithContacts) throws IllegalArgumentException, UriBuilderException, IOException, MessagingException, JSONException, BackendRequestException, InterruptedException {
+		if (!oldWayUsersGeneration) {
+			CommonUtils.yourUsers = new CopyOnWriteArrayList<ClientUser>();
+			CommonUtils.contacts = new CopyOnWriteArrayList<ClientUser>();
+		
+			CommonUtils.generateUsers(users, connections);
+			log.debug("Following users are failed to be activated: " + CreateZetaUser.failedToActivate);
+			Thread.sleep(CommonUtils.BACKEND_SYNC_TIMEOUT);
+			TestPreparation.createContactLinks(usersWithContacts);
+		}
 	}
 }
