@@ -364,7 +364,7 @@ Feature: Connect
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
-    And I wait for 60 seconds
+    And I wait for 90 seconds
     Then I see that no results found
 
     Examples: 
