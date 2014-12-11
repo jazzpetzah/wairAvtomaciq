@@ -268,14 +268,14 @@ Feature: Connect
     And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
     When I tap on contact name <ChatName>
-    And I swipe up on group dialog page
+    And I swipe up on dialog page
     And I tap on group chat contact <Contact2>
     And I see connect to <Contact2> dialog
     And I tap on edit connect request field
     And I type Connect request "Message"
     And I press Connect button
-    And I press back on group chat info page
-    And I navigate back from group chat page
+    And I return to group chat page
+    And I navigate back from dialog page
     And I see contact list loaded with User name <Contact2>
 
     Examples: 

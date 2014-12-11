@@ -60,7 +60,7 @@ Feature: Conversation View
     And I see Add to conversation button
     And I click on Add to conversation button
     Then I see group chat page with users <Contact1> <Contact2>
-    And I navigate back from group chat page
+    And I navigate back from dialog page
     And I see <Contact1> and <Contact2> chat in contact list
 
     Examples: 
