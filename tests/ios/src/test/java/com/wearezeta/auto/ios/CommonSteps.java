@@ -78,7 +78,7 @@ public class CommonSteps {
 		if (CommonUtils.getIsSimulatorFromConfig(CommonSteps.class)) {
 			try {
 				String[] picturepath = new String[] {CommonUtils.getUserPicturePathFromConfig(CommonSteps.class)};
-				IOSSimulatorPhotoLibHelper.CreateSimulatorPhotoLib("8.0", picturepath, true);
+				IOSSimulatorPhotoLibHelper.CreateSimulatorPhotoLib("8.1", picturepath, true);
 			}
 			catch(Exception ex){
 				ex.printStackTrace();
