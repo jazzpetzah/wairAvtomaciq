@@ -31,6 +31,7 @@ public class ConversationPageSteps {
 	 private int beforeNumberOfKnocks = -1;
 	 private int beforeNumberOfHotKnocks = -1;
 	 private int beforeNumberOfImages = -1;
+	 public String pingID;
 	 
 	 @When("I write random message")
 	 public void WhenIWriteRandomMessage() {	
@@ -179,7 +180,7 @@ public class ConversationPageSteps {
 				}
 			}
 			yourСontact = BackEndREST.loginByUser(yourСontact);
-			BackEndREST.sendPingToConversation(yourСontact, conversation);
+			pingID = BackEndREST.sendPingToConversation(yourСontact, conversation);
 			Thread.sleep(1000);
 	 }
 
@@ -189,8 +190,17 @@ public class ConversationPageSteps {
 	 }
 
 	 @When("^User (.*) pings again in chat (.*)$")
-	 public void WhenUserPingsAgainInChat(String user, String conversation) throws Throwable {
-	   
+	 public void WhenUserPingsAgainInChat(String contact, String conversation) throws Throwable {
+		 ClientUser yourСontact = null;
+			contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+			for (ClientUser user : CommonUtils.contacts) {
+				if (user.getName().toLowerCase().equals(contact.toLowerCase())) {
+					yourСontact = user;
+				}
+			}
+			yourСontact = BackEndREST.loginByUser(yourСontact);
+			BackEndREST.sendHotPingToConversation(yourСontact, conversation,pingID);
+			Thread.sleep(1000);
 	 }
 
 	 @Then("^I see User (.*) Pinged Again message in the conversation$")
