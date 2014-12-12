@@ -19,7 +19,7 @@ public class CreateZetaUser {
 	private static final Logger log = ZetaLogger.getLog(CreateZetaUser.class.getSimpleName());
 	
 	public static final String MAILS_FOLDER = "Inbox";
-	public static final int ACTIVATION_TIMEOUT = 10; 
+	public static final int ACTIVATION_TIMEOUT = 5; 
 	public static final int NUMBER_OF_MAILS_TO_CHECK = 20;
 	
 	public static final ArrayList<String> failedToActivate = new ArrayList<String>();
@@ -67,7 +67,7 @@ public class CreateZetaUser {
 			throws MessagingException, IOException, IllegalArgumentException,
 			UriBuilderException, BackendRequestException, InterruptedException {
 		log.debug("Activating user " + registeredUserMail + ":" + password + " (with timeout: " + timeout + ")");
-		final int ATTEMPS_NUMBER = 5;
+		final int ATTEMPS_NUMBER = 15;
 		for (int i = 0; i < ATTEMPS_NUMBER; i++) {
 			List<EmailHeaders> newMails = getLastMailHeaders(mail, password, NUMBER_OF_MAILS_TO_CHECK);
 			for (EmailHeaders newMailContent : newMails) {
