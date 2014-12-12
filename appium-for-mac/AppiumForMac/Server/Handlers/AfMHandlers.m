@@ -113,6 +113,8 @@
 
 -(NSString *) pressEnter:(PFUIElement*) element
 {
+    [NSThread sleepForTimeInterval:2.0f];
+    
     NSValue* pos = element.AXPosition;
     NSPoint pnt = pos.pointValue;
     
