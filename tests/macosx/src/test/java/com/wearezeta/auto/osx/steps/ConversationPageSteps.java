@@ -223,7 +223,24 @@ public class ConversationPageSteps {
 
 	 @Then("^I see User (.*) Pinged Again message in the conversation$")
 	 public void ThenISeeUserPingedAgainMessageInTheConversation(String user) throws Throwable {
-	    
+		 String username = CommonUtils.retrieveRealUserContactPasswordValue(user);
+		 String expectedPingMessage = username.toUpperCase() + OSXLocators.USER_PINGED_AGAIN_MESSAGE;
+		 String dialogLastMessage = username.toUpperCase() + " PINGED AGAIN";
+		 if (dialogLastMessage.equals(expectedPingMessage)) {
+			 boolean isNumberIncreased = false;
+			 int afterNumberOfHotKnocks = -1;
+			 for (int i = 0; i < 3; i++) {
+				 afterNumberOfHotKnocks = CommonSteps.senderPages.getConversationPage().getNumberOfYouPingedMessages(OSXLocators.xpathYouPingedAgainMessage);
+				 if (afterNumberOfHotKnocks == beforeNumberOfHotKnocks + 1) {
+					 isNumberIncreased = true;
+					 break;
+				 }
+				 try { Thread.sleep(1000); } catch (InterruptedException e) { }
+			 }
+			 
+			 Assert.assertTrue("Incorrect messages count: before - "
+					 + beforeNumberOfHotKnocks + ", after - " + afterNumberOfHotKnocks, isNumberIncreased);
+		 	}
 	 }
 	 
 	 @Then("I see message (.*) in conversation$")
