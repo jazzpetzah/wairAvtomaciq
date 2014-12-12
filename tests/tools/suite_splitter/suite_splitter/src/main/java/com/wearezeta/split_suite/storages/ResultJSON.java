@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -12,7 +11,6 @@ import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.wearezeta.split_suite.ExecutedTestcase;
 import com.wearezeta.split_suite.Testcase;
 
 public class ResultJSON extends TestcasesStorage {
@@ -23,87 +21,9 @@ public class ResultJSON extends TestcasesStorage {
 		super(path);
 	}
 
-	private static boolean parseIsPassed(JSONArray steps) {
-		for (int stepIdx = 0; stepIdx < steps.length(); stepIdx++) {
-			if (!steps.getJSONObject(stepIdx).getJSONObject("result")
-					.getString("status").equals("passed")) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	private static boolean parseIsFailed(JSONArray steps) {
-		for (int stepIdx = 0; stepIdx < steps.length(); stepIdx++) {
-			if (steps.getJSONObject(stepIdx).getJSONObject("result")
-					.getString("status").equals("failed")) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private static boolean parseIsSkipped(JSONArray steps) {
-		for (int stepIdx = 0; stepIdx < steps.length(); stepIdx++) {
-			if (!steps.getJSONObject(stepIdx).getJSONObject("result")
-					.getString("status").equals("skipped")) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	private static Set<String> parseTagsList(JSONArray tags) {
-		Set<String> resultList = new LinkedHashSet<String>();
-
-		for (int tagIdx = 0; tagIdx < tags.length(); tagIdx++) {
-			resultList.add(tags.getJSONObject(tagIdx).getString("name"));
-		}
-		return resultList;
-	}
-
-	private static List<ExecutedTestcase> extractTestcasesFromFeature(
-			JSONObject feature) {
-		List<ExecutedTestcase> parsedTestcases = new ArrayList<ExecutedTestcase>();
-		if (!feature.has("elements")) {
-			return parsedTestcases;
-		}
-		JSONArray elements = feature.getJSONArray("elements");
-		for (int elementIdx = 0; elementIdx < elements.length(); elementIdx++) {
-			JSONObject element = elements.getJSONObject(elementIdx);
-			final String cucumberId = element.getString("id");
-			final String name = element.getString("name");
-			final boolean isPassed = parseIsPassed(element
-					.getJSONArray("steps"));
-			final boolean isFailed = parseIsFailed(element
-					.getJSONArray("steps"));
-			final boolean isSkipped = parseIsSkipped(element
-					.getJSONArray("steps"));
-			Set<String> tags = new LinkedHashSet<String>();
-			if (element.has("tags")) {
-				tags = parseTagsList(element.getJSONArray("tags"));
-			}
-			final String id = Testcase.extractIdsFromTags(tags);
-			ExecutedTestcase tc = new ExecutedTestcase(id, name, tags,
-					cucumberId, isPassed, isFailed, isSkipped);
-			parsedTestcases.add(tc);
-		}
-
-		return parsedTestcases;
-	}
-
 	@Override
-	public List<ExecutedTestcase> getTestcases() throws Throwable {
-		final String json = FileUtils.readFileToString(new File(getPath()),
-				"UTF-8");
-		List<ExecutedTestcase> resultList = new ArrayList<ExecutedTestcase>();
-
-		JSONArray allFeatures = new JSONArray(json);
-		for (int featureIdx = 0; featureIdx < allFeatures.length(); featureIdx++) {
-			resultList.addAll(extractTestcasesFromFeature(allFeatures
-					.getJSONObject(featureIdx)));
-		}
-		return resultList;
+	public List<Testcase> getTestcases() throws Throwable {
+		throw new RuntimeException("Not implemented");
 	}
 
 	private static int computeNewPartIndex(String currentId,
