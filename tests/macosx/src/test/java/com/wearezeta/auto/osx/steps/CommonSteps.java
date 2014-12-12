@@ -3,6 +3,7 @@ package com.wearezeta.auto.osx.steps;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.mail.MessagingException;
 import javax.ws.rs.core.UriBuilderException;
@@ -41,6 +42,8 @@ public class CommonSteps {
 	private static boolean isFirstRun = true;
 	private static boolean isFirstRunPassed = false;
 	
+	private static boolean oldWayUsersGeneration = false;
+	
 	@Before("@performance")
 	public void setUpPerformance() throws Exception, UriBuilderException, IOException, MessagingException, JSONException, BackendRequestException, InterruptedException{
 		CommonUtils.generatePerformanceUser();
@@ -57,6 +60,7 @@ public class CommonSteps {
 	@Before("~@performance")
 	public void setUp() throws Exception {
 		boolean generateUsersFlag = Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class));
+		oldWayUsersGeneration = Boolean.valueOf(CommonUtils.getIsOldWayUsersGeneration(CommonSteps.class));
 		
 		OSXCommonUtils.deleteZClientLoginFromKeychain();
 		OSXCommonUtils.removeAllZClientSettingsFromDefaults();
@@ -65,11 +69,11 @@ public class CommonSteps {
 		
 		if (isFirstRun) {
 			isFirstRun = false;
-			if (generateUsersFlag) {
+			if (generateUsersFlag && oldWayUsersGeneration) {
 				CommonUtils.generateUsers(4);
 				log.debug("Following users are failed to be activated: " + CreateZetaUser.failedToActivate);
 				Thread.sleep(CommonUtils.BACKEND_SYNC_TIMEOUT);
-				TestPreparation.createContactLinks();
+				TestPreparation.createContactLinks(3);
 			} else {
 				CommonUtils.usePrecreatedUsers();
 			}
@@ -138,4 +142,16 @@ public class CommonSteps {
 		BackEndREST.acceptAllConnections(yourUser);
 	}
 
+	@Given("I have (\\d+) users and (\\d+) contacts for (\\d+) users")
+	public void IHaveUsersAndConnections(int users, int connections, int usersWithContacts) throws IllegalArgumentException, UriBuilderException, IOException, MessagingException, JSONException, BackendRequestException, InterruptedException {
+		if (!oldWayUsersGeneration) {
+			CommonUtils.yourUsers = new CopyOnWriteArrayList<ClientUser>();
+			CommonUtils.contacts = new CopyOnWriteArrayList<ClientUser>();
+		
+			CommonUtils.generateUsers(users, connections);
+			log.debug("Following users are failed to be activated: " + CreateZetaUser.failedToActivate);
+			Thread.sleep(CommonUtils.BACKEND_SYNC_TIMEOUT);
+			TestPreparation.createContactLinks(usersWithContacts);
+		}
+	}
 }

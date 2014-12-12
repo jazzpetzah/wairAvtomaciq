@@ -2,6 +2,7 @@ Feature: Conversation List
 
   @smoke @id474 @id481
   Scenario Outline: Mute and unmute conversation
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open conversation with <Contact>

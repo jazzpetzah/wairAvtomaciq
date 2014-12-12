@@ -109,19 +109,10 @@ public class OtherUserPersonalInfoPageSteps {
 		}
 	}
 	
-	@When("^I swipe up group chat info page$")
-	public void WhenISwipeUpGroupChatInfoPage() throws Throwable {	
-		PagesCollection.otherUserPersonalInfoPage.swipeUp(500);
-	}
 
-	@When("^I swipe right on group chat info page$")
+	@When("^I swipe right on other user profile page$")
 	public void WhenISwipeRightOnGroupChatInfoPage() throws Throwable {
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.otherUserPersonalInfoPage.swipeRight(500);
-	}
-
-	@When("^I press back on group chat info page$")
-	public void WhenIPressBackOnGroupChatInfoPage() throws Throwable {
-		PagesCollection.dialogPage = (DialogPage) PagesCollection.otherUserPersonalInfoPage.tabBackButton();
 	}
 	
 	@When("^I press Leave conversation button$")

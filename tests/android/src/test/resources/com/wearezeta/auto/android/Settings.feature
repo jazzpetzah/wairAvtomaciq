@@ -2,6 +2,7 @@ Feature: Settings
 
   @id67 @id68 @regression
   Scenario Outline: Open and Close settings page
+    Given I have 1 users and 0 contacts for 0 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
@@ -21,6 +22,7 @@ Feature: Settings
 
   @id71 @regression
   Scenario Outline: Can not open Settings page when editing user name
+    Given I have 1 users and 0 contacts for 0 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
@@ -37,6 +39,7 @@ Feature: Settings
 
   @id91 @id92 @regression
   Scenario Outline: Open Close About page from Settings page
+    Given I have 1 users and 0 contacts for 0 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>

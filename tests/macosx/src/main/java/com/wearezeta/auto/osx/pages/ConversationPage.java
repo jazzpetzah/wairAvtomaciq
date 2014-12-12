@@ -330,6 +330,11 @@ public class ConversationPage extends OSXPage {
 		WebElement scrollArea = driver.findElement(By
 				.id(OSXLocators.idConversationScrollArea));
 
+		if (lastGroupPosition == null || textInputPosition == null) {
+			log.debug("No scroll, last group were not found.");
+			return;
+		}
+
 		if (lastGroupPosition.y() > textInputPosition.y()) {
 			WebElement scrollBar = scrollArea.findElement(By
 					.xpath("//AXScrollBar[2]"));

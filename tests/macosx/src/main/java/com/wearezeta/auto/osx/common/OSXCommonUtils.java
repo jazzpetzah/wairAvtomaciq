@@ -79,17 +79,19 @@ public class OSXCommonUtils extends CommonUtils {
 	
 	public static void removeAllZClientSettingsFromDefaults() throws Exception {
 		String command = "defaults delete com.wearezeta.zclient.mac.development";
-
-		if (getOsName().contains(OS_NAME_WINDOWS)) {
-			Runtime.getRuntime().exec("cmd /C " + command);
-		} else {
-			executeOsXCommand(new String[] { "/bin/bash", "-c", command });
-		}
+		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
+		command = "defaults delete com.wearezeta.zclient.mac.internal";
+		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
+		command = "defaults delete com.wearezeta.zclient.mac";
+		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
 	}
 	
 	public static void setZClientBackend(String bt) throws Exception {
 		String command = "defaults write com.wearezeta.zclient.mac.development ZMBackendEnvironmentType -string " + bt;
-		
+		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
+		command = "defaults write com.wearezeta.zclient.mac.internal ZMBackendEnvironmentType -string " + bt;
+		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
+		command = "defaults write com.wearezeta.zclient.mac ZMBackendEnvironmentType -string " + bt;
 		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
 	}
 	

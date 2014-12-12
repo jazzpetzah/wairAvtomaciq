@@ -2,6 +2,7 @@ Feature: Conversation
 
   @smoke @id466
   Scenario Outline: Send message to conversation
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <Contact>
@@ -15,6 +16,7 @@ Feature: Conversation
 
   @smoke @id467
   Scenario Outline: Ping conversation
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <Contact>
@@ -29,6 +31,7 @@ Feature: Conversation
 
   @smoke @id468
   Scenario Outline: Send picture to conversation
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <Contact>
@@ -37,10 +40,11 @@ Feature: Conversation
 
     Examples: 
       | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact2 |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
   @regression @id444
   Scenario Outline: Send HD picture to conversation
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <Contact>
@@ -53,6 +57,7 @@ Feature: Conversation
 
   @smoke @id470
   Scenario Outline: Send message to group chat
+    Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
@@ -67,6 +72,7 @@ Feature: Conversation
 
   @regression @1408
   Scenario Outline: Send picture to group chat
+    Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
@@ -80,6 +86,7 @@ Feature: Conversation
 
   @regression @id81
   Scenario Outline: Play embedded SoundCloud link in conversation
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <Contact>
@@ -95,6 +102,7 @@ Feature: Conversation
 
   @staging @id379
   Scenario Outline: Play/pause SoundCloud media link from the media bar
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <Contact>
@@ -116,6 +124,7 @@ Feature: Conversation
 
   @regression @id380
   Scenario Outline: Conversation scrolls back to playing media when clicked on the media bar
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <Contact>
@@ -134,6 +143,7 @@ Feature: Conversation
 
   @regression @id624
   Scenario Outline: Text message sent to group chat is visible on other end
+    Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
@@ -158,6 +168,7 @@ Feature: Conversation
 
   @regression @id623
   Scenario Outline: Image sent to group chat is visible on other end
+    Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
@@ -181,6 +192,7 @@ Feature: Conversation
 
   @regression @id625
   Scenario Outline: Multimedia message sent to group chat is visible on other end
+    Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     And I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
@@ -204,6 +216,7 @@ Feature: Conversation
 
   @regression @id381
   Scenario Outline: The media bar disappears after playback finishes
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <Contact>
@@ -221,6 +234,7 @@ Feature: Conversation
 
   @regression @id378
   Scenario Outline: Media bar disappears when playing media is back in view
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <Contact>
@@ -240,6 +254,7 @@ Feature: Conversation
 
   @staging
   Scenario Outline: Drag image to conversation
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <Contact>

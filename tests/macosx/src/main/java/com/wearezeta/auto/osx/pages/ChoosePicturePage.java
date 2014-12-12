@@ -40,6 +40,8 @@ public class ChoosePicturePage extends OSXPage {
 		DriverUtils.setDefaultImplicitWait(driver);
 		String xpath = String.format(OSXLocators.xpathFormatFinderImageFile, imageName);
 
+		log.debug("Looking for image " + imageName + " to use. Page source: " + driver.getPageSource());
+		
 		WebElement el = driver.findElement(By.xpath(xpath));
 		el.click();
 	}

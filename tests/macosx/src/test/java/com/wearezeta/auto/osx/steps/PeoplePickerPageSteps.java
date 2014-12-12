@@ -3,6 +3,7 @@ package com.wearezeta.auto.osx.steps;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.BackEndREST;
+import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.osx.pages.PeoplePickerPage;
 
@@ -56,6 +57,23 @@ public class PeoplePickerPageSteps {
 	public void ISendInvitationToUserByContact(String user, String contact) throws Throwable {
 		user = CommonUtils.retrieveRealUserContactPasswordValue(user);
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
-		BackEndREST.autoTestSendRequest(CommonUtils.yourUsers.get(2), CommonUtils.yourUsers.get(0));
+		
+		ClientUser contactUser = null;
+		ClientUser userUser = null;
+		
+		for (ClientUser us: CommonUtils.yourUsers) {
+			if (us.getName().equals(contact)) contactUser = us;
+			if (us.getName().equals(user)) userUser = us;
+		}
+		
+		for (ClientUser us: CommonUtils.contacts) {
+			if (us.getName().equals(contact)) contactUser = us;
+			if (us.getName().equals(user)) userUser = us;
+		}
+		
+		Assert.assertNotNull("Can't find contact with name " + contact, contactUser);
+		Assert.assertNotNull("Can't find user with name " + user, userUser);
+		
+		BackEndREST.autoTestSendRequest(contactUser, userUser);
 	}
 }

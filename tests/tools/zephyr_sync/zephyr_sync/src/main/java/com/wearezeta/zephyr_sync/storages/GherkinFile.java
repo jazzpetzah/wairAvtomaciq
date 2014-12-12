@@ -31,7 +31,8 @@ public class GherkinFile extends TestcasesStorage {
 		this.path = path;
 	}
 
-	private String gherkinToJSON() throws UnsupportedEncodingException, FileNotFoundException {
+	private String gherkinToJSON() throws UnsupportedEncodingException,
+			FileNotFoundException {
 		String gherkin = FixJava.readReader(new InputStreamReader(
 				new FileInputStream(path), "UTF-8"));
 
@@ -64,29 +65,35 @@ public class GherkinFile extends TestcasesStorage {
 		JSONArray allGroups = new JSONArray(json);
 		for (int groupIdx = 0; groupIdx < allGroups.length(); groupIdx++) {
 			JSONObject group = allGroups.getJSONObject(groupIdx);
+			if (!group.has("elements")) {
+				continue;
+			}
 			JSONArray allTestCases = group.getJSONArray("elements");
 			for (int tcIdx = 0; tcIdx < allTestCases.length(); tcIdx++) {
 				JSONObject testCase = allTestCases.getJSONObject(tcIdx);
 				final String testCaseName = testCase.getString("name");
-				
+
 				Set<String> tags = new LinkedHashSet<String>();
-				if(testCase.has("tags")) {
+				if (testCase.has("tags")) {
 					JSONArray tagsList = testCase.getJSONArray("tags");
 					for (int tagIdx = 0; tagIdx < tagsList.length(); tagIdx++) {
-						tags.add(tagsList.getJSONObject(tagIdx).getString("name"));
+						tags.add(tagsList.getJSONObject(tagIdx).getString(
+								"name"));
 					}
 				}
 				final String cucumberId = testCase.getString("id");
 
-				CucumberTestcase tc = new CucumberTestcase(Testcase.extractIdsFromTags(tags),
-						testCaseName, tags, cucumberId);
+				CucumberTestcase tc = new CucumberTestcase(
+						Testcase.extractIdsFromTags(tags), testCaseName, tags,
+						cucumberId);
 				resultList.add(tc);
 			}
 		}
 		return resultList;
 	}
 
-	private void updateJSONTestcase(CucumberTestcase updatedTCInfo, JSONArray allGroups) {
+	private void updateJSONTestcase(CucumberTestcase updatedTCInfo,
+			JSONArray allGroups) {
 		for (int groupIdx = 0; groupIdx < allGroups.length(); groupIdx++) {
 			JSONObject group = allGroups.getJSONObject(groupIdx);
 			JSONArray allTestCases = group.getJSONArray("elements");
@@ -117,7 +124,8 @@ public class GherkinFile extends TestcasesStorage {
 	}
 
 	@Override
-	public void syncTestcases(List<? extends Testcase> testcases) throws Throwable {
+	public void syncTestcases(List<? extends Testcase> testcases)
+			throws Throwable {
 		final String json = gherkinToJSON();
 
 		JSONArray resultJSON = new JSONArray(json);
