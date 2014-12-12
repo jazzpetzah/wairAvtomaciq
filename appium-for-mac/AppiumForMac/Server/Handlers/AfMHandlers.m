@@ -152,9 +152,14 @@
     
     NSMutableDictionary *errorDict = [NSMutableDictionary new];
     
+    [NSThread sleepForTimeInterval:1.0f];
+    
     NSAppleScript *appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 36\nend tell"];
     
-    return [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
+    NSString *statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
+    NSLog(@"Script execution result(pressing enter): %@", statusString);
+    
+    return statusString;
 
 }
 
