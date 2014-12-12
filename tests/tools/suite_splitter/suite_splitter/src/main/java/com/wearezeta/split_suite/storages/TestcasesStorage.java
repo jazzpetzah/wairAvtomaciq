@@ -17,23 +17,25 @@ public abstract class TestcasesStorage {
 	public String getPath() {
 		return this.path;
 	}
-	
+
 	public abstract List<? extends Testcase> getTestcases() throws Throwable;
 
 	public List<? extends Testcase> getTestcases(Set<String> includeTags,
 			Set<String> excludeTags) throws Throwable {
 		List<Testcase> resultList = new ArrayList<Testcase>();
-		
+
 		for (Testcase tc : this.getTestcases()) {
-			if ((includeTags != null && !Collections.disjoint(tc.getTags(),
-					includeTags)) || includeTags == null) {
-				if ((excludeTags != null && Collections.disjoint(tc.getTags(),
-						excludeTags)) || excludeTags == null) {
+			if (includeTags == null
+					|| (includeTags != null && !Collections.disjoint(
+							tc.getTags(), includeTags))) {
+				if (excludeTags == null
+						|| (excludeTags != null && Collections.disjoint(
+								tc.getTags(), excludeTags))) {
 					resultList.add(tc);
 				}
 			}
 		}
-		
+
 		return resultList;
 	}
 }
