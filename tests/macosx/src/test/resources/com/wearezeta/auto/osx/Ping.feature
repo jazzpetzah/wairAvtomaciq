@@ -16,7 +16,7 @@ Feature: Ping
       | Login   | Password    | Name    | Contact1    | Contact2    | ChatName      |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | PingGroupChat |
   
-  @torun @staging @id1291
+  @staging @id1291
   Scenario Outline: Verify you can see Ping on the other side (group conversation)
     Given I have 1 users and 2 contacts for 1 users
   	Given I have group chat with name <ChatName> with <Contact1> and <Contact2>

@@ -75,11 +75,6 @@ public class LoginPage extends OSXPage {
 		signInButton.click();
 		return new ContactListPage(url, path);
 		}
-	
-//	public ContactListPage confirmSignIn() throws IOException {
-//		signInButton.click();
-//		return new ContactListPage(url, path);
-//	}
 
 	public String getLogin() {
 		return login;
