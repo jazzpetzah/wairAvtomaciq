@@ -113,22 +113,13 @@
 
 -(NSString *) pressEnter:(PFUIElement*) element
 {
-    NSValue* pos = element.AXPosition;
-    NSPoint pnt = pos.pointValue;
-    
-    PFUIElement* parent = element.AXParent;
-    
-    while ([@"AXApplication" isEqualToString:parent.AXRole]) {
-        pnt.x += parent.AXPosition.pointValue.x;
-        pnt.y += parent.AXPosition.pointValue.y;
-        
-        parent = parent.AXParent;
-    }
-    
+    NSPoint position = [element.AXPosition pointValue];
+    NSPoint size = [element.AXSize pointValue];
     CGEventRef event = CGEventCreate(NULL);
     CGPoint pt = CGEventGetLocation(event);
-    pt.x = pnt.x + 10;
-    pt.y = pnt.y + 10;
+    
+    pt.x = position.x + size.x/2;
+    pt.y = position.y + size.y/2;
     
     CGEventRef click1_move = CGEventCreateMouseEvent(
                                                      NULL, kCGEventMouseMoved,
@@ -160,7 +151,6 @@
     NSLog(@"Script execution result(pressing enter): %@", statusString);
     
     return statusString;
-
 }
 
 // GET /status
