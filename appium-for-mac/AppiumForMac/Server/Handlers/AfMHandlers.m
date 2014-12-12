@@ -113,8 +113,6 @@
 
 -(NSString *) pressEnter:(PFUIElement*) element
 {
-    [NSThread sleepForTimeInterval:2.0f];
-    
     NSValue* pos = element.AXPosition;
     NSPoint pnt = pos.pointValue;
     
@@ -156,7 +154,10 @@
     
     NSAppleScript *appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 36\nend tell"];
     
-    return [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
+    NSString *statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
+    NSLog(@"Script execution result(pressing enter): %@", statusString);
+    
+    return statusString;
 
 }
 
