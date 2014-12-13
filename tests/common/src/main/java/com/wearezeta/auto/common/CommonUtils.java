@@ -13,8 +13,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.mail.MessagingException;
 import javax.ws.rs.core.UriBuilderException;
 
 import org.apache.commons.collections.ListUtils;
@@ -62,7 +62,7 @@ public class CommonUtils {
 	public static List<ConvPair> user_chats = new CopyOnWriteArrayList<ConvPair>();
 	public static final int MAX_PARALLEL_USER_CREATION_TASKS = 5;
 	public static final int NUMBER_OF_REGISTRATION_RETRIES = 5;
-	
+
 	public static final String CONTACT_PICTURE_NAME = "aqaPictureContact";
 	public static final String CONTACT_PICTURE_EMAIL = "smoketester+aqaPictureContact@wearezeta.com";
 	public static final String CONTACT_PICTURE_PASSWORD = "picture123";
@@ -76,15 +76,16 @@ public class CommonUtils {
 	private static final String HOT_PING_IMAGE = "hot_ping_image.png";
 	private static final String IOS_PING_IMAGE = "ios_ping_image.png";
 	private static final String IOS_HOT_PING_IMAGE = "ios_hot_ping_image.png";
-	
+
 	private static final Random rand = new Random();
 	public static final int BACKEND_SYNC_TIMEOUT = 5000 + rand.nextInt(4000); // milliseconds
 
 	public static final String PLATFORM_NAME_OSX = "Mac";
 	public static final String PLATFORM_NAME_ANDROID = "Android";
 	public static final String PLATFORM_NAME_IOS = "iOS";
-	private static final Logger log = ZetaLogger.getLog(CommonUtils.class.getSimpleName());
-	
+	private static final Logger log = ZetaLogger.getLog(CommonUtils.class
+			.getSimpleName());
+
 	public static String getOsName() {
 		return System.getProperty("os.name");
 	}
@@ -95,12 +96,13 @@ public class CommonUtils {
 		outputErrorStreamToLog(process.getErrorStream());
 		log.debug("Process exited with code " + process.waitFor());
 	}
-	
-	public static void outputErrorStreamToLog(InputStream stream) throws IOException {
+
+	public static void outputErrorStreamToLog(InputStream stream)
+			throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(stream));
 		StringBuilder sb = new StringBuilder("\n");
 		String s;
-		while (( s = br.readLine() ) != null ) {
+		while ((s = br.readLine()) != null) {
 			sb.append("\t" + s + "\n");
 		}
 		String output = sb.toString();
@@ -124,7 +126,7 @@ public class CommonUtils {
 		throw new NoSuchElementException("No user with username: " + username
 				+ " is in an available list");
 	}
-	
+
 	public static String retrieveRealUserEmailValue(String contact) {
 		String email = "";
 		boolean flag = false;
@@ -135,7 +137,7 @@ public class CommonUtils {
 				break;
 			}
 		}
-		if(flag == false) {
+		if (flag == false) {
 			for (ClientUser user : CommonUtils.contacts) {
 				if (user.getName().equals(contact)) {
 					email = user.getEmail();
@@ -143,7 +145,7 @@ public class CommonUtils {
 				}
 			}
 		}
-		
+
 		return email;
 	}
 
@@ -160,7 +162,8 @@ public class CommonUtils {
 			if (yourUsers.size() > 0) {
 				try {
 					replacementMap.put(YOUR_USER_1, yourUsers.get(0).getName());
-					replacementMap.put(YOUR_PASS, yourUsers.get(0).getPassword());
+					replacementMap.put(YOUR_PASS, yourUsers.get(0)
+							.getPassword());
 					replacementMap.put(YOUR_USER_2, yourUsers.get(1).getName());
 					replacementMap.put(YOUR_USER_3, yourUsers.get(2).getName());
 					replacementMap.put(YOUR_USER_4, yourUsers.get(3).getName());
@@ -169,9 +172,12 @@ public class CommonUtils {
 					replacementMap.put(YOUR_USER_7, yourUsers.get(6).getName());
 					replacementMap.put(YOUR_USER_8, yourUsers.get(7).getName());
 					replacementMap.put(YOUR_USER_9, yourUsers.get(8).getName());
-					replacementMap.put(YOUR_USER_10, yourUsers.get(9).getName());
-					replacementMap.put(YOUR_USER_11, yourUsers.get(10).getName());
-				} catch (ArrayIndexOutOfBoundsException e) { }
+					replacementMap
+							.put(YOUR_USER_10, yourUsers.get(9).getName());
+					replacementMap.put(YOUR_USER_11, yourUsers.get(10)
+							.getName());
+				} catch (ArrayIndexOutOfBoundsException e) {
+				}
 			}
 			if (contacts.size() > 0) {
 				try {
@@ -181,7 +187,8 @@ public class CommonUtils {
 					replacementMap.put(CONTACT_4, CONTACT_PICTURE_NAME);
 					replacementMap.put(CONTACT_5, CONTACT_AVATAR_NAME);
 					replacementMap.put(CONTACT_6, contacts.get(3).getName());
-				} catch (ArrayIndexOutOfBoundsException e) { }
+				} catch (ArrayIndexOutOfBoundsException e) {
+				}
 			}
 			// TODO: Magic strings
 			replacementMap.put("aqaPictureContactEmail", CONTACT_PICTURE_EMAIL);
@@ -206,7 +213,7 @@ public class CommonUtils {
 		}
 		return result;
 	}
-	
+
 	public static String getBackendType(Class<?> c) throws IOException {
 		return getValueFromCommonConfig(c, "backendType");
 	}
@@ -216,24 +223,26 @@ public class CommonUtils {
 		return path;
 	}
 
-
 	public static String getPingIconPath(Class<?> c) throws IOException {
 		String path = getValueFromConfig(c, "defaultImagesPath") + PING_IMAGE;
 		return path;
 	}
-	
+
 	public static String getPingIconPathIOS(Class<?> c) throws IOException {
-		String path = getValueFromConfig(c, "defaultImagesPath") + IOS_PING_IMAGE;
+		String path = getValueFromConfig(c, "defaultImagesPath")
+				+ IOS_PING_IMAGE;
 		return path;
 	}
 
 	public static String getHotPingIconPath(Class<?> c) throws IOException {
-		String path = getValueFromConfig(c, "defaultImagesPath") + HOT_PING_IMAGE;
+		String path = getValueFromConfig(c, "defaultImagesPath")
+				+ HOT_PING_IMAGE;
 		return path;
 	}
-	
+
 	public static String getHotPingIconPathIOS(Class<?> c) throws IOException {
-		String path = getValueFromConfig(c, "defaultImagesPath") + IOS_HOT_PING_IMAGE;
+		String path = getValueFromConfig(c, "defaultImagesPath")
+				+ IOS_HOT_PING_IMAGE;
 		return path;
 	}
 
@@ -241,11 +250,12 @@ public class CommonUtils {
 		return getValueFromConfig(c, "defaultImagesPath");
 	}
 
-	public static String getIsOldWayUsersGeneration(Class<?> c) throws IOException {
+	public static String getIsOldWayUsersGeneration(Class<?> c)
+			throws IOException {
 		String users = getValueFromConfig(c, "oldWayUsersGeneration");
 		return users;
 	}
-	
+
 	public static String getResultImagePath(Class<?> c) throws IOException {
 		String path = getValueFromConfig(c, "defaultImagesPath")
 				+ RESULT_USER_IMAGE;
@@ -410,11 +420,11 @@ public class CommonUtils {
 		Map<String, String> names = new HashMap<String, String>();
 		names.put("aqaPictureContactEmail", CONTACT_PICTURE_NAME);
 		names.put("aqaAvatarTestContactEmail", CONTACT_AVATAR_NAME);
-		
+
 		Map<String, String> creds = new HashMap<String, String>();
 		creds.put("aqaPictureContactEmail", "aqaPictureContactPassword");
 		creds.put("aqaAvatarTestContactEmail", "aqaAvatarTestContactPassword");
-		
+
 		for (Map.Entry<String, String> entry : creds.entrySet()) {
 			ClientUser user = new ClientUser();
 			user.setEmail(CommonUtils
@@ -426,16 +436,13 @@ public class CommonUtils {
 			contacts.add(user);
 		}
 	}
-	
-	public static void generateUsers(int contactsNumber) throws IOException,
-			MessagingException, IllegalArgumentException, UriBuilderException,
-			JSONException, BackendRequestException, InterruptedException {
+
+	public static void generateUsers(int contactsNumber) throws Exception {
 		generateUsers(USERS_COUNT, contactsNumber);
 	}
 
-	public static void generateUsers(int usersNumber, int contactsNumber)throws IOException,
-	MessagingException, IllegalArgumentException, UriBuilderException,
-	JSONException, BackendRequestException, InterruptedException {
+	public static void generateUsers(int usersNumber, int contactsNumber)
+			throws Exception {
 		ExecutorService executor = Executors
 				.newFixedThreadPool(MAX_PARALLEL_USER_CREATION_TASKS);
 		for (int i = 0; i < usersNumber + contactsNumber; i++) {
@@ -448,7 +455,7 @@ public class CommonUtils {
 					while (doRetry && count < NUMBER_OF_REGISTRATION_RETRIES) {
 						try {
 							final String email = CreateZetaUser
-								.registerUserAndReturnMail();
+									.registerUserAndReturnMail();
 							if (email == null)
 								return;
 							ClientUser user = new ClientUser();
@@ -467,7 +474,10 @@ public class CommonUtils {
 						}
 						if (doRetry) {
 							count++;
-							try { Thread.sleep(waitTime*1000); } catch (InterruptedException e) { }
+							try {
+								Thread.sleep(waitTime * 1000);
+							} catch (InterruptedException e) {
+							}
 							waitTime += 2;
 						}
 					}
@@ -483,7 +493,8 @@ public class CommonUtils {
 							"The backend has failed to prepare predefined users within %d seconds timeout",
 							USERS_CREATION_TIMEOUT));
 		}
-		if (yourUsers.size() != usersNumber || contacts.size() != contactsNumber) {
+		if (yourUsers.size() != usersNumber
+				|| contacts.size() != contactsNumber) {
 			throw new BackendRequestException(
 					"Failed to create new users or contacts on the backend");
 		}
@@ -491,9 +502,12 @@ public class CommonUtils {
 		generateAdditionalContacts();
 	}
 
-	public static void generateNUsers(int usersNum) {
+	public static void generateNUsers(int usersNum)
+			throws InterruptedException, BackendRequestException {
 		ExecutorService executor = Executors
 				.newFixedThreadPool(MAX_PARALLEL_USER_CREATION_TASKS);
+		final AtomicInteger numOfUsersCreatedWOErrors = new AtomicInteger();
+		numOfUsersCreatedWOErrors.set(0);
 		for (int i = 0; i < usersNum; i++) {
 			Runnable worker = new Thread(new Runnable() {
 				public void run() {
@@ -507,7 +521,7 @@ public class CommonUtils {
 						user.setPassword(CommonUtils
 								.getDefaultPasswordFromConfig(CommonUtils.class));
 						additionalUsers.add(user);
-
+						numOfUsersCreatedWOErrors.getAndIncrement();
 					} catch (Exception e) {
 						log.debug("error" + e.getMessage());
 					}
@@ -516,10 +530,17 @@ public class CommonUtils {
 			executor.submit(worker);
 		}
 		executor.shutdown();
-		try {
-			executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-		} catch (InterruptedException e) {
-			log.debug(e.getMessage());
+		if (!executor
+				.awaitTermination(USERS_CREATION_TIMEOUT, TimeUnit.SECONDS)) {
+			throw new BackendRequestException(
+					String.format(
+							"The backend has failed to create %d users within %d seconds timeout",
+							usersNum, USERS_CREATION_TIMEOUT));
+		}
+		if (numOfUsersCreatedWOErrors.get() != usersNum) {
+			throw new BackendRequestException(String.format(
+					"Failed to create %d new users or contacts on the backend",
+					usersNum));
 		}
 	}
 
@@ -634,10 +655,7 @@ public class CommonUtils {
 		return getValueFromConfig(c, "deviceName");
 	}
 
-	public static void generatePerformanceUser()
-			throws IllegalArgumentException, UriBuilderException, IOException,
-			MessagingException, JSONException, BackendRequestException,
-			InterruptedException {
+	public static void generatePerformanceUser() throws Exception {
 		String email = CreateZetaUser.registerUserAndReturnMail();
 		if (email == null)
 			return;
@@ -647,5 +665,4 @@ public class CommonUtils {
 		perfUser = BackEndREST.getUserInfo(perfUser);
 		yourUsers.add(perfUser);
 	}
-
 }

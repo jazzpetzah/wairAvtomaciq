@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Assert;
@@ -10,6 +11,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.CreateZetaUser;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.LanguageUtils;
+import com.wearezeta.auto.common.email.MBoxChangesListener;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 
@@ -24,6 +26,8 @@ public class RegistrationPageSteps {
 
 	private String aqaPassword;
 
+	private MBoxChangesListener listener;
+
 	public static final int maxCheckCnt = 2;
 
 	boolean generateUsers = false;
@@ -34,7 +38,8 @@ public class RegistrationPageSteps {
 
 	@Then("I see Take or select photo label and smile")
 	public void ISeeTakeOrSelectPhotoLabel() {
-		Assert.assertTrue(PagesCollection.registrationPage.isTakeOrSelectPhotoLabelVisible());
+		Assert.assertTrue(PagesCollection.registrationPage
+				.isTakeOrSelectPhotoLabelVisible());
 		Assert.assertTrue(PagesCollection.registrationPage
 				.isTakePhotoSmileDisplayed());
 	}
@@ -264,9 +269,9 @@ public class RegistrationPageSteps {
 	public void IEnterIncorrectEmail(String email) throws IOException {
 		PagesCollection.registrationPage.setEmail(email);
 	}
-	
+
 	@When("I clear email input field on Registration page")
-	public void IClearEmailInputRegistration(){
+	public void IClearEmailInputRegistration() {
 		PagesCollection.registrationPage.clearEmailInput();
 	}
 
@@ -285,7 +290,7 @@ public class RegistrationPageSteps {
 		// contains a domain name with a dot + domain extension(min 2
 		// characters)
 		String[] listOfInvalidEmails = { "abc.example.com", "abc@example@.com",
-				"example@zeta", "abc@example."/*, "abc@example.c" */};
+				"example@zeta", "abc@example."/* , "abc@example.c" */};
 		// test fails because minimum 2 character domain extension is not
 		// implemented(allows for only 1)
 		PagesCollection.registrationPage.setListOfEmails(listOfInvalidEmails);
@@ -332,7 +337,8 @@ public class RegistrationPageSteps {
 	public void ContactListLoadsWithOnlyMyName() throws Throwable {
 		PagesCollection.contactListPage = new ContactListPage(
 				CommonUtils.getIosAppiumUrlFromConfig(ContactListPage.class),
-				CommonUtils.getIosApplicationPathFromConfig(ContactListPage.class));
+				CommonUtils
+						.getIosApplicationPathFromConfig(ContactListPage.class));
 		PagesCollection.contactListPage.waitForContactListToLoad();
 		Assert.assertTrue(PagesCollection.contactListPage
 				.isMyUserNameDisplayedFirstInContactList(aqaName));
@@ -346,11 +352,12 @@ public class RegistrationPageSteps {
 
 	@Then("^I navigate throughout the registration pages and see my input$")
 	public void NavigateAndVerifyInput() throws IOException {
-		PagesCollection.registrationPage.verifyUserInputIsPresent(aqaName, aqaEmail);
+		PagesCollection.registrationPage.verifyUserInputIsPresent(aqaName,
+				aqaEmail);
 	}
-	
+
 	@When("I navigate from password screen back to Welcome screen")
-	public void NaviateFromPassScreenToWelcomeScreen(){
+	public void NaviateFromPassScreenToWelcomeScreen() {
 		PagesCollection.registrationPage.navigateToWelcomePage();
 	}
 
@@ -360,8 +367,13 @@ public class RegistrationPageSteps {
 	}
 
 	@When("^I submit registration data$")
-	public void ISubmitRegistrationData() {
+	public void ISubmitRegistrationData() throws Exception {
 		PagesCollection.registrationPage.createAccount();
+
+		Map<String, String> expectedHeaders = new HashMap<String, String>();
+		expectedHeaders.put("Delivered-To", aqaEmail);
+		this.listener = CreateZetaUser.getMboxInstance(aqaEmail,
+				aqaPassword).open().startMboxMonitor(expectedHeaders);
 	}
 
 	@Then("^I confirm that (\\d+) recent emails in inbox contain (\\d+) for current recipient$")
@@ -406,8 +418,7 @@ public class RegistrationPageSteps {
 
 	@Then("^I verify registration address$")
 	public void IVerifyRegistrationAddress() throws Throwable {
-		Assert.assertTrue("Email: " + aqaEmail + "/Password: " + aqaPassword, CreateZetaUser.activateRegisteredUser(aqaEmail, 10,
-				aqaEmail, aqaPassword));
+		CreateZetaUser.activateRegisteredUser(this.listener);
 	}
 
 	@When("I don't see Next button")
