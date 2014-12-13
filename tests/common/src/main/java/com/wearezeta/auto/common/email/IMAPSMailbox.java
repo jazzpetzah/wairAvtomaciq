@@ -64,18 +64,13 @@ public class IMAPSMailbox {
 		return this.user;
 	}
 
-	private void openFolder() throws MessagingException, InterruptedException {
-		semaphore.acquire();
-		try {
-			if (!folder.isOpen()) {
-				try {
-					folder.open(Folder.READ_WRITE);
-				} catch (MessagingException ex) {
-					folder.open(Folder.READ_ONLY);
-				}
+	private void openFolder() throws MessagingException {
+		if (!folder.isOpen()) {
+			try {
+				folder.open(Folder.READ_WRITE);
+			} catch (MessagingException ex) {
+				folder.open(Folder.READ_ONLY);
 			}
-		} finally {
-			semaphore.release();
 		}
 	}
 
@@ -148,18 +143,13 @@ public class IMAPSMailbox {
 		}
 	}
 
-	private void closeFolder() throws InterruptedException {
-		semaphore.acquire();
-		try {
-			if (folder.isOpen()) {
-				try {
-					folder.close(true);
-				} catch (MessagingException e) {
-					e.printStackTrace();
-				}
+	private void closeFolder() {
+		if (folder.isOpen()) {
+			try {
+				folder.close(true);
+			} catch (MessagingException e) {
+				e.printStackTrace();
 			}
-		} finally {
-			semaphore.release();
 		}
 	}
 
