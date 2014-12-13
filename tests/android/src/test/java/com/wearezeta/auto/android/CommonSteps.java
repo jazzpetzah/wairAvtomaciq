@@ -363,9 +363,7 @@ public class CommonSteps {
 	private static boolean isFirstRun = true;
 	private static boolean isFirstRunPassed = false;
 
-	private void commonBefore() throws IOException, InterruptedException,
-			MessagingException, IllegalArgumentException, UriBuilderException,
-			JSONException, BackendRequestException {
+	private void commonBefore() throws Exception {
 		try {
 			AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
 		} catch (Exception ex) {
@@ -410,7 +408,7 @@ public class CommonSteps {
 	}
 	
 	@Given("I have (\\d+) users and (\\d+) contacts for (\\d+) users")
-	public void IHaveUsersAndConnections(int users, int connections, int usersWithContacts) throws IllegalArgumentException, UriBuilderException, IOException, MessagingException, JSONException, BackendRequestException, InterruptedException {
+	public void IHaveUsersAndConnections(int users, int connections, int usersWithContacts) throws Exception {
 		if (!oldWayUsersGeneration) {
 			CommonUtils.yourUsers = new CopyOnWriteArrayList<ClientUser>();
 			CommonUtils.contacts = new CopyOnWriteArrayList<ClientUser>();
