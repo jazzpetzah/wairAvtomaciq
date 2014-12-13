@@ -46,11 +46,10 @@ public class CreateZetaUser {
 			regMail = entry.getValue();
 		}
 
-		IMAPSMailbox mbox = getMboxInstance(getMboxName(), getMboxPassword())
-				.open();
+		IMAPSMailbox mbox = getMboxInstance(getMboxName(), getMboxPassword());
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", regMail);
-		MBoxChangesListener listener = mbox.startMboxMonitor(expectedHeaders);
+		MBoxChangesListener listener = mbox.startMboxListener(expectedHeaders);
 		BackEndREST.registerNewUser(regMail, nextSuffix, getMboxPassword());
 		activateRegisteredUser(listener);
 
@@ -63,7 +62,6 @@ public class CreateZetaUser {
 			BackendRequestException, IOException {
 		EmailHeaders registrationInfo = IMAPSMailbox.getFilteredMessageHeaders(
 				listener, ACTIVATION_TIMEOUT);
-		listener.getParentMBox().close();
 		BackEndREST.activateNewUser(registrationInfo.getXZetaKey(),
 				registrationInfo.getXZetaCode());
 		log.debug(String.format("User %s is activated",
@@ -87,7 +85,7 @@ public class CreateZetaUser {
 	}
 
 	public static IMAPSMailbox getMboxInstance(String user, String password)
-			throws MessagingException, IOException {
+			throws MessagingException, IOException, InterruptedException {
 		return new IMAPSMailbox(
 				CommonUtils
 						.getDefaultEmailServerFromConfig(CreateZetaUser.class),
@@ -98,12 +96,7 @@ public class CreateZetaUser {
 			String password, int messageCount) throws MessagingException,
 			IOException, InterruptedException {
 		IMAPSMailbox mbox = getMboxInstance(user, password);
-		mbox.open();
-		try {
-			return mbox.getLastMailHeaders(messageCount);
-		} finally {
-			mbox.close();
-		}
+		return mbox.getLastMailHeaders(messageCount);
 	}
 
 	private static String setRegMail(String basemail, String suffix) {

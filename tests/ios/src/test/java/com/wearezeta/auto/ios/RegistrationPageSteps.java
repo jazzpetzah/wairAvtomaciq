@@ -373,7 +373,7 @@ public class RegistrationPageSteps {
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", aqaEmail);
 		this.listener = CreateZetaUser.getMboxInstance(aqaEmail,
-				aqaPassword).open().startMboxMonitor(expectedHeaders);
+				aqaPassword).startMboxListener(expectedHeaders);
 	}
 
 	@Then("^I confirm that (\\d+) recent emails in inbox contain (\\d+) for current recipient$")

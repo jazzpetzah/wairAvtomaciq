@@ -115,7 +115,7 @@ public class RegistrationPageSteps {
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", aqaEmail);
 		this.listener = CreateZetaUser.getMboxInstance(aqaEmail, aqaPassword)
-				.open().startMboxMonitor(expectedHeaders);
+				.startMboxListener(expectedHeaders);
 	}
 
 	@Then("^I see confirmation page$")

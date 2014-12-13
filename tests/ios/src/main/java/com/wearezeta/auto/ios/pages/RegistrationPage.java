@@ -236,21 +236,24 @@ public class RegistrationPage extends IOSPage {
 	public void inputEmail() {
 		yourEmail.sendKeys("\n");
 	}
-	
-	public void scriptInputEmail(String val){
+
+	public void scriptInputEmail(String val) {
 		String script = String.format(
-				IOSLocators.scriptRegistrationEmailInputPath + ".setValue(\"%s\");", val);
+				IOSLocators.scriptRegistrationEmailInputPath
+						+ ".setValue(\"%s\");", val);
 		driver.executeScript(script);
-}
-	
-	public void scriptInputAndConfirmEmail(String val){
-			String script = String.format(
-					IOSLocators.scriptRegistrationEmailInputPath + ".setValue(\"%s\");" +
-							IOSLocators.scriptKeyboardReturnKeyPath + ".tap();", val);
-			driver.executeScript(script);
 	}
-	
-	public void clearEmailInput(){
+
+	public void scriptInputAndConfirmEmail(String val) {
+		String script = String.format(
+				IOSLocators.scriptRegistrationEmailInputPath
+						+ ".setValue(\"%s\");"
+						+ IOSLocators.scriptKeyboardReturnKeyPath + ".tap();",
+				val);
+		driver.executeScript(script);
+	}
+
+	public void clearEmailInput() {
 		scriptInputEmail("");
 	}
 
@@ -259,7 +262,8 @@ public class RegistrationPage extends IOSPage {
 	}
 
 	public void clickCreateAccountButton() {
-		DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameCreateAccountButton));
+		DriverUtils.waitUntilElementAppears(driver,
+				By.name(IOSLocators.nameCreateAccountButton));
 		createAccountButton.click();
 	}
 
@@ -299,7 +303,7 @@ public class RegistrationPage extends IOSPage {
 	}
 
 	public boolean typeAllInvalidEmails() {
-		
+
 		for (int i = 0; i < listOfEmails.length; i++) {
 			yourEmail.sendKeys(listOfEmails[i] + "\n");
 			if (!provideValidEmailMessage.isDisplayed()) {
@@ -326,11 +330,14 @@ public class RegistrationPage extends IOSPage {
 
 		PagesCollection.loginPage.clickJoinButton();
 		forwardWelcomeButton.click(); // skip photo
-		Assert.assertEquals("Name is not same as previously entered.", name, yourName.getText());
+		Assert.assertEquals("Name is not same as previously entered.", name,
+				yourName.getText());
 		forwardWelcomeButton.click();
-		Assert.assertEquals("Email is not same as previously entered.", email, yourEmail.getText());
+		Assert.assertEquals("Email is not same as previously entered.", email,
+				yourEmail.getText());
 		forwardWelcomeButton.click();
-		Assert.assertEquals("Preciously entered email shouln't be shown", defaultPassFieldValue, yourPassword.getText()); 
+		Assert.assertEquals("Preciously entered email shouln't be shown",
+				defaultPassFieldValue, yourPassword.getText());
 	}
 
 	public void navigateToCreateAccount() {
@@ -414,10 +421,11 @@ public class RegistrationPage extends IOSPage {
 	private void typePassword() {
 		yourPassword.sendKeys(getPassword());
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 		typePassword();
-		
+
 	}
 
 	public String[] getListOfEmails() {
@@ -445,17 +453,12 @@ public class RegistrationPage extends IOSPage {
 				CommonUtils
 						.getDefaultPasswordFromConfig(RegistrationPage.class));
 		int actualCnt = 0;
-		try {
-			mailbox.open();
-			List<EmailHeaders> allEmailsHeaders = mailbox
-					.getLastMailHeaders(allRecentEmailsCnt);
-			for (EmailHeaders emailHeaders : allEmailsHeaders) {
-				if (emailHeaders.getLastUserEmail().equals(expectedRecipient)) {
-					actualCnt++;
-				}
+		List<EmailHeaders> allEmailsHeaders = mailbox
+				.getLastMailHeaders(allRecentEmailsCnt);
+		for (EmailHeaders emailHeaders : allEmailsHeaders) {
+			if (emailHeaders.getLastUserEmail().equals(expectedRecipient)) {
+				actualCnt++;
 			}
-		} finally {
-			mailbox.close();
 		}
 		return actualCnt;
 	}

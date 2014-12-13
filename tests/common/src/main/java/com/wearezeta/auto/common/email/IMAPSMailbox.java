@@ -13,62 +13,60 @@ import javax.mail.*;
 
 public class IMAPSMailbox {
 	private static final Semaphore semaphore = new Semaphore(1);
-
 	private static final String MAIL_PROTOCOL = "imaps";
-	private String mailServer;
-	private String mailFolder;
+
 	private Folder folder = null;
 	private String user;
-	private String password;
-	
 	private Thread messagesCountNotifier;
 
 	private static Map<String, Store> CACHED_STORES = new HashMap<String, Store>();
-	private static Map<String, Folder> CACHED_FOLDERS = new HashMap<String, Folder>();
 
-	private static Folder getCachedFolder(String serverName, String folderName,
-			String user, String password) throws MessagingException {
-		if (!CACHED_STORES.containsKey(serverName)) {
-			Properties props = System.getProperties();
-			Session session = Session.getInstance(props, null);
-			Store store = session.getStore(MAIL_PROTOCOL);
-			store.connect(serverName, -1, user, password);
-			CACHED_STORES.put(serverName, store);
-
-			Folder defaultFolder = store.getDefaultFolder();
-			Folder localFolder = defaultFolder.getFolder(folderName);
-			CACHED_FOLDERS.put(serverName, localFolder);
+	private static Store getCachedStore(String serverName, String user,
+			String password) throws MessagingException, InterruptedException {
+		semaphore.acquire();
+		try {
+			if (!CACHED_STORES.containsKey(serverName)) {
+				Properties props = System.getProperties();
+				Session session = Session.getInstance(props, null);
+				Store store = session.getStore(MAIL_PROTOCOL);
+				store.connect(serverName, -1, user, password);
+				CACHED_STORES.put(serverName, store);
+			}
+			return CACHED_STORES.get(serverName);
+		} finally {
+			semaphore.release();
 		}
-		return CACHED_FOLDERS.get(serverName);
 	}
 
-	public static void clearCaches() throws MessagingException {
-		for (String serverName : CACHED_STORES.keySet()) {
-			if (CACHED_FOLDERS.containsKey(serverName)) {
-				Folder folder = CACHED_FOLDERS.get(serverName);
-				if (folder.isOpen()) {
-					folder.close(true);
-				}
+	public static void clearCaches() throws MessagingException,
+			InterruptedException {
+		semaphore.acquire();
+		try {
+			for (String serverName : CACHED_STORES.keySet()) {
+				Store store = CACHED_STORES.get(serverName);
+				store.close();
 			}
-			Store store = CACHED_STORES.get(serverName);
-			store.close();
+			CACHED_STORES.clear();
+		} finally {
+			semaphore.release();
 		}
-		CACHED_STORES.clear();
-		CACHED_FOLDERS.clear();
 	}
 
 	public IMAPSMailbox(String mailServer, String mailFolder, String user,
-			String password) throws MessagingException {
-		this.mailServer = mailServer;
-		this.mailFolder = mailFolder;
+			String password) throws MessagingException, InterruptedException {
 		this.user = user;
-		this.password = password;
+		Store store = getCachedStore(mailServer, user, password);
+		Folder defaultFolder = store.getDefaultFolder();
+		this.folder = defaultFolder.getFolder(mailFolder);
 	}
-	
-	public IMAPSMailbox open() throws MessagingException, InterruptedException {
+
+	public String getUser() {
+		return this.user;
+	}
+
+	private void openFolder() throws MessagingException, InterruptedException {
 		semaphore.acquire();
 		try {
-			folder = getCachedFolder(mailServer, mailFolder, user, password);
 			if (!folder.isOpen()) {
 				try {
 					folder.open(Folder.READ_WRITE);
@@ -79,28 +77,38 @@ public class IMAPSMailbox {
 		} finally {
 			semaphore.release();
 		}
-		return this;
 	}
 
 	public List<EmailHeaders> getLastMailHeaders(int msgsCount)
-			throws MessagingException {
-		int currentMsgsCount = folder.getMessageCount();
-		Message[] fetchedMsgs;
-		if (msgsCount > currentMsgsCount) {
-			fetchedMsgs = folder.getMessages();
-		} else {
-			fetchedMsgs = folder.getMessages(currentMsgsCount - msgsCount,
-					currentMsgsCount);
+			throws MessagingException, InterruptedException {
+		if (!folder.isOpen()) {
+			this.openFolder();
 		}
-		List<EmailHeaders> resultList = new ArrayList<EmailHeaders>();
-		for (Message msg : fetchedMsgs) {
-			resultList.add(EmailHeaders.createFromMessage(msg));
+		try {
+			int currentMsgsCount = folder.getMessageCount();
+			Message[] fetchedMsgs;
+			if (msgsCount > currentMsgsCount) {
+				fetchedMsgs = folder.getMessages();
+			} else {
+				fetchedMsgs = folder.getMessages(currentMsgsCount - msgsCount,
+						currentMsgsCount);
+			}
+			List<EmailHeaders> resultList = new ArrayList<EmailHeaders>();
+			for (Message msg : fetchedMsgs) {
+				resultList.add(EmailHeaders.createFromMessage(msg));
+			}
+			return resultList;
+		} finally {
+			this.closeFolder();
 		}
-		return resultList;
 	}
 
-	public MBoxChangesListener startMboxMonitor(
-			Map<String, String> expectedHeaders) {
+	public MBoxChangesListener startMboxListener(
+			Map<String, String> expectedHeaders) throws MessagingException,
+			InterruptedException {
+		if (!folder.isOpen()) {
+			this.openFolder();
+		}
 		CountDownLatch wait = new CountDownLatch(1);
 		MBoxChangesListener listener = new MBoxChangesListener(this,
 				expectedHeaders, wait);
@@ -126,17 +134,21 @@ public class IMAPSMailbox {
 	public static EmailHeaders getFilteredMessageHeaders(
 			MBoxChangesListener listener, int timeout) throws TimeoutException,
 			InterruptedException, MessagingException {
-		Message message = listener.getMatchedMessage(timeout);
-		if (message != null) {
-			return EmailHeaders.createFromMessage(message);
+		try {
+			Message message = listener.getMatchedMessage(timeout);
+			if (message != null) {
+				return EmailHeaders.createFromMessage(message);
+			}
+			throw new TimeoutException(
+					String.format(
+							"The email message for user % has not been received within %s second(s) timeout",
+							listener.getParentMBox().getUser(), timeout));
+		} finally {
+			listener.getParentMBox().closeFolder();
 		}
-		throw new TimeoutException(
-				String.format(
-						"The email message has not been received within %s second(s) timeout",
-						timeout));
 	}
 
-	public void close() throws InterruptedException {
+	private void closeFolder() throws InterruptedException {
 		semaphore.acquire();
 		try {
 			if (folder.isOpen()) {
@@ -146,7 +158,6 @@ public class IMAPSMailbox {
 					e.printStackTrace();
 				}
 			}
-			folder = null;
 		} finally {
 			semaphore.release();
 		}
@@ -158,7 +169,7 @@ public class IMAPSMailbox {
 			public void run() {
 				try {
 					IMAPSMailbox.clearCaches();
-				} catch (MessagingException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}

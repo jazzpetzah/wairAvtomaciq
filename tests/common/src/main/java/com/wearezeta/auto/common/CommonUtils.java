@@ -534,13 +534,12 @@ public class CommonUtils {
 				.awaitTermination(USERS_CREATION_TIMEOUT, TimeUnit.SECONDS)) {
 			throw new BackendRequestException(
 					String.format(
-							"The backend has failed to create %d users within %d seconds timeout",
-							usersNum, USERS_CREATION_TIMEOUT));
+							"The backend has failed to generate users within %d seconds timeout",
+							USERS_CREATION_TIMEOUT));
 		}
 		if (numOfUsersCreatedWOErrors.get() != usersNum) {
 			throw new BackendRequestException(String.format(
-					"Failed to create %d new users or contacts on the backend",
-					usersNum));
+					"Failed to create %d new users on the backend", usersNum));
 		}
 	}
 
@@ -549,6 +548,8 @@ public class CommonUtils {
 			JSONException, BackendRequestException, InterruptedException {
 		ExecutorService executor = Executors
 				.newFixedThreadPool(MAX_PARALLEL_USER_CREATION_TASKS);
+		final AtomicInteger numOfConnsSentWOErrors = new AtomicInteger();
+		numOfConnsSentWOErrors.set(0);
 		for (int i = 0; i < additionalUsers.size(); i++) {
 			final ClientUser user = additionalUsers.get(i);
 			Runnable worker = new Thread(new Runnable() {
@@ -559,6 +560,7 @@ public class CommonUtils {
 						pair.setContact(user);
 						pair.setConvName(yourUser.getName());
 						user_chats.add(pair);
+						numOfConnsSentWOErrors.getAndIncrement();
 					} catch (Exception e) {
 						log.debug(e.getMessage());
 					}
@@ -567,10 +569,17 @@ public class CommonUtils {
 			executor.submit(worker);
 		}
 		executor.shutdown();
-		try {
-			executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-		} catch (InterruptedException e) {
-			log.debug(e.getMessage());
+		if (!executor
+				.awaitTermination(USERS_CREATION_TIMEOUT, TimeUnit.SECONDS)) {
+			throw new BackendRequestException(
+					String.format(
+							"The backend has failed to send conection requests within %d seconds timeout",
+							USERS_CREATION_TIMEOUT));
+		}
+		if (numOfConnsSentWOErrors.get() != additionalUsers.size()) {
+			throw new BackendRequestException(String.format(
+					"Failed to send connections to %d users on the backend",
+					additionalUsers.size()));
 		}
 	}
 
