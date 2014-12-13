@@ -13,6 +13,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.ws.rs.core.UriBuilderException;
 
@@ -501,9 +502,12 @@ public class CommonUtils {
 		generateAdditionalContacts();
 	}
 
-	public static void generateNUsers(int usersNum) {
+	public static void generateNUsers(int usersNum)
+			throws InterruptedException, BackendRequestException {
 		ExecutorService executor = Executors
 				.newFixedThreadPool(MAX_PARALLEL_USER_CREATION_TASKS);
+		final AtomicInteger numOfUsersCreatedWOErrors = new AtomicInteger();
+		numOfUsersCreatedWOErrors.set(0);
 		for (int i = 0; i < usersNum; i++) {
 			Runnable worker = new Thread(new Runnable() {
 				public void run() {
@@ -517,7 +521,8 @@ public class CommonUtils {
 						user.setPassword(CommonUtils
 								.getDefaultPasswordFromConfig(CommonUtils.class));
 						additionalUsers.add(user);
-
+						numOfUsersCreatedWOErrors.set(numOfUsersCreatedWOErrors
+								.incrementAndGet());
 					} catch (Exception e) {
 						log.debug("error" + e.getMessage());
 					}
@@ -526,10 +531,17 @@ public class CommonUtils {
 			executor.submit(worker);
 		}
 		executor.shutdown();
-		try {
-			executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-		} catch (InterruptedException e) {
-			log.debug(e.getMessage());
+		if (!executor
+				.awaitTermination(USERS_CREATION_TIMEOUT, TimeUnit.SECONDS)) {
+			throw new BackendRequestException(
+					String.format(
+							"The backend has failed to create %d users within %d seconds timeout",
+							usersNum, USERS_CREATION_TIMEOUT));
+		}
+		if (numOfUsersCreatedWOErrors.get() != usersNum) {
+			throw new BackendRequestException(String.format(
+					"Failed to create %d new users or contacts on the backend",
+					usersNum));
 		}
 	}
 
