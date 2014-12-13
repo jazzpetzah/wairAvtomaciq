@@ -521,8 +521,7 @@ public class CommonUtils {
 						user.setPassword(CommonUtils
 								.getDefaultPasswordFromConfig(CommonUtils.class));
 						additionalUsers.add(user);
-						numOfUsersCreatedWOErrors.set(numOfUsersCreatedWOErrors
-								.incrementAndGet());
+						numOfUsersCreatedWOErrors.getAndIncrement();
 					} catch (Exception e) {
 						log.debug("error" + e.getMessage());
 					}

@@ -109,7 +109,7 @@ public class IMAPSMailbox {
 			@Override
 			public void run() {
 				Folder dstFolder = IMAPSMailbox.this.folder;
-				while (dstFolder.isOpen()) {
+				while (dstFolder != null && dstFolder.isOpen()) {
 					try {
 						Thread.sleep(3000);
 					} catch (InterruptedException e) {
