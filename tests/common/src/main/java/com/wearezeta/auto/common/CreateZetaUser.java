@@ -19,8 +19,8 @@ public class CreateZetaUser {
 	private static final Logger log = ZetaLogger.getLog(CreateZetaUser.class.getSimpleName());
 	
 	public static final String MAILS_FOLDER = "Inbox";
-	public static final int ACTIVATION_TIMEOUT = 5; 
-	public static final int NUMBER_OF_MAILS_TO_CHECK = 20;
+	public static final int ACTIVATION_TIMEOUT = 10; 
+	public static final int NUMBER_OF_MAILS_TO_CHECK = 25;
 	
 	public static final ArrayList<String> failedToActivate = new ArrayList<String>();
 
