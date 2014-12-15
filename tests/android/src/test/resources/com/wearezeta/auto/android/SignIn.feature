@@ -33,7 +33,7 @@ Feature: Sign In
       | Login1  | Password    | Login2   |
       | aqaUser | aqaPassword | yourUser |
 
-  @id1413 @staging
+  @id1413 @regression
   Scenario Outline: Negative case for sign in
     Given I see sign in screen
     When I press Sign in button
