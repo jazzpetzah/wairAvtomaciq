@@ -67,6 +67,9 @@ public class LoginPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathTermsOfServiceButton)
 	private WebElement termsOfServiceButton;
 	
+	@FindBy(how = How.NAME, using = IOSLocators.nameProfileName)
+	private WebElement selfProfileName;
+	
 	private String login;
 	
 	private String password;
@@ -103,6 +106,11 @@ public class LoginPage extends IOSPage {
 		
 		signInButton.click();
 		return this;
+	}
+	
+	public boolean isSelfProfileVisible () {
+		
+		return DriverUtils.isElementDisplayed(PagesCollection.loginPage.selfProfileName);
 	}
 	
 	public IOSPage login() throws IOException {
