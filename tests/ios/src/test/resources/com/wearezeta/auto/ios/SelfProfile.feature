@@ -2,7 +2,7 @@ Feature: Self Profile
 
   @smoke @id344
   Scenario Outline: Change your profile picture
-    Given I have 1 users and 0 contacts for 0 users
+    Given I have 1 users and 0 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
@@ -20,7 +20,7 @@ Feature: Self Profile
 
   @regression @id1055
   Scenario Outline: Attempt to enter a name with 0 chars
-    Given I have 1 users and 0 contacts for 0 users
+    Given I have 1 users and 0 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
@@ -36,7 +36,7 @@ Feature: Self Profile
 
   @staging @id1056 
   Scenario Outline: Attempt to enter a name with 1 char
-    Given I have 1 users and 0 contacts for 0 users
+    Given I have 1 users and 0 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>

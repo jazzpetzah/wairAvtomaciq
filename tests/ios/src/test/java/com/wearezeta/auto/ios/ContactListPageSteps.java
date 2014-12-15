@@ -28,7 +28,7 @@ public class ContactListPageSteps {
 		}
 		
 		//workaround for login into self profile
-		Thread.sleep(2000);
+		Thread.sleep(3000);
 		if (DriverUtils.isElementDisplayed(PagesCollection.loginPage.getDriver().findElementByName(IOSLocators.nameProfileName))) {
 			PagesCollection.loginPage.swipeRight(1000);
 		}
