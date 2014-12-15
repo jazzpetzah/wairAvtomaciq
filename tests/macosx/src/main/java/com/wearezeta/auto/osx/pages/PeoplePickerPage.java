@@ -40,6 +40,11 @@ public class PeoplePickerPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerSearchResultEntry)
 	private List<WebElement> searchResults;
 	
+	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerTopContactsGrid)
+	private WebElement peoplePickerTopContactsList;
+	
+	
+	
 	public PeoplePickerPage(String URL, String path) throws MalformedURLException {
 		super(URL, path);
 	}
@@ -188,5 +193,10 @@ public class PeoplePickerPage extends OSXPage {
 	
 	public void addSelectedUsersToConversation() {
 		addToConversationButton.click();
+	}
+	
+	public boolean isTopPeopleVisible(){
+		return DriverUtils.waitUntilElementAppears(driver,
+				By.id(OSXLocators.idPeoplePickerTopContactsGrid));	
 	}
 }

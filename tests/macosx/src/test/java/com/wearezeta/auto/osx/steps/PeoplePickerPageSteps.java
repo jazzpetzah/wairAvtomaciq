@@ -9,6 +9,7 @@ import com.wearezeta.auto.osx.pages.PeoplePickerPage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
+import cucumber.api.java.en.Then;
 
 public class PeoplePickerPageSteps {
 	
@@ -75,5 +76,17 @@ public class PeoplePickerPageSteps {
 		Assert.assertNotNull("Can't find user with name " + user, userUser);
 		
 		BackEndREST.autoTestSendRequest(contactUser, userUser);
+	}
+	
+	@Then("^I see Top People list in People Picker$")
+	public void ISeeTopPeopleListInPeoplePicker() throws Throwable {
+		boolean topPeopleisVisible = CommonSteps.senderPages.getPeoplePickerPage().isTopPeopleVisible();
+		if (!topPeopleisVisible){
+			CommonSteps.senderPages.getPeoplePickerPage().closePeoplePicker();
+			Thread.sleep(1000);
+			CommonSteps.senderPages.getContactListPage().openPeoplePicker();
+			topPeopleisVisible = CommonSteps.senderPages.getPeoplePickerPage().isTopPeopleVisible();
+		}
+		Assert.assertTrue("Top People not shown ", topPeopleisVisible);
 	}
 }
