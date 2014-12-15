@@ -184,17 +184,19 @@ public class ConversationPageSteps {
 			Thread.sleep(1000);
 	 }
 
-	 @Then("^I see User (.*) Pinged message in the conversation$")
-	 public void ThenISeeUserPingedMessageInTheConversation(String user) throws Throwable {
+	 @Then("^I see User (.*) Pinged action in the conversation$")
+	 public void ThenISeeUserPingedActionInTheConversation(String user) throws Throwable {
 		 String username = CommonUtils.retrieveRealUserContactPasswordValue(user);
 		 String expectedPingMessage = username.toUpperCase() + OSXLocators.USER_PINGED_MESSAGE;
 		 String dialogLastMessage = username.toUpperCase() + " PINGED";
 		 
+		 boolean isNumberIncreased = false;
+		 int afterNumberOfKnocks = -1;
+		 int afterNumberOfHotKnocks = -1;
+
 		 if (dialogLastMessage.equals(expectedPingMessage)) {
-			 boolean isNumberIncreased = false;
-			 int afterNumberOfKnocks = -1;
 			 for (int i = 0; i < 3; i++) {
-				 afterNumberOfKnocks = CommonSteps.senderPages.getConversationPage().getNumberOfYouPingedMessages(OSXLocators.xpathYouPingedMessage);
+				 afterNumberOfKnocks = CommonSteps.senderPages.getConversationPage().getNumberOfYouPingedMessages(OSXLocators.xpathOtherPingedMessage);
 				 if (afterNumberOfKnocks == beforeNumberOfKnocks + 1) {
 					 isNumberIncreased = true;
 					 break;
@@ -205,7 +207,20 @@ public class ConversationPageSteps {
 			 Assert.assertTrue("Incorrect messages count: before - "
 					 + beforeNumberOfKnocks + ", after - " + afterNumberOfKnocks, isNumberIncreased);
 		 }
-	}
+		 else {
+			 for (int i = 0; i < 3; i++) {
+				 afterNumberOfHotKnocks = CommonSteps.senderPages.getConversationPage().getNumberOfYouPingedMessages(OSXLocators.xpathOtherPingedAgainMessage);
+				 if (afterNumberOfHotKnocks == beforeNumberOfHotKnocks + 1) {
+					 isNumberIncreased = true;
+					 break;
+				 }
+				 try { Thread.sleep(1000); } catch (InterruptedException e) { }
+			 }
+			 
+			 Assert.assertTrue("Incorrect messages count: before - "
+					 + beforeNumberOfHotKnocks + ", after - " + afterNumberOfHotKnocks, isNumberIncreased);
+		 	}
+		 }
 
 	 @When("^User (.*) pings again in chat (.*)$")
 	 public void WhenUserPingsAgainInChat(String contact, String conversation) throws Throwable {
@@ -219,28 +234,6 @@ public class ConversationPageSteps {
 			yourСontact = BackEndREST.loginByUser(yourСontact);
 			BackEndREST.sendHotPingToConversation(yourСontact, conversation,pingID);
 			Thread.sleep(1000);
-	 }
-
-	 @Then("^I see User (.*) Pinged Again message in the conversation$")
-	 public void ThenISeeUserPingedAgainMessageInTheConversation(String user) throws Throwable {
-		 String username = CommonUtils.retrieveRealUserContactPasswordValue(user);
-		 String expectedPingMessage = username.toUpperCase() + OSXLocators.USER_PINGED_AGAIN_MESSAGE;
-		 String dialogLastMessage = username.toUpperCase() + " PINGED AGAIN";
-		 if (dialogLastMessage.equals(expectedPingMessage)) {
-			 boolean isNumberIncreased = false;
-			 int afterNumberOfHotKnocks = -1;
-			 for (int i = 0; i < 3; i++) {
-				 afterNumberOfHotKnocks = CommonSteps.senderPages.getConversationPage().getNumberOfYouPingedMessages(OSXLocators.xpathYouPingedAgainMessage);
-				 if (afterNumberOfHotKnocks == beforeNumberOfHotKnocks + 1) {
-					 isNumberIncreased = true;
-					 break;
-				 }
-				 try { Thread.sleep(1000); } catch (InterruptedException e) { }
-			 }
-			 
-			 Assert.assertTrue("Incorrect messages count: before - "
-					 + beforeNumberOfHotKnocks + ", after - " + afterNumberOfHotKnocks, isNumberIncreased);
-		 	}
 	 }
 	 
 	 @Then("I see message (.*) in conversation$")
