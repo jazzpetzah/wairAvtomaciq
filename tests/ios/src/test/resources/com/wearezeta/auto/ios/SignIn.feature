@@ -2,7 +2,7 @@ Feature: Sign In
 
   @smoke @id340
   Scenario Outline: Sign in to ZClient
-    Given I have 1 users and 0 contacts for 0 users
+    Given I have 1 users and 0 contacts for 1 users
     Given I see sign in screen
     When I press Sign in button
     And I have entered login <Login>
