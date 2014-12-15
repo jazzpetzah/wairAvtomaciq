@@ -246,6 +246,9 @@ public class DialogPage extends IOSPage{
 		mediabarBarTitle.click();
 	}
 	
+	
+	private final int TEXT_INPUT_HEIGH = 150;
+	private final int TOP_BORDER_WIDTH = 40;
 	@Override
 	public IOSPage swipeUp(int time) throws IOException
 	{
@@ -253,7 +256,7 @@ public class DialogPage extends IOSPage{
 		
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
-		driver.swipe(coords.x + elementSize.width / 2, coords.y + elementSize.height - 200, coords.x + elementSize.width / 2, coords.y + 40, time);
+		driver.swipe(coords.x + elementSize.width / 2, coords.y + elementSize.height - TEXT_INPUT_HEIGH, coords.x + elementSize.width / 2, coords.y + TOP_BORDER_WIDTH, time);
 		return returnBySwipe(SwipeDirection.UP);
 	}
 	

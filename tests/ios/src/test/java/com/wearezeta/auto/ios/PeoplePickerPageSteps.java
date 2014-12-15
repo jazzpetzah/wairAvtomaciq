@@ -20,6 +20,36 @@ public class PeoplePickerPageSteps {
 		Assert.assertTrue(PagesCollection.peoplePickerPage.isPeoplePickerPageVisible());
 	}
 	
+	@When("I see Upload contacts dialog")
+	public void WhenISeeUploadContactsDialog(){
+		Assert.assertTrue("Upload dialog is not shown", PagesCollection.peoplePickerPage.isUploadDialogShown());
+	}
+	
+	@When("I dont see Upload contacts dialog")
+	public void WhenIDontSeeUploadContactsDialog(){
+		Assert.assertFalse("Upload dialog is shown", PagesCollection.peoplePickerPage.isUploadDialogShown());
+	}
+	
+	@When("I click Later button on Upload dialog")
+	public void IClickLaterButtonOnUploadDialog(){
+		PagesCollection.peoplePickerPage.clickLaterButton();
+	}
+	
+	@When("I click Continue button on Upload dialog")
+	public void IClickContinueButtonOnUploadDialog(){
+		PagesCollection.peoplePickerPage.clickContinueButton();
+	}
+	
+	@When("I see PEOPLE YOU MAY KNOW label")
+	public void ISeePepopleYouMayKnowLabel(){
+		Assert.assertTrue("PEOPLE YOU MAY KNOW lable is not visible", PagesCollection.peoplePickerPage.isPeopleYouMayKnowLabelVisible());
+	}
+	
+	@When("I dont see PEOPLE YOU MAY KNOW label")
+	public void IDontSeePepopleYouMayKnowLabel(){
+		Assert.assertFalse("PEOPLE YOU MAY KNOW lable is visible", PagesCollection.peoplePickerPage.isPeopleYouMayKnowLabelVisible());
+	}
+	
 	@When("I re-enter the people picker if top people list is not there")
 	public void IRetryPeoplePickerIfNotLoaded() throws IOException, Exception {
 		if (!PagesCollection.peoplePickerPage.isTopPeopleLabelVisible()) {
@@ -55,7 +85,7 @@ public class PeoplePickerPageSteps {
 	public void WhenISeeUserFoundOnPeoplePickerPage(String contact) throws Throwable {
 		
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
-	    PagesCollection.peoplePickerPage.waitUserPickerFindUser(contact);
+	    Assert.assertTrue("User :" + contact + " is not presented on Pepople picker page", PagesCollection.peoplePickerPage.waitUserPickerFindUser(contact));
 	}
 	
 	@When("^I tap on NOT connected user name on People picker page (.*)$")

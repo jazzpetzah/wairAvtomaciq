@@ -333,15 +333,16 @@ public class RegistrationPageSteps {
 		PagesCollection.registrationPage.clickCreateAccountButton();
 	}
 
-	@Then("Contact list loads with only my name")
-	public void ContactListLoadsWithOnlyMyName() throws Throwable {
+	@Then("Contact list loads with only my name (.*)")
+	public void ContactListLoadsWithOnlyMyName(String name) throws Throwable {
+		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
 		PagesCollection.contactListPage = new ContactListPage(
 				CommonUtils.getIosAppiumUrlFromConfig(ContactListPage.class),
 				CommonUtils
 						.getIosApplicationPathFromConfig(ContactListPage.class));
 		PagesCollection.contactListPage.waitForContactListToLoad();
-		Assert.assertTrue(PagesCollection.contactListPage
-				.isMyUserNameDisplayedFirstInContactList(aqaName));
+		Assert.assertTrue("My username is not displayed first", PagesCollection.contactListPage
+				.isMyUserNameDisplayedFirstInContactList(name));
 	}
 
 	@Then("I see Create Account button disabled")

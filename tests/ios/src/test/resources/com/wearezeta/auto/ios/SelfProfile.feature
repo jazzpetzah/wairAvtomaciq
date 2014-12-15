@@ -34,7 +34,8 @@ Feature: Self Profile
       | Login   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |
 
-  @staging @id1056 
+  #ZIOS-2975
+  @staging @id1056
   Scenario Outline: Attempt to enter a name with 1 char
     Given I have 1 users and 0 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
@@ -47,7 +48,5 @@ Feature: Self Profile
     And I see error message asking for more characters
 
     Examples: 
-      | Login   | Password    | Name    |  username  |
-      | aqaUser | aqaPassword | aqaUser |   c        |
-      
-      
+      | Login   | Password    | Name    | username |
+      | aqaUser | aqaPassword | aqaUser | c        |

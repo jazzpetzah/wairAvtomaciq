@@ -15,10 +15,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import javax.ws.rs.core.UriBuilderException;
 
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.openqa.selenium.Dimension;
@@ -229,8 +233,7 @@ public class CommonUtils {
 	}
 
 	public static String getPingIconPathIOS(Class<?> c) throws IOException {
-		String path = getValueFromConfig(c, "defaultImagesPath")
-				+ IOS_PING_IMAGE;
+		String path = getValueFromConfig(c, "iosImagesPath") + IOS_PING_IMAGE;
 		return path;
 	}
 
@@ -241,7 +244,7 @@ public class CommonUtils {
 	}
 
 	public static String getHotPingIconPathIOS(Class<?> c) throws IOException {
-		String path = getValueFromConfig(c, "defaultImagesPath")
+		String path = getValueFromConfig(c, "iosImagesPath")
 				+ IOS_HOT_PING_IMAGE;
 		return path;
 	}
@@ -674,4 +677,71 @@ public class CommonUtils {
 		perfUser = BackEndREST.getUserInfo(perfUser);
 		yourUsers.add(perfUser);
 	}
+
+	private static void addUserToMacContactsByAppleScript(String firsname,
+			String email) throws ScriptException {
+		final String[] scriptArr = new String[] {
+				"property first_name : \"" + firsname + "\"",
+				"property user_email : \"" + email + "\"",
+				"property laba : \"Work\"",
+				"	tell application \"Contacts\"",
+				"		set thePerson to make new person with properties {first name:first_name}",
+				"		tell thePerson",
+				"			make new email at end of emails of thePerson with properties {label:laba, value:user_email}",
+				"		end tell", "		save", "	end tell" };
+		final String script = StringUtils.join(scriptArr, "\n");
+		ScriptEngineManager mgr = new ScriptEngineManager();
+		ScriptEngine engine = mgr.getEngineByName("AppleScript");
+		engine.eval(script);
+	}
+
+	private static void removeUserFromMacContactsByAppleScript(String firstname)
+			throws ScriptException {
+		final String[] scriptArr = new String[] {
+				"property first_name : \"" + firstname + "\"",
+				"	tell application \"Contacts\"",
+				"		set thePerson to every person whose first name = first_name",
+				"		repeat with osoba in thePerson", "			delete osoba",
+				"		end repeat", "		save", "	end tell" };
+		final String script = StringUtils.join(scriptArr, "\n");
+		ScriptEngineManager mgr = new ScriptEngineManager();
+		ScriptEngine engine = mgr.getEngineByName("AppleScript");
+		engine.eval(script);
+	}
+
+	private static void addUserToContacts(String firsname, String email)
+			throws ScriptException {
+		addUserToMacContactsByAppleScript(firsname, email);
+	}
+
+	private static void removeUserFromContacts(String firstname)
+			throws ScriptException {
+		removeUserFromMacContactsByAppleScript(firstname);
+	}
+
+	public static void addUsersToMacContacts(List<ClientUser> Users)
+			throws ScriptException, IllegalArgumentException,
+			UriBuilderException, IOException, JSONException,
+			BackendRequestException, InterruptedException {
+		for (ClientUser user : Users) {
+			user = BackEndREST.loginByUser(user);
+			user = BackEndREST.getUserInfo(user);
+			String uname = user.getName();
+			String umail = user.getEmail();
+			addUserToContacts(uname, umail);
+		}
+	}
+
+	public static void removeUsersFromMacContacts(List<ClientUser> Users)
+			throws ScriptException, IllegalArgumentException,
+			UriBuilderException, IOException, JSONException,
+			BackendRequestException, InterruptedException {
+		for (ClientUser user : Users) {
+			user = BackEndREST.loginByUser(user);
+			user = BackEndREST.getUserInfo(user);
+			String uname = user.getName();
+			removeUserFromContacts(uname);
+		}
+	}
+
 }

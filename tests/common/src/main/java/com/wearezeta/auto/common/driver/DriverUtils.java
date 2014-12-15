@@ -131,6 +131,22 @@ public class DriverUtils {
 		}
 		return bool;
 	}
+	
+	public static void waitUntilAlertAppears(RemoteWebDriver driver){
+		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+		try {
+			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+					.withTimeout(20, TimeUnit.SECONDS)
+					.pollingEvery(1, TimeUnit.SECONDS)
+					.ignoring(NoSuchElementException.class);
+
+			wait.until(ExpectedConditions.alertIsPresent());
+		} catch (Exception ex) {
+
+		} finally {
+			setDefaultImplicitWait(driver);
+		}	
+	}
 
 	public static void setTextForChildByClassName(WebElement parent, String childClassName, String value)
 	{

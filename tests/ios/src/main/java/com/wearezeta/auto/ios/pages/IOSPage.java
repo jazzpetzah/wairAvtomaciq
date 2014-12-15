@@ -254,4 +254,24 @@ public abstract class IOSPage extends BasePage {
 			engine.eval(script);
 		}
 	}
+	
+	public void acceptAlert(){
+		DriverUtils.waitUntilAlertAppears(driver);
+		try {
+			driver.switchTo().alert().accept();
+		}
+		catch (Exception e){
+			//do nothing
+		}
+	}
+	
+	public void dismissAlert(){
+		DriverUtils.waitUntilAlertAppears(driver);
+		try {
+			driver.switchTo().alert().dismiss();
+		}
+		catch (Exception e){
+			//do nothing
+		}
+	}
 }
