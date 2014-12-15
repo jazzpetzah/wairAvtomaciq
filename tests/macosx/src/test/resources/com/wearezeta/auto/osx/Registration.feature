@@ -1,24 +1,24 @@
 Feature: Register new user
 
   #no camera on some Jenkins slaves
-  @regression @id1080
-  Scenario Outline: Register new user using front camera
-    Given I am signed out from ZClient
-    And I see Sign In screen
-    When I start registration
-    And I choose register using camera
-    And I take registration picture from camera
-    And I enter name <Name>
-    And I enter email <Email>
-    And I enter password <Password>
-    And I submit registration data
-    Then I see confirmation page
-    And I verify registration address
-    And I see contact list of registered user
+#  @regression @id1080
+#  Scenario Outline: Register new user using front camera
+#    Given I am signed out from ZClient
+#    And I see Sign In screen
+#    When I start registration
+#    And I choose register using camera
+#    And I take registration picture from camera
+#    And I enter name <Name>
+#    And I enter email <Email>
+#    And I enter password <Password>
+#    And I submit registration data
+#    Then I see confirmation page
+#    And I verify registration address
+#    And I see contact list of registered user
 
-    Examples: 
-      | Email   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |
+#    Examples: 
+#      | Email   | Password    | Name    |
+#      | aqaUser | aqaPassword | aqaUser |
 
   #ZOSX-2857
   @smoke @id177
