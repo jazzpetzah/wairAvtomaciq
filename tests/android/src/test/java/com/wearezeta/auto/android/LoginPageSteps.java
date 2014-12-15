@@ -82,4 +82,16 @@ public class LoginPageSteps {
 		Assert.assertTrue("We don't see welcome buttons", PagesCollection.loginPage.isWelcomeButtonsExist());
 	}
 
+	@Then("^Login error message appears$")
+	public void LoginErrorMessage() throws Exception {
+		PagesCollection.loginPage.waitForLogin();
+		Assert.assertTrue("Error message not shown", PagesCollection.loginPage.isLoginError());
+	}
+	
+	@Then("^Contains wrong name or password text$")
+	public void LoginErrorMessageText() throws Exception {
+		PagesCollection.loginPage.waitForLogin();
+		Assert.assertTrue("Text in error message is not as expected", PagesCollection.loginPage.isLoginErrorTextOk());
+	}
+	
 }
