@@ -1,4 +1,7 @@
-package com.wearezeta.auto.common;
+package com.wearezeta.auto.common.email;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
 
 public class EmailHeaders {
 	
@@ -37,6 +40,16 @@ public class EmailHeaders {
 	}
 	public void setXZetaCode(String xZetaCode) {
 		this.xZetaCode = xZetaCode;
+	}
+	
+	public static EmailHeaders createFromMessage(Message msg) throws MessagingException {
+		EmailHeaders headers = new EmailHeaders();
+		headers.setLastUserEmail(msg.getHeader("Delivered-To")[0]);
+		headers.setMailSubject(msg.getHeader("Subject")[0]);
+		headers.setXZetaPurpose(msg.getHeader("X-Zeta-Purpose")[0]);
+		headers.setXZetaKey(msg.getHeader("X-Zeta-Key")[0]);
+		headers.setXZetaCode(msg.getHeader("X-Zeta-Code")[0]);
+		return headers;
 	}
 }
 

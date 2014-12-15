@@ -132,13 +132,15 @@ public class ConversationInfoPageSteps {
 	@Then("^I see (.*) photo in Conversation info$")
 	public void ISeeContactPhotoInConversationInfo(String photo) throws Throwable {
 		ConversationInfoPage conversationInfo = CommonSteps.senderPages.getConversationInfoPage();
+		conversationInfo.openImageInPopup();
 		BufferedImage screen = conversationInfo.takeScreenshot();
 		BufferedImage picture = ImageUtil.readImageFromFile(OSXPage.imagesPath + photo);
 		double score = ImageUtil.getOverlapScore(screen, picture, ImageUtil.RESIZE_FROM2560x1600OPTIMIZED);
 		log.debug("Score for comparison of 2 pictures = " + score);
 		Assert.assertTrue(
-				"Overlap between two images has no enough score. Expected >= 0.55, current = " + score,
-				score >= 0.55d);
+				"Overlap between two images has no enough score. Expected >= 0.85, current = " + score,
+				score >= 0.85d);
+		conversationInfo.closeImagePopup();
 	}
 
 	@Then("^I see add new people button$")

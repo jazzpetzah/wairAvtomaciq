@@ -33,9 +33,17 @@ public class ResultJSON extends TestcasesStorage {
 
 	private static boolean parseIsFailed(JSONArray steps) {
 		for (int stepIdx = 0; stepIdx < steps.length(); stepIdx++) {
-			if (steps.getJSONObject(stepIdx).getJSONObject("result")
-					.getString("status").equals("failed")) {
-				return true;
+			JSONObject step = steps.getJSONObject(stepIdx);
+			if (step.getJSONObject("result").getString("status")
+					.equals("failed")) {
+				if (step.has("keyword")
+						&& !step.getString("keyword").trim().toLowerCase()
+								.equals("given")) {
+					// Don't fail the test case if test setup failed
+					return true;
+				} else if (!step.has("keyword")) {
+					return true;
+				}
 			}
 		}
 		return false;

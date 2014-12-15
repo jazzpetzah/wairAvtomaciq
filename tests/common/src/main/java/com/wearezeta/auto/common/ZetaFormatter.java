@@ -3,7 +3,6 @@ package com.wearezeta.auto.common;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,7 +10,6 @@ import java.util.Queue;
 
 import javax.imageio.ImageIO;
 
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.common.driver.DriverUtils;

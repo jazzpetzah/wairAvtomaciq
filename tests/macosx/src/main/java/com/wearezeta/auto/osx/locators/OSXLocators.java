@@ -167,4 +167,6 @@ public final class OSXLocators {
 	public static final String idMainWindowCloseButton = "MainWindowCloseButton";
 	
 	public static final String xpathPeoplePopover = "//AXPopover";
+	
+	public static final String xpathImagePopupCloseButton = "//AXWindow[@AXRoleDescription='floating window']/AXButton[@AXRoleDescription='close button']";
 }

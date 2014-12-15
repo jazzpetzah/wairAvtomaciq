@@ -35,17 +35,20 @@ import com.wearezeta.auto.image_send.*;
 import java.awt.image.BufferedImage;
 
 public class BackEndREST {
-	private static final Logger log = ZetaLogger.getLog(BackEndREST.class.getSimpleName());
-	
+	private static final Logger log = ZetaLogger.getLog(BackEndREST.class
+			.getSimpleName());
+
 	private static String backendUrl = "not set";
+
+	private static final int LOGIN_TOO_FREQUENT_ERROR = 429;
 
 	static {
 		log.setLevel(Level.DEBUG);
 	}
-	
+
 	ClientConfig config = new DefaultClientConfig();
 	static Client client = Client.create();
-	
+
 	private final static String CONNECTION_CONSTANT = "CONNECT TO ";
 
 	public static void autoTestSendRequest(ClientUser user, ClientUser contact)
@@ -78,19 +81,19 @@ public class BackEndREST {
 	}
 
 	public static String sendPingToConversation(ClientUser fromUser,
-			String chatName) throws Exception{
+			String chatName) throws Exception {
 		fromUser = loginByUser(fromUser);
 		String id = getConversationByName(fromUser, chatName);
 		return sendConversationPing(fromUser, id);
 	}
-	
+
 	public static void sendHotPingToConversation(ClientUser fromUser,
-			String chatName,String id) throws Exception{
+			String chatName, String id) throws Exception {
 		fromUser = loginByUser(fromUser);
 		String conv_id = getConversationByName(fromUser, chatName);
-		sendConvertsationHotPing(fromUser,conv_id, id);
+		sendConvertsationHotPing(fromUser, conv_id, id);
 	}
-	
+
 	private static void VerifyRequestResult(int currentResponseCode,
 			int[] acceptableResponseCodes) throws BackendRequestException {
 		if (acceptableResponseCodes.length > 0) {
@@ -106,7 +109,8 @@ public class BackEndREST {
 						String.format(
 								"Backend request failed. Request return code is: %d. Expected codes are: %s",
 								currentResponseCode,
-								Arrays.toString(acceptableResponseCodes)));
+								Arrays.toString(acceptableResponseCodes)),
+						currentResponseCode);
 			}
 		}
 	}
@@ -115,10 +119,11 @@ public class BackEndREST {
 			int[] acceptableResponseCodes) throws BackendRequestException {
 		Object lock = new Object();
 		ClientResponse response;
-		synchronized(lock) {
+		synchronized (lock) {
 			response = webResource.post(ClientResponse.class, entity);
 		}
-		log.debug("HTTP POST request(Input data: " + entity + ", Response: " + response.toString() + ")");
+		log.debug("HTTP POST request(Input data: " + entity + ", Response: "
+				+ response.toString() + ")");
 		VerifyRequestResult(response.getStatus(), acceptableResponseCodes);
 		return response.getEntity(String.class);
 	}
@@ -126,7 +131,8 @@ public class BackEndREST {
 	private static String httpPut(Builder webResource, Object entity,
 			int[] acceptableResponseCodes) throws BackendRequestException {
 		ClientResponse response = webResource.put(ClientResponse.class, entity);
-		log.debug("HTTP PUT request(Input data: " + entity + ", Response: " + response.toString() + ")");
+		log.debug("HTTP PUT request(Input data: " + entity + ", Response: "
+				+ response.toString() + ")");
 		VerifyRequestResult(response.getStatus(), acceptableResponseCodes);
 		return response.getEntity(String.class);
 	}
@@ -174,29 +180,31 @@ public class BackEndREST {
 
 	public static ClientUser loginByUser(ClientUser user)
 			throws IllegalArgumentException, UriBuilderException, IOException,
-			JSONException, BackendRequestException {
+			JSONException, BackendRequestException, InterruptedException {
 		Builder webResource = buildDefaultRequest("login",
 				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
 		final String input = String.format(
 				"{\"email\":\"%s\",\"password\":\"%s\",\"label\":\"\"}",
 				user.getEmail(), user.getPassword());
-		boolean doRetry = true;
 		int tryNum = 1;
 		String output = "";
 		int toWait = 1;
-		while (doRetry && tryNum < 5) {
+		while (tryNum < 5) {
 			try {
-				output = httpPost(webResource, input, new int[] { HttpStatus.SC_OK });
-				doRetry = false;
+				output = httpPost(webResource, input,
+						new int[] { HttpStatus.SC_OK });
+				break;
 			} catch (BackendRequestException e) {
-				if (tryNum < 4) {
-					log.debug("Request for login number #" + tryNum + " failed.");
-					doRetry = true;
+				if (e.getReturnCode() == LOGIN_TOO_FREQUENT_ERROR) {
+					log.debug(String
+							.format("Login request for login number #%d failed. Retrying...",
+									tryNum));
 					tryNum++;
-					try { Thread.sleep(toWait*1000); } catch(InterruptedException ex) { }
-					toWait+=2;
+					Thread.sleep(toWait * 1000);
+					toWait *= 2;
+				} else {
+					throw e;
 				}
-				else { throw e; }
 			}
 		}
 		JSONObject jsonObj = new JSONObject(output);
@@ -209,7 +217,7 @@ public class BackEndREST {
 
 		return user;
 	}
-	
+
 	public static String getUserNameByID(String id, ClientUser user)
 			throws IllegalArgumentException, UriBuilderException, IOException,
 			JSONException, BackendRequestException {
@@ -218,7 +226,7 @@ public class BackEndREST {
 		final String output = httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
 		JSONObject jsonObj = new JSONObject(output);
-		
+
 		return jsonObj.getString("name");
 	}
 
@@ -298,7 +306,7 @@ public class BackEndREST {
 			changeConnectRequestStatus(user, to, "ignored");
 		}
 	}
-	
+
 	public static void changeConnectRequestStatus(ClientUser user,
 			String connectionId, String newStatus)
 			throws BackendRequestException, IllegalArgumentException,
@@ -338,7 +346,8 @@ public class BackEndREST {
 	public static void activateNewUser(String key, String code)
 			throws BackendRequestException, IllegalArgumentException,
 			UriBuilderException, IOException {
-		log.debug("Request for 'User Activation' (key: " + key + "; code: " + code + ")");
+		log.debug("Request for 'User Activation' (key: " + key + "; code: "
+				+ code + ")");
 		Builder webResource = buildDefaultRequest(
 				String.format("activate?code=%s&key=%s", code, key),
 				MediaType.APPLICATION_JSON);
@@ -351,20 +360,21 @@ public class BackEndREST {
 
 	public static void sendPictureToSingleUserConversation(ClientUser userFrom,
 			ClientUser userTo, String imagePath) throws Throwable {
-		
+
 		userFrom = loginByUser(userFrom);
 		sendPicture(userFrom, imagePath,
 				getConversationWithSingleUser(userFrom, userTo), null);
 	}
 
 	public static void sendPictureToChatByName(ClientUser userFrom,
-			String chatName, String imagePath, InputStream src) throws Throwable {
-		
+			String chatName, String imagePath, InputStream src)
+			throws Throwable {
+
 		userFrom = loginByUser(userFrom);
 		sendPicture(userFrom, imagePath,
 				getConversationByName(userFrom, chatName), src);
 	}
-	
+
 	public static void createGroupChatWithUnconnecteduser(String chatName,
 			String groupCreator) throws IllegalArgumentException,
 			UriBuilderException, IOException, BackendRequestException,
@@ -381,7 +391,7 @@ public class BackEndREST {
 		List<ClientUser> users = new ArrayList<ClientUser>();
 		users.add(selfUser); // add self
 		users.add(unconnectedUser);
-		
+
 		groupCreatorUser = BackEndREST.loginByUser(groupCreatorUser);
 		BackEndREST.createGroupConversation(groupCreatorUser, users, chatName);
 	}
@@ -408,41 +418,42 @@ public class BackEndREST {
 		final String output = httpPost(webResource, input,
 				new int[] { HttpStatus.SC_CREATED });
 
-		writeLog(new String[] { "Output for 'Create Group Chat'" + "\n\t" + output });
+		writeLog(new String[] { "Output for 'Create Group Chat'" + "\n\t"
+				+ output });
 	}
 
 	private static void sendPicture(ClientUser userFrom, String imagePath,
 			String convId, InputStream src) throws Throwable {
-		
+
 		String imageMimeType = "";
 		if (null == src) {
-			InputStream is = new BufferedInputStream(new FileInputStream(imagePath));
+			InputStream is = new BufferedInputStream(new FileInputStream(
+					imagePath));
 			imageMimeType = URLConnection.guessContentTypeFromStream(is);
 			is.close();
-		}
-		else {
+		} else {
 			imageMimeType = URLConnection.guessContentTypeFromStream(src);
-			
+
 			if (imageMimeType == null) {
-				//hardcode as there is no good way to check it when reading a resource from jar
+				// hardcode as there is no good way to check it when reading a
+				// resource from jar
 				imageMimeType = "image/jpeg";
 			}
 		}
 		byte[] srcImageAsByteArray;
-		
+
 		if (null == src) {
 			FileInputStream fis = new FileInputStream(imagePath);
-			
+
 			try {
 				srcImageAsByteArray = IOUtils.toByteArray(fis);
 			} finally {
 				fis.close();
 			}
-		}
-		else {
+		} else {
 			srcImageAsByteArray = IOUtils.toByteArray(src);
 		}
-		
+
 		ImageAssetData srcImgData = new ImageAssetData(convId,
 				srcImageAsByteArray, imageMimeType);
 		srcImgData.setIsPublic(true);
@@ -489,15 +500,17 @@ public class BackEndREST {
 			JSONObject conversation = (JSONObject) jsonArray.get(i);
 			conversationId = conversation.getString("id");
 			String name = conversation.getString("name");
-			name = name.replaceAll("\uFFFC", "").trim();;
+			name = name.replaceAll("\uFFFC", "").trim();
+			;
 			if (name.equals("null")) {
 				conversation = (JSONObject) conversation.get("members");
 				JSONArray otherArray = (JSONArray) conversation.get("others");
 				if (otherArray.length() == 1) {
-					String id = ((JSONObject) otherArray.get(0)).getString("id");
-					String contactName = BackEndREST.getUserNameByID(id, fromUser);
-					if (contactName.equals(conversationName)) 
-					{
+					String id = ((JSONObject) otherArray.get(0))
+							.getString("id");
+					String contactName = BackEndREST.getUserNameByID(id,
+							fromUser);
+					if (contactName.equals(conversationName)) {
 						return conversationId;
 					}
 				}
@@ -505,8 +518,7 @@ public class BackEndREST {
 			}
 			if (name.equals(conversationName)) {
 				return conversationId;
-			}
-			else {
+			} else {
 				conversationId = "";
 			}
 		}
@@ -529,15 +541,17 @@ public class BackEndREST {
 
 		writeLog(new String[] { "Output from Server ....\n\t" + output });
 	}
-	
-	private static String sendConversationPing(ClientUser user, String convId) throws IllegalArgumentException, UriBuilderException, IOException, BackendRequestException, JSONException{
+
+	private static String sendConversationPing(ClientUser user, String convId)
+			throws IllegalArgumentException, UriBuilderException, IOException,
+			BackendRequestException, JSONException {
 		String nonce = CommonUtils.generateGUID();
-		
-		Builder webResource = buildDefaultRequestWithAuth("conversations/" + convId + "/knock",
+
+		Builder webResource = buildDefaultRequestWithAuth(
+				"conversations/" + convId + "/knock",
 				MediaType.APPLICATION_JSON, user).type(
 				MediaType.APPLICATION_JSON);
-		final String input = String.format(
-				"{\"nonce\": \"%s\"}", nonce);
+		final String input = String.format("{\"nonce\": \"%s\"}", nonce);
 		final String output = httpPost(webResource, input, new int[] {
 				HttpStatus.SC_OK, HttpStatus.SC_CREATED });
 		final JSONObject jsonObj = new JSONObject(output);
@@ -545,11 +559,14 @@ public class BackEndREST {
 		writeLog(new String[] { "Output from Server .... " + output + "\n" });
 		return eventId;
 	}
-	
-	private static void sendConvertsationHotPing(ClientUser user, String convId, String refId) throws IllegalArgumentException, UriBuilderException, IOException, BackendRequestException{
+
+	private static void sendConvertsationHotPing(ClientUser user,
+			String convId, String refId) throws IllegalArgumentException,
+			UriBuilderException, IOException, BackendRequestException {
 		String nonce = CommonUtils.generateGUID();
-		
-		Builder webResource = buildDefaultRequestWithAuth("conversations/" + convId + "/hot-knock",
+
+		Builder webResource = buildDefaultRequestWithAuth(
+				"conversations/" + convId + "/hot-knock",
 				MediaType.APPLICATION_JSON, user).type(
 				MediaType.APPLICATION_JSON);
 		final String input = String.format(
@@ -559,9 +576,10 @@ public class BackEndREST {
 		writeLog(new String[] { "Output from Server .... " + output + "\n" });
 	}
 
-	public static String [] getConversationsAsStringArray(ClientUser user) throws Exception {
+	public static String[] getConversationsAsStringArray(ClientUser user)
+			throws Exception {
 		JSONArray jsonArray = getConversations(user);
-		ArrayList<String> result = new ArrayList<String>(); 
+		ArrayList<String> result = new ArrayList<String>();
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject conversation = (JSONObject) jsonArray.get(i);
 			String name = conversation.getString("name");
@@ -569,14 +587,15 @@ public class BackEndREST {
 				conversation = (JSONObject) conversation.get("members");
 				JSONArray otherArray = (JSONArray) conversation.get("others");
 				if (otherArray.length() == 1) {
-					String id = ((JSONObject) otherArray.get(0)).getString("id");
+					String id = ((JSONObject) otherArray.get(0))
+							.getString("id");
 					String contactName = BackEndREST.getUserNameByID(id, user);
 					result.add(contactName);
-				}
-				else {
+				} else {
 					String contactName = "";
 					for (int j = 0; j < otherArray.length(); j++) {
-						String id = ((JSONObject) otherArray.get(j)).getString("id");
+						String id = ((JSONObject) otherArray.get(j))
+								.getString("id");
 						contactName += BackEndREST.getUserNameByID(id, user);
 						if (j < otherArray.length() - 1) {
 							contactName += ", ";
@@ -584,11 +603,10 @@ public class BackEndREST {
 					}
 					result.add(contactName);
 				}
-			}
-			else {
+			} else {
 				result.add(name);
 			}
-				
+
 		}
 		return (String[]) result.toArray(new String[0]);
 	}
@@ -604,15 +622,16 @@ public class BackEndREST {
 
 		return (JSONArray) jsonObj.get("conversations");
 	}
-	
+
 	public static void setDefaultBackendURL(String Url) {
 		backendUrl = Url;
 	}
 
 	public static URI getBaseURI() throws IllegalArgumentException,
 			UriBuilderException, IOException {
-		String backend = backendUrl.equals("not set") ? CommonUtils.getDefaultBackEndUrlFromConfig(CommonUtils.class) : backendUrl;
-		
+		String backend = backendUrl.equals("not set") ? CommonUtils
+				.getDefaultBackEndUrlFromConfig(CommonUtils.class) : backendUrl;
+
 		return UriBuilder.fromUri(backend).build();
 	}
 
@@ -654,12 +673,13 @@ public class BackEndREST {
 			ClientUser fromUser, ClientUser toUser) throws Exception {
 		return getPictureAssetFromConversation(fromUser, toUser, 0);
 	}
-	
+
 	public static BufferedImage getLastPictureAssetFromConversation(
 			ClientUser fromUser, ClientUser toUser) throws Exception {
-		return getPictureAssetFromConversation(fromUser, toUser, Integer.MAX_VALUE);
+		return getPictureAssetFromConversation(fromUser, toUser,
+				Integer.MAX_VALUE);
 	}
-	
+
 	public static BufferedImage getPictureAssetFromConversation(
 			ClientUser fromUser, ClientUser toUser, int index) throws Exception {
 		BufferedImage result = null;
@@ -677,7 +697,8 @@ public class BackEndREST {
 				if (tag.equals("medium")) {
 					result = getAssetsDownload(convID, (String) data.get("id"),
 							fromUser);
-					if (currentIndex == index) return result;
+					if (currentIndex == index)
+						return result;
 					currentIndex++;
 				}
 			}

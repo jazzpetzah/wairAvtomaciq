@@ -4,13 +4,14 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
-import org.openqa.selenium.NoSuchElementException;
 
 import cucumber.api.java.en.*;
 
 import com.wearezeta.auto.common.BackEndREST;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.*;
 
 public class ContactListPageSteps {
@@ -24,6 +25,12 @@ public class ContactListPageSteps {
 			PagesCollection.contactListPage.dismissTutorial();
 		} else {
 			log.debug("No tutorial is shown");
+		}
+		
+		//workaround for login into self profile
+		Thread.sleep(3000);
+		if (DriverUtils.isElementDisplayed(PagesCollection.loginPage.getDriver().findElementByName(IOSLocators.nameProfileName))) {
+			PagesCollection.loginPage.swipeRight(1000);
 		}
 		
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
