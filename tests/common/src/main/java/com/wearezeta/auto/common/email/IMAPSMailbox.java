@@ -136,7 +136,7 @@ public class IMAPSMailbox {
 			}
 			throw new TimeoutException(
 					String.format(
-							"The email message for user % has not been received within %s second(s) timeout",
+							"The email message for user %s has not been received within %s second(s) timeout",
 							listener.getParentMBox().getUser(), timeout));
 		} finally {
 			listener.getParentMBox().closeFolder();
