@@ -43,8 +43,8 @@ public class ContactListPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathPendingRequest)
 	private WebElement pendingRequest;
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameTutorialText)
-	private WebElement tutorialText;
+	@FindBy(how = How.NAME, using = IOSLocators.nameTutorialView)
+	private WebElement tutorialView;
 	
 	private String url;
 	private String path;
@@ -250,8 +250,8 @@ public class ContactListPage extends IOSPage {
 	
 	public boolean isTutorialShown(){
 		//this.refreshUITree();
-		DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameTutorialText));
-		boolean tutorialShown = DriverUtils.isElementDisplayed(tutorialText);
+		DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameTutorialView));
+		boolean tutorialShown = DriverUtils.isElementDisplayed(tutorialView);
 		return tutorialShown;
 	}
 	
