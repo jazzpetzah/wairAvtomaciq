@@ -113,6 +113,11 @@ public class DialogPage extends IOSPage{
 		return lastMessage.getText();
 	}
 	
+	public boolean isPingMessageVisible(String msg){
+		
+		return DriverUtils.isElementDisplayed(driver.findElement(By.name(msg)));
+	}
+	
 	public void pressPingButton() {
 		pingButton.click();
 	}
