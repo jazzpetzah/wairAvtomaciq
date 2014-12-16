@@ -112,6 +112,9 @@ public class CommonSteps {
 	@After
 	public void tearDown() throws Exception {
 		senderPages.closeAllPages();
+		
+		//workaround for stuck on Send picture test
+		OSXCommonUtils.killWireIfStuck();
 	}
 
 	@Given("^I have group chat with name (.*) with (.*) and (.*)$")
