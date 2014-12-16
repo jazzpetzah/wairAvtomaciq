@@ -31,7 +31,7 @@ public class ChoosePicturePage extends OSXPage {
 	private WebElement selectColumnViewButton;
 	
 	public ChoosePicturePage(String URL, String path) throws MalformedURLException {
-		super(URL, path);
+		super(URL, path, false);
 	}
 
 	public Boolean isVisible() {
