@@ -78,7 +78,7 @@ public class ChoosePicturePage extends OSXPage {
 		return false;
 	}
 	
-	public void openImage(String filename) throws IOException {
+	public void openImage(String filename) {
 		if (selectColumnView()) {
 			goToSelectedFavoritesFolder(OSXLocators.IMAGES_SOURCE_DIRECTORY);
 			searchForImage(filename);
