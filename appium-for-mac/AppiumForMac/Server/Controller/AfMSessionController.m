@@ -302,8 +302,7 @@
     CFTypeRef identifierRef = nil;
     AXUIElementCopyAttributeValue(root.elementRef, (__bridge CFStringRef)@"AXIdentifier", &identifierRef);
 	NSString *identifier = (__bridge NSString*)identifierRef;
-    NSLog(@"Get info as XML for element with id %@", identifier);
-    
+
 	if (identifier != nil)
 	{
 		[element addAttribute:[GDataXMLElement attributeWithName:@"AXIdentifier" stringValue:[NSString stringWithFormat:@"%@",[root valueForAttribute:@"AXIdentifier"]]]];
@@ -332,7 +331,6 @@
 	}
     
     NSArray *children = root.AXChildren;
-    NSLog(@"It has %lu children", (unsigned long)children.count);
     if ([root.AXRole caseInsensitiveCompare:@"AXUnknown"] == NSOrderedSame) {
         NSMutableArray *filtered = [NSMutableArray new];
         for (PFUIElement* val in children) {

@@ -1,5 +1,6 @@
 package com.wearezeta.auto.osx.pages;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 
 import org.apache.log4j.Logger;
@@ -9,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
@@ -46,11 +48,13 @@ public class ChoosePicturePage extends OSXPage {
 		el.click();
 	}
 	
-	public void selectColumnView() {
+	public boolean selectColumnView() {
 		try {
 			selectColumnViewButton.click();
+			return true;
 		} catch (NoSuchElementException e) {
 			log.debug("Can't find column view selector.\n" + driver.getPageSource());
+			return false;
 		}
 	}
 	
@@ -74,10 +78,26 @@ public class ChoosePicturePage extends OSXPage {
 		return false;
 	}
 	
-	public void openImage(String filename) {
-		try { Thread.sleep(5000); } catch (InterruptedException e) { }
-		selectColumnView();
-		goToSelectedFavoritesFolder(OSXLocators.IMAGES_SOURCE_DIRECTORY);
-		searchForImage(filename);
+	public void openImage(String filename) throws IOException {
+		if (selectColumnView()) {
+			goToSelectedFavoritesFolder(OSXLocators.IMAGES_SOURCE_DIRECTORY);
+			searchForImage(filename);
+		} else {
+			String openImageScript =
+					"tell application \"System Events\" to tell application process \"Wire\"\n" +
+					"set frontmost to true\n" +
+					"end tell\n" +
+					"delay 3\n" +
+					"tell application \"System Events\" to keystroke \"" + filename + "\"\n" +
+					"tell application \"System Events\"\n" +
+					"key code 36\n" +
+					"end tell";
+			driver.executeScript(openImageScript);
+			try {
+				driver.navigate().to(CommonUtils.getOsxApplicationPathFromConfig(ChoosePicturePage.class));
+			} catch (IOException e) {
+				log.fatal(e.getMessage());
+			}
+		}
 	}
 }
