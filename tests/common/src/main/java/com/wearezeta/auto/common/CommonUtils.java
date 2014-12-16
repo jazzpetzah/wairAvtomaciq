@@ -101,6 +101,23 @@ public class CommonUtils {
 		log.debug("Process exited with code " + process.waitFor());
 	}
 
+	public static String executeOsXCommandWithOutput(String[] cmd) throws Exception {
+		Process process = Runtime.getRuntime().exec(cmd);
+		log.debug("Process started for cmdline " + Arrays.toString(cmd));
+		InputStream stream = process.getInputStream();
+		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+		StringBuilder sb = new StringBuilder("\n");
+		String s;
+		while ((s = br.readLine()) != null) {
+			sb.append("\t" + s + "\n");
+		}
+		String output = sb.toString();
+		stream.close();
+		outputErrorStreamToLog(process.getErrorStream());
+		log.debug("Process exited with code " + process.waitFor());
+		return output;
+	}
+	
 	public static void outputErrorStreamToLog(InputStream stream)
 			throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(stream));
