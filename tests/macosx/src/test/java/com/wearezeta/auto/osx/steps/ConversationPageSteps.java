@@ -9,6 +9,7 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.BackEndREST;
 import com.wearezeta.auto.common.BackendRequestException;
+import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -30,6 +31,7 @@ public class ConversationPageSteps {
 	 private int beforeNumberOfKnocks = -1;
 	 private int beforeNumberOfHotKnocks = -1;
 	 private int beforeNumberOfImages = -1;
+	 public String pingID;
 	 
 	 @When("I write random message")
 	 public void WhenIWriteRandomMessage() {	
@@ -166,6 +168,72 @@ public class ConversationPageSteps {
 	 public void IPingAgainUser() {
 		 calcNumberOfPings();
 		 CommonSteps.senderPages.getConversationPage().pingAgain();
+	 }
+	 
+	 @When("^User (.*) pings in chat (.*)$")
+	 public void WhenUserPingsInChat(String contact, String conversation) throws Throwable {
+		 ClientUser yourСontact = null;
+			contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+			for (ClientUser user : CommonUtils.contacts) {
+				if (user.getName().toLowerCase().equals(contact.toLowerCase())) {
+					yourСontact = user;
+				}
+			}
+			yourСontact = BackEndREST.loginByUser(yourСontact);
+			pingID = BackEndREST.sendPingToConversation(yourСontact, conversation);
+			Thread.sleep(1000);
+	 }
+
+	 @Then("^I see User (.*) Pinged action in the conversation$")
+	 public void ThenISeeUserPingedActionInTheConversation(String user) throws Throwable {
+		 String username = CommonUtils.retrieveRealUserContactPasswordValue(user);
+		 String expectedPingMessage = username.toUpperCase() + OSXLocators.USER_PINGED_MESSAGE;
+		 String dialogLastMessage = username.toUpperCase() + " PINGED";
+		 
+		 boolean isNumberIncreased = false;
+		 int afterNumberOfKnocks = -1;
+		 int afterNumberOfHotKnocks = -1;
+
+		 if (dialogLastMessage.equals(expectedPingMessage)) {
+			 for (int i = 0; i < 3; i++) {
+				 afterNumberOfKnocks = CommonSteps.senderPages.getConversationPage().getNumberOfYouPingedMessages(OSXLocators.xpathOtherPingedMessage);
+				 if (afterNumberOfKnocks == beforeNumberOfKnocks + 1) {
+					 isNumberIncreased = true;
+					 break;
+				 }
+				 try { Thread.sleep(1000); } catch (InterruptedException e) { }
+			 }
+			 
+			 Assert.assertTrue("Incorrect messages count: before - "
+					 + beforeNumberOfKnocks + ", after - " + afterNumberOfKnocks, isNumberIncreased);
+		 }
+		 else {
+			 for (int i = 0; i < 3; i++) {
+				 afterNumberOfHotKnocks = CommonSteps.senderPages.getConversationPage().getNumberOfYouPingedMessages(OSXLocators.xpathOtherPingedAgainMessage);
+				 if (afterNumberOfHotKnocks == beforeNumberOfHotKnocks + 1) {
+					 isNumberIncreased = true;
+					 break;
+				 }
+				 try { Thread.sleep(1000); } catch (InterruptedException e) { }
+			 }
+			 
+			 Assert.assertTrue("Incorrect messages count: before - "
+					 + beforeNumberOfHotKnocks + ", after - " + afterNumberOfHotKnocks, isNumberIncreased);
+		 	}
+		 }
+
+	 @When("^User (.*) pings again in chat (.*)$")
+	 public void WhenUserPingsAgainInChat(String contact, String conversation) throws Throwable {
+		 ClientUser yourСontact = null;
+			contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+			for (ClientUser user : CommonUtils.contacts) {
+				if (user.getName().toLowerCase().equals(contact.toLowerCase())) {
+					yourСontact = user;
+				}
+			}
+			yourСontact = BackEndREST.loginByUser(yourСontact);
+			BackEndREST.sendHotPingToConversation(yourСontact, conversation,pingID);
+			Thread.sleep(1000);
 	 }
 	 
 	 @Then("I see message (.*) in conversation$")

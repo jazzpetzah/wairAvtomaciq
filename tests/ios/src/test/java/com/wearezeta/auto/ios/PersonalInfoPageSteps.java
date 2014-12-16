@@ -44,7 +44,7 @@ public class PersonalInfoPageSteps {
 	
 	@When("I see error message asking for more characters")
 	public void ISeeErrorMessageForMoreCharacters(){
-		Assert.assertTrue(PagesCollection.personalInfoPage.isTooShortNameErrorMessage());
+		Assert.assertTrue("Error message is not shown", PagesCollection.personalInfoPage.isTooShortNameErrorMessage());
 	}
 	
 	@When("^I press options button (.*)$")

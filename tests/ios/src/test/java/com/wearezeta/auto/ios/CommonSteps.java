@@ -5,10 +5,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import javax.script.ScriptException;
+import javax.ws.rs.core.UriBuilderException;
+
 import org.apache.log4j.Logger;
+import org.json.JSONException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.BackEndREST;
+import com.wearezeta.auto.common.BackendRequestException;
 import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.CreateZetaUser;
@@ -118,8 +123,8 @@ public class CommonSteps {
 			IOSPage.clearPagesCollection();
 		}
 
-		/*ZetaFormatter.setBuildNumber(IOSCommonUtils
-				.readClientVersionFromPlist().getClientBuildNumber()); */
+		ZetaFormatter.setBuildNumber(IOSCommonUtils
+				.readClientVersionFromPlist().getClientBuildNumber());
 	}
 
 	@Given("I have at least (.*) connections")
@@ -218,7 +223,17 @@ public class CommonSteps {
 
 	@When("I scroll up page a bit")
 	public void IScrollUpPageABit() {
-		PagesCollection.iOSPage.smallScrollUp();
+		PagesCollection.loginPage.smallScrollUp();
+	}
+
+	@When("I accept alert")
+	public void IAcceptAlert() {
+		PagesCollection.loginPage.acceptAlert();
+	}
+
+	@When("I dismiss alert")
+	public void IDismissAlert() {
+		PagesCollection.loginPage.dismissAlert();
 	}
 
 	@Given("I have (\\d+) users and (\\d+) contacts for (\\d+) users")
@@ -234,5 +249,20 @@ public class CommonSteps {
 			Thread.sleep(CommonUtils.BACKEND_SYNC_TIMEOUT);
 			TestPreparation.createContactLinks(usersWithContacts);
 		}
+	}
+
+	@When("I add contacts list users to Mac contacts")
+	public void AddContactsUsersToMacContacts() throws ScriptException,
+			IllegalArgumentException, UriBuilderException, IOException,
+			JSONException, BackendRequestException, InterruptedException {
+		CommonUtils.addUsersToMacContacts(CommonUtils.contacts);
+	}
+
+	@When("I remove contacts list users from Mac contacts")
+	public void IRemoveContactsListUsersFromMacContact()
+			throws ScriptException, IllegalArgumentException,
+			UriBuilderException, IOException, JSONException,
+			BackendRequestException, InterruptedException {
+		CommonUtils.removeUsersFromMacContacts(CommonUtils.contacts);
 	}
 }

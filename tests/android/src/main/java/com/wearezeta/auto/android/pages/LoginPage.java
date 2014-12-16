@@ -31,6 +31,9 @@ public class LoginPage extends AndroidPage {
 
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idLoginPasswordInput")
 	private List<WebElement> loginPasswordField;
+	
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idLoginError")
+	private WebElement loginError;
 
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idWelcomeButtonsContainer")
 	private List<WebElement> welcomeButtonsContainer;
@@ -45,6 +48,7 @@ public class LoginPage extends AndroidPage {
 	private String password;
 	private String url;
 	private String path;
+	private static final String LOGIN_ERROR_TEXT = "WRONG ADDRESS OR PASSWORD.\n PLEASE TRY AGAIN.";
 
 	public LoginPage(String URL, String path) throws Exception {
 
@@ -70,6 +74,14 @@ public class LoginPage extends AndroidPage {
 		return welcomeSlogan != null;
 	}
 
+	public Boolean isLoginError() {
+		return loginError.isDisplayed();
+	}
+	
+	public Boolean isLoginErrorTextOk() {	
+		return loginError.getText().equals(LOGIN_ERROR_TEXT);
+	}
+	
 	public LoginPage SignIn() throws IOException {
 
 		signInButton.click();

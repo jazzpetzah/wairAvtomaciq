@@ -72,9 +72,10 @@ public class LoginPage extends OSXPage {
 	}
 	
 	public ContactListPage confirmSignIn() throws IOException {
+		try { Thread.sleep(1000); } catch (InterruptedException e) { }
 		signInButton.click();
 		return new ContactListPage(url, path);
-	}
+		}
 
 	public String getLogin() {
 		return login;
