@@ -4,7 +4,7 @@ Feature: People View
   Scenario Outline: I can access user details page from group chat and see user name, email and photo
   	Given I have 1 users and 1 contacts for 1 users
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <GroupChatName>
     And I swipe up on dialog page
@@ -39,7 +39,7 @@ Feature: People View
   Scenario Outline: Leave group conversation
     Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <GroupChatName>
     And I see dialog page
@@ -56,7 +56,7 @@ Feature: People View
   Scenario Outline: Remove from group chat
     Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <GroupChatName>
     And I see dialog page
@@ -76,7 +76,7 @@ Feature: People View
   Scenario Outline: Verify correct group info page information
     Given I have 1 users and 0 contacts for 0 users
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <GroupChatName>
     And I swipe up on dialog page
