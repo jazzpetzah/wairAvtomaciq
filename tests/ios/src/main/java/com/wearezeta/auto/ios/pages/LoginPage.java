@@ -116,11 +116,8 @@ public class LoginPage extends IOSPage {
 	public IOSPage login() throws IOException {
 		
 		confirmSignInButton.click();
-		PersonalInfoPage personalInfo = new PersonalInfoPage(url, path);
-		if (personalInfo.isSettingsButtonVisible()) {
-			swipeRight(500);
-		}
-		PagesCollection.personalInfoPage = personalInfo;
+		
+		DriverUtils.waitUntilElementDissapear(driver, By.name(IOSLocators.nameLoginButton), 20);
 		return new ContactListPage(url, path);
 	}
 	
