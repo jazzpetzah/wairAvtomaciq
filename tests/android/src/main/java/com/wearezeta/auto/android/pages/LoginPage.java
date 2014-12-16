@@ -124,7 +124,7 @@ public class LoginPage extends AndroidPage {
 
 	public boolean waitForLogin() {
 
-		return DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.LoginPage.idLoginProgressBar));
+		return DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.LoginPage.idLoginProgressBar), 30);
 	}
 
 	public Boolean isLoginFinished(String contact) throws InterruptedException {
