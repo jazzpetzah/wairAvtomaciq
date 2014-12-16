@@ -59,7 +59,7 @@ Feature: Conversation
   Scenario Outline: Send message to group chat
     Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
     When I write random message
@@ -74,7 +74,7 @@ Feature: Conversation
   Scenario Outline: Send picture to group chat
     Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
     When I send picture testing.jpg
@@ -145,7 +145,7 @@ Feature: Conversation
   Scenario Outline: Text message sent to group chat is visible on other end
     Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
     And I write random message
@@ -170,7 +170,7 @@ Feature: Conversation
   Scenario Outline: Image sent to group chat is visible on other end
     Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
     And I send picture testing.jpg
@@ -194,7 +194,7 @@ Feature: Conversation
   Scenario Outline: Multimedia message sent to group chat is visible on other end
     Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
     When I post media link <SoundCloudLink>
@@ -219,7 +219,7 @@ Feature: Conversation
     Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
-    And I open conversation with <Contact>
+    When I open conversation with <Contact>
     And I post messages and media link <SoundCloudLink>
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap SoundCloud link
