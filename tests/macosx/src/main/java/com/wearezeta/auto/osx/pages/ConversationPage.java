@@ -176,7 +176,7 @@ public class ConversationPage extends OSXPage {
 		peopleButton.click();
 	}
 
-	public void openChooseImageDialog() {
+	public void openChooseImageDialog() throws IOException {
 		if (addImageButton == null) {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
 					.withTimeout(10, TimeUnit.SECONDS)
@@ -191,6 +191,8 @@ public class ConversationPage extends OSXPage {
 			});
 		}
 		addImageButton.click();
+		try { Thread.sleep(1000); } catch (InterruptedException e) { }
+		driver.navigate().to(CommonUtils.getOsxApplicationPathFromConfig(ConversationPage.class));
 	}
 	
 	public void shortcutChooseImageDialog() throws ScriptException{

@@ -10,6 +10,9 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.pagefactory.ByAll;
 import org.openqa.selenium.support.pagefactory.ByChained;
 
+import com.wearezeta.auto.common.CommonUtils;
+
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Set;
@@ -101,11 +104,23 @@ public class ZetaAnnotations {
     return ans;
   }
 
-  protected By buildByFromZetaFindBy(ZetaFindBy findBy) {
+  protected By buildByFromZetaFindBy(ZetaFindBy findBy){
 	    How how = findBy.how();
 	    String locatorsDb = findBy.locatorsDb();
 	    String locatorKey = findBy.locatorKey();
 
+	    try {
+			if(CommonUtils.getAndroidApiLvl(ZetaAnnotations.class) < 43){
+				if(how == How.ID){
+					how = How.XPATH;
+				}
+				locatorKey = "xpath" + locatorKey.substring(2) + "42";
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
 		String locatorValue = getLocatorValue(locatorsDb, locatorKey);
 	    switch (how) {
 	      case CLASS_NAME:

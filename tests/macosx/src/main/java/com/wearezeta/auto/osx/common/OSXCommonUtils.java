@@ -153,4 +153,10 @@ public class OSXCommonUtils extends CommonUtils {
 				"-c",
 				"instruments -t /Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/Resources/templates/Activity\\ Monitor.tracetemplate"});
 	}
+	
+	public static void killWireIfStuck() {
+		try {
+			executeOsXCommand(new String[] { "/bin/bash", "-c", "kill -9 $(lsof -c Wire -t)" });
+		} catch (Exception e) { }
+	}
 }
