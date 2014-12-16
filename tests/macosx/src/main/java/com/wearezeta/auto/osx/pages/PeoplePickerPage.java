@@ -197,6 +197,6 @@ public class PeoplePickerPage extends OSXPage {
 	
 	public boolean isTopPeopleVisible(){
 		return DriverUtils.waitUntilElementAppears(driver,
-				By.id(OSXLocators.idPeoplePickerTopContactsGrid));	
+				By.xpath(OSXLocators.xpathPeoplePickerTopContactsSectionHeader));	
 	}
 }
