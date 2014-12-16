@@ -43,7 +43,9 @@ public final class AndroidLocators {
 		
 		public static final String idWelcomeButtonsContainer = LOCATORS_PACKAGE + ":id/cm__choose";
 		
-		public static final String idWelcomeSlogan = LOCATORS_PACKAGE + ":id/tv__welcome__slogan" ;
+		public static final String idWelcomeSlogan = LOCATORS_PACKAGE + ":id/tv__welcome__slogan";
+		
+		public static final String idLoginError = LOCATORS_PACKAGE + ":id/ttv__sign_in__login_failed__guidance";
 		
 	}
 	

@@ -4,7 +4,7 @@ Feature: Ping
   Scenario Outline: Verify you can send Ping & Hot Ping in a group conversation
     Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
     When I tap on contact name <GroupChatName>
     And I see dialog page
@@ -24,7 +24,7 @@ Feature: Ping
   Scenario Outline: Verify you can receive Ping & Hot Ping in a group conversation
     Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
     When I tap on contact name <GroupChatName>
     And I see dialog page

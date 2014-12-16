@@ -4,7 +4,7 @@ Feature: People View
   Scenario Outline: Check confirmation request on removing person from group chat
     Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open conversation with <ChatName>
     And I open Conversation info
@@ -20,7 +20,7 @@ Feature: People View
   Scenario Outline: Change conversation name
     Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open conversation with <ChatName>
     And I open Conversation info
@@ -36,7 +36,7 @@ Feature: People View
   Scenario Outline: Do not accept erroneous input as group conversation name (only spaces)
     Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open conversation with <ChatName>
     And I open Conversation info
@@ -52,7 +52,7 @@ Feature: People View
   Scenario Outline: Do not accept erroneous input as group conversation name (leading spaces)
     Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open conversation with <ChatName>
     And I open Conversation info
@@ -67,7 +67,7 @@ Feature: People View
   Scenario Outline: I can navigate forth and back between participant view and personal info
     Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open conversation with <ChatName>
     And I open Conversation info
@@ -100,7 +100,7 @@ Feature: People View
   Scenario Outline: Add user to group conversation
     Given I have 1 users and 3 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
     When I open People Picker from conversation
@@ -153,7 +153,7 @@ Feature: People View
   Scenario Outline: Group conversation name is displayed
     Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
     And I open Conversation info
@@ -170,7 +170,7 @@ Feature: People View
   Scenario Outline: Leave group conversation
     Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open conversation with <ChatName>
     And I open Conversation info
@@ -187,7 +187,7 @@ Feature: People View
   Scenario Outline: Remove user from group chat
     Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open conversation with <ChatName>
     And I open Conversation info
@@ -203,7 +203,7 @@ Feature: People View
   Scenario Outline: Remove then add the same participant in group chat
     Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
     And I open Conversation info
@@ -254,7 +254,7 @@ Feature: People View
   Scenario Outline: Leave group chat - second end verification
     Given I have 1 users and 3 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
     When I open People Picker from conversation

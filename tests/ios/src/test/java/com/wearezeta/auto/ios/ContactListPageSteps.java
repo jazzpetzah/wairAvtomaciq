@@ -4,13 +4,14 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
-import org.openqa.selenium.NoSuchElementException;
 
 import cucumber.api.java.en.*;
 
 import com.wearezeta.auto.common.BackEndREST;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.*;
 
 public class ContactListPageSteps {
@@ -24,6 +25,12 @@ public class ContactListPageSteps {
 			PagesCollection.contactListPage.dismissTutorial();
 		} else {
 			log.debug("No tutorial is shown");
+		}
+		
+		//workaround for login into self profile
+		Thread.sleep(3000);
+		if (PagesCollection.loginPage.isSelfProfileVisible()) {
+			PagesCollection.loginPage.swipeRight(1000);
 		}
 		
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
@@ -49,6 +56,16 @@ public class ContactListPageSteps {
 			throws Throwable {
 		BackEndREST.createGroupChatWithUnconnecteduser(
 				chatName, groupCreator);
+	}
+	
+	@When("I dismiss tutorial layout")
+	public void IDismissTutorial(){
+		boolean tutorialIsVisible = PagesCollection.contactListPage.isTutorialShown();
+		if(tutorialIsVisible) {
+			PagesCollection.contactListPage.dismissTutorial();
+		} else {
+			log.debug("No tutorial is shown");
+		}
 	}
 
 	@When("^I tap on my name (.*)$")
@@ -253,8 +270,8 @@ public class ContactListPageSteps {
 		name1=CommonUtils.retrieveRealUserContactPasswordValue(name1);
 		name2=CommonUtils.retrieveRealUserContactPasswordValue(name2);
 		name3=CommonUtils.retrieveRealUserContactPasswordValue(name3);
-		String chatname = name1 + ", " + name2 + ", " + name3;
-		Assert.assertTrue(PagesCollection.contactListPage.isDisplayedInContactList(chatname));
+		boolean chatExists = PagesCollection.contactListPage.conversationWithUsersPresented(name1, name2, name3);
+		Assert.assertTrue("Convesation with : " + name1 + ", " + name2 + ", " + name3 + ", "+ " is not in chat list", chatExists);
 	}
 	
 	@When("I don't see in contact list group chat with (.*) (.*) (.*)")
@@ -262,8 +279,8 @@ public class ContactListPageSteps {
 		name1=CommonUtils.retrieveRealUserContactPasswordValue(name1);
 		name2=CommonUtils.retrieveRealUserContactPasswordValue(name2);
 		name3=CommonUtils.retrieveRealUserContactPasswordValue(name3);
-		String chatname = name1 + ", " + name2 + ", " + name3;
-		Assert.assertFalse(PagesCollection.contactListPage.isDisplayedInContactList(chatname));
+		boolean chatExists = PagesCollection.contactListPage.conversationWithUsersPresented(name1, name2, name3);
+		Assert.assertFalse("Convesation with : " + name1 + ", " + name2 + ", " + name3 + ", "+ " is in chat list", chatExists);
 	}
 
 }

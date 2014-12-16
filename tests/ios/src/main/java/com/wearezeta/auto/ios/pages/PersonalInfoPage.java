@@ -118,7 +118,7 @@ public class PersonalInfoPage extends IOSPage{
 	}
 	
 	public boolean isTooShortNameErrorMessage(){
-		return nameTooShortError.isDisplayed();
+		return DriverUtils.isElementDisplayed(nameTooShortError);
 	}
 	
 	public void clearNameField(){

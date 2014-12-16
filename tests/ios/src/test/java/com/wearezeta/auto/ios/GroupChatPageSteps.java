@@ -27,6 +27,7 @@ public class GroupChatPageSteps {
 	
 	@Then("^I see group chat page with 3 users (.*) (.*) (.*)$")
 	public void ThenISeeGroupChatPage3Users(String name1, String name2, String name3) throws Throwable {
+		Assert.assertTrue("Conversation page is not shown", PagesCollection.groupChatPage.isGroupChatPageVisible());
 		name1 = CommonUtils.retrieveRealUserContactPasswordValue(name1);
 		name2 = CommonUtils.retrieveRealUserContactPasswordValue(name2);
 		name3 = CommonUtils.retrieveRealUserContactPasswordValue(name3);

@@ -80,15 +80,15 @@ public class DialogPageSteps {
 	@Then("^I see You Pinged message in the dialog$")
 	public void ISeeHelloMessageFromMeInTheDialog() throws Throwable {
 		String pingmessage = IOSLocators.nameYouPingedMessage;
-		String dialogLastMessage = PagesCollection.dialogPage.getLastChatMessage();
-		Assert.assertTrue("Actual: "+dialogLastMessage+" || Expected: "+pingmessage, dialogLastMessage.equals(pingmessage));
+		
+		Assert.assertTrue(PagesCollection.dialogPage.isPingMessageVisible(pingmessage));
 	}
 	
 	@Then("^I see You Pinged Again message in the dialog$")
 	public void ISeeHeyMessageFromMeInTheDialog() throws Throwable {
 		String pingagainmessage = IOSLocators.nameYouPingedAgainMessage;
-		String dialogLastMessage = PagesCollection.dialogPage.getLastChatMessage();
-		Assert.assertTrue("Actual: "+dialogLastMessage+" || Expected: "+pingagainmessage, dialogLastMessage.equals(pingagainmessage));
+		
+		Assert.assertTrue(PagesCollection.dialogPage.isPingMessageVisible(pingagainmessage));
 	}
 	
 	@Then("^I see User (.*) Pinged message in the conversation$")
@@ -132,7 +132,7 @@ public class DialogPageSteps {
 	
 	@When("^I swipe up on dialog page to open other user personal page$")
 	public void WhenISwipeUpOnDialogPage() throws IOException{
-		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage)PagesCollection.dialogPage.swipeUp(1000);
+		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage)PagesCollection.dialogPage.swipeUp(500);
 	}
 
 	@Then("^I see my message in the dialog$")

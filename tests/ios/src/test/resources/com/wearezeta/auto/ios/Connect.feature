@@ -27,8 +27,8 @@ Feature: Connect
   Scenario Outline: Get invitation message from user
     Given I have 2 users and 0 contacts for 0 users
     Given I have connection request from <Contact>
-    And I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I Sign in using login <Login> and password <Password>
+    When I see Contact list with my name <Name>
     And I see Pending request link in contact list
     And I click on Pending request link in contact list
     And I see Pending request page
@@ -146,8 +146,8 @@ Feature: Connect
   Scenario Outline: Verify transitions between connection requests (ignoring)
     Given I have 2 users and 0 contacts for 0 users
     Given I send <SentRequests> connection requests to <Name>
-    When I Sign in using login <Name> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I Sign in using login <Name> and password <Password>
+    When I see Contact list with my name <Name>
     And I see Pending request link in contact list
     And I click on Pending request link in contact list
     And I see Pending request page

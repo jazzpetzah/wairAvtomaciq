@@ -2,6 +2,7 @@ Feature: Search
 
   @id218 @regression
   Scenario Outline: I can do full name search for existing 1:1(non-archive)
+  	Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe down contact list
@@ -16,8 +17,9 @@ Feature: Search
 
   @id220 @regression
   Scenario Outline: I can do full name search for existing group convo(non-archive)
+    Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe down contact list
     And I see People picker page
@@ -31,6 +33,7 @@ Feature: Search
 
   @id223 @regression
   Scenario Outline: I can do partial name search for existing 1:1
+    Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe down contact list
@@ -47,7 +50,7 @@ Feature: Search
   Scenario Outline: I can do partial name search for existing group convo(non-archive)
     Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe down contact list
     And I see People picker page
