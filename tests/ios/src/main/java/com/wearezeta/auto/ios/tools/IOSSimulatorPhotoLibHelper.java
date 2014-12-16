@@ -14,6 +14,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 
@@ -28,6 +29,7 @@ public class IOSSimulatorPhotoLibHelper {
 	public static final String PHOTO_DATA_PATH_TEMPLATE = "%s/PhotoData";
 	public static final String PHOTOS_ROOT_TEMPLATE = "%s/DCIM/100APPLE";
 	public static final String SIMULATOR_DEVICE_NAME = "iPhone 6";
+	public static final String SIMCTL = "/Applications/Xcode.app/Contents/Developer/usr/bin/simctl";
 	
 	private static final Logger log = ZetaLogger.getLog(IOSSimulatorPhotoLibHelper.class.getSimpleName());
 
@@ -124,9 +126,10 @@ public class IOSSimulatorPhotoLibHelper {
 	}
 
 	public static void CreateSimulatorPhotoLib(final String simulatorVersion, String[] srcPictPaths,
-			boolean shouldDoCleanup) throws Exception {
+			boolean shouldDoCleanup, boolean useSimCtl) throws Exception {
 		
-		String libPath = FindSimultorFolder(simulatorVersion) + "/data/";
+		String simPath = FindSimultorFolder(simulatorVersion);
+		String libPath = simPath + "/data/";
 		
 		if (!new File(libPath).exists()) {
 			log.error(
@@ -142,13 +145,23 @@ public class IOSSimulatorPhotoLibHelper {
 		File photosRootObj = new File(libPath);
 
 		for (String picturePath: srcPictPaths) {
-			File from = new File(picturePath);
-			File to = new File(photosRootObj.getAbsolutePath(), from.getName());
-			if (from.isDirectory()) {
-				FileUtils.copyDirectory(from, to, false);
+			if (useSimCtl) {
+				CommonUtils.executeOsXCommand(new String[] { "/bin/bash", "-c", SIMCTL + " boot " + 
+						new File(simPath).getName()});
+				CommonUtils.executeOsXCommand(new String[] { "/bin/bash", "-c", SIMCTL + " addphoto " + 
+						new File(simPath).getName() + " " + picturePath});
+				CommonUtils.executeOsXCommand(new String[] { "/bin/bash", "-c", SIMCTL + " shutdown " + 
+						new File(simPath).getName()});
 			}
 			else {
-				FileUtils.copyFile(from, to);
+				File from = new File(picturePath);
+				File to = new File(photosRootObj.getAbsolutePath(), from.getName());
+				if (from.isDirectory()) {
+					FileUtils.copyDirectory(from, to, false);
+				}
+				else {
+					FileUtils.copyFile(from, to);
+				}
 			}
 		}
 	}
