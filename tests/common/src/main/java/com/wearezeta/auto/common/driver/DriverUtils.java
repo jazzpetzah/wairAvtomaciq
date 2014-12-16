@@ -61,7 +61,8 @@ public class DriverUtils {
 			final By by) {
 
 		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-		Boolean bool = true;
+		//changing to true may cause false positive result
+		Boolean bool = false;
 		try {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
 					.withTimeout(20, TimeUnit.SECONDS)
