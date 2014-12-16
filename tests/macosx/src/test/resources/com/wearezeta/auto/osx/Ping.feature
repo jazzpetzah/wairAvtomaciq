@@ -4,7 +4,7 @@ Feature: Ping
   Scenario Outline: Ping group chat
     Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
     When I ping user
@@ -20,7 +20,7 @@ Feature: Ping
   Scenario Outline: Verify you can see Ping on the other side (group conversation)
     Given I have 1 users and 2 contacts for 1 users
   	Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
-  	And I Sign in using login <Login> and password <Password>
+  	Given I Sign in using login <Login> and password <Password>
   	And I see my name <Name> in Contact list
   	And I open conversation with <ChatName>
   	And User <Contact1> pings in chat <ChatName>
