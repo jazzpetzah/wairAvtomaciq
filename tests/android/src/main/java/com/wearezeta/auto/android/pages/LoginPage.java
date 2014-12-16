@@ -9,6 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -35,8 +36,8 @@ public class LoginPage extends AndroidPage {
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idLoginError")
 	private WebElement loginError;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idWelcomeButtonsContainer")
-	private List<WebElement> welcomeButtonsContainer;
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idWelcomeSlogan")
+	private List<WebElement> welcomeSloganContainer;
 
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idContactListNames")
 	private WebElement contactListNames;
@@ -97,7 +98,6 @@ public class LoginPage extends AndroidPage {
 	}
 
 	public void setLogin(String login) {
-
 		for(WebElement el: loginPasswordField){
 			if(el.getText().equals("Email")){
 				el.click();
@@ -133,7 +133,9 @@ public class LoginPage extends AndroidPage {
 	}
 
 	public Boolean isWelcomeButtonsExist(){
-		return welcomeButtonsContainer.size() > 0;
+		refreshUITree();
+		wait.until(ExpectedConditions.visibilityOfAllElements(welcomeSloganContainer));
+		return welcomeSloganContainer.size() > 0;
 	}
 
 	@Override

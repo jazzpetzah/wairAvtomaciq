@@ -25,7 +25,7 @@ public class ContactListPage extends AndroidPage {
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameFrameLayout)
 	private List<WebElement> frameLayout;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idSelfUserName")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idNameField")
 	private List<WebElement> selfUserName;
 
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idContactListMute")
