@@ -87,7 +87,7 @@ Feature: People View
   #Muted due ZIOS-2724
   @regression @id1396
   Scenario Outline: Verify correct group info page information
-    Given I have 1 users and 0 contacts for 0 users
+    Given I have 1 users and 0 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
@@ -135,7 +135,7 @@ Feature: People View
   #fails to check email of first user due to defect IOS-990
   @staging @id339
   Scenario Outline: Tap on participant profiles in group info page participant view
-    Given I have 1 users and 0 contacts for 0 users
+    Given I have 1 users and 0 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     Given I have group chat named <GroupChatName> with an unconnected user, made by <GroupCreator>
     And I see Contact list with my name <Name>
