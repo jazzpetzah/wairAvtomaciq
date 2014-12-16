@@ -458,7 +458,8 @@ public class ConversationPage extends OSXPage {
 					"end tell\n" +
 				"tell application \"System Events\" to tell application process \"Finder\"\n" +
 					"set position of window 1 to {0, 0}\n" +
-					"end tell";
+					"end tell\n" +
+				"tell application \"Finder\" to set the current view of the front Finder window to icon view";
 		 driver.executeScript(scr0);
 	}
 	

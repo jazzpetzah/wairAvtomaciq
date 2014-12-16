@@ -82,12 +82,13 @@ public class CommonSteps {
 	private static boolean oldWayUsersGeneration = false;
 
 	private void commonBefore() throws Exception {
+		
 		if (CommonUtils.getIsSimulatorFromConfig(CommonSteps.class)) {
 			try {
 				String[] picturepath = new String[] { CommonUtils
 						.getUserPicturePathFromConfig(CommonSteps.class) };
 				IOSSimulatorPhotoLibHelper.CreateSimulatorPhotoLib("8.1",
-						picturepath, true);
+						picturepath, true, true);
 			} catch (Exception ex) {
 				ex.printStackTrace();
 				log.error("Failed to deploy pictures into simulator.\n"

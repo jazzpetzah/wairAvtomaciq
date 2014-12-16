@@ -117,8 +117,12 @@ public class LoginPage extends IOSPage {
 		
 		confirmSignInButton.click();
 		
-		DriverUtils.waitUntilElementDissapear(driver, By.name(IOSLocators.nameLoginButton), 20);
-		return new ContactListPage(url, path);
+		if (DriverUtils.waitUntilElementDissapear(driver, By.name(IOSLocators.nameLoginButton), 20)) {
+			return new ContactListPage(url, path);
+		}
+		else {
+			return null;
+		}
 	}
 	
 	public void clickJoinButton()
