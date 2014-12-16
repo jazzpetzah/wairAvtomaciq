@@ -24,8 +24,8 @@ Feature: Search
   @staging @id311 @noAcceptAlert
   Scenario Outline: Verify uploading address book to the server
     Given I have 1 users and 2 contacts for 0 users
-    And I Sign in using login <Login> and password <Password>
-    And I add contacts list users to Mac contacts
+    Given I Sign in using login <Login> and password <Password>
+    When I add contacts list users to Mac contacts
     And I dismiss alert
     And I dismiss tutorial layout
     And Contact list loads with only my name <Name>
