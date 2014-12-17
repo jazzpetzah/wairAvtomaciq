@@ -135,7 +135,7 @@ public class ConversationInfoPageSteps {
 		conversationInfo.openImageInPopup();
 		BufferedImage screen = conversationInfo.takeScreenshot();
 		BufferedImage picture = ImageUtil.readImageFromFile(OSXPage.imagesPath + photo);
-		double score = ImageUtil.getOverlapScore(screen, picture, ImageUtil.RESIZE_FROM2560x1600OPTIMIZED);
+		double score = ImageUtil.getOverlapScore(screen, picture, ImageUtil.RESIZE_FROM1920x1080OPTIMIZED);
 		log.debug("Score for comparison of 2 pictures = " + score);
 		Assert.assertTrue(
 				"Overlap between two images has no enough score. Expected >= 0.85, current = " + score,
