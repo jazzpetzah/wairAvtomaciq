@@ -136,7 +136,7 @@ public final class IOSLocators {
 	
 	public static final String nameCreateAccountButton = "RegistrationCreateAccountButton";
 	
-	public static final String xpathLastChatMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/UIATextView";
+	public static final String xpathLastChatMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/*[last()]";
 	
 	public static final String nameLeaveConversation = "metaControllerRightButton";
 	
