@@ -235,6 +235,12 @@ public class CommonUtils {
 		return result;
 	}
 
+	public static int getAndroidApiLvl(Class<?> c) throws IOException {
+		String androidVersion = "44";
+		androidVersion = getValueFromConfig(c, "androidVersion");
+		return Integer.parseInt(androidVersion);
+	}
+	
 	public static String getBackendType(Class<?> c) throws IOException {
 		return getValueFromCommonConfig(c, "backendType");
 	}
