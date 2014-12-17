@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,16 +19,12 @@ import org.jboss.netty.handler.timeout.TimeoutException;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
 
-import com.google.common.base.Function;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -176,23 +171,9 @@ public class ConversationPage extends OSXPage {
 		peopleButton.click();
 	}
 
-	public void openChooseImageDialog() throws IOException {
-		if (addImageButton == null) {
-			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-					.withTimeout(10, TimeUnit.SECONDS)
-					.pollingEvery(2, TimeUnit.SECONDS)
-					.ignoring(NoSuchElementException.class);
-
-			addImageButton = wait.until(new Function<WebDriver, WebElement>() {
-				public WebElement apply(WebDriver driver) {
-					return driver.findElement(By
-							.name(OSXLocators.nameSignInButton));
-				}
-			});
-		}
+	public void openChooseImageDialog() {
+		log.debug("Open choose image dialog for conversation");
 		addImageButton.click();
-		try { Thread.sleep(1000); } catch (InterruptedException e) { }
-		driver.navigate().to(CommonUtils.getOsxApplicationPathFromConfig(ConversationPage.class));
 	}
 	
 	public void shortcutChooseImageDialog() throws ScriptException{
