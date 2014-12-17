@@ -199,7 +199,7 @@ public class CommonSteps {
 		// limited to 4 users at time of creation to save time creating users
 		if (requests < 5) {
 			List<ClientUser> unconnectedUsers = CommonUtils.yourUsers.subList(
-					3, 7);
+					1, requests + 1);
 			for (int i = 0; i < requests; i++) {
 				BackEndREST.autoTestSendRequest(unconnectedUsers.get(i),
 						CommonUtils.findUserNamed(user));
