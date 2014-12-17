@@ -33,7 +33,7 @@ public class ContactListPageSteps {
 			PagesCollection.loginPage.swipeRight(1000);
 		}
 		
-		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
+		Assert.assertTrue("Username : " + name + " dind't appear in contact list", PagesCollection.loginPage.isLoginFinished(name));
 		ISwipeDownContactList();
 		PeoplePickerPageSteps steps = new PeoplePickerPageSteps();
 		steps.WhenISeePeoplePickerPage();
