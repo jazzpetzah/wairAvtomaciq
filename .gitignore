@@ -1,5 +1,3 @@
-.metadata
-tests/tools/suite_splitter/suite_splitter/.classpath
-tests/tools/suite_splitter/suite_splitter/.settings/org.eclipse.core.resources.prefs
-tests/tools/suite_splitter/suite_splitter/.settings/org.eclipse.jdt.core.prefs
-tests/tools/suite_splitter/suite_splitter/.settings/org.eclipse.m2e.core.prefs
+*.metadata
+*.classpath
+*.prefs
