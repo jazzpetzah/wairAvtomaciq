@@ -88,7 +88,7 @@ Feature: People View
     When I open conversation with <Contact1>
     And I open Conversation info
     Then I see <Contact1> name in Conversation info
-    And I see aqaPictureContact_osx_userinfo_2560x1600.png photo in Conversation info
+    And I see aqaPictureContact_osx_userinfo_1920x1080.png photo in Conversation info
     And I see add new people button
     And I see block a person button
 
