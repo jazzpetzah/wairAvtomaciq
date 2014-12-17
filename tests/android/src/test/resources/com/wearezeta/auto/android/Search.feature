@@ -64,7 +64,7 @@ Feature: Search
 
   @id327 @smoke
   Scenario Outline: Open/Close People picker
-    Given I have 1 users and 0 contacts for 0 users
+    Given I have 1 users and 0 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe down contact list
