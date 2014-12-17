@@ -29,7 +29,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @torun @smoke @id468
+  @smoke @id468
   Scenario Outline: Send picture to conversation
     Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
