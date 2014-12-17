@@ -78,21 +78,37 @@ public class OSXCommonUtils extends CommonUtils {
 	}
 	
 	public static void removeAllZClientSettingsFromDefaults() throws Exception {
-		String command = "defaults delete com.wearezeta.zclient.mac.development";
-		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
-		command = "defaults delete com.wearezeta.zclient.mac.internal";
-		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
-		command = "defaults delete com.wearezeta.zclient.mac";
-		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
+		removeZClientDomain("com.wearezeta.zclient.mac.development");
+		removeZClientDomain("com.wearezeta.zclient.mac.internal");
+		removeZClientDomain("com.wearezeta.zclient.mac");
 	}
 	
 	public static void setZClientBackend(String bt) throws Exception {
-		String command = "defaults write com.wearezeta.zclient.mac.development ZMBackendEnvironmentType -string " + bt;
+		setZClientBackendForDomain("com.wearezeta.zclient.mac.development", bt);
+		setZClientBackendForDomain("com.wearezeta.zclient.mac.internal", bt);
+		setZClientBackendForDomain("com.wearezeta.zclient.mac", bt);
+	}
+
+	public static void removeZClientDomain(String domain) throws Exception {
+		String command = "defaults delete " + domain;
 		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
-		command = "defaults write com.wearezeta.zclient.mac.internal ZMBackendEnvironmentType -string " + bt;
+	}
+	
+	public static void setZClientBackendForDomain(String domain, String bt) throws Exception {
+		String command = "defaults write " + domain + " ZMBackendEnvironmentType -string " + bt;
 		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
-		command = "defaults write com.wearezeta.zclient.mac ZMBackendEnvironmentType -string " + bt;
-		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
+		for (int i = 0; i < 10; i++) {
+			if (isBackendTypeSetForDomain(domain, bt)) break;
+			try { Thread.sleep(500); } catch (InterruptedException e) { }
+		}
+	}
+	
+	public static boolean isBackendTypeSetForDomain(String domain, String bt) throws Exception {
+		String command = "defaults read " + domain + " ZMBackendEnvironmentType";
+		String result = executeOsXCommandWithOutput(new String[] { "/bin/bash", "-c", command });
+		
+		if (result.contains(bt)) return true;
+		else return false;
 	}
 	
 	public static BuildVersionInfo readClientVersionFromPlist() {
@@ -136,5 +152,11 @@ public class OSXCommonUtils extends CommonUtils {
 				"/bin/bash",
 				"-c",
 				"instruments -t /Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/Resources/templates/Activity\\ Monitor.tracetemplate"});
+	}
+	
+	public static void killWireIfStuck() {
+		try {
+			executeOsXCommand(new String[] { "/bin/bash", "-c", "kill -9 $(lsof -c Wire -t)" });
+		} catch (Exception e) { }
 	}
 }

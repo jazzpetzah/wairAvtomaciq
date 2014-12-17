@@ -32,3 +32,17 @@ Feature: Sign In
     Examples: 
       | Login1  | Password    | Login2   |
       | aqaUser | aqaPassword | yourUser |
+
+  @id1413 @regression
+  Scenario Outline: Negative case for sign in
+    Given I see sign in screen
+    When I press Sign in button
+    And I have entered login <Login>
+    And I have entered password <Password>
+    And I press Log in button
+    Then Login error message appears
+    And Contains wrong name or password text
+
+    Examples: 
+      | Login   | Password |
+      | aaa 	| aaa 	   |

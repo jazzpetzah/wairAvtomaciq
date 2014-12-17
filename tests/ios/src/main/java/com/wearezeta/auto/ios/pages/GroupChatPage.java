@@ -48,7 +48,8 @@ public class GroupChatPage extends DialogPage {
 	}
 	
 	public boolean areRequired3ContactsAddedToChat(String name1, String name2, String name3){
-		boolean flag = getLastChatMessage().contains(name1) && getLastChatMessage().contains(name2) && getLastChatMessage().contains(name3);
+		String lastMessage = getLastChatMessage();
+		boolean flag = lastMessage.contains(name1.toUpperCase()) && lastMessage.contains(name2.toUpperCase()) && lastMessage.contains(name3.toUpperCase());
 		return flag;
 	}
 	

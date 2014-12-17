@@ -54,6 +54,9 @@ public class ConversationInfoPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idUserProfileViewBackButton)
 	private WebElement userProfileViewBackButton;
 	
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathImagePopupCloseButton)
+	private WebElement imagePopupCloseButton;
+	
 	public String currentConversationName;
 	
 	private String url;
@@ -220,5 +223,13 @@ public class ConversationInfoPage extends OSXPage {
 	
 	public void setCurrentConversationName(String name) {
 		currentConversationName = name;
+	}
+	
+	public void openImageInPopup() {
+		peoplePopover.click();
+	}
+	
+	public void closeImagePopup() {
+		imagePopupCloseButton.click();
 	}
 }

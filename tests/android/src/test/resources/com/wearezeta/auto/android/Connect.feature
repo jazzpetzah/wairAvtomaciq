@@ -24,7 +24,7 @@ Feature: Connect
   Scenario Outline: Accept connection request
   	Given I have 2 users and 0 contacts for 0 users
     Given <Contact> connection request is sended to me <Login>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <WaitingMess>
     And I see connect to <Contact> dialog
@@ -56,7 +56,7 @@ Feature: Connect
   Scenario Outline: I can see a inbox count increasing/decreasing correctly + I ignore someone from people picker and clear my inbox
     Given I have 5 users and 0 contacts for 0 users
     Given <Contact1> connection request is sended to me <Login>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
     And <Contact2> connection request is sended to me <Login>
     When I tap on contact name <WaitingMess2>
@@ -87,7 +87,7 @@ Feature: Connect
   Scenario Outline: I accept someone from people picker and -1 from inbox as well
     Given I have 3 users and 0 contacts for 0 users
     Given <Contact1> connection request is sended to me <Login>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
     And <Contact2> connection request is sended to me <Login>
     When I see contact list loaded with User name <WaitingMess1>
@@ -135,7 +135,7 @@ Feature: Connect
   Scenario Outline: I want to be taken to the connect inbox right away if the person I select already sent me a connect request
     Given I have 2 users and 0 contacts for 0 users
     Given <Contact> connection request is sended to me <Login>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
     When I see contact list loaded with User name <WaitingMess>
     And I swipe down contact list
@@ -278,8 +278,8 @@ Feature: Connect
   Scenario Outline: I want to initiate a connect request by selecting someone from within a group conversation
     Given I have 2 users and 1 contacts for 1 users
     Given User <Contact1> is connected with <Contact2>
-    And My Contact <Contact1> has group chat with me <Login> and his Contact <Contact2> with name <ChatName>
-    And I Sign in using login <Login> and password <Password>
+    Given My Contact <Contact1> has group chat with me <Login> and his Contact <Contact2> with name <ChatName>
+    Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
     When I tap on contact name <ChatName>
     And I swipe up on dialog page
@@ -358,7 +358,7 @@ Feature: Connect
   Scenario Outline: I do not want to be seen in the search results of someone I blocked
     Given I have 2 users and 0 contacts for 0 users
     Given User <Contact> blocks user <Login>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe down contact list
     And I see People picker page

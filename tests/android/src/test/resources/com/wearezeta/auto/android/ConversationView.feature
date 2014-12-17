@@ -76,7 +76,7 @@ Feature: Conversation View
   Scenario Outline: Send message to group chat
     Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <GroupChatName>
     And I see dialog page

@@ -43,8 +43,8 @@ public class ContactListPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathPendingRequest)
 	private WebElement pendingRequest;
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameTutorialText)
-	private WebElement tutorialText;
+	@FindBy(how = How.NAME, using = IOSLocators.nameTutorialView)
+	private WebElement tutorialView;
 	
 	private String url;
 	private String path;
@@ -173,6 +173,11 @@ public class ContactListPage extends IOSPage {
 		DriverUtils.swipeRight(driver, findNameInContactList(contact), time);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
+	
+	private String getFirstConversationName(){
+		String text = firstChatInChatListTextField.getText();
+		return text;
+	}
 
 	public boolean verifyChangedGroupNameInChatList() {
 		return firstChatInChatListTextField.getText().equals(
@@ -250,8 +255,8 @@ public class ContactListPage extends IOSPage {
 	
 	public boolean isTutorialShown(){
 		//this.refreshUITree();
-		DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameTutorialText));
-		boolean tutorialShown = DriverUtils.isElementDisplayed(tutorialText);
+		DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameTutorialView));
+		boolean tutorialShown = DriverUtils.isElementDisplayed(tutorialView);
 		return tutorialShown;
 	}
 	
@@ -279,6 +284,13 @@ public class ContactListPage extends IOSPage {
 		Dimension elementSize = content.getSize();
 		driver.swipe(coords.x + elementSize.width / 2, coords.y + 50, coords.x + elementSize.width / 2, coords.y + elementSize.height - 150, time);
 		return returnBySwipe(SwipeDirection.DOWN);
+	}
+
+	public boolean conversationWithUsersPresented(String name1, String name2,
+			String name3) {
+		String firstChat = getFirstConversationName();
+		boolean chatExist = firstChat.contains(name1) && firstChat.contains(name2) && firstChat.contains(name3);
+		return chatExist;
 	}
 	
 }

@@ -50,6 +50,12 @@ public class PeoplePickerPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.nameLaterButton)
 	private WebElement laterButton;
 	
+	@FindBy(how = How.NAME, using = IOSLocators.nameContinueUploadButton)
+	private WebElement continueButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.namePeopleYouMayKnowLabel)
+	private WebElement peopleYouMayKnowLabel;
+	
 	
 	private String url;
 	private String path;
@@ -87,11 +93,8 @@ public class PeoplePickerPage extends IOSPage{
 		peoplePickerSearch.sendKeys(text);
 	}
 	
-	public void waitUserPickerFindUser(String user){
-
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.name(user)));
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.name(user)));
-		//DriverUtils.waitUntilElementAppears(driver, By.name(user));
+	public boolean waitUserPickerFindUser(String user){
+		return DriverUtils.waitUntilElementAppears(driver, By.name(user));
 	}
 	
 	public ConnectToPage clickOnNotConnectedUser(String name) throws MalformedURLException{
@@ -240,6 +243,19 @@ public class PeoplePickerPage extends IOSPage{
 		driver.findElement(By.name(contact)).click();
 		page = new OtherUserOnPendingProfilePage(url, path);
 		return page;
+	}
+
+	public boolean isUploadDialogShown() {
+		boolean isLaterBtnVisible = DriverUtils.isElementDisplayed(laterButton);
+		return isLaterBtnVisible;
+	}
+
+	public void clickContinueButton() {
+		continueButton.click();
+	}
+
+	public boolean isPeopleYouMayKnowLabelVisible() {
+		return DriverUtils.isElementDisplayed(peopleYouMayKnowLabel);
 	}
 
 }

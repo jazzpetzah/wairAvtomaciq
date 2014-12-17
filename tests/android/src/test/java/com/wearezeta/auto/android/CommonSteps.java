@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import javax.mail.MessagingException;
 import javax.ws.rs.core.UriBuilderException;
 
 import org.apache.log4j.Logger;
@@ -39,8 +38,9 @@ public class CommonSteps {
 				"warn");
 	}
 
-	private static final Logger log = ZetaLogger.getLog(CommonSteps.class.getSimpleName());
-	
+	private static final Logger log = ZetaLogger.getLog(CommonSteps.class
+			.getSimpleName());
+
 	public static final String CONNECTION_NAME = "CONNECT TO ";
 	public static final String CONNECTION_MESSAGE = "Hello!";
 	public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
@@ -48,7 +48,7 @@ public class CommonSteps {
 	private String path;
 
 	private static boolean oldWayUsersGeneration = false;
-	
+
 	@Before("@performance")
 	public void setUpPerformance() throws Exception {
 		try {
@@ -252,9 +252,7 @@ public class CommonSteps {
 	}
 
 	@When("^(.*) ignore all requests$")
-	public void IgnoreConnectRequest(String contact)
-			throws IllegalArgumentException, UriBuilderException, IOException,
-			JSONException, BackendRequestException {
+	public void IgnoreConnectRequest(String contact) throws Exception {
 		ClientUser yourСontact = null;
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 		for (ClientUser user : CommonUtils.yourUsers) {
@@ -311,9 +309,7 @@ public class CommonSteps {
 	}
 
 	@When("^(.*) accept all requests$")
-	public void AcceptConnectRequest(String contact)
-			throws IllegalArgumentException, UriBuilderException, IOException,
-			JSONException, BackendRequestException {
+	public void AcceptConnectRequest(String contact) throws Exception {
 		ClientUser yourСontact = null;
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 		for (ClientUser user : CommonUtils.yourUsers) {
@@ -333,7 +329,8 @@ public class CommonSteps {
 	}
 
 	@When("^Contact (.*) ping conversation (.*)$")
-	public void userPingedConversation(String contact, String conversationName ) throws Exception{
+	public void userPingedConversation(String contact, String conversationName)
+			throws Exception {
 		ClientUser yourСontact = null;
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 		for (ClientUser user : CommonUtils.contacts) {
@@ -342,12 +339,14 @@ public class CommonSteps {
 			}
 		}
 		yourСontact = BackEndREST.loginByUser(yourСontact);
-		pingId = BackEndREST.sendPingToConversation(yourСontact, conversationName);
+		pingId = BackEndREST.sendPingToConversation(yourСontact,
+				conversationName);
 		Thread.sleep(1000);
 	}
-	
+
 	@When("^Contact (.*) hotping conversation (.*)$")
-	public void userHotPingedConversation(String contact, String conversationName ) throws Exception{
+	public void userHotPingedConversation(String contact,
+			String conversationName) throws Exception {
 		ClientUser yourСontact = null;
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 		for (ClientUser user : CommonUtils.contacts) {
@@ -356,16 +355,15 @@ public class CommonSteps {
 			}
 		}
 		yourСontact = BackEndREST.loginByUser(yourСontact);
-		BackEndREST.sendHotPingToConversation(yourСontact, conversationName,pingId);
+		BackEndREST.sendHotPingToConversation(yourСontact, conversationName,
+				pingId);
 		Thread.sleep(1000);
 	}
-	
+
 	private static boolean isFirstRun = true;
 	private static boolean isFirstRunPassed = false;
 
-	private void commonBefore() throws IOException, InterruptedException,
-			MessagingException, IllegalArgumentException, UriBuilderException,
-			JSONException, BackendRequestException {
+	private void commonBefore() throws Exception {
 		try {
 			AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
 		} catch (Exception ex) {
@@ -374,7 +372,9 @@ public class CommonSteps {
 
 		try {
 			AndroidCommonUtils.disableHints();
-			String backendJSON = AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(this.getClass()));
+			String backendJSON = AndroidCommonUtils
+					.createBackendJSON(CommonUtils.getBackendType(this
+							.getClass()));
 			AndroidCommonUtils.deployBackendFile(backendJSON);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -385,7 +385,7 @@ public class CommonSteps {
 				.getGenerateUsersFlagFromConfig(CommonSteps.class));
 		oldWayUsersGeneration = Boolean.valueOf(CommonUtils
 				.getIsOldWayUsersGeneration(CommonSteps.class));
-		
+
 		if (isFirstRun) {
 			isFirstRun = false;
 			if (generateUsersFlag && oldWayUsersGeneration) {
@@ -405,18 +405,21 @@ public class CommonSteps {
 
 		path = CommonUtils
 				.getAndroidApplicationPathFromConfig(CommonSteps.class);
-		
-		ZetaFormatter.setBuildNumber(AndroidCommonUtils.readClientVersionFromAdb());
+
+		ZetaFormatter.setBuildNumber(AndroidCommonUtils
+				.readClientVersionFromAdb());
 	}
-	
+
 	@Given("I have (\\d+) users and (\\d+) contacts for (\\d+) users")
-	public void IHaveUsersAndConnections(int users, int connections, int usersWithContacts) throws IllegalArgumentException, UriBuilderException, IOException, MessagingException, JSONException, BackendRequestException, InterruptedException {
+	public void IHaveUsersAndConnections(int users, int connections,
+			int usersWithContacts) throws Exception {
 		if (!oldWayUsersGeneration) {
 			CommonUtils.yourUsers = new CopyOnWriteArrayList<ClientUser>();
 			CommonUtils.contacts = new CopyOnWriteArrayList<ClientUser>();
-		
+
 			CommonUtils.generateUsers(users, connections);
-			log.debug("Following users are failed to be activated: " + CreateZetaUser.failedToActivate);
+			log.debug("Following users are failed to be activated: "
+					+ CreateZetaUser.failedToActivate);
 			Thread.sleep(CommonUtils.BACKEND_SYNC_TIMEOUT);
 			TestPreparation.createContactLinks(usersWithContacts);
 		}

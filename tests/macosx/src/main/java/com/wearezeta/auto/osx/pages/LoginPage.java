@@ -13,6 +13,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
@@ -71,9 +72,10 @@ public class LoginPage extends OSXPage {
 	}
 	
 	public ContactListPage confirmSignIn() throws IOException {
+		try { Thread.sleep(1000); } catch (InterruptedException e) { }
 		signInButton.click();
 		return new ContactListPage(url, path);
-	}
+		}
 
 	public String getLogin() {
 		return login;
@@ -136,6 +138,7 @@ public class LoginPage extends OSXPage {
 			menu.quitZClient();
 			try {
 				OSXCommonUtils.removeAllZClientSettingsFromDefaults();
+				OSXCommonUtils.setZClientBackend(CommonUtils.getBackendType(LoginPage.class));
 			} catch (Exception ex) {
 				log.error("Can't clear ZClient settings in OSX.\n" + ex.getMessage());
 			}

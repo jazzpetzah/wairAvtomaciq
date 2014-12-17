@@ -29,49 +29,62 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 
 public class CommonSteps {
-	public static final Logger log = ZetaLogger.getLog(CommonSteps.class.getSimpleName());
-	
+	public static final Logger log = ZetaLogger.getLog(CommonSteps.class
+			.getSimpleName());
+
 	static {
 		System.setProperty("java.awt.headless", "false");
-		System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
-		System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http", "warn");
+		System.setProperty("org.apache.commons.logging.Log",
+				"org.apache.commons.logging.impl.SimpleLog");
+		System.setProperty(
+				"org.apache.commons.logging.simplelog.log.org.apache.http",
+				"warn");
 	}
-	
+
 	public static PagesCollection senderPages;
-	
+
 	private static boolean isFirstRun = true;
 	private static boolean isFirstRunPassed = false;
-	
+
 	private static boolean oldWayUsersGeneration = false;
-	
+
 	@Before("@performance")
-	public void setUpPerformance() throws Exception, UriBuilderException, IOException, MessagingException, JSONException, BackendRequestException, InterruptedException{
+	public void setUpPerformance() throws Exception, UriBuilderException,
+			IOException, MessagingException, JSONException,
+			BackendRequestException, InterruptedException {
 		CommonUtils.generatePerformanceUser();
-		
-		String path = CommonUtils.getOsxApplicationPathFromConfig(CommonSteps.class);
+
+		String path = CommonUtils
+				.getOsxApplicationPathFromConfig(CommonSteps.class);
 		senderPages = new PagesCollection();
-		
-		senderPages.setMainMenuPage(new MainMenuPage(CommonUtils.getOsxAppiumUrlFromConfig(CommonSteps.class), path));
-		senderPages.setLoginPage(new LoginPage(CommonUtils.getOsxAppiumUrlFromConfig(CommonSteps.class), path));
+
+		senderPages.setMainMenuPage(new MainMenuPage(CommonUtils
+				.getOsxAppiumUrlFromConfig(CommonSteps.class), path));
+		senderPages.setLoginPage(new LoginPage(CommonUtils
+				.getOsxAppiumUrlFromConfig(CommonSteps.class), path));
 		ZetaFormatter.setDriver(senderPages.getLoginPage().getDriver());
 		senderPages.getLoginPage().sendProblemReportIfFound();
 	}
-	
+
 	@Before("~@performance")
 	public void setUp() throws Exception {
-		boolean generateUsersFlag = Boolean.valueOf(CommonUtils.getGenerateUsersFlagFromConfig(CommonSteps.class));
-		oldWayUsersGeneration = Boolean.valueOf(CommonUtils.getIsOldWayUsersGeneration(CommonSteps.class));
-		
+		boolean generateUsersFlag = Boolean.valueOf(CommonUtils
+				.getGenerateUsersFlagFromConfig(CommonSteps.class));
+		oldWayUsersGeneration = Boolean.valueOf(CommonUtils
+				.getIsOldWayUsersGeneration(CommonSteps.class));
+
 		OSXCommonUtils.deleteZClientLoginFromKeychain();
 		OSXCommonUtils.removeAllZClientSettingsFromDefaults();
-		
-		OSXCommonUtils.setZClientBackend(CommonUtils.getBackendType(this.getClass()));
-		
+
+		OSXCommonUtils.setZClientBackend(CommonUtils.getBackendType(this
+				.getClass()));
+
 		if (isFirstRun) {
 			isFirstRun = false;
 			if (generateUsersFlag && oldWayUsersGeneration) {
 				CommonUtils.generateUsers(4);
-				log.debug("Following users are failed to be activated: " + CreateZetaUser.failedToActivate);
+				log.debug("Following users are failed to be activated: "
+						+ CreateZetaUser.failedToActivate);
 				Thread.sleep(CommonUtils.BACKEND_SYNC_TIMEOUT);
 				TestPreparation.createContactLinks(3);
 			} else {
@@ -79,25 +92,31 @@ public class CommonSteps {
 			}
 			isFirstRunPassed = true;
 		}
-		
+
 		if (!isFirstRunPassed) {
 			throw new Exception("Skipped due to error in users creation.");
 		}
-		
-		String path = CommonUtils.getOsxApplicationPathFromConfig(CommonSteps.class);
+
+		String path = CommonUtils
+				.getOsxApplicationPathFromConfig(CommonSteps.class);
 		senderPages = new PagesCollection();
-		
-		senderPages.setMainMenuPage(new MainMenuPage(CommonUtils.getOsxAppiumUrlFromConfig(CommonSteps.class), path));
-		senderPages.setLoginPage(new LoginPage(CommonUtils.getOsxAppiumUrlFromConfig(CommonSteps.class), path));
+
+		senderPages.setMainMenuPage(new MainMenuPage(CommonUtils
+				.getOsxAppiumUrlFromConfig(CommonSteps.class), path));
+		senderPages.setLoginPage(new LoginPage(CommonUtils
+				.getOsxAppiumUrlFromConfig(CommonSteps.class), path));
 		ZetaFormatter.setDriver(senderPages.getLoginPage().getDriver());
 		senderPages.getLoginPage().sendProblemReportIfFound();
 	}
-	
+
 	@After
 	public void tearDown() throws Exception {
 		senderPages.closeAllPages();
+		
+		//workaround for stuck on Send picture test
+		OSXCommonUtils.killWireIfStuck();
 	}
-	
+
 	@Given("^I have group chat with name (.*) with (.*) and (.*)$")
 	public void GivenIHaveGroupChatWith(String chatName, String contact1,
 			String contact2) throws Throwable {
@@ -122,7 +141,7 @@ public class CommonSteps {
 		BackEndREST.createGroupConversation(CommonUtils.yourUsers.get(0),
 				chatContacts, chatName);
 	}
-	
+
 	@Given("^Generate (\\d+) and connect to (.*) contacts$")
 	public void GivenGenerateAndConnectAdditionalUsers(int usersNum,
 			String userName) throws IllegalArgumentException,
@@ -143,13 +162,15 @@ public class CommonSteps {
 	}
 
 	@Given("I have (\\d+) users and (\\d+) contacts for (\\d+) users")
-	public void IHaveUsersAndConnections(int users, int connections, int usersWithContacts) throws IllegalArgumentException, UriBuilderException, IOException, MessagingException, JSONException, BackendRequestException, InterruptedException {
+	public void IHaveUsersAndConnections(int users, int connections,
+			int usersWithContacts) throws Exception {
 		if (!oldWayUsersGeneration) {
 			CommonUtils.yourUsers = new CopyOnWriteArrayList<ClientUser>();
 			CommonUtils.contacts = new CopyOnWriteArrayList<ClientUser>();
-		
+
 			CommonUtils.generateUsers(users, connections);
-			log.debug("Following users are failed to be activated: " + CreateZetaUser.failedToActivate);
+			log.debug("Following users are failed to be activated: "
+					+ CreateZetaUser.failedToActivate);
 			Thread.sleep(CommonUtils.BACKEND_SYNC_TIMEOUT);
 			TestPreparation.createContactLinks(usersWithContacts);
 		}

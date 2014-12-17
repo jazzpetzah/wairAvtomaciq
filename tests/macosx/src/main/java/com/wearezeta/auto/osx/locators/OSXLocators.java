@@ -60,9 +60,13 @@ public final class OSXLocators {
 
 	public static final String xpathYouPingedMessage = "//AXGroup[AXStaticText[@AXValue='YOU'] and AXStaticText[@AXValue=' PINGED']]";
 	public static final String xpathYouPingedAgainMessage = "//AXGroup[AXStaticText[@AXValue='YOU'] and AXStaticText[@AXValue=' PINGED AGAIN']]";
+	public static final String xpathOtherPingedMessage = "//AXGroup[AXStaticText[@AXValue='%s'] and AXStaticText[@AXValue=' PINGED']]";
+	public static final String xpathOtherPingedAgainMessage = "//AXGroup[AXStaticText[@AXValue='%s'] and AXStaticText[@AXValue=' PINGED AGAIN']]";
 	
 	public static final String YOU_PINGED_MESSAGE = "YOU PINGED";
 	public static final String YOU_PINGED_AGAIN_MESSAGE = "YOU PINGED AGAIN";
+	public static final String USER_PINGED_MESSAGE = "PINGED";
+	public static final String USER_PINGED_AGAIN_MESSAGE = "PINGED AGIAN";
 	public static final String YOU_ADDED_MESSAGE = "YOU ADDED";
 	public static final String YOU_REMOVED_MESSAGE = "YOU REMOVED";
 	public static final String CONNECTED_TO_MESSAGE = "CONNECTED TO";
@@ -163,4 +167,6 @@ public final class OSXLocators {
 	public static final String idMainWindowCloseButton = "MainWindowCloseButton";
 	
 	public static final String xpathPeoplePopover = "//AXPopover";
+	
+	public static final String xpathImagePopupCloseButton = "//AXWindow[@AXRoleDescription='floating window']/AXButton[@AXRoleDescription='close button']";
 }

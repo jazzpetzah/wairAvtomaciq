@@ -136,7 +136,7 @@ public final class IOSLocators {
 	
 	public static final String nameCreateAccountButton = "RegistrationCreateAccountButton";
 	
-	public static final String xpathLastChatMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/UIAStaticText";
+	public static final String xpathLastChatMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/*[last()]";
 	
 	public static final String nameLeaveConversation = "metaControllerRightButton";
 	
@@ -394,6 +394,8 @@ public final class IOSLocators {
 	public static final String namePeoplePickerAddToConversationButton = "ADD TO CONVERSATION";
 	public static final String xpathPeoplePickerTopConnectionsAvatar = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[%d]";
 	public static final String nameLaterButton = "LATER";
+	public static final String nameContinueUploadButton = "CONTINUE";
+	public static final String namePeopleYouMayKnowLabel = "PEOPLE YOU MAY KNOW";
 	
 	//////////////////
 	//Connect to page

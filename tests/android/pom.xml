@@ -24,6 +24,7 @@
 	<androidClientInfoPath>/Project/builds_info/classes.dex</androidClientInfoPath>
 	<androidAppiumLogPath>/Project/appium_android.log</androidAppiumLogPath>
 	<defaultEmail>smoketester.android@wearezeta.com</defaultEmail>
+	<androidVersion>44</androidVersion>
   </properties>
 
   <dependencies>
