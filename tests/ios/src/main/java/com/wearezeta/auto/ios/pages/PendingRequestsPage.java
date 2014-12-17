@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.thoughtworks.selenium.webdriven.commands.IsElementPresent;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -52,6 +53,7 @@ public class PendingRequestsPage extends IOSPage {
 		ContactListPage page = null;
 		for(int i=0;i<clicks;i++){
 			DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.namePendingRequestIgnoreButton));
+			wait.until(ExpectedConditions.elementToBeClickable(ignoreRequestButton));
 			ignoreRequestButton.click();
 			Thread.sleep(500);
 			DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.namePendingRequestIgnoreButton));

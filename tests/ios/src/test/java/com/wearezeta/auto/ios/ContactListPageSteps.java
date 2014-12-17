@@ -20,15 +20,7 @@ public class ContactListPageSteps {
 	@Given("^I see Contact list with my name (.*)$")
 	public void GivenISeeContactListWithMyName(String name) throws Throwable {
 		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
-		boolean tutorialIsVisible = PagesCollection.contactListPage.isTutorialShown();
-		if(tutorialIsVisible) {
-			PagesCollection.contactListPage.dismissTutorial();
-		} else {
-			log.debug("No tutorial is shown");
-		}
-		
-		//workaround for login into self profile
-		Thread.sleep(3000);
+
 		if (PagesCollection.loginPage.isSelfProfileVisible()) {
 			PagesCollection.loginPage.swipeRight(1000);
 		}
@@ -38,17 +30,6 @@ public class ContactListPageSteps {
 		PeoplePickerPageSteps steps = new PeoplePickerPageSteps();
 		steps.WhenISeePeoplePickerPage();
 		steps.IClickCloseButtonDismissPeopleView();
-		
-		//workaround, for some reason tutorial might still be shown
-		if (!tutorialIsVisible) {
-			tutorialIsVisible = PagesCollection.contactListPage.isTutorialShown();
-			if(tutorialIsVisible) {
-				PagesCollection.contactListPage.dismissTutorial();
-			} else {
-				log.debug("No tutorial is shown again");
-			}
-		}
-		// end
 	}
 
 	@Given("^I have group chat named (.*) with an unconnected user, made by (.*)$")

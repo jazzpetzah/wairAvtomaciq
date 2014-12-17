@@ -48,7 +48,7 @@ public class LoginPageSteps {
 		 PagesCollection.loginPage.setPassword(password);
 		 PagesCollection.contactListPage = (ContactListPage)(PagesCollection.loginPage.login());
 		 
-		 Assert.assertNotNull(PagesCollection.contactListPage);
+		 Assert.assertNotNull("Login not passed", PagesCollection.contactListPage);
 		 //Assert.assertTrue("Login finished", PagesCollection.loginPage.waitForLogin());
 	}
 	 

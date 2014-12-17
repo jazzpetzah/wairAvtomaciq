@@ -2,7 +2,7 @@ Feature: Connect
 
   @smoke @id576
   Scenario Outline: Send invitation message to a user
-    Given I have 2 users and 0 contacts for 0 users
+    Given I have 2 users and 0 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe down contact list
@@ -25,7 +25,7 @@ Feature: Connect
 
   @smoke @id585
   Scenario Outline: Get invitation message from user
-    Given I have 2 users and 0 contacts for 0 users
+    Given I have 2 users and 0 contacts for 1 users
     Given I have connection request from <Contact>
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
@@ -42,7 +42,7 @@ Feature: Connect
 
   @staging @id576
   Scenario Outline: Send connection request to unconnected participant in a group chat
-    Given I have 2 users and 0 contacts for 0 users
+    Given I have 2 users and 0 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I have group chat named <GroupChatName> with an unconnected user, made by <GroupCreator>
     And I see Contact list with my name <Name>
@@ -144,7 +144,7 @@ Feature: Connect
 
   @staging @id579
   Scenario Outline: Verify transitions between connection requests (ignoring)
-    Given I have 2 users and 0 contacts for 0 users
+    Given I have 4 users and 0 contacts for 1 users
     Given I send <SentRequests> connection requests to <Name>
     Given I Sign in using login <Name> and password <Password>
     When I see Contact list with my name <Name>
@@ -165,7 +165,7 @@ Feature: Connect
 
   @staging @id1404
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (Search)
-    Given I have 2 users and 0 contacts for 0 users
+    Given I have 2 users and 0 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe down contact list

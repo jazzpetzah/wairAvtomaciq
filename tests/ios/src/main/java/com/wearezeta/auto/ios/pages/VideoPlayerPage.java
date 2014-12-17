@@ -51,6 +51,10 @@ public class VideoPlayerPage extends IOSPage{
 		return DriverUtils.waitUntilElementAppears(driver, By.xpath(IOSLocators.xpathVideoMainPage));
 	}
 	
+	public void tapVideoPage(){
+		videoPlayerMainWindow.click();
+	}
+	
 	public DialogPage clickVideoDoneButton() throws IOException{
 		DialogPage page = null;
 		videoDoneButton.click();
@@ -60,7 +64,14 @@ public class VideoPlayerPage extends IOSPage{
 	}
 	
 	public void clickPauseButton(){
-		videoPauseButton.click();
+		if (DriverUtils.isElementDisplayed(videoPauseButton)) {
+			videoPauseButton.click();
+		}
+		else {
+			tapVideoPage();
+			videoPauseButton.click();
+		}
+		
 	}
 	
 	@Override
