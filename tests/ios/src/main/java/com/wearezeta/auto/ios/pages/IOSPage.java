@@ -87,7 +87,7 @@ public abstract class IOSPage extends BasePage {
 		capabilities.setCapability("app", path);
 		capabilities.setCapability("deviceName", "iPhone 6");
 		capabilities.setCapability("platformVersion", "8.1");
-		capabilities.setCapability("processArguments", "--args -ZMBackendEnvironmentType " + bt);
+		capabilities.setCapability("processArguments", "--args -TutorialOverlaysEnabled 0 -ZMBackendEnvironmentType " + bt);
 		if (false == acceptAlerts) {
 			initWithoutAutoAccept();
 		}
