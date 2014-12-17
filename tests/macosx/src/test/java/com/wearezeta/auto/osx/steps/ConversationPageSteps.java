@@ -64,7 +64,7 @@ public class ConversationPageSteps {
 				 ));
 		 
 		 ChoosePicturePage choosePicturePage = CommonSteps.senderPages.getChoosePicturePage();
-		 Assert.assertTrue(choosePicturePage.isVisible());
+		 Assert.assertTrue("Choose picture page were not opened.", choosePicturePage.isVisible());
 		 
 		 choosePicturePage.openImage(imageFilename);
 	 }

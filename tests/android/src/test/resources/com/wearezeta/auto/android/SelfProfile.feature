@@ -2,7 +2,7 @@ Feature: Self Profile
 
   @id205 @smoke 
   Scenario Outline: Change user picture
-    Given I have 1 users and 0 contacts for 0 users
+    Given I have 1 users and 0 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
@@ -34,7 +34,7 @@ Feature: Self Profile
 
   @id328 @smoke 
   Scenario Outline: ZClient change name
-    Given I have 1 users and 0 contacts for 0 users
+    Given I have 1 users and 0 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>

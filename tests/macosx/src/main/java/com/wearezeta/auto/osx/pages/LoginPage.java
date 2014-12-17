@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
@@ -173,6 +174,7 @@ public class LoginPage extends OSXPage {
 			sendProblemReportButton.click();
 			isProblemReported = true;
 		} catch (NoSuchElementException e) {
+		} catch (NoSuchWindowException e) {
 		} finally {
 			if (isProblemReported) {
 				log.debug("ZClient were crashed on previous run.");

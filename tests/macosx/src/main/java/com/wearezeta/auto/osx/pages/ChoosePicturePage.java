@@ -35,7 +35,9 @@ public class ChoosePicturePage extends OSXPage {
 	}
 
 	public Boolean isVisible() {
-		return cancelButton != null;
+		boolean isVisible = (cancelButton != null);
+		if (isVisible) log.debug("Choose picture page opened");
+		return isVisible;
 	}
 	
 	public void searchForImage(String imageName) {
