@@ -166,7 +166,7 @@ public abstract class IOSPage extends BasePage {
 	}
 	
 	public void smallScrollDown() {
-		driver.swipe(10, 200, 10, 220, 500);
+		driver.swipe(20, 300, 20, 400, 500);
 	}
 
 	public static void clearPagesCollection() throws IllegalArgumentException, IllegalAccessException {
