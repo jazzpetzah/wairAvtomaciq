@@ -174,8 +174,6 @@ public class ConversationPage extends OSXPage {
 	public void openChooseImageDialog() throws IOException {
 		log.debug("Open choose image dialog for conversation");
 		addImageButton.click();
-		try { Thread.sleep(1000); } catch (InterruptedException e) { }
-		driver.navigate().to(CommonUtils.getOsxApplicationPathFromConfig(ConversationPage.class));
 	}
 	
 	public void shortcutChooseImageDialog() throws ScriptException{
