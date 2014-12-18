@@ -1,8 +1,11 @@
 package com.wearezeta.auto.android.pages;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -271,16 +274,16 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 			avatarIcon = getElementScreenshot(driver.findElement(By.xpath(String.format(AndroidLocators.OtherUserPersonalInfoPage.xpathGroupChatInfoLinearLayoutId, i))));
 			String avatarName = driver.findElement(By.xpath(String.format(AndroidLocators.OtherUserPersonalInfoPage.xpathGroupChatInfoContacts, i))).getText();
 			if(avatarName.equalsIgnoreCase(contact1)){
-				BufferedImage realImage = ImageUtil.readImageFromFile(path+AVATAR_WITH_IMAGE);
+				BufferedImage realImage = ImageUtil.readImageFromFile(path + AVATAR_WITH_IMAGE);
 				double score = ImageUtil.getOverlapScore(realImage, avatarIcon);
 				if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
 					return false;
 				}
 				flag1 = true;
 			}
-			if(avatarName.equalsIgnoreCase(contact2)){
+			if(contact2.toLowerCase().startsWith(avatarName.toLowerCase())) {
 				//must be a yellow user with initials AT
-				BufferedImage realImage = ImageUtil.readImageFromFile(path+AVATAR_NO_IMAGE);
+				BufferedImage realImage = ImageUtil.readImageFromFile(path + AVATAR_NO_IMAGE);
 				double score = ImageUtil.getOverlapScore(realImage, avatarIcon);
 				if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
 					return false;
@@ -288,8 +291,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 				flag2 = true;
 			}
 		}
-		if(flag1 && flag2)
-		{
+		if(flag1 && flag2) {
 			commonFlag = true;
 		}
 		
