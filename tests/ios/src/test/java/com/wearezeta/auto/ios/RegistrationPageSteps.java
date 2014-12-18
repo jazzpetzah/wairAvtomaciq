@@ -402,7 +402,7 @@ public class RegistrationPageSteps {
 			}
 			checksCnt++;
 		}
-		Assert.assertTrue(actualCnt == expectedCnt);
+		Assert.assertTrue("Expected mail count is : " + expectedCnt + ", but actual count is : " + actualCnt, actualCnt == expectedCnt);
 	}
 
 	@Then("^I resend verification email$")

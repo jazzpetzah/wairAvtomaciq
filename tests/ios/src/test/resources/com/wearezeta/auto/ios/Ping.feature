@@ -1,6 +1,6 @@
 Feature: Ping
 
-  @staging @id1357
+  @regression @id1357
   Scenario Outline: Verify you can send Ping in a group conversation
     Given I have 1 users and 2 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
@@ -19,7 +19,7 @@ Feature: Ping
       | Login   | Password    | GroupChatName        | Contact1    | Contact2    | Action1 | Action2      |
       | aqaUser | aqaPassword | ReceivePingGroupChat | aqaContact1 | aqaContact2 | PINGED  | PINGED AGAIN |
 
-  @staging @id1358
+  @regression @id1358
   Scenario Outline: Verify you can see Ping on the other side (group conversation)
     Given I have 1 users and 2 contacts for 1 users
     Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>

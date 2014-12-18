@@ -198,6 +198,8 @@ public class CommonUtils {
 					replacementMap.put(YOUR_USER_11, yourUsers.get(10)
 							.getName());
 				} catch (ArrayIndexOutOfBoundsException e) {
+				} catch (IndexOutOfBoundsException e) {
+					
 				}
 			}
 			if (contacts.size() > 0) {

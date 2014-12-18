@@ -292,11 +292,13 @@ public final class AndroidLocators {
 		
 		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME + "$RegistractionPage";
 		
-		public static final String idCreateUserBtn = LOCATORS_PACKAGE + ":id/create_user";
+		public static final String idCreateUserBtn = LOCATORS_PACKAGE + ":id/zb__sign_up__create_account";
 		
-		public static final String idVerifyEmailBtn = LOCATORS_PACKAGE + ":id/button_verify_email";
+		public static final String idVerifyEmailBtn = LOCATORS_PACKAGE + ":id/gtv__envelope";
 		
-		public static final String idNewPasswordField = LOCATORS_PACKAGE + ":id/new_password";
+		public static final String idNewPasswordField = LOCATORS_PACKAGE + ":id/tet__sign_up__password";
+		
+		public static final String idNextArrow = LOCATORS_PACKAGE + ":id/gtv__sign_up__next";
 	}
 	
 	//public static final String idInstructions  = LOCATORS_PACKAGE + ":id/instructions";

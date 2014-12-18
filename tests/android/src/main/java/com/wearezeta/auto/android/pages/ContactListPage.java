@@ -8,6 +8,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
@@ -69,6 +70,7 @@ public class ContactListPage extends AndroidPage {
 		//workaround for incorrect tap
 		el = findInContactList(name, 1);
 		if (el != null && DriverUtils.isElementDisplayed(el)) {
+			this.restoreApplication();
 			el.click();
 			log.debug("tap on contact for the second time");
 		}
@@ -101,7 +103,7 @@ public class ContactListPage extends AndroidPage {
 	private WebElement findInContactList(String name, int cyclesNumber) {
 		WebElement contact = null;
 		refreshUITree();
-		if (conversationMessage.isEmpty()) {
+		if (conversationMessage.isEmpty() && selfUserName.isEmpty()) {
 			List<WebElement> contactsList = driver
 					.findElements(By.xpath(String
 							.format(AndroidLocators.ContactListPage.xpathContacts,

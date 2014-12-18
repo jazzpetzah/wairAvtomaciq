@@ -142,7 +142,7 @@ Feature: Connect
       #| Login   | Password    | Name    | Contact         |
       #| aqaUser | aqaPassword | aqaUser | yourNotContact1 |
 
-  @staging @id579
+  @regression @id579
   Scenario Outline: Verify transitions between connection requests (ignoring)
     Given I have 4 users and 0 contacts for 1 users
     Given I send <SentRequests> connection requests to <Name>
@@ -163,7 +163,7 @@ Feature: Connect
       | Login   | Password    | Name    | SentRequests | NotConnectedUser |
       | aqaUser | aqaPassword | aqaUser | 3            | yourUser         |
 
-  @staging @id1404
+  @regression @id1404
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (Search)
     Given I have 2 users and 0 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
