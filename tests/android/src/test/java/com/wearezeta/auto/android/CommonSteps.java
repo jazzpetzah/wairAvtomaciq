@@ -287,24 +287,36 @@ public class CommonSteps {
 	@When("^User (.*) blocks user (.*)$")
 	public void BlockContact(String contact, String login) throws Exception {
 		ClientUser yourUser = null;
-		login = CommonUtils.retrieveRealUserContactPasswordValue(login);
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
 		for (ClientUser user : CommonUtils.yourUsers) {
-			if (user.getName().toLowerCase().equals(login.toLowerCase())) {
+			if (user.getName().toLowerCase().equals(contact.toLowerCase())) {
 				yourUser = user;
 				break;
 			}
 		}
 		yourUser = BackEndREST.loginByUser(yourUser);
-		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		login = CommonUtils.retrieveRealUserContactPasswordValue(login);
+		boolean flag = false;
 		for (ClientUser user : CommonUtils.contacts) {
-			if (user.getName().toLowerCase().equals(contact.toLowerCase())) {
+			if (user.getName().toLowerCase().equals(login.toLowerCase())) {
 				user = BackEndREST.loginByUser(user);
-
-				BackEndREST.changeConnectRequestStatus(user, yourUser.getId(),
+				flag = true;
+				BackEndREST.changeConnectRequestStatus(yourUser, user.getId(),
 						"blocked");
 				break;
 			}
-
+		}
+		if (!flag) {
+			for (ClientUser user : CommonUtils.yourUsers) {
+				if (user.getName().toLowerCase().equals(login.toLowerCase())) {
+					user = BackEndREST.loginByUser(user);
+					BackEndREST.sendConnectRequest(yourUser, user, "connect", "Hello");
+					Thread.sleep(1000);
+					BackEndREST.changeConnectRequestStatus(yourUser, user.getId(),
+							"blocked");
+					break;
+				}
+			}
 		}
 	}
 
