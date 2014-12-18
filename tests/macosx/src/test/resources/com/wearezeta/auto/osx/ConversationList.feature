@@ -6,11 +6,11 @@ Feature: Conversation List
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open conversation with <Contact>
-    And I change conversation mute state
+    And I change mute state of conversation with <Contact>
     And I go to user <Name> profile
     Then I see conversation <Contact> is muted
     When I open conversation with <Contact>
-    And I change conversation mute state
+    And I change mute state of conversation with <Contact>
     And I go to user <Name> profile
     Then I see conversation <Contact> is unmuted
 

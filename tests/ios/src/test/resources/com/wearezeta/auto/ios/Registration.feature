@@ -316,10 +316,10 @@ Feature: Registration
     And I See selected picture
     And I confirm selection
     And I input name <Name> and hit Enter
-    And I enter email <Email> and hit Enter
-    And I enter password <Password> and hit Enter
+    And I input email <Email> and hit Enter
+    And I enter password <Password>
     Then I confirm that <EmailCount> recent emails in inbox contain 0 for current recipient
-    And I submit registration data
+    And I click Create Account Button
     Then I confirm that <EmailCount> recent emails in inbox contain 1 for current recipient
     And I resend verification email
     Then I confirm that <EmailCount> recent emails in inbox contain 2 for current recipient

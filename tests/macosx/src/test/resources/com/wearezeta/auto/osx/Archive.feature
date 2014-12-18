@@ -6,7 +6,7 @@ Feature: Archive
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open conversation with <Contact>
-    And I archive conversation
+    And I archive conversation with <Contact>
     And I go to user <Name> profile
     Then I do not see conversation <Contact> in contact list
     When I go to archive
