@@ -25,5 +25,9 @@ public class VideoPlayerPageSteps {
 	public void ITapPauseButtonOnVideoPlayerPage(){
 		PagesCollection.videoPlayerPage.clickPauseButton();
 	}
-
+	
+	@When("I tap video player page")
+	public void ITapVideoPlayerPage(){
+		PagesCollection.videoPlayerPage.tapVideoPage();
+	}
 }

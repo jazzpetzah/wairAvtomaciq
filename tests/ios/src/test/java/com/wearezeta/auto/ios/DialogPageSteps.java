@@ -193,7 +193,9 @@ public class DialogPageSteps {
 	@When("I type and send long message and media link (.*)")
 	public void ITypeAndSendLongTextAndMediaLink(String link) throws InterruptedException{
 		PagesCollection.dialogPage.sendMessageUsingScript(longMessage);
+		Thread.sleep(2000);
 		PagesCollection.dialogPage.sendMessageUsingScript(link);
+		Thread.sleep(3000);
 	}
 	
 	@When("^I memorize message send time$")
@@ -242,7 +244,7 @@ public class DialogPageSteps {
 	@When("^I scroll media out of sight until media bar appears$")
 	public void IScrollMediaOutOfSightUntilMediaBarAppears() throws Exception{
 		PagesCollection.dialogPage = PagesCollection.dialogPage.scrollDownTilMediaBarAppears();
-		Assert.assertTrue(PagesCollection.dialogPage.isMediaBarDisplayed());
+		Assert.assertTrue("Media bar is not displayed", PagesCollection.dialogPage.isMediaBarDisplayed());
 	}
 	
 	@When("^I pause playing the media in media bar$")
@@ -334,7 +336,8 @@ public class DialogPageSteps {
 	@Then("^I scroll away the keyboard$")
 	public void IScrollKeyboardAway() throws Throwable {
 		PagesCollection.dialogPage.swipeDialogPageDown(500);
-		Thread.sleep(1000);
+		PagesCollection.dialogPage.swipeDialogPageUp(500);
+		Thread.sleep(2000);
 	}
 	
 	@Then("^I navigate back to conversations view$")
