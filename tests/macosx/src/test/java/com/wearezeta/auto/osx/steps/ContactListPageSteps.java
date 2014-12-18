@@ -123,9 +123,9 @@ public class ContactListPageSteps {
 	public void ISeeConversationIsUnmuted(String conversation) {
 		conversation = CommonUtils.retrieveRealUserContactPasswordValue(conversation);
 		ContactListPage contactList = CommonSteps.senderPages.getContactListPage();
-		Assert.assertFalse(
+		Assert.assertTrue(
 				"Conversation with name " + conversation + " is still muted.",
-				contactList.isConversationMutedButtonVisible(conversation));
+				contactList.isConversationMutedButtonNotVisible(conversation));
 	}
 	
 	@When("I see connect invitation")
