@@ -31,7 +31,6 @@ Feature: Sign In
       #| Login   | Password    | UserA   | UserB       |
       #| aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  #Muted due to missing notification support from sync engine
   @regression @id1398
   Scenario Outline: Notification if SignIn credentials are wrong
   	Given I have 1 users and 0 contacts for 0 users
