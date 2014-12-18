@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -18,7 +19,7 @@ public class RegistrationPage extends AndroidPage {
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConfirmButton")
 	private WebElement confirmImageButton;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idNameField")
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idNameEdit")
 	private WebElement nameField;
 	
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idEmailField")
@@ -33,8 +34,14 @@ public class RegistrationPage extends AndroidPage {
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.RegistractionPage.CLASS_NAME, locatorKey = "idVerifyEmailBtn")
 	private WebElement verifyEmailBtn;
 	
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.RegistractionPage.CLASS_NAME, locatorKey = "idNextArrow")
+	private WebElement nextArrow;
+	
 	private String url;
 	private String path;
+	
+	private static final String YOUR_NAME = "your full name";
+	private static final String EMAIL = "email";
 	
 	public RegistrationPage(String URL, String path) throws Exception {
 		super(URL, path);
@@ -50,6 +57,7 @@ public class RegistrationPage extends AndroidPage {
 	}
 
 	public void takePhoto() {
+		wait.until(ExpectedConditions.elementToBeClickable(cameraButton));
 		cameraButton.click();
 		
 	}
@@ -74,18 +82,21 @@ public class RegistrationPage extends AndroidPage {
 	}
 
 	public void setName(String name) {
-		DriverUtils.setTextForChildByClassName(nameField, "android.widget.EditText", name);
-		
+		if (nameField.getText().toLowerCase().equals(YOUR_NAME)) {
+			nameField.sendKeys(name);
+			nextArrow.click();
+		}
 	}
 
 	public void setEmail(String email) {
-		DriverUtils.setTextForChildByClassName(emailField, "android.widget.EditText", email);
-		
+		if (nameField.getText().toLowerCase().equals(EMAIL)) {
+			nameField.sendKeys(email);
+			nextArrow.click();
+		}
 	}
 
 	public void setPassword(String password) {
-		DriverUtils.setTextForChildByClassName(passwordField, "android.widget.EditText", password);
-		
+		passwordField.sendKeys(password);
 	}
 
 	public void createAccount() {
@@ -97,10 +108,9 @@ public class RegistrationPage extends AndroidPage {
 		return DriverUtils.isElementDisplayed(verifyEmailBtn);
 	}
 
-	public AndroidPage continueRegistration() throws Exception {
-		//TODO : need to update this method
-		verifyEmailBtn.click();
-		return null;
+	public ContactListPage continueRegistration() throws Exception {
+
+		return new ContactListPage(url, path);
 	}
 
 }
