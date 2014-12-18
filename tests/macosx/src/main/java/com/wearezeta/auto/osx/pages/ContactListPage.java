@@ -316,7 +316,7 @@ public class ContactListPage extends OSXPage {
 	}
 	
 	public void clickToggleMenuButton() {
-		WebElement toggleMenu = driver.findElement(By.id(OSXLocators.idToggleMenu));
+		WebElement toggleMenu = driver.findElement(By.id(OSXLocators.idShowMenuButton));
 		toggleMenu.click();
 	}
 	
