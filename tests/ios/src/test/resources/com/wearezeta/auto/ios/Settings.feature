@@ -1,6 +1,6 @@
 Feature: Settings
 
-  @id482 @staging
+  @id482 @regression
   Scenario Outline: Verify user can access settings
     Given I have 1 users and 0 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>

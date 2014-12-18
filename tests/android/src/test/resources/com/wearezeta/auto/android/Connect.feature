@@ -2,7 +2,7 @@ Feature: Connect
 
   @id191 @id193 @smoke
   Scenario Outline: Send invitation message to a user
-    Given I have 2 users and 0 contacts for 0 users
+    Given I have 2 users and 0 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe down contact list
@@ -22,7 +22,7 @@ Feature: Connect
 
   @id323 @smoke
   Scenario Outline: Accept connection request
-  	Given I have 2 users and 0 contacts for 0 users
+  	Given I have 2 users and 0 contacts for 1 users
     Given <Contact> connection request is sended to me <Login>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -37,7 +37,7 @@ Feature: Connect
 
   @id1411 @regression
   Scenario Outline: I can see a new inbox for connection when receive new connection request
-    Given I have 2 users and 0 contacts for 0 users
+    Given I have 2 users and 0 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     And I do not see Contact list with name <WaitingMess>
@@ -54,7 +54,7 @@ Feature: Connect
 
   @id539 @id543 @regression
   Scenario Outline: I can see a inbox count increasing/decreasing correctly + I ignore someone from people picker and clear my inbox
-    Given I have 5 users and 0 contacts for 0 users
+    Given I have 5 users and 0 contacts for 1 users
     Given <Contact1> connection request is sended to me <Login>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
@@ -85,7 +85,7 @@ Feature: Connect
 
   @id544 @regression
   Scenario Outline: I accept someone from people picker and -1 from inbox as well
-    Given I have 3 users and 0 contacts for 0 users
+    Given I have 3 users and 0 contacts for 1 users
     Given <Contact1> connection request is sended to me <Login>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
@@ -107,7 +107,7 @@ Feature: Connect
 
   @id540 @regression
   Scenario Outline: I can ignore a connect request and reconnect later
-    Given I have 2 users and 0 contacts for 0 users
+    Given I have 2 users and 0 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
     And Contact name <WaitingMess> is not in list
@@ -133,7 +133,7 @@ Feature: Connect
 
   @id542 @regression
   Scenario Outline: I want to be taken to the connect inbox right away if the person I select already sent me a connect request
-    Given I have 2 users and 0 contacts for 0 users
+    Given I have 2 users and 0 contacts for 1 users
     Given <Contact> connection request is sended to me <Login>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
@@ -153,7 +153,7 @@ Feature: Connect
 
   @id547 @regression
   Scenario Outline: I can see the char counter changes when writing the first connect message
-    Given I have 2 users and 0 contacts for 0 users
+    Given I have 2 users and 0 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
     And I swipe down contact list
@@ -175,7 +175,7 @@ Feature: Connect
 
   @id548 @regression
   Scenario Outline: I can not send first message with space only
-    Given I have 2 users and 0 contacts for 0 users
+    Given I have 2 users and 0 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
     And I swipe down contact list
@@ -195,7 +195,7 @@ Feature: Connect
 
   @id554 @regression
   Scenario Outline: I would not know other person has ignored my connection request
-    Given I have 2 users and 0 contacts for 0 users
+    Given I have 2 users and 0 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
     And I swipe down contact list
@@ -217,7 +217,7 @@ Feature: Connect
 
   @id541 @regression
   Scenario Outline: I can receive new connection request when app in background
-    Given I have 2 users and 0 contacts for 0 users
+    Given I have 2 users and 0 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
     When I minimize the application
@@ -235,7 +235,7 @@ Feature: Connect
 
   @id553 @regression
   Scenario Outline: I want to see that the other person has accepted the connect request in the conversation view
-    Given I have 2 users and 0 contacts for 0 users
+    Given I have 2 users and 0 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
     And I swipe down contact list
@@ -257,7 +257,7 @@ Feature: Connect
 
   @id552 @regression
   Scenario Outline: I want to discard the new connect request (sending) by returning to the search results after selecting someone I’m not connected to
-    Given I have 2 users and 0 contacts for 0 users
+    Given I have 2 users and 0 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>
     And I swipe down contact list
@@ -322,7 +322,7 @@ Feature: Connect
 
   @id680 @regression
   Scenario Outline: I want to see user has been blocked within the Start UI
-    Given I have 2 users and 0 contacts for 0 users
+    Given I have 2 users and 0 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe down contact list
@@ -356,7 +356,7 @@ Feature: Connect
 
   @regression @id720
   Scenario Outline: I do not want to be seen in the search results of someone I blocked
-    Given I have 2 users and 0 contacts for 0 users
+    Given I have 2 users and 0 contacts for 1 users
     Given User <Contact> blocks user <Login>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -395,7 +395,7 @@ Feature: Connect
 
   @id1405 @regression
   Scenario Outline: Impossibility of starting 1:1 conversation with pending user (Search)
-  	Given I have 2 users and 0 contacts for 0 users
+  	Given I have 2 users and 0 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe down contact list

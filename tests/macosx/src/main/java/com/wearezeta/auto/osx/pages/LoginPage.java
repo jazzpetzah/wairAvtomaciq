@@ -8,15 +8,14 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class LoginPage extends OSXPage {
@@ -135,14 +134,7 @@ public class LoginPage extends OSXPage {
 		} catch (NoSuchElementException e) {
 			log.info("Logging out because previous user is signed in.");
 			MainMenuPage menu = new MainMenuPage(url, path);
-			menu.quitZClient();
-			try {
-				OSXCommonUtils.removeAllZClientSettingsFromDefaults();
-				OSXCommonUtils.setZClientBackend(CommonUtils.getBackendType(LoginPage.class));
-			} catch (Exception ex) {
-				log.error("Can't clear ZClient settings in OSX.\n" + ex.getMessage());
-			}
-			driver.navigate().to(path);
+			menu.SignOut();
 		} finally {
 			DriverUtils.setDefaultImplicitWait(driver);
 		}
@@ -173,6 +165,7 @@ public class LoginPage extends OSXPage {
 			sendProblemReportButton.click();
 			isProblemReported = true;
 		} catch (NoSuchElementException e) {
+		} catch (NoSuchWindowException e) {
 		} finally {
 			if (isProblemReported) {
 				log.debug("ZClient were crashed on previous run.");

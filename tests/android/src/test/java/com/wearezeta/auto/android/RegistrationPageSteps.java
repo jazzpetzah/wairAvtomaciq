@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+import javax.mail.MessagingException;
+
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
@@ -26,9 +28,10 @@ public class RegistrationPageSteps {
 	private MBoxChangesListener listener;
 
 	@When("^I press Camera button twice$")
-	public void WhenIPressCameraButton() throws IOException {
+	public void WhenIPressCameraButton() throws IOException, InterruptedException {
 
 		PagesCollection.registrationPage.takePhoto();
+		Thread.sleep(1000);
 		PagesCollection.registrationPage.takePhoto();
 	}
 
@@ -97,25 +100,26 @@ public class RegistrationPageSteps {
 	}
 
 	@When("^I enter password (.*)$")
-	public void IEnterPassword(String password) throws IOException {
+	public void IEnterPassword(String password) throws IOException, MessagingException, InterruptedException {
 
 		if (password.equals(CommonUtils.YOUR_PASS)) {
-			PagesCollection.registrationPage.setPassword(CommonUtils
-					.getDefaultPasswordFromConfig(CommonUtils.class));
+			password = CommonUtils
+					.getDefaultPasswordFromConfig(CommonUtils.class);
 		} else {
-			aqaPassword = password;
-			PagesCollection.registrationPage.setPassword(password);
+			aqaPassword = password;	
 		}
+		
+		PagesCollection.registrationPage.setPassword(password);
 	}
 
 	@When("^I submit registration data$")
 	public void ISubmitRegistrationData() throws Exception {
-		PagesCollection.registrationPage.createAccount();
-
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", aqaEmail);
 		this.listener = CreateZetaUser.getMboxInstance(aqaEmail, aqaPassword)
 				.startMboxListener(expectedHeaders);
+		
+		PagesCollection.registrationPage.createAccount();
 	}
 
 	@Then("^I see confirmation page$")
@@ -129,10 +133,10 @@ public class RegistrationPageSteps {
 		CreateZetaUser.activateRegisteredUser(this.listener);
 	}
 
-	@Then("^I press continue registration$")
+	@Then("^I store created user info$")
 	public void IPressContinue() throws Throwable {
 		// TODO: need to handle returned page
-		PagesCollection.registrationPage.continueRegistration();
+		PagesCollection.contactListPage = PagesCollection.registrationPage.continueRegistration();
 		ClientUser myContact = new ClientUser(aqaEmail, aqaPassword, aqaName,
 				UsersState.AllContactsConnected);
 		CommonUtils.yourUsers = new LinkedList<ClientUser>();

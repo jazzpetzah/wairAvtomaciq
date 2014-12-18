@@ -277,6 +277,19 @@ public class DialogPage extends IOSPage{
 		}
 		return page;
 	}
+	
+	public DialogPage swipeDialogPageUp(int time) throws Throwable {		
+		DialogPage page = null;
+		if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true){
+			DriverUtils.swipeUp(driver, conversationPage, time);
+			page = this;
+		}
+		else {
+			swipeUpSimulator();
+			page = this;
+		}
+		return page;
+	}
 
 	@Override
 	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {

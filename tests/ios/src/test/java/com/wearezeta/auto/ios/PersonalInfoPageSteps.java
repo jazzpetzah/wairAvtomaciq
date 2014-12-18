@@ -30,13 +30,13 @@ public class PersonalInfoPageSteps {
 		PagesCollection.personalInfoPage.tapOnEditNameField();
 	}
 	
-	@When("I attempt to enter an empty name and press return")
+	@When("I attempt to input an empty name and press return")
 	public void EnterEmptyNameAndPressReturn(){
 		PagesCollection.personalInfoPage.clearNameField();
 		PagesCollection.personalInfoPage.pressEnterInNameField();
 	}
 
-	@When("I attempt to enter an empty name and tap the screen")
+	@When("I attempt to input an empty name and tap the screen")
 	public void EnterEmptyNameAndTapScreen(){
 		PagesCollection.personalInfoPage.clearNameField();
 		PagesCollection.personalInfoPage.tapOnPersonalPage();

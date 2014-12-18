@@ -103,10 +103,11 @@ public class ContactListPageSteps {
 				CommonUtils.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
 	}
 	
-	@When("I change conversation mute state")
-	public void IChangeConversationMuteState() {
+	@When("I change mute state of conversation with (.*)")
+	public void IChangeConversationMuteState(String conversation) {
+		conversation = CommonUtils.retrieveRealUserContactPasswordValue(conversation);
 		ContactListPage contactList = CommonSteps.senderPages.getContactListPage();
-		contactList.changeMuteStateForSelectedConversation();
+		contactList.changeMuteStateForConversation(conversation);
 	}
 	
 	@Then("I see conversation (.*) is muted")
@@ -122,9 +123,9 @@ public class ContactListPageSteps {
 	public void ISeeConversationIsUnmuted(String conversation) {
 		conversation = CommonUtils.retrieveRealUserContactPasswordValue(conversation);
 		ContactListPage contactList = CommonSteps.senderPages.getContactListPage();
-		Assert.assertFalse(
+		Assert.assertTrue(
 				"Conversation with name " + conversation + " is still muted.",
-				contactList.isConversationMutedButtonVisible(conversation));
+				contactList.isConversationMutedButtonNotVisible(conversation));
 	}
 	
 	@When("I see connect invitation")
@@ -138,10 +139,11 @@ public class ContactListPageSteps {
 		contactList.acceptAllInvitations();
 	}
 	
-	@When("I archive conversation")
-	public void IArchiveConversation() {
+	@When("I archive conversation with (.*)")
+	public void IArchiveConversation(String conversation) {
+		conversation = CommonUtils.retrieveRealUserContactPasswordValue(conversation);
 		ContactListPage contactList = CommonSteps.senderPages.getContactListPage();
-		contactList.moveSelectedConversationToArchive();
+		contactList.moveConversationToArchive(conversation);
 	}
 	
 	@When("I go to archive")

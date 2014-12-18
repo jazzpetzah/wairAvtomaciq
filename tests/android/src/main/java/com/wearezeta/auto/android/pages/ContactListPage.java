@@ -8,6 +8,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
@@ -20,7 +21,7 @@ public class ContactListPage extends AndroidPage {
 	private List<WebElement> contactListNames;
 
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classEditText)
-	private WebElement cursorInput;
+	private List<WebElement> cursorInput;
 
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameFrameLayout)
 	private List<WebElement> frameLayout;
@@ -46,8 +47,6 @@ public class ContactListPage extends AndroidPage {
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idSearchHintClose")
 	private WebElement closeHintBtn;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMessage")
-	private List<WebElement> conversationMessage;
 
 	private String url;
 	private String path;
@@ -69,6 +68,7 @@ public class ContactListPage extends AndroidPage {
 		//workaround for incorrect tap
 		el = findInContactList(name, 1);
 		if (el != null && DriverUtils.isElementDisplayed(el)) {
+			this.restoreApplication();
 			el.click();
 			log.debug("tap on contact for the second time");
 		}
@@ -101,7 +101,7 @@ public class ContactListPage extends AndroidPage {
 	private WebElement findInContactList(String name, int cyclesNumber) {
 		WebElement contact = null;
 		refreshUITree();
-		if (conversationMessage.isEmpty()) {
+		if (cursorInput.isEmpty() && selfUserName.isEmpty()) {
 			List<WebElement> contactsList = driver
 					.findElements(By.xpath(String
 							.format(AndroidLocators.ContactListPage.xpathContacts,

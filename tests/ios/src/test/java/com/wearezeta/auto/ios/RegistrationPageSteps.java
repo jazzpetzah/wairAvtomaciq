@@ -2,8 +2,11 @@ package com.wearezeta.auto.ios;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.mail.MessagingException;
 
 import org.junit.Assert;
 
@@ -315,17 +318,24 @@ public class RegistrationPageSteps {
 	}
 
 	@When("^I input password (.*) and hit Enter$")
-	public void IInputPasswordAndHitEnter(String password) throws IOException {
-
+	public void IInputPasswordAndHitEnter(String password) throws IOException, MessagingException, InterruptedException {
+		
 		if (password.equals(CommonUtils.YOUR_PASS)) {
 			PagesCollection.registrationPage.setPassword(CommonUtils
 					.getDefaultPasswordFromConfig(CommonUtils.class));
-			PagesCollection.registrationPage.inputPassword();
 		} else {
 			aqaPassword = password;
-			PagesCollection.registrationPage.setPassword(password);
-			PagesCollection.registrationPage.inputPassword();
+			PagesCollection.registrationPage.setPassword(password);	
 		}
+		
+		if (null == this.listener) {
+			Map<String, String> expectedHeaders = new HashMap<String, String>();
+			expectedHeaders.put("Delivered-To", aqaEmail);
+			this.listener = CreateZetaUser.getMboxInstance(aqaEmail,
+					aqaPassword).startMboxListener(expectedHeaders);
+		}
+		
+		PagesCollection.registrationPage.inputPassword();
 	}
 
 	@When("I click Create Account Button")
@@ -392,7 +402,7 @@ public class RegistrationPageSteps {
 			}
 			checksCnt++;
 		}
-		Assert.assertTrue(actualCnt == expectedCnt);
+		Assert.assertTrue("Expected mail count is : " + expectedCnt + ", but actual count is : " + actualCnt, actualCnt == expectedCnt);
 	}
 
 	@Then("^I resend verification email$")
@@ -411,8 +421,8 @@ public class RegistrationPageSteps {
 	}
 
 	@Then("^I see confirmation page$")
-	public void ISeeConfirmationPage() {
-		PagesCollection.registrationPage.waitForConfirmationMessage();
+	public void ISeeConfirmationPage() throws MalformedURLException {
+		PagesCollection.peoplePickerPage = PagesCollection.registrationPage.waitForConfirmationMessage();
 		Assert.assertTrue(PagesCollection.registrationPage
 				.isConfirmationShown());
 	}
