@@ -33,7 +33,7 @@ public final class OSXLocators {
 	public static final String idPeoplePickerSearchResultEntry = "people_picker_result_namefield";
 	public static final String idPeoplePickerSearchResultTable = "people_picker_searchresult";
 	
-	public static final String idToggleMenu = "ToggleMenu";
+	public static final String idShowMenuButton = "clshowMenuButton";
 	public static final String idMuteButton = "muteButton";
 	public static final String idArchiveButton = "archiveButton";
 	public static final String idShowArchivedButton = "openArchiveButton";
