@@ -63,6 +63,11 @@ public class OSXCommonUtils extends CommonUtils {
 		return result;
 	}
 	
+	public static void deleteCacheFolder() throws Exception {
+		String command = "rm -rf " + System.getProperty("user.home") + "/Library/Containers/com.wearezeta.zclient.mac*";
+		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
+	}
+	
 	public static void deleteZClientLoginFromKeychain() throws Exception {
 		String command = "security delete-generic-password -s \"zeta dev-nginz-https.zinfra.io\"";
 
