@@ -25,9 +25,9 @@ Feature: Self Profile
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I tap to edit my name
-    And I attempt to enter an empty name and press return
+    And I attempt to input an empty name and press return
     And I see error message asking for more characters
-    And I attempt to enter an empty name and tap the screen
+    And I attempt to input an empty name and tap the screen
     And I see error message asking for more characters
 
     Examples: 
