@@ -120,7 +120,7 @@ Feature: Registration
     And I input password <Password> and hit Enter
     Then I see confirmation page
     And I verify registration address
-    And Contact list loads with only my name
+    And I see Upload contacts dialog
 
     Examples: 
       | Email   | Password    | Name    |
@@ -219,7 +219,7 @@ Feature: Registration
     And I input password <Password> and hit Enter
     And I see confirmation page
     And I verify registration address
-    Then Contact list loads with only my name
+    Then I see Upload contacts dialog
 
     Examples: 
       | Email   | Password    | Name    |
