@@ -141,7 +141,7 @@ Feature: Conversation View
       | Login   | Password    | Name    | Contact1    | SoundCloudLink                                                                       |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
-  @staging @id394
+  @regression @id394
   Scenario Outline: Tap the cursor to get to the end of the conversation
     Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
@@ -367,7 +367,7 @@ Feature: Conversation View
       | Login   | Password    | Name    | Contact1    | Contact2    |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
 
-  @staging @id556
+  @regression @id556
   Scenario Outline: Verify you can add people from 1:1 people view (via Add to Conversation button)
     Given I have 1 users and 3 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
@@ -392,7 +392,7 @@ Feature: Conversation View
       | Login   | Password    | Name    | Contact1    | Contact2    | Contact3    |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | aqaContact3 |
 
-  @staging @id557
+  @regression @id557
   Scenario Outline: Verify you can add people from 1:1 people view (via keyboard button)
     Given I have 1 users and 3 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
@@ -418,7 +418,7 @@ Feature: Conversation View
       | Login   | Password    | Name    | Contact1    | Contact2    | Contact3    |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | aqaContact3 |
 
-  @staging @id559
+  @regression @id559
   Scenario Outline: Verify you can add people from 1:1 people view (cancel view)
     Given I have 1 users and 3 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
