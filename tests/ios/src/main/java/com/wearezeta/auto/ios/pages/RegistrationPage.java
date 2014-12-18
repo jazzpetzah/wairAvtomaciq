@@ -204,9 +204,11 @@ public class RegistrationPage extends IOSPage {
 		return closeColorModeButton.isDisplayed();
 	}
 
-	public void waitForConfirmationMessage() {
+	public PeoplePickerPage waitForConfirmationMessage() throws MalformedURLException {
 		DriverUtils.waitUntilElementAppears(driver,
 				By.className(IOSLocators.classNameConfirmationMessage));
+		
+		return new PeoplePickerPage(url, path);
 	}
 
 	public boolean isConfirmationShown() {
