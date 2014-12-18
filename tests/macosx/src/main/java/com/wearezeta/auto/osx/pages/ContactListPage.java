@@ -316,30 +316,16 @@ public class ContactListPage extends OSXPage {
 	}
 	
 	public void clickToggleMenuButton() {
-		WebElement toggleMenu = driver.findElement(By.id(OSXLocators.idToggleMenu));
+		WebElement toggleMenu = driver.findElement(By.id(OSXLocators.idShowMenuButton));
 		toggleMenu.click();
 	}
 	
-	int previousMutedLocation = Integer.MAX_VALUE;
 	public boolean isConversationMutedButtonVisible(String conversation) {
-		boolean isExist = false;
-		WebElement muted = driver.findElement(By.xpath(String.format(OSXLocators.xpathFormatMutedButton, conversation)));
-		
-		int mutedLocation = -1;
-		try {
-			mutedLocation = NSPoint.fromString(muted.getAttribute("AXPosition")).x();
-
-			if (mutedLocation < previousMutedLocation) {
-				isExist = true;
-			} else {
-				isExist = false;
-			}
-		} catch (Exception e) {
-			isExist = false;
-		}
-		
-		previousMutedLocation = mutedLocation;
-		return isExist;
+		return DriverUtils.waitUntilElementAppears(driver, By.xpath(String.format(OSXLocators.xpathFormatMutedButton, conversation)));
+	}
+	
+	public boolean isConversationMutedButtonNotVisible(String conversation) {
+		return DriverUtils.waitUntilElementDissapear(driver, By.xpath(String.format(OSXLocators.xpathFormatMutedButton, conversation)));
 	}
 	
 	public void changeMuteStateForConversation(String conversation) {
