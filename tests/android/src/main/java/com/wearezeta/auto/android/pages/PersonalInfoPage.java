@@ -72,7 +72,7 @@ public class PersonalInfoPage extends AndroidPage
 	}
 
 	public boolean isPersonalInfoVisible() {
-
+		refreshUITree();
 		return emailField.isDisplayed();
 	}
 

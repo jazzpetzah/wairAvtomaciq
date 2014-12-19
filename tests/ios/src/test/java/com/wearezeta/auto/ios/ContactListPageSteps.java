@@ -119,6 +119,7 @@ public class ContactListPageSteps {
 
 		PeoplePickerPageSteps pickerSteps = new PeoplePickerPageSteps();
 		pickerSteps.WhenISeePeoplePickerPage();
+		pickerSteps.WhenITapOnSearchInputOnPeoplePickerPage();
 		pickerSteps.WhenIInputInPeoplePickerSearchFieldUserName(contact2);
 		pickerSteps.WhenISeeUserFoundOnPeoplePickerPage(contact2);
 		pickerSteps.WhenITapOnUserNameFoundOnPeoplePickerPage(contact2);

@@ -14,28 +14,28 @@ Feature: Sign In
       | Login   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |
 
-  @id209 @smoke
-  Scenario Outline: I can change sign in user
-    Given I have 2 users and 0 contacts for 0 users
-    Given I Sign in using login <Login1> and password <Password>
-    And I see Contact list with my name <Login1>
-    When I tap on my name <Login1>
+  #@id209 @smoke
+  #Scenario Outline: I can change sign in user
+    #Given I have 2 users and 0 contacts for 0 users
+    #Given I Sign in using login <Login1> and password <Password>
+    #And I see Contact list with my name <Login1>
+    #When I tap on my name <Login1>
     #workaround
-    And I minimize the application
-    And I restore the application
+    #And I minimize the application
+    #And I restore the application
     #workaround
-    And I tap options button
-    And I tap sign out button
-    And I see sign in and join buttons
-    And I press Sign in button
-    And I have entered login <Login2>
-    And I have entered password <Password>
-    And I press Log in button
-    Then Contact list appears with my name <Login2>
+    #And I tap options button
+    #And I tap sign out button
+    #And I see sign in and join buttons
+    #And I press Sign in button
+    #And I have entered login <Login2>
+    #And I have entered password <Password>
+    #And I press Log in button
+    #Then Contact list appears with my name <Login2>
 
-    Examples: 
-      | Login1  | Password    | Login2   |
-      | aqaUser | aqaPassword | yourUser |
+    #Examples: 
+    #  | Login1  | Password    | Login2   |
+    #  | aqaUser | aqaPassword | yourUser |
 
   @id1413 @regression
   Scenario Outline: Negative case for sign in
