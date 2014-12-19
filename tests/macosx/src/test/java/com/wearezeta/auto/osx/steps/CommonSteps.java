@@ -75,7 +75,7 @@ public class CommonSteps {
 
 		OSXCommonUtils.deleteZClientLoginFromKeychain();
 		OSXCommonUtils.removeAllZClientSettingsFromDefaults();
-		OSXCommonUtils.deleteCacheFolder();
+//		OSXCommonUtils.deleteCacheFolder();
 		
 		OSXCommonUtils.setZClientBackend(CommonUtils.getBackendType(this
 				.getClass()));

@@ -32,7 +32,7 @@ public class MainMenuPage extends OSXPage {
 		try {
 			OSXCommonUtils.deleteZClientLoginFromKeychain();
 			OSXCommonUtils.removeAllZClientSettingsFromDefaults();
-			OSXCommonUtils.deleteCacheFolder();
+//			OSXCommonUtils.deleteCacheFolder();
 			OSXCommonUtils.setZClientBackend(CommonUtils.getBackendType(LoginPage.class));
 		} catch (Exception ex) {
 			log.error("Can't clear ZClient settings in OSX.\n" + ex.getMessage());
