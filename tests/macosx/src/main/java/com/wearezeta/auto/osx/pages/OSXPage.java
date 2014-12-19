@@ -47,6 +47,10 @@ public class OSXPage extends BasePage {
 		return DriverUtils.takeScreenshot(driver);
 	}
 	
+	public void startApp() throws IOException {
+		driver.navigate().to(CommonUtils.getOsxApplicationPathFromConfig(OSXPage.class));
+	}
+	
 	//not used in OS X
 	@Override public BasePage swipeLeft(int time) throws IOException { return null; }
 	@Override public BasePage swipeRight(int time) throws IOException { return null; }
