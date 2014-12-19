@@ -67,6 +67,11 @@ public class ConnectToPage extends AndroidPage {
 		wait.until(ExpectedConditions.elementToBeClickable(confirmBtn));
 		confirmBtn.click();
 	}
+	
+	public ContactListPage navigateBack() throws Exception{
+		driver.navigate().back();
+		return new ContactListPage(url, path);
+	}
 
 	public String getConnectToHeader() {
 		refreshUITree();
