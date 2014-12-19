@@ -276,8 +276,7 @@ Feature: Connect
 
   @id550 @regression
   Scenario Outline: I want to initiate a connect request by selecting someone from within a group conversation
-    Given I have 2 users and 1 contacts for 1 users
-    Given User <Contact1> is connected with <Contact2>
+    Given I have 2 users and 1 contacts for 2 users
     Given My Contact <Contact1> has group chat with me <Login> and his Contact <Contact2> with name <ChatName>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>

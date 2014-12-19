@@ -166,7 +166,8 @@ public class CommonSteps {
 		}
 		List<ClientUser> users = new LinkedList<ClientUser>();
 		yourUser = BackEndREST.loginByUser(yourUser);
-		yourContact = BackEndREST.loginByUser(yourUser);
+		yourContact = BackEndREST.loginByUser(yourContact);
+		contactContact = BackEndREST.loginByUser(contactContact);
 		users.add(yourUser);
 		users.add(contactContact);
 
