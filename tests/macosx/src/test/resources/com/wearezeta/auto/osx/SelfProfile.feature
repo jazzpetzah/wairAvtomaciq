@@ -34,7 +34,7 @@ Feature: User Profile
 #      | Login   | Password    | Name    |
 #      | aqaUser | aqaPassword | aqaUser |
 
-  @staging @id183
+  @regression @id183
   Scenario Outline: Profile photo can be deleted
     Given I have 1 users and 0 contacts for 0 users
     Given I Sign in using login <Login> and password <Password>
