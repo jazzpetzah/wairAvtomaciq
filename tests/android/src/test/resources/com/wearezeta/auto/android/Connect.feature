@@ -61,19 +61,23 @@ Feature: Connect
     And <Contact2> connection request is sended to me <Login>
     When I tap on contact name <WaitingMess2>
     And I press Ignore connect button
+    And I navigate back from connect page
     Then I see contact list loaded with User name <WaitingMess1>
     And <Contact3> connection request is sended to me <Login>
     And <Contact4> connection request is sended to me <Login>
     And I see contact list loaded with User name <WaitingMess3>
+    And I wait for 5 seconds
     And I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact3>
     And I tap on user name found on People picker page <Contact3>
     And I press Ignore connect button
+    And I navigate back from connect page
     And I see contact list loaded with User name <WaitingMess2>
     And I tap on contact name <WaitingMess2>
     And I press Ignore connect button
+    And I navigate back from connect page
     And I see contact list loaded with User name <WaitingMess1>
     And I tap on contact name <WaitingMess1>
     And I press Ignore connect button
