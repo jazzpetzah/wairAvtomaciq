@@ -307,7 +307,7 @@ Feature: Registration
       #| Email   | Password    | Name    |
       #| aqaUser | aqaPassword | aqaUser |
 
-  @staging @id298
+  @regression @id298
   Scenario Outline: Can re-send verification email from verification screen
     Given I see sign in screen
     When I press Join button

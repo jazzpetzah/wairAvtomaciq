@@ -61,8 +61,12 @@ public class CommonSteps {
 		String backendType = CommonUtils.getBackendType(this.getClass());
 		
 		//setting backend configuration for all platforms
-		OSXCommonUtils.setZClientBackend(backendType);
+		OSXCommonUtils.deleteZClientLoginFromKeychain();
+		OSXCommonUtils.removeAllZClientSettingsFromDefaults();
+		OSXCommonUtils.deleteCacheFolder();
 		
+		OSXCommonUtils.setZClientBackend(backendType);
+
 		String androidBEFlagFilePath = AndroidCommonUtils.createBackendJSON(backendType);
 		AndroidCommonUtils.deployBackendFile(androidBEFlagFilePath);
 		
@@ -146,6 +150,15 @@ public class CommonSteps {
 						+ "ms");
 				ZetaFormatter.setDriver(osxSenderPages.getLoginPage().getDriver());
 				osxSenderPages.getLoginPage().sendProblemReportIfFound();
+				try {
+					if (!OSXCommonUtils.isBackendTypeSet(CommonUtils.getBackendType(this.getClass()))) {
+						log.debug("Backend setting were overwritten. Trying to restart app.");
+						osxSenderPages.getMainMenuPage().quitZClient();
+						OSXCommonUtils.setZClientBackend(CommonUtils.getBackendType(this
+							.getClass()));
+						osxSenderPages.getLoginPage().startApp();
+					}
+				} catch (Exception e) { log.debug("Failed to check backend type and restart app if necessary."); }
 			}
 		});
 	}

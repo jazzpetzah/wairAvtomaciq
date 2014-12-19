@@ -87,7 +87,7 @@ public final class AndroidLocators {
 		
 		public static final String idContactListNames = LOCATORS_PACKAGE + ":id/tv_conv_list_topic";
 		
-		public static final String idContactListMute = LOCATORS_PACKAGE + ":id/tv_conv_list_menu_mute";
+		public static final String xpathContactListMute = "//android.widget.FrameLayout[android.widget.TextView[@text='%s']]//android.widget.TextView[@resource-id='com.waz.zclient.dev:id/tv_conv_list_menu_mute']";
 		
 		public static final String idConfirmCancelButton = LOCATORS_PACKAGE + ":id/zb__confirm__cancel_button";
 		
@@ -97,7 +97,9 @@ public final class AndroidLocators {
 		
 		public static final String xpathContacts = "//android.widget.TextView[@text='%s']"; 
 		
-		public static final String idSimpleDialogPageText = LOCATORS_PACKAGE + ":id/ttv__simple_dialog__text";  
+		public static final String idSimpleDialogPageText = LOCATORS_PACKAGE + ":id/ttv__simple_dialog__text";
+		
+		public static final String idMutedIcon = LOCATORS_PACKAGE + ":id/tv_conv_list_voice_muted";
 		
 	}
 	

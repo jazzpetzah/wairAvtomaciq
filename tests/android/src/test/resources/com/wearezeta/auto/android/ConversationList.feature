@@ -6,10 +6,10 @@ Feature: Conversation List
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe right on a <Contact1>
-    And I click mute conversation
+    And I click mute conversation <Contact1>
     Then Contact <Contact1> is muted
     When I swipe right on a <Contact1>
-    And I click mute conversation
+    And I click mute conversation <Contact1>
     Then Contact <Contact1> is not muted
 
     Examples: 
