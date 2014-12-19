@@ -403,6 +403,7 @@ Feature: Conversation View
     And I see <Contact1> user profile page
     And I press Add button
     And I see People picker page
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact2>
     And I see user <Contact2> found on People picker page
     And I don't see Add to conversation button
