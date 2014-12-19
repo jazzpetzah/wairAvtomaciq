@@ -82,6 +82,7 @@ public class RegistrationPage extends AndroidPage {
 	}
 
 	public void setName(String name) {
+		refreshUITree();
 		if (nameField.getText().toLowerCase().equals(YOUR_NAME)) {
 			nameField.sendKeys(name);
 			nextArrow.click();
@@ -89,6 +90,7 @@ public class RegistrationPage extends AndroidPage {
 	}
 
 	public void setEmail(String email) {
+		refreshUITree();
 		if (nameField.getText().toLowerCase().equals(EMAIL)) {
 			nameField.sendKeys(email);
 			nextArrow.click();
@@ -96,6 +98,7 @@ public class RegistrationPage extends AndroidPage {
 	}
 
 	public void setPassword(String password) {
+		refreshUITree();
 		passwordField.sendKeys(password);
 	}
 
