@@ -29,14 +29,14 @@ public class ContactListPage extends AndroidPage {
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idNameField")
 	private List<WebElement> selfUserName;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idContactListMute")
-	private WebElement muteBtn;
-
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConfirmCancelButton")
 	private List<WebElement> laterBtn;
 	
 	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConfirmCancelButtonPicker")
 	private List<WebElement> laterBtnPicker;
+	
+	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idMutedIcon")
+	private WebElement mutedIcon;
 	
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameLoginPage)
 	private WebElement mainControl;
@@ -121,14 +121,23 @@ public class ContactListPage extends AndroidPage {
 
 	public void swipeRightOnContact(int time, String contact)
 			throws IOException {
-		findInContactList(contact, 5);
 		WebElement el = driver.findElementByXPath(String.format(
 				AndroidLocators.ContactListPage.xpathContactFrame, contact));
 		DriverUtils.swipeRight(driver, el, time);
 	}
 
-	public void clickOnMute() {
-		muteBtn.click();
+	public void clickOnMute(String contact) {
+		WebElement el = driver.findElementByXPath(String.format(
+				AndroidLocators.ContactListPage.xpathContactListMute, contact));
+		el.click();
+		el = driver.findElementByXPath(String.format(
+				AndroidLocators.ContactListPage.xpathContactFrame, contact));
+		el.click();
+	}
+	
+	public boolean isContactMuted() {
+		
+		return DriverUtils.isElementDisplayed(mutedIcon);
 	}
 	
 	public boolean isHintVisible() throws InterruptedException, IOException {

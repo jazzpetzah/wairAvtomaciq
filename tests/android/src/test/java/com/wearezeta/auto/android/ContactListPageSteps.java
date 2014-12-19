@@ -117,13 +117,14 @@ public class ContactListPageSteps {
 	public void ISwipeRightOnContact(String contact) throws IOException {
 
 		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
-		PagesCollection.contactListPage.swipeRightOnContact(500, contact);
+		PagesCollection.contactListPage.swipeRightOnContact(1000, contact);
 	}
 
-	@When("^I click mute conversation$")
-	public void IClickMuteConversation() throws IOException, InterruptedException {
+	@When("^I click mute conversation (.*)$")
+	public void IClickMuteConversation(String contact) throws IOException, InterruptedException {
 
-		PagesCollection.contactListPage.clickOnMute();
+		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		PagesCollection.contactListPage.clickOnMute(contact);
 	}
 	
 	@Then("^I see (.*) and (.*) chat in contact list$")
@@ -162,14 +163,14 @@ public class ContactListPageSteps {
 
 	@Then("^Contact (.*) is muted$")
 	public void ContactIsMuted(String contact) throws Throwable {
-		// Express the Regexp above with the code you wish you had
-		throw new PendingException();
+		
+		Assert.assertTrue(PagesCollection.contactListPage.isContactMuted());
 	}
 
 	@Then("^Contact (.*) is not muted$")
 	public void ThenContactIsNotMuted(String contact) throws Throwable {
-		// Express the Regexp above with the code you wish you had
-		throw new PendingException();
+		
+		Assert.assertFalse(PagesCollection.contactListPage.isContactMuted());
 	}
 	
 	@Then("^Contact name (.*) is not in list$")
