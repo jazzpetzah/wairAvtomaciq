@@ -80,7 +80,7 @@ Feature: People View
       | Login   | Password    | Name    | Contact1    | Contact2    | ChatName        |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | PartViewNavChat |
 
-  @staging @id100
+  @regression @id100
   Scenario Outline: Access proﬁle information for the other participant in a 1on1 conversation
     Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
