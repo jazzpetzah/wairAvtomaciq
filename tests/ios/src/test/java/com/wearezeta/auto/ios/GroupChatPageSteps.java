@@ -31,6 +31,7 @@ public class GroupChatPageSteps {
 		name1 = CommonUtils.retrieveRealUserContactPasswordValue(name1);
 		name2 = CommonUtils.retrieveRealUserContactPasswordValue(name2);
 		name3 = CommonUtils.retrieveRealUserContactPasswordValue(name3);
+		Thread.sleep(1000);//still have to wait some time for animation to finish
 	    Assert.assertTrue(PagesCollection.groupChatPage.areRequired3ContactsAddedToChat(name1, name2, name3));
 	}
 	
