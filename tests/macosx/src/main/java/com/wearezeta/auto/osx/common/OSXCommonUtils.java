@@ -102,10 +102,12 @@ public class OSXCommonUtils extends CommonUtils {
 	public static void setZClientBackendForDomain(String domain, String bt) throws Exception {
 		String command = "defaults write " + domain + " ZMBackendEnvironmentType -string " + bt;
 		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
-		for (int i = 0; i < 10; i++) {
-			if (isBackendTypeSetForDomain(domain, bt)) break;
-			try { Thread.sleep(500); } catch (InterruptedException e) { }
-		}
+	}
+	
+	public static boolean isBackendTypeSet(String bt) throws Exception {
+		return ( isBackendTypeSetForDomain("com.wearezeta.zclient.mac.development", bt)
+				&& isBackendTypeSetForDomain("com.wearezeta.zclient.mac.internal", bt)
+				&& isBackendTypeSetForDomain("com.wearezeta.zclient.mac", bt));
 	}
 	
 	public static boolean isBackendTypeSetForDomain(String domain, String bt) throws Exception {

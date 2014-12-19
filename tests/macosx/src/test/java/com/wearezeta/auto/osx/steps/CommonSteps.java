@@ -108,6 +108,14 @@ public class CommonSteps {
 				.getOsxAppiumUrlFromConfig(CommonSteps.class), path));
 		ZetaFormatter.setDriver(senderPages.getLoginPage().getDriver());
 		senderPages.getLoginPage().sendProblemReportIfFound();
+		
+		if (!OSXCommonUtils.isBackendTypeSet(CommonUtils.getBackendType(this.getClass()))) {
+			log.debug("Backend setting were overwritten. Trying to restart app.");
+			senderPages.getMainMenuPage().quitZClient();
+			OSXCommonUtils.setZClientBackend(CommonUtils.getBackendType(this
+					.getClass()));
+			senderPages.getLoginPage().startApp();
+		}
 	}
 
 	@After

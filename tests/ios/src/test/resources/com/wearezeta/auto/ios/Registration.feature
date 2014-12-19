@@ -92,7 +92,7 @@ Feature: Registration
       | Correct | Password    | Name    | Incorrect           |
       | aqaUser | aqaPassword | aqaUser | error@wearezeta.com |
 
-  @regression @id346
+  @regression @id528 @id529 @id530
   Scenario Outline: Register new user using username with maximum characters allowed, Deutch, Double-byte (Chinese), and emoji Characters
     Given I see sign in screen
     When I press Join button
@@ -107,7 +107,7 @@ Feature: Registration
       | Email   | Password    | MaxChars | Language |
       | aqaUser | aqaPassword | 72       | English  |
 
-  @id589 @regression
+  @regression @id589 
   Scenario Outline: Register new user using photo album
     Given I see sign in screen
     When I press Join button
@@ -184,7 +184,7 @@ Feature: Registration
       #| Email   | Password    | Name    |
       #| aqaUser | aqaPassword | aqaUser |
 
-  @regression @id273
+  @regression @id273 @id301
   Scenario Outline: Next Button should not be visible on first registration step visit
     Given I see sign in screen
     When I press Join button

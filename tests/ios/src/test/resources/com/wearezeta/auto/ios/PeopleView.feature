@@ -11,6 +11,7 @@ Feature: People View
     And I see <Contact1> user profile page
     And I press Add button
     And I see People picker page
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact2>
     And I see user <Contact2> found on People picker page
     And I tap on connected user <Contact2> on People picker page
@@ -187,6 +188,93 @@ Feature: People View
     Examples: 
       | Login   | Password    | Name    | Contact1    | Contact2    | ChatName   |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | QAtestChat |
+            
+  @regression @id555
+  Scenario Outline: Verify you can add people from 1:1 people view (view functionality)
+    Given I have 1 users and 2 contacts for 1 users
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I swipe up on dialog page to open other user personal page
+    And I see <Contact1> user profile page
+    And I press Add button
+    And I see People picker page
+    And I dont see keyboard
+    And I tap on connected user <Contact2> on People picker page
+    And I see user <Contact2> on People picker page is selected
+    And I tap on connected user <Contact2> on People picker page
+    And I see user <Contact2> on People picker page is NOT selected
+    And I tap on connected user <Contact2> on People picker page
+    And I tap on Search input on People picker page
+    And I see keyboard
+    And I don't see Add to conversation button
+    And I press keyboard Delete button
+    And I see user <Contact2> on People picker page is NOT selected
+
+    Examples: 
+      | Login   | Password    | Name    | Contact1    | Contact2    |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
+            
+  @regression @id557
+  Scenario Outline: Verify you can add people from 1:1 people view (via keyboard button)
+    Given I have 1 users and 3 contacts for 1 users
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I swipe up on dialog page to open other user personal page
+    And I see <Contact1> user profile page
+    And I press Add button
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact2>
+    And I see user <Contact2> found on People picker page
+    And I don't see Add to conversation button
+    And I click on connected user <Contact2> avatar on People picker page
+    And I click on connected user <Contact3> avatar on People picker page
+    And I click on Go button
+    And I see group chat page with 3 users <Contact1> <Contact2> <Contact3>
+    And I swipe right on group chat page
+    And I see Contact list with my name <Name>
+    And I see in contact list group chat with <Contact1> <Contact2> <Contact3>
+
+    Examples: 
+      | Login   | Password    | Name    | Contact1    | Contact2    | Contact3    |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | aqaContact3 |
+           
+  @regression @id559
+  Scenario Outline: Verify you can add people from 1:1 people view (cancel view)
+    Given I have 1 users and 3 contacts for 1 users
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I swipe up on dialog page to open other user personal page
+    And I see <Contact1> user profile page
+    And I press Add button
+    And I see People picker page
+    And I scroll up page a bit
+    And I dont see keyboard
+    And I tap on connected user <Contact2> on People picker page
+    And I tap on connected user <Contact3> on People picker page
+    And I click close button to dismiss people view
+    And I see <Contact1> user profile page
+    And I press Add button
+    And I see People picker page
+    And I see user <Contact2> on People picker page is NOT selected
+    And I see user <Contact3> on People picker page is NOT selected
+    And I click close button to dismiss people view
+    And I see <Contact1> user profile page
+    And I swipe down on other user profile page
+    And I see dialog page
+    And I swipe right on Dialog page
+    And I see Contact list with my name <Name>
+    And I don't see in contact list group chat with <Contact1> <Contact2> <Contact3>
+
+    Examples: 
+      | Login   | Password    | Name    | Contact1    | Contact2    | Contact3    |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | aqaContact3 |
 
   #Known issue ZIOS-1711. Muted test due to crash after relogin.
   #@staging @id597 @mute
