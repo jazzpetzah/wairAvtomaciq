@@ -10,7 +10,7 @@ import os
 class CliHandlerBase(object):
     def __init__(self, jenkins):
         self._jenkins = jenkins
-    
+
     def _build_options(self, parser):
         parser.add_argument('request_type',
                              help='Jenkins request type. Available types: {0}'.\
@@ -34,7 +34,8 @@ def get_handler(keyword, jenkins):
         module_path = os.path.join(current_module_path, module_name)
         if os.path.isfile(module_path):
             with open(module_path, 'r') as f:
-                if f.read().find('class {0}({1})'.format(keyword, 'CliHandlerBase')) >= 0:
+                if f.read().find('class {0}({1})'.format(keyword,
+                                                         CliHandlerBase.__name__)) >= 0:
                     mod_name, _ = os.path.splitext(os.path.split(module_path)[-1])
                     module_obj = imp.load_source(mod_name, module_path)
                     return getattr(module_obj, keyword)(jenkins)
@@ -51,7 +52,8 @@ def get_handler_names():
         module_path = os.path.join(current_module_path, module_name)
         if os.path.isfile(module_path):
             with open(module_path, 'r') as f:
-                handler_names = re.findall(r'class (\w+)\(CliHandlerBase\)', f.read())
+                handler_names = re.findall(r'class (\w+)\(' + CliHandlerBase.__name__ + '\)',
+                                           f.read())
                 if handler_names:
-                    result_names = handler_names[0]
+                    result_names.append(handler_names[0])
     return result_names
