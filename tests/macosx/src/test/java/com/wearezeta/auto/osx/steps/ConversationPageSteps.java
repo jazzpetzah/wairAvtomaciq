@@ -374,7 +374,10 @@ public class ConversationPageSteps {
 	 
 	 @When("^I scroll media out of sight till media bar appears$")
 	 public void WhenIScrollMediaOutOfSightUntilMediaBarAppears() throws Throwable {
-		 CommonSteps.senderPages.getConversationPage().scrollDownTillMediaBarAppears();
+		 ConversationPage conversationPage = 
+				 CommonSteps.senderPages.getConversationPage();
+		 conversationPage.scrollDownTillMediaBarAppears();
+		 Assert.assertTrue("Media bar doesn't appear", conversationPage.isMediaBarVisible());
 	 }
 
 	 @When("^I pause playing media in media bar$")
