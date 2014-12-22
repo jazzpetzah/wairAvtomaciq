@@ -255,6 +255,10 @@ public abstract class IOSPage extends BasePage {
 		}
 	}
 	
+	public void hideKeyboard() {
+		driver.hideKeyboard();
+	}
+	
 	public void acceptAlert(){
 		DriverUtils.waitUntilAlertAppears(driver);
 		try {
