@@ -102,7 +102,7 @@ public class ZBender
     		return;
     	}
     	
-    	String login = "error", password = "error", contact = "", imgPath = "", backend = "staging";
+    	String login = "error", password = "error", contact = "", imgPath = "", backend = "staging", name = "ZBender";
     	Boolean sendImg = false, showContacts = false;
     	int messageCount = 1, interval = 0;
     	for (int i = 0; i < args.length; i = i + 2) {
@@ -139,6 +139,10 @@ public class ZBender
 			case "-backend" :
 				backend = args[i+1];
 				break;
+				
+			case "-name" :
+				name = args[i+1];
+				break;	
 		}
     	}
     	
@@ -161,7 +165,7 @@ public class ZBender
 
     	BackEndREST.setDefaultBackendURL(backend);
     	
-		ClientUser yourСontact = new ClientUser(login, password, "ZBender", UsersState.AllContactsConnected);
+		ClientUser yourСontact = new ClientUser(login, password, name, UsersState.AllContactsConnected);
 		
 		if (showContacts) {
 			BackEndREST.loginByUser(yourСontact);

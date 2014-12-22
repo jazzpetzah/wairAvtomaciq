@@ -42,9 +42,9 @@ Feature: Connect
 
   @staging @id576
   Scenario Outline: Send connection request to unconnected participant in a group chat
-    Given I have 2 users and 0 contacts for 1 users
+    Given I have 2 users and 0 contacts for 2 users
+    Given I have group chat named <GroupChatName> with an unconnected user, made by <GroupCreator>
     Given I Sign in using login <Login> and password <Password>
-    And I have group chat named <GroupChatName> with an unconnected user, made by <GroupCreator>
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I swipe up on group chat page
