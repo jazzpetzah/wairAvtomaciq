@@ -449,6 +449,18 @@ public class ConversationPage extends OSXPage {
 	public void dragPictureToConversation(String picture) throws IOException {
 		WebElement target = driver.findElement(By
 				.id(OSXLocators.idConversationScrollArea));
+		
+		NSPoint targetLocation = NSPoint.fromString(target.getAttribute("AXPosition"));
+		NSPoint targetSize = NSPoint.fromString(target.getAttribute("AXSize"));
+		
+		int xLoc = targetLocation.x() + targetSize.x()/2;
+		int yLoc = targetLocation.y() + targetSize.y()/2;
+		
+		String scr0 = "tell application \"Finder\" " + 
+				 "to set the bounds of the front Finder window " +
+				 "to {0, 0, " + (xLoc-20) + ", " + (yLoc-20) + "}";
+		driver.executeScript(scr0);
+		 
 		driver.navigate().to("Finder");
 		try {
 			WebElement element = driver.findElement(By.name(picture));
