@@ -1,11 +1,11 @@
-package com.wearezeta.split_suite.storages;
+package com.wearezeta.suite_splitter.storages;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import com.wearezeta.split_suite.Testcase;
+import com.wearezeta.suite_splitter.Testcase;
 
 public abstract class TestcasesStorage {
 	private String path;

@@ -1,4 +1,4 @@
-package com.wearezeta.split_suite;
+package com.wearezeta.suite_splitter;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,10 +20,10 @@ import org.apache.commons.cli.PosixParser;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
-import com.wearezeta.split_suite.reporting.ReportGenerator;
-import com.wearezeta.split_suite.reporting.ReportModel;
-import com.wearezeta.split_suite.storages.GherkinFile;
-import com.wearezeta.split_suite.storages.ResultJSON;
+import com.wearezeta.suite_splitter.reporting.ReportGenerator;
+import com.wearezeta.suite_splitter.reporting.ReportModel;
+import com.wearezeta.suite_splitter.storages.GherkinFile;
+import com.wearezeta.suite_splitter.storages.ResultJSON;
 
 public class App {
 	private static final String FEATURE_EXTENSION = "feature";

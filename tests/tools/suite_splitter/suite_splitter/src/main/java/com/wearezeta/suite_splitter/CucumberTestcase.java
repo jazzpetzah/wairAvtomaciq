@@ -1,4 +1,4 @@
-package com.wearezeta.split_suite;
+package com.wearezeta.suite_splitter;
 
 import java.util.Set;
 

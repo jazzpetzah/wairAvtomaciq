@@ -1,4 +1,4 @@
-package com.wearezeta.split_suite.storages;
+package com.wearezeta.suite_splitter.storages;
 
 import gherkin.JSONParser;
 import gherkin.formatter.JSONFormatter;
@@ -20,8 +20,8 @@ import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.wearezeta.split_suite.CucumberTestcase;
-import com.wearezeta.split_suite.Testcase;
+import com.wearezeta.suite_splitter.CucumberTestcase;
+import com.wearezeta.suite_splitter.Testcase;
 
 public class GherkinFile extends TestcasesStorage {
 	public GherkinFile(String path) {
