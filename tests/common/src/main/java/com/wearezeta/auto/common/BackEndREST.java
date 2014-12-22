@@ -375,13 +375,14 @@ public class BackEndREST {
 				getConversationByName(userFrom, chatName), src);
 	}
 
+	//TODO: needs refactoring! this method should be deleted
 	public static void createGroupChatWithUnconnecteduser(String chatName,
 			String groupCreator) throws IllegalArgumentException,
 			UriBuilderException, IOException, BackendRequestException,
 			JSONException, InterruptedException {
 		ClientUser groupCreatorUser = CommonUtils.findUserNamed(groupCreator);
 		ClientUser unconnectedUser = CommonUtils
-				.findUserNamed(CommonUtils.YOUR_UNCONNECTED_USER);
+				.findUserNamed(CommonUtils.YOUR_USER_2);
 		ClientUser selfUser = CommonUtils
 				.findUserNamed(CommonUtils.YOUR_USER_1);
 
@@ -501,8 +502,8 @@ public class BackEndREST {
 			conversationId = conversation.getString("id");
 			String name = conversation.getString("name");
 			name = name.replaceAll("\uFFFC", "").trim();
-			;
-			if (name.equals("null")) {
+			
+			if (name.equals("null") || name.equals(fromUser.getName())) {
 				conversation = (JSONObject) conversation.get("members");
 				JSONArray otherArray = (JSONArray) conversation.get("others");
 				if (otherArray.length() == 1) {
