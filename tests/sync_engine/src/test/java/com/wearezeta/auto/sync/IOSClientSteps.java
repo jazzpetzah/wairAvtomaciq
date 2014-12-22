@@ -30,9 +30,7 @@ public class IOSClientSteps {
 			com.wearezeta.auto.ios.LoginPageSteps iosLoginPageSteps = new com.wearezeta.auto.ios.LoginPageSteps();
 			iosLoginPageSteps.GivenISignIn(login, password);
 			com.wearezeta.auto.ios.ContactListPageSteps iosContactListPageSteps = new com.wearezeta.auto.ios.ContactListPageSteps();
-			log.debug("Page source: " + com.wearezeta.auto.ios.pages.PagesCollection.loginPage.getPageSource());
 			iosContactListPageSteps.GivenISeeContactListWithMyName(name);
-			log.debug("Page source: " + com.wearezeta.auto.ios.pages.PagesCollection.loginPage.getPageSource());
 		}
 	}
 

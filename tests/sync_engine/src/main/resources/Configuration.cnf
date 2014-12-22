@@ -35,6 +35,7 @@ defaultImagePath=${Root}/${defaultImagePath}
 defaultImagesPath=${Root}/${defaultImagesPath}
 androidClientInfoPath=${androidClientInfoPath}
 androidAppiumLogPath=${androidAppiumLogPath}
+androidVersion=${androidVersion}
 
 ### IOS CONFIG ###
 ios.client.enabled=${ios.client.enabled}
