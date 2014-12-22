@@ -252,7 +252,7 @@ Feature: Conversation
       | Login   | Password    | Name    | Contact     | SoundCloudLink                               |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/djsliinkbbc/2-test-me |
 
-  @staging
+  @regression
   Scenario Outline: Drag image to conversation
     Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
