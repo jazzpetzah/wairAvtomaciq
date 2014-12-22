@@ -185,6 +185,7 @@ public class CommonSteps {
 						com.wearezeta.auto.android.pages.PagesCollection.loginPage.isVisible();
 					} catch (Exception e) {
 						log.debug(e.getMessage());
+						e.printStackTrace();
 					}
 					long endDate = new Date().getTime();
 					try {
