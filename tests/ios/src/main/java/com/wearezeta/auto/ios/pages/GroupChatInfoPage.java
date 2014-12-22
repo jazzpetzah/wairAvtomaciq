@@ -111,13 +111,14 @@ public class GroupChatInfoPage extends IOSPage {
 		return true;
 	}
 
+	//TODO: refactor! hardcoded users
 	public void tapAndCheckAllParticipants() throws IOException {
 		List<WebElement> participants = getCurrentParticipants();
 		String participantNameTextFieldValue = null;
 		String participantName = null;
 		String participantEmailTextFieldValue = null;
 		String unconnectedUsername = CommonUtils
-				.retrieveRealUserContactPasswordValue(CommonUtils.YOUR_UNCONNECTED_USER);
+				.retrieveRealUserContactPasswordValue(CommonUtils.YOUR_USER_2);
 		for (WebElement participant : participants) {
 			ClientUser participantUser = getParticipantUser(participant);
 			participantName = participantUser.getName();
@@ -131,8 +132,8 @@ public class GroupChatInfoPage extends IOSPage {
 					participantNameTextFieldValue
 							.equalsIgnoreCase(participantName));
 			if (participantName.equalsIgnoreCase(unconnectedUsername)) {
-				Assert.assertTrue("Unconnected user's email is displayed",
-						participantEmailTextFieldValue.equals(""));
+				Assert.assertFalse("Unconnected user's email is displayed",
+						participantEmailTextFieldValue.equalsIgnoreCase(participantUser.getEmail()));
 			} else {
 				Assert.assertTrue(
 						"Participant Email is incorrect and/or not displayed",

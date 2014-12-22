@@ -35,6 +35,7 @@ Feature: People View
     And I swipe up on group chat page
     And I press Add button
     And I see People picker page
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
     And I see user <Contact3> found on People picker page
     And I tap on connected user <Contact3> on People picker page
@@ -136,9 +137,9 @@ Feature: People View
   #fails to check email of first user due to defect IOS-990
   @staging @id339
   Scenario Outline: Tap on participant profiles in group info page participant view
-    Given I have 1 users and 0 contacts for 1 users
-    Given I Sign in using login <Login> and password <Password>
+    Given I have 2 users and 0 contacts for 2 users
     Given I have group chat named <GroupChatName> with an unconnected user, made by <GroupCreator>
+    Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I swipe up on group chat page

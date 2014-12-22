@@ -7,6 +7,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
@@ -29,7 +30,7 @@ public class OtherUserPersonalInfoPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.nameContinueButton)
 	private WebElement continueButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathExitOtherUserPersonalInfoPageButton)
+	@FindBy(how = How.NAME, using = IOSLocators.nameExitOtherUserPersonalInfoPageButton)
 	private WebElement exitOtherPersonalInfoPageButton;
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherPersonalInfoPageNameField )
@@ -110,7 +111,7 @@ public class OtherUserPersonalInfoPage extends IOSPage{
 	
 	public DialogPage clickOnStartDialogButton() throws Throwable{
 		DialogPage page = null;
-		startDialogButton.click();
+		driver.tap(1, driver.findElementByName(IOSLocators.nameAddContactToChatButton), 1);
 		page = new DialogPage(url, path);
 		return page;
 	}

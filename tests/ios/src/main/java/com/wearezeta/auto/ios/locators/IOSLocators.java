@@ -182,9 +182,9 @@ public final class IOSLocators {
 	
 	public static final String nameExitGroupInfoPageButton = "metaControllerCancelButton";
 	
-	public static final String nameExitOtherUserPersonalInfoPageButton = "ProfileOtherCloseButton";
+	//public static final String nameExitOtherUserPersonalInfoPageButton = "ProfileOtherCloseButton";
 	
-	public static final String xpathExitOtherUserPersonalInfoPageButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAButton[6]";
+	public static final String nameExitOtherUserPersonalInfoPageButton = "OtherUserProfileCloseButton";
 	
 	public static final String xpathAlbum = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[1]/UIAStaticText[1]";
 	
@@ -192,9 +192,9 @@ public final class IOSLocators {
 	
 	//public static final String nameOtherPersonalInfoPageEmailField = "ProfileOtherEmailField";
 	
-	public static final String xpathOtherPersonalInfoPageNameField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[3]";
+	public static final String xpathOtherPersonalInfoPageNameField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATextView[2]";
 	
-	public static final String xpathOtherPersonalInfoPageEmailField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[4]";
+	public static final String xpathOtherPersonalInfoPageEmailField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATextView[3]";
 	
 	///////////////////////
 	//Self profile page
