@@ -336,6 +336,7 @@ public class CommonSteps {
 					androidSteps.AndroidIOpenConversationWith(conversationName);
 				} catch (Throwable e) {
 					log.fatal("Android client crashed during login and opening conversation.\n" + e.getMessage());
+					e.printStackTrace();
 					ExecutionContext.androidZeta().setState(
 							InstanceState.ERROR_CRASHED);
 					// TODO: process crash
@@ -351,6 +352,7 @@ public class CommonSteps {
 					iosSteps.IOSIOpenConversationWith(conversationName);
 				} catch (Throwable e) {
 					log.error("iOS client crashed during login and opening conversation.\n" + e.getMessage());
+					e.printStackTrace();
 					ExecutionContext.iosZeta().setState(
 							InstanceState.ERROR_CRASHED);
 					// TODO: process crash
