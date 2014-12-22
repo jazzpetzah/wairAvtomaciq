@@ -127,7 +127,7 @@ public class CommonSteps {
 			}
 
 		}
-
+		Thread.sleep(2000);
 	}
 
 	@Given("My Contact (.*) has group chat with me (.*) and his Contact (.*) with name (.*)")
@@ -332,6 +332,7 @@ public class CommonSteps {
 		}
 		yourСontact = BackEndREST.loginByUser(yourСontact);
 		BackEndREST.acceptAllConnections(yourСontact);
+		Thread.sleep(2000);
 	}
 
 	@When("^I press back button$")
