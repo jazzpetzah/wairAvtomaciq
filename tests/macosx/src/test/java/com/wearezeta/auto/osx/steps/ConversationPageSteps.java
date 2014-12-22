@@ -363,10 +363,11 @@ public class ConversationPageSteps {
 	 
 	 @Given("^I post messages and media link (.*)$")
 	 public void WhenIPostMessagesAndMediaLink(String link) throws Throwable { 
-		 final int RANDOM_MESSAGE_COUNT =20;
+		 final int RANDOM_MESSAGE_COUNT = 20;
 		 for (int i = 0; i <= RANDOM_MESSAGE_COUNT; i++){
 			 WhenIWriteRandomMessage();
 			 WhenISendMessage();
+			 Thread.sleep(500);
 		 }
 		 CommonSteps.senderPages.getConversationPage().writeNewMessage(link);
 		 WhenISendMessage();
