@@ -184,6 +184,7 @@ public class CommonSteps {
 								androidAppiumUrl, androidPath);
 						com.wearezeta.auto.android.pages.PagesCollection.loginPage.isVisible();
 					} catch (Exception e) {
+						log.debug(e.getMessage());
 					}
 					long endDate = new Date().getTime();
 					try {
