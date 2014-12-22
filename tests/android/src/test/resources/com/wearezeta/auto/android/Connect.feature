@@ -61,19 +61,23 @@ Feature: Connect
     And <Contact2> connection request is sended to me <Login>
     When I tap on contact name <WaitingMess2>
     And I press Ignore connect button
+    And I navigate back from connect page
     Then I see contact list loaded with User name <WaitingMess1>
     And <Contact3> connection request is sended to me <Login>
     And <Contact4> connection request is sended to me <Login>
     And I see contact list loaded with User name <WaitingMess3>
+    And I wait for 5 seconds
     And I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact3>
     And I tap on user name found on People picker page <Contact3>
     And I press Ignore connect button
+    And I navigate back from connect page
     And I see contact list loaded with User name <WaitingMess2>
     And I tap on contact name <WaitingMess2>
     And I press Ignore connect button
+    And I navigate back from connect page
     And I see contact list loaded with User name <WaitingMess1>
     And I tap on contact name <WaitingMess1>
     And I press Ignore connect button
@@ -276,8 +280,7 @@ Feature: Connect
 
   @id550 @regression
   Scenario Outline: I want to initiate a connect request by selecting someone from within a group conversation
-    Given I have 2 users and 1 contacts for 1 users
-    Given User <Contact1> is connected with <Contact2>
+    Given I have 2 users and 1 contacts for 2 users
     Given My Contact <Contact1> has group chat with me <Login> and his Contact <Contact2> with name <ChatName>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Login>

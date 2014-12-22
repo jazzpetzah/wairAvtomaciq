@@ -43,6 +43,11 @@ public class ConnectToPageSteps {
 		PagesCollection.contactListPage = PagesCollection.connectToPage.pressIgnoreButton();	
 	}
 	
+	@When("^I navigate back from connect page$")
+	public void WhenINavigateBackFromDialogPage() throws Exception{
+		PagesCollection.contactListPage = PagesCollection.connectToPage.navigateBack();
+	}
+	
 	@Then("^I see that connection is pending$")
 	public void ThenConnectionIsPending(){
 		if(PagesCollection.connectToPage == null) {
