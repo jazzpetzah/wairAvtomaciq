@@ -8,6 +8,7 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
@@ -113,8 +114,8 @@ public class PersonalInfoPage extends IOSPage{
 	}
 	
 	public void tapOnEditNameField(){
+		wait.until(ExpectedConditions.elementToBeClickable(profileNameEditField));
 		profileNameEditField.click();
-		Assert.assertTrue(isKeyboardVisible());
 	}
 	
 	public boolean isTooShortNameErrorMessage(){
@@ -130,6 +131,7 @@ public class PersonalInfoPage extends IOSPage{
 	}
 	
 	public void pressEnterInNameField(){
+		DriverUtils.mobileTapByCoordinates(driver, profileNameEditField);
 		profileNameEditField.sendKeys("\n");
 	}
 	

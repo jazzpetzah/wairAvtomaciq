@@ -156,6 +156,7 @@ Feature: Connect
     And I don't see conversation with not connected user <NotConnectedUser>
     And I swipe down contact list
     And I see People picker page
+    And I tap on Search input on People picker page
     And I search for ignored user name <NotConnectedUser> and tap on it
     Then I see Pending request page
 

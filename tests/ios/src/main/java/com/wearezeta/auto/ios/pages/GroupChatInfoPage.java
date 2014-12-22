@@ -22,7 +22,7 @@ import com.wearezeta.auto.ios.locators.IOSLocators;
 public class GroupChatInfoPage extends IOSPage {
 	private String url;
 	private String path;
-	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.95;
+	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.90;
 
 	private String conversationName = null;
 
