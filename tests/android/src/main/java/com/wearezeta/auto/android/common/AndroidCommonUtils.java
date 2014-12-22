@@ -29,6 +29,8 @@ public class AndroidCommonUtils extends CommonUtils {
 	private static final String edgeBackend = "[\"https://edge-nginz-https.zinfra.io\", \"https://edge-nginz-ssl.zinfra.io/await\", \"1003090516085\"]";
 	private static final String productionBackend = "[\"https://prod-nginz-https.wire.com\", \"https://prod-nginz-ssl.wire.com/await\", \"782078216207\"]";
 	
+	public static final String ADB_PREFIX = "";
+	
 	public static void uploadPhotoToAndroid(String photoPathOnDevice)
 			throws Exception {
 		if (getOsName().contains(OS_NAME_WINDOWS)) {
@@ -38,12 +40,12 @@ public class AndroidCommonUtils extends CommonUtils {
 			Runtime.getRuntime()
 					.exec("cmd /C adb -d shell \"am broadcast -a android.intent.action.MEDIA_MOUNTED -d file:///sdcard \"Broadcasting: Intent { act=android.intent.action.MEDIA_MOUNTED dat=file:///sdcard }");
 		} else {
-			executeOsXCommand(new String[] { "/bin/bash", "-c", "adb push "
+			executeOsXCommand(new String[] { "/bin/bash", "-c", ADB_PREFIX + "adb push "
 					+ getImagePath(CommonUtils.class) + " " + photoPathOnDevice });
 			executeOsXCommand(new String[] {
 					"/bin/bash",
 					"-c",
-					"adb shell \"am broadcast -a android.intent.action.MEDIA_MOUNTED -d file:///sdcard \"Broadcasting: Intent { act=android.intent.action.MEDIA_MOUNTED dat=file:///sdcard }" });
+					ADB_PREFIX + "adb shell \"am broadcast -a android.intent.action.MEDIA_MOUNTED -d file:///sdcard \"Broadcasting: Intent { act=android.intent.action.MEDIA_MOUNTED dat=file:///sdcard }" });
 		}
 	}
 	
@@ -53,7 +55,7 @@ public class AndroidCommonUtils extends CommonUtils {
 					"cmd /C adb shell touch /sdcard/disableOnBoardingHints");
 		} else {
 			executeOsXCommand(new String[] { "/bin/bash", "-c",
-					"adb shell touch /sdcard/disableOnBoardingHints" });
+					ADB_PREFIX + "adb shell touch /sdcard/disableOnBoardingHints" });
 		}
 	}
 
@@ -63,7 +65,7 @@ public class AndroidCommonUtils extends CommonUtils {
 					"cmd /C adb shell am force-stop com.waz.zclient");
 		} else {
 			executeOsXCommand(new String[] { "/bin/bash", "-c",
-					"adb shell am force-stop com.waz.zclient" });
+					ADB_PREFIX + "adb shell am force-stop com.waz.zclient" });
 		}
 	}
 	
@@ -97,7 +99,7 @@ public class AndroidCommonUtils extends CommonUtils {
 	public static String getPropertyFromAdb(String propertyName) throws IOException, InterruptedException {
 		String result = "no info";
 
-		String adbCommand = String.format("adb shell getprop %s", propertyName);
+		String adbCommand = String.format(ADB_PREFIX + "adb shell getprop %s", propertyName);
 		Process process = null;
 		if (getOsName().contains(OS_NAME_WINDOWS)) {
 			process = Runtime.getRuntime().exec("cmd /C " + adbCommand);
@@ -134,7 +136,7 @@ public class AndroidCommonUtils extends CommonUtils {
 	
 	public static String readClientVersionFromAdb() throws IOException, InterruptedException {
 		String clientBuild = "no info";
-		String adbCommand = String.format("adb shell dumpsys package %s | grep versionName", CommonUtils.getAndroidPackageFromConfig(AndroidLocators.class));
+		String adbCommand = String.format(ADB_PREFIX + "adb shell dumpsys package %s | grep versionName", CommonUtils.getAndroidPackageFromConfig(AndroidLocators.class));
 		Process process = null;
 		if (getOsName().contains(OS_NAME_WINDOWS)) {
 			process = Runtime.getRuntime().exec("cmd /C " + adbCommand);
@@ -184,7 +186,7 @@ public class AndroidCommonUtils extends CommonUtils {
 	private static Boolean isWifiEnabled() throws IOException, InterruptedException {
 		Boolean result = null;
 		
-		String adbCommand = "adb shell dumpsys wifi";
+		String adbCommand = ADB_PREFIX + "adb shell dumpsys wifi";
 		Process process = null;
 		if (getOsName().contains(OS_NAME_WINDOWS)) {
 			process = Runtime.getRuntime().exec("cmd /C " + adbCommand);
@@ -259,7 +261,7 @@ public class AndroidCommonUtils extends CommonUtils {
 					"cmd /C adb push " + fileName + " "
 							+ "/mnt/sdcard/customBackend.json");
 		} else {
-			executeOsXCommand(new String[] { "/bin/bash", "-c", "adb push "
+			executeOsXCommand(new String[] { "/bin/bash", "-c", ADB_PREFIX + "adb push "
 					+ fileName + " " + "/mnt/sdcard/customBackend.json" });
 		}
 	}
