@@ -184,6 +184,8 @@ public class CommonSteps {
 								androidAppiumUrl, androidPath);
 						com.wearezeta.auto.android.pages.PagesCollection.loginPage.isVisible();
 					} catch (Exception e) {
+						log.debug(e.getMessage());
+						e.printStackTrace();
 					}
 					long endDate = new Date().getTime();
 					try {
@@ -320,7 +322,7 @@ public class CommonSteps {
 							"usersPassword");
 					osxSteps.OSXIOpenConversationWith(conversationName);
 				} catch (Throwable e) {
-					log.fatal("OSX client crashed during login and opening conversation.");
+					log.fatal("OSX client crashed during login and opening conversation.\n" + e.getMessage());
 					ExecutionContext.osxZeta().setState(
 							InstanceState.ERROR_CRASHED);
 					// TODO: process crash
@@ -335,7 +337,8 @@ public class CommonSteps {
 							"usersPassword");
 					androidSteps.AndroidIOpenConversationWith(conversationName);
 				} catch (Throwable e) {
-					log.fatal("Android client crashed during login and opening conversation.");
+					log.fatal("Android client crashed during login and opening conversation.\n" + e.getMessage());
+					e.printStackTrace();
 					ExecutionContext.androidZeta().setState(
 							InstanceState.ERROR_CRASHED);
 					// TODO: process crash
@@ -350,7 +353,8 @@ public class CommonSteps {
 							"usersPassword");
 					iosSteps.IOSIOpenConversationWith(conversationName);
 				} catch (Throwable e) {
-					log.error("iOS client crashed during login and opening conversation.\n" + e.toString());
+					log.error("iOS client crashed during login and opening conversation.\n" + e.getMessage());
+					e.printStackTrace();
 					ExecutionContext.iosZeta().setState(
 							InstanceState.ERROR_CRASHED);
 					// TODO: process crash
