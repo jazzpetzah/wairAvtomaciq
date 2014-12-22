@@ -238,7 +238,7 @@ public class DriverUtils {
 		
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		HashMap<String, Double> tapObject = new HashMap<String, Double>();
-		tapObject.put("x", (double) (coords.x + elementSize.width - 20)); // in pixels from left
+		tapObject.put("x", (double) (coords.x + elementSize.width - elementSize.width / 2)); // in pixels from left
 		tapObject.put("y", (double) (coords.y + elementSize.height - 20));// in pixels from top
 		js.executeScript("mobile: tap", tapObject);
 	}
