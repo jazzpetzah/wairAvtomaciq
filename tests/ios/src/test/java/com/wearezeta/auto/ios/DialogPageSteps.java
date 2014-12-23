@@ -379,7 +379,7 @@ public class DialogPageSteps {
 	@When("I input more than 200 chars message and send it")
 	public void ISend200CharsMessage() throws Exception{
 		message = CommonUtils.generateRandomString(210).toLowerCase().replace("x", " ");
-		PagesCollection.dialogPage.sendStringToInput(message + "\n");
+		PagesCollection.dialogPage.sendMessageUsingScript(message);
 	}
 	
 	@When("I tap and hold on message input")
