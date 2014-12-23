@@ -554,13 +554,18 @@ public class DialogPage extends IOSPage{
 		WebElement messageElement = null;
 		try {
 			String messageXpath = String.format(IOSLocators.xpathFormatSpecificMessageContains, message);
+			Date receivedDate = new Date();
+			long startDate = new Date().getTime();
 			messageElement = driver.findElement(By.xpath(messageXpath));
+			long endDate = new Date().getTime();
+			long time = endDate - startDate;
+			log.debug("iOS: Message '" + message + "' received in " + time + "ms");
+			if (messageElement != null) {
+				return new MessageEntry("text", message, new Date(receivedDate.getTime()+time/2), checkTime);
+			}
 		} catch (NoSuchElementException e) {
 			log.debug(driver.getPageSource());
 			throw e;
-		}
-		if (messageElement != null) {
-			return new MessageEntry("text", message, new Date(), checkTime);
 		}
 		return null;
 	}
