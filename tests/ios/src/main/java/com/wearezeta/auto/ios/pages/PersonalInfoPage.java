@@ -127,6 +127,7 @@ public class PersonalInfoPage extends IOSPage{
 	}
 	
 	public void enterNameInNamefield(String username){
+		DriverUtils.mobileTapByCoordinates(driver, profileNameEditField);
 		profileNameEditField.sendKeys(username);
 	}
 	

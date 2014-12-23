@@ -55,6 +55,9 @@ public class GroupChatInfoPage extends IOSPage {
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameAddPeopleContinueButton)
 	private WebElement addDialogContinueButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameOtherUserProfilePageCloseButton)
+	private WebElement closeButton;
 
 	public GroupChatInfoPage(String URL, String path)
 			throws MalformedURLException {
@@ -82,6 +85,11 @@ public class GroupChatInfoPage extends IOSPage {
 				.parseInt(numberOfParticipantsText.getText().replaceAll("\\D+",
 						""));
 		return givenNumberOfParticipants == correctNumber;
+	}
+	
+	public GroupChatPage closeGroupChatInfoPage() throws IOException {
+		closeButton.click();
+		return new GroupChatPage(url, path);
 	}
 
 	public boolean areParticipantAvatarsCorrect() throws IOException {

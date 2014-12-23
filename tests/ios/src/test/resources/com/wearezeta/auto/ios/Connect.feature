@@ -23,6 +23,7 @@ Feature: Connect
       | Login   | Password    | Name    | Contact  |
       | aqaUser | aqaPassword | aqaUser | yourUser |
 
+  #ZIOS-3122
   @smoke @id585
   Scenario Outline: Get invitation message from user
     Given I have 2 users and 0 contacts for 1 users

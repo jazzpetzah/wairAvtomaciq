@@ -109,6 +109,11 @@ public class GroupChatInfoPageSteps {
 		PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.groupChatInfoPage.swipeDown(500);
 	}
 	
+	@When("I close group chat info page")
+	public void ICloseGroupChatInfoPage() throws IOException{
+		PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.groupChatInfoPage.closeGroupChatInfoPage();
+	}
+	
 	@When("I tap on add button on group chat info page")
 	public void ITapAddButtonOnGroupChatInfoPage(){
 		PagesCollection.groupChatInfoPage.clickOnAddButton();

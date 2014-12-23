@@ -58,8 +58,6 @@ public final class IOSLocators {
 	
 	public static final String namePickerClearButton = "PeoplePickerClearButton";
 	
-	public static final String xpathTypeYourMessage = "//UIAApplication[1]/UIAWindow[1]/UIATextView[1]";
-	
 	public static final String nameSendConnectButton = "SEND";
 	
 	public static final String nameConnectOtherUserButton = "CONNECT";

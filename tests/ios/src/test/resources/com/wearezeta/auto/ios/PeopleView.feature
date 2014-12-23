@@ -167,20 +167,10 @@ Feature: People View
 
   @staging @id393
   Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
-    Given I have 1 users and 2 contacts for 1 users
+    Given I have 2 users and 1 contacts for 2 users
+    Given I have group chat named <ChatName> with an unconnected user, made by <Contact1>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I create group chat with <Contact1> and <Contact2>
-    And I swipe up on group chat page
-    And I change conversation name to <ChatName>
-    And I swipe down on group chat info page
-    And I swipe right on Dialog page
-    And I tap on my name <Name>
-    And I click on Settings button on personal page
-    And I click Sign out button from personal page
-    And I Sign in using login <Contact1> and password <Password>
-    And I see Personal page
-    And I swipe right on the personal page
     And I tap on group chat with name <ChatName>
     And I swipe up on group chat page
     And I tap on not connected contact <Contact2>
@@ -188,7 +178,7 @@ Feature: People View
 
     Examples: 
       | Login   | Password    | Name    | Contact1    | Contact2    | ChatName   |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | QAtestChat |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | yourUser    | QAtestChat |
             
   @regression @id555
   Scenario Outline: Verify you can add people from 1:1 people view (view functionality)
