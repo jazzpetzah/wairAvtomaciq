@@ -58,8 +58,6 @@ public final class IOSLocators {
 	
 	public static final String namePickerClearButton = "PeoplePickerClearButton";
 	
-	public static final String xpathTypeYourMessage = "//UIAApplication[1]/UIAWindow[1]/UIATextView[1]";
-	
 	public static final String nameSendConnectButton = "SEND";
 	
 	public static final String nameConnectOtherUserButton = "CONNECT";
@@ -137,6 +135,8 @@ public final class IOSLocators {
 	public static final String nameCreateAccountButton = "RegistrationCreateAccountButton";
 	
 	public static final String xpathLastChatMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/*[last()]";
+	
+	public static final String xpathFormatSpecificMessageContains = "//UIATextView[contains(@name,'%s')]";
 	
 	public static final String nameLeaveConversation = "metaControllerRightButton";
 	
