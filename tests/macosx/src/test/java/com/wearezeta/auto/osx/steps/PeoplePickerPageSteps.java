@@ -80,6 +80,7 @@ public class PeoplePickerPageSteps {
 	
 	@Then("^I see Top People list in People Picker$")
 	public void ISeeTopPeopleListInPeoplePicker() throws Throwable {
+		Thread.sleep(2000);
 		boolean topPeopleisVisible = CommonSteps.senderPages.getPeoplePickerPage().isTopPeopleVisible();
 		if (!topPeopleisVisible){
 			CommonSteps.senderPages.getPeoplePickerPage().closePeoplePicker();

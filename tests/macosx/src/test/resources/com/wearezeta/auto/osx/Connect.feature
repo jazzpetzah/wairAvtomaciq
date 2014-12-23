@@ -51,3 +51,18 @@ Feature: Connect to user
     Examples: 
       | Login   | Password    | Name    | Contact  |
       | aqaUser | aqaPassword | aqaUser | yourUser |
+      
+  @torun @staging @id1407
+  Scenario Outline: Verify impossiibility of starting 1:1 conversation with pending  user (Search)
+  	Given I have 2 users and 0 contacts for 0 users
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name <Name> in Contact list
+    When I open People Picker from contact list
+    And I search by email for user <Contact>
+    And I see user <Contact> in search results
+    And I add user <Contact> from search results
+    And I send invitation to user
+    
+    Examples: 
+      | Login   | Password    | Name    | Contact  |
+      | aqaUser | aqaPassword | aqaUser | yourUser |

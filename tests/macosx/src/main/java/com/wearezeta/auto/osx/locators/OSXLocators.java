@@ -34,6 +34,7 @@ public final class OSXLocators {
 	public static final String idPeoplePickerSearchResultEntry = "people_picker_result_namefield";
 	public static final String idPeoplePickerSearchResultTable = "people_picker_searchresult";
 	public static final String idPeoplePickerTopContactsGrid = "people_picker_user_collectionview";
+	public static final String xpathPeoplePickerTopContacts = "//AXGrid[@AXIdentifier='people_picker_user_collectionview']";
 	
 	public static final String idToggleMenu = "ToggleMenu";
 	public static final String idMuteButton = "muteButton";

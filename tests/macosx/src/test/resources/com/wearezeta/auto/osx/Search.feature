@@ -1,6 +1,6 @@
 Feature: Search
 
-  @torun @staging @id1391
+  @staging @id1391
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People
   	Given I have 1 users and 4 contacts for 1 users 
   	Given I Sign in using login <Login> and password <Password>
