@@ -553,7 +553,8 @@ public class DialogPage extends IOSPage{
 	public MessageEntry receiveMessage(String message, boolean checkTime) {
 		WebElement messageElement = null;
 		try {
-			messageElement = driver.findElement(By.name(message));
+			String messageXpath = String.format(IOSLocators.xpathFormatSpecificMessageContains, message);
+			messageElement = driver.findElement(By.xpath(messageXpath));
 		} catch (NoSuchElementException e) {
 			log.debug(driver.getPageSource());
 			throw e;
