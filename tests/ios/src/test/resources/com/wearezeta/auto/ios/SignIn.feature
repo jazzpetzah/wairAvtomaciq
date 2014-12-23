@@ -1,6 +1,6 @@
 Feature: Sign In
 
-  @smoke @id340
+  @smoke @id340 @torun
   Scenario Outline: Sign in to ZClient
     Given I have 1 users and 0 contacts for 1 users
     Given I see sign in screen
@@ -31,7 +31,7 @@ Feature: Sign In
       #| Login   | Password    | UserA   | UserB       |
       #| aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @regression @id1398
+  @regression @id1398 @torun
   Scenario Outline: Notification if SignIn credentials are wrong
   	Given I have 1 users and 0 contacts for 0 users
     Given I see sign in screen
