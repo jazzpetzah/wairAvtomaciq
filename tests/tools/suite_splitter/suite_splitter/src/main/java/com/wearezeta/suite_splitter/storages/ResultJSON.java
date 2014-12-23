@@ -50,8 +50,9 @@ public class ResultJSON extends TestcasesStorage {
 			final String partId = partItem.getString("id");
 			if (existingItems.containsKey(partId)) {
 				importElements(partItem, existingItems.get(partId));
+			} else {
+				mainArray.put(partItem);
 			}
-			mainArray.put(partItem);
 		}
 	}
 
