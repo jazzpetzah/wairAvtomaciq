@@ -14,9 +14,6 @@ import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class ConnectToPage extends IOSPage {
 	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathTypeYourMessage)
-	private WebElement typeYourMessage;
-	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathConnectCloseButton)
 	private WebElement closeConnectDialoButon;
 	
@@ -44,11 +41,11 @@ public class ConnectToPage extends IOSPage {
 	}
 	
 	public Boolean isConnectToUserDialogVisible(){
-		return typeYourMessage.isDisplayed();
+		return sendConecttionInput.isDisplayed();
 	}
 	
 	public String getConnectToUserLabelValue(){
-		return typeYourMessage.getText();
+		return sendConecttionInput.getText();
 	}
 	
 	public void fillTextInConnectDialog() {
