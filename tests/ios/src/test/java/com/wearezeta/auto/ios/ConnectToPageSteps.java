@@ -54,6 +54,7 @@ public class ConnectToPageSteps {
 						"Hello");
 			}
 		}
+		Thread.sleep(2000);
 	}
 
 	@When("^I see connection request from (.*)$")

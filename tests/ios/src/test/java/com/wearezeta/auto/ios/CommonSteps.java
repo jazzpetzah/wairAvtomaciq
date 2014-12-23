@@ -203,6 +203,8 @@ public class CommonSteps {
 			for (int i = 0; i < requests; i++) {
 				BackEndREST.autoTestSendRequest(unconnectedUsers.get(i),
 						CommonUtils.findUserNamed(user));
+				
+				Thread.sleep(2000);
 			}
 		}
 	}

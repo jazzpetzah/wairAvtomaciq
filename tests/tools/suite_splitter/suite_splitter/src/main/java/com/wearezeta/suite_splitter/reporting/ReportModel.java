@@ -1,4 +1,4 @@
-package com.wearezeta.split_suite.reporting;
+package com.wearezeta.suite_splitter.reporting;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.wearezeta.split_suite.Testcase;
+import com.wearezeta.suite_splitter.Testcase;
 
 public class ReportModel {
 	private Map<String, Map<String, List<String>>> splittedFeatures = new LinkedHashMap<String, Map<String, List<String>>>();

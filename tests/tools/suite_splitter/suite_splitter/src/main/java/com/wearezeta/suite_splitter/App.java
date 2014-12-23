@@ -1,4 +1,4 @@
-package com.wearezeta.split_suite;
+package com.wearezeta.suite_splitter;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,10 +20,10 @@ import org.apache.commons.cli.PosixParser;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
-import com.wearezeta.split_suite.reporting.ReportGenerator;
-import com.wearezeta.split_suite.reporting.ReportModel;
-import com.wearezeta.split_suite.storages.GherkinFile;
-import com.wearezeta.split_suite.storages.ResultJSON;
+import com.wearezeta.suite_splitter.reporting.ReportGenerator;
+import com.wearezeta.suite_splitter.reporting.ReportModel;
+import com.wearezeta.suite_splitter.storages.GherkinFile;
+import com.wearezeta.suite_splitter.storages.ResultJSON;
 
 public class App {
 	private static final String FEATURE_EXTENSION = "feature";
@@ -218,6 +218,8 @@ public class App {
 						String.format(
 								"sets working mode. Possible values are: %s (default) and %s",
 								MODE_SPLIT, MODE_JOIN)).hasArg().create());
+		options.addOption(OptionBuilder.withLongOpt("verbose")
+				.withDescription("Be more tolkative").create());
 		// split mode options
 		options.addOption(OptionBuilder
 				.withLongOpt("features-root")
@@ -304,12 +306,32 @@ public class App {
 				final String devicesCountStr = readRequiredOption(line,
 						"devices-count");
 				final int devicesCount = Integer.parseInt(devicesCountStr);
+				String includeTags = line.getOptionValue("include-tags");
+				if (includeTags.equals("null")) {
+					includeTags = null;
+				}
+				String excludeTags = line.getOptionValue("exclude-tags");
+				if (excludeTags.equals("null")) {
+					excludeTags = null;
+				}
 
 				ReportModel reportDataModel = splitFeatures(
-						getFeatures(featuresRoot), dstRoot,
-						line.getOptionValue("include-tags"),
-						line.getOptionValue("exclude-tags"), devicesCount);
-				ReportGenerator.generate(reportDataModel);
+						getFeatures(featuresRoot), dstRoot, includeTags,
+						excludeTags, devicesCount);
+				final int partsCount = reportDataModel.getSplittedFeatures()
+						.size();
+				if (partsCount > 0) {
+					if (line.hasOption("verbose")) {
+						ReportGenerator.generate(reportDataModel);
+					} else {
+						System.out.println(String.format(
+								"Successfully split features into %d parts",
+								partsCount));
+					}
+				} else {
+					System.out
+							.println("There are no any test cases to split in the given scenarios");
+				}
 			} else if (line.getOptionValue("mode") != null
 					&& line.getOptionValue("mode").equals(MODE_JOIN)) {
 				final String resultReportPath = readRequiredOption(line,
