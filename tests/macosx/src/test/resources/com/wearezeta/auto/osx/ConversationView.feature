@@ -102,7 +102,7 @@ Feature: Conversation
 
   @torun @staging @id379
   Scenario Outline: Play/pause SoundCloud media link from the media bar
-    Given I have 1 users and 1 contacts for 1 users
+    Given I have 1 users and 1 contacts for 1 users no predefined
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <Contact>

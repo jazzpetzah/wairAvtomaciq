@@ -170,7 +170,7 @@ public class CommonSteps {
 		BackEndREST.acceptAllConnections(yourUser);
 	}
 
-	@Given("I have (\\d+) users and (\\d+) contacts for (\\d+) users")
+	@Given("^I have (\\d+) users and (\\d+) contacts for (\\d+) users$")
 	public void IHaveUsersAndConnections(int users, int connections,
 			int usersWithContacts) throws Exception {
 		if (!oldWayUsersGeneration) {
@@ -178,6 +178,21 @@ public class CommonSteps {
 			CommonUtils.contacts = new CopyOnWriteArrayList<ClientUser>();
 
 			CommonUtils.generateUsers(users, connections);
+			log.debug("Following users are failed to be activated: "
+					+ CreateZetaUser.failedToActivate);
+			Thread.sleep(CommonUtils.BACKEND_SYNC_TIMEOUT);
+			TestPreparation.createContactLinks(usersWithContacts);
+		}
+	}
+	
+	@Given("^I have (\\d+) users and (\\d+) contacts for (\\d+) users no predefined$")
+	public void IHaveUsersAndConnectionsWithoutPredefined(int users, int connections,
+			int usersWithContacts) throws Exception {
+		if (!oldWayUsersGeneration) {
+			CommonUtils.yourUsers = new CopyOnWriteArrayList<ClientUser>();
+			CommonUtils.contacts = new CopyOnWriteArrayList<ClientUser>();
+
+			CommonUtils.generateUsers(users, connections, false);
 			log.debug("Following users are failed to be activated: "
 					+ CreateZetaUser.failedToActivate);
 			Thread.sleep(CommonUtils.BACKEND_SYNC_TIMEOUT);

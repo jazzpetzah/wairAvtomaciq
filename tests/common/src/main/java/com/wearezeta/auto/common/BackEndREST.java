@@ -584,7 +584,7 @@ public class BackEndREST {
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject conversation = (JSONObject) jsonArray.get(i);
 			String name = conversation.getString("name");
-			if (name.equals("null")) {
+			if (name.equals("null") || name.equals(user.getName())) {
 				conversation = (JSONObject) conversation.get("members");
 				JSONArray otherArray = (JSONArray) conversation.get("others");
 				if (otherArray.length() == 1) {

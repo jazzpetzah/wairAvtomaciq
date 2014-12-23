@@ -469,7 +469,11 @@ public class CommonUtils {
 		generateUsers(USERS_COUNT, contactsNumber);
 	}
 
-	public static void generateUsers(int usersNumber, int contactsNumber)
+	public static void generateUsers(int usersNumber, int contactsNumber) throws Exception {
+		generateUsers(usersNumber, contactsNumber, true);
+	}
+	
+	public static void generateUsers(int usersNumber, int contactsNumber, boolean additionalContacts)
 			throws Exception {
 		ExecutorService executor = Executors
 				.newFixedThreadPool(MAX_PARALLEL_USER_CREATION_TASKS);
@@ -527,7 +531,9 @@ public class CommonUtils {
 					"Failed to create new users or contacts on the backend");
 		}
 
-		generateAdditionalContacts();
+		if (additionalContacts) {
+			generateAdditionalContacts();
+		}
 	}
 
 	public static void generateNUsers(int usersNum)
