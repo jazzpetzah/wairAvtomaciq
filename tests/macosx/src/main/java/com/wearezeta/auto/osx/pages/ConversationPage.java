@@ -421,10 +421,14 @@ public class ConversationPage extends OSXPage {
 	public MessageEntry receiveMessage(String message, boolean checkTime) {
 		DriverUtils.setImplicitWaitValue(driver, 120);
 		try {
+			Date receivedDate = new Date();
+			long startDate = new Date().getTime();
 			WebElement messageElement = driver.findElement(By.xpath(String.format(
 				OSXLocators.xpathFormatSpecificMessageEntry, message)));
+			long endDate = new Date().getTime();
+			log.debug("OSX: Message '" + message + "' received in " + (endDate - startDate) + "ms");
 			if (messageElement != null) {
-				return new MessageEntry("text", message, new Date(), checkTime);
+				return new MessageEntry("text", message, receivedDate, checkTime);
 			}
 		} finally {
 			DriverUtils.setDefaultImplicitWait(driver);
