@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -550,7 +551,13 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public MessageEntry receiveMessage(String message, boolean checkTime) {
-		WebElement messageElement = driver.findElement(By.name(message));
+		WebElement messageElement = null;
+		try {
+			messageElement = driver.findElement(By.name(message));
+		} catch (NoSuchElementException e) {
+			log.debug(driver.getPageSource());
+			throw e;
+		}
 		if (messageElement != null) {
 			return new MessageEntry("text", message, new Date(), checkTime);
 		}
