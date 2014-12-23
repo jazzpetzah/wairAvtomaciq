@@ -26,8 +26,8 @@ Feature: Connect
   @smoke @id585
   Scenario Outline: Get invitation message from user
     Given I have 2 users and 0 contacts for 1 users
-    Given I have connection request from <Contact>
     Given I Sign in using login <Login> and password <Password>
+    Given I have connection request from <Contact>
     When I see Contact list with my name <Name>
     And I see Pending request link in contact list
     And I click on Pending request link in contact list
