@@ -210,7 +210,7 @@ public class ZetaListener extends Thread {
 		return parsePageSources(UUID_OSX_TEXT_MESSAGE_PATTERN, checkTime);
 	}
 	
-	private static final String UUID_IOS_TEXT_MESSAGE_PATTERN = "<UIATextView[^>]*value=\"([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\"[^>]*>\\s*</UIATextView>";
+	private static final String UUID_IOS_TEXT_MESSAGE_PATTERN = "<UIATextView[^>]*value=\"[^\"a-z0-9]*([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\"[^>]*>\\s*</UIATextView>";
 	private ArrayList<MessageEntry> receiveChatMessagesIos(boolean checkTime) throws Exception, Throwable {
 //		com.wearezeta.auto.ios.pages.DialogPage dialogPage = 
 //				com.wearezeta.auto.ios.pages.PagesCollection.dialogPage;
