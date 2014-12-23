@@ -1,4 +1,4 @@
-package com.wearezeta.split_suite.reporting;
+package com.wearezeta.suite_splitter.reporting;
 
 import java.util.List;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.wearezeta.split_suite.storages;
+package com.wearezeta.suite_splitter.storages;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.wearezeta.split_suite.Testcase;
+import com.wearezeta.suite_splitter.Testcase;
 
 public class ResultJSON extends TestcasesStorage {
 	private static final String NEW_ID_FORMAT = "%s-part%s";

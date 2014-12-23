@@ -89,7 +89,7 @@ public final class AndroidLocators {
 		
 		public static final String xpathContactListMute = "//android.widget.FrameLayout[android.widget.TextView[@text='%s']]//android.widget.TextView[@resource-id='com.waz.zclient.dev:id/tv_conv_list_menu_mute']";
 		
-		public static final String idConfirmCancelButton = LOCATORS_PACKAGE + ":id/zb__confirm__cancel_button";
+		public static final String idConfirmCancelButton = LOCATORS_PACKAGE + ":id/cancel";
 		
 		public static final String idConfirmCancelButtonPicker = LOCATORS_PACKAGE + ":id/zb__confirm_dialog__cancel_button";
 		
