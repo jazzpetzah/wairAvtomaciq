@@ -3,8 +3,9 @@ package com.wearezeta.suite_splitter.storages;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
@@ -14,9 +15,6 @@ import org.json.JSONObject;
 import com.wearezeta.suite_splitter.Testcase;
 
 public class ResultJSON extends TestcasesStorage {
-	private static final String NEW_ID_FORMAT = "%s-part%s";
-	private static final String NEW_NAME_FORMAT = "%s Part %s";
-
 	public ResultJSON(String path) {
 		super(path);
 	}
@@ -26,34 +24,35 @@ public class ResultJSON extends TestcasesStorage {
 		throw new RuntimeException("Not implemented");
 	}
 
-	private static int computeNewPartIndex(String currentId,
-			Set<String> existingIds) {
-		int suffix = 2;
-		while (existingIds.contains(String.format(NEW_ID_FORMAT, currentId,
-				suffix))) {
-			suffix++;
+	private static void importElements(JSONObject srcItem, JSONObject dstItem) {
+		if (srcItem.has("elements")) {
+			JSONArray srcElements = srcItem.getJSONArray("elements");
+			if (dstItem.has("elements")) {
+				JSONArray dstElements = dstItem.getJSONArray("elements");
+				for (int elementIdx = 0; elementIdx < srcElements.length(); elementIdx++) {
+					dstElements.put(srcElements.getJSONObject(elementIdx));
+				}
+			} else {
+				dstItem.put("elements", srcElements);
+			}
 		}
-		return suffix;
 	}
 
 	private static void updateMainReport(JSONArray mainArray, JSONArray nextPart) {
-		Set<String> existingIds = new HashSet<String>();
+		Map<String, JSONObject> existingItems = new HashMap<String, JSONObject>();
 		for (int mainIdx = 0; mainIdx < mainArray.length(); mainIdx++) {
-			existingIds.add(mainArray.getJSONObject(mainIdx).getString("id"));
+			existingItems.put(mainArray.getJSONObject(mainIdx).getString("id"),
+					mainArray.getJSONObject(mainIdx));
 		}
 
 		for (int partIdx = 0; partIdx < nextPart.length(); partIdx++) {
-			JSONObject item = nextPart.getJSONObject(partIdx);
-			final String partId = item.getString("id");
-			if (existingIds.contains(partId)) {
-				final int newPartIndex = computeNewPartIndex(partId,
-						existingIds);
-				item.put("id",
-						String.format(NEW_ID_FORMAT, partId, newPartIndex));
-				item.put("name", String.format(NEW_NAME_FORMAT,
-						item.getString("name"), newPartIndex));
+			JSONObject partItem = nextPart.getJSONObject(partIdx);
+			final String partId = partItem.getString("id");
+			if (existingItems.containsKey(partId)) {
+				importElements(partItem, existingItems.get(partId));
+			} else {
+				mainArray.put(partItem);
 			}
-			mainArray.put(item);
 		}
 	}
 
