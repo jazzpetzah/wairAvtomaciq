@@ -37,7 +37,7 @@ Feature: Settings
       | Login   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |
 
-  @id91 @id92 @regression
+  @id90 @id91 @id92 @regression
   Scenario Outline: Open Close About page from Settings page
     Given I have 1 users and 0 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
