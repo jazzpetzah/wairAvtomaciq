@@ -64,6 +64,11 @@ public class LoginPageSteps {
 		 PagesCollection.contactListPage = (ContactListPage)(PagesCollection.loginPage.login());
 	 }
 	 
+	 @When("I attemt to press Login button")
+	 public void IAttemptToPressLoginButton(){
+		 PagesCollection.loginPage.clickLoginButton();
+	 }
+	 
 	 @When("I press Join button")
 	 public void WhenIPressJoinButton() throws IOException {
 		 

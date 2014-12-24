@@ -125,6 +125,10 @@ public class LoginPage extends IOSPage {
 		}
 	}
 	
+	public void clickLoginButton(){
+		confirmSignInButton.click();
+	}
+	
 	public void clickJoinButton()
 	{
 		registerButton.click();

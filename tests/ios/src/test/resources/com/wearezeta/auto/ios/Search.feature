@@ -5,9 +5,6 @@ Feature: Search
     Given I have 1 users and 2 contacts for 0 users
     Given I Sign in using login <Login> and password <Password>
     And I dismiss alert
-    And I dismiss tutorial layout
-    And Contact list loads with only my name <Name>
-    And I swipe down contact list
     And I see Upload contacts dialog
     And I click Continue button on Upload dialog
     And I dismiss alert
@@ -27,9 +24,6 @@ Feature: Search
     Given I Sign in using login <Login> and password <Password>
     When I add contacts list users to Mac contacts
     And I dismiss alert
-    And I dismiss tutorial layout
-    And Contact list loads with only my name <Name>
-    And I swipe down contact list
     And I see Upload contacts dialog
     And I click Continue button on Upload dialog
     And I accept alert
