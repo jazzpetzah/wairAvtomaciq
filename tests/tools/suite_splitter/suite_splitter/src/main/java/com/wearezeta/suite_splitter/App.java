@@ -173,7 +173,9 @@ public class App {
 					continue;
 				}
 				final int tcCount = splittedFeatures.get(srcPath);
-				if (testcasesCountInFolder + tcCount > maxTestcasesCountInFolder) {
+				// Do not create too much parted folders
+				if (folderNumber + 1 < divider
+						&& testcasesCountInFolder + tcCount > maxTestcasesCountInFolder) {
 					continue;
 				}
 				File srcFile = new File(srcPath);
@@ -240,7 +242,7 @@ public class App {
 				.withType(Integer.class)
 				.withDescription(
 						String.format(
-								"[mandatory in %s mode] the number of devices to split feature files between",
+								"[mandatory in %s mode] the number of devices to split feature files between. Should be greater than zero",
 								MODE_SPLIT)).hasArg().create());
 		options.addOption(OptionBuilder
 				.withLongOpt("include-tags")
