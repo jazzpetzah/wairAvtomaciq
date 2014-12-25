@@ -221,7 +221,6 @@ public class DialogPageSteps {
 	
 	@When("I swipe right on Dialog page")
 	public void ISwipeRightOnDialogPage() throws IOException{
-		PagesCollection.dialogPage.hideKeyboard();
 		PagesCollection.contactListPage = (ContactListPage) PagesCollection.dialogPage.swipeRight(1000);
 	}
 	

@@ -523,18 +523,19 @@ Feature: Conversation View
     And I scroll away the keyboard
     And I swipe right on Dialog page
     And I see play/pause button next to username <Contact1> in contact list
+    And I tap play/pause button in contact list next to username <Contact1>
     And I tap on contact name <Contact2>
     And I type and send long message and media link <SoundCloudLink>
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
+    And I scroll away the keyboard
     And I swipe right on Dialog page
-    And I dont see play/pause button next to username <Contact1> in contact list
     And I see play/pause button next to username <Contact2> in contact list
-    And I tap on play/pause button in contact list
+    And I tap play/pause button in contact list next to username <Contact2>
     And I tap on contact name <Contact2>
     And I scroll media out of sight until media bar appears
     Then I see playing media is paused
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | SoundCloudLink                                 |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | https://soundcloud.com/carl-cox/carl-cox-nexus |
+      | Login   | Password    | Name    | Contact1    | Contact2    | SoundCloudLink                              										   |
+      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |

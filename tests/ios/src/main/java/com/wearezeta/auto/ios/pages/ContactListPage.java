@@ -88,6 +88,11 @@ public class ContactListPage extends IOSPage {
 	public void tapPlayPauseButton(){
 		playPauseButton.click();
 	}
+	
+	public void tapPlayPauseButtonNextTo(String name) throws InterruptedException{
+		WebElement element = driver.findElement(By.xpath(String.format(IOSLocators.xpathContactListPlayPauseButton, name)));
+		DriverUtils.iOSMultiTap(driver, element, 1);
+	}
 
 	private boolean isProfilePageVisible() {
 		boolean result = false;
