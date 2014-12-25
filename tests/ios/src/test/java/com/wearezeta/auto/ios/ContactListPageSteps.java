@@ -213,6 +213,12 @@ public class ContactListPageSteps {
 		PagesCollection.contactListPage.tapPlayPauseButton();
 	}
 	
+	@When("I tap play/pause button in contact list next to username (.*)")
+	public void ITapPlayPauseButtonInContactListNextTo(String contact) throws InterruptedException{
+		String name = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		PagesCollection.contactListPage.tapPlayPauseButtonNextTo(name);
+	}
+	
 	@When("I see in contact list group chat named (.*)")
 	public void ISeeInContactListGroupChatWithName(String name){
 		Assert.assertTrue(PagesCollection.contactListPage.isChatInContactList(name));

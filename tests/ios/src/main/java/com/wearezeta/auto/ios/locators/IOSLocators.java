@@ -174,7 +174,7 @@ public final class IOSLocators {
 
 	public static final String xpathMutedIcon = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[@name='%s']/UIAButton[3]";
 	
-	public static final String xpathContactListPlayPauseButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[@name='%s']/UIAButton[3]";
+	public static final String xpathContactListPlayPauseButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[@name='%s']/UIAButton";
 	
 	public static final String nameMuteButton = "ConvCellMuteButton";
 
