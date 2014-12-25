@@ -21,7 +21,13 @@ public class PeoplePickerPageSteps {
 	}
 	
 	@When("I see Upload contacts dialog")
-	public void WhenISeeUploadContactsDialog(){
+	public void WhenISeeUploadContactsDialog() throws IOException{
+		if (PagesCollection.peoplePickerPage == null){
+			String path = CommonUtils
+					.getIosApplicationPathFromConfig(TestRun.class);
+			PagesCollection.peoplePickerPage = new PeoplePickerPage(
+					CommonUtils.getIosAppiumUrlFromConfig(TestRun.class), path);
+		}
 		Assert.assertTrue("Upload dialog is not shown", PagesCollection.peoplePickerPage.isUploadDialogShown());
 	}
 	

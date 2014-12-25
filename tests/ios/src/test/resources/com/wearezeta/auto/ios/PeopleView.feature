@@ -86,7 +86,6 @@ Feature: People View
       | Login   | Password    | Name    | Contact1    | Contact2    |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
 
-  #Muted due ZIOS-2724
   @regression @id1396
   Scenario Outline: Verify correct group info page information
     Given I have 1 users and 0 contacts for 1 users
@@ -179,7 +178,8 @@ Feature: People View
     Examples: 
       | Login   | Password    | Name    | Contact1    | Contact2    | ChatName   |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | yourUser    | QAtestChat |
-            
+
+	#ZIOS-2035            
   @regression @id555
   Scenario Outline: Verify you can add people from 1:1 people view (view functionality)
     Given I have 1 users and 2 contacts for 1 users
