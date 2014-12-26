@@ -1,6 +1,6 @@
 Feature: Search
 
-  @staging @id299 @noAcceptAlert
+  @regression @id299 @noAcceptAlert
   Scenario Outline: Verify denying address book uploading
     Given I have 1 users and 2 contacts for 0 users
     Given I Sign in using login <Login> and password <Password>
