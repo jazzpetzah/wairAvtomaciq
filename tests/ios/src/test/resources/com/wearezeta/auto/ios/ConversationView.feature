@@ -157,7 +157,7 @@ Feature: Conversation View
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @staging @id415
+  @regression @id415
   Scenario Outline: Send Message to contact after navigating away from chat page
     Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
@@ -178,7 +178,7 @@ Feature: Conversation View
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
 #Muted steps due to relogin issue
-  @staging @id407
+  @regression @id407
   Scenario Outline: Send more than 200 chars message
     Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
