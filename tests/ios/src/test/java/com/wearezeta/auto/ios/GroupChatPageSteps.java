@@ -69,7 +69,7 @@ public class GroupChatPageSteps {
 	
 	@When("^I return to the chat list$")
 	public void IReturnToChatList() throws IOException{
-		PagesCollection.contactListPage = (ContactListPage)PagesCollection.groupChatPage.swipeRight(1000);
+		PagesCollection.contactListPage = (ContactListPage)PagesCollection.groupChatPage.swipeRight(500);
 	}
 	
 	@When("^I can see You Added (.*) message$")

@@ -133,8 +133,7 @@ Feature: People View
       | Login   | Password    | Name    | Contact1    | Contact2    |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
 
-  #fails to check email of first user due to defect IOS-990
-  @staging @id339
+  @regression @id339
   Scenario Outline: Tap on participant profiles in group info page participant view
     Given I have 2 users and 0 contacts for 2 users
     Given I have group chat named <GroupChatName> with an unconnected user, made by <GroupCreator>
@@ -148,7 +147,7 @@ Feature: People View
       | Login   | Password    | Name    | GroupCreator      | GroupChatName |
       | aqaUser | aqaPassword | aqaUser | aqaPictureContact | TESTCHAT      |
 
-  @staging @id393
+  @regression @id393
   Scenario Outline: Verify you can start 1:1 conversation from a group conversation profile
     Given I have 1 users and 2 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
@@ -164,7 +163,7 @@ Feature: People View
       | Login   | Password    | Name    | Contact1    | Contact2    |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
 
-  @staging @id393
+  @regression @id393
   Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
     Given I have 2 users and 1 contacts for 2 users
     Given I have group chat named <ChatName> with an unconnected user, made by <Contact1>
