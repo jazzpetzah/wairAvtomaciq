@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import sys
+import traceback
 
 from cli_handlers.cli_handler_base import CliHandlerBase
 
@@ -21,5 +21,5 @@ class IsBuildRunningForJob(CliHandlerBase):
             build = job.get_build(int(args.build))
             return build.is_running()
         except Exception:
-            sys.stderr.write(sys.exc_info())
+            traceback.print_exc()
             return False
