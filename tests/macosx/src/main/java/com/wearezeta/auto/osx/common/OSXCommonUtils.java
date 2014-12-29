@@ -116,12 +116,12 @@ public class OSXCommonUtils extends CommonUtils {
 		Thread.sleep(PREFS_DAEMON_RESTART_TIMEOUT);
 	}
 
-	public static void removeZClientDomain(String domain) throws Exception {
+	private static void removeZClientDomain(String domain) throws Exception {
 		String command = "defaults delete " + domain;
 		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
 	}
 
-	public static void setZClientBackendForDomain(String domain, String bt)
+	private static void setZClientBackendForDomain(String domain, String bt)
 			throws Exception {
 		final String setBackendTypeCmd = "defaults write " + domain
 				+ " ZMBackendEnvironmentType -string " + bt;
