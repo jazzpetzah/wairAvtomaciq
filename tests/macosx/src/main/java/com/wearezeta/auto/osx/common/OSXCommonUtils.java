@@ -129,14 +129,15 @@ public class OSXCommonUtils extends CommonUtils {
 	}
 
 	public static boolean isBackendTypeSet(String bt) throws Exception {
-		return (isBackendTypeSetForDomain(
-				"com.wearezeta.zclient.mac.development", bt)
-				&& isBackendTypeSetForDomain(
-						"com.wearezeta.zclient.mac.internal", bt) && isBackendTypeSetForDomain(
-					"com.wearezeta.zclient.mac", bt));
+		for (String domain: BACKEND_TYPE_DOMAIN_NAMES) {
+			if (!isBackendTypeSetForDomain(domain, bt)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
-	public static boolean isBackendTypeSetForDomain(String domain, String bt)
+	private static boolean isBackendTypeSetForDomain(String domain, String bt)
 			throws Exception {
 		String command = "defaults read " + domain
 				+ " ZMBackendEnvironmentType";
