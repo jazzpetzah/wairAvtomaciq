@@ -19,6 +19,9 @@ import com.wearezeta.auto.osx.pages.ContactListPage;
 
 public class OSXCommonUtils extends CommonUtils {
 	private static final int PREFS_DAEMON_RESTART_TIMEOUT = 1000;
+	private static final String[] BACKEND_TYPE_DOMAIN_NAMES = new String[] {
+			"com.wearezeta.zclient.mac.development",
+			"com.wearezeta.zclient.mac.internal", "com.wearezeta.zclient.mac" };
 
 	private static final Logger log = ZetaLogger.getLog(OSXCommonUtils.class
 			.getSimpleName());
@@ -94,15 +97,17 @@ public class OSXCommonUtils extends CommonUtils {
 	}
 
 	public static void removeAllZClientSettingsFromDefaults() throws Exception {
-		removeZClientDomain("com.wearezeta.zclient.mac.development");
-		removeZClientDomain("com.wearezeta.zclient.mac.internal");
-		removeZClientDomain("com.wearezeta.zclient.mac");
+		resetOSXPrefsDaemon();
+		for (String domain: BACKEND_TYPE_DOMAIN_NAMES) {
+			removeZClientDomain(domain);
+		}
 	}
 
 	public static void setZClientBackend(String bt) throws Exception {
-		setZClientBackendForDomain("com.wearezeta.zclient.mac.development", bt);
-		setZClientBackendForDomain("com.wearezeta.zclient.mac.internal", bt);
-		setZClientBackendForDomain("com.wearezeta.zclient.mac", bt);
+		resetOSXPrefsDaemon();
+		for (String domain: BACKEND_TYPE_DOMAIN_NAMES) {
+			setZClientBackendForDomain(domain, bt);
+		}
 	}
 
 	private static void resetOSXPrefsDaemon() throws Exception {
@@ -112,16 +117,12 @@ public class OSXCommonUtils extends CommonUtils {
 	}
 
 	public static void removeZClientDomain(String domain) throws Exception {
-		resetOSXPrefsDaemon();
-
 		String command = "defaults delete " + domain;
 		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
 	}
 
 	public static void setZClientBackendForDomain(String domain, String bt)
 			throws Exception {
-		resetOSXPrefsDaemon();
-
 		final String setBackendTypeCmd = "defaults write " + domain
 				+ " ZMBackendEnvironmentType -string " + bt;
 		executeOsXCommand(new String[] { "/bin/bash", "-c", setBackendTypeCmd });
