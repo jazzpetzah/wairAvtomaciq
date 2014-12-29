@@ -141,11 +141,7 @@ public class OSXCommonUtils extends CommonUtils {
 				+ " ZMBackendEnvironmentType";
 		String result = executeOsXCommandWithOutput(new String[] { "/bin/bash",
 				"-c", command });
-
-		if (result.contains(bt))
-			return true;
-		else
-			return false;
+		return result.contains(bt);
 	}
 
 	public static BuildVersionInfo readClientVersionFromPlist() {
