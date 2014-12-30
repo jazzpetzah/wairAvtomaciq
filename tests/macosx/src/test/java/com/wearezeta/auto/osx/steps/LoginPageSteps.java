@@ -94,7 +94,7 @@ public class LoginPageSteps {
 	 }
 	 
 	 @Given ("I am signed out from ZClient")
-	 public void GivenIAmSignedOutFromZClient() throws MalformedURLException, IOException {
+	 public void GivenIAmSignedOutFromZClient() throws Exception {
 		 CommonSteps.senderPages.getLoginPage().logoutIfNotSignInPage();
 	 }
 	 

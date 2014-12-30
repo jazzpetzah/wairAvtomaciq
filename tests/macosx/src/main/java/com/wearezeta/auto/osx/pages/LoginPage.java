@@ -127,7 +127,7 @@ public class LoginPage extends OSXPage {
 		return page;
 	}
 	
-	public void logoutIfNotSignInPage() throws IOException {
+	public void logoutIfNotSignInPage() throws Exception {
 		DriverUtils.setImplicitWaitValue(driver, 1);
 		try {
 			driver.findElement(By.id(OSXLocators.idLoginPage));
