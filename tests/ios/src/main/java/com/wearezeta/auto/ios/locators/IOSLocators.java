@@ -220,6 +220,10 @@ public final class IOSLocators {
 	
 	public static final String xpathAllSoundAlertsButton = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]";
 	
+	public static final String nameSettingsChangePasswordButton = "Change Password";
+	
+	public static final String xpathChangePasswordPageChangePasswordButton = "//UIAApplication[1]/UIAWindow[2]/UIAScrollView[1]/UIAScrollView[1]/UIAWebView[1]/UIAButton[1]";
+	
 	///////////////////////
 	//Other User Profile
 	//////////////////////

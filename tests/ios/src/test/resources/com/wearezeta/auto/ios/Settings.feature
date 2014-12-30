@@ -28,6 +28,21 @@ Feature: Settings
       | Login   | Password    | Name    |
       | aqaUser | aqaPassword | aqaUser |
 
+@staging @id862
+  Scenario Outline: Verify reset password page is accessible from settings
+  	Given I have 1 users and 0 contacts for 1 users
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on my name <Name>
+	And I click on Settings button on personal page
+	And I click on Settings button from the options menu
+	And I click on Change Password button in Settings
+	Then I see reset password page
+
+    Examples: 
+      | Login   | Password    | Name    |
+      | aqaUser | aqaPassword | aqaUser |  
+
   @id1258 @regression
   Scenario Outline: Verify default value for sound settings is all
     Given I have 1 users and 0 contacts for 1 users

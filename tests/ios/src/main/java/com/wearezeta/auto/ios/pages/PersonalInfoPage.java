@@ -66,6 +66,12 @@ public class PersonalInfoPage extends IOSPage{
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathAllSoundAlertsButton)
 	private WebElement allSoundAlertsButton;
 	
+	@FindBy(how = How.NAME, using = IOSLocators.nameSettingsChangePasswordButton)
+	private WebElement settingsChangePasswordButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathChangePasswordPageChangePasswordButton)
+	private WebElement changePasswordPageChangePasswordButton;
+	
 	private String url;
 	private String path;
 	
@@ -104,6 +110,14 @@ public class PersonalInfoPage extends IOSPage{
 	
 	public boolean isAboutPageVisible(){
 		return termsOfUseButton.isDisplayed();
+	}
+	
+	public boolean isResetPasswordPageVisible(){
+		return changePasswordPageChangePasswordButton.isDisplayed();
+	}
+	
+	public void clickChangePasswordButton(){
+		settingsChangePasswordButton.click();
 	}
 	
 	public LoginPage clickSignoutButton() throws MalformedURLException{
