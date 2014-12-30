@@ -148,12 +148,22 @@ public class PersonalInfoPageSteps {
 	
 	@When("I swipe right on the personal page")
 	public void ISwipeRightOnPersonalPage() throws IOException{
-		PagesCollection.contactListPage = (ContactListPage)PagesCollection.personalInfoPage.swipeRight(500);
+	PagesCollection.contactListPage = (ContactListPage)PagesCollection.personalInfoPage.swipeRight(500);
 	}
 	
 	@When("I click on Settings button from the options menu")
 	public void WhenIClickOnSettingsButtonFromOptionsMenu(){
 	PagesCollection.personalInfoPage.tapOnSettingsButton();
+	}
+	
+	@When("I click on Change Password button in Settings")
+	public void WhenIClickOnChangePasswordButtonFromSettings(){
+	PagesCollection.personalInfoPage.clickChangePasswordButton();
+	}
+	
+	@Then("I see reset password page")
+	public void ISeeResetPasswordPage(){
+	Assert.assertTrue(PagesCollection.personalInfoPage.isResetPasswordPageVisible());
 	}
 	
 	@When("I tap on Sound Alerts")
