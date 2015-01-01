@@ -13,5 +13,4 @@ pictureResultsPath=${pictureResultsPath}
 androidClientInfoPath=${androidClientInfoPath}
 androidAppiumLogPath=${androidAppiumLogPath}
 defaultEmail=${defaultEmail}
-oldWayUsersGeneration=false
 androidVersion=${androidVersion}

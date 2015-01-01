@@ -11,17 +11,19 @@ import javax.mail.MessagingException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.CreateZetaUser;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.LanguageUtils;
 import com.wearezeta.auto.common.email.MBoxChangesListener;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
+import com.wearezeta.auto.user_management.CreateZetaUser;
+import com.wearezeta.auto.user_management.UsersManager;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class RegistrationPageSteps {
+	private final UsersManager usrMgr = UsersManager.getInstance();
 
 	private String aqaName;
 

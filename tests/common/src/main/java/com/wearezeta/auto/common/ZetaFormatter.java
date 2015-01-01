@@ -14,6 +14,8 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaDriver;
+import com.wearezeta.auto.user_management.ClientUser;
+import com.wearezeta.auto.user_management.UsersState;
 
 import gherkin.formatter.Formatter;
 import gherkin.formatter.Reporter;

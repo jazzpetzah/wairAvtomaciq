@@ -31,6 +31,7 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.image_send.*;
+import com.wearezeta.auto.user_management.ClientUser;
 
 import java.awt.image.BufferedImage;
 
@@ -49,19 +50,15 @@ public class BackEndREST {
 	ClientConfig config = new DefaultClientConfig();
 	static Client client = Client.create();
 
-	private final static String CONNECTION_CONSTANT = "CONNECT TO ";
-
 	public static void autoTestSendRequest(ClientUser user, ClientUser contact)
-			throws IllegalArgumentException, UriBuilderException, IOException,
-			JSONException, BackendRequestException, InterruptedException {
+			throws Exception {
 		user = loginByUser(user);
 		user = getUserInfo(user);
 		sendConnectRequest(user, contact, contact.getName(), "Hello!!!");
 	}
 
 	public static void autoTestAcceptAllRequest(ClientUser user)
-			throws IllegalArgumentException, UriBuilderException, IOException,
-			JSONException, BackendRequestException, InterruptedException {
+			throws Exception {
 		user = loginByUser(user);
 		acceptAllConnections(user);
 	}
@@ -178,9 +175,8 @@ public class BackEndREST {
 		}
 	}
 
-	public static ClientUser loginByUser(ClientUser user)
-			throws IllegalArgumentException, UriBuilderException, IOException,
-			JSONException, BackendRequestException, InterruptedException {
+	public static ClientUser loginByUser(ClientUser user) throws Exception {
+		ClientUser result = user.clone();
 		Builder webResource = buildDefaultRequest("login",
 				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
 		final String input = String.format(
@@ -208,14 +204,14 @@ public class BackEndREST {
 			}
 		}
 		JSONObject jsonObj = new JSONObject(output);
-		user.setAccessToken(jsonObj.getString("access_token"));
-		user.setTokenType(jsonObj.getString("token_type"));
+		result.setAccessToken(jsonObj.getString("access_token"));
+		result.setTokenType(jsonObj.getString("token_type"));
 
 		writeLog(new String[] {
 				"Output from Server ....  login By User " + user.getEmail(),
 				output + "\n" });
 
-		return user;
+		return result;
 	}
 
 	public static String getUserNameByID(String id, ClientUser user)
@@ -230,22 +226,21 @@ public class BackEndREST {
 		return jsonObj.getString("name");
 	}
 
-	public static ClientUser getUserInfo(ClientUser user)
-			throws IllegalArgumentException, UriBuilderException, IOException,
-			JSONException, BackendRequestException {
+	public static ClientUser getUserInfo(ClientUser user) throws Exception {
+		ClientUser result = user.clone();
 		Builder webResource = buildDefaultRequestWithAuth("self",
 				MediaType.APPLICATION_JSON, user);
 		final String output = httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
 		JSONObject jsonObj = new JSONObject(output);
-		user.setName(jsonObj.getString("name"));
-		user.setId(jsonObj.getString("id"));
+		result.setName(jsonObj.getString("name"));
+		result.setId(jsonObj.getString("id"));
 
 		writeLog(new String[] {
 				"Output from Server .... get User Info " + user.getEmail(),
 				output + "\n" });
 
-		return user;
+		return result;
 	}
 
 	public static void sendConnectRequest(ClientUser user, ClientUser contact,
@@ -375,32 +370,9 @@ public class BackEndREST {
 				getConversationByName(userFrom, chatName), src);
 	}
 
-	//TODO: needs refactoring! this method should be deleted
-	public static void createGroupChatWithUnconnecteduser(String chatName,
-			String groupCreator) throws IllegalArgumentException,
-			UriBuilderException, IOException, BackendRequestException,
-			JSONException, InterruptedException {
-		ClientUser groupCreatorUser = CommonUtils.findUserNamed(groupCreator);
-		ClientUser unconnectedUser = CommonUtils
-				.findUserNamed(CommonUtils.YOUR_USER_2);
-		ClientUser selfUser = CommonUtils
-				.findUserNamed(CommonUtils.YOUR_USER_1);
-
-		BackEndREST.sendConnectRequest(groupCreatorUser, unconnectedUser,
-				CONNECTION_CONSTANT + groupCreatorUser.getName(), chatName);
-		BackEndREST.acceptAllConnections(unconnectedUser);
-		List<ClientUser> users = new ArrayList<ClientUser>();
-		users.add(selfUser); // add self
-		users.add(unconnectedUser);
-
-		groupCreatorUser = BackEndREST.loginByUser(groupCreatorUser);
-		BackEndREST.createGroupConversation(groupCreatorUser, users, chatName);
-	}
-
 	public static void createGroupConversation(ClientUser user,
 			List<ClientUser> contacts, String conversationName)
-			throws IllegalArgumentException, UriBuilderException, IOException,
-			JSONException, BackendRequestException, InterruptedException {
+			throws Exception {
 		user = loginByUser(user);
 		user = getUserInfo(user);
 		List<String> quotedContacts = new ArrayList<String>();
@@ -502,7 +474,7 @@ public class BackEndREST {
 			conversationId = conversation.getString("id");
 			String name = conversation.getString("name");
 			name = name.replaceAll("\uFFFC", "").trim();
-			
+
 			if (name.equals("null") || name.equals(fromUser.getName())) {
 				conversation = (JSONObject) conversation.get("members");
 				JSONArray otherArray = (JSONArray) conversation.get("others");

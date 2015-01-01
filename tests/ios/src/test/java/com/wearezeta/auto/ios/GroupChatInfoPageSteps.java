@@ -4,16 +4,16 @@ import java.io.IOException;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.ios.pages.ConnectToPage;
 import com.wearezeta.auto.ios.pages.GroupChatPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
-
+import com.wearezeta.auto.user_management.UsersManager;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class GroupChatInfoPageSteps {
+	private final UsersManager usrMgr = UsersManager.getInstance();
 	
 	@When("^I press leave converstation button$")
 	public void IPressLeaveConverstationButton() throws Throwable {
@@ -75,14 +75,13 @@ public class GroupChatInfoPageSteps {
 	
 	@When("^I select contact (.*)$")
 	public void ISelectContact(String name) throws IOException {
-		
-		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		name = usrMgr.findUserByNameAlias(name).getName();
 		PagesCollection.otherUserPersonalInfoPage = PagesCollection.groupChatInfoPage.selectContactByName(name);
 	}
 	
 	@When("I tap on not connected contact (.*)")
 	public void ITapOnNotConnectedContact(String name) throws IOException{
-		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		name = usrMgr.findUserByNameAlias(name).getName();
 		PagesCollection.connectToPage = (ConnectToPage)PagesCollection.groupChatInfoPage.selectNotConnectedUser(name);
 	}
 	

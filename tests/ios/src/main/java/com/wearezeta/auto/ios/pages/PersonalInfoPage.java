@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.*;
 
-import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
@@ -13,8 +12,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
-
-import cucumber.api.java.en.When;
 
 public class PersonalInfoPage extends IOSPage{
 	

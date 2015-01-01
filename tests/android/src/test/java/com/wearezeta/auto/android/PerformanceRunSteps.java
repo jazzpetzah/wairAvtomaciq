@@ -3,16 +3,20 @@ package com.wearezeta.auto.android;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Random;
+
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.user_management.UsersManager;
 
 import cucumber.api.java.en.When;
 
 public class PerformanceRunSteps {
+	private final UsersManager usrMgr = UsersManager.getInstance();
+	
 	private static final int SEND_MESSAGE_NUM = 4;
 	private static final int BACK_END_MESSAGE_COUNT = 5;
 	private static final int MIN_WAIT_VALUE_IN_MIN = 1;
@@ -25,12 +29,12 @@ public class PerformanceRunSteps {
 		long diffInMinutes = 0;
 //		Boolean isMinimized = false; Broke swipe in dialogs
 		Random random = new Random();
-		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		name = usrMgr.findUserByNameAlias(name).getName();
 		while (diffInMinutes < time) {
 
 			// Get BackEnd messages
-			CommonUtils.sendRandomMessagesToUser(BACK_END_MESSAGE_COUNT);
-			CommonUtils.sendDefaultImageToUser((int) Math
+			usrMgr.sendRandomMessagesToUser(BACK_END_MESSAGE_COUNT);
+			usrMgr.sendDefaultImageToUser((int) Math
 					.floor(BACK_END_MESSAGE_COUNT / 5));
 			// ----
 

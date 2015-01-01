@@ -23,7 +23,7 @@ public class PeoplePickerPage extends OSXPage {
 	private WebElement mainWindow;
 
 //	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerDismissButton)
-	private WebElement cancelButton;
+//	private WebElement cancelButton;
 	
 	@FindBy(how = How.NAME, using = OSXLocators.namePeoplePickerAddToConversationButton)
 	private WebElement addToConversationButton;

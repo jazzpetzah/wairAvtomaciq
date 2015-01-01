@@ -4,18 +4,20 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Random;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
+import com.wearezeta.auto.user_management.UsersManager;
 import com.wearezeta.auto.common.CommonUtils;
 
 import cucumber.api.java.en.When;
 
 public class PerformanceRunSteps {
+	private final UsersManager usrMgr = UsersManager.getInstance();
+	
 	private static final int SEND_MESSAGE_NUM = 4;
 	private static final int BACK_END_MESSAGE_COUNT = 5;
 	private static final int MIN_WAIT_VALUE_IN_MIN = 1;
@@ -29,12 +31,12 @@ public class PerformanceRunSteps {
 		long diffInMinutes = 0;
 		
 		Random random = new Random();
-		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		name = usrMgr.findUserByNameAlias(name).getName();
 		while (diffInMinutes < time) {
 
 			// Send x messages and x/5 images to your user
-			CommonUtils.sendRandomMessagesToUser(BACK_END_MESSAGE_COUNT);
-			CommonUtils.sendDefaultImageToUser((int) Math.floor(BACK_END_MESSAGE_COUNT / 5));
+			usrMgr.sendRandomMessagesToUser(BACK_END_MESSAGE_COUNT);
+			usrMgr.sendDefaultImageToUser((int) Math.floor(BACK_END_MESSAGE_COUNT / 5));
 			
 			// Send message to random visible chat
 			for (int i = 0; i < SEND_MESSAGE_NUM; i++) {

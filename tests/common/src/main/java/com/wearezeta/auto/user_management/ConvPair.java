@@ -1,6 +1,5 @@
-package com.wearezeta.auto.common;
+package com.wearezeta.auto.user_management;
 
-import com.wearezeta.auto.common.ClientUser;
 
 public class ConvPair {
 	private ClientUser contact;

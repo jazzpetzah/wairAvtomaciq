@@ -3,7 +3,6 @@ package com.wearezeta.auto.ios.pages;
 import java.io.IOException;
 import java.util.*;
 
-import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -13,11 +12,10 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
-import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class ContactListPage extends IOSPage {
-	private static final Logger log = ZetaLogger.getLog("iOS:" + ContactListPage.class.getSimpleName());
+	// private static final Logger log = ZetaLogger.getLog("iOS:" + ContactListPage.class.getSimpleName());
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathContactListNames)
 	private List<WebElement> contactListNames;

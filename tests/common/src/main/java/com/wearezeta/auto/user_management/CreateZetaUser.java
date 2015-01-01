@@ -1,22 +1,20 @@
-package com.wearezeta.auto.common;
+package com.wearezeta.auto.user_management;
 
 import javax.mail.*;
-import javax.ws.rs.core.UriBuilderException;
-
 import org.apache.log4j.Logger;
 
+import com.wearezeta.auto.common.BackEndREST;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.email.EmailHeaders;
 import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.email.MBoxChangesListener;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeoutException;
 
 public class CreateZetaUser {
 
@@ -25,8 +23,6 @@ public class CreateZetaUser {
 
 	public static final String MAILS_FOLDER = "Inbox";
 	public static final int ACTIVATION_TIMEOUT = 120; // seconds
-
-	public static final ArrayList<String> failedToActivate = new ArrayList<String>();
 
 	public static String getMboxName() throws IOException {
 		return CommonUtils.getDefaultEmailFromConfig(CreateZetaUser.class);
@@ -57,9 +53,7 @@ public class CreateZetaUser {
 	}
 
 	public static void activateRegisteredUser(MBoxChangesListener listener)
-			throws TimeoutException, InterruptedException, MessagingException,
-			IllegalArgumentException, UriBuilderException,
-			BackendRequestException, IOException {
+			throws Exception {
 		EmailHeaders registrationInfo = IMAPSMailbox.getFilteredMessageHeaders(
 				listener, ACTIVATION_TIMEOUT);
 		BackEndREST.activateNewUser(registrationInfo.getXZetaKey(),

@@ -10,11 +10,11 @@ import java.util.Map;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.CreateZetaUser;
 import com.wearezeta.auto.common.email.MBoxChangesListener;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.RegistrationPage;
+import com.wearezeta.auto.user_management.CreateZetaUser;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -39,41 +39,41 @@ public class RegistrationPageSteps {
 			aqaEmail = map.get(aqaName);
 			aqaPassword = CommonUtils
 					.getDefaultPasswordFromConfig(CommonUtils.class);
-			CommonSteps.senderPages.getRegistrationPage().enterName(aqaName);
+			CommonOSXSteps.senderPages.getRegistrationPage().enterName(aqaName);
 		} else {
 			aqaName = name;
-			CommonSteps.senderPages.getRegistrationPage().enterName(name);
+			CommonOSXSteps.senderPages.getRegistrationPage().enterName(name);
 		}
 	}
 
 	@When("I enter email (.*)")
 	public void IEnterEmail(String email) {
 		if (email.equals(CommonUtils.YOUR_USER_1)) {
-			CommonSteps.senderPages.getRegistrationPage().enterEmail(aqaEmail);
+			CommonOSXSteps.senderPages.getRegistrationPage().enterEmail(aqaEmail);
 		} else {
 			aqaEmail = email;
-			CommonSteps.senderPages.getRegistrationPage().enterEmail(email);
+			CommonOSXSteps.senderPages.getRegistrationPage().enterEmail(email);
 		}
 	}
 
 	@When("I enter password (.*)")
 	public void IEnterPassword(String password) throws IOException {
 		if (password.equals(CommonUtils.YOUR_PASS)) {
-			CommonSteps.senderPages
+			CommonOSXSteps.senderPages
 					.getRegistrationPage()
 					.enterPassword(
 							CommonUtils
 									.getDefaultPasswordFromConfig(CommonUtils.class));
 		} else {
 			aqaPassword = password;
-			CommonSteps.senderPages.getRegistrationPage().enterPassword(
+			CommonOSXSteps.senderPages.getRegistrationPage().enterPassword(
 					password);
 		}
 	}
 
 	@When("I submit registration data")
 	public void ISubmitRegistrationData() throws Exception {
-		CommonSteps.senderPages.getRegistrationPage().submitRegistration();
+		CommonOSXSteps.senderPages.getRegistrationPage().submitRegistration();
 
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", aqaEmail);
@@ -83,7 +83,7 @@ public class RegistrationPageSteps {
 
 	@Then("I see confirmation page")
 	public void ISeeConfirmationPage() {
-		Assert.assertTrue(CommonSteps.senderPages.getRegistrationPage()
+		Assert.assertTrue(CommonOSXSteps.senderPages.getRegistrationPage()
 				.isConfirmationRequested());
 	}
 
@@ -94,19 +94,19 @@ public class RegistrationPageSteps {
 
 	@When("I choose register using camera")
 	public void IChooseRegisterUsingCamera() {
-		CommonSteps.senderPages.getRegistrationPage().chooseToTakePicture();
+		CommonOSXSteps.senderPages.getRegistrationPage().chooseToTakePicture();
 	}
 
 	@When("I take registration picture from camera")
 	public void ITakeRegistrationPictureFromCamera()
 			throws InterruptedException {
-		CommonSteps.senderPages.getRegistrationPage().chooseToTakePicture();
-		CommonSteps.senderPages.getRegistrationPage().acceptTakenPicture();
+		CommonOSXSteps.senderPages.getRegistrationPage().chooseToTakePicture();
+		CommonOSXSteps.senderPages.getRegistrationPage().acceptTakenPicture();
 	}
 
 	@When("I choose register with image")
 	public void IChooseRegisterWithImage() {
-		CommonSteps.senderPages.getRegistrationPage().chooseToPickImage();
+		CommonOSXSteps.senderPages.getRegistrationPage().chooseToPickImage();
 	}
 
 	@When("I take registration picture from image file (.*)")
@@ -121,12 +121,12 @@ public class RegistrationPageSteps {
 
 		choosePicturePage.openImage(imageFile);
 
-		CommonSteps.senderPages.getRegistrationPage().acceptTakenPicture();
+		CommonOSXSteps.senderPages.getRegistrationPage().acceptTakenPicture();
 	}
 
 	@Then("I see contact list of registered user")
 	public void ISeeContactListOfRegisteredUser() throws Exception {
-		CommonSteps.senderPages
+		CommonOSXSteps.senderPages
 				.setContactListPage(new ContactListPage(
 						CommonUtils
 								.getOsxAppiumUrlFromConfig(RegistrationPageSteps.class),
@@ -147,7 +147,7 @@ public class RegistrationPageSteps {
 
 	@Then("I enter invalid emails")
 	public void IEnterInvalidEmails() {
-		RegistrationPage registrationPage = CommonSteps.senderPages
+		RegistrationPage registrationPage = CommonOSXSteps.senderPages
 				.getRegistrationPage();
 		for (String invalidEmail : INVALID_EMAILS) {
 			registrationPage.enterEmail(invalidEmail);
@@ -170,7 +170,7 @@ public class RegistrationPageSteps {
 
 	@Then("I see that email invalid")
 	public void ISeeThatEmailInvalid() {
-		RegistrationPage registrationPage = CommonSteps.senderPages
+		RegistrationPage registrationPage = CommonOSXSteps.senderPages
 				.getRegistrationPage();
 		Assert.assertTrue("Email accepted but shouldn't be.",
 				registrationPage.isInvalidEmailMessageAppear());
@@ -178,7 +178,7 @@ public class RegistrationPageSteps {
 
 	@Then("I see email (.*) without spaces")
 	public void ISeeEmailWithoutSpaces(String email) {
-		RegistrationPage registrationPage = CommonSteps.senderPages
+		RegistrationPage registrationPage = CommonOSXSteps.senderPages
 				.getRegistrationPage();
 		Assert.assertTrue(
 				"It was accepted to enter spaces in email '"

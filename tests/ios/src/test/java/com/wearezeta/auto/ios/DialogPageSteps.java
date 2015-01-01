@@ -9,7 +9,6 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.BackEndREST;
-import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -22,12 +21,16 @@ import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.ios.pages.CameraRollPage;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.VideoPlayerPage;
+import com.wearezeta.auto.user_management.ClientUser;
+import com.wearezeta.auto.user_management.UsersManager;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class DialogPageSteps {
 	private static final Logger log = ZetaLogger.getLog(DialogPageSteps.class.getSimpleName());
+	private final UsersManager usrMgr = UsersManager.getInstance();
+	
 	private String message;
 	private String longMessage = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.";
 
@@ -93,7 +96,7 @@ public class DialogPageSteps {
 	
 	@Then("^I see User (.*) Pinged message in the conversation$")
 	public void ISeeUserPingedMessageTheDialog(String user) throws Throwable {
-		String username = CommonUtils.retrieveRealUserContactPasswordValue(user);
+		String username = usrMgr.findUserByNameAlias(user).getName();
 		String expectedPingMessage = username.toUpperCase() + " PINGED";
 		String dialogLastMessage;
 		if (PagesCollection.dialogPage != null){
@@ -107,7 +110,7 @@ public class DialogPageSteps {
 	
 	@Then("^I see User (.*) Pinged Again message in the conversation$")
 	public void ISeeUserHotPingedMessageTheDialog(String user) throws Throwable {
-		String username = CommonUtils.retrieveRealUserContactPasswordValue(user);
+		String username = usrMgr.findUserByNameAlias(user).getName();
 		String expectedPingMessage = username.toUpperCase() + " PINGED AGAIN";
 		String dialogLastMessage;
 		if (PagesCollection.dialogPage != null){
@@ -172,9 +175,8 @@ public class DialogPageSteps {
 	
 	@Then("^I see Pending Connect to (.*) message on Dialog page from user (.*)$")
 	public void ISeePendingConnectMessage(String contact, String user) throws Throwable {
-		
-		user = CommonUtils.retrieveRealUserContactPasswordValue(user);
-		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		user = usrMgr.findUserByNameAlias(user).getName();
+		contact = usrMgr.findUserByNameAlias(contact).getName();
 		String expectedConnectingLabel = PagesCollection.dialogPage.getExpectedConnectingLabel(contact);
 		String actualConnectingLabel = PagesCollection.dialogPage.getConnectMessageLabel();
 		String lastMessage = PagesCollection.dialogPage.getLastMessageFromDialog();
@@ -418,13 +420,7 @@ public class DialogPageSteps {
 	
 	@When("^User (.*) Ping in chat (.*) by BackEnd$")
 	public void UserPingInChatByBE(String contact, String conversationName) throws Exception{
-		ClientUser yourСontact = null;
-		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
-		for (ClientUser user : CommonUtils.contacts) {
-			if (user.getName().toLowerCase().equals(contact.toLowerCase())) {
-				yourСontact = user;
-			}
-		}
+		ClientUser yourСontact = usrMgr.findUserByNameAlias(contact);
 		yourСontact = BackEndREST.loginByUser(yourСontact);
 		pingId = BackEndREST.sendPingToConversation(yourСontact, conversationName);
 		Thread.sleep(1000);
@@ -432,13 +428,7 @@ public class DialogPageSteps {
 	
 	@When("^User (.*) HotPing in chat (.*) by BackEnd$")
 	public void UserHotPingInChatByBE(String contact, String conversationName) throws Exception{
-		ClientUser yourСontact = null;
-		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
-		for (ClientUser user : CommonUtils.contacts) {
-			if (user.getName().toLowerCase().equals(contact.toLowerCase())) {
-				yourСontact = user;
-			}
-		}
+		ClientUser yourСontact = usrMgr.findUserByNameAlias(contact);
 		yourСontact = BackEndREST.loginByUser(yourСontact);
 		BackEndREST.sendHotPingToConversation(yourСontact, conversationName,pingId);
 		Thread.sleep(1000);

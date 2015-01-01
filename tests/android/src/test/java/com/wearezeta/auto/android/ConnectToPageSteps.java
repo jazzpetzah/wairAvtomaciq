@@ -4,16 +4,17 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.ConnectToPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
-import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.user_management.UsersManager;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ConnectToPageSteps {
+	private final UsersManager usrMgr = UsersManager.getInstance();
 
 	@When("^I see connect to (.*) dialog$")
 	public void WhenISeeConnectToUserDialog(String contact) throws Throwable {
-		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		contact = usrMgr.findUserByNameAlias(contact).getName();
 		PagesCollection.connectToPage = (ConnectToPage) PagesCollection.androidPage;
 		
 		Thread.sleep(2000);

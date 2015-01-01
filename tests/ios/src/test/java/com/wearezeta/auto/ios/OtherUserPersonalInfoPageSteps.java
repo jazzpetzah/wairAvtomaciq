@@ -4,19 +4,20 @@ import java.io.IOException;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.ios.pages.PeoplePickerPage;
+import com.wearezeta.auto.user_management.UsersManager;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class OtherUserPersonalInfoPageSteps {
+	private final UsersManager usrMgr = UsersManager.getInstance();
 	
 	@When("^I see (.*) user profile page$")
 	public void WhenISeeOtherUserProfilePage(String name){
-		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		name = usrMgr.findUserByNameAlias(name).getName();
 		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage.isOtherUserProfileNameVisible(name));
 	}
 	
@@ -53,13 +54,9 @@ public class OtherUserPersonalInfoPageSteps {
 	
 	@Then("^I see the user profile from (.*)$")
 	public void ISeeTheUserProfileFrom(String contact) throws Throwable {
-		
-		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
-		
+		contact = usrMgr.findUserByNameAlias(contact).getName();
 		boolean isShown = PagesCollection.otherUserPersonalInfoPage.isOtherUserProfileEmailVisible(contact);
-		
 		Assert.assertTrue("I can see the contacts email on the user profile page", isShown);
-	    
 	}
 	
 	@When("I tap on start dialog button on other user profile page")

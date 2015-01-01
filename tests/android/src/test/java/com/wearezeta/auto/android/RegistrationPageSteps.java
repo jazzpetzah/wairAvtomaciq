@@ -12,10 +12,15 @@ import org.junit.Assert;
 import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.email.MBoxChangesListener;
+import com.wearezeta.auto.user_management.ClientUser;
+import com.wearezeta.auto.user_management.CreateZetaUser;
+import com.wearezeta.auto.user_management.UsersManager;
+import com.wearezeta.auto.user_management.UsersState;
 
 import cucumber.api.java.en.*;
 
 public class RegistrationPageSteps {
+	private final UsersManager usrMgr = UsersManager.getInstance();
 
 	private String aqaName;
 
