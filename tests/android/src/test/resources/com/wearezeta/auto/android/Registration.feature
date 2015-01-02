@@ -13,7 +13,6 @@ Feature: Registration
     And I submit registration data
     Then I see confirmation page
     And I verify registration address
-    And I store created user info
     And I see Contact list with my name <Name>
 
     Examples: 

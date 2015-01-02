@@ -8,7 +8,7 @@ public class ClientUser {
 	private Set<String> nameAliases = new HashSet<String>();
 
 	public Set<String> getNameAliases() {
-		return this.nameAliases;
+		return new HashSet<String>(this.nameAliases);
 	}
 
 	public void addNameAlias(String alias) {
@@ -23,7 +23,7 @@ public class ClientUser {
 	private Set<String> passwordAliases = new HashSet<String>();
 
 	public Set<String> getPasswordAliases() {
-		return this.passwordAliases;
+		return new HashSet<String>(this.passwordAliases);
 	}
 
 	public void addPasswordAlias(String alias) {
@@ -38,7 +38,7 @@ public class ClientUser {
 	private Set<String> emailAliases = new HashSet<String>();
 
 	public Set<String> getEmailAliases() {
-		return this.emailAliases;
+		return new HashSet<String>(this.emailAliases);
 	}
 
 	public void addEmailAlias(String alias) {
@@ -52,13 +52,13 @@ public class ClientUser {
 	private String id = null;
 	private String accessToken = null;
 	private String tokenType = null;
-	private UsersState userState = UsersState.NotCreated;
+	private UserState userState = UserState.NotCreated;
 
 	public ClientUser() {
 	}
 
 	public ClientUser(String email, String password, String name,
-			UsersState userState) {
+			UserState userState) {
 		this.email = email;
 		this.password = password;
 		this.name = name;
@@ -113,11 +113,11 @@ public class ClientUser {
 		this.tokenType = tokenType;
 	}
 
-	public UsersState getUserState() {
+	public UserState getUserState() {
 		return userState;
 	}
 
-	public void setUserState(UsersState userState) {
+	public void setUserState(UserState userState) {
 		this.userState = userState;
 	}
 

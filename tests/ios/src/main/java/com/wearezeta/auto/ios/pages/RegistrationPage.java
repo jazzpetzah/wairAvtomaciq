@@ -19,7 +19,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.IOSPage;
-import com.wearezeta.auto.user_management.CreateZetaUser;
+import com.wearezeta.auto.user_management.UserCreationHelper;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.email.EmailHeaders;
@@ -450,7 +450,7 @@ public class RegistrationPage extends IOSPage {
 		IMAPSMailbox mailbox = new IMAPSMailbox(
 				CommonUtils
 						.getDefaultEmailServerFromConfig(RegistrationPage.class),
-				CreateZetaUser.MAILS_FOLDER, CommonUtils
+				UserCreationHelper.MAILS_FOLDER, CommonUtils
 						.getDefaultEmailFromConfig(RegistrationPage.class),
 				CommonUtils
 						.getDefaultPasswordFromConfig(RegistrationPage.class));

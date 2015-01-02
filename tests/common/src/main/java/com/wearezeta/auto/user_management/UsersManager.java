@@ -28,18 +28,20 @@ public class UsersManager {
 	private static final Logger log = ZetaLogger.getLog(UsersManager.class
 			.getSimpleName());
 
-	private void resetClientsList(String[] aliases, List<ClientUser> dstList) {
+	private void resetClientsList(String[] aliases, List<ClientUser> dstList) throws IOException {
 		dstList.clear();
 		for (String userAlias : aliases) {
 			ClientUser pendingUser = new ClientUser();
 			pendingUser.setName(userAlias);
 			pendingUser.addNameAlias(userAlias);
+			pendingUser.setPassword(CommonUtils
+					.getDefaultPasswordFromConfig(CommonUtils.class));
 			pendingUser.addPasswordAlias(YOUR_PASS_ALIAS);
 			dstList.add(pendingUser);
 		}
 	}
 
-	private void resetUsers() {
+	private void resetUsers() throws IOException {
 		resetClientsList(new String[] { YOUR_USER_1_ALIAS, YOUR_USER_2_ALIAS,
 				YOUR_USER_3_ALIAS, YOUR_USER_4_ALIAS, YOUR_USER_5_ALIAS,
 				YOUR_USER_6_ALIAS, YOUR_USER_7_ALIAS, YOUR_USER_8_ALIAS,
@@ -48,6 +50,7 @@ public class UsersManager {
 	}
 
 	public static final String YOUR_PASS_ALIAS = "aqaPassword";
+	public static final String YOUR_EMAIL_ALIAS = "aqaEmail";
 
 	public static final String YOUR_USER_1_ALIAS = "aqaUser";
 	public static final String SELF_USER_ALIAS = YOUR_USER_1_ALIAS;
@@ -64,14 +67,18 @@ public class UsersManager {
 	public static final String YOUR_USER_11_ALIAS = "yourNotContact5";
 	private List<ClientUser> yourUsers = new ArrayList<ClientUser>();
 
-	public List<ClientUser> getUsers() {
+	public List<ClientUser> getCreatedUsers() {
 		ArrayList<ClientUser> result = new ArrayList<ClientUser>();
 		for (ClientUser usr : this.yourUsers) {
-			if (usr.getUserState() != UsersState.NotCreated) {
+			if (usr.getUserState() != UserState.NotCreated) {
 				result.add(usr);
 			}
 		}
 		return result;
+	}
+
+	public void appendCustomUser(ClientUser newUser) {
+		this.yourUsers.add(newUser);
 	}
 
 	public static final String CONTACT_1_ALIAS = "aqaContact1";
@@ -95,36 +102,39 @@ public class UsersManager {
 	public static final String CONTACT_6_ALIAS = "aqaBlock";
 	private List<ClientUser> contacts = new ArrayList<ClientUser>();
 
-	private void resetContacts() {
+	private void resetContacts() throws IOException {
 		resetClientsList(new String[] { CONTACT_1_ALIAS, CONTACT_2_ALIAS,
 				CONTACT_3_ALIAS, CONTACT_4_ALIAS, CONTACT_5_ALIAS,
 				CONTACT_6_ALIAS }, contacts);
 		ClientUser pictureContact = findUserByNameAlias(CONTACT_3_ALIAS);
 		pictureContact.setEmail(CONTACT_PICTURE_EMAIL);
-		pictureContact.addEmailAlias("aqaPictureContactEmail");
+		pictureContact.addEmailAlias(CONTACT_PICTURE_EMAIL_ALIAS);
 		pictureContact.setPassword(CONTACT_PICTURE_PASSWORD);
+		pictureContact.clearPasswordAliases();
 		pictureContact.addPasswordAlias(CONTACT_PICTURE_PASSWORD_ALIAS);
-		pictureContact.setUserState(UsersState.Created);
+		pictureContact.setUserState(UserState.Created);
 		ClientUser avatarContact = findUserByNameAlias(CONTACT_4_ALIAS);
 		avatarContact.setEmail(CONTACT_AVATAR_EMAIL);
 		avatarContact.addEmailAlias(CONTACT_AVATAR_EMAIL_ALIAS);
 		avatarContact.setPassword(CONTACT_AVATAR_PASSWORD);
+		avatarContact.clearPasswordAliases();
 		avatarContact.addPasswordAlias(CONTACT_AVATAR_PASSWORD_ALIAS);
-		avatarContact.setUserState(UsersState.Created);
+		avatarContact.setUserState(UserState.Created);
 	}
 
-	public List<ClientUser> getContacts() {
+	public List<ClientUser> getCreatedContacts() {
 		ArrayList<ClientUser> result = new ArrayList<ClientUser>();
 		for (ClientUser usr : this.contacts) {
-			if (usr.getUserState() != UsersState.NotCreated) {
+			if (usr.getUserState() != UserState.NotCreated) {
 				result.add(usr);
 			}
 		}
 		return result;
 	}
 
-	// private List<ClientUser> requiredContacts = new
-	// CopyOnWriteArrayList<ClientUser>();
+	public void appendCustomContact(ClientUser newContact) {
+		this.contacts.add(newContact);
+	}
 
 	public static final String PERFORMANCE_USER_ALIAS = "perfUser";
 	public static final String PERFORMANCE_PASS_ALIAS = "perfPass";
@@ -150,9 +160,9 @@ public class UsersManager {
 		return new ArrayList<ConvPair>(this.userChats);
 	}
 
-//	private void resetUserChats() {
-//		this.userChats.clear();
-//	}
+	private void resetUserChats() {
+		this.userChats.clear();
+	}
 
 	private static final int MAX_PARALLEL_USER_CREATION_TASKS = 5;
 	private static final int NUMBER_OF_REGISTRATION_RETRIES = 5;
@@ -162,14 +172,18 @@ public class UsersManager {
 
 	private static UsersManager instance = null;
 
-	private UsersManager() {
+	private UsersManager() throws IOException {
 		resetUsers();
 		resetContacts();
 	}
 
 	public static UsersManager getInstance() {
 		if (instance == null) {
-			instance = new UsersManager();
+			try {
+				instance = new UsersManager();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		return instance;
 	}
@@ -189,7 +203,7 @@ public class UsersManager {
 	public ClientUser findUserByNameAlias(String alias) {
 		return findUserByAlias(alias, UserAliasType.NAME);
 	}
-	
+
 	public ClientUser findUserByAlias(String alias, UserAliasType aliasType) {
 		for (Object item : getAllUsers()) {
 			ClientUser user = (ClientUser) item;
@@ -212,27 +226,35 @@ public class UsersManager {
 		throw new NoSuchElementException(String.format(
 				"No user with username '%s' is in an available list", alias));
 	}
-//
-//	public String getUserValueByAlias(String alias) {
-//		for (UserAliasType aliasType : UserAliasType.values()) {
-//			try {
-//				ClientUser user = findUserByAlias(alias, aliasType);
-//				if (aliasType == UserAliasType.NAME) {
-//					return user.getName();
-//				} else if (aliasType == UserAliasType.EMAIL) {
-//					return user.getEmail();
-//				} else if (aliasType == UserAliasType.PASSWORD) {
-//					return user.getPassword();
-//				} else {
-//					assert (false);
-//				}
-//			} catch (NoSuchElementException e) {
-//				// Skip silently
-//			}
-//		}
-//		throw new NoSuchElementException(String.format(
-//				"The alias '%s' is not known", alias));
-//	}
+
+	public String replaceAliasesOccurences(String srcStr,
+			UserAliasType aliasType) {
+		String result = srcStr;
+		for (ClientUser dstUser : this.getAllUsers()) {
+			try {
+				Set<String> aliases = null;
+				String replacement = null;
+				if (aliasType == UserAliasType.NAME) {
+					aliases = dstUser.getNameAliases();
+					replacement = dstUser.getName();
+				} else if (aliasType == UserAliasType.EMAIL) {
+					aliases = dstUser.getEmailAliases();
+					replacement = dstUser.getEmail();
+				} else if (aliasType == UserAliasType.PASSWORD) {
+					aliases = dstUser.getPasswordAliases();
+					replacement = dstUser.getPassword();
+				} else {
+					assert (false);
+				}
+				for (String alias : aliases) {
+					result = result.replace(alias, replacement);
+				}
+			} catch (NoSuchElementException e) {
+				// Ignore silently
+			}
+		}
+		return result;
+	}
 
 	public void generateUsers(int usersNumber, int contactsNumber)
 			throws Exception {
@@ -247,13 +269,11 @@ public class UsersManager {
 					int waitTime = 1;
 					while (doRetry && count < NUMBER_OF_REGISTRATION_RETRIES) {
 						try {
-							final String email = CreateZetaUser
+							final String email = UserCreationHelper
 									.registerUserAndReturnMail();
 							ClientUser user = new ClientUser();
 							user.setEmail(email);
-							user.setPassword(CommonUtils
-									.getDefaultPasswordFromConfig(CommonUtils.class));
-							user.setUserState(UsersState.Created);
+							user.setUserState(UserState.Created);
 							createdClients.add(user);
 							doRetry = false;
 						} catch (Exception e) {
@@ -300,9 +320,12 @@ public class UsersManager {
 				dstClient = this.contacts.get(contactIdx);
 				contactIdx++;
 			}
+			if (dstClient.getUserState() != UserState.NotCreated) {
+				continue;
+			}
 			ClientUser srcClient = createdClients.get(clientIdx);
 			dstClient.setEmail(srcClient.getEmail());
-			dstClient.setPassword(srcClient.getPassword());
+			dstClient.addEmailAlias(YOUR_EMAIL_ALIAS);
 			dstClient.setUserState(srcClient.getUserState());
 		}
 	}
@@ -318,7 +341,7 @@ public class UsersManager {
 			Runnable worker = new Thread(new Runnable() {
 				public void run() {
 					try {
-						String email = CreateZetaUser
+						String email = UserCreationHelper
 								.registerUserAndReturnMail();
 						ClientUser user = new ClientUser();
 						user.setEmail(email);
@@ -354,6 +377,7 @@ public class UsersManager {
 				.newFixedThreadPool(MAX_PARALLEL_USER_CREATION_TASKS);
 		final AtomicInteger numOfConnsSentWOErrors = new AtomicInteger();
 		numOfConnsSentWOErrors.set(0);
+		this.resetUserChats();
 		for (int i = 0; i < additionalUsers.size(); i++) {
 			final ClientUser user = additionalUsers.get(i);
 			Runnable worker = new Thread(new Runnable() {
@@ -436,7 +460,7 @@ public class UsersManager {
 	}
 
 	public void generatePerformanceUser() throws Exception {
-		String email = CreateZetaUser.registerUserAndReturnMail();
+		String email = UserCreationHelper.registerUserAndReturnMail();
 		perfUser.setEmail(email);
 		perfUser.setPassword(CommonUtils
 				.getDefaultPasswordFromConfig(CommonUtils.class));
@@ -445,21 +469,21 @@ public class UsersManager {
 	}
 
 	public void createContactLinks(int linkedUsers) throws Exception {
-		List<ClientUser> users = this.getUsers();
+		List<ClientUser> users = this.getCreatedUsers();
 		for (ClientUser yourUser : users) {
 			yourUser = BackEndREST.loginByUser(yourUser);
 			yourUser = BackEndREST.getUserInfo(yourUser);
 		}
 		for (int i = 0; i < linkedUsers; i++) {
 			ClientUser dstUser = users.get(i);
-			for (ClientUser contact : this.getContacts()) {
+			for (ClientUser contact : this.getCreatedContacts()) {
 				BackEndREST.autoTestSendRequest(contact, dstUser);
-				contact.setUserState(UsersState.RequestSend);
+				contact.setUserState(UserState.RequestSend);
 				Thread.sleep(500);
 			}
 
 			BackEndREST.autoTestAcceptAllRequest(dstUser);
-			dstUser.setUserState(UsersState.AllContactsConnected);
+			dstUser.setUserState(UserState.AllContactsConnected);
 		}
 	}
 

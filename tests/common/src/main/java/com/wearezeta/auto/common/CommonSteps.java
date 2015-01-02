@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.wearezeta.auto.user_management.ClientUser;
-import com.wearezeta.auto.user_management.CreateZetaUser;
+import com.wearezeta.auto.user_management.UserCreationHelper;
 import com.wearezeta.auto.user_management.OSXAddressBookHelpers;
 import com.wearezeta.auto.user_management.UsersManager;
-import com.wearezeta.auto.user_management.UsersState;
+import com.wearezeta.auto.user_management.UserState;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
@@ -161,7 +161,7 @@ public abstract class CommonSteps {
 			throws Throwable {
 		// limited to 4 users at time of creation to save time creating users
 		if (requests < 5) {
-			List<ClientUser> unconnectedUsers = usrMgr.getUsers().subList(1,
+			List<ClientUser> unconnectedUsers = usrMgr.getCreatedUsers().subList(1,
 					requests + 1);
 			ClientUser dstUser = usrMgr.findUserByNameAlias(user);
 			for (int i = 0; i < requests; i++) {
@@ -174,13 +174,13 @@ public abstract class CommonSteps {
 
 	@When("I add contacts list users to Mac contacts")
 	public void AddContactsUsersToMacContacts() throws Exception {
-		(new OSXAddressBookHelpers()).addUsersToContacts(usrMgr.getContacts());
+		(new OSXAddressBookHelpers()).addUsersToContacts(usrMgr.getCreatedContacts());
 	}
 
 	@When("I remove contacts list users from Mac contacts")
 	public void IRemoveContactsListUsersFromMacContact() throws Exception {
 		(new OSXAddressBookHelpers()).removeUsersFromContacts(usrMgr
-				.getContacts());
+				.getCreatedContacts());
 	}
 
 	@Given("I have at least (.*) connections")
@@ -189,12 +189,12 @@ public abstract class CommonSteps {
 		ClientUser selfUser = usrMgr
 				.findUserByNameAlias(UsersManager.SELF_USER_ALIAS);
 		for (int i = 0; i < minimumConnections; i++) {
-			String email = CreateZetaUser.registerUserAndReturnMail();
+			String email = UserCreationHelper.registerUserAndReturnMail();
 			ClientUser user = new ClientUser();
 			user.setEmail(email);
 			user.setPassword(CommonUtils
 					.getDefaultPasswordFromConfig(CommonUtils.class));
-			user.setUserState(UsersState.Created);
+			user.setUserState(UserState.Created);
 			BackEndREST.autoTestSendRequest(user, selfUser);
 		}
 		BackEndREST.autoTestAcceptAllRequest(selfUser);

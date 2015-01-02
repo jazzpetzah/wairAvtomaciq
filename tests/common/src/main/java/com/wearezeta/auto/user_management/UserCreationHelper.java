@@ -16,33 +16,34 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CreateZetaUser {
+public class UserCreationHelper {
 
-	private static final Logger log = ZetaLogger.getLog(CreateZetaUser.class
-			.getSimpleName());
+	private static final Logger log = ZetaLogger
+			.getLog(UserCreationHelper.class.getSimpleName());
 
 	public static final String MAILS_FOLDER = "Inbox";
 	public static final int ACTIVATION_TIMEOUT = 120; // seconds
 
 	public static String getMboxName() throws IOException {
-		return CommonUtils.getDefaultEmailFromConfig(CreateZetaUser.class);
+		return CommonUtils.getDefaultEmailFromConfig(UserCreationHelper.class);
 	}
 
-	public static String getMboxPassword() throws IOException {
-		return CommonUtils.getDefaultPasswordFromConfig(CreateZetaUser.class);
+	private static String getMboxPassword() throws IOException {
+		return CommonUtils
+				.getDefaultPasswordFromConfig(UserCreationHelper.class);
 	}
 
 	public static String registerUserAndReturnMail() throws Exception {
 		String nextSuffix = null;
 		String regMail = null;
-		Map<String, String> nextUser = generateNextUser(getMboxName(),
-				getMboxPassword());
+		Map<String, String> nextUser = generateUniqUserCredentials(
+				getMboxName());
 		for (Map.Entry<String, String> entry : nextUser.entrySet()) {
 			nextSuffix = entry.getKey();
 			regMail = entry.getValue();
 		}
 
-		IMAPSMailbox mbox = getMboxInstance(getMboxName(), getMboxPassword());
+		IMAPSMailbox mbox = getMboxInstance();
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", regMail);
 		MBoxChangesListener listener = mbox.startMboxListener(expectedHeaders);
@@ -62,38 +63,36 @@ public class CreateZetaUser {
 				registrationInfo.getLastUserEmail()));
 	}
 
-	public static Map<String, String> generateNextUser(String mail,
-			String password) {
-		String suffix = CommonUtils.generateGUID();
-		suffix = suffix.replace("-", "");
-		String regMail = null;
+	public static Map<String, String> generateUniqUserCredentials(String mail) {
+		String userId = generateUserId();
+		String regMail = generateUniqEmail(mail, userId);
+
 		Map<String, String> user = new LinkedHashMap<String, String>();
-
-		regMail = setRegMail(mail, suffix);
-		user.put(suffix, regMail);
-
-		log.debug("Generated credentials for new user registration: " + regMail
-				+ ":" + password);
-
+		user.put(userId, regMail);
+		log.debug("Generated credentials for new user registration: " + regMail);
 		return user;
 	}
 
-	public static IMAPSMailbox getMboxInstance(String user, String password)
+	public static IMAPSMailbox getMboxInstance()
 			throws MessagingException, IOException, InterruptedException {
 		return new IMAPSMailbox(
 				CommonUtils
-						.getDefaultEmailServerFromConfig(CreateZetaUser.class),
-				MAILS_FOLDER, user, password);
+						.getDefaultEmailServerFromConfig(UserCreationHelper.class),
+				MAILS_FOLDER, getMboxName(), getMboxPassword());
 	}
 
 	public static List<EmailHeaders> getLastMailHeaders(String user,
 			String password, int messageCount) throws MessagingException,
 			IOException, InterruptedException {
-		IMAPSMailbox mbox = getMboxInstance(user, password);
+		IMAPSMailbox mbox = getMboxInstance();
 		return mbox.getLastMailHeaders(messageCount);
 	}
 
-	private static String setRegMail(String basemail, String suffix) {
+	private static String generateUserId() {
+		return CommonUtils.generateGUID().replace("-", "");
+	}
+
+	private static String generateUniqEmail(String basemail, String suffix) {
 		String genmail = basemail.split("@")[0].concat("+").concat(suffix)
 				.concat("@").concat(basemail.split("@")[1]);
 		return genmail;

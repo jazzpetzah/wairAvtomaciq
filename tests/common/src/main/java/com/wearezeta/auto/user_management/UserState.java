@@ -1,6 +1,6 @@
 package com.wearezeta.auto.user_management;
 
-public enum UsersState {
+public enum UserState {
 	NotCreated,
 	Created,
 	RequestSend,

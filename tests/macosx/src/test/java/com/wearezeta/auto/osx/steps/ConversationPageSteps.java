@@ -20,6 +20,7 @@ import com.wearezeta.auto.osx.pages.ConversationPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
 import com.wearezeta.auto.user_management.ClientUser;
 import com.wearezeta.auto.user_management.UsersManager;
+import com.wearezeta.auto.user_management.UsersManager.UserAliasType;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -277,87 +278,62 @@ public class ConversationPageSteps {
 		Thread.sleep(1000);
 	}
 
+	private void verifyYouPingedMessage() throws InterruptedException {
+		boolean isNumberIncreased = false;
+		int afterNumberOfKnocks = -1;
+		for (int i = 0; i < 3; i++) {
+			afterNumberOfKnocks = CommonOSXSteps.senderPages
+					.getConversationPage().getNumberOfYouPingedMessages(
+							OSXLocators.xpathYouPingedMessage);
+			if (afterNumberOfKnocks == beforeNumberOfKnocks + 1) {
+				isNumberIncreased = true;
+				break;
+			}
+			Thread.sleep(1000);
+		}
+
+		Assert.assertTrue("Incorrect messages count: before - "
+				+ beforeNumberOfKnocks + ", after - " + afterNumberOfKnocks,
+				isNumberIncreased);
+	}
+
+	private void verifyYouPingedAgainMessage() throws InterruptedException {
+		boolean isNumberIncreased = false;
+		int afterNumberOfHotKnocks = -1;
+		for (int i = 0; i < 3; i++) {
+			afterNumberOfHotKnocks = CommonOSXSteps.senderPages
+					.getConversationPage().getNumberOfYouPingedMessages(
+							OSXLocators.xpathYouPingedAgainMessage);
+			if (afterNumberOfHotKnocks == beforeNumberOfHotKnocks + 1) {
+				isNumberIncreased = true;
+				break;
+			}
+			Thread.sleep(1000);
+		}
+
+		Assert.assertTrue("Incorrect messages count: before - "
+				+ beforeNumberOfHotKnocks + ", after - "
+				+ afterNumberOfHotKnocks, isNumberIncreased);
+	}
+
+	private void verifyMsgExistsInConversationView(String msg)
+			throws InterruptedException {
+		msg = usrMgr.replaceAliasesOccurences(msg, UserAliasType.NAME);
+		msg = msg.toUpperCase();
+		Assert.assertTrue(String.format("Message '%s' not found.", msg),
+				CommonOSXSteps.senderPages.getConversationPage()
+						.isMessageExist(msg));
+	}
+
 	@Then("I see message (.*) in conversation$")
 	public void ThenISeeMessageInConversation(String message)
 			throws InterruptedException {
 		if (message.equals(OSXLocators.YOU_PINGED_MESSAGE)) {
-			boolean isNumberIncreased = false;
-			int afterNumberOfKnocks = -1;
-			for (int i = 0; i < 3; i++) {
-				afterNumberOfKnocks = CommonOSXSteps.senderPages
-						.getConversationPage().getNumberOfYouPingedMessages(
-								OSXLocators.xpathYouPingedMessage);
-				if (afterNumberOfKnocks == beforeNumberOfKnocks + 1) {
-					isNumberIncreased = true;
-					break;
-				}
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-				}
-			}
-
-			Assert.assertTrue(
-					"Incorrect messages count: before - "
-							+ beforeNumberOfKnocks + ", after - "
-							+ afterNumberOfKnocks, isNumberIncreased);
-
+			verifyYouPingedMessage();
 		} else if (message.equals(OSXLocators.YOU_PINGED_AGAIN_MESSAGE)) {
-			boolean isNumberIncreased = false;
-			int afterNumberOfHotKnocks = -1;
-			for (int i = 0; i < 3; i++) {
-				afterNumberOfHotKnocks = CommonOSXSteps.senderPages
-						.getConversationPage().getNumberOfYouPingedMessages(
-								OSXLocators.xpathYouPingedAgainMessage);
-				if (afterNumberOfHotKnocks == beforeNumberOfHotKnocks + 1) {
-					isNumberIncreased = true;
-					break;
-				}
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-				}
-			}
-
-			Assert.assertTrue("Incorrect messages count: before - "
-					+ beforeNumberOfHotKnocks + ", after - "
-					+ afterNumberOfHotKnocks, isNumberIncreased);
-
-		} else if (message.contains(OSXLocators.YOU_ADDED_MESSAGE)) {
-			message = CommonUtils.retrieveRealUserContactPasswordValue(message);
-			message = message.toUpperCase();
-			Assert.assertTrue("User was not added to conversation. Message "
-					+ message + " not found.", CommonOSXSteps.senderPages
-					.getConversationPage().isMessageExist(message));
-		} else if (message
-				.contains(OSXLocators.YOU_STARTED_CONVERSATION_MESSAGE)) {
-			message = CommonUtils.retrieveRealUserContactPasswordValue(message);
-			message = message.toUpperCase();
-			Assert.assertTrue("User was not added to conversation. Message "
-					+ message + " not found.", CommonOSXSteps.senderPages
-					.getConversationPage().isMessageExist(message));
-		} else if (message.contains(OSXLocators.YOU_REMOVED_MESSAGE)) {
-			message = CommonUtils.retrieveRealUserContactPasswordValue(message);
-			message = message.toUpperCase();
-			Assert.assertTrue(
-					"User was not removed from conversation. Message "
-							+ message + " not found.",
-					CommonOSXSteps.senderPages.getConversationPage()
-							.isMessageExist(message));
-		} else if (message.contains(OSXLocators.CONNECTED_TO_MESSAGE)) {
-			message = CommonUtils.retrieveRealUserContactPasswordValue(message)
-					.toUpperCase();
-			Assert.assertTrue(
-					"Connected to message does not appear in conversation.",
-					CommonOSXSteps.senderPages.getConversationPage()
-							.isMessageExist(message));
+			verifyYouPingedAgainMessage();
 		} else {
-			String updatedMessage = CommonUtils
-					.retrieveRealUserContactPasswordValue(message);
-			if (!updatedMessage.equals(message))
-				message = updatedMessage.toUpperCase();
-			Assert.assertTrue(CommonOSXSteps.senderPages.getConversationPage()
-					.isMessageExist(message));
+			verifyMsgExistsInConversationView(message);
 		}
 	}
 

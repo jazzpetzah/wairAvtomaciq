@@ -15,7 +15,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.user_management.ClientUser;
-import com.wearezeta.auto.user_management.UsersState;
+import com.wearezeta.auto.user_management.UserState;
 
 import gherkin.formatter.Formatter;
 import gherkin.formatter.Reporter;
@@ -208,7 +208,7 @@ public class ZetaFormatter implements Formatter, Reporter {
 	
 	private void sendNotification(String message) throws Exception {
 		
-		ClientUser yourСontact = new ClientUser(LOGIN, PASSWORD, "AutomationBot", UsersState.AllContactsConnected);
+		ClientUser yourСontact = new ClientUser(LOGIN, PASSWORD, "AutomationBot", UserState.AllContactsConnected);
 		switch (driver.getCapabilities().getCapability("platformName").toString()) {
 			case "Android":
 				BackEndREST.sendDialogMessageByChatName(yourСontact, CONTACT_ANDROID, message);

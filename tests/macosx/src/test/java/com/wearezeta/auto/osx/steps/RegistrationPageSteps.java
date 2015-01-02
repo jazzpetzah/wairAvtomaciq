@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.junit.Assert;
 
@@ -14,71 +15,65 @@ import com.wearezeta.auto.common.email.MBoxChangesListener;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.RegistrationPage;
-import com.wearezeta.auto.user_management.CreateZetaUser;
+import com.wearezeta.auto.user_management.ClientUser;
+import com.wearezeta.auto.user_management.UserCreationHelper;
+import com.wearezeta.auto.user_management.UsersManager;
+import com.wearezeta.auto.user_management.UsersManager.UserAliasType;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class RegistrationPageSteps {
-	private String aqaName;
-	private String aqaEmail;
-	private String aqaPassword;
+	private final UsersManager usrMgr = UsersManager.getInstance();
+
+	private ClientUser userToRegister = null;
 
 	private MBoxChangesListener listener;
 
 	@When("I enter name (.*)")
 	public void IEnterName(String name) throws IOException {
-		if (name.equals(CommonUtils.YOUR_USER_1)) {
-			Map<String, String> map = CreateZetaUser
-					.generateNextUser(
-							CommonUtils
-									.getDefaultEmailFromConfig(CommonUtils.class),
-							CommonUtils
-									.getDefaultPasswordFromConfig(CommonUtils.class));
-			aqaName = map.keySet().iterator().next();
-			aqaEmail = map.get(aqaName);
-			aqaPassword = CommonUtils
-					.getDefaultPasswordFromConfig(CommonUtils.class);
-			CommonOSXSteps.senderPages.getRegistrationPage().enterName(aqaName);
-		} else {
-			aqaName = name;
-			CommonOSXSteps.senderPages.getRegistrationPage().enterName(name);
+		try {
+			this.userToRegister = usrMgr.findUserByNameAlias(name);
+		} catch (NoSuchElementException e) {
+			this.userToRegister = new ClientUser();
+			this.userToRegister.setName(name);
+			this.userToRegister.addNameAlias(name);
 		}
+		CommonOSXSteps.senderPages.getRegistrationPage().enterName(
+				this.userToRegister.getName());
 	}
 
 	@When("I enter email (.*)")
-	public void IEnterEmail(String email) {
-		if (email.equals(CommonUtils.YOUR_USER_1)) {
-			CommonOSXSteps.senderPages.getRegistrationPage().enterEmail(aqaEmail);
-		} else {
-			aqaEmail = email;
-			CommonOSXSteps.senderPages.getRegistrationPage().enterEmail(email);
-		}
+	public void IEnterEmail(String email) throws IOException {
+		Map<String, String> userCredentails = UserCreationHelper
+				.generateUniqUserCredentials(UserCreationHelper.getMboxName());
+		this.userToRegister
+				.setEmail(userCredentails.values().iterator().next());
+		this.userToRegister.setId(userCredentails.keySet().iterator().next());
+		CommonOSXSteps.senderPages.getRegistrationPage().enterEmail(
+				this.userToRegister.getEmail());
 	}
 
 	@When("I enter password (.*)")
 	public void IEnterPassword(String password) throws IOException {
-		if (password.equals(CommonUtils.YOUR_PASS)) {
-			CommonOSXSteps.senderPages
-					.getRegistrationPage()
-					.enterPassword(
-							CommonUtils
-									.getDefaultPasswordFromConfig(CommonUtils.class));
-		} else {
-			aqaPassword = password;
-			CommonOSXSteps.senderPages.getRegistrationPage().enterPassword(
-					password);
+		try {
+			this.userToRegister.setPassword(usrMgr.findUserByAlias(password,
+					UserAliasType.PASSWORD).getPassword());
+		} catch (NoSuchElementException e) {
+			this.userToRegister.setPassword(password);
+			this.userToRegister.addPasswordAlias(password);
 		}
+		CommonOSXSteps.senderPages.getRegistrationPage().enterPassword(
+				this.userToRegister.getPassword());
 	}
 
 	@When("I submit registration data")
 	public void ISubmitRegistrationData() throws Exception {
 		CommonOSXSteps.senderPages.getRegistrationPage().submitRegistration();
-
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
-		expectedHeaders.put("Delivered-To", aqaEmail);
-		this.listener = CreateZetaUser.getMboxInstance(aqaEmail, aqaPassword)
-				.startMboxListener(expectedHeaders);
+		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
+		this.listener = UserCreationHelper.getMboxInstance().startMboxListener(
+				expectedHeaders);
 	}
 
 	@Then("I see confirmation page")
@@ -89,7 +84,8 @@ public class RegistrationPageSteps {
 
 	@Then("I verify registration address")
 	public void IVerifyRegistrationAddress() throws Exception {
-		CreateZetaUser.activateRegisteredUser(this.listener);
+		UserCreationHelper.activateRegisteredUser(this.listener);
+		usrMgr.appendCustomUser(this.userToRegister);
 	}
 
 	@When("I choose register using camera")
@@ -133,15 +129,12 @@ public class RegistrationPageSteps {
 						CommonUtils
 								.getOsxApplicationPathFromConfig(RegistrationPageSteps.class)));
 		ContactListPageSteps clSteps = new ContactListPageSteps();
-		clSteps.ISeeMyNameInContactList(aqaName);
+		clSteps.ISeeMyNameInContactList(this.userToRegister.getName());
 	}
 
 	public static final String[] INVALID_EMAILS = new String[] {
 			"abc.example.com", "abc@example@.com", "example@zeta",
-			"abc@example."/*
-						 * , "abc@example.c"
-						 */
-	};
+			"abc@example." };
 
 	public ArrayList<String> consideredValidEmails = new ArrayList<String>();
 
