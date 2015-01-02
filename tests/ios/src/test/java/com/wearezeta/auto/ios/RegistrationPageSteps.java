@@ -19,15 +19,15 @@ import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.user_management.ClientUser;
 import com.wearezeta.auto.user_management.UserCreationHelper;
-import com.wearezeta.auto.user_management.UsersManager;
+import com.wearezeta.auto.user_management.ClientUsersManager;
 import com.wearezeta.auto.user_management.UserState;
-import com.wearezeta.auto.user_management.UsersManager.UserAliasType;
+import com.wearezeta.auto.user_management.ClientUsersManager.UserAliasType;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class RegistrationPageSteps {
-	private final UsersManager usrMgr = UsersManager.getInstance();
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private ClientUser userToRegister = null;
 

@@ -15,7 +15,7 @@ import com.wearezeta.auto.osx.pages.ConversationInfoPage;
 import com.wearezeta.auto.osx.pages.ConversationPage;
 import com.wearezeta.auto.osx.pages.PeoplePickerPage;
 import com.wearezeta.auto.osx.pages.UserProfilePage;
-import com.wearezeta.auto.user_management.UsersManager;
+import com.wearezeta.auto.user_management.ClientUsersManager;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -24,7 +24,7 @@ import cucumber.api.java.en.When;
 public class ContactListPageSteps {
 	private static final Logger log = ZetaLogger
 			.getLog(ContactListPageSteps.class.getSimpleName());
-	private final UsersManager usrMgr = UsersManager.getInstance();
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	@Given("^I see my name (.*) in Contact list$")
 	public void ISeeMyNameInContactList(String name) throws Exception {

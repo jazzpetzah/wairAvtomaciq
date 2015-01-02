@@ -6,14 +6,14 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.user_management.ClientUser;
-import com.wearezeta.auto.user_management.UsersManager;
+import com.wearezeta.auto.user_management.ClientUsersManager;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class OtherUserPersonalInfoPageSteps {
 	private final String BG_IMAGE_NAME = "aqaPictureContactBG.png";
-	private final UsersManager usrMgr = UsersManager.getInstance();
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	@When("^I see (.*) user profile page$")
 	public void WhenISeeOherUserProfilePage(String name) {

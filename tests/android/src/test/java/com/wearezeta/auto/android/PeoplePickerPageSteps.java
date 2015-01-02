@@ -4,13 +4,13 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.user_management.ClientUser;
-import com.wearezeta.auto.user_management.UsersManager;
+import com.wearezeta.auto.user_management.ClientUsersManager;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class PeoplePickerPageSteps {
-	private final UsersManager usrMgr = UsersManager.getInstance();
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	@When("^I see People picker page$")
 	public void WhenISeePeoplePickerPage() throws Throwable {

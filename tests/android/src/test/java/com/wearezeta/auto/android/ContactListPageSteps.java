@@ -5,14 +5,14 @@ import java.io.IOException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
-import com.wearezeta.auto.user_management.UsersManager;
+import com.wearezeta.auto.user_management.ClientUsersManager;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ContactListPageSteps {
-	private final UsersManager usrMgr = UsersManager.getInstance();
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private void disableHint(String name) throws Throwable {
 		Thread.sleep(2000);

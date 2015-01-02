@@ -10,13 +10,13 @@ import com.wearezeta.auto.ios.pages.GroupChatInfoPage;
 import com.wearezeta.auto.ios.pages.GroupChatPage;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
-import com.wearezeta.auto.user_management.UsersManager;
+import com.wearezeta.auto.user_management.ClientUsersManager;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class GroupChatPageSteps {
-	private final UsersManager usrMgr = UsersManager.getInstance();
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	@Then("^I see group chat page with users (.*) (.*)$")
 	public void ThenISeeGroupChatPage(String name1, String name2)

@@ -49,7 +49,6 @@ Feature: People View
       | Login   | Password    | Name    | Contact1    | Contact2    | Contact3    | Number |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | aqaContact3 | 4      |
       
-#conflicting with other contacts in contact list
   @smoke @id1389
   Scenario Outline: Leave from group chat
     Given I have 1 users and 2 contacts for 1 users

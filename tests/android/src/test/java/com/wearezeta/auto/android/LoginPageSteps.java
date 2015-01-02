@@ -7,13 +7,13 @@ import org.junit.Assert;
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.user_management.ClientUser;
-import com.wearezeta.auto.user_management.UsersManager;
-import com.wearezeta.auto.user_management.UsersManager.UserAliasType;
+import com.wearezeta.auto.user_management.ClientUsersManager;
+import com.wearezeta.auto.user_management.ClientUsersManager.UserAliasType;
 
 import cucumber.api.java.en.*;
 
 public class LoginPageSteps {
-	private final UsersManager usrMgr = UsersManager.getInstance();
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	@Given("I see sign in screen")
 	public void GiveniSeeSignInScreen() {

@@ -9,13 +9,13 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.ConnectToPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
-import com.wearezeta.auto.user_management.UsersManager;
+import com.wearezeta.auto.user_management.ClientUsersManager;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
 public class ConnectToPageSteps {
-	private final UsersManager usrMgr = UsersManager.getInstance();
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	@When("^I see connect to (.*) dialog$")
 	public void WhenISeeConnectToUserDialog(String name) throws Throwable {
@@ -50,7 +50,7 @@ public class ConnectToPageSteps {
 	@Given("^I have connection request from (.*)$")
 	public void IHaveConnectionRequest(String contact) throws Throwable {
 		BackEndREST.sendConnectRequest(usrMgr.findUserByNameAlias(contact),
-				usrMgr.findUserByNameAlias(UsersManager.SELF_USER_ALIAS),
+				usrMgr.findUserByNameAlias(ClientUsersManager.SELF_USER_ALIAS),
 				"CONNECT TO " + contact, "Hello");
 		Thread.sleep(2000);
 	}

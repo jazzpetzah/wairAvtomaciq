@@ -5,13 +5,13 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.BackEndREST;
 import com.wearezeta.auto.osx.pages.PeoplePickerPage;
 import com.wearezeta.auto.user_management.ClientUser;
-import com.wearezeta.auto.user_management.UsersManager;
+import com.wearezeta.auto.user_management.ClientUsersManager;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
 public class PeoplePickerPageSteps {
-	private final UsersManager usrMgr = UsersManager.getInstance();
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	
 	@When("I search for user (.*)")
 	public void WhenISearchForUser(String user) {

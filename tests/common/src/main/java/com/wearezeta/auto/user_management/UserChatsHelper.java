@@ -171,7 +171,7 @@ public class UserChatsHelper {
 		InputStream configFileStream = null;
 		Random random = new Random();
 		configFileStream = new FileInputStream(
-				CommonUtils.getImagePath(UsersManager.class));
+				CommonUtils.getImagePath(ClientUsersManager.class));
 		for (int i = 0; i < imagesCount; i++) {
 			ConvPair pair = userChats.get(random.nextInt(userChats.size() - 1));
 			final ClientUser user = pair.getContact();
@@ -187,11 +187,11 @@ public class UserChatsHelper {
 
 	public void createGroupChatWithUnconnecteduser(String chatName,
 			String groupCreator) throws Exception {
-		UsersManager usrMgr = UsersManager.getInstance();
+		ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 		
 		ClientUser groupCreatorUser = usrMgr.findUserByNameAlias(groupCreator);
-		ClientUser unconnectedUser = usrMgr.findUserByNameAlias(UsersManager.YOUR_USER_2_ALIAS);
-		ClientUser selfUser = usrMgr.findUserByNameAlias(UsersManager.SELF_USER_ALIAS);
+		ClientUser unconnectedUser = usrMgr.findUserByNameAlias(ClientUsersManager.YOUR_USER_2_ALIAS);
+		ClientUser selfUser = usrMgr.findUserByNameAlias(ClientUsersManager.SELF_USER_ALIAS);
 
 		BackEndREST.sendConnectRequest(groupCreatorUser, unconnectedUser,
 				CONNECTION_CONSTANT + groupCreatorUser.getName(), chatName);

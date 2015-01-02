@@ -11,14 +11,14 @@ import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.email.MBoxChangesListener;
 import com.wearezeta.auto.user_management.ClientUser;
 import com.wearezeta.auto.user_management.UserCreationHelper;
-import com.wearezeta.auto.user_management.UsersManager;
-import com.wearezeta.auto.user_management.UsersManager.UserAliasType;
+import com.wearezeta.auto.user_management.ClientUsersManager;
+import com.wearezeta.auto.user_management.ClientUsersManager.UserAliasType;
 import com.wearezeta.auto.user_management.UserState;
 
 import cucumber.api.java.en.*;
 
 public class RegistrationPageSteps {
-	private final UsersManager usrMgr = UsersManager.getInstance();
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private ClientUser userToRegister = null;
 

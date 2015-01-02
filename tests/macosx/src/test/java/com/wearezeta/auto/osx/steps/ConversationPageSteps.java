@@ -19,8 +19,8 @@ import com.wearezeta.auto.osx.pages.ConversationInfoPage;
 import com.wearezeta.auto.osx.pages.ConversationPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
 import com.wearezeta.auto.user_management.ClientUser;
-import com.wearezeta.auto.user_management.UsersManager;
-import com.wearezeta.auto.user_management.UsersManager.UserAliasType;
+import com.wearezeta.auto.user_management.ClientUsersManager;
+import com.wearezeta.auto.user_management.ClientUsersManager.UserAliasType;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -29,7 +29,7 @@ import cucumber.api.java.en.When;
 public class ConversationPageSteps {
 	private static final Logger log = ZetaLogger
 			.getLog(ConversationPageSteps.class.getSimpleName());
-	private final UsersManager usrMgr = UsersManager.getInstance();
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private String randomMessage;
 	private int beforeNumberOfKnocks = -1;
@@ -111,9 +111,9 @@ public class ConversationPageSteps {
 		Exception lastException = null;
 		BufferedImage pictureAssetFromConv = null;
 		ClientUser selfUser = usrMgr
-				.findUserByNameAlias(UsersManager.SELF_USER_ALIAS);
+				.findUserByNameAlias(ClientUsersManager.SELF_USER_ALIAS);
 		ClientUser contactUser = usrMgr
-				.findUserByNameAlias(UsersManager.CONTACT_1_ALIAS);
+				.findUserByNameAlias(ClientUsersManager.CONTACT_1_ALIAS);
 		do {
 			retry = false;
 			try {

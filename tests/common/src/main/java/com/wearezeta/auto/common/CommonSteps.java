@@ -7,7 +7,7 @@ import com.wearezeta.auto.user_management.ClientUser;
 import com.wearezeta.auto.user_management.UserChatsHelper;
 import com.wearezeta.auto.user_management.UserCreationHelper;
 import com.wearezeta.auto.user_management.OSXAddressBookHelpers;
-import com.wearezeta.auto.user_management.UsersManager;
+import com.wearezeta.auto.user_management.ClientUsersManager;
 
 public final class CommonSteps {
 	public static final String CONNECTION_NAME = "CONNECT TO ";
@@ -15,8 +15,8 @@ public final class CommonSteps {
 
 	private static String pingId = null;
 
-	private final UsersManager usrMgr = UsersManager.getInstance();
-	public UsersManager getUserManager() {
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+	public ClientUsersManager getUserManager() {
 		return this.usrMgr;
 	}
 	private final UserChatsHelper chatHelper = UserChatsHelper.getInstance();
@@ -72,7 +72,7 @@ public final class CommonSteps {
 		chatContacts.add(usrMgr.findUserByNameAlias(contact1));
 		chatContacts.add(usrMgr.findUserByNameAlias(contact2));
 		ClientUser user = usrMgr
-				.findUserByNameAlias(UsersManager.SELF_USER_ALIAS);
+				.findUserByNameAlias(ClientUsersManager.SELF_USER_ALIAS);
 		user = BackEndREST.loginByUser(user);
 		BackEndREST.createGroupConversation(user, chatContacts, chatName);
 	}
@@ -178,7 +178,7 @@ public final class CommonSteps {
 	public void GivenIHaveAtMinimumConnections(int minimumConnections)
 			throws Exception {
 		ClientUser selfUser = usrMgr
-				.findUserByNameAlias(UsersManager.SELF_USER_ALIAS);
+				.findUserByNameAlias(ClientUsersManager.SELF_USER_ALIAS);
 		for (int i = 0; i < minimumConnections; i++) {
 			ClientUser user = new ClientUser();
 			UserCreationHelper.createWireUser(user);

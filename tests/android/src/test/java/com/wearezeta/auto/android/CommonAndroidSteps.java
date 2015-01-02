@@ -7,7 +7,7 @@ import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ZetaFormatter;
-import com.wearezeta.auto.user_management.UsersManager;
+import com.wearezeta.auto.user_management.ClientUsersManager;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -36,7 +36,7 @@ public class CommonAndroidSteps {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		UsersManager.getInstance().generatePerformanceUser();
+		ClientUsersManager.getInstance().generatePerformanceUser();
 		path = CommonUtils
 				.getAndroidApplicationPathFromConfig(CommonAndroidSteps.class);
 		if (PagesCollection.loginPage == null) {

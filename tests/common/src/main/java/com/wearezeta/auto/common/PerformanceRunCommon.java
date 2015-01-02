@@ -1,11 +1,11 @@
 package com.wearezeta.auto.common;
 
 import com.wearezeta.auto.user_management.UserChatsHelper;
-import com.wearezeta.auto.user_management.UsersManager;
+import com.wearezeta.auto.user_management.ClientUsersManager;
 
 public final class PerformanceRunCommon {
-	private final UsersManager usrMgr = UsersManager.getInstance();
-	public UsersManager getUserManager() {
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+	public ClientUsersManager getUserManager() {
 		return this.usrMgr;
 	}
 	private final UserChatsHelper chatHelper = UserChatsHelper.getInstance();

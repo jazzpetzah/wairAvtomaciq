@@ -14,8 +14,8 @@ import com.wearezeta.auto.osx.pages.LoginPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
 import com.wearezeta.auto.osx.pages.RegistrationPage;
 import com.wearezeta.auto.user_management.ClientUser;
-import com.wearezeta.auto.user_management.UsersManager;
-import com.wearezeta.auto.user_management.UsersManager.UserAliasType;
+import com.wearezeta.auto.user_management.ClientUsersManager;
+import com.wearezeta.auto.user_management.ClientUsersManager.UserAliasType;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -24,7 +24,7 @@ import cucumber.api.java.en.When;
 public class LoginPageSteps {
 	private static final Logger log = ZetaLogger.getLog(LoginPageSteps.class
 			.getSimpleName());
-	private final UsersManager usrMgr = UsersManager.getInstance();
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	@Given("I Sign in using login (.*) and password (.*)")
 	public void GivenISignInUsingLoginAndPassword(String login, String password)

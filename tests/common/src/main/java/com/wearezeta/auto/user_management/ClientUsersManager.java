@@ -13,15 +13,37 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.wearezeta.auto.common.BackEndREST;
 import com.wearezeta.auto.common.BackendRequestException;
 
-public class UsersManager {
+public class ClientUsersManager {
+	private void setClientUserAliases(ClientUser user, String[] nameAliases,
+			String[] passwordAliases, String[] emailAliases) {
+		if (nameAliases != null && nameAliases.length > 0) {
+			user.clearNameAliases();
+			for (String nameAlias : nameAliases) {
+				user.addNameAlias(nameAlias);
+			}
+		}
+		if (passwordAliases != null && passwordAliases.length > 0) {
+			user.clearPasswordAliases();
+			for (String passwordAlias : passwordAliases) {
+				user.addPasswordAlias(passwordAlias);
+			}
+		}
+		if (emailAliases != null && emailAliases.length > 0) {
+			user.clearEmailAliases();
+			for (String emailAlias : passwordAliases) {
+				user.addEmailAlias(emailAlias);
+			}
+		}
+	}
+
 	private void resetClientsList(String[] aliases, List<ClientUser> dstList)
 			throws IOException {
 		dstList.clear();
-		for (String userAlias : aliases) {
+		for (String nameAlias : aliases) {
 			ClientUser pendingUser = new ClientUser();
-			pendingUser.addNameAlias(userAlias);
-			pendingUser.addPasswordAlias(YOUR_PASS_ALIAS);
-			pendingUser.addEmailAlias(YOUR_EMAIL_ALIAS);
+			setClientUserAliases(pendingUser, new String[] { nameAlias },
+					new String[] { YOUR_PASS_ALIAS },
+					new String[] { YOUR_EMAIL_ALIAS });
 			dstList.add(pendingUser);
 		}
 	}
@@ -69,41 +91,27 @@ public class UsersManager {
 	public static final String CONTACT_1_ALIAS = "aqaContact1";
 	public static final String CONTACT_2_ALIAS = "aqaContact2";
 	public static final String CONTACT_3_ALIAS = "aqaContact3";
-	public static final String CONTACT_4_ALIAS = "aqaPictureContact";
-	public static final String CONTACT_PICTURE_NAME = CONTACT_4_ALIAS;
-	public static final String CONTACT_PICTURE_EMAIL = "smoketester+aqaPictureContact@wearezeta.com";
+	public static final String CONTACT_PICTURE_NAME_ALIAS = "aqaPictureContact";
 	public static final String CONTACT_PICTURE_EMAIL_ALIAS = "aqaPictureContactEmail";
-	public static final String CONTACT_PICTURE_PASSWORD = "picture123";
 	public static final String CONTACT_PICTURE_PASSWORD_ALIAS = "aqaPictureContactPassword";
-	public static final String CONTACT_5_ALIAS = "aqaAvatar TestContact";
-	public static final String CONTACT_AVATAR_NAME = CONTACT_5_ALIAS;
-	public static final String CONTACT_AVATAR_EMAIL = "smoketester+aqaAvatarTestContact@wearezeta.com";
+	public static final String CONTACT_AVATAR_NAME_ALIAS = "aqaAvatar TestContact";
 	public static final String CONTACT_AVATAR_EMAIL_ALIAS = "aqaAvatarTestContactEmail";
-	public static final String CONTACT_AVATAR_PASSWORD = "avatar123";
 	public static final String CONTACT_AVATAR_PASSWORD_ALIAS = "aqaAvatarTestContactPassword";
-	public static final String CONTACT_6_ALIAS = "aqaBlock";
+	public static final String CONTACT_BLOCK_ALIAS = "aqaBlock";
 	private List<ClientUser> contacts = new ArrayList<ClientUser>();
 
 	private void resetContacts() throws IOException {
 		resetClientsList(new String[] { CONTACT_1_ALIAS, CONTACT_2_ALIAS,
-				CONTACT_3_ALIAS, CONTACT_4_ALIAS, CONTACT_5_ALIAS,
-				CONTACT_6_ALIAS }, contacts);
-//		ClientUser pictureContact = findUserByNameAlias(CONTACT_3_ALIAS);
-//		pictureContact.setEmail(CONTACT_PICTURE_EMAIL);
-//		pictureContact.clearNameAliases();
-//		pictureContact.addEmailAlias(CONTACT_PICTURE_EMAIL_ALIAS);
-//		pictureContact.setPassword(CONTACT_PICTURE_PASSWORD);
-//		pictureContact.clearPasswordAliases();
-//		pictureContact.addPasswordAlias(CONTACT_PICTURE_PASSWORD_ALIAS);
-//		pictureContact.setUserState(UserState.Created);
-//		ClientUser avatarContact = findUserByNameAlias(CONTACT_4_ALIAS);
-//		avatarContact.setEmail(CONTACT_AVATAR_EMAIL);
-//		avatarContact.clearEmailAliases();
-//		avatarContact.addEmailAlias(CONTACT_AVATAR_EMAIL_ALIAS);
-//		avatarContact.setPassword(CONTACT_AVATAR_PASSWORD);
-//		avatarContact.clearPasswordAliases();
-//		avatarContact.addPasswordAlias(CONTACT_AVATAR_PASSWORD_ALIAS);
-//		avatarContact.setUserState(UserState.Created);
+				CONTACT_3_ALIAS, CONTACT_PICTURE_NAME_ALIAS,
+				CONTACT_AVATAR_NAME_ALIAS, CONTACT_BLOCK_ALIAS }, contacts);
+		ClientUser pictureContact = findUserByNameAlias(CONTACT_PICTURE_NAME_ALIAS);
+		setClientUserAliases(pictureContact, null,
+				new String[] { CONTACT_PICTURE_PASSWORD_ALIAS },
+				new String[] { CONTACT_PICTURE_EMAIL_ALIAS });
+		ClientUser avatarContact = findUserByNameAlias(CONTACT_AVATAR_NAME_ALIAS);
+		setClientUserAliases(avatarContact, null,
+				new String[] { CONTACT_AVATAR_EMAIL_ALIAS },
+				new String[] { CONTACT_AVATAR_PASSWORD_ALIAS });
 	}
 
 	public List<ClientUser> getCreatedContacts() {
@@ -138,18 +146,18 @@ public class UsersManager {
 	private static final int NUMBER_OF_REGISTRATION_RETRIES = 5;
 	private static final int USERS_CREATION_TIMEOUT = 60 * 5; // seconds
 
-	private static UsersManager instance = null;
+	private static ClientUsersManager instance = null;
 
-	private UsersManager() throws IOException {
+	private ClientUsersManager() throws IOException {
 		resetPerfUser();
 		resetUsers();
 		resetContacts();
 	}
 
-	public static UsersManager getInstance() {
+	public static ClientUsersManager getInstance() {
 		if (instance == null) {
 			try {
-				instance = new UsersManager();
+				instance = new ClientUsersManager();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -294,7 +302,6 @@ public class UsersManager {
 		for (int i = 0; i < linkedUsers; i++) {
 			ClientUser dstUser = this.getCreatedUsers().get(i);
 			for (ClientUser contact : this.getCreatedContacts()) {
-				Thread.sleep(500);
 				BackEndREST.autoTestSendRequest(contact, dstUser);
 			}
 			BackEndREST.autoTestAcceptAllRequest(dstUser);

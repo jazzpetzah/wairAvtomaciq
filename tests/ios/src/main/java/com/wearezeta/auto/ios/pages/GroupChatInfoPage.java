@@ -18,10 +18,10 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.user_management.ClientUser;
-import com.wearezeta.auto.user_management.UsersManager;
+import com.wearezeta.auto.user_management.ClientUsersManager;
 
 public class GroupChatInfoPage extends IOSPage {
-	private final UsersManager usrMgr = UsersManager.getInstance();
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private String url;
 	private String path;
@@ -129,7 +129,7 @@ public class GroupChatInfoPage extends IOSPage {
 		String participantName = null;
 		String participantEmailTextFieldValue = null;
 		String unconnectedUsername = usrMgr.findUserByNameAlias(
-				UsersManager.YOUR_USER_2_ALIAS).getName();
+				ClientUsersManager.YOUR_USER_2_ALIAS).getName();
 		for (WebElement participant : participants) {
 			ClientUser participantUser = getParticipantUser(participant);
 			participantName = participantUser.getName();

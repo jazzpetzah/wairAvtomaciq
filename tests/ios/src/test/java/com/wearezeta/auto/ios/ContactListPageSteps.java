@@ -11,12 +11,12 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.pages.*;
 import com.wearezeta.auto.user_management.UserChatsHelper;
-import com.wearezeta.auto.user_management.UsersManager;
+import com.wearezeta.auto.user_management.ClientUsersManager;
 
 public class ContactListPageSteps {
 	private static final Logger log = ZetaLogger
 			.getLog(ContactListPageSteps.class.getSimpleName());
-	private final UsersManager usrMgr = UsersManager.getInstance();
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	private final UserChatsHelper chatsHelper = UserChatsHelper.getInstance();
 
 	@Given("^I see Contact list with my name (.*)$")

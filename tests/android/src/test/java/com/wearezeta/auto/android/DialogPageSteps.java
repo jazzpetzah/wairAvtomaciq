@@ -6,12 +6,12 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.user_management.UsersManager;
+import com.wearezeta.auto.user_management.ClientUsersManager;
 
 import cucumber.api.java.en.*;
 
 public class DialogPageSteps {
-	private final UsersManager usrMgr = UsersManager.getInstance();
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private static final String ANDROID_LONG_MESSAGE = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
 			+ "Maecenas sed lorem dignissim lacus tincidunt scelerisque nec sed sem. Nunc lacinia non tortor a fringilla. "
@@ -198,12 +198,12 @@ public class DialogPageSteps {
 	public void ThenISeeGroupChatPage(String name1, String name2)
 			throws Throwable {
 		PagesCollection.dialogPage.isDialogVisible();
-		if (name1.contains(UsersManager.CONTACT_1_ALIAS)
-				&& name2.contains(UsersManager.CONTACT_2_ALIAS)) {
+		if (name1.contains(ClientUsersManager.CONTACT_1_ALIAS)
+				&& name2.contains(ClientUsersManager.CONTACT_2_ALIAS)) {
 			PagesCollection.dialogPage.isGroupChatDialogContainsNames(usrMgr
-					.findUserByNameAlias(UsersManager.CONTACT_1_ALIAS)
+					.findUserByNameAlias(ClientUsersManager.CONTACT_1_ALIAS)
 					.getName(),
-					usrMgr.findUserByNameAlias(UsersManager.CONTACT_2_ALIAS)
+					usrMgr.findUserByNameAlias(ClientUsersManager.CONTACT_2_ALIAS)
 							.getName());
 		} else {
 			PagesCollection.dialogPage.isGroupChatDialogContainsNames(name1,
