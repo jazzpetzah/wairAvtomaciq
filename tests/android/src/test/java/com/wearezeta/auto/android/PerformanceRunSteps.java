@@ -9,40 +9,32 @@ import org.openqa.selenium.WebElement;
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
+import com.wearezeta.auto.common.CommonPerformanceRunSteps;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.user_management.UsersManager;
 
 import cucumber.api.java.en.When;
 
-public class PerformanceRunSteps {
-	private final UsersManager usrMgr = UsersManager.getInstance();
-	
-	private static final int SEND_MESSAGE_NUM = 4;
-	private static final int BACK_END_MESSAGE_COUNT = 5;
-	private static final int MIN_WAIT_VALUE_IN_MIN = 1;
-	private static final int MAX_WAIT_VALUE_IN_MIN = 2;
-
+public class PerformanceRunSteps extends CommonPerformanceRunSteps {
 	@When("^I (.*) start test cycle for (.*) minutes")
 	public void WhenIStartTestCycleForNMinutes(String name, int time)
 			throws Throwable {
 		LocalDateTime startDateTime = LocalDateTime.now();
 		long diffInMinutes = 0;
-//		Boolean isMinimized = false; Broke swipe in dialogs
+		// Boolean isMinimized = false; Broke swipe in dialogs
 		Random random = new Random();
 		name = usrMgr.findUserByNameAlias(name).getName();
 		while (diffInMinutes < time) {
 
 			// Get BackEnd messages
-			usrMgr.sendRandomMessagesToUser(BACK_END_MESSAGE_COUNT);
-			usrMgr.sendDefaultImageToUser((int) Math
+			chatHelper.sendRandomMessagesToUser(BACK_END_MESSAGE_COUNT);
+			chatHelper.sendDefaultImageToUser((int) Math
 					.floor(BACK_END_MESSAGE_COUNT / 5));
 			// ----
 
-/*			Broke swipe in dialogs
- * 			if (isMinimized) {
-				PagesCollection.contactListPage.restoreApplication();
-			}
-*/
+			/*
+			 * Broke swipe in dialogs if (isMinimized) {
+			 * PagesCollection.contactListPage.restoreApplication(); }
+			 */
 			// --Get list of visible dialogs visible dialog
 			ArrayList<WebElement> visibleContactsList = new ArrayList<WebElement>(
 					PagesCollection.contactListPage.GetVisibleContacts());
@@ -77,10 +69,11 @@ public class PerformanceRunSteps {
 			}
 			// ----
 
-/*			Broke swipe in dialogs
- * 			PagesCollection.dialogPage.minimizeApplication();
-			isMinimized = true;
-*/
+			/*
+			 * Broke swipe in dialogs
+			 * PagesCollection.dialogPage.minimizeApplication(); isMinimized =
+			 * true;
+			 */
 			Thread.sleep((random.nextInt(MAX_WAIT_VALUE_IN_MIN) + MIN_WAIT_VALUE_IN_MIN) * 60 * 1000);
 			LocalDateTime currentDateTime = LocalDateTime.now();
 			diffInMinutes = java.time.Duration.between(startDateTime,

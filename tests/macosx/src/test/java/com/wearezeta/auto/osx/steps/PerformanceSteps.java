@@ -4,29 +4,20 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.time.LocalDateTime;
 
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 
+import com.wearezeta.auto.common.CommonPerformanceRunSteps;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationPage;
-import com.wearezeta.auto.user_management.UsersManager;
 
 import cucumber.api.java.en.When;
 
-public class PerformanceSteps {
-	private final UsersManager usrMgr = UsersManager.getInstance();
-
-	private static final int MIN_WAIT_VALUE_IN_MIN = 1;
-	private static final int MAX_WAIT_VALUE_IN_MIN = 2;
-	private static final int BACK_END_MESSAGE_COUNT = 5;
-	private static final int SEND_MESSAGE_NUM = 4;
+public class PerformanceSteps extends CommonPerformanceRunSteps {
 	private String randomMessage;
 	private static final String picturename = "testing.jpg";
-	private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class.getSimpleName());
 
 	Random random = new Random();
 
@@ -43,45 +34,42 @@ public class PerformanceSteps {
 								.getOsxAppiumUrlFromConfig(LoginPageSteps.class),
 						CommonUtils
 								.getOsxApplicationPathFromConfig(LoginPageSteps.class)));
-		
-		//Main cycle
-		while (diffInMinutes < time) {
-			
-			//Send messages and image by BackEnd
-			try {
-				usrMgr.sendRandomMessagesToUser(BACK_END_MESSAGE_COUNT);
-				usrMgr.sendDefaultImageToUser((int) Math
-						.floor(BACK_END_MESSAGE_COUNT / 5));
-			}
-			catch (Exception e) {
-				
-			}
 
-			
+		// Main cycle
+		while (diffInMinutes < time) {
+
+			// Send messages and image by BackEnd
+			try {
+				chatHelper.sendRandomMessagesToUser(BACK_END_MESSAGE_COUNT);
+				chatHelper.sendDefaultImageToUser((int) Math
+						.floor(BACK_END_MESSAGE_COUNT / 5));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 			Thread.sleep(1000);
 
-			//Send messages cycle by UI
+			// Send messages cycle by UI
 			for (int j = 1; j <= SEND_MESSAGE_NUM; ++j) {
 				ArrayList<WebElement> visibleContactsList = new ArrayList<WebElement>(
 						CommonOSXSteps.senderPages.getContactListPage()
 								.getContacts());
-				//remove self user from the list
+				// remove self user from the list
 				for (int i = 0; i < visibleContactsList.size(); i++) {
 					if (visibleContactsList.get(i).getText().equals(user)) {
 						visibleContactsList.remove(i);
 						break;
 					}
 				}
-				if (visibleContactsList.size()<= 0){
+				if (visibleContactsList.size() <= 0) {
 					continue;
 				}
 				int randomInt = random.nextInt(visibleContactsList.size() - 1);
 				String contact = visibleContactsList.get(randomInt).getText();
-				CommonOSXSteps.senderPages.getContactListPage().openConversation(
-						contact, false);
+				CommonOSXSteps.senderPages.getContactListPage()
+						.openConversation(contact, false);
 				Thread.sleep(100);
-				
+
 				CommonOSXSteps.senderPages
 						.setConversationPage(new ConversationPage(
 								CommonUtils
@@ -89,53 +77,58 @@ public class PerformanceSteps {
 								CommonUtils
 										.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
 				Thread.sleep(2000);
-				int numberMessages = CommonOSXSteps.senderPages.getConversationPage().getNumberOfMessageEntries(contact);				
-				int numberPictures = CommonOSXSteps.senderPages.getConversationPage().getNumberOfImageEntries();
-				if (numberMessages > 0 || numberPictures > 0){
-					try{
-					CommonOSXSteps.senderPages.getConversationPage().scrollDownToLastMessage();
-					}
-					catch(Exception exep){
+				int numberMessages = CommonOSXSteps.senderPages
+						.getConversationPage().getNumberOfMessageEntries(
+								contact);
+				int numberPictures = CommonOSXSteps.senderPages
+						.getConversationPage().getNumberOfImageEntries();
+				if (numberMessages > 0 || numberPictures > 0) {
+					try {
+						CommonOSXSteps.senderPages.getConversationPage()
+								.scrollDownToLastMessage();
+					} catch (Exception exep) {
 						System.out.println("no need to scroll");
 					}
 				}
 				randomMessage = CommonUtils.generateGUID();
-				CommonOSXSteps.senderPages.getConversationPage().writeNewMessage(
-						randomMessage);
+				CommonOSXSteps.senderPages.getConversationPage()
+						.writeNewMessage(randomMessage);
 				Thread.sleep(2000);
-				CommonOSXSteps.senderPages.getConversationPage().sendNewMessage();
+				CommonOSXSteps.senderPages.getConversationPage()
+						.sendNewMessage();
 				Thread.sleep(2000);
-				try{
-				CommonOSXSteps.senderPages.getConversationPage().scrollDownToLastMessage();
-				CommonOSXSteps.senderPages.getConversationPage().scrollDownToLastMessage();
-				}
-				catch(Exception ex){
+				try {
+					CommonOSXSteps.senderPages.getConversationPage()
+							.scrollDownToLastMessage();
+					CommonOSXSteps.senderPages.getConversationPage()
+							.scrollDownToLastMessage();
+				} catch (Exception ex) {
 					log.debug("Scrolling fail: ", ex);
 				}
 				Thread.sleep(2000);
-				try{
-				CommonOSXSteps.senderPages.getConversationPage().shortcutChooseImageDialog();
-				CommonOSXSteps.senderPages
-						.setChoosePicturePage(new ChoosePicturePage(
-								CommonUtils
-										.getOsxAppiumUrlFromConfig(ContactListPage.class),
-								CommonUtils
-										.getOsxApplicationPathFromConfig(ContactListPage.class)));
+				try {
+					CommonOSXSteps.senderPages.getConversationPage()
+							.shortcutChooseImageDialog();
+					CommonOSXSteps.senderPages
+							.setChoosePicturePage(new ChoosePicturePage(
+									CommonUtils
+											.getOsxAppiumUrlFromConfig(ContactListPage.class),
+									CommonUtils
+											.getOsxApplicationPathFromConfig(ContactListPage.class)));
 
-				ChoosePicturePage choosePicturePage = CommonOSXSteps.senderPages
-						.getChoosePicturePage();
-				Assert.assertTrue(choosePicturePage.isVisible());
-				
-				choosePicturePage.openImage(picturename);
-				}
-				catch(Exception ex){
+					ChoosePicturePage choosePicturePage = CommonOSXSteps.senderPages
+							.getChoosePicturePage();
+					Assert.assertTrue(choosePicturePage.isVisible());
+
+					choosePicturePage.openImage(picturename);
+				} catch (Exception ex) {
 					log.debug("Image posting failed: ", ex);
 				}
 				Thread.sleep(1000);
-				try{
-				CommonOSXSteps.senderPages.getConversationPage().scrollDownToLastMessage();
-				}
-				catch(Exception exep){
+				try {
+					CommonOSXSteps.senderPages.getConversationPage()
+							.scrollDownToLastMessage();
+				} catch (Exception exep) {
 					log.debug("Scrolling fail: ", exep);
 				}
 			}
@@ -163,7 +156,7 @@ public class PerformanceSteps {
 	@When("Set random sleep interval")
 	public void SetRandomSleepInterval() throws InterruptedException {
 		int sleepTimer = ((random.nextInt(MAX_WAIT_VALUE_IN_MIN) + MIN_WAIT_VALUE_IN_MIN) * 60 * 1000);
-		log.debug("Sleep time: " + sleepTimer/1000 + " sec.");
+		log.debug("Sleep time: " + sleepTimer / 1000 + " sec.");
 		Thread.sleep(sleepTimer);
 	}
 

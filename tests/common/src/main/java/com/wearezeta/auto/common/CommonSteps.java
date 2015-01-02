@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.wearezeta.auto.user_management.ClientUser;
+import com.wearezeta.auto.user_management.UserChatsHelper;
 import com.wearezeta.auto.user_management.UserCreationHelper;
 import com.wearezeta.auto.user_management.OSXAddressBookHelpers;
 import com.wearezeta.auto.user_management.UsersManager;
@@ -19,6 +20,7 @@ public abstract class CommonSteps {
 	private static String pingId = null;
 
 	protected final UsersManager usrMgr = UsersManager.getInstance();
+	protected final UserChatsHelper chatHelper = UserChatsHelper.getInstance();
 
 	public CommonSteps() {
 	}
@@ -77,8 +79,8 @@ public abstract class CommonSteps {
 	public void GivenGenerateAndConnectAdditionalUsers(int usersNum,
 			String userName) throws Exception {
 		ClientUser yourUser = usrMgr.findUserByNameAlias(userName);
-		usrMgr.generateNUsers(usersNum);
-		usrMgr.sendConnectionRequestInThreads(yourUser);
+		chatHelper.generateNUsers(usersNum);
+		chatHelper.sendConnectionRequestInThreads(yourUser);
 		yourUser = BackEndREST.loginByUser(yourUser);
 		BackEndREST.acceptAllConnections(yourUser);
 	}

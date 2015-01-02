@@ -1,33 +1,20 @@
 package com.wearezeta.auto.user_management;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.ws.rs.core.UriBuilderException;
-
-import org.apache.log4j.Logger;
-import org.json.JSONException;
 
 import com.wearezeta.auto.common.BackEndREST;
 import com.wearezeta.auto.common.BackendRequestException;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class UsersManager {
-	private static final Logger log = ZetaLogger.getLog(UsersManager.class
-			.getSimpleName());
-
 	private void resetClientsList(String[] aliases, List<ClientUser> dstList) throws IOException {
 		dstList.clear();
 		for (String userAlias : aliases) {
@@ -142,26 +129,6 @@ public class UsersManager {
 	{
 		perfUser.addNameAlias(PERFORMANCE_USER_ALIAS);
 		perfUser.addPasswordAlias(PERFORMANCE_PASS_ALIAS);
-	}
-
-	private List<ClientUser> additionalUsers = new CopyOnWriteArrayList<ClientUser>();
-
-	public List<ClientUser> getAdditionalUsers() {
-		return new ArrayList<ClientUser>(this.additionalUsers);
-	}
-
-	private void resetAdditionalUsers() {
-		this.additionalUsers.clear();
-	}
-
-	private List<ConvPair> userChats = new CopyOnWriteArrayList<ConvPair>();
-
-	public List<ConvPair> getUserChats() {
-		return new ArrayList<ConvPair>(this.userChats);
-	}
-
-	private void resetUserChats() {
-		this.userChats.clear();
 	}
 
 	private static final int MAX_PARALLEL_USER_CREATION_TASKS = 5;
@@ -330,134 +297,7 @@ public class UsersManager {
 		}
 	}
 
-	public void generateNUsers(int usersNum) throws InterruptedException,
-			BackendRequestException {
-		ExecutorService executor = Executors
-				.newFixedThreadPool(MAX_PARALLEL_USER_CREATION_TASKS);
-		final AtomicInteger numOfUsersCreatedWOErrors = new AtomicInteger();
-		numOfUsersCreatedWOErrors.set(0);
-		this.resetAdditionalUsers();
-		for (int i = 0; i < usersNum; i++) {
-			Runnable worker = new Thread(new Runnable() {
-				public void run() {
-					try {
-						String email = UserCreationHelper
-								.registerUserAndReturnMail();
-						ClientUser user = new ClientUser();
-						user.setEmail(email);
-						user.setPassword(CommonUtils
-								.getDefaultPasswordFromConfig(CommonUtils.class));
-						additionalUsers.add(user);
-						numOfUsersCreatedWOErrors.getAndIncrement();
-					} catch (Exception e) {
-						log.debug("error" + e.getMessage());
-					}
-				}
-			});
-			executor.submit(worker);
-		}
-		executor.shutdown();
-		if (!executor
-				.awaitTermination(USERS_CREATION_TIMEOUT, TimeUnit.SECONDS)) {
-			throw new BackendRequestException(
-					String.format(
-							"The backend has failed to generate users within %d seconds timeout",
-							USERS_CREATION_TIMEOUT));
-		}
-		if (numOfUsersCreatedWOErrors.get() != usersNum) {
-			throw new BackendRequestException(String.format(
-					"Failed to create %d new users on the backend", usersNum));
-		}
-	}
-
-	public void sendConnectionRequestInThreads(final ClientUser yourUser)
-			throws IllegalArgumentException, UriBuilderException, IOException,
-			JSONException, BackendRequestException, InterruptedException {
-		ExecutorService executor = Executors
-				.newFixedThreadPool(MAX_PARALLEL_USER_CREATION_TASKS);
-		final AtomicInteger numOfConnsSentWOErrors = new AtomicInteger();
-		numOfConnsSentWOErrors.set(0);
-		this.resetUserChats();
-		for (int i = 0; i < additionalUsers.size(); i++) {
-			final ClientUser user = additionalUsers.get(i);
-			Runnable worker = new Thread(new Runnable() {
-				public void run() {
-					try {
-						BackEndREST.autoTestSendRequest(user, yourUser);
-						ConvPair pair = new ConvPair();
-						pair.setContact(user);
-						pair.setConvName(yourUser.getName());
-						userChats.add(pair);
-						numOfConnsSentWOErrors.getAndIncrement();
-					} catch (Exception e) {
-						log.debug(e.getMessage());
-					}
-				}
-			});
-			executor.submit(worker);
-		}
-		executor.shutdown();
-		if (!executor
-				.awaitTermination(USERS_CREATION_TIMEOUT, TimeUnit.SECONDS)) {
-			throw new BackendRequestException(
-					String.format(
-							"The backend has failed to send conection requests within %d seconds timeout",
-							USERS_CREATION_TIMEOUT));
-		}
-		if (numOfConnsSentWOErrors.get() != additionalUsers.size()) {
-			throw new BackendRequestException(String.format(
-					"Failed to send connections to %d users on the backend",
-					additionalUsers.size()));
-		}
-	}
-
-	public void sendRandomMessagesToUser(int messCount) {
-		Random random = new Random();
-		if (messCount > userChats.size()) {
-			messCount = userChats.size();
-		}
-		ExecutorService executor = Executors
-				.newFixedThreadPool(MAX_PARALLEL_USER_CREATION_TASKS);
-		for (int i = 0; i < messCount; i++) {
-			ConvPair pair = userChats.get(random.nextInt(userChats.size() - 1));
-			final ClientUser user = pair.getContact();
-			final String contact = pair.getConvName();
-			Runnable worker = new Thread(new Runnable() {
-				public void run() {
-					try {
-						BackEndREST.sendDialogMessageByChatName(user, contact,
-								CommonUtils.generateGUID());
-					} catch (Throwable e) {
-						log.debug(e.getMessage());
-					}
-				}
-			});
-			executor.submit(worker);
-		}
-		executor.shutdown();
-		try {
-			executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-		} catch (InterruptedException e) {
-			log.debug(e.getMessage());
-		}
-	}
-
-	public void sendDefaultImageToUser(int imagesCount) throws Throwable {
-		InputStream configFileStream = null;
-		Random random = new Random();
-		configFileStream = new FileInputStream(
-				CommonUtils.getImagePath(UsersManager.class));
-		for (int i = 0; i < imagesCount; i++) {
-			ConvPair pair = userChats.get(random.nextInt(userChats.size() - 1));
-			final ClientUser user = pair.getContact();
-			final String contact = pair.getConvName();
-			BackEndREST.sendPictureToChatByName(user, contact, "default",
-					configFileStream);
-		}
-		if (configFileStream != null) {
-			configFileStream.close();
-		}
-	}
+	
 
 	public void generatePerformanceUser() throws Exception {
 		String email = UserCreationHelper.registerUserAndReturnMail();
