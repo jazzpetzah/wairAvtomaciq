@@ -25,6 +25,8 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 public class UserChatsHelper {
 	private static final int MAX_PARALLEL_CREATION_TASKS = 5;
 	private static final int CREATION_TIMEOUT = 60 * 5; // seconds
+	
+	private final static String CONNECTION_CONSTANT = "CONNECT TO ";
 
 	private static final Logger log = ZetaLogger.getLog(UserChatsHelper.class
 			.getSimpleName());
@@ -186,6 +188,25 @@ public class UserChatsHelper {
 		if (configFileStream != null) {
 			configFileStream.close();
 		}
+		
 	}
 
+	public void createGroupChatWithUnconnecteduser(String chatName,
+			String groupCreator) throws Exception {
+		UsersManager usrMgr = UsersManager.getInstance();
+		
+		ClientUser groupCreatorUser = usrMgr.findUserByNameAlias(groupCreator);
+		ClientUser unconnectedUser = usrMgr.findUserByNameAlias(UsersManager.YOUR_USER_2_ALIAS);
+		ClientUser selfUser = usrMgr.findUserByNameAlias(UsersManager.SELF_USER_ALIAS);
+
+		BackEndREST.sendConnectRequest(groupCreatorUser, unconnectedUser,
+				CONNECTION_CONSTANT + groupCreatorUser.getName(), chatName);
+		BackEndREST.acceptAllConnections(unconnectedUser);
+		List<ClientUser> users = new ArrayList<ClientUser>();
+		users.add(selfUser); // add self
+		users.add(unconnectedUser);
+
+		groupCreatorUser = BackEndREST.loginByUser(groupCreatorUser);
+		BackEndREST.createGroupConversation(groupCreatorUser, users, chatName);
+	}
 }

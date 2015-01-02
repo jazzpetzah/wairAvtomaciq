@@ -15,7 +15,8 @@ import com.wearezeta.auto.common.BackendRequestException;
 import com.wearezeta.auto.common.CommonUtils;
 
 public class UsersManager {
-	private void resetClientsList(String[] aliases, List<ClientUser> dstList) throws IOException {
+	private void resetClientsList(String[] aliases, List<ClientUser> dstList)
+			throws IOException {
 		dstList.clear();
 		for (String userAlias : aliases) {
 			ClientUser pendingUser = new ClientUser();
@@ -33,7 +34,7 @@ public class UsersManager {
 				YOUR_USER_3_ALIAS, YOUR_USER_4_ALIAS, YOUR_USER_5_ALIAS,
 				YOUR_USER_6_ALIAS, YOUR_USER_7_ALIAS, YOUR_USER_8_ALIAS,
 				YOUR_USER_9_ALIAS, YOUR_USER_10_ALIAS, YOUR_USER_11_ALIAS },
-				yourUsers);
+				users);
 	}
 
 	public static final String YOUR_PASS_ALIAS = "aqaPassword";
@@ -52,11 +53,11 @@ public class UsersManager {
 	public static final String YOUR_USER_9_ALIAS = "yourAccept";
 	public static final String YOUR_USER_10_ALIAS = "yourGroupChat";
 	public static final String YOUR_USER_11_ALIAS = "yourNotContact5";
-	private List<ClientUser> yourUsers = new ArrayList<ClientUser>();
+	private List<ClientUser> users = new ArrayList<ClientUser>();
 
 	public List<ClientUser> getCreatedUsers() {
 		ArrayList<ClientUser> result = new ArrayList<ClientUser>();
-		for (ClientUser usr : this.yourUsers) {
+		for (ClientUser usr : this.users) {
 			if (usr.getUserState() != UserState.NotCreated) {
 				result.add(usr);
 			}
@@ -65,27 +66,24 @@ public class UsersManager {
 	}
 
 	public void appendCustomUser(ClientUser newUser) {
-		this.yourUsers.add(newUser);
+		this.users.add(newUser);
 	}
 
 	public static final String CONTACT_1_ALIAS = "aqaContact1";
 	public static final String CONTACT_2_ALIAS = "aqaContact2";
 	public static final String CONTACT_3_ALIAS = "aqaContact3";
-
 	public static final String CONTACT_4_ALIAS = "aqaPictureContact";
 	public static final String CONTACT_PICTURE_NAME = CONTACT_4_ALIAS;
 	public static final String CONTACT_PICTURE_EMAIL = "smoketester+aqaPictureContact@wearezeta.com";
 	public static final String CONTACT_PICTURE_EMAIL_ALIAS = "aqaPictureContactEmail";
 	public static final String CONTACT_PICTURE_PASSWORD = "picture123";
 	public static final String CONTACT_PICTURE_PASSWORD_ALIAS = "aqaPictureContactPassword";
-
 	public static final String CONTACT_5_ALIAS = "aqaAvatar TestContact";
 	public static final String CONTACT_AVATAR_NAME = CONTACT_5_ALIAS;
 	public static final String CONTACT_AVATAR_EMAIL = "smoketester+aqaAvatarTestContact@wearezeta.com";
 	public static final String CONTACT_AVATAR_EMAIL_ALIAS = "aqaAvatarTestContactEmail";
 	public static final String CONTACT_AVATAR_PASSWORD = "avatar123";
 	public static final String CONTACT_AVATAR_PASSWORD_ALIAS = "aqaAvatarTestContactPassword";
-
 	public static final String CONTACT_6_ALIAS = "aqaBlock";
 	private List<ClientUser> contacts = new ArrayList<ClientUser>();
 
@@ -123,11 +121,16 @@ public class UsersManager {
 		this.contacts.add(newContact);
 	}
 
-	public static final String PERFORMANCE_USER_ALIAS = "perfUser";
+	public static final String PERFORMANCE_USER_NAME = "perfUser";
+	public static final String PERFORMANCE_USER_ALIAS = PERFORMANCE_USER_NAME;
 	public static final String PERFORMANCE_PASS_ALIAS = "perfPass";
 	private ClientUser perfUser = new ClientUser();
-	{
+
+	private void resetPerfUser() throws IOException {
+		perfUser.setName(PERFORMANCE_USER_ALIAS);
 		perfUser.addNameAlias(PERFORMANCE_USER_ALIAS);
+		perfUser.setPassword(CommonUtils
+				.getDefaultPasswordFromConfig(UsersManager.class));
 		perfUser.addPasswordAlias(PERFORMANCE_PASS_ALIAS);
 	}
 
@@ -135,11 +138,10 @@ public class UsersManager {
 	private static final int NUMBER_OF_REGISTRATION_RETRIES = 5;
 	private static final int USERS_CREATION_TIMEOUT = 60 * 5; // seconds
 
-	private final static String CONNECTION_CONSTANT = "CONNECT TO ";
-
 	private static UsersManager instance = null;
 
 	private UsersManager() throws IOException {
+		resetPerfUser();
 		resetUsers();
 		resetContacts();
 	}
@@ -157,7 +159,7 @@ public class UsersManager {
 
 	private List<ClientUser> getAllUsers() {
 		List<ClientUser> allUsers = new ArrayList<ClientUser>();
-		allUsers.addAll(yourUsers);
+		allUsers.addAll(users);
 		allUsers.addAll(contacts);
 		allUsers.add(perfUser);
 		return allUsers;
@@ -281,7 +283,7 @@ public class UsersManager {
 		for (int clientIdx = 0; clientIdx < usersNumber + contactsNumber; clientIdx++) {
 			ClientUser dstClient = null;
 			if (clientIdx < usersNumber) {
-				dstClient = this.yourUsers.get(userIdx);
+				dstClient = this.users.get(userIdx);
 				userIdx++;
 			} else {
 				dstClient = this.contacts.get(contactIdx);
@@ -297,53 +299,27 @@ public class UsersManager {
 		}
 	}
 
-	
-
 	public void generatePerformanceUser() throws Exception {
 		String email = UserCreationHelper.registerUserAndReturnMail();
 		perfUser.setEmail(email);
-		perfUser.setPassword(CommonUtils
-				.getDefaultPasswordFromConfig(CommonUtils.class));
 		perfUser = BackEndREST.loginByUser(perfUser);
 		perfUser = BackEndREST.getUserInfo(perfUser);
 	}
 
 	public void createContactLinks(int linkedUsers) throws Exception {
-		List<ClientUser> users = this.getCreatedUsers();
-		for (ClientUser yourUser : users) {
+		for (ClientUser yourUser : this.getCreatedUsers()) {
 			yourUser = BackEndREST.loginByUser(yourUser);
 			yourUser = BackEndREST.getUserInfo(yourUser);
 		}
 		for (int i = 0; i < linkedUsers; i++) {
-			ClientUser dstUser = users.get(i);
+			ClientUser dstUser = this.getCreatedUsers().get(i);
 			for (ClientUser contact : this.getCreatedContacts()) {
 				BackEndREST.autoTestSendRequest(contact, dstUser);
 				contact.setUserState(UserState.RequestSend);
 				Thread.sleep(500);
 			}
-
 			BackEndREST.autoTestAcceptAllRequest(dstUser);
 			dstUser.setUserState(UserState.AllContactsConnected);
 		}
-	}
-
-	public void createGroupChatWithUnconnecteduser(String chatName,
-			String groupCreator) throws Exception {
-		ClientUser groupCreatorUser = findUserByAlias(groupCreator,
-				UserAliasType.NAME);
-		ClientUser unconnectedUser = findUserByAlias(YOUR_USER_2_ALIAS,
-				UserAliasType.NAME);
-		ClientUser selfUser = findUserByAlias(YOUR_USER_1_ALIAS,
-				UserAliasType.NAME);
-
-		BackEndREST.sendConnectRequest(groupCreatorUser, unconnectedUser,
-				CONNECTION_CONSTANT + groupCreatorUser.getName(), chatName);
-		BackEndREST.acceptAllConnections(unconnectedUser);
-		List<ClientUser> users = new ArrayList<ClientUser>();
-		users.add(selfUser); // add self
-		users.add(unconnectedUser);
-
-		groupCreatorUser = BackEndREST.loginByUser(groupCreatorUser);
-		BackEndREST.createGroupConversation(groupCreatorUser, users, chatName);
 	}
 }

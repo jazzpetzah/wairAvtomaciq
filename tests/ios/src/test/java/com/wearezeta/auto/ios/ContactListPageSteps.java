@@ -10,12 +10,14 @@ import cucumber.api.java.en.*;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.pages.*;
+import com.wearezeta.auto.user_management.UserChatsHelper;
 import com.wearezeta.auto.user_management.UsersManager;
 
 public class ContactListPageSteps {
 	private static final Logger log = ZetaLogger
 			.getLog(ContactListPageSteps.class.getSimpleName());
 	private final UsersManager usrMgr = UsersManager.getInstance();
+	private final UserChatsHelper chatsHelper = UserChatsHelper.getInstance();
 
 	@Given("^I see Contact list with my name (.*)$")
 	public void GivenISeeContactListWithMyName(String name) throws Throwable {
@@ -36,7 +38,7 @@ public class ContactListPageSteps {
 	@Given("^I have group chat named (.*) with an unconnected user, made by (.*)$")
 	public void GivenGroupChatWithName(String chatName, String groupCreator)
 			throws Throwable {
-		usrMgr.createGroupChatWithUnconnecteduser(chatName, groupCreator);
+		chatsHelper.createGroupChatWithUnconnecteduser(chatName, groupCreator);
 	}
 
 	@When("I dismiss tutorial layout")
