@@ -5,14 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.wearezeta.auto.common.BackEndREST;
 import com.wearezeta.auto.common.BackendRequestException;
-import com.wearezeta.auto.common.CommonUtils;
 
 public class UsersManager {
 	private void resetClientsList(String[] aliases, List<ClientUser> dstList)
@@ -20,11 +19,9 @@ public class UsersManager {
 		dstList.clear();
 		for (String userAlias : aliases) {
 			ClientUser pendingUser = new ClientUser();
-			pendingUser.setName(userAlias);
 			pendingUser.addNameAlias(userAlias);
-			pendingUser.setPassword(CommonUtils
-					.getDefaultPasswordFromConfig(CommonUtils.class));
 			pendingUser.addPasswordAlias(YOUR_PASS_ALIAS);
+			pendingUser.addEmailAlias(YOUR_EMAIL_ALIAS);
 			dstList.add(pendingUser);
 		}
 	}
@@ -38,7 +35,7 @@ public class UsersManager {
 	}
 
 	public static final String YOUR_PASS_ALIAS = "aqaPassword";
-	public static final String YOUR_EMAIL_ALIAS = "aqaEmail";
+	public static final String YOUR_EMAIL_ALIAS = "aqaUser";
 
 	public static final String YOUR_USER_1_ALIAS = "aqaUser";
 	public static final String SELF_USER_ALIAS = YOUR_USER_1_ALIAS;
@@ -91,20 +88,22 @@ public class UsersManager {
 		resetClientsList(new String[] { CONTACT_1_ALIAS, CONTACT_2_ALIAS,
 				CONTACT_3_ALIAS, CONTACT_4_ALIAS, CONTACT_5_ALIAS,
 				CONTACT_6_ALIAS }, contacts);
-		ClientUser pictureContact = findUserByNameAlias(CONTACT_3_ALIAS);
-		pictureContact.setEmail(CONTACT_PICTURE_EMAIL);
-		pictureContact.addEmailAlias(CONTACT_PICTURE_EMAIL_ALIAS);
-		pictureContact.setPassword(CONTACT_PICTURE_PASSWORD);
-		pictureContact.clearPasswordAliases();
-		pictureContact.addPasswordAlias(CONTACT_PICTURE_PASSWORD_ALIAS);
-		pictureContact.setUserState(UserState.Created);
-		ClientUser avatarContact = findUserByNameAlias(CONTACT_4_ALIAS);
-		avatarContact.setEmail(CONTACT_AVATAR_EMAIL);
-		avatarContact.addEmailAlias(CONTACT_AVATAR_EMAIL_ALIAS);
-		avatarContact.setPassword(CONTACT_AVATAR_PASSWORD);
-		avatarContact.clearPasswordAliases();
-		avatarContact.addPasswordAlias(CONTACT_AVATAR_PASSWORD_ALIAS);
-		avatarContact.setUserState(UserState.Created);
+//		ClientUser pictureContact = findUserByNameAlias(CONTACT_3_ALIAS);
+//		pictureContact.setEmail(CONTACT_PICTURE_EMAIL);
+//		pictureContact.clearNameAliases();
+//		pictureContact.addEmailAlias(CONTACT_PICTURE_EMAIL_ALIAS);
+//		pictureContact.setPassword(CONTACT_PICTURE_PASSWORD);
+//		pictureContact.clearPasswordAliases();
+//		pictureContact.addPasswordAlias(CONTACT_PICTURE_PASSWORD_ALIAS);
+//		pictureContact.setUserState(UserState.Created);
+//		ClientUser avatarContact = findUserByNameAlias(CONTACT_4_ALIAS);
+//		avatarContact.setEmail(CONTACT_AVATAR_EMAIL);
+//		avatarContact.clearEmailAliases();
+//		avatarContact.addEmailAlias(CONTACT_AVATAR_EMAIL_ALIAS);
+//		avatarContact.setPassword(CONTACT_AVATAR_PASSWORD);
+//		avatarContact.clearPasswordAliases();
+//		avatarContact.addPasswordAlias(CONTACT_AVATAR_PASSWORD_ALIAS);
+//		avatarContact.setUserState(UserState.Created);
 	}
 
 	public List<ClientUser> getCreatedContacts() {
@@ -127,11 +126,12 @@ public class UsersManager {
 	private ClientUser perfUser = new ClientUser();
 
 	private void resetPerfUser() throws IOException {
-		perfUser.setName(PERFORMANCE_USER_ALIAS);
+		perfUser.clearNameAliases();
 		perfUser.addNameAlias(PERFORMANCE_USER_ALIAS);
-		perfUser.setPassword(CommonUtils
-				.getDefaultPasswordFromConfig(UsersManager.class));
+		perfUser.clearPasswordAliases();
 		perfUser.addPasswordAlias(PERFORMANCE_PASS_ALIAS);
+		perfUser.clearEmailAliases();
+		perfUser.addEmailAlias(YOUR_EMAIL_ALIAS);
 	}
 
 	private static final int MAX_PARALLEL_USER_CREATION_TASKS = 5;
@@ -229,34 +229,37 @@ public class UsersManager {
 			throws Exception {
 		ExecutorService executor = Executors
 				.newFixedThreadPool(MAX_PARALLEL_USER_CREATION_TASKS);
-		final List<ClientUser> createdClients = new CopyOnWriteArrayList<ClientUser>();
-		for (int i = 0; i < usersNumber + contactsNumber; i++) {
+
+		final AtomicInteger createdClientsCount = new AtomicInteger(0);
+		for (int clientIdx = 0; clientIdx < usersNumber + contactsNumber; clientIdx++) {
+			List<ClientUser> srcList = null;
+			int listIdx = 0;
+			if (clientIdx < usersNumber) {
+				srcList = this.users;
+				listIdx = clientIdx;
+			} else {
+				srcList = this.contacts;
+				listIdx = clientIdx - usersNumber;
+			}
+			final ClientUser userToCreate = srcList.get(listIdx);
 			Runnable worker = new Thread(new Runnable() {
 				public void run() {
-					boolean doRetry = true;
 					int count = 0;
 					int waitTime = 1;
-					while (doRetry && count < NUMBER_OF_REGISTRATION_RETRIES) {
+					while (count < NUMBER_OF_REGISTRATION_RETRIES) {
 						try {
-							final String email = UserCreationHelper
-									.registerUserAndReturnMail();
-							ClientUser user = new ClientUser();
-							user.setEmail(email);
-							user.setUserState(UserState.Created);
-							createdClients.add(user);
-							doRetry = false;
+							UserCreationHelper.createWireUser(userToCreate);
+							createdClientsCount.incrementAndGet();
+							break;
 						} catch (Exception e) {
-							doRetry = true;
 							e.printStackTrace();
 						}
-						if (doRetry) {
-							count++;
-							try {
-								Thread.sleep(waitTime * 1000);
-							} catch (InterruptedException e) {
-								return;
-							}
+						count++;
+						try {
+							Thread.sleep(waitTime * 1000);
 							waitTime *= 2;
+						} catch (InterruptedException e) {
+							return;
 						}
 					}
 				}
@@ -271,55 +274,30 @@ public class UsersManager {
 							"The backend has failed to prepare predefined users within %d seconds timeout",
 							USERS_CREATION_TIMEOUT));
 		}
-		if (createdClients.size() != usersNumber + contactsNumber) {
+		if (createdClientsCount.get() != usersNumber + contactsNumber) {
 			throw new BackendRequestException(
 					"Failed to create new users or contacts on the backend");
-		}
-
-		int userIdx = 0;
-		int contactIdx = 0;
-		this.resetUsers();
-		this.resetContacts();
-		for (int clientIdx = 0; clientIdx < usersNumber + contactsNumber; clientIdx++) {
-			ClientUser dstClient = null;
-			if (clientIdx < usersNumber) {
-				dstClient = this.users.get(userIdx);
-				userIdx++;
-			} else {
-				dstClient = this.contacts.get(contactIdx);
-				contactIdx++;
-			}
-			if (dstClient.getUserState() != UserState.NotCreated) {
-				continue;
-			}
-			ClientUser srcClient = createdClients.get(clientIdx);
-			dstClient.setEmail(srcClient.getEmail());
-			dstClient.addEmailAlias(YOUR_EMAIL_ALIAS);
-			dstClient.setUserState(srcClient.getUserState());
 		}
 	}
 
 	public void generatePerformanceUser() throws Exception {
-		String email = UserCreationHelper.registerUserAndReturnMail();
-		perfUser.setEmail(email);
+		perfUser = UserCreationHelper.createWireUser(perfUser);
 		perfUser = BackEndREST.loginByUser(perfUser);
-		perfUser = BackEndREST.getUserInfo(perfUser);
+		perfUser.setId(BackEndREST.getUserInfo(perfUser).getId());
 	}
 
 	public void createContactLinks(int linkedUsers) throws Exception {
 		for (ClientUser yourUser : this.getCreatedUsers()) {
 			yourUser = BackEndREST.loginByUser(yourUser);
-			yourUser = BackEndREST.getUserInfo(yourUser);
+			yourUser.setId(BackEndREST.getUserInfo(yourUser).getId());
 		}
 		for (int i = 0; i < linkedUsers; i++) {
 			ClientUser dstUser = this.getCreatedUsers().get(i);
 			for (ClientUser contact : this.getCreatedContacts()) {
-				BackEndREST.autoTestSendRequest(contact, dstUser);
-				contact.setUserState(UserState.RequestSend);
 				Thread.sleep(500);
+				BackEndREST.autoTestSendRequest(contact, dstUser);
 			}
 			BackEndREST.autoTestAcceptAllRequest(dstUser);
-			dstUser.setUserState(UserState.AllContactsConnected);
 		}
 	}
 }

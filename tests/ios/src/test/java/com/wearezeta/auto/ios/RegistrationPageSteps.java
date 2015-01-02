@@ -166,6 +166,7 @@ public class RegistrationPageSteps {
 		} catch (NoSuchElementException e) {
 			this.userToRegister = new ClientUser();
 			this.userToRegister.setName(name);
+			this.userToRegister.clearNameAliases();
 			this.userToRegister.addNameAlias(name);
 		}
 		PagesCollection.registrationPage.setName(this.userToRegister.getName());
@@ -196,11 +197,15 @@ public class RegistrationPageSteps {
 
 	@When("^I enter email (.*)$")
 	public void IEnterEmail(String email) throws IOException {
-		Map<String, String> userCredentails = UserCreationHelper
-				.generateUniqUserCredentials(UserCreationHelper.getMboxName());
-		this.userToRegister
-				.setEmail(userCredentails.values().iterator().next());
-		this.userToRegister.setId(userCredentails.keySet().iterator().next());
+		try {
+			String realEmail = usrMgr.findUserByAlias(email,
+					UserAliasType.EMAIL).getEmail();
+			this.userToRegister.setEmail(realEmail);
+		} catch (NoSuchElementException e) {
+			this.userToRegister.setEmail(email);
+		}
+		this.userToRegister.clearEmailAliases();
+		this.userToRegister.addEmailAlias(email);
 		PagesCollection.registrationPage.setEmail(this.userToRegister
 				.getEmail() + "\n");
 	}
@@ -213,14 +218,18 @@ public class RegistrationPageSteps {
 
 	@When("^I attempt to enter an email with spaces (.*)$")
 	public void IEnterEmailWithSpaces(String email) throws IOException {
-		Map<String, String> userCredentails = UserCreationHelper
-				.generateUniqUserCredentials(UserCreationHelper.getMboxName());
-		this.userToRegister
-				.setEmail(userCredentails.values().iterator().next());
-		this.userToRegister.setId(userCredentails.keySet().iterator().next());
-		email = this.userToRegister.getEmail();
-		PagesCollection.registrationPage.setEmail(new StringBuilder(email)
-				.insert(email.length() - 1, "          ").toString());
+		try {
+			String realEmail = usrMgr.findUserByAlias(email,
+					UserAliasType.EMAIL).getEmail();
+			this.userToRegister.setEmail(realEmail);
+		} catch (NoSuchElementException e) {
+			this.userToRegister.setEmail(email);
+		}
+		this.userToRegister.clearEmailAliases();
+		this.userToRegister.addEmailAlias(email);
+		PagesCollection.registrationPage.setEmail(new StringBuilder(
+				this.userToRegister.getEmail()).insert(email.length() - 1,
+				"          ").toString());
 	}
 
 	@When("^I enter an incorrect email (.*)$")

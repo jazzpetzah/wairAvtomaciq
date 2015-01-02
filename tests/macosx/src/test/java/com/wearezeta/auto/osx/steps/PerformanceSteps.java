@@ -4,18 +4,25 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.time.LocalDateTime;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 
-import com.wearezeta.auto.common.CommonPerformanceRunSteps;
+import com.wearezeta.auto.common.PerformanceRunCommon;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationPage;
 
 import cucumber.api.java.en.When;
 
-public class PerformanceSteps extends CommonPerformanceRunSteps {
+public class PerformanceSteps {
+	private final Logger log = ZetaLogger.getLog(PerformanceRunCommon.class
+			.getSimpleName());
+	private final PerformanceRunCommon commonStuff = PerformanceRunCommon
+			.getInstance();
+
 	private String randomMessage;
 	private static final String picturename = "testing.jpg";
 
@@ -27,7 +34,7 @@ public class PerformanceSteps extends CommonPerformanceRunSteps {
 		LocalDateTime startDateTime = LocalDateTime.now();
 		long diffInMinutes = 0;
 
-		user = usrMgr.findUserByNameAlias(user).getName();
+		user = commonStuff.getUserManager().findUserByNameAlias(user).getName();
 		CommonOSXSteps.senderPages
 				.setContactListPage(new ContactListPage(
 						CommonUtils
@@ -40,9 +47,13 @@ public class PerformanceSteps extends CommonPerformanceRunSteps {
 
 			// Send messages and image by BackEnd
 			try {
-				chatHelper.sendRandomMessagesToUser(BACK_END_MESSAGE_COUNT);
-				chatHelper.sendDefaultImageToUser((int) Math
-						.floor(BACK_END_MESSAGE_COUNT / 5));
+				commonStuff.getUserChatsHelper().sendRandomMessagesToUser(
+						PerformanceRunCommon.BACK_END_MESSAGE_COUNT);
+				commonStuff
+						.getUserChatsHelper()
+						.sendDefaultImageToUser(
+								(int) Math
+										.floor(PerformanceRunCommon.BACK_END_MESSAGE_COUNT / 5));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -50,7 +61,7 @@ public class PerformanceSteps extends CommonPerformanceRunSteps {
 			Thread.sleep(1000);
 
 			// Send messages cycle by UI
-			for (int j = 1; j <= SEND_MESSAGE_NUM; ++j) {
+			for (int j = 1; j <= PerformanceRunCommon.SEND_MESSAGE_NUM; ++j) {
 				ArrayList<WebElement> visibleContactsList = new ArrayList<WebElement>(
 						CommonOSXSteps.senderPages.getContactListPage()
 								.getContacts());
@@ -155,7 +166,8 @@ public class PerformanceSteps extends CommonPerformanceRunSteps {
 
 	@When("Set random sleep interval")
 	public void SetRandomSleepInterval() throws InterruptedException {
-		int sleepTimer = ((random.nextInt(MAX_WAIT_VALUE_IN_MIN) + MIN_WAIT_VALUE_IN_MIN) * 60 * 1000);
+		int sleepTimer = ((random
+				.nextInt(PerformanceRunCommon.MAX_WAIT_VALUE_IN_MIN) + PerformanceRunCommon.MIN_WAIT_VALUE_IN_MIN) * 60 * 1000);
 		log.debug("Sleep time: " + sleepTimer / 1000 + " sec.");
 		Thread.sleep(sleepTimer);
 	}

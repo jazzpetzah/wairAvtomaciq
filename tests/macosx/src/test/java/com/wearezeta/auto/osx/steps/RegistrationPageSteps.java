@@ -37,6 +37,7 @@ public class RegistrationPageSteps {
 		} catch (NoSuchElementException e) {
 			this.userToRegister = new ClientUser();
 			this.userToRegister.setName(name);
+			this.userToRegister.clearNameAliases();
 			this.userToRegister.addNameAlias(name);
 		}
 		CommonOSXSteps.senderPages.getRegistrationPage().enterName(
@@ -45,11 +46,15 @@ public class RegistrationPageSteps {
 
 	@When("I enter email (.*)")
 	public void IEnterEmail(String email) throws IOException {
-		Map<String, String> userCredentails = UserCreationHelper
-				.generateUniqUserCredentials(UserCreationHelper.getMboxName());
-		this.userToRegister
-				.setEmail(userCredentails.values().iterator().next());
-		this.userToRegister.setId(userCredentails.keySet().iterator().next());
+		try {
+			String realEmail = usrMgr.findUserByAlias(email,
+					UserAliasType.EMAIL).getEmail();
+			this.userToRegister.setEmail(realEmail);
+		} catch (NoSuchElementException e) {
+			this.userToRegister.setEmail(email);
+			this.userToRegister.clearEmailAliases();
+			this.userToRegister.addEmailAlias(email);
+		}
 		CommonOSXSteps.senderPages.getRegistrationPage().enterEmail(
 				this.userToRegister.getEmail());
 	}
@@ -61,6 +66,7 @@ public class RegistrationPageSteps {
 					UserAliasType.PASSWORD).getPassword());
 		} catch (NoSuchElementException e) {
 			this.userToRegister.setPassword(password);
+			this.userToRegister.clearPasswordAliases();
 			this.userToRegister.addPasswordAlias(password);
 		}
 		CommonOSXSteps.senderPages.getRegistrationPage().enterPassword(

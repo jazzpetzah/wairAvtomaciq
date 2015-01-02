@@ -67,19 +67,14 @@ public class UserChatsHelper {
 			BackendRequestException {
 		ExecutorService executor = Executors
 				.newFixedThreadPool(MAX_PARALLEL_CREATION_TASKS);
-		final AtomicInteger numOfUsersCreatedWOErrors = new AtomicInteger();
-		numOfUsersCreatedWOErrors.set(0);
+		final AtomicInteger numOfUsersCreatedWOErrors = new AtomicInteger(0);
 		this.resetAdditionalUsers();
 		for (int i = 0; i < usersNum; i++) {
 			Runnable worker = new Thread(new Runnable() {
 				public void run() {
 					try {
-						String email = UserCreationHelper
-								.registerUserAndReturnMail();
 						ClientUser user = new ClientUser();
-						user.setEmail(email);
-						user.setPassword(CommonUtils
-								.getDefaultPasswordFromConfig(CommonUtils.class));
+						UserCreationHelper.createWireUser(user);
 						additionalUsers.add(user);
 						numOfUsersCreatedWOErrors.getAndIncrement();
 					} catch (Exception e) {
@@ -107,8 +102,7 @@ public class UserChatsHelper {
 			JSONException, BackendRequestException, InterruptedException {
 		ExecutorService executor = Executors
 				.newFixedThreadPool(MAX_PARALLEL_CREATION_TASKS);
-		final AtomicInteger numOfConnsSentWOErrors = new AtomicInteger();
-		numOfConnsSentWOErrors.set(0);
+		final AtomicInteger numOfConnsSentWOErrors = new AtomicInteger(0);
 		this.resetUserChats();
 		for (int i = 0; i < additionalUsers.size(); i++) {
 			final ClientUser user = additionalUsers.get(i);

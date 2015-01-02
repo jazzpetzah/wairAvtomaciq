@@ -9,12 +9,15 @@ import org.openqa.selenium.WebElement;
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
-import com.wearezeta.auto.common.CommonPerformanceRunSteps;
+import com.wearezeta.auto.common.PerformanceRunCommon;
 import com.wearezeta.auto.common.CommonUtils;
 
 import cucumber.api.java.en.When;
 
-public class PerformanceRunSteps extends CommonPerformanceRunSteps {
+public class PerformanceRunSteps {
+	private final PerformanceRunCommon commonStuff = PerformanceRunCommon
+			.getInstance();
+
 	@When("^I (.*) start test cycle for (.*) minutes")
 	public void WhenIStartTestCycleForNMinutes(String name, int time)
 			throws Throwable {
@@ -22,13 +25,17 @@ public class PerformanceRunSteps extends CommonPerformanceRunSteps {
 		long diffInMinutes = 0;
 		// Boolean isMinimized = false; Broke swipe in dialogs
 		Random random = new Random();
-		name = usrMgr.findUserByNameAlias(name).getName();
+		name = commonStuff.getUserManager().findUserByNameAlias(name).getName();
 		while (diffInMinutes < time) {
 
 			// Get BackEnd messages
-			chatHelper.sendRandomMessagesToUser(BACK_END_MESSAGE_COUNT);
-			chatHelper.sendDefaultImageToUser((int) Math
-					.floor(BACK_END_MESSAGE_COUNT / 5));
+			commonStuff.getUserChatsHelper().sendRandomMessagesToUser(
+					PerformanceRunCommon.BACK_END_MESSAGE_COUNT);
+			commonStuff
+					.getUserChatsHelper()
+					.sendDefaultImageToUser(
+							(int) Math
+									.floor(PerformanceRunCommon.BACK_END_MESSAGE_COUNT / 5));
 			// ----
 
 			/*
@@ -47,7 +54,7 @@ public class PerformanceRunSteps extends CommonPerformanceRunSteps {
 			// --
 
 			// Send message to random visible chat
-			for (int i = 0; i < SEND_MESSAGE_NUM; i++) {
+			for (int i = 0; i < PerformanceRunCommon.SEND_MESSAGE_NUM; i++) {
 				int randomInt = random.nextInt(visibleContactsList.size() - 1);
 				PagesCollection.dialogPage = (DialogPage) PagesCollection.contactListPage
 						.tapOnContactByPosition(visibleContactsList, randomInt);
@@ -74,7 +81,8 @@ public class PerformanceRunSteps extends CommonPerformanceRunSteps {
 			 * PagesCollection.dialogPage.minimizeApplication(); isMinimized =
 			 * true;
 			 */
-			Thread.sleep((random.nextInt(MAX_WAIT_VALUE_IN_MIN) + MIN_WAIT_VALUE_IN_MIN) * 60 * 1000);
+			Thread.sleep((random
+					.nextInt(PerformanceRunCommon.MAX_WAIT_VALUE_IN_MIN) + PerformanceRunCommon.MIN_WAIT_VALUE_IN_MIN) * 60 * 1000);
 			LocalDateTime currentDateTime = LocalDateTime.now();
 			diffInMinutes = java.time.Duration.between(startDateTime,
 					currentDateTime).toMinutes();

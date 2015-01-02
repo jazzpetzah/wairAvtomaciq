@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import javax.mail.MessagingException;
-
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
@@ -67,26 +65,31 @@ public class RegistrationPageSteps {
 	}
 
 	@When("^I enter email (.*)$")
-	public void IEnterEmail(String email) throws IOException {
-		Map<String, String> userCredentails = UserCreationHelper
-				.generateUniqUserCredentials(UserCreationHelper.getMboxName());
-		this.userToRegister
-				.setEmail(userCredentails.values().iterator().next());
-		this.userToRegister.setId(userCredentails.keySet().iterator().next());
+	public void IEnterEmail(String email) {
+		try {
+			String realEmail = usrMgr.findUserByAlias(email,
+					UserAliasType.EMAIL).getEmail();
+			this.userToRegister.setEmail(realEmail);
+		} catch (NoSuchElementException e) {
+			this.userToRegister.setEmail(email);
+		}
+		this.userToRegister.clearEmailAliases();
+		this.userToRegister.addEmailAlias(email);
 		PagesCollection.registrationPage.setEmail(this.userToRegister
 				.getEmail());
 	}
 
 	@When("^I enter password (.*)$")
-	public void IEnterPassword(String password) throws IOException,
-			MessagingException, InterruptedException {
+	public void IEnterPassword(String password) {
 		try {
-			this.userToRegister.setPassword(usrMgr.findUserByAlias(password,
-					UserAliasType.PASSWORD).getPassword());
+			String realPassword = usrMgr.findUserByAlias(password,
+					UserAliasType.PASSWORD).getPassword();
+			this.userToRegister.setPassword(realPassword);
 		} catch (NoSuchElementException e) {
 			this.userToRegister.setPassword(password);
-			this.userToRegister.addPasswordAlias(password);
 		}
+		this.userToRegister.clearPasswordAliases();
+		this.userToRegister.addPasswordAlias(password);
 		PagesCollection.registrationPage.setPassword(this.userToRegister
 				.getPassword());
 	}

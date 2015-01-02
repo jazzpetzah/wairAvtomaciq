@@ -203,24 +203,25 @@ public class ZetaFormatter implements Formatter, Reporter {
 	@Override
 	public void write(String arg0) {
 		// TODO Auto-generated method stub
-		
 	}
 	
 	private void sendNotification(String message) throws Exception {
-		
-		ClientUser yourСontact = new ClientUser(LOGIN, PASSWORD, "AutomationBot", UserState.AllContactsConnected);
+		ClientUser bot = new ClientUser();
+		bot.setEmail(LOGIN);
+		bot.setPassword(PASSWORD);
+		bot.setName("AutomationBot");
+		bot.setUserState(UserState.AllContactsConnected);
 		switch (driver.getCapabilities().getCapability("platformName").toString()) {
 			case "Android":
-				BackEndREST.sendDialogMessageByChatName(yourСontact, CONTACT_ANDROID, message);
+				BackEndREST.sendDialogMessageByChatName(bot, CONTACT_ANDROID, message);
 				break;
 			case "Mac":
-				BackEndREST.sendDialogMessageByChatName(yourСontact, CONTACT_OSX, message);
+				BackEndREST.sendDialogMessageByChatName(bot, CONTACT_OSX, message);
 				break;
 			case "iOS":
-				BackEndREST.sendDialogMessageByChatName(yourСontact, CONTACT_IOS, message);
+				BackEndREST.sendDialogMessageByChatName(bot, CONTACT_IOS, message);
 				break;
 		}
-		
 	}
 
 	public static RemoteWebDriver getDriver() {

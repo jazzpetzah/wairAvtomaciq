@@ -10,16 +10,14 @@ import org.openqa.selenium.WebElement;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
-import com.wearezeta.auto.common.CommonPerformanceRunSteps;
+import com.wearezeta.auto.common.PerformanceRunCommon;
 import com.wearezeta.auto.common.CommonUtils;
 
 import cucumber.api.java.en.When;
 
-public class PerformanceRunSteps extends CommonPerformanceRunSteps {
-	private static final int SEND_MESSAGE_NUM = 4;
-	private static final int BACK_END_MESSAGE_COUNT = 5;
-	private static final int MIN_WAIT_VALUE_IN_MIN = 1;
-	private static final int MAX_WAIT_VALUE_IN_MIN = 2;
+public class PerformanceRunSteps {
+	private final PerformanceRunCommon commonStuff = PerformanceRunCommon
+			.getInstance();
 	private static final int MIN_SLEEP_VALUE = 30000;
 
 	@When("^I (.*) start test cycle for (.*) minutes")
@@ -29,16 +27,20 @@ public class PerformanceRunSteps extends CommonPerformanceRunSteps {
 		long diffInMinutes = 0;
 
 		Random random = new Random();
-		name = usrMgr.findUserByNameAlias(name).getName();
+		name = commonStuff.getUserManager().findUserByNameAlias(name).getName();
 		while (diffInMinutes < time) {
 
 			// Send x messages and x/5 images to your user
-			chatHelper.sendRandomMessagesToUser(BACK_END_MESSAGE_COUNT);
-			chatHelper.sendDefaultImageToUser((int) Math
-					.floor(BACK_END_MESSAGE_COUNT / 5));
+			commonStuff.getUserChatsHelper().sendRandomMessagesToUser(
+					PerformanceRunCommon.BACK_END_MESSAGE_COUNT);
+			commonStuff
+					.getUserChatsHelper()
+					.sendDefaultImageToUser(
+							(int) Math
+									.floor(PerformanceRunCommon.BACK_END_MESSAGE_COUNT / 5));
 
 			// Send message to random visible chat
-			for (int i = 0; i < SEND_MESSAGE_NUM; i++) {
+			for (int i = 0; i < PerformanceRunCommon.SEND_MESSAGE_NUM; i++) {
 
 				// --Get list of visible dialogs, remove self user name from
 				// this list
@@ -86,7 +88,8 @@ public class PerformanceRunSteps extends CommonPerformanceRunSteps {
 
 			// PagesCollection.contactListPage.minimizeZeta();
 			Thread.sleep(MIN_SLEEP_VALUE
-					+ (random.nextInt(MAX_WAIT_VALUE_IN_MIN) + MIN_WAIT_VALUE_IN_MIN)
+					+ (random
+							.nextInt(PerformanceRunCommon.MAX_WAIT_VALUE_IN_MIN) + PerformanceRunCommon.MIN_WAIT_VALUE_IN_MIN)
 					* 60 * 1000);
 			LocalDateTime currentDateTime = LocalDateTime.now();
 			diffInMinutes = java.time.Duration.between(startDateTime,

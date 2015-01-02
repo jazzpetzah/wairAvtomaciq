@@ -12,12 +12,10 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 public class UserCreationHelper {
-
 	private static final Logger log = ZetaLogger
 			.getLog(UserCreationHelper.class.getSimpleName());
 
@@ -33,24 +31,17 @@ public class UserCreationHelper {
 				.getDefaultPasswordFromConfig(UserCreationHelper.class);
 	}
 
-	public static String registerUserAndReturnMail() throws Exception {
-		String nextSuffix = null;
-		String regMail = null;
-		Map<String, String> nextUser = generateUniqUserCredentials(
-				getMboxName());
-		for (Map.Entry<String, String> entry : nextUser.entrySet()) {
-			nextSuffix = entry.getKey();
-			regMail = entry.getValue();
-		}
-
+	// ! Mutates user instance
+	public static ClientUser createWireUser(ClientUser user) throws Exception {
 		IMAPSMailbox mbox = getMboxInstance();
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
-		expectedHeaders.put("Delivered-To", regMail);
+		expectedHeaders.put("Delivered-To", user.getEmail());
 		MBoxChangesListener listener = mbox.startMboxListener(expectedHeaders);
-		BackEndREST.registerNewUser(regMail, nextSuffix, getMboxPassword());
+		BackEndREST.registerNewUser(user.getEmail(), user.getName(),
+				user.getPassword());
 		activateRegisteredUser(listener);
-
-		return regMail;
+		user.setUserState(UserState.Created);
+		return user;
 	}
 
 	public static void activateRegisteredUser(MBoxChangesListener listener)
@@ -63,18 +54,8 @@ public class UserCreationHelper {
 				registrationInfo.getLastUserEmail()));
 	}
 
-	public static Map<String, String> generateUniqUserCredentials(String mail) {
-		String userId = generateUserId();
-		String regMail = generateUniqEmail(mail, userId);
-
-		Map<String, String> user = new LinkedHashMap<String, String>();
-		user.put(userId, regMail);
-		log.debug("Generated credentials for new user registration: " + regMail);
-		return user;
-	}
-
-	public static IMAPSMailbox getMboxInstance()
-			throws MessagingException, IOException, InterruptedException {
+	public static IMAPSMailbox getMboxInstance() throws MessagingException,
+			IOException, InterruptedException {
 		return new IMAPSMailbox(
 				CommonUtils
 						.getDefaultEmailServerFromConfig(UserCreationHelper.class),
@@ -88,11 +69,11 @@ public class UserCreationHelper {
 		return mbox.getLastMailHeaders(messageCount);
 	}
 
-	private static String generateUserId() {
+	public static String generateUniqName() {
 		return CommonUtils.generateGUID().replace("-", "");
 	}
 
-	private static String generateUniqEmail(String basemail, String suffix) {
+	public static String generateUniqEmail(String basemail, String suffix) {
 		String genmail = basemail.split("@")[0].concat("+").concat(suffix)
 				.concat("@").concat(basemail.split("@")[1]);
 		return genmail;

@@ -8,24 +8,29 @@ import com.wearezeta.auto.user_management.UserChatsHelper;
 import com.wearezeta.auto.user_management.UserCreationHelper;
 import com.wearezeta.auto.user_management.OSXAddressBookHelpers;
 import com.wearezeta.auto.user_management.UsersManager;
-import com.wearezeta.auto.user_management.UserState;
 
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.When;
-
-public abstract class CommonSteps {
+public final class CommonSteps {
 	public static final String CONNECTION_NAME = "CONNECT TO ";
 	public static final String CONNECTION_MESSAGE = "Hello!";
 
 	private static String pingId = null;
 
-	protected final UsersManager usrMgr = UsersManager.getInstance();
-	protected final UserChatsHelper chatHelper = UserChatsHelper.getInstance();
-
-	public CommonSteps() {
+	private final UsersManager usrMgr = UsersManager.getInstance();
+	public UsersManager getUserManager() {
+		return this.usrMgr;
 	}
+	private final UserChatsHelper chatHelper = UserChatsHelper.getInstance();
 
-	@Given("^(.*) connection request is sended to me (.*)$")
+	private static CommonSteps instance = null;
+	public static CommonSteps getInstance() {
+		if (instance == null) {
+			instance = new CommonSteps();
+		}
+		return instance;
+	}
+	
+	private CommonSteps() {}
+
 	public void GivenConnectionRequestIsSendedToMe(String contact, String me)
 			throws Throwable {
 		ClientUser yourUser = usrMgr.findUserByNameAlias(me);
@@ -36,7 +41,6 @@ public abstract class CommonSteps {
 		Thread.sleep(2000);
 	}
 
-	@Given("My Contact (.*) has group chat with me (.*) and his Contact (.*) with name (.*)")
 	public void GivenMyContactCreateGroupChatWithMeAndHisContact(
 			String contact1, String me, String contact2, String chatName)
 			throws Exception {
@@ -53,7 +57,6 @@ public abstract class CommonSteps {
 		BackEndREST.createGroupConversation(yourContact, users, chatName);
 	}
 
-	@Given("^User (.*) is connected with (.*)")
 	public void GivenUserIsConnectedWith(String contact1, String contact2)
 			throws Exception {
 		ClientUser contactInfo1 = usrMgr.findUserByNameAlias(contact1);
@@ -63,7 +66,6 @@ public abstract class CommonSteps {
 		BackEndREST.autoTestAcceptAllRequest(contactInfo2);
 	}
 
-	@Given("^I have group chat with name (.*) with (.*) and (.*)$")
 	public void GivenIHaveGroupChatWith(String chatName, String contact1,
 			String contact2) throws Exception {
 		List<ClientUser> chatContacts = new ArrayList<ClientUser>();
@@ -75,7 +77,6 @@ public abstract class CommonSteps {
 		BackEndREST.createGroupConversation(user, chatContacts, chatName);
 	}
 
-	@Given("^Generate (\\d+) and connect to (.*) contacts$")
 	public void GivenGenerateAndConnectAdditionalUsers(int usersNum,
 			String userName) throws Exception {
 		ClientUser yourUser = usrMgr.findUserByNameAlias(userName);
@@ -85,20 +86,17 @@ public abstract class CommonSteps {
 		BackEndREST.acceptAllConnections(yourUser);
 	}
 
-	@When("^(.*) ignore all requests$")
 	public void IgnoreConnectRequest(String contact) throws Exception {
 		ClientUser yourСontact = usrMgr.findUserByNameAlias(contact);
 		yourСontact = BackEndREST.loginByUser(yourСontact);
 		BackEndREST.ignoreAllConnections(yourСontact);
 	}
 
-	@When("^I wait for (.*) seconds$")
 	public void WaitForTime(String seconds) throws NumberFormatException,
 			InterruptedException {
 		Thread.sleep(Integer.parseInt(seconds) * 1000);
 	}
 
-	@When("^User (.*) blocks user (.*)$")
 	public void BlockContact(String contact, String login) throws Exception {
 		ClientUser yourUser = usrMgr.findUserByNameAlias(contact);
 		yourUser = BackEndREST.loginByUser(yourUser);
@@ -115,7 +113,6 @@ public abstract class CommonSteps {
 				"blocked");
 	}
 
-	@When("^(.*) accept all requests$")
 	public void AcceptConnectRequest(String contact) throws Exception {
 		ClientUser yourСontact = usrMgr.findUserByNameAlias(contact);
 		yourСontact = BackEndREST.loginByUser(yourСontact);
@@ -123,7 +120,6 @@ public abstract class CommonSteps {
 		Thread.sleep(2000);
 	}
 
-	@Given("I have (\\d+) users and (\\d+) contacts for (\\d+) users")
 	public void IHaveUsersAndConnections(int users, int connections,
 			int usersWithContacts) throws Exception {
 		usrMgr.generateUsers(users, connections);
@@ -131,7 +127,6 @@ public abstract class CommonSteps {
 		usrMgr.createContactLinks(usersWithContacts);
 	}
 
-	@When("^Contact (.*) ping conversation (.*)$")
 	public void userPingedConversation(String contact, String conversationName)
 			throws Exception {
 		ClientUser yourСontact = usrMgr.findUserByNameAlias(contact);
@@ -141,7 +136,6 @@ public abstract class CommonSteps {
 		Thread.sleep(1000);
 	}
 
-	@When("^Contact (.*) hotping conversation (.*)$")
 	public void userHotPingedConversation(String contact,
 			String conversationName) throws Exception {
 		ClientUser yourСontact = usrMgr.findUserByNameAlias(contact);
@@ -151,14 +145,12 @@ public abstract class CommonSteps {
 		Thread.sleep(1000);
 	}
 
-	@Given("I send invitation to (.*) by (.*)")
 	public void ISendInvitationToUserByContact(String user, String contact)
 			throws Exception {
 		BackEndREST.autoTestSendRequest(usrMgr.findUserByNameAlias(contact),
 				usrMgr.findUserByNameAlias(user));
 	}
 
-	@Given("I send (.*) connection requests to (.*)")
 	public void ISendInvitationToUserByContact(int requests, String user)
 			throws Throwable {
 		// limited to 4 users at time of creation to save time creating users
@@ -174,29 +166,22 @@ public abstract class CommonSteps {
 		}
 	}
 
-	@When("I add contacts list users to Mac contacts")
 	public void AddContactsUsersToMacContacts() throws Exception {
 		(new OSXAddressBookHelpers()).addUsersToContacts(usrMgr.getCreatedContacts());
 	}
 
-	@When("I remove contacts list users from Mac contacts")
 	public void IRemoveContactsListUsersFromMacContact() throws Exception {
 		(new OSXAddressBookHelpers()).removeUsersFromContacts(usrMgr
 				.getCreatedContacts());
 	}
 
-	@Given("I have at least (.*) connections")
 	public void GivenIHaveAtMinimumConnections(int minimumConnections)
 			throws Exception {
 		ClientUser selfUser = usrMgr
 				.findUserByNameAlias(UsersManager.SELF_USER_ALIAS);
 		for (int i = 0; i < minimumConnections; i++) {
-			String email = UserCreationHelper.registerUserAndReturnMail();
 			ClientUser user = new ClientUser();
-			user.setEmail(email);
-			user.setPassword(CommonUtils
-					.getDefaultPasswordFromConfig(CommonUtils.class));
-			user.setUserState(UserState.Created);
+			UserCreationHelper.createWireUser(user);
 			BackEndREST.autoTestSendRequest(user, selfUser);
 		}
 		BackEndREST.autoTestAcceptAllRequest(selfUser);

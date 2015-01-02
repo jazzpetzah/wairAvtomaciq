@@ -32,6 +32,7 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.image_send.*;
 import com.wearezeta.auto.user_management.ClientUser;
+import com.wearezeta.auto.user_management.UserState;
 
 import java.awt.image.BufferedImage;
 
@@ -50,19 +51,25 @@ public class BackEndREST {
 	ClientConfig config = new DefaultClientConfig();
 	static Client client = Client.create();
 
+	// ! Mutates user instance
 	public static void autoTestSendRequest(ClientUser user, ClientUser contact)
 			throws Exception {
 		user = loginByUser(user);
 		user = getUserInfo(user);
 		sendConnectRequest(user, contact, contact.getName(), "Hello!!!");
+		user.setUserState(UserState.RequestSend);
 	}
 
-	public static void autoTestAcceptAllRequest(ClientUser user)
+	// ! Mutates user instance
+	public static ClientUser autoTestAcceptAllRequest(ClientUser user)
 			throws Exception {
 		user = loginByUser(user);
 		acceptAllConnections(user);
+		user.setUserState(UserState.AllContactsConnected);
+		return user;
 	}
 
+	// ! Mutates user instance
 	public static void sendDialogMessage(ClientUser fromUser,
 			ClientUser toUser, String message) throws Exception {
 		fromUser = loginByUser(fromUser);
@@ -70,6 +77,7 @@ public class BackEndREST {
 		sendConversationMessage(fromUser, id, message);
 	}
 
+	// ! Mutates user instance
 	public static void sendDialogMessageByChatName(ClientUser fromUser,
 			String chatName, String message) throws Exception {
 		fromUser = loginByUser(fromUser);
@@ -77,6 +85,7 @@ public class BackEndREST {
 		sendConversationMessage(fromUser, id, message);
 	}
 
+	// ! Mutates user instance
 	public static String sendPingToConversation(ClientUser fromUser,
 			String chatName) throws Exception {
 		fromUser = loginByUser(fromUser);
@@ -84,6 +93,7 @@ public class BackEndREST {
 		return sendConversationPing(fromUser, id);
 	}
 
+	// ! Mutates user instance
 	public static void sendHotPingToConversation(ClientUser fromUser,
 			String chatName, String id) throws Exception {
 		fromUser = loginByUser(fromUser);
@@ -169,14 +179,22 @@ public class BackEndREST {
 	}
 
 	private synchronized static void writeLog(String[] lines) {
-		// TODO: Replace with smart logger
 		for (String line : lines) {
 			log.debug(line);
 		}
 	}
 
+	// ! Mutates user instance
 	public static ClientUser loginByUser(ClientUser user) throws Exception {
-		ClientUser result = user.clone();
+		if (user.getAccessToken() != null) {
+			try {
+				getUserNameByID(user.getId(), user);
+				return user;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
 		Builder webResource = buildDefaultRequest("login",
 				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
 		final String input = String.format(
@@ -204,14 +222,14 @@ public class BackEndREST {
 			}
 		}
 		JSONObject jsonObj = new JSONObject(output);
-		result.setAccessToken(jsonObj.getString("access_token"));
-		result.setTokenType(jsonObj.getString("token_type"));
+		user.setAccessToken(jsonObj.getString("access_token"));
+		user.setTokenType(jsonObj.getString("token_type"));
 
 		writeLog(new String[] {
 				"Output from Server ....  login By User " + user.getEmail(),
 				output + "\n" });
 
-		return result;
+		return user;
 	}
 
 	public static String getUserNameByID(String id, ClientUser user)
