@@ -2,7 +2,7 @@ Feature: Sign In
 
   @smoke @id340
   Scenario Outline: Sign in to ZClient
-    Given I have 1 users and 0 contacts for 1 users
+    Given There is 1 user where <Name> is me
     Given I see sign in screen
     When I press Sign in button
     And I have entered login <Login>
@@ -11,8 +11,8 @@ Feature: Sign In
     Then I see Contact list with my name <Name>
 
     Examples: 
-      | Login   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
 
   #Known issue is IOS-989, once it is fixed test should be updated
   #@staging @id524

@@ -2,7 +2,7 @@ Feature: Search
 
   @regression @id299 @noAcceptAlert
   Scenario Outline: Verify denying address book uploading
-    Given I have 1 users and 2 contacts for 0 users
+    Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I dismiss alert
     And I see Upload contacts dialog
@@ -15,12 +15,13 @@ Feature: Search
     And I dont see Upload contacts dialog
 
     Examples: 
-      | Login   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
 
   @staging @id311 @noAcceptAlert
   Scenario Outline: Verify uploading address book to the server
-    Given I have 1 users and 2 contacts for 0 users
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     When I add contacts list users to Mac contacts
     And I dismiss alert
@@ -32,9 +33,9 @@ Feature: Search
     And I see user <Contact2> found on People picker page
     And I remove contacts list users from Mac contacts
 
-    Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
+    Examples:
+      | Login      | Password      | Name      | Contact1    | Contact2    |
+      | user1Email | user1Password | user1Name | user2Name   | user3Name   |
 
   #Muted due to sync engine troubles(group chat is not created and app is closed after logout)
   #@mute @smoke @id600
@@ -74,7 +75,8 @@ Feature: Search
   
   @staging @id754
   Scenario Outline: Start 1:1 chat with users from Top Connections
-    Given I have at least 9 connections
+    Given There are <UserCount> users where <Name> is me
+    Given Myself is connected to all other users
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I swipe down contact list
@@ -85,12 +87,13 @@ Feature: Search
     And I tap go to enter conversation
 
     Examples: 
-      | Login   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |
+      | Login      | Password      | Name      | UserCount |
+      | user1Email | user1Password | user1Name | 10        |
 
   @id1150 @staging
   Scenario Outline: Start group chat with users from Top Connections
-    Given I have at least 9 connections
+    Given There are <UserCount> users where <Name> is me
+    Given Myself is connected to all other users
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I swipe down contact list
@@ -106,5 +109,5 @@ Feature: Search
     And I see first item in contact list named <ConvoName>
 
     Examples: 
-      | Login   | Password    | Name    | ConvoName    |
-      | aqaUser | aqaPassword | aqaUser | TopGroupTest |
+      | Login      | Password      | Name      | ConvoName     |
+      | user1Email | user1Password | user1Name | TopGroupTest  |

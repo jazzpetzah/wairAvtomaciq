@@ -27,12 +27,9 @@ import org.json.JSONObject;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource.Builder;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.image_send.*;
 import com.wearezeta.auto.user_management.ClientUser;
-import com.wearezeta.auto.user_management.UserState;
 
 import java.awt.image.BufferedImage;
 
@@ -48,58 +45,7 @@ public class BackEndREST {
 		log.setLevel(Level.DEBUG);
 	}
 
-	ClientConfig config = new DefaultClientConfig();
-	static Client client = Client.create();
-
-	// ! Mutates user instance
-	public static void autoTestSendRequest(ClientUser user, ClientUser contact)
-			throws Exception {
-		user = loginByUser(user);
-		user = getUserInfo(user);
-		sendConnectRequest(user, contact, contact.getName(), "Hello!!!");
-		user.setUserState(UserState.RequestSend);
-	}
-
-	// ! Mutates user instance
-	public static ClientUser autoTestAcceptAllRequest(ClientUser user)
-			throws Exception {
-		user = loginByUser(user);
-		acceptAllConnections(user);
-		user.setUserState(UserState.AllContactsConnected);
-		return user;
-	}
-
-	// ! Mutates user instance
-	public static void sendDialogMessage(ClientUser fromUser,
-			ClientUser toUser, String message) throws Exception {
-		fromUser = loginByUser(fromUser);
-		String id = getConversationWithSingleUser(fromUser, toUser);
-		sendConversationMessage(fromUser, id, message);
-	}
-
-	// ! Mutates user instance
-	public static void sendDialogMessageByChatName(ClientUser fromUser,
-			String chatName, String message) throws Exception {
-		fromUser = loginByUser(fromUser);
-		String id = getConversationByName(fromUser, chatName);
-		sendConversationMessage(fromUser, id, message);
-	}
-
-	// ! Mutates user instance
-	public static String sendPingToConversation(ClientUser fromUser,
-			String chatName) throws Exception {
-		fromUser = loginByUser(fromUser);
-		String id = getConversationByName(fromUser, chatName);
-		return sendConversationPing(fromUser, id);
-	}
-
-	// ! Mutates user instance
-	public static void sendHotPingToConversation(ClientUser fromUser,
-			String chatName, String id) throws Exception {
-		fromUser = loginByUser(fromUser);
-		String conv_id = getConversationByName(fromUser, chatName);
-		sendConvertsationHotPing(fromUser, conv_id, id);
-	}
+	private static Client client = Client.create();
 
 	private static void VerifyRequestResult(int currentResponseCode,
 			int[] acceptableResponseCodes) throws BackendRequestException {
@@ -483,7 +429,7 @@ public class BackEndREST {
 		return conversationId;
 	}
 
-	private static String getConversationByName(ClientUser fromUser,
+	public static String getConversationByName(ClientUser fromUser,
 			String conversationName) throws Exception {
 		String conversationId = null;
 		JSONArray jsonArray = getConversations(fromUser);
@@ -516,7 +462,7 @@ public class BackEndREST {
 		return conversationId;
 	}
 
-	private static void sendConversationMessage(ClientUser user, String convId,
+	public static void sendConversationMessage(ClientUser user, String convId,
 			String message) throws BackendRequestException,
 			IllegalArgumentException, UriBuilderException, IOException {
 		String nonce = CommonUtils.generateGUID();
@@ -533,7 +479,7 @@ public class BackEndREST {
 		writeLog(new String[] { "Output from Server ....\n\t" + output });
 	}
 
-	private static String sendConversationPing(ClientUser user, String convId)
+	public static String sendConversationPing(ClientUser user, String convId)
 			throws IllegalArgumentException, UriBuilderException, IOException,
 			BackendRequestException, JSONException {
 		String nonce = CommonUtils.generateGUID();
@@ -551,7 +497,7 @@ public class BackEndREST {
 		return eventId;
 	}
 
-	private static void sendConvertsationHotPing(ClientUser user,
+	public static void sendConvertsationHotPing(ClientUser user,
 			String convId, String refId) throws IllegalArgumentException,
 			UriBuilderException, IOException, BackendRequestException {
 		String nonce = CommonUtils.generateGUID();

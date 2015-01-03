@@ -2,7 +2,8 @@ Feature: People View
 
   @smoke @id1393
   Scenario Outline: Start group chat with users from contact list
-    Given I have 1 users and 2 contacts for 1 users
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
@@ -20,12 +21,13 @@ Feature: People View
     Then I see group chat page with users <Contact1> <Contact2>
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
+      | Login      | Password      | Name      | Contact1    | Contact2    |
+      | user1Email | user1Password | user1Name | user2Name   | user3Name   |
 
   @regression @id489
   Scenario Outline: Add user to a group conversation
-    Given I have 1 users and 3 contacts for 1 users
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
@@ -46,12 +48,13 @@ Feature: People View
     And I can see You Added <Contact3> message
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | Contact3    | Number |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | aqaContact3 | 4      |
+      | Login      | Password      | Name      | Contact1    | Contact2    | Contact3  | Number |
+      | user1Email | user1Password | user1Name | user2Name   | user3Name   | user4Name | 4      |
       
   @smoke @id1389
   Scenario Outline: Leave from group chat
-    Given I have 1 users and 2 contacts for 1 users
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
@@ -65,12 +68,13 @@ Feature: People View
     And I see You Left message in group chat
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
+      | Login      | Password      | Name      | Contact1    | Contact2   |
+      | user1Email | user1Password | user1Name | user2Name   | user3Name  |
 
   @smoke @id1390
   Scenario Outline: Remove from group chat
-    Given I have 1 users and 2 contacts for 1 users
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
@@ -82,27 +86,29 @@ Feature: People View
     Then I see that <Contact2> is not present on group chat page
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
+      | Login      | Password      | Name      | Contact1    | Contact2   |
+      | user1Email | user1Password | user1Name | user2Name   | user3Name  |
 
   @regression @id1396
   Scenario Outline: Verify correct group info page information
-    Given I have 1 users and 0 contacts for 1 users
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
     And I swipe up on group chat page
     Then I see that the conversation name is correct with <Contact1> and <Contact2>
     And I see the correct number of participants in the title <ParticipantNumber>
-    And I see the correct participant avatars
+    # And I see the correct participant avatars
 
-    Examples: 
-      | Login   | Password    | Name    | Contact1          | Contact2              | ParticipantNumber |
-      | aqaUser | aqaPassword | aqaUser | aqaPictureContact | aqaAvatar TestContact | 3                 |
+    Examples:
+      | Login      | Password      | Name      | Contact1    | Contact2   | ParticipantNumber |
+      | user1Email | user1Password | user1Name | user2Name   | user3Name  | 3                 |
 
   @smoke @id1406
   Scenario Outline: I can edit the conversation name
-    Given I have 1 users and 2 contacts for 1 users
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
@@ -114,13 +120,14 @@ Feature: People View
     And I return to the chat list
     And I see in contact list group chat named <ChatName>
 
-    Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | ChatName |
-      | aqaUser | aqaPassword | aqaUser | aqaContact2 | aqaContact1 | QAtest   |
+    Examples:
+      | Login      | Password      | Name      | Contact1    | Contact2   | ChatName |
+      | user1Email | user1Password | user1Name | user2Name   | user3Name  | QAtest   |
 
   @regression @id531
   Scenario Outline: I can see the individual user profile if I select someone in participants view
-    Given I have 1 users and 2 contacts for 1 users
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
@@ -129,26 +136,29 @@ Feature: People View
     Then I see <Contact2> user profile page
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
+      | Login      | Password      | Name      | Contact1    | Contact2   |
+      | user1Email | user1Password | user1Name | user2Name   | user3Name  |
 
   @regression @id339
   Scenario Outline: Tap on participant profiles in group info page participant view
-    Given I have 2 users and 0 contacts for 2 users
-    Given I have group chat named <GroupChatName> with an unconnected user, made by <GroupCreator>
+    Given There are 3 users where <Name> is me
+    Given <GroupCreator> is connected to me
+    Given <NonConnectedContact> is connected to <GroupCreator>
+    Given <GroupCreator> has group chat <GroupChatName> with Myself,<NonConnectedContact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I swipe up on group chat page
     And I tap on all of the participants and check their emails and names
 
-    Examples: 
-      | Login   | Password    | Name    | GroupCreator      | GroupChatName |
-      | aqaUser | aqaPassword | aqaUser | aqaPictureContact | TESTCHAT      |
+    Examples:
+      | Login      | Password      | Name      | GroupCreator | NonConnectedContact | GroupChatName |
+      | user1Email | user1Password | user1Name | user2Name    | user3Name           | TESTCHAT      |
 
   @regression @id393
   Scenario Outline: Verify you can start 1:1 conversation from a group conversation profile
-    Given I have 1 users and 2 contacts for 1 users
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
@@ -159,28 +169,31 @@ Feature: People View
     Then I see my message in the dialog
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
+      | Login      | Password      | Name      | Contact1    | Contact2   |
+      | user1Email | user1Password | user1Name | user2Name   | user3Name  |
 
   @regression @id393
   Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
-    Given I have 2 users and 1 contacts for 2 users
-    Given I have group chat named <ChatName> with an unconnected user, made by <Contact1>
+    Given There are 3 users where <Name> is me
+    Given <GroupCreator> is connected to me
+    Given <NonConnectedContact> is connected to <GroupCreator>
+    Given <GroupCreator> has group chat <GroupChatName> with Myself,<NonConnectedContact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    And I tap on group chat with name <ChatName>
+    And I tap on group chat with name <GroupChatName>
     And I swipe up on group chat page
-    And I tap on not connected contact <Contact2>
-    Then I see connect to <Contact2> dialog
+    And I tap on not connected contact <NonConnectedContact>
+    Then I see connect to <NonConnectedContact> dialog
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | ChatName   |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | yourUser    | QAtestChat |
+      | Login      | Password      | Name      | GroupCreator | NonConnectedContact | GroupChatName |
+      | user1Email | user1Password | user1Name | user2Name    | user3Name           | TESTCHAT      |
 
 	#ZIOS-2035            
   @regression @id555
   Scenario Outline: Verify you can add people from 1:1 people view (view functionality)
-    Given I have 1 users and 2 contacts for 1 users
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
@@ -202,12 +215,13 @@ Feature: People View
     And I see user <Contact2> on People picker page is NOT selected
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
+      | Login      | Password      | Name      | Contact1    | Contact2   |
+      | user1Email | user1Password | user1Name | user2Name   | user3Name  |
             
   @regression @id557
   Scenario Outline: Verify you can add people from 1:1 people view (via keyboard button)
-    Given I have 1 users and 3 contacts for 1 users
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
@@ -229,12 +243,13 @@ Feature: People View
     And I see in contact list group chat with <Contact1> <Contact2> <Contact3>
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | Contact3    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | aqaContact3 |
+      | Login      | Password      | Name      | Contact1    | Contact2   | Contact3  |
+      | user1Email | user1Password | user1Name | user2Name   | user3Name  | user4Name |
            
   @regression @id559
   Scenario Outline: Verify you can add people from 1:1 people view (cancel view)
-    Given I have 1 users and 3 contacts for 1 users
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
@@ -262,8 +277,8 @@ Feature: People View
     And I don't see in contact list group chat with <Contact1> <Contact2> <Contact3>
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | Contact3    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | aqaContact3 |
+      | Login      | Password      | Name      | Contact1    | Contact2   | Contact3  |
+      | user1Email | user1Password | user1Name | user2Name   | user3Name  | user4Name |
 
   #Known issue ZIOS-1711. Muted test due to crash after relogin.
   #@staging @id597 @mute

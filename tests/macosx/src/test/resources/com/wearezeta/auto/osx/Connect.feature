@@ -2,8 +2,8 @@ Feature: Connect to user
 
   @smoke @id473
   Scenario Outline: Receive invitation from user
-    Given I have 2 users and 0 contacts for 0 users
-    Given I send invitation to <Name> by <Contact>
+    Given There are 2 users where <Name> is me
+    Given <Contact> has sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I see connect invitation
@@ -12,13 +12,13 @@ Feature: Connect to user
     Then I see Contact list with name <Contact>
 
     Examples: 
-      | Login   | Password    | Name    | Contact  |
-      | aqaUser | aqaPassword | aqaUser | yourUser |
+      | Login      | Password      | Name      | Contact      |
+      | user1Email | user1Password | user1Name | user2Name    |
 
   @regression @id616
   Scenario Outline: Conversation created on second end after user accept connection request
-    Given I have 2 users and 0 contacts for 0 users
-    Given I send invitation to <Name> by <Contact>
+    Given There are 2 users where <Name> is me
+    Given <Contact> has sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I see connect invitation
@@ -33,12 +33,12 @@ Feature: Connect to user
     And I see message CONNECTED TO <Name> in conversation
 
     Examples: 
-      | Login   | Password    | Name    | Contact  |
-      | aqaUser | aqaPassword | aqaUser | yourUser |
+      | Login      | Password      | Name      | Contact      |
+      | user1Email | user1Password | user1Name | user2Name    |
 
   @smoke @id1409
   Scenario Outline: Verify sending a connection request to user chosen from people view
-    Given I have 2 users and 0 contacts for 0 users
+    Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open People Picker from contact list
@@ -49,5 +49,5 @@ Feature: Connect to user
     Then I see Contact list with name <Contact>
 
     Examples: 
-      | Login   | Password    | Name    | Contact  |
-      | aqaUser | aqaPassword | aqaUser | yourUser |
+      | Login      | Password      | Name      | Contact      |
+      | user1Email | user1Password | user1Name | user2Name    |

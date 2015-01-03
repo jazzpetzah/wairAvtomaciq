@@ -92,7 +92,7 @@ public class CommonOSXSteps {
 	@Given("^(.*) connection request is sended to me (.*)$")
 	public void GivenConnectionRequestIsSendedToMe(String contact, String me)
 			throws Throwable {
-		commonSteps.GivenConnectionRequestIsSendedToMe(contact, me);
+		commonSteps.GivenConnectionRequestIsSentToMe(contact, me);
 	}
 
 	@Given("My Contact (.*) has group chat with me (.*) and his Contact (.*) with name (.*)")
@@ -150,13 +150,13 @@ public class CommonOSXSteps {
 	@When("^Contact (.*) ping conversation (.*)$")
 	public void userPingedConversation(String contact, String conversationName)
 			throws Exception {
-		commonSteps.userPingedConversation(contact, conversationName);
+		commonSteps.UserPingedConversation(contact, conversationName);
 	}
 
 	@When("^Contact (.*) hotping conversation (.*)$")
 	public void userHotPingedConversation(String contact,
 			String conversationName) throws Exception {
-		commonSteps.userHotPingedConversation(contact, conversationName);
+		commonSteps.UserHotPingedConversation(contact, conversationName);
 	}
 
 	@Given("I send invitation to (.*) by (.*)")

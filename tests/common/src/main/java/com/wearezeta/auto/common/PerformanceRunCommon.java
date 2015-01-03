@@ -1,16 +1,11 @@
 package com.wearezeta.auto.common;
 
-import com.wearezeta.auto.user_management.UserChatsHelper;
 import com.wearezeta.auto.user_management.ClientUsersManager;
 
 public final class PerformanceRunCommon {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	public ClientUsersManager getUserManager() {
 		return this.usrMgr;
-	}
-	private final UserChatsHelper chatHelper = UserChatsHelper.getInstance();
-	public UserChatsHelper getUserChatsHelper() {
-		return this.chatHelper;
 	}
 	
 	public static final int SEND_MESSAGE_NUM = 4;

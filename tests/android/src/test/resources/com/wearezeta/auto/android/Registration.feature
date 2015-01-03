@@ -16,5 +16,5 @@ Feature: Registration
     And I see Contact list with my name <Name>
 
     Examples: 
-      | Email   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |

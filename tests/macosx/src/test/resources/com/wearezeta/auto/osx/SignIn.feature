@@ -2,7 +2,7 @@ Feature: Sign In
 
   @smoke @id690
   Scenario Outline: Sign in ZClient
-    Given I have 1 users and 0 contacts for 0 users
+    Given There is 1 user where <Name> is me
     Given I am signed out from ZClient
     And I see Sign In screen
     When I start Sign In
@@ -12,14 +12,14 @@ Feature: Sign In
     Then I see my name <Name> in Contact list
 
     Examples: 
-      | Login   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
 
   #Not supported functionality - Sign Out
   @regression @id525
   Scenario Outline: Change Sign in user
-    Given I have 2 users and 0 contacts for 0 users
-    Given I Sign in using login <Login2> and password <Password>
+    Given There are 2 users where <Name> is me
+    Given I Sign in using login <Login2> and password <Password2>
     And I see my name <Name2> in Contact list
     And I go to user <Name2> profile
     And I open picture settings
@@ -34,5 +34,5 @@ Feature: Sign In
     And I see changed user picture
 
     Examples: 
-      | Login   | Login2   | Password    | Name    | Name2    |
-      | aqaUser | yourUser | aqaPassword | aqaUser | yourUser |
+      | Login      | Login2     | Password      | Password2     | Name      | Name2     |
+      | user1Email | user2Email | user1Password | user2Password | user1Name | user2Name |

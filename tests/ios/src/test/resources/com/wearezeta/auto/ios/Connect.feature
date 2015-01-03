@@ -2,13 +2,13 @@ Feature: Connect
 
   @smoke @id576
   Scenario Outline: Send invitation message to a user
-    Given I have 2 users and 0 contacts for 1 users
+    Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact>
+    And I input in People picker search field user name <ContactEmail>
     And I see user <Contact> found on People picker page
     And I tap on NOT connected user name on People picker page <Contact>
     And I see connect to <Contact> dialog
@@ -20,14 +20,14 @@ Feature: Connect
     And I see Pending Connect to <Contact> message on Dialog page from user <Name>
 
     Examples: 
-      | Login   | Password    | Name    | Contact  |
-      | aqaUser | aqaPassword | aqaUser | yourUser |
+      | Login      | Password      | Name      | Contact   | ContactEmail |
+      | user1Email | user1Password | user1Name | user2Name | user2Email   |
 
   #ZIOS-3122
   @smoke @id585
   Scenario Outline: Get invitation message from user
-    Given I have 2 users and 0 contacts for 1 users
-    Given I have connection request from <Contact>
+    Given There are 2 users where <Name> is me
+    Given <Contact> has sent connection request to Me
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I see Pending request link in contact list
@@ -38,13 +38,15 @@ Feature: Connect
     Then I see first item in contact list named <Contact>
 
     Examples: 
-      | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | yourUser    |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
 
   @staging @id576
   Scenario Outline: Send connection request to unconnected participant in a group chat
-    Given I have 2 users and 0 contacts for 2 users
-    Given I have group chat named <GroupChatName> with an unconnected user, made by <GroupCreator>
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <GroupCreator>
+    Given <GroupCreator> is connected to <UnconnectedUser>
+    Given <GroupCreator> has group chat <GroupChatName> with <UnconnectedUser>,Myself
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
@@ -55,9 +57,9 @@ Feature: Connect
     And I return to the chat list
     Then I see first item in contact list named <UnconnectedUser>
 
-    Examples: 
-      | Login   | Password    | Name    | GroupCreator      | GroupChatName | UnconnectedUser |
-      | aqaUser | aqaPassword | aqaUser | aqaPictureContact | TESTCHAT      | yourUser        |
+    Examples:
+      | Login      | Password      | Name      | GroupCreator   | GroupChatName | UnconnectedUser |
+      | user1Email | user1Password | user1Name | user2Name      | TESTCHAT      | user3Name       |
 
   #Muted due to relogin issue
   #@staging @id611
@@ -145,8 +147,8 @@ Feature: Connect
 
   @regression @id579
   Scenario Outline: Verify transitions between connection requests (ignoring)
-    Given I have 4 users and 0 contacts for 1 users
-    Given I send <SentRequests> connection requests to <Name>
+    Given There are 4 users where <Name> is me
+    Given <Contact1>,<Contact2>,<Contact3> have sent connection requests to me
     Given I Sign in using login <Name> and password <Password>
     When I see Contact list with my name <Name>
     And I see Pending request link in contact list
@@ -161,13 +163,13 @@ Feature: Connect
     And I search for ignored user name <NotConnectedUser> and tap on it
     Then I see Pending request page
 
-    Examples: 
-      | Login   | Password    | Name    | SentRequests | NotConnectedUser |
-      | aqaUser | aqaPassword | aqaUser | 3            | yourUser         |
+    Examples:
+      | Login      | Password      | Name      | NotConnectedUser   | Contact2   | Contact3   |
+      | user1Email | user1Password | user1Name | user2Name          | user3Name  | user4Name  |
 
   @regression @id1404
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (Search)
-    Given I have 2 users and 0 contacts for 1 users
+    Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe down contact list
@@ -185,5 +187,5 @@ Feature: Connect
     And I see <Contact> user pending profile page
 
     Examples: 
-      | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | yourUser    |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |

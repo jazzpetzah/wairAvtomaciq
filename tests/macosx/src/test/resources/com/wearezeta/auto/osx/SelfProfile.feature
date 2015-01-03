@@ -2,7 +2,7 @@ Feature: User Profile
 
   @smoke @id180
   Scenario Outline: Change user picture from image file
-    Given I have 1 users and 0 contacts for 0 users
+    Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I go to user <Name> profile
@@ -14,8 +14,8 @@ Feature: User Profile
     Then I see changed user picture
 
     Examples: 
-      | Login   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
 
   #@regression
 #  @staging @id425
@@ -36,7 +36,7 @@ Feature: User Profile
 
   @regression @id183
   Scenario Outline: Profile photo can be deleted
-    Given I have 1 users and 0 contacts for 0 users
+    Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I go to user <Name> profile
@@ -50,5 +50,5 @@ Feature: User Profile
     Then I see user profile picture is not set
 
     Examples: 
-      | Login   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |

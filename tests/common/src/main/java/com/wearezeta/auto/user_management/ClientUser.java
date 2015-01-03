@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.wearezeta.auto.common.BackendAPIWrappers;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.email.IMAPSMailbox;
 
 public class ClientUser implements Cloneable {
 	private String name = null;
@@ -21,6 +23,9 @@ public class ClientUser implements Cloneable {
 	}
 	public void addNameAlias(String alias) {
 		this.nameAliases.add(alias);
+	}
+	public void removeNameAlias(String alias) {
+		this.nameAliases.remove(alias);
 	}
 	public void clearNameAliases() {
 		this.nameAliases.clear();
@@ -41,6 +46,9 @@ public class ClientUser implements Cloneable {
 	public void addPasswordAlias(String alias) {
 		this.passwordAliases.add(alias);
 	}
+	public void removePasswordAlias(String alias) {
+		this.passwordAliases.remove(alias);
+	}
 	public void clearPasswordAliases() {
 		this.passwordAliases.clear();
 	}
@@ -59,6 +67,9 @@ public class ClientUser implements Cloneable {
 	}
 	public void addEmailAlias(String alias) {
 		this.emailAliases.add(alias);
+	}
+	public void removeEmailAlias(String alias) {
+		this.emailAliases.remove(alias);
 	}
 	public void clearEmailAliases() {
 		this.emailAliases.clear();
@@ -97,11 +108,11 @@ public class ClientUser implements Cloneable {
 	}
 
 	public ClientUser() throws IOException {
-		this.name = UserCreationHelper.generateUniqName();
+		this.name = BackendAPIWrappers.generateUniqName();
 		this.password = CommonUtils
 				.getDefaultPasswordFromConfig(ClientUser.class);
-		this.email = UserCreationHelper.generateUniqEmail(
-				UserCreationHelper.getMboxName(), name);
+		this.email = BackendAPIWrappers.generateUniqEmail(
+				IMAPSMailbox.getName(), name);
 	}
 
 	@Override

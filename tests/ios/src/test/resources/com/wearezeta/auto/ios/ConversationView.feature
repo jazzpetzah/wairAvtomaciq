@@ -2,7 +2,8 @@ Feature: Conversation View
 
   @smoke @id330
   Scenario Outline: Send Message to contact
-    Given I have 1 users and 1 contacts for 1 users
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -12,12 +13,13 @@ Feature: Conversation View
     Then I see my message in the dialog
 
     Examples: 
-      | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
 
   @smoke @id331
   Scenario Outline: Send Hello to contact
-    Given I have 1 users and 1 contacts for 1 users
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -29,12 +31,13 @@ Feature: Conversation View
     Then I see You Pinged Again message in the dialog
 
     Examples: 
-      | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
 
   @smoke @id332
   Scenario Outline: Send a camera roll picture to user from contact list
-    Given I have 1 users and 1 contacts for 1 users
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -47,12 +50,13 @@ Feature: Conversation View
     Then I see new photo in the dialog
 
     Examples: 
-      | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
 
   @smoke @id334
   Scenario Outline: Send message to group chat
-    Given I have 1 users and 2 contacts for 1 users
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
@@ -61,15 +65,16 @@ Feature: Conversation View
     Then I see my message in the dialog
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
+      | Login      | Password      | Name      | Contact1  | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |
 
   @staging @id383
   Scenario Outline: Play/pause SoundCloud media link from the media bar
-    Given I have 1 users and 1 contacts for 1 users
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I tap on contact name <Contact1>
+    When I tap on contact name <Contact>
     And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
     Then I see media link <SoundCloudLink> and media in dialog
@@ -83,15 +88,16 @@ Feature: Conversation View
     Then The media stopps playing
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | SoundCloudLink                                                                       |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+      | Login      | Password      | Name      | Contact   | SoundCloudLink                                                                       |
+      | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
   @regression @id384
   Scenario Outline: Conversation gets scrolled back to playing media when clicking on media bar
-    Given I have 1 users and 1 contacts for 1 users
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I tap on contact name <Contact1>
+    When I tap on contact name <Contact>
     And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
     Then I see media link <SoundCloudLink> and media in dialog
@@ -101,31 +107,33 @@ Feature: Conversation View
     Then I see conversation view is scrolled back to the playing media link <SoundCloudLink>
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | SoundCloudLink                                                                       |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+      | Login      | Password      | Name      | Contact   | SoundCloudLink                                                                       |
+      | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
   @regression @id385
   Scenario Outline: Verify the Media Bar dissapears after playback finishes - SoundCloud
-    Given I have 1 users and 1 contacts for 1 users
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I tap on contact name <Contact1>
+    When I tap on contact name <Contact>
     And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
     And I see media bar on dialog page
-    And I wait <time> seconds for media to stop playing
+    And I wait 30 seconds for media to stop playing
     Then I dont see media bar on dialog page
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | SoundCloudLink                                                                       | time |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download | 129  |
+      | Login      | Password      | Name      | Contact   | SoundCloudLink                                                                       |
+      | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
   @regression @id386
   Scenario Outline: Verify the Media Bar disappears when playing media is back in view - SoundCloud
-    Given I have 1 users and 1 contacts for 1 users
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
@@ -138,12 +146,13 @@ Feature: Conversation View
     Then I dont see media bar on dialog page
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    | SoundCloudLink                                                                       |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+      | Login      | Password      | Name      | Contact   | SoundCloudLink                                                                       |
+      | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
   @regression @id394
   Scenario Outline: Tap the cursor to get to the end of the conversation
-    Given I have 1 users and 1 contacts for 1 users
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -154,12 +163,13 @@ Feature: Conversation View
     Then I see last message in the dialog
 
     Examples: 
-      | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
 
   @regression @id415
   Scenario Outline: Send Message to contact after navigating away from chat page
-    Given I have 1 users and 1 contacts for 1 users
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -174,13 +184,14 @@ Feature: Conversation View
     Then I see my message in the dialog
 
     Examples: 
-      | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
 
 #Muted steps due to relogin issue
   @regression @id407
   Scenario Outline: Send more than 200 chars message
-    Given I have 1 users and 1 contacts for 1 users
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -199,12 +210,13 @@ Feature: Conversation View
     #Then I see my message in the dialog
 
     Examples: 
-      | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
 
   @regression @id408
   Scenario Outline: Send one line message with lower case and upper case
-    Given I have 1 users and 1 contacts for 1 users
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -214,12 +226,13 @@ Feature: Conversation View
     Then I see my message in the dialog
 
     Examples: 
-      | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
 
   @staging @id409
   Scenario Outline: Send special chars (German)
-    Given I have 1 users and 1 contacts for 1 users
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
     Given I press Sign in button
     And I fill in email input <Text>
     And I copy email input field content
@@ -234,16 +247,17 @@ Feature: Conversation View
     And I send the message
     Then I see last message in dialog is expected message <Text>
 
-    Examples: 
-      | Login   | Password    | Name    | Contact     | Text                  |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | ÄäÖöÜüß & latin chars |
+    Examples:
+      | Login      | Password      | Name      | Contact   | Text                  |
+      | user1Email | user1Password | user1Name | user2Name | ÄäÖöÜüß & latin chars |
 
   @regression @id413
   Scenario Outline: Copy and paste to send the message
-    Given I have 1 users and 1 contacts for 1 users
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
     Given I see sign in screen
     When I press Sign in button
-    And I have entered login <text>
+    And I have entered login <Text>
     And I tap and hold on Email input
     And I click on popup SelectAll item
     And I click on popup Copy item
@@ -257,15 +271,16 @@ Feature: Conversation View
     And I tap and hold on message input
     And I click on popup Paste item
     And I send the message
-    Then I see last message in dialog is expected message <text>
+    Then I see last message in dialog is expected message <Text>
 
     Examples: 
-      | Login   | Password    | Name    | Contact     | text       |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | TextToCopy |
+      | Login      | Password      | Name      | Contact   | Text       |
+      | user1Email | user1Password | user1Name | user2Name | TextToCopy |
 
   @regression @id414
   Scenario Outline: Send a text containing spaces
-    Given I have 1 users and 1 contacts for 1 users
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -285,7 +300,8 @@ Feature: Conversation View
 
   @regression @id416
   Scenario Outline: Keyboard up and navigate to main convo list
-    Given I have 1 users and 1 contacts for 1 users
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -296,15 +312,16 @@ Feature: Conversation View
     And I dont see keyboard
 
     Examples: 
-      | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
 
   @regression @id488
   Scenario Outline: Verify you can see conversation images in fullscreen
-    Given I have 1 users and 1 contacts for 1 users
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I tap on contact name <Contact1>
+    When I tap on contact name <Contact>
     And I see dialog page
     And I swipe the text input cursor
     And I press Add Picture button
@@ -325,12 +342,13 @@ Feature: Conversation View
     Then I see new photo in the dialog
 
     Examples: 
-      | Login   | Password    | Name    | Contact1    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
 
   @regression @id526
   Scenario Outline: I can send and play inline youtube link
-    Given I have 1 users and 1 contacts for 1 users
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -340,9 +358,9 @@ Feature: Conversation View
     And I click video container for the first time
     And I see video player page is opened
 
-    Examples: 
-      | Login   | Password    | Name    | Contact     | YouTubeLink                                |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | http://www.youtube.com/watch?v=Bb1RhktcugU |
+    Examples:
+      | Login      | Password      | Name      | Contact   | YouTubeLink                                |
+      | user1Email | user1Password | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
 
   #Muted due to app quit on logout workaround
   #@staging @id606 @mute
@@ -487,7 +505,8 @@ Feature: Conversation View
 
   @staging @id1387
   Scenario Outline: Verify you can play/pause media from the Media Bar - YouTube
-    Given I have 1 users and 1 contacts for 1 users
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -506,13 +525,14 @@ Feature: Conversation View
     And I stop media in media bar
     Then The media stopps playing
 
-    Examples: 
-      | Login   | Password    | Name    | Contact     | YouTubeLink                                |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | http://www.youtube.com/watch?v=Bb1RhktcugU |
+    Examples:
+      | Login      | Password      | Name      | Contact   | YouTubeLink                                |
+      | user1Email | user1Password | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
 
   @staging @id1388
   Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation - SoundCloud
-    Given I have 1 users and 2 contacts for 1 users
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
@@ -536,6 +556,6 @@ Feature: Conversation View
     And I scroll media out of sight until media bar appears
     Then I see playing media is paused
 
-    Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | SoundCloudLink                              										   |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+    Examples:
+      | Login      | Password      | Name      | Contact1   | Contact2    | SoundCloudLink                                                                       |
+      | user1Email | user1Password | user1Name | user2Name  | aqaContact2 | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |

@@ -213,13 +213,13 @@ public class ZetaFormatter implements Formatter, Reporter {
 		bot.setUserState(UserState.AllContactsConnected);
 		switch (driver.getCapabilities().getCapability("platformName").toString()) {
 			case "Android":
-				BackEndREST.sendDialogMessageByChatName(bot, CONTACT_ANDROID, message);
+				BackendAPIWrappers.sendDialogMessageByChatName(bot, CONTACT_ANDROID, message);
 				break;
 			case "Mac":
-				BackEndREST.sendDialogMessageByChatName(bot, CONTACT_OSX, message);
+				BackendAPIWrappers.sendDialogMessageByChatName(bot, CONTACT_OSX, message);
 				break;
 			case "iOS":
-				BackEndREST.sendDialogMessageByChatName(bot, CONTACT_IOS, message);
+				BackendAPIWrappers.sendDialogMessageByChatName(bot, CONTACT_IOS, message);
 				break;
 		}
 	}

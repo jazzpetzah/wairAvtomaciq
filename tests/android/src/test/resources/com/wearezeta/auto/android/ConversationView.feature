@@ -2,8 +2,8 @@ Feature: Conversation View
 
   @id316 @smoke
   Scenario Outline: Send Message to contact
-    Given I have 1 users and 1 contacts for 1 users
-    Given I have 1 users and 1 contacts for 1 users
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -13,12 +13,13 @@ Feature: Conversation View
     Then I see my message in the dialog
 
     Examples: 
-      | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user1Name |
 
   @id317 @smoke
   Scenario Outline: Send Hello and Hey to contact
-    Given I have 1 users and 1 contacts for 1 users
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -28,12 +29,13 @@ Feature: Conversation View
     Then I see Hello-Hey message <Message> with <Action> in the dialog
 
     Examples: 
-      | Login   | Password    | Name    | Contact     | Message    | Action |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | YOU | PINGED |
+      | Login      | Password      | Name      | Contact   | Message    | Action |
+      | user1Email | user1Password | user1Name | user1Name | YOU        | PINGED |
 
   @id318 @smoke
   Scenario Outline: Send Camera picture to contact
-    Given I have 1 users and 1 contacts for 1 users
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -45,12 +47,13 @@ Feature: Conversation View
     Then I see new photo in the dialog
 
     Examples: 
-      | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user1Name |
 
   @id1262 @smoke
   Scenario Outline: Add people to 1:1 chat
-    Given I have 1 users and 2 contacts for 1 users
+    Given There are 3 users where <Name> is me
+    Given <Name> is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
@@ -68,14 +71,15 @@ Feature: Conversation View
     And I navigate back from dialog page
     And I see <Contact1> and <Contact2> chat in contact list
 
-    Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
+    Examples:
+      | Login      | Password      | Name      | Contact   | Contact2    |
+      | user1Email | user1Password | user1Name | user1Name | user2Name   |
 
   @id320 @smoke
   Scenario Outline: Send message to group chat
-    Given I have 1 users and 2 contacts for 1 users
-    Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
+    Given There are 3 users where <Name> is me
+    Given <Name> is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <GroupChatName>
@@ -84,13 +88,14 @@ Feature: Conversation View
     And I type the message and send it
     Then I see my message in the dialog
 
-    Examples: 
-      | Login   | Password    | Name    | Contact1    | Contact2    | GroupChatName     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | SendMessGroupChat |
+    Examples:
+      | Login      | Password      | Name      | Contact   | Contact2    | GroupChatName     |
+      | user1Email | user1Password | user1Name | user1Name | user2Name   | SendMessGroupChat |
 
   @id143 @regression
   Scenario Outline: Send Long Message to contact
-    Given I have 1 users and 1 contacts for 1 users
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -100,12 +105,13 @@ Feature: Conversation View
     Then I see my message in the dialog
 
     Examples: 
-      | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user1Name |
 
   @id145 @regression
   Scenario Outline: Send Upper and Lower case to contact
-    Given I have 1 users and 1 contacts for 1 users
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -115,12 +121,13 @@ Feature: Conversation View
     Then I see my message in the dialog
 
     Examples: 
-      | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user1Name |
 
   @id146 @unicode @regression
   Scenario Outline: Send special chars message to contact
-    Given I have 1 users and 1 contacts for 1 users
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -129,13 +136,14 @@ Feature: Conversation View
     And I input <Message> message and send it
     Then I see my message in the dialog
 
-    Examples: 
-      | Login   | Password    | Name    | Contact     | Message                           |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | ÄäÖöÜüß simple message in english |
+    Examples:
+      | Login      | Password      | Name      | Contact   | Message                           |
+      | user1Email | user1Password | user1Name | user1Name | ÄäÖöÜüß simple message in english |
 
   @mute @regression @id149
   Scenario Outline: Send emoji message to contact
-    Given I have 1 users and 1 contacts for 1 users
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -145,12 +153,13 @@ Feature: Conversation View
     Then I see my message in the dialog
 
     Examples: 
-      | Login   | Password    | Name    | Contact     | Message  |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | :) ;) :( |
+      | Login      | Password      | Name      | Contact   | Message   |
+      | user1Email | user1Password | user1Name | user1Name | :) ;) :(  |
 
   @id147 @unicode @regression
   Scenario Outline: Send double byte chars
-    Given I have 1 users and 1 contacts for 1 users
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -159,13 +168,14 @@ Feature: Conversation View
     And I input <Message> message and send it
     Then I see my message in the dialog
 
-    Examples: 
-      | Login   | Password    | Name    | Contact     | Message                     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 | 畑 はたけ hatake field of crops |
+    Examples:
+      | Login      | Password      | Name      | Contact   | Message                         |
+      | user1Email | user1Password | user1Name | user1Name | 畑 はたけ hatake field of crops  |
 
   @regression @id162
   Scenario Outline: Send picture from gallery into 1:1 conversation
-    Given I have 1 users and 1 contacts for 1 users
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -179,6 +189,5 @@ Feature: Conversation View
     Then I see uploaded picture
 
     Examples: 
-      | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
-  
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user1Name |

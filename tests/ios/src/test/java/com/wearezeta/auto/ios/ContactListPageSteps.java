@@ -10,14 +10,14 @@ import cucumber.api.java.en.*;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.pages.*;
-import com.wearezeta.auto.user_management.UserChatsHelper;
+import com.wearezeta.auto.user_management.ConversationsManager;
 import com.wearezeta.auto.user_management.ClientUsersManager;
 
 public class ContactListPageSteps {
 	private static final Logger log = ZetaLogger
 			.getLog(ContactListPageSteps.class.getSimpleName());
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	private final UserChatsHelper chatsHelper = UserChatsHelper.getInstance();
+	private final ConversationsManager chatsHelper = ConversationsManager.getInstance();
 
 	@Given("^I see Contact list with my name (.*)$")
 	public void GivenISeeContactListWithMyName(String name) throws Throwable {

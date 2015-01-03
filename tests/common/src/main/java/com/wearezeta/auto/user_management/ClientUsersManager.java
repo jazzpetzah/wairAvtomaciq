@@ -5,13 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
-import com.wearezeta.auto.common.BackEndREST;
-import com.wearezeta.auto.common.BackendRequestException;
+import com.wearezeta.auto.common.BackendAPIWrappers;
 
 public class ClientUsersManager {
 	private void setClientUserAliases(ClientUser user, String[] nameAliases,
@@ -36,42 +31,26 @@ public class ClientUsersManager {
 		}
 	}
 
-	private void resetClientsList(String[] aliases, List<ClientUser> dstList)
-			throws IOException {
+	private void resetClientsList(List<ClientUser> dstList) throws IOException {
 		dstList.clear();
-		for (String nameAlias : aliases) {
+		for (int userIdx = 0; userIdx < MAX_USERS; userIdx++) {
 			ClientUser pendingUser = new ClientUser();
-			setClientUserAliases(pendingUser, new String[] { nameAlias },
-					new String[] { YOUR_PASS_ALIAS },
-					new String[] { YOUR_EMAIL_ALIAS });
+			final String[] nameAliases = new String[] { String.format(
+					NAME_ALIAS_TEMPLATE, userIdx + 1) };
+			final String[] passwordAliases = new String[] { String.format(
+					PASSWORD_ALIAS_TEMPLATE, userIdx + 1) };
+			final String[] emailAliases = new String[] { String.format(
+					EMAIL_ALIAS_TEMPLATE, userIdx + 1) };
+			setClientUserAliases(pendingUser, nameAliases, passwordAliases,
+					emailAliases);
 			dstList.add(pendingUser);
 		}
 	}
 
-	private void resetUsers() throws IOException {
-		resetClientsList(new String[] { YOUR_USER_1_ALIAS, YOUR_USER_2_ALIAS,
-				YOUR_USER_3_ALIAS, YOUR_USER_4_ALIAS, YOUR_USER_5_ALIAS,
-				YOUR_USER_6_ALIAS, YOUR_USER_7_ALIAS, YOUR_USER_8_ALIAS,
-				YOUR_USER_9_ALIAS, YOUR_USER_10_ALIAS, YOUR_USER_11_ALIAS },
-				users);
-	}
-
-	public static final String YOUR_PASS_ALIAS = "aqaPassword";
-	public static final String YOUR_EMAIL_ALIAS = "aqaUser";
-
-	public static final String YOUR_USER_1_ALIAS = "aqaUser";
-	public static final String SELF_USER_ALIAS = YOUR_USER_1_ALIAS;
-	public static final String YOUR_USER_2_ALIAS = "yourUser";
-	public static final String YOUR_USER_3_ALIAS = "yourContact";
-	public static final String YOUR_UNCONNECTED_USER_ALIAS = YOUR_USER_3_ALIAS;
-	public static final String YOUR_USER_4_ALIAS = "yourNotContact1";
-	public static final String YOUR_USER_5_ALIAS = "yourNotContact2";
-	public static final String YOUR_USER_6_ALIAS = "yourNotContact3";
-	public static final String YOUR_USER_7_ALIAS = "yourNotContact4";
-	public static final String YOUR_USER_8_ALIAS = "yourIgnore";
-	public static final String YOUR_USER_9_ALIAS = "yourAccept";
-	public static final String YOUR_USER_10_ALIAS = "yourGroupChat";
-	public static final String YOUR_USER_11_ALIAS = "yourNotContact5";
+	public static final String NAME_ALIAS_TEMPLATE = "user%dName";
+	public static final String PASSWORD_ALIAS_TEMPLATE = "user%dPassword";
+	public static final String EMAIL_ALIAS_TEMPLATE = "user%dEmail";
+	public static final int MAX_USERS = 1001;
 	private List<ClientUser> users = new ArrayList<ClientUser>();
 
 	public List<ClientUser> getCreatedUsers() {
@@ -84,74 +63,10 @@ public class ClientUsersManager {
 		return result;
 	}
 
-	public void appendCustomUser(ClientUser newUser) {
-		this.users.add(newUser);
-	}
-
-	public static final String CONTACT_1_ALIAS = "aqaContact1";
-	public static final String CONTACT_2_ALIAS = "aqaContact2";
-	public static final String CONTACT_3_ALIAS = "aqaContact3";
-	public static final String CONTACT_PICTURE_NAME_ALIAS = "aqaPictureContact";
-	public static final String CONTACT_PICTURE_EMAIL_ALIAS = "aqaPictureContactEmail";
-	public static final String CONTACT_PICTURE_PASSWORD_ALIAS = "aqaPictureContactPassword";
-	public static final String CONTACT_AVATAR_NAME_ALIAS = "aqaAvatar TestContact";
-	public static final String CONTACT_AVATAR_EMAIL_ALIAS = "aqaAvatarTestContactEmail";
-	public static final String CONTACT_AVATAR_PASSWORD_ALIAS = "aqaAvatarTestContactPassword";
-	public static final String CONTACT_BLOCK_ALIAS = "aqaBlock";
-	private List<ClientUser> contacts = new ArrayList<ClientUser>();
-
-	private void resetContacts() throws IOException {
-		resetClientsList(new String[] { CONTACT_1_ALIAS, CONTACT_2_ALIAS,
-				CONTACT_3_ALIAS, CONTACT_PICTURE_NAME_ALIAS,
-				CONTACT_AVATAR_NAME_ALIAS, CONTACT_BLOCK_ALIAS }, contacts);
-		ClientUser pictureContact = findUserByNameAlias(CONTACT_PICTURE_NAME_ALIAS);
-		setClientUserAliases(pictureContact, null,
-				new String[] { CONTACT_PICTURE_PASSWORD_ALIAS },
-				new String[] { CONTACT_PICTURE_EMAIL_ALIAS });
-		ClientUser avatarContact = findUserByNameAlias(CONTACT_AVATAR_NAME_ALIAS);
-		setClientUserAliases(avatarContact, null,
-				new String[] { CONTACT_AVATAR_EMAIL_ALIAS },
-				new String[] { CONTACT_AVATAR_PASSWORD_ALIAS });
-	}
-
-	public List<ClientUser> getCreatedContacts() {
-		ArrayList<ClientUser> result = new ArrayList<ClientUser>();
-		for (ClientUser usr : this.contacts) {
-			if (usr.getUserState() != UserState.NotCreated) {
-				result.add(usr);
-			}
-		}
-		return result;
-	}
-
-	public void appendCustomContact(ClientUser newContact) {
-		this.contacts.add(newContact);
-	}
-
-	public static final String PERFORMANCE_USER_NAME = "perfUser";
-	public static final String PERFORMANCE_USER_ALIAS = PERFORMANCE_USER_NAME;
-	public static final String PERFORMANCE_PASS_ALIAS = "perfPass";
-	private ClientUser perfUser = new ClientUser();
-
-	private void resetPerfUser() throws IOException {
-		perfUser.clearNameAliases();
-		perfUser.addNameAlias(PERFORMANCE_USER_ALIAS);
-		perfUser.clearPasswordAliases();
-		perfUser.addPasswordAlias(PERFORMANCE_PASS_ALIAS);
-		perfUser.clearEmailAliases();
-		perfUser.addEmailAlias(YOUR_EMAIL_ALIAS);
-	}
-
-	private static final int MAX_PARALLEL_USER_CREATION_TASKS = 5;
-	private static final int NUMBER_OF_REGISTRATION_RETRIES = 5;
-	private static final int USERS_CREATION_TIMEOUT = 60 * 5; // seconds
-
 	private static ClientUsersManager instance = null;
 
 	private ClientUsersManager() throws IOException {
-		resetPerfUser();
-		resetUsers();
-		resetContacts();
+		resetClientsList(this.users);
 	}
 
 	public static ClientUsersManager getInstance() {
@@ -166,11 +81,7 @@ public class ClientUsersManager {
 	}
 
 	private List<ClientUser> getAllUsers() {
-		List<ClientUser> allUsers = new ArrayList<ClientUser>();
-		allUsers.addAll(users);
-		allUsers.addAll(contacts);
-		allUsers.add(perfUser);
-		return allUsers;
+		return this.users;
 	}
 
 	public static enum UserAliasType {
@@ -233,78 +144,61 @@ public class ClientUsersManager {
 		return result;
 	}
 
-	public void generateUsers(int usersNumber, int contactsNumber)
-			throws Exception {
-		ExecutorService executor = Executors
-				.newFixedThreadPool(MAX_PARALLEL_USER_CREATION_TASKS);
+	public void createUsersOnBackend(int count) throws Exception {
+		this.resetClientsList(this.users);
+		BackendAPIWrappers.generateUsers(this.users.subList(0, count));
+	}
 
-		final AtomicInteger createdClientsCount = new AtomicInteger(0);
-		for (int clientIdx = 0; clientIdx < usersNumber + contactsNumber; clientIdx++) {
-			List<ClientUser> srcList = null;
-			int listIdx = 0;
-			if (clientIdx < usersNumber) {
-				srcList = this.users;
-				listIdx = clientIdx;
-			} else {
-				srcList = this.contacts;
-				listIdx = clientIdx - usersNumber;
-			}
-			final ClientUser userToCreate = srcList.get(listIdx);
-			Runnable worker = new Thread(new Runnable() {
-				public void run() {
-					int count = 0;
-					int waitTime = 1;
-					while (count < NUMBER_OF_REGISTRATION_RETRIES) {
-						try {
-							UserCreationHelper.createWireUser(userToCreate);
-							createdClientsCount.incrementAndGet();
-							break;
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-						count++;
-						try {
-							Thread.sleep(waitTime * 1000);
-							waitTime *= 2;
-						} catch (InterruptedException e) {
-							return;
-						}
-					}
+	private static String[] SELF_USER_NAME_ALISES = new String[] { "me",
+			"myself" };
+	private static String[] SELF_USER_PASSWORD_ALISES = new String[] { "myPassword" };
+	private static String[] SELF_USER_EMAIL_ALISES = new String[] { "myEmail" };
+
+	private ClientUser selfUser = null;
+
+	public void setSelfUser(ClientUser usr) {
+		if (this.selfUser != null) {
+			for (String nameAlias : SELF_USER_NAME_ALISES) {
+				if (this.selfUser.getNameAliases().contains(nameAlias)) {
+					this.selfUser.removeNameAlias(nameAlias);
 				}
-			});
-			executor.execute(worker);
-		}
-		executor.shutdown();
-		if (!executor
-				.awaitTermination(USERS_CREATION_TIMEOUT, TimeUnit.SECONDS)) {
-			throw new BackendRequestException(
-					String.format(
-							"The backend has failed to prepare predefined users within %d seconds timeout",
-							USERS_CREATION_TIMEOUT));
-		}
-		if (createdClientsCount.get() != usersNumber + contactsNumber) {
-			throw new BackendRequestException(
-					"Failed to create new users or contacts on the backend");
-		}
-	}
-
-	public void generatePerformanceUser() throws Exception {
-		perfUser = UserCreationHelper.createWireUser(perfUser);
-		perfUser = BackEndREST.loginByUser(perfUser);
-		perfUser.setId(BackEndREST.getUserInfo(perfUser).getId());
-	}
-
-	public void createContactLinks(int linkedUsers) throws Exception {
-		for (ClientUser yourUser : this.getCreatedUsers()) {
-			yourUser = BackEndREST.loginByUser(yourUser);
-			yourUser.setId(BackEndREST.getUserInfo(yourUser).getId());
-		}
-		for (int i = 0; i < linkedUsers; i++) {
-			ClientUser dstUser = this.getCreatedUsers().get(i);
-			for (ClientUser contact : this.getCreatedContacts()) {
-				BackEndREST.autoTestSendRequest(contact, dstUser);
 			}
-			BackEndREST.autoTestAcceptAllRequest(dstUser);
+			for (String passwordAlias : SELF_USER_PASSWORD_ALISES) {
+				if (this.selfUser.getPasswordAliases().contains(passwordAlias)) {
+					this.selfUser.removePasswordAlias(passwordAlias);
+				}
+			}
+			for (String emailAlias : SELF_USER_EMAIL_ALISES) {
+				if (this.selfUser.getEmailAliases().contains(emailAlias)) {
+					this.selfUser.removeEmailAlias(emailAlias);
+				}
+			}
 		}
+		this.selfUser = usr;
+		if (!this.selfUser.getNameAliases().contains(SELF_USER_NAME_ALISES[0])) {
+			for (String nameAlias : SELF_USER_NAME_ALISES) {
+				this.selfUser.addNameAlias(nameAlias);
+			}
+		}
+		if (!this.selfUser.getPasswordAliases().contains(
+				SELF_USER_PASSWORD_ALISES[0])) {
+			for (String passwordAlias : SELF_USER_PASSWORD_ALISES) {
+				this.selfUser.addPasswordAlias(passwordAlias);
+			}
+		}
+		if (!this.selfUser.getEmailAliases()
+				.contains(SELF_USER_EMAIL_ALISES[0])) {
+			for (String emailAlias : SELF_USER_EMAIL_ALISES) {
+				this.selfUser.addEmailAlias(emailAlias);
+			}
+		}
+	}
+
+	public ClientUser getSelfUser() {
+		return this.selfUser;
+	}
+
+	public boolean isSelfUserSet() {
+		return (this.selfUser != null);
 	}
 }

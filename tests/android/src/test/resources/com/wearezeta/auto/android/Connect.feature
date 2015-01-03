@@ -2,7 +2,7 @@ Feature: Connect
 
   @id191 @id193 @smoke
   Scenario Outline: Send invitation message to a user
-    Given I have 2 users and 0 contacts for 1 users
+    Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe down contact list
@@ -17,13 +17,13 @@ Feature: Connect
     Then I see contact list loaded with User name <Contact>
 
     Examples: 
-      | Login   | Password    | Name    | Contact  | Message       |
-      | aqaUser | aqaPassword | aqaUser | yourUser | Hellow friend |
+      | Login      | Password      | Name      | Contact   | Message       |
+      | user1Email | user1Password | user1Name | user2Name | Hellow friend |
 
   @id323 @smoke
   Scenario Outline: Accept connection request
-  	Given I have 2 users and 0 contacts for 1 users
-    Given <Contact> connection request is sended to me <Login>
+    Given There are 2 users where <Name> is me
+    Given <Contact> has sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <WaitingMess>
@@ -32,16 +32,16 @@ Feature: Connect
     Then I see Connect to <Contact> Dialog page
 
     Examples: 
-      | Login   | Password    | Name    | Contact     | WaitingMess      |
-      | aqaUser | aqaPassword | aqaUser | yourUser    | 1 person waiting |
+      | Login      | Password      | Name      | Contact      | WaitingMess      |
+      | user1Email | user1Password | user1Name | user2Name    | 1 person waiting |
 
   @id1411 @regression
   Scenario Outline: I can see a new inbox for connection when receive new connection request
-    Given I have 2 users and 0 contacts for 1 users
+    Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     And I do not see Contact list with name <WaitingMess>
-    And <Contact> connection request is sended to me <Login>
+    And <Contact> has sent connection request to <Name>
     When I tap on contact name <WaitingMess>
     And I see connect to <Contact> dialog
     And I press Ignore connect button
@@ -49,22 +49,22 @@ Feature: Connect
     Then Contact name <WaitingMess> is not in list
 
     Examples: 
-      | Login   | Password    | Name    | Contact      | WaitingMess      |
-      | aqaUser | aqaPassword | aqaUser | yourUser     | 1 person waiting |
+      | Login      | Password      | Name      | Contact      | WaitingMess      |
+      | user1Email | user1Password | user1Name | user2Name    | 1 person waiting |
 
   @id539 @id543 @regression
   Scenario Outline: I can see a inbox count increasing/decreasing correctly + I ignore someone from people picker and clear my inbox
-    Given I have 5 users and 0 contacts for 1 users
-    Given <Contact1> connection request is sended to me <Login>
+    Given There are 5 users where <Name> is me
+    Given <Contact1> has sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Login>
-    And <Contact2> connection request is sended to me <Login>
+    And I see Contact list with my name <Name>
+    And <Contact2> has sent connection request to <Name>
     When I tap on contact name <WaitingMess2>
     And I press Ignore connect button
     And I navigate back from connect page
     Then I see contact list loaded with User name <WaitingMess1>
-    And <Contact3> connection request is sended to me <Login>
-    And <Contact4> connection request is sended to me <Login>
+    And <Contact3> has sent connection request to <Name>
+    And <Contact4> has sent connection request to <Name>
     And I see contact list loaded with User name <WaitingMess3>
     And I wait for 5 seconds
     And I swipe down contact list
@@ -84,16 +84,16 @@ Feature: Connect
     And Contact name <WaitingMess1> is not in list
 
     Examples: 
-      | Login    | Password    | Contact1        | WaitingMess1     | Contact2        | WaitingMess2     | Contact3        | Contact4        | WaitingMess3     |
-      | aqaUser  | aqaPassword | yourUser        | 1 person waiting | yourContact     | 2 people waiting | yourNotContact1 | yourNotContact2 | 3 people waiting |
+      | Login       | Password      | Name      | Contact1    | WaitingMess1     | Contact2  | WaitingMess2     | Contact3  | Contact4  | WaitingMess3     |
+      | user1Email  | user1Password | user1Name | user2Name   | 1 person waiting | user3Name | 2 people waiting | user4Name | user5Name | 3 people waiting |
 
   @id544 @regression
   Scenario Outline: I accept someone from people picker and -1 from inbox as well
-    Given I have 3 users and 0 contacts for 1 users
-    Given <Contact1> connection request is sended to me <Login>
+    Given There are 3 users where <Name> is me
+    Given <Contact1> has sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Login>
-    And <Contact2> connection request is sended to me <Login>
+    And I see Contact list with my name <Name>
+    And <Contact2> has sent connection request to <Name>
     When I see contact list loaded with User name <WaitingMess1>
     And I swipe down contact list
     And I see People picker page
@@ -106,16 +106,16 @@ Feature: Connect
     And I see contact list loaded with User name <WaitingMess2>
 
     Examples: 
-      | Login       | Password    | Contact1        | Contact2        | WaitingMess1     | WaitingMess2     |
-      | aqaUser     | aqaPassword | yourUser        | yourContact     | 2 people waiting | 1 person waiting |
+      | Login       | Password      | Name      | Contact1    | WaitingMess1     | Contact2  | WaitingMess2     |
+      | user1Email  | user1Password | user1Name | user2Name   | 1 person waiting | user3Name | 2 people waiting |
 
   @id540 @regression
   Scenario Outline: I can ignore a connect request and reconnect later
-    Given I have 2 users and 0 contacts for 1 users
+    Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Login>
+    And I see Contact list with my name <Name>
     And Contact name <WaitingMess> is not in list
-    And <Contact> connection request is sended to me <Login>
+    And <Contact> has sent connection request to <Name>
     When I see contact list loaded with User name <WaitingMess>
     And I tap on contact name <WaitingMess>
     And I press Ignore connect button
@@ -132,15 +132,15 @@ Feature: Connect
     And Contact name <WaitingMess> is not in list
 
     Examples: 
-      | Login   | Password    | Contact  | WaitingMess      |
-      | aqaUser | aqaPassword | yourUser | 1 person waiting |
+      | Login      | Password      | Name      | Contact   | WaitingMess      |
+      | user1Email | user1Password | user1Name | user2Name | 1 person waiting |
 
   @id542 @regression
   Scenario Outline: I want to be taken to the connect inbox right away if the person I select already sent me a connect request
-    Given I have 2 users and 0 contacts for 1 users
-    Given <Contact> connection request is sended to me <Login>
+    Given There are 2 users where <Name> is me
+    Given <Contact> has sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Login>
+    And I see Contact list with my name <Name>
     When I see contact list loaded with User name <WaitingMess>
     And I swipe down contact list
     And I see People picker page
@@ -152,14 +152,14 @@ Feature: Connect
     Then I see Connect to <Contact> Dialog page
 
     Examples: 
-      | Login   | Password    | Contact      | WaitingMess      |
-      | aqaUser | aqaPassword | yourUser     | 1 person waiting |
+      | Login      | Password      | Name      | Contact   | WaitingMess      |
+      | user1Email | user1Password | user1Name | user2Name | 1 person waiting |
 
   @id547 @regression
   Scenario Outline: I can see the char counter changes when writing the first connect message
-    Given I have 2 users and 0 contacts for 1 users
+    Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Login>
+    And I see Contact list with my name <Name>
     And I swipe down contact list
     And I see People picker page
     When I tap on Search input on People picker page
@@ -174,14 +174,14 @@ Feature: Connect
     And I see connect button enabled state is <SecondState>
 
     Examples: 
-      | Login   | Password    | Contact      | CounterValue1 | Message | CounterValue2 | FirstState | SecondState |
-      | aqaUser | aqaPassword | yourUser     | 140           | test    | 136           | false      | true        |
+      | Login      | Password      | Name      | Contact   | CounterValue1 | Message | CounterValue2 | FirstState | SecondState |
+      | user1Email | user1Password | user1Name | user2Name | 140           | test    | 136           | false      | true        |
 
   @id548 @regression
   Scenario Outline: I can not send first message with space only
-    Given I have 2 users and 0 contacts for 1 users
+    Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Login>
+    And I see Contact list with my name <Name>
     And I swipe down contact list
     And I see People picker page
     When I tap on Search input on People picker page
@@ -194,14 +194,14 @@ Feature: Connect
     And I see connect button enabled state is <FirstState>
 
     Examples: 
-      | Login   | Password    | Contact    | CounterValue | FirstState |
-      | aqaUser | aqaPassword | yourUser   | 136          | false      |
+      | Login      | Password      | Name      | Contact     | CounterValue | FirstState |
+      | user1Email | user1Password | user1Name | user2Name   | 136          | false      |
 
   @id554 @regression
   Scenario Outline: I would not know other person has ignored my connection request
-    Given I have 2 users and 0 contacts for 1 users
+    Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Login>
+    And I see Contact list with my name <Name>
     And I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -216,14 +216,14 @@ Feature: Connect
     And I see that connection is pending
 
     Examples: 
-      | Login   | Password    | Contact    | Message |
-      | aqaUser | aqaPassword | yourUser   | Test    |
+      | Login      | Password      | Name      | Contact     | Message |
+      | user1Email | user1Password | user1Name | user2Name   | Test    |
 
   @id541 @regression
   Scenario Outline: I can receive new connection request when app in background
-    Given I have 2 users and 0 contacts for 1 users
+    Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Login>
+    And I see Contact list with my name <Name>
     When I minimize the application
     And <Contact> connection request is sended to me <Login>
     And I restore the application
@@ -234,14 +234,14 @@ Feature: Connect
     And I press Ignore connect button
 
     Examples: 
-      | Login   | Password    | Name    | Contact    | WaitingMess      |
-      | aqaUser | aqaPassword | aqaUser | yourUser   | 1 person waiting |
+      | Login      | Password      | Name      | Contact   | WaitingMess      |
+      | user1Email | user1Password | user1Name | user2Name | 1 person waiting |
 
   @id553 @regression
   Scenario Outline: I want to see that the other person has accepted the connect request in the conversation view
-    Given I have 2 users and 0 contacts for 1 users
+    Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Login>
+    And I see Contact list with my name <Name>
     And I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -252,18 +252,19 @@ Feature: Connect
     And I type Connect request "<Message>"
     And I press Connect button
     When <Contact> accept all requests
+    When I wait for 2 seconds
     Then I tap on contact name <Contact>
     And I see Connect to <Contact> Dialog page
 
     Examples: 
-      | Login   | Password    | Contact    | Message |
-      | aqaUser | aqaPassword | yourUser   | Test    |
+      | Login      | Password      | Name      | Contact   | Message |
+      | user1Email | user1Password | user1Name | user2Name | Test    |
 
   @id552 @regression
   Scenario Outline: I want to discard the new connect request (sending) by returning to the search results after selecting someone I’m not connected to
-    Given I have 2 users and 0 contacts for 1 users
+    Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Login>
+    And I see Contact list with my name <Name>
     And I swipe down contact list
     And I see People picker page
     When I tap on Search input on People picker page
@@ -275,15 +276,17 @@ Feature: Connect
     And I see People picker page
 
     Examples: 
-      | Login   | Password    | Contact    |
-      | aqaUser | aqaPassword | yourUser   |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
 
   @id550 @regression
   Scenario Outline: I want to initiate a connect request by selecting someone from within a group conversation
-    Given I have 2 users and 1 contacts for 2 users
-    Given My Contact <Contact1> has group chat with me <Login> and his Contact <Contact2> with name <ChatName>
+    Given There are 3 users where <Name> is me
+    Given <Contact1> is connected to <Name>
+    Given <Contact2> is connected to <Contact1>
+    Given <Contact1> has group chat <ChatName> with Myself,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Login>
+    And I see Contact list with my name <Name>
     When I tap on contact name <ChatName>
     And I swipe up on dialog page
     And I tap on group chat contact <Contact2>
@@ -296,12 +299,13 @@ Feature: Connect
     And I see contact list loaded with User name <Contact2>
 
     Examples: 
-      | Login   | Password    | Contact1    | Contact2      | ChatName         |
-      | aqaUser | aqaPassword | aqaContact1 | yourUser      | ContactGroupChat |
+      | Login      | Password      | Name      | Contact1   | Contact2   | ChatName         |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name  | ContactGroupChat |
 
   @id676 @regression
   Scenario Outline: I want to block a person from 1:1 conversation
-  	Given I have 1 users and 1 contacts for 1 users
+  	Given There are 2 users where <Name> is me
+  	Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -320,12 +324,13 @@ Feature: Connect
     Then User info should be shown with Block button
 
     Examples: 
-      | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
 
   @id680 @regression
   Scenario Outline: I want to see user has been blocked within the Start UI
-    Given I have 2 users and 0 contacts for 1 users
+    Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe down contact list
@@ -353,31 +358,32 @@ Feature: Connect
     Then User info should be shown with Block button
     And I click Unblock button
 
-    Examples: 
-      | Login   | Password    | Name    | Contact         | Message      |
-      | aqaUser | aqaPassword | aqaUser | yourUser        | Hello friend |
+    Examples:
+      | Login      | Password      | Name      | Contact   | Message      |
+      | user1Email | user1Password | user1Name | user2Name | Hello friend |
 
   @regression @id720
   Scenario Outline: I do not want to be seen in the search results of someone I blocked
-    Given I have 2 users and 0 contacts for 1 users
-    Given User <Contact> blocks user <Login>
+    Given There are 2 users where <Name> is me
+    Given User <Contact> blocks user <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
-    And I input in search field user name to connect to <Contact>
     And I wait for 90 seconds
+    And I input in search field user name to connect to <Contact>
     Then I see that no results found
 
     Examples: 
-      | Login   | Password    | Name    | Contact  |
-      | aqaUser | aqaPassword | aqaUser | yourUser |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
 
   @id723 @regression
   Scenario Outline: I want to unblock someone from their Profile view
-    Given I have 1 users and 1 contacts for 1 users
-    Given User <Login> blocks user <Contact>
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Name> blocks user <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     And I swipe down contact list
@@ -393,12 +399,12 @@ Feature: Connect
     And I see contact list loaded with User name <Contact>
 
     Examples: 
-      | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
 
   @id1405 @regression
   Scenario Outline: Impossibility of starting 1:1 conversation with pending user (Search)
-  	Given I have 2 users and 0 contacts for 1 users
+  	Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe down contact list
@@ -417,5 +423,5 @@ Feature: Connect
     Then I see that connection is pending
 
     Examples: 
-      | Login   | Password    | Name    | Contact      |
-      | aqaUser | aqaPassword | aqaUser | yourUser     |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |

@@ -2,7 +2,7 @@ Feature: Settings
 
   @id67 @id68 @regression
   Scenario Outline: Open and Close settings page
-    Given I have 1 users and 0 contacts for 1 users
+    Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
@@ -17,12 +17,12 @@ Feature: Settings
     Then I see personal info page
 
     Examples: 
-      | Login   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
 
   @id71 @regression
   Scenario Outline: Can not open Settings page when editing user name
-    Given I have 1 users and 0 contacts for 1 users
+    Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
@@ -34,12 +34,12 @@ Feature: Settings
     Then Settings button is unreachable
 
     Examples: 
-      | Login   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
 
   @id90 @id91 @id92 @regression
   Scenario Outline: Open Close About page from Settings page
-    Given I have 1 users and 0 contacts for 1 users
+    Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
@@ -54,5 +54,5 @@ Feature: Settings
     Then I see personal info page
 
     Examples: 
-      | Login   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
