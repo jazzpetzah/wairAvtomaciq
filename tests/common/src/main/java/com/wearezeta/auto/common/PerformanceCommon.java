@@ -56,13 +56,14 @@ public final class PerformanceCommon {
 		return otherUsers.get(random.nextInt(otherUsers.size())).getName();
 	}
 
-	public void sendRandomMessagesToUser(int messCount,
-			final int simultaneousMsgsCount)
-			throws SelfUserIsNotDefinedException, InterruptedException {
+	public void sendRandomMessagesToUser(int totalMsgsCount,
+			int simultaneousMsgsCount) throws SelfUserIsNotDefinedException,
+			InterruptedException {
 		final ClientUser selfUser = getUserManager().getSelfUserOrThrowError();
 		ExecutorService executor = Executors
-				.newFixedThreadPool(simultaneousMsgsCount);
-		for (int i = 0; i < messCount; i++) {
+				.newFixedThreadPool((simultaneousMsgsCount < totalMsgsCount) ? simultaneousMsgsCount
+						: totalMsgsCount);
+		for (int i = 0; i < totalMsgsCount; i++) {
 			final String contactName = getRandomContactName(selfUser);
 			Runnable worker = new Thread(new Runnable() {
 				public void run() {
@@ -70,7 +71,7 @@ public final class PerformanceCommon {
 						BackendAPIWrappers.sendDialogMessageByChatName(
 								selfUser, contactName,
 								CommonUtils.generateGUID());
-					} catch (Throwable e) {
+					} catch (Exception e) {
 						getLogger().debug(e.getMessage());
 					}
 				}
@@ -82,16 +83,21 @@ public final class PerformanceCommon {
 	}
 
 	public void sendDefaultImageToUser(int imagesCount) throws Exception {
-		FileInputStream configFileStream = new FileInputStream(
-				CommonUtils.getImagePath(PerformanceCommon.class));
-		final ClientUser selfUser = getUserManager().getSelfUserOrThrowError();
-		for (int i = 0; i < imagesCount; i++) {
-			final String contact = getRandomContactName(selfUser);
-			BackEndREST.sendPictureToChatByName(selfUser, contact, "default",
-					configFileStream);
-		}
-		if (configFileStream != null) {
-			configFileStream.close();
+		FileInputStream configFileStream = null;
+		try {
+			configFileStream = new FileInputStream(
+					CommonUtils.getImagePath(PerformanceCommon.class));
+			final ClientUser selfUser = getUserManager()
+					.getSelfUserOrThrowError();
+			for (int i = 0; i < imagesCount; i++) {
+				final String contact = getRandomContactName(selfUser);
+				BackEndREST.sendPictureToChatByName(selfUser, contact,
+						"default", configFileStream);
+			}
+		} finally {
+			if (configFileStream != null) {
+				configFileStream.close();
+			}
 		}
 	}
 }
