@@ -42,13 +42,10 @@ public final class BackendAPIWrappers {
 				registrationInfo.getLastUserEmail()));
 	}
 
-	
-
 	// ! Mutates all user instances
 	public static void createContactLinks(ClientUser userFrom,
 			List<ClientUser> usersTo) throws Exception {
 		userFrom = BackEndREST.loginByUser(userFrom);
-		userFrom.setId(BackEndREST.getUserInfo(userFrom).getId());
 		for (ClientUser userTo : usersTo) {
 			autoTestSendRequest(userFrom, userTo);
 			autoTestAcceptAllRequest(userTo);
@@ -56,10 +53,10 @@ public final class BackendAPIWrappers {
 	}
 
 	// ! Mutates user instance
-	public static void autoTestSendRequest(ClientUser userFrom, ClientUser userTo)
-			throws Exception {
+	public static void autoTestSendRequest(ClientUser userFrom,
+			ClientUser userTo) throws Exception {
 		userFrom = BackEndREST.loginByUser(userFrom);
-		userFrom = BackEndREST.getUserInfo(userFrom);
+		userTo = BackEndREST.loginByUser(userTo);
 		BackEndREST.sendConnectRequest(userFrom, userTo, userTo.getName(),
 				"Hello!!!");
 		userFrom.setUserState(UserState.RequestSend);

@@ -46,7 +46,6 @@ public final class OSXAddressBookHelpers {
 	public static void addUsersToContacts(List<ClientUser> users) throws Exception {
 		for (ClientUser user : users) {
 			ClientUser usr = BackEndREST.loginByUser(user);
-			usr = BackEndREST.getUserInfo(usr);
 			addUserToMacContactsByAppleScript(usr.getName(), usr.getEmail());
 		}
 	}
@@ -55,7 +54,6 @@ public final class OSXAddressBookHelpers {
 			throws Exception {
 		for (ClientUser user : users) {
 			ClientUser usr = BackEndREST.loginByUser(user);
-			usr = BackEndREST.getUserInfo(usr);
 			removeUserFromMacContactsByAppleScript(usr.getName());
 		}
 	}

@@ -48,7 +48,7 @@ public class BackEndREST {
 
 	private static Client client = Client.create();
 
-	private static void VerifyRequestResult(int currentResponseCode,
+	private static void verifyRequestResult(int currentResponseCode,
 			int[] acceptableResponseCodes) throws BackendRequestException {
 		if (acceptableResponseCodes.length > 0) {
 			boolean isResponseCodeAcceptable = false;
@@ -78,7 +78,7 @@ public class BackEndREST {
 		}
 		log.debug("HTTP POST request(Input data: " + entity + ", Response: "
 				+ response.toString() + ")");
-		VerifyRequestResult(response.getStatus(), acceptableResponseCodes);
+		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
 		return response.getEntity(String.class);
 	}
 
@@ -87,7 +87,7 @@ public class BackEndREST {
 		ClientResponse response = webResource.put(ClientResponse.class, entity);
 		log.debug("HTTP PUT request(Input data: " + entity + ", Response: "
 				+ response.toString() + ")");
-		VerifyRequestResult(response.getStatus(), acceptableResponseCodes);
+		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
 		return response.getEntity(String.class);
 	}
 
@@ -95,7 +95,7 @@ public class BackEndREST {
 			int[] acceptableResponseCodes) throws BackendRequestException {
 		ClientResponse response = webResource.get(ClientResponse.class);
 		log.debug("HTTP GET request(Response: " + response.toString() + ")");
-		VerifyRequestResult(response.getStatus(), acceptableResponseCodes);
+		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
 		return response.getEntity(entityClass);
 	}
 
@@ -103,7 +103,7 @@ public class BackEndREST {
 			int[] acceptableResponseCodes) throws BackendRequestException {
 		ClientResponse response = webResource.get(ClientResponse.class);
 		log.debug("HTTP GET request(Response: " + response.toString() + ")");
-		VerifyRequestResult(response.getStatus(), acceptableResponseCodes);
+		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
 		return response.getEntity(String.class);
 	}
 
@@ -135,10 +135,10 @@ public class BackEndREST {
 	public static ClientUser loginByUser(ClientUser user) throws Exception {
 		if (user.getAccessToken() != null) {
 			try {
-				getUserNameByID(user.getId(), user);
+				getUserInfo(user);
 				return user;
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (BackendRequestException e) {
+				// Ignore silently
 			}
 		}
 
@@ -176,6 +176,8 @@ public class BackEndREST {
 				"Output from Server ....  login By User " + user.getEmail(),
 				output + "\n" });
 
+		user.setId(getUserInfo(user).getId());
+
 		return user;
 	}
 
@@ -191,7 +193,7 @@ public class BackEndREST {
 		return jsonObj.getString("name");
 	}
 
-	public static ClientUser getUserInfo(ClientUser user) throws Exception {
+	private static ClientUser getUserInfo(ClientUser user) throws Exception {
 		ClientUser result = user.clone();
 		Builder webResource = buildDefaultRequestWithAuth("self",
 				MediaType.APPLICATION_JSON, user);
@@ -338,12 +340,10 @@ public class BackEndREST {
 			List<ClientUser> contacts, String conversationName)
 			throws Exception {
 		user = loginByUser(user);
-		user = getUserInfo(user);
 		List<String> quotedContacts = new ArrayList<String>();
 		for (ClientUser contact : contacts) {
 			ClientUser newUser = contact;
 			newUser = loginByUser(newUser);
-			newUser = getUserInfo(newUser);
 			quotedContacts.add(String.format("\"%s\"", newUser.getId()));
 		}
 		final String input = String.format(

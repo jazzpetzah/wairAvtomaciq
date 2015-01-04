@@ -48,10 +48,11 @@ public final class CommonSteps {
 	public void ConnectionRequestIsSentTo(String userFromNameAlias,
 			String usersToNameAliases) throws Throwable {
 		ClientUser userFrom = usrMgr.findUserByNameAlias(userFromNameAlias);
+		userFrom = BackEndREST.loginByUser(userFrom);
 		for (String userToNameAlias : splitAliases(usersToNameAliases)) {
 			ClientUser userTo = usrMgr.findUserByNameAlias(userToNameAlias);
 			userTo = BackEndREST.loginByUser(userTo);
-			BackEndREST.sendConnectRequest(userTo, userFrom, CONNECTION_NAME
+			BackEndREST.sendConnectRequest(userFrom, userTo, CONNECTION_NAME
 					+ userTo.getName(), CONNECTION_MESSAGE);
 		}
 	}

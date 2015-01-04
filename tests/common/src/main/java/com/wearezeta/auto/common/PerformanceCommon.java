@@ -61,8 +61,7 @@ public final class PerformanceCommon {
 			InterruptedException {
 		final ClientUser selfUser = getUserManager().getSelfUserOrThrowError();
 		ExecutorService executor = Executors
-				.newFixedThreadPool((simultaneousMsgsCount < totalMsgsCount) ? simultaneousMsgsCount
-						: totalMsgsCount);
+				.newFixedThreadPool(simultaneousMsgsCount);
 		for (int i = 0; i < totalMsgsCount; i++) {
 			final String contactName = getRandomContactName(selfUser);
 			Runnable worker = new Thread(new Runnable() {
