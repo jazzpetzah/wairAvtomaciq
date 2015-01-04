@@ -196,12 +196,12 @@ public class CommonAndroidSteps {
 				dstConversationName);
 	}
 
-	@When("I add contacts list users to Mac contacts")
+	@When("^I add contacts list users to Mac contacts$")
 	public void AddContactsUsersToMacContacts() throws Exception {
 		commonSteps.AddContactsUsersToMacContacts();
 	}
 
-	@When("I remove contacts list users from Mac contacts")
+	@When("^I remove contacts list users from Mac contacts$")
 	public void IRemoveContactsListUsersFromMacContact() throws Exception {
 		commonSteps.IRemoveContactsListUsersFromMacContact();
 	}

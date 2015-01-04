@@ -51,7 +51,7 @@ Feature: Search
   #And I tap on connected user <Contact2> on People picker page
   #And I see Create Conversation button on People picker page
   #And I click Create Conversation button  on People picker page
-  #And I see group chat page with users <Contact1> <Contact2>
+  #And I see group chat page with users <Contact1>,<Contact2>
   #And I swipe right on group chat page
   #And I tap on my name <Name>
   #And I see Personal page

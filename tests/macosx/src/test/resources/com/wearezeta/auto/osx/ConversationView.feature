@@ -53,7 +53,7 @@ Feature: Conversation
     And I see my name <Name> in Contact list
     And I open conversation with <Contact>
     When I send picture hdpicture.jpg
-    Then I see HD picture hdpicture.jpg in conversation
+    Then I see HD picture hdpicture.jpg in conversation with <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   |

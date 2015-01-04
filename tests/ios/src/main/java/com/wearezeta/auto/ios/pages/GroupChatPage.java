@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -42,9 +43,14 @@ public class GroupChatPage extends DialogPage {
 		this.path = path;
 	}
 	
-	public boolean areRequiredContactsAddedToChat(String name1, String name2){
-		
-		return getLastChatMessage().contains(name1) && getLastChatMessage().contains(name2);
+	public boolean areRequiredContactsAddedToChat(List<String> names){
+		final String lastMsg = getLastChatMessage();
+		for (String name : names) {
+			if (!lastMsg.toLowerCase().contains(name.toLowerCase())) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	public boolean areRequired3ContactsAddedToChat(String name1, String name2, String name3){

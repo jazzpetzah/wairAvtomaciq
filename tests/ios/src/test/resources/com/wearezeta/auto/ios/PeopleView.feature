@@ -18,7 +18,7 @@ Feature: People View
     And I tap on connected user <Contact2> on People picker page
     #And I see Add to conversation button
     And I click on Go button
-    Then I see group chat page with users <Contact1> <Contact2>
+    Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples: 
       | Login      | Password      | Name      | Contact1    | Contact2    |

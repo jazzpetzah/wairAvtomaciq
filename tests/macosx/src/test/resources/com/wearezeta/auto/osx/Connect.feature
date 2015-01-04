@@ -45,7 +45,7 @@ Feature: Connect to user
     And I search by email for user <Contact>
     And I see user <Contact> in search results
     And I add user <Contact> from search results
-    And I send invitation to user
+    And Myself has sent connection request to <Contact>
     Then I see Contact list with name <Contact>
 
     Examples: 

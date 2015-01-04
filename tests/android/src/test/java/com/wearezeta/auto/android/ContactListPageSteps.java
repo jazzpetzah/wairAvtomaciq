@@ -2,9 +2,11 @@ package com.wearezeta.auto.android;
 
 import java.io.IOException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.user_management.ClientUsersManager;
 
 import cucumber.api.java.en.Given;
@@ -115,7 +117,9 @@ public class ContactListPageSteps {
 		pickerSteps.WhenIClickOnAddToConversationButton();
 
 		DialogPageSteps groupChatSteps = new DialogPageSteps();
-		groupChatSteps.ThenISeeGroupChatPage(contact1, contact2);
+		final String[] names = new String[] { contact1, contact2 };
+		groupChatSteps.ThenISeeGroupChatPage(StringUtils.join(names,
+				CommonSteps.ALIASES_SEPARATOR));
 	}
 
 	@When("^I swipe right on a (.*)$")

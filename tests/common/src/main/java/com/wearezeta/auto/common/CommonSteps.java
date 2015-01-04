@@ -11,7 +11,7 @@ public final class CommonSteps {
 	public static final String CONNECTION_NAME = "CONNECT TO ";
 	public static final String CONNECTION_MESSAGE = "Hello!";
 
-	private static String pingId = null;
+	private String pingId = null;
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
@@ -31,9 +31,9 @@ public final class CommonSteps {
 	private CommonSteps() {
 	}
 
-	static final String ALIASES_SEPARATOR = ",";
+	public static final String ALIASES_SEPARATOR = ",";
 
-	private static List<String> splitAliases(String aliases) {
+	public static List<String> splitAliases(String aliases) {
 		List<String> result = new ArrayList<String>();
 		String[] splittedAliases = aliases.split(ALIASES_SEPARATOR);
 		for (String splittedAlias : splittedAliases) {
@@ -154,13 +154,6 @@ public final class CommonSteps {
 				dstConversationName, pingId);
 		Thread.sleep(1000);
 	}
-
-	// public void ISendInvitationToUserByContact(String user, String contact)
-	// throws Exception {
-	// BackendAPIWrappers.autoTestSendRequest(
-	// usrMgr.findUserByNameAlias(contact),
-	// usrMgr.findUserByNameAlias(user));
-	// }
 
 	public void AddContactsUsersToMacContacts() throws Exception {
 		(new OSXAddressBookHelpers()).addUsersToContacts(usrMgr

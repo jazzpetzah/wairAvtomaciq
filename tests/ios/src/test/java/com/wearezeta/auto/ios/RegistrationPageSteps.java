@@ -11,14 +11,15 @@ import javax.mail.MessagingException;
 
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.BackendAPIWrappers;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.LanguageUtils;
+import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.email.MBoxChangesListener;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.user_management.ClientUser;
-import com.wearezeta.auto.user_management.UserCreationHelper;
 import com.wearezeta.auto.user_management.ClientUsersManager;
 import com.wearezeta.auto.user_management.UserState;
 import com.wearezeta.auto.user_management.ClientUsersManager.UserAliasType;
@@ -289,7 +290,7 @@ public class RegistrationPageSteps {
 
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
-		this.listener = UserCreationHelper.getMboxInstance().startMboxListener(
+		this.listener = IMAPSMailbox.getInstance().startMboxListener(
 				expectedHeaders);
 		PagesCollection.registrationPage.inputPassword();
 	}
@@ -340,7 +341,7 @@ public class RegistrationPageSteps {
 
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
-		this.listener = UserCreationHelper.getMboxInstance().startMboxListener(
+		this.listener = IMAPSMailbox.getInstance().startMboxListener(
 				expectedHeaders);
 	}
 
@@ -389,9 +390,8 @@ public class RegistrationPageSteps {
 
 	@Then("^I verify registration address$")
 	public void IVerifyRegistrationAddress() throws Throwable {
-		UserCreationHelper.activateRegisteredUser(this.listener);
+		BackendAPIWrappers.activateRegisteredUser(this.listener);
 		userToRegister.setUserState(UserState.Created);
-		usrMgr.appendCustomUser(userToRegister);
 	}
 
 	@When("I don't see Next button")

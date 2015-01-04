@@ -32,7 +32,7 @@ Feature: People View
     And I add in search field user name to connect to <Contact2>
     And I  long tap on user name found on People picker page <Contact2>
     And I tap on create conversation
-    Then I see group chat page with users <Contact1> <Contact2>
+    Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples:
       | Login      | Password      | Name      | Contact1   | Contact2    | GroupChatName           |

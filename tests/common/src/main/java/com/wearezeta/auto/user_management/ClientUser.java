@@ -130,4 +130,9 @@ public class ClientUser implements Cloneable {
 		cloned.emailAliases = this.getEmailAliases();
 		return cloned;
 	}
+	
+	@Override
+	public String toString() {
+		return this.getName();
+	}
 }

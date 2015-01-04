@@ -2,22 +2,22 @@ package com.wearezeta.auto.ios;
 
 import java.io.IOException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import cucumber.api.java.en.*;
 
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.pages.*;
-import com.wearezeta.auto.user_management.ConversationsManager;
 import com.wearezeta.auto.user_management.ClientUsersManager;
 
 public class ContactListPageSteps {
 	private static final Logger log = ZetaLogger
 			.getLog(ContactListPageSteps.class.getSimpleName());
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	private final ConversationsManager chatsHelper = ConversationsManager.getInstance();
 
 	@Given("^I see Contact list with my name (.*)$")
 	public void GivenISeeContactListWithMyName(String name) throws Throwable {
@@ -33,12 +33,6 @@ public class ContactListPageSteps {
 		PeoplePickerPageSteps steps = new PeoplePickerPageSteps();
 		steps.WhenISeePeoplePickerPage();
 		steps.IClickCloseButtonDismissPeopleView();
-	}
-
-	@Given("^I have group chat named (.*) with an unconnected user, made by (.*)$")
-	public void GivenGroupChatWithName(String chatName, String groupCreator)
-			throws Throwable {
-		chatsHelper.createGroupChatWithUnconnecteduser(chatName, groupCreator);
 	}
 
 	@When("I dismiss tutorial layout")
@@ -129,7 +123,9 @@ public class ContactListPageSteps {
 		pickerSteps.WhenIClickOnAddToConversationButton();
 
 		GroupChatPageSteps groupChatSteps = new GroupChatPageSteps();
-		groupChatSteps.ThenISeeGroupChatPage(contact1, contact2);
+		final String[] names = new String[] {contact1, contact2};
+		groupChatSteps.ThenISeeGroupChatPage(StringUtils.join(names,
+				CommonSteps.ALIASES_SEPARATOR));
 	}
 
 	@When("^I see the group conversation name changed in the chat list$")

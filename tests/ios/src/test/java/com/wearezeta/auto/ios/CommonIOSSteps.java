@@ -16,13 +16,14 @@ import com.wearezeta.auto.ios.tools.IOSSimulatorPhotoLibHelper;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
-public class CommonIOSSteps{
+public class CommonIOSSteps {
 	private static final Logger log = ZetaLogger.getLog(CommonIOSSteps.class
 			.getSimpleName());
-	
+
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 
 	static {
@@ -96,70 +97,79 @@ public class CommonIOSSteps{
 		IOSKeyboard.dispose();
 	}
 
-	@When("I see keyboard")
+	@When("^I see keyboard$")
 	public void ISeeKeyboard() {
 		Assert.assertTrue(PagesCollection.dialogPage.isKeyboardVisible());
 	}
 
-	@When("I dont see keyboard")
+	@When("^I dont see keyboard$")
 	public void IDontSeeKeyboard() {
 		Assert.assertFalse(PagesCollection.dialogPage.isKeyboardVisible());
 	}
 
-	@When("I press keyboard Delete button")
+	@When("^I press keyboard Delete button$")
 	public void IPressKeyboardDeleteBtn() {
 		PagesCollection.iOSPage.clickKeyboardDeleteButton();
 	}
 
-	@When("I scroll up page a bit")
+	@When("^I scroll up page a bit$")
 	public void IScrollUpPageABit() {
 		PagesCollection.loginPage.smallScrollUp();
 	}
 
-	@When("I accept alert")
+	@When("^I accept alert$")
 	public void IAcceptAlert() {
 		PagesCollection.loginPage.acceptAlert();
 	}
 
-	@When("I dismiss alert")
+	@When("^I dismiss alert$")
 	public void IDismissAlert() {
 		PagesCollection.loginPage.dismissAlert();
 	}
 
-	@Given("^(.*) connection request is sended to me (.*)$")
-	public void GivenConnectionRequestIsSendedToMe(String contact, String me)
-			throws Throwable {
-		commonSteps.GivenConnectionRequestIsSentToMe(contact, me);
+	@Given("^(.*) has sent connection request to (.*)$")
+	public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
+			String usersToNameAliases) throws Throwable {
+		commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
+				usersToNameAliases);
 	}
 
-	@Given("My Contact (.*) has group chat with me (.*) and his Contact (.*) with name (.*)")
-	public void GivenMyContactCreateGroupChatWithMeAndHisContact(
-			String contact1, String me, String contact2, String chatName)
+	@And("^(.*) has sent connection request to (.*)$")
+	public void AndConnectionRequestIsSentTo(String userFromNameAlias,
+			String usersToNameAliases) throws Throwable {
+		commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
+				usersToNameAliases);
+	}
+
+	@Given("^(.*) has group chat (.*) with (.*)$")
+	public void UserHasGroupChatWithContacts(String chatOwnerNameAlias,
+			String chatName, String otherParticipantsNameAlises)
 			throws Exception {
-		commonSteps.GivenMyContactCreateGroupChatWithMeAndHisContact(contact1, me, contact2, chatName);
+		commonSteps.UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName,
+				otherParticipantsNameAlises);
 	}
 
-	@Given("^User (.*) is connected with (.*)")
-	public void GivenUserIsConnectedWith(String contact1, String contact2)
+	@Given("^(.*) is connected to (.*)$")
+	public void UserIsConnectedTo(String userFromNameAlias,
+			String usersToNameAliases) throws Exception {
+		commonSteps.UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
+	}
+
+	@Given("^There \\w+ (\\d+) user[s]*$")
+	public void ThereAreNUsers(int count) throws Exception {
+		commonSteps.ThereAreNUsers(count);
+	}
+
+	@Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
+	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
 			throws Exception {
-		commonSteps.GivenUserIsConnectedWith(contact1, contact2);
-	}
-
-	@Given("^I have group chat with name (.*) with (.*) and (.*)$")
-	public void GivenIHaveGroupChatWith(String chatName, String contact1,
-			String contact2) throws Exception {
-		commonSteps.GivenIHaveGroupChatWith(chatName, contact1, contact2);
-	}
-
-	@Given("^Generate (\\d+) and connect to (.*) contacts$")
-	public void GivenGenerateAndConnectAdditionalUsers(int usersNum,
-			String userName) throws Exception {
-		commonSteps.GivenGenerateAndConnectAdditionalUsers(usersNum, userName);
+		commonSteps.ThereAreNUsersWhereXIsMe(count, myNameAlias);
 	}
 
 	@When("^(.*) ignore all requests$")
-	public void IgnoreConnectRequest(String contact) throws Exception {
-		commonSteps.IgnoreConnectRequest(contact);
+	public void IgnoreAllIncomingConnectRequest(String userToNameAlias)
+			throws Exception {
+		commonSteps.IgnoreAllIncomingConnectRequest(userToNameAlias);
 	}
 
 	@When("^I wait for (.*) seconds$")
@@ -169,58 +179,38 @@ public class CommonIOSSteps{
 	}
 
 	@When("^User (.*) blocks user (.*)$")
-	public void BlockContact(String contact, String login) throws Exception {
-		commonSteps.BlockContact(contact, login);
+	public void BlockContact(String blockAsUserNameAlias,
+			String userToBlockNameAlias) throws Exception {
+		commonSteps.BlockContact(blockAsUserNameAlias, userToBlockNameAlias);
 	}
 
 	@When("^(.*) accept all requests$")
-	public void AcceptConnectRequest(String contact) throws Exception {
-		commonSteps.AcceptConnectRequest(contact);
-	}
-
-	@Given("I have (\\d+) users and (\\d+) contacts for (\\d+) users")
-	public void IHaveUsersAndConnections(int users, int connections,
-			int usersWithContacts) throws Exception {
-		commonSteps.IHaveUsersAndConnections(users, connections, usersWithContacts);
+	public void AcceptAllIncomingConnectionRequests(String userToNameAlias)
+			throws Exception {
+		commonSteps.AcceptAllIncomingConnectionRequests(userToNameAlias);
 	}
 
 	@When("^Contact (.*) ping conversation (.*)$")
-	public void userPingedConversation(String contact, String conversationName)
-			throws Exception {
-		commonSteps.UserPingedConversation(contact, conversationName);
+	public void UserPingedConversation(String pingFromUserNameAlias,
+			String dstConversationName) throws Exception {
+		commonSteps.UserPingedConversation(pingFromUserNameAlias,
+				dstConversationName);
 	}
 
 	@When("^Contact (.*) hotping conversation (.*)$")
-	public void userHotPingedConversation(String contact,
-			String conversationName) throws Exception {
-		commonSteps.UserHotPingedConversation(contact, conversationName);
+	public void UserHotPingedConversation(String hotPingFromUserNameAlias,
+			String dstConversationName) throws Exception {
+		commonSteps.UserHotPingedConversation(hotPingFromUserNameAlias,
+				dstConversationName);
 	}
 
-	@Given("I send invitation to (.*) by (.*)")
-	public void ISendInvitationToUserByContact(String user, String contact)
-			throws Exception {
-		commonSteps.ISendInvitationToUserByContact(user, contact);
-	}
-
-	@Given("I send (.*) connection requests to (.*)")
-	public void ISendInvitationToUserByContact(int requests, String user)
-			throws Throwable {
-		commonSteps.ISendInvitationToUserByContact(requests, user);
-	}
-
-	@When("I add contacts list users to Mac contacts")
+	@When("^I add contacts list users to Mac contacts$")
 	public void AddContactsUsersToMacContacts() throws Exception {
 		commonSteps.AddContactsUsersToMacContacts();
 	}
 
-	@When("I remove contacts list users from Mac contacts")
+	@When("^I remove contacts list users from Mac contacts$")
 	public void IRemoveContactsListUsersFromMacContact() throws Exception {
 		commonSteps.IRemoveContactsListUsersFromMacContact();
-	}
-
-	@Given("I have at least (.*) connections")
-	public void GivenIHaveAtMinimumConnections(int minimumConnections)
-			throws Exception {
-		commonSteps.GivenIHaveAtMinimumConnections(minimumConnections);
 	}
 }

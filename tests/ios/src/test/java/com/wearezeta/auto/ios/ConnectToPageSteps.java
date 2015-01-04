@@ -50,14 +50,12 @@ public class ConnectToPageSteps {
 	@Given("^I have connection request from (.*)$")
 	public void IHaveConnectionRequest(String contact) throws Throwable {
 		BackEndREST.sendConnectRequest(usrMgr.findUserByNameAlias(contact),
-				usrMgr.findUserByNameAlias(ClientUsersManager.SELF_USER_ALIAS),
-				"CONNECT TO " + contact, "Hello");
-		Thread.sleep(2000);
+				usrMgr.getSelfUserOrThrowError(), "CONNECT TO " + contact,
+				"Hello");
 	}
 
 	@When("^I see connection request from (.*)$")
 	public void IReceiveInvitationMessage(String contact) throws Throwable {
-
 		// Not needed since we auto accept all alerts
 		ContactListPageSteps clSteps = new ContactListPageSteps();
 		clSteps.ISeeUserNameFirstInContactList(IOSLocators.xpathPendingRequest);
@@ -65,7 +63,6 @@ public class ConnectToPageSteps {
 
 	@When("^I confirm connection request$")
 	public void IAcceptInvitationMessage() throws IOException {
-
 		ContactListPageSteps clSteps = new ContactListPageSteps();
 		clSteps.WhenITapOnContactName(IOSLocators.xpathPendingRequest);
 		PagesCollection.connectToPage = new ConnectToPage(

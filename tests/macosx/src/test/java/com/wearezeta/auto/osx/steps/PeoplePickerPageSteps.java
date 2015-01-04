@@ -2,7 +2,6 @@ package com.wearezeta.auto.osx.steps;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.BackEndREST;
 import com.wearezeta.auto.osx.pages.PeoplePickerPage;
 import com.wearezeta.auto.user_management.ClientUser;
 import com.wearezeta.auto.user_management.ClientUsersManager;
@@ -53,12 +52,5 @@ public class PeoplePickerPageSteps {
 	@When("I send invitation to user")
 	public void WhenISendInvitationToUser() {
 		CommonOSXSteps.senderPages.getPeoplePickerPage().sendInvitationToUserIfRequested();
-	}
-	
-	@Given("I send invitation to (.*) by (.*)")
-	public void ISendInvitationToUserByContact(String user, String contact) throws Throwable {	
-		ClientUser contactUser = usrMgr.findUserByNameAlias(user);
-		ClientUser userUser = usrMgr.findUserByNameAlias(contact);
-		BackEndREST.autoTestSendRequest(contactUser, userUser);
 	}
 }

@@ -148,7 +148,9 @@ Feature: Connect
   @regression @id579
   Scenario Outline: Verify transitions between connection requests (ignoring)
     Given There are 4 users where <Name> is me
-    Given <Contact1>,<Contact2>,<Contact3> have sent connection requests to me
+    Given <Contact1> has sent connection request to me
+    Given <Contact2> has sent connection request to me
+    Given <Contact3> has sent connection request to me
     Given I Sign in using login <Name> and password <Password>
     When I see Contact list with my name <Name>
     And I see Pending request link in contact list

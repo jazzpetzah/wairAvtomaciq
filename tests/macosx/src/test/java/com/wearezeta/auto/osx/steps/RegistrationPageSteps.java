@@ -10,13 +10,14 @@ import java.util.NoSuchElementException;
 
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.BackendAPIWrappers;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.email.MBoxChangesListener;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.RegistrationPage;
 import com.wearezeta.auto.user_management.ClientUser;
-import com.wearezeta.auto.user_management.UserCreationHelper;
 import com.wearezeta.auto.user_management.ClientUsersManager;
 import com.wearezeta.auto.user_management.ClientUsersManager.UserAliasType;
 
@@ -78,7 +79,7 @@ public class RegistrationPageSteps {
 		CommonOSXSteps.senderPages.getRegistrationPage().submitRegistration();
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
-		this.listener = UserCreationHelper.getMboxInstance().startMboxListener(
+		this.listener = IMAPSMailbox.getInstance().startMboxListener(
 				expectedHeaders);
 	}
 
@@ -90,8 +91,7 @@ public class RegistrationPageSteps {
 
 	@Then("I verify registration address")
 	public void IVerifyRegistrationAddress() throws Exception {
-		UserCreationHelper.activateRegisteredUser(this.listener);
-		usrMgr.appendCustomUser(this.userToRegister);
+		BackendAPIWrappers.activateRegisteredUser(this.listener);
 	}
 
 	@When("I choose register using camera")

@@ -16,10 +16,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.IOSPage;
-import com.wearezeta.auto.user_management.UserCreationHelper;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.email.EmailHeaders;
@@ -447,13 +445,7 @@ public class RegistrationPage extends IOSPage {
 	public int getRecentEmailsCountForRecipient(int allRecentEmailsCnt,
 			String expectedRecipient) throws MessagingException, IOException,
 			InterruptedException {
-		IMAPSMailbox mailbox = new IMAPSMailbox(
-				CommonUtils
-						.getDefaultEmailServerFromConfig(RegistrationPage.class),
-				UserCreationHelper.MAILS_FOLDER, CommonUtils
-						.getDefaultEmailFromConfig(RegistrationPage.class),
-				CommonUtils
-						.getDefaultPasswordFromConfig(RegistrationPage.class));
+		IMAPSMailbox mailbox = IMAPSMailbox.getInstance();
 		int actualCnt = 0;
 		List<EmailHeaders> allEmailsHeaders = mailbox
 				.getLastMailHeaders(allRecentEmailsCnt);

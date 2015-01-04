@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
 
-import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -122,39 +121,46 @@ public class GroupChatInfoPage extends IOSPage {
 		return true;
 	}
 
-	// TODO: refactor! hardcoded users
+	// FIXME: refactor! hardcoded users
 	public void tapAndCheckAllParticipants() throws IOException {
-		List<WebElement> participants = getCurrentParticipants();
-		String participantNameTextFieldValue = null;
-		String participantName = null;
-		String participantEmailTextFieldValue = null;
-		String unconnectedUsername = usrMgr.findUserByNameAlias(
-				ClientUsersManager.YOUR_USER_2_ALIAS).getName();
-		for (WebElement participant : participants) {
-			ClientUser participantUser = getParticipantUser(participant);
-			participantName = participantUser.getName();
-			PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) tapOnParticipant(getParticipantName(participant));
-			participantNameTextFieldValue = PagesCollection.otherUserPersonalInfoPage
-					.getNameFieldValue();
-			participantEmailTextFieldValue = PagesCollection.otherUserPersonalInfoPage
-					.getEmailFieldValue();
-			Assert.assertTrue(
-					"Participant Name is incorrect and/or not displayed",
-					participantNameTextFieldValue
-							.equalsIgnoreCase(participantName));
-			if (participantName.equalsIgnoreCase(unconnectedUsername)) {
-				Assert.assertFalse("Unconnected user's email is displayed",
-						participantEmailTextFieldValue
-								.equalsIgnoreCase(participantUser.getEmail()));
-			} else {
-				Assert.assertTrue(
-						"Participant Email is incorrect and/or not displayed",
-						participantEmailTextFieldValue
-								.equalsIgnoreCase(participantUser.getEmail()));
-			}
-			PagesCollection.groupChatInfoPage = (GroupChatInfoPage) PagesCollection.otherUserPersonalInfoPage
-					.leavePageToGroupInfoPage();
-		}
+		throw new RuntimeException(
+				"Fixme dude! Using hardcoded user has never been a good idea :-(");
+		// List<WebElement> participants = getCurrentParticipants();
+		// String participantNameTextFieldValue = null;
+		// String participantName = null;
+		// String participantEmailTextFieldValue = null;
+		// String unconnectedUsername = usrMgr.findUserByNameAlias(
+		// ClientUsersManager.YOUR_USER_2_ALIAS).getName();
+		// for (WebElement participant : participants) {
+		// ClientUser participantUser = getParticipantUser(participant);
+		// participantName = participantUser.getName();
+		// PagesCollection.otherUserPersonalInfoPage =
+		// (OtherUserPersonalInfoPage)
+		// tapOnParticipant(getParticipantName(participant));
+		// participantNameTextFieldValue =
+		// PagesCollection.otherUserPersonalInfoPage
+		// .getNameFieldValue();
+		// participantEmailTextFieldValue =
+		// PagesCollection.otherUserPersonalInfoPage
+		// .getEmailFieldValue();
+		// Assert.assertTrue(
+		// "Participant Name is incorrect and/or not displayed",
+		// participantNameTextFieldValue
+		// .equalsIgnoreCase(participantName));
+		// if (participantName.equalsIgnoreCase(unconnectedUsername)) {
+		// Assert.assertFalse("Unconnected user's email is displayed",
+		// participantEmailTextFieldValue
+		// .equalsIgnoreCase(participantUser.getEmail()));
+		// } else {
+		// Assert.assertTrue(
+		// "Participant Email is incorrect and/or not displayed",
+		// participantEmailTextFieldValue
+		// .equalsIgnoreCase(participantUser.getEmail()));
+		// }
+		// PagesCollection.groupChatInfoPage = (GroupChatInfoPage)
+		// PagesCollection.otherUserPersonalInfoPage
+		// .leavePageToGroupInfoPage();
+		// }
 	}
 
 	public String getParticipantName(WebElement participant) {
@@ -194,7 +200,8 @@ public class GroupChatInfoPage extends IOSPage {
 			return true;
 		} else {
 			contact1 = usrMgr.findUserByNameAlias(contact1).getName();
-			contact2 = usrMgr.findUserByNameAlias(contact2).getName();;
+			contact2 = usrMgr.findUserByNameAlias(contact2).getName();
+			;
 			if (contact1.contains(" ")) {
 				contact1 = contact1.substring(0, contact1.indexOf(" "));
 			}

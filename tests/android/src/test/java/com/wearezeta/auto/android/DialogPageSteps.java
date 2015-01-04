@@ -1,10 +1,13 @@
 package com.wearezeta.auto.android;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.user_management.ClientUsersManager;
 
@@ -194,21 +197,18 @@ public class DialogPageSteps {
 				.swipeRight(500);
 	}
 
-	@Then("^I see group chat page with users (.*) (.*)$")
-	public void ThenISeeGroupChatPage(String name1, String name2)
+	@Then("^I see group chat page with users (.*)$")
+	public void ThenISeeGroupChatPage(String participantNameAliases)
 			throws Throwable {
 		PagesCollection.dialogPage.isDialogVisible();
-		if (name1.contains(ClientUsersManager.CONTACT_1_ALIAS)
-				&& name2.contains(ClientUsersManager.CONTACT_2_ALIAS)) {
-			PagesCollection.dialogPage.isGroupChatDialogContainsNames(usrMgr
-					.findUserByNameAlias(ClientUsersManager.CONTACT_1_ALIAS)
-					.getName(),
-					usrMgr.findUserByNameAlias(ClientUsersManager.CONTACT_2_ALIAS)
-							.getName());
-		} else {
-			PagesCollection.dialogPage.isGroupChatDialogContainsNames(name1,
-					name2);
+		List<String> participantNames = new ArrayList<String>();
+		for (String nameAlias : CommonSteps
+				.splitAliases(participantNameAliases)) {
+			participantNames.add(usrMgr.findUserByNameAlias(nameAlias)
+					.getName());
 		}
+		Assert.assertTrue(PagesCollection.dialogPage
+				.isGroupChatDialogContainsNames(participantNames));
 	}
 
 	@Then("^I see message that I left chat$")

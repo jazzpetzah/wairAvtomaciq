@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.BackEndREST;
+import com.wearezeta.auto.common.BackendAPIWrappers;
 import com.wearezeta.auto.common.BackendRequestException;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
@@ -79,9 +80,9 @@ public class ConversationPageSteps {
 		choosePicturePage.openImage(imageFilename);
 	}
 
-	@Then("^I see HD picture (.*) in conversation$")
-	public void ThenISeeHDPictureInConversation(String filename)
-			throws Throwable {
+	@Then("^I see HD picture (.*) in conversation with (.*)$")
+	public void ThenISeeHDPictureInConversation(String filename,
+			String contactNameAlias) throws Throwable {
 
 		// fist check, if there is a picture sent
 		int afterNumberOfImages = -1;
@@ -110,10 +111,8 @@ public class ConversationPageSteps {
 		int retriesCount = 0;
 		Exception lastException = null;
 		BufferedImage pictureAssetFromConv = null;
-		ClientUser selfUser = usrMgr
-				.findUserByNameAlias(ClientUsersManager.SELF_USER_ALIAS);
-		ClientUser contactUser = usrMgr
-				.findUserByNameAlias(ClientUsersManager.CONTACT_1_ALIAS);
+		ClientUser selfUser = usrMgr.getSelfUserOrThrowError();
+		ClientUser contactUser = usrMgr.findUserByNameAlias(contactNameAlias);
 		do {
 			retry = false;
 			try {
@@ -208,11 +207,11 @@ public class ConversationPageSteps {
 	}
 
 	@When("^User (.*) pings in chat (.*)$")
-	public void WhenUserPingsInChat(String contact, String conversation)
+	public void WhenUserPingsInChat(String contactNameAlias, String conversation)
 			throws Throwable {
-		ClientUser yourСontact = usrMgr.findUserByNameAlias(contact);
-		yourСontact = BackEndREST.loginByUser(yourСontact);
-		pingID = BackEndREST.sendPingToConversation(yourСontact, conversation);
+		ClientUser yourСontact = usrMgr.findUserByNameAlias(contactNameAlias);
+		pingID = BackendAPIWrappers.sendPingToConversation(yourСontact,
+				conversation);
 		Thread.sleep(1000);
 	}
 
@@ -269,12 +268,12 @@ public class ConversationPageSteps {
 	}
 
 	@When("^User (.*) pings again in chat (.*)$")
-	public void WhenUserPingsAgainInChat(String contact, String conversation)
-			throws Throwable {
-		ClientUser yourСontact = usrMgr.findUserByNameAlias(contact);
+	public void WhenUserPingsAgainInChat(String contactNameAlias,
+			String conversation) throws Throwable {
+		ClientUser yourСontact = usrMgr.findUserByNameAlias(contactNameAlias);
 		yourСontact = BackEndREST.loginByUser(yourСontact);
-		BackEndREST
-				.sendHotPingToConversation(yourСontact, conversation, pingID);
+		BackendAPIWrappers.sendHotPingToConversation(yourСontact, conversation,
+				pingID);
 		Thread.sleep(1000);
 	}
 

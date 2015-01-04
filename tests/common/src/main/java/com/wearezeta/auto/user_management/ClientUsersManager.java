@@ -32,6 +32,7 @@ public class ClientUsersManager {
 	}
 
 	private void resetClientsList(List<ClientUser> dstList) throws IOException {
+		this.selfUser = null;
 		dstList.clear();
 		for (int userIdx = 0; userIdx < MAX_USERS; userIdx++) {
 			ClientUser pendingUser = new ClientUser();
@@ -149,7 +150,7 @@ public class ClientUsersManager {
 		BackendAPIWrappers.generateUsers(this.users.subList(0, count));
 	}
 
-	private static String[] SELF_USER_NAME_ALISES = new String[] { "me",
+	private static String[] SELF_USER_NAME_ALISES = new String[] { "I", "me",
 			"myself" };
 	private static String[] SELF_USER_PASSWORD_ALISES = new String[] { "myPassword" };
 	private static String[] SELF_USER_EMAIL_ALISES = new String[] { "myEmail" };
@@ -157,6 +158,12 @@ public class ClientUsersManager {
 	private ClientUser selfUser = null;
 
 	public void setSelfUser(ClientUser usr) {
+		if (!this.users.contains(usr)) {
+			throw new RuntimeException(
+					String.format("User %s should be one of precreated users!",
+							usr));
+		}
+		
 		if (this.selfUser != null) {
 			for (String nameAlias : SELF_USER_NAME_ALISES) {
 				if (this.selfUser.getNameAliases().contains(nameAlias)) {
@@ -192,6 +199,22 @@ public class ClientUsersManager {
 				this.selfUser.addEmailAlias(emailAlias);
 			}
 		}
+	}
+
+	public static class SelfUserIsNotDefinedException extends Exception {
+		private static final long serialVersionUID = 5586439025162442603L;
+
+		public SelfUserIsNotDefinedException(String msg) {
+			super(msg);
+		}
+	}
+
+	public ClientUser getSelfUserOrThrowError()
+			throws SelfUserIsNotDefinedException {
+		if (this.selfUser == null) {
+			throw new SelfUserIsNotDefinedException("Self user should be defined in some previous step!");
+		}
+		return this.selfUser;
 	}
 
 	public ClientUser getSelfUser() {

@@ -1,9 +1,12 @@
 package com.wearezeta.auto.ios;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.GroupChatInfoPage;
@@ -18,14 +21,17 @@ import cucumber.api.java.en.When;
 public class GroupChatPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-	@Then("^I see group chat page with users (.*) (.*)$")
-	public void ThenISeeGroupChatPage(String name1, String name2)
+	@Then("^I see group chat page with users (.*)$")
+	public void ThenISeeGroupChatPage(String participantNameAliases)
 			throws Throwable {
-		Thread.sleep(2000);
-		name1 = usrMgr.findUserByNameAlias(name1).getName();
-		name2 = usrMgr.findUserByNameAlias(name2).getName();
-		PagesCollection.groupChatPage.areRequiredContactsAddedToChat(name1,
-				name2);
+		List<String> participantNames = new ArrayList<String>();
+		for (String nameAlias : CommonSteps
+				.splitAliases(participantNameAliases)) {
+			participantNames.add(usrMgr.findUserByNameAlias(nameAlias)
+					.getName());
+		}
+		Assert.assertTrue(PagesCollection.groupChatPage
+				.areRequiredContactsAddedToChat(participantNames));
 	}
 
 	@Then("^I see group chat page with 3 users (.*) (.*) (.*)$")
