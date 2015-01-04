@@ -1,12 +1,12 @@
 package com.wearezeta.auto.android;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
-import com.wearezeta.auto.user_management.ClientUser;
 import com.wearezeta.auto.user_management.ClientUsersManager;
 import com.wearezeta.auto.user_management.ClientUsersManager.UserAliasType;
 
@@ -22,9 +22,18 @@ public class LoginPageSteps {
 
 	@Given("^I Sign in using login (.*) and password (.*)$")
 	public void GivenISignIn(String login, String password) throws Exception {
-		ClientUser dstUser = usrMgr.findUserByNameAlias(login);
-		login = dstUser.getEmail();
-		password = dstUser.getPassword();
+		try {
+			login = usrMgr.findUserByAlias(login, UserAliasType.EMAIL)
+					.getEmail();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
+		try {
+			password = usrMgr.findUserByAlias(password, UserAliasType.PASSWORD)
+					.getPassword();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
 		Assert.assertNotNull(PagesCollection.loginPage.isVisible());
 		PagesCollection.loginPage.SignIn();
 		PagesCollection.loginPage.setLogin(login);
@@ -55,15 +64,24 @@ public class LoginPageSteps {
 
 	@When("I have entered login (.*)")
 	public void WhenIHaveEnteredLogin(String login) {
-		login = usrMgr.findUserByNameAlias(login).getEmail();
+		try {
+			login = usrMgr.findUserByAlias(login, UserAliasType.EMAIL)
+					.getEmail();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
 		PagesCollection.loginPage.setLogin(login);
 	}
 
 	@When("I have entered password (.*)")
 	public void WhenIHaveEnteredPassword(String password)
 			throws InterruptedException {
-		password = usrMgr.findUserByAlias(password, UserAliasType.PASSWORD)
-				.getPassword();
+		try {
+			password = usrMgr.findUserByAlias(password, UserAliasType.PASSWORD)
+					.getPassword();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
 		PagesCollection.loginPage.setPassword(password);
 	}
 

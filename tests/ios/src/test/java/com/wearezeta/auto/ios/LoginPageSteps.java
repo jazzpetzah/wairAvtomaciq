@@ -3,12 +3,13 @@ package com.wearezeta.auto.ios;
 import org.junit.Assert;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
-import com.wearezeta.auto.user_management.ClientUser;
 import com.wearezeta.auto.user_management.ClientUsersManager;
+import com.wearezeta.auto.user_management.ClientUsersManager.UserAliasType;
 
 import cucumber.api.java.en.*;
 
@@ -23,9 +24,18 @@ public class LoginPageSteps {
 	@Given("^I Sign in using login (.*) and password (.*)$")
 	public void GivenISignIn(String login, String password) throws IOException,
 			InterruptedException {
-		ClientUser dstUser = usrMgr.findUserByNameAlias(login);
-		login = dstUser.getEmail();
-		password = dstUser.getPassword();
+		try {
+			login = usrMgr.findUserByAlias(login, UserAliasType.EMAIL)
+					.getEmail();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
+		try {
+			password = usrMgr.findUserByAlias(password, UserAliasType.PASSWORD)
+					.getPassword();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
 		Assert.assertNotNull(PagesCollection.loginPage.isVisible());
 		PagesCollection.loginPage = (LoginPage) (PagesCollection.loginPage
 				.signIn());
@@ -58,20 +68,30 @@ public class LoginPageSteps {
 
 	@When("I press Join button")
 	public void WhenIPressJoinButton() throws IOException {
-
 		PagesCollection.registrationPage = PagesCollection.loginPage.join();
 	}
 
 	@When("I have entered login (.*)")
-	public void WhenIHaveEnteredLogin(String value) throws IOException {
-		ClientUser dstUser = usrMgr.findUserByNameAlias(value);
-		PagesCollection.loginPage.setLogin(dstUser.getEmail());
+	public void WhenIHaveEnteredLogin(String login) throws IOException {
+		try {
+			login = usrMgr.findUserByAlias(login,
+				UserAliasType.EMAIL).getEmail();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
+		PagesCollection.loginPage.setLogin(login);
 	}
 
 	@When("I have entered password (.*)")
-	public void WhenIHaveEnteredPassword(String value) throws IOException {
-		ClientUser dstUser = usrMgr.findUserByNameAlias(value);
-		PagesCollection.loginPage.setPassword(dstUser.getPassword());
+	public void WhenIHaveEnteredPassword(String password)
+			throws IOException {
+		try {
+			password = usrMgr.findUserByAlias(password,
+				UserAliasType.PASSWORD).getPassword();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
+		PagesCollection.loginPage.setPassword(password);
 	}
 
 	@When("I fill in email input (.*)")

@@ -20,7 +20,6 @@ import com.wearezeta.auto.osx.pages.PagesCollection;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
@@ -90,13 +89,6 @@ public class CommonOSXSteps {
 
 	@Given("^(.*) has sent connection request to (.*)$")
 	public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
-			String usersToNameAliases) throws Throwable {
-		commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
-				usersToNameAliases);
-	}
-
-	@And("^(.*) has sent connection request to (.*)$")
-	public void AndConnectionRequestIsSentTo(String userFromNameAlias,
 			String usersToNameAliases) throws Throwable {
 		commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
 				usersToNameAliases);
