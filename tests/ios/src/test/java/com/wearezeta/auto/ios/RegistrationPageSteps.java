@@ -11,10 +11,10 @@ import javax.mail.MessagingException;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.BackendAPIWrappers;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.LanguageUtils;
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.email.MBoxChangesListener;
 import com.wearezeta.auto.ios.pages.ContactListPage;

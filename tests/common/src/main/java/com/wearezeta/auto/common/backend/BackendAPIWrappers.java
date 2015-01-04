@@ -1,4 +1,4 @@
-package com.wearezeta.auto.common;
+package com.wearezeta.auto.common.backend;
 
 import java.util.HashMap;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.wearezeta.auto.common;
+package com.wearezeta.auto.common.backend;
 
 public class BackendRequestException extends Exception {
 	private static final long serialVersionUID = 3106861319171268398L;

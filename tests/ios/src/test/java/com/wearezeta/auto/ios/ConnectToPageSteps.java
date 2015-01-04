@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.BackEndREST;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.backend.BackEndREST;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.ConnectToPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;

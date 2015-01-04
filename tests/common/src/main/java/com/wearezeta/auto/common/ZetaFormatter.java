@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.user_management.ClientUser;

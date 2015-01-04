@@ -8,10 +8,10 @@ import javax.ws.rs.core.UriBuilderException;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
 
-import com.wearezeta.auto.common.BackendRequestException;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ZetaFormatter;
+import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.pages.LoginPage;

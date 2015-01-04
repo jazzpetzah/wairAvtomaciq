@@ -8,7 +8,7 @@ import javax.script.ScriptException;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.wearezeta.auto.common.BackEndREST;
+import com.wearezeta.auto.common.backend.BackEndREST;
 
 public final class OSXAddressBookHelpers {
 	private static ScriptEngine engine = (new ScriptEngineManager())

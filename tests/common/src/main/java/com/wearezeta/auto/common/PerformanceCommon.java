@@ -9,6 +9,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
+import com.wearezeta.auto.common.backend.BackEndREST;
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.user_management.ClientUser;
 import com.wearezeta.auto.user_management.ClientUsersManager;
@@ -31,7 +33,7 @@ public final class PerformanceCommon {
 	public static final int BACK_END_MESSAGE_COUNT = 5;
 	public static final int MIN_WAIT_VALUE_IN_MIN = 1;
 	public static final int MAX_WAIT_VALUE_IN_MIN = 2;
-	public static final int PARALLEL_MSGS = 5;
+	public static final int SIMULTANEOUS_MSGS_COUNT = 5;
 
 	private static PerformanceCommon instance = null;
 

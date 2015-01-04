@@ -10,8 +10,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.wearezeta.auto.common.BackendAPIWrappers;
-import com.wearezeta.auto.common.BackendRequestException;
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.common.backend.BackendRequestException;
 
 public class ClientUsersManager {
 	private static final int MAX_PARALLEL_USER_CREATION_TASKS = 5;

@@ -35,7 +35,7 @@ public class PerformanceSteps {
 			// Send x messages and x/5 images to your user
 			perfCommon.sendRandomMessagesToUser(
 					PerformanceCommon.BACK_END_MESSAGE_COUNT,
-					PerformanceCommon.PARALLEL_MSGS);
+					PerformanceCommon.SIMULTANEOUS_MSGS_COUNT);
 			perfCommon
 					.sendDefaultImageToUser(PerformanceCommon.BACK_END_MESSAGE_COUNT / 5);
 

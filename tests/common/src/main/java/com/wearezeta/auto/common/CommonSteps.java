@@ -3,6 +3,9 @@ package com.wearezeta.auto.common;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.wearezeta.auto.common.backend.BackEndREST;
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.user_management.ClientUser;
 import com.wearezeta.auto.user_management.OSXAddressBookHelpers;
 import com.wearezeta.auto.user_management.ClientUsersManager;
