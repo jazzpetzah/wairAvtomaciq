@@ -327,8 +327,7 @@ public class BackEndREST {
 
 	public static void sendPictureToChatByName(ClientUser userFrom,
 			String chatName, String imagePath, InputStream src)
-			throws Throwable {
-
+			throws Exception {
 		userFrom = loginByUser(userFrom);
 		sendPicture(userFrom, imagePath,
 				getConversationByName(userFrom, chatName), src);
@@ -360,8 +359,7 @@ public class BackEndREST {
 	}
 
 	private static void sendPicture(ClientUser userFrom, String imagePath,
-			String convId, InputStream src) throws Throwable {
-
+			String convId, InputStream src) throws Exception {
 		String imageMimeType = "";
 		if (null == src) {
 			InputStream is = new BufferedInputStream(new FileInputStream(

@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.time.LocalDateTime;
 
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 
-import com.wearezeta.auto.common.PerformanceRunCommon;
+import com.wearezeta.auto.common.PerformanceCommon;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationPage;
@@ -18,23 +16,22 @@ import com.wearezeta.auto.osx.pages.ConversationPage;
 import cucumber.api.java.en.When;
 
 public class PerformanceSteps {
-	private final Logger log = ZetaLogger.getLog(PerformanceRunCommon.class
-			.getSimpleName());
-	private final PerformanceRunCommon commonStuff = PerformanceRunCommon
+	private final PerformanceCommon perfCommon = PerformanceCommon
 			.getInstance();
 
 	private String randomMessage;
 	private static final String picturename = "testing.jpg";
 
-	Random random = new Random();
+	private Random random = new Random();
 
 	@When("^I (.*) start testing cycle for (\\d+) minutes$")
-	public void WhenIStartTestingCycleForMinutes(String user, int time)
+	public void WhenIStartTestingCycleForMinutes(String nameAlias, int time)
 			throws Throwable {
 		LocalDateTime startDateTime = LocalDateTime.now();
 		long diffInMinutes = 0;
 
-		user = commonStuff.getUserManager().findUserByNameAlias(user).getName();
+		final String name = perfCommon.getUserManager()
+				.findUserByNameAlias(nameAlias).getName();
 		CommonOSXSteps.senderPages
 				.setContactListPage(new ContactListPage(
 						CommonUtils
@@ -47,13 +44,11 @@ public class PerformanceSteps {
 
 			// Send messages and image by BackEnd
 			try {
-				commonStuff.getUserChatsHelper().sendRandomMessagesToUser(
-						PerformanceRunCommon.BACK_END_MESSAGE_COUNT);
-				commonStuff
-						.getUserChatsHelper()
-						.sendDefaultImageToUser(
-								(int) Math
-										.floor(PerformanceRunCommon.BACK_END_MESSAGE_COUNT / 5));
+				perfCommon.sendRandomMessagesToUser(
+						PerformanceCommon.BACK_END_MESSAGE_COUNT,
+						PerformanceCommon.PARALLEL_MSGS);
+				perfCommon
+						.sendDefaultImageToUser(PerformanceCommon.BACK_END_MESSAGE_COUNT / 5);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -61,13 +56,13 @@ public class PerformanceSteps {
 			Thread.sleep(1000);
 
 			// Send messages cycle by UI
-			for (int j = 1; j <= PerformanceRunCommon.SEND_MESSAGE_NUM; ++j) {
+			for (int j = 1; j <= PerformanceCommon.SEND_MESSAGE_NUM; ++j) {
 				ArrayList<WebElement> visibleContactsList = new ArrayList<WebElement>(
 						CommonOSXSteps.senderPages.getContactListPage()
 								.getContacts());
 				// remove self user from the list
 				for (int i = 0; i < visibleContactsList.size(); i++) {
-					if (visibleContactsList.get(i).getText().equals(user)) {
+					if (visibleContactsList.get(i).getText().equals(name)) {
 						visibleContactsList.remove(i);
 						break;
 					}
@@ -114,7 +109,7 @@ public class PerformanceSteps {
 					CommonOSXSteps.senderPages.getConversationPage()
 							.scrollDownToLastMessage();
 				} catch (Exception ex) {
-					log.debug("Scrolling fail: ", ex);
+					perfCommon.getLogger().debug("Scrolling fail: ", ex);
 				}
 				Thread.sleep(2000);
 				try {
@@ -133,14 +128,14 @@ public class PerformanceSteps {
 
 					choosePicturePage.openImage(picturename);
 				} catch (Exception ex) {
-					log.debug("Image posting failed: ", ex);
+					perfCommon.getLogger().debug("Image posting failed: ", ex);
 				}
 				Thread.sleep(1000);
 				try {
 					CommonOSXSteps.senderPages.getConversationPage()
 							.scrollDownToLastMessage();
 				} catch (Exception exep) {
-					log.debug("Scrolling fail: ", exep);
+					perfCommon.getLogger().debug("Scrolling fail: ", exep);
 				}
 			}
 
@@ -161,21 +156,21 @@ public class PerformanceSteps {
 		CommonOSXSteps.senderPages.getContactListPage()
 				.waitUntilMainWindowAppears();
 		CommonOSXSteps.senderPages.getContactListPage().minimizeZClient();
-		log.debug("Client minimized");
+		perfCommon.getLogger().debug("Client minimized");
 	}
 
 	@When("Set random sleep interval")
 	public void SetRandomSleepInterval() throws InterruptedException {
 		int sleepTimer = ((random
-				.nextInt(PerformanceRunCommon.MAX_WAIT_VALUE_IN_MIN) + PerformanceRunCommon.MIN_WAIT_VALUE_IN_MIN) * 60 * 1000);
-		log.debug("Sleep time: " + sleepTimer / 1000 + " sec.");
+				.nextInt(PerformanceCommon.MAX_WAIT_VALUE_IN_MIN) + PerformanceCommon.MIN_WAIT_VALUE_IN_MIN) * 60 * 1000);
+		perfCommon.getLogger().debug("Sleep time: " + sleepTimer / 1000 + " sec.");
 		Thread.sleep(sleepTimer);
 	}
 
 	@When("Restore ZClient")
 	public void RestoreZClient() throws Exception {
 		CommonOSXSteps.senderPages.getContactListPage().restoreZClient();
-		log.debug("Client restored");
+		perfCommon.getLogger().debug("Client restored");
 	}
 
 }

@@ -99,7 +99,7 @@ public class RegistrationPageSteps {
 	public void ISubmitRegistrationData() throws Exception {
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
-		this.listener = IMAPSMailbox.getInstance().startMboxListener(
+		this.listener = IMAPSMailbox.createDefaultInstance().startMboxListener(
 				expectedHeaders);
 
 		PagesCollection.registrationPage.createAccount();

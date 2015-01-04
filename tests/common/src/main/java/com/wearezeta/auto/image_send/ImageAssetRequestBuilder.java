@@ -111,7 +111,7 @@ public class ImageAssetRequestBuilder extends AssetRequestBuilder {
 	}
 
 	@Override
-	public List<AssetRequest> getRequests() throws Throwable {
+	public List<AssetRequest> getRequests() throws Exception {
 		List<AssetRequest> resultList = new ArrayList<AssetRequest>();
 
 		List<AssetData> processedImageAssets = getProcessedAssets();

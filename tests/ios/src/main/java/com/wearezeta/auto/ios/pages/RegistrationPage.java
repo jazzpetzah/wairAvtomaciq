@@ -445,7 +445,7 @@ public class RegistrationPage extends IOSPage {
 	public int getRecentEmailsCountForRecipient(int allRecentEmailsCnt,
 			String expectedRecipient) throws MessagingException, IOException,
 			InterruptedException {
-		IMAPSMailbox mailbox = IMAPSMailbox.getInstance();
+		IMAPSMailbox mailbox = IMAPSMailbox.createDefaultInstance();
 		int actualCnt = 0;
 		List<EmailHeaders> allEmailsHeaders = mailbox
 				.getLastMailHeaders(allRecentEmailsCnt);

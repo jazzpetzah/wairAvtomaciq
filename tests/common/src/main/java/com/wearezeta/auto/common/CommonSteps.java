@@ -66,7 +66,7 @@ public final class CommonSteps {
 	}
 
 	private static final String OTHER_USERS_ALIAS = "all other";
-	
+
 	public void UserIsConnectedTo(String userFromNameAlias,
 			String usersToNameAliases) throws Exception {
 		ClientUser usrFrom = usrMgr.findUserByNameAlias(userFromNameAlias);
@@ -74,7 +74,7 @@ public final class CommonSteps {
 		if (usersToNameAliases.toLowerCase().contains(OTHER_USERS_ALIAS)) {
 			List<ClientUser> otherUsers = usrMgr.getCreatedUsers();
 			otherUsers.remove(usrFrom);
-			for(ClientUser usrTo : otherUsers) {
+			for (ClientUser usrTo : otherUsers) {
 				BackendAPIWrappers.autoTestSendRequest(usrFrom, usrTo);
 				BackendAPIWrappers.autoTestAcceptAllRequest(usrTo);
 			}
@@ -156,12 +156,10 @@ public final class CommonSteps {
 	}
 
 	public void AddContactsUsersToMacContacts() throws Exception {
-		(new OSXAddressBookHelpers()).addUsersToContacts(usrMgr
-				.getCreatedUsers());
+		OSXAddressBookHelpers.addUsersToContacts(usrMgr.getCreatedUsers());
 	}
 
 	public void IRemoveContactsListUsersFromMacContact() throws Exception {
-		(new OSXAddressBookHelpers()).removeUsersFromContacts(usrMgr
-				.getCreatedUsers());
+		OSXAddressBookHelpers.removeUsersFromContacts(usrMgr.getCreatedUsers());
 	}
 }

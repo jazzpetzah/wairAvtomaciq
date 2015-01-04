@@ -13,5 +13,5 @@ public abstract class AssetProcessor {
 		this.inData = inData;
 	}
 	
-	protected abstract List<AssetData> processAsset() throws Throwable;
+	protected abstract List<AssetData> processAsset() throws Exception;
 }

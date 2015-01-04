@@ -170,11 +170,10 @@ public class IMAPSMailbox {
 		});
 	}
 
-	public static IMAPSMailbox getInstance() throws MessagingException,
-			IOException, InterruptedException {
+	public static IMAPSMailbox createDefaultInstance()
+			throws MessagingException, IOException, InterruptedException {
 		return new IMAPSMailbox(
-				CommonUtils
-						.getDefaultEmailServerFromConfig(IMAPSMailbox.class),
+				CommonUtils.getDefaultEmailServerFromConfig(IMAPSMailbox.class),
 				MAILS_FOLDER, getName(), getPassword());
 	}
 

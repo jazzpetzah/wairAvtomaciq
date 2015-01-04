@@ -10,15 +10,13 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.wearezeta.auto.common.BackEndREST;
 
-public class OSXAddressBookHelpers extends AddressBookHelpers {
-	private ScriptEngine engine = (new ScriptEngineManager())
+public final class OSXAddressBookHelpers {
+	private static ScriptEngine engine = (new ScriptEngineManager())
 			.getEngineByName("AppleScript");
 
-	public OSXAddressBookHelpers() {
-		super();
-	}
+	public OSXAddressBookHelpers() {}
 
-	private void addUserToMacContactsByAppleScript(String firsname, String email)
+	private static void addUserToMacContactsByAppleScript(String firsname, String email)
 			throws ScriptException {
 		final String[] scriptArr = new String[] {
 				"property first_name : \"" + firsname + "\"",
@@ -33,7 +31,7 @@ public class OSXAddressBookHelpers extends AddressBookHelpers {
 		engine.eval(script);
 	}
 
-	private void removeUserFromMacContactsByAppleScript(String firstname)
+	private static void removeUserFromMacContactsByAppleScript(String firstname)
 			throws ScriptException {
 		final String[] scriptArr = new String[] {
 				"property first_name : \"" + firstname + "\"",
@@ -45,7 +43,7 @@ public class OSXAddressBookHelpers extends AddressBookHelpers {
 		engine.eval(script);
 	}
 
-	public void addUsersToContacts(List<ClientUser> users) throws Exception {
+	public static void addUsersToContacts(List<ClientUser> users) throws Exception {
 		for (ClientUser user : users) {
 			ClientUser usr = BackEndREST.loginByUser(user);
 			usr = BackEndREST.getUserInfo(usr);
@@ -53,7 +51,7 @@ public class OSXAddressBookHelpers extends AddressBookHelpers {
 		}
 	}
 
-	public void removeUsersFromContacts(List<ClientUser> users)
+	public static void removeUsersFromContacts(List<ClientUser> users)
 			throws Exception {
 		for (ClientUser user : users) {
 			ClientUser usr = BackEndREST.loginByUser(user);

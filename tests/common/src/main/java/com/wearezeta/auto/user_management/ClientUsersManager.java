@@ -5,10 +5,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.wearezeta.auto.common.BackendAPIWrappers;
+import com.wearezeta.auto.common.BackendRequestException;
 
 public class ClientUsersManager {
+	private static final int MAX_PARALLEL_USER_CREATION_TASKS = 5;
+	private static final int NUMBER_OF_REGISTRATION_RETRIES = 5;
+	private static final int USERS_CREATION_TIMEOUT = 60 * 5; // seconds
+
+	private static final String NAME_ALIAS_TEMPLATE = "user%dName";
+	private static final String PASSWORD_ALIAS_TEMPLATE = "user%dPassword";
+	private static final String EMAIL_ALIAS_TEMPLATE = "user%dEmail";
+	private static final int MAX_USERS = 1001;
+
 	private void setClientUserAliases(ClientUser user, String[] nameAliases,
 			String[] passwordAliases, String[] emailAliases) {
 		if (nameAliases != null && nameAliases.length > 0) {
@@ -48,10 +62,6 @@ public class ClientUsersManager {
 		}
 	}
 
-	public static final String NAME_ALIAS_TEMPLATE = "user%dName";
-	public static final String PASSWORD_ALIAS_TEMPLATE = "user%dPassword";
-	public static final String EMAIL_ALIAS_TEMPLATE = "user%dEmail";
-	public static final int MAX_USERS = 1001;
 	private List<ClientUser> users = new ArrayList<ClientUser>();
 
 	public List<ClientUser> getCreatedUsers() {
@@ -104,7 +114,8 @@ public class ClientUsersManager {
 			} else if (aliasType == UserAliasType.PASSWORD) {
 				aliases = user.getPasswordAliases();
 			} else {
-				assert (false);
+				throw new RuntimeException(String.format(
+						"Unknown alias type %s", aliasType));
 			}
 			for (String currentAlias : aliases) {
 				if (currentAlias.equalsIgnoreCase(alias)) {
@@ -145,9 +156,69 @@ public class ClientUsersManager {
 		return result;
 	}
 
-	public void createUsersOnBackend(int count) throws Exception {
+	// ! Mutates the users list
+	private void generateUsers(List<ClientUser> usersToCreate) throws Exception {
+		ExecutorService executor = Executors
+				.newFixedThreadPool(MAX_PARALLEL_USER_CREATION_TASKS);
+
+		final AtomicInteger createdClientsCount = new AtomicInteger(0);
+		for (final ClientUser userToCreate : usersToCreate) {
+			Runnable worker = new Thread(new Runnable() {
+				public void run() {
+					int count = 0;
+					int waitTime = 1;
+					while (count < NUMBER_OF_REGISTRATION_RETRIES) {
+						try {
+							BackendAPIWrappers.createUser(userToCreate);
+							createdClientsCount.incrementAndGet();
+							break;
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						count++;
+						try {
+							Thread.sleep(waitTime * 1000);
+							waitTime *= 2;
+						} catch (InterruptedException e) {
+							return;
+						}
+					}
+				}
+			});
+			executor.execute(worker);
+		}
+		executor.shutdown();
+		if (!executor
+				.awaitTermination(USERS_CREATION_TIMEOUT, TimeUnit.SECONDS)) {
+			throw new BackendRequestException(
+					String.format(
+							"The backend has failed to prepare predefined users within %d seconds timeout",
+							USERS_CREATION_TIMEOUT));
+		}
+		if (createdClientsCount.get() != usersToCreate.size()) {
+			throw new BackendRequestException(
+					"Failed to create new users or contacts on the backend");
+		}
+	}
+
+	public static class TooManyUsersToCreateException extends Exception {
+		private static final long serialVersionUID = -7730445785978830114L;
+
+		TooManyUsersToCreateException(String msg) {
+			super(msg);
+		}
+	}
+
+	public void createUsersOnBackend(int count)
+			throws Exception {
 		this.resetClientsList(this.users);
-		BackendAPIWrappers.generateUsers(this.users.subList(0, count));
+		if (count > MAX_USERS) {
+			throw new TooManyUsersToCreateException(
+					String.format(
+							"Maximum allowed number of users to create is %d. Current number is %d",
+							MAX_USERS, count));
+		}
+		generateUsers(this.users.subList(0, count));
 	}
 
 	private static String[] SELF_USER_NAME_ALISES = new String[] { "I", "me",
@@ -159,11 +230,10 @@ public class ClientUsersManager {
 
 	public void setSelfUser(ClientUser usr) {
 		if (!this.users.contains(usr)) {
-			throw new RuntimeException(
-					String.format("User %s should be one of precreated users!",
-							usr));
+			throw new RuntimeException(String.format(
+					"User %s should be one of precreated users!", usr));
 		}
-		
+
 		if (this.selfUser != null) {
 			for (String nameAlias : SELF_USER_NAME_ALISES) {
 				if (this.selfUser.getNameAliases().contains(nameAlias)) {
@@ -212,7 +282,8 @@ public class ClientUsersManager {
 	public ClientUser getSelfUserOrThrowError()
 			throws SelfUserIsNotDefinedException {
 		if (this.selfUser == null) {
-			throw new SelfUserIsNotDefinedException("Self user should be defined in some previous step!");
+			throw new SelfUserIsNotDefinedException(
+					"Self user should be defined in some previous step!");
 		}
 		return this.selfUser;
 	}
