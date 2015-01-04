@@ -39,7 +39,7 @@ public class ClientUsersManager {
 		}
 		if (emailAliases != null && emailAliases.length > 0) {
 			user.clearEmailAliases();
-			for (String emailAlias : passwordAliases) {
+			for (String emailAlias : emailAliases) {
 				user.addEmailAlias(emailAlias);
 			}
 		}
@@ -209,8 +209,7 @@ public class ClientUsersManager {
 		}
 	}
 
-	public void createUsersOnBackend(int count)
-			throws Exception {
+	public void createUsersOnBackend(int count) throws Exception {
 		this.resetClientsList(this.users);
 		if (count > MAX_USERS) {
 			throw new TooManyUsersToCreateException(
@@ -231,7 +230,8 @@ public class ClientUsersManager {
 	public void setSelfUser(ClientUser usr) {
 		if (!this.users.contains(usr)) {
 			throw new RuntimeException(String.format(
-					"User %s should be one of precreated users!", usr));
+					"User %s should be one of precreated users!",
+					usr.toString()));
 		}
 
 		if (this.selfUser != null) {
@@ -252,22 +252,14 @@ public class ClientUsersManager {
 			}
 		}
 		this.selfUser = usr;
-		if (!this.selfUser.getNameAliases().contains(SELF_USER_NAME_ALISES[0])) {
-			for (String nameAlias : SELF_USER_NAME_ALISES) {
-				this.selfUser.addNameAlias(nameAlias);
-			}
+		for (String nameAlias : SELF_USER_NAME_ALISES) {
+			this.selfUser.addNameAlias(nameAlias);
 		}
-		if (!this.selfUser.getPasswordAliases().contains(
-				SELF_USER_PASSWORD_ALISES[0])) {
-			for (String passwordAlias : SELF_USER_PASSWORD_ALISES) {
-				this.selfUser.addPasswordAlias(passwordAlias);
-			}
+		for (String passwordAlias : SELF_USER_PASSWORD_ALISES) {
+			this.selfUser.addPasswordAlias(passwordAlias);
 		}
-		if (!this.selfUser.getEmailAliases()
-				.contains(SELF_USER_EMAIL_ALISES[0])) {
-			for (String emailAlias : SELF_USER_EMAIL_ALISES) {
-				this.selfUser.addEmailAlias(emailAlias);
-			}
+		for (String emailAlias : SELF_USER_EMAIL_ALISES) {
+			this.selfUser.addEmailAlias(emailAlias);
 		}
 	}
 
