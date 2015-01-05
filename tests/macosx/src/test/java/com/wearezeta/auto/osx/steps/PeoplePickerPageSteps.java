@@ -20,14 +20,16 @@ public class PeoplePickerPageSteps {
 	}
 	
 	@When("I search by email for user (.*)")
-	public void ISearchByEmailForUser(String user) {
+	public void ISearchByEmailForUser(String user) throws InterruptedException {
+		Thread.sleep(1000);
 		user = CommonUtils.retrieveRealUserContactPasswordValue(user);
 		String email = CommonUtils.retrieveRealUserEmailValue(user);
 		CommonSteps.senderPages.getPeoplePickerPage().searchForText(email);
 	}
 	
 	@When("I see user (.*) in search results")
-	public void WhenISeeUserFromSearchResults(String user) {
+	public void WhenISeeUserFromSearchResults(String user) throws InterruptedException {
+		Thread.sleep(1000);
 		user = CommonUtils.retrieveRealUserContactPasswordValue(user);
 		Assert.assertTrue(
 				"User " + user + " not found in results",
