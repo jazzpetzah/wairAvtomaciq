@@ -117,8 +117,7 @@ public final class CommonSteps {
 				.findUserByNameAlias(userToBlockNameAlias);
 		try {
 			BackendAPIWrappers.sendConnectRequest(blockAsUser, userToBlock,
-					"connect", "Hello");
-			Thread.sleep(1000);
+					"connect", CommonSteps.CONNECTION_MESSAGE);
 		} catch (BackendRequestException e) {
 			// Ignore silently
 		}

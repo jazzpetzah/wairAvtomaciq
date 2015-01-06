@@ -9,6 +9,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
@@ -30,7 +31,7 @@ public class PendingRequestsPage extends IOSPage {
 	private String url;
 	private String path;
 	
-	private String autoHelloMessage = "Hello";
+	private String autoHelloMessage = CommonSteps.CONNECTION_MESSAGE;
 
 	public PendingRequestsPage(String URL, String path) throws MalformedURLException {
 		super(URL, path);
