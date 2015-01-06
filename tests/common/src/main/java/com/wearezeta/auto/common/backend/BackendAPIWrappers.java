@@ -60,10 +60,17 @@ public final class BackendAPIWrappers {
 
 	public static void autoTestSendRequest(ClientUser userFrom,
 			ClientUser userTo) throws Exception {
+		autoTestSendRequest(userFrom, userTo, CommonSteps.CONNECTION_NAME
+				+ userTo.getName(), CommonSteps.CONNECTION_MESSAGE);
+	}
+
+	public static void autoTestSendRequest(ClientUser userFrom,
+			ClientUser userTo, String pendingConvoName, String connMsg)
+			throws Exception {
 		userFrom = tryLoginByUser(userFrom);
 		userTo = tryLoginByUser(userTo);
-		sendConnectRequest(userFrom, userTo, userTo.getName(),
-				CommonSteps.CONNECTION_MESSAGE);
+		BackendREST.sendConnectRequest(generateAuthToken(userFrom),
+				userTo.getId(), pendingConvoName, connMsg);
 		userFrom.setUserState(UserState.RequestSend);
 	}
 
@@ -280,14 +287,6 @@ public final class BackendAPIWrappers {
 		final JSONObject userInfo = BackendREST.getUserInfoByID(id,
 				generateAuthToken(user));
 		return userInfo.getString("name");
-	}
-
-	public static void sendConnectRequest(ClientUser user, ClientUser contact,
-			String connectName, String message) throws Exception {
-		tryLoginByUser(user);
-		tryLoginByUser(contact);
-		BackendREST.sendConnectRequest(generateAuthToken(user),
-				contact.getId(), connectName, message);
 	}
 
 	public static void acceptAllConnections(ClientUser user) throws Exception {

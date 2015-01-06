@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -61,7 +62,11 @@ public class ContactListPageSteps {
 
 	@When("^I tap on contact name (.*)$")
 	public void WhenITapOnContactName(String name) throws IOException {
-		name = usrMgr.findUserByNameAlias(name).getName();
+		try {
+			name = usrMgr.findUserByNameAlias(name).getName();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
 		IOSPage page = PagesCollection.contactListPage.tapOnName(name);
 
 		if (page instanceof DialogPage) {

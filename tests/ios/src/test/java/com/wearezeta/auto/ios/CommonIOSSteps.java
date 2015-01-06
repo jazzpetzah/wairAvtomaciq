@@ -205,4 +205,9 @@ public class CommonIOSSteps {
 	public void IRemoveContactsListUsersFromMacContact() throws Exception {
 		commonSteps.IRemoveContactsListUsersFromMacContact();
 	}
+	
+	@Given("^I have connection request from (.*)$")
+	public void IHaveConnectionRequest(String contact) throws Exception {
+		commonSteps.IHaveConnectionRequest(contact);
+	}
 }

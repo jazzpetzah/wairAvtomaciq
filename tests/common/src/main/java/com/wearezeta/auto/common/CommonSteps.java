@@ -50,8 +50,7 @@ public final class CommonSteps {
 		ClientUser userFrom = usrMgr.findUserByNameAlias(userFromNameAlias);
 		for (String userToNameAlias : splitAliases(usersToNameAliases)) {
 			ClientUser userTo = usrMgr.findUserByNameAlias(userToNameAlias);
-			BackendAPIWrappers.sendConnectRequest(userFrom, userTo,
-					CONNECTION_NAME + userTo.getName(), CONNECTION_MESSAGE);
+			BackendAPIWrappers.autoTestSendRequest(userFrom, userTo);
 		}
 	}
 
@@ -116,8 +115,7 @@ public final class CommonSteps {
 		ClientUser userToBlock = usrMgr
 				.findUserByNameAlias(userToBlockNameAlias);
 		try {
-			BackendAPIWrappers.sendConnectRequest(blockAsUser, userToBlock,
-					"connect", CommonSteps.CONNECTION_MESSAGE);
+			BackendAPIWrappers.autoTestSendRequest(blockAsUser, userToBlock);
 		} catch (BackendRequestException e) {
 			// Ignore silently
 		}
@@ -155,5 +153,12 @@ public final class CommonSteps {
 
 	public void IRemoveContactsListUsersFromMacContact() throws Exception {
 		OSXAddressBookHelpers.removeUsersFromContacts(usrMgr.getCreatedUsers());
+	}
+
+	public void IHaveConnectionRequest(String userToNameAlias) throws Exception {
+		ClientUser userTo = usrMgr.findUserByNameAlias(userToNameAlias);
+		BackendAPIWrappers.autoTestSendRequest(userTo,
+				usrMgr.getSelfUserOrThrowError(), CommonSteps.CONNECTION_NAME
+						+ userTo.getName(), CommonSteps.CONNECTION_MESSAGE);
 	}
 }
