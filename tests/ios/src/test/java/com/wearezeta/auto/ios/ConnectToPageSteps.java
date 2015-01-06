@@ -5,13 +5,18 @@ import java.io.IOException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.ConnectToPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
+import com.wearezeta.auto.user_management.ClientUsersManager;
 
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
 public class ConnectToPageSteps {
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+
 	@When("^I see connect to (.*) dialog$")
 	public void WhenISeeConnectToUserDialog(String name) throws Throwable {
 		Assert.assertTrue("Connection input is not visible",
@@ -40,6 +45,13 @@ public class ConnectToPageSteps {
 			throws Throwable {
 		PagesCollection.iOSPage = PagesCollection.connectToPage
 				.sendInvitation(name);
+	}
+
+	@Given("^I have connection request from (.*)$")
+	public void IHaveConnectionRequest(String contact) throws Throwable {
+		BackendAPIWrappers.sendConnectRequest(usrMgr.findUserByNameAlias(contact),
+				usrMgr.getSelfUserOrThrowError(), "CONNECT TO " + contact,
+				"Hello");
 	}
 
 	@When("^I see connection request from (.*)$")

@@ -124,7 +124,7 @@ public class ClientUsersManager {
 			}
 		}
 		throw new NoSuchElementException(String.format(
-				"No user with alias '%s' is created", alias));
+				"No user with username '%s' is in an available list", alias));
 	}
 
 	public String replaceAliasesOccurences(String srcStr,
