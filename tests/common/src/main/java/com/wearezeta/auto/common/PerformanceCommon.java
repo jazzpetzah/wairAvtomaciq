@@ -9,7 +9,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
-import com.wearezeta.auto.common.backend.BackEndREST;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.user_management.ClientUser;
@@ -90,7 +89,7 @@ public final class PerformanceCommon {
 					.getSelfUserOrThrowError();
 			for (int i = 0; i < imagesCount; i++) {
 				final String contact = getRandomContactName(selfUser);
-				BackEndREST.sendPictureToChatByName(selfUser, contact,
+				BackendAPIWrappers.sendPictureToChatByName(selfUser, contact,
 						"default", configFileStream);
 			}
 		} finally {

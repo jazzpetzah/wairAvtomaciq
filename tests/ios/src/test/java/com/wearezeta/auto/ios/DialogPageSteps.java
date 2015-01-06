@@ -8,7 +8,6 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
-import com.wearezeta.auto.common.backend.BackEndREST;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.pages.ContactListPage;
@@ -478,7 +477,6 @@ public class DialogPageSteps {
 	public void UserHotPingInChatByBE(String contact, String conversationName)
 			throws Exception {
 		ClientUser yourСontact = usrMgr.findUserByNameAlias(contact);
-		yourСontact = BackEndREST.loginByUser(yourСontact);
 		BackendAPIWrappers.sendHotPingToConversation(yourСontact,
 				conversationName, pingId);
 	}

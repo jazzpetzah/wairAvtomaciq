@@ -8,16 +8,15 @@ import javax.script.ScriptException;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.wearezeta.auto.common.backend.BackEndREST;
-
 public final class OSXAddressBookHelpers {
 	private static ScriptEngine engine = (new ScriptEngineManager())
 			.getEngineByName("AppleScript");
 
-	public OSXAddressBookHelpers() {}
+	public OSXAddressBookHelpers() {
+	}
 
-	private static void addUserToMacContactsByAppleScript(String firsname, String email)
-			throws ScriptException {
+	private static void addUserToMacContactsByAppleScript(String firsname,
+			String email) throws ScriptException {
 		final String[] scriptArr = new String[] {
 				"property first_name : \"" + firsname + "\"",
 				"property user_email : \"" + email + "\"",
@@ -43,18 +42,17 @@ public final class OSXAddressBookHelpers {
 		engine.eval(script);
 	}
 
-	public static void addUsersToContacts(List<ClientUser> users) throws Exception {
+	public static void addUsersToContacts(List<ClientUser> users)
+			throws Exception {
 		for (ClientUser user : users) {
-			ClientUser usr = BackEndREST.loginByUser(user);
-			addUserToMacContactsByAppleScript(usr.getName(), usr.getEmail());
+			addUserToMacContactsByAppleScript(user.getName(), user.getEmail());
 		}
 	}
 
 	public static void removeUsersFromContacts(List<ClientUser> users)
 			throws Exception {
 		for (ClientUser user : users) {
-			ClientUser usr = BackEndREST.loginByUser(user);
-			removeUserFromMacContactsByAppleScript(usr.getName());
+			removeUserFromMacContactsByAppleScript(user.getName());
 		}
 	}
 }

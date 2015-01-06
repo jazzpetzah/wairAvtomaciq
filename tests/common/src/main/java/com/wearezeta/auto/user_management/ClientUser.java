@@ -7,7 +7,7 @@ import java.util.Set;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.email.IMAPSMailbox;
 
-public class ClientUser implements Cloneable {
+public class ClientUser {
 	private String name = null;
 
 	public String getName() {
@@ -147,22 +147,6 @@ public class ClientUser implements Cloneable {
 		this.password = CommonUtils
 				.getDefaultPasswordFromConfig(ClientUser.class);
 		this.email = generateUniqEmail(IMAPSMailbox.getName(), name);
-	}
-
-	@Override
-	public ClientUser clone() throws CloneNotSupportedException {
-		ClientUser cloned = (ClientUser) super.clone();
-		cloned.setId(this.getId());
-		cloned.setEmail(this.getEmail());
-		cloned.setName(this.getName());
-		cloned.setAccessToken(this.getAccessToken());
-		cloned.setTokenType(this.getTokenType());
-		cloned.setPassword(this.getPassword());
-		cloned.setUserState(this.getUserState());
-		cloned.nameAliases = this.getNameAliases();
-		cloned.passwordAliases = this.getPasswordAliases();
-		cloned.emailAliases = this.getEmailAliases();
-		return cloned;
 	}
 
 	@Override

@@ -9,7 +9,6 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
-import com.wearezeta.auto.common.backend.BackEndREST;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -116,7 +115,7 @@ public class ConversationPageSteps {
 		do {
 			retry = false;
 			try {
-				pictureAssetFromConv = BackEndREST
+				pictureAssetFromConv = BackendAPIWrappers
 						.getLastPictureAssetFromConversation(selfUser,
 								contactUser);
 			} catch (BackendRequestException e) {
@@ -271,7 +270,6 @@ public class ConversationPageSteps {
 	public void WhenUserPingsAgainInChat(String contactNameAlias,
 			String conversation) throws Throwable {
 		ClientUser yourСontact = usrMgr.findUserByNameAlias(contactNameAlias);
-		yourСontact = BackEndREST.loginByUser(yourСontact);
 		BackendAPIWrappers.sendHotPingToConversation(yourСontact, conversation,
 				pingID);
 		Thread.sleep(1000);

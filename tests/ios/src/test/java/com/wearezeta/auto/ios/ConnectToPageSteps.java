@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.backend.BackEndREST;
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.ConnectToPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
@@ -49,7 +49,7 @@ public class ConnectToPageSteps {
 
 	@Given("^I have connection request from (.*)$")
 	public void IHaveConnectionRequest(String contact) throws Throwable {
-		BackEndREST.sendConnectRequest(usrMgr.findUserByNameAlias(contact),
+		BackendAPIWrappers.sendConnectRequest(usrMgr.findUserByNameAlias(contact),
 				usrMgr.getSelfUserOrThrowError(), "CONNECT TO " + contact,
 				"Hello");
 	}

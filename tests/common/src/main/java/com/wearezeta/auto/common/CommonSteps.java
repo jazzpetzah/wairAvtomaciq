@@ -3,9 +3,9 @@ package com.wearezeta.auto.common;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.wearezeta.auto.common.backend.BackEndREST;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
+import com.wearezeta.auto.common.backend.ConnectionStatus;
 import com.wearezeta.auto.user_management.ClientUser;
 import com.wearezeta.auto.user_management.OSXAddressBookHelpers;
 import com.wearezeta.auto.user_management.ClientUsersManager;
@@ -48,12 +48,10 @@ public final class CommonSteps {
 	public void ConnectionRequestIsSentTo(String userFromNameAlias,
 			String usersToNameAliases) throws Throwable {
 		ClientUser userFrom = usrMgr.findUserByNameAlias(userFromNameAlias);
-		userFrom = BackEndREST.loginByUser(userFrom);
 		for (String userToNameAlias : splitAliases(usersToNameAliases)) {
 			ClientUser userTo = usrMgr.findUserByNameAlias(userToNameAlias);
-			userTo = BackEndREST.loginByUser(userTo);
-			BackEndREST.sendConnectRequest(userFrom, userTo, CONNECTION_NAME
-					+ userTo.getName(), CONNECTION_MESSAGE);
+			BackendAPIWrappers.sendConnectRequest(userFrom, userTo,
+					CONNECTION_NAME + userTo.getName(), CONNECTION_MESSAGE);
 		}
 	}
 
@@ -61,12 +59,12 @@ public final class CommonSteps {
 			String chatName, String otherParticipantsNameAlises)
 			throws Exception {
 		ClientUser chatOwner = usrMgr.findUserByNameAlias(chatOwnerNameAlias);
-		chatOwner = BackEndREST.loginByUser(chatOwner);
 		List<ClientUser> participants = new ArrayList<ClientUser>();
 		for (String participantNameAlias : splitAliases(otherParticipantsNameAlises)) {
 			participants.add(usrMgr.findUserByNameAlias(participantNameAlias));
 		}
-		BackEndREST.createGroupConversation(chatOwner, participants, chatName);
+		BackendAPIWrappers.createGroupConversation(chatOwner, participants,
+				chatName);
 	}
 
 	private static final String OTHER_USERS_ALIAS = "all other";
@@ -74,7 +72,6 @@ public final class CommonSteps {
 	public void UserIsConnectedTo(String userFromNameAlias,
 			String usersToNameAliases) throws Exception {
 		ClientUser usrFrom = usrMgr.findUserByNameAlias(userFromNameAlias);
-		usrFrom = BackEndREST.loginByUser(usrFrom);
 		if (usersToNameAliases.toLowerCase().contains(OTHER_USERS_ALIAS)) {
 			List<ClientUser> otherUsers = usrMgr.getCreatedUsers();
 			otherUsers.remove(usrFrom);
@@ -104,8 +101,7 @@ public final class CommonSteps {
 	public void IgnoreAllIncomingConnectRequest(String userToNameAlias)
 			throws Exception {
 		ClientUser userTo = usrMgr.findUserByNameAlias(userToNameAlias);
-		userTo = BackEndREST.loginByUser(userTo);
-		BackEndREST.ignoreAllConnections(userTo);
+		BackendAPIWrappers.ignoreAllConnections(userTo);
 	}
 
 	public void WaitForTime(String seconds) throws NumberFormatException,
@@ -117,33 +113,29 @@ public final class CommonSteps {
 			String userToBlockNameAlias) throws Exception {
 		ClientUser blockAsUser = usrMgr
 				.findUserByNameAlias(blockAsUserNameAlias);
-		blockAsUser = BackEndREST.loginByUser(blockAsUser);
 		ClientUser userToBlock = usrMgr
 				.findUserByNameAlias(userToBlockNameAlias);
-		userToBlock = BackEndREST.loginByUser(userToBlock);
 		try {
-			BackEndREST.sendConnectRequest(blockAsUser, userToBlock, "connect",
-					"Hello");
+			BackendAPIWrappers.sendConnectRequest(blockAsUser, userToBlock,
+					"connect", "Hello");
 			Thread.sleep(1000);
 		} catch (BackendRequestException e) {
 			// Ignore silently
 		}
-		BackEndREST.changeConnectRequestStatus(blockAsUser,
-				userToBlock.getId(), "blocked");
+		BackendAPIWrappers.changeConnectRequestStatus(blockAsUser,
+				userToBlock.getId(), ConnectionStatus.Blocked);
 	}
 
 	public void AcceptAllIncomingConnectionRequests(String userToNameAlias)
 			throws Exception {
 		ClientUser userTo = usrMgr.findUserByNameAlias(userToNameAlias);
-		userTo = BackEndREST.loginByUser(userTo);
-		BackEndREST.acceptAllConnections(userTo);
+		BackendAPIWrappers.acceptAllConnections(userTo);
 	}
 
 	public void UserPingedConversation(String pingFromUserNameAlias,
 			String dstConversationName) throws Exception {
 		ClientUser pingFromUser = usrMgr
 				.findUserByNameAlias(pingFromUserNameAlias);
-		pingFromUser = BackEndREST.loginByUser(pingFromUser);
 		pingId = BackendAPIWrappers.sendPingToConversation(pingFromUser,
 				dstConversationName);
 		Thread.sleep(1000);
@@ -153,7 +145,6 @@ public final class CommonSteps {
 			String dstConversationName) throws Exception {
 		ClientUser hotPingFromUser = usrMgr
 				.findUserByNameAlias(hotPingFromUserNameAlias);
-		hotPingFromUser = BackEndREST.loginByUser(hotPingFromUser);
 		BackendAPIWrappers.sendHotPingToConversation(hotPingFromUser,
 				dstConversationName, pingId);
 		Thread.sleep(1000);
