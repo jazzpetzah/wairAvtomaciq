@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
@@ -75,7 +76,7 @@ public class ContactListPageSteps {
 	}
 
 	@When("^I tap on contact name (.*)$")
-	public void WhenITapOnContactName(String name) throws Throwable {
+	public void WhenITapOnContactName(String name) throws Exception {
 		name = usrMgr.findUserByNameAlias(name).getName();
 		PagesCollection.androidPage = PagesCollection.contactListPage
 				.tapOnName(name);
@@ -97,9 +98,17 @@ public class ContactListPageSteps {
 
 	@When("^I create group chat with (.*) and (.*)$")
 	public void ICreateGroupChat(String contact1, String contact2)
-			throws Throwable {
-		contact1 = usrMgr.findUserByNameAlias(contact1).getName();
-		contact2 = usrMgr.findUserByNameAlias(contact2).getName();
+			throws Exception {
+		try {
+			contact1 = usrMgr.findUserByNameAlias(contact1).getName();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
+		try {
+			contact2 = usrMgr.findUserByNameAlias(contact2).getName();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
 		WhenITapOnContactName(contact1);
 		DialogPageSteps dialogSteps = new DialogPageSteps();
 		dialogSteps.WhenISeeDialogPage();
