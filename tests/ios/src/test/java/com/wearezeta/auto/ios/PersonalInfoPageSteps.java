@@ -7,7 +7,7 @@ import java.net.MalformedURLException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.ImageUtil;
-import com.wearezeta.auto.common.user_management.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.CameraRollPage;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.IOSPage;

@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.user_management.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.ConnectToPage;
 import com.wearezeta.auto.ios.pages.GroupChatPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;

@@ -1,4 +1,4 @@
-package com.wearezeta.auto.common.user_management;
+package com.wearezeta.auto.common.usrmgmt;
 
 import java.util.List;
 

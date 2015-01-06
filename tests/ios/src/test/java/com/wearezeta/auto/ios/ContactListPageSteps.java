@@ -12,7 +12,7 @@ import cucumber.api.java.en.*;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.user_management.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.*;
 
 public class ContactListPageSteps {

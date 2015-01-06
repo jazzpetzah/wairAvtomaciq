@@ -11,10 +11,10 @@ import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.email.MBoxChangesListener;
-import com.wearezeta.auto.common.user_management.ClientUser;
-import com.wearezeta.auto.common.user_management.ClientUsersManager;
-import com.wearezeta.auto.common.user_management.UserState;
-import com.wearezeta.auto.common.user_management.ClientUsersManager.UserAliasType;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.UserState;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.UserAliasType;
 
 import cucumber.api.java.en.*;
 

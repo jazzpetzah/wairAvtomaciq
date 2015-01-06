@@ -2,8 +2,8 @@ package com.wearezeta.auto.osx.steps;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.user_management.ClientUser;
-import com.wearezeta.auto.common.user_management.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.osx.pages.PeoplePickerPage;
 
 import cucumber.api.java.en.Given;
