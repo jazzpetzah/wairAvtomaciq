@@ -7,11 +7,11 @@ import java.net.MalformedURLException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.common.user_management.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.CameraRollPage;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
-import com.wearezeta.auto.user_management.ClientUsersManager;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;

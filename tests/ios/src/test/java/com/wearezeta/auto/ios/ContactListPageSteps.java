@@ -12,8 +12,8 @@ import cucumber.api.java.en.*;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.user_management.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.*;
-import com.wearezeta.auto.user_management.ClientUsersManager;
 
 public class ContactListPageSteps {
 	private static final Logger log = ZetaLogger

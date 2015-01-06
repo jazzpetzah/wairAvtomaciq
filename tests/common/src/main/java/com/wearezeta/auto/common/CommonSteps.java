@@ -6,9 +6,9 @@ import java.util.List;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.backend.ConnectionStatus;
-import com.wearezeta.auto.user_management.ClientUser;
-import com.wearezeta.auto.user_management.OSXAddressBookHelpers;
-import com.wearezeta.auto.user_management.ClientUsersManager;
+import com.wearezeta.auto.common.user_management.ClientUser;
+import com.wearezeta.auto.common.user_management.ClientUsersManager;
+import com.wearezeta.auto.common.user_management.OSXAddressBookHelpers;
 
 public final class CommonSteps {
 	public static final String CONNECTION_NAME = "CONNECT TO ";

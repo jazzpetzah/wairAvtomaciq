@@ -16,8 +16,8 @@ import com.wearezeta.auto.common.email.EmailHeaders;
 import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.email.MBoxChangesListener;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.user_management.ClientUser;
-import com.wearezeta.auto.user_management.UserState;
+import com.wearezeta.auto.common.user_management.ClientUser;
+import com.wearezeta.auto.common.user_management.UserState;
 
 // Almost all methods of this class mutate ClientUser
 // argument by performing automatic login (set id and session token attributes)

@@ -9,13 +9,13 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.StringParser;
+import com.wearezeta.auto.common.user_management.ClientUsersManager;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationInfoPage;
 import com.wearezeta.auto.osx.pages.ConversationPage;
 import com.wearezeta.auto.osx.pages.PeoplePickerPage;
 import com.wearezeta.auto.osx.pages.UserProfilePage;
-import com.wearezeta.auto.user_management.ClientUsersManager;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;

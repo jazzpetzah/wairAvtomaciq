@@ -10,6 +10,8 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.user_management.ClientUser;
+import com.wearezeta.auto.common.user_management.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.pages.IOSPage;
@@ -19,8 +21,6 @@ import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.ios.pages.CameraRollPage;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.VideoPlayerPage;
-import com.wearezeta.auto.user_management.ClientUser;
-import com.wearezeta.auto.user_management.ClientUsersManager;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;

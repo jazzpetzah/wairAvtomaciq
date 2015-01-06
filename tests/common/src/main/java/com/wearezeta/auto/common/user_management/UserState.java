@@ -1,4 +1,4 @@
-package com.wearezeta.auto.user_management;
+package com.wearezeta.auto.common.user_management;
 
 public enum UserState {
 	NotCreated,

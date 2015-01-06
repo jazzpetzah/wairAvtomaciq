@@ -3,8 +3,8 @@ package com.wearezeta.auto.android;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
-import com.wearezeta.auto.user_management.ClientUser;
-import com.wearezeta.auto.user_management.ClientUsersManager;
+import com.wearezeta.auto.common.user_management.ClientUser;
+import com.wearezeta.auto.common.user_management.ClientUsersManager;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;

@@ -12,15 +12,15 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.user_management.ClientUser;
+import com.wearezeta.auto.common.user_management.ClientUsersManager;
+import com.wearezeta.auto.common.user_management.ClientUsersManager.UserAliasType;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationInfoPage;
 import com.wearezeta.auto.osx.pages.ConversationPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
-import com.wearezeta.auto.user_management.ClientUser;
-import com.wearezeta.auto.user_management.ClientUsersManager;
-import com.wearezeta.auto.user_management.ClientUsersManager.UserAliasType;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;

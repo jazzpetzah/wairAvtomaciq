@@ -11,9 +11,9 @@ import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.user_management.ClientUser;
-import com.wearezeta.auto.user_management.ClientUsersManager;
-import com.wearezeta.auto.user_management.ClientUsersManager.SelfUserIsNotDefinedException;
+import com.wearezeta.auto.common.user_management.ClientUser;
+import com.wearezeta.auto.common.user_management.ClientUsersManager;
+import com.wearezeta.auto.common.user_management.ClientUsersManager.SelfUserIsNotDefinedException;
 
 public final class PerformanceCommon {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
