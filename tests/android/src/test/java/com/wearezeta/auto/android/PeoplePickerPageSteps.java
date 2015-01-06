@@ -1,10 +1,13 @@
 package com.wearezeta.auto.android;
 
+import java.util.NoSuchElementException;
+
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.UserAliasType;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -13,7 +16,7 @@ public class PeoplePickerPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	@When("^I see People picker page$")
-	public void WhenISeePeoplePickerPage() throws Throwable {
+	public void WhenISeePeoplePickerPage() throws Exception {
 		Assert.assertTrue(PagesCollection.peoplePickerPage
 				.isPeoplePickerPageVisible());
 	}
@@ -38,17 +41,26 @@ public class PeoplePickerPageSteps {
 
 	@When("^I input in People picker search field user name (.*)$")
 	public void WhenIInputInPeoplePickerSearchFieldUserName(String contact)
-			throws Throwable {
-		ClientUser dstUser = usrMgr.findUserByNameAlias(contact);
-		contact = dstUser.getName();
-		String email = dstUser.getEmail();
-		if (email != "") {
-			PagesCollection.peoplePickerPage.typeTextInPeopleSearch(email);
-		} else {
-			PagesCollection.peoplePickerPage.typeTextInPeopleSearch(contact);
+			throws Exception {
+		try {
+			contact = usrMgr.findUserByNameAlias(contact).getName();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
 		}
+		PagesCollection.peoplePickerPage.typeTextInPeopleSearch(contact);
 	}
 
+	@When("^I input in People picker search field user email (.*)$")
+	public void WhenIInputInPeoplePickerSearchFieldUserEmail(String email)
+			throws Exception {
+		try {
+			email = usrMgr.findUserByAlias(email, UserAliasType.EMAIL).getEmail();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
+		PagesCollection.peoplePickerPage.typeTextInPeopleSearch(email);
+	}
+	
 	@When("^I input in search field part (.*) of user name to connect to (.*)$")
 	public void WhenIInputInPeoplePickerSearchFieldPartOfUserName(String part,
 			String contact) throws Throwable {
@@ -79,7 +91,7 @@ public class PeoplePickerPageSteps {
 
 	@When("^I see user (.*) found on People picker page$")
 	public void WhenISeeUserFoundOnPeoplePickerPage(String contact)
-			throws Throwable {
+			throws Exception {
 		contact = usrMgr.findUserByNameAlias(contact).getName();
 		PagesCollection.peoplePickerPage.waitUserPickerFindUser(contact);
 	}
@@ -92,7 +104,7 @@ public class PeoplePickerPageSteps {
 
 	@When("^I tap on user name found on People picker page (.*)$")
 	public void WhenITapOnUserNameFoundOnPeoplePickerPage(String contact)
-			throws Throwable {
+			throws Exception {
 		contact = usrMgr.findUserByNameAlias(contact).getName();
 		PagesCollection.peoplePickerPage.waitUserPickerFindUser(contact);
 		PagesCollection.androidPage = PagesCollection.peoplePickerPage

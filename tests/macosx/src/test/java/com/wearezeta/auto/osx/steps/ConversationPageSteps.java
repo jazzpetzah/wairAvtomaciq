@@ -3,6 +3,7 @@ package com.wearezeta.auto.osx.steps;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -376,8 +377,16 @@ public class ConversationPageSteps {
 	@Given("^I create group chat with (.*) and (.*)$")
 	public void WhenICreateGroupChatWithUser1AndUser2(String user1, String user2)
 			throws Exception {
-		user1 = usrMgr.findUserByNameAlias(user1).getName();
-		user2 = usrMgr.findUserByNameAlias(user2).getName();
+		try {
+			user1 = usrMgr.findUserByNameAlias(user1).getName();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
+		try {
+			user2 = usrMgr.findUserByNameAlias(user2).getName();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
 		ContactListPageSteps clSteps = new ContactListPageSteps();
 		PeoplePickerPageSteps ppSteps = new PeoplePickerPageSteps();
 		clSteps.GivenIOpenConversationWith(user1);

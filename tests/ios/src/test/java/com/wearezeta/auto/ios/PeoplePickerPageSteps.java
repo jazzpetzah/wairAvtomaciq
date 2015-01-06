@@ -1,12 +1,13 @@
 package com.wearezeta.auto.ios;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.UserAliasType;
 import com.wearezeta.auto.ios.pages.GroupChatPage;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
@@ -87,10 +88,23 @@ public class PeoplePickerPageSteps {
 
 	@When("^I input in People picker search field user name (.*)$")
 	public void WhenIInputInPeoplePickerSearchFieldUserName(String contact)
-			throws Throwable {
-		ClientUser dstUser = usrMgr.findUserByNameAlias(contact);
-		contact = dstUser.getName();
-		String email = dstUser.getEmail();
+			throws Exception {
+		try {
+			contact = usrMgr.findUserByNameAlias(contact).getName();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
+		PagesCollection.peoplePickerPage.fillTextInPeoplePickerSearch(contact);
+	}
+
+	@When("^I input in People picker search field user email (.*)$")
+	public void WhenIInputInPeoplePickerSearchFieldUserEmail(String email)
+			throws Exception {
+		try {
+			email = usrMgr.findUserByAlias(email, UserAliasType.EMAIL).getEmail();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
 		PagesCollection.peoplePickerPage.fillTextInPeoplePickerSearch(email);
 	}
 

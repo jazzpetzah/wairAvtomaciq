@@ -24,18 +24,18 @@ public class DialogPageSteps {
 	private String message;
 
 	@When("^I see dialog page$")
-	public void WhenISeeDialogPage() throws Throwable {
+	public void WhenISeeDialogPage() throws Exception {
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
 		PagesCollection.dialogPage.waitForCursorInputVisible();
 	}
 
 	@When("^I tap on text input$")
-	public void WhenITapOnTextInput() throws Throwable {
+	public void WhenITapOnTextInput() throws Exception {
 		PagesCollection.dialogPage.tapOnCursorInput();
 	}
 
 	@When("^I type the message and send it$")
-	public void WhenITypeRandomMessageAndSendIt() throws Throwable {
+	public void WhenITypeRandomMessageAndSendIt() throws Exception {
 		message = CommonUtils.generateGUID();
 		PagesCollection.dialogPage.typeMessage(message);
 	}
@@ -199,7 +199,7 @@ public class DialogPageSteps {
 
 	@Then("^I see group chat page with users (.*)$")
 	public void ThenISeeGroupChatPage(String participantNameAliases)
-			throws Throwable {
+			throws Exception {
 		PagesCollection.dialogPage.isDialogVisible();
 		List<String> participantNames = new ArrayList<String>();
 		for (String nameAlias : CommonSteps

@@ -8,7 +8,7 @@ Feature: Connect
     When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
-    And I input in People picker search field user name <ContactEmail>
+    And I input in People picker search field user email <ContactEmail>
     And I see user <Contact> found on People picker page
     And I tap on NOT connected user name on People picker page <Contact>
     And I see connect to <Contact> dialog

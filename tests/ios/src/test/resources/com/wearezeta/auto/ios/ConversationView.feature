@@ -55,7 +55,7 @@ Feature: Conversation View
 
   @smoke @id334
   Scenario Outline: Send message to group chat
-    Given There are 2 users where <Name> is me
+    Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
