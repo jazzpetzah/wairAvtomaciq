@@ -58,7 +58,7 @@ Feature: Search
       | Login   | Password    | Name    | ConvoName    |
       | aqaUser | aqaPassword | aqaUser | TopGroupTest |
 
-  @staging @id754
+  @staging @id1394
   Scenario Outline: Start 1:1 chat with users from Top Connections
     Given I have at least 9 connections
     Given I Sign in using login <Login> and password <Password>

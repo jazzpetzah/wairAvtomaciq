@@ -64,7 +64,7 @@ Feature: Conversation View
       | Login   | Password    | Name    | Contact1    | Contact2    |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
 
-  @staging @id383
+  @staging @id1468
   Scenario Outline: Play/pause SoundCloud media link from the media bar
     Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
@@ -296,7 +296,7 @@ Feature: Conversation View
       | Login   | Password    | Name    | Contact     |
       | aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  @regression @id488
+  @regression @id1474
   Scenario Outline: Verify you can see conversation images in fullscreen
     Given I have 1 users and 1 contacts for 1 users
     Given I Sign in using login <Login> and password <Password>
