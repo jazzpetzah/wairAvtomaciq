@@ -205,14 +205,16 @@ public class CommonIOSSteps {
 	public void IRemoveContactsListUsersFromMacContact() throws Exception {
 		commonSteps.IRemoveContactsListUsersFromMacContact();
 	}
-	
-	@When("^I change my avatar picture to (.*)$")
-	public void IChangeMyAvatarPicture(String path) throws Exception {
-		commonSteps.IChangeMyAvatarPicture(path);
+
+	@When("^I change (.*) avatar picture to (.*)$")
+	public void IChangeMyAvatarPicture(String userNameAlias, String path)
+			throws Exception {
+		commonSteps.IChangeUserAvatarPicture(userNameAlias, path);
 	}
-	
-	@When("^I change my name to (.*)$")
-	public void IChangeMyName(String newName) throws Exception {
-		commonSteps.IChangeMyName(newName);
+
+	@When("^I change (.*) name to (.*)$")
+	public void IChangeMyName(String userNameAlias, String newName)
+			throws Exception {
+		commonSteps.IChangeUserName(userNameAlias, newName);
 	}
 }

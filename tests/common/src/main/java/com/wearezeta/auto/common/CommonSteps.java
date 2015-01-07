@@ -50,9 +50,11 @@ public final class CommonSteps {
 
 	public void ConnectionRequestIsSentTo(String userFromNameAlias,
 			String usersToNameAliases) throws Throwable {
-		ClientUser userFrom = usrMgr.findUserByNameOrNameAlias(userFromNameAlias);
+		ClientUser userFrom = usrMgr
+				.findUserByNameOrNameAlias(userFromNameAlias);
 		for (String userToNameAlias : splitAliases(usersToNameAliases)) {
-			ClientUser userTo = usrMgr.findUserByNameOrNameAlias(userToNameAlias);
+			ClientUser userTo = usrMgr
+					.findUserByNameOrNameAlias(userToNameAlias);
 			BackendAPIWrappers.sendConnectRequest(userFrom, userTo,
 					CONNECTION_NAME + userTo.getName(), CONNECTION_MESSAGE);
 		}
@@ -61,10 +63,12 @@ public final class CommonSteps {
 	public void UserHasGroupChatWithContacts(String chatOwnerNameAlias,
 			String chatName, String otherParticipantsNameAlises)
 			throws Exception {
-		ClientUser chatOwner = usrMgr.findUserByNameOrNameAlias(chatOwnerNameAlias);
+		ClientUser chatOwner = usrMgr
+				.findUserByNameOrNameAlias(chatOwnerNameAlias);
 		List<ClientUser> participants = new ArrayList<ClientUser>();
 		for (String participantNameAlias : splitAliases(otherParticipantsNameAlises)) {
-			participants.add(usrMgr.findUserByNameOrNameAlias(participantNameAlias));
+			participants.add(usrMgr
+					.findUserByNameOrNameAlias(participantNameAlias));
 		}
 		BackendAPIWrappers.createGroupConversation(chatOwner, participants,
 				chatName);
@@ -74,7 +78,8 @@ public final class CommonSteps {
 
 	public void UserIsConnectedTo(String userFromNameAlias,
 			String usersToNameAliases) throws Exception {
-		ClientUser usrFrom = usrMgr.findUserByNameOrNameAlias(userFromNameAlias);
+		ClientUser usrFrom = usrMgr
+				.findUserByNameOrNameAlias(userFromNameAlias);
 		if (usersToNameAliases.toLowerCase().contains(OTHER_USERS_ALIAS)) {
 			List<ClientUser> otherUsers = usrMgr.getCreatedUsers();
 			otherUsers.remove(usrFrom);
@@ -160,19 +165,22 @@ public final class CommonSteps {
 		OSXAddressBookHelpers.removeUsersFromContacts(usrMgr.getCreatedUsers());
 	}
 
-	public void IChangeMyAvatarPicture(String picturePath) throws Exception {
+	public void IChangeUserAvatarPicture(String userNameAlias,
+			String picturePath) throws Exception {
 		if (new File(picturePath).exists()) {
-			BackendAPIWrappers.updateSelfPicture(
-					usrMgr.getSelfUserOrThrowError(), picturePath);
+			BackendAPIWrappers.updateUserPicture(
+					usrMgr.findUserByNameOrNameAlias(userNameAlias),
+					picturePath);
 		} else {
 			throw new NotImplementedException();
 			// TODO: extract picture from resources
 		}
 	}
 
-	public void IChangeMyName(String newName) throws Exception {
-		BackendAPIWrappers.updateSelfName(usrMgr.getSelfUserOrThrowError(),
-				newName);
+	public void IChangeUserName(String userNameAlias, String newName)
+			throws Exception {
+		BackendAPIWrappers.updateUserName(
+				usrMgr.findUserByNameOrNameAlias(userNameAlias), newName);
 	}
 
 }

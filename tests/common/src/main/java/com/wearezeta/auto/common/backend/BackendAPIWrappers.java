@@ -422,10 +422,10 @@ public final class BackendAPIWrappers {
 				assetId);
 	}
 
-	public static void updateSelfPicture(ClientUser selfUser,
-			InputStream picture) throws Exception {
-		tryLoginByUser(selfUser);
-		final String convId = selfUser.getId();
+	public static void updateUserPicture(ClientUser user, InputStream picture)
+			throws Exception {
+		tryLoginByUser(user);
+		final String convId = user.getId();
 		final byte[] srcImageAsByteArray = IOUtils.toByteArray(picture);
 
 		ImageAssetData srcImgData = new ImageAssetData(convId,
@@ -435,32 +435,32 @@ public final class BackendAPIWrappers {
 		ImageAssetRequestBuilder reqBuilder = new ImageAssetRequestBuilder(
 				imgProcessor);
 		Map<JSONObject, AssetData> sentPictures = BackendREST.sendPicture(
-				generateAuthToken(selfUser), convId, reqBuilder);
+				generateAuthToken(user), convId, reqBuilder);
 		Map<String, AssetData> processedAssets = new LinkedHashMap<String, AssetData>();
 		for (Map.Entry<JSONObject, AssetData> entry : sentPictures.entrySet()) {
 			final String postedImageId = entry.getKey().getJSONObject("data")
 					.getString("id");
 			processedAssets.put(postedImageId, entry.getValue());
 		}
-		BackendREST.updateSelfInfo(generateAuthToken(selfUser), null,
+		BackendREST.updateSelfInfo(generateAuthToken(user), null,
 				processedAssets, null);
 	}
 
-	public static void updateSelfPicture(ClientUser selfUser, String picturePath)
+	public static void updateUserPicture(ClientUser user, String picturePath)
 			throws Exception {
 		final InputStream fis = new FileInputStream(picturePath);
 		try {
-			updateSelfPicture(selfUser, fis);
+			updateUserPicture(user, fis);
 		} finally {
 			fis.close();
 		}
 	}
 
-	public static void updateSelfName(ClientUser selfUser, String newName)
+	public static void updateUserName(ClientUser user, String newName)
 			throws Exception {
-		tryLoginByUser(selfUser);
-		BackendREST.updateSelfInfo(generateAuthToken(selfUser), null, null,
-				newName);
-		selfUser.setName(newName);
+		tryLoginByUser(user);
+		BackendREST
+				.updateSelfInfo(generateAuthToken(user), null, null, newName);
+		user.setName(newName);
 	}
 }
