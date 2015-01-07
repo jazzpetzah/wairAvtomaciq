@@ -54,7 +54,7 @@ Feature: People View
 
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2    | GroupChatName  |
-      | user1Email | user1Password | user1Name | user1Name  | user2Name   | LeaveGroupChat |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name   | LeaveGroupChat |
 
   @id322 @smoke
   Scenario Outline: Remove from group chat
@@ -75,7 +75,7 @@ Feature: People View
 
     Examples:
       | Login      | Password      | Name      | Contact1   | Contact2    | GroupChatName       | Message     |
-      | user1Email | user1Password | user1Name | user1Name  | user2Name   | RemoveFromGroupChat | YOU REMOVED |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name   | RemoveFromGroupChat | YOU REMOVED |
 
   @regression @id594
   Scenario Outline: Verify correct group info page information
