@@ -77,7 +77,12 @@ public class ContactListPageSteps {
 
 	@When("^I tap on contact name (.*)$")
 	public void WhenITapOnContactName(String name) throws Exception {
-		name = usrMgr.findUserByNameAlias(name).getName();
+		try {
+			name = usrMgr.findUserByNameAlias(name).getName();
+		}
+		catch(Exception ex) {
+			
+		}
 		PagesCollection.androidPage = PagesCollection.contactListPage
 				.tapOnName(name);
 	}

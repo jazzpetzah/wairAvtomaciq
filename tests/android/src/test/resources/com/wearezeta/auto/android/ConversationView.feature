@@ -53,7 +53,7 @@ Feature: Conversation View
   @id1262 @smoke
   Scenario Outline: Add people to 1:1 chat
     Given There are 3 users where <Name> is me
-    Given <Name> is connected to <Contact>,<Contact2>
+    Given <Name> is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
@@ -72,13 +72,13 @@ Feature: Conversation View
     And I see <Contact1> and <Contact2> chat in contact list
 
     Examples:
-      | Login      | Password      | Name      | Contact   | Contact2    |
+      | Login      | Password      | Name      | Contact1   | Contact2    |
       | user1Email | user1Password | user1Name | user2Name | user3Name   |
 
   @id320 @smoke
   Scenario Outline: Send message to group chat
     Given There are 3 users where <Name> is me
-    Given <Name> is connected to <Contact>,<Contact2>
+    Given <Name> is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -89,8 +89,8 @@ Feature: Conversation View
     Then I see my message in the dialog
 
     Examples:
-      | Login      | Password      | Name      | Contact   | Contact2    | GroupChatName     |
-      | user1Email | user1Password | user1Name | user2Name | user1Name   | SendMessGroupChat |
+      | Login      | Password      | Name      | Contact1   | Contact2    | GroupChatName     |
+      | user1Email | user1Password | user1Name | user2Name | user3Name    | SendMessGroupChat |
 
   @id143 @regression
   Scenario Outline: Send Long Message to contact

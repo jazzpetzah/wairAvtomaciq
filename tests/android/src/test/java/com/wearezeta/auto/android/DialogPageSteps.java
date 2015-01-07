@@ -109,7 +109,12 @@ public class DialogPageSteps {
 	@Then("^I see Hello-Hey message (.*) with (.*) in the dialog$")
 	public void ThenISeeHelloHeyMessageInTheDialog(String message, String action)
 			throws Throwable {
-		message = usrMgr.findUserByNameAlias(message).getName();
+		try {
+			message = usrMgr.findUserByNameAlias(message).getName();
+		}
+		catch (Exception ex) {
+			
+		}
 		Assert.assertEquals("Ping message compare",
 				message + " " + action.trim(),
 				PagesCollection.dialogPage.getKnockText());
