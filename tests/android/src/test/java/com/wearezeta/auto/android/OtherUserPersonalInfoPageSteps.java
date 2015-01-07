@@ -20,7 +20,7 @@ public class OtherUserPersonalInfoPageSteps {
 		if (PagesCollection.otherUserPersonalInfoPage == null) {
 			PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.androidPage;
 		}
-		name = usrMgr.findUserByNameAlias(name).getName();
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		PagesCollection.otherUserPersonalInfoPage.isOtherUserNameVisible(name);
 	}
 
@@ -69,7 +69,7 @@ public class OtherUserPersonalInfoPageSteps {
 
 	@Then("^I see (.*) user name and email$")
 	public void ISeeUserNameAndEmail(String contact) {
-		ClientUser dstUser = usrMgr.findUserByNameAlias(contact);
+		ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(contact);
 		contact = dstUser.getName();
 		String email = dstUser.getEmail();
 		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
@@ -102,7 +102,7 @@ public class OtherUserPersonalInfoPageSteps {
 
 	@When("^I tap on group chat contact (.*)$")
 	public void WhenITapOnGroupChatContact(String contact) throws Throwable {
-		contact = usrMgr.findUserByNameAlias(contact).getName();
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		PagesCollection.androidPage = PagesCollection.otherUserPersonalInfoPage
 				.tapOnContact(contact);
 		if (PagesCollection.androidPage instanceof OtherUserPersonalInfoPage) {
@@ -129,7 +129,7 @@ public class OtherUserPersonalInfoPageSteps {
 
 	@When("^I select contact (.*)$")
 	public void WhenISelectContact(String name) throws Throwable {
-		name = usrMgr.findUserByNameAlias(name).getName();
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		PagesCollection.androidPage = PagesCollection.otherUserPersonalInfoPage
 				.selectContactByName(name);
 	}
@@ -145,8 +145,8 @@ public class OtherUserPersonalInfoPageSteps {
 	public void ISeeCorrectParticipantAvatars(String contact1, String contact2)
 			throws IOException {
 		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
-				.isParticipantAvatars(usrMgr.findUserByNameAlias(contact1)
-						.getName(), usrMgr.findUserByNameAlias(contact2)
+				.isParticipantAvatars(usrMgr.findUserByNameOrNameAlias(contact1)
+						.getName(), usrMgr.findUserByNameOrNameAlias(contact2)
 						.getName()));
 	}
 
@@ -161,7 +161,7 @@ public class OtherUserPersonalInfoPageSteps {
 	@Then("^I do not see (.*) on group chat info page$")
 	public void ThenIDoNotSeeOnGroupChatInfoPage(String contact)
 			throws Throwable {
-		contact = usrMgr.findUserByNameAlias(contact).getName();
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertFalse(PagesCollection.otherUserPersonalInfoPage
 				.isContactExists(contact));
 	}

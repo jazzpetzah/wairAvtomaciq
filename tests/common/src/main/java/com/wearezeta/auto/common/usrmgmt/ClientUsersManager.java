@@ -2,6 +2,7 @@ package com.wearezeta.auto.common.usrmgmt;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -91,55 +92,88 @@ public class ClientUsersManager {
 		return instance;
 	}
 
-	public static enum UserAliasType {
-		NAME, PASSWORD, EMAIL;
+	public static enum FindBy {
+		NAME, PASSWORD, EMAIL, NAME_ALIAS, PASSWORD_ALIAS, EMAIL_ALIAS;
 	}
 
-	public ClientUser findUserByNameAlias(String alias) {
-		return findUserByAlias(alias, UserAliasType.NAME);
+	public ClientUser findUserByPasswordAlias(String alias) {
+		return findUserBy(alias, new FindBy[] { FindBy.PASSWORD_ALIAS });
 	}
 
-	public ClientUser findUserByAlias(String alias, UserAliasType aliasType) {
-		for (Object item : users) {
-			ClientUser user = (ClientUser) item;
-			Set<String> aliases = null;
-			if (aliasType == UserAliasType.NAME) {
+	public ClientUser findUserByNameOrNameAlias(String alias) {
+		return findUserBy(alias,
+				new FindBy[] { FindBy.NAME, FindBy.NAME_ALIAS });
+	}
+
+	public ClientUser findUserByEmailOrEmailAlias(String alias) {
+		return findUserBy(alias, new FindBy[] { FindBy.EMAIL,
+				FindBy.EMAIL_ALIAS });
+	}
+
+	public ClientUser findUserBy(String searchStr, FindBy[] findByTypes) {
+		for (FindBy findBy : findByTypes) {
+			try {
+				return findUserBy(searchStr, findBy);
+			} catch (NoSuchElementException e) {
+				// Ignore silently
+			}
+		}
+		throw new NoSuchElementException(String.format(
+				"No user '%s' has been created before", searchStr));
+	}
+
+	public ClientUser findUserBy(String searchStr, FindBy findBy) {
+		for (ClientUser user : users) {
+			Set<String> aliases = new HashSet<String>();
+			if (findBy == FindBy.NAME_ALIAS) {
 				aliases = user.getNameAliases();
-			} else if (aliasType == UserAliasType.EMAIL) {
+			} else if (findBy == FindBy.EMAIL_ALIAS) {
 				aliases = user.getEmailAliases();
-			} else if (aliasType == UserAliasType.PASSWORD) {
+			} else if (findBy == FindBy.PASSWORD_ALIAS) {
 				aliases = user.getPasswordAliases();
+			} else if (findBy == FindBy.NAME) {
+				if (user.getName().equalsIgnoreCase(searchStr)) {
+					return user;
+				}
+			} else if (findBy == FindBy.EMAIL) {
+				if (user.getEmail().equalsIgnoreCase(searchStr)) {
+					return user;
+				}
+			} else if (findBy == FindBy.PASSWORD) {
+				if (user.getPassword().equals(searchStr)) {
+					return user;
+				}
 			} else {
 				throw new RuntimeException(String.format(
-						"Unknown alias type %s", aliasType));
+						"Unknown FindBy type %s", findBy));
 			}
 			for (String currentAlias : aliases) {
-				if (currentAlias.equalsIgnoreCase(alias)) {
+				if (currentAlias.equalsIgnoreCase(searchStr)) {
 					return user;
 				}
 			}
 		}
 		throw new NoSuchElementException(String.format(
-				"No user with username '%s' is in an available list", alias));
+				"No user '%s' has been created before", searchStr));
 	}
 
-	public String replaceAliasesOccurences(String srcStr,
-			UserAliasType aliasType) {
+	public String replaceAliasesOccurences(String srcStr, FindBy findByAliasType) {
 		String result = srcStr;
 		for (ClientUser dstUser : users) {
-			Set<String> aliases = null;
+			Set<String> aliases = new HashSet<String>();
 			String replacement = null;
-			if (aliasType == UserAliasType.NAME) {
+			if (findByAliasType == FindBy.NAME_ALIAS) {
 				aliases = dstUser.getNameAliases();
 				replacement = dstUser.getName();
-			} else if (aliasType == UserAliasType.EMAIL) {
+			} else if (findByAliasType == FindBy.EMAIL_ALIAS) {
 				aliases = dstUser.getEmailAliases();
 				replacement = dstUser.getEmail();
-			} else if (aliasType == UserAliasType.PASSWORD) {
+			} else if (findByAliasType == FindBy.PASSWORD_ALIAS) {
 				aliases = dstUser.getPasswordAliases();
 				replacement = dstUser.getPassword();
 			} else {
-				assert (false);
+				throw new RuntimeException(String.format(
+						"Unsupported FindBy type %s", findByAliasType));
 			}
 			for (String alias : aliases) {
 				result = result.replace(alias, replacement);

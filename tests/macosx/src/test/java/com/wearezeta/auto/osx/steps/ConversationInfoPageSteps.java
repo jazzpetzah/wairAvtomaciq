@@ -25,7 +25,7 @@ public class ConversationInfoPageSteps {
 	
 	@When("I choose user (.*) in Conversation info")
 	public void WhenIChooseUserInConversationInfo(String user) throws MalformedURLException, IOException {
-		user = usrMgr.findUserByNameAlias(user).getName();
+		user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		CommonOSXSteps.senderPages.setConversationInfoPage(new ConversationInfoPage(
 				 CommonUtils.getOsxAppiumUrlFromConfig(ConversationInfoPage.class),
 				 CommonUtils.getOsxApplicationPathFromConfig(ConversationInfoPage.class)
@@ -36,7 +36,7 @@ public class ConversationInfoPageSteps {
 	
 	@Then("I do not see user (.*) in Conversation info")
 	public void IDontSeeUserInConversationInfo(String user) throws MalformedURLException, IOException {
-		user = usrMgr.findUserByNameAlias(user).getName();
+		user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		CommonOSXSteps.senderPages.setConversationInfoPage(new ConversationInfoPage(
 				 CommonUtils.getOsxAppiumUrlFromConfig(ConversationInfoPage.class),
 				 CommonUtils.getOsxApplicationPathFromConfig(ConversationInfoPage.class)
@@ -59,7 +59,7 @@ public class ConversationInfoPageSteps {
 		if (contact.equals(OSXLocators.RANDOM_KEYWORD)) {
 			contact = CommonOSXSteps.senderPages.getConversationInfoPage().getCurrentConversationName();
 		} else {
-			contact = usrMgr.findUserByNameAlias(contact).getName();
+			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		}
 		Assert.assertTrue(CommonOSXSteps.senderPages.getConversationInfoPage().isConversationNameEquals(contact));
 	}
@@ -98,7 +98,7 @@ public class ConversationInfoPageSteps {
 	
 	@Then("I see user (.*) personal info")
 	public void ISeeUserPersonalInfo(String contact) {
-		contact = usrMgr.findUserByNameAlias(contact).getName();
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		ConversationInfoPage conversationInfo = CommonOSXSteps.senderPages.getConversationInfoPage();
 		conversationInfo.isContactPersonalInfoAppear(contact);
 	}
@@ -111,14 +111,14 @@ public class ConversationInfoPageSteps {
 	
 	@Then("^I see (.*) name in Conversation info$")
 	public void ISeeContactNameInConversationInfo(String contact) throws Throwable {
-		contact = usrMgr.findUserByNameAlias(contact).getName();
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		ConversationInfoPage conversationInfo = CommonOSXSteps.senderPages.getConversationInfoPage();
 		Assert.assertTrue(conversationInfo.isUserNameDisplayed(contact));
 	}
 
 	@Then("^I see (.*) email in Conversation info$")
 	public void ISeeContactEmailInConversationInfo(String contact) throws Throwable {
-		ClientUser dstUser = usrMgr.findUserByNameAlias(contact);
+		ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(contact);
 		contact = dstUser.getName();
 		String email = dstUser.getEmail();
 		Assert.assertNotNull("Can't find an e-mail for contact user " + contact, email);

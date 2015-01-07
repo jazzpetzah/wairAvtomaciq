@@ -134,14 +134,14 @@ public class PersonalInfoPageSteps {
 
 	@When("I see name (.*) on Personal page")
 	public void ISeeMyNameOnPersonalPage(String name) {
-		name = usrMgr.findUserByNameAlias(name).getName();
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		Assert.assertTrue(PagesCollection.personalInfoPage.getUserNameValue()
 				.equals(name));
 	}
 
 	@When("I see email (.*) on Personal page")
-	public void ISeeMyEmailOnPersonalPage(String name) {
-		String email = usrMgr.findUserByNameAlias(name).getEmail();
+	public void ISeeMyEmailOnPersonalPage(String email) {
+		email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
 		Assert.assertTrue(email.equals(PagesCollection.personalInfoPage
 				.getUserEmailVaue()));
 	}

@@ -53,7 +53,7 @@ public class ContactListPageSteps {
 
 	@Given("^I see Contact list with my name (.*)$")
 	public void GivenISeeContactListWithMyName(String name) throws Throwable {
-		name = usrMgr.findUserByNameAlias(name).getName();
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		PagesCollection.contactListPage.pressLaterButton();
 		// TODO: revisit later
 		Thread.sleep(2000);
@@ -70,7 +70,7 @@ public class ContactListPageSteps {
 	@Given("^I do not see Contact list with name (.*)$")
 	public void GivenIDoNotSeeContactListWithName(String value)
 			throws Throwable {
-		value = usrMgr.findUserByNameAlias(value).getName();
+		value = usrMgr.findUserByNameOrNameAlias(value).getName();
 		Assert.assertFalse(PagesCollection.contactListPage
 				.isContactExists(value));
 	}
@@ -78,7 +78,7 @@ public class ContactListPageSteps {
 	@When("^I tap on contact name (.*)$")
 	public void WhenITapOnContactName(String name) throws Exception {
 		try {
-			name = usrMgr.findUserByNameAlias(name).getName();
+			name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		}
 		catch(Exception ex) {
 			
@@ -89,7 +89,7 @@ public class ContactListPageSteps {
 
 	@When("^I tap on my name (.*)$")
 	public void WhenITapOnMyName(String name) throws Exception {
-		name = usrMgr.findUserByNameAlias(name).getName();
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		PagesCollection.personalInfoPage = (PersonalInfoPage) PagesCollection.contactListPage
 				.tapOnName(name);
 	}
@@ -105,12 +105,12 @@ public class ContactListPageSteps {
 	public void ICreateGroupChat(String contact1, String contact2)
 			throws Exception {
 		try {
-			contact1 = usrMgr.findUserByNameAlias(contact1).getName();
+			contact1 = usrMgr.findUserByNameOrNameAlias(contact1).getName();
 		} catch (NoSuchElementException e) {
 			// Ignore silently
 		}
 		try {
-			contact2 = usrMgr.findUserByNameAlias(contact2).getName();
+			contact2 = usrMgr.findUserByNameOrNameAlias(contact2).getName();
 		} catch (NoSuchElementException e) {
 			// Ignore silently
 		}
@@ -138,22 +138,22 @@ public class ContactListPageSteps {
 
 	@When("^I swipe right on a (.*)$")
 	public void ISwipeRightOnContact(String contact) throws IOException {
-		contact = usrMgr.findUserByNameAlias(contact).getName();
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		PagesCollection.contactListPage.swipeRightOnContact(1000, contact);
 	}
 
 	@When("^I click mute conversation (.*)$")
 	public void IClickMuteConversation(String contact) throws IOException,
 			InterruptedException {
-		contact = usrMgr.findUserByNameAlias(contact).getName();
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		PagesCollection.contactListPage.clickOnMute(contact);
 	}
 
 	@Then("^I see (.*) and (.*) chat in contact list$")
 	public void ISeeGroupChatInContactList(String contact1, String contact2)
 			throws InterruptedException {
-		contact1 = usrMgr.findUserByNameAlias(contact1).getName();
-		contact2 = usrMgr.findUserByNameAlias(contact2).getName();
+		contact1 = usrMgr.findUserByNameOrNameAlias(contact1).getName();
+		contact2 = usrMgr.findUserByNameOrNameAlias(contact2).getName();
 		Assert.assertTrue(PagesCollection.contactListPage
 				.isContactExists(contact1 + ", " + contact2)
 				|| PagesCollection.contactListPage.isContactExists(contact2
@@ -162,7 +162,7 @@ public class ContactListPageSteps {
 
 	@Then("Contact list appears with my name (.*)")
 	public void ThenContactListAppears(String name) throws Throwable {
-		name = usrMgr.findUserByNameAlias(name).getName();
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		PagesCollection.contactListPage.pressLaterButton();
 		// TODO: revisit later
 		Thread.sleep(2000);
@@ -177,7 +177,7 @@ public class ContactListPageSteps {
 
 	@Then("^I see contact list loaded with User name (.*)$")
 	public void ISeeUserNameFirstInContactList(String value) throws Throwable {
-		value = usrMgr.findUserByNameAlias(value).getName();
+		value = usrMgr.findUserByNameOrNameAlias(value).getName();
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(value));
 	}
 
@@ -195,7 +195,7 @@ public class ContactListPageSteps {
 
 	@Then("^Contact name (.*) is not in list$")
 	public void ThenContactNameIsNotInList(String value) throws Throwable {
-		value = usrMgr.findUserByNameAlias(value).getName();
+		value = usrMgr.findUserByNameOrNameAlias(value).getName();
 		Assert.assertFalse(PagesCollection.contactListPage
 				.isContactExists(value));
 	}

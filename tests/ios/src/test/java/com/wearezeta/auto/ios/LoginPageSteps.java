@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.UserAliasType;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
@@ -25,14 +24,12 @@ public class LoginPageSteps {
 	public void GivenISignIn(String login, String password) throws IOException,
 			InterruptedException {
 		try {
-			login = usrMgr.findUserByAlias(login, UserAliasType.EMAIL)
-					.getEmail();
+			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
 		} catch (NoSuchElementException e) {
 			// Ignore silently
 		}
 		try {
-			password = usrMgr.findUserByAlias(password, UserAliasType.PASSWORD)
-					.getPassword();
+			password = usrMgr.findUserByPasswordAlias(password).getPassword();
 		} catch (NoSuchElementException e) {
 			// Ignore silently
 		}
@@ -74,8 +71,7 @@ public class LoginPageSteps {
 	@When("I have entered login (.*)")
 	public void WhenIHaveEnteredLogin(String login) throws IOException {
 		try {
-			login = usrMgr.findUserByAlias(login,
-				UserAliasType.EMAIL).getEmail();
+			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
 		} catch (NoSuchElementException e) {
 			// Ignore silently
 		}
@@ -83,11 +79,9 @@ public class LoginPageSteps {
 	}
 
 	@When("I have entered password (.*)")
-	public void WhenIHaveEnteredPassword(String password)
-			throws IOException {
+	public void WhenIHaveEnteredPassword(String password) throws IOException {
 		try {
-			password = usrMgr.findUserByAlias(password,
-				UserAliasType.PASSWORD).getPassword();
+			password = usrMgr.findUserByPasswordAlias(password).getPassword();
 		} catch (NoSuchElementException e) {
 			// Ignore silently
 		}

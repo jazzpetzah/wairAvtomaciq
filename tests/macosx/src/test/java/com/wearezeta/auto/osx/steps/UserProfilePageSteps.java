@@ -129,7 +129,7 @@ public class UserProfilePageSteps {
 
 	@Then("I see name (.*) in User profile")
 	public void ISeeNameInUserProfile(String name) {
-		name = usrMgr.findUserByNameAlias(name).getName();
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		UserProfilePage userProfile = CommonOSXSteps.senderPages
 				.getUserProfilePage();
 		userProfile.selfProfileNameEquals(name);
@@ -137,7 +137,7 @@ public class UserProfilePageSteps {
 
 	@Then("I see email of (.*) in User profile")
 	public void ISeeEmailOfUserInUserProfile(String name) {
-		ClientUser dstUser = usrMgr.findUserByNameAlias(name);
+		ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(name);
 		name = dstUser.getName();
 		String email = dstUser.getEmail();
 		UserProfilePage userProfile = CommonOSXSteps.senderPages

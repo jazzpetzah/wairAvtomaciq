@@ -97,7 +97,7 @@ public class DialogPageSteps {
 
 	@Then("^I see User (.*) Pinged message in the conversation$")
 	public void ISeeUserPingedMessageTheDialog(String user) throws Throwable {
-		String username = usrMgr.findUserByNameAlias(user).getName();
+		String username = usrMgr.findUserByNameOrNameAlias(user).getName();
 		String expectedPingMessage = username.toUpperCase() + " PINGED";
 		String dialogLastMessage;
 		if (PagesCollection.dialogPage != null) {
@@ -113,7 +113,7 @@ public class DialogPageSteps {
 
 	@Then("^I see User (.*) Pinged Again message in the conversation$")
 	public void ISeeUserHotPingedMessageTheDialog(String user) throws Throwable {
-		String username = usrMgr.findUserByNameAlias(user).getName();
+		String username = usrMgr.findUserByNameOrNameAlias(user).getName();
 		String expectedPingMessage = username.toUpperCase() + " PINGED AGAIN";
 		String dialogLastMessage;
 		if (PagesCollection.dialogPage != null) {
@@ -192,8 +192,8 @@ public class DialogPageSteps {
 	@Then("^I see Pending Connect to (.*) message on Dialog page from user (.*)$")
 	public void ISeePendingConnectMessage(String contact, String user)
 			throws Throwable {
-		user = usrMgr.findUserByNameAlias(user).getName();
-		contact = usrMgr.findUserByNameAlias(contact).getName();
+		user = usrMgr.findUserByNameOrNameAlias(user).getName();
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		String expectedConnectingLabel = PagesCollection.dialogPage
 				.getExpectedConnectingLabel(contact);
 		String actualConnectingLabel = PagesCollection.dialogPage
@@ -468,7 +468,7 @@ public class DialogPageSteps {
 	@When("^User (.*) Ping in chat (.*) by BackEnd$")
 	public void UserPingInChatByBE(String contact, String conversationName)
 			throws Exception {
-		ClientUser yourСontact = usrMgr.findUserByNameAlias(contact);
+		ClientUser yourСontact = usrMgr.findUserByNameOrNameAlias(contact);
 		pingId = BackendAPIWrappers.sendPingToConversation(yourСontact,
 				conversationName);
 	}
@@ -476,7 +476,7 @@ public class DialogPageSteps {
 	@When("^User (.*) HotPing in chat (.*) by BackEnd$")
 	public void UserHotPingInChatByBE(String contact, String conversationName)
 			throws Exception {
-		ClientUser yourСontact = usrMgr.findUserByNameAlias(contact);
+		ClientUser yourСontact = usrMgr.findUserByNameOrNameAlias(contact);
 		BackendAPIWrappers.sendHotPingToConversation(yourСontact,
 				conversationName, pingId);
 	}

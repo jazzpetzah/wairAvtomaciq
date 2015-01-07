@@ -29,7 +29,7 @@ public class PerformanceSteps {
 		long diffInMinutes = 0;
 
 		final String name = perfCommon.getUserManager()
-				.findUserByNameAlias(nameAlias).getName();
+				.findUserByNameOrNameAlias(nameAlias).getName();
 		while (diffInMinutes < time) {
 
 			// Send x messages and x/5 images to your user

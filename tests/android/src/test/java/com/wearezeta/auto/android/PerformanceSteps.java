@@ -28,7 +28,7 @@ public class PerformanceSteps {
 		// Boolean isMinimized = false; Broke swipe in dialogs
 
 		final String name = perfCommon.getUserManager()
-				.findUserByNameAlias(nameAlias).getName();
+				.findUserByNameOrNameAlias(nameAlias).getName();
 		while (diffInMinutes < time) {
 
 			// Get BackEnd messages

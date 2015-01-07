@@ -75,13 +75,13 @@ public class GroupChatInfoPageSteps {
 	
 	@When("^I select contact (.*)$")
 	public void ISelectContact(String name) throws IOException {
-		name = usrMgr.findUserByNameAlias(name).getName();
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		PagesCollection.otherUserPersonalInfoPage = PagesCollection.groupChatInfoPage.selectContactByName(name);
 	}
 	
 	@When("I tap on not connected contact (.*)")
 	public void ITapOnNotConnectedContact(String name) throws IOException{
-		name = usrMgr.findUserByNameAlias(name).getName();
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		PagesCollection.connectToPage = (ConnectToPage)PagesCollection.groupChatInfoPage.selectNotConnectedUser(name);
 	}
 	

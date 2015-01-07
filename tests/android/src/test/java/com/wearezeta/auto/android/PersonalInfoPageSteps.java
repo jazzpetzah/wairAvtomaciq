@@ -65,7 +65,7 @@ public class PersonalInfoPageSteps {
 
 	@When("^I change (.*) to (.*)$")
 	public void IChangeNameTo(String name, String newName) throws Throwable {
-		name = usrMgr.findUserByNameAlias(name).getName();
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		PagesCollection.personalInfoPage.changeName(name, newName);
 	}
 
@@ -86,7 +86,7 @@ public class PersonalInfoPageSteps {
 	public void ISeeMyNewName(String name, String oldName) throws Throwable {
 		Assert.assertTrue(name.equals(PagesCollection.personalInfoPage
 				.getUserName()));
-		oldName = usrMgr.findUserByNameAlias(name).getName();
+		oldName = usrMgr.findUserByNameOrNameAlias(name).getName();
 		PagesCollection.personalInfoPage.tapOnMyName();
 		PagesCollection.personalInfoPage.changeName(name, oldName);
 	}

@@ -17,7 +17,7 @@ public class OtherUserPersonalInfoPageSteps {
 	
 	@When("^I see (.*) user profile page$")
 	public void WhenISeeOtherUserProfilePage(String name){
-		name = usrMgr.findUserByNameAlias(name).getName();
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage.isOtherUserProfileNameVisible(name));
 	}
 	
@@ -54,7 +54,7 @@ public class OtherUserPersonalInfoPageSteps {
 	
 	@Then("^I see the user profile from (.*)$")
 	public void ISeeTheUserProfileFrom(String contact) throws Throwable {
-		contact = usrMgr.findUserByNameAlias(contact).getName();
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		boolean isShown = PagesCollection.otherUserPersonalInfoPage.isOtherUserProfileEmailVisible(contact);
 		Assert.assertTrue("I can see the contacts email on the user profile page", isShown);
 	}

@@ -176,12 +176,12 @@ public class GroupChatInfoPage extends IOSPage {
 	}
 
 	public ClientUser getParticipantUser(WebElement participant) {
-		return usrMgr.findUserByNameAlias(getParticipantName(participant));
+		return usrMgr.findUserByNameOrNameAlias(getParticipantName(participant));
 	}
 
 	public IOSPage tapOnParticipant(String participantName) throws IOException {
 		IOSPage page = null;
-		participantName = usrMgr.findUserByNameAlias(participantName).getName();
+		participantName = usrMgr.findUserByNameOrNameAlias(participantName).getName();
 		List<WebElement> participants = getCurrentParticipants();
 		for (WebElement participant : participants) {
 			if (getParticipantName(participant).equalsIgnoreCase(
@@ -199,8 +199,8 @@ public class GroupChatInfoPage extends IOSPage {
 		if (conversationNameTextField.getText().equals(conversationName)) {
 			return true;
 		} else {
-			contact1 = usrMgr.findUserByNameAlias(contact1).getName();
-			contact2 = usrMgr.findUserByNameAlias(contact2).getName();
+			contact1 = usrMgr.findUserByNameOrNameAlias(contact1).getName();
+			contact2 = usrMgr.findUserByNameOrNameAlias(contact2).getName();
 			;
 			if (contact1.contains(" ")) {
 				contact1 = contact1.substring(0, contact1.indexOf(" "));

@@ -15,7 +15,7 @@ import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.UserAliasType;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.ContactListPage;
@@ -112,7 +112,8 @@ public class ConversationPageSteps {
 		Exception lastException = null;
 		BufferedImage pictureAssetFromConv = null;
 		ClientUser selfUser = usrMgr.getSelfUserOrThrowError();
-		ClientUser contactUser = usrMgr.findUserByNameAlias(contactNameAlias);
+		ClientUser contactUser = usrMgr
+				.findUserByNameOrNameAlias(contactNameAlias);
 		do {
 			retry = false;
 			try {
@@ -209,7 +210,8 @@ public class ConversationPageSteps {
 	@When("^User (.*) pings in chat (.*)$")
 	public void WhenUserPingsInChat(String contactNameAlias, String conversation)
 			throws Throwable {
-		ClientUser yourСontact = usrMgr.findUserByNameAlias(contactNameAlias);
+		ClientUser yourСontact = usrMgr
+				.findUserByNameOrNameAlias(contactNameAlias);
 		pingID = BackendAPIWrappers.sendPingToConversation(yourСontact,
 				conversation);
 		Thread.sleep(1000);
@@ -218,7 +220,7 @@ public class ConversationPageSteps {
 	@Then("^I see User (.*) Pinged action in the conversation$")
 	public void ThenISeeUserPingedActionInTheConversation(String user)
 			throws Throwable {
-		String username = usrMgr.findUserByNameAlias(user).getName();
+		String username = usrMgr.findUserByNameOrNameAlias(user).getName();
 		String expectedPingMessage = username.toUpperCase()
 				+ OSXLocators.USER_PINGED_MESSAGE;
 		String dialogLastMessage = username.toUpperCase() + " PINGED";
@@ -270,7 +272,8 @@ public class ConversationPageSteps {
 	@When("^User (.*) pings again in chat (.*)$")
 	public void WhenUserPingsAgainInChat(String contactNameAlias,
 			String conversation) throws Throwable {
-		ClientUser yourСontact = usrMgr.findUserByNameAlias(contactNameAlias);
+		ClientUser yourСontact = usrMgr
+				.findUserByNameOrNameAlias(contactNameAlias);
 		BackendAPIWrappers.sendHotPingToConversation(yourСontact, conversation,
 				pingID);
 		Thread.sleep(1000);
@@ -316,7 +319,7 @@ public class ConversationPageSteps {
 
 	private void verifyMsgExistsInConversationView(String msg)
 			throws InterruptedException {
-		msg = usrMgr.replaceAliasesOccurences(msg, UserAliasType.NAME);
+		msg = usrMgr.replaceAliasesOccurences(msg, FindBy.NAME);
 		msg = msg.toUpperCase();
 		Assert.assertTrue(String.format("Message '%s' not found.", msg),
 				CommonOSXSteps.senderPages.getConversationPage()
@@ -378,12 +381,12 @@ public class ConversationPageSteps {
 	public void WhenICreateGroupChatWithUser1AndUser2(String user1, String user2)
 			throws Exception {
 		try {
-			user1 = usrMgr.findUserByNameAlias(user1).getName();
+			user1 = usrMgr.findUserByNameOrNameAlias(user1).getName();
 		} catch (NoSuchElementException e) {
 			// Ignore silently
 		}
 		try {
-			user2 = usrMgr.findUserByNameAlias(user2).getName();
+			user2 = usrMgr.findUserByNameOrNameAlias(user2).getName();
 		} catch (NoSuchElementException e) {
 			// Ignore silently
 		}

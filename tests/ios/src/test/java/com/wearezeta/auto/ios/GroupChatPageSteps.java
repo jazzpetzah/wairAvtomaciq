@@ -27,7 +27,7 @@ public class GroupChatPageSteps {
 		List<String> participantNames = new ArrayList<String>();
 		for (String nameAlias : CommonSteps
 				.splitAliases(participantNameAliases)) {
-			participantNames.add(usrMgr.findUserByNameAlias(nameAlias)
+			participantNames.add(usrMgr.findUserByNameOrNameAlias(nameAlias)
 					.getName());
 		}
 		Assert.assertTrue(PagesCollection.groupChatPage
@@ -39,9 +39,9 @@ public class GroupChatPageSteps {
 			String name3) throws Throwable {
 		Assert.assertTrue("Conversation page is not shown",
 				PagesCollection.groupChatPage.isGroupChatPageVisible());
-		name1 = usrMgr.findUserByNameAlias(name1).getName();
-		name2 = usrMgr.findUserByNameAlias(name2).getName();
-		name3 = usrMgr.findUserByNameAlias(name3).getName();
+		name1 = usrMgr.findUserByNameOrNameAlias(name1).getName();
+		name2 = usrMgr.findUserByNameOrNameAlias(name2).getName();
+		name3 = usrMgr.findUserByNameOrNameAlias(name3).getName();
 		Thread.sleep(1000);// still have to wait some time for animation to
 							// finish
 		Assert.assertTrue(PagesCollection.groupChatPage
@@ -79,7 +79,7 @@ public class GroupChatPageSteps {
 	@Then("^I see that (.*) is not present on group chat page$")
 	public void ISeeContactIsNotPresentOnGroupChatPage(String contact)
 			throws InterruptedException {
-		contact = usrMgr.findUserByNameAlias(contact).getName();
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertTrue(PagesCollection.groupChatPage
 				.waitForContactToDisappear(contact));
 	}
@@ -92,7 +92,7 @@ public class GroupChatPageSteps {
 
 	@When("^I can see You Added (.*) message$")
 	public void ICanSeeYouAddedContact(String contact) throws Throwable {
-		contact = usrMgr.findUserByNameAlias(contact).getName();
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertTrue(PagesCollection.groupChatPage
 				.isYouAddedUserMessageShown(contact));
 	}

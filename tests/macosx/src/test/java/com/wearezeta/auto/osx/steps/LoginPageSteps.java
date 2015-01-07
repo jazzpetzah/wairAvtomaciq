@@ -10,7 +10,6 @@ import org.openqa.selenium.NoSuchElementException;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.UserAliasType;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.LoginPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
@@ -29,33 +28,27 @@ public class LoginPageSteps {
 	public void GivenISignInUsingLoginAndPassword(String login, String password)
 			throws IOException {
 		try {
-			login = usrMgr.findUserByAlias(login, UserAliasType.EMAIL)
-					.getEmail();
-		} catch (NoSuchElementException e) {
+			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
+		} catch (java.util.NoSuchElementException e) {
 			// Ignore silently
 		}
 		try {
-			password = usrMgr.findUserByAlias(password, UserAliasType.PASSWORD)
-					.getPassword();
-		} catch (NoSuchElementException e) {
+			password = usrMgr.findUserByPasswordAlias(password).getPassword();
+		} catch (java.util.NoSuchElementException e) {
 			// Ignore silently
 		}
-
 		log.debug("Starting to Sign in using login " + login + " and password "
 				+ password);
 
-		try {
-			LoginPage loginPage = CommonOSXSteps.senderPages.getLoginPage();
-			loginPage.startSignIn();
+		LoginPage loginPage = CommonOSXSteps.senderPages.getLoginPage();
+		loginPage.startSignIn();
 
-			loginPage.setLogin(login);
-			loginPage.setPassword(password);
+		loginPage.setLogin(login);
+		loginPage.setPassword(password);
 
-			loginPage.confirmSignIn();
+		loginPage.confirmSignIn();
 
-			Assert.assertTrue("Failed to login", loginPage.waitForLogin());
-		} catch (NoSuchElementException e) {
-		}
+		Assert.assertTrue("Failed to login", loginPage.waitForLogin());
 
 		CommonOSXSteps.senderPages
 				.setContactListPage(new ContactListPage(
@@ -86,8 +79,7 @@ public class LoginPageSteps {
 	@When("I have entered login (.*)")
 	public void WhenIHaveEnteredLogin(String login) {
 		try {
-			login = usrMgr.findUserByAlias(login, UserAliasType.EMAIL)
-					.getEmail();
+			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
 		} catch (NoSuchElementException e) {
 			// Ignore silently
 		}
@@ -97,8 +89,7 @@ public class LoginPageSteps {
 	@When("I have entered password (.*)")
 	public void WhenIHaveEnteredPassword(String password) {
 		try {
-			password = usrMgr.findUserByAlias(password,
-					UserAliasType.PASSWORD).getPassword();
+			password = usrMgr.findUserByPasswordAlias(password).getPassword();
 		} catch (NoSuchElementException e) {
 			// Ignore silently
 		}

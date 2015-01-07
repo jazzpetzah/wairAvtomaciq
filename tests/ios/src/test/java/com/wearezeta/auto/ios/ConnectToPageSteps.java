@@ -49,7 +49,7 @@ public class ConnectToPageSteps {
 
 	@Given("^I have connection request from (.*)$")
 	public void IHaveConnectionRequest(String contact) throws Throwable {
-		BackendAPIWrappers.sendConnectRequest(usrMgr.findUserByNameAlias(contact),
+		BackendAPIWrappers.sendConnectRequest(usrMgr.findUserByNameOrNameAlias(contact),
 				usrMgr.getSelfUserOrThrowError(), "CONNECT TO " + contact,
 				"Hello");
 	}

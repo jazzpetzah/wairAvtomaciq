@@ -3,6 +3,7 @@ package com.wearezeta.auto.android;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.junit.Assert;
 
@@ -108,12 +109,11 @@ public class DialogPageSteps {
 
 	@Then("^I see Hello-Hey message (.*) with (.*) in the dialog$")
 	public void ThenISeeHelloHeyMessageInTheDialog(String message, String action)
-			throws Throwable {
+			throws Exception {
 		try {
-			message = usrMgr.findUserByNameAlias(message).getName();
-		}
-		catch (Exception ex) {
-			
+			message = usrMgr.findUserByNameOrNameAlias(message).getName();
+		} catch (NoSuchElementException ex) {
+			// Ignore silently
 		}
 		Assert.assertEquals("Ping message compare",
 				message + " " + action.trim(),
@@ -135,8 +135,8 @@ public class DialogPageSteps {
 	@Then("^I see (.*) added (.*) message on Dialog page$")
 	public void ISeeAddedMessageOnDialogPage(String user, String contact)
 			throws Throwable {
-		user = usrMgr.findUserByNameAlias(user).getName();
-		contact = usrMgr.findUserByNameAlias(contact).getName();
+		user = usrMgr.findUserByNameOrNameAlias(user).getName();
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		String chatMessage = user + " ADDED " + contact;
 		Assert.assertTrue(PagesCollection.dialogPage.isConnectMessageVisible());
 		Assert.assertTrue(PagesCollection.dialogPage
@@ -173,7 +173,7 @@ public class DialogPageSteps {
 		if (PagesCollection.dialogPage == null) {
 			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
 		}
-		contact = usrMgr.findUserByNameAlias(contact).getName();
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertEquals("connected to",
 				PagesCollection.dialogPage.getConnectRequestChatLabel());
 		Assert.assertEquals(contact.toLowerCase(),
@@ -209,7 +209,7 @@ public class DialogPageSteps {
 		List<String> participantNames = new ArrayList<String>();
 		for (String nameAlias : CommonSteps
 				.splitAliases(participantNameAliases)) {
-			participantNames.add(usrMgr.findUserByNameAlias(nameAlias)
+			participantNames.add(usrMgr.findUserByNameOrNameAlias(nameAlias)
 					.getName());
 		}
 		Assert.assertTrue(PagesCollection.dialogPage
@@ -225,7 +225,8 @@ public class DialogPageSteps {
 	@Then("^I see  message (.*) contact (.*) on group page$")
 	public void ThenISeeMessageContactOnGroupPage(String message, String contact)
 			throws Throwable {
-		contact = usrMgr.findUserByNameAlias(contact).getName().toUpperCase();
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName()
+				.toUpperCase();
 		Assert.assertTrue(PagesCollection.dialogPage.isMessageExists(message
 				+ " " + contact));
 	}

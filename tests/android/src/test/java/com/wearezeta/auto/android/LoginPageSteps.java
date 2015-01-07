@@ -8,7 +8,6 @@ import org.junit.Assert;
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.UserAliasType;
 
 import cucumber.api.java.en.*;
 
@@ -23,14 +22,12 @@ public class LoginPageSteps {
 	@Given("^I Sign in using login (.*) and password (.*)$")
 	public void GivenISignIn(String login, String password) throws Exception {
 		try {
-			login = usrMgr.findUserByAlias(login, UserAliasType.EMAIL)
-					.getEmail();
+			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
 		} catch (NoSuchElementException e) {
 			// Ignore silently
 		}
 		try {
-			password = usrMgr.findUserByAlias(password, UserAliasType.PASSWORD)
-					.getPassword();
+			password = usrMgr.findUserByPasswordAlias(password).getPassword();
 		} catch (NoSuchElementException e) {
 			// Ignore silently
 		}
@@ -58,15 +55,13 @@ public class LoginPageSteps {
 
 	@When("I press Join button")
 	public void WhenIPressJoinButton() throws Exception {
-
 		PagesCollection.registrationPage = PagesCollection.loginPage.join();
 	}
 
 	@When("I have entered login (.*)")
 	public void WhenIHaveEnteredLogin(String login) {
 		try {
-			login = usrMgr.findUserByAlias(login, UserAliasType.EMAIL)
-					.getEmail();
+			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
 		} catch (NoSuchElementException e) {
 			// Ignore silently
 		}
@@ -77,8 +72,7 @@ public class LoginPageSteps {
 	public void WhenIHaveEnteredPassword(String password)
 			throws InterruptedException {
 		try {
-			password = usrMgr.findUserByAlias(password, UserAliasType.PASSWORD)
-					.getPassword();
+			password = usrMgr.findUserByPasswordAlias(password).getPassword();
 		} catch (NoSuchElementException e) {
 			// Ignore silently
 		}

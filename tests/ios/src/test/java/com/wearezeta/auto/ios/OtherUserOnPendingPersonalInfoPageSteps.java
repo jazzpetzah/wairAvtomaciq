@@ -12,7 +12,7 @@ public class OtherUserOnPendingPersonalInfoPageSteps {
 	
 	@When("^I see (.*) user pending profile page$")
 	public void WhenISeeOtherUserProfilePage(String name){
-		name = usrMgr.findUserByNameAlias(name).getName();
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		Assert.assertTrue("Username is not displayed", PagesCollection.otherUserOnPendingProfilePage.isUserNameDisplayed(name));
 		Assert.assertTrue("Close button not displayed",PagesCollection.otherUserOnPendingProfilePage.isClosePageButtonVisible());
 		Assert.assertTrue("Pending label is not displayed",PagesCollection.otherUserOnPendingProfilePage.isPendingLabelVisible());

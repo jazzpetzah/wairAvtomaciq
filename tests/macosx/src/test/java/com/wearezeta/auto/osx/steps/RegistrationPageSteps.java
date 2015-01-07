@@ -16,7 +16,6 @@ import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.email.MBoxChangesListener;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.UserAliasType;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.RegistrationPage;
@@ -34,7 +33,7 @@ public class RegistrationPageSteps {
 	@When("I enter name (.*)")
 	public void IEnterName(String name) throws IOException {
 		try {
-			this.userToRegister = usrMgr.findUserByNameAlias(name);
+			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
 		} catch (NoSuchElementException e) {
 			this.userToRegister = new ClientUser();
 			this.userToRegister.setName(name);
@@ -48,8 +47,8 @@ public class RegistrationPageSteps {
 	@When("I enter email (.*)")
 	public void IEnterEmail(String email) throws IOException {
 		try {
-			String realEmail = usrMgr.findUserByAlias(email,
-					UserAliasType.EMAIL).getEmail();
+			String realEmail = usrMgr.findUserByEmailOrEmailAlias(email)
+					.getEmail();
 			this.userToRegister.setEmail(realEmail);
 		} catch (NoSuchElementException e) {
 			this.userToRegister.setEmail(email);
@@ -63,8 +62,8 @@ public class RegistrationPageSteps {
 	@When("I enter password (.*)")
 	public void IEnterPassword(String password) throws IOException {
 		try {
-			this.userToRegister.setPassword(usrMgr.findUserByAlias(password,
-					UserAliasType.PASSWORD).getPassword());
+			this.userToRegister.setPassword(usrMgr.findUserByPasswordAlias(
+					password).getPassword());
 		} catch (NoSuchElementException e) {
 			this.userToRegister.setPassword(password);
 			this.userToRegister.clearPasswordAliases();

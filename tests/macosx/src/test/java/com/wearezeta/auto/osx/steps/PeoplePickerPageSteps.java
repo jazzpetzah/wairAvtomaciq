@@ -14,13 +14,13 @@ public class PeoplePickerPageSteps {
 	
 	@When("I search for user (.*)")
 	public void WhenISearchForUser(String user) {
-		user = usrMgr.findUserByNameAlias(user).getName();
+		user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		CommonOSXSteps.senderPages.getPeoplePickerPage().searchForText(user);
 	}
 	
 	@When("I search by email for user (.*)")
 	public void ISearchByEmailForUser(String user) {
-		ClientUser dstUser = usrMgr.findUserByNameAlias(user);
+		ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(user);
 		user = dstUser.getName();
 		String email = dstUser.getEmail();
 		CommonOSXSteps.senderPages.getPeoplePickerPage().searchForText(email);
@@ -28,7 +28,7 @@ public class PeoplePickerPageSteps {
 	
 	@When("I see user (.*) in search results")
 	public void WhenISeeUserFromSearchResults(String user) {
-		user = usrMgr.findUserByNameAlias(user).getName();
+		user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		Assert.assertTrue(
 				"User " + user + " not found in results",
 				CommonOSXSteps.senderPages.getPeoplePickerPage().areSearchResultsContainUser(user));
@@ -37,13 +37,13 @@ public class PeoplePickerPageSteps {
 	
 	@When("I add user (.*) from search results")
 	public void WhenIAddUserFromSearchResults(String user) {
-		user = usrMgr.findUserByNameAlias(user).getName();
+		user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		CommonOSXSteps.senderPages.getPeoplePickerPage().chooseUserInSearchResults(user);
 	}
 	
 	 @Given("^I select user (.*) from search results")
 	 public void ISelectUserFromSearchResults(String user) {
-		 user = usrMgr.findUserByNameAlias(user).getName();
+		 user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		 PeoplePickerPage page = CommonOSXSteps.senderPages.getPeoplePickerPage();
 		 page.selectUserInSearchResults(user);
 		 

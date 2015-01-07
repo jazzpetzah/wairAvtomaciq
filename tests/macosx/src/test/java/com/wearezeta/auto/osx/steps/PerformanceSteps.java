@@ -31,7 +31,7 @@ public class PerformanceSteps {
 		long diffInMinutes = 0;
 
 		final String name = perfCommon.getUserManager()
-				.findUserByNameAlias(nameAlias).getName();
+				.findUserByNameOrNameAlias(nameAlias).getName();
 		CommonOSXSteps.senderPages
 				.setContactListPage(new ContactListPage(
 						CommonUtils
@@ -163,7 +163,8 @@ public class PerformanceSteps {
 	public void SetRandomSleepInterval() throws InterruptedException {
 		int sleepTimer = ((random
 				.nextInt(PerformanceCommon.MAX_WAIT_VALUE_IN_MIN) + PerformanceCommon.MIN_WAIT_VALUE_IN_MIN) * 60 * 1000);
-		perfCommon.getLogger().debug("Sleep time: " + sleepTimer / 1000 + " sec.");
+		perfCommon.getLogger().debug(
+				"Sleep time: " + sleepTimer / 1000 + " sec.");
 		Thread.sleep(sleepTimer);
 	}
 

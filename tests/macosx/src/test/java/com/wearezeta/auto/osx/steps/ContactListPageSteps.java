@@ -52,7 +52,7 @@ public class ContactListPageSteps {
 			name = CommonOSXSteps.senderPages.getConversationInfoPage()
 					.getCurrentConversationName();
 		} else {
-			name = usrMgr.findUserByNameAlias(name).getName();
+			name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		}
 		log.debug("Looking for contact with name " + name);
 		Assert.assertTrue(CommonOSXSteps.senderPages.getContactListPage()
@@ -62,14 +62,14 @@ public class ContactListPageSteps {
 	@Given("I do not see conversation {1}(.*) {1}in contact list")
 	public void IDoNotSeeConversationInContactList(String conversation)
 			throws IOException {
-		conversation = usrMgr.findUserByNameAlias(conversation).getName();
+		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
 		Assert.assertTrue(CommonOSXSteps.senderPages.getContactListPage()
 				.isContactWithNameDoesNotExist(conversation));
 	}
 
 	@Then("Contact list appears with my name (.*)")
 	public void ThenContactListAppears(String name) {
-		name = usrMgr.findUserByNameAlias(name).getName();
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		Assert.assertTrue("Login finished", CommonOSXSteps.senderPages
 				.getLoginPage().waitForLogin());
 		Assert.assertTrue(name + " were not found in contact list",
@@ -82,7 +82,7 @@ public class ContactListPageSteps {
 			contact = CommonOSXSteps.senderPages.getConversationInfoPage()
 					.getCurrentConversationName();
 		} else {
-			contact = usrMgr.findUserByNameAlias(contact).getName();
+			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		}
 
 		boolean isConversationExist = false;
@@ -139,7 +139,7 @@ public class ContactListPageSteps {
 
 	@When("I change mute state of conversation with (.*)")
 	public void IChangeConversationMuteState(String conversation) {
-		conversation = usrMgr.findUserByNameAlias(conversation).getName();
+		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
 		ContactListPage contactList = CommonOSXSteps.senderPages
 				.getContactListPage();
 		contactList.changeMuteStateForConversation(conversation);
@@ -147,7 +147,7 @@ public class ContactListPageSteps {
 
 	@Then("I see conversation (.*) is muted")
 	public void ISeeConversationIsMuted(String conversation) {
-		conversation = usrMgr.findUserByNameAlias(conversation).getName();
+		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
 		ContactListPage contactList = CommonOSXSteps.senderPages
 				.getContactListPage();
 		Assert.assertTrue("Conversation with name " + conversation
@@ -157,7 +157,7 @@ public class ContactListPageSteps {
 
 	@Then("I see conversation (.*) is unmuted")
 	public void ISeeConversationIsUnmuted(String conversation) {
-		conversation = usrMgr.findUserByNameAlias(conversation).getName();
+		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
 		ContactListPage contactList = CommonOSXSteps.senderPages
 				.getContactListPage();
 		Assert.assertTrue("Conversation with name " + conversation
@@ -179,7 +179,7 @@ public class ContactListPageSteps {
 
 	@When("I archive conversation with (.*)")
 	public void IArchiveConversation(String conversation) {
-		conversation = usrMgr.findUserByNameAlias(conversation).getName();
+		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
 		ContactListPage contactList = CommonOSXSteps.senderPages
 				.getContactListPage();
 		contactList.moveConversationToArchive(conversation);

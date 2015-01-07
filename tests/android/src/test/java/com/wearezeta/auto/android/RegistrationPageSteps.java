@@ -14,7 +14,6 @@ import com.wearezeta.auto.common.email.MBoxChangesListener;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.UserState;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.UserAliasType;
 
 import cucumber.api.java.en.*;
 
@@ -56,7 +55,7 @@ public class RegistrationPageSteps {
 	@When("^I enter name (.*)$")
 	public void IEnterName(String name) throws IOException {
 		try {
-			this.userToRegister = usrMgr.findUserByNameAlias(name);
+			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
 		} catch (NoSuchElementException e) {
 			this.userToRegister = new ClientUser();
 			this.userToRegister.setName(name);
@@ -68,8 +67,8 @@ public class RegistrationPageSteps {
 	@When("^I enter email (.*)$")
 	public void IEnterEmail(String email) {
 		try {
-			String realEmail = usrMgr.findUserByAlias(email,
-					UserAliasType.EMAIL).getEmail();
+			String realEmail = usrMgr.findUserByEmailOrEmailAlias(email)
+					.getEmail();
 			this.userToRegister.setEmail(realEmail);
 		} catch (NoSuchElementException e) {
 			this.userToRegister.setEmail(email);
@@ -83,8 +82,8 @@ public class RegistrationPageSteps {
 	@When("^I enter password (.*)$")
 	public void IEnterPassword(String password) {
 		try {
-			String realPassword = usrMgr.findUserByAlias(password,
-					UserAliasType.PASSWORD).getPassword();
+			String realPassword = usrMgr.findUserByPasswordAlias(password)
+					.getPassword();
 			this.userToRegister.setPassword(realPassword);
 		} catch (NoSuchElementException e) {
 			this.userToRegister.setPassword(password);

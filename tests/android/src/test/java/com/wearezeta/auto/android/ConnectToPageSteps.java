@@ -14,7 +14,7 @@ public class ConnectToPageSteps {
 
 	@When("^I see connect to (.*) dialog$")
 	public void WhenISeeConnectToUserDialog(String contact) throws Throwable {
-		contact = usrMgr.findUserByNameAlias(contact).getName();
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		PagesCollection.connectToPage = (ConnectToPage) PagesCollection.androidPage;
 		
 		Thread.sleep(2000);
