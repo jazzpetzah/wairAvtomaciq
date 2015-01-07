@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios;
 
 import java.io.IOException;
-import java.util.NoSuchElementException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;

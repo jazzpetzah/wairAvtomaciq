@@ -1,7 +1,10 @@
 package com.wearezeta.auto.common;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
@@ -156,4 +159,20 @@ public final class CommonSteps {
 	public void IRemoveContactsListUsersFromMacContact() throws Exception {
 		OSXAddressBookHelpers.removeUsersFromContacts(usrMgr.getCreatedUsers());
 	}
+
+	public void IChangeMyAvatarPicture(String picturePath) throws Exception {
+		if (new File(picturePath).exists()) {
+			BackendAPIWrappers.updateSelfPicture(
+					usrMgr.getSelfUserOrThrowError(), picturePath);
+		} else {
+			throw new NotImplementedException();
+			// TODO: extract picture from resources
+		}
+	}
+
+	public void IChangeMyName(String newName) throws Exception {
+		BackendAPIWrappers.updateSelfName(usrMgr.getSelfUserOrThrowError(),
+				newName);
+	}
+
 }

@@ -91,10 +91,6 @@ public class ClientUsersManager {
 		return instance;
 	}
 
-	private List<ClientUser> getAllUsers() {
-		return this.users;
-	}
-
 	public static enum UserAliasType {
 		NAME, PASSWORD, EMAIL;
 	}
@@ -104,7 +100,7 @@ public class ClientUsersManager {
 	}
 
 	public ClientUser findUserByAlias(String alias, UserAliasType aliasType) {
-		for (Object item : getAllUsers()) {
+		for (Object item : users) {
 			ClientUser user = (ClientUser) item;
 			Set<String> aliases = null;
 			if (aliasType == UserAliasType.NAME) {
@@ -130,27 +126,23 @@ public class ClientUsersManager {
 	public String replaceAliasesOccurences(String srcStr,
 			UserAliasType aliasType) {
 		String result = srcStr;
-		for (ClientUser dstUser : this.getAllUsers()) {
-			try {
-				Set<String> aliases = null;
-				String replacement = null;
-				if (aliasType == UserAliasType.NAME) {
-					aliases = dstUser.getNameAliases();
-					replacement = dstUser.getName();
-				} else if (aliasType == UserAliasType.EMAIL) {
-					aliases = dstUser.getEmailAliases();
-					replacement = dstUser.getEmail();
-				} else if (aliasType == UserAliasType.PASSWORD) {
-					aliases = dstUser.getPasswordAliases();
-					replacement = dstUser.getPassword();
-				} else {
-					assert (false);
-				}
-				for (String alias : aliases) {
-					result = result.replace(alias, replacement);
-				}
-			} catch (NoSuchElementException e) {
-				// Ignore silently
+		for (ClientUser dstUser : users) {
+			Set<String> aliases = null;
+			String replacement = null;
+			if (aliasType == UserAliasType.NAME) {
+				aliases = dstUser.getNameAliases();
+				replacement = dstUser.getName();
+			} else if (aliasType == UserAliasType.EMAIL) {
+				aliases = dstUser.getEmailAliases();
+				replacement = dstUser.getEmail();
+			} else if (aliasType == UserAliasType.PASSWORD) {
+				aliases = dstUser.getPasswordAliases();
+				replacement = dstUser.getPassword();
+			} else {
+				assert (false);
+			}
+			for (String alias : aliases) {
+				result = result.replace(alias, replacement);
 			}
 		}
 		return result;

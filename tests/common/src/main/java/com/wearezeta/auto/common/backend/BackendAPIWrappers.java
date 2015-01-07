@@ -1,12 +1,17 @@
 package com.wearezeta.auto.common.backend;
 
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -18,6 +23,10 @@ import com.wearezeta.auto.common.email.MBoxChangesListener;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.UserState;
+import com.wearezeta.auto.image_send.AssetData;
+import com.wearezeta.auto.image_send.ImageAssetData;
+import com.wearezeta.auto.image_send.ImageAssetProcessor;
+import com.wearezeta.auto.image_send.ImageAssetRequestBuilder;
 
 // Almost all methods of this class mutate ClientUser
 // argument by performing automatic login (set id and session token attributes)
@@ -108,23 +117,56 @@ public final class BackendAPIWrappers {
 	}
 
 	public static void sendPictureToSingleUserConversation(ClientUser userFrom,
-			ClientUser userTo, String imagePath) throws Throwable {
+			ClientUser userTo, String imagePath) throws Exception {
+		FileInputStream fis = new FileInputStream(imagePath);
+		try {
+			sendPictureToSingleUserConversation(userFrom, userTo, fis);
+		} finally {
+			fis.close();
+		}
+	}
+
+	public static void sendPictureToSingleUserConversation(ClientUser userFrom,
+			ClientUser userTo, InputStream image) throws Exception {
 		userFrom = tryLoginByUser(userFrom);
-		BackendREST.sendPicture(generateAuthToken(userFrom), imagePath,
-				getConversationWithSingleUser(userFrom, userTo), null);
+
+		byte[] srcImageAsByteArray = IOUtils.toByteArray(image);
+		BackendREST.sendPicture(generateAuthToken(userFrom),
+				getConversationWithSingleUser(userFrom, userTo),
+				srcImageAsByteArray, guessMimeType(image));
+	}
+
+	private static String guessMimeType(InputStream stream) throws IOException {
+		String imageMimeType = URLConnection.guessContentTypeFromStream(stream);
+		if (imageMimeType == null) {
+			// hardcode as there is no good way to check it when reading a
+			// resource from jar
+			imageMimeType = "image/jpeg";
+		}
+		return imageMimeType;
 	}
 
 	public static void sendPictureToChatByName(ClientUser userFrom,
-			String chatName, String imagePath, InputStream src)
-			throws Exception {
+			String chatName, String imagePath) throws Exception {
+		FileInputStream fis = new FileInputStream(imagePath);
+		try {
+			sendPictureToChatByName(userFrom, chatName, imagePath);
+		} finally {
+			fis.close();
+		}
+	}
+
+	public static void sendPictureToChatByName(ClientUser userFrom,
+			String chatName, InputStream src) throws Exception {
 		userFrom = tryLoginByUser(userFrom);
-		BackendREST.sendPicture(generateAuthToken(userFrom), imagePath,
-				getConversationByName(userFrom, chatName), src);
+		byte[] srcImageAsByteArray = IOUtils.toByteArray(src);
+		BackendREST.sendPicture(generateAuthToken(userFrom),
+				getConversationByName(userFrom, chatName), srcImageAsByteArray,
+				guessMimeType(src));
 	}
 
 	private static String getConversationByName(ClientUser user,
 			String conversationName) throws Exception {
-		tryLoginByUser(user);
 		String conversationId = null;
 		JSONArray jsonArray = getConversations(user);
 		for (int i = 0; i < jsonArray.length(); i++) {
@@ -235,7 +277,7 @@ public final class BackendAPIWrappers {
 		}
 	}
 
-	public static String getConversationWithSingleUser(ClientUser fromUser,
+	private static String getConversationWithSingleUser(ClientUser fromUser,
 			ClientUser toUser) throws Exception {
 		String conversationId = null;
 		JSONArray jsonArray = getConversations(fromUser);
@@ -254,7 +296,7 @@ public final class BackendAPIWrappers {
 		return conversationId;
 	}
 
-	public static ClientUser tryLoginByUser(ClientUser user) throws Exception {
+	private static ClientUser tryLoginByUser(ClientUser user) throws Exception {
 		if (user.getAccessToken() != null) {
 			try {
 				BackendREST.getUserInfo(generateAuthToken(user));
@@ -338,13 +380,6 @@ public final class BackendAPIWrappers {
 				conversationName);
 	}
 
-	public static void sendPicture(ClientUser userFrom, String imagePath,
-			String convId, InputStream src) throws Exception {
-		tryLoginByUser(userFrom);
-		BackendREST.sendPicture(generateAuthToken(userFrom), imagePath, convId,
-				src);
-	}
-
 	public static void sendConversationMessage(ClientUser userFrom,
 			String convId, String message) throws Exception {
 		tryLoginByUser(userFrom);
@@ -368,7 +403,6 @@ public final class BackendAPIWrappers {
 	}
 
 	private static JSONArray getConversations(ClientUser user) throws Exception {
-		tryLoginByUser(user);
 		JSONObject conversationsInfo = BackendREST
 				.getConversationsInfo(generateAuthToken(user));
 		return conversationsInfo.getJSONArray("conversations");
@@ -386,5 +420,47 @@ public final class BackendAPIWrappers {
 		tryLoginByUser(user);
 		return BackendREST.getAssetsDownload(generateAuthToken(user), convId,
 				assetId);
+	}
+
+	public static void updateSelfPicture(ClientUser selfUser,
+			InputStream picture) throws Exception {
+		tryLoginByUser(selfUser);
+		final String convId = selfUser.getId();
+		final byte[] srcImageAsByteArray = IOUtils.toByteArray(picture);
+
+		ImageAssetData srcImgData = new ImageAssetData(convId,
+				srcImageAsByteArray, guessMimeType(picture));
+		srcImgData.setIsPublic(true);
+		ImageAssetProcessor imgProcessor = new ImageAssetProcessor(srcImgData);
+		ImageAssetRequestBuilder reqBuilder = new ImageAssetRequestBuilder(
+				imgProcessor);
+		Map<JSONObject, AssetData> sentPictures = BackendREST.sendPicture(
+				generateAuthToken(selfUser), convId, reqBuilder);
+		Map<String, AssetData> processedAssets = new LinkedHashMap<String, AssetData>();
+		for (Map.Entry<JSONObject, AssetData> entry : sentPictures.entrySet()) {
+			final String postedImageId = entry.getKey().getJSONObject("data")
+					.getString("id");
+			processedAssets.put(postedImageId, entry.getValue());
+		}
+		BackendREST.updateSelfInfo(generateAuthToken(selfUser), null,
+				processedAssets, null);
+	}
+
+	public static void updateSelfPicture(ClientUser selfUser, String picturePath)
+			throws Exception {
+		final InputStream fis = new FileInputStream(picturePath);
+		try {
+			updateSelfPicture(selfUser, fis);
+		} finally {
+			fis.close();
+		}
+	}
+
+	public static void updateSelfName(ClientUser selfUser, String newName)
+			throws Exception {
+		tryLoginByUser(selfUser);
+		BackendREST.updateSelfInfo(generateAuthToken(selfUser), null, null,
+				newName);
+		selfUser.setName(newName);
 	}
 }

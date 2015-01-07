@@ -90,7 +90,7 @@ public final class PerformanceCommon {
 			for (int i = 0; i < imagesCount; i++) {
 				final String contact = getRandomContactName(selfUser);
 				BackendAPIWrappers.sendPictureToChatByName(selfUser, contact,
-						"default", configFileStream);
+						configFileStream);
 			}
 		} finally {
 			if (configFileStream != null) {

@@ -229,7 +229,7 @@ public class ImageAssetProcessor extends AssetProcessor {
 	}
 
 	@Override
-	protected List<AssetData> processAsset() throws IOException,
+	public List<AssetData> processAsset() throws IOException,
 			MimeTypeNotSupportedException {
 		List<AssetData> resultList = new ArrayList<AssetData>();
 

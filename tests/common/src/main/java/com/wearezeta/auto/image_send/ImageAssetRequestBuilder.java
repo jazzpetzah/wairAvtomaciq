@@ -116,8 +116,8 @@ public class ImageAssetRequestBuilder extends AssetRequestBuilder {
 
 		List<AssetData> processedImageAssets = getProcessedAssets();
 		for (AssetData processedImageAsset: processedImageAssets) {
-			AssetRequest req = new AssetRequest();
 			ImageAssetData curentAssetData = (ImageAssetData) processedImageAsset;
+			AssetRequest req = new AssetRequest(curentAssetData);
 			req.setContentDisposition(this.getContentDisposition(curentAssetData));
 			req.setContentLength(this.getContentLength(curentAssetData));
 			req.setContentType(this.getContentType(curentAssetData));

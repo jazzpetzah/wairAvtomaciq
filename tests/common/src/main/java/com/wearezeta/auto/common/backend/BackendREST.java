@@ -1,21 +1,17 @@
 package com.wearezeta.auto.common.backend;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
-import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriBuilderException;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -25,6 +21,7 @@ import org.json.JSONObject;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource.Builder;
+import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.AuthToken.AuthTokenIsNotSetException;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -287,44 +284,10 @@ final class BackendREST {
 		return new JSONObject(output);
 	}
 
-	public static List<JSONObject> sendPicture(AuthToken token,
-			String imagePath, String convId, InputStream src) throws Exception {
-		String imageMimeType = "";
-		if (null == src) {
-			InputStream is = new BufferedInputStream(new FileInputStream(
-					imagePath));
-			imageMimeType = URLConnection.guessContentTypeFromStream(is);
-			is.close();
-		} else {
-			imageMimeType = URLConnection.guessContentTypeFromStream(src);
-
-			if (imageMimeType == null) {
-				// hardcode as there is no good way to check it when reading a
-				// resource from jar
-				imageMimeType = "image/jpeg";
-			}
-		}
-		byte[] srcImageAsByteArray;
-
-		if (null == src) {
-			FileInputStream fis = new FileInputStream(imagePath);
-
-			try {
-				srcImageAsByteArray = IOUtils.toByteArray(fis);
-			} finally {
-				fis.close();
-			}
-		} else {
-			srcImageAsByteArray = IOUtils.toByteArray(src);
-		}
-
-		ImageAssetData srcImgData = new ImageAssetData(convId,
-				srcImageAsByteArray, imageMimeType);
-		srcImgData.setIsPublic(true);
-		ImageAssetProcessor imgProcessor = new ImageAssetProcessor(srcImgData);
-		ImageAssetRequestBuilder reqBuilder = new ImageAssetRequestBuilder(
-				imgProcessor);
-		List<JSONObject> result = new ArrayList<JSONObject>();
+	public static Map<JSONObject, AssetData> sendPicture(AuthToken token,
+			String convId, ImageAssetRequestBuilder reqBuilder)
+			throws Exception {
+		Map<JSONObject, AssetData> result = new LinkedHashMap<JSONObject, AssetData>();
 		for (AssetRequest request : reqBuilder.getRequests()) {
 			Builder webResource = buildDefaultRequestWithAuth(
 					request.getEndpoint(), MediaType.APPLICATION_JSON, token)
@@ -332,12 +295,25 @@ final class BackendREST {
 					.header("Content-Disposition",
 							request.getContentDisposition())
 					.header("Content-Length", request.getContentLength());
-			String output = httpPost(webResource, request.getPayload(),
+			final String output = httpPost(webResource, request.getPayload(),
 					new int[] { HttpStatus.SC_CREATED });
 			writeLog(new String[] { "Output from Server ....", output + "\n" });
-			result.add(new JSONObject(output));
+			final JSONObject jsonOutput = new JSONObject(output);
+			result.put(jsonOutput, request.getAssetDataObject());
 		}
 		return result;
+	}
+
+	public static Map<JSONObject, AssetData> sendPicture(AuthToken token,
+			String convId, byte[] srcImageAsByteArray, String imageMimeType)
+			throws Exception {
+		ImageAssetData srcImgData = new ImageAssetData(convId,
+				srcImageAsByteArray, imageMimeType);
+		srcImgData.setIsPublic(true);
+		ImageAssetProcessor imgProcessor = new ImageAssetProcessor(srcImgData);
+		ImageAssetRequestBuilder reqBuilder = new ImageAssetRequestBuilder(
+				imgProcessor);
+		return sendPicture(token, convId, reqBuilder);
 	}
 
 	public static void sendConversationMessage(AuthToken userFromToken,
@@ -419,6 +395,68 @@ final class BackendREST {
 				"Output from Server .... get Asset Download URL ",
 				"ASSET PIC: " + assetDownload + "\n" });
 		return assetDownload;
+	}
+
+	private static JSONArray generatePicturesArray(
+			Map<String, AssetData> publishedPictureAssets)
+			throws Base64DecodingException {
+		JSONArray result = new JSONArray();
+		JSONObject pictureItem = new JSONObject();
+		for (Map.Entry<String, AssetData> entry : publishedPictureAssets
+				.entrySet()) {
+			final String publishedPictureId = entry.getKey();
+			final ImageAssetData pictureAssetData = (ImageAssetData) entry
+					.getValue();
+			pictureItem.put("content_type", pictureAssetData.getMimeType());
+			final byte[] internalImageData = pictureAssetData.getImageData();
+			pictureItem.put("content_length", internalImageData.length);
+			pictureItem.put("id", publishedPictureId);
+
+			JSONObject additionalInfo = new JSONObject();
+			additionalInfo.put("correlation_id",
+					pictureAssetData.getCorrelationId());
+			additionalInfo.put("height", pictureAssetData.getHeight());
+			additionalInfo.put("nonce", pictureAssetData.getNonce());
+			additionalInfo.put("original_height",
+					pictureAssetData.getOriginalHeight());
+			additionalInfo.put("original_width",
+					pictureAssetData.getOriginalWidth());
+			additionalInfo.put("public", pictureAssetData.getIsPublic());
+			if (pictureAssetData.getIsInline()) {
+				additionalInfo.put("tag", "smallProfile");
+			} else {
+				additionalInfo.put("tag", pictureAssetData.getTag());
+			}
+			additionalInfo.put("width", pictureAssetData.getWidth());
+			additionalInfo.put("public", pictureAssetData.getIsPublic());
+			pictureItem.put("info", additionalInfo);
+
+			result.put(pictureItem);
+		}
+		return result;
+	}
+
+	public static void updateSelfInfo(AuthToken token, Integer accentId,
+			Map<String, AssetData> publishedPictureAssets, String name)
+			throws Exception {
+		Builder webResource = buildDefaultRequestWithAuth(
+				String.format("self"), MediaType.APPLICATION_JSON, token).type(
+				MediaType.APPLICATION_JSON);
+		JSONObject requestBody = new JSONObject();
+		if (accentId != null) {
+			requestBody.put("accent_id", accentId.intValue());
+		}
+		if (publishedPictureAssets != null) {
+			requestBody.put("picture",
+					generatePicturesArray(publishedPictureAssets));
+		}
+		if (name != null) {
+			requestBody.put("name", name);
+		}
+		final String output = httpPut(webResource, requestBody.toString(),
+				new int[] { HttpStatus.SC_OK });
+		writeLog(new String[] { "Output from Server .... Update Self Info ",
+				output });
 	}
 
 	public static void setDefaultBackendURL(String url) {
