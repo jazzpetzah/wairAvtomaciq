@@ -104,16 +104,7 @@ public class ContactListPageSteps {
 	@When("^I create group chat with (.*) and (.*)$")
 	public void ICreateGroupChat(String contact1, String contact2)
 			throws Throwable {
-		try {
-			contact1 = usrMgr.findUserByNameAlias(contact1).getName();
-		} catch (NoSuchElementException e) {
-			// Ignore silently
-		}
-		try {
-			contact2 = usrMgr.findUserByNameAlias(contact2).getName();
-		} catch (NoSuchElementException e) {
-			// Ignore silently
-		}
+
 		WhenITapOnContactName(contact1);
 		DialogPageSteps dialogSteps = new DialogPageSteps();
 		dialogSteps.WhenISeeDialogPage();
@@ -131,6 +122,7 @@ public class ContactListPageSteps {
 		pickerSteps.WhenITapOnUserNameFoundOnPeoplePickerPage(contact2);
 		pickerSteps.WhenIClickOnAddToConversationButton();
 
+		Thread.sleep(2000); // wait for group chat to appear
 		GroupChatPageSteps groupChatSteps = new GroupChatPageSteps();
 		final String[] names = new String[] {contact1, contact2};
 		groupChatSteps.ThenISeeGroupChatPage(StringUtils.join(names,
