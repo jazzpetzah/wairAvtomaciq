@@ -233,7 +233,7 @@ final class BackendREST {
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("status", newStatus.toString());
 		final String output = httpPut(webResource, requestBody.toString(),
-				new int[] { HttpStatus.SC_OK });
+				new int[] { HttpStatus.SC_OK, HttpStatus.SC_NO_CONTENT });
 		writeLog(new String[] {
 				"Output from Server ....  change Connect Request Status ",
 				output + "\n" });
