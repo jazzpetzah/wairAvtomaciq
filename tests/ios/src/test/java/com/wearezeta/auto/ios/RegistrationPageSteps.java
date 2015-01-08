@@ -213,7 +213,6 @@ public class RegistrationPageSteps {
 	@When("^I input email (.*) and hit Enter$")
 	public void IInputEmailAndHitEnter(String email) throws IOException {
 		IEnterEmail(email);
-		PagesCollection.registrationPage.inputEmail();
 	}
 
 	@When("^I attempt to enter an email with spaces (.*)$")

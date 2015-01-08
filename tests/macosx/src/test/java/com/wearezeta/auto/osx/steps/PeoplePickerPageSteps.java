@@ -1,5 +1,7 @@
 package com.wearezeta.auto.osx.steps;
 
+import java.util.NoSuchElementException;
+
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -14,7 +16,11 @@ public class PeoplePickerPageSteps {
 	
 	@When("I search for user (.*)")
 	public void WhenISearchForUser(String user) {
-		user = usrMgr.findUserByNameOrNameAlias(user).getName();
+		try {
+			user = usrMgr.findUserByNameOrNameAlias(user).getName();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
 		CommonOSXSteps.senderPages.getPeoplePickerPage().searchForText(user);
 	}
 	
@@ -28,7 +34,11 @@ public class PeoplePickerPageSteps {
 	
 	@When("I see user (.*) in search results")
 	public void WhenISeeUserFromSearchResults(String user) {
-		user = usrMgr.findUserByNameOrNameAlias(user).getName();
+		try {
+			user = usrMgr.findUserByNameOrNameAlias(user).getName();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
 		Assert.assertTrue(
 				"User " + user + " not found in results",
 				CommonOSXSteps.senderPages.getPeoplePickerPage().areSearchResultsContainUser(user));
@@ -37,7 +47,11 @@ public class PeoplePickerPageSteps {
 	
 	@When("I add user (.*) from search results")
 	public void WhenIAddUserFromSearchResults(String user) {
-		user = usrMgr.findUserByNameOrNameAlias(user).getName();
+		try {
+			user = usrMgr.findUserByNameOrNameAlias(user).getName();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
 		CommonOSXSteps.senderPages.getPeoplePickerPage().chooseUserInSearchResults(user);
 	}
 	

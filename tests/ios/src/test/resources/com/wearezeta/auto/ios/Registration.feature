@@ -33,8 +33,8 @@ Feature: Registration
     Then I verify no spaces are present in email
 
     Examples: 
-      | Email   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
 
   @regression @id304
   Scenario Outline: Attempt to register an email with incorrect format
@@ -49,8 +49,8 @@ Feature: Registration
     Then I verify that the app does not let me continue
 
     Examples: 
-      | Name    |
-      | aqaUser |
+      | Name      |
+      | user1Name |
 
   @regression @id284
   Scenario Outline: Conserve user input throughout registration
@@ -67,8 +67,8 @@ Feature: Registration
     Then I navigate throughout the registration pages and see my input
 
     Examples: 
-      | Email   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
 
   @regression @id282
   Scenario Outline: Can return to email page to change email if input incorrectly
@@ -89,8 +89,8 @@ Feature: Registration
     And I see confirmation page
 
     Examples: 
-      | Correct | Password    | Name    | Incorrect           |
-      | aqaUser | aqaPassword | aqaUser | error@wearezeta.com |
+      | Correct    | Password      | Name      | Incorrect           |
+      | user1Email | user1Password | user1Name | error@wearezeta.com |
 
   @regression @id528 @id529 @id530
   Scenario Outline: Register new user using username with maximum characters allowed, Deutch, Double-byte (Chinese), and emoji Characters
@@ -104,10 +104,10 @@ Feature: Registration
     Then I verify that my username is at most <MaxChars> characters long
 
     Examples: 
-      | Email   | Password    | MaxChars | Language |
-      | aqaUser | aqaPassword | 72       | English  |
+      | Email      | Password      | MaxChars | Language |
+      | user1Email | user1Password | 72       | English  |
 
-  @regression @id589 
+  @regression @id589 @torun
   Scenario Outline: Register new user using photo album
     Given I see sign in screen
     When I press Join button
@@ -123,8 +123,8 @@ Feature: Registration
     And I see Upload contacts dialog
 
     Examples: 
-      | Email   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
 
   #@staging @id288
   #Scenario Outline: Switch between vignette overlay and full color (Real Device)
@@ -152,8 +152,8 @@ Feature: Registration
     Then I see Take or select photo label and smile
 
     Examples: 
-      | Email   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
 
   @regression @id285
   Scenario Outline: Take or select a photo label not visible when picture is selected
@@ -166,8 +166,8 @@ Feature: Registration
     Then I don't see Take or select photo label and smile
 
     Examples: 
-      | Email   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
 
   #@staging @id285
   #Scenario Outline: Take or select a photo label not visible when picture is selected (Real Device)
@@ -203,8 +203,8 @@ Feature: Registration
     And I don't see Next button
 
     Examples: 
-      | Email   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
 
   @regression @id1392
   Scenario Outline: Automatic email verification
@@ -222,8 +222,8 @@ Feature: Registration
     Then I see Upload contacts dialog
 
     Examples: 
-      | Email   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
 
   #@staging @id275
   #Scenario Outline: Register new user using rear camera (Real Device)
@@ -257,8 +257,8 @@ Feature: Registration
     Then I see Create Account button disabled
 
     Examples: 
-      | Email   | Password | Name    |
-      | aqaUser | 1234567  | aqaUser |
+      | Email      | Password | Name      |
+      | user1Email | 1234567  | user1Name |
 
   #@staging @id281
   #Scenario Outline: Change selected image during registratrion (Real Device)
@@ -325,8 +325,8 @@ Feature: Registration
     Then I confirm that <EmailCount> recent emails in inbox contain 2 for current recipient
 
     Examples: 
-      | Email   | Password    | Name    | EmailCount |
-      | aqaUser | aqaPassword | aqaUser | 20         |
+      | Email      | Password      | Name      | EmailCount |
+      | user1Email | user1Password | user1Name | 20         |
 
   @regression @id302
   Scenario Outline: Verify back button during registration process
@@ -347,5 +347,5 @@ Feature: Registration
     And I verify back button
 
     Examples: 
-      | Email   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |

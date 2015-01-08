@@ -19,7 +19,7 @@ public class PeoplePickerPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	@When("^I see People picker page$")
-	public void WhenISeePeoplePickerPage() throws Throwable {
+	public void WhenISeePeoplePickerPage() throws Exception {
 		Assert.assertTrue(PagesCollection.peoplePickerPage
 				.isPeoplePickerPageVisible());
 	}
@@ -81,7 +81,7 @@ public class PeoplePickerPageSteps {
 	}
 
 	@When("^I tap on Search input on People picker page$")
-	public void WhenITapOnSearchInputOnPeoplePickerPage() throws Throwable {
+	public void WhenITapOnSearchInputOnPeoplePickerPage() throws Exception {
 		PagesCollection.peoplePickerPage.tapOnPeoplePickerSearch();
 	}
 
@@ -114,8 +114,12 @@ public class PeoplePickerPageSteps {
 
 	@When("^I see user (.*) found on People picker page$")
 	public void WhenISeeUserFoundOnPeoplePickerPage(String contact)
-			throws Throwable {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+			throws Exception {
+		try {
+			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
 		Assert.assertTrue("User :" + contact
 				+ " is not presented on Pepople picker page",
 				PagesCollection.peoplePickerPage
@@ -124,8 +128,12 @@ public class PeoplePickerPageSteps {
 
 	@When("^I tap on NOT connected user name on People picker page (.*)$")
 	public void WhenITapOnUserNameFoundOnPeoplePickerPage(String contact)
-			throws Throwable {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+			throws Exception {
+		try {
+			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
 		PagesCollection.connectToPage = PagesCollection.peoplePickerPage
 				.clickOnNotConnectedUser(contact);
 	}
@@ -245,7 +253,7 @@ public class PeoplePickerPageSteps {
 	}
 
 	@When("^I click on Add to conversation button$")
-	public void WhenIClickOnAddToConversationButton() throws Throwable {
+	public void WhenIClickOnAddToConversationButton() throws Exception {
 		if (PagesCollection.peoplePickerPage.isKeyboardVisible()) {
 			PagesCollection.groupChatPage = PagesCollection.peoplePickerPage
 					.clickOnGoButton();

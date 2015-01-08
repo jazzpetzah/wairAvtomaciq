@@ -15,7 +15,7 @@ Feature: Ping
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName      |
-      | user1Email | user1Password | user1Name | user1Name | user2Name | PingGroupChat |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | PingGroupChat |
   
   @regression @id1291
   Scenario Outline: Verify you can see Ping on the other side (group conversation)
@@ -32,4 +32,4 @@ Feature: Ping
   		
   	Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName      |
-      | user1Email | user1Password | user1Name | user1Name | user2Name | PingGroupChat |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | PingGroupChat |

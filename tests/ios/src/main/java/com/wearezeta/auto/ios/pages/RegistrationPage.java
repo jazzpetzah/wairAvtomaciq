@@ -412,6 +412,7 @@ public class RegistrationPage extends IOSPage {
 	public void setEmail(String email) {
 		this.email = email;
 		typeEmail();
+		this.email = email.replace('\n', ' ').trim();
 	}
 
 	public String getPassword() {
