@@ -26,7 +26,7 @@ Feature: Ping
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     And I Sign in using login <Login> and password <Password>
-    When I see Contact list with my name <Login>
+    When I see Contact list with my name <Name>
     And I tap on group chat with name <GroupChatName>
     And User <Contact1> Ping in chat <GroupChatName> by BackEnd
     Then I see User <Contact1> Pinged message in the conversation

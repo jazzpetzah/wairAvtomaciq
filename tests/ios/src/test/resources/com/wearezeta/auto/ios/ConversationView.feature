@@ -133,7 +133,7 @@ Feature: Conversation View
   @regression @id386
   Scenario Outline: Verify the Media Bar disappears when playing media is back in view - SoundCloud
     Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given Myself is connected to <Contact1>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
@@ -146,7 +146,7 @@ Feature: Conversation View
     Then I dont see media bar on dialog page
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | SoundCloudLink                                                                       |
+      | Login      | Password      | Name      | Contact1   | SoundCloudLink                                                                       |
       | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
   @regression @id394

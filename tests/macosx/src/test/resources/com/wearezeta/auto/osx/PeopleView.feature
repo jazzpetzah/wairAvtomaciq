@@ -175,7 +175,7 @@ Feature: People View
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName               | NewName |
-      | user1Email | user1Password | user1Name | user1Name | user2Name | CheckDisplayedNameChat | RANDOM  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | CheckDisplayedNameChat | RANDOM  |
 
   @smoke @id471
   Scenario Outline: Leave group conversation
@@ -193,7 +193,7 @@ Feature: People View
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       |
-      | user1Email | user1Password | user1Name | user1Name | user2Name | LeaveGroupChat |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat |
 
   @smoke @id492
   Scenario Outline: Remove user from group chat
@@ -210,7 +210,7 @@ Feature: People View
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       |
-      | user1Email | user1Password | user1Name | user1Name | user2Name | RemoveUserChat |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | RemoveUserChat |
 
   @regression @id535
   Scenario Outline: Remove then add the same participant in group chat
@@ -237,7 +237,7 @@ Feature: People View
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName          |
-      | user1Email | user1Password | user1Name | user1Name | user2Name | RemoveAddSameChat |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | RemoveAddSameChat |
 
   @regression @id618
   Scenario Outline: Verify the new conversation is created on the other end
@@ -263,7 +263,7 @@ Feature: People View
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  |
-      | user1Email | user1Password | user1Name | user1Name | user2Name |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |
 
   @regression @id621
   Scenario Outline: Leave group chat - second end verification
