@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 import org.junit.Assert;
 
@@ -20,7 +21,11 @@ public class OtherUserPersonalInfoPageSteps {
 		if (PagesCollection.otherUserPersonalInfoPage == null) {
 			PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.androidPage;
 		}
-		name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		try {
+			name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
 		PagesCollection.otherUserPersonalInfoPage.isOtherUserNameVisible(name);
 	}
 

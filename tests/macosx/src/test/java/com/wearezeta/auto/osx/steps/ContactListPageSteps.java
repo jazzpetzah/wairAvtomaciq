@@ -2,6 +2,7 @@ package com.wearezeta.auto.osx.steps;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -82,7 +83,11 @@ public class ContactListPageSteps {
 			contact = CommonOSXSteps.senderPages.getConversationInfoPage()
 					.getCurrentConversationName();
 		} else {
-			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+			try {
+				contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+			} catch (NoSuchElementException e) {
+				// Silently ignore
+			}
 		}
 
 		boolean isConversationExist = false;

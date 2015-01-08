@@ -1,5 +1,7 @@
 package com.wearezeta.auto.android;
 
+import java.util.NoSuchElementException;
+
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
@@ -39,14 +41,22 @@ public class PeoplePickerPageSteps {
 	@When("^I input in People picker search field user name (.*)$")
 	public void WhenIInputInPeoplePickerSearchFieldUserName(String contact)
 			throws Exception {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		try {
+			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
 		PagesCollection.peoplePickerPage.typeTextInPeopleSearch(contact);
 	}
 
 	@When("^I input in People picker search field user email (.*)$")
 	public void WhenIInputInPeoplePickerSearchFieldUserEmail(String email)
 			throws Exception {
-		email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
+		try {
+			email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
 		PagesCollection.peoplePickerPage.typeTextInPeopleSearch(email);
 	}
 
@@ -94,7 +104,11 @@ public class PeoplePickerPageSteps {
 	@When("^I tap on user name found on People picker page (.*)$")
 	public void WhenITapOnUserNameFoundOnPeoplePickerPage(String contact)
 			throws Exception {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		try {
+			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
 		PagesCollection.peoplePickerPage.waitUserPickerFindUser(contact);
 		PagesCollection.androidPage = PagesCollection.peoplePickerPage
 				.selectContact(contact);

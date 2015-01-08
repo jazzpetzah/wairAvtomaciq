@@ -231,7 +231,7 @@ public class PeoplePickerPage extends IOSPage{
 		peoplePickerSearch.sendKeys("\n");
 	}
 	
-	public GroupChatPage clickAddToCoversationButton() throws Throwable{
+	public GroupChatPage clickAddToCoversationButton() throws Exception{
 		addToConversationBtn.click();
 		return new GroupChatPage(url, path);
 	}
