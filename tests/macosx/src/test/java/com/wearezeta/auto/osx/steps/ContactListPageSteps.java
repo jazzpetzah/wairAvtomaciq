@@ -53,7 +53,11 @@ public class ContactListPageSteps {
 			name = CommonOSXSteps.senderPages.getConversationInfoPage()
 					.getCurrentConversationName();
 		} else {
-			name = usrMgr.findUserByNameOrNameAlias(name).getName();
+			try {
+				name = usrMgr.findUserByNameOrNameAlias(name).getName();
+			} catch (NoSuchElementException e) {
+				// Silently ignore
+			}
 		}
 		log.debug("Looking for contact with name " + name);
 		Assert.assertTrue(CommonOSXSteps.senderPages.getContactListPage()
