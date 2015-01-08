@@ -5,7 +5,7 @@ import java.net.MalformedURLException;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
-import org.openqa.selenium.NoSuchElementException;
+import java.util.NoSuchElementException;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -29,12 +29,12 @@ public class LoginPageSteps {
 			throws IOException {
 		try {
 			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
-		} catch (java.util.NoSuchElementException e) {
+		} catch (NoSuchElementException e) {
 			// Ignore silently
 		}
 		try {
 			password = usrMgr.findUserByPasswordAlias(password).getPassword();
-		} catch (java.util.NoSuchElementException e) {
+		} catch (NoSuchElementException e) {
 			// Ignore silently
 		}
 		log.debug("Starting to Sign in using login " + login + " and password "

@@ -164,7 +164,9 @@ public class RegistrationPageSteps {
 		try {
 			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
 		} catch (NoSuchElementException e) {
-			this.userToRegister = new ClientUser();
+			if (this.userToRegister == null) {
+				this.userToRegister = new ClientUser();
+			}
 			this.userToRegister.setName(name);
 			this.userToRegister.clearNameAliases();
 			this.userToRegister.addNameAlias(name);
@@ -202,6 +204,9 @@ public class RegistrationPageSteps {
 					.getEmail();
 			this.userToRegister.setEmail(realEmail);
 		} catch (NoSuchElementException e) {
+			if (this.userToRegister == null) {
+				this.userToRegister = new ClientUser();
+			}
 			this.userToRegister.setEmail(email);
 		}
 		this.userToRegister.clearEmailAliases();
@@ -222,6 +227,9 @@ public class RegistrationPageSteps {
 					.getEmail();
 			this.userToRegister.setEmail(realEmail);
 		} catch (NoSuchElementException e) {
+			if (this.userToRegister == null) {
+				this.userToRegister = new ClientUser();
+			}
 			this.userToRegister.setEmail(email);
 		}
 		this.userToRegister.clearEmailAliases();
