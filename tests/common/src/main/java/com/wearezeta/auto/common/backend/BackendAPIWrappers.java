@@ -463,4 +463,12 @@ public final class BackendAPIWrappers {
 				.updateSelfInfo(generateAuthToken(user), null, null, newName);
 		user.setName(newName);
 	}
+
+	public static void updateUserAccentColor(ClientUser user, AccentColor color)
+			throws Exception {
+		tryLoginByUser(user);
+		BackendREST.updateSelfInfo(generateAuthToken(user), color.getId(),
+				null, null);
+		user.setAccentColor(color);
+	}
 }
