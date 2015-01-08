@@ -319,7 +319,7 @@ public class ConversationPageSteps {
 
 	private void verifyMsgExistsInConversationView(String msg)
 			throws InterruptedException {
-		msg = usrMgr.replaceAliasesOccurences(msg, FindBy.NAME);
+		msg = usrMgr.replaceAliasesOccurences(msg, FindBy.NAME_ALIAS);
 		msg = msg.toUpperCase();
 		Assert.assertTrue(String.format("Message '%s' not found.", msg),
 				CommonOSXSteps.senderPages.getConversationPage()
