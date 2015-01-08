@@ -72,7 +72,7 @@ Feature: Conversation
     Then I see random message in conversation
 
     Examples:
-      | Login      | Password      | Name      | Contact1   | Contact2  |C hatName             |
+      | Login      | Password      | Name      | Contact1   | Contact2  | ChatName             |
       | user1Email | user1Password | user1Name | user2Name  | user3Name | SendMessageGroupChat |
 
   @regression @1408

@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -94,21 +95,21 @@ public final class BackendAPIWrappers {
 	public static void sendDialogMessageByChatName(ClientUser fromUser,
 			String toChat, String message) throws Exception {
 		fromUser = tryLoginByUser(fromUser);
-		String id = getConversationByName(fromUser, toChat);
+		String id = getConversationIdByName(fromUser, toChat);
 		sendConversationMessage(fromUser, id, message);
 	}
 
 	public static String sendPingToConversation(ClientUser fromUser,
 			String toChat) throws Exception {
 		fromUser = tryLoginByUser(fromUser);
-		String id = getConversationByName(fromUser, toChat);
+		String id = getConversationIdByName(fromUser, toChat);
 		return sendConversationPing(fromUser, id);
 	}
 
 	public static void sendHotPingToConversation(ClientUser fromUser,
 			String toChat, String id) throws Exception {
 		fromUser = tryLoginByUser(fromUser);
-		String conv_id = getConversationByName(fromUser, toChat);
+		String conv_id = getConversationIdByName(fromUser, toChat);
 		sendConvertsationHotPing(fromUser, conv_id, id);
 	}
 
@@ -161,40 +162,40 @@ public final class BackendAPIWrappers {
 		userFrom = tryLoginByUser(userFrom);
 		byte[] srcImageAsByteArray = IOUtils.toByteArray(src);
 		BackendREST.sendPicture(generateAuthToken(userFrom),
-				getConversationByName(userFrom, chatName), srcImageAsByteArray,
-				guessMimeType(src));
+				getConversationIdByName(userFrom, chatName),
+				srcImageAsByteArray, guessMimeType(src));
 	}
 
-	private static String getConversationByName(ClientUser user,
+	private static String getConversationIdByName(ClientUser ownerUser,
 			String conversationName) throws Exception {
-		String conversationId = null;
-		JSONArray jsonArray = getConversations(user);
+		JSONArray jsonArray = getConversations(ownerUser);
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject conversation = (JSONObject) jsonArray.get(i);
-			conversationId = conversation.getString("id");
-			String name = conversation.getString("name");
+			final String conversationId = conversation.getString("id");
+			String name = "null";
+			if (conversation.get("name") instanceof String) {
+				name = conversation.getString("name");
+			}
 			name = name.replaceAll("\uFFFC", "").trim();
-
-			if (name.equals("null") || name.equals(user.getName())) {
+			if (name.equals("null") || name.equals(ownerUser.getName())) {
 				conversation = (JSONObject) conversation.get("members");
 				JSONArray otherArray = (JSONArray) conversation.get("others");
 				if (otherArray.length() == 1) {
 					String id = ((JSONObject) otherArray.get(0))
 							.getString("id");
-					String contactName = getUserNameByID(id, user);
+					String contactName = getUserNameByID(id, ownerUser);
 					if (contactName.equals(conversationName)) {
 						return conversationId;
 					}
 				}
-
 			}
 			if (name.equals(conversationName)) {
 				return conversationId;
-			} else {
-				conversationId = "";
 			}
 		}
-		return conversationId;
+		throw new NoSuchElementException(String.format(
+				"Conversation '%s' does not exist for user '%s'",
+				conversationName, ownerUser.getName()));
 	}
 
 	public static String[] getConversationsAsStringArray(ClientUser user)
@@ -204,7 +205,10 @@ public final class BackendAPIWrappers {
 		ArrayList<String> result = new ArrayList<String>();
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject conversation = (JSONObject) jsonArray.get(i);
-			String name = conversation.getString("name");
+			String name = "null";
+			if (conversation.get("name") instanceof String) {
+				name = conversation.getString("name");
+			}
 			if (name.equals("null") || name.equals(user.getName())) {
 				conversation = (JSONObject) conversation.get("members");
 				JSONArray otherArray = (JSONArray) conversation.get("others");
@@ -228,7 +232,6 @@ public final class BackendAPIWrappers {
 			} else {
 				result.add(name);
 			}
-
 		}
 		return (String[]) result.toArray(new String[0]);
 	}

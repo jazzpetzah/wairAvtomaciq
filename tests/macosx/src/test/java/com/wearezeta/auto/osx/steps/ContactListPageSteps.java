@@ -53,7 +53,11 @@ public class ContactListPageSteps {
 			name = CommonOSXSteps.senderPages.getConversationInfoPage()
 					.getCurrentConversationName();
 		} else {
-			name = usrMgr.findUserByNameOrNameAlias(name).getName();
+			try {
+				name = usrMgr.findUserByNameOrNameAlias(name).getName();
+			} catch (NoSuchElementException e) {
+				// Silently ignore
+			}
 		}
 		log.debug("Looking for contact with name " + name);
 		Assert.assertTrue(CommonOSXSteps.senderPages.getContactListPage()
@@ -77,16 +81,32 @@ public class ContactListPageSteps {
 				CommonOSXSteps.senderPages.getLoginPage().isLoginFinished(name));
 	}
 
+	private String findNoNameGroupChatContacts(String groupChat) {
+		String result = "";
+		String contacts[] = groupChat.split(",");
+		for (int i = 0; i < contacts.length; i++) {
+			result += usrMgr.findUserByNameOrNameAlias(contacts[i].trim()).getName();
+			if (i < contacts.length-1) {
+				result += ",";
+			}
+		}
+		return result;
+	}
+	
 	private void clickOnContactListEntry(String contact, boolean isUserProfile)
 			throws MalformedURLException, IOException {
 		if (contact.equals(OSXLocators.RANDOM_KEYWORD)) {
 			contact = CommonOSXSteps.senderPages.getConversationInfoPage()
 					.getCurrentConversationName();
 		} else {
-			try {
-				contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-			} catch (NoSuchElementException e) {
-				// Silently ignore
+			if (!contact.contains(",")) {
+				try {
+					contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+				} catch (NoSuchElementException e) {
+					//do nothing
+				}
+			} else {
+				contact = findNoNameGroupChatContacts(contact);
 			}
 		}
 
