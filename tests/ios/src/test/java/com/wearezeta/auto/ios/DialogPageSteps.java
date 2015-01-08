@@ -42,7 +42,7 @@ public class DialogPageSteps {
 	public String pingId;
 
 	@When("^I see dialog page$")
-	public void WhenISeeDialogPage() throws Throwable {
+	public void WhenISeeDialogPage() throws Exception {
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.iOSPage;
 		PagesCollection.dialogPage.waitForCursorInputVisible();
 		// PagesCollection.dialogPage.waitForYouAddedCellVisible();
@@ -54,7 +54,7 @@ public class DialogPageSteps {
 	}
 
 	@When("^I tap on text input$")
-	public void WhenITapOnTextInput() throws Throwable {
+	public void WhenITapOnTextInput() throws Exception {
 		PagesCollection.dialogPage.tapOnCursorInput();
 	}
 

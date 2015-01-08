@@ -23,7 +23,7 @@ public class GroupChatPageSteps {
 
 	@Then("^I see group chat page with users (.*)$")
 	public void ThenISeeGroupChatPage(String participantNameAliases)
-			throws Throwable {
+			throws Exception {
 		List<String> participantNames = new ArrayList<String>();
 		for (String nameAlias : CommonSteps
 				.splitAliases(participantNameAliases)) {
