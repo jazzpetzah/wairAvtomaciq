@@ -171,6 +171,8 @@ public class CommonOSXSteps {
 	public void tearDown() throws Exception {
 		senderPages.closeAllPages();
 
+		commonSteps.getUserManager().resetUsers();
+
 		// workaround for stuck on Send picture test
 		OSXCommonUtils.killWireIfStuck();
 	}

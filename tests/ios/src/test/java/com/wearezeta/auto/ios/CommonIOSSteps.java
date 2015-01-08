@@ -94,6 +94,8 @@ public class CommonIOSSteps {
 		PagesCollection.loginPage.Close();
 		IOSPage.clearPagesCollection();
 		IOSKeyboard.dispose();
+		
+		commonSteps.getUserManager().resetUsers();
 	}
 
 	@When("^I see keyboard$")

@@ -81,6 +81,8 @@ public class CommonAndroidSteps {
 	public void tearDown() throws Exception {
 		PagesCollection.loginPage.Close();
 		AndroidPage.clearPagesCollection();
+		
+		commonSteps.getUserManager().resetUsers();
 	}
 
 	@When("^I press back button$")
