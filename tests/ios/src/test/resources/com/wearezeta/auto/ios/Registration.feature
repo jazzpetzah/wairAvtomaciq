@@ -107,7 +107,7 @@ Feature: Registration
       | Email      | Password      | MaxChars | Language |
       | user1Email | user1Password | 72       | English  |
 
-  @regression @id589 @torun
+  @regression @id589
   Scenario Outline: Register new user using photo album
     Given I see sign in screen
     When I press Join button
