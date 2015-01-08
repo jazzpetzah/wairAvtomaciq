@@ -1,25 +1,24 @@
 Feature: Register new user
 
   #no camera on some Jenkins slaves
-#  @regression @id1080
-#  Scenario Outline: Register new user using front camera
-#    Given I am signed out from ZClient
-#    And I see Sign In screen
-#    When I start registration
-#    And I choose register using camera
-#    And I take registration picture from camera
-#    And I enter name <Name>
-#    And I enter email <Email>
-#    And I enter password <Password>
-#    And I submit registration data
-#    Then I see confirmation page
-#    And I verify registration address
-#    And I see contact list of registered user
-
-#    Examples: 
-#      | Email   | Password    | Name    |
-#      | aqaUser | aqaPassword | aqaUser |
-
+  #  @regression @id1080
+  #  Scenario Outline: Register new user using front camera
+  #    Given I am signed out from ZClient
+  #    And I see Sign In screen
+  #    When I start registration
+  #    And I choose register using camera
+  #    And I take registration picture from camera
+  #    And I enter name <Name>
+  #    And I enter email <Email>
+  #    And I enter password <Password>
+  #    And I submit registration data
+  #    Then I see confirmation page
+  #    And I verify registration address
+  #    And I see contact list of registered user
+  #    Examples:
+  #      | Email   | Password    | Name    |
+  #      | aqaUser | aqaPassword | aqaUser |
+  
   #ZOSX-2857
   @smoke @id177
   Scenario Outline: Register new user with image - landscape image
@@ -37,8 +36,8 @@ Feature: Register new user
     And I see contact list of registered user
 
     Examples: 
-      | Email   | Password    | Name    | ImageFile                 |
-      | aqaUser | aqaPassword | aqaUser | userpicture_landscape.jpg |
+      | Email      | Password      | Name      | ImageFile                 |
+      | user1Email | user1Password | user1Name | userpicture_landscape.jpg |
 
   #ZOSX-2857
   @smoke @id177
@@ -57,8 +56,8 @@ Feature: Register new user
     And I see contact list of registered user
 
     Examples: 
-      | Email   | Password    | Name    | ImageFile                |
-      | aqaUser | aqaPassword | aqaUser | userpicture_portrait.jpg |
+      | Email      | Password      | Name      | ImageFile                |
+      | user1Email | user1Password | user1Name | userpicture_portrait.jpg |
 
   @regression @id171
   Scenario Outline: Do not accept email with spaces
