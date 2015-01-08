@@ -106,7 +106,7 @@ Feature: Connect
     And I see contact list loaded with User name <WaitingMess2>
 
     Examples: 
-      | Login       | Password      | Name      | Contact1    | WaitingMess1     | Contact2  | WaitingMess2     |
+      | Login       | Password      | Name      | Contact1    | WaitingMess2     | Contact2  | WaitingMess1     |
       | user1Email  | user1Password | user1Name | user2Name   | 1 person waiting | user3Name | 2 people waiting |
 
   @id540 @regression
