@@ -72,7 +72,7 @@ public class ContactListPageSteps {
 	public void GivenIDoNotSeeContactListWithName(String value)
 			throws Throwable {
 		try{
-		value = usrMgr.findUserByNameOrNameAlias(value).getName();
+			value = usrMgr.findUserByNameOrNameAlias(value).getName();
 		}
 		catch(NoSuchElementException e)
 		{
@@ -85,7 +85,7 @@ public class ContactListPageSteps {
 	@When("^I tap on contact name (.*)$")
 	public void WhenITapOnContactName(String value) throws Exception {
 		try{
-		value = usrMgr.findUserByNameOrNameAlias(value).getName();
+			value = usrMgr.findUserByNameOrNameAlias(value).getName();
 		}
 		catch(NoSuchElementException e)
 		{
@@ -152,7 +152,7 @@ public class ContactListPageSteps {
 
 	@When("^I click mute conversation (.*)$")
 	public void IClickMuteConversation(String contact) throws IOException,
-			InterruptedException {
+	InterruptedException {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		PagesCollection.contactListPage.clickOnMute(contact);
 	}
@@ -186,7 +186,7 @@ public class ContactListPageSteps {
 	@Then("^I see contact list loaded with User name (.*)$")
 	public void ISeeUserNameFirstInContactList(String value) throws Throwable {
 		try{
-		value = usrMgr.findUserByNameOrNameAlias(value).getName();
+			value = usrMgr.findUserByNameOrNameAlias(value).getName();
 		}
 		catch(NoSuchElementException e)
 		{
@@ -210,7 +210,7 @@ public class ContactListPageSteps {
 	@Then("^Contact name (.*) is not in list$")
 	public void ThenContactNameIsNotInList(String value) throws Throwable {
 		try{
-		value = usrMgr.findUserByNameOrNameAlias(value).getName();
+			value = usrMgr.findUserByNameOrNameAlias(value).getName();
 		}
 		catch(NoSuchElementException e)
 		{
