@@ -14,7 +14,7 @@ Feature: Search
 
     Examples: 
       | Login      | Password      | Name      | Contact    |
-      | user1Email | user1Password | user1Name | user1Name  | 
+      | user1Email | user1Password | user1Name | user2Name  | 
 
   @id220 @regression
   Scenario Outline: I can do full name search for existing group convo(non-archive)
@@ -31,7 +31,7 @@ Feature: Search
 
     Examples:
       | Login      | Password      | Name      | Contact1   | Contact2    | GroupChatName          |
-      | user1Email | user1Password | user1Name | user1Name  | user2Name   | PeoplePicker GroupChat |
+      | user1Email | user1Password | user1Name | user3Name  | user2Name   | PeoplePicker GroupChat |
 
   @id223 @regression
   Scenario Outline: I can do partial name search for existing 1:1
@@ -47,7 +47,7 @@ Feature: Search
 
     Examples: 
       | Login      | Password      | Name      | Contact     | Size |
-      | user1Email | user1Password | user1Name | user1Name   |  12  |
+      | user1Email | user1Password | user1Name | user2Name   |  12  |
 
   @id225 @regression
   Scenario Outline: I can do partial name search for existing group convo(non-archive)
@@ -64,7 +64,7 @@ Feature: Search
 
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2    | GroupChatName           | Size |
-      | user1Email | user1Password | user1Name | user1Name  | user2Name   | PeoplePicker GroupChat1 | 5    |
+      | user1Email | user1Password | user1Name | user3Name  | user2Name   | PeoplePicker GroupChat1 | 5    |
 
   @id327 @smoke
   Scenario Outline: Open/Close People picker

@@ -16,7 +16,7 @@ Feature: People View
 
     Examples:
       | Login      | Password      | Name      | Contact1   | Contact2    | GroupChatName   |
-      | user1Email | user1Password | user1Name | user1Name  | user2Name   | GroupInfoCheck2 |
+      | user1Email | user1Password | user1Name | user3Name  | user2Name   | GroupInfoCheck2 |
 
   @id319 @regression
   Scenario Outline: I can create group chat from People picker
@@ -36,7 +36,7 @@ Feature: People View
 
     Examples:
       | Login      | Password      | Name      | Contact1   | Contact2    | GroupChatName           |
-      | user1Email | user1Password | user1Name | user1Name  | user2Name   | PeoplePicker GroupChat2 |
+      | user1Email | user1Password | user1Name | user3Name  | user2Name   | PeoplePicker GroupChat2 |
 
   @id321 @smoke
   Scenario Outline: Leave group conversation
@@ -94,4 +94,4 @@ Feature: People View
 
     Examples:
       | Login      | Password      | Name      | Contact1   | Contact2    | ParticipantNumber | GroupChatName  |
-      | user1Email | user1Password | user1Name | user1Name  | user2Name   | 3                 | GroupInfoCheck |
+      | user1Email | user1Password | user1Name | user3Name  | user2Name   | 3                 | GroupInfoCheck |

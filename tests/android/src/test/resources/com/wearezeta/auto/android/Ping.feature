@@ -19,7 +19,7 @@ Feature: Ping
 
     Examples:
       | Login      | Password      | Name      | Contact1   | Contact2    | GroupChatName     | Message | Action1 | Action2      |
-      | user1Email | user1Password | user1Name | user1Name  | user2Name   | SendPingGroupChat | YOU     | PINGED  | PINGED AGAIN |
+      | user1Email | user1Password | user1Name | user3Name  | user2Name   | SendPingGroupChat | YOU     | PINGED  | PINGED AGAIN |
 
   @id1374 @regression
   Scenario Outline: Verify you can receive Ping & Hot Ping in a group conversation
@@ -39,4 +39,4 @@ Feature: Ping
     
     Examples:
        | Login      | Password      | Name      | Contact1   | Contact2    | GroupChatName        | Action1 | Action2      |
-       | user1Email | user1Password | user1Name | user1Name  | user2Name   | ReceivePingGroupChat | PINGED  | PINGED AGAIN |
+       | user1Email | user1Password | user1Name | user3Name  | user2Name   | ReceivePingGroupChat | PINGED  | PINGED AGAIN |
