@@ -340,7 +340,7 @@ public final class BackendAPIWrappers {
 			String to = ((JSONObject) connections.get(i)).getString("to");
 			String status = ((JSONObject) connections.get(i))
 					.getString("status");
-			if (!status.equals(ConnectionStatus.Accepted)) {
+			if (status.equals(ConnectionStatus.Pending.toString())) {
 				changeConnectRequestStatus(user, to, ConnectionStatus.Accepted);
 			}
 		}
@@ -354,7 +354,7 @@ public final class BackendAPIWrappers {
 			String to = ((JSONObject) connections.get(i)).getString("to");
 			String status = ((JSONObject) connections.get(i))
 					.getString("status");
-			if (status.equals(ConnectionStatus.Pending)) {
+			if (status.equals(ConnectionStatus.Pending.toString())) {
 				changeConnectRequestStatus(user, to, ConnectionStatus.Ignored);
 			}
 		}
@@ -462,5 +462,13 @@ public final class BackendAPIWrappers {
 		BackendREST
 				.updateSelfInfo(generateAuthToken(user), null, null, newName);
 		user.setName(newName);
+	}
+
+	public static void updateUserAccentColor(ClientUser user, AccentColor color)
+			throws Exception {
+		tryLoginByUser(user);
+		BackendREST.updateSelfInfo(generateAuthToken(user), color.getId(),
+				null, null);
+		user.setAccentColor(color);
 	}
 }

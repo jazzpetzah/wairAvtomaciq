@@ -6,6 +6,7 @@ import java.util.List;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.backend.ConnectionStatus;
@@ -183,4 +184,10 @@ public final class CommonSteps {
 				usrMgr.findUserByNameOrNameAlias(userNameAlias), newName);
 	}
 
+	public void IChangeUserAccentColor(String userNameAlias, String colorName)
+			throws Exception {
+		BackendAPIWrappers.updateUserAccentColor(
+				usrMgr.findUserByNameOrNameAlias(userNameAlias),
+				AccentColor.getByName(colorName));
+	}
 }

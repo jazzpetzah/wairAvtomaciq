@@ -106,7 +106,7 @@ Feature: Connect
     And I see contact list loaded with User name <WaitingMess2>
 
     Examples: 
-      | Login       | Password      | Name      | Contact1    | WaitingMess1     | Contact2  | WaitingMess2     |
+      | Login       | Password      | Name      | Contact1    | WaitingMess2     | Contact2  | WaitingMess1     |
       | user1Email  | user1Password | user1Name | user2Name   | 1 person waiting | user3Name | 2 people waiting |
 
   @id540 @regression
@@ -283,7 +283,7 @@ Feature: Connect
   Scenario Outline: I want to initiate a connect request by selecting someone from within a group conversation
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
-    Given <Contact2> is connected to <Contact1>
+    Given <Contact1> is connected to <Contact2>
     Given <Contact1> has group chat <ChatName> with Myself,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
