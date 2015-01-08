@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.email.IMAPSMailbox;
 
 public class ClientUser {
@@ -130,6 +131,16 @@ public class ClientUser {
 
 	public void setUserState(UserState userState) {
 		this.userState = userState;
+	}
+	
+	private AccentColor accentColor = AccentColor.Undefined;
+	
+	public void setAccentColor(AccentColor newColor) {
+		this.accentColor = newColor;
+	}
+	
+	public AccentColor getAccentColor() {
+		return this.accentColor;
 	}
 
 	private static String generateUniqName() {

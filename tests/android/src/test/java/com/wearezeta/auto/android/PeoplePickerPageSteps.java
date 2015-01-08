@@ -63,7 +63,11 @@ public class PeoplePickerPageSteps {
 	@When("^I input in search field part (.*) of user name to connect to (.*)$")
 	public void WhenIInputInPeoplePickerSearchFieldPartOfUserName(String part,
 			String contact) throws Throwable {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		try {
+			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
 		String[] list = contact.split("(?<=\\G.{" + part + "})");
 		PagesCollection.peoplePickerPage.typeTextInPeopleSearch(list[0]);
 	}
@@ -71,9 +75,15 @@ public class PeoplePickerPageSteps {
 	@When("^I input in search field user name to connect to (.*)$")
 	public void WhenIInputInSearchFieldUserNameToConnectTo(String contact)
 			throws Throwable {
-		ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(contact);
-		contact = dstUser.getName();
-		String email = dstUser.getEmail();
+		String email = "";
+		try {
+			ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(contact);
+			contact = dstUser.getName();
+			email = dstUser.getEmail();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
+		
 		if (email != "") {
 			PagesCollection.peoplePickerPage.typeTextInPeopleSearch(email);
 		} else {
