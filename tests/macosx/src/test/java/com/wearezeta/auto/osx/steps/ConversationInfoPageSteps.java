@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
+import org.openqa.selenium.NoSuchElementException;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
@@ -59,7 +60,11 @@ public class ConversationInfoPageSteps {
 		if (contact.equals(OSXLocators.RANDOM_KEYWORD)) {
 			contact = CommonOSXSteps.senderPages.getConversationInfoPage().getCurrentConversationName();
 		} else {
-			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+			try {
+				contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+			} catch (NoSuchElementException e) {
+				//do nothing
+			}
 		}
 		Assert.assertTrue(CommonOSXSteps.senderPages.getConversationInfoPage().isConversationNameEquals(contact));
 	}

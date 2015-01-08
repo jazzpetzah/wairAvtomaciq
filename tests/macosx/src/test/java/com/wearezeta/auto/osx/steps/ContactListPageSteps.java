@@ -67,7 +67,11 @@ public class ContactListPageSteps {
 	@Given("I do not see conversation {1}(.*) {1}in contact list")
 	public void IDoNotSeeConversationInContactList(String conversation)
 			throws IOException {
-		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
+		try {
+			conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
+		} catch (NoSuchElementException e) {
+			//do nothing
+		}
 		Assert.assertTrue(CommonOSXSteps.senderPages.getContactListPage()
 				.isContactWithNameDoesNotExist(conversation));
 	}

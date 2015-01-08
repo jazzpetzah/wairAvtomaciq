@@ -12,8 +12,8 @@ Feature: Connect to user
     Then I see Contact list with name <Contact>
 
     Examples: 
-      | Login      | Password      | Name      | Contact      |
-      | user1Email | user1Password | user1Name | user2Name    |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
 
   @regression @id616
   Scenario Outline: Conversation created on second end after user accept connection request
@@ -33,8 +33,8 @@ Feature: Connect to user
     And I see message CONNECTED TO <Name> in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact      |
-      | user1Email | user1Password | user1Name | user2Name    |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
 
   @smoke @id1409
   Scenario Outline: Verify sending a connection request to user chosen from people view
@@ -45,9 +45,9 @@ Feature: Connect to user
     And I search by email for user <Contact>
     And I see user <Contact> in search results
     And I add user <Contact> from search results
-    And Myself has sent connection request to <Contact>
+    And I send invitation to user
     Then I see Contact list with name <Contact>
 
     Examples: 
-      | Login      | Password      | Name      | Contact      |
-      | user1Email | user1Password | user1Name | user2Name    |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
