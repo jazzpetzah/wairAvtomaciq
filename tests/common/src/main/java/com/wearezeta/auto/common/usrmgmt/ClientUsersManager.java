@@ -101,13 +101,8 @@ public class ClientUsersManager {
 	}
 
 	public ClientUser findUserByNameOrNameAlias(String alias) {
-		ClientUser user = null;
-		try{
-			user = findUserBy(alias,new FindBy[] { FindBy.NAME, FindBy.NAME_ALIAS });
-		} catch (NoSuchElementException e) {
-		// Ignore silently
-		}
-		return user;
+		return findUserBy(alias,
+				new FindBy[] { FindBy.NAME, FindBy.NAME_ALIAS });
 	}
 
 	public ClientUser findUserByEmailOrEmailAlias(String alias) {
