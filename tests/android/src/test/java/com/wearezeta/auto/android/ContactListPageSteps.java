@@ -71,22 +71,28 @@ public class ContactListPageSteps {
 	@Given("^I do not see Contact list with name (.*)$")
 	public void GivenIDoNotSeeContactListWithName(String value)
 			throws Throwable {
-		ClientUser user = usrMgr.findUserByNameOrNameAlias(value);
-		if(null  != user){
-			value = user.getName();
-			}
+		try{
+		value = usrMgr.findUserByNameOrNameAlias(value).getName();
+		}
+		catch(NoSuchElementException e)
+		{
+			// Ignore silently	
+		}
 		Assert.assertFalse(PagesCollection.contactListPage
 				.isContactExists(value));
 	}
 
 	@When("^I tap on contact name (.*)$")
-	public void WhenITapOnContactName(String name) throws Exception {
-		ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
-		if(null  != user){
-			name = user.getName();
-			}
+	public void WhenITapOnContactName(String value) throws Exception {
+		try{
+		value = usrMgr.findUserByNameOrNameAlias(value).getName();
+		}
+		catch(NoSuchElementException e)
+		{
+			// Ignore silently	
+		}
 		PagesCollection.androidPage = PagesCollection.contactListPage
-				.tapOnName(name);
+				.tapOnName(value);
 	}
 
 	@When("^I tap on my name (.*)$")
@@ -179,10 +185,13 @@ public class ContactListPageSteps {
 
 	@Then("^I see contact list loaded with User name (.*)$")
 	public void ISeeUserNameFirstInContactList(String value) throws Throwable {
-		ClientUser user = usrMgr.findUserByNameOrNameAlias(value);
-		if(null  != user){
-			value = user.getName();
-			}
+		try{
+		value = usrMgr.findUserByNameOrNameAlias(value).getName();
+		}
+		catch(NoSuchElementException e)
+		{
+			// Ignore silently	
+		}
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(value));
 	}
 
@@ -200,10 +209,13 @@ public class ContactListPageSteps {
 
 	@Then("^Contact name (.*) is not in list$")
 	public void ThenContactNameIsNotInList(String value) throws Throwable {
-		ClientUser user = usrMgr.findUserByNameOrNameAlias(value);
-		if(null  != user){
-			value = user.getName();
-			}
+		try{
+		value = usrMgr.findUserByNameOrNameAlias(value).getName();
+		}
+		catch(NoSuchElementException e)
+		{
+			// Ignore silently	
+		}
 		Assert.assertFalse(PagesCollection.contactListPage
 				.isContactExists(value));
 	}
