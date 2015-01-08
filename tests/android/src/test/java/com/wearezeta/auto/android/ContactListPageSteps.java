@@ -81,12 +81,10 @@ public class ContactListPageSteps {
 
 	@When("^I tap on contact name (.*)$")
 	public void WhenITapOnContactName(String name) throws Exception {
-		try {
-			name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		}
-		catch(Exception ex) {
-			
-		}
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
+		if(null  != user){
+			name = user.getName();
+			}
 		PagesCollection.androidPage = PagesCollection.contactListPage
 				.tapOnName(name);
 	}
@@ -181,7 +179,10 @@ public class ContactListPageSteps {
 
 	@Then("^I see contact list loaded with User name (.*)$")
 	public void ISeeUserNameFirstInContactList(String value) throws Throwable {
-		value = usrMgr.findUserByNameOrNameAlias(value).getName();
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(value);
+		if(null  != user){
+			value = user.getName();
+			}
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(value));
 	}
 
