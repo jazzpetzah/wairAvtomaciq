@@ -354,7 +354,7 @@ public final class BackendAPIWrappers {
 			String to = ((JSONObject) connections.get(i)).getString("to");
 			String status = ((JSONObject) connections.get(i))
 					.getString("status");
-			if (status.equals(ConnectionStatus.Pending)) {
+			if (status.equals(ConnectionStatus.Pending.toString())) {
 				changeConnectRequestStatus(user, to, ConnectionStatus.Ignored);
 			}
 		}
