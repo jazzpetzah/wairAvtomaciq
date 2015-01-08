@@ -143,7 +143,7 @@ Feature: People View
   Scenario Outline: Tap on participant profiles in group info page participant view
     Given There are 3 users where <Name> is me
     Given <GroupCreator> is connected to me
-    Given <NonConnectedContact> is connected to <GroupCreator>
+    Given <GroupCreator> is connected to <NonConnectedContact>
     Given <GroupCreator> has group chat <GroupChatName> with Myself,<NonConnectedContact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -176,7 +176,7 @@ Feature: People View
   Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
     Given There are 3 users where <Name> is me
     Given <GroupCreator> is connected to me
-    Given <NonConnectedContact> is connected to <GroupCreator>
+    Given <GroupCreator> is connected to <NonConnectedContact>
     Given <GroupCreator> has group chat <GroupChatName> with Myself,<NonConnectedContact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

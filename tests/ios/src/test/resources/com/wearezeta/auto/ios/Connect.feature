@@ -162,12 +162,12 @@ Feature: Connect
     And I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
-    And I search for ignored user name <NotConnectedUser> and tap on it
+    And I search for ignored user name <Contact1> and tap on it
     Then I see Pending request page
 
     Examples:
-      | Login      | Password      | Name      | NotConnectedUser   | Contact2   | Contact3   |
-      | user1Email | user1Password | user1Name | user2Name          | user3Name  | user4Name  |
+      | Login      | Password      | Name      | Contact1     | Contact2   | Contact3   |
+      | user1Email | user1Password | user1Name | user2Name    | user3Name  | user4Name  |
 
   @regression @id1404
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (Search)
