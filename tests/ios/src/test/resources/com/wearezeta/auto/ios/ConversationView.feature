@@ -295,8 +295,8 @@ Feature: Conversation View
     Then I see my message in the dialog
 
     Examples: 
-      | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
 
   @regression @id416
   Scenario Outline: Keyboard up and navigate to main convo list
