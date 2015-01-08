@@ -27,20 +27,23 @@ public class PeoplePickerPageSteps {
 	
 	@When("I search by email for user (.*)")
 	public void ISearchByEmailForUser(String user) throws InterruptedException {
-		Thread.sleep(1000);
-		user = CommonUtils.retrieveRealUserContactPasswordValue(user);
-		String email = CommonUtils.retrieveRealUserEmailValue(user);
-		CommonSteps.senderPages.getPeoplePickerPage().searchForText(email);
+		ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(user);
+		user = dstUser.getName();
+		String email = dstUser.getEmail();
+		CommonOSXSteps.senderPages.getPeoplePickerPage().searchForText(email);
 	}
 	
 	@When("I see user (.*) in search results")
 	public void WhenISeeUserFromSearchResults(String user) throws InterruptedException {
-		Thread.sleep(1000);
-		user = CommonUtils.retrieveRealUserContactPasswordValue(user);
-		Assert.assertTrue(
-				"User " + user + " not found in results",
-				CommonOSXSteps.senderPages.getPeoplePickerPage().areSearchResultsContainUser(user));
-		CommonOSXSteps.senderPages.getPeoplePickerPage().scrollToUserInSearchResults(user);
+		try {
+			user = usrMgr.findUserByNameOrNameAlias(user).getName();
+			} catch (NoSuchElementException e) {
+			// Ignore silently
+			}
+			Assert.assertTrue(
+			"User " + user + " not found in results",
+			CommonOSXSteps.senderPages.getPeoplePickerPage().areSearchResultsContainUser(user));
+			CommonOSXSteps.senderPages.getPeoplePickerPage().scrollToUserInSearchResults(user);
 	}
 	
 	@When("I add user (.*) from search results")
@@ -68,8 +71,8 @@ public class PeoplePickerPageSteps {
 	
 	@Given("I send invitation to (.*) by (.*)")
 	public void ISendInvitationToUserByContact(String user, String contact) throws Throwable {
-		user = CommonUtils.retrieveRealUserContactPasswordValue(user);
-		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		user = usrMgr.findUserByNameOrNameAlias(user).getName();
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		
 		ClientUser contactUser = null;
 		ClientUser userUser = null;
@@ -93,12 +96,12 @@ public class PeoplePickerPageSteps {
 	@Then("^I see Top People list in People Picker$")
 	public void ISeeTopPeopleListInPeoplePicker() throws Throwable {
 		Thread.sleep(2000);
-		boolean topPeopleisVisible = CommonSteps.senderPages.getPeoplePickerPage().isTopPeopleVisible();
+		boolean topPeopleisVisible = CommonOSXSteps.senderPages.getPeoplePickerPage().isTopPeopleVisible();
 		if (!topPeopleisVisible){
-			CommonSteps.senderPages.getPeoplePickerPage().closePeoplePicker();
+			CommonOSXSteps.senderPages.getPeoplePickerPage().closePeoplePicker();
 			Thread.sleep(1000);
-			CommonSteps.senderPages.getContactListPage().openPeoplePicker();
-			topPeopleisVisible = CommonSteps.senderPages.getPeoplePickerPage().isTopPeopleVisible();
+			CommonOSXSteps.senderPages.getContactListPage().openPeoplePicker();
+			topPeopleisVisible = CommonOSXSteps.senderPages.getPeoplePickerPage().isTopPeopleVisible();
 		}
 		Assert.assertTrue("Top People not shown ", topPeopleisVisible);
 	}
