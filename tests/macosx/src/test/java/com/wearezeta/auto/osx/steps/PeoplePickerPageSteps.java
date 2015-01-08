@@ -69,30 +69,6 @@ public class PeoplePickerPageSteps {
 		CommonOSXSteps.senderPages.getPeoplePickerPage().sendInvitationToUserIfRequested();
 	}
 	
-	@Given("I send invitation to (.*) by (.*)")
-	public void ISendInvitationToUserByContact(String user, String contact) throws Throwable {
-		user = usrMgr.findUserByNameOrNameAlias(user).getName();
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		
-		ClientUser contactUser = null;
-		ClientUser userUser = null;
-		
-		for (ClientUser us: CommonUtils.yourUsers) {
-			if (us.getName().equals(contact)) contactUser = us;
-			if (us.getName().equals(user)) userUser = us;
-		}
-		
-		for (ClientUser us: CommonUtils.contacts) {
-			if (us.getName().equals(contact)) contactUser = us;
-			if (us.getName().equals(user)) userUser = us;
-		}
-		
-		Assert.assertNotNull("Can't find contact with name " + contact, contactUser);
-		Assert.assertNotNull("Can't find user with name " + user, userUser);
-		
-		BackEndREST.autoTestSendRequest(contactUser, userUser);
-	}
-	
 	@Then("^I see Top People list in People Picker$")
 	public void ISeeTopPeopleListInPeoplePicker() throws Throwable {
 		Thread.sleep(2000);
