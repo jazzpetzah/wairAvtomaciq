@@ -151,7 +151,7 @@ Feature: Connect
     Given <Contact1> has sent connection request to me
     Given <Contact2> has sent connection request to me
     Given <Contact3> has sent connection request to me
-    Given I Sign in using login <Name> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I see Pending request link in contact list
     And I click on Pending request link in contact list
