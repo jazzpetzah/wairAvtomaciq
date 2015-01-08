@@ -2,6 +2,7 @@ package com.wearezeta.auto.common.usrmgmt;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -164,7 +165,9 @@ public class ClientUsersManager {
 
 	public String replaceAliasesOccurences(String srcStr, FindBy findByAliasType) {
 		String result = srcStr;
-		for (ClientUser dstUser : users) {
+		List<ClientUser> reversedUsers = new ArrayList<ClientUser>(users);
+		Collections.reverse(reversedUsers);
+		for (ClientUser dstUser : reversedUsers) {
 			Set<String> aliases = new HashSet<String>();
 			String replacement = null;
 			if (findByAliasType == FindBy.NAME_ALIAS) {
@@ -251,8 +254,8 @@ public class ClientUsersManager {
 		generateUsers(this.users.subList(0, count));
 	}
 
-	private static String[] SELF_USER_NAME_ALISES = new String[] { "I", "me",
-			"myself" };
+	private static String[] SELF_USER_NAME_ALISES = new String[] { "I", "ME",
+			"MYSELF" };
 	private static String[] SELF_USER_PASSWORD_ALISES = new String[] { "myPassword" };
 	private static String[] SELF_USER_EMAIL_ALISES = new String[] { "myEmail" };
 
