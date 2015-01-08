@@ -11,6 +11,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.StringParser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationInfoPage;
@@ -87,11 +88,7 @@ public class ContactListPageSteps {
 			contact = CommonOSXSteps.senderPages.getConversationInfoPage()
 					.getCurrentConversationName();
 		} else {
-			try {
-				contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-			} catch (NoSuchElementException e) {
-				// Silently ignore
-			}
+			contact =  usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		}
 
 		boolean isConversationExist = false;
