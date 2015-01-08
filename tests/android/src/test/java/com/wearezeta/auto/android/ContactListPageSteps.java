@@ -8,6 +8,7 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.CommonSteps;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 import cucumber.api.java.en.Given;
@@ -70,7 +71,10 @@ public class ContactListPageSteps {
 	@Given("^I do not see Contact list with name (.*)$")
 	public void GivenIDoNotSeeContactListWithName(String value)
 			throws Throwable {
-		value = usrMgr.findUserByNameOrNameAlias(value).getName();
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(value);
+		if(null  != user){
+			value = user.getName();
+			}
 		Assert.assertFalse(PagesCollection.contactListPage
 				.isContactExists(value));
 	}
@@ -195,7 +199,10 @@ public class ContactListPageSteps {
 
 	@Then("^Contact name (.*) is not in list$")
 	public void ThenContactNameIsNotInList(String value) throws Throwable {
-		value = usrMgr.findUserByNameOrNameAlias(value).getName();
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(value);
+		if(null  != user){
+			value = user.getName();
+			}
 		Assert.assertFalse(PagesCollection.contactListPage
 				.isContactExists(value));
 	}
