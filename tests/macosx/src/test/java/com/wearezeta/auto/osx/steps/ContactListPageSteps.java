@@ -2,6 +2,7 @@ package com.wearezeta.auto.osx.steps;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -9,6 +10,7 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.StringParser;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationInfoPage;
@@ -21,144 +23,193 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ContactListPageSteps {
-	private static final Logger log = ZetaLogger.getLog(ContactListPageSteps.class.getSimpleName());
-	
-	@Given ("^I see my name (.*) in Contact list$")
+	private static final Logger log = ZetaLogger
+			.getLog(ContactListPageSteps.class.getSimpleName());
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+
+	@Given("^I see my name (.*) in Contact list$")
 	public void ISeeMyNameInContactList(String name) throws Exception {
-		CommonSteps.senderPages.getLoginPage().sendProblemReportIfFound();
-		CommonSteps.senderPages.getContactListPage().pressLaterButton();
+		CommonOSXSteps.senderPages.getLoginPage().sendProblemReportIfFound();
+		CommonOSXSteps.senderPages.getContactListPage().pressLaterButton();
 		Thread.sleep(1000);
-		CommonSteps.senderPages.setPeoplePickerPage(new PeoplePickerPage(
-				CommonUtils.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
-				CommonUtils.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
-		PeoplePickerPage peoplePickerPage = CommonSteps.senderPages.getPeoplePickerPage();
+		CommonOSXSteps.senderPages
+				.setPeoplePickerPage(new PeoplePickerPage(
+						CommonUtils
+								.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
+						CommonUtils
+								.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
+		PeoplePickerPage peoplePickerPage = CommonOSXSteps.senderPages
+				.getPeoplePickerPage();
 		if (peoplePickerPage.isPeoplePickerPageVisible()) {
 			log.debug("People picker appears. Closing it.");
 			peoplePickerPage.closePeoplePicker();
 		}
 		GivenISeeContactListWithName(name);
 	}
-	
-	@Given ("I see Contact list with name (.*)")
+
+	@Given("I see Contact list with name (.*)")
 	public void GivenISeeContactListWithName(String name) throws Exception {
 		if (name.equals(OSXLocators.RANDOM_KEYWORD)) {
-			name = CommonSteps.senderPages.getConversationInfoPage().getCurrentConversationName();
+			name = CommonOSXSteps.senderPages.getConversationInfoPage()
+					.getCurrentConversationName();
 		} else {
-			name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+			name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		}
 		log.debug("Looking for contact with name " + name);
-		Assert.assertTrue(CommonSteps.senderPages.getContactListPage().isContactWithNameExists(name));
+		Assert.assertTrue(CommonOSXSteps.senderPages.getContactListPage()
+				.isContactWithNameExists(name));
 	}
-	
-	@Given ("I do not see conversation {1}(.*) {1}in contact list")
-	public void IDoNotSeeConversationInContactList(String conversation) throws IOException {
-		conversation = CommonUtils.retrieveRealUserContactPasswordValue(conversation);
-		Assert.assertTrue(CommonSteps.senderPages.getContactListPage().isContactWithNameDoesNotExist(conversation));
+
+	@Given("I do not see conversation {1}(.*) {1}in contact list")
+	public void IDoNotSeeConversationInContactList(String conversation)
+			throws IOException {
+		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
+		Assert.assertTrue(CommonOSXSteps.senderPages.getContactListPage()
+				.isContactWithNameDoesNotExist(conversation));
 	}
-	
-	@Then ("Contact list appears with my name (.*)")
+
+	@Then("Contact list appears with my name (.*)")
 	public void ThenContactListAppears(String name) {
-		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
-		Assert.assertTrue("Login finished", CommonSteps.senderPages.getLoginPage().waitForLogin());
-		Assert.assertTrue(name + " were not found in contact list", CommonSteps.senderPages.getLoginPage().isLoginFinished(name));
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		Assert.assertTrue("Login finished", CommonOSXSteps.senderPages
+				.getLoginPage().waitForLogin());
+		Assert.assertTrue(name + " were not found in contact list",
+				CommonOSXSteps.senderPages.getLoginPage().isLoginFinished(name));
 	}
-	
-	private void clickOnContactListEntry(String contact, boolean isUserProfile) throws MalformedURLException, IOException {
+
+	private void clickOnContactListEntry(String contact, boolean isUserProfile)
+			throws MalformedURLException, IOException {
 		if (contact.equals(OSXLocators.RANDOM_KEYWORD)) {
-			contact = CommonSteps.senderPages.getConversationInfoPage().getCurrentConversationName();
+			contact = CommonOSXSteps.senderPages.getConversationInfoPage()
+					.getCurrentConversationName();
 		} else {
-			contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+			try {
+				contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+			} catch (NoSuchElementException e) {
+				// Silently ignore
+			}
 		}
-		
+
 		boolean isConversationExist = false;
 		for (int i = 0; i < 10; i++) {
-			isConversationExist = CommonSteps.senderPages.getContactListPage().openConversation(contact, isUserProfile);
-			if(isConversationExist) break;
-			try {Thread.sleep(1000); } catch (InterruptedException e) { }
+			isConversationExist = CommonOSXSteps.senderPages
+					.getContactListPage().openConversation(contact,
+							isUserProfile);
+			if (isConversationExist)
+				break;
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+			}
 		}
-		Assert.assertTrue("Contact list entry with name " + contact + " was not found.", isConversationExist);
+		Assert.assertTrue("Contact list entry with name " + contact
+				+ " was not found.", isConversationExist);
 	}
-	
+
 	@Given("I open conversation with (.*)")
-	public void GivenIOpenConversationWith(String contact) throws MalformedURLException, IOException {
+	public void GivenIOpenConversationWith(String contact)
+			throws MalformedURLException, IOException {
 		clickOnContactListEntry(contact, false);
-		CommonSteps.senderPages.setConversationPage(new ConversationPage(
-				CommonUtils.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
-				CommonUtils.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
+		CommonOSXSteps.senderPages
+				.setConversationPage(new ConversationPage(
+						CommonUtils
+								.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
+						CommonUtils
+								.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
 	}
-	
-	@Given("I go to user (.*) profile") 
-	public void GivenIGoToUserProfile(String user) throws MalformedURLException, IOException {
+
+	@Given("I go to user (.*) profile")
+	public void GivenIGoToUserProfile(String user)
+			throws MalformedURLException, IOException {
 		clickOnContactListEntry(user, true);
-		CommonSteps.senderPages.setUserProfilePage(new UserProfilePage(
-				CommonUtils.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
-				CommonUtils.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
+		CommonOSXSteps.senderPages
+				.setUserProfilePage(new UserProfilePage(
+						CommonUtils
+								.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
+						CommonUtils
+								.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
 	}
-	
+
 	@When("I open People Picker from contact list")
-	public void WhenIOpenPeoplePickerFromContactList() throws MalformedURLException, IOException {
-		CommonSteps.senderPages.getContactListPage().openPeoplePicker();
-		CommonSteps.senderPages.setPeoplePickerPage(new PeoplePickerPage(
-				CommonUtils.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
-				CommonUtils.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
+	public void WhenIOpenPeoplePickerFromContactList()
+			throws MalformedURLException, IOException {
+		CommonOSXSteps.senderPages.getContactListPage().openPeoplePicker();
+		CommonOSXSteps.senderPages
+				.setPeoplePickerPage(new PeoplePickerPage(
+						CommonUtils
+								.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
+						CommonUtils
+								.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
 	}
-	
-	@When("I change conversation mute state")
-	public void IChangeConversationMuteState() {
-		ContactListPage contactList = CommonSteps.senderPages.getContactListPage();
-		contactList.changeMuteStateForSelectedConversation();
+
+	@When("I change mute state of conversation with (.*)")
+	public void IChangeConversationMuteState(String conversation) {
+		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
+		ContactListPage contactList = CommonOSXSteps.senderPages
+				.getContactListPage();
+		contactList.changeMuteStateForConversation(conversation);
 	}
-	
+
 	@Then("I see conversation (.*) is muted")
 	public void ISeeConversationIsMuted(String conversation) {
-		conversation = CommonUtils.retrieveRealUserContactPasswordValue(conversation);
-		ContactListPage contactList = CommonSteps.senderPages.getContactListPage();
-		Assert.assertTrue(
-				"Conversation with name " + conversation + " were not muted.",
+		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
+		ContactListPage contactList = CommonOSXSteps.senderPages
+				.getContactListPage();
+		Assert.assertTrue("Conversation with name " + conversation
+				+ " were not muted.",
 				contactList.isConversationMutedButtonVisible(conversation));
 	}
-	
+
 	@Then("I see conversation (.*) is unmuted")
 	public void ISeeConversationIsUnmuted(String conversation) {
-		conversation = CommonUtils.retrieveRealUserContactPasswordValue(conversation);
-		ContactListPage contactList = CommonSteps.senderPages.getContactListPage();
-		Assert.assertFalse(
-				"Conversation with name " + conversation + " is still muted.",
-				contactList.isConversationMutedButtonVisible(conversation));
+		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
+		ContactListPage contactList = CommonOSXSteps.senderPages
+				.getContactListPage();
+		Assert.assertTrue("Conversation with name " + conversation
+				+ " is still muted.",
+				contactList.isConversationMutedButtonNotVisible(conversation));
 	}
-	
+
 	@When("I see connect invitation")
 	public void ISeeConnectInvitation() throws Exception {
 		GivenISeeContactListWithName(OSXLocators.CONTACT_LIST_ONE_CONNECT_REQUEST);
 	}
-	
+
 	@When("I accept invitation")
 	public void IAcceptInvitation() {
-		ContactListPage contactList = CommonSteps.senderPages.getContactListPage();
+		ContactListPage contactList = CommonOSXSteps.senderPages
+				.getContactListPage();
 		contactList.acceptAllInvitations();
 	}
-	
-	@When("I archive conversation")
-	public void IArchiveConversation() {
-		ContactListPage contactList = CommonSteps.senderPages.getContactListPage();
-		contactList.moveSelectedConversationToArchive();
+
+	@When("I archive conversation with (.*)")
+	public void IArchiveConversation(String conversation) {
+		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
+		ContactListPage contactList = CommonOSXSteps.senderPages
+				.getContactListPage();
+		contactList.moveConversationToArchive(conversation);
 	}
-	
+
 	@When("I go to archive")
 	public void IGoToArchive() {
-		ContactListPage contactList = CommonSteps.senderPages.getContactListPage();
+		ContactListPage contactList = CommonOSXSteps.senderPages
+				.getContactListPage();
 		contactList.showArchivedConversations();
 	}
-	
+
 	@When("I set name {1}(.*) {1}for conversation$")
-	public void ISetRandomNameForConversation(String name) throws MalformedURLException, IOException {
-		ConversationInfoPage conversationInfo = CommonSteps.senderPages.getConversationInfoPage();
+	public void ISetRandomNameForConversation(String name)
+			throws MalformedURLException, IOException {
+		ConversationInfoPage conversationInfo = CommonOSXSteps.senderPages
+				.getConversationInfoPage();
 		name = StringParser.unescapeString(name);
 		if (name.equals(OSXLocators.RANDOM_KEYWORD)) {
-			conversationInfo.setCurrentConversationName(CommonUtils.generateGUID());
+			conversationInfo.setCurrentConversationName(CommonUtils
+					.generateGUID());
 		} else {
 			conversationInfo.setCurrentConversationName(name);
 		}
-		conversationInfo.setNewConversationName(conversationInfo.getCurrentConversationName());
+		conversationInfo.setNewConversationName(conversationInfo
+				.getCurrentConversationName());
 	}
 }

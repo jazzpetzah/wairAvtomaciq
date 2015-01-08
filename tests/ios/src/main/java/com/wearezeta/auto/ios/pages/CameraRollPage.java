@@ -45,6 +45,7 @@ public class CameraRollPage extends IOSPage{
 	
 	public void selectImageFromLibrary() throws Throwable {
 		clickFirstLibraryFolder();
+		acceptAlert();
 		clickFirstImage();
 	}
 	

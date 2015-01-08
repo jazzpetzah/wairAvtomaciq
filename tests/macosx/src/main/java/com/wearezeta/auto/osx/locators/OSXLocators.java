@@ -36,7 +36,7 @@ public final class OSXLocators {
 	public static final String idPeoplePickerTopContactsGrid = "people_picker_user_collectionview";
 	public static final String xpathPeoplePickerTopContacts = "//AXGrid[@AXIdentifier='people_picker_user_collectionview']";
 	
-	public static final String idToggleMenu = "ToggleMenu";
+	public static final String idShowMenuButton = "clshowMenuButton";
 	public static final String idMuteButton = "muteButton";
 	public static final String idArchiveButton = "archiveButton";
 	public static final String idShowArchivedButton = "openArchiveButton";
@@ -103,7 +103,7 @@ public final class OSXLocators {
 
 	public static final String xpathPictureSettingsCloseButton = "//AXWindow[@AXRoleDescription='floating window']/AXButton[@AXRoleDescription='close button']";
 
-	public static final String xpathFormatMutedButton = "//AXCell[AXStaticText[@AXValue='%s']]/AXButton[@AXTitle='']";
+	public static final String xpathFormatMutedButton = "//AXCell[AXStaticText[@AXValue='%s']]/AXImage[@AXTitle='']";
 
 	public static final String xpathFailedApplicationDialogCancel = "//AXWindow[@AXIdentifier='_NS:162']/AXButton[@AXIdentifier='_NS:9']";
 	public static final String xpathFailedApplicationDialogSend = "//AXWindow[@AXIdentifier='_NS:162']/AXButton[@AXIdentifier='_NS:13']";

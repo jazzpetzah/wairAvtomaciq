@@ -15,6 +15,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.FluentWait;
@@ -132,6 +134,33 @@ public class ContactListPage extends OSXPage {
 		}
 		return true;
 	}
+
+	public WebElement getContactWithName(String name) {
+		WebElement result = null;
+		
+		if (name.contains(",")) {
+			String[] exContacts = name.split(",");
+
+			for (WebElement contact: this.contactsTextFields) {
+				boolean isFound = true;
+				String realContact = contact.getText();
+				for (String exContact: exContacts) {
+					if (!realContact.contains(exContact.trim())) {
+						isFound = false;
+					}
+				}
+				if (isFound) {
+					return contact;
+				}
+			}	
+		} else {
+			String xpath = String.format(OSXLocators.xpathFormatContactEntryWithName, name);
+			result = driver.findElement(By.xpath(xpath));
+			return result;
+		}
+		
+		return result;
+	}
 	
 	public boolean openConversation(String conversationName, boolean isUserProfile) {
 
@@ -222,7 +251,7 @@ public class ContactListPage extends OSXPage {
 		return result;
 	}
 	
-	public List<WebElement> getContacts(){
+	public List<WebElement> getContacts() {
 		return contactsTextFields;
 	}
 	
@@ -273,41 +302,40 @@ public class ContactListPage extends OSXPage {
         }
 	}
 	
-	public void goToContactActionsMenu() {
-		WebElement toggleMenu = driver.findElement(By.id(OSXLocators.idToggleMenu));
+	public void goToContactActionsMenu(String contact) {
+		try {
+			clickToggleMenuButton();
+			return;
+		} catch (NoSuchElementException e) {	}
+		
+		Actions builder = new Actions(driver);
+		Action moveMouseToContact = builder.moveToElement(mainWindow).moveToElement(getContactWithName(contact)).build();
+		moveMouseToContact.perform();
+
+		clickToggleMenuButton();
+	}
+	
+	public void clickToggleMenuButton() {
+		WebElement toggleMenu = driver.findElement(By.id(OSXLocators.idShowMenuButton));
 		toggleMenu.click();
 	}
 	
-	int previousMutedLocation = Integer.MAX_VALUE;
 	public boolean isConversationMutedButtonVisible(String conversation) {
-		boolean isExist = false;
-		WebElement muted = driver.findElement(By.xpath(String.format(OSXLocators.xpathFormatMutedButton, conversation)));
-		
-		int mutedLocation = -1;
-		try {
-			mutedLocation = NSPoint.fromString(muted.getAttribute("AXPosition")).x();
-
-			if (mutedLocation < previousMutedLocation) {
-				isExist = true;
-			} else {
-				isExist = false;
-			}
-		} catch (Exception e) {
-			isExist = false;
-		}
-		
-		previousMutedLocation = mutedLocation;
-		return isExist;
+		return DriverUtils.waitUntilElementAppears(driver, By.xpath(String.format(OSXLocators.xpathFormatMutedButton, conversation)));
 	}
 	
-	public void changeMuteStateForSelectedConversation() {
-		goToContactActionsMenu();
+	public boolean isConversationMutedButtonNotVisible(String conversation) {
+		return DriverUtils.waitUntilElementDissapear(driver, By.xpath(String.format(OSXLocators.xpathFormatMutedButton, conversation)));
+	}
+	
+	public void changeMuteStateForConversation(String conversation) {
+		goToContactActionsMenu(conversation);
 		WebElement muteButton = driver.findElement(By.id(OSXLocators.idMuteButton));
 		muteButton.click();
 	}
 	
-	public void moveSelectedConversationToArchive() {
-		goToContactActionsMenu();
+	public void moveConversationToArchive(String conversation) {
+		goToContactActionsMenu(conversation);
 		WebElement archiveButton = driver.findElement(By.id(OSXLocators.idArchiveButton));
 		archiveButton.click();
 	}

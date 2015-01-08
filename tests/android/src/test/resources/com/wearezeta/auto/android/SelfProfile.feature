@@ -1,11 +1,15 @@
 Feature: Self Profile
 
-  @id205 @smoke 
+  @id205 @smoke
   Scenario Outline: Change user picture
-    Given I have 1 users and 0 contacts for 0 users
+    Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
+    #workaround
+    And I minimize the application
+    And I restore the application
+    #workaround
     And I tap on personal info screen
     And I tap change photo button
     And I press Gallery button
@@ -15,12 +19,13 @@ Feature: Self Profile
     Then I see changed user picture
 
     Examples: 
-      | Login   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
 
   @id325 @smoke
   Scenario Outline: Check contact personal info
-    Given I have 1 users and 1 contacts for 1 users
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -29,15 +34,19 @@ Feature: Self Profile
     Then I see <Contact> user name and email
 
     Examples: 
-      | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
 
-  @id328 @smoke 
+  @id328 @smoke
   Scenario Outline: ZClient change name
-    Given I have 1 users and 0 contacts for 0 users
+    Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
+    #workaround
+    And I minimize the application
+    And I restore the application
+    #workaround
     And I tap on my name
     And I change <Name> to <NewName>
     And I swipe right to contact list
@@ -46,5 +55,5 @@ Feature: Self Profile
     Then I see my new name <NewName> and return old <Name>
 
     Examples: 
-      | Login   | Password    | Name    | NewName     |
-      | aqaUser | aqaPassword | aqaUser | NewTestName |
+      | Login      | Password      | Name      | NewName     |
+      | user1Email | user1Password | user1Name | NewTestName |

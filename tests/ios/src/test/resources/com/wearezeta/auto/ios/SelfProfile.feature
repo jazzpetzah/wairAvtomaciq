@@ -2,7 +2,7 @@ Feature: Self Profile
 
   @smoke @id344
   Scenario Outline: Change your profile picture
-    Given I have 1 users and 0 contacts for 1 users
+    Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
@@ -14,29 +14,30 @@ Feature: Self Profile
     And I return to personal page
     Then I see changed user picture <Picture>
 
-    Examples: 
-      | Login   | Password    | Name    | Picture                      |
-      | aqaUser | aqaPassword | aqaUser | userpicture_mobile_check.jpg |
+    Examples:
+      | Login      | Password      | Name      | Picture                      |
+      | user1Email | user1Password | user1Name | userpicture_mobile_check.jpg |
 
   @regression @id1055
   Scenario Outline: Attempt to enter a name with 0 chars
-    Given I have 1 users and 0 contacts for 1 users
+    Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I tap to edit my name
-    And I attempt to enter an empty name and press return
+    And I attempt to input an empty name and press return
     And I see error message asking for more characters
-    And I attempt to enter an empty name and tap the screen
+    And I attempt to input an empty name and tap the screen
     And I see error message asking for more characters
 
     Examples: 
-      | Login   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
 
-  @staging @id1056 
+  #ZIOS-2975
+  @staging @id1056
   Scenario Outline: Attempt to enter a name with 1 char
-    Given I have 1 users and 0 contacts for 1 users
+    Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
@@ -47,7 +48,5 @@ Feature: Self Profile
     And I see error message asking for more characters
 
     Examples: 
-      | Login   | Password    | Name    |  username  |
-      | aqaUser | aqaPassword | aqaUser |   c        |
-      
-      
+      | Login   | Password    | Name    | username |
+      | aqaUser | aqaPassword | aqaUser | c        |

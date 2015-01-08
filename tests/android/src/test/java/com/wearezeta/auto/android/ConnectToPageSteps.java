@@ -4,16 +4,17 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.ConnectToPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
-import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ConnectToPageSteps {
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	@When("^I see connect to (.*) dialog$")
 	public void WhenISeeConnectToUserDialog(String contact) throws Throwable {
-		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		PagesCollection.connectToPage = (ConnectToPage) PagesCollection.androidPage;
 		
 		Thread.sleep(2000);
@@ -41,6 +42,11 @@ public class ConnectToPageSteps {
 			PagesCollection.connectToPage = (ConnectToPage) PagesCollection.androidPage;
 		}
 		PagesCollection.contactListPage = PagesCollection.connectToPage.pressIgnoreButton();	
+	}
+	
+	@When("^I navigate back from connect page$")
+	public void WhenINavigateBackFromDialogPage() throws Exception{
+		PagesCollection.contactListPage = PagesCollection.connectToPage.navigateBack();
 	}
 	
 	@Then("^I see that connection is pending$")

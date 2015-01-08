@@ -1,66 +1,55 @@
 package com.wearezeta.auto.ios;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import cucumber.api.java.en.*;
 
-import com.wearezeta.auto.common.BackEndREST;
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.ios.locators.IOSLocators;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.*;
 
 public class ContactListPageSteps {
-	private static final Logger log = ZetaLogger.getLog(ContactListPageSteps.class.getSimpleName());
-	
+	private static final Logger log = ZetaLogger
+			.getLog(ContactListPageSteps.class.getSimpleName());
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+
 	@Given("^I see Contact list with my name (.*)$")
 	public void GivenISeeContactListWithMyName(String name) throws Throwable {
-		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
-		boolean tutorialIsVisible = PagesCollection.contactListPage.isTutorialShown();
-		if(tutorialIsVisible) {
-			PagesCollection.contactListPage.dismissTutorial();
-		} else {
-			log.debug("No tutorial is shown");
-		}
-		
-		//workaround for login into self profile
-		Thread.sleep(3000);
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		if (PagesCollection.loginPage.isSelfProfileVisible()) {
 			PagesCollection.loginPage.swipeRight(1000);
 		}
-		
-		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
+
+		Assert.assertTrue("Username : " + name
+				+ " dind't appear in contact list",
+				PagesCollection.loginPage.isLoginFinished(name));
 		ISwipeDownContactList();
 		PeoplePickerPageSteps steps = new PeoplePickerPageSteps();
 		steps.WhenISeePeoplePickerPage();
 		steps.IClickCloseButtonDismissPeopleView();
-		
-		//workaround, for some reason tutorial might still be shown
-		if (!tutorialIsVisible) {
-			tutorialIsVisible = PagesCollection.contactListPage.isTutorialShown();
-			if(tutorialIsVisible) {
-				PagesCollection.contactListPage.dismissTutorial();
-			} else {
-				log.debug("No tutorial is shown again");
-			}
-		}
-		// end
 	}
 
-	@Given("^I have group chat named (.*) with an unconnected user, made by (.*)$")
-	public void GivenGroupChatWithName(String chatName, String groupCreator)
-			throws Throwable {
-		BackEndREST.createGroupChatWithUnconnecteduser(
-				chatName, groupCreator);
+	@When("I dismiss tutorial layout")
+	public void IDismissTutorial() {
+		boolean tutorialIsVisible = PagesCollection.contactListPage
+				.isTutorialShown();
+		if (tutorialIsVisible) {
+			PagesCollection.contactListPage.dismissTutorial();
+		} else {
+			log.debug("No tutorial is shown");
+		}
 	}
 
 	@When("^I tap on my name (.*)$")
 	public void WhenITapOnMyName(String name) throws IOException {
-		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		IOSPage page = PagesCollection.contactListPage.tapOnName(name);
 
 		if (page instanceof PersonalInfoPage) {
@@ -73,8 +62,11 @@ public class ContactListPageSteps {
 
 	@When("^I tap on contact name (.*)$")
 	public void WhenITapOnContactName(String name) throws IOException {
-
-		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		try {
+			name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
 		IOSPage page = PagesCollection.contactListPage.tapOnName(name);
 
 		if (page instanceof DialogPage) {
@@ -108,17 +100,14 @@ public class ContactListPageSteps {
 
 	@Then("^I see first item in contact list named (.*)$")
 	public void ISeeUserNameFirstInContactList(String value) throws Throwable {
-
-		value = CommonUtils.retrieveRealUserContactPasswordValue(value);
-		Assert.assertTrue(PagesCollection.contactListPage.isChatInContactList(value));
+		value = usrMgr.findUserByNameOrNameAlias(value).getName();
+		Assert.assertTrue(PagesCollection.contactListPage
+				.isChatInContactList(value));
 	}
 
 	@When("^I create group chat with (.*) and (.*)$")
 	public void ICreateGroupChat(String contact1, String contact2)
-			throws Throwable {
-
-		contact1 = CommonUtils.retrieveRealUserContactPasswordValue(contact1);
-		contact2 = CommonUtils.retrieveRealUserContactPasswordValue(contact2);
+			throws Exception {
 		WhenITapOnContactName(contact1);
 		DialogPageSteps dialogSteps = new DialogPageSteps();
 		dialogSteps.WhenISeeDialogPage();
@@ -130,13 +119,17 @@ public class ContactListPageSteps {
 
 		PeoplePickerPageSteps pickerSteps = new PeoplePickerPageSteps();
 		pickerSteps.WhenISeePeoplePickerPage();
+		pickerSteps.WhenITapOnSearchInputOnPeoplePickerPage();
 		pickerSteps.WhenIInputInPeoplePickerSearchFieldUserName(contact2);
 		pickerSteps.WhenISeeUserFoundOnPeoplePickerPage(contact2);
 		pickerSteps.WhenITapOnUserNameFoundOnPeoplePickerPage(contact2);
 		pickerSteps.WhenIClickOnAddToConversationButton();
 
+		Thread.sleep(2000); // wait for group chat to appear
 		GroupChatPageSteps groupChatSteps = new GroupChatPageSteps();
-		groupChatSteps.ThenISeeGroupChatPage(contact1, contact2);
+		final String[] names = new String[] {contact1, contact2};
+		groupChatSteps.ThenISeeGroupChatPage(StringUtils.join(names,
+				CommonSteps.ALIASES_SEPARATOR));
 	}
 
 	@When("^I see the group conversation name changed in the chat list$")
@@ -148,9 +141,8 @@ public class ContactListPageSteps {
 	@Then("^I see (.*) and (.*) chat in contact list$")
 	public void ISeeGroupChatInContactList(String contact1, String contact2)
 			throws InterruptedException {
-
-		contact1 = CommonUtils.retrieveRealUserContactPasswordValue(contact1);
-		contact2 = CommonUtils.retrieveRealUserContactPasswordValue(contact2);
+		contact1 = usrMgr.findUserByNameOrNameAlias(contact1).getName();
+		contact2 = usrMgr.findUserByNameOrNameAlias(contact2).getName();
 		Assert.assertTrue(PagesCollection.contactListPage
 				.isGroupChatAvailableInContactList());
 	}
@@ -158,17 +150,15 @@ public class ContactListPageSteps {
 	@Then("^I tap on a group chat with (.*) and (.*)$")
 	public void ITapOnGroupChat(String contact1, String contact2)
 			throws IOException {
-
-		contact1 = CommonUtils.retrieveRealUserContactPasswordValue(contact1);
-		contact2 = CommonUtils.retrieveRealUserContactPasswordValue(contact2);
+		contact1 = usrMgr.findUserByNameOrNameAlias(contact1).getName();
+		contact2 = usrMgr.findUserByNameOrNameAlias(contact2).getName();
 		PagesCollection.contactListPage.tapOnUnnamedGroupChat(contact1,
 				contact2);
 	}
 
 	@When("^I swipe right on a (.*)$")
 	public void ISwipeRightOnContact(String contact) throws IOException {
-
-		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		PagesCollection.contactListPage.swipeRightOnContact(500, contact);
 	}
 
@@ -181,16 +171,14 @@ public class ContactListPageSteps {
 
 	@Then("^Contact (.*) is muted$")
 	public void ContactIsMuted(String contact) throws IOException {
-
-		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertTrue(PagesCollection.contactListPage
 				.isContactMuted(contact));
 	}
 
 	@Then("^Contact (.*) is not muted$")
 	public void ContactIsNotMuted(String contact) throws IOException {
-
-		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertFalse(PagesCollection.contactListPage
 				.isContactMuted(contact));
 	}
@@ -205,72 +193,93 @@ public class ContactListPageSteps {
 			PagesCollection.contactListPage.swipeUpSimulator();
 		}
 	}
-	
+
 	@When("I see play/pause button next to username (.*) in contact list")
-	public void ISeePlayPauseButtonNextToUserName(String contact){
-		String name = CommonUtils.retrieveRealUserContactPasswordValue(contact);
-		Assert.assertTrue(PagesCollection.contactListPage.isPlayPauseButtonVisible(name));
+	public void ISeePlayPauseButtonNextToUserName(String contact) {
+		String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		Assert.assertTrue(PagesCollection.contactListPage
+				.isPlayPauseButtonVisible(name));
 	}
-	
+
 	@When("I dont see play/pause button next to username (.*) in contact list")
-	public void IDontSeePlayPauseButtonNextToUserName(String contact){
-		String name = CommonUtils.retrieveRealUserContactPasswordValue(contact);
-		Assert.assertFalse(PagesCollection.contactListPage.isPlayPauseButtonVisible(name));
+	public void IDontSeePlayPauseButtonNextToUserName(String contact) {
+		String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		Assert.assertFalse(PagesCollection.contactListPage
+				.isPlayPauseButtonVisible(name));
 	}
-	
+
 	@When("I tap on play/pause button in contact list")
-	public void ITapOnPlayPauseButtonInContactList(){
+	public void ITapOnPlayPauseButtonInContactList() {
 		PagesCollection.contactListPage.tapPlayPauseButton();
 	}
-	
+
+	@When("I tap play/pause button in contact list next to username (.*)")
+	public void ITapPlayPauseButtonInContactListNextTo(String contact)
+			throws InterruptedException {
+		String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		PagesCollection.contactListPage.tapPlayPauseButtonNextTo(name);
+	}
+
 	@When("I see in contact list group chat named (.*)")
-	public void ISeeInContactListGroupChatWithName(String name){
-		Assert.assertTrue(PagesCollection.contactListPage.isChatInContactList(name));
+	public void ISeeInContactListGroupChatWithName(String name) {
+		Assert.assertTrue(PagesCollection.contactListPage
+				.isChatInContactList(name));
 	}
-	
+
 	@When("I click on Pending request link in contact list")
-	public void ICcickPendingRequestLinkContactList() throws Throwable{
-		PagesCollection.pendingRequestsPage = PagesCollection.contactListPage.clickPendingRequest();
+	public void ICcickPendingRequestLinkContactList() throws Throwable {
+		PagesCollection.pendingRequestsPage = PagesCollection.contactListPage
+				.clickPendingRequest();
 	}
-	
+
 	@When("I see Pending request link in contact list")
-	public void ISeePendingRequestLinkInContacts(){
-		Assert.assertTrue("Pending request link is not in Contact list", PagesCollection.contactListPage.isPendingRequestInContactList());
+	public void ISeePendingRequestLinkInContacts() {
+		Assert.assertTrue("Pending request link is not in Contact list",
+				PagesCollection.contactListPage.isPendingRequestInContactList());
 	}
-	
+
 	@When("I dont see Pending request link in contact list")
-	public void IDontSeePendingRequestLinkInContacts(){
-		Assert.assertFalse(PagesCollection.contactListPage.isPendingRequestInContactList());
+	public void IDontSeePendingRequestLinkInContacts() {
+		Assert.assertFalse(PagesCollection.contactListPage
+				.isPendingRequestInContactList());
 	}
-	
+
 	@When("I see conversation with not connected user (.*)")
-	public void ISeeConversationWithUser(String name){
-		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
-		Assert.assertTrue(PagesCollection.contactListPage.isDisplayedInContactList(name));
+	public void ISeeConversationWithUser(String name) {
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		Assert.assertTrue(PagesCollection.contactListPage
+				.isDisplayedInContactList(name));
 	}
-	
+
 	@When("I don't see conversation with not connected user (.*)")
-	public void IDontSeeConversationWithUser(String name){
-		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
-		Assert.assertFalse(PagesCollection.contactListPage.isDisplayedInContactList(name));
+	public void IDontSeeConversationWithUser(String name) {
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		Assert.assertFalse(PagesCollection.contactListPage
+				.isDisplayedInContactList(name));
 	}
-	
+
 	@When("I see in contact list group chat with (.*) (.*) (.*)")
-	public void ISeeInContactsGroupChatWith(String name1, String name2, String name3){
-		name1=CommonUtils.retrieveRealUserContactPasswordValue(name1);
-		name2=CommonUtils.retrieveRealUserContactPasswordValue(name2);
-		name3=CommonUtils.retrieveRealUserContactPasswordValue(name3);
-		String chatname = name1 + ", " + name2 + ", " + name3;
-		Assert.assertTrue(PagesCollection.contactListPage.isDisplayedInContactList(chatname));
+	public void ISeeInContactsGroupChatWith(String name1, String name2,
+			String name3) {
+		name1 = usrMgr.findUserByNameOrNameAlias(name1).getName();
+		name2 = usrMgr.findUserByNameOrNameAlias(name2).getName();
+		name3 = usrMgr.findUserByNameOrNameAlias(name3).getName();
+		boolean chatExists = PagesCollection.contactListPage
+				.conversationWithUsersPresented(name1, name2, name3);
+		Assert.assertTrue("Convesation with : " + name1 + ", " + name2 + ", "
+				+ name3 + ", " + " is not in chat list", chatExists);
 	}
-	
+
 	@When("I don't see in contact list group chat with (.*) (.*) (.*)")
-	public void IDontSeeInContactsGroupChatWith(String name1, String name2, String name3){
-		name1=CommonUtils.retrieveRealUserContactPasswordValue(name1);
-		name2=CommonUtils.retrieveRealUserContactPasswordValue(name2);
-		name3=CommonUtils.retrieveRealUserContactPasswordValue(name3);
-		String chatname = name1 + ", " + name2 + ", " + name3;
-		Assert.assertFalse(PagesCollection.contactListPage.isDisplayedInContactList(chatname));
+	public void IDontSeeInContactsGroupChatWith(String name1, String name2,
+			String name3) {
+		name1 = usrMgr.findUserByNameOrNameAlias(name1).getName();
+		name2 = usrMgr.findUserByNameOrNameAlias(name2).getName();
+		name3 = usrMgr.findUserByNameOrNameAlias(name3).getName();
+		boolean chatExists = PagesCollection.contactListPage
+				.conversationWithUsersPresented(name1, name2, name3);
+		Assert.assertFalse("Convesation with : " + name1 + ", " + name2 + ", "
+				+ name3 + ", " + " is in chat list", chatExists);
 	}
 
 }

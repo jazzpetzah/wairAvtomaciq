@@ -116,12 +116,17 @@ public class LoginPage extends IOSPage {
 	public IOSPage login() throws IOException {
 		
 		confirmSignInButton.click();
-		PersonalInfoPage personalInfo = new PersonalInfoPage(url, path);
-		if (personalInfo.isSettingsButtonVisible()) {
-			swipeRight(500);
+		
+		if (DriverUtils.waitUntilElementDissapear(driver, By.name(IOSLocators.nameLoginButton), 40)) {
+			return new ContactListPage(url, path);
 		}
-		PagesCollection.personalInfoPage = personalInfo;
-		return new ContactListPage(url, path);
+		else {
+			return null;
+		}
+	}
+	
+	public void clickLoginButton(){
+		confirmSignInButton.click();
 	}
 	
 	public void clickJoinButton()
@@ -171,7 +176,6 @@ public class LoginPage extends IOSPage {
 	}
 	
 	public Boolean isLoginFinished(String contact) throws IOException {
-		
 		try {
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.name(contact)));
 			wait.until(ExpectedConditions.visibilityOfElementLocated(By.name(contact)));
@@ -180,9 +184,7 @@ public class LoginPage extends IOSPage {
 		{
 			log.debug(ex.getMessage());
 		}
-		WebElement el = null;
-		el = driver.findElement(By.name(contact));
-		return el != null;
+		return DriverUtils.waitUntilElementAppears(driver, By.name(contact));
 	}
 
 	@Override

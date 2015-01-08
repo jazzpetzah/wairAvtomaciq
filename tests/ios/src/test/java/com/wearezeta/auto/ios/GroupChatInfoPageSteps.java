@@ -4,16 +4,16 @@ import java.io.IOException;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.ConnectToPage;
 import com.wearezeta.auto.ios.pages.GroupChatPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
-
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class GroupChatInfoPageSteps {
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	
 	@When("^I press leave converstation button$")
 	public void IPressLeaveConverstationButton() throws Throwable {
@@ -75,14 +75,13 @@ public class GroupChatInfoPageSteps {
 	
 	@When("^I select contact (.*)$")
 	public void ISelectContact(String name) throws IOException {
-		
-		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		PagesCollection.otherUserPersonalInfoPage = PagesCollection.groupChatInfoPage.selectContactByName(name);
 	}
 	
 	@When("I tap on not connected contact (.*)")
 	public void ITapOnNotConnectedContact(String name) throws IOException{
-		name = CommonUtils.retrieveRealUserContactPasswordValue(name);
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		PagesCollection.connectToPage = (ConnectToPage)PagesCollection.groupChatInfoPage.selectNotConnectedUser(name);
 	}
 	
@@ -107,6 +106,11 @@ public class GroupChatInfoPageSteps {
 	@When("I swipe down on group chat info page")
 	public void ISwipeUpOnGroupChatInfoPage() throws IOException{
 		PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.groupChatInfoPage.swipeDown(500);
+	}
+	
+	@When("I close group chat info page")
+	public void ICloseGroupChatInfoPage() throws IOException{
+		PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.groupChatInfoPage.closeGroupChatInfoPage();
 	}
 	
 	@When("I tap on add button on group chat info page")

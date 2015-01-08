@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,16 +19,12 @@ import org.jboss.netty.handler.timeout.TimeoutException;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
 
-import com.google.common.base.Function;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -176,20 +171,8 @@ public class ConversationPage extends OSXPage {
 		peopleButton.click();
 	}
 
-	public void openChooseImageDialog() {
-		if (addImageButton == null) {
-			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-					.withTimeout(10, TimeUnit.SECONDS)
-					.pollingEvery(2, TimeUnit.SECONDS)
-					.ignoring(NoSuchElementException.class);
-
-			addImageButton = wait.until(new Function<WebDriver, WebElement>() {
-				public WebElement apply(WebDriver driver) {
-					return driver.findElement(By
-							.name(OSXLocators.nameSignInButton));
-				}
-			});
-		}
+	public void openChooseImageDialog() throws IOException {
+		log.debug("Open choose image dialog for conversation");
 		addImageButton.click();
 	}
 	
@@ -438,10 +421,15 @@ public class ConversationPage extends OSXPage {
 	public MessageEntry receiveMessage(String message, boolean checkTime) {
 		DriverUtils.setImplicitWaitValue(driver, 120);
 		try {
+			Date receivedDate = new Date();
+			long startDate = new Date().getTime();
 			WebElement messageElement = driver.findElement(By.xpath(String.format(
 				OSXLocators.xpathFormatSpecificMessageEntry, message)));
+			long endDate = new Date().getTime();
+			long time = endDate - startDate;
+			log.debug("OSX: Message '" + message + "' received in " + (endDate - startDate) + "ms");
 			if (messageElement != null) {
-				return new MessageEntry("text", message, new Date(), checkTime);
+				return new MessageEntry("text", message, new Date(receivedDate.getTime()+time/2), checkTime);
 			}
 		} finally {
 			DriverUtils.setDefaultImplicitWait(driver);
@@ -458,13 +446,26 @@ public class ConversationPage extends OSXPage {
 					"end tell\n" +
 				"tell application \"System Events\" to tell application process \"Finder\"\n" +
 					"set position of window 1 to {0, 0}\n" +
-					"end tell";
+					"end tell\n" +
+				"tell application \"Finder\" to set the current view of the front Finder window to icon view";
 		 driver.executeScript(scr0);
 	}
 	
 	public void dragPictureToConversation(String picture) throws IOException {
 		WebElement target = driver.findElement(By
 				.id(OSXLocators.idConversationScrollArea));
+		
+		NSPoint targetLocation = NSPoint.fromString(target.getAttribute("AXPosition"));
+		NSPoint targetSize = NSPoint.fromString(target.getAttribute("AXSize"));
+		
+		int xLoc = targetLocation.x() + targetSize.x()/2;
+		int yLoc = targetLocation.y() + targetSize.y()/2;
+		
+		String scr0 = "tell application \"Finder\" " + 
+				 "to set the bounds of the front Finder window " +
+				 "to {0, 0, " + (xLoc-20) + ", " + (yLoc-20) + "}";
+		driver.executeScript(scr0);
+		 
 		driver.navigate().to("Finder");
 		try {
 			WebElement element = driver.findElement(By.name(picture));

@@ -8,9 +8,11 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class MainMenuPage extends OSXPage {
+	// private static final Logger log = ZetaLogger.getLog(MainMenuPage.class.getSimpleName());
 	
 	@FindBy(how = How.NAME, using = OSXLocators.nameQuitZClientMenuItem)
 	private WebElement quitZClientMenuItem;
@@ -22,8 +24,12 @@ public class MainMenuPage extends OSXPage {
 		super(URL, path);
 	}
 
-	public void SignOut() throws IOException {
-		signOutMenuItem.click();
+	public void SignOut() throws Exception {
+		// signOutMenuItem.click();
+		quitZClient();
+		OSXCommonUtils.deleteZClientLoginFromKeychain();
+		OSXCommonUtils.deleteCacheFolder();
+		Thread.sleep(1000);
 		driver.navigate().to(CommonUtils.getOsxApplicationPathFromConfig(MainMenuPage.class));
 	}
 	

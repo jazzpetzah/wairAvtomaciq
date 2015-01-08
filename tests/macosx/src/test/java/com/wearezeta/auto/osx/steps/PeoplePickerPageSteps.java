@@ -1,10 +1,11 @@
 package com.wearezeta.auto.osx.steps;
 
+import java.util.NoSuchElementException;
+
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.BackEndREST;
-import com.wearezeta.auto.common.ClientUser;
-import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.osx.pages.PeoplePickerPage;
 
 import cucumber.api.java.en.Given;
@@ -12,11 +13,16 @@ import cucumber.api.java.en.When;
 import cucumber.api.java.en.Then;
 
 public class PeoplePickerPageSteps {
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	
 	@When("I search for user (.*)")
 	public void WhenISearchForUser(String user) {
-		user = CommonUtils.retrieveRealUserContactPasswordValue(user);
-		CommonSteps.senderPages.getPeoplePickerPage().searchForText(user);
+		try {
+			user = usrMgr.findUserByNameOrNameAlias(user).getName();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
+		CommonOSXSteps.senderPages.getPeoplePickerPage().searchForText(user);
 	}
 	
 	@When("I search by email for user (.*)")
@@ -33,27 +39,31 @@ public class PeoplePickerPageSteps {
 		user = CommonUtils.retrieveRealUserContactPasswordValue(user);
 		Assert.assertTrue(
 				"User " + user + " not found in results",
-				CommonSteps.senderPages.getPeoplePickerPage().areSearchResultsContainUser(user));
-		CommonSteps.senderPages.getPeoplePickerPage().scrollToUserInSearchResults(user);
+				CommonOSXSteps.senderPages.getPeoplePickerPage().areSearchResultsContainUser(user));
+		CommonOSXSteps.senderPages.getPeoplePickerPage().scrollToUserInSearchResults(user);
 	}
 	
 	@When("I add user (.*) from search results")
 	public void WhenIAddUserFromSearchResults(String user) {
-		user = CommonUtils.retrieveRealUserContactPasswordValue(user);
-		CommonSteps.senderPages.getPeoplePickerPage().chooseUserInSearchResults(user);
+		try {
+			user = usrMgr.findUserByNameOrNameAlias(user).getName();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
+		CommonOSXSteps.senderPages.getPeoplePickerPage().chooseUserInSearchResults(user);
 	}
 	
 	 @Given("^I select user (.*) from search results")
 	 public void ISelectUserFromSearchResults(String user) {
-		 user = CommonUtils.retrieveRealUserContactPasswordValue(user);
-		 PeoplePickerPage page = CommonSteps.senderPages.getPeoplePickerPage();
+		 user = usrMgr.findUserByNameOrNameAlias(user).getName();
+		 PeoplePickerPage page = CommonOSXSteps.senderPages.getPeoplePickerPage();
 		 page.selectUserInSearchResults(user);
 		 
 	 }
 	 
 	@When("I send invitation to user")
 	public void WhenISendInvitationToUser() {
-		CommonSteps.senderPages.getPeoplePickerPage().sendInvitationToUserIfRequested();
+		CommonOSXSteps.senderPages.getPeoplePickerPage().sendInvitationToUserIfRequested();
 	}
 	
 	@Given("I send invitation to (.*) by (.*)")

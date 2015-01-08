@@ -92,7 +92,7 @@ Feature: Registration
       | Correct | Password    | Name    | Incorrect           |
       | aqaUser | aqaPassword | aqaUser | error@wearezeta.com |
 
-  @regression @id346
+  @regression @id528 @id529 @id530
   Scenario Outline: Register new user using username with maximum characters allowed, Deutch, Double-byte (Chinese), and emoji Characters
     Given I see sign in screen
     When I press Join button
@@ -107,7 +107,7 @@ Feature: Registration
       | Email   | Password    | MaxChars | Language |
       | aqaUser | aqaPassword | 72       | English  |
 
-  @id589 @regression
+  @regression @id589 
   Scenario Outline: Register new user using photo album
     Given I see sign in screen
     When I press Join button
@@ -120,7 +120,7 @@ Feature: Registration
     And I input password <Password> and hit Enter
     Then I see confirmation page
     And I verify registration address
-    And Contact list loads with only my name
+    And I see Upload contacts dialog
 
     Examples: 
       | Email   | Password    | Name    |
@@ -184,7 +184,7 @@ Feature: Registration
       #| Email   | Password    | Name    |
       #| aqaUser | aqaPassword | aqaUser |
 
-  @regression @id273
+  @regression @id273 @id301
   Scenario Outline: Next Button should not be visible on first registration step visit
     Given I see sign in screen
     When I press Join button
@@ -219,7 +219,7 @@ Feature: Registration
     And I input password <Password> and hit Enter
     And I see confirmation page
     And I verify registration address
-    Then Contact list loads with only my name
+    Then I see Upload contacts dialog
 
     Examples: 
       | Email   | Password    | Name    |
@@ -307,7 +307,7 @@ Feature: Registration
       #| Email   | Password    | Name    |
       #| aqaUser | aqaPassword | aqaUser |
 
-  @staging @id298
+  @regression @id298
   Scenario Outline: Can re-send verification email from verification screen
     Given I see sign in screen
     When I press Join button
@@ -316,10 +316,10 @@ Feature: Registration
     And I See selected picture
     And I confirm selection
     And I input name <Name> and hit Enter
-    And I enter email <Email> and hit Enter
-    And I enter password <Password> and hit Enter
+    And I input email <Email> and hit Enter
+    And I enter password <Password>
     Then I confirm that <EmailCount> recent emails in inbox contain 0 for current recipient
-    And I submit registration data
+    And I click Create Account Button
     Then I confirm that <EmailCount> recent emails in inbox contain 1 for current recipient
     And I resend verification email
     Then I confirm that <EmailCount> recent emails in inbox contain 2 for current recipient

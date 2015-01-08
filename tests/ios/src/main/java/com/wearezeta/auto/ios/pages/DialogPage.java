@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -111,6 +112,11 @@ public class DialogPage extends IOSPage{
 	
 	public String getLastChatMessage(){
 		return lastMessage.getText();
+	}
+	
+	public boolean isPingMessageVisible(String msg){
+		
+		return DriverUtils.isElementDisplayed(driver.findElement(By.name(msg)));
 	}
 	
 	public void pressPingButton() {
@@ -246,6 +252,9 @@ public class DialogPage extends IOSPage{
 		mediabarBarTitle.click();
 	}
 	
+	
+	private final int TEXT_INPUT_HEIGH = 150;
+	private final int TOP_BORDER_WIDTH = 40;
 	@Override
 	public IOSPage swipeUp(int time) throws IOException
 	{
@@ -253,7 +262,7 @@ public class DialogPage extends IOSPage{
 		
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
-		driver.swipe(coords.x + elementSize.width / 2, coords.y + elementSize.height - 200, coords.x + elementSize.width / 2, coords.y + 40, time);
+		driver.swipe(coords.x + elementSize.width / 2, coords.y + elementSize.height - TEXT_INPUT_HEIGH, coords.x + elementSize.width / 2, coords.y + TOP_BORDER_WIDTH, time);
 		return returnBySwipe(SwipeDirection.UP);
 	}
 	
@@ -265,6 +274,19 @@ public class DialogPage extends IOSPage{
 		}
 		else {
 			swipeDownSimulator();
+			page = this;
+		}
+		return page;
+	}
+	
+	public DialogPage swipeDialogPageUp(int time) throws Throwable {		
+		DialogPage page = null;
+		if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true){
+			DriverUtils.swipeUp(driver, conversationPage, time);
+			page = this;
+		}
+		else {
+			swipeUpSimulator();
 			page = this;
 		}
 		return page;
@@ -529,9 +551,21 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public MessageEntry receiveMessage(String message, boolean checkTime) {
-		WebElement messageElement = driver.findElement(By.name(message));
-		if (messageElement != null) {
-			return new MessageEntry("text", message, new Date(), checkTime);
+		WebElement messageElement = null;
+		try {
+			String messageXpath = String.format(IOSLocators.xpathFormatSpecificMessageContains, message);
+			Date receivedDate = new Date();
+			long startDate = new Date().getTime();
+			messageElement = driver.findElement(By.xpath(messageXpath));
+			long endDate = new Date().getTime();
+			long time = endDate - startDate;
+			log.debug("iOS: Message '" + message + "' received in " + time + "ms");
+			if (messageElement != null) {
+				return new MessageEntry("text", message, new Date(receivedDate.getTime()+time/2), checkTime);
+			}
+		} catch (NoSuchElementException e) {
+			log.debug(driver.getPageSource());
+			throw e;
 		}
 		return null;
 	}

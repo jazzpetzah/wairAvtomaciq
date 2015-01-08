@@ -4,9 +4,9 @@ import java.io.IOException;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.BackEndREST;
-import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.ConnectToPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
@@ -15,25 +15,29 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
 public class ConnectToPageSteps {
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	@When("^I see connect to (.*) dialog$")
 	public void WhenISeeConnectToUserDialog(String name) throws Throwable {
-		Assert.assertTrue("Connection input is not visible", PagesCollection.connectToPage.isConnectToUserDialogVisible());
+		Assert.assertTrue("Connection input is not visible",
+				PagesCollection.connectToPage.isConnectToUserDialogVisible());
 	}
 
 	@When("^I input message in connect to dialog$")
 	public void WhenIInputMessageInConnectToDialog() {
 		PagesCollection.connectToPage.fillTextInConnectDialog();
 	}
-	
+
 	@When("I click Send button on connect to dialog")
-	public void IClickSendButtonConnectDialog() throws Throwable{
-		PagesCollection.peoplePickerPage = PagesCollection.connectToPage.clickSendButton();
+	public void IClickSendButtonConnectDialog() throws Throwable {
+		PagesCollection.peoplePickerPage = PagesCollection.connectToPage
+				.clickSendButton();
 	}
-	
+
 	@When("I click Connect button on connect to dialog")
-	public void IClickConnectButtonConnectDialog() throws Throwable{
-		PagesCollection.peoplePickerPage = PagesCollection.connectToPage.sendInvitation();
+	public void IClickConnectButtonConnectDialog() throws Throwable {
+		PagesCollection.peoplePickerPage = PagesCollection.connectToPage
+				.sendInvitation();
 	}
 
 	@When("^I input message in connect to dialog and click Send button$")
@@ -44,21 +48,14 @@ public class ConnectToPageSteps {
 	}
 
 	@Given("^I have connection request from (.*)$")
-	public void IHaveConnectionRequest(String contact)
-			throws Throwable {
-		contact = CommonUtils.retrieveRealUserContactPasswordValue(contact);
-		for (ClientUser user : CommonUtils.yourUsers) {
-			if (user.getName().equals(contact)) {
-				BackEndREST.sendConnectRequest(user,
-						CommonUtils.yourUsers.get(0), "CONNECT TO " + contact,
-						"Hello");
-			}
-		}
+	public void IHaveConnectionRequest(String contact) throws Throwable {
+		BackendAPIWrappers.sendConnectRequest(usrMgr.findUserByNameOrNameAlias(contact),
+				usrMgr.getSelfUserOrThrowError(), "CONNECT TO " + contact,
+				"Hello");
 	}
 
 	@When("^I see connection request from (.*)$")
 	public void IReceiveInvitationMessage(String contact) throws Throwable {
-
 		// Not needed since we auto accept all alerts
 		ContactListPageSteps clSteps = new ContactListPageSteps();
 		clSteps.ISeeUserNameFirstInContactList(IOSLocators.xpathPendingRequest);
@@ -66,12 +63,12 @@ public class ConnectToPageSteps {
 
 	@When("^I confirm connection request$")
 	public void IAcceptInvitationMessage() throws IOException {
-
 		ContactListPageSteps clSteps = new ContactListPageSteps();
 		clSteps.WhenITapOnContactName(IOSLocators.xpathPendingRequest);
 		PagesCollection.connectToPage = new ConnectToPage(
 				CommonUtils.getIosAppiumUrlFromConfig(ConnectToPage.class),
-				CommonUtils.getIosApplicationPathFromConfig(ConnectToPage.class));
+				CommonUtils
+						.getIosApplicationPathFromConfig(ConnectToPage.class));
 		PagesCollection.connectToPage.acceptInvitation();
 		// Not needed since we auto accept all alerts
 	}

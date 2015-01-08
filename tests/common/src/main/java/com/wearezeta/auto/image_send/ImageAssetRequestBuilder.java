@@ -111,13 +111,13 @@ public class ImageAssetRequestBuilder extends AssetRequestBuilder {
 	}
 
 	@Override
-	public List<AssetRequest> getRequests() throws Throwable {
+	public List<AssetRequest> getRequests() throws Exception {
 		List<AssetRequest> resultList = new ArrayList<AssetRequest>();
 
 		List<AssetData> processedImageAssets = getProcessedAssets();
 		for (AssetData processedImageAsset: processedImageAssets) {
-			AssetRequest req = new AssetRequest();
 			ImageAssetData curentAssetData = (ImageAssetData) processedImageAsset;
+			AssetRequest req = new AssetRequest(curentAssetData);
 			req.setContentDisposition(this.getContentDisposition(curentAssetData));
 			req.setContentLength(this.getContentLength(curentAssetData));
 			req.setContentType(this.getContentType(curentAssetData));

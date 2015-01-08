@@ -20,6 +20,10 @@ public class OSXPage extends BasePage {
 	public static String imagesPath = System.getProperty("user.home") + "/Documents/";
 	
 	public OSXPage(String URL, String path) throws MalformedURLException {
+		this(URL, path, true);
+	}
+	
+	public OSXPage(String URL, String path, boolean doNavigate) throws MalformedURLException {
 		DesiredCapabilities capabilities = new DesiredCapabilities(); 
         capabilities.setCapability(CapabilityType.BROWSER_NAME, ""); 
         capabilities.setCapability(CapabilityType.PLATFORM, CommonUtils.PLATFORM_NAME_OSX); 
@@ -29,7 +33,9 @@ public class OSXPage extends BasePage {
         driver = drivers.get(CommonUtils.PLATFORM_NAME_OSX);
         wait = waits.get(CommonUtils.PLATFORM_NAME_OSX);
         
-        driver.navigate().to(path);
+        if (doNavigate) {
+        	driver.navigate().to(path);
+        }
 	}
 
 	@Override
@@ -39,6 +45,10 @@ public class OSXPage extends BasePage {
 
 	public BufferedImage takeScreenshot() throws IOException {
 		return DriverUtils.takeScreenshot(driver);
+	}
+	
+	public void startApp() throws IOException {
+		driver.navigate().to(CommonUtils.getOsxApplicationPathFromConfig(OSXPage.class));
 	}
 	
 	//not used in OS X

@@ -9,7 +9,6 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
@@ -50,6 +49,12 @@ public class PeoplePickerPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.nameLaterButton)
 	private WebElement laterButton;
 	
+	@FindBy(how = How.NAME, using = IOSLocators.nameContinueUploadButton)
+	private WebElement continueButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.namePeopleYouMayKnowLabel)
+	private WebElement peopleYouMayKnowLabel;
+	
 	
 	private String url;
 	private String path;
@@ -75,8 +80,7 @@ public class PeoplePickerPage extends IOSPage{
 	
 	public void tapOnPeoplePickerSearch() { 
 		
-		driver.tap(1, peoplePickerSearch.getLocation().x + 20, peoplePickerSearch.getLocation().y + 20, 1);//workaround for people picker activation
-		peoplePickerSearch.click();
+		driver.tap(1, peoplePickerSearch.getLocation().x + 40, peoplePickerSearch.getLocation().y + 30, 1);//workaround for people picker activation
 	}
 	
 	public void tapOnPeoplePickerClearBtn() {
@@ -87,11 +91,8 @@ public class PeoplePickerPage extends IOSPage{
 		peoplePickerSearch.sendKeys(text);
 	}
 	
-	public void waitUserPickerFindUser(String user){
-
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.name(user)));
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.name(user)));
-		//DriverUtils.waitUntilElementAppears(driver, By.name(user));
+	public boolean waitUserPickerFindUser(String user){
+		return DriverUtils.waitUntilElementAppears(driver, By.name(user));
 	}
 	
 	public ConnectToPage clickOnNotConnectedUser(String name) throws MalformedURLException{
@@ -230,7 +231,7 @@ public class PeoplePickerPage extends IOSPage{
 		peoplePickerSearch.sendKeys("\n");
 	}
 	
-	public GroupChatPage clickAddToCoversationButton() throws Throwable{
+	public GroupChatPage clickAddToCoversationButton() throws Exception{
 		addToConversationBtn.click();
 		return new GroupChatPage(url, path);
 	}
@@ -240,6 +241,19 @@ public class PeoplePickerPage extends IOSPage{
 		driver.findElement(By.name(contact)).click();
 		page = new OtherUserOnPendingProfilePage(url, path);
 		return page;
+	}
+
+	public boolean isUploadDialogShown() {
+		boolean isLaterBtnVisible = DriverUtils.isElementDisplayed(laterButton);
+		return isLaterBtnVisible;
+	}
+
+	public void clickContinueButton() {
+		continueButton.click();
+	}
+
+	public boolean isPeopleYouMayKnowLabelVisible() {
+		return DriverUtils.isElementDisplayed(peopleYouMayKnowLabel);
 	}
 
 }

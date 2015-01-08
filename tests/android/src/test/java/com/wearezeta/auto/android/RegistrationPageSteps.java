@@ -2,120 +2,106 @@ package com.wearezeta.auto.android;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
-import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.email.MBoxChangesListener;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.UserState;
 
 import cucumber.api.java.en.*;
 
 public class RegistrationPageSteps {
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-	private String aqaName;
-
-	private String aqaEmail;
-
-	private String aqaPassword;
-
-	boolean generateUsers = false;
+	private ClientUser userToRegister = null;
 
 	private MBoxChangesListener listener;
 
 	@When("^I press Camera button twice$")
-	public void WhenIPressCameraButton() throws IOException {
-
+	public void WhenIPressCameraButton() throws IOException,
+			InterruptedException {
 		PagesCollection.registrationPage.takePhoto();
+		Thread.sleep(1000);
 		PagesCollection.registrationPage.takePhoto();
 	}
 
 	@When("^I press Picture button$")
 	public void WhenIPressPictureButton() throws IOException {
-
 		PagesCollection.registrationPage.selectPicture();
 	}
 
 	@When("^I choose photo from album$")
 	public void WhenIPressChoosePhoto() throws IOException {
-
 		PagesCollection.registrationPage.chooseFirstPhoto();
 	}
 
 	@When("^I See selected picture$")
 	public void ISeeSelectedPicture() throws IOException {
-
 		Assert.assertTrue(PagesCollection.registrationPage.isPictureSelected());
 	}
 
 	@When("^I confirm selection$")
 	public void IConfirmSelection() throws IOException {
-
 		PagesCollection.registrationPage.confirmPicture();
 	}
 
 	@When("^I enter name (.*)$")
 	public void IEnterName(String name) throws IOException {
-
-		if (name.equals(CommonUtils.YOUR_USER_1)) {
-			Map<String, String> map = CreateZetaUser
-					.generateNextUser(
-							CommonUtils
-									.getDefaultEmailFromConfig(CommonUtils.class),
-							CommonUtils
-									.getDefaultPasswordFromConfig(CommonUtils.class));
-
-			aqaName = map.keySet().iterator().next();
-
-			aqaEmail = map.get(aqaName);
-
-			aqaPassword = CommonUtils
-					.getDefaultPasswordFromConfig(CommonUtils.class);
-
-			generateUsers = true;
-
-			PagesCollection.registrationPage.setName(aqaName);
+		try {
+			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
+		} catch (NoSuchElementException e) {
+			this.userToRegister = new ClientUser();
+			this.userToRegister.setName(name);
+			this.userToRegister.addNameAlias(name);
 		}
-
-		else {
-			aqaName = name;
-			PagesCollection.registrationPage.setName(name);
-		}
+		PagesCollection.registrationPage.setName(this.userToRegister.getName());
 	}
 
 	@When("^I enter email (.*)$")
-	public void IEnterEmail(String email) throws IOException {
-
-		if (email.equals(CommonUtils.YOUR_USER_1)) {
-			PagesCollection.registrationPage.setEmail(aqaEmail);
-		} else {
-			aqaEmail = email;
-			PagesCollection.registrationPage.setEmail(email);
+	public void IEnterEmail(String email) {
+		try {
+			String realEmail = usrMgr.findUserByEmailOrEmailAlias(email)
+					.getEmail();
+			this.userToRegister.setEmail(realEmail);
+		} catch (NoSuchElementException e) {
+			this.userToRegister.setEmail(email);
 		}
+		this.userToRegister.clearEmailAliases();
+		this.userToRegister.addEmailAlias(email);
+		PagesCollection.registrationPage.setEmail(this.userToRegister
+				.getEmail());
 	}
 
 	@When("^I enter password (.*)$")
-	public void IEnterPassword(String password) throws IOException {
-
-		if (password.equals(CommonUtils.YOUR_PASS)) {
-			PagesCollection.registrationPage.setPassword(CommonUtils
-					.getDefaultPasswordFromConfig(CommonUtils.class));
-		} else {
-			aqaPassword = password;
-			PagesCollection.registrationPage.setPassword(password);
+	public void IEnterPassword(String password) {
+		try {
+			String realPassword = usrMgr.findUserByPasswordAlias(password)
+					.getPassword();
+			this.userToRegister.setPassword(realPassword);
+		} catch (NoSuchElementException e) {
+			this.userToRegister.setPassword(password);
 		}
+		this.userToRegister.clearPasswordAliases();
+		this.userToRegister.addPasswordAlias(password);
+		PagesCollection.registrationPage.setPassword(this.userToRegister
+				.getPassword());
 	}
 
 	@When("^I submit registration data$")
 	public void ISubmitRegistrationData() throws Exception {
-		PagesCollection.registrationPage.createAccount();
-
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
-		expectedHeaders.put("Delivered-To", aqaEmail);
-		this.listener = CreateZetaUser.getMboxInstance(aqaEmail, aqaPassword)
-				.startMboxListener(expectedHeaders);
+		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
+		this.listener = IMAPSMailbox.createDefaultInstance().startMboxListener(
+				expectedHeaders);
+
+		PagesCollection.registrationPage.createAccount();
 	}
 
 	@Then("^I see confirmation page$")
@@ -126,17 +112,7 @@ public class RegistrationPageSteps {
 
 	@Then("^I verify registration address$")
 	public void IVerifyRegistrationAddress() throws Throwable {
-		CreateZetaUser.activateRegisteredUser(this.listener);
+		BackendAPIWrappers.activateRegisteredUser(this.listener);
+		this.userToRegister.setUserState(UserState.Created);
 	}
-
-	@Then("^I press continue registration$")
-	public void IPressContinue() throws Throwable {
-		// TODO: need to handle returned page
-		PagesCollection.registrationPage.continueRegistration();
-		ClientUser myContact = new ClientUser(aqaEmail, aqaPassword, aqaName,
-				UsersState.AllContactsConnected);
-		CommonUtils.yourUsers = new LinkedList<ClientUser>();
-		CommonUtils.yourUsers.add(myContact);
-	}
-
 }

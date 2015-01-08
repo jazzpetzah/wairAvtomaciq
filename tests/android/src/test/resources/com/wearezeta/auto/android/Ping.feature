@@ -2,10 +2,11 @@ Feature: Ping
  
   @id1373 @regression
   Scenario Outline: Verify you can send Ping & Hot Ping in a group conversation
-    Given I have 1 users and 2 contacts for 1 users
-    Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Login>
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
     When I tap on contact name <GroupChatName>
     And I see dialog page
     And I swipe on text input
@@ -16,16 +17,17 @@ Feature: Ping
 #   Then I see <Action2> icon
     Then I see Hello-Hey message <Message> with <Action2> in the dialog
 
-    Examples: 
-      | Login   | Password    | GroupChatName     | Contact1    | Contact2    | Message | Action1 | Action2      |
-      | aqaUser | aqaPassword | SendPingGroupChat | aqaContact1 | aqaContact2 | YOU     | PINGED  | PINGED AGAIN |
+    Examples:
+      | Login      | Password      | Name      | Contact1   | Contact2    | GroupChatName     | Message | Action1 | Action2      |
+      | user1Email | user1Password | user1Name | user1Name  | user2Name   | SendPingGroupChat | YOU     | PINGED  | PINGED AGAIN |
 
   @id1374 @regression
   Scenario Outline: Verify you can receive Ping & Hot Ping in a group conversation
-    Given I have 1 users and 2 contacts for 1 users
-    Given I have group chat with name <GroupChatName> with <Contact1> and <Contact2>
-    And I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Login>
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
     When I tap on contact name <GroupChatName>
     And I see dialog page
     And Contact <Contact1> ping conversation <GroupChatName>
@@ -35,6 +37,6 @@ Feature: Ping
  	Then I see Hello-Hey message <Contact1> with <Action2>  in the dialog
 # 	And I see <Action2> icon
     
-    Examples: 
-      | Login   | Password    | GroupChatName        | Contact1    | Contact2    | Action1 | Action2      |
-      | aqaUser | aqaPassword | ReceivePingGroupChat | aqaContact1 | aqaContact2 | PINGED   | PINGED AGAIN |
+    Examples:
+       | Login      | Password      | Name      | Contact1   | Contact2    | GroupChatName        | Action1 | Action2      |
+       | user1Email | user1Password | user1Name | user1Name  | user2Name   | ReceivePingGroupChat | PINGED  | PINGED AGAIN |

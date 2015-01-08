@@ -4,16 +4,14 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.*;
 
-import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
-
-import cucumber.api.java.en.When;
 
 public class PersonalInfoPage extends IOSPage{
 	
@@ -65,6 +63,12 @@ public class PersonalInfoPage extends IOSPage{
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathAllSoundAlertsButton)
 	private WebElement allSoundAlertsButton;
 	
+	@FindBy(how = How.NAME, using = IOSLocators.nameSettingsChangePasswordButton)
+	private WebElement settingsChangePasswordButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathChangePasswordPageChangePasswordButton)
+	private WebElement changePasswordPageChangePasswordButton;
+	
 	private String url;
 	private String path;
 	
@@ -105,6 +109,14 @@ public class PersonalInfoPage extends IOSPage{
 		return termsOfUseButton.isDisplayed();
 	}
 	
+	public boolean isResetPasswordPageVisible(){
+		return changePasswordPageChangePasswordButton.isDisplayed();
+	}
+	
+	public void clickChangePasswordButton(){
+		settingsChangePasswordButton.click();
+	}
+	
 	public LoginPage clickSignoutButton() throws MalformedURLException{
 		LoginPage page;
 		signoutButton.click();
@@ -113,12 +125,12 @@ public class PersonalInfoPage extends IOSPage{
 	}
 	
 	public void tapOnEditNameField(){
+		wait.until(ExpectedConditions.elementToBeClickable(profileNameEditField));
 		profileNameEditField.click();
-		Assert.assertTrue(isKeyboardVisible());
 	}
 	
 	public boolean isTooShortNameErrorMessage(){
-		return nameTooShortError.isDisplayed();
+		return DriverUtils.isElementDisplayed(nameTooShortError);
 	}
 	
 	public void clearNameField(){
@@ -126,10 +138,12 @@ public class PersonalInfoPage extends IOSPage{
 	}
 	
 	public void enterNameInNamefield(String username){
+		DriverUtils.mobileTapByCoordinates(driver, profileNameEditField);
 		profileNameEditField.sendKeys(username);
 	}
 	
 	public void pressEnterInNameField(){
+		DriverUtils.mobileTapByCoordinates(driver, profileNameEditField);
 		profileNameEditField.sendKeys("\n");
 	}
 	

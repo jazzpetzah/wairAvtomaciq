@@ -23,7 +23,7 @@ public class PeoplePickerPage extends OSXPage {
 	private WebElement mainWindow;
 
 //	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerDismissButton)
-	private WebElement cancelButton;
+//	private WebElement cancelButton;
 	
 	@FindBy(how = How.NAME, using = OSXLocators.namePeoplePickerAddToConversationButton)
 	private WebElement addToConversationButton;
@@ -62,12 +62,18 @@ public class PeoplePickerPage extends OSXPage {
 	}
 	
 	public WebElement findCancelButton() {
-		List<WebElement> buttonCandidates = driver.findElements(By.className("AXButton"));
-    	for (WebElement button: buttonCandidates) {
-    		if (button.getAttribute("AXIdentifier").equals(OSXLocators.idPeoplePickerDismissButton)) {
-    			return button;
-    		}
-    	}
+		for (int i = 0; i < 3; i++) {
+			log.debug("Looking for CancelPeoplePicker button. Instance #" + i);
+			List<WebElement> buttonCandidates = driver.findElements(By.className("AXButton"));
+			for (WebElement button: buttonCandidates) {
+				String attribute = button.getAttribute("AXIdentifier");
+				log.debug("Looking for button with attribute " + attribute);
+				if (attribute.equals(OSXLocators.idPeoplePickerDismissButton)) {
+					log.debug("Found people picker cancel button. Location " + NSPoint.fromString(button.getAttribute("AXPosition")));
+					return button;
+				}
+			}
+		}
         return null;
 	}
 	
@@ -158,12 +164,12 @@ public class PeoplePickerPage extends OSXPage {
 	public boolean isPeoplePickerPageVisible() throws InterruptedException, IOException {
 		boolean flag = false;
 		try {
-			peoplePickerSearchResultTable.click();
+			peoplePickerSearchResultTable.isEnabled();
 			flag = true;
 		} catch (NoSuchElementException e) {
 		}
 		try {
-			peoplePickerTopContactsSectionHeader.click();
+			peoplePickerTopContactsSectionHeader.isEnabled();
 			flag = true;
 		} catch (NoSuchElementException e) { }
 		return flag;

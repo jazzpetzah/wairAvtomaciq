@@ -19,7 +19,7 @@
 	<isSimulator>true</isSimulator>
 	<generateUsers>true</generateUsers>
 	<driverTimeoutSeconds>30</driverTimeoutSeconds>
-	<pathToUserpic>img/Media</pathToUserpic>
+	<pathToUserpic>img/userpicture_landscape.jpg</pathToUserpic>
 	<iosImagesPath>img/</iosImagesPath> 
 	<swipeScriptPath>swipeInWindow</swipeScriptPath>
 	<iosAppiumLogPath>/Project/appium_ios.log</iosAppiumLogPath>

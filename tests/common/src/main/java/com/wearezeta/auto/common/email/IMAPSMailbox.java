@@ -1,5 +1,6 @@
 package com.wearezeta.auto.common.email;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,9 +12,12 @@ import java.util.concurrent.TimeoutException;
 
 import javax.mail.*;
 
+import com.wearezeta.auto.common.CommonUtils;
+
 public class IMAPSMailbox {
 	private static final Semaphore semaphore = new Semaphore(1);
 	private static final String MAIL_PROTOCOL = "imaps";
+	private static final String MAILS_FOLDER = "Inbox";
 
 	private Folder folder = null;
 	private String user;
@@ -136,7 +140,7 @@ public class IMAPSMailbox {
 			}
 			throw new TimeoutException(
 					String.format(
-							"The email message for user % has not been received within %s second(s) timeout",
+							"The email message for user %s has not been received within %s second(s) timeout",
 							listener.getParentMBox().getUser(), timeout));
 		} finally {
 			listener.getParentMBox().closeFolder();
@@ -164,5 +168,20 @@ public class IMAPSMailbox {
 				}
 			}
 		});
+	}
+
+	public static IMAPSMailbox createDefaultInstance()
+			throws MessagingException, IOException, InterruptedException {
+		return new IMAPSMailbox(
+				CommonUtils.getDefaultEmailServerFromConfig(IMAPSMailbox.class),
+				MAILS_FOLDER, getName(), getPassword());
+	}
+
+	public static String getName() throws IOException {
+		return CommonUtils.getDefaultEmailFromConfig(IMAPSMailbox.class);
+	}
+
+	private static String getPassword() throws IOException {
+		return CommonUtils.getDefaultPasswordFromConfig(IMAPSMailbox.class);
 	}
 }

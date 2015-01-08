@@ -87,7 +87,7 @@ public abstract class IOSPage extends BasePage {
 		capabilities.setCapability("app", path);
 		capabilities.setCapability("deviceName", "iPhone 6");
 		capabilities.setCapability("platformVersion", "8.1");
-		capabilities.setCapability("processArguments", "--args -ZMBackendEnvironmentType " + bt);
+		capabilities.setCapability("processArguments", "--args -TutorialOverlaysEnabled 0 -ZMBackendEnvironmentType " + bt);
 		if (false == acceptAlerts) {
 			initWithoutAutoAccept();
 		}
@@ -166,7 +166,7 @@ public abstract class IOSPage extends BasePage {
 	}
 	
 	public void smallScrollDown() {
-		driver.swipe(10, 200, 10, 220, 500);
+		driver.swipe(20, 300, 20, 400, 500);
 	}
 
 	public static void clearPagesCollection() throws IllegalArgumentException, IllegalAccessException {
@@ -252,6 +252,30 @@ public abstract class IOSPage extends BasePage {
 		ScriptEngine engine = mgr.getEngineByName("AppleScriptEngine");
 		if (null != engine) {
 			engine.eval(script);
+		}
+	}
+	
+	public void hideKeyboard() {
+		driver.hideKeyboard();
+	}
+	
+	public void acceptAlert(){
+		DriverUtils.waitUntilAlertAppears(driver);
+		try {
+			driver.switchTo().alert().accept();
+		}
+		catch (Exception e){
+			//do nothing
+		}
+	}
+	
+	public void dismissAlert(){
+		DriverUtils.waitUntilAlertAppears(driver);
+		try {
+			driver.switchTo().alert().dismiss();
+		}
+		catch (Exception e){
+			//do nothing
 		}
 	}
 }

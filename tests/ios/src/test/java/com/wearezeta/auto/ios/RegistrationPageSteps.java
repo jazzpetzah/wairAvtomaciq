@@ -2,16 +2,24 @@ package com.wearezeta.auto.ios;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
+
+import javax.mail.MessagingException;
 
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.CreateZetaUser;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.LanguageUtils;
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.email.MBoxChangesListener;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.UserState;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 
@@ -19,12 +27,9 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class RegistrationPageSteps {
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-	private String aqaName;
-
-	private String aqaEmail;
-
-	private String aqaPassword;
+	private ClientUser userToRegister = null;
 
 	private MBoxChangesListener listener;
 
@@ -156,31 +161,15 @@ public class RegistrationPageSteps {
 
 	@When("^I enter name (.*)$")
 	public void IEnterName(String name) throws IOException {
-
-		if (name.equals(CommonUtils.YOUR_USER_1)) {
-			Map<String, String> map = CreateZetaUser
-					.generateNextUser(
-							CommonUtils
-									.getDefaultEmailFromConfig(CommonUtils.class),
-							CommonUtils
-									.getDefaultPasswordFromConfig(CommonUtils.class));
-
-			aqaName = map.keySet().iterator().next();
-
-			aqaEmail = map.get(aqaName);
-
-			aqaPassword = CommonUtils
-					.getDefaultPasswordFromConfig(CommonUtils.class);
-
-			generateUsers = true;
-
-			PagesCollection.registrationPage.setName(aqaName);
+		try {
+			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
+		} catch (NoSuchElementException e) {
+			this.userToRegister = new ClientUser();
+			this.userToRegister.setName(name);
+			this.userToRegister.clearNameAliases();
+			this.userToRegister.addNameAlias(name);
 		}
-
-		else {
-			aqaName = name;
-			PagesCollection.registrationPage.setName(name);
-		}
+		PagesCollection.registrationPage.setName(this.userToRegister.getName());
 	}
 
 	@When("^I enter a username which is at most (\\d+) characters long from (\\w+) alphabet$")
@@ -193,34 +182,8 @@ public class RegistrationPageSteps {
 
 	@When("^I input name (.*) and hit Enter$")
 	public void IInputNameAndHitEnter(String name) throws IOException {
-
-		if (name.equals(CommonUtils.YOUR_USER_1)) {
-			Map<String, String> map = CreateZetaUser
-					.generateNextUser(
-							CommonUtils
-									.getDefaultEmailFromConfig(CommonUtils.class),
-							CommonUtils
-									.getDefaultPasswordFromConfig(CommonUtils.class));
-
-			aqaName = map.keySet().iterator().next();
-
-			aqaEmail = map.get(aqaName);
-
-			aqaPassword = CommonUtils
-					.getDefaultPasswordFromConfig(CommonUtils.class);
-
-			generateUsers = true;
-
-			PagesCollection.registrationPage.setName(aqaName);
-
-			PagesCollection.registrationPage.inputName();
-		}
-
-		else {
-			aqaName = name;
-			PagesCollection.registrationPage.setName(name);
-			PagesCollection.registrationPage.inputName();
-		}
+		IEnterName(name);
+		PagesCollection.registrationPage.inputName();
 	}
 
 	@Then("^I verify that my username is at most (\\d+) characters long$")
@@ -234,35 +197,39 @@ public class RegistrationPageSteps {
 
 	@When("^I enter email (.*)$")
 	public void IEnterEmail(String email) throws IOException {
-
-		if (email.equals(CommonUtils.YOUR_USER_1)) {
-			aqaEmail = CommonUtils.retrieveRealUserEmailValue(email);
-			PagesCollection.registrationPage.setEmail(aqaEmail + "\n");
-		} else {
-			aqaEmail = email;
-			PagesCollection.registrationPage.setEmail(email + "\n");
+		try {
+			String realEmail = usrMgr.findUserByEmailOrEmailAlias(email)
+					.getEmail();
+			this.userToRegister.setEmail(realEmail);
+		} catch (NoSuchElementException e) {
+			this.userToRegister.setEmail(email);
 		}
+		this.userToRegister.clearEmailAliases();
+		this.userToRegister.addEmailAlias(email);
+		PagesCollection.registrationPage.setEmail(this.userToRegister
+				.getEmail() + "\n");
 	}
 
 	@When("^I input email (.*) and hit Enter$")
 	public void IInputEmailAndHitEnter(String email) throws IOException {
-
-		if (email.equals(CommonUtils.YOUR_USER_1)) {
-			PagesCollection.registrationPage.setEmail(aqaEmail);
-			PagesCollection.registrationPage.inputEmail();
-		} else {
-			PagesCollection.registrationPage.setEmail(email);
-			PagesCollection.registrationPage.inputEmail();
-		}
+		IEnterEmail(email);
+		PagesCollection.registrationPage.inputEmail();
 	}
 
 	@When("^I attempt to enter an email with spaces (.*)$")
 	public void IEnterEmailWithSpaces(String email) throws IOException {
-		if (email.equals(CommonUtils.YOUR_USER_1)) {
-			email = aqaEmail;
+		try {
+			String realEmail = usrMgr.findUserByEmailOrEmailAlias(email)
+					.getEmail();
+			this.userToRegister.setEmail(realEmail);
+		} catch (NoSuchElementException e) {
+			this.userToRegister.setEmail(email);
 		}
-		PagesCollection.registrationPage.setEmail(new StringBuilder(email)
-				.insert(email.length() - 1, "          ").toString());
+		this.userToRegister.clearEmailAliases();
+		this.userToRegister.addEmailAlias(email);
+		PagesCollection.registrationPage.setEmail(new StringBuilder(
+				this.userToRegister.getEmail()).insert(email.length() - 1,
+				"          ").toString());
 	}
 
 	@When("^I enter an incorrect email (.*)$")
@@ -304,28 +271,27 @@ public class RegistrationPageSteps {
 
 	@When("^I enter password (.*)$")
 	public void IEnterPassword(String password) throws IOException {
-
-		if (password.equals(CommonUtils.YOUR_PASS)) {
-			PagesCollection.registrationPage.setPassword(CommonUtils
-					.getDefaultPasswordFromConfig(CommonUtils.class));
-		} else {
-			aqaPassword = password;
-			PagesCollection.registrationPage.setPassword(password);
+		try {
+			this.userToRegister.setPassword(usrMgr.findUserByPasswordAlias(
+					password).getPassword());
+		} catch (NoSuchElementException e) {
+			this.userToRegister.setPassword(password);
+			this.userToRegister.addPasswordAlias(password);
 		}
+		PagesCollection.registrationPage.setPassword(this.userToRegister
+				.getPassword());
 	}
 
 	@When("^I input password (.*) and hit Enter$")
-	public void IInputPasswordAndHitEnter(String password) throws IOException {
+	public void IInputPasswordAndHitEnter(String password) throws IOException,
+			MessagingException, InterruptedException {
+		IEnterPassword(password);
 
-		if (password.equals(CommonUtils.YOUR_PASS)) {
-			PagesCollection.registrationPage.setPassword(CommonUtils
-					.getDefaultPasswordFromConfig(CommonUtils.class));
-			PagesCollection.registrationPage.inputPassword();
-		} else {
-			aqaPassword = password;
-			PagesCollection.registrationPage.setPassword(password);
-			PagesCollection.registrationPage.inputPassword();
-		}
+		Map<String, String> expectedHeaders = new HashMap<String, String>();
+		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
+		this.listener = IMAPSMailbox.createDefaultInstance().startMboxListener(
+				expectedHeaders);
+		PagesCollection.registrationPage.inputPassword();
 	}
 
 	@When("I click Create Account Button")
@@ -333,15 +299,17 @@ public class RegistrationPageSteps {
 		PagesCollection.registrationPage.clickCreateAccountButton();
 	}
 
-	@Then("Contact list loads with only my name")
-	public void ContactListLoadsWithOnlyMyName() throws Throwable {
+	@Then("Contact list loads with only my name (.*)")
+	public void ContactListLoadsWithOnlyMyName(String name) throws Throwable {
+		name = this.userToRegister.getName();
 		PagesCollection.contactListPage = new ContactListPage(
 				CommonUtils.getIosAppiumUrlFromConfig(ContactListPage.class),
 				CommonUtils
 						.getIosApplicationPathFromConfig(ContactListPage.class));
 		PagesCollection.contactListPage.waitForContactListToLoad();
-		Assert.assertTrue(PagesCollection.contactListPage
-				.isMyUserNameDisplayedFirstInContactList(aqaName));
+		Assert.assertTrue("My username is not displayed first",
+				PagesCollection.contactListPage
+						.isMyUserNameDisplayedFirstInContactList(name));
 	}
 
 	@Then("I see Create Account button disabled")
@@ -352,8 +320,8 @@ public class RegistrationPageSteps {
 
 	@Then("^I navigate throughout the registration pages and see my input$")
 	public void NavigateAndVerifyInput() throws IOException {
-		PagesCollection.registrationPage.verifyUserInputIsPresent(aqaName,
-				aqaEmail);
+		PagesCollection.registrationPage.verifyUserInputIsPresent(
+				this.userToRegister.getName(), this.userToRegister.getEmail());
 	}
 
 	@When("I navigate from password screen back to Welcome screen")
@@ -371,15 +339,15 @@ public class RegistrationPageSteps {
 		PagesCollection.registrationPage.createAccount();
 
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
-		expectedHeaders.put("Delivered-To", aqaEmail);
-		this.listener = CreateZetaUser.getMboxInstance(aqaEmail,
-				aqaPassword).startMboxListener(expectedHeaders);
+		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
+		this.listener = IMAPSMailbox.createDefaultInstance().startMboxListener(
+				expectedHeaders);
 	}
 
 	@Then("^I confirm that (\\d+) recent emails in inbox contain (\\d+) for current recipient$")
 	public void VerifyRecipientsCount(final int recentEmailsCnt,
 			final int expectedCnt) throws Throwable {
-		String expectedRecipient = aqaEmail;
+		String expectedRecipient = this.userToRegister.getEmail();
 		int checksCnt = 0;
 		int actualCnt = 0;
 		while (checksCnt < maxCheckCnt) {
@@ -391,7 +359,9 @@ public class RegistrationPageSteps {
 			}
 			checksCnt++;
 		}
-		Assert.assertTrue(actualCnt == expectedCnt);
+		Assert.assertTrue("Expected mail count is : " + expectedCnt
+				+ ", but actual count is : " + actualCnt,
+				actualCnt == expectedCnt);
 	}
 
 	@Then("^I resend verification email$")
@@ -410,15 +380,17 @@ public class RegistrationPageSteps {
 	}
 
 	@Then("^I see confirmation page$")
-	public void ISeeConfirmationPage() {
-		PagesCollection.registrationPage.waitForConfirmationMessage();
+	public void ISeeConfirmationPage() throws MalformedURLException {
+		PagesCollection.peoplePickerPage = PagesCollection.registrationPage
+				.waitForConfirmationMessage();
 		Assert.assertTrue(PagesCollection.registrationPage
 				.isConfirmationShown());
 	}
 
 	@Then("^I verify registration address$")
 	public void IVerifyRegistrationAddress() throws Throwable {
-		CreateZetaUser.activateRegisteredUser(this.listener);
+		BackendAPIWrappers.activateRegisteredUser(this.listener);
+		userToRegister.setUserState(UserState.Created);
 	}
 
 	@When("I don't see Next button")

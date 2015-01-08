@@ -7,8 +7,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.thoughtworks.selenium.webdriven.commands.IsElementPresent;
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
@@ -30,7 +31,7 @@ public class PendingRequestsPage extends IOSPage {
 	private String url;
 	private String path;
 	
-	private String autoHelloMessage = "Hello";
+	private String autoHelloMessage = CommonSteps.CONNECTION_MESSAGE;
 
 	public PendingRequestsPage(String URL, String path) throws MalformedURLException {
 		super(URL, path);
@@ -52,6 +53,7 @@ public class PendingRequestsPage extends IOSPage {
 		ContactListPage page = null;
 		for(int i=0;i<clicks;i++){
 			DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.namePendingRequestIgnoreButton));
+			wait.until(ExpectedConditions.elementToBeClickable(ignoreRequestButton));
 			ignoreRequestButton.click();
 			Thread.sleep(500);
 			DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.namePendingRequestIgnoreButton));

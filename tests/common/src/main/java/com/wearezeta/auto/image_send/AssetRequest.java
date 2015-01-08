@@ -57,8 +57,13 @@ public class AssetRequest {
 		this.endpoint = endpoint;
 	}
 	
-	public AssetRequest() {
-		// TODO Auto-generated constructor stub
+	private AssetData assetData;
+	
+	public AssetData getAssetDataObject() {
+		return this.assetData;
 	}
 	
+	public AssetRequest(AssetData assetData) {
+		this.assetData = assetData;
+	}
 }

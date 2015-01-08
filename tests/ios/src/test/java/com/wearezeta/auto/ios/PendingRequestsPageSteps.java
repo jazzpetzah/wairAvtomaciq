@@ -2,12 +2,13 @@ package com.wearezeta.auto.ios;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 
 import cucumber.api.java.en.When;
 
 public class PendingRequestsPageSteps {
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	
 	@When("^I click on Ignore button on Pending requests page$")
 	public void IClickOnIgnoreButtonPendingRequests() throws Throwable{
@@ -31,8 +32,8 @@ public class PendingRequestsPageSteps {
 	
 	@When("I see Hello connect message from user (.*) on Pending request page")
 	public void ISeeHelloConnectMessageFrom(String user){
-		String contact = CommonUtils.retrieveRealUserContactPasswordValue(user);
-		Assert.assertEquals(contact, PagesCollection.pendingRequestsPage.getRequesterName());
+		user = usrMgr.findUserByNameOrNameAlias(user).getName();
+		Assert.assertEquals(user, PagesCollection.pendingRequestsPage.getRequesterName());
 		Assert.assertTrue(PagesCollection.pendingRequestsPage.isAutoMessageCorrect());
 	}
 

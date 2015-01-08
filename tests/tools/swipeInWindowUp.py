@@ -37,13 +37,13 @@ def swipe(startX, startY, endX, endY):
     mouseclickdn(startX, startY)
     y = startY
     if (startY < endY):
-        time.sleep(1)
+        time.sleep(0.01)
         for i in range(1,(endY - startY)):
             mousedrag(endX, y)
             y+=1
             time.sleep(0.001)
     if (endY < startY):
-        time.sleep(1)
+        time.sleep(0.01)
         for i in range(1,(startY - endY)):
             mousedrag(endX, y)
             y-=1

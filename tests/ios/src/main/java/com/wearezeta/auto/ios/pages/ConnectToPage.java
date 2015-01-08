@@ -8,14 +8,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class ConnectToPage extends IOSPage {
-	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathTypeYourMessage)
-	private WebElement typeYourMessage;
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathConnectCloseButton)
 	private WebElement closeConnectDialoButon;
@@ -34,7 +32,7 @@ public class ConnectToPage extends IOSPage {
 	
 	private String url;
 	private String path;
-	private String inviteMessage = "Hello";
+	private String inviteMessage = CommonSteps.CONNECTION_MESSAGE;
 
 	public ConnectToPage(String URL, String path) throws MalformedURLException {
 		super(URL, path);
@@ -44,11 +42,11 @@ public class ConnectToPage extends IOSPage {
 	}
 	
 	public Boolean isConnectToUserDialogVisible(){
-		return typeYourMessage.isDisplayed();
+		return sendConecttionInput.isDisplayed();
 	}
 	
 	public String getConnectToUserLabelValue(){
-		return typeYourMessage.getText();
+		return sendConecttionInput.getText();
 	}
 	
 	public void fillTextInConnectDialog() {

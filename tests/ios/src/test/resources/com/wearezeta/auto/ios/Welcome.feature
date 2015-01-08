@@ -6,7 +6,3 @@ Feature: Welcome
     And I press Terms of Service link
     Then I see the terms info page
     And I return to welcome page
-
-    Examples: 
-      | Login   | Password    | Name    | 
-      | aqaUser | aqaPassword | aqaUser | 

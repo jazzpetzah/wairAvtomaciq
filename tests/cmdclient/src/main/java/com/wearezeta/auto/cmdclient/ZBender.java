@@ -102,7 +102,7 @@ public class ZBender
     		return;
     	}
     	
-    	String login = "error", password = "error", contact = "", imgPath = "";
+    	String login = "error", password = "error", contact = "", imgPath = "", backend = "staging", name = "ZBender";
     	Boolean sendImg = false, showContacts = false;
     	int messageCount = 1, interval = 0;
     	for (int i = 0; i < args.length; i = i + 2) {
@@ -135,15 +135,37 @@ public class ZBender
     		case "-contacts" :
     			showContacts = true;
     			break;
-    		}
+    		
+			case "-backend" :
+				backend = args[i+1];
+				break;
+				
+			case "-name" :
+				name = args[i+1];
+				break;	
+		}
     	}
     	
     	if (login.equals("error") || password.equals("error")) {
     		log.error("invalid credentials");
     		return;
     	}
+    	
+    	switch (backend) {
+	    	case "edge":
+	    		backend = "https://edge-nginz-https.zinfra.io";
+	    		break;
+	    	case "production":
+	    		backend = "https://prod-nginz-https.wire.com";
+	    		break;
+	    	default:
+	    		backend = "https://dev-nginz-https.zinfra.io";
+	    		break;
+    	}
 
-		ClientUser yourСontact = new ClientUser(login, password, "ZBender", UsersState.AllContactsConnected);
+    	BackEndREST.setDefaultBackendURL(backend);
+    	
+		ClientUser yourСontact = new ClientUser(login, password, name, UsersState.AllContactsConnected);
 		
 		if (showContacts) {
 			BackEndREST.loginByUser(yourСontact);

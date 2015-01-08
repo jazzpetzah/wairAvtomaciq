@@ -449,9 +449,15 @@ public class DialogPage extends AndroidPage{
 		return flag;
 	}
 	
-	public boolean isGroupChatDialogContainsNames(String name1, String name2)
+	public boolean isGroupChatDialogContainsNames(List<String> names)
 	{
-		return (conversationMessage.getText().toLowerCase().contains(name1.toLowerCase()) && conversationMessage.getText().toLowerCase().contains(name2.toLowerCase()));
+		final String convoText = conversationMessage.getText();
+		for (String name : names) {
+			if (!convoText.toLowerCase().contains(name.toLowerCase())) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	public boolean isDialogVisible(){

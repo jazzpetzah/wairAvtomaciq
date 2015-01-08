@@ -13,10 +13,8 @@ Feature: Registration
     And I submit registration data
     Then I see confirmation page
     And I verify registration address
-    And I press continue registration
-    And I swipe from Instructions page to Contact list page
-    And Contact list appears with my name <Name>
+    And I see Contact list with my name <Name>
 
     Examples: 
-      | Email   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |

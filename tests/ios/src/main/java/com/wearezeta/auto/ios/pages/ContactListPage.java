@@ -3,7 +3,6 @@ package com.wearezeta.auto.ios.pages;
 import java.io.IOException;
 import java.util.*;
 
-import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -13,11 +12,10 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
-import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class ContactListPage extends IOSPage {
-	private static final Logger log = ZetaLogger.getLog("iOS:" + ContactListPage.class.getSimpleName());
+	// private static final Logger log = ZetaLogger.getLog("iOS:" + ContactListPage.class.getSimpleName());
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathContactListNames)
 	private List<WebElement> contactListNames;
@@ -87,6 +85,11 @@ public class ContactListPage extends IOSPage {
 	
 	public void tapPlayPauseButton(){
 		playPauseButton.click();
+	}
+	
+	public void tapPlayPauseButtonNextTo(String name) throws InterruptedException{
+		WebElement element = driver.findElement(By.xpath(String.format(IOSLocators.xpathContactListPlayPauseButton, name)));
+		DriverUtils.iOSMultiTap(driver, element, 1);
 	}
 
 	private boolean isProfilePageVisible() {
@@ -172,6 +175,11 @@ public class ContactListPage extends IOSPage {
 				.getLocation().x;
 		DriverUtils.swipeRight(driver, findNameInContactList(contact), time);
 		return returnBySwipe(SwipeDirection.RIGHT);
+	}
+	
+	private String getFirstConversationName(){
+		String text = firstChatInChatListTextField.getText();
+		return text;
 	}
 
 	public boolean verifyChangedGroupNameInChatList() {
@@ -279,6 +287,13 @@ public class ContactListPage extends IOSPage {
 		Dimension elementSize = content.getSize();
 		driver.swipe(coords.x + elementSize.width / 2, coords.y + 50, coords.x + elementSize.width / 2, coords.y + elementSize.height - 150, time);
 		return returnBySwipe(SwipeDirection.DOWN);
+	}
+
+	public boolean conversationWithUsersPresented(String name1, String name2,
+			String name3) {
+		String firstChat = getFirstConversationName();
+		boolean chatExist = firstChat.contains(name1) && firstChat.contains(name2) && firstChat.contains(name3);
+		return chatExist;
 	}
 	
 }

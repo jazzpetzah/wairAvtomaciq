@@ -61,8 +61,12 @@ public class CommonSteps {
 		String backendType = CommonUtils.getBackendType(this.getClass());
 		
 		//setting backend configuration for all platforms
-		OSXCommonUtils.setZClientBackend(backendType);
+		OSXCommonUtils.deleteZClientLoginFromKeychain();
+		OSXCommonUtils.removeAllZClientSettingsFromDefaults();
+		OSXCommonUtils.deleteCacheFolder();
 		
+		OSXCommonUtils.setZClientBackend(backendType);
+
 		String androidBEFlagFilePath = AndroidCommonUtils.createBackendJSON(backendType);
 		AndroidCommonUtils.deployBackendFile(androidBEFlagFilePath);
 		
@@ -146,6 +150,15 @@ public class CommonSteps {
 						+ "ms");
 				ZetaFormatter.setDriver(osxSenderPages.getLoginPage().getDriver());
 				osxSenderPages.getLoginPage().sendProblemReportIfFound();
+				try {
+					if (!OSXCommonUtils.isBackendTypeSet(CommonUtils.getBackendType(this.getClass()))) {
+						log.debug("Backend setting were overwritten. Trying to restart app.");
+						osxSenderPages.getMainMenuPage().quitZClient();
+						OSXCommonUtils.setZClientBackend(CommonUtils.getBackendType(this
+							.getClass()));
+						osxSenderPages.getLoginPage().startApp();
+					}
+				} catch (Exception e) { log.debug("Failed to check backend type and restart app if necessary."); }
 			}
 		});
 	}
@@ -171,6 +184,8 @@ public class CommonSteps {
 								androidAppiumUrl, androidPath);
 						com.wearezeta.auto.android.pages.PagesCollection.loginPage.isVisible();
 					} catch (Exception e) {
+						log.debug(e.getMessage());
+						e.printStackTrace();
 					}
 					long endDate = new Date().getTime();
 					try {
@@ -307,7 +322,7 @@ public class CommonSteps {
 							"usersPassword");
 					osxSteps.OSXIOpenConversationWith(conversationName);
 				} catch (Throwable e) {
-					log.fatal("OSX client crashed during login and opening conversation.");
+					log.fatal("OSX client crashed during login and opening conversation.\n" + e.getMessage());
 					ExecutionContext.osxZeta().setState(
 							InstanceState.ERROR_CRASHED);
 					// TODO: process crash
@@ -322,7 +337,8 @@ public class CommonSteps {
 							"usersPassword");
 					androidSteps.AndroidIOpenConversationWith(conversationName);
 				} catch (Throwable e) {
-					log.fatal("Android client crashed during login and opening conversation.");
+					log.fatal("Android client crashed during login and opening conversation.\n" + e.getMessage());
+					e.printStackTrace();
 					ExecutionContext.androidZeta().setState(
 							InstanceState.ERROR_CRASHED);
 					// TODO: process crash
@@ -337,7 +353,8 @@ public class CommonSteps {
 							"usersPassword");
 					iosSteps.IOSIOpenConversationWith(conversationName);
 				} catch (Throwable e) {
-					log.error("iOS client crashed during login and opening conversation.\n" + e.toString());
+					log.error("iOS client crashed during login and opening conversation.\n" + e.getMessage());
+					e.printStackTrace();
 					ExecutionContext.iosZeta().setState(
 							InstanceState.ERROR_CRASHED);
 					// TODO: process crash
@@ -388,6 +405,7 @@ public class CommonSteps {
 					ExecutionContext.iosZeta().listener().scrollToTheEndOfConversation();
 				} catch (NoSuchElementException e) {
 					log.error("Failed to get iOS page source. Client could be crashed.\n" + e.getMessage());
+					e.printStackTrace();
 					if (ExecutionContext.iosZeta().listener().isSessionLost()) {
 						log.error("Session lost on iOS client. No checks for next time.");
 						ExecutionContext.iosZeta().setState(InstanceState.ERROR_CRASHED);
@@ -470,7 +488,8 @@ public class CommonSteps {
 						try {
 							ExecutionContext.iosZeta().listener().waitForMessageIos(message, true);
 						} catch (NoSuchElementException e) {
-							log.error("Failed to get iOS page source. Client could be crashed.\n" + e.getMessage());
+							log.error("iOS: Wait for message sent from OS X finished with incorrect result.\n" + e.getMessage());
+							e.printStackTrace();
 							if (ExecutionContext.iosZeta().listener().isSessionLost()) {
 								log.error("Session lost on iOS client. No checks for next time.");
 								ExecutionContext.iosZeta().setState(InstanceState.ERROR_CRASHED);
@@ -521,7 +540,8 @@ public class CommonSteps {
 							try {
 								ExecutionContext.iosZeta().listener().waitForMessageIos(message, true);
 							} catch (NoSuchElementException e) {
-								log.error("Failed to get iOS page source. Client could be crashed.\n" + e.getMessage());
+								log.error("iOS: Wait for message sent from Android finished with incorrect result.\n" + e.getMessage());
+								e.printStackTrace();
 								if (ExecutionContext.iosZeta().listener().isSessionLost()) {
 									log.error("Session lost on iOS client. No checks for next time.");
 									ExecutionContext.iosZeta().setState(InstanceState.ERROR_CRASHED);

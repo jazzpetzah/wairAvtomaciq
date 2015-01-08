@@ -2,7 +2,7 @@ Feature: Sign In
 
   @smoke @id340
   Scenario Outline: Sign in to ZClient
-    Given I have 1 users and 0 contacts for 1 users
+    Given There is 1 user where <Name> is me
     Given I see sign in screen
     When I press Sign in button
     And I have entered login <Login>
@@ -11,8 +11,8 @@ Feature: Sign In
     Then I see Contact list with my name <Name>
 
     Examples: 
-      | Login   | Password    | Name    |
-      | aqaUser | aqaPassword | aqaUser |
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
 
   #Known issue is IOS-989, once it is fixed test should be updated
   #@staging @id524
@@ -31,23 +31,15 @@ Feature: Sign In
       #| Login   | Password    | UserA   | UserB       |
       #| aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-  #Muted due to missing notification support from sync engine
   @regression @id1398
   Scenario Outline: Notification if SignIn credentials are wrong
-  	Given I have 1 users and 0 contacts for 0 users
     Given I see sign in screen
     When I press Sign in button
     And I enter wrong email <WrongMail>
-    Then I see error with email notification
-    And I have entered login <Login>
-    Then I see no error notification
     And I enter wrong password <WrongPassword>
-    And I press Login button
+    And I attemt to press Login button
     Then I see wrong credentials notification
-    And I have entered password <Password>
-    And I press Login button
-    And I see Contact list with my name <Name>
 
     Examples: 
-      | Login   | Password    | Name    | WrongMail  | WrongPassword |
-      | aqaUser | aqaPassword | aqaUser | wrongwrong | wrong         |
+      | WrongMail  | WrongPassword |
+      | wrongwrong | wrong         |

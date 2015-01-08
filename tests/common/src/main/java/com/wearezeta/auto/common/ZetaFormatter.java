@@ -12,8 +12,11 @@ import javax.imageio.ImageIO;
 
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaDriver;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
+import com.wearezeta.auto.common.usrmgmt.UserState;
 
 import gherkin.formatter.Formatter;
 import gherkin.formatter.Reporter;
@@ -201,24 +204,25 @@ public class ZetaFormatter implements Formatter, Reporter {
 	@Override
 	public void write(String arg0) {
 		// TODO Auto-generated method stub
-		
 	}
 	
 	private void sendNotification(String message) throws Exception {
-		
-		ClientUser yourСontact = new ClientUser(LOGIN, PASSWORD, "AutomationBot", UsersState.AllContactsConnected);
+		ClientUser bot = new ClientUser();
+		bot.setEmail(LOGIN);
+		bot.setPassword(PASSWORD);
+		bot.setName("AutomationBot");
+		bot.setUserState(UserState.AllContactsConnected);
 		switch (driver.getCapabilities().getCapability("platformName").toString()) {
 			case "Android":
-				BackEndREST.sendDialogMessageByChatName(yourСontact, CONTACT_ANDROID, message);
+				BackendAPIWrappers.sendDialogMessageByChatName(bot, CONTACT_ANDROID, message);
 				break;
 			case "Mac":
-				BackEndREST.sendDialogMessageByChatName(yourСontact, CONTACT_OSX, message);
+				BackendAPIWrappers.sendDialogMessageByChatName(bot, CONTACT_OSX, message);
 				break;
 			case "iOS":
-				BackEndREST.sendDialogMessageByChatName(yourСontact, CONTACT_IOS, message);
+				BackendAPIWrappers.sendDialogMessageByChatName(bot, CONTACT_IOS, message);
 				break;
 		}
-		
 	}
 
 	public static RemoteWebDriver getDriver() {

@@ -2,15 +2,14 @@ package com.wearezeta.auto.osx.steps;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.NoSuchElementException;
 
-import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.LoginPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
@@ -21,102 +20,105 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class LoginPageSteps {
-	private static final Logger log = ZetaLogger.getLog(LoginPageSteps.class.getSimpleName());
-	
-	@Given ("I Sign in using login (.*) and password (.*)")
-	public void GivenISignInUsingLoginAndPassword(String login, String password) throws IOException {
-		login = CommonUtils.retrieveRealUserContactPasswordValue(login);
-		for (ClientUser user : CommonUtils.yourUsers) {
-			if (user.getName().toLowerCase().equals(login.toLowerCase())) {
-				login = user.getEmail();
-				password = CommonUtils.retrieveRealUserContactPasswordValue(password);
-				break;
-			}
-		}
-		
-		for (ClientUser user: CommonUtils.contacts) {
-			if (user.getName().toLowerCase().equals(login.toLowerCase())) {
-				login = user.getEmail();
-				password = CommonUtils.retrieveRealUserContactPasswordValue(password);
-				break;
-			}
-		}
-		
-		log.debug("Starting to Sign in using login " + login + " and password " + password);
+	private static final Logger log = ZetaLogger.getLog(LoginPageSteps.class
+			.getSimpleName());
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
+	@Given("I Sign in using login (.*) and password (.*)")
+	public void GivenISignInUsingLoginAndPassword(String login, String password)
+			throws IOException {
 		try {
-			LoginPage loginPage = CommonSteps.senderPages.getLoginPage();
-			long startDate = new Date().getTime();
-			loginPage.startSignIn();
-			long endDate = new Date().getTime();
-			log.debug("First sign in click takes " + (endDate - startDate) + "ms");
-			startDate = new Date().getTime();
-			loginPage.setLogin(login);
-			endDate = new Date().getTime();
-			log.debug("Setting login takes " + (endDate - startDate) + "ms");
-			startDate = new Date().getTime();
-			loginPage.setPassword(password);
-			endDate = new Date().getTime();
-			log.debug("Setting password takes " + (endDate - startDate) + "ms");
-			startDate = new Date().getTime();
-			loginPage.confirmSignIn();
-			endDate = new Date().getTime();
-			log.debug("Sign in takes " + (endDate - startDate) + "ms");
-			Assert.assertTrue("Failed to login", loginPage.waitForLogin());
-		} catch (NoSuchElementException e) { }
-		
-		CommonSteps.senderPages.setContactListPage(new ContactListPage(
-				CommonUtils.getOsxAppiumUrlFromConfig(ContactListPage.class),
-				CommonUtils.getOsxApplicationPathFromConfig(ContactListPage.class)));
-	 }
-	
-	@When("I start Sign In") 
-	public void WhenIStartSignIn() {
-		CommonSteps.senderPages.getLoginPage().startSignIn();
+			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
+		} catch (java.util.NoSuchElementException e) {
+			// Ignore silently
+		}
+		try {
+			password = usrMgr.findUserByPasswordAlias(password).getPassword();
+		} catch (java.util.NoSuchElementException e) {
+			// Ignore silently
+		}
+		log.debug("Starting to Sign in using login " + login + " and password "
+				+ password);
+
+		LoginPage loginPage = CommonOSXSteps.senderPages.getLoginPage();
+		loginPage.startSignIn();
+
+		loginPage.setLogin(login);
+		loginPage.setPassword(password);
+
+		loginPage.confirmSignIn();
+
+		Assert.assertTrue("Failed to login", loginPage.waitForLogin());
+
+		CommonOSXSteps.senderPages
+				.setContactListPage(new ContactListPage(
+						CommonUtils
+								.getOsxAppiumUrlFromConfig(ContactListPage.class),
+						CommonUtils
+								.getOsxApplicationPathFromConfig(ContactListPage.class)));
 	}
-	
-	 @When("I press Sign In button")
-	 public void WhenIPressSignInButton() throws IOException {
-		 OSXPage page = CommonSteps.senderPages.getLoginPage().confirmSignIn();
-		 Assert.assertNotNull("After sign in button click Login page or Contact List page should appear. Page couldn't be null", page);
-		 if (page instanceof ContactListPage) {
-			 CommonSteps.senderPages.setContactListPage((ContactListPage)page);
-		 }
-	 }
-	 
-	 @When ("I have entered login (.*)")
-	 public void WhenIHaveEnteredLogin(String login) {
-		 if (login.equals(CommonUtils.YOUR_USER_1)) {
-			 login = CommonUtils.yourUsers.get(0).getEmail();
-		 }
-		 CommonSteps.senderPages.getLoginPage().setLogin(login);
-	 }
-	 
-	 @When ("I have entered password (.*)")
-	 public void WhenIHaveEnteredPassword(String password) {
-		 password = CommonUtils.retrieveRealUserContactPasswordValue(password);
-		 CommonSteps.senderPages.getLoginPage().setPassword(password);
-	 }
-	 
-	 @Given ("I see Sign In screen")
-	 public void GivenISeeSignInScreen() {
-		 Assert.assertNotNull(CommonSteps.senderPages.getLoginPage().isVisible());
-	 }
-	 
-	 @Given ("I am signed out from ZClient")
-	 public void GivenIAmSignedOutFromZClient() throws MalformedURLException, IOException {
-		 CommonSteps.senderPages.getLoginPage().logoutIfNotSignInPage();
-	 }
-	 
-	 @Then("I have returned to Sign In screen")
-	 public void ThenISeeSignInScreen() {
-		 Assert.assertTrue("Failed to logout", CommonSteps.senderPages.getContactListPage().waitForSignOut());
-		 Assert.assertTrue(CommonSteps.senderPages.getContactListPage().isSignOutFinished());
-	 }
-	 
-	 @When("I start registration")
-	 public void IStartRegistration() throws MalformedURLException {
-		 RegistrationPage registration = CommonSteps.senderPages.getLoginPage().startRegistration();
-		 CommonSteps.senderPages.setRegistrationPage(registration);
-	 }
+
+	@When("I start Sign In")
+	public void WhenIStartSignIn() {
+		CommonOSXSteps.senderPages.getLoginPage().startSignIn();
+	}
+
+	@When("I press Sign In button")
+	public void WhenIPressSignInButton() throws IOException {
+		OSXPage page = CommonOSXSteps.senderPages.getLoginPage()
+				.confirmSignIn();
+		Assert.assertNotNull(
+				"After sign in button click Login page or Contact List page should appear. Page couldn't be null",
+				page);
+		if (page instanceof ContactListPage) {
+			CommonOSXSteps.senderPages
+					.setContactListPage((ContactListPage) page);
+		}
+	}
+
+	@When("I have entered login (.*)")
+	public void WhenIHaveEnteredLogin(String login) {
+		try {
+			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
+		CommonOSXSteps.senderPages.getLoginPage().setLogin(login);
+	}
+
+	@When("I have entered password (.*)")
+	public void WhenIHaveEnteredPassword(String password) {
+		try {
+			password = usrMgr.findUserByPasswordAlias(password).getPassword();
+		} catch (NoSuchElementException e) {
+			// Ignore silently
+		}
+		CommonOSXSteps.senderPages.getLoginPage().setPassword(password);
+	}
+
+	@Given("I see Sign In screen")
+	public void GivenISeeSignInScreen() {
+		Assert.assertNotNull(CommonOSXSteps.senderPages.getLoginPage()
+				.isVisible());
+	}
+
+	@Given("I am signed out from ZClient")
+	public void GivenIAmSignedOutFromZClient() throws Exception {
+		CommonOSXSteps.senderPages.getLoginPage().logoutIfNotSignInPage();
+	}
+
+	@Then("I have returned to Sign In screen")
+	public void ThenISeeSignInScreen() {
+		Assert.assertTrue("Failed to logout", CommonOSXSteps.senderPages
+				.getContactListPage().waitForSignOut());
+		Assert.assertTrue(CommonOSXSteps.senderPages.getContactListPage()
+				.isSignOutFinished());
+	}
+
+	@When("I start registration")
+	public void IStartRegistration() throws MalformedURLException {
+		RegistrationPage registration = CommonOSXSteps.senderPages
+				.getLoginPage().startRegistration();
+		CommonOSXSteps.senderPages.setRegistrationPage(registration);
+	}
 }

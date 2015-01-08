@@ -22,7 +22,7 @@ public abstract class AssetData {
 	public void setConvId(String convId) {
 		this.convId = convId;
 	}
-
+	
 	public void verifyMandatoryFields() throws MandatoryFieldNotSetException {
 		if (this.getConvId() == null) {
 			throw new MandatoryFieldNotSetException(

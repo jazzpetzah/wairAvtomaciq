@@ -16,7 +16,7 @@ public abstract class AssetRequestBuilder {
 		this.processor = processor;
 	}
 	
-	protected List<AssetData> getProcessedAssets() throws Throwable {
+	protected List<AssetData> getProcessedAssets() throws Exception {
 		return this.getProcessor().processAsset();
 	}
 	
