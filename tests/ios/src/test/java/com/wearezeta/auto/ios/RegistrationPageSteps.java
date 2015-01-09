@@ -348,12 +348,12 @@ public class RegistrationPageSteps {
 
 	@When("^I submit registration data$")
 	public void ISubmitRegistrationData() throws Exception {
-		PagesCollection.registrationPage.createAccount();
-
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
 		this.listener = IMAPSMailbox.createDefaultInstance().startMboxListener(
 				expectedHeaders);
+
+		PagesCollection.registrationPage.createAccount();
 	}
 
 	@Then("^I confirm that (\\d+) recent emails in inbox contain (\\d+) for current recipient$")

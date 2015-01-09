@@ -227,6 +227,7 @@ Feature: Connect
     When I minimize the application
     And <Contact> has sent connection request to Me
     And I restore the application
+    And I press back button
     And I see contact list loaded with User name <WaitingMess>
     And I tap on contact name <WaitingMess>
     Then I see connect to <Contact> dialog
