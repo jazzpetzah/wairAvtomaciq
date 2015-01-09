@@ -57,7 +57,9 @@ public class RegistrationPageSteps {
 		try {
 			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
 		} catch (NoSuchElementException e) {
-			this.userToRegister = new ClientUser();
+			if (this.userToRegister == null) {
+				this.userToRegister = new ClientUser();
+			}
 			this.userToRegister.setName(name);
 			this.userToRegister.addNameAlias(name);
 		}
@@ -65,12 +67,15 @@ public class RegistrationPageSteps {
 	}
 
 	@When("^I enter email (.*)$")
-	public void IEnterEmail(String email) {
+	public void IEnterEmail(String email) throws Exception {
 		try {
 			String realEmail = usrMgr.findUserByEmailOrEmailAlias(email)
 					.getEmail();
 			this.userToRegister.setEmail(realEmail);
 		} catch (NoSuchElementException e) {
+			if (this.userToRegister == null) {
+				this.userToRegister = new ClientUser();
+			}
 			this.userToRegister.setEmail(email);
 		}
 		this.userToRegister.clearEmailAliases();
@@ -80,12 +85,15 @@ public class RegistrationPageSteps {
 	}
 
 	@When("^I enter password (.*)$")
-	public void IEnterPassword(String password) {
+	public void IEnterPassword(String password) throws Exception {
 		try {
 			String realPassword = usrMgr.findUserByPasswordAlias(password)
 					.getPassword();
 			this.userToRegister.setPassword(realPassword);
 		} catch (NoSuchElementException e) {
+			if (this.userToRegister == null) {
+				this.userToRegister = new ClientUser();
+			}
 			this.userToRegister.setPassword(password);
 		}
 		this.userToRegister.clearPasswordAliases();
@@ -96,12 +104,12 @@ public class RegistrationPageSteps {
 
 	@When("^I submit registration data$")
 	public void ISubmitRegistrationData() throws Exception {
+		PagesCollection.registrationPage.createAccount();
+
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
 		this.listener = IMAPSMailbox.createDefaultInstance().startMboxListener(
 				expectedHeaders);
-
-		PagesCollection.registrationPage.createAccount();
 	}
 
 	@Then("^I see confirmation page$")

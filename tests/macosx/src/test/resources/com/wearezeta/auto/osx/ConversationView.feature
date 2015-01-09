@@ -71,9 +71,9 @@ Feature: Conversation
     And I send message
     Then I see random message in conversation
 
-    Examples:
-      | Login      | Password      | Name      | Contact1   | Contact2  | ChatName             |
-      | user1Email | user1Password | user1Name | user2Name  | user3Name | SendMessageGroupChat |
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessageGroupChat |
 
   @regression @1408
   Scenario Outline: Send picture to group chat
@@ -86,9 +86,9 @@ Feature: Conversation
     When I send picture testing.jpg
     Then I see picture in conversation
 
-    Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2   | ChatName             |
-      | user1Email | user1Password | user1Name | user2Name | user3Name  | SendPictureGroupChat |
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | SendPictureGroupChat |
 
   @regression @id81
   Scenario Outline: Play embedded SoundCloud link in conversation
@@ -103,7 +103,7 @@ Feature: Conversation
     And I tap SoundCloud link
     Then I see the embedded media is playing
 
-    Examples:
+    Examples: 
       | Login      | Password      | Name      | Contact   | SoundCloudLink                               |
       | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/djsliinkbbc/2-test-me |
 
@@ -155,7 +155,6 @@ Feature: Conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
-    Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
@@ -163,19 +162,21 @@ Feature: Conversation
     And I send message
     And I see random message in conversation
     When I am signing out
+    And I reset Wire defaults and restart client
     And I Sign in using login <Contact1> and password <Password>
     And I see my name <Contact1> in Contact list
     And I open conversation with <ChatName>
     Then I see random message in conversation
     And I am signing out
+    And I reset Wire defaults and restart client
     And I Sign in using login <Contact2> and password <Password>
     And I see my name <Contact2> in Contact list
     And I open conversation with <ChatName>
     Then I see random message in conversation
 
-    Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2   | ChatName             |
-      | user1Email | user1Password | user1Name | user2Name | user3Name  | SecondEndTextChat    |
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName          |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | SecondEndTextChat |
 
   @regression @id623
   Scenario Outline: Image sent to group chat is visible on other end
@@ -188,19 +189,21 @@ Feature: Conversation
     And I send picture testing.jpg
     And I see picture in conversation
     When I am signing out
+    And I reset Wire defaults and restart client
     And I Sign in using login <Contact1> and password <Password>
     And I see my name <Contact1> in Contact list
     And I open conversation with <ChatName>
     Then I see picture in conversation
     And I am signing out
+    And I reset Wire defaults and restart client
     And I Sign in using login <Contact2> and password <Password>
     And I see my name <Contact2> in Contact list
     And I open conversation with <ChatName>
     Then I see picture in conversation
 
-    Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2   | ChatName             |
-      | user1Email | user1Password | user1Name | user2Name | user3Name  | SecondEndImageChat   |
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName           |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | SecondEndImageChat |
 
   @regression @id625
   Scenario Outline: Multimedia message sent to group chat is visible on other end
@@ -213,19 +216,21 @@ Feature: Conversation
     When I post media link <SoundCloudLink>
     And I see media link <SoundCloudLink> and media in dialog
     And I am signing out
+    And I reset Wire defaults and restart client
     And I Sign in using login <Contact1> and password <Password>
     And I see my name <Contact1> in Contact list
     And I open conversation with <ChatName>
     Then I see media link <SoundCloudLink> and media in dialog
     And I am signing out
+    And I reset Wire defaults and restart client
     And I Sign in using login <Contact2> and password <Password>
     And I see my name <Contact2> in Contact list
     And I open conversation with <ChatName>
     Then I see media link <SoundCloudLink> and media in dialog
 
-    Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2   | SoundCloudLink                                  | ChatName        |
-      | user1Email | user1Password | user1Name | user2Name | user3Name  | https://soundcloud.com/djsliinkbbc/2-test-me    | SecondEndMMChat |
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | SoundCloudLink                               | ChatName        |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | https://soundcloud.com/djsliinkbbc/2-test-me | SecondEndMMChat |
 
   @regression @id381
   Scenario Outline: The media bar disappears after playback finishes
@@ -242,9 +247,9 @@ Feature: Conversation
     And I wait <Time> seconds till playback finishes
     Then I see media bar disappears
 
-    Examples:
-      | Login      | Password      | Name      | Contact   | SoundCloudLink                             |
-      | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/20sekunder/erika-no |
+    Examples: 
+      | Login      | Password      | Name      | Contact   | SoundCloudLink                             | Time |
+      | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/20sekunder/erika-no | 30   |
 
   @regression @id378
   Scenario Outline: Media bar disappears when playing media is back in view
@@ -263,7 +268,7 @@ Feature: Conversation
     Then I see the embedded media is playing
     Then I see media bar disappears
 
-    Examples:
+    Examples: 
       | Login      | Password      | Name      | Contact   | SoundCloudLink                               |
       | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/djsliinkbbc/2-test-me |
 
@@ -282,4 +287,3 @@ Feature: Conversation
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
-

@@ -74,12 +74,15 @@ public class UserProfilePageSteps {
 		userProfile.openPictureSettings();
 		BufferedImage referenceImage = userProfile.takeScreenshot();
 
+		final double minOverlapScore = 0.55d;
 		BufferedImage templateImage = ImageUtil
 				.readImageFromFile(OSXPage.imagesPath + filename);
-		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);
+		final double score = ImageUtil.getOverlapScore(referenceImage,
+				templateImage);
 		Assert.assertTrue(
-				"Overlap between two images has no enough score. Expected >= 0.55, current = "
-						+ score, score >= 0.55d);
+				String.format(
+						"Overlap between two images has no enough score. Expected >= %f, current = %f",
+						minOverlapScore, score), score >= minOverlapScore);
 	}
 
 	@Then("^I see changed user picture$")
@@ -88,11 +91,13 @@ public class UserProfilePageSteps {
 				.getUserProfilePage();
 		BufferedImage userProfileAfter = userProfile.takeScreenshot();
 
-		double score = ImageUtil.getOverlapScore(userProfileAfter,
+		final double minOverlapScore = 0.985d;
+		final double score = ImageUtil.getOverlapScore(userProfileAfter,
 				userProfileBefore, ImageUtil.RESIZE_NORESIZE);
-		Assert.assertFalse(
-				"Overlap between two images has no enough score. Expected >= 0.985, current = "
-						+ score, score >= 0.985d);
+		Assert.assertTrue(
+				String.format(
+						"Overlap between two images has no enough score. Expected >= %f, current = %f",
+						minOverlapScore, score), score >= minOverlapScore);
 	}
 
 	@When("I select to remove photo")

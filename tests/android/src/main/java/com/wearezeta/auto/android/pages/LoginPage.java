@@ -122,6 +122,9 @@ public class LoginPage extends AndroidPage {
 		}
 	}
 
+	public boolean waitForLoginScreenDisappear() {
+		return DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.LoginPage.idLoginButton), 40);
+	}
 	public boolean waitForLogin() {
 
 		return DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.LoginPage.idLoginProgressBar), 40);

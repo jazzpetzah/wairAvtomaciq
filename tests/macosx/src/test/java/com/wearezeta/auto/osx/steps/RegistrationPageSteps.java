@@ -35,7 +35,9 @@ public class RegistrationPageSteps {
 		try {
 			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
 		} catch (NoSuchElementException e) {
-			this.userToRegister = new ClientUser();
+			if (this.userToRegister == null) {
+				this.userToRegister = new ClientUser();
+			}
 			this.userToRegister.setName(name);
 			this.userToRegister.clearNameAliases();
 			this.userToRegister.addNameAlias(name);
@@ -51,6 +53,9 @@ public class RegistrationPageSteps {
 					.getEmail();
 			this.userToRegister.setEmail(realEmail);
 		} catch (NoSuchElementException e) {
+			if (this.userToRegister == null) {
+				this.userToRegister = new ClientUser();
+			}
 			this.userToRegister.setEmail(email);
 			this.userToRegister.clearEmailAliases();
 			this.userToRegister.addEmailAlias(email);
@@ -65,6 +70,9 @@ public class RegistrationPageSteps {
 			this.userToRegister.setPassword(usrMgr.findUserByPasswordAlias(
 					password).getPassword());
 		} catch (NoSuchElementException e) {
+			if (this.userToRegister == null) {
+				this.userToRegister = new ClientUser();
+			}
 			this.userToRegister.setPassword(password);
 			this.userToRegister.clearPasswordAliases();
 			this.userToRegister.addPasswordAlias(password);
@@ -75,11 +83,12 @@ public class RegistrationPageSteps {
 
 	@When("I submit registration data")
 	public void ISubmitRegistrationData() throws Exception {
-		CommonOSXSteps.senderPages.getRegistrationPage().submitRegistration();
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
 		this.listener = IMAPSMailbox.createDefaultInstance().startMboxListener(
 				expectedHeaders);
+
+		CommonOSXSteps.senderPages.getRegistrationPage().submitRegistration();
 	}
 
 	@Then("I see confirmation page")

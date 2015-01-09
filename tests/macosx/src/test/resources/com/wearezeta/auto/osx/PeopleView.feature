@@ -56,7 +56,6 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
-    Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open conversation with <ChatName>
@@ -249,12 +248,14 @@ Feature: People View
     And I open conversation with <Contact1>, <Contact2>
     And I see message YOU STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
     When I am signing out
+    And I reset Wire defaults and restart client
     And I Sign in using login <Contact1> and password <Password>
     And I see my name <Contact1> in Contact list
     Then I see Contact list with name <Login>, <Contact2>
     And I open conversation with <Login>, <Contact2>
     And I see message <Login> STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
     And I am signing out
+    And I reset Wire defaults and restart client
     And I Sign in using login <Contact2> and password <Password>
     And I see my name <Contact2> in Contact list
     Then I see Contact list with name <Login>, <Contact1>
@@ -286,6 +287,7 @@ Feature: People View
     And I open conversation with <ChatName>
     And I see message YOU LEFT in conversation
     Then I am signing out
+    And I reset Wire defaults and restart client
     And I Sign in using login <Contact1> and password <Password>
     And I see my name <Contact1> in Contact list
     And I open conversation with <ChatName>
