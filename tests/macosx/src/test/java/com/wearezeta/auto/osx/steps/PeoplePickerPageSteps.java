@@ -40,6 +40,13 @@ public class PeoplePickerPageSteps {
 			} catch (NoSuchElementException e) {
 			// Ignore silently
 			}
+		boolean userInSearchResult = CommonOSXSteps.senderPages.getPeoplePickerPage().areSearchResultsContainUser(user);
+		if(!userInSearchResult){
+			CommonOSXSteps.senderPages.getPeoplePickerPage().closePeoplePicker();
+			Thread.sleep(1000);
+			CommonOSXSteps.senderPages.getContactListPage().openPeoplePicker();
+			ISearchByEmailForUser(user);
+		}
 			Assert.assertTrue(
 			"User " + user + " not found in results",
 			CommonOSXSteps.senderPages.getPeoplePickerPage().areSearchResultsContainUser(user));
@@ -80,5 +87,15 @@ public class PeoplePickerPageSteps {
 			topPeopleisVisible = CommonOSXSteps.senderPages.getPeoplePickerPage().isTopPeopleVisible();
 		}
 		Assert.assertTrue("Top People not shown ", topPeopleisVisible);
+	}
+	
+	@Then("^I choose person from Top People$")
+	public void IChoosePersonFromTopPeople() throws Throwable {
+		CommonOSXSteps.senderPages.getPeoplePickerPage().selectUserFromTopPeople();
+	}
+
+	@Then("^I press create conversation to enter conversation$")
+	public void IPressCreateConversationToEnterConversation() throws Throwable {
+		CommonOSXSteps.senderPages.getPeoplePickerPage().addSelectedUsersToConversation();
 	}
 }
