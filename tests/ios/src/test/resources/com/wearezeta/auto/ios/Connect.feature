@@ -147,10 +147,11 @@ Feature: Connect
 
   @regression @id579
   Scenario Outline: Verify transitions between connection requests (ignoring)
-    Given There are 4 users where <Name> is me
+    Given There are 5 users where <Name> is me
     Given <Contact1> has sent connection request to me
     Given <Contact2> has sent connection request to me
     Given <Contact3> has sent connection request to me
+    Given Myself is connected to <Contact4>
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I see Pending request link in contact list
@@ -158,7 +159,7 @@ Feature: Connect
     And I see Pending request page
     And I click on Ignore button on Pending requests page <SentRequests> times
     And I dont see Pending request link in contact list
-    And I don't see conversation with not connected user <NotConnectedUser>
+    And I don't see conversation with not connected user <Contact1>
     And I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -166,8 +167,8 @@ Feature: Connect
     Then I see Pending request page
 
     Examples:
-      | Login      | Password      | Name      | Contact1     | Contact2   | Contact3   |
-      | user1Email | user1Password | user1Name | user2Name    | user3Name  | user4Name  |
+      | Login      | Password      | Name      | Contact1     | Contact2   | Contact3   | Contact4  | SentRequests |
+      | user1Email | user1Password | user1Name | user2Name    | user3Name  | user4Name  | user5Name |      3       |
 
   @regression @id1404
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (Search)
