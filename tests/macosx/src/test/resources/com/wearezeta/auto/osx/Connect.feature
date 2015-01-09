@@ -49,12 +49,12 @@ Feature: Connect to user
     Then I see Contact list with name <Contact>
 
     Examples: 
-      | Login   | Password    | Name    | Contact  |
-      | aqaUser | aqaPassword | aqaUser | yourUser |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
       
   @torun @staging @id1407
   Scenario Outline: Verify impossiibility of starting 1:1 conversation with pending  user (Search)
-  	Given I have 2 users and 0 contacts for 0 users
+  	Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open People Picker from contact list
@@ -64,5 +64,5 @@ Feature: Connect to user
     And I send invitation to user
     
     Examples: 
-      | Login   | Password    | Name    | Contact  |
-      | aqaUser | aqaPassword | aqaUser | yourUser |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
