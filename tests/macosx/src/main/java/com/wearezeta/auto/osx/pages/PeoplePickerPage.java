@@ -46,6 +46,9 @@ public class PeoplePickerPage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathPeoplePickerTopContacts)
 	private WebElement peoplePickerTopContacts;
 	
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathPeoplePickerTopContactAvatar)
+	private WebElement peoplePickerTopContactAvatar;
+	
 	
 	public PeoplePickerPage(String URL, String path) throws MalformedURLException {
 		super(URL, path);
@@ -208,5 +211,9 @@ public class PeoplePickerPage extends OSXPage {
 //				By.xpath(OSXLocators.xpathPeoplePickerTopContactsSectionHeader));
 		return DriverUtils.waitUntilElementAppears(driver,
 				By.xpath(OSXLocators.xpathPeoplePickerTopContacts));		
+	}
+	
+	public void selectUserFromTopPeople(){
+		peoplePickerTopContactAvatar.click();
 	}
 }
