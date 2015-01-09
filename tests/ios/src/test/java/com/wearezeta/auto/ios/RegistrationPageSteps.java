@@ -199,6 +199,7 @@ public class RegistrationPageSteps {
 
 	@When("^I enter email (.*)$")
 	public void IEnterEmail(String email) throws IOException {
+		boolean flag = false;
 		try {
 			String realEmail = usrMgr.findUserByEmailOrEmailAlias(email)
 					.getEmail();
@@ -207,12 +208,16 @@ public class RegistrationPageSteps {
 			if (this.userToRegister == null) {
 				this.userToRegister = new ClientUser();
 			}
-			this.userToRegister.setEmail(email);
+			flag = true;
 		}
-		this.userToRegister.clearEmailAliases();
-		this.userToRegister.addEmailAlias(email);
-		PagesCollection.registrationPage.setEmail(this.userToRegister
-				.getEmail() + "\n");
+
+		if (flag) {
+			PagesCollection.registrationPage.setEmail(email + "\n");
+		}
+		else {
+			PagesCollection.registrationPage.setEmail(this.userToRegister
+					.getEmail() + "\n");
+		}
 	}
 
 	@When("^I input email (.*) and hit Enter$")
