@@ -30,8 +30,13 @@ public class LoginPageSteps {
 		try {
 			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
 		} catch (NoSuchElementException e) {
-			// Ignore silently
+			try {
+				//search for email by name aliases in case name is specified
+				login = usrMgr.findUserByNameOrNameAlias(login).getEmail();
+			} catch (NoSuchElementException ex) {
+			}
 		}
+		
 		try {
 			password = usrMgr.findUserByPasswordAlias(password).getPassword();
 		} catch (NoSuchElementException e) {

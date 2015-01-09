@@ -128,6 +128,7 @@ public class ClientUsersManager {
 	}
 
 	public ClientUser findUserBy(String searchStr, FindBy findBy) {
+		searchStr = searchStr.trim();
 		for (ClientUser user : users) {
 			Set<String> aliases = new HashSet<String>();
 			if (findBy == FindBy.NAME_ALIAS) {
