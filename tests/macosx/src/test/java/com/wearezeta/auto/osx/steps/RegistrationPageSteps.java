@@ -83,11 +83,12 @@ public class RegistrationPageSteps {
 
 	@When("I submit registration data")
 	public void ISubmitRegistrationData() throws Exception {
-		CommonOSXSteps.senderPages.getRegistrationPage().submitRegistration();
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
 		this.listener = IMAPSMailbox.createDefaultInstance().startMboxListener(
 				expectedHeaders);
+
+		CommonOSXSteps.senderPages.getRegistrationPage().submitRegistration();
 	}
 
 	@Then("I see confirmation page")
