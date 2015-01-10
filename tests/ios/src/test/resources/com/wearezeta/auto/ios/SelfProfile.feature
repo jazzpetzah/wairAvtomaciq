@@ -48,5 +48,5 @@ Feature: Self Profile
     And I see error message asking for more characters
 
     Examples: 
-      | Login   | Password    | Name    | username |
-      | aqaUser | aqaPassword | aqaUser | c        |
+      | Login      | Password      | Name      | username |
+      | user1Email | user1Password | user1Name | c        |
