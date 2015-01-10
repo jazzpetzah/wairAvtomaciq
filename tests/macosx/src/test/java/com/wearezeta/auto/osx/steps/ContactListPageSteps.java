@@ -2,7 +2,6 @@ package com.wearezeta.auto.osx.steps;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -11,6 +10,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.StringParser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationInfoPage;
@@ -55,7 +55,7 @@ public class ContactListPageSteps {
 		} else {
 			try {
 				name = usrMgr.findUserByNameOrNameAlias(name).getName();
-			} catch (NoSuchElementException e) {
+			} catch (NoSuchUserException e) {
 				// Silently ignore
 			}
 		}
@@ -66,18 +66,19 @@ public class ContactListPageSteps {
 
 	@Given("I do not see conversation {1}(.*) {1}in contact list")
 	public void IDoNotSeeConversationInContactList(String conversation)
-			throws IOException {
+			throws Exception {
 		try {
-			conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
-		} catch (NoSuchElementException e) {
-			//do nothing
+			conversation = usrMgr.findUserByNameOrNameAlias(conversation)
+					.getName();
+		} catch (NoSuchUserException e) {
+			// do nothing
 		}
 		Assert.assertTrue(CommonOSXSteps.senderPages.getContactListPage()
 				.isContactWithNameDoesNotExist(conversation));
 	}
 
 	@Then("Contact list appears with my name (.*)")
-	public void ThenContactListAppears(String name) {
+	public void ThenContactListAppears(String name) throws Exception {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		Assert.assertTrue("Login finished", CommonOSXSteps.senderPages
 				.getLoginPage().waitForLogin());
@@ -85,29 +86,32 @@ public class ContactListPageSteps {
 				CommonOSXSteps.senderPages.getLoginPage().isLoginFinished(name));
 	}
 
-	private String findNoNameGroupChatContacts(String groupChat) {
+	private String findNoNameGroupChatContacts(String groupChat)
+			throws NoSuchUserException {
 		String result = "";
 		String contacts[] = groupChat.split(",");
 		for (int i = 0; i < contacts.length; i++) {
-			result += usrMgr.findUserByNameOrNameAlias(contacts[i].trim()).getName();
-			if (i < contacts.length-1) {
+			result += usrMgr.findUserByNameOrNameAlias(contacts[i].trim())
+					.getName();
+			if (i < contacts.length - 1) {
 				result += ",";
 			}
 		}
 		return result;
 	}
-	
+
 	private void clickOnContactListEntry(String contact, boolean isUserProfile)
-			throws MalformedURLException, IOException {
+			throws MalformedURLException, IOException, NoSuchUserException {
 		if (contact.equals(OSXLocators.RANDOM_KEYWORD)) {
 			contact = CommonOSXSteps.senderPages.getConversationInfoPage()
 					.getCurrentConversationName();
 		} else {
 			if (!contact.contains(",")) {
 				try {
-					contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-				} catch (NoSuchElementException e) {
-					//do nothing
+					contact = usrMgr.findUserByNameOrNameAlias(contact)
+							.getName();
+				} catch (NoSuchUserException e) {
+					// do nothing
 				}
 			} else {
 				contact = findNoNameGroupChatContacts(contact);
@@ -131,8 +135,7 @@ public class ContactListPageSteps {
 	}
 
 	@Given("I open conversation with (.*)")
-	public void GivenIOpenConversationWith(String contact)
-			throws MalformedURLException, IOException {
+	public void GivenIOpenConversationWith(String contact) throws Exception {
 		clickOnContactListEntry(contact, false);
 		CommonOSXSteps.senderPages
 				.setConversationPage(new ConversationPage(
@@ -143,8 +146,7 @@ public class ContactListPageSteps {
 	}
 
 	@Given("I go to user (.*) profile")
-	public void GivenIGoToUserProfile(String user)
-			throws MalformedURLException, IOException {
+	public void GivenIGoToUserProfile(String user) throws Exception {
 		clickOnContactListEntry(user, true);
 		CommonOSXSteps.senderPages
 				.setUserProfilePage(new UserProfilePage(
@@ -167,7 +169,8 @@ public class ContactListPageSteps {
 	}
 
 	@When("I change mute state of conversation with (.*)")
-	public void IChangeConversationMuteState(String conversation) {
+	public void IChangeConversationMuteState(String conversation)
+			throws Exception {
 		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
 		ContactListPage contactList = CommonOSXSteps.senderPages
 				.getContactListPage();
@@ -175,7 +178,7 @@ public class ContactListPageSteps {
 	}
 
 	@Then("I see conversation (.*) is muted")
-	public void ISeeConversationIsMuted(String conversation) {
+	public void ISeeConversationIsMuted(String conversation) throws Exception {
 		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
 		ContactListPage contactList = CommonOSXSteps.senderPages
 				.getContactListPage();
@@ -185,7 +188,7 @@ public class ContactListPageSteps {
 	}
 
 	@Then("I see conversation (.*) is unmuted")
-	public void ISeeConversationIsUnmuted(String conversation) {
+	public void ISeeConversationIsUnmuted(String conversation) throws Exception {
 		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
 		ContactListPage contactList = CommonOSXSteps.senderPages
 				.getContactListPage();
@@ -207,7 +210,7 @@ public class ContactListPageSteps {
 	}
 
 	@When("I archive conversation with (.*)")
-	public void IArchiveConversation(String conversation) {
+	public void IArchiveConversation(String conversation) throws Exception {
 		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
 		ContactListPage contactList = CommonOSXSteps.senderPages
 				.getContactListPage();

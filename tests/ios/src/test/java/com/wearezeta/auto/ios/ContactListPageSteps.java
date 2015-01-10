@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios;
 
 import java.io.IOException;
-import java.util.NoSuchElementException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -13,6 +12,7 @@ import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.*;
 
 public class ContactListPageSteps {
@@ -48,7 +48,7 @@ public class ContactListPageSteps {
 	}
 
 	@When("^I tap on my name (.*)$")
-	public void WhenITapOnMyName(String name) throws IOException {
+	public void WhenITapOnMyName(String name) throws Exception {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		IOSPage page = PagesCollection.contactListPage.tapOnName(name);
 
@@ -61,10 +61,10 @@ public class ContactListPageSteps {
 	}
 
 	@When("^I tap on contact name (.*)$")
-	public void WhenITapOnContactName(String name) throws IOException {
+	public void WhenITapOnContactName(String name) throws Exception {
 		try {
 			name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		IOSPage page = PagesCollection.contactListPage.tapOnName(name);
@@ -127,7 +127,7 @@ public class ContactListPageSteps {
 
 		Thread.sleep(2000); // wait for group chat to appear
 		GroupChatPageSteps groupChatSteps = new GroupChatPageSteps();
-		final String[] names = new String[] {contact1, contact2};
+		final String[] names = new String[] { contact1, contact2 };
 		groupChatSteps.ThenISeeGroupChatPage(StringUtils.join(names,
 				CommonSteps.ALIASES_SEPARATOR));
 	}
@@ -140,7 +140,7 @@ public class ContactListPageSteps {
 
 	@Then("^I see (.*) and (.*) chat in contact list$")
 	public void ISeeGroupChatInContactList(String contact1, String contact2)
-			throws InterruptedException {
+			throws Exception {
 		contact1 = usrMgr.findUserByNameOrNameAlias(contact1).getName();
 		contact2 = usrMgr.findUserByNameOrNameAlias(contact2).getName();
 		Assert.assertTrue(PagesCollection.contactListPage
@@ -149,7 +149,7 @@ public class ContactListPageSteps {
 
 	@Then("^I tap on a group chat with (.*) and (.*)$")
 	public void ITapOnGroupChat(String contact1, String contact2)
-			throws IOException {
+			throws Exception {
 		contact1 = usrMgr.findUserByNameOrNameAlias(contact1).getName();
 		contact2 = usrMgr.findUserByNameOrNameAlias(contact2).getName();
 		PagesCollection.contactListPage.tapOnUnnamedGroupChat(contact1,
@@ -157,7 +157,7 @@ public class ContactListPageSteps {
 	}
 
 	@When("^I swipe right on a (.*)$")
-	public void ISwipeRightOnContact(String contact) throws IOException {
+	public void ISwipeRightOnContact(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		PagesCollection.contactListPage.swipeRightOnContact(500, contact);
 	}
@@ -170,14 +170,14 @@ public class ContactListPageSteps {
 	}
 
 	@Then("^Contact (.*) is muted$")
-	public void ContactIsMuted(String contact) throws IOException {
+	public void ContactIsMuted(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertTrue(PagesCollection.contactListPage
 				.isContactMuted(contact));
 	}
 
 	@Then("^Contact (.*) is not muted$")
-	public void ContactIsNotMuted(String contact) throws IOException {
+	public void ContactIsNotMuted(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertFalse(PagesCollection.contactListPage
 				.isContactMuted(contact));
@@ -195,14 +195,16 @@ public class ContactListPageSteps {
 	}
 
 	@When("I see play/pause button next to username (.*) in contact list")
-	public void ISeePlayPauseButtonNextToUserName(String contact) {
+	public void ISeePlayPauseButtonNextToUserName(String contact)
+			throws Exception {
 		String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertTrue(PagesCollection.contactListPage
 				.isPlayPauseButtonVisible(name));
 	}
 
 	@When("I dont see play/pause button next to username (.*) in contact list")
-	public void IDontSeePlayPauseButtonNextToUserName(String contact) {
+	public void IDontSeePlayPauseButtonNextToUserName(String contact)
+			throws Exception {
 		String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertFalse(PagesCollection.contactListPage
 				.isPlayPauseButtonVisible(name));
@@ -215,7 +217,7 @@ public class ContactListPageSteps {
 
 	@When("I tap play/pause button in contact list next to username (.*)")
 	public void ITapPlayPauseButtonInContactListNextTo(String contact)
-			throws InterruptedException {
+			throws Exception {
 		String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		PagesCollection.contactListPage.tapPlayPauseButtonNextTo(name);
 	}
@@ -245,14 +247,14 @@ public class ContactListPageSteps {
 	}
 
 	@When("I see conversation with not connected user (.*)")
-	public void ISeeConversationWithUser(String name) {
+	public void ISeeConversationWithUser(String name) throws Exception {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		Assert.assertTrue(PagesCollection.contactListPage
 				.isDisplayedInContactList(name));
 	}
 
 	@When("I don't see conversation with not connected user (.*)")
-	public void IDontSeeConversationWithUser(String name) {
+	public void IDontSeeConversationWithUser(String name) throws Exception {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		Assert.assertFalse(PagesCollection.contactListPage
 				.isDisplayedInContactList(name));
@@ -260,7 +262,7 @@ public class ContactListPageSteps {
 
 	@When("I see in contact list group chat with (.*) (.*) (.*)")
 	public void ISeeInContactsGroupChatWith(String name1, String name2,
-			String name3) {
+			String name3) throws Exception {
 		name1 = usrMgr.findUserByNameOrNameAlias(name1).getName();
 		name2 = usrMgr.findUserByNameOrNameAlias(name2).getName();
 		name3 = usrMgr.findUserByNameOrNameAlias(name3).getName();
@@ -272,7 +274,7 @@ public class ContactListPageSteps {
 
 	@When("I don't see in contact list group chat with (.*) (.*) (.*)")
 	public void IDontSeeInContactsGroupChatWith(String name1, String name2,
-			String name3) {
+			String name3) throws Exception {
 		name1 = usrMgr.findUserByNameOrNameAlias(name1).getName();
 		name2 = usrMgr.findUserByNameOrNameAlias(name2).getName();
 		name3 = usrMgr.findUserByNameOrNameAlias(name3).getName();

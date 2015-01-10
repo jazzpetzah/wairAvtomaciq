@@ -16,7 +16,7 @@ public class OtherUserPersonalInfoPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	
 	@When("^I see (.*) user profile page$")
-	public void WhenISeeOtherUserProfilePage(String name){
+	public void WhenISeeOtherUserProfilePage(String name) throws Exception {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage.isOtherUserProfileNameVisible(name));
 	}

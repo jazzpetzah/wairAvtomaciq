@@ -3,9 +3,9 @@ package com.wearezeta.auto.ios;
 import org.junit.Assert;
 
 import java.io.IOException;
-import java.util.NoSuchElementException;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
@@ -25,12 +25,12 @@ public class LoginPageSteps {
 			InterruptedException {
 		try {
 			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		try {
 			password = usrMgr.findUserByPasswordAlias(password).getPassword();
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		Assert.assertNotNull(PagesCollection.loginPage.isVisible());
@@ -72,7 +72,7 @@ public class LoginPageSteps {
 	public void WhenIHaveEnteredLogin(String login) throws IOException {
 		try {
 			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		PagesCollection.loginPage.setLogin(login);
@@ -82,7 +82,7 @@ public class LoginPageSteps {
 	public void WhenIHaveEnteredPassword(String password) throws IOException {
 		try {
 			password = usrMgr.findUserByPasswordAlias(password).getPassword();
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		PagesCollection.loginPage.setPassword(password);

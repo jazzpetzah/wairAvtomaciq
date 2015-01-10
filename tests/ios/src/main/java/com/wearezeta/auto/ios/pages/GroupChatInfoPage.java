@@ -17,6 +17,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class GroupChatInfoPage extends IOSPage {
@@ -175,13 +176,16 @@ public class GroupChatInfoPage extends IOSPage {
 		}
 	}
 
-	public ClientUser getParticipantUser(WebElement participant) {
-		return usrMgr.findUserByNameOrNameAlias(getParticipantName(participant));
+	public ClientUser getParticipantUser(WebElement participant)
+			throws NoSuchUserException {
+		return usrMgr
+				.findUserByNameOrNameAlias(getParticipantName(participant));
 	}
 
-	public IOSPage tapOnParticipant(String participantName) throws IOException {
+	public IOSPage tapOnParticipant(String participantName) throws Exception {
 		IOSPage page = null;
-		participantName = usrMgr.findUserByNameOrNameAlias(participantName).getName();
+		participantName = usrMgr.findUserByNameOrNameAlias(participantName)
+				.getName();
 		List<WebElement> participants = getCurrentParticipants();
 		for (WebElement participant : participants) {
 			if (getParticipantName(participant).equalsIgnoreCase(
@@ -195,7 +199,8 @@ public class GroupChatInfoPage extends IOSPage {
 				"No participant was found with the name: " + participantName);
 	}
 
-	public boolean isCorrectConversationName(String contact1, String contact2) {
+	public boolean isCorrectConversationName(String contact1, String contact2)
+			throws Exception {
 		if (conversationNameTextField.getText().equals(conversationName)) {
 			return true;
 		} else {
