@@ -249,22 +249,22 @@ Feature: People View
     And I see message YOU STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
     When I am signing out
     And I reset Wire defaults and restart client
-    And I Sign in using login <Contact1> and password <Password>
+    And I Sign in using login <Contact1Email> and password <Password>
     And I see my name <Contact1> in Contact list
-    Then I see Contact list with name <Login>, <Contact2>
-    And I open conversation with <Login>, <Contact2>
-    And I see message <Login> STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
+    Then I see Contact list with name <Name>, <Contact2>
+    And I open conversation with <Name>, <Contact2>
+    And I see message <Name> STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
     And I am signing out
     And I reset Wire defaults and restart client
-    And I Sign in using login <Contact2> and password <Password>
+    And I Sign in using login <Contact2Email> and password <Password>
     And I see my name <Contact2> in Contact list
-    Then I see Contact list with name <Login>, <Contact1>
-    And I open conversation with <Login>, <Contact1>
-    And I see message <Login> STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
+    Then I see Contact list with name <Name>, <Contact1>
+    And I open conversation with <Name>, <Contact1>
+    And I see message <Name> STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name |
+      | Login      | Password      | Name      | Contact1  | Contact1Email | Contact2  | Contact2Email |
+      | user1Email | user1Password | user1Name | user2Name | user2Email    | user3Name | user3Email    |
 
   @regression @id621
   Scenario Outline: Leave group chat - second end verification
@@ -288,7 +288,7 @@ Feature: People View
     And I see message YOU LEFT in conversation
     Then I am signing out
     And I reset Wire defaults and restart client
-    And I Sign in using login <Contact1> and password <Password>
+    And I Sign in using login <Contact1Email> and password <Password>
     And I see my name <Contact1> in Contact list
     And I open conversation with <ChatName>
     And I see message <Name> LEFT in conversation
@@ -297,5 +297,5 @@ Feature: People View
     And I see that conversation has 3 people
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | ChatName       |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | LeaveGroupChat |
+      | Login      | Password      | Name      | Contact1  | Contact1Email | Contact2  | Contact3  | ChatName       |
+      | user1Email | user1Password | user1Name | user2Name | user2Email    | user3Name | user4Name | LeaveGroupChat |
