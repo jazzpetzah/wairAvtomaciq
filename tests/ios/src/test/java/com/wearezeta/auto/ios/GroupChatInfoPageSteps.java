@@ -25,7 +25,7 @@ public class GroupChatInfoPageSteps {
 	PagesCollection.groupChatInfoPage.changeConversationNameToRandom();
 	}
 	
-	@When("I change conversation name to (.*)")
+	@When("I change group conversation name to (.*)")
 	public void IChangeConversationNameTo(String name){
 		PagesCollection.groupChatInfoPage.changeConversationName(name);
 	}

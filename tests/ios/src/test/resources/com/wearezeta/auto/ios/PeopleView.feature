@@ -113,7 +113,7 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
     And I swipe up on group chat page
-    And I change conversation name to <ChatName>
+    And I change group conversation name to <ChatName>
     Then I see correct conversation name <ChatName>
     And I exit the group info page
     And I see you renamed conversation to <ChatName> message shown in Group Chat
@@ -287,7 +287,7 @@ Feature: People View
     #And I see Contact list with my name <Name>
     #When I create group chat with <Contact1> and <Contact2>
     #And I swipe up on group chat page
-    #And I change conversation name to <ChatName>
+    #And I change group conversation name to <ChatName>
     #And I swipe down on group chat info page
     #And I swipe right on Dialog page
     #And I tap on my name <Name>
@@ -319,7 +319,7 @@ Feature: People View
     #And I see message in group chat <message>
     #And I swipe down on group chat page
     #And I swipe up on group chat page in simulator
-    #And I change conversation name to <ChatName>
+    #And I change group conversation name to <ChatName>
     #And I add to existing group chat contact <Contact3>
     #And I swipe down on group chat info page
     #And I swipe right on Dialog page

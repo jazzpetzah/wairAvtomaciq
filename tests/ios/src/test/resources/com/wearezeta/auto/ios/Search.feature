@@ -103,7 +103,7 @@ Feature: Search
     Then I tap on 2 top connections
     And I click Create Conversation button  on People picker page
     And I swipe up on group chat page
-    And I change conversation name to <ConvoName>
+    And I change group conversation name to <ConvoName>
     And I exit the group info page
     And I return to the chat list
     And I see first item in contact list named <ConvoName>
