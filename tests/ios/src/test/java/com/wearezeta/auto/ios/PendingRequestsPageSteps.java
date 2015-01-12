@@ -31,7 +31,7 @@ public class PendingRequestsPageSteps {
 	}
 	
 	@When("I see Hello connect message from user (.*) on Pending request page")
-	public void ISeeHelloConnectMessageFrom(String user){
+	public void ISeeHelloConnectMessageFrom(String user) throws Exception {
 		user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		Assert.assertEquals(user, PagesCollection.pendingRequestsPage.getRequesterName());
 		Assert.assertTrue(PagesCollection.pendingRequestsPage.isAutoMessageCorrect());

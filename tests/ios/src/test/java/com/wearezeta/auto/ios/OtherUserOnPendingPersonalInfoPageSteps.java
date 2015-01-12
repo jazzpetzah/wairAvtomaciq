@@ -9,18 +9,25 @@ import cucumber.api.java.en.When;
 
 public class OtherUserOnPendingPersonalInfoPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	
+
 	@When("^I see (.*) user pending profile page$")
-	public void WhenISeeOtherUserProfilePage(String name){
+	public void WhenISeeOtherUserProfilePage(String name) throws Exception {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		Assert.assertTrue("Username is not displayed", PagesCollection.otherUserOnPendingProfilePage.isUserNameDisplayed(name));
-		Assert.assertTrue("Close button not displayed",PagesCollection.otherUserOnPendingProfilePage.isClosePageButtonVisible());
-		Assert.assertTrue("Pending label is not displayed",PagesCollection.otherUserOnPendingProfilePage.isPendingLabelVisible());
+		Assert.assertTrue("Username is not displayed",
+				PagesCollection.otherUserOnPendingProfilePage
+						.isUserNameDisplayed(name));
+		Assert.assertTrue("Close button not displayed",
+				PagesCollection.otherUserOnPendingProfilePage
+						.isClosePageButtonVisible());
+		Assert.assertTrue("Pending label is not displayed",
+				PagesCollection.otherUserOnPendingProfilePage
+						.isPendingLabelVisible());
 	}
-	
+
 	@When("^I click on start conversation button on pending profile page$")
-	public void WhenIClickOnStartConversatonButtonOnPendingProfilePage(){
-		PagesCollection.otherUserOnPendingProfilePage.clickStartConversationButton();
+	public void WhenIClickOnStartConversatonButtonOnPendingProfilePage() {
+		PagesCollection.otherUserOnPendingProfilePage
+				.clickStartConversationButton();
 	}
 
 }

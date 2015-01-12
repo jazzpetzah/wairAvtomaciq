@@ -26,7 +26,6 @@ Feature: Connect to user
     And I accept invitation
     And I see Contact list with name <Contact>
     And I am signing out
-    And I reset Wire defaults and restart client
     And I Sign in using login <Contact> and password <Password>
     And I see my name <Contact> in Contact list
     Then I see Contact list with name <Name>

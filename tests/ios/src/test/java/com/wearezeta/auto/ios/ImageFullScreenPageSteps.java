@@ -51,7 +51,7 @@ public class ImageFullScreenPageSteps {
 	}
 
 	@When("I see sender first name (.*) on fullscreen page")
-	public void ISeeSenderName(String sender) {
+	public void ISeeSenderName(String sender) throws Exception {
 		String senderFirstName = usrMgr.findUserByNameOrNameAlias(sender)
 				.getName().split(" ")[0].toUpperCase();
 		Assert.assertEquals(senderFirstName,

@@ -558,4 +558,4 @@ Feature: Conversation View
 
     Examples:
       | Login      | Password      | Name      | Contact1   | Contact2    | SoundCloudLink                                                                       |
-      | user1Email | user1Password | user1Name | user2Name  | aqaContact2 | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name   | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |

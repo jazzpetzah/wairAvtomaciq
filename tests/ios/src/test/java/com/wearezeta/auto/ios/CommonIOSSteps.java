@@ -208,14 +208,14 @@ public class CommonIOSSteps {
 		commonSteps.IRemoveContactsListUsersFromMacContact();
 	}
 
-	@When("^I change (.*) avatar picture to (.*)$")
-	public void IChangeMyAvatarPicture(String userNameAlias, String path)
+	@When("^I change (\\w+) avatar picture to (.*)$")
+	public void IChangeUserAvatarPicture(String userNameAlias, String path)
 			throws Exception {
 		commonSteps.IChangeUserAvatarPicture(userNameAlias, path);
 	}
 
-	@When("^I change (.*) name to (.*)$")
-	public void IChangeMyName(String userNameAlias, String newName)
+	@When("^I change (\\w+) name to (.*)$")
+	public void IChangeUserName(String userNameAlias, String newName)
 			throws Exception {
 		commonSteps.IChangeUserName(userNameAlias, newName);
 	}

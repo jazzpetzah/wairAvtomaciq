@@ -1,18 +1,16 @@
 package com.wearezeta.auto.osx.steps;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.MalformedURLException;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
-import java.util.NoSuchElementException;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ConversationInfoPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
@@ -25,7 +23,7 @@ public class ConversationInfoPageSteps {
 	private static final Logger log = ZetaLogger.getLog(ConversationInfoPageSteps.class.getSimpleName());
 	
 	@When("I choose user (.*) in Conversation info")
-	public void WhenIChooseUserInConversationInfo(String user) throws MalformedURLException, IOException {
+	public void WhenIChooseUserInConversationInfo(String user) throws Exception {
 		user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		CommonOSXSteps.senderPages.setConversationInfoPage(new ConversationInfoPage(
 				 CommonUtils.getOsxAppiumUrlFromConfig(ConversationInfoPage.class),
@@ -36,7 +34,7 @@ public class ConversationInfoPageSteps {
 	}
 	
 	@Then("I do not see user (.*) in Conversation info")
-	public void IDontSeeUserInConversationInfo(String user) throws MalformedURLException, IOException {
+	public void IDontSeeUserInConversationInfo(String user) throws Exception {
 		user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		CommonOSXSteps.senderPages.setConversationInfoPage(new ConversationInfoPage(
 				 CommonUtils.getOsxAppiumUrlFromConfig(ConversationInfoPage.class),
@@ -62,7 +60,7 @@ public class ConversationInfoPageSteps {
 		} else {
 			try {
 				contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-			} catch (NoSuchElementException e) {
+			} catch (NoSuchUserException e) {
 				//do nothing
 			}
 		}
@@ -102,7 +100,7 @@ public class ConversationInfoPageSteps {
 	}
 	
 	@Then("I see user (.*) personal info")
-	public void ISeeUserPersonalInfo(String contact) {
+	public void ISeeUserPersonalInfo(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		ConversationInfoPage conversationInfo = CommonOSXSteps.senderPages.getConversationInfoPage();
 		conversationInfo.isContactPersonalInfoAppear(contact);

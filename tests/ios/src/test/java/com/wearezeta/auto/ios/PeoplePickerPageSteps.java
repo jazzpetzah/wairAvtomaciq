@@ -1,12 +1,12 @@
 package com.wearezeta.auto.ios;
 
 import java.io.IOException;
-import java.util.NoSuchElementException;
 
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.GroupChatPage;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
@@ -90,7 +90,7 @@ public class PeoplePickerPageSteps {
 			throws Exception {
 		try {
 			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		PagesCollection.peoplePickerPage.fillTextInPeoplePickerSearch(contact);
@@ -101,7 +101,7 @@ public class PeoplePickerPageSteps {
 			throws Exception {
 		try {
 			email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		PagesCollection.peoplePickerPage.fillTextInPeoplePickerSearch(email);
@@ -117,7 +117,7 @@ public class PeoplePickerPageSteps {
 			throws Exception {
 		try {
 			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		Assert.assertTrue("User :" + contact
@@ -131,7 +131,7 @@ public class PeoplePickerPageSteps {
 			throws Exception {
 		try {
 			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		PagesCollection.connectToPage = PagesCollection.peoplePickerPage
@@ -211,7 +211,7 @@ public class PeoplePickerPageSteps {
 	}
 
 	@When("I tap on connected user (.*) on People picker page")
-	public void ISelectUserOnPeoplePickerPage(String name) {
+	public void ISelectUserOnPeoplePickerPage(String name) throws Exception {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		PagesCollection.peoplePickerPage.selectUser(name);
 	}
@@ -230,13 +230,15 @@ public class PeoplePickerPageSteps {
 	}
 
 	@When("I see user (.*) on People picker page is selected")
-	public void ISeeUserIsSelectedOnPeoplePickerPage(String name) {
+	public void ISeeUserIsSelectedOnPeoplePickerPage(String name)
+			throws Exception {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		Assert.assertTrue(PagesCollection.peoplePickerPage.isUserSelected(name));
 	}
 
 	@When("I see user (.*) on People picker page is NOT selected")
-	public void ISeeUserIsNotSelectedOnPeoplePickerPage(String name) {
+	public void ISeeUserIsNotSelectedOnPeoplePickerPage(String name)
+			throws Exception {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		Assert.assertFalse(PagesCollection.peoplePickerPage
 				.isUserSelected(name));
