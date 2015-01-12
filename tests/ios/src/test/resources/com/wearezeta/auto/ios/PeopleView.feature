@@ -149,7 +149,8 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I swipe up on group chat page
-    And I tap on all of the participants and check their emails and names
+    And I tap on <GroupCreator> and check email visible and name
+    And I tap on <NonConnectedContact> and check email invisible and name
 
     Examples:
       | Login      | Password      | Name      | GroupCreator | NonConnectedContact | GroupChatName |

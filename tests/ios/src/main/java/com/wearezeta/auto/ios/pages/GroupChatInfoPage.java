@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -122,46 +123,44 @@ public class GroupChatInfoPage extends IOSPage {
 		return true;
 	}
 
-	// FIXME: refactor! hardcoded users
-	public void tapAndCheckAllParticipants() throws IOException {
-		throw new RuntimeException(
-				"Fixme dude! Using hardcoded user has never been a good idea :-(");
-		// List<WebElement> participants = getCurrentParticipants();
-		// String participantNameTextFieldValue = null;
-		// String participantName = null;
-		// String participantEmailTextFieldValue = null;
-		// String unconnectedUsername = usrMgr.findUserByNameAlias(
-		// ClientUsersManager.YOUR_USER_2_ALIAS).getName();
-		// for (WebElement participant : participants) {
-		// ClientUser participantUser = getParticipantUser(participant);
-		// participantName = participantUser.getName();
-		// PagesCollection.otherUserPersonalInfoPage =
-		// (OtherUserPersonalInfoPage)
-		// tapOnParticipant(getParticipantName(participant));
-		// participantNameTextFieldValue =
-		// PagesCollection.otherUserPersonalInfoPage
-		// .getNameFieldValue();
-		// participantEmailTextFieldValue =
-		// PagesCollection.otherUserPersonalInfoPage
-		// .getEmailFieldValue();
-		// Assert.assertTrue(
-		// "Participant Name is incorrect and/or not displayed",
-		// participantNameTextFieldValue
-		// .equalsIgnoreCase(participantName));
-		// if (participantName.equalsIgnoreCase(unconnectedUsername)) {
-		// Assert.assertFalse("Unconnected user's email is displayed",
-		// participantEmailTextFieldValue
-		// .equalsIgnoreCase(participantUser.getEmail()));
-		// } else {
-		// Assert.assertTrue(
-		// "Participant Email is incorrect and/or not displayed",
-		// participantEmailTextFieldValue
-		// .equalsIgnoreCase(participantUser.getEmail()));
-		// }
-		// PagesCollection.groupChatInfoPage = (GroupChatInfoPage)
-		// PagesCollection.otherUserPersonalInfoPage
-		// .leavePageToGroupInfoPage();
-		// }
+	public void tapAndCheckAllParticipants(String user, boolean checkEmail) throws Exception {
+
+		List<WebElement> participants = getCurrentParticipants();
+		String participantNameTextFieldValue = "";
+		String participantName = "";
+		String participantEmailTextFieldValue = "";
+		
+		user = usrMgr.findUserByNameOrNameAlias(user).getName();
+		String email = usrMgr.findUserByNameOrNameAlias(user).getEmail();
+		
+		for (WebElement participant : participants) {
+			ClientUser participantUser = getParticipantUser(participant);
+			participantName = participantUser.getName();
+			if (!participantName.equalsIgnoreCase(user)) {
+				continue;
+			}
+			PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) tapOnParticipant(getParticipantName(participant));
+			participantNameTextFieldValue = PagesCollection.otherUserPersonalInfoPage
+					.getNameFieldValue();
+			participantEmailTextFieldValue = PagesCollection.otherUserPersonalInfoPage
+					.getEmailFieldValue();
+			Assert.assertTrue(
+					"Participant Name is incorrect and/or not displayed",
+					participantNameTextFieldValue
+							.equalsIgnoreCase(user));
+			if (checkEmail) {
+				Assert.assertTrue("User's email is not displayed",
+							participantEmailTextFieldValue
+									.equalsIgnoreCase(email));
+			}
+			else {
+				Assert.assertFalse("User's email is displayed",
+						participantEmailTextFieldValue
+								.equalsIgnoreCase(email));
+			}
+		}
+		PagesCollection.groupChatInfoPage = (GroupChatInfoPage) PagesCollection.otherUserPersonalInfoPage
+				.leavePageToGroupInfoPage();
 	}
 
 	public String getParticipantName(WebElement participant) {

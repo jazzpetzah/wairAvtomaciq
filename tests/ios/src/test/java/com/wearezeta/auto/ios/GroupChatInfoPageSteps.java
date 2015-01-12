@@ -51,9 +51,14 @@ public class GroupChatInfoPageSteps {
 						.parseInt(realNumberOfParticipants)));
 	}
 
-	@When("^I tap on all of the participants and check their emails and names$")
-	public void ITapAllParticipantsAndCheckElements() throws IOException {
-		PagesCollection.groupChatInfoPage.tapAndCheckAllParticipants();
+	@When("^I tap on (.*) and check email (.*) and name$")
+	public void ITapAllParticipantsAndCheckElements(String user, String checkEmail) throws Exception {
+		if (checkEmail.equals("visible")) {
+			PagesCollection.groupChatInfoPage.tapAndCheckAllParticipants(user, true);
+		}
+		else {
+			PagesCollection.groupChatInfoPage.tapAndCheckAllParticipants(user, false);
+		}
 	}
 
 	@When("^I see the correct participant avatars$")
