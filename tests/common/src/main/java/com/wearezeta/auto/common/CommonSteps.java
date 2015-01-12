@@ -148,6 +148,15 @@ public final class CommonSteps {
 				dstConversationName);
 		Thread.sleep(1000);
 	}
+	
+	public void UserSentMessageToUser(String msgFromUserNameAlias,
+			String dstUserNameAlias, String message) throws Exception {
+		ClientUser msgFromUser = usrMgr
+				.findUserByNameOrNameAlias(msgFromUserNameAlias);
+		ClientUser msgToUser = usrMgr
+				.findUserByNameOrNameAlias(dstUserNameAlias);
+		BackendAPIWrappers.sendDialogMessage(msgFromUser, msgToUser, message);
+	}
 
 	public void UserHotPingedConversation(String hotPingFromUserNameAlias,
 			String dstConversationName) throws Exception {

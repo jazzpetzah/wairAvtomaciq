@@ -51,8 +51,6 @@ public class LoginPageSteps {
 	@When("I press Log in button")
 	public void WhenIPressLogInButton() throws Exception {
 		PagesCollection.contactListPage = PagesCollection.loginPage.LogIn();
-		Assert.assertTrue("Login in progress",
-				PagesCollection.loginPage.waitForLoginScreenDisappear());
 		Assert.assertTrue("Login finished",
 				PagesCollection.loginPage.waitForLogin());
 	}

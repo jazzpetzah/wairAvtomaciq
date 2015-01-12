@@ -90,7 +90,11 @@ public class ContactListPageSteps {
 
 	@When("^I tap on my name (.*)$")
 	public void WhenITapOnMyName(String name) throws Exception {
-		name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		try {
+			name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
 		PagesCollection.personalInfoPage = (PersonalInfoPage) PagesCollection.contactListPage
 				.tapOnName(name);
 	}

@@ -1,7 +1,7 @@
 Feature: Search
 
   @id218 @regression
-  Scenario Outline: I can do full name search for existing 1:1(non-archive)
+  Scenario Outline: I can do full name search for existing 1:1 non-archive
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
@@ -17,7 +17,7 @@ Feature: Search
       | user1Email | user1Password | user1Name | user2Name  | 
 
   @id220 @regression
-  Scenario Outline: I can do full name search for existing group convo(non-archive)
+  Scenario Outline: I can do full name search for existing group convo non-archive
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -50,7 +50,7 @@ Feature: Search
       | user1Email | user1Password | user1Name | user2Name   |  12  |
 
   @id225 @regression
-  Scenario Outline: I can do partial name search for existing group convo(non-archive)
+  Scenario Outline: I can do partial name search for existing group convo non-archive
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>

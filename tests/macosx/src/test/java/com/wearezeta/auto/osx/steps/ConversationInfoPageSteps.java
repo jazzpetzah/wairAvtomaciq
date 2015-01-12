@@ -10,7 +10,7 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ConversationInfoPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
@@ -58,11 +58,7 @@ public class ConversationInfoPageSteps {
 		if (contact.equals(OSXLocators.RANDOM_KEYWORD)) {
 			contact = CommonOSXSteps.senderPages.getConversationInfoPage().getCurrentConversationName();
 		} else {
-			try {
-				contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-			} catch (NoSuchUserException e) {
-				//do nothing
-			}
+			contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		}
 		Assert.assertTrue(CommonOSXSteps.senderPages.getConversationInfoPage().isConversationNameEquals(contact));
 	}
