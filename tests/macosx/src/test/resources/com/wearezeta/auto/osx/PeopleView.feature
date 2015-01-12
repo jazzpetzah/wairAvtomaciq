@@ -89,6 +89,7 @@ Feature: People View
   Scenario Outline: Access proﬁle information for the other participant in a 1on1 conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I change user <Contact> avatar picture from file aqaPictureContact.jpg
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open conversation with <Contact>
@@ -248,14 +249,12 @@ Feature: People View
     And I open conversation with <Contact1>, <Contact2>
     And I see message YOU STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
     When I am signing out
-    And I reset Wire defaults and restart client
     And I Sign in using login <Contact1Email> and password <Password>
     And I see my name <Contact1> in Contact list
     Then I see Contact list with name <Name>, <Contact2>
     And I open conversation with <Name>, <Contact2>
     And I see message <Name> STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
     And I am signing out
-    And I reset Wire defaults and restart client
     And I Sign in using login <Contact2Email> and password <Password>
     And I see my name <Contact2> in Contact list
     Then I see Contact list with name <Name>, <Contact1>
@@ -287,7 +286,6 @@ Feature: People View
     And I open conversation with <ChatName>
     And I see message YOU LEFT in conversation
     Then I am signing out
-    And I reset Wire defaults and restart client
     And I Sign in using login <Contact1Email> and password <Password>
     And I see my name <Contact1> in Contact list
     And I open conversation with <ChatName>

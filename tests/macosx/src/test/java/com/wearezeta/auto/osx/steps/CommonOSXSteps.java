@@ -16,6 +16,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.pages.LoginPage;
 import com.wearezeta.auto.osx.pages.MainMenuPage;
+import com.wearezeta.auto.osx.pages.OSXPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
 
 import cucumber.api.java.After;
@@ -177,6 +178,11 @@ public class CommonOSXSteps {
 				.getBackendType(LoginPage.class));
 		Thread.sleep(1000);
 		senderPages.getLoginPage().startApp();
+	}
+	
+	@When("^I change user (.*) avatar picture from file (.*)$")
+	public void IChangeUserAvatarPictureFromFile(String user, String picture) throws Exception {
+		commonSteps.IChangeUserAvatarPicture(user, OSXPage.imagesPath + picture);
 	}
 	
 	@After

@@ -27,7 +27,6 @@ Feature: Sign In
     And I select image file userpicture_portrait.jpg
     And I see photo in User profile
     When I am signed out from ZClient
-    And I reset Wire defaults and restart client
     And I Sign in using login <Login> and password <Password>
     Then I see my name <Name> in Contact list
     And I see name <Name> in User profile
