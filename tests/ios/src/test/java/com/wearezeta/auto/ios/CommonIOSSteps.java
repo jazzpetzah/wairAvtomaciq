@@ -190,6 +190,12 @@ public class CommonIOSSteps {
 		commonSteps.UserPingedConversation(pingFromUserNameAlias,
 				dstConversationName);
 	}
+	
+	@When("^Contact (.*) send message to user (.*)$")
+	public void UserSendMessageToConversation(String msgFromUserNameAlias,
+			String dstUserNameAlias) throws Exception {
+		commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstUserNameAlias, CommonUtils.generateRandomString(10));
+	}
 
 	@When("^Contact (.*) hotping conversation (.*)$")
 	public void UserHotPingedConversation(String hotPingFromUserNameAlias,

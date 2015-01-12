@@ -190,7 +190,7 @@ Feature: People View
       | Login      | Password      | Name      | GroupCreator | NonConnectedContact | GroupChatName |
       | user1Email | user1Password | user1Name | user2Name    | user3Name           | TESTCHAT      |
 
-	#ZIOS-2035            
+	# broken functionality           
   @regression @id555
   Scenario Outline: Verify you can add people from 1:1 people view (view functionality)
     Given There are 3 users where <Name> is me
