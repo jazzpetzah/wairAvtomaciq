@@ -10,6 +10,7 @@ import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -65,7 +66,11 @@ public class PersonalInfoPageSteps {
 
 	@When("^I change (.*) to (.*)$")
 	public void IChangeNameTo(String name, String newName) throws Throwable {
-		name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		try{
+			name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
 		PagesCollection.personalInfoPage.changeName(name, newName);
 	}
 
@@ -86,7 +91,11 @@ public class PersonalInfoPageSteps {
 	public void ISeeMyNewName(String name, String oldName) throws Throwable {
 		Assert.assertTrue(name.equals(PagesCollection.personalInfoPage
 				.getUserName()));
-		oldName = usrMgr.findUserByNameOrNameAlias(name).getName();
+		try{
+			oldName = usrMgr.findUserByNameOrNameAlias(name).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
 		PagesCollection.personalInfoPage.tapOnMyName();
 		PagesCollection.personalInfoPage.changeName(name, oldName);
 	}
