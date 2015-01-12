@@ -165,7 +165,11 @@ public class PeoplePickerPageSteps {
 
 	@Then("^I see group (.*)  in People picker$")
 	public void ThenISeeGroupInPeoplePicker(String contact) throws Throwable {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		try {
+			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
 		Assert.assertTrue(PagesCollection.peoplePickerPage
 				.groupIsVisible(contact));
 	}

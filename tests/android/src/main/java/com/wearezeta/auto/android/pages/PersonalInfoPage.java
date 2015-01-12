@@ -151,13 +151,13 @@ public class PersonalInfoPage extends AndroidPage
 		nameField.click();
 	}
 
-	public void changeName(String name, String newName) {
+	public void changeName(String name, String newName) throws Exception {
 		for(int i=0; i<name.length();i++)
 		{
 			driver.sendKeyEvent(67);
 		}
 		nameEdit.sendKeys(newName);
-		DriverUtils.mobileTapByCoordinates(driver, backgroundOverlay);
+		swipeRight(500);
 	}
 
 	public String getUserName() {
