@@ -13,9 +13,12 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.pages.LoginPage;
 import com.wearezeta.auto.osx.pages.MainMenuPage;
+import com.wearezeta.auto.osx.pages.OSXPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
 
 import cucumber.api.java.After;
@@ -29,6 +32,8 @@ public class CommonOSXSteps {
 
 	public static final Logger log = ZetaLogger.getLog(CommonOSXSteps.class
 			.getSimpleName());
+
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	static {
 		System.setProperty("java.awt.headless", "false");
@@ -177,6 +182,19 @@ public class CommonOSXSteps {
 				.getBackendType(LoginPage.class));
 		Thread.sleep(1000);
 		senderPages.getLoginPage().startApp();
+	}
+	
+	@When("^I change user (.*) avatar picture from file (.*)$")
+	public void IChangeUserAvatarPictureFromFile(String user, String picture) throws Exception {
+		String picturePath = OSXPage.imagesPath + "/" + picture;
+		try {
+			user = usrMgr.findUserByNameOrNameAlias(user)
+					.getName();
+		} catch (NoSuchUserException e) {
+			// do nothing
+		}
+		log.debug("Setting avatar for user " + user + " from image " + picturePath);
+		commonSteps.IChangeUserAvatarPicture(user, picturePath);
 	}
 	
 	@After

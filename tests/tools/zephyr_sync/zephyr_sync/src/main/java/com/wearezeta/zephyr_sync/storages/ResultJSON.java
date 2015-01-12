@@ -72,25 +72,27 @@ public class ResultJSON extends TestcasesStorage {
 			JSONObject feature) {
 		List<ExecutedTestcase> parsedTestcases = new ArrayList<ExecutedTestcase>();
 
-		JSONArray elements = feature.getJSONArray("elements");
-		for (int elementIdx = 0; elementIdx < elements.length(); elementIdx++) {
-			JSONObject element = elements.getJSONObject(elementIdx);
-			final String cucumberId = element.getString("id");
-			final String name = element.getString("name");
-			final boolean isPassed = parseIsPassed(element
-					.getJSONArray("steps"));
-			final boolean isFailed = parseIsFailed(element
-					.getJSONArray("steps"));
-			final boolean isSkipped = parseIsSkipped(element
-					.getJSONArray("steps"));
-			Set<String> tags = new LinkedHashSet<String>();
-			if (element.has("tags")) {
-				tags = parseTagsList(element.getJSONArray("tags"));
+		if (feature.has("elements")) {
+			JSONArray elements = feature.getJSONArray("elements");
+			for (int elementIdx = 0; elementIdx < elements.length(); elementIdx++) {
+				JSONObject element = elements.getJSONObject(elementIdx);
+				final String cucumberId = element.getString("id");
+				final String name = element.getString("name");
+				final boolean isPassed = parseIsPassed(element
+						.getJSONArray("steps"));
+				final boolean isFailed = parseIsFailed(element
+						.getJSONArray("steps"));
+				final boolean isSkipped = parseIsSkipped(element
+						.getJSONArray("steps"));
+				Set<String> tags = new LinkedHashSet<String>();
+				if (element.has("tags")) {
+					tags = parseTagsList(element.getJSONArray("tags"));
+				}
+				final String id = Testcase.extractIdsFromTags(tags);
+				ExecutedTestcase tc = new ExecutedTestcase(id, name, tags,
+						cucumberId, isPassed, isFailed, isSkipped);
+				parsedTestcases.add(tc);
 			}
-			final String id = Testcase.extractIdsFromTags(tags);
-			ExecutedTestcase tc = new ExecutedTestcase(id, name, tags,
-					cucumberId, isPassed, isFailed, isSkipped);
-			parsedTestcases.add(tc);
 		}
 
 		return parsedTestcases;

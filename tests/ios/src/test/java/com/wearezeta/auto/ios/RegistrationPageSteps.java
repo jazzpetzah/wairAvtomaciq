@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 import javax.mail.MessagingException;
 
@@ -19,6 +18,7 @@ import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.email.MBoxChangesListener;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.UserState;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
@@ -163,7 +163,7 @@ public class RegistrationPageSteps {
 	public void IEnterName(String name) throws IOException {
 		try {
 			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			if (this.userToRegister == null) {
 				this.userToRegister = new ClientUser();
 			}
@@ -204,7 +204,7 @@ public class RegistrationPageSteps {
 			String realEmail = usrMgr.findUserByEmailOrEmailAlias(email)
 					.getEmail();
 			this.userToRegister.setEmail(realEmail);
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			if (this.userToRegister == null) {
 				this.userToRegister = new ClientUser();
 			}
@@ -231,7 +231,7 @@ public class RegistrationPageSteps {
 			String realEmail = usrMgr.findUserByEmailOrEmailAlias(email)
 					.getEmail();
 			this.userToRegister.setEmail(realEmail);
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			if (this.userToRegister == null) {
 				this.userToRegister = new ClientUser();
 			}
@@ -286,7 +286,7 @@ public class RegistrationPageSteps {
 		try {
 			this.userToRegister.setPassword(usrMgr.findUserByPasswordAlias(
 					password).getPassword());
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			this.userToRegister.setPassword(password);
 			this.userToRegister.addPasswordAlias(password);
 		}

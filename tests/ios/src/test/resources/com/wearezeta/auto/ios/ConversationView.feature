@@ -123,7 +123,7 @@ Feature: Conversation View
     And I tap media link
     And I scroll media out of sight until media bar appears
     And I see media bar on dialog page
-    And I wait 30 seconds for media to stop playing
+    And I wait 130 seconds for media to stop playing
     Then I dont see media bar on dialog page
 
     Examples: 
@@ -558,4 +558,4 @@ Feature: Conversation View
 
     Examples:
       | Login      | Password      | Name      | Contact1   | Contact2    | SoundCloudLink                                                                       |
-      | user1Email | user1Password | user1Name | user2Name  | aqaContact2 | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name   | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |

@@ -3,7 +3,6 @@ package com.wearezeta.auto.android;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.junit.Assert;
 
@@ -11,6 +10,7 @@ import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
 import cucumber.api.java.en.*;
 
@@ -67,12 +67,12 @@ public class DialogPageSteps {
 	}
 
 	@When("^I swipe on text input$")
-	public void WhenISwipeOnTextInput() throws Throwable {
+	public void WhenISwipeOnTextInput() throws Exception {
 		PagesCollection.dialogPage.SwipeOnCursorInput();
 	}
 
 	@When("^I swipe left on text input$")
-	public void WhenISwipeLeftOnTextInput() throws Throwable {
+	public void WhenISwipeLeftOnTextInput() throws Exception {
 		PagesCollection.dialogPage.SwipeLeftOnCursorInput();
 	}
 
@@ -112,7 +112,7 @@ public class DialogPageSteps {
 			throws Exception {
 		try {
 			message = usrMgr.findUserByNameOrNameAlias(message).getName();
-		} catch (NoSuchElementException ex) {
+		} catch (NoSuchUserException ex) {
 			// Ignore silently
 		}
 		Assert.assertEquals("Ping message compare",
@@ -169,7 +169,7 @@ public class DialogPageSteps {
 	}
 
 	@Then("^I see Connect to (.*) Dialog page$")
-	public void ThenIseeConnectToDialogPage(String contact) {
+	public void ThenIseeConnectToDialogPage(String contact) throws Exception {
 		if (PagesCollection.dialogPage == null) {
 			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
 		}

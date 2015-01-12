@@ -1,12 +1,11 @@
 package com.wearezeta.auto.android;
 
-import java.util.NoSuchElementException;
-
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -43,7 +42,7 @@ public class PeoplePickerPageSteps {
 			throws Exception {
 		try {
 			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		PagesCollection.peoplePickerPage.typeTextInPeopleSearch(contact);
@@ -54,7 +53,7 @@ public class PeoplePickerPageSteps {
 			throws Exception {
 		try {
 			email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		PagesCollection.peoplePickerPage.typeTextInPeopleSearch(email);
@@ -65,7 +64,7 @@ public class PeoplePickerPageSteps {
 			String contact) throws Throwable {
 		try {
 			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		String[] list = contact.split("(?<=\\G.{" + part + "})");
@@ -75,16 +74,17 @@ public class PeoplePickerPageSteps {
 	@When("^I input in search field user name to connect to (.*)$")
 	public void WhenIInputInSearchFieldUserNameToConnectTo(String contact)
 			throws Throwable {
-		String email = "";
+		// FIXME : ambiguous use of email field when the step states only user name 
+		String email = null;
 		try {
 			ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(contact);
 			contact = dstUser.getName();
 			email = dstUser.getEmail();
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		
-		if (email != "") {
+		if (email != null) {
 			PagesCollection.peoplePickerPage.typeTextInPeopleSearch(email);
 		} else {
 			PagesCollection.peoplePickerPage.typeTextInPeopleSearch(contact);
@@ -116,7 +116,7 @@ public class PeoplePickerPageSteps {
 			throws Exception {
 		try {
 			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		PagesCollection.peoplePickerPage.waitUserPickerFindUser(contact);

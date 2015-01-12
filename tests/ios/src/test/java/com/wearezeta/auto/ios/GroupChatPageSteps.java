@@ -78,7 +78,7 @@ public class GroupChatPageSteps {
 
 	@Then("^I see that (.*) is not present on group chat page$")
 	public void ISeeContactIsNotPresentOnGroupChatPage(String contact)
-			throws InterruptedException {
+			throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertTrue(PagesCollection.groupChatPage
 				.waitForContactToDisappear(contact));

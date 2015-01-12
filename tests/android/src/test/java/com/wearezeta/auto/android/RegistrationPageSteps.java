@@ -3,7 +3,6 @@ package com.wearezeta.auto.android;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 import org.junit.Assert;
 
@@ -13,6 +12,7 @@ import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.email.MBoxChangesListener;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.UserState;
 
 import cucumber.api.java.en.*;
@@ -56,7 +56,7 @@ public class RegistrationPageSteps {
 	public void IEnterName(String name) throws IOException {
 		try {
 			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			if (this.userToRegister == null) {
 				this.userToRegister = new ClientUser();
 			}
@@ -72,7 +72,7 @@ public class RegistrationPageSteps {
 			String realEmail = usrMgr.findUserByEmailOrEmailAlias(email)
 					.getEmail();
 			this.userToRegister.setEmail(realEmail);
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			if (this.userToRegister == null) {
 				this.userToRegister = new ClientUser();
 			}
@@ -90,7 +90,7 @@ public class RegistrationPageSteps {
 			String realPassword = usrMgr.findUserByPasswordAlias(password)
 					.getPassword();
 			this.userToRegister.setPassword(realPassword);
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			if (this.userToRegister == null) {
 				this.userToRegister = new ClientUser();
 			}

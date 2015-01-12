@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -17,6 +18,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class GroupChatInfoPage extends IOSPage {
@@ -34,7 +36,7 @@ public class GroupChatInfoPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameLeaveConversationButton)
 	private WebElement leaveChatButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathConversationNameTextField)
+	@FindBy(how = How.NAME, using = IOSLocators.nameConversationNameTextField)
 	private WebElement conversationNameTextField;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameExitGroupInfoPageButton)
@@ -121,46 +123,44 @@ public class GroupChatInfoPage extends IOSPage {
 		return true;
 	}
 
-	// FIXME: refactor! hardcoded users
-	public void tapAndCheckAllParticipants() throws IOException {
-		throw new RuntimeException(
-				"Fixme dude! Using hardcoded user has never been a good idea :-(");
-		// List<WebElement> participants = getCurrentParticipants();
-		// String participantNameTextFieldValue = null;
-		// String participantName = null;
-		// String participantEmailTextFieldValue = null;
-		// String unconnectedUsername = usrMgr.findUserByNameAlias(
-		// ClientUsersManager.YOUR_USER_2_ALIAS).getName();
-		// for (WebElement participant : participants) {
-		// ClientUser participantUser = getParticipantUser(participant);
-		// participantName = participantUser.getName();
-		// PagesCollection.otherUserPersonalInfoPage =
-		// (OtherUserPersonalInfoPage)
-		// tapOnParticipant(getParticipantName(participant));
-		// participantNameTextFieldValue =
-		// PagesCollection.otherUserPersonalInfoPage
-		// .getNameFieldValue();
-		// participantEmailTextFieldValue =
-		// PagesCollection.otherUserPersonalInfoPage
-		// .getEmailFieldValue();
-		// Assert.assertTrue(
-		// "Participant Name is incorrect and/or not displayed",
-		// participantNameTextFieldValue
-		// .equalsIgnoreCase(participantName));
-		// if (participantName.equalsIgnoreCase(unconnectedUsername)) {
-		// Assert.assertFalse("Unconnected user's email is displayed",
-		// participantEmailTextFieldValue
-		// .equalsIgnoreCase(participantUser.getEmail()));
-		// } else {
-		// Assert.assertTrue(
-		// "Participant Email is incorrect and/or not displayed",
-		// participantEmailTextFieldValue
-		// .equalsIgnoreCase(participantUser.getEmail()));
-		// }
-		// PagesCollection.groupChatInfoPage = (GroupChatInfoPage)
-		// PagesCollection.otherUserPersonalInfoPage
-		// .leavePageToGroupInfoPage();
-		// }
+	public void tapAndCheckAllParticipants(String user, boolean checkEmail) throws Exception {
+
+		List<WebElement> participants = getCurrentParticipants();
+		String participantNameTextFieldValue = "";
+		String participantName = "";
+		String participantEmailTextFieldValue = "";
+		
+		user = usrMgr.findUserByNameOrNameAlias(user).getName();
+		String email = usrMgr.findUserByNameOrNameAlias(user).getEmail();
+		
+		for (WebElement participant : participants) {
+			ClientUser participantUser = getParticipantUser(participant);
+			participantName = participantUser.getName();
+			if (!participantName.equalsIgnoreCase(user)) {
+				continue;
+			}
+			PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) tapOnParticipant(getParticipantName(participant));
+			participantNameTextFieldValue = PagesCollection.otherUserPersonalInfoPage
+					.getNameFieldValue();
+			participantEmailTextFieldValue = PagesCollection.otherUserPersonalInfoPage
+					.getEmailFieldValue();
+			Assert.assertTrue(
+					"Participant Name is incorrect and/or not displayed",
+					participantNameTextFieldValue
+							.equalsIgnoreCase(user));
+			if (checkEmail) {
+				Assert.assertTrue("User's email is not displayed",
+							participantEmailTextFieldValue
+									.equalsIgnoreCase(email));
+			}
+			else {
+				Assert.assertFalse("User's email is displayed",
+						participantEmailTextFieldValue
+								.equalsIgnoreCase(email));
+			}
+		}
+		PagesCollection.groupChatInfoPage = (GroupChatInfoPage) PagesCollection.otherUserPersonalInfoPage
+				.leavePageToGroupInfoPage();
 	}
 
 	public String getParticipantName(WebElement participant) {
@@ -175,13 +175,16 @@ public class GroupChatInfoPage extends IOSPage {
 		}
 	}
 
-	public ClientUser getParticipantUser(WebElement participant) {
-		return usrMgr.findUserByNameOrNameAlias(getParticipantName(participant));
+	public ClientUser getParticipantUser(WebElement participant)
+			throws NoSuchUserException {
+		return usrMgr
+				.findUserByNameOrNameAlias(getParticipantName(participant));
 	}
 
-	public IOSPage tapOnParticipant(String participantName) throws IOException {
+	public IOSPage tapOnParticipant(String participantName) throws Exception {
 		IOSPage page = null;
-		participantName = usrMgr.findUserByNameOrNameAlias(participantName).getName();
+		participantName = usrMgr.findUserByNameOrNameAlias(participantName)
+				.getName();
 		List<WebElement> participants = getCurrentParticipants();
 		for (WebElement participant : participants) {
 			if (getParticipantName(participant).equalsIgnoreCase(
@@ -195,7 +198,8 @@ public class GroupChatInfoPage extends IOSPage {
 				"No participant was found with the name: " + participantName);
 	}
 
-	public boolean isCorrectConversationName(String contact1, String contact2) {
+	public boolean isCorrectConversationName(String contact1, String contact2)
+			throws Exception {
 		if (conversationNameTextField.getText().equals(conversationName)) {
 			return true;
 		} else {

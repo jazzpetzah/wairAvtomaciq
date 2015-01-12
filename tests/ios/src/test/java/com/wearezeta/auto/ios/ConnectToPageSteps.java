@@ -1,7 +1,5 @@
 package com.wearezeta.auto.ios;
 
-import java.io.IOException;
-
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -62,7 +60,7 @@ public class ConnectToPageSteps {
 	}
 
 	@When("^I confirm connection request$")
-	public void IAcceptInvitationMessage() throws IOException {
+	public void IAcceptInvitationMessage() throws Exception {
 		ContactListPageSteps clSteps = new ContactListPageSteps();
 		clSteps.WhenITapOnContactName(IOSLocators.xpathPendingRequest);
 		PagesCollection.connectToPage = new ConnectToPage(
