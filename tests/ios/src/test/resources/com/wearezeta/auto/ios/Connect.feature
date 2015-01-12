@@ -41,7 +41,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id576
+  @regression @id576
   Scenario Outline: Send connection request to unconnected participant in a group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <GroupCreator>

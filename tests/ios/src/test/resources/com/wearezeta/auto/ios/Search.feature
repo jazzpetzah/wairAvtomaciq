@@ -94,6 +94,8 @@ Feature: Search
   Scenario Outline: Start group chat with users from Top Connections
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
+    Given Contact <Contact> send message to user <Name>
+    Given Contact <Name> send message to user <Contact>
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I swipe down contact list
@@ -109,5 +111,5 @@ Feature: Search
     And I see first item in contact list named <ConvoName>
 
     Examples: 
-      | Login      | Password      | Name      | ConvoName     |
-      | user1Email | user1Password | user1Name | TopGroupTest  |
+      | Login      | Password      | Name      | ConvoName     | UserCount | Contact   |
+      | user1Email | user1Password | user1Name | TopGroupTest  | 9         | user2Name |
