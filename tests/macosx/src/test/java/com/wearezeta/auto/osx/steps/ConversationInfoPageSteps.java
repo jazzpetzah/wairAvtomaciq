@@ -132,11 +132,14 @@ public class ConversationInfoPageSteps {
 		conversationInfo.openImageInPopup();
 		BufferedImage screen = conversationInfo.takeScreenshot();
 		BufferedImage picture = ImageUtil.readImageFromFile(OSXPage.imagesPath + photo);
-		double score = ImageUtil.getOverlapScore(screen, picture, ImageUtil.RESIZE_FROM1920x1080OPTIMIZED);
+		
+		final double minOverlapScore = 0.8d;
+		final double score = ImageUtil.getOverlapScore(screen, picture, ImageUtil.RESIZE_FROM1920x1080OPTIMIZED);
 		log.debug("Score for comparison of 2 pictures = " + score);
 		Assert.assertTrue(
-				"Overlap between two images has no enough score. Expected >= 0.85, current = " + score,
-				score >= 0.85d);
+				String.format(
+						"Overlap between two images has no enough score. Expected >= %f, current = %f",
+						minOverlapScore, score), score >= minOverlapScore);
 		conversationInfo.closeImagePopup();
 	}
 

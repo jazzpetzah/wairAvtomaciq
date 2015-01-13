@@ -25,6 +25,7 @@ Feature: Search
     Given I Sign in using login <Login> and password <Password>
     When I add contacts list users to Mac contacts
     And I dismiss alert
+    And I swipe down contact list
     And I see Upload contacts dialog
     And I click Continue button on Upload dialog
     And I accept alert
@@ -90,7 +91,7 @@ Feature: Search
       | Login      | Password      | Name      | UserCount |
       | user1Email | user1Password | user1Name | 10        |
 
-  @id1150 @staging
+  @id1150 @staging 
   Scenario Outline: Start group chat with users from Top Connections
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -112,4 +113,4 @@ Feature: Search
 
     Examples: 
       | Login      | Password      | Name      | ConvoName     | UserCount | Contact   |
-      | user1Email | user1Password | user1Name | TopGroupTest  | 9         | user2Name |
+      | user1Email | user1Password | user1Name | TopGroupTest  | 10         | user2Name |

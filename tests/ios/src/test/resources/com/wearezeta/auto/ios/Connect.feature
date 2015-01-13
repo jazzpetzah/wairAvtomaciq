@@ -172,11 +172,13 @@ Feature: Connect
 
   @regression @id1404
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (Search)
-    Given There are 2 users where <Name> is me
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe down contact list
     And I see People picker page
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
     And I tap on NOT connected user name on People picker page <Contact>
@@ -190,5 +192,5 @@ Feature: Connect
     And I see <Contact> user pending profile page
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact   | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |

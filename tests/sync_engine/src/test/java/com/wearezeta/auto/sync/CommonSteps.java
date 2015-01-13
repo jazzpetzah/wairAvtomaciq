@@ -19,8 +19,8 @@ import org.junit.Assert;
 import org.openqa.selenium.NoSuchElementException;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
-import com.wearezeta.auto.common.BackEndREST;
-import com.wearezeta.auto.common.ClientUser;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -54,6 +54,8 @@ public class CommonSteps {
 	private static final Logger log = ZetaLogger.getLog(CommonSteps.class
 			.getSimpleName());
 
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+
 	@Before
 	public void setup() throws Exception {
 		OSXCommonUtils.removeAllZClientSettingsFromDefaults();
@@ -69,32 +71,14 @@ public class CommonSteps {
 
 		String androidBEFlagFilePath = AndroidCommonUtils.createBackendJSON(backendType);
 		AndroidCommonUtils.deployBackendFile(androidBEFlagFilePath);
-		
-		boolean generateUsersFlag = Boolean.valueOf(SyncEngineUtil
-				.getCommonGenerateUsersFromConfig(this.getClass()));
-
-		if (generateUsersFlag) {
-			SyncEngineUtil.generateUsers(3);
-			Thread.sleep(SyncEngineUtil.BACKEND_SYNC_TIMEOUT);
-			SyncEngineUtil.connectUsers();
-
-			// create group chat
-			ArrayList<ClientUser> chatParticipants = new ArrayList<ClientUser>();
-			chatParticipants.add(SyncEngineUtil.usersList.get(1));
-			chatParticipants.add(SyncEngineUtil.usersList.get(2));
-
-			BackEndREST.createGroupConversation(
-					SyncEngineUtil.usersList.get(0), chatParticipants,
-					SyncEngineUtil.CHAT_NAME);
-		} else {
-			SyncEngineUtil.usePrecreatedUsers();
-		}
 
 		// init platform clients
 		int i = 0;
+		
+		ArrayList<ClientUser> usersList = new ArrayList<ClientUser>(usrMgr.getCreatedUsers());
 		for (String platform : SyncEngineUtil.platforms) {
 			ZetaInstance client = new ZetaInstance(platform);
-			client.setUserInstance(SyncEngineUtil.usersList.get(i++));
+			client.setUserInstance(usersList.get(i++));
 			ExecutionContext.clients.put(platform, client);
 		}
 	}
@@ -104,7 +88,7 @@ public class CommonSteps {
 			IllegalAccessException, IOException {
 		// osx teardown
 		if (ExecutionContext.isOsxEnabled()) {
-			com.wearezeta.auto.osx.steps.CommonSteps.senderPages
+			com.wearezeta.auto.osx.steps.CommonOSXSteps.senderPages
 					.closeAllPages();
 		}
 
@@ -122,6 +106,26 @@ public class CommonSteps {
 		}
 	}
 
+	@Given("^(.*) has group chat (.*) with (.*)$")
+	public void UserHasGroupChatWithContacts(String chatOwnerNameAlias,
+			String chatName, String otherParticipantsNameAlises)
+			throws Exception {
+		com.wearezeta.auto.common.CommonSteps.getInstance().UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName,
+				otherParticipantsNameAlises);
+	}
+
+	@Given("^(.*) is connected to (.*)$")
+	public void UserIsConnectedTo(String userFromNameAlias,
+			String usersToNameAliases) throws Exception {
+		com.wearezeta.auto.common.CommonSteps.getInstance().UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
+	}
+
+	@Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
+	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
+			throws Exception {
+		com.wearezeta.auto.common.CommonSteps.getInstance().ThereAreNUsersWhereXIsMe(count, myNameAlias);
+	}
+
 	private void startOsxClient(ExecutorService executor) throws IOException {
 		final String osxPath = CommonUtils
 				.getOsxApplicationPathFromConfig(this.getClass());
@@ -129,8 +133,8 @@ public class CommonSteps {
 				.getOsxAppiumUrlFromConfig(this.getClass());
 		executor.execute(new Runnable() {
 			public void run() {
-				com.wearezeta.auto.osx.steps.CommonSteps.senderPages = new com.wearezeta.auto.osx.pages.PagesCollection();
-				com.wearezeta.auto.osx.pages.PagesCollection osxSenderPages = com.wearezeta.auto.osx.steps.CommonSteps.senderPages;
+				com.wearezeta.auto.osx.steps.CommonOSXSteps.senderPages = new com.wearezeta.auto.osx.pages.PagesCollection();
+				com.wearezeta.auto.osx.pages.PagesCollection osxSenderPages = com.wearezeta.auto.osx.steps.CommonOSXSteps.senderPages;
 
 				long startDate = new Date().getTime();
 				try {
@@ -318,8 +322,8 @@ public class CommonSteps {
 		executor.execute(new Runnable() {
 			public void run() {
 				try {
-					osxSteps.OSXISignInUsingLoginAndPassword("1stUser",
-							"usersPassword");
+					osxSteps.OSXISignInUsingLoginAndPassword(SyncEngineUtil.OSX_NAME_ALIAS,
+							SyncEngineUtil.PASSWORD_ALIAS);
 					osxSteps.OSXIOpenConversationWith(conversationName);
 				} catch (Throwable e) {
 					log.fatal("OSX client crashed during login and opening conversation.\n" + e.getMessage());
@@ -333,8 +337,8 @@ public class CommonSteps {
 		executor.execute(new Runnable() {
 			public void run() {
 				try {
-					androidSteps.AndroidISignInUsingLoginAndPassword("2ndUser",
-							"usersPassword");
+					androidSteps.AndroidISignInUsingLoginAndPassword(SyncEngineUtil.ANDROID_NAME_ALIAS,
+							SyncEngineUtil.PASSWORD_ALIAS);
 					androidSteps.AndroidIOpenConversationWith(conversationName);
 				} catch (Throwable e) {
 					log.fatal("Android client crashed during login and opening conversation.\n" + e.getMessage());
@@ -349,8 +353,8 @@ public class CommonSteps {
 		executor.execute(new Runnable() {
 			public void run() {
 				try {
-					iosSteps.IOSISignInUsingLoginAndPassword("3rdUser",
-							"usersPassword");
+					iosSteps.IOSISignInUsingLoginAndPassword(SyncEngineUtil.IOS_NAME_ALIAS,
+							SyncEngineUtil.PASSWORD_ALIAS);
 					iosSteps.IOSIOpenConversationWith(conversationName);
 				} catch (Throwable e) {
 					log.error("iOS client crashed during login and opening conversation.\n" + e.getMessage());
@@ -366,32 +370,6 @@ public class CommonSteps {
 		if (!executor.awaitTermination(20, TimeUnit.MINUTES)) {
 			throw new Exception(
 					"Clients sign in was not finished in 20 minutes.");
-		}
-	}
-
-	@Given("I start sync engine test")
-	public void IStartSyncEngineTest() throws Exception {
-		log.debug("Starting sync engine");
-		ExecutorService executor = Executors.newFixedThreadPool(10);
-
-		int i = 0;
-		for (String platform : SyncEngineUtil.platforms) {
-			ZetaInstance client = ExecutionContext.clients.get(platform);
-			if (client.isEnabled()) {
-				log.debug("Init client for platform: " + platform);
-				client.setUserInstance(SyncEngineUtil.usersList.get(i++));
-				executor.execute(client.sender());
-				executor.execute(client.listener());
-			} else {
-				log.debug("Client for platform " + platform
-						+ " is skipped. SKIPPED");
-			}
-			ExecutionContext.clients.put(platform, client);
-		}
-
-		executor.shutdown();
-		if (!executor.awaitTermination(10, TimeUnit.MINUTES)) {
-			throw new Exception("Work was not finished in useful time.");
 		}
 	}
 

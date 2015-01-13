@@ -345,6 +345,7 @@ public class RegistrationPage extends IOSPage {
 	}
 
 	public void typeUsername() {
+		wait.until(ExpectedConditions.elementToBeClickable(yourName));
 		yourName.sendKeys(getName());
 	}
 

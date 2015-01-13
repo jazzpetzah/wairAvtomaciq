@@ -178,8 +178,9 @@ public class RegistrationPageSteps {
 	public void IEnterNameWithCharacterLimit(int charactersLimit,
 			String alphabetName) throws Throwable {
 		String nameToType = LanguageUtils.generateRandomString(charactersLimit,
-				alphabetName);
-		PagesCollection.registrationPage.setName(nameToType);
+				alphabetName).replace('\\', '|');
+		IEnterName(nameToType);
+		PagesCollection.registrationPage.inputName();
 	}
 
 	@When("^I input name (.*) and hit Enter$")
