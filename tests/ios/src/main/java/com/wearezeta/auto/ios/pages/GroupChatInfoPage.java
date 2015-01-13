@@ -27,6 +27,9 @@ public class GroupChatInfoPage extends IOSPage {
 	private String url;
 	private String path;
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.90;
+	
+	private final String AQA_PICTURE_CONTACT = "AQAPICTURECONTACT";
+	private final String AQA_AVATAR_CONTACT = "AT";
 
 	private String conversationName = null;
 
@@ -99,18 +102,22 @@ public class GroupChatInfoPage extends IOSPage {
 	public boolean areParticipantAvatarsCorrect() throws IOException {
 		List<WebElement> participantAvatars = getCurrentParticipants();
 		BufferedImage avatarIcon = null;
+		boolean flag1 = false, flag2 = false;
 		for (WebElement avatar : participantAvatars) {
 			avatarIcon = CommonUtils.getElementScreenshot(avatar, driver);
 			String avatarName = avatar.getAttribute("name");
-			if (avatarName.equalsIgnoreCase("AQAPICTURECONTACT")) {
+			if (avatarName.equalsIgnoreCase(AQA_PICTURE_CONTACT)) {
 				BufferedImage realImage = ImageUtil.readImageFromFile(IOSPage
 						.getImagesPath() + "avatarPictureTest.png");
 				double score = ImageUtil.getOverlapScore(realImage, avatarIcon);
 				if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
 					return false;
 				}
+				else {
+					flag1 = true;
+				}
 			}
-			if (avatarName.equalsIgnoreCase("AT")) {
+			if (avatarName.equalsIgnoreCase(AQA_AVATAR_CONTACT)) {
 				// must be a yellow user with initials AT
 				BufferedImage realImage = ImageUtil.readImageFromFile(IOSPage
 						.getImagesPath() + "avatarTest.png");
@@ -118,9 +125,12 @@ public class GroupChatInfoPage extends IOSPage {
 				if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
 					return false;
 				}
+				else {
+					flag2 = true;
+				}
 			}
 		}
-		return true;
+		return flag1 && flag2;
 	}
 
 	public void tapAndCheckAllParticipants(String user, boolean checkEmail) throws Exception {

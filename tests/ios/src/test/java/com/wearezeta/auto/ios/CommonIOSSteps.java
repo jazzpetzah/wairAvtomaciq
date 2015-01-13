@@ -214,15 +214,22 @@ public class CommonIOSSteps {
 		commonSteps.IRemoveContactsListUsersFromMacContact();
 	}
 
-	@When("^I change (\\w+) avatar picture to (.*)$")
+	@When("^User (\\w+) change avatar picture to (.*)$")
 	public void IChangeUserAvatarPicture(String userNameAlias, String path)
 			throws Exception {
-		commonSteps.IChangeUserAvatarPicture(userNameAlias, path);
+		String rootPath = CommonUtils.getSimulatorImagesPathFromConfig(getClass());
+		commonSteps.IChangeUserAvatarPicture(userNameAlias, rootPath + "/" + path);
 	}
 
-	@When("^I change (\\w+) name to (.*)$")
+	@When("^User (\\w+) change  name to (.*)$")
 	public void IChangeUserName(String userNameAlias, String newName)
 			throws Exception {
 		commonSteps.IChangeUserName(userNameAlias, newName);
+	}
+	
+	@When("^User (\\w+) change  accent color to (.*)$")
+	public void IChangeAccentColor(String userNameAlias, String newColor)
+			throws Exception {
+		commonSteps.IChangeUserAccentColor(userNameAlias, newColor);
 	}
 }
