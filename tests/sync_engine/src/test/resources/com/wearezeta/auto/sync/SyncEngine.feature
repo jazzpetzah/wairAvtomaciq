@@ -5,7 +5,7 @@ Feature: Sync Engine
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I start all platform clients
-    And I sign in to all platform clients and go to conversation <ConversationName>
+    And I sign in to all platform clients and go to conversation <ChatName>
     When I run serial sync engine test
     Then I collect messages order data
     And I collect builds and devices info

@@ -71,16 +71,6 @@ public class CommonSteps {
 
 		String androidBEFlagFilePath = AndroidCommonUtils.createBackendJSON(backendType);
 		AndroidCommonUtils.deployBackendFile(androidBEFlagFilePath);
-
-		// init platform clients
-		int i = 0;
-		
-		ArrayList<ClientUser> usersList = new ArrayList<ClientUser>(usrMgr.getCreatedUsers());
-		for (String platform : SyncEngineUtil.platforms) {
-			ZetaInstance client = new ZetaInstance(platform);
-			client.setUserInstance(usersList.get(i++));
-			ExecutionContext.clients.put(platform, client);
-		}
 	}
 
 	@After
@@ -285,6 +275,16 @@ public class CommonSteps {
 	
 	@Given("I start all platform clients")
 	public void IStartPlatformClients() throws Exception {
+		// init platform clients
+		int i = 0;
+		
+		ArrayList<ClientUser> usersList = new ArrayList<ClientUser>(usrMgr.getCreatedUsers());
+		for (String platform : SyncEngineUtil.platforms) {
+			ZetaInstance client = new ZetaInstance(platform);
+			client.setUserInstance(usersList.get(i++));
+			ExecutionContext.clients.put(platform, client);
+		}
+		
 		ExecutorService executor = Executors.newFixedThreadPool(3);
 
 		// OSX initialization
