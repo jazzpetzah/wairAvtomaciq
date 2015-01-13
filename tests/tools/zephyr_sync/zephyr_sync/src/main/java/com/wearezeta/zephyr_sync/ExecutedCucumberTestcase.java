@@ -2,7 +2,7 @@ package com.wearezeta.zephyr_sync;
 
 import java.util.Set;
 
-public class ExecutedTestcase extends CucumberTestcase {
+public class ExecutedCucumberTestcase extends CucumberTestcase {
 	private boolean isPassed;
 	private boolean isFailed;
 	private boolean isSkipped;
@@ -29,7 +29,7 @@ public class ExecutedTestcase extends CucumberTestcase {
 		throw new RuntimeException("The property is read-only");
 	}
 
-	public ExecutedTestcase(String id, String name, Set<String> tags,
+	public ExecutedCucumberTestcase(String id, String name, Set<String> tags,
 			String cucumberId, boolean isPassed, boolean isFailed,
 			boolean isSkipped) {
 		super(id, name, tags, cucumberId);

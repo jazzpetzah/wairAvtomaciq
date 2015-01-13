@@ -11,7 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.mysql.jdbc.NotImplemented;
-import com.wearezeta.zephyr_sync.ExecutedTestcase;
+import com.wearezeta.zephyr_sync.ExecutedCucumberTestcase;
 import com.wearezeta.zephyr_sync.Testcase;
 
 public class ResultJSON extends TestcasesStorage {
@@ -68,9 +68,9 @@ public class ResultJSON extends TestcasesStorage {
 		return resultList;
 	}
 
-	private static List<ExecutedTestcase> extractTestcasesFromFeature(
+	private static List<ExecutedCucumberTestcase> extractTestcasesFromFeature(
 			JSONObject feature) {
-		List<ExecutedTestcase> parsedTestcases = new ArrayList<ExecutedTestcase>();
+		List<ExecutedCucumberTestcase> parsedTestcases = new ArrayList<ExecutedCucumberTestcase>();
 
 		if (feature.has("elements")) {
 			JSONArray elements = feature.getJSONArray("elements");
@@ -89,7 +89,7 @@ public class ResultJSON extends TestcasesStorage {
 					tags = parseTagsList(element.getJSONArray("tags"));
 				}
 				final String id = Testcase.extractIdsFromTags(tags);
-				ExecutedTestcase tc = new ExecutedTestcase(id, name, tags,
+				ExecutedCucumberTestcase tc = new ExecutedCucumberTestcase(id, name, tags,
 						cucumberId, isPassed, isFailed, isSkipped);
 				parsedTestcases.add(tc);
 			}
@@ -99,9 +99,9 @@ public class ResultJSON extends TestcasesStorage {
 	}
 
 	@Override
-	public List<ExecutedTestcase> getTestcases() throws Throwable {
+	public List<ExecutedCucumberTestcase> getTestcases() throws Exception {
 		final String json = FileUtils.readFileToString(new File(path), "UTF-8");
-		List<ExecutedTestcase> resultList = new ArrayList<ExecutedTestcase>();
+		List<ExecutedCucumberTestcase> resultList = new ArrayList<ExecutedCucumberTestcase>();
 
 		JSONArray allFeatures = new JSONArray(json);
 		for (int featureIdx = 0; featureIdx < allFeatures.length(); featureIdx++) {
@@ -113,7 +113,7 @@ public class ResultJSON extends TestcasesStorage {
 
 	@Override
 	public void syncTestcases(List<? extends Testcase> testcases)
-			throws Throwable {
+			throws Exception {
 		throw new NotImplemented();
 	}
 
