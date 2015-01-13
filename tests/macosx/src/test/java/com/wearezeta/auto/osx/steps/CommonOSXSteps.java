@@ -24,7 +24,6 @@ import com.wearezeta.auto.osx.pages.PagesCollection;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class CommonOSXSteps {
@@ -173,17 +172,6 @@ public class CommonOSXSteps {
 	@When("^I remove contacts list users from Mac contacts$")
 	public void IRemoveContactsListUsersFromMacContact() throws Exception {
 		commonSteps.IRemoveContactsListUsersFromMacContact();
-	}
-
-	@Then("^I reset Wire defaults and restart client")
-	public void ISetWireDefaultsAndRestartClient() throws Exception {
-		senderPages.getMainMenuPage().quitZClient();
-		OSXCommonUtils.deleteZClientLoginFromKeychain();
-		OSXCommonUtils.deleteCacheFolder();
-		OSXCommonUtils.setZClientBackend(CommonUtils
-				.getBackendType(LoginPage.class));
-		Thread.sleep(1000);
-		senderPages.getLoginPage().startApp();
 	}
 	
 	@When("^I change user (.*) avatar picture from file (.*)$")

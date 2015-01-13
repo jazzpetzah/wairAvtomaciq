@@ -51,3 +51,17 @@ Feature: Connect to user
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+
+  @staging @id1386
+  Scenario Outline: Verify you dont receive any messages from blocked person in 1:1 chat
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Name> blocks user <Contact>
+    Given Contact <Contact> sends random message to user <Name>
+    Given I Sign in using login <Login> and password <Password>
+    When I see my name <Name> in Contact list
+    Then I do not see conversation <Contact> in contact list
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
