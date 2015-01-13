@@ -6,5 +6,6 @@ public class ZClientMenuSteps {
 	 @When("I am signing out")
 	 public void WhenIAmSigningOut() throws Exception {
 		 CommonOSXSteps.senderPages.getMainMenuPage().SignOut();
+		 CommonOSXSteps.resetBackendSettingsIfOverwritten();
 	 }
 }

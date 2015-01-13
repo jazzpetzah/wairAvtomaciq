@@ -46,6 +46,15 @@ public class CommonOSXSteps {
 
 	public static PagesCollection senderPages;
 
+	public static void resetBackendSettingsIfOverwritten() throws IOException, Exception {
+		if (!OSXCommonUtils.isBackendTypeSet(CommonUtils.getBackendType(CommonOSXSteps.class))) {
+			log.debug("Backend setting were overwritten. Trying to restart app.");
+			senderPages.getMainMenuPage().quitZClient();
+			OSXCommonUtils.setZClientBackend(CommonUtils.getBackendType(CommonOSXSteps.class));
+			senderPages.getLoginPage().startApp();
+		}
+	}
+
 	@Before("@performance")
 	public void setUpPerformance() throws Exception, UriBuilderException,
 			IOException, MessagingException, JSONException,
@@ -83,14 +92,7 @@ public class CommonOSXSteps {
 		ZetaFormatter.setDriver(senderPages.getLoginPage().getDriver());
 		senderPages.getLoginPage().sendProblemReportIfFound();
 
-		if (!OSXCommonUtils.isBackendTypeSet(CommonUtils.getBackendType(this
-				.getClass()))) {
-			log.debug("Backend setting were overwritten. Trying to restart app.");
-			senderPages.getMainMenuPage().quitZClient();
-			OSXCommonUtils.setZClientBackend(CommonUtils.getBackendType(this
-					.getClass()));
-			senderPages.getLoginPage().startApp();
-		}
+		resetBackendSettingsIfOverwritten();
 	}
 
 	@Given("^(.*) has sent connection request to (.*)$")
