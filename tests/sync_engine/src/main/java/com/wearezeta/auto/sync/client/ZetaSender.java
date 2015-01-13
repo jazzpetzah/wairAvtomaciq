@@ -6,8 +6,8 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriverException;
 
-import com.wearezeta.auto.common.BackEndREST;
-import com.wearezeta.auto.common.ClientUser;
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
@@ -133,6 +133,6 @@ public class ZetaSender extends Thread {
 	}
 	
 	private void sendTextMessageBackend(String chat, String message) throws Exception {
-		BackEndREST.sendDialogMessageByChatName(backendClient(), chat, message);
+		BackendAPIWrappers.sendDialogMessageByChatName(backendClient(), chat, message);
 	}
 }
