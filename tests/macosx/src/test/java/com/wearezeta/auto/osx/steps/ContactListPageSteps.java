@@ -11,6 +11,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.StringParser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationInfoPage;
@@ -53,11 +54,7 @@ public class ContactListPageSteps {
 			name = CommonOSXSteps.senderPages.getConversationInfoPage()
 					.getCurrentConversationName();
 		} else {
-			try {
-				name = usrMgr.findUserByNameOrNameAlias(name).getName();
-			} catch (NoSuchUserException e) {
-				// Silently ignore
-			}
+			name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		}
 		log.debug("Looking for contact with name " + name);
 		Assert.assertTrue(CommonOSXSteps.senderPages.getContactListPage()

@@ -124,7 +124,7 @@ public class OtherUserPersonalInfoPageSteps {
 	@When("^I press Leave conversation button$")
 	public void WhenIPressLeaveConversationButton() throws Throwable {
 		PagesCollection.otherUserPersonalInfoPage
-				.pressLeaveConversationButton();
+		.pressLeaveConversationButton();
 	}
 
 	@When("^I confirm leaving$")
@@ -149,10 +149,18 @@ public class OtherUserPersonalInfoPageSteps {
 	@Then("^I see the correct participant (.*) and (.*) avatars$")
 	public void ISeeCorrectParticipantAvatars(String contact1, String contact2)
 			throws Exception {
+		try {
+			contact1 = usrMgr.findUserByNameOrNameAlias(contact1).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+		try {
+			contact2 = usrMgr.findUserByNameOrNameAlias(contact2).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
 		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
-				.isParticipantAvatars(usrMgr.findUserByNameOrNameAlias(contact1)
-						.getName(), usrMgr.findUserByNameOrNameAlias(contact2)
-						.getName()));
+				.isParticipantAvatars(contact1,contact2));
 	}
 
 	@Then("^I see the correct number of participants in the title (.*)$")

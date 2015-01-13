@@ -130,9 +130,6 @@ public class ContactListPage extends AndroidPage {
 		WebElement el = driver.findElementByXPath(String.format(
 				AndroidLocators.ContactListPage.xpathContactListMute, contact));
 		el.click();
-		el = driver.findElementByXPath(String.format(
-				AndroidLocators.ContactListPage.xpathContactFrame, contact));
-		el.click();
 	}
 	
 	public boolean isContactMuted() {

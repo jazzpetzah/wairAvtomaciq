@@ -126,4 +126,8 @@ public class ImageUtil {
 	public static BufferedImage readImageFromFile(String filePath) throws IOException {
 		return ImageIO.read(new File(filePath));
 	}
+
+	public static void storeImageToFile(BufferedImage im, String filePath) throws IOException {
+		ImageIO.write(im, "PNG", new File(filePath));
+	}
 }

@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
@@ -44,6 +45,13 @@ public class ConversationPageSteps {
 		IWriteMessage(randomMessage);
 	}
 
+	@When("^Contact (.*) sends random message to user (.*)$")
+	public void UserSendsRandomMessageToConversation(String msgFromUserNameAlias,
+			String dstUserNameAlias) throws Exception {
+		randomMessage = CommonUtils.generateRandomString(10);
+		CommonSteps.getInstance().UserSentMessageToUser(msgFromUserNameAlias, dstUserNameAlias, randomMessage);
+	}
+	
 	@When("I write message (.*)")
 	public void IWriteMessage(String message) {
 		CommonOSXSteps.senderPages.getConversationPage().writeNewMessage(
