@@ -122,5 +122,6 @@ public class RegistrationPageSteps {
 	public void IVerifyRegistrationAddress() throws Throwable {
 		BackendAPIWrappers.activateRegisteredUser(this.listener);
 		this.userToRegister.setUserState(UserState.Created);
+		PagesCollection.contactListPage = PagesCollection.registrationPage.continueRegistration();
 	}
 }
