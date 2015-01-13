@@ -93,7 +93,7 @@ Feature: Registration
       | user1Email | user1Password | user1Name | error@wearezeta.com |
 
   @regression @id528 @id529 @id530
-  Scenario Outline: Register new user using username with maximum characters allowed, Deutch, Double-byte (Chinese), and emoji Characters
+  Scenario Outline: Register new user using username with maximum characters allowed
     Given I see sign in screen
     When I press Join button
     And I press Picture button
@@ -101,6 +101,7 @@ Feature: Registration
     And I See selected picture
     And I confirm selection
     And I enter a username which is at most <MaxChars> characters long from <Language> alphabet
+    And I click Back button
     Then I verify that my username is at most <MaxChars> characters long
 
     Examples: 
@@ -320,8 +321,10 @@ Feature: Registration
     And I enter password <Password>
     Then I confirm that <EmailCount> recent emails in inbox contain 0 for current recipient
     And I click Create Account Button
+    And I wait for 10 seconds
     Then I confirm that <EmailCount> recent emails in inbox contain 1 for current recipient
     And I resend verification email
+    And I wait for 10 seconds
     Then I confirm that <EmailCount> recent emails in inbox contain 2 for current recipient
 
     Examples: 

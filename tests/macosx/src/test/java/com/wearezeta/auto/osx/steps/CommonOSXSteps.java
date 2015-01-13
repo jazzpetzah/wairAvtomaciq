@@ -24,7 +24,6 @@ import com.wearezeta.auto.osx.pages.PagesCollection;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class CommonOSXSteps {
@@ -45,6 +44,15 @@ public class CommonOSXSteps {
 	}
 
 	public static PagesCollection senderPages;
+
+	public static void resetBackendSettingsIfOverwritten() throws IOException, Exception {
+		if (!OSXCommonUtils.isBackendTypeSet(CommonUtils.getBackendType(CommonOSXSteps.class))) {
+			log.debug("Backend setting were overwritten. Trying to restart app.");
+			senderPages.getMainMenuPage().quitZClient();
+			OSXCommonUtils.setZClientBackend(CommonUtils.getBackendType(CommonOSXSteps.class));
+			senderPages.getLoginPage().startApp();
+		}
+	}
 
 	@Before("@performance")
 	public void setUpPerformance() throws Exception, UriBuilderException,
@@ -83,14 +91,7 @@ public class CommonOSXSteps {
 		ZetaFormatter.setDriver(senderPages.getLoginPage().getDriver());
 		senderPages.getLoginPage().sendProblemReportIfFound();
 
-		if (!OSXCommonUtils.isBackendTypeSet(CommonUtils.getBackendType(this
-				.getClass()))) {
-			log.debug("Backend setting were overwritten. Trying to restart app.");
-			senderPages.getMainMenuPage().quitZClient();
-			OSXCommonUtils.setZClientBackend(CommonUtils.getBackendType(this
-					.getClass()));
-			senderPages.getLoginPage().startApp();
-		}
+		resetBackendSettingsIfOverwritten();
 	}
 
 	@Given("^(.*) has sent connection request to (.*)$")
@@ -171,17 +172,6 @@ public class CommonOSXSteps {
 	@When("^I remove contacts list users from Mac contacts$")
 	public void IRemoveContactsListUsersFromMacContact() throws Exception {
 		commonSteps.IRemoveContactsListUsersFromMacContact();
-	}
-
-	@Then("^I reset Wire defaults and restart client")
-	public void ISetWireDefaultsAndRestartClient() throws Exception {
-		senderPages.getMainMenuPage().quitZClient();
-		OSXCommonUtils.deleteZClientLoginFromKeychain();
-		OSXCommonUtils.deleteCacheFolder();
-		OSXCommonUtils.setZClientBackend(CommonUtils
-				.getBackendType(LoginPage.class));
-		Thread.sleep(1000);
-		senderPages.getLoginPage().startApp();
 	}
 	
 	@When("^I change user (.*) avatar picture from file (.*)$")

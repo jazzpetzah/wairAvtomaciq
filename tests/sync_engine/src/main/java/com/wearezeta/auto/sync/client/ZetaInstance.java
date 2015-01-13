@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
-import com.wearezeta.auto.common.ClientUser;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.BuildVersionInfo;

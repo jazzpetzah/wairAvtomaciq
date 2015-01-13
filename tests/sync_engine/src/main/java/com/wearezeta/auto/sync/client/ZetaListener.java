@@ -100,12 +100,12 @@ public class ZetaListener extends Thread {
 						com.wearezeta.auto.android.pages.PagesCollection.dialogPage;
 				return dialogPage.getPageSource();
 			} else if (platform().equals(CommonUtils.PLATFORM_NAME_OSX)) {
-				com.wearezeta.auto.osx.steps.CommonSteps.senderPages.setConversationPage(
+				com.wearezeta.auto.osx.steps.CommonOSXSteps.senderPages.setConversationPage(
 						new com.wearezeta.auto.osx.pages.ConversationPage(
 								CommonUtils.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
 								CommonUtils.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
 				com.wearezeta.auto.osx.pages.ConversationPage conversationPage =
-						com.wearezeta.auto.osx.steps.CommonSteps.senderPages.getConversationPage();
+						com.wearezeta.auto.osx.steps.CommonOSXSteps.senderPages.getConversationPage();
 				return conversationPage.getPageSource();
 			} else if (platform().equals(CommonUtils.PLATFORM_NAME_IOS)) {
 				com.wearezeta.auto.ios.pages.DialogPage dialogPage =
@@ -169,12 +169,12 @@ public class ZetaListener extends Thread {
 
 	public void waitForMessageOsx(String message, boolean checkTime) {
 		try {
-			com.wearezeta.auto.osx.steps.CommonSteps.senderPages.setConversationPage(
+			com.wearezeta.auto.osx.steps.CommonOSXSteps.senderPages.setConversationPage(
 				new com.wearezeta.auto.osx.pages.ConversationPage(
 						CommonUtils.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
 						CommonUtils.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
 			com.wearezeta.auto.osx.pages.ConversationPage conversationPage =
-				com.wearezeta.auto.osx.steps.CommonSteps.senderPages.getConversationPage();
+				com.wearezeta.auto.osx.steps.CommonOSXSteps.senderPages.getConversationPage();
 			MessageEntry entry = conversationPage.receiveMessage(message, checkTime);
 			if (entry != null) {
 				registeredMessages.put(message, entry);

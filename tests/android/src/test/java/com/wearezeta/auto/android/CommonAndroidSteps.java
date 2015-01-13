@@ -7,6 +7,8 @@ import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ZetaFormatter;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -23,6 +25,7 @@ public class CommonAndroidSteps {
 	}
 
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
 	private String path;
@@ -137,7 +140,38 @@ public class CommonAndroidSteps {
 		commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
 				usersToNameAliases);
 	}
-
+	@Given("^(.*) has an avatar picture from file (.*)$")
+	public void GivenUserHasAnAvatarPicture(String name, String picture) throws Throwable {
+		String picturePath = CommonUtils.getImagesPath(CommonAndroidSteps.class) + "/" + picture;
+		try {
+			name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+		commonSteps.IChangeUserAvatarPicture(name, picturePath);
+	}
+	
+	@Given("^(.*) has an accent color (.*)$")
+	public void GivenUserHasAnAccentColor(String name, String colorName) throws Throwable {
+		try {
+			name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+		commonSteps.IChangeUserAccentColor(name, colorName);
+	}
+	
+	@Given("^(.*) has a name (.*)$")
+	public void GivenUserHasAName(String name, String newName) throws Throwable {
+		try {
+			name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+		commonSteps.IChangeUserName(name, newName);
+	}
+	
+	
 	@Given("^(.*) is connected to (.*)$")
 	public void UserIsConnectedTo(String userFromNameAlias,
 			String usersToNameAliases) throws Exception {

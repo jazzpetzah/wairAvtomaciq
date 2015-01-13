@@ -80,7 +80,7 @@ public class OtherUserPersonalInfoPage extends IOSPage{
 	
 	public boolean isOtherUserProfileNameVisible(String name) {
 		WebElement otherUserName = driver.findElementByName(name);
-		return DriverUtils.isElementDisplayed(otherUserName);
+		return  otherUserName.isEnabled();
 	}
 	
 	public void continueToAddUser(){
