@@ -6,17 +6,18 @@ Feature: People View
     Given <Contact1> has an avatar picture from file <Picture>
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given <Contact1> has a name <Contact1NewName>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <GroupChatName>
     And I swipe up on dialog page
-    And I tap on group chat contact <Contact1>
+    And I tap on group chat contact <Contact1NewName>
     Then I see <Contact1> user name and email
     And I see correct background image
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName   | Picture                      |
-      | user1Email | user1Password | user1Name | user3Name | user2Name | GroupInfoCheck2 | aqaPictureContact600_800.jpg |
+      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName   | Picture                      | Contact1NewName   |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupInfoCheck2 | aqaPictureContact600_800.jpg | aqaPictureContact |
 
   @id319 @regression
   Scenario Outline: I can create group chat from People picker
@@ -95,5 +96,5 @@ Feature: People View
     And I see the correct participant <Contact1NewName> and <Contact2NewName> avatars
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName  | Picture                      | Color        | Contact1NewName        | Contact2NewName       |
-      | user1Email | user1Password | user1Name | user3Name | user2Name | 3                 | GroupInfoCheck | aqaPictureContact600_800.jpg | BrightOrange | aqaPicture TestContact | aqaAvatar TestContact |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName  | Picture                      | Color        | Contact1NewName   | Contact2NewName       |
+      | user1Email | user1Password | user1Name | user3Name | user2Name | 3                 | GroupInfoCheck | aqaPictureContact600_800.jpg | BrightOrange | aqaPictureContact | aqaAvatar TestContact |
