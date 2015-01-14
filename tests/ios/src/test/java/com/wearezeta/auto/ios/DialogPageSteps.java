@@ -2,6 +2,8 @@ package com.wearezeta.auto.ios;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -158,8 +160,17 @@ public class DialogPageSteps {
 			throws Throwable {
 		String dialogLastMessage = PagesCollection.dialogPage
 				.getLastMessageFromDialog();
+
+		if (!Normalizer.isNormalized(dialogLastMessage, Form.NFC)) {
+			dialogLastMessage = Normalizer.normalize(dialogLastMessage, Form.NFC);
+		}
+		
+		if (!Normalizer.isNormalized(msg, Form.NFC)) {
+			dialogLastMessage = Normalizer.normalize(msg, Form.NFC);
+		}
+
 		Assert.assertTrue("Message is different, actual: " + dialogLastMessage
-				+ " expected: " + msg, dialogLastMessage.equals((msg).trim()));
+				+ " expected: " + msg, dialogLastMessage.equals(msg));
 	}
 
 	@Then("^I see last message in the dialog$")
