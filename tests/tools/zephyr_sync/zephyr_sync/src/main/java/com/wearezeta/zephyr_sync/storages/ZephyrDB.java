@@ -191,8 +191,7 @@ public class ZephyrDB extends TestcasesStorage {
 						.getString("execution_status")));
 			}
 			return new ExecutedZephyrTestcase(realId,
-					Long.toString(executedTcId), name, comment, status,
-					(status != ZephyrExecutionStatus.Undefined));
+					Long.toString(executedTcId), name, comment, status);
 		} finally {
 			rs.close();
 			prepStmt.close();
@@ -273,81 +272,84 @@ public class ZephyrDB extends TestcasesStorage {
 		}
 	}
 
+	private long addTestcaseResult(final ExecutedZephyrTestcase tc)
+			throws Exception {
+		PreparedStatement prepStmt = null;
+		final long executionId = Long.parseLong(tc.getExecutionId());
+		final ZephyrExecutionStatus executionStatus = tc.getExecutionStatus();
+		if (executionStatus == ZephyrExecutionStatus.Undefined) {
+			return -1;
+		}
+
+		prepStmt = conn
+				.prepareStatement("INSERT INTO test_result "
+						+ "(execution_date, execution_notes, execution_status, "
+						+ "attachment_location, status, defect_id, tester_id, release_test_schedule_id) "
+						+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+		try {
+			prepStmt.setTimestamp(1,
+					new java.sql.Timestamp(System.currentTimeMillis()));
+			prepStmt.setNull(2, java.sql.Types.VARCHAR);
+			prepStmt.setString(3,
+					Integer.toString(executionStatus.getId().intValue()));
+			prepStmt.setNull(4, java.sql.Types.VARCHAR);
+			prepStmt.setNull(5, java.sql.Types.VARCHAR);
+			prepStmt.setNull(6, java.sql.Types.BIGINT);
+			prepStmt.setLong(7, DEFAULT_TESTER_ID);
+			prepStmt.setLong(8, executionId);
+			prepStmt.execute();
+		} finally {
+			prepStmt.close();
+		}
+
+		prepStmt = conn
+				.prepareStatement("SELECT MAX(id) as max_id FROM test_result");
+		ResultSet rs = prepStmt.executeQuery();
+		try {
+			rs.next();
+			return rs.getLong("max_id");
+		} finally {
+			rs.close();
+			prepStmt.close();
+		}
+	}
+
+	private void updateTestcaseStatus(final ExecutedZephyrTestcase tc,
+			final long lastTestResultId) throws Exception {
+		final long executionId = Long.parseLong(tc.getExecutionId());
+		final String executionComment = tc.getExecutionComment();
+		final ZephyrExecutionStatus executionStatus = tc.getExecutionStatus();
+
+		PreparedStatement prepStmt = conn
+				.prepareStatement("UPDATE release_test_schedule SET comment=?, last_test_result=? WHERE id=?");
+		try {
+			if (executionComment == null) {
+				prepStmt.setNull(1, java.sql.Types.VARCHAR);
+			} else {
+				prepStmt.setString(1, executionComment);
+			}
+			if (executionStatus == ZephyrExecutionStatus.Undefined) {
+				prepStmt.setNull(2, java.sql.Types.BIGINT);
+			} else {
+				prepStmt.setLong(2, lastTestResultId);
+			}
+			prepStmt.setLong(3, executionId);
+			prepStmt.executeUpdate();
+		} finally {
+			prepStmt.close();
+		}
+	}
+
 	public int syncPhaseResults(ZephyrTestPhase phase) throws Exception {
 		final List<ExecutedZephyrTestcase> phaseTestcases = phase
 				.getTestcases();
-
 		int countOfUpdatedTestcases = 0;
 		for (ExecutedZephyrTestcase executedTC : phaseTestcases) {
 			if (!executedTC.getIsChanged()) {
 				continue;
 			}
-			PreparedStatement prepStmt = null;
-			final long executionId = Long
-					.parseLong(executedTC.getExecutionId());
-			final ZephyrExecutionStatus executionStatus = executedTC
-					.getExecutionStatus();
-			final String executionComment = executedTC.getExecutionComment();
-
-			if (executedTC.getIsExecuted()) {
-				prepStmt = conn
-						.prepareStatement("UPDATE test_result SET execution_status=? WHERE release_test_schedule_id=?");
-				try {
-					if (executionStatus == ZephyrExecutionStatus.Undefined) {
-						throw new RuntimeException(String.format(
-								"Execution status field MUST be defined for the test case '[%s] %s' "
-										+ "in phase '%s'", executionId,
-								executedTC.getName(), phase.getName()));
-					}
-					prepStmt.setString(1, Integer.toString(executionStatus
-							.getId().intValue()));
-					prepStmt.setLong(2, executionId);
-					prepStmt.executeUpdate();
-				} finally {
-					prepStmt.close();
-				}
-			} else {
-				prepStmt = conn
-						.prepareStatement("INSERT INTO test_result "
-								+ "(execution_date, execution_notes, execution_status, "
-								+ "attachment_location, status, defect_id, tester_id, release_test_schedule_id) "
-								+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-				try {
-					prepStmt.setTimestamp(1,
-							new java.sql.Timestamp(System.currentTimeMillis()));
-					prepStmt.setNull(2, java.sql.Types.VARCHAR);
-					if (executionStatus == ZephyrExecutionStatus.Undefined) {
-						throw new RuntimeException(String.format(
-								"Execution status field MUST be defined for the test case '[%s] %s' "
-										+ "in phase '%s'", executionId,
-								executedTC.getName(), phase.getName()));
-					}
-					prepStmt.setString(3, Integer.toString(executionStatus
-							.getId().intValue()));
-					prepStmt.setNull(4, java.sql.Types.VARCHAR);
-					prepStmt.setNull(5, java.sql.Types.VARCHAR);
-					prepStmt.setNull(6, java.sql.Types.BIGINT);
-					prepStmt.setLong(7, DEFAULT_TESTER_ID);
-					prepStmt.setLong(8, executionId);
-					prepStmt.execute();
-				} finally {
-					prepStmt.close();
-				}
-			}
-
-			prepStmt = conn
-					.prepareStatement("UPDATE release_test_schedule SET comment=? WHERE id=?");
-			try {
-				if (executionComment == null) {
-					prepStmt.setNull(1, java.sql.Types.VARCHAR);
-				} else {
-					prepStmt.setString(1, executionComment);
-				}
-				prepStmt.setLong(2, executionId);
-				prepStmt.executeUpdate();
-			} finally {
-				prepStmt.close();
-			}
+			final long lastTestResultId = addTestcaseResult(executedTC);
+			updateTestcaseStatus(executedTC, lastTestResultId);
 			countOfUpdatedTestcases++;
 		}
 		return countOfUpdatedTestcases;

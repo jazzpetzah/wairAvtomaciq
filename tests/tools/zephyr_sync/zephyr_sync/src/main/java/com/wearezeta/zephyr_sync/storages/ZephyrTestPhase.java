@@ -46,6 +46,9 @@ public class ZephyrTestPhase {
 		this.id = id;
 		this.name = name;
 		this.scheduledTo = scheduledTo;
-		this.testcases = testcases;
+		this.testcases = new ArrayList<ExecutedZephyrTestcase>(testcases);
+		for (ExecutedZephyrTestcase tc : this.testcases) {
+			tc.setParentPhase(this);
+		}
 	}
 }

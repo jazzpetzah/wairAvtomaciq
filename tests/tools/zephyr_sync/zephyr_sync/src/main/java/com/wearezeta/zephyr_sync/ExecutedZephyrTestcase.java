@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.wearezeta.zephyr_sync.storages.ZephyrExecutionStatus;
+import com.wearezeta.zephyr_sync.storages.ZephyrTestPhase;
 
 public class ExecutedZephyrTestcase extends Testcase {
 	private ZephyrExecutionStatus executionStatus = ZephyrExecutionStatus.Undefined;
@@ -44,18 +45,22 @@ public class ExecutedZephyrTestcase extends Testcase {
 		throw new RuntimeException("The property is read-only");
 	}
 	
-	private boolean isExecuted;
-	public boolean getIsExecuted() {
-		return this.isExecuted;
+	private ZephyrTestPhase parentPhase;
+	public ZephyrTestPhase getParentPhase() {
+		return this.parentPhase;
+	}
+	
+	// ! This method is for internal usage only
+	public void setParentPhase(ZephyrTestPhase parent) {
+		this.parentPhase = parent;
 	}
 
 	public ExecutedZephyrTestcase(String id, String executionId, String name,
-			String executionComment, ZephyrExecutionStatus status, boolean isEexcuted) {
+			String executionComment, ZephyrExecutionStatus status) {
 		super(id, name, new HashSet<String>(), false);
 		this.executionComment = executionComment;
 		this.executionStatus = status;
 		this.executionId = executionId;
-		this.isExecuted = isEexcuted;
 	}
 
 }
