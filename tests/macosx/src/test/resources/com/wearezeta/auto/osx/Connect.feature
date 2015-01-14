@@ -62,6 +62,15 @@ Feature: Connect to user
     When Contact <Contact> sends random message to user <Name>
     And I wait for 10 seconds
     Then I do not see conversation <Contact> in contact list
+    When I open People Picker from contact list
+    And I search by email for user <Contact>
+    And I see user <Contact> in search results
+    And I add user <Contact> from search results
+    And I unblock user
+    Then I open conversation with <Contact>
+    And I see random message in conversation
+    And Contact <Contact> sends random message to user <Name>
+    And I see random message in conversation
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
