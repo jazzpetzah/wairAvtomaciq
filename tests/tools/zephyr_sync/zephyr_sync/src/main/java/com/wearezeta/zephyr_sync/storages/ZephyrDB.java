@@ -24,7 +24,7 @@ public class ZephyrDB extends TestcasesStorage {
 	private final static String USER = "root";
 	private final static String PASSWORD = "root";
 
-	private final static long DEFAULT_TESTER_ID = 1;
+	private final static long DEFAULT_TESTER_ID = 2;
 
 	public ZephyrDB(String server) throws SQLException {
 		conn = DriverManager.getConnection(String.format(
@@ -273,9 +273,11 @@ public class ZephyrDB extends TestcasesStorage {
 		}
 	}
 
-	public void syncPhaseResults(ZephyrTestPhase phase) throws Exception {
+	public int syncPhaseResults(ZephyrTestPhase phase) throws Exception {
 		final List<ExecutedZephyrTestcase> phaseTestcases = phase
 				.getTestcases();
+
+		int countOfUpdatedTestcases = 0;
 		for (ExecutedZephyrTestcase executedTC : phaseTestcases) {
 			if (!executedTC.getIsChanged()) {
 				continue;
@@ -311,8 +313,8 @@ public class ZephyrDB extends TestcasesStorage {
 								+ "attachment_location, status, defect_id, tester_id, release_test_schedule_id) "
 								+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 				try {
-					prepStmt.setDate(1,
-							new java.sql.Date(System.currentTimeMillis()));
+					prepStmt.setTimestamp(1,
+							new java.sql.Timestamp(System.currentTimeMillis()));
 					prepStmt.setNull(2, java.sql.Types.VARCHAR);
 					if (executionStatus == ZephyrExecutionStatus.Undefined) {
 						throw new RuntimeException(String.format(
@@ -346,7 +348,9 @@ public class ZephyrDB extends TestcasesStorage {
 			} finally {
 				prepStmt.close();
 			}
+			countOfUpdatedTestcases++;
 		}
+		return countOfUpdatedTestcases;
 	}
 
 	@Override

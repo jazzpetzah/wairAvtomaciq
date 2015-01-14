@@ -362,7 +362,7 @@ public class App {
 		return prapareReportingModel(title, reportData);
 	}
 
-	private static void syncPhaseResults(ZephyrDB zephyrDB,
+	private static int syncPhaseResults(ZephyrDB zephyrDB,
 			String jsonReportPath, ZephyrTestPhase dstPhase, String jobUrl)
 			throws Exception {
 		List<ExecutedZephyrTestcase> phaseTestcases = dstPhase.getTestcases();
@@ -388,7 +388,7 @@ public class App {
 			}
 		}
 
-		// zephyrDB.syncPhaseResults(dstPhase);
+		return zephyrDB.syncPhaseResults(dstPhase);
 	}
 
 	private static String getCurrentDateTimeStamp() {
@@ -505,11 +505,12 @@ public class App {
 		}
 	}
 
-	private static void executeSyncPhaseAction(CommandLine cmdLine,
+	private static int executeSyncPhaseAction(CommandLine cmdLine,
 			ZephyrDB zephyrDB) throws Exception {
 		verifyFileParameterExists(cmdLine, PARAM_REPORT_PATH);
 
-		syncPhaseResults(zephyrDB, cmdLine.getOptionValue(PARAM_REPORT_PATH),
+		return syncPhaseResults(zephyrDB,
+				cmdLine.getOptionValue(PARAM_REPORT_PATH),
 				executeVerifyPhaseAction(cmdLine, zephyrDB),
 				cmdLine.getOptionValue(PARAM_JOB_URL));
 	}
@@ -554,11 +555,22 @@ public class App {
 						.println("Execution report has been successfully saved as "
 								+ htmlReportPath);
 			} else if (executionType.equals(EXECUTION_TYPE_PHASE_SYNC)) {
-				executeSyncPhaseAction(line, zephyrDB);
-				System.out.println(String.format(
-						"Successfully updated Zephyr phase '%s' "
-								+ "with automated test execution results",
-						line.getOptionValue(PARAM_PHASE_NAME)));
+				final int updatedTestcasesCount = executeSyncPhaseAction(line,
+						zephyrDB);
+				if (updatedTestcasesCount > 0) {
+					System.out
+							.println(String
+									.format("Successfully updated %d test case(s) in Zephyr phase '%s' "
+											+ "with automated test execution results taken from '%s'",
+											updatedTestcasesCount,
+											line.getOptionValue(PARAM_PHASE_NAME),
+											line.getOptionValue(PARAM_REPORT_PATH)));
+				} else {
+					System.out
+							.println(String
+									.format("There are no automated test cases in Zephyr phase '%s' to update",
+											line.getOptionValue(PARAM_PHASE_NAME)));
+				}
 			} else if (executionType.equals(EXECUTION_TYPE_PHASE_VERIFICATION)) {
 				ZephyrTestPhase phase = executeVerifyPhaseAction(line, zephyrDB);
 				System.out
