@@ -52,7 +52,7 @@ Feature: Connect to user
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
       
-  @torun @staging @id1407
+  @staging @id1407
   Scenario Outline: Verify impossiibility of starting 1:1 conversation with pending  user (Search)
   	Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
