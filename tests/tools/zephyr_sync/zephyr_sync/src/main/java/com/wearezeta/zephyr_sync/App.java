@@ -22,6 +22,7 @@ import org.apache.commons.cli.PosixParser;
 import com.wearezeta.zephyr_sync.reporting.ReportGenerator;
 import com.wearezeta.zephyr_sync.reporting.ReportModel;
 import com.wearezeta.zephyr_sync.reporting.ReportModel.TestcaseGroup;
+import com.wearezeta.zephyr_sync.storages.CucumberExecutionStatus;
 import com.wearezeta.zephyr_sync.storages.GherkinFile;
 import com.wearezeta.zephyr_sync.storages.ResultJSON;
 import com.wearezeta.zephyr_sync.storages.ZephyrDB;
@@ -186,7 +187,8 @@ public class App {
 			String jobURL) {
 		syncAutomatedState(executedTC, zephyrTC);
 		Set<String> zephyrTCTags = zephyrTC.getTags();
-		if (!zephyrTCTags.contains(MUTE_TAG) && executedTC.getIsFailed()) {
+		if (!zephyrTCTags.contains(MUTE_TAG)
+				&& executedTC.getStatus() == CucumberExecutionStatus.Failed) {
 			zephyrTCTags.add(MUTE_TAG);
 			zephyrTC.setTags(zephyrTCTags);
 			if (jobURL != null) {
@@ -272,7 +274,7 @@ public class App {
 			ZephyrTestcase zephyrTC, ExecutedCucumberTestcase executedTC,
 			String jobURL) {
 		syncAutomatedState(executedTC, zephyrTC);
-		if (executedTC.getIsPassed()) {
+		if (executedTC.getStatus() == CucumberExecutionStatus.Passed) {
 			Set<String> currentZephyrTCTags = zephyrTC.getTags();
 			if (currentZephyrTCTags.contains(MUTE_TAG)) {
 				currentZephyrTCTags.remove(MUTE_TAG);
@@ -372,9 +374,9 @@ public class App {
 		for (ExecutedCucumberTestcase executedCucumberTC : executedCucumberTestcases) {
 			for (ExecutedZephyrTestcase phaseTC : phaseTestcases) {
 				if (executedCucumberTC.getId().equals(phaseTC.getId())) {
-					if (executedCucumberTC.getIsPassed()) {
+					if (executedCucumberTC.getStatus() == CucumberExecutionStatus.Passed) {
 						phaseTC.setExecutionStatus(ZephyrExecutionStatus.Pass);
-					} else if (executedCucumberTC.getIsFailed()) {
+					} else if (executedCucumberTC.getStatus() == CucumberExecutionStatus.Failed) {
 						phaseTC.setExecutionStatus(ZephyrExecutionStatus.Fail);
 					}
 					if (jobUrl != null) {
@@ -386,7 +388,7 @@ public class App {
 			}
 		}
 
-		zephyrDB.syncPhaseResults(dstPhase);
+		// zephyrDB.syncPhaseResults(dstPhase);
 	}
 
 	private static String getCurrentDateTimeStamp() {
@@ -396,11 +398,20 @@ public class App {
 		return strDate;
 	}
 
+	private static final String PARAM_ZEPHYR_SERVER = "zephyr-server";
+	private static final String PARAM_TYPE = "type";
+	private static final String PARAM_HTML_REPORT_PATH = "html-report-path";
+	private static final String PARAM_FEATURES_ROOT = "features-root";
+	private static final String PARAM_JOB_URL = "job-url";
+	private static final String PARAM_CYCLE_NAME = "cycle-name";
+	private static final String PARAM_PHASE_NAME = "phase-name";
+	private static final String PARAM_REPORT_PATH = "report-path";
+
 	@SuppressWarnings("static-access")
 	private static Options createCmdlineOptions() {
 		Options options = new Options();
 		options.addOption(OptionBuilder
-				.withLongOpt("type")
+				.withLongOpt(PARAM_TYPE)
 				.withType(String.class)
 				.withDescription(
 						"[mandatory] sets execution type: either "
@@ -411,41 +422,41 @@ public class App {
 								+ EXECUTION_TYPE_PHASE_VERIFICATION).hasArg()
 				.isRequired().create());
 		options.addOption(OptionBuilder
-				.withLongOpt("zephyr-server")
+				.withLongOpt(PARAM_ZEPHYR_SERVER)
 				.withType(String.class)
 				.withDescription(
 						"[mandatory] ip/domain name of Zephyr server (MySQL access should be already enabled for the current host)")
 				.hasArg().isRequired().create());
-		options.addOption(OptionBuilder.withLongOpt("html-report-path")
+		options.addOption(OptionBuilder.withLongOpt(PARAM_HTML_REPORT_PATH)
 				.withType(String.class)
 				.withDescription("full path to resulting html report").hasArg()
 				.create());
 		options.addOption(OptionBuilder
-				.withLongOpt("features-root")
+				.withLongOpt(PARAM_FEATURES_ROOT)
 				.withType(String.class)
 				.withDescription(
 						"the path to root folder, where Cucumber .feature files are located")
 				.hasArg().create());
 		options.addOption(OptionBuilder
-				.withLongOpt("report-path")
+				.withLongOpt(PARAM_REPORT_PATH)
 				.withType(String.class)
 				.withDescription(
 						"the path to JSON report conatining suite execution resulsts")
 				.hasArg().create());
 		options.addOption(OptionBuilder
-				.withLongOpt("job-url")
+				.withLongOpt(PARAM_JOB_URL)
 				.withType(String.class)
 				.withDescription(
 						"URL of Jenkins job, which generated this report (if available)")
 				.hasArg().create());
 		options.addOption(OptionBuilder
-				.withLongOpt("cycle-name")
+				.withLongOpt(PARAM_CYCLE_NAME)
 				.withType(String.class)
 				.withDescription(
 						"the name of Zephyr execution cycle (make sure it is spelled correctly)")
 				.hasArg().create());
 		options.addOption(OptionBuilder
-				.withLongOpt("phase-name")
+				.withLongOpt(PARAM_PHASE_NAME)
 				.withType(String.class)
 				.withDescription(
 						"the name of Zephyr execution phase (make sure it is spelled correctly)")
@@ -474,42 +485,44 @@ public class App {
 
 	private static ReportModel executeSyncFeaturesAction(CommandLine cmdLine,
 			ZephyrDB zephyrDB) throws Exception {
-		verifyFileParameterExists(cmdLine, "features-root");
-		return syncFeatureFiles(cmdLine.getOptionValue("features-root"),
+		verifyFileParameterExists(cmdLine, PARAM_FEATURES_ROOT);
+		return syncFeatureFiles(cmdLine.getOptionValue(PARAM_FEATURES_ROOT),
 				zephyrDB);
 	}
 
 	private static ReportModel executeSyncResultsAction(CommandLine cmdLine,
 			ZephyrDB zephyrDB) throws Exception {
-		verifyFileParameterExists(cmdLine, "report-path");
-		if (cmdLine.getOptionValue("type").equals(EXECUTION_TYPE_RESULTS_SYNC)) {
+		verifyFileParameterExists(cmdLine, PARAM_REPORT_PATH);
+		if (cmdLine.getOptionValue(PARAM_TYPE).equals(
+				EXECUTION_TYPE_RESULTS_SYNC)) {
 			return syncTestExecutionResults(
-					cmdLine.getOptionValue("report-path"), zephyrDB,
-					cmdLine.getOptionValue("job-url"));
+					cmdLine.getOptionValue(PARAM_REPORT_PATH), zephyrDB,
+					cmdLine.getOptionValue(PARAM_JOB_URL));
 		} else {
 			return syncTestVerificationResults(
-					cmdLine.getOptionValue("report-path"), zephyrDB,
-					cmdLine.getOptionValue("job-url"));
+					cmdLine.getOptionValue(PARAM_REPORT_PATH), zephyrDB,
+					cmdLine.getOptionValue(PARAM_JOB_URL));
 		}
 	}
 
 	private static void executeSyncPhaseAction(CommandLine cmdLine,
 			ZephyrDB zephyrDB) throws Exception {
-		verifyFileParameterExists(cmdLine, "report-path");
+		verifyFileParameterExists(cmdLine, PARAM_REPORT_PATH);
 
-		syncPhaseResults(zephyrDB, cmdLine.getOptionValue("report-path"),
+		syncPhaseResults(zephyrDB, cmdLine.getOptionValue(PARAM_REPORT_PATH),
 				executeVerifyPhaseAction(cmdLine, zephyrDB),
-				cmdLine.getOptionValue("job-url"));
+				cmdLine.getOptionValue(PARAM_JOB_URL));
 	}
 
 	private static ZephyrTestPhase executeVerifyPhaseAction(
 			CommandLine cmdLine, ZephyrDB zephyrDB) throws Exception {
-		verifyParameterExists(cmdLine, "cycle-name");
-		verifyParameterExists(cmdLine, "phase-name");
+		verifyParameterExists(cmdLine, PARAM_CYCLE_NAME);
+		verifyParameterExists(cmdLine, PARAM_PHASE_NAME);
 
 		ZephyrTestCycle dstCycle = zephyrDB.getTestCycle(cmdLine
-				.getOptionValue("cycle-name"));
-		return dstCycle.getPhaseByName(cmdLine.getOptionValue("phase-name"));
+				.getOptionValue(PARAM_CYCLE_NAME));
+		return dstCycle
+				.getPhaseByName(cmdLine.getOptionValue(PARAM_PHASE_NAME));
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -519,15 +532,15 @@ public class App {
 
 		try {
 			CommandLine line = parser.parse(options, args);
-			final String executionType = line.getOptionValue("type");
+			final String executionType = line.getOptionValue(PARAM_TYPE);
 			final ZephyrDB zephyrDB = new ZephyrDB(
-					line.getOptionValue("zephyr-server"));
+					line.getOptionValue(PARAM_ZEPHYR_SERVER));
 			if (executionType.equals(EXECUTION_TYPE_FEATURES_SYNC)
 					|| executionType.equals(EXECUTION_TYPE_RESULTS_SYNC)
 					|| executionType.equals(EXECUTION_TYPE_VERIFICATION_SYNC)) {
-				verifyParameterExists(line, "html-report-path");
+				verifyParameterExists(line, PARAM_HTML_REPORT_PATH);
 				final String htmlReportPath = line
-						.getOptionValue("html-report-path");
+						.getOptionValue(PARAM_HTML_REPORT_PATH);
 				if (executionType.equals(EXECUTION_TYPE_FEATURES_SYNC)) {
 					ReportGenerator.generate(
 							executeSyncFeaturesAction(line, zephyrDB),
@@ -545,13 +558,15 @@ public class App {
 				System.out.println(String.format(
 						"Successfully updated Zephyr phase '%s' "
 								+ "with automated test execution results",
-						line.getOptionValue("phase-name")));
+						line.getOptionValue(PARAM_PHASE_NAME)));
 			} else if (executionType.equals(EXECUTION_TYPE_PHASE_VERIFICATION)) {
 				ZephyrTestPhase phase = executeVerifyPhaseAction(line, zephyrDB);
 				System.out
 						.println(String
-								.format("The phase named '%s' has been successfully detected in Zephyr and is scheduled to '%s'",
-										line.getOptionValue("phase-name"),
+								.format("The phase '%s' belonging to execution cycle '%s' "
+										+ "has been successfully detected in Zephyr and is scheduled to '%s'",
+										line.getOptionValue(PARAM_PHASE_NAME),
+										line.getOptionValue(PARAM_CYCLE_NAME),
 										phase.getScheduledTo().toString()));
 			} else {
 				formatter.printHelp("zephyr_sync", options);

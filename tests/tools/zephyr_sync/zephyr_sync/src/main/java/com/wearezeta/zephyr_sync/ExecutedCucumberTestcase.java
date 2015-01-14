@@ -2,21 +2,13 @@ package com.wearezeta.zephyr_sync;
 
 import java.util.Set;
 
+import com.wearezeta.zephyr_sync.storages.CucumberExecutionStatus;
+
 public class ExecutedCucumberTestcase extends CucumberTestcase {
-	private boolean isPassed;
-	private boolean isFailed;
-	private boolean isSkipped;
+	private CucumberExecutionStatus status = CucumberExecutionStatus.Undefined;
 
-	public boolean getIsPassed() {
-		return this.isPassed;
-	}
-
-	public boolean getIsFailed() {
-		return this.isFailed;
-	}
-	
-	public boolean getIsSkipped() {
-		return this.isSkipped;
+	public CucumberExecutionStatus getStatus() {
+		return this.status;
 	}
 
 	@Override
@@ -30,24 +22,19 @@ public class ExecutedCucumberTestcase extends CucumberTestcase {
 	}
 
 	public ExecutedCucumberTestcase(String id, String name, Set<String> tags,
-			String cucumberId, boolean isPassed, boolean isFailed,
-			boolean isSkipped) {
+			String cucumberId, CucumberExecutionStatus status) {
 		super(id, name, tags, cucumberId);
-		this.isPassed = isPassed;
-		this.isFailed = isFailed;
-		this.isSkipped = isSkipped;
+		this.status = status;
 	}
 
 	@Override
 	public String toString() {
 		return String
 				.format("%s[\n\tid: %s\n\tname: %s\n\ttags: %s\n\tisAutomated: %s\n\t"
-						+ "cucumberId: %s\n\tisPassed: %s\n\tisFailed: %s\n\t"
-						+ "isSkipped: %s\n\tisChanged: %s\n]",
+						+ "cucumberId: %s\n\tstatus: %s\n\tChanged: %s\n]",
 						this.getClass().getName(), this.getId(),
 						this.getName(), this.getTags().toString(),
 						this.getIsAutomated(), this.getCucumberId(),
-						this.getIsPassed(), this.getIsFailed(), 
-						this.getIsSkipped(), this.getIsChanged());
+						this.getStatus(), this.getIsChanged());
 	}
 }

@@ -31,9 +31,10 @@ public enum ZephyrExecutionStatus {
 		if (id == null) {
 			return ZephyrExecutionStatus.Undefined;
 		}
-		for (ZephyrExecutionStatus color : ZephyrExecutionStatus.values()) {
-			if (color.getId().intValue() == id.intValue()) {
-				return color;
+		for (ZephyrExecutionStatus status : ZephyrExecutionStatus.values()) {
+			if (status.getId() != null
+					&& status.getId().intValue() == id.intValue()) {
+				return status;
 			}
 		}
 		throw new NoSuchElementException(String.format(

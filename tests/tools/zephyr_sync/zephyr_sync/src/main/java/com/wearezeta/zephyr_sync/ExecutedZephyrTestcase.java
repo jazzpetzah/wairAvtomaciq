@@ -43,13 +43,19 @@ public class ExecutedZephyrTestcase extends Testcase {
 	public void setTags(Set<String> tags) {
 		throw new RuntimeException("The property is read-only");
 	}
+	
+	private boolean isExecuted;
+	public boolean getIsExecuted() {
+		return this.isExecuted;
+	}
 
 	public ExecutedZephyrTestcase(String id, String executionId, String name,
-			String executionComment, ZephyrExecutionStatus status) {
+			String executionComment, ZephyrExecutionStatus status, boolean isEexcuted) {
 		super(id, name, new HashSet<String>(), false);
 		this.executionComment = executionComment;
 		this.executionStatus = status;
 		this.executionId = executionId;
+		this.isExecuted = isEexcuted;
 	}
 
 }

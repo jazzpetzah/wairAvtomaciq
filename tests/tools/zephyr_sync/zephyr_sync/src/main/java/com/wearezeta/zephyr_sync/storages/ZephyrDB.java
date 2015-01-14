@@ -24,6 +24,8 @@ public class ZephyrDB extends TestcasesStorage {
 	private final static String USER = "root";
 	private final static String PASSWORD = "root";
 
+	private final static long DEFAULT_TESTER_ID = 1;
+
 	public ZephyrDB(String server) throws SQLException {
 		conn = DriverManager.getConnection(String.format(
 				"jdbc:mysql://%s:%d/%s?user=%s&password=%s", server, PORT,
@@ -176,17 +178,21 @@ public class ZephyrDB extends TestcasesStorage {
 						+ "FROM test_result "
 						+ "INNER JOIN release_test_schedule ON test_result.release_test_schedule_id=release_test_schedule.id "
 						+ "WHERE release_test_schedule.id=?");
+		final String realId = getRealTestcaseIdByExecutedTestcaseId(executedTcId);
+		final String name = getTestcaseNameById(realId);
 		prepStmt.setLong(1, executedTcId);
 		ResultSet rs = prepStmt.executeQuery();
 		try {
-			rs.next();
-			final String realId = getRealTestcaseIdByExecutedTestcaseId(executedTcId);
-			final String name = getTestcaseNameById(realId);
-			final String comment = rs.getString("comment");
-			final ZephyrExecutionStatus status = ZephyrExecutionStatus
-					.getById(Integer.parseInt(rs.getString("execution_status")));
+			String comment = null;
+			ZephyrExecutionStatus status = ZephyrExecutionStatus.Undefined;
+			if (rs.first()) {
+				comment = rs.getString("comment");
+				status = ZephyrExecutionStatus.getById(Integer.parseInt(rs
+						.getString("execution_status")));
+			}
 			return new ExecutedZephyrTestcase(realId,
-					Long.toString(executedTcId), name, comment, status);
+					Long.toString(executedTcId), name, comment, status,
+					(status != ZephyrExecutionStatus.Undefined));
 		} finally {
 			rs.close();
 			prepStmt.close();
@@ -281,19 +287,50 @@ public class ZephyrDB extends TestcasesStorage {
 					.getExecutionStatus();
 			final String executionComment = executedTC.getExecutionComment();
 
-			prepStmt = conn
-					.prepareStatement("UPDATE test_result SET execution_status=? WHERE release_test_schedule_id=?");
-			try {
-				if (executionStatus == ZephyrExecutionStatus.Undefined) {
-					prepStmt.setNull(1, java.sql.Types.BIGINT);
-				} else {
-					prepStmt.setString(1,
-							Integer.toString(executionStatus.getId().intValue()));
+			if (executedTC.getIsExecuted()) {
+				prepStmt = conn
+						.prepareStatement("UPDATE test_result SET execution_status=? WHERE release_test_schedule_id=?");
+				try {
+					if (executionStatus == ZephyrExecutionStatus.Undefined) {
+						throw new RuntimeException(String.format(
+								"Execution status field MUST be defined for the test case '[%s] %s' "
+										+ "in phase '%s'", executionId,
+								executedTC.getName(), phase.getName()));
+					}
+					prepStmt.setString(1, Integer.toString(executionStatus
+							.getId().intValue()));
+					prepStmt.setLong(2, executionId);
+					prepStmt.executeUpdate();
+				} finally {
+					prepStmt.close();
 				}
-				prepStmt.setLong(2, executionId);
-				prepStmt.executeUpdate();
-			} finally {
-				prepStmt.close();
+			} else {
+				prepStmt = conn
+						.prepareStatement("INSERT INTO test_result "
+								+ "(execution_date, execution_notes, execution_status, "
+								+ "attachment_location, status, defect_id, tester_id, release_test_schedule_id) "
+								+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+				try {
+					prepStmt.setDate(1,
+							new java.sql.Date(System.currentTimeMillis()));
+					prepStmt.setNull(2, java.sql.Types.VARCHAR);
+					if (executionStatus == ZephyrExecutionStatus.Undefined) {
+						throw new RuntimeException(String.format(
+								"Execution status field MUST be defined for the test case '[%s] %s' "
+										+ "in phase '%s'", executionId,
+								executedTC.getName(), phase.getName()));
+					}
+					prepStmt.setString(3, Integer.toString(executionStatus
+							.getId().intValue()));
+					prepStmt.setNull(4, java.sql.Types.VARCHAR);
+					prepStmt.setNull(5, java.sql.Types.VARCHAR);
+					prepStmt.setNull(6, java.sql.Types.BIGINT);
+					prepStmt.setLong(7, DEFAULT_TESTER_ID);
+					prepStmt.setLong(8, executionId);
+					prepStmt.execute();
+				} finally {
+					prepStmt.close();
+				}
 			}
 
 			prepStmt = conn

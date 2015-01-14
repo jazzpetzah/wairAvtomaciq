@@ -71,30 +71,33 @@ public class ResultJSON extends TestcasesStorage {
 	private static List<ExecutedCucumberTestcase> extractTestcasesFromFeature(
 			JSONObject feature) {
 		List<ExecutedCucumberTestcase> parsedTestcases = new ArrayList<ExecutedCucumberTestcase>();
-
-		if (feature.has("elements")) {
-			JSONArray elements = feature.getJSONArray("elements");
-			for (int elementIdx = 0; elementIdx < elements.length(); elementIdx++) {
-				JSONObject element = elements.getJSONObject(elementIdx);
-				final String cucumberId = element.getString("id");
-				final String name = element.getString("name");
-				final boolean isPassed = parseIsPassed(element
-						.getJSONArray("steps"));
-				final boolean isFailed = parseIsFailed(element
-						.getJSONArray("steps"));
-				final boolean isSkipped = parseIsSkipped(element
-						.getJSONArray("steps"));
-				Set<String> tags = new LinkedHashSet<String>();
-				if (element.has("tags")) {
-					tags = parseTagsList(element.getJSONArray("tags"));
-				}
-				final String id = Testcase.extractIdsFromTags(tags);
-				ExecutedCucumberTestcase tc = new ExecutedCucumberTestcase(id, name, tags,
-						cucumberId, isPassed, isFailed, isSkipped);
-				parsedTestcases.add(tc);
-			}
+		if (!feature.has("elements")) {
+			return parsedTestcases;
 		}
 
+		JSONArray elements = feature.getJSONArray("elements");
+		for (int elementIdx = 0; elementIdx < elements.length(); elementIdx++) {
+			JSONObject element = elements.getJSONObject(elementIdx);
+			final String cucumberId = element.getString("id");
+			final String name = element.getString("name");
+			CucumberExecutionStatus status = CucumberExecutionStatus.Undefined;
+			JSONArray steps = element.getJSONArray("steps");
+			if (parseIsPassed(steps)) {
+				status = CucumberExecutionStatus.Passed;
+			} else if (parseIsFailed(steps)) {
+				status = CucumberExecutionStatus.Failed;
+			} else if (parseIsSkipped(steps)) {
+				status = CucumberExecutionStatus.Skipped;
+			}
+			Set<String> tags = new LinkedHashSet<String>();
+			if (element.has("tags")) {
+				tags = parseTagsList(element.getJSONArray("tags"));
+			}
+			final String id = Testcase.extractIdsFromTags(tags);
+			ExecutedCucumberTestcase tc = new ExecutedCucumberTestcase(id,
+					name, tags, cucumberId, status);
+			parsedTestcases.add(tc);
+		}
 		return parsedTestcases;
 	}
 
