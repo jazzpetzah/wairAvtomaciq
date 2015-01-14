@@ -28,7 +28,7 @@ Feature: Settings
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-@staging @id862
+@regression @id862
   Scenario Outline: Verify reset password page is accessible from settings
     Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
