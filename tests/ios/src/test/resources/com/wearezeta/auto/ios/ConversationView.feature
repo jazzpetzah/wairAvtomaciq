@@ -233,18 +233,11 @@ Feature: Conversation View
   Scenario Outline: Send special chars (German)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I press Sign in button
-    And I fill in email input <Text>
-    And I copy email input field content
-    And I have entered login <Login>
-    And I have entered password <Password>
-    And I press Login button
+    Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     And I tap on contact name <Contact>
     And I see dialog page
-    And I tap and hold on message input
-    And I click on popup Paste item
-    And I send the message
+    And I send using script predefined message <Text>
     Then I see last message in dialog is expected message <Text>
 
     Examples:

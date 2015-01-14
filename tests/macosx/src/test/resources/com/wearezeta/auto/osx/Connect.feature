@@ -57,9 +57,10 @@ Feature: Connect to user
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
-    Given Contact <Contact> sends random message to user <Name>
     Given I Sign in using login <Login> and password <Password>
-    When I see my name <Name> in Contact list
+    And I see my name <Name> in Contact list
+    When Contact <Contact> sends random message to user <Name>
+    And I wait for 10 seconds
     Then I do not see conversation <Contact> in contact list
 
     Examples: 

@@ -2,7 +2,8 @@ Feature: Connect
 
   @smoke @id576
   Scenario Outline: Send invitation message to a user
-    Given There are 2 users where <Name> is me
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe down contact list
@@ -20,13 +21,14 @@ Feature: Connect
     And I see Pending Connect to <Contact> message on Dialog page from user <Name>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | ContactEmail |
-      | user1Email | user1Password | user1Name | user2Name | user2Email   |
+      | Login      | Password      | Name      | Contact   | ContactEmail | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user2Email   | user3Name |
 
   #ZIOS-3122
   @smoke @id585
   Scenario Outline: Get invitation message from user
-    Given There are 2 users where <Name> is me
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact2>
     Given <Contact> has sent connection request to Me
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
@@ -38,8 +40,8 @@ Feature: Connect
     Then I see first item in contact list named <Contact>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact   | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |
 
   @regression @id576
   Scenario Outline: Send connection request to unconnected participant in a group chat

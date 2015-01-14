@@ -107,7 +107,11 @@ public class OtherUserPersonalInfoPageSteps {
 
 	@When("^I tap on group chat contact (.*)$")
 	public void WhenITapOnGroupChatContact(String contact) throws Throwable {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		try {
+			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
 		PagesCollection.androidPage = PagesCollection.otherUserPersonalInfoPage
 				.tapOnContact(contact);
 		if (PagesCollection.androidPage instanceof OtherUserPersonalInfoPage) {
