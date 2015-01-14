@@ -40,6 +40,9 @@ public class PeoplePickerPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerSearchResultEntry)
 	private List<WebElement> searchResults;
 	
+	@FindBy(how = How.ID, using = OSXLocators.idUnblockUserButton)
+	private WebElement unblockUserButton;
+	
 	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerTopContactsGrid)
 	private WebElement peoplePickerTopContactsList;
 	
@@ -99,6 +102,10 @@ public class PeoplePickerPage extends OSXPage {
        		return false;
        	}
         return true;
+	}
+	
+	public void unblockUser() {
+		unblockUserButton.click();
 	}
 	
 	public boolean areSearchResultsContainUser(String username) {

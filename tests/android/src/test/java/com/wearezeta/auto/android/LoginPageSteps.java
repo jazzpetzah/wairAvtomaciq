@@ -1,13 +1,13 @@
 package com.wearezeta.auto.android;
 
 import java.io.IOException;
-import java.util.NoSuchElementException;
 
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
 import cucumber.api.java.en.*;
 
@@ -23,12 +23,12 @@ public class LoginPageSteps {
 	public void GivenISignIn(String login, String password) throws Exception {
 		try {
 			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		try {
 			password = usrMgr.findUserByPasswordAlias(password).getPassword();
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		Assert.assertNotNull(PagesCollection.loginPage.isVisible());
@@ -37,6 +37,8 @@ public class LoginPageSteps {
 		PagesCollection.loginPage.setPassword(password);
 		PagesCollection.contactListPage = (ContactListPage) (PagesCollection.loginPage
 				.LogIn());
+		Assert.assertTrue("Login in progress",
+				PagesCollection.loginPage.waitForLoginScreenDisappear());
 		Assert.assertTrue("Login finished",
 				PagesCollection.loginPage.waitForLogin());
 	}
@@ -62,7 +64,7 @@ public class LoginPageSteps {
 	public void WhenIHaveEnteredLogin(String login) {
 		try {
 			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		PagesCollection.loginPage.setLogin(login);
@@ -73,7 +75,7 @@ public class LoginPageSteps {
 			throws InterruptedException {
 		try {
 			password = usrMgr.findUserByPasswordAlias(password).getPassword();
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		PagesCollection.loginPage.setPassword(password);

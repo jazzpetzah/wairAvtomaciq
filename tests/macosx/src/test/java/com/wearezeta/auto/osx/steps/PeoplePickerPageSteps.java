@@ -6,6 +6,7 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.osx.pages.PeoplePickerPage;
 
 import cucumber.api.java.en.Given;
@@ -19,14 +20,14 @@ public class PeoplePickerPageSteps {
 	public void WhenISearchForUser(String user) {
 		try {
 			user = usrMgr.findUserByNameOrNameAlias(user).getName();
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		CommonOSXSteps.senderPages.getPeoplePickerPage().searchForText(user);
 	}
 	
 	@When("I search by email for user (.*)")
-	public void ISearchByEmailForUser(String user) throws InterruptedException {
+	public void ISearchByEmailForUser(String user) throws Exception {
 		ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(user);
 		user = dstUser.getName();
 		String email = dstUser.getEmail();
@@ -37,7 +38,7 @@ public class PeoplePickerPageSteps {
 	public void WhenISeeUserFromSearchResults(String user) throws InterruptedException {
 		try {
 			user = usrMgr.findUserByNameOrNameAlias(user).getName();
-			} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			// Ignore silently
 			}
 		boolean userInSearchResult = CommonOSXSteps.senderPages.getPeoplePickerPage().areSearchResultsContainUser(user);
@@ -57,14 +58,14 @@ public class PeoplePickerPageSteps {
 	public void WhenIAddUserFromSearchResults(String user) {
 		try {
 			user = usrMgr.findUserByNameOrNameAlias(user).getName();
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		CommonOSXSteps.senderPages.getPeoplePickerPage().chooseUserInSearchResults(user);
 	}
 	
 	 @Given("^I select user (.*) from search results")
-	 public void ISelectUserFromSearchResults(String user) {
+	 public void ISelectUserFromSearchResults(String user) throws Exception {
 		 user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		 PeoplePickerPage page = CommonOSXSteps.senderPages.getPeoplePickerPage();
 		 page.selectUserInSearchResults(user);
@@ -74,6 +75,11 @@ public class PeoplePickerPageSteps {
 	@When("I send invitation to user")
 	public void WhenISendInvitationToUser() {
 		CommonOSXSteps.senderPages.getPeoplePickerPage().sendInvitationToUserIfRequested();
+	}
+	
+	@When("I unblock user")
+	public void IUnblockUserInPeoplePicker() {
+		CommonOSXSteps.senderPages.getPeoplePickerPage().unblockUser();
 	}
 	
 	@Then("^I see Top People list in People Picker$")

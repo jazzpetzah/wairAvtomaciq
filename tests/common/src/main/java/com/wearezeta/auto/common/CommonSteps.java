@@ -6,6 +6,7 @@ import java.util.List;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.backend.ConnectionStatus;
@@ -147,6 +148,15 @@ public final class CommonSteps {
 				dstConversationName);
 		Thread.sleep(1000);
 	}
+	
+	public void UserSentMessageToUser(String msgFromUserNameAlias,
+			String dstUserNameAlias, String message) throws Exception {
+		ClientUser msgFromUser = usrMgr
+				.findUserByNameOrNameAlias(msgFromUserNameAlias);
+		ClientUser msgToUser = usrMgr
+				.findUserByNameOrNameAlias(dstUserNameAlias);
+		BackendAPIWrappers.sendDialogMessage(msgFromUser, msgToUser, message);
+	}
 
 	public void UserHotPingedConversation(String hotPingFromUserNameAlias,
 			String dstConversationName) throws Exception {
@@ -183,4 +193,10 @@ public final class CommonSteps {
 				usrMgr.findUserByNameOrNameAlias(userNameAlias), newName);
 	}
 
+	public void IChangeUserAccentColor(String userNameAlias, String colorName)
+			throws Exception {
+		BackendAPIWrappers.updateUserAccentColor(
+				usrMgr.findUserByNameOrNameAlias(userNameAlias),
+				AccentColor.getByName(colorName));
+	}
 }

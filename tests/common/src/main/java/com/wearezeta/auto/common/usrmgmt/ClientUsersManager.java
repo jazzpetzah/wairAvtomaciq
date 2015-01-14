@@ -4,12 +4,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
@@ -23,7 +24,7 @@ public class ClientUsersManager {
 	private static final String PASSWORD_ALIAS_TEMPLATE = "user%dPassword";
 	private static final String EMAIL_ALIAS_TEMPLATE = "user%dEmail";
 	private static final int MAX_USERS = 1001;
-	
+
 	private void setClientUserAliases(ClientUser user, String[] nameAliases,
 			String[] passwordAliases, String[] emailAliases) {
 		if (nameAliases != null && nameAliases.length > 0) {
@@ -75,6 +76,11 @@ public class ClientUsersManager {
 		return result;
 	}
 
+	public void resetUsers() throws IOException {
+		this.selfUser = null;
+		this.resetClientsList(users);
+	}
+
 	private static ClientUsersManager instance = null;
 
 	private ClientUsersManager() throws IOException {
@@ -93,59 +99,79 @@ public class ClientUsersManager {
 	}
 
 	public static enum FindBy {
-		NAME, PASSWORD, EMAIL, NAME_ALIAS, PASSWORD_ALIAS, EMAIL_ALIAS;
+		NAME("Name"), PASSWORD("Password"), EMAIL("Email"), NAME_ALIAS(
+				"Name Alias(es)"), PASSWORD_ALIAS("Password Alias(es)"), EMAIL_ALIAS(
+				"Email Alias(es)");
+
+		private final String name;
+
+		private FindBy(String name) {
+			this.name = name;
+		}
+
+		@Override
+		public String toString() {
+			return this.name;
+		}
 	}
 
-	public ClientUser findUserByPasswordAlias(String alias) {
+	public ClientUser findUserByPasswordAlias(String alias)
+			throws NoSuchUserException {
 		return findUserBy(alias, new FindBy[] { FindBy.PASSWORD_ALIAS });
 	}
 
-	public ClientUser findUserByNameOrNameAlias(String alias) {
+	public ClientUser findUserByNameOrNameAlias(String alias)
+			throws NoSuchUserException {
 		return findUserBy(alias,
 				new FindBy[] { FindBy.NAME, FindBy.NAME_ALIAS });
 	}
 
-	public ClientUser findUserByEmailOrEmailAlias(String alias) {
+	public ClientUser findUserByEmailOrEmailAlias(String alias)
+			throws NoSuchUserException {
 		return findUserBy(alias, new FindBy[] { FindBy.EMAIL,
 				FindBy.EMAIL_ALIAS });
 	}
 
-	public ClientUser findUserBy(String searchStr, FindBy[] findByTypes) {
-		for (FindBy findBy : findByTypes) {
+	public ClientUser findUserBy(String searchStr, FindBy[] findByCriterias)
+			throws NoSuchUserException {
+		for (FindBy findBy : findByCriterias) {
 			try {
 				return findUserBy(searchStr, findBy);
-			} catch (NoSuchElementException e) {
+			} catch (NoSuchUserException e) {
 				// Ignore silently
 			}
 		}
-		throw new NoSuchElementException(String.format(
-				"No user '%s' has been created before", searchStr));
+		throw new NoSuchUserException(String.format(
+				"User '%s' could not be found by '%s'", searchStr,
+				StringUtils.join(findByCriterias, ", ")));
 	}
 
-	public ClientUser findUserBy(String searchStr, FindBy findBy) {
+	public ClientUser findUserBy(String searchStr, FindBy findByCriteria)
+			throws NoSuchUserException {
+		searchStr = searchStr.trim();
 		for (ClientUser user : users) {
 			Set<String> aliases = new HashSet<String>();
-			if (findBy == FindBy.NAME_ALIAS) {
+			if (findByCriteria == FindBy.NAME_ALIAS) {
 				aliases = user.getNameAliases();
-			} else if (findBy == FindBy.EMAIL_ALIAS) {
+			} else if (findByCriteria == FindBy.EMAIL_ALIAS) {
 				aliases = user.getEmailAliases();
-			} else if (findBy == FindBy.PASSWORD_ALIAS) {
+			} else if (findByCriteria == FindBy.PASSWORD_ALIAS) {
 				aliases = user.getPasswordAliases();
-			} else if (findBy == FindBy.NAME) {
+			} else if (findByCriteria == FindBy.NAME) {
 				if (user.getName().equalsIgnoreCase(searchStr)) {
 					return user;
 				}
-			} else if (findBy == FindBy.EMAIL) {
+			} else if (findByCriteria == FindBy.EMAIL) {
 				if (user.getEmail().equalsIgnoreCase(searchStr)) {
 					return user;
 				}
-			} else if (findBy == FindBy.PASSWORD) {
+			} else if (findByCriteria == FindBy.PASSWORD) {
 				if (user.getPassword().equals(searchStr)) {
 					return user;
 				}
 			} else {
 				throw new RuntimeException(String.format(
-						"Unknown FindBy type %s", findBy));
+						"Unknown FindBy criteria %s", findByCriteria));
 			}
 			for (String currentAlias : aliases) {
 				if (currentAlias.equalsIgnoreCase(searchStr)) {
@@ -153,8 +179,9 @@ public class ClientUsersManager {
 				}
 			}
 		}
-		throw new NoSuchElementException(String.format(
-				"No user '%s' has been created before", searchStr));
+		throw new NoSuchUserException(String.format(
+				"User '%s' could not be found by '%s'", searchStr,
+				findByCriteria));
 	}
 
 	public String replaceAliasesOccurences(String srcStr, FindBy findByAliasType) {
@@ -173,10 +200,11 @@ public class ClientUsersManager {
 				replacement = dstUser.getPassword();
 			} else {
 				throw new RuntimeException(String.format(
-						"Unsupported FindBy type %s", findByAliasType));
+						"Unsupported FindBy criteria '%s'", findByAliasType));
 			}
 			for (String alias : aliases) {
-				result = result.replace(alias, replacement);
+				result = result.replaceAll("(?i)\\b(" + alias + ")\\b",
+						replacement);
 			}
 		}
 		return result;
@@ -246,8 +274,8 @@ public class ClientUsersManager {
 		generateUsers(this.users.subList(0, count));
 	}
 
-	private static String[] SELF_USER_NAME_ALISES = new String[] { "I", "me",
-			"myself" };
+	private static String[] SELF_USER_NAME_ALISES = new String[] { "I", "Me",
+			"Myself" };
 	private static String[] SELF_USER_PASSWORD_ALISES = new String[] { "myPassword" };
 	private static String[] SELF_USER_EMAIL_ALISES = new String[] { "myEmail" };
 

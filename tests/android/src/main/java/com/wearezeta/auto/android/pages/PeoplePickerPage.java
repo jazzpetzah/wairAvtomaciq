@@ -126,7 +126,7 @@ public class PeoplePickerPage extends AndroidPage {
 	public boolean isPeoplePickerPageVisible() throws InterruptedException, IOException {
 		refreshUITree();//TODO workaround
 		try {
-			wait.until(ExpectedConditions.elementToBeClickable(pickerSearch));
+			wait.until(ExpectedConditions.visibilityOf(pickerSearch));
 		} catch (NoSuchElementException e) {
 			return false;
 		}

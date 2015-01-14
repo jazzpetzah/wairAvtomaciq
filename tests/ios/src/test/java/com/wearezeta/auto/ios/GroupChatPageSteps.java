@@ -27,8 +27,12 @@ public class GroupChatPageSteps {
 		List<String> participantNames = new ArrayList<String>();
 		for (String nameAlias : CommonSteps
 				.splitAliases(participantNameAliases)) {
-			participantNames.add(usrMgr.findUserByNameOrNameAlias(nameAlias)
-					.getName());
+			String name = usrMgr.findUserByNameOrNameAlias(nameAlias)
+					.getName();
+			if (name.indexOf(" ") != -1) {
+				name = name.substring(0, name.indexOf(" "));
+			}
+			participantNames.add(name);
 		}
 		Assert.assertTrue(PagesCollection.groupChatPage
 				.areRequiredContactsAddedToChat(participantNames));
@@ -78,7 +82,7 @@ public class GroupChatPageSteps {
 
 	@Then("^I see that (.*) is not present on group chat page$")
 	public void ISeeContactIsNotPresentOnGroupChatPage(String contact)
-			throws InterruptedException {
+			throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertTrue(PagesCollection.groupChatPage
 				.waitForContactToDisappear(contact));

@@ -94,6 +94,8 @@ public class CommonIOSSteps {
 		PagesCollection.loginPage.Close();
 		IOSPage.clearPagesCollection();
 		IOSKeyboard.dispose();
+		
+		commonSteps.getUserManager().resetUsers();
 	}
 
 	@When("^I see keyboard$")
@@ -188,6 +190,12 @@ public class CommonIOSSteps {
 		commonSteps.UserPingedConversation(pingFromUserNameAlias,
 				dstConversationName);
 	}
+	
+	@When("^Contact (.*) send message to user (.*)$")
+	public void UserSendMessageToConversation(String msgFromUserNameAlias,
+			String dstUserNameAlias) throws Exception {
+		commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstUserNameAlias, CommonUtils.generateRandomString(10));
+	}
 
 	@When("^Contact (.*) hotping conversation (.*)$")
 	public void UserHotPingedConversation(String hotPingFromUserNameAlias,
@@ -206,15 +214,22 @@ public class CommonIOSSteps {
 		commonSteps.IRemoveContactsListUsersFromMacContact();
 	}
 
-	@When("^I change (.*) avatar picture to (.*)$")
-	public void IChangeMyAvatarPicture(String userNameAlias, String path)
+	@When("^User (\\w+) change avatar picture to (.*)$")
+	public void IChangeUserAvatarPicture(String userNameAlias, String path)
 			throws Exception {
-		commonSteps.IChangeUserAvatarPicture(userNameAlias, path);
+		String rootPath = CommonUtils.getSimulatorImagesPathFromConfig(getClass());
+		commonSteps.IChangeUserAvatarPicture(userNameAlias, rootPath + "/" + path);
 	}
 
-	@When("^I change (.*) name to (.*)$")
-	public void IChangeMyName(String userNameAlias, String newName)
+	@When("^User (\\w+) change  name to (.*)$")
+	public void IChangeUserName(String userNameAlias, String newName)
 			throws Exception {
 		commonSteps.IChangeUserName(userNameAlias, newName);
+	}
+	
+	@When("^User (\\w+) change  accent color to (.*)$")
+	public void IChangeAccentColor(String userNameAlias, String newColor)
+			throws Exception {
+		commonSteps.IChangeUserAccentColor(userNameAlias, newColor);
 	}
 }

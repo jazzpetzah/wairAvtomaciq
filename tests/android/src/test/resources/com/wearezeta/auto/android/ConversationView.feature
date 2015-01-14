@@ -106,7 +106,7 @@ Feature: Conversation View
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user1Name |
+      | user1Email | user1Password | user1Name | user2Name |
 
   @id145 @regression
   Scenario Outline: Send Upper and Lower case to contact
@@ -122,7 +122,7 @@ Feature: Conversation View
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user1Name |
+      | user1Email | user1Password | user1Name | user2Name |
 
   @id146 @unicode @regression
   Scenario Outline: Send special chars message to contact
@@ -138,7 +138,7 @@ Feature: Conversation View
 
     Examples:
       | Login      | Password      | Name      | Contact   | Message                           |
-      | user1Email | user1Password | user1Name | user1Name | ÄäÖöÜüß simple message in english |
+      | user1Email | user1Password | user1Name | user2Name | ÄäÖöÜüß simple message in english |
 
   @mute @regression @id149
   Scenario Outline: Send emoji message to contact
@@ -154,7 +154,7 @@ Feature: Conversation View
 
     Examples: 
       | Login      | Password      | Name      | Contact   | Message   |
-      | user1Email | user1Password | user1Name | user1Name | :) ;) :(  |
+      | user1Email | user1Password | user1Name | user2Name | :) ;) :(  |
 
   @id147 @unicode @regression
   Scenario Outline: Send double byte chars
@@ -170,7 +170,7 @@ Feature: Conversation View
 
     Examples:
       | Login      | Password      | Name      | Contact   | Message                         |
-      | user1Email | user1Password | user1Name | user1Name | 畑 はたけ hatake field of crops  |
+      | user1Email | user1Password | user1Name | user2Name | 畑 はたけ hatake field of crops  |
 
   @regression @id162
   Scenario Outline: Send picture from gallery into 1:1 conversation
@@ -190,4 +190,4 @@ Feature: Conversation View
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user1Name |
+      | user1Email | user1Password | user1Name | user2Name |

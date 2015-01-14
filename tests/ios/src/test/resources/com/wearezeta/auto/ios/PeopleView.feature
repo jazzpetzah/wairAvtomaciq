@@ -18,6 +18,7 @@ Feature: People View
     And I tap on connected user <Contact2> on People picker page
     #And I see Add to conversation button
     And I click on Go button
+    And I wait for 2 seconds
     Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples: 
@@ -92,6 +93,10 @@ Feature: People View
   @regression @id1396
   Scenario Outline: Verify correct group info page information
     Given There are 3 users where <Name> is me
+    Given User <Contact1> change avatar picture to <Picture>
+    Given User <Contact1> change  name to AQAPICTURECONTACT
+    Given User <Contact2> change  name to AQAAVATAR TestContact
+    Given User <Contact2> change  accent color to <Color>
     Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -99,11 +104,11 @@ Feature: People View
     And I swipe up on group chat page
     Then I see that the conversation name is correct with <Contact1> and <Contact2>
     And I see the correct number of participants in the title <ParticipantNumber>
-    # And I see the correct participant avatars
+    And I see the correct participant avatars
 
     Examples:
-      | Login      | Password      | Name      | Contact1    | Contact2   | ParticipantNumber |
-      | user1Email | user1Password | user1Name | user2Name   | user3Name  | 3                 |
+      | Login      | Password      | Name      | Contact1    | Contact2   | ParticipantNumber | Picture                      | Color        |
+      | user1Email | user1Password | user1Name | user2Name   | user3Name  | 3                 | aqaPictureContact600_800.jpg | BrightOrange |
 
   @smoke @id1406
   Scenario Outline: I can edit the conversation name
@@ -113,7 +118,7 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
     And I swipe up on group chat page
-    And I change conversation name to <ChatName>
+    And I change group conversation name to <ChatName>
     Then I see correct conversation name <ChatName>
     And I exit the group info page
     And I see you renamed conversation to <ChatName> message shown in Group Chat
@@ -149,7 +154,8 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I swipe up on group chat page
-    And I tap on all of the participants and check their emails and names
+    And I tap on <GroupCreator> and check email visible and name
+    And I tap on <NonConnectedContact> and check email invisible and name
 
     Examples:
       | Login      | Password      | Name      | GroupCreator | NonConnectedContact | GroupChatName |
@@ -189,7 +195,7 @@ Feature: People View
       | Login      | Password      | Name      | GroupCreator | NonConnectedContact | GroupChatName |
       | user1Email | user1Password | user1Name | user2Name    | user3Name           | TESTCHAT      |
 
-	#ZIOS-2035            
+	# broken functionality           
   @regression @id555
   Scenario Outline: Verify you can add people from 1:1 people view (view functionality)
     Given There are 3 users where <Name> is me
@@ -287,7 +293,7 @@ Feature: People View
     #And I see Contact list with my name <Name>
     #When I create group chat with <Contact1> and <Contact2>
     #And I swipe up on group chat page
-    #And I change conversation name to <ChatName>
+    #And I change group conversation name to <ChatName>
     #And I swipe down on group chat info page
     #And I swipe right on Dialog page
     #And I tap on my name <Name>
@@ -319,7 +325,7 @@ Feature: People View
     #And I see message in group chat <message>
     #And I swipe down on group chat page
     #And I swipe up on group chat page in simulator
-    #And I change conversation name to <ChatName>
+    #And I change group conversation name to <ChatName>
     #And I add to existing group chat contact <Contact3>
     #And I swipe down on group chat info page
     #And I swipe right on Dialog page

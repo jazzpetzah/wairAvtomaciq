@@ -13,9 +13,12 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.pages.LoginPage;
 import com.wearezeta.auto.osx.pages.MainMenuPage;
+import com.wearezeta.auto.osx.pages.OSXPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
 
 import cucumber.api.java.After;
@@ -29,6 +32,8 @@ public class CommonOSXSteps {
 	public static final Logger log = ZetaLogger.getLog(CommonOSXSteps.class
 			.getSimpleName());
 
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+
 	static {
 		System.setProperty("java.awt.headless", "false");
 		System.setProperty("org.apache.commons.logging.Log",
@@ -39,6 +44,15 @@ public class CommonOSXSteps {
 	}
 
 	public static PagesCollection senderPages;
+
+	public static void resetBackendSettingsIfOverwritten() throws IOException, Exception {
+		if (!OSXCommonUtils.isBackendTypeSet(CommonUtils.getBackendType(CommonOSXSteps.class))) {
+			log.debug("Backend setting were overwritten. Trying to restart app.");
+			senderPages.getMainMenuPage().quitZClient();
+			OSXCommonUtils.setZClientBackend(CommonUtils.getBackendType(CommonOSXSteps.class));
+			senderPages.getLoginPage().startApp();
+		}
+	}
 
 	@Before("@performance")
 	public void setUpPerformance() throws Exception, UriBuilderException,
@@ -77,14 +91,7 @@ public class CommonOSXSteps {
 		ZetaFormatter.setDriver(senderPages.getLoginPage().getDriver());
 		senderPages.getLoginPage().sendProblemReportIfFound();
 
-		if (!OSXCommonUtils.isBackendTypeSet(CommonUtils.getBackendType(this
-				.getClass()))) {
-			log.debug("Backend setting were overwritten. Trying to restart app.");
-			senderPages.getMainMenuPage().quitZClient();
-			OSXCommonUtils.setZClientBackend(CommonUtils.getBackendType(this
-					.getClass()));
-			senderPages.getLoginPage().startApp();
-		}
+		resetBackendSettingsIfOverwritten();
 	}
 
 	@Given("^(.*) has sent connection request to (.*)$")
@@ -166,10 +173,25 @@ public class CommonOSXSteps {
 	public void IRemoveContactsListUsersFromMacContact() throws Exception {
 		commonSteps.IRemoveContactsListUsersFromMacContact();
 	}
-
+	
+	@When("^I change user (.*) avatar picture from file (.*)$")
+	public void IChangeUserAvatarPictureFromFile(String user, String picture) throws Exception {
+		String picturePath = OSXPage.imagesPath + "/" + picture;
+		try {
+			user = usrMgr.findUserByNameOrNameAlias(user)
+					.getName();
+		} catch (NoSuchUserException e) {
+			// do nothing
+		}
+		log.debug("Setting avatar for user " + user + " from image " + picturePath);
+		commonSteps.IChangeUserAvatarPicture(user, picturePath);
+	}
+	
 	@After
 	public void tearDown() throws Exception {
 		senderPages.closeAllPages();
+
+		commonSteps.getUserManager().resetUsers();
 
 		// workaround for stuck on Send picture test
 		OSXCommonUtils.killWireIfStuck();

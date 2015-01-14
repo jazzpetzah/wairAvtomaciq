@@ -106,7 +106,7 @@ Feature: Connect
     And I see contact list loaded with User name <WaitingMess2>
 
     Examples: 
-      | Login       | Password      | Name      | Contact1    | WaitingMess1     | Contact2  | WaitingMess2     |
+      | Login       | Password      | Name      | Contact1    | WaitingMess2     | Contact2  | WaitingMess1     |
       | user1Email  | user1Password | user1Name | user2Name   | 1 person waiting | user3Name | 2 people waiting |
 
   @id540 @regression
@@ -212,6 +212,7 @@ Feature: Connect
     And I type Connect request "<Message>"
     And I press Connect button
     When <Contact> ignore all requests
+    And I press Clear button
     Then I tap on contact name <Contact>
     And I see that connection is pending
 
@@ -227,6 +228,7 @@ Feature: Connect
     When I minimize the application
     And <Contact> has sent connection request to Me
     And I restore the application
+    And I press back button
     And I see contact list loaded with User name <WaitingMess>
     And I tap on contact name <WaitingMess>
     Then I see connect to <Contact> dialog
@@ -252,7 +254,8 @@ Feature: Connect
     And I type Connect request "<Message>"
     And I press Connect button
     When <Contact> accept all requests
-    When I wait for 2 seconds
+    And I wait for 2 seconds
+    And I press Clear button
     Then I tap on contact name <Contact>
     And I see Connect to <Contact> Dialog page
 
@@ -283,7 +286,7 @@ Feature: Connect
   Scenario Outline: I want to initiate a connect request by selecting someone from within a group conversation
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
-    Given <Contact2> is connected to <Contact1>
+    Given <Contact1> is connected to <Contact2>
     Given <Contact1> has group chat <ChatName> with Myself,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -328,7 +331,7 @@ Feature: Connect
       | user1Email | user1Password | user1Name | user2Name |
 
 
-  @id680 @regression
+  @id680 @regressionko
   Scenario Outline: I want to see user has been blocked within the Start UI
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
@@ -342,7 +345,8 @@ Feature: Connect
     And I tap on edit connect request field
     And I type Connect request "<Message>"
     And I press Connect button
-    Then I see contact list loaded with User name <Contact>
+    And I press Clear button
+    And I see contact list loaded with User name <Contact>
     When I tap on contact name <Contact>
     And I see that connection is pending
     And I Press Block button on connect to page
@@ -414,10 +418,10 @@ Feature: Connect
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
     And I press Connect button
-    And I swipe down contact list
+   	#And I swipe down contact list
     And I see People picker page
-    And I tap on Search input on People picker page
-    And I input in search field user name to connect to <Contact>
+    #And I tap on Search input on People picker page
+    #And I input in search field user name to connect to <Contact>
     And I see user <Contact> found on People picker page
     And I tap on user name found on People picker page <Contact>
     Then I see that connection is pending

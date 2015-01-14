@@ -1,13 +1,13 @@
 package com.wearezeta.auto.android;
 
 import java.io.IOException;
-import java.util.NoSuchElementException;
 
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -23,7 +23,7 @@ public class OtherUserPersonalInfoPageSteps {
 		}
 		try {
 			name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		PagesCollection.otherUserPersonalInfoPage.isOtherUserNameVisible(name);
@@ -73,7 +73,7 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	@Then("^I see (.*) user name and email$")
-	public void ISeeUserNameAndEmail(String contact) {
+	public void ISeeUserNameAndEmail(String contact) throws Exception {
 		ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(contact);
 		contact = dstUser.getName();
 		String email = dstUser.getEmail();
@@ -107,7 +107,11 @@ public class OtherUserPersonalInfoPageSteps {
 
 	@When("^I tap on group chat contact (.*)$")
 	public void WhenITapOnGroupChatContact(String contact) throws Throwable {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		try {
+			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
 		PagesCollection.androidPage = PagesCollection.otherUserPersonalInfoPage
 				.tapOnContact(contact);
 		if (PagesCollection.androidPage instanceof OtherUserPersonalInfoPage) {
@@ -124,7 +128,7 @@ public class OtherUserPersonalInfoPageSteps {
 	@When("^I press Leave conversation button$")
 	public void WhenIPressLeaveConversationButton() throws Throwable {
 		PagesCollection.otherUserPersonalInfoPage
-				.pressLeaveConversationButton();
+		.pressLeaveConversationButton();
 	}
 
 	@When("^I confirm leaving$")
@@ -148,11 +152,19 @@ public class OtherUserPersonalInfoPageSteps {
 
 	@Then("^I see the correct participant (.*) and (.*) avatars$")
 	public void ISeeCorrectParticipantAvatars(String contact1, String contact2)
-			throws IOException {
+			throws Exception {
+		try {
+			contact1 = usrMgr.findUserByNameOrNameAlias(contact1).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+		try {
+			contact2 = usrMgr.findUserByNameOrNameAlias(contact2).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
 		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
-				.isParticipantAvatars(usrMgr.findUserByNameOrNameAlias(contact1)
-						.getName(), usrMgr.findUserByNameOrNameAlias(contact2)
-						.getName()));
+				.isParticipantAvatars(contact1,contact2));
 	}
 
 	@Then("^I see the correct number of participants in the title (.*)$")

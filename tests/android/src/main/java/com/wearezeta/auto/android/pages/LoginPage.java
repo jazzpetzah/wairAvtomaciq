@@ -49,7 +49,7 @@ public class LoginPage extends AndroidPage {
 	private String password;
 	private String url;
 	private String path;
-	private static final String LOGIN_ERROR_TEXT = "WRONG ADDRESS OR PASSWORD.\n PLEASE TRY AGAIN.";
+	private static final String LOGIN_ERROR_TEXT = "WRONG ADDRESS OR PASSWORD.\nPLEASE TRY AGAIN.";
 
 	public LoginPage(String URL, String path) throws Exception {
 
@@ -122,6 +122,9 @@ public class LoginPage extends AndroidPage {
 		}
 	}
 
+	public boolean waitForLoginScreenDisappear() {
+		return DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.LoginPage.idLoginButton), 40);
+	}
 	public boolean waitForLogin() {
 
 		return DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.LoginPage.idLoginProgressBar), 40);

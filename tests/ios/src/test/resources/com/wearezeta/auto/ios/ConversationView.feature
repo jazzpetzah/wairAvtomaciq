@@ -123,7 +123,7 @@ Feature: Conversation View
     And I tap media link
     And I scroll media out of sight until media bar appears
     And I see media bar on dialog page
-    And I wait 30 seconds for media to stop playing
+    And I wait 130 seconds for media to stop playing
     Then I dont see media bar on dialog page
 
     Examples: 
@@ -229,22 +229,15 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id409
+  @regression @id409
   Scenario Outline: Send special chars (German)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I press Sign in button
-    And I fill in email input <Text>
-    And I copy email input field content
-    And I have entered login <Login>
-    And I have entered password <Password>
-    And I press Login button
+    Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     And I tap on contact name <Contact>
     And I see dialog page
-    And I tap and hold on message input
-    And I click on popup Paste item
-    And I send the message
+    And I send using script predefined message <Text>
     Then I see last message in dialog is expected message <Text>
 
     Examples:
@@ -295,8 +288,8 @@ Feature: Conversation View
     Then I see my message in the dialog
 
     Examples: 
-      | Login   | Password    | Name    | Contact     |
-      | aqaUser | aqaPassword | aqaUser | aqaContact1 |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
 
   @regression @id416
   Scenario Outline: Keyboard up and navigate to main convo list
@@ -558,4 +551,4 @@ Feature: Conversation View
 
     Examples:
       | Login      | Password      | Name      | Contact1   | Contact2    | SoundCloudLink                                                                       |
-      | user1Email | user1Password | user1Name | user2Name  | aqaContact2 | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name   | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |

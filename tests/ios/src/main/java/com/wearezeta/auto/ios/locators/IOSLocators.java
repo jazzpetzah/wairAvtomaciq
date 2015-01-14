@@ -170,7 +170,7 @@ public final class IOSLocators {
 	
 	public static final String nameForwardWelcomeButton = "ForwardWelcomeButton";
 	
-	public static final String xpathConversationNameTextField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATextField[1]";
+	public static final String nameConversationNameTextField = "ParticipantsView_GroupName";
 
 	public static final String xpathMutedIcon = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[@name='%s']/UIAButton[3]";
 	
@@ -192,9 +192,9 @@ public final class IOSLocators {
 	
 	//public static final String nameOtherPersonalInfoPageEmailField = "ProfileOtherEmailField";
 	
-	public static final String xpathOtherPersonalInfoPageNameField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATextView[2]";
+	public static final String xpathOtherPersonalInfoPageNameField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATextView[3]";
 	
-	public static final String xpathOtherPersonalInfoPageEmailField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATextView[3]";
+	public static final String xpathOtherPersonalInfoPageEmailField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATextView[4]";
 	
 	///////////////////////
 	//Self profile page

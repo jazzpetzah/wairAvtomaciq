@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 import org.junit.Assert;
 
@@ -16,6 +15,7 @@ import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.email.MBoxChangesListener;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.RegistrationPage;
@@ -34,8 +34,10 @@ public class RegistrationPageSteps {
 	public void IEnterName(String name) throws IOException {
 		try {
 			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
-		} catch (NoSuchElementException e) {
-			this.userToRegister = new ClientUser();
+		} catch (NoSuchUserException e) {
+			if (this.userToRegister == null) {
+				this.userToRegister = new ClientUser();
+			}
 			this.userToRegister.setName(name);
 			this.userToRegister.clearNameAliases();
 			this.userToRegister.addNameAlias(name);
@@ -50,7 +52,10 @@ public class RegistrationPageSteps {
 			String realEmail = usrMgr.findUserByEmailOrEmailAlias(email)
 					.getEmail();
 			this.userToRegister.setEmail(realEmail);
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
+			if (this.userToRegister == null) {
+				this.userToRegister = new ClientUser();
+			}
 			this.userToRegister.setEmail(email);
 			this.userToRegister.clearEmailAliases();
 			this.userToRegister.addEmailAlias(email);
@@ -64,7 +69,10 @@ public class RegistrationPageSteps {
 		try {
 			this.userToRegister.setPassword(usrMgr.findUserByPasswordAlias(
 					password).getPassword());
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
+			if (this.userToRegister == null) {
+				this.userToRegister = new ClientUser();
+			}
 			this.userToRegister.setPassword(password);
 			this.userToRegister.clearPasswordAliases();
 			this.userToRegister.addPasswordAlias(password);
@@ -75,11 +83,12 @@ public class RegistrationPageSteps {
 
 	@When("I submit registration data")
 	public void ISubmitRegistrationData() throws Exception {
-		CommonOSXSteps.senderPages.getRegistrationPage().submitRegistration();
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
 		this.listener = IMAPSMailbox.createDefaultInstance().startMboxListener(
 				expectedHeaders);
+
+		CommonOSXSteps.senderPages.getRegistrationPage().submitRegistration();
 	}
 
 	@Then("I see confirmation page")

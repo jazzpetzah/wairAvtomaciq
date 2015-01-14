@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 import javax.mail.MessagingException;
 
@@ -19,6 +18,7 @@ import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.email.MBoxChangesListener;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.UserState;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
@@ -163,8 +163,10 @@ public class RegistrationPageSteps {
 	public void IEnterName(String name) throws IOException {
 		try {
 			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
-		} catch (NoSuchElementException e) {
-			this.userToRegister = new ClientUser();
+		} catch (NoSuchUserException e) {
+			if (this.userToRegister == null) {
+				this.userToRegister = new ClientUser();
+			}
 			this.userToRegister.setName(name);
 			this.userToRegister.clearNameAliases();
 			this.userToRegister.addNameAlias(name);
@@ -176,8 +178,9 @@ public class RegistrationPageSteps {
 	public void IEnterNameWithCharacterLimit(int charactersLimit,
 			String alphabetName) throws Throwable {
 		String nameToType = LanguageUtils.generateRandomString(charactersLimit,
-				alphabetName);
-		PagesCollection.registrationPage.setName(nameToType);
+				alphabetName).replace('\\', '|');
+		IEnterName(nameToType);
+		PagesCollection.registrationPage.inputName();
 	}
 
 	@When("^I input name (.*) and hit Enter$")
@@ -197,23 +200,30 @@ public class RegistrationPageSteps {
 
 	@When("^I enter email (.*)$")
 	public void IEnterEmail(String email) throws IOException {
+		boolean flag = false;
 		try {
 			String realEmail = usrMgr.findUserByEmailOrEmailAlias(email)
 					.getEmail();
 			this.userToRegister.setEmail(realEmail);
-		} catch (NoSuchElementException e) {
-			this.userToRegister.setEmail(email);
+		} catch (NoSuchUserException e) {
+			if (this.userToRegister == null) {
+				this.userToRegister = new ClientUser();
+			}
+			flag = true;
 		}
-		this.userToRegister.clearEmailAliases();
-		this.userToRegister.addEmailAlias(email);
-		PagesCollection.registrationPage.setEmail(this.userToRegister
-				.getEmail() + "\n");
+
+		if (flag) {
+			PagesCollection.registrationPage.setEmail(email + "\n");
+		}
+		else {
+			PagesCollection.registrationPage.setEmail(this.userToRegister
+					.getEmail() + "\n");
+		}
 	}
 
 	@When("^I input email (.*) and hit Enter$")
 	public void IInputEmailAndHitEnter(String email) throws IOException {
 		IEnterEmail(email);
-		PagesCollection.registrationPage.inputEmail();
 	}
 
 	@When("^I attempt to enter an email with spaces (.*)$")
@@ -222,7 +232,10 @@ public class RegistrationPageSteps {
 			String realEmail = usrMgr.findUserByEmailOrEmailAlias(email)
 					.getEmail();
 			this.userToRegister.setEmail(realEmail);
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
+			if (this.userToRegister == null) {
+				this.userToRegister = new ClientUser();
+			}
 			this.userToRegister.setEmail(email);
 		}
 		this.userToRegister.clearEmailAliases();
@@ -274,7 +287,7 @@ public class RegistrationPageSteps {
 		try {
 			this.userToRegister.setPassword(usrMgr.findUserByPasswordAlias(
 					password).getPassword());
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			this.userToRegister.setPassword(password);
 			this.userToRegister.addPasswordAlias(password);
 		}
@@ -336,12 +349,12 @@ public class RegistrationPageSteps {
 
 	@When("^I submit registration data$")
 	public void ISubmitRegistrationData() throws Exception {
-		PagesCollection.registrationPage.createAccount();
-
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
 		this.listener = IMAPSMailbox.createDefaultInstance().startMboxListener(
 				expectedHeaders);
+
+		PagesCollection.registrationPage.createAccount();
 	}
 
 	@Then("^I confirm that (\\d+) recent emails in inbox contain (\\d+) for current recipient$")

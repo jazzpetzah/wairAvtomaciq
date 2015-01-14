@@ -13,9 +13,9 @@ Feature: People View
     And I select to remove user from group chat
     Then I see confirmation request about removing user
 
-    Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2   | ChatName              |
-      | user1Email | user1Password | user1Name | user2Name | user3Name  | ConfirmRemovingChat   |
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName            |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | ConfirmRemovingChat |
 
   @regression @id95
   Scenario Outline: Change conversation name
@@ -47,16 +47,15 @@ Feature: People View
     Then I do not see conversation <NewName> in contact list
     And I see Contact list with name <ChatName>
 
-    Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName          | NewName      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | EditNameErr1Chat  | \\u0020      |
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName         | NewName |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | EditNameErr1Chat | \\u0020 |
 
   @regression @id96
   Scenario Outline: Do not accept erroneous input as group conversation name (leading spaces)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
-    Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open conversation with <ChatName>
@@ -64,9 +63,9 @@ Feature: People View
     And I set name <NewName> for conversation
     Then I see Contact list with name <ExpectedNewName>
 
-    Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName          | NewName                                      | ExpectedNewName         |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | EditNameErr2Chat  | \\u0020\\u0020\\u0020Test   Leading   Spaces | Test   Leading   Spaces |
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName         | NewName                                      | ExpectedNewName         |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | EditNameErr2Chat | \\u0020\\u0020\\u0020Test   Leading   Spaces | Test   Leading   Spaces |
 
   @regression @id97
   Scenario Outline: I can navigate forth and back between participant view and personal info
@@ -82,14 +81,15 @@ Feature: People View
     And I return to participant view from personal info
     And I see conversation name <ChatName> in conversation info
 
-    Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName         |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | PartViewNavChat  |
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | PartViewNavChat |
 
   @regression @id100
   Scenario Outline: Access proﬁle information for the other participant in a 1on1 conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I change user <Contact> avatar picture from file aqaPictureContact.jpg
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open conversation with <Contact>
@@ -99,7 +99,7 @@ Feature: People View
     And I see add new people button
     And I see block a person button
 
-    Examples:
+    Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
@@ -120,9 +120,9 @@ Feature: People View
     And I open Conversation info
     And I see that conversation has 4 people
 
-    Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3   | ChatName            |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name  | AddUserToGroupChat  |
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | ChatName           |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | AddUserToGroupChat |
 
   @smoke @id103
   Scenario Outline: Create group chat from 1on1 conversation
@@ -139,8 +139,8 @@ Feature: People View
     And I see message YOU STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2   |
-      | user1Email | user1Password | user1Name | user2Name | user3Name  |
+      | Login      | Password      | Name      | Contact1  | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |
 
   @regression @id186
   Scenario Outline: Display conversation info correctly
@@ -155,9 +155,9 @@ Feature: People View
     And I see that conversation has <Number> people
     And I see <Number> participants avatars
 
-    Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2   | Number |
-      | user1Email | user1Password | user1Name | user2Name | user3Name  | 3      |
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | Number |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | 3      |
 
   @regression @id188
   Scenario Outline: Group conversation name is displayed
@@ -208,7 +208,7 @@ Feature: People View
     And I remove selected user from conversation
     Then I see message YOU REMOVED <Contact1> in conversation
 
-    Examples:
+    Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       |
       | user1Email | user1Password | user1Name | user2Name | user3Name | RemoveUserChat |
 
@@ -235,7 +235,7 @@ Feature: People View
     And I open Conversation info
     And I see that conversation has 3 people
 
-    Examples:
+    Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName          |
       | user1Email | user1Password | user1Name | user2Name | user3Name | RemoveAddSameChat |
 
@@ -249,21 +249,21 @@ Feature: People View
     And I open conversation with <Contact1>, <Contact2>
     And I see message YOU STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
     When I am signing out
-    And I Sign in using login <Contact1> and password <Password>
+    And I Sign in using login <Contact1Email> and password <Password>
     And I see my name <Contact1> in Contact list
-    Then I see Contact list with name <Login>, <Contact2>
-    And I open conversation with <Login>, <Contact2>
-    And I see message <Login> STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
+    Then I see Contact list with name <Name>, <Contact2>
+    And I open conversation with <Name>, <Contact2>
+    And I see message <Name> STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
     And I am signing out
-    And I Sign in using login <Contact2> and password <Password>
+    And I Sign in using login <Contact2Email> and password <Password>
     And I see my name <Contact2> in Contact list
-    Then I see Contact list with name <Login>, <Contact1>
-    And I open conversation with <Login>, <Contact1>
-    And I see message <Login> STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
+    Then I see Contact list with name <Name>, <Contact1>
+    And I open conversation with <Name>, <Contact1>
+    And I see message <Name> STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name |
+      | Login      | Password      | Name      | Contact1  | Contact1Email | Contact2  | Contact2Email |
+      | user1Email | user1Password | user1Name | user2Name | user2Email    | user3Name | user3Email    |
 
   @regression @id621
   Scenario Outline: Leave group chat - second end verification
@@ -286,7 +286,7 @@ Feature: People View
     And I open conversation with <ChatName>
     And I see message YOU LEFT in conversation
     Then I am signing out
-    And I Sign in using login <Contact1> and password <Password>
+    And I Sign in using login <Contact1Email> and password <Password>
     And I see my name <Contact1> in Contact list
     And I open conversation with <ChatName>
     And I see message <Name> LEFT in conversation
@@ -295,5 +295,5 @@ Feature: People View
     And I see that conversation has 3 people
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | ChatName       |
-      | user1Email | user1Password | user1Name | user1Name | user2Name | user3Name | LeaveGroupChat |
+      | Login      | Password      | Name      | Contact1  | Contact1Email | Contact2  | Contact3  | ChatName       |
+      | user1Email | user1Password | user1Name | user2Name | user2Email    | user3Name | user4Name | LeaveGroupChat |

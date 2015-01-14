@@ -2,7 +2,8 @@ Feature: Connect
 
   @smoke @id576
   Scenario Outline: Send invitation message to a user
-    Given There are 2 users where <Name> is me
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe down contact list
@@ -20,13 +21,14 @@ Feature: Connect
     And I see Pending Connect to <Contact> message on Dialog page from user <Name>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | ContactEmail |
-      | user1Email | user1Password | user1Name | user2Name | user2Email   |
+      | Login      | Password      | Name      | Contact   | ContactEmail | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user2Email   | user3Name |
 
   #ZIOS-3122
   @smoke @id585
   Scenario Outline: Get invitation message from user
-    Given There are 2 users where <Name> is me
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact2>
     Given <Contact> has sent connection request to Me
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
@@ -38,10 +40,10 @@ Feature: Connect
     Then I see first item in contact list named <Contact>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact   | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @staging @id576
+  @regression @id576
   Scenario Outline: Send connection request to unconnected participant in a group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <GroupCreator>
@@ -147,18 +149,19 @@ Feature: Connect
 
   @regression @id579
   Scenario Outline: Verify transitions between connection requests (ignoring)
-    Given There are 4 users where <Name> is me
+    Given There are 5 users where <Name> is me
     Given <Contact1> has sent connection request to me
     Given <Contact2> has sent connection request to me
     Given <Contact3> has sent connection request to me
-    Given I Sign in using login <Name> and password <Password>
+    Given Myself is connected to <Contact4>
+    Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I see Pending request link in contact list
     And I click on Pending request link in contact list
     And I see Pending request page
     And I click on Ignore button on Pending requests page <SentRequests> times
     And I dont see Pending request link in contact list
-    And I don't see conversation with not connected user <NotConnectedUser>
+    And I don't see conversation with not connected user <Contact1>
     And I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -166,16 +169,18 @@ Feature: Connect
     Then I see Pending request page
 
     Examples:
-      | Login      | Password      | Name      | Contact1     | Contact2   | Contact3   |
-      | user1Email | user1Password | user1Name | user2Name    | user3Name  | user4Name  |
+      | Login      | Password      | Name      | Contact1     | Contact2   | Contact3   | Contact4  | SentRequests |
+      | user1Email | user1Password | user1Name | user2Name    | user3Name  | user4Name  | user5Name |      3       |
 
   @regression @id1404
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (Search)
-    Given There are 2 users where <Name> is me
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe down contact list
     And I see People picker page
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
     And I tap on NOT connected user name on People picker page <Contact>
@@ -189,5 +194,5 @@ Feature: Connect
     And I see <Contact> user pending profile page
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact   | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |

@@ -1,8 +1,6 @@
 package com.wearezeta.auto.osx.steps;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.MalformedURLException;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -12,6 +10,7 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ConversationInfoPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
@@ -24,7 +23,7 @@ public class ConversationInfoPageSteps {
 	private static final Logger log = ZetaLogger.getLog(ConversationInfoPageSteps.class.getSimpleName());
 	
 	@When("I choose user (.*) in Conversation info")
-	public void WhenIChooseUserInConversationInfo(String user) throws MalformedURLException, IOException {
+	public void WhenIChooseUserInConversationInfo(String user) throws Exception {
 		user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		CommonOSXSteps.senderPages.setConversationInfoPage(new ConversationInfoPage(
 				 CommonUtils.getOsxAppiumUrlFromConfig(ConversationInfoPage.class),
@@ -35,7 +34,7 @@ public class ConversationInfoPageSteps {
 	}
 	
 	@Then("I do not see user (.*) in Conversation info")
-	public void IDontSeeUserInConversationInfo(String user) throws MalformedURLException, IOException {
+	public void IDontSeeUserInConversationInfo(String user) throws Exception {
 		user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		CommonOSXSteps.senderPages.setConversationInfoPage(new ConversationInfoPage(
 				 CommonUtils.getOsxAppiumUrlFromConfig(ConversationInfoPage.class),
@@ -59,7 +58,7 @@ public class ConversationInfoPageSteps {
 		if (contact.equals(OSXLocators.RANDOM_KEYWORD)) {
 			contact = CommonOSXSteps.senderPages.getConversationInfoPage().getCurrentConversationName();
 		} else {
-			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+			contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		}
 		Assert.assertTrue(CommonOSXSteps.senderPages.getConversationInfoPage().isConversationNameEquals(contact));
 	}
@@ -97,7 +96,7 @@ public class ConversationInfoPageSteps {
 	}
 	
 	@Then("I see user (.*) personal info")
-	public void ISeeUserPersonalInfo(String contact) {
+	public void ISeeUserPersonalInfo(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		ConversationInfoPage conversationInfo = CommonOSXSteps.senderPages.getConversationInfoPage();
 		conversationInfo.isContactPersonalInfoAppear(contact);
@@ -133,11 +132,14 @@ public class ConversationInfoPageSteps {
 		conversationInfo.openImageInPopup();
 		BufferedImage screen = conversationInfo.takeScreenshot();
 		BufferedImage picture = ImageUtil.readImageFromFile(OSXPage.imagesPath + photo);
-		double score = ImageUtil.getOverlapScore(screen, picture, ImageUtil.RESIZE_FROM1920x1080OPTIMIZED);
+		
+		final double minOverlapScore = 0.8d;
+		final double score = ImageUtil.getOverlapScore(screen, picture, ImageUtil.RESIZE_FROM1920x1080OPTIMIZED);
 		log.debug("Score for comparison of 2 pictures = " + score);
 		Assert.assertTrue(
-				"Overlap between two images has no enough score. Expected >= 0.85, current = " + score,
-				score >= 0.85d);
+				String.format(
+						"Overlap between two images has no enough score. Expected >= %f, current = %f",
+						minOverlapScore, score), score >= minOverlapScore);
 		conversationInfo.closeImagePopup();
 	}
 

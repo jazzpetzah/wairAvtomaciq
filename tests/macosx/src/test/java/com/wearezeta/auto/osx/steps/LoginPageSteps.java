@@ -5,11 +5,11 @@ import java.net.MalformedURLException;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
-import org.openqa.selenium.NoSuchElementException;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.LoginPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
@@ -29,12 +29,17 @@ public class LoginPageSteps {
 			throws IOException {
 		try {
 			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
-		} catch (java.util.NoSuchElementException e) {
-			// Ignore silently
+		} catch (NoSuchUserException e) {
+			try {
+				//search for email by name aliases in case name is specified
+				login = usrMgr.findUserByNameOrNameAlias(login).getEmail();
+			} catch (NoSuchUserException ex) {
+			}
 		}
+		
 		try {
 			password = usrMgr.findUserByPasswordAlias(password).getPassword();
-		} catch (java.util.NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		log.debug("Starting to Sign in using login " + login + " and password "
@@ -80,7 +85,7 @@ public class LoginPageSteps {
 	public void WhenIHaveEnteredLogin(String login) {
 		try {
 			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		CommonOSXSteps.senderPages.getLoginPage().setLogin(login);
@@ -90,7 +95,7 @@ public class LoginPageSteps {
 	public void WhenIHaveEnteredPassword(String password) {
 		try {
 			password = usrMgr.findUserByPasswordAlias(password).getPassword();
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		CommonOSXSteps.senderPages.getLoginPage().setPassword(password);

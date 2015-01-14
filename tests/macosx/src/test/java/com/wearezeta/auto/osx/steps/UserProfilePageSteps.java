@@ -22,11 +22,10 @@ public class UserProfilePageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private BufferedImage userProfileBefore = null;
-
+	private BufferedImage userProfileAfter = null;
+	
 	@Given("I open picture settings")
 	public void GivenIOpenPictureSettings() throws IOException {
-		userProfileBefore = CommonOSXSteps.senderPages.getUserProfilePage()
-				.takeScreenshot();
 		CommonOSXSteps.senderPages.getUserProfilePage().openPictureSettings();
 	}
 
@@ -74,25 +73,33 @@ public class UserProfilePageSteps {
 		userProfile.openPictureSettings();
 		BufferedImage referenceImage = userProfile.takeScreenshot();
 
+		final double minOverlapScore = 0.55d;
 		BufferedImage templateImage = ImageUtil
 				.readImageFromFile(OSXPage.imagesPath + filename);
-		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);
+		final double score = ImageUtil.getOverlapScore(referenceImage,
+				templateImage);
 		Assert.assertTrue(
-				"Overlap between two images has no enough score. Expected >= 0.55, current = "
-						+ score, score >= 0.55d);
+				String.format(
+						"Overlap between two images has no enough score. Expected >= %f, current = %f",
+						minOverlapScore, score), score >= minOverlapScore);
 	}
 
 	@Then("^I see changed user picture$")
 	public void ThenISeeChangedUserPicture() throws IOException {
 		UserProfilePage userProfile = CommonOSXSteps.senderPages
 				.getUserProfilePage();
-		BufferedImage userProfileAfter = userProfile.takeScreenshot();
+		if (userProfileAfter != null) {
+			userProfileBefore = userProfileAfter;
+		}
+		userProfileAfter = userProfile.takeScreenshot();
 
-		double score = ImageUtil.getOverlapScore(userProfileAfter,
+		final double minOverlapScore = 0.985d;
+		final double score = ImageUtil.getOverlapScore(userProfileAfter,
 				userProfileBefore, ImageUtil.RESIZE_NORESIZE);
-		Assert.assertFalse(
-				"Overlap between two images has no enough score. Expected >= 0.985, current = "
-						+ score, score >= 0.985d);
+		Assert.assertTrue(
+				String.format(
+						"Overlap between two images is larger than expected. Picture was not changed. Expected <= %f, current = %f",
+						minOverlapScore, score), score <= minOverlapScore);
 	}
 
 	@When("I select to remove photo")
@@ -128,7 +135,7 @@ public class UserProfilePageSteps {
 	}
 
 	@Then("I see name (.*) in User profile")
-	public void ISeeNameInUserProfile(String name) {
+	public void ISeeNameInUserProfile(String name) throws Exception {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		UserProfilePage userProfile = CommonOSXSteps.senderPages
 				.getUserProfilePage();
@@ -136,7 +143,7 @@ public class UserProfilePageSteps {
 	}
 
 	@Then("I see email of (.*) in User profile")
-	public void ISeeEmailOfUserInUserProfile(String name) {
+	public void ISeeEmailOfUserInUserProfile(String name) throws Exception {
 		ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(name);
 		name = dstUser.getName();
 		String email = dstUser.getEmail();

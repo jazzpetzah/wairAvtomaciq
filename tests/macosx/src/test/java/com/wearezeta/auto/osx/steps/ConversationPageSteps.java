@@ -3,11 +3,11 @@ package com.wearezeta.auto.osx.steps;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
@@ -16,6 +16,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.ContactListPage;
@@ -44,6 +45,13 @@ public class ConversationPageSteps {
 		IWriteMessage(randomMessage);
 	}
 
+	@When("^Contact (.*) sends random message to user (.*)$")
+	public void UserSendsRandomMessageToConversation(String msgFromUserNameAlias,
+			String dstUserNameAlias) throws Exception {
+		randomMessage = CommonUtils.generateRandomString(10);
+		CommonSteps.getInstance().UserSentMessageToUser(msgFromUserNameAlias, dstUserNameAlias, randomMessage);
+	}
+	
 	@When("I write message (.*)")
 	public void IWriteMessage(String message) {
 		CommonOSXSteps.senderPages.getConversationPage().writeNewMessage(
@@ -319,7 +327,7 @@ public class ConversationPageSteps {
 
 	private void verifyMsgExistsInConversationView(String msg)
 			throws InterruptedException {
-		msg = usrMgr.replaceAliasesOccurences(msg, FindBy.NAME);
+		msg = usrMgr.replaceAliasesOccurences(msg, FindBy.NAME_ALIAS);
 		msg = msg.toUpperCase();
 		Assert.assertTrue(String.format("Message '%s' not found.", msg),
 				CommonOSXSteps.senderPages.getConversationPage()
@@ -382,12 +390,12 @@ public class ConversationPageSteps {
 			throws Exception {
 		try {
 			user1 = usrMgr.findUserByNameOrNameAlias(user1).getName();
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		try {
 			user2 = usrMgr.findUserByNameOrNameAlias(user2).getName();
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		ContactListPageSteps clSteps = new ContactListPageSteps();

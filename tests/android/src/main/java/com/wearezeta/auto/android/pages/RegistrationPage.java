@@ -73,7 +73,8 @@ public class RegistrationPage extends AndroidPage {
 	}
 
 	public boolean isPictureSelected() {
-		
+		refreshUITree();
+		wait.until(ExpectedConditions.elementToBeClickable(confirmImageButton));
 		return DriverUtils.isElementDisplayed(confirmImageButton);
 	}
 
@@ -83,8 +84,10 @@ public class RegistrationPage extends AndroidPage {
 
 	public void setName(String name) {
 		refreshUITree();
+		wait.until(ExpectedConditions.elementToBeClickable(nameField));
 		if (nameField.getText().toLowerCase().equals(YOUR_NAME)) {
 			nameField.sendKeys(name);
+			wait.until(ExpectedConditions.elementToBeClickable(nextArrow));
 			nextArrow.click();
 		}
 	}
@@ -93,6 +96,7 @@ public class RegistrationPage extends AndroidPage {
 		refreshUITree();
 		if (nameField.getText().toLowerCase().equals(EMAIL)) {
 			nameField.sendKeys(email);
+			wait.until(ExpectedConditions.elementToBeClickable(nextArrow));
 			nextArrow.click();
 		}
 	}

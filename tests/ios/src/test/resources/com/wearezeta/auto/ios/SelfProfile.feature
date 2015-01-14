@@ -1,8 +1,9 @@
 Feature: Self Profile
 
-  @smoke @id344
+  @smoke @id344 
   Scenario Outline: Change your profile picture
-    Given There is 1 user where <Name> is me
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
@@ -15,12 +16,13 @@ Feature: Self Profile
     Then I see changed user picture <Picture>
 
     Examples:
-      | Login      | Password      | Name      | Picture                      |
-      | user1Email | user1Password | user1Name | userpicture_mobile_check.jpg |
+      | Login      | Password      | Name      | Picture                      | Contact   |
+      | user1Email | user1Password | user1Name | userpicture_mobile_check.jpg | user2Name |
 
   @regression @id1055
   Scenario Outline: Attempt to enter a name with 0 chars
-    Given There is 1 user where <Name> is me
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
@@ -31,13 +33,14 @@ Feature: Self Profile
     And I see error message asking for more characters
 
     Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
 
   #ZIOS-2975
   @staging @id1056
   Scenario Outline: Attempt to enter a name with 1 char
-    Given There is 1 user where <Name> is me
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
@@ -48,5 +51,5 @@ Feature: Self Profile
     And I see error message asking for more characters
 
     Examples: 
-      | Login   | Password    | Name    | username |
-      | aqaUser | aqaPassword | aqaUser | c        |
+      | Login      | Password      | Name      | username | Contact   |
+      | user1Email | user1Password | user1Name | c        | user2Name |

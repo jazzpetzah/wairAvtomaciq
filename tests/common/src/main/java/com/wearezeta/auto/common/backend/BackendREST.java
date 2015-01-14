@@ -21,7 +21,6 @@ import org.json.JSONObject;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource.Builder;
-import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.AuthToken.AuthTokenIsNotSetException;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -398,8 +397,7 @@ final class BackendREST {
 	}
 
 	private static JSONArray generatePicturesArray(
-			Map<String, AssetData> publishedPictureAssets)
-			throws Base64DecodingException {
+			Map<String, AssetData> publishedPictureAssets) {
 		JSONArray result = new JSONArray();
 		JSONObject pictureItem = new JSONObject();
 		for (Map.Entry<String, AssetData> entry : publishedPictureAssets

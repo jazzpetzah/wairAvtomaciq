@@ -1,14 +1,12 @@
 package com.wearezeta.auto.android;
 
-import java.io.IOException;
-import java.util.NoSuchElementException;
-
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -17,7 +15,7 @@ import cucumber.api.java.en.When;
 public class ContactListPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-	private void disableHint(String name) throws Throwable {
+	private void disableHint(String name) throws Exception {
 		Thread.sleep(2000);
 		if (PagesCollection.contactListPage.isHintVisible()) {
 			PagesCollection.contactListPage.closeHint();
@@ -69,33 +67,40 @@ public class ContactListPageSteps {
 
 	@Given("^I do not see Contact list with name (.*)$")
 	public void GivenIDoNotSeeContactListWithName(String value)
-			throws Throwable {
-		value = usrMgr.findUserByNameOrNameAlias(value).getName();
+			throws Exception {
+		try {
+			value = usrMgr.findUserByNameOrNameAlias(value).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
 		Assert.assertFalse(PagesCollection.contactListPage
 				.isContactExists(value));
 	}
 
 	@When("^I tap on contact name (.*)$")
-	public void WhenITapOnContactName(String name) throws Exception {
+	public void WhenITapOnContactName(String value) throws Exception {
 		try {
-			name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		}
-		catch(Exception ex) {
-			
+			value = usrMgr.findUserByNameOrNameAlias(value).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
 		}
 		PagesCollection.androidPage = PagesCollection.contactListPage
-				.tapOnName(name);
+				.tapOnName(value);
 	}
 
 	@When("^I tap on my name (.*)$")
 	public void WhenITapOnMyName(String name) throws Exception {
-		name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		try {
+			name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
 		PagesCollection.personalInfoPage = (PersonalInfoPage) PagesCollection.contactListPage
 				.tapOnName(name);
 	}
 
 	@When("^I swipe down contact list$")
-	public void ISwipeDownContactList() throws Throwable {
+	public void ISwipeDownContactList() throws Exception {
 		PagesCollection.peoplePickerPage = (PeoplePickerPage) PagesCollection.contactListPage
 				.swipeDown(1000);
 		PagesCollection.contactListPage.pressLaterButton();
@@ -106,12 +111,12 @@ public class ContactListPageSteps {
 			throws Exception {
 		try {
 			contact1 = usrMgr.findUserByNameOrNameAlias(contact1).getName();
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		try {
 			contact2 = usrMgr.findUserByNameOrNameAlias(contact2).getName();
-		} catch (NoSuchElementException e) {
+		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		WhenITapOnContactName(contact1);
@@ -137,21 +142,20 @@ public class ContactListPageSteps {
 	}
 
 	@When("^I swipe right on a (.*)$")
-	public void ISwipeRightOnContact(String contact) throws IOException {
+	public void ISwipeRightOnContact(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		PagesCollection.contactListPage.swipeRightOnContact(1000, contact);
 	}
 
 	@When("^I click mute conversation (.*)$")
-	public void IClickMuteConversation(String contact) throws IOException,
-			InterruptedException {
+	public void IClickMuteConversation(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		PagesCollection.contactListPage.clickOnMute(contact);
 	}
 
 	@Then("^I see (.*) and (.*) chat in contact list$")
 	public void ISeeGroupChatInContactList(String contact1, String contact2)
-			throws InterruptedException {
+			throws Exception {
 		contact1 = usrMgr.findUserByNameOrNameAlias(contact1).getName();
 		contact2 = usrMgr.findUserByNameOrNameAlias(contact2).getName();
 		Assert.assertTrue(PagesCollection.contactListPage
@@ -161,7 +165,7 @@ public class ContactListPageSteps {
 	}
 
 	@Then("Contact list appears with my name (.*)")
-	public void ThenContactListAppears(String name) throws Throwable {
+	public void ThenContactListAppears(String name) throws Exception {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		PagesCollection.contactListPage.pressLaterButton();
 		// TODO: revisit later
@@ -176,26 +180,34 @@ public class ContactListPageSteps {
 	}
 
 	@Then("^I see contact list loaded with User name (.*)$")
-	public void ISeeUserNameFirstInContactList(String value) throws Throwable {
-		value = usrMgr.findUserByNameOrNameAlias(value).getName();
+	public void ISeeUserNameFirstInContactList(String value) throws Exception {
+		try {
+			value = usrMgr.findUserByNameOrNameAlias(value).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(value));
 	}
 
 	@Then("^Contact (.*) is muted$")
-	public void ContactIsMuted(String contact) throws Throwable {
+	public void ContactIsMuted(String contact) throws Exception {
 
 		Assert.assertTrue(PagesCollection.contactListPage.isContactMuted());
 	}
 
 	@Then("^Contact (.*) is not muted$")
-	public void ThenContactIsNotMuted(String contact) throws Throwable {
+	public void ThenContactIsNotMuted(String contact) throws Exception {
 
 		Assert.assertFalse(PagesCollection.contactListPage.isContactMuted());
 	}
 
 	@Then("^Contact name (.*) is not in list$")
-	public void ThenContactNameIsNotInList(String value) throws Throwable {
-		value = usrMgr.findUserByNameOrNameAlias(value).getName();
+	public void ThenContactNameIsNotInList(String value) throws Exception {
+		try {
+			value = usrMgr.findUserByNameOrNameAlias(value).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
 		Assert.assertFalse(PagesCollection.contactListPage
 				.isContactExists(value));
 	}

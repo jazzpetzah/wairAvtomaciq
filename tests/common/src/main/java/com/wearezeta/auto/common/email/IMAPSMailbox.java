@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeoutException;
@@ -18,6 +19,9 @@ public class IMAPSMailbox {
 	private static final Semaphore semaphore = new Semaphore(1);
 	private static final String MAIL_PROTOCOL = "imaps";
 	private static final String MAILS_FOLDER = "Inbox";
+	private static final int NEW_MSG_MIN_CHECK_INTERVAL = 5000; // seconds
+
+	private static final Random random = new Random();
 
 	private Folder folder = null;
 	private String user;
@@ -68,12 +72,22 @@ public class IMAPSMailbox {
 		return this.user;
 	}
 
-	private void openFolder() throws MessagingException {
+	private void openFolder() throws MessagingException, InterruptedException {
+		int tryNum = 0;
+		final int maxRetry = 5;
+
 		if (!folder.isOpen()) {
-			try {
-				folder.open(Folder.READ_WRITE);
-			} catch (MessagingException ex) {
-				folder.open(Folder.READ_ONLY);
+			while (true) {
+				try {
+					folder.open(Folder.READ_ONLY);
+					return;
+				} catch (MessagingException ex) {
+					Thread.sleep((tryNum + 1) * 3 * 1000);
+					tryNum++;
+					if (tryNum >= maxRetry) {
+						throw ex;
+					}
+				}
 			}
 		}
 	}
@@ -118,9 +132,10 @@ public class IMAPSMailbox {
 				Folder dstFolder = IMAPSMailbox.this.folder;
 				while (dstFolder != null && dstFolder.isOpen()) {
 					try {
-						Thread.sleep(3000);
+						Thread.sleep(NEW_MSG_MIN_CHECK_INTERVAL
+								+ random.nextInt(NEW_MSG_MIN_CHECK_INTERVAL));
 					} catch (InterruptedException e) {
-						break;
+						return;
 					}
 				}
 			}

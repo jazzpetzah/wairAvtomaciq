@@ -31,6 +31,7 @@ Feature: Sign In
     Then I see my name <Name> in Contact list
     And I see name <Name> in User profile
     And I see email of <Name> in User profile
+    And I open picture settings
     And I see changed user picture
 
     Examples: 

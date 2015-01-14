@@ -3,20 +3,21 @@ Feature: People View
   @id83 @id87 @regression
   Scenario Outline: I can access user details page from group chat and see user name, email and photo
     Given There are 3 users where <Name> is me
-    # Given <Contact1> has an avatar picture
+    Given <Contact1> has an avatar picture from file <Picture>
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given <Contact1> has a name <Contact1NewName>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <GroupChatName>
     And I swipe up on dialog page
-    And I tap on group chat contact <Contact1>
+    And I tap on group chat contact <Contact1NewName>
     Then I see <Contact1> user name and email
     And I see correct background image
 
-    Examples:
-      | Login      | Password      | Name      | Contact1   | Contact2    | GroupChatName   |
-      | user1Email | user1Password | user1Name | user1Name  | user2Name   | GroupInfoCheck2 |
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName   | Picture                      | Contact1NewName   |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupInfoCheck2 | aqaPictureContact600_800.jpg | aqaPictureContact |
 
   @id319 @regression
   Scenario Outline: I can create group chat from People picker
@@ -34,9 +35,9 @@ Feature: People View
     And I tap on create conversation
     Then I see group chat page with users <Contact1>,<Contact2>
 
-    Examples:
-      | Login      | Password      | Name      | Contact1   | Contact2    | GroupChatName           |
-      | user1Email | user1Password | user1Name | user1Name  | user2Name   | PeoplePicker GroupChat2 |
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName           |
+      | user1Email | user1Password | user1Name | user3Name | user2Name | PeoplePicker GroupChat2 |
 
   @id321 @smoke
   Scenario Outline: Leave group conversation
@@ -53,8 +54,8 @@ Feature: People View
     Then I see Contact list with my name <Name>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1   | Contact2    | GroupChatName  |
-      | user1Email | user1Password | user1Name | user2Name  | user3Name   | LeaveGroupChat |
+      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat |
 
   @id322 @smoke
   Scenario Outline: Remove from group chat
@@ -73,16 +74,18 @@ Feature: People View
     And I return to group chat page
     Then I see  message <Message> contact <Contact2> on group page
 
-    Examples:
-      | Login      | Password      | Name      | Contact1   | Contact2    | GroupChatName       | Message     |
-      | user1Email | user1Password | user1Name | user2Name  | user3Name   | RemoveFromGroupChat | YOU REMOVED |
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName       | Message     |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | RemoveFromGroupChat | YOU REMOVED |
 
   @regression @id594
   Scenario Outline: Verify correct group info page information
     Given There are 3 users where <Name> is me
-    # Given <Contact1> has an avatar picture
-    # Given <Contact2> has an avatar picture
+    Given <Contact1> has an avatar picture from file <Picture>
+    Given <Contact2> has an accent color <Color>
     Given Myself is connected to <Contact1>,<Contact2>
+    Given <Contact1> has a name <Contact1NewName>
+    Given <Contact2> has a name <Contact2NewName>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -90,8 +93,8 @@ Feature: People View
     And I swipe up on dialog page
     Then I see that the conversation name is <GroupChatName>
     And I see the correct number of participants in the title <ParticipantNumber>
-    # And I see the correct participant <Contact1> and <Contact2> avatars
+    And I see the correct participant <Contact1NewName> and <Contact2NewName> avatars
 
-    Examples:
-      | Login      | Password      | Name      | Contact1   | Contact2    | ParticipantNumber | GroupChatName  |
-      | user1Email | user1Password | user1Name | user1Name  | user2Name   | 3                 | GroupInfoCheck |
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName  | Picture                      | Color        | Contact1NewName   | Contact2NewName       |
+      | user1Email | user1Password | user1Name | user3Name | user2Name | 3                 | GroupInfoCheck | aqaPictureContact600_800.jpg | BrightOrange | aqaPictureContact | aqaAvatar TestContact |
