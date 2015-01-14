@@ -42,7 +42,7 @@ public class ZephyrTestCycle {
 	public ZephyrTestCycle(String id, String name, List<ZephyrTestPhase> childPhases) {
 		this.id = id;
 		this.name = name;
-		this.childPhases = childPhases;
+		this.childPhases = new ArrayList<ZephyrTestPhase>(childPhases);
 		for (ZephyrTestPhase phase : this.childPhases) {
 			phase.setParentCycle(this);
 		}
