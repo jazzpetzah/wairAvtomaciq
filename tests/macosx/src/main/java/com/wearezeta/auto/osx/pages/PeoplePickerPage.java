@@ -40,6 +40,9 @@ public class PeoplePickerPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerSearchResultEntry)
 	private List<WebElement> searchResults;
 	
+	@FindBy(how = How.ID, using = OSXLocators.idUnblockUserButton)
+	private WebElement unblockUserButton;
+	
 	public PeoplePickerPage(String URL, String path) throws MalformedURLException {
 		super(URL, path);
 	}
@@ -89,6 +92,10 @@ public class PeoplePickerPage extends OSXPage {
        		return false;
        	}
         return true;
+	}
+	
+	public void unblockUser() {
+		unblockUserButton.click();
 	}
 	
 	public boolean areSearchResultsContainUser(String username) {

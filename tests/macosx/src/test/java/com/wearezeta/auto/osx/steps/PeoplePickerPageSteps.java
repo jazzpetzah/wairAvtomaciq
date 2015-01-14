@@ -66,4 +66,9 @@ public class PeoplePickerPageSteps {
 	public void WhenISendInvitationToUser() {
 		CommonOSXSteps.senderPages.getPeoplePickerPage().sendInvitationToUserIfRequested();
 	}
+	
+	@When("I unblock user")
+	public void IUnblockUserInPeoplePicker() {
+		CommonOSXSteps.senderPages.getPeoplePickerPage().unblockUser();
+	}
 }
