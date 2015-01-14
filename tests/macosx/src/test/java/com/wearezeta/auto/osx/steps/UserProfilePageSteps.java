@@ -22,11 +22,10 @@ public class UserProfilePageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private BufferedImage userProfileBefore = null;
-
+	private BufferedImage userProfileAfter = null;
+	
 	@Given("I open picture settings")
 	public void GivenIOpenPictureSettings() throws IOException {
-		userProfileBefore = CommonOSXSteps.senderPages.getUserProfilePage()
-				.takeScreenshot();
 		CommonOSXSteps.senderPages.getUserProfilePage().openPictureSettings();
 	}
 
@@ -89,14 +88,17 @@ public class UserProfilePageSteps {
 	public void ThenISeeChangedUserPicture() throws IOException {
 		UserProfilePage userProfile = CommonOSXSteps.senderPages
 				.getUserProfilePage();
-		BufferedImage userProfileAfter = userProfile.takeScreenshot();
+		if (userProfileAfter != null) {
+			userProfileBefore = userProfileAfter;
+		}
+		userProfileAfter = userProfile.takeScreenshot();
 
 		final double minOverlapScore = 0.985d;
 		final double score = ImageUtil.getOverlapScore(userProfileAfter,
 				userProfileBefore, ImageUtil.RESIZE_NORESIZE);
 		Assert.assertTrue(
 				String.format(
-						"Overlap between two images is larger than expected. Picture were not changed. Expected <= %f, current = %f",
+						"Overlap between two images is larger than expected. Picture was not changed. Expected <= %f, current = %f",
 						minOverlapScore, score), score <= minOverlapScore);
 	}
 
