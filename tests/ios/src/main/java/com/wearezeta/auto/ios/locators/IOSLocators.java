@@ -434,5 +434,10 @@ public final class IOSLocators {
 	public static final String nameYouLeftMessage = "YOU LEFT";
 	public static final String nameYouPingedMessage = "YOU PINGED";
 	public static final String nameYouPingedAgainMessage = "YOU PINGED AGAIN";
+	
+	////////////////////////////
+	//Unblock user locator
+	////////////////////////////
+	public static final String nameUnblockButton = "UNBLOCK";
 }
 
