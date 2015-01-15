@@ -59,6 +59,8 @@ public class PeoplePickerPage extends IOSPage{
 	private String url;
 	private String path;
 	
+	private int numberTopSelected = 0;
+	
 	public PeoplePickerPage(String URL, String path) throws MalformedURLException {
 		super(URL, path);
 		url = URL;
@@ -194,7 +196,9 @@ public class PeoplePickerPage extends IOSPage{
 	}
 	
 	public void tapNumberOfTopConnections(int numberToTap){
+		numberTopSelected = 0;
 		for(int i=1;i<numberToTap+1;i++){
+			numberTopSelected++;
 			driver.findElement(By.xpath(String.format(IOSLocators.xpathPeoplePickerTopConnectionsAvatar, i))).click();
 		}
 	}
@@ -203,9 +207,14 @@ public class PeoplePickerPage extends IOSPage{
 		return DriverUtils.isElementDisplayed(createConverstaionButton);
 	}
 	
-	public GroupChatPage clickCreateConversationButton() throws Throwable{
+	public IOSPage clickCreateConversationButton() throws Throwable{
 		createConverstaionButton.click();
-		return new GroupChatPage(url, path);
+		if (numberTopSelected >= 2) {
+			return new GroupChatPage(url, path);
+		}
+		else {
+			return new DialogPage(url, path);
+		}
 	}
 	
 	public boolean isTopPeopleLabelVisible(){

@@ -78,20 +78,24 @@ Feature: Search
   Scenario Outline: Start 1:1 chat with users from Top Connections
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
+    Given Contact <Contact> send message to user <Name>
+    Given Contact <Name> send message to user <Contact>
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I swipe down contact list
     And I see People picker page
-    And I re-enter the people picker if top people list is not there
+    #And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on 1 top connections
-    And I tap go to enter conversation
+    And I click Create Conversation button on People picker page
+    And I wait for 2 seconds
+    And I see dialog page
 
     Examples: 
-      | Login      | Password      | Name      | UserCount |
-      | user1Email | user1Password | user1Name | 10        |
+      | Login      | Password      | Name      | UserCount | Contact   |
+      | user1Email | user1Password | user1Name | 10        | user2Name |
 
-  @id1150 @staging 
+  @id1150 @staging
   Scenario Outline: Start group chat with users from Top Connections
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -101,10 +105,10 @@ Feature: Search
     When I see Contact list with my name <Name>
     And I swipe down contact list
     And I see People picker page
-    And I re-enter the people picker if top people list is not there
+    #And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on 2 top connections
-    And I click Create Conversation button  on People picker page
+    And I click Create Conversation button on People picker page
     And I swipe up on group chat page
     And I change group conversation name to <ConvoName>
     And I exit the group info page
@@ -113,4 +117,4 @@ Feature: Search
 
     Examples: 
       | Login      | Password      | Name      | ConvoName     | UserCount | Contact   |
-      | user1Email | user1Password | user1Name | TopGroupTest  | 10         | user2Name |
+      | user1Email | user1Password | user1Name | TopGroupTest  | 10        | user2Name |
