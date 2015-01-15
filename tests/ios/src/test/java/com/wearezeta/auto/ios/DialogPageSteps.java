@@ -57,7 +57,12 @@ public class DialogPageSteps {
 
 	@When("^I tap on text input$")
 	public void WhenITapOnTextInput() throws Exception {
-		PagesCollection.dialogPage.tapOnCursorInput();
+		for (int i = 0; i < 5; i ++) {
+			PagesCollection.dialogPage.tapOnCursorInput();
+			if (PagesCollection.dialogPage.isKeyboardVisible()) {
+				break;
+			}
+		}
 	}
 
 	@When("^I type the message$")
@@ -185,7 +190,12 @@ public class DialogPageSteps {
 	@When("^I swipe the text input cursor$")
 	public void ISwipeTheTextInputCursor() throws Throwable {
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.iOSPage;
-		PagesCollection.dialogPage.swipeInputCursor();
+		for (int i = 0; i < 3; i ++) {
+			PagesCollection.dialogPage.swipeInputCursor();
+			if (PagesCollection.dialogPage.isPingButtonVisible()) {
+				break;
+			}
+		}
 	}
 
 	@When("^I press Add Picture button$")
@@ -384,7 +394,6 @@ public class DialogPageSteps {
 	@Then("^I scroll away the keyboard$")
 	public void IScrollKeyboardAway() throws Throwable {
 		PagesCollection.dialogPage.swipeDialogPageDown(500);
-		PagesCollection.dialogPage.swipeDialogPageUp(500);
 		Thread.sleep(2000);
 	}
 
