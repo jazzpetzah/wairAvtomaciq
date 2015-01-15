@@ -270,4 +270,8 @@ public class PeoplePickerPageSteps {
 		PagesCollection.peoplePickerPage.tapOnPeoplePickerClearBtn();
 	}
 
+	@When("^I unblock user$")
+	public void IUnblockUser() {
+		PagesCollection.peoplePickerPage.unblockUser();
+	}
 }

@@ -55,6 +55,8 @@ public class PeoplePickerPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.namePeopleYouMayKnowLabel)
 	private WebElement peopleYouMayKnowLabel;
 	
+	@FindBy(how = How.NAME, using = IOSLocators.nameUnblockButton)
+	private WebElement unblockButton;
 	
 	private String url;
 	private String path;
@@ -254,6 +256,10 @@ public class PeoplePickerPage extends IOSPage{
 
 	public boolean isPeopleYouMayKnowLabelVisible() {
 		return DriverUtils.isElementDisplayed(peopleYouMayKnowLabel);
+	}
+	
+	public void unblockUser() {
+		unblockButton.click();
 	}
 
 }
