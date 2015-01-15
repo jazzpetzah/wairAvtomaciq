@@ -196,3 +196,25 @@ Feature: Connect
     Examples: 
       | Login      | Password      | Name      | Contact   | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
+      
+  @torun @staging @id1399 
+  Scenario Outline: Verify you don't receive any messages from blocked person in 1:1 chat
+  	Given There are 2 users where <Name> is me
+  	Given <Contact> is connected to <Name>
+    Given User <Name> blocks user <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When Contact <Contact> sends random message to user <Name>
+    And I wait for 10 seconds
+    Then I dont see conversation <Contact> in contact list
+    When I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact>
+    And I see user <Contact> found on People picker page
+    And I tap on connected user <Contact> on People picker page
+    And I unblock user
+    
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
