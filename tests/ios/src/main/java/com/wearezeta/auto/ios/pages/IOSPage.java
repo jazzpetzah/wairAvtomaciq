@@ -31,49 +31,50 @@ import com.wearezeta.auto.common.driver.ZetaDriver;
 public abstract class IOSPage extends BasePage {
 	protected static ZetaDriver driver;
 	protected static WebDriverWait wait;
-	
-	private static final int SWIPE_DELAY = 10 * 1000; //milliseconds
-	
+
+	private static final int SWIPE_DELAY = 10 * 1000; // milliseconds
+
 	DesiredCapabilities capabilities = new DesiredCapabilities();
-	
+
 	private String url = "";
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameMainWindow)
 	protected WebElement content;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameEditingItemSelect)
 	private WebElement popupSelect;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameEditingItemSelectAll)
 	private WebElement popupSelectAll;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameEditingItemCopy)
 	private WebElement popupCopy;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameEditingItemCut)
 	private WebElement popupCut;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameEditingItemPaste)
 	private WebElement popupPaste;
-	
+
 	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameKeyboard)
 	private WebElement keyboard;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameKeyboardDeleteButton)
 	private WebElement keyboardDeleteBtn;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameKeyboardReturnButton)
 	private WebElement keyboardReturnBtn;
 
 	private static String imagesPath = "";
 
 	public IOSPage(String URL, String path) throws MalformedURLException {
-		this (URL, path, true);
+		this(URL, path, true);
 	}
-	
-	public IOSPage(String URL, String path, boolean acceptAlerts) throws MalformedURLException {
+
+	public IOSPage(String URL, String path, boolean acceptAlerts)
+			throws MalformedURLException {
 		String bt = "staging";
-		
+
 		try {
 			setImagesPath(CommonUtils.getSimulatorImagesPathFromConfig(this
 					.getClass()));
@@ -83,38 +84,39 @@ public abstract class IOSPage extends BasePage {
 		}
 		url = URL;
 		capabilities.setCapability("platformName", "iOS");
-		
+
 		capabilities.setCapability("app", path);
 		capabilities.setCapability("deviceName", "iPhone 6");
 		capabilities.setCapability("platformVersion", "8.1");
-		capabilities.setCapability("processArguments", "--args -TutorialOverlaysEnabled 0 -ZMBackendEnvironmentType " + bt);
+		capabilities.setCapability("processArguments",
+				"--args -TutorialOverlaysEnabled 0 -ZMBackendEnvironmentType "
+						+ bt);
 		if (false == acceptAlerts) {
 			initWithoutAutoAccept();
-		}
-		else {
+		} else {
 			initWithAutoAccept();
 		}
 	}
-	
+
 	private void initWithAutoAccept() throws MalformedURLException {
 		capabilities.setCapability("autoAcceptAlerts", true);
 		super.InitConnection(url, capabilities);
 
-        storeDriverAndWait();
+		storeDriverAndWait();
 	}
-	
+
 	private void initWithoutAutoAccept() throws MalformedURLException {
-		
+
 		super.InitConnection(url, capabilities);
-		
-        storeDriverAndWait();
+
+		storeDriverAndWait();
 	}
 
 	private void storeDriverAndWait() {
-        driver = drivers.get(CommonUtils.PLATFORM_NAME_IOS);
-        wait = waits.get(CommonUtils.PLATFORM_NAME_IOS);
+		driver = (ZetaDriver) drivers.get(CommonUtils.PLATFORM_NAME_IOS);
+		wait = (WebDriverWait) waits.get(CommonUtils.PLATFORM_NAME_IOS);
 	}
-	
+
 	@Override
 	public void Close() throws IOException {
 		super.Close();
@@ -160,16 +162,17 @@ public abstract class IOSPage extends BasePage {
 		DriverUtils.swipeDown(driver, content, time);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
-	
+
 	public void smallScrollUp() {
 		driver.swipe(10, 220, 10, 200, 500);
 	}
-	
+
 	public void smallScrollDown() {
 		driver.swipe(20, 300, 20, 400, 500);
 	}
 
-	public static void clearPagesCollection() throws IllegalArgumentException, IllegalAccessException {
+	public static void clearPagesCollection() throws IllegalArgumentException,
+			IllegalAccessException {
 		clearPagesCollection(PagesCollection.class, IOSPage.class);
 	}
 
@@ -180,73 +183,77 @@ public abstract class IOSPage extends BasePage {
 	public static void setImagesPath(String imagesPath) {
 		IOSPage.imagesPath = imagesPath;
 	}
-	
-	public void clickPopupSelectAllButton(){
+
+	public void clickPopupSelectAllButton() {
 		popupSelectAll.click();
 	}
-	
-	public void clickPopupCopyButton(){
+
+	public void clickPopupCopyButton() {
 		popupCopy.click();
 	}
-	
-	public void clickPopupPasteButton(){
+
+	public void clickPopupPasteButton() {
 		popupPaste.click();
 	}
-	
+
 	@Override
 	public BufferedImage getElementScreenshot(WebElement element)
 			throws IOException {
 		BufferedImage screenshot = takeScreenshot();
 		Point elementLocation = element.getLocation();
 		Dimension elementSize = element.getSize();
-		int x = elementLocation.x*2;
-		int y = elementLocation.y*2;
-		int w = elementSize.width*2; if (x+w>screenshot.getWidth()) w = screenshot.getWidth()-x;
-		int h = elementSize.height*2; if (y+h>screenshot.getHeight()) h = screenshot.getHeight()-y;
+		int x = elementLocation.x * 2;
+		int y = elementLocation.y * 2;
+		int w = elementSize.width * 2;
+		if (x + w > screenshot.getWidth())
+			w = screenshot.getWidth() - x;
+		int h = elementSize.height * 2;
+		if (y + h > screenshot.getHeight())
+			h = screenshot.getHeight() - y;
 		return screenshot.getSubimage(x, y, w, h);
 	}
-	
-	public void pasteStringToInput(WebElement element, String text){
+
+	public void pasteStringToInput(WebElement element, String text) {
 		IOSCommonUtils.copyToSystemClipboard(text);
 		DriverUtils.iOSLongTap(driver, element);
 		clickPopupPasteButton();
 	}
-	
-	public void inputStringFromKeyboard(String returnKey) throws InterruptedException{
+
+	public void inputStringFromKeyboard(String returnKey)
+			throws InterruptedException {
 		IOSKeyboard keyboard = IOSKeyboard.getInstance();
 		keyboard.typeString(returnKey, driver);
 	}
-	
-	public boolean isKeyboardVisible(){
-		DriverUtils.waitUntilElementDissapear(driver, By.className(IOSLocators.classNameKeyboard));
+
+	public boolean isKeyboardVisible() {
+		DriverUtils.waitUntilElementDissapear(driver,
+				By.className(IOSLocators.classNameKeyboard));
 		return DriverUtils.isElementDisplayed(keyboard);
 	}
-	
-	public void clickKeyboardDeleteButton(){
+
+	public void clickKeyboardDeleteButton() {
 		keyboardDeleteBtn.click();
 	}
-	
-	public void clickKeyboardReturnButton(){
+
+	public void clickKeyboardReturnButton() {
 		keyboardReturnBtn.click();
 	}
 
 	public static Object executeScript(String script) {
 		return driver.executeScript(script);
 	}
-	
-	public boolean isSimulator() throws Throwable{
+
+	public boolean isSimulator() throws Throwable {
 		return CommonUtils.getIsSimulatorFromConfig(IOSPage.class);
 	}
-	
-	public void cmdVscript() throws ScriptException{
+
+	public void cmdVscript() throws ScriptException {
 		final String[] scriptArr = new String[] {
 				"property thisapp: \"iOS Simulator\"",
-				"tell application \"System Events\"",
-				" tell process thisapp",
+				"tell application \"System Events\"", " tell process thisapp",
 				" click menu item \"Paste\" of menu \"Edit\" of menu bar 1",
-				" end tell",
-				"end tell"};
-		
+				" end tell", "end tell" };
+
 		final String script = StringUtils.join(scriptArr, "\n");
 		ScriptEngineManager mgr = new ScriptEngineManager();
 		ScriptEngine engine = mgr.getEngineByName("AppleScriptEngine");
@@ -254,28 +261,26 @@ public abstract class IOSPage extends BasePage {
 			engine.eval(script);
 		}
 	}
-	
+
 	public void hideKeyboard() {
 		driver.hideKeyboard();
 	}
-	
-	public void acceptAlert(){
+
+	public void acceptAlert() {
 		DriverUtils.waitUntilAlertAppears(driver);
 		try {
 			driver.switchTo().alert().accept();
-		}
-		catch (Exception e){
-			//do nothing
+		} catch (Exception e) {
+			// do nothing
 		}
 	}
-	
-	public void dismissAlert(){
+
+	public void dismissAlert() {
 		DriverUtils.waitUntilAlertAppears(driver);
 		try {
 			driver.switchTo().alert().dismiss();
-		}
-		catch (Exception e){
-			//do nothing
+		} catch (Exception e) {
+			// do nothing
 		}
 	}
 }
