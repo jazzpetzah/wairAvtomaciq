@@ -29,9 +29,9 @@ Feature: People View
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact1>
-    And I  long tap on user name found on People picker page <Contact1>
+    And I tap on user name found on People picker page <Contact1>
     And I add in search field user name to connect to <Contact2>
-    And I  long tap on user name found on People picker page <Contact2>
+    And I tap on user name found on People picker page <Contact2>
     And I tap on create conversation
     Then I see group chat page with users <Contact1>,<Contact2>
 
