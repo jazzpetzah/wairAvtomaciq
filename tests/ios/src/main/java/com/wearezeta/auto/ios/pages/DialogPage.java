@@ -119,6 +119,10 @@ public class DialogPage extends IOSPage{
 		return DriverUtils.isElementDisplayed(driver.findElement(By.name(msg)));
 	}
 	
+	public boolean isPingButtonVisible() {
+		return DriverUtils.isElementDisplayed(pingButton);
+	}
+	
 	public void pressPingButton() {
 		pingButton.click();
 	}
@@ -187,12 +191,12 @@ public class DialogPage extends IOSPage{
 
 	
 	private String GetImageCell(List<WebElement> chatList) {
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(IOSLocators.xpathOtherConversationCellFormat)));
 		String lastMessage = imageCell.getAttribute("name");
 		return lastMessage;
 	}
 
-	public String getImageCellFromDialog()
-	{
+	public String getImageCellFromDialog() {
 		return GetImageCell(messagesList);
 	}
 	

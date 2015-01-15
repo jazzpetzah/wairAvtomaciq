@@ -179,7 +179,6 @@ Feature: Conversation View
     And I navigate back to conversations view
     And I tap on contact name <Contact>
     And I tap on text input
-    And I tap on text input
     And I send the message
     Then I see my message in the dialog
 

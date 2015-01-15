@@ -63,7 +63,7 @@ public class PeoplePickerPage extends AndroidPage {
 	public void typeTextInPeopleSearch(String contactName) throws InterruptedException
 	{
 		pickerSearch.sendKeys(contactName);
-		driver.navigate().back();
+		driver.sendKeyEvent(66);
 	}
 	
 	public void addTextToPeopleSearch(String contactName) throws InterruptedException
