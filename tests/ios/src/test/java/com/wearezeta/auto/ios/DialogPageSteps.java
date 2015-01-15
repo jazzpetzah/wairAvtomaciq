@@ -8,6 +8,7 @@ import java.text.Normalizer.Form;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
@@ -515,6 +516,13 @@ public class DialogPageSteps {
 		Assert.assertTrue(
 				"Overlap between two images has not enough score. Expected >= 0.75, current = "
 						+ score, score >= 0.75d);
+	}
+	
+	@When("^Contact (.*) sends random message to user (.*)$")
+	public void UserSendsRandomMessageToConversation(String msgFromUserNameAlias,
+			String dstUserNameAlias) throws Exception {
+		message = CommonUtils.generateRandomString(10);
+		CommonSteps.getInstance().UserSentMessageToUser(msgFromUserNameAlias, dstUserNameAlias, message);
 	}
 
 }

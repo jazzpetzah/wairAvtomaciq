@@ -288,5 +288,13 @@ public class ContactListPageSteps {
 		Assert.assertFalse("Convesation with : " + name1 + ", " + name2 + ", "
 				+ name3 + ", " + " is in chat list", chatExists);
 	}
+	
+	@When("I dont see conversation (.*) in contact list")
+	public void IDoNotSeeConversationInContactList(String name)
+			throws Exception {
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		Assert.assertFalse(PagesCollection.contactListPage
+				.isDisplayedInContactList(name));
+	}
 
 }
