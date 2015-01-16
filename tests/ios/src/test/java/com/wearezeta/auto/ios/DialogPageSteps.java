@@ -492,6 +492,7 @@ public class DialogPageSteps {
 		ClientUser yourСontact = usrMgr.findUserByNameOrNameAlias(contact);
 		pingId = BackendAPIWrappers.sendPingToConversation(yourСontact,
 				conversationName);
+		Thread.sleep(1000);
 	}
 
 	@When("^User (.*) HotPing in chat (.*) by BackEnd$")
@@ -500,6 +501,7 @@ public class DialogPageSteps {
 		ClientUser yourСontact = usrMgr.findUserByNameOrNameAlias(contact);
 		BackendAPIWrappers.sendHotPingToConversation(yourСontact,
 				conversationName, pingId);
+		Thread.sleep(1000);
 	}
 
 	@Then("^I see (.*) icon in conversation$")
