@@ -1,5 +1,8 @@
 package com.wearezeta.auto.common;
 
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -21,14 +24,16 @@ import org.openqa.selenium.support.pagefactory.FieldDecorator;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.ZetaDriver;
+import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.locators.ZetaElementLocatorFactory;
 import com.wearezeta.auto.common.locators.ZetaFieldDecorator;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public abstract class BasePage {
 
-	protected static HashMap<String, ZetaDriver> drivers = new HashMap<String, ZetaDriver>();
+	protected static HashMap<String, AppiumDriver> drivers = new HashMap<String, AppiumDriver>();
 	protected static HashMap<String, WebDriverWait> waits = new HashMap<String, WebDriverWait>();
 	private static final Logger log = ZetaLogger.getLog(BasePage.class.getSimpleName());
 	
@@ -38,8 +43,16 @@ public abstract class BasePage {
 			throws MalformedURLException {
 
 		String platform = (String) capabilities.getCapability("platformName");
-		if (null == drivers || drivers.isEmpty() || drivers.get(platform) == null || drivers.get(platform).isSessionLost()) {
-			drivers.put(platform, new ZetaDriver(new URL(URL), capabilities));
+		if (null == drivers || drivers.isEmpty() || drivers.get(platform) == null) {
+			if(platform.equals(CommonUtils.PLATFORM_NAME_ANDROID)){
+				drivers.put("Android", new ZetaAndroidDriver(new URL(URL), capabilities));
+			}
+			else if(platform.equals(CommonUtils.PLATFORM_NAME_IOS)){
+				drivers.put(platform, new ZetaIOSDriver (new URL(URL), capabilities));
+			}
+			else if(platform.equals(CommonUtils.PLATFORM_NAME_OSX)){
+				drivers.put(platform, new ZetaOSXDriver (new URL(URL), capabilities));
+			}
 			try {
 				drivers.get(platform).manage()
 						.timeouts()
@@ -58,7 +71,7 @@ public abstract class BasePage {
 		
 		pagePlatform = platform;
 				
-		ElementLocatorFactory zetaLocatorFactory = new ZetaElementLocatorFactory(drivers.get(platform));
+		ZetaElementLocatorFactory zetaLocatorFactory = new ZetaElementLocatorFactory(drivers.get(platform));
 		FieldDecorator zetaFieldDecorator = new ZetaFieldDecorator(zetaLocatorFactory);
 		PageFactory.initElements(zetaFieldDecorator, this);
 	}
@@ -128,7 +141,7 @@ public abstract class BasePage {
 		return drivers.get(pagePlatform).getPageSource();
 	}
 	
-	public static ZetaDriver getDriver(String id) {
+	public static AppiumDriver getDriver(String id) {
 		return drivers.get(id);
 	}
 }

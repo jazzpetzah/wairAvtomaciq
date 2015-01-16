@@ -9,7 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.pagefactory.ElementLocator;
 
 public class ZetaElementLocator implements ElementLocator {
-	private final SearchContext searchContext;
+	public final SearchContext searchContext;
 	private final boolean shouldCache;
 	private final By by;
 	private WebElement cachedElement;

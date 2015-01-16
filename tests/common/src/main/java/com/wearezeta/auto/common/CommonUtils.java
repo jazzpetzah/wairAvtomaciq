@@ -1,5 +1,7 @@
 package com.wearezeta.auto.common;
 
+import io.appium.java_client.AppiumDriver;
+
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,10 +14,8 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class CommonUtils {
@@ -266,9 +266,9 @@ public class CommonUtils {
 	}
 	
 	public static BufferedImage getElementScreenshot(WebElement element,
-			RemoteWebDriver driver) throws IOException {
+			AppiumDriver driver) throws IOException {
 		BufferedImage screenshot = DriverUtils
-				.takeScreenshot((ZetaDriver) driver);
+				.takeScreenshot(driver);
 		org.openqa.selenium.Point elementLocation = element.getLocation();
 		Dimension elementSize = element.getSize();
 		return screenshot.getSubimage(elementLocation.x * 2,

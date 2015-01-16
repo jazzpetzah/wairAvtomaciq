@@ -69,14 +69,14 @@ public abstract class AndroidPage extends BasePage {
 	{
 		capabilities.setCapability("unicodeKeyboard", true);
         capabilities.setCapability("resetKeyboard", true);
-        super.InitConnection(url, capabilities,CommonUtils.PLATFORM_NAME_ANDROID);
+        super.InitConnection(url, capabilities);
 
         storeDriverAndWait();
 	}
 	
 	private void initNoneUnicodeDriver() throws MalformedURLException
 	{
-        super.InitConnection(url, capabilities,CommonUtils.PLATFORM_NAME_ANDROID);
+        super.InitConnection(url, capabilities);
         
         storeDriverAndWait();
 	}

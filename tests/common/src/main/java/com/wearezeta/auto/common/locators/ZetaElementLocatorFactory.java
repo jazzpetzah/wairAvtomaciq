@@ -7,7 +7,7 @@ import org.openqa.selenium.support.pagefactory.ElementLocator;
 import org.openqa.selenium.support.pagefactory.ElementLocatorFactory;
 
 public class ZetaElementLocatorFactory implements ElementLocatorFactory {
-	private final SearchContext searchContext;
+	public final SearchContext searchContext;
 	
 	public ZetaElementLocatorFactory(SearchContext searchContext) {
 		this.searchContext = searchContext;
