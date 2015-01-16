@@ -271,7 +271,8 @@ public class PeoplePickerPageSteps {
 	}
 
 	@When("^I unblock user$")
-	public void IUnblockUser() {
-		PagesCollection.peoplePickerPage.unblockUser();
+	public void IUnblockUser() throws Exception {
+		PagesCollection.dialogPage = PagesCollection.peoplePickerPage.unblockUser();
+		
 	}
 }

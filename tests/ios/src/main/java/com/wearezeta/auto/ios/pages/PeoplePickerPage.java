@@ -258,8 +258,9 @@ public class PeoplePickerPage extends IOSPage{
 		return DriverUtils.isElementDisplayed(peopleYouMayKnowLabel);
 	}
 	
-	public void unblockUser() {
+	public DialogPage unblockUser() throws Exception {
 		unblockButton.click();
+		return new DialogPage(url, path);
 	}
 
 }

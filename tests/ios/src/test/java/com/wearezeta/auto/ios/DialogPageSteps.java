@@ -524,5 +524,14 @@ public class DialogPageSteps {
 		message = CommonUtils.generateRandomString(10);
 		CommonSteps.getInstance().UserSentMessageToUser(msgFromUserNameAlias, dstUserNameAlias, message);
 	}
+	
+	@Then("^I see contacts random message in the dialog$")
+	public void ThenISeeContactsRandomMessageInTheDialog() throws Throwable {
+		String dialogLastMessage = PagesCollection.dialogPage
+				.getLastMessageFromDialog();
+		Assert.assertTrue("Message is different, actual: " + dialogLastMessage
+				+ " expected: " + message,
+				dialogLastMessage.equals((message).trim()));
+	}
 
 }
