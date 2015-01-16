@@ -12,14 +12,15 @@ import org.openqa.selenium.WebElement;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.MobileElement;
 
-public class ZetaDriver extends AppiumDriver implements WebDriver {
+public class ZetaOSXDriver extends AppiumDriver implements WebDriver {
 	
-	private static final Logger log = ZetaLogger.getLog(ZetaDriver.class.getSimpleName());
+	private static final Logger log = ZetaLogger.getLog(ZetaOSXDriver.class.getSimpleName());
 
 	private boolean isSessionLost = false;
 	
-	public ZetaDriver(URL remoteAddress, Capabilities desiredCapabilities) {
+	public ZetaOSXDriver(URL remoteAddress, Capabilities desiredCapabilities) {
 		super(remoteAddress, desiredCapabilities);
 		isSessionLost = false;
 	}
@@ -144,6 +145,18 @@ public class ZetaDriver extends AppiumDriver implements WebDriver {
 
 	public void setSessionLost(boolean isSesstionLost) {
 		this.isSessionLost = isSesstionLost;
+	}
+
+	@Override
+	public MobileElement scrollTo(String text) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MobileElement scrollToExact(String text) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

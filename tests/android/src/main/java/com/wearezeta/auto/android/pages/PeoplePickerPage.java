@@ -181,6 +181,7 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public ContactListPage tapClearButton() throws Exception {
+		refreshUITree();
 		pickerClearBtn.click();
 		return new ContactListPage(url, path);
 	}

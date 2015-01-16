@@ -26,10 +26,10 @@ import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
-import com.wearezeta.auto.common.driver.ZetaDriver;
+import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public abstract class IOSPage extends BasePage {
-	protected static ZetaDriver driver;
+	protected static ZetaIOSDriver driver;
 	protected static WebDriverWait wait;
 	
 	private static final int SWIPE_DELAY = 10 * 1000; //milliseconds
@@ -98,20 +98,20 @@ public abstract class IOSPage extends BasePage {
 	
 	private void initWithAutoAccept() throws MalformedURLException {
 		capabilities.setCapability("autoAcceptAlerts", true);
-		super.InitConnection(url, capabilities);
+		super.InitConnection(url, capabilities, "IOS");
 
         storeDriverAndWait();
 	}
 	
 	private void initWithoutAutoAccept() throws MalformedURLException {
 		
-		super.InitConnection(url, capabilities);
+		super.InitConnection(url, capabilities, "IOS");
 		
         storeDriverAndWait();
 	}
 
 	private void storeDriverAndWait() {
-        driver = drivers.get(CommonUtils.PLATFORM_NAME_IOS);
+        driver = (ZetaIOSDriver) drivers.get(CommonUtils.PLATFORM_NAME_IOS);
         wait = waits.get(CommonUtils.PLATFORM_NAME_IOS);
 	}
 	

@@ -1,137 +1,143 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.wearezeta.auto</groupId>
-  <artifactId>auto-android</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
- 
-  <name>auto-android</name>
-  <url>http://maven.apache.org</url>
+	<groupId>com.wearezeta.auto</groupId>
+	<artifactId>auto-android</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	<skipTests>true</skipTests>
-	<TestRun>DevRun</TestRun>
-	<Url>http://127.0.0.1:4723/wd/hub</Url>
-    <appPath>/Project/zclient.apk</appPath>
-	<package>com.waz.zclient.dev</package>
-	<generateUsers>true</generateUsers>
-	<activity>com.waz.zclient.MainActivity</activity>
-	<driverTimeoutSeconds>15</driverTimeoutSeconds>
-	<defaultImagesPath>img/</defaultImagesPath> 
-	<androidClientInfoPath>/Project/builds_info/classes.dex</androidClientInfoPath>
-	<androidAppiumLogPath>/Project/appium_android.log</androidAppiumLogPath>
-	<defaultEmail>smoketester.android@wearezeta.com</defaultEmail>
-	<androidVersion>44</androidVersion>
-  </properties>
+	<name>auto-android</name>
+	<url>http://maven.apache.org</url>
 
-  <dependencies>
-    <dependency>
-	<groupId>com.google.android</groupId>
-	<artifactId>android</artifactId>
-	<version>4.1.1.4</version>
-</dependency>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<skipTests>true</skipTests>
+		<TestRun>DevRun</TestRun>
+		<Url>http://127.0.0.1:4723/wd/hub</Url>
+		<appPath>/Project/zclient.apk</appPath>
+		<package>com.waz.zclient.dev</package>
+		<generateUsers>true</generateUsers>
+		<activity>com.waz.zclient.MainActivity</activity>
+		<driverTimeoutSeconds>15</driverTimeoutSeconds>
+		<defaultImagesPath>img/</defaultImagesPath>
+		<androidClientInfoPath>/Project/builds_info/classes.dex</androidClientInfoPath>
+		<androidAppiumLogPath>/Project/appium_android.log</androidAppiumLogPath>
+		<defaultEmail>smoketester.android@wearezeta.com</defaultEmail>
+		<androidVersion>44</androidVersion>
+	</properties>
 
-<dependency>
-	<groupId>org.apache.httpcomponents</groupId>
-	<artifactId>httpclient</artifactId>
-	<version>4.3.4</version>
-</dependency>
+	<dependencies>
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>android</artifactId>
+			<version>4.1.1.4</version>
+		</dependency>
 
-	<dependency>
-      <groupId>com.wearezeta.auto</groupId>
-      <artifactId>auto-common</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <type>jar</type>
-    </dependency>
-	
-	<dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.11</version>
-    </dependency>
-    
-	<dependency>
-	  <groupId>org.seleniumhq.selenium</groupId>
-	  <artifactId>selenium-java</artifactId>
-	  <version>2.42.2</version>
-    </dependency>
-    
-    <dependency>
-		<groupId>io.appium</groupId>
-		<artifactId>java-client</artifactId>
-		<version>1.6.2</version>
-	</dependency>
-	
-	<dependency>
-        <groupId>info.cukes</groupId>
-        <artifactId>cucumber-picocontainer</artifactId>
-        <version>1.1.8</version>
-    </dependency>
-    <dependency>
-        <groupId>info.cukes</groupId>
-        <artifactId>cucumber-junit</artifactId>
-        <version>1.1.8</version>
-    </dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.3.4</version>
+		</dependency>
 
-  </dependencies>
-   
-  <build>
-    <sourceDirectory>src/main/java</sourceDirectory>
-    <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
-        <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
-        </configuration>
-      </plugin>
-      
-      <plugin>
-       <groupId>org.apache.maven.plugins</groupId>
-       <artifactId>maven-jar-plugin</artifactId>
-       <version>2.4</version>
-       <executions>
-         <execution>
-           <goals>
-             <goal>test-jar</goal>
-           </goals>
-         </execution>
-       </executions>
-     </plugin>
-     
-	<plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.17</version>
-        <configuration>
-		  <skipTests>${skipTests}</skipTests>
-		  <includes>
-			<include>**/${TestRun}.java</include>
-          </includes>
-          <argLine>-Djava.library.path=../common/native_lib</argLine>
-        </configuration>
-      </plugin>
-       <plugin>
-		 <groupId>org.apache.maven.plugins</groupId>
-		 <artifactId>maven-resources-plugin</artifactId>
-		 <version>2.6</version>
-		 <configuration>
-		   <!-- specify UTF-8, ISO-8859-1 or any other file encoding -->
-		   <encoding>UTF-8</encoding>
-		 </configuration>
-		</plugin>
-		
-    </plugins>
-    
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <filtering>true</filtering>
-      </resource>
-    </resources>
+		<dependency>
+			<groupId>com.wearezeta.auto</groupId>
+			<artifactId>auto-common</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<type>jar</type>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20141113</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>2.44.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.appium</groupId>
+			<artifactId>java-client</artifactId>
+			<version>2.1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>info.cukes</groupId>
+			<artifactId>cucumber-picocontainer</artifactId>
+			<version>1.1.8</version>
+		</dependency>
+		<dependency>
+			<groupId>info.cukes</groupId>
+			<artifactId>cucumber-junit</artifactId>
+			<version>1.1.8</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.17</version>
+				<configuration>
+					<skipTests>${skipTests}</skipTests>
+					<includes>
+						<include>**/${TestRun}.java</include>
+					</includes>
+					<argLine>-Djava.library.path=../common/native_lib</argLine>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<!-- specify UTF-8, ISO-8859-1 or any other file encoding -->
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+
+		</plugins>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
 </project>

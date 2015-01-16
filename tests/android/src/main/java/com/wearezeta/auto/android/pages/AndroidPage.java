@@ -19,11 +19,10 @@ import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
-import com.wearezeta.auto.common.driver.ZetaDriver;
-
+import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public abstract class AndroidPage extends BasePage {
-	protected static ZetaDriver driver;
+	protected static ZetaAndroidDriver driver;
 	protected static WebDriverWait wait;
 	
 	private DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -70,20 +69,20 @@ public abstract class AndroidPage extends BasePage {
 	{
 		capabilities.setCapability("unicodeKeyboard", true);
         capabilities.setCapability("resetKeyboard", true);
-        super.InitConnection(url, capabilities);
+        super.InitConnection(url, capabilities,CommonUtils.PLATFORM_NAME_ANDROID);
 
         storeDriverAndWait();
 	}
 	
 	private void initNoneUnicodeDriver() throws MalformedURLException
 	{
-        super.InitConnection(url, capabilities);
+        super.InitConnection(url, capabilities,CommonUtils.PLATFORM_NAME_ANDROID);
         
         storeDriverAndWait();
 	}
 	
 	private void storeDriverAndWait() {
-        driver = drivers.get(CommonUtils.PLATFORM_NAME_ANDROID);
+        driver = (ZetaAndroidDriver) drivers.get(CommonUtils.PLATFORM_NAME_ANDROID);
         wait = waits.get(CommonUtils.PLATFORM_NAME_ANDROID);
 	}
 	

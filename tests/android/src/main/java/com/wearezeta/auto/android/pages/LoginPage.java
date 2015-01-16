@@ -66,7 +66,7 @@ public class LoginPage extends AndroidPage {
 	}
 	
 	
-	public RemoteWebDriver getDriver() {
+	public ZetaAndroidDriver getDriver() {
 		return driver;
 	}
 
