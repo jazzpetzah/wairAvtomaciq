@@ -197,7 +197,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
       
-  @staging @id1399 
+  @torun @staging @id1399 
   Scenario Outline: Verify you don't receive any messages from blocked person in 1:1 chat
   	Given There are 2 users where <Name> is me
   	Given <Contact> is connected to <Name>
@@ -214,11 +214,11 @@ Feature: Connect
     And I see user <Contact> found on People picker page
     And I tap on connected user <Contact> on People picker page
     And I unblock user
-    Then I see contacts random message in the dialog
+    Then I see message in the dialog
     And I navigate back to conversations view
     And Contact <Contact> sends random message to user <Name>
     When I tap on contact name <Contact>
-    Then I see contacts random message in the dialog
+    Then I see message in the dialog
     
     Examples: 
       | Login      | Password      | Name      | Contact   |

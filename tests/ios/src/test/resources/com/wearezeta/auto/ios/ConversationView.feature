@@ -10,7 +10,7 @@ Feature: Conversation View
     And I see dialog page
     And I type the message
     And I send the message
-    Then I see my message in the dialog
+    Then I see message in the dialog
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
@@ -62,7 +62,7 @@ Feature: Conversation View
     When I create group chat with <Contact1> and <Contact2>
     And I type the message
     And I send the message
-    Then I see my message in the dialog
+    Then I see message in the dialog
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  |
@@ -180,7 +180,7 @@ Feature: Conversation View
     And I tap on contact name <Contact>
     And I tap on text input
     And I send the message
-    Then I see my message in the dialog
+    Then I see message in the dialog
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
@@ -196,7 +196,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I input more than 200 chars message and send it
-    Then I see my message in the dialog
+    Then I see message in the dialog
     #And I scroll away the keyboard
     #And I swipe right on Dialog page
     #And I tap on my name <Name>
@@ -206,7 +206,7 @@ Feature: Conversation View
     #And I see Personal page
     #And I swipe right on the personal page
     #And I tap on contact name <Name>
-    #Then I see my message in the dialog
+    #Then I see message in the dialog
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
@@ -222,7 +222,7 @@ Feature: Conversation View
     And I see dialog page
     And I input message with lower case and upper case
     And I send the message
-    Then I see my message in the dialog
+    Then I see message in the dialog
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
@@ -281,10 +281,10 @@ Feature: Conversation View
     And I see message with only spaces is not send
     And I input message with leading empty spaces
     And I send the message
-    And I see my message in the dialog
+    And I see message in the dialog
     And I input message with trailing emtpy spaces
     And I send the message
-    Then I see my message in the dialog
+    Then I see message in the dialog
 
     Examples: 
       | Login      | Password      | Name      | Contact   |

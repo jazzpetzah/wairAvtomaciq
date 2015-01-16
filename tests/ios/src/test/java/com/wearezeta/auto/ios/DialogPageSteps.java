@@ -152,8 +152,8 @@ public class DialogPageSteps {
 				.swipeUp(500);
 	}
 
-	@Then("^I see my message in the dialog$")
-	public void ThenISeeMyMessageInTheDialog() throws Throwable {
+	@Then("^I see message in the dialog$")
+	public void ThenISeeMessageInTheDialog() throws Throwable {
 		String dialogLastMessage = PagesCollection.dialogPage
 				.getLastMessageFromDialog();
 		Assert.assertTrue("Message is different, actual: " + dialogLastMessage
@@ -527,13 +527,4 @@ public class DialogPageSteps {
 		CommonSteps.getInstance().UserSentMessageToUser(msgFromUserNameAlias, dstUserNameAlias, message);
 	}
 	
-	@Then("^I see contacts random message in the dialog$")
-	public void ThenISeeContactsRandomMessageInTheDialog() throws Throwable {
-		String dialogLastMessage = PagesCollection.dialogPage
-				.getLastMessageFromDialog();
-		Assert.assertTrue("Message is different, actual: " + dialogLastMessage
-				+ " expected: " + message,
-				dialogLastMessage.equals((message).trim()));
-	}
-
 }

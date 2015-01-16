@@ -172,7 +172,7 @@ Feature: People View
     And I select contact <Contact1>
     And I tap on start dialog button on other user profile page
     And I type the message and send it
-    Then I see my message in the dialog
+    Then I see message in the dialog
 
     Examples: 
       | Login      | Password      | Name      | Contact1    | Contact2   |
