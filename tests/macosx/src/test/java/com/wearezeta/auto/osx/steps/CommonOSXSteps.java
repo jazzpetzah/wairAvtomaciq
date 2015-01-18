@@ -45,11 +45,14 @@ public class CommonOSXSteps {
 
 	public static PagesCollection senderPages;
 
-	public static void resetBackendSettingsIfOverwritten() throws IOException, Exception {
-		if (!OSXCommonUtils.isBackendTypeSet(CommonUtils.getBackendType(CommonOSXSteps.class))) {
+	public static void resetBackendSettingsIfOverwritten() throws IOException,
+			Exception {
+		if (!OSXCommonUtils.isBackendTypeSet(CommonUtils
+				.getBackendType(CommonOSXSteps.class))) {
 			log.debug("Backend setting were overwritten. Trying to restart app.");
 			senderPages.getMainMenuPage().quitZClient();
-			OSXCommonUtils.setZClientBackend(CommonUtils.getBackendType(CommonOSXSteps.class));
+			OSXCommonUtils.setZClientBackend(CommonUtils
+					.getBackendType(CommonOSXSteps.class));
 			senderPages.getLoginPage().startApp();
 		}
 	}
@@ -173,20 +176,32 @@ public class CommonOSXSteps {
 	public void IRemoveContactsListUsersFromMacContact() throws Exception {
 		commonSteps.IRemoveContactsListUsersFromMacContact();
 	}
-	
+
 	@When("^I change user (.*) avatar picture from file (.*)$")
-	public void IChangeUserAvatarPictureFromFile(String user, String picture) throws Exception {
+	public void IChangeUserAvatarPictureFromFile(String user, String picture)
+			throws Exception {
 		String picturePath = OSXPage.imagesPath + "/" + picture;
 		try {
-			user = usrMgr.findUserByNameOrNameAlias(user)
-					.getName();
+			user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		} catch (NoSuchUserException e) {
 			// do nothing
 		}
-		log.debug("Setting avatar for user " + user + " from image " + picturePath);
+		log.debug("Setting avatar for user " + user + " from image "
+				+ picturePath);
 		commonSteps.IChangeUserAvatarPicture(user, picturePath);
 	}
-	
+
+	@Given("^There \\w+ (\\d+) shared user[s]* with name prefix (\\w+)$")
+	public void ThereAreNSharedUsersWithNamePrefix(int count, String namePrefix)
+			throws Exception {
+		commonSteps.ThereAreNSharedUsersWithNamePrefix(count, namePrefix);
+	}
+
+	@Given("^User (\\w+) is [Mm]e$")
+	public void UserXIsMe(String nameAlias) throws Exception {
+		commonSteps.UserXIsMe(nameAlias);
+	}
+
 	@After
 	public void tearDown() throws Exception {
 		senderPages.closeAllPages();

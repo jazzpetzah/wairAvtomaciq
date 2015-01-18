@@ -94,7 +94,7 @@ public class CommonIOSSteps {
 		PagesCollection.loginPage.Close();
 		IOSPage.clearPagesCollection();
 		IOSKeyboard.dispose();
-		
+
 		commonSteps.getUserManager().resetUsers();
 	}
 
@@ -190,11 +190,12 @@ public class CommonIOSSteps {
 		commonSteps.UserPingedConversation(pingFromUserNameAlias,
 				dstConversationName);
 	}
-	
+
 	@When("^Contact (.*) send message to user (.*)$")
 	public void UserSendMessageToConversation(String msgFromUserNameAlias,
 			String dstUserNameAlias) throws Exception {
-		commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstUserNameAlias, CommonUtils.generateRandomString(10));
+		commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
+				dstUserNameAlias, CommonUtils.generateRandomString(10));
 	}
 
 	@When("^Contact (.*) hotping conversation (.*)$")
@@ -217,8 +218,10 @@ public class CommonIOSSteps {
 	@When("^User (\\w+) change avatar picture to (.*)$")
 	public void IChangeUserAvatarPicture(String userNameAlias, String path)
 			throws Exception {
-		String rootPath = CommonUtils.getSimulatorImagesPathFromConfig(getClass());
-		commonSteps.IChangeUserAvatarPicture(userNameAlias, rootPath + "/" + path);
+		String rootPath = CommonUtils
+				.getSimulatorImagesPathFromConfig(getClass());
+		commonSteps.IChangeUserAvatarPicture(userNameAlias, rootPath + "/"
+				+ path);
 	}
 
 	@When("^User (\\w+) change  name to (.*)$")
@@ -226,10 +229,21 @@ public class CommonIOSSteps {
 			throws Exception {
 		commonSteps.IChangeUserName(userNameAlias, newName);
 	}
-	
+
 	@When("^User (\\w+) change  accent color to (.*)$")
 	public void IChangeAccentColor(String userNameAlias, String newColor)
 			throws Exception {
 		commonSteps.IChangeUserAccentColor(userNameAlias, newColor);
+	}
+
+	@Given("^There \\w+ (\\d+) shared user[s]* with name prefix (\\w+)$")
+	public void ThereAreNSharedUsersWithNamePrefix(int count, String namePrefix)
+			throws Exception {
+		commonSteps.ThereAreNSharedUsersWithNamePrefix(count, namePrefix);
+	}
+	
+	@Given("^User (\\w+) is [Mm]e$")
+	public void UserXIsMe(String nameAlias) throws Exception {
+		commonSteps.UserXIsMe(nameAlias);
 	}
 }

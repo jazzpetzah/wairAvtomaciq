@@ -148,7 +148,7 @@ public final class CommonSteps {
 				dstConversationName);
 		Thread.sleep(1000);
 	}
-	
+
 	public void UserSentMessageToUser(String msgFromUserNameAlias,
 			String dstUserNameAlias, String message) throws Exception {
 		ClientUser msgFromUser = usrMgr
@@ -198,5 +198,14 @@ public final class CommonSteps {
 		BackendAPIWrappers.updateUserAccentColor(
 				usrMgr.findUserByNameOrNameAlias(userNameAlias),
 				AccentColor.getByName(colorName));
+	}
+
+	public void ThereAreNSharedUsersWithNamePrefix(int count, String namePrefix)
+			throws Exception {
+		usrMgr.appendSharedUsers(namePrefix, count);
+	}
+
+	public void UserXIsMe(String nameAlias) throws Exception {
+		usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(nameAlias));
 	}
 }

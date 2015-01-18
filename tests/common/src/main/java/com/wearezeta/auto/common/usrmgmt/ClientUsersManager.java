@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpStatus;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
@@ -47,10 +48,11 @@ public class ClientUsersManager {
 		}
 	}
 
-	private void resetClientsList(List<ClientUser> dstList) throws IOException {
+	private void resetClientsList(List<ClientUser> dstList, int maxCount)
+			throws IOException {
 		this.selfUser = null;
 		dstList.clear();
-		for (int userIdx = 0; userIdx < MAX_USERS; userIdx++) {
+		for (int userIdx = 0; userIdx < maxCount; userIdx++) {
 			ClientUser pendingUser = new ClientUser();
 			final String[] nameAliases = new String[] { String.format(
 					NAME_ALIAS_TEMPLATE, userIdx + 1) };
@@ -78,13 +80,13 @@ public class ClientUsersManager {
 
 	public void resetUsers() throws IOException {
 		this.selfUser = null;
-		this.resetClientsList(users);
+		this.resetClientsList(users, MAX_USERS);
 	}
 
 	private static ClientUsersManager instance = null;
 
 	private ClientUsersManager() throws IOException {
-		resetClientsList(this.users);
+		resetClientsList(this.users, MAX_USERS);
 	}
 
 	public static ClientUsersManager getInstance() {
@@ -264,7 +266,7 @@ public class ClientUsersManager {
 	}
 
 	public void createUsersOnBackend(int count) throws Exception {
-		this.resetClientsList(this.users);
+		this.resetClientsList(this.users, MAX_USERS);
 		if (count > MAX_USERS) {
 			throw new TooManyUsersToCreateException(
 					String.format(
@@ -340,5 +342,90 @@ public class ClientUsersManager {
 
 	public boolean isSelfUserSet() {
 		return (this.selfUser != null);
+	}
+
+	private static final int SHARED_USERS_MIN_CREATION_INTERVAL = 10;
+
+	private void generateSharedUsers(List<ClientUser> sharedUsers,
+			String commonEmailSuffix, int count) throws Exception {
+		// It is highly possible, that some part (or, probably, all)
+		// of these shared users already
+		// exist on the backend, so we test which user doesn't exist
+		// and create additional pending users
+		try {
+			BackendAPIWrappers.tryLoginByUser(sharedUsers.get(sharedUsers
+					.size() - 1));
+			for (ClientUser sharedUser : sharedUsers) {
+				sharedUser.setUserState(UserState.Created);
+			}
+			return;
+		} catch (BackendRequestException e) {
+			if (e.getReturnCode() != HttpStatus.SC_FORBIDDEN) {
+				throw e;
+			}
+		}
+
+		// We check only each 10-th user to speed up our search
+		// Also, this is the reason why we create extra users
+		int lastCreatedUserIndex = sharedUsers.size()
+				- SHARED_USERS_MIN_CREATION_INTERVAL;
+		while (lastCreatedUserIndex >= 0) {
+			try {
+				BackendAPIWrappers.tryLoginByUser(sharedUsers
+						.get(lastCreatedUserIndex));
+				lastCreatedUserIndex -= SHARED_USERS_MIN_CREATION_INTERVAL;
+			} catch (BackendRequestException e) {
+				if (e.getReturnCode() != HttpStatus.SC_FORBIDDEN) {
+					throw e;
+				} else {
+					if (lastCreatedUserIndex % 50 == 0) {
+						// this is to avoid too many request error on the
+						// backend
+						Thread.sleep(1000);
+					}
+				}
+			}
+		}
+		int firstNonCreatedUserIndex;
+		if (lastCreatedUserIndex < 0) {
+			firstNonCreatedUserIndex = 0;
+		} else {
+			firstNonCreatedUserIndex = lastCreatedUserIndex + 1;
+		}
+		this.generateUsers(sharedUsers.subList(firstNonCreatedUserIndex,
+				sharedUsers.size()));
+	}
+
+	public void appendSharedUsers(String commonNamePrefix, int count)
+			throws Exception {
+		if (count <= 0) {
+			throw new RuntimeException(
+					"Count of users should be positive integer number");
+		}
+		if (commonNamePrefix.length() == 0) {
+			throw new RuntimeException(
+					"Common name prefix value could not be empty");
+		}
+
+		List<ClientUser> sharedUsers = new ArrayList<ClientUser>();
+		final int ceiledCount = count / SHARED_USERS_MIN_CREATION_INTERVAL
+				* SHARED_USERS_MIN_CREATION_INTERVAL
+				+ SHARED_USERS_MIN_CREATION_INTERVAL;
+		resetClientsList(sharedUsers, ceiledCount);
+		for (int sharedUserIdx = 0; sharedUserIdx < sharedUsers.size(); sharedUserIdx++) {
+			ClientUser dstUser = sharedUsers.get(sharedUserIdx);
+			final String name = commonNamePrefix
+					+ Integer.toString(sharedUserIdx + 1);
+			dstUser.setName(name);
+			dstUser.addNameAlias(name);
+			dstUser.setEmail(ClientUser.generateEmail(name));
+		}
+		generateSharedUsers(sharedUsers, commonNamePrefix, ceiledCount);
+
+		int appendPos = getCreatedUsers().size();
+		for (int sharedUserIdx = 0; sharedUserIdx < count; sharedUserIdx++) {
+			this.users.set(appendPos, sharedUsers.get(sharedUserIdx));
+			appendPos++;
+		}
 	}
 }
