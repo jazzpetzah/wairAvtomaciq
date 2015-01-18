@@ -12,6 +12,10 @@ import com.wearezeta.auto.ios.pages.PagesCollection;
 
 import cucumber.api.java.en.*;
 
+/**
+ * Contains steps to work with Login/Welcome page 
+ *
+ */
 public class LoginPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
