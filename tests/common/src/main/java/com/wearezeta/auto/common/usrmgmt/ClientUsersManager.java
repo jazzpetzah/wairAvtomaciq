@@ -419,6 +419,7 @@ public class ClientUsersManager {
 			dstUser.setName(name);
 			dstUser.addNameAlias(name);
 			dstUser.setEmail(ClientUser.generateEmail(name));
+			dstUser.addEmailAlias(name + "Email");
 		}
 		generateSharedUsers(sharedUsers, commonNamePrefix, ceiledCount);
 
