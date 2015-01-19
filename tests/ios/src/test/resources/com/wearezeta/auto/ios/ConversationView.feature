@@ -123,7 +123,7 @@ Feature: Conversation View
     And I tap media link
     And I scroll media out of sight until media bar appears
     And I see media bar on dialog page
-    And I wait 130 seconds for media to stop playing
+    And I wait 140 seconds for media to stop playing
     Then I dont see media bar on dialog page
 
     Examples: 
