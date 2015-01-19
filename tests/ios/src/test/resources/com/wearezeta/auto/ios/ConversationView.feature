@@ -174,6 +174,7 @@ Feature: Conversation View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
+    And I input more than 200 chars message and send it
     And I type the message
     And I scroll away the keyboard
     And I navigate back to conversations view
