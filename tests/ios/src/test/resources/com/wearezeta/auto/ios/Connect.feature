@@ -204,9 +204,9 @@ Feature: Connect
     Given User <Name> blocks user <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When Contact <Contact> sends random message to user <Name>
-    And Contact <Contact> ping conversation <Name>
+    When Contact <Contact> ping conversation <Name>
     And Contact <Contact> sends image testing.jpg to single user conversation <Name>
+    And Contact <Contact> sends random message to user <Name>
     And I wait for 10 seconds
     Then I dont see conversation <Contact> in contact list
     When I swipe down contact list
@@ -217,6 +217,7 @@ Feature: Connect
     And I tap on connected user <Contact> on People picker page
     And I unblock user
     Then I see message in the dialog
+    And I see new photo in the dialog
     And I navigate back to conversations view
     And Contact <Contact> sends random message to user <Name>
     When I tap on contact name <Contact>
