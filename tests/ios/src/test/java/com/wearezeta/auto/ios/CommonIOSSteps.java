@@ -232,4 +232,24 @@ public class CommonIOSSteps {
 			throws Exception {
 		commonSteps.IChangeUserAccentColor(userNameAlias, newColor);
 	}
+	
+	@When("^Contact (.*) sends image (.*) to (.*) conversation (.*)")
+	public void ContactSendImageToConversation(String imageSenderUserNameAlias,
+			String imageFileName, String conversationType,
+			String dstConversationName) throws Exception {
+		String imagePath = IOSPage
+				.getImagesPath() + imageFileName;
+		Boolean isGroup = null;
+		if (conversationType.equals("single user")) {
+			isGroup = false;
+		} else if (conversationType.equals("group")) {
+			isGroup = true;
+		}
+		if (isGroup == null) {
+			throw new Exception(
+					"Incorrect type of conversation specified (single user | group) expected.");
+		}
+		commonSteps.UserSendsImageToConversation(imageSenderUserNameAlias,
+				imagePath, dstConversationName, isGroup);
+	}
 }
