@@ -8,6 +8,7 @@ public final class OSXLocators {
 	public static final String nameSignInButton = "SIGN IN";
 	public static final String nameRegisterButton = "REGISTER";
 	public static final String xpathAcceptTermsOfServiceCheckBox = "//AXCheckBox";
+	public static final String xpathWrongCredentialsMessage = "//AXTextArea[starts-with(@AXValue, 'WRONG ADDRESS OR PASSWORD')]";
 	
 	public static final String idLoginField = "TempLoginViewControllerUsernameField";
 	public static final String classNameLoginField = "AXTextArea";

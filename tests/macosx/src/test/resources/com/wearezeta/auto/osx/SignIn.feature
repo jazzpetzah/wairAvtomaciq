@@ -37,3 +37,23 @@ Feature: Sign In
     Examples: 
       | Login      | Login2     | Password      | Password2     | Name      | Name2     |
       | user1Email | user2Email | user1Password | user2Password | user1Name | user2Name |
+
+  @staging @id1120
+  Scenario Outline: Verify I see wrong address or password message
+    Given I am signed out from ZClient
+    And I see Sign In screen
+    When I start Sign In
+    And I have entered login <Login>
+    And I have entered password <Password>
+    And I press Sign In button
+    Then I see wrong credentials message
+    When I have entered login <Login2>
+    Then I do not see wrong credentials message
+    When I press Sign In button
+    And I see wrong credentials message
+    And I input password <Password2> using script
+    Then I do not see wrong credentials message
+
+    Examples: 
+      | Login | Password | Login2 | Password2 |
+      | aaa   | aaa      | aaa2   | aaa2      |
