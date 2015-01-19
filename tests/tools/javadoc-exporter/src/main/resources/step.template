@@ -1,0 +1,43 @@
+<h1>{{name}}</h1>
+
+<h2>Method name</h2>
+<p>{{methodName}}</p>
+
+<h2>Description</h2>
+<p>{{description}}</p>
+
+{{^paramsList.empty}}
+<h2>Parameters</h2>
+<table>
+  <tbody>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+    </tr>
+    {{#paramsList}}
+    <tr>
+       <td>{{name}}</td>
+       <td>{{value}}</td>
+    </tr>
+    {{/paramsList}}
+  </tbody>
+</table>
+{{/paramsList.empty}}
+
+{{^throwsList.empty}}
+<h2>Exceptions</h2>
+<table>
+  <tbody>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+    </tr>
+    {{#throwsList}}
+    <tr>
+       <td>{{name}}</td>
+       <td>{{value}}</td>
+    </tr>
+    {{/throwsList}}
+  </tbody>
+</table>
+{{/throwsList.empty}}
