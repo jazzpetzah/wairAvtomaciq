@@ -155,6 +155,7 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public DialogPage clickOnAddToCoversationButton() throws Exception{
+		driver.navigate().back();
 		addToConversationsButton.click();
 		return new DialogPage(url, path);
 	}

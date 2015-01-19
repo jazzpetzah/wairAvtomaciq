@@ -58,7 +58,7 @@ public class GherkinFile extends TestcasesStorage {
 	}
 
 	@Override
-	public List<CucumberTestcase> getTestcases() throws Throwable {
+	public List<CucumberTestcase> getTestcases() throws Exception {
 		final String json = gherkinToJSON();
 		List<CucumberTestcase> resultList = new ArrayList<CucumberTestcase>();
 
@@ -125,7 +125,7 @@ public class GherkinFile extends TestcasesStorage {
 
 	@Override
 	public void syncTestcases(List<? extends Testcase> testcases)
-			throws Throwable {
+			throws Exception {
 		final String json = gherkinToJSON();
 
 		JSONArray resultJSON = new JSONArray(json);
