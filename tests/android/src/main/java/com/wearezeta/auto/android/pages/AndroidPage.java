@@ -74,7 +74,7 @@ public abstract class AndroidPage extends BasePage {
         storeDriverAndWait();
 	}
 	
-	private void initNoneUnicodeDriver() throws MalformedURLException
+	private void initNoneUnicodeDriver() throws IOException
 	{
         super.InitConnection(url, capabilities);
         

@@ -40,7 +40,7 @@ public abstract class BasePage {
 	private String pagePlatform;
 	
 	protected synchronized void InitConnection(String URL, DesiredCapabilities capabilities)
-			throws MalformedURLException {
+			throws IOException {
 
 		String platform = (String) capabilities.getCapability("platformName");
 		if (null == drivers || drivers.isEmpty() || drivers.get(platform) == null) {
@@ -71,7 +71,8 @@ public abstract class BasePage {
 		
 		pagePlatform = platform;
 				
-		ZetaElementLocatorFactory zetaLocatorFactory = new ZetaElementLocatorFactory(drivers.get(platform));
+		ZetaElementLocatorFactory zetaLocatorFactory = new ZetaElementLocatorFactory(drivers.get(platform),Long.parseLong(CommonUtils
+				.getDriverTimeoutFromConfig(getClass())),AppiumFieldDecorator.DEFAULT_TIMEUNIT);
 		FieldDecorator zetaFieldDecorator = new ZetaFieldDecorator(zetaLocatorFactory);
 		PageFactory.initElements(zetaFieldDecorator, this);
 	}
