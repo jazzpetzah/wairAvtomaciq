@@ -60,6 +60,8 @@ Feature: Connect to user
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When Contact <Contact> sends random message to user <Name>
+    And Contact <Contact> ping conversation <Name>
+    And Contact <Contact> sends image testing.jpg to single user conversation <Name>
     And I wait for 10 seconds
     Then I do not see conversation <Contact> in contact list
     When I open People Picker from contact list
@@ -69,6 +71,8 @@ Feature: Connect to user
     And I unblock user
     Then I open conversation with <Contact>
     And I see random message in conversation
+    And I see message <Contact> PINGED in conversation
+    Then I see picture in conversation
     And Contact <Contact> sends random message to user <Name>
     And I see random message in conversation
 
