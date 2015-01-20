@@ -219,6 +219,17 @@ public class CommonOSXSteps {
 		commonSteps.IChangeUserAvatarPicture(user, picturePath);
 	}
 
+	@Given("^There \\w+ (\\d+) shared user[s]* with name prefix (\\w+)$")
+	public void ThereAreNSharedUsersWithNamePrefix(int count, String namePrefix)
+			throws Exception {
+		commonSteps.ThereAreNSharedUsersWithNamePrefix(count, namePrefix);
+	}
+
+	@Given("^User (\\w+) is [Mm]e$")
+	public void UserXIsMe(String nameAlias) throws Exception {
+		commonSteps.UserXIsMe(nameAlias);
+	}
+
 	@After
 	public void tearDown() throws Exception {
 		senderPages.closeAllPages();

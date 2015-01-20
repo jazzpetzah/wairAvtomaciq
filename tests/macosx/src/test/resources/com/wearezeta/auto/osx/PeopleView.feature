@@ -195,7 +195,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       |
       | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat |
 
-  @smoke @id492
+  @smoke @id492 @id1526
   Scenario Outline: Remove user from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

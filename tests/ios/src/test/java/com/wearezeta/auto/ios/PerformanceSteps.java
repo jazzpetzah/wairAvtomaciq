@@ -18,13 +18,14 @@ import cucumber.api.java.en.When;
 public class PerformanceSteps {
 	private final PerformanceCommon perfCommon = PerformanceCommon
 			.getInstance();
+
 	private static final int MIN_SLEEP_VALUE = 30000;
 
 	private Random random = new Random();
 
 	@When("^I (.*) start test cycle for (\\d+) minutes")
 	public void WhenIStartTestCycleForNMinutes(String nameAlias, int time)
-			throws Throwable {
+			throws Exception {
 		LocalDateTime startDateTime = LocalDateTime.now();
 		long diffInMinutes = 0;
 
