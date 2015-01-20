@@ -176,7 +176,7 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public void swipeInputCursor() throws IOException, InterruptedException{
-		DriverUtils.swipeRight(driver, conversationInput, 500);
+		DriverUtils.swipeRight(driver, conversationInput, 1000);
 	}
 	
 	public CameraRollPage pressAddPictureButton() throws IOException{
@@ -214,7 +214,7 @@ public class DialogPage extends IOSPage{
 		int count = 0;
 		boolean buttonIsShown = false;
 		if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true){
-			DriverUtils.swipeDown(driver, conversationPage, 500);
+			DriverUtils.swipeDown(driver, conversationPage, 1000);
 			
 		}
 		else {

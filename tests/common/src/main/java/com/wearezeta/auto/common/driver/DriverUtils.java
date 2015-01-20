@@ -196,7 +196,7 @@ public class DriverUtils {
 	public static void swipeRight(AppiumDriver driver, WebElement element, int time) {
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
-		driver.swipe(coords.x, coords.y + elementSize.height / 2, coords.x + elementSize.width - 20, coords.y + elementSize.height / 2, time);
+		driver.swipe(coords.x, coords.y + elementSize.height / 2, coords.x + elementSize.width - 10, coords.y + elementSize.height / 2, time);
 	}
 
 	public static void swipeUp(AppiumDriver driver,WebElement element, int time) {
