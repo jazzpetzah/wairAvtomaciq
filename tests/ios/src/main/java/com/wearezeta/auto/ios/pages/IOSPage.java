@@ -66,20 +66,13 @@ public abstract class IOSPage extends BasePage {
 
 	private static String imagesPath = "";
 
-<<<<<<< HEAD
-	public IOSPage(String URL, String path) throws MalformedURLException {
+	public IOSPage(String URL, String path) throws IOException {
 		this(URL, path, true);
 	}
 
-	public IOSPage(String URL, String path, boolean acceptAlerts)
-			throws MalformedURLException {
-=======
-	public IOSPage(String URL, String path) throws IOException {
-		this (URL, path, true);
-	}
 	
-	public IOSPage(String URL, String path, boolean acceptAlerts) throws IOException {
->>>>>>> fe9983e3d11da89cdc4d70a184a4dd66f169af44
+	public IOSPage(String URL, String path, boolean acceptAlerts)
+			throws IOException {
 		String bt = "staging";
 
 		try {
@@ -104,40 +97,23 @@ public abstract class IOSPage extends BasePage {
 			initWithAutoAccept();
 		}
 	}
-<<<<<<< HEAD
 
-	private void initWithAutoAccept() throws MalformedURLException {
-=======
-	
 	private void initWithAutoAccept() throws IOException {
->>>>>>> fe9983e3d11da89cdc4d70a184a4dd66f169af44
 		capabilities.setCapability("autoAcceptAlerts", true);
 		super.InitConnection(url, capabilities);
 
 		storeDriverAndWait();
 	}
-<<<<<<< HEAD
 
-	private void initWithoutAutoAccept() throws MalformedURLException {
-
-=======
-	
 	private void initWithoutAutoAccept() throws IOException {
-		
->>>>>>> fe9983e3d11da89cdc4d70a184a4dd66f169af44
 		super.InitConnection(url, capabilities);
 
 		storeDriverAndWait();
 	}
 
 	private void storeDriverAndWait() {
-<<<<<<< HEAD
-		driver = (ZetaDriver) drivers.get(CommonUtils.PLATFORM_NAME_IOS);
+		driver = (ZetaIOSDriver) drivers.get(CommonUtils.PLATFORM_NAME_IOS);
 		wait = (WebDriverWait) waits.get(CommonUtils.PLATFORM_NAME_IOS);
-=======
-        driver = (ZetaIOSDriver) drivers.get(CommonUtils.PLATFORM_NAME_IOS);
-        wait = waits.get(CommonUtils.PLATFORM_NAME_IOS);
->>>>>>> fe9983e3d11da89cdc4d70a184a4dd66f169af44
 	}
 
 	@Override

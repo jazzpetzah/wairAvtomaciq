@@ -2,7 +2,6 @@ package com.wearezeta.auto.osx.pages;
 
 import java.awt.HeadlessException;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.List;
 
 import org.openqa.selenium.By;
