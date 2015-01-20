@@ -18,6 +18,9 @@ public class PeoplePickerPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerSearchUsers")
 	private List<WebElement> pickerSearchUsers;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerSearchUsers")
+	private WebElement pickerSearchUser;
+	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPeoplePickerClearbtn")
 	private WebElement pickerClearBtn;
 
@@ -83,8 +86,7 @@ public class PeoplePickerPage extends AndroidPage {
 	
 	public AndroidPage selectContact(String contactName) throws Exception {
 		AndroidPage page = null;
-		WebElement el = driver.findElementByXPath(String.format(AndroidLocators.PeoplePickerPage.xpathPeoplePickerContact,contactName));
-		el.click();
+		pickerSearchUser.click();
 		
 		if(driver.findElementsById(AndroidLocators.OtherUserPersonalInfoPage.idUnblockBtn).size() > 0) {
 			page = new OtherUserPersonalInfoPage(url, path);
@@ -129,7 +131,10 @@ public class PeoplePickerPage extends AndroidPage {
 			wait.until(ExpectedConditions.visibilityOf(pickerSearch));
 		} catch (NoSuchElementException e) {
 			return false;
+		} catch (TimeoutException e) {
+			return false;
 		}
+		
 		return pickerSearch.isEnabled();
 	}
 

@@ -2,7 +2,6 @@ package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -67,11 +66,11 @@ public abstract class IOSPage extends BasePage {
 
 	private static String imagesPath = "";
 
-	public IOSPage(String URL, String path) throws MalformedURLException {
+	public IOSPage(String URL, String path) throws IOException {
 		this (URL, path, true);
 	}
 	
-	public IOSPage(String URL, String path, boolean acceptAlerts) throws MalformedURLException {
+	public IOSPage(String URL, String path, boolean acceptAlerts) throws IOException {
 		String bt = "staging";
 		
 		try {
@@ -96,16 +95,16 @@ public abstract class IOSPage extends BasePage {
 		}
 	}
 	
-	private void initWithAutoAccept() throws MalformedURLException {
+	private void initWithAutoAccept() throws IOException {
 		capabilities.setCapability("autoAcceptAlerts", true);
-		super.InitConnection(url, capabilities, "IOS");
+		super.InitConnection(url, capabilities);
 
         storeDriverAndWait();
 	}
 	
-	private void initWithoutAutoAccept() throws MalformedURLException {
+	private void initWithoutAutoAccept() throws IOException {
 		
-		super.InitConnection(url, capabilities, "IOS");
+		super.InitConnection(url, capabilities);
 		
         storeDriverAndWait();
 	}

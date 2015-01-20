@@ -259,11 +259,6 @@ public class ZetaAnnotations extends Annotations{
 	public By buildBy() {
 		assertValidAnnotations();
 
-		ZetaFindBy zetaFindBy = mobileField.getAnnotation(ZetaFindBy.class);
-		if (zetaFindBy != null) {
-			return buildByFromZetaFindBy(zetaFindBy);
-		}
-
 		AndroidFindBy androidBy = mobileField
 				.getAnnotation(AndroidFindBy.class);
 		if (androidBy != null && ANDROID.toUpperCase().equals(platform)) {
@@ -295,7 +290,11 @@ public class ZetaAnnotations extends Annotations{
 		if (iOSFindAll != null && IOS.toUpperCase().equals(platform)) {
 			return getComplexMobileBy(iOSFindAll.value(), ByAll.class);
 		}		
-
+		
+		ZetaFindBy zetaFindBy = mobileField.getAnnotation(ZetaFindBy.class);
+		if (zetaFindBy != null) {
+			return buildByFromZetaFindBy(zetaFindBy);
+		}
 		return super.buildBy();
 	}
 

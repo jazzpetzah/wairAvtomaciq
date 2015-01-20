@@ -80,14 +80,14 @@ public class LoginPage extends IOSPage {
 	
 	public String message;
 	
-	public LoginPage(String URL, String path) throws MalformedURLException {
+	public LoginPage(String URL, String path) throws IOException {
 		
 		super(URL, path);
 		this.url = URL;
 		this.path = path;
 	}
 	
-	public LoginPage(String URL, String path, boolean acceptAlerts) throws MalformedURLException {
+	public LoginPage(String URL, String path, boolean acceptAlerts) throws IOException {
 		
 		super(URL, path, acceptAlerts);
 		this.url = URL;

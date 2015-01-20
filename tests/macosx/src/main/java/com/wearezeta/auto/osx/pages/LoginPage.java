@@ -49,7 +49,7 @@ public class LoginPage extends OSXPage {
 	private String url;
 	private String path;
 	
-	public LoginPage(String URL, String path) throws MalformedURLException {
+	public LoginPage(String URL, String path) throws IOException {
 		
 		super(URL, path);
 		this.url = URL;
@@ -117,7 +117,7 @@ public class LoginPage extends OSXPage {
 		return el != null;
 	}
 	
-	public RegistrationPage startRegistration() throws MalformedURLException {
+	public RegistrationPage startRegistration() throws IOException {
 		acceptTermOfServiceCheckBox.click();
 		for (int i = 0; i < 3; i++) {
 			if (registerButton.getAttribute("AXEnabled").equals("1")) break;

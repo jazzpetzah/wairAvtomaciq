@@ -6,10 +6,6 @@ Feature: Self Profile
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
-    #workaround
-    And I minimize the application
-    And I restore the application
-    #workaround
     And I tap on personal info screen
     And I tap change photo button
     And I press Gallery button
@@ -43,10 +39,6 @@ Feature: Self Profile
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
-    #workaround
-    And I minimize the application
-    And I restore the application
-    #workaround
     And I tap on my name
     And I change <Name> to <NewName>
     And I swipe right to contact list

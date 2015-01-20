@@ -121,7 +121,7 @@ public class LoginPageSteps {
 	}
 
 	@When("I start registration")
-	public void IStartRegistration() throws MalformedURLException {
+	public void IStartRegistration() throws IOException {
 		RegistrationPage registration = CommonOSXSteps.senderPages
 				.getLoginPage().startRegistration();
 		CommonOSXSteps.senderPages.setRegistrationPage(registration);

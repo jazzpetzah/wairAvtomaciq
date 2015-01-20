@@ -1,5 +1,7 @@
 package com.wearezeta.auto.osx.steps;
 
+import io.appium.java_client.AppiumDriver;
+
 import java.io.IOException;
 
 import javax.mail.MessagingException;
@@ -66,7 +68,7 @@ public class CommonOSXSteps {
 				.getOsxAppiumUrlFromConfig(CommonOSXSteps.class), path));
 		senderPages.setLoginPage(new LoginPage(CommonUtils
 				.getOsxAppiumUrlFromConfig(CommonOSXSteps.class), path));
-		ZetaFormatter.setDriver(senderPages.getLoginPage().getDriver());
+		ZetaFormatter.setDriver((AppiumDriver) senderPages.getLoginPage().getDriver());
 		senderPages.getLoginPage().sendProblemReportIfFound();
 	}
 
@@ -88,7 +90,7 @@ public class CommonOSXSteps {
 				.getOsxAppiumUrlFromConfig(CommonOSXSteps.class), path));
 		senderPages.setLoginPage(new LoginPage(CommonUtils
 				.getOsxAppiumUrlFromConfig(CommonOSXSteps.class), path));
-		ZetaFormatter.setDriver(senderPages.getLoginPage().getDriver());
+		ZetaFormatter.setDriver((AppiumDriver) senderPages.getLoginPage().getDriver());
 		senderPages.getLoginPage().sendProblemReportIfFound();
 
 		resetBackendSettingsIfOverwritten();

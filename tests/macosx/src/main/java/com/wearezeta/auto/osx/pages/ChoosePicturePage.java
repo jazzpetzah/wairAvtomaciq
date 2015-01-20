@@ -30,7 +30,7 @@ public class ChoosePicturePage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathSelectColumnViewButton)
 	private WebElement selectColumnViewButton;
 	
-	public ChoosePicturePage(String URL, String path) throws MalformedURLException {
+	public ChoosePicturePage(String URL, String path) throws IOException {
 		super(URL, path, false);
 	}
 

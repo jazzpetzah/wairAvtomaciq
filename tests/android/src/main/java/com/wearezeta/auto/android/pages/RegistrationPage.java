@@ -87,6 +87,7 @@ public class RegistrationPage extends AndroidPage {
 		wait.until(ExpectedConditions.elementToBeClickable(nameField));
 		if (nameField.getText().toLowerCase().equals(YOUR_NAME)) {
 			nameField.sendKeys(name);
+			refreshUITree();
 			wait.until(ExpectedConditions.elementToBeClickable(nextArrow));
 			nextArrow.click();
 		}
@@ -96,6 +97,7 @@ public class RegistrationPage extends AndroidPage {
 		refreshUITree();
 		if (nameField.getText().toLowerCase().equals(EMAIL)) {
 			nameField.sendKeys(email);
+			refreshUITree();
 			wait.until(ExpectedConditions.elementToBeClickable(nextArrow));
 			nextArrow.click();
 		}
@@ -112,6 +114,8 @@ public class RegistrationPage extends AndroidPage {
 	}
 
 	public boolean isConfirmationVisible() {
+		refreshUITree();
+		wait.until(ExpectedConditions.visibilityOf(verifyEmailBtn));
 		return DriverUtils.isElementDisplayed(verifyEmailBtn);
 	}
 

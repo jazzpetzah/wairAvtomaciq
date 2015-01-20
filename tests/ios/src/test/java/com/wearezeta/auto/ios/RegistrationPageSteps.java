@@ -393,7 +393,7 @@ public class RegistrationPageSteps {
 	}
 
 	@Then("^I see confirmation page$")
-	public void ISeeConfirmationPage() throws MalformedURLException {
+	public void ISeeConfirmationPage() throws IOException {
 		PagesCollection.peoplePickerPage = PagesCollection.registrationPage
 				.waitForConfirmationMessage();
 		Assert.assertTrue(PagesCollection.registrationPage

@@ -1,5 +1,7 @@
 package com.wearezeta.auto.android.pages;
 
+import io.appium.java_client.pagefactory.AndroidFindBy;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -100,13 +102,13 @@ public class DialogPage extends AndroidPage{
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idSearchHintClose")
 	private WebElement closeHintBtn;
 	
-	@FindBy(how = How.XPATH, using = AndroidLocators.DialogPage.xpathAddPicture)
+	@AndroidFindBy(xpath = AndroidLocators.DialogPage.xpathAddPicture)
 	private WebElement addPictureBtn;
 	
-	@FindBy(how = How.XPATH, using = AndroidLocators.DialogPage.xpathPing)
+	@AndroidFindBy(xpath = AndroidLocators.DialogPage.xpathPing)
 	private WebElement pingBtn;
 	
-	@FindBy(how = How.XPATH, using = AndroidLocators.OtherUserPersonalInfoPage.xpathGroupChatInfoLinearLayout)
+	@AndroidFindBy(xpath = AndroidLocators.OtherUserPersonalInfoPage.xpathGroupChatInfoLinearLayout)
 	private List<WebElement> linearLayout;
 	
 	private String url;
@@ -153,7 +155,8 @@ public class DialogPage extends AndroidPage{
 	}
 	
 	public void tapPingBtn() throws InterruptedException {
-
+		refreshUITree();
+		System.out.println(driver.getPageSource());
 		pingBtn.click();
 		Thread.sleep(1000);
 	}

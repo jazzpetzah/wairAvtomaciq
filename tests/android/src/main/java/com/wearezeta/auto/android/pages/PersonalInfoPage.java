@@ -133,6 +133,7 @@ public class PersonalInfoPage extends AndroidPage
 	}
 
 	public void tapOptionsButton() throws InterruptedException {
+		refreshUITree();
 		optionsButton.click();
 	}
 
@@ -153,14 +154,16 @@ public class PersonalInfoPage extends AndroidPage
 	}
 
 	public void changeName(String name, String newName) throws Exception {
-		for(int i=0; i<name.length();i++)
-		{
-			driver.sendKeyEvent(67);
-		}
 		nameEdit.sendKeys(newName);
-		swipeRight(500);
+		driver.navigate().back();
+		Thread.sleep(1000);
 	}
-
+	
+	@Override
+	public ContactListPage navigateBack() throws Exception{
+		driver.navigate().back();
+		return new ContactListPage(url, path);
+	}
 	public String getUserName() {
 		refreshUITree();
 		return nameField.getText();
