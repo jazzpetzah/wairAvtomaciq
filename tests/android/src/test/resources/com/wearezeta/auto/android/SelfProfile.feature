@@ -2,7 +2,8 @@ Feature: Self Profile
 
   @id205 @smoke
   Scenario Outline: Change user picture
-    Given There is 1 user where <Name> is me
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
@@ -15,8 +16,8 @@ Feature: Self Profile
     Then I see changed user picture
 
     Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
 
   @id325 @smoke
   Scenario Outline: Check contact personal info
@@ -35,7 +36,8 @@ Feature: Self Profile
 
   @id328 @smoke
   Scenario Outline: ZClient change name
-    Given There is 1 user where <Name> is me
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
@@ -47,5 +49,5 @@ Feature: Self Profile
     Then I see my new name <NewName> and return old <Name>
 
     Examples: 
-      | Login      | Password      | Name      | NewName     |
-      | user1Email | user1Password | user1Name | NewTestName |
+      | Login      | Password      | Name      | NewName     | Contact   |
+      | user1Email | user1Password | user1Name | NewTestName | user2Name |

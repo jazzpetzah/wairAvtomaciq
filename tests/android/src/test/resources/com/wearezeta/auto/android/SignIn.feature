@@ -2,7 +2,8 @@ Feature: Sign In
 
   @id326 @smoke
   Scenario Outline: Sign in to ZClient
-    Given There is 1 user where <Name> is me
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
     Given I see sign in screen
     When I press Sign in button
     And I have entered login <Login>
@@ -11,8 +12,8 @@ Feature: Sign In
     Then Contact list appears with my name <Name>
 
     Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
 
   #@id209 @smoke
   #Scenario Outline: I can change sign in user
