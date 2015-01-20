@@ -134,7 +134,7 @@ public class CommonSteps {
 					osxSenderPages
 							.setLoginPage(new com.wearezeta.auto.osx.pages.LoginPage(
 									osxAppiumUrl, osxPath));
-				} catch (MalformedURLException e) {
+				} catch (IOException e) {
 				}
 				long endDate = new Date().getTime();
 				ExecutionContext.osxZeta().setStartupTimeMs(

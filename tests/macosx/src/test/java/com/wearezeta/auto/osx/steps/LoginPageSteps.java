@@ -1,7 +1,6 @@
 package com.wearezeta.auto.osx.steps;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;

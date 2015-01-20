@@ -29,7 +29,6 @@ public class IOSSimulatorPhotoLibHelper {
 	private static final String MEDIA_PATH_TEMPLATE = "%s/Media";
 	public static final String PHOTO_DATA_PATH_TEMPLATE = "%s/PhotoData";
 	public static final String PHOTOS_ROOT_TEMPLATE = "%s/DCIM/100APPLE";
-	public static final String SIMULATOR_DEVICE_NAME = "iPhone 6";
 	public static final String SIMCTL = "/Applications/Xcode.app/Contents/Developer/usr/bin/simctl";
 
 	private static final Logger log = ZetaLogger
@@ -83,6 +82,7 @@ public class IOSSimulatorPhotoLibHelper {
 
 	private static String FindSimultorFolder(String simulatorVersion)
 			throws Exception {
+		String deviceName = CommonUtils.getDeviceName(CommonUtils.class);
 		String libPath = GetiOSLibPath(simulatorVersion);
 
 		if (!new File(libPath).exists()) {
@@ -103,7 +103,7 @@ public class IOSSimulatorPhotoLibHelper {
 						try {
 							if (compareDeviceNameFromPlist(
 									device.getAbsolutePath(),
-									SIMULATOR_DEVICE_NAME)) {
+									deviceName)) {
 								result = child.getAbsolutePath();
 							}
 						} catch (Exception ex) {
