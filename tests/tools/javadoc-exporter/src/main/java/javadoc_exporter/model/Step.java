@@ -15,6 +15,12 @@ public class Step {
 	public String getMethodName() {
 		return methodName;
 	}
+	
+	private String methodSignature;
+	
+	public String getMethodSignature() {
+		return this.methodSignature;
+	}
 
 	private List<StepAttribute> throwsList = new ArrayList<StepAttribute>();
 
@@ -44,10 +50,11 @@ public class Step {
 		return this.owner;
 	}
 
-	public Step(String name, String methodName, String description,
+	public Step(String name, String methodName, String methodSignature, String description,
 			List<StepAttribute> throwsList, List<StepAttribute> paramsList) {
 		this.name = name;
 		this.methodName = methodName;
+		this.methodSignature = methodSignature;
 		this.description = description;
 		this.throwsList = new ArrayList<StepAttribute>(throwsList);
 		this.paramsList = new ArrayList<StepAttribute>(paramsList);

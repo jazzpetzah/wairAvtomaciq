@@ -3,6 +3,11 @@
 <h2>Method name</h2>
 <p>{{methodName}}</p>
 
+<h2>Method signature</h2>
+<pre>
+{{methodSignature}}
+</pre>
+
 <h2>Description</h2>
 <p>{{description}}</p>
 

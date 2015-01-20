@@ -7,14 +7,13 @@ import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javadoc_exporter.confluence_rest_api.RESTMethods;
+import javadoc_exporter.confluence_rest_api.ConfluenceAPIWrappers;
 import javadoc_exporter.model.StepsContainer;
 import javadoc_exporter.transformers.InputTransformer;
 import javadoc_exporter.transformers.OutputTransformer;
@@ -27,8 +26,6 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.apache.commons.io.FilenameUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
@@ -58,48 +55,6 @@ public class App {
 		new OutputTransformer(container, dstRoot).transform();
 	}
 
-	private static JSONObject getPageInfo(JSONObject children, String pageTitle)
-			throws Exception {
-		final int size = children.getInt("size");
-		if (size > 0) {
-			JSONArray foundPages = children.getJSONArray("results");
-			for (int pageIdx = 0; pageIdx < size; pageIdx++) {
-				final JSONObject currentPage = foundPages
-						.getJSONObject(pageIdx);
-				final String currentTitle = currentPage.getString("title");
-				if (currentTitle.equals(pageTitle)) {
-					return currentPage;
-				}
-			}
-		}
-		return null;
-	}
-
-	private static long updateConfluenceChildPageIfNecessary(long parentPageId,
-			String spaceKey, String pageTitle, String pageBody)
-			throws Exception {
-		JSONObject children = RESTMethods.getChildren(parentPageId,
-				new String[] { "version" });
-		JSONObject pageInfo = getPageInfo(children, pageTitle);
-		if (pageInfo == null) {
-			pageInfo = RESTMethods.createChildPage(parentPageId, spaceKey,
-					pageTitle, pageBody);
-		} else {
-			String currentBodyHash = "";
-			if (pageInfo.getJSONObject("version").has("message")) {
-				currentBodyHash = pageInfo.getJSONObject("version").getString(
-						"message");
-			}
-			if (!currentBodyHash.equals(RESTMethods.getBodyHash(pageBody))) {
-				final int currentPageVersion = pageInfo
-						.getJSONObject("version").getInt("number");
-				RESTMethods.updateChildPage(parentPageId, spaceKey, pageTitle,
-						pageBody, currentPageVersion + 1);
-			}
-		}
-		return pageInfo.getLong("id");
-	}
-
 	private static String extractPageTitle(final String path)
 			throws UnsupportedEncodingException {
 		String baseName = FilenameUtils.getBaseName(path);
@@ -118,8 +73,9 @@ public class App {
 			List<String> stepsFilesPaths) throws Exception {
 		final String pageTitle = extractPageTitle(containerFilePath);
 		final String pageBody = extractPageBody(containerFilePath);
-		final long containerPageId = updateConfluenceChildPageIfNecessary(
-				parentPageId, spaceKey, pageTitle, pageBody);
+		final long containerPageId = ConfluenceAPIWrappers
+				.updateConfluenceChildPageIfNecessary(parentPageId, spaceKey,
+						pageTitle, pageBody);
 
 		Map<String, String> stepsToPublish = new LinkedHashMap<String, String>();
 		for (String stepFilePath : stepsFilesPaths) {
@@ -127,11 +83,13 @@ public class App {
 			final String stepPageBody = extractPageBody(stepFilePath);
 			stepsToPublish.put(stepPageTitle, stepPageBody);
 		}
-		removeExtraChildren(containerPageId, stepsToPublish.keySet());
+		ConfluenceAPIWrappers.removeExtraChildren(containerPageId,
+				stepsToPublish.keySet());
 
 		for (Map.Entry<String, String> stepInfo : stepsToPublish.entrySet()) {
-			updateConfluenceChildPageIfNecessary(containerPageId, spaceKey,
-					stepInfo.getKey(), stepInfo.getValue());
+			ConfluenceAPIWrappers.updateConfluenceChildPageIfNecessary(
+					containerPageId, spaceKey, stepInfo.getKey(),
+					stepInfo.getValue());
 		}
 	}
 
@@ -143,7 +101,8 @@ public class App {
 			final String pageTitle = extractPageTitle(path);
 			realContainerNames.add(pageTitle);
 		}
-		removeExtraChildren(parentPageId, realContainerNames);
+		ConfluenceAPIWrappers.removeExtraChildren(parentPageId,
+				realContainerNames);
 
 		for (Map.Entry<String, List<String>> containerInfo : stepsMapping
 				.entrySet()) {
@@ -152,39 +111,8 @@ public class App {
 		}
 	}
 
-	private static void removeExtraChildren(long parentPageId,
-			Set<String> exstingChildrenTitles) throws Exception {
-		JSONObject children = RESTMethods.getChildren(parentPageId,
-				new String[] { "version" });
-		Map<String, Long> confluenceChildren = new HashMap<String, Long>();
-		final int size = children.getInt("size");
-		if (size > 0) {
-			JSONArray foundPages = children.getJSONArray("results");
-			for (int pageIdx = 0; pageIdx < size; pageIdx++) {
-				final JSONObject currentPage = foundPages
-						.getJSONObject(pageIdx);
-				confluenceChildren.put(currentPage.getString("title"),
-						currentPage.getLong("id"));
-			}
-		}
-		Set<Long> pagesToDelete = new HashSet<Long>();
-		for (Map.Entry<String, Long> entry : confluenceChildren.entrySet()) {
-			if (!exstingChildrenTitles.contains(entry.getKey())) {
-				pagesToDelete.add(entry.getValue());
-			}
-		}
-		for (Long id : pagesToDelete) {
-			RESTMethods.removeChildPage(id.longValue());
-		}
-	}
-
-	/**
-	 * http://stackoverflow.com/questions/24504631/how-to-update-a-page-in-
-	 * confluence-5-5-1-via-rest-call
-	 */
 	private static void publishToConfluence(String srcRoot, String spaceKey,
 			long parentPageId) throws Exception {
-		// TODO : encapsulate Confluence-specific stuff into separate module
 		// ! all module names inside file names are urlencoded
 		Map<String, List<String>> stepsMapping = new LinkedHashMap<String, List<String>>();
 

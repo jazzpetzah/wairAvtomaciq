@@ -19,7 +19,6 @@ public class InputTransformer {
 	private static final String STEP_PARAMS_LIST_MARKER = "Parameters:";
 	private static final String NONE_VALUE = "None";
 
-
 	public InputTransformer(WebDriver source) {
 		this.source = source;
 	}
@@ -96,6 +95,7 @@ public class InputTransformer {
 	}
 
 	private static final String METHOD_NAME_LOCATOR = ".//h4";
+	private static final String METHOD_SIGNATURE_LOCATOR = ".//pre";
 	private static final String STEP_NAME_LOCATOR = ".//dt[contains(., '"
 			+ STEP_NAME_MARKER + "')]/following-sibling::dd";
 	private static final String STEP_DESCRIPTION_LOCATOR = ".//div[@class='block']";
@@ -103,6 +103,8 @@ public class InputTransformer {
 	private Step createStep(final WebElement stepElement) {
 		final String methodName = stepElement.findElement(
 				By.xpath(METHOD_NAME_LOCATOR)).getText();
+		final String methodSignature = stepElement.findElement(
+				By.xpath(METHOD_SIGNATURE_LOCATOR)).getText();
 		final String name = stepElement
 				.findElement(By.xpath(STEP_NAME_LOCATOR)).getText();
 		String description = NONE_VALUE;
@@ -116,7 +118,8 @@ public class InputTransformer {
 				STEP_PARAMS_LIST_MARKER);
 		final List<StepAttribute> throwsList = getAttributesList(stepElement,
 				STEP_THROWS_LIST_MARKER);
-		return new Step(name, methodName, description, throwsList, paramsList);
+		return new Step(name, methodName, methodSignature, description,
+				throwsList, paramsList);
 	}
 
 	public StepsContainer transform() {

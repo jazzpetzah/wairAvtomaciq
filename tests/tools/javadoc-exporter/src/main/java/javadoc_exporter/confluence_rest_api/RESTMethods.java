@@ -22,7 +22,7 @@ import com.sun.jersey.api.client.WebResource.Builder;
  * https://developer.atlassian.com/display/CONFDEV/Confluence+REST+API+Examples
  * https://bunjil.jira-dev.com/wiki/plugins/servlet/restbrowser
  */
-public class RESTMethods {
+class RESTMethods {
 	private static final String CONFLUENCE_URL_KEY = "ConfluenceURL";
 	private static final String CONFLUENCE_AUTH_TOKEN_KEY = "ConfluenceAuthToken";
 	private static final String MAIN_PROPERTIES = "main.properties";
@@ -104,7 +104,7 @@ public class RESTMethods {
 	private static final int PAGES_LIMIT = 1000;
 	private static final String DEFAULT_ENCODING = "utf-8";
 
-	public static JSONObject getChildren(long parentId, String[] expansions)
+	public static JSONObject getChildrenPages(long parentId, String[] expansions)
 			throws Exception {
 		final String expand = URLEncoder.encode(
 				org.apache.commons.lang3.StringUtils.join(expansions, ","),
