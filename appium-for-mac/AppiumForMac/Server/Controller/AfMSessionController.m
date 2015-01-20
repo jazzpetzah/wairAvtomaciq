@@ -30,7 +30,7 @@
 			[NSNumber numberWithBool:NO], @"webStorageEnabled",
 			[NSNumber numberWithBool:NO], @"locationContextEnabled",
 			@"Mac", @"browserName",
-			@"Mac", @"platform",
+			@"MAC", @"platform",
             @"Mac", @"platformName",
 			[NSNumber numberWithBool:YES], @"javascriptEnabled",
 			[NSNumber numberWithBool:NO], @"databaseEnabled",
