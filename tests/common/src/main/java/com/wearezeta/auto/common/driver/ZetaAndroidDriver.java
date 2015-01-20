@@ -12,7 +12,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 import io.appium.java_client.android.AndroidDriver;
 
-public class ZetaAndroidDriver extends AndroidDriver {
+public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver {
 
 	private static final Logger log = ZetaLogger.getLog(ZetaAndroidDriver.class.getSimpleName());
 
@@ -112,12 +112,6 @@ public class ZetaAndroidDriver extends AndroidDriver {
 			log.error(ex.getMessage() + "\n" + stackTraceToString(ex));
 			throw ex;
 		}
-	}
-
-	@Override
-	public String getPageSource() {
-		String result = super.getPageSource();
-		return result;
 	}
 
 	@Override

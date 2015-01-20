@@ -12,7 +12,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 import io.appium.java_client.ios.IOSDriver;
 
-public class ZetaIOSDriver extends IOSDriver {
+public class ZetaIOSDriver extends IOSDriver implements ZetaDriver{
 
 	private static final Logger log = ZetaLogger.getLog(ZetaIOSDriver.class.getSimpleName());
 
@@ -112,12 +112,6 @@ public class ZetaIOSDriver extends IOSDriver {
 			log.error(ex.getMessage() + "\n" + stackTraceToString(ex));
 			throw ex;
 		}
-	}
-
-	@Override
-	public String getPageSource() {
-		String result = super.getPageSource();
-		return result;
 	}
 
 	@Override

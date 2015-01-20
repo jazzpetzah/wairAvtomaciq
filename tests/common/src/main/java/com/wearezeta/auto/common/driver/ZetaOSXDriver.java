@@ -14,7 +14,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 
-public class ZetaOSXDriver extends AppiumDriver implements WebDriver {
+public class ZetaOSXDriver extends AppiumDriver implements WebDriver,ZetaDriver {
 	
 	private static final Logger log = ZetaLogger.getLog(ZetaOSXDriver.class.getSimpleName());
 
@@ -114,12 +114,6 @@ public class ZetaOSXDriver extends AppiumDriver implements WebDriver {
 			log.error(ex.getMessage() + "\n" + stackTraceToString(ex));
 			throw ex;
 		}
-	}
-
-	@Override
-	public String getPageSource() {
-		String result = super.getPageSource();
-		return result;
 	}
 
 	@Override

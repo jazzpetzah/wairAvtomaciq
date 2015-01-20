@@ -23,6 +23,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.locators.ZetaElementLocatorFactory;
@@ -83,7 +84,7 @@ public abstract class BasePage {
 	}
 
 	public BufferedImage takeScreenshot() throws IOException {
-		return DriverUtils.takeScreenshot(drivers.get(pagePlatform));
+		return DriverUtils.takeScreenshot((ZetaDriver) drivers.get(pagePlatform));
 	}
 
 	public BufferedImage getElementScreenshot(WebElement element)

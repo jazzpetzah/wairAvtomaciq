@@ -9,7 +9,7 @@ import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.support.pagefactory.ElementLocator;
 import org.openqa.selenium.support.pagefactory.ElementLocatorFactory;
 
-public class ZetaElementLocatorFactory implements ElementLocatorFactory, ResetsImplicitlyWaitTimeOut  {
+public class ZetaElementLocatorFactory implements ElementLocatorFactory, ResetImplicitlyWaitTimeOut  {
 	final SearchContext searchContext;
 	private final ZetaTimeOutContainer timeOutContainer;
 

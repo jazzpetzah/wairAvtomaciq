@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.UserState;
 
@@ -183,7 +184,7 @@ public class ZetaFormatter implements Formatter, Reporter {
 		//take screenshot
 		if (driver != null) {
 			try {
-				BufferedImage image = DriverUtils.takeScreenshot(driver);
+				BufferedImage image = DriverUtils.takeScreenshot((ZetaDriver) driver);
 				String picturePath = CommonUtils.getPictureResultsPathFromConfig(this.getClass());
 				File outputfile = new File(picturePath + feature + "/" +
 						scenario + "/" + currentStep + ".png");

@@ -2,7 +2,7 @@ package com.wearezeta.auto.common.locators;
 
 import java.util.concurrent.TimeUnit;
 
-class ZetaTimeOutContainer implements ResetsImplicitlyWaitTimeOut{
+class ZetaTimeOutContainer implements ResetImplicitlyWaitTimeOut{
 	private long timeOutValue;
 	private TimeUnit timeUnit;
 
