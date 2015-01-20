@@ -43,7 +43,7 @@ public abstract class BasePage {
 		String platform = (String) capabilities.getCapability("platformName");
 		if (null == drivers || drivers.isEmpty() || drivers.get(platform) == null) {
 			if(platform.equals(CommonUtils.PLATFORM_NAME_ANDROID)){
-				drivers.put("Android", new ZetaAndroidDriver(new URL(URL), capabilities));
+				drivers.put(platform, new ZetaAndroidDriver(new URL(URL), capabilities));
 			}
 			else if(platform.equals(CommonUtils.PLATFORM_NAME_IOS)){
 				drivers.put(platform, new ZetaIOSDriver (new URL(URL), capabilities));
