@@ -36,7 +36,7 @@ Feature: Connect to user
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id1409
+  @smoke @id1528
   Scenario Outline: Verify sending a connection request to user chosen from people view
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
