@@ -2,7 +2,6 @@ package com.wearezeta.auto.ios;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -1,7 +1,6 @@
 package com.wearezeta.auto.osx.pages;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.List;
 
 import org.apache.log4j.Logger;

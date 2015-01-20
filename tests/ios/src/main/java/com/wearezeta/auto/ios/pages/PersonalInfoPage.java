@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.*;
 
 import org.openqa.selenium.By;
