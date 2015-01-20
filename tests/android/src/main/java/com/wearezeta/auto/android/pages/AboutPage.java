@@ -1,5 +1,7 @@
 package com.wearezeta.auto.android.pages;
 
+import io.appium.java_client.pagefactory.AndroidFindBy;
+
 import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
@@ -16,7 +18,7 @@ public class AboutPage extends AndroidPage {
 	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.AboutPage.CLASS_NAME, locatorKey = "idAboutLogo")
 	private WebElement aboutLogo;
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.AboutPage.CLASS_NAME, locatorKey = "idAboutClose")
+	@AndroidFindBy(xpath=AndroidLocators.AboutPage.xpathAboutClose)
 	private WebElement aboutClose;
 	
 	public AboutPage(String URL, String path) throws Exception {

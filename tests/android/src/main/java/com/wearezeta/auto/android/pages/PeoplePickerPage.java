@@ -86,6 +86,7 @@ public class PeoplePickerPage extends AndroidPage {
 	
 	public AndroidPage selectContact(String contactName) throws Exception {
 		AndroidPage page = null;
+		refreshUITree();
 		pickerSearchUser.click();
 		
 		if(driver.findElementsById(AndroidLocators.OtherUserPersonalInfoPage.idUnblockBtn).size() > 0) {
@@ -182,7 +183,8 @@ public class PeoplePickerPage extends AndroidPage {
 	public AndroidPage tapCreateConversation() throws Exception {
 		refreshUITree();
 		wait.until(ExpectedConditions.visibilityOf(createConversation));
-		DriverUtils.androidMultiTap(driver, createConversation,1,0.3);
+		createConversation.click();
+		//DriverUtils.androidMultiTap(driver, createConversation,1,0.3);
 		return  new DialogPage(url, path);
 	}
 
