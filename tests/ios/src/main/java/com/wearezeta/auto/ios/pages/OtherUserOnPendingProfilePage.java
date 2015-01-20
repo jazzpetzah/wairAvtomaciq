@@ -23,7 +23,7 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameOtherProfilePageStartConversationButton)
 	private WebElement startConversationButton;
 	
-	public OtherUserOnPendingProfilePage(String URL, String path) throws MalformedURLException {
+	public OtherUserOnPendingProfilePage(String URL, String path) throws IOException {
 		super(URL, path);
 	}
 	

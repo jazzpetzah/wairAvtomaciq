@@ -8,6 +8,7 @@ public final class OSXLocators {
 	public static final String nameSignInButton = "SIGN IN";
 	public static final String nameRegisterButton = "REGISTER";
 	public static final String xpathAcceptTermsOfServiceCheckBox = "//AXCheckBox";
+	public static final String xpathWrongCredentialsMessage = "//AXTextArea[starts-with(@AXValue, 'WRONG ADDRESS OR PASSWORD')]";
 	
 	public static final String idLoginField = "TempLoginViewControllerUsernameField";
 	public static final String classNameLoginField = "AXTextArea";
@@ -59,8 +60,6 @@ public final class OSXLocators {
 	public static final String xpathFormatPeoplePickerSearchResultUser = "//AXStaticText[@AXIdentifier='people_picker_result_namefield'][@AXValue='%s']";
 	public static final String xpathConversationListScrollArea = "//AXScrollArea[@AXIdentifier='conversationList']";
 
-	public static final String xpathYouPingedMessage = "//AXGroup[AXStaticText[@AXValue='YOU'] and AXStaticText[@AXValue=' PINGED']]";
-	public static final String xpathYouPingedAgainMessage = "//AXGroup[AXStaticText[@AXValue='YOU'] and AXStaticText[@AXValue=' PINGED AGAIN']]";
 	public static final String xpathOtherPingedMessage = "//AXGroup[AXStaticText[@AXValue='%s'] and AXStaticText[@AXValue=' PINGED']]";
 	public static final String xpathOtherPingedAgainMessage = "//AXGroup[AXStaticText[@AXValue='%s'] and AXStaticText[@AXValue=' PINGED AGAIN']]";
 	

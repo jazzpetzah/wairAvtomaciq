@@ -43,7 +43,7 @@ public class PeoplePickerPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idUnblockUserButton)
 	private WebElement unblockUserButton;
 	
-	public PeoplePickerPage(String URL, String path) throws MalformedURLException {
+	public PeoplePickerPage(String URL, String path) throws IOException {
 		super(URL, path);
 	}
 	

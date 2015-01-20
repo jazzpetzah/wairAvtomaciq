@@ -121,9 +121,24 @@ public class LoginPageSteps {
 	}
 
 	@When("I start registration")
-	public void IStartRegistration() throws MalformedURLException {
+	public void IStartRegistration() throws IOException {
 		RegistrationPage registration = CommonOSXSteps.senderPages
 				.getLoginPage().startRegistration();
 		CommonOSXSteps.senderPages.setRegistrationPage(registration);
+	}
+	
+	@When("I input password (.*) using script")
+	public void IInputPasswordUsingScript(String password) {
+		CommonOSXSteps.senderPages.getLoginPage().setPasswordUsingScript(password);
+	}
+
+	@Then("I see wrong credentials message")
+	public void ISeeWrongCredentialsMessage() {
+		Assert.assertTrue(CommonOSXSteps.senderPages.getLoginPage().isWrongCredentialsMessageDisplayed());
+	}
+	
+	@Then("^I do not see wrong credentials message$")
+	public void IDoNotSeeWrongCredentialsMessage() {
+		Assert.assertFalse(CommonOSXSteps.senderPages.getLoginPage().isWrongCredentialsMessageDisplayed());
 	}
 }

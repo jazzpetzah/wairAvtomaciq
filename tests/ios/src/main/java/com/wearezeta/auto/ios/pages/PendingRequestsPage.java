@@ -33,7 +33,7 @@ public class PendingRequestsPage extends IOSPage {
 	
 	private String autoHelloMessage = CommonSteps.CONNECTION_MESSAGE;
 
-	public PendingRequestsPage(String URL, String path) throws MalformedURLException {
+	public PendingRequestsPage(String URL, String path) throws IOException {
 		super(URL, path);
 		
 		this.url = URL;

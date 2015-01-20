@@ -1,5 +1,6 @@
 package com.wearezeta.auto.osx.pages;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 
 import org.openqa.selenium.By;
@@ -50,7 +51,7 @@ public class UserProfilePage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idSelfProfileEmailTextField)
 	private WebElement selfProfileEmailTextField;
 	
-	public UserProfilePage(String URL, String path) throws MalformedURLException {
+	public UserProfilePage(String URL, String path) throws IOException {
 		super(URL, path);
 	}
 

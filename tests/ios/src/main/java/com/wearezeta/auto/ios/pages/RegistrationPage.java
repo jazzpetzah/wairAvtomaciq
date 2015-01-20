@@ -117,7 +117,7 @@ public class RegistrationPage extends IOSPage {
 	private String path;
 
 	public RegistrationPage(String URL, String path)
-			throws MalformedURLException {
+			throws IOException {
 		super(URL, path);
 		this.url = URL;
 		this.path = path;
@@ -202,7 +202,7 @@ public class RegistrationPage extends IOSPage {
 		return closeColorModeButton.isDisplayed();
 	}
 
-	public PeoplePickerPage waitForConfirmationMessage() throws MalformedURLException {
+	public PeoplePickerPage waitForConfirmationMessage() throws IOException {
 		DriverUtils.waitUntilElementAppears(driver,
 				By.className(IOSLocators.classNameConfirmationMessage));
 		

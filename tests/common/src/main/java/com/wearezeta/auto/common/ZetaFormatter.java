@@ -1,6 +1,8 @@
 package com.wearezeta.auto.common;
 
 
+import io.appium.java_client.AppiumDriver;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Date;
@@ -9,8 +11,6 @@ import java.util.List;
 import java.util.Queue;
 
 import javax.imageio.ImageIO;
-
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -32,7 +32,7 @@ import gherkin.formatter.model.Tag;
 
 public class ZetaFormatter implements Formatter, Reporter {
 	
-	private static RemoteWebDriver driver = null;
+	private static AppiumDriver driver = null;
 	
 	private String feature = "";
 	private String scenario = "";
@@ -225,11 +225,11 @@ public class ZetaFormatter implements Formatter, Reporter {
 		}
 	}
 
-	public static RemoteWebDriver getDriver() {
+	public static AppiumDriver getDriver() {
 		return driver;
 	}
 
-	public static void setDriver(RemoteWebDriver driver) {
+	public static void setDriver(AppiumDriver driver) {
 		ZetaFormatter.driver = driver;
 	}
 

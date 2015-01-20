@@ -132,13 +132,13 @@ public class ClientUser {
 	public void setUserState(UserState userState) {
 		this.userState = userState;
 	}
-	
+
 	private AccentColor accentColor = AccentColor.Undefined;
-	
+
 	public void setAccentColor(AccentColor newColor) {
 		this.accentColor = newColor;
 	}
-	
+
 	public AccentColor getAccentColor() {
 		return this.accentColor;
 	}
@@ -147,7 +147,11 @@ public class ClientUser {
 		return CommonUtils.generateGUID().replace("-", "");
 	}
 
-	private static String generateUniqEmail(String basemail, String suffix) {
+	public static String generateEmail(String suffix) throws IOException {
+		return generateEmail(IMAPSMailbox.getName(), suffix);
+	}
+
+	private static String generateEmail(String basemail, String suffix) {
 		String genmail = basemail.split("@")[0].concat("+").concat(suffix)
 				.concat("@").concat(basemail.split("@")[1]);
 		return genmail;
@@ -157,7 +161,7 @@ public class ClientUser {
 		this.name = generateUniqName();
 		this.password = CommonUtils
 				.getDefaultPasswordFromConfig(ClientUser.class);
-		this.email = generateUniqEmail(IMAPSMailbox.getName(), name);
+		this.email = generateEmail(name);
 	}
 
 	@Override

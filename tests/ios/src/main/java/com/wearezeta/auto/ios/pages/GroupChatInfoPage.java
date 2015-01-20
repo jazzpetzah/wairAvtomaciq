@@ -67,7 +67,7 @@ public class GroupChatInfoPage extends IOSPage {
 	private WebElement closeButton;
 
 	public GroupChatInfoPage(String URL, String path)
-			throws MalformedURLException {
+			throws IOException {
 		super(URL, path);
 		this.url = URL;
 		this.path = path;

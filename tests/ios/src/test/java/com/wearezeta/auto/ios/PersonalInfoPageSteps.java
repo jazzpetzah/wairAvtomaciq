@@ -76,7 +76,7 @@ public class PersonalInfoPageSteps {
 
 	@When("I click Sign out button from personal page")
 	public void IClickSignOutButtonFromPersonalPage()
-			throws MalformedURLException {
+			throws IOException {
 		PagesCollection.personalInfoPage.clickSignoutButton();
 	}
 

@@ -43,15 +43,31 @@
 		</dependency>
 
 		<dependency>
+<<<<<<< HEAD
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
 			<version>2.42.2</version>
+=======
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20141113</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>2.44.0</version>
+>>>>>>> fe9983e3d11da89cdc4d70a184a4dd66f169af44
 		</dependency>
 
 		<dependency>
 			<groupId>io.appium</groupId>
 			<artifactId>java-client</artifactId>
+<<<<<<< HEAD
 			<version>1.6.2</version>
+=======
+			<version>2.1.0</version>
+>>>>>>> fe9983e3d11da89cdc4d70a184a4dd66f169af44
 		</dependency>
 
 		<dependency>
@@ -129,6 +145,7 @@
 				</configuration>
 			</plugin>
 
+<<<<<<< HEAD
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -147,6 +164,8 @@
 					</tags>
 				</configuration>
 			</plugin>
+=======
+>>>>>>> fe9983e3d11da89cdc4d70a184a4dd66f169af44
 		</plugins>
 
 		<resources>
