@@ -1,7 +1,6 @@
 package com.wearezeta.auto.osx.pages;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -30,7 +29,7 @@ public class ChoosePicturePage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathSelectColumnViewButton)
 	private WebElement selectColumnViewButton;
 	
-	public ChoosePicturePage(String URL, String path) throws MalformedURLException {
+	public ChoosePicturePage(String URL, String path) throws IOException {
 		super(URL, path, false);
 	}
 

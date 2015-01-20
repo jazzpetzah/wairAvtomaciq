@@ -1,7 +1,6 @@
 package com.wearezeta.auto.osx.pages;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -81,7 +80,7 @@ public class ConversationPage extends OSXPage {
 	private WebElement conversationView;
 
 	public ConversationPage(String URL, String path)
-			throws MalformedURLException {
+			throws IOException {
 
 		super(URL, path);
 	}

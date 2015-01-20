@@ -1,7 +1,8 @@
 package com.wearezeta.auto.osx.pages;
 
+import io.appium.java_client.AppiumDriver;
+
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.Date;
 import java.util.List;
 
@@ -10,7 +11,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
@@ -52,7 +52,7 @@ public class LoginPage extends OSXPage {
 	private String url;
 	private String path;
 	
-	public LoginPage(String URL, String path) throws MalformedURLException {
+	public LoginPage(String URL, String path) throws IOException {
 		
 		super(URL, path);
 		this.url = URL;
@@ -120,7 +120,7 @@ public class LoginPage extends OSXPage {
 		return el != null;
 	}
 	
-	public RegistrationPage startRegistration() throws MalformedURLException {
+	public RegistrationPage startRegistration() throws IOException {
 		acceptTermOfServiceCheckBox.click();
 		for (int i = 0; i < 3; i++) {
 			if (registerButton.getAttribute("AXEnabled").equals("1")) break;
@@ -200,7 +200,7 @@ public class LoginPage extends OSXPage {
 		driver.executeScript(script);
 	}
 	
-	public RemoteWebDriver getDriver() {
+	public AppiumDriver getDriver() {
 		return driver;
 	}
 }

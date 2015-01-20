@@ -1,10 +1,10 @@
 package com.wearezeta.auto.ios.tools;
 
-import com.wearezeta.auto.common.driver.ZetaDriver;
+import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class KeyboardStateSpecial extends KeyboardState {
 
-	public KeyboardStateSpecial(ZetaDriver driver) {
+	public KeyboardStateSpecial(ZetaIOSDriver driver) {
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}

@@ -1,5 +1,7 @@
 package com.wearezeta.auto.osx.steps;
 
+import io.appium.java_client.AppiumDriver;
+
 import java.io.IOException;
 
 import javax.mail.MessagingException;
@@ -69,7 +71,7 @@ public class CommonOSXSteps {
 				.getOsxAppiumUrlFromConfig(CommonOSXSteps.class), path));
 		senderPages.setLoginPage(new LoginPage(CommonUtils
 				.getOsxAppiumUrlFromConfig(CommonOSXSteps.class), path));
-		ZetaFormatter.setDriver(senderPages.getLoginPage().getDriver());
+		ZetaFormatter.setDriver((AppiumDriver) senderPages.getLoginPage().getDriver());
 		senderPages.getLoginPage().sendProblemReportIfFound();
 	}
 
@@ -91,7 +93,7 @@ public class CommonOSXSteps {
 				.getOsxAppiumUrlFromConfig(CommonOSXSteps.class), path));
 		senderPages.setLoginPage(new LoginPage(CommonUtils
 				.getOsxAppiumUrlFromConfig(CommonOSXSteps.class), path));
-		ZetaFormatter.setDriver(senderPages.getLoginPage().getDriver());
+		ZetaFormatter.setDriver((AppiumDriver) senderPages.getLoginPage().getDriver());
 		senderPages.getLoginPage().sendProblemReportIfFound();
 
 		resetBackendSettingsIfOverwritten();
@@ -215,6 +217,17 @@ public class CommonOSXSteps {
 		log.debug("Setting avatar for user " + user + " from image "
 				+ picturePath);
 		commonSteps.IChangeUserAvatarPicture(user, picturePath);
+	}
+
+	@Given("^There \\w+ (\\d+) shared user[s]* with name prefix (\\w+)$")
+	public void ThereAreNSharedUsersWithNamePrefix(int count, String namePrefix)
+			throws Exception {
+		commonSteps.ThereAreNSharedUsersWithNamePrefix(count, namePrefix);
+	}
+
+	@Given("^User (\\w+) is [Mm]e$")
+	public void UserXIsMe(String nameAlias) throws Exception {
+		commonSteps.UserXIsMe(nameAlias);
 	}
 
 	@After

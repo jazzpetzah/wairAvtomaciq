@@ -25,6 +25,7 @@
 		<iosAppiumLogPath>/Project/appium_ios.log</iosAppiumLogPath>
 		<defaultEmail>smoketester.ios@wearezeta.com</defaultEmail>
 		<iosClientInfoPlist>/Project/builds_info/Info_ios.plist</iosClientInfoPlist>
+		<deviceName>iPhone 6</deviceName>
 	</properties>
 
 	<dependencies>
@@ -43,15 +44,21 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20141113</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
-			<version>2.42.2</version>
+			<version>2.44.0</version>
 		</dependency>
 
 		<dependency>
 			<groupId>io.appium</groupId>
 			<artifactId>java-client</artifactId>
-			<version>1.6.2</version>
+			<version>2.1.0</version>
 		</dependency>
 
 		<dependency>

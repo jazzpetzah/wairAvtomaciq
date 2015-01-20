@@ -1,7 +1,6 @@
 package com.wearezeta.auto.osx.pages;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -55,7 +54,7 @@ public class ContactListPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idMainWindowCloseButton)
 	private WebElement closeWindowButton;
 	
-	public ContactListPage(String URL, String path) throws MalformedURLException {
+	public ContactListPage(String URL, String path) throws IOException {
 		super(URL, path);
 	}
 

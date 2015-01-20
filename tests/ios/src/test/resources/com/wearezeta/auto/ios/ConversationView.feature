@@ -68,7 +68,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @staging @id383
+  @staging @id1468
   Scenario Outline: Play/pause SoundCloud media link from the media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -308,7 +308,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @regression @id488
+  @regression @id1474
   Scenario Outline: Verify you can see conversation images in fullscreen
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

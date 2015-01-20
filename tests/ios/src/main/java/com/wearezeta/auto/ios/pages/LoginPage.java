@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -19,7 +18,7 @@ import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
-import com.wearezeta.auto.common.driver.ZetaDriver;
+import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class LoginPage extends IOSPage {
@@ -80,21 +79,21 @@ public class LoginPage extends IOSPage {
 	
 	public String message;
 	
-	public LoginPage(String URL, String path) throws MalformedURLException {
+	public LoginPage(String URL, String path) throws IOException {
 		
 		super(URL, path);
 		this.url = URL;
 		this.path = path;
 	}
 	
-	public LoginPage(String URL, String path, boolean acceptAlerts) throws MalformedURLException {
+	public LoginPage(String URL, String path, boolean acceptAlerts) throws IOException {
 		
 		super(URL, path, acceptAlerts);
 		this.url = URL;
 		this.path = path;
 	}
 	
-	public ZetaDriver getDriver() {
+	public ZetaIOSDriver getDriver() {
 		return driver;
 	}
 	

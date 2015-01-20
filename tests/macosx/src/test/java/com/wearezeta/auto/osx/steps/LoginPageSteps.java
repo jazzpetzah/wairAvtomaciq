@@ -1,7 +1,6 @@
 package com.wearezeta.auto.osx.steps;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -121,7 +120,7 @@ public class LoginPageSteps {
 	}
 
 	@When("I start registration")
-	public void IStartRegistration() throws MalformedURLException {
+	public void IStartRegistration() throws IOException {
 		RegistrationPage registration = CommonOSXSteps.senderPages
 				.getLoginPage().startRegistration();
 		CommonOSXSteps.senderPages.setRegistrationPage(registration);

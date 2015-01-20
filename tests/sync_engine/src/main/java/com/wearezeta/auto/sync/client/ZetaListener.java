@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.osx.steps.ContactListPageSteps;
@@ -227,6 +228,6 @@ public class ZetaListener extends Thread {
 	}
 	
 	public boolean isSessionLost() {
-		return com.wearezeta.auto.common.BasePage.getDriver(parent.getPlatform()).isSessionLost();
+		return ((ZetaDriver)com.wearezeta.auto.common.BasePage.getDriver(parent.getPlatform())).isSessionLost();
 	}
 }

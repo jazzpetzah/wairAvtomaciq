@@ -62,7 +62,7 @@ public class ConversationInfoPage extends OSXPage {
 	private String url;
 	private String path;
 	
-	public ConversationInfoPage(String URL, String path) throws MalformedURLException {
+	public ConversationInfoPage(String URL, String path) throws IOException {
 		super(URL, path);
 		this.url = URL;
 		this.path = path;
@@ -106,7 +106,7 @@ public class ConversationInfoPage extends OSXPage {
 		return DriverUtils.isElementDisplayed(peoplePopover);
 	}
 	
-	public PeoplePickerPage openPeoplePicker() throws MalformedURLException {		
+	public PeoplePickerPage openPeoplePicker() throws IOException {		
 		try {
 			singleChatAddPeopleButton.click();
 		} catch (NoSuchElementException e) {

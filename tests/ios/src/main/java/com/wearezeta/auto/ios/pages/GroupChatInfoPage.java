@@ -2,7 +2,6 @@ package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.List;
 
 import org.junit.Assert;
@@ -67,7 +66,7 @@ public class GroupChatInfoPage extends IOSPage {
 	private WebElement closeButton;
 
 	public GroupChatInfoPage(String URL, String path)
-			throws MalformedURLException {
+			throws IOException {
 		super(URL, path);
 		this.url = URL;
 		this.path = path;

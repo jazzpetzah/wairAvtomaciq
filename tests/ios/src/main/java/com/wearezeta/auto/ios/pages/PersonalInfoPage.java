@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.*;
 
 import org.openqa.selenium.By;
@@ -117,7 +116,7 @@ public class PersonalInfoPage extends IOSPage{
 		settingsChangePasswordButton.click();
 	}
 	
-	public LoginPage clickSignoutButton() throws MalformedURLException{
+	public LoginPage clickSignoutButton() throws IOException{
 		LoginPage page;
 		signoutButton.click();
 		page = new LoginPage(url, path);

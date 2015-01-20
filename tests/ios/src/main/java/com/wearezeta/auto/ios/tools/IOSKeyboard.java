@@ -3,7 +3,7 @@ package com.wearezeta.auto.ios.tools;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.wearezeta.auto.common.driver.ZetaDriver;
+import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class IOSKeyboard {
 	private static final String TAP_KEYBOARD_BUTTON = "target.frontMostApp().keyboard().elements()[\"%s\"].tap();";
@@ -43,7 +43,7 @@ public class IOSKeyboard {
 		return UNKNOWN_STATE;
 	}
 
-	private ZetaDriver driver = null;
+	private ZetaIOSDriver driver = null;
 
 	protected IOSKeyboard() {
 		
@@ -77,7 +77,7 @@ public class IOSKeyboard {
 		return UNKNOWN_STATE;
 	}
 
-	public void typeString(String message, ZetaDriver driver) throws InterruptedException {
+	public void typeString(String message, ZetaIOSDriver driver) throws InterruptedException {
 		this.driver = driver;
 		String messageChar = "";
 

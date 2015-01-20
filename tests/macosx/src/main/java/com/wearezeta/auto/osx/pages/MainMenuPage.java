@@ -1,7 +1,6 @@
 package com.wearezeta.auto.osx.pages;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebElement;
@@ -22,7 +21,7 @@ public class MainMenuPage extends OSXPage {
 	@FindBy(how = How.NAME, using = OSXLocators.nameSignOutMenuItem)
 	private WebElement signOutMenuItem;
 	
-	public MainMenuPage(String URL, String path) throws MalformedURLException {
+	public MainMenuPage(String URL, String path) throws IOException {
 		super(URL, path);
 	}
 
