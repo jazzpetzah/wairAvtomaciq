@@ -45,7 +45,7 @@ public class ZetaFormatter implements Formatter, Reporter {
 	private int lineNumber = 0;
 	
 	private static final String LOGIN = "smoketester+bot@wearezeta.com";
-	private static final String PASSWORD = "aqsa123456";
+	private static final String PASSWORD = "aqa123456";
 	private static final String CONTACT_ANDROID = "Android Smoke Feedback";
 	private static final String CONTACT_IOS = "iOS Smoke Feedback";
 	private static final String CONTACT_OSX = "OSX Smoke Feedback";
