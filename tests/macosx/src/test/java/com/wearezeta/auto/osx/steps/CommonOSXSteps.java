@@ -147,6 +147,13 @@ public class CommonOSXSteps {
 		commonSteps.BlockContact(blockAsUserNameAlias, userToBlockNameAlias);
 	}
 
+	@When("^User (.*) unblocks user (.*)$")
+	public void UnblockContact(String unblockAsUserNameAlias,
+			String userToUnblockNameAlias) throws Exception {
+		commonSteps.UnblockContact(unblockAsUserNameAlias,
+				userToUnblockNameAlias);
+	}
+
 	@When("^(.*) accept all requests$")
 	public void AcceptAllIncomingConnectionRequests(String userToNameAlias)
 			throws Exception {
@@ -165,6 +172,25 @@ public class CommonOSXSteps {
 			String dstConversationName) throws Exception {
 		commonSteps.UserHotPingedConversation(hotPingFromUserNameAlias,
 				dstConversationName);
+	}
+
+	@When("^Contact (.*) sends image (.*) to (.*) conversation (.*)")
+	public void ContactSendImageToConversation(String imageSenderUserNameAlias,
+			String imageFileName, String conversationType,
+			String dstConversationName) throws Exception {
+		String imagePath = OSXPage.imagesPath + "/" + imageFileName;
+		Boolean isGroup = null;
+		if (conversationType.equals("single user")) {
+			isGroup = false;
+		} else if (conversationType.equals("group")) {
+			isGroup = true;
+		}
+		if (isGroup == null) {
+			throw new Exception(
+					"Incorrect type of conversation specified (single user | group) expected.");
+		}
+		commonSteps.UserSendsImageToConversation(imageSenderUserNameAlias,
+				imagePath, dstConversationName, isGroup);
 	}
 
 	@When("^I add contacts list users to Mac contacts$")
