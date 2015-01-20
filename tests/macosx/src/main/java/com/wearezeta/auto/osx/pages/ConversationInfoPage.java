@@ -44,6 +44,9 @@ public class ConversationInfoPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idLeaveConversationButton)
 	private WebElement leaveConversationButton;
 	
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathOpenSingleChatButton)
+	private WebElement openSingleChatButton;
+	
 	@FindBy(how = How.ID, using = OSXLocators.idConversationScrollArea)
 	private WebElement conversationScrollArea;
 	
@@ -55,6 +58,12 @@ public class ConversationInfoPage extends OSXPage {
 	
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathImagePopupCloseButton)
 	private WebElement imagePopupCloseButton;
+	
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathPendingButton)
+	private WebElement pendingButton;
+	
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathConnectToUserButton)
+	private WebElement connectToUserButton;
 	
 	public String currentConversationName;
 	
@@ -82,8 +91,10 @@ public class ConversationInfoPage extends OSXPage {
 		Screen s = new Screen();
 		try {
     		App.focus(CommonUtils.getOsxApplicationPathFromConfig(ConversationInfoPage.class));
-			s.click(Env.getMouseLocation());
-			s.click(Env.getMouseLocation());
+			if (!userIsNotExistInConversation(user))
+				s.click(Env.getMouseLocation());
+			if (!userIsNotExistInConversation(user))
+				s.click(Env.getMouseLocation());
 		} catch (HeadlessException e) {
 			e.printStackTrace();
 		} catch (FindFailed e) {
@@ -207,8 +218,30 @@ public class ConversationInfoPage extends OSXPage {
 		return singleChatBlockUserButton.isDisplayed();
 	}
 	
+	public boolean isOpenConversationButtonExists() {
+		return openSingleChatButton.isDisplayed();
+	}
+	
+	public boolean isRemoveUserFromConversationButtonExists() {
+		return removeUserFromConversationButton.isDisplayed();
+	}
+	
+	public boolean isConnectButtonExists() {
+		return connectToUserButton.isDisplayed();
+	}
+	
 	public boolean isUserNameDisplayed(String name) {
 		return singleChatUserNameField.getAttribute("AXValue").equals(name);
+	}
+	
+	public boolean isPendingButtonExists() {
+		return pendingButton.isDisplayed();
+	}
+	
+	public boolean isSentConnectionRequestMessageExists(String message) {
+		String xpath = String.format(OSXLocators.xpathFormatSentConnectionRequestMessage, message);
+		WebElement el = driver.findElement(By.xpath(xpath));
+		return el.isDisplayed();
 	}
 	
 	public boolean isEmailButtonExists(String email) {

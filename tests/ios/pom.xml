@@ -25,6 +25,7 @@
 		<iosAppiumLogPath>/Project/appium_ios.log</iosAppiumLogPath>
 		<defaultEmail>smoketester.ios@wearezeta.com</defaultEmail>
 		<iosClientInfoPlist>/Project/builds_info/Info_ios.plist</iosClientInfoPlist>
+		<deviceName>iPhone 6</deviceName>
 	</properties>
 
 	<dependencies>

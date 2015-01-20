@@ -74,7 +74,7 @@ Feature: Search
   #| Login   | Password    | Name    | Contact1    | Contact2    |
   #| aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
   
-  @staging @id754
+  @staging @id1394
   Scenario Outline: Start 1:1 chat with users from Top Connections
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users

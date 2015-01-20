@@ -32,6 +32,7 @@ Feature: People View
     And I tap on user name found on People picker page <Contact1>
     And I add in search field user name to connect to <Contact2>
     And I tap on user name found on People picker page <Contact2>
+    And I press back button
     And I tap on create conversation
     Then I see group chat page with users <Contact1>,<Contact2>
 
@@ -39,7 +40,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName           |
       | user1Email | user1Password | user1Name | user3Name | user2Name | PeoplePicker GroupChat2 |
 
-  @id321 @smoke
+  @id321 @smoke 
   Scenario Outline: Leave group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
