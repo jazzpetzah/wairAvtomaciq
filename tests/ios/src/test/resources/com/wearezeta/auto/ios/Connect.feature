@@ -217,7 +217,8 @@ Feature: Connect
     And I tap on connected user <Contact> on People picker page
     And I unblock user
     Then I see message in the dialog
-    And I see new photo in the dialog
+    Then I see User <Contact> Pinged message in the conversation
+    Then I see new photo in the dialog
     And I navigate back to conversations view
     And Contact <Contact> sends random message to user <Name>
     When I tap on contact name <Contact>
