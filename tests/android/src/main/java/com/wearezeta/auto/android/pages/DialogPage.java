@@ -156,7 +156,6 @@ public class DialogPage extends AndroidPage{
 	
 	public void tapPingBtn() throws InterruptedException {
 		refreshUITree();
-		System.out.println(driver.getPageSource());
 		pingBtn.click();
 		Thread.sleep(1000);
 	}
