@@ -266,7 +266,7 @@ Feature: Conversation
       | Login      | Password      | Name      | Contact   | SoundCloudLink                               |
       | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/djsliinkbbc/2-test-me |
 
-  @regression
+  @regression @id1048
   Scenario Outline: Drag image to conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
