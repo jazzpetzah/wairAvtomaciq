@@ -169,4 +169,12 @@ public final class OSXLocators {
 	public static final String xpathPeoplePopover = "//AXPopover";
 	
 	public static final String xpathImagePopupCloseButton = "//AXWindow[@AXRoleDescription='floating window']/AXButton[@AXRoleDescription='close button']";
+
+	public static final String xpathOpenSingleChatButton = "//AXPopover/AXButton[@AXTitle='OPEN CONVERSATION']";
+	
+	public static final String xpathPendingButton = "//AXPopover/AXButton[@AXTitle='PENDING']";
+
+	public static final String xpathConnectToUserButton = "//AXPopover/AXButton[@AXTitle='CONNECT']";
+	
+	public static final String xpathFormatSentConnectionRequestMessage = "//AXPopover//AXTextArea[@AXValue='%s']";
 }

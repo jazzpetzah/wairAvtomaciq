@@ -126,6 +126,17 @@ public class ConversationInfoPageSteps {
 		Assert.assertTrue(conversationInfo.isEmailButtonExists(email.toLowerCase()));
 	}
 
+	@Then("^I dont see (.*) email in Conversation info$")
+	public void IDontSeeContactEmailInConversationInfo(String contact) throws Throwable {
+		ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(contact);
+		contact = dstUser.getName();
+		String email = dstUser.getEmail();
+		Assert.assertNotNull("Can't find an e-mail for contact user " + contact, email);
+		ConversationInfoPage conversationInfo = CommonOSXSteps.senderPages.getConversationInfoPage();
+		log.debug("Looking for email " + email + " in single chat user info.");
+		Assert.assertFalse(conversationInfo.isEmailButtonExists(email.toLowerCase()));
+	}
+	
 	@Then("^I see (.*) photo in Conversation info$")
 	public void ISeeContactPhotoInConversationInfo(String photo) throws Throwable {
 		ConversationInfoPage conversationInfo = CommonOSXSteps.senderPages.getConversationInfoPage();
@@ -153,5 +164,28 @@ public class ConversationInfoPageSteps {
 	    Assert.assertTrue(CommonOSXSteps.senderPages.getConversationInfoPage().isBlockUserButtonExists());
 	}
 
-
+	@Then("^I see open conversation button$")
+	public void ISeeOpenConversationButton() {
+		Assert.assertTrue(CommonOSXSteps.senderPages.getConversationInfoPage().isOpenConversationButtonExists());
+	}
+	
+	@Then("^I see pending button$")
+	public void ISeePendingButton() {
+		Assert.assertTrue(CommonOSXSteps.senderPages.getConversationInfoPage().isPendingButtonExists());
+	}
+	
+	@Then("^I see connect button$")
+	public void ISeeConnectButton() {
+		Assert.assertTrue(CommonOSXSteps.senderPages.getConversationInfoPage().isConnectButtonExists());
+	}
+	
+	@Then("^I see remove person from conversation button$")
+	public void ISeeRemovePersonFromConversationButton() {
+		Assert.assertTrue(CommonOSXSteps.senderPages.getConversationInfoPage().isRemoveUserFromConversationButtonExists());
+	}
+	
+	@Then("^I see connection request message (.*)$")
+	public void ISeeConnectionRequestMessage(String message) {
+		Assert.assertTrue(CommonOSXSteps.senderPages.getConversationInfoPage().isSentConnectionRequestMessageExists(message));
+	}
 }
