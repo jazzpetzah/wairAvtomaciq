@@ -100,7 +100,12 @@ public class ContactListPageSteps {
 
 	@Then("^I see first item in contact list named (.*)$")
 	public void ISeeUserNameFirstInContactList(String value) throws Throwable {
-		value = usrMgr.findUserByNameOrNameAlias(value).getName();
+		try {
+			value = usrMgr.findUserByNameOrNameAlias(value).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+
 		Assert.assertTrue(PagesCollection.contactListPage
 				.isChatInContactList(value));
 	}

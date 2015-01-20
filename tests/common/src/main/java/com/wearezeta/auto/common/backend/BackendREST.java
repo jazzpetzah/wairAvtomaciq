@@ -20,6 +20,7 @@ import org.json.JSONObject;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource.Builder;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.AuthToken.AuthTokenIsNotSetException;
@@ -231,8 +232,12 @@ final class BackendREST {
 				MediaType.APPLICATION_JSON);
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("status", newStatus.toString());
-		final String output = httpPut(webResource, requestBody.toString(),
-				new int[] { HttpStatus.SC_OK, HttpStatus.SC_NO_CONTENT });
+		String output = "<NO CONTENT>";
+		try {
+			output = httpPut(webResource, requestBody.toString(), new int[] {
+					HttpStatus.SC_OK, HttpStatus.SC_NO_CONTENT });
+		} catch (UniformInterfaceException e) {
+		}
 		writeLog(new String[] {
 				"Output from Server ....  change Connect Request Status ",
 				output + "\n" });

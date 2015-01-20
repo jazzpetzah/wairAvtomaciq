@@ -29,9 +29,11 @@ Feature: Ping
     When I see Contact list with my name <Name>
     And I tap on group chat with name <GroupChatName>
     And User <Contact1> Ping in chat <GroupChatName> by BackEnd
+    And I wait for 3 seconds
     Then I see User <Contact1> Pinged message in the conversation
     And I see <Action1> icon in conversation
     And User <Contact1> HotPing in chat <GroupChatName> by BackEnd
+    And I wait for 3 seconds
     And I see User <Contact1> Pinged Again message in the conversation
     And I see <Action2> icon in conversation
 

@@ -15,7 +15,7 @@ from cli_handlers.cli_handler_base import get_handler, get_handler_names
 
 
 if __name__ == '__main__':
-    jenkins = Jenkins(os.getenv('JENKINS_INTERNAL_URL', 'http://192.168.2.10:8080'),
+    jenkins = Jenkins(os.getenv('JENKINS_URL', 'http://192.168.10.44:8080'),
                       os.getenv('JENKINS_USER', 'root'),
                       os.getenv('JENKINS_PASSWORD', 'aqa123456'))
     if len(sys.argv) < 2:

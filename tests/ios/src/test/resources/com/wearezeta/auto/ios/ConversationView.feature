@@ -123,7 +123,7 @@ Feature: Conversation View
     And I tap media link
     And I scroll media out of sight until media bar appears
     And I see media bar on dialog page
-    And I wait 130 seconds for media to stop playing
+    And I wait 140 seconds for media to stop playing
     Then I dont see media bar on dialog page
 
     Examples: 
@@ -174,11 +174,11 @@ Feature: Conversation View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
+    And I input more than 200 chars message and send it
     And I type the message
     And I scroll away the keyboard
     And I navigate back to conversations view
     And I tap on contact name <Contact>
-    And I tap on text input
     And I tap on text input
     And I send the message
     Then I see my message in the dialog
@@ -229,7 +229,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id409
+  @regression @id409
   Scenario Outline: Send special chars (German)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

@@ -12,6 +12,7 @@ import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.backend.ConnectionStatus;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.OSXAddressBookHelpers;
 
 public final class CommonSteps {
@@ -134,6 +135,22 @@ public final class CommonSteps {
 				userToBlock.getId(), ConnectionStatus.Blocked);
 	}
 
+	public void UnblockContact(String unblockAsUserNameAlias,
+			String userToUnblockNameAlias) throws Exception {
+		ClientUser unblockAsUser = usrMgr
+				.findUserByNameOrNameAlias(unblockAsUserNameAlias);
+		ClientUser userToUnblock = usrMgr
+				.findUserByNameOrNameAlias(userToUnblockNameAlias);
+		try {
+			BackendAPIWrappers.sendConnectRequest(unblockAsUser, userToUnblock,
+					"connect", CommonSteps.CONNECTION_MESSAGE);
+		} catch (BackendRequestException e) {
+			// Ignore silently
+		}
+		BackendAPIWrappers.changeConnectRequestStatus(unblockAsUser,
+				userToUnblock.getId(), ConnectionStatus.Accepted);
+	}
+
 	public void AcceptAllIncomingConnectionRequests(String userToNameAlias)
 			throws Exception {
 		ClientUser userTo = usrMgr.findUserByNameOrNameAlias(userToNameAlias);
@@ -144,11 +161,13 @@ public final class CommonSteps {
 			String dstConversationName) throws Exception {
 		ClientUser pingFromUser = usrMgr
 				.findUserByNameOrNameAlias(pingFromUserNameAlias);
+		dstConversationName = usrMgr.replaceAliasesOccurences(
+				dstConversationName, FindBy.NAME_ALIAS);
 		pingId = BackendAPIWrappers.sendPingToConversation(pingFromUser,
 				dstConversationName);
 		Thread.sleep(1000);
 	}
-	
+
 	public void UserSentMessageToUser(String msgFromUserNameAlias,
 			String dstUserNameAlias, String message) throws Exception {
 		ClientUser msgFromUser = usrMgr
@@ -162,9 +181,29 @@ public final class CommonSteps {
 			String dstConversationName) throws Exception {
 		ClientUser hotPingFromUser = usrMgr
 				.findUserByNameOrNameAlias(hotPingFromUserNameAlias);
+		dstConversationName = usrMgr.replaceAliasesOccurences(
+				dstConversationName, FindBy.NAME_ALIAS);
 		BackendAPIWrappers.sendHotPingToConversation(hotPingFromUser,
 				dstConversationName, pingId);
 		Thread.sleep(1000);
+	}
+
+	public void UserSendsImageToConversation(String imageSenderUserNameAlias,
+			String imagePath, String dstConversationName, Boolean isGroup)
+			throws Exception {
+		ClientUser imageSender = usrMgr
+				.findUserByNameOrNameAlias(imageSenderUserNameAlias);
+		if (!isGroup) {
+			ClientUser imageReceiver = usrMgr
+					.findUserByNameOrNameAlias(dstConversationName);
+			BackendAPIWrappers.sendPictureToSingleUserConversation(imageSender,
+					imageReceiver, imagePath);
+		} else {
+			dstConversationName = usrMgr.replaceAliasesOccurences(
+					dstConversationName, FindBy.NAME_ALIAS);
+			BackendAPIWrappers.sendPictureToChatByName(imageSender,
+					dstConversationName, imagePath);
+		}
 	}
 
 	public void AddContactsUsersToMacContacts() throws Exception {

@@ -66,7 +66,7 @@ public class PeoplePickerPage extends AndroidPage {
 	public void typeTextInPeopleSearch(String contactName) throws InterruptedException
 	{
 		pickerSearch.sendKeys(contactName);
-		driver.navigate().back();
+		driver.sendKeyEvent(66);
 	}
 	
 	public void addTextToPeopleSearch(String contactName) throws InterruptedException
@@ -160,6 +160,7 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public DialogPage clickOnAddToCoversationButton() throws Exception{
+		driver.navigate().back();
 		addToConversationsButton.click();
 		return new DialogPage(url, path);
 	}

@@ -47,11 +47,14 @@ public class CommonOSXSteps {
 
 	public static PagesCollection senderPages;
 
-	public static void resetBackendSettingsIfOverwritten() throws IOException, Exception {
-		if (!OSXCommonUtils.isBackendTypeSet(CommonUtils.getBackendType(CommonOSXSteps.class))) {
+	public static void resetBackendSettingsIfOverwritten() throws IOException,
+			Exception {
+		if (!OSXCommonUtils.isBackendTypeSet(CommonUtils
+				.getBackendType(CommonOSXSteps.class))) {
 			log.debug("Backend setting were overwritten. Trying to restart app.");
 			senderPages.getMainMenuPage().quitZClient();
-			OSXCommonUtils.setZClientBackend(CommonUtils.getBackendType(CommonOSXSteps.class));
+			OSXCommonUtils.setZClientBackend(CommonUtils
+					.getBackendType(CommonOSXSteps.class));
 			senderPages.getLoginPage().startApp();
 		}
 	}
@@ -146,6 +149,13 @@ public class CommonOSXSteps {
 		commonSteps.BlockContact(blockAsUserNameAlias, userToBlockNameAlias);
 	}
 
+	@When("^User (.*) unblocks user (.*)$")
+	public void UnblockContact(String unblockAsUserNameAlias,
+			String userToUnblockNameAlias) throws Exception {
+		commonSteps.UnblockContact(unblockAsUserNameAlias,
+				userToUnblockNameAlias);
+	}
+
 	@When("^(.*) accept all requests$")
 	public void AcceptAllIncomingConnectionRequests(String userToNameAlias)
 			throws Exception {
@@ -166,6 +176,25 @@ public class CommonOSXSteps {
 				dstConversationName);
 	}
 
+	@When("^Contact (.*) sends image (.*) to (.*) conversation (.*)")
+	public void ContactSendImageToConversation(String imageSenderUserNameAlias,
+			String imageFileName, String conversationType,
+			String dstConversationName) throws Exception {
+		String imagePath = OSXPage.imagesPath + "/" + imageFileName;
+		Boolean isGroup = null;
+		if (conversationType.equals("single user")) {
+			isGroup = false;
+		} else if (conversationType.equals("group")) {
+			isGroup = true;
+		}
+		if (isGroup == null) {
+			throw new Exception(
+					"Incorrect type of conversation specified (single user | group) expected.");
+		}
+		commonSteps.UserSendsImageToConversation(imageSenderUserNameAlias,
+				imagePath, dstConversationName, isGroup);
+	}
+
 	@When("^I add contacts list users to Mac contacts$")
 	public void AddContactsUsersToMacContacts() throws Exception {
 		commonSteps.AddContactsUsersToMacContacts();
@@ -175,20 +204,21 @@ public class CommonOSXSteps {
 	public void IRemoveContactsListUsersFromMacContact() throws Exception {
 		commonSteps.IRemoveContactsListUsersFromMacContact();
 	}
-	
+
 	@When("^I change user (.*) avatar picture from file (.*)$")
-	public void IChangeUserAvatarPictureFromFile(String user, String picture) throws Exception {
+	public void IChangeUserAvatarPictureFromFile(String user, String picture)
+			throws Exception {
 		String picturePath = OSXPage.imagesPath + "/" + picture;
 		try {
-			user = usrMgr.findUserByNameOrNameAlias(user)
-					.getName();
+			user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		} catch (NoSuchUserException e) {
 			// do nothing
 		}
-		log.debug("Setting avatar for user " + user + " from image " + picturePath);
+		log.debug("Setting avatar for user " + user + " from image "
+				+ picturePath);
 		commonSteps.IChangeUserAvatarPicture(user, picturePath);
 	}
-	
+
 	@After
 	public void tearDown() throws Exception {
 		senderPages.closeAllPages();

@@ -42,6 +42,9 @@ public class LoginPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idSendProblemReportButton)
 	private WebElement sendProblemReportButton;
 	
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathWrongCredentialsMessage)
+	private WebElement wrongCredentialsMessage;
+	
 	private String login;
 	
 	private String password;
@@ -174,6 +177,27 @@ public class LoginPage extends OSXPage {
 		}
 		long endDate = new Date().getTime();
 		log.debug("Sending problem report took " + (endDate - startDate) + "ms");
+	}
+	
+	public boolean isWrongCredentialsMessageDisplayed() {
+		try {
+			String text = wrongCredentialsMessage.getText();
+			log.debug("Found element with text: " + text);
+			return true;
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+	}
+	
+	public void setPasswordUsingScript(String password) {
+		String script = "tell application \"Wire\" to activate\n" +
+				"tell application \"System Events\"\n" +
+				"tell process \"Wire\"\n" +
+				"set value of attribute \"AXFocused\" of text field 1 of window 1 to true\n" +
+				"keystroke \"" + password + "\"\n" +
+				"end tell\n" +
+				"end tell";
+		driver.executeScript(script);
 	}
 	
 	public RemoteWebDriver getDriver() {
