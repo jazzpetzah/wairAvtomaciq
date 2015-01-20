@@ -89,6 +89,10 @@ public class CommonUtils {
 	public static String getBackendType(Class<?> c) throws IOException {
 		return getValueFromCommonConfig(c, "backendType");
 	}
+	
+	public static String getDeviceName(Class<?> c) throws IOException {
+		return getValueFromConfig(c, "deviceName");
+	}
 
 	public static String getImagePath(Class<?> c) throws IOException {
 		String path = getValueFromConfig(c, "defaultImagesPath") + USER_IMAGE;

@@ -73,11 +73,13 @@ public abstract class IOSPage extends BasePage {
 	
 	public IOSPage(String URL, String path, boolean acceptAlerts) throws MalformedURLException {
 		String bt = "staging";
+		String deviceName = "";
 		
 		try {
 			setImagesPath(CommonUtils.getSimulatorImagesPathFromConfig(this
 					.getClass()));
 			bt = CommonUtils.getBackendType(this.getClass());
+			deviceName = CommonUtils.getDeviceName(this.getClass());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -85,7 +87,7 @@ public abstract class IOSPage extends BasePage {
 		capabilities.setCapability("platformName", "iOS");
 		
 		capabilities.setCapability("app", path);
-		capabilities.setCapability("deviceName", "iPhone 6");
+		capabilities.setCapability("deviceName", deviceName);
 		capabilities.setCapability("platformVersion", "8.1");
 		capabilities.setCapability("processArguments", "--args -TutorialOverlaysEnabled 0 -ZMBackendEnvironmentType " + bt);
 		if (false == acceptAlerts) {
