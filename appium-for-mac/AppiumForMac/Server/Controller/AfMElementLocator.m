@@ -369,6 +369,42 @@
 
     }
     
+    if (self.strategy == AppiumMacLocatoryStrategyCssSelector)
+    {
+        NSArray *params = [self.value componentsSeparatedByString:@","];
+        NSLog(@"%@", params);
+        AfMElementLocator *windowLocator = [AfMElementLocator locatorWithSession:self.session using:params[0] value:params[1]];
+        
+        PFUIElement *matchedElement = nil;
+        if (windowLocator != nil) {
+            PFUIElement *window = [windowLocator findUsingBaseElement:nil statusCode:statusCode];
+            if (window != nil) {
+                int winCenterX =
+                window.AXPosition.pointValue.x + window.AXSize.pointValue.x/2;
+                int winCenterY =
+                window.AXPosition.pointValue.y + window.AXSize.pointValue.y/2;
+                int lookAtX = winCenterX + [params[2] intValue];
+                int lookAtY = winCenterY + [params[3] intValue];
+                
+                NSError *error = nil;
+                PFUIElement *newElement = [PFUIElement elementAtPoint:NSMakePoint(lookAtX, lookAtY) withDelegate:nil error:&error];
+                matchedElement = newElement;
+                
+                *statusCode = kAfMStatusCodeSuccess;
+                [results addObject:matchedElement];
+            } else {
+                *statusCode = kAfMStatusCodeNoSuchWindow;
+                return;
+            }
+            if (matchedElement == nil) {
+                *statusCode = kAfMStatusCodeNoSuchElement;
+                return;
+            }
+            *statusCode = kAfMStatusCodeUnknownError;
+            return;
+        }
+    }
+    
     // check if this the element we are looking for
     if ([self matchesElement:baseElement])
     {
