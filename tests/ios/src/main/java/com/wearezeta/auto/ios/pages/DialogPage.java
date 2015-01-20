@@ -200,6 +200,12 @@ public class DialogPage extends IOSPage{
 		return GetImageCell(messagesList);
 	}
 	
+	public int getNumberOfImages(){
+		List<WebElement> conversationImages = driver.findElements(By
+				.xpath(IOSLocators.xpathOtherConversationCellFormat));
+		return conversationImages.size();
+	}
+	
 	public void startMediaContent(){
 		boolean flag = DriverUtils.waitUntilElementAppears(driver, By.xpath(IOSLocators.xpathMediaConversationCell));
 		if (flag){

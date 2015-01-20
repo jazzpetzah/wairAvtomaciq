@@ -43,6 +43,7 @@ public class DialogPageSteps {
 	private static String onlySpacesMessage = "     ";
 	public static long memTime;
 	public String pingId;
+	private int beforeNumberOfImages = 0;
 
 	@When("^I see dialog page$")
 	public void WhenISeeDialogPage() throws Exception {
@@ -234,10 +235,29 @@ public class DialogPageSteps {
 
 	@Then("^I see new photo in the dialog$")
 	public void ISeeNewPhotoInTheDialog() throws Throwable {
-		String dialogLastMessage = PagesCollection.dialogPage
-				.getImageCellFromDialog();
-		String imageCell = "ImageCell";
-		Assert.assertEquals(imageCell, dialogLastMessage);
+//		String dialogLastMessage = PagesCollection.dialogPage
+//				.getImageCellFromDialog();
+//		String imageCell = "ImageCell";
+//		Assert.assertEquals(imageCell, dialogLastMessage);
+		
+		int afterNumberOfImages = -1;
+
+		boolean isNumberIncreased = false;
+		for (int i = 0; i < 3; i++) {
+			afterNumberOfImages = PagesCollection.dialogPage.getNumberOfImages();
+			if (afterNumberOfImages == beforeNumberOfImages + 1) {
+				isNumberIncreased = true;
+				break;
+			}
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+			}
+		}
+
+		Assert.assertTrue("Incorrect images count: before - "
+				+ beforeNumberOfImages + ", after - " + afterNumberOfImages,
+				isNumberIncreased);
 	}
 
 	@When("I type and send long message and media link (.*)")
