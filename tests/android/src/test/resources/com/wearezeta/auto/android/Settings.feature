@@ -37,16 +37,12 @@ Feature: Settings
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @id90 @id91 @id92 @regression
+  @id90 @id91 @id92 @regression 
   Scenario Outline: Open Close About page from Settings page
     Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
-    #workaround
-    And I minimize the application
-    And I restore the application
-    #workaround
     And I tap options button
     And I tap about button
     Then I see About page
