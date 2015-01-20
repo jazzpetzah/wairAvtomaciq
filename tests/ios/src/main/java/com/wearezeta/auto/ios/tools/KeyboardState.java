@@ -2,7 +2,7 @@ package com.wearezeta.auto.ios.tools;
 
 import java.util.regex.Pattern;
 
-import com.wearezeta.auto.common.driver.ZetaDriver;
+import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public abstract class KeyboardState {
 	private static final String TAP_KEYBOARD_BUTTON = "target.frontMostApp().keyboard().elements()[\"%s\"].tap();";
@@ -10,9 +10,9 @@ public abstract class KeyboardState {
 	public static final String MORE_LETTERS = "more, letters";
 	public static final String MORE_SYMBOLS = "more, symbols";
 	public static final String SHIFT = "shift";
-	private ZetaDriver driver = null;
+	private ZetaIOSDriver driver = null;
 
-	protected KeyboardState(ZetaDriver driver) {
+	protected KeyboardState(ZetaIOSDriver driver) {
 
 		this.driver = driver;
 	}

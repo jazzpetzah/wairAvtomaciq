@@ -81,7 +81,7 @@ public class ConversationPage extends OSXPage {
 	private WebElement conversationView;
 
 	public ConversationPage(String URL, String path)
-			throws MalformedURLException {
+			throws IOException {
 
 		super(URL, path);
 	}

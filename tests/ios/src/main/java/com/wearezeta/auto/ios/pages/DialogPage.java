@@ -270,7 +270,7 @@ public class DialogPage extends IOSPage{
 		return returnBySwipe(SwipeDirection.UP);
 	}
 	
-	public DialogPage swipeDialogPageDown(int time) throws Throwable {		
+	public DialogPage swipeDialogPageDown(int time) throws Exception {		
 		DialogPage page = null;
 		if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true){
 			DriverUtils.swipeDown(driver, conversationPage, time);

@@ -3,38 +3,38 @@ package com.wearezeta.auto.android.pages;
 import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
+import com.wearezeta.auto.common.locators.ZetaHow;
 
 public class RegistrationPage extends AndroidPage {
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogTakePhotoButton")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogTakePhotoButton")
 	private WebElement cameraButton;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConfirmButton")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConfirmButton")
 	private WebElement confirmImageButton;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idNameEdit")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idNameEdit")
 	private WebElement nameField;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idEmailField")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idEmailField")
 	private WebElement emailField;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.RegistractionPage.CLASS_NAME, locatorKey = "idNewPasswordField")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.RegistractionPage.CLASS_NAME, locatorKey = "idNewPasswordField")
 	private WebElement passwordField;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.RegistractionPage.CLASS_NAME, locatorKey = "idCreateUserBtn")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.RegistractionPage.CLASS_NAME, locatorKey = "idCreateUserBtn")
 	private WebElement createUserBtn;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.RegistractionPage.CLASS_NAME, locatorKey = "idVerifyEmailBtn")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.RegistractionPage.CLASS_NAME, locatorKey = "idVerifyEmailBtn")
 	private WebElement verifyEmailBtn;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.RegistractionPage.CLASS_NAME, locatorKey = "idNextArrow")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.RegistractionPage.CLASS_NAME, locatorKey = "idNextArrow")
 	private WebElement nextArrow;
 	
 	private String url;
@@ -114,6 +114,8 @@ public class RegistrationPage extends AndroidPage {
 	}
 
 	public boolean isConfirmationVisible() {
+		refreshUITree();
+		wait.until(ExpectedConditions.visibilityOf(verifyEmailBtn));
 		return DriverUtils.isElementDisplayed(verifyEmailBtn);
 	}
 

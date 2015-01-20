@@ -299,7 +299,7 @@ public final class BackendAPIWrappers {
 		return conversationId;
 	}
 
-	private static ClientUser tryLoginByUser(ClientUser user) throws Exception {
+	public static ClientUser tryLoginByUser(ClientUser user) throws Exception {
 		if (user.getAccessToken() != null) {
 			try {
 				BackendREST.getUserInfo(generateAuthToken(user));

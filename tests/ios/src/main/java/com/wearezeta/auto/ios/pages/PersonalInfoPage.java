@@ -117,7 +117,7 @@ public class PersonalInfoPage extends IOSPage{
 		settingsChangePasswordButton.click();
 	}
 	
-	public LoginPage clickSignoutButton() throws MalformedURLException{
+	public LoginPage clickSignoutButton() throws IOException{
 		LoginPage page;
 		signoutButton.click();
 		page = new LoginPage(url, path);

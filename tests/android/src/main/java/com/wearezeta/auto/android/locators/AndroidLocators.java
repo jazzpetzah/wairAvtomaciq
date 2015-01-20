@@ -43,7 +43,7 @@ public final class AndroidLocators {
 		
 		public static final String idWelcomeButtonsContainer = LOCATORS_PACKAGE + ":id/cm__choose";
 		
-		public static final String idWelcomeSlogan = LOCATORS_PACKAGE + ":id/tv__welcome__slogan";
+		public static final String idWelcomeSlogan = LOCATORS_PACKAGE + ":id/tv__welcome__terms_of_service";
 		
 		public static final String idLoginError = LOCATORS_PACKAGE + ":id/ttv__sign_in__login_failed__guidance";
 		
@@ -172,9 +172,9 @@ public final class AndroidLocators {
 		
 		public static final String xpathCloseCursor = "//android.support.v4.view.ViewPager[1]/android.widget.ListView[1]/android.widget.FrameLayout[1]";
 	
-		public static final String xpathAddPicture = "//android.support.v4.view.ViewPager[1]/android.widget.LinearLayout[1]/android.widget.TextView[1]";
+		public static final String xpathAddPicture = "//android.widget.FrameLayout/android.widget.LinearLayout/android.widget.TextView[1]";
 		
-		public static final String xpathPing = "//android.support.v4.view.ViewPager[1]/android.widget.LinearLayout[1]/android.widget.TextView[2]";
+		public static final String xpathPing = "//android.widget.FrameLayout/android.widget.LinearLayout/android.widget.TextView[2]";
 		
 		public static final String xpathFormatSpecificMessage = "//android.widget.TextView[@resource-id='" + LOCATORS_PACKAGE + ":id/ltv__row_conversation__message' and @text='%s']";
 	
@@ -296,7 +296,7 @@ public final class AndroidLocators {
 		
 		public static final String idCreateUserBtn = LOCATORS_PACKAGE + ":id/zb__sign_up__create_account";
 		
-		public static final String idVerifyEmailBtn = LOCATORS_PACKAGE + ":id/gtv__envelope";
+		public static final String idVerifyEmailBtn = LOCATORS_PACKAGE + ":id/ttv__sign_up__resend";
 		
 		public static final String idNewPasswordField = LOCATORS_PACKAGE + ":id/tet__sign_up__password";
 		

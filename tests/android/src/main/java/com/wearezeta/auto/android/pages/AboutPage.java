@@ -3,10 +3,10 @@ package com.wearezeta.auto.android.pages;
 import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.SwipeDirection;
+import com.wearezeta.auto.common.locators.ZetaHow;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
 
 public class AboutPage extends AndroidPage {
@@ -14,9 +14,9 @@ public class AboutPage extends AndroidPage {
 	private String url;
 	private String path;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.AboutPage.CLASS_NAME, locatorKey = "idAboutLogo")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.AboutPage.CLASS_NAME, locatorKey = "idAboutLogo")
 	private WebElement aboutLogo;
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.AboutPage.CLASS_NAME, locatorKey = "idAboutClose")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.AboutPage.CLASS_NAME, locatorKey = "idAboutClose")
 	private WebElement aboutClose;
 	
 	public AboutPage(String URL, String path) throws Exception {

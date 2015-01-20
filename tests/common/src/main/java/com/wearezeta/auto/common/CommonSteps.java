@@ -238,4 +238,13 @@ public final class CommonSteps {
 				usrMgr.findUserByNameOrNameAlias(userNameAlias),
 				AccentColor.getByName(colorName));
 	}
+
+	public void ThereAreNSharedUsersWithNamePrefix(int count, String namePrefix)
+			throws Exception {
+		usrMgr.appendSharedUsers(namePrefix, count);
+	}
+
+	public void UserXIsMe(String nameAlias) throws Exception {
+		usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(nameAlias));
+	}
 }
