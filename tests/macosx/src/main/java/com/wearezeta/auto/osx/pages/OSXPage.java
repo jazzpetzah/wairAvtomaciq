@@ -25,7 +25,7 @@ public class OSXPage extends BasePage {
 	public OSXPage(String URL, String path, boolean doNavigate) throws IOException {
 		DesiredCapabilities capabilities = new DesiredCapabilities(); 
         capabilities.setCapability(CapabilityType.BROWSER_NAME, ""); 
-        capabilities.setCapability(CapabilityType.PLATFORM, CommonUtils.PLATFORM_NAME_OSX); 
+        capabilities.setCapability(CapabilityType.PLATFORM, CommonUtils.PLATFORM_NAME_OSX.toUpperCase()); 
         capabilities.setCapability("platformName", CommonUtils.PLATFORM_NAME_OSX); 
         super.InitConnection(URL, capabilities);
 
