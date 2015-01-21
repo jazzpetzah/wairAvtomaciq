@@ -61,7 +61,10 @@ public class App {
 			testcasesCount += existingFeature.getTestcases(includeTags,
 					excludeTags).size();
 		}
-		final int maxTestcasesCountPerFeature = testcasesCount / divider;
+		int maxTestcasesCountPerFeature = testcasesCount / divider;
+		if (maxTestcasesCountPerFeature == 0) {
+			maxTestcasesCountPerFeature = testcasesCount;
+		}
 
 		Map<String, Integer> splittedFeaturesMapping = new LinkedHashMap<String, Integer>();
 		for (GherkinFile existingFeature : existingFeatures) {
