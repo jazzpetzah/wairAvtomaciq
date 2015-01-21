@@ -240,6 +240,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		wait.until(ExpectedConditions.visibilityOf(groupChatName));
 		WebElement cn = driver.findElement(By.xpath(String.format(AndroidLocators.ContactListPage.xpathContacts, contact.toUpperCase())));
 		cn.click();
+		refreshUITree();
 		if(connectToHeader.size()>0){
 			return new ConnectToPage(url, path);
 		}
