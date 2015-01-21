@@ -82,6 +82,7 @@ Feature: Search
     Given Contact <Name> send message to user <Contact>
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
+    And I wait for 30 seconds
     And I swipe down contact list
     And I see People picker page
     #And I re-enter the people picker if top people list is not there
@@ -103,12 +104,14 @@ Feature: Search
     Given Contact <Name> send message to user <Contact>
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
+    And I wait for 30 seconds
     And I swipe down contact list
     And I see People picker page
     #And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on 2 top connections
     And I click Create Conversation button on People picker page
+    And I wait for 2 seconds
     And I swipe up on group chat page
     And I change group conversation name to <ConvoName>
     And I exit the group info page
