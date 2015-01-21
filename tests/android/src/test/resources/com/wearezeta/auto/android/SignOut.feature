@@ -1,6 +1,6 @@
 Feature: Sign Out
 
-  @id329 @smoke @torun
+  @id329 @smoke
   Scenario Outline: Sign out from ZClient
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
