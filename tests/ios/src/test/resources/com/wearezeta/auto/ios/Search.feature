@@ -74,7 +74,7 @@ Feature: Search
   #| Login   | Password    | Name    | Contact1    | Contact2    |
   #| aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
   
-  @staging @id1394
+  @regression @id1394
   Scenario Outline: Start 1:1 chat with users from Top Connections
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -96,7 +96,7 @@ Feature: Search
       | Login      | Password      | Name      | UserCount | Contact   |
       | user1Email | user1Password | user1Name | 10        | user2Name |
 
-  @id1150 @staging
+  @id1150 @regression
   Scenario Outline: Start group chat with users from Top Connections
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
