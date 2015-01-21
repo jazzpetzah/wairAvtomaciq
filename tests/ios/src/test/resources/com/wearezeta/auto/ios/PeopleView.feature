@@ -237,10 +237,11 @@ Feature: People View
     And I press Add button
     And I see People picker page
     And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact2>
+    #And I input in People picker search field user name <Contact2>
     And I see user <Contact2> found on People picker page
     And I don't see Add to conversation button
     And I click on connected user <Contact2> avatar on People picker page
+    And I see user <Contact3> found on People picker page
     And I click on connected user <Contact3> avatar on People picker page
     And I click on Go button
     And I see group chat page with 3 users <Contact1> <Contact2> <Contact3>
