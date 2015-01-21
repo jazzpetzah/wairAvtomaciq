@@ -25,7 +25,9 @@ public final class AndroidLocators {
 		
 		public static final String idLoginButton = LOCATORS_PACKAGE + ":id/zb__sign_in__button";
 		
-		public static final String idLoginPasswordInput = LOCATORS_PACKAGE + ":id/tet__profile__guided";
+		public static final String xpathLoginInput = "//android.widget.EditText[ancestor::android.widget.LinearLayout[contains(@resource-id,'get__sign_in__email')]]";
+		
+		public static final String xpathPasswordInput =  "//android.widget.EditText[ancestor::android.widget.LinearLayout[contains(@resource-id,'get__sign_in__password')]]";
 		
 		public static final String xpathLoginPasswordInput42 = "//android.widget.EditText";
 		
