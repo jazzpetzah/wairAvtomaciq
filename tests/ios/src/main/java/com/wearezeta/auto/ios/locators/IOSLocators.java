@@ -376,7 +376,7 @@ public final class IOSLocators {
 	//Contact list locator
 	////////////////////////////
 	
-	public static final String xpathPendingRequest = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[contains(@name,' waiting')]/UIAStaticText[1]";
+	public static final String xpathPendingRequest = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[2]/UIACollectionCell[contains(@name,' waiting')]/UIAStaticText[1]";
 	
 	////////////////////////////////
 	//Pending requests page locators
