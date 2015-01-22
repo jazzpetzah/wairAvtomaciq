@@ -12,12 +12,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import javax.ws.rs.core.UriBuilderException;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.wearezeta.auto.common.CommonSteps;
+import com.wearezeta.auto.common.backend.AuthToken.AuthTokenIsNotSetException;
 import com.wearezeta.auto.common.email.EmailHeaders;
 import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.email.MBoxChangesListener;
@@ -473,5 +477,37 @@ public final class BackendAPIWrappers {
 		BackendREST.updateSelfInfo(generateAuthToken(user), color.getId(),
 				null, null);
 		user.setAccentColor(color);
+	}
+
+	public static void updateConvLastReadState(ClientUser user, String convId,
+			String lastReadEvent) throws Exception {
+		// can be used to override last_read event or use
+		// getLastEventFromConversation to set the last read to the last event
+		tryLoginByUser(user);
+		BackendREST.updateConvSelfInfo(generateAuthToken(user), convId,
+				lastReadEvent, null, null);
+	}
+
+	public static void updateConvMutedState(ClientUser user, String convId,
+			boolean muted) throws Exception {
+		tryLoginByUser(user);
+		BackendREST.updateConvSelfInfo(generateAuthToken(user), convId, null,
+				muted, null);
+	}
+
+	public static void archiveUserConv(ClientUser ownerUser,
+			ClientUser archivedUser) throws Exception {
+		tryLoginByUser(ownerUser);
+		BackendREST.updateConvSelfInfo(generateAuthToken(ownerUser),
+				getConversationWithSingleUser(ownerUser, archivedUser), null,
+				null, true);
+	}
+
+	public static void unarchiveUserConv(ClientUser ownerUser,
+			ClientUser archivedUser) throws Exception {
+		tryLoginByUser(ownerUser);
+		BackendREST.updateConvSelfInfo(generateAuthToken(ownerUser),
+				getConversationWithSingleUser(ownerUser, archivedUser), null,
+				null, false);
 	}
 }

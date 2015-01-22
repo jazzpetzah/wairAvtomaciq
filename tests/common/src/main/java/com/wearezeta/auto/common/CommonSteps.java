@@ -151,6 +151,22 @@ public final class CommonSteps {
 				userToUnblock.getId(), ConnectionStatus.Accepted);
 	}
 
+	public void ArchiveConversationWithUser(String usersToNameAliases,
+			String archiveConversationWithUser) throws Exception {
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(usersToNameAliases);
+		ClientUser archivedUser = usrMgr
+				.findUserByNameOrNameAlias(archiveConversationWithUser);
+		BackendAPIWrappers.archiveUserConv(user, archivedUser);
+	}
+
+	public void UnarchiveConversationWithUser(String usersToNameAliases,
+			String archiveConversationWithUser) throws Exception {
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(usersToNameAliases);
+		ClientUser archivedUser = usrMgr
+				.findUserByNameOrNameAlias(archiveConversationWithUser);
+		BackendAPIWrappers.unarchiveUserConv(user, archivedUser);
+	}
+
 	public void AcceptAllIncomingConnectionRequests(String userToNameAlias)
 			throws Exception {
 		ClientUser userTo = usrMgr.findUserByNameOrNameAlias(userToNameAlias);

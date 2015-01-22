@@ -16,3 +16,19 @@ Feature: Conversation List
     #Examples: 
       #| Login   | Password    | Name    | Contact1    |
       #| aqaUser | aqaPassword | aqaUser | aqaContact1 |
+
+@staging @id1333
+  Scenario Outline: Unarchive conversation
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <ArchivedUser>
+    Given Myself archived conversation with <ArchivedUser>
+    Given I Sign in using login <Login> and password <Password>
+	And I see Contact list with my name <Name>
+	And I open archived conversations
+	And I tap on contact name <ArchivedUser>
+	And I navigate back to conversations view
+	Then I see first item in contact list named <ArchivedUser>
+	
+    Examples: 
+      | Login      | Password      | Name      | ArchivedUser   |
+      | user1Email | user1Password | user1Name | user2Name      |

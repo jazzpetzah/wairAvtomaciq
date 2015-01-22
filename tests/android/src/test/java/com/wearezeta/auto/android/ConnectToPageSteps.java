@@ -63,7 +63,7 @@ public class ConnectToPageSteps {
 	}
 	
 	@When("^I type Connect request \"(.*)\"$")
-	public void WhenITypeConnectRequest(String message){
+	public void WhenITypeConnectRequest(String message) throws Exception{
 		PagesCollection.connectToPage.typeConnectionRequies(message);
 	}
 	

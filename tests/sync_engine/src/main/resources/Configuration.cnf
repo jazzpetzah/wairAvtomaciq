@@ -48,3 +48,4 @@ pathToUserpic=${Root}/${pathToUserpic}
 iosClientInfoPlist=${iosClientInfoPlist}
 iosAppiumLogPath=${iosAppiumLogPath}
 iosImagesPath=${Root}/${iosImagesPath}
+deviceName=${deviceName}

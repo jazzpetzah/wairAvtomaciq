@@ -187,21 +187,12 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 	
 	public boolean isContactExists(String contact) {
-		boolean flag = false;
+		boolean flag = true;
 		refreshUITree();
-		
-		for(WebElement user : linearLayout)
-		{
-			List<WebElement> elements = user.findElements(By.className(AndroidLocators.CommonLocators.classNameTextView));
-			for(WebElement element : elements){
-					if(element.getText() != null && element.getText().equals((contact.toUpperCase()))){
-						flag = true;
-						break;
-					}
-			}
-			if(flag){
-				break;
-			}
+		wait.until(ExpectedConditions.visibilityOf(groupChatName));
+		List<WebElement> cn = driver.findElements(By.xpath(String.format(AndroidLocators.ContactListPage.xpathContacts, contact.toUpperCase())));
+		if(cn.isEmpty()){
+			flag = false;
 		}
 		return flag;
 	}	
