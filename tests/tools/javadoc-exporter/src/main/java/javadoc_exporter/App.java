@@ -7,11 +7,11 @@ import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javadoc_exporter.confluence_rest_api.ConfluenceAPIWrappers;
 import javadoc_exporter.model.StepsContainer;
@@ -71,9 +71,10 @@ public class App {
 			List<String> stepsFilesPaths) throws Exception {
 		final String pageTitle = extractPageTitle(containerFilePath);
 		final String pageBody = extractPageBody(containerFilePath);
-		final long containerPageId = ConfluenceAPIWrappers
-				.updateConfluenceChildPageIfNecessary(parentPageId, spaceKey,
-						pageTitle, pageBody);
+		final long containerPageId = ConfluenceAPIWrappers.createChildPage(
+				parentPageId, spaceKey, pageTitle, pageBody);
+		System.out.println(String.format("Created container page '%s'",
+				pageTitle));
 
 		Map<String, String> stepsToPublish = new LinkedHashMap<String, String>();
 		for (String stepFilePath : stepsFilesPaths) {
@@ -81,13 +82,14 @@ public class App {
 			final String stepPageBody = extractPageBody(stepFilePath);
 			stepsToPublish.put(stepPageTitle, stepPageBody);
 		}
-		ConfluenceAPIWrappers.removeExtraChildren(containerPageId,
-				stepsToPublish.keySet());
 
-		for (Map.Entry<String, String> stepInfo : stepsToPublish.entrySet()) {
-			ConfluenceAPIWrappers.updateConfluenceChildPageIfNecessary(
-					containerPageId, spaceKey, stepInfo.getKey(),
-					stepInfo.getValue());
+		final SortedSet<String> sortedStepNames = new TreeSet<String>(
+				stepsToPublish.keySet());
+		for (String stepName : sortedStepNames) {
+			ConfluenceAPIWrappers.createChildPage(containerPageId, spaceKey,
+					stepName, stepsToPublish.get(stepName));
+			System.out.println(String.format("\tCreated step page '%s'",
+					stepName));
 		}
 		return stepsToPublish.size() + 1;
 	}
@@ -95,19 +97,16 @@ public class App {
 	private static int syncConfluenceContent(long parentPageId,
 			String spaceKey, Map<String, List<String>> stepsMapping)
 			throws Exception {
-		Set<String> realContainerNames = new HashSet<String>();
-		for (String path : stepsMapping.keySet()) {
-			final String pageTitle = extractPageTitle(path);
-			realContainerNames.add(pageTitle);
-		}
-		ConfluenceAPIWrappers.removeExtraChildren(parentPageId,
-				realContainerNames);
+		System.out.println("Cleaning existing hierachy...");
+		ConfluenceAPIWrappers.removeChildren(parentPageId, true);
+		System.out.println("Done");
 
 		int synchronizedPagesCount = 0;
-		for (Map.Entry<String, List<String>> containerInfo : stepsMapping
-				.entrySet()) {
+		final SortedSet<String> sortedContainerNames = new TreeSet<String>(
+				stepsMapping.keySet());
+		for (String containerName : sortedContainerNames) {
 			synchronizedPagesCount += publishStepsContainer(parentPageId,
-					spaceKey, containerInfo.getKey(), containerInfo.getValue());
+					spaceKey, containerName, stepsMapping.get(containerName));
 		}
 		return synchronizedPagesCount;
 	}

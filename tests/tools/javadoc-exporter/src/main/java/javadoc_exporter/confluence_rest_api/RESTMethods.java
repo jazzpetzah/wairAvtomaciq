@@ -187,7 +187,7 @@ class RESTMethods {
 		return new JSONObject(output);
 	}
 
-	public static void removeChildPage(long pageId) throws Exception {
+	public static void removePage(long pageId) throws Exception {
 		Builder webResource = buildRequestWithAuth(String.format("content/%s",
 				pageId));
 		try {
