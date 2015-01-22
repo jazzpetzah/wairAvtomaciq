@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource.Builder;
 
 /**
@@ -189,7 +190,11 @@ class RESTMethods {
 	public static void removeChildPage(long pageId) throws Exception {
 		Builder webResource = buildRequestWithAuth(String.format("content/%s",
 				pageId));
-		httpDelete(webResource, new int[] { HttpStatus.SC_NO_CONTENT });
+		try {
+			httpDelete(webResource, new int[] { HttpStatus.SC_NO_CONTENT });
+		} catch (UniformInterfaceException e) {
+			// ignore silently
+		}
 	}
 
 	public static String getBodyHash(String body) {
