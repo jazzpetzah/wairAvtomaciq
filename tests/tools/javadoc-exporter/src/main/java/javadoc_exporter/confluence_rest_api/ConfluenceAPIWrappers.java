@@ -48,8 +48,9 @@ public class ConfluenceAPIWrappers {
 			if (!currentBodyHash.equals(RESTMethods.getBodyHash(pageBody))) {
 				final int currentPageVersion = pageInfo
 						.getJSONObject("version").getInt("number");
-				RESTMethods.updateChildPage(parentPageId, spaceKey, pageTitle,
-						pageBody, currentPageVersion + 1);
+				RESTMethods.updateChildPage(parentPageId,
+						pageInfo.getLong("id"), spaceKey, pageTitle, pageBody,
+						currentPageVersion + 1);
 			}
 		}
 		return pageInfo.getLong("id");

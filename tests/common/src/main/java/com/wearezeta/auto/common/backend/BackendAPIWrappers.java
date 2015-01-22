@@ -12,16 +12,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import javax.ws.rs.core.UriBuilderException;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.wearezeta.auto.common.CommonSteps;
-import com.wearezeta.auto.common.backend.AuthToken.AuthTokenIsNotSetException;
 import com.wearezeta.auto.common.email.EmailHeaders;
 import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.email.MBoxChangesListener;
