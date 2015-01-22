@@ -29,12 +29,12 @@ class RESTMethods {
 	private static final String MAIN_PROPERTIES = "main.properties";
 
 	private static String getConfluenceURL() throws IOException {
-		return ResourceHelpers.getValueFromConfigFile(RESTMethods.class,
-				CONFLUENCE_URL_KEY, MAIN_PROPERTIES);
+		return ResourceHelpers.getValueFromConfigFile(CONFLUENCE_URL_KEY,
+				MAIN_PROPERTIES);
 	}
 
 	private static String getConfluenceAuthToken() throws IOException {
-		return ResourceHelpers.getValueFromConfigFile(RESTMethods.class,
+		return ResourceHelpers.getValueFromConfigFile(
 				CONFLUENCE_AUTH_TOKEN_KEY, MAIN_PROPERTIES);
 	}
 
@@ -149,8 +149,8 @@ class RESTMethods {
 		return new JSONObject(output);
 	}
 
-	public static JSONObject updateChildPage(long parentId, long pageId, String spaceKey,
-			String newTitle, String newBody, int versionNumber)
+	public static JSONObject updateChildPage(long parentId, long pageId,
+			String spaceKey, String newTitle, String newBody, int versionNumber)
 			throws Exception {
 		Builder webResource = buildRequestWithAuth(String.format("content/%s",
 				pageId));
