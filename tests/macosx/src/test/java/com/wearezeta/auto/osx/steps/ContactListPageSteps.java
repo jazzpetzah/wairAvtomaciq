@@ -44,6 +44,8 @@ public class ContactListPageSteps {
 		if (peoplePickerPage.isPeoplePickerPageVisible()) {
 			log.debug("People picker appears. Closing it.");
 			peoplePickerPage.closePeoplePicker();
+		} else {
+			log.debug("No people picker found.\nPage source: " + peoplePickerPage.getPageSource());
 		}
 		GivenISeeContactListWithName(name);
 	}
