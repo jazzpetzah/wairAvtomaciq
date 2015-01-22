@@ -41,6 +41,7 @@ public class ZetaFormatter implements Formatter, Reporter {
 
 	private long startDate;
 	private long endDate;
+	@SuppressWarnings("unused")
 	private int lineNumber = 0;
 	
 	private static final String LOGIN = "smoketester+bot@wearezeta.com";
@@ -206,6 +207,7 @@ public class ZetaFormatter implements Formatter, Reporter {
 		// TODO Auto-generated method stub
 	}
 	
+	@SuppressWarnings("unused")
 	private void sendNotification(String message) throws Exception {
 		ClientUser bot = new ClientUser();
 		bot.setEmail(LOGIN);

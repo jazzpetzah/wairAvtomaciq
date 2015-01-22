@@ -16,6 +16,7 @@ import org.apache.http.HttpStatus;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.sun.jersey.api.client.Client;
@@ -387,6 +388,34 @@ final class BackendREST {
 		return new JSONObject(output);
 	}
 
+	public static JSONObject getLastEventIDs(AuthToken token)
+			throws IllegalArgumentException, UriBuilderException, IOException,
+			AuthTokenIsNotSetException, BackendRequestException {
+		Builder webResource = buildDefaultRequestWithAuth(
+				String.format("conversations/last-events"),
+				MediaType.APPLICATION_JSON, token);
+		final String output = httpGet(webResource,
+				new int[] { HttpStatus.SC_OK });
+		writeLog(new String[] { "Output from Server .... get Last Event ID's ",
+				output + "\n" });
+		return new JSONObject(output);
+	}
+
+	public static String getLastEventFromConversation(AuthToken token,
+			String convId) throws JSONException, IllegalArgumentException,
+			UriBuilderException, IOException, AuthTokenIsNotSetException,
+			BackendRequestException {
+		JSONArray convsWithLastIds = BackendREST.getLastEventIDs(token)
+				.getJSONArray("conversations");
+		for (int i = 0; i < convsWithLastIds.length(); i++) {
+			if (convsWithLastIds.getJSONObject(i).getString("id")
+					.equals(convId)) {
+				return convsWithLastIds.getJSONObject(i).getString("event");
+			}
+		}
+		throw new IOException("Invalid conversation ID");
+	}
+
 	public static BufferedImage getAssetsDownload(AuthToken token,
 			String convId, String assetId) throws Exception {
 		Builder webResource = buildDefaultRequestWithAuth(
@@ -460,6 +489,36 @@ final class BackendREST {
 				new int[] { HttpStatus.SC_OK });
 		writeLog(new String[] { "Output from Server .... Update Self Info ",
 				output });
+	}
+
+	public static void updateConvSelfInfo(AuthToken token, String convId,
+			String lastRead, Boolean muted, Boolean archived)
+			throws IllegalArgumentException, UriBuilderException, IOException,
+			AuthTokenIsNotSetException, JSONException, BackendRequestException {
+		Builder webResource = buildDefaultRequestWithAuth(
+				String.format("conversations/%s/self", convId),
+				MediaType.APPLICATION_JSON, token).type(
+				MediaType.APPLICATION_JSON);
+		JSONObject requestBody = new JSONObject();
+		if (lastRead != null) {
+			requestBody.put("last_read", lastRead);
+		}
+		if (muted != null) {
+			requestBody.put("muted", (boolean) muted);
+		}
+		if (archived != null) {
+			if (archived) {
+				requestBody
+						.put("archived", BackendREST
+								.getLastEventFromConversation(token, convId));
+			} else {
+				requestBody.put("archived", "false");
+			}
+		}
+		final String output = httpPut(webResource, requestBody.toString(),
+				new int[] { HttpStatus.SC_OK, HttpStatus.SC_CREATED });
+		writeLog(new String[] { "Output from Server .... Update conversation self info "
+				+ output + "\n" });
 	}
 
 	public static void setDefaultBackendURL(String url) {
