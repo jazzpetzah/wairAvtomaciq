@@ -42,9 +42,9 @@ public class GroupChatPage extends DialogPage {
 		this.url = URL;
 		this.path = path;
 	}
-	
+
 	public boolean areRequiredContactsAddedToChat(List<String> names){
-		final String lastMsg = getLastChatMessage();
+		final String lastMsg = getStartedtChatMessage();
 		for (String name : names) {
 			if (!lastMsg.toLowerCase().contains(name.toLowerCase())) {
 				return false;
