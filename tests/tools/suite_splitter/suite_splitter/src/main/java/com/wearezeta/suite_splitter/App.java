@@ -61,10 +61,8 @@ public class App {
 			testcasesCount += existingFeature.getTestcases(includeTags,
 					excludeTags).size();
 		}
-		int maxTestcasesCountPerFeature = testcasesCount / divider;
-		if (maxTestcasesCountPerFeature == 0) {
-			maxTestcasesCountPerFeature = testcasesCount;
-		}
+		final int maxTestcasesCountPerFeature = (testcasesCount < divider) ? 1
+				: (testcasesCount / divider);
 
 		Map<String, Integer> splittedFeaturesMapping = new LinkedHashMap<String, Integer>();
 		for (GherkinFile existingFeature : existingFeatures) {
@@ -157,7 +155,8 @@ public class App {
 			testcasesCount += entry.getValue();
 		}
 		int folderNumber = 0;
-		final int maxTestcasesCountInFolder = testcasesCount / divider;
+		final int maxTestcasesCountInFolder = (testcasesCount < divider) ? 1
+				: (testcasesCount / divider);
 		Set<String> processedFeatures = new HashSet<String>();
 		while (processedFeatures.size() < splittedFeatures.size()) {
 			final File currentFolder = new File(dstRoot, String.format(
