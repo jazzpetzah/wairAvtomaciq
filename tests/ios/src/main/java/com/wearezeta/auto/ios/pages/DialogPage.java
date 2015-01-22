@@ -55,6 +55,9 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathConnectMessageLabel)
 	private WebElement connectMessageLabel;
 	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathConnectionMessage)
+	private WebElement connectionMessage;
+	
 	@FindBy(how = How.NAME, using = IOSLocators.namePendingButton)
 	private WebElement pendingButton;
 	
@@ -102,7 +105,7 @@ public class DialogPage extends IOSPage{
 	private String url;
 	private String path;
 	
-	private String connectMessage = "Hi %s,\nlet’s connect on wire.\n%s";
+	private String connectMessage = "Hi %s, let’s connect on wire. %s";
 	private String connectingLabel = "CONNECTING TO %s";
 	
 	public DialogPage(String URL, String path) throws IOException {
@@ -163,9 +166,13 @@ public class DialogPage extends IOSPage{
 		String script = IOSLocators.scriptCursorInputPath + ".tap();";
 		driver.executeScript(script);
 	}
+	
+	public String getConnectionMessage() {
+		
+		return connectionMessage.getText();
+	}
 
-	public String getLastMessageFromDialog()
-	{
+	public String getLastMessageFromDialog() {
 		return getLastMessage(messagesList);
 	}
 	
