@@ -2,3 +2,5 @@
 *.classpath
 *.prefs
 *.pyc
+tests/tools/javadoc-exporter/bin
+tests/tools/javadoc-exporter/target

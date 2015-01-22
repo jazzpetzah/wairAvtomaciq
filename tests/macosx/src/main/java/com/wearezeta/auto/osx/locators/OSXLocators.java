@@ -32,7 +32,7 @@ public final class OSXLocators {
 	public static final String xpathPeoplePickerTopContactsSectionHeader = "//AXstaticText[@AXIdentifier='people_picker_topcpnverstion_sectionheader']";
 	public static final String idPeoplePickerDismissButton = "people_picker_cancel_button";
 	public static final String idPeoplePickerSearchResultEntry = "people_picker_result_namefield";
-	public static final String xpathPeoplePickerSearchResultTable = "//AXScrollArea[@AXIdentifier='people_picker_searchresult']";
+	public static final String xpathPeoplePickerSearchResultTable = "//AXTable[@AXIdentifier='people_picker_searchresult']";
 	public static final String idUnblockUserButton = "unblock";
 	
 	public static final String idShowMenuButton = "clshowMenuButton";

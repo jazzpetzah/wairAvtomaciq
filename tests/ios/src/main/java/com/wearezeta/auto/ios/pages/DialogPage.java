@@ -61,6 +61,8 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathLastChatMessage)
 	private WebElement lastMessage;
 	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathStartedConversationMessage)
+	private WebElement startedConversationMessage;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameAddPictureButton)
 	private WebElement addPictureButton;
@@ -112,6 +114,10 @@ public class DialogPage extends IOSPage{
 	
 	public String getLastChatMessage(){
 		return lastMessage.getText();
+	}
+	
+	public String getStartedtChatMessage(){
+		return startedConversationMessage.getText();
 	}
 	
 	public boolean isPingMessageVisible(String msg){

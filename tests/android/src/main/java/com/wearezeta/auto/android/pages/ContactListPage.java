@@ -30,6 +30,9 @@ public class ContactListPage extends AndroidPage {
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameFrameLayout)
 	private List<WebElement> frameLayout;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idProfileOptionsButton")
+	private WebElement laterButton;
+	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idNameField")
 	private List<WebElement> selfUserName;
 
@@ -181,13 +184,21 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	public ContactListPage pressLaterButton() throws Exception {
+		try {
+			wait.until(ExpectedConditions.elementToBeClickable(laterButton));
+		} catch (NoSuchElementException e) {
+
+		}
+		catch (TimeoutException e) {
+
+		}
 		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.PersonalInfoPage.idProfileOptionsButton));
-		
+
 		refreshUITree();
 		if (laterBtn.size() > 0) {
 			laterBtn.get(0).click();
 		}
-		
+
 		else if (laterBtnPicker.size() > 0) {
 			laterBtnPicker.get(0).click();
 		}
@@ -196,7 +207,7 @@ public class ContactListPage extends AndroidPage {
 		PagesCollection.peoplePickerPage = new PeoplePickerPage (url, path);
 		return this;
 	}
-	
+
 	public Boolean isContactExists(String name){
 		return findInContactList(name,0) != null;
 	}

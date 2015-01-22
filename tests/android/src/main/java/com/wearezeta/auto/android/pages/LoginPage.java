@@ -1,5 +1,7 @@
 package com.wearezeta.auto.android.pages;
 
+import io.appium.java_client.pagefactory.AndroidFindBy;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -31,8 +33,11 @@ public class LoginPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idLoginButton")
 	private WebElement confirmSignInButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idLoginPasswordInput")
-	private List<WebElement> loginPasswordField;
+	@AndroidFindBy(xpath =  AndroidLocators.LoginPage.xpathLoginInput)
+	private WebElement loginInput;
+	
+	@AndroidFindBy(xpath =  AndroidLocators.LoginPage.xpathPasswordInput)
+	private WebElement passwordInput;
 	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idLoginError")
 	private WebElement loginError;
@@ -99,13 +104,8 @@ public class LoginPage extends AndroidPage {
 	}
 
 	public void setLogin(String login) {
-		for(WebElement el: loginPasswordField){
-			if(el.getText().equals("Email")){
-				el.click();
-				el.sendKeys(login);
-				break;
-			}
-		}
+		refreshUITree();
+		loginInput.sendKeys(login);
 	}
 	
 	public String getPassword() {
@@ -113,14 +113,8 @@ public class LoginPage extends AndroidPage {
 	}
 
 	public void setPassword(String password) throws InterruptedException {
-
-		for(WebElement el: loginPasswordField){
-			if(el.getText() == null || el.getText().isEmpty() ){
-				el.click();
-				el.sendKeys(password);
-				break;
-			}
-		}
+		passwordInput.click();
+		passwordInput.sendKeys(password);
 	}
 
 	public boolean waitForLoginScreenDisappear() {

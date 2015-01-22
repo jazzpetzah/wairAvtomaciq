@@ -1,7 +1,10 @@
 package com.wearezeta.auto.android.pages;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.NoSuchElementException;
 
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -15,34 +18,37 @@ public class RegistrationPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogTakePhotoButton")
 	private WebElement cameraButton;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConfirmButton")
 	private WebElement confirmImageButton;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idNameEdit")
 	private WebElement nameField;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idEmailField")
 	private WebElement emailField;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.RegistractionPage.CLASS_NAME, locatorKey = "idNewPasswordField")
 	private WebElement passwordField;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.RegistractionPage.CLASS_NAME, locatorKey = "idCreateUserBtn")
 	private WebElement createUserBtn;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.RegistractionPage.CLASS_NAME, locatorKey = "idVerifyEmailBtn")
 	private WebElement verifyEmailBtn;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.RegistractionPage.CLASS_NAME, locatorKey = "idNextArrow")
 	private WebElement nextArrow;
-	
+
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConfirmCancelButton")
+	private WebElement laterBtn;
+
 	private String url;
 	private String path;
-	
+
 	private static final String YOUR_NAME = "your full name";
 	private static final String EMAIL = "email";
-	
+
 	public RegistrationPage(String URL, String path) throws Exception {
 		super(URL, path);
 		this.url = URL;
@@ -59,17 +65,17 @@ public class RegistrationPage extends AndroidPage {
 	public void takePhoto() {
 		wait.until(ExpectedConditions.elementToBeClickable(cameraButton));
 		cameraButton.click();
-		
+
 	}
 
 	public void selectPicture() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void chooseFirstPhoto() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public boolean isPictureSelected() {
@@ -110,7 +116,7 @@ public class RegistrationPage extends AndroidPage {
 
 	public void createAccount() {
 		createUserBtn.click();
-		
+
 	}
 
 	public boolean isConfirmationVisible() {
@@ -120,7 +126,15 @@ public class RegistrationPage extends AndroidPage {
 	}
 
 	public ContactListPage continueRegistration() throws Exception {
+		try{
+			wait.until(ExpectedConditions.visibilityOf(laterBtn));
+		}
+		catch(NoSuchElementException e){
 
+		}
+		catch(TimeoutException e){
+
+		}
 		return new ContactListPage(url, path);
 	}
 

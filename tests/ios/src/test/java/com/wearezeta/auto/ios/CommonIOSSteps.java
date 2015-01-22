@@ -178,6 +178,13 @@ public class CommonIOSSteps {
 		commonSteps.BlockContact(blockAsUserNameAlias, userToBlockNameAlias);
 	}
 
+	@When("^(.*) archived conversation with (.*)$")
+	public void ArchiveConversationWithUser(String userToNameAlias,
+			String archivedUserNameAlias) throws Exception {
+		commonSteps.ArchiveConversationWithUser(userToNameAlias,
+				archivedUserNameAlias);
+	}
+
 	@When("^(.*) accept all requests$")
 	public void AcceptAllIncomingConnectionRequests(String userToNameAlias)
 			throws Exception {
@@ -241,7 +248,7 @@ public class CommonIOSSteps {
 			throws Exception {
 		commonSteps.ThereAreNSharedUsersWithNamePrefix(count, namePrefix);
 	}
-	
+
 	@Given("^User (\\w+) is [Mm]e$")
 	public void UserXIsMe(String nameAlias) throws Exception {
 		commonSteps.UserXIsMe(nameAlias);
