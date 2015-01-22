@@ -104,6 +104,7 @@ public class CommonAndroidSteps {
 
 		try {
 			AndroidCommonUtils.disableHints();
+			AndroidCommonUtils.disableHockeyUpdates();
 			String backendJSON = AndroidCommonUtils
 					.createBackendJSON(CommonUtils.getBackendType(this
 							.getClass()));
