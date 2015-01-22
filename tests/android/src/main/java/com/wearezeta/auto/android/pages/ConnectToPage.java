@@ -4,7 +4,9 @@ package com.wearezeta.auto.android.pages;
 import java.util.List;
 
 import org.openqa.selenium.WebElement;
+
 import com.wearezeta.auto.common.locators.ZetaHow;
+
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
@@ -109,9 +111,9 @@ public class ConnectToPage extends AndroidPage {
 		}
 	}
 	
-	public void typeConnectionRequies(String message) {
+	public void typeConnectionRequies(String message) throws Exception {
 		connectionRequestMessage.sendKeys(message);
-		
+		navigateBack();
 	}
 	
 	public ContactListPage pressConnectButton() throws Exception {

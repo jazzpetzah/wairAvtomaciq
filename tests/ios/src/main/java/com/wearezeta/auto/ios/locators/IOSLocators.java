@@ -241,7 +241,7 @@ public final class IOSLocators {
 	
 	public static final String nameTakePhotoHintLabel = "CHOOSE A PICTURE  AND PICK A COLOR";
 	
-	public static final String xpathFirstChatInChatListTextField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[2]/UIAStaticText[1]";
+	public static final String xpathFirstChatInChatListTextField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell[1]/UIAStaticText[1]";
 	
 	public static final String xpathParticipantAvatar = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[%s]";
 	
@@ -376,7 +376,7 @@ public final class IOSLocators {
 	//Contact list locator
 	////////////////////////////
 	
-	public static final String xpathPendingRequest = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[contains(@name,' waiting')]/UIAStaticText[1]";
+	public static final String xpathPendingRequest = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[2]/UIACollectionCell[contains(@name,' waiting')]/UIAStaticText[1]";
 	
 	////////////////////////////////
 	//Pending requests page locators

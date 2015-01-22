@@ -30,10 +30,10 @@ public class PeoplePickerPage extends OSXPage {
 //	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerSearchField)
 	private WebElement searchField;
 	
-	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerSearchResultTable)
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathPeoplePickerSearchResultTable)
 	private WebElement peoplePickerSearchResultTable;
 	
-	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerTopContactsSectionHeader)
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathPeoplePickerTopContactsSectionHeader)
 	private WebElement peoplePickerTopContactsSectionHeader;
 
 	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerSearchResultEntry)
