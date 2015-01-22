@@ -267,7 +267,7 @@ public class App {
 						spaceKey, Long.parseLong(parentPageId), platformName);
 				System.out
 						.println(String
-								.format("Successfully published %d documentation page(s) for platfrom '%s' located in '%s'",
+								.format("Successfully published %d documentation page(s) for platform '%s' located in '%s'",
 										countOfPublishedPages, platformName,
 										srcRoot));
 			} else {
