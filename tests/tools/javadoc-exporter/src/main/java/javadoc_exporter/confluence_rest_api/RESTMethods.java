@@ -94,6 +94,7 @@ class RESTMethods {
 		return client
 				.resource(
 						String.format("%s/%s", getConfluenceURL(), restAction))
+				.type(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.AUTHORIZATION,
 						String.format("Basic %s", getConfluenceAuthToken()));
@@ -126,7 +127,7 @@ class RESTMethods {
 
 		JSONObject space = new JSONObject();
 		space.put("key", spaceKey);
-		requestBody.put("space", space.toString());
+		requestBody.put("space", space);
 
 		JSONArray ancestors = new JSONArray();
 		JSONObject ancestor = new JSONObject();
@@ -142,17 +143,12 @@ class RESTMethods {
 		body.put("storage", storage);
 		requestBody.put("body", body);
 
-		JSONObject version = new JSONObject();
-		version.put("number", 1);
-		version.put("message", getBodyHash(pageBody));
-		requestBody.put("version", version);
-
 		final String output = httpPost(webResource, requestBody.toString(),
 				new int[] { HttpStatus.SC_OK });
 		return new JSONObject(output);
 	}
 
-	public static JSONObject updateChildPage(long pageId, String spaceKey,
+	public static JSONObject updateChildPage(long parentId, long pageId, String spaceKey,
 			String newTitle, String newBody, int versionNumber)
 			throws Exception {
 		Builder webResource = buildRequestWithAuth(String.format("content/%s",
@@ -164,7 +160,14 @@ class RESTMethods {
 
 		JSONObject space = new JSONObject();
 		space.put("key", spaceKey);
-		requestBody.put("space", space.toString());
+		requestBody.put("space", space);
+
+		JSONArray ancestors = new JSONArray();
+		JSONObject ancestor = new JSONObject();
+		ancestor.put("type", TYPE_PAGE);
+		ancestor.put("id", parentId);
+		ancestors.put(ancestor);
+		requestBody.put("ancestors", ancestors);
 
 		JSONObject body = new JSONObject();
 		JSONObject storage = new JSONObject();

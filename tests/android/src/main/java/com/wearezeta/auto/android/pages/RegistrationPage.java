@@ -1,7 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.openqa.selenium.TimeoutException;
