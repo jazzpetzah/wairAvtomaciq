@@ -1,5 +1,3 @@
-<h1>{{name}}</h1>
-
 <h2>Method name</h2>
 <p>{{methodName}}</p>
 

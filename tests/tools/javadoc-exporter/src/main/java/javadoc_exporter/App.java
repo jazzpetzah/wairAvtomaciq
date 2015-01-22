@@ -57,10 +57,8 @@ public class App {
 
 	private static String extractPageTitle(final String path)
 			throws UnsupportedEncodingException {
-		String baseName = FilenameUtils.getBaseName(path);
-		String fNameWOExt = FilenameUtils.removeExtension(baseName);
-		return URLDecoder
-				.decode(fNameWOExt, OutputTransformer.DEFAULT_ENCODING);
+		final String baseName = FilenameUtils.getBaseName(path);
+		return URLDecoder.decode(baseName, OutputTransformer.DEFAULT_ENCODING);
 	}
 
 	private static String extractPageBody(final String path) throws Exception {
@@ -68,7 +66,7 @@ public class App {
 		return new String(encoded, OutputTransformer.DEFAULT_ENCODING);
 	}
 
-	private static void publishStepsContainer(long parentPageId,
+	private static int publishStepsContainer(long parentPageId,
 			String spaceKey, String containerFilePath,
 			List<String> stepsFilesPaths) throws Exception {
 		final String pageTitle = extractPageTitle(containerFilePath);
@@ -91,9 +89,10 @@ public class App {
 					containerPageId, spaceKey, stepInfo.getKey(),
 					stepInfo.getValue());
 		}
+		return stepsToPublish.size() + 1;
 	}
 
-	private static void syncConfluenceContent(long parentPageId,
+	private static int syncConfluenceContent(long parentPageId,
 			String spaceKey, Map<String, List<String>> stepsMapping)
 			throws Exception {
 		Set<String> realContainerNames = new HashSet<String>();
@@ -104,14 +103,16 @@ public class App {
 		ConfluenceAPIWrappers.removeExtraChildren(parentPageId,
 				realContainerNames);
 
+		int synchronizedPagesCount = 0;
 		for (Map.Entry<String, List<String>> containerInfo : stepsMapping
 				.entrySet()) {
-			publishStepsContainer(parentPageId, spaceKey,
-					containerInfo.getKey(), containerInfo.getValue());
+			synchronizedPagesCount += publishStepsContainer(parentPageId,
+					spaceKey, containerInfo.getKey(), containerInfo.getValue());
 		}
+		return synchronizedPagesCount;
 	}
 
-	private static void publishToConfluence(String srcRoot, String spaceKey,
+	private static int publishToConfluence(String srcRoot, String spaceKey,
 			long parentPageId) throws Exception {
 		// ! all module names inside file names are urlencoded
 		Map<String, List<String>> stepsMapping = new LinkedHashMap<String, List<String>>();
@@ -147,7 +148,7 @@ public class App {
 			stepsMapping.put(containerFilePath, stepsPaths);
 		}
 
-		syncConfluenceContent(parentPageId, spaceKey, stepsMapping);
+		return syncConfluenceContent(parentPageId, spaceKey, stepsMapping);
 	}
 
 	@SuppressWarnings("static-access")
@@ -241,8 +242,11 @@ public class App {
 									"Command line parameter '%s' must be provided for mode '%s'",
 									PARAM_NAME_PARENT_PAGE_ID, mode));
 				}
-				publishToConfluence(srcRoot, spaceKey,
-						Long.parseLong(parentPageId));
+				final int countOfPublishedPages = publishToConfluence(srcRoot,
+						spaceKey, Long.parseLong(parentPageId));
+				System.out.println(String.format(
+						"Successfully published %d page(s) located in '%s'",
+						countOfPublishedPages, srcRoot));
 			} else {
 				throw new RuntimeException(String.format(
 						"Mode '%s' is unknown", mode));
