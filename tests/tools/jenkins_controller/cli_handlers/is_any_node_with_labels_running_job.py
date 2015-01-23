@@ -27,8 +27,6 @@ class IsAnyNodeWithLabelsRunningJob(CliHandlerBase):
         args = parser.parse_args()
         job = self._jenkins.get_job(args.name)
         try:
-            if not job.is_running():
-                return False
             all_build_ids = job.get_build_ids()
             counter = 0
             for build_id in all_build_ids:
