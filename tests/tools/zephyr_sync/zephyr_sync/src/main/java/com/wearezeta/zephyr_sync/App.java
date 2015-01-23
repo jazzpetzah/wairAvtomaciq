@@ -371,9 +371,11 @@ public class App {
 		final List<ExecutedCucumberTestcase> executedCucumberTestcases = resultJSON
 				.getTestcases();
 
-		for (ExecutedCucumberTestcase executedCucumberTC : executedCucumberTestcases) {
-			for (ExecutedZephyrTestcase phaseTC : phaseTestcases) {
-				if (executedCucumberTC.getId().equals(phaseTC.getId())) {
+		for (ExecutedZephyrTestcase phaseTC : phaseTestcases) {
+			for (ExecutedCucumberTestcase executedCucumberTC : executedCucumberTestcases) {
+				final Set<String> executedTCIds = Testcase
+						.splitIds(executedCucumberTC.getId());
+				if (executedTCIds.contains(phaseTC.getId())) {
 					if (executedCucumberTC.getStatus() == CucumberExecutionStatus.Passed) {
 						phaseTC.setExecutionStatus(ZephyrExecutionStatus.Pass);
 					} else if (executedCucumberTC.getStatus() == CucumberExecutionStatus.Failed) {
