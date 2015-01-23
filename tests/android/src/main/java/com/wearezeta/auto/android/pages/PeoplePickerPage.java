@@ -92,10 +92,11 @@ public class PeoplePickerPage extends AndroidPage {
 		refreshUITree();
 		pickerSearchUser.click();
 		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.PeoplePickerPage.idPickerSearchUsers));
+		refreshUITree();
 		if(driver.findElementsById(AndroidLocators.OtherUserPersonalInfoPage.idUnblockBtn).size() > 0) {
 			page = new OtherUserPersonalInfoPage(url, path);
 		}
-		else if(connectToHeader.size() > 0 && connectToHeader.get(0).isDisplayed()) {
+		else if(driver.findElementsById(AndroidLocators.ConnectToPage.idConnectToHeader).size() > 0) {
 			page = new ConnectToPage(url, path);
 		}
 		else if(isVisible(addToConversationsButton)) {
@@ -201,10 +202,14 @@ public class PeoplePickerPage extends AndroidPage {
 
 	public boolean userIsVisible(String contact) {
 		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.PeoplePickerPage.idNoResultsFound));
+		refreshUITree();
+		wait.until(ExpectedConditions.visibilityOfAllElements(pickerSearchUsers));
 		return isVisible(driver.findElement(By.xpath(String.format(AndroidLocators.PeoplePickerPage.xpathPeoplePickerContact, contact))));	
 	}
 	
 	public boolean groupIsVisible(String contact) {
+		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.PeoplePickerPage.idNoResultsFound));
+		refreshUITree();
 		wait.until(ExpectedConditions.visibilityOfAllElements(pickerSearchConversations));
 		return isVisible(driver.findElement(By.xpath(String.format(AndroidLocators.PeoplePickerPage.xpathPeoplePickerGroup, contact))));	
 	}
