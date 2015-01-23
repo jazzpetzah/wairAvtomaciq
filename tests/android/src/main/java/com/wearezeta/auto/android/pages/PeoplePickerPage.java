@@ -88,7 +88,7 @@ public class PeoplePickerPage extends AndroidPage {
 		AndroidPage page = null;
 		refreshUITree();
 		pickerSearchUser.click();
-		
+		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.PeoplePickerPage.idPickerSearchUsers));
 		if(driver.findElementsById(AndroidLocators.OtherUserPersonalInfoPage.idUnblockBtn).size() > 0) {
 			page = new OtherUserPersonalInfoPage(url, path);
 		}
