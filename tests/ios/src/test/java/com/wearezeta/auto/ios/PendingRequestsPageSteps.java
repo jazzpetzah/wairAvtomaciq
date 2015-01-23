@@ -25,6 +25,11 @@ public class PendingRequestsPageSteps {
 		PagesCollection.contactListPage = PagesCollection.pendingRequestsPage.clickConnectButton();
 	}
 	
+	@When("^I click on Connect button on Pending requests page (.*) times$")
+	public void IClickOnConnectButtonPendingRequests(int numberOfConnects) throws Throwable{
+			PagesCollection.contactListPage = PagesCollection.pendingRequestsPage.clickConnectButtonMultiple(numberOfConnects);
+	}
+		
 	@When("I see Pending request page")
 	public void ISeePendingRequestPage(){
 		Assert.assertTrue("Pending Requests page is not shown", PagesCollection.pendingRequestsPage.isConnectButtonDisplayed());
