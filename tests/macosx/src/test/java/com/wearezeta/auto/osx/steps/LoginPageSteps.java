@@ -109,6 +109,7 @@ public class LoginPageSteps {
 	@Given("I am signed out from ZClient")
 	public void GivenIAmSignedOutFromZClient() throws Exception {
 		CommonOSXSteps.senderPages.getLoginPage().logoutIfNotSignInPage();
+		 CommonOSXSteps.resetBackendSettingsIfOverwritten();
 	}
 
 	@Then("I have returned to Sign In screen")

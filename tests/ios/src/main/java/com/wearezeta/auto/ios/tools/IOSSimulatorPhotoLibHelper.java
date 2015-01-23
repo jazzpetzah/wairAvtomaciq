@@ -132,6 +132,10 @@ public class IOSSimulatorPhotoLibHelper {
 		}
 		File mediaObj = new File(GetMediaPath(libPath));
 		if (mediaObj.exists()) {
+			if (useSimCtl) {
+				CommonUtils.executeOsXCommand(new String[] { "/bin/bash", "-c",
+						SIMCTL + " erase " + new File(simPath).getName() });
+			}
 			FileUtils.deleteDirectory(mediaObj);
 		}
 

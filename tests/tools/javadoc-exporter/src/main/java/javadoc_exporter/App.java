@@ -7,11 +7,11 @@ import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javadoc_exporter.confluence_rest_api.ConfluenceAPIWrappers;
 import javadoc_exporter.model.StepsContainer;
@@ -40,6 +40,7 @@ public class App {
 	private static final String PARAM_NAME_SRC_ROOT = "src-root";
 	private static final String PARAM_NAME_SPACE_KEY = "space-key";
 	private static final String PARAM_NAME_PARENT_PAGE_ID = "parent-page-id";
+	private static final String PARAM_NAME_PLATFORM_NAME = "platform-name";
 
 	private static void transformJavadocToConfluence(String srcPath,
 			String dstRoot) throws Exception {
@@ -55,10 +56,12 @@ public class App {
 		new OutputTransformer(container, dstRoot).transform();
 	}
 
-	private static String extractPageTitle(final String path)
-			throws UnsupportedEncodingException {
+	private static String buildPageTitle(final String path,
+			final String platformName) throws UnsupportedEncodingException {
 		final String baseName = FilenameUtils.getBaseName(path);
-		return URLDecoder.decode(baseName, OutputTransformer.DEFAULT_ENCODING);
+		final String decodedName = URLDecoder.decode(baseName,
+				OutputTransformer.DEFAULT_ENCODING);
+		return String.format("%s: %s", platformName, decodedName);
 	}
 
 	private static String extractPageBody(final String path) throws Exception {
@@ -68,52 +71,53 @@ public class App {
 
 	private static int publishStepsContainer(long parentPageId,
 			String spaceKey, String containerFilePath,
-			List<String> stepsFilesPaths) throws Exception {
-		final String pageTitle = extractPageTitle(containerFilePath);
+			List<String> stepsFilesPaths, String platformName) throws Exception {
+		final String pageTitle = buildPageTitle(containerFilePath, platformName);
 		final String pageBody = extractPageBody(containerFilePath);
-		final long containerPageId = ConfluenceAPIWrappers
-				.updateConfluenceChildPageIfNecessary(parentPageId, spaceKey,
-						pageTitle, pageBody);
+		final long containerPageId = ConfluenceAPIWrappers.createChildPage(
+				parentPageId, spaceKey, pageTitle, pageBody);
+		System.out.println(String.format("Created container page '%s'",
+				pageTitle));
 
 		Map<String, String> stepsToPublish = new LinkedHashMap<String, String>();
 		for (String stepFilePath : stepsFilesPaths) {
-			final String stepPageTitle = extractPageTitle(stepFilePath);
+			final String stepPageTitle = buildPageTitle(stepFilePath,
+					platformName);
 			final String stepPageBody = extractPageBody(stepFilePath);
 			stepsToPublish.put(stepPageTitle, stepPageBody);
 		}
-		ConfluenceAPIWrappers.removeExtraChildren(containerPageId,
-				stepsToPublish.keySet());
 
-		for (Map.Entry<String, String> stepInfo : stepsToPublish.entrySet()) {
-			ConfluenceAPIWrappers.updateConfluenceChildPageIfNecessary(
-					containerPageId, spaceKey, stepInfo.getKey(),
-					stepInfo.getValue());
+		final SortedSet<String> sortedStepNames = new TreeSet<String>(
+				stepsToPublish.keySet());
+		for (String stepName : sortedStepNames) {
+			ConfluenceAPIWrappers.createChildPage(containerPageId, spaceKey,
+					stepName, stepsToPublish.get(stepName));
+			System.out.println(String.format("\tCreated step page '%s'",
+					stepName));
 		}
 		return stepsToPublish.size() + 1;
 	}
 
 	private static int syncConfluenceContent(long parentPageId,
-			String spaceKey, Map<String, List<String>> stepsMapping)
-			throws Exception {
-		Set<String> realContainerNames = new HashSet<String>();
-		for (String path : stepsMapping.keySet()) {
-			final String pageTitle = extractPageTitle(path);
-			realContainerNames.add(pageTitle);
-		}
-		ConfluenceAPIWrappers.removeExtraChildren(parentPageId,
-				realContainerNames);
+			String spaceKey, Map<String, List<String>> stepsMapping,
+			String platformName) throws Exception {
+		System.out.println("Cleaning existing hierachy...");
+		ConfluenceAPIWrappers.removeChildren(parentPageId, true);
+		System.out.println("Done");
 
 		int synchronizedPagesCount = 0;
-		for (Map.Entry<String, List<String>> containerInfo : stepsMapping
-				.entrySet()) {
+		final SortedSet<String> sortedContainerNames = new TreeSet<String>(
+				stepsMapping.keySet());
+		for (String containerName : sortedContainerNames) {
 			synchronizedPagesCount += publishStepsContainer(parentPageId,
-					spaceKey, containerInfo.getKey(), containerInfo.getValue());
+					spaceKey, containerName, stepsMapping.get(containerName),
+					platformName);
 		}
 		return synchronizedPagesCount;
 	}
 
 	private static int publishToConfluence(String srcRoot, String spaceKey,
-			long parentPageId) throws Exception {
+			long parentPageId, String platformName) throws Exception {
 		// ! all module names inside file names are urlencoded
 		Map<String, List<String>> stepsMapping = new LinkedHashMap<String, List<String>>();
 
@@ -148,7 +152,8 @@ public class App {
 			stepsMapping.put(containerFilePath, stepsPaths);
 		}
 
-		return syncConfluenceContent(parentPageId, spaceKey, stepsMapping);
+		return syncConfluenceContent(parentPageId, spaceKey, stepsMapping,
+				platformName);
 	}
 
 	@SuppressWarnings("static-access")
@@ -197,6 +202,14 @@ public class App {
 						String.format(
 								"[mandatory for '%s' mode] the id number of root page",
 								MODE_PUBLISH)).hasArg().create());
+		options.addOption(OptionBuilder
+				.withLongOpt(PARAM_NAME_PLATFORM_NAME)
+				.withType(String.class)
+				.withDescription(
+						String.format(
+								"[mandatory for '%s' mode] the name of destination platfrom (this is to avoid duplicated page titles)",
+								MODE_PUBLISH)).hasArg().create());
+
 		return options;
 	}
 
@@ -242,11 +255,21 @@ public class App {
 									"Command line parameter '%s' must be provided for mode '%s'",
 									PARAM_NAME_PARENT_PAGE_ID, mode));
 				}
+				final String platformName = line
+						.getOptionValue(PARAM_NAME_PLATFORM_NAME);
+				if (platformName == null) {
+					throw new RuntimeException(
+							String.format(
+									"Command line parameter '%s' must be provided for mode '%s'",
+									PARAM_NAME_PLATFORM_NAME, mode));
+				}
 				final int countOfPublishedPages = publishToConfluence(srcRoot,
-						spaceKey, Long.parseLong(parentPageId));
-				System.out.println(String.format(
-						"Successfully published %d page(s) located in '%s'",
-						countOfPublishedPages, srcRoot));
+						spaceKey, Long.parseLong(parentPageId), platformName);
+				System.out
+						.println(String
+								.format("Successfully published %d documentation page(s) for platform '%s' located in '%s'",
+										countOfPublishedPages, platformName,
+										srcRoot));
 			} else {
 				throw new RuntimeException(String.format(
 						"Mode '%s' is unknown", mode));
