@@ -54,7 +54,7 @@ public class GroupChatPage extends DialogPage {
 	}
 	
 	public boolean areRequired3ContactsAddedToChat(String name1, String name2, String name3){
-		String lastMessage = getLastChatMessage();
+		String lastMessage = getStartedtChatMessage();
 		boolean flag = lastMessage.contains(name1.toUpperCase()) && lastMessage.contains(name2.toUpperCase()) && lastMessage.contains(name3.toUpperCase());
 		return flag;
 	}
@@ -87,7 +87,7 @@ public class GroupChatPage extends DialogPage {
 	}
 	
 	public boolean isYouRenamedConversationMessageVisible(String name){
-		return getLastMessageFromDialog().equals(String.format(IOSLocators.nameYouRenamedConversationMessage, name));
+		return getRenamedMessage().equals(String.format(IOSLocators.nameYouRenamedConversationMessage, name));
 	}
 	
 	public boolean isMessageShownInGroupChat(String message){
