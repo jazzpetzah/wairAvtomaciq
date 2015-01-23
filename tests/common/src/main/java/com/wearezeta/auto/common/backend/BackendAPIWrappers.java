@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -28,6 +29,7 @@ import com.wearezeta.auto.image_send.AssetData;
 import com.wearezeta.auto.image_send.ImageAssetData;
 import com.wearezeta.auto.image_send.ImageAssetProcessor;
 import com.wearezeta.auto.image_send.ImageAssetRequestBuilder;
+import com.wearezeta.auto.image_send.SelfImageProcessor;
 
 // Almost all methods of this class mutate ClientUser
 // argument by performing automatic login (set id and session token attributes)
@@ -434,7 +436,9 @@ public final class BackendAPIWrappers {
 		ImageAssetData srcImgData = new ImageAssetData(convId,
 				srcImageAsByteArray, guessMimeType(picture));
 		srcImgData.setIsPublic(true);
-		ImageAssetProcessor imgProcessor = new ImageAssetProcessor(srcImgData);
+		srcImgData.setCorrelationId(String.valueOf(UUID.randomUUID()));
+		srcImgData.setNonce(srcImgData.getCorrelationId());
+		ImageAssetProcessor imgProcessor = new SelfImageProcessor(srcImgData);
 		ImageAssetRequestBuilder reqBuilder = new ImageAssetRequestBuilder(
 				imgProcessor);
 		Map<JSONObject, AssetData> sentPictures = BackendREST.sendPicture(
