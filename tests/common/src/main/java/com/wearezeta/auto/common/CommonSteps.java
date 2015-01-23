@@ -1,6 +1,7 @@
 package com.wearezeta.auto.common;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -262,5 +263,13 @@ public final class CommonSteps {
 
 	public void UserXIsMe(String nameAlias) throws Exception {
 		usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(nameAlias));
+	}
+	
+	public void BlockTcpConnectionForApp(String appName) throws IOException {
+		CommonUtils.blockTcpForAppName(appName);
+	}
+	
+	public void EnableTcpConnectionForApp(String appName) throws IOException {
+		CommonUtils.enableTcpForAppName(appName);
 	}
 }
