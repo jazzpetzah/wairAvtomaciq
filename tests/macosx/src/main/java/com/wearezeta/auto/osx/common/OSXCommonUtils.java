@@ -23,6 +23,8 @@ public class OSXCommonUtils extends CommonUtils {
 			"com.wearezeta.zclient.mac.development",
 			"com.wearezeta.zclient.mac.internal", "com.wearezeta.zclient.mac" };
 
+	public static final String APP_NAME = "Wire";
+	
 	private static final Logger log = ZetaLogger.getLog(OSXCommonUtils.class
 			.getSimpleName());
 

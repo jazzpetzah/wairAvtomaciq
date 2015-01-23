@@ -5,4 +5,4 @@ defaultEmailServer=imap.gmail.com
 defaultBackEndUrl=https://staging-nginz-https.zinfra.io
 #staging, production, edge
 backendType=staging
- 
+jenkinsSuPassword=123456

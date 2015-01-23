@@ -11,10 +11,10 @@ Feature: Ping
     And I swipe the text input cursor
     And I click Ping button
     Then I see You Pinged message in the dialog
-    And I see <Action1> icon in conversation
+    #And I see <Action1> icon in conversation
     And I click Ping button
     And I see You Pinged Again message in the dialog
-    And I see <Action2> icon in conversation
+    #And I see <Action2> icon in conversation
 
     Examples:
       | Login      | Password      | Name      | Contact1    | Contact2   | Action1 | Action2      | GroupChatName        |
@@ -31,11 +31,11 @@ Feature: Ping
     And User <Contact1> Ping in chat <GroupChatName> by BackEnd
     And I wait for 3 seconds
     Then I see User <Contact1> Pinged message in the conversation
-    And I see <Action1> icon in conversation
+    #And I see <Action1> icon in conversation
     And User <Contact1> HotPing in chat <GroupChatName> by BackEnd
     And I wait for 3 seconds
     And I see User <Contact1> Pinged Again message in the conversation
-    And I see <Action2> icon in conversation
+    #And I see <Action2> icon in conversation
 
     Examples: 
       | Login      | Password      | Name      | Contact1    | Contact2   | Action1 | Action2      | GroupChatName        |

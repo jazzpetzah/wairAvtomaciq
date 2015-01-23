@@ -49,6 +49,9 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.nameTextInput)
 	private WebElement textInput;
 	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathYouPinged)
+	private WebElement youPinged;
+	
 	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameDialogMessages)
 	private List<WebElement> messagesList;
 	
@@ -57,6 +60,9 @@ public class DialogPage extends IOSPage{
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathConnectionMessage)
 	private WebElement connectionMessage;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameYouRenamedConversation)
+	private WebElement youRenamedConversation;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.namePendingButton)
 	private WebElement pendingButton;
@@ -170,6 +176,11 @@ public class DialogPage extends IOSPage{
 	public String getConnectionMessage() {
 		
 		return connectionMessage.getText();
+	}
+	
+	public String getRenamedMessage() {
+		
+		return youRenamedConversation.getText();
 	}
 
 	public String getLastMessageFromDialog() {
@@ -670,8 +681,8 @@ public class DialogPage extends IOSPage{
 	private static final int PING_ICON_Y_OFFSET = 7;
 	
 	private BufferedImage getPingIconScreenShot() throws IOException{
-		Point elementLocation = lastMessage.getLocation();
-		Dimension elementSize = lastMessage.getSize();
+		Point elementLocation = youPinged.getLocation();
+		Dimension elementSize = youPinged.getSize();
 		int x = elementLocation.x*2+elementSize.width*2;
 		int y = (elementLocation.y-PING_ICON_Y_OFFSET)*2;
 		int w = PING_ICON_WIDTH;

@@ -246,9 +246,11 @@ public final class AndroidLocators {
 		
 		public static final String idNoResultsFound = LOCATORS_PACKAGE + ":id/ttv_pickuser__error_header";
 		
-		public static final String xpathPeoplePickerGroup = "//android.widget.LinearLayout[child::android.widget.TextView[@resource-id='" + LOCATORS_PACKAGE + ":id/ttv_pickuser_searchconversation_name' and @text='%s']]";
+		public static final String idPeoplePickerSerchConversations = LOCATORS_PACKAGE + ":id/ttv_pickuser_searchconversation_name";
 		
-		public static final String xpathPeoplePickerContact = "//android.widget.FrameLayout[child::android.widget.TextView[@resource-id='" + LOCATORS_PACKAGE + ":id/ttv_pickuser__searchuser_name' and @text='%s']]";
+		public static final String xpathPeoplePickerGroup = "//android.widget.TextView[@resource-id='" + LOCATORS_PACKAGE + ":id/ttv_pickuser_searchconversation_name' and @text='%s']";
+		
+		public static final String xpathPeoplePickerContact = "//android.widget.TextView[@resource-id='" + LOCATORS_PACKAGE + ":id/ttv_pickuser__searchuser_name' and @text='%s']";
 		
 		public static final String xpathPeoplePickerClearbtn42 = "//android.widget.FrameLayout/android.widget.TextView[preceding-sibling::android.widget.ScrollView]";
 		

@@ -38,6 +38,8 @@ public class CommonUtils {
 	private static final Logger log = ZetaLogger.getLog(CommonUtils.class
 			.getSimpleName());
 
+	private static final String TCPBLOCK_PREFIX_PATH = "/usr/local/bin/";
+	
 	public static String getOsName() {
 		return System.getProperty("os.name");
 	}
@@ -270,6 +272,11 @@ public class CommonUtils {
 		return getValueFromConfig(c, "deviceName");
 	}
 	
+	public static String getJenkinsSuperUserPassword(Class<?> c)
+			throws IOException {
+		return getValueFromCommonConfig(c, "jenkinsSuPassword");
+	}
+	
 	public static BufferedImage getElementScreenshot(WebElement element,
 			AppiumDriver driver) throws IOException {
 		BufferedImage screenshot = DriverUtils
@@ -287,5 +294,35 @@ public class CommonUtils {
 		firstParts = login.split("\\+");
 		secondParts = firstParts[1].split("@");
 		return secondParts[0];
+	}
+	
+	public static void blockTcpForAppName(String appName) throws IOException {
+		final String blockTcpForAppCmd = "echo "
+				+ getJenkinsSuperUserPassword(CommonUtils.class) + "| sudo -S "
+				+ TCPBLOCK_PREFIX_PATH + "tcpblock -a " + appName;
+		try {
+			executeOsXCommand(new String[] { "/bin/bash", "-c",
+					blockTcpForAppCmd });
+			log.debug(executeOsXCommandWithOutput(new String[] { "/bin/bash",
+					"-c", TCPBLOCK_PREFIX_PATH + "tcpblock -g" }));
+		} catch (Exception e) {
+			log.error("TCP connections for " + appName
+					+ " were not blocked. Make sure tcpblock is installed.");
+		}
+	}
+
+	public static void enableTcpForAppName(String appName) throws IOException {
+		final String enableTcpForAppCmd = "echo "
+				+ getJenkinsSuperUserPassword(CommonUtils.class) + "| sudo -S "
+				+ TCPBLOCK_PREFIX_PATH + "tcpblock -r " + appName;
+		try {
+			executeOsXCommand(new String[] { "/bin/bash", "-c",
+					enableTcpForAppCmd });
+			log.debug(executeOsXCommandWithOutput(new String[] { "/bin/bash",
+					"-c", TCPBLOCK_PREFIX_PATH + "tcpblock -g" }));
+		} catch (Exception e) {
+			log.error("TCP connections for " + appName
+					+ " were not enabled. Make sure tcpblock is installed.");
+		}
 	}
 }
