@@ -21,6 +21,9 @@ public class PeoplePickerPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerSearchUsers")
 	private WebElement pickerSearchUser;
 	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPeoplePickerSerchConversations")
+	private List<WebElement> pickerSearchConversations;
+	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPeoplePickerClearbtn")
 	private WebElement pickerClearBtn;
 
@@ -202,6 +205,7 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 	
 	public boolean groupIsVisible(String contact) {
+		wait.until(ExpectedConditions.visibilityOfAllElements(pickerSearchConversations));
 		return isVisible(driver.findElement(By.xpath(String.format(AndroidLocators.PeoplePickerPage.xpathPeoplePickerGroup, contact))));	
 	}
 
