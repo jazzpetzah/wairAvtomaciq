@@ -58,6 +58,9 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathConnectionMessage)
 	private WebElement connectionMessage;
 	
+	@FindBy(how = How.NAME, using = IOSLocators.nameYouRenamedConversation)
+	private WebElement youRenamedConversation;
+	
 	@FindBy(how = How.NAME, using = IOSLocators.namePendingButton)
 	private WebElement pendingButton;
 	
@@ -170,6 +173,11 @@ public class DialogPage extends IOSPage{
 	public String getConnectionMessage() {
 		
 		return connectionMessage.getText();
+	}
+	
+	public String getRenamedMessage() {
+		
+		return youRenamedConversation.getText();
 	}
 
 	public String getLastMessageFromDialog() {
