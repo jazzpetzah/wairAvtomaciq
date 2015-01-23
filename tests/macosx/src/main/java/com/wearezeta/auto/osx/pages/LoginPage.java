@@ -45,6 +45,12 @@ public class LoginPage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathWrongCredentialsMessage)
 	private WebElement wrongCredentialsMessage;
 	
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathNoInternetConnectionMessage)
+	private WebElement noInternetConnectionMessage;
+	
+	@FindBy(how = How.ID, using = OSXLocators.idCloseNoInternetDialogButton)
+	private WebElement closeNoInternetDialog;
+	
 	private String login;
 	
 	private String password;
@@ -187,6 +193,14 @@ public class LoginPage extends OSXPage {
 		} catch (NoSuchElementException e) {
 			return false;
 		}
+	}
+	
+	public boolean isNoInternetMessageAppears() {
+		return DriverUtils.waitUntilElementAppears(driver, By.xpath(OSXLocators.xpathNoInternetConnectionMessage), 60);
+	}
+	
+	public void closeNoInternetDialog() {
+		closeNoInternetDialog.click();
 	}
 	
 	public void setPasswordUsingScript(String password) {

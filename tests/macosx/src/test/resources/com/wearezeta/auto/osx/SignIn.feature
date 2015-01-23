@@ -57,3 +57,22 @@ Feature: Sign In
     Examples: 
       | Login | Password | Login2 | Password2 |
       | aaa   | aaa      | aaa2   | aaa2      |
+
+  @staging @id1116
+  Scenario Outline: Verify Sign In progress behaviour while there are probelms with internet connectivity
+    Given There is 1 user where <Name> is me
+    Given I am signed out from ZClient
+    Given Internet connection is lost
+    And I see Sign In screen
+    When I start Sign In
+    And I have entered login <Login>
+    And I have entered password <Password>
+    And I press Sign In button
+    Then I see internet connectivity error message
+    When Internet connection is restored
+    And I press Sign In button
+    Then I see my name <Name> in Contact list
+
+    Examples: 
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |

@@ -141,4 +141,11 @@ public class LoginPageSteps {
 	public void IDoNotSeeWrongCredentialsMessage() {
 		Assert.assertFalse(CommonOSXSteps.senderPages.getLoginPage().isWrongCredentialsMessageDisplayed());
 	}
+	
+	@Then("^I see internet connectivity error message")
+	public void ISeeInternetConnectivityErrorMessage() {
+		LoginPage loginPage = CommonOSXSteps.senderPages.getLoginPage();
+		Assert.assertTrue(loginPage.isNoInternetMessageAppears());
+		loginPage.closeNoInternetDialog();
+	}
 }
