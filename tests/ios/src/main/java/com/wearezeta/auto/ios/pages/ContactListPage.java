@@ -293,7 +293,7 @@ public class ContactListPage extends IOSPage {
 	public IOSPage swipeDown(int time) throws IOException {
 		Point coords = content.getLocation();
 		Dimension elementSize = content.getSize();
-		driver.swipe(coords.x + elementSize.width / 2, coords.y + 50, coords.x
+		driver.swipe(coords.x + elementSize.width / 2, coords.y + 150, coords.x
 				+ elementSize.width / 2, coords.y + elementSize.height - 150,
 				time);
 		return returnBySwipe(SwipeDirection.DOWN);
