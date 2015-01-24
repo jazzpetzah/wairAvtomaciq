@@ -69,6 +69,9 @@ public class LoginPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameProfileName)
 	private WebElement selfProfileName;
 	
+	@FindBy(how = How.NAME, using = IOSLocators.nameLaterButton)
+	private WebElement laterButton;
+	
 	private String login;
 	
 	private String password;
@@ -105,6 +108,15 @@ public class LoginPage extends IOSPage {
 		
 		signInButton.click();
 		return this;
+	}
+	
+	public PeoplePickerPage clickLaterButton() throws IOException {
+		if(DriverUtils.isElementDisplayed(laterButton)) {
+			laterButton.click();
+			return new PeoplePickerPage(url, path);
+		}
+		
+		return null;
 	}
 	
 	public boolean isSelfProfileVisible () {
