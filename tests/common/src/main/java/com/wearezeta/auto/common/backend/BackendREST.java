@@ -315,7 +315,7 @@ final class BackendREST {
 		ImageAssetData srcImgData = new ImageAssetData(convId,
 				srcImageAsByteArray, imageMimeType);
 		srcImgData.setIsPublic(true);
-		ImageAssetProcessor imgProcessor = new ImageAssetProcessor(srcImgData);
+		ImageAssetProcessor imgProcessor = new ConvoImageProcessor(srcImgData);
 		ImageAssetRequestBuilder reqBuilder = new ImageAssetRequestBuilder(
 				imgProcessor);
 		return sendPicture(token, convId, reqBuilder);
@@ -430,18 +430,18 @@ final class BackendREST {
 		return assetDownload;
 	}
 
-	private static JSONArray generatePicturesArray(
+	private static JSONArray generateRequestForSelfPicture(
 			Map<String, AssetData> publishedPictureAssets) {
 		JSONArray result = new JSONArray();
-		JSONObject pictureItem = new JSONObject();
 		for (Map.Entry<String, AssetData> entry : publishedPictureAssets
 				.entrySet()) {
+			final JSONObject pictureItem = new JSONObject();
 			final String publishedPictureId = entry.getKey();
 			final ImageAssetData pictureAssetData = (ImageAssetData) entry
 					.getValue();
 			pictureItem.put("content_type", pictureAssetData.getMimeType());
-			final byte[] internalImageData = pictureAssetData.getImageData();
-			pictureItem.put("content_length", internalImageData.length);
+			pictureItem.put("content_length",
+					pictureAssetData.getImageData().length);
 			pictureItem.put("id", publishedPictureId);
 
 			JSONObject additionalInfo = new JSONObject();
@@ -454,13 +454,8 @@ final class BackendREST {
 			additionalInfo.put("original_width",
 					pictureAssetData.getOriginalWidth());
 			additionalInfo.put("public", pictureAssetData.getIsPublic());
-			if (pictureAssetData.getIsInline()) {
-				additionalInfo.put("tag", "smallProfile");
-			} else {
-				additionalInfo.put("tag", pictureAssetData.getTag());
-			}
+			additionalInfo.put("tag", pictureAssetData.getTag());
 			additionalInfo.put("width", pictureAssetData.getWidth());
-			additionalInfo.put("public", pictureAssetData.getIsPublic());
 			pictureItem.put("info", additionalInfo);
 
 			result.put(pictureItem);
@@ -480,7 +475,7 @@ final class BackendREST {
 		}
 		if (publishedPictureAssets != null) {
 			requestBody.put("picture",
-					generatePicturesArray(publishedPictureAssets));
+					generateRequestForSelfPicture(publishedPictureAssets));
 		}
 		if (name != null) {
 			requestBody.put("name", name);
