@@ -139,7 +139,7 @@ public class UserProfilePageSteps {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		UserProfilePage userProfile = CommonOSXSteps.senderPages
 				.getUserProfilePage();
-		userProfile.selfProfileNameEquals(name);
+		Assert.assertTrue(userProfile.selfProfileNameEquals(name));
 	}
 
 	@Then("I see email of (.*) in User profile")

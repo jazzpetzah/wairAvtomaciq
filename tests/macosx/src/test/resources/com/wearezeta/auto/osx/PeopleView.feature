@@ -336,3 +336,27 @@ Feature: People View
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | ChatName                | ConnectionRequestMessage | AvatarPicture         |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | ParticipantProfilesChat | Hello!                   | aqaPictureContact.jpg |
+
+  @staging @id619
+  Scenario Outline: Verify new users are added to a group conversation on the other end
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
+    Given Myself has group chat <ChatName> with <Contact2>,<Contact3>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name <Name> in Contact list
+    And I open conversation with <ChatName>
+    When I open Conversation info
+    And I open People Picker from conversation
+    And I search for user <Contact1>
+    And I see user <Contact1> in search results
+    And I add user <Contact1> from search results
+    And I open conversation with <ChatName>
+    And I see message YOU ADDED <Contact1> in conversation
+    Then I am signing out
+    And I Sign in using login <Contact1> and password <Password>
+    And I see my name <Contact1> in Contact list
+    And I open conversation with <ChatName>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | ChatName      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | AddUserSEChat |
