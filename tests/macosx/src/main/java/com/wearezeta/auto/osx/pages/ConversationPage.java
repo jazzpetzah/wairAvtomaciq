@@ -36,6 +36,8 @@ public class ConversationPage extends OSXPage {
 			.getSimpleName());
 
 	static final String SOUNDCLOUD_BUTTON_ATT_TITLE = "AXDescription";
+	static final String SOUNDCLOUD_BUTTON_ATT_TITLE_9 = "AXTitle";
+	
 	static String SOUNDCLOUD_BUTTON_STATE;
 	int numberSoundCloudButtons;
 
@@ -244,6 +246,9 @@ public class ConversationPage extends OSXPage {
 		setLastSoundCloudButtonToUse();
 		SOUNDCLOUD_BUTTON_STATE = soundCloudLinkButton
 				.getAttribute(SOUNDCLOUD_BUTTON_ATT_TITLE);
+		if (SOUNDCLOUD_BUTTON_STATE.trim().isEmpty()) {
+			SOUNDCLOUD_BUTTON_STATE = soundCloudLinkButton.getAttribute(SOUNDCLOUD_BUTTON_ATT_TITLE_9);
+		}
 		log.debug(driver.getPageSource());
 		return SOUNDCLOUD_BUTTON_STATE;
 	}
