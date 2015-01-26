@@ -49,4 +49,4 @@ class IsAnyNodeWithLabelsRunningJob(CliHandlerBase):
             return False
         except Exception:
             traceback.print_exc()
-            return False
+            return True
