@@ -195,6 +195,8 @@ public class PeoplePickerPage extends AndroidPage {
 	public ContactListPage tapClearButton() throws Exception {
 		refreshUITree();
 		pickerClearBtn.click();
+		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.PeoplePickerPage.idPeoplePickerClearbtn));
+		refreshUITree();
 		return new ContactListPage(url, path);
 	}
 

@@ -19,6 +19,7 @@ import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.RegistrationPage;
+import com.wearezeta.auto.osx.pages.UserProfilePage;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -146,6 +147,18 @@ public class RegistrationPageSteps {
 		clSteps.ISeeMyNameInContactList(this.userToRegister.getName());
 	}
 
+	@Then("I see self profile of registered user")
+	public void ISeeSelfProfileOfRegisteredUser() throws Exception {
+		CommonOSXSteps.senderPages
+				.setUserProfilePage(new UserProfilePage(
+						CommonUtils
+								.getOsxAppiumUrlFromConfig(RegistrationPageSteps.class),
+						CommonUtils
+								.getOsxApplicationPathFromConfig(RegistrationPageSteps.class)));
+		UserProfilePageSteps upSteps = new UserProfilePageSteps();
+		upSteps.ISeeNameInUserProfile(this.userToRegister.getName());
+	}
+	
 	public static final String[] INVALID_EMAILS = new String[] {
 			"abc.example.com", "abc@example@.com", "example@zeta",
 			"abc@example." };

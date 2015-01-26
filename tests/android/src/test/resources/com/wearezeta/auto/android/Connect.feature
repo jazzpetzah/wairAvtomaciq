@@ -236,7 +236,7 @@ Feature: Connect
     When I minimize the application
     And <Contact> has sent connection request to Me
     And I restore the application
-    And I press back button
+    #And I press back button
     And I see contact list loaded with User name <WaitingMess>
     And I tap on contact name <WaitingMess>
     Then I see connect to <Contact> dialog
@@ -265,7 +265,8 @@ Feature: Connect
     When <Contact> accept all requests
     And I wait for 2 seconds
     And I press Clear button
-    Then I tap on contact name <Contact>
+    Then I see contact list loaded with User name <Contact>
+    And I tap on contact name <Contact>
     And I see Connect to <Contact> Dialog page
 
     Examples: 
