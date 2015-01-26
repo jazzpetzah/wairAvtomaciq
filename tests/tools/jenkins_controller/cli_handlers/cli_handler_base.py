@@ -26,6 +26,10 @@ class CliHandlerNotFoundError(Exception):
     pass
 
 
+class TimeoutError(Exception):
+    pass
+
+
 def get_handler(keyword, jenkins):
     current_module_path = os.path.dirname(__file__)
     for module_name in os.listdir(current_module_path):
