@@ -2,6 +2,7 @@ package com.wearezeta.auto.osx.pages;
 
 import java.io.IOException;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -10,9 +11,11 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class UserProfilePage extends OSXPage {
+	private static final Logger log = ZetaLogger.getLog(UserProfilePage.class.getSimpleName());
 	
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathMainWindow)
 	private WebElement mainWindow;
@@ -104,6 +107,7 @@ public class UserProfilePage extends OSXPage {
 	
 	public boolean selfProfileNameEquals(String name) {
 		String xpath = String.format(OSXLocators.xpathFormatSelfProfileNameTextField, name);
+		log.debug("Looking for name " + name + " by xpath '" + xpath + "' in user profile. Page source: " + driver.getPageSource());
 		WebElement element = driver.findElement(By.xpath(xpath));
 		return name.equals(element.getText());
 	}
