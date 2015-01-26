@@ -244,6 +244,7 @@ public class ConversationPage extends OSXPage {
 		setLastSoundCloudButtonToUse();
 		SOUNDCLOUD_BUTTON_STATE = soundCloudLinkButton
 				.getAttribute(SOUNDCLOUD_BUTTON_ATT_TITLE);
+		log.debug(driver.getPageSource());
 		return SOUNDCLOUD_BUTTON_STATE;
 	}
 
