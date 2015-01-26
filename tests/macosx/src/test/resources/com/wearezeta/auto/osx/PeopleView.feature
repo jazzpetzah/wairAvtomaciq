@@ -85,7 +85,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        |
       | user1Email | user1Password | user1Name | user2Name | user3Name | PartViewNavChat |
 
-  @regression @id100
+  @regression @id100 @torun
   Scenario Outline: Access proﬁle information for the other participant in a 1on1 conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
