@@ -42,8 +42,10 @@ public class MainMenuPage extends OSXPage {
 		driver.navigate().to(CommonUtils.getOsxApplicationPathFromConfig(MainMenuPage.class));
 	}
 	
-	public void quitZClient() {
+	public void quitZClient() throws IOException {
 		try {
+			//workaround for Mavericks lost pages
+			driver.navigate().to(CommonUtils.getOsxApplicationPathFromConfig(MainMenuPage.class));
 			quitZClientMenuItem.click();
 		} catch (NoSuchElementException e) {
 			log.debug(driver.getPageSource());
