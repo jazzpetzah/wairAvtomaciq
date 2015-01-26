@@ -4,6 +4,7 @@ import argparse
 import imp
 import pprint
 import re
+import time
 import os
 
 
@@ -15,6 +16,14 @@ class CliHandlerBase(object):
         parser.add_argument('request_type',
                              help='Jenkins request type. Available types: {0}'.\
                 format(pprint.pformat(get_handler_names())))
+    
+    def _wait_while_job_in_queue(self, job, timeout):
+        current_timestamp = time.time()
+        MAX_WAIT = int(timeout)
+        while job.is_queued() and time.time() - current_timestamp < MAX_WAIT:
+            time.sleep(5)
+        if job.is_queued():
+            raise TimeoutError('The job is still in the queue after {0} seconds timeout'.format(MAX_WAIT))
 
     def _get_parser(self):
         parser = argparse.ArgumentParser()
