@@ -23,14 +23,17 @@ public class ContactListPageSteps {
 	@Given("^I see Contact list with my name (.*)$")
 	public void GivenISeeContactListWithMyName(String name) throws Throwable {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		if (PagesCollection.loginPage.isSelfProfileVisible()) {
-			PagesCollection.loginPage.swipeRight(1000);
-		}
+//		if (PagesCollection.loginPage.isSelfProfileVisible()) {
+//			PagesCollection.loginPage.swipeRight(1000);
+//		}
 
 		Assert.assertTrue("Username : " + name
 				+ " dind't appear in contact list",
 				PagesCollection.loginPage.isLoginFinished(name));
-		ISwipeDownContactList();
+		PagesCollection.peoplePickerPage = PagesCollection.loginPage.clickLaterButton();
+		if (null == PagesCollection.peoplePickerPage) {
+			ISwipeDownContactList();
+		}
 		PeoplePickerPageSteps steps = new PeoplePickerPageSteps();
 		steps.WhenISeePeoplePickerPage();
 		steps.IClickCloseButtonDismissPeopleView();

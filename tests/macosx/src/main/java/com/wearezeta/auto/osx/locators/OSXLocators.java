@@ -177,4 +177,8 @@ public final class OSXLocators {
 	public static final String xpathConnectToUserButton = "//AXPopover/AXButton[@AXTitle='CONNECT']";
 	
 	public static final String xpathFormatSentConnectionRequestMessage = "//AXPopover//AXTextArea[@AXValue='%s']";
+
+	public static final String xpathNoInternetConnectionMessage = "//AXStaticText[@AXValue='No Internet Connection']";
+	
+	public static final String idCloseNoInternetDialogButton = "_NS:14";
 }

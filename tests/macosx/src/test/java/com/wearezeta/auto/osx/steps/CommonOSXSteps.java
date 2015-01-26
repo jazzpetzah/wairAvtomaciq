@@ -77,7 +77,7 @@ public class CommonOSXSteps {
 
 	@Before("~@performance")
 	public void setUp() throws Exception {
-
+		CommonUtils.enableTcpForAppName(OSXCommonUtils.APP_NAME);
 		OSXCommonUtils.deleteZClientLoginFromKeychain();
 		OSXCommonUtils.removeAllZClientSettingsFromDefaults();
 		OSXCommonUtils.deleteCacheFolder();
@@ -230,6 +230,16 @@ public class CommonOSXSteps {
 		commonSteps.UserXIsMe(nameAlias);
 	}
 
+	@Given("^Internet connection is lost$")
+	public void InternetConnectionIsLost() throws Exception {
+		commonSteps.BlockTcpConnectionForApp(OSXCommonUtils.APP_NAME);
+	}
+	
+	@Given("^Internet connection is restored$")
+	public void InternetConnectionIsRestored() throws Exception {
+		commonSteps.EnableTcpConnectionForApp(OSXCommonUtils.APP_NAME);
+	}
+	
 	@After
 	public void tearDown() throws Exception {
 		senderPages.closeAllPages();
@@ -238,5 +248,7 @@ public class CommonOSXSteps {
 
 		// workaround for stuck on Send picture test
 		OSXCommonUtils.killWireIfStuck();
+
+		CommonUtils.enableTcpForAppName(OSXCommonUtils.APP_NAME);
 	}
 }
