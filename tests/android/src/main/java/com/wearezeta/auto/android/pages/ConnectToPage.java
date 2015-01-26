@@ -2,6 +2,7 @@ package com.wearezeta.auto.android.pages;
 
 
 import java.util.List;
+import org.openqa.selenium.*;
 
 import org.openqa.selenium.WebElement;
 
@@ -113,11 +114,16 @@ public class ConnectToPage extends AndroidPage {
 	
 	public void typeConnectionRequies(String message) throws Exception {
 		connectionRequestMessage.sendKeys(message);
-		navigateBack();
 	}
 	
 	public ContactListPage pressConnectButton() throws Exception {
+		try{
 		sendConnectionRequestButton.click();
+		}
+		catch(NoSuchElementException ex){
+			navigateBack();
+			sendConnectionRequestButton.click();
+		}
 		return new ContactListPage(url, path);
 	}
 	

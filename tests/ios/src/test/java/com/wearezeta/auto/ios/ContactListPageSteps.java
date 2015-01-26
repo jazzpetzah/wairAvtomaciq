@@ -31,12 +31,11 @@ public class ContactListPageSteps {
 				+ " dind't appear in contact list",
 				PagesCollection.loginPage.isLoginFinished(name));
 		PagesCollection.peoplePickerPage = PagesCollection.loginPage.clickLaterButton();
-		if (null == PagesCollection.peoplePickerPage) {
-			ISwipeDownContactList();
+		if (null != PagesCollection.peoplePickerPage) {
+			PeoplePickerPageSteps steps = new PeoplePickerPageSteps();
+			steps.WhenISeePeoplePickerPage();
+			steps.IClickCloseButtonDismissPeopleView();
 		}
-		PeoplePickerPageSteps steps = new PeoplePickerPageSteps();
-		steps.WhenISeePeoplePickerPage();
-		steps.IClickCloseButtonDismissPeopleView();
 	}
 
 	@When("I dismiss tutorial layout")

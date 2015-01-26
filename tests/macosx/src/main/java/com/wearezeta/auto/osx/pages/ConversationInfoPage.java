@@ -17,6 +17,7 @@ import org.sikuli.script.Screen;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.osx.locators.OSXLocators;
+import com.wearezeta.auto.osx.util.NSPoint;
 
 @SuppressWarnings("deprecation")
 public class ConversationInfoPage extends OSXPage {
@@ -64,6 +65,9 @@ public class ConversationInfoPage extends OSXPage {
 	
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathConnectToUserButton)
 	private WebElement connectToUserButton;
+	
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathAvatarFullScreenWindow)
+	private WebElement avatarFullScreenWindow;
 	
 	public String currentConversationName;
 	
@@ -247,6 +251,11 @@ public class ConversationInfoPage extends OSXPage {
 	public boolean isEmailButtonExists(String email) {
 		return DriverUtils.waitUntilElementAppears(driver, By.xpath(
 				String.format(OSXLocators.xpathSingleChatUserEmailButton, email)));
+	}
+	
+	public NSPoint retrieveAvatarFullScreenWindowSize() {
+		NSPoint result = NSPoint.fromString(avatarFullScreenWindow.getAttribute("AXSize"));
+		return result;
 	}
 	
 	public String getCurrentConversationName() {
