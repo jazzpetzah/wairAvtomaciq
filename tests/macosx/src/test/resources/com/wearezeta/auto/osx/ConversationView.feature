@@ -90,7 +90,7 @@ Feature: Conversation
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendPictureGroupChat |
 
-  @regression @id81
+  @regression @id81 @torun
   Scenario Outline: Play embedded SoundCloud link in conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
