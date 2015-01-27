@@ -6,11 +6,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Random;
 import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
@@ -42,7 +44,7 @@ public final class BackendAPIWrappers {
 	public static void setDefaultBackendURL(String url) {
 		BackendREST.setDefaultBackendURL(url);
 	}
-	
+
 	public static ClientUser createUser(ClientUser user) throws Exception {
 		IMAPSMailbox mbox = IMAPSMailbox.createDefaultInstance();
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
@@ -513,5 +515,38 @@ public final class BackendAPIWrappers {
 		BackendREST.updateConvSelfInfo(generateAuthToken(ownerUser),
 				getConversationWithSingleUser(ownerUser, archivedUser), null,
 				null, false);
+	}
+
+	public static class NoContactsFoundException extends Exception {
+		private static final long serialVersionUID = -7682778364420522320L;
+
+		public NoContactsFoundException(String msg) {
+			super(msg);
+		}
+	}
+
+	private static Random random = new Random();
+
+	public static void waitUntilContactsFound(ClientUser searchByUser,
+			String query, int expectedCount, boolean orMore, int timeout)
+			throws Exception {
+		tryLoginByUser(searchByUser);
+		Date date = new Date();
+		long currentTimestamp = date.getTime();
+		int currentCount = -1;
+		while (date.getTime() <= currentTimestamp + timeout * 1000) {
+			final JSONObject searchResult = BackendREST.searchForContacts(
+					generateAuthToken(searchByUser), query);
+			currentCount = searchResult.getInt("found");
+			if (currentCount == expectedCount
+					|| (orMore && currentCount >= expectedCount)) {
+				return;
+			}
+			Thread.sleep(1000 + random.nextInt(4000));
+		}
+		throw new NoContactsFoundException(
+				String.format(
+						"%s contact(s) '%s' were not found within %s second(s) timeout",
+						expectedCount, query, timeout));
 	}
 }

@@ -2,6 +2,7 @@ package com.wearezeta.auto.common.backend;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -514,6 +515,20 @@ final class BackendREST {
 				new int[] { HttpStatus.SC_OK, HttpStatus.SC_CREATED });
 		writeLog(new String[] { "Output from Server .... Update conversation self info "
 				+ output + "\n" });
+	}
+
+	public static JSONObject searchForContacts(AuthToken token, String query)
+			throws Exception {
+		Builder webResource = buildDefaultRequestWithAuth(
+				String.format("search/contacts?q=%s",
+						URLEncoder.encode(query, "utf-8")),
+				MediaType.APPLICATION_JSON, token).type(
+				MediaType.APPLICATION_JSON);
+		final String output = httpGet(webResource,
+				new int[] { HttpStatus.SC_OK });
+		writeLog(new String[] { "Output from Server .... Search for contacts "
+				+ output + "\n" });
+		return new JSONObject(output);
 	}
 
 	public static void setDefaultBackendURL(String url) {

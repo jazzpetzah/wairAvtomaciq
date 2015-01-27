@@ -71,7 +71,8 @@ public class CommonOSXSteps {
 				.getOsxAppiumUrlFromConfig(CommonOSXSteps.class), path));
 		senderPages.setLoginPage(new LoginPage(CommonUtils
 				.getOsxAppiumUrlFromConfig(CommonOSXSteps.class), path));
-		ZetaFormatter.setDriver((AppiumDriver) senderPages.getLoginPage().getDriver());
+		ZetaFormatter.setDriver((AppiumDriver) senderPages.getLoginPage()
+				.getDriver());
 		senderPages.getLoginPage().sendProblemReportIfFound();
 	}
 
@@ -93,7 +94,8 @@ public class CommonOSXSteps {
 				.getOsxAppiumUrlFromConfig(CommonOSXSteps.class), path));
 		senderPages.setLoginPage(new LoginPage(CommonUtils
 				.getOsxAppiumUrlFromConfig(CommonOSXSteps.class), path));
-		ZetaFormatter.setDriver((AppiumDriver) senderPages.getLoginPage().getDriver());
+		ZetaFormatter.setDriver((AppiumDriver) senderPages.getLoginPage()
+				.getDriver());
 		senderPages.getLoginPage().sendProblemReportIfFound();
 
 		resetBackendSettingsIfOverwritten();
@@ -234,12 +236,20 @@ public class CommonOSXSteps {
 	public void InternetConnectionIsLost() throws Exception {
 		commonSteps.BlockTcpConnectionForApp(OSXCommonUtils.APP_NAME);
 	}
-	
+
 	@Given("^Internet connection is restored$")
 	public void InternetConnectionIsRestored() throws Exception {
 		commonSteps.EnableTcpConnectionForApp(OSXCommonUtils.APP_NAME);
 	}
-	
+
+	@Given("^(\\w+) wait[s]* up to (\\d+) second[s]* until contact (.*) exists in backend search results$")
+	public void UserWaitsUntilContactExistsInHisSearchResults(
+			String searchByNameAlias, int timeout, String query)
+			throws Exception {
+		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query,
+				timeout);
+	}
+
 	@After
 	public void tearDown() throws Exception {
 		senderPages.closeAllPages();
