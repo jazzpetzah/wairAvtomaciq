@@ -11,9 +11,11 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ConversationInfoPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
+import com.wearezeta.auto.osx.util.NSPoint;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -144,8 +146,14 @@ public class ConversationInfoPageSteps {
 		BufferedImage screen = conversationInfo.takeScreenshot();
 		BufferedImage picture = ImageUtil.readImageFromFile(OSXPage.imagesPath + photo);
 		
+		NSPoint avatarWinSize = conversationInfo.retrieveAvatarFullScreenWindowSize();
+		
+		if (OSXCommonUtils.isRetinaDisplay(screen.getWidth(), screen.getHeight())) {
+			avatarWinSize = new NSPoint(avatarWinSize.x()*2, avatarWinSize.y()*2);
+		}
+		
 		final double minOverlapScore = 0.8d;
-		final double score = ImageUtil.getOverlapScore(screen, picture, ImageUtil.RESIZE_FROM1920x1080OPTIMIZED);
+		final double score = ImageUtil.getOverlapScore(screen, picture, ImageUtil.RESIZE_TEMPLATE_TO_RESOLUTION, avatarWinSize.x(), avatarWinSize.y());
 		log.debug("Score for comparison of 2 pictures = " + score);
 		Assert.assertTrue(
 				String.format(

@@ -181,4 +181,6 @@ public final class OSXLocators {
 	public static final String xpathNoInternetConnectionMessage = "//AXStaticText[@AXValue='No Internet Connection']";
 	
 	public static final String idCloseNoInternetDialogButton = "_NS:14";
+	
+	public static final String xpathAvatarFullScreenWindow = "//AXWindow[@AXRoleDescription='floating window']";
 }

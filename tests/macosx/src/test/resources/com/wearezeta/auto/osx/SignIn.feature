@@ -16,7 +16,7 @@ Feature: Sign In
       | user1Email | user1Password | user1Name |
 
   #Not supported functionality - Sign Out
-  @regression @id525
+  @regression @id525 @torun
   Scenario Outline: Change Sign in user
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login2> and password <Password2>
@@ -26,7 +26,7 @@ Feature: Sign In
     And I choose to select picture from image file
     And I select image file userpicture_portrait.jpg
     And I see photo in User profile
-    When I am signed out from ZClient
+    When I am signing out
     And I Sign in using login <Login> and password <Password>
     Then I see my name <Name> in Contact list
     And I see name <Name> in User profile

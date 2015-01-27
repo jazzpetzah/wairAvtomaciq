@@ -25,6 +25,16 @@ public class PendingRequestsPageSteps {
 		PagesCollection.contactListPage = PagesCollection.pendingRequestsPage.clickConnectButton();
 	}
 	
+	/**
+	 * Clicks the connect button on the pending requests page a specific number of times
+	 * 
+	 * @step. ^I click on Connect button on Pending requests page (.*) times$
+	 * 
+	 * @param numberOfConnects
+	 *            number of clicks integer 
+	 * @throws AssertionError
+	 *             if connect button is not visible
+	 */
 	@When("^I click on Connect button on Pending requests page (.*) times$")
 	public void IClickOnConnectButtonPendingRequests(int numberOfConnects) throws Throwable{
 			PagesCollection.contactListPage = PagesCollection.pendingRequestsPage.clickConnectButtonMultiple(numberOfConnects);

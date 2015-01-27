@@ -19,11 +19,11 @@ public class ReportModel {
 		String name;
 		List<String> aDetails;
 		int count;
-		
+
 		List<String> details() {
 			return this.aDetails;
 		}
-		
+
 		public TestcaseGroup(String name, List<String> details, int count) {
 			this.name = name;
 			this.aDetails = details;

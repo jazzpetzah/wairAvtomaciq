@@ -22,6 +22,7 @@ public class ImageUtil {
 	public static final int RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION = 2;
 	public static final int RESIZE_FROM1920x1080OPTIMIZED = 3;
 	public static final int RESIZE_FROM2560x1600OPTIMIZED = 4;
+	public static final int RESIZE_TEMPLATE_TO_RESOLUTION = 5;
 	
 	static {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -84,11 +85,27 @@ public class ImageUtil {
 		return result;
 	}
 	
+	public static Mat resizeMatrixToResolution(Mat matrix, int exWidth, int exHeight) {
+		Mat result;
+		if (matrix.width() != exWidth || matrix.height() != exHeight) {
+			result = new Mat();
+			Size sz = new Size(exWidth, exHeight);
+			Imgproc.resize(matrix, result, sz);
+		} else {
+			result = matrix;
+		}
+		return result;
+	}
+	
 	public static double getOverlapScore(BufferedImage refImage, BufferedImage tplImage) {
 		return getOverlapScore(refImage, tplImage, RESIZE_FROM1920x1080OPTIMIZED);
 	}
 	
 	public static double getOverlapScore(BufferedImage refImage, BufferedImage tplImage, int resizeMode) {
+		return getOverlapScore(refImage, tplImage, resizeMode, 1, 1);
+	}
+	
+	public static double getOverlapScore(BufferedImage refImage, BufferedImage tplImage, int resizeMode, int exWidth, int exHeight) {
 		//convert images to matrixes
 		refImage = convertToBufferedImageOfType(refImage, BufferedImage.TYPE_3BYTE_BGR);
 		tplImage = convertToBufferedImageOfType(tplImage, BufferedImage.TYPE_3BYTE_BGR);
@@ -108,6 +125,8 @@ public class ImageUtil {
 	    	ref = resizeFirstMatrixToSecondMatrixResolution(ref, tpl);
 	    } else if (resizeMode == RESIZE_FROM2560x1600OPTIMIZED) {
 	    	tpl = resizeTemplateMatrixFromOptimizedForResolution(tpl, ref, 1600, 2560);
+	    } else if (resizeMode == RESIZE_TEMPLATE_TO_RESOLUTION) {
+	    	tpl = resizeMatrixToResolution(tpl, exWidth, exHeight);
 	    }
 	    
 	    //get grayscale images for matching template

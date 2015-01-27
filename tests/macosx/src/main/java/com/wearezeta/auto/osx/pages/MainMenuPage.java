@@ -3,6 +3,7 @@ package com.wearezeta.auto.osx.pages;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -41,8 +42,15 @@ public class MainMenuPage extends OSXPage {
 		driver.navigate().to(CommonUtils.getOsxApplicationPathFromConfig(MainMenuPage.class));
 	}
 	
-	public void quitZClient() {
-		quitZClientMenuItem.click();
+	public void quitZClient() throws IOException {
+		try {
+			//workaround for Mavericks lost pages
+			driver.navigate().to(CommonUtils.getOsxApplicationPathFromConfig(MainMenuPage.class));
+			quitZClientMenuItem.click();
+		} catch (NoSuchElementException e) {
+			log.debug(driver.getPageSource());
+			throw e;
+		}
 	}
 	
 	@Override

@@ -208,4 +208,12 @@ public class OSXCommonUtils extends CommonUtils {
 		} catch (Exception e) {
 		}
 	}
+	
+	public static boolean isRetinaDisplay(int width, int height) {
+		if (width == 2560 && height == 1600) {
+			return true;			
+		} else {
+			return false;
+		}
+	}
 }

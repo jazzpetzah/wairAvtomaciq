@@ -10,6 +10,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -18,6 +20,8 @@ import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.wearezeta.zephyr_sync.reporting.ReportGenerator;
 import com.wearezeta.zephyr_sync.reporting.ReportModel;
@@ -54,8 +58,44 @@ public class App {
 	private static final String EXECUTION_TYPE_PHASE_SYNC = "phase_sync";
 	private static final String EXECUTION_TYPE_PHASE_VERIFICATION = "phase_verification";
 
+	private static String transformURLIntoLinks(String text) {
+		final String urlValidationRegex = "(https?|ftp)://(www\\d?|[a-zA-Z0-9]+)?.[a-zA-Z0-9-]+(\\:|.)([a-zA-Z0-9.]+|(\\d+)?)([/?:].*)?";
+		Pattern p = Pattern.compile(urlValidationRegex);
+		Matcher m = p.matcher(text);
+		StringBuffer sb = new StringBuffer();
+		while (m.find()) {
+			String found = m.group(0);
+			m.appendReplacement(sb, "<a href='" + found + "'>"
+					+ StringEscapeUtils.escapeXml(found) + "</a>");
+		}
+		m.appendTail(sb);
+		return sb.toString();
+	}
+
+	private static final String ID_LINK_TEMPLATE = "<a href='http://%s/flex?tcid=%s'>%s</a>";
+
+	private static String getZephyrTcDetailsAsHTML(Testcase tc,
+			String zephyrServer) {
+		List<String> idLinks = new ArrayList<String>();
+		Set<String> idsSet = Testcase.splitIds(tc.getId());
+		for (String id : idsSet) {
+			idLinks.add(String.format(ID_LINK_TEMPLATE, zephyrServer, id, id));
+		}
+
+		if ((tc instanceof ZephyrTestcase)
+				&& ((ZephyrTestcase) tc).getAutomatedScriptPath() != null) {
+			return String.format("[%s] %s -> <em>%s</em>", StringUtils
+					.join(idLinks, " "), StringEscapeUtils.escapeXml(tc
+					.getName()), transformURLIntoLinks(((ZephyrTestcase) tc)
+					.getAutomatedScriptPath()));
+		} else {
+			return String.format("[%s] %s", StringUtils.join(idLinks, " "),
+					StringEscapeUtils.escapeXml(tc.getName()));
+		}
+	}
+
 	private static ReportModel prapareReportingModel(String title,
-			Map<String, List<? extends Testcase>> data) {
+			Map<String, List<? extends Testcase>> data, String zephyrServer) {
 		List<TestcaseGroup> tcGroups = new ArrayList<TestcaseGroup>();
 		for (Map.Entry<String, List<? extends Testcase>> entry : data
 				.entrySet()) {
@@ -68,8 +108,8 @@ public class App {
 					byNameTestcasesMapping.keySet());
 			Collections.sort(sortedByName);
 			for (String name : sortedByName) {
-				details.add(String.format("[%s] %s", byNameTestcasesMapping
-						.get(name).getId(), name));
+				details.add(getZephyrTcDetailsAsHTML(
+						byNameTestcasesMapping.get(name), zephyrServer));
 			}
 			tcGroups.add(new TestcaseGroup(entry.getKey(), details, details
 					.size()));
@@ -113,7 +153,7 @@ public class App {
 		final List<CucumberTestcase> allGherkinTestcases = new ArrayList<CucumberTestcase>();
 		List<CucumberTestcase> testcasesWithMissingIds = new ArrayList<CucumberTestcase>();
 		List<CucumberTestcase> testcasesWithCorruptedIds = new ArrayList<CucumberTestcase>();
-		List<CucumberTestcase> mutedTestcases = new ArrayList<CucumberTestcase>();
+		List<ZephyrTestcase> mutedTestcases = new ArrayList<ZephyrTestcase>();
 		List<CucumberTestcase> nonMutedTestcases = new ArrayList<CucumberTestcase>();
 		for (int i = 0; i < listOfFiles.length; i++) {
 			if (!listOfFiles[i].isFile()
@@ -130,7 +170,7 @@ public class App {
 			for (CucumberTestcase cucumberTC : currentTestcases) {
 				if (cucumberTC.getId().length() > 0) {
 					boolean isTCUntouched = true;
-					for (String tcId : cucumberTC.getId().split("\\s+")) {
+					for (String tcId : Testcase.splitIds(cucumberTC.getId())) {
 						try {
 							Long.parseLong(tcId);
 						} catch (NumberFormatException e) {
@@ -147,7 +187,7 @@ public class App {
 							zephyrTCFound = true;
 							syncCucumberTCWithZephyr(cucumberTC, zephyrTC);
 							if (zephyrTC.getTags().contains(MUTE_TAG)) {
-								mutedTestcases.add(cucumberTC);
+								mutedTestcases.add(zephyrTC);
 								isTCUntouched = false;
 							}
 							break;
@@ -179,7 +219,7 @@ public class App {
 
 		final String title = String.format("[%s] Pre-Execution Report",
 				getCurrentDateTimeStamp());
-		return prapareReportingModel(title, reportData);
+		return prapareReportingModel(title, reportData, zephyrDB.getServer());
 	}
 
 	private static boolean syncZephyrMutedWithExecutedTC(
@@ -216,7 +256,7 @@ public class App {
 		for (ExecutedCucumberTestcase executedTC : executedTestcases) {
 			if (executedTC.getId().length() > 0) {
 				boolean isTCUntouched = true;
-				for (String tcId : executedTC.getId().split("\\s+")) {
+				for (String tcId : Testcase.splitIds(executedTC.getId())) {
 					try {
 						Long.parseLong(tcId);
 					} catch (NumberFormatException e) {
@@ -267,7 +307,7 @@ public class App {
 
 		final String title = String.format("[%s] Post-Execution Report",
 				getCurrentDateTimeStamp());
-		return prapareReportingModel(title, reportData);
+		return prapareReportingModel(title, reportData, zephyrDB.getServer());
 	}
 
 	private static boolean syncZephyrUnmutedWithExecutedTC(
@@ -306,7 +346,7 @@ public class App {
 		for (ExecutedCucumberTestcase executedTC : executedTestcases) {
 			if (executedTC.getId().length() > 0) {
 				boolean isTCUntouched = true;
-				for (String tcId : executedTC.getId().split("\\s+")) {
+				for (String tcId : Testcase.splitIds(executedTC.getId())) {
 					try {
 						Long.parseLong(tcId);
 					} catch (NumberFormatException e) {
@@ -359,7 +399,7 @@ public class App {
 		final String title = String.format(
 				"[%s] Muted Tests Verification Report",
 				getCurrentDateTimeStamp());
-		return prapareReportingModel(title, reportData);
+		return prapareReportingModel(title, reportData, zephyrDB.getServer());
 	}
 
 	private static int syncPhaseResults(ZephyrDB zephyrDB,
