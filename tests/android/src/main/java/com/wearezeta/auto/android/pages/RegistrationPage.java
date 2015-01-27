@@ -84,6 +84,8 @@ public class RegistrationPage extends AndroidPage {
 	}
 
 	public void confirmPicture() {
+		refreshUITree();
+		wait.until(ExpectedConditions.elementToBeClickable(confirmImageButton));
 		confirmImageButton.click();
 	}
 

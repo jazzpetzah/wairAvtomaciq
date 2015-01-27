@@ -230,7 +230,9 @@ public class DialogPage extends AndroidPage{
 	
 	public void changeCamera() {
 		refreshUITree();//TODO workaround
-		changeCameraButton.click();
+		if(DriverUtils.isElementDisplayed(changeCameraButton)){
+			changeCameraButton.click();
+		}
 	}
 
 	public boolean isConnectMessageVisible() {
@@ -435,6 +437,17 @@ public class DialogPage extends AndroidPage{
 	public String getKnockText(){
 		refreshUITree();
 		return knockMessage.getText() + " " + knockAction.getText();
+	}
+	
+	public Boolean isKnockText(String message, String action){
+		Boolean flag = false;
+		refreshUITree();
+		List<WebElement> messageElement = driver.findElements(By.xpath(String.format(AndroidLocators.DialogPage.xpathMessage, message)));
+		List<WebElement> actionElement = driver.findElements(By.xpath(String.format(AndroidLocators.DialogPage.xpathMessage, action)));
+		if(!messageElement.isEmpty() && !actionElement.isEmpty()){
+			flag = true;
+		}
+		return flag;
 	}
 	
 	public boolean isMessageExists(String messageText){
