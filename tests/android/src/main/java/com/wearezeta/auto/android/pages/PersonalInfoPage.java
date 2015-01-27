@@ -154,6 +154,9 @@ public class PersonalInfoPage extends AndroidPage
 	}
 
 	public void changeName(String name, String newName) throws Exception {
+		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.PersonalInfoPage.idNameField));
+		refreshUITree();
+		wait.until(ExpectedConditions.visibilityOf(nameEdit));
 		nameEdit.sendKeys(newName);
 		driver.navigate().back();
 		Thread.sleep(1000);
