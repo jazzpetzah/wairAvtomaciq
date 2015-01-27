@@ -112,6 +112,28 @@ public class ContactListPageSteps {
 				.isChatInContactList(value));
 	}
 
+	/**
+	 * verifies the visibility of a specific user in the contact list
+	 * 
+	 * @step. ^I see user (.*) in contact list$
+	 * 
+	 * @param value
+	 *            username value string
+	 * @throws AssertionError
+	 *             if the user does not exist
+	 */
+	@Then("^I see user (.*) in contact list$")
+	public void ISeeUserInContactList(String value) throws Throwable {
+		try {
+			value = usrMgr.findUserByNameOrNameAlias(value).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+
+		Assert.assertTrue(PagesCollection.contactListPage
+				.isChatInContactList(value));
+	}
+	
 	@When("^I create group chat with (.*) and (.*)$")
 	public void ICreateGroupChat(String contact1, String contact2)
 			throws Exception {

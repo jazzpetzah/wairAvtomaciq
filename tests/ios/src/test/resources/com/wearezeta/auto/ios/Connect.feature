@@ -171,6 +171,28 @@ Feature: Connect
     Examples:
       | Login      | Password      | Name      | Contact1     | Contact2   | Contact3   | Contact4  | SentRequests |
       | user1Email | user1Password | user1Name | user2Name    | user3Name  | user4Name  | user5Name |      3       |
+      
+  @staging @id577
+  Scenario Outline: Verify transitions between connection requests (connecting)
+    Given There are 5 users where <Name> is me
+    Given <Contact1> has sent connection request to me
+    Given <Contact2> has sent connection request to me
+    Given <Contact3> has sent connection request to me
+    Given Myself is connected to <Contact4>
+    Given I Sign in using login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I see Pending request link in contact list
+    And I click on Pending request link in contact list
+    And I see Pending request page
+    And I click on Connect button on Pending requests page <SentRequests> times
+    Then I dont see Pending request link in contact list
+    And I see user <Contact1> in contact list
+    And I see user <Contact2> in contact list
+    And I see user <Contact3> in contact list
+
+    Examples:
+      | Login      | Password      | Name      | Contact1     | Contact2   | Contact3   | Contact4  | SentRequests |
+      | user1Email | user1Password | user1Name | user2Name    | user3Name  | user4Name  | user5Name |      3       |
 
   @regression @id1404
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (Search)
