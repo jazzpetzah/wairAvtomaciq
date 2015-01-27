@@ -26,7 +26,14 @@ public class ZephyrDB extends TestcasesStorage {
 
 	private final static long DEFAULT_TESTER_ID = 2;
 
+	private String server;
+	public String getServer() {
+		return this.server;
+	}
+	
+	
 	public ZephyrDB(String server) throws SQLException {
+		this.server = server;
 		conn = DriverManager.getConnection(String.format(
 				"jdbc:mysql://%s:%d/%s?user=%s&password=%s", server, PORT,
 				DBNAME, USER, PASSWORD));

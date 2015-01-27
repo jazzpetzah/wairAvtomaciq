@@ -11,6 +11,13 @@ import com.wearezeta.auto.common.email.IMAPSMailbox;
 public class ClientUser {
 	private String name = null;
 
+	public ClientUser(String email, String password, String name, UserState state) {
+		this.email = email;
+		this.password = password;
+		this.name = name;
+		this.userState = state;
+	}
+	
 	public String getName() {
 		return name;
 	}

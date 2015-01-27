@@ -269,7 +269,13 @@ public class PeoplePickerPageSteps {
 	}
 
 	@When("I click close button to dismiss people view")
-	public void IClickCloseButtonDismissPeopleView() {
+	public void IClickCloseButtonDismissPeopleView() throws Exception {
+		//WORKAROUND for black screen
+		WhenITapOnSearchInputOnPeoplePickerPage();
+		PagesCollection.peoplePickerPage.fillTextInPeoplePickerSearch(CommonUtils.generateRandomString(10));
+		PagesCollection.peoplePickerPage.clearInputField();
+		
+		
 		PagesCollection.peoplePickerPage.tapOnPeoplePickerClearBtn();
 	}
 

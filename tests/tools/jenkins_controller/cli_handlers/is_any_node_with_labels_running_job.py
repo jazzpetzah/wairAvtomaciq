@@ -14,9 +14,11 @@ class IsAnyNodeWithLabelsRunningJob(CliHandlerBase):
                             help='List of comma-separated node labels to match')
         parser.add_argument('--name', required=True,
                             help='Name of the job to check')
+        parser.add_argument('--queue_timeout',
+                            help='Maximum time to wait while this job has queued items (in seconds, 300 by default)')
         parser.add_argument('--depth',
                             help='How many recent builds should we check for the particular job')
-        parser.set_defaults(depth=50)
+        parser.set_defaults(depth=50, queue_timeout=300)
     
     def _normalize_labels(self, labels_list):
         normalized_labels = map(lambda x: x.strip(), labels_list)
@@ -26,6 +28,7 @@ class IsAnyNodeWithLabelsRunningJob(CliHandlerBase):
         parser = self._get_parser()
         args = parser.parse_args()
         job = self._jenkins.get_job(args.name)
+        self._wait_while_job_in_queue(job, args.queue_timeout)
         try:
             all_build_ids = job.get_build_ids()
             counter = 0
@@ -46,4 +49,4 @@ class IsAnyNodeWithLabelsRunningJob(CliHandlerBase):
             return False
         except Exception:
             traceback.print_exc()
-            return False
+            return True

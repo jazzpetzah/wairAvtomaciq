@@ -31,12 +31,11 @@ public class ContactListPageSteps {
 				+ " dind't appear in contact list",
 				PagesCollection.loginPage.isLoginFinished(name));
 		PagesCollection.peoplePickerPage = PagesCollection.loginPage.clickLaterButton();
-//		if (null == PagesCollection.peoplePickerPage) {
-//			ISwipeDownContactList();
-//		}
-//		PeoplePickerPageSteps steps = new PeoplePickerPageSteps();
-//		steps.WhenISeePeoplePickerPage();
-//		steps.IClickCloseButtonDismissPeopleView();
+		if (null != PagesCollection.peoplePickerPage) {
+			PeoplePickerPageSteps steps = new PeoplePickerPageSteps();
+			steps.WhenISeePeoplePickerPage();
+			steps.IClickCloseButtonDismissPeopleView();
+		}
 	}
 
 	@When("I dismiss tutorial layout")
@@ -113,6 +112,28 @@ public class ContactListPageSteps {
 				.isChatInContactList(value));
 	}
 
+	/**
+	 * verifies the visibility of a specific user in the contact list
+	 * 
+	 * @step. ^I see user (.*) in contact list$
+	 * 
+	 * @param value
+	 *            username value string
+	 * @throws AssertionError
+	 *             if the user does not exist
+	 */
+	@Then("^I see user (.*) in contact list$")
+	public void ISeeUserInContactList(String value) throws Throwable {
+		try {
+			value = usrMgr.findUserByNameOrNameAlias(value).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+
+		Assert.assertTrue(PagesCollection.contactListPage
+				.isChatInContactList(value));
+	}
+	
 	@When("^I create group chat with (.*) and (.*)$")
 	public void ICreateGroupChat(String contact1, String contact2)
 			throws Exception {

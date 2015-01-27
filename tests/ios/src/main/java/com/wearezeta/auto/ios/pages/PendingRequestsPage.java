@@ -54,7 +54,6 @@ public class PendingRequestsPage extends IOSPage {
 			DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.namePendingRequestIgnoreButton));
 			wait.until(ExpectedConditions.elementToBeClickable(ignoreRequestButton));
 			ignoreRequestButton.click();
-			Thread.sleep(500);
 			DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.namePendingRequestIgnoreButton));
 		}
 		page = new ContactListPage(url, path);
@@ -68,6 +67,22 @@ public class PendingRequestsPage extends IOSPage {
 		return page;
 	}
 	
+	public ContactListPage clickConnectButtonMultiple(int clicks)
+			throws Throwable {
+		ContactListPage page = null;
+		for (int i = 0; i < clicks; i++) {
+			DriverUtils.waitUntilElementAppears(driver,
+					By.name(IOSLocators.namePendingRequestConnectButton));
+			wait.until(ExpectedConditions
+					.elementToBeClickable(connectRequestButton));
+			connectRequestButton.click();
+			DriverUtils.waitUntilElementAppears(driver,
+					By.name(IOSLocators.namePendingRequestConnectButton));
+		}
+		page = new ContactListPage(url, path);
+		return page;
+	}
+			
 	public boolean isConnectButtonDisplayed(){
 		return DriverUtils.isElementDisplayed(connectRequestButton);
 	}
