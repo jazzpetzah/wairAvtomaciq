@@ -39,6 +39,10 @@ public final class BackendAPIWrappers {
 	private static final Logger log = ZetaLogger
 			.getLog(BackendAPIWrappers.class.getSimpleName());
 
+	public static void setDefaultBackendURL(String url) {
+		BackendREST.setDefaultBackendURL(url);
+	}
+	
 	public static ClientUser createUser(ClientUser user) throws Exception {
 		IMAPSMailbox mbox = IMAPSMailbox.createDefaultInstance();
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
