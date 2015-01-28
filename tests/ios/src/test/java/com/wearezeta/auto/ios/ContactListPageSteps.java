@@ -23,18 +23,19 @@ public class ContactListPageSteps {
 	@Given("^I see Contact list with my name (.*)$")
 	public void GivenISeeContactListWithMyName(String name) throws Throwable {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-//		if (PagesCollection.loginPage.isSelfProfileVisible()) {
-//			PagesCollection.loginPage.swipeRight(1000);
-//		}
 
 		Assert.assertTrue("Username : " + name
 				+ " dind't appear in contact list",
 				PagesCollection.loginPage.isLoginFinished(name));
 		PagesCollection.peoplePickerPage = PagesCollection.loginPage.clickLaterButton();
+		log.debug("click on later button after login");
 		if (null != PagesCollection.peoplePickerPage) {
+			log.debug("click on later button after login, success");
 			PeoplePickerPageSteps steps = new PeoplePickerPageSteps();
 			steps.WhenISeePeoplePickerPage();
+			log.debug("people picker is visible");
 			steps.IClickCloseButtonDismissPeopleView();
+			log.debug("click on close people picker");
 		}
 	}
 
