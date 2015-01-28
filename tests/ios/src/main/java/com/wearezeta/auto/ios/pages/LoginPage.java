@@ -69,8 +69,8 @@ public class LoginPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameProfileName)
 	private WebElement selfProfileName;
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameContinueUploadButton)
-	private WebElement continueButton;
+	@FindBy(how = How.NAME, using = IOSLocators.nameLaterButton)
+	private WebElement laterButton;
 	
 	private String login;
 	
@@ -110,9 +110,9 @@ public class LoginPage extends IOSPage {
 		return this;
 	}
 	
-	public PeoplePickerPage clickContinueButton() throws IOException {
-		if(DriverUtils.isElementDisplayed(continueButton)) {
-			continueButton.click();
+	public PeoplePickerPage clickLaterButton() throws IOException {
+		if(DriverUtils.isElementDisplayed(laterButton)) {
+			laterButton.click();
 			return new PeoplePickerPage(url, path);
 		}
 		
