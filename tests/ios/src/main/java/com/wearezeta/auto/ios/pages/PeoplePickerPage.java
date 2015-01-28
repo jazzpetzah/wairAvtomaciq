@@ -257,7 +257,9 @@ public class PeoplePickerPage extends IOSPage{
 	}
 
 	public void clickContinueButton() {
-		continueButton.click();
+		if(DriverUtils.isElementDisplayed(continueButton)) {
+			continueButton.click();
+		}
 	}
 
 	public boolean isPeopleYouMayKnowLabelVisible() {
