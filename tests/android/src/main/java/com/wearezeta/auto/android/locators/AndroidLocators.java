@@ -192,7 +192,7 @@ public final class AndroidLocators {
 		
 		public static final String xpathFormatSpecificMessage = "//android.widget.TextView[@resource-id='" + LOCATORS_PACKAGE + ":id/ltv__row_conversation__message' and @text='%s']";
 	
-		public static final String xpathMessage = "//android.widget.LinearLayout/android.widget.TextView[@text='%s']";
+		public static final String xpathMessage = "//android.widget.LinearLayout/android.widget.TextView[contains(@text,'%s')]";
 		
 		public static final String xpathBackgroundOverlay42 = "//android.view.View/android.widget.FrameLayout";
 		

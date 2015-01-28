@@ -442,8 +442,8 @@ public class DialogPage extends AndroidPage{
 	public Boolean isKnockText(String message, String action){
 		Boolean flag = false;
 		refreshUITree();
-		List<WebElement> messageElement = driver.findElements(By.xpath(String.format(AndroidLocators.DialogPage.xpathMessage, message)));
-		List<WebElement> actionElement = driver.findElements(By.xpath(String.format(AndroidLocators.DialogPage.xpathMessage, action)));
+		List<WebElement> messageElement = driver.findElements(By.xpath(String.format(AndroidLocators.DialogPage.xpathMessage, message.trim())));
+		List<WebElement> actionElement = driver.findElements(By.xpath(String.format(AndroidLocators.DialogPage.xpathMessage, action.trim())));
 		if(!messageElement.isEmpty() && !actionElement.isEmpty()){
 			flag = true;
 		}
