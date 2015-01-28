@@ -42,12 +42,37 @@ public class CommonWebAppSteps {
 		ZetaFormatter.setDriver(PagesCollection.invitationCodePage.getDriver());
 	}
 
+	/**
+	 * Creates specified number of users and sets user with specified name as
+	 * main user
+	 * 
+	 * @step. ^There \\w+ (\\d+) user[s]* where (.*) is me$
+	 * 
+	 * @param count
+	 *            number of users to create
+	 * @param myNameAlias
+	 *            user name or name alias to use as main user
+	 * 
+	 * @throws Exception
+	 */
 	@Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
 			throws Exception {
 		commonSteps.ThereAreNUsersWhereXIsMe(count, myNameAlias);
 	}
 
+	/**
+	 * Creates connection between to users
+	 * 
+	 * @step. ^(.*) is connected to (.*)$
+	 * 
+	 * @param userFromNameAlias
+	 *            user which sends connection request
+	 * @param usersToNameAliases
+	 *            user which accepts connection request
+	 * 
+	 * @throws Exception
+	 */
 	@Given("^(.*) is connected to (.*)$")
 	public void UserIsConnectedTo(String userFromNameAlias,
 			String usersToNameAliases) throws Exception {

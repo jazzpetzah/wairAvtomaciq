@@ -59,10 +59,12 @@ public class LoginPage extends WebPage {
 	}
 
 	public void inputEmail(String email) {
+		emailInput.clear();
 		emailInput.sendKeys(email);
 	}
 
 	public void inputPassword(String password) {
+		passwordInput.clear();
 		passwordInput.sendKeys(password);
 	}
 
