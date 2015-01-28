@@ -139,6 +139,19 @@ public class DialogPageSteps {
 		message = CommonUtils.generateGUID();
 		PagesCollection.dialogPage.sendStringToInput(message + "\n");
 	}
+	
+	/**
+	 * Click open conversation details button in 1:1 dialog
+	 * 
+	 * @step. ^I open conversation details$
+	 * 
+	 * @throws Exception
+	 *             if other user personal profile page was not created
+	 */
+	@When("^I open conversation details$") 
+	public void IOpenConversationDetails() throws Exception {
+		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.dialogPage.openConversationDetailsClick();
+	}
 
 	@When("^I send the message$")
 	public void WhenISendTheMessage() throws Throwable {

@@ -51,6 +51,19 @@ public class GroupChatPageSteps {
 		Assert.assertTrue(PagesCollection.groupChatPage
 				.areRequired3ContactsAddedToChat(name1, name2, name3));
 	}
+	
+	/**
+	 * Click open conversation details button in group chat
+	 * 
+	 * @step. ^I open group conversation details$
+	 * 
+	 * @throws Exception
+	 *             if group chat info page was not created
+	 */
+	@When("^I open group conversation details$") 
+	public void IOpenConversationDetails() throws Exception {
+		PagesCollection.groupChatInfoPage = (GroupChatInfoPage) PagesCollection.groupChatPage.openConversationDetailsClick();
+	}
 
 	@When("^I swipe up on group chat page$")
 	public void ISwipeUpOnGroupChatPage() throws Exception {
