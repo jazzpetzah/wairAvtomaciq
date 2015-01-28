@@ -1,6 +1,5 @@
 package com.wearezeta.auto.common.driver;
 
-
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.NetworkConnectionSetting;
 import io.appium.java_client.android.AndroidDriver;
@@ -27,6 +26,7 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
@@ -56,13 +56,13 @@ public class DriverUtils {
 		return flag;
 	}
 	
-	public static boolean waitUntilElementDissapear(AppiumDriver driver,
+	public static boolean waitUntilElementDissapear(RemoteWebDriver driver,
 			final By by) {
 		return waitUntilElementDissapear(driver, by, 20);
 	}
 	
 
-	public static boolean waitUntilElementDissapear(AppiumDriver driver,
+	public static boolean waitUntilElementDissapear(RemoteWebDriver driver,
 			final By by, int timeout) {
 
 		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
@@ -88,12 +88,12 @@ public class DriverUtils {
 		return bool;
 	}
 
-	public static boolean waitUntilElementAppears(AppiumDriver driver,
+	public static boolean waitUntilElementAppears(RemoteWebDriver driver,
 			final By by) {
 		return waitUntilElementAppears(driver, by, 20);
 	}
 	
-	public static boolean waitUntilElementAppears(AppiumDriver driver,
+	public static boolean waitUntilElementAppears(RemoteWebDriver driver,
 			final By by, int timeout) {
 
 		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
@@ -285,7 +285,7 @@ public class DriverUtils {
 		Runtime.getRuntime().exec("/usr/bin/open -a Terminal " + scriptPath + "Up.py");
 	}
 
-	public static void iOSMultiTap(AppiumDriver driver,WebElement element, int tapNumber) throws InterruptedException
+	public static void iOSMultiTap(AppiumDriver driver, WebElement element, int tapNumber) throws InterruptedException
 	{
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
@@ -309,11 +309,11 @@ public class DriverUtils {
 		driver.tap(fingerNumber, element, 1);	
 	}
 
-	public static void turnOffImplicitWait(AppiumDriver driver) {
+	public static void turnOffImplicitWait(RemoteWebDriver driver) {
 		driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
 	}
 
-	public static void setDefaultImplicitWait(AppiumDriver driver) { 
+	public static void setDefaultImplicitWait(RemoteWebDriver driver) { 
 		try {
 			driver.manage().timeouts().implicitlyWait(Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(BasePage.class)), 
 					TimeUnit.SECONDS);
@@ -322,7 +322,7 @@ public class DriverUtils {
 		} 
 	}
 
-	public static void setImplicitWaitValue(AppiumDriver driver, int seconds) {
+	public static void setImplicitWaitValue(RemoteWebDriver driver, int seconds) {
 		driver.manage().timeouts().implicitlyWait(seconds, TimeUnit.SECONDS);
 	}
 
