@@ -264,12 +264,23 @@ public final class CommonSteps {
 	public void UserXIsMe(String nameAlias) throws Exception {
 		usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(nameAlias));
 	}
-	
+
 	public void BlockTcpConnectionForApp(String appName) throws IOException {
 		CommonUtils.blockTcpForAppName(appName);
 	}
-	
+
 	public void EnableTcpConnectionForApp(String appName) throws IOException {
 		CommonUtils.enableTcpForAppName(appName);
+	}
+
+	public void WaitUntilContactIsFoundInSearch(String searchByNameAlias,
+			String contactAlias, int timeout) throws Exception {
+		String query = usrMgr.replaceAliasesOccurences(contactAlias,
+				FindBy.NAME_ALIAS);
+		query = usrMgr.replaceAliasesOccurences(contactAlias,
+				FindBy.EMAIL_ALIAS);
+		BackendAPIWrappers.waitUntilContactsFound(
+				usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query, 1,
+				true, timeout);
 	}
 }

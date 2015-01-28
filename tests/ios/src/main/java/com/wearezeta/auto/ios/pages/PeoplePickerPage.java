@@ -75,7 +75,7 @@ public class PeoplePickerPage extends IOSPage{
 	public Boolean isPeoplePickerPageVisible() {	
 		 
 		boolean result = DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.namePickerClearButton));
-		clickLaterButton();
+		clickContinueButton();
 		return result;
 	}
 	
@@ -257,7 +257,9 @@ public class PeoplePickerPage extends IOSPage{
 	}
 
 	public void clickContinueButton() {
-		continueButton.click();
+		if(DriverUtils.isElementDisplayed(continueButton)) {
+			continueButton.click();
+		}
 	}
 
 	public boolean isPeopleYouMayKnowLabelVisible() {

@@ -259,4 +259,12 @@ public class CommonAndroidSteps {
 	public void UserXIsMe(String nameAlias) throws Exception {
 		commonSteps.UserXIsMe(nameAlias);
 	}
+
+	@Given("^(\\w+) wait[s]* up to (\\d+) second[s]* until contact (.*) exists in backend search results$")
+	public void UserWaitsUntilContactExistsInHisSearchResults(
+			String searchByNameAlias, int timeout, String query)
+			throws Exception {
+		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query,
+				timeout);
+	}
 }
