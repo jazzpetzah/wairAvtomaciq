@@ -198,16 +198,6 @@ Feature: Conversation View
     And I see dialog page
     And I input more than 200 chars message and send it
     Then I see my message in the dialog
-    #And I scroll away the keyboard
-    #And I swipe right on Dialog page
-    #And I tap on my name <Name>
-    #And I click on Settings button on personal page
-    #And I click Sign out button from personal page
-    #And I Sign in using login <Contact> and password <Password>
-    #And I see Personal page
-    #And I swipe right on the personal page
-    #And I tap on contact name <Name>
-    #Then I see my message in the dialog
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
@@ -507,6 +497,7 @@ Feature: Conversation View
     And I type and send long message and media link <YouTubeLink>
     And I see media link <YouTubeLink> and media in dialog
     And I scroll away the keyboard
+    And I scroll back to media container
     And I click video container for the first time
     And I see video player page is opened
     And I tap Pause button on Video player page

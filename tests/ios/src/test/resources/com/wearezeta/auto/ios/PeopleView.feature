@@ -101,6 +101,7 @@ Feature: People View
     Given User <Contact1> change  name to AQAPICTURECONTACT
     Given User <Contact2> change  name to AQAAVATAR TestContact
     Given User <Contact2> change  accent color to <Color>
+    Given User <Contact1> change  accent color to <Color1>
     Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -112,8 +113,8 @@ Feature: People View
     And I see the correct participant avatars
 
     Examples:
-      | Login      | Password      | Name      | Contact1    | Contact2   | ParticipantNumber | Picture                      | Color        |
-      | user1Email | user1Password | user1Name | user2Name   | user3Name  | 3                 | aqaPictureContact600_800.jpg | BrightOrange |
+      | Login      | Password      | Name      | Contact1    | Contact2   | ParticipantNumber | Picture                      | Color        | Color1       |
+      | user1Email | user1Password | user1Name | user2Name   | user3Name  | 3                 | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow |
 
   @smoke @id1406
   Scenario Outline: I can edit the conversation name

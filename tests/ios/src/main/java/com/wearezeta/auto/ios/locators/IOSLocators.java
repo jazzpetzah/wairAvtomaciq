@@ -306,7 +306,7 @@ public final class IOSLocators {
 	
 	public static final String nameVideoPreviousButton = "Previous track";
 	
-	public static final String nameVideoPauseButton = "Pause";
+	public static final String nameVideoPauseButton = "PauseButton";
 	
 	public static final String nameVideoNextButton = "Next track";
 

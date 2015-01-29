@@ -408,7 +408,7 @@ public class DialogPage extends IOSPage{
 		DialogPage page = null;
 		int count = 0;
 		boolean mediaContainerShown = mediaContainer.isDisplayed();
-		while(!(mediaContainerShown) & (count<5)){
+		while(!(mediaContainerShown) & (count < 3)){
 			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true){
 				DriverUtils.swipeUp(driver, conversationPage, 500);
 				page = this;
@@ -417,10 +417,10 @@ public class DialogPage extends IOSPage{
 				swipeUpSimulator();
 				page = this;
 			}
-			mediaContainerShown = mediabarPlayPauseButton.isDisplayed();
+			mediaContainerShown = mediaContainer.isDisplayed();
 			count++;
 		}		
-		Assert.assertTrue(mediabarPlayPauseButton.isDisplayed());
+
 		return page;
 	}
 

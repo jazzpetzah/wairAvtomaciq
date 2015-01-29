@@ -21,8 +21,11 @@ class CliHandlerBase(object):
                 format(pprint.pformat(get_handler_names())))
     
     def _wait_while_job_in_queue(self, job, timeout):
+        timeout = int(timeout)
+        if timeout < 0:
+            return
         current_timestamp = time.time()
-        MAX_WAIT = int(timeout)
+        MAX_WAIT = timeout
         while job.is_queued() and time.time() - current_timestamp < MAX_WAIT:
             time.sleep(5)
         if job.is_queued():

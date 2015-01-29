@@ -105,11 +105,11 @@ public class ConnectToPage extends AndroidPage {
 
 	public void tapEditConnectionRequies() {
 		refreshUITree();
-		connectionRequestMessage.click();
-		int length = connectionRequestMessage.getText().length();
+		connectionRequestMessage.clear();
+		/*int length = connectionRequestMessage.getText().length();
 		for(int i = 0; i < length; i++) {
 			driver.sendKeyEvent(67);
-		}
+		}*/
 	}
 	
 	public void typeConnectionRequies(String message) throws Exception {
