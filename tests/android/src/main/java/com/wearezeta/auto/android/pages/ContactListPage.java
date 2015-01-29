@@ -68,7 +68,7 @@ public class ContactListPage extends AndroidPage {
 	public AndroidPage tapOnName(String name) throws Exception {
 		AndroidPage page = null;
 		WebElement el = findInContactList(name, 5);
-		wait.until(ExpectedConditions.elementToBeClickable(el));
+		wait.until(ExpectedConditions.visibilityOf(el));
 		el.click();
 		refreshUITree();
 		DriverUtils.setImplicitWaitValue(driver, 5);
