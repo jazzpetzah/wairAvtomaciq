@@ -16,13 +16,27 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
 public class LoginPageSteps {
-	
+
 	private static final Logger log = ZetaLogger.getLog(LoginPageSteps.class
 			.getSimpleName());
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-	@Given("I Sign in using login (.*) and password (.*)")
+	/**
+	 * Enters user email and password into corresponding fields on sign in screen
+	 * then taps "Sign In" button
+	 * 
+	 * @step. ^I Sign in using login (.*) and password (.*)$
+	 * 
+	 * @param login
+	 *            user login string
+	 * @param password
+	 *            user password string
+	 * 
+	 * @throws AssertionError
+	 *             if login operation was unsuccessful
+	 */
+	@Given("^I Sign in using login (.*) and password (.*)$")
 	public void ISignInUsingLoginAndPassword(String login, String password)
 			throws IOException {
 		try {
@@ -52,7 +66,15 @@ public class LoginPageSteps {
 		this.IPressSignInButton();
 	}
 
-	@When("I press Sign In button")
+	/**
+	 * Presses Sign In button on the corresponding page and verifies whether an
+	 * account is signed in properly
+	 * 
+	 * @step. ^I press Sign In button$
+	 * 
+	 * @throws IOException
+	 */
+	@When("^I press Sign In button$")
 	public void IPressSignInButton() throws IOException {
 		WebPage page = PagesCollection.loginPage.confirmSignIn();
 
@@ -67,7 +89,15 @@ public class LoginPageSteps {
 		}
 	}
 
-	@When("I enter email (.*)")
+	/**
+	 * Types email string into the corresponding input field on sign in page
+	 * 
+	 * @step. ^I enter email (.*)$
+	 * 
+	 * @param email
+	 *            user email string
+	 */
+	@When("^I enter email (.*)$")
 	public void IEnterEmail(String email) {
 		try {
 			email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
@@ -77,6 +107,14 @@ public class LoginPageSteps {
 		PagesCollection.loginPage.inputEmail(email);
 	}
 
+	/**
+	 * Types password string into the corresponding input field on sign in page
+	 * 
+	 * @step. ^I enter password (.*)$
+	 * 
+	 * @param password
+	 *            password string
+	 */
 	@When("I enter password (.*)")
 	public void IEnterPassword(String password) {
 		try {
@@ -87,7 +125,15 @@ public class LoginPageSteps {
 		PagesCollection.loginPage.inputPassword(password);
 	}
 
-	@Given("I see Sign In page")
+	/**
+	 * Verifies whether Sign In page is the current page
+	 * 
+	 * @step. ^I see Sign In page$
+	 * 
+	 * @throws AssertionError
+	 *             if current page is not Sign In page
+	 */
+	@Given("^I see Sign In page$")
 	public void ISeeSignInPage() {
 		Assert.assertNotNull(PagesCollection.loginPage.isVisible());
 	}

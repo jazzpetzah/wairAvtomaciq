@@ -14,6 +14,11 @@ public class InvitationCodePageSteps {
 
 	private boolean skipInvitation = false;
 
+	/**
+	 * Checks that opened page is Invitation page
+	 * 
+	 * @step. ^I see invitation page$
+	 */
 	@Given("^I see invitation page$")
 	public void ISeeInvitationPage() {
 		if (!PagesCollection.invitationCodePage.isVisible()) {
@@ -21,6 +26,15 @@ public class InvitationCodePageSteps {
 		}
 	}
 
+	/**
+	 * Enters invitation code into corresponding field then taps "Proceed"
+	 * button
+	 * 
+	 * @step. I enter invitation code
+	 *
+	 * @throws AssertionError
+	 *             if login operation was unsuccessful
+	 */
 	@Given("I enter invitation code")
 	public void IEnterInvitationCode() throws IOException {
 		if (!skipInvitation) {

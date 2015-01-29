@@ -19,11 +19,33 @@ public class ContactListPageSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
+	/**
+	 * Checks that we can see signed in user in Contact List
+	 * 
+	 * @step. ^I see my name (.*) in Contact list$
+	 * 
+	 * @param name
+	 *            user name string
+	 * 
+	 * @throws AssertionError
+	 *             if user name does not appear in Contact List
+	 */
 	@Given("^I see my name (.*) in Contact list$")
 	public void ISeeMyNameInContactList(String name) throws Exception {
 		GivenISeeContactListWithName(name);
 	}
 
+	/**
+	 * Checks that we can see conversation with specified name in Contact List
+	 * 
+	 * @step. I see Contact list with name (.*)
+	 * 
+	 * @param name
+	 *            conversation name string
+	 * 
+	 * @throws AssertionError
+	 *             if conversation name does not appear in Contact List
+	 */
 	@Given("I see Contact list with name (.*)")
 	public void GivenISeeContactListWithName(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
@@ -32,6 +54,16 @@ public class ContactListPageSteps {
 				.isContactWithNameExists(name));
 	}
 
+	/**
+	 * Opens conversation by choosing it from Contact List
+	 * 
+	 * @step. I open conversation with (.*)
+	 * 
+	 * @param contact
+	 *            conversation name string
+	 * 
+	 * @throws Exception
+	 */
 	@Given("I open conversation with (.*)")
 	public void GivenIOpenConversationWith(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);

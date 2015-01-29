@@ -52,6 +52,9 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathYouPinged)
 	private WebElement youPinged;
 	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathOpenConversationDetails)
+	protected WebElement openConversationDetails;
+	
 	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameDialogMessages)
 	private List<WebElement> messagesList;
 	
@@ -283,6 +286,14 @@ public class DialogPage extends IOSPage{
 	
 	private final int TEXT_INPUT_HEIGH = 150;
 	private final int TOP_BORDER_WIDTH = 40;
+	
+	
+	public IOSPage openConversationDetailsClick() throws IOException {
+		openConversationDetails.click();
+		
+		return new OtherUserPersonalInfoPage(url, path);
+	}
+	
 	@Override
 	public IOSPage swipeUp(int time) throws IOException
 	{

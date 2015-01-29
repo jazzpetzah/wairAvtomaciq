@@ -57,6 +57,13 @@ public class WebPage extends BasePage {
 		wait = waits.get(CommonUtils.PLATFORM_NAME_WEB);
 
 		if (doNavigate) {
+			// Workaround for Safari
+			// We should wait for cookies to be set after applying beta code
+			// or invitation code page will appear again
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+			}
 			driver.navigate().to(path);
 		}
 	}
