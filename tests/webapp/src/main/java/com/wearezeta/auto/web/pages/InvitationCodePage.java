@@ -14,6 +14,7 @@ import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class InvitationCodePage extends WebPage {
 
+	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger
 			.getLog(InvitationCodePage.class.getSimpleName());
 

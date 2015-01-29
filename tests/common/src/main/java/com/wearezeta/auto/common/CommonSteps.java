@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import org.apache.commons.lang3.NotImplementedException;
 
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
@@ -238,7 +238,7 @@ public final class CommonSteps {
 					usrMgr.findUserByNameOrNameAlias(userNameAlias),
 					picturePath);
 		} else {
-			throw new NotImplementedException();
+			throw new NotImplementedException("Please implement loading pictures from resources");
 			// TODO: extract picture from resources
 		}
 	}
