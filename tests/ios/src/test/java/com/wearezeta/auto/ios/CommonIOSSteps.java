@@ -66,19 +66,6 @@ public class CommonIOSSteps {
 
 	private void commonBefore() throws Exception {
 
-		if (CommonUtils.getIsSimulatorFromConfig(CommonIOSSteps.class)) {
-			try {
-				String[] picturepath = new String[] { CommonUtils
-						.getUserPicturePathFromConfig(CommonIOSSteps.class) };
-				IOSSimulatorPhotoLibHelper.CreateSimulatorPhotoLib("8.1",
-						picturepath, true, true);
-			} catch (Exception ex) {
-				ex.printStackTrace();
-				log.error("Failed to deploy pictures into simulator.\n"
-						+ ex.getMessage());
-			}
-		}
-
 		if (PagesCollection.loginPage != null
 				&& PagesCollection.loginPage.getDriver().isSessionLost()) {
 			log.info("Session was lost, reseting pages collection");
