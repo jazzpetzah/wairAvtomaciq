@@ -7,6 +7,9 @@ import re
 import time
 import os
 
+import socket
+socket.setdefaulttimeout(300)
+
 
 class CliHandlerBase(object):
     def __init__(self, jenkins):

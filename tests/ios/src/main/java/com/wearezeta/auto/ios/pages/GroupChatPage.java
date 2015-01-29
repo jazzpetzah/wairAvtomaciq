@@ -121,6 +121,13 @@ public class GroupChatPage extends DialogPage {
 	}
 	
 	@Override
+	public IOSPage openConversationDetailsClick() throws IOException {
+		openConversationDetails.click();
+		
+		return new GroupChatInfoPage(url, path);
+	}
+	
+	@Override
 	public IOSPage swipeUp(int time) throws IOException
 	{
 		WebElement element =  driver.findElement(By.name(IOSLocators.nameMainWindow));

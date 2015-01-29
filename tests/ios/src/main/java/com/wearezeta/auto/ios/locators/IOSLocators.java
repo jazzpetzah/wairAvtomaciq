@@ -52,6 +52,8 @@ public final class IOSLocators {
 	
 	public static final String nameTextInput = "ComposeControllerTextView";
 	
+	public static final String xpathOpenConversationDetails = "//UIAApplication[1]/UIAWindow[1]/UIAButton[6]";
+	
 	public static final String xpathYouPinged = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[2]/UIAStaticText[contains(@name, 'YOU PINGED')]";
 	
 	public static final String xpathLastDialogMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]";

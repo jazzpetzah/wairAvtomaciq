@@ -8,7 +8,8 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I swipe up on dialog page to open other user personal page
+    #And I swipe up on dialog page to open other user personal page
+    And I open conversation details
     And I see <Contact1> user profile page
     And I press Add button
     And I see People picker page
@@ -35,7 +36,8 @@ Feature: People View
     And I return to the chat list
     And I see <Contact1> and <Contact2> chat in contact list
     And I tap on a group chat with <Contact1> and <Contact2>
-    And I swipe up on group chat page
+    #And I swipe up on group chat page
+    And I open group conversation details
     And I press Add button
     And I see People picker page
     And I tap on Search input on People picker page
@@ -59,7 +61,8 @@ Feature: People View
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
-    And I swipe up on group chat page
+    #And I swipe up on group chat page
+    And I open group conversation details
     And I press leave converstation button
     And I see leave conversation alert
     Then I press leave
@@ -79,7 +82,8 @@ Feature: People View
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
-    And I swipe up on group chat page
+    #And I swipe up on group chat page
+    And I open group conversation details
     And I select contact <Contact2>
     And I click Remove
     And I see warning message
@@ -101,7 +105,8 @@ Feature: People View
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
-    And I swipe up on group chat page
+    #And I swipe up on group chat page
+    And I open group conversation details
     Then I see that the conversation name is correct with <Contact1> and <Contact2>
     And I see the correct number of participants in the title <ParticipantNumber>
     And I see the correct participant avatars
@@ -117,7 +122,8 @@ Feature: People View
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
-    And I swipe up on group chat page
+    #And I swipe up on group chat page
+    And I open group conversation details
     And I change group conversation name to <ChatName>
     Then I see correct conversation name <ChatName>
     And I exit the group info page
@@ -136,7 +142,8 @@ Feature: People View
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
-    And I swipe up on group chat page
+    #And I swipe up on group chat page
+    And I open group conversation details
     And I select contact <Contact2>
     Then I see <Contact2> user profile page
 
@@ -153,7 +160,8 @@ Feature: People View
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
-    And I swipe up on group chat page
+    #And I swipe up on group chat page
+    And I open group conversation details
     And I tap on <GroupCreator> and check email visible and name
     And I tap on <NonConnectedContact> and check email invisible and name
 
@@ -168,7 +176,8 @@ Feature: People View
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
-    And I swipe up on group chat page
+    #And I swipe up on group chat page
+    And I open group conversation details
     And I select contact <Contact1>
     And I tap on start dialog button on other user profile page
     And I type the message and send it
@@ -187,7 +196,8 @@ Feature: People View
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     And I tap on group chat with name <GroupChatName>
-    And I swipe up on group chat page
+    #And I swipe up on group chat page
+    And I open group conversation details
     And I tap on not connected contact <NonConnectedContact>
     Then I see connect to <NonConnectedContact> dialog
 
@@ -204,7 +214,8 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I swipe up on dialog page to open other user personal page
+    #And I swipe up on dialog page to open other user personal page
+    And I open conversation details
     And I see <Contact1> user profile page
     And I press Add button
     And I see People picker page
@@ -232,7 +243,8 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I swipe up on dialog page to open other user personal page
+    #And I swipe up on dialog page to open other user personal page
+    And I open conversation details
     And I see <Contact1> user profile page
     And I press Add button
     And I see People picker page
@@ -261,7 +273,8 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I swipe up on dialog page to open other user personal page
+    #And I swipe up on dialog page to open other user personal page
+    And I open conversation details
     And I see <Contact1> user profile page
     And I press Add button
     And I see People picker page

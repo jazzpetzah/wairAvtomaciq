@@ -35,6 +35,8 @@ public class CommonUtils {
 	public static final String PLATFORM_NAME_OSX = "Mac";
 	public static final String PLATFORM_NAME_ANDROID = "Android";
 	public static final String PLATFORM_NAME_IOS = "iOS";
+	public static final String PLATFORM_NAME_WEB = "WebApp";
+	
 	private static final Logger log = ZetaLogger.getLog(CommonUtils.class
 			.getSimpleName());
 
@@ -207,6 +209,11 @@ public class CommonUtils {
 		return getValueFromConfig(c, "iosAppiumUrl");
 	}
 
+	public static String getWebAppAppiumUrlFromConfig(Class<?> c)
+			throws IOException {
+		return getValueFromConfig(c, "webappAppiumUrl");
+	}
+	
 	public static Boolean getIsSimulatorFromConfig(Class<?> c)
 			throws IOException {
 		return (getValueFromConfig(c, "isSimulator").equals("true"));
@@ -220,7 +227,12 @@ public class CommonUtils {
 			throws IOException {
 		return getValueFromConfig(c, "osxApplicationPath");
 	}
-
+	
+	public static String getWebAppApplicationPathFromConfig(Class<?> c)
+			throws IOException {
+		return getValueFromConfig(c, "webappApplicationPath");
+	}
+	
 	public static String getAndroidApplicationPathFromConfig(Class<?> c)
 			throws IOException {
 		return getValueFromConfig(c, "androidApplicationPath");

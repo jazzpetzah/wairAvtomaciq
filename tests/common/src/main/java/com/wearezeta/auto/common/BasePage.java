@@ -1,6 +1,5 @@
 package com.wearezeta.auto.common;
 
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 
 import java.awt.image.BufferedImage;
@@ -17,6 +16,7 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.FieldDecorator;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -26,13 +26,14 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.locators.ZetaElementLocatorFactory;
 import com.wearezeta.auto.common.locators.ZetaFieldDecorator;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public abstract class BasePage {
 
-	protected static HashMap<String, AppiumDriver> drivers = new HashMap<String, AppiumDriver>();
+	protected static HashMap<String, RemoteWebDriver> drivers = new HashMap<String, RemoteWebDriver>();
 	protected static HashMap<String, WebDriverWait> waits = new HashMap<String, WebDriverWait>();
 	private static final Logger log = ZetaLogger.getLog(BasePage.class.getSimpleName());
 	
@@ -51,6 +52,9 @@ public abstract class BasePage {
 			}
 			else if(platform.equals(CommonUtils.PLATFORM_NAME_OSX)){
 				drivers.put(platform, new ZetaOSXDriver (new URL(URL), capabilities));
+			}
+			else if(platform.equals(CommonUtils.PLATFORM_NAME_WEB)){
+				drivers.put(platform, new ZetaWebAppDriver (new URL(URL), capabilities));
 			}
 			try {
 				drivers.get(platform).manage()
@@ -141,7 +145,7 @@ public abstract class BasePage {
 		return drivers.get(pagePlatform).getPageSource();
 	}
 	
-	public static AppiumDriver getDriver(String id) {
+	public static RemoteWebDriver getDriver(String id) {
 		return drivers.get(id);
 	}
 }

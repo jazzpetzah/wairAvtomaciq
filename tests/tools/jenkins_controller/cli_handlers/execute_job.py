@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 
 from datetime import datetime
-import time
-import traceback
 import urllib
 
 from cli_handlers.cli_handler_base import CliHandlerBase
@@ -47,23 +45,11 @@ class ExecuteJob(CliHandlerBase):
         args = parser.parse_args()
         job = self._jenkins.get_job(args.name)
         start_time = datetime.now()
-        try_num = 0
-        MAX_TRIES = 5
-        while True:
-            try:
-                job.invoke(securitytoken=args.token,
-                           block=args.block,
-                           invoke_block_delay=int(args.invoke_queue_delay),
-                           build_params=self._encoded_params_to_dict(args.params),
-                           cause=args.cause)
-                break
-            except Exception as e:
-                traceback.print_exc()
-                if try_num < MAX_TRIES:
-                    try_num += 1
-                    time.sleep(try_num);
-                else:
-                    raise e
+        job.invoke(securitytoken=args.token,
+                   block=args.block,
+                   invoke_block_delay=int(args.invoke_queue_delay),
+                   build_params=self._encoded_params_to_dict(args.params),
+                   cause=args.cause)
         if args.block:
             timedelta_str = self._timedelta_to_str(datetime.now() - start_time)
             return 'Jenkins job "{0}" is '\

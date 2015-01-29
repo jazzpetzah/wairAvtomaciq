@@ -106,38 +106,45 @@ public class DialogPageSteps {
 	public void ISeeUserPingedMessageTheDialog(String user) throws Throwable {
 		String username = usrMgr.findUserByNameOrNameAlias(user).getName();
 		String expectedPingMessage = username.toUpperCase() + " PINGED";
-		String dialogLastMessage;
 		if (PagesCollection.dialogPage != null) {
-			dialogLastMessage = PagesCollection.dialogPage.getLastChatMessage();
+			Assert.assertTrue(PagesCollection.dialogPage
+					.isPingMessageVisible(expectedPingMessage));
 		} else {
-			dialogLastMessage = PagesCollection.groupChatPage
-					.getLastChatMessage();
+			Assert.assertTrue(PagesCollection.groupChatPage
+					.isPingMessageVisible(expectedPingMessage));
 		}
-		Assert.assertTrue("Actual: " + dialogLastMessage + " || Expected: "
-				+ expectedPingMessage,
-				dialogLastMessage.equals(expectedPingMessage));
 	}
 
 	@Then("^I see User (.*) Pinged Again message in the conversation$")
 	public void ISeeUserHotPingedMessageTheDialog(String user) throws Throwable {
 		String username = usrMgr.findUserByNameOrNameAlias(user).getName();
 		String expectedPingMessage = username.toUpperCase() + " PINGED AGAIN";
-		String dialogLastMessage;
 		if (PagesCollection.dialogPage != null) {
-			dialogLastMessage = PagesCollection.dialogPage.getLastChatMessage();
+			Assert.assertTrue(PagesCollection.dialogPage
+					.isPingMessageVisible(expectedPingMessage));
 		} else {
-			dialogLastMessage = PagesCollection.groupChatPage
-					.getLastChatMessage();
+			Assert.assertTrue(PagesCollection.groupChatPage
+					.isPingMessageVisible(expectedPingMessage));
 		}
-		Assert.assertTrue("Actual: " + dialogLastMessage + " || Expected: "
-				+ expectedPingMessage,
-				dialogLastMessage.equals(expectedPingMessage));
 	}
 
 	@When("^I type the message and send it$")
 	public void ITypeTheMessageAndSendIt() throws Throwable {
 		message = CommonUtils.generateGUID();
 		PagesCollection.dialogPage.sendStringToInput(message + "\n");
+	}
+	
+	/**
+	 * Click open conversation details button in 1:1 dialog
+	 * 
+	 * @step. ^I open conversation details$
+	 * 
+	 * @throws Exception
+	 *             if other user personal profile page was not created
+	 */
+	@When("^I open conversation details$") 
+	public void IOpenConversationDetails() throws Exception {
+		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.dialogPage.openConversationDetailsClick();
 	}
 
 	@When("^I send the message$")

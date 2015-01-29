@@ -23,18 +23,20 @@ public class ContactListPageSteps {
 	@Given("^I see Contact list with my name (.*)$")
 	public void GivenISeeContactListWithMyName(String name) throws Throwable {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-//		if (PagesCollection.loginPage.isSelfProfileVisible()) {
-//			PagesCollection.loginPage.swipeRight(1000);
-//		}
 
 		Assert.assertTrue("Username : " + name
 				+ " dind't appear in contact list",
 				PagesCollection.loginPage.isLoginFinished(name));
-		PagesCollection.peoplePickerPage = PagesCollection.loginPage.clickContinueButton();
+		PagesCollection.peoplePickerPage = PagesCollection.loginPage.clickLaterButton();
 		if (null != PagesCollection.peoplePickerPage) {
 			PeoplePickerPageSteps steps = new PeoplePickerPageSteps();
 			steps.WhenISeePeoplePickerPage();
 			steps.IClickCloseButtonDismissPeopleView();
+			//workaround for black screen
+			PagesCollection.peoplePickerPage.minimizeApplication(5);
+			if (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
+				steps.IClickCloseButtonDismissPeopleView();
+			}
 		}
 	}
 
@@ -69,8 +71,16 @@ public class ContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		IOSPage page = PagesCollection.contactListPage.tapOnName(name);
-
+		IOSPage page = null;
+		try {
+			page = PagesCollection.contactListPage.tapOnName(name);
+		} catch (org.openqa.selenium.TimeoutException ex) {
+			//workaround for black screen
+			log.debug("Oh no! it is black screen issue!");
+			PagesCollection.contactListPage.minimizeApplication(5);
+			page = PagesCollection.contactListPage.tapOnName(name);
+		}
+		
 		if (page instanceof DialogPage) {
 			PagesCollection.dialogPage = (DialogPage) page;
 		}
