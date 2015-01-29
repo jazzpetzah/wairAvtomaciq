@@ -11,7 +11,8 @@ class IsBuildRunningForJob(CliHandlerBase):
         parser.add_argument('--name', required=True,
                             help='The name of Jenkins job to check. Required parameter')
         parser.add_argument('--queue_timeout',
-                            help='Maximum time to wait while this job has queued items (in seconds, 300 by default)')
+                            help='Maximum time to wait while this job has queued items (in seconds, 300 by default). '\
+                            'Set it to negative value if you want to ignore this verification.')
         parser.add_argument('--build', required=True,
                             help='Build number to check. Required parameter')
         parser.set_defaults(queue_timeout=300)
