@@ -9,6 +9,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class WebCommonUtils extends CommonUtils {
 
+	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(WebCommonUtils.class
 			.getSimpleName());
 
