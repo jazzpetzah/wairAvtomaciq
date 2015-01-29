@@ -34,7 +34,9 @@ public class ContactListPageSteps {
 			steps.IClickCloseButtonDismissPeopleView();
 			//workaround for black screen
 			PagesCollection.peoplePickerPage.minimizeApplication(5);
-			steps.IClickCloseButtonDismissPeopleView();
+			if (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
+				steps.IClickCloseButtonDismissPeopleView();
+			}
 		}
 	}
 
