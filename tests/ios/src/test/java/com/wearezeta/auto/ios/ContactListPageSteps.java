@@ -73,6 +73,7 @@ public class ContactListPageSteps {
 			page = PagesCollection.contactListPage.tapOnName(name);
 		} catch (org.openqa.selenium.TimeoutException ex) {
 			//workaround for black screen
+			log.debug("Oh no! it is black screen issue!");
 			PagesCollection.contactListPage.minimizeApplication(5);
 			page = PagesCollection.contactListPage.tapOnName(name);
 		}
