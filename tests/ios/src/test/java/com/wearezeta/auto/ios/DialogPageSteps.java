@@ -106,32 +106,26 @@ public class DialogPageSteps {
 	public void ISeeUserPingedMessageTheDialog(String user) throws Throwable {
 		String username = usrMgr.findUserByNameOrNameAlias(user).getName();
 		String expectedPingMessage = username.toUpperCase() + " PINGED";
-		String dialogLastMessage;
 		if (PagesCollection.dialogPage != null) {
-			dialogLastMessage = PagesCollection.dialogPage.getLastChatMessage();
+			Assert.assertTrue(PagesCollection.dialogPage
+					.isPingMessageVisible(expectedPingMessage));
 		} else {
-			dialogLastMessage = PagesCollection.groupChatPage
-					.getLastChatMessage();
+			Assert.assertTrue(PagesCollection.groupChatPage
+					.isPingMessageVisible(expectedPingMessage));
 		}
-		Assert.assertTrue("Actual: " + dialogLastMessage + " || Expected: "
-				+ expectedPingMessage,
-				dialogLastMessage.equals(expectedPingMessage));
 	}
 
 	@Then("^I see User (.*) Pinged Again message in the conversation$")
 	public void ISeeUserHotPingedMessageTheDialog(String user) throws Throwable {
 		String username = usrMgr.findUserByNameOrNameAlias(user).getName();
 		String expectedPingMessage = username.toUpperCase() + " PINGED AGAIN";
-		String dialogLastMessage;
 		if (PagesCollection.dialogPage != null) {
-			dialogLastMessage = PagesCollection.dialogPage.getLastChatMessage();
+			Assert.assertTrue(PagesCollection.dialogPage
+					.isPingMessageVisible(expectedPingMessage));
 		} else {
-			dialogLastMessage = PagesCollection.groupChatPage
-					.getLastChatMessage();
+			Assert.assertTrue(PagesCollection.groupChatPage
+					.isPingMessageVisible(expectedPingMessage));
 		}
-		Assert.assertTrue("Actual: " + dialogLastMessage + " || Expected: "
-				+ expectedPingMessage,
-				dialogLastMessage.equals(expectedPingMessage));
 	}
 
 	@When("^I type the message and send it$")
