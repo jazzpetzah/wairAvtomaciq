@@ -3,11 +3,12 @@ package com.wearezeta.auto.web.pages;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
-import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
@@ -33,13 +34,7 @@ public class InvitationCodePage extends WebPage {
 	}
 
 	public boolean isVisible() {
-		boolean result;
-		try {
-			result = codeInput.isDisplayed();
-		} catch (NoSuchElementException e) {
-			log.debug("No invitation page");
-			result = false;
-		}
+		boolean result = DriverUtils.waitUntilElementAppears(driver, By.id(WebAppLocators.InvitationCodePage.idCodeInput), 5);
 		return result;
 	}
 
