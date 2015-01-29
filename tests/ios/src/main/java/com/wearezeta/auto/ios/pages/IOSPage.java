@@ -275,6 +275,11 @@ public abstract class IOSPage extends BasePage {
 			// do nothing
 		}
 	}
+	
+	public void minimizeApplication(int time) {
+		
+		driver.executeScript("au.backgroundApp(" + Integer.toString(time) + ")");
+	}
 
 	public void dismissAlert() {
 		DriverUtils.waitUntilAlertAppears(driver);

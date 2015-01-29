@@ -28,14 +28,10 @@ public class ContactListPageSteps {
 				+ " dind't appear in contact list",
 				PagesCollection.loginPage.isLoginFinished(name));
 		PagesCollection.peoplePickerPage = PagesCollection.loginPage.clickLaterButton();
-		log.debug("click on later button after login");
 		if (null != PagesCollection.peoplePickerPage) {
-			log.debug("click on later button after login, success");
 			PeoplePickerPageSteps steps = new PeoplePickerPageSteps();
 			steps.WhenISeePeoplePickerPage();
-			log.debug("people picker is visible");
 			steps.IClickCloseButtonDismissPeopleView();
-			log.debug("click on close people picker");
 		}
 	}
 
@@ -70,8 +66,15 @@ public class ContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		IOSPage page = PagesCollection.contactListPage.tapOnName(name);
-
+		IOSPage page = null;
+		try {
+			page = PagesCollection.contactListPage.tapOnName(name);
+		} catch (org.openqa.selenium.TimeoutException ex) {
+			//workaround for black screen
+			PagesCollection.contactListPage.minimizeApplication(5);
+			page = PagesCollection.contactListPage.tapOnName(name);
+		}
+		
 		if (page instanceof DialogPage) {
 			PagesCollection.dialogPage = (DialogPage) page;
 		}
