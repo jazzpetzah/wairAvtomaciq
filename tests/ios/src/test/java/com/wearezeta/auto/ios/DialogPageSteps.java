@@ -250,7 +250,8 @@ public class DialogPageSteps {
 	public void ITypeAndSendLongTextAndMediaLink(String link)
 			throws InterruptedException {
 		PagesCollection.dialogPage.sendMessageUsingScript(longMessage);
-		Thread.sleep(2000);
+		PagesCollection.dialogPage.sendStringToInput(CommonUtils.generateRandomString(10) + "\n");
+		Thread.sleep(3000);
 		PagesCollection.dialogPage.sendMessageUsingScript(link);
 		Thread.sleep(3000);
 	}

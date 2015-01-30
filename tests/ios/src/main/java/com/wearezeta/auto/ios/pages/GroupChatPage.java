@@ -122,14 +122,14 @@ public class GroupChatPage extends DialogPage {
 	
 	@Override
 	public IOSPage openConversationDetailsClick() throws IOException {
+		DriverUtils.waitUntilElementAppears(driver, By.xpath(IOSLocators.xpathOpenConversationDetails));
 		openConversationDetails.click();
 		
 		return new GroupChatInfoPage(url, path);
 	}
 	
 	@Override
-	public IOSPage swipeUp(int time) throws IOException
-	{
+	public IOSPage swipeUp(int time) throws IOException {
 		WebElement element =  driver.findElement(By.name(IOSLocators.nameMainWindow));
 		
 		Point coords = element.getLocation();
@@ -139,8 +139,7 @@ public class GroupChatPage extends DialogPage {
 	}
 	
     @Override
-	public IOSPage swipeRight(int time) throws IOException
-	{
+	public IOSPage swipeRight(int time) throws IOException {
 		WebElement element =  driver.findElement(By.name(IOSLocators.nameMainWindow));
 		
 		Point coords = element.getLocation();
