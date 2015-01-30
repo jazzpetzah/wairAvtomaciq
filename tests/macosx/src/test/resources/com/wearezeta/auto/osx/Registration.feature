@@ -33,7 +33,7 @@ Feature: Register new user
     And I submit registration data
     Then I see confirmation page
     And I verify registration address
-    And I see self profile of registered user
+    And I see contact list of registered user
 
     Examples: 
       | Email      | Password      | Name      | ImageFile                 |
