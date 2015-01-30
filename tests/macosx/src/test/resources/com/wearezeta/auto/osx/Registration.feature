@@ -20,7 +20,7 @@ Feature: Register new user
   #      | aqaUser | aqaPassword | aqaUser |
   
   #ZOSX-2857
-  @smoke @id177 @torun
+  @smoke @id177
   Scenario Outline: Register new user with image - landscape image
     Given I am signed out from ZClient
     And I see Sign In screen
@@ -33,7 +33,7 @@ Feature: Register new user
     And I submit registration data
     Then I see confirmation page
     And I verify registration address
-    And I see contact list of registered user
+    And I see self profile of registered user
 
     Examples: 
       | Email      | Password      | Name      | ImageFile                 |
