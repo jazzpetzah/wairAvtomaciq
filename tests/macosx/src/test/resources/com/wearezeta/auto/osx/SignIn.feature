@@ -29,6 +29,7 @@ Feature: Sign In
     When I am signing out
     And I Sign in using login <Login> and password <Password>
     Then I see my name <Name> in Contact list
+    And I go to user <Name> profile
     And I see name <Name> in User profile
     And I see email of <Name> in User profile
     And I open picture settings

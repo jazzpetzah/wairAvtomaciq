@@ -44,11 +44,9 @@ public class MainMenuPage extends OSXPage {
 	
 	public void quitZClient() throws IOException {
 		try {
-			//workaround for Mavericks lost pages
-			driver.navigate().to(CommonUtils.getOsxApplicationPathFromConfig(MainMenuPage.class));
 			quitZClientMenuItem.click();
 		} catch (NoSuchElementException e) {
-			log.debug(driver.getPageSource());
+			log.debug("Can't find Quit Wire button. Source: " + driver.getPageSource());
 			throw e;
 		}
 	}
