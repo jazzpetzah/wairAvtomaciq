@@ -345,8 +345,7 @@ Feature: People View
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
-    When I open Conversation info
-    And I open People Picker from conversation
+    When I open People Picker from conversation
     And I search for user <Contact1>
     And I see user <Contact1> in search results
     And I add user <Contact1> from search results

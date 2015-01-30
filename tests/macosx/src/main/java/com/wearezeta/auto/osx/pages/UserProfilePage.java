@@ -54,7 +54,7 @@ public class UserProfilePage extends OSXPage {
 	private WebElement selfProfileEmailTextField;
 	
 	public UserProfilePage(String URL, String path) throws IOException {
-		super(URL, path);
+		super(URL, path, false);
 	}
 
 	public void openPictureSettings() {
@@ -81,14 +81,8 @@ public class UserProfilePage extends OSXPage {
 		confirmPictureChoiceButton.click();
 		try {
 			pictureSettingsCloseButton.click();
-		} catch (NoSuchElementException e) { }			
-		String source = driver.getPageSource();
-		source = (source.length()>520?source.substring(0, 512):source);
-		log.debug("Source before checking picture chosen: " + source);
-		DriverUtils.waitUntilElementDissapear(driver, By.xpath(OSXLocators.xpathPictureFromImageFile));			
-		source = driver.getPageSource();
-		source = (source.length()>520?source.substring(0, 512):source);
-		log.debug("Source before checking picture chosen: " + source);
+		} catch (NoSuchElementException e) { }
+		DriverUtils.waitUntilElementDissapear(driver, By.xpath(OSXLocators.xpathPictureFromImageFile));
 	}
 
 	public void chooseToRemovePhoto() {

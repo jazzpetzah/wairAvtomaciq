@@ -44,16 +44,10 @@ public class MainMenuPage extends OSXPage {
 	
 	public void quitZClient() throws IOException {
 		try {
-			String source = driver.getPageSource();
-			source = (source.length()>520?source.substring(0, 512):source);
-			log.debug("Source before look for Quit Wire: " + source);
 			quitZClientMenuItem.click();
 		} catch (NoSuchElementException e) {
+			log.debug("Can't find Quit Wire button. Source: " + driver.getPageSource());
 			throw e;
-		} finally {	
-			String source = driver.getPageSource();
-			source = (source.length()>520?source.substring(0, 512):source);
-			log.debug("Source after look for Quit Wire: " + source);
 		}
 	}
 	
