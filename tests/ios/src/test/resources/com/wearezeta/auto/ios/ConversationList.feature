@@ -17,7 +17,7 @@ Feature: Conversation List
       #| Login   | Password    | Name    | Contact1    |
       #| aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
-@staging @id1333
+@regression @id1333
   Scenario Outline: Unarchive conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>

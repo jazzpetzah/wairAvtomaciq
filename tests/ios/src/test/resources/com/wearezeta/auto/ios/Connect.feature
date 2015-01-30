@@ -173,7 +173,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact1     | Contact2   | Contact3   | Contact4  | SentRequests |
       | user1Email | user1Password | user1Name | user2Name    | user3Name  | user4Name  | user5Name |      3       |
       
-  @staging @id577
+  @regression @id577
   Scenario Outline: Verify transitions between connection requests (connecting)
     Given There are 5 users where <Name> is me
     Given <Contact1> has sent connection request to me
