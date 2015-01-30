@@ -208,6 +208,13 @@ public class ContactListPageSteps {
 		contactList.acceptAllInvitations();
 	}
 
+	@When("I ignore invitation")
+	public void IIgnoreInvitation() {
+		ContactListPage contactList = CommonOSXSteps.senderPages
+				.getContactListPage();
+		contactList.ignoreAllInvitations();
+	}
+	
 	@When("I archive conversation with (.*)")
 	public void IArchiveConversation(String conversation) throws Exception {
 		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();

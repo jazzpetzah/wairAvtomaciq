@@ -229,6 +229,17 @@ public class ContactListPage extends OSXPage {
 		}
 	}
 	
+	public void ignoreAllInvitations() {
+		List<WebElement> connectButtons = driver.findElements(By.id(OSXLocators.idIgnoreConnectionRequestButton));
+		for (WebElement connectButton: connectButtons) {
+			try {
+				connectButton.click();
+			} catch (NoSuchElementException e) {
+				log.error(e.getMessage());
+			}
+		}
+	}
+	
 	public void pressLaterButton() throws Exception {
 		int count = 0;
 		boolean isFound = false;

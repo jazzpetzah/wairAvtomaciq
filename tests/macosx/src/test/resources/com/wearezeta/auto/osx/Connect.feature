@@ -79,3 +79,24 @@ Feature: Connect to user
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+
+  @staging @id617
+  Scenario Outline: Verify 1:1 conversation is not created on the second end after you ignore connection request
+    Given There are 2 users where <Name> is me
+    Given <Contact> has sent connection request to <Name>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name <Name> in Contact list
+    When I see connect invitation
+    And I open conversation with One person waiting
+    And I ignore invitation
+    Then I do not see conversation <Contact> in contact list
+    When I am signing out
+    Given I Sign in using login <Contact> and password <Password>
+    And I see my name <Contact> in Contact list
+    And I open conversation with <Name>
+    And I see message CONNECTING TO <Name> in conversation
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+      
