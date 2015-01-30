@@ -82,7 +82,9 @@ public class UserProfilePage extends OSXPage {
 		try {
 			pictureSettingsCloseButton.click();
 		} catch (NoSuchElementException e) { }
+		log.debug("Source before checking picture chosen: " + driver.getPageSource().substring(0, 512));
 		DriverUtils.waitUntilElementDissapear(driver, By.xpath(OSXLocators.xpathPictureFromImageFile));
+		log.debug("Source before checking picture chosen: " + driver.getPageSource().substring(0, 512));
 	}
 
 	public void chooseToRemovePhoto() {
@@ -108,7 +110,6 @@ public class UserProfilePage extends OSXPage {
 	public boolean selfProfileNameEquals(String name) {
 		String xpath = String.format(OSXLocators.xpathFormatSelfProfileNameTextField, name);
 		log.debug("Looking for name " + name + " by xpath '" + xpath + "' in user profile. Page source: " + driver.getPageSource());
-		WebElement element = driver.findElement(By.xpath(xpath));
-		return name.equals(element.getText());
+		return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath), 60);
 	}
 }
