@@ -1,11 +1,9 @@
 package com.wearezeta.auto.web.pages;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -13,8 +11,6 @@ import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class ContactListPage extends WebPage {

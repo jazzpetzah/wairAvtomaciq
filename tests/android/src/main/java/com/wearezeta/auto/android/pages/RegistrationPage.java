@@ -27,16 +27,16 @@ public class RegistrationPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idEmailField")
 	private WebElement emailField;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.RegistractionPage.CLASS_NAME, locatorKey = "idNewPasswordField")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.RegistrationPage.CLASS_NAME, locatorKey = "idNewPasswordField")
 	private WebElement passwordField;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.RegistractionPage.CLASS_NAME, locatorKey = "idCreateUserBtn")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.RegistrationPage.CLASS_NAME, locatorKey = "idCreateUserBtn")
 	private WebElement createUserBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.RegistractionPage.CLASS_NAME, locatorKey = "idVerifyEmailBtn")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.RegistrationPage.CLASS_NAME, locatorKey = "idVerifyEmailBtn")
 	private WebElement verifyEmailBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.RegistractionPage.CLASS_NAME, locatorKey = "idNextArrow")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.RegistrationPage.CLASS_NAME, locatorKey = "idNextArrow")
 	private WebElement nextArrow;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConfirmCancelButton")

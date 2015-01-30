@@ -12,6 +12,7 @@ import cucumber.api.java.en.When;
 
 public class ConversationPageSteps {
 
+	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger
 			.getLog(ConversationPageSteps.class.getSimpleName());
 
