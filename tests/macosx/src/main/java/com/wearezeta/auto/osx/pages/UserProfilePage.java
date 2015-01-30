@@ -81,10 +81,14 @@ public class UserProfilePage extends OSXPage {
 		confirmPictureChoiceButton.click();
 		try {
 			pictureSettingsCloseButton.click();
-		} catch (NoSuchElementException e) { }
-		log.debug("Source before checking picture chosen: " + driver.getPageSource().substring(0, 512));
-		DriverUtils.waitUntilElementDissapear(driver, By.xpath(OSXLocators.xpathPictureFromImageFile));
-		log.debug("Source before checking picture chosen: " + driver.getPageSource().substring(0, 512));
+		} catch (NoSuchElementException e) { }			
+		String source = driver.getPageSource();
+		source = (source.length()>520?source.substring(0, 512):source);
+		log.debug("Source before checking picture chosen: " + source);
+		DriverUtils.waitUntilElementDissapear(driver, By.xpath(OSXLocators.xpathPictureFromImageFile));			
+		source = driver.getPageSource();
+		source = (source.length()>520?source.substring(0, 512):source);
+		log.debug("Source before checking picture chosen: " + source);
 	}
 
 	public void chooseToRemovePhoto() {

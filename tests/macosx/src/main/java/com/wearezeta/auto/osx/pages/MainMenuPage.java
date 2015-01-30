@@ -44,15 +44,21 @@ public class MainMenuPage extends OSXPage {
 	
 	public void quitZClient() throws IOException {
 		try {
-			log.debug("Source before trying to reconnect to Wire: " + driver.getPageSource().substring(0, 512));
+			String source = driver.getPageSource();
+			source = (source.length()>520?source.substring(0, 512):source);
+			log.debug("Source before trying to reconnect to Wire: " + source);
 			//workaround for Mavericks lost pages
 			driver.navigate().to(CommonUtils.getOsxApplicationPathFromConfig(MainMenuPage.class));
-			log.debug("Source after trying to reconnect to Wire: " + driver.getPageSource().substring(0, 512));
+			source = driver.getPageSource();
+			source = (source.length()>520?source.substring(0, 512):source);
+			log.debug("Source after trying to reconnect to Wire: " + source);
 			quitZClientMenuItem.click();
 		} catch (NoSuchElementException e) {
 			throw e;
-		} finally {
-			log.debug("Source after look for Quit Wire: " + driver.getPageSource().substring(0, 512));
+		} finally {	
+			String source = driver.getPageSource();
+			source = (source.length()>520?source.substring(0, 512):source);
+			log.debug("Source after look for Quit Wire: " + source);
 		}
 	}
 	
