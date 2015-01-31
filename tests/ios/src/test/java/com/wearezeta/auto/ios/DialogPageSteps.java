@@ -263,10 +263,10 @@ public class DialogPageSteps {
 
 	@Then("I see media link (.*) and media in dialog")
 	public void ISeeMediaLinkAndMediaInDialog(String link) {
-		Assert.assertEquals(link.toLowerCase(), PagesCollection.dialogPage
-				.getLastMessageFromDialog().toLowerCase());
 		Assert.assertTrue("Media is missing in dialog",
 				PagesCollection.dialogPage.isMediaContainerVisible());
+		Assert.assertEquals(link.toLowerCase(), PagesCollection.dialogPage
+				.getLastMessageFromDialog().toLowerCase());
 	}
 
 	@When("I click video container for the first time")

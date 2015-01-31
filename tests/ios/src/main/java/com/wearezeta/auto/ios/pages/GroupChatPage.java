@@ -121,9 +121,15 @@ public class GroupChatPage extends DialogPage {
 	}
 	
 	@Override
-	public IOSPage openConversationDetailsClick() throws IOException {
-		DriverUtils.waitUntilElementAppears(driver, By.xpath(IOSLocators.xpathOpenConversationDetails));
-		openConversationDetails.click();
+	public IOSPage openConversationDetailsClick() throws IOException, InterruptedException {
+		
+		for (int i = 0; i < 3; i ++) {
+			openConversationDetails.click();
+			Thread.sleep(1000);
+			if (DriverUtils.isElementDisplayed(driver.findElementByName(IOSLocators.nameExitGroupInfoPageButton))) {
+				break;
+			}
+		}
 		
 		return new GroupChatInfoPage(url, path);
 	}
