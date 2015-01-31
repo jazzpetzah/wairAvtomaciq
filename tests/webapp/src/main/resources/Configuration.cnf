@@ -1,8 +1,8 @@
 #Configuration file for WebApp tests
 #Configure before running tests
-webappAppiumUrl=http://127.0.0.1:5026/wd/hub
-webappApplicationPath=https://app.wire.com/login.html?env=staging
-driverTimeoutSeconds=30
-defaultEmail=smoketester.osx@wearezeta.com
+webappAppiumUrl=${url}
+webappApplicationPath=https://app.wire.com/login.html?env=${backendType}
+driverTimeoutSeconds=${driverTimeoutSeconds}
+defaultEmail=${defaultEmail}
 #chrome | firefox | ie | safari
-browserName=chrome
+browserName=${browser}
