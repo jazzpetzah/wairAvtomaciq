@@ -3,14 +3,13 @@ package com.wearezeta.auto.web.steps;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.When;
 
 public class ContactListPageSteps {
 
@@ -50,8 +49,14 @@ public class ContactListPageSteps {
 	public void GivenISeeContactListWithName(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		log.debug("Looking for contact with name " + name);
-		Assert.assertTrue(PagesCollection.contactListPage
-				.isContactWithNameExists(name));
+		if (usrMgr.isSelfUserSet()
+				&& usrMgr.getSelfUser().getName().equals(name)) {
+			Assert.assertTrue(PagesCollection.contactListPage.getSelfName()
+					.equals(name));
+		} else {
+			Assert.assertTrue(PagesCollection.contactListPage
+					.isContactWithNameExists(name));
+		}
 	}
 
 	/**
@@ -67,11 +72,18 @@ public class ContactListPageSteps {
 	@Given("I open conversation with (.*)")
 	public void GivenIOpenConversationWith(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		PagesCollection.contactListPage.openConversation(contact, false);
-		PagesCollection.conversationPage = new ConversationPage(
-				CommonUtils
-						.getWebAppAppiumUrlFromConfig(ContactListPageSteps.class),
-				CommonUtils
-						.getWebAppApplicationPathFromConfig(ContactListPageSteps.class));
+		PagesCollection.conversationPage = PagesCollection.contactListPage
+				.openConversation(contact);
+	}
+
+	/**
+	 * Clicks the self name item in the convo list to open self profile page
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I open self profile$")
+	public void IOpenSelfProfile() throws Exception {
+		PagesCollection.selfProfilePage = PagesCollection.contactListPage
+				.openSelfProfile();
 	}
 }

@@ -9,6 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.locators.WebAppLocators;
@@ -18,7 +19,7 @@ public class ContactListPage extends WebPage {
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
 			.getSimpleName());
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathContactListEntry)
+	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathContactListEntries)
 	private List<WebElement> contactListEntries;
 
 	public ContactListPage(String URL, String path) throws IOException {
@@ -49,11 +50,17 @@ public class ContactListPage extends WebPage {
 		if (name.contains(",")) {
 			return retrieveNoNameGroupContact(name) != null;
 		} else {
-			String xpath = String
-					.format(WebAppLocators.ContactListPage.xpathFormatContactEntryWithName,
-							name);
+			final String xpath = WebAppLocators.ContactListPage.xpathContactListEntryByName
+					.apply(name);
 			return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath));
 		}
+	}
+
+	public String getSelfName() {
+		final String xpath = WebAppLocators.ContactListPage.xpathSelfProfileEntry;
+		DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath));
+		final WebElement myName = driver.findElement(By.xpath(xpath));
+		return myName.getText();
 	}
 
 	public WebElement getContactWithName(String name) {
@@ -62,32 +69,61 @@ public class ContactListPage extends WebPage {
 		if (name.contains(",")) {
 			result = retrieveNoNameGroupContact(name);
 		} else {
-			String xpath = String
-					.format(WebAppLocators.ContactListPage.xpathFormatContactEntryWithName,
-							name);
+			final String xpath = WebAppLocators.ContactListPage.xpathContactListEntryByName
+					.apply(name);
 			result = driver.findElement(By.xpath(xpath));
 		}
 
 		return result;
 	}
 
-	public boolean openConversation(String conversationName,
-			boolean isUserProfile) {
+	public static class ConversationNotFoundException extends Exception {
+		private static final long serialVersionUID = 210376981070797845L;
+
+		ConversationNotFoundException(String msg) {
+			super(msg);
+		}
+	}
+
+	public ConversationPage openConversation(String conversationName)
+			throws Exception {
+		final String xpath = WebAppLocators.ContactListPage.xpathContactListEntries;
+		DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath));
 
 		if (conversationName.contains(",")) {
 			WebElement contact = retrieveNoNameGroupContact(conversationName);
 			if (contact != null) {
 				contact.click();
-				return true;
+				return new ConversationPage(
+						CommonUtils
+								.getWebAppAppiumUrlFromConfig(ContactListPage.class),
+						CommonUtils
+								.getWebAppApplicationPathFromConfig(ContactListPage.class));
 			}
 		} else {
 			for (WebElement contact : this.contactListEntries) {
 				if (contact.getText().equals(conversationName)) {
 					contact.click();
-					return true;
+					return new ConversationPage(
+							CommonUtils
+									.getWebAppAppiumUrlFromConfig(ContactListPage.class),
+							CommonUtils
+									.getWebAppApplicationPathFromConfig(ContactListPage.class));
 				}
 			}
 		}
-		return false;
+		throw new ConversationNotFoundException(String.format(
+				"Conversation '%s' does not exist in the conversations list",
+				conversationName));
+	}
+
+	public SelfProfilePage openSelfProfile() throws Exception {
+		final String selfNameXPath = WebAppLocators.ContactListPage.xpathSelfProfileEntry;
+		WebElement selfProfileDiv = driver.findElement(By.xpath(selfNameXPath));
+		selfProfileDiv.click();
+		return new SelfProfilePage(
+				CommonUtils.getWebAppAppiumUrlFromConfig(ContactListPage.class),
+				CommonUtils
+						.getWebAppApplicationPathFromConfig(ContactListPage.class));
 	}
 }
