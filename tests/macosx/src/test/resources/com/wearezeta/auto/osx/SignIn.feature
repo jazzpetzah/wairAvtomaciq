@@ -16,7 +16,7 @@ Feature: Sign In
       | user1Email | user1Password | user1Name |
 
   #Not supported functionality - Sign Out
-  @regression @id525 @torun
+  @regression @id525
   Scenario Outline: Change Sign in user
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login2> and password <Password2>
@@ -29,6 +29,7 @@ Feature: Sign In
     When I am signing out
     And I Sign in using login <Login> and password <Password>
     Then I see my name <Name> in Contact list
+    And I go to user <Name> profile
     And I see name <Name> in User profile
     And I see email of <Name> in User profile
     And I open picture settings

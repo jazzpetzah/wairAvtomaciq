@@ -262,15 +262,19 @@ public class DialogPage extends IOSPage{
 	}
 
 	public void pauseMediaContent(){
-		mediabarPlayPauseButton.click();
+	
+		driver.tap(1, mediabarPlayPauseButton.getLocation().x, mediabarPlayPauseButton.getLocation().y + 
+				mediabarPlayPauseButton.getSize().getHeight(), 1);	
 	}
 	
 	public void playMediaContent(){
-		mediabarPlayPauseButton.click();
+		driver.tap(1, mediabarPlayPauseButton.getLocation().x, mediabarPlayPauseButton.getLocation().y + 
+				mediabarPlayPauseButton.getSize().getHeight(), 1);	
 	}
 	
 	public void stopMediaContent(){
-		mediabarStopCloseButton.click();
+		driver.tap(1, mediabarStopCloseButton.getLocation().x, mediabarStopCloseButton.getLocation().y + 
+				mediabarStopCloseButton.getSize().getHeight(), 1);
 	}
 	
 	public String getMediaState(){

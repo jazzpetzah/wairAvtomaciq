@@ -54,7 +54,7 @@ public class UserProfilePage extends OSXPage {
 	private WebElement selfProfileEmailTextField;
 	
 	public UserProfilePage(String URL, String path) throws IOException {
-		super(URL, path);
+		super(URL, path, false);
 	}
 
 	public void openPictureSettings() {
@@ -108,7 +108,6 @@ public class UserProfilePage extends OSXPage {
 	public boolean selfProfileNameEquals(String name) {
 		String xpath = String.format(OSXLocators.xpathFormatSelfProfileNameTextField, name);
 		log.debug("Looking for name " + name + " by xpath '" + xpath + "' in user profile. Page source: " + driver.getPageSource());
-		WebElement element = driver.findElement(By.xpath(xpath));
-		return name.equals(element.getText());
+		return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath), 60);
 	}
 }

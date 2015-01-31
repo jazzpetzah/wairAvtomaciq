@@ -108,7 +108,7 @@ public final class OSXLocators {
 	public static final String idSendProblemReportButton = "_NS:13";
 	
 	public static final String idAcceptConnectionRequestButton = "connect";
-	public static final String idIgnoreConnectionRequestButton = "_NS:10";
+	public static final String idIgnoreConnectionRequestButton = "block";
 	
 	public static final String xpathPleaseProvideEmailAddress = "//AXStaticText[@AXValue='PLEASE PROVIDE A VALID EMAIL ADDRESS']";
 

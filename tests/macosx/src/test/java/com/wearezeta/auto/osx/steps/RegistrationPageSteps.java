@@ -155,7 +155,6 @@ public class RegistrationPageSteps {
 								.getOsxAppiumUrlFromConfig(RegistrationPageSteps.class),
 						CommonUtils
 								.getOsxApplicationPathFromConfig(RegistrationPageSteps.class)));
-		CommonOSXSteps.senderPages.getUserProfilePage().startApp();
 		UserProfilePageSteps upSteps = new UserProfilePageSteps();
 		upSteps.ISeeNameInUserProfile(this.userToRegister.getName());
 	}
