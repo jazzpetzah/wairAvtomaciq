@@ -25,16 +25,15 @@ public final class WebAppLocators {
 	public static final class ContactListPage {
 		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
 
-		public static final String xpathSelfProfileEntry = String.format(
-				"%s%s", xpathParentContactListItem,
-				"//div[contains(@class, 'center-column')]");
+		public static final String xpathSelfProfileEntry = xpathParentContactListItem
+				+ "//div[contains(@class, 'center-column')]";
 
 		// index starts from 1
 		// self name is not included
 		public static final Function<Integer, String> xpathContactListEntryByIndex = (
-				index) -> String
-				.format("%s/div[2]//ul/li[%d]//div[contains(@class, 'center-column')]",
-						xpathParentContactListItem, index);
+				index) -> String.format(
+				"%s/div[2]//ul/li[%d]//div[contains(@class, 'center-column')]",
+				xpathParentContactListItem, index);
 
 		public static final Function<String, String> xpathContactListEntryByName = (
 				name) -> String

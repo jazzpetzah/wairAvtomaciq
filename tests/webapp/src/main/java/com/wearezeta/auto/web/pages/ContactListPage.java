@@ -22,6 +22,9 @@ public class ContactListPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathContactListEntries)
 	private List<WebElement> contactListEntries;
 
+	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathSelfProfileEntry)
+	private WebElement selfName;
+
 	public ContactListPage(String URL, String path) throws IOException {
 		super(URL, path);
 	}
@@ -57,10 +60,7 @@ public class ContactListPage extends WebPage {
 	}
 
 	public String getSelfName() {
-		final String xpath = WebAppLocators.ContactListPage.xpathSelfProfileEntry;
-		DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath));
-		final WebElement myName = driver.findElement(By.xpath(xpath));
-		return myName.getText();
+		return selfName.getText();
 	}
 
 	public WebElement getContactWithName(String name) {
@@ -77,18 +77,10 @@ public class ContactListPage extends WebPage {
 		return result;
 	}
 
-	public static class ConversationNotFoundException extends Exception {
-		private static final long serialVersionUID = 210376981070797845L;
-
-		ConversationNotFoundException(String msg) {
-			super(msg);
-		}
-	}
-
 	public ConversationPage openConversation(String conversationName)
 			throws Exception {
-		final String xpath = WebAppLocators.ContactListPage.xpathContactListEntries;
-		DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath));
+		DriverUtils.waitUntilElementAppears(driver, By
+				.xpath(WebAppLocators.ContactListPage.xpathContactListEntries));
 
 		if (conversationName.contains(",")) {
 			WebElement contact = retrieveNoNameGroupContact(conversationName);
@@ -112,15 +104,13 @@ public class ContactListPage extends WebPage {
 				}
 			}
 		}
-		throw new ConversationNotFoundException(String.format(
+		throw new RuntimeException(String.format(
 				"Conversation '%s' does not exist in the conversations list",
 				conversationName));
 	}
 
 	public SelfProfilePage openSelfProfile() throws Exception {
-		final String selfNameXPath = WebAppLocators.ContactListPage.xpathSelfProfileEntry;
-		WebElement selfProfileDiv = driver.findElement(By.xpath(selfNameXPath));
-		selfProfileDiv.click();
+		selfName.click();
 		return new SelfProfilePage(
 				CommonUtils.getWebAppAppiumUrlFromConfig(ContactListPage.class),
 				CommonUtils
