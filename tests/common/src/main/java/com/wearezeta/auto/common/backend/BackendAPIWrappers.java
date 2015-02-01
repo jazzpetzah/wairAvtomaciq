@@ -531,10 +531,9 @@ public final class BackendAPIWrappers {
 			String query, int expectedCount, boolean orMore, int timeout)
 			throws Exception {
 		tryLoginByUser(searchByUser);
-		Date date = new Date();
-		long currentTimestamp = date.getTime();
+		long startTimestamp = (new Date()).getTime();
 		int currentCount = -1;
-		while (date.getTime() <= currentTimestamp + timeout * 1000) {
+		while ((new Date()).getTime() <= startTimestamp + timeout * 1000) {
 			final JSONObject searchResult = BackendREST.searchForContacts(
 					generateAuthToken(searchByUser), query);
 			currentCount = searchResult.getInt("found");
