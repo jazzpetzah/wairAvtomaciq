@@ -42,7 +42,7 @@ Feature: Connect to user
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open People Picker from contact list
-    And I wait up to 15 seconds until contact <Contact> exists in backend search results
+    And I wait up to 15 seconds until <ContactEmail> exists in backend search results
     And I search by email for user <Contact>
     And I see user <Contact> in search results
     And I add user <Contact> from search results
@@ -50,8 +50,8 @@ Feature: Connect to user
     Then I see Contact list with name <Contact>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact   | ContactEmail |
+      | user1Email | user1Password | user1Name | user2Name | user2Email   |
 
   @staging @id1386
   Scenario Outline: Verify you dont receive any messages from blocked person in 1:1 chat
