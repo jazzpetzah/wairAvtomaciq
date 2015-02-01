@@ -13,7 +13,8 @@ Feature: People View
     And I swipe up on dialog page
     And I tap on group chat contact <Contact1NewName>
     Then I see <Contact1> user name and email
-    And I see correct background image
+    # This step requires to be rewritten to support multiple screen resolutions
+    # And I see correct background image
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName   | Picture                      | Contact1NewName   |

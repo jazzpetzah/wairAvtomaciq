@@ -87,6 +87,7 @@ public class GroupChatInfoPage extends IOSPage {
 	}
 
 	public boolean isNumberOfParticipants(int correctNumber) {
+		DriverUtils.waitUntilElementAppears(driver, By.xpath(IOSLocators.xpathNumberOfParticipantsText));
 		int givenNumberOfParticipants = Integer
 				.parseInt(numberOfParticipantsText.getText().replaceAll("\\D+",
 						""));

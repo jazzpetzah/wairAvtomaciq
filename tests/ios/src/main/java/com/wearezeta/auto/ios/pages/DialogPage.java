@@ -292,8 +292,15 @@ public class DialogPage extends IOSPage{
 	private final int TOP_BORDER_WIDTH = 40;
 	
 	
-	public IOSPage openConversationDetailsClick() throws IOException {
-		openConversationDetails.click();
+	public IOSPage openConversationDetailsClick() throws IOException, InterruptedException {
+		
+		for (int i = 0; i < 3; i ++) {
+			openConversationDetails.click();
+			Thread.sleep(1000);
+			if (DriverUtils.isElementDisplayed(driver.findElementByName(IOSLocators.nameExitGroupInfoPageButton))) {
+				break;
+			}
+		}
 		
 		return new OtherUserPersonalInfoPage(url, path);
 	}
@@ -360,6 +367,7 @@ public class DialogPage extends IOSPage{
 	}
 	
 	public boolean isMediaContainerVisible(){
+		DriverUtils.waitUntilElementAppears(driver, By.xpath(IOSLocators.xpathMediaConversationCell));
 		return mediaLinkCell != null;
 	}
 	
