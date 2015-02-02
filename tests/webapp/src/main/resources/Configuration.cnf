@@ -1,8 +1,9 @@
-#Configuration file for WebApp tests
-#Configure before running tests
-webappAppiumUrl=http://127.0.0.1:5026/wd/hub
-webappApplicationPath=https://app.wire.com/login.html?env=staging
-driverTimeoutSeconds=30
-defaultEmail=smoketester.osx@wearezeta.com
+# you can override any of these settings in ~/.m2/settings.xml
+# see http://maven.apache.org/ref/3.2.5/maven-settings/settings.html for more details
+webappAppiumUrl=${url}
+webappApplicationPath=https://app.wire.com/login.html?env=${backendType}
+pictureResultsPath=${pictureResultsPath}
+driverTimeoutSeconds=${driverTimeoutSeconds}
+defaultEmail=${defaultEmail}
 #chrome | firefox | ie | safari
-browserName=chrome
+browserName=${browser}

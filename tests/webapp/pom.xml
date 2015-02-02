@@ -12,13 +12,15 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<skipTests>true</skipTests>
+		<skipTests>false</skipTests>
 		<TestRun>DevRun</TestRun>
-		<Url>http://127.0.0.1:5026/wd/hub</Url>
-		<appPath>Wire</appPath>
-		<generateUsers>true</generateUsers>
+		<pictureResultsPath>/var/tmp/</pictureResultsPath>
+		<url>http://127.0.0.1:5026/wd/hub</url>
 		<driverTimeoutSeconds>30</driverTimeoutSeconds>
 		<defaultEmail>smoketester.osx@wearezeta.com</defaultEmail>
+		<browser>chrome</browser>
+		<!-- edge | staging | production -->
+		<backendType>staging</backendType>
 	</properties>
 
 	<dependencies>

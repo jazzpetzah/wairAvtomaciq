@@ -242,7 +242,7 @@ public class CommonOSXSteps {
 		commonSteps.EnableTcpConnectionForApp(OSXCommonUtils.APP_NAME);
 	}
 
-	@Given("^(\\w+) wait[s]* up to (\\d+) second[s]* until contact (.*) exists in backend search results$")
+	@Given("^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in backend search results$")
 	public void UserWaitsUntilContactExistsInHisSearchResults(
 			String searchByNameAlias, int timeout, String query)
 			throws Exception {

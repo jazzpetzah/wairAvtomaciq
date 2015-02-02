@@ -1,5 +1,7 @@
 package com.wearezeta.auto.web.locators;
 
+import java.util.function.Function;
+
 public final class WebAppLocators {
 
 	public static final class InvitationCodePage {
@@ -21,10 +23,39 @@ public final class WebAppLocators {
 	}
 
 	public static final class ContactListPage {
+		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
 
-		public static final String xpathContactListEntry = "//div[@class='center-column']";
+		public static final String xpathSelfProfileEntry = xpathParentContactListItem
+				+ "//div[contains(@class, 'center-column')]";
 
-		public static final String xpathFormatContactEntryWithName = "//div[@class='center-column' and text()='%s']";
+		// index starts from 1
+		// self name is not included
+		public static final Function<Integer, String> xpathContactListEntryByIndex = (
+				index) -> String.format(
+				"%s/div[2]//ul/li[%d]//div[contains(@class, 'center-column')]",
+				xpathParentContactListItem, index);
+
+		public static final Function<String, String> xpathContactListEntryByName = (
+				name) -> String
+				.format("%s/div[2]//div[contains(@class, 'center-column') and text()='%s']",
+						xpathParentContactListItem, name);
+
+		public static final String xpathContactListEntries = xpathParentContactListItem
+				+ "/div[2]//li";
+	}
+
+	public static final class SettingsPage {
+		public static final String xpathSettingsDialogRoot = "//div[@id='self-settings' and contains(@class, 'modal-show')]";
+	}
+
+	public static final class SelfProfilePage {
+		public static final String xpathGearButton = "//div[@id='show-settings']";
+
+		public static final String xpathGearMenuRoot = "//div[@id='setting-bubble' and contains(@class, 'bubble-show')]";
+
+		public static final Function<String, String> xpathGearMenuItemByName = (
+				name) -> String.format("%s//a[text()='%s']", xpathGearMenuRoot,
+				name);
 	}
 
 	public static final class ConversationPage {
