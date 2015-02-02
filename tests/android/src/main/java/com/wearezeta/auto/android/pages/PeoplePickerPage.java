@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.common.KeyboardMapper;
 import com.wearezeta.auto.android.locators.AndroidLocators;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
@@ -91,12 +92,17 @@ public class PeoplePickerPage extends AndroidPage {
 		AndroidPage page = null;
 		refreshUITree();
 		pickerSearchUser.click();
-		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.PeoplePickerPage.idPickerSearchUsers));
+		if(CommonUtils.getAndroidApiLvl(PeoplePickerPage.class) > 42){
+			DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.PeoplePickerPage.idPickerSearchUsers));
+		}
+		else{
+			DriverUtils.waitUntilElementDissapear(driver, By.xpath(AndroidLocators.PeoplePickerPage.xpathOtherText));
+		}
 		refreshUITree();
-		if(driver.findElementsById(AndroidLocators.OtherUserPersonalInfoPage.idUnblockBtn).size() > 0) {
+		if(driver.findElements(AndroidLocators.OtherUserPersonalInfoPage.getByForOtherUserPersonalInfoUnlockButton()).size() > 0) {
 			page = new OtherUserPersonalInfoPage(url, path);
 		}
-		else if(driver.findElementsById(AndroidLocators.ConnectToPage.idConnectToHeader).size() > 0) {
+		else if(driver.findElements(AndroidLocators.ConnectToPage.getByForConnectToPageHeader()).size() > 0) {
 			page = new ConnectToPage(url, path);
 		}
 		else if(isVisible(addToConversationsButton)) {

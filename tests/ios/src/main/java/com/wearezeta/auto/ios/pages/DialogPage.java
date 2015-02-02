@@ -295,8 +295,10 @@ public class DialogPage extends IOSPage{
 	public IOSPage openConversationDetailsClick() throws IOException, InterruptedException {
 		
 		for (int i = 0; i < 3; i ++) {
-			openConversationDetails.click();
-			Thread.sleep(1000);
+			if (DriverUtils.isElementDisplayed(openConversationDetails)) {
+				openConversationDetails.click();
+				Thread.sleep(1000);
+			}
 			if (DriverUtils.isElementDisplayed(driver.findElementByName(IOSLocators.nameExitGroupInfoPageButton))) {
 				break;
 			}

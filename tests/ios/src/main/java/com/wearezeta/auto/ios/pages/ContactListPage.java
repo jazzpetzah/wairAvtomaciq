@@ -56,7 +56,12 @@ public class ContactListPage extends IOSPage {
 	}
 
 	public boolean isMyUserNameDisplayedFirstInContactList(String name) {
-		return myUserNameInContactList.getText().equals(name);
+		if (DriverUtils.isElementDisplayed(myUserNameInContactList)) {
+			return myUserNameInContactList.getText().equals(name);
+		}
+		else {
+			return false;
+		}
 	}
 
 	public void muteConversation() {

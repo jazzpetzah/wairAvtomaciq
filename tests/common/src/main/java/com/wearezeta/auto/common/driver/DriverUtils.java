@@ -190,25 +190,45 @@ public class DriverUtils {
 	public static void swipeLeft(AppiumDriver driver, WebElement element, int time) {
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
-		driver.swipe(coords.x + elementSize.width - 20, coords.y + elementSize.height / 2, coords.x + 20, coords.y + elementSize.height / 2, time);
+		try{
+			driver.swipe(coords.x + elementSize.width - 20, coords.y + elementSize.height / 2, coords.x + 20, coords.y + elementSize.height / 2, time);
+		}
+		catch(Exception ex){
+
+		}
 	}
 
 	public static void swipeRight(AppiumDriver driver, WebElement element, int time) {
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
-		driver.swipe(coords.x, coords.y + elementSize.height / 2, coords.x + elementSize.width - 10, coords.y + elementSize.height / 2, time);
+		try{
+			driver.swipe(coords.x, coords.y + elementSize.height / 2, coords.x + elementSize.width - 10, coords.y + elementSize.height / 2, time);
+		}
+		catch(Exception ex){
+
+		}
 	}
 
 	public static void swipeUp(AppiumDriver driver,WebElement element, int time) {
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
-		driver.swipe(coords.x + elementSize.width / 2, coords.y + elementSize.height - 170, coords.x + elementSize.width / 2, coords.y + 120, time);
+		try{
+			driver.swipe(coords.x + elementSize.width / 2, coords.y + elementSize.height - 170, coords.x + elementSize.width / 2, coords.y + 120, time);
+		}
+		catch(Exception ex){
+
+		}
 	}
 
 	public static void swipeDown(AppiumDriver driver,WebElement element, int time) {
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
-		driver.swipe(coords.x + elementSize.width / 2, coords.y + 150, coords.x + elementSize.width / 2, coords.y + elementSize.height - 200, time);
+		try{
+			driver.swipe(coords.x + elementSize.width / 2, coords.y + 150, coords.x + elementSize.width / 2, coords.y + elementSize.height - 200, time);
+		}
+		catch(Exception ex){
+
+		}
 	}
 
 	public static void androidMultiTap(AppiumDriver driver,WebElement element, int tapNumber, double duration) throws InterruptedException
