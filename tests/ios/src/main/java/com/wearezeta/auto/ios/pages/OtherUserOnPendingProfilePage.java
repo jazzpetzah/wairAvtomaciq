@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -23,7 +22,7 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameOtherProfilePageStartConversationButton)
 	private WebElement startConversationButton;
 	
-	public OtherUserOnPendingProfilePage(String URL, String path) throws MalformedURLException {
+	public OtherUserOnPendingProfilePage(String URL, String path) throws IOException {
 		super(URL, path);
 	}
 	

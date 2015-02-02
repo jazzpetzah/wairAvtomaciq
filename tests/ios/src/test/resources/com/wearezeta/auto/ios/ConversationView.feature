@@ -34,7 +34,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id332
+  @smoke @id332 @deployPictures
   Scenario Outline: Send a camera roll picture to user from contact list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -123,7 +123,7 @@ Feature: Conversation View
     And I tap media link
     And I scroll media out of sight until media bar appears
     And I see media bar on dialog page
-    And I wait 130 seconds for media to stop playing
+    And I wait 150 seconds for media to stop playing
     Then I dont see media bar on dialog page
 
     Examples: 
@@ -174,11 +174,11 @@ Feature: Conversation View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
+    And I input more than 200 chars message and send it
     And I type the message
     And I scroll away the keyboard
     And I navigate back to conversations view
     And I tap on contact name <Contact>
-    And I tap on text input
     And I tap on text input
     And I send the message
     Then I see my message in the dialog
@@ -198,16 +198,6 @@ Feature: Conversation View
     And I see dialog page
     And I input more than 200 chars message and send it
     Then I see my message in the dialog
-    #And I scroll away the keyboard
-    #And I swipe right on Dialog page
-    #And I tap on my name <Name>
-    #And I click on Settings button on personal page
-    #And I click Sign out button from personal page
-    #And I Sign in using login <Contact> and password <Password>
-    #And I see Personal page
-    #And I swipe right on the personal page
-    #And I tap on contact name <Name>
-    #Then I see my message in the dialog
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
@@ -507,6 +497,7 @@ Feature: Conversation View
     And I type and send long message and media link <YouTubeLink>
     And I see media link <YouTubeLink> and media in dialog
     And I scroll away the keyboard
+    And I scroll back to media container
     And I click video container for the first time
     And I see video player page is opened
     And I tap Pause button on Video player page

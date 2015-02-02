@@ -12,7 +12,6 @@ import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.ios.tools.IOSKeyboard;
-import com.wearezeta.auto.ios.tools.IOSSimulatorPhotoLibHelper;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -66,19 +65,6 @@ public class CommonIOSSteps {
 
 	private void commonBefore() throws Exception {
 
-		if (CommonUtils.getIsSimulatorFromConfig(CommonIOSSteps.class)) {
-			try {
-				String[] picturepath = new String[] { CommonUtils
-						.getUserPicturePathFromConfig(CommonIOSSteps.class) };
-				IOSSimulatorPhotoLibHelper.CreateSimulatorPhotoLib("8.1",
-						picturepath, true, true);
-			} catch (Exception ex) {
-				ex.printStackTrace();
-				log.error("Failed to deploy pictures into simulator.\n"
-						+ ex.getMessage());
-			}
-		}
-
 		if (PagesCollection.loginPage != null
 				&& PagesCollection.loginPage.getDriver().isSessionLost()) {
 			log.info("Session was lost, reseting pages collection");
@@ -94,7 +80,7 @@ public class CommonIOSSteps {
 		PagesCollection.loginPage.Close();
 		IOSPage.clearPagesCollection();
 		IOSKeyboard.dispose();
-		
+
 		commonSteps.getUserManager().resetUsers();
 	}
 
@@ -178,6 +164,13 @@ public class CommonIOSSteps {
 		commonSteps.BlockContact(blockAsUserNameAlias, userToBlockNameAlias);
 	}
 
+	@When("^(.*) archived conversation with (.*)$")
+	public void ArchiveConversationWithUser(String userToNameAlias,
+			String archivedUserNameAlias) throws Exception {
+		commonSteps.ArchiveConversationWithUser(userToNameAlias,
+				archivedUserNameAlias);
+	}
+
 	@When("^(.*) accept all requests$")
 	public void AcceptAllIncomingConnectionRequests(String userToNameAlias)
 			throws Exception {
@@ -190,11 +183,12 @@ public class CommonIOSSteps {
 		commonSteps.UserPingedConversation(pingFromUserNameAlias,
 				dstConversationName);
 	}
-	
+
 	@When("^Contact (.*) send message to user (.*)$")
 	public void UserSendMessageToConversation(String msgFromUserNameAlias,
 			String dstUserNameAlias) throws Exception {
-		commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstUserNameAlias, CommonUtils.generateRandomString(10));
+		commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
+				dstUserNameAlias, CommonUtils.generateRandomString(10));
 	}
 
 	@When("^Contact (.*) hotping conversation (.*)$")
@@ -217,8 +211,10 @@ public class CommonIOSSteps {
 	@When("^User (\\w+) change avatar picture to (.*)$")
 	public void IChangeUserAvatarPicture(String userNameAlias, String path)
 			throws Exception {
-		String rootPath = CommonUtils.getSimulatorImagesPathFromConfig(getClass());
-		commonSteps.IChangeUserAvatarPicture(userNameAlias, rootPath + "/" + path);
+		String rootPath = CommonUtils
+				.getSimulatorImagesPathFromConfig(getClass());
+		commonSteps.IChangeUserAvatarPicture(userNameAlias, rootPath + "/"
+				+ path);
 	}
 
 	@When("^User (\\w+) change  name to (.*)$")
@@ -226,10 +222,29 @@ public class CommonIOSSteps {
 			throws Exception {
 		commonSteps.IChangeUserName(userNameAlias, newName);
 	}
-	
+
 	@When("^User (\\w+) change  accent color to (.*)$")
 	public void IChangeAccentColor(String userNameAlias, String newColor)
 			throws Exception {
 		commonSteps.IChangeUserAccentColor(userNameAlias, newColor);
+	}
+
+	@Given("^There \\w+ (\\d+) shared user[s]* with name prefix (\\w+)$")
+	public void ThereAreNSharedUsersWithNamePrefix(int count, String namePrefix)
+			throws Exception {
+		commonSteps.ThereAreNSharedUsersWithNamePrefix(count, namePrefix);
+	}
+
+	@Given("^User (\\w+) is [Mm]e$")
+	public void UserXIsMe(String nameAlias) throws Exception {
+		commonSteps.UserXIsMe(nameAlias);
+	}
+
+	@Given("^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in backend search results$")
+	public void UserWaitsUntilContactExistsInHisSearchResults(
+			String searchByNameAlias, int timeout, String query)
+			throws Exception {
+		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query,
+				timeout);
 	}
 }

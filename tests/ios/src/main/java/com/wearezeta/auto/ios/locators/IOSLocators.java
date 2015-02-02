@@ -39,7 +39,11 @@ public final class IOSLocators {
 	public static final String xpathUserProfileName = "//UIAApplication[1]/UIAWindow[1]/UIAElement[1]/UIATextView[1]";
 	
 	public static final String classNameDialogMessages = "UIATableCell";
+	
+	public static final String xpathConnectionMessage = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]/UIAStaticText[contains(@name, 'Let’s connect on Wire.')]";
 
+	public static final String nameYouRenamedConversation = "YOU RENAMED THE CONVERSATION";
+	
 	public static final String xpathDialogTextMessage = "//UIATableCell/UIATextView";
 	
 	public static final String xpathFormatDialogTextMessage = "//UIATableCell/UIATextView[@value='%s']";
@@ -47,6 +51,10 @@ public final class IOSLocators {
 	public static final String nameConversationCursorInput = "ConversationTextInputField";
 	
 	public static final String nameTextInput = "ComposeControllerTextView";
+	
+	public static final String xpathOpenConversationDetails = "//UIAApplication[1]/UIAWindow[1]/UIAButton[6]";
+	
+	public static final String xpathYouPinged = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[2]/UIAStaticText[contains(@name, 'YOU PINGED')]";
 	
 	public static final String xpathLastDialogMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]";
 	
@@ -88,7 +96,7 @@ public final class IOSLocators {
 
 	public static final String xpathFirstInContactList = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[2]/UIAStaticText[1]";
 	
-	public static final String xpathConnectMessageLabel = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]/UIAStaticText[1]";
+	public static final String xpathConnectMessageLabel = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]/UIAStaticText[starts-with(@name, 'CONNECTING TO')]";
 	
 	public static final String xpathUnicUserPickerSearchResult = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell[1]";
 	
@@ -135,6 +143,8 @@ public final class IOSLocators {
 	public static final String nameCreateAccountButton = "RegistrationCreateAccountButton";
 	
 	public static final String xpathLastChatMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/*[last()]";
+	
+	public static final String xpathStartedConversationMessage = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]/UIAStaticText[starts-with(@name, 'YOU STARTED A CONVERSATION WITH')]";
 	
 	public static final String xpathFormatSpecificMessageContains = "//UIATextView[contains(@name,'%s')]";
 	
@@ -241,7 +251,7 @@ public final class IOSLocators {
 	
 	public static final String nameTakePhotoHintLabel = "CHOOSE A PICTURE  AND PICK A COLOR";
 	
-	public static final String xpathFirstChatInChatListTextField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[2]/UIAStaticText[1]";
+	public static final String xpathFirstChatInChatListTextField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell[1]/UIAStaticText[1]";
 	
 	public static final String xpathParticipantAvatar = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[%s]";
 	
@@ -278,7 +288,7 @@ public final class IOSLocators {
 	
 	public static final String xpathCloseColorModeButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAButton[4]";
 
-	public static String xpathNumberPeopleText = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[3]";
+	public static String xpathNumberPeopleText = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[contains(@name, 'people')]";
 	
 	public static final String peopleCountTextSubstring = " people";
 	
@@ -296,7 +306,7 @@ public final class IOSLocators {
 	
 	public static final String nameVideoPreviousButton = "Previous track";
 	
-	public static final String nameVideoPauseButton = "Pause";
+	public static final String nameVideoPauseButton = "PauseButton";
 	
 	public static final String nameVideoNextButton = "Next track";
 
@@ -369,14 +379,14 @@ public final class IOSLocators {
 	public static final String nameAddPeopleCancelButton = "CANCEL";
 	public static final String nameAddPeopleContinueButton = "CONTINUE";
 	public static final String nameYouAddetToGroupChatMessage = "YOU ADDED %s";
-	public static final String nameYouRenamedConversationMessage = "%s\nYOU RENAMED THE CONVERSATION";
+	public static final String nameYouRenamedConversationMessage = "YOU RENAMED THE CONVERSATION";
 	
 	
 	////////////////////////////
 	//Contact list locator
 	////////////////////////////
 	
-	public static final String xpathPendingRequest = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[contains(@name,' waiting')]/UIAStaticText[1]";
+	public static final String xpathPendingRequest = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[2]/UIACollectionCell[contains(@name,' waiting')]/UIAStaticText[1]";
 	
 	////////////////////////////////
 	//Pending requests page locators

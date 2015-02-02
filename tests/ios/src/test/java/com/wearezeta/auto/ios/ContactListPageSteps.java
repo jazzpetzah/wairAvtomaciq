@@ -23,17 +23,21 @@ public class ContactListPageSteps {
 	@Given("^I see Contact list with my name (.*)$")
 	public void GivenISeeContactListWithMyName(String name) throws Throwable {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		if (PagesCollection.loginPage.isSelfProfileVisible()) {
-			PagesCollection.loginPage.swipeRight(1000);
-		}
 
 		Assert.assertTrue("Username : " + name
 				+ " dind't appear in contact list",
 				PagesCollection.loginPage.isLoginFinished(name));
-		ISwipeDownContactList();
-		PeoplePickerPageSteps steps = new PeoplePickerPageSteps();
-		steps.WhenISeePeoplePickerPage();
-		steps.IClickCloseButtonDismissPeopleView();
+		PagesCollection.peoplePickerPage = PagesCollection.loginPage.clickLaterButton();
+		if (null != PagesCollection.peoplePickerPage) {
+			PeoplePickerPageSteps steps = new PeoplePickerPageSteps();
+			steps.WhenISeePeoplePickerPage();
+			steps.IClickCloseButtonDismissPeopleView();
+			//workaround for black screen
+			PagesCollection.peoplePickerPage.minimizeApplication(5);
+			if (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
+				steps.IClickCloseButtonDismissPeopleView();
+			}
+		}
 	}
 
 	@When("I dismiss tutorial layout")
@@ -67,8 +71,16 @@ public class ContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		IOSPage page = PagesCollection.contactListPage.tapOnName(name);
-
+		IOSPage page = null;
+		try {
+			page = PagesCollection.contactListPage.tapOnName(name);
+		} catch (org.openqa.selenium.TimeoutException ex) {
+			//workaround for black screen
+			log.debug("Oh no! it is black screen issue!");
+			PagesCollection.contactListPage.minimizeApplication(5);
+			page = PagesCollection.contactListPage.tapOnName(name);
+		}
+		
 		if (page instanceof DialogPage) {
 			PagesCollection.dialogPage = (DialogPage) page;
 		}
@@ -100,11 +112,38 @@ public class ContactListPageSteps {
 
 	@Then("^I see first item in contact list named (.*)$")
 	public void ISeeUserNameFirstInContactList(String value) throws Throwable {
-		value = usrMgr.findUserByNameOrNameAlias(value).getName();
+		try {
+			value = usrMgr.findUserByNameOrNameAlias(value).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+
 		Assert.assertTrue(PagesCollection.contactListPage
 				.isChatInContactList(value));
 	}
 
+	/**
+	 * verifies the visibility of a specific user in the contact list
+	 * 
+	 * @step. ^I see user (.*) in contact list$
+	 * 
+	 * @param value
+	 *            username value string
+	 * @throws AssertionError
+	 *             if the user does not exist
+	 */
+	@Then("^I see user (.*) in contact list$")
+	public void ISeeUserInContactList(String value) throws Throwable {
+		try {
+			value = usrMgr.findUserByNameOrNameAlias(value).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+
+		Assert.assertTrue(PagesCollection.contactListPage
+				.isChatInContactList(value));
+	}
+	
 	@When("^I create group chat with (.*) and (.*)$")
 	public void ICreateGroupChat(String contact1, String contact2)
 			throws Exception {

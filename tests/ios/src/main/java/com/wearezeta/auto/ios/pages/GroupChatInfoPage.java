@@ -2,7 +2,6 @@ package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.List;
 
 import org.junit.Assert;
@@ -26,7 +25,7 @@ public class GroupChatInfoPage extends IOSPage {
 
 	private String url;
 	private String path;
-	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.90;
+	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.85;
 	
 	private final String AQA_PICTURE_CONTACT = "AQAPICTURECONTACT";
 	private final String AQA_AVATAR_CONTACT = "AT";
@@ -67,7 +66,7 @@ public class GroupChatInfoPage extends IOSPage {
 	private WebElement closeButton;
 
 	public GroupChatInfoPage(String URL, String path)
-			throws MalformedURLException {
+			throws IOException {
 		super(URL, path);
 		this.url = URL;
 		this.path = path;
@@ -88,6 +87,7 @@ public class GroupChatInfoPage extends IOSPage {
 	}
 
 	public boolean isNumberOfParticipants(int correctNumber) {
+		DriverUtils.waitUntilElementAppears(driver, By.xpath(IOSLocators.xpathNumberOfParticipantsText));
 		int givenNumberOfParticipants = Integer
 				.parseInt(numberOfParticipantsText.getText().replaceAll("\\D+",
 						""));

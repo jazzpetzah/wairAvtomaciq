@@ -7,23 +7,21 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 import javax.imageio.ImageIO;
 
 import org.apache.commons.codec.binary.Base64;
 
-public class ImageAssetProcessor extends AssetProcessor {
+public abstract class ImageAssetProcessor extends AssetProcessor {
 	public static final long MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 	public static final long MAX_NON_GIF_IMAGE_SIZE = 310 * 1024;
 	public static final long MAX_INLINE_ITEM_SIZE = 30 * 1024;
-	public static final String MEDIUM_TAG = "medium";
+
+	private static final String MEDIUM_TAG = "medium";
 	private static final int MEDIUM_DIMENSION = 1448;
-	public static final String PREVIEW_TAG = "preview";
-	private static final int PREVIEW_DIMENSION = 64;
+
 	public static final String MIME_TYPE_JPEG = "image/jpeg";
 	public static final String MIME_TYPE_GIF = "image/gif";
 	public static final String MIME_TYPE_PNG = "image/png";
@@ -115,7 +113,7 @@ public class ImageAssetProcessor extends AssetProcessor {
 		return resizedImage;
 	}
 
-	private byte[] getScaledImage(BufferedImage inImage, String mimeType,
+	protected byte[] getScaledImage(BufferedImage inImage, String mimeType,
 			long dataSize, double dimension) throws IOException,
 			MimeTypeNotSupportedException {
 		ByteArrayOutputStream resultStream = new ByteArrayOutputStream();
@@ -147,7 +145,7 @@ public class ImageAssetProcessor extends AssetProcessor {
 		}
 	}
 
-	private ImageAssetData getMediumImage(String correlationId)
+	protected ImageAssetData getMediumImage(String correlationId)
 			throws IOException, MimeTypeNotSupportedException {
 		final ImageAssetData originalImageAsset = this.getInData();
 		final String convId = originalImageAsset.getConvId();
@@ -196,53 +194,5 @@ public class ImageAssetProcessor extends AssetProcessor {
 		}
 		resultAssetData.setNativePush(originalImageAsset.getNativePush());
 		return resultAssetData;
-	}
-
-	private ImageAssetData getPreviewImage(String correlationId)
-			throws IOException, MimeTypeNotSupportedException {
-		final ImageAssetData originalImageAsset = this.getInData();
-		final String convId = originalImageAsset.getConvId();
-		final String mimeType = MIME_TYPE_JPEG;
-		final byte[] imageData = originalImageAsset.getImageData();
-		final BufferedImage originalImage = ImageIO
-				.read(new ByteArrayInputStream(imageData));
-		final byte[] previewImageData = getScaledImage(originalImage, mimeType,
-				imageData.length, PREVIEW_DIMENSION);
-
-		// Old clients assume that previews should be always inline
-		ImageAssetData resultAssetData = new ImageAssetData(convId,
-				Base64.encodeBase64(previewImageData), mimeType);
-		final BufferedImage previewImage = ImageIO
-				.read(new ByteArrayInputStream(previewImageData));
-		resultAssetData.setWidth(previewImage.getWidth());
-		resultAssetData.setOriginalWidth(originalImage.getWidth());
-		resultAssetData.setHeight(previewImage.getHeight());
-		resultAssetData.setOriginalHeight(originalImage.getHeight());
-		resultAssetData.setName(originalImageAsset.getName());
-		resultAssetData.setTag(PREVIEW_TAG);
-		resultAssetData.setCorrelationId(correlationId);
-		resultAssetData.setIsInline(true);
-		resultAssetData.setIsPublic(originalImageAsset.getIsPublic());
-		resultAssetData.setNonce(String.valueOf(UUID.randomUUID()));
-		resultAssetData.setNativePush(originalImageAsset.getNativePush());
-		return resultAssetData;
-	}
-
-	@Override
-	public List<AssetData> processAsset() throws IOException,
-			MimeTypeNotSupportedException {
-		List<AssetData> resultList = new ArrayList<AssetData>();
-
-		final String correlationId = (this.getInData().getCorrelationId() == null) ? String
-				.valueOf(UUID.randomUUID()) : this.getInData()
-				.getCorrelationId();
-
-		ImageAssetData previewImage = getPreviewImage(correlationId);
-		resultList.add(previewImage);
-
-		ImageAssetData mediumImage = getMediumImage(correlationId);
-		resultList.add(mediumImage);
-
-		return resultList;
 	}
 }

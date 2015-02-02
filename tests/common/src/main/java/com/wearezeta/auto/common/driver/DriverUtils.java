@@ -1,8 +1,8 @@
 package com.wearezeta.auto.common.driver;
 
-
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.NetworkConnectionSetting;
+import io.appium.java_client.android.AndroidDriver;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -118,7 +118,7 @@ public class DriverUtils {
 		return bool;
 	}
 	
-	public static boolean waitUntilElementClickable(RemoteWebDriver driver,
+	public static boolean waitUntilElementClickable(AppiumDriver driver,
 			final WebElement element) {
 
 		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
@@ -138,7 +138,7 @@ public class DriverUtils {
 		return bool;
 	}
 	
-	public static void waitUntilAlertAppears(RemoteWebDriver driver){
+	public static void waitUntilAlertAppears(AppiumDriver driver){
 		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 		try {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
@@ -159,14 +159,14 @@ public class DriverUtils {
 		parent.findElement(By.className(childClassName)).sendKeys(value);
 	}
 
-	public static boolean waitForElementWithTextByXPath(String xpath,String name, RemoteWebDriver driver) throws InterruptedException
+	public static boolean waitForElementWithTextByXPath(String xpath,String name, AppiumDriver driver) throws InterruptedException
 	{
 		boolean flag = true;
 		boolean found = false;
 		int counter = 0;
 			while (flag) {		
 				counter ++;
-				List<WebElement> contactsList = driver.findElements(By.xpath(String.format(xpath, name)));
+				List<WebElement> contactsList = driver.findElementsByXPath(String.format(xpath, name));
 				if(contactsList.size()>0){
 					found = true;
 					break;
@@ -180,7 +180,7 @@ public class DriverUtils {
 		return found;
 	}
 
-	public static void scrollToElement(RemoteWebDriver driver, WebElement element) {
+	public static void scrollToElement(AppiumDriver driver, WebElement element) {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		HashMap<String, String> scrollToObject = new HashMap<String, String>();
 		scrollToObject.put("element",((RemoteWebElement) element).getId());
@@ -190,25 +190,45 @@ public class DriverUtils {
 	public static void swipeLeft(AppiumDriver driver, WebElement element, int time) {
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
-		driver.swipe(coords.x + elementSize.width - 20, coords.y + elementSize.height / 2, coords.x + 20, coords.y + elementSize.height / 2, time);
+		try{
+			driver.swipe(coords.x + elementSize.width - 20, coords.y + elementSize.height / 2, coords.x + 20, coords.y + elementSize.height / 2, time);
+		}
+		catch(Exception ex){
+
+		}
 	}
 
 	public static void swipeRight(AppiumDriver driver, WebElement element, int time) {
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
-		driver.swipe(coords.x, coords.y + elementSize.height / 2, coords.x + elementSize.width - 20, coords.y + elementSize.height / 2, time);
+		try{
+			driver.swipe(coords.x, coords.y + elementSize.height / 2, coords.x + elementSize.width - 10, coords.y + elementSize.height / 2, time);
+		}
+		catch(Exception ex){
+
+		}
 	}
 
 	public static void swipeUp(AppiumDriver driver,WebElement element, int time) {
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
-		driver.swipe(coords.x + elementSize.width / 2, coords.y + elementSize.height - 170, coords.x + elementSize.width / 2, coords.y + 120, time);
+		try{
+			driver.swipe(coords.x + elementSize.width / 2, coords.y + elementSize.height - 170, coords.x + elementSize.width / 2, coords.y + 120, time);
+		}
+		catch(Exception ex){
+
+		}
 	}
 
 	public static void swipeDown(AppiumDriver driver,WebElement element, int time) {
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
-		driver.swipe(coords.x + elementSize.width / 2, coords.y + 150, coords.x + elementSize.width / 2, coords.y + elementSize.height - 200, time);
+		try{
+			driver.swipe(coords.x + elementSize.width / 2, coords.y + 150, coords.x + elementSize.width / 2, coords.y + elementSize.height - 200, time);
+		}
+		catch(Exception ex){
+
+		}
 	}
 
 	public static void androidMultiTap(AppiumDriver driver,WebElement element, int tapNumber, double duration) throws InterruptedException
@@ -285,7 +305,7 @@ public class DriverUtils {
 		Runtime.getRuntime().exec("/usr/bin/open -a Terminal " + scriptPath + "Up.py");
 	}
 
-	public static void iOSMultiTap(AppiumDriver driver,WebElement element, int tapNumber) throws InterruptedException
+	public static void iOSMultiTap(AppiumDriver driver, WebElement element, int tapNumber) throws InterruptedException
 	{
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
@@ -338,7 +358,7 @@ public class DriverUtils {
 		}
 	}
 	
-	public static void ToggleNetworkConnectionAndroid(AppiumDriver driver, boolean airplane, boolean wifi, boolean data) {
+	public static void ToggleNetworkConnectionAndroid(AndroidDriver driver, boolean airplane, boolean wifi, boolean data) {
 		
 		NetworkConnectionSetting connection = new NetworkConnectionSetting(airplane, wifi, data); 
 

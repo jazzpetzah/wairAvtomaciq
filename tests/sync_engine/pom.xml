@@ -1,193 +1,200 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  
-  <groupId>com.wearezeta.auto</groupId>
-  <artifactId>auto-sync-engine</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
-  
-  <name>auto-sync-engine</name>
-  <url>http://maven.apache.org</url>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <skipTests>true</skipTests>
-    <TestRun>DevRun</TestRun>
-    <driverTimeoutSeconds>10</driverTimeoutSeconds>
-    <defaultEmail>smoketester.osx@wearezeta.com</defaultEmail>
-    <pictureResultsPath>$CUCUMBER_REPORTS/Images</pictureResultsPath>
-    <acceptance.messages.count>10</acceptance.messages.count>
-    <acceptance.sending.timeout.sec>5</acceptance.sending.timeout.sec>
-    <acceptance.max.send.interval.sec>-1</acceptance.max.send.interval.sec>
-    <acceptance.parallel.mode>false</acceptance.parallel.mode>
-    <acceptance.report.path>$CUCUMBER_REPORTS/SyncEngineReport.html</acceptance.report.path>
-    <common.generate.users>true</common.generate.users>
-    <common.same.user>false</common.same.user>
-    <osx.client.enabled>true</osx.client.enabled>
-    <osx.backend.sender>false</osx.backend.sender>
-    <osxAppiumUrl>http://127.0.0.1:4622/wd/hub/</osxAppiumUrl>
-    <osxApplicationPath>/Applications/Wire.app</osxApplicationPath>
-    <osxClientInfoPlist>/Project/builds_info/Info_osx.plist</osxClientInfoPlist>
-    <android.client.enabled>true</android.client.enabled>
-    <android.backend.sender>false</android.backend.sender>
-    <androidAppiumUrl>http://127.0.0.1:4824/wd/hub</androidAppiumUrl>
-    <androidApplicationPath>/Project/zclient.apk</androidApplicationPath>
-    <androidClientInfoPath>/Project/builds_info/android_classes.dex</androidClientInfoPath>
-    <androidAppiumLogPath>/Project/appium_android.log</androidAppiumLogPath>
-    <package>com.waz.zclient.dev</package>
-    <activity>com.waz.zclient.MainActivity</activity>
-	<androidVersion>44</androidVersion>
-    <resultImage>$CUCUMBER_REPORTS/Images</resultImage>
-    <defaultImagePath>img/</defaultImagePath>
-    <defaultImagesPath>img/</defaultImagesPath>
-    <ios.client.enabled>true</ios.client.enabled>
-    <ios.backend.sender>false</ios.backend.sender>
-    <iosAppiumUrl>http://127.0.0.1:4723/wd/hub</iosAppiumUrl>
-    <iosApplicationPath>/Project/Wire.ipa</iosApplicationPath>
-    <isSimulator>true</isSimulator>
-    <swipeScriptPath>swipeInWindow</swipeScriptPath>
-    <pathToUserpic>img/userpicture_portrait.jpg</pathToUserpic>
-    <iosImagesPath>img/</iosImagesPath>
-    <iosClientInfoPlist>/Project/builds_info/Info_ios.plist</iosClientInfoPlist>
-    <iosAppiumLogPath>/Project/appium_ios.log</iosAppiumLogPath>
-  </properties>
+	<groupId>com.wearezeta.auto</groupId>
+	<artifactId>auto-sync-engine</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
-  <dependencies>
-    
-    <dependency>
-      <groupId>org.sikuli</groupId>
-      <artifactId>sikuli-java</artifactId>
-      <version>1.0.1</version>
-      <type>jar</type>
-    </dependency>
-    
-    <dependency>
-      <groupId>com.wearezeta.auto</groupId>
-      <artifactId>auto-common</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <type>jar</type>
-    </dependency>
+	<name>auto-sync-engine</name>
+	<url>http://maven.apache.org</url>
 
-    <dependency>
-      <groupId>com.wearezeta.auto</groupId>
-      <artifactId>auto-macosx</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <type>jar</type>
-    </dependency>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<skipTests>true</skipTests>
+		<TestRun>DevRun</TestRun>
+		<driverTimeoutSeconds>10</driverTimeoutSeconds>
+		<defaultEmail>smoketester.osx@wearezeta.com</defaultEmail>
+		<pictureResultsPath>$CUCUMBER_REPORTS/Images</pictureResultsPath>
+		<acceptance.messages.count>10</acceptance.messages.count>
+		<acceptance.sending.timeout.sec>5</acceptance.sending.timeout.sec>
+		<acceptance.max.send.interval.sec>-1</acceptance.max.send.interval.sec>
+		<acceptance.parallel.mode>false</acceptance.parallel.mode>
+		<acceptance.report.path>$CUCUMBER_REPORTS/SyncEngineReport.html</acceptance.report.path>
+		<common.generate.users>true</common.generate.users>
+		<common.same.user>false</common.same.user>
+		<osx.client.enabled>true</osx.client.enabled>
+		<osx.backend.sender>false</osx.backend.sender>
+		<osxAppiumUrl>http://127.0.0.1:4622/wd/hub/</osxAppiumUrl>
+		<osxApplicationPath>/Applications/Wire.app</osxApplicationPath>
+		<osxClientInfoPlist>/Project/builds_info/Info_osx.plist</osxClientInfoPlist>
+		<android.client.enabled>true</android.client.enabled>
+		<android.backend.sender>false</android.backend.sender>
+		<androidAppiumUrl>http://127.0.0.1:4824/wd/hub</androidAppiumUrl>
+		<androidApplicationPath>/Project/zclient.apk</androidApplicationPath>
+		<androidClientInfoPath>/Project/builds_info/android_classes.dex</androidClientInfoPath>
+		<androidAppiumLogPath>/Project/appium_android.log</androidAppiumLogPath>
+		<package>com.waz.zclient.dev</package>
+		<activity>com.waz.zclient.MainActivity</activity>
+		<androidVersion>44</androidVersion>
+		<resultImage>$CUCUMBER_REPORTS/Images</resultImage>
+		<defaultImagePath>img/</defaultImagePath>
+		<defaultImagesPath>img/</defaultImagesPath>
+		<ios.client.enabled>true</ios.client.enabled>
+		<ios.backend.sender>false</ios.backend.sender>
+		<iosAppiumUrl>http://127.0.0.1:4723/wd/hub</iosAppiumUrl>
+		<iosApplicationPath>/Project/Wire.ipa</iosApplicationPath>
+		<isSimulator>true</isSimulator>
+		<swipeScriptPath>swipeInWindow</swipeScriptPath>
+		<pathToUserpic>img/userpicture_portrait.jpg</pathToUserpic>
+		<iosImagesPath>img/</iosImagesPath>
+		<iosClientInfoPlist>/Project/builds_info/Info_ios.plist</iosClientInfoPlist>
+		<iosAppiumLogPath>/Project/appium_ios.log</iosAppiumLogPath>
+		<deviceName>iPhone 6</deviceName>
+	</properties>
 
-    <dependency>
-      <groupId>com.wearezeta.auto</groupId>
-      <artifactId>auto-macosx</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <type>test-jar</type>
-    </dependency>
+	<dependencies>
 
-    <dependency>
-      <groupId>com.wearezeta.auto</groupId>
-      <artifactId>auto-android</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <type>jar</type>
-    </dependency>
+		<dependency>
+			<groupId>org.sikuli</groupId>
+			<artifactId>sikuli-java</artifactId>
+			<version>1.0.1</version>
+			<type>jar</type>
+		</dependency>
 
-    <dependency>
-      <groupId>com.wearezeta.auto</groupId>
-      <artifactId>auto-android</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <type>test-jar</type>
-    </dependency>
+		<dependency>
+			<groupId>com.wearezeta.auto</groupId>
+			<artifactId>auto-common</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<type>jar</type>
+		</dependency>
 
-    <dependency>
-      <groupId>com.wearezeta.auto</groupId>
-      <artifactId>auto-ios</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <type>jar</type>
-    </dependency>
+		<dependency>
+			<groupId>com.wearezeta.auto</groupId>
+			<artifactId>auto-macosx</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<type>jar</type>
+		</dependency>
 
-    <dependency>
-      <groupId>com.wearezeta.auto</groupId>
-      <artifactId>auto-ios</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <type>test-jar</type>
-    </dependency>
+		<dependency>
+			<groupId>com.wearezeta.auto</groupId>
+			<artifactId>auto-macosx</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<type>test-jar</type>
+		</dependency>
 
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.11</version>
-    </dependency>
-    
-    <dependency>
-      <groupId>org.seleniumhq.selenium</groupId>
-      <artifactId>selenium-java</artifactId>
-      <version>2.42.2</version>
-    </dependency>
-    
-    <dependency>
-        <groupId>info.cukes</groupId>
-        <artifactId>cucumber-picocontainer</artifactId>
-        <version>1.1.8</version>
-    </dependency>
-    <dependency>
-        <groupId>info.cukes</groupId>
-        <artifactId>cucumber-junit</artifactId>
-        <version>1.1.8</version>
-     </dependency>
-    
-    <dependency>
-        <groupId>io.appium</groupId>
-        <artifactId>java-client</artifactId>
-        <version>1.6.1</version>
-    </dependency>
-    
-    <dependency>
-		<groupId>xstream</groupId>
-		<artifactId>xstream</artifactId>
-		<version>1.2.2</version>
-	</dependency>
-  </dependencies>
-  
-  <build>
-    <sourceDirectory>src/main/java</sourceDirectory>
-    <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
-        <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
-        </configuration>
-      </plugin>
-      
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.17</version>
-        <configuration>
-            <skipTests>${skipTests}</skipTests>
-            <includes>
-                <include>**/${TestRun}.java</include>
-          </includes>
-          <argLine>-Djava.library.path=../common/native_lib</argLine>
-        </configuration>
-      </plugin>
-        <plugin>
-         <groupId>org.apache.maven.plugins</groupId>
-         <artifactId>maven-resources-plugin</artifactId>
-         <version>2.6</version>
-         <configuration>
-           <!-- specify UTF-8, ISO-8859-1 or any other file encoding -->
-           <encoding>UTF-8</encoding>
-         </configuration>
-        </plugin>
-    </plugins>
-    
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <filtering>true</filtering>
-      </resource>
-    </resources>
-    
-  </build>
+		<dependency>
+			<groupId>com.wearezeta.auto</groupId>
+			<artifactId>auto-android</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<type>jar</type>
+		</dependency>
+
+		<dependency>
+			<groupId>com.wearezeta.auto</groupId>
+			<artifactId>auto-android</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<type>test-jar</type>
+		</dependency>
+
+		<dependency>
+			<groupId>com.wearezeta.auto</groupId>
+			<artifactId>auto-ios</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<type>jar</type>
+		</dependency>
+
+		<dependency>
+			<groupId>com.wearezeta.auto</groupId>
+			<artifactId>auto-ios</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<type>test-jar</type>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>2.44.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>info.cukes</groupId>
+			<artifactId>cucumber-picocontainer</artifactId>
+			<version>1.1.8</version>
+		</dependency>
+		<dependency>
+			<groupId>info.cukes</groupId>
+			<artifactId>cucumber-junit</artifactId>
+			<version>1.1.8</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.appium</groupId>
+			<artifactId>java-client</artifactId>
+			<version>2.1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>1.2.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20140107</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.17</version>
+				<configuration>
+					<skipTests>${skipTests}</skipTests>
+					<includes>
+						<include>**/${TestRun}.java</include>
+					</includes>
+					<argLine>-Djava.library.path=../common/native_lib</argLine>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<!-- specify UTF-8, ISO-8859-1 or any other file encoding -->
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+		</plugins>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
+	</build>
 </project>

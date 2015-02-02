@@ -2,7 +2,6 @@ package com.wearezeta.auto.ios;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -393,7 +392,7 @@ public class RegistrationPageSteps {
 	}
 
 	@Then("^I see confirmation page$")
-	public void ISeeConfirmationPage() throws MalformedURLException {
+	public void ISeeConfirmationPage() throws IOException {
 		PagesCollection.peoplePickerPage = PagesCollection.registrationPage
 				.waitForConfirmationMessage();
 		Assert.assertTrue(PagesCollection.registrationPage

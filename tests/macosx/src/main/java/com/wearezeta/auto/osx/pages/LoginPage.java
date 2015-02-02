@@ -1,7 +1,8 @@
 package com.wearezeta.auto.osx.pages;
 
+import io.appium.java_client.AppiumDriver;
+
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.Date;
 import java.util.List;
 
@@ -10,7 +11,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
@@ -42,6 +42,15 @@ public class LoginPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idSendProblemReportButton)
 	private WebElement sendProblemReportButton;
 	
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathWrongCredentialsMessage)
+	private WebElement wrongCredentialsMessage;
+	
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathNoInternetConnectionMessage)
+	private WebElement noInternetConnectionMessage;
+	
+	@FindBy(how = How.ID, using = OSXLocators.idCloseNoInternetDialogButton)
+	private WebElement closeNoInternetDialog;
+	
 	private String login;
 	
 	private String password;
@@ -49,7 +58,7 @@ public class LoginPage extends OSXPage {
 	private String url;
 	private String path;
 	
-	public LoginPage(String URL, String path) throws MalformedURLException {
+	public LoginPage(String URL, String path) throws IOException {
 		
 		super(URL, path);
 		this.url = URL;
@@ -117,7 +126,7 @@ public class LoginPage extends OSXPage {
 		return el != null;
 	}
 	
-	public RegistrationPage startRegistration() throws MalformedURLException {
+	public RegistrationPage startRegistration() throws IOException {
 		acceptTermOfServiceCheckBox.click();
 		for (int i = 0; i < 3; i++) {
 			if (registerButton.getAttribute("AXEnabled").equals("1")) break;
@@ -176,7 +185,36 @@ public class LoginPage extends OSXPage {
 		log.debug("Sending problem report took " + (endDate - startDate) + "ms");
 	}
 	
-	public RemoteWebDriver getDriver() {
+	public boolean isWrongCredentialsMessageDisplayed() {
+		try {
+			String text = wrongCredentialsMessage.getText();
+			log.debug("Found element with text: " + text);
+			return true;
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+	}
+	
+	public boolean isNoInternetMessageAppears() {
+		return DriverUtils.waitUntilElementAppears(driver, By.xpath(OSXLocators.xpathNoInternetConnectionMessage), 60);
+	}
+	
+	public void closeNoInternetDialog() {
+		closeNoInternetDialog.click();
+	}
+	
+	public void setPasswordUsingScript(String password) {
+		String script = "tell application \"Wire\" to activate\n" +
+				"tell application \"System Events\"\n" +
+				"tell process \"Wire\"\n" +
+				"set value of attribute \"AXFocused\" of text field 1 of window 1 to true\n" +
+				"keystroke \"" + password + "\"\n" +
+				"end tell\n" +
+				"end tell";
+		driver.executeScript(script);
+	}
+	
+	public AppiumDriver getDriver() {
 		return driver;
 	}
 }

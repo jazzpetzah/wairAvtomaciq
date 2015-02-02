@@ -78,7 +78,8 @@ public class PersonalInfoPageSteps {
 	public void ISwipeRightToContactList() throws Exception {
 
 		PagesCollection.contactListPage = (ContactListPage) PagesCollection.personalInfoPage
-				.swipeRight(1000);
+				.navigateBack();
+				//.swipeRight(1000);
 	}
 
 	@When("^I tap about button$")

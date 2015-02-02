@@ -1,10 +1,11 @@
 package com.wearezeta.auto.common;
 
+import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
@@ -15,31 +16,46 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.pagefactory.ElementLocatorFactory;
 import org.openqa.selenium.support.pagefactory.FieldDecorator;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.driver.ZetaDriver;
+import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import com.wearezeta.auto.common.driver.ZetaOSXDriver;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.locators.ZetaElementLocatorFactory;
 import com.wearezeta.auto.common.locators.ZetaFieldDecorator;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public abstract class BasePage {
 
-	protected static HashMap<String, ZetaDriver> drivers = new HashMap<String, ZetaDriver>();
+	protected static HashMap<String, RemoteWebDriver> drivers = new HashMap<String, RemoteWebDriver>();
 	protected static HashMap<String, WebDriverWait> waits = new HashMap<String, WebDriverWait>();
 	private static final Logger log = ZetaLogger.getLog(BasePage.class.getSimpleName());
 	
 	private String pagePlatform;
 	
 	protected synchronized void InitConnection(String URL, DesiredCapabilities capabilities)
-			throws MalformedURLException {
+			throws IOException {
 
 		String platform = (String) capabilities.getCapability("platformName");
-		if (null == drivers || drivers.isEmpty() || drivers.get(platform) == null || drivers.get(platform).isSessionLost()) {
-			drivers.put(platform, new ZetaDriver(new URL(URL), capabilities));
+		if (null == drivers || drivers.isEmpty() || drivers.get(platform) == null) {
+			if(platform.equals(CommonUtils.PLATFORM_NAME_ANDROID)){
+				drivers.put(platform, new ZetaAndroidDriver(new URL(URL), capabilities));
+			}
+			else if(platform.equals(CommonUtils.PLATFORM_NAME_IOS)){
+				drivers.put(platform, new ZetaIOSDriver (new URL(URL), capabilities));
+			}
+			else if(platform.equals(CommonUtils.PLATFORM_NAME_OSX)){
+				drivers.put(platform, new ZetaOSXDriver (new URL(URL), capabilities));
+			}
+			else if(platform.equals(CommonUtils.PLATFORM_NAME_WEB)){
+				drivers.put(platform, new ZetaWebAppDriver (new URL(URL), capabilities));
+			}
 			try {
 				drivers.get(platform).manage()
 						.timeouts()
@@ -58,7 +74,8 @@ public abstract class BasePage {
 		
 		pagePlatform = platform;
 				
-		ElementLocatorFactory zetaLocatorFactory = new ZetaElementLocatorFactory(drivers.get(platform));
+		ZetaElementLocatorFactory zetaLocatorFactory = new ZetaElementLocatorFactory(drivers.get(platform),Long.parseLong(CommonUtils
+				.getDriverTimeoutFromConfig(getClass())),AppiumFieldDecorator.DEFAULT_TIMEUNIT);
 		FieldDecorator zetaFieldDecorator = new ZetaFieldDecorator(zetaLocatorFactory);
 		PageFactory.initElements(zetaFieldDecorator, this);
 	}
@@ -71,7 +88,7 @@ public abstract class BasePage {
 	}
 
 	public BufferedImage takeScreenshot() throws IOException {
-		return DriverUtils.takeScreenshot(drivers.get(pagePlatform));
+		return DriverUtils.takeScreenshot((ZetaDriver) drivers.get(pagePlatform));
 	}
 
 	public BufferedImage getElementScreenshot(WebElement element)
@@ -128,7 +145,7 @@ public abstract class BasePage {
 		return drivers.get(pagePlatform).getPageSource();
 	}
 	
-	public static ZetaDriver getDriver(String id) {
+	public static RemoteWebDriver getDriver(String id) {
 		return drivers.get(id);
 	}
 }

@@ -12,6 +12,7 @@ import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
+import com.wearezeta.auto.common.locators.ZetaHow;
 
 public class PersonalInfoPage extends AndroidPage
 {
@@ -19,49 +20,49 @@ public class PersonalInfoPage extends AndroidPage
 	private String url;
 	private String path;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idBackgroundOverlay")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idBackgroundOverlay")
 	private WebElement backgroundOverlay;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idSettingsBox")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idSettingsBox")
 	private WebElement settingBox;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idEmailField")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idEmailField")
 	private WebElement emailField;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idNameField")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idNameField")
 	private WebElement nameField;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idSettingsBtn")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idSettingsBtn")
 	private WebElement settingsButton;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idNameEdit")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idNameEdit")
 	private WebElement nameEdit;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idChangePhotoBtn")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idChangePhotoBtn")
 	private WebElement changePhotoBtn;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idGalleryBtn")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idGalleryBtn")
 	private WebElement galleryBtn;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConfirmButton")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConfirmButton")
 	private WebElement confirmBtn;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idProfileOptionsButton")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idProfileOptionsButton")
 	private WebElement optionsButton;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idAboutButton")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idAboutButton")
 	private WebElement aboutButton;
 
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameLoginPage)
 	private WebElement page;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idSignOutBtn")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idSignOutBtn")
 	private WebElement signOutBtn;
 
 	@FindBy(how = How.ID, using = AndroidLocators.PersonalInfoPage.idOpenFrom)
 	private List<WebElement> openFrom;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idProfileOptionsButton")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idProfileOptionsButton")
 	private List<WebElement> settingsButtonList;
 
 	public PersonalInfoPage(String URL, String path) throws Exception {
@@ -132,6 +133,7 @@ public class PersonalInfoPage extends AndroidPage
 	}
 
 	public void tapOptionsButton() throws InterruptedException {
+		refreshUITree();
 		optionsButton.click();
 	}
 
@@ -152,14 +154,19 @@ public class PersonalInfoPage extends AndroidPage
 	}
 
 	public void changeName(String name, String newName) throws Exception {
-		for(int i=0; i<name.length();i++)
-		{
-			driver.sendKeyEvent(67);
-		}
+		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.PersonalInfoPage.idNameField));
+		refreshUITree();
+		wait.until(ExpectedConditions.visibilityOf(nameEdit));
 		nameEdit.sendKeys(newName);
-		swipeRight(500);
+		driver.navigate().back();
+		Thread.sleep(1000);
 	}
-
+	
+	@Override
+	public ContactListPage navigateBack() throws Exception{
+		driver.navigate().back();
+		return new ContactListPage(url, path);
+	}
 	public String getUserName() {
 		refreshUITree();
 		return nameField.getText();
@@ -179,6 +186,7 @@ public class PersonalInfoPage extends AndroidPage
 	public boolean isSettingsButtonNotVisible() {
 		boolean flag = false;
 		refreshUITree();
+		DriverUtils.waitUntilElementDissapear(driver, AndroidLocators.PersonalInfoPage.getByForProfileOptionsButton());
 		if(settingsButtonList == null || settingsButtonList.isEmpty())
 		{
 			flag = true;

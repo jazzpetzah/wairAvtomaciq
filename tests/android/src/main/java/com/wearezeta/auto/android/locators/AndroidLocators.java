@@ -1,5 +1,7 @@
 package com.wearezeta.auto.android.locators;
 
+import org.openqa.selenium.By;
+
 import com.wearezeta.auto.common.CommonUtils;
 
 public final class AndroidLocators {
@@ -25,7 +27,9 @@ public final class AndroidLocators {
 		
 		public static final String idLoginButton = LOCATORS_PACKAGE + ":id/zb__sign_in__button";
 		
-		public static final String idLoginPasswordInput = LOCATORS_PACKAGE + ":id/tet__profile__guided";
+		public static final String xpathLoginInput = "//android.widget.EditText[ancestor::android.widget.LinearLayout[contains(@resource-id,'get__sign_in__email')]]";
+		
+		public static final String xpathPasswordInput =  "//android.widget.EditText[ancestor::android.widget.LinearLayout[contains(@resource-id,'get__sign_in__password')]]";
 		
 		public static final String xpathLoginPasswordInput42 = "//android.widget.EditText";
 		
@@ -43,9 +47,21 @@ public final class AndroidLocators {
 		
 		public static final String idWelcomeButtonsContainer = LOCATORS_PACKAGE + ":id/cm__choose";
 		
-		public static final String idWelcomeSlogan = LOCATORS_PACKAGE + ":id/tv__welcome__slogan";
+		public static final String idWelcomeSlogan = LOCATORS_PACKAGE + ":id/tv__welcome__terms_of_service";
 		
 		public static final String idLoginError = LOCATORS_PACKAGE + ":id/ttv__sign_in__login_failed__guidance";
+		
+		public static final String xpathSignUpButton42 = "//android.widget.TextView[@text='REGISTER']";
+		
+		public static By getByForLoginPageRegistrationButton() {
+			if (CommonUtils.getAndroidApiLvl(AndroidLocators.class) < 43) {
+				return By
+						.xpath(AndroidLocators.LoginPage.xpathSignUpButton42);
+			} else {
+				return By
+						.id(AndroidLocators.LoginPage.idSignUpButton);
+			}
+		}
 		
 	}
 	
@@ -53,9 +69,10 @@ public final class AndroidLocators {
 		
 		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME + "$AboutPage";
 		
-		public static final String idAboutLogo =LOCATORS_PACKAGE + ":id/iv__about__logo";
+		public static final String xpathAboutClose = "//android.widget.LinearLayout/android.widget.TextView";
 		
-		public static final String idAboutClose = LOCATORS_PACKAGE + ":id/gtl__about__close";
+		public static final String idAboutLogo =LOCATORS_PACKAGE + ":id/iv__about__logo";
+
 	}
 	
 	public static final class ConnectToPage {
@@ -71,6 +88,24 @@ public final class AndroidLocators {
 		public static final String idConnectRequestIgnore = LOCATORS_PACKAGE + ":id/zb__connect_request__ignore_button";
 		
 		public static final String idPaticipantsPendingLabel = LOCATORS_PACKAGE + ":id/ttv__participants__pending_label";
+		
+		public static final String xpathConnectToHeader42 = "//android.widget.EditText[following-sibling::android.widget.TextView]";
+		
+		public static final String xpathConnectToCharCounter42 = ":id/ttv__send_connect_request__connect_button__character_counter";
+		
+		public static final String xpathConnectRequestAccept42 = "//android.widget.TextView[@text='Connect']";
+		
+		public static final String xpathConnectRequestIgnore42 = "//android.widget.TextView[@text='Ignore']";
+	
+		public static By getByForConnectToPageHeader() {
+			if (CommonUtils.getAndroidApiLvl(AndroidLocators.class) < 43) {
+				return By
+						.xpath(AndroidLocators.ConnectToPage.idConnectToHeader);
+			} else {
+				return By
+						.id(AndroidLocators.ConnectToPage.xpathConnectToHeader42);
+			}
+		}
 	}
 	
 	public static final class ContactListPage {
@@ -79,15 +114,13 @@ public final class AndroidLocators {
 		
 		public static final String xpathContactListNames42 = "//android.support.v4.view.ViewPager/android.widget.ListView/android.widget.FrameLayout/android.widget.TextView[4]";
 		
-		public static final String xpathContactListMute42 = "//android.support.v4.view.ViewPager/android.widget.ListView/android.widget.FrameLayout/android.widget.TextView[3]";
-		
 		public static final String xpathSelfUserName42 =  "//android.support.v4.view.ViewPager/android.widget.ListView/android.widget.FrameLayout/android.widget.TextView[@visible='true'][1]";
 		
 		public static final String xpathConfirmCancelButton42 = "//android.widget.TextView[@text='LATER']";
 		
 		public static final String idContactListNames = LOCATORS_PACKAGE + ":id/tv_conv_list_topic";
 		
-		public static final String xpathContactListMute = "//android.widget.FrameLayout[android.widget.TextView[@text='%s']]//android.widget.TextView[@resource-id='com.waz.zclient.dev:id/tv_conv_list_menu_mute']";
+		public static final String xpathContactListMute = "//android.widget.ListView/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.TextView[2]";
 		
 		public static final String idConfirmCancelButton = LOCATORS_PACKAGE + ":id/cancel";
 		
@@ -100,6 +133,8 @@ public final class AndroidLocators {
 		public static final String idSimpleDialogPageText = LOCATORS_PACKAGE + ":id/ttv__simple_dialog__text";
 		
 		public static final String idMutedIcon = LOCATORS_PACKAGE + ":id/tv_conv_list_voice_muted";
+		
+		public static final String xpathMutedIcon42 = "//android.widget.ListView/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.TextView";
 		
 	}
 	
@@ -129,8 +164,11 @@ public final class AndroidLocators {
 		
 		public static final String idDismissUpdateButton = "android:id/button2";
 		
+		public static final String xpathConfirmBtn42 = "//android.widget.TextView[@text='LEAVE' or @text='REMOVE']";
 		
 		public static final String xpathDismissUpdateButton42 = "//android.widget.Button[contains(@text,'Dismiss']";
+		
+		public static final String xpathGalleryBtn42 = "//android.widget.ViewAnimator/android.widget.FrameLayout/android.widget.TextView[1]";
 
 	}
 	
@@ -172,18 +210,51 @@ public final class AndroidLocators {
 		
 		public static final String xpathCloseCursor = "//android.support.v4.view.ViewPager[1]/android.widget.ListView[1]/android.widget.FrameLayout[1]";
 	
-		public static final String xpathAddPicture = "//android.support.v4.view.ViewPager[1]/android.widget.LinearLayout[1]/android.widget.TextView[1]";
+		public static final String xpathAddPicture = "//android.widget.FrameLayout/android.widget.LinearLayout/android.widget.TextView[2]";
 		
-		public static final String xpathPing = "//android.support.v4.view.ViewPager[1]/android.widget.LinearLayout[1]/android.widget.TextView[2]";
+		public static final String xpathPing = "//android.widget.FrameLayout/android.widget.LinearLayout/android.widget.TextView[3]";
 		
 		public static final String xpathFormatSpecificMessage = "//android.widget.TextView[@resource-id='" + LOCATORS_PACKAGE + ":id/ltv__row_conversation__message' and @text='%s']";
 	
+		public static final String xpathMessage = "//android.widget.LinearLayout/android.widget.TextView[contains(@text,'%s')]";
+		
+		public static final String xpathBackgroundOverlay42 = "//android.widget.FrameLayout/android.widget.ListView";
+		
 		public static final String xpathCursorFrame42 = "//android.support.v4.view.ViewPager/android.widget.ListView/android.widget.FrameLayout";
-		
-		public static final String xpathBackgroundOverlay42 = " //android.support.v4.view.ViewPager/android.widget.ListView";
 
-		public static final String xpathMessage42 = "//android.support.v4.view.ViewPager/android.widget.ListView/android.widget.LinearLayout/android.widget.TextView";	
+		public static final String xpathMessage42 = "//android.widget.LinearLayout[ancestor::android.widget.ListView]/android.widget.LinearLayout/android.widget.TextView";	
 		
+		public static final String xpathConnectRequestChatLabel42 = "//android.widget.TextView[@text='Connected to ']";
+		
+		public static final String xpathConnectRequestChatUserName42 = "//android.widget.TextView[preceding-sibling::android.widget.TextView[@text='Connected to ']]";
+		
+		public static final String xpathDialogTakePhotoButton42 = "//android.widget.ViewAnimator/android.widget.FrameLayout/android.widget.TextView[2]";
+		
+		public static final String xpathDialogChangeCameraButton42 = "//android.widget.FrameLayout[child::android.widget.ViewAnimator]/android.widget.FrameLayout/android.widget.TextView[2]";
+		
+		public static final String xpathConfirmButton42 = "//android.widget.TextView[@text='OK']";
+		
+		public static final String xpathDialogImages42 = "//android.widget.FrameLayout//android.widget.ImageView";
+		
+		public static By getByForDialogPageImage() {
+			if (CommonUtils.getAndroidApiLvl(AndroidLocators.class) < 43) {
+				return By
+						.xpath(AndroidLocators.DialogPage.xpathDialogImages42);
+			} else {
+				return By
+						.id(AndroidLocators.DialogPage.idDialogImages);
+			}
+		}
+		
+		public static By getByForDialogConfirmImageButtn() {
+			if (CommonUtils.getAndroidApiLvl(AndroidLocators.class) < 43) {
+				return By
+						.xpath(AndroidLocators.DialogPage.xpathConfirmButton42);
+			} else {
+				return By
+						.id(AndroidLocators.DialogPage.idConfirmButton);
+			}
+		}
 	}
 	
 	public static final class OtherUserPersonalInfoPage {
@@ -213,6 +284,30 @@ public final class AndroidLocators {
 		public static final String idRightActionButton = LOCATORS_PACKAGE + ":id/gtv__participants__right__action";
 		
 		public static final String idUnblockBtn = LOCATORS_PACKAGE + ":id/zb__connect_request__unblock_button";
+		
+		public static final String xpathOtherUserPersonalInfoSingleName42 = "//android.widget.LinearLayout[child::android.widget.TextView]/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.TextView";
+		
+		public static final String xpathLeftActionButton42 = "//android.widget.RelativeLayout/android.widget.RelativeLayout[following-sibling::android.widget.TextView]/android.widget.TextView";
+		
+		public static final String xpathRightActionButton42 = "//android.widget.RelativeLayout/android.widget.TextView[preceding-sibling::android.widget.RelativeLayout]";
+		
+		public static final String xpathParticipantsHeader42 = "//android.widget.FrameLayout[following-sibling::android.widget.TextView]/android.widget.LinearLayout/android.widget.TextView";
+		
+		public static final String xpathParticipantsSubHeader42 = "//android.widget.FrameLayout/android.widget.LinearLayout[child::android.widget.FrameLayout]/android.widget.TextView";
+		
+		public static final String xpathOtherUserPersonalInfoSingleMail42 = "//android.widget.FrameLayout/android.widget.LinearLayout[child::android.widget.FrameLayout]/android.widget.TextView";
+		
+		public static final String xpathUnblockBtn42 = "//android.widget.FrameLayout[NOT_IMPLEMENTED='']";
+		
+		public static By getByForOtherUserPersonalInfoUnlockButton() {
+			if (CommonUtils.getAndroidApiLvl(AndroidLocators.class) < 43) {
+				return By
+						.xpath(AndroidLocators.OtherUserPersonalInfoPage.xpathUnblockBtn42);
+			} else {
+				return By
+						.id(AndroidLocators.OtherUserPersonalInfoPage.idUnblockBtn);
+			}
+		}
 	}
 	
 	public static final class PeoplePickerPage {
@@ -243,13 +338,26 @@ public final class AndroidLocators {
 		
 		public static final String idNoResultsFound = LOCATORS_PACKAGE + ":id/ttv_pickuser__error_header";
 		
-		public static final String xpathPeoplePickerGroup = "//android.widget.LinearLayout[child::android.widget.TextView[@resource-id='" + LOCATORS_PACKAGE + ":id/ttv_pickuser_searchconversation_name' and @text='%s']]";
+		public static final String idPeoplePickerSerchConversations = LOCATORS_PACKAGE + ":id/ttv_pickuser_searchconversation_name";
 		
-		public static final String xpathPeoplePickerContact = "//android.widget.FrameLayout[child::android.widget.TextView[@resource-id='" + LOCATORS_PACKAGE + ":id/ttv_pickuser__searchuser_name' and @text='%s']]";
+		public static final String xpathOtherText = "//android.widget.ListView/android.widget.LinearLayout/android.widget.TextView[@text='OTHERS']";
+		
+		public static final String xpathPeoplePickerGroup = "//android.widget.TextView[@resource-id='" + LOCATORS_PACKAGE + ":id/ttv_pickuser_searchconversation_name' and @text='%s']";
+		
+		public static final String xpathPeoplePickerContact = "//android.widget.TextView[@resource-id='" + LOCATORS_PACKAGE + ":id/ttv_pickuser__searchuser_name' and @text='%s']";
 		
 		public static final String xpathPeoplePickerClearbtn42 = "//android.widget.FrameLayout/android.widget.TextView[preceding-sibling::android.widget.ScrollView]";
 		
-		public static final String xpathPickerSearch42 = "//android.widget.FrameLayout/android.widget.ScrollView/android.widget.EditText";
+		public static final String xpathPickerSearch42 = "//android.widget.FrameLayout/android.widget.ScrollView/android.widget.FrameLayout/android.widget.EditText";
+		
+		public static final String xpathPickerSearchUsers42 = "//android.widget.FrameLayout/android.widget.ListView/android.widget.FrameLayout";
+		
+		public static final String xpathConnectionRequiesMessage42 = "//android.widget.LinearLayout/android.widget.EditText[preceding-sibling::android.widget.RelativeLayout]";
+		
+		public static final String xpathSendConnectionRequestButton42 = "//android.widget.FrameLayout[preceding-sibling::android.widget.RelativeLayout]/android.widget.TextView";
+		
+		public static final String xpathPickerBtnDone42 = "//android.widget.TextView[@text='ADD TO CONVERSATION']";
+		
 	}
 	
 	public static final class PersonalInfoPage {
@@ -280,27 +388,53 @@ public final class AndroidLocators {
 		
 		public static final String idOpenFrom = "com.google.android.apps.plus:id/tiles";
 		
-		public static final String xpathProfileOptionsButton42 = "//android.support.v4.view.ViewPager/android.widget.TextView";
+		public static final String xpathProfileOptionsButton42 = "//android.widget.FrameLayout[child::android.widget.LinearLayout]/android.widget.TextView";
 		
 		public static final String xpathSignOutBtn42 = "//android.widget.TextView[@text='Sign Out']";
 		
-		public static final String xpathEmailField42 = "//android.support.v4.view.ViewPager/android.widget.LinearLayout/android.widget.TextView[2]";
+		public static final String xpathEmailField42 = "//android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.TextView";
 		
-		public static final String xpathNameField42 = "//android.support.v4.view.ViewPager/android.widget.LinearLayout/android.widget.TextView[1]";
+		public static final String xpathNameField42 = "//android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout[following-sibling::android.widget.TextView]/android.widget.TextView[1]";
+
+		public static final String xpathChangePhotoBtn42 = "//android.widget.ViewAnimator/android.widget.FrameLayout/android.widget.TextView";
 		
+		public static final String xpathNameEdit42 ="//android.widget.FrameLayout/android.widget.EditText";
+		
+		public static By getByForProfileOptionsButton() {
+			if (CommonUtils.getAndroidApiLvl(AndroidLocators.class) < 43) {
+				return By
+						.xpath(AndroidLocators.PersonalInfoPage.xpathProfileOptionsButton42);
+			} else {
+				return By
+						.id(AndroidLocators.PersonalInfoPage.idProfileOptionsButton);
+			}
+		}
 	}
 	
-	public static final class RegistractionPage {
+	public static final class RegistrationPage {
 		
-		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME + "$RegistractionPage";
+		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME + "$RegistrationPage";
+		
+		public static final String idNameEdit =LOCATORS_PACKAGE + ":id/tet__profile__guided";
 		
 		public static final String idCreateUserBtn = LOCATORS_PACKAGE + ":id/zb__sign_up__create_account";
 		
-		public static final String idVerifyEmailBtn = LOCATORS_PACKAGE + ":id/gtv__envelope";
+		public static final String idVerifyEmailBtn = LOCATORS_PACKAGE + ":id/ttv__sign_up__resend";
 		
 		public static final String idNewPasswordField = LOCATORS_PACKAGE + ":id/tet__sign_up__password";
 		
 		public static final String idNextArrow = LOCATORS_PACKAGE + ":id/gtv__sign_up__next";
+		
+		public static final String xpathNameEdit42 = "//android.widget.EditText";
+		
+		public static final String xpathNewPasswordField42 = "//android.widget.EditText";
+		
+		public static final String xpathNextArrow42 = "//android.widget.FrameLayout[child::android.widget.LinearLayout]/android.widget.TextView[2]";
+		
+		public static final String xpathCreateUserBtn42 = "//android.widget.TextView[@text='CREATE ACCOUNT']";
+		
+		public static final String xpathVerifyEmailBtn42 = "//android.widget.TextView[@text='Re-send']";
+		
 	}
 	
 	//public static final String idInstructions  = LOCATORS_PACKAGE + ":id/instructions";

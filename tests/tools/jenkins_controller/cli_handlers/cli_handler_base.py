@@ -4,7 +4,11 @@ import argparse
 import imp
 import pprint
 import re
+import time
 import os
+
+import socket
+socket.setdefaulttimeout(300)
 
 
 class CliHandlerBase(object):
@@ -15,6 +19,17 @@ class CliHandlerBase(object):
         parser.add_argument('request_type',
                              help='Jenkins request type. Available types: {0}'.\
                 format(pprint.pformat(get_handler_names())))
+    
+    def _wait_while_job_in_queue(self, job, timeout):
+        timeout = int(timeout)
+        if timeout < 0:
+            return
+        current_timestamp = time.time()
+        MAX_WAIT = timeout
+        while job.is_queued() and time.time() - current_timestamp < MAX_WAIT:
+            time.sleep(5)
+        if job.is_queued():
+            raise TimeoutError('The job is still in the queue after {0} seconds timeout'.format(MAX_WAIT))
 
     def _get_parser(self):
         parser = argparse.ArgumentParser()
@@ -23,6 +38,10 @@ class CliHandlerBase(object):
 
 
 class CliHandlerNotFoundError(Exception):
+    pass
+
+
+class TimeoutError(Exception):
     pass
 
 

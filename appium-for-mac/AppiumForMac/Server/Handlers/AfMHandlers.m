@@ -540,7 +540,9 @@
 
     NSString *using = (NSString*)[postParams objectForKey:@"using"];
     NSString *value = (NSString*)[postParams objectForKey:@"value"];
-
+    
+    NSLog(@"Looking for multiple elements using strategy %@ and value %@", using, value);
+    
 	AfMElementLocator *locator = [AfMElementLocator locatorWithSession:session using:using value:value];
     
     // initialize status as though no element were found

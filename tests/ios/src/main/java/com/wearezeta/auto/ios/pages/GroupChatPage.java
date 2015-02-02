@@ -42,9 +42,9 @@ public class GroupChatPage extends DialogPage {
 		this.url = URL;
 		this.path = path;
 	}
-	
+
 	public boolean areRequiredContactsAddedToChat(List<String> names){
-		final String lastMsg = getLastChatMessage();
+		final String lastMsg = getStartedtChatMessage();
 		for (String name : names) {
 			if (!lastMsg.toLowerCase().contains(name.toLowerCase())) {
 				return false;
@@ -54,7 +54,7 @@ public class GroupChatPage extends DialogPage {
 	}
 	
 	public boolean areRequired3ContactsAddedToChat(String name1, String name2, String name3){
-		String lastMessage = getLastChatMessage();
+		String lastMessage = getStartedtChatMessage();
 		boolean flag = lastMessage.contains(name1.toUpperCase()) && lastMessage.contains(name2.toUpperCase()) && lastMessage.contains(name3.toUpperCase());
 		return flag;
 	}
@@ -87,7 +87,7 @@ public class GroupChatPage extends DialogPage {
 	}
 	
 	public boolean isYouRenamedConversationMessageVisible(String name){
-		return getLastMessageFromDialog().equals(String.format(IOSLocators.nameYouRenamedConversationMessage, name));
+		return getRenamedMessage().equals(String.format(IOSLocators.nameYouRenamedConversationMessage, name));
 	}
 	
 	public boolean isMessageShownInGroupChat(String message){
@@ -121,8 +121,21 @@ public class GroupChatPage extends DialogPage {
 	}
 	
 	@Override
-	public IOSPage swipeUp(int time) throws IOException
-	{
+	public IOSPage openConversationDetailsClick() throws IOException, InterruptedException {
+		
+		for (int i = 0; i < 3; i ++) {
+			openConversationDetails.click();
+			Thread.sleep(1000);
+			if (DriverUtils.isElementDisplayed(driver.findElementByName(IOSLocators.nameExitGroupInfoPageButton))) {
+				break;
+			}
+		}
+		
+		return new GroupChatInfoPage(url, path);
+	}
+	
+	@Override
+	public IOSPage swipeUp(int time) throws IOException {
 		WebElement element =  driver.findElement(By.name(IOSLocators.nameMainWindow));
 		
 		Point coords = element.getLocation();
@@ -132,8 +145,7 @@ public class GroupChatPage extends DialogPage {
 	}
 	
     @Override
-	public IOSPage swipeRight(int time) throws IOException
-	{
+	public IOSPage swipeRight(int time) throws IOException {
 		WebElement element =  driver.findElement(By.name(IOSLocators.nameMainWindow));
 		
 		Point coords = element.getLocation();

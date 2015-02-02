@@ -34,9 +34,9 @@ public class ConversationPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private String randomMessage;
-	private int beforeNumberOfKnocks = -1;
-	private int beforeNumberOfHotKnocks = -1;
-	private int beforeNumberOfImages = -1;
+	private int beforeNumberOfKnocks = 0;
+	private int beforeNumberOfHotKnocks = 0;
+	private int beforeNumberOfImages = 0;
 	public String pingID;
 
 	@When("I write random message")
@@ -190,28 +190,28 @@ public class ConversationPageSteps {
 				.scrollDownToLastMessage();
 	}
 
-	private void calcNumberOfPings() {
+	private void calcNumberOfPings(String user) {
 		if (beforeNumberOfKnocks < 0) {
 			beforeNumberOfKnocks = CommonOSXSteps.senderPages
-					.getConversationPage().getNumberOfYouPingedMessages(
-							OSXLocators.xpathYouPingedMessage);
+					.getConversationPage().getNumberOfYouPingedMessages(String.format(
+							OSXLocators.xpathOtherPingedMessage, user));
 		}
 		if (beforeNumberOfHotKnocks < 0) {
 			beforeNumberOfHotKnocks = CommonOSXSteps.senderPages
-					.getConversationPage().getNumberOfYouPingedMessages(
-							OSXLocators.xpathYouPingedAgainMessage);
+					.getConversationPage().getNumberOfYouPingedMessages(String.format(
+							OSXLocators.xpathOtherPingedAgainMessage, user));
 		}
 	}
 
 	@When("I ping user")
 	public void WhenIPingUser() {
-		calcNumberOfPings();
+		calcNumberOfPings("YOU");
 		CommonOSXSteps.senderPages.getConversationPage().ping();
 	}
 
 	@When("I ping again user")
 	public void IPingAgainUser() {
-		calcNumberOfPings();
+		calcNumberOfPings("YOU");
 		CommonOSXSteps.senderPages.getConversationPage().pingAgain();
 	}
 
@@ -287,13 +287,13 @@ public class ConversationPageSteps {
 		Thread.sleep(1000);
 	}
 
-	private void verifyYouPingedMessage() throws InterruptedException {
+	private void verifyPingedMessage(String user) throws InterruptedException {
 		boolean isNumberIncreased = false;
 		int afterNumberOfKnocks = -1;
 		for (int i = 0; i < 3; i++) {
 			afterNumberOfKnocks = CommonOSXSteps.senderPages
-					.getConversationPage().getNumberOfYouPingedMessages(
-							OSXLocators.xpathYouPingedMessage);
+					.getConversationPage().getNumberOfYouPingedMessages(String.format(
+							OSXLocators.xpathOtherPingedMessage, user));
 			if (afterNumberOfKnocks == beforeNumberOfKnocks + 1) {
 				isNumberIncreased = true;
 				break;
@@ -306,13 +306,13 @@ public class ConversationPageSteps {
 				isNumberIncreased);
 	}
 
-	private void verifyYouPingedAgainMessage() throws InterruptedException {
+	private void verifyPingedAgainMessage(String user) throws InterruptedException {
 		boolean isNumberIncreased = false;
 		int afterNumberOfHotKnocks = -1;
 		for (int i = 0; i < 3; i++) {
 			afterNumberOfHotKnocks = CommonOSXSteps.senderPages
-					.getConversationPage().getNumberOfYouPingedMessages(
-							OSXLocators.xpathYouPingedAgainMessage);
+					.getConversationPage().getNumberOfYouPingedMessages(String.format(
+							OSXLocators.xpathOtherPingedAgainMessage, user));
 			if (afterNumberOfHotKnocks == beforeNumberOfHotKnocks + 1) {
 				isNumberIncreased = true;
 				break;
@@ -338,9 +338,12 @@ public class ConversationPageSteps {
 	public void ThenISeeMessageInConversation(String message)
 			throws InterruptedException {
 		if (message.equals(OSXLocators.YOU_PINGED_MESSAGE)) {
-			verifyYouPingedMessage();
+			verifyPingedMessage("YOU");
 		} else if (message.equals(OSXLocators.YOU_PINGED_AGAIN_MESSAGE)) {
-			verifyYouPingedAgainMessage();
+			verifyPingedAgainMessage("YOU");
+		} else if (message.contains(OSXLocators.USER_PINGED_MESSAGE)) {
+			message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
+			verifyPingedMessage(message.split(" ")[0].toUpperCase());
 		} else {
 			verifyMsgExistsInConversationView(message);
 		}

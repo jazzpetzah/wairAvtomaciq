@@ -20,7 +20,7 @@ Feature: Registration
       #| Email   | Password    | Name    |
       #| aqaUser | aqaPassword | aqaUser |
 
-  @regression @id304
+  @regression @id304 @deployPictures
   Scenario Outline: Attempt to register an email with spaces
     Given I see sign in screen
     When I press Join button
@@ -36,7 +36,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id304
+  @regression @id304 @deployPictures
   Scenario Outline: Attempt to register an email with incorrect format
     Given I see sign in screen
     When I press Join button
@@ -52,7 +52,7 @@ Feature: Registration
       | Name      |
       | user1Name |
 
-  @regression @id284
+  @regression @id284 @deployPictures
   Scenario Outline: Conserve user input throughout registration
     Given I see sign in screen
     When I press Join button
@@ -70,7 +70,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id282
+  @regression @id282 @deployPictures
   Scenario Outline: Can return to email page to change email if input incorrectly
     Given I see sign in screen
     When I press Join button
@@ -92,7 +92,7 @@ Feature: Registration
       | Correct    | Password      | Name      | Incorrect           |
       | user1Email | user1Password | user1Name | error@wearezeta.com |
 
-  @regression @id528 @id529 @id530
+  @regression @id528 @id529 @id530 @deployPictures
   Scenario Outline: Register new user using username with maximum characters allowed
     Given I see sign in screen
     When I press Join button
@@ -108,7 +108,7 @@ Feature: Registration
       | Email      | Password      | MaxChars | Language |
       | user1Email | user1Password | 72       | English  |
 
-  @regression @id589
+  @regression @id589 @deployPictures
   Scenario Outline: Register new user using photo album
     Given I see sign in screen
     When I press Join button
@@ -156,7 +156,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id285
+  @regression @id285 @deployPictures
   Scenario Outline: Take or select a photo label not visible when picture is selected
     Given I see sign in screen
     When I press Join button
@@ -185,7 +185,7 @@ Feature: Registration
       #| Email   | Password    | Name    |
       #| aqaUser | aqaPassword | aqaUser |
 
-  @regression @id273 @id301
+  @regression @id273 @id301 @deployPictures
   Scenario Outline: Next Button should not be visible on first registration step visit
     Given I see sign in screen
     When I press Join button
@@ -207,7 +207,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id1392
+  @regression @id1392 @deployPictures
   Scenario Outline: Automatic email verification
     Given I see sign in screen
     When I press Join button
@@ -244,7 +244,7 @@ Feature: Registration
       #| Email   | Password    | Name    |
       #| aqaUser | aqaPassword | aqaUser |
 
-  @regression @id305
+  @regression @id305 @deployPictures
   Scenario Outline: Minimum 8 chars password requirement validation
     Given I see sign in screen
     When I press Join button
@@ -308,7 +308,7 @@ Feature: Registration
       #| Email   | Password    | Name    |
       #| aqaUser | aqaPassword | aqaUser |
 
-  @regression @id298
+  @regression @id298 @deployPictures
   Scenario Outline: Can re-send verification email from verification screen
     Given I see sign in screen
     When I press Join button
@@ -331,7 +331,7 @@ Feature: Registration
       | Email      | Password      | Name      | EmailCount |
       | user1Email | user1Password | user1Name | 20         |
 
-  @regression @id302
+  @regression @id302 @deployPictures
   Scenario Outline: Verify back button during registration process
     Given I see sign in screen
     When I press Join button

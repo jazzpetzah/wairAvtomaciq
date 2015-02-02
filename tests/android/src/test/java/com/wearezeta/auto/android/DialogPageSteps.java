@@ -115,9 +115,10 @@ public class DialogPageSteps {
 		} catch (NoSuchUserException ex) {
 			// Ignore silently
 		}
-		Assert.assertEquals("Ping message compare",
+		Assert.assertTrue(PagesCollection.dialogPage.isKnockText(message,action));
+		/*Assert.assertEquals("Ping message compare",
 				message + " " + action.trim(),
-				PagesCollection.dialogPage.getKnockText());
+				PagesCollection.dialogPage.getKnockText());*/
 	}
 
 	@Then("^I see my message in the dialog$")

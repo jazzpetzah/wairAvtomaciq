@@ -44,6 +44,8 @@ public class ContactListPageSteps {
 		if (peoplePickerPage.isPeoplePickerPageVisible()) {
 			log.debug("People picker appears. Closing it.");
 			peoplePickerPage.closePeoplePicker();
+		} else {
+			log.debug("No people picker found.\nPage source: " + peoplePickerPage.getPageSource());
 		}
 		GivenISeeContactListWithName(name);
 	}
@@ -206,6 +208,13 @@ public class ContactListPageSteps {
 		contactList.acceptAllInvitations();
 	}
 
+	@When("I ignore invitation")
+	public void IIgnoreInvitation() {
+		ContactListPage contactList = CommonOSXSteps.senderPages
+				.getContactListPage();
+		contactList.ignoreAllInvitations();
+	}
+	
 	@When("I archive conversation with (.*)")
 	public void IArchiveConversation(String conversation) throws Exception {
 		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();

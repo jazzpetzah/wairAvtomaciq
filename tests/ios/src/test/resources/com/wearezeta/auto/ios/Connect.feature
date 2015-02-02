@@ -9,6 +9,7 @@ Feature: Connect
     When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
+    Given I wait up to 15 seconds until <ContactEmail> exists in backend search results
     And I input in People picker search field user email <ContactEmail>
     And I see user <Contact> found on People picker page
     And I tap on NOT connected user name on People picker page <Contact>
@@ -167,6 +168,28 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I search for ignored user name <Contact1> and tap on it
     Then I see Pending request page
+
+    Examples:
+      | Login      | Password      | Name      | Contact1     | Contact2   | Contact3   | Contact4  | SentRequests |
+      | user1Email | user1Password | user1Name | user2Name    | user3Name  | user4Name  | user5Name |      3       |
+      
+  @regression @id577
+  Scenario Outline: Verify transitions between connection requests (connecting)
+    Given There are 5 users where <Name> is me
+    Given <Contact1> has sent connection request to me
+    Given <Contact2> has sent connection request to me
+    Given <Contact3> has sent connection request to me
+    Given Myself is connected to <Contact4>
+    Given I Sign in using login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I see Pending request link in contact list
+    And I click on Pending request link in contact list
+    And I see Pending request page
+    And I click on Connect button on Pending requests page <SentRequests> times
+    Then I dont see Pending request link in contact list
+    And I see user <Contact1> in contact list
+    And I see user <Contact2> in contact list
+    And I see user <Contact3> in contact list
 
     Examples:
       | Login      | Password      | Name      | Contact1     | Contact2   | Contact3   | Contact4  | SentRequests |

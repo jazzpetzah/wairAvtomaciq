@@ -223,10 +223,13 @@ public class PeoplePickerPageSteps {
 						.isCreateConversationButtonVisible());
 	}
 
-	@When("I click Create Conversation button  on People picker page")
+	@When("I click Create Conversation button on People picker page")
 	public void IClickCreateConversationButton() throws Throwable {
-		PagesCollection.groupChatPage = PagesCollection.peoplePickerPage
+		PagesCollection.iOSPage = PagesCollection.peoplePickerPage
 				.clickCreateConversationButton();
+		if (PagesCollection.iOSPage instanceof GroupChatPage) {
+			PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.iOSPage;
+		}
 	}
 
 	@When("I see user (.*) on People picker page is selected")
@@ -266,7 +269,7 @@ public class PeoplePickerPageSteps {
 	}
 
 	@When("I click close button to dismiss people view")
-	public void IClickCloseButtonDismissPeopleView() {
+	public void IClickCloseButtonDismissPeopleView() throws Exception {
 		PagesCollection.peoplePickerPage.tapOnPeoplePickerClearBtn();
 	}
 

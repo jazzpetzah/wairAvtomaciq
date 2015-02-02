@@ -57,7 +57,12 @@ public class DialogPageSteps {
 
 	@When("^I tap on text input$")
 	public void WhenITapOnTextInput() throws Exception {
-		PagesCollection.dialogPage.tapOnCursorInput();
+		for (int i = 0; i < 5; i ++) {
+			PagesCollection.dialogPage.tapOnCursorInput();
+			if (PagesCollection.dialogPage.isKeyboardVisible()) {
+				break;
+			}
+		}
 	}
 
 	@When("^I type the message$")
@@ -101,38 +106,45 @@ public class DialogPageSteps {
 	public void ISeeUserPingedMessageTheDialog(String user) throws Throwable {
 		String username = usrMgr.findUserByNameOrNameAlias(user).getName();
 		String expectedPingMessage = username.toUpperCase() + " PINGED";
-		String dialogLastMessage;
 		if (PagesCollection.dialogPage != null) {
-			dialogLastMessage = PagesCollection.dialogPage.getLastChatMessage();
+			Assert.assertTrue(PagesCollection.dialogPage
+					.isPingMessageVisible(expectedPingMessage));
 		} else {
-			dialogLastMessage = PagesCollection.groupChatPage
-					.getLastChatMessage();
+			Assert.assertTrue(PagesCollection.groupChatPage
+					.isPingMessageVisible(expectedPingMessage));
 		}
-		Assert.assertTrue("Actual: " + dialogLastMessage + " || Expected: "
-				+ expectedPingMessage,
-				dialogLastMessage.equals(expectedPingMessage));
 	}
 
 	@Then("^I see User (.*) Pinged Again message in the conversation$")
 	public void ISeeUserHotPingedMessageTheDialog(String user) throws Throwable {
 		String username = usrMgr.findUserByNameOrNameAlias(user).getName();
 		String expectedPingMessage = username.toUpperCase() + " PINGED AGAIN";
-		String dialogLastMessage;
 		if (PagesCollection.dialogPage != null) {
-			dialogLastMessage = PagesCollection.dialogPage.getLastChatMessage();
+			Assert.assertTrue(PagesCollection.dialogPage
+					.isPingMessageVisible(expectedPingMessage));
 		} else {
-			dialogLastMessage = PagesCollection.groupChatPage
-					.getLastChatMessage();
+			Assert.assertTrue(PagesCollection.groupChatPage
+					.isPingMessageVisible(expectedPingMessage));
 		}
-		Assert.assertTrue("Actual: " + dialogLastMessage + " || Expected: "
-				+ expectedPingMessage,
-				dialogLastMessage.equals(expectedPingMessage));
 	}
 
 	@When("^I type the message and send it$")
 	public void ITypeTheMessageAndSendIt() throws Throwable {
 		message = CommonUtils.generateGUID();
 		PagesCollection.dialogPage.sendStringToInput(message + "\n");
+	}
+	
+	/**
+	 * Click open conversation details button in 1:1 dialog
+	 * 
+	 * @step. ^I open conversation details$
+	 * 
+	 * @throws Exception
+	 *             if other user personal profile page was not created
+	 */
+	@When("^I open conversation details$") 
+	public void IOpenConversationDetails() throws Exception {
+		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.dialogPage.openConversationDetailsClick();
 	}
 
 	@When("^I send the message$")
@@ -185,7 +197,12 @@ public class DialogPageSteps {
 	@When("^I swipe the text input cursor$")
 	public void ISwipeTheTextInputCursor() throws Throwable {
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.iOSPage;
-		PagesCollection.dialogPage.swipeInputCursor();
+		for (int i = 0; i < 3; i ++) {
+			PagesCollection.dialogPage.swipeInputCursor();
+			if (PagesCollection.dialogPage.isPingButtonVisible()) {
+				break;
+			}
+		}
 	}
 
 	@When("^I press Add Picture button$")
@@ -210,7 +227,7 @@ public class DialogPageSteps {
 		String actualConnectingLabel = PagesCollection.dialogPage
 				.getConnectMessageLabel();
 		String lastMessage = PagesCollection.dialogPage
-				.getLastMessageFromDialog();
+				.getConnectionMessage();
 		String expectedConnectMessage = PagesCollection.dialogPage
 				.getExpectedConnectMessage(contact, user);
 		Assert.assertEquals("Expected: " + expectedConnectingLabel
@@ -233,7 +250,8 @@ public class DialogPageSteps {
 	public void ITypeAndSendLongTextAndMediaLink(String link)
 			throws InterruptedException {
 		PagesCollection.dialogPage.sendMessageUsingScript(longMessage);
-		Thread.sleep(2000);
+		PagesCollection.dialogPage.sendStringToInput(CommonUtils.generateRandomString(10) + "\n");
+		Thread.sleep(3000);
 		PagesCollection.dialogPage.sendMessageUsingScript(link);
 		Thread.sleep(3000);
 	}
@@ -245,10 +263,10 @@ public class DialogPageSteps {
 
 	@Then("I see media link (.*) and media in dialog")
 	public void ISeeMediaLinkAndMediaInDialog(String link) {
-		Assert.assertEquals(link.toLowerCase(), PagesCollection.dialogPage
-				.getLastMessageFromDialog().toLowerCase());
 		Assert.assertTrue("Media is missing in dialog",
 				PagesCollection.dialogPage.isMediaContainerVisible());
+		Assert.assertEquals(link.toLowerCase(), PagesCollection.dialogPage
+				.getLastMessageFromDialog().toLowerCase());
 	}
 
 	@When("I click video container for the first time")
@@ -384,13 +402,17 @@ public class DialogPageSteps {
 	@Then("^I scroll away the keyboard$")
 	public void IScrollKeyboardAway() throws Throwable {
 		PagesCollection.dialogPage.swipeDialogPageDown(500);
-		PagesCollection.dialogPage.swipeDialogPageUp(500);
 		Thread.sleep(2000);
 	}
 
 	@Then("^I navigate back to conversations view$")
 	public void INavigateToConversationsView() throws IOException {
-		PagesCollection.dialogPage.swipeRight(SWIPE_DURATION);
+		for (int i = 0; i < 3; i++ ) {
+			PagesCollection.dialogPage.swipeRight(SWIPE_DURATION);
+			if (PagesCollection.contactListPage.isMyUserNameDisplayedFirstInContactList(usrMgr.getSelfUser().getName())) {
+				break;
+			}
+		}
 	}
 
 	@When("I try to send message with only spaces")
@@ -482,6 +504,7 @@ public class DialogPageSteps {
 		ClientUser yourСontact = usrMgr.findUserByNameOrNameAlias(contact);
 		pingId = BackendAPIWrappers.sendPingToConversation(yourСontact,
 				conversationName);
+		Thread.sleep(1000);
 	}
 
 	@When("^User (.*) HotPing in chat (.*) by BackEnd$")
@@ -490,6 +513,7 @@ public class DialogPageSteps {
 		ClientUser yourСontact = usrMgr.findUserByNameOrNameAlias(contact);
 		BackendAPIWrappers.sendHotPingToConversation(yourСontact,
 				conversationName, pingId);
+		Thread.sleep(1000);
 	}
 
 	@Then("^I see (.*) icon in conversation$")

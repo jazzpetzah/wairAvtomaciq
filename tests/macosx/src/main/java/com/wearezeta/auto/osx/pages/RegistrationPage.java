@@ -1,6 +1,6 @@
 package com.wearezeta.auto.osx.pages;
 
-import java.net.MalformedURLException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.openqa.selenium.By;
@@ -38,7 +38,7 @@ public class RegistrationPage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathRegistrationPictureConfirmationButton)
 	private WebElement confirmChosenPictureButton;
 	
-	public RegistrationPage(String URL, String path) throws MalformedURLException {
+	public RegistrationPage(String URL, String path) throws IOException {
 		super(URL, path);
 	}
 

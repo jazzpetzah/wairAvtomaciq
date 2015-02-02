@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -33,7 +32,7 @@ public class PendingRequestsPage extends IOSPage {
 	
 	private String autoHelloMessage = CommonSteps.CONNECTION_MESSAGE;
 
-	public PendingRequestsPage(String URL, String path) throws MalformedURLException {
+	public PendingRequestsPage(String URL, String path) throws IOException {
 		super(URL, path);
 		
 		this.url = URL;
@@ -55,7 +54,6 @@ public class PendingRequestsPage extends IOSPage {
 			DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.namePendingRequestIgnoreButton));
 			wait.until(ExpectedConditions.elementToBeClickable(ignoreRequestButton));
 			ignoreRequestButton.click();
-			Thread.sleep(500);
 			DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.namePendingRequestIgnoreButton));
 		}
 		page = new ContactListPage(url, path);
@@ -69,6 +67,22 @@ public class PendingRequestsPage extends IOSPage {
 		return page;
 	}
 	
+	public ContactListPage clickConnectButtonMultiple(int clicks)
+			throws Throwable {
+		ContactListPage page = null;
+		for (int i = 0; i < clicks; i++) {
+			DriverUtils.waitUntilElementAppears(driver,
+					By.name(IOSLocators.namePendingRequestConnectButton));
+			wait.until(ExpectedConditions
+					.elementToBeClickable(connectRequestButton));
+			connectRequestButton.click();
+			DriverUtils.waitUntilElementAppears(driver,
+					By.name(IOSLocators.namePendingRequestConnectButton));
+		}
+		page = new ContactListPage(url, path);
+		return page;
+	}
+			
 	public boolean isConnectButtonDisplayed(){
 		return DriverUtils.isElementDisplayed(connectRequestButton);
 	}

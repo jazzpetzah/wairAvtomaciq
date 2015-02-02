@@ -84,7 +84,7 @@ public class CommonAndroidSteps {
 	public void tearDown() throws Exception {
 		PagesCollection.loginPage.Close();
 		AndroidPage.clearPagesCollection();
-		
+
 		commonSteps.getUserManager().resetUsers();
 	}
 
@@ -104,6 +104,7 @@ public class CommonAndroidSteps {
 
 		try {
 			AndroidCommonUtils.disableHints();
+			AndroidCommonUtils.disableHockeyUpdates();
 			String backendJSON = AndroidCommonUtils
 					.createBackendJSON(CommonUtils.getBackendType(this
 							.getClass()));
@@ -140,9 +141,12 @@ public class CommonAndroidSteps {
 		commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
 				usersToNameAliases);
 	}
+
 	@Given("^(.*) has an avatar picture from file (.*)$")
-	public void GivenUserHasAnAvatarPicture(String name, String picture) throws Throwable {
-		String picturePath = CommonUtils.getImagesPath(CommonAndroidSteps.class) + "/" + picture;
+	public void GivenUserHasAnAvatarPicture(String name, String picture)
+			throws Throwable {
+		String picturePath = CommonUtils
+				.getImagesPath(CommonAndroidSteps.class) + "/" + picture;
 		try {
 			name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		} catch (NoSuchUserException e) {
@@ -150,9 +154,10 @@ public class CommonAndroidSteps {
 		}
 		commonSteps.IChangeUserAvatarPicture(name, picturePath);
 	}
-	
+
 	@Given("^(.*) has an accent color (.*)$")
-	public void GivenUserHasAnAccentColor(String name, String colorName) throws Throwable {
+	public void GivenUserHasAnAccentColor(String name, String colorName)
+			throws Throwable {
 		try {
 			name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		} catch (NoSuchUserException e) {
@@ -160,7 +165,7 @@ public class CommonAndroidSteps {
 		}
 		commonSteps.IChangeUserAccentColor(name, colorName);
 	}
-	
+
 	@Given("^(.*) has a name (.*)$")
 	public void GivenUserHasAName(String name, String newName) throws Throwable {
 		try {
@@ -170,8 +175,7 @@ public class CommonAndroidSteps {
 		}
 		commonSteps.IChangeUserName(name, newName);
 	}
-	
-	
+
 	@Given("^(.*) is connected to (.*)$")
 	public void UserIsConnectedTo(String userFromNameAlias,
 			String usersToNameAliases) throws Exception {
@@ -243,5 +247,24 @@ public class CommonAndroidSteps {
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
 			throws Exception {
 		commonSteps.ThereAreNUsersWhereXIsMe(count, myNameAlias);
+	}
+
+	@Given("^There \\w+ (\\d+) shared user[s]* with name prefix (\\w+)$")
+	public void ThereAreNSharedUsersWithNamePrefix(int count, String namePrefix)
+			throws Exception {
+		commonSteps.ThereAreNSharedUsersWithNamePrefix(count, namePrefix);
+	}
+
+	@Given("^User (\\w+) is [Mm]e$")
+	public void UserXIsMe(String nameAlias) throws Exception {
+		commonSteps.UserXIsMe(nameAlias);
+	}
+
+	@Given("^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in backend search results$")
+	public void UserWaitsUntilContactExistsInHisSearchResults(
+			String searchByNameAlias, int timeout, String query)
+			throws Exception {
+		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query,
+				timeout);
 	}
 }

@@ -9,11 +9,11 @@ public class ImageAssetData extends AssetData {
 	private Integer originalWidth = null;
 	private Integer originalHeight = null;
 	private Boolean isInline = false;
-	private Boolean isPublic = null;
+	private Boolean isPublic = true;
 	private String correlationId = null;
 	private String tag = null;
 	private String nonce = null;
-	private Boolean nativePush = null;
+	private Boolean nativePush = false;
 
 	private byte[] imageData = null;
 	private String mimeType = null;

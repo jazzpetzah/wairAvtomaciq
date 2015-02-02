@@ -59,6 +59,17 @@ public class AndroidCommonUtils extends CommonUtils {
 		}
 	}
 
+	public static void disableHockeyUpdates() throws Exception {
+		if (getOsName().contains(OS_NAME_WINDOWS)) {
+			Runtime.getRuntime().exec(
+					"cmd /C adb shell touch /sdcard/disableHockeyUpdates");
+		} else {
+			executeOsXCommand(new String[] { "/bin/bash", "-c",
+					ADB_PREFIX + "adb shell touch /sdcard/disableHockeyUpdates" });
+		}
+	}
+
+	
 	public static void killAndroidClient() throws Exception {
 		if (getOsName().contains(OS_NAME_WINDOWS)) {
 			Runtime.getRuntime().exec(
