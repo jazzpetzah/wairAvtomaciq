@@ -215,7 +215,7 @@ public class DialogPage extends AndroidPage{
 	
 	public boolean isImageExists() {
 		refreshUITree();//TODO workaround
-		return DriverUtils.waitUntilElementAppears(driver,By.id(AndroidLocators.DialogPage.idDialogImages));
+		return DriverUtils.waitUntilElementAppears(driver,AndroidLocators.DialogPage.getByForDialogPageImage());
 	}
 
 	public void confirm() {

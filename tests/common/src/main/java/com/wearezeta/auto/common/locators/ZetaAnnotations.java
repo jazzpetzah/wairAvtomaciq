@@ -303,16 +303,11 @@ public class ZetaAnnotations extends Annotations{
 		String locatorsDb = findBy.locatorsDb();
 		String locatorKey = findBy.locatorKey();
 
-		try {
-			if(CommonUtils.getAndroidApiLvl(ZetaAnnotations.class) < 43){
-				if(how == ZetaHow.ID){
-					how = ZetaHow.XPATH;
-				}
-				locatorKey = "xpath" + locatorKey.substring(2) + "42";
+		if(CommonUtils.getAndroidApiLvl(ZetaAnnotations.class) < 43){
+			if(how == ZetaHow.ID){
+				how = ZetaHow.XPATH;
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			locatorKey = "xpath" + locatorKey.substring(2) + "42";
 		}
 
 		String locatorValue = getLocatorValue(locatorsDb, locatorKey);
