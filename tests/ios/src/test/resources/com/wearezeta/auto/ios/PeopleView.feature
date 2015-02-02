@@ -109,7 +109,7 @@ Feature: People View
     #And I swipe up on group chat page
     And I open group conversation details
     Then I see that the conversation name is correct with <Contact1> and <Contact2>
-    And I see the correct number of participants in the title <ParticipantNumber>
+    And I see that conversation has <ParticipantNumber> people
     And I see the correct participant avatars
 
     Examples:
