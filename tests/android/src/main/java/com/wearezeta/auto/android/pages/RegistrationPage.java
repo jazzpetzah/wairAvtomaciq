@@ -79,7 +79,7 @@ public class RegistrationPage extends AndroidPage {
 
 	public boolean isPictureSelected() {
 		refreshUITree();
-		wait.until(ExpectedConditions.elementToBeClickable(confirmImageButton));
+		DriverUtils.waitUntilElementAppears(driver, AndroidLocators.DialogPage.getByForDialogConfirmImageButtn());
 		return DriverUtils.isElementDisplayed(confirmImageButton);
 	}
 

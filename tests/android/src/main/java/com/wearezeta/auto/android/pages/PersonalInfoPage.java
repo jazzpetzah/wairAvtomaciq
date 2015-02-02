@@ -186,7 +186,7 @@ public class PersonalInfoPage extends AndroidPage
 	public boolean isSettingsButtonNotVisible() {
 		boolean flag = false;
 		refreshUITree();
-		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.PersonalInfoPage.idProfileOptionsButton));
+		DriverUtils.waitUntilElementDissapear(driver, AndroidLocators.PersonalInfoPage.getByForProfileOptionsButton());
 		if(settingsButtonList == null || settingsButtonList.isEmpty())
 		{
 			flag = true;

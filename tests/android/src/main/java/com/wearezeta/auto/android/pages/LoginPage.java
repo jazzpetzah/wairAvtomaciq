@@ -13,6 +13,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -38,6 +39,9 @@ public class LoginPage extends AndroidPage {
 	
 	@AndroidFindBy(xpath =  AndroidLocators.LoginPage.xpathPasswordInput)
 	private WebElement passwordInput;
+	
+	@FindBy(className  = AndroidLocators.CommonLocators.classEditText)
+	private List<WebElement> editText;
 	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idLoginError")
 	private WebElement loginError;
@@ -90,7 +94,8 @@ public class LoginPage extends AndroidPage {
 	}
 	
 	public LoginPage SignIn() throws IOException {
-
+		refreshUITree();
+		wait.until(ExpectedConditions.visibilityOf(signInButton));
 		signInButton.click();
 		return this;
 	}
@@ -103,18 +108,36 @@ public class LoginPage extends AndroidPage {
 		return login;
 	}
 
-	public void setLogin(String login) {
+	public void setLogin(String login) throws IOException {
 		refreshUITree();
-		loginInput.sendKeys(login);
+		if(CommonUtils.getAndroidApiLvl(LoginPage.class) > 42){
+			loginInput.sendKeys(login);
+		}
+		else{
+			for(WebElement editField : editText){
+				if (editField.getText().toLowerCase().equals("email")){
+					editField.sendKeys(login);
+				}
+			}
+		}
 	}
 	
 	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) throws InterruptedException {
-		passwordInput.click();
-		passwordInput.sendKeys(password);
+	public void setPassword(String password) throws InterruptedException, IOException {
+		if(CommonUtils.getAndroidApiLvl(LoginPage.class) > 42){
+			passwordInput.click();
+			passwordInput.sendKeys(password);
+		}
+		else{
+			for(WebElement editField : editText){
+				if (editField.getText().toLowerCase().isEmpty()){
+					editField.sendKeys(password);
+				}
+			}
+		}
 	}
 
 	public boolean waitForLoginScreenDisappear() {
@@ -144,7 +167,7 @@ public class LoginPage extends AndroidPage {
 
 	public RegistrationPage join() throws Exception {
 		signUpButton.click();
-
+		DriverUtils.waitUntilElementDissapear(driver, AndroidLocators.LoginPage.getByForLoginPageRegistrationButton());
 		return new RegistrationPage(url, path);
 	}
 	

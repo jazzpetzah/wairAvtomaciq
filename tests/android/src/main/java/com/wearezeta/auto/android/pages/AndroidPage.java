@@ -168,7 +168,12 @@ public abstract class AndroidPage extends BasePage {
 	public void dialogsPagesSwipeUp(int time){
 		Point coords = content.getLocation();
 		Dimension elementSize = content.getSize();
-		driver.swipe(coords.x+elementSize.width / 2, coords.y + elementSize.height - 300, coords.x + elementSize.width / 2, coords.y, time);
+		try{
+			driver.swipe(coords.x+elementSize.width / 2, coords.y + elementSize.height - 300, coords.x + elementSize.width / 2, coords.y, time);
+		}
+		catch(Exception ex){
+
+		}
 
 	}
 	

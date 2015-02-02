@@ -85,9 +85,14 @@ public class CommonUtils {
 		stream.close();
 	}
 
-	public static int getAndroidApiLvl(Class<?> c) throws IOException {
+	public static int getAndroidApiLvl(Class<?> c) {
 		String androidVersion = "44";
-		androidVersion = getValueFromConfig(c, "androidVersion");
+		try {
+			androidVersion = getValueFromConfig(c, "androidVersion");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return Integer.parseInt(androidVersion);
 	}
 	
