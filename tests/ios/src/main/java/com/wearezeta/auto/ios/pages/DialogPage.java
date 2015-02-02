@@ -675,4 +675,11 @@ public class DialogPage extends IOSPage{
 	public void waitPingAnimation() throws InterruptedException {
 		Thread.sleep(PING_ANIMATION_TIME);		
 	}
+	
+	public int getNumberOfPingedMessages(String xpath) {
+		List<WebElement> pingedMessages =
+				driver.findElements(By.xpath(xpath));
+		log.debug("Retrieved number of Pings in conversation: " + pingedMessages.size());
+		return pingedMessages.size();
+	}
 }

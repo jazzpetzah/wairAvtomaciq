@@ -44,6 +44,7 @@ public class DialogPageSteps {
 	public static long memTime;
 	public String pingId;
 	private int beforeNumberOfImages = 0;
+	private int beforeNumberOfKnocks = 0;
 
 	@When("^I see dialog page$")
 	public void WhenISeeDialogPage() throws Exception {
@@ -103,6 +104,24 @@ public class DialogPageSteps {
 		Assert.assertTrue(PagesCollection.dialogPage
 				.isPingMessageVisible(pingagainmessage));
 	}
+	
+//	private void verifyPingedMessage() throws InterruptedException {
+//		boolean isNumberIncreased = false;
+//		int afterNumberOfKnocks = -1;
+//		for (int i = 0; i < 3; i++) {
+//			afterNumberOfKnocks = PagesCollection.dialogPage.getNumberOfPingedMessages(
+//							IOSLocators.xpathOtherUserPingedMessage);
+//			if (afterNumberOfKnocks == beforeNumberOfKnocks + 1) {
+//				isNumberIncreased = true;
+//				break;
+//			}
+//			Thread.sleep(1000);
+//		}
+//
+//		Assert.assertTrue("Incorrect messages count: before - "
+//				+ beforeNumberOfKnocks + ", after - " + afterNumberOfKnocks,
+//				isNumberIncreased);
+//	}
 
 	@Then("^I see User (.*) Pinged message in the conversation$")
 	public void ISeeUserPingedMessageTheDialog(String user) throws Throwable {
@@ -118,6 +137,8 @@ public class DialogPageSteps {
 		Assert.assertTrue("Actual: " + dialogLastMessage + " || Expected: "
 				+ expectedPingMessage,
 				dialogLastMessage.equals(expectedPingMessage));
+//		verifyPingedMessage();
+		
 	}
 
 	@Then("^I see User (.*) Pinged Again message in the conversation$")
