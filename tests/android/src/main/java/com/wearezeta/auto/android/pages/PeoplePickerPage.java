@@ -6,7 +6,6 @@ import java.util.List;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.wearezeta.auto.android.PeoplePickerPageSteps;
 import com.wearezeta.auto.android.common.KeyboardMapper;
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.CommonUtils;
@@ -93,7 +92,7 @@ public class PeoplePickerPage extends AndroidPage {
 		AndroidPage page = null;
 		refreshUITree();
 		pickerSearchUser.click();
-		if(CommonUtils.getAndroidApiLvl(PeoplePickerPageSteps.class) > 42){
+		if(CommonUtils.getAndroidApiLvl(PeoplePickerPage.class) > 42){
 			DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.PeoplePickerPage.idPickerSearchUsers));
 		}
 		else{
