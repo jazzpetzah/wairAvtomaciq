@@ -100,10 +100,10 @@ public final class AndroidLocators {
 		public static By getByForConnectToPageHeader() {
 			if (CommonUtils.getAndroidApiLvl(AndroidLocators.class) < 43) {
 				return By
-						.xpath(AndroidLocators.ConnectToPage.idConnectToHeader);
+						.xpath(AndroidLocators.ConnectToPage.xpathConnectToHeader42);
 			} else {
 				return By
-						.id(AndroidLocators.ConnectToPage.xpathConnectToHeader42);
+						.id(AndroidLocators.ConnectToPage.idConnectToHeader);
 			}
 		}
 	}
