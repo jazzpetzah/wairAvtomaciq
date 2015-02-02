@@ -130,7 +130,7 @@ Feature: Conversation
       | Login      | Password      | Name      | Contact   | SoundCloudLink                               |
       | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/djsliinkbbc/2-test-me |
 
-  @staging @id380
+  @staging @id380 @torun
   Scenario Outline: Conversation scrolls back to playing media when clicked on the media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -226,7 +226,7 @@ Feature: Conversation
       | Login      | Password      | Name      | Contact1  | Contact2  | SoundCloudLink                               | ChatName        |
       | user1Email | user1Password | user1Name | user2Name | user3Name | https://soundcloud.com/djsliinkbbc/2-test-me | SecondEndMMChat |
 
-  @staging @id381
+  @staging @id381 @torun
   Scenario Outline: The media bar disappears after playback finishes
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -245,7 +245,7 @@ Feature: Conversation
       | Login      | Password      | Name      | Contact   | SoundCloudLink                             | Time |
       | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/20sekunder/erika-no | 30   |
 
-  @staging @id378
+  @staging @id378 @torun
   Scenario Outline: Media bar disappears when playing media is back in view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
