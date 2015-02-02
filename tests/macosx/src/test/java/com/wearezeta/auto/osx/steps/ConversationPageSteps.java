@@ -3,9 +3,12 @@ package com.wearezeta.auto.osx.steps;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
@@ -56,6 +59,12 @@ public class ConversationPageSteps {
 	public void IWriteMessage(String message) {
 		CommonOSXSteps.senderPages.getConversationPage().writeNewMessage(
 				message);
+	}
+	
+	@When("I can not write a random message")
+	public void ICanNotWriteAMessage() {
+		WebElement newMessageTextArea = CommonOSXSteps.senderPages.getConversationPage().findNewMessageTextArea();
+		Assert.assertNull("This is a pending user, message area should be hidden and not possible to send any message", newMessageTextArea);
 	}
 
 	@When("I send message")

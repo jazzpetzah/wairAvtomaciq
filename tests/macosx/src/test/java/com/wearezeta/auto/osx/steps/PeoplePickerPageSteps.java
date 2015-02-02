@@ -35,7 +35,7 @@ public class PeoplePickerPageSteps {
 	}
 	
 	@When("I see user (.*) in search results")
-	public void WhenISeeUserFromSearchResults(String user) throws InterruptedException {
+	public void WhenISeeUserFromSearchResults(String user) throws Exception {
 		try {
 			user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		} catch (NoSuchUserException e) {

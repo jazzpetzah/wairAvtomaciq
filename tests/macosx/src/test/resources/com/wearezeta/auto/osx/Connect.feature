@@ -112,6 +112,9 @@ Feature: Connect to user
     And I see user <Contact> in search results
     And I add user <Contact> from search results
     And I send invitation to user
+    And I open conversation with <Contact>
+    Then I can not write a random message
+    
     
     Examples: 
       | Login      | Password      | Name      | Contact   |

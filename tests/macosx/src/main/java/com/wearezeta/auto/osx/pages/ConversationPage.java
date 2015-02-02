@@ -92,7 +92,7 @@ public class ConversationPage extends OSXPage {
 		return viewPager != null;
 	}
 
-	private WebElement findNewMessageTextArea() {
+	public WebElement findNewMessageTextArea() {
 		List<WebElement> rows = driver.findElements(By
 				.xpath(OSXLocators.xpathNewMessageTextArea));
 		for (WebElement row : rows) {
