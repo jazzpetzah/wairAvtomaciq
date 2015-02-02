@@ -293,7 +293,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | Contact1  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @id550 @regression 
+  @id550 @regression
   Scenario Outline: I want to initiate a connect request by selecting someone from within a group conversation
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
@@ -441,3 +441,20 @@ Feature: Connect
     Examples: 
       | Login      | Password      | Name      | Contact   | Contact1  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
+
+  @id1397 @regression
+  Scenario Outline: Verify you do not receive any messages from blocked person in 1:1 chat
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And User <Name> blocks user <Contact>
+    And I input <Message> message and send it
+    And Contact <Contact> send message to user <Name>
+    Then Last message is <Message>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Message |
+      | user1Email | user1Password | user1Name | user2Name | Hello!  |

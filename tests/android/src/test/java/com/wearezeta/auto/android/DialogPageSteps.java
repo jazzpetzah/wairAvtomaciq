@@ -231,4 +231,9 @@ public class DialogPageSteps {
 		Assert.assertTrue(PagesCollection.dialogPage.isMessageExists(message
 				+ " " + contact));
 	}
+	
+	@Then("^Last message is (.*)$")
+	public void ThenLastMessageIs(String message){
+		Assert.assertEquals(message.toLowerCase().trim(), PagesCollection.dialogPage.getLastMessageFromDialog().toLowerCase().trim());
+	}
 }
