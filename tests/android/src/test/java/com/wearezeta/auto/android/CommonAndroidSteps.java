@@ -238,6 +238,13 @@ public class CommonAndroidSteps {
 		commonSteps.IRemoveContactsListUsersFromMacContact();
 	}
 
+	@When("^Contact (.*) send message to user (.*)$")
+	public void UserSendMessageToConversation(String msgFromUserNameAlias,
+			String dstUserNameAlias) throws Exception {
+		commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
+				dstUserNameAlias, CommonUtils.generateRandomString(10));
+	}
+	
 	@Given("^There \\w+ (\\d+) user[s]*$")
 	public void ThereAreNUsers(int count) throws Exception {
 		commonSteps.ThereAreNUsers(count);
