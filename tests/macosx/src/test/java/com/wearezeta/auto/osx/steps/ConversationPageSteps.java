@@ -61,6 +61,13 @@ public class ConversationPageSteps {
 				message);
 	}
 	
+	/**
+	 * Verifies that the message text area is not visible when your contact 
+	 * is e.g. in pending state.
+	 * 
+	 * @step. I can not write a random message
+	 * 
+	 */
 	@When("I can not write a random message")
 	public void ICanNotWriteAMessage() {
 		WebElement newMessageTextArea = CommonOSXSteps.senderPages.getConversationPage().findNewMessageTextArea();
