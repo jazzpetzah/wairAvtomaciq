@@ -1,5 +1,6 @@
 Feature: Search
 
+  #needs locator for top people
   @staging @id1391
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People
   	Given There are 2 users where <Name> is me
