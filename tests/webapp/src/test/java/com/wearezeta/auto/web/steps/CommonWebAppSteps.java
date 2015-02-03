@@ -79,6 +79,28 @@ public class CommonWebAppSteps {
 		commonSteps.UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
 	}
 
+	/**
+	 * Creates group chat with specified users
+	 * 
+	 * @step. ^(.*) has group chat (.*) with (.*)$
+	 * 
+	 * @param chatOwnerNameAlias
+	 *            user that creates group chat
+	 * @param chatName
+	 *            group chat name
+	 * @param otherParticipantsNameAlises
+	 *            list of users which will be added to chat separated by comma
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^(.*) has group chat (.*) with (.*)$")
+	public void UserHasGroupChatWithContacts(String chatOwnerNameAlias,
+			String chatName, String otherParticipantsNameAlises)
+			throws Exception {
+		commonSteps.UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName,
+				otherParticipantsNameAlises);
+	}
+
 	@After
 	public void tearDown() throws Exception {
 
