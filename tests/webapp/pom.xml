@@ -17,7 +17,7 @@
 		<pictureResultsPath>/var/tmp/</pictureResultsPath>
 		<url>http://127.0.0.1:5026/wd/hub</url>
 		<driverTimeoutSeconds>30</driverTimeoutSeconds>
-		<defaultEmail>smoketester.webapp@wearezeta.com</defaultEmail>
+		<defaultEmail>smoketester.osx@wearezeta.com</defaultEmail>
 		<!-- chrome | firefox | ie | safari -->
 		<browser>chrome</browser>
 		<!-- mavericks | yosemite | win7 | win7_ie10 | win7_ie11 | <empty> -->
