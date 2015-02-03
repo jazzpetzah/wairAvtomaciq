@@ -100,6 +100,22 @@ public class CommonWebAppSteps {
 		commonSteps.UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName,
 				otherParticipantsNameAlises);
 	}
+	
+	/**
+	 * Sets self user to be the current user
+	 * 
+	 * @step. ^User (\\w+) is [Mm]e$
+	 * 
+	 * @param nameAlias
+	 *            user to be set as self user
+	 * 
+	 * @throws Exception
+	 */
+
+	@Given("^User (\\w+) is [Mm]e$")
+	public void UserXIsMe(String nameAlias) throws Exception {
+		commonSteps.UserXIsMe(nameAlias);
+	}
 
 	@After
 	public void tearDown() throws Exception {

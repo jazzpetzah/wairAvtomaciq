@@ -56,6 +56,10 @@ public final class WebAppLocators {
 		public static final Function<String, String> xpathGearMenuItemByName = (
 				name) -> String.format("%s//a[text()='%s']", xpathGearMenuRoot,
 				name);
+				
+		public static final String xpathSelfUserName = "//input-element[@class='self-profile-name']/span";
+		
+		public static final String classNameSelfUserMail = "self-profile-mail";
 	}
 
 	public static final class ConversationPage {
