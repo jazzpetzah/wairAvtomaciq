@@ -55,10 +55,9 @@ public class WebPage extends BasePage {
 			// Use undocumented grid property to match platforms
 			// https://groups.google.com/forum/#!topic/selenium-users/PRsEBcbpNlM
 			capabilities.setCapability("applicationName", platformName);
-		} else {
-			capabilities.setCapability("platformName",
-					CommonUtils.PLATFORM_NAME_WEB);
 		}
+		capabilities.setCapability("platformName",
+				CommonUtils.PLATFORM_NAME_WEB);
 
 		super.InitConnection(URL, capabilities);
 
