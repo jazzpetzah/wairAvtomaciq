@@ -297,7 +297,7 @@ public class DialogPage extends IOSPage{
 		for (int i = 0; i < 3; i ++) {
 			if (DriverUtils.isElementDisplayed(openConversationDetails)) {
 				openConversationDetails.click();
-				Thread.sleep(1000);
+				DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameExitGroupInfoPageButton), 5);
 			}
 			if (DriverUtils.isElementDisplayed(driver.findElementByName(IOSLocators.nameExitGroupInfoPageButton))) {
 				break;
