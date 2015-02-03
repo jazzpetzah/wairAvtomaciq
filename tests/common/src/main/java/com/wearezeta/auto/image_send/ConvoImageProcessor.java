@@ -33,7 +33,7 @@ public class ConvoImageProcessor extends ImageAssetProcessor {
 
 		// Old clients assume that previews should be always inline
 		ImageAssetData resultAssetData = new ImageAssetData(convId,
-				Base64.encodeBase64(previewImageData), mimeType);
+				previewImageData, mimeType);
 		final BufferedImage previewImage = ImageIO
 				.read(new ByteArrayInputStream(previewImageData));
 		resultAssetData.setWidth(previewImage.getWidth());
