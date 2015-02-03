@@ -17,4 +17,9 @@ public class WebCommonUtils extends CommonUtils {
 			throws IOException {
 		return getValueFromConfig(c, "browserName");
 	}
+
+	public static String getPlatformNameFromConfig(Class<?> c)
+			throws IOException {
+		return getValueFromConfig(c, "platformName");
+	}
 }

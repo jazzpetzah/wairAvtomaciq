@@ -39,7 +39,7 @@ Feature: Sign In
       | Login      | Login2     | Password      | Password2     | Name      | Name2     |
       | user1Email | user2Email | user1Password | user2Password | user1Name | user2Name |
 
-  @staging @id1120
+  @regression @id1120
   Scenario Outline: Verify I see wrong address or password message
     Given I am signed out from ZClient
     And I see Sign In screen

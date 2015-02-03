@@ -1,7 +1,5 @@
 package com.wearezeta.auto.web.steps;
 
-import java.io.IOException;
-
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
@@ -36,7 +34,7 @@ public class InvitationCodePageSteps {
 	 *             if login operation was unsuccessful
 	 */
 	@Given("I enter invitation code")
-	public void IEnterInvitationCode() throws IOException {
+	public void IEnterInvitationCode() throws Exception {
 		if (!skipInvitation) {
 			PagesCollection.invitationCodePage.inputCode(INVITATION_CODE);
 			PagesCollection.loginPage = PagesCollection.invitationCodePage

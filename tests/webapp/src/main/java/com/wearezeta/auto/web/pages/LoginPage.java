@@ -1,7 +1,5 @@
 package com.wearezeta.auto.web.pages;
 
-import java.io.IOException;
-
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -34,7 +32,7 @@ public class LoginPage extends WebPage {
 	private String url;
 	private String path;
 
-	public LoginPage(String url, String path) throws IOException {
+	public LoginPage(String url, String path) throws Exception {
 		super(url, path, true);
 
 		this.url = url;
@@ -52,7 +50,7 @@ public class LoginPage extends WebPage {
 		return page != null;
 	}
 
-	public ContactListPage confirmSignIn() throws IOException {
+	public ContactListPage confirmSignIn() throws Exception {
 		
 		loginButton.click();
 
