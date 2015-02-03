@@ -38,7 +38,7 @@ public class LoginPageSteps {
 	 */
 	@Given("^I Sign in using login (.*) and password (.*)$")
 	public void ISignInUsingLoginAndPassword(String login, String password)
-			throws IOException {
+			throws Exception {
 		try {
 			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
 		} catch (NoSuchUserException e) {
@@ -75,7 +75,7 @@ public class LoginPageSteps {
 	 * @throws IOException
 	 */
 	@When("^I press Sign In button$")
-	public void IPressSignInButton() throws IOException {
+	public void IPressSignInButton() throws Exception {
 		WebPage page = PagesCollection.loginPage.confirmSignIn();
 
 		Assert.assertNotNull(

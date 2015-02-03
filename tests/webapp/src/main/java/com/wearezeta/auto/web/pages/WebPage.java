@@ -18,14 +18,14 @@ public class WebPage extends BasePage {
 	protected static ZetaWebAppDriver driver;
 	protected static WebDriverWait wait;
 
-	public WebPage(String URL, String path) throws IOException {
+	public WebPage(String URL, String path) throws Exception {
 		this(URL, path, false);
 	}
 
 	public WebPage(String URL, String path, boolean doNavigate)
-			throws IOException {
+			throws Exception {
 
-		String browser = WebCommonUtils
+		final String browser = WebCommonUtils
 				.getWebAppBrowserNameFromConfig(WebPage.class);
 
 		DesiredCapabilities capabilities;
@@ -49,20 +49,28 @@ public class WebPage extends BasePage {
 							+ browser
 							+ ". Please choose one of the following: chrome | firefox | safari | ie");
 		}
-		capabilities.setCapability("platformName",
-				CommonUtils.PLATFORM_NAME_WEB);
+		final String platformName = WebCommonUtils
+				.getPlatformNameFromConfig(WebPage.class);
+		if (platformName.length() > 0) {
+			// Use undocumented grid property to match platforms
+			// https://groups.google.com/forum/#!topic/selenium-users/PRsEBcbpNlM
+			capabilities.setCapability("applicationName", platformName);
+		} else {
+			capabilities.setCapability("platformName",
+					CommonUtils.PLATFORM_NAME_WEB);
+		}
+
 		super.InitConnection(URL, capabilities);
 
 		driver = (ZetaWebAppDriver) drivers.get(CommonUtils.PLATFORM_NAME_WEB);
 		wait = waits.get(CommonUtils.PLATFORM_NAME_WEB);
 
 		if (doNavigate) {
-			// Workaround for Safari
-			// We should wait for cookies to be set after applying beta code
-			// or invitation code page will appear again
-			try {
+			if (browser.equals("safari")) {
+				// Workaround for Safari
+				// We should wait for cookies to be set after applying beta code
+				// or invitation code page will appear again
 				Thread.sleep(1000);
-			} catch (InterruptedException e) {
 			}
 			driver.navigate().to(path);
 		}

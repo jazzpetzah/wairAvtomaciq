@@ -1,6 +1,5 @@
 package com.wearezeta.auto.web.pages;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -26,7 +25,7 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idConversationInput)
 	private WebElement conversationInput;
 
-	public ConversationPage(String URL, String path) throws IOException {
+	public ConversationPage(String URL, String path) throws Exception {
 
 		super(URL, path);
 	}

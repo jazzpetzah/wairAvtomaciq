@@ -1,6 +1,5 @@
 package com.wearezeta.auto.web.pages;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -25,7 +24,7 @@ public class ContactListPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathSelfProfileEntry)
 	private WebElement selfName;
 
-	public ContactListPage(String URL, String path) throws IOException {
+	public ContactListPage(String URL, String path) throws Exception {
 		super(URL, path);
 	}
 

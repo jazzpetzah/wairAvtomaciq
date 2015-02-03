@@ -1,7 +1,5 @@
 package com.wearezeta.auto.web.pages;
 
-import java.io.IOException;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -14,7 +12,7 @@ public class SelfProfilePage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathGearButton)
 	private WebElement gearButton;
 
-	public SelfProfilePage(String URL, String path) throws IOException {
+	public SelfProfilePage(String URL, String path) throws Exception {
 		super(URL, path);
 	}
 
