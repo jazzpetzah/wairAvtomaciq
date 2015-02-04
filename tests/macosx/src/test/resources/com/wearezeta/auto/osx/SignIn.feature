@@ -59,7 +59,7 @@ Feature: Sign In
       | Login | Password | Login2 | Password2 |
       | aaa   | aaa      | aaa2   | aaa2      |
 
-  @staging @id1116
+  @regression @id1116
   Scenario Outline: Verify Sign In progress behaviour while there are probelms with internet connectivity
     Given There is 1 user where <Name> is me
     Given I am signed out from ZClient

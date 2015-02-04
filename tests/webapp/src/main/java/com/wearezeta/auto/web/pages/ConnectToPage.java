@@ -24,6 +24,11 @@ public class ConnectToPage extends WebPage {
 				user);
 		WebElement acceptButton = driver.findElement(By.xpath(xpath));
 		DriverUtils.waitUntilElementClickable(driver, acceptButton);
+		// Waiting till self-profile page elements will not be clickable
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+		}
 		acceptButton.click();
 	}
 }
