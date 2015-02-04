@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.pages;
 import java.io.IOException;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 
@@ -44,8 +45,12 @@ public class CameraRollPage extends IOSPage{
 	}
 	
 	public void selectImageFromLibrary() throws Throwable {
-		clickFirstLibraryFolder();
-		acceptAlert();
+		try {
+			clickFirstLibraryFolder();
+		} catch (NoSuchElementException ex) {
+			
+		}
+
 		clickFirstImage();
 	}
 	
