@@ -50,8 +50,23 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idUserProfileConfirmationMenu")
 	private WebElement confirmMenu;
 	
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idRightActionButton")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idBlockButton")
 	private WebElement blockButton; 
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idRightActionButton")
+	private WebElement rightConversationButton; 
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idRenameButton")
+	private WebElement renameButton;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idArchiveButton")
+	private WebElement archiveButton;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idLeaveButton")
+	private WebElement leaveButton;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idSilenceButton")
+	private WebElement silenceButton;
 	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idUnblockBtn")
 	private WebElement unblockButton; 
@@ -84,10 +99,15 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		this.path = path;
 	}
 
-	public ContactListPage pressLeaveConversationButton() throws Exception {
+	public void pressRightConversationButton(){
 		refreshUITree();//TODO workaround
-		wait.until(ExpectedConditions.elementToBeClickable(blockButton));
-		blockButton.click();
+		wait.until(ExpectedConditions.elementToBeClickable(rightConversationButton));
+		rightConversationButton.click();
+	}
+	
+	public ContactListPage pressLeaveButton() throws Exception{
+		refreshUITree();
+		leaveButton.click();
 		return new ContactListPage(url, path);
 	}
 	

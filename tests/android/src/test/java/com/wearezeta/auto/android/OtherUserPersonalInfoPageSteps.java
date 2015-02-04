@@ -125,10 +125,16 @@ public class OtherUserPersonalInfoPageSteps {
 				.swipeRight(500);
 	}
 
-	@When("^I press Leave conversation button$")
-	public void WhenIPressLeaveConversationButton() throws Throwable {
+	@When("^I press Right conversation button$")
+	public void WhenIPressRightConversationButton() throws Throwable {
 		PagesCollection.otherUserPersonalInfoPage
-		.pressLeaveConversationButton();
+		.pressRightConversationButton();
+	}
+	
+	@When("^I press Leave conversartion button$")
+	public void WhenIPressLeaveConversationButton() throws Throwable {
+		PagesCollection.contactListPage = PagesCollection.otherUserPersonalInfoPage
+		.pressLeaveButton();
 	}
 
 	@When("^I confirm leaving$")

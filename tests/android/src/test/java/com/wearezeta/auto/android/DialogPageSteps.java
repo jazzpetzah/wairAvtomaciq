@@ -26,7 +26,9 @@ public class DialogPageSteps {
 
 	@When("^I see dialog page$")
 	public void WhenISeeDialogPage() throws Exception {
-		PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
+		if(PagesCollection.dialogPage == null){
+			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
+		}
 		PagesCollection.dialogPage.waitForCursorInputVisible();
 	}
 

@@ -39,10 +39,6 @@ public final class AndroidLocators {
 		
 		public static final String xpathWelcomeSlogan42 = "//android.widget.TextView[contains(@text,'welcome to Wire')]" ;
 		
-		//public static final String idLoginField = LOCATORS_PACKAGE + ":id/ifv_signin_username_or_email";
-		
-		//public static final String idPasswordField = LOCATORS_PACKAGE + ":id/ifv_signin_password";
-		
 		public static final String idLoginProgressBar = LOCATORS_PACKAGE + ":id/pv__sign_in__preview";
 		
 		public static final String idWelcomeButtonsContainer = LOCATORS_PACKAGE + ":id/cm__choose";
@@ -152,7 +148,7 @@ public final class AndroidLocators {
 		
 		public static final String classEditText = "android.widget.EditText";
 		
-		public static final String classNameTextView = "//android.support.v4.view.ViewPager[1]/android.widget.LinearLayout[1]/android.widget.TextView";
+		public static final String classNameTextView = "android.widget.TextView";
 		
 		public static final String xpathImagesFrameLayout = "//android.widget.GridView[@resource-id='com.android.documentsui:id/grid']/android.widget.FrameLayout";
 		
@@ -285,6 +281,16 @@ public final class AndroidLocators {
 		
 		public static final String idUnblockBtn = LOCATORS_PACKAGE + ":id/zb__connect_request__unblock_button";
 		
+		public static final String idRenameButton = LOCATORS_PACKAGE + ":id/ttv__conversation_settings__rename";
+		
+		public static final String idArchiveButton = LOCATORS_PACKAGE + ":id/ttv__conversation_settings__archive";
+		
+		public static final String idSilenceButton = LOCATORS_PACKAGE + ":id/ttv__conversation_settings__silence";
+		
+		public static final String idLeaveButton = LOCATORS_PACKAGE + ":id/ttv__conversation_settings__leave";
+		
+		public static final String idBlockButton = LOCATORS_PACKAGE + ":id/ttv__conversation_settings__block";
+		
 		public static final String xpathOtherUserPersonalInfoSingleName42 = "//android.widget.LinearLayout[child::android.widget.TextView]/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.TextView";
 		
 		public static final String xpathLeftActionButton42 = "//android.widget.RelativeLayout/android.widget.RelativeLayout[following-sibling::android.widget.TextView]/android.widget.TextView";
@@ -299,6 +305,16 @@ public final class AndroidLocators {
 		
 		public static final String xpathUnblockBtn42 = "//android.widget.FrameLayout[NOT_IMPLEMENTED='']";
 		
+		public static final String xpathRenameButton42 = "android.widget.TextView[@text='RENAME']";
+		
+		public static final String xpathArchiveButton42 = "android.widget.TextView[@text='ARCHIVE']";
+		
+		public static final String xpathSilenceButton42 = "android.widget.TextView[@text='SILENCE']";
+		
+		public static final String xpathLeaveButton42 = "android.widget.TextView[@text='LEAVE']";
+		
+		public static final String xpathBlockButton42 = "android.widget.TextView[@text='BLOCK']";
+		
 		public static By getByForOtherUserPersonalInfoUnlockButton() {
 			if (CommonUtils.getAndroidApiLvl(AndroidLocators.class) < 43) {
 				return By
@@ -311,6 +327,8 @@ public final class AndroidLocators {
 	}
 	
 	public static final class PeoplePickerPage {
+		
+		public static final String xpathTopConversationContact= "//android.widget.TextView[@text='%s']";
 		
 		public static final String idParticipantsClose = LOCATORS_PACKAGE + ":id/gtv__participants__close";
 		
