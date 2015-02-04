@@ -40,7 +40,7 @@ class ExecuteJob(CliHandlerBase):
         minutes, seconds = divmod(remainder, 60)
         return '{0:02d}:{1:02d}:{2:02d}'.format(hours, minutes, seconds)
 
-    def __call__(self):
+    def _invoke(self):
         parser = self._get_parser()
         args = parser.parse_args()
         job = self._jenkins.get_job(args.name)
