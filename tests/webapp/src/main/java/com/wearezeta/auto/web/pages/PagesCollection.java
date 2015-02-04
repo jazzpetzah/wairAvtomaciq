@@ -15,4 +15,6 @@ public class PagesCollection extends AbstractPagesCollection {
 	public static SelfProfilePage selfProfilePage = null;
 	
 	public static SettingsPage settingsPage = null;
+	
+	public static ConnectToPage connectToPage = null;
 }
