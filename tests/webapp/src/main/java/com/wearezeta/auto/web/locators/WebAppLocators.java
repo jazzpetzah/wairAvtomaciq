@@ -76,4 +76,16 @@ public final class WebAppLocators {
 
 		public static final String idConversationInput = "conversation-input-text";
 	}
+	
+	public static final class ConnectToPage {
+	
+		public static final String xpathFormatAcceptRequestButton = "//div[@class='connect-name' and span[text()='%s']]/following-sibling::div/div[@id='accept']";
+		
+		public static final String xpathFormatIgnoreReqestButton = "//div[@class='connect-name' and span[text()='%s']]/following-sibling::div/div[@id='ignore']";
+	}
+	
+	public static final class Common {
+		
+		public static final String CONTACT_LIST_ONE_PERSON_WAITING = "One person waiting";
+	}
 }

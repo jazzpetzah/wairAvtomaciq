@@ -100,7 +100,7 @@ public class CommonWebAppSteps {
 		commonSteps.UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName,
 				otherParticipantsNameAlises);
 	}
-	
+
 	/**
 	 * Sets self user to be the current user
 	 * 
@@ -111,10 +111,28 @@ public class CommonWebAppSteps {
 	 * 
 	 * @throws Exception
 	 */
-
 	@Given("^User (\\w+) is [Mm]e$")
 	public void UserXIsMe(String nameAlias) throws Exception {
 		commonSteps.UserXIsMe(nameAlias);
+	}
+
+	/**
+	 * Sends connection request by one user to another
+	 * 
+	 * @step. ^(.*) has sent connection request to (.*)$
+	 * 
+	 * @param userFromNameAlias
+	 *            user that sends connection request
+	 * @param usersToNameAliases
+	 *            user which receive connection request
+	 *
+	 * @throws Exception
+	 */
+	@Given("^(.*) has sent connection request to (.*)$")
+	public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
+			String usersToNameAliases) throws Throwable {
+		commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
+				usersToNameAliases);
 	}
 
 	@After
