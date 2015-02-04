@@ -23,8 +23,14 @@ public final class WebAppLocators {
 	}
 
 	public static final class ContactListPage {
+		public static final String xpathArchive = "//div[contains(@class, 'conversation-list-item-archive')]//div[contains(@class, 'center-column') and text()='Archive']";
+		
 		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
-
+		
+		public static final String classArchiveButton = "zi-archive";
+		
+		public static final String classActionsButton = "zi-actions";
+		
 		public static final String xpathSelfProfileEntry = xpathParentContactListItem
 				+ "//div[contains(@class, 'center-column')]";
 
@@ -37,11 +43,11 @@ public final class WebAppLocators {
 
 		public static final Function<String, String> xpathContactListEntryByName = (
 				name) -> String
-				.format("%s/div[2]//div[contains(@class, 'center-column') and text()='%s']",
+				.format("%s/div[2]//li[div[contains(@class, 'center-column') and text()='%s']]",
 						xpathParentContactListItem, name);
 
 		public static final String xpathContactListEntries = xpathParentContactListItem
-				+ "/div[2]//li";
+				+ "/div[2]//li/div[contains(@class, 'center-column')]";
 	}
 
 	public static final class SettingsPage {
@@ -56,6 +62,10 @@ public final class WebAppLocators {
 		public static final Function<String, String> xpathGearMenuItemByName = (
 				name) -> String.format("%s//a[text()='%s']", xpathGearMenuRoot,
 				name);
+				
+		public static final String xpathSelfUserName = "//input-element[@class='self-profile-name']/span";
+		
+		public static final String classNameSelfUserMail = "self-profile-mail";
 	}
 
 	public static final class ConversationPage {
@@ -65,5 +75,17 @@ public final class WebAppLocators {
 		public static final String xpathFormatSpecificMessageEntry = "//div[@class='message']/div[@class='text' and text()='%s']";
 
 		public static final String idConversationInput = "conversation-input-text";
+	}
+	
+	public static final class ConnectToPage {
+	
+		public static final String xpathFormatAcceptRequestButton = "//div[@class='connect-name' and span[text()='%s']]/following-sibling::div/div[@id='accept']";
+		
+		public static final String xpathFormatIgnoreReqestButton = "//div[@class='connect-name' and span[text()='%s']]/following-sibling::div/div[@id='ignore']";
+	}
+	
+	public static final class Common {
+		
+		public static final String CONTACT_LIST_ONE_PERSON_WAITING = "One person waiting";
 	}
 }

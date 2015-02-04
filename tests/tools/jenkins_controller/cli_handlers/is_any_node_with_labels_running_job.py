@@ -25,7 +25,7 @@ class IsAnyNodeWithLabelsRunningJob(CliHandlerBase):
         normalized_labels = map(lambda x: x.strip(), labels_list)
         return set(normalized_labels)
 
-    def __call__(self):
+    def _invoke(self):
         parser = self._get_parser()
         args = parser.parse_args()
         job = self._jenkins.get_job(args.name)

@@ -6,6 +6,7 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
 import cucumber.api.java.en.Given;
@@ -79,11 +80,86 @@ public class ContactListPageSteps {
 	/**
 	 * Clicks the self name item in the convo list to open self profile page
 	 * 
+	 * @step. ^I open self profile$
+	 * 
 	 * @throws Exception
 	 */
 	@When("^I open self profile$")
 	public void IOpenSelfProfile() throws Exception {
 		PagesCollection.selfProfilePage = PagesCollection.contactListPage
 				.openSelfProfile();
+	}
+
+	/**
+	 * Archive conversation by choosing it from Contact List
+	 * 
+	 * @step. ^I archive conversation (.*)$
+	 * 
+	 * @param contact
+	 *            conversation name string
+	 * 
+	 */
+	@When("^I archive conversation (.*)$")
+	public void IClickArchiveButton(String contact) {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		PagesCollection.contactListPage.clickActionsButtonForContact(contact);
+		PagesCollection.contactListPage
+				.clickArchiveConversationForContact(contact);
+	}
+
+	/**
+	 * Open archived conversations
+	 * 
+	 * @step. ^I open archive$
+	 * 
+	 */
+	@When("^I open archive$")
+	public void IOpenArchive() {
+		PagesCollection.contactListPage.openArchive();
+	}
+
+	/**
+	 * Checks that we cannot see conversation with specified name in Contact
+	 * List
+	 * 
+	 * @step. ^I do not see Contact list with name (.*)$
+	 * 
+	 * @param name
+	 *            conversation name string
+	 * 
+	 * @throws AssertionError
+	 *             if conversation name appear in Contact List
+	 */
+	@Given("^I do not see Contact list with name (.*)$")
+	public void IDoNotSeeContactListWithName(String name) throws Exception {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		Assert.assertFalse(PagesCollection.contactListPage
+				.isContactWithNameExists(name));
+	}
+
+	/**
+	 * Checks that connection request is displayed in Conversation List
+	 * 
+	 * @step. ^I see connection request$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see connection request$")
+	public void ISeeConnectInvitation() throws Exception {
+		GivenISeeContactListWithName(WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING);
+	}
+
+	/**
+	 * Opens list of connection requests from Contact list
+	 * 
+	 * @step. ^I open connection requests list$
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I open connection requests list$")
+	public void GivenIOpenConnectionRequestsList() throws Exception {
+		PagesCollection.connectToPage = PagesCollection.contactListPage
+				.openConnectionRequestsList(WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING);
+
 	}
 }

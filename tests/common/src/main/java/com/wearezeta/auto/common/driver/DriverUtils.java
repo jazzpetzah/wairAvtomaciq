@@ -118,7 +118,7 @@ public class DriverUtils {
 		return bool;
 	}
 	
-	public static boolean waitUntilElementClickable(AppiumDriver driver,
+	public static boolean waitUntilElementClickable(RemoteWebDriver driver,
 			final WebElement element) {
 
 		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);

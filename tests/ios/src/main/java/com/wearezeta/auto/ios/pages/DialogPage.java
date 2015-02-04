@@ -110,6 +110,9 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathYouAddedMessageCellFormat)
 	private List<WebElement> youAddedCell;
 	
+	@FindBy(how = How.XPATH, using = IOSLocators.nameExitGroupInfoPageButton)
+	protected WebElement closeInfoPage;
+	
 	
 	private String url;
 	private String path;
@@ -299,7 +302,7 @@ public class DialogPage extends IOSPage{
 				openConversationDetails.click();
 				DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameExitGroupInfoPageButton), 5);
 			}
-			if (DriverUtils.isElementDisplayed(driver.findElementByName(IOSLocators.nameExitGroupInfoPageButton))) {
+			if (DriverUtils.isElementDisplayed(closeInfoPage)) {
 				break;
 			}
 		}
