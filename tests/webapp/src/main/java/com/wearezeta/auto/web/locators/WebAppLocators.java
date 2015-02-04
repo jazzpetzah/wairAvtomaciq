@@ -47,7 +47,7 @@ public final class WebAppLocators {
 						xpathParentContactListItem, name);
 
 		public static final String xpathContactListEntries = xpathParentContactListItem
-				+ "/div[2]//li";
+				+ "/div[2]//li/div[contains(@class, 'center-column')]";
 	}
 
 	public static final class SettingsPage {

@@ -65,12 +65,12 @@ public class WebPage extends BasePage {
 		wait = waits.get(CommonUtils.PLATFORM_NAME_WEB);
 
 		if (doNavigate) {
-			if (browser.equals("safari")) {
-				// Workaround for Safari
-				// We should wait for cookies to be set after applying beta code
-				// or invitation code page will appear again
-				Thread.sleep(1000);
-			}
+			// Workaround for Safari
+			// We should wait for cookies to be set after applying beta code
+			// or invitation code page will appear again
+			// Also for Chrome
+			Thread.sleep(1000);
+
 			driver.navigate().to(path);
 		}
 	}
