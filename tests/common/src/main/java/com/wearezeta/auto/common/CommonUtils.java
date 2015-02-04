@@ -96,6 +96,17 @@ public class CommonUtils {
 		return Integer.parseInt(androidVersion);
 	}
 	
+	public static Boolean getAndroidLogs(Class<?> c) {
+		Boolean androidlogs = false;
+		try {
+			androidlogs = Boolean.valueOf(getValueFromConfig(c, "androidLogs"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return androidlogs;
+	}
+	
 	public static String getBackendType(Class<?> c) throws IOException {
 		return getValueFromCommonConfig(c, "backendType");
 	}

@@ -14,3 +14,4 @@ androidClientInfoPath=${androidClientInfoPath}
 androidAppiumLogPath=${androidAppiumLogPath}
 defaultEmail=${defaultEmail}
 androidVersion=${androidVersion}
+androidLogs=${androidLogs}
