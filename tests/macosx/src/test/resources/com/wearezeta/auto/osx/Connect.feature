@@ -81,7 +81,7 @@ Feature: Connect to user
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id617
+  @regression @id617
   Scenario Outline: Verify 1:1 conversation is not created on the second end after you ignore connection request
     Given There are 2 users where <Name> is me
     Given <Contact> has sent connection request to <Name>

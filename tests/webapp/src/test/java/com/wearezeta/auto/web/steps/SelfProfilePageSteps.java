@@ -3,6 +3,9 @@ package com.wearezeta.auto.web.steps;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.SettingsPage;
 
@@ -10,6 +13,8 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 
 public class SelfProfilePageSteps {
+
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	public SelfProfilePageSteps() {
 	}
@@ -49,5 +54,43 @@ public class SelfProfilePageSteps {
 				CommonUtils
 						.getWebAppApplicationPathFromConfig(SelfProfilePageSteps.class));
 		Assert.assertTrue(PagesCollection.settingsPage.isVisible());
+	}
+
+	/**
+	 * Verifies that correct user name is shown on self profile page
+	 * 
+	 * @param name
+	 *            name of the user
+	 * 
+	 * @throws NoSuchUserException
+	 */
+	@And("I see user name on self profile page (.*)")
+	public void ISeeUserNameOnSelfProfilePage(String name)
+			throws NoSuchUserException {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		String actualName = PagesCollection.selfProfilePage.getUserName();
+		Assert.assertEquals(name, actualName);
+	}
+
+	/**
+	 * Verifies that correct user email is shown on self profile page
+	 * 
+	 * @param email
+	 *            email of the user
+	 * 
+	 * @throws NoSuchUserException
+	 */
+	@And("I see user email on self profile page (.*)")
+	public void ISeeUserEmailOnSelfProfilePage(String email)
+			throws NoSuchUserException {
+		try {
+			email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
+		} catch (NoSuchUserException e) {
+
+		}
+
+		String actualEmail = PagesCollection.selfProfilePage.getUserMail();
+		Assert.assertEquals(email, actualEmail);
+		;
 	}
 }

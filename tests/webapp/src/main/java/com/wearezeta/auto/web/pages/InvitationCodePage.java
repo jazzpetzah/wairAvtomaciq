@@ -1,7 +1,5 @@
 package com.wearezeta.auto.web.pages;
 
-import java.io.IOException;
-
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -27,7 +25,7 @@ public class InvitationCodePage extends WebPage {
 	private String url;
 	private String path;
 
-	public InvitationCodePage(String url, String path) throws IOException {
+	public InvitationCodePage(String url, String path) throws Exception {
 		super(url, path, true);
 
 		this.url = url;
@@ -43,7 +41,7 @@ public class InvitationCodePage extends WebPage {
 		codeInput.sendKeys(code);
 	}
 
-	public LoginPage proceed() throws IOException {
+	public LoginPage proceed() throws Exception {
 		proceedButton.click();
 		return new LoginPage(url, path);
 	}

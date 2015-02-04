@@ -35,48 +35,64 @@ public abstract class BasePage {
 
 	protected static HashMap<String, RemoteWebDriver> drivers = new HashMap<String, RemoteWebDriver>();
 	protected static HashMap<String, WebDriverWait> waits = new HashMap<String, WebDriverWait>();
-	private static final Logger log = ZetaLogger.getLog(BasePage.class.getSimpleName());
-	
-	private String pagePlatform;
-	
-	protected synchronized void InitConnection(String URL, DesiredCapabilities capabilities)
-			throws IOException {
+	private static final Logger log = ZetaLogger.getLog(BasePage.class
+			.getSimpleName());
 
-		String platform = (String) capabilities.getCapability("platformName");
-		if (null == drivers || drivers.isEmpty() || drivers.get(platform) == null) {
-			if(platform.equals(CommonUtils.PLATFORM_NAME_ANDROID)){
-				drivers.put(platform, new ZetaAndroidDriver(new URL(URL), capabilities));
-			}
-			else if(platform.equals(CommonUtils.PLATFORM_NAME_IOS)){
-				drivers.put(platform, new ZetaIOSDriver (new URL(URL), capabilities));
-			}
-			else if(platform.equals(CommonUtils.PLATFORM_NAME_OSX)){
-				drivers.put(platform, new ZetaOSXDriver (new URL(URL), capabilities));
-			}
-			else if(platform.equals(CommonUtils.PLATFORM_NAME_WEB)){
-				drivers.put(platform, new ZetaWebAppDriver (new URL(URL), capabilities));
+	private String pagePlatform;
+
+	protected synchronized void InitConnection(String URL,
+			DesiredCapabilities capabilities) throws IOException {
+
+		final String platform = (String) capabilities
+				.getCapability("platformName");
+		if (null == drivers || drivers.isEmpty()
+				|| drivers.get(platform) == null) {
+			if (platform.equals(CommonUtils.PLATFORM_NAME_ANDROID)) {
+				drivers.put(platform, new ZetaAndroidDriver(new URL(URL),
+						capabilities));
+			} else if (platform.equals(CommonUtils.PLATFORM_NAME_IOS)) {
+				drivers.put(platform, new ZetaIOSDriver(new URL(URL),
+						capabilities));
+			} else if (platform.equals(CommonUtils.PLATFORM_NAME_OSX)) {
+				drivers.put(platform, new ZetaOSXDriver(new URL(URL),
+						capabilities));
+			} else if (platform.equals(CommonUtils.PLATFORM_NAME_WEB)) {
+				capabilities.setCapability("platformName", "ANY");
+				drivers.put(platform, new ZetaWebAppDriver(new URL(URL),
+						capabilities));
+			} else {
+				throw new RuntimeException(String.format(
+						"Platform name '%s' is unknown", platform));
 			}
 			try {
-				drivers.get(platform).manage()
+				drivers.get(platform)
+						.manage()
 						.timeouts()
 						.implicitlyWait(
 								Integer.parseInt(CommonUtils
 										.getDriverTimeoutFromConfig(getClass())),
 								TimeUnit.SECONDS);
 
-				waits.put(platform, new WebDriverWait(drivers.get(platform), Integer.parseInt(CommonUtils
-						.getDriverTimeoutFromConfig(getClass()))));
+				waits.put(
+						platform,
+						new WebDriverWait(
+								drivers.get(platform),
+								Integer.parseInt(CommonUtils
+										.getDriverTimeoutFromConfig(getClass()))));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		
+
 		pagePlatform = platform;
-				
-		ZetaElementLocatorFactory zetaLocatorFactory = new ZetaElementLocatorFactory(drivers.get(platform),Long.parseLong(CommonUtils
-				.getDriverTimeoutFromConfig(getClass())),AppiumFieldDecorator.DEFAULT_TIMEUNIT);
-		FieldDecorator zetaFieldDecorator = new ZetaFieldDecorator(zetaLocatorFactory);
+
+		ZetaElementLocatorFactory zetaLocatorFactory = new ZetaElementLocatorFactory(
+				drivers.get(platform), Long.parseLong(CommonUtils
+						.getDriverTimeoutFromConfig(getClass())),
+				AppiumFieldDecorator.DEFAULT_TIMEUNIT);
+		FieldDecorator zetaFieldDecorator = new ZetaFieldDecorator(
+				zetaLocatorFactory);
 		PageFactory.initElements(zetaFieldDecorator, this);
 	}
 
@@ -88,7 +104,8 @@ public abstract class BasePage {
 	}
 
 	public BufferedImage takeScreenshot() throws IOException {
-		return DriverUtils.takeScreenshot((ZetaDriver) drivers.get(pagePlatform));
+		return DriverUtils.takeScreenshot((ZetaDriver) drivers
+				.get(pagePlatform));
 	}
 
 	public BufferedImage getElementScreenshot(WebElement element)
@@ -102,13 +119,13 @@ public abstract class BasePage {
 		int h = elementSize.height;
 		return screenshot.getSubimage(x, y, w, h);
 	}
-	
-	public BufferedImage getScreenshotByCoordinates(int x, int y, int w, int h) throws IOException{
+
+	public BufferedImage getScreenshotByCoordinates(int x, int y, int w, int h)
+			throws IOException {
 		BufferedImage screenshot = takeScreenshot();
 		try {
 			screenshot = screenshot.getSubimage(x, y, w, h);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			log.debug("Screenshot object is out of borders");
 		}
 		return screenshot;
@@ -118,7 +135,7 @@ public abstract class BasePage {
 		try {
 			drivers.get(pagePlatform).getPageSource();
 		} catch (WebDriverException ex) {
-			
+
 		}
 	}
 
@@ -130,7 +147,8 @@ public abstract class BasePage {
 
 	public abstract BasePage swipeDown(int time) throws IOException, Exception;
 
-	protected static void clearPagesCollection(Class<? extends AbstractPagesCollection> collection,
+	protected static void clearPagesCollection(
+			Class<? extends AbstractPagesCollection> collection,
 			Class<? extends BasePage> baseClass)
 			throws IllegalArgumentException, IllegalAccessException {
 		for (Field f : collection.getFields()) {
@@ -144,7 +162,7 @@ public abstract class BasePage {
 	public String getPageSource() {
 		return drivers.get(pagePlatform).getPageSource();
 	}
-	
+
 	public static RemoteWebDriver getDriver(String id) {
 		return drivers.get(id);
 	}
