@@ -73,6 +73,10 @@ public abstract class Testcase {
 		}
 	}
 
+	public static Set<String> splitIds(String id) {
+		return new LinkedHashSet<String>(Arrays.asList(id.split("\\s+")));
+	}
+
 	public static Set<String> extractTagsFromString(String in) {
 		in = in.trim();
 		if (in.length() > 0) {

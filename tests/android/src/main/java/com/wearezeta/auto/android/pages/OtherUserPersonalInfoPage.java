@@ -15,6 +15,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
+import com.wearezeta.auto.common.locators.ZetaHow;
 
 public class OtherUserPersonalInfoPage extends AndroidPage {
 
@@ -31,28 +32,43 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.OtherUserPersonalInfoPage.classNameGridView)
 	private WebElement groupChatUsersGrid;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsHeader")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsHeader")
 	private WebElement groupChatName;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsHeader")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsHeader")
 	private List<WebElement> otherUserName;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsSubHeader")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsSubHeader")
 	private List<WebElement> otherUserMail;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idOtherUserPersonalInfoSingleName")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idOtherUserPersonalInfoSingleName")
 	private List<WebElement> otherUserSingleName;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idOtherUserPersonalInfoSingleMail")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idOtherUserPersonalInfoSingleMail")
 	private List<WebElement> otherUserSingleMail;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idUserProfileConfirmationMenu")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idUserProfileConfirmationMenu")
 	private WebElement confirmMenu;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idRightActionButton")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idBlockButton")
 	private WebElement blockButton; 
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idUnblockBtn")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idRightActionButton")
+	private WebElement rightConversationButton; 
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idRenameButton")
+	private WebElement renameButton;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idArchiveButton")
+	private WebElement archiveButton;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idLeaveButton")
+	private WebElement leaveButton;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idSilenceButton")
+	private WebElement silenceButton;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idUnblockBtn")
 	private WebElement unblockButton; 
 	
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameFrameLayout)
@@ -61,16 +77,16 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameLoginPage)
 	private WebElement backGround;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idConfirmBtn")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idConfirmBtn")
 	private WebElement confirmBtn;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idLeftActionButton")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idLeftActionButton")
 	private WebElement addContactBtn;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsSubHeader")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsSubHeader")
 	private WebElement participantsSubHeader;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectToHeader")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectToHeader")
 	private List<WebElement> connectToHeader;
 	
 	private String url;
@@ -83,10 +99,15 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		this.path = path;
 	}
 
-	public ContactListPage pressLeaveConversationButton() throws Exception {
+	public void pressRightConversationButton(){
 		refreshUITree();//TODO workaround
-		wait.until(ExpectedConditions.elementToBeClickable(blockButton));
-		blockButton.click();
+		wait.until(ExpectedConditions.elementToBeClickable(rightConversationButton));
+		rightConversationButton.click();
+	}
+	
+	public ContactListPage pressLeaveButton() throws Exception{
+		refreshUITree();
+		leaveButton.click();
 		return new ContactListPage(url, path);
 	}
 	
@@ -186,21 +207,12 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 	
 	public boolean isContactExists(String contact) {
-		boolean flag = false;
+		boolean flag = true;
 		refreshUITree();
-		
-		for(WebElement user : linearLayout)
-		{
-			List<WebElement> elements = user.findElements(By.className(AndroidLocators.CommonLocators.classNameTextView));
-			for(WebElement element : elements){
-					if(element.getText() != null && element.getText().equals((contact.toUpperCase()))){
-						flag = true;
-						break;
-					}
-			}
-			if(flag){
-				break;
-			}
+		wait.until(ExpectedConditions.visibilityOf(groupChatName));
+		List<WebElement> cn = driver.findElements(By.xpath(String.format(AndroidLocators.ContactListPage.xpathContacts, contact.toUpperCase())));
+		if(cn.isEmpty()){
+			flag = false;
 		}
 		return flag;
 	}	
@@ -239,6 +251,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		wait.until(ExpectedConditions.visibilityOf(groupChatName));
 		WebElement cn = driver.findElement(By.xpath(String.format(AndroidLocators.ContactListPage.xpathContacts, contact.toUpperCase())));
 		cn.click();
+		refreshUITree();
 		if(connectToHeader.size()>0){
 			return new ConnectToPage(url, path);
 		}

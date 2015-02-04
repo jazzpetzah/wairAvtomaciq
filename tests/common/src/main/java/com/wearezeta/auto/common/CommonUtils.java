@@ -1,5 +1,7 @@
 package com.wearezeta.auto.common;
 
+import io.appium.java_client.AppiumDriver;
+
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,7 +14,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaDriver;
@@ -34,9 +35,13 @@ public class CommonUtils {
 	public static final String PLATFORM_NAME_OSX = "Mac";
 	public static final String PLATFORM_NAME_ANDROID = "Android";
 	public static final String PLATFORM_NAME_IOS = "iOS";
+	public static final String PLATFORM_NAME_WEB = "WebApp";
+	
 	private static final Logger log = ZetaLogger.getLog(CommonUtils.class
 			.getSimpleName());
 
+	private static final String TCPBLOCK_PREFIX_PATH = "/usr/local/bin/";
+	
 	public static String getOsName() {
 		return System.getProperty("os.name");
 	}
@@ -80,14 +85,34 @@ public class CommonUtils {
 		stream.close();
 	}
 
-	public static int getAndroidApiLvl(Class<?> c) throws IOException {
+	public static int getAndroidApiLvl(Class<?> c) {
 		String androidVersion = "44";
-		androidVersion = getValueFromConfig(c, "androidVersion");
+		try {
+			androidVersion = getValueFromConfig(c, "androidVersion");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return Integer.parseInt(androidVersion);
+	}
+	
+	public static Boolean getAndroidLogs(Class<?> c) {
+		Boolean androidlogs = false;
+		try {
+			androidlogs = Boolean.valueOf(getValueFromConfig(c, "androidLogs"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return androidlogs;
 	}
 	
 	public static String getBackendType(Class<?> c) throws IOException {
 		return getValueFromCommonConfig(c, "backendType");
+	}
+	
+	public static String getDeviceName(Class<?> c) throws IOException {
+		return getValueFromConfig(c, "deviceName");
 	}
 
 	public static String getImagePath(Class<?> c) throws IOException {
@@ -200,6 +225,11 @@ public class CommonUtils {
 		return getValueFromConfig(c, "iosAppiumUrl");
 	}
 
+	public static String getWebAppAppiumUrlFromConfig(Class<?> c)
+			throws IOException {
+		return getValueFromConfig(c, "webappAppiumUrl");
+	}
+	
 	public static Boolean getIsSimulatorFromConfig(Class<?> c)
 			throws IOException {
 		return (getValueFromConfig(c, "isSimulator").equals("true"));
@@ -213,7 +243,12 @@ public class CommonUtils {
 			throws IOException {
 		return getValueFromConfig(c, "osxApplicationPath");
 	}
-
+	
+	public static String getWebAppApplicationPathFromConfig(Class<?> c)
+			throws IOException {
+		return getValueFromConfig(c, "webappApplicationPath");
+	}
+	
 	public static String getAndroidApplicationPathFromConfig(Class<?> c)
 			throws IOException {
 		return getValueFromConfig(c, "androidApplicationPath");
@@ -265,8 +300,13 @@ public class CommonUtils {
 		return getValueFromConfig(c, "deviceName");
 	}
 	
+	public static String getJenkinsSuperUserPassword(Class<?> c)
+			throws IOException {
+		return getValueFromCommonConfig(c, "jenkinsSuPassword");
+	}
+	
 	public static BufferedImage getElementScreenshot(WebElement element,
-			RemoteWebDriver driver) throws IOException {
+			AppiumDriver driver) throws IOException {
 		BufferedImage screenshot = DriverUtils
 				.takeScreenshot((ZetaDriver) driver);
 		org.openqa.selenium.Point elementLocation = element.getLocation();
@@ -282,5 +322,35 @@ public class CommonUtils {
 		firstParts = login.split("\\+");
 		secondParts = firstParts[1].split("@");
 		return secondParts[0];
+	}
+	
+	public static void blockTcpForAppName(String appName) throws IOException {
+		final String blockTcpForAppCmd = "echo "
+				+ getJenkinsSuperUserPassword(CommonUtils.class) + "| sudo -S "
+				+ TCPBLOCK_PREFIX_PATH + "tcpblock -a " + appName;
+		try {
+			executeOsXCommand(new String[] { "/bin/bash", "-c",
+					blockTcpForAppCmd });
+			log.debug(executeOsXCommandWithOutput(new String[] { "/bin/bash",
+					"-c", TCPBLOCK_PREFIX_PATH + "tcpblock -g" }));
+		} catch (Exception e) {
+			log.error("TCP connections for " + appName
+					+ " were not blocked. Make sure tcpblock is installed.");
+		}
+	}
+
+	public static void enableTcpForAppName(String appName) throws IOException {
+		final String enableTcpForAppCmd = "echo "
+				+ getJenkinsSuperUserPassword(CommonUtils.class) + "| sudo -S "
+				+ TCPBLOCK_PREFIX_PATH + "tcpblock -r " + appName;
+		try {
+			executeOsXCommand(new String[] { "/bin/bash", "-c",
+					enableTcpForAppCmd });
+			log.debug(executeOsXCommandWithOutput(new String[] { "/bin/bash",
+					"-c", TCPBLOCK_PREFIX_PATH + "tcpblock -g" }));
+		} catch (Exception e) {
+			log.error("TCP connections for " + appName
+					+ " were not enabled. Make sure tcpblock is installed.");
+		}
 	}
 }

@@ -150,7 +150,7 @@ public class PeoplePickerPageSteps {
 	public void WhenISearchForUserNameAndTapOnItOnPeoplePickerPage(
 			String contact) throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		PagesCollection.peoplePickerPage.pickUserAndTap(contact);
+		PagesCollection.connectToPage = PagesCollection.peoplePickerPage.pickUserAndTap(contact);
 	}
 
 	@When("^I search for ignored user name (.*) and tap on it$")
@@ -269,7 +269,7 @@ public class PeoplePickerPageSteps {
 	}
 
 	@When("I click close button to dismiss people view")
-	public void IClickCloseButtonDismissPeopleView() {
+	public void IClickCloseButtonDismissPeopleView() throws Exception {
 		PagesCollection.peoplePickerPage.tapOnPeoplePickerClearBtn();
 	}
 

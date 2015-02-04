@@ -47,7 +47,7 @@
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
-			<version>2.42.2</version>
+			<version>2.44.0</version>
 		</dependency>
 
 		<dependency>
@@ -64,13 +64,19 @@
 		<dependency>
 			<groupId>io.appium</groupId>
 			<artifactId>java-client</artifactId>
-			<version>1.6.1</version>
+			<version>2.1.0</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.googlecode.plist</groupId>
 			<artifactId>dd-plist</artifactId>
 			<version>1.8</version> <!-- corresponds to r108 -->
+		</dependency>
+
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20140107</version>
 		</dependency>
 	</dependencies>
 
@@ -118,6 +124,26 @@
 				<configuration>
 					<!-- specify UTF-8, ISO-8859-1 or any other file encoding -->
 					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.10.1</version>
+				<configuration>
+					<show>public</show>
+					<sourceFileIncludes>
+						<!-- This will work only since v 2.11+ (http://jira.codehaus.org/browse/MJAVADOC-365) -->
+						<include>**/*Steps.java</include>
+					</sourceFileIncludes>
+					<tags>
+						<tag>
+							<name>step.</name>
+							<placement>m</placement>
+							<head>Step Declaration:</head>
+						</tag>
+					</tags>
 				</configuration>
 			</plugin>
 		</plugins>

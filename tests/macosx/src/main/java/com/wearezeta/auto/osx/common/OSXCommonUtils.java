@@ -23,6 +23,8 @@ public class OSXCommonUtils extends CommonUtils {
 			"com.wearezeta.zclient.mac.development",
 			"com.wearezeta.zclient.mac.internal", "com.wearezeta.zclient.mac" };
 
+	public static final String APP_NAME = "Wire";
+	
 	private static final Logger log = ZetaLogger.getLog(OSXCommonUtils.class
 			.getSimpleName());
 
@@ -204,6 +206,14 @@ public class OSXCommonUtils extends CommonUtils {
 			executeOsXCommand(new String[] { "/bin/bash", "-c",
 					"kill -9 $(lsof -c Wire -t)" });
 		} catch (Exception e) {
+		}
+	}
+	
+	public static boolean isRetinaDisplay(int width, int height) {
+		if (width == 2560 && height == 1600) {
+			return true;			
+		} else {
+			return false;
 		}
 	}
 }

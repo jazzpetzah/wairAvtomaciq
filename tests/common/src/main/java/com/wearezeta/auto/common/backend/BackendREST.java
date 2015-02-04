@@ -2,6 +2,7 @@ package com.wearezeta.auto.common.backend;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.apache.http.HttpStatus;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.sun.jersey.api.client.Client;
@@ -274,7 +276,7 @@ final class BackendREST {
 
 	public static JSONObject createGroupConversation(AuthToken token,
 			List<String> contactIds, String conversationName) throws Exception {
-		JSONArray ids = new JSONArray(contactIds);
+		JSONArray ids = new JSONArray(contactIds.toArray(new String[0]));
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("users", ids);
 		requestBody.put("name", conversationName);
@@ -314,7 +316,7 @@ final class BackendREST {
 		ImageAssetData srcImgData = new ImageAssetData(convId,
 				srcImageAsByteArray, imageMimeType);
 		srcImgData.setIsPublic(true);
-		ImageAssetProcessor imgProcessor = new ImageAssetProcessor(srcImgData);
+		ImageAssetProcessor imgProcessor = new ConvoImageProcessor(srcImgData);
 		ImageAssetRequestBuilder reqBuilder = new ImageAssetRequestBuilder(
 				imgProcessor);
 		return sendPicture(token, convId, reqBuilder);
@@ -387,6 +389,34 @@ final class BackendREST {
 		return new JSONObject(output);
 	}
 
+	public static JSONObject getLastEventIDs(AuthToken token)
+			throws IllegalArgumentException, UriBuilderException, IOException,
+			AuthTokenIsNotSetException, BackendRequestException {
+		Builder webResource = buildDefaultRequestWithAuth(
+				String.format("conversations/last-events"),
+				MediaType.APPLICATION_JSON, token);
+		final String output = httpGet(webResource,
+				new int[] { HttpStatus.SC_OK });
+		writeLog(new String[] { "Output from Server .... get Last Event ID's ",
+				output + "\n" });
+		return new JSONObject(output);
+	}
+
+	public static String getLastEventFromConversation(AuthToken token,
+			String convId) throws JSONException, IllegalArgumentException,
+			UriBuilderException, IOException, AuthTokenIsNotSetException,
+			BackendRequestException {
+		JSONArray convsWithLastIds = BackendREST.getLastEventIDs(token)
+				.getJSONArray("conversations");
+		for (int i = 0; i < convsWithLastIds.length(); i++) {
+			if (convsWithLastIds.getJSONObject(i).getString("id")
+					.equals(convId)) {
+				return convsWithLastIds.getJSONObject(i).getString("event");
+			}
+		}
+		throw new IOException("Invalid conversation ID");
+	}
+
 	public static BufferedImage getAssetsDownload(AuthToken token,
 			String convId, String assetId) throws Exception {
 		Builder webResource = buildDefaultRequestWithAuth(
@@ -401,18 +431,18 @@ final class BackendREST {
 		return assetDownload;
 	}
 
-	private static JSONArray generatePicturesArray(
+	private static JSONArray generateRequestForSelfPicture(
 			Map<String, AssetData> publishedPictureAssets) {
 		JSONArray result = new JSONArray();
-		JSONObject pictureItem = new JSONObject();
 		for (Map.Entry<String, AssetData> entry : publishedPictureAssets
 				.entrySet()) {
+			final JSONObject pictureItem = new JSONObject();
 			final String publishedPictureId = entry.getKey();
 			final ImageAssetData pictureAssetData = (ImageAssetData) entry
 					.getValue();
 			pictureItem.put("content_type", pictureAssetData.getMimeType());
-			final byte[] internalImageData = pictureAssetData.getImageData();
-			pictureItem.put("content_length", internalImageData.length);
+			pictureItem.put("content_length",
+					pictureAssetData.getImageData().length);
 			pictureItem.put("id", publishedPictureId);
 
 			JSONObject additionalInfo = new JSONObject();
@@ -425,13 +455,8 @@ final class BackendREST {
 			additionalInfo.put("original_width",
 					pictureAssetData.getOriginalWidth());
 			additionalInfo.put("public", pictureAssetData.getIsPublic());
-			if (pictureAssetData.getIsInline()) {
-				additionalInfo.put("tag", "smallProfile");
-			} else {
-				additionalInfo.put("tag", pictureAssetData.getTag());
-			}
+			additionalInfo.put("tag", pictureAssetData.getTag());
 			additionalInfo.put("width", pictureAssetData.getWidth());
-			additionalInfo.put("public", pictureAssetData.getIsPublic());
 			pictureItem.put("info", additionalInfo);
 
 			result.put(pictureItem);
@@ -451,7 +476,7 @@ final class BackendREST {
 		}
 		if (publishedPictureAssets != null) {
 			requestBody.put("picture",
-					generatePicturesArray(publishedPictureAssets));
+					generateRequestForSelfPicture(publishedPictureAssets));
 		}
 		if (name != null) {
 			requestBody.put("name", name);
@@ -460,6 +485,50 @@ final class BackendREST {
 				new int[] { HttpStatus.SC_OK });
 		writeLog(new String[] { "Output from Server .... Update Self Info ",
 				output });
+	}
+
+	public static void updateConvSelfInfo(AuthToken token, String convId,
+			String lastRead, Boolean muted, Boolean archived)
+			throws IllegalArgumentException, UriBuilderException, IOException,
+			AuthTokenIsNotSetException, JSONException, BackendRequestException {
+		Builder webResource = buildDefaultRequestWithAuth(
+				String.format("conversations/%s/self", convId),
+				MediaType.APPLICATION_JSON, token).type(
+				MediaType.APPLICATION_JSON);
+		JSONObject requestBody = new JSONObject();
+		if (lastRead != null) {
+			requestBody.put("last_read", lastRead);
+		}
+		if (muted != null) {
+			requestBody.put("muted", (boolean) muted);
+		}
+		if (archived != null) {
+			if (archived) {
+				requestBody
+						.put("archived", BackendREST
+								.getLastEventFromConversation(token, convId));
+			} else {
+				requestBody.put("archived", "false");
+			}
+		}
+		final String output = httpPut(webResource, requestBody.toString(),
+				new int[] { HttpStatus.SC_OK, HttpStatus.SC_CREATED });
+		writeLog(new String[] { "Output from Server .... Update conversation self info "
+				+ output + "\n" });
+	}
+
+	public static JSONObject searchForContacts(AuthToken token, String query)
+			throws Exception {
+		Builder webResource = buildDefaultRequestWithAuth(
+				String.format("search/contacts?q=%s",
+						URLEncoder.encode(query, "utf-8")),
+				MediaType.APPLICATION_JSON, token).type(
+				MediaType.APPLICATION_JSON);
+		final String output = httpGet(webResource,
+				new int[] { HttpStatus.SC_OK });
+		writeLog(new String[] { "Output from Server .... Search for contacts "
+				+ output + "\n" });
+		return new JSONObject(output);
 	}
 
 	public static void setDefaultBackendURL(String url) {

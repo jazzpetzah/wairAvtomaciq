@@ -42,7 +42,7 @@
 
     var dataSet = [
       {{#dataSet}}
-      { "tcType": "{{name}}", "details": [{{#details}}"{{.}}",{{/details}}], "cnt": {{count}} },
+      { "tcType": "{{name}}", "details": [{{#details}}"{{{.}}}",{{/details}}], "cnt": {{count}} },
       {{/dataSet}}
     ];
     var destTable = $("#dataTable");
@@ -91,8 +91,8 @@
         heightMargin: 1,
         maxHeight: 1,
         sectionCSS: 'margin: 0px;',
-        moreLink: '<a href="#">Show Details</a>',
-        lessLink: '<a href="#">Hide Details</a>',
+        moreLink: '<a href="#">Expand More</a>',
+        lessLink: '<a href="#">Collapse</a>',
     });
     
     var pieChartDataSet = [];

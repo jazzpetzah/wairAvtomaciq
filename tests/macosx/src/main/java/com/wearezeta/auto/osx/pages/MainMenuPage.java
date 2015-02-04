@@ -1,9 +1,9 @@
 package com.wearezeta.auto.osx.pages;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 import org.apache.log4j.Logger;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -22,7 +22,7 @@ public class MainMenuPage extends OSXPage {
 	@FindBy(how = How.NAME, using = OSXLocators.nameSignOutMenuItem)
 	private WebElement signOutMenuItem;
 	
-	public MainMenuPage(String URL, String path) throws MalformedURLException {
+	public MainMenuPage(String URL, String path) throws IOException {
 		super(URL, path);
 	}
 
@@ -42,8 +42,13 @@ public class MainMenuPage extends OSXPage {
 		driver.navigate().to(CommonUtils.getOsxApplicationPathFromConfig(MainMenuPage.class));
 	}
 	
-	public void quitZClient() {
-		quitZClientMenuItem.click();
+	public void quitZClient() throws IOException {
+		try {
+			quitZClientMenuItem.click();
+		} catch (NoSuchElementException e) {
+			log.debug("Can't find Quit Wire button. Source: " + driver.getPageSource());
+			throw e;
+		}
 	}
 	
 	@Override

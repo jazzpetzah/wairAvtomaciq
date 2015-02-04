@@ -127,12 +127,12 @@ public class DialogPageSteps {
 	public void ISeeUserPingedMessageTheDialog(String user) throws Throwable {
 		String username = usrMgr.findUserByNameOrNameAlias(user).getName();
 		String expectedPingMessage = username.toUpperCase() + " PINGED";
-		String dialogLastMessage;
 		if (PagesCollection.dialogPage != null) {
-			dialogLastMessage = PagesCollection.dialogPage.getLastChatMessage();
+			Assert.assertTrue(PagesCollection.dialogPage
+					.isPingMessageVisible(expectedPingMessage));
 		} else {
-			dialogLastMessage = PagesCollection.groupChatPage
-					.getLastChatMessage();
+			Assert.assertTrue(PagesCollection.groupChatPage
+					.isPingMessageVisible(expectedPingMessage));
 		}
 		Assert.assertTrue("Actual: " + dialogLastMessage + " || Expected: "
 				+ expectedPingMessage,
@@ -145,22 +145,32 @@ public class DialogPageSteps {
 	public void ISeeUserHotPingedMessageTheDialog(String user) throws Throwable {
 		String username = usrMgr.findUserByNameOrNameAlias(user).getName();
 		String expectedPingMessage = username.toUpperCase() + " PINGED AGAIN";
-		String dialogLastMessage;
 		if (PagesCollection.dialogPage != null) {
-			dialogLastMessage = PagesCollection.dialogPage.getLastChatMessage();
+			Assert.assertTrue(PagesCollection.dialogPage
+					.isPingMessageVisible(expectedPingMessage));
 		} else {
-			dialogLastMessage = PagesCollection.groupChatPage
-					.getLastChatMessage();
+			Assert.assertTrue(PagesCollection.groupChatPage
+					.isPingMessageVisible(expectedPingMessage));
 		}
-		Assert.assertTrue("Actual: " + dialogLastMessage + " || Expected: "
-				+ expectedPingMessage,
-				dialogLastMessage.equals(expectedPingMessage));
 	}
 
 	@When("^I type the message and send it$")
 	public void ITypeTheMessageAndSendIt() throws Throwable {
 		message = CommonUtils.generateGUID();
 		PagesCollection.dialogPage.sendStringToInput(message + "\n");
+	}
+	
+	/**
+	 * Click open conversation details button in 1:1 dialog
+	 * 
+	 * @step. ^I open conversation details$
+	 * 
+	 * @throws Exception
+	 *             if other user personal profile page was not created
+	 */
+	@When("^I open conversation details$") 
+	public void IOpenConversationDetails() throws Exception {
+		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.dialogPage.openConversationDetailsClick();
 	}
 
 	@When("^I send the message$")
@@ -243,7 +253,7 @@ public class DialogPageSteps {
 		String actualConnectingLabel = PagesCollection.dialogPage
 				.getConnectMessageLabel();
 		String lastMessage = PagesCollection.dialogPage
-				.getLastMessageFromDialog();
+				.getConnectionMessage();
 		String expectedConnectMessage = PagesCollection.dialogPage
 				.getExpectedConnectMessage(contact, user);
 		Assert.assertEquals("Expected: " + expectedConnectingLabel
@@ -285,7 +295,8 @@ public class DialogPageSteps {
 	public void ITypeAndSendLongTextAndMediaLink(String link)
 			throws InterruptedException {
 		PagesCollection.dialogPage.sendMessageUsingScript(longMessage);
-		Thread.sleep(2000);
+		PagesCollection.dialogPage.sendStringToInput(CommonUtils.generateRandomString(10) + "\n");
+		Thread.sleep(3000);
 		PagesCollection.dialogPage.sendMessageUsingScript(link);
 		Thread.sleep(3000);
 	}
@@ -296,11 +307,18 @@ public class DialogPageSteps {
 	}
 
 	@Then("I see media link (.*) and media in dialog")
-	public void ISeeMediaLinkAndMediaInDialog(String link) {
-		Assert.assertEquals(link.toLowerCase(), PagesCollection.dialogPage
-				.getLastMessageFromDialog().toLowerCase());
+	public void ISeeMediaLinkAndMediaInDialog(String link) throws InterruptedException {
 		Assert.assertTrue("Media is missing in dialog",
 				PagesCollection.dialogPage.isMediaContainerVisible());
+		
+		for (int i = 0; i < 10; i++) {
+			if (!link.equalsIgnoreCase(PagesCollection.dialogPage
+					.getLastMessageFromDialog())) {
+				Thread.sleep(6000);
+			}
+		}
+		Assert.assertEquals(link.toLowerCase(), PagesCollection.dialogPage
+				.getLastMessageFromDialog().toLowerCase());
 	}
 
 	@When("I click video container for the first time")
@@ -441,7 +459,12 @@ public class DialogPageSteps {
 
 	@Then("^I navigate back to conversations view$")
 	public void INavigateToConversationsView() throws IOException {
-		PagesCollection.dialogPage.swipeRight(SWIPE_DURATION);
+		for (int i = 0; i < 3; i++ ) {
+			PagesCollection.dialogPage.swipeRight(SWIPE_DURATION);
+			if (PagesCollection.contactListPage.isMyUserNameDisplayedFirstInContactList(usrMgr.getSelfUser().getName())) {
+				break;
+			}
+		}
 	}
 
 	@When("I try to send message with only spaces")

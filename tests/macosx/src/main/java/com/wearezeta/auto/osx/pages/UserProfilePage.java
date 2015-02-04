@@ -1,7 +1,8 @@
 package com.wearezeta.auto.osx.pages;
 
-import java.net.MalformedURLException;
+import java.io.IOException;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -10,9 +11,11 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class UserProfilePage extends OSXPage {
+	private static final Logger log = ZetaLogger.getLog(UserProfilePage.class.getSimpleName());
 	
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathMainWindow)
 	private WebElement mainWindow;
@@ -50,8 +53,8 @@ public class UserProfilePage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idSelfProfileEmailTextField)
 	private WebElement selfProfileEmailTextField;
 	
-	public UserProfilePage(String URL, String path) throws MalformedURLException {
-		super(URL, path);
+	public UserProfilePage(String URL, String path) throws IOException {
+		super(URL, path, false);
 	}
 
 	public void openPictureSettings() {
@@ -104,7 +107,7 @@ public class UserProfilePage extends OSXPage {
 	
 	public boolean selfProfileNameEquals(String name) {
 		String xpath = String.format(OSXLocators.xpathFormatSelfProfileNameTextField, name);
-		WebElement element = driver.findElement(By.xpath(xpath));
-		return name.equals(element.getText());
+		log.debug("Looking for name " + name + " by xpath '" + xpath + "' in user profile. Page source: " + driver.getPageSource());
+		return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath), 60);
 	}
 }

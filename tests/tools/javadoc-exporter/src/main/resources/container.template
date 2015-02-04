@@ -1,0 +1,13 @@
+<h2>Package Name</h2>
+<em>{{pkgName}}</em>
+
+<h2>Description</h2>
+<p>{{description}}</p>
+
+{{^steps.empty}}
+<h2>Steps</h2>
+<p><ac:structured-macro ac:name="children"><ac:parameter ac:name="depth">10</ac:parameter><ac:parameter ac:name="all">true</ac:parameter></ac:structured-macro></p>
+{{/steps.empty}}
+{{#steps.empty}}
+<h2>The module does not contain any documented Cucumber steps</h2>
+{{/steps.empty}}

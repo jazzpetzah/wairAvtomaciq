@@ -195,7 +195,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       |
       | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat |
 
-  @smoke @id492
+  @smoke @id492 @id1526
   Scenario Outline: Remove user from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -297,3 +297,65 @@ Feature: People View
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact1Email | Contact2  | Contact3  | ChatName       |
       | user1Email | user1Password | user1Name | user2Name | user2Email    | user3Name | user4Name | LeaveGroupChat |
+
+  @regression @id765
+  Scenario Outline: Verify you can see participant profiles in a group conversation
+    Given There are 4 users where <Name> is me
+    Given I change user <Contact1> avatar picture from file <AvatarPicture>
+    Given I change user <Contact2> avatar picture from file <AvatarPicture>
+    Given I change user <Contact3> avatar picture from file <AvatarPicture>
+    Given <Contact1> is connected to <Name>,<Contact2>,<Contact3>
+    Given <Name> has sent connection request to <Contact2>
+    Given <Contact1> has group chat <ChatName> with <Name>,<Contact2>,<Contact3>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name <Name> in Contact list
+    When I open conversation with <ChatName>
+    And I open Conversation info
+    And I choose user <Contact1> in Conversation info
+    Then I see <Contact1> name in Conversation info
+    And I see <Contact1> email in Conversation info
+    And I see aqaPictureContact_osx_userinfo_1920x1080.png photo in Conversation info
+    And I see open conversation button
+    And I see remove person from conversation button
+    When I return to participant view from personal info
+    And I choose user <Contact2> in Conversation info
+    Then I see <Contact2> name in Conversation info
+    And I dont see <Contact2> email in Conversation info
+    And I see aqaPictureContact_osx_userinfo_1920x1080.png photo in Conversation info
+    And I see pending button
+    And I see connection request message <ConnectionRequestMessage>
+    And I see remove person from conversation button
+    When I return to participant view from personal info
+    And I choose user <Contact3> in Conversation info
+    Then I see <Contact3> name in Conversation info
+    And I dont see <Contact3> email in Conversation info
+    And I see aqaPictureContact_osx_userinfo_1920x1080.png photo in Conversation info
+    And I see connect button
+    And I see remove person from conversation button
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | ChatName                | ConnectionRequestMessage | AvatarPicture         |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | ParticipantProfilesChat | Hello!                   | aqaPictureContact.jpg |
+
+  @regression @id619
+  Scenario Outline: Verify new users are added to a group conversation on the other end
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
+    Given Myself has group chat <ChatName> with <Contact2>,<Contact3>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name <Name> in Contact list
+    And I open conversation with <ChatName>
+    When I open People Picker from conversation
+    And I search for user <Contact1>
+    And I see user <Contact1> in search results
+    And I add user <Contact1> from search results
+    And I open conversation with <ChatName>
+    And I see message YOU ADDED <Contact1> in conversation
+    Then I am signing out
+    And I Sign in using login <Contact1> and password <Password>
+    And I see my name <Contact1> in Contact list
+    And I open conversation with <ChatName>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | ChatName      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | AddUserSEChat |

@@ -6,11 +6,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Random;
+import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -28,6 +31,7 @@ import com.wearezeta.auto.image_send.AssetData;
 import com.wearezeta.auto.image_send.ImageAssetData;
 import com.wearezeta.auto.image_send.ImageAssetProcessor;
 import com.wearezeta.auto.image_send.ImageAssetRequestBuilder;
+import com.wearezeta.auto.image_send.SelfImageProcessor;
 
 // Almost all methods of this class mutate ClientUser
 // argument by performing automatic login (set id and session token attributes)
@@ -36,6 +40,10 @@ public final class BackendAPIWrappers {
 
 	private static final Logger log = ZetaLogger
 			.getLog(BackendAPIWrappers.class.getSimpleName());
+
+	public static void setDefaultBackendURL(String url) {
+		BackendREST.setDefaultBackendURL(url);
+	}
 
 	public static ClientUser createUser(ClientUser user) throws Exception {
 		IMAPSMailbox mbox = IMAPSMailbox.createDefaultInstance();
@@ -299,7 +307,7 @@ public final class BackendAPIWrappers {
 		return conversationId;
 	}
 
-	private static ClientUser tryLoginByUser(ClientUser user) throws Exception {
+	public static ClientUser tryLoginByUser(ClientUser user) throws Exception {
 		if (user.getAccessToken() != null) {
 			try {
 				BackendREST.getUserInfo(generateAuthToken(user));
@@ -434,7 +442,9 @@ public final class BackendAPIWrappers {
 		ImageAssetData srcImgData = new ImageAssetData(convId,
 				srcImageAsByteArray, guessMimeType(picture));
 		srcImgData.setIsPublic(true);
-		ImageAssetProcessor imgProcessor = new ImageAssetProcessor(srcImgData);
+		srcImgData.setCorrelationId(String.valueOf(UUID.randomUUID()));
+		srcImgData.setNonce(srcImgData.getCorrelationId());
+		ImageAssetProcessor imgProcessor = new SelfImageProcessor(srcImgData);
 		ImageAssetRequestBuilder reqBuilder = new ImageAssetRequestBuilder(
 				imgProcessor);
 		Map<JSONObject, AssetData> sentPictures = BackendREST.sendPicture(
@@ -473,5 +483,69 @@ public final class BackendAPIWrappers {
 		BackendREST.updateSelfInfo(generateAuthToken(user), color.getId(),
 				null, null);
 		user.setAccentColor(color);
+	}
+
+	public static void updateConvLastReadState(ClientUser user, String convId,
+			String lastReadEvent) throws Exception {
+		// can be used to override last_read event or use
+		// getLastEventFromConversation to set the last read to the last event
+		tryLoginByUser(user);
+		BackendREST.updateConvSelfInfo(generateAuthToken(user), convId,
+				lastReadEvent, null, null);
+	}
+
+	public static void updateConvMutedState(ClientUser user, String convId,
+			boolean muted) throws Exception {
+		tryLoginByUser(user);
+		BackendREST.updateConvSelfInfo(generateAuthToken(user), convId, null,
+				muted, null);
+	}
+
+	public static void archiveUserConv(ClientUser ownerUser,
+			ClientUser archivedUser) throws Exception {
+		tryLoginByUser(ownerUser);
+		BackendREST.updateConvSelfInfo(generateAuthToken(ownerUser),
+				getConversationWithSingleUser(ownerUser, archivedUser), null,
+				null, true);
+	}
+
+	public static void unarchiveUserConv(ClientUser ownerUser,
+			ClientUser archivedUser) throws Exception {
+		tryLoginByUser(ownerUser);
+		BackendREST.updateConvSelfInfo(generateAuthToken(ownerUser),
+				getConversationWithSingleUser(ownerUser, archivedUser), null,
+				null, false);
+	}
+
+	public static class NoContactsFoundException extends Exception {
+		private static final long serialVersionUID = -7682778364420522320L;
+
+		public NoContactsFoundException(String msg) {
+			super(msg);
+		}
+	}
+
+	private static Random random = new Random();
+
+	public static void waitUntilContactsFound(ClientUser searchByUser,
+			String query, int expectedCount, boolean orMore, int timeout)
+			throws Exception {
+		tryLoginByUser(searchByUser);
+		long startTimestamp = (new Date()).getTime();
+		int currentCount = -1;
+		while ((new Date()).getTime() <= startTimestamp + timeout * 1000) {
+			final JSONObject searchResult = BackendREST.searchForContacts(
+					generateAuthToken(searchByUser), query);
+			currentCount = searchResult.getInt("found");
+			if (currentCount == expectedCount
+					|| (orMore && currentCount >= expectedCount)) {
+				return;
+			}
+			Thread.sleep(1000 + random.nextInt(4000));
+		}
+		throw new NoContactsFoundException(
+				String.format(
+						"%s contact(s) '%s' were not found within %s second(s) timeout",
+						expectedCount, query, timeout));
 	}
 }

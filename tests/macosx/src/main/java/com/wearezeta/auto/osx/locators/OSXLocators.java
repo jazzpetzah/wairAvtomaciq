@@ -29,10 +29,10 @@ public final class OSXLocators {
 	public static final String idPeopleButton = "PeopleButton";
 	public static final String idAddConversationButton = "addConversationButton";
 	public static final String idPeoplePickerSearchField = "people_picker_searchfield";
-	public static final String idPeoplePickerTopContactsSectionHeader = "people_picker_topcpnverstion_sectionheader";
+	public static final String xpathPeoplePickerTopContactsSectionHeader = "//AXstaticText[@AXIdentifier='people_picker_topcpnverstion_sectionheader']";
 	public static final String idPeoplePickerDismissButton = "people_picker_cancel_button";
 	public static final String idPeoplePickerSearchResultEntry = "people_picker_result_namefield";
-	public static final String idPeoplePickerSearchResultTable = "people_picker_searchresult";
+	public static final String xpathPeoplePickerSearchResultTable = "//AXTable[@AXIdentifier='people_picker_searchresult']";
 	public static final String idUnblockUserButton = "unblock";
 	
 	public static final String idShowMenuButton = "clshowMenuButton";
@@ -108,7 +108,7 @@ public final class OSXLocators {
 	public static final String idSendProblemReportButton = "_NS:13";
 	
 	public static final String idAcceptConnectionRequestButton = "connect";
-	public static final String idIgnoreConnectionRequestButton = "_NS:10";
+	public static final String idIgnoreConnectionRequestButton = "block";
 	
 	public static final String xpathPleaseProvideEmailAddress = "//AXStaticText[@AXValue='PLEASE PROVIDE A VALID EMAIL ADDRESS']";
 
@@ -169,4 +169,18 @@ public final class OSXLocators {
 	public static final String xpathPeoplePopover = "//AXPopover";
 	
 	public static final String xpathImagePopupCloseButton = "//AXWindow[@AXRoleDescription='floating window']/AXButton[@AXRoleDescription='close button']";
+
+	public static final String xpathOpenSingleChatButton = "//AXPopover/AXButton[@AXTitle='OPEN CONVERSATION']";
+	
+	public static final String xpathPendingButton = "//AXPopover/AXButton[@AXTitle='PENDING']";
+
+	public static final String xpathConnectToUserButton = "//AXPopover/AXButton[@AXTitle='CONNECT']";
+	
+	public static final String xpathFormatSentConnectionRequestMessage = "//AXPopover//AXTextArea[@AXValue='%s']";
+
+	public static final String xpathNoInternetConnectionMessage = "//AXStaticText[@AXValue='No Internet Connection']";
+	
+	public static final String idCloseNoInternetDialogButton = "_NS:14";
+	
+	public static final String xpathAvatarFullScreenWindow = "//AXWindow[@AXRoleDescription='floating window']";
 }

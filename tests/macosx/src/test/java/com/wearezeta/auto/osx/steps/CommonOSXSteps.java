@@ -1,5 +1,7 @@
 package com.wearezeta.auto.osx.steps;
 
+import io.appium.java_client.AppiumDriver;
+
 import java.io.IOException;
 
 import javax.mail.MessagingException;
@@ -69,13 +71,14 @@ public class CommonOSXSteps {
 				.getOsxAppiumUrlFromConfig(CommonOSXSteps.class), path));
 		senderPages.setLoginPage(new LoginPage(CommonUtils
 				.getOsxAppiumUrlFromConfig(CommonOSXSteps.class), path));
-		ZetaFormatter.setDriver(senderPages.getLoginPage().getDriver());
+		ZetaFormatter.setDriver((AppiumDriver) senderPages.getLoginPage()
+				.getDriver());
 		senderPages.getLoginPage().sendProblemReportIfFound();
 	}
 
 	@Before("~@performance")
 	public void setUp() throws Exception {
-
+		CommonUtils.enableTcpForAppName(OSXCommonUtils.APP_NAME);
 		OSXCommonUtils.deleteZClientLoginFromKeychain();
 		OSXCommonUtils.removeAllZClientSettingsFromDefaults();
 		OSXCommonUtils.deleteCacheFolder();
@@ -91,7 +94,8 @@ public class CommonOSXSteps {
 				.getOsxAppiumUrlFromConfig(CommonOSXSteps.class), path));
 		senderPages.setLoginPage(new LoginPage(CommonUtils
 				.getOsxAppiumUrlFromConfig(CommonOSXSteps.class), path));
-		ZetaFormatter.setDriver(senderPages.getLoginPage().getDriver());
+		ZetaFormatter.setDriver((AppiumDriver) senderPages.getLoginPage()
+				.getDriver());
 		senderPages.getLoginPage().sendProblemReportIfFound();
 
 		resetBackendSettingsIfOverwritten();
@@ -217,6 +221,35 @@ public class CommonOSXSteps {
 		commonSteps.IChangeUserAvatarPicture(user, picturePath);
 	}
 
+	@Given("^There \\w+ (\\d+) shared user[s]* with name prefix (\\w+)$")
+	public void ThereAreNSharedUsersWithNamePrefix(int count, String namePrefix)
+			throws Exception {
+		commonSteps.ThereAreNSharedUsersWithNamePrefix(count, namePrefix);
+	}
+
+	@Given("^User (\\w+) is [Mm]e$")
+	public void UserXIsMe(String nameAlias) throws Exception {
+		commonSteps.UserXIsMe(nameAlias);
+	}
+
+	@Given("^Internet connection is lost$")
+	public void InternetConnectionIsLost() throws Exception {
+		commonSteps.BlockTcpConnectionForApp(OSXCommonUtils.APP_NAME);
+	}
+
+	@Given("^Internet connection is restored$")
+	public void InternetConnectionIsRestored() throws Exception {
+		commonSteps.EnableTcpConnectionForApp(OSXCommonUtils.APP_NAME);
+	}
+
+	@Given("^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in backend search results$")
+	public void UserWaitsUntilContactExistsInHisSearchResults(
+			String searchByNameAlias, int timeout, String query)
+			throws Exception {
+		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query,
+				timeout);
+	}
+
 	@After
 	public void tearDown() throws Exception {
 		senderPages.closeAllPages();
@@ -225,5 +258,7 @@ public class CommonOSXSteps {
 
 		// workaround for stuck on Send picture test
 		OSXCommonUtils.killWireIfStuck();
+
+		CommonUtils.enableTcpForAppName(OSXCommonUtils.APP_NAME);
 	}
 }

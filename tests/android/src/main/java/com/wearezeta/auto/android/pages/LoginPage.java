@@ -1,45 +1,55 @@
 package com.wearezeta.auto.android.pages;
 
+import io.appium.java_client.pagefactory.AndroidFindBy;
+
 import java.io.IOException;
 import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
+import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
+import com.wearezeta.auto.common.locators.ZetaHow;
 
 public class LoginPage extends AndroidPage {
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idSignInButton")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idSignInButton")
 	private WebElement signInButton;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idWelcomeSlogan")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idWelcomeSlogan")
 	private WebElement welcomeSlogan;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idSignUpButton")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idSignUpButton")
 	private WebElement signUpButton;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idLoginButton")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idLoginButton")
 	private WebElement confirmSignInButton;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idLoginPasswordInput")
-	private List<WebElement> loginPasswordField;
+	@AndroidFindBy(xpath =  AndroidLocators.LoginPage.xpathLoginInput)
+	private WebElement loginInput;
 	
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idLoginError")
+	@AndroidFindBy(xpath =  AndroidLocators.LoginPage.xpathPasswordInput)
+	private WebElement passwordInput;
+	
+	@FindBy(className  = AndroidLocators.CommonLocators.classEditText)
+	private List<WebElement> editText;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idLoginError")
 	private WebElement loginError;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idWelcomeSlogan")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idWelcomeSlogan")
 	private List<WebElement> welcomeSloganContainer;
 
-	@ZetaFindBy(how = How.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idContactListNames")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idContactListNames")
 	private WebElement contactListNames;
 
 	@FindBy(how = How.ID, using = AndroidLocators.CommonLocators.idDismissUpdateButton)
@@ -66,7 +76,7 @@ public class LoginPage extends AndroidPage {
 	}
 	
 	
-	public RemoteWebDriver getDriver() {
+	public ZetaAndroidDriver getDriver() {
 		return driver;
 	}
 
@@ -84,7 +94,8 @@ public class LoginPage extends AndroidPage {
 	}
 	
 	public LoginPage SignIn() throws IOException {
-
+		refreshUITree();
+		wait.until(ExpectedConditions.visibilityOf(signInButton));
 		signInButton.click();
 		return this;
 	}
@@ -97,12 +108,16 @@ public class LoginPage extends AndroidPage {
 		return login;
 	}
 
-	public void setLogin(String login) {
-		for(WebElement el: loginPasswordField){
-			if(el.getText().equals("Email")){
-				el.click();
-				el.sendKeys(login);
-				break;
+	public void setLogin(String login) throws IOException {
+		refreshUITree();
+		if(CommonUtils.getAndroidApiLvl(LoginPage.class) > 42){
+			loginInput.sendKeys(login);
+		}
+		else{
+			for(WebElement editField : editText){
+				if (editField.getText().toLowerCase().equals("email")){
+					editField.sendKeys(login);
+				}
 			}
 		}
 	}
@@ -111,13 +126,16 @@ public class LoginPage extends AndroidPage {
 		return password;
 	}
 
-	public void setPassword(String password) throws InterruptedException {
-
-		for(WebElement el: loginPasswordField){
-			if(el.getText() == null || el.getText().isEmpty() ){
-				el.click();
-				el.sendKeys(password);
-				break;
+	public void setPassword(String password) throws InterruptedException, IOException {
+		if(CommonUtils.getAndroidApiLvl(LoginPage.class) > 42){
+			passwordInput.click();
+			passwordInput.sendKeys(password);
+		}
+		else{
+			for(WebElement editField : editText){
+				if (editField.getText().toLowerCase().isEmpty()){
+					editField.sendKeys(password);
+				}
 			}
 		}
 	}
@@ -149,7 +167,7 @@ public class LoginPage extends AndroidPage {
 
 	public RegistrationPage join() throws Exception {
 		signUpButton.click();
-
+		DriverUtils.waitUntilElementDissapear(driver, AndroidLocators.LoginPage.getByForLoginPageRegistrationButton());
 		return new RegistrationPage(url, path);
 	}
 	

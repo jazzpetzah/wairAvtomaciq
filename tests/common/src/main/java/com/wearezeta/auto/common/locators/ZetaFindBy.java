@@ -5,12 +5,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.openqa.selenium.support.How;
-
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.TYPE})
 public @interface ZetaFindBy {
-	How how() default How.ID;
+	ZetaHow how() default ZetaHow.ID;
 	
 	String locatorsDb() default "";
 	

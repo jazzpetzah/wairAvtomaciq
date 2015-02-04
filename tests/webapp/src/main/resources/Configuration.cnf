@@ -1,0 +1,9 @@
+# you can override any of these settings in ~/.m2/settings.xml
+# see http://maven.apache.org/ref/3.2.5/maven-settings/settings.html for more details
+webappAppiumUrl=${url}
+webappApplicationPath=https://app.wire.com/login.html?env=${backendType}
+pictureResultsPath=${pictureResultsPath}
+driverTimeoutSeconds=${driverTimeoutSeconds}
+defaultEmail=${defaultEmail}
+browserName=${browser}
+platformName=${platform}

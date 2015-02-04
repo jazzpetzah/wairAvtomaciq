@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -63,7 +62,7 @@ public class PeoplePickerPage extends IOSPage{
 	
 	private int numberTopSelected = 0;
 	
-	public PeoplePickerPage(String URL, String path) throws MalformedURLException {
+	public PeoplePickerPage(String URL, String path) throws IOException {
 		super(URL, path);
 		url = URL;
 		this.path = path;
@@ -99,19 +98,19 @@ public class PeoplePickerPage extends IOSPage{
 		return DriverUtils.waitUntilElementAppears(driver, By.name(user));
 	}
 	
-	public ConnectToPage clickOnNotConnectedUser(String name) throws MalformedURLException{
+	public ConnectToPage clickOnNotConnectedUser(String name) throws IOException{
 		ConnectToPage page;
 		driver.findElement(By.name(name)).click();
 		page = new ConnectToPage(url, path);
 		return page;
 	}
 	
-	public  ConnectToPage pickUserAndTap(String name) throws MalformedURLException{
+	public  ConnectToPage pickUserAndTap(String name) throws IOException{
 		PickUser(name).click();
 		return new ConnectToPage(url, path);
 	}
 	
-	public  PendingRequestsPage pickIgnoredUserAndTap(String name) throws MalformedURLException{
+	public  PendingRequestsPage pickIgnoredUserAndTap(String name) throws IOException{
 		PickUser(name).click();
 		return new PendingRequestsPage(url, path);
 	}
@@ -260,7 +259,9 @@ public class PeoplePickerPage extends IOSPage{
 	}
 
 	public void clickContinueButton() {
-		continueButton.click();
+		if(DriverUtils.isElementDisplayed(continueButton)) {
+			continueButton.click();
+		}
 	}
 
 	public boolean isPeopleYouMayKnowLabelVisible() {

@@ -13,8 +13,9 @@ Feature: People View
     And I swipe up on dialog page
     And I tap on group chat contact <Contact1NewName>
     Then I see <Contact1> user name and email
-    And I see correct background image
 
+    # This step requires to be rewritten to support multiple screen resolutions
+    # And I see correct background image
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName   | Picture                      | Contact1NewName   |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupInfoCheck2 | aqaPictureContact600_800.jpg | aqaPictureContact |
@@ -32,6 +33,7 @@ Feature: People View
     And I tap on user name found on People picker page <Contact1>
     And I add in search field user name to connect to <Contact2>
     And I tap on user name found on People picker page <Contact2>
+    And I press back button
     And I tap on create conversation
     Then I see group chat page with users <Contact1>,<Contact2>
 
@@ -49,7 +51,8 @@ Feature: People View
     When I tap on contact name <GroupChatName>
     And I see dialog page
     And I swipe up on dialog page
-    And I press Leave conversation button
+    And I press Right conversation button
+    And I press Leave conversartion button
     And I confirm leaving
     Then I see Contact list with my name <Name>
 
@@ -98,3 +101,22 @@ Feature: People View
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName  | Picture                      | Color        | Contact1NewName   | Contact2NewName       |
       | user1Email | user1Password | user1Name | user3Name | user2Name | 3                 | GroupInfoCheck | aqaPictureContact600_800.jpg | BrightOrange | aqaPictureContact | aqaAvatar TestContact |
+
+  @smoke @id1395
+  Scenario Outline: Verify starting 1:1 conversation with a person from Top People
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Contact <Contact1> send message to user <Name>
+    Given Contact <Name> send message to user <Contact1>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    And I wait for 90 seconds
+    When I swipe down contact list
+    And I see People picker page
+    And I tap on <Contact1> in Top People
+    And I tap on create conversation
+    Then I see dialog page
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |

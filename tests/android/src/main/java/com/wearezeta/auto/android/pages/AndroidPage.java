@@ -1,17 +1,22 @@
 package com.wearezeta.auto.android.pages;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.util.List;
+import io.appium.java_client.pagefactory.AndroidFindBy;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.logging.Level;
+
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LoggingPreferences;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
@@ -19,25 +24,27 @@ import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
-import com.wearezeta.auto.common.driver.ZetaDriver;
-
+import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import com.wearezeta.auto.common.log.ZetaLogger;
 
 public abstract class AndroidPage extends BasePage {
-	protected static ZetaDriver driver;
+	protected static ZetaAndroidDriver driver;
 	protected static WebDriverWait wait;
 	
 	private DesiredCapabilities capabilities = new DesiredCapabilities();
+	private static final Logger log = ZetaLogger.getLog(CommonUtils.class
+			.getSimpleName());
 	
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameLoginPage)
+	@AndroidFindBy(className = AndroidLocators.CommonLocators.classNameLoginPage)
 	private WebElement content;
 	
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classListView)
+	@AndroidFindBy(className = AndroidLocators.CommonLocators.classListView)
 	private WebElement container;
 	
-	@FindBy(how = How.XPATH, using = AndroidLocators.CommonLocators.xpathImagesFrameLayout)
+	@FindBy(xpath = AndroidLocators.CommonLocators.xpathImagesFrameLayout)
 	private List<WebElement> frameLayouts;
 	
-	@FindBy(how = How.XPATH, using = AndroidLocators.CommonLocators.xpathImage)
+	@FindBy(xpath = AndroidLocators.CommonLocators.xpathImage)
 	private List<WebElement> image;
 	
 	private String url;
@@ -50,7 +57,10 @@ public abstract class AndroidPage extends BasePage {
 	public AndroidPage(String URL, String path, boolean isUnicode) throws Exception {
 		
         url = URL;
-        
+
+        LoggingPreferences object = new LoggingPreferences();	
+        object.enable("logcat", Level.ALL);
+        capabilities.setCapability(CapabilityType.LOGGING_PREFS, object);
         capabilities.setCapability("platformName", CommonUtils.PLATFORM_NAME_ANDROID);
         capabilities.setCapability("deviceName", CommonUtils.getAndroidDeviceNameFromConfig(AndroidPage.class));
         capabilities.setCapability("app", path);
@@ -75,7 +85,7 @@ public abstract class AndroidPage extends BasePage {
         storeDriverAndWait();
 	}
 	
-	private void initNoneUnicodeDriver() throws MalformedURLException
+	private void initNoneUnicodeDriver() throws IOException
 	{
         super.InitConnection(url, capabilities);
         
@@ -83,7 +93,7 @@ public abstract class AndroidPage extends BasePage {
 	}
 	
 	private void storeDriverAndWait() {
-        driver = drivers.get(CommonUtils.PLATFORM_NAME_ANDROID);
+        driver = (ZetaAndroidDriver) drivers.get(CommonUtils.PLATFORM_NAME_ANDROID);
         wait = waits.get(CommonUtils.PLATFORM_NAME_ANDROID);
 	}
 	
@@ -135,6 +145,7 @@ public abstract class AndroidPage extends BasePage {
 	
 	@Override
 	public void Close() throws IOException {
+		showLogs();
 		try {
 			AndroidCommonUtils.killAndroidClient();
 		} catch (Exception e) {
@@ -169,7 +180,12 @@ public abstract class AndroidPage extends BasePage {
 	public void dialogsPagesSwipeUp(int time){
 		Point coords = content.getLocation();
 		Dimension elementSize = content.getSize();
-		driver.swipe(coords.x+elementSize.width / 2, coords.y + elementSize.height - 300, coords.x + elementSize.width / 2, coords.y, time);
+		try{
+			driver.swipe(coords.x+elementSize.width / 2, coords.y + elementSize.height - 300, coords.x + elementSize.width / 2, coords.y, time);
+		}
+		catch(Exception ex){
+
+		}
 
 	}
 	
@@ -189,5 +205,14 @@ public abstract class AndroidPage extends BasePage {
 	
 	public static void clearPagesCollection() throws IllegalArgumentException, IllegalAccessException {
 		clearPagesCollection(PagesCollection.class, AndroidPage.class);
+	}
+	
+	private static void showLogs(){
+		if(CommonUtils.getAndroidLogs(AndroidPage.class)){
+			List<LogEntry> logEntries = driver.manage().logs().get("logcat").getAll();
+			for(LogEntry entry : logEntries){
+				log.error(entry.getMessage().toString());
+			}
+		}
 	}
 }

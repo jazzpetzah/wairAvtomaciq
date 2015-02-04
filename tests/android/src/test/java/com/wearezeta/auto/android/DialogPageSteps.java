@@ -26,7 +26,9 @@ public class DialogPageSteps {
 
 	@When("^I see dialog page$")
 	public void WhenISeeDialogPage() throws Exception {
-		PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
+		if(PagesCollection.dialogPage == null){
+			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
+		}
 		PagesCollection.dialogPage.waitForCursorInputVisible();
 	}
 
@@ -115,9 +117,10 @@ public class DialogPageSteps {
 		} catch (NoSuchUserException ex) {
 			// Ignore silently
 		}
-		Assert.assertEquals("Ping message compare",
+		Assert.assertTrue(PagesCollection.dialogPage.isKnockText(message,action));
+		/*Assert.assertEquals("Ping message compare",
 				message + " " + action.trim(),
-				PagesCollection.dialogPage.getKnockText());
+				PagesCollection.dialogPage.getKnockText());*/
 	}
 
 	@Then("^I see my message in the dialog$")
@@ -229,5 +232,10 @@ public class DialogPageSteps {
 				.toUpperCase();
 		Assert.assertTrue(PagesCollection.dialogPage.isMessageExists(message
 				+ " " + contact));
+	}
+	
+	@Then("^Last message is (.*)$")
+	public void ThenLastMessageIs(String message){
+		Assert.assertEquals(message.toLowerCase().trim(), PagesCollection.dialogPage.getLastMessageFromDialog().toLowerCase().trim());
 	}
 }

@@ -1,7 +1,6 @@
 package com.wearezeta.auto.osx.steps;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -110,6 +109,7 @@ public class LoginPageSteps {
 	@Given("I am signed out from ZClient")
 	public void GivenIAmSignedOutFromZClient() throws Exception {
 		CommonOSXSteps.senderPages.getLoginPage().logoutIfNotSignInPage();
+		 CommonOSXSteps.resetBackendSettingsIfOverwritten();
 	}
 
 	@Then("I have returned to Sign In screen")
@@ -121,7 +121,7 @@ public class LoginPageSteps {
 	}
 
 	@When("I start registration")
-	public void IStartRegistration() throws MalformedURLException {
+	public void IStartRegistration() throws IOException {
 		RegistrationPage registration = CommonOSXSteps.senderPages
 				.getLoginPage().startRegistration();
 		CommonOSXSteps.senderPages.setRegistrationPage(registration);
@@ -140,5 +140,12 @@ public class LoginPageSteps {
 	@Then("^I do not see wrong credentials message$")
 	public void IDoNotSeeWrongCredentialsMessage() {
 		Assert.assertFalse(CommonOSXSteps.senderPages.getLoginPage().isWrongCredentialsMessageDisplayed());
+	}
+	
+	@Then("^I see internet connectivity error message")
+	public void ISeeInternetConnectivityErrorMessage() {
+		LoginPage loginPage = CommonOSXSteps.senderPages.getLoginPage();
+		Assert.assertTrue(loginPage.isNoInternetMessageAppears());
+		loginPage.closeNoInternetDialog();
 	}
 }

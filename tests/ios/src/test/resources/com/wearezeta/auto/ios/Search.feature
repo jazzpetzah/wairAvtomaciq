@@ -34,9 +34,9 @@ Feature: Search
     And I see user <Contact2> found on People picker page
     And I remove contacts list users from Mac contacts
 
-    Examples:
-      | Login      | Password      | Name      | Contact1    | Contact2    |
-      | user1Email | user1Password | user1Name | user2Name   | user3Name   |
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |
 
   #Muted due to sync engine troubles(group chat is not created and app is closed after logout)
   #@mute @smoke @id600
@@ -73,8 +73,7 @@ Feature: Search
   #Examples:
   #| Login   | Password    | Name    | Contact1    | Contact2    |
   #| aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
-  
-  @staging @id754
+  @regression @id1394
   Scenario Outline: Start 1:1 chat with users from Top Connections
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -82,9 +81,10 @@ Feature: Search
     Given Contact <Name> send message to user <Contact>
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
+    And I wait for 30 seconds
     And I swipe down contact list
     And I see People picker page
-    #And I re-enter the people picker if top people list is not there
+    And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on 1 top connections
     And I click Create Conversation button on People picker page
@@ -95,7 +95,7 @@ Feature: Search
       | Login      | Password      | Name      | UserCount | Contact   |
       | user1Email | user1Password | user1Name | 10        | user2Name |
 
-  @id1150 @staging
+  @id1150 @regression
   Scenario Outline: Start group chat with users from Top Connections
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -103,12 +103,14 @@ Feature: Search
     Given Contact <Name> send message to user <Contact>
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
+    And I wait for 30 seconds
     And I swipe down contact list
     And I see People picker page
-    #And I re-enter the people picker if top people list is not there
+    And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on 2 top connections
     And I click Create Conversation button on People picker page
+    And I wait for 2 seconds
     And I swipe up on group chat page
     And I change group conversation name to <ConvoName>
     And I exit the group info page
@@ -116,5 +118,23 @@ Feature: Search
     And I see first item in contact list named <ConvoName>
 
     Examples: 
-      | Login      | Password      | Name      | ConvoName     | UserCount | Contact   |
-      | user1Email | user1Password | user1Name | TopGroupTest  | 10        | user2Name |
+      | Login      | Password      | Name      | ConvoName    | UserCount | Contact   |
+      | user1Email | user1Password | user1Name | TopGroupTest | 10        | user2Name |
+
+  @id1454 @staging
+  Scenario Outline: Verify sending a connection request to user chosen from search
+    Given There are 2 users where <Name> is me
+    Given I Sign in using login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I search for user name <UnconnectedUser> and tap on it on People picker page
+    Then I see connect to <UnconnectedUser> dialog
+    And I click Connect button on connect to dialog
+    And I click close button to dismiss people view
+    And I see conversation with not connected user <UnconnectedUser>
+    
+    Examples: 
+      | Login      | Password      | Name      | UnconnectedUserEmail | UnconnectedUser |
+      | user1Email | user1Password | user1Name | user2Email           | user2Name       |

@@ -18,6 +18,7 @@ public class VideoPlayerPageSteps {
 	
 	@When("I tap on Done button on Video player page")
 	public void ITapOnDoneButtonOnVideoPlayerPage() throws IOException{
+		PagesCollection.videoPlayerPage.tapVideoPage();
 		PagesCollection.dialogPage = PagesCollection.videoPlayerPage.clickVideoDoneButton();
 	}
 	

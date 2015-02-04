@@ -1,7 +1,6 @@
 package com.wearezeta.auto.osx.pages;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -31,10 +30,10 @@ public class PeoplePickerPage extends OSXPage {
 //	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerSearchField)
 	private WebElement searchField;
 	
-	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerSearchResultTable)
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathPeoplePickerSearchResultTable)
 	private WebElement peoplePickerSearchResultTable;
 	
-	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerTopContactsSectionHeader)
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathPeoplePickerTopContactsSectionHeader)
 	private WebElement peoplePickerTopContactsSectionHeader;
 
 	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerSearchResultEntry)
@@ -43,7 +42,7 @@ public class PeoplePickerPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idUnblockUserButton)
 	private WebElement unblockUserButton;
 	
-	public PeoplePickerPage(String URL, String path) throws MalformedURLException {
+	public PeoplePickerPage(String URL, String path) throws IOException {
 		super(URL, path);
 	}
 	

@@ -1,7 +1,6 @@
 package com.wearezeta.auto.osx.pages;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -37,6 +36,8 @@ public class ConversationPage extends OSXPage {
 			.getSimpleName());
 
 	static final String SOUNDCLOUD_BUTTON_ATT_TITLE = "AXDescription";
+	static final String SOUNDCLOUD_BUTTON_ATT_TITLE_9 = "AXTitle";
+	
 	static String SOUNDCLOUD_BUTTON_STATE;
 	int numberSoundCloudButtons;
 
@@ -81,7 +82,7 @@ public class ConversationPage extends OSXPage {
 	private WebElement conversationView;
 
 	public ConversationPage(String URL, String path)
-			throws MalformedURLException {
+			throws IOException {
 
 		super(URL, path);
 	}
@@ -245,6 +246,9 @@ public class ConversationPage extends OSXPage {
 		setLastSoundCloudButtonToUse();
 		SOUNDCLOUD_BUTTON_STATE = soundCloudLinkButton
 				.getAttribute(SOUNDCLOUD_BUTTON_ATT_TITLE);
+		if (SOUNDCLOUD_BUTTON_STATE.trim().isEmpty()) {
+			SOUNDCLOUD_BUTTON_STATE = soundCloudLinkButton.getAttribute(SOUNDCLOUD_BUTTON_ATT_TITLE_9);
+		}
 		return SOUNDCLOUD_BUTTON_STATE;
 	}
 

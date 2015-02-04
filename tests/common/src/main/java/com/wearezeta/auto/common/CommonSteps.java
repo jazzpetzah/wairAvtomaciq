@@ -1,10 +1,11 @@
 package com.wearezeta.auto.common;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import org.apache.commons.lang3.NotImplementedException;
 
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
@@ -151,6 +152,22 @@ public final class CommonSteps {
 				userToUnblock.getId(), ConnectionStatus.Accepted);
 	}
 
+	public void ArchiveConversationWithUser(String usersToNameAliases,
+			String archiveConversationWithUser) throws Exception {
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(usersToNameAliases);
+		ClientUser archivedUser = usrMgr
+				.findUserByNameOrNameAlias(archiveConversationWithUser);
+		BackendAPIWrappers.archiveUserConv(user, archivedUser);
+	}
+
+	public void UnarchiveConversationWithUser(String usersToNameAliases,
+			String archiveConversationWithUser) throws Exception {
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(usersToNameAliases);
+		ClientUser archivedUser = usrMgr
+				.findUserByNameOrNameAlias(archiveConversationWithUser);
+		BackendAPIWrappers.unarchiveUserConv(user, archivedUser);
+	}
+
 	public void AcceptAllIncomingConnectionRequests(String userToNameAlias)
 			throws Exception {
 		ClientUser userTo = usrMgr.findUserByNameOrNameAlias(userToNameAlias);
@@ -221,7 +238,7 @@ public final class CommonSteps {
 					usrMgr.findUserByNameOrNameAlias(userNameAlias),
 					picturePath);
 		} else {
-			throw new NotImplementedException();
+			throw new NotImplementedException("Please implement loading pictures from resources");
 			// TODO: extract picture from resources
 		}
 	}
@@ -237,5 +254,33 @@ public final class CommonSteps {
 		BackendAPIWrappers.updateUserAccentColor(
 				usrMgr.findUserByNameOrNameAlias(userNameAlias),
 				AccentColor.getByName(colorName));
+	}
+
+	public void ThereAreNSharedUsersWithNamePrefix(int count, String namePrefix)
+			throws Exception {
+		usrMgr.appendSharedUsers(namePrefix, count);
+	}
+
+	public void UserXIsMe(String nameAlias) throws Exception {
+		usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(nameAlias));
+	}
+
+	public void BlockTcpConnectionForApp(String appName) throws IOException {
+		CommonUtils.blockTcpForAppName(appName);
+	}
+
+	public void EnableTcpConnectionForApp(String appName) throws IOException {
+		CommonUtils.enableTcpForAppName(appName);
+	}
+
+	public void WaitUntilContactIsFoundInSearch(String searchByNameAlias,
+			String contactAlias, int timeout) throws Exception {
+		String query = usrMgr.replaceAliasesOccurences(contactAlias,
+				FindBy.NAME_ALIAS);
+		query = usrMgr.replaceAliasesOccurences(contactAlias,
+				FindBy.EMAIL_ALIAS);
+		BackendAPIWrappers.waitUntilContactsFound(
+				usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query, 1,
+				true, timeout);
 	}
 }

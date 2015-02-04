@@ -34,7 +34,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id332
+  @smoke @id332 @deployPictures
   Scenario Outline: Send a camera roll picture to user from contact list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -68,7 +68,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @staging @id383
+  @staging @id1468
   Scenario Outline: Play/pause SoundCloud media link from the media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -77,6 +77,8 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
+    And I scroll away the keyboard
+    And I scroll back to media container
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -100,6 +102,8 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
+    And I scroll away the keyboard
+    And I scroll back to media container
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -123,7 +127,7 @@ Feature: Conversation View
     And I tap media link
     And I scroll media out of sight until media bar appears
     And I see media bar on dialog page
-    And I wait 140 seconds for media to stop playing
+    And I wait 150 seconds for media to stop playing
     Then I dont see media bar on dialog page
 
     Examples: 
@@ -308,7 +312,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @regression @id488
+  @regression @id1474
   Scenario Outline: Verify you can see conversation images in fullscreen
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -507,6 +511,7 @@ Feature: Conversation View
     And I type and send long message and media link <YouTubeLink>
     And I see media link <YouTubeLink> and media in dialog
     And I scroll away the keyboard
+    And I scroll back to media container
     And I click video container for the first time
     And I see video player page is opened
     And I tap Pause button on Video player page

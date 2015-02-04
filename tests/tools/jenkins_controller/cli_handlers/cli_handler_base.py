@@ -3,7 +3,10 @@
 import argparse
 import imp
 import pprint
+import random
 import re
+import requests
+import time
 import os
 
 
@@ -16,13 +19,43 @@ class CliHandlerBase(object):
                              help='Jenkins request type. Available types: {0}'.\
                 format(pprint.pformat(get_handler_names())))
 
+    def _wait_while_job_in_queue(self, job, timeout):
+        timeout = int(timeout)
+        if timeout < 0:
+            return
+        current_timestamp = time.time()
+        MAX_WAIT = timeout
+        while job.is_queued() and time.time() - current_timestamp < MAX_WAIT:
+            time.sleep(5)
+        if job.is_queued():
+            raise TimeoutError('The job is still in the queue after {0} seconds timeout'.format(MAX_WAIT))
+
     def _get_parser(self):
         parser = argparse.ArgumentParser()
         self._build_options(parser)
         return parser
+    
+    def _invoke(self):
+        raise NotImplementedError('Should be implemented in a subclass')
+
+    def __call__(self):
+        MAX_TRY_COUNT = 5
+        try_num = 0
+        while True:
+            try:
+                return self._invoke()
+            except requests.exceptions.ConnectionError as e:
+                try_num += 1
+                if try_num >= MAX_TRY_COUNT:
+                    raise e
+                time.sleep(random.randint(2, 10))
 
 
 class CliHandlerNotFoundError(Exception):
+    pass
+
+
+class TimeoutError(Exception):
     pass
 
 

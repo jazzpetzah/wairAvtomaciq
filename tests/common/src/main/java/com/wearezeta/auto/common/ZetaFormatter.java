@@ -1,6 +1,5 @@
 package com.wearezeta.auto.common;
 
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Date;
@@ -41,6 +40,7 @@ public class ZetaFormatter implements Formatter, Reporter {
 
 	private long startDate;
 	private long endDate;
+	@SuppressWarnings("unused")
 	private int lineNumber = 0;
 	
 	private static final String LOGIN = "smoketester+bot@wearezeta.com";
@@ -171,11 +171,11 @@ public class ZetaFormatter implements Formatter, Reporter {
 					errorMsg = errorMsg.substring(0, 255);
 				}
 				
-				sendNotification("\n============Automatic notification============\n" +
-						driver.getCapabilities().getCapability("platformName") + " " + scope + 
-						"(build " + buildNumber + ") \n" + "Feature: " + feature + 
-						", Scenario: " + scenario + "(line number: " + Integer.toString(lineNumber) + ")" + "\nStep: " + 
-						currentStep + ", failed with error: \n" + errorMsg + "...");
+//				sendNotification("\n============Automatic notification============\n" +
+//						driver.getCapabilities().getCapability("platformName") + " " + scope + 
+//						"(build " + buildNumber + ") \n" + "Feature: " + feature + 
+//						", Scenario: " + scenario + "(line number: " + Integer.toString(lineNumber) + ")" + "\nStep: " + 
+//						currentStep + ", failed with error: \n" + errorMsg + "...");
 			} catch (Exception e) {
 				
 				e.printStackTrace();
@@ -206,6 +206,7 @@ public class ZetaFormatter implements Formatter, Reporter {
 		// TODO Auto-generated method stub
 	}
 	
+	@SuppressWarnings("unused")
 	private void sendNotification(String message) throws Exception {
 		ClientUser bot = new ClientUser();
 		bot.setEmail(LOGIN);

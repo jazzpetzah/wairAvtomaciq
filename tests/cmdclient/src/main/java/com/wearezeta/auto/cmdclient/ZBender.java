@@ -6,17 +6,17 @@ import java.util.Date;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import com.wearezeta.auto.common.BackEndREST;
-import com.wearezeta.auto.common.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.UsersState;
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
+import com.wearezeta.auto.common.usrmgmt.UserState;
 
 
 public class ZBender 
 {
 	private static final Logger log = ZetaLogger.getLog(ZBender.class.getSimpleName());
-	private static final Logger backendLog = ZetaLogger.getLog(BackEndREST.class.getSimpleName());
+	private static final Logger backendLog = ZetaLogger.getLog(BackendAPIWrappers.class.getSimpleName());
 	
 	private static final String IMG = "/bender.jpg";
 	
@@ -27,7 +27,12 @@ public class ZBender
 			configFileStream = ZBender.class.getClass().getResourceAsStream(IMG);
 		}
 		
-		BackEndREST.sendPictureToChatByName(user, contact, path, configFileStream);
+		if (null == configFileStream) {
+			BackendAPIWrappers.sendPictureToChatByName(user, contact, path);
+		}
+		else {
+			BackendAPIWrappers.sendPictureToChatByName(user, contact, configFileStream);
+		}
 		
 		if (configFileStream != null) {
 			configFileStream.close();
@@ -65,7 +70,7 @@ public class ZBender
 				
 				log.info("Sending message " + Integer.toString(i + 1) + " of " + Integer.toString(messageCount) + 
 						" to contact " + contact);
-				BackEndREST.sendDialogMessageByChatName(user, contact, Integer.toString(i + 1) + " " + CommonUtils.generateGUID());
+				BackendAPIWrappers.sendDialogMessageByChatName(user, contact, Integer.toString(i + 1) + " " + CommonUtils.generateGUID());
 				Thread.sleep(interval * 1000);
 			}
 			
@@ -77,7 +82,7 @@ public class ZBender
 				
 				log.info("Sending message " + Integer.toString(count) + " to contact " + contact);
 				
-				BackEndREST.sendDialogMessageByChatName(user, contact, Integer.toString(count) + " " + CommonUtils.generateGUID());
+				BackendAPIWrappers.sendDialogMessageByChatName(user, contact, Integer.toString(count) + " " + CommonUtils.generateGUID());
 				count++;
 				Thread.sleep(interval * 1000);
 			}
@@ -163,14 +168,13 @@ public class ZBender
 	    		break;
     	}
 
-    	BackEndREST.setDefaultBackendURL(backend);
+    	BackendAPIWrappers.setDefaultBackendURL(backend);
     	
-		ClientUser yourСontact = new ClientUser(login, password, name, UsersState.AllContactsConnected);
+		ClientUser yourСontact = new ClientUser(login, password, name, UserState.AllContactsConnected);
 		
 		if (showContacts) {
-			BackEndREST.loginByUser(yourСontact);
 			log.info("================================");
-			String [] contacts = BackEndREST.getConversationsAsStringArray(yourСontact);
+			String [] contacts = BackendAPIWrappers.getConversationsAsStringArray(yourСontact);
 			for (int i = 0; i < contacts.length; i++) {
 				log.info(contacts[i]);
 			}
