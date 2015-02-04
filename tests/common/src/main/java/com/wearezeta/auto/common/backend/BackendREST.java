@@ -276,7 +276,7 @@ final class BackendREST {
 
 	public static JSONObject createGroupConversation(AuthToken token,
 			List<String> contactIds, String conversationName) throws Exception {
-		JSONArray ids = new JSONArray(contactIds);
+		JSONArray ids = new JSONArray(contactIds.toArray(new String[0]));
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("users", ids);
 		requestBody.put("name", conversationName);

@@ -122,6 +122,7 @@ public class ContactListPage extends WebPage {
 		} else {
 			for (WebElement contact : this.contactListEntries) {
 				if (contact.getText().equals(conversationName)) {
+					DriverUtils.waitUntilElementClickable(driver, contact);
 					contact.click();
 					return new ConversationPage(
 							CommonUtils
