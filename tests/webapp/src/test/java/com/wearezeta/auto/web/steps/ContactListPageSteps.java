@@ -80,7 +80,7 @@ public class ContactListPageSteps {
 	/**
 	 * Clicks the self name item in the convo list to open self profile page
 	 * 
-	 * @step ^I open self profile$
+	 * @step. ^I open self profile$
 	 * 
 	 * @throws Exception
 	 */
@@ -110,7 +110,7 @@ public class ContactListPageSteps {
 	/**
 	 * Open archived conversations
 	 * 
-	 * @step ^I open archive$
+	 * @step. ^I open archive$
 	 * 
 	 */
 	@When("^I open archive$")
@@ -140,7 +140,7 @@ public class ContactListPageSteps {
 	/**
 	 * Checks that connection request is displayed in Conversation List
 	 * 
-	 * @step ^I see connection request$
+	 * @step. ^I see connection request$
 	 * 
 	 * @throws Exception
 	 */
@@ -152,7 +152,7 @@ public class ContactListPageSteps {
 	/**
 	 * Opens list of connection requests from Contact list
 	 * 
-	 * @step ^I open connection requests list$
+	 * @step. ^I open connection requests list$
 	 * 
 	 * @throws Exception
 	 */

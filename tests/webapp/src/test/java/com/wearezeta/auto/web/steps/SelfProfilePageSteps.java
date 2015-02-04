@@ -32,6 +32,8 @@ public class SelfProfilePageSteps {
 	/**
 	 * Clicks the corresponding item from "gear" menu
 	 * 
+	 * @step. ^I select (.*) menu item on self profile page$
+	 * 
 	 * @param name
 	 *            the name of menu item
 	 */
@@ -42,6 +44,8 @@ public class SelfProfilePageSteps {
 
 	/**
 	 * Verifies whether settings dialog is visible
+	 * 
+	 * @step. ^I see Settings dialog$
 	 * 
 	 * @throws AssertionError
 	 *             if settings dialog is not currently visible
@@ -59,6 +63,8 @@ public class SelfProfilePageSteps {
 	/**
 	 * Verifies that correct user name is shown on self profile page
 	 * 
+	 * @step. I see user name on self profile page (.*)
+	 * 
 	 * @param name
 	 *            name of the user
 	 * 
@@ -74,6 +80,8 @@ public class SelfProfilePageSteps {
 
 	/**
 	 * Verifies that correct user email is shown on self profile page
+	 * 
+	 * @step. I see user email on self profile page (.*)
 	 * 
 	 * @param email
 	 *            email of the user
@@ -91,6 +99,5 @@ public class SelfProfilePageSteps {
 
 		String actualEmail = PagesCollection.selfProfilePage.getUserMail();
 		Assert.assertEquals(email, actualEmail);
-		;
 	}
 }
