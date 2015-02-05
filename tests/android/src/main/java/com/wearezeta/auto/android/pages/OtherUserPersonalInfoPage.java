@@ -111,6 +111,11 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		return new ContactListPage(url, path);
 	}
 	
+	public void pressSilenceButton() {
+		refreshUITree();
+		silenceButton.click();
+	}
+	
 	public void clickBlockBtn() {
 		refreshUITree();
 		blockButton.click();

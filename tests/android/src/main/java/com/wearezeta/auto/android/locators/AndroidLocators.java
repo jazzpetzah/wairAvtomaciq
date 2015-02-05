@@ -116,7 +116,7 @@ public final class AndroidLocators {
 		
 		public static final String idContactListNames = LOCATORS_PACKAGE + ":id/tv_conv_list_topic";
 		
-		public static final String xpathContactListMute = "//android.widget.ListView/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.TextView[2]";
+		public static final String xpathContactListArchiveUnarchive = "//android.widget.ListView/android.widget.FrameLayout[child::android.widget.TextView[@text='%s']]/android.widget.LinearLayout/android.widget.TextView[@text='ARCHIVE' or @text='UNARCHIVE']";
 		
 		public static final String idConfirmCancelButton = LOCATORS_PACKAGE + ":id/cancel";
 		

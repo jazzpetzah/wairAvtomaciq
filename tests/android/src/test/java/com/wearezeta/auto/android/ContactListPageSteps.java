@@ -147,10 +147,18 @@ public class ContactListPageSteps {
 		PagesCollection.contactListPage.swipeRightOnContact(1000, contact);
 	}
 
-	@When("^I click mute conversation (.*)$")
-	public void IClickMuteConversation(String contact) throws Exception {
+	@When("^I swipe archive conversation (.*)$")
+	public void ISwipeArchiveConversation(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		PagesCollection.contactListPage.clickOnMute(contact);
+		AndroidPage page  = PagesCollection.contactListPage.swipeOnArchiveUnarchive(contact);
+		if(page instanceof DialogPage){
+			PagesCollection.dialogPage = (DialogPage) page;
+		}
+	}
+	
+	@When("^I swipe up contact list$")
+	public void ISwipeUpContactList() throws Exception {
+		PagesCollection.contactListPage.swipeUp(1000);
 	}
 
 	@Then("^I see (.*) and (.*) chat in contact list$")
