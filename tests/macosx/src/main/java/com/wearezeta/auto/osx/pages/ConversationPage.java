@@ -273,7 +273,7 @@ public class ConversationPage extends OSXPage {
 					conversationDecrementSB = scrollButton;
 				}
 			}
-			long TIMEOUT_MINUTES = 2;
+			long TIMEOUT_MINUTES = 1;
 			long startDate = new Date().getTime();
 			while (mediaBarPosition.y() < windowPosition.y()) {
 				conversationDecrementSB.click();

@@ -77,6 +77,8 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
+    And I scroll away the keyboard
+    And I scroll back to media container
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -100,6 +102,8 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
+    And I scroll away the keyboard
+    And I scroll back to media container
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -338,6 +342,8 @@ Feature: Conversation View
     And I see dialog page
     And I post media link <YouTubeLink>
     Then I see media link <YouTubeLink> and media in dialog
+    And I scroll away the keyboard
+    And I scroll back to media container
     And I click video container for the first time
     And I see video player page is opened
 

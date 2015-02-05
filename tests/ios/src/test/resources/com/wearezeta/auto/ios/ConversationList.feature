@@ -22,6 +22,7 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
     Given Myself archived conversation with <ArchivedUser>
+    And I wait for 30 seconds
     Given I Sign in using login <Login> and password <Password>
 	And I see Contact list with my name <Name>
 	And I open archived conversations

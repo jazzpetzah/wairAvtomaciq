@@ -379,6 +379,9 @@ public class DialogPage extends IOSPage{
 	public VideoPlayerPage clickOnVideoContainerFirstTime() throws IOException, InterruptedException {
 		VideoPlayerPage page = new VideoPlayerPage(url, path);
 		youtubeCell.click();
+		if (!page.isVideoPlayerPageOpened()) {
+			youtubeCell.click();
+		}
 		
 		return page;
 	}

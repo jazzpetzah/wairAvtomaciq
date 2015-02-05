@@ -130,8 +130,30 @@ public class DriverUtils {
 					.ignoring(NoSuchElementException.class);
 
 			wait.until(ExpectedConditions.elementToBeClickable(element));
+			bool = true;
 		} catch (Exception ex) {
+			bool = false;
+		} finally {
+			setDefaultImplicitWait(driver);
+		}
+		return bool;
+	}
 
+	public static boolean waitUntilElementVisible(RemoteWebDriver driver,
+			final WebElement element) {
+
+		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+		Boolean bool = false;
+		try {
+			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+					.withTimeout(20, TimeUnit.SECONDS)
+					.pollingEvery(1, TimeUnit.SECONDS)
+					.ignoring(NoSuchElementException.class);
+
+			wait.until(ExpectedConditions.visibilityOf(element));
+			bool = true;
+		} catch (Exception ex) {
+			bool = false;
 		} finally {
 			setDefaultImplicitWait(driver);
 		}
