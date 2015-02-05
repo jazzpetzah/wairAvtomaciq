@@ -136,6 +136,11 @@ public class OtherUserPersonalInfoPageSteps {
 		PagesCollection.contactListPage = PagesCollection.otherUserPersonalInfoPage
 		.pressLeaveButton();
 	}
+	
+	@When("^I press Silence conversartion button$")
+	public void WhenIPressSilenceConversationButton() throws Throwable {
+		PagesCollection.otherUserPersonalInfoPage.pressSilenceButton();
+	}
 
 	@When("^I confirm leaving$")
 	public void WhenIConfirmLeaving() throws Throwable {

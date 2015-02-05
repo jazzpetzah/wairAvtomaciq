@@ -45,8 +45,8 @@ public class PeoplePickerPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.namePeoplePickerAddToConversationButton)
 	private WebElement addToConversationBtn;
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameLaterButton)
-	private WebElement laterButton;
+	@FindBy(how = How.NAME, using = IOSLocators.nameShareButton)
+	private WebElement shareButton;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameContinueUploadButton)
 	private WebElement continueButton;
@@ -67,8 +67,8 @@ public class PeoplePickerPage extends IOSPage{
 	}
 	
 	public void clickLaterButton() {
-		if(DriverUtils.isElementDisplayed(laterButton)) {
-			laterButton.click();
+		if(DriverUtils.isElementDisplayed(shareButton)) {
+			shareButton.click();
 		}
 	}
 	
@@ -252,7 +252,7 @@ public class PeoplePickerPage extends IOSPage{
 	}
 
 	public boolean isUploadDialogShown() {
-		boolean isLaterBtnVisible = DriverUtils.isElementDisplayed(laterButton);
+		boolean isLaterBtnVisible = DriverUtils.isElementDisplayed(shareButton);
 		return isLaterBtnVisible;
 	}
 
