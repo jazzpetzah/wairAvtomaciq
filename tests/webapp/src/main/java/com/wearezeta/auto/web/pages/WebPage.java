@@ -64,6 +64,8 @@ public class WebPage extends BasePage {
 		driver = (ZetaWebAppDriver) drivers.get(CommonUtils.PLATFORM_NAME_WEB);
 		wait = waits.get(CommonUtils.PLATFORM_NAME_WEB);
 
+		driver.manage().window().maximize();
+		
 		if (doNavigate) {
 			// Workaround for Safari
 			// We should wait for cookies to be set after applying beta code

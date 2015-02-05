@@ -28,6 +28,9 @@ public class ContactListPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathArchive)
 	private WebElement archive;
 
+	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.ContactListPage.classNameOpenPeoplePickerButton)
+	private WebElement openPeoplePickerButton;
+
 	public ContactListPage(String URL, String path) throws Exception {
 		super(URL, path);
 	}
@@ -49,6 +52,11 @@ public class ContactListPage extends WebPage {
 		}
 
 		return null;
+	}
+
+	public boolean waitForContactListVisible() {
+		return DriverUtils.waitUntilElementVisible(driver,
+				openPeoplePickerButton);
 	}
 
 	public boolean isContactWithNameExists(String name) {
@@ -149,6 +157,14 @@ public class ContactListPage extends WebPage {
 	public SelfProfilePage openSelfProfile() throws Exception {
 		selfName.click();
 		return new SelfProfilePage(
+				CommonUtils.getWebAppAppiumUrlFromConfig(ContactListPage.class),
+				CommonUtils
+						.getWebAppApplicationPathFromConfig(ContactListPage.class));
+	}
+
+	public PeoplePickerPage openPeoplePicker() throws Exception {
+		openPeoplePickerButton.click();
+		return new PeoplePickerPage(
 				CommonUtils.getWebAppAppiumUrlFromConfig(ContactListPage.class),
 				CommonUtils
 						.getWebAppApplicationPathFromConfig(ContactListPage.class));

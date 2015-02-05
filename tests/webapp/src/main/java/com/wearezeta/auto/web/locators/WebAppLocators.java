@@ -48,6 +48,8 @@ public final class WebAppLocators {
 
 		public static final String xpathContactListEntries = xpathParentContactListItem
 				+ "/div[2]//li/div[contains(@class, 'center-column')]";
+
+		public static final String classNameOpenPeoplePickerButton = "plus-button";
 	}
 
 	public static final class SettingsPage {
@@ -83,7 +85,16 @@ public final class WebAppLocators {
 		
 		public static final String xpathFormatIgnoreReqestButton = "//div[@class='connect-name' and span[text()='%s']]/following-sibling::div/div[@id='ignore']";
 	}
-	
+
+	public static final class PeoplePickerPage {
+
+		public static final String classNameSearchInput = "search-input";
+
+		public static final String xpathFormatSearchListItemWithName = "//div[@class='search-list-item-name' and text()='%s']";
+
+		public static final String classNameCreateConversationButton = "search-button-add";
+	}
+
 	public static final class Common {
 		
 		public static final String CONTACT_LIST_ONE_PERSON_WAITING = "One person waiting";
