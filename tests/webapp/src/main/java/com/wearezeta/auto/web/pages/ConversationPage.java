@@ -1,6 +1,5 @@
 package com.wearezeta.auto.web.pages;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -25,10 +24,19 @@ public class ConversationPage extends WebPage {
 
 	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idConversationInput)
 	private WebElement conversationInput;
+	
+	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.ConversationPage.classNameShowParticipantsButton)
+	private WebElement showParticipants;
 
-	public ConversationPage(String URL, String path) throws IOException {
+	private String url;
+	private String path;
+	
+	public ConversationPage(String URL, String path) throws Exception {
 
 		super(URL, path);
+		
+		this.url = URL;
+		this.path = path;
 	}
 
 	public void writeNewMessage(String message) {
@@ -50,5 +58,15 @@ public class ConversationPage extends WebPage {
 			isSend = true;
 		}
 		return isSend;
+	}
+	
+	public UserProfilePopupPage clickShowUserProfileButton() throws Exception {
+		showParticipants.click();
+		return new UserProfilePopupPage(url, path);
+	}
+	
+	public ParticipantsPopupPage clickShowParticipantsButton() throws Exception {
+		showParticipants.click();
+		return new ParticipantsPopupPage(url, path);
 	}
 }

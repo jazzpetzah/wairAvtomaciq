@@ -24,13 +24,64 @@ public class ResultJSON extends TestcasesStorage {
 		throw new RuntimeException("Not implemented");
 	}
 
+	private static Map<String, Integer> statusPriorityMap = new HashMap<String, Integer>();
+	static {
+		statusPriorityMap.put("failed", 2);
+		statusPriorityMap.put("skipped", 1);
+		statusPriorityMap.put("passed", 0);
+	}
+
+	private static void setWorstResult(JSONObject srcElement,
+			JSONObject dstElement) {
+		if (srcElement.has("steps") && dstElement.has("steps")) {
+			final JSONArray srcSteps = srcElement.getJSONArray("steps");
+			final JSONArray dstSteps = dstElement.getJSONArray("steps");
+			for (int dstStepIdx = 0; dstStepIdx < dstSteps.length(); dstStepIdx++) {
+				if (dstStepIdx < srcSteps.length()) {
+					final String srcStepResult = srcSteps
+							.getJSONObject(dstStepIdx).getJSONObject("result")
+							.getString("status");
+					final int srcStepPriority = statusPriorityMap
+							.containsKey(srcStepResult) ? statusPriorityMap
+							.get(srcStepResult) : 3;
+					final String dstStepResult = dstSteps
+							.getJSONObject(dstStepIdx).getJSONObject("result")
+							.getString("status");
+					final int dstStepPriority = statusPriorityMap
+							.containsKey(dstStepResult) ? statusPriorityMap
+							.get(dstStepResult) : 3;
+					if (srcStepPriority > dstStepPriority) {
+						dstSteps.getJSONObject(dstStepIdx)
+								.getJSONObject("result")
+								.put("result", srcStepResult);
+					}
+				}
+			}
+		}
+	}
+
 	private static void importElements(JSONObject srcItem, JSONObject dstItem) {
 		if (srcItem.has("elements")) {
 			JSONArray srcElements = srcItem.getJSONArray("elements");
 			if (dstItem.has("elements")) {
 				JSONArray dstElements = dstItem.getJSONArray("elements");
-				for (int elementIdx = 0; elementIdx < srcElements.length(); elementIdx++) {
-					dstElements.put(srcElements.getJSONObject(elementIdx));
+				for (int srcElIdx = 0; srcElIdx < srcElements.length(); srcElIdx++) {
+					boolean isDestElReplaced = false;
+					for (int dstElIdx = 0; dstElIdx < dstElements.length(); dstElIdx++) {
+						final String dstElId = dstElements.getJSONObject(
+								dstElIdx).getString("id");
+						final String srcElId = srcElements.getJSONObject(
+								srcElIdx).getString("id");
+						if (dstElId.equals(srcElId)) {
+							setWorstResult(srcElements.getJSONObject(srcElIdx),
+									dstElements.getJSONObject(dstElIdx));
+							isDestElReplaced = true;
+							break;
+						}
+					}
+					if (!isDestElReplaced) {
+						dstElements.put(srcElements.getJSONObject(srcElIdx));
+					}
 				}
 			} else {
 				dstItem.put("elements", srcElements);

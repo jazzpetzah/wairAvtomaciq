@@ -12,8 +12,6 @@ import java.util.UUID;
 
 import javax.imageio.ImageIO;
 
-import org.apache.commons.codec.binary.Base64;
-
 public abstract class ImageAssetProcessor extends AssetProcessor {
 	public static final long MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 	public static final long MAX_NON_GIF_IMAGE_SIZE = 310 * 1024;
@@ -157,8 +155,12 @@ public abstract class ImageAssetProcessor extends AssetProcessor {
 		}
 		final BufferedImage originalImage = ImageIO
 				.read(new ByteArrayInputStream(imageData));
-		final byte[] processedImageData = getScaledImage(originalImage,
-				mimeType, imageData.length, MEDIUM_DIMENSION);
+		final byte[] processedImageData;
+		if(mimeType == MIME_TYPE_GIF){
+			processedImageData = imageData;
+		}else{
+			processedImageData = getScaledImage(originalImage, mimeType, imageData.length, MEDIUM_DIMENSION);
+		}
 
 		if (originalImageAsset.getIsInline() == true
 				&& processedImageData.length > MAX_INLINE_ITEM_SIZE) {
@@ -167,7 +169,7 @@ public abstract class ImageAssetProcessor extends AssetProcessor {
 		ImageAssetData resultAssetData;
 		if (originalImageAsset.getIsInline() == true) {
 			resultAssetData = new ImageAssetData(convId,
-					Base64.encodeBase64(processedImageData), mimeType);
+					processedImageData, mimeType);
 		} else {
 			resultAssetData = new ImageAssetData(convId, processedImageData,
 					mimeType);

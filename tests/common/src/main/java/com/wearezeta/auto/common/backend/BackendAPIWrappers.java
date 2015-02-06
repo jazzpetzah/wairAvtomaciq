@@ -66,6 +66,10 @@ public final class BackendAPIWrappers {
 		log.debug(String.format("User %s is activated",
 				registrationInfo.getLastUserEmail()));
 	}
+	
+	public static String getUserActivationLink(MBoxChangesListener listener) throws Exception {
+		return IMAPSMailbox.getActivationLink(listener, ACTIVATION_TIMEOUT);
+	}
 
 	public static void createContactLinks(ClientUser userFrom,
 			List<ClientUser> usersTo) throws Exception {

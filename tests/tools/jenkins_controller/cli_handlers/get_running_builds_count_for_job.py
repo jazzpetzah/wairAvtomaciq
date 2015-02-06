@@ -17,7 +17,7 @@ class GetRunningBuildsCountForJob(CliHandlerBase):
                             help='How many recent builds should we check for the particular job')
         parser.set_defaults(depth=50, queue_timeout=300)
 
-    def __call__(self):
+    def _invoke(self):
         parser = self._get_parser()
         args = parser.parse_args()
         job = self._jenkins.get_job(args.name)

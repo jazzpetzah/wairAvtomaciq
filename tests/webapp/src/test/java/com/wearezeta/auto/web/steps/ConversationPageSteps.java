@@ -65,4 +65,18 @@ public class ConversationPageSteps {
 		Assert.assertTrue(PagesCollection.conversationPage
 				.isMessageSent(randomMessage));
 	}
+
+	/**
+	 * Click on the button from conversation that popups user profile
+	 * 
+	 * @step I click show user profile button
+	 * 
+	 * @throws Exception
+	 */
+	@When("I click show user profile button")
+	public void WhenIClickShowUserProfileButton() throws Exception {
+		PagesCollection.userProfilePopupPage = PagesCollection.conversationPage
+				.clickShowUserProfileButton();
+
+	}
 }

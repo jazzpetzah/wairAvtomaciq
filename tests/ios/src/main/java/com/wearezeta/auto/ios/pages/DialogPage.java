@@ -110,6 +110,9 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathYouAddedMessageCellFormat)
 	private List<WebElement> youAddedCell;
 	
+	@FindBy(how = How.XPATH, using = IOSLocators.nameExitGroupInfoPageButton)
+	protected WebElement closeInfoPage;
+	
 	
 	private String url;
 	private String path;
@@ -297,9 +300,9 @@ public class DialogPage extends IOSPage{
 		for (int i = 0; i < 3; i ++) {
 			if (DriverUtils.isElementDisplayed(openConversationDetails)) {
 				openConversationDetails.click();
-				Thread.sleep(1000);
+				DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameExitGroupInfoPageButton), 5);
 			}
-			if (DriverUtils.isElementDisplayed(driver.findElementByName(IOSLocators.nameExitGroupInfoPageButton))) {
+			if (DriverUtils.isElementDisplayed(closeInfoPage)) {
 				break;
 			}
 		}
@@ -376,6 +379,9 @@ public class DialogPage extends IOSPage{
 	public VideoPlayerPage clickOnVideoContainerFirstTime() throws IOException, InterruptedException {
 		VideoPlayerPage page = new VideoPlayerPage(url, path);
 		youtubeCell.click();
+		if (!page.isVideoPlayerPageOpened()) {
+			youtubeCell.click();
+		}
 		
 		return page;
 	}

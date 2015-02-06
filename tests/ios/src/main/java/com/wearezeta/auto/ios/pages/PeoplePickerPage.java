@@ -45,8 +45,8 @@ public class PeoplePickerPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.namePeoplePickerAddToConversationButton)
 	private WebElement addToConversationBtn;
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameLaterButton)
-	private WebElement laterButton;
+	@FindBy(how = How.NAME, using = IOSLocators.nameShareButton)
+	private WebElement shareButton;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameContinueUploadButton)
 	private WebElement continueButton;
@@ -67,8 +67,8 @@ public class PeoplePickerPage extends IOSPage{
 	}
 	
 	public void clickLaterButton() {
-		if(DriverUtils.isElementDisplayed(laterButton)) {
-			laterButton.click();
+		if(DriverUtils.isElementDisplayed(shareButton)) {
+			shareButton.click();
 		}
 	}
 	
@@ -134,9 +134,14 @@ public class PeoplePickerPage extends IOSPage{
 		return flag;
 	}
 	
-	public GroupChatPage clickOnGoButton() throws IOException{
+	public IOSPage clickOnGoButton(boolean isGroupChat) throws IOException{
 		goButton.click();
-		return new GroupChatPage(url, path);
+		if (isGroupChat) {
+			return new GroupChatPage(url, path);
+		}
+		else {
+			return new DialogPage(url, path);
+		}
 	}
 	
 	public GroupChatInfoPage clickOnUserToAddToExistingGroupChat(String name) throws Throwable{
@@ -252,7 +257,7 @@ public class PeoplePickerPage extends IOSPage{
 	}
 
 	public boolean isUploadDialogShown() {
-		boolean isLaterBtnVisible = DriverUtils.isElementDisplayed(laterButton);
+		boolean isLaterBtnVisible = DriverUtils.isElementDisplayed(shareButton);
 		return isLaterBtnVisible;
 	}
 

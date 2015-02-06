@@ -15,7 +15,7 @@ import com.wearezeta.auto.common.locators.ZetaFindBy;
 import com.wearezeta.auto.common.locators.ZetaHow;
 
 public class PeoplePickerPage extends AndroidPage {
-
+	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerSearchUsers")
 	private List<WebElement> pickerSearchUsers;
 
@@ -67,6 +67,11 @@ public class PeoplePickerPage extends AndroidPage {
 		pickerSearch.click();
 	}
 
+	public void tapOnContactInTopPeoples(String name) throws Exception{
+		WebElement el = driver.findElement(By.xpath(String.format(AndroidLocators.PeoplePickerPage.xpathTopConversationContact, name.toUpperCase())));
+		el.click();
+	}
+	
 	public void typeTextInPeopleSearch(String contactName) throws InterruptedException
 	{
 		pickerSearch.sendKeys(contactName);
@@ -194,7 +199,7 @@ public class PeoplePickerPage extends AndroidPage {
 		refreshUITree();
 		wait.until(ExpectedConditions.visibilityOf(createConversation));
 		createConversation.click();
-		//DriverUtils.androidMultiTap(driver, createConversation,1,0.3);
+		
 		return  new DialogPage(url, path);
 	}
 

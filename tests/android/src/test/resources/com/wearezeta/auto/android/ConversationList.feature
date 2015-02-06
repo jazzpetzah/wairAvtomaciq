@@ -6,7 +6,11 @@ Feature: Conversation List
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I swipe right on a <Contact1>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I swipe up on dialog page
+    And I press Right conversation button
+    And I press Silence conversartion button
     And I click mute conversation <Contact1>
     Then Contact <Contact1> is muted
     When I swipe right on a <Contact1>

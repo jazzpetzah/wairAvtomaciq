@@ -1,6 +1,5 @@
 package com.wearezeta.auto.web.pages;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -8,6 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -25,7 +25,13 @@ public class ContactListPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathSelfProfileEntry)
 	private WebElement selfName;
 
-	public ContactListPage(String URL, String path) throws IOException {
+	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathArchive)
+	private WebElement archive;
+
+	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.ContactListPage.classNameOpenPeoplePickerButton)
+	private WebElement openPeoplePickerButton;
+
+	public ContactListPage(String URL, String path) throws Exception {
 		super(URL, path);
 	}
 
@@ -46,6 +52,11 @@ public class ContactListPage extends WebPage {
 		}
 
 		return null;
+	}
+
+	public boolean waitForContactListVisible() {
+		return DriverUtils.waitUntilElementVisible(driver,
+				openPeoplePickerButton);
 	}
 
 	public boolean isContactWithNameExists(String name) {
@@ -77,6 +88,30 @@ public class ContactListPage extends WebPage {
 		return result;
 	}
 
+	public void openArchive() {
+		wait.until(ExpectedConditions.elementToBeClickable(archive));
+		archive.click();
+	}
+
+	public void clickArchiveConversationForContact(String conversationName) {
+
+		WebElement contact = getContactWithName(conversationName);
+
+		wait.until(ExpectedConditions.elementToBeClickable(By
+				.className(WebAppLocators.ContactListPage.classArchiveButton)));
+		WebElement archiveButton = contact.findElement(By
+				.className(WebAppLocators.ContactListPage.classArchiveButton));
+		archiveButton.click();
+	}
+
+	public void clickActionsButtonForContact(String conversationName) {
+
+		WebElement contact = getContactWithName(conversationName);
+		WebElement actionsButton = contact.findElement(By
+				.className(WebAppLocators.ContactListPage.classActionsButton));
+		actionsButton.click();
+	}
+
 	public ConversationPage openConversation(String conversationName)
 			throws Exception {
 		DriverUtils.waitUntilElementAppears(driver, By
@@ -95,6 +130,7 @@ public class ContactListPage extends WebPage {
 		} else {
 			for (WebElement contact : this.contactListEntries) {
 				if (contact.getText().equals(conversationName)) {
+					DriverUtils.waitUntilElementClickable(driver, contact);
 					contact.click();
 					return new ConversationPage(
 							CommonUtils
@@ -109,9 +145,26 @@ public class ContactListPage extends WebPage {
 				conversationName));
 	}
 
+	public ConnectToPage openConnectionRequestsList(String listAlias)
+			throws Exception {
+		openConversation(listAlias);
+		return new ConnectToPage(
+				CommonUtils.getWebAppAppiumUrlFromConfig(ContactListPage.class),
+				CommonUtils
+						.getWebAppApplicationPathFromConfig(ContactListPage.class));
+	}
+
 	public SelfProfilePage openSelfProfile() throws Exception {
 		selfName.click();
 		return new SelfProfilePage(
+				CommonUtils.getWebAppAppiumUrlFromConfig(ContactListPage.class),
+				CommonUtils
+						.getWebAppApplicationPathFromConfig(ContactListPage.class));
+	}
+
+	public PeoplePickerPage openPeoplePicker() throws Exception {
+		openPeoplePickerButton.click();
+		return new PeoplePickerPage(
 				CommonUtils.getWebAppAppiumUrlFromConfig(ContactListPage.class),
 				CommonUtils
 						.getWebAppApplicationPathFromConfig(ContactListPage.class));

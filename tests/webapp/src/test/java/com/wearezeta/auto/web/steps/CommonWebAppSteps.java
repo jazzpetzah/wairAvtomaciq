@@ -79,6 +79,62 @@ public class CommonWebAppSteps {
 		commonSteps.UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
 	}
 
+	/**
+	 * Creates group chat with specified users
+	 * 
+	 * @step. ^(.*) has group chat (.*) with (.*)$
+	 * 
+	 * @param chatOwnerNameAlias
+	 *            user that creates group chat
+	 * @param chatName
+	 *            group chat name
+	 * @param otherParticipantsNameAlises
+	 *            list of users which will be added to chat separated by comma
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^(.*) has group chat (.*) with (.*)$")
+	public void UserHasGroupChatWithContacts(String chatOwnerNameAlias,
+			String chatName, String otherParticipantsNameAlises)
+			throws Exception {
+		commonSteps.UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName,
+				otherParticipantsNameAlises);
+	}
+
+	/**
+	 * Sets self user to be the current user
+	 * 
+	 * @step. ^User (\\w+) is [Mm]e$
+	 * 
+	 * @param nameAlias
+	 *            user to be set as self user
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^User (\\w+) is [Mm]e$")
+	public void UserXIsMe(String nameAlias) throws Exception {
+		commonSteps.UserXIsMe(nameAlias);
+	}
+
+	/**
+	 * Sends connection request by one user to another
+	 * 
+	 * @step. ^(.*) has sent connection request to (.*)$
+	 * 
+	 * @param userFromNameAlias
+	 *            user that sends connection request
+	 * @param usersToNameAliases
+	 *            user which receive connection request
+	 *
+	 * @throws Exception
+	 */
+	@Given("^(.*) has sent connection request to (.*)$")
+	public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
+			String usersToNameAliases) throws Throwable {
+		commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
+				usersToNameAliases);
+	}
+
 	@After
 	public void tearDown() throws Exception {
 

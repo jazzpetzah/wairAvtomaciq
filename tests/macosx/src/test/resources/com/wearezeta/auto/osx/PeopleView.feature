@@ -298,7 +298,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact1Email | Contact2  | Contact3  | ChatName       |
       | user1Email | user1Password | user1Name | user2Name | user2Email    | user3Name | user4Name | LeaveGroupChat |
 
-  @staging @id765
+  @regression @id765
   Scenario Outline: Verify you can see participant profiles in a group conversation
     Given There are 4 users where <Name> is me
     Given I change user <Contact1> avatar picture from file <AvatarPicture>
@@ -337,7 +337,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | ChatName                | ConnectionRequestMessage | AvatarPicture         |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | ParticipantProfilesChat | Hello!                   | aqaPictureContact.jpg |
 
-  @staging @id619
+  @regression @id619
   Scenario Outline: Verify new users are added to a group conversation on the other end
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>

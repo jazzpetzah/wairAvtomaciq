@@ -39,7 +39,7 @@ Feature: Sign In
       | Login      | Login2     | Password      | Password2     | Name      | Name2     |
       | user1Email | user2Email | user1Password | user2Password | user1Name | user2Name |
 
-  @staging @id1120
+  @regression @id1120
   Scenario Outline: Verify I see wrong address or password message
     Given I am signed out from ZClient
     And I see Sign In screen
@@ -59,7 +59,7 @@ Feature: Sign In
       | Login | Password | Login2 | Password2 |
       | aaa   | aaa      | aaa2   | aaa2      |
 
-  @staging @id1116
+  @regression @id1116
   Scenario Outline: Verify Sign In progress behaviour while there are probelms with internet connectivity
     Given There is 1 user where <Name> is me
     Given I am signed out from ZClient
