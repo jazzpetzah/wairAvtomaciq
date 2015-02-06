@@ -13,12 +13,10 @@ public class ConnectToPageSteps {
 	/**
 	 * Accepts connection request received from specified user
 	 * 
-	 * @step ^I accept connection request from user (.*)$
+	 * @step. ^I accept connection request from user (.*)$
 	 * 
-	 * @param name
+	 * @param user
 	 *            name of user which sent connection request
-	 * 
-	 * @throws Exception
 	 */
 	@When("^I accept connection request from user (.*)$")
 	public void IAcceptConnectionRequestFromUser(String user) {
