@@ -10,7 +10,10 @@ import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeoutException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import javax.activation.DataHandler;
 import javax.mail.*;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -162,6 +165,101 @@ public class IMAPSMailbox {
 		}
 	}
 
+	public static String getActivationLink(
+			MBoxChangesListener listener, int timeout) throws TimeoutException,
+			InterruptedException, MessagingException, IOException {
+		try {
+			Message message = listener.getMatchedMessage(timeout);
+			if (message != null) {
+				createActivationURLFromMessage(message);
+			}
+			throw new TimeoutException(
+					String.format(
+							"The email message for user %s has not been received within %s second(s) timeout",
+							listener.getParentMBox().getUser(), timeout));
+		} finally {
+			listener.getParentMBox().closeFolder();
+		}
+	}
+	
+	private static String createActivationURLFromMessage(Message message) throws IOException, MessagingException{
+		String content = "";        
+		Object msgContent = message.getContent();
+		if (msgContent instanceof Multipart) {
+
+			Multipart multipart = (Multipart) msgContent;
+			for (int j = 0; j < multipart.getCount(); j++) {
+
+				BodyPart bodyPart = multipart.getBodyPart(j);
+
+				String disposition = bodyPart.getDisposition();
+
+				if (disposition != null && (disposition.equalsIgnoreCase(Part.ATTACHMENT))) { 
+					DataHandler handler = bodyPart.getDataHandler();                                 
+				}
+				else { 
+					content = getText(bodyPart);  
+				}
+			}
+		}
+		else            {    
+			content= message.getContent().toString();
+		}
+
+		return pullLink(content);
+	}
+	private static String getText(Part p) throws
+	MessagingException, IOException {
+		if (p.isMimeType("text/*")) {
+			String s = (String)p.getContent();
+			p.isMimeType("text/html");
+			return s;
+		}
+
+		if (p.isMimeType("multipart/alternative")) {
+			// prefer html text over plain text
+			Multipart mp = (Multipart)p.getContent();
+			String text = null;
+			for (int i = 0; i < mp.getCount(); i++) {
+				Part bp = mp.getBodyPart(i);
+				if (bp.isMimeType("text/plain")) {
+					if (text == null)
+						text = getText(bp);
+					continue;
+				} else if (bp.isMimeType("text/html")) {
+					String s = getText(bp);
+					if (s != null)
+						return s;
+				} else {
+					return getText(bp);
+				}
+			}
+			return text;
+		} else if (p.isMimeType("multipart/*")) {
+			Multipart mp = (Multipart)p.getContent();
+			for (int i = 0; i < mp.getCount(); i++) {
+				String s = getText(mp.getBodyPart(i));
+				if (s != null)
+					return s;
+			}
+		}
+
+		return null;
+	}
+
+	private static String pullLink(String text) {
+		ArrayList<String> links = new ArrayList<String>();
+
+		String regex = "<a href=\"([^\"]*)\"[^>]*>VERIFY</a>";
+		Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+		Matcher urlMatcher = p.matcher(text);
+		while (urlMatcher.find())
+		{
+			links.add(urlMatcher.group(1));
+		}
+		return links.get(0);
+	}
+	
 	private void closeFolder() {
 		if (folder.isOpen()) {
 			try {
