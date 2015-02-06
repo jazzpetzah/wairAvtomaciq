@@ -134,9 +134,14 @@ public class PeoplePickerPage extends IOSPage{
 		return flag;
 	}
 	
-	public GroupChatPage clickOnGoButton() throws IOException{
+	public IOSPage clickOnGoButton(boolean isGroupChat) throws IOException{
 		goButton.click();
-		return new GroupChatPage(url, path);
+		if (isGroupChat) {
+			return new GroupChatPage(url, path);
+		}
+		else {
+			return new DialogPage(url, path);
+		}
 	}
 	
 	public GroupChatInfoPage clickOnUserToAddToExistingGroupChat(String name) throws Throwable{

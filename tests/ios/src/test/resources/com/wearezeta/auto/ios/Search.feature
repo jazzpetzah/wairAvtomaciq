@@ -73,6 +73,8 @@ Feature: Search
   #Examples:
   #| Login   | Password    | Name    | Contact1    | Contact2    |
   #| aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 |
+  
+  
   @regression @id1394
   Scenario Outline: Start 1:1 chat with users from Top Connections
     Given There are <UserCount> users where <Name> is me
@@ -87,7 +89,7 @@ Feature: Search
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on 1 top connections
-    And I click Create Conversation button on People picker page
+    And I click Go button to create 1:1 conversation
     And I wait for 2 seconds
     And I see dialog page
 
@@ -109,7 +111,7 @@ Feature: Search
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on 2 top connections
-    And I click Create Conversation button on People picker page
+    And I click on Go button
     And I wait for 2 seconds
     And I swipe up on group chat page
     And I change group conversation name to <ConvoName>
