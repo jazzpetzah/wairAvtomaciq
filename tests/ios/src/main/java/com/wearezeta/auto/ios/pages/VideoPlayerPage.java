@@ -37,7 +37,7 @@ public class VideoPlayerPage extends IOSPage{
 	private String url;
 	private String path;
 	
-	public VideoPlayerPage(String URL, String path) throws IOException {
+	public VideoPlayerPage(String URL, String path) throws Exception {
 		super(URL, path);
 		
 		this.url = URL;
@@ -56,7 +56,7 @@ public class VideoPlayerPage extends IOSPage{
 		videoPlayerMainWindow.click();
 	}
 	
-	public DialogPage clickVideoDoneButton() throws IOException{
+	public DialogPage clickVideoDoneButton() throws Exception{
 		DialogPage page = null;
 		DriverUtils.mobileTapByCoordinates(driver, videoDoneButton);
 		try {

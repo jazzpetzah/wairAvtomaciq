@@ -14,8 +14,7 @@ import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
 import com.wearezeta.auto.common.locators.ZetaHow;
 
-public class PersonalInfoPage extends AndroidPage
-{
+public class PersonalInfoPage extends AndroidPage {
 
 	private String url;
 	private String path;
@@ -77,29 +76,28 @@ public class PersonalInfoPage extends AndroidPage
 		return emailField.isDisplayed();
 	}
 
-	public void waitForEmailFieldVisible(){
+	public void waitForEmailFieldVisible() {
 
 		wait.until(ExpectedConditions.visibilityOf(emailField));
 	}
 
-	public void clickOnPage() throws InterruptedException{
-		DriverUtils.androidMultiTap(driver, page,1,0.2);
+	public void clickOnPage() throws InterruptedException {
+		DriverUtils.androidMultiTap(driver, page, 1, 0.2);
 	}
 
-
-	public void tapChangePhotoButton(){
+	public void tapChangePhotoButton() {
 		changePhotoBtn.click();
 	}
 
-	public void tapGalleryButton(){
+	public void tapGalleryButton() {
 		galleryBtn.click();
 	}
 
-	public void tapConfirmButton() throws IOException{
+	public void tapConfirmButton() throws IOException {
 		confirmBtn.click();
 	}
 
-	public void tapSignOutBtn(){
+	public void tapSignOutBtn() {
 
 		refreshUITree();
 		signOutBtn.click();
@@ -109,26 +107,22 @@ public class PersonalInfoPage extends AndroidPage
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
 
 		AndroidPage page = null;
-		switch (direction){
-		case DOWN:
-		{
+		switch (direction) {
+		case DOWN: {
 			break;
 		}
-		case UP:
-		{
+		case UP: {
 			page = this;
 			break;
 		}
-		case LEFT:
-		{
+		case LEFT: {
 			break;
 		}
-		case RIGHT:
-		{
-			page = new ContactListPage(url,path);
+		case RIGHT: {
+			page = new ContactListPage(url, path);
 			break;
 		}
-		}	
+		}
 		return page;
 	}
 
@@ -141,10 +135,10 @@ public class PersonalInfoPage extends AndroidPage
 
 		refreshUITree();
 		settingsButton.click();
-		return new SettingsPage (url, path);
+		return new SettingsPage(url, path);
 	}
 
-	public void waitForConfirmBtn(){
+	public void waitForConfirmBtn() {
 		wait.until(ExpectedConditions.visibilityOf(confirmBtn));
 	}
 
@@ -154,19 +148,21 @@ public class PersonalInfoPage extends AndroidPage
 	}
 
 	public void changeName(String name, String newName) throws Exception {
-		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.PersonalInfoPage.idNameField));
+		DriverUtils.waitUntilElementDissapear(driver,
+				By.id(AndroidLocators.PersonalInfoPage.idNameField));
 		refreshUITree();
 		wait.until(ExpectedConditions.visibilityOf(nameEdit));
 		nameEdit.sendKeys(newName);
 		driver.navigate().back();
 		Thread.sleep(1000);
 	}
-	
+
 	@Override
-	public ContactListPage navigateBack() throws Exception{
+	public ContactListPage navigateBack() throws Exception {
 		driver.navigate().back();
 		return new ContactListPage(url, path);
 	}
+
 	public String getUserName() {
 		refreshUITree();
 		return nameField.getText();
@@ -183,20 +179,23 @@ public class PersonalInfoPage extends AndroidPage
 		return settingBox.isDisplayed();
 	}
 
-	public boolean isSettingsButtonNotVisible() {
+	public boolean isSettingsButtonNotVisible() throws Exception {
 		boolean flag = false;
 		refreshUITree();
-		DriverUtils.waitUntilElementDissapear(driver, AndroidLocators.PersonalInfoPage.getByForProfileOptionsButton());
-		if(settingsButtonList == null || settingsButtonList.isEmpty())
-		{
+		DriverUtils
+				.waitUntilElementDissapear(driver,
+						AndroidLocators.PersonalInfoPage
+								.getByForProfileOptionsButton());
+		if (settingsButtonList == null || settingsButtonList.isEmpty()) {
 			flag = true;
 		}
 		return flag;
 	}
-	
+
 	public boolean waitForSettingsDissapear() {
 
-		return DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.PersonalInfoPage.idProfileOptionsButton));
+		return DriverUtils.waitUntilElementDissapear(driver,
+				By.id(AndroidLocators.PersonalInfoPage.idProfileOptionsButton));
 	}
 
 }

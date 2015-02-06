@@ -1,7 +1,6 @@
 package com.wearezeta.auto.android;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 import org.junit.Assert;
 
@@ -108,7 +107,7 @@ public class PersonalInfoPageSteps {
 	}
 
 	@Then("I see changed user picture")
-	public void ThenISeeChangedUserPicture() throws IOException {
+	public void ThenISeeChangedUserPicture() throws Exception {
 		BufferedImage referenceImage = PagesCollection.personalInfoPage
 				.takeScreenshot();
 		String path = CommonUtils

@@ -7,7 +7,6 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.pages.GroupChatPage;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
@@ -26,7 +25,7 @@ public class PeoplePickerPageSteps {
 	}
 
 	@When("I see Upload contacts dialog")
-	public void WhenISeeUploadContactsDialog() throws IOException {
+	public void WhenISeeUploadContactsDialog() throws Exception {
 		if (PagesCollection.peoplePickerPage == null) {
 			String path = CommonUtils
 					.getIosApplicationPathFromConfig(TestRun.class);
@@ -175,19 +174,19 @@ public class PeoplePickerPageSteps {
 	}
 	
 	@When("^I click Go button to create 1:1 conversation$")
-	public void WhenIClickOnGoButtonForSingle() throws IOException {
+	public void WhenIClickOnGoButtonForSingle() throws Exception {
 		PagesCollection.iOSPage =  PagesCollection.peoplePickerPage
 				.clickOnGoButton(false);
 	}
 
 	@When("^I click on Go button to create 1:1 conversation$")
-	public void WhenIClickOnGoButton() throws IOException {
+	public void WhenIClickOnGoButton() throws Exception {
 		PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.peoplePickerPage
 				.clickOnGoButton(true);
 	}
 
 	@When("^I click clear button$")
-	public void WhenIClickClearButton() throws IOException {
+	public void WhenIClickClearButton() throws Exception {
 		PagesCollection.contactListPage = PagesCollection.peoplePickerPage
 				.dismissPeoplePicker();
 	}

@@ -157,7 +157,7 @@ public class ContactListPageSteps {
 
 	@When("I open People Picker from contact list")
 	public void WhenIOpenPeoplePickerFromContactList()
-			throws MalformedURLException, IOException {
+			throws Exception {
 		CommonOSXSteps.senderPages.getContactListPage().openPeoplePicker();
 		CommonOSXSteps.senderPages
 				.setPeoplePickerPage(new PeoplePickerPage(

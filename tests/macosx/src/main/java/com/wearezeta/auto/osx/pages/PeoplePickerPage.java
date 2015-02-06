@@ -1,7 +1,6 @@
 package com.wearezeta.auto.osx.pages;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -53,7 +52,7 @@ public class PeoplePickerPage extends OSXPage {
 	private WebElement peoplePickerTopContactAvatar;
 	
 	
-	public PeoplePickerPage(String URL, String path) throws IOException {
+	public PeoplePickerPage(String URL, String path) throws Exception {
 		super(URL, path);
 	}
 	

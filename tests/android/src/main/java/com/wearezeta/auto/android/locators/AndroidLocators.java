@@ -49,7 +49,7 @@ public final class AndroidLocators {
 		
 		public static final String xpathSignUpButton42 = "//android.widget.TextView[@text='REGISTER']";
 		
-		public static By getByForLoginPageRegistrationButton() {
+		public static By getByForLoginPageRegistrationButton() throws Exception {
 			if (CommonUtils.getAndroidApiLvl(AndroidLocators.class) < 43) {
 				return By
 						.xpath(AndroidLocators.LoginPage.xpathSignUpButton42);
@@ -93,7 +93,7 @@ public final class AndroidLocators {
 		
 		public static final String xpathConnectRequestIgnore42 = "//android.widget.TextView[@text='Ignore']";
 	
-		public static By getByForConnectToPageHeader() {
+		public static By getByForConnectToPageHeader() throws Exception {
 			if (CommonUtils.getAndroidApiLvl(AndroidLocators.class) < 43) {
 				return By
 						.xpath(AndroidLocators.ConnectToPage.xpathConnectToHeader42);
@@ -232,7 +232,7 @@ public final class AndroidLocators {
 		
 		public static final String xpathDialogImages42 = "//android.widget.FrameLayout//android.widget.ImageView";
 		
-		public static By getByForDialogPageImage() {
+		public static By getByForDialogPageImage() throws Exception {
 			if (CommonUtils.getAndroidApiLvl(AndroidLocators.class) < 43) {
 				return By
 						.xpath(AndroidLocators.DialogPage.xpathDialogImages42);
@@ -242,7 +242,7 @@ public final class AndroidLocators {
 			}
 		}
 		
-		public static By getByForDialogConfirmImageButtn() {
+		public static By getByForDialogConfirmImageButtn() throws Exception {
 			if (CommonUtils.getAndroidApiLvl(AndroidLocators.class) < 43) {
 				return By
 						.xpath(AndroidLocators.DialogPage.xpathConfirmButton42);
@@ -315,7 +315,7 @@ public final class AndroidLocators {
 		
 		public static final String xpathBlockButton42 = "android.widget.TextView[@text='BLOCK']";
 		
-		public static By getByForOtherUserPersonalInfoUnlockButton() {
+		public static By getByForOtherUserPersonalInfoUnlockButton() throws Exception {
 			if (CommonUtils.getAndroidApiLvl(AndroidLocators.class) < 43) {
 				return By
 						.xpath(AndroidLocators.OtherUserPersonalInfoPage.xpathUnblockBtn42);
@@ -418,7 +418,7 @@ public final class AndroidLocators {
 		
 		public static final String xpathNameEdit42 ="//android.widget.FrameLayout/android.widget.EditText";
 		
-		public static By getByForProfileOptionsButton() {
+		public static By getByForProfileOptionsButton() throws Exception {
 			if (CommonUtils.getAndroidApiLvl(AndroidLocators.class) < 43) {
 				return By
 						.xpath(AndroidLocators.PersonalInfoPage.xpathProfileOptionsButton42);

@@ -1,7 +1,5 @@
 package com.wearezeta.auto.osx.steps;
 
-import java.util.NoSuchElementException;
-
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
