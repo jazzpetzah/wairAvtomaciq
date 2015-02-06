@@ -108,6 +108,7 @@ Feature: Connect to user
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open People Picker from contact list
+    Given I wait up to 60 seconds until <ContactEmail> exists in backend search results
     And I search by email for user <Contact>
     And I see user <Contact> in search results
     And I add user <Contact> from search results
@@ -117,5 +118,5 @@ Feature: Connect to user
     
     
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact   | ContactEmail |
+      | user1Email | user1Password | user1Name | user2Name | user2Email   |

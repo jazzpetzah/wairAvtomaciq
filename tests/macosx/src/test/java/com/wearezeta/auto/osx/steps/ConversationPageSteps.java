@@ -70,8 +70,8 @@ public class ConversationPageSteps {
 	 */
 	@When("I can not write a random message")
 	public void ICanNotWriteAMessage() {
-		WebElement newMessageTextArea = CommonOSXSteps.senderPages.getConversationPage().findNewMessageTextArea();
-		Assert.assertNull("This is a pending user, message area should be hidden and not possible to send any message", newMessageTextArea);
+		boolean messageTextArea = CommonOSXSteps.senderPages.getConversationPage().isMessageTextAreaVisible();
+		Assert.assertFalse("This is a pending user, message area should be hidden and not possible to send any message", messageTextArea);
 	}
 
 	@When("I send message")

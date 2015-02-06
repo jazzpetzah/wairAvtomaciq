@@ -29,6 +29,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.osx.locators.OSXLocators;
+import com.wearezeta.auto.osx.steps.CommonOSXSteps;
 import com.wearezeta.auto.osx.util.NSPoint;
 
 public class ConversationPage extends OSXPage {
@@ -101,6 +102,14 @@ public class ConversationPage extends OSXPage {
 			}
 		}
 		return null;
+	}
+	
+	public boolean isMessageTextAreaVisible(){
+		WebElement newMessageTextArea = CommonOSXSteps.senderPages.getConversationPage().findNewMessageTextArea();
+		if (newMessageTextArea != null){
+			return true;
+		}
+		return false;	
 	}
 
 	public void ping() {

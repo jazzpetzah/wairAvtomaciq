@@ -41,13 +41,7 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 			}
-		boolean userInSearchResult = CommonOSXSteps.senderPages.getPeoplePickerPage().areSearchResultsContainUser(user);
-		if(!userInSearchResult){
-			CommonOSXSteps.senderPages.getPeoplePickerPage().closePeoplePicker();
-			Thread.sleep(1000);
-			CommonOSXSteps.senderPages.getContactListPage().openPeoplePicker();
-			ISearchByEmailForUser(user);
-		}
+		
 			Assert.assertTrue(
 			"User " + user + " not found in results",
 			CommonOSXSteps.senderPages.getPeoplePickerPage().areSearchResultsContainUser(user));
