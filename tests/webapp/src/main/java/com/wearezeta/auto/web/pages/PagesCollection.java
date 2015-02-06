@@ -19,4 +19,6 @@ public class PagesCollection extends AbstractPagesCollection {
 	public static ConnectToPage connectToPage = null;
 
 	public static PeoplePickerPage peoplePickerPage = null;
+	
+	public static UserProfilePopupPage userProfilePopupPage = null;
 }

@@ -17,3 +17,20 @@ Feature: People View
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
+
+  @staging @id1686
+  Scenario Outline: Verify you can access proﬁle information for the other participant in a 1to1 conversation
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name <Name> in Contact list
+    And I open conversation with <Contact>
+    And I click show user profile button
+    Then I see User Profile Popup Page
+    And I see on User Profile Popup Page User username <Contact>
+    And I see Add people button on User Profile Popup Page
+    And I see Block button on User Profile Popup Page
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
