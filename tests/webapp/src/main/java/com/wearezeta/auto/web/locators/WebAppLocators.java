@@ -77,6 +77,8 @@ public final class WebAppLocators {
 		public static final String xpathFormatSpecificMessageEntry = "//div[@class='message']/div[@class='text' and text()='%s']";
 
 		public static final String idConversationInput = "conversation-input-text";
+
+		public static final String classNameShowParticipantsButton = "show-participants";
 	}
 	
 	public static final class ConnectToPage {
@@ -93,6 +95,18 @@ public final class WebAppLocators {
 		public static final String xpathFormatSearchListItemWithName = "//div[@class='search-list-item-name' and text()='%s']";
 
 		public static final String classNameCreateConversationButton = "search-button-add";
+	}
+
+	public static final class UserProfilePopupPage {
+
+		public static final String xpathUserProfilePage = "//user-profile";
+
+		public static final String xpathNameAddPeopleButton = "//div[@class='footer-button-left zi zi-add zi-button']";
+
+		public static final String xpathNameBlockButton = "//div[@class='footer-button-right zi zi-block zi-button']";
+
+		public static final String xpathUserName = "//div[@class='name']";
+
 	}
 
 	public static final class Common {
