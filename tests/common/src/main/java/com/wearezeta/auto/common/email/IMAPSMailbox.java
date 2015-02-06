@@ -171,7 +171,7 @@ public class IMAPSMailbox {
 		try {
 			Message message = listener.getMatchedMessage(timeout);
 			if (message != null) {
-				createActivationURLFromMessage(message);
+				return createActivationURLFromMessage(message);
 			}
 			throw new TimeoutException(
 					String.format(
