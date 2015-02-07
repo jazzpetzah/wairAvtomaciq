@@ -151,9 +151,15 @@ public class CommonUtils {
 	}
 
 	private final static Semaphore sem = new Semaphore(1);
+	private final static Map<String, String> cachedConfig = new HashMap<String, String>();
 
 	private static String getValueFromConfigFile(Class<?> c, String key,
 			String resourcePath) throws Exception {
+		final String configKey = String.format("%s:%s", resourcePath, key);
+		if (cachedConfig.containsKey(configKey)) {
+			return cachedConfig.get(configKey);
+		}
+
 		final int maxTry = 5;
 		int tryNum = 0;
 		Exception savedException = null;
@@ -165,7 +171,8 @@ public class CommonUtils {
 				configFileStream = configFile.openStream();
 				Properties p = new Properties();
 				p.load(configFileStream);
-				return (String) p.get(key);
+				cachedConfig.put(configKey, (String) p.get(key));
+				return cachedConfig.get(configKey);
 			} catch (Exception e) {
 				savedException = e;
 			} finally {
@@ -174,7 +181,7 @@ public class CommonUtils {
 				}
 				sem.release();
 			}
-			Thread.sleep(1000 + rand.nextInt(2000));
+			Thread.sleep(100 + rand.nextInt(2000));
 			tryNum++;
 		} while (tryNum < maxTry);
 		throw savedException;
