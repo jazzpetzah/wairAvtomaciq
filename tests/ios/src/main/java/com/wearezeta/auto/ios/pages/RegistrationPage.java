@@ -3,6 +3,8 @@ package com.wearezeta.auto.ios.pages;
 import java.io.IOException;
 import java.util.List;
 
+import javax.mail.Message;
+
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -17,7 +19,7 @@ import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
-import com.wearezeta.auto.common.email.EmailHeaders;
+import com.wearezeta.auto.common.email.BackendMessage;
 import com.wearezeta.auto.common.email.IMAPSMailbox;
 
 public class RegistrationPage extends IOSPage {
@@ -113,8 +115,7 @@ public class RegistrationPage extends IOSPage {
 	private String url;
 	private String path;
 
-	public RegistrationPage(String URL, String path)
-			throws Exception {
+	public RegistrationPage(String URL, String path) throws Exception {
 		super(URL, path);
 		this.url = URL;
 		this.path = path;
@@ -202,7 +203,7 @@ public class RegistrationPage extends IOSPage {
 	public PeoplePickerPage waitForConfirmationMessage() throws Exception {
 		DriverUtils.waitUntilElementAppears(driver,
 				By.className(IOSLocators.classNameConfirmationMessage));
-		
+
 		return new PeoplePickerPage(url, path);
 	}
 
@@ -444,15 +445,18 @@ public class RegistrationPage extends IOSPage {
 	public int getRecentEmailsCountForRecipient(int allRecentEmailsCnt,
 			String expectedRecipient) throws Exception {
 		IMAPSMailbox mailbox = IMAPSMailbox.createDefaultInstance();
-		int actualCnt = 0;
-		List<EmailHeaders> allEmailsHeaders = mailbox
-				.getLastMailHeaders(allRecentEmailsCnt);
-		for (EmailHeaders emailHeaders : allEmailsHeaders) {
-			if (emailHeaders.getLastUserEmail().equals(expectedRecipient)) {
-				actualCnt++;
-			}
-		}
+
+		List<Message> allEmails = mailbox.getRecentMessages(allRecentEmailsCnt);
+		final int actualCnt = (int)allEmails
+				.stream()
+				.filter(x -> {
+					try {
+						return new BackendMessage(x).getLastUserEmail().equals(
+								expectedRecipient);
+					} catch (Exception e) {
+						return false;
+					}
+				}).count();
 		return actualCnt;
 	}
-
 }
