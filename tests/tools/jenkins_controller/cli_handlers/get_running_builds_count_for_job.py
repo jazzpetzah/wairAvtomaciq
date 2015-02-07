@@ -15,7 +15,7 @@ class GetRunningBuildsCountForJob(CliHandlerBase):
                             'Set it to negative value if you want to ignore this verification.')
         parser.add_argument('--depth',
                             help='How many recent builds should we check for the particular job')
-        parser.set_defaults(depth=50, queue_timeout=300)
+        parser.set_defaults(depth=20, queue_timeout=300)
 
     def _invoke(self):
         parser = self._get_parser()

@@ -19,7 +19,7 @@ class IsAnyNodeWithLabelsRunningJob(CliHandlerBase):
                             'Set it to negative value if you want to ignore this verification.')
         parser.add_argument('--depth',
                             help='How many recent builds should we check for the particular job')
-        parser.set_defaults(depth=50, queue_timeout=300)
+        parser.set_defaults(depth=20, queue_timeout=300)
 
     def _normalize_labels(self, labels_list):
         normalized_labels = map(lambda x: x.strip(), labels_list)
