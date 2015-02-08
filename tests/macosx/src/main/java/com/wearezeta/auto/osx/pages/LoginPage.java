@@ -2,7 +2,6 @@ package com.wearezeta.auto.osx.pages;
 
 import io.appium.java_client.AppiumDriver;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -58,7 +57,7 @@ public class LoginPage extends OSXPage {
 	private String url;
 	private String path;
 	
-	public LoginPage(String URL, String path) throws IOException {
+	public LoginPage(String URL, String path) throws Exception {
 		
 		super(URL, path);
 		this.url = URL;
@@ -79,8 +78,8 @@ public class LoginPage extends OSXPage {
 		signInButton.click();
 	}
 	
-	public ContactListPage confirmSignIn() throws IOException {
-		try { Thread.sleep(1000); } catch (InterruptedException e) { }
+	public ContactListPage confirmSignIn() throws Exception {
+		Thread.sleep(1000);
 		signInButton.click();
 		return new ContactListPage(url, path);
 		}
@@ -126,7 +125,7 @@ public class LoginPage extends OSXPage {
 		return el != null;
 	}
 	
-	public RegistrationPage startRegistration() throws IOException {
+	public RegistrationPage startRegistration() throws Exception {
 		acceptTermOfServiceCheckBox.click();
 		for (int i = 0; i < 3; i++) {
 			if (registerButton.getAttribute("AXEnabled").equals("1")) break;

@@ -29,6 +29,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.osx.locators.OSXLocators;
+import com.wearezeta.auto.osx.steps.CommonOSXSteps;
 import com.wearezeta.auto.osx.util.NSPoint;
 
 public class ConversationPage extends OSXPage {
@@ -37,7 +38,7 @@ public class ConversationPage extends OSXPage {
 
 	static final String SOUNDCLOUD_BUTTON_ATT_TITLE = "AXDescription";
 	static final String SOUNDCLOUD_BUTTON_ATT_TITLE_9 = "AXTitle";
-	
+
 	static String SOUNDCLOUD_BUTTON_STATE;
 	int numberSoundCloudButtons;
 
@@ -51,7 +52,7 @@ public class ConversationPage extends OSXPage {
 
 	@FindBy(how = How.NAME, using = OSXLocators.namePingMenuItem)
 	private WebElement pingMenuItem;
-	
+
 	@FindBy(how = How.NAME, using = OSXLocators.namePingAgainMenuItem)
 	private WebElement pingAgainMenuItem;
 
@@ -81,8 +82,7 @@ public class ConversationPage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathConversationViewScrollArea)
 	private WebElement conversationView;
 
-	public ConversationPage(String URL, String path)
-			throws IOException {
+	public ConversationPage(String URL, String path) throws Exception {
 
 		super(URL, path);
 	}
@@ -92,7 +92,7 @@ public class ConversationPage extends OSXPage {
 		return viewPager != null;
 	}
 
-	private WebElement findNewMessageTextArea() {
+	public WebElement findNewMessageTextArea() {
 		List<WebElement> rows = driver.findElements(By
 				.xpath(OSXLocators.xpathNewMessageTextArea));
 		for (WebElement row : rows) {
@@ -103,6 +103,15 @@ public class ConversationPage extends OSXPage {
 		return null;
 	}
 
+	public boolean isMessageTextAreaVisible() {
+		WebElement newMessageTextArea = CommonOSXSteps.senderPages
+				.getConversationPage().findNewMessageTextArea();
+		if (newMessageTextArea != null) {
+			return true;
+		}
+		return false;
+	}
+
 	public void ping() {
 		pingMenuItem.click();
 	}
@@ -110,18 +119,20 @@ public class ConversationPage extends OSXPage {
 	public void pingAgain() {
 		pingAgainMenuItem.click();
 	}
-	
+
 	public boolean isMessageExist(String message) throws InterruptedException {
 		String messageText = "";
-		
+
 		boolean isSystemMessage = true;
 		if (message.contains(OSXLocators.YOU_ADDED_MESSAGE)) {
 			messageText = OSXLocators.YOU_ADDED_MESSAGE;
 		} else if (message.contains(OSXLocators.USER_ADDED_MESSAGE_FORMAT)) {
 			messageText = OSXLocators.USER_ADDED_MESSAGE_FORMAT;
-		} else if (message.contains(OSXLocators.YOU_STARTED_CONVERSATION_MESSAGE)) {
+		} else if (message
+				.contains(OSXLocators.YOU_STARTED_CONVERSATION_MESSAGE)) {
 			messageText = OSXLocators.YOU_STARTED_CONVERSATION_MESSAGE;
-		} else if (message.contains(OSXLocators.USER_STARTED_CONVERSATION_MESSAGE_FORMAT)) {
+		} else if (message
+				.contains(OSXLocators.USER_STARTED_CONVERSATION_MESSAGE_FORMAT)) {
 			messageText = OSXLocators.USER_STARTED_CONVERSATION_MESSAGE_FORMAT;
 		} else {
 			isSystemMessage = false;
@@ -176,15 +187,15 @@ public class ConversationPage extends OSXPage {
 		log.debug("Open choose image dialog for conversation");
 		addImageButton.click();
 	}
-	
-	public void shortcutChooseImageDialog() throws ScriptException{
+
+	public void shortcutChooseImageDialog() throws ScriptException {
 		final String[] scriptArr = new String[] {
 				"property bi : \"com.wearezeta.zclient.mac\"",
 				"tell application id bi",
 				"activate",
 				"tell application \"System Events\" to keystroke \"p\" using {command down, shift down}",
-				"end tell"};
-		
+				"end tell" };
+
 		final String script = StringUtils.join(scriptArr, "\n");
 		ScriptEngineManager mgr = new ScriptEngineManager();
 		ScriptEngine engine = mgr.getEngineByName("AppleScript");
@@ -192,12 +203,13 @@ public class ConversationPage extends OSXPage {
 	}
 
 	public int getNumberOfYouPingedMessages(String xpath) {
-		List<WebElement> youPingedMessages =
-				driver.findElements(By.xpath(xpath));
-		log.debug("Retrieved number of Pings in conversation: " + youPingedMessages.size());
+		List<WebElement> youPingedMessages = driver.findElements(By
+				.xpath(xpath));
+		log.debug("Retrieved number of Pings in conversation: "
+				+ youPingedMessages.size());
 		return youPingedMessages.size();
 	}
-	
+
 	public int getNumberOfMessageEntries(String message) {
 		String xpath = String.format(
 				OSXLocators.xpathFormatSpecificMessageEntry, message);
@@ -238,8 +250,10 @@ public class ConversationPage extends OSXPage {
 
 	public boolean isSoundCloudContainerVisible() {
 
-		return DriverUtils.waitUntilElementAppears(driver,
-				By.xpath(OSXLocators.xpathSoundCloudMediaContainerWithoutImage));
+		return DriverUtils
+				.waitUntilElementAppears(
+						driver,
+						By.xpath(OSXLocators.xpathSoundCloudMediaContainerWithoutImage));
 	}
 
 	public String getSoundCloudButtonState() {
@@ -247,15 +261,18 @@ public class ConversationPage extends OSXPage {
 		SOUNDCLOUD_BUTTON_STATE = soundCloudLinkButton
 				.getAttribute(SOUNDCLOUD_BUTTON_ATT_TITLE);
 		if (SOUNDCLOUD_BUTTON_STATE.trim().isEmpty()) {
-			SOUNDCLOUD_BUTTON_STATE = soundCloudLinkButton.getAttribute(SOUNDCLOUD_BUTTON_ATT_TITLE_9);
+			SOUNDCLOUD_BUTTON_STATE = soundCloudLinkButton
+					.getAttribute(SOUNDCLOUD_BUTTON_ATT_TITLE_9);
 		}
 		return SOUNDCLOUD_BUTTON_STATE;
 	}
 
 	public void scrollDownTillMediaBarAppears() throws Exception {
-		NSPoint mediaBarPosition = NSPoint.fromString(mediabarBarTitle.getAttribute("AXPosition"));
-		NSPoint windowPosition = NSPoint.fromString(viewPager.getAttribute("AXPosition"));
-		
+		NSPoint mediaBarPosition = NSPoint.fromString(mediabarBarTitle
+				.getAttribute("AXPosition"));
+		NSPoint windowPosition = NSPoint.fromString(viewPager
+				.getAttribute("AXPosition"));
+
 		// get scrollbar for conversation view
 		WebElement conversationDecrementSB = null;
 
@@ -280,7 +297,8 @@ public class ConversationPage extends OSXPage {
 				mediaBarPosition = NSPoint.fromString(mediabarBarTitle
 						.getAttribute("AXPosition"));
 				long endDate = new Date().getTime();
-				if (endDate - startDate > TIMEOUT_MINUTES*60*1000) break;
+				if (endDate - startDate > TIMEOUT_MINUTES * 60 * 1000)
+					break;
 			}
 		}
 	}
@@ -296,8 +314,8 @@ public class ConversationPage extends OSXPage {
 					.getAttribute("AXPosition"));
 			NSPoint size = NSPoint.fromString(group.getAttribute("AXSize"));
 			if (position == null || size == null) {
-				log.debug("Can't get position or size for current element. Position: " + position +
-						", size: " + size);
+				log.debug("Can't get position or size for current element. Position: "
+						+ position + ", size: " + size);
 				continue;
 			}
 			if (position.y() + size.y() > lastPosition) {
@@ -340,7 +358,8 @@ public class ConversationPage extends OSXPage {
 				lastGroupPosition = NSPoint.fromString(lastGroup
 						.getAttribute("AXPosition"));
 				long endDate = new Date().getTime();
-				if (endDate - startDate > TIMEOUT_MINUTES*60*1000) break;
+				if (endDate - startDate > TIMEOUT_MINUTES * 60 * 1000)
+					break;
 			}
 		}
 	}
@@ -364,10 +383,14 @@ public class ConversationPage extends OSXPage {
 	}
 
 	public boolean isMediaBarVisible() {
-		NSPoint mediaBarPosition = NSPoint.fromString(mediabarBarTitle.getAttribute("AXPosition"));
-		NSPoint windowPosition = NSPoint.fromString(viewPager.getAttribute("AXPosition"));
-		if (mediaBarPosition.y() >= windowPosition.y()) return true;
-		else return false;
+		NSPoint mediaBarPosition = NSPoint.fromString(mediabarBarTitle
+				.getAttribute("AXPosition"));
+		NSPoint windowPosition = NSPoint.fromString(viewPager
+				.getAttribute("AXPosition"));
+		if (mediaBarPosition.y() >= windowPosition.y())
+			return true;
+		else
+			return false;
 	}
 
 	private static int STATE_CHANGE_TIMEOUT = 60 * 2;
@@ -375,7 +398,8 @@ public class ConversationPage extends OSXPage {
 	public String getCurrentPlaybackTime() {
 		String time = "";
 		try {
-			WebElement el = driver.findElement(By.xpath(OSXLocators.xpathSoundCloudCurrentPlaybackTime));
+			WebElement el = driver.findElement(By
+					.xpath(OSXLocators.xpathSoundCloudCurrentPlaybackTime));
 			time = el.getAttribute("AXValue");
 		} catch (NoSuchElementException e) {
 			log.error("No element that contains playback time");
@@ -405,19 +429,21 @@ public class ConversationPage extends OSXPage {
 	public boolean isMediaLinkAppearsInDialog(String link) {
 		return DriverUtils.waitUntilElementAppears(driver, By.name(link));
 	}
-	
+
 	private static final String UUID_TEXT_MESSAGE_PATTERN = "<AXGroup[^>]*>\\s*<AXStaticText[^>]*AXValue=\"([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\"[^>]*/>\\s*</AXGroup>";
+
 	public ArrayList<MessageEntry> listAllMessages(boolean checkTime) {
 		long startDate = new Date().getTime();
 		Date receivedDate = new Date();
 		String source = driver.getPageSource();
 		long endDate = new Date().getTime();
-		log.debug("Time to get page source: " + (endDate-startDate) + "ms");
+		log.debug("Time to get page source: " + (endDate - startDate) + "ms");
 		ArrayList<MessageEntry> listResult = new ArrayList<MessageEntry>();
 		Pattern pattern = Pattern.compile(UUID_TEXT_MESSAGE_PATTERN);
 		Matcher matcher = pattern.matcher(source);
 		while (matcher.find()) {
-			listResult.add(new MessageEntry("text", matcher.group(1), receivedDate, checkTime));
+			listResult.add(new MessageEntry("text", matcher.group(1),
+					receivedDate, checkTime));
 		}
 		return listResult;
 	}
@@ -427,13 +453,16 @@ public class ConversationPage extends OSXPage {
 		try {
 			Date receivedDate = new Date();
 			long startDate = new Date().getTime();
-			WebElement messageElement = driver.findElement(By.xpath(String.format(
-				OSXLocators.xpathFormatSpecificMessageEntry, message)));
+			WebElement messageElement = driver.findElement(By.xpath(String
+					.format(OSXLocators.xpathFormatSpecificMessageEntry,
+							message)));
 			long endDate = new Date().getTime();
 			long time = endDate - startDate;
-			log.debug("OSX: Message '" + message + "' received in " + (endDate - startDate) + "ms");
+			log.debug("OSX: Message '" + message + "' received in "
+					+ (endDate - startDate) + "ms");
 			if (messageElement != null) {
-				return new MessageEntry("text", message, new Date(receivedDate.getTime()+time/2), checkTime);
+				return new MessageEntry("text", message, new Date(
+						receivedDate.getTime() + time / 2), checkTime);
 			}
 		} finally {
 			DriverUtils.setDefaultImplicitWait(driver);
@@ -441,46 +470,49 @@ public class ConversationPage extends OSXPage {
 		return null;
 
 	}
-	
+
 	public void openFinder() {
-		 String scr0 = "tell application \"Finder\" to close every window\n" +
-					"tell application \"Finder\" to open folder \"Documents\" of home\n" +
-				"tell application \"System Events\" to tell application process \"Finder\"\n" +
-					"set frontmost to true\n" +
-					"end tell\n" +
-				"tell application \"System Events\" to tell application process \"Finder\"\n" +
-					"set position of window 1 to {0, 0}\n" +
-					"end tell\n" +
-				"tell application \"Finder\" to set the current view of the front Finder window to icon view";
-		 driver.executeScript(scr0);
+		String scr0 = "tell application \"Finder\" to close every window\n"
+				+ "tell application \"Finder\" to open folder \"Documents\" of home\n"
+				+ "tell application \"System Events\" to tell application process \"Finder\"\n"
+				+ "set frontmost to true\n"
+				+ "end tell\n"
+				+ "tell application \"System Events\" to tell application process \"Finder\"\n"
+				+ "set position of window 1 to {0, 0}\n"
+				+ "end tell\n"
+				+ "tell application \"Finder\" to set the current view of the front Finder window to icon view";
+		driver.executeScript(scr0);
 	}
-	
-	public void dragPictureToConversation(String picture) throws IOException {
+
+	public void dragPictureToConversation(String picture) throws Exception {
 		WebElement target = driver.findElement(By
 				.id(OSXLocators.idConversationScrollArea));
-		
-		NSPoint targetLocation = NSPoint.fromString(target.getAttribute("AXPosition"));
+
+		NSPoint targetLocation = NSPoint.fromString(target
+				.getAttribute("AXPosition"));
 		NSPoint targetSize = NSPoint.fromString(target.getAttribute("AXSize"));
-		
-		int xLoc = targetLocation.x() + targetSize.x()/2;
-		int yLoc = targetLocation.y() + targetSize.y()/2;
-		
-		String scr0 = "tell application \"Finder\" " + 
-				 "to set the bounds of the front Finder window " +
-				 "to {0, 0, " + (xLoc-20) + ", " + (yLoc-20) + "}";
+
+		int xLoc = targetLocation.x() + targetSize.x() / 2;
+		int yLoc = targetLocation.y() + targetSize.y() / 2;
+
+		String scr0 = "tell application \"Finder\" "
+				+ "to set the bounds of the front Finder window "
+				+ "to {0, 0, " + (xLoc - 20) + ", " + (yLoc - 20) + "}";
 		driver.executeScript(scr0);
-		 
+
 		driver.navigate().to("Finder");
 		try {
 			WebElement element = driver.findElement(By.name(picture));
 			Actions builder = new Actions(driver);
 
 			Action dragAndDrop = builder.clickAndHold(element)
-				.moveToElement(target).release(target).build();
+					.moveToElement(target).release(target).build();
 
 			dragAndDrop.perform();
 		} finally {
-			driver.navigate().to(CommonUtils.getOsxApplicationPathFromConfig(ConversationPage.class));
+			driver.navigate()
+					.to(CommonUtils
+							.getOsxApplicationPathFromConfig(ConversationPage.class));
 		}
 	}
 }

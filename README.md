@@ -23,14 +23,19 @@ brew install node
 ##Appium
 Download Appium from here:
 
-* [Appium for Mac](https://bitbucket.org/appium/appium.app/downloads/) 
+* [Appium](https://bitbucket.org/appium/appium.app/downloads/) 
+* UPDATE [Appium newst version](https://github.com/appium/appium/releases/tag/v1.3.3)
 
-When Appium is opened, configure it by clicking in the Apple symbole. If you want to run the test on the simulator add the AppPath to ZClient.app like from here or where ever the simulator build is: (~/Library/Developer/Xcode/DerivedData/ZClient-fxsmvhgghphimdebxcatdyrafqyx/Build/Products/Debug-iphonesimulator/ZClient.app)
-Set Platform version to 7.1
+When Appium is opened, configure it by clicking in the Apple symbole. If you want to run the test on the simulator add the AppPath to ZClient.app (this needs to be a simulator build).
+Set simulator device as iPhone 6
+Set Platform version manually to 8.1 
 
 Press 'Launch' to connect Appium to the simulator to run tests on it.
 
-You can run the tests as well on the Device, therefore provide AppPath to ipa file of the debug-iphone build and enable BundleID with com.wearezeta.zclient-alpha and your UDID of your device and change platform version to 7.1.1.
+You can run the tests as well on the Device, therefore provide AppPath to ipa file of the debug-iphone build and enable BundleID with com.wearezeta.zclient-alpha and your UDID of your device and change platform version to the version that is running on your device.
+
+#####Run Appium for Mac Wire automation
+Open in the zautomation folder the AppiumForMac Folder and open the project file with xcode. Run the code and leave it running. A Appium icon with the osx X should appear in your dock.
 
 ##Eclipse
 Download Eclipse.
@@ -40,10 +45,11 @@ For better reading of Cucumber files, Cucumber Plug-In: go to Help -> Install Ne
 
 All needed project structure, base classes and utilities are already ready to use. Just open the zautomation/tests folder in Eclipse (File -> Import -> existing Maven Project -> select the /tests folder). There the test architecture for every platform is in.
 
-You have to configure settings.xml file: An example of this file is in zautomation/tests/settings.xml Create ~/.m2 folder and create settings.xml file. Change root and appPath (same like in Appium) and all other needed values of this file according to your local values
+You have to configure settings.xml file: An example of this file is in zautomation/tests/settings.xml Create ~/.m2 folder and create settings.xml file. Change root and appPath (same like in Appium) and all other needed values of this file according to your local values.
+For Mac the wire app just needs to be placed into the Applicationsfolder and in settings.xml and in pom.xml (inside eclipse) <appPath>tag needs to have the name of the App. (eg. <apppath>WireBuild1880<apppath>).
 
 Configure Maven builds:
-In Eclipse create new Maven Debug configuration (Run -> Debug Configurations…).Pictures of the configurations are found in the Wiki (Setting up Eclipse project ).
+In Eclipse create new Maven Debug configuration (Run -> Debug Configurations…).Pictures of the configurations are found in the Wiki (Setting up Eclipse project https://github.com/wearezeta/zautomation/wiki/Setting-up-Eclipse-project ).
  For the Base directory – select a project you want to debug (iOS, android, macosx). Profile – according to the selected project. Profile name should be the same as set in settings.xml file.
  Create another debug configuration, this time for Remote Java Application.
  

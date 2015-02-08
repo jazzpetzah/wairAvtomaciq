@@ -43,7 +43,7 @@ public class RegistrationPageSteps {
 	}
 
 	@When("^I See selected picture$")
-	public void ISeeSelectedPicture() throws IOException {
+	public void ISeeSelectedPicture() throws Exception {
 		Assert.assertTrue(PagesCollection.registrationPage.isPictureSelected());
 	}
 
@@ -53,7 +53,7 @@ public class RegistrationPageSteps {
 	}
 
 	@When("^I enter name (.*)$")
-	public void IEnterName(String name) throws IOException {
+	public void IEnterName(String name) throws Exception {
 		try {
 			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
 		} catch (NoSuchUserException e) {

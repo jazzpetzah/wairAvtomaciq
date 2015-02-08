@@ -52,12 +52,14 @@ public class GroupChatInfoPageSteps {
 	}
 
 	@When("^I tap on (.*) and check email (.*) and name$")
-	public void ITapAllParticipantsAndCheckElements(String user, String checkEmail) throws Exception {
+	public void ITapAllParticipantsAndCheckElements(String user,
+			String checkEmail) throws Exception {
 		if (checkEmail.equals("visible")) {
-			PagesCollection.groupChatInfoPage.tapAndCheckAllParticipants(user, true);
-		}
-		else {
-			PagesCollection.groupChatInfoPage.tapAndCheckAllParticipants(user, false);
+			PagesCollection.groupChatInfoPage.tapAndCheckAllParticipants(user,
+					true);
+		} else {
+			PagesCollection.groupChatInfoPage.tapAndCheckAllParticipants(user,
+					false);
 		}
 	}
 
@@ -122,13 +124,13 @@ public class GroupChatInfoPageSteps {
 	}
 
 	@When("I swipe down on group chat info page")
-	public void ISwipeUpOnGroupChatInfoPage() throws IOException {
+	public void ISwipeUpOnGroupChatInfoPage() throws Exception {
 		PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.groupChatInfoPage
 				.swipeDown(500);
 	}
 
 	@When("I close group chat info page")
-	public void ICloseGroupChatInfoPage() throws IOException {
+	public void ICloseGroupChatInfoPage() throws Exception {
 		PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.groupChatInfoPage
 				.closeGroupChatInfoPage();
 	}

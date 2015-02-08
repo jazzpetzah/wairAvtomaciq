@@ -78,7 +78,7 @@ public class WebPage extends BasePage {
 	}
 
 	@Override
-	public void Close() throws IOException {
+	public void Close() throws Exception {
 		super.Close();
 	}
 

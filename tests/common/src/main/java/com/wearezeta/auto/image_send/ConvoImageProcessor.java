@@ -9,8 +9,6 @@ import java.util.UUID;
 
 import javax.imageio.ImageIO;
 
-import org.apache.commons.codec.binary.Base64;
-
 public class ConvoImageProcessor extends ImageAssetProcessor {
 	public static final String PREVIEW_TAG = "preview";
 	private static final int PREVIEW_DIMENSION = 64;

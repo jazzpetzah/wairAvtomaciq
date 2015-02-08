@@ -1,7 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -197,7 +196,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		
 	}
 
-	public boolean isBackGroundImageCorrect(String imageName) throws IOException {
+	public boolean isBackGroundImageCorrect(String imageName) throws Exception {
 		BufferedImage bgImage = null;
 		boolean flag = false;
 		bgImage = getElementScreenshot(backGround);
@@ -279,7 +278,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		return new DialogPage(url, path);
 	}
 
-	public boolean isParticipantAvatars(String contact1, String contact2) throws IOException {
+	public boolean isParticipantAvatars(String contact1, String contact2) throws Exception {
 		boolean flag1 = false;
 		boolean flag2 = false;
 		boolean commonFlag = false;

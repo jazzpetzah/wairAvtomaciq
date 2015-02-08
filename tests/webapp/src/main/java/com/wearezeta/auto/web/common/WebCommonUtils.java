@@ -1,7 +1,5 @@
 package com.wearezeta.auto.web.common;
 
-import java.io.IOException;
-
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -14,12 +12,12 @@ public class WebCommonUtils extends CommonUtils {
 			.getSimpleName());
 
 	public static String getWebAppBrowserNameFromConfig(Class<?> c)
-			throws IOException {
+			throws Exception {
 		return getValueFromConfig(c, "browserName");
 	}
 
 	public static String getPlatformNameFromConfig(Class<?> c)
-			throws IOException {
+			throws Exception {
 		return getValueFromConfig(c, "platformName");
 	}
 }

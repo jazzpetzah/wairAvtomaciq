@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.io.IOException;
 import java.util.*;
 
 import org.openqa.selenium.By;
@@ -49,7 +48,7 @@ public class ContactListPage extends IOSPage {
 	private String path;
 	private int oldLocation = 0;
 
-	public ContactListPage(String URL, String path) throws IOException {
+	public ContactListPage(String URL, String path) throws Exception {
 		super(URL, path);
 		url = URL;
 		this.path = path;
@@ -112,7 +111,7 @@ public class ContactListPage extends IOSPage {
 		return result;
 	}
 
-	public IOSPage tapOnName(String name) throws IOException {
+	public IOSPage tapOnName(String name) throws Exception {
 		IOSPage page = null;
 		WebElement el = findNameInContactList(name);
 		wait.until(ExpectedConditions.elementToBeClickable(el));
@@ -177,7 +176,7 @@ public class ContactListPage extends IOSPage {
 	}
 
 	public IOSPage swipeRightOnContact(int time, String contact)
-			throws IOException {
+			throws Exception {
 		oldLocation = driver.findElementByXPath(
 				String.format(IOSLocators.xpathMutedIcon, contact))
 				.getLocation().x;
@@ -196,14 +195,12 @@ public class ContactListPage extends IOSPage {
 	}
 
 	public GroupChatPage tapOnUnnamedGroupChat(String contact1, String contact2)
-			throws IOException {
-
+			throws Exception {
 		findChatInContactList(contact1, contact2).click();
-
 		return new GroupChatPage(url, path);
 	}
 
-	public IOSPage tapOnGroupChat(String chatName) throws IOException {
+	public IOSPage tapOnGroupChat(String chatName) throws Exception {
 		findNameInContactList(chatName).click();
 		return new GroupChatPage(url, path);
 	}
@@ -231,7 +228,7 @@ public class ContactListPage extends IOSPage {
 	}
 
 	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
+	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
 
 		IOSPage page = null;
 		switch (direction) {
@@ -295,7 +292,7 @@ public class ContactListPage extends IOSPage {
 	}
 
 	@Override
-	public IOSPage swipeDown(int time) throws IOException {
+	public IOSPage swipeDown(int time) throws Exception {
 		Point coords = content.getLocation();
 		Dimension elementSize = content.getSize();
 		driver.swipe(coords.x + elementSize.width / 2, coords.y + 150, coords.x
