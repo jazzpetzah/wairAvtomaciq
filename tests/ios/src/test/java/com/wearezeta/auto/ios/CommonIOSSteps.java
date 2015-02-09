@@ -12,7 +12,6 @@ import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.ios.tools.IOSKeyboard;
-import com.wearezeta.auto.ios.tools.IOSSimulatorPhotoLibHelper;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
