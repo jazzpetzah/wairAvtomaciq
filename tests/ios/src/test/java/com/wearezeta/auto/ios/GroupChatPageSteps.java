@@ -27,8 +27,7 @@ public class GroupChatPageSteps {
 		List<String> participantNames = new ArrayList<String>();
 		for (String nameAlias : CommonSteps
 				.splitAliases(participantNameAliases)) {
-			String name = usrMgr.findUserByNameOrNameAlias(nameAlias)
-					.getName();
+			String name = usrMgr.findUserByNameOrNameAlias(nameAlias).getName();
 			if (name.indexOf(" ") != -1) {
 				name = name.substring(0, name.indexOf(" "));
 			}
@@ -51,7 +50,7 @@ public class GroupChatPageSteps {
 		Assert.assertTrue(PagesCollection.groupChatPage
 				.areRequired3ContactsAddedToChat(name1, name2, name3));
 	}
-	
+
 	/**
 	 * Click open conversation details button in group chat
 	 * 
@@ -60,9 +59,10 @@ public class GroupChatPageSteps {
 	 * @throws Exception
 	 *             if group chat info page was not created
 	 */
-	@When("^I open group conversation details$") 
+	@When("^I open group conversation details$")
 	public void IOpenConversationDetails() throws Exception {
-		PagesCollection.groupChatInfoPage = (GroupChatInfoPage) PagesCollection.groupChatPage.openConversationDetailsClick();
+		PagesCollection.groupChatInfoPage = (GroupChatInfoPage) PagesCollection.groupChatPage
+				.openConversationDetailsClick();
 	}
 
 	@When("^I swipe up on group chat page$")
@@ -102,7 +102,7 @@ public class GroupChatPageSteps {
 	}
 
 	@When("^I return to the chat list$")
-	public void IReturnToChatList() throws IOException {
+	public void IReturnToChatList() throws Exception {
 		PagesCollection.contactListPage = (ContactListPage) PagesCollection.groupChatPage
 				.swipeRight(500);
 	}

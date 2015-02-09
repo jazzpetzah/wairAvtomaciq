@@ -89,7 +89,7 @@ public class ContactListPageSteps {
 	}
 
 	@When("^I tap on group chat with name (.*)$")
-	public void WhenITapOnGroupChatName(String chatName) throws IOException {
+	public void WhenITapOnGroupChatName(String chatName) throws Exception {
 
 		IOSPage page = PagesCollection.contactListPage.tapOnGroupChat(chatName);
 

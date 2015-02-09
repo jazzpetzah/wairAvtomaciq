@@ -74,8 +74,7 @@ public class PersonalInfoPageSteps {
 	}
 
 	@When("I click Sign out button from personal page")
-	public void IClickSignOutButtonFromPersonalPage()
-			throws IOException {
+	public void IClickSignOutButtonFromPersonalPage() throws Exception {
 		PagesCollection.personalInfoPage.clickSignoutButton();
 	}
 
@@ -85,7 +84,7 @@ public class PersonalInfoPageSteps {
 	}
 
 	@When("^I press Camera button$")
-	public void IPressCameraButton() throws InterruptedException, IOException {
+	public void IPressCameraButton() throws Exception {
 		CameraRollPage page = PagesCollection.personalInfoPage
 				.pressCameraButton();
 		PagesCollection.cameraRollPage = (CameraRollPage) page;
@@ -160,7 +159,7 @@ public class PersonalInfoPageSteps {
 	}
 
 	@When("I swipe right on the personal page")
-	public void ISwipeRightOnPersonalPage() throws IOException {
+	public void ISwipeRightOnPersonalPage() throws Exception {
 		PagesCollection.contactListPage = (ContactListPage) PagesCollection.personalInfoPage
 				.swipeRight(500);
 	}

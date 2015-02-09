@@ -30,7 +30,7 @@ public class ImageFullScreenPage extends IOSPage{
 	private String url;
 	private String path;
 	
-	public ImageFullScreenPage(String URL, String path) throws IOException {
+	public ImageFullScreenPage(String URL, String path) throws Exception {
 		super(URL, path);
 		
 		this.url = URL;
@@ -41,7 +41,7 @@ public class ImageFullScreenPage extends IOSPage{
 		return imageFullScreen.isDisplayed();
 	}
 	
-	public DialogPage clickCloseButton() throws IOException{
+	public DialogPage clickCloseButton() throws Exception{
 		DialogPage page = null;
 		fullScreenCloseButton.click();
 		page = new DialogPage(url, path);

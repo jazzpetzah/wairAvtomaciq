@@ -1,6 +1,5 @@
 package com.wearezeta.auto.sync.client;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
@@ -48,7 +47,7 @@ public class ZetaInstance {
 			try {
 				isEnabled = SyncEngineUtil
 					.getAndroidClientEnabledFromConfig(ExecutionContext.class);
-			} catch (IOException e) {
+			} catch (Exception e) {
 				isEnabled = true;
 				log.warn("Failed to read property android.client.enabled from config file. Set to 'true' by default");
 			}
@@ -56,7 +55,7 @@ public class ZetaInstance {
 			try {
 				isSendUsingBackend = SyncEngineUtil
 						.getAndroidBackendSenderFromConfig(this.getClass());
-			} catch (IOException e) {
+			} catch (Exception e) {
 				isSendUsingBackend = false;
 				log.warn("Failed to read property android.backend.sender from config file. Set to 'false' by default");
 				
@@ -65,7 +64,7 @@ public class ZetaInstance {
 			try {
 				isEnabled = SyncEngineUtil
 					.getIosClientEnabledFromConfig(ExecutionContext.class);
-			} catch (IOException e) {
+			} catch (Exception e) {
 				isEnabled = true;
 				log.warn("Failed to read property ios.client.enabled from config file. Set to 'true' by default");
 			}
@@ -73,7 +72,7 @@ public class ZetaInstance {
 			try {
 				isSendUsingBackend = SyncEngineUtil
 						.getIosBackendSenderFromConfig(this.getClass());
-			} catch (IOException e) {
+			} catch (Exception e) {
 				isSendUsingBackend = false;
 				log.warn("Failed to read property ios.backend.sender from config file. Set to 'false' by default");
 			}
@@ -82,7 +81,7 @@ public class ZetaInstance {
 			try {
 				isEnabled = SyncEngineUtil
 					.getOSXClientEnabledFromConfig(ExecutionContext.class);
-			} catch (IOException e) {
+			} catch (Exception e) {
 				isEnabled = true;
 				log.warn("Failed to read property osx.client.enabled from config file. Set to 'true' by default");
 			}
@@ -90,7 +89,7 @@ public class ZetaInstance {
 			try {
 				isSendUsingBackend = SyncEngineUtil
 						.getOSXBackendSenderFromConfig(this.getClass());
-			} catch (IOException e) {
+			} catch (Exception e) {
 				isSendUsingBackend = false;
 				log.warn("Failed to read property osx.backend.sender from config file. Set to 'false' by default");
 			}
@@ -101,7 +100,7 @@ public class ZetaInstance {
 		try {
 			messagesSendingInterval = SyncEngineUtil.getAcceptanceMaxSendingIntervalFromConfig(ExecutionContext.class);
 			
-		} catch (IOException e) {
+		} catch (Exception e) {
 			messagesSendingInterval = 0;
 			log.warn("Failed to read property acceptance.max.sending.interval.sec from config file. Set to '0' by default");
 		}
@@ -109,7 +108,7 @@ public class ZetaInstance {
 		try {
 			messagesToSend = SyncEngineUtil.getClientMessagesCount(ExecutionContext.class);
 			
-		} catch (IOException e) {
+		} catch (Exception e) {
 			messagesToSend = -1;
 			log.warn("Failed to read property acceptance.messages.count from config file. Set to '0' by default");
 		}

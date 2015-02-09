@@ -108,7 +108,7 @@ public class LoginPage extends AndroidPage {
 		return login;
 	}
 
-	public void setLogin(String login) throws IOException {
+	public void setLogin(String login) throws Exception {
 		refreshUITree();
 		if(CommonUtils.getAndroidApiLvl(LoginPage.class) > 42){
 			loginInput.sendKeys(login);
@@ -126,7 +126,7 @@ public class LoginPage extends AndroidPage {
 		return password;
 	}
 
-	public void setPassword(String password) throws InterruptedException, IOException {
+	public void setPassword(String password) throws Exception {
 		if(CommonUtils.getAndroidApiLvl(LoginPage.class) > 42){
 			passwordInput.click();
 			passwordInput.sendKeys(password);

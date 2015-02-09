@@ -143,14 +143,30 @@ public class ContactListPageSteps {
 
 	@When("^I swipe right on a (.*)$")
 	public void ISwipeRightOnContact(String contact) throws Exception {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		try {
+			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
 		PagesCollection.contactListPage.swipeRightOnContact(1000, contact);
 	}
 
-	@When("^I click mute conversation (.*)$")
-	public void IClickMuteConversation(String contact) throws Exception {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		PagesCollection.contactListPage.clickOnMute(contact);
+	@When("^I swipe archive conversation (.*)$")
+	public void ISwipeArchiveConversation(String contact) throws Exception {
+		try {
+			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+		AndroidPage page  = PagesCollection.contactListPage.swipeOnArchiveUnarchive(contact);
+		if(page instanceof DialogPage){
+			PagesCollection.dialogPage = (DialogPage) page;
+		}
+	}
+
+	@When("^I swipe up contact list$")
+	public void ISwipeUpContactList() throws Exception {
+		PagesCollection.contactListPage.swipeUp(1000);
 	}
 
 	@Then("^I see (.*) and (.*) chat in contact list$")

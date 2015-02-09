@@ -42,7 +42,17 @@ public class PeoplePickerPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idUnblockUserButton)
 	private WebElement unblockUserButton;
 	
-	public PeoplePickerPage(String URL, String path) throws IOException {
+	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerTopContactsGrid)
+	private WebElement peoplePickerTopContactsList;
+	
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathPeoplePickerTopContacts)
+	private WebElement peoplePickerTopContacts;
+	
+	@FindBy(how = How.XPATH, using = OSXLocators.xpathPeoplePickerTopContactAvatar)
+	private WebElement peoplePickerTopContactAvatar;
+	
+	
+	public PeoplePickerPage(String URL, String path) throws Exception {
 		super(URL, path);
 	}
 	
@@ -200,5 +210,16 @@ public class PeoplePickerPage extends OSXPage {
 	
 	public void addSelectedUsersToConversation() {
 		addToConversationButton.click();
+	}
+	
+	public boolean isTopPeopleVisible(){
+//		return DriverUtils.waitUntilElementAppears(driver,
+//				By.xpath(OSXLocators.xpathPeoplePickerTopContactsSectionHeader));
+		return DriverUtils.waitUntilElementAppears(driver,
+				By.xpath(OSXLocators.xpathPeoplePickerTopContacts));		
+	}
+	
+	public void selectUserFromTopPeople(){
+		peoplePickerTopContactAvatar.click();
 	}
 }

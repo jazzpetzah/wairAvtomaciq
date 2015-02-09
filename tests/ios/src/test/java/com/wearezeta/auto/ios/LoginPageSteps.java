@@ -13,7 +13,7 @@ import com.wearezeta.auto.ios.pages.PagesCollection;
 import cucumber.api.java.en.*;
 
 /**
- * Contains steps to work with Login/Welcome page 
+ * Contains steps to work with Login/Welcome page
  *
  */
 public class LoginPageSteps {
@@ -44,8 +44,7 @@ public class LoginPageSteps {
 	 *             if login operation was unsuccessful
 	 */
 	@Given("^I Sign in using login (.*) and password (.*)$")
-	public void GivenISignIn(String login, String password) throws IOException,
-			InterruptedException {
+	public void GivenISignIn(String login, String password) throws Exception {
 		try {
 			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
 		} catch (NoSuchUserException e) {
@@ -89,7 +88,7 @@ public class LoginPageSteps {
 	 * @throws IOException
 	 */
 	@When("I press Login button")
-	public void WhenIPressSignInButtonAgain() throws IOException {
+	public void WhenIPressSignInButtonAgain() throws Exception {
 		PagesCollection.contactListPage = (ContactListPage) (PagesCollection.loginPage
 				.login());
 	}
@@ -112,7 +111,7 @@ public class LoginPageSteps {
 	 * @throws IOException
 	 */
 	@When("I press Join button")
-	public void WhenIPressJoinButton() throws IOException {
+	public void WhenIPressJoinButton() throws Exception {
 		PagesCollection.registrationPage = PagesCollection.loginPage.join();
 	}
 
@@ -126,7 +125,7 @@ public class LoginPageSteps {
 	 * @throws IOException
 	 */
 	@When("I have entered login (.*)")
-	public void WhenIHaveEnteredLogin(String login) throws IOException {
+	public void WhenIHaveEnteredLogin(String login) throws Exception {
 		try {
 			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
 		} catch (NoSuchUserException e) {
@@ -145,7 +144,7 @@ public class LoginPageSteps {
 	 * @throws IOException
 	 */
 	@When("I have entered password (.*)")
-	public void WhenIHaveEnteredPassword(String password) throws IOException {
+	public void WhenIHaveEnteredPassword(String password) throws Exception {
 		try {
 			password = usrMgr.findUserByPasswordAlias(password).getPassword();
 		} catch (NoSuchUserException e) {
@@ -163,7 +162,7 @@ public class LoginPageSteps {
 	 *            a string to type
 	 */
 	@When("I fill in email input (.*)")
-	public void IFillInEmailInput(String text) throws IOException {
+	public void IFillInEmailInput(String text) throws Exception {
 		PagesCollection.loginPage.setLogin(text);
 	}
 
@@ -304,7 +303,7 @@ public class LoginPageSteps {
 	 *            text to enter into email input field
 	 */
 	@When("^I enter wrong email (.*)")
-	public void IEnterWrongEmail(String wrongMail) throws IOException {
+	public void IEnterWrongEmail(String wrongMail) throws Exception {
 		PagesCollection.loginPage.setLogin(wrongMail);
 		PagesCollection.loginPage.tapPasswordField();
 	}
@@ -341,7 +340,7 @@ public class LoginPageSteps {
 	 * @step. ^I enter wrong password (.*)
 	 */
 	@When("^I enter wrong password (.*)")
-	public void IEnterWrongPassword(String wrongPassword) throws IOException {
+	public void IEnterWrongPassword(String wrongPassword) throws Exception {
 		PagesCollection.loginPage.setPassword(wrongPassword);
 	}
 

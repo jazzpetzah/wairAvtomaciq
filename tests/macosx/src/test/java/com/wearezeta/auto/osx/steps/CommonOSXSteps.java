@@ -3,6 +3,7 @@ package com.wearezeta.auto.osx.steps;
 import io.appium.java_client.AppiumDriver;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import javax.mail.MessagingException;
 import javax.ws.rs.core.UriBuilderException;
@@ -250,6 +251,29 @@ public class CommonOSXSteps {
 				timeout);
 	}
 
+	@When("^Contact (.*) sends random message to conversation (.*)")
+	public void ContactSendsRandomMessageToConversation(String msgFromUserNameAlias, String dstUserNameAlias) throws Exception {
+		String message = UUID.randomUUID().toString();
+		ContactSendsMessageToConversation(msgFromUserNameAlias, message, dstUserNameAlias);
+	}
+	
+	@When("^Contact (.*) sends message (.*) to conversation (.*)$")
+	public void ContactSendsMessageToConversation(String msgFromUserNameAlias,
+			String message, String dstUserNameAlias) throws Exception {
+		commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstUserNameAlias, message);
+	}
+	
+	@When("^Contact (.*) posts messages and media link (.*) to conversation (.*)$")
+	public void ContactPostsMessagesAndMediaLink(String msgFromUserNameAlias,
+			String mediaLink, String dstUserNameAlias) throws Exception {
+		final int RANDOM_MESSAGE_COUNT = 20;
+		for (int i = 0; i <= RANDOM_MESSAGE_COUNT; i++) {
+			ContactSendsRandomMessageToConversation(msgFromUserNameAlias, dstUserNameAlias);
+			Thread.sleep(500);
+		}
+		ContactSendsMessageToConversation(msgFromUserNameAlias, mediaLink, dstUserNameAlias);
+	}
+	
 	@After
 	public void tearDown() throws Exception {
 		senderPages.closeAllPages();

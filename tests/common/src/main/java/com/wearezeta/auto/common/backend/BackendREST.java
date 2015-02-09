@@ -11,13 +11,11 @@ import java.util.Map;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
-import javax.ws.rs.core.UriBuilderException;
 
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.sun.jersey.api.client.Client;
@@ -25,7 +23,6 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource.Builder;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.backend.AuthToken.AuthTokenIsNotSetException;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.image_send.*;
 
@@ -106,15 +103,14 @@ final class BackendREST {
 	}
 
 	private static Builder buildDefaultRequest(String restAction, String accept)
-			throws IllegalArgumentException, UriBuilderException, IOException {
+			throws Exception {
 		return client
 				.resource(String.format("%s/%s", getBaseURI(), restAction))
 				.accept(accept);
 	}
 
 	private static Builder buildDefaultRequestWithAuth(String restAction,
-			String accept, AuthToken token) throws IllegalArgumentException,
-			UriBuilderException, IOException, AuthTokenIsNotSetException {
+			String accept, AuthToken token) throws Exception {
 		return client
 				.resource(String.format("%s/%s", getBaseURI(), restAction))
 				.accept(accept)
@@ -390,8 +386,7 @@ final class BackendREST {
 	}
 
 	public static JSONObject getLastEventIDs(AuthToken token)
-			throws IllegalArgumentException, UriBuilderException, IOException,
-			AuthTokenIsNotSetException, BackendRequestException {
+			throws Exception {
 		Builder webResource = buildDefaultRequestWithAuth(
 				String.format("conversations/last-events"),
 				MediaType.APPLICATION_JSON, token);
@@ -403,9 +398,7 @@ final class BackendREST {
 	}
 
 	public static String getLastEventFromConversation(AuthToken token,
-			String convId) throws JSONException, IllegalArgumentException,
-			UriBuilderException, IOException, AuthTokenIsNotSetException,
-			BackendRequestException {
+			String convId) throws Exception {
 		JSONArray convsWithLastIds = BackendREST.getLastEventIDs(token)
 				.getJSONArray("conversations");
 		for (int i = 0; i < convsWithLastIds.length(); i++) {
@@ -489,8 +482,7 @@ final class BackendREST {
 
 	public static void updateConvSelfInfo(AuthToken token, String convId,
 			String lastRead, Boolean muted, Boolean archived)
-			throws IllegalArgumentException, UriBuilderException, IOException,
-			AuthTokenIsNotSetException, JSONException, BackendRequestException {
+			throws Exception {
 		Builder webResource = buildDefaultRequestWithAuth(
 				String.format("conversations/%s/self", convId),
 				MediaType.APPLICATION_JSON, token).type(
@@ -535,8 +527,7 @@ final class BackendREST {
 		backendUrl = url;
 	}
 
-	public static URI getBaseURI() throws IllegalArgumentException,
-			UriBuilderException, IOException {
+	public static URI getBaseURI() throws Exception {
 		String backend = backendUrl.equals("not set") ? CommonUtils
 				.getDefaultBackEndUrlFromConfig(CommonUtils.class) : backendUrl;
 

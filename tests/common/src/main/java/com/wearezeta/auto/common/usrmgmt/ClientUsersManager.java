@@ -1,6 +1,5 @@
 package com.wearezeta.auto.common.usrmgmt;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -49,7 +48,7 @@ public class ClientUsersManager {
 	}
 
 	private void resetClientsList(List<ClientUser> dstList, int maxCount)
-			throws IOException {
+			throws Exception {
 		this.selfUser = null;
 		dstList.clear();
 		for (int userIdx = 0; userIdx < maxCount; userIdx++) {
@@ -78,14 +77,14 @@ public class ClientUsersManager {
 		return result;
 	}
 
-	public void resetUsers() throws IOException {
+	public void resetUsers() throws Exception {
 		this.selfUser = null;
 		this.resetClientsList(users, MAX_USERS);
 	}
 
 	private static ClientUsersManager instance = null;
 
-	private ClientUsersManager() throws IOException {
+	private ClientUsersManager() throws Exception {
 		resetClientsList(this.users, MAX_USERS);
 	}
 
@@ -93,8 +92,9 @@ public class ClientUsersManager {
 		if (instance == null) {
 			try {
 				instance = new ClientUsersManager();
-			} catch (IOException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
+				return null;
 			}
 		}
 		return instance;

@@ -50,13 +50,25 @@ public class ContactListPageSteps {
 	public void GivenISeeContactListWithName(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		log.debug("Looking for contact with name " + name);
+		Assert.assertTrue("No contact list loaded.",
+				PagesCollection.contactListPage.waitForContactListVisible());
 		if (usrMgr.isSelfUserSet()
 				&& usrMgr.getSelfUser().getName().equals(name)) {
 			Assert.assertTrue(PagesCollection.contactListPage.getSelfName()
 					.equals(name));
 		} else {
-			Assert.assertTrue(PagesCollection.contactListPage
-					.isContactWithNameExists(name));
+			boolean result = false;
+			for (int i = 0; i < 20; i++) {
+				result = PagesCollection.contactListPage
+						.isContactWithNameExists(name);
+				if (result)
+					break;
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+				}
+			}
+			Assert.assertTrue(result);
 		}
 	}
 
@@ -157,9 +169,22 @@ public class ContactListPageSteps {
 	 * @throws Exception
 	 */
 	@Given("^I open connection requests list$")
-	public void GivenIOpenConnectionRequestsList() throws Exception {
+	public void IOpenConnectionRequestsList() throws Exception {
 		PagesCollection.connectToPage = PagesCollection.contactListPage
 				.openConnectionRequestsList(WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING);
 
+	}
+
+	/**
+	 * Opens People Picker in Contact List
+	 * 
+	 * @step. ^I open People Picker from Contact List$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I open People Picker from Contact List$")
+	public void IOpenPeoplePicker() throws Exception {
+		PagesCollection.peoplePickerPage = PagesCollection.contactListPage
+				.openPeoplePicker();
 	}
 }
