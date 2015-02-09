@@ -52,6 +52,15 @@ public class IMAPSMailbox {
 		try {
 			for (String serverName : CACHED_STORES.keySet()) {
 				Store store = CACHED_STORES.get(serverName);
+				try {
+					final Folder inbox = store.getDefaultFolder().getFolder(
+							MAILS_FOLDER);
+					if (inbox.isOpen()) {
+						inbox.close(true);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				store.close();
 			}
 			CACHED_STORES.clear();
@@ -97,19 +106,15 @@ public class IMAPSMailbox {
 		if (!folder.isOpen()) {
 			this.openFolder();
 		}
-		try {
-			int currentMsgsCount = folder.getMessageCount();
-			Message[] fetchedMsgs;
-			if (msgsCount > currentMsgsCount) {
-				fetchedMsgs = folder.getMessages();
-			} else {
-				fetchedMsgs = folder.getMessages(currentMsgsCount - msgsCount,
-						currentMsgsCount);
-			}
-			return new ArrayList<Message>(Arrays.asList(fetchedMsgs));
-		} finally {
-			this.closeFolder();
+		int currentMsgsCount = folder.getMessageCount();
+		Message[] fetchedMsgs;
+		if (msgsCount > currentMsgsCount) {
+			fetchedMsgs = folder.getMessages();
+		} else {
+			fetchedMsgs = folder.getMessages(currentMsgsCount - msgsCount,
+					currentMsgsCount);
 		}
+		return new ArrayList<Message>(Arrays.asList(fetchedMsgs));
 	}
 
 	public MBoxChangesListener startMboxListener(
@@ -144,28 +149,14 @@ public class IMAPSMailbox {
 	public static Message getFilteredMessage(MBoxChangesListener listener,
 			int timeout) throws TimeoutException, InterruptedException,
 			MessagingException {
-		try {
-			Message message = listener.getMatchedMessage(timeout);
-			if (message != null) {
-				return message;
-			}
-			throw new TimeoutException(
-					String.format(
-							"The email message for user %s has not been received within %s second(s) timeout",
-							listener.getParentMBox().getUser(), timeout));
-		} finally {
-			listener.getParentMBox().closeFolder();
+		Message message = listener.getMatchedMessage(timeout);
+		if (message != null) {
+			return message;
 		}
-	}
-
-	private void closeFolder() {
-		if (folder.isOpen()) {
-			try {
-				folder.close(true);
-			} catch (MessagingException e) {
-				e.printStackTrace();
-			}
-		}
+		throw new TimeoutException(
+				String.format(
+						"The email message for user %s has not been received within %s second(s) timeout",
+						listener.getParentMBox().getUser(), timeout));
 	}
 
 	static {
