@@ -24,7 +24,7 @@ Feature: People View
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
-    And I open conversation with <Contact>
+    When I open conversation with <Contact>
     And I click show user profile button
     Then I see User Profile Popup Page
     And I see on User Profile Popup Page User username <Contact>
@@ -34,3 +34,25 @@ Feature: People View
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+      
+      
+  @staging @id1692
+  Scenario Outline: Leave from group chat
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name <Name> in Contact list
+    And I open conversation with <ChatName>
+    And I click show user profile button
+    And I see User Profile Popup Page
+    When I click leave group chat
+    And I confirm leave group chat
+    Then I do not see Contact list with name <ChatName>
+    When I open archive
+    And I open conversation with <ChatName>
+    Then I see <Message> action in conversation
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       | Message    |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat | you left   |

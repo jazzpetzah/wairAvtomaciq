@@ -79,4 +79,19 @@ public class ConversationPageSteps {
 				.clickShowUserProfileButton();
 
 	}
+	
+	
+	/**
+	 * Checks action message (e.g. you left, etc.) appear in conversation
+	 * 
+	 * @step. ^I see (.*) action in conversation$
+	 * 
+	 * @throws AssertionError
+	 *             if action message did not appear in conversation
+	 */
+	@Then("^I see (.*) action in conversation$")
+	public void ThenISeeActionInConversation(String message) {
+		Assert.assertTrue(PagesCollection.conversationPage
+				.isActionMessageSent(message));
+	}
 }
