@@ -145,6 +145,7 @@ public class PersonalInfoPage extends AndroidPage {
 	public void tapOnMyName() {
 		wait.until(ExpectedConditions.visibilityOf(nameField));
 		nameField.click();
+		wait.until(ExpectedConditions.visibilityOf(nameEdit));
 	}
 
 	public void changeName(String name, String newName) throws Exception {
