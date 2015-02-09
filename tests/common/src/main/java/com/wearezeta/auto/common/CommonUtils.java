@@ -362,4 +362,16 @@ public class CommonUtils {
 					+ " were not enabled. Make sure tcpblock is installed.");
 		}
 	}
+
+	public static String readTextFileFromResources(String resourcePath)
+			throws IOException {
+		BufferedReader in = new BufferedReader(new InputStreamReader(
+				CommonUtils.class.getResourceAsStream(resourcePath)));
+		String full = "";
+		String s;
+		while ((s = in.readLine()) != null) {
+			full += s + "\n";
+		}
+		return full;
+	}
 }

@@ -79,6 +79,8 @@ public final class WebAppLocators {
 		public static final String idConversationInput = "conversation-input-text";
 
 		public static final String classNameShowParticipantsButton = "show-participants";
+		
+		public static final String xpathActionMessageEntry = "//div[@class='message']//div[@class='action' and contains(text(), '%s')]";
 	}
 	
 	public static final class ConnectToPage {
@@ -98,14 +100,18 @@ public final class WebAppLocators {
 	}
 
 	public static final class UserProfilePopupPage {
-
-		public static final String xpathUserProfilePage = "//user-profile";
+		
+		public static final String idUserProfilePage = "participants-bubble";
 
 		public static final String xpathNameAddPeopleButton = "//div[@class='footer-button-left zi zi-add zi-button']";
 
 		public static final String xpathNameBlockButton = "//div[@class='footer-button-right zi zi-block zi-button']";
 
 		public static final String xpathUserName = "//div[@class='name']";
+		
+		public static final String xpathLeaveGroupChat = "//div[@class='participants-group-leave zi zi-leave zi-button']";
+		
+		public static final String xpathConfirmLeaveButton = "//div[@class='zeta-button zeta-button-medium' and text()='leave']";
 
 	}
 

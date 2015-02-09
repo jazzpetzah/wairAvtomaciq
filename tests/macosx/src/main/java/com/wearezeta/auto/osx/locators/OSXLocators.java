@@ -187,4 +187,9 @@ public final class OSXLocators {
 	public static final String idCloseNoInternetDialogButton = "_NS:14";
 	
 	public static final String xpathAvatarFullScreenWindow = "//AXWindow[@AXRoleDescription='floating window']";
+
+	public static final class RegistrationPage {
+		
+		public static final String ACTIVATION_RESPONSE_VERIFIED = "Account verified.";
+	}
 }
