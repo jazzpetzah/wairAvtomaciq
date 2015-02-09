@@ -12,6 +12,7 @@ Feature: People View
     And I search for <Contact2> in People Picker
     And I select <Contact2> from People Picker results
     And I choose to create conversation from People Picker
+    And I see Contact list with name <Name>
     Then I see Contact list with name <Contact1>,<Contact2>
 
     Examples: 

@@ -1,7 +1,5 @@
 package com.wearezeta.auto.sync;
 
-import java.io.IOException;
-
 import com.wearezeta.auto.common.CommonUtils;
 
 public class SyncEngineUtil {
@@ -23,52 +21,52 @@ public class SyncEngineUtil {
 	};
 
 	public static boolean getCommonGenerateUsersFromConfig(Class<?> c)
-			throws IOException {
+			throws Exception {
 		return Boolean.parseBoolean(CommonUtils.getValueFromConfig(c, "common.generate.users"));
 	}
 
 	public static boolean getOSXClientEnabledFromConfig(Class<?> c)
-			throws IOException {
+			throws Exception {
 		return Boolean.parseBoolean(CommonUtils.getValueFromConfig(c, "osx.client.enabled"));
 	}
 
 	public static boolean getAndroidClientEnabledFromConfig(Class<?> c)
-			throws IOException {
+			throws Exception {
 		return Boolean.parseBoolean(CommonUtils.getValueFromConfig(c, "android.client.enabled"));
 	}
 
 	public static boolean getIosClientEnabledFromConfig(Class<?> c)
-			throws IOException {
+			throws Exception {
 		return Boolean.parseBoolean(CommonUtils.getValueFromConfig(c, "ios.client.enabled"));
 	}
 	
 	public static boolean getOSXBackendSenderFromConfig(Class<?> c)
-			throws IOException {
+			throws Exception {
 		return Boolean.parseBoolean(CommonUtils.getValueFromConfig(c, "osx.backend.sender"));
 	}
 
 	public static boolean getAndroidBackendSenderFromConfig(Class<?> c)
-			throws IOException {
+			throws Exception {
 		return Boolean.parseBoolean(CommonUtils.getValueFromConfig(c, "android.backend.sender"));
 	}
 
 	public static boolean getIosBackendSenderFromConfig(Class<?> c)
-			throws IOException {
+			throws Exception {
 		return Boolean.parseBoolean(CommonUtils.getValueFromConfig(c, "ios.backend.sender"));
 	}
 	
 	public static String getAcceptanceReportPathFromConfig(Class<?> c)
-			throws IOException {
+			throws Exception {
 		return CommonUtils.getValueFromConfig(c, "acceptance.report.path");
 	}
 
 	public static int getAcceptanceMaxSendingIntervalFromConfig(Class<?> c)
-			throws IOException {
+			throws NumberFormatException, Exception {
 		return Integer.parseInt(CommonUtils.getValueFromConfig(c, "acceptance.max.send.interval.sec"));
 	}
 	
 	public static int getClientMessagesCount(Class<?> c)
-			throws IOException {
+			throws NumberFormatException, Exception {
 		return Integer.parseInt(CommonUtils.getValueFromConfig(c, "acceptance.messages.count"));
 	}
 	

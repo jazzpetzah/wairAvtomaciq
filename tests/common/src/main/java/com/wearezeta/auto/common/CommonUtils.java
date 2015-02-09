@@ -7,7 +7,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
@@ -167,8 +166,9 @@ public class CommonUtils {
 			InputStream configFileStream = null;
 			sem.acquire();
 			try {
-				URL configFile = c.getClass().getResource("/" + resourcePath);
-				configFileStream = configFile.openStream();
+				final ClassLoader classLoader = c.getClassLoader();
+				configFileStream = classLoader
+						.getResourceAsStream(resourcePath);
 				Properties p = new Properties();
 				p.load(configFileStream);
 				cachedConfig.put(configKey, (String) p.get(key));
