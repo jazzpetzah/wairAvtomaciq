@@ -24,17 +24,17 @@ public class ConversationPage extends WebPage {
 
 	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idConversationInput)
 	private WebElement conversationInput;
-	
+
 	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.ConversationPage.classNameShowParticipantsButton)
 	private WebElement showParticipants;
 
 	private String url;
 	private String path;
-	
+
 	public ConversationPage(String URL, String path) throws Exception {
 
 		super(URL, path);
-		
+
 		this.url = URL;
 		this.path = path;
 	}
@@ -59,14 +59,28 @@ public class ConversationPage extends WebPage {
 		}
 		return isSend;
 	}
-	
+
 	public UserProfilePopupPage clickShowUserProfileButton() throws Exception {
 		showParticipants.click();
 		return new UserProfilePopupPage(url, path);
 	}
-	
+
 	public ParticipantsPopupPage clickShowParticipantsButton() throws Exception {
 		showParticipants.click();
 		return new ParticipantsPopupPage(url, path);
+	}
+
+	private static String getFullPicturePath(String pictureName) {
+		return String.format("%s/Documents/%s", System.getenv("HOME"),
+				"Documents", pictureName);
+	}
+
+	public void sendPicture(String pictureName) {
+		final String picturePath = getFullPicturePath(pictureName);
+	}
+
+	public boolean isPictureSent(String pictureName) {
+		final String picturePath = getFullPicturePath(pictureName);
+		return false;
 	}
 }
