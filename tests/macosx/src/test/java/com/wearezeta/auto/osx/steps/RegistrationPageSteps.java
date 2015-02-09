@@ -1,7 +1,5 @@
 package com.wearezeta.auto.osx.steps;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -32,7 +30,7 @@ public class RegistrationPageSteps {
 	private MBoxChangesListener listener;
 
 	@When("I enter name (.*)")
-	public void IEnterName(String name) throws IOException {
+	public void IEnterName(String name) throws Exception {
 		try {
 			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
 		} catch (NoSuchUserException e) {
@@ -48,7 +46,7 @@ public class RegistrationPageSteps {
 	}
 
 	@When("I enter email (.*)")
-	public void IEnterEmail(String email) throws IOException {
+	public void IEnterEmail(String email) throws Exception {
 		try {
 			String realEmail = usrMgr.findUserByEmailOrEmailAlias(email)
 					.getEmail();
@@ -66,7 +64,7 @@ public class RegistrationPageSteps {
 	}
 
 	@When("I enter password (.*)")
-	public void IEnterPassword(String password) throws IOException {
+	public void IEnterPassword(String password) throws Exception {
 		try {
 			this.userToRegister.setPassword(usrMgr.findUserByPasswordAlias(
 					password).getPassword());
@@ -122,7 +120,7 @@ public class RegistrationPageSteps {
 
 	@When("I take registration picture from image file (.*)")
 	public void ITakeRegistrationPictureFromImageFile(String imageFile)
-			throws MalformedURLException, IOException, InterruptedException {
+			throws Exception {
 		ChoosePicturePage choosePicturePage = new ChoosePicturePage(
 				CommonUtils
 						.getOsxAppiumUrlFromConfig(RegistrationPageSteps.class),
@@ -158,7 +156,7 @@ public class RegistrationPageSteps {
 		UserProfilePageSteps upSteps = new UserProfilePageSteps();
 		upSteps.ISeeNameInUserProfile(this.userToRegister.getName());
 	}
-	
+
 	public static final String[] INVALID_EMAILS = new String[] {
 			"abc.example.com", "abc@example@.com", "example@zeta",
 			"abc@example." };

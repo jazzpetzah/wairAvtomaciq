@@ -61,7 +61,7 @@ public class LoginPageSteps {
 	}
 
 	@When("I have entered login (.*)")
-	public void WhenIHaveEnteredLogin(String login) throws IOException {
+	public void WhenIHaveEnteredLogin(String login) throws Exception {
 		try {
 			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
 		} catch (NoSuchUserException e) {
@@ -72,7 +72,7 @@ public class LoginPageSteps {
 
 	@When("I have entered password (.*)")
 	public void WhenIHaveEnteredPassword(String password)
-			throws InterruptedException, IOException {
+			throws Exception {
 		try {
 			password = usrMgr.findUserByPasswordAlias(password).getPassword();
 		} catch (NoSuchUserException e) {

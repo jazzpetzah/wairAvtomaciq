@@ -145,7 +145,7 @@ public class AndroidCommonUtils extends CommonUtils {
 		return result;
 	}
 	
-	public static String readClientVersionFromAdb() throws IOException, InterruptedException {
+	public static String readClientVersionFromAdb() throws Exception {
 		String clientBuild = "no info";
 		String adbCommand = String.format(ADB_PREFIX + "adb shell dumpsys package %s | grep versionName", CommonUtils.getAndroidPackageFromConfig(AndroidLocators.class));
 		Process process = null;
@@ -183,7 +183,7 @@ public class AndroidCommonUtils extends CommonUtils {
 		return clientBuild;
 	}
 	
-	public static BuildVersionInfo readClientVersion() throws IOException, InterruptedException {
+	public static BuildVersionInfo readClientVersion() throws Exception {
 		String clientBuild = readClientVersionFromAdb();
 		String zmessagingBuild = getZMessagingBuildFromClassesDex();
 		
@@ -257,12 +257,12 @@ public class AndroidCommonUtils extends CommonUtils {
 	}
 	
 	public static String getAndroidClientInfoPathFromConfig(Class<?> c)
-			throws IOException {
+			throws Exception {
 		return CommonUtils.getValueFromConfig(c, "androidClientInfoPath");
 	}
 	
 	public static String getAndroidAppiumLogPathFromConfig(Class<?> c)
-			throws IOException {
+			throws Exception {
 		return CommonUtils.getValueFromConfig(c, "androidAppiumLogPath");
 	}
 	

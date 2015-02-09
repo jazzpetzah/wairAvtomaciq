@@ -1,7 +1,5 @@
 package com.wearezeta.auto.osx.steps;
 
-import java.io.IOException;
-
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
@@ -25,7 +23,7 @@ public class LoginPageSteps {
 
 	@Given("I Sign in using login (.*) and password (.*)")
 	public void GivenISignInUsingLoginAndPassword(String login, String password)
-			throws IOException {
+			throws Exception {
 		try {
 			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
 		} catch (NoSuchUserException e) {
@@ -68,7 +66,7 @@ public class LoginPageSteps {
 	}
 
 	@When("I press Sign In button")
-	public void WhenIPressSignInButton() throws IOException {
+	public void WhenIPressSignInButton() throws Exception {
 		OSXPage page = CommonOSXSteps.senderPages.getLoginPage()
 				.confirmSignIn();
 		Assert.assertNotNull(
@@ -121,7 +119,7 @@ public class LoginPageSteps {
 	}
 
 	@When("I start registration")
-	public void IStartRegistration() throws IOException {
+	public void IStartRegistration() throws Exception {
 		RegistrationPage registration = CommonOSXSteps.senderPages
 				.getLoginPage().startRegistration();
 		CommonOSXSteps.senderPages.setRegistrationPage(registration);

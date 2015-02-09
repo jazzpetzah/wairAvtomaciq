@@ -1,7 +1,5 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.io.IOException;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -31,7 +29,7 @@ public class CameraRollPage extends IOSPage{
 	private String url;
 	private String path;
 	
-	public CameraRollPage(String URL, String path) throws IOException {
+	public CameraRollPage(String URL, String path) throws Exception {
 		super(URL, path);
 		
 		this.url = URL;
@@ -70,7 +68,7 @@ public class CameraRollPage extends IOSPage{
 	}
 	
 	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
+	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
 		IOSPage page = null;
 		switch (direction){
 			case DOWN:

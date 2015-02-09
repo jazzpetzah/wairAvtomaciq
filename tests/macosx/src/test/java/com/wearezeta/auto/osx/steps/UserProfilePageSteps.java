@@ -2,7 +2,6 @@ package com.wearezeta.auto.osx.steps;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 import org.junit.Assert;
 
@@ -23,15 +22,14 @@ public class UserProfilePageSteps {
 
 	private BufferedImage userProfileBefore = null;
 	private BufferedImage userProfileAfter = null;
-	
+
 	@Given("I open picture settings")
 	public void GivenIOpenPictureSettings() throws IOException {
 		CommonOSXSteps.senderPages.getUserProfilePage().openPictureSettings();
 	}
 
 	@When("I choose to select picture from image file")
-	public void WhenIChooseToSelectPictureFromImageFile()
-			throws MalformedURLException, IOException {
+	public void WhenIChooseToSelectPictureFromImageFile() throws Exception {
 		CommonOSXSteps.senderPages.getUserProfilePage()
 				.openChooseImageFileDialog();
 		CommonOSXSteps.senderPages
@@ -48,8 +46,7 @@ public class UserProfilePageSteps {
 	}
 
 	@When("I select image file (.*)")
-	public void WhenISelectImageFile(String imageFilename)
-			throws InterruptedException {
+	public void WhenISelectImageFile(String imageFilename) throws Exception {
 		ChoosePicturePage choosePicturePage = CommonOSXSteps.senderPages
 				.getChoosePicturePage();
 		Assert.assertTrue(choosePicturePage.isVisible());

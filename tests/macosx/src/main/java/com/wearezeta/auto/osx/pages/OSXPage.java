@@ -18,11 +18,11 @@ public class OSXPage extends BasePage {
 	
 	public static String imagesPath = System.getProperty("user.home") + "/Documents/";
 	
-	public OSXPage(String URL, String path) throws IOException {
+	public OSXPage(String URL, String path) throws Exception {
 		this(URL, path, true);
 	}
 	
-	public OSXPage(String URL, String path, boolean doNavigate) throws IOException {
+	public OSXPage(String URL, String path, boolean doNavigate) throws Exception {
 		DesiredCapabilities capabilities = new DesiredCapabilities(); 
         capabilities.setCapability(CapabilityType.BROWSER_NAME, ""); 
         capabilities.setCapability(CapabilityType.PLATFORM, CommonUtils.PLATFORM_NAME_OSX.toUpperCase()); 
@@ -38,7 +38,7 @@ public class OSXPage extends BasePage {
 	}
 
 	@Override
-	public void Close() throws IOException {
+	public void Close() throws Exception {
 		super.Close();
 	}
 
@@ -46,7 +46,7 @@ public class OSXPage extends BasePage {
 		return DriverUtils.takeScreenshot(driver);
 	}
 	
-	public void startApp() throws IOException {
+	public void startApp() throws Exception {
 		driver.navigate().to(CommonUtils.getOsxApplicationPathFromConfig(OSXPage.class));
 	}
 	

@@ -1,7 +1,5 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.io.IOException;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -32,7 +30,7 @@ public class PendingRequestsPage extends IOSPage {
 	
 	private String autoHelloMessage = CommonSteps.CONNECTION_MESSAGE;
 
-	public PendingRequestsPage(String URL, String path) throws IOException {
+	public PendingRequestsPage(String URL, String path) throws Exception {
 		super(URL, path);
 		
 		this.url = URL;
@@ -100,7 +98,7 @@ public class PendingRequestsPage extends IOSPage {
 	}
 	
 	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
+	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
 		
 		IOSPage page = null;
 		switch (direction){

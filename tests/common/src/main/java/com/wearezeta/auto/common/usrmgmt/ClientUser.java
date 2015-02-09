@@ -1,6 +1,5 @@
 package com.wearezeta.auto.common.usrmgmt;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -154,7 +153,7 @@ public class ClientUser {
 		return CommonUtils.generateGUID().replace("-", "");
 	}
 
-	public static String generateEmail(String suffix) throws IOException {
+	public static String generateEmail(String suffix) throws Exception {
 		return generateEmail(IMAPSMailbox.getName(), suffix);
 	}
 
@@ -164,7 +163,7 @@ public class ClientUser {
 		return genmail;
 	}
 
-	public ClientUser() throws IOException {
+	public ClientUser() throws Exception {
 		this.name = generateUniqName();
 		this.password = CommonUtils
 				.getDefaultPasswordFromConfig(ClientUser.class);

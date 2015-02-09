@@ -3,8 +3,6 @@ package com.wearezeta.auto.ios.pages;
 import java.io.IOException;
 import java.util.List;
 
-import javax.mail.MessagingException;
-
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -116,7 +114,7 @@ public class RegistrationPage extends IOSPage {
 	private String path;
 
 	public RegistrationPage(String URL, String path)
-			throws IOException {
+			throws Exception {
 		super(URL, path);
 		this.url = URL;
 		this.path = path;
@@ -169,7 +167,7 @@ public class RegistrationPage extends IOSPage {
 		clickSwitchCameraButton();
 	}
 
-	public CameraRollPage selectPicture() throws IOException {
+	public CameraRollPage selectPicture() throws Exception {
 		photoButton.click();
 		return new CameraRollPage(url, path);
 	}
@@ -201,7 +199,7 @@ public class RegistrationPage extends IOSPage {
 		return closeColorModeButton.isDisplayed();
 	}
 
-	public PeoplePickerPage waitForConfirmationMessage() throws IOException {
+	public PeoplePickerPage waitForConfirmationMessage() throws Exception {
 		DriverUtils.waitUntilElementAppears(driver,
 				By.className(IOSLocators.classNameConfirmationMessage));
 		
@@ -444,8 +442,7 @@ public class RegistrationPage extends IOSPage {
 	}
 
 	public int getRecentEmailsCountForRecipient(int allRecentEmailsCnt,
-			String expectedRecipient) throws MessagingException, IOException,
-			InterruptedException {
+			String expectedRecipient) throws Exception {
 		IMAPSMailbox mailbox = IMAPSMailbox.createDefaultInstance();
 		int actualCnt = 0;
 		List<EmailHeaders> allEmailsHeaders = mailbox

@@ -2,15 +2,10 @@ package com.wearezeta.auto.web.steps;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.PagesCollection;
-import com.wearezeta.auto.web.pages.SettingsPage;
 
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class UserProfilePopupPageSteps {

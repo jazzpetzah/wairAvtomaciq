@@ -66,7 +66,7 @@ public class GroupChatInfoPage extends IOSPage {
 	private WebElement closeButton;
 
 	public GroupChatInfoPage(String URL, String path)
-			throws IOException {
+			throws Exception {
 		super(URL, path);
 		this.url = URL;
 		this.path = path;
@@ -94,7 +94,7 @@ public class GroupChatInfoPage extends IOSPage {
 		return givenNumberOfParticipants == correctNumber;
 	}
 
-	public GroupChatPage closeGroupChatInfoPage() throws IOException {
+	public GroupChatPage closeGroupChatInfoPage() throws Exception {
 		closeButton.click();
 		return new GroupChatPage(url, path);
 	}
@@ -268,14 +268,14 @@ public class GroupChatInfoPage extends IOSPage {
 	}
 
 	public OtherUserPersonalInfoPage selectContactByName(String name)
-			throws IOException {
+			throws Exception {
 		DriverUtils.mobileTapByCoordinates(driver,
 				driver.findElementByName(name.toUpperCase()));
 
 		return new OtherUserPersonalInfoPage(url, path);
 	}
 
-	public ConnectToPage selectNotConnectedUser(String name) throws IOException {
+	public ConnectToPage selectNotConnectedUser(String name) throws Exception {
 		driver.findElementByName(name.toUpperCase()).click();
 
 		return new ConnectToPage(url, path);
@@ -288,7 +288,7 @@ public class GroupChatInfoPage extends IOSPage {
 	}
 
 	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
+	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
 		IOSPage page = null;
 		switch (direction) {
 		case DOWN: {

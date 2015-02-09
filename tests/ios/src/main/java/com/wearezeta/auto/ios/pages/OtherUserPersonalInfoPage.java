@@ -1,7 +1,5 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.io.IOException;
-
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -43,7 +41,7 @@ public class OtherUserPersonalInfoPage extends IOSPage{
 	private String url;
 	private String path;
 	
-	public OtherUserPersonalInfoPage(String URL, String path) throws IOException {
+	public OtherUserPersonalInfoPage(String URL, String path) throws Exception {
 		super(URL, path);
 		this.url = URL;
 		this.path = path;
@@ -60,12 +58,12 @@ public class OtherUserPersonalInfoPage extends IOSPage{
 		}
 	}
 	
-	public IOSPage leavePageToGroupInfoPage() throws IOException{
+	public IOSPage leavePageToGroupInfoPage() throws Exception{
 		exitOtherPersonalInfoPageButton.click();
 		return new GroupChatInfoPage(url, path);
 	}
 	
-	public PeoplePickerPage addContactToChat() throws IOException {
+	public PeoplePickerPage addContactToChat() throws Exception {
 		addButton.click();
 		catchContinueAlert();
 		return new PeoplePickerPage(url, path);
@@ -115,7 +113,7 @@ public class OtherUserPersonalInfoPage extends IOSPage{
 	}
 	
 	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
+	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
 		IOSPage page = null;
 		switch (direction){
 		case DOWN:

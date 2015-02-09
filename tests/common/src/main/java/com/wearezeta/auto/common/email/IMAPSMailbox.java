@@ -13,7 +13,6 @@ import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.activation.DataHandler;
 import javax.mail.*;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -165,9 +164,9 @@ public class IMAPSMailbox {
 		}
 	}
 
-	public static String getActivationLink(
-			MBoxChangesListener listener, int timeout) throws TimeoutException,
-			InterruptedException, MessagingException, IOException {
+	public static String getActivationLink(MBoxChangesListener listener,
+			int timeout) throws TimeoutException, InterruptedException,
+			MessagingException, IOException {
 		try {
 			Message message = listener.getMatchedMessage(timeout);
 			if (message != null) {
@@ -181,44 +180,41 @@ public class IMAPSMailbox {
 			listener.getParentMBox().closeFolder();
 		}
 	}
-	
-	private static String createActivationURLFromMessage(Message message) throws IOException, MessagingException{
-		String content = "";        
+
+	private static String createActivationURLFromMessage(Message message)
+			throws IOException, MessagingException {
+		String content = "";
 		Object msgContent = message.getContent();
 		if (msgContent instanceof Multipart) {
-
 			Multipart multipart = (Multipart) msgContent;
 			for (int j = 0; j < multipart.getCount(); j++) {
-
 				BodyPart bodyPart = multipart.getBodyPart(j);
-
 				String disposition = bodyPart.getDisposition();
-
-				if (disposition != null && (disposition.equalsIgnoreCase(Part.ATTACHMENT))) { 
-					DataHandler handler = bodyPart.getDataHandler();                                 
-				}
-				else { 
-					content = getText(bodyPart);  
+				if (disposition != null
+						&& (disposition.equalsIgnoreCase(Part.ATTACHMENT))) {
+					// DataHandler handler = bodyPart.getDataHandler();
+				} else {
+					content = getText(bodyPart);
 				}
 			}
-		}
-		else            {    
-			content= message.getContent().toString();
+		} else {
+			content = message.getContent().toString();
 		}
 
 		return pullLink(content);
 	}
-	private static String getText(Part p) throws
-	MessagingException, IOException {
+
+	private static String getText(Part p) throws MessagingException,
+			IOException {
 		if (p.isMimeType("text/*")) {
-			String s = (String)p.getContent();
+			String s = (String) p.getContent();
 			p.isMimeType("text/html");
 			return s;
 		}
 
 		if (p.isMimeType("multipart/alternative")) {
 			// prefer html text over plain text
-			Multipart mp = (Multipart)p.getContent();
+			Multipart mp = (Multipart) p.getContent();
 			String text = null;
 			for (int i = 0; i < mp.getCount(); i++) {
 				Part bp = mp.getBodyPart(i);
@@ -236,7 +232,7 @@ public class IMAPSMailbox {
 			}
 			return text;
 		} else if (p.isMimeType("multipart/*")) {
-			Multipart mp = (Multipart)p.getContent();
+			Multipart mp = (Multipart) p.getContent();
 			for (int i = 0; i < mp.getCount(); i++) {
 				String s = getText(mp.getBodyPart(i));
 				if (s != null)
@@ -253,13 +249,12 @@ public class IMAPSMailbox {
 		String regex = "<a href=\"([^\"]*)\"[^>]*>VERIFY</a>";
 		Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
 		Matcher urlMatcher = p.matcher(text);
-		while (urlMatcher.find())
-		{
+		while (urlMatcher.find()) {
 			links.add(urlMatcher.group(1));
 		}
 		return links.get(0);
 	}
-	
+
 	private void closeFolder() {
 		if (folder.isOpen()) {
 			try {
@@ -283,18 +278,17 @@ public class IMAPSMailbox {
 		});
 	}
 
-	public static IMAPSMailbox createDefaultInstance()
-			throws MessagingException, IOException, InterruptedException {
+	public static IMAPSMailbox createDefaultInstance() throws Exception {
 		return new IMAPSMailbox(
 				CommonUtils.getDefaultEmailServerFromConfig(IMAPSMailbox.class),
 				MAILS_FOLDER, getName(), getPassword());
 	}
 
-	public static String getName() throws IOException {
+	public static String getName() throws Exception {
 		return CommonUtils.getDefaultEmailFromConfig(IMAPSMailbox.class);
 	}
 
-	private static String getPassword() throws IOException {
+	private static String getPassword() throws Exception {
 		return CommonUtils.getDefaultPasswordFromConfig(IMAPSMailbox.class);
 	}
 }

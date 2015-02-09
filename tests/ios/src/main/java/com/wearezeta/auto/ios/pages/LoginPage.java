@@ -82,14 +82,14 @@ public class LoginPage extends IOSPage {
 	
 	public String message;
 	
-	public LoginPage(String URL, String path) throws IOException {
+	public LoginPage(String URL, String path) throws Exception {
 		
 		super(URL, path);
 		this.url = URL;
 		this.path = path;
 	}
 	
-	public LoginPage(String URL, String path, boolean acceptAlerts) throws IOException {
+	public LoginPage(String URL, String path, boolean acceptAlerts) throws Exception {
 		
 		super(URL, path, acceptAlerts);
 		this.url = URL;
@@ -110,7 +110,7 @@ public class LoginPage extends IOSPage {
 		return this;
 	}
 	
-	public PeoplePickerPage clickLaterButton() throws IOException {
+	public PeoplePickerPage clickLaterButton() throws Exception {
 		if(DriverUtils.isElementDisplayed(shareButton)) {
 			shareButton.click();
 			return new PeoplePickerPage(url, path);
@@ -124,7 +124,7 @@ public class LoginPage extends IOSPage {
 		return DriverUtils.isElementDisplayed(PagesCollection.loginPage.selfProfileName);
 	}
 	
-	public IOSPage login() throws IOException {
+	public IOSPage login() throws Exception {
 		
 		confirmSignInButton.click();
 		
@@ -145,7 +145,7 @@ public class LoginPage extends IOSPage {
 		registerButton.click();
 	}
 	
-	public RegistrationPage join() throws IOException{
+	public RegistrationPage join() throws Exception{
 		termsOfServiceButton.click();
 		registerButton.click();
 
@@ -156,7 +156,7 @@ public class LoginPage extends IOSPage {
 		return login;
 	}
 
-	public void setLogin(String login) throws IOException {
+	public void setLogin(String login) throws Exception {
 		if (CommonUtils.getIsSimulatorFromConfig(LoginPage.class)) {
 			DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameLoginField));
 			loginField.sendKeys(login);
@@ -171,7 +171,7 @@ public class LoginPage extends IOSPage {
 		return password;
 	}
 
-	public void setPassword(String password) throws IOException {
+	public void setPassword(String password) throws Exception {
 		if (CommonUtils.getIsSimulatorFromConfig(LoginPage.class)) {
 			passwordField.sendKeys(password);
 		} else {

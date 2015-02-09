@@ -41,7 +41,7 @@ public abstract class BasePage {
 	private String pagePlatform;
 
 	protected synchronized void InitConnection(String URL,
-			DesiredCapabilities capabilities) throws IOException {
+			DesiredCapabilities capabilities) throws Exception {
 
 		final String platform = (String) capabilities
 				.getCapability("platformName");
@@ -96,7 +96,7 @@ public abstract class BasePage {
 		PageFactory.initElements(zetaFieldDecorator, this);
 	}
 
-	public synchronized void Close() throws IOException {
+	public synchronized void Close() throws Exception {
 		if (drivers.get(pagePlatform) != null) {
 			drivers.get(pagePlatform).quit();
 			drivers.put(pagePlatform, null);

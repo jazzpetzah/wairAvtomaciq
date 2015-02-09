@@ -69,7 +69,7 @@ public class ConversationPageSteps {
 	/**
 	 * Click on the button from conversation that popups user profile
 	 * 
-	 * @step I click show user profile button
+	 * @step. I click show user profile button
 	 * 
 	 * @throws Exception
 	 */
