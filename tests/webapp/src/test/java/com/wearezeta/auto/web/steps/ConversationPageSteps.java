@@ -89,7 +89,7 @@ public class ConversationPageSteps {
 	 */
 	@When("^I send picture (.*)")
 	public void WhenISendPicture(String pictureName) throws Exception {
-		 PagesCollection.conversationPage.sendPicture(pictureName);
+		PagesCollection.conversationPage.sendPicture(pictureName);
 	}
 
 	/**
@@ -105,8 +105,7 @@ public class ConversationPageSteps {
 		Assert.assertTrue(PagesCollection.conversationPage
 				.isPictureSent(pictureName));
 	}
-	
-	
+
 	/**
 	 * Checks action message (e.g. you left, etc.) appear in conversation
 	 * 

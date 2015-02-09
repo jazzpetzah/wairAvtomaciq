@@ -58,6 +58,6 @@ Feature: Conversation
     Then I see sent picture <PictureName> in the conversation view
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | PicturePath               |
+      | Login      | Password      | Name      | Contact   | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg |
 
