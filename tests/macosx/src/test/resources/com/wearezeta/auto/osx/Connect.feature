@@ -66,6 +66,7 @@ Feature: Connect to user
     And I wait for 10 seconds
     Then I do not see conversation <Contact> in contact list
     When I open People Picker from contact list
+    When I wait up to 15 seconds until <Contact> exists in backend search results
     And I search by email for user <Contact>
     And I see user <Contact> in search results
     And I add user <Contact> from search results
