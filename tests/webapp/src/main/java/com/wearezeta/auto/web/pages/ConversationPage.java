@@ -73,9 +73,9 @@ public class ConversationPage extends WebPage {
 		return isSend;
 	}
 	
-	public UserProfilePopupPage clickShowUserProfileButton() throws Exception {
+	public UserProfilePopup clickShowUserProfileButton() throws Exception {
 		showParticipants.click();
-		return new UserProfilePopupPage(url, path);
+		return new UserProfilePopup(url, path);
 	}
 	
 	public ParticipantsPopupPage clickShowParticipantsButton() throws Exception {

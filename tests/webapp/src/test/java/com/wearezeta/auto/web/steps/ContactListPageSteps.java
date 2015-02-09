@@ -170,7 +170,7 @@ public class ContactListPageSteps {
 	 */
 	@Given("^I open connection requests list$")
 	public void IOpenConnectionRequestsList() throws Exception {
-		PagesCollection.connectToPage = PagesCollection.contactListPage
+		PagesCollection.pendingConnectionsPage = PagesCollection.contactListPage
 				.openConnectionRequestsList(WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING);
 
 	}

@@ -8,13 +8,13 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
-public class ConnectToPage extends WebPage {
+public class PendingConnectionsPage extends WebPage {
 
 	@SuppressWarnings("unused")
-	private static final Logger log = ZetaLogger.getLog(ConnectToPage.class
+	private static final Logger log = ZetaLogger.getLog(PendingConnectionsPage.class
 			.getSimpleName());
 
-	public ConnectToPage(String URL, String path) throws Exception {
+	public PendingConnectionsPage(String URL, String path) throws Exception {
 		super(URL, path);
 	}
 

@@ -75,7 +75,7 @@ public class ConversationPageSteps {
 	 */
 	@When("I click show user profile button")
 	public void WhenIClickShowUserProfileButton() throws Exception {
-		PagesCollection.userProfilePopupPage = PagesCollection.conversationPage
+		PagesCollection.userProfilePopup = PagesCollection.conversationPage
 				.clickShowUserProfileButton();
 
 	}

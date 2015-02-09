@@ -97,6 +97,13 @@ public final class WebAppLocators {
 		public static final String xpathFormatSearchListItemWithName = "//div[@class='search-list-item-name' and text()='%s']";
 
 		public static final String classNameCreateConversationButton = "search-button-add";
+
+		public static final String xpathSearhResultList = "//div[@class='search-list-item']";
+
+		public static final Function<String, String> xpathSearchResultByName = (
+				name) -> String.format(
+				"%s/div[@class='search-list-item-name' and text()='%s']",
+				xpathSearhResultList, name);
 	}
 
 	public static final class UserProfilePopupPage {
@@ -114,9 +121,22 @@ public final class WebAppLocators {
 		public static final String xpathConfirmLeaveButton = "//div[@class='zeta-button zeta-button-medium' and text()='leave']";
 
 	}
+	
+	public static final class ConnectToPopup {
+		
+		public static final String idConnectionPopupWindow = "people-picker-user-bubble";
+		
+		public static final String xpathUserName = "//div[@id='people-picker-user-bubble']//div[@class='name']";
+		
+		public static final String classNameConnectionMessage = "user-profile-connect-message";
+		
+		public static final String xpathConnectButton = "//div[@id='people-picker-user-bubble']//div[text()='connect']";
+		
+	}
 
 	public static final class Common {
 		
+
 		public static final String CONTACT_LIST_ONE_PERSON_WAITING = "One person waiting";
 	}
 }
