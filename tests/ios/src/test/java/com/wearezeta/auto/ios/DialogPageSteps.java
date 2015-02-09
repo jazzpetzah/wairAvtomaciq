@@ -7,6 +7,7 @@ import java.text.Normalizer.Form;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
@@ -41,6 +42,8 @@ public class DialogPageSteps {
 	private static String onlySpacesMessage = "     ";
 	public static long memTime;
 	public String pingId;
+	private int beforeNumberOfImages = 0;
+	private int beforeNumberOfKnocks = 0;
 
 	@When("^I see dialog page$")
 	public void WhenISeeDialogPage() throws Exception {
@@ -158,8 +161,8 @@ public class DialogPageSteps {
 				.swipeUp(500);
 	}
 
-	@Then("^I see my message in the dialog$")
-	public void ThenISeeMyMessageInTheDialog() throws Throwable {
+	@Then("^I see message in the dialog$")
+	public void ThenISeeMessageInTheDialog() throws Throwable {
 		String dialogLastMessage = PagesCollection.dialogPage
 				.getLastMessageFromDialog();
 		Assert.assertTrue("Message is different, actual: " + dialogLastMessage
@@ -240,10 +243,24 @@ public class DialogPageSteps {
 
 	@Then("^I see new photo in the dialog$")
 	public void ISeeNewPhotoInTheDialog() throws Throwable {
-		String dialogLastMessage = PagesCollection.dialogPage
-				.getImageCellFromDialog();
-		String imageCell = "ImageCell";
-		Assert.assertEquals(imageCell, dialogLastMessage);
+		int afterNumberOfImages = -1;
+
+		boolean isNumberIncreased = false;
+		for (int i = 0; i < 3; i++) {
+			afterNumberOfImages = PagesCollection.dialogPage.getNumberOfImages();
+			if (afterNumberOfImages == beforeNumberOfImages + 1) {
+				isNumberIncreased = true;
+				break;
+			}
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+			}
+		}
+
+		Assert.assertTrue("Incorrect images count: before - "
+				+ beforeNumberOfImages + ", after - " + afterNumberOfImages,
+				isNumberIncreased);
 	}
 
 	@When("I type and send long message and media link (.*)")
@@ -542,5 +559,12 @@ public class DialogPageSteps {
 				"Overlap between two images has not enough score. Expected >= 0.75, current = "
 						+ score, score >= 0.75d);
 	}
-
+	
+	@When("^Contact (.*) sends random message to user (.*)$")
+	public void UserSendsRandomMessageToConversation(String msgFromUserNameAlias,
+			String dstUserNameAlias) throws Exception {
+		message = CommonUtils.generateRandomString(10);
+		CommonSteps.getInstance().UserSentMessageToUser(msgFromUserNameAlias, dstUserNameAlias, message);
+	}
+	
 }

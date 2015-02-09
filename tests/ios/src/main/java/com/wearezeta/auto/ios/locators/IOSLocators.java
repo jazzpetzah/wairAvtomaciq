@@ -444,5 +444,12 @@ public final class IOSLocators {
 	public static final String nameYouLeftMessage = "YOU LEFT";
 	public static final String nameYouPingedMessage = "YOU PINGED";
 	public static final String nameYouPingedAgainMessage = "YOU PINGED AGAIN";
+	
+	//public static final String xpathOtherUserPingedMessage = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]/UIAStaticText[@name=' PINGED']";
+	
+	////////////////////////////
+	//Unblock user locator
+	////////////////////////////
+	public static final String nameUnblockButton = "UNBLOCK";
 }
 
