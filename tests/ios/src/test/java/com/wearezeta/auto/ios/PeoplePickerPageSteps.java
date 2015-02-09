@@ -279,6 +279,12 @@ public class PeoplePickerPageSteps {
 		PagesCollection.peoplePickerPage.tapOnPeoplePickerClearBtn();
 	}
 
+	/**
+	 * Unblocks a blocked user by clicking the unblock button
+	 * 
+	 * @step. I unblock user
+	 * 
+	 */
 	@When("^I unblock user$")
 	public void IUnblockUser() throws Exception {
 		PagesCollection.dialogPage = PagesCollection.peoplePickerPage.unblockUser();
