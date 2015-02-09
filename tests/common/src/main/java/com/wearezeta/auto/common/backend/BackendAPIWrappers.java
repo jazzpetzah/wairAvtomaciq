@@ -21,7 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.wearezeta.auto.common.CommonSteps;
-import com.wearezeta.auto.common.email.EmailHeaders;
+import com.wearezeta.auto.common.email.ActivationMessage;
 import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.email.MBoxChangesListener;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -59,16 +59,19 @@ public final class BackendAPIWrappers {
 
 	public static void activateRegisteredUser(MBoxChangesListener listener)
 			throws Exception {
-		EmailHeaders registrationInfo = IMAPSMailbox.getFilteredMessageHeaders(
-				listener, ACTIVATION_TIMEOUT);
+		ActivationMessage registrationInfo = new ActivationMessage(
+				IMAPSMailbox.getFilteredMessage(listener, ACTIVATION_TIMEOUT));
 		BackendREST.activateNewUser(registrationInfo.getXZetaKey(),
 				registrationInfo.getXZetaCode());
 		log.debug(String.format("User %s is activated",
 				registrationInfo.getLastUserEmail()));
 	}
-	
-	public static String getUserActivationLink(MBoxChangesListener listener) throws Exception {
-		return IMAPSMailbox.getActivationLink(listener, ACTIVATION_TIMEOUT);
+
+	public static String getUserActivationLink(MBoxChangesListener listener)
+			throws Exception {
+		ActivationMessage registrationInfo = new ActivationMessage(
+				IMAPSMailbox.getFilteredMessage(listener, ACTIVATION_TIMEOUT));
+		return registrationInfo.extractActivationLink();
 	}
 
 	public static void createContactLinks(ClientUser userFrom,
