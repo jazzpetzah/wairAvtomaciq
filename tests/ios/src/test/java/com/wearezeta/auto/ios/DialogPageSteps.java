@@ -103,24 +103,6 @@ public class DialogPageSteps {
 		Assert.assertTrue(PagesCollection.dialogPage
 				.isPingMessageVisible(pingagainmessage));
 	}
-	
-//	private void verifyPingedMessage() throws InterruptedException {
-//		boolean isNumberIncreased = false;
-//		int afterNumberOfKnocks = -1;
-//		for (int i = 0; i < 3; i++) {
-//			afterNumberOfKnocks = PagesCollection.dialogPage.getNumberOfPingedMessages(
-//							IOSLocators.xpathOtherUserPingedMessage);
-//			if (afterNumberOfKnocks == beforeNumberOfKnocks + 1) {
-//				isNumberIncreased = true;
-//				break;
-//			}
-//			Thread.sleep(1000);
-//		}
-//
-//		Assert.assertTrue("Incorrect messages count: before - "
-//				+ beforeNumberOfKnocks + ", after - " + afterNumberOfKnocks,
-//				isNumberIncreased);
-//	}
 
 	@Then("^I see User (.*) Pinged message in the conversation$")
 	public void ISeeUserPingedMessageTheDialog(String user) throws Throwable {
@@ -133,11 +115,6 @@ public class DialogPageSteps {
 			Assert.assertTrue(PagesCollection.groupChatPage
 					.isPingMessageVisible(expectedPingMessage));
 		}
-//		Assert.assertTrue("Actual: " + dialogLastMessage + " || Expected: "
-//				+ expectedPingMessage,
-//				dialogLastMessage.equals(expectedPingMessage));
-//		verifyPingedMessage();
-		
 	}
 
 	@Then("^I see User (.*) Pinged Again message in the conversation$")
@@ -266,11 +243,6 @@ public class DialogPageSteps {
 
 	@Then("^I see new photo in the dialog$")
 	public void ISeeNewPhotoInTheDialog() throws Throwable {
-//		String dialogLastMessage = PagesCollection.dialogPage
-//				.getImageCellFromDialog();
-//		String imageCell = "ImageCell";
-//		Assert.assertEquals(imageCell, dialogLastMessage);
-		
 		int afterNumberOfImages = -1;
 
 		boolean isNumberIncreased = false;
