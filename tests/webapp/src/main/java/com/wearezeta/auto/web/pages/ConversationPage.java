@@ -46,6 +46,19 @@ public class ConversationPage extends WebPage {
 	public void sendNewMessage() {
 		conversationInput.sendKeys(Keys.ENTER);
 	}
+	
+	public boolean isActionMessageSent(String message) {
+		boolean isSend = false;
+		String xpath = String
+				.format(WebAppLocators.ConversationPage.xpathActionMessageEntry,
+						message);
+		DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath));
+		WebElement element = driver.findElement(By.xpath(xpath));
+		if (element != null) {
+			isSend = true;
+		}
+		return isSend;
+	}
 
 	public boolean isMessageSent(String message) {
 		boolean isSend = false;

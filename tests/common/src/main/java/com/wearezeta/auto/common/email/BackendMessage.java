@@ -12,7 +12,10 @@ import javax.mail.Part;
 public class BackendMessage {
 	private Message msg;
 
-	private Message getMessage() {
+	protected Message getMessage() throws MessagingException {
+		if (!this.msg.getFolder().isOpen()) {
+			this.msg.getFolder().open(Folder.READ_ONLY);
+		}
 		return this.msg;
 	}
 
@@ -22,49 +25,27 @@ public class BackendMessage {
 
 	public final String getHeaderValue(String headerName)
 			throws MessagingException {
-		boolean wasFolderOpened = this.msg.getFolder().isOpen();
-		try {
-			if (!wasFolderOpened) {
-				this.msg.getFolder().open(Folder.READ_ONLY);
-			}
-			return this.getMessage().getHeader(headerName)[0];
-		} finally {
-			if (!wasFolderOpened) {
-				this.msg.getFolder().close(false);
-			}
-		}
+		return this.getMessage().getHeader(headerName)[0];
 	}
 
 	public String getContent() throws IOException, MessagingException {
 		String content = "";
-		boolean wasFolderOpened = this.msg.getFolder().isOpen();
-		Object msgContent = null;
-		try {
-			if (!wasFolderOpened) {
-				this.msg.getFolder().open(Folder.READ_ONLY);
-			}
-			msgContent = this.getMessage().getContent();
-
-			if (msgContent instanceof Multipart) {
-				Multipart multipart = (Multipart) msgContent;
-				StringBuilder multipartContent = new StringBuilder();
-				for (int j = 0; j < multipart.getCount(); j++) {
-					BodyPart bodyPart = multipart.getBodyPart(j);
-					if (bodyPart.getDisposition() == null) {
-						multipartContent.append(getText(bodyPart));
-					}
+		Object msgContent = this.getMessage().getContent();
+		if (msgContent instanceof Multipart) {
+			Multipart multipart = (Multipart) msgContent;
+			StringBuilder multipartContent = new StringBuilder();
+			for (int j = 0; j < multipart.getCount(); j++) {
+				BodyPart bodyPart = multipart.getBodyPart(j);
+				if (bodyPart.getDisposition() == null) {
+					multipartContent.append(getText(bodyPart));
 				}
-				content = multipartContent.toString();
-			} else {
-				content = msgContent.toString();
 			}
-
-			return content;
-		} finally {
-			if (!wasFolderOpened) {
-				this.msg.getFolder().close(false);
-			}
+			content = multipartContent.toString();
+		} else {
+			content = msgContent.toString();
 		}
+
+		return content;
 	}
 
 	/**
