@@ -62,5 +62,27 @@ public class UserProfilePopupPageSteps {
 		Assert.assertTrue(PagesCollection.userProfilePopupPage
 				.isBlockButtonVisible());
 	}
+	
+	/**
+	 * Click on leave group chat button in User profile popup
+	 * 
+	 * @step. ^I click leave group chat$
+	 * 
+	 */
+	@When("^I click leave group chat$")
+	public void IClickLeaveGroupChat() {
+		PagesCollection.userProfilePopupPage.leaveGroupChat();
+	}
+	
+	/**
+	 * Confirm leaving group chat by clicking LEAVE button
+	 * 
+	 * @step. ^I confirm leave group chat$
+	 * 
+	 */
+	@When("^I confirm leave group chat$")
+	public void IClickConfirmLeaveGroupChat() {
+		PagesCollection.userProfilePopupPage.confirmLeaveGroupChat();
+	}
 
 }

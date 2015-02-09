@@ -3,6 +3,7 @@ package com.wearezeta.auto.common.email;
 import java.io.IOException;
 
 import javax.mail.BodyPart;
+import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
@@ -11,7 +12,10 @@ import javax.mail.Part;
 public class BackendMessage {
 	private Message msg;
 
-	public Message getMessage() {
+	protected Message getMessage() throws MessagingException {
+		if (!this.msg.getFolder().isOpen()) {
+			this.msg.getFolder().open(Folder.READ_ONLY);
+		}
 		return this.msg;
 	}
 
@@ -19,7 +23,7 @@ public class BackendMessage {
 		this.msg = msg;
 	}
 
-	public String getHeaderValue(String headerName)
+	public final String getHeaderValue(String headerName)
 			throws MessagingException {
 		return this.getMessage().getHeader(headerName)[0];
 	}
@@ -38,7 +42,7 @@ public class BackendMessage {
 			}
 			content = multipartContent.toString();
 		} else {
-			content = this.getMessage().getContent().toString();
+			content = msgContent.toString();
 		}
 
 		return content;
@@ -91,11 +95,13 @@ public class BackendMessage {
 	}
 
 	private static final String DELIVERED_TO_HEADER_NAME = "Delivered-To";
+
 	public String getLastUserEmail() throws MessagingException {
 		return this.getHeaderValue(DELIVERED_TO_HEADER_NAME);
 	}
 
 	private static final String SUBJECT_HEADER_NAME = "Subject";
+
 	public String getMailSubject() throws MessagingException {
 		return this.getHeaderValue(SUBJECT_HEADER_NAME);
 	}
