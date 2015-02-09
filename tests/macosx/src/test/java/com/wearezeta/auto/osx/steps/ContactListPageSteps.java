@@ -32,6 +32,7 @@ public class ContactListPageSteps {
 	public void ISeeMyNameInContactList(String name) throws Exception {
 		CommonOSXSteps.senderPages.getLoginPage().sendProblemReportIfFound();
 		CommonOSXSteps.senderPages.getContactListPage().pressLaterButton();
+		CommonOSXSteps.senderPages.getContactListPage().pressLaterButton();
 		Thread.sleep(1000);
 		CommonOSXSteps.senderPages
 				.setPeoplePickerPage(new PeoplePickerPage(
