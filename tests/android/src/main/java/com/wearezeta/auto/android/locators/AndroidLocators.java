@@ -263,7 +263,7 @@ public final class AndroidLocators {
 		
 		public static final String xpathGroupChatInfoLinearLayoutId = "//android.widget.GridView/android.widget.LinearLayout[%1$s]";
 		
-		public static final String xpathGroupChatInfoContacts = "//android.widget.GridView/android.widget.LinearLayout[%1$s]/android.widget.TextView";
+		public static final String xpathGroupChatInfoContacts = "//android.widget.GridView/android.widget.LinearLayout[%1$s]/android.widget.LinearLayout/android.widget.TextView";
 		
 		public static final String idParticipantsHeader = LOCATORS_PACKAGE + ":id/ttv__participants__header";
 		
