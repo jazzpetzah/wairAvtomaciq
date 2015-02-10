@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -101,7 +102,11 @@ public class ConversationPage extends WebPage {
 				+ WebAppLocators.ConversationPage.cssSendImageInput
 				+ "').css({'left': '0'});";
 		driver.executeScript(showPathInputJScript);
-		imagePathInput.sendKeys(picturePath);
+		if (DriverUtils.waitUntilElementVisible(driver, imagePathInput)) {
+			imagePathInput.sendKeys(picturePath);
+		} else {
+			throw new TimeoutException("Image input is still not visible after timeout");
+		}
 	}
 
 	public boolean isPictureSent(String pictureName) {
