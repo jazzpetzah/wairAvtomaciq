@@ -193,24 +193,24 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	public ContactListPage pressLaterButton() throws Exception {
-		try {
+		/*try {
 			wait.until(ExpectedConditions.elementToBeClickable(laterButton));
 		} catch (NoSuchElementException e) {
 
 		}
 		catch (TimeoutException e) {
 
-		}
-		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.PersonalInfoPage.idProfileOptionsButton));
+		}*/
+		//DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.PersonalInfoPage.idProfileOptionsButton));
 
 		refreshUITree();
 		if (laterBtn.size() > 0) {
 			laterBtn.get(0).click();
 		}
-
 		else if (laterBtnPicker.size() > 0) {
 			laterBtnPicker.get(0).click();
 		}
+		
 		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.ContactListPage.idSimpleDialogPageText));
 		//TODO: we need this as sometimes we see people picker after login
 		PagesCollection.peoplePickerPage = new PeoplePickerPage (url, path);

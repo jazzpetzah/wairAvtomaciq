@@ -36,7 +36,10 @@ public class PeoplePickerPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerSearch")
 	private WebElement pickerSearch;
-
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerSearch")
+	private List<WebElement> pickerSearchList;
+	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerGrid")
 	private WebElement pickerGrid;
 
@@ -142,6 +145,7 @@ public class PeoplePickerPage extends AndroidPage {
 
 
 	public boolean isPeoplePickerPageVisible() throws InterruptedException, IOException {
+		Boolean flag = false;
 		refreshUITree();//TODO workaround
 		try {
 			wait.until(ExpectedConditions.visibilityOf(pickerSearch));
@@ -150,8 +154,10 @@ public class PeoplePickerPage extends AndroidPage {
 		} catch (TimeoutException e) {
 			return false;
 		}
-		
-		return pickerSearch.isEnabled();
+		if(pickerSearchList.size() > 0){
+			flag = true;
+		}
+		return flag;
 	}
 
 
@@ -206,7 +212,7 @@ public class PeoplePickerPage extends AndroidPage {
 	public ContactListPage tapClearButton() throws Exception {
 		refreshUITree();
 		pickerClearBtn.click();
-		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.PeoplePickerPage.idPeoplePickerClearbtn));
+		//DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.PeoplePickerPage.idPeoplePickerClearbtn));
 		refreshUITree();
 		return new ContactListPage(url, path);
 	}
