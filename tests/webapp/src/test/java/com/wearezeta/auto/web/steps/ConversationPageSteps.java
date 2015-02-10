@@ -77,10 +77,37 @@ public class ConversationPageSteps {
 	public void WhenIClickShowUserProfileButton() throws Exception {
 		PagesCollection.userProfilePopup = PagesCollection.conversationPage
 				.clickShowUserProfileButton();
-
 	}
-	
-	
+
+	/**
+	 * Send a picture into current conversation
+	 * 
+	 * @param pictureName
+	 *            the name of a picture file. This file should already exist in
+	 *            the ~/Documents folder
+	 * @throws Exception
+	 */
+	@When("^I send picture (.*)")
+	public void WhenISendPicture(String pictureName) throws Exception {
+		PagesCollection.conversationPage.sendPicture(pictureName);
+	}
+
+	/**
+	 * Verifies whether previously sent picture exists in the conversation view
+	 * 
+	 * @step. ^I send picture (.*)
+	 * 
+	 * @param pictureName
+	 *            the name of a picture file. This file should already exist in
+	 *            the ~/Documents folder
+	 * @throws Exception
+	 */
+	@Then("^I see sent picture (.*) in the conversation view$")
+	public void ThenISeeSentPicture(String pictureName) throws Exception {
+		Assert.assertTrue(PagesCollection.conversationPage
+				.isPictureSent(pictureName));
+	}
+
 	/**
 	 * Checks action message (e.g. you left, etc.) appear in conversation
 	 * 

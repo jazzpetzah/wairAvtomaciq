@@ -9,7 +9,9 @@ import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class ConnectToPopup extends WebPage{
 
+	@SuppressWarnings("unused")
 	private String url;
+	@SuppressWarnings("unused")
 	private String path;
 	
 	public ConnectToPopup(String URL, String path) throws Exception {
