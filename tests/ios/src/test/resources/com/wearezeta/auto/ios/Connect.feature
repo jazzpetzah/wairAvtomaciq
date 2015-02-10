@@ -253,7 +253,7 @@ Feature: Connect
     When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
-    Given I wait up to 15 seconds until <ContactEmail> exists in backend search results
+    And I wait up to 15 seconds until <ContactEmail> exists in backend search results
     And I input in People picker search field user email <ContactEmail>
     And I see user <Contact> found on People picker page
     And I tap on NOT connected user name on People picker page <Contact>
@@ -268,7 +268,7 @@ Feature: Connect
     And I input in People picker search field user email <ContactEmail>
     And I see user <Contact> found on People picker page
     And I tap on user on pending name on People picker page <Contact>
-    And I see <Contact> user pending profile page
+    Then I see <Contact> user pending profile page
     
   	Examples: 
       | Login      | Password      | Name      | Contact   | ContactEmail |
