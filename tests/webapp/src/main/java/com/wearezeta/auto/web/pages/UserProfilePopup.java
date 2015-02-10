@@ -27,6 +27,12 @@ public class UserProfilePopup extends WebPage {
 	
 	@FindBy(how = How.XPATH, using = WebAppLocators.UserProfilePopupPage.xpathConfirmLeaveButton)
 	private WebElement confirmLeaveButton;
+	
+	@FindBy(how = How.XPATH, using = WebAppLocators.UserProfilePopupPage.xpathConfirmRemoveButton)
+	private WebElement confirmRemoveButton;
+	
+	@FindBy(how = How.XPATH, using = WebAppLocators.UserProfilePopupPage.xpathRemoveFromGroupChat)
+	private WebElement removeFromGroupChatButton;
 
 	public UserProfilePopup(String URL, String path) throws Exception {
 		super(URL, path);
@@ -41,6 +47,11 @@ public class UserProfilePopup extends WebPage {
 	public void confirmLeaveGroupChat() {
 		wait.until(ExpectedConditions.elementToBeClickable(confirmLeaveButton));
 		confirmLeaveButton.click();
+	}
+	
+	public void confirmRemoveFromGroupChat() {
+		wait.until(ExpectedConditions.elementToBeClickable(confirmRemoveButton));
+		confirmRemoveButton.click();
 	}
 
 	public boolean isUserProfilePopupPageVisible() {
@@ -57,6 +68,16 @@ public class UserProfilePopup extends WebPage {
 
 	public boolean isBlockButtonVisible() {
 		return DriverUtils.isElementDisplayed(blockButton);
+	}
+	
+	public void clickOnParticipant(String name) {
+		String xpath = String.format(WebAppLocators.UserProfilePopupPage.xpathParticipantName, name);
+		WebElement participant = driver.findElementByXPath(xpath);
+		participant.click();
+	}
+	
+	public void removeFromGroupChat() {
+		removeFromGroupChatButton.click();
 	}
 
 }

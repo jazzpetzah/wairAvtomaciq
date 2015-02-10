@@ -130,6 +130,12 @@ public final class WebAppLocators {
 		public static final String xpathLeaveGroupChat = "//div[@class='participants-group-leave zi zi-leave zi-button']";
 
 		public static final String xpathConfirmLeaveButton = "//div[@class='zeta-button zeta-button-medium' and text()='leave']";
+		
+		public static final String xpathConfirmRemoveButton = "//div[@class='zeta-button zeta-button-medium' and text()='remove']";
+		
+		public static final String xpathParticipantName = "//div[@class='search-list-item-name' and text()='%s']/..";
+		
+		public static final String xpathRemoveFromGroupChat = "//div[@class='footer-button-right zi zi-delete zi-button']";
 
 	}
 	
