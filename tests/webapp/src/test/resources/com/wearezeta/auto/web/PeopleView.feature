@@ -7,8 +7,10 @@ Feature: People View
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open People Picker from Contact List
+    And I wait up to 15 seconds until <Contact1> exists in backend search results
     And I search for <Contact1> in People Picker
     And I select <Contact1> from People Picker results
+    And I wait up to 15 seconds until <Contact2> exists in backend search results
     And I search for <Contact2> in People Picker
     And I select <Contact2> from People Picker results
     And I choose to create conversation from People Picker

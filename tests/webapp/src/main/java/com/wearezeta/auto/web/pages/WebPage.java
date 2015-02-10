@@ -66,7 +66,11 @@ public class WebPage extends BasePage {
 		wait = waits.get(CommonUtils.PLATFORM_NAME_WEB);
 
 		driver.setFileDetector(new LocalFileDetector());
-		driver.manage().window().maximize();
+		try {
+			driver.manage().window().maximize();
+		}catch (Exception ex ) {
+			
+		}
 		
 		if (doNavigate) {
 			// Workaround for Safari
