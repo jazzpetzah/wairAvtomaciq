@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -206,6 +207,19 @@ public abstract class AndroidPage extends BasePage {
 		clearPagesCollection(PagesCollection.class, AndroidPage.class);
 	}
 	
+	public boolean isVisible(WebElement element) {
+		boolean value = false;
+		try{
+			element.isDisplayed();
+			value = true;
+		}
+		catch(NoSuchElementException ex)
+		{
+			value = false;
+		}
+		return value;
+
+	}
 	private static void showLogs() throws Exception{
 		if(CommonUtils.getAndroidLogs(AndroidPage.class)){
 			List<LogEntry> logEntries = driver.manage().logs().get("logcat").getAll();

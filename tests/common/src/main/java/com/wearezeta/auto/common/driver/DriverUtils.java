@@ -26,6 +26,7 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -389,5 +390,11 @@ public class DriverUtils {
 	
 	public static void iOSLongTap(AppiumDriver driver, WebElement element){
 		driver.tap(1, element, 1000);
+	}
+	
+	public static void moveMouserOver(RemoteWebDriver driver, WebElement element) {
+		Actions action = new Actions(driver);
+		action.moveToElement(element);
+		action.perform();
 	}
 }

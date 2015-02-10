@@ -1,26 +1,23 @@
 package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
 import cucumber.api.java.en.When;
 
 public class ConnectToPageSteps {
 
+	@SuppressWarnings("unused")
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
-	 * Accepts connection request received from specified user
+	 * Clicks Connect button on connect popup
 	 * 
-	 * @step. ^I accept connection request from user (.*)$
+	 * @step. I click Connect button on Connect to popup
 	 * 
-	 * @param user
-	 *            name of user which sent connection request
 	 */
-	@When("^I accept connection request from user (.*)$")
-	public void IAcceptConnectionRequestFromUser(String user) {
-		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
-		PagesCollection.connectToPage.acceptRequestFromUser(user);
+	@When("^I click Connect button on Connect to popup$")
+	public void IAcceptConnectionRequestFromUser() {
+		PagesCollection.connectToPopup.clickConnectButton();
 	}
 }

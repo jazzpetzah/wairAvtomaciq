@@ -21,8 +21,15 @@ public class PeoplePickerPage extends WebPage {
 	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.PeoplePickerPage.classNameCreateConversationButton)
 	private WebElement createConversationButton;
 
+	private String url;
+	@SuppressWarnings("unused")
+	private String path;
+	
 	public PeoplePickerPage(String URL, String path) throws Exception {
 		super(URL, path);
+		
+		this.url = URL;
+		this.path = path;
 	}
 
 	public void searchForUser(String searchText) {
@@ -47,4 +54,22 @@ public class PeoplePickerPage extends WebPage {
 	public void createConversation() {
 		createConversationButton.click();
 	}
+
+	private void clickNotConnectedUser(String name) {
+		String foundUserXpath = WebAppLocators.PeoplePickerPage.xpathSearchResultByName.apply(name);
+		WebElement foundUserElement = driver.findElement(By.xpath(foundUserXpath));
+		foundUserElement.click();
+	}
+	
+	public ConnectToPopup clickNotConnectedUserName(String name) throws Exception {
+		clickNotConnectedUser(name);
+		return new ConnectToPopup(url, name);
+	}
+	
+	public boolean isUserFound(String name) {
+		String foundUserXpath = WebAppLocators.PeoplePickerPage.xpathSearchResultByName.apply(name);
+		WebElement foundUserElement = driver.findElement(By.xpath(foundUserXpath));
+		return DriverUtils.isElementDisplayed(foundUserElement);
+	}
+	
 }
