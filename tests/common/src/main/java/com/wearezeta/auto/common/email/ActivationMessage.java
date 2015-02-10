@@ -10,7 +10,8 @@ import javax.mail.MessagingException;
 
 public class ActivationMessage extends BackendMessage {
 
-	public ActivationMessage(Message msg) {
+	public ActivationMessage(Message msg) throws MessagingException,
+			IOException {
 		super(msg);
 	}
 
@@ -28,20 +29,23 @@ public class ActivationMessage extends BackendMessage {
 	}
 
 	private static final String ZETA_PURPOSE_HEADER_NAME = "X-Zeta-Purpose";
+
 	public String getXZetaPurpose() throws MessagingException {
 		return this.getHeaderValue(ZETA_PURPOSE_HEADER_NAME);
 	}
 
 	private static final String ZETA_KEY_HEADER_NAME = "X-Zeta-Key";
+
 	public String getXZetaKey() throws MessagingException {
 		return this.getHeaderValue(ZETA_KEY_HEADER_NAME);
 	}
 
 	private static final String ZETA_CODE_HEADER_NAME = "X-Zeta-Code";
+
 	public String getXZetaCode() throws MessagingException {
 		return this.getHeaderValue(ZETA_CODE_HEADER_NAME);
 	}
-	
+
 	public static boolean isActivationMessage(Message msg) {
 		try {
 			return (msg.getHeader(ZETA_CODE_HEADER_NAME) != null);
