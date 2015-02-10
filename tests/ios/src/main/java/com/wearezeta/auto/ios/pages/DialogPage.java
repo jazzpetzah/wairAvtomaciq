@@ -103,7 +103,6 @@ public class DialogPage extends IOSPage{
 	@FindBy(how = How.NAME, using = IOSLocators.nameMediaBarTitle)
 	private WebElement mediabarBarTitle;
 	
-	
 	@FindBy(how = How.NAME, using = IOSLocators.namePingButton)
 	private WebElement pingButton;
 	
@@ -344,6 +343,15 @@ public class DialogPage extends IOSPage{
 		return page;
 	}
 
+	public OtherUserOnPendingProfilePage swipePendingDialogPageUp(int time) throws Throwable {		
+		WebElement element =  driver.findElement(By.name(IOSLocators.nameMainWindow));
+		
+		Point coords = element.getLocation();
+		Dimension elementSize = element.getSize();
+		driver.swipe(coords.x + elementSize.width / 2, coords.y + elementSize.height - TEXT_INPUT_HEIGH, coords.x + elementSize.width / 2, coords.y + TOP_BORDER_WIDTH, time);
+		return new OtherUserOnPendingProfilePage(url, path);
+	}
+	
 	@Override
 	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
 		IOSPage page = null;
@@ -418,6 +426,11 @@ public class DialogPage extends IOSPage{
 		return flag;
 	}
 
+	public boolean isTitleBarDisplayed(String convName) {
+		//check if the title bar is off the page or not
+		return (driver.findElement(By.xpath(IOSLocators.xpathConversationTitleBar)).getLocation().y>0);
+	}
+	
 	public DialogPage scrollUpToMediaContainer() throws Throwable {
 		DialogPage page = null;
 		int count = 0;

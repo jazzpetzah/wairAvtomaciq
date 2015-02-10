@@ -150,7 +150,22 @@ public class PeoplePickerPageSteps {
 	public void WhenISearchForUserNameAndTapOnItOnPeoplePickerPage(
 			String contact) throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		PagesCollection.connectToPage = PagesCollection.peoplePickerPage.pickUserAndTap(contact);
+		PagesCollection.connectToPage = PagesCollection.peoplePickerPage
+				.pickUserAndTap(contact);
+	}
+
+	/**
+	 * Verifies that a clock is present on a pending user's searched avatar
+	 * 
+	 * @step. ^I see the user avatar with a clock$
+	 * 
+	 * @throws IOException
+	 */
+	
+	@Then("^I see the user avatar with a clock$")
+	public void ISeeUserWithAvatarClock() throws IOException {
+		Assert.assertTrue("Avatar does not have a clock icon",
+				PagesCollection.peoplePickerPage.checkAvatarClockIcon() > 0.95);
 	}
 
 	@When("^I search for ignored user name (.*) and tap on it$")

@@ -1,5 +1,7 @@
 package com.wearezeta.auto.ios;
 
+import java.util.UUID;
+
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
@@ -220,6 +222,26 @@ public class CommonIOSSteps {
 	@When("^User (\\w+) change  name to (.*)$")
 	public void IChangeUserName(String userNameAlias, String newName)
 			throws Exception {
+		commonSteps.IChangeUserName(userNameAlias, newName);
+	}
+
+	/**
+	 * Changes a users name to a randomly generated name that starts with a
+	 * certain letter
+	 * 
+	 * @param userNameAlias
+	 *            user's name alias to change
+	 * 
+	 * @param startLetter
+	 *            the first letter of the new username
+	 * 
+	 * @step. ^User (\\w+) name starts with (.*)$
+	 */
+
+	@When("^User (\\w+) name starts with (.*)$")
+	public void IChangeUserNameToNameStartingWith(String userNameAlias, String startLetter)
+			throws Exception {
+		String newName = startLetter.concat(UUID.randomUUID().toString().replace("-", ""));
 		commonSteps.IChangeUserName(userNameAlias, newName);
 	}
 

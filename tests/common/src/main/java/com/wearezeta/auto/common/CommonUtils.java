@@ -28,6 +28,7 @@ public class CommonUtils {
 	private static final String HOT_PING_IMAGE = "hot_ping_image.png";
 	private static final String IOS_PING_IMAGE = "ios_ping_image.png";
 	private static final String IOS_HOT_PING_IMAGE = "ios_hot_ping_image.png";
+	private static final String IOS_AVATAR_CLOCK_IMAGE = "searchedAvatarWithClock.png";
 
 	private static final Random rand = new Random();
 	public static final int BACKEND_SYNC_TIMEOUT = 5000 + rand.nextInt(4000); // milliseconds
@@ -131,6 +132,12 @@ public class CommonUtils {
 		return path;
 	}
 
+	public static String getAvatarWithClockIconPathIOS(Class<?> c) throws IOException {
+		String path = getValueFromConfig(c, "iosImagesPath")
+				+ IOS_AVATAR_CLOCK_IMAGE;
+		return path;
+	}
+	
 	public static String getImagesPath(Class<?> c) throws IOException {
 		return getValueFromConfig(c, "defaultImagesPath");
 	}
