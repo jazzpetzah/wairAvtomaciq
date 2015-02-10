@@ -20,7 +20,7 @@ public class UserProfilePopupPageSteps {
 	 */
 	@When("I see User Profile Popup Page")
 	public void ISeeUserProfilePopupPage() {
-		Assert.assertTrue(PagesCollection.userProfilePopupPage
+		Assert.assertTrue(PagesCollection.userProfilePopup
 				.isUserProfilePopupPageVisible());
 	}
 
@@ -36,7 +36,7 @@ public class UserProfilePopupPageSteps {
 	public void IseeUserNameOnUserProfilePage(String name) {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		Assert.assertEquals(name,
-				PagesCollection.userProfilePopupPage.getUserName());
+				PagesCollection.userProfilePopup.getUserName());
 	}
 	
 	/**
@@ -47,7 +47,7 @@ public class UserProfilePopupPageSteps {
 	 */
 	@When("I see Add people button on User Profile Popup Page")
 	public void ISeeAddPeopleButtonOnUserProfilePopupPage() {
-		Assert.assertTrue(PagesCollection.userProfilePopupPage
+		Assert.assertTrue(PagesCollection.userProfilePopup
 				.isAddPeopleButtonVisible());
 	}
 	
@@ -59,7 +59,7 @@ public class UserProfilePopupPageSteps {
 	 */
 	@When("I see Block button on User Profile Popup Page")
 	public void ISeeBlockButtonOnUserProfilePopupPage() {
-		Assert.assertTrue(PagesCollection.userProfilePopupPage
+		Assert.assertTrue(PagesCollection.userProfilePopup
 				.isBlockButtonVisible());
 	}
 	
@@ -71,7 +71,7 @@ public class UserProfilePopupPageSteps {
 	 */
 	@When("^I click leave group chat$")
 	public void IClickLeaveGroupChat() {
-		PagesCollection.userProfilePopupPage.leaveGroupChat();
+		PagesCollection.userProfilePopup.leaveGroupChat();
 	}
 	
 	/**
@@ -82,7 +82,7 @@ public class UserProfilePopupPageSteps {
 	 */
 	@When("^I confirm leave group chat$")
 	public void IClickConfirmLeaveGroupChat() {
-		PagesCollection.userProfilePopupPage.confirmLeaveGroupChat();
+		PagesCollection.userProfilePopup.confirmLeaveGroupChat();
 	}
 
 }

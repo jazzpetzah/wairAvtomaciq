@@ -43,7 +43,6 @@ public class DialogPageSteps {
 	public static long memTime;
 	public String pingId;
 	private int beforeNumberOfImages = 0;
-	private int beforeNumberOfKnocks = 0;
 
 	@When("^I see dialog page$")
 	public void WhenISeeDialogPage() throws Exception {

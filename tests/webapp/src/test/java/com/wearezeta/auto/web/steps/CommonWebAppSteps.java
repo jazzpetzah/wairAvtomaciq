@@ -6,6 +6,7 @@ import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.pages.InvitationCodePage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.WebPage;
@@ -19,6 +20,7 @@ public class CommonWebAppSteps {
 
 	public static final Logger log = ZetaLogger.getLog(CommonWebAppSteps.class
 			.getSimpleName());
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	static {
 		System.setProperty("java.awt.headless", "false");
@@ -133,6 +135,31 @@ public class CommonWebAppSteps {
 			String usersToNameAliases) throws Throwable {
 		commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
 				usersToNameAliases);
+	}
+
+	/**
+	 * Pings BackEnd until user is indexed and avialable in search
+	 * 
+	 * @step. ^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in backend search results$
+	 * 
+	 * @param searchByNameAlias
+	 *            user name to search string
+	 * 
+	 * @param timeout
+	 *            max ping timeout in sec
+	 * 
+	 * @param query
+	 *            querry string
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in backend search results$")
+	public void UserWaitsUntilContactExistsInHisSearchResults(
+			String searchByNameAlias, int timeout, String query)
+			throws Exception {
+		query = usrMgr.findUserByNameOrNameAlias(query).getName();
+		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query,
+				timeout);
 	}
 
 	@After
