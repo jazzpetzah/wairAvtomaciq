@@ -21,7 +21,7 @@ public class WebCommonUtils extends CommonUtils {
 	}
 
 	public static String getFullPicturePath(String pictureName) {
-		return String.format("%s/Documents/%s", System.getenv("HOME"),
-				pictureName);
+		return String.format("%s/Documents/%s",
+				System.getProperty("user.home"), pictureName);
 	}
 }
