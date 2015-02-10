@@ -57,3 +57,24 @@ Feature: People View
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       | Message    |
       | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat | you left   |
+      
+      
+  @staging @id1694
+  Scenario Outline: Verify you can remove participants from a group conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name <Name> in Contact list
+    And I open conversation with <ChatName>
+    And I click show user profile button
+    And I see User Profile Popup Page
+    When I click on participant <Contact1>
+    And I remove user from group chat
+    And I confirm remove from group chat
+    And I open conversation with <ChatName>
+    Then I see <Message> action in conversation
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       | Message       |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat | you removed   |

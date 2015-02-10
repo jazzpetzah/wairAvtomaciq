@@ -84,5 +84,40 @@ public class UserProfilePopupPageSteps {
 	public void IClickConfirmLeaveGroupChat() {
 		PagesCollection.userProfilePopup.confirmLeaveGroupChat();
 	}
+	
+	/**
+	 * Click on a participant in User profile popup
+	 * 
+	 * @step. ^I click on participant (.*)$
+	 * 
+	 * @param name
+	 *            user name string
+	 */
+	@When("^I click on participant (.*)$") 
+	public void IClickOnParticipant(String name){
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		PagesCollection.userProfilePopup.clickOnParticipant(name);
+	}
 
+	/**
+	 * Remove participant from group chat by clicking - button
+	 * 
+	 * @step. ^I remove user from group chat$
+	 * 
+	 */
+	@When("^I remove user from group chat$")
+	public void IRemoveUserFromGroupChat() {
+		PagesCollection.userProfilePopup.removeFromGroupChat();
+	}
+	
+	/**
+	 * Confirm removing from group chat by clicking REMOVE button
+	 * 
+	 * @step. ^I confirm remove from group chat$
+	 * 
+	 */
+	@When("^I confirm remove from group chat$")
+	public void IClickConfirmRemoveFromGroupChat() {
+		PagesCollection.userProfilePopup.confirmRemoveFromGroupChat();
+	}
 }
