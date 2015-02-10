@@ -22,6 +22,7 @@ public class PeoplePickerPage extends WebPage {
 	private WebElement createConversationButton;
 
 	private String url;
+	@SuppressWarnings("unused")
 	private String path;
 	
 	public PeoplePickerPage(String URL, String path) throws Exception {

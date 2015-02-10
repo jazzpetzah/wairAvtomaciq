@@ -7,6 +7,7 @@ import cucumber.api.java.en.When;
 
 public class ConnectToPageSteps {
 
+	@SuppressWarnings("unused")
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**

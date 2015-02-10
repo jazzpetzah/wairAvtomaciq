@@ -95,6 +95,8 @@ public class ConversationPageSteps {
 	/**
 	 * Verifies whether previously sent picture exists in the conversation view
 	 * 
+	 * @step. ^I send picture (.*)
+	 * 
 	 * @param pictureName
 	 *            the name of a picture file. This file should already exist in
 	 *            the ~/Documents folder

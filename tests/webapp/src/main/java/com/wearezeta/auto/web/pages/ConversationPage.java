@@ -11,6 +11,7 @@ import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class ConversationPage extends WebPage {
@@ -19,22 +20,28 @@ public class ConversationPage extends WebPage {
 	private static final Logger log = ZetaLogger.getLog(ConversationPage.class
 			.getSimpleName());
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathMessageEntry)
-	private List<WebElement> messageEntries;
+	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathTextMessageEntry)
+	private List<WebElement> textMessageEntries;
+
+	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathImageMessageEntry)
+	private List<WebElement> imageMessageEntries;
 
 	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idConversationInput)
 	private WebElement conversationInput;
-	
+
 	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.ConversationPage.classNameShowParticipantsButton)
 	private WebElement showParticipants;
 
+	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathSendImageInput)
+	private WebElement imagePathInput;
+
 	private String url;
 	private String path;
-	
+
 	public ConversationPage(String URL, String path) throws Exception {
 
 		super(URL, path);
-		
+
 		this.url = URL;
 		this.path = path;
 	}
@@ -46,12 +53,12 @@ public class ConversationPage extends WebPage {
 	public void sendNewMessage() {
 		conversationInput.sendKeys(Keys.ENTER);
 	}
-	
+
 	public boolean isActionMessageSent(String message) {
 		boolean isSend = false;
-		String xpath = String
-				.format(WebAppLocators.ConversationPage.xpathActionMessageEntry,
-						message);
+		String xpath = String.format(
+				WebAppLocators.ConversationPage.xpathActionMessageEntry,
+				message);
 		DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath));
 		WebElement element = driver.findElement(By.xpath(xpath));
 		if (element != null) {
@@ -63,7 +70,7 @@ public class ConversationPage extends WebPage {
 	public boolean isMessageSent(String message) {
 		boolean isSend = false;
 		String xpath = String
-				.format(WebAppLocators.ConversationPage.xpathFormatSpecificMessageEntry,
+				.format(WebAppLocators.ConversationPage.xpathFormatSpecificTextMessageEntry,
 						message);
 		DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath));
 		WebElement element = driver.findElement(By.xpath(xpath));
@@ -72,14 +79,40 @@ public class ConversationPage extends WebPage {
 		}
 		return isSend;
 	}
-	
+
 	public UserProfilePopup clickShowUserProfileButton() throws Exception {
 		showParticipants.click();
 		return new UserProfilePopup(url, path);
 	}
-	
+
 	public ParticipantsPopupPage clickShowParticipantsButton() throws Exception {
 		showParticipants.click();
 		return new ParticipantsPopupPage(url, path);
+	}
+
+	public void sendPicture(String pictureName) {
+		final String picturePath = WebCommonUtils
+				.getFullPicturePath(pictureName);
+		final String showPathInputJScript = "$('"
+				+ WebAppLocators.ConversationPage.cssSendImageLabel
+				+ "').css({'opacity': '100'});" + "\n" + "$('"
+				+ WebAppLocators.ConversationPage.cssSendImageLabel
+				+ "').find('"
+				+ WebAppLocators.ConversationPage.cssSendImageInput
+				+ "').css({'left': '0'});";
+		driver.executeScript(showPathInputJScript);
+		imagePathInput.sendKeys(picturePath);
+	}
+
+	public boolean isPictureSent(String pictureName) {
+		@SuppressWarnings("unused")
+		final String picturePath = WebCommonUtils
+				.getFullPicturePath(pictureName);
+		// TODO: Add comparison of the original and sent pictures
+		final boolean isAnyPictureMsgFound = DriverUtils
+				.waitUntilElementAppears(
+						driver,
+						By.xpath(WebAppLocators.ConversationPage.xpathImageMessageEntry));
+		return isAnyPictureMsgFound && (imageMessageEntries.size() > 0);
 	}
 }
