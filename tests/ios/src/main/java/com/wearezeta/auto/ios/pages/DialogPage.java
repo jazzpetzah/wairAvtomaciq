@@ -103,11 +103,7 @@ public class DialogPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameMediaBarTitle)
 	private WebElement mediabarBarTitle;
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> 86d578a41a21dd56983fa923294df75d3df1d939
 	@FindBy(how = How.NAME, using = IOSLocators.namePingButton)
 	private WebElement pingButton;
 
@@ -441,11 +437,6 @@ public class DialogPage extends IOSPage {
 	public boolean isMediaBarDisplayed() {
 		boolean flag = mediabarPlayPauseButton.isDisplayed();
 		return flag;
-	}
-
-	public boolean isTitleBarDisplayed(String convName) {
-		//check if the title bar is off the page or not
-		return (driver.findElement(By.xpath(IOSLocators.xpathConversationTitleBar)).getLocation().y>0);
 	}
 	
 	public DialogPage scrollUpToMediaContainer() throws Throwable {

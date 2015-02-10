@@ -277,10 +277,6 @@ public abstract class IOSPage extends BasePage {
 	}
 
 	public void minimizeApplication(int time) {
-<<<<<<< HEAD
-=======
-
->>>>>>> 86d578a41a21dd56983fa923294df75d3df1d939
 		driver.executeScript("au.backgroundApp(" + Integer.toString(time) + ")");
 	}
 

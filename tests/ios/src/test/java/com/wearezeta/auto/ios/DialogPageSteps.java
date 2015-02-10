@@ -162,7 +162,6 @@ public class DialogPageSteps {
 				.swipeUp(500);
 	}
 
-<<<<<<< HEAD
 	/**
 	 * Swipes up on the pending dialog page in order to access the pending personal info page
 	 * 
@@ -178,10 +177,6 @@ public class DialogPageSteps {
 	
 	@Then("^I see my message in the dialog$")
 	public void ThenISeeMyMessageInTheDialog() throws Throwable {
-=======
-	@Then("^I see message in the dialog$")
-	public void ThenISeeMessageInTheDialog() throws Throwable {
->>>>>>> 86d578a41a21dd56983fa923294df75d3df1d939
 		String dialogLastMessage = PagesCollection.dialogPage
 				.getLastMessageFromDialog();
 		Assert.assertTrue("Message is different, actual: " + dialogLastMessage

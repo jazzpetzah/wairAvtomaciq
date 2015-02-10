@@ -115,15 +115,11 @@ public class ConnectToPage extends IOSPage {
 		return DriverUtils.waitUntilElementAppears(driver, By.className(IOSLocators.clasNameConnectDialogLabel));
 	}
 	
-<<<<<<< HEAD
 	public boolean isConnectButtonVisible(){
 		return connectOtherUserButton.isDisplayed();
 	}
 	
-	public PeoplePickerPage sendInvitation() throws IOException {
-=======
 	public PeoplePickerPage sendInvitation() throws Exception {
->>>>>>> 86d578a41a21dd56983fa923294df75d3df1d939
 		connectOtherUserButton.click();
 		return new PeoplePickerPage(url, path);	
 	}
