@@ -48,18 +48,41 @@ public class ContactListPageSteps {
 			PagesCollection.contactListPage.navigateBack();
 		}
 	}
-
-	@Given("^I see Contact list with my name (.*)$")
-	public void GivenISeeContactListWithMyName(String name) throws Throwable {
+	
+	/**
+	 * Close People Picker and open contact list without contacts 
+	 * 
+	 * @step. ^I see Contact list with no contacts and my name (.*)$
+	 * 
+	 * @param name
+	 *            user name string
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I see Contact list with no contacts and my name (.*)$")
+	public void GivenISeeContactListWithNoContactsAndMyNameAnd(String name) throws Throwable {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		PagesCollection.contactListPage.pressLaterButton();
-		// TODO: revisit later
-		Thread.sleep(2000);
 		if (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
 			PagesCollection.peoplePickerPage.tapClearButton();
 		}
 
-		// disableHint(name);
+		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
+
+	}
+
+	/**
+	 * Close People Picker and open contact list with contacts 
+	 * 
+	 * @step. ^I see Contact list with no contacts and my name (.*)$
+	 * 
+	 * @param name
+	 *            user name string
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I see Contact list with my name (.*)$")
+	public void GivenISeeContactListWithMyName(String name) throws Throwable {
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 
@@ -183,14 +206,6 @@ public class ContactListPageSteps {
 	@Then("Contact list appears with my name (.*)")
 	public void ThenContactListAppears(String name) throws Exception {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		PagesCollection.contactListPage.pressLaterButton();
-		// TODO: revisit later
-		Thread.sleep(2000);
-		if (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
-			PagesCollection.peoplePickerPage.tapClearButton();
-		}
-
-		disableHint(name);
 
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
 	}

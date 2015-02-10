@@ -124,4 +124,17 @@ public class RegistrationPageSteps {
 		this.userToRegister.setUserState(UserState.Created);
 		PagesCollection.contactListPage = PagesCollection.registrationPage.continueRegistration();
 	}
+	
+	/**
+	 * Activates user using browser by URL from mail
+	 * 
+	 * @step. ^I activate user by URL$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I activate user by URL$")
+	public void WhenIActivateUserByUrl() throws Exception{
+		String link = BackendAPIWrappers.getUserActivationLink(this.listener);
+		PagesCollection.peoplePickerPage = PagesCollection.registrationPage.activateByLink(link);
+	}
 }

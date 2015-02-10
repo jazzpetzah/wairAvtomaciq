@@ -8,7 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
-public class UserProfilePopupPage extends WebPage {
+public class UserProfilePopup extends WebPage {
 
 	@FindBy(how = How.ID, using = WebAppLocators.UserProfilePopupPage.idUserProfilePage)
 	private WebElement userProfilePopup;
@@ -28,7 +28,7 @@ public class UserProfilePopupPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.UserProfilePopupPage.xpathConfirmLeaveButton)
 	private WebElement confirmLeaveButton;
 
-	public UserProfilePopupPage(String URL, String path) throws Exception {
+	public UserProfilePopup(String URL, String path) throws Exception {
 		super(URL, path);
 
 	}

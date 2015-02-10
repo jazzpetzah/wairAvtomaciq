@@ -56,7 +56,7 @@ public class IMAPSMailbox {
 					final Folder inbox = store.getDefaultFolder().getFolder(
 							MAILS_FOLDER);
 					if (inbox.isOpen()) {
-						inbox.close(true);
+						inbox.close(false);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -101,28 +101,34 @@ public class IMAPSMailbox {
 		}
 	}
 
+	private void closeFolder() throws MessagingException {
+		if (folder.isOpen()) {
+			folder.close(false);
+		}
+	}
+
 	public List<Message> getRecentMessages(int msgsCount)
 			throws MessagingException, InterruptedException {
-		if (!folder.isOpen()) {
-			this.openFolder();
+		this.openFolder();
+		try {
+			int currentMsgsCount = folder.getMessageCount();
+			Message[] fetchedMsgs;
+			if (msgsCount > currentMsgsCount) {
+				fetchedMsgs = folder.getMessages();
+			} else {
+				fetchedMsgs = folder.getMessages(currentMsgsCount - msgsCount,
+						currentMsgsCount);
+			}
+			return new ArrayList<Message>(Arrays.asList(fetchedMsgs));
+		} finally {
+			this.closeFolder();
 		}
-		int currentMsgsCount = folder.getMessageCount();
-		Message[] fetchedMsgs;
-		if (msgsCount > currentMsgsCount) {
-			fetchedMsgs = folder.getMessages();
-		} else {
-			fetchedMsgs = folder.getMessages(currentMsgsCount - msgsCount,
-					currentMsgsCount);
-		}
-		return new ArrayList<Message>(Arrays.asList(fetchedMsgs));
 	}
 
 	public MBoxChangesListener startMboxListener(
 			Map<String, String> expectedHeaders) throws MessagingException,
 			InterruptedException {
-		if (!folder.isOpen()) {
-			this.openFolder();
-		}
+		this.openFolder();
 		CountDownLatch wait = new CountDownLatch(1);
 		MBoxChangesListener listener = new MBoxChangesListener(this,
 				expectedHeaders, wait);
@@ -149,14 +155,18 @@ public class IMAPSMailbox {
 	public static Message getFilteredMessage(MBoxChangesListener listener,
 			int timeout) throws TimeoutException, InterruptedException,
 			MessagingException {
-		Message message = listener.getMatchedMessage(timeout);
-		if (message != null) {
-			return message;
+		try {
+			Message message = listener.getMatchedMessage(timeout);
+			if (message != null) {
+				return message;
+			}
+			throw new TimeoutException(
+					String.format(
+							"The email message for user %s has not been received within %s second(s) timeout",
+							listener.getParentMBox().getUser(), timeout));
+		} finally {
+			listener.getParentMBox().closeFolder();
 		}
-		throw new TimeoutException(
-				String.format(
-						"The email message for user %s has not been received within %s second(s) timeout",
-						listener.getParentMBox().getUser(), timeout));
 	}
 
 	static {

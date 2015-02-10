@@ -46,3 +46,18 @@ Feature: Conversation
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+      
+  @staging @id1612
+  Scenario Outline: Send Camera picture to contact in 1:1
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name <Name> in Contact list
+    And I open conversation with <Contact>
+    When I send picture <PictureName>
+    Then I see sent picture <PictureName> in the conversation view
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | PictureName               |
+      | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg |
+
