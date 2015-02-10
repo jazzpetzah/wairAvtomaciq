@@ -76,7 +76,7 @@ Feature: Connect
   #And I tap on NOT connected user name on People picker page <Contact>
   #And I see connect to <Contact> dialog
   #And I input message in connect to dialog
-  #And I click Send button on connect to dialog
+  #Old method must change this line #And I click Send button on connect to dialog
   #And I see People picker page
   #And I click clear button
   #And I see Contact list with my name <Name>

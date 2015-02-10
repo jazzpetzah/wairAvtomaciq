@@ -142,13 +142,11 @@ public class PeoplePickerPage extends IOSPage {
 
 	public PendingRequestsPage pickIgnoredUserAndTap(String name)
 			throws Exception {
-
 		PickUser(name).click();
 		return new PendingRequestsPage(url, path);
 	}
 
 	public ContactListPage dismissPeoplePicker() throws Exception {
-
 		peoplePickerClearBtn.click();
 		return new ContactListPage(url, path);
 	}
@@ -156,7 +154,7 @@ public class PeoplePickerPage extends IOSPage {
 	public boolean isAddToConversationBtnVisible() {
 		return DriverUtils.isElementDisplayed(addToConversationBtn);
 	}
-
+	
 	public boolean addToConversationNotVisible() {
 		boolean flag;
 		try {
@@ -212,15 +210,6 @@ public class PeoplePickerPage extends IOSPage {
 		fillTextInPeoplePickerSearch(name);
 		waitUserPickerFindUser(name);
 		user = driver.findElementByName(name);
-		try {
-			BufferedImage image = getElementScreenshot(driver
-					.findElement(By
-							.xpath("//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[1]/UIAStaticText[1]")));
-			ImageIO.write(image, "png", new File("elementshot.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		return user;
 	}
 

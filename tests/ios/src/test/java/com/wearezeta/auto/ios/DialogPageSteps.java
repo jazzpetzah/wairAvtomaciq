@@ -175,8 +175,8 @@ public class DialogPageSteps {
 		PagesCollection.otherUserOnPendingProfilePage = PagesCollection.dialogPage.swipePendingDialogPageUp(500);
 	}
 	
-	@Then("^I see my message in the dialog$")
-	public void ThenISeeMyMessageInTheDialog() throws Throwable {
+	@Then("^I see message in the dialog$")
+	public void ThenISeeMessageInTheDialog() throws Throwable {
 		String dialogLastMessage = PagesCollection.dialogPage
 				.getLastMessageFromDialog();
 		Assert.assertTrue("Message is different, actual: " + dialogLastMessage
