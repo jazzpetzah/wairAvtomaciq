@@ -101,11 +101,10 @@ Feature: Connect to user
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
-       
-      
-  @staging @id1407
-  Scenario Outline: Verify impossiibility of starting 1:1 conversation with pending  user (Search)
-  	Given There are 2 users where <Name> is me
+
+  @regression @id1407
+  Scenario Outline: Verify impossiibility of starting 1:1 conversation with pending user (Search)
+    Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open People Picker from contact list
@@ -116,8 +115,7 @@ Feature: Connect to user
     And I send invitation to user
     And I open conversation with <Contact>
     Then I can not write a random message
-    
-    
+
     Examples: 
       | Login      | Password      | Name      | Contact   | ContactEmail |
       | user1Email | user1Password | user1Name | user2Name | user2Email   |
