@@ -14,20 +14,17 @@ import javax.mail.Multipart;
 import javax.mail.Part;
 
 public class BackendMessage {
-	private Object msgContent;
+	private Message msg;
 	private Map<String, String> mapHeaders = new HashMap<String, String>();
 
-	protected Object getMsgContent() {
-		return this.msgContent;
-	}
-
 	public BackendMessage(Message msg) throws MessagingException, IOException {
+		this.msg = msg;
+
 		final boolean wasFolderOpened = msg.getFolder().isOpen();
 		if (!wasFolderOpened) {
 			msg.getFolder().open(Folder.READ_ONLY);
 		}
 		try {
-			this.msgContent = msg.getContent();
 			@SuppressWarnings("unchecked")
 			Enumeration<Header> hdrs = msg.getAllHeaders();
 			while (hdrs.hasMoreElements()) {
@@ -47,23 +44,30 @@ public class BackendMessage {
 	}
 
 	public String getContent() throws IOException, MessagingException {
-		String content = "";
-		Object msgContent = this.getMsgContent();
-		if (msgContent instanceof Multipart) {
-			Multipart multipart = (Multipart) msgContent;
-			StringBuilder multipartContent = new StringBuilder();
-			for (int j = 0; j < multipart.getCount(); j++) {
-				BodyPart bodyPart = multipart.getBodyPart(j);
-				if (bodyPart.getDisposition() == null) {
-					multipartContent.append(getText(bodyPart));
-				}
-			}
-			content = multipartContent.toString();
-		} else {
-			content = msgContent.toString();
+		final boolean wasFolderOpened = this.msg.getFolder().isOpen();
+		if (!wasFolderOpened) {
+			msg.getFolder().open(Folder.READ_ONLY);
 		}
-
-		return content;
+		try {
+			Object msgContent = this.msg.getContent();
+			if (msgContent instanceof Multipart) {
+				Multipart multipart = (Multipart) msgContent;
+				StringBuilder multipartContent = new StringBuilder();
+				for (int j = 0; j < multipart.getCount(); j++) {
+					BodyPart bodyPart = multipart.getBodyPart(j);
+					if (bodyPart.getDisposition() == null) {
+						multipartContent.append(getText(bodyPart));
+					}
+				}
+				return multipartContent.toString();
+			} else {
+				return msgContent.toString();
+			}
+		} finally {
+			if (!wasFolderOpened) {
+				msg.getFolder().close(false);
+			}
+		}
 	}
 
 	/**

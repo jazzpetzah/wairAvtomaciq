@@ -140,3 +140,25 @@ Feature: Search
     Examples: 
       | Login      | Password      | Name      | UnconnectedUserEmail | UnconnectedUser |
       | user1Email | user1Password | user1Name | user2Email           | user2Name       |
+      
+  @staging @id763
+  Scenario Outline: I can still search for other people using the search field, regardless of whether I already added people from Top conversations
+  	Given There are <UserCount> users where <Name> is me
+    Given Myself is connected to all other users
+    Given I Sign in using login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I wait for 30 seconds
+    And I swipe down contact list
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    Then I tap on 3 top connections
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact>
+    And I see user <Contact> found on People picker page
+    And I tap on connected user <Contact> on People picker page
+    Then I see that <Number> contacts are selected
+     
+  	Examples: 
+      | Login      | Password      | Name      | UserCount | Contact   | Number |
+      | user1Email | user1Password | user1Name | 10        | user2Name |  4     |

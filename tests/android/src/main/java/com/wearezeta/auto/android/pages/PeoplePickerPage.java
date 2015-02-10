@@ -187,19 +187,6 @@ public class PeoplePickerPage extends AndroidPage {
 		return new DialogPage(url, path);
 	}
 	//TODO: move this to some base page
-	private boolean isVisible(WebElement element) {
-		boolean value = false;
-		try{
-			element.isDisplayed();
-			value = true;
-		}
-		catch(NoSuchElementException ex)
-		{
-			value = false;
-		}
-		return value;
-
-	}
 
 	public AndroidPage tapCreateConversation() throws Exception {
 		refreshUITree();
