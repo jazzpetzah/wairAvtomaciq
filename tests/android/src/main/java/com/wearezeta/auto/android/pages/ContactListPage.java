@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.locators.ZetaHow;
 
 import org.openqa.selenium.support.FindBy;
@@ -32,32 +33,35 @@ public class ContactListPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idProfileOptionsButton")
 	private WebElement laterButton;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idNameField")
-	private List<WebElement> selfUserName;
+	private WebElement selfUserName;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConfirmCancelButton")
 	private List<WebElement> laterBtn;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConfirmCancelButtonPicker")
 	private List<WebElement> laterBtnPicker;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idMutedIcon")
 	private WebElement mutedIcon;
-	
+
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConvList")
+	private WebElement convList;
+
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameLoginPage)
 	private WebElement mainControl;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectToHeader")
-	private List<WebElement> connectToHeader;
-	
+	private WebElement connectToHeader;
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idSearchHintClose")
 	private WebElement closeHintBtn;
-	
 
 	private String url;
 	private String path;
-	private static final Logger log = ZetaLogger.getLog(ContactListPage.class.getSimpleName());
+	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
+			.getSimpleName());
 
 	public ContactListPage(String URL, String path) throws Exception {
 		super(URL, path);
@@ -72,7 +76,7 @@ public class ContactListPage extends AndroidPage {
 		el.click();
 		refreshUITree();
 		DriverUtils.setImplicitWaitValue(driver, 5);
-		//workaround for incorrect tap
+		// workaround for incorrect tap
 		el = findInContactList(name, 1);
 		if (el != null && DriverUtils.isElementDisplayed(el)) {
 			this.restoreApplication();
@@ -80,10 +84,9 @@ public class ContactListPage extends AndroidPage {
 			log.debug("tap on contact for the second time");
 		}
 		//
-		if(connectToHeader.size() > 0 && connectToHeader.get(0).isDisplayed()){
+		if (isVisible(connectToHeader)) {
 			page = new ConnectToPage(url, path);
-		}
-		else if (selfUserName.size() > 0 && selfUserName.get(0).isDisplayed()) {
+		} else if (isVisible(selfUserName)) {
 			page = new PersonalInfoPage(url, path);
 		} else {
 			page = new DialogPage(url, path);
@@ -92,23 +95,33 @@ public class ContactListPage extends AndroidPage {
 		return page;
 	}
 
-	public AndroidPage tapOnContactByPosition(List<WebElement> contacts, int id) throws Exception{
+	public AndroidPage tapOnContactByPosition(List<WebElement> contacts, int id)
+			throws Exception {
 		AndroidPage page = null;
 		refreshUITree();
 		contacts.get(id).click();
 		page = new DialogPage(url, path);
 		return page;
 	}
-	
-	public List<WebElement> GetVisibleContacts(){
+
+	public List<WebElement> GetVisibleContacts() {
 		refreshUITree();
 		return contactListNames;
 	}
-	
-	private WebElement findInContactList(String name, int cyclesNumber) {
+
+	private WebElement findInContactList(String name, int cyclesNumber)
+			throws Exception {
 		WebElement contact = null;
+		Boolean flag = false;
 		refreshUITree();
-		if (cursorInput.isEmpty() && selfUserName.isEmpty()) {
+		if (CommonUtils.getAndroidApiLvl(ContactListPage.class) > 42) {
+			if (isVisible(convList)) {
+				flag = true;
+			}
+		} else if (cursorInput.isEmpty() && !isVisible(selfUserName)) {
+			flag = true;
+		}
+		if (flag) {
 			List<WebElement> contactsList = driver
 					.findElements(By.xpath(String
 							.format(AndroidLocators.ContactListPage.xpathContacts,
@@ -126,46 +139,45 @@ public class ContactListPage extends AndroidPage {
 		return contact;
 	}
 
-	public void swipeRightOnContact(int time, String contact)
-			throws Exception {
+	public void swipeRightOnContact(int time, String contact) throws Exception {
 		WebElement el = driver.findElementByXPath(String.format(
 				AndroidLocators.ContactListPage.xpathContactFrame, contact));
 		DriverUtils.swipeRight(driver, el, time);
 	}
 
 	public AndroidPage swipeOnArchiveUnarchive(String contact) throws Exception {
-		WebElement el = driver.findElementByXPath(String.format(
-				AndroidLocators.ContactListPage.xpathContactListArchiveUnarchive, contact));
+		WebElement el = driver
+				.findElementByXPath(String
+						.format(AndroidLocators.ContactListPage.xpathContactListArchiveUnarchive,
+								contact));
 		DriverUtils.swipeRight(driver, el, 1000);
 		AndroidPage page = null;
 		refreshUITree();
-		if(cursorInput.isEmpty()){
+		if (cursorInput.isEmpty()) {
 			page = new ContactListPage(url, path);
-		}
-		else{
+		} else {
 			page = new DialogPage(url, path);
 		}
 		return page;
 	}
-	
+
 	public boolean isContactMuted() {
-		
+
 		return DriverUtils.isElementDisplayed(mutedIcon);
 	}
-	
+
 	public boolean isHintVisible() throws InterruptedException, IOException {
-		refreshUITree();//TODO workaround
+		refreshUITree();// TODO workaround
 		try {
 			wait.until(ExpectedConditions.elementToBeClickable(closeHintBtn));
 		} catch (NoSuchElementException e) {
 			return false;
+		} catch (TimeoutException e) {
+			return false;
 		}
-		 catch (TimeoutException e) {
-				return false;
-			}
 		return closeHintBtn.isEnabled();
 	}
-	
+
 	public void closeHint() {
 		closeHintBtn.click();
 	}
@@ -193,31 +205,33 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	public ContactListPage pressLaterButton() throws Exception {
-		/*try {
-			wait.until(ExpectedConditions.elementToBeClickable(laterButton));
-		} catch (NoSuchElementException e) {
-
-		}
-		catch (TimeoutException e) {
-
-		}*/
-		//DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.PersonalInfoPage.idProfileOptionsButton));
+		/*
+		 * try {
+		 * wait.until(ExpectedConditions.elementToBeClickable(laterButton)); }
+		 * catch (NoSuchElementException e) {
+		 * 
+		 * } catch (TimeoutException e) {
+		 * 
+		 * }
+		 */
+		// DriverUtils.waitUntilElementDissapear(driver,
+		// By.id(AndroidLocators.PersonalInfoPage.idProfileOptionsButton));
 
 		refreshUITree();
 		if (laterBtn.size() > 0) {
 			laterBtn.get(0).click();
-		}
-		else if (laterBtnPicker.size() > 0) {
+		} else if (laterBtnPicker.size() > 0) {
 			laterBtnPicker.get(0).click();
 		}
-		
-		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.ContactListPage.idSimpleDialogPageText));
-		//TODO: we need this as sometimes we see people picker after login
-		PagesCollection.peoplePickerPage = new PeoplePickerPage (url, path);
+
+		DriverUtils.waitUntilElementDissapear(driver,
+				By.id(AndroidLocators.ContactListPage.idSimpleDialogPageText));
+		// TODO: we need this as sometimes we see people picker after login
+		PagesCollection.peoplePickerPage = new PeoplePickerPage(url, path);
 		return this;
 	}
 
-	public Boolean isContactExists(String name){
-		return findInContactList(name,0) != null;
+	public Boolean isContactExists(String name) throws Exception {
+		return findInContactList(name, 0) != null;
 	}
 }

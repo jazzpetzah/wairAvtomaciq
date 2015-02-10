@@ -158,7 +158,10 @@ public final class AndroidLocators {
 
 		public static final String idYourName = LOCATORS_PACKAGE
 				+ ":id/ttv__conversation_list__sticky_menu__profile_link";
-
+		
+		public static final String idConvList = LOCATORS_PACKAGE
+				+ ":id/pv__conv_list";
+		
 		public static final String idConfirmCancelButtonPicker = LOCATORS_PACKAGE
 				+ ":id/zb__confirm_dialog__cancel_button";
 
