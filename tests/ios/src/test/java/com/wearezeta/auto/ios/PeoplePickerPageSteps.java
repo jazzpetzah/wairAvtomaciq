@@ -150,7 +150,8 @@ public class PeoplePickerPageSteps {
 	public void WhenISearchForUserNameAndTapOnItOnPeoplePickerPage(
 			String contact) throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		PagesCollection.connectToPage = PagesCollection.peoplePickerPage.pickUserAndTap(contact);
+		PagesCollection.connectToPage = PagesCollection.peoplePickerPage
+				.pickUserAndTap(contact);
 	}
 
 	@When("^I search for ignored user name (.*) and tap on it$")
@@ -172,10 +173,10 @@ public class PeoplePickerPageSteps {
 		Assert.assertTrue("Add to conversation button is visible",
 				PagesCollection.peoplePickerPage.addToConversationNotVisible());
 	}
-	
+
 	@When("^I click Go button to create 1:1 conversation$")
 	public void WhenIClickOnGoButtonForSingle() throws Exception {
-		PagesCollection.iOSPage =  PagesCollection.peoplePickerPage
+		PagesCollection.iOSPage = PagesCollection.peoplePickerPage
 				.clickOnGoButton(false);
 	}
 
@@ -279,4 +280,31 @@ public class PeoplePickerPageSteps {
 		PagesCollection.peoplePickerPage.tapOnPeoplePickerClearBtn();
 	}
 
+	/**
+	 * Unblocks a blocked user by clicking the unblock button
+	 * 
+	 * @step. I unblock user
+	 * 
+	 */
+	@When("^I unblock user$")
+	public void IUnblockUser() throws Exception {
+		PagesCollection.dialogPage = PagesCollection.peoplePickerPage
+				.unblockUser();
+
+	}
+
+	/**
+	 * This step checks if the number of the selected contacts is correct.
+	 * 
+	 * @step. ^I see that (\\d+) contacts are selected$
+	 * 
+	 * @param number
+	 *            expected number of contacts
+	 * 
+	 */
+	@Then("^I see that (\\d+) contacts are selected$")
+	public void ISeeThatContactsAreSelected(int number) {
+		int numberOfSelectedTopPeople = PagesCollection.peoplePickerPage.getNumberOfSelectedTopPeople();
+		Assert.assertEquals(number, numberOfSelectedTopPeople);
+	}
 }

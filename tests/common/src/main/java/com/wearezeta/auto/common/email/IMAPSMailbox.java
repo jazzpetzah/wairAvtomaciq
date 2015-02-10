@@ -1,7 +1,7 @@
 package com.wearezeta.auto.common.email;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,8 +10,6 @@ import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeoutException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.mail.*;
 
@@ -54,6 +52,15 @@ public class IMAPSMailbox {
 		try {
 			for (String serverName : CACHED_STORES.keySet()) {
 				Store store = CACHED_STORES.get(serverName);
+				try {
+					final Folder inbox = store.getDefaultFolder().getFolder(
+							MAILS_FOLDER);
+					if (inbox.isOpen()) {
+						inbox.close(false);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				store.close();
 			}
 			CACHED_STORES.clear();
@@ -94,11 +101,15 @@ public class IMAPSMailbox {
 		}
 	}
 
-	public List<EmailHeaders> getLastMailHeaders(int msgsCount)
-			throws MessagingException, InterruptedException {
-		if (!folder.isOpen()) {
-			this.openFolder();
+	private void closeFolder() throws MessagingException {
+		if (folder.isOpen()) {
+			folder.close(false);
 		}
+	}
+
+	public List<Message> getRecentMessages(int msgsCount)
+			throws MessagingException, InterruptedException {
+		this.openFolder();
 		try {
 			int currentMsgsCount = folder.getMessageCount();
 			Message[] fetchedMsgs;
@@ -108,11 +119,7 @@ public class IMAPSMailbox {
 				fetchedMsgs = folder.getMessages(currentMsgsCount - msgsCount,
 						currentMsgsCount);
 			}
-			List<EmailHeaders> resultList = new ArrayList<EmailHeaders>();
-			for (Message msg : fetchedMsgs) {
-				resultList.add(EmailHeaders.createFromMessage(msg));
-			}
-			return resultList;
+			return new ArrayList<Message>(Arrays.asList(fetchedMsgs));
 		} finally {
 			this.closeFolder();
 		}
@@ -121,9 +128,7 @@ public class IMAPSMailbox {
 	public MBoxChangesListener startMboxListener(
 			Map<String, String> expectedHeaders) throws MessagingException,
 			InterruptedException {
-		if (!folder.isOpen()) {
-			this.openFolder();
-		}
+		this.openFolder();
 		CountDownLatch wait = new CountDownLatch(1);
 		MBoxChangesListener listener = new MBoxChangesListener(this,
 				expectedHeaders, wait);
@@ -147,30 +152,13 @@ public class IMAPSMailbox {
 		return listener;
 	}
 
-	public static EmailHeaders getFilteredMessageHeaders(
-			MBoxChangesListener listener, int timeout) throws TimeoutException,
-			InterruptedException, MessagingException {
-		try {
-			Message message = listener.getMatchedMessage(timeout);
-			if (message != null) {
-				return EmailHeaders.createFromMessage(message);
-			}
-			throw new TimeoutException(
-					String.format(
-							"The email message for user %s has not been received within %s second(s) timeout",
-							listener.getParentMBox().getUser(), timeout));
-		} finally {
-			listener.getParentMBox().closeFolder();
-		}
-	}
-
-	public static String getActivationLink(MBoxChangesListener listener,
+	public static Message getFilteredMessage(MBoxChangesListener listener,
 			int timeout) throws TimeoutException, InterruptedException,
-			MessagingException, IOException {
+			MessagingException {
 		try {
 			Message message = listener.getMatchedMessage(timeout);
 			if (message != null) {
-				return createActivationURLFromMessage(message);
+				return message;
 			}
 			throw new TimeoutException(
 					String.format(
@@ -178,90 +166,6 @@ public class IMAPSMailbox {
 							listener.getParentMBox().getUser(), timeout));
 		} finally {
 			listener.getParentMBox().closeFolder();
-		}
-	}
-
-	private static String createActivationURLFromMessage(Message message)
-			throws IOException, MessagingException {
-		String content = "";
-		Object msgContent = message.getContent();
-		if (msgContent instanceof Multipart) {
-			Multipart multipart = (Multipart) msgContent;
-			for (int j = 0; j < multipart.getCount(); j++) {
-				BodyPart bodyPart = multipart.getBodyPart(j);
-				String disposition = bodyPart.getDisposition();
-				if (disposition != null
-						&& (disposition.equalsIgnoreCase(Part.ATTACHMENT))) {
-					// DataHandler handler = bodyPart.getDataHandler();
-				} else {
-					content = getText(bodyPart);
-				}
-			}
-		} else {
-			content = message.getContent().toString();
-		}
-
-		return pullLink(content);
-	}
-
-	private static String getText(Part p) throws MessagingException,
-			IOException {
-		if (p.isMimeType("text/*")) {
-			String s = (String) p.getContent();
-			p.isMimeType("text/html");
-			return s;
-		}
-
-		if (p.isMimeType("multipart/alternative")) {
-			// prefer html text over plain text
-			Multipart mp = (Multipart) p.getContent();
-			String text = null;
-			for (int i = 0; i < mp.getCount(); i++) {
-				Part bp = mp.getBodyPart(i);
-				if (bp.isMimeType("text/plain")) {
-					if (text == null)
-						text = getText(bp);
-					continue;
-				} else if (bp.isMimeType("text/html")) {
-					String s = getText(bp);
-					if (s != null)
-						return s;
-				} else {
-					return getText(bp);
-				}
-			}
-			return text;
-		} else if (p.isMimeType("multipart/*")) {
-			Multipart mp = (Multipart) p.getContent();
-			for (int i = 0; i < mp.getCount(); i++) {
-				String s = getText(mp.getBodyPart(i));
-				if (s != null)
-					return s;
-			}
-		}
-
-		return null;
-	}
-
-	private static String pullLink(String text) {
-		ArrayList<String> links = new ArrayList<String>();
-
-		String regex = "<a href=\"([^\"]*)\"[^>]*>VERIFY</a>";
-		Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-		Matcher urlMatcher = p.matcher(text);
-		while (urlMatcher.find()) {
-			links.add(urlMatcher.group(1));
-		}
-		return links.get(0);
-	}
-
-	private void closeFolder() {
-		if (folder.isOpen()) {
-			try {
-				folder.close(true);
-			} catch (MessagingException e) {
-				e.printStackTrace();
-			}
 		}
 	}
 

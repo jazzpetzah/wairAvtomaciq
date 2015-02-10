@@ -66,7 +66,7 @@ public class ContactListPage extends WebPage {
 		} else {
 			final String xpath = WebAppLocators.ContactListPage.xpathContactListEntryByName
 					.apply(name);
-			return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath));
+			return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath), 20);
 		}
 	}
 
@@ -107,8 +107,10 @@ public class ContactListPage extends WebPage {
 	public void clickActionsButtonForContact(String conversationName) {
 
 		WebElement contact = getContactWithName(conversationName);
+		DriverUtils.moveMouserOver(driver, contact);
 		WebElement actionsButton = contact.findElement(By
 				.className(WebAppLocators.ContactListPage.classActionsButton));
+		wait.until(ExpectedConditions.elementToBeClickable(actionsButton));
 		actionsButton.click();
 	}
 
@@ -145,10 +147,10 @@ public class ContactListPage extends WebPage {
 				conversationName));
 	}
 
-	public ConnectToPage openConnectionRequestsList(String listAlias)
+	public PendingConnectionsPage openConnectionRequestsList(String listAlias)
 			throws Exception {
 		openConversation(listAlias);
-		return new ConnectToPage(
+		return new PendingConnectionsPage(
 				CommonUtils.getWebAppAppiumUrlFromConfig(ContactListPage.class),
 				CommonUtils
 						.getWebAppApplicationPathFromConfig(ContactListPage.class));

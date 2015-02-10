@@ -7,7 +7,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
@@ -167,8 +166,9 @@ public class CommonUtils {
 			InputStream configFileStream = null;
 			sem.acquire();
 			try {
-				URL configFile = c.getClass().getResource("/" + resourcePath);
-				configFileStream = configFile.openStream();
+				final ClassLoader classLoader = c.getClassLoader();
+				configFileStream = classLoader
+						.getResourceAsStream(resourcePath);
 				Properties p = new Properties();
 				p.load(configFileStream);
 				cachedConfig.put(configKey, (String) p.get(key));
@@ -361,5 +361,17 @@ public class CommonUtils {
 			log.error("TCP connections for " + appName
 					+ " were not enabled. Make sure tcpblock is installed.");
 		}
+	}
+
+	public static String readTextFileFromResources(String resourcePath)
+			throws IOException {
+		BufferedReader in = new BufferedReader(new InputStreamReader(
+				CommonUtils.class.getResourceAsStream(resourcePath)));
+		String full = "";
+		String s;
+		while ((s = in.readLine()) != null) {
+			full += s + "\n";
+		}
+		return full;
 	}
 }

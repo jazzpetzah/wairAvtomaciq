@@ -407,6 +407,7 @@ public final class IOSLocators {
 	public static final String xpathPeoplePickerUserAvatar = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell/UIAStaticText[@name='%s']/..";
 	public static final String namePeoplePickerAddToConversationButton = "ADD TO CONVERSATION";
 	public static final String xpathPeoplePickerTopConnectionsAvatar = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[%d]";
+	public static final String xpathPeoplePickerAllTopPeople = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell";
 	public static final String nameShareButton = "SHARE";
 	public static final String nameContinueUploadButton = "CONTINUE";
 	public static final String namePeopleYouMayKnowLabel = "PEOPLE YOU MAY KNOW";
@@ -444,5 +445,12 @@ public final class IOSLocators {
 	public static final String nameYouLeftMessage = "YOU LEFT";
 	public static final String nameYouPingedMessage = "YOU PINGED";
 	public static final String nameYouPingedAgainMessage = "YOU PINGED AGAIN";
+	
+	//public static final String xpathOtherUserPingedMessage = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]/UIAStaticText[@name=' PINGED']";
+	
+	////////////////////////////
+	//Unblock user locator
+	////////////////////////////
+	public static final String nameUnblockButton = "UNBLOCK";
 }
 

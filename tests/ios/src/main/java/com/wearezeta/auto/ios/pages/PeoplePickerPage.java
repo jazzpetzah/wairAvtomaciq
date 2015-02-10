@@ -52,7 +52,13 @@ public class PeoplePickerPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.namePeopleYouMayKnowLabel)
 	private WebElement peopleYouMayKnowLabel;
-
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameUnblockButton)
+	private WebElement unblockButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathPeoplePickerAllTopPeople)
+	private List<WebElement> topPeopleList;
+	
 	private String url;
 	private String path;
 
@@ -272,6 +278,21 @@ public class PeoplePickerPage extends IOSPage {
 
 	public boolean isPeopleYouMayKnowLabelVisible() {
 		return DriverUtils.isElementDisplayed(peopleYouMayKnowLabel);
+	}
+	
+	public DialogPage unblockUser() throws Exception {
+		unblockButton.click();
+		return new DialogPage(url, path);
+	}
+	
+	public int getNumberOfSelectedTopPeople() {
+		int selectedPeople = 0;
+		for (WebElement people: topPeopleList){
+			if (people.getAttribute("value").equals("1")) {
+				selectedPeople++;
+			}	
+		}
+		return selectedPeople;
 	}
 
 }

@@ -21,6 +21,9 @@ import com.wearezeta.auto.common.locators.ZetaFindBy;
 import com.wearezeta.auto.common.locators.ZetaHow;
 
 public class LoginPage extends AndroidPage {
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPeoplePickerClearbtn")
+	private WebElement pickerClearBtn;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idSignInButton")
 	private WebElement signInButton;
@@ -28,6 +31,9 @@ public class LoginPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idWelcomeSlogan")
 	private WebElement welcomeSlogan;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idYourName")
+	private WebElement yourUser;
+	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idSignUpButton")
 	private WebElement signUpButton;
 
@@ -149,8 +155,21 @@ public class LoginPage extends AndroidPage {
 	}
 
 	public Boolean isLoginFinished(String contact) throws InterruptedException {
+		Boolean flag = false;
 		refreshUITree();
-		return DriverUtils.waitForElementWithTextByXPath(AndroidLocators.ContactListPage.xpathContacts,contact,driver);
+		try{
+			wait.until(ExpectedConditions.visibilityOf(yourUser));
+		}
+		catch (Exception ex){
+			pickerClearBtn.click();
+			refreshUITree();
+		}
+		
+		if(yourUser.getText().toLowerCase().equals(contact.toLowerCase())){
+			flag = true;
+		}
+		//return DriverUtils.waitForElementWithTextByXPath(AndroidLocators.ContactListPage.xpathContacts,contact,driver);
+		return flag;
 	}
 
 	public Boolean isWelcomeButtonsExist(){

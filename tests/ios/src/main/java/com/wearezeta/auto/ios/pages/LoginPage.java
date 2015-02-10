@@ -114,6 +114,8 @@ public class LoginPage extends IOSPage {
 		if(DriverUtils.isElementDisplayed(shareButton)) {
 			shareButton.click();
 			return new PeoplePickerPage(url, path);
+		} else {
+			log.debug("No share button. Page source: " + driver.getPageSource());
 		}
 		
 		return null;
