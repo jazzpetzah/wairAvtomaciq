@@ -6,6 +6,7 @@ import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.pages.InvitationCodePage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.WebPage;
@@ -19,6 +20,7 @@ public class CommonWebAppSteps {
 
 	public static final Logger log = ZetaLogger.getLog(CommonWebAppSteps.class
 			.getSimpleName());
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	static {
 		System.setProperty("java.awt.headless", "false");
@@ -100,7 +102,7 @@ public class CommonWebAppSteps {
 		commonSteps.UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName,
 				otherParticipantsNameAlises);
 	}
-	
+
 	/**
 	 * Sets self user to be the current user
 	 * 
@@ -111,10 +113,53 @@ public class CommonWebAppSteps {
 	 * 
 	 * @throws Exception
 	 */
-
 	@Given("^User (\\w+) is [Mm]e$")
 	public void UserXIsMe(String nameAlias) throws Exception {
 		commonSteps.UserXIsMe(nameAlias);
+	}
+
+	/**
+	 * Sends connection request by one user to another
+	 * 
+	 * @step. ^(.*) has sent connection request to (.*)$
+	 * 
+	 * @param userFromNameAlias
+	 *            user that sends connection request
+	 * @param usersToNameAliases
+	 *            user which receive connection request
+	 *
+	 * @throws Exception
+	 */
+	@Given("^(.*) has sent connection request to (.*)$")
+	public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
+			String usersToNameAliases) throws Throwable {
+		commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
+				usersToNameAliases);
+	}
+
+	/**
+	 * Pings BackEnd until user is indexed and avialable in search
+	 * 
+	 * @step. ^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in backend search results$
+	 * 
+	 * @param searchByNameAlias
+	 *            user name to search string
+	 * 
+	 * @param timeout
+	 *            max ping timeout in sec
+	 * 
+	 * @param query
+	 *            querry string
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in backend search results$")
+	public void UserWaitsUntilContactExistsInHisSearchResults(
+			String searchByNameAlias, int timeout, String query)
+			throws Exception {
+		query = usrMgr.findUserByNameOrNameAlias(query).getName();
+		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query,
+				timeout);
 	}
 
 	@After

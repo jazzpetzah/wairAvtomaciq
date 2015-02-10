@@ -54,7 +54,7 @@ public class ContactListPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idMainWindowCloseButton)
 	private WebElement closeWindowButton;
 	
-	public ContactListPage(String URL, String path) throws IOException {
+	public ContactListPage(String URL, String path) throws Exception {
 		super(URL, path);
 	}
 

@@ -107,23 +107,23 @@ Feature: Conversation
       | Login      | Password      | Name      | Contact   | SoundCloudLink                               |
       | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/djsliinkbbc/2-test-me |
 
-  @staging @id379 @torun
+  @staging @id379
   Scenario Outline: Play/pause SoundCloud media link from the media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given Contact <Name> posts messages and media link <SoundCloudLink> to conversation <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <Contact>
-    And I post messages and media link <SoundCloudLink>
-    Then I see media link <SoundCloudLink> and media in dialog
+    And I see media link <SoundCloudLink> and media in dialog
     And I tap SoundCloud link
-    Then I see the embedded media is playing
+    And I see the embedded media is playing
     And I scroll media out of sight till media bar appears
-    And I pause playing media in media bar
+    When I pause playing media in media bar
     Then The playing media is paused
-    And I press play in media bar
+    When I press play in media bar
     Then The media is playing
-    And I stop media in media bar
+    When I stop media in media bar
     Then The media stops playing
 
     Examples: 
@@ -134,17 +134,17 @@ Feature: Conversation
   Scenario Outline: Conversation scrolls back to playing media when clicked on the media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given Contact <Name> posts messages and media link <SoundCloudLink> to conversation <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <Contact>
-    And I post messages and media link <SoundCloudLink>
-    Then I see media link <SoundCloudLink> and media in dialog
+    And I see media link <SoundCloudLink> and media in dialog
     And I tap SoundCloud link
-    Then I see the embedded media is playing
-    And I scroll media out of sight till media bar appears
+    And I see the embedded media is playing
+    When I scroll media out of sight till media bar appears
     And I press the media bar title
     Then I see media link <SoundCloudLink> and media in dialog
-    Then I see the embedded media is playing
+    And I see the embedded media is playing
 
     Examples: 
       | Login      | Password      | Name      | Contact   | SoundCloudLink                               |
@@ -230,14 +230,14 @@ Feature: Conversation
   Scenario Outline: The media bar disappears after playback finishes
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given Contact <Name> posts messages and media link <SoundCloudLink> to conversation <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
-    When I open conversation with <Contact>
-    And I post messages and media link <SoundCloudLink>
-    Then I see media link <SoundCloudLink> and media in dialog
+    And I open conversation with <Contact>
+    And I see media link <SoundCloudLink> and media in dialog
     And I tap SoundCloud link
-    Then I see the embedded media is playing
-    And I scroll media out of sight till media bar appears
+    And I see the embedded media is playing
+    When I scroll media out of sight till media bar appears
     And I wait <Time> seconds till playback finishes
     Then I see media bar disappears
 
@@ -249,18 +249,18 @@ Feature: Conversation
   Scenario Outline: Media bar disappears when playing media is back in view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given Contact <Name> posts messages and media link <SoundCloudLink> to conversation <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <Contact>
-    And I post messages and media link <SoundCloudLink>
-    Then I see media link <SoundCloudLink> and media in dialog
+    And I see media link <SoundCloudLink> and media in dialog
     And I tap SoundCloud link
-    Then I see the embedded media is playing
-    And I scroll media out of sight till media bar appears
+    And I see the embedded media is playing
+    When I scroll media out of sight till media bar appears
     And I press the media bar title
     Then I see media link <SoundCloudLink> and media in dialog
-    Then I see the embedded media is playing
-    Then I see media bar disappears
+    And I see the embedded media is playing
+    And I see media bar disappears
 
     Examples: 
       | Login      | Password      | Name      | Contact   | SoundCloudLink                               |

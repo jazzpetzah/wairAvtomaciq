@@ -25,7 +25,7 @@ public class PeoplePickerPageSteps {
 	}
 
 	@When("I see Upload contacts dialog")
-	public void WhenISeeUploadContactsDialog() throws IOException {
+	public void WhenISeeUploadContactsDialog() throws Exception {
 		if (PagesCollection.peoplePickerPage == null) {
 			String path = CommonUtils
 					.getIosApplicationPathFromConfig(TestRun.class);
@@ -187,15 +187,21 @@ public class PeoplePickerPageSteps {
 		Assert.assertTrue("Add to conversation button is visible",
 				PagesCollection.peoplePickerPage.addToConversationNotVisible());
 	}
+	
+	@When("^I click Go button to create 1:1 conversation$")
+	public void WhenIClickOnGoButtonForSingle() throws Exception {
+		PagesCollection.iOSPage =  PagesCollection.peoplePickerPage
+				.clickOnGoButton(false);
+	}
 
-	@When("^I click on Go button$")
-	public void WhenIClickOnGoButton() throws IOException {
+	@When("^I click on Go button to create 1:1 conversation$")
+	public void WhenIClickOnGoButton() throws Exception {
 		PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.peoplePickerPage
-				.clickOnGoButton();
+				.clickOnGoButton(true);
 	}
 
 	@When("^I click clear button$")
-	public void WhenIClickClearButton() throws IOException {
+	public void WhenIClickClearButton() throws Exception {
 		PagesCollection.contactListPage = PagesCollection.peoplePickerPage
 				.dismissPeoplePicker();
 	}
@@ -275,8 +281,8 @@ public class PeoplePickerPageSteps {
 	@When("^I click on Add to conversation button$")
 	public void WhenIClickOnAddToConversationButton() throws Exception {
 		if (PagesCollection.peoplePickerPage.isKeyboardVisible()) {
-			PagesCollection.groupChatPage = PagesCollection.peoplePickerPage
-					.clickOnGoButton();
+			PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.peoplePickerPage
+					.clickOnGoButton(true);
 		} else {
 			PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.peoplePickerPage
 					.clickAddToCoversationButton();
@@ -288,4 +294,15 @@ public class PeoplePickerPageSteps {
 		PagesCollection.peoplePickerPage.tapOnPeoplePickerClearBtn();
 	}
 
+	/**
+	 * Unblocks a blocked user by clicking the unblock button
+	 * 
+	 * @step. I unblock user
+	 * 
+	 */
+	@When("^I unblock user$")
+	public void IUnblockUser() throws Exception {
+		PagesCollection.dialogPage = PagesCollection.peoplePickerPage.unblockUser();
+		
+	}
 }

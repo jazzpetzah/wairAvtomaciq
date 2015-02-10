@@ -292,12 +292,18 @@ public class ZetaAnnotations extends Annotations{
 		
 		ZetaFindBy zetaFindBy = mobileField.getAnnotation(ZetaFindBy.class);
 		if (zetaFindBy != null) {
-			return buildByFromZetaFindBy(zetaFindBy);
+			try {
+				return buildByFromZetaFindBy(zetaFindBy);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
 		}
 		return super.buildBy();
 	}
 
-	protected By buildByFromZetaFindBy(ZetaFindBy findBy){
+	protected By buildByFromZetaFindBy(ZetaFindBy findBy) throws Exception{
 		ZetaHow how = findBy.how();
 		String locatorsDb = findBy.locatorsDb();
 		String locatorKey = findBy.locatorKey();

@@ -1,6 +1,5 @@
 package com.wearezeta.auto.android;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +25,9 @@ public class DialogPageSteps {
 
 	@When("^I see dialog page$")
 	public void WhenISeeDialogPage() throws Exception {
-		PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
+		if(PagesCollection.dialogPage == null){
+			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
+		}
 		PagesCollection.dialogPage.waitForCursorInputVisible();
 	}
 
@@ -182,12 +183,12 @@ public class DialogPageSteps {
 	}
 
 	@Then("I see uploaded picture")
-	public void ThenISeeChangedUserPicture() throws IOException {
+	public void ThenISeeChangedUserPicture() throws Exception {
 		Assert.assertTrue(PagesCollection.dialogPage.dialogImageCompare());
 	}
 
 	@Then("^I see (.*) icon$")
-	public void ThenIseeIcon(String iconLabel) throws IOException {
+	public void ThenIseeIcon(String iconLabel) throws Exception {
 		double score = PagesCollection.dialogPage.checkPingIcon(iconLabel);
 		Assert.assertTrue(
 				"Overlap between two images has not enough score. Expected >= 0.75, current = "

@@ -127,16 +127,25 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	public void swipeRightOnContact(int time, String contact)
-			throws IOException {
+			throws Exception {
 		WebElement el = driver.findElementByXPath(String.format(
 				AndroidLocators.ContactListPage.xpathContactFrame, contact));
 		DriverUtils.swipeRight(driver, el, time);
 	}
 
-	public void clickOnMute(String contact) {
+	public AndroidPage swipeOnArchiveUnarchive(String contact) throws Exception {
 		WebElement el = driver.findElementByXPath(String.format(
-				AndroidLocators.ContactListPage.xpathContactListMute, contact));
-		el.click();
+				AndroidLocators.ContactListPage.xpathContactListArchiveUnarchive, contact));
+		DriverUtils.swipeRight(driver, el, 1000);
+		AndroidPage page = null;
+		refreshUITree();
+		if(cursorInput.isEmpty()){
+			page = new ContactListPage(url, path);
+		}
+		else{
+			page = new DialogPage(url, path);
+		}
+		return page;
 	}
 	
 	public boolean isContactMuted() {

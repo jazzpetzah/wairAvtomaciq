@@ -3,7 +3,6 @@ package com.wearezeta.auto.sync.report;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 
 import javax.xml.transform.Source;
@@ -17,7 +16,7 @@ import javax.xml.transform.stream.StreamSource;
 import com.wearezeta.auto.sync.SyncEngineUtil;
 
 public class ReportGenerator {
-	public static void generate(ReportData data) throws IOException {
+	public static void generate(ReportData data) throws Exception {
 		TransformerFactory tFactory=TransformerFactory.newInstance();
 
         Source xslDoc=new StreamSource(ReportGenerator.class.getResourceAsStream("/report.xsl"));

@@ -64,19 +64,21 @@ public class WebPage extends BasePage {
 		driver = (ZetaWebAppDriver) drivers.get(CommonUtils.PLATFORM_NAME_WEB);
 		wait = waits.get(CommonUtils.PLATFORM_NAME_WEB);
 
+		driver.manage().window().maximize();
+		
 		if (doNavigate) {
-			if (browser.equals("safari")) {
-				// Workaround for Safari
-				// We should wait for cookies to be set after applying beta code
-				// or invitation code page will appear again
-				Thread.sleep(1000);
-			}
+			// Workaround for Safari
+			// We should wait for cookies to be set after applying beta code
+			// or invitation code page will appear again
+			// Also for Chrome
+			Thread.sleep(1000);
+
 			driver.navigate().to(path);
 		}
 	}
 
 	@Override
-	public void Close() throws IOException {
+	public void Close() throws Exception {
 		super.Close();
 	}
 

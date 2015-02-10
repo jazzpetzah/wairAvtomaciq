@@ -89,7 +89,7 @@ public class ContactListPageSteps {
 	}
 
 	@When("^I tap on group chat with name (.*)$")
-	public void WhenITapOnGroupChatName(String chatName) throws IOException {
+	public void WhenITapOnGroupChatName(String chatName) throws Exception {
 
 		IOSPage page = PagesCollection.contactListPage.tapOnGroupChat(chatName);
 
@@ -321,6 +321,14 @@ public class ContactListPageSteps {
 				.conversationWithUsersPresented(name1, name2, name3);
 		Assert.assertFalse("Convesation with : " + name1 + ", " + name2 + ", "
 				+ name3 + ", " + " is in chat list", chatExists);
+	}
+	
+	@When("I dont see conversation (.*) in contact list")
+	public void IDoNotSeeConversationInContactList(String name)
+			throws Exception {
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		Assert.assertFalse(PagesCollection.contactListPage
+				.isDisplayedInContactList(name));
 	}
 
 }

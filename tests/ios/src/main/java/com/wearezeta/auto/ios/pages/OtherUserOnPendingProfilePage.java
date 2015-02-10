@@ -22,7 +22,7 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameOtherProfilePageStartConversationButton)
 	private WebElement startConversationButton;
 	
-	public OtherUserOnPendingProfilePage(String URL, String path) throws IOException {
+	public OtherUserOnPendingProfilePage(String URL, String path) throws Exception {
 		super(URL, path);
 	}
 	

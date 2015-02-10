@@ -1,7 +1,5 @@
 package com.wearezeta.auto.osx.pages;
 
-import java.io.IOException;
-
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -53,7 +51,7 @@ public class UserProfilePage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idSelfProfileEmailTextField)
 	private WebElement selfProfileEmailTextField;
 	
-	public UserProfilePage(String URL, String path) throws IOException {
+	public UserProfilePage(String URL, String path) throws Exception {
 		super(URL, path, false);
 	}
 
@@ -107,7 +105,7 @@ public class UserProfilePage extends OSXPage {
 	
 	public boolean selfProfileNameEquals(String name) {
 		String xpath = String.format(OSXLocators.xpathFormatSelfProfileNameTextField, name);
-		log.debug("Looking for name " + name + " by xpath '" + xpath + "' in user profile. Page source: " + driver.getPageSource());
+		log.debug("Looking for name " + name + " by xpath '" + xpath + "' in user profile.");
 		return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath), 60);
 	}
 }

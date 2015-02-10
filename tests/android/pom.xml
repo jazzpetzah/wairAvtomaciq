@@ -25,6 +25,7 @@
 		<androidAppiumLogPath>/Project/appium_android.log</androidAppiumLogPath>
 		<defaultEmail>smoketester.android@wearezeta.com</defaultEmail>
 		<androidVersion>44</androidVersion>
+		<androidLogs>false</androidLogs>
 	</properties>
 
 	<dependencies>
@@ -91,7 +92,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-					<source>1.7</source>
+					<source>1.8</source>
 					<target>1.8</target>
 				</configuration>
 			</plugin>

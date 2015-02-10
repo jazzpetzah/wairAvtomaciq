@@ -24,10 +24,19 @@ public class ConversationPage extends WebPage {
 
 	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idConversationInput)
 	private WebElement conversationInput;
+	
+	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.ConversationPage.classNameShowParticipantsButton)
+	private WebElement showParticipants;
 
+	private String url;
+	private String path;
+	
 	public ConversationPage(String URL, String path) throws Exception {
 
 		super(URL, path);
+		
+		this.url = URL;
+		this.path = path;
 	}
 
 	public void writeNewMessage(String message) {
@@ -36,6 +45,19 @@ public class ConversationPage extends WebPage {
 
 	public void sendNewMessage() {
 		conversationInput.sendKeys(Keys.ENTER);
+	}
+	
+	public boolean isActionMessageSent(String message) {
+		boolean isSend = false;
+		String xpath = String
+				.format(WebAppLocators.ConversationPage.xpathActionMessageEntry,
+						message);
+		DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath));
+		WebElement element = driver.findElement(By.xpath(xpath));
+		if (element != null) {
+			isSend = true;
+		}
+		return isSend;
 	}
 
 	public boolean isMessageSent(String message) {
@@ -49,5 +71,15 @@ public class ConversationPage extends WebPage {
 			isSend = true;
 		}
 		return isSend;
+	}
+	
+	public UserProfilePopup clickShowUserProfileButton() throws Exception {
+		showParticipants.click();
+		return new UserProfilePopup(url, path);
+	}
+	
+	public ParticipantsPopupPage clickShowParticipantsButton() throws Exception {
+		showParticipants.click();
+		return new ParticipantsPopupPage(url, path);
 	}
 }

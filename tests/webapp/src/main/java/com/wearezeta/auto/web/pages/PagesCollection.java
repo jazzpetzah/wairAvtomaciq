@@ -11,8 +11,16 @@ public class PagesCollection extends AbstractPagesCollection {
 	public static ContactListPage contactListPage = null;
 
 	public static ConversationPage conversationPage = null;
-	
+
 	public static SelfProfilePage selfProfilePage = null;
-	
+
 	public static SettingsPage settingsPage = null;
+
+	public static PendingConnectionsPage pendingConnectionsPage = null;
+
+	public static PeoplePickerPage peoplePickerPage = null;
+	
+	public static UserProfilePopup userProfilePopup = null;
+	
+	public static ConnectToPopup connectToPopup = null;
 }

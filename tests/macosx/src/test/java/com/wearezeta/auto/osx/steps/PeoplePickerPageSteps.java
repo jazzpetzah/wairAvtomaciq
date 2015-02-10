@@ -9,6 +9,7 @@ import com.wearezeta.auto.osx.pages.PeoplePickerPage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
+import cucumber.api.java.en.Then;
 
 public class PeoplePickerPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -32,16 +33,17 @@ public class PeoplePickerPageSteps {
 	}
 	
 	@When("I see user (.*) in search results")
-	public void WhenISeeUserFromSearchResults(String user) {
+	public void WhenISeeUserFromSearchResults(String user) throws Exception {
 		try {
 			user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		} catch (NoSuchUserException e) {
 			// Ignore silently
-		}
-		Assert.assertTrue(
-				"User " + user + " not found in results",
-				CommonOSXSteps.senderPages.getPeoplePickerPage().areSearchResultsContainUser(user));
-		CommonOSXSteps.senderPages.getPeoplePickerPage().scrollToUserInSearchResults(user);
+			}
+		
+			Assert.assertTrue(
+			"User " + user + " not found in results",
+			CommonOSXSteps.senderPages.getPeoplePickerPage().areSearchResultsContainUser(user));
+			CommonOSXSteps.senderPages.getPeoplePickerPage().scrollToUserInSearchResults(user);
 	}
 	
 	@When("I add user (.*) from search results")
@@ -70,5 +72,28 @@ public class PeoplePickerPageSteps {
 	@When("I unblock user")
 	public void IUnblockUserInPeoplePicker() {
 		CommonOSXSteps.senderPages.getPeoplePickerPage().unblockUser();
+	}
+	
+	@Then("^I see Top People list in People Picker$")
+	public void ISeeTopPeopleListInPeoplePicker() throws Throwable {
+		Thread.sleep(2000);
+		boolean topPeopleisVisible = CommonOSXSteps.senderPages.getPeoplePickerPage().isTopPeopleVisible();
+		if (!topPeopleisVisible){
+			CommonOSXSteps.senderPages.getPeoplePickerPage().closePeoplePicker();
+			Thread.sleep(1000);
+			CommonOSXSteps.senderPages.getContactListPage().openPeoplePicker();
+			topPeopleisVisible = CommonOSXSteps.senderPages.getPeoplePickerPage().isTopPeopleVisible();
+		}
+		Assert.assertTrue("Top People not shown ", topPeopleisVisible);
+	}
+	
+	@Then("^I choose person from Top People$")
+	public void IChoosePersonFromTopPeople() throws Throwable {
+		CommonOSXSteps.senderPages.getPeoplePickerPage().selectUserFromTopPeople();
+	}
+
+	@Then("^I press create conversation to enter conversation$")
+	public void IPressCreateConversationToEnterConversation() throws Throwable {
+		CommonOSXSteps.senderPages.getPeoplePickerPage().addSelectedUsersToConversation();
 	}
 }

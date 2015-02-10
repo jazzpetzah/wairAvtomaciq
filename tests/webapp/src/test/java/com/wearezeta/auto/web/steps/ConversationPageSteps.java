@@ -65,4 +65,33 @@ public class ConversationPageSteps {
 		Assert.assertTrue(PagesCollection.conversationPage
 				.isMessageSent(randomMessage));
 	}
+
+	/**
+	 * Click on the button from conversation that popups user profile
+	 * 
+	 * @step. I click show user profile button
+	 * 
+	 * @throws Exception
+	 */
+	@When("I click show user profile button")
+	public void WhenIClickShowUserProfileButton() throws Exception {
+		PagesCollection.userProfilePopup = PagesCollection.conversationPage
+				.clickShowUserProfileButton();
+
+	}
+	
+	
+	/**
+	 * Checks action message (e.g. you left, etc.) appear in conversation
+	 * 
+	 * @step. ^I see (.*) action in conversation$
+	 * 
+	 * @throws AssertionError
+	 *             if action message did not appear in conversation
+	 */
+	@Then("^I see (.*) action in conversation$")
+	public void ThenISeeActionInConversation(String message) {
+		Assert.assertTrue(PagesCollection.conversationPage
+				.isActionMessageSent(message));
+	}
 }

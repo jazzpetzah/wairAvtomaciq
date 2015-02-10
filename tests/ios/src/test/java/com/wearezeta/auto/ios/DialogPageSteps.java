@@ -1,13 +1,13 @@
 package com.wearezeta.auto.ios;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
@@ -44,6 +44,7 @@ public class DialogPageSteps {
 	private static String onlySpacesMessage = "     ";
 	public static long memTime;
 	public String pingId;
+	private int beforeNumberOfImages = 0;
 
 	@When("^I see dialog page$")
 	public void WhenISeeDialogPage() throws Exception {
@@ -59,7 +60,7 @@ public class DialogPageSteps {
 
 	@When("^I tap on text input$")
 	public void WhenITapOnTextInput() throws Exception {
-		for (int i = 0; i < 5; i ++) {
+		for (int i = 0; i < 5; i++) {
 			PagesCollection.dialogPage.tapOnCursorInput();
 			if (PagesCollection.dialogPage.isKeyboardVisible()) {
 				break;
@@ -135,7 +136,7 @@ public class DialogPageSteps {
 		message = CommonUtils.generateGUID();
 		PagesCollection.dialogPage.sendStringToInput(message + "\n");
 	}
-	
+
 	/**
 	 * Click open conversation details button in 1:1 dialog
 	 * 
@@ -144,9 +145,10 @@ public class DialogPageSteps {
 	 * @throws Exception
 	 *             if other user personal profile page was not created
 	 */
-	@When("^I open conversation details$") 
+	@When("^I open conversation details$")
 	public void IOpenConversationDetails() throws Exception {
-		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.dialogPage.openConversationDetailsClick();
+		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.dialogPage
+				.openConversationDetailsClick();
 	}
 
 	@When("^I send the message$")
@@ -155,11 +157,12 @@ public class DialogPageSteps {
 	}
 
 	@When("^I swipe up on dialog page to open other user personal page$")
-	public void WhenISwipeUpOnDialogPage() throws IOException {
+	public void WhenISwipeUpOnDialogPage() throws Exception {
 		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.dialogPage
 				.swipeUp(500);
 	}
 
+<<<<<<< HEAD
 	/**
 	 * Swipes up on the pending dialog page in order to access the pending personal info page
 	 * 
@@ -175,6 +178,10 @@ public class DialogPageSteps {
 	
 	@Then("^I see my message in the dialog$")
 	public void ThenISeeMyMessageInTheDialog() throws Throwable {
+=======
+	@Then("^I see message in the dialog$")
+	public void ThenISeeMessageInTheDialog() throws Throwable {
+>>>>>>> 86d578a41a21dd56983fa923294df75d3df1d939
 		String dialogLastMessage = PagesCollection.dialogPage
 				.getLastMessageFromDialog();
 		Assert.assertTrue("Message is different, actual: " + dialogLastMessage
@@ -189,9 +196,10 @@ public class DialogPageSteps {
 				.getLastMessageFromDialog();
 
 		if (!Normalizer.isNormalized(dialogLastMessage, Form.NFC)) {
-			dialogLastMessage = Normalizer.normalize(dialogLastMessage, Form.NFC);
+			dialogLastMessage = Normalizer.normalize(dialogLastMessage,
+					Form.NFC);
 		}
-		
+
 		if (!Normalizer.isNormalized(msg, Form.NFC)) {
 			dialogLastMessage = Normalizer.normalize(msg, Form.NFC);
 		}
@@ -212,7 +220,7 @@ public class DialogPageSteps {
 	@When("^I swipe the text input cursor$")
 	public void ISwipeTheTextInputCursor() throws Throwable {
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.iOSPage;
-		for (int i = 0; i < 3; i ++) {
+		for (int i = 0; i < 3; i++) {
 			PagesCollection.dialogPage.swipeInputCursor();
 			if (PagesCollection.dialogPage.isPingButtonVisible()) {
 				break;
@@ -241,8 +249,7 @@ public class DialogPageSteps {
 				.getExpectedConnectingLabel(contact);
 		String actualConnectingLabel = PagesCollection.dialogPage
 				.getConnectMessageLabel();
-		String lastMessage = PagesCollection.dialogPage
-				.getConnectionMessage();
+		String lastMessage = PagesCollection.dialogPage.getConnectionMessage();
 		String expectedConnectMessage = PagesCollection.dialogPage
 				.getExpectedConnectMessage(contact, user);
 		Assert.assertEquals("Expected: " + expectedConnectingLabel
@@ -255,17 +262,32 @@ public class DialogPageSteps {
 
 	@Then("^I see new photo in the dialog$")
 	public void ISeeNewPhotoInTheDialog() throws Throwable {
-		String dialogLastMessage = PagesCollection.dialogPage
-				.getImageCellFromDialog();
-		String imageCell = "ImageCell";
-		Assert.assertEquals(imageCell, dialogLastMessage);
+		int afterNumberOfImages = -1;
+
+		boolean isNumberIncreased = false;
+		for (int i = 0; i < 3; i++) {
+			afterNumberOfImages = PagesCollection.dialogPage.getNumberOfImages();
+			if (afterNumberOfImages == beforeNumberOfImages + 1) {
+				isNumberIncreased = true;
+				break;
+			}
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+			}
+		}
+
+		Assert.assertTrue("Incorrect images count: before - "
+				+ beforeNumberOfImages + ", after - " + afterNumberOfImages,
+				isNumberIncreased);
 	}
 
 	@When("I type and send long message and media link (.*)")
 	public void ITypeAndSendLongTextAndMediaLink(String link)
 			throws InterruptedException {
 		PagesCollection.dialogPage.sendMessageUsingScript(longMessage);
-		PagesCollection.dialogPage.sendStringToInput(CommonUtils.generateRandomString(10) + "\n");
+		PagesCollection.dialogPage.sendStringToInput(CommonUtils
+				.generateRandomString(10) + "\n");
 		Thread.sleep(3000);
 		PagesCollection.dialogPage.sendMessageUsingScript(link);
 		Thread.sleep(3000);
@@ -277,10 +299,11 @@ public class DialogPageSteps {
 	}
 
 	@Then("I see media link (.*) and media in dialog")
-	public void ISeeMediaLinkAndMediaInDialog(String link) throws InterruptedException {
+	public void ISeeMediaLinkAndMediaInDialog(String link)
+			throws InterruptedException {
 		Assert.assertTrue("Media is missing in dialog",
 				PagesCollection.dialogPage.isMediaContainerVisible());
-		
+
 		for (int i = 0; i < 10; i++) {
 			if (!link.equalsIgnoreCase(PagesCollection.dialogPage
 					.getLastMessageFromDialog())) {
@@ -292,7 +315,7 @@ public class DialogPageSteps {
 	}
 
 	@When("I click video container for the first time")
-	public void IPlayVideoFirstTime() throws IOException, InterruptedException {
+	public void IPlayVideoFirstTime() throws Exception {
 		PagesCollection.videoPlayerPage = (VideoPlayerPage) PagesCollection.dialogPage
 				.clickOnVideoContainerFirstTime();
 	}
@@ -303,7 +326,7 @@ public class DialogPageSteps {
 	}
 
 	@When("I swipe right on Dialog page")
-	public void ISwipeRightOnDialogPage() throws IOException {
+	public void ISwipeRightOnDialogPage() throws Exception {
 		PagesCollection.contactListPage = (ContactListPage) PagesCollection.dialogPage
 				.swipeRight(1000);
 	}
@@ -428,10 +451,12 @@ public class DialogPageSteps {
 	}
 
 	@Then("^I navigate back to conversations view$")
-	public void INavigateToConversationsView() throws IOException {
-		for (int i = 0; i < 3; i++ ) {
+	public void INavigateToConversationsView() throws Exception {
+		for (int i = 0; i < 3; i++) {
 			PagesCollection.dialogPage.swipeRight(SWIPE_DURATION);
-			if (PagesCollection.contactListPage.isMyUserNameDisplayedFirstInContactList(usrMgr.getSelfUser().getName())) {
+			if (PagesCollection.contactListPage
+					.isMyUserNameDisplayedFirstInContactList(usrMgr
+							.getSelfUser().getName())) {
 				break;
 			}
 		}
@@ -539,7 +564,7 @@ public class DialogPageSteps {
 	}
 
 	@Then("^I see (.*) icon in conversation$")
-	public void ThenIseeIcon(String iconLabel) throws IOException,
+	public void ThenIseeIcon(String iconLabel) throws Exception,
 			InterruptedException {
 		double score;
 		if (PagesCollection.dialogPage != null) {
@@ -553,5 +578,12 @@ public class DialogPageSteps {
 				"Overlap between two images has not enough score. Expected >= 0.75, current = "
 						+ score, score >= 0.75d);
 	}
-
+	
+	@When("^Contact (.*) sends random message to user (.*)$")
+	public void UserSendsRandomMessageToConversation(String msgFromUserNameAlias,
+			String dstUserNameAlias) throws Exception {
+		message = CommonUtils.generateRandomString(10);
+		CommonSteps.getInstance().UserSentMessageToUser(msgFromUserNameAlias, dstUserNameAlias, message);
+	}
+	
 }

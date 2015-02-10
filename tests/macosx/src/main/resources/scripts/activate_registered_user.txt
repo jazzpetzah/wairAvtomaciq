@@ -1,0 +1,16 @@
+tell application "Safari" to close every window
+tell application "Safari"
+	activate
+end tell
+tell application "System Events" to tell application process "Safari"
+	set frontmost to true
+end tell
+tell application "Safari" to open location "%s"
+delay 5
+tell application "Safari"
+	set doc to document 1
+	delay 1
+	set myVar to do JavaScript "myVar=document.querySelectorAll('.success:not(.hide):not(.icon)')[0].getElementsByTagName('p')[0].innerHTML" in doc
+	quit
+	return myVar
+end tell

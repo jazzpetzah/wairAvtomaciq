@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -96,7 +95,7 @@ public class ImageFullScreenPageSteps {
 	}
 
 	@When("I tap close fullscreen page button")
-	public void ITapCloseFullscreenButton() throws IOException {
+	public void ITapCloseFullscreenButton() throws Exception {
 		PagesCollection.imageFullScreenPage.clickCloseButton();
 	}
 

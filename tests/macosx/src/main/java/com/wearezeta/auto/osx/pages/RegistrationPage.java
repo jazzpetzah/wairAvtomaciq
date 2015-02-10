@@ -1,18 +1,25 @@
 package com.wearezeta.auto.osx.pages;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.email.MBoxChangesListener;
+import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class RegistrationPage extends OSXPage {
+	
+	private static final Logger log = ZetaLogger.getLog(RegistrationPage.class.getSimpleName());
 	
 	@FindBy(how = How.CLASS_NAME, using = OSXLocators.classNameLoginField)
 	private WebElement nameField;
@@ -38,7 +45,12 @@ public class RegistrationPage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathRegistrationPictureConfirmationButton)
 	private WebElement confirmChosenPictureButton;
 	
-	public RegistrationPage(String URL, String path) throws IOException {
+	private MBoxChangesListener listener;
+	
+	private static final String ACTIVATE_USER_SCRIPT = "/scripts/activate_registered_user.txt";
+	private String activationResponse = null;
+	
+	public RegistrationPage(String URL, String path) throws Exception {
 		super(URL, path);
 	}
 
@@ -92,5 +104,33 @@ public class RegistrationPage extends OSXPage {
 		} catch (NoSuchElementException e) {
 			return false;
 		}
+	}
+	
+	public void setListener(MBoxChangesListener listener) {
+		this.listener = listener;
+	}
+	
+	public MBoxChangesListener getListener() {
+		return listener;
+	}
+
+	public void activateUserViaBrowserAndSavePage() throws Exception {
+		String activationLink = BackendAPIWrappers
+				.getUserActivationLink(this.listener);
+		String script = String
+				.format(OSXCommonUtils
+						.readTextFileFromResources(ACTIVATE_USER_SCRIPT),
+						activationLink);
+
+		@SuppressWarnings("unchecked")
+		Map<String, String> value = (Map<String, String>) driver
+				.executeScript(script);
+		activationResponse = value.get("result");
+		log.debug(activationResponse);
+	}
+
+	public boolean isUserActivated() {
+		return activationResponse
+				.contains(OSXLocators.RegistrationPage.ACTIVATION_RESPONSE_VERIFIED);
 	}
 }

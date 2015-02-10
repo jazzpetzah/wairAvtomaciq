@@ -1,8 +1,11 @@
 package com.wearezeta.auto.ios.pages;
 
+<<<<<<< HEAD
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+=======
+>>>>>>> 86d578a41a21dd56983fa923294df75d3df1d939
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -51,29 +54,50 @@ public class PeoplePickerPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.namePeoplePickerAddToConversationButton)
 	private WebElement addToConversationBtn;
 
+<<<<<<< HEAD
 	@FindBy(how = How.NAME, using = IOSLocators.nameLaterButton)
 	private WebElement laterButton;
+=======
+	@FindBy(how = How.NAME, using = IOSLocators.nameShareButton)
+	private WebElement shareButton;
+>>>>>>> 86d578a41a21dd56983fa923294df75d3df1d939
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameContinueUploadButton)
 	private WebElement continueButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.namePeopleYouMayKnowLabel)
 	private WebElement peopleYouMayKnowLabel;
+<<<<<<< HEAD
 
+=======
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameUnblockButton)
+	private WebElement unblockButton;
+	
+>>>>>>> 86d578a41a21dd56983fa923294df75d3df1d939
 	private String url;
 	private String path;
 
 	private int numberTopSelected = 0;
 
+<<<<<<< HEAD
 	public PeoplePickerPage(String URL, String path) throws IOException {
+=======
+	public PeoplePickerPage(String URL, String path) throws Exception {
+>>>>>>> 86d578a41a21dd56983fa923294df75d3df1d939
 		super(URL, path);
 		url = URL;
 		this.path = path;
 	}
 
 	public void clickLaterButton() {
+<<<<<<< HEAD
 		if (DriverUtils.isElementDisplayed(laterButton)) {
 			laterButton.click();
+=======
+		if (DriverUtils.isElementDisplayed(shareButton)) {
+			shareButton.click();
+>>>>>>> 86d578a41a21dd56983fa923294df75d3df1d939
 		}
 	}
 
@@ -86,6 +110,10 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public void tapOnPeoplePickerSearch() {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 86d578a41a21dd56983fa923294df75d3df1d939
 		driver.tap(1, peoplePickerSearch.getLocation().x + 40,
 				peoplePickerSearch.getLocation().y + 30, 1);// workaround for
 															// people picker
@@ -96,6 +124,7 @@ public class PeoplePickerPage extends IOSPage {
 		peoplePickerClearBtn.click();
 	}
 
+<<<<<<< HEAD
 	public double checkAvatarClockIcon() throws IOException {
 		String path = null;
 		BufferedImage clockImage = getAvatarClockIconScreenShot();
@@ -110,6 +139,8 @@ public class PeoplePickerPage extends IOSPage {
 						.xpath("//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[1]/UIAStaticText[1]")));
 	}
 
+=======
+>>>>>>> 86d578a41a21dd56983fa923294df75d3df1d939
 	public void fillTextInPeoplePickerSearch(String text) {
 		peoplePickerSearch.sendKeys(text);
 	}
@@ -118,26 +149,42 @@ public class PeoplePickerPage extends IOSPage {
 		return DriverUtils.waitUntilElementAppears(driver, By.name(user));
 	}
 
+<<<<<<< HEAD
 	public ConnectToPage clickOnNotConnectedUser(String name)
 			throws IOException {
+=======
+	public ConnectToPage clickOnNotConnectedUser(String name) throws Exception {
+>>>>>>> 86d578a41a21dd56983fa923294df75d3df1d939
 		ConnectToPage page;
 		driver.findElement(By.name(name)).click();
 		page = new ConnectToPage(url, path);
 		return page;
 	}
 
+<<<<<<< HEAD
 	public ConnectToPage pickUserAndTap(String name) throws IOException {
+=======
+	public ConnectToPage pickUserAndTap(String name) throws Exception {
+>>>>>>> 86d578a41a21dd56983fa923294df75d3df1d939
 		PickUser(name).click();
 		return new ConnectToPage(url, path);
 	}
 
 	public PendingRequestsPage pickIgnoredUserAndTap(String name)
+<<<<<<< HEAD
 			throws IOException {
+=======
+			throws Exception {
+>>>>>>> 86d578a41a21dd56983fa923294df75d3df1d939
 		PickUser(name).click();
 		return new PendingRequestsPage(url, path);
 	}
 
+<<<<<<< HEAD
 	public ContactListPage dismissPeoplePicker() throws IOException {
+=======
+	public ContactListPage dismissPeoplePicker() throws Exception {
+>>>>>>> 86d578a41a21dd56983fa923294df75d3df1d939
 		peoplePickerClearBtn.click();
 		return new ContactListPage(url, path);
 	}
@@ -157,9 +204,17 @@ public class PeoplePickerPage extends IOSPage {
 		return flag;
 	}
 
+<<<<<<< HEAD
 	public GroupChatPage clickOnGoButton() throws IOException {
+=======
+	public IOSPage clickOnGoButton(boolean isGroupChat) throws Exception {
+>>>>>>> 86d578a41a21dd56983fa923294df75d3df1d939
 		goButton.click();
-		return new GroupChatPage(url, path);
+		if (isGroupChat) {
+			return new GroupChatPage(url, path);
+		} else {
+			return new DialogPage(url, path);
+		}
 	}
 
 	public GroupChatInfoPage clickOnUserToAddToExistingGroupChat(String name)
@@ -171,7 +226,11 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	@Override
+<<<<<<< HEAD
 	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
+=======
+	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
+>>>>>>> 86d578a41a21dd56983fa923294df75d3df1d939
 
 		IOSPage page = null;
 		switch (direction) {
@@ -285,7 +344,7 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public boolean isUploadDialogShown() {
-		boolean isLaterBtnVisible = DriverUtils.isElementDisplayed(laterButton);
+		boolean isLaterBtnVisible = DriverUtils.isElementDisplayed(shareButton);
 		return isLaterBtnVisible;
 	}
 
@@ -297,6 +356,11 @@ public class PeoplePickerPage extends IOSPage {
 
 	public boolean isPeopleYouMayKnowLabelVisible() {
 		return DriverUtils.isElementDisplayed(peopleYouMayKnowLabel);
+	}
+	
+	public DialogPage unblockUser() throws Exception {
+		unblockButton.click();
+		return new DialogPage(url, path);
 	}
 
 }

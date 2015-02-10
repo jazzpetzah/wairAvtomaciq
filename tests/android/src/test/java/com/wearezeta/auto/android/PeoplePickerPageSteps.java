@@ -23,7 +23,18 @@ public class PeoplePickerPageSteps {
 	public void WhenITapOnSearchInputOnPeoplePickerPage() throws Throwable {
 		PagesCollection.peoplePickerPage.tapPeopleSearch();
 	}
-
+	
+	@When("^I tap on (.*) in Top People$")
+	public void WhenITapInTopPeople(String contact)
+			throws Exception {
+		try {
+			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+		PagesCollection.peoplePickerPage.tapOnContactInTopPeoples(contact);
+	}
+	
 	@When("^I tap on create conversation$")
 	public void WhenITapOnCreateConversation() throws Throwable {
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.peoplePickerPage

@@ -6,6 +6,7 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
 import cucumber.api.java.en.Given;
@@ -49,13 +50,25 @@ public class ContactListPageSteps {
 	public void GivenISeeContactListWithName(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		log.debug("Looking for contact with name " + name);
+		Assert.assertTrue("No contact list loaded.",
+				PagesCollection.contactListPage.waitForContactListVisible());
 		if (usrMgr.isSelfUserSet()
 				&& usrMgr.getSelfUser().getName().equals(name)) {
 			Assert.assertTrue(PagesCollection.contactListPage.getSelfName()
 					.equals(name));
 		} else {
-			Assert.assertTrue(PagesCollection.contactListPage
-					.isContactWithNameExists(name));
+			boolean result = false;
+			for (int i = 0; i < 20; i++) {
+				result = PagesCollection.contactListPage
+						.isContactWithNameExists(name);
+				if (result)
+					break;
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+				}
+			}
+			Assert.assertTrue(result);
 		}
 	}
 
@@ -79,7 +92,7 @@ public class ContactListPageSteps {
 	/**
 	 * Clicks the self name item in the convo list to open self profile page
 	 * 
-	 * @step ^I open self profile$
+	 * @step. ^I open self profile$
 	 * 
 	 * @throws Exception
 	 */
@@ -88,7 +101,7 @@ public class ContactListPageSteps {
 		PagesCollection.selfProfilePage = PagesCollection.contactListPage
 				.openSelfProfile();
 	}
-	
+
 	/**
 	 * Archive conversation by choosing it from Contact List
 	 * 
@@ -102,22 +115,24 @@ public class ContactListPageSteps {
 	public void IClickArchiveButton(String contact) {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		PagesCollection.contactListPage.clickActionsButtonForContact(contact);
-		PagesCollection.contactListPage.clickArchiveConversationForContact(contact);
+		PagesCollection.contactListPage
+				.clickArchiveConversationForContact(contact);
 	}
-	
+
 	/**
 	 * Open archived conversations
 	 * 
-	 * @step ^I open archive$
+	 * @step. ^I open archive$
 	 * 
 	 */
 	@When("^I open archive$")
 	public void IOpenArchive() {
 		PagesCollection.contactListPage.openArchive();
 	}
-	
+
 	/**
-	 * Checks that we cannot see conversation with specified name in Contact List
+	 * Checks that we cannot see conversation with specified name in Contact
+	 * List
 	 * 
 	 * @step. ^I do not see Contact list with name (.*)$
 	 * 
@@ -132,5 +147,44 @@ public class ContactListPageSteps {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		Assert.assertFalse(PagesCollection.contactListPage
 				.isContactWithNameExists(name));
+	}
+
+	/**
+	 * Checks that connection request is displayed in Conversation List
+	 * 
+	 * @step. ^I see connection request$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see connection request$")
+	public void ISeeConnectInvitation() throws Exception {
+		GivenISeeContactListWithName(WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING);
+	}
+
+	/**
+	 * Opens list of connection requests from Contact list
+	 * 
+	 * @step. ^I open connection requests list$
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I open connection requests list$")
+	public void IOpenConnectionRequestsList() throws Exception {
+		PagesCollection.pendingConnectionsPage = PagesCollection.contactListPage
+				.openConnectionRequestsList(WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING);
+
+	}
+
+	/**
+	 * Opens People Picker in Contact List
+	 * 
+	 * @step. ^I open People Picker from Contact List$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I open People Picker from Contact List$")
+	public void IOpenPeoplePicker() throws Exception {
+		PagesCollection.peoplePickerPage = PagesCollection.contactListPage
+				.openPeoplePicker();
 	}
 }
