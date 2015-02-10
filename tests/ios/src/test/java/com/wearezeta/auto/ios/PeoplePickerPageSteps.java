@@ -158,12 +158,11 @@ public class PeoplePickerPageSteps {
 	 * Verifies that a clock is present on a pending user's searched avatar
 	 * 
 	 * @step. ^I see the user avatar with a clock$
-	 * 
-	 * @throws IOException
+	 * @throws Exception 
 	 */
 	
 	@Then("^I see the user avatar with a clock$")
-	public void ISeeUserWithAvatarClock() throws IOException {
+	public void ISeeUserWithAvatarClock() throws Exception {
 		Assert.assertTrue("Avatar does not have a clock icon",
 				PagesCollection.peoplePickerPage.checkAvatarClockIcon() > 0.95);
 	}

@@ -135,17 +135,13 @@ public class CommonUtils {
 		return path;
 	}
 
-<<<<<<< HEAD
-	public static String getAvatarWithClockIconPathIOS(Class<?> c) throws IOException {
+	public static String getAvatarWithClockIconPathIOS(Class<?> c) throws Exception {
 		String path = getValueFromConfig(c, "iosImagesPath")
 				+ IOS_AVATAR_CLOCK_IMAGE;
 		return path;
 	}
-	
-	public static String getImagesPath(Class<?> c) throws IOException {
-=======
+
 	public static String getImagesPath(Class<?> c) throws Exception {
->>>>>>> 86d578a41a21dd56983fa923294df75d3df1d939
 		return getValueFromConfig(c, "defaultImagesPath");
 	}
 

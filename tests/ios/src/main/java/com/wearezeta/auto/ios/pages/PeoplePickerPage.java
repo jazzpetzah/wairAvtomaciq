@@ -51,8 +51,8 @@ public class PeoplePickerPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.namePeoplePickerAddToConversationButton)
 	private WebElement addToConversationBtn;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameLaterButton)
-	private WebElement laterButton;
+//	@FindBy(how = How.NAME, using = IOSLocators.nameLaterButton)
+//	private WebElement laterButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameShareButton)
 	private WebElement shareButton;
@@ -78,9 +78,9 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public void clickLaterButton() {
-		if (DriverUtils.isElementDisplayed(laterButton)) {
-			laterButton.click();
-		}
+//		if (DriverUtils.isElementDisplayed(laterButton)) {
+//			laterButton.click();
+//		}
 		if (DriverUtils.isElementDisplayed(shareButton)) {
 			shareButton.click();
 		}
@@ -105,7 +105,7 @@ public class PeoplePickerPage extends IOSPage {
 		peoplePickerClearBtn.click();
 	}
 
-	public double checkAvatarClockIcon() throws IOException {
+	public double checkAvatarClockIcon() throws Exception {
 		String path = null;
 		BufferedImage clockImage = getAvatarClockIconScreenShot();
 		path = CommonUtils.getAvatarWithClockIconPathIOS(GroupChatPage.class);
