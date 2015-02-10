@@ -162,3 +162,25 @@ Feature: Search
   	Examples: 
       | Login      | Password      | Name      | UserCount | Contact   | Number |
       | user1Email | user1Password | user1Name | 10        | user2Name |  4     |
+      
+  @staging @id1456
+  Scenario Outline: Verify you can unblock someone from search list
+  	Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Name> blocks user <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    Then I dont see conversation <Contact> in contact list
+    When I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact>
+    And I see user <Contact> found on People picker page
+    And I tap on connected user <Contact> on People picker page
+    And I unblock user
+    And I type the message
+    And I send the message
+    Then I see message in the dialog
+    
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name | 
