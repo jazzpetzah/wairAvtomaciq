@@ -210,12 +210,16 @@ public abstract class AndroidPage extends BasePage {
 	public boolean isVisible(WebElement element) {
 		boolean value = false;
 		try{
+			DriverUtils.setImplicitWaitValue(driver, 5);
 			element.isDisplayed();
 			value = true;
 		}
 		catch(NoSuchElementException ex)
 		{
 			value = false;
+		}
+		finally{
+			DriverUtils.setDefaultImplicitWait(driver);
 		}
 		return value;
 

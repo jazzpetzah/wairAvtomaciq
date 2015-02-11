@@ -155,7 +155,6 @@ public class LoginPage extends AndroidPage {
 	}
 
 	public Boolean isLoginFinished(String contact) throws InterruptedException {
-		Boolean flag = false;
 		refreshUITree();
 		try{
 			wait.until(ExpectedConditions.visibilityOf(yourUser));
@@ -164,12 +163,8 @@ public class LoginPage extends AndroidPage {
 			pickerClearBtn.click();
 			refreshUITree();
 		}
-		
-		if(yourUser.getText().toLowerCase().equals(contact.toLowerCase())){
-			flag = true;
-		}
-		//return DriverUtils.waitForElementWithTextByXPath(AndroidLocators.ContactListPage.xpathContacts,contact,driver);
-		return flag;
+
+		return DriverUtils.waitForElementWithTextByXPath(AndroidLocators.ContactListPage.xpathContacts,contact,driver);
 	}
 
 	public Boolean isWelcomeButtonsExist(){
