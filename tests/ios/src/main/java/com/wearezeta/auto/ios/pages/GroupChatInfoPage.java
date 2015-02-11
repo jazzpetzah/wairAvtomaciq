@@ -28,7 +28,7 @@ public class GroupChatInfoPage extends IOSPage {
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.80;
 	
 	private final String AQA_PICTURE_CONTACT = "AQAPICTURECONTACT";
-	private final String AQA_AVATAR_CONTACT = "AT";
+	private final String AQA_AVATAR_CONTACT = "AQAAVATAR";
 
 	private String conversationName = null;
 
