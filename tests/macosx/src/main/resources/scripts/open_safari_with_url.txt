@@ -1,0 +1,9 @@
+tell application "Safari" to close every window
+tell application "Safari"
+	activate
+end tell
+tell application "System Events" to tell application process "Safari"
+	set frontmost to true
+end tell
+tell application "Safari" to open location "%s"
+delay 3
