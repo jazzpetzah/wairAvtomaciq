@@ -180,7 +180,7 @@ public class PeoplePickerPageSteps {
 				.clickOnGoButton(false);
 	}
 
-	@When("^I click on Go button to create 1:1 conversation$")
+	@When("^I click on Go button$")
 	public void WhenIClickOnGoButton() throws Exception {
 		PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.peoplePickerPage
 				.clickOnGoButton(true);

@@ -69,7 +69,7 @@ public class LoginPage extends WebPage {
 
 	public boolean waitForLogin() {
 		boolean noSignIn = DriverUtils.waitUntilElementDissapear(driver,
-				By.id(WebAppLocators.LoginPage.idLoginButton));;
+				By.id(WebAppLocators.LoginPage.idLoginButton), 40);
 		return noSignIn;
 	}
 }
