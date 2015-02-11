@@ -80,7 +80,7 @@ public final class WebAppLocators {
 
 		public static final String classNameShowParticipantsButton = "show-participants";
 
-		public static final String xpathActionMessageEntry = "//div[@class='message']//div[@class='action' and contains(text(), '%s')]";
+		public static final String xpathActionMessageEntry = "//div[contains(@class,'special')]//div[@class='action' and contains(text(), '%s')]";
 
 		public static final String xpathSendImageLabel = "//label[contains(@class, 'zi') and contains(@class, 'upload-images')]";
 
@@ -91,7 +91,7 @@ public final class WebAppLocators {
 
 		public static final String cssSendImageInput = "input[type=\"file\"]";
 
-		public static final String xpathImageMessageEntry = "//div[@class='message']/div[@class='message-asset-image']";
+		public static final String xpathImageMessageEntry = "//div[@class='message-asset-image']";
 	}
 
 	public static final class ConnectToPage {
