@@ -177,9 +177,6 @@ public class ContactListPage extends IOSPage {
 
 	public IOSPage swipeRightOnContact(int time, String contact)
 			throws Exception {
-		oldLocation = driver.findElementByXPath(
-				String.format(IOSLocators.xpathMutedIcon, contact))
-				.getLocation().x;
 		DriverUtils.swipeRight(driver, findNameInContactList(contact), time);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
