@@ -168,6 +168,8 @@ public final class IOSLocators {
 	
 	public static final String nameCameraButton = "cameraButton";
 	
+	public static final String xpathPictureButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[3]";
+	
 	public static final String idProvideValidEmailMessage = "PLEASE PROVIDE A VALID EMAIL ADDRESS"; 
 	
 	public static final String nameAddContactToChatButton = "metaControllerLeftButton";
