@@ -41,7 +41,7 @@ public class PeoplePickerPageSteps {
 	@When("^I select (.*) from People Picker results$")
 	public void ISelectUserFromPeoplePickerResults(String user) {
 		try {
-			Thread.sleep(2000);
+			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 		}
 		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
