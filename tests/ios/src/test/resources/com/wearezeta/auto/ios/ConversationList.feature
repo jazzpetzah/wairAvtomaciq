@@ -33,3 +33,17 @@ Feature: Conversation List
     Examples: 
       | Login      | Password      | Name      | ArchivedUser   |
       | user1Email | user1Password | user1Name | user2Name      |
+      
+ @torun @staging @id1462
+ Scenario Outline: Verify silence the conversation
+ 	Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Contact> change  name to <NewName>
+    Given User <Name> change  accent color to <Color>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact>
+    
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Color        | NewName |
+      | user1Email | user1Password | user1Name | user2Name | BrightOrange | SILENCE |
