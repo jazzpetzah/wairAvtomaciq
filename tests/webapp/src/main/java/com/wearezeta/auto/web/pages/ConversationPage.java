@@ -117,7 +117,7 @@ public class ConversationPage extends WebPage {
 		final boolean isAnyPictureMsgFound = DriverUtils
 				.waitUntilElementAppears(
 						driver,
-						By.xpath(WebAppLocators.ConversationPage.xpathImageMessageEntry));
+						By.xpath(WebAppLocators.ConversationPage.xpathImageMessageEntry), 40);
 		return isAnyPictureMsgFound && (imageMessageEntries.size() > 0);
 	}
 }

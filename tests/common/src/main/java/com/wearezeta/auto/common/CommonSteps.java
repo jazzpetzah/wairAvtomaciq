@@ -237,7 +237,8 @@ public final class CommonSteps {
 					usrMgr.findUserByNameOrNameAlias(userNameAlias),
 					picturePath);
 		} else {
-			throw new NotImplementedException("Please implement loading pictures from resources");
+			throw new NotImplementedException(
+					"Please implement loading pictures from resources");
 			// TODO: extract picture from resources
 		}
 	}
@@ -276,8 +277,7 @@ public final class CommonSteps {
 			String contactAlias, int timeout) throws Exception {
 		String query = usrMgr.replaceAliasesOccurences(contactAlias,
 				FindBy.NAME_ALIAS);
-		query = usrMgr.replaceAliasesOccurences(contactAlias,
-				FindBy.EMAIL_ALIAS);
+		query = usrMgr.replaceAliasesOccurences(query, FindBy.EMAIL_ALIAS);
 		BackendAPIWrappers.waitUntilContactsFound(
 				usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query, 1,
 				true, timeout);
