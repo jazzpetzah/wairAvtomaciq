@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -12,6 +14,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class ContactListPage extends WebPage {
@@ -107,10 +110,16 @@ public class ContactListPage extends WebPage {
 	public void clickActionsButtonForContact(String conversationName) {
 
 		WebElement contact = getContactWithName(conversationName);
-		DriverUtils.moveMouserOver(driver, contact);
+		try {
+			DriverUtils.moveMouserOver(driver, contact);
+		} catch (WebDriverException e) {
+			//do nothing (safari workaround)
+		}
 		WebElement actionsButton = contact.findElement(By
 				.className(WebAppLocators.ContactListPage.classActionsButton));
-		wait.until(ExpectedConditions.elementToBeClickable(actionsButton));
+
+		DriverUtils.waitUntilElementClickable(driver, actionsButton, 5);
+
 		actionsButton.click();
 	}
 
