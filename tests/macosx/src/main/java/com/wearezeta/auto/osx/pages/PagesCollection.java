@@ -14,6 +14,7 @@ public class PagesCollection extends AbstractPagesCollection {
 	private ConversationInfoPage conversationInfoPage = null;
 	private UserProfilePage userProfilePage = null;
 	private RegistrationPage registrationPage = null;
+	private ChangePasswordPage changePasswordPage = null;
 	
 	public void closeAllPages() throws Exception {
 		for (Field f : this.getClass().getDeclaredFields()) {
@@ -99,4 +100,11 @@ public class PagesCollection extends AbstractPagesCollection {
 		this.mainMenuPage = mainMenuPage;
 	}
 	
+	public ChangePasswordPage getChangePasswordPage() {
+		return changePasswordPage;
+	}
+	
+	public void setChangePasswordPage(ChangePasswordPage page) {
+		this.changePasswordPage = page;
+	}
 }

@@ -15,6 +15,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.email.MBoxChangesListener;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
+import com.wearezeta.auto.osx.common.OSXConstants;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class RegistrationPage extends OSXPage {
@@ -47,7 +48,6 @@ public class RegistrationPage extends OSXPage {
 	
 	private MBoxChangesListener listener;
 	
-	private static final String ACTIVATE_USER_SCRIPT = "/scripts/activate_registered_user.txt";
 	private String activationResponse = null;
 	
 	public RegistrationPage(String URL, String path) throws Exception {
@@ -106,20 +106,12 @@ public class RegistrationPage extends OSXPage {
 		}
 	}
 	
-	public void setListener(MBoxChangesListener listener) {
-		this.listener = listener;
-	}
-	
-	public MBoxChangesListener getListener() {
-		return listener;
-	}
-
-	public void activateUserViaBrowserAndSavePage() throws Exception {
+	public void activateUserFromBrowser() throws Exception {
 		String activationLink = BackendAPIWrappers
 				.getUserActivationLink(this.listener);
 		String script = String
 				.format(OSXCommonUtils
-						.readTextFileFromResources(ACTIVATE_USER_SCRIPT),
+						.readTextFileFromResources(OSXConstants.Scripts.ACTIVATE_USER_SCRIPT),
 						activationLink);
 
 		@SuppressWarnings("unchecked")
@@ -132,5 +124,13 @@ public class RegistrationPage extends OSXPage {
 	public boolean isUserActivated() {
 		return activationResponse
 				.contains(OSXLocators.RegistrationPage.ACTIVATION_RESPONSE_VERIFIED);
+	}
+	
+	public void setListener(MBoxChangesListener listener) {
+		this.listener = listener;
+	}
+	
+	public MBoxChangesListener getListener() {
+		return listener;
 	}
 }

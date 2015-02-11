@@ -25,7 +25,6 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | ContactEmail | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user2Email   | user3Name |
 
-  #ZIOS-3122
   @smoke @id585
   Scenario Outline: Get invitation message from user
     Given There are 3 users where <Name> is me
@@ -38,6 +37,7 @@ Feature: Connect
     And I see Pending request page
     And I see Hello connect message from user <Contact> on Pending request page
     And I click Connect button on Pending request page
+    And I wait for 2 seconds
     Then I see first item in contact list named <Contact>
 
     Examples: 

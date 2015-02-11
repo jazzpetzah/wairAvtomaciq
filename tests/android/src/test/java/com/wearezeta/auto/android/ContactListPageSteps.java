@@ -126,7 +126,6 @@ public class ContactListPageSteps {
 	public void ISwipeDownContactList() throws Exception {
 		PagesCollection.peoplePickerPage = (PeoplePickerPage) PagesCollection.contactListPage
 				.swipeDown(1000);
-		PagesCollection.contactListPage.pressLaterButton();
 	}
 
 	@When("^I create group chat with (.*) and (.*)$")

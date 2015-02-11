@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @staging @id1910
+  @smoke @id1910
   Scenario Outline: Accept connection request
     Given There are 2 users where <Name> is me
     Given <Contact> has sent connection request to <Name>
