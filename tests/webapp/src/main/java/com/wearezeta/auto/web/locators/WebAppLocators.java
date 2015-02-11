@@ -91,7 +91,7 @@ public final class WebAppLocators {
 
 		public static final String cssSendImageInput = "input[type=\"file\"]";
 
-		public static final String xpathImageMessageEntry = "//div[@class='message']/div[@class='message-asset-image']";
+		public static final String xpathImageMessageEntry = "//div[contains(@class,'message')]/div[@class='message-asset-image']";
 	}
 
 	public static final class ConnectToPage {
