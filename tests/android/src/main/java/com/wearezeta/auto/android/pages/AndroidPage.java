@@ -207,10 +207,10 @@ public abstract class AndroidPage extends BasePage {
 		clearPagesCollection(PagesCollection.class, AndroidPage.class);
 	}
 	
-	public boolean isVisible(WebElement element) {
+	public boolean isVisible(WebElement element) throws NumberFormatException, Exception {
 		boolean value = false;
 		try{
-			DriverUtils.setImplicitWaitValue(driver, 5);
+			changeZetaLocatorTimeout(3);
 			element.isDisplayed();
 			value = true;
 		}
@@ -219,7 +219,8 @@ public abstract class AndroidPage extends BasePage {
 			value = false;
 		}
 		finally{
-			DriverUtils.setDefaultImplicitWait(driver);
+			changeZetaLocatorTimeout(Long.parseLong(CommonUtils
+					.getDriverTimeoutFromConfig(getClass())));
 		}
 		return value;
 

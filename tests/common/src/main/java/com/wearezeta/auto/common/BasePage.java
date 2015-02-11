@@ -37,7 +37,7 @@ public abstract class BasePage {
 	protected static HashMap<String, WebDriverWait> waits = new HashMap<String, WebDriverWait>();
 	private static final Logger log = ZetaLogger.getLog(BasePage.class
 			.getSimpleName());
-
+	private static ZetaElementLocatorFactory zetaLocatorFactory;
 	private String pagePlatform;
 
 	protected synchronized void InitConnection(String URL,
@@ -87,7 +87,7 @@ public abstract class BasePage {
 
 		pagePlatform = platform;
 
-		ZetaElementLocatorFactory zetaLocatorFactory = new ZetaElementLocatorFactory(
+		zetaLocatorFactory = new ZetaElementLocatorFactory(
 				drivers.get(platform), Long.parseLong(CommonUtils
 						.getDriverTimeoutFromConfig(getClass())),
 				AppiumFieldDecorator.DEFAULT_TIMEUNIT);
@@ -165,5 +165,9 @@ public abstract class BasePage {
 
 	public static RemoteWebDriver getDriver(String id) {
 		return drivers.get(id);
+	}
+	
+	public static void changeZetaLocatorTimeout(long seconds){
+		zetaLocatorFactory.resetImplicitlyWaitTimeOut(seconds, AppiumFieldDecorator.DEFAULT_TIMEUNIT);
 	}
 }
