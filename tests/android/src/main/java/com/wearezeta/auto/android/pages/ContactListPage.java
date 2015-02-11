@@ -26,7 +26,7 @@ public class ContactListPage extends AndroidPage {
 	private List<WebElement> contactListNames;
 
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classEditText)
-	private List<WebElement> cursorInput;
+	private WebElement cursorInput;
 
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameFrameLayout)
 	private List<WebElement> frameLayout;
@@ -75,23 +75,16 @@ public class ContactListPage extends AndroidPage {
 		wait.until(ExpectedConditions.visibilityOf(el));
 		el.click();
 		refreshUITree();
-		DriverUtils.setImplicitWaitValue(driver, 5);
+		page = getPages();
 		// workaround for incorrect tap
-		el = findInContactList(name, 1);
-		if (el != null && DriverUtils.isElementDisplayed(el)) {
-			this.restoreApplication();
-			el.click();
-			log.debug("tap on contact for the second time");
+		if(page == null){
+			el = findInContactList(name, 1);
+			if (el != null && DriverUtils.isElementDisplayed(el)) {
+				this.restoreApplication();
+				el.click();
+				log.debug("tap on contact for the second time");
+			}	
 		}
-		//
-		if (isVisible(connectToHeader)) {
-			page = new ConnectToPage(url, path);
-		} else if (isVisible(selfUserName)) {
-			page = new PersonalInfoPage(url, path);
-		} else {
-			page = new DialogPage(url, path);
-		}
-		DriverUtils.setDefaultImplicitWait(driver);
 		return page;
 	}
 
@@ -118,7 +111,7 @@ public class ContactListPage extends AndroidPage {
 			if (isVisible(convList)) {
 				flag = true;
 			}
-		} else if (cursorInput.isEmpty() && !isVisible(selfUserName)) {
+		} else if (!isVisible(cursorInput) && !isVisible(selfUserName)) {
 			flag = true;
 		}
 		if (flag) {
@@ -153,9 +146,9 @@ public class ContactListPage extends AndroidPage {
 		DriverUtils.swipeRight(driver, el, 1000);
 		AndroidPage page = null;
 		refreshUITree();
-		if (cursorInput.isEmpty()) {
+		if (!isVisible(cursorInput)) {
 			page = new ContactListPage(url, path);
-		} else {
+		} else if (isVisible(cursorInput)){
 			page = new DialogPage(url, path);
 		}
 		return page;
@@ -233,5 +226,18 @@ public class ContactListPage extends AndroidPage {
 
 	public Boolean isContactExists(String name) throws Exception {
 		return findInContactList(name, 0) != null;
+	}
+	
+	private AndroidPage getPages() throws Exception{
+		AndroidPage page = null;
+		if (isVisible(connectToHeader)) {
+			page = new ConnectToPage(url, path);
+		} else if (isVisible(selfUserName)) {
+			page = new PersonalInfoPage(url, path);
+		} else if (isVisible(cursorInput)) {
+			page = new DialogPage(url, path);
+		}
+		
+		return page;
 	}
 }
