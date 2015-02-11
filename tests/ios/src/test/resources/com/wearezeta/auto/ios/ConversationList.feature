@@ -43,6 +43,7 @@ Feature: Conversation List
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe right on a <Contact>
+    And I silence conversation <Contact>
     
     Examples: 
       | Login      | Password      | Name      | Contact   | Color        | NewName |

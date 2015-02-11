@@ -397,4 +397,11 @@ public class DriverUtils {
 		action.moveToElement(element);
 		action.perform();
 	}
+	 
+	public static void clickSilenceConversationButton(AppiumDriver driver,WebElement element){
+		Point coords = element.getLocation();
+		//Dimension elementSize = element.getSize();
+		
+		driver.tap(1, coords.x-70, coords.y, 1);
+	}
 }

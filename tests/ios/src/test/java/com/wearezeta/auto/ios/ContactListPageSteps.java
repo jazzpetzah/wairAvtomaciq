@@ -330,5 +330,22 @@ public class ContactListPageSteps {
 		Assert.assertFalse(PagesCollection.contactListPage
 				.isDisplayedInContactList(name));
 	}
+	
+	/**
+	 * Conversation gets silenced by pressing the silence button
+	 * 
+	 * @step. ^I silence conversation (.*)$
+	 * 
+	 * @param conversation
+	 *            conversation name to silence
+	 * @throws Exception
+	 *             if conversation is not found
+	 * 
+	 */
+	@When("^I silence conversation (.*)$")
+	public void ISilenceConversation(String conversation) throws Exception{
+		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
+		PagesCollection.contactListPage.silenceConversation(conversation); 
+	}
 
 }

@@ -43,6 +43,12 @@ public class ContactListPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameTutorialView)
 	private WebElement tutorialView;
+	
+//	@FindBy(how = How.XPATH, using = IOSLocators.xpathAnyUserInContactList)
+//	private WebElement anyContactInList;
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathFirstInContactList)
+	private WebElement firstContactInList;
+	
 
 	private String url;
 	private String path;
@@ -304,6 +310,11 @@ public class ContactListPage extends IOSPage {
 		boolean chatExist = firstChat.contains(name1)
 				&& firstChat.contains(name2) && firstChat.contains(name3);
 		return chatExist;
+	}
+	
+	public void silenceConversation(String conversation){
+		WebElement contact = findNameInContactList(conversation); 
+		DriverUtils.clickSilenceConversationButton(driver, contact);
 	}
 
 }
