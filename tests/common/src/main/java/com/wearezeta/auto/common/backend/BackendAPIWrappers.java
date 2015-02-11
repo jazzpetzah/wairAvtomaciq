@@ -24,6 +24,7 @@ import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.email.ActivationMessage;
 import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.email.MBoxChangesListener;
+import com.wearezeta.auto.common.email.PasswordResetMessage;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.UserState;
@@ -72,6 +73,13 @@ public final class BackendAPIWrappers {
 		ActivationMessage registrationInfo = new ActivationMessage(
 				IMAPSMailbox.getFilteredMessage(listener, ACTIVATION_TIMEOUT));
 		return registrationInfo.extractActivationLink();
+	}
+	
+	public static String getPasswordResetLink(MBoxChangesListener listener)
+			throws Exception {
+		PasswordResetMessage resetPassword = new PasswordResetMessage(
+				IMAPSMailbox.getFilteredMessage(listener, ACTIVATION_TIMEOUT));
+		return resetPassword.extractPasswordResetLink();
 	}
 
 	public static void createContactLinks(ClientUser userFrom,

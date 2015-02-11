@@ -347,7 +347,7 @@ public class RegistrationPageSteps {
 	public void IOpenActivationLinkInBrowser() throws Exception {
 		RegistrationPage registrationPage = CommonOSXSteps.senderPages
 				.getRegistrationPage();
-		registrationPage.activateUserViaBrowserAndSavePage();
+		registrationPage.activateUserFromBrowser();
 	}
 
 	/**
