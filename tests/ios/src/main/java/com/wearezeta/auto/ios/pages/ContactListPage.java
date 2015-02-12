@@ -1,6 +1,11 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
+
+import javax.imageio.ImageIO;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -9,6 +14,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
@@ -19,6 +25,9 @@ public class ContactListPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathContactListNames)
 	private List<WebElement> contactListNames;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathContactListCells)
+	private List<WebElement> contactListCells;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameProfileName)
 	private WebElement profileName;
@@ -153,6 +162,34 @@ public class ContactListPage extends IOSPage {
 			if (flag) {
 				WebElement el = contactListNames
 						.get(contactListNames.size() - 1);
+				wait.until(ExpectedConditions.visibilityOf(el));
+				wait.until(ExpectedConditions.elementToBeClickable(el));
+				DriverUtils.scrollToElement(driver, el);
+			} else {
+				break;
+			}
+		}
+		return contact;
+	}
+	
+	private WebElement findCellInContactList(String name) {
+		Boolean flag = true;
+		WebElement contact = null;
+		for (int i = 0; i < 5; i++) {
+			for (WebElement listCell : contactListCells) {
+				//for (int j = 0; j <= contactListNames.size(); j++){
+					for (WebElement cellText : contactListNames){
+						if (cellText.getText().equals(name)) {
+							contact = listCell;
+							flag = false;
+							break;
+						}
+					//}
+				}
+			}
+			if (flag) {
+				WebElement el = contactListCells
+						.get(contactListCells.size() - 1);
 				wait.until(ExpectedConditions.visibilityOf(el));
 				wait.until(ExpectedConditions.elementToBeClickable(el));
 				DriverUtils.scrollToElement(driver, el);
@@ -316,5 +353,13 @@ public class ContactListPage extends IOSPage {
 		WebElement contact = findNameInContactList(conversation); 
 		DriverUtils.clickSilenceConversationButton(driver, contact);
 	}
+	
+	public void saveScreenshotToFile(String conversation) throws IOException {
+		BufferedImage screenshot = null;
+		WebElement element = findCellInContactList(conversation);
+		screenshot = CommonUtils.getElementScreenshot(element, driver);
+		File outputfile = new File("silencescreenshot2.png");
+		ImageIO.write(screenshot, "png", outputfile);
+   }
 
 }

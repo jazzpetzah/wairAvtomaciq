@@ -347,5 +347,21 @@ public class ContactListPageSteps {
 		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
 		PagesCollection.contactListPage.silenceConversation(conversation); 
 	}
+	
+	/**
+	 * Verifies, that the conversation is really silenced
+	 * 
+	 * @step. ^I see conversation (.*) is silenced$
+	 * 
+	 * @param conversation
+	 *            conversation name to silence
+	 * @throws Exception 
+	 * 
+	 */
+	@Then("^I see conversation (.*) is silenced$")
+	public void ISeeConversationIsSilenced(String conversation) throws Exception{
+		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
+		PagesCollection.contactListPage.saveScreenshotToFile(conversation);
+	}
 
 }

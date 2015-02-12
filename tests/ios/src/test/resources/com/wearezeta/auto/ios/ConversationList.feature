@@ -44,6 +44,7 @@ Feature: Conversation List
     And I see Contact list with my name <Name>
     When I swipe right on a <Contact>
     And I silence conversation <Contact>
+    Then I see conversation <Contact> is silenced
     
     Examples: 
       | Login      | Password      | Name      | Contact   | Color        | NewName |
