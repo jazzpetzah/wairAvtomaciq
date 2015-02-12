@@ -1,5 +1,7 @@
 package com.wearezeta.auto.android.pages;
 
+import io.appium.java_client.pagefactory.AndroidFindBy;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -21,6 +23,12 @@ import com.wearezeta.auto.common.locators.ZetaFindBy;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class ContactListPage extends AndroidPage {
+
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPeoplePickerClearbtn")
+	private WebElement pickerClearBtn;
+
+	@AndroidFindBy(className = AndroidLocators.CommonLocators.classNameLoginPage)
+	private WebElement content;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idContactListNames")
 	private List<WebElement> contactListNames;
@@ -58,6 +66,7 @@ public class ContactListPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idSearchHintClose")
 	private WebElement closeHintBtn;
 
+	private Boolean secondAttemptFlag = false;
 	private String url;
 	private String path;
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
@@ -77,13 +86,13 @@ public class ContactListPage extends AndroidPage {
 		refreshUITree();
 		page = getPages();
 		// workaround for incorrect tap
-		if(page == null){
+		if (page == null) {
 			el = findInContactList(name, 1);
 			if (el != null && DriverUtils.isElementDisplayed(el)) {
 				this.restoreApplication();
 				el.click();
 				log.debug("tap on contact for the second time");
-			}	
+			}
 		}
 		return page;
 	}
@@ -148,7 +157,7 @@ public class ContactListPage extends AndroidPage {
 		refreshUITree();
 		if (!isVisible(cursorInput)) {
 			page = new ContactListPage(url, path);
-		} else if (isVisible(cursorInput)){
+		} else if (isVisible(cursorInput)) {
 			page = new DialogPage(url, path);
 		}
 		return page;
@@ -173,6 +182,19 @@ public class ContactListPage extends AndroidPage {
 
 	public void closeHint() {
 		closeHintBtn.click();
+	}
+
+	@Override
+	public AndroidPage swipeDown(int time) throws Exception {
+
+		DriverUtils.swipeDown(driver, content, time);
+		Thread.sleep(1000);
+		if (!isVisible(pickerClearBtn) && !secondAttemptFlag) {
+			secondAttemptFlag = true;
+			DriverUtils.swipeDown(driver, content, time * 2);
+		}
+		secondAttemptFlag = false;
+		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
 	@Override
@@ -227,8 +249,8 @@ public class ContactListPage extends AndroidPage {
 	public Boolean isContactExists(String name) throws Exception {
 		return findInContactList(name, 0) != null;
 	}
-	
-	private AndroidPage getPages() throws Exception{
+
+	private AndroidPage getPages() throws Exception {
 		AndroidPage page = null;
 		if (isVisible(connectToHeader)) {
 			page = new ConnectToPage(url, path);
@@ -237,7 +259,7 @@ public class ContactListPage extends AndroidPage {
 		} else if (isVisible(cursorInput)) {
 			page = new DialogPage(url, path);
 		}
-		
+
 		return page;
 	}
 }

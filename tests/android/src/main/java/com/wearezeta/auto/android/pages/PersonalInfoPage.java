@@ -132,7 +132,6 @@ public class PersonalInfoPage extends AndroidPage {
 	}
 
 	public SettingsPage tapSettingsButton() throws Exception {
-
 		refreshUITree();
 		settingsButton.click();
 		return new SettingsPage(url, path);
@@ -143,8 +142,10 @@ public class PersonalInfoPage extends AndroidPage {
 	}
 
 	public void tapOnMyName() {
+		refreshUITree();
 		wait.until(ExpectedConditions.visibilityOf(nameField));
 		nameField.click();
+		refreshUITree();
 		wait.until(ExpectedConditions.visibilityOf(nameEdit));
 	}
 
@@ -187,7 +188,7 @@ public class PersonalInfoPage extends AndroidPage {
 				.waitUntilElementDissapear(driver,
 						AndroidLocators.PersonalInfoPage
 								.getByForProfileOptionsButton());
-		if (settingsButtonList == null || settingsButtonList.isEmpty()) {
+		if (!isVisible(settingsButton)) {
 			flag = true;
 		}
 		return flag;
