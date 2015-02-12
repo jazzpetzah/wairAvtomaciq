@@ -118,8 +118,12 @@ public class ConversationPage extends WebPage {
 							.readTextFileFromResources(WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT),
 							WebCommonUtils.getPicturesPath(), pictureName);
 			ScriptEngineManager mgr = new ScriptEngineManager();
-			ScriptEngine engine = mgr.getEngineByName("AppleScript");
-			engine.eval(script);
+			ScriptEngine engine = mgr.getEngineByName("AppleScriptEngine");
+			if (engine != null) {
+				engine.eval(script);
+			} else {
+				throw new Exception("Failed to get script engine to execute AppleScript.");
+			}
 		} else {
 			if (DriverUtils.waitUntilElementVisible(driver, imagePathInput)) {
 				imagePathInput.sendKeys(picturePath);
