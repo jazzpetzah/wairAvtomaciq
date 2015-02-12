@@ -15,6 +15,7 @@ import cucumber.api.java.en.When;
 public class ContactListPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
+	@SuppressWarnings("unused")
 	private void disableHint(String name) throws Exception {
 		Thread.sleep(2000);
 		if (PagesCollection.contactListPage.isHintVisible()) {
@@ -126,7 +127,6 @@ public class ContactListPageSteps {
 	public void ISwipeDownContactList() throws Exception {
 		PagesCollection.peoplePickerPage = (PeoplePickerPage) PagesCollection.contactListPage
 				.swipeDown(1000);
-		PagesCollection.contactListPage.pressLaterButton();
 	}
 
 	@When("^I create group chat with (.*) and (.*)$")

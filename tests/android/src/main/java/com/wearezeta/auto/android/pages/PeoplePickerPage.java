@@ -206,14 +206,14 @@ public class PeoplePickerPage extends AndroidPage {
 
 
 
-	public boolean userIsVisible(String contact) {
+	public boolean userIsVisible(String contact) throws Exception {
 		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.PeoplePickerPage.idNoResultsFound));
 		refreshUITree();
 		wait.until(ExpectedConditions.visibilityOfAllElements(pickerSearchUsers));
 		return isVisible(driver.findElement(By.xpath(String.format(AndroidLocators.PeoplePickerPage.xpathPeoplePickerContact, contact))));	
 	}
 	
-	public boolean groupIsVisible(String contact) {
+	public boolean groupIsVisible(String contact) throws Exception {
 		DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.PeoplePickerPage.idNoResultsFound));
 		refreshUITree();
 		wait.until(ExpectedConditions.visibilityOfAllElements(pickerSearchConversations));

@@ -60,6 +60,7 @@ public class PendingRequestsPage extends IOSPage {
 	
 	public ContactListPage clickConnectButton() throws Throwable{
 		ContactListPage page = null;
+		DriverUtils.waitUntilElementClickable(driver, connectRequestButton);
 		connectRequestButton.click();
 		page = new ContactListPage(url, path);
 		return page;

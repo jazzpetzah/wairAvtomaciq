@@ -170,6 +170,8 @@ public final class IOSLocators {
 	
 	public static final String nameCameraButton = "cameraButton";
 	
+	public static final String xpathPictureButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[3]";
+	
 	public static final String idProvideValidEmailMessage = "PLEASE PROVIDE A VALID EMAIL ADDRESS"; 
 	
 	public static final String nameAddContactToChatButton = "metaControllerLeftButton";
@@ -411,7 +413,7 @@ public final class IOSLocators {
 	public static final String xpathPeoplePickerTopConnectionsAvatar = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[%d]";
 	public static final String xpathPeoplePickerAllTopPeople = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell";
 	public static final String nameShareButton = "SHARE";
-	public static final String nameContinueUploadButton = "CONTINUE";
+	public static final String nameContinueUploadButton = "SHARE";
 	public static final String namePeopleYouMayKnowLabel = "PEOPLE YOU MAY KNOW";
 	
 	//////////////////

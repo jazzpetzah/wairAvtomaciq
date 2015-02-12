@@ -1,6 +1,6 @@
 Feature: Sign Out
 
-  @staging @id1790
+  @smoke @id1790
   Scenario Outline: Change sign-in user
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>

@@ -207,15 +207,20 @@ public abstract class AndroidPage extends BasePage {
 		clearPagesCollection(PagesCollection.class, AndroidPage.class);
 	}
 	
-	public boolean isVisible(WebElement element) {
+	public boolean isVisible(WebElement element) throws NumberFormatException, Exception {
 		boolean value = false;
 		try{
+			changeZetaLocatorTimeout(3);
 			element.isDisplayed();
 			value = true;
 		}
 		catch(NoSuchElementException ex)
 		{
 			value = false;
+		}
+		finally{
+			changeZetaLocatorTimeout(Long.parseLong(CommonUtils
+					.getDriverTimeoutFromConfig(getClass())));
 		}
 		return value;
 

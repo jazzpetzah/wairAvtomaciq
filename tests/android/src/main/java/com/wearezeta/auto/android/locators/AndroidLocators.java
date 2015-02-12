@@ -23,9 +23,9 @@ public final class AndroidLocators {
 
 		public static final class ForgotPasswordPage {
 
-			public static final String xpathEmailField = "//android.widget.EditText[@content-desc='Email']";
+			public static final String xpathEditField = "//android.webkit.WebView/android.view.View/android.widget.EditText";
 
-			public static final String xpathChangePasswordButton = "//android.widget.Button[@content-desc='CHANGE PASSWORD']";
+			public static final String xpathChangePasswordButton = "//android.webkit.WebView/android.view.View/android.widget.Button";
 		}
 	}
 
@@ -43,14 +43,17 @@ public final class AndroidLocators {
 				+ "$LoginPage";
 
 		public static final String idSignInButton = LOCATORS_PACKAGE
-				+ ":id/ttv__confirmation__confirm";
+				+ ":id/ttv__welcome__sign_in";
 
 		public static final String idSignUpButton = LOCATORS_PACKAGE
-				+ ":id/ttv__confirmation__cancel";
+				+ ":id/ttv__welcome__create_account";
 
 		public static final String idLoginButton = LOCATORS_PACKAGE
 				+ ":id/zb__sign_in__button";
 
+		public static final String idForgotPass = LOCATORS_PACKAGE
+				+ ":id/ttv_signin_forgot_password";
+		
 		public static final String xpathLoginInput = "//android.widget.EditText[ancestor::android.widget.LinearLayout[contains(@resource-id,'get__sign_in__email')]]";
 
 		public static final String xpathPasswordInput = "//android.widget.EditText[ancestor::android.widget.LinearLayout[contains(@resource-id,'get__sign_in__password')]]";
@@ -60,6 +63,8 @@ public final class AndroidLocators {
 		public static final String xpathSignInButton42 = "//android.widget.TextView[contains(@text,'SIGN IN')]";
 
 		public static final String xpathLoginButton42 = "//android.widget.TextView[contains(@text,'SIGN IN')]";
+		
+		public static final String xpathForgotPass42 = "//android.widget.TextView[contains(@text,'FORGOT PASSWORD?')]";
 
 		public static final String xpathWelcomeSlogan42 = "//android.widget.TextView[contains(@text,'welcome to Wire')]";
 
@@ -75,7 +80,7 @@ public final class AndroidLocators {
 		public static final String idLoginError = LOCATORS_PACKAGE
 				+ ":id/ttv__sign_in__login_failed__guidance";
 
-		public static final String xpathSignUpButton42 = "//android.widget.TextView[@text='REGISTER']";
+		public static final String xpathSignUpButton42 = "//android.widget.TextView[@text='CREATE ACCOUNT']";
 
 		public static By getByForLoginPageRegistrationButton() throws Exception {
 			if (CommonUtils.getAndroidApiLvl(AndroidLocators.class) < 43) {
