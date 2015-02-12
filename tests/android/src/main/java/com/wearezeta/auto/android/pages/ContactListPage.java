@@ -190,7 +190,7 @@ public class ContactListPage extends AndroidPage {
 		refreshUITree();
 		DriverUtils.swipeDown(driver, content, time);
 		Thread.sleep(2000);
-		if (!isVisible(pickerClearBtn) && !secondAttemptFlag) {
+		if (!isVisible(pickerClearBtn) && !secondAttemptFlag && isVisible(openStartUIButton)) {
 			refreshUITree();
 			secondAttemptFlag = true;
 			openStartUIButton.click();
