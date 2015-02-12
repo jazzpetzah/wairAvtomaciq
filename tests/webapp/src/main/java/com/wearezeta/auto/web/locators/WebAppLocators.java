@@ -72,9 +72,9 @@ public final class WebAppLocators {
 
 	public static final class ConversationPage {
 
-		public static final String xpathTextMessageEntry = "//div[@class='message']/div[@class='text']";
+		public static final String xpathTextMessageEntry = "//div[contains(@class,'message')]/div[@class='text']";
 
-		public static final String xpathFormatSpecificTextMessageEntry = "//div[@class='message']/div[@class='text' and text()='%s']";
+		public static final String xpathFormatSpecificTextMessageEntry = "//div[contains(@class,'message')]/div[@class='text' and text()='%s']";
 
 		public static final String idConversationInput = "conversation-input-text";
 
