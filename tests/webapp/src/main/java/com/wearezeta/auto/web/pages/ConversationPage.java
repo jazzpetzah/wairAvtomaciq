@@ -122,6 +122,7 @@ public class ConversationPage extends WebPage {
 			if (engine != null) {
 				engine.eval(script);
 			} else {
+				log.debug("No script engine factory for AppleScript. Existing script engine factories: " + mgr.getEngineFactories());
 				throw new Exception("Failed to get script engine to execute AppleScript.");
 			}
 		} else {
