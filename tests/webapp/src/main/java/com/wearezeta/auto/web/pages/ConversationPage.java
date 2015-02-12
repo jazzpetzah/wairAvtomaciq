@@ -22,7 +22,6 @@ import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class ConversationPage extends WebPage {
 
-	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(ConversationPage.class
 			.getSimpleName());
 

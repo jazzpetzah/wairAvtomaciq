@@ -13,6 +13,9 @@ class GetBuildsWithParametersForJob(CliHandlerBase):
         parser.add_argument('--parameters', required=True,
                             help='The comma separated list of parameters and their values, '
                             'which found builds should contain. Required parameter')
+        parser.add_argument('--only-running', action='store_true', default=False,
+                            help='Check only builds, which are currently running',
+                            dest="only_running")
         parser.add_argument('--queue_timeout',
                             help='Maximum time to wait while this job has queued items (in seconds, 300 by default). '\
                             'Set it to negative value if you want to ignore this verification.')
@@ -40,6 +43,8 @@ class GetBuildsWithParametersForJob(CliHandlerBase):
                 else:
                     counter += 1
                 build = job.get_build_metadata(build_id)
+                if args.only_running and not build.is_running():
+                    continue
                 build_matches = True
                 for expected_param_name, expected_param_value in expected_params.iteritems():
                     are_build_params_match = False
