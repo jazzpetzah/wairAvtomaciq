@@ -27,7 +27,7 @@ public class ContactListPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathContactListNames)
 	private List<WebElement> contactListNames;
-	
+
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathContactListCells)
 	private List<WebElement> contactListCells;
 
@@ -54,12 +54,11 @@ public class ContactListPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameTutorialView)
 	private WebElement tutorialView;
-	
-//	@FindBy(how = How.XPATH, using = IOSLocators.xpathAnyUserInContactList)
-//	private WebElement anyContactInList;
+
+	// @FindBy(how = How.XPATH, using = IOSLocators.xpathAnyUserInContactList)
+	// private WebElement anyContactInList;
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathFirstInContactList)
 	private WebElement firstContactInList;
-	
 
 	private String url;
 	private String path;
@@ -74,8 +73,7 @@ public class ContactListPage extends IOSPage {
 	public boolean isMyUserNameDisplayedFirstInContactList(String name) {
 		if (DriverUtils.isElementDisplayed(myUserNameInContactList)) {
 			return myUserNameInContactList.getText().equals(name);
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
@@ -173,18 +171,18 @@ public class ContactListPage extends IOSPage {
 		}
 		return contact;
 	}
-	
+
 	private WebElement findCellInContactList(String name) {
 		Boolean flag = true;
 		WebElement contact = null;
 		for (int i = 0; i < 5; i++) {
 			for (WebElement listCell : contactListCells) {
-					for (WebElement cellText : contactListNames){
-						if (cellText.getText().equals(name)) {
-							contact = listCell;
-							flag = false;
-							break;
-						}
+				for (WebElement cellText : contactListNames) {
+					if (cellText.getText().equals(name)) {
+						contact = listCell;
+						flag = false;
+						break;
+					}
 				}
 			}
 			if (flag) {
@@ -348,19 +346,22 @@ public class ContactListPage extends IOSPage {
 				&& firstChat.contains(name2) && firstChat.contains(name3);
 		return chatExist;
 	}
-	
-	public void silenceConversation(String conversation){
-		WebElement contact = findNameInContactList(conversation); 
+
+	public void silenceConversation(String conversation) {
+		WebElement contact = findNameInContactList(conversation);
 		DriverUtils.clickSilenceConversationButton(driver, contact);
 	}
-	
-	public boolean isConversationSilenced(String conversation) throws IOException{
+
+	public boolean isConversationSilenced(String conversation)
+			throws IOException {
 		BufferedImage silencedConversation = null;
 		WebElement element = findCellInContactList(conversation);
-		silencedConversation = CommonUtils.getElementScreenshot(element, driver);
+		silencedConversation = CommonUtils
+				.getElementScreenshot(element, driver);
 		BufferedImage referenceImage = ImageUtil.readImageFromFile(IOSPage
 				.getImagesPath() + "silenceVerification.png");
-		double score = ImageUtil.getOverlapScore(referenceImage, silencedConversation);
+		double score = ImageUtil.getOverlapScore(referenceImage,
+				silencedConversation);
 		if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
 			return false;
 		}
