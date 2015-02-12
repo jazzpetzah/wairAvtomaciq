@@ -215,7 +215,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @staging @id1399
+  @regression @id1399
   Scenario Outline: Verify you don't receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -246,7 +246,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | Picture     |
       | user1Email | user1Password | user1Name | user2Name | testing.jpg |
       
-  @staging @id596
+  @regression @id596
   Scenario Outline: Verify you cannot send the invitation message twice
   	Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
