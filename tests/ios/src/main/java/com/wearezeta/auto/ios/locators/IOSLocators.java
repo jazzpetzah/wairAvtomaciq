@@ -54,7 +54,7 @@ public final class IOSLocators {
 	
 	public static final String nameTextInput = "ComposeControllerTextView";
 	
-	public static final String xpathOpenConversationDetails = "//UIAApplication[1]/UIAWindow[1]/UIAButton[6]";
+	public static final String nameOpenConversationDetails = "conversationDetailButton";
 	
 	public static final String xpathYouPinged = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[2]/UIAStaticText[contains(@name, 'YOU PINGED')]";
 	
@@ -170,7 +170,7 @@ public final class IOSLocators {
 	
 	public static final String nameCameraButton = "cameraButton";
 	
-	public static final String xpathPictureButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[3]";
+	public static final String namePictureButton = "CameraLibraryButton";
 	
 	public static final String idProvideValidEmailMessage = "PLEASE PROVIDE A VALID EMAIL ADDRESS"; 
 	
