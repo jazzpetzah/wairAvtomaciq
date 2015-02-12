@@ -411,7 +411,7 @@ public final class IOSLocators {
 	public static final String xpathPeoplePickerTopConnectionsAvatar = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[%d]";
 	public static final String xpathPeoplePickerAllTopPeople = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell";
 	public static final String nameShareButton = "SHARE";
-	public static final String nameContinueUploadButton = "CONTINUE";
+	public static final String nameContinueUploadButton = "SHARE";
 	public static final String namePeopleYouMayKnowLabel = "PEOPLE YOU MAY KNOW";
 	
 	//////////////////
