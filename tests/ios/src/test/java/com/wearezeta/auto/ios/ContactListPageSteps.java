@@ -27,12 +27,13 @@ public class ContactListPageSteps {
 		Assert.assertTrue("Username : " + name
 				+ " dind't appear in contact list",
 				PagesCollection.loginPage.isLoginFinished(name));
-		PagesCollection.peoplePickerPage = PagesCollection.loginPage.clickLaterButton();
+		PagesCollection.peoplePickerPage = PagesCollection.loginPage
+				.clickLaterButton();
 		if (null != PagesCollection.peoplePickerPage) {
 			PeoplePickerPageSteps steps = new PeoplePickerPageSteps();
 			steps.WhenISeePeoplePickerPage();
 			steps.IClickCloseButtonDismissPeopleView();
-			//workaround for black screen
+			// workaround for black screen
 			PagesCollection.peoplePickerPage.minimizeApplication(5);
 			if (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
 				steps.IClickCloseButtonDismissPeopleView();
@@ -75,12 +76,12 @@ public class ContactListPageSteps {
 		try {
 			page = PagesCollection.contactListPage.tapOnName(name);
 		} catch (org.openqa.selenium.TimeoutException ex) {
-			//workaround for black screen
+			// workaround for black screen
 			log.debug("Oh no! it is black screen issue!");
 			PagesCollection.contactListPage.minimizeApplication(5);
 			page = PagesCollection.contactListPage.tapOnName(name);
 		}
-		
+
 		if (page instanceof DialogPage) {
 			PagesCollection.dialogPage = (DialogPage) page;
 		}
@@ -143,7 +144,7 @@ public class ContactListPageSteps {
 		Assert.assertTrue(PagesCollection.contactListPage
 				.isChatInContactList(value));
 	}
-	
+
 	@When("^I create group chat with (.*) and (.*)$")
 	public void ICreateGroupChat(String contact1, String contact2)
 			throws Exception {
@@ -322,13 +323,50 @@ public class ContactListPageSteps {
 		Assert.assertFalse("Convesation with : " + name1 + ", " + name2 + ", "
 				+ name3 + ", " + " is in chat list", chatExists);
 	}
-	
+
 	@When("I dont see conversation (.*) in contact list")
 	public void IDoNotSeeConversationInContactList(String name)
 			throws Exception {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		Assert.assertFalse(PagesCollection.contactListPage
 				.isDisplayedInContactList(name));
+	}
+
+	/**
+	 * Conversation gets silenced by pressing the silence button
+	 * 
+	 * @step. ^I silence conversation (.*)$
+	 * 
+	 * @param conversation
+	 *            conversation name to silence
+	 * @throws Exception
+	 *             if conversation is not found
+	 * 
+	 */
+	@When("^I silence conversation (.*)$")
+	public void ISilenceConversation(String conversation) throws Exception {
+		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
+		PagesCollection.contactListPage.silenceConversation(conversation);
+	}
+
+	/**
+	 * Verifies, that the conversation is really silenced
+	 * 
+	 * @step. ^I see conversation (.*) is silenced$
+	 * 
+	 * @param conversation
+	 *            conversation name to silence
+	 * @throws Exception
+	 * 
+	 */
+	@Then("^I see conversation (.*) is silenced$")
+	public void ISeeConversationIsSilenced(String conversation)
+			throws Exception {
+		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
+		boolean isSilenced = PagesCollection.contactListPage
+				.isConversationSilenced(conversation);
+		Assert.assertTrue("Conversation is not silenced", isSilenced);
+
 	}
 
 }
