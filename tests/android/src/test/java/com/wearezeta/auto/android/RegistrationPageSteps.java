@@ -28,7 +28,7 @@ public class RegistrationPageSteps {
 	public void WhenIPressCameraButton() throws IOException,
 			InterruptedException {
 		PagesCollection.registrationPage.takePhoto();
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 		PagesCollection.registrationPage.takePhoto();
 	}
 

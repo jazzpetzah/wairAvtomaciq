@@ -3,7 +3,7 @@ package com.wearezeta.auto.osx.common;
 public class OSXConstants {
 	public static final class Scripts {
 		
-		public static final String SCRIPTS_FOLDER = "/scripts/";
+		private static final String SCRIPTS_FOLDER = "/scripts/";
 		
 		public static final String ACTIVATE_USER_SCRIPT = SCRIPTS_FOLDER + "activate_registered_user.txt";
 

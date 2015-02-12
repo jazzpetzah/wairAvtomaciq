@@ -36,6 +36,9 @@ public class LoginPage extends AndroidPage {
 	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idSignUpButton")
 	private WebElement signUpButton;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idForgotPass")
+	private WebElement forgotPasswordButton;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idLoginButton")
 	private WebElement confirmSignInButton;
@@ -105,6 +108,13 @@ public class LoginPage extends AndroidPage {
 		signInButton.click();
 		return this;
 	}
+	
+	public SettingsPage forgotPassword() throws Exception {
+		refreshUITree();
+		wait.until(ExpectedConditions.visibilityOf(forgotPasswordButton));
+		forgotPasswordButton.click();
+		return new SettingsPage(url, path);
+	}
 
 	public ContactListPage LogIn() throws Exception {
 		confirmSignInButton.click();
@@ -154,13 +164,19 @@ public class LoginPage extends AndroidPage {
 		return DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.LoginPage.idLoginProgressBar), 40);
 	}
 
-	public Boolean isLoginFinished(String contact) throws InterruptedException {
+	public Boolean isLoginFinished(String contact) throws NumberFormatException, Exception {
 		refreshUITree();
 		try{
 			wait.until(ExpectedConditions.visibilityOf(yourUser));
 		}
 		catch (Exception ex){
-			pickerClearBtn.click();
+			refreshUITree();
+			if(isVisible(pickerClearBtn)){
+				pickerClearBtn.click();
+			}
+			else{
+				navigateBack();
+			}
 			refreshUITree();
 		}
 

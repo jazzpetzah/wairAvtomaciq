@@ -2,6 +2,9 @@ package com.wearezeta.auto.web.pages;
 
 import java.util.List;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -10,8 +13,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
@@ -91,7 +96,7 @@ public class ConversationPage extends WebPage {
 		return new ParticipantsPopupPage(url, path);
 	}
 
-	public void sendPicture(String pictureName) {
+	public void sendPicture(String pictureName) throws Exception {
 		final String picturePath = WebCommonUtils
 				.getFullPicturePath(pictureName);
 		final String showPathInputJScript = "$('"
@@ -102,10 +107,30 @@ public class ConversationPage extends WebPage {
 				+ WebAppLocators.ConversationPage.cssSendImageInput
 				+ "').css({'left': '0'});";
 		driver.executeScript(showPathInputJScript);
-		if (DriverUtils.waitUntilElementVisible(driver, imagePathInput)) {
-			imagePathInput.sendKeys(picturePath);
+		if (WebCommonUtils.getWebAppBrowserNameFromConfig(
+				ConversationPage.class).equals(WebAppConstants.Browser.SAFARI)) {
+			// sendKeys() call to file input element does nothing on safari
+			// so instead of sendKeys() we are using AppleScript which chooses
+			// required image in open file dialog
+			imagePathInput.click();
+			String script = String
+					.format(CommonUtils
+							.readTextFileFromResources(WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT),
+							WebCommonUtils.getPicturesPath(), pictureName);
+			ScriptEngineManager mgr = new ScriptEngineManager();
+			ScriptEngine engine = mgr.getEngineByName("AppleScriptEngine");
+			if (engine != null) {
+				engine.eval(script);
+			} else {
+				throw new Exception("Failed to get script engine to execute AppleScript.");
+			}
 		} else {
-			throw new TimeoutException("Image input is still not visible after timeout");
+			if (DriverUtils.waitUntilElementVisible(driver, imagePathInput)) {
+				imagePathInput.sendKeys(picturePath);
+			} else {
+				throw new TimeoutException(
+						"Image input is still not visible after timeout");
+			}
 		}
 	}
 
@@ -117,7 +142,8 @@ public class ConversationPage extends WebPage {
 		final boolean isAnyPictureMsgFound = DriverUtils
 				.waitUntilElementAppears(
 						driver,
-						By.xpath(WebAppLocators.ConversationPage.xpathImageMessageEntry), 40);
+						By.xpath(WebAppLocators.ConversationPage.xpathImageMessageEntry),
+						40);
 		return isAnyPictureMsgFound && (imageMessageEntries.size() > 0);
 	}
 }
