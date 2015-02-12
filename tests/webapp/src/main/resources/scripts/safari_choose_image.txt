@@ -1,0 +1,18 @@
+tell application "System Events" to tell application process "Safari"
+	set frontmost to true
+end tell
+tell application "Safari"
+	set posixpath to "%s"
+	tell window 1
+		tell application "System Events"
+			keystroke "g" using {shift down, command down}
+			keystroke posixpath
+			delay 1
+			keystroke return
+			delay 1
+			keystroke "%s"
+			delay 1
+			keystroke return
+		end tell
+	end tell
+end tell
