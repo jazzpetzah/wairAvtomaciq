@@ -122,7 +122,7 @@ public class ConversationPage extends WebPage {
 			engine.eval(script);
 		} else {
 			if (DriverUtils.waitUntilElementVisible(driver, imagePathInput)) {
-				imagePathInput.sendKeys(picturePath + "\n");
+				imagePathInput.sendKeys(picturePath);
 			} else {
 				throw new TimeoutException(
 						"Image input is still not visible after timeout");
