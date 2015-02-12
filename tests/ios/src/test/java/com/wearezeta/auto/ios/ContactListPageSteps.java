@@ -368,5 +368,22 @@ public class ContactListPageSteps {
 		Assert.assertTrue("Conversation is not silenced", isSilenced);
 
 	}
+	
+	/**
+	 * Conversation gets archived by pressing the archive button
+	 * 
+	 * @step. ^I archive conversation (.*)$
+	 * 
+	 * @param conversation
+	 *            conversation name to archive
+	 * @throws Exception
+	 *             if conversation is not found
+	 * 
+	 */
+	@When("^I archive conversation (.*)$")
+	public void IArchiveConversation(String conversation) throws Exception{
+		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
+		PagesCollection.contactListPage.archiveConversation(conversation);
+	}
 
 }
