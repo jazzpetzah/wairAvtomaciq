@@ -189,6 +189,7 @@ public class ContactListPage extends AndroidPage {
 	public AndroidPage swipeDown(int time) throws Exception {
 		refreshUITree();
 		DriverUtils.swipeDown(driver, content, time);
+		Thread.sleep(2000);
 		if (!isVisible(pickerClearBtn) && !secondAttemptFlag) {
 			refreshUITree();
 			secondAttemptFlag = true;
