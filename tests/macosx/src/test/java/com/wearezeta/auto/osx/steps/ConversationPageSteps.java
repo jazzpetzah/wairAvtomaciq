@@ -194,6 +194,11 @@ public class ConversationPageSteps {
 			}
 		}
 
+		if (!isNumberIncreased) {
+			log.debug("New picture was not found. Check source: " + CommonOSXSteps.senderPages
+			.getConversationPage().getPageSource());
+		}
+		
 		Assert.assertTrue("Incorrect images count: before - "
 				+ beforeNumberOfImages + ", after - " + afterNumberOfImages,
 				isNumberIncreased);

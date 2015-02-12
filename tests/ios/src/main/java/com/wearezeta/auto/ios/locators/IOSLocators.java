@@ -30,6 +30,8 @@ public final class IOSLocators {
 	
 	public static final String xpathContactListNames = "//UIAApplication/UIAWindow/UIACollectionView/UIACollectionCell/UIAStaticText";
 	
+	public static final String xpathContactListCells = "//UIAApplication/UIAWindow/UIACollectionView/UIACollectionCell";
+	
 	public static final String nameProfileSettingsButton = "SettingsButton";
 
 	public static final String classNameUIAButton = "UIAButton";
