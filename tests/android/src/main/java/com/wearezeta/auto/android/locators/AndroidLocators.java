@@ -147,6 +147,10 @@ public final class AndroidLocators {
 		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME
 				+ "$ContactListPage";
 
+		
+		public static final String idOpenStartUIButton = LOCATORS_PACKAGE
+				+ ":id/gtv__conversation_list__sticky_menu__trigger_startui";
+		
 		public static final String xpathContactListNames42 = "//android.support.v4.view.ViewPager/android.widget.ListView/android.widget.FrameLayout/android.widget.TextView[4]";
 
 		public static final String xpathSelfUserName42 = "//android.support.v4.view.ViewPager/android.widget.ListView/android.widget.FrameLayout/android.widget.TextView[@visible='true'][1]";
@@ -179,6 +183,8 @@ public final class AndroidLocators {
 
 		public static final String idMutedIcon = LOCATORS_PACKAGE
 				+ ":id/tv_conv_list_voice_muted";
+		
+		public static final String xpathOpenStartUIButton42 = "//android.widget.LinearLayout/android.widget.LinearLayout/android.widget.TextView[following-sibling::android.widget.TextView]";
 
 		public static final String xpathYourName42 = "//android.widget.LinearLayout/android.widget.LinearLayout/android.widget.TextView[preceding-sibling::android.widget.TextView]";
 
