@@ -367,4 +367,9 @@ public class ContactListPage extends IOSPage {
 		}
 		return true;
 	}
+	
+	public void archiveConversation(String conversation) {
+		WebElement contact = findNameInContactList(conversation);
+		DriverUtils.clickArchiveConversationButton(driver, contact);
+	}
 }

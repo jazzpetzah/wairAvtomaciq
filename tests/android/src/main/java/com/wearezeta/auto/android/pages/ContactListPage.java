@@ -1,7 +1,5 @@
 package com.wearezeta.auto.android.pages;
 
-import io.appium.java_client.pagefactory.AndroidFindBy;
-
 import java.io.IOException;
 import java.util.*;
 
@@ -27,7 +25,7 @@ public class ContactListPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPeoplePickerClearbtn")
 	private WebElement pickerClearBtn;
 
-	@AndroidFindBy(className = AndroidLocators.CommonLocators.classNameLoginPage)
+	@FindBy(className = AndroidLocators.CommonLocators.classNameLoginPage)
 	private WebElement content;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idContactListNames")
@@ -42,6 +40,9 @@ public class ContactListPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idProfileOptionsButton")
 	private WebElement laterButton;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idOpenStartUIButton")
+	private WebElement openStartUIButton;
+	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idNameField")
 	private WebElement selfUserName;
 
@@ -186,12 +187,12 @@ public class ContactListPage extends AndroidPage {
 
 	@Override
 	public AndroidPage swipeDown(int time) throws Exception {
-
+		refreshUITree();
 		DriverUtils.swipeDown(driver, content, time);
-		Thread.sleep(1000);
 		if (!isVisible(pickerClearBtn) && !secondAttemptFlag) {
+			refreshUITree();
 			secondAttemptFlag = true;
-			DriverUtils.swipeDown(driver, content, time * 2);
+			openStartUIButton.click();
 		}
 		secondAttemptFlag = false;
 		return returnBySwipe(SwipeDirection.DOWN);
