@@ -361,7 +361,9 @@ public class ContactListPageSteps {
 	@Then("^I see conversation (.*) is silenced$")
 	public void ISeeConversationIsSilenced(String conversation) throws Exception{
 		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
-		PagesCollection.contactListPage.saveScreenshotToFile(conversation);
+		boolean isSilenced = PagesCollection.contactListPage.isConversationSilenced(conversation);
+		Assert.assertTrue("Conversation is not silenced", isSilenced);
+		
 	}
 
 }

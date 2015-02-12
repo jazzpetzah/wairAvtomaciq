@@ -15,6 +15,7 @@ import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
@@ -22,6 +23,7 @@ import com.wearezeta.auto.ios.locators.IOSLocators;
 public class ContactListPage extends IOSPage {
 	// private static final Logger log = ZetaLogger.getLog("iOS:" +
 	// ContactListPage.class.getSimpleName());
+	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.90;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathContactListNames)
 	private List<WebElement> contactListNames;
@@ -177,14 +179,12 @@ public class ContactListPage extends IOSPage {
 		WebElement contact = null;
 		for (int i = 0; i < 5; i++) {
 			for (WebElement listCell : contactListCells) {
-				//for (int j = 0; j <= contactListNames.size(); j++){
 					for (WebElement cellText : contactListNames){
 						if (cellText.getText().equals(name)) {
 							contact = listCell;
 							flag = false;
 							break;
 						}
-					//}
 				}
 			}
 			if (flag) {
@@ -354,12 +354,16 @@ public class ContactListPage extends IOSPage {
 		DriverUtils.clickSilenceConversationButton(driver, contact);
 	}
 	
-	public void saveScreenshotToFile(String conversation) throws IOException {
-		BufferedImage screenshot = null;
+	public boolean isConversationSilenced(String conversation) throws IOException{
+		BufferedImage silencedConversation = null;
 		WebElement element = findCellInContactList(conversation);
-		screenshot = CommonUtils.getElementScreenshot(element, driver);
-		File outputfile = new File("silencescreenshot2.png");
-		ImageIO.write(screenshot, "png", outputfile);
-   }
-
+		silencedConversation = CommonUtils.getElementScreenshot(element, driver);
+		BufferedImage referenceImage = ImageUtil.readImageFromFile(IOSPage
+				.getImagesPath() + "silenceVerification.png");
+		double score = ImageUtil.getOverlapScore(referenceImage, silencedConversation);
+		if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
+			return false;
+		}
+		return true;
+	}
 }
