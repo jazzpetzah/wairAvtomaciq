@@ -442,4 +442,15 @@ public class DriverUtils {
 		Point coords = element.getLocation();
 		driver.tap(1, coords.x - 70, coords.y, 1);
 	}
+	
+	/*
+	 * This is a work around for pressing the archive button. The ID is not
+	 * visible through Appium, thats why it is tapped by its location
+	 * coordinates.
+	 */
+	public static void clickArchiveConversationButton(AppiumDriver driver,
+			WebElement element) {
+		Point coords = element.getLocation();
+		driver.tap(1, coords.x - 126, coords.y, 1);
+	}
 }
