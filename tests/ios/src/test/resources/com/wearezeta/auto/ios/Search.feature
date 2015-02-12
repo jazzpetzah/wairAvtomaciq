@@ -123,7 +123,7 @@ Feature: Search
       | Login      | Password      | Name      | ConvoName    | UserCount | Contact   |
       | user1Email | user1Password | user1Name | TopGroupTest | 10        | user2Name |
 
-  @id1454 @staging
+  @id1454 @regression
   Scenario Outline: Verify sending a connection request to user chosen from search
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
@@ -141,7 +141,7 @@ Feature: Search
       | Login      | Password      | Name      | UnconnectedUserEmail | UnconnectedUser |
       | user1Email | user1Password | user1Name | user2Email           | user2Name       |
       
-  @staging @id763
+  @regression @id763
   Scenario Outline: I can still search for other people using the search field, regardless of whether I already added people from Top conversations
   	Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -163,7 +163,7 @@ Feature: Search
       | Login      | Password      | Name      | UserCount | Contact   | Number |
       | user1Email | user1Password | user1Name | 10        | user2Name |  4     |
       
-  @staging @id1456
+  @regression @id1456
   Scenario Outline: Verify you can unblock someone from search list
   	Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
