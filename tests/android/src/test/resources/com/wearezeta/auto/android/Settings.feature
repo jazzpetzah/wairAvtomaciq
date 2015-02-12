@@ -48,7 +48,7 @@ Feature: Settings
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id1402 @staging 
+  @id2020 @staging 
   Scenario Outline: Verify possibility of reseting password
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
