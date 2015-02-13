@@ -90,7 +90,7 @@ public abstract class IOSPage extends BasePage {
 		capabilities.setCapability("deviceName", deviceName);
 		capabilities.setCapability("platformVersion", "8.1");
 		capabilities.setCapability("processArguments",
-				"--args -TutorialOverlaysEnabled 0 -ZMBackendEnvironmentType "
+				"--args -TutorialOverlaysEnabled 0 -UseHockey 0 -ZMBackendEnvironmentType "
 						+ bt);
 		if (false == acceptAlerts) {
 			initWithoutAutoAccept();

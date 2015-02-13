@@ -111,13 +111,19 @@ public class LoginPage extends IOSPage {
 	}
 	
 	public PeoplePickerPage clickLaterButton() throws Exception {
-		if(DriverUtils.isElementDisplayed(shareButton)) {
+		if (DriverUtils.isElementDisplayed(shareButton)) {
 			shareButton.click();
 			return new PeoplePickerPage(url, path);
 		} else {
-			
+			// workaround for Sync Engine scenario
+			// on real iOS device when contacts are shared there is no
+			// Share Contacts dialog but people picker page appears, which we
+			// not process in case no Share Contacts dialog
+			if (!CommonUtils.getIsSimulatorFromConfig(LoginPage.class)) {
+				return new PeoplePickerPage(url, path);
+			}
 		}
-		
+
 		return null;
 	}
 	
@@ -132,8 +138,7 @@ public class LoginPage extends IOSPage {
 		
 		if (DriverUtils.waitUntilElementDissapear(driver, By.name(IOSLocators.nameLoginButton), 40)) {
 			return new ContactListPage(url, path);
-		}
-		else {
+		} else {
 			return null;
 		}
 	}

@@ -74,15 +74,15 @@ public final class WebAppLocators {
 
 	public static final class ConversationPage {
 
-		public static final String xpathTextMessageEntry = "//div[@class='message']/div[@class='text']";
+		public static final String xpathTextMessageEntry = "//div[contains(@class,'message')]/div[@class='text']";
 
-		public static final String xpathFormatSpecificTextMessageEntry = "//div[@class='message']/div[@class='text' and text()='%s']";
+		public static final String xpathFormatSpecificTextMessageEntry = "//div[contains(@class,'message')]/div[@class='text' and text()='%s']";
 
 		public static final String idConversationInput = "conversation-input-text";
 
 		public static final String classNameShowParticipantsButton = "show-participants";
 
-		public static final String xpathActionMessageEntry = "//div[@class='message']//div[@class='action' and contains(text(), '%s')]";
+		public static final String xpathActionMessageEntry = "//div[contains(@class,'special')]//div[@class='action' and contains(text(), '%s')]";
 
 		public static final String xpathSendImageLabel = "//label[contains(@class, 'zi') and contains(@class, 'upload-images')]";
 
@@ -93,7 +93,7 @@ public final class WebAppLocators {
 
 		public static final String cssSendImageInput = "input[type=\"file\"]";
 
-		public static final String xpathImageMessageEntry = "//div[@class='message']/div[@class='message-asset-image']";
+		public static final String xpathImageMessageEntry = "//div[@class='message-asset-image']";
 	}
 
 	public static final class ConnectToPage {

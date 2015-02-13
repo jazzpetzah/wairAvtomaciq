@@ -442,7 +442,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | Contact1  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @id1397 @regression
+  @id1397 @staging
   Scenario Outline: Verify you do not receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -450,11 +450,14 @@ Feature: Connect
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And User <Name> blocks user <Contact>
     And I input <Message> message and send it
+    And I wait for 5 seconds
+    And User <Name> blocks user <Contact>
+    And Contact <Contact> sends image <Picture> to single user conversation <Name>
     And Contact <Contact> send message to user <Name>
+    And Contact <Contact> ping conversation <Name>
     Then Last message is <Message>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Message |
-      | user1Email | user1Password | user1Name | user2Name | Hello!  |
+      | Login      | Password      | Name      | Contact   | Message          | Picture     |
+      | user1Email | user1Password | user1Name | user2Name | Hello my friend! | testing.jpg |

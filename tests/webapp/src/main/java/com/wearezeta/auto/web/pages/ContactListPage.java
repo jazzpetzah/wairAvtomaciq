@@ -98,10 +98,10 @@ public class ContactListPage extends WebPage {
 
 		WebElement contact = getContactWithName(conversationName);
 
-		wait.until(ExpectedConditions.elementToBeClickable(By
-				.className(WebAppLocators.ContactListPage.classArchiveButton)));
 		WebElement archiveButton = contact.findElement(By
 				.className(WebAppLocators.ContactListPage.classArchiveButton));
+		DriverUtils.waitUntilElementClickable(driver, archiveButton);
+
 		archiveButton.click();
 	}
 

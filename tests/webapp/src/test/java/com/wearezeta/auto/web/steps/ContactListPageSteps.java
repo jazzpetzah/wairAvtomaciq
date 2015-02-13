@@ -58,7 +58,7 @@ public class ContactListPageSteps {
 					.equals(name));
 		} else {
 			boolean result = false;
-			for (int i = 0; i < 20; i++) {
+			for (int i = 0; i < 5; i++) {
 				result = PagesCollection.contactListPage
 						.isContactWithNameExists(name);
 				if (result)

@@ -22,6 +22,12 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class ContactListPage extends AndroidPage {
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPeoplePickerClearbtn")
+	private WebElement pickerClearBtn;
+
+	@FindBy(className = AndroidLocators.CommonLocators.classNameLoginPage)
+	private WebElement content;
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idContactListNames")
 	private List<WebElement> contactListNames;
 
@@ -34,6 +40,9 @@ public class ContactListPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idProfileOptionsButton")
 	private WebElement laterButton;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idOpenStartUIButton")
+	private WebElement openStartUIButton;
+	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idNameField")
 	private WebElement selfUserName;
 
@@ -77,13 +86,13 @@ public class ContactListPage extends AndroidPage {
 		refreshUITree();
 		page = getPages();
 		// workaround for incorrect tap
-		if(page == null){
+		if (page == null) {
 			el = findInContactList(name, 1);
 			if (el != null && DriverUtils.isElementDisplayed(el)) {
 				this.restoreApplication();
 				el.click();
 				log.debug("tap on contact for the second time");
-			}	
+			}
 		}
 		return page;
 	}
@@ -148,7 +157,7 @@ public class ContactListPage extends AndroidPage {
 		refreshUITree();
 		if (!isVisible(cursorInput)) {
 			page = new ContactListPage(url, path);
-		} else if (isVisible(cursorInput)){
+		} else if (isVisible(cursorInput)) {
 			page = new DialogPage(url, path);
 		}
 		return page;
@@ -173,6 +182,23 @@ public class ContactListPage extends AndroidPage {
 
 	public void closeHint() {
 		closeHintBtn.click();
+	}
+
+	@Override
+	public AndroidPage swipeDown(int time) throws Exception {
+		refreshUITree();
+		DriverUtils.swipeDown(driver, content, time);
+		Thread.sleep(2000);
+		if (!isVisible(pickerClearBtn) && isVisible(openStartUIButton)) {
+			refreshUITree();
+			try{
+				openStartUIButton.click();
+			}
+			catch(NoSuchElementException ex){
+				
+			}
+		}
+		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
 	@Override
@@ -227,8 +253,8 @@ public class ContactListPage extends AndroidPage {
 	public Boolean isContactExists(String name) throws Exception {
 		return findInContactList(name, 0) != null;
 	}
-	
-	private AndroidPage getPages() throws Exception{
+
+	private AndroidPage getPages() throws Exception {
 		AndroidPage page = null;
 		if (isVisible(connectToHeader)) {
 			page = new ConnectToPage(url, path);
@@ -237,7 +263,7 @@ public class ContactListPage extends AndroidPage {
 		} else if (isVisible(cursorInput)) {
 			page = new DialogPage(url, path);
 		}
-		
+
 		return page;
 	}
 }

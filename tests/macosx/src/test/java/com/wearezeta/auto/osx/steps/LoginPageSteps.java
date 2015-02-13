@@ -85,8 +85,6 @@ public class LoginPageSteps {
 	 * Clicks on Sign In button on Welcome screen and opens Sign In screen
 	 * 
 	 * @step. I start Sign In
-	 * 
-	 * @throws Exception
 	 */
 	@When("I start Sign In")
 	public void WhenIStartSignIn() {
