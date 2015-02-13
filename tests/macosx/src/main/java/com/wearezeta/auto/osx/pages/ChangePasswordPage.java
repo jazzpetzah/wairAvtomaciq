@@ -47,8 +47,7 @@ public class ChangePasswordPage extends OSXPage {
 				.waitUntilElementAppears(
 						driver,
 						By.xpath(OSXLocators.ChangePasswordPage.xpathPasswordChangedMessage),
-						5);
-
+						10);
 		quitSafariButton.click();
 
 		driver.navigate().to(
