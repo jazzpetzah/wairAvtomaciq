@@ -80,7 +80,10 @@ public class DriverUtils {
 				}
 			});
 		} catch (Exception ex) {
-			// do nothing
+			//debug output for WebApp sign in issue
+			if (driver instanceof ZetaWebAppDriver) {
+				log.debug(ex.getMessage());
+			}
 		} finally {
 			setDefaultImplicitWait(driver);
 		}
@@ -137,6 +140,38 @@ public class DriverUtils {
 			bool = true;
 		} catch (Exception ex) {
 			bool = false;
+		} finally {
+			setDefaultImplicitWait(driver);
+		}
+		return bool;
+	}
+	
+	public static boolean waitUntilWebPageLoaded(RemoteWebDriver driver) {
+		return waitUntilWebPageLoaded(driver, 20);
+	}
+
+	public static boolean waitUntilWebPageLoaded(RemoteWebDriver driver,
+			int timeout) {
+		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+		Boolean bool = false;
+		try {
+			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+					.withTimeout(timeout, TimeUnit.SECONDS)
+					.pollingEvery(1, TimeUnit.SECONDS)
+					.ignoring(NoSuchElementException.class);
+
+			bool = wait.until(new Function<WebDriver, Boolean>() {
+				@Override
+				public Boolean apply(WebDriver t) {
+					return String
+							.valueOf(
+									((JavascriptExecutor) driver)
+											.executeScript("return document.readyState"))
+							.equals("complete");
+				}
+			});
+		} catch (Exception ex) {
+			// do nothing
 		} finally {
 			setDefaultImplicitWait(driver);
 		}

@@ -14,6 +14,7 @@ import com.wearezeta.auto.web.pages.WebPage;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.When;
 
 public class CommonWebAppSteps {
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
@@ -160,6 +161,21 @@ public class CommonWebAppSteps {
 		query = usrMgr.findUserByNameOrNameAlias(query).getName();
 		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query,
 				timeout);
+	}
+	
+	/**
+	 * Wait for specified amount of seconds 
+	 * 
+	 * @step. ^I wait for (.*) seconds$
+	 * 
+	 * @param seconds
+	 * @throws NumberFormatException
+	 * @throws InterruptedException
+	 */
+	@When("^I wait for (.*) seconds$")
+	public void WaitForTime(String seconds) throws NumberFormatException,
+			InterruptedException {
+		commonSteps.WaitForTime(seconds);
 	}
 
 	@After

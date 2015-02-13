@@ -53,7 +53,7 @@ public class DialogPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathYouPinged)
 	private WebElement youPinged;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathOpenConversationDetails)
+	@FindBy(how = How.NAME, using = IOSLocators.nameOpenConversationDetails)
 	protected WebElement openConversationDetails;
 
 	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameDialogMessages)
