@@ -80,7 +80,10 @@ public class DriverUtils {
 				}
 			});
 		} catch (Exception ex) {
-			// do nothing
+			//debug output for WebApp sign in issue
+			if (driver instanceof ZetaWebAppDriver) {
+				log.debug(ex.getMessage());
+			}
 		} finally {
 			setDefaultImplicitWait(driver);
 		}
