@@ -37,7 +37,7 @@ public class PersonalInfoPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathPersonalInfoPage)
 	private WebElement personalPage;
 	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathPictureButton)
+	@FindBy(how = How.NAME, using = IOSLocators.namePictureButton)
 	private WebElement pictureButton;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathProfileNameEditField)

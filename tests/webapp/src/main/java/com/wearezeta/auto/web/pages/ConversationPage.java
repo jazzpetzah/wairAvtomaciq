@@ -22,7 +22,6 @@ import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class ConversationPage extends WebPage {
 
-	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(ConversationPage.class
 			.getSimpleName());
 
@@ -118,8 +117,13 @@ public class ConversationPage extends WebPage {
 							.readTextFileFromResources(WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT),
 							WebCommonUtils.getPicturesPath(), pictureName);
 			ScriptEngineManager mgr = new ScriptEngineManager();
-			ScriptEngine engine = mgr.getEngineByName("AppleScript");
-			engine.eval(script);
+			ScriptEngine engine = mgr.getEngineByName("AppleScriptEngine");
+			if (engine != null) {
+				engine.eval(script);
+			} else {
+				log.debug("No script engine factory for AppleScript. Existing script engine factories: " + mgr.getEngineFactories());
+				throw new Exception("Failed to get script engine to execute AppleScript.");
+			}
 		} else {
 			if (DriverUtils.waitUntilElementVisible(driver, imagePathInput)) {
 				imagePathInput.sendKeys(picturePath);
