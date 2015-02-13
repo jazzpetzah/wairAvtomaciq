@@ -566,4 +566,9 @@ public class DialogPageSteps {
 		CommonSteps.getInstance().UserSentMessageToUser(msgFromUserNameAlias, dstUserNameAlias, message);
 	}
 	
+	@When("^I scroll to the end of the conversation$")
+	public void IScrollToTheEndOfTheConversation(){
+
+	}
+	
 }

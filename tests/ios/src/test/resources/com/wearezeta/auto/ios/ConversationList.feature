@@ -63,3 +63,24 @@ Feature: Conversation List
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+      
+  @torun @staging @id1075
+  Scenario Outline: Verify messages are marked as read with disappearing unread dot
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Contact> change  name to <NewName>
+    Given User <Name> change  accent color to <Color>
+    Given Contact <Contact> send number <Number> of message to user <Name>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    And I see unread messages dot
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I scroll to the end of the conversation
+    And I swipe right on Dialog page
+    Then I dont see an unread message dot
+    
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Number | NewName    | Color        |
+      | user1Email | user1Password | user1Name | user2Name | 20		| UNREAD DOT | BrightOrange |
+  

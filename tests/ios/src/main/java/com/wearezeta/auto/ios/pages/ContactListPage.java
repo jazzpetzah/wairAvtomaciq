@@ -372,4 +372,11 @@ public class ContactListPage extends IOSPage {
 		WebElement contact = findNameInContactList(conversation);
 		DriverUtils.clickArchiveConversationButton(driver, contact);
 	}
+	
+	public void unreadDotIsVisible() throws IOException{
+		BufferedImage screenshot = null;
+		screenshot = getScreenshotByCoordinates(0, 200, 180, 75);
+		File outputfile = new File("unreadDot.png");
+		ImageIO.write(screenshot, "png", outputfile);
+	}
 }

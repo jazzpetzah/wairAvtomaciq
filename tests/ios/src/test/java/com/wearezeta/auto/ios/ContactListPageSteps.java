@@ -385,5 +385,29 @@ public class ContactListPageSteps {
 		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
 		PagesCollection.contactListPage.archiveConversation(conversation);
 	}
+	
+	/**
+	 * Verifies that an unread message dot is in the conversation list
+	 * 
+	 * @step. ^I see unread messages dot$
+	 * 
+	 * @throws IOException 
+	 * 
+	 */
+	@When("^I see unread messages dot$")
+	public void ISeeUnreadMessagesDot() throws IOException{
+		PagesCollection.contactListPage.unreadDotIsVisible();
+	}
+	
+	/**
+	 * Verifies that an unread message dot is NOT seen in the conversation list
+	 * 
+	 * @step. ^I dont see an unread messages dot$
+	 * 
+	 */
+	@Then("^I dont see an unread message dot$")
+	public void IDontSeeAnUnreadMessageDot(){
+
+	}
 
 }
