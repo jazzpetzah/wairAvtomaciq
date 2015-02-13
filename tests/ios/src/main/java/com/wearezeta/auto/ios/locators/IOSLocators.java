@@ -430,7 +430,7 @@ public final class IOSLocators {
 	public static final String classNameKeyboard = "UIAKeyboard";
 	
 	public static final String nameKeyboardDeleteButton = "Delete";
-	public static final String nameKeyboardReturnButton = "Return";
+	public static final String nameKeyboardReturnButton = "Send";
 	
 	////////////////
 	//Tutorial
