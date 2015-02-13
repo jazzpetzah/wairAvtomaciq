@@ -337,6 +337,17 @@ public class RegistrationPageSteps {
 	public void NaviateFromPassScreenToWelcomeScreen() {
 		PagesCollection.registrationPage.navigateToWelcomePage();
 	}
+	
+	/**
+	 * Navigates from any page in the registration process, back to the welcome
+	 * page
+	 * 
+	 * @step. I navigate back to welcome page
+	 */
+	@When("^I navigate back to welcome page")
+	public void INavigateToWelcomePage() {
+		PagesCollection.registrationPage.navigateToWelcomePage();
+	}
 
 	@When("I input user data")
 	public void IInputUserData() {
@@ -438,6 +449,18 @@ public class RegistrationPageSteps {
 		Assert.assertTrue(
 				"Images look same. Expected score <= 0.25, current = " + score,
 				score <= 0.25d);
+	}
+
+	/**
+	 * Verifies that the email verification reminder on the login page is
+	 * displayed
+	 * 
+	 * @step. I see email verification reminder
+	 */
+	@Then("^I see email verification reminder$")
+	public void ISeeEmailVerificationReminder() {
+		Assert.assertTrue(PagesCollection.registrationPage
+				.isEmailVerifPromptVisible());
 	}
 
 }
