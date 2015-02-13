@@ -142,6 +142,38 @@ public class DriverUtils {
 		}
 		return bool;
 	}
+	
+	public static boolean waitUntilWebPageLoaded(RemoteWebDriver driver) {
+		return waitUntilWebPageLoaded(driver, 20);
+	}
+
+	public static boolean waitUntilWebPageLoaded(RemoteWebDriver driver,
+			int timeout) {
+		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+		Boolean bool = false;
+		try {
+			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+					.withTimeout(timeout, TimeUnit.SECONDS)
+					.pollingEvery(1, TimeUnit.SECONDS)
+					.ignoring(NoSuchElementException.class);
+
+			bool = wait.until(new Function<WebDriver, Boolean>() {
+				@Override
+				public Boolean apply(WebDriver t) {
+					return String
+							.valueOf(
+									((JavascriptExecutor) driver)
+											.executeScript("return document.readyState"))
+							.equals("complete");
+				}
+			});
+		} catch (Exception ex) {
+			// do nothing
+		} finally {
+			setDefaultImplicitWait(driver);
+		}
+		return bool;
+	}
 
 	public static boolean waitUntilElementVisible(RemoteWebDriver driver,
 			final WebElement element) {
