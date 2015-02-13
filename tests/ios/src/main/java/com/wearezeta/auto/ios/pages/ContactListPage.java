@@ -375,12 +375,6 @@ public class ContactListPage extends IOSPage {
 	}
 	
 	public boolean unreadDotIsVisible() throws IOException{
-//		BufferedImage screenshot = null;
-//		screenshot = getScreenshotByCoordinates(0, 200, 180, 75);
-//		File outputfile = new File("unreadDot.png");
-//		ImageIO.write(screenshot, "png", outputfile);
-//		return true;
-		
 		BufferedImage unreadDot = null;
 		unreadDot = getScreenshotByCoordinates(0, 200, 180, 75);
 		BufferedImage referenceImage = ImageUtil.readImageFromFile(IOSPage
@@ -392,12 +386,8 @@ public class ContactListPage extends IOSPage {
 		}
 		return true;
 	}
+	
 	public boolean unreadDotIsNotVisible() throws IOException{
-//		BufferedImage screenshot = null;
-//		screenshot = getScreenshotByCoordinates(0, 200, 180, 75);
-//		File outputfile = new File("noUnreadDot.png");
-//		ImageIO.write(screenshot, "png", outputfile);
-		
 		BufferedImage noUnreadDot = null;
 		noUnreadDot = getScreenshotByCoordinates(0, 200, 180, 75);
 		BufferedImage referenceImage = ImageUtil.readImageFromFile(IOSPage
