@@ -100,4 +100,17 @@ public class SelfProfilePageSteps {
 		String actualEmail = PagesCollection.selfProfilePage.getUserMail();
 		Assert.assertEquals(email, actualEmail);
 	}
+
+	/**
+	 * Set new username on self profile page
+	 * 
+	 * @step. I change username to (.*)
+	 * 
+	 * @param name
+	 *            new username string
+	 */
+	@And("I change username to (.*)")
+	public void IChangeUserNameTo(String name) {
+		PagesCollection.selfProfilePage.setUserName(name);
+	}
 }
