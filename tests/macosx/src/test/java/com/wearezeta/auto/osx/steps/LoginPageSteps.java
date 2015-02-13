@@ -11,11 +11,13 @@ import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.pages.ChangePasswordPage;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.LoginPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
 import com.wearezeta.auto.osx.pages.RegistrationPage;
+import com.wearezeta.auto.osx.pages.UserProfilePage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -79,6 +81,12 @@ public class LoginPageSteps {
 								.getOsxAppiumUrlFromConfig(ContactListPage.class),
 						CommonUtils
 								.getOsxApplicationPathFromConfig(ContactListPage.class)));
+		CommonOSXSteps.senderPages
+				.setUserProfilePage(new UserProfilePage(
+						OSXCommonUtils
+								.getOsxAppiumUrlFromConfig(LoginPageSteps.class),
+						OSXCommonUtils
+								.getOsxApplicationPathFromConfig(LoginPageSteps.class)));
 	}
 
 	/**
@@ -109,6 +117,12 @@ public class LoginPageSteps {
 			CommonOSXSteps.senderPages
 					.setContactListPage((ContactListPage) page);
 		}
+		CommonOSXSteps.senderPages
+				.setUserProfilePage(new UserProfilePage(
+						OSXCommonUtils
+								.getOsxAppiumUrlFromConfig(LoginPageSteps.class),
+						OSXCommonUtils
+								.getOsxApplicationPathFromConfig(LoginPageSteps.class)));
 	}
 
 	/**

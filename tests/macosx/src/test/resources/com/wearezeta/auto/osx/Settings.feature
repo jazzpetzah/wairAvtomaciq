@@ -16,7 +16,7 @@ Feature: Settings
     And I have entered login <Email>
     And I have entered password <NewPassword>
     And I press Sign In button
-    Then I see my name <Name> in Contact list
+    Then I see name <Name> in User profile
 
     Examples: 
       | Email      | Password      | Name      | NewPassword |
