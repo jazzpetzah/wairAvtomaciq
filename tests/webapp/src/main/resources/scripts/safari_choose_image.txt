@@ -9,9 +9,9 @@ tell application "Safari"
 			keystroke posixpath
 			delay 1
 			keystroke return
-			delay 1
+			delay 3
 			keystroke "%s"
-			delay 1
+			delay 3
 			keystroke return
 		end tell
 	end tell
