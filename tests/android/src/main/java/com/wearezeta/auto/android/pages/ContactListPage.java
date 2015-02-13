@@ -67,7 +67,6 @@ public class ContactListPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idSearchHintClose")
 	private WebElement closeHintBtn;
 
-	private Boolean secondAttemptFlag = false;
 	private String url;
 	private String path;
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
@@ -190,12 +189,15 @@ public class ContactListPage extends AndroidPage {
 		refreshUITree();
 		DriverUtils.swipeDown(driver, content, time);
 		Thread.sleep(2000);
-		if (!isVisible(pickerClearBtn) && !secondAttemptFlag && isVisible(openStartUIButton)) {
+		if (!isVisible(pickerClearBtn) && isVisible(openStartUIButton)) {
 			refreshUITree();
-			secondAttemptFlag = true;
-			openStartUIButton.click();
+			try{
+				openStartUIButton.click();
+			}
+			catch(NoSuchElementException ex){
+				
+			}
 		}
-		secondAttemptFlag = false;
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
