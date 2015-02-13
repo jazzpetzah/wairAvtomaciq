@@ -51,6 +51,7 @@ Feature: People View
     And I see User Profile Popup Page
     When I click leave group chat
     And I confirm leave group chat
+    And I wait for 2 seconds
     Then I do not see Contact list with name <ChatName>
     When I open archive
     And I open conversation with <ChatName>
