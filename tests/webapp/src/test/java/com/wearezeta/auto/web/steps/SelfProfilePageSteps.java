@@ -112,5 +112,6 @@ public class SelfProfilePageSteps {
 	@And("I change username to (.*)")
 	public void IChangeUserNameTo(String name) {
 		PagesCollection.selfProfilePage.setUserName(name);
+		usrMgr.getSelfUser().setName(name);
 	}
 }
