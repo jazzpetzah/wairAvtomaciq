@@ -76,8 +76,8 @@ public class WebPage extends BasePage {
 			// After beta code is applied we should wait till sign in page
 			// pointed to production backend will be loaded before loading
 			// staging page
-			DriverUtils.waitUntilWebPageLoaded(driver, 30);
-
+			Thread.sleep(5000);
+			
 			driver.navigate().to(path);
 		}
 	}
