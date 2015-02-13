@@ -37,6 +37,9 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.ConversationPage.classNameShowParticipantsButton)
 	private WebElement showParticipants;
 
+	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathSendImageLabel)
+	private WebElement sendImageLabel;
+
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathSendImageInput)
 	private WebElement imagePathInput;
 
@@ -96,22 +99,12 @@ public class ConversationPage extends WebPage {
 	}
 
 	public void sendPicture(String pictureName) throws Exception {
-		final String picturePath = WebCommonUtils
-				.getFullPicturePath(pictureName);
-		final String showPathInputJScript = "$('"
-				+ WebAppLocators.ConversationPage.cssSendImageLabel
-				+ "').css({'opacity': '100'});" + "\n" + "$('"
-				+ WebAppLocators.ConversationPage.cssSendImageLabel
-				+ "').find('"
-				+ WebAppLocators.ConversationPage.cssSendImageInput
-				+ "').css({'left': '0'});";
-		driver.executeScript(showPathInputJScript);
 		if (WebCommonUtils.getWebAppBrowserNameFromConfig(
 				ConversationPage.class).equals(WebAppConstants.Browser.SAFARI)) {
 			// sendKeys() call to file input element does nothing on safari
 			// so instead of sendKeys() we are using AppleScript which chooses
 			// required image in open file dialog
-			imagePathInput.click();
+			sendImageLabel.click();
 			String script = String
 					.format(CommonUtils
 							.readTextFileFromResources(WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT),
@@ -121,10 +114,22 @@ public class ConversationPage extends WebPage {
 			if (engine != null) {
 				engine.eval(script);
 			} else {
-				log.debug("No script engine factory for AppleScript. Existing script engine factories: " + mgr.getEngineFactories());
-				throw new Exception("Failed to get script engine to execute AppleScript.");
+				log.debug("No script engine factory for AppleScript. Existing script engine factories: "
+						+ mgr.getEngineFactories());
+				throw new Exception(
+						"Failed to get script engine to execute AppleScript.");
 			}
 		} else {
+			final String picturePath = WebCommonUtils
+					.getFullPicturePath(pictureName);
+			final String showPathInputJScript = "$('"
+					+ WebAppLocators.ConversationPage.cssSendImageLabel
+					+ "').css({'opacity': '100'});" + "\n" + "$('"
+					+ WebAppLocators.ConversationPage.cssSendImageLabel
+					+ "').find('"
+					+ WebAppLocators.ConversationPage.cssSendImageInput
+					+ "').css({'left': '0'});";
+			driver.executeScript(showPathInputJScript);
 			if (DriverUtils.waitUntilElementVisible(driver, imagePathInput)) {
 				imagePathInput.sendKeys(picturePath);
 			} else {
