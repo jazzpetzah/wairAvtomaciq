@@ -112,6 +112,7 @@ public class ConversationPage extends WebPage {
 			// so instead of sendKeys() we are using AppleScript which chooses
 			// required image in open file dialog
 			imagePathInput.click();
+			imagePathInput.click();
 			String script = String
 					.format(CommonUtils
 							.readTextFileFromResources(WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT),
