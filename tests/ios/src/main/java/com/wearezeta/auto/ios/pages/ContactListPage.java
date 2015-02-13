@@ -24,6 +24,7 @@ public class ContactListPage extends IOSPage {
 	// private static final Logger log = ZetaLogger.getLog("iOS:" +
 	// ContactListPage.class.getSimpleName());
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.90;
+	private final double MIN_ACCEPTABLE_IMAGE_UNREADDOT_VALUE = 0.99;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathContactListNames)
 	private List<WebElement> contactListNames;
@@ -373,10 +374,39 @@ public class ContactListPage extends IOSPage {
 		DriverUtils.clickArchiveConversationButton(driver, contact);
 	}
 	
-	public void unreadDotIsVisible() throws IOException{
-		BufferedImage screenshot = null;
-		screenshot = getScreenshotByCoordinates(0, 200, 180, 75);
-		File outputfile = new File("unreadDot.png");
-		ImageIO.write(screenshot, "png", outputfile);
+	public boolean unreadDotIsVisible() throws IOException{
+//		BufferedImage screenshot = null;
+//		screenshot = getScreenshotByCoordinates(0, 200, 180, 75);
+//		File outputfile = new File("unreadDot.png");
+//		ImageIO.write(screenshot, "png", outputfile);
+//		return true;
+		
+		BufferedImage unreadDot = null;
+		unreadDot = getScreenshotByCoordinates(0, 200, 180, 75);
+		BufferedImage referenceImage = ImageUtil.readImageFromFile(IOSPage
+				.getImagesPath() + "unreadDot.png");
+		double score = ImageUtil.getOverlapScore(referenceImage,
+				unreadDot);
+		if (score <= MIN_ACCEPTABLE_IMAGE_UNREADDOT_VALUE) {
+			return false;
+		}
+		return true;
+	}
+	public boolean unreadDotIsNotVisible() throws IOException{
+//		BufferedImage screenshot = null;
+//		screenshot = getScreenshotByCoordinates(0, 200, 180, 75);
+//		File outputfile = new File("noUnreadDot.png");
+//		ImageIO.write(screenshot, "png", outputfile);
+		
+		BufferedImage noUnreadDot = null;
+		noUnreadDot = getScreenshotByCoordinates(0, 200, 180, 75);
+		BufferedImage referenceImage = ImageUtil.readImageFromFile(IOSPage
+				.getImagesPath() + "noUnreadDot.png");
+		double score = ImageUtil.getOverlapScore(referenceImage,
+				noUnreadDot);
+		if (score <= MIN_ACCEPTABLE_IMAGE_UNREADDOT_VALUE) {
+			return false;
+		}
+		return true;
 	}
 }

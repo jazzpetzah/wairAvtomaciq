@@ -568,7 +568,7 @@ public class DialogPageSteps {
 	
 	@When("^I scroll to the end of the conversation$")
 	public void IScrollToTheEndOfTheConversation(){
-
+		PagesCollection.dialogPage.scrollToEndOfConversation();
 	}
 	
 }

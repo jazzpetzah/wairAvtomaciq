@@ -396,7 +396,8 @@ public class ContactListPageSteps {
 	 */
 	@When("^I see unread messages dot$")
 	public void ISeeUnreadMessagesDot() throws IOException{
-		PagesCollection.contactListPage.unreadDotIsVisible();
+		boolean unreadDotSeen = PagesCollection.contactListPage.unreadDotIsVisible();
+		Assert.assertTrue("No unread dot visible.", unreadDotSeen);
 	}
 	
 	/**
@@ -404,9 +405,13 @@ public class ContactListPageSteps {
 	 * 
 	 * @step. ^I dont see an unread messages dot$
 	 * 
+	 * @throws IOException 
+	 * 
 	 */
 	@Then("^I dont see an unread message dot$")
-	public void IDontSeeAnUnreadMessageDot(){
+	public void IDontSeeAnUnreadMessageDot() throws IOException{
+		boolean noUnreadDotSeen = PagesCollection.contactListPage.unreadDotIsNotVisible();
+		Assert.assertTrue("No unread dot visible.", noUnreadDotSeen);
 
 	}
 

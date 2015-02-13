@@ -82,5 +82,5 @@ Feature: Conversation List
     
     Examples: 
       | Login      | Password      | Name      | Contact   | Number | NewName    | Color        |
-      | user1Email | user1Password | user1Name | user2Name | 20		| UNREAD DOT | BrightOrange |
+      | user1Email | user1Password | user1Name | user2Name | 30		| UNREAD DOT | BrightOrange |
   
