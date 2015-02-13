@@ -66,6 +66,8 @@ public final class WebAppLocators {
 				name);
 
 		public static final String xpathSelfUserName = "//input-element[@class='self-profile-name']/span";
+		
+		public static final String xpathSelfUserNameInput = "//input-element[@class='self-profile-name']/textarea";
 
 		public static final String classNameSelfUserMail = "self-profile-mail";
 	}
