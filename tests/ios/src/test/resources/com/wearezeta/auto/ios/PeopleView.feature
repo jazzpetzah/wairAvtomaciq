@@ -94,7 +94,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1    | Contact2   |
       | user1Email | user1Password | user1Name | user2Name   | user3Name  |
 
-  @regression @id1396
+  @staging @id1396
   Scenario Outline: Verify correct group info page information
     Given There are 3 users where <Name> is me
     Given User <Contact1> change avatar picture to <Picture>
