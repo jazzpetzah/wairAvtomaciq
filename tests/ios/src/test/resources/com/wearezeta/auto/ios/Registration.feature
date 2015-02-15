@@ -352,3 +352,25 @@ Feature: Registration
     Examples: 
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
+
+  @staging @id798 @deployPictures
+  Scenario Outline: Email verification reminder is displayed when attempt is made to sign in with unverified email
+    Given I see sign in screen
+    When I press Join button
+    And I press Picture button
+    And I choose a picture from camera roll
+    And I See selected picture
+    And I confirm selection
+    And I input name <Name> and hit Enter
+    And I input email <Email> and hit Enter
+    And I enter password <Password>
+    And I click Create Account Button
+    And I see confirmation page
+    And I navigate back to welcome page
+    And I press Sign in button
+    And I fill in email input <Email>
+    Then I see email verification reminder
+    
+     Examples: 
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
