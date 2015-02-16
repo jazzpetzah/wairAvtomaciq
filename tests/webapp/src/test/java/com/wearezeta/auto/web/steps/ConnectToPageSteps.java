@@ -18,6 +18,6 @@ public class ConnectToPageSteps {
 	 */
 	@When("^I click Connect button on Connect to popup$")
 	public void IAcceptConnectionRequestFromUser() {
-		PagesCollection.connectToPopup.clickConnectButton();
+		PagesCollection.connectToPopupPage.clickConnectButton();
 	}
 }
