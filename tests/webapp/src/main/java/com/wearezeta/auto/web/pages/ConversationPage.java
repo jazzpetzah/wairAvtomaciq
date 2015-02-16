@@ -112,7 +112,13 @@ public class ConversationPage extends WebPage {
 			// sendKeys() call to file input element does nothing on safari
 			// so instead of sendKeys() we are using AppleScript which chooses
 			// required image in open file dialog
-			sendImageLabel.click();
+			final String showPathInputJScript = "$('"
+					+ WebAppLocators.ConversationPage.cssSendImageLabel
+					+ "').find('"
+					+ WebAppLocators.ConversationPage.cssSendImageInput
+					+ "').css({'left': '0'});";
+			driver.executeScript(showPathInputJScript);
+			imagePathInput.click();
 			String script = String
 					.format(CommonUtils
 							.readTextFileFromResources(WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT),
