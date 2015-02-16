@@ -141,7 +141,7 @@ Feature: Search
       | Login      | Password      | Name      | UnconnectedUserEmail | UnconnectedUser |
       | user1Email | user1Password | user1Name | user2Email           | user2Name       |
       
-  @regression @id763
+  @staging @id763
   Scenario Outline: I can still search for other people using the search field, regardless of whether I already added people from Top conversations
   	Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
