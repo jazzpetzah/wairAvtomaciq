@@ -31,7 +31,6 @@ androidApplicationPath=${androidApplicationPath}
 package=${package}
 activity=${activity}
 resultImage=${resultImage}
-defaultImagePath=${Root}/${defaultImagePath}
 defaultImagesPath=${Root}/${defaultImagesPath}
 androidClientInfoPath=${androidClientInfoPath}
 androidAppiumLogPath=${androidAppiumLogPath}

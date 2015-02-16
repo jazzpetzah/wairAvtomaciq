@@ -39,7 +39,6 @@
 		<activity>com.waz.zclient.MainActivity</activity>
 		<androidVersion>44</androidVersion>
 		<resultImage>$CUCUMBER_REPORTS/Images</resultImage>
-		<defaultImagePath>img/</defaultImagePath>
 		<defaultImagesPath>img/</defaultImagesPath>
 		<ios.client.enabled>true</ios.client.enabled>
 		<ios.backend.sender>false</ios.backend.sender>
