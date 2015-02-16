@@ -39,17 +39,15 @@ public class PerformanceSteps {
 			perfCommon
 					.sendDefaultImageToUser(PerformanceCommon.BACK_END_MESSAGE_COUNT / 5);
 
-			// Send message to random visible chat
+			// Send messages in response to a random visible chat
 			for (int i = 0; i < PerformanceCommon.SEND_MESSAGE_NUM; i++) {
-				// --Get list of visible dialogs, remove self user name from
-				// this list
+				// Get list of visible dialogs, remove self user name from this list
 				Assert.assertTrue("Contact list didn't load",
 						PagesCollection.contactListPage
 								.waitForContactListToLoad());
 				ArrayList<WebElement> visibleContactsList = new ArrayList<WebElement>(
 						PagesCollection.contactListPage.GetVisibleContacts());
 				visibleContactsList.remove(0);
-				// --
 
 				int randomChatIdx = random
 						.nextInt(visibleContactsList.size() - 1);
@@ -57,7 +55,9 @@ public class PerformanceSteps {
 						.tapOnContactByIndex(visibleContactsList, randomChatIdx);
 
 				// Emulating reading of previously received messages
-				PagesCollection.dialogPage.swipeDown(2000);
+				// This is broken in iOS simulator, known Apple bug
+				// Using "external" swipe is unstable for a long perf test
+				// PagesCollection.dialogPage.swipeDown(500);
 
 				// Writing response
 				PagesCollection.dialogPage.tapOnCursorInput();
@@ -71,7 +71,6 @@ public class PerformanceSteps {
 								DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL,
 								30);
 			}
-			// ----
 
 			Thread.sleep((MIN_SLEEP_INTERVAL + random
 					.nextInt(MAX_SLEEP_INTERVAL - MIN_SLEEP_INTERVAL + 1)) * 1000);
