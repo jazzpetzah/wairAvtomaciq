@@ -26,6 +26,16 @@ public class PerformanceSteps {
 
 	private Random random = new Random();
 
+	/**
+	 * Starts standard actions loop (read messages/send messages) to measure
+	 * application performance
+	 * 
+	 * @param nameAlias
+	 *            user name alias
+	 * @param time
+	 *            number of minutes to run the loop
+	 * @throws Exception
+	 */
 	@When("^I (.*) start test cycle for (\\d+) minutes")
 	public void WhenIStartTestCycleForNMinutes(String nameAlias, int time)
 			throws Exception {
@@ -41,7 +51,8 @@ public class PerformanceSteps {
 
 			// Send messages in response to a random visible chat
 			for (int i = 0; i < PerformanceCommon.SEND_MESSAGE_NUM; i++) {
-				// Get list of visible dialogs, remove self user name from this list
+				// Get list of visible dialogs, remove self user name from this
+				// list
 				Assert.assertTrue("Contact list didn't load",
 						PagesCollection.contactListPage
 								.waitForContactListToLoad());
