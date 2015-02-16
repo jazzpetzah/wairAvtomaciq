@@ -62,8 +62,8 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	@When("^I press add contact button$")
-	public void WhenIPressAddContactButton() throws IOException {
-		PagesCollection.otherUserPersonalInfoPage.tapAddContactBtn();
+	public void WhenIPressAddContactButton() throws Exception {
+		PagesCollection.peoplePickerPage = PagesCollection.otherUserPersonalInfoPage.tapAddContactBtn();
 	}
 
 	@When("^I Press Block button$")

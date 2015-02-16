@@ -66,7 +66,7 @@ public final class AndroidLocators {
 		
 		public static final String xpathForgotPass42 = "//android.widget.TextView[contains(@text,'FORGOT PASSWORD?')]";
 
-		public static final String xpathWelcomeSlogan42 = "//android.widget.TextView[contains(@text,'welcome to Wire')]";
+		public static final String xpathWelcomeSlogan42 = "//android.widget.TextView[contains(@text,'conversations.')]";
 
 		public static final String idLoginProgressBar = LOCATORS_PACKAGE
 				+ ":id/pv__sign_in__preview";
@@ -473,6 +473,8 @@ public final class AndroidLocators {
 		public static final String xpathPeoplePickerContact = "//android.widget.TextView[@resource-id='"
 				+ LOCATORS_PACKAGE
 				+ ":id/ttv_pickuser__searchuser_name' and @text='%s']";
+		
+		public static final String xpathCreateConversationIcon42 = "//android.widget.TextView[@text='CREATE CONVERSATION']";
 
 		public static final String xpathPeoplePickerClearbtn42 = "//android.widget.FrameLayout/android.widget.TextView[preceding-sibling::android.widget.ScrollView]";
 

@@ -68,7 +68,8 @@ Feature: Search
 
   @id327 @smoke
   Scenario Outline: Open/Close People picker
-    Given There is 1 users where <Name> is me
+    Given There is 2 users where <Name> is me
+    Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe down contact list
@@ -77,5 +78,5 @@ Feature: Search
     Then Contact list appears with my name <Name>
 
     Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |

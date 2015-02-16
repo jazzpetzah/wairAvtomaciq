@@ -88,9 +88,14 @@ public class ConversationPage extends WebPage {
 		return isSend;
 	}
 
-	public UserProfilePopup clickShowUserProfileButton() throws Exception {
+	public WebPage clickShowUserProfileButton(boolean isGroup) throws Exception {
 		showParticipants.click();
-		return new UserProfilePopup(url, path);
+		if(isGroup) {
+			return new ParticipantsPopupPage(url, path);
+		}
+		else {
+			return new UserProfilePopupPage(url, path);
+		}
 	}
 
 	public ParticipantsPopupPage clickShowParticipantsButton() throws Exception {
@@ -99,12 +104,27 @@ public class ConversationPage extends WebPage {
 	}
 
 	public void sendPicture(String pictureName) throws Exception {
+		final String picturePath = WebCommonUtils
+				.getFullPicturePath(pictureName);
+
+		final String showImageLabelJScript = "$('"
+				+ WebAppLocators.ConversationPage.cssSendImageLabel
+				+ "').css({'opacity': '100'});";
+		driver.executeScript(showImageLabelJScript);
 		if (WebCommonUtils.getWebAppBrowserNameFromConfig(
 				ConversationPage.class).equals(WebAppConstants.Browser.SAFARI)) {
 			// sendKeys() call to file input element does nothing on safari
 			// so instead of sendKeys() we are using AppleScript which chooses
 			// required image in open file dialog
-			sendImageLabel.click();
+			final String showPathInputJScript = "$('"
+					+ WebAppLocators.ConversationPage.cssSendImageLabel
+					+ "').find('"
+					+ WebAppLocators.ConversationPage.cssSendImageInput
+					+ "').css({'left': '0'});";
+			driver.executeScript(showPathInputJScript);
+			//waiting few seconds till we can click on element
+			Thread.sleep(2000);
+			imagePathInput.click();
 			String script = String
 					.format(CommonUtils
 							.readTextFileFromResources(WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT),
@@ -120,11 +140,7 @@ public class ConversationPage extends WebPage {
 						"Failed to get script engine to execute AppleScript.");
 			}
 		} else {
-			final String picturePath = WebCommonUtils
-					.getFullPicturePath(pictureName);
 			final String showPathInputJScript = "$('"
-					+ WebAppLocators.ConversationPage.cssSendImageLabel
-					+ "').css({'opacity': '100'});" + "\n" + "$('"
 					+ WebAppLocators.ConversationPage.cssSendImageLabel
 					+ "').find('"
 					+ WebAppLocators.ConversationPage.cssSendImageInput
