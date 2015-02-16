@@ -4,6 +4,7 @@ Feature: People View
   Scenario Outline: Start group chat with users from contact list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    And I wait for 30 seconds
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open People Picker from Contact List
