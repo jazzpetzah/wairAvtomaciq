@@ -7,7 +7,7 @@ Feature: Performance Tests
     Given Myself is connected to all other users
     And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I <Login> start test cycle for <Time> minutes
+    When I <Name> start test cycle for <Time> minutes
 
     Examples: 
       | Login      | Name          | Password      | Name      | UsersNumber | UserNamePrefix | Time  |
