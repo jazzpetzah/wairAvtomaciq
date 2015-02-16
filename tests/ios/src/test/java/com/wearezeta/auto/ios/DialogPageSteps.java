@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 
@@ -566,6 +567,12 @@ public class DialogPageSteps {
 		CommonSteps.getInstance().UserSentMessageToUser(msgFromUserNameAlias, dstUserNameAlias, message);
 	}
 	
+	/**
+	 * Scrolls to the end of the conversation
+	 * 
+	 * @step. ^I scroll to the end of the conversation$  
+	 * 
+	 */
 	@When("^I scroll to the end of the conversation$")
 	public void IScrollToTheEndOfTheConversation(){
 		PagesCollection.dialogPage.scrollToEndOfConversation();
