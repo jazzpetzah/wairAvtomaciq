@@ -7,7 +7,6 @@ import javax.script.ScriptEngineManager;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
@@ -118,6 +117,8 @@ public class ConversationPage extends WebPage {
 					+ WebAppLocators.ConversationPage.cssSendImageInput
 					+ "').css({'left': '0'});";
 			driver.executeScript(showPathInputJScript);
+			//waiting few seconds till we can click on element
+			Thread.sleep(2000);
 			imagePathInput.click();
 			String script = String
 					.format(CommonUtils
