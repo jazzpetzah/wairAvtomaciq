@@ -1,8 +1,11 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
+
+import javax.imageio.ImageIO;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -373,7 +376,7 @@ public class ContactListPage extends IOSPage {
 	
 	public boolean unreadDotIsVisible() throws IOException{
 		BufferedImage unreadDot = null;
-		unreadDot = getScreenshotByCoordinates(0, 200, 180, 75);
+		unreadDot = getScreenshotByCoordinates(0, 200, 100, 75);
 		BufferedImage referenceImage = ImageUtil.readImageFromFile(IOSPage
 				.getImagesPath() + "unreadDot.png");
 		double score = ImageUtil.getOverlapScore(referenceImage,
@@ -386,7 +389,7 @@ public class ContactListPage extends IOSPage {
 	
 	public boolean unreadDotIsNotVisible() throws IOException{
 		BufferedImage noUnreadDot = null;
-		noUnreadDot = getScreenshotByCoordinates(0, 200, 180, 75);
+		noUnreadDot = getScreenshotByCoordinates(0, 200, 100, 75);
 		BufferedImage referenceImage = ImageUtil.readImageFromFile(IOSPage
 				.getImagesPath() + "noUnreadDot.png");
 		double score = ImageUtil.getOverlapScore(referenceImage,
