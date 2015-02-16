@@ -10,5 +10,5 @@ Feature: Performance Tests
     When I <Login> start test cycle for <Time> minutes
 
     Examples: 
-      | Login      | Password      | Name      | UsersNumber | UserNamePrefix | Time  |
-      | user1Email | user1Password | user1Name | 11          | perf           | 60    |
+      | Login      | Name          | Password      | Name      | UsersNumber | UserNamePrefix | Time  |
+      | user1Email | user1Name     | user1Password | user1Name | 11          | perf           | 5     |
