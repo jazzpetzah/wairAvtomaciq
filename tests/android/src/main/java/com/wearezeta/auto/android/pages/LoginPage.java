@@ -175,7 +175,9 @@ public class LoginPage extends AndroidPage {
 				pickerClearBtn.click();
 			}
 			else{
-				navigateBack();
+				if(!isVisible(yourUser)){
+					navigateBack();
+				}
 			}
 			refreshUITree();
 		}
