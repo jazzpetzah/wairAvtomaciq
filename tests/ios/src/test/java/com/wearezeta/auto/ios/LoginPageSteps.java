@@ -58,16 +58,10 @@ public class LoginPageSteps {
 		Assert.assertNotNull(PagesCollection.loginPage.isVisible());
 		PagesCollection.loginPage = (LoginPage) (PagesCollection.loginPage
 				.signIn());
-		for (int i = 0; i < 2; i++) {
-			PagesCollection.loginPage.setLogin(login);
-			PagesCollection.loginPage.setPassword(password);
-			PagesCollection.contactListPage = (ContactListPage) (PagesCollection.loginPage
-					.login());
-			if (null != PagesCollection.contactListPage) {
-				break;
-			}
-			Thread.sleep(30000);
-		}
+		PagesCollection.loginPage.setLogin(login);
+		PagesCollection.loginPage.setPassword(password);
+		PagesCollection.contactListPage = (ContactListPage) (PagesCollection.loginPage
+				.login());
 
 		Assert.assertNotNull("Login not passed",
 				PagesCollection.contactListPage);
