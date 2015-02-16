@@ -376,22 +376,11 @@ public class ContactListPage extends IOSPage {
 	}
 	
 	public boolean unreadDotIsVisible(boolean visible, String conversation) throws IOException{
-//		BufferedImage screenshot = null;
-//		WebElement contact = findCellInContactList(conversation);
-//		screenshot = getScreenshotByCoordinates(contact.getLocation().x, contact.getLocation().y + contactListContainer.getLocation().y, contact.getSize().width/4, contact.getSize().height*2);
-//		if (visible == true){
-//			File outputfile = new File("dot.png");
-//			ImageIO.write(screenshot, "png", outputfile);
-//			} else {
-//				File outputfile = new File("nodot.png");
-//				ImageIO.write(screenshot, "png", outputfile);
-//			}
 		BufferedImage unreadDot = null;
 		BufferedImage referenceImage = null;
 		double score = 0;
 		WebElement contact = findCellInContactList(conversation);
 		unreadDot = getScreenshotByCoordinates(contact.getLocation().x, contact.getLocation().y + contactListContainer.getLocation().y, contact.getSize().width/4, contact.getSize().height*2);
-		//unreadDot = getScreenshotByCoordinates(0, 200, 100, 75);
 		if (visible == true){
 		referenceImage = ImageUtil.readImageFromFile(IOSPage
 				.getImagesPath() + "unreadDot.png");
