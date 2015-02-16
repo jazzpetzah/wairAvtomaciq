@@ -191,9 +191,9 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		return new OtherUserPersonalInfoPage(url, path);
 	}
 
-	public void tapAddContactBtn() {
-		addContactBtn.click();
-		
+	public PeoplePickerPage tapAddContactBtn() throws Exception {
+		 addContactBtn.click();
+		return new PeoplePickerPage(url, path);
 	}
 
 	public boolean isBackGroundImageCorrect(String imageName) throws Exception {

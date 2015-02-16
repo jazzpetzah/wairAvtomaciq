@@ -135,9 +135,17 @@ public final class WebAppLocators {
 		
 		public static final String xpathConfirmRemoveButton = "//div[@class='zeta-button zeta-button-medium' and text()='remove']";
 		
+		public static final String xpathConfirmAddButton = "//div[@class='zeta-button zeta-button-medium' and text()='continue']";
+		
 		public static final String xpathParticipantName = "//div[@class='search-list-item-name' and text()='%s']/..";
 		
 		public static final String xpathRemoveFromGroupChat = "//div[@class='footer-button-right zi zi-delete zi-button']";
+		
+		public static final String xpathGroupAddPeopleButton = "//div[@class='participants-group-add zi zi-add zi-button']";
+		
+		public static final String xpathProfilePageSearchField = "//div[@class='participants-search-header']//input[@class='search-input']";
+		
+		public static final String xpathAddPeopleMessage = "//div[@class='confirm-content' and span[text()='Add people and share history?']]";
 
 	}
 	

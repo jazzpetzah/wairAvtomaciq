@@ -1,8 +1,11 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
+
+import javax.imageio.ImageIO;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -21,6 +24,7 @@ public class ContactListPage extends IOSPage {
 	// private static final Logger log = ZetaLogger.getLog("iOS:" +
 	// ContactListPage.class.getSimpleName());
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.90;
+	private final double MIN_ACCEPTABLE_IMAGE_UNREADDOT_VALUE = 0.99;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathContactListNames)
 	private List<WebElement> contactListNames;
@@ -52,11 +56,12 @@ public class ContactListPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameTutorialView)
 	private WebElement tutorialView;
 
-	// @FindBy(how = How.XPATH, using = IOSLocators.xpathAnyUserInContactList)
-	// private WebElement anyContactInList;
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathFirstInContactList)
 	private WebElement firstContactInList;
-
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathContactListContainer)
+	private WebElement contactListContainer;
+		
 	private String url;
 	private String path;
 	private int oldLocation = 0;
@@ -369,4 +374,29 @@ public class ContactListPage extends IOSPage {
 		WebElement contact = findNameInContactList(conversation);
 		DriverUtils.clickArchiveConversationButton(driver, contact);
 	}
+	
+	public boolean unreadDotIsVisible(boolean visible, String conversation) throws IOException{
+		BufferedImage unreadDot = null;
+		BufferedImage referenceImage = null;
+		double score = 0;
+		WebElement contact = findCellInContactList(conversation);
+		unreadDot = getScreenshotByCoordinates(contact.getLocation().x, contact.getLocation().y + contactListContainer.getLocation().y, contact.getSize().width/4, contact.getSize().height*2);
+		if (visible == true){
+		referenceImage = ImageUtil.readImageFromFile(IOSPage
+				.getImagesPath() + "unreadDot.png");
+		score = ImageUtil.getOverlapScore(referenceImage,
+				unreadDot);
+		} else {
+			referenceImage = ImageUtil.readImageFromFile(IOSPage
+					.getImagesPath() + "noUnreadDot.png");
+			score = ImageUtil.getOverlapScore(referenceImage,
+					unreadDot);
+		}
+		
+		if (score <= MIN_ACCEPTABLE_IMAGE_UNREADDOT_VALUE) {
+			return false;
+		}
+		return true;
+	}
+
 }

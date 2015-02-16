@@ -61,9 +61,9 @@ public class PeoplePickerPage extends WebPage {
 		foundUserElement.click();
 	}
 	
-	public ConnectToPopup clickNotConnectedUserName(String name) throws Exception {
+	public ConnectToPopupPage clickNotConnectedUserName(String name) throws Exception {
 		clickNotConnectedUser(name);
-		return new ConnectToPopup(url, name);
+		return new ConnectToPopupPage(url, name);
 	}
 	
 	public boolean isUserFound(String name) {
