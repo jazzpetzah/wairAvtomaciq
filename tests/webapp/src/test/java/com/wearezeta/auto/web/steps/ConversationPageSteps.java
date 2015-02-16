@@ -161,6 +161,11 @@ public class ConversationPageSteps {
 				.isActionMessageSent(message + " " + contact));
 	}
 	
+	@When("^I choose to send picture$")
+	public void IChooseToSendPicture() throws Exception {
+		PagesCollection.conversationPage.prepareForPictureSending();
+	}
+	
 	/**
 	 * Add a user to group chat
 	 * 

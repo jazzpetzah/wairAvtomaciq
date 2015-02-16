@@ -103,28 +103,23 @@ public class ConversationPage extends WebPage {
 		return new ParticipantsPopupPage(url, path);
 	}
 
-	public void sendPicture(String pictureName) throws Exception {
-		final String picturePath = WebCommonUtils
-				.getFullPicturePath(pictureName);
-
+	public void prepareForPictureSending() throws Exception {
 		final String showImageLabelJScript = "$('"
 				+ WebAppLocators.ConversationPage.cssSendImageLabel
 				+ "').css({'opacity': '100'});";
 		driver.executeScript(showImageLabelJScript);
+	}
+	
+	public void sendPicture(String pictureName) throws Exception {
+		final String picturePath = WebCommonUtils
+				.getFullPicturePath(pictureName);
+
 		if (WebCommonUtils.getWebAppBrowserNameFromConfig(
 				ConversationPage.class).equals(WebAppConstants.Browser.SAFARI)) {
 			// sendKeys() call to file input element does nothing on safari
 			// so instead of sendKeys() we are using AppleScript which chooses
 			// required image in open file dialog
-			final String showPathInputJScript = "$('"
-					+ WebAppLocators.ConversationPage.cssSendImageLabel
-					+ "').find('"
-					+ WebAppLocators.ConversationPage.cssSendImageInput
-					+ "').css({'left': '0'});";
-			driver.executeScript(showPathInputJScript);
-			//waiting few seconds till we can click on element
-			Thread.sleep(2000);
-			imagePathInput.click();
+			sendImageLabel.click();
 			String script = String
 					.format(CommonUtils
 							.readTextFileFromResources(WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT),
