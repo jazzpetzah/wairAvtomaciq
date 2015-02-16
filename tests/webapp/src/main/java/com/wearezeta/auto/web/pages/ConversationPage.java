@@ -7,6 +7,7 @@ import javax.script.ScriptEngineManager;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
@@ -99,6 +100,13 @@ public class ConversationPage extends WebPage {
 	}
 
 	public void sendPicture(String pictureName) throws Exception {
+		final String picturePath = WebCommonUtils
+				.getFullPicturePath(pictureName);
+
+		final String showImageLabelJScript = "$('"
+				+ WebAppLocators.ConversationPage.cssSendImageLabel
+				+ "').css({'opacity': '100'});";
+		driver.executeScript(showImageLabelJScript);
 		if (WebCommonUtils.getWebAppBrowserNameFromConfig(
 				ConversationPage.class).equals(WebAppConstants.Browser.SAFARI)) {
 			// sendKeys() call to file input element does nothing on safari
@@ -120,11 +128,7 @@ public class ConversationPage extends WebPage {
 						"Failed to get script engine to execute AppleScript.");
 			}
 		} else {
-			final String picturePath = WebCommonUtils
-					.getFullPicturePath(pictureName);
 			final String showPathInputJScript = "$('"
-					+ WebAppLocators.ConversationPage.cssSendImageLabel
-					+ "').css({'opacity': '100'});" + "\n" + "$('"
 					+ WebAppLocators.ConversationPage.cssSendImageLabel
 					+ "').find('"
 					+ WebAppLocators.ConversationPage.cssSendImageInput
