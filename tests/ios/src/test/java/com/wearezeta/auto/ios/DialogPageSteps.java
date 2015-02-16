@@ -133,7 +133,6 @@ public class DialogPageSteps {
 	@When("^I type the message and send it$")
 	public void ITypeTheMessageAndSendIt() throws Throwable {
 		message = CommonUtils.generateGUID().replace('-', 'x');
-		;
 		PagesCollection.dialogPage.sendStringToInput(message + "\n");
 	}
 

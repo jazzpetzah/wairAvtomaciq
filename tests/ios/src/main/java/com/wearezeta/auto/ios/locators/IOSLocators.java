@@ -458,5 +458,7 @@ public final class IOSLocators {
 	//Unblock user locator
 	////////////////////////////
 	public static final String nameUnblockButton = "UNBLOCK";
+	
+	public static final String xpathContactListContainer = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[2]";
 }
 

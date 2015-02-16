@@ -73,12 +73,12 @@ Feature: Conversation List
     Given Contact <Contact> send number <Number> of message to user <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    And I see unread messages dot
+    And I see unread messages dot for <Contact>
     When I tap on contact name <Contact>
     And I see dialog page
     And I scroll to the end of the conversation
     And I swipe right on Dialog page
-    Then I dont see an unread message dot
+    Then I dont see an unread message dot for <Contact>
     
     Examples: 
       | Login      | Password      | Name      | Contact   | Number | NewName    | Color        |

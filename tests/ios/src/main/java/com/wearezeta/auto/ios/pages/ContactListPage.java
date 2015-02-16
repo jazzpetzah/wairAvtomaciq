@@ -56,11 +56,12 @@ public class ContactListPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameTutorialView)
 	private WebElement tutorialView;
 
-	// @FindBy(how = How.XPATH, using = IOSLocators.xpathAnyUserInContactList)
-	// private WebElement anyContactInList;
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathFirstInContactList)
 	private WebElement firstContactInList;
-
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathContactListContainer)
+	private WebElement contactListContainer;
+		
 	private String url;
 	private String path;
 	private int oldLocation = 0;
@@ -374,29 +375,39 @@ public class ContactListPage extends IOSPage {
 		DriverUtils.clickArchiveConversationButton(driver, contact);
 	}
 	
-	public boolean unreadDotIsVisible() throws IOException{
+	public boolean unreadDotIsVisible(boolean visible, String conversation) throws IOException{
+//		BufferedImage screenshot = null;
+//		WebElement contact = findCellInContactList(conversation);
+//		screenshot = getScreenshotByCoordinates(contact.getLocation().x, contact.getLocation().y + contactListContainer.getLocation().y, contact.getSize().width/4, contact.getSize().height*2);
+//		if (visible == true){
+//			File outputfile = new File("dot.png");
+//			ImageIO.write(screenshot, "png", outputfile);
+//			} else {
+//				File outputfile = new File("nodot.png");
+//				ImageIO.write(screenshot, "png", outputfile);
+//			}
 		BufferedImage unreadDot = null;
-		unreadDot = getScreenshotByCoordinates(0, 200, 100, 75);
-		BufferedImage referenceImage = ImageUtil.readImageFromFile(IOSPage
+		BufferedImage referenceImage = null;
+		double score = 0;
+		WebElement contact = findCellInContactList(conversation);
+		unreadDot = getScreenshotByCoordinates(contact.getLocation().x, contact.getLocation().y + contactListContainer.getLocation().y, contact.getSize().width/4, contact.getSize().height*2);
+		//unreadDot = getScreenshotByCoordinates(0, 200, 100, 75);
+		if (visible == true){
+		referenceImage = ImageUtil.readImageFromFile(IOSPage
 				.getImagesPath() + "unreadDot.png");
-		double score = ImageUtil.getOverlapScore(referenceImage,
+		score = ImageUtil.getOverlapScore(referenceImage,
 				unreadDot);
+		} else {
+			referenceImage = ImageUtil.readImageFromFile(IOSPage
+					.getImagesPath() + "noUnreadDot.png");
+			score = ImageUtil.getOverlapScore(referenceImage,
+					unreadDot);
+		}
+		
 		if (score <= MIN_ACCEPTABLE_IMAGE_UNREADDOT_VALUE) {
 			return false;
 		}
 		return true;
 	}
-	
-	public boolean unreadDotIsNotVisible() throws IOException{
-		BufferedImage noUnreadDot = null;
-		noUnreadDot = getScreenshotByCoordinates(0, 200, 100, 75);
-		BufferedImage referenceImage = ImageUtil.readImageFromFile(IOSPage
-				.getImagesPath() + "noUnreadDot.png");
-		double score = ImageUtil.getOverlapScore(referenceImage,
-				noUnreadDot);
-		if (score <= MIN_ACCEPTABLE_IMAGE_UNREADDOT_VALUE) {
-			return false;
-		}
-		return true;
-	}
+
 }

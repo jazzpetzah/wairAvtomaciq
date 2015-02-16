@@ -391,12 +391,17 @@ public class ContactListPageSteps {
 	 * 
 	 * @step. ^I see unread messages dot$
 	 * 
+	 * @param conversation
+	 *            conversation name to check for unread dot
+	 * 
 	 * @throws IOException 
+	 * @throws Exception 
 	 * 
 	 */
-	@When("^I see unread messages dot$")
-	public void ISeeUnreadMessagesDot() throws IOException{
-		boolean unreadDotSeen = PagesCollection.contactListPage.unreadDotIsVisible();
+	@When("^I see unread messages dot for (.*)$")
+	public void ISeeUnreadMessagesDot(String conversation) throws IOException, Exception{
+		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
+		boolean unreadDotSeen = PagesCollection.contactListPage.unreadDotIsVisible(true, conversation);
 		Assert.assertTrue("No unread dot visible.", unreadDotSeen);
 	}
 	
@@ -405,12 +410,17 @@ public class ContactListPageSteps {
 	 * 
 	 * @step. ^I dont see an unread messages dot$
 	 * 
+	 * @param conversation
+	 *            conversation name to check for unread dot
+	 * 
 	 * @throws IOException 
+	 * @throws Exception 
 	 * 
 	 */
-	@Then("^I dont see an unread message dot$")
-	public void IDontSeeAnUnreadMessageDot() throws IOException{
-		boolean noUnreadDotSeen = PagesCollection.contactListPage.unreadDotIsNotVisible();
+	@Then("^I dont see an unread message dot for (.*)$")
+	public void IDontSeeAnUnreadMessageDot(String conversation) throws IOException, Exception{
+		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
+		boolean noUnreadDotSeen = PagesCollection.contactListPage.unreadDotIsVisible(false, conversation);
 		Assert.assertTrue("No unread dot visible.", noUnreadDotSeen);
 
 	}
