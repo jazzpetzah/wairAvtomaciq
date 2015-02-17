@@ -35,8 +35,8 @@ public class WebCommonUtils extends CommonUtils {
 		return getValueFromConfig(c, "hubHost");
 	}
 
-	public static String getHubPortFromConfig(Class<?> c) throws Exception {
-		return getValueFromConfig(c, "hubPort");
+	public static int getHubPortFromConfig(Class<?> c) throws Exception {
+		return Integer.parseInt(getValueFromConfig(c, "hubPort"));
 	}
 
 	public static String getPicturesPath() {
