@@ -96,7 +96,6 @@ public class WebCommonUtils extends CommonUtils {
 
 		String command = String.format(commandTemplate,
 				getJenkinsSuperUserPassword(CommonUtils.class),
-				getJenkinsSuperUserLogin(CommonUtils.class),
 				WebAppConstants.Scripts.SCRIPTS_FOLDER,
 				getJenkinsSuperUserLogin(CommonUtils.class),
 				WebAppExecutionContext.seleniumNodeIp,
@@ -136,6 +135,9 @@ public class WebCommonUtils extends CommonUtils {
 		script = String.format(script, params);
 		File dstFileInstance = new File(dstFile);
 		dstFileInstance.getParentFile().mkdirs();
+		if (dstFileInstance.exists()) {
+			dstFileInstance.delete();
+		}
 		dstFileInstance.createNewFile();
 		PrintWriter out = new PrintWriter(dstFile);
 		out.write(script);
