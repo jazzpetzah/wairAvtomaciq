@@ -190,15 +190,16 @@ public class PeoplePickerPage extends AndroidPage {
 
 	public AndroidPage tapCreateConversation() throws Exception {
 		refreshUITree();
+		wait.until(ExpectedConditions.visibilityOf(createConversation));
 		try{
 			driver.hideKeyboard();
 		}
 		catch(Exception ex){
 			
 		}
-		wait.until(ExpectedConditions.visibilityOf(createConversation));
-		createConversation.click();
-		
+		if(isVisible(createConversation)){
+			createConversation.click();
+		}
 		return  new DialogPage(url, path);
 	}
 

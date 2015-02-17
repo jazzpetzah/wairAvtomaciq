@@ -141,12 +141,12 @@ public class PersonalInfoPage extends AndroidPage {
 		wait.until(ExpectedConditions.visibilityOf(confirmBtn));
 	}
 
-	public void tapOnMyName() {
+	public void tapOnMyName() throws Exception {
 		refreshUITree();
 		wait.until(ExpectedConditions.visibilityOf(nameField));
 		nameField.click();
 		refreshUITree();
-		wait.until(ExpectedConditions.visibilityOf(nameEdit));
+		DriverUtils.waitUntilElementAppears(driver, AndroidLocators.PersonalInfoPage.getByForNameEditField());
 	}
 
 	public void changeName(String name, String newName) throws Exception {
