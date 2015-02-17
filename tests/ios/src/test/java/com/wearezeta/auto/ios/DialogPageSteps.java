@@ -11,6 +11,7 @@ import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -309,7 +310,10 @@ public class DialogPageSteps {
 	@When("I swipe right on Dialog page")
 	public void ISwipeRightOnDialogPage() throws Exception {
 		PagesCollection.contactListPage = (ContactListPage) PagesCollection.dialogPage
-				.swipeRight(1000);
+				.swipeRight(
+						1000,
+						DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL,
+						30);
 	}
 
 	@When("I send long message")

@@ -1,6 +1,6 @@
 Feature: Performance Tests
 
-  @performance @torun
+  @performance
   Scenario Outline: Normal usage
     Given There are <UsersNumber> shared users with name prefix <UserNamePrefix>
     Given User <Name> is Me
