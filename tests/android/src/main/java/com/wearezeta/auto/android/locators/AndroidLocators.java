@@ -542,6 +542,16 @@ public final class AndroidLocators {
 
 		public static final String xpathNameEdit42 = "//android.widget.FrameLayout/android.widget.EditText";
 
+		public static By getByForNameEditField() throws Exception {
+			if (CommonUtils.getAndroidApiLvl(AndroidLocators.class) < 43) {
+				return By
+						.xpath(AndroidLocators.PersonalInfoPage.xpathNameEdit42);
+			} else {
+				return By
+						.id(AndroidLocators.PersonalInfoPage.idNameEdit);
+			}
+		}
+		
 		public static By getByForProfileOptionsButton() throws Exception {
 			if (CommonUtils.getAndroidApiLvl(AndroidLocators.class) < 43) {
 				return By

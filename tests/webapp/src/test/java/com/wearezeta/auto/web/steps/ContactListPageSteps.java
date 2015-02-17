@@ -187,4 +187,36 @@ public class ContactListPageSteps {
 		PagesCollection.peoplePickerPage = PagesCollection.contactListPage
 				.openPeoplePicker();
 	}
+	
+	/**
+	 * Mute conversation by choosing it from Contact List
+	 * 
+	 * @step. ^I mute conversation (.*)$
+	 * 
+	 * @param contact
+	 *            conversation name string
+	 * @throws InterruptedException
+	 */
+	@When("^I mute conversation (.*)$")
+	public void IClickMuteButton(String contact) throws InterruptedException {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		PagesCollection.contactListPage.clickActionsButtonForContact(contact);
+		Thread.sleep(1000);
+		PagesCollection.contactListPage
+				.clickMuteConversationForContact(contact);
+	}
+	
+	/**
+	 * Verify that conversation is muted by checking mute icon
+	 * 
+	 * @step. ^I see that conversation (.*) is muted$
+	 * @param contact
+	 * 			conversation name string
+	 */
+	@When("^I see that conversation (.*) is muted$")
+	public void ISeeConversationIsMuted(String contact) {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+
+		Assert.assertTrue(PagesCollection.contactListPage.isConversationMuted(contact));
+	}
 }

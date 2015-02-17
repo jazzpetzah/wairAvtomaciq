@@ -71,6 +71,7 @@ public class PersonalInfoPageSteps {
 			// Ignore silently
 		}
 		PagesCollection.personalInfoPage.changeName(name, newName);
+		usrMgr.getSelfUser().setName(newName);
 	}
 
 	@When("^I swipe right to contact list$")

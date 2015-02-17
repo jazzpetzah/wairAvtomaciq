@@ -76,3 +76,16 @@ Feature: Conversation
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendPictureGroupChat | userpicture_landscape.jpg |
+      
+  @staging @id1918
+  Scenario Outline: Mute 1on1 conversation
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name <Name> in Contact list
+    When I mute conversation <Contact>
+    Then I see that conversation <Contact> is muted
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
