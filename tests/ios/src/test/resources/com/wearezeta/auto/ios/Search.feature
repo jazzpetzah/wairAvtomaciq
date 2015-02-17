@@ -147,12 +147,8 @@ Feature: Search
     And I see <UnconnectedUser> user pending profile page
     
     Examples: 
-<<<<<<< HEAD
       | Login      | Password      | Name      | UnconnectedUser | NumOfMessageChars | StartLetter |
       | user1Email | user1Password | user1Name | user2Name       | 141               | T           |
-=======
-      | Login      | Password      | Name      | UnconnectedUserEmail | UnconnectedUser |
-      | user1Email | user1Password | user1Name | user2Email           | user2Name       |
       
   @staging @id763
   Scenario Outline: I can still search for other people using the search field, regardless of whether I already added people from Top conversations
@@ -197,4 +193,3 @@ Feature: Search
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name | 
->>>>>>> 8be45aa384fbdc76ace0cacf5ba461e5a8c4b521
