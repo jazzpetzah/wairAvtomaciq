@@ -49,9 +49,8 @@ public class WebCommonUtils extends CommonUtils {
 	}
 
 	public static String getNodeIp(RemoteWebDriver driver) throws Exception {
-		HttpHost host = new HttpHost("localhost", 5026);
+		HttpHost host = new HttpHost(getHubHostFromConfig(WebCommonUtils.class), getHubPortFromConfig(WebCommonUtils.class));
 		DefaultHttpClient client = new DefaultHttpClient();
-		System.out.println(getWebAppAppiumUrlFromConfig(WebCommonUtils.class));
 		String url = String.format(
 				"http://%s:%s/grid/api/testsession?session=%s",
 				getHubHostFromConfig(WebCommonUtils.class),
