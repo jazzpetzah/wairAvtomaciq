@@ -8,7 +8,7 @@ Feature: Performance Tests
     # And I start Activity Monitoring logging <Device ID>
     And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I <Name> start test cycle for <Time> minutes
+    When I start test cycle for <Time> minutes
 
     Examples: 
       | Login      | Name      | Password      | UsersNumber | Time | UserNamePrefix | Device ID                                |
