@@ -97,9 +97,9 @@ public class LoginPageSteps {
 	/**
 	 * Taps Login button on the corresponding screen
 	 * 
-	 * @step. I attemt to press Login button
+	 * @step. I attempt to press Login button
 	 */
-	@When("I attemt to press Login button")
+	@When("I attempt to press Login button")
 	public void IAttemptToPressLoginButton() {
 		PagesCollection.loginPage.clickLoginButton();
 	}
