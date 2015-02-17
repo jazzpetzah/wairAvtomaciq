@@ -531,7 +531,7 @@ Feature: Conversation View
     And I type and send long message and media link <SoundCloudLink>
     And I see media link <SoundCloudLink> and media in dialog
     And I swipe right on Dialog page
-	And I tap on contact name <Contact>
+	And I tap on contact name <Contact1>
     And I tap media link
     And I swipe right on Dialog page
     And I see play/pause button next to username <Contact1> in contact list
@@ -540,7 +540,7 @@ Feature: Conversation View
     And I type and send long message and media link <SoundCloudLink>
     And I see media link <SoundCloudLink> and media in dialog
     And I swipe right on Dialog page
-	And I tap on contact name <Contact>
+	And I tap on contact name <Contact2>
     And I tap media link
     And I swipe right on Dialog page
     And I see play/pause button next to username <Contact2> in contact list
