@@ -164,14 +164,9 @@ public class LoginPage extends IOSPage {
 	}
 
 	public void setLogin(String login) throws Exception {
-		if (CommonUtils.getIsSimulatorFromConfig(LoginPage.class)) {
-			DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameLoginField));
-			loginField.sendKeys(login);
-		} else {
-			String script = String.format(
-					IOSLocators.scriptSignInEmailPath + ".setValue(\"%s\")", login);
-			driver.executeScript(script);
-		}
+		String script = String.format(
+				IOSLocators.scriptSignInEmailPath + ".setValue(\"%s\")", login);
+		driver.executeScript(script);
 	}
 
 	public String getPassword() {
@@ -179,13 +174,9 @@ public class LoginPage extends IOSPage {
 	}
 
 	public void setPassword(String password) throws Exception {
-		if (CommonUtils.getIsSimulatorFromConfig(LoginPage.class)) {
-			passwordField.sendKeys(password);
-		} else {
-			String script = String.format(
-					IOSLocators.scriptSignInPasswordPath + ".setValue(\"%s\")", password);
-			driver.executeScript(script);
-		}
+		String script = String.format(
+				IOSLocators.scriptSignInPasswordPath + ".setValue(\"%s\")", password);
+		driver.executeScript(script);
 	}
 	
 	public boolean waitForLogin() throws InterruptedException {

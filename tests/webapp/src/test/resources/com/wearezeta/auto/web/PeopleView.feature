@@ -38,8 +38,7 @@ Feature: People View
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
-      
-      
+
   @staging @id1692
   Scenario Outline: Leave from group chat
     Given There are 3 users where <Name> is me
@@ -48,8 +47,8 @@ Feature: People View
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
-    And I click show user profile button
-    And I see User Profile Popup Page
+    And I click show participant profile button
+    And I see Participant Profile Popup Page
     When I click leave group chat
     And I confirm leave group chat
     And I wait for 2 seconds
@@ -59,10 +58,9 @@ Feature: People View
     Then I see <Message> action in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       | Message    |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat | you left   |
-      
-      
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       | Message  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat | you left |
+
   @staging @id1694
   Scenario Outline: Verify you can remove participants from a group conversation
     Given There are 3 users where <Name> is me
@@ -71,8 +69,8 @@ Feature: People View
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
-    And I click show user profile button
-    And I see User Profile Popup Page
+    And I click show participant profile button
+    And I see Participant Profile Popup Page
     When I click on participant <Contact1>
     And I remove user from group chat
     And I confirm remove from group chat
@@ -80,5 +78,40 @@ Feature: People View
     Then I see <Message> action in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       | Message       |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat | you removed   |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       | Message     |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat | you removed |
+
+  @staging @id1687
+  Scenario Outline: Verify you can add participants to the group conversation by searching the user directory
+    Given There are 5 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name <Name> in Contact list
+    And I open conversation with <ChatName>
+    And I click show participant profile button
+    And I see Participant Profile Popup Page
+    When I click Add people button on Participant Profile Popup Page
+    And I see Add People message
+    And I confirm add to group chat
+    And I input user name <Contact3> in search field
+    And I select <Contact3> from Popup Page search results
+    And I choose to create conversation from Popup Page
+    And I open conversation with <ChatName>
+    Then I see <Message> action for <Contact3> in conversation
+    When I add <Contact4> to group chat
+    And I open conversation with <ChatName>
+    Then I see <Message> action for <Contact4> in conversation
+    And I click show participant profile button
+    And I see Participant Profile Popup Page
+    And I see <Contact3>,<Contact4> displayed on Participant Profile Page
+    When I open conversation with <ChatName>
+    And I click show participant profile button
+    And I see Participant Profile Popup Page
+    And I click Add people button on Participant Profile Popup Page
+    And I confirm add to group chat
+    #add last verification - that no one left to add
+    
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName       | Message   |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | AddToGroupChat | you added |

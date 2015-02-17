@@ -74,7 +74,7 @@ public class PeoplePickerPageSteps {
 	@When("I click on not connected user (.*) found by Search")
 	public void IClickNotConnecteUserOnSearch(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		PagesCollection.connectToPopup = PagesCollection.peoplePickerPage
+		PagesCollection.connectToPopupPage = PagesCollection.peoplePickerPage
 				.clickNotConnectedUserName(name);
 	}
 

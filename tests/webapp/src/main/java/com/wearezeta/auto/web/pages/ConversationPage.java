@@ -88,9 +88,14 @@ public class ConversationPage extends WebPage {
 		return isSend;
 	}
 
-	public UserProfilePopup clickShowUserProfileButton() throws Exception {
+	public WebPage clickShowUserProfileButton(boolean isGroup) throws Exception {
 		showParticipants.click();
-		return new UserProfilePopup(url, path);
+		if(isGroup) {
+			return new ParticipantsPopupPage(url, path);
+		}
+		else {
+			return new UserProfilePopupPage(url, path);
+		}
 	}
 
 	public ParticipantsPopupPage clickShowParticipantsButton() throws Exception {

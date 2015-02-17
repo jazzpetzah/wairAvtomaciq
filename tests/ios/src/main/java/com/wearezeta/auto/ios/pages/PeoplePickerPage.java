@@ -200,6 +200,7 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public void selectUser(String name) {
+		DriverUtils.waitUntilElementClickable(driver, userPickerSearchResult);
 		driver.findElement(By.name(name)).click();
 	}
 

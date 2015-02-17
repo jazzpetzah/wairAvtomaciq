@@ -746,4 +746,12 @@ public class DialogPage extends IOSPage {
 		log.debug("Retrieved number of Pings in conversation: " + pingedMessages.size());
 		return pingedMessages.size();
 	}
+	
+	public DialogPage scrollToEndOfConversation(){
+		DialogPage page = null;
+		WebElement el = driver.findElement(By
+				.xpath(IOSLocators.xpathLastChatMessage));
+		DriverUtils.scrollToElement(driver, el);
+		return page;
+	}
 }
