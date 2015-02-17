@@ -181,7 +181,7 @@ public class ConversationPageSteps {
 		int afterNumberOfImages = -1;
 
 		boolean isNumberIncreased = false;
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 10; i++) {
 			afterNumberOfImages = CommonOSXSteps.senderPages
 					.getConversationPage().getNumberOfImageEntries();
 			if (afterNumberOfImages == beforeNumberOfImages + 1) {
@@ -194,6 +194,11 @@ public class ConversationPageSteps {
 			}
 		}
 
+		if (!isNumberIncreased) {
+			log.debug("New picture was not found. Check source: " + CommonOSXSteps.senderPages
+			.getConversationPage().getPageSource());
+		}
+		
 		Assert.assertTrue("Incorrect images count: before - "
 				+ beforeNumberOfImages + ", after - " + afterNumberOfImages,
 				isNumberIncreased);

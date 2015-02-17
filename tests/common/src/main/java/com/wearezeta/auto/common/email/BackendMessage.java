@@ -1,9 +1,13 @@
 package com.wearezeta.auto.common.email;
 
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.mail.BodyPart;
 import javax.mail.Folder;
+import javax.mail.Header;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
@@ -11,41 +15,59 @@ import javax.mail.Part;
 
 public class BackendMessage {
 	private Message msg;
+	private Map<String, String> mapHeaders = new HashMap<String, String>();
 
-	protected Message getMessage() throws MessagingException {
-		if (!this.msg.getFolder().isOpen()) {
-			this.msg.getFolder().open(Folder.READ_ONLY);
-		}
-		return this.msg;
-	}
-
-	public BackendMessage(Message msg) {
+	public BackendMessage(Message msg) throws MessagingException, IOException {
 		this.msg = msg;
+
+		final boolean wasFolderOpened = msg.getFolder().isOpen();
+		if (!wasFolderOpened) {
+			msg.getFolder().open(Folder.READ_ONLY);
+		}
+		try {
+			@SuppressWarnings("unchecked")
+			Enumeration<Header> hdrs = msg.getAllHeaders();
+			while (hdrs.hasMoreElements()) {
+				Header hdr = hdrs.nextElement();
+				mapHeaders.put(hdr.getName(), hdr.getValue());
+			}
+		} finally {
+			if (!wasFolderOpened) {
+				msg.getFolder().close(false);
+			}
+		}
 	}
 
 	public final String getHeaderValue(String headerName)
 			throws MessagingException {
-		return this.getMessage().getHeader(headerName)[0];
+		return this.mapHeaders.get(headerName);
 	}
 
 	public String getContent() throws IOException, MessagingException {
-		String content = "";
-		Object msgContent = this.getMessage().getContent();
-		if (msgContent instanceof Multipart) {
-			Multipart multipart = (Multipart) msgContent;
-			StringBuilder multipartContent = new StringBuilder();
-			for (int j = 0; j < multipart.getCount(); j++) {
-				BodyPart bodyPart = multipart.getBodyPart(j);
-				if (bodyPart.getDisposition() == null) {
-					multipartContent.append(getText(bodyPart));
-				}
-			}
-			content = multipartContent.toString();
-		} else {
-			content = msgContent.toString();
+		final boolean wasFolderOpened = this.msg.getFolder().isOpen();
+		if (!wasFolderOpened) {
+			msg.getFolder().open(Folder.READ_ONLY);
 		}
-
-		return content;
+		try {
+			Object msgContent = this.msg.getContent();
+			if (msgContent instanceof Multipart) {
+				Multipart multipart = (Multipart) msgContent;
+				StringBuilder multipartContent = new StringBuilder();
+				for (int j = 0; j < multipart.getCount(); j++) {
+					BodyPart bodyPart = multipart.getBodyPart(j);
+					if (bodyPart.getDisposition() == null) {
+						multipartContent.append(getText(bodyPart));
+					}
+				}
+				return multipartContent.toString();
+			} else {
+				return msgContent.toString();
+			}
+		} finally {
+			if (!wasFolderOpened) {
+				msg.getFolder().close(false);
+			}
+		}
 	}
 
 	/**

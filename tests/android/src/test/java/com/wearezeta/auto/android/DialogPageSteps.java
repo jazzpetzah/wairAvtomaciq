@@ -91,7 +91,8 @@ public class DialogPageSteps {
 	public void WhenIPressButton(String buttonName) throws Throwable {
 		switch (buttonName.toLowerCase()) {
 		case "take photo":
-			PagesCollection.dialogPage.changeCamera();
+			//Temp fix for Moto 
+			//PagesCollection.dialogPage.changeCamera();
 			Thread.sleep(1000);
 			PagesCollection.dialogPage.takePhoto();
 			break;

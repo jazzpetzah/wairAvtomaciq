@@ -101,6 +101,9 @@ public class RegistrationPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathReSendButton)
 	private WebElement reSendButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathEmailVerifPrompt)
+	private WebElement emailVerifPrompt;
 
 	private String name;
 	private String email;
@@ -459,4 +462,9 @@ public class RegistrationPage extends IOSPage {
 				}).count();
 		return actualCnt;
 	}
+	
+	public boolean isEmailVerifPromptVisible() {
+		return emailVerifPrompt.isDisplayed();
+	}
+	
 }

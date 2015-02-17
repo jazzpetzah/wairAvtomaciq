@@ -14,6 +14,9 @@ public class SelfProfilePage extends WebPage {
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathSelfUserName)
 	private WebElement userName;
+	
+	@FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathSelfUserNameInput)
+	private WebElement userNameInput;
 
 	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.SelfProfilePage.classNameSelfUserMail)
 	private WebElement userMail;
@@ -37,10 +40,18 @@ public class SelfProfilePage extends WebPage {
 	}
 
 	public String getUserName() {
+		DriverUtils.waitUntilElementAppears(driver,
+				By.xpath(WebAppLocators.SelfProfilePage.xpathSelfUserName));
 		return userName.getText();
 	}
 
 	public String getUserMail() {
 		return userMail.getText();
+	}
+
+	public void setUserName(String name) {
+		userName.click();
+		userNameInput.clear();
+		userNameInput.sendKeys(name + "\n");
 	}
 }

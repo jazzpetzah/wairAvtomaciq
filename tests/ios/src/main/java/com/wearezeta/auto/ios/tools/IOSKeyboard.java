@@ -10,7 +10,7 @@ public class IOSKeyboard {
 	private static final KeyboardState UNKNOWN_STATE = new KeyboardStateUnknown();
 	private static final int TAP_DELAY = 20;
 	private List<KeyboardState> CACHED_STATES = new ArrayList<KeyboardState>();
-	private static final String DEFAULT_RETURN_NAME = "Return";
+	private static final String DEFAULT_RETURN_NAME = "Send";
 	
 	private String returnName = DEFAULT_RETURN_NAME;
 

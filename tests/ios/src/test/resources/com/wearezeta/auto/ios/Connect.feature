@@ -25,7 +25,6 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | ContactEmail | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user2Email   | user3Name |
 
-  #ZIOS-3122
   @smoke @id585
   Scenario Outline: Get invitation message from user
     Given There are 3 users where <Name> is me
@@ -36,8 +35,10 @@ Feature: Connect
     And I see Pending request link in contact list
     And I click on Pending request link in contact list
     And I see Pending request page
+    And I wait for 2 seconds
     And I see Hello connect message from user <Contact> on Pending request page
     And I click Connect button on Pending request page
+    And I wait for 2 seconds
     Then I see first item in contact list named <Contact>
 
     Examples: 
@@ -214,7 +215,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @staging @id1399
+  @regression @id1399
   Scenario Outline: Verify you don't receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -244,3 +245,32 @@ Feature: Connect
     Examples: 
       | Login      | Password      | Name      | Contact   | Picture     |
       | user1Email | user1Password | user1Name | user2Name | testing.jpg |
+      
+  @regression @id596
+  Scenario Outline: Verify you cannot send the invitation message twice
+  	Given There are 2 users where <Name> is me
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I wait up to 15 seconds until <ContactEmail> exists in backend search results
+    And I input in People picker search field user email <ContactEmail>
+    And I see user <Contact> found on People picker page
+    And I tap on NOT connected user name on People picker page <Contact>
+    And I see connect to <Contact> dialog
+    And I click Connect button on connect to dialog
+    And I see People picker page
+    And I click close button to dismiss people view
+    Then I see first item in contact list named <Contact>
+    When I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user email <ContactEmail>
+    And I see user <Contact> found on People picker page
+    And I tap on user on pending name on People picker page <Contact>
+    Then I see <Contact> user pending profile page
+    
+  	Examples: 
+      | Login      | Password      | Name      | Contact   | ContactEmail |
+      | user1Email | user1Password | user1Name | user2Name | user2Email   |

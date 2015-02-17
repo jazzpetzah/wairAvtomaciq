@@ -28,7 +28,7 @@ public class GroupChatInfoPage extends IOSPage {
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.80;
 	
 	private final String AQA_PICTURE_CONTACT = "AQAPICTURECONTACT";
-	private final String AQA_AVATAR_CONTACT = "AT";
+	private final String AQA_AVATAR_CONTACT = "AQAAVATAR";
 
 	private String conversationName = null;
 
@@ -99,38 +99,35 @@ public class GroupChatInfoPage extends IOSPage {
 		return new GroupChatPage(url, path);
 	}
 
-	public boolean areParticipantAvatarsCorrect() throws IOException {
+	public boolean areParticipantAvatarCorrect(String contact) throws IOException {
+		
+		String name = "", picture = "";
+		if (contact.toLowerCase().contains(AQA_PICTURE_CONTACT.toLowerCase())) {
+			name = AQA_PICTURE_CONTACT;
+			picture = "avatarPictureTest.png";
+		} else {
+			name = AQA_AVATAR_CONTACT;
+			picture = "avatarTest.png";
+		}
 		List<WebElement> participantAvatars = getCurrentParticipants();
 		BufferedImage avatarIcon = null;
-		boolean flag1 = false, flag2 = false;
+		boolean flag = false;
 		for (WebElement avatar : participantAvatars) {
 			avatarIcon = CommonUtils.getElementScreenshot(avatar, driver);
 			String avatarName = avatar.getAttribute("name");
-			if (avatarName.equalsIgnoreCase(AQA_PICTURE_CONTACT)) {
+			if (avatarName.equalsIgnoreCase(name)) {
 				BufferedImage realImage = ImageUtil.readImageFromFile(IOSPage
-						.getImagesPath() + "avatarPictureTest.png");
+						.getImagesPath() + picture);
 				double score = ImageUtil.getOverlapScore(realImage, avatarIcon);
 				if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
 					return false;
 				}
 				else {
-					flag1 = true;
-				}
-			}
-			if (avatarName.equalsIgnoreCase(AQA_AVATAR_CONTACT)) {
-				// must be a yellow user with initials AT
-				BufferedImage realImage = ImageUtil.readImageFromFile(IOSPage
-						.getImagesPath() + "avatarTest.png");
-				double score = ImageUtil.getOverlapScore(realImage, avatarIcon);
-				if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
-					return false;
-				}
-				else {
-					flag2 = true;
+					flag = true;
 				}
 			}
 		}
-		return flag1 && flag2;
+		return flag;
 	}
 
 	public void tapAndCheckAllParticipants(String user, boolean checkEmail) throws Exception {

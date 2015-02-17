@@ -15,7 +15,7 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
-
+  #https://wearezeta.atlassian.net/browse/ZIOS-3269
   @smoke @id331
   Scenario Outline: Send Hello to contact
     Given There are 2 users where <Name> is me
@@ -27,6 +27,7 @@ Feature: Conversation View
     And I swipe the text input cursor
     And I click Ping button
     Then I see You Pinged message in the dialog
+    And I swipe the text input cursor
     And I click Ping button
     Then I see You Pinged Again message in the dialog
 
@@ -114,7 +115,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | SoundCloudLink                                                                       |
       | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
-  @regression @id385
+  @staging @id385
   Scenario Outline: Verify the Media Bar dissapears after playback finishes - SoundCloud
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -134,7 +135,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | SoundCloudLink                                                                       |
       | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
-  @regression @id386
+  @staging @id386
   Scenario Outline: Verify the Media Bar disappears when playing media is back in view - SoundCloud
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

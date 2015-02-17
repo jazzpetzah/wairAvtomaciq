@@ -107,7 +107,7 @@ Feature: Conversation
       | Login      | Password      | Name      | Contact   | SoundCloudLink                               |
       | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/djsliinkbbc/2-test-me |
 
-  @staging @id379
+  @regression @id379
   Scenario Outline: Play/pause SoundCloud media link from the media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -130,7 +130,7 @@ Feature: Conversation
       | Login      | Password      | Name      | Contact   | SoundCloudLink                               |
       | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/djsliinkbbc/2-test-me |
 
-  @staging @id380
+  @regression @id380
   Scenario Outline: Conversation scrolls back to playing media when clicked on the media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

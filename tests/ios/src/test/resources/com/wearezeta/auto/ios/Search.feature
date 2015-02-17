@@ -123,7 +123,7 @@ Feature: Search
       | Login      | Password      | Name      | ConvoName    | UserCount | Contact   |
       | user1Email | user1Password | user1Name | TopGroupTest | 10        | user2Name |
 
-  @id1454 @staging
+  @id1454 @regression
   Scenario Outline: Verify sending a connection request to user chosen from search
     Given There are 2 users where <Name> is me
     Given User <UnconnectedUser> name starts with <StartLetter>
@@ -147,5 +147,54 @@ Feature: Search
     And I see <UnconnectedUser> user pending profile page
     
     Examples: 
+<<<<<<< HEAD
       | Login      | Password      | Name      | UnconnectedUser | NumOfMessageChars | StartLetter |
       | user1Email | user1Password | user1Name | user2Name       | 141               | T           |
+=======
+      | Login      | Password      | Name      | UnconnectedUserEmail | UnconnectedUser |
+      | user1Email | user1Password | user1Name | user2Email           | user2Name       |
+      
+  @staging @id763
+  Scenario Outline: I can still search for other people using the search field, regardless of whether I already added people from Top conversations
+  	Given There are <UserCount> users where <Name> is me
+    Given Myself is connected to all other users
+    Given I Sign in using login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I wait for 30 seconds
+    And I swipe down contact list
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    Then I tap on 3 top connections
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact>
+    And I see user <Contact> found on People picker page
+    And I tap on connected user <Contact> on People picker page
+    Then I see that <Number> contacts are selected
+     
+  	Examples: 
+      | Login      | Password      | Name      | UserCount | Contact   | Number |
+      | user1Email | user1Password | user1Name | 10        | user2Name |  4     |
+      
+  @regression @id1456
+  Scenario Outline: Verify you can unblock someone from search list
+  	Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Name> blocks user <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    When I dont see conversation <Contact> in contact list
+    And I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact>
+    And I see user <Contact> found on People picker page
+    And I tap on connected user <Contact> on People picker page
+    And I unblock user
+    And I type the message
+    And I send the message
+    Then I see message in the dialog
+    
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name | 
+>>>>>>> 8be45aa384fbdc76ace0cacf5ba461e5a8c4b521

@@ -61,7 +61,7 @@ public class RegistrationPageSteps {
 	 * @param email
 	 *            user email string
 	 * 
-	 * @throws Ecxeption
+	 * @throws Exception
 	 */
 	@When("I enter email (.*)")
 	public void IEnterEmail(String email) throws Exception {
@@ -347,7 +347,7 @@ public class RegistrationPageSteps {
 	public void IOpenActivationLinkInBrowser() throws Exception {
 		RegistrationPage registrationPage = CommonOSXSteps.senderPages
 				.getRegistrationPage();
-		registrationPage.activateUserViaBrowserAndSavePage();
+		registrationPage.activateUserFromBrowser();
 	}
 
 	/**

@@ -8,9 +8,10 @@ import java.util.regex.Pattern;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 
-public class ActivationMessage extends BackendMessage {
+public class ActivationMessage extends WireMessage {
 
-	public ActivationMessage(Message msg) {
+	public ActivationMessage(Message msg) throws MessagingException,
+			IOException {
 		super(msg);
 	}
 
@@ -27,24 +28,12 @@ public class ActivationMessage extends BackendMessage {
 		return links.get(0);
 	}
 
-	private static final String ZETA_PURPOSE_HEADER_NAME = "X-Zeta-Purpose";
-	public String getXZetaPurpose() throws MessagingException {
-		return this.getHeaderValue(ZETA_PURPOSE_HEADER_NAME);
-	}
-
-	private static final String ZETA_KEY_HEADER_NAME = "X-Zeta-Key";
-	public String getXZetaKey() throws MessagingException {
-		return this.getHeaderValue(ZETA_KEY_HEADER_NAME);
-	}
-
-	private static final String ZETA_CODE_HEADER_NAME = "X-Zeta-Code";
-	public String getXZetaCode() throws MessagingException {
-		return this.getHeaderValue(ZETA_CODE_HEADER_NAME);
-	}
+	private static final String MESSAGE_PURPOSE = "Activation";
 	
 	public static boolean isActivationMessage(Message msg) {
 		try {
-			return (msg.getHeader(ZETA_CODE_HEADER_NAME) != null);
+			return (msg.getHeader(ZETA_CODE_HEADER_NAME) != null && msg
+					.getHeader(ZETA_CODE_HEADER_NAME).equals(MESSAGE_PURPOSE));
 		} catch (MessagingException e) {
 			return false;
 		}

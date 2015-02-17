@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 
@@ -70,7 +71,7 @@ public class DialogPageSteps {
 
 	@When("^I type the message$")
 	public void WhenITypeTheMessage() throws Throwable {
-		message = CommonUtils.generateGUID();
+		message = CommonUtils.generateGUID().replace('-', 'x');
 		PagesCollection.dialogPage.sendStringToInput(message);
 	}
 
@@ -133,7 +134,7 @@ public class DialogPageSteps {
 
 	@When("^I type the message and send it$")
 	public void ITypeTheMessageAndSendIt() throws Throwable {
-		message = CommonUtils.generateGUID();
+		message = CommonUtils.generateGUID().replace('-', 'x');
 		PagesCollection.dialogPage.sendStringToInput(message + "\n");
 	}
 
@@ -261,7 +262,8 @@ public class DialogPageSteps {
 
 		boolean isNumberIncreased = false;
 		for (int i = 0; i < 3; i++) {
-			afterNumberOfImages = PagesCollection.dialogPage.getNumberOfImages();
+			afterNumberOfImages = PagesCollection.dialogPage
+					.getNumberOfImages();
 			if (afterNumberOfImages == beforeNumberOfImages + 1) {
 				isNumberIncreased = true;
 				break;
@@ -573,12 +575,25 @@ public class DialogPageSteps {
 				"Overlap between two images has not enough score. Expected >= 0.75, current = "
 						+ score, score >= 0.75d);
 	}
-	
+
 	@When("^Contact (.*) sends random message to user (.*)$")
-	public void UserSendsRandomMessageToConversation(String msgFromUserNameAlias,
-			String dstUserNameAlias) throws Exception {
+	public void UserSendsRandomMessageToConversation(
+			String msgFromUserNameAlias, String dstUserNameAlias)
+			throws Exception {
 		message = CommonUtils.generateRandomString(10);
-		CommonSteps.getInstance().UserSentMessageToUser(msgFromUserNameAlias, dstUserNameAlias, message);
+		CommonSteps.getInstance().UserSentMessageToUser(msgFromUserNameAlias,
+				dstUserNameAlias, message);
 	}
-	
+
+	/**
+	 * Scrolls to the end of the conversation
+	 * 
+	 * @step. ^I scroll to the end of the conversation$
+	 * 
+	 */
+	@When("^I scroll to the end of the conversation$")
+	public void IScrollToTheEndOfTheConversation() {
+		PagesCollection.dialogPage.scrollToEndOfConversation();
+	}
+
 }

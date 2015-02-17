@@ -40,7 +40,6 @@
         <driverTimeoutSeconds>10</driverTimeoutSeconds>
         <pictureResultsPath>/Users/shiznyak/Downloads/</pictureResultsPath>
         <resultImage>img/userpicture_mobile_check.jpg</resultImage> <!-- no need to change -->
-        <defaultImagePath>img/userpicture.jpg</defaultImagePath> <!-- no need to change -->
       </properties>
     </profile>
     <!-- Config for OSX tests -->
@@ -81,7 +80,6 @@
         <package>com.waz.zclient.dev</package>
         <activity>com.waz.zclient.MainActivity</activity>
         <resultImage>/Users/kaleksandrov/results/</resultImage>
-        <defaultImagePath>/Users/kaleksandrov/zautomation/tests/tools/img/</defaultImagePath>
         <defaultImagesPath>/Users/kaleksandrov/zautomation/tests/tools/img/</defaultImagesPath>
         <!-- IOS Config -->
         <ios.client.enabled>true</ios.client.enabled>

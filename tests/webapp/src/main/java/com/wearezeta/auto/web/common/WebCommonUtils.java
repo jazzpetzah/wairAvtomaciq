@@ -16,8 +16,16 @@ public class WebCommonUtils extends CommonUtils {
 		return getValueFromConfig(c, "browserName");
 	}
 
-	public static String getPlatformNameFromConfig(Class<?> c)
-			throws Exception {
+	public static String getPlatformNameFromConfig(Class<?> c) throws Exception {
 		return getValueFromConfig(c, "platformName");
+	}
+
+	public static String getPicturesPath() {
+		return String.format("%s/Documents", System.getProperty("user.home"));
+	}
+
+	public static String getFullPicturePath(String pictureName) {
+		return String.format("%s/Documents/%s",
+				System.getProperty("user.home"), pictureName);
 	}
 }

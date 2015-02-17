@@ -124,10 +124,13 @@ public class GroupChatPage extends DialogPage {
 		for (int i = 0; i < 3; i ++) {
 			if (DriverUtils.isElementDisplayed(openConversationDetails)) {
 				openConversationDetails.click();
-				DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameExitGroupInfoPageButton), 5);
+				DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameAddContactToChatButton), 5);
 			}
-			if (DriverUtils.isElementDisplayed(closeInfoPage)) {
+			if (DriverUtils.isElementDisplayed(addInfoPage)) {
 				break;
+			}
+			else {
+				this.minimizeApplication(3);
 			}
 		}
 		

@@ -37,7 +37,7 @@ public abstract class BasePage {
 	protected static HashMap<String, WebDriverWait> waits = new HashMap<String, WebDriverWait>();
 	private static final Logger log = ZetaLogger.getLog(BasePage.class
 			.getSimpleName());
-
+	private static ZetaElementLocatorFactory zetaLocatorFactory;
 	private String pagePlatform;
 
 	protected synchronized void InitConnection(String URL,
@@ -58,8 +58,28 @@ public abstract class BasePage {
 						capabilities));
 			} else if (platform.equals(CommonUtils.PLATFORM_NAME_WEB)) {
 				capabilities.setCapability("platformName", "ANY");
-				drivers.put(platform, new ZetaWebAppDriver(new URL(URL),
-						capabilities));
+				int tryNum = 0;
+				final int maxTries = 3;
+				WebDriverException savedException = null;
+				do {
+					// Try to reconnect WebDriver,
+					// because sometimes Safari driver is non-responsive
+					try {
+						drivers.put(platform, new ZetaWebAppDriver(
+								new URL(URL), capabilities));
+						break;
+					} catch (WebDriverException e) {
+						if (e.getMessage().contains("Failed to connect")) {
+							savedException = e;
+							tryNum++;
+						} else {
+							throw e;
+						}
+					}
+				} while (tryNum < maxTries);
+				if (tryNum >= maxTries) {
+					throw savedException;
+				}
 			} else {
 				throw new RuntimeException(String.format(
 						"Platform name '%s' is unknown", platform));
@@ -87,7 +107,7 @@ public abstract class BasePage {
 
 		pagePlatform = platform;
 
-		ZetaElementLocatorFactory zetaLocatorFactory = new ZetaElementLocatorFactory(
+		zetaLocatorFactory = new ZetaElementLocatorFactory(
 				drivers.get(platform), Long.parseLong(CommonUtils
 						.getDriverTimeoutFromConfig(getClass())),
 				AppiumFieldDecorator.DEFAULT_TIMEUNIT);
@@ -165,5 +185,10 @@ public abstract class BasePage {
 
 	public static RemoteWebDriver getDriver(String id) {
 		return drivers.get(id);
+	}
+
+	public static void changeZetaLocatorTimeout(long seconds) {
+		zetaLocatorFactory.resetImplicitlyWaitTimeOut(seconds,
+				AppiumFieldDecorator.DEFAULT_TIMEUNIT);
 	}
 }

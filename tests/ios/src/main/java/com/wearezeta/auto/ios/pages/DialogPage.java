@@ -53,7 +53,7 @@ public class DialogPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathYouPinged)
 	private WebElement youPinged;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathOpenConversationDetails)
+	@FindBy(how = How.NAME, using = IOSLocators.nameOpenConversationDetails)
 	protected WebElement openConversationDetails;
 
 	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameDialogMessages)
@@ -110,8 +110,8 @@ public class DialogPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathYouAddedMessageCellFormat)
 	private List<WebElement> youAddedCell;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.nameExitGroupInfoPageButton)
-	protected WebElement closeInfoPage;
+	@FindBy(how = How.NAME, using = IOSLocators.nameAddContactToChatButton)
+	protected WebElement addInfoPage;
 
 	private String url;
 	private String path;
@@ -306,10 +306,13 @@ public class DialogPage extends IOSPage {
 			if (DriverUtils.isElementDisplayed(openConversationDetails)) {
 				openConversationDetails.click();
 				DriverUtils.waitUntilElementAppears(driver,
-						By.name(IOSLocators.nameExitGroupInfoPageButton), 5);
+						By.name(IOSLocators.nameAddContactToChatButton), 5);
 			}
-			if (DriverUtils.isElementDisplayed(closeInfoPage)) {
+			if (DriverUtils.isElementDisplayed(addInfoPage)) {
 				break;
+			}
+			else {
+				this.minimizeApplication(3);
 			}
 		}
 
@@ -751,5 +754,13 @@ public class DialogPage extends IOSPage {
 				driver.findElements(By.xpath(xpath));
 		log.debug("Retrieved number of Pings in conversation: " + pingedMessages.size());
 		return pingedMessages.size();
+	}
+	
+	public DialogPage scrollToEndOfConversation(){
+		DialogPage page = null;
+		WebElement el = driver.findElement(By
+				.xpath(IOSLocators.xpathLastChatMessage));
+		DriverUtils.scrollToElement(driver, el);
+		return page;
 	}
 }

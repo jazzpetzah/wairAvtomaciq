@@ -7,12 +7,14 @@ import org.openqa.selenium.support.How;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
-public class ConnectToPopup extends WebPage{
+public class ConnectToPopupPage extends WebPage{
 
+	@SuppressWarnings("unused")
 	private String url;
+	@SuppressWarnings("unused")
 	private String path;
 	
-	public ConnectToPopup(String URL, String path) throws Exception {
+	public ConnectToPopupPage(String URL, String path) throws Exception {
 		super(URL, path);
 		
 		this.url = URL;

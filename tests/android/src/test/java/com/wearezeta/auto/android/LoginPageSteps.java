@@ -47,6 +47,11 @@ public class LoginPageSteps {
 	public void WhenIPressSignInButton() throws IOException {
 		PagesCollection.loginPage.SignIn();
 	}
+	
+	@When("I press FORGOT PASSWORD button")
+	public void WhenIPressForgotPasswordButton() throws Exception {
+		PagesCollection.settingsPage = PagesCollection.loginPage.forgotPassword();
+	}
 
 	@When("I press Log in button")
 	public void WhenIPressLogInButton() throws Exception {

@@ -214,7 +214,7 @@ public class CommonSteps {
 									iosAppiumPath, iosPath, true);
 						} else {
 							com.wearezeta.auto.ios.pages.PagesCollection.loginPage = new com.wearezeta.auto.ios.pages.LoginPage(
-									iosAppiumPath, iosPath, false);
+									iosAppiumPath, iosPath, true);
 						}
 						com.wearezeta.auto.ios.pages.PagesCollection.loginPage.isLoginButtonVisible();
 					} catch (MalformedURLException e) {

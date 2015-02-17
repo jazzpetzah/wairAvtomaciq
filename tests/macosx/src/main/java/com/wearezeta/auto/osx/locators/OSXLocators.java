@@ -2,12 +2,8 @@ package com.wearezeta.auto.osx.locators;
 
 public final class OSXLocators {
 	
-	public static final String idLoginPage = "_NS:6";
 	public static final String xpathMainWindow = "//AXWindow[@AXRoleDescription='standard window']";
 	
-	public static final String nameSignInButton = "SIGN IN";
-	public static final String nameRegisterButton = "REGISTER";
-	public static final String xpathAcceptTermsOfServiceCheckBox = "//AXCheckBox";
 	public static final String xpathWrongCredentialsMessage = "//AXTextArea[starts-with(@AXValue, 'WRONG ADDRESS OR PASSWORD')]";
 	
 	public static final String idLoginField = "TempLoginViewControllerUsernameField";
@@ -188,8 +184,34 @@ public final class OSXLocators {
 	
 	public static final String xpathAvatarFullScreenWindow = "//AXWindow[@AXRoleDescription='floating window']";
 
+	public static final class LoginPage {
+		
+		public static final String idLoginPage = "_NS:6";
+
+		public static final String xpathAcceptTermsOfServiceCheckBox = "//AXCheckBox";
+		
+		public static final String nameSignInButton = "SIGN IN";
+		
+		public static final String nameRegisterButton = "REGISTER";
+		
+		public static final String xpathForgotPasswordButton = "//AXButton[contains(@AXTitle, 'FORGOT PASSWORD')]";
+	}
+	
 	public static final class RegistrationPage {
 		
 		public static final String ACTIVATION_RESPONSE_VERIFIED = "Account verified.";
+	}
+	
+	public static final class ChangePasswordPage {
+		
+		public static final String xpathEmailTextField = "//AXTextField[@AXPlaceholderValue='Email']";
+		
+		public static final String xpathPasswordTextField = "//AXTextField[@AXPlaceholderValue='Password']";
+		
+		public static final String nameChangePasswordButton = "CHANGE PASSWORD";
+		
+		public static final String xpathPasswordChangedMessage = "//AXStaticText[@AXValue='Password changed']";
+	
+		public static final String nameQuitSafariButton = "Quit Safari";
 	}
 }

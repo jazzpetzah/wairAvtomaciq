@@ -36,9 +36,9 @@ public class PersonalInfoPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathPersonalInfoPage)
 	private WebElement personalPage;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameCameraButton)
-	private WebElement cameraButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.namePictureButton)
+	private WebElement pictureButton;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathProfileNameEditField)
 	private WebElement profileNameEditField;
@@ -174,7 +174,7 @@ public class PersonalInfoPage extends IOSPage {
 
 		CameraRollPage page;
 		page = new CameraRollPage(url, path);
-		cameraButton.click();
+		pictureButton.click();
 
 		return page;
 	}

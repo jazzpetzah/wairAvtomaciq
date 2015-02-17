@@ -186,14 +186,14 @@ public class PeoplePickerPageSteps {
 		Assert.assertTrue("Add to conversation button is visible",
 				PagesCollection.peoplePickerPage.addToConversationNotVisible());
 	}
-	
+
 	@When("^I click Go button to create 1:1 conversation$")
 	public void WhenIClickOnGoButtonForSingle() throws Exception {
-		PagesCollection.iOSPage =  PagesCollection.peoplePickerPage
+		PagesCollection.iOSPage = PagesCollection.peoplePickerPage
 				.clickOnGoButton(false);
 	}
 
-	@When("^I click on Go button to create 1:1 conversation$")
+	@When("^I click on Go button$")
 	public void WhenIClickOnGoButton() throws Exception {
 		PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.peoplePickerPage
 				.clickOnGoButton(true);
@@ -301,7 +301,23 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I unblock user$")
 	public void IUnblockUser() throws Exception {
-		PagesCollection.dialogPage = PagesCollection.peoplePickerPage.unblockUser();
-		
+		PagesCollection.dialogPage = PagesCollection.peoplePickerPage
+				.unblockUser();
+
+	}
+
+	/**
+	 * This step checks if the number of the selected contacts is correct.
+	 * 
+	 * @step. ^I see that (\\d+) contacts are selected$
+	 * 
+	 * @param number
+	 *            expected number of contacts
+	 * 
+	 */
+	@Then("^I see that (\\d+) contacts are selected$")
+	public void ISeeThatContactsAreSelected(int number) {
+		int numberOfSelectedTopPeople = PagesCollection.peoplePickerPage.getNumberOfSelectedTopPeople();
+		Assert.assertEquals(number, numberOfSelectedTopPeople);
 	}
 }

@@ -1,6 +1,11 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
+
+import javax.imageio.ImageIO;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -9,6 +14,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
@@ -16,9 +23,14 @@ import com.wearezeta.auto.ios.locators.IOSLocators;
 public class ContactListPage extends IOSPage {
 	// private static final Logger log = ZetaLogger.getLog("iOS:" +
 	// ContactListPage.class.getSimpleName());
+	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.90;
+	private final double MIN_ACCEPTABLE_IMAGE_UNREADDOT_VALUE = 0.99;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathContactListNames)
 	private List<WebElement> contactListNames;
+
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathContactListCells)
+	private List<WebElement> contactListCells;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameProfileName)
 	private WebElement profileName;
@@ -44,6 +56,12 @@ public class ContactListPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameTutorialView)
 	private WebElement tutorialView;
 
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathFirstInContactList)
+	private WebElement firstContactInList;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathContactListContainer)
+	private WebElement contactListContainer;
+		
 	private String url;
 	private String path;
 	private int oldLocation = 0;
@@ -57,8 +75,7 @@ public class ContactListPage extends IOSPage {
 	public boolean isMyUserNameDisplayedFirstInContactList(String name) {
 		if (DriverUtils.isElementDisplayed(myUserNameInContactList)) {
 			return myUserNameInContactList.getText().equals(name);
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
@@ -157,6 +174,32 @@ public class ContactListPage extends IOSPage {
 		return contact;
 	}
 
+	private WebElement findCellInContactList(String name) {
+		Boolean flag = true;
+		WebElement contact = null;
+		for (int i = 0; i < 5; i++) {
+			for (WebElement listCell : contactListCells) {
+				for (WebElement cellText : contactListNames) {
+					if (cellText.getText().equals(name)) {
+						contact = listCell;
+						flag = false;
+						break;
+					}
+				}
+			}
+			if (flag) {
+				WebElement el = contactListCells
+						.get(contactListCells.size() - 1);
+				wait.until(ExpectedConditions.visibilityOf(el));
+				wait.until(ExpectedConditions.elementToBeClickable(el));
+				DriverUtils.scrollToElement(driver, el);
+			} else {
+				break;
+			}
+		}
+		return contact;
+	}
+
 	public boolean isChatInContactList(String name) {
 		boolean flag = findNameInContactList(name) != null;
 		return flag;
@@ -177,9 +220,6 @@ public class ContactListPage extends IOSPage {
 
 	public IOSPage swipeRightOnContact(int time, String contact)
 			throws Exception {
-		oldLocation = driver.findElementByXPath(
-				String.format(IOSLocators.xpathMutedIcon, contact))
-				.getLocation().x;
 		DriverUtils.swipeRight(driver, findNameInContactList(contact), time);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
@@ -307,6 +347,56 @@ public class ContactListPage extends IOSPage {
 		boolean chatExist = firstChat.contains(name1)
 				&& firstChat.contains(name2) && firstChat.contains(name3);
 		return chatExist;
+	}
+
+	public void silenceConversation(String conversation) {
+		WebElement contact = findNameInContactList(conversation);
+		DriverUtils.clickSilenceConversationButton(driver, contact);
+	}
+
+	public boolean isConversationSilenced(String conversation)
+			throws IOException {
+		BufferedImage silencedConversation = null;
+		WebElement element = findCellInContactList(conversation);
+		silencedConversation = CommonUtils
+				.getElementScreenshot(element, driver);
+		BufferedImage referenceImage = ImageUtil.readImageFromFile(IOSPage
+				.getImagesPath() + "silenceVerification.png");
+		double score = ImageUtil.getOverlapScore(referenceImage,
+				silencedConversation);
+		if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
+			return false;
+		}
+		return true;
+	}
+	
+	public void archiveConversation(String conversation) {
+		WebElement contact = findNameInContactList(conversation);
+		DriverUtils.clickArchiveConversationButton(driver, contact);
+	}
+	
+	public boolean unreadDotIsVisible(boolean visible, String conversation) throws IOException{
+		BufferedImage unreadDot = null;
+		BufferedImage referenceImage = null;
+		double score = 0;
+		WebElement contact = findCellInContactList(conversation);
+		unreadDot = getScreenshotByCoordinates(contact.getLocation().x, contact.getLocation().y + contactListContainer.getLocation().y, contact.getSize().width/4, contact.getSize().height*2);
+		if (visible == true){
+		referenceImage = ImageUtil.readImageFromFile(IOSPage
+				.getImagesPath() + "unreadDot.png");
+		score = ImageUtil.getOverlapScore(referenceImage,
+				unreadDot);
+		} else {
+			referenceImage = ImageUtil.readImageFromFile(IOSPage
+					.getImagesPath() + "noUnreadDot.png");
+			score = ImageUtil.getOverlapScore(referenceImage,
+					unreadDot);
+		}
+		
+		if (score <= MIN_ACCEPTABLE_IMAGE_UNREADDOT_VALUE) {
+			return false;
+		}
+		return true;
 	}
 
 }

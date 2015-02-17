@@ -28,6 +28,13 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 		}
 		PagesCollection.peoplePickerPage.searchForUser(user);
+		
+		// waiting till status of found contact will be changed to connection
+		// requires further investigation (possible defect)
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+		}
 	}
 
 	/**
@@ -40,10 +47,6 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I select (.*) from People Picker results$")
 	public void ISelectUserFromPeoplePickerResults(String user) {
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-		}
 		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
 		PagesCollection.peoplePickerPage.selectUserFromSearchResult(user);
 	}
@@ -59,7 +62,7 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * Clikcs on user found by search to open connect dialog
+	 * Clicks on user found by search to open connect dialog
 	 * 
 	 * @step. I click on not connected user (.*) found by Search
 	 * 
@@ -71,7 +74,8 @@ public class PeoplePickerPageSteps {
 	@When("I click on not connected user (.*) found by Search")
 	public void IClickNotConnecteUserOnSearch(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		PagesCollection.connectToPopup = PagesCollection.peoplePickerPage.clickNotConnectedUserName(name);
+		PagesCollection.connectToPopupPage = PagesCollection.peoplePickerPage
+				.clickNotConnectedUserName(name);
 	}
 
 	/**

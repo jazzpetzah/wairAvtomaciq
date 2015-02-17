@@ -7,6 +7,7 @@ import cucumber.api.java.en.When;
 
 public class ConnectToPageSteps {
 
+	@SuppressWarnings("unused")
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
@@ -17,6 +18,6 @@ public class ConnectToPageSteps {
 	 */
 	@When("^I click Connect button on Connect to popup$")
 	public void IAcceptConnectionRequestFromUser() {
-		PagesCollection.connectToPopup.clickConnectButton();
+		PagesCollection.connectToPopupPage.clickConnectButton();
 	}
 }

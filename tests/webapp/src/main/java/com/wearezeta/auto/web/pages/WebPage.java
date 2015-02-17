@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -64,15 +65,19 @@ public class WebPage extends BasePage {
 		driver = (ZetaWebAppDriver) drivers.get(CommonUtils.PLATFORM_NAME_WEB);
 		wait = waits.get(CommonUtils.PLATFORM_NAME_WEB);
 
-		driver.manage().window().maximize();
+		driver.setFileDetector(new LocalFileDetector());
+		try {
+			driver.manage().window().maximize();
+		}catch (Exception ex ) {
+			
+		}
 		
 		if (doNavigate) {
-			// Workaround for Safari
-			// We should wait for cookies to be set after applying beta code
-			// or invitation code page will appear again
-			// Also for Chrome
-			Thread.sleep(1000);
-
+			// After beta code is applied we should wait till sign in page
+			// pointed to production backend will be loaded before loading
+			// staging page
+			Thread.sleep(5000);
+			
 			driver.navigate().to(path);
 		}
 	}

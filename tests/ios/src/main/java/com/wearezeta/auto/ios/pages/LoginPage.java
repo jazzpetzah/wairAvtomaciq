@@ -111,11 +111,19 @@ public class LoginPage extends IOSPage {
 	}
 	
 	public PeoplePickerPage clickLaterButton() throws Exception {
-		if(DriverUtils.isElementDisplayed(shareButton)) {
+		if (DriverUtils.isElementDisplayed(shareButton)) {
 			shareButton.click();
 			return new PeoplePickerPage(url, path);
+		} else {
+			// workaround for Sync Engine scenario
+			// on real iOS device when contacts are shared there is no
+			// Share Contacts dialog but people picker page appears, which we
+			// not process in case no Share Contacts dialog
+			if (!CommonUtils.getIsSimulatorFromConfig(LoginPage.class)) {
+				return new PeoplePickerPage(url, path);
+			}
 		}
-		
+
 		return null;
 	}
 	
@@ -130,8 +138,7 @@ public class LoginPage extends IOSPage {
 		
 		if (DriverUtils.waitUntilElementDissapear(driver, By.name(IOSLocators.nameLoginButton), 40)) {
 			return new ContactListPage(url, path);
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
@@ -157,14 +164,9 @@ public class LoginPage extends IOSPage {
 	}
 
 	public void setLogin(String login) throws Exception {
-		if (CommonUtils.getIsSimulatorFromConfig(LoginPage.class)) {
-			DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameLoginField));
-			loginField.sendKeys(login);
-		} else {
-			String script = String.format(
-					IOSLocators.scriptSignInEmailPath + ".setValue(\"%s\")", login);
-			driver.executeScript(script);
-		}
+		String script = String.format(
+				IOSLocators.scriptSignInEmailPath + ".setValue(\"%s\")", login);
+		driver.executeScript(script);
 	}
 
 	public String getPassword() {
@@ -172,13 +174,9 @@ public class LoginPage extends IOSPage {
 	}
 
 	public void setPassword(String password) throws Exception {
-		if (CommonUtils.getIsSimulatorFromConfig(LoginPage.class)) {
-			passwordField.sendKeys(password);
-		} else {
-			String script = String.format(
-					IOSLocators.scriptSignInPasswordPath + ".setValue(\"%s\")", password);
-			driver.executeScript(script);
-		}
+		String script = String.format(
+				IOSLocators.scriptSignInPasswordPath + ".setValue(\"%s\")", password);
+		driver.executeScript(script);
 	}
 	
 	public boolean waitForLogin() throws InterruptedException {

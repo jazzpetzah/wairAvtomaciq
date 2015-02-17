@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @smoke @id9
+  @smoke @id9 
   Scenario Outline: Register new user using front camera
     Given I see sign in screen
     When I press Join button
@@ -12,8 +12,11 @@ Feature: Registration
     And I enter password <Password>
     And I submit registration data
     Then I see confirmation page
-    And I verify registration address
-    And I see Contact list with my name <Name>
+    And I minimize the application
+    And I activate user by URL
+    And I restore the application
+    #And I verify registration address
+    And I see Contact list with no contacts and my name <Name>
 
     Examples: 
       | Email      | Password      | Name      |
