@@ -763,4 +763,15 @@ public class DialogPage extends IOSPage {
 		DriverUtils.scrollToElement(driver, el);
 		return page;
 	}
+
+	public boolean isTitleBarDisplayed() throws InterruptedException {
+		//wait for the title bar to animate onto the page
+		Thread.sleep(1000);
+		//check if the title bar is off the page or not
+		return driver.findElement(By.xpath(IOSLocators.xpathDialogTitleBar)).getLocation().y>0;
+	}
+
+	public boolean isTitleBarNamed(String chatName) {
+		return driver.findElement(By.xpath(IOSLocators.xpathDialogTitleBar)).getAttribute("name").equals(chatName.toUpperCase());
+	}
 }
