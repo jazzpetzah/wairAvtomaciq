@@ -80,10 +80,9 @@ public class WebCommonUtils extends CommonUtils {
 	}
 
 	public static void putScriptsOnExecutionNode(String node) throws Exception {
-		String commandTemplate = "echo %s| sudo -S "
-				+ "/usr/local/bin/sshpass -p %s "
-				+ "scp -r UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
-				+ "%s@/Users/%s/Documents/scripts/ %s@%s:%s";
+		String commandTemplate = "sshpass -p %s "
+				+ "scp -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
+				+ "%s@/Users/%s/Documents/scripts/* %s@%s:%s";
 
 		String command = String.format(commandTemplate,
 				getJenkinsSuperUserPassword(CommonUtils.class),
@@ -99,7 +98,12 @@ public class WebCommonUtils extends CommonUtils {
 
 	public static void executeAppleScriptFromFile(String script)
 			throws Exception {
-		String command = "osascript " + script;
+		String commandTemplate = "sshpass -p %s ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no %s@%s osascript %s";
+		String command = String.format(commandTemplate,
+				getJenkinsSuperUserPassword(CommonUtils.class),
+				getJenkinsSuperUserLogin(CommonUtils.class),
+				WebAppExecutionContext.seleniumNodeIp,
+				script);
 		WebCommonUtils
 				.executeOsXCommand(new String[] { "bash", "-c", command });
 	}
