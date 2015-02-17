@@ -28,6 +28,10 @@ public final class WebAppLocators {
 		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
 
 		public static final String classArchiveButton = "zi-archive";
+		
+		public static final String classMuteButton = "zi-silence"; 
+		
+		public static final String classMuteIcon = "conversation-muted";
 
 		public static final String classActionsButton = "zi-actions";
 

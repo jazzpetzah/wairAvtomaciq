@@ -104,6 +104,31 @@ public class ContactListPage extends WebPage {
 
 		archiveButton.click();
 	}
+	
+	public void clickMuteConversationForContact(String conversationName) {
+
+		WebElement contact = getContactWithName(conversationName);
+
+		List<WebElement> muteButtons = contact.findElements(By
+				.className(WebAppLocators.ContactListPage.classMuteButton));
+		for (WebElement e: muteButtons) {
+			if(e.isDisplayed()) {
+				DriverUtils.waitUntilElementClickable(driver, e);
+
+				e.click();
+			}
+		}
+	}
+	
+	public boolean isConversationMuted(String conversationName) {
+
+		WebElement contact = getContactWithName(conversationName);
+
+		WebElement muteIcon = contact.findElement(By
+				.className(WebAppLocators.ContactListPage.classMuteIcon));
+
+		return muteIcon.isDisplayed();
+	}
 
 	public void clickActionsButtonForContact(String conversationName) {
 
