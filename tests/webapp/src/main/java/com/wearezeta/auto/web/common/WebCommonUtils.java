@@ -82,7 +82,7 @@ public class WebCommonUtils extends CommonUtils {
 	public static void putScriptsOnExecutionNode(String node) throws Exception {
 		String commandTemplate = "sshpass -p %s "
 				+ "scp -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
-				+ "%s@/Users/%s/Documents/scripts/* %s@%s:%s";
+				+ "/Users/%s/Documents/scripts/* %s@%s:%s";
 
 		String command = String.format(commandTemplate,
 				getJenkinsSuperUserPassword(CommonUtils.class),
