@@ -30,6 +30,8 @@ public class PerformanceSteps {
 	 * Starts standard actions loop (read messages/send messages) to measure
 	 * application performance
 	 * 
+	 * @step. ^I (.*) start test cycle for (\\d+) minutes
+	 * 
 	 * @param nameAlias
 	 *            user name alias
 	 * @param time
