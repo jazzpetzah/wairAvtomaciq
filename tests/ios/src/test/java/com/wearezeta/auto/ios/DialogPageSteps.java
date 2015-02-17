@@ -158,7 +158,7 @@ public class DialogPageSteps {
 	@When("^I swipe up on dialog page to open other user personal page$")
 	public void WhenISwipeUpOnDialogPage() throws Exception {
 		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.dialogPage
-				.swipeUp(500);
+				.swipeUp(1000);
 	}
 
 	@Then("^I see message in the dialog$")
