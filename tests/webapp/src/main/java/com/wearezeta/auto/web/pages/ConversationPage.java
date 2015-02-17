@@ -10,7 +10,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.WebAppConstants;
@@ -19,6 +18,7 @@ import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class ConversationPage extends WebPage {
 
+	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(ConversationPage.class
 			.getSimpleName());
 
@@ -87,10 +87,9 @@ public class ConversationPage extends WebPage {
 
 	public WebPage clickShowUserProfileButton(boolean isGroup) throws Exception {
 		showParticipants.click();
-		if(isGroup) {
+		if (isGroup) {
 			return new ParticipantsPopupPage(url, path);
-		}
-		else {
+		} else {
 			return new UserProfilePopupPage(url, path);
 		}
 	}
@@ -100,7 +99,8 @@ public class ConversationPage extends WebPage {
 		return new ParticipantsPopupPage(url, path);
 	}
 
-	public void sendPicture(String pictureName) throws Exception {
+	public void sendPicture(String pictureName, boolean isGroup)
+			throws Exception {
 		final String picturePath = WebCommonUtils
 				.getFullPicturePath(pictureName);
 		final String showImageLabelJScript = "$('"
@@ -112,7 +112,12 @@ public class ConversationPage extends WebPage {
 			// sendKeys() call to file input element does nothing on safari
 			// so instead of sendKeys() we are using AppleScript which chooses
 			// required image in open file dialog
-			WebCommonUtils.executeAppleScriptFromFile(WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT);
+			WebCommonUtils.formatTextInFileAndSave(
+					WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT,
+					new String[] { (isGroup ? "-2" : "-3"),
+							WebCommonUtils.getPicturesPath(), pictureName });
+			WebCommonUtils
+					.executeAppleScriptFromFile(WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT);
 		} else {
 			final String showPathInputJScript = "$('"
 					+ WebAppLocators.ConversationPage.cssSendImageLabel

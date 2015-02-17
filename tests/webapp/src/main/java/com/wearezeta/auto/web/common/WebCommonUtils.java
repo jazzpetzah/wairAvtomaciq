@@ -1,7 +1,10 @@
 package com.wearezeta.auto.web.common;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.URL;
 
@@ -107,5 +110,26 @@ public class WebCommonUtils extends CommonUtils {
 				WebAppExecutionContext.seleniumNodeIp, script);
 		WebCommonUtils
 				.executeOsXCommand(new String[] { "bash", "-c", command });
+	}
+
+	public static void formatTextInFileAndSave(String file, Object[] params)
+			throws IOException {
+		FileInputStream fis = new FileInputStream(file);
+		InputStreamReader isr = new InputStreamReader(fis);
+		BufferedReader br = new BufferedReader(isr);
+		String script = "";
+		String t;
+		while ((t = br.readLine()) != null) {
+			if (!t.trim().isEmpty()) {
+				script += t + "\n";
+			}
+		}
+		br.close();
+		isr.close();
+		fis.close();
+		script = String.format(script, params);
+		PrintWriter out = new PrintWriter(file);
+		out.write(script);
+		out.close();
 	}
 }

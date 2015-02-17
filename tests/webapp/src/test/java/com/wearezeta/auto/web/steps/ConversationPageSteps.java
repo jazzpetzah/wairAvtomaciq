@@ -106,9 +106,10 @@ public class ConversationPageSteps {
 	 *            the ~/Documents folder
 	 * @throws Exception
 	 */
-	@When("^I send picture (.*)")
-	public void WhenISendPicture(String pictureName) throws Exception {
-		PagesCollection.conversationPage.sendPicture(pictureName);
+	@When("^I send picture (.*) to ([a-z]*) conversation")
+	public void WhenISendPicture(String chatType, String pictureName) throws Exception {
+		boolean isGroup = (chatType.equals("group")?true:false);
+		PagesCollection.conversationPage.sendPicture(pictureName, isGroup);
 	}
 
 	/**
