@@ -51,9 +51,8 @@ public class CommonWebAppSteps {
 		if (WebCommonUtils.getWebAppBrowserNameFromConfig(CommonWebAppSteps.class).equals(WebAppConstants.Browser.SAFARI)) {
 			try {
 				WebAppExecutionContext.seleniumNodeIp = WebCommonUtils.getNodeIp(PagesCollection.invitationCodePage.getDriver());
-				WebCommonUtils.putScriptsOnExecutionNode(WebAppExecutionContext.seleniumNodeIp);
 			} catch (Exception e) {
-				log.debug("Error when trying to prepare for send picture test on Safari. They expected to be failed. Error message for more info: " + e.getMessage());
+				log.debug("Error on checking node IP for Safari test. Error message: " + e.getMessage());
 				e.printStackTrace();
 			}
 		}

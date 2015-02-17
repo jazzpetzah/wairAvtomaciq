@@ -11,6 +11,6 @@ public class WebAppConstants {
 		
 		public static final String SCRIPTS_FOLDER = "/var/tmp/safari_scripts/";
 		
-		public static final String SAFARI_SEND_PICTURE_SCRIPT = SCRIPTS_FOLDER + "safari_choose_image.txt";
+		public static final String SAFARI_SEND_PICTURE_SCRIPT = "safari_choose_image.txt";
 	}
 }

@@ -13,6 +13,7 @@ import org.openqa.selenium.support.How;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.WebAppConstants;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
@@ -112,12 +113,20 @@ public class ConversationPage extends WebPage {
 			// sendKeys() call to file input element does nothing on safari
 			// so instead of sendKeys() we are using AppleScript which chooses
 			// required image in open file dialog
-			WebCommonUtils.formatTextInFileAndSave(
-					WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT,
-					new String[] { (isGroup ? "-2" : "-3"),
-							WebCommonUtils.getPicturesPath(), pictureName });
+			String scriptDestination = WebAppConstants.Scripts.SCRIPTS_FOLDER
+					+ WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT;
 			WebCommonUtils
-					.executeAppleScriptFromFile(WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT);
+					.formatTextInFileAndSave(
+							WebCommonUtils.getScriptsTemplatesPath()
+									+ WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT,
+							scriptDestination,
+							new String[] { (isGroup ? "-2" : "-3"),
+									WebCommonUtils.getPicturesPath(),
+									pictureName });
+			WebCommonUtils
+					.putScriptsOnExecutionNode(WebAppExecutionContext.seleniumNodeIp);
+			WebCommonUtils
+					.executeAppleScriptFromFile(scriptDestination);
 		} else {
 			final String showPathInputJScript = "$('"
 					+ WebAppLocators.ConversationPage.cssSendImageLabel

@@ -1,6 +1,7 @@
 package com.wearezeta.auto.web.common;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -42,6 +43,10 @@ public class WebCommonUtils extends CommonUtils {
 		return Integer.parseInt(getValueFromConfig(c, "hubPort"));
 	}
 
+	public static String getScriptsTemplatesPath() {
+		return String.format("%s/Documents/scripts/", System.getProperty("user.home"));
+	}
+	
 	public static String getPicturesPath() {
 		return String.format("%s/Documents", System.getProperty("user.home"));
 	}
@@ -87,11 +92,12 @@ public class WebCommonUtils extends CommonUtils {
 	public static void putScriptsOnExecutionNode(String node) throws Exception {
 		String commandTemplate = "sshpass -p %s "
 				+ "scp -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
-				+ "/Users/%s/Documents/scripts/* %s@%s:%s";
+				+ "%s/* %s@%s:%s";
 
 		String command = String.format(commandTemplate,
 				getJenkinsSuperUserPassword(CommonUtils.class),
 				getJenkinsSuperUserLogin(CommonUtils.class),
+				WebAppConstants.Scripts.SCRIPTS_FOLDER,
 				getJenkinsSuperUserLogin(CommonUtils.class),
 				WebAppExecutionContext.seleniumNodeIp,
 				WebAppConstants.Scripts.SCRIPTS_FOLDER);
@@ -112,9 +118,9 @@ public class WebCommonUtils extends CommonUtils {
 				.executeOsXCommand(new String[] { "bash", "-c", command });
 	}
 
-	public static void formatTextInFileAndSave(String file, Object[] params)
+	public static void formatTextInFileAndSave(String srcFile, String dstFile, Object[] params)
 			throws IOException {
-		FileInputStream fis = new FileInputStream(file);
+		FileInputStream fis = new FileInputStream(srcFile);
 		InputStreamReader isr = new InputStreamReader(fis);
 		BufferedReader br = new BufferedReader(isr);
 		String script = "";
@@ -128,7 +134,10 @@ public class WebCommonUtils extends CommonUtils {
 		isr.close();
 		fis.close();
 		script = String.format(script, params);
-		PrintWriter out = new PrintWriter(file);
+		File dstFileInstance = new File(dstFile);
+		dstFileInstance.getParentFile().mkdirs();
+		dstFileInstance.createNewFile();
+		PrintWriter out = new PrintWriter(dstFile);
 		out.write(script);
 		out.close();
 	}
