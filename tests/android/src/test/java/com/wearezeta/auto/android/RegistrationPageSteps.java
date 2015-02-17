@@ -28,7 +28,7 @@ public class RegistrationPageSteps {
 	public void WhenIPressCameraButton() throws IOException,
 			InterruptedException {
 		PagesCollection.registrationPage.takePhoto();
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 		PagesCollection.registrationPage.takePhoto();
 	}
 
@@ -43,7 +43,7 @@ public class RegistrationPageSteps {
 	}
 
 	@When("^I See selected picture$")
-	public void ISeeSelectedPicture() throws IOException {
+	public void ISeeSelectedPicture() throws Exception {
 		Assert.assertTrue(PagesCollection.registrationPage.isPictureSelected());
 	}
 
@@ -53,7 +53,7 @@ public class RegistrationPageSteps {
 	}
 
 	@When("^I enter name (.*)$")
-	public void IEnterName(String name) throws IOException {
+	public void IEnterName(String name) throws Exception {
 		try {
 			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
 		} catch (NoSuchUserException e) {
@@ -123,5 +123,18 @@ public class RegistrationPageSteps {
 		BackendAPIWrappers.activateRegisteredUser(this.listener);
 		this.userToRegister.setUserState(UserState.Created);
 		PagesCollection.contactListPage = PagesCollection.registrationPage.continueRegistration();
+	}
+	
+	/**
+	 * Activates user using browser by URL from mail
+	 * 
+	 * @step. ^I activate user by URL$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I activate user by URL$")
+	public void WhenIActivateUserByUrl() throws Exception{
+		String link = BackendAPIWrappers.getUserActivationLink(this.listener);
+		PagesCollection.peoplePickerPage = PagesCollection.registrationPage.activateByLink(link);
 	}
 }

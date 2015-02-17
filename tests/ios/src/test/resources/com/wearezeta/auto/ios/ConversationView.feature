@@ -10,12 +10,12 @@ Feature: Conversation View
     And I see dialog page
     And I type the message
     And I send the message
-    Then I see my message in the dialog
+    Then I see message in the dialog
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
-
+  #https://wearezeta.atlassian.net/browse/ZIOS-3269
   @smoke @id331
   Scenario Outline: Send Hello to contact
     Given There are 2 users where <Name> is me
@@ -27,6 +27,7 @@ Feature: Conversation View
     And I swipe the text input cursor
     And I click Ping button
     Then I see You Pinged message in the dialog
+    And I swipe the text input cursor
     And I click Ping button
     Then I see You Pinged Again message in the dialog
 
@@ -62,7 +63,7 @@ Feature: Conversation View
     When I create group chat with <Contact1> and <Contact2>
     And I type the message
     And I send the message
-    Then I see my message in the dialog
+    Then I see message in the dialog
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  |
@@ -77,6 +78,8 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
+	And I swipe right on Dialog page
+	And I tap on contact name <Contact>
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -100,6 +103,8 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
+	And I swipe right on Dialog page
+	And I tap on contact name <Contact>
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -110,7 +115,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | SoundCloudLink                                                                       |
       | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
-  @regression @id385
+  @staging @id385
   Scenario Outline: Verify the Media Bar dissapears after playback finishes - SoundCloud
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -130,7 +135,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | SoundCloudLink                                                                       |
       | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
-  @regression @id386
+  @staging @id386
   Scenario Outline: Verify the Media Bar disappears when playing media is back in view - SoundCloud
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -139,6 +144,8 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
+    And I swipe right on Dialog page
+	And I tap on contact name <Contact>
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -176,18 +183,16 @@ Feature: Conversation View
     And I see dialog page
     And I input more than 200 chars message and send it
     And I type the message
-    And I scroll away the keyboard
-    And I navigate back to conversations view
+	And I swipe right on Dialog page
     And I tap on contact name <Contact>
     And I tap on text input
     And I send the message
-    Then I see my message in the dialog
+    Then I see message in the dialog
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-#Muted steps due to relogin issue
   @regression @id407
   Scenario Outline: Send more than 200 chars message
     Given There are 2 users where <Name> is me
@@ -197,7 +202,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I input more than 200 chars message and send it
-    Then I see my message in the dialog
+    Then I see message in the dialog
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
@@ -213,7 +218,7 @@ Feature: Conversation View
     And I see dialog page
     And I input message with lower case and upper case
     And I send the message
-    Then I see my message in the dialog
+    Then I see message in the dialog
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
@@ -272,10 +277,10 @@ Feature: Conversation View
     And I see message with only spaces is not send
     And I input message with leading empty spaces
     And I send the message
-    And I see my message in the dialog
+    And I see message in the dialog
     And I input message with trailing emtpy spaces
     And I send the message
-    Then I see my message in the dialog
+    Then I see message in the dialog
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
@@ -338,6 +343,8 @@ Feature: Conversation View
     And I see dialog page
     And I post media link <YouTubeLink>
     Then I see media link <YouTubeLink> and media in dialog
+	And I swipe right on Dialog page
+	And I tap on contact name <Contact>
     And I click video container for the first time
     And I see video player page is opened
 
@@ -496,8 +503,8 @@ Feature: Conversation View
     And I see dialog page
     And I type and send long message and media link <YouTubeLink>
     And I see media link <YouTubeLink> and media in dialog
-    And I scroll away the keyboard
-    And I scroll back to media container
+	And I swipe right on Dialog page
+	And I tap on contact name <Contact>
     And I click video container for the first time
     And I see video player page is opened
     And I tap Pause button on Video player page
@@ -523,16 +530,18 @@ Feature: Conversation View
     And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
     And I see media link <SoundCloudLink> and media in dialog
+    And I swipe right on Dialog page
+	And I tap on contact name <Contact1>
     And I tap media link
-    And I scroll away the keyboard
     And I swipe right on Dialog page
     And I see play/pause button next to username <Contact1> in contact list
     And I tap play/pause button in contact list next to username <Contact1>
     And I tap on contact name <Contact2>
     And I type and send long message and media link <SoundCloudLink>
     And I see media link <SoundCloudLink> and media in dialog
+    And I swipe right on Dialog page
+	And I tap on contact name <Contact2>
     And I tap media link
-    And I scroll away the keyboard
     And I swipe right on Dialog page
     And I see play/pause button next to username <Contact2> in contact list
     And I tap play/pause button in contact list next to username <Contact2>

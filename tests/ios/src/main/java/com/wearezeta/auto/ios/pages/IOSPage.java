@@ -66,12 +66,12 @@ public abstract class IOSPage extends BasePage {
 
 	private static String imagesPath = "";
 
-	public IOSPage(String URL, String path) throws IOException {
+	public IOSPage(String URL, String path) throws Exception {
 		this(URL, path, true);
 	}
 
 	public IOSPage(String URL, String path, boolean acceptAlerts)
-			throws IOException {
+			throws Exception {
 		String bt = "staging";
 		String deviceName = "";
 
@@ -90,7 +90,7 @@ public abstract class IOSPage extends BasePage {
 		capabilities.setCapability("deviceName", deviceName);
 		capabilities.setCapability("platformVersion", "8.1");
 		capabilities.setCapability("processArguments",
-				"--args -TutorialOverlaysEnabled 0 -ZMBackendEnvironmentType "
+				"--args -TutorialOverlaysEnabled 0 -UseHockey 0 -ZMBackendEnvironmentType "
 						+ bt);
 		if (false == acceptAlerts) {
 			initWithoutAutoAccept();
@@ -99,14 +99,14 @@ public abstract class IOSPage extends BasePage {
 		}
 	}
 
-	private void initWithAutoAccept() throws IOException {
+	private void initWithAutoAccept() throws Exception {
 		capabilities.setCapability("autoAcceptAlerts", true);
 		super.InitConnection(url, capabilities);
 
 		storeDriverAndWait();
 	}
 
-	private void initWithoutAutoAccept() throws IOException {
+	private void initWithoutAutoAccept() throws Exception {
 
 		super.InitConnection(url, capabilities);
 
@@ -119,28 +119,46 @@ public abstract class IOSPage extends BasePage {
 	}
 
 	@Override
-	public void Close() throws IOException {
+	public void Close() throws Exception {
 		super.Close();
 	}
 
 	public abstract IOSPage returnBySwipe(SwipeDirection direction)
-			throws IOException;
+			throws Exception;
 
 	@Override
-	public IOSPage swipeLeft(int time) throws IOException {
+	public IOSPage swipeLeft(int time) throws Exception {
 		DriverUtils.swipeLeft(driver, content, time);
 		return returnBySwipe(SwipeDirection.LEFT);
 	}
 
+	public IOSPage swipeLeft(int time, int percentX, int percentY)
+			throws Exception {
+		DriverUtils.swipeLeft(driver, content, time, percentX, percentY);
+		return returnBySwipe(SwipeDirection.LEFT);
+	}
+
 	@Override
-	public IOSPage swipeRight(int time) throws IOException {
+	public IOSPage swipeRight(int time) throws Exception {
 		DriverUtils.swipeRight(driver, content, time);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 
+	public IOSPage swipeRight(int time, int percentX, int percentY)
+			throws Exception {
+		DriverUtils.swipeRight(driver, content, time, percentX, percentY);
+		return returnBySwipe(SwipeDirection.RIGHT);
+	}
+
 	@Override
-	public IOSPage swipeUp(int time) throws IOException {
+	public IOSPage swipeUp(int time) throws Exception {
 		DriverUtils.swipeUp(driver, content, time);
+		return returnBySwipe(SwipeDirection.UP);
+	}
+
+	public IOSPage swipeUp(int time, int percentX, int percentY)
+			throws Exception {
+		DriverUtils.swipeUp(driver, content, time, percentX, percentY);
 		return returnBySwipe(SwipeDirection.UP);
 	}
 
@@ -159,8 +177,14 @@ public abstract class IOSPage extends BasePage {
 	}
 
 	@Override
-	public IOSPage swipeDown(int time) throws IOException {
+	public IOSPage swipeDown(int time) throws Exception {
 		DriverUtils.swipeDown(driver, content, time);
+		return returnBySwipe(SwipeDirection.DOWN);
+	}
+
+	public IOSPage swipeDown(int time, int percentX, int percentY)
+			throws Exception {
+		DriverUtils.swipeDown(driver, content, time, percentX, percentY);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
@@ -275,9 +299,9 @@ public abstract class IOSPage extends BasePage {
 			// do nothing
 		}
 	}
-	
+
 	public void minimizeApplication(int time) {
-		
+
 		driver.executeScript("au.backgroundApp(" + Integer.toString(time) + ")");
 	}
 

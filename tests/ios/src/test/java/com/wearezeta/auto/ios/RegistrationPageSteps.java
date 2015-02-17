@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.mail.MessagingException;
-
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -81,7 +79,7 @@ public class RegistrationPageSteps {
 	}
 
 	@When("^I press Picture button$")
-	public void WhenIPressPictureButton() throws IOException {
+	public void WhenIPressPictureButton() throws Exception {
 
 		PagesCollection.cameraRollPage = PagesCollection.registrationPage
 				.selectPicture();
@@ -159,7 +157,7 @@ public class RegistrationPageSteps {
 	}
 
 	@When("^I enter name (.*)$")
-	public void IEnterName(String name) throws IOException {
+	public void IEnterName(String name) throws Exception {
 		try {
 			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
 		} catch (NoSuchUserException e) {
@@ -183,7 +181,7 @@ public class RegistrationPageSteps {
 	}
 
 	@When("^I input name (.*) and hit Enter$")
-	public void IInputNameAndHitEnter(String name) throws IOException {
+	public void IInputNameAndHitEnter(String name) throws Exception {
 		IEnterName(name);
 		PagesCollection.registrationPage.inputName();
 	}
@@ -198,7 +196,7 @@ public class RegistrationPageSteps {
 	}
 
 	@When("^I enter email (.*)$")
-	public void IEnterEmail(String email) throws IOException {
+	public void IEnterEmail(String email) throws Exception {
 		boolean flag = false;
 		try {
 			String realEmail = usrMgr.findUserByEmailOrEmailAlias(email)
@@ -221,12 +219,12 @@ public class RegistrationPageSteps {
 	}
 
 	@When("^I input email (.*) and hit Enter$")
-	public void IInputEmailAndHitEnter(String email) throws IOException {
+	public void IInputEmailAndHitEnter(String email) throws Exception {
 		IEnterEmail(email);
 	}
 
 	@When("^I attempt to enter an email with spaces (.*)$")
-	public void IEnterEmailWithSpaces(String email) throws IOException {
+	public void IEnterEmailWithSpaces(String email) throws Exception {
 		try {
 			String realEmail = usrMgr.findUserByEmailOrEmailAlias(email)
 					.getEmail();
@@ -295,8 +293,7 @@ public class RegistrationPageSteps {
 	}
 
 	@When("^I input password (.*) and hit Enter$")
-	public void IInputPasswordAndHitEnter(String password) throws IOException,
-			MessagingException, InterruptedException {
+	public void IInputPasswordAndHitEnter(String password) throws Exception {
 		IEnterPassword(password);
 
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
@@ -338,6 +335,17 @@ public class RegistrationPageSteps {
 
 	@When("I navigate from password screen back to Welcome screen")
 	public void NaviateFromPassScreenToWelcomeScreen() {
+		PagesCollection.registrationPage.navigateToWelcomePage();
+	}
+	
+	/**
+	 * Navigates from any page in the registration process, back to the welcome
+	 * page
+	 * 
+	 * @step. I navigate back to welcome page
+	 */
+	@When("^I navigate back to welcome page")
+	public void INavigateToWelcomePage() {
 		PagesCollection.registrationPage.navigateToWelcomePage();
 	}
 
@@ -392,7 +400,7 @@ public class RegistrationPageSteps {
 	}
 
 	@Then("^I see confirmation page$")
-	public void ISeeConfirmationPage() throws IOException {
+	public void ISeeConfirmationPage() throws Exception {
 		PagesCollection.peoplePickerPage = PagesCollection.registrationPage
 				.waitForConfirmationMessage();
 		Assert.assertTrue(PagesCollection.registrationPage
@@ -400,7 +408,7 @@ public class RegistrationPageSteps {
 	}
 
 	@Then("^I verify registration address$")
-	public void IVerifyRegistrationAddress() throws Throwable {
+	public void IVerifyRegistrationAddress() throws Exception {
 		BackendAPIWrappers.activateRegisteredUser(this.listener);
 		userToRegister.setUserState(UserState.Created);
 	}
@@ -441,6 +449,18 @@ public class RegistrationPageSteps {
 		Assert.assertTrue(
 				"Images look same. Expected score <= 0.25, current = " + score,
 				score <= 0.25d);
+	}
+
+	/**
+	 * Verifies that the email verification reminder on the login page is
+	 * displayed
+	 * 
+	 * @step. I see email verification reminder
+	 */
+	@Then("^I see email verification reminder$")
+	public void ISeeEmailVerificationReminder() {
+		Assert.assertTrue(PagesCollection.registrationPage
+				.isEmailVerifPromptVisible());
 	}
 
 }

@@ -30,6 +30,8 @@ public final class IOSLocators {
 	
 	public static final String xpathContactListNames = "//UIAApplication/UIAWindow/UIACollectionView/UIACollectionCell/UIAStaticText";
 	
+	public static final String xpathContactListCells = "//UIAApplication/UIAWindow/UIACollectionView/UIACollectionCell";
+	
 	public static final String nameProfileSettingsButton = "SettingsButton";
 
 	public static final String classNameUIAButton = "UIAButton";
@@ -52,7 +54,7 @@ public final class IOSLocators {
 	
 	public static final String nameTextInput = "ComposeControllerTextView";
 	
-	public static final String xpathOpenConversationDetails = "//UIAApplication[1]/UIAWindow[1]/UIAButton[6]";
+	public static final String nameOpenConversationDetails = "conversationDetailButton";
 	
 	public static final String xpathYouPinged = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[2]/UIAStaticText[contains(@name, 'YOU PINGED')]";
 	
@@ -82,7 +84,7 @@ public final class IOSLocators {
 	
 	public static final String namePingButton = "ComposeControllerPingButton";
 	
-	public static final String nameCameraLibraryButton = "CameraLibraryButton"; //"FullScreenCameraRightButton";
+	public static final String nameCameraLibraryButton = "Camera Roll"; 
 	
 	public static final String nameCameraRollCancel = "Cancel";
 	
@@ -90,7 +92,7 @@ public final class IOSLocators {
 	
 	public static final String xpathLibraryFirstPicture = "//UIAApplication/UIAWindow/UIACollectionView/UIACollectionCell[1]";
 	
-	public static final String nameConfirmPictureButton = "ImageConfirmerConfirmButton";
+	public static final String nameConfirmPictureButton = "OK";
 	
 	public static final String xpathMyUserInContactList = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[1]/UIAStaticText[1]";
 
@@ -111,6 +113,8 @@ public final class IOSLocators {
 	public static final String nameKeyboardGoButton = "Go";
 	
 	public static final String classUIATextView = "UIATextView";
+	
+    public static final String xpathEmailVerifPrompt = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[contains(@name, 'We sent an email to ')]";
 
 	
 	
@@ -167,6 +171,8 @@ public final class IOSLocators {
 	public static final String xpathPersonalInfoPage = "//UIAApplication[1]/UIAWindow[1]";
 	
 	public static final String nameCameraButton = "cameraButton";
+	
+	public static final String namePictureButton = "CameraLibraryButton";
 	
 	public static final String idProvideValidEmailMessage = "PLEASE PROVIDE A VALID EMAIL ADDRESS"; 
 	
@@ -288,7 +294,7 @@ public final class IOSLocators {
 	
 	public static final String xpathCloseColorModeButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAButton[4]";
 
-	public static String xpathNumberPeopleText = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[3]";
+	public static String xpathNumberPeopleText = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[contains(@name, 'people')]";
 	
 	public static final String peopleCountTextSubstring = " people";
 	
@@ -407,8 +413,9 @@ public final class IOSLocators {
 	public static final String xpathPeoplePickerUserAvatar = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell/UIAStaticText[@name='%s']/..";
 	public static final String namePeoplePickerAddToConversationButton = "ADD TO CONVERSATION";
 	public static final String xpathPeoplePickerTopConnectionsAvatar = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[%d]";
-	public static final String nameLaterButton = "LATER";
-	public static final String nameContinueUploadButton = "CONTINUE";
+	public static final String xpathPeoplePickerAllTopPeople = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell";
+	public static final String nameShareButton = "SHARE";
+	public static final String nameContinueUploadButton = "SHARE";
 	public static final String namePeopleYouMayKnowLabel = "PEOPLE YOU MAY KNOW";
 	
 	//////////////////
@@ -425,7 +432,7 @@ public final class IOSLocators {
 	public static final String classNameKeyboard = "UIAKeyboard";
 	
 	public static final String nameKeyboardDeleteButton = "Delete";
-	public static final String nameKeyboardReturnButton = "Return";
+	public static final String nameKeyboardReturnButton = "Send";
 	
 	////////////////
 	//Tutorial
@@ -444,5 +451,14 @@ public final class IOSLocators {
 	public static final String nameYouLeftMessage = "YOU LEFT";
 	public static final String nameYouPingedMessage = "YOU PINGED";
 	public static final String nameYouPingedAgainMessage = "YOU PINGED AGAIN";
+	
+	//public static final String xpathOtherUserPingedMessage = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]/UIAStaticText[@name=' PINGED']";
+	
+	////////////////////////////
+	//Unblock user locator
+	////////////////////////////
+	public static final String nameUnblockButton = "UNBLOCK";
+	
+	public static final String xpathContactListContainer = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[2]";
 }
 

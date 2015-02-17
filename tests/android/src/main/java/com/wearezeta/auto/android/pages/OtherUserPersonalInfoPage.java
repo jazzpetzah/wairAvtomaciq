@@ -1,7 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -50,8 +49,23 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idUserProfileConfirmationMenu")
 	private WebElement confirmMenu;
 	
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idRightActionButton")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idBlockButton")
 	private WebElement blockButton; 
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idRightActionButton")
+	private WebElement rightConversationButton; 
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idRenameButton")
+	private WebElement renameButton;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idArchiveButton")
+	private WebElement archiveButton;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idLeaveButton")
+	private WebElement leaveButton;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idSilenceButton")
+	private WebElement silenceButton;
 	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idUnblockBtn")
 	private WebElement unblockButton; 
@@ -84,16 +98,26 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		this.path = path;
 	}
 
-	public ContactListPage pressLeaveConversationButton() throws Exception {
+	public void pressRightConversationButton(){
 		refreshUITree();//TODO workaround
-		wait.until(ExpectedConditions.elementToBeClickable(blockButton));
-		blockButton.click();
+		wait.until(ExpectedConditions.elementToBeClickable(rightConversationButton));
+		rightConversationButton.click();
+	}
+	
+	public ContactListPage pressLeaveButton() throws Exception{
+		refreshUITree();
+		leaveButton.click();
 		return new ContactListPage(url, path);
+	}
+	
+	public void pressSilenceButton() {
+		refreshUITree();
+		silenceButton.click();
 	}
 	
 	public void clickBlockBtn() {
 		refreshUITree();
-		blockButton.click();
+		rightConversationButton.click();
 	}
 	
 	public AndroidPage clickUnblockBtn() throws Exception {
@@ -167,12 +191,12 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		return new OtherUserPersonalInfoPage(url, path);
 	}
 
-	public void tapAddContactBtn() {
-		addContactBtn.click();
-		
+	public PeoplePickerPage tapAddContactBtn() throws Exception {
+		 addContactBtn.click();
+		return new PeoplePickerPage(url, path);
 	}
 
-	public boolean isBackGroundImageCorrect(String imageName) throws IOException {
+	public boolean isBackGroundImageCorrect(String imageName) throws Exception {
 		BufferedImage bgImage = null;
 		boolean flag = false;
 		bgImage = getElementScreenshot(backGround);
@@ -254,7 +278,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		return new DialogPage(url, path);
 	}
 
-	public boolean isParticipantAvatars(String contact1, String contact2) throws IOException {
+	public boolean isParticipantAvatars(String contact1, String contact2) throws Exception {
 		boolean flag1 = false;
 		boolean flag2 = false;
 		boolean commonFlag = false;

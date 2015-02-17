@@ -13,6 +13,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -20,6 +21,9 @@ import com.wearezeta.auto.common.locators.ZetaFindBy;
 import com.wearezeta.auto.common.locators.ZetaHow;
 
 public class LoginPage extends AndroidPage {
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPeoplePickerClearbtn")
+	private WebElement pickerClearBtn;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idSignInButton")
 	private WebElement signInButton;
@@ -27,17 +31,26 @@ public class LoginPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idWelcomeSlogan")
 	private WebElement welcomeSlogan;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idYourName")
+	private WebElement yourUser;
+	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idSignUpButton")
-	protected WebElement signUpButton;
+	private WebElement signUpButton;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idForgotPass")
+	private WebElement forgotPasswordButton;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idLoginButton")
-	protected WebElement confirmSignInButton;
+	private WebElement confirmSignInButton;
 
 	@AndroidFindBy(xpath =  AndroidLocators.LoginPage.xpathLoginInput)
 	private WebElement loginInput;
 	
 	@AndroidFindBy(xpath =  AndroidLocators.LoginPage.xpathPasswordInput)
 	private WebElement passwordInput;
+	
+	@FindBy(className  = AndroidLocators.CommonLocators.classEditText)
+	private List<WebElement> editText;
 	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idLoginError")
 	private WebElement loginError;
@@ -90,9 +103,17 @@ public class LoginPage extends AndroidPage {
 	}
 	
 	public LoginPage SignIn() throws IOException {
-
+		refreshUITree();
+		wait.until(ExpectedConditions.visibilityOf(signInButton));
 		signInButton.click();
 		return this;
+	}
+	
+	public SettingsPage forgotPassword() throws Exception {
+		refreshUITree();
+		wait.until(ExpectedConditions.visibilityOf(forgotPasswordButton));
+		forgotPasswordButton.click();
+		return new SettingsPage(url, path);
 	}
 
 	public ContactListPage LogIn() throws Exception {
@@ -103,18 +124,36 @@ public class LoginPage extends AndroidPage {
 		return login;
 	}
 
-	public void setLogin(String login) {
+	public void setLogin(String login) throws Exception {
 		refreshUITree();
-		loginInput.sendKeys(login);
+		if(CommonUtils.getAndroidApiLvl(LoginPage.class) > 42){
+			loginInput.sendKeys(login);
+		}
+		else{
+			for(WebElement editField : editText){
+				if (editField.getText().toLowerCase().equals("email")){
+					editField.sendKeys(login);
+				}
+			}
+		}
 	}
 	
 	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) throws InterruptedException {
-		passwordInput.click();
-		passwordInput.sendKeys(password);
+	public void setPassword(String password) throws Exception {
+		if(CommonUtils.getAndroidApiLvl(LoginPage.class) > 42){
+			passwordInput.click();
+			passwordInput.sendKeys(password);
+		}
+		else{
+			for(WebElement editField : editText){
+				if (editField.getText().toLowerCase().isEmpty()){
+					editField.sendKeys(password);
+				}
+			}
+		}
 	}
 
 	public boolean waitForLoginScreenDisappear() {
@@ -125,8 +164,24 @@ public class LoginPage extends AndroidPage {
 		return DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.LoginPage.idLoginProgressBar), 40);
 	}
 
-	public Boolean isLoginFinished(String contact) throws InterruptedException {
+	public Boolean isLoginFinished(String contact) throws NumberFormatException, Exception {
 		refreshUITree();
+		try{
+			wait.until(ExpectedConditions.visibilityOf(yourUser));
+		}
+		catch (Exception ex){
+			refreshUITree();
+			if(isVisible(pickerClearBtn)){
+				pickerClearBtn.click();
+			}
+			else{
+				if(!isVisible(yourUser)){
+					navigateBack();
+				}
+			}
+			refreshUITree();
+		}
+
 		return DriverUtils.waitForElementWithTextByXPath(AndroidLocators.ContactListPage.xpathContacts,contact,driver);
 	}
 
@@ -144,7 +199,7 @@ public class LoginPage extends AndroidPage {
 
 	public RegistrationPage join() throws Exception {
 		signUpButton.click();
-
+		DriverUtils.waitUntilElementDissapear(driver, AndroidLocators.LoginPage.getByForLoginPageRegistrationButton());
 		return new RegistrationPage(url, path);
 	}
 	

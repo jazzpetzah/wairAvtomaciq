@@ -69,8 +69,8 @@ public class LoginPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameProfileName)
 	private WebElement selfProfileName;
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameLaterButton)
-	private WebElement laterButton;
+	@FindBy(how = How.NAME, using = IOSLocators.nameShareButton)
+	private WebElement shareButton;
 	
 	private String login;
 	
@@ -82,14 +82,14 @@ public class LoginPage extends IOSPage {
 	
 	public String message;
 	
-	public LoginPage(String URL, String path) throws IOException {
+	public LoginPage(String URL, String path) throws Exception {
 		
 		super(URL, path);
 		this.url = URL;
 		this.path = path;
 	}
 	
-	public LoginPage(String URL, String path, boolean acceptAlerts) throws IOException {
+	public LoginPage(String URL, String path, boolean acceptAlerts) throws Exception {
 		
 		super(URL, path, acceptAlerts);
 		this.url = URL;
@@ -110,12 +110,20 @@ public class LoginPage extends IOSPage {
 		return this;
 	}
 	
-	public PeoplePickerPage clickLaterButton() throws IOException {
-		if(DriverUtils.isElementDisplayed(laterButton)) {
-			laterButton.click();
+	public PeoplePickerPage clickLaterButton() throws Exception {
+		if (DriverUtils.isElementDisplayed(shareButton)) {
+			shareButton.click();
 			return new PeoplePickerPage(url, path);
+		} else {
+			// workaround for Sync Engine scenario
+			// on real iOS device when contacts are shared there is no
+			// Share Contacts dialog but people picker page appears, which we
+			// not process in case no Share Contacts dialog
+			if (!CommonUtils.getIsSimulatorFromConfig(LoginPage.class)) {
+				return new PeoplePickerPage(url, path);
+			}
 		}
-		
+
 		return null;
 	}
 	
@@ -124,14 +132,13 @@ public class LoginPage extends IOSPage {
 		return DriverUtils.isElementDisplayed(PagesCollection.loginPage.selfProfileName);
 	}
 	
-	public IOSPage login() throws IOException {
+	public IOSPage login() throws Exception {
 		
 		confirmSignInButton.click();
 		
 		if (DriverUtils.waitUntilElementDissapear(driver, By.name(IOSLocators.nameLoginButton), 40)) {
 			return new ContactListPage(url, path);
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
@@ -145,7 +152,7 @@ public class LoginPage extends IOSPage {
 		registerButton.click();
 	}
 	
-	public RegistrationPage join() throws IOException{
+	public RegistrationPage join() throws Exception{
 		termsOfServiceButton.click();
 		registerButton.click();
 
@@ -156,29 +163,20 @@ public class LoginPage extends IOSPage {
 		return login;
 	}
 
-	public void setLogin(String login) throws IOException {
-		if (CommonUtils.getIsSimulatorFromConfig(LoginPage.class)) {
-			DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameLoginField));
-			loginField.sendKeys(login);
-		} else {
-			String script = String.format(
-					IOSLocators.scriptSignInEmailPath + ".setValue(\"%s\")", login);
-			driver.executeScript(script);
-		}
+	public void setLogin(String login) throws Exception {
+		String script = String.format(
+				IOSLocators.scriptSignInEmailPath + ".setValue(\"%s\")", login);
+		driver.executeScript(script);
 	}
 
 	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) throws IOException {
-		if (CommonUtils.getIsSimulatorFromConfig(LoginPage.class)) {
-			passwordField.sendKeys(password);
-		} else {
-			String script = String.format(
-					IOSLocators.scriptSignInPasswordPath + ".setValue(\"%s\")", password);
-			driver.executeScript(script);
-		}
+	public void setPassword(String password) throws Exception {
+		String script = String.format(
+				IOSLocators.scriptSignInPasswordPath + ".setValue(\"%s\")", password);
+		driver.executeScript(script);
 	}
 	
 	public boolean waitForLogin() throws InterruptedException {

@@ -28,7 +28,7 @@ public class OSXCommonUtils extends CommonUtils {
 	private static final Logger log = ZetaLogger.getLog(OSXCommonUtils.class
 			.getSimpleName());
 
-	public static String getZClientProcessName() throws IOException {
+	public static String getZClientProcessName() throws Exception {
 		String getZClientProcess = CommonUtils
 				.getOsxApplicationPathFromConfig(ContactListPage.class);
 		File file = new File(getZClientProcess);
@@ -189,7 +189,7 @@ public class OSXCommonUtils extends CommonUtils {
 	}
 
 	public static String getOsxClientInfoPlistFromConfig(Class<?> c)
-			throws IOException {
+			throws Exception {
 		return CommonUtils.getValueFromConfig(c, "osxClientInfoPlist");
 	}
 

@@ -190,6 +190,15 @@ public class CommonIOSSteps {
 		commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
 				dstUserNameAlias, CommonUtils.generateRandomString(10));
 	}
+	
+	@When("^Contact (.*) send number (.*) of message to user (.*)$")
+	public void UserSendNumberOfMessageToConversation(String msgFromUserNameAlias, int numberOfMessages,
+			String dstUserNameAlias) throws Exception {
+		for(int i = 0; i <= numberOfMessages; i++){
+		commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
+				dstUserNameAlias, CommonUtils.generateRandomString(10));
+		}
+	}
 
 	@When("^Contact (.*) hotping conversation (.*)$")
 	public void UserHotPingedConversation(String hotPingFromUserNameAlias,
@@ -240,11 +249,31 @@ public class CommonIOSSteps {
 		commonSteps.UserXIsMe(nameAlias);
 	}
 
-	@Given("^(\\w+) wait[s]* up to (\\d+) second[s]* until contact (.*) exists in backend search results$")
+	@Given("^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in backend search results$")
 	public void UserWaitsUntilContactExistsInHisSearchResults(
 			String searchByNameAlias, int timeout, String query)
 			throws Exception {
 		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query,
 				timeout);
+	}
+	
+	@When("^Contact (.*) sends image (.*) to (.*) conversation (.*)")
+	public void ContactSendImageToConversation(String imageSenderUserNameAlias,
+			String imageFileName, String conversationType,
+			String dstConversationName) throws Exception {
+		String imagePath = IOSPage
+				.getImagesPath() + imageFileName;
+		Boolean isGroup = null;
+		if (conversationType.equals("single user")) {
+			isGroup = false;
+		} else if (conversationType.equals("group")) {
+			isGroup = true;
+		}
+		if (isGroup == null) {
+			throw new Exception(
+					"Incorrect type of conversation specified (single user | group) expected.");
+		}
+		commonSteps.UserSendsImageToConversation(imageSenderUserNameAlias,
+				imagePath, dstConversationName, isGroup);
 	}
 }

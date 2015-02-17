@@ -74,8 +74,7 @@ public class CommonSteps {
 	}
 
 	@After
-	public void teardown() throws IllegalArgumentException,
-			IllegalAccessException, IOException {
+	public void teardown() throws Exception {
 		// osx teardown
 		if (ExecutionContext.isOsxEnabled()) {
 			com.wearezeta.auto.osx.steps.CommonOSXSteps.senderPages
@@ -116,7 +115,7 @@ public class CommonSteps {
 		com.wearezeta.auto.common.CommonSteps.getInstance().ThereAreNUsersWhereXIsMe(count, myNameAlias);
 	}
 
-	private void startOsxClient(ExecutorService executor) throws IOException {
+	private void startOsxClient(ExecutorService executor) throws Exception {
 		final String osxPath = CommonUtils
 				.getOsxApplicationPathFromConfig(this.getClass());
 		final String osxAppiumUrl = CommonUtils
@@ -134,7 +133,7 @@ public class CommonSteps {
 					osxSenderPages
 							.setLoginPage(new com.wearezeta.auto.osx.pages.LoginPage(
 									osxAppiumUrl, osxPath));
-				} catch (IOException e) {
+				} catch (Exception e) {
 				}
 				long endDate = new Date().getTime();
 				ExecutionContext.osxZeta().setStartupTimeMs(
@@ -157,7 +156,7 @@ public class CommonSteps {
 		});
 	}
 	
-	private void startAndroidClient(ExecutorService executor) throws IOException {
+	private void startAndroidClient(ExecutorService executor) throws Exception {
 		try {
 			AndroidCommonUtils.disableHints();
 		} catch (Exception e) {
@@ -184,7 +183,7 @@ public class CommonSteps {
 					long endDate = new Date().getTime();
 					try {
 						startDate = readDateFromAppiumLog(AndroidCommonUtils.getAndroidAppiumLogPathFromConfig(CommonSteps.class));
-					} catch (IOException e) {
+					} catch (Exception e) {
 						log.error("Failed to read Android application startup time from Appium log.\n"
 								+ "Approximate value will be used. "
 								+ e.getMessage());
@@ -199,7 +198,7 @@ public class CommonSteps {
 		});
 	}
 	
-	private void startIosClient(ExecutorService executor) throws IOException {
+	private void startIosClient(ExecutorService executor) throws Exception {
 		final String iosPath = CommonUtils
 				.getIosApplicationPathFromConfig(this.getClass());
 		final String iosAppiumPath = CommonUtils
@@ -215,16 +214,18 @@ public class CommonSteps {
 									iosAppiumPath, iosPath, true);
 						} else {
 							com.wearezeta.auto.ios.pages.PagesCollection.loginPage = new com.wearezeta.auto.ios.pages.LoginPage(
-									iosAppiumPath, iosPath, false);
+									iosAppiumPath, iosPath, true);
 						}
 						com.wearezeta.auto.ios.pages.PagesCollection.loginPage.isLoginButtonVisible();
 					} catch (MalformedURLException e) {
-					} catch (IOException e) { }
+					} catch (IOException e) {
+					} catch (Exception e) {
+					}
 					
 					long endDate = new Date().getTime();
 					try {
 						startDate = readDateFromAppiumLog(IOSCommonUtils.getIosAppiumLogPathFromConfig(CommonSteps.class));
-					} catch (IOException e) {
+					} catch (Exception e) {
 						log.error("Failed to read iOS application startup time from Appium log.\n"
 								+ "Approximate value will be used. "
 								+ e.getMessage());
@@ -639,7 +640,7 @@ public class CommonSteps {
 	}
 	
 	@Given("I build results report")
-	public void IBuildResultsReport() throws IOException {
+	public void IBuildResultsReport() throws Exception {
 		ExecutionContext.report.fillReportInfo();
 		log.debug(ReportData.toXml(ExecutionContext.report));
 		ReportGenerator.generate(ExecutionContext.report);
@@ -654,10 +655,12 @@ public class CommonSteps {
 				androidClientInfo = AndroidCommonUtils.readClientVersion();
 				androidDeviceInfo = AndroidCommonUtils.readDeviceInfo();
 				log.debug("Following info were taken from android device: " + androidDeviceInfo);
-			} catch (InterruptedException ex) {
-				log.error(ex.getMessage());
+			} catch (InterruptedException iex) {
+				log.error(iex.getMessage());
 			} catch (IOException ioex) {
 				log.error(ioex.getMessage());
+			} catch (Exception ex) {
+				log.error(ex.getMessage());
 			}
 			ExecutionContext.androidZeta().setVersionInfo(androidClientInfo);
 			ExecutionContext.androidZeta().setDeviceInfo(androidDeviceInfo);

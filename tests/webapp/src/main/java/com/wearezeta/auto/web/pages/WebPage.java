@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -18,14 +19,14 @@ public class WebPage extends BasePage {
 	protected static ZetaWebAppDriver driver;
 	protected static WebDriverWait wait;
 
-	public WebPage(String URL, String path) throws IOException {
+	public WebPage(String URL, String path) throws Exception {
 		this(URL, path, false);
 	}
 
 	public WebPage(String URL, String path, boolean doNavigate)
-			throws IOException {
+			throws Exception {
 
-		String browser = WebCommonUtils
+		final String browser = WebCommonUtils
 				.getWebAppBrowserNameFromConfig(WebPage.class);
 
 		DesiredCapabilities capabilities;
@@ -49,27 +50,40 @@ public class WebPage extends BasePage {
 							+ browser
 							+ ". Please choose one of the following: chrome | firefox | safari | ie");
 		}
+		final String platformName = WebCommonUtils
+				.getPlatformNameFromConfig(WebPage.class);
+		if (platformName.length() > 0) {
+			// Use undocumented grid property to match platforms
+			// https://groups.google.com/forum/#!topic/selenium-users/PRsEBcbpNlM
+			capabilities.setCapability("applicationName", platformName);
+		}
 		capabilities.setCapability("platformName",
 				CommonUtils.PLATFORM_NAME_WEB);
+
 		super.InitConnection(URL, capabilities);
 
 		driver = (ZetaWebAppDriver) drivers.get(CommonUtils.PLATFORM_NAME_WEB);
 		wait = waits.get(CommonUtils.PLATFORM_NAME_WEB);
 
+		driver.setFileDetector(new LocalFileDetector());
+		try {
+			driver.manage().window().maximize();
+		}catch (Exception ex ) {
+			
+		}
+		
 		if (doNavigate) {
-			// Workaround for Safari
-			// We should wait for cookies to be set after applying beta code
-			// or invitation code page will appear again
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-			}
+			// After beta code is applied we should wait till sign in page
+			// pointed to production backend will be loaded before loading
+			// staging page
+			Thread.sleep(5000);
+			
 			driver.navigate().to(path);
 		}
 	}
 
 	@Override
-	public void Close() throws IOException {
+	public void Close() throws Exception {
 		super.Close();
 	}
 

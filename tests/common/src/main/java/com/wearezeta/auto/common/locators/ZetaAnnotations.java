@@ -18,7 +18,6 @@ import io.appium.java_client.pagefactory.iOSFindAll;
 import io.appium.java_client.pagefactory.iOSFindBy;
 import io.appium.java_client.pagefactory.iOSFindBys;
 
-import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -293,26 +292,27 @@ public class ZetaAnnotations extends Annotations{
 		
 		ZetaFindBy zetaFindBy = mobileField.getAnnotation(ZetaFindBy.class);
 		if (zetaFindBy != null) {
-			return buildByFromZetaFindBy(zetaFindBy);
+			try {
+				return buildByFromZetaFindBy(zetaFindBy);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
 		}
 		return super.buildBy();
 	}
 
-	protected By buildByFromZetaFindBy(ZetaFindBy findBy){
+	protected By buildByFromZetaFindBy(ZetaFindBy findBy) throws Exception{
 		ZetaHow how = findBy.how();
 		String locatorsDb = findBy.locatorsDb();
 		String locatorKey = findBy.locatorKey();
 
-		try {
-			if(CommonUtils.getAndroidApiLvl(ZetaAnnotations.class) < 43){
-				if(how == ZetaHow.ID){
-					how = ZetaHow.XPATH;
-				}
-				locatorKey = "xpath" + locatorKey.substring(2) + "42";
+		if(CommonUtils.getAndroidApiLvl(ZetaAnnotations.class) < 43){
+			if(how == ZetaHow.ID){
+				how = ZetaHow.XPATH;
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			locatorKey = "xpath" + locatorKey.substring(2) + "42";
 		}
 
 		String locatorValue = getLocatorValue(locatorsDb, locatorKey);

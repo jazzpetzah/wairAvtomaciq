@@ -47,6 +47,11 @@ public class LoginPageSteps {
 	public void WhenIPressSignInButton() throws IOException {
 		PagesCollection.loginPage.SignIn();
 	}
+	
+	@When("I press FORGOT PASSWORD button")
+	public void WhenIPressForgotPasswordButton() throws Exception {
+		PagesCollection.settingsPage = PagesCollection.loginPage.forgotPassword();
+	}
 
 	@When("I press Log in button")
 	public void WhenIPressLogInButton() throws Exception {
@@ -61,7 +66,7 @@ public class LoginPageSteps {
 	}
 
 	@When("I have entered login (.*)")
-	public void WhenIHaveEnteredLogin(String login) {
+	public void WhenIHaveEnteredLogin(String login) throws Exception {
 		try {
 			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
 		} catch (NoSuchUserException e) {
@@ -72,7 +77,7 @@ public class LoginPageSteps {
 
 	@When("I have entered password (.*)")
 	public void WhenIHaveEnteredPassword(String password)
-			throws InterruptedException {
+			throws Exception {
 		try {
 			password = usrMgr.findUserByPasswordAlias(password).getPassword();
 		} catch (NoSuchUserException e) {

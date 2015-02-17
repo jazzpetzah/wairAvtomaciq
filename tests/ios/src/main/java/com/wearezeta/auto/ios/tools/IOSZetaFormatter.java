@@ -3,8 +3,6 @@ package com.wearezeta.auto.ios.tools;
 import gherkin.formatter.model.Scenario;
 import gherkin.formatter.model.Tag;
 
-import java.io.IOException;
-
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -12,26 +10,26 @@ import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class IOSZetaFormatter extends ZetaFormatter {
-	
-	private static final Logger log = ZetaLogger
-			.getLog(IOSZetaFormatter.class.getSimpleName());
-	
+
+	private static final Logger log = ZetaLogger.getLog(IOSZetaFormatter.class
+			.getSimpleName());
+
 	@Override
 	public void startOfScenarioLifeCycle(Scenario scenario) {
 		for (Tag t : scenario.getTags()) {
-			if(t.getName().equals("@deployPictures")) {
+			if (t.getName().equals("@deployPictures")) {
 				try {
 					deploySimularotPictures();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
+				} catch (Exception e) {
 					e.printStackTrace();
+					throw new RuntimeException(e.getMessage());
 				}
 				break;
 			}
 		}
 	}
-	
-	private void deploySimularotPictures() throws IOException {
+
+	private void deploySimularotPictures() throws Exception {
 		if (CommonUtils.getIsSimulatorFromConfig(IOSZetaFormatter.class)) {
 			try {
 				String[] picturepath = new String[] { CommonUtils

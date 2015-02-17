@@ -1,7 +1,7 @@
 package com.wearezeta.auto.common.email;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +52,15 @@ public class IMAPSMailbox {
 		try {
 			for (String serverName : CACHED_STORES.keySet()) {
 				Store store = CACHED_STORES.get(serverName);
+				try {
+					final Folder inbox = store.getDefaultFolder().getFolder(
+							MAILS_FOLDER);
+					if (inbox.isOpen()) {
+						inbox.close(false);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				store.close();
 			}
 			CACHED_STORES.clear();
@@ -92,11 +101,15 @@ public class IMAPSMailbox {
 		}
 	}
 
-	public List<EmailHeaders> getLastMailHeaders(int msgsCount)
-			throws MessagingException, InterruptedException {
-		if (!folder.isOpen()) {
-			this.openFolder();
+	private void closeFolder() throws MessagingException {
+		if (folder.isOpen()) {
+			folder.close(false);
 		}
+	}
+
+	public List<Message> getRecentMessages(int msgsCount)
+			throws MessagingException, InterruptedException {
+		this.openFolder();
 		try {
 			int currentMsgsCount = folder.getMessageCount();
 			Message[] fetchedMsgs;
@@ -106,11 +119,7 @@ public class IMAPSMailbox {
 				fetchedMsgs = folder.getMessages(currentMsgsCount - msgsCount,
 						currentMsgsCount);
 			}
-			List<EmailHeaders> resultList = new ArrayList<EmailHeaders>();
-			for (Message msg : fetchedMsgs) {
-				resultList.add(EmailHeaders.createFromMessage(msg));
-			}
-			return resultList;
+			return new ArrayList<Message>(Arrays.asList(fetchedMsgs));
 		} finally {
 			this.closeFolder();
 		}
@@ -119,9 +128,7 @@ public class IMAPSMailbox {
 	public MBoxChangesListener startMboxListener(
 			Map<String, String> expectedHeaders) throws MessagingException,
 			InterruptedException {
-		if (!folder.isOpen()) {
-			this.openFolder();
-		}
+		this.openFolder();
 		CountDownLatch wait = new CountDownLatch(1);
 		MBoxChangesListener listener = new MBoxChangesListener(this,
 				expectedHeaders, wait);
@@ -145,13 +152,13 @@ public class IMAPSMailbox {
 		return listener;
 	}
 
-	public static EmailHeaders getFilteredMessageHeaders(
-			MBoxChangesListener listener, int timeout) throws TimeoutException,
-			InterruptedException, MessagingException {
+	public static Message getFilteredMessage(MBoxChangesListener listener,
+			int timeout) throws TimeoutException, InterruptedException,
+			MessagingException {
 		try {
 			Message message = listener.getMatchedMessage(timeout);
 			if (message != null) {
-				return EmailHeaders.createFromMessage(message);
+				return message;
 			}
 			throw new TimeoutException(
 					String.format(
@@ -159,16 +166,6 @@ public class IMAPSMailbox {
 							listener.getParentMBox().getUser(), timeout));
 		} finally {
 			listener.getParentMBox().closeFolder();
-		}
-	}
-
-	private void closeFolder() {
-		if (folder.isOpen()) {
-			try {
-				folder.close(true);
-			} catch (MessagingException e) {
-				e.printStackTrace();
-			}
 		}
 	}
 
@@ -185,18 +182,17 @@ public class IMAPSMailbox {
 		});
 	}
 
-	public static IMAPSMailbox createDefaultInstance()
-			throws MessagingException, IOException, InterruptedException {
+	public static IMAPSMailbox createDefaultInstance() throws Exception {
 		return new IMAPSMailbox(
 				CommonUtils.getDefaultEmailServerFromConfig(IMAPSMailbox.class),
 				MAILS_FOLDER, getName(), getPassword());
 	}
 
-	public static String getName() throws IOException {
+	public static String getName() throws Exception {
 		return CommonUtils.getDefaultEmailFromConfig(IMAPSMailbox.class);
 	}
 
-	private static String getPassword() throws IOException {
+	private static String getPassword() throws Exception {
 		return CommonUtils.getDefaultPasswordFromConfig(IMAPSMailbox.class);
 	}
 }

@@ -54,7 +54,7 @@ public class ContactListPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idMainWindowCloseButton)
 	private WebElement closeWindowButton;
 	
-	public ContactListPage(String URL, String path) throws IOException {
+	public ContactListPage(String URL, String path) throws Exception {
 		super(URL, path);
 	}
 
@@ -208,7 +208,7 @@ public class ContactListPage extends OSXPage {
 		 WebElement el = wait.until(new Function<WebDriver, WebElement>() {
 			 
 			 public WebElement apply(WebDriver driver) {
-				 return driver.findElement(By.name(OSXLocators.nameSignInButton));
+				 return driver.findElement(By.name(OSXLocators.LoginPage.nameSignInButton));
 			 }
 		 });
 		return el != null;

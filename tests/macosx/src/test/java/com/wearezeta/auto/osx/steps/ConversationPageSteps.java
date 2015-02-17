@@ -1,8 +1,6 @@
 package com.wearezeta.auto.osx.steps;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.MalformedURLException;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -46,16 +44,34 @@ public class ConversationPageSteps {
 	}
 
 	@When("^Contact (.*) sends random message to user (.*)$")
-	public void UserSendsRandomMessageToConversation(String msgFromUserNameAlias,
-			String dstUserNameAlias) throws Exception {
+	public void UserSendsRandomMessageToConversation(
+			String msgFromUserNameAlias, String dstUserNameAlias)
+			throws Exception {
 		randomMessage = CommonUtils.generateRandomString(10);
-		CommonSteps.getInstance().UserSentMessageToUser(msgFromUserNameAlias, dstUserNameAlias, randomMessage);
+		CommonSteps.getInstance().UserSentMessageToUser(msgFromUserNameAlias,
+				dstUserNameAlias, randomMessage);
 	}
-	
+
 	@When("I write message (.*)")
 	public void IWriteMessage(String message) {
 		CommonOSXSteps.senderPages.getConversationPage().writeNewMessage(
 				message);
+	}
+
+	/**
+	 * Verifies that the message text area is not visible when your contact is
+	 * e.g. in pending state.
+	 * 
+	 * @step. I can not write a random message
+	 * 
+	 */
+	@When("I can not write a random message")
+	public void ICanNotWriteAMessage() {
+		boolean messageTextArea = CommonOSXSteps.senderPages
+				.getConversationPage().isMessageTextAreaVisible();
+		Assert.assertFalse(
+				"This is a pending user, message area should be hidden and not possible to send any message",
+				messageTextArea);
 	}
 
 	@When("I send message")
@@ -64,8 +80,7 @@ public class ConversationPageSteps {
 	}
 
 	@When("I send picture (.*)")
-	public void WhenISendPicture(String imageFilename)
-			throws MalformedURLException, IOException {
+	public void WhenISendPicture(String imageFilename) throws Exception {
 		if (beforeNumberOfImages < 0) {
 			beforeNumberOfImages = CommonOSXSteps.senderPages
 					.getConversationPage().getNumberOfImageEntries();
@@ -166,7 +181,7 @@ public class ConversationPageSteps {
 		int afterNumberOfImages = -1;
 
 		boolean isNumberIncreased = false;
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 10; i++) {
 			afterNumberOfImages = CommonOSXSteps.senderPages
 					.getConversationPage().getNumberOfImageEntries();
 			if (afterNumberOfImages == beforeNumberOfImages + 1) {
@@ -179,6 +194,11 @@ public class ConversationPageSteps {
 			}
 		}
 
+		if (!isNumberIncreased) {
+			log.debug("New picture was not found. Check source: " + CommonOSXSteps.senderPages
+			.getConversationPage().getPageSource());
+		}
+		
 		Assert.assertTrue("Incorrect images count: before - "
 				+ beforeNumberOfImages + ", after - " + afterNumberOfImages,
 				isNumberIncreased);
@@ -193,13 +213,16 @@ public class ConversationPageSteps {
 	private void calcNumberOfPings(String user) {
 		if (beforeNumberOfKnocks < 0) {
 			beforeNumberOfKnocks = CommonOSXSteps.senderPages
-					.getConversationPage().getNumberOfYouPingedMessages(String.format(
-							OSXLocators.xpathOtherPingedMessage, user));
+					.getConversationPage().getNumberOfYouPingedMessages(
+							String.format(OSXLocators.xpathOtherPingedMessage,
+									user));
 		}
 		if (beforeNumberOfHotKnocks < 0) {
 			beforeNumberOfHotKnocks = CommonOSXSteps.senderPages
-					.getConversationPage().getNumberOfYouPingedMessages(String.format(
-							OSXLocators.xpathOtherPingedAgainMessage, user));
+					.getConversationPage().getNumberOfYouPingedMessages(
+							String.format(
+									OSXLocators.xpathOtherPingedAgainMessage,
+									user));
 		}
 	}
 
@@ -292,8 +315,9 @@ public class ConversationPageSteps {
 		int afterNumberOfKnocks = -1;
 		for (int i = 0; i < 3; i++) {
 			afterNumberOfKnocks = CommonOSXSteps.senderPages
-					.getConversationPage().getNumberOfYouPingedMessages(String.format(
-							OSXLocators.xpathOtherPingedMessage, user));
+					.getConversationPage().getNumberOfYouPingedMessages(
+							String.format(OSXLocators.xpathOtherPingedMessage,
+									user));
 			if (afterNumberOfKnocks == beforeNumberOfKnocks + 1) {
 				isNumberIncreased = true;
 				break;
@@ -306,13 +330,16 @@ public class ConversationPageSteps {
 				isNumberIncreased);
 	}
 
-	private void verifyPingedAgainMessage(String user) throws InterruptedException {
+	private void verifyPingedAgainMessage(String user)
+			throws InterruptedException {
 		boolean isNumberIncreased = false;
 		int afterNumberOfHotKnocks = -1;
 		for (int i = 0; i < 3; i++) {
 			afterNumberOfHotKnocks = CommonOSXSteps.senderPages
-					.getConversationPage().getNumberOfYouPingedMessages(String.format(
-							OSXLocators.xpathOtherPingedAgainMessage, user));
+					.getConversationPage().getNumberOfYouPingedMessages(
+							String.format(
+									OSXLocators.xpathOtherPingedAgainMessage,
+									user));
 			if (afterNumberOfHotKnocks == beforeNumberOfHotKnocks + 1) {
 				isNumberIncreased = true;
 				break;
@@ -342,7 +369,8 @@ public class ConversationPageSteps {
 		} else if (message.equals(OSXLocators.YOU_PINGED_AGAIN_MESSAGE)) {
 			verifyPingedAgainMessage("YOU");
 		} else if (message.contains(OSXLocators.USER_PINGED_MESSAGE)) {
-			message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
+			message = usrMgr.replaceAliasesOccurences(message,
+					FindBy.NAME_ALIAS);
 			verifyPingedMessage(message.split(" ")[0].toUpperCase());
 		} else {
 			verifyMsgExistsInConversationView(message);
@@ -372,8 +400,7 @@ public class ConversationPageSteps {
 	}
 
 	@When("I open Conversation info")
-	public void WhenIOpenConversationInfo() throws MalformedURLException,
-			IOException {
+	public void WhenIOpenConversationInfo() throws Exception {
 		ConversationPage conversationPage = CommonOSXSteps.senderPages
 				.getConversationPage();
 		conversationPage.writeNewMessage("");
@@ -565,7 +592,7 @@ public class ConversationPageSteps {
 	}
 
 	@When("I drag picture (.*) to conversation")
-	public void IDragPictureToConversation(String picture) throws IOException {
+	public void IDragPictureToConversation(String picture) throws Exception {
 		CommonOSXSteps.senderPages.getConversationPage()
 				.dragPictureToConversation(picture);
 	}

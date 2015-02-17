@@ -94,7 +94,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1    | Contact2   |
       | user1Email | user1Password | user1Name | user2Name   | user3Name  |
 
-  @regression @id1396
+  @staging @id1396
   Scenario Outline: Verify correct group info page information
     Given There are 3 users where <Name> is me
     Given User <Contact1> change avatar picture to <Picture>
@@ -109,8 +109,9 @@ Feature: People View
     #And I swipe up on group chat page
     And I open group conversation details
     Then I see that the conversation name is correct with <Contact1> and <Contact2>
-    And I see the correct number of participants in the title <ParticipantNumber>
-    And I see the correct participant avatars
+    And I see that conversation has <ParticipantNumber> people
+    And I see the correct participant <Contact1> avatar
+    And I see the correct participant <Contact2> avatar
 
     Examples:
       | Login      | Password      | Name      | Contact1    | Contact2   | ParticipantNumber | Picture                      | Color        | Color1       |
@@ -182,7 +183,7 @@ Feature: People View
     And I select contact <Contact1>
     And I tap on start dialog button on other user profile page
     And I type the message and send it
-    Then I see my message in the dialog
+    Then I see message in the dialog
 
     Examples: 
       | Login      | Password      | Name      | Contact1    | Contact2   |

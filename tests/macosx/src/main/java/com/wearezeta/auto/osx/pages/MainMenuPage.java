@@ -22,7 +22,7 @@ public class MainMenuPage extends OSXPage {
 	@FindBy(how = How.NAME, using = OSXLocators.nameSignOutMenuItem)
 	private WebElement signOutMenuItem;
 	
-	public MainMenuPage(String URL, String path) throws IOException {
+	public MainMenuPage(String URL, String path) throws Exception {
 		super(URL, path);
 	}
 
@@ -52,7 +52,7 @@ public class MainMenuPage extends OSXPage {
 	}
 	
 	@Override
-	public void Close() throws IOException {
+	public void Close() throws Exception {
 		try {
 			SignOut();
 			quitZClientMenuItem.click();

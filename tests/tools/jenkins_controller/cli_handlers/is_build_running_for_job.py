@@ -17,7 +17,7 @@ class IsBuildRunningForJob(CliHandlerBase):
                             help='Build number to check. Required parameter')
         parser.set_defaults(queue_timeout=300)
 
-    def __call__(self):
+    def _invoke(self):
         parser = self._get_parser()
         args = parser.parse_args()
         job = self._jenkins.get_job(args.name)

@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -37,7 +36,7 @@ public class GroupChatPage extends DialogPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameYouRenamedConversationMessage)
 	private WebElement yourRenamedMessage;
 
-	public GroupChatPage(String URL, String path) throws IOException {
+	public GroupChatPage(String URL, String path) throws Exception {
 		super(URL, path);
 		this.url = URL;
 		this.path = path;
@@ -121,15 +120,25 @@ public class GroupChatPage extends DialogPage {
 	}
 	
 	@Override
-	public IOSPage openConversationDetailsClick() throws IOException {
-		DriverUtils.waitUntilElementAppears(driver, By.xpath(IOSLocators.xpathOpenConversationDetails));
-		openConversationDetails.click();
+	public IOSPage openConversationDetailsClick() throws Exception {
+		for (int i = 0; i < 3; i ++) {
+			if (DriverUtils.isElementDisplayed(openConversationDetails)) {
+				openConversationDetails.click();
+				DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameAddContactToChatButton), 5);
+			}
+			if (DriverUtils.isElementDisplayed(addInfoPage)) {
+				break;
+			}
+			else {
+				swipeUp(1000);
+			}
+		}
 		
 		return new GroupChatInfoPage(url, path);
 	}
 	
 	@Override
-	public IOSPage swipeUp(int time) throws IOException {
+	public IOSPage swipeUp(int time) throws Exception {
 		WebElement element =  driver.findElement(By.name(IOSLocators.nameMainWindow));
 		
 		Point coords = element.getLocation();
@@ -139,7 +148,7 @@ public class GroupChatPage extends DialogPage {
 	}
 	
     @Override
-	public IOSPage swipeRight(int time) throws IOException {
+	public IOSPage swipeRight(int time) throws Exception {
 		WebElement element =  driver.findElement(By.name(IOSLocators.nameMainWindow));
 		
 		Point coords = element.getLocation();
@@ -149,7 +158,7 @@ public class GroupChatPage extends DialogPage {
 	}
 	
 	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
+	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
 		IOSPage page = null;
 		switch (direction){
 			case DOWN:

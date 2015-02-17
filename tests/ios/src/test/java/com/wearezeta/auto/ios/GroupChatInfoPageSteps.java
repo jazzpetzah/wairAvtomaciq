@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.ConnectToPage;
 import com.wearezeta.auto.ios.pages.GroupChatPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
@@ -52,19 +53,22 @@ public class GroupChatInfoPageSteps {
 	}
 
 	@When("^I tap on (.*) and check email (.*) and name$")
-	public void ITapAllParticipantsAndCheckElements(String user, String checkEmail) throws Exception {
+	public void ITapAllParticipantsAndCheckElements(String user,
+			String checkEmail) throws Exception {
 		if (checkEmail.equals("visible")) {
-			PagesCollection.groupChatInfoPage.tapAndCheckAllParticipants(user, true);
-		}
-		else {
-			PagesCollection.groupChatInfoPage.tapAndCheckAllParticipants(user, false);
+			PagesCollection.groupChatInfoPage.tapAndCheckAllParticipants(user,
+					true);
+		} else {
+			PagesCollection.groupChatInfoPage.tapAndCheckAllParticipants(user,
+					false);
 		}
 	}
 
-	@When("^I see the correct participant avatars$")
-	public void IVerifyCorrectParticipantAvatars() throws IOException {
+	@When("^I see the correct participant (.*) avatar$")
+	public void IVerifyCorrectParticipantAvatars(String contact) throws IOException, NoSuchUserException {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertTrue(PagesCollection.groupChatInfoPage
-				.areParticipantAvatarsCorrect());
+				.areParticipantAvatarCorrect(contact));
 	}
 
 	@When("^I exit the group info page$")
@@ -122,13 +126,13 @@ public class GroupChatInfoPageSteps {
 	}
 
 	@When("I swipe down on group chat info page")
-	public void ISwipeUpOnGroupChatInfoPage() throws IOException {
+	public void ISwipeUpOnGroupChatInfoPage() throws Exception {
 		PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.groupChatInfoPage
 				.swipeDown(500);
 	}
 
 	@When("I close group chat info page")
-	public void ICloseGroupChatInfoPage() throws IOException {
+	public void ICloseGroupChatInfoPage() throws Exception {
 		PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.groupChatInfoPage
 				.closeGroupChatInfoPage();
 	}

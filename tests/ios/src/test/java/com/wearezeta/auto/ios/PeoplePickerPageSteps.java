@@ -25,7 +25,7 @@ public class PeoplePickerPageSteps {
 	}
 
 	@When("I see Upload contacts dialog")
-	public void WhenISeeUploadContactsDialog() throws IOException {
+	public void WhenISeeUploadContactsDialog() throws Exception {
 		if (PagesCollection.peoplePickerPage == null) {
 			String path = CommonUtils
 					.getIosApplicationPathFromConfig(TestRun.class);
@@ -150,7 +150,8 @@ public class PeoplePickerPageSteps {
 	public void WhenISearchForUserNameAndTapOnItOnPeoplePickerPage(
 			String contact) throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		PagesCollection.peoplePickerPage.pickUserAndTap(contact);
+		PagesCollection.connectToPage = PagesCollection.peoplePickerPage
+				.pickUserAndTap(contact);
 	}
 
 	@When("^I search for ignored user name (.*) and tap on it$")
@@ -173,14 +174,20 @@ public class PeoplePickerPageSteps {
 				PagesCollection.peoplePickerPage.addToConversationNotVisible());
 	}
 
+	@When("^I click Go button to create 1:1 conversation$")
+	public void WhenIClickOnGoButtonForSingle() throws Exception {
+		PagesCollection.iOSPage = PagesCollection.peoplePickerPage
+				.clickOnGoButton(false);
+	}
+
 	@When("^I click on Go button$")
-	public void WhenIClickOnGoButton() throws IOException {
+	public void WhenIClickOnGoButton() throws Exception {
 		PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.peoplePickerPage
-				.clickOnGoButton();
+				.clickOnGoButton(true);
 	}
 
 	@When("^I click clear button$")
-	public void WhenIClickClearButton() throws IOException {
+	public void WhenIClickClearButton() throws Exception {
 		PagesCollection.contactListPage = PagesCollection.peoplePickerPage
 				.dismissPeoplePicker();
 	}
@@ -260,8 +267,8 @@ public class PeoplePickerPageSteps {
 	@When("^I click on Add to conversation button$")
 	public void WhenIClickOnAddToConversationButton() throws Exception {
 		if (PagesCollection.peoplePickerPage.isKeyboardVisible()) {
-			PagesCollection.groupChatPage = PagesCollection.peoplePickerPage
-					.clickOnGoButton();
+			PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.peoplePickerPage
+					.clickOnGoButton(true);
 		} else {
 			PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.peoplePickerPage
 					.clickAddToCoversationButton();
@@ -273,4 +280,31 @@ public class PeoplePickerPageSteps {
 		PagesCollection.peoplePickerPage.tapOnPeoplePickerClearBtn();
 	}
 
+	/**
+	 * Unblocks a blocked user by clicking the unblock button
+	 * 
+	 * @step. I unblock user
+	 * 
+	 */
+	@When("^I unblock user$")
+	public void IUnblockUser() throws Exception {
+		PagesCollection.dialogPage = PagesCollection.peoplePickerPage
+				.unblockUser();
+
+	}
+
+	/**
+	 * This step checks if the number of the selected contacts is correct.
+	 * 
+	 * @step. ^I see that (\\d+) contacts are selected$
+	 * 
+	 * @param number
+	 *            expected number of contacts
+	 * 
+	 */
+	@Then("^I see that (\\d+) contacts are selected$")
+	public void ISeeThatContactsAreSelected(int number) {
+		int numberOfSelectedTopPeople = PagesCollection.peoplePickerPage.getNumberOfSelectedTopPeople();
+		Assert.assertEquals(number, numberOfSelectedTopPeople);
+	}
 }

@@ -25,10 +25,10 @@ public class GroupChatInfoPage extends IOSPage {
 
 	private String url;
 	private String path;
-	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.85;
+	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.80;
 	
 	private final String AQA_PICTURE_CONTACT = "AQAPICTURECONTACT";
-	private final String AQA_AVATAR_CONTACT = "AT";
+	private final String AQA_AVATAR_CONTACT = "AQAAVATAR";
 
 	private String conversationName = null;
 
@@ -66,7 +66,7 @@ public class GroupChatInfoPage extends IOSPage {
 	private WebElement closeButton;
 
 	public GroupChatInfoPage(String URL, String path)
-			throws IOException {
+			throws Exception {
 		super(URL, path);
 		this.url = URL;
 		this.path = path;
@@ -87,49 +87,47 @@ public class GroupChatInfoPage extends IOSPage {
 	}
 
 	public boolean isNumberOfParticipants(int correctNumber) {
+		DriverUtils.waitUntilElementAppears(driver, By.xpath(IOSLocators.xpathNumberOfParticipantsText));
 		int givenNumberOfParticipants = Integer
 				.parseInt(numberOfParticipantsText.getText().replaceAll("\\D+",
 						""));
 		return givenNumberOfParticipants == correctNumber;
 	}
 
-	public GroupChatPage closeGroupChatInfoPage() throws IOException {
+	public GroupChatPage closeGroupChatInfoPage() throws Exception {
 		closeButton.click();
 		return new GroupChatPage(url, path);
 	}
 
-	public boolean areParticipantAvatarsCorrect() throws IOException {
+	public boolean areParticipantAvatarCorrect(String contact) throws IOException {
+		
+		String name = "", picture = "";
+		if (contact.toLowerCase().contains(AQA_PICTURE_CONTACT.toLowerCase())) {
+			name = AQA_PICTURE_CONTACT;
+			picture = "avatarPictureTest.png";
+		} else {
+			name = AQA_AVATAR_CONTACT;
+			picture = "avatarTest.png";
+		}
 		List<WebElement> participantAvatars = getCurrentParticipants();
 		BufferedImage avatarIcon = null;
-		boolean flag1 = false, flag2 = false;
+		boolean flag = false;
 		for (WebElement avatar : participantAvatars) {
 			avatarIcon = CommonUtils.getElementScreenshot(avatar, driver);
 			String avatarName = avatar.getAttribute("name");
-			if (avatarName.equalsIgnoreCase(AQA_PICTURE_CONTACT)) {
+			if (avatarName.equalsIgnoreCase(name)) {
 				BufferedImage realImage = ImageUtil.readImageFromFile(IOSPage
-						.getImagesPath() + "avatarPictureTest.png");
+						.getImagesPath() + picture);
 				double score = ImageUtil.getOverlapScore(realImage, avatarIcon);
 				if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
 					return false;
 				}
 				else {
-					flag1 = true;
-				}
-			}
-			if (avatarName.equalsIgnoreCase(AQA_AVATAR_CONTACT)) {
-				// must be a yellow user with initials AT
-				BufferedImage realImage = ImageUtil.readImageFromFile(IOSPage
-						.getImagesPath() + "avatarTest.png");
-				double score = ImageUtil.getOverlapScore(realImage, avatarIcon);
-				if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
-					return false;
-				}
-				else {
-					flag2 = true;
+					flag = true;
 				}
 			}
 		}
-		return flag1 && flag2;
+		return flag;
 	}
 
 	public void tapAndCheckAllParticipants(String user, boolean checkEmail) throws Exception {
@@ -267,14 +265,14 @@ public class GroupChatInfoPage extends IOSPage {
 	}
 
 	public OtherUserPersonalInfoPage selectContactByName(String name)
-			throws IOException {
+			throws Exception {
 		DriverUtils.mobileTapByCoordinates(driver,
 				driver.findElementByName(name.toUpperCase()));
 
 		return new OtherUserPersonalInfoPage(url, path);
 	}
 
-	public ConnectToPage selectNotConnectedUser(String name) throws IOException {
+	public ConnectToPage selectNotConnectedUser(String name) throws Exception {
 		driver.findElementByName(name.toUpperCase()).click();
 
 		return new ConnectToPage(url, path);
@@ -287,7 +285,7 @@ public class GroupChatInfoPage extends IOSPage {
 	}
 
 	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
+	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
 		IOSPage page = null;
 		switch (direction) {
 		case DOWN: {

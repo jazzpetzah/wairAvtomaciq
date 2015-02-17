@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.pages;
 import java.io.IOException;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 
@@ -36,7 +37,7 @@ public class VideoPlayerPage extends IOSPage{
 	private String url;
 	private String path;
 	
-	public VideoPlayerPage(String URL, String path) throws IOException {
+	public VideoPlayerPage(String URL, String path) throws Exception {
 		super(URL, path);
 		
 		this.url = URL;
@@ -55,9 +56,14 @@ public class VideoPlayerPage extends IOSPage{
 		videoPlayerMainWindow.click();
 	}
 	
-	public DialogPage clickVideoDoneButton() throws IOException{
+	public DialogPage clickVideoDoneButton() throws Exception{
 		DialogPage page = null;
-		videoDoneButton.click();
+		DriverUtils.mobileTapByCoordinates(driver, videoDoneButton);
+		try {
+			DriverUtils.mobileTapByCoordinates(driver, videoDoneButton);
+		}catch (WebDriverException e) {
+			
+		}
 		page = new DialogPage(url, path);
 		return page;
 		

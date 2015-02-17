@@ -2,9 +2,9 @@ package com.wearezeta.auto.osx.pages;
 
 import io.appium.java_client.AppiumDriver;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -14,23 +14,27 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.email.MBoxChangesListener;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.osx.common.OSXCommonUtils;
+import com.wearezeta.auto.osx.common.OSXConstants;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class LoginPage extends OSXPage {
 	private static final Logger log = ZetaLogger.getLog(LoginPage.class.getSimpleName());
 	
-	@FindBy(how = How.ID, using = OSXLocators.idLoginPage)
+	@FindBy(how = How.ID, using = OSXLocators.LoginPage.idLoginPage)
 	private WebElement viewPager;
 	
-	@FindBy(how = How.XPATH, using = OSXLocators.xpathAcceptTermsOfServiceCheckBox)
-	private WebElement acceptTermOfServiceCheckBox;
+	@FindBy(how = How.XPATH, using = OSXLocators.LoginPage.xpathAcceptTermsOfServiceCheckBox)
+	private WebElement acceptTermsOfServiceCheckBox;
 	
-	@FindBy(how = How.NAME, using = OSXLocators.nameRegisterButton)
+	@FindBy(how = How.NAME, using = OSXLocators.LoginPage.nameRegisterButton)
 	private WebElement registerButton;
 
-	@FindBy(how = How.NAME, using = OSXLocators.nameSignInButton)
+	@FindBy(how = How.NAME, using = OSXLocators.LoginPage.nameSignInButton)
 	private WebElement signInButton;
 
 	@FindBy(how = How.CSS, using = OSXLocators.relativePathLoginField)
@@ -51,14 +55,19 @@ public class LoginPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idCloseNoInternetDialogButton)
 	private WebElement closeNoInternetDialog;
 	
+	@FindBy(how = How.XPATH, using = OSXLocators.LoginPage.xpathForgotPasswordButton)
+	private WebElement forgotPasswordButton;
+	
+	private MBoxChangesListener listener;
+	
 	private String login;
 	
 	private String password;
 	
 	private String url;
 	private String path;
-	
-	public LoginPage(String URL, String path) throws IOException {
+
+	public LoginPage(String URL, String path) throws Exception {
 		
 		super(URL, path);
 		this.url = URL;
@@ -68,7 +77,7 @@ public class LoginPage extends OSXPage {
 	public Boolean isVisible() {
 		WebElement page = null;
 		try {
-			page = driver.findElement(By.id(OSXLocators.idLoginPage));
+			page = driver.findElement(By.id(OSXLocators.LoginPage.idLoginPage));
 		} catch (NoSuchElementException e) {
 			page = null;
 		}
@@ -79,8 +88,8 @@ public class LoginPage extends OSXPage {
 		signInButton.click();
 	}
 	
-	public ContactListPage confirmSignIn() throws IOException {
-		try { Thread.sleep(1000); } catch (InterruptedException e) { }
+	public ContactListPage confirmSignIn() throws Exception {
+		Thread.sleep(1000);
 		signInButton.click();
 		return new ContactListPage(url, path);
 		}
@@ -109,7 +118,7 @@ public class LoginPage extends OSXPage {
 	
 	public boolean waitForLogin() {
 		DriverUtils.turnOffImplicitWait(driver);
-		boolean noSignIn = DriverUtils.waitUntilElementDissapear(driver, By.name(OSXLocators.nameSignInButton));
+		boolean noSignIn = DriverUtils.waitUntilElementDissapear(driver, By.name(OSXLocators.LoginPage.nameSignInButton));
 		DriverUtils.setDefaultImplicitWait(driver);
 		return noSignIn;
 	}
@@ -126,8 +135,8 @@ public class LoginPage extends OSXPage {
 		return el != null;
 	}
 	
-	public RegistrationPage startRegistration() throws IOException {
-		acceptTermOfServiceCheckBox.click();
+	public RegistrationPage startRegistration() throws Exception {
+		acceptTermsOfServiceCheckBox.click();
 		for (int i = 0; i < 3; i++) {
 			if (registerButton.getAttribute("AXEnabled").equals("1")) break;
 		}
@@ -139,7 +148,7 @@ public class LoginPage extends OSXPage {
 	public void logoutIfNotSignInPage() throws Exception {
 		DriverUtils.setImplicitWaitValue(driver, 1);
 		try {
-			driver.findElement(By.id(OSXLocators.idLoginPage));
+			driver.findElement(By.id(OSXLocators.LoginPage.idLoginPage));
 		} catch (NoSuchElementException e) {
 			log.info("Logging out because previous user is signed in.");
 			MainMenuPage menu = new MainMenuPage(url, path);
@@ -216,5 +225,49 @@ public class LoginPage extends OSXPage {
 	
 	public AppiumDriver getDriver() {
 		return driver;
+	}
+
+	public ChangePasswordPage openResetPasswordPage() throws Exception {
+		String passwordResetLink = BackendAPIWrappers.getPasswordResetLink(this.listener);
+		String script = String
+				.format(OSXCommonUtils
+						.readTextFileFromResources(OSXConstants.Scripts.OPEN_SAFARI_WITH_URL_SCRIPT),
+						passwordResetLink);
+		driver.executeScript(script);
+		return new ChangePasswordPage(url, path);
+	}
+	
+	public ChangePasswordPage openStagingForgotPasswordPage() throws Exception {
+		String script = String
+				.format(OSXCommonUtils
+						.readTextFileFromResources(OSXConstants.Scripts.OPEN_SAFARI_WITH_URL_SCRIPT),
+						OSXConstants.BrowserActions.STAGING_CHANGE_PASSWORD_URL);
+		driver.executeScript(script);
+		return new ChangePasswordPage(url, path);
+	}
+	
+	public boolean isForgotPasswordPageAppears() throws Exception {
+		String script = String
+				.format(OSXCommonUtils
+						.readTextFileFromResources(OSXConstants.Scripts.PASSWORD_PAGE_VISIBLE_SCRIPT));
+
+		@SuppressWarnings("unchecked")
+		Map<String, String> value = (Map<String, String>) driver
+				.executeScript(script);
+		boolean result = Boolean.parseBoolean(value.get("result"));
+		return result;
+	}
+
+	
+	public void forgotPassword() {
+		forgotPasswordButton.click();
+	}
+	
+	public MBoxChangesListener getListener() {
+		return listener;
+	}
+	
+	public void setListener(MBoxChangesListener listener) {
+		this.listener = listener;
 	}
 }
