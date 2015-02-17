@@ -134,9 +134,9 @@ public class ParticipantsProfilePopupSteps {
 	}
 	
 	/**
-	 * Creates conversation with selected users
+	 * Creates conversation with selected users from Popup Page
 	 * 
-	 * @step. ^I choose to create conversation from People Picker$
+	 * @step. ^I choose to create conversation from Popup Page$
 	 */
 	@When("^I choose to create conversation from Popup Page$")
 	public void IChooseToCreateConversationFromPopupPage() {
