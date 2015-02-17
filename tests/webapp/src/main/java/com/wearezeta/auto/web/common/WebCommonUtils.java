@@ -49,7 +49,9 @@ public class WebCommonUtils extends CommonUtils {
 	}
 
 	public static String getNodeIp(RemoteWebDriver driver) throws Exception {
-		HttpHost host = new HttpHost(getHubHostFromConfig(WebCommonUtils.class), getHubPortFromConfig(WebCommonUtils.class));
+		HttpHost host = new HttpHost(
+				getHubHostFromConfig(WebCommonUtils.class),
+				getHubPortFromConfig(WebCommonUtils.class));
 		DefaultHttpClient client = new DefaultHttpClient();
 		String url = String.format(
 				"http://%s:%s/grid/api/testsession?session=%s",
@@ -86,8 +88,6 @@ public class WebCommonUtils extends CommonUtils {
 
 		String command = String.format(commandTemplate,
 				getJenkinsSuperUserPassword(CommonUtils.class),
-				getJenkinsSuperUserPassword(CommonUtils.class),
-				getJenkinsSuperUserLogin(CommonUtils.class),
 				getJenkinsSuperUserLogin(CommonUtils.class),
 				getJenkinsSuperUserLogin(CommonUtils.class),
 				WebAppExecutionContext.seleniumNodeIp,
@@ -98,12 +98,13 @@ public class WebCommonUtils extends CommonUtils {
 
 	public static void executeAppleScriptFromFile(String script)
 			throws Exception {
-		String commandTemplate = "sshpass -p %s ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no %s@%s osascript %s";
+		String commandTemplate = "sshpass -p %s "
+				+ "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
+				+ "%s@%s osascript %s";
 		String command = String.format(commandTemplate,
 				getJenkinsSuperUserPassword(CommonUtils.class),
 				getJenkinsSuperUserLogin(CommonUtils.class),
-				WebAppExecutionContext.seleniumNodeIp,
-				script);
+				WebAppExecutionContext.seleniumNodeIp, script);
 		WebCommonUtils
 				.executeOsXCommand(new String[] { "bash", "-c", command });
 	}
