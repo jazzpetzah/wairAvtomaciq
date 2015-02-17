@@ -54,7 +54,6 @@ Feature: Conversation
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <Contact>
-    When I choose to send picture
     And I send picture <PictureName>
     Then I see sent picture <PictureName> in the conversation view
 
@@ -63,7 +62,7 @@ Feature: Conversation
       | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg |
 
 
-  @staging @id1934
+  @staging @id1934 @torun
   Scenario Outline: Send Camera picture to group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
