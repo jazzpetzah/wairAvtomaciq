@@ -316,13 +316,23 @@ public class CommonUtils {
 
 	public static BufferedImage getElementScreenshot(WebElement element,
 			AppiumDriver driver) throws IOException {
+		return getElementScreenshot(element, driver, "iPhone 6");
+	}
+	
+	public static BufferedImage getElementScreenshot(WebElement element,
+			AppiumDriver driver, String deviceName) throws IOException {
+		int multiply = 3;
+		if(deviceName.equals("iPhone 6")) {
+			multiply = 2;
+		}
+		
 		BufferedImage screenshot = DriverUtils
 				.takeScreenshot((ZetaDriver) driver);
 		org.openqa.selenium.Point elementLocation = element.getLocation();
 		Dimension elementSize = element.getSize();
-		return screenshot.getSubimage(elementLocation.x * 2,
-				elementLocation.y * 2, elementSize.width * 2,
-				elementSize.height * 2);
+		return screenshot.getSubimage(elementLocation.x * multiply,
+				elementLocation.y * multiply, elementSize.width * multiply,
+				elementSize.height * multiply);
 	}
 
 	public static String getContactName(String login) {

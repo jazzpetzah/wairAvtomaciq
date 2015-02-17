@@ -355,15 +355,18 @@ public class ContactListPage extends IOSPage {
 	}
 
 	public boolean isConversationSilenced(String conversation)
-			throws IOException {
+			throws Exception {
 		BufferedImage silencedConversation = null;
 		WebElement element = findCellInContactList(conversation);
 		silencedConversation = CommonUtils
-				.getElementScreenshot(element, driver);
+				.getElementScreenshot(element, driver, CommonUtils.getDeviceName(this.getClass()));
 		BufferedImage referenceImage = ImageUtil.readImageFromFile(IOSPage
 				.getImagesPath() + "silenceVerification.png");
-		double score = ImageUtil.getOverlapScore(referenceImage,
-				silencedConversation);
+//		File outputfile = new File("silenceiPhone6plus.png");
+//		ImageIO.write(silencedConversation, "png", outputfile);
+		//double score = ImageUtil.getOverlapScore(referenceImage,silencedConversation);
+		double score = ImageUtil.getOverlapScore(referenceImage, silencedConversation,
+				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 		if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
 			return false;
 		}
