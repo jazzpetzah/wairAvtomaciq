@@ -1,6 +1,6 @@
 package com.wearezeta.auto.common;
 
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
@@ -34,9 +34,15 @@ public final class PerformanceCommon {
 	public static final int MAX_WAIT_VALUE_IN_MIN = 2;
 	public static final int SIMULTANEOUS_MSGS_COUNT = 5;
 
+	private static final String DEFAULT_PERF_IMAGE = "perf/default.jpg";
+	private InputStream defaultImage = null;
+
 	private static PerformanceCommon instance = null;
 
 	private PerformanceCommon() {
+		final ClassLoader classLoader = this.getClass().getClassLoader();
+		defaultImage = classLoader
+				.getResourceAsStream(DEFAULT_PERF_IMAGE);
 	}
 
 	public static PerformanceCommon getInstance() {
@@ -70,6 +76,7 @@ public final class PerformanceCommon {
 								selfUser, contactName,
 								CommonUtils.generateGUID());
 					} catch (Exception e) {
+						e.printStackTrace();
 						getLogger().debug(e.getMessage());
 					}
 				}
@@ -77,25 +84,23 @@ public final class PerformanceCommon {
 			executor.submit(worker);
 		}
 		executor.shutdown();
-		executor.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
+		executor.awaitTermination(900, TimeUnit.SECONDS);
 	}
 
 	public void sendDefaultImageToUser(int imagesCount) throws Exception {
-		FileInputStream configFileStream = null;
-		try {
-			configFileStream = new FileInputStream(
-					CommonUtils.getImagePath(PerformanceCommon.class));
-			final ClientUser selfUser = getUserManager()
-					.getSelfUserOrThrowError();
-			for (int i = 0; i < imagesCount; i++) {
-				final String contact = getRandomContactName(selfUser);
-				BackendAPIWrappers.sendPictureToChatByName(selfUser, contact,
-						configFileStream);
-			}
-		} finally {
-			if (configFileStream != null) {
-				configFileStream.close();
-			}
+		final ClientUser selfUser = getUserManager().getSelfUserOrThrowError();
+		for (int i = 0; i < imagesCount; i++) {
+			final String contact = getRandomContactName(selfUser);
+			BackendAPIWrappers.sendPictureToChatByName(selfUser, contact,
+					defaultImage);
 		}
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		if (defaultImage != null) {
+			defaultImage.close();
+		}
+		super.finalize();
 	}
 }

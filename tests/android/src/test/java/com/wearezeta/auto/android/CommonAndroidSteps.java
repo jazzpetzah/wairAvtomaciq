@@ -95,7 +95,7 @@ public class CommonAndroidSteps {
 		}
 	}
 
-	private void commonBefore() throws Exception {
+	public void commonBefore() throws Exception {
 		try {
 			AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
 		} catch (Exception ex) {

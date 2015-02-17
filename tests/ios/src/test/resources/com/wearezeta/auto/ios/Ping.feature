@@ -12,6 +12,7 @@ Feature: Ping
     And I click Ping button
     Then I see You Pinged message in the dialog
     #And I see <Action1> icon in conversation
+    And I swipe the text input cursor
     And I click Ping button
     And I see You Pinged Again message in the dialog
     #And I see <Action2> icon in conversation

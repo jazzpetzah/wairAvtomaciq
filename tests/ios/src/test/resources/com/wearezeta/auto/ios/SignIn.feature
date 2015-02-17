@@ -37,7 +37,7 @@ Feature: Sign In
     When I press Sign in button
     And I enter wrong email <WrongMail>
     And I enter wrong password <WrongPassword>
-    And I attemt to press Login button
+    And I attempt to press Login button
     Then I see wrong credentials notification
 
     Examples: 

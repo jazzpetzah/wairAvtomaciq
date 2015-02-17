@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 
@@ -12,6 +11,7 @@ import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -158,7 +158,7 @@ public class DialogPageSteps {
 	@When("^I swipe up on dialog page to open other user personal page$")
 	public void WhenISwipeUpOnDialogPage() throws Exception {
 		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.dialogPage
-				.swipeUp(500);
+				.swipeUp(1000);
 	}
 
 	@Then("^I see message in the dialog$")
@@ -310,7 +310,10 @@ public class DialogPageSteps {
 	@When("I swipe right on Dialog page")
 	public void ISwipeRightOnDialogPage() throws Exception {
 		PagesCollection.contactListPage = (ContactListPage) PagesCollection.dialogPage
-				.swipeRight(1000);
+				.swipeRight(
+						1000,
+						DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL,
+						30);
 	}
 
 	@When("I send long message")

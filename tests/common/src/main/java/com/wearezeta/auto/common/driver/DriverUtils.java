@@ -80,7 +80,7 @@ public class DriverUtils {
 				}
 			});
 		} catch (Exception ex) {
-			//debug output for WebApp sign in issue
+			// debug output for WebApp sign in issue
 			if (driver instanceof ZetaWebAppDriver) {
 				log.debug(ex.getMessage());
 			}
@@ -145,7 +145,7 @@ public class DriverUtils {
 		}
 		return bool;
 	}
-	
+
 	public static boolean waitUntilWebPageLoaded(RemoteWebDriver driver) {
 		return waitUntilWebPageLoaded(driver, 20);
 	}
@@ -248,55 +248,102 @@ public class DriverUtils {
 		js.executeScript("mobile: scrollTo", scrollToObject);
 	}
 
+	public static final int SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL = 100;
+	public static final int SWIPE_Y_DEFAULT_PERCENTAGE_HORIZONTAL = 50;
+
+	/**
+	 * 
+	 * @param driver
+	 * @param element
+	 * @param time
+	 * @param percentX
+	 *            min value is 1. Where to swipe (in percents relative to the
+	 *            original control width)
+	 * @param percentY
+	 *            min value is 1. Where to swipe (in percents relative to the
+	 *            original control height)
+	 */
+	public static void swipeLeft(AppiumDriver driver, WebElement element,
+			int time, int percentX, int percentY) {
+		final Point coords = element.getLocation();
+		final Dimension elementSize = element.getSize();
+		final int xOffset = (int) Math.round(elementSize.width * (percentX / 100.0));
+		final int yOffset = (int) Math.round(elementSize.height * (percentY / 100.0));
+		try {
+			driver.swipe(coords.x + xOffset, coords.y + yOffset, coords.x,
+					coords.y + yOffset, time);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
 	public static void swipeLeft(AppiumDriver driver, WebElement element,
 			int time) {
-		Point coords = element.getLocation();
-		Dimension elementSize = element.getSize();
-		try {
-			driver.swipe(coords.x + elementSize.width - 20, coords.y
-					+ elementSize.height / 2, coords.x + 20, coords.y
-					+ elementSize.height / 2, time);
-		} catch (Exception ex) {
+		swipeLeft(driver, element, time, SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL,
+				SWIPE_Y_DEFAULT_PERCENTAGE_HORIZONTAL);
+	}
 
+	public static void swipeRight(AppiumDriver driver, WebElement element,
+			int time, int percentX, int percentY) {
+		final Point coords = element.getLocation();
+		final Dimension elementSize = element.getSize();
+		final int xOffset = (int) Math.round(elementSize.width * (percentX / 100.0));
+		final int yOffset = (int) Math.round(elementSize.height * (percentY / 100.0));
+		try {
+			driver.swipe(coords.x, coords.y + yOffset, coords.x + xOffset,
+					coords.y + yOffset, time);
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 
 	public static void swipeRight(AppiumDriver driver, WebElement element,
 			int time) {
-		Point coords = element.getLocation();
-		Dimension elementSize = element.getSize();
-		try {
-			driver.swipe(coords.x, coords.y + elementSize.height / 2, coords.x
-					+ elementSize.width - 10,
-					coords.y + elementSize.height / 2, time);
-		} catch (Exception ex) {
+		swipeRight(driver, element, time,
+				SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL,
+				SWIPE_Y_DEFAULT_PERCENTAGE_HORIZONTAL);
+	}
 
+	public static final int SWIPE_X_DEFAULT_PERCENTAGE_VERTICAL = 50;
+	public static final int SWIPE_Y_DEFAULT_PERCENTAGE_VERTICAL = 100;
+
+	public static void swipeUp(AppiumDriver driver, WebElement element,
+			int time, int percentX, int percentY) {
+		final Point coords = element.getLocation();
+		final Dimension elementSize = element.getSize();
+		final int xOffset = (int) Math.round(elementSize.width * (percentX / 100.0));
+		final int yOffset = (int) Math.round(elementSize.height * (percentY / 100.0));
+		try {
+			driver.swipe(coords.x + xOffset, coords.y + yOffset, coords.x
+					+ xOffset, coords.y, time);
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 
 	public static void swipeUp(AppiumDriver driver, WebElement element, int time) {
-		Point coords = element.getLocation();
-		Dimension elementSize = element.getSize();
-		try {
-			driver.swipe(coords.x + elementSize.width / 2, coords.y
-					+ elementSize.height - 170, coords.x + elementSize.width
-					/ 2, coords.y + 120, time);
-		} catch (Exception ex) {
+		swipeUp(driver, element, time, SWIPE_X_DEFAULT_PERCENTAGE_VERTICAL,
+				SWIPE_Y_DEFAULT_PERCENTAGE_VERTICAL);
+	}
 
+	public static void swipeDown(AppiumDriver driver, WebElement element,
+			int time, int percentX, int percentY) {
+		final Point coords = element.getLocation();
+		final Dimension elementSize = element.getSize();
+		final int xOffset = (int) Math.round(elementSize.width * (percentX / 100.0));
+		final int yOffset = (int) Math.round(elementSize.height * (percentY / 100.0));
+		try {
+			driver.swipe(coords.x + xOffset, coords.y, coords.x + xOffset,
+					coords.y + yOffset, time);
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 
 	public static void swipeDown(AppiumDriver driver, WebElement element,
 			int time) {
-		Point coords = element.getLocation();
-		Dimension elementSize = element.getSize();
-		try {
-			driver.swipe(coords.x + elementSize.width / 2, coords.y + 150,
-					coords.x + elementSize.width / 2, coords.y
-							+ elementSize.height - 200, time);
-		} catch (Exception ex) {
-
-		}
+		swipeDown(driver, element, time, SWIPE_X_DEFAULT_PERCENTAGE_VERTICAL,
+				SWIPE_Y_DEFAULT_PERCENTAGE_VERTICAL);
 	}
 
 	public static void androidMultiTap(AppiumDriver driver, WebElement element,
@@ -477,7 +524,7 @@ public class DriverUtils {
 		Point coords = element.getLocation();
 		driver.tap(1, coords.x - (coords.x/2 - coords.x/8), coords.y, 1);
 	}
-	
+
 	/*
 	 * This is a work around for pressing the archive button. The ID is not
 	 * visible through Appium, thats why it is tapped by its location
