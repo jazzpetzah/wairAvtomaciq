@@ -475,7 +475,7 @@ public class DriverUtils {
 	public static void clickSilenceConversationButton(AppiumDriver driver,
 			WebElement element) {
 		Point coords = element.getLocation();
-		driver.tap(1, coords.x - 70, coords.y, 1);
+		driver.tap(1, coords.x - (coords.x/2 - coords.x/8), coords.y, 1);
 	}
 	
 	/*
@@ -486,6 +486,6 @@ public class DriverUtils {
 	public static void clickArchiveConversationButton(AppiumDriver driver,
 			WebElement element) {
 		Point coords = element.getLocation();
-		driver.tap(1, coords.x - 126, coords.y, 1);
+		driver.tap(1, coords.x - (coords.x/2 + coords.x/8), coords.y, 1);
 	}
 }
