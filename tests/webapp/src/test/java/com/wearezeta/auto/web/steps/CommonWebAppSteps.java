@@ -7,6 +7,9 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.web.common.WebAppConstants;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
+import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.pages.InvitationCodePage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.WebPage;
@@ -43,6 +46,17 @@ public class CommonWebAppSteps {
 		PagesCollection.invitationCodePage = new InvitationCodePage(url, path);
 
 		ZetaFormatter.setDriver(PagesCollection.invitationCodePage.getDriver());
+
+		//put AppleScript for execution to Selenium node
+		if (WebCommonUtils.getWebAppBrowserNameFromConfig(CommonWebAppSteps.class).equals(WebAppConstants.Browser.SAFARI)) {
+			try {
+				WebAppExecutionContext.seleniumNodeIp = WebCommonUtils.getNodeIp(PagesCollection.invitationCodePage.getDriver());
+				WebCommonUtils.putScriptsOnExecutionNode(WebAppExecutionContext.seleniumNodeIp);
+			} catch (Exception e) {
+				log.debug("Error when trying to prepare for send picture test on Safari. They expected to be failed. Error message for more info: " + e.getMessage());
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**

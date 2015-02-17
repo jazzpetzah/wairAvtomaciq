@@ -2,9 +2,6 @@ package com.wearezeta.auto.web.pages;
 
 import java.util.List;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -115,20 +112,7 @@ public class ConversationPage extends WebPage {
 			// sendKeys() call to file input element does nothing on safari
 			// so instead of sendKeys() we are using AppleScript which chooses
 			// required image in open file dialog
-			String script = String
-					.format(CommonUtils
-							.readTextFileFromResources(WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT),
-							WebCommonUtils.getPicturesPath(), pictureName);
-			ScriptEngineManager mgr = new ScriptEngineManager();
-			ScriptEngine engine = mgr.getEngineByName("AppleScriptEngine");
-			if (engine != null) {
-				engine.eval(script);
-			} else {
-				log.debug("No script engine factory for AppleScript. Existing script engine factories: "
-						+ mgr.getEngineFactories());
-				throw new Exception(
-						"Failed to get script engine to execute AppleScript.");
-			}
+			WebCommonUtils.executeAppleScriptFromFile(WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT);
 		} else {
 			final String showPathInputJScript = "$('"
 					+ WebAppLocators.ConversationPage.cssSendImageLabel

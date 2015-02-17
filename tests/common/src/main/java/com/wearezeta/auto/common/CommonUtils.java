@@ -308,7 +308,12 @@ public class CommonUtils {
 			throws Exception {
 		return getValueFromConfig(c, "deviceName");
 	}
-
+	
+	public static String getJenkinsSuperUserLogin(Class<?> c)
+			throws Exception {
+		return getValueFromCommonConfig(c, "jenkinsSuLogin");
+	}
+	
 	public static String getJenkinsSuperUserPassword(Class<?> c)
 			throws Exception {
 		return getValueFromCommonConfig(c, "jenkinsSuPassword");
