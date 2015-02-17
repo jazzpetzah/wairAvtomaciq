@@ -15,7 +15,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ConversationPageSteps {
-	
+
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	@SuppressWarnings("unused")
@@ -84,7 +84,7 @@ public class ConversationPageSteps {
 		PagesCollection.userProfilePopupPage = (UserProfilePopupPage) PagesCollection.conversationPage
 				.clickShowUserProfileButton(false);
 	}
-	
+
 	/**
 	 * Click on the button from conversation that popups participant profile
 	 * 
@@ -101,14 +101,20 @@ public class ConversationPageSteps {
 	/**
 	 * Send a picture into current conversation
 	 * 
+	 * @step. ^I send picture (.*) to ([a-z]*) conversation$
+	 * 
 	 * @param pictureName
 	 *            the name of a picture file. This file should already exist in
 	 *            the ~/Documents folder
+	 * @param chatType
+	 *            specifies is it group chat or conversation with single user
+	 * 
 	 * @throws Exception
 	 */
-	@When("^I send picture (.*) to ([a-z]*) conversation")
-	public void WhenISendPicture(String chatType, String pictureName) throws Exception {
-		boolean isGroup = (chatType.equals("group")?true:false);
+	@When("^I send picture (.*) to ([a-z]*) conversation$")
+	public void WhenISendPicture(String pictureName, String chatType)
+			throws Exception {
+		boolean isGroup = (chatType.equals("group") ? true : false);
 		PagesCollection.conversationPage.sendPicture(pictureName, isGroup);
 	}
 
@@ -141,7 +147,7 @@ public class ConversationPageSteps {
 		Assert.assertTrue(PagesCollection.conversationPage
 				.isActionMessageSent(message));
 	}
-	
+
 	/**
 	 * Checks action message (e.g. you left, etc.) appear in conversation
 	 * 
@@ -149,14 +155,15 @@ public class ConversationPageSteps {
 	 * 
 	 * @throws AssertionError
 	 *             if action message did not appear in conversation
-	 *             
+	 * 
 	 * @param message
 	 * 
 	 * @param contact
 	 * 
 	 */
 	@Then("^I see (.*) action for (.*) in conversation$")
-	public void ThenISeeActionForContactInConversation(String message, String contact) {
+	public void ThenISeeActionForContactInConversation(String message,
+			String contact) {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		Assert.assertTrue(PagesCollection.conversationPage
 				.isActionMessageSent(message + " " + contact));
