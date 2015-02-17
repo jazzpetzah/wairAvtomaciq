@@ -1,5 +1,7 @@
 package com.wearezeta.auto.ios;
 
+import java.io.IOException;
+
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -26,12 +28,33 @@ public class ConnectToPageSteps {
 		PagesCollection.connectToPage.fillTextInConnectDialog();
 	}
 
-	@When("I click Send button on connect to dialog")
-	public void IClickSendButtonConnectDialog() throws Throwable {
-		PagesCollection.peoplePickerPage = PagesCollection.connectToPage
-				.clickSendButton();
+	/**
+	 * Erases all connection message content
+	 * 
+	 * @step. I delete all connect message content
+	 * 
+	 * @throws IOException
+	 */
+	
+	@When("^I delete all connect message content$")
+	public void IDeleteAllMessageContent() throws IOException {
+		PagesCollection.connectToPage.deleteTextInConnectDialog();
 	}
 
+	/**
+	 * Verifies connection button is disabled
+	 * 
+	 * @step. I see that connect button is disabled
+	 * 
+	 * @throws AssertionError
+	 * 			if connection button is visible
+	 */
+	
+	@When("^I see that connect button is disabled$")
+	public void IClickSendButtonConnectDialog() throws IOException {
+		Assert.assertFalse("Connect button is not disabled", PagesCollection.connectToPage.isConnectButtonVisible());
+	}
+	
 	@When("I click Connect button on connect to dialog")
 	public void IClickConnectButtonConnectDialog() throws Throwable {
 		PagesCollection.peoplePickerPage = PagesCollection.connectToPage
@@ -52,6 +75,36 @@ public class ConnectToPageSteps {
 				"Hello");
 	}
 
+	/**
+	 * Inputs a message with a certain number of random characters
+	 * 
+	 * @step. I input message in connect dialog with (.*) characters
+	 * 
+	 * @param characters
+	 * 			number of characters to input into dialog
+	 * 
+	 * @throws IOException
+	 */
+	
+	@When("^I input message in connect dialog with (.*) characters$")
+	public void IInputMessageWithLength(int characters) throws IOException {
+		PagesCollection.connectToPage.enterCharactersIntoDialog(characters);;
+	}
+	
+	/**
+	 * Checks that the max amount of characters are present
+	 * 
+	 * @step. I input message in connect dialog with (.*) characters
+	 * 
+	 * @throws AssertionError
+	 * 			if too many characters are present
+	 */
+	
+	@When("^I see message with max number of characters$")
+	public void VerifyMaxCharacterCount() throws IOException {
+		Assert.assertTrue(PagesCollection.connectToPage.isMaxCharactersInMessage());
+	}
+	
 	@When("^I see connection request from (.*)$")
 	public void IReceiveInvitationMessage(String contact) throws Throwable {
 		// Not needed since we auto accept all alerts
