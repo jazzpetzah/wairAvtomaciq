@@ -42,8 +42,8 @@ public class OSXPage extends BasePage {
 	}
 
 	@Override
-	public void Close() throws Exception {
-		super.Close();
+	public void close() throws Exception {
+		super.close();
 	}
 
 	public BufferedImage takeScreenshot() throws IOException {

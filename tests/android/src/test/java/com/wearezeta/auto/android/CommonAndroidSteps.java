@@ -82,7 +82,7 @@ public class CommonAndroidSteps {
 
 	@After
 	public void tearDown() throws Exception {
-		PagesCollection.loginPage.Close();
+		PagesCollection.loginPage.close();
 		AndroidPage.clearPagesCollection();
 
 		commonSteps.getUserManager().resetUsers();

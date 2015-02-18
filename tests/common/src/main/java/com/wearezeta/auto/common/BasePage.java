@@ -38,25 +38,25 @@ public abstract class BasePage {
 	private static final Logger log = ZetaLogger.getLog(BasePage.class
 			.getSimpleName());
 	private static ZetaElementLocatorFactory zetaLocatorFactory;
-	private Platform pagePlatform;
+	private Platform platform;
 
 	protected synchronized void InitConnection(String URL,
 			DesiredCapabilities capabilities) throws Exception {
-		final Platform platform = Platform.getByName((String) capabilities
-				.getCapability("platformName"));
-		if (!drivers.containsKey(platform)) {
-			switch (platform) {
+		final Platform platformInCapabilities = Platform
+				.getByName((String) capabilities.getCapability("platformName"));
+		if (!drivers.containsKey(platformInCapabilities)) {
+			switch (platformInCapabilities) {
 			case Mac:
-				drivers.put(platform, new ZetaOSXDriver(new URL(URL),
-						capabilities));
+				drivers.put(platformInCapabilities, new ZetaOSXDriver(new URL(
+						URL), capabilities));
 				break;
 			case iOS:
-				drivers.put(platform, new ZetaIOSDriver(new URL(URL),
-						capabilities));
+				drivers.put(platformInCapabilities, new ZetaIOSDriver(new URL(
+						URL), capabilities));
 				break;
 			case Android:
-				drivers.put(platform, new ZetaAndroidDriver(new URL(URL),
-						capabilities));
+				drivers.put(platformInCapabilities, new ZetaAndroidDriver(
+						new URL(URL), capabilities));
 				break;
 			case Web:
 				int tryNum = 0;
@@ -66,8 +66,9 @@ public abstract class BasePage {
 					// Try to reconnect WebDriver,
 					// because sometimes Safari driver is non-responsive
 					try {
-						drivers.put(platform, new ZetaWebAppDriver(
-								new URL(URL), capabilities));
+						drivers.put(
+								platformInCapabilities,
+								new ZetaWebAppDriver(new URL(URL), capabilities));
 						break;
 					} catch (WebDriverException e) {
 						if (e.getMessage().contains("Failed to connect")) {
@@ -83,35 +84,29 @@ public abstract class BasePage {
 				}
 				break;
 			default:
-				throw new RuntimeException(String.format(
-						"Platform name '%s' is unknown", platform));
+				throw new RuntimeException(
+						String.format("Platform name '%s' is unknown",
+								platformInCapabilities));
 			}
 
-			try {
-				drivers.get(platform)
-						.manage()
-						.timeouts()
-						.implicitlyWait(
-								Integer.parseInt(CommonUtils
-										.getDriverTimeoutFromConfig(getClass())),
-								TimeUnit.SECONDS);
-
-				waits.put(
-						platform,
-						new WebDriverWait(
-								drivers.get(platform),
-								Integer.parseInt(CommonUtils
-										.getDriverTimeoutFromConfig(getClass()))));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			drivers.get(platformInCapabilities)
+					.manage()
+					.timeouts()
+					.implicitlyWait(
+							Integer.parseInt(CommonUtils
+									.getDriverTimeoutFromConfig(getClass())),
+							TimeUnit.SECONDS);
+			waits.put(
+					platformInCapabilities,
+					new WebDriverWait(drivers.get(platformInCapabilities),
+							Integer.parseInt(CommonUtils
+									.getDriverTimeoutFromConfig(getClass()))));
 		}
 
-		pagePlatform = platform;
+		this.platform = platformInCapabilities;
 
 		zetaLocatorFactory = new ZetaElementLocatorFactory(
-				drivers.get(platform), Long.parseLong(CommonUtils
+				drivers.get(platformInCapabilities), Long.parseLong(CommonUtils
 						.getDriverTimeoutFromConfig(getClass())),
 				AppiumFieldDecorator.DEFAULT_TIMEUNIT);
 		FieldDecorator zetaFieldDecorator = new ZetaFieldDecorator(
@@ -119,20 +114,18 @@ public abstract class BasePage {
 		PageFactory.initElements(zetaFieldDecorator, this);
 	}
 
-	public synchronized void Close() throws Exception {
-		if (drivers.containsKey(pagePlatform)
-				&& drivers.get(pagePlatform) != null) {
+	public synchronized void close() throws Exception {
+		if (drivers.containsKey(platform) && drivers.get(platform) != null) {
 			try {
-				drivers.get(pagePlatform).quit();
+				drivers.get(platform).quit();
 			} finally {
-				drivers.remove(pagePlatform);
+				drivers.remove(platform);
 			}
 		}
 	}
 
 	public BufferedImage takeScreenshot() throws IOException {
-		return DriverUtils.takeScreenshot((ZetaDriver) drivers
-				.get(pagePlatform));
+		return DriverUtils.takeScreenshot((ZetaDriver) drivers.get(platform));
 	}
 
 	public BufferedImage getElementScreenshot(WebElement element)
@@ -160,7 +153,7 @@ public abstract class BasePage {
 
 	public void refreshUITree() {
 		try {
-			drivers.get(pagePlatform).getPageSource();
+			drivers.get(platform).getPageSource();
 		} catch (WebDriverException ex) {
 
 		}
@@ -187,7 +180,7 @@ public abstract class BasePage {
 	}
 
 	public String getPageSource() {
-		return drivers.get(pagePlatform).getPageSource();
+		return drivers.get(platform).getPageSource();
 	}
 
 	public static RemoteWebDriver getDriver(Platform id) {

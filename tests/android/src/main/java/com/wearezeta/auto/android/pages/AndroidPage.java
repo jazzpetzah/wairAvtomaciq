@@ -61,7 +61,7 @@ public abstract class AndroidPage extends BasePage {
 		LoggingPreferences object = new LoggingPreferences();
 		object.enable("logcat", Level.ALL);
 		capabilities.setCapability(CapabilityType.LOGGING_PREFS, object);
-		capabilities.setCapability("platformName", Platform.Android);
+		capabilities.setCapability("platformName", Platform.Android.getName());
 		capabilities.setCapability("deviceName",
 				CommonUtils.getAndroidDeviceNameFromConfig(AndroidPage.class));
 		capabilities.setCapability("app", path);
@@ -143,14 +143,14 @@ public abstract class AndroidPage extends BasePage {
 	}
 
 	@Override
-	public void Close() throws Exception {
+	public void close() throws Exception {
 		showLogs();
 		try {
 			AndroidCommonUtils.killAndroidClient();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		super.Close();
+		super.close();
 	}
 
 	public abstract AndroidPage returnBySwipe(SwipeDirection direction)

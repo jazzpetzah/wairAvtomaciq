@@ -85,8 +85,7 @@ public abstract class IOSPage extends BasePage {
 			e.printStackTrace();
 		}
 		url = URL;
-		capabilities.setCapability("platformName", "iOS");
-
+		capabilities.setCapability("platformName", Platform.iOS.getName());
 		capabilities.setCapability("app", path);
 		capabilities.setCapability("deviceName", deviceName);
 		capabilities.setCapability("platformVersion", "8.1");
@@ -120,8 +119,8 @@ public abstract class IOSPage extends BasePage {
 	}
 
 	@Override
-	public void Close() throws Exception {
-		super.Close();
+	public void close() throws Exception {
+		super.close();
 	}
 
 	public abstract IOSPage returnBySwipe(SwipeDirection direction)

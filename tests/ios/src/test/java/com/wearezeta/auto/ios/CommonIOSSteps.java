@@ -79,7 +79,7 @@ public class CommonIOSSteps {
 
 	@After
 	public void tearDown() throws Exception {
-		PagesCollection.loginPage.Close();
+		PagesCollection.loginPage.close();
 		IOSPage.clearPagesCollection();
 		IOSKeyboard.dispose();
 

@@ -85,13 +85,13 @@ public class CommonSteps {
 
 		// android teardown
 		if (ExecutionContext.isAndroidEnabled()) {
-			com.wearezeta.auto.android.pages.PagesCollection.loginPage.Close();
+			com.wearezeta.auto.android.pages.PagesCollection.loginPage.close();
 			com.wearezeta.auto.android.pages.AndroidPage.clearPagesCollection();
 		}
 
 		// ios teardown
 		if (ExecutionContext.isIosEnabled()) {
-			com.wearezeta.auto.ios.pages.PagesCollection.loginPage.Close();
+			com.wearezeta.auto.ios.pages.PagesCollection.loginPage.close();
 			com.wearezeta.auto.ios.pages.IOSPage.clearPagesCollection();
 			com.wearezeta.auto.ios.tools.IOSKeyboard.dispose();
 		}

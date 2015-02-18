@@ -57,7 +57,7 @@ public class WebPage extends BasePage {
 			// https://groups.google.com/forum/#!topic/selenium-users/PRsEBcbpNlM
 			capabilities.setCapability("applicationName", webPlatformName);
 		}
-		capabilities.setCapability("platformName", Platform.Web);
+		capabilities.setCapability("platformName", Platform.Web.getName());
 
 		super.InitConnection(URL, capabilities);
 
@@ -81,8 +81,8 @@ public class WebPage extends BasePage {
 	}
 
 	@Override
-	public void Close() throws Exception {
-		super.Close();
+	public void close() throws Exception {
+		super.close();
 	}
 
 	public BufferedImage takeScreenshot() throws IOException {
