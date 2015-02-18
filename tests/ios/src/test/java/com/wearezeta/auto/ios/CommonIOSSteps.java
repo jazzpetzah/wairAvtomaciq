@@ -116,6 +116,19 @@ public class CommonIOSSteps {
 		PagesCollection.loginPage.dismissAlert();
 	}
 
+	/**
+	* Closes the app for a certain amount of time in seconds
+	* 
+	* @param seconds
+	*           time in seconds to close the app
+	* 
+	* @step. ^I close the app for (.*) seconds$
+	*/
+	@When("^I close the app for (.*) seconds$")
+		public void ICloseApp(int seconds) {
+		PagesCollection.iOSPage.minimizeApplication(seconds);
+	}
+	
 	@Given("^(.*) has sent connection request to (.*)$")
 	public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
 			String usersToNameAliases) throws Throwable {

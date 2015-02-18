@@ -15,6 +15,7 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+
   #https://wearezeta.atlassian.net/browse/ZIOS-3269
   @smoke @id331
   Scenario Outline: Send Hello to contact
@@ -78,8 +79,8 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
-	And I swipe right on Dialog page
-	And I tap on contact name <Contact>
+    And I swipe right on Dialog page
+    And I tap on contact name <Contact>
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -103,8 +104,8 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
-	And I swipe right on Dialog page
-	And I tap on contact name <Contact>
+    And I swipe right on Dialog page
+    And I tap on contact name <Contact>
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -145,7 +146,7 @@ Feature: Conversation View
     And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
     And I swipe right on Dialog page
-	And I tap on contact name <Contact>
+    And I tap on contact name <Contact>
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -153,7 +154,7 @@ Feature: Conversation View
     Then I dont see media bar on dialog page
 
     Examples: 
-      | Login      | Password      | Name      | Contact1   | SoundCloudLink                                                                       |
+      | Login      | Password      | Name      | Contact1  | SoundCloudLink                                                                       |
       | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
   @regression @id394
@@ -183,7 +184,7 @@ Feature: Conversation View
     And I see dialog page
     And I input more than 200 chars message and send it
     And I type the message
-	And I swipe right on Dialog page
+    And I swipe right on Dialog page
     And I tap on contact name <Contact>
     And I tap on text input
     And I send the message
@@ -235,7 +236,7 @@ Feature: Conversation View
     And I send using script predefined message <Text>
     Then I see last message in dialog is expected message <Text>
 
-    Examples:
+    Examples: 
       | Login      | Password      | Name      | Contact   | Text                  |
       | user1Email | user1Password | user1Name | user2Name | ÄäÖöÜüß & latin chars |
 
@@ -343,156 +344,148 @@ Feature: Conversation View
     And I see dialog page
     And I post media link <YouTubeLink>
     Then I see media link <YouTubeLink> and media in dialog
-	And I swipe right on Dialog page
-	And I tap on contact name <Contact>
+    And I swipe right on Dialog page
+    And I tap on contact name <Contact>
     And I click video container for the first time
     And I see video player page is opened
 
-    Examples:
+    Examples: 
       | Login      | Password      | Name      | Contact   | YouTubeLink                                |
       | user1Email | user1Password | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
 
   #Muted due to app quit on logout workaround
   #@staging @id606 @mute
   #Scenario Outline: Verify you can see text message, which was sent into a group conversation, on the second end
-    #Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
-    #And I Sign in using login <Login> and password <Password>
-    #And I see Contact list with my name <Name>
-    #And I tap on group chat with name <ChatName>
-    #And I send predefined message <message>
-    #And I see message in group chat <message>
-    #And I swipe right on Dialog page
-    #And I tap on my name <Name>
-    #And I click on Settings button on personal page
-    #And I click Sign out button from personal page
-    #And I Sign in using login <Contact1> and password <Password>
-    #And I see Personal page
-    #And I swipe right on the personal page
-    #And I see in contact list group chat named <ChatName>
-    #And I tap on group chat with name <ChatName>
-    #And I see message in group chat <message>
-    #And I swipe right on Dialog page
-    #And I tap on my name <Contact1>
-    #And I click on Settings button on personal page
-    #And I click Sign out button from personal page
-    #And I Sign in using login <Contact2> and password <Password>
-    #And I see Personal page
-    #And I swipe right on the personal page
-    #And I see in contact list group chat named <ChatName>
-    #And I tap on group chat with name <ChatName>
-    #And I see message in group chat <message>
-
-    #Examples: 
-      #| Login   | Password    | Name    | Contact1    | Contact2    | ChatName   | message      |
-      #| aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | QAtestChat | Test Message |
-
+  #Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
+  #And I Sign in using login <Login> and password <Password>
+  #And I see Contact list with my name <Name>
+  #And I tap on group chat with name <ChatName>
+  #And I send predefined message <message>
+  #And I see message in group chat <message>
+  #And I swipe right on Dialog page
+  #And I tap on my name <Name>
+  #And I click on Settings button on personal page
+  #And I click Sign out button from personal page
+  #And I Sign in using login <Contact1> and password <Password>
+  #And I see Personal page
+  #And I swipe right on the personal page
+  #And I see in contact list group chat named <ChatName>
+  #And I tap on group chat with name <ChatName>
+  #And I see message in group chat <message>
+  #And I swipe right on Dialog page
+  #And I tap on my name <Contact1>
+  #And I click on Settings button on personal page
+  #And I click Sign out button from personal page
+  #And I Sign in using login <Contact2> and password <Password>
+  #And I see Personal page
+  #And I swipe right on the personal page
+  #And I see in contact list group chat named <ChatName>
+  #And I tap on group chat with name <ChatName>
+  #And I see message in group chat <message>
+  #Examples:
+  #| Login   | Password    | Name    | Contact1    | Contact2    | ChatName   | message      |
+  #| aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | QAtestChat | Test Message |
   #Muted due to app quit on logout workaround
   #@staging @id607 @mute
   #Scenario Outline: Verify you can see multimedia message, which was sent into a group conversation, on the second end
-    #Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
-    #And I Sign in using login <Login> and password <Password>
-    #And I see Contact list with my name <Name>
-    #And I tap on group chat with name <ChatName>
-    #And I post media link <YouTubeLink>
-    #And I tap on dialog window
-    #And I swipe right on Dialog page
-    #And I tap on my name <Name>
-    #And I click on Settings button on personal page
-    #And I click Sign out button from personal page
-    #And I Sign in using login <Contact1> and password <Password>
-    #And I see Personal page
-    #And I swipe right on the personal page
-    #And I see in contact list group chat named <ChatName>
-    #And I tap on group chat with name <ChatName>
-    #And I see media link <YouTubeLink> and media in dialog
-    #And I click video container for the first time
-    #And I see video player page is opened
-    #And I tap on Done button on Video player page
-    #And I swipe right on Dialog page
-    #And I tap on my name <Contact1>
-    #And I click on Settings button on personal page
-    #And I click Sign out button from personal page
-    #And I Sign in using login <Contact2> and password <Password>
-    #And I see Personal page
-    #And I swipe right on the personal page
-    #And I see in contact list group chat named <ChatName>
-    #And I tap on group chat with name <ChatName>
-    #And I see media link <YouTubeLink> and media in dialog
-    #And I click video container for the first time
-    #And I see video player page is opened
-    #And I tap on Done button on Video player page
-
-    #Examples: 
-      #| Login   | Password    | Name    | Contact1    | Contact2    | ChatName   | YouTubeLink                                |
-      #| aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | QAtestChat | http://www.youtube.com/watch?v=Bb1RhktcugU |
-
+  #Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
+  #And I Sign in using login <Login> and password <Password>
+  #And I see Contact list with my name <Name>
+  #And I tap on group chat with name <ChatName>
+  #And I post media link <YouTubeLink>
+  #And I tap on dialog window
+  #And I swipe right on Dialog page
+  #And I tap on my name <Name>
+  #And I click on Settings button on personal page
+  #And I click Sign out button from personal page
+  #And I Sign in using login <Contact1> and password <Password>
+  #And I see Personal page
+  #And I swipe right on the personal page
+  #And I see in contact list group chat named <ChatName>
+  #And I tap on group chat with name <ChatName>
+  #And I see media link <YouTubeLink> and media in dialog
+  #And I click video container for the first time
+  #And I see video player page is opened
+  #And I tap on Done button on Video player page
+  #And I swipe right on Dialog page
+  #And I tap on my name <Contact1>
+  #And I click on Settings button on personal page
+  #And I click Sign out button from personal page
+  #And I Sign in using login <Contact2> and password <Password>
+  #And I see Personal page
+  #And I swipe right on the personal page
+  #And I see in contact list group chat named <ChatName>
+  #And I tap on group chat with name <ChatName>
+  #And I see media link <YouTubeLink> and media in dialog
+  #And I click video container for the first time
+  #And I see video player page is opened
+  #And I tap on Done button on Video player page
+  #Examples:
+  #| Login   | Password    | Name    | Contact1    | Contact2    | ChatName   | YouTubeLink                                |
+  #| aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | QAtestChat | http://www.youtube.com/watch?v=Bb1RhktcugU |
   #Muted due to app quit on logout workaround
   #@staging @id608 @mute
   #Scenario Outline: Verify you can see image, which was sent into a group conversation, on the second end
-    #Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
-    #And I Sign in using login <Login> and password <Password>
-    #And I see Contact list with my name <Name>
-    #And I tap on group chat with name <ChatName>
-    #And I swipe the text input cursor
-    #And I press Add Picture button
-    #And I press Camera Roll button
-    #And I choose a picture from camera roll
-    #And I press Confirm button
-    #And I see new photo in the dialog
-    #And I verify image in dialog is same as template <Picture>
-    #And I swipe right on Dialog page
-    #And I tap on my name <Name>
-    #And I click on Settings button on personal page
-    #And I click Sign out button from personal page
-    #And I Sign in using login <Contact1> and password <Password>
-    #And I see Personal page
-    #And I swipe right on the personal page
-    #And I see in contact list group chat named <ChatName>
-    #And I tap on group chat with name <ChatName>
-    #And I scroll to image in dialog
-    #And I verify image in dialog is same as template <Picture>
-    #And I swipe right on Dialog page
-    #And I tap on my name <Contact1>
-    #And I click on Settings button on personal page
-    #And I click Sign out button from personal page
-    #And I Sign in using login <Contact2> and password <Password>
-    #And I see Personal page
-    #And I swipe right on the personal page
-    #And I see in contact list group chat named <ChatName>
-    #And I tap on group chat with name <ChatName>
-    #And I scroll to image in dialog
-    #And I verify image in dialog is same as template <Picture>
-
-    #Examples: 
-      #| Login   | Password    | Name    | Contact1    | Contact2    | ChatName   | Picture                   |
-      #| aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | QAtestChat | userpicture_landscape.jpg |
-
+  #Given I have group chat with name <ChatName> with <Contact1> and <Contact2>
+  #And I Sign in using login <Login> and password <Password>
+  #And I see Contact list with my name <Name>
+  #And I tap on group chat with name <ChatName>
+  #And I swipe the text input cursor
+  #And I press Add Picture button
+  #And I press Camera Roll button
+  #And I choose a picture from camera roll
+  #And I press Confirm button
+  #And I see new photo in the dialog
+  #And I verify image in dialog is same as template <Picture>
+  #And I swipe right on Dialog page
+  #And I tap on my name <Name>
+  #And I click on Settings button on personal page
+  #And I click Sign out button from personal page
+  #And I Sign in using login <Contact1> and password <Password>
+  #And I see Personal page
+  #And I swipe right on the personal page
+  #And I see in contact list group chat named <ChatName>
+  #And I tap on group chat with name <ChatName>
+  #And I scroll to image in dialog
+  #And I verify image in dialog is same as template <Picture>
+  #And I swipe right on Dialog page
+  #And I tap on my name <Contact1>
+  #And I click on Settings button on personal page
+  #And I click Sign out button from personal page
+  #And I Sign in using login <Contact2> and password <Password>
+  #And I see Personal page
+  #And I swipe right on the personal page
+  #And I see in contact list group chat named <ChatName>
+  #And I tap on group chat with name <ChatName>
+  #And I scroll to image in dialog
+  #And I verify image in dialog is same as template <Picture>
+  #Examples:
+  #| Login   | Password    | Name    | Contact1    | Contact2    | ChatName   | Picture                   |
+  #| aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | QAtestChat | userpicture_landscape.jpg |
   #Muted due relogin issue
   #@mute @staging @id614 @id590
   #Scenario Outline: I am able to play inline YouTube link poster by others
-   #Given I Sign in using login <Login> and password <Password>
-    #And I see Contact list with my name <Name>
-    #When I tap on contact name <Contact>
-    #And I see dialog page
-    #And I post media link <YouTubeLink>
-    #And I tap on dialog window
-    #And I swipe right on Dialog page
-    #And I tap on my name <Name>
-    #And I click on Settings button on personal page
-    #And I click Sign out button from personal page
-    #And I see sign in screen
-    #And I Sign in using login <Contact> and password <Password>
-    #And I see Personal page
-    #And I swipe right on the personal page
-    #And I tap on contact name <Name>
-    #Then I see media link <YouTubeLink> and media in dialog
-    #And I click video container for the first time
-    #And I see video player page is opened
-
-    #Examples: 
-      #| Login   | Password    | Name    | Contact     | YouTubeLink                                |
-      #| aqaUser | aqaPassword | aqaUser | aqaContact1 | http://www.youtube.com/watch?v=Bb1RhktcugU |
-
+  #Given I Sign in using login <Login> and password <Password>
+  #And I see Contact list with my name <Name>
+  #When I tap on contact name <Contact>
+  #And I see dialog page
+  #And I post media link <YouTubeLink>
+  #And I tap on dialog window
+  #And I swipe right on Dialog page
+  #And I tap on my name <Name>
+  #And I click on Settings button on personal page
+  #And I click Sign out button from personal page
+  #And I see sign in screen
+  #And I Sign in using login <Contact> and password <Password>
+  #And I see Personal page
+  #And I swipe right on the personal page
+  #And I tap on contact name <Name>
+  #Then I see media link <YouTubeLink> and media in dialog
+  #And I click video container for the first time
+  #And I see video player page is opened
+  #Examples:
+  #| Login   | Password    | Name    | Contact     | YouTubeLink                                |
+  #| aqaUser | aqaPassword | aqaUser | aqaContact1 | http://www.youtube.com/watch?v=Bb1RhktcugU |
   @staging @id1387
   Scenario Outline: Verify you can play/pause media from the Media Bar - YouTube
     Given There are 2 users where <Name> is me
@@ -503,8 +496,8 @@ Feature: Conversation View
     And I see dialog page
     And I type and send long message and media link <YouTubeLink>
     And I see media link <YouTubeLink> and media in dialog
-	And I swipe right on Dialog page
-	And I tap on contact name <Contact>
+    And I swipe right on Dialog page
+    And I tap on contact name <Contact>
     And I click video container for the first time
     And I see video player page is opened
     And I tap Pause button on Video player page
@@ -516,7 +509,7 @@ Feature: Conversation View
     And I stop media in media bar
     Then The media stopps playing
 
-    Examples:
+    Examples: 
       | Login      | Password      | Name      | Contact   | YouTubeLink                                |
       | user1Email | user1Password | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
 
@@ -531,7 +524,7 @@ Feature: Conversation View
     And I type and send long message and media link <SoundCloudLink>
     And I see media link <SoundCloudLink> and media in dialog
     And I swipe right on Dialog page
-	And I tap on contact name <Contact1>
+    And I tap on contact name <Contact1>
     And I tap media link
     And I swipe right on Dialog page
     And I see play/pause button next to username <Contact1> in contact list
@@ -540,7 +533,7 @@ Feature: Conversation View
     And I type and send long message and media link <SoundCloudLink>
     And I see media link <SoundCloudLink> and media in dialog
     And I swipe right on Dialog page
-	And I tap on contact name <Contact2>
+    And I tap on contact name <Contact2>
     And I tap media link
     And I swipe right on Dialog page
     And I see play/pause button next to username <Contact2> in contact list
@@ -549,6 +542,21 @@ Feature: Conversation View
     And I scroll media out of sight until media bar appears
     Then I see playing media is paused
 
-    Examples:
-      | Login      | Password      | Name      | Contact1   | Contact2    | SoundCloudLink                                                                       |
-      | user1Email | user1Password | user1Name | user2Name  | user3Name   | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | SoundCloudLink                                                                       |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+
+  @staging @id1137
+  Scenario Outline: Verify appearance of title bar for conversation, restored from background
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I close the app for <CloseAppTime> seconds
+    Then I see title bar in conversation name <Contact>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | CloseAppTime |
+      | user1Email | user1Password | user1Name | user2Name | 2            |
