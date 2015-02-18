@@ -42,7 +42,7 @@ public final class IOSLocators {
 	
 	public static final String classNameDialogMessages = "UIATableCell";
 	
-	public static final String xpathConnectionMessage = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]/UIAStaticText[contains(@name, 'Let’s connect on Wire.')]";
+	public static final String xpathConnectionMessage = "//UIAStaticText[contains(@name, 'Let’s connect on Wire.')]";
 
 	public static final String nameYouRenamedConversation = "YOU RENAMED THE CONVERSATION";
 	
@@ -98,7 +98,7 @@ public final class IOSLocators {
 
 	public static final String xpathFirstInContactList = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[2]/UIAStaticText[1]";
 	
-	public static final String xpathConnectMessageLabel = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]/UIAStaticText[starts-with(@name, 'CONNECTING TO')]";
+	public static final String xpathConnectMessageLabel = "//UIAStaticText[starts-with(@name, 'CONNECTING TO')]";
 	
 	public static final String xpathUnicUserPickerSearchResult = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell[1]";
 	
@@ -148,7 +148,7 @@ public final class IOSLocators {
 	
 	public static final String xpathLastChatMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/*[last()]";
 	
-	public static final String xpathStartedConversationMessage = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]/UIAStaticText[starts-with(@name, 'YOU STARTED A CONVERSATION WITH')]";
+	public static final String xpathStartedConversationMessage = "//UIAStaticText[starts-with(@name, 'YOU STARTED A CONVERSATION WITH')]";
 	
 	public static final String xpathFormatSpecificMessageContains = "//UIATextView[contains(@name,'%s')]";
 	
@@ -392,7 +392,7 @@ public final class IOSLocators {
 	//Contact list locator
 	////////////////////////////
 	
-	public static final String xpathPendingRequest = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[2]/UIACollectionCell[contains(@name,' waiting')]/UIAStaticText[1]";
+	public static final String xpathPendingRequest = "//UIACollectionCell[contains(@name,' waiting')]/UIAStaticText[1]";
 	
 	////////////////////////////////
 	//Pending requests page locators
@@ -400,8 +400,8 @@ public final class IOSLocators {
 	
 	public static final String namePendingRequestIgnoreButton = "IGNORE";
 	public static final String namePendingRequestConnectButton = "CONNECT";
-	public static final String xpathPendingRequesterName = "//UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIATextView[1]";
-	public static final String xpathPendingRequestMessage = "//UIAApplication[1]/UIAWindow[1]/UIAScrollView[1]/UIATextView[3]";
+	public static final String xpathPendingRequesterName = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAScrollView[1]/UIATextView[1]";
+	public static final String xpathPendingRequestMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAScrollView[1]/UIATextView[3]";
 	
 	/////////////////////////////
 	//People picker
