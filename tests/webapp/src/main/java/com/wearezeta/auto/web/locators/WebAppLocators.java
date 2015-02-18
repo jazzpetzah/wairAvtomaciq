@@ -84,9 +84,11 @@ public final class WebAppLocators {
 
 		public static final String xpathActionMessageEntry = "//div[contains(@class,'special')]//div[@class='action' and contains(text(), '%s')]";
 
-		public static final String xpathSendImageLabel = "//label[contains(@class, 'zi') and contains(@class, 'upload-images')]";
+		public static final String xpathSendImageLabel = "//label[contains(@class,'controls-right-button') and contains(@class,'zi-picture')]";
 
-		public static final String cssSendImageLabel = "label.upload-images";
+		public static final String cssRightControlsPanel = "div.controls-right";
+		
+		public static final String cssSendImageLabel = "label.controls-right-button.zi-picture";
 
 		public static final String xpathSendImageInput = xpathSendImageLabel
 				+ "/input[@type='file']";

@@ -105,7 +105,7 @@ public class ConversationPage extends WebPage {
 		final String picturePath = WebCommonUtils
 				.getFullPicturePath(pictureName);
 		final String showImageLabelJScript = "$('"
-				+ WebAppLocators.ConversationPage.cssSendImageLabel
+				+ WebAppLocators.ConversationPage.cssRightControlsPanel
 				+ "').css({'opacity': '100'});";
 		driver.executeScript(showImageLabelJScript);
 		if (WebCommonUtils.getWebAppBrowserNameFromConfig(
