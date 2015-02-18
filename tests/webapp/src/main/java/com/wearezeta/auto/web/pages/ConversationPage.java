@@ -115,18 +115,20 @@ public class ConversationPage extends WebPage {
 			// required image in open file dialog
 			String scriptDestination = WebAppConstants.Scripts.SCRIPTS_FOLDER
 					+ WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT;
+			final String GROUP_CHAT_LABEL_INDEX = "-2";
+			final String SINGLE_CHAT_LABEL_INDEX = "-3";
 			WebCommonUtils
 					.formatTextInFileAndSave(
 							WebCommonUtils.getScriptsTemplatesPath()
 									+ WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT,
-							scriptDestination,
-							new String[] { (isGroup ? "-2" : "-3"),
+							scriptDestination, new String[] {
+									(isGroup ? GROUP_CHAT_LABEL_INDEX
+											: SINGLE_CHAT_LABEL_INDEX),
 									WebCommonUtils.getPicturesPath(),
 									pictureName });
 			WebCommonUtils
 					.putScriptsOnExecutionNode(WebAppExecutionContext.seleniumNodeIp);
-			WebCommonUtils
-					.executeAppleScriptFromFile(scriptDestination);
+			WebCommonUtils.executeAppleScriptFromFile(scriptDestination);
 		} else {
 			final String showPathInputJScript = "$('"
 					+ WebAppLocators.ConversationPage.cssSendImageLabel
