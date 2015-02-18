@@ -57,6 +57,7 @@ Feature: Conversation List
     And I see Contact list with my name <Name>
     When I swipe right on a <Contact>
     And I archive conversation <Contact>
+    Then I dont see conversation <Contact> in contact list
     And I open archived conversations
     Then I see user <Contact> in contact list
 

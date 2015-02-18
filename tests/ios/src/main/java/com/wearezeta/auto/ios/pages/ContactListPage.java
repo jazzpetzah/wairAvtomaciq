@@ -1,8 +1,11 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
+
+import javax.imageio.ImageIO;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -352,15 +355,21 @@ public class ContactListPage extends IOSPage {
 	}
 
 	public boolean isConversationSilenced(String conversation)
-			throws IOException {
+			throws Exception {
+		String deviceType = CommonUtils.getDeviceName(this.getClass());
 		BufferedImage silencedConversation = null;
+		BufferedImage referenceImage = null;
 		WebElement element = findCellInContactList(conversation);
 		silencedConversation = CommonUtils
-				.getElementScreenshot(element, driver);
-		BufferedImage referenceImage = ImageUtil.readImageFromFile(IOSPage
-				.getImagesPath() + "silenceVerification.png");
-		double score = ImageUtil.getOverlapScore(referenceImage,
-				silencedConversation);
+				.getElementScreenshot(element, driver, CommonUtils.getDeviceName(this.getClass()));
+		if(deviceType.equals("iPhone 6 Plus")){
+			referenceImage = ImageUtil.readImageFromFile(IOSPage
+					.getImagesPath() + "silenceiPhone6plus.png");
+		} else{
+			referenceImage = ImageUtil.readImageFromFile(IOSPage
+					.getImagesPath() + "silenceVerification.png");
+		}
+		double score = ImageUtil.getOverlapScore(silencedConversation, referenceImage, 0);
 		if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
 			return false;
 		}
