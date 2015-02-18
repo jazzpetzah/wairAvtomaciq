@@ -33,28 +33,32 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public abstract class BasePage {
 
-	protected static HashMap<String, RemoteWebDriver> drivers = new HashMap<String, RemoteWebDriver>();
-	protected static HashMap<String, WebDriverWait> waits = new HashMap<String, WebDriverWait>();
+	protected static HashMap<Platform, RemoteWebDriver> drivers = new HashMap<Platform, RemoteWebDriver>();
+	protected static HashMap<Platform, WebDriverWait> waits = new HashMap<Platform, WebDriverWait>();
 	private static final Logger log = ZetaLogger.getLog(BasePage.class
 			.getSimpleName());
 	private static ZetaElementLocatorFactory zetaLocatorFactory;
-	private String pagePlatform;
+	private Platform pagePlatform;
 
 	protected synchronized void InitConnection(String URL,
 			DesiredCapabilities capabilities) throws Exception {
-		final String platform = (String) capabilities
-				.getCapability("platformName");
+		final Platform platform = Platform.getByName((String) capabilities
+				.getCapability("platformName"));
 		if (!drivers.containsKey(platform)) {
-			if (platform.equals(CommonUtils.PLATFORM_NAME_ANDROID)) {
-				drivers.put(platform, new ZetaAndroidDriver(new URL(URL),
-						capabilities));
-			} else if (platform.equals(CommonUtils.PLATFORM_NAME_IOS)) {
-				drivers.put(platform, new ZetaIOSDriver(new URL(URL),
-						capabilities));
-			} else if (platform.equals(CommonUtils.PLATFORM_NAME_OSX)) {
+			switch (platform) {
+			case Mac:
 				drivers.put(platform, new ZetaOSXDriver(new URL(URL),
 						capabilities));
-			} else if (platform.equals(CommonUtils.PLATFORM_NAME_WEB)) {
+				break;
+			case iOS:
+				drivers.put(platform, new ZetaIOSDriver(new URL(URL),
+						capabilities));
+				break;
+			case Android:
+				drivers.put(platform, new ZetaAndroidDriver(new URL(URL),
+						capabilities));
+				break;
+			case Web:
 				int tryNum = 0;
 				final int maxTries = 3;
 				WebDriverException savedException = null;
@@ -77,10 +81,12 @@ public abstract class BasePage {
 				if (tryNum >= maxTries) {
 					throw savedException;
 				}
-			} else {
+				break;
+			default:
 				throw new RuntimeException(String.format(
 						"Platform name '%s' is unknown", platform));
 			}
+
 			try {
 				drivers.get(platform)
 						.manage()
@@ -184,7 +190,7 @@ public abstract class BasePage {
 		return drivers.get(pagePlatform).getPageSource();
 	}
 
-	public static RemoteWebDriver getDriver(String id) {
+	public static RemoteWebDriver getDriver(Platform id) {
 		return drivers.get(id);
 	}
 

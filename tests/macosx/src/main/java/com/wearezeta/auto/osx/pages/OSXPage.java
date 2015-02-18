@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 
@@ -27,14 +28,13 @@ public class OSXPage extends BasePage {
 			throws Exception {
 		DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability(CapabilityType.BROWSER_NAME, "");
-		capabilities.setCapability(CapabilityType.PLATFORM,
-				CommonUtils.PLATFORM_NAME_OSX.toUpperCase());
-		capabilities.setCapability("platformName",
-				CommonUtils.PLATFORM_NAME_OSX);
+		capabilities.setCapability(CapabilityType.PLATFORM, Platform.Mac
+				.getName().toUpperCase());
+		capabilities.setCapability("platformName", Platform.Mac.getName());
 		super.InitConnection(URL, capabilities);
 
-		driver = (ZetaOSXDriver) drivers.get(CommonUtils.PLATFORM_NAME_OSX);
-		wait = waits.get(CommonUtils.PLATFORM_NAME_OSX);
+		driver = (ZetaOSXDriver) drivers.get(Platform.Mac);
+		wait = waits.get(Platform.Mac);
 
 		if (doNavigate) {
 			driver.navigate().to(path);

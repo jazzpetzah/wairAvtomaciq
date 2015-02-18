@@ -1,6 +1,6 @@
 Feature: Conversation
 
-  @smoke @id1626
+  @smoke @id1626 @torun
   Scenario Outline: Send message in 1on1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -15,7 +15,7 @@ Feature: Conversation
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id1628
+  @smoke @id1628 @torun
   Scenario Outline: Send message to group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

@@ -2,13 +2,13 @@ package com.wearezeta.auto.sync.client;
 
 import java.util.Date;
 
-
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriverException;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.sync.ExecutionContext;
@@ -20,7 +20,7 @@ public class ZetaSender extends Thread {
 
 	private ZetaInstance parent;
 	private int toSend;
-	private String platform() { return parent.getPlatform(); }
+	private Platform platform() { return parent.getPlatform(); }
 
 	public static Date sendingStartDate = null;
 	
@@ -81,14 +81,22 @@ public class ZetaSender extends Thread {
 			if (parent.getIsSendUsingBackend()) {
 				sendTextMessageBackend(SyncEngineUtil.CHAT_NAME, message);
 			}
-			else if (platform().equals(CommonUtils.PLATFORM_NAME_ANDROID)) {
-				sendTextMessageAndroid(message);
-			} else if (platform().equals(CommonUtils.PLATFORM_NAME_OSX)) {
-				sendTextMessageOsx(message);
-			} else if (platform().equals(CommonUtils.PLATFORM_NAME_IOS)) {
-				sendTextMessageIos(message);
+			else {
+				switch (platform()) {
+				case Android:
+					sendTextMessageAndroid(message);
+					break;
+				case Mac:
+					sendTextMessageOsx(message);
+					break;
+				case iOS:
+					sendTextMessageIos(message);
+					break;
+				default:
+					break;
+				}
 			}
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			//TODO: register error
 			log.error(e.getMessage());
 			e.printStackTrace();
@@ -99,7 +107,7 @@ public class ZetaSender extends Thread {
 		ExecutionContext.addNewSentTextMessage(entry, checkTime);
 	}
 	
-	private void sendTextMessageAndroid(String message) throws Throwable {
+	private void sendTextMessageAndroid(String message) throws Exception {
 		com.wearezeta.auto.android.DialogPageSteps steps = new com.wearezeta.auto.android.DialogPageSteps();
 		steps.ITypeTheMessageAndSendIt(message);
 	}
@@ -110,7 +118,7 @@ public class ZetaSender extends Thread {
 		steps.WhenISendMessage();
 	}
 	
-	private void sendTextMessageIos(String message) throws Throwable {
+	private void sendTextMessageIos(String message) throws Exception {
 		com.wearezeta.auto.ios.DialogPageSteps steps = new com.wearezeta.auto.ios.DialogPageSteps();
 		com.wearezeta.auto.ios.pages.DialogPage page = com.wearezeta.auto.ios.pages.PagesCollection.dialogPage;
 		page.ScrollToLastMessage();

@@ -518,7 +518,7 @@ public class DialogPageSteps {
 
 	@When("^I send using script predefined message (.*)$")
 	public void ISendUsingScriptPredefinedMessage(String message)
-			throws Throwable {
+			throws Exception {
 		PagesCollection.dialogPage.sendMessageUsingScript(message);
 	}
 

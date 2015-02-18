@@ -23,6 +23,7 @@ import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.ios.tools.IOSKeyboard;
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
@@ -114,8 +115,8 @@ public abstract class IOSPage extends BasePage {
 	}
 
 	private void storeDriverAndWait() {
-		driver = (ZetaIOSDriver) drivers.get(CommonUtils.PLATFORM_NAME_IOS);
-		wait = (WebDriverWait) waits.get(CommonUtils.PLATFORM_NAME_IOS);
+		driver = (ZetaIOSDriver) drivers.get(Platform.iOS);
+		wait = (WebDriverWait) waits.get(Platform.iOS);
 	}
 
 	@Override

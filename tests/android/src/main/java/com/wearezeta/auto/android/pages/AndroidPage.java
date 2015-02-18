@@ -61,8 +61,7 @@ public abstract class AndroidPage extends BasePage {
 		LoggingPreferences object = new LoggingPreferences();
 		object.enable("logcat", Level.ALL);
 		capabilities.setCapability(CapabilityType.LOGGING_PREFS, object);
-		capabilities.setCapability("platformName",
-				CommonUtils.PLATFORM_NAME_ANDROID);
+		capabilities.setCapability("platformName", Platform.Android);
 		capabilities.setCapability("deviceName",
 				CommonUtils.getAndroidDeviceNameFromConfig(AndroidPage.class));
 		capabilities.setCapability("app", path);
@@ -95,9 +94,8 @@ public abstract class AndroidPage extends BasePage {
 	}
 
 	private void storeDriverAndWait() {
-		driver = (ZetaAndroidDriver) drivers
-				.get(CommonUtils.PLATFORM_NAME_ANDROID);
-		wait = waits.get(CommonUtils.PLATFORM_NAME_ANDROID);
+		driver = (ZetaAndroidDriver) drivers.get(Platform.Android);
+		wait = waits.get(Platform.Android);
 	}
 
 	public void selectPhoto() {
