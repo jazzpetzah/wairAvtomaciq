@@ -8,7 +8,7 @@ public final class IOSLocators {
 	
 	public static final String nameRegisterButton = "SignUp";
 	
-	public static final String xpathTermsOfServiceButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]";
+	public static final String nameTermsOfServiceButton = "LegalCheckmarkButton";
 	
 	public static final String nameLoginButton = "ConfirmSignIn";
 	
@@ -218,7 +218,7 @@ public final class IOSLocators {
 
 	public static final String nameProfileName = "ProfileSelfNameField";
 	
-	public static final String xpathProfileNameEditField = "//UIAApplication[1]/UIAWindow[1]/UIAElement[1]/UIATextView[1]";
+	public static final String xpathProfileNameEditField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAElement[1]/UIATextView[1]";
 	
 	public static final String nameSelfNameTooShortError = "AT LEAST 2 CHARACTERS ";
 	
@@ -412,8 +412,8 @@ public final class IOSLocators {
 	public static final String NamePeoplePickerTopPeopleLabel = "TOP PEOPLE";
 	public static final String xpathPeoplePickerUserAvatar = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell/UIAStaticText[@name='%s']/..";
 	public static final String namePeoplePickerAddToConversationButton = "ADD TO CONVERSATION";
-	public static final String xpathPeoplePickerTopConnectionsAvatar = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[%d]";
-	public static final String xpathPeoplePickerAllTopPeople = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell";
+	public static final String xpathPeoplePickerTopConnectionsAvatar = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[%d]";
+	public static final String xpathPeoplePickerAllTopPeople = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell";
 	public static final String nameShareButton = "SHARE";
 	public static final String nameContinueUploadButton = "SHARE";
 	public static final String namePeopleYouMayKnowLabel = "PEOPLE YOU MAY KNOW";

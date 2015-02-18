@@ -63,7 +63,7 @@ public class LoginPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameIgnoreUpdateButton)
 	private WebElement ignoreUpdateButton;
 	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathTermsOfServiceButton)
+	@FindBy(how = How.NAME, using = IOSLocators.nameTermsOfServiceButton)
 	private WebElement termsOfServiceButton;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameProfileName)
