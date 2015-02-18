@@ -42,7 +42,7 @@ public class ContactListPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idOpenStartUIButton")
 	private WebElement openStartUIButton;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idNameField")
 	private WebElement selfUserName;
 
@@ -51,6 +51,9 @@ public class ContactListPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConfirmCancelButtonPicker")
 	private List<WebElement> laterBtnPicker;
+
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idPlayPauseMedia")
+	private WebElement playPauseMedia;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idMutedIcon")
 	private WebElement mutedIcon;
@@ -191,11 +194,10 @@ public class ContactListPage extends AndroidPage {
 		Thread.sleep(2000);
 		if (!isVisible(pickerClearBtn) && isVisible(openStartUIButton)) {
 			refreshUITree();
-			try{
+			try {
 				openStartUIButton.click();
-			}
-			catch(NoSuchElementException ex){
-				
+			} catch (NoSuchElementException ex) {
+
 			}
 		}
 		return returnBySwipe(SwipeDirection.DOWN);
@@ -265,5 +267,12 @@ public class ContactListPage extends AndroidPage {
 		}
 
 		return page;
+	}
+
+	public boolean isPlayPauseMediaButtonVisible()
+			throws NumberFormatException, Exception {
+		DriverUtils.waitUntilElementAppears(driver,
+				By.id(AndroidLocators.ContactListPage.idPlayPauseMedia));
+		return isVisible(playPauseMedia);
 	}
 }

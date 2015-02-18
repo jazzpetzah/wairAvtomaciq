@@ -25,7 +25,7 @@ public class DialogPageSteps {
 
 	@When("^I see dialog page$")
 	public void WhenISeeDialogPage() throws Exception {
-		if(PagesCollection.dialogPage == null){
+		if (PagesCollection.dialogPage == null) {
 			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
 		}
 		PagesCollection.dialogPage.waitForCursorInputVisible();
@@ -87,12 +87,38 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.tapPingBtn();
 	}
 
+	/**
+	 * Tap on Dialog page bottom for scrolling page to the end
+	 * 
+	 * @step. ^I tap Dialog page bottom$
+	 * 
+	 * @throws Throwable
+	 * 
+	 */
+	@When("^I tap Dialog page bottom$")
+	public void WhenITapOnDialogPageBottom() throws Throwable {
+		PagesCollection.dialogPage.tapDialogPageBottomLinearLayout();
+	}
+
+	/**
+	 * Tap on Play/Pause media item button
+	 * 
+	 * @step. ^I press PlayPause media item button$
+	 * 
+	 * @throws Throwable
+	 * 
+	 */
+	@When("^I press PlayPause media item button$")
+	public void WhenIPressPlayPauseButton() throws Throwable {
+		PagesCollection.dialogPage.tapPlayPauseBtn();
+	}
+
 	@When("^I press \"(.*)\" button$")
 	public void WhenIPressButton(String buttonName) throws Throwable {
 		switch (buttonName.toLowerCase()) {
 		case "take photo":
-			//Temp fix for Moto 
-			//PagesCollection.dialogPage.changeCamera();
+			// Temp fix for Moto
+			// PagesCollection.dialogPage.changeCamera();
 			Thread.sleep(1000);
 			PagesCollection.dialogPage.takePhoto();
 			break;
@@ -117,10 +143,12 @@ public class DialogPageSteps {
 		} catch (NoSuchUserException ex) {
 			// Ignore silently
 		}
-		Assert.assertTrue(PagesCollection.dialogPage.isKnockText(message,action));
-		/*Assert.assertEquals("Ping message compare",
-				message + " " + action.trim(),
-				PagesCollection.dialogPage.getKnockText());*/
+		Assert.assertTrue(PagesCollection.dialogPage.isKnockText(message,
+				action));
+		/*
+		 * Assert.assertEquals("Ping message compare", message + " " +
+		 * action.trim(), PagesCollection.dialogPage.getKnockText());
+		 */
 	}
 
 	@Then("^I see my message in the dialog$")
@@ -233,9 +261,11 @@ public class DialogPageSteps {
 		Assert.assertTrue(PagesCollection.dialogPage.isMessageExists(message
 				+ " " + contact));
 	}
-	
+
 	@Then("^Last message is (.*)$")
-	public void ThenLastMessageIs(String message){
-		Assert.assertEquals(message.toLowerCase().trim(), PagesCollection.dialogPage.getLastMessageFromDialog().toLowerCase().trim());
+	public void ThenLastMessageIs(String message) {
+		Assert.assertEquals(message.toLowerCase().trim(),
+				PagesCollection.dialogPage.getLastMessageFromDialog()
+						.toLowerCase().trim());
 	}
 }

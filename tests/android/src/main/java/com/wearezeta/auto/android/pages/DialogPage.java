@@ -103,6 +103,9 @@ public class DialogPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idSearchHintClose")
 	private WebElement closeHintBtn;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idPlayPauseMedia")
+	private WebElement playPauseBtn;
+
 	@AndroidFindBy(xpath = AndroidLocators.DialogPage.xpathAddPicture)
 	private WebElement addPictureBtn;
 
@@ -111,6 +114,9 @@ public class DialogPage extends AndroidPage {
 
 	@AndroidFindBy(xpath = AndroidLocators.OtherUserPersonalInfoPage.xpathGroupChatInfoLinearLayout)
 	private List<WebElement> linearLayout;
+
+	@ZetaFindBy(how = ZetaHow.XPATH, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "xpathDialogPageBottomLinearLayout")
+	private WebElement dialogPageBottomLinearLayout;
 
 	private String url;
 	private String path;
@@ -165,7 +171,8 @@ public class DialogPage extends AndroidPage {
 	public void typeMessage(String message) {
 		refreshUITree();
 		cursorInput.sendKeys(message + "\\n");
-		DriverUtils.mobileTapByCoordinates(driver, backgroundOverlay);
+		// DriverUtils.mobileTapByCoordinates(driver, backgroundOverlay);
+		driver.hideKeyboard();
 	}
 
 	public String getLastMessageFromDialog() {
@@ -484,4 +491,15 @@ public class DialogPage extends AndroidPage {
 		return DriverUtils.waitUntilElementAppears(driver,
 				By.id(AndroidLocators.DialogPage.idMessage));
 	}
+
+	public void tapPlayPauseBtn() {
+		refreshUITree();
+		playPauseBtn.click();
+	}
+
+	public void tapDialogPageBottomLinearLayout() {
+		refreshUITree();
+		dialogPageBottomLinearLayout.click();
+	}
+
 }

@@ -49,9 +49,9 @@ public class ContactListPageSteps {
 			PagesCollection.contactListPage.navigateBack();
 		}
 	}
-	
+
 	/**
-	 * Close People Picker and open contact list without contacts 
+	 * Close People Picker and open contact list without contacts
 	 * 
 	 * @step. ^I see Contact list with no contacts and my name (.*)$
 	 * 
@@ -61,7 +61,8 @@ public class ContactListPageSteps {
 	 * @throws Exception
 	 */
 	@Given("^I see Contact list with no contacts and my name (.*)$")
-	public void GivenISeeContactListWithNoContactsAndMyNameAnd(String name) throws Throwable {
+	public void GivenISeeContactListWithNoContactsAndMyNameAnd(String name)
+			throws Throwable {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		if (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
 			PagesCollection.peoplePickerPage.tapClearButton();
@@ -72,7 +73,7 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Close People Picker and open contact list with contacts 
+	 * Close People Picker and open contact list with contacts
 	 * 
 	 * @step. ^I see Contact list with no contacts and my name (.*)$
 	 * 
@@ -181,8 +182,9 @@ public class ContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		AndroidPage page  = PagesCollection.contactListPage.swipeOnArchiveUnarchive(contact);
-		if(page instanceof DialogPage){
+		AndroidPage page = PagesCollection.contactListPage
+				.swipeOnArchiveUnarchive(contact);
+		if (page instanceof DialogPage) {
 			PagesCollection.dialogPage = (DialogPage) page;
 		}
 	}
@@ -241,5 +243,19 @@ public class ContactListPageSteps {
 		}
 		Assert.assertFalse(PagesCollection.contactListPage
 				.isContactExists(value));
+	}
+
+	/**
+	 * Verify that Play/Pause media content button is visible in Conversation
+	 * List
+	 * 
+	 * @step. ^I see PlayPause media content button in Conversations List$
+	 * 
+	 */
+	@Then("^I see PlayPause media content button in Conversations List$")
+	public void ThenISeePlayPauseMediaContentButtonInConvLst()
+			throws NumberFormatException, Exception {
+		Assert.assertTrue(PagesCollection.contactListPage
+				.isPlayPauseMediaButtonVisible());
 	}
 }

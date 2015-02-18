@@ -53,7 +53,7 @@ public final class AndroidLocators {
 
 		public static final String idForgotPass = LOCATORS_PACKAGE
 				+ ":id/ttv_signin_forgot_password";
-		
+
 		public static final String xpathLoginInput = "//android.widget.EditText[ancestor::android.widget.LinearLayout[contains(@resource-id,'get__sign_in__email')]]";
 
 		public static final String xpathPasswordInput = "//android.widget.EditText[ancestor::android.widget.LinearLayout[contains(@resource-id,'get__sign_in__password')]]";
@@ -63,7 +63,7 @@ public final class AndroidLocators {
 		public static final String xpathSignInButton42 = "//android.widget.TextView[contains(@text,'SIGN IN')]";
 
 		public static final String xpathLoginButton42 = "//android.widget.TextView[contains(@text,'SIGN IN')]";
-		
+
 		public static final String xpathForgotPass42 = "//android.widget.TextView[contains(@text,'FORGOT PASSWORD?')]";
 
 		public static final String xpathWelcomeSlogan42 = "//android.widget.TextView[contains(@text,'conversations.')]";
@@ -147,10 +147,9 @@ public final class AndroidLocators {
 		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME
 				+ "$ContactListPage";
 
-		
 		public static final String idOpenStartUIButton = LOCATORS_PACKAGE
 				+ ":id/gtv__conversation_list__sticky_menu__trigger_startui";
-		
+
 		public static final String xpathContactListNames42 = "//android.support.v4.view.ViewPager/android.widget.ListView/android.widget.FrameLayout/android.widget.TextView[4]";
 
 		public static final String xpathSelfUserName42 = "//android.support.v4.view.ViewPager/android.widget.ListView/android.widget.FrameLayout/android.widget.TextView[@visible='true'][1]";
@@ -165,12 +164,15 @@ public final class AndroidLocators {
 		public static final String idConfirmCancelButton = LOCATORS_PACKAGE
 				+ ":id/cancel";
 
+		public static final String idPlayPauseMedia = LOCATORS_PACKAGE
+				+ ":id/tv_conv_list_media_player";
+
 		public static final String idYourName = LOCATORS_PACKAGE
 				+ ":id/ttv__conversation_list__sticky_menu__profile_link";
-		
+
 		public static final String idConvList = LOCATORS_PACKAGE
 				+ ":id/pv__conv_list";
-		
+
 		public static final String idConfirmCancelButtonPicker = LOCATORS_PACKAGE
 				+ ":id/zb__confirm_dialog__cancel_button";
 
@@ -183,7 +185,7 @@ public final class AndroidLocators {
 
 		public static final String idMutedIcon = LOCATORS_PACKAGE
 				+ ":id/tv_conv_list_voice_muted";
-		
+
 		public static final String xpathOpenStartUIButton42 = "//android.widget.LinearLayout/android.widget.LinearLayout/android.widget.TextView[following-sibling::android.widget.TextView]";
 
 		public static final String xpathYourName42 = "//android.widget.LinearLayout/android.widget.LinearLayout/android.widget.TextView[preceding-sibling::android.widget.TextView]";
@@ -238,6 +240,9 @@ public final class AndroidLocators {
 		public static final String idBackgroundOverlay = LOCATORS_PACKAGE
 				+ ":id/v_background_dark_overlay";
 
+		public static final String idPlayPauseMedia = LOCATORS_PACKAGE
+				+ ":id/iv__media_play";
+
 		public static final String idKnockMessage = LOCATORS_PACKAGE
 				+ ":id/ttv__row_conversation__knock_message";
 
@@ -275,6 +280,9 @@ public final class AndroidLocators {
 
 		public static final String idDialogPageBottomFrameLayout = LOCATORS_PACKAGE
 				+ ":id/cv";
+
+		public static final String xpathDialogPageBottomLinearLayout = "//android.widget.FrameLayout[@resource-id='"
+				+ LOCATORS_PACKAGE + ":id/cv']/android.widget.LinearLayout";
 
 		public static final String idConnectRequestChatLabel = LOCATORS_PACKAGE
 				+ ":id/ttv__row_conversation__connect_request__chathead_footer__label";
@@ -473,7 +481,7 @@ public final class AndroidLocators {
 		public static final String xpathPeoplePickerContact = "//android.widget.TextView[@resource-id='"
 				+ LOCATORS_PACKAGE
 				+ ":id/ttv_pickuser__searchuser_name' and @text='%s']";
-		
+
 		public static final String xpathCreateConversationIcon42 = "//android.widget.TextView[@text='CREATE CONVERSATION']";
 
 		public static final String xpathPeoplePickerClearbtn42 = "//android.widget.FrameLayout/android.widget.TextView[preceding-sibling::android.widget.ScrollView]";
@@ -547,11 +555,10 @@ public final class AndroidLocators {
 				return By
 						.xpath(AndroidLocators.PersonalInfoPage.xpathNameEdit42);
 			} else {
-				return By
-						.id(AndroidLocators.PersonalInfoPage.idNameEdit);
+				return By.id(AndroidLocators.PersonalInfoPage.idNameEdit);
 			}
 		}
-		
+
 		public static By getByForProfileOptionsButton() throws Exception {
 			if (CommonUtils.getAndroidApiLvl(AndroidLocators.class) < 43) {
 				return By

@@ -1,5 +1,7 @@
 # you can override any of these settings in ~/.m2/settings.xml
 # see http://maven.apache.org/ref/3.2.5/maven-settings/settings.html for more details
+hubHost=${hubHost}
+hubPort=${hubPort}
 webappAppiumUrl=${url}
 webappApplicationPath=https://app.wire.com/login.html?env=${backendType}
 pictureResultsPath=${pictureResultsPath}

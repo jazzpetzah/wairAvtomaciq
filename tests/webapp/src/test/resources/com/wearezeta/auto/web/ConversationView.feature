@@ -30,7 +30,7 @@ Feature: Conversation
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessageGroupChat |
-      
+
   @staging @id1545
   Scenario Outline: Archive and unarchive conversation
     Given There are 2 users where <Name> is me
@@ -46,7 +46,7 @@ Feature: Conversation
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
-      
+
   @staging @id1612
   Scenario Outline: Send Camera picture to contact in 1:1
     Given There are 2 users where <Name> is me
@@ -54,13 +54,12 @@ Feature: Conversation
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <Contact>
-    When I send picture <PictureName>
+    And I send picture <PictureName> to single conversation
     Then I see sent picture <PictureName> in the conversation view
 
     Examples: 
       | Login      | Password      | Name      | Contact   | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg |
-
 
   @staging @id1934
   Scenario Outline: Send Camera picture to group chat
@@ -70,13 +69,13 @@ Feature: Conversation
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
-    When I send picture <PictureName>
+    When I send picture <PictureName> to group conversation
     Then I see sent picture <PictureName> in the conversation view
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendPictureGroupChat | userpicture_landscape.jpg |
-      
+
   @staging @id1918
   Scenario Outline: Mute 1on1 conversation
     Given There are 2 users where <Name> is me

@@ -89,6 +89,31 @@ public class DriverUtils {
 		}
 		return bool;
 	}
+	
+	public static boolean waitUntilElementAppears(RemoteWebDriver driver,
+			final WebElement el, int timeout) {
+
+		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+		Boolean bool = false;
+		try {
+			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+					.withTimeout(timeout, TimeUnit.SECONDS)
+					.pollingEvery(1, TimeUnit.SECONDS)
+					.ignoring(NoSuchElementException.class);
+
+			bool = wait.until(new Function<WebDriver, Boolean>() {
+
+				public Boolean apply(WebDriver driver) {
+					return el.isDisplayed();
+				}
+			});
+		} catch (Exception ex) {
+
+		} finally {
+			setDefaultImplicitWait(driver);
+		}
+		return bool;
+	}
 
 	public static boolean waitUntilElementAppears(RemoteWebDriver driver,
 			final By by) {
