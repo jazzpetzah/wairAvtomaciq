@@ -64,7 +64,7 @@ public class ImageUtil {
 	
 	public static Mat resizeTemplateMatrixFromOptimizedForResolution(Mat tpl, Mat ref, int etWidth, int etHeight) {
 		Mat result;
-		if (tpl.width() > ref.width() || tpl.height() > ref.height()) {
+		if (ref.width() != etWidth && ref.height() != etHeight) {
 			result = new Mat();
 			Size sz = new Size((tpl.width()*ref.width())/etWidth, (tpl.height()*ref.height())/etHeight);
 			Imgproc.resize(tpl, result, sz);
