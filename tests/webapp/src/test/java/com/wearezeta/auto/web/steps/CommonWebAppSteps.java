@@ -2,11 +2,15 @@ package com.wearezeta.auto.web.steps;
 
 import org.apache.log4j.Logger;
 
+import com.google.common.io.Files;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.web.common.WebAppConstants;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
+import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.pages.InvitationCodePage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.WebPage;
@@ -43,6 +47,22 @@ public class CommonWebAppSteps {
 		PagesCollection.invitationCodePage = new InvitationCodePage(url, path);
 
 		ZetaFormatter.setDriver(PagesCollection.invitationCodePage.getDriver());
+
+		// put AppleScript for execution to Selenium node
+		if (WebCommonUtils.getWebAppBrowserNameFromConfig(
+				CommonWebAppSteps.class).equals(WebAppConstants.Browser.SAFARI)) {
+			try {
+				WebAppExecutionContext.seleniumNodeIp = WebCommonUtils
+						.getNodeIp(PagesCollection.invitationCodePage
+								.getDriver());
+			} catch (Exception e) {
+				log.debug("Error on checking node IP for Safari test. Error message: "
+						+ e.getMessage());
+				e.printStackTrace();
+			}
+			WebAppExecutionContext.temporaryScriptsLocation = Files
+					.createTempDir().getAbsolutePath();
+		}
 	}
 
 	/**
@@ -141,7 +161,8 @@ public class CommonWebAppSteps {
 	/**
 	 * Pings BackEnd until user is indexed and avialable in search
 	 * 
-	 * @step. ^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in backend search results$
+	 * @step. ^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in
+	 *        backend search results$
 	 * 
 	 * @param searchByNameAlias
 	 *            user name to search string
@@ -162,9 +183,9 @@ public class CommonWebAppSteps {
 		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query,
 				timeout);
 	}
-	
+
 	/**
-	 * Wait for specified amount of seconds 
+	 * Wait for specified amount of seconds
 	 * 
 	 * @step. ^I wait for (.*) seconds$
 	 * 
