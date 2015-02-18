@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @smoke @id9 
+  @id9 @id30 @smoke
   Scenario Outline: Register new user using front camera
     Given I see sign in screen
     When I press Join button

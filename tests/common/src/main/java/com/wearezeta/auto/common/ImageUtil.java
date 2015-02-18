@@ -23,6 +23,7 @@ public class ImageUtil {
 	public static final int RESIZE_FROM1920x1080OPTIMIZED = 3;
 	public static final int RESIZE_FROM2560x1600OPTIMIZED = 4;
 	public static final int RESIZE_TEMPLATE_TO_RESOLUTION = 5;
+	public static final int RESIZE_FROM_OPTIMIZED = 6;
 	
 	static {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -63,7 +64,7 @@ public class ImageUtil {
 	
 	public static Mat resizeTemplateMatrixFromOptimizedForResolution(Mat tpl, Mat ref, int etWidth, int etHeight) {
 		Mat result;
-		if (tpl.width() > ref.width() || tpl.height() > ref.height()) {
+		if (ref.width() != etWidth && ref.height() != etHeight) {
 			result = new Mat();
 			Size sz = new Size((tpl.width()*ref.width())/etWidth, (tpl.height()*ref.height())/etHeight);
 			Imgproc.resize(tpl, result, sz);
@@ -127,6 +128,8 @@ public class ImageUtil {
 	    	tpl = resizeTemplateMatrixFromOptimizedForResolution(tpl, ref, 1600, 2560);
 	    } else if (resizeMode == RESIZE_TEMPLATE_TO_RESOLUTION) {
 	    	tpl = resizeMatrixToResolution(tpl, exWidth, exHeight);
+	    } else if (resizeMode == RESIZE_FROM_OPTIMIZED) {
+	    	tpl = resizeTemplateMatrixFromOptimizedForResolution(tpl, ref, exWidth, exHeight);
 	    }
 	    
 	    //get grayscale images for matching template

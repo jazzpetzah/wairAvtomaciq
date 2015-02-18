@@ -1,6 +1,7 @@
 package com.wearezeta.auto.common;
 
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
@@ -10,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -29,9 +31,9 @@ public final class PerformanceCommon {
 	}
 
 	public static final int SEND_MESSAGE_NUM = 4;
-	public static final int BACK_END_MESSAGE_COUNT = 5;
-	public static final int MIN_WAIT_VALUE_IN_MIN = 1;
-	public static final int MAX_WAIT_VALUE_IN_MIN = 2;
+	private static final int BACKEND_MESSAGE_COUNT = 5;
+	private static final int MIN_WAIT_SECONDS = 5;
+	private static final int MAX_WAIT_SECONDS = 30;
 	public static final int SIMULTANEOUS_MSGS_COUNT = 5;
 
 	private static final String DEFAULT_PERF_IMAGE = "perf/default.jpg";
@@ -41,8 +43,7 @@ public final class PerformanceCommon {
 
 	private PerformanceCommon() {
 		final ClassLoader classLoader = this.getClass().getClassLoader();
-		defaultImage = classLoader
-				.getResourceAsStream(DEFAULT_PERF_IMAGE);
+		defaultImage = classLoader.getResourceAsStream(DEFAULT_PERF_IMAGE);
 	}
 
 	public static PerformanceCommon getInstance() {
@@ -52,7 +53,7 @@ public final class PerformanceCommon {
 		return instance;
 	}
 
-	private Random random = new Random();
+	public Random random = new Random();
 
 	private String getRandomContactName(ClientUser selfUser)
 			throws SelfUserIsNotDefinedException {
@@ -61,7 +62,37 @@ public final class PerformanceCommon {
 		return otherUsers.get(random.nextInt(otherUsers.size())).getName();
 	}
 
-	public void sendRandomMessagesToUser(int totalMsgsCount,
+	private void generateIncomingMessages() throws Exception {
+		sendRandomMessagesToUser(BACKEND_MESSAGE_COUNT, SIMULTANEOUS_MSGS_COUNT);
+		try {
+			sendDefaultImageToUser(BACKEND_MESSAGE_COUNT / 5);
+		} catch (BackendRequestException e) {
+			e.printStackTrace();
+			getLogger().debug(e.getMessage());
+		}
+	}
+
+	public static interface PerformanceLoop {
+		public void run() throws Exception;
+	}
+
+	public void runPerformanceLoop(PerformanceLoop loop,
+			final int timeoutMinutes) throws Exception {
+		LocalDateTime startDateTime = LocalDateTime.now();
+		long minutesElapsed = 0;
+		do {
+			generateIncomingMessages();
+
+			loop.run();
+
+			Thread.sleep((MIN_WAIT_SECONDS + random.nextInt(MAX_WAIT_SECONDS
+					- MIN_WAIT_SECONDS + 1)) * 1000);
+			minutesElapsed = java.time.Duration.between(startDateTime,
+					LocalDateTime.now()).toMinutes();
+		} while (minutesElapsed <= timeoutMinutes);
+	}
+
+	private void sendRandomMessagesToUser(int totalMsgsCount,
 			int simultaneousMsgsCount) throws SelfUserIsNotDefinedException,
 			InterruptedException {
 		final ClientUser selfUser = getUserManager().getSelfUserOrThrowError();
@@ -87,7 +118,7 @@ public final class PerformanceCommon {
 		executor.awaitTermination(900, TimeUnit.SECONDS);
 	}
 
-	public void sendDefaultImageToUser(int imagesCount) throws Exception {
+	private void sendDefaultImageToUser(int imagesCount) throws Exception {
 		final ClientUser selfUser = getUserManager().getSelfUserOrThrowError();
 		for (int i = 0; i < imagesCount; i++) {
 			final String contact = getRandomContactName(selfUser);
