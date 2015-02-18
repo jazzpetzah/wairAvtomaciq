@@ -362,8 +362,10 @@ public class ContactListPage extends IOSPage {
 //		File outputfile = new File("silenceiPhone6plus.png");
 //		ImageIO.write(silencedConversation, "png", outputfile);
 		//double score = ImageUtil.getOverlapScore(referenceImage,silencedConversation);
-		double score = ImageUtil.getOverlapScore(referenceImage, silencedConversation,
-				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+//		double score = ImageUtil.getOverlapScore(referenceImage, silencedConversation,
+//				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+		double score = ImageUtil.getOverlapScore(silencedConversation, referenceImage,
+				ImageUtil.RESIZE_FROM_OPTIMIZED, 750, 1334);
 		if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
 			return false;
 		}
