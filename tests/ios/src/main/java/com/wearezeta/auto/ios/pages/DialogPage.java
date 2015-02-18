@@ -113,6 +113,9 @@ public class DialogPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameAddContactToChatButton)
 	protected WebElement addInfoPage;
 
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathDialogTitleBar)
+	private WebElement titleBar;
+	
 	private String url;
 	private String path;
 
@@ -762,5 +765,16 @@ public class DialogPage extends IOSPage {
 				.xpath(IOSLocators.xpathLastChatMessage));
 		DriverUtils.scrollToElement(driver, el);
 		return page;
+	}
+
+	public boolean isTitleBarDisplayed() throws InterruptedException {
+		//wait for the title bar to animate onto the page
+		Thread.sleep(1000);
+		//check if the title bar is off the page or not
+		return titleBar.getLocation().y>0;
+	}
+
+	public boolean isTitleBarNamed(String chatName) {
+		return titleBar.getAttribute("name").equals(chatName.toUpperCase());
 	}
 }
