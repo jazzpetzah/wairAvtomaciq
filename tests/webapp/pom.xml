@@ -15,7 +15,9 @@
 		<skipTests>false</skipTests>
 		<TestRun>DevRun</TestRun>
 		<pictureResultsPath>/var/tmp/</pictureResultsPath>
-		<url>http://127.0.0.1:5026/wd/hub</url>
+		<hubHost>127.0.0.1</hubHost>
+		<hubPort>4444</hubPort>
+		<url>http://${hubHost}:${hubPort}/wd/hub</url>
 		<driverTimeoutSeconds>30</driverTimeoutSeconds>
 		<defaultEmail>smoketester.webapp@wearezeta.com</defaultEmail>
 		<!-- chrome | firefox | ie | safari -->

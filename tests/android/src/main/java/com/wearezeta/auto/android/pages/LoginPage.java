@@ -64,8 +64,6 @@ public class LoginPage extends AndroidPage {
 	@FindBy(how = How.ID, using = AndroidLocators.CommonLocators.idDismissUpdateButton)
 	private WebElement dismissUpdateButton;
 	
-	private String login;
-	private String password;
 	private String url;
 	private String path;
 	private static final String LOGIN_ERROR_TEXT = "WRONG ADDRESS OR PASSWORD.\nPLEASE TRY AGAIN.";
@@ -120,9 +118,6 @@ public class LoginPage extends AndroidPage {
 		confirmSignInButton.click();
 		return new ContactListPage(url, path);
 	}
-	public String getLogin() {
-		return login;
-	}
 
 	public void setLogin(String login) throws Exception {
 		refreshUITree();
@@ -136,10 +131,6 @@ public class LoginPage extends AndroidPage {
 				}
 			}
 		}
-	}
-	
-	public String getPassword() {
-		return password;
 	}
 
 	public void setPassword(String password) throws Exception {
