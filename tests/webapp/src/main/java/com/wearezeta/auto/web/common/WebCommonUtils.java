@@ -44,9 +44,10 @@ public class WebCommonUtils extends CommonUtils {
 	}
 
 	public static String getScriptsTemplatesPath() {
-		return String.format("%s/Documents/scripts/", System.getProperty("user.home"));
+		return String.format("%s/Documents/scripts/",
+				System.getProperty("user.home"));
 	}
-	
+
 	public static String getPicturesPath() {
 		return String.format("%s/Documents", System.getProperty("user.home"));
 	}
@@ -117,8 +118,8 @@ public class WebCommonUtils extends CommonUtils {
 				.executeOsXCommand(new String[] { "bash", "-c", command });
 	}
 
-	public static void formatTextInFileAndSave(String srcFile, String dstFile, Object[] params)
-			throws IOException {
+	public static void formatTextInFileAndSave(String srcFile, String dstFile,
+			Object[] params) throws IOException {
 		FileInputStream fis = new FileInputStream(srcFile);
 		InputStreamReader isr = new InputStreamReader(fis);
 		BufferedReader br = new BufferedReader(isr);

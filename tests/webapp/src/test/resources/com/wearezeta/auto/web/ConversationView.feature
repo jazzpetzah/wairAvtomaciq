@@ -47,7 +47,7 @@ Feature: Conversation
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id1612 @torun
+  @staging @id1612
   Scenario Outline: Send Camera picture to contact in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -61,7 +61,7 @@ Feature: Conversation
       | Login      | Password      | Name      | Contact   | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg |
 
-  @staging @id1934 @torun
+  @staging @id1934
   Scenario Outline: Send Camera picture to group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -75,7 +75,7 @@ Feature: Conversation
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendPictureGroupChat | userpicture_landscape.jpg |
-      
+
   @staging @id1918
   Scenario Outline: Mute 1on1 conversation
     Given There are 2 users where <Name> is me

@@ -47,12 +47,16 @@ public class CommonWebAppSteps {
 
 		ZetaFormatter.setDriver(PagesCollection.invitationCodePage.getDriver());
 
-		//put AppleScript for execution to Selenium node
-		if (WebCommonUtils.getWebAppBrowserNameFromConfig(CommonWebAppSteps.class).equals(WebAppConstants.Browser.SAFARI)) {
+		// put AppleScript for execution to Selenium node
+		if (WebCommonUtils.getWebAppBrowserNameFromConfig(
+				CommonWebAppSteps.class).equals(WebAppConstants.Browser.SAFARI)) {
 			try {
-				WebAppExecutionContext.seleniumNodeIp = WebCommonUtils.getNodeIp(PagesCollection.invitationCodePage.getDriver());
+				WebAppExecutionContext.seleniumNodeIp = WebCommonUtils
+						.getNodeIp(PagesCollection.invitationCodePage
+								.getDriver());
 			} catch (Exception e) {
-				log.debug("Error on checking node IP for Safari test. Error message: " + e.getMessage());
+				log.debug("Error on checking node IP for Safari test. Error message: "
+						+ e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -154,7 +158,8 @@ public class CommonWebAppSteps {
 	/**
 	 * Pings BackEnd until user is indexed and avialable in search
 	 * 
-	 * @step. ^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in backend search results$
+	 * @step. ^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in
+	 *        backend search results$
 	 * 
 	 * @param searchByNameAlias
 	 *            user name to search string
@@ -175,9 +180,9 @@ public class CommonWebAppSteps {
 		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query,
 				timeout);
 	}
-	
+
 	/**
-	 * Wait for specified amount of seconds 
+	 * Wait for specified amount of seconds
 	 * 
 	 * @step. ^I wait for (.*) seconds$
 	 * 
