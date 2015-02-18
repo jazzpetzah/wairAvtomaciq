@@ -7,7 +7,7 @@ Feature: Performance
     Given Myself is connected to all other users
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
-    And I <Name> start testing cycle for <Time> minutes
+    And I start testing cycle for <Time> minutes
 
     Examples: 
       | Login      | Name          | Password      | Name      | UsersNumber | UserNamePrefix | Time  |

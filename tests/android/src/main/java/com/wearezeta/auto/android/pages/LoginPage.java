@@ -35,13 +35,13 @@ public class LoginPage extends AndroidPage {
 	private WebElement yourUser;
 	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idSignUpButton")
-	private WebElement signUpButton;
+	protected WebElement signUpButton;
 	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idForgotPass")
 	private WebElement forgotPasswordButton;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idLoginButton")
-	private WebElement confirmSignInButton;
+	protected WebElement confirmSignInButton;
 
 	@AndroidFindBy(xpath =  AndroidLocators.LoginPage.xpathLoginInput)
 	private WebElement loginInput;

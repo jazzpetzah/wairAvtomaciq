@@ -1,6 +1,12 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.util.Random;
+import java.util.UUID;
+
+import javax.imageio.ImageIO;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -14,6 +20,8 @@ import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class ConnectToPage extends IOSPage {
 	
+	private static final int MAX_MESSAGE_CHARACTERS = 140;
+
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathConnectCloseButton)
 	private WebElement closeConnectDialoButon;
 	
@@ -27,7 +35,7 @@ public class ConnectToPage extends IOSPage {
 	private WebElement ignoreOtherUserButton;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameSendConnectionInputField)
-	private WebElement sendConecttionInput;
+	private WebElement sendConnectionInput;
 	
 	private String url;
 	private String path;
@@ -41,15 +49,42 @@ public class ConnectToPage extends IOSPage {
 	}
 	
 	public Boolean isConnectToUserDialogVisible(){
-		return sendConecttionInput.isDisplayed();
+		return sendConnectionInput.isDisplayed();
 	}
 	
 	public String getConnectToUserLabelValue(){
-		return sendConecttionInput.getText();
+		return sendConnectionInput.getText();
 	}
 	
 	public void fillTextInConnectDialog() {
-		sendConecttionInput.sendKeys(inviteMessage);
+		sendConnectionInput.sendKeys(inviteMessage);
+	}
+
+	public void enterCharactersIntoDialog(int numberOfCharacters) {
+		final String characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJLMNOPQRSTUVWXYZ1234567890!@#$%^&*()";
+		StringBuilder result = new StringBuilder();
+		while (numberOfCharacters > 0) {
+			Random rand = new Random();
+			result.append(characters.charAt(rand.nextInt(characters.length())));
+			numberOfCharacters--;
+		}
+		sendConnectionInput.sendKeys(result.toString());
+	}
+
+	public boolean isMaxCharactersInMessage(){
+		int messageCharCount = sendConnectionInput.getText().length();
+		if(messageCharCount>MAX_MESSAGE_CHARACTERS||messageCharCount<MAX_MESSAGE_CHARACTERS){
+			return false;
+		}else{
+			return true;
+		}
+	}
+	
+	public void deleteTextInConnectDialog() {
+		sendConnectionInput.clear();
+		//additional steps required because clear() does not disable the connect button
+		sendConnectionInput.sendKeys("a");
+		clickKeyboardDeleteButton();
 	}
 	
 	public PeoplePickerPage clickSendButton() throws Throwable {
@@ -80,6 +115,10 @@ public class ConnectToPage extends IOSPage {
 		return DriverUtils.waitUntilElementAppears(driver, By.className(IOSLocators.clasNameConnectDialogLabel));
 	}
 	
+	public boolean isConnectButtonVisible(){
+		return connectOtherUserButton.isDisplayed();
+	}
+	
 	public PeoplePickerPage sendInvitation() throws Exception {
 		connectOtherUserButton.click();
 		return new PeoplePickerPage(url, path);	
@@ -96,7 +135,7 @@ public class ConnectToPage extends IOSPage {
 	}
 	
 	public boolean isSendConnectionInputVisible(){
-		return DriverUtils.isElementDisplayed(sendConecttionInput);
+		return DriverUtils.isElementDisplayed(sendConnectionInput);
 	}
 
 }
