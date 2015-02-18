@@ -79,7 +79,7 @@ public class App {
 		final String pageBody = extractPageBody(containerFilePath);
 		final long containerPageId;
 		try {
-			System.out.print(String.format("\tCreating container page '%s'",
+			System.out.print(String.format("Creating container page '%s'",
 					pageTitle));
 			containerPageId = ConfluenceAPIWrappers.createChildPage(
 					parentPageId, spaceKey, pageTitle, pageBody);
