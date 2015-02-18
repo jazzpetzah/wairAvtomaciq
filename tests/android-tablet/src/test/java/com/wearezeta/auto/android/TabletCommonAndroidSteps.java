@@ -1,7 +1,6 @@
 package com.wearezeta.auto.android;
 
 import com.wearezeta.auto.android.pages.PagesCollection;
-import com.wearezeta.auto.android.pages.TabletAndroidPage;
 import com.wearezeta.auto.android.pages.TabletLoginPage;
 import com.wearezeta.auto.android.pages.TabletPagesCollection;
 import com.wearezeta.auto.common.CommonSteps;
@@ -50,7 +49,8 @@ public class TabletCommonAndroidSteps {
 	@After
 	public void tabletTearDown() throws Exception {
 		TabletPagesCollection.loginPage.Close();
-		TabletAndroidPage.clearTabletPagesCollection();
+		TabletLoginPage.clearTabletPagesCollection();
+		
 		commonSteps.getUserManager().resetUsers();
 	}
 }

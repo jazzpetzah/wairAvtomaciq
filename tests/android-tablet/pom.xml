@@ -16,7 +16,7 @@
 		<TestRun>DevRun</TestRun>
 		<Url>http://127.0.0.1:4723/wd/hub</Url>
 		<appPath>/Project/zclient.apk</appPath>
-		<package>com.waz.zclient.dev</package>
+		<package>com.wire.tablet</package>
 		<generateUsers>true</generateUsers>
 		<activity>com.waz.zclient.MainActivity</activity>
 		<driverTimeoutSeconds>15</driverTimeoutSeconds>
