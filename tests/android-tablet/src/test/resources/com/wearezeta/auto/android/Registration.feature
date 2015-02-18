@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @id9 @smoke
+  @id9 @id30 @staging
   Scenario Outline: Register new user using front camera
     Given I see sign in screen
     When I press tablet Join button

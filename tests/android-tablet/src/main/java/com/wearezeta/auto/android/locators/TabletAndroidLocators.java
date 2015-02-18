@@ -10,8 +10,16 @@ public final class TabletAndroidLocators {
 	
 	public static final class TabletContactListPage {
 		
-		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME + "$TabletContactListPage";
+		public static final String CLASS_NAME = TabletAndroidLocators.CLASS_NAME + "$TabletContactListPage";
 		public static final String idProfileLink = LOCATORS_PACKAGE + ":id/ttv__conversation_list__sticky_menu__profile_link";
+		
+	}
+	
+	public static final class TabletLoginPage {
+		
+		public static final String CLASS_NAME = TabletAndroidLocators.CLASS_NAME + "$TabletLoginPage";
+		public static final String idTabletSignInButton = LOCATORS_PACKAGE + ":id/ttv__confirmation__confirm";
+		public static final String idTabletSignUpButton = LOCATORS_PACKAGE + ":id/ttv__confirmation__cancel";
 		
 	}
 }
