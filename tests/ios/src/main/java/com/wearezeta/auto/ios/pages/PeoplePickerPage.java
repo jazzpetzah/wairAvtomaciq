@@ -105,18 +105,18 @@ public class PeoplePickerPage extends IOSPage {
 		peoplePickerClearBtn.click();
 	}
 
-	public double checkAvatarClockIcon() throws Exception {
+	public double checkAvatarClockIcon(String name) throws Exception {
 		String path = null;
-		BufferedImage clockImage = getAvatarClockIconScreenShot();
+		BufferedImage clockImage = getAvatarClockIconScreenShot(name);
 		path = CommonUtils.getAvatarWithClockIconPathIOS(GroupChatPage.class);
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
 		return ImageUtil.getOverlapScore(clockImage, templateImage);
 	}
 
-	public BufferedImage getAvatarClockIconScreenShot() throws IOException {
+	public BufferedImage getAvatarClockIconScreenShot(String name) throws IOException {
 		return getElementScreenshot(driver
 				.findElement(By
-						.xpath("//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[1]/UIAStaticText[1]")));
+						.name(name)));
 	}
 
 	public void fillTextInPeoplePickerSearch(String text) {

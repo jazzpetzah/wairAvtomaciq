@@ -5,6 +5,7 @@ Feature: Search
     Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I dismiss alert
+    And I swipe down contact list
     And I see Upload contacts dialog
     And I click Continue button on Upload dialog
     And I dismiss alert
@@ -139,7 +140,7 @@ Feature: Search
     And I input message in connect dialog with <NumOfMessageChars> characters
     And I see message with max number of characters
     And I click Connect button on connect to dialog
-    Then I see the user avatar with a clock
+    Then I see the user <UnconnectedUser> avatar with a clock
     And I click close button to dismiss people view
     And I see conversation with not connected user <UnconnectedUser>
     And I tap on contact name <UnconnectedUser>
