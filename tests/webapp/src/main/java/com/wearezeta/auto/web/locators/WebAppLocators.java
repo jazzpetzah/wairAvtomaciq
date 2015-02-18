@@ -153,6 +153,10 @@ public final class WebAppLocators {
 		public static final String xpathProfilePageSearchField = "//div[@class='participants-search-header']//input[@class='search-input']";
 
 		public static final String xpathAddPeopleMessage = "//div[@class='confirm-content' and span[text()='Add people and share history?']]";
+		
+		public static final String xpathConversationTitle = "//div[@class='participants-group-header']/div[@class='name']/span";
+		
+		public static final String xpathConversationTitleInput = "//div[@class='participants-group-header']/div[@class='name']/textarea";
 
 	}
 
