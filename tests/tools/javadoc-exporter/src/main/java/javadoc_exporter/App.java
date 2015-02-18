@@ -14,7 +14,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import javadoc_exporter.confluence_rest_api.ConfluenceAPIWrappers;
-import javadoc_exporter.confluence_rest_api.RESTApiError;
 import javadoc_exporter.model.StepsContainer;
 import javadoc_exporter.transformers.InputTransformer;
 import javadoc_exporter.transformers.OutputTransformer;
@@ -70,15 +69,25 @@ public class App {
 		return new String(encoded, OutputTransformer.DEFAULT_ENCODING);
 	}
 
+	private static final String SUCCESS_STATE = " - SUCCESS";
+	private static final String FAILED_STATE = " - FAILED";
+
 	private static int publishStepsContainer(long parentPageId,
 			String spaceKey, String containerFilePath,
 			List<String> stepsFilesPaths, String platformName) throws Exception {
 		final String pageTitle = buildPageTitle(containerFilePath, platformName);
 		final String pageBody = extractPageBody(containerFilePath);
-		final long containerPageId = ConfluenceAPIWrappers.createChildPage(
-				parentPageId, spaceKey, pageTitle, pageBody);
-		System.out.println(String.format("Created container page '%s'",
-				pageTitle));
+		final long containerPageId;
+		try {
+			System.out.print(String.format("\tCreating container page '%s'",
+					pageTitle));
+			containerPageId = ConfluenceAPIWrappers.createChildPage(
+					parentPageId, spaceKey, pageTitle, pageBody);
+			System.out.println(SUCCESS_STATE);
+		} catch (Exception e) {
+			System.out.println(FAILED_STATE);
+			throw e;
+		}
 
 		Map<String, String> stepsToPublish = new LinkedHashMap<String, String>();
 		for (String stepFilePath : stepsFilesPaths) {
@@ -92,14 +101,14 @@ public class App {
 				stepsToPublish.keySet());
 		for (String stepName : sortedStepNames) {
 			try {
+				System.out.print(String.format("\tCreating step page '%s'",
+						stepName));
 				ConfluenceAPIWrappers.createChildPage(containerPageId,
 						spaceKey, stepName, stepsToPublish.get(stepName));
-				System.out.println(String.format("\tCreated step page '%s'",
-						stepName));
-			} catch (RESTApiError e) {
-				System.out.println(String.format(
-						"\tFailed to create step page '%s'", stepName));
-				e.printStackTrace();
+				System.out.println(SUCCESS_STATE);
+			} catch (Exception e) {
+				System.out.println(FAILED_STATE);
+				throw e;
 			}
 		}
 		return stepsToPublish.size() + 1;
