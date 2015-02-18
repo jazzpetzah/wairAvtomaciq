@@ -28,7 +28,7 @@ public class PerformanceSteps {
 	 * 
 	 * @param timeout
 	 *            number of minutes to run the loop
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I start testing cycle for (\\d+) minutes$")
 	public void WhenIStartTestingCycleForMinutes(int timeout) throws Exception {
