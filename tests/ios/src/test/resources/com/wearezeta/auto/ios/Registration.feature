@@ -121,7 +121,7 @@ Feature: Registration
     And I input password <Password> and hit Enter
     Then I see confirmation page
     And I verify registration address
-    And I see Upload contacts dialog
+    And I see Contact list with my name <Name>
 
     Examples: 
       | Email      | Password      | Name      |
@@ -220,7 +220,7 @@ Feature: Registration
     And I input password <Password> and hit Enter
     And I see confirmation page
     And I verify registration address
-    Then I see Upload contacts dialog
+    Then I see Contact list with my name <Name>
 
     Examples: 
       | Email      | Password      | Name      |

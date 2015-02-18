@@ -30,8 +30,7 @@ public class TabletLoginPageSteps {
 	 *             if login operation was unsuccessful
 	 */
 	@Given("^I Sign in to self profile using login (.*) and password (.*)$")
-	public void GivenISignInToProfile(String login, String password) throws IOException,
-	InterruptedException {
+	public void GivenISignInToProfile(String login, String password) throws Exception {
 		try {
 			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
 		} catch (NoSuchUserException e) {
@@ -43,7 +42,7 @@ public class TabletLoginPageSteps {
 			// Ignore silently
 		}
 		Assert.assertNotNull(TabletPagesCollection.loginPage.isVisible());
-		TabletPagesCollection.loginPage.SignIn();
+		TabletPagesCollection.loginPage.tabletSignIn();
 		TabletPagesCollection.loginPage.setLogin(login);
 		TabletPagesCollection.loginPage.setPassword(password);
 		try {
@@ -55,10 +54,13 @@ public class TabletLoginPageSteps {
 		}
 		Assert.assertNotNull("Login not passed", TabletPagesCollection.personalInfoPage);
 	}
+	
 	/**
 	 * Taps Login button on the corresponding screen
 	 * 
 	 * @step. I attempt to press Login button
+	 * 
+	 * @throws Exception
 	 */
 	@When("I attempt to press Login button")
 	public void WhenIPressTabletLogInButton() throws Exception {
@@ -80,5 +82,17 @@ public class TabletLoginPageSteps {
 	public void WhenIPressJoinButton() throws Exception {
 		TabletPagesCollection.registrationPage = TabletPagesCollection.loginPage.tabletJoin();
 		PagesCollection.registrationPage = TabletPagesCollection.registrationPage;
+	}
+
+	/**
+	 * Taps SignIn button on Welcome page
+	 * 
+	 * @step. I press tablet Sign in button
+	 * 
+	 * @throws IOException
+	 */
+	@When("I press tablet Sign in button")
+	public void WhenIPressSignInButton() throws IOException {
+		TabletPagesCollection.loginPage.tabletSignIn();
 	}
 }

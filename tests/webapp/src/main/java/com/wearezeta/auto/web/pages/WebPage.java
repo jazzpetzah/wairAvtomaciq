@@ -50,12 +50,12 @@ public class WebPage extends BasePage {
 							+ browser
 							+ ". Please choose one of the following: chrome | firefox | safari | ie");
 		}
-		final String platformName = WebCommonUtils
+		final String webPlatformName = WebCommonUtils
 				.getPlatformNameFromConfig(WebPage.class);
-		if (platformName.length() > 0) {
+		if (webPlatformName.length() > 0) {
 			// Use undocumented grid property to match platforms
 			// https://groups.google.com/forum/#!topic/selenium-users/PRsEBcbpNlM
-			capabilities.setCapability("applicationName", platformName);
+			capabilities.setCapability("applicationName", webPlatformName);
 		}
 		capabilities.setCapability("platformName",
 				CommonUtils.PLATFORM_NAME_WEB);
@@ -68,16 +68,15 @@ public class WebPage extends BasePage {
 		driver.setFileDetector(new LocalFileDetector());
 		try {
 			driver.manage().window().maximize();
-		}catch (Exception ex ) {
-			
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
-		
+
 		if (doNavigate) {
 			// After beta code is applied we should wait till sign in page
 			// pointed to production backend will be loaded before loading
 			// staging page
 			Thread.sleep(5000);
-			
 			driver.navigate().to(path);
 		}
 	}

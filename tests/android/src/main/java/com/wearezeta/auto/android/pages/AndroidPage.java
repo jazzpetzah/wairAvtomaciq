@@ -30,119 +30,120 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 public abstract class AndroidPage extends BasePage {
 	protected static ZetaAndroidDriver driver;
 	protected static WebDriverWait wait;
-	
+
 	private DesiredCapabilities capabilities = new DesiredCapabilities();
 	private static final Logger log = ZetaLogger.getLog(CommonUtils.class
 			.getSimpleName());
-	
+
 	@AndroidFindBy(className = AndroidLocators.CommonLocators.classNameLoginPage)
 	private WebElement content;
-	
+
 	@AndroidFindBy(className = AndroidLocators.CommonLocators.classListView)
 	private WebElement container;
-	
+
 	@FindBy(xpath = AndroidLocators.CommonLocators.xpathImagesFrameLayout)
 	private List<WebElement> frameLayouts;
-	
+
 	@FindBy(xpath = AndroidLocators.CommonLocators.xpathImage)
 	private List<WebElement> image;
-	
+
 	private String url;
-	
+
 	public AndroidPage(String URL, String path) throws Exception {
-		this(URL,path,false);
+		this(URL, path, false);
 	}
-	
-	
-	public AndroidPage(String URL, String path, boolean isUnicode) throws Exception {
-		
-        url = URL;
 
-        LoggingPreferences object = new LoggingPreferences();	
-        object.enable("logcat", Level.ALL);
-        capabilities.setCapability(CapabilityType.LOGGING_PREFS, object);
-        capabilities.setCapability("platformName", CommonUtils.PLATFORM_NAME_ANDROID);
-        capabilities.setCapability("deviceName", CommonUtils.getAndroidDeviceNameFromConfig(AndroidPage.class));
-        capabilities.setCapability("app", path);
-        capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(AndroidPage.class));
-        capabilities.setCapability("appActivity", CommonUtils.getAndroidActivityFromConfig(AndroidPage.class));
-        capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidActivityFromConfig(AndroidPage.class));
-        
-        if (isUnicode) {
-        	initUnicodeDriver();
-        }
-        else {
-        	initNoneUnicodeDriver();
-        }
+	public AndroidPage(String URL, String path, boolean isUnicode)
+			throws Exception {
+
+		url = URL;
+
+		LoggingPreferences object = new LoggingPreferences();
+		object.enable("logcat", Level.ALL);
+		capabilities.setCapability(CapabilityType.LOGGING_PREFS, object);
+		capabilities.setCapability("platformName",
+				CommonUtils.PLATFORM_NAME_ANDROID);
+		capabilities.setCapability("deviceName",
+				CommonUtils.getAndroidDeviceNameFromConfig(AndroidPage.class));
+		capabilities.setCapability("app", path);
+		capabilities.setCapability("appPackage",
+				CommonUtils.getAndroidPackageFromConfig(AndroidPage.class));
+		capabilities.setCapability("appActivity",
+				CommonUtils.getAndroidActivityFromConfig(AndroidPage.class));
+		capabilities.setCapability("appWaitActivity",
+				CommonUtils.getAndroidActivityFromConfig(AndroidPage.class));
+
+		if (isUnicode) {
+			initUnicodeDriver();
+		} else {
+			initNoneUnicodeDriver();
+		}
 	}
-	
-	private void initUnicodeDriver() throws Exception
-	{
+
+	private void initUnicodeDriver() throws Exception {
 		capabilities.setCapability("unicodeKeyboard", true);
-        capabilities.setCapability("resetKeyboard", true);
-        super.InitConnection(url, capabilities);
+		capabilities.setCapability("resetKeyboard", true);
+		super.InitConnection(url, capabilities);
 
-        storeDriverAndWait();
+		storeDriverAndWait();
 	}
-	
-	private void initNoneUnicodeDriver() throws Exception
-	{
-        super.InitConnection(url, capabilities);
-        
-        storeDriverAndWait();
+
+	private void initNoneUnicodeDriver() throws Exception {
+		super.InitConnection(url, capabilities);
+
+		storeDriverAndWait();
 	}
-	
+
 	private void storeDriverAndWait() {
-        driver = (ZetaAndroidDriver) drivers.get(CommonUtils.PLATFORM_NAME_ANDROID);
-        wait = waits.get(CommonUtils.PLATFORM_NAME_ANDROID);
+		driver = (ZetaAndroidDriver) drivers
+				.get(CommonUtils.PLATFORM_NAME_ANDROID);
+		wait = waits.get(CommonUtils.PLATFORM_NAME_ANDROID);
 	}
-	
-	public void selectPhoto(){
+
+	public void selectPhoto() {
 		refreshUITree();
-		try{
+		try {
 			frameLayouts.get(0).click();
 			return;
-		}
-		catch(Exception ex)
-		{
+		} catch (Exception ex) {
 
 		}
-		try{
+		try {
 			image.get(0).click();
 			return;
-		}
-		catch(Exception ex){
+		} catch (Exception ex) {
 		}
 	}
-	
-	public void hideKeyboard(){
+
+	public void hideKeyboard() {
 		driver.hideKeyboard();
 	}
-	public AndroidPage navigateBack() throws Exception{
+
+	public AndroidPage navigateBack() throws Exception {
 		driver.navigate().back();
 		return null;
 	}
-	
-	public void minimizeApplication () throws InterruptedException {
+
+	public void minimizeApplication() throws InterruptedException {
 
 		driver.sendKeyEvent(3);
 		Thread.sleep(1000);
 	}
-	
+
 	public void restoreApplication() {
-		
+
 		try {
 			driver.runAppInBackground(10);
 			Thread.sleep(1000);
-		}
-		catch (WebDriverException ex) {
-			//do nothing, sometimes after restoring the app we have this exception, Appium bug
+		} catch (WebDriverException ex) {
+			// do nothing, sometimes after restoring the app we have this
+			// exception, Appium bug
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void Close() throws Exception {
 		showLogs();
@@ -153,82 +154,82 @@ public abstract class AndroidPage extends BasePage {
 		}
 		super.Close();
 	}
-	
-	public abstract AndroidPage returnBySwipe (SwipeDirection direction) throws Exception;
-	
+
+	public abstract AndroidPage returnBySwipe(SwipeDirection direction)
+			throws Exception;
+
 	@Override
-	public AndroidPage swipeLeft(int time) throws Exception
-	{
+	public AndroidPage swipeLeft(int time) throws Exception {
 		DriverUtils.swipeLeft(driver, content, time);
 		return returnBySwipe(SwipeDirection.LEFT);
 	}
-	
+
 	@Override
-	public AndroidPage swipeRight(int time) throws Exception
-	{
+	public AndroidPage swipeRight(int time) throws Exception {
 		DriverUtils.swipeRight(driver, content, time);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
-	
+
 	@Override
-	public AndroidPage swipeUp(int time) throws Exception
-	{
+	public AndroidPage swipeUp(int time) throws Exception {
 		DriverUtils.swipeUp(driver, content, time);
 		return returnBySwipe(SwipeDirection.UP);
 	}
-	
-	public void dialogsPagesSwipeUp(int time){
+
+	public void dialogsPagesSwipeUp(int time) {
 		Point coords = content.getLocation();
 		Dimension elementSize = content.getSize();
-		try{
-			driver.swipe(coords.x+elementSize.width / 2, coords.y + elementSize.height - 300, coords.x + elementSize.width / 2, coords.y, time);
-		}
-		catch(Exception ex){
+		try {
+			driver.swipe(coords.x + elementSize.width / 2, coords.y
+					+ elementSize.height - 300, coords.x + elementSize.width
+					/ 2, coords.y, time);
+		} catch (Exception ex) {
 
 		}
 
 	}
-	
+
 	@Override
-	public AndroidPage swipeDown(int time) throws Exception
-	{
-		
+	public AndroidPage swipeDown(int time) throws Exception {
+
 		DriverUtils.swipeDown(driver, content, time);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
-	
-	public void tapButtonByClassNameAndIndex(WebElement element, String className, int index)
-	{
-		List<WebElement> buttonsList = element.findElements(By.className(className));
+
+	public void tapButtonByClassNameAndIndex(WebElement element,
+			String className, int index) {
+		List<WebElement> buttonsList = element.findElements(By
+				.className(className));
 		buttonsList.get(index).click();
 	}
-	
-	public static void clearPagesCollection() throws IllegalArgumentException, IllegalAccessException {
+
+	public static void clearPagesCollection() throws IllegalArgumentException,
+			IllegalAccessException {
 		clearPagesCollection(PagesCollection.class, AndroidPage.class);
 	}
-	
-	public boolean isVisible(WebElement element) throws NumberFormatException, Exception {
+
+	public boolean isVisible(WebElement element) throws NumberFormatException,
+			Exception {
 		boolean value = false;
-		try{
+		try {
 			changeZetaLocatorTimeout(3);
 			element.isDisplayed();
 			value = true;
-		}
-		catch(NoSuchElementException ex)
-		{
+		} catch (NoSuchElementException ex) {
 			value = false;
-		}
-		finally{
+		} finally {
 			changeZetaLocatorTimeout(Long.parseLong(CommonUtils
 					.getDriverTimeoutFromConfig(getClass())));
 		}
 		return value;
 
 	}
-	private static void showLogs() throws Exception{
-		if(CommonUtils.getAndroidLogs(AndroidPage.class)){
-			List<LogEntry> logEntries = driver.manage().logs().get("logcat").getAll();
-			for(LogEntry entry : logEntries){
+
+	private static void showLogs() throws Exception {
+		if (CommonUtils.getAndroidLogs(AndroidPage.class)) {
+			List<LogEntry> logEntries = driver.manage().logs().get("logcat")
+					.getAll();
+			for (LogEntry entry : logEntries) {
 				log.error(entry.getMessage().toString());
 			}
 		}

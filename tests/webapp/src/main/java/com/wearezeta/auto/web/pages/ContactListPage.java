@@ -121,12 +121,18 @@ public class ContactListPage extends WebPage {
 	}
 	
 	public boolean isConversationMuted(String conversationName) {
-
+		//moving focus from contact - to now show ... button
+		try {
+			DriverUtils.moveMouserOver(driver, selfName);
+		} catch (WebDriverException e) {
+			//do nothing (safari workaround)
+		}
 		WebElement contact = getContactWithName(conversationName);
 
 		WebElement muteIcon = contact.findElement(By
 				.className(WebAppLocators.ContactListPage.classMuteIcon));
-
+		DriverUtils.waitUntilElementAppears(driver, muteIcon, 5);
+		
 		return muteIcon.isDisplayed();
 	}
 

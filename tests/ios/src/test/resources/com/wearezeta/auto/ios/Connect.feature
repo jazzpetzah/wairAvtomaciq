@@ -25,7 +25,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | ContactEmail | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user2Email   | user3Name |
 
-  @smoke @id585
+  @smoke @id585 @id1475
   Scenario Outline: Get invitation message from user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>

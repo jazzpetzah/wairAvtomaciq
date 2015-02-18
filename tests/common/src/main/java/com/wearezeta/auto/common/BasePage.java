@@ -42,11 +42,9 @@ public abstract class BasePage {
 
 	protected synchronized void InitConnection(String URL,
 			DesiredCapabilities capabilities) throws Exception {
-
 		final String platform = (String) capabilities
 				.getCapability("platformName");
-		if (null == drivers || drivers.isEmpty()
-				|| drivers.get(platform) == null) {
+		if (!drivers.containsKey(platform)) {
 			if (platform.equals(CommonUtils.PLATFORM_NAME_ANDROID)) {
 				drivers.put(platform, new ZetaAndroidDriver(new URL(URL),
 						capabilities));
@@ -57,7 +55,6 @@ public abstract class BasePage {
 				drivers.put(platform, new ZetaOSXDriver(new URL(URL),
 						capabilities));
 			} else if (platform.equals(CommonUtils.PLATFORM_NAME_WEB)) {
-				capabilities.setCapability("platformName", "ANY");
 				int tryNum = 0;
 				final int maxTries = 3;
 				WebDriverException savedException = null;
@@ -117,9 +114,13 @@ public abstract class BasePage {
 	}
 
 	public synchronized void Close() throws Exception {
-		if (drivers.get(pagePlatform) != null) {
-			drivers.get(pagePlatform).quit();
-			drivers.put(pagePlatform, null);
+		if (drivers.containsKey(pagePlatform)
+				&& drivers.get(pagePlatform) != null) {
+			try {
+				drivers.get(pagePlatform).quit();
+			} finally {
+				drivers.remove(pagePlatform);
+			}
 		}
 	}
 

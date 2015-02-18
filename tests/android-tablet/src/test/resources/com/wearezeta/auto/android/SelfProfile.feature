@@ -1,6 +1,6 @@
 Feature: Self Profile
 
-  @id328 @smoke
+  @id328 @staging
     Scenario Outline: ZClient change name
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
