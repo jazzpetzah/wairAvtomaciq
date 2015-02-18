@@ -130,7 +130,7 @@ public class GroupChatPage extends DialogPage {
 				break;
 			}
 			else {
-				this.minimizeApplication(3);
+				swipeUp(1000);
 			}
 		}
 		

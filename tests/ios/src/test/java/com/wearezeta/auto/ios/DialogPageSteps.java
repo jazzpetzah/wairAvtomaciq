@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 
@@ -12,13 +11,16 @@ import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.ImageFullScreenPage;
+import com.wearezeta.auto.ios.pages.OtherUserOnPendingProfilePage;
 import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.ios.pages.CameraRollPage;
@@ -158,9 +160,22 @@ public class DialogPageSteps {
 	@When("^I swipe up on dialog page to open other user personal page$")
 	public void WhenISwipeUpOnDialogPage() throws Exception {
 		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.dialogPage
-				.swipeUp(500);
+				.swipeUp(1000);
 	}
 
+	/**
+	 * Swipes up on the pending dialog page in order to access the pending personal info page
+	 * 
+	 * @step. ^I swipe up on pending dialog page to open other user pending personal page$
+	 * 
+	 * @throws Throwable
+	 */
+	
+	@When("^I swipe up on pending dialog page to open other user pending personal page$")
+	public void WhenISwipeUpOnPendingDialogPage() throws Throwable {
+		PagesCollection.otherUserOnPendingProfilePage = PagesCollection.dialogPage.swipePendingDialogPageUp(500);
+	}
+	
 	@Then("^I see message in the dialog$")
 	public void ThenISeeMessageInTheDialog() throws Throwable {
 		String dialogLastMessage = PagesCollection.dialogPage
@@ -310,7 +325,10 @@ public class DialogPageSteps {
 	@When("I swipe right on Dialog page")
 	public void ISwipeRightOnDialogPage() throws Exception {
 		PagesCollection.contactListPage = (ContactListPage) PagesCollection.dialogPage
-				.swipeRight(1000);
+				.swipeRight(
+						1000,
+						DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL,
+						30);
 	}
 
 	@When("I send long message")

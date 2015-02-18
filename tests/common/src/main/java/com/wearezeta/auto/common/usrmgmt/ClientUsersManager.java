@@ -352,47 +352,34 @@ public class ClientUsersManager {
 		// of these shared users already
 		// exist on the backend, so we test which user doesn't exist
 		// and create additional pending users
-		try {
-			BackendAPIWrappers.tryLoginByUser(sharedUsers.get(sharedUsers
-					.size() - 1));
-			for (ClientUser sharedUser : sharedUsers) {
-				sharedUser.setUserState(UserState.Created);
-			}
-			return;
-		} catch (BackendRequestException e) {
-			if (e.getReturnCode() != HttpStatus.SC_FORBIDDEN) {
-				throw e;
-			}
-		}
 
 		// We check only each 10-th user to speed up our search
 		// Also, this is the reason why we create extra users
-		int lastCreatedUserIndex = sharedUsers.size()
-				- SHARED_USERS_MIN_CREATION_INTERVAL;
-		while (lastCreatedUserIndex >= 0) {
+		int lastExistingUserIndex = sharedUsers.size() - 1;
+		while (lastExistingUserIndex >= 0) {
 			try {
 				BackendAPIWrappers.tryLoginByUser(sharedUsers
-						.get(lastCreatedUserIndex));
-				lastCreatedUserIndex -= SHARED_USERS_MIN_CREATION_INTERVAL;
-			} catch (BackendRequestException e) {
-				if (e.getReturnCode() != HttpStatus.SC_FORBIDDEN) {
-					throw e;
+						.get(lastExistingUserIndex));
+				for (int idx = 0; idx <= lastExistingUserIndex; idx++) {
+					sharedUsers.get(idx).setUserState(UserState.Created);
+				}
+				if (lastExistingUserIndex == sharedUsers.size() - 1) {
+					// All users already exist on the backend
+					return;
 				} else {
-					if (lastCreatedUserIndex % 50 == 0) {
-						// this is to avoid too many request error on the
-						// backend
-						Thread.sleep(1000);
-					}
+					// It is necessary to create several more users
+					break;
+				}
+			} catch (BackendRequestException e) {
+				if (e.getReturnCode() == HttpStatus.SC_FORBIDDEN) {
+					lastExistingUserIndex -= SHARED_USERS_MIN_CREATION_INTERVAL;
+				} else {
+					throw e;
 				}
 			}
 		}
-		int firstNonCreatedUserIndex;
-		if (lastCreatedUserIndex < 0) {
-			firstNonCreatedUserIndex = 0;
-		} else {
-			firstNonCreatedUserIndex = lastCreatedUserIndex + 1;
-		}
-		this.generateUsers(sharedUsers.subList(firstNonCreatedUserIndex,
+
+		this.generateUsers(sharedUsers.subList(lastExistingUserIndex + 1,
 				sharedUsers.size()));
 	}
 
@@ -423,6 +410,7 @@ public class ClientUsersManager {
 		}
 		generateSharedUsers(sharedUsers, commonNamePrefix, ceiledCount);
 
+		// Appending shared users to the end of "normal" users list
 		int appendPos = getCreatedUsers().size();
 		for (int sharedUserIdx = 0; sharedUserIdx < count; sharedUserIdx++) {
 			this.users.set(appendPos, sharedUsers.get(sharedUserIdx));

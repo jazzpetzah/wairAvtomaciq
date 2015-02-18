@@ -78,8 +78,8 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
-    And I scroll away the keyboard
-    And I scroll back to media container
+	And I swipe right on Dialog page
+	And I tap on contact name <Contact>
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -103,8 +103,8 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
-    And I scroll away the keyboard
-    And I scroll back to media container
+	And I swipe right on Dialog page
+	And I tap on contact name <Contact>
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -144,6 +144,8 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
+    And I swipe right on Dialog page
+	And I tap on contact name <Contact>
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -181,8 +183,7 @@ Feature: Conversation View
     And I see dialog page
     And I input more than 200 chars message and send it
     And I type the message
-    And I scroll away the keyboard
-    And I navigate back to conversations view
+	And I swipe right on Dialog page
     And I tap on contact name <Contact>
     And I tap on text input
     And I send the message
@@ -192,7 +193,6 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-#Muted steps due to relogin issue
   @regression @id407
   Scenario Outline: Send more than 200 chars message
     Given There are 2 users where <Name> is me
@@ -203,16 +203,6 @@ Feature: Conversation View
     And I see dialog page
     And I input more than 200 chars message and send it
     Then I see message in the dialog
-    #And I scroll away the keyboard
-    #And I swipe right on Dialog page
-    #And I tap on my name <Name>
-    #And I click on Settings button on personal page
-    #And I click Sign out button from personal page
-    #And I Sign in using login <Contact> and password <Password>
-    #And I see Personal page
-    #And I swipe right on the personal page
-    #And I tap on contact name <Name>
-    #Then I see message in the dialog
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
@@ -353,8 +343,8 @@ Feature: Conversation View
     And I see dialog page
     And I post media link <YouTubeLink>
     Then I see media link <YouTubeLink> and media in dialog
-    And I scroll away the keyboard
-    And I scroll back to media container
+	And I swipe right on Dialog page
+	And I tap on contact name <Contact>
     And I click video container for the first time
     And I see video player page is opened
 
@@ -513,8 +503,8 @@ Feature: Conversation View
     And I see dialog page
     And I type and send long message and media link <YouTubeLink>
     And I see media link <YouTubeLink> and media in dialog
-    And I scroll away the keyboard
-    And I scroll back to media container
+	And I swipe right on Dialog page
+	And I tap on contact name <Contact>
     And I click video container for the first time
     And I see video player page is opened
     And I tap Pause button on Video player page
@@ -540,16 +530,18 @@ Feature: Conversation View
     And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
     And I see media link <SoundCloudLink> and media in dialog
+    And I swipe right on Dialog page
+	And I tap on contact name <Contact1>
     And I tap media link
-    And I scroll away the keyboard
     And I swipe right on Dialog page
     And I see play/pause button next to username <Contact1> in contact list
     And I tap play/pause button in contact list next to username <Contact1>
     And I tap on contact name <Contact2>
     And I type and send long message and media link <SoundCloudLink>
     And I see media link <SoundCloudLink> and media in dialog
+    And I swipe right on Dialog page
+	And I tap on contact name <Contact2>
     And I tap media link
-    And I scroll away the keyboard
     And I swipe right on Dialog page
     And I see play/pause button next to username <Contact2> in contact list
     And I tap play/pause button in contact list next to username <Contact2>

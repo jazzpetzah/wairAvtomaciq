@@ -1,6 +1,11 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -8,6 +13,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.ios.locators.IOSLocators;
@@ -44,6 +51,9 @@ public class PeoplePickerPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.namePeoplePickerAddToConversationButton)
 	private WebElement addToConversationBtn;
 
+//	@FindBy(how = How.NAME, using = IOSLocators.nameLaterButton)
+//	private WebElement laterButton;
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameShareButton)
 	private WebElement shareButton;
 
@@ -71,6 +81,9 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public void clickLaterButton() {
+//		if (DriverUtils.isElementDisplayed(laterButton)) {
+//			laterButton.click();
+//		}
 		if (DriverUtils.isElementDisplayed(shareButton)) {
 			shareButton.click();
 		}
@@ -85,7 +98,6 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public void tapOnPeoplePickerSearch() {
-
 		driver.tap(1, peoplePickerSearch.getLocation().x + 40,
 				peoplePickerSearch.getLocation().y + 30, 1);// workaround for
 															// people picker
@@ -96,6 +108,20 @@ public class PeoplePickerPage extends IOSPage {
 		peoplePickerClearBtn.click();
 	}
 
+	public double checkAvatarClockIcon() throws Exception {
+		String path = null;
+		BufferedImage clockImage = getAvatarClockIconScreenShot();
+		path = CommonUtils.getAvatarWithClockIconPathIOS(GroupChatPage.class);
+		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
+		return ImageUtil.getOverlapScore(clockImage, templateImage);
+	}
+
+	public BufferedImage getAvatarClockIconScreenShot() throws IOException {
+		return getElementScreenshot(driver
+				.findElement(By
+						.xpath("//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[1]/UIAStaticText[1]")));
+	}
+
 	public void fillTextInPeoplePickerSearch(String text) {
 		peoplePickerSearch.sendKeys(text);
 	}
@@ -103,7 +129,7 @@ public class PeoplePickerPage extends IOSPage {
 	public boolean waitUserPickerFindUser(String user) {
 		return DriverUtils.waitUntilElementAppears(driver, By.name(user));
 	}
-
+	
 	public ConnectToPage clickOnNotConnectedUser(String name) throws Exception {
 		ConnectToPage page;
 		driver.findElement(By.name(name)).click();
@@ -112,6 +138,7 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public ConnectToPage pickUserAndTap(String name) throws Exception {
+
 		PickUser(name).click();
 		return new ConnectToPage(url, path);
 	}
@@ -130,7 +157,7 @@ public class PeoplePickerPage extends IOSPage {
 	public boolean isAddToConversationBtnVisible() {
 		return DriverUtils.isElementDisplayed(addToConversationBtn);
 	}
-
+	
 	public boolean addToConversationNotVisible() {
 		boolean flag;
 		try {
@@ -161,7 +188,6 @@ public class PeoplePickerPage extends IOSPage {
 
 	@Override
 	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
-
 		IOSPage page = null;
 		switch (direction) {
 		case DOWN: {
@@ -187,7 +213,6 @@ public class PeoplePickerPage extends IOSPage {
 		fillTextInPeoplePickerSearch(name);
 		waitUserPickerFindUser(name);
 		user = driver.findElementByName(name);
-
 		return user;
 	}
 

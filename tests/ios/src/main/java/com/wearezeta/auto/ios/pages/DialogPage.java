@@ -312,7 +312,7 @@ public class DialogPage extends IOSPage {
 				break;
 			}
 			else {
-				this.minimizeApplication(3);
+				swipeUp(1000);
 			}
 		}
 
@@ -356,6 +356,15 @@ public class DialogPage extends IOSPage {
 		return page;
 	}
 
+	public OtherUserOnPendingProfilePage swipePendingDialogPageUp(int time) throws Throwable {		
+		WebElement element =  driver.findElement(By.name(IOSLocators.nameMainWindow));
+		
+		Point coords = element.getLocation();
+		Dimension elementSize = element.getSize();
+		driver.swipe(coords.x + elementSize.width / 2, coords.y + elementSize.height - TEXT_INPUT_HEIGH, coords.x + elementSize.width / 2, coords.y + TOP_BORDER_WIDTH, time);
+		return new OtherUserOnPendingProfilePage(url, path);
+	}
+	
 	@Override
 	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
 		IOSPage page = null;
@@ -432,7 +441,7 @@ public class DialogPage extends IOSPage {
 		boolean flag = mediabarPlayPauseButton.isDisplayed();
 		return flag;
 	}
-
+	
 	public DialogPage scrollUpToMediaContainer() throws Throwable {
 		DialogPage page = null;
 		int count = 0;

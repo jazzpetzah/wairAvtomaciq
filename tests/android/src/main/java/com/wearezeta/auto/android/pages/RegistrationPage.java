@@ -33,7 +33,7 @@ public class RegistrationPage extends AndroidPage {
 	private WebElement confirmImageButton;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idNameEdit")
-	private WebElement nameField;
+	protected WebElement nameField;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idEmailField")
 	private WebElement emailField;
@@ -48,7 +48,7 @@ public class RegistrationPage extends AndroidPage {
 	private WebElement verifyEmailBtn;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.RegistrationPage.CLASS_NAME, locatorKey = "idNextArrow")
-	private WebElement nextArrow;
+	protected WebElement nextArrow;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConfirmCancelButton")
 	private WebElement laterBtn;
@@ -103,7 +103,8 @@ public class RegistrationPage extends AndroidPage {
 	public void setName(String name) {
 		refreshUITree();
 		wait.until(ExpectedConditions.elementToBeClickable(nameField));
-		if (nameField.getText().toLowerCase().equals(YOUR_NAME)) {
+		//TABLET fix
+		if (nameField.getText().toLowerCase().contains(YOUR_NAME)) {
 			nameField.sendKeys(name);
 			refreshUITree();
 			wait.until(ExpectedConditions.elementToBeClickable(nextArrow));
@@ -113,7 +114,8 @@ public class RegistrationPage extends AndroidPage {
 
 	public void setEmail(String email) {
 		refreshUITree();
-		if (nameField.getText().toLowerCase().equals(EMAIL)) {
+		//TABLET fix
+		if (nameField.getText().toLowerCase().contains(EMAIL)) {
 			nameField.sendKeys(email);
 			refreshUITree();
 			wait.until(ExpectedConditions.elementToBeClickable(nextArrow));

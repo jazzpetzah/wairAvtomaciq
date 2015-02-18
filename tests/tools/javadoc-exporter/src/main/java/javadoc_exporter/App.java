@@ -14,6 +14,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import javadoc_exporter.confluence_rest_api.ConfluenceAPIWrappers;
+import javadoc_exporter.confluence_rest_api.RESTApiError;
 import javadoc_exporter.model.StepsContainer;
 import javadoc_exporter.transformers.InputTransformer;
 import javadoc_exporter.transformers.OutputTransformer;
@@ -90,10 +91,16 @@ public class App {
 		final SortedSet<String> sortedStepNames = new TreeSet<String>(
 				stepsToPublish.keySet());
 		for (String stepName : sortedStepNames) {
-			ConfluenceAPIWrappers.createChildPage(containerPageId, spaceKey,
-					stepName, stepsToPublish.get(stepName));
-			System.out.println(String.format("\tCreated step page '%s'",
-					stepName));
+			try {
+				ConfluenceAPIWrappers.createChildPage(containerPageId,
+						spaceKey, stepName, stepsToPublish.get(stepName));
+				System.out.println(String.format("\tCreated step page '%s'",
+						stepName));
+			} catch (RESTApiError e) {
+				System.out.println(String.format(
+						"\tFailed to create step page '%s'", stepName));
+				e.printStackTrace();
+			}
 		}
 		return stepsToPublish.size() + 1;
 	}

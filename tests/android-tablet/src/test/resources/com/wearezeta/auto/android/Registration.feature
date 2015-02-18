@@ -1,0 +1,21 @@
+Feature: Registration
+
+  @id9 @smoke
+  Scenario Outline: Register new user using front camera
+    Given I see sign in screen
+    When I press tablet Join button
+    And I press Camera button twice
+    And I See selected picture
+    And I confirm selection
+    And I enter name <Name>
+    And I enter email <Email>
+    And I enter password <Password>
+    And I submit registration data
+    Then I see confirmation page
+    And I verify registration address
+    And I passed login automatically
+    And I see personal info page loaded with my name <Name>
+
+    Examples: 
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
