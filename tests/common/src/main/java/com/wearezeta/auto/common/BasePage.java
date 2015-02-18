@@ -42,67 +42,59 @@ public abstract class BasePage {
 
 	protected synchronized void InitConnection(String URL,
 			DesiredCapabilities capabilities) throws Exception {
-
 		final String platform = (String) capabilities
 				.getCapability("platformName");
-		if (null == drivers || drivers.isEmpty()
-				|| drivers.get(platform) == null) {
-			if (platform.equals(CommonUtils.PLATFORM_NAME_ANDROID)) {
-				drivers.put(platform, new ZetaAndroidDriver(new URL(URL),
-						capabilities));
-			} else if (platform.equals(CommonUtils.PLATFORM_NAME_IOS)) {
-				drivers.put(platform, new ZetaIOSDriver(new URL(URL),
-						capabilities));
-			} else if (platform.equals(CommonUtils.PLATFORM_NAME_OSX)) {
-				drivers.put(platform, new ZetaOSXDriver(new URL(URL),
-						capabilities));
-			} else if (platform.equals(CommonUtils.PLATFORM_NAME_WEB)) {
-				capabilities.setCapability("platformName", "ANY");
-				int tryNum = 0;
-				final int maxTries = 3;
-				WebDriverException savedException = null;
-				do {
-					// Try to reconnect WebDriver,
-					// because sometimes Safari driver is non-responsive
-					try {
-						drivers.put(platform, new ZetaWebAppDriver(
-								new URL(URL), capabilities));
-						break;
-					} catch (WebDriverException e) {
-						if (e.getMessage().contains("Failed to connect")) {
-							savedException = e;
-							tryNum++;
-						} else {
-							throw e;
-						}
+		if (platform.equals(CommonUtils.PLATFORM_NAME_ANDROID)) {
+			drivers.put(platform, new ZetaAndroidDriver(new URL(URL),
+					capabilities));
+		} else if (platform.equals(CommonUtils.PLATFORM_NAME_IOS)) {
+			drivers.put(platform, new ZetaIOSDriver(new URL(URL), capabilities));
+		} else if (platform.equals(CommonUtils.PLATFORM_NAME_OSX)) {
+			drivers.put(platform, new ZetaOSXDriver(new URL(URL), capabilities));
+		} else if (platform.equals(CommonUtils.PLATFORM_NAME_WEB)) {
+			int tryNum = 0;
+			final int maxTries = 3;
+			WebDriverException savedException = null;
+			do {
+				// Try to reconnect WebDriver,
+				// because sometimes Safari driver is non-responsive
+				try {
+					drivers.put(platform, new ZetaWebAppDriver(new URL(URL),
+							capabilities));
+					break;
+				} catch (WebDriverException e) {
+					if (e.getMessage().contains("Failed to connect")) {
+						savedException = e;
+						tryNum++;
+					} else {
+						throw e;
 					}
-				} while (tryNum < maxTries);
-				if (tryNum >= maxTries) {
-					throw savedException;
 				}
-			} else {
-				throw new RuntimeException(String.format(
-						"Platform name '%s' is unknown", platform));
+			} while (tryNum < maxTries);
+			if (tryNum >= maxTries) {
+				throw savedException;
 			}
-			try {
-				drivers.get(platform)
-						.manage()
-						.timeouts()
-						.implicitlyWait(
-								Integer.parseInt(CommonUtils
-										.getDriverTimeoutFromConfig(getClass())),
-								TimeUnit.SECONDS);
+		} else {
+			throw new RuntimeException(String.format(
+					"Platform name '%s' is unknown", platform));
+		}
+		try {
+			drivers.get(platform)
+					.manage()
+					.timeouts()
+					.implicitlyWait(
+							Integer.parseInt(CommonUtils
+									.getDriverTimeoutFromConfig(getClass())),
+							TimeUnit.SECONDS);
 
-				waits.put(
-						platform,
-						new WebDriverWait(
-								drivers.get(platform),
-								Integer.parseInt(CommonUtils
-										.getDriverTimeoutFromConfig(getClass()))));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			waits.put(
+					platform,
+					new WebDriverWait(drivers.get(platform), Integer
+							.parseInt(CommonUtils
+									.getDriverTimeoutFromConfig(getClass()))));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		pagePlatform = platform;
@@ -118,8 +110,11 @@ public abstract class BasePage {
 
 	public synchronized void Close() throws Exception {
 		if (drivers.get(pagePlatform) != null) {
-			drivers.get(pagePlatform).quit();
-			drivers.put(pagePlatform, null);
+			try {
+				drivers.get(pagePlatform).quit();
+			} finally {
+				drivers.remove(pagePlatform);
+			}
 		}
 	}
 

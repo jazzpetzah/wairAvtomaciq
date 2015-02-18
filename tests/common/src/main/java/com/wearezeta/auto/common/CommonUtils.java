@@ -36,7 +36,7 @@ public class CommonUtils {
 	public static final String PLATFORM_NAME_OSX = "Mac";
 	public static final String PLATFORM_NAME_ANDROID = "Android";
 	public static final String PLATFORM_NAME_IOS = "iOS";
-	public static final String PLATFORM_NAME_WEB = "WebApp";
+	public static final String PLATFORM_NAME_WEB = "ANY";
 
 	private static final Logger log = ZetaLogger.getLog(CommonUtils.class
 			.getSimpleName());
