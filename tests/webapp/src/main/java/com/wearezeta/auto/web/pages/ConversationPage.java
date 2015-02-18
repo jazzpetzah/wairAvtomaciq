@@ -113,7 +113,7 @@ public class ConversationPage extends WebPage {
 			// sendKeys() call to file input element does nothing on safari
 			// so instead of sendKeys() we are using AppleScript which chooses
 			// required image in open file dialog
-			String scriptDestination = WebAppConstants.Scripts.SCRIPTS_FOLDER
+			String scriptDestination = WebAppExecutionContext.temporaryScriptsLocation + "/"
 					+ WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT;
 			final String GROUP_CHAT_LABEL_INDEX = "-2";
 			final String SINGLE_CHAT_LABEL_INDEX = "-3";

@@ -2,6 +2,7 @@ package com.wearezeta.auto.web.steps;
 
 import org.apache.log4j.Logger;
 
+import com.google.common.io.Files;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ZetaFormatter;
@@ -59,6 +60,8 @@ public class CommonWebAppSteps {
 						+ e.getMessage());
 				e.printStackTrace();
 			}
+			WebAppExecutionContext.temporaryScriptsLocation = Files
+					.createTempDir().getAbsolutePath();
 		}
 	}
 

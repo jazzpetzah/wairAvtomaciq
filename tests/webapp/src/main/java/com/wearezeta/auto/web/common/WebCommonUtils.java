@@ -26,6 +26,9 @@ public class WebCommonUtils extends CommonUtils {
 	private static final Logger log = ZetaLogger.getLog(WebCommonUtils.class
 			.getSimpleName());
 
+	// workaround for local executions in case sshpass is not in the PATH
+	private static final String SSHPASS_PATH = "";
+
 	public static String getWebAppBrowserNameFromConfig(Class<?> c)
 			throws Exception {
 		return getValueFromConfig(c, "browserName");
@@ -91,23 +94,25 @@ public class WebCommonUtils extends CommonUtils {
 	}
 
 	public static void putScriptsOnExecutionNode(String node) throws Exception {
-		String commandTemplate = "sshpass -p %s "
+		String commandTemplate = SSHPASS_PATH
+				+ "sshpass -p %s "
 				+ "scp -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 				+ "%s/* %s@%s:%s";
 
 		String command = String.format(commandTemplate,
 				getJenkinsSuperUserPassword(CommonUtils.class),
-				WebAppConstants.Scripts.SCRIPTS_FOLDER,
+				WebAppExecutionContext.temporaryScriptsLocation,
 				getJenkinsSuperUserLogin(CommonUtils.class),
 				WebAppExecutionContext.seleniumNodeIp,
-				WebAppConstants.Scripts.SCRIPTS_FOLDER);
+				WebAppExecutionContext.temporaryScriptsLocation);
 		WebCommonUtils
 				.executeOsXCommand(new String[] { "bash", "-c", command });
 	}
 
 	public static void executeAppleScriptFromFile(String script)
 			throws Exception {
-		String commandTemplate = "sshpass -p %s "
+		String commandTemplate = SSHPASS_PATH
+				+ "sshpass -p %s "
 				+ "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 				+ "%s@%s osascript %s";
 		String command = String.format(commandTemplate,
@@ -120,28 +125,42 @@ public class WebCommonUtils extends CommonUtils {
 
 	public static void formatTextInFileAndSave(String srcFile, String dstFile,
 			Object[] params) throws IOException {
-		FileInputStream fis = new FileInputStream(srcFile);
-		InputStreamReader isr = new InputStreamReader(fis);
-		BufferedReader br = new BufferedReader(isr);
 		String script = "";
-		String t;
-		while ((t = br.readLine()) != null) {
-			if (!t.trim().isEmpty()) {
-				script += t + "\n";
+
+		FileInputStream fis = null;
+		InputStreamReader isr = null;
+		BufferedReader br = null;
+
+		try {
+			fis = new FileInputStream(srcFile);
+			isr = new InputStreamReader(fis);
+			br = new BufferedReader(isr);
+			String t;
+			while ((t = br.readLine()) != null) {
+				if (!t.trim().isEmpty()) {
+					script += t + "\n";
+				}
 			}
+			script = String.format(script, params);
+
+			File dstFileInstance = new File(dstFile);
+			dstFileInstance.getParentFile().mkdirs();
+			if (dstFileInstance.exists()) {
+				dstFileInstance.delete();
+			}
+			dstFileInstance.createNewFile();
+			PrintWriter out = new PrintWriter(dstFile);
+			out.write(script);
+			out.close();
+		} catch (IOException e) {
+			log.debug(e.getMessage());
+		} finally {
+			if (br != null)
+				br.close();
+			if (isr != null)
+				isr.close();
+			if (fis != null)
+				fis.close();
 		}
-		br.close();
-		isr.close();
-		fis.close();
-		script = String.format(script, params);
-		File dstFileInstance = new File(dstFile);
-		dstFileInstance.getParentFile().mkdirs();
-		if (dstFileInstance.exists()) {
-			dstFileInstance.delete();
-		}
-		dstFileInstance.createNewFile();
-		PrintWriter out = new PrintWriter(dstFile);
-		out.write(script);
-		out.close();
 	}
 }

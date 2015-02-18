@@ -23,6 +23,7 @@ public final class WebAppLocators {
 	}
 
 	public static final class ContactListPage {
+		
 		public static final String xpathArchive = "//div[contains(@class, 'conversation-list-item-archive')]//div[contains(@class, 'center-column') and text()='Archive']";
 
 		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
