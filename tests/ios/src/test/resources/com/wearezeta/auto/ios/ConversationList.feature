@@ -85,3 +85,20 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   | Number | NewName    | Color        |
       | user1Email | user1Password | user1Name | user2Name | 30		| UNREAD DOT | BrightOrange |
   
+  @staging @id1481
+  Scenario Outline: Verify archive a group conversation
+  	Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    And I Sign in using login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    When I swipe right on a <GroupChatName>
+    And I archive conversation <GroupChatName>
+    Then I dont see conversation <GroupChatName> in contact list
+    And I open archived conversations
+    Then I see user <GroupChatName> in contact list
+    
+    Examples: 
+      | Login      | Password      | Name      | Contact1    | Contact2   | GroupChatName        |
+      | user1Email | user1Password | user1Name | user2Name   | user3Name  | ArchiveGroupChat     |
+  

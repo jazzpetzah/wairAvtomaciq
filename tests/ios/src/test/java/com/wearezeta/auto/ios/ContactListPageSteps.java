@@ -12,6 +12,7 @@ import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.*;
 
@@ -135,11 +136,7 @@ public class ContactListPageSteps {
 	 */
 	@Then("^I see user (.*) in contact list$")
 	public void ISeeUserInContactList(String value) throws Throwable {
-		try {
-			value = usrMgr.findUserByNameOrNameAlias(value).getName();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
+		value = usrMgr.replaceAliasesOccurences(value, FindBy.NAME_ALIAS);
 
 		Assert.assertTrue(PagesCollection.contactListPage
 				.isChatInContactList(value));
@@ -198,7 +195,7 @@ public class ContactListPageSteps {
 
 	@When("^I swipe right on a (.*)$")
 	public void ISwipeRightOnContact(String contact) throws Exception {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		PagesCollection.contactListPage.swipeRightOnContact(500, contact);
 	}
 
@@ -327,7 +324,7 @@ public class ContactListPageSteps {
 	@When("I dont see conversation (.*) in contact list")
 	public void IDoNotSeeConversationInContactList(String name)
 			throws Exception {
-		name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		Assert.assertFalse(PagesCollection.contactListPage
 				.isDisplayedInContactList(name));
 	}
@@ -382,7 +379,7 @@ public class ContactListPageSteps {
 	 */
 	@When("^I archive conversation (.*)$")
 	public void IArchiveConversation(String conversation) throws Exception {
-		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
+		conversation = usrMgr.replaceAliasesOccurences(conversation, FindBy.NAME_ALIAS);
 		PagesCollection.contactListPage.archiveConversation(conversation);
 	}
 	
