@@ -33,7 +33,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | ArchivedUser |
       | user1Email | user1Password | user1Name | user2Name    |
 
-  @torun @regression @id1462
+  @regression @id1462
   Scenario Outline: Verify silence the conversation
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
