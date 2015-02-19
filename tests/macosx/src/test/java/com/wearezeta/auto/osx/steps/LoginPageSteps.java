@@ -6,12 +6,11 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.osx.common.OSXCommonUtils;
+import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.pages.ChangePasswordPage;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
@@ -75,18 +74,11 @@ public class LoginPageSteps {
 		Assert.assertTrue("Failed to login",
 				PagesCollection.loginPage.waitForLogin());
 
+		PagesCollection.contactListPage = new ContactListPage(OSXExecutionContext.appiumUrl,
+				OSXExecutionContext.wirePath);
 		CommonOSXSteps.senderPages
-				.setContactListPage(new ContactListPage(
-						CommonUtils
-								.getOsxAppiumUrlFromConfig(ContactListPage.class),
-						CommonUtils
-								.getOsxApplicationPathFromConfig(ContactListPage.class)));
-		CommonOSXSteps.senderPages
-				.setUserProfilePage(new UserProfilePage(
-						OSXCommonUtils
-								.getOsxAppiumUrlFromConfig(LoginPageSteps.class),
-						OSXCommonUtils
-								.getOsxApplicationPathFromConfig(LoginPageSteps.class)));
+				.setUserProfilePage(new UserProfilePage(OSXExecutionContext.appiumUrl,
+						OSXExecutionContext.wirePath));
 	}
 
 	/**
@@ -113,15 +105,11 @@ public class LoginPageSteps {
 				"After sign in button click Login page or Contact List page should appear. Page couldn't be null",
 				page);
 		if (page instanceof ContactListPage) {
-			CommonOSXSteps.senderPages
-					.setContactListPage((ContactListPage) page);
+			PagesCollection.contactListPage = (ContactListPage) page;
 		}
 		CommonOSXSteps.senderPages
-				.setUserProfilePage(new UserProfilePage(
-						OSXCommonUtils
-								.getOsxAppiumUrlFromConfig(LoginPageSteps.class),
-						OSXCommonUtils
-								.getOsxApplicationPathFromConfig(LoginPageSteps.class)));
+				.setUserProfilePage(new UserProfilePage(OSXExecutionContext.appiumUrl,
+						OSXExecutionContext.wirePath));
 	}
 
 	/**
@@ -193,9 +181,8 @@ public class LoginPageSteps {
 	 */
 	@Then("I have returned to Sign In screen")
 	public void ThenISeeSignInScreen() {
-		Assert.assertTrue("Failed to logout", CommonOSXSteps.senderPages
-				.getContactListPage().waitForSignOut());
-		Assert.assertTrue(CommonOSXSteps.senderPages.getContactListPage()
+		Assert.assertTrue("Failed to logout", PagesCollection.contactListPage.waitForSignOut());
+		Assert.assertTrue(PagesCollection.contactListPage
 				.isSignOutFinished());
 	}
 

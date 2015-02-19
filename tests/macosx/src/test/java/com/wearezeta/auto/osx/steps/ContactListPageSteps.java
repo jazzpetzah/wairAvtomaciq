@@ -12,8 +12,8 @@ import com.wearezeta.auto.common.misc.StringParser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.locators.OSXLocators;
-import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationInfoPage;
 import com.wearezeta.auto.osx.pages.ConversationPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
@@ -32,15 +32,11 @@ public class ContactListPageSteps {
 	@Given("^I see my name (.*) in Contact list$")
 	public void ISeeMyNameInContactList(String name) throws Exception {
 		PagesCollection.loginPage.sendProblemReportIfFound();
-		CommonOSXSteps.senderPages.getContactListPage().pressLaterButton();
-		CommonOSXSteps.senderPages.getContactListPage().pressLaterButton();
+		PagesCollection.contactListPage.pressLaterButton();
+		PagesCollection.contactListPage.pressLaterButton();
 		Thread.sleep(1000);
-		CommonOSXSteps.senderPages
-				.setPeoplePickerPage(new PeoplePickerPage(
-						CommonUtils
-								.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
-						CommonUtils
-								.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
+		CommonOSXSteps.senderPages.setPeoplePickerPage(new PeoplePickerPage(
+				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath));
 		PeoplePickerPage peoplePickerPage = CommonOSXSteps.senderPages
 				.getPeoplePickerPage();
 		if (peoplePickerPage.isPeoplePickerPageVisible()) {
@@ -62,7 +58,7 @@ public class ContactListPageSteps {
 			name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		}
 		log.debug("Looking for contact with name " + name);
-		Assert.assertTrue(CommonOSXSteps.senderPages.getContactListPage()
+		Assert.assertTrue(PagesCollection.contactListPage
 				.isContactWithNameExists(name));
 	}
 
@@ -75,7 +71,7 @@ public class ContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// do nothing
 		}
-		Assert.assertTrue(CommonOSXSteps.senderPages.getContactListPage()
+		Assert.assertTrue(PagesCollection.contactListPage
 				.isContactWithNameDoesNotExist(conversation));
 	}
 
@@ -122,9 +118,8 @@ public class ContactListPageSteps {
 
 		boolean isConversationExist = false;
 		for (int i = 0; i < 10; i++) {
-			isConversationExist = CommonOSXSteps.senderPages
-					.getContactListPage().openConversation(contact,
-							isUserProfile);
+			isConversationExist = PagesCollection.contactListPage
+					.openConversation(contact, isUserProfile);
 			if (isConversationExist)
 				break;
 			try {
@@ -139,63 +134,46 @@ public class ContactListPageSteps {
 	@Given("I open conversation with (.*)")
 	public void GivenIOpenConversationWith(String contact) throws Exception {
 		clickOnContactListEntry(contact, false);
-		CommonOSXSteps.senderPages
-				.setConversationPage(new ConversationPage(
-						CommonUtils
-								.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
-						CommonUtils
-								.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
+		PagesCollection.conversationPage = new ConversationPage(
+				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
 	}
 
 	@Given("I go to user (.*) profile")
 	public void GivenIGoToUserProfile(String user) throws Exception {
 		clickOnContactListEntry(user, true);
-		CommonOSXSteps.senderPages
-				.setUserProfilePage(new UserProfilePage(
-						CommonUtils
-								.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
-						CommonUtils
-								.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
+		CommonOSXSteps.senderPages.setUserProfilePage(new UserProfilePage(
+				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath));
 	}
 
 	@When("I open People Picker from contact list")
 	public void WhenIOpenPeoplePickerFromContactList() throws Exception {
-		CommonOSXSteps.senderPages.getContactListPage().openPeoplePicker();
-		CommonOSXSteps.senderPages
-				.setPeoplePickerPage(new PeoplePickerPage(
-						CommonUtils
-								.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
-						CommonUtils
-								.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
+		PagesCollection.contactListPage.openPeoplePicker();
+		CommonOSXSteps.senderPages.setPeoplePickerPage(new PeoplePickerPage(
+				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath));
 	}
 
 	@When("I change mute state of conversation with (.*)")
 	public void IChangeConversationMuteState(String conversation)
 			throws Exception {
 		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
-		ContactListPage contactList = CommonOSXSteps.senderPages
-				.getContactListPage();
-		contactList.changeMuteStateForConversation(conversation);
+		PagesCollection.contactListPage
+				.changeMuteStateForConversation(conversation);
 	}
 
 	@Then("I see conversation (.*) is muted")
 	public void ISeeConversationIsMuted(String conversation) throws Exception {
 		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
-		ContactListPage contactList = CommonOSXSteps.senderPages
-				.getContactListPage();
 		Assert.assertTrue("Conversation with name " + conversation
-				+ " were not muted.",
-				contactList.isConversationMutedButtonVisible(conversation));
+				+ " were not muted.", PagesCollection.contactListPage
+				.isConversationMutedButtonVisible(conversation));
 	}
 
 	@Then("I see conversation (.*) is unmuted")
 	public void ISeeConversationIsUnmuted(String conversation) throws Exception {
 		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
-		ContactListPage contactList = CommonOSXSteps.senderPages
-				.getContactListPage();
 		Assert.assertTrue("Conversation with name " + conversation
-				+ " is still muted.",
-				contactList.isConversationMutedButtonNotVisible(conversation));
+				+ " is still muted.", PagesCollection.contactListPage
+				.isConversationMutedButtonNotVisible(conversation));
 	}
 
 	@When("I see connect invitation")
@@ -205,31 +183,23 @@ public class ContactListPageSteps {
 
 	@When("I accept invitation")
 	public void IAcceptInvitation() {
-		ContactListPage contactList = CommonOSXSteps.senderPages
-				.getContactListPage();
-		contactList.acceptAllInvitations();
+		PagesCollection.contactListPage.acceptAllInvitations();
 	}
 
 	@When("I ignore invitation")
 	public void IIgnoreInvitation() {
-		ContactListPage contactList = CommonOSXSteps.senderPages
-				.getContactListPage();
-		contactList.ignoreAllInvitations();
+		PagesCollection.contactListPage.ignoreAllInvitations();
 	}
 
 	@When("I archive conversation with (.*)")
 	public void IArchiveConversation(String conversation) throws Exception {
 		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
-		ContactListPage contactList = CommonOSXSteps.senderPages
-				.getContactListPage();
-		contactList.moveConversationToArchive(conversation);
+		PagesCollection.contactListPage.moveConversationToArchive(conversation);
 	}
 
 	@When("I go to archive")
 	public void IGoToArchive() {
-		ContactListPage contactList = CommonOSXSteps.senderPages
-				.getContactListPage();
-		contactList.showArchivedConversations();
+		PagesCollection.contactListPage.showArchivedConversations();
 	}
 
 	@When("I set name {1}(.*) {1}for conversation$")

@@ -13,8 +13,10 @@ import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.ContactListPage;
+import com.wearezeta.auto.osx.pages.PagesCollection;
 import com.wearezeta.auto.osx.pages.RegistrationPage;
 import com.wearezeta.auto.osx.pages.UserProfilePage;
 
@@ -225,12 +227,8 @@ public class RegistrationPageSteps {
 	 */
 	@Then("I see contact list of registered user")
 	public void ISeeContactListOfRegisteredUser() throws Exception {
-		CommonOSXSteps.senderPages
-				.setContactListPage(new ContactListPage(
-						CommonUtils
-								.getOsxAppiumUrlFromConfig(RegistrationPageSteps.class),
-						CommonUtils
-								.getOsxApplicationPathFromConfig(RegistrationPageSteps.class)));
+		PagesCollection.contactListPage = new ContactListPage(
+				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
 		ContactListPageSteps clSteps = new ContactListPageSteps();
 		clSteps.ISeeMyNameInContactList(this.userToRegister.getName());
 	}

@@ -10,8 +10,10 @@ public class PagesCollection extends AbstractPagesCollection {
 
 	public static LoginPage loginPage = null;
 
-	private ContactListPage contactListPage = null;
-	private ConversationPage conversationPage = null;
+	public static ContactListPage contactListPage = null;
+	
+	public static ConversationPage conversationPage = null;
+	
 	private ChoosePicturePage choosePicturePage = null;
 	private PeoplePickerPage peoplePickerPage = null;
 	private ConversationInfoPage conversationInfoPage = null;
@@ -29,22 +31,6 @@ public class PagesCollection extends AbstractPagesCollection {
 				}
 			}
 		}
-	}
-
-	public ContactListPage getContactListPage() {
-		return contactListPage;
-	}
-
-	public void setContactListPage(ContactListPage contactListPage) {
-		this.contactListPage = contactListPage;
-	}
-
-	public ConversationPage getConversationPage() {
-		return conversationPage;
-	}
-
-	public void setConversationPage(ConversationPage conversationPage) {
-		this.conversationPage = conversationPage;
 	}
 
 	public ChoosePicturePage getChoosePicturePage() {
