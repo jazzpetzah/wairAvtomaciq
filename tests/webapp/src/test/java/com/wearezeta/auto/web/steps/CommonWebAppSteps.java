@@ -36,8 +36,21 @@ public class CommonWebAppSteps {
 				"warn");
 	}
 
+	private void resetEnvironment() throws Exception {
+		if (PagesCollection.invitationCodePage != null) {
+			PagesCollection.invitationCodePage.close();
+		}
+
+		WebPage.clearPagesCollection();
+
+		commonSteps.getUserManager().resetUsers();
+	}
+
 	@Before("~@performance")
 	public void setUp() throws Exception {
+		// @After step is not executed in case of critical error or
+		// in case there are failures in before step
+		resetEnvironment();
 
 		String url = CommonUtils
 				.getWebAppAppiumUrlFromConfig(CommonWebAppSteps.class);
@@ -198,32 +211,39 @@ public class CommonWebAppSteps {
 			InterruptedException {
 		commonSteps.WaitForTime(seconds);
 	}
-	
+
 	/**
 	 * Mute conversation
 	 * 
 	 * @step. ^(.*) muted conversation with (.*)$
 	 * @param userToNameAlias
-	 * 			user who want to mute conversation
+	 *            user who want to mute conversation
 	 * @param muteUserNameAlias
-	 * 			conversation or user to be muted
+	 *            conversation or user to be muted
 	 * @throws Exception
 	 */
 	@When("^(.*) muted conversation with (.*)$")
 	public void MuteConversationWithUser(String userToNameAlias,
 			String muteUserNameAlias) throws Exception {
-		commonSteps.MuteConversationWithUser(userToNameAlias,
-				muteUserNameAlias);
+		commonSteps
+				.MuteConversationWithUser(userToNameAlias, muteUserNameAlias);
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		if (PagesCollection.invitationCodePage != null) {
-			PagesCollection.invitationCodePage.close();
+		resetEnvironment();
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		// Close the session in any case 
+		try {
+			if (PagesCollection.invitationCodePage != null) {
+				PagesCollection.invitationCodePage.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
-		WebPage.clearPagesCollection();
-
-		commonSteps.getUserManager().resetUsers();
+		super.finalize();
 	}
 }
