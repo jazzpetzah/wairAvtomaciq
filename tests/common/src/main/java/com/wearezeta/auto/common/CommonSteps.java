@@ -7,12 +7,14 @@ import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
 
 import com.wearezeta.auto.common.backend.AccentColor;
+import com.wearezeta.auto.common.backend.AuthToken;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.backend.ConnectionStatus;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.OSXAddressBookHelpers;
 
 public final class CommonSteps {
@@ -157,6 +159,13 @@ public final class CommonSteps {
 		ClientUser archivedUser = usrMgr
 				.findUserByNameOrNameAlias(archiveConversationWithUser);
 		BackendAPIWrappers.archiveUserConv(user, archivedUser);
+	}
+	
+	public void ArchiveConversationWithGroup(String aUser, String archiveConversationWithGroup) throws Exception{
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(aUser);
+		//archiveConversationWithGroup = usrMgr.replaceAliasesOccurences(archiveConversationWithGroup, FindBy.NAME_ALIAS);
+		final String conversationIDToArchive = BackendAPIWrappers.getConversationIdByName(user,archiveConversationWithGroup);
+		BackendAPIWrappers.archiveGroupConv(user, conversationIDToArchive);
 	}
 
 	public void UnarchiveConversationWithUser(String usersToNameAliases,

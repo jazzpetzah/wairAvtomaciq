@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios;
 
+import java.io.IOException;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
@@ -172,7 +173,26 @@ public class CommonIOSSteps {
 		commonSteps.ArchiveConversationWithUser(userToNameAlias,
 				archivedUserNameAlias);
 	}
-
+	
+	/**
+	 * Verifies that an unread message dot is NOT seen in the conversation list
+	 * 
+	 * @step. ^(.*) archived conversation having groupname (.*)$
+	 * 
+	 * @param userToNameAlias
+	 *            user that archives the group conversation
+	 * @param archivedUserNameAlias
+	 * 			  name of group conversation to archive
+	 * @throws Exception 
+	 * 
+	 */
+	@When("^(.*) archived conversation having groupname (.*)$")
+	public void ArchiveConversationHavingGroupname(String userToNameAlias,
+			String archivedUserNameAlias) throws Exception {
+		commonSteps.ArchiveConversationWithGroup(userToNameAlias,
+				archivedUserNameAlias);
+	}
+   
 	@When("^(.*) accept all requests$")
 	public void AcceptAllIncomingConnectionRequests(String userToNameAlias)
 			throws Exception {

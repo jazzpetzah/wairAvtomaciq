@@ -101,4 +101,22 @@ Feature: Conversation List
     Examples: 
       | Login      | Password      | Name      | Contact1    | Contact2   | GroupChatName        |
       | user1Email | user1Password | user1Name | user2Name   | user3Name  | ArchiveGroupChat     |
+      
+      
+  @staging @id1481
+  Scenario Outline: Verify unarchive a group conversation
+  	Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Myself archived conversation having groupname <GroupChatName>
+    And I Sign in using login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I open archived conversations
+    And I tap on contact name <GroupChatName>
+    And I navigate back to conversations view
+    Then I see first item in contact list named <GroupChatName>
+    
+    Examples: 
+      | Login      | Password      | Name      | Contact1    | Contact2   | GroupChatName        |
+      | user1Email | user1Password | user1Name | user2Name   | user3Name  | ArchiveGroupChat     |
   
