@@ -161,10 +161,11 @@ public class PeoplePickerPageSteps {
 	 * @throws Exception 
 	 */
 	
-	@Then("^I see the user avatar with a clock$")
-	public void ISeeUserWithAvatarClock() throws Exception {
+	@Then("^I see the user (.*) avatar with a clock$")
+	public void ISeeUserWithAvatarClock(String contact) throws Exception {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertTrue("Avatar does not have a clock icon",
-				PagesCollection.peoplePickerPage.checkAvatarClockIcon() > 0.95);
+				PagesCollection.peoplePickerPage.checkAvatarClockIcon(contact) > 0.95);
 	}
 
 	@When("^I search for ignored user name (.*) and tap on it$")

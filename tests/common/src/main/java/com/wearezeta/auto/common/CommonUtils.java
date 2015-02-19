@@ -33,10 +33,10 @@ public class CommonUtils {
 	private static final Random rand = new Random();
 	public static final int BACKEND_SYNC_TIMEOUT = 5000 + rand.nextInt(4000); // milliseconds
 
-	public static final String PLATFORM_NAME_OSX = "Mac";
-	public static final String PLATFORM_NAME_ANDROID = "Android";
-	public static final String PLATFORM_NAME_IOS = "iOS";
-	public static final String PLATFORM_NAME_WEB = "WebApp";
+//	public static final String PLATFORM_NAME_OSX = "Mac";
+//	public static final String PLATFORM_NAME_ANDROID = "Android";
+//	public static final String PLATFORM_NAME_IOS = "iOS";
+//	public static final String PLATFORM_NAME_WEB = "ANY";
 
 	private static final Logger log = ZetaLogger.getLog(CommonUtils.class
 			.getSimpleName());

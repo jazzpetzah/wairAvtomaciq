@@ -10,7 +10,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.BasePage;
-import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.common.WebCommonUtils;
@@ -50,41 +50,39 @@ public class WebPage extends BasePage {
 							+ browser
 							+ ". Please choose one of the following: chrome | firefox | safari | ie");
 		}
-		final String platformName = WebCommonUtils
+		final String webPlatformName = WebCommonUtils
 				.getPlatformNameFromConfig(WebPage.class);
-		if (platformName.length() > 0) {
+		if (webPlatformName.length() > 0) {
 			// Use undocumented grid property to match platforms
 			// https://groups.google.com/forum/#!topic/selenium-users/PRsEBcbpNlM
-			capabilities.setCapability("applicationName", platformName);
+			capabilities.setCapability("applicationName", webPlatformName);
 		}
-		capabilities.setCapability("platformName",
-				CommonUtils.PLATFORM_NAME_WEB);
+		capabilities.setCapability("platformName", Platform.Web.getName());
 
 		super.InitConnection(URL, capabilities);
 
-		driver = (ZetaWebAppDriver) drivers.get(CommonUtils.PLATFORM_NAME_WEB);
-		wait = waits.get(CommonUtils.PLATFORM_NAME_WEB);
+		driver = (ZetaWebAppDriver) drivers.get(Platform.Web);
+		wait = waits.get(Platform.Web);
 
 		driver.setFileDetector(new LocalFileDetector());
 		try {
 			driver.manage().window().maximize();
-		}catch (Exception ex ) {
-			
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
-		
+
 		if (doNavigate) {
 			// After beta code is applied we should wait till sign in page
 			// pointed to production backend will be loaded before loading
 			// staging page
 			Thread.sleep(5000);
-			
 			driver.navigate().to(path);
 		}
 	}
 
 	@Override
-	public void Close() throws Exception {
-		super.Close();
+	public void close() throws Exception {
+		super.close();
 	}
 
 	public BufferedImage takeScreenshot() throws IOException {

@@ -201,9 +201,8 @@ public class CommonWebAppSteps {
 
 	@After
 	public void tearDown() throws Exception {
-
-		if (PagesCollection.loginPage != null) {
-			PagesCollection.loginPage.Close();
+		if (PagesCollection.invitationCodePage != null) {
+			PagesCollection.invitationCodePage.close();
 		}
 
 		WebPage.clearPagesCollection();

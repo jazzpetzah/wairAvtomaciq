@@ -9,50 +9,70 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 
 public class OSXPage extends BasePage {
 	protected static ZetaOSXDriver driver;
 	protected static WebDriverWait wait;
-	
-	public static String imagesPath = System.getProperty("user.home") + "/Documents/";
-	
+
+	public static String imagesPath = System.getProperty("user.home")
+			+ "/Documents/";
+
 	public OSXPage(String URL, String path) throws Exception {
 		this(URL, path, true);
 	}
-	
-	public OSXPage(String URL, String path, boolean doNavigate) throws Exception {
-		DesiredCapabilities capabilities = new DesiredCapabilities(); 
-        capabilities.setCapability(CapabilityType.BROWSER_NAME, ""); 
-        capabilities.setCapability(CapabilityType.PLATFORM, CommonUtils.PLATFORM_NAME_OSX.toUpperCase()); 
-        capabilities.setCapability("platformName", CommonUtils.PLATFORM_NAME_OSX); 
-        super.InitConnection(URL, capabilities);
 
-        driver = (ZetaOSXDriver) drivers.get(CommonUtils.PLATFORM_NAME_OSX);
-        wait = waits.get(CommonUtils.PLATFORM_NAME_OSX);
-        
-        if (doNavigate) {
-        	driver.navigate().to(path);
-        }
+	public OSXPage(String URL, String path, boolean doNavigate)
+			throws Exception {
+		DesiredCapabilities capabilities = new DesiredCapabilities();
+		capabilities.setCapability(CapabilityType.BROWSER_NAME, "");
+		capabilities.setCapability(CapabilityType.PLATFORM, Platform.Mac
+				.getName().toUpperCase());
+		capabilities.setCapability("platformName", Platform.Mac.getName());
+		super.InitConnection(URL, capabilities);
+
+		driver = (ZetaOSXDriver) drivers.get(Platform.Mac);
+		wait = waits.get(Platform.Mac);
+
+		if (doNavigate) {
+			driver.navigate().to(path);
+		}
 	}
 
 	@Override
-	public void Close() throws Exception {
-		super.Close();
+	public void close() throws Exception {
+		super.close();
 	}
 
 	public BufferedImage takeScreenshot() throws IOException {
 		return DriverUtils.takeScreenshot(driver);
 	}
-	
+
 	public void startApp() throws Exception {
-		driver.navigate().to(CommonUtils.getOsxApplicationPathFromConfig(OSXPage.class));
+		driver.navigate().to(
+				CommonUtils.getOsxApplicationPathFromConfig(OSXPage.class));
 	}
-	
-	//not used in OS X
-	@Override public BasePage swipeLeft(int time) throws IOException { return null; }
-	@Override public BasePage swipeRight(int time) throws IOException { return null; }
-	@Override public BasePage swipeUp(int time) throws IOException { return null; }
-	@Override public BasePage swipeDown(int time) throws IOException { return null; }
+
+	// not used in OS X
+	@Override
+	public BasePage swipeLeft(int time) throws IOException {
+		return null;
+	}
+
+	@Override
+	public BasePage swipeRight(int time) throws IOException {
+		return null;
+	}
+
+	@Override
+	public BasePage swipeUp(int time) throws IOException {
+		return null;
+	}
+
+	@Override
+	public BasePage swipeDown(int time) throws IOException {
+		return null;
+	}
 }

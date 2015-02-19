@@ -52,11 +52,11 @@ public class MainMenuPage extends OSXPage {
 	}
 	
 	@Override
-	public void Close() throws Exception {
+	public void close() throws Exception {
 		try {
 			SignOut();
 			quitZClientMenuItem.click();
 		} catch (Exception e) { }
-		super.Close();
+		super.close();
 	}
 }

@@ -48,6 +48,8 @@ public final class IOSLocators {
 	
 	public static final String xpathDialogTextMessage = "//UIATableCell/UIATextView";
 	
+	public static final String xpathDialogTitleBar = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[1]";
+	
 	public static final String xpathFormatDialogTextMessage = "//UIATableCell/UIATextView[@value='%s']";
 	
 	public static final String nameConversationCursorInput = "ConversationTextInputField";
@@ -168,7 +170,7 @@ public final class IOSLocators {
 	
 	public static final String xpathYouAddedMessageCellFormat = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[1]";
 	
-	public static final String xpathPersonalInfoPage = "//UIAApplication[1]/UIAWindow[1]";
+	public static final String xpathPersonalInfoPage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']";
 	
 	public static final String nameCameraButton = "cameraButton";
 	
@@ -228,13 +230,13 @@ public final class IOSLocators {
 	
 	public static final String nameOptionsSettingsButton = "Settings";
 	
-	public static final String xpathSettingsPage = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]";
+	public static final String xpathSettingsPage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]";
 	
 	public static final String nameSoundAlertsButton = "Sound Alerts";
 	
-	public static final String xpathSoundAlertsPage = "//UIAApplication[1]/UIAWindow[1]/UIANavigationBar[1]/UIAImage[1]";
+	public static final String xpathSoundAlertsPage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIANavigationBar[1]/UIAImage[1]";
 	
-	public static final String xpathAllSoundAlertsButton = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]";
+	public static final String xpathAllSoundAlertsButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[1]";
 	
 	public static final String nameSettingsChangePasswordButton = "Change Password";
 	
