@@ -20,6 +20,8 @@ public final class WebAppLocators {
 		public static final String idPasswordInput = "wire-password";
 
 		public static final String idLoginButton = "wire-login";
+		
+		public static final String classNameSpinner = "loading-spinner";
 	}
 
 	public static final class ContactListPage {
