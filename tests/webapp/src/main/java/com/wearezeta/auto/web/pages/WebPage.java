@@ -66,7 +66,9 @@ public class WebPage extends BasePage {
 
 		driver.setFileDetector(new LocalFileDetector());
 		try {
-			driver.manage().window().maximize();
+			if (!browser.equals("safari")) {
+				driver.manage().window().maximize();
+			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

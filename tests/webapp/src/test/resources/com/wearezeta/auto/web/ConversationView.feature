@@ -88,3 +88,18 @@ Feature: Conversation
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+      
+  @staging @id1919
+  Scenario Outline: Unmute 1on1 conversation
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Name> muted conversation with <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name <Name> in Contact list
+    And I see that conversation <Contact> is muted
+    When I toggle mute for conversation <Contact>
+    Then I see that conversation <Contact> is not muted
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |

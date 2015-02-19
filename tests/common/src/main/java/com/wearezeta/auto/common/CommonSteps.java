@@ -158,6 +158,15 @@ public final class CommonSteps {
 				.findUserByNameOrNameAlias(archiveConversationWithUser);
 		BackendAPIWrappers.archiveUserConv(user, archivedUser);
 	}
+	
+	public void MuteConversationWithUser(String usersToNameAliases,
+			String muteConversationWithUser) throws Exception {
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(usersToNameAliases);
+		ClientUser mutedUser = usrMgr
+				.findUserByNameOrNameAlias(muteConversationWithUser);
+		
+		BackendAPIWrappers.updateConvMutedState(user, mutedUser, true);
+	}
 
 	public void UnarchiveConversationWithUser(String usersToNameAliases,
 			String archiveConversationWithUser) throws Exception {
