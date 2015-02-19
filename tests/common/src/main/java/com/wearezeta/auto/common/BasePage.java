@@ -45,6 +45,9 @@ public abstract class BasePage {
 		final Platform platformInCapabilities = Platform
 				.getByName((String) capabilities.getCapability("platformName"));
 		if (!drivers.containsKey(platformInCapabilities)) {
+			log.debug(String.format(
+					"Creating driver instance for platfrom '%s'",
+					platformInCapabilities.getName()));
 			switch (platformInCapabilities) {
 			case Mac:
 				drivers.put(platformInCapabilities, new ZetaOSXDriver(new URL(
@@ -115,9 +118,14 @@ public abstract class BasePage {
 	}
 
 	public synchronized void close() throws Exception {
+		log.debug(String.format("Trying to destroy driver for platfrom '%s'",
+				platform.getName()));
 		if (drivers.containsKey(platform) && drivers.get(platform) != null) {
 			try {
 				drivers.get(platform).quit();
+				log.debug(String
+						.format("Successfully destroyed driver instance for platfrom '%s'",
+								platform.getName()));
 			} finally {
 				drivers.remove(platform);
 			}
