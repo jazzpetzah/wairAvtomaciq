@@ -14,8 +14,8 @@ import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.pages.ChangePasswordPage;
 import com.wearezeta.auto.osx.pages.ContactListPage;
-import com.wearezeta.auto.osx.pages.LoginPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
+import com.wearezeta.auto.osx.pages.PagesCollection;
 import com.wearezeta.auto.osx.pages.RegistrationPage;
 import com.wearezeta.auto.osx.pages.UserProfilePage;
 
@@ -65,15 +65,15 @@ public class LoginPageSteps {
 		log.debug("Starting to Sign in using login " + login + " and password "
 				+ password);
 
-		LoginPage loginPage = CommonOSXSteps.senderPages.getLoginPage();
-		loginPage.startSignIn();
+		PagesCollection.loginPage.startSignIn();
 
-		loginPage.setLogin(login);
-		loginPage.setPassword(password);
+		PagesCollection.loginPage.setLogin(login);
+		PagesCollection.loginPage.setPassword(password);
 
-		loginPage.confirmSignIn();
+		PagesCollection.loginPage.confirmSignIn();
 
-		Assert.assertTrue("Failed to login", loginPage.waitForLogin());
+		Assert.assertTrue("Failed to login",
+				PagesCollection.loginPage.waitForLogin());
 
 		CommonOSXSteps.senderPages
 				.setContactListPage(new ContactListPage(
@@ -96,7 +96,7 @@ public class LoginPageSteps {
 	 */
 	@When("I start Sign In")
 	public void WhenIStartSignIn() {
-		CommonOSXSteps.senderPages.getLoginPage().startSignIn();
+		PagesCollection.loginPage.startSignIn();
 	}
 
 	/**
@@ -108,8 +108,7 @@ public class LoginPageSteps {
 	 */
 	@When("I press Sign In button")
 	public void WhenIPressSignInButton() throws Exception {
-		OSXPage page = CommonOSXSteps.senderPages.getLoginPage()
-				.confirmSignIn();
+		OSXPage page = PagesCollection.loginPage.confirmSignIn();
 		Assert.assertNotNull(
 				"After sign in button click Login page or Contact List page should appear. Page couldn't be null",
 				page);
@@ -140,7 +139,7 @@ public class LoginPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		CommonOSXSteps.senderPages.getLoginPage().setLogin(login);
+		PagesCollection.loginPage.setLogin(login);
 	}
 
 	/**
@@ -158,7 +157,7 @@ public class LoginPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		CommonOSXSteps.senderPages.getLoginPage().setPassword(password);
+		PagesCollection.loginPage.setPassword(password);
 	}
 
 	/**
@@ -171,8 +170,7 @@ public class LoginPageSteps {
 	 */
 	@Given("I see Sign In screen")
 	public void GivenISeeSignInScreen() {
-		Assert.assertNotNull(CommonOSXSteps.senderPages.getLoginPage()
-				.isVisible());
+		Assert.assertNotNull(PagesCollection.loginPage.isVisible());
 	}
 
 	/**
@@ -184,7 +182,7 @@ public class LoginPageSteps {
 	 */
 	@Given("I am signed out from ZClient")
 	public void GivenIAmSignedOutFromZClient() throws Exception {
-		CommonOSXSteps.senderPages.getLoginPage().logoutIfNotSignInPage();
+		PagesCollection.loginPage.logoutIfNotSignInPage();
 		CommonOSXSteps.resetBackendSettingsIfOverwritten();
 	}
 
@@ -210,8 +208,8 @@ public class LoginPageSteps {
 	 */
 	@When("I start registration")
 	public void IStartRegistration() throws Exception {
-		RegistrationPage registration = CommonOSXSteps.senderPages
-				.getLoginPage().startRegistration();
+		RegistrationPage registration = PagesCollection.loginPage
+				.startRegistration();
 		CommonOSXSteps.senderPages.setRegistrationPage(registration);
 	}
 
@@ -225,8 +223,7 @@ public class LoginPageSteps {
 	 */
 	@When("I input password (.*) using script")
 	public void IInputPasswordUsingScript(String password) {
-		CommonOSXSteps.senderPages.getLoginPage().setPasswordUsingScript(
-				password);
+		PagesCollection.loginPage.setPasswordUsingScript(password);
 	}
 
 	/**
@@ -241,7 +238,7 @@ public class LoginPageSteps {
 	 */
 	@Then("I see wrong credentials message")
 	public void ISeeWrongCredentialsMessage() {
-		Assert.assertTrue(CommonOSXSteps.senderPages.getLoginPage()
+		Assert.assertTrue(PagesCollection.loginPage
 				.isWrongCredentialsMessageDisplayed());
 	}
 
@@ -256,7 +253,7 @@ public class LoginPageSteps {
 	 */
 	@Then("^I do not see wrong credentials message$")
 	public void IDoNotSeeWrongCredentialsMessage() {
-		Assert.assertFalse(CommonOSXSteps.senderPages.getLoginPage()
+		Assert.assertFalse(PagesCollection.loginPage
 				.isWrongCredentialsMessageDisplayed());
 	}
 
@@ -270,9 +267,9 @@ public class LoginPageSteps {
 	 */
 	@Then("^I see internet connectivity error message$")
 	public void ISeeInternetConnectivityErrorMessage() {
-		LoginPage loginPage = CommonOSXSteps.senderPages.getLoginPage();
-		Assert.assertTrue(loginPage.isNoInternetMessageAppears());
-		loginPage.closeNoInternetDialog();
+		Assert.assertTrue(PagesCollection.loginPage
+				.isNoInternetMessageAppears());
+		PagesCollection.loginPage.closeNoInternetDialog();
 	}
 
 	/**
@@ -282,8 +279,7 @@ public class LoginPageSteps {
 	 */
 	@When("^I select to Reset Password$")
 	public void ISelectToResetPassword() {
-		LoginPage loginPage = CommonOSXSteps.senderPages.getLoginPage();
-		loginPage.forgotPassword();
+		PagesCollection.loginPage.forgotPassword();
 	}
 
 	/**
@@ -295,8 +291,7 @@ public class LoginPageSteps {
 	 */
 	@Then("^I see Forgot Password page in browser$")
 	public void ISeeChangePasswordPageInBrowser() throws Exception {
-		LoginPage loginPage = CommonOSXSteps.senderPages.getLoginPage();
-		loginPage.isForgotPasswordPageAppears();
+		PagesCollection.loginPage.isForgotPasswordPageAppears();
 	}
 
 	/**
@@ -308,9 +303,9 @@ public class LoginPageSteps {
 	 */
 	@When("^I go to Forgot Password page$")
 	public void IGoToForgotPasswordPage() throws Exception {
-		LoginPage loginPage = CommonOSXSteps.senderPages.getLoginPage();
-		CommonOSXSteps.senderPages.setChangePasswordPage(loginPage
-				.openStagingForgotPasswordPage());
+		CommonOSXSteps.senderPages
+				.setChangePasswordPage(PagesCollection.loginPage
+						.openStagingForgotPasswordPage());
 	}
 
 	/**
@@ -331,15 +326,13 @@ public class LoginPageSteps {
 			// Ignore silently
 		}
 
-		LoginPage loginPage = CommonOSXSteps.senderPages.getLoginPage();
-
 		ChangePasswordPage changePasswordPage = CommonOSXSteps.senderPages
 				.getChangePasswordPage();
 
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", email);
-		loginPage.setListener(IMAPSMailbox.createDefaultInstance()
-				.startMboxListener(expectedHeaders));
+		PagesCollection.loginPage.setListener(IMAPSMailbox
+				.createDefaultInstance().startMboxListener(expectedHeaders));
 		changePasswordPage.enterEmailForChangePasswordAndSubmit(email);
 	}
 
@@ -353,9 +346,9 @@ public class LoginPageSteps {
 	 */
 	@When("^I open change password link from email$")
 	public void IOpenChangePasswordLinkFromEmail() throws Exception {
-		LoginPage loginPage = CommonOSXSteps.senderPages.getLoginPage();
-		CommonOSXSteps.senderPages.setChangePasswordPage(loginPage
-				.openResetPasswordPage());
+		CommonOSXSteps.senderPages
+				.setChangePasswordPage(PagesCollection.loginPage
+						.openResetPasswordPage());
 	}
 
 	/**

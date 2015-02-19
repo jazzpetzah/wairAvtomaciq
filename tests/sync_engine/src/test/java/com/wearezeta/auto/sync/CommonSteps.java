@@ -128,16 +128,13 @@ public class CommonSteps {
 		executor.execute(new Runnable() {
 			public void run() {
 				com.wearezeta.auto.osx.steps.CommonOSXSteps.senderPages = new com.wearezeta.auto.osx.pages.PagesCollection();
-				com.wearezeta.auto.osx.pages.PagesCollection osxSenderPages = com.wearezeta.auto.osx.steps.CommonOSXSteps.senderPages;
 
 				long startDate = new Date().getTime();
 				try {
-					osxSenderPages
-							.setMainMenuPage(new com.wearezeta.auto.osx.pages.MainMenuPage(
-									osxAppiumUrl, osxPath));
-					osxSenderPages
-							.setLoginPage(new com.wearezeta.auto.osx.pages.LoginPage(
-									osxAppiumUrl, osxPath));
+					com.wearezeta.auto.osx.pages.PagesCollection.mainMenuPage = new com.wearezeta.auto.osx.pages.MainMenuPage(
+							osxAppiumUrl, osxPath);
+					com.wearezeta.auto.osx.pages.PagesCollection.loginPage = new com.wearezeta.auto.osx.pages.LoginPage(
+							osxAppiumUrl, osxPath);
 				} catch (Exception e) {
 				}
 				long endDate = new Date().getTime();
@@ -145,17 +142,21 @@ public class CommonSteps {
 						.setStartupTimeMs(endDate - startDate);
 				log.debug("OSX application startup time: "
 						+ ExecutionContext.osxZeta().getStartupTimeMs() + "ms");
-				ZetaFormatter.setDriver(osxSenderPages.getLoginPage()
-						.getDriver());
-				osxSenderPages.getLoginPage().sendProblemReportIfFound();
+				ZetaFormatter
+						.setDriver(com.wearezeta.auto.osx.pages.PagesCollection.loginPage
+								.getDriver());
+				com.wearezeta.auto.osx.pages.PagesCollection.loginPage
+						.sendProblemReportIfFound();
 				try {
 					if (!OSXCommonUtils.isBackendTypeSet(CommonUtils
 							.getBackendType(this.getClass()))) {
 						log.debug("Backend setting were overwritten. Trying to restart app.");
-						osxSenderPages.getMainMenuPage().quitZClient();
+						com.wearezeta.auto.osx.pages.PagesCollection.mainMenuPage
+								.quitZClient();
 						OSXCommonUtils.setZClientBackend(CommonUtils
 								.getBackendType(this.getClass()));
-						osxSenderPages.getLoginPage().startApp();
+						com.wearezeta.auto.osx.pages.PagesCollection.loginPage
+								.startApp();
 					}
 				} catch (Exception e) {
 					log.debug("Failed to check backend type and restart app if necessary.");

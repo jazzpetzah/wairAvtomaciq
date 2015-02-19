@@ -15,12 +15,12 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationInfoPage;
 import com.wearezeta.auto.osx.pages.ConversationPage;
-import com.wearezeta.auto.osx.pages.OSXPage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -155,7 +155,8 @@ public class ConversationPageSteps {
 		} while (retry == true && retriesCount < 5);
 
 		BufferedImage origSentPicture = ImageUtil
-				.readImageFromFile(OSXPage.imagesPath + filename);
+				.readImageFromFile(OSXExecutionContext.userDocuments + "/"
+						+ filename);
 
 		Assert.assertNotNull(
 				"Can't get picture asset from conversation via backend.\n"
@@ -195,10 +196,11 @@ public class ConversationPageSteps {
 		}
 
 		if (!isNumberIncreased) {
-			log.debug("New picture was not found. Check source: " + CommonOSXSteps.senderPages
-			.getConversationPage().getPageSource());
+			log.debug("New picture was not found. Check source: "
+					+ CommonOSXSteps.senderPages.getConversationPage()
+							.getPageSource());
 		}
-		
+
 		Assert.assertTrue("Incorrect images count: before - "
 				+ beforeNumberOfImages + ", after - " + afterNumberOfImages,
 				isNumberIncreased);

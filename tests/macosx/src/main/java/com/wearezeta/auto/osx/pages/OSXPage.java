@@ -17,9 +17,6 @@ public class OSXPage extends BasePage {
 	protected static ZetaOSXDriver driver;
 	protected static WebDriverWait wait;
 
-	public static String imagesPath = System.getProperty("user.home")
-			+ "/Documents/";
-
 	public OSXPage(String URL, String path) throws Exception {
 		this(URL, path, true);
 	}

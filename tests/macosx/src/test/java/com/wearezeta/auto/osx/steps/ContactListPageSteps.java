@@ -16,6 +16,7 @@ import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationInfoPage;
 import com.wearezeta.auto.osx.pages.ConversationPage;
+import com.wearezeta.auto.osx.pages.PagesCollection;
 import com.wearezeta.auto.osx.pages.PeoplePickerPage;
 import com.wearezeta.auto.osx.pages.UserProfilePage;
 
@@ -30,7 +31,7 @@ public class ContactListPageSteps {
 
 	@Given("^I see my name (.*) in Contact list$")
 	public void ISeeMyNameInContactList(String name) throws Exception {
-		CommonOSXSteps.senderPages.getLoginPage().sendProblemReportIfFound();
+		PagesCollection.loginPage.sendProblemReportIfFound();
 		CommonOSXSteps.senderPages.getContactListPage().pressLaterButton();
 		CommonOSXSteps.senderPages.getContactListPage().pressLaterButton();
 		Thread.sleep(1000);
@@ -46,7 +47,8 @@ public class ContactListPageSteps {
 			log.debug("People picker appears. Closing it.");
 			peoplePickerPage.closePeoplePicker();
 		} else {
-			log.debug("No people picker found.\nPage source: " + peoplePickerPage.getPageSource());
+			log.debug("No people picker found.\nPage source: "
+					+ peoplePickerPage.getPageSource());
 		}
 		GivenISeeContactListWithName(name);
 	}
@@ -80,10 +82,10 @@ public class ContactListPageSteps {
 	@Then("Contact list appears with my name (.*)")
 	public void ThenContactListAppears(String name) throws Exception {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		Assert.assertTrue("Login finished", CommonOSXSteps.senderPages
-				.getLoginPage().waitForLogin());
+		Assert.assertTrue("Login finished",
+				PagesCollection.loginPage.waitForLogin());
 		Assert.assertTrue(name + " were not found in contact list",
-				CommonOSXSteps.senderPages.getLoginPage().isLoginFinished(name));
+				PagesCollection.loginPage.isLoginFinished(name));
 	}
 
 	private String findNoNameGroupChatContacts(String groupChat)
@@ -157,8 +159,7 @@ public class ContactListPageSteps {
 	}
 
 	@When("I open People Picker from contact list")
-	public void WhenIOpenPeoplePickerFromContactList()
-			throws Exception {
+	public void WhenIOpenPeoplePickerFromContactList() throws Exception {
 		CommonOSXSteps.senderPages.getContactListPage().openPeoplePicker();
 		CommonOSXSteps.senderPages
 				.setPeoplePickerPage(new PeoplePickerPage(
@@ -215,7 +216,7 @@ public class ContactListPageSteps {
 				.getContactListPage();
 		contactList.ignoreAllInvitations();
 	}
-	
+
 	@When("I archive conversation with (.*)")
 	public void IArchiveConversation(String conversation) throws Exception {
 		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
