@@ -48,7 +48,7 @@ public class TabletCommonAndroidSteps {
 
 	@After
 	public void tabletTearDown() throws Exception {
-		TabletPagesCollection.loginPage.Close();
+		TabletPagesCollection.loginPage.close();
 		TabletLoginPage.clearTabletPagesCollection();
 		
 		commonSteps.getUserManager().resetUsers();
