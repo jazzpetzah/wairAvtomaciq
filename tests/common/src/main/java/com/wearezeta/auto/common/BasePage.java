@@ -44,6 +44,9 @@ public abstract class BasePage {
 			DesiredCapabilities capabilities) throws Exception {
 		final Platform platformInCapabilities = Platform
 				.getByName((String) capabilities.getCapability("platformName"));
+		log.debug(String
+				.format("Checking whether driver instance for platfrom '%s' already exists",
+						platformInCapabilities.getName()));
 		if (!drivers.containsKey(platformInCapabilities)) {
 			log.debug(String.format(
 					"Creating driver instance for platfrom '%s'",
@@ -104,6 +107,10 @@ public abstract class BasePage {
 					new WebDriverWait(drivers.get(platformInCapabilities),
 							Integer.parseInt(CommonUtils
 									.getDriverTimeoutFromConfig(getClass()))));
+		} else {
+			log.debug(String.format(
+					"Driver instance for platfrom '%s' already exists",
+					platformInCapabilities.getName()));
 		}
 
 		this.platform = platformInCapabilities;
@@ -118,14 +125,15 @@ public abstract class BasePage {
 	}
 
 	public synchronized void close() throws Exception {
-		log.debug(String.format("Trying to destroy driver for platfrom '%s'",
+		log.debug(String.format(
+				"Trying to quit driver instance for platfrom '%s'",
 				platform.getName()));
 		if (drivers.containsKey(platform) && drivers.get(platform) != null) {
 			try {
 				drivers.get(platform).quit();
-				log.debug(String
-						.format("Successfully destroyed driver instance for platfrom '%s'",
-								platform.getName()));
+				log.debug(String.format(
+						"Successfully quit driver instance for platfrom '%s'",
+						platform.getName()));
 			} finally {
 				drivers.remove(platform);
 			}

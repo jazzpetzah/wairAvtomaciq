@@ -48,13 +48,12 @@ public class DriverUtils {
 	}
 
 	public static boolean isElementDisplayed(WebElement element) {
-		boolean flag = true;
 		try {
-			flag = element.isDisplayed();
+			return element.isDisplayed();
 		} catch (Exception ex) {
-			flag = false;
+			// ex.printStackTrace();
+			return false;
 		}
-		return flag;
 	}
 
 	private static final int DEFAULT_LOOKUP_TIMEOUT = 20;
@@ -87,6 +86,7 @@ public class DriverUtils {
 
 	public static boolean waitUntilElementAppears(RemoteWebDriver driver,
 			final Object el_or_locator, int timeout) throws Exception {
+		assert((el_or_locator instanceof WebElement) || (el_or_locator instanceof By));
 		turnOffImplicitWait(driver);
 		try {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
