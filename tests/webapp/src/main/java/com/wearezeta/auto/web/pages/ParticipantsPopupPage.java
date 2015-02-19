@@ -70,7 +70,7 @@ public class ParticipantsPopupPage extends WebPage {
 		createConversationButton.click();
 	}
 	
-	public void searchForUser(String searchText) {
+	public void searchForUser(String searchText) throws Exception {
 		DriverUtils.waitUntilElementClickable(driver, profilePageSearchField);
 		profilePageSearchField.clear();
 		profilePageSearchField.sendKeys(searchText);
@@ -104,7 +104,7 @@ public class ParticipantsPopupPage extends WebPage {
 		groupAddPeopleButton.click();
 	}
 	
-	public void selectUserFromSearchResult(String user) {
+	public void selectUserFromSearchResult(String user) throws Exception {
 		String xpath = String
 				.format(WebAppLocators.PeoplePickerPage.xpathFormatSearchListItemWithName,
 						user);

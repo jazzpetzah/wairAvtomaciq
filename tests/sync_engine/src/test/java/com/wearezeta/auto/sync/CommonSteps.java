@@ -145,9 +145,9 @@ public class CommonSteps {
 				ZetaFormatter
 						.setDriver(com.wearezeta.auto.osx.pages.PagesCollection.loginPage
 								.getDriver());
-				com.wearezeta.auto.osx.pages.PagesCollection.loginPage
-						.sendProblemReportIfFound();
 				try {
+					com.wearezeta.auto.osx.pages.PagesCollection.loginPage
+							.sendProblemReportIfFound();
 					if (!OSXCommonUtils.isBackendTypeSet(CommonUtils
 							.getBackendType(this.getClass()))) {
 						log.debug("Backend setting were overwritten. Trying to restart app.");
@@ -252,7 +252,7 @@ public class CommonSteps {
 					try {
 						com.wearezeta.auto.ios.pages.PagesCollection.loginPage
 								.ignoreUpdate();
-					} catch (NoSuchElementException e) {
+					} catch (Exception e) {
 						log.debug("No update notification.");
 					}
 				}

@@ -29,7 +29,7 @@ public class SelfProfilePage extends WebPage {
 		gearButton.click();
 	}
 
-	public void selectGearMenuItem(String name) {
+	public void selectGearMenuItem(String name) throws Exception {
 		final String menuXPath = WebAppLocators.SelfProfilePage.xpathGearMenuRoot;
 		DriverUtils.waitUntilElementAppears(driver, By.xpath(menuXPath));
 		final String menuItemXPath = WebAppLocators.SelfProfilePage.xpathGearMenuItemByName
@@ -39,7 +39,7 @@ public class SelfProfilePage extends WebPage {
 		itemElement.click();
 	}
 
-	public String getUserName() {
+	public String getUserName() throws Exception {
 		DriverUtils.waitUntilElementAppears(driver,
 				By.xpath(WebAppLocators.SelfProfilePage.xpathSelfUserName));
 		return userName.getText();

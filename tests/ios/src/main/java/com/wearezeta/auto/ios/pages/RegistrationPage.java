@@ -262,7 +262,7 @@ public class RegistrationPage extends IOSPage {
 		yourPassword.sendKeys("\n");
 	}
 
-	public void clickCreateAccountButton() {
+	public void clickCreateAccountButton() throws Exception {
 		DriverUtils.waitUntilElementAppears(driver,
 				By.name(IOSLocators.nameCreateAccountButton));
 		createAccountButton.click();

@@ -133,9 +133,10 @@ public class LoginPageSteps {
 	 * 
 	 * @param password
 	 *            user password string
+	 * @throws Exception 
 	 */
 	@When("I have entered password (.*)")
-	public void WhenIHaveEnteredPassword(String password) {
+	public void WhenIHaveEnteredPassword(String password) throws Exception {
 		try {
 			password = usrMgr.findUserByPasswordAlias(password).getPassword();
 		} catch (NoSuchUserException e) {
@@ -174,9 +175,10 @@ public class LoginPageSteps {
 	 * When called after logout, checks that Sign In screen is opened
 	 * 
 	 * @step. I have returned to Sign In screen
+	 * @throws Exception 
 	 */
 	@Then("I have returned to Sign In screen")
-	public void ThenISeeSignInScreen() {
+	public void ThenISeeSignInScreen() throws Exception {
 		Assert.assertTrue("Failed to logout",
 				PagesCollection.contactListPage.waitForSignOut());
 		Assert.assertTrue(PagesCollection.contactListPage.isSignOutFinished());
@@ -243,12 +245,13 @@ public class LoginPageSteps {
 	 * Checks that No internet connection error appears when internet is blocked
 	 * 
 	 * @step. ^I see internet connectivity error message$
+	 * @throws Exception 
 	 * 
 	 * @throws AssertionError
 	 *             if there is no message about internet connection error
 	 */
 	@Then("^I see internet connectivity error message$")
-	public void ISeeInternetConnectivityErrorMessage() {
+	public void ISeeInternetConnectivityErrorMessage() throws Exception {
 		Assert.assertTrue(PagesCollection.loginPage
 				.isNoInternetMessageAppears());
 		PagesCollection.loginPage.closeNoInternetDialog();

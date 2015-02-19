@@ -92,7 +92,7 @@ public class LoginPage extends OSXPage {
 		loginField.sendKeys(login);
 	}
 
-	public void setPassword(String password) {
+	public void setPassword(String password) throws Exception {
 		DriverUtils.turnOffImplicitWait(driver);
 		try {
 			passwordField.sendKeys(password);
@@ -102,7 +102,7 @@ public class LoginPage extends OSXPage {
 		}
 	}
 
-	public boolean waitForLogin() {
+	public boolean waitForLogin() throws Exception {
 		DriverUtils.turnOffImplicitWait(driver);
 		boolean noSignIn = DriverUtils.waitUntilElementDissapear(driver,
 				By.name(OSXLocators.LoginPage.nameSignInButton));
@@ -149,7 +149,7 @@ public class LoginPage extends OSXPage {
 		}
 	}
 
-	public void sendProblemReportIfFound() {
+	public void sendProblemReportIfFound() throws Exception {
 		long startDate = new Date().getTime();
 		boolean isReport = false;
 		for (int i = 0; i < 10; i++) {
@@ -200,7 +200,7 @@ public class LoginPage extends OSXPage {
 		}
 	}
 
-	public boolean isNoInternetMessageAppears() {
+	public boolean isNoInternetMessageAppears() throws Exception {
 		return DriverUtils.waitUntilElementAppears(driver,
 				By.xpath(OSXLocators.xpathNoInternetConnectionMessage), 60);
 	}

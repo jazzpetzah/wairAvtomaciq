@@ -24,21 +24,21 @@ public class PeoplePickerPage extends WebPage {
 	private String url;
 	@SuppressWarnings("unused")
 	private String path;
-	
+
 	public PeoplePickerPage(String URL, String path) throws Exception {
 		super(URL, path);
-		
+
 		this.url = URL;
 		this.path = path;
 	}
 
-	public void searchForUser(String searchText) {
+	public void searchForUser(String searchText) throws Exception {
 		DriverUtils.waitUntilElementClickable(driver, searchInput);
 		searchInput.clear();
 		searchInput.sendKeys(searchText);
 	}
 
-	public void selectUserFromSearchResult(String user) {
+	public void selectUserFromSearchResult(String user) throws Exception {
 		String xpath = String
 				.format(WebAppLocators.PeoplePickerPage.xpathFormatSearchListItemWithName,
 						user);
@@ -56,20 +56,25 @@ public class PeoplePickerPage extends WebPage {
 	}
 
 	private void clickNotConnectedUser(String name) {
-		String foundUserXpath = WebAppLocators.PeoplePickerPage.xpathSearchResultByName.apply(name);
-		WebElement foundUserElement = driver.findElement(By.xpath(foundUserXpath));
+		String foundUserXpath = WebAppLocators.PeoplePickerPage.xpathSearchResultByName
+				.apply(name);
+		WebElement foundUserElement = driver.findElement(By
+				.xpath(foundUserXpath));
 		foundUserElement.click();
 	}
-	
-	public ConnectToPopupPage clickNotConnectedUserName(String name) throws Exception {
+
+	public ConnectToPopupPage clickNotConnectedUserName(String name)
+			throws Exception {
 		clickNotConnectedUser(name);
 		return new ConnectToPopupPage(url, name);
 	}
-	
+
 	public boolean isUserFound(String name) {
-		String foundUserXpath = WebAppLocators.PeoplePickerPage.xpathSearchResultByName.apply(name);
-		WebElement foundUserElement = driver.findElement(By.xpath(foundUserXpath));
+		String foundUserXpath = WebAppLocators.PeoplePickerPage.xpathSearchResultByName
+				.apply(name);
+		WebElement foundUserElement = driver.findElement(By
+				.xpath(foundUserXpath));
 		return DriverUtils.isElementDisplayed(foundUserElement);
 	}
-	
+
 }

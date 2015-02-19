@@ -26,7 +26,7 @@ public class GroupChatInfoPage extends IOSPage {
 	private String url;
 	private String path;
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.80;
-	
+
 	private final String AQA_PICTURE_CONTACT = "AQAPICTURECONTACT";
 	private final String AQA_AVATAR_CONTACT = "AQAAVATAR";
 
@@ -65,8 +65,7 @@ public class GroupChatInfoPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameOtherUserProfilePageCloseButton)
 	private WebElement closeButton;
 
-	public GroupChatInfoPage(String URL, String path)
-			throws Exception {
+	public GroupChatInfoPage(String URL, String path) throws Exception {
 		super(URL, path);
 		this.url = URL;
 		this.path = path;
@@ -86,8 +85,9 @@ public class GroupChatInfoPage extends IOSPage {
 		conversationNameTextField.sendKeys(name + "\n");
 	}
 
-	public boolean isNumberOfParticipants(int correctNumber) {
-		DriverUtils.waitUntilElementAppears(driver, By.xpath(IOSLocators.xpathNumberOfParticipantsText));
+	public boolean isNumberOfParticipants(int correctNumber) throws Exception {
+		DriverUtils.waitUntilElementAppears(driver,
+				By.xpath(IOSLocators.xpathNumberOfParticipantsText));
 		int givenNumberOfParticipants = Integer
 				.parseInt(numberOfParticipantsText.getText().replaceAll("\\D+",
 						""));
@@ -99,8 +99,9 @@ public class GroupChatInfoPage extends IOSPage {
 		return new GroupChatPage(url, path);
 	}
 
-	public boolean areParticipantAvatarCorrect(String contact) throws IOException {
-		
+	public boolean areParticipantAvatarCorrect(String contact)
+			throws IOException {
+
 		String name = "", picture = "";
 		if (contact.toLowerCase().contains(AQA_PICTURE_CONTACT.toLowerCase())) {
 			name = AQA_PICTURE_CONTACT;
@@ -121,8 +122,7 @@ public class GroupChatInfoPage extends IOSPage {
 				double score = ImageUtil.getOverlapScore(realImage, avatarIcon);
 				if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
 					return false;
-				}
-				else {
+				} else {
 					flag = true;
 				}
 			}
@@ -130,16 +130,17 @@ public class GroupChatInfoPage extends IOSPage {
 		return flag;
 	}
 
-	public void tapAndCheckAllParticipants(String user, boolean checkEmail) throws Exception {
+	public void tapAndCheckAllParticipants(String user, boolean checkEmail)
+			throws Exception {
 
 		List<WebElement> participants = getCurrentParticipants();
 		String participantNameTextFieldValue = "";
 		String participantName = "";
 		String participantEmailTextFieldValue = "";
-		
+
 		user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		String email = usrMgr.findUserByNameOrNameAlias(user).getEmail();
-		
+
 		for (WebElement participant : participants) {
 			ClientUser participantUser = getParticipantUser(participant);
 			participantName = participantUser.getName();
@@ -153,17 +154,13 @@ public class GroupChatInfoPage extends IOSPage {
 					.getEmailFieldValue();
 			Assert.assertTrue(
 					"Participant Name is incorrect and/or not displayed",
-					participantNameTextFieldValue
-							.equalsIgnoreCase(user));
+					participantNameTextFieldValue.equalsIgnoreCase(user));
 			if (checkEmail) {
 				Assert.assertTrue("User's email is not displayed",
-							participantEmailTextFieldValue
-									.equalsIgnoreCase(email));
-			}
-			else {
+						participantEmailTextFieldValue.equalsIgnoreCase(email));
+			} else {
 				Assert.assertFalse("User's email is displayed",
-						participantEmailTextFieldValue
-								.equalsIgnoreCase(email));
+						participantEmailTextFieldValue.equalsIgnoreCase(email));
 			}
 		}
 		PagesCollection.groupChatInfoPage = (GroupChatInfoPage) PagesCollection.otherUserPersonalInfoPage
@@ -278,8 +275,7 @@ public class GroupChatInfoPage extends IOSPage {
 		return new ConnectToPage(url, path);
 	}
 
-	public boolean isLeaveConversationAlertVisible() {
-
+	public boolean isLeaveConversationAlertVisible() throws Exception {
 		return DriverUtils.waitUntilElementAppears(driver,
 				By.name(IOSLocators.nameLeaveConversationAlert));
 	}

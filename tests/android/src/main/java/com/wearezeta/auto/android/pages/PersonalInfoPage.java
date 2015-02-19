@@ -194,8 +194,7 @@ public class PersonalInfoPage extends AndroidPage {
 		return flag;
 	}
 
-	public boolean waitForSettingsDissapear() {
-
+	public boolean waitForSettingsDissapear() throws Exception {
 		return DriverUtils.waitUntilElementDissapear(driver,
 				By.id(AndroidLocators.PersonalInfoPage.idProfileOptionsButton));
 	}

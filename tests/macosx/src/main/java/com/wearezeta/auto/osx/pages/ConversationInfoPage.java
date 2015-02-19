@@ -79,7 +79,7 @@ public class ConversationInfoPage extends OSXPage {
 		this.path = path;
 	}
 
-	public boolean userIsNotExistInConversation(String user) {
+	public boolean userIsNotExistInConversation(String user) throws Exception {
 		String xpath = String.format(
 				OSXLocators.xpathFormatPeoplePickerUserCell, user);
 		return DriverUtils.waitUntilElementDissapear(driver, By.xpath(xpath));
@@ -108,7 +108,7 @@ public class ConversationInfoPage extends OSXPage {
 		}
 	}
 
-	private void confirmIfRequested() {
+	private void confirmIfRequested() throws Exception {
 		try {
 			DriverUtils.setImplicitWaitValue(driver, 3);
 			confirmationViewConfirmButton.click();
@@ -132,7 +132,7 @@ public class ConversationInfoPage extends OSXPage {
 		return new PeoplePickerPage(url, path);
 	}
 
-	public void removeUser() {
+	public void removeUser() throws Exception {
 		removeUserFromConversationButton.click();
 		confirmIfRequested();
 		conversationScrollArea.click();
@@ -151,7 +151,7 @@ public class ConversationInfoPage extends OSXPage {
 		}
 	}
 
-	public void leaveConversation() {
+	public void leaveConversation() throws Exception {
 		leaveConversationButton.click();
 		confirmIfRequested();
 	}
@@ -258,7 +258,7 @@ public class ConversationInfoPage extends OSXPage {
 		return el.isDisplayed();
 	}
 
-	public boolean isEmailButtonExists(String email) {
+	public boolean isEmailButtonExists(String email) throws Exception {
 		return DriverUtils.waitUntilElementAppears(driver, By.xpath(String
 				.format(OSXLocators.xpathSingleChatUserEmailButton, email)));
 	}

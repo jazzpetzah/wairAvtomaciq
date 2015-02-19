@@ -250,7 +250,7 @@ public abstract class IOSPage extends BasePage {
 		keyboard.typeString(returnKey, driver);
 	}
 
-	public boolean isKeyboardVisible() {
+	public boolean isKeyboardVisible() throws Exception {
 		DriverUtils.waitUntilElementDissapear(driver,
 				By.className(IOSLocators.classNameKeyboard));
 		return DriverUtils.isElementDisplayed(keyboard);
@@ -291,7 +291,7 @@ public abstract class IOSPage extends BasePage {
 		driver.hideKeyboard();
 	}
 
-	public void acceptAlert() {
+	public void acceptAlert() throws Exception {
 		DriverUtils.waitUntilAlertAppears(driver);
 		try {
 			driver.switchTo().alert().accept();
@@ -304,7 +304,7 @@ public abstract class IOSPage extends BasePage {
 		driver.executeScript("au.backgroundApp(" + Integer.toString(time) + ")");
 	}
 
-	public void dismissAlert() {
+	public void dismissAlert() throws Exception {
 		DriverUtils.waitUntilAlertAppears(driver);
 		try {
 			driver.switchTo().alert().dismiss();

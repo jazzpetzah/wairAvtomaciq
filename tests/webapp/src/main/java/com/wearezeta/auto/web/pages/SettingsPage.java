@@ -11,7 +11,7 @@ public class SettingsPage extends WebPage {
 		super(URL, path);
 	}
 
-	public boolean isVisible() {
+	public boolean isVisible() throws Exception {
 		final String xpath = WebAppLocators.SettingsPage.xpathSettingsDialogRoot;
 		return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath));
 	}

@@ -36,9 +36,10 @@ public class SelfProfilePageSteps {
 	 * 
 	 * @param name
 	 *            the name of menu item
+	 * @throws Exception 
 	 */
 	@And("^I select (.*) menu item on self profile page$")
-	public void ISelectGearMenuItem(String name) {
+	public void ISelectGearMenuItem(String name) throws Exception {
 		PagesCollection.selfProfilePage.selectGearMenuItem(name);
 	}
 
@@ -67,12 +68,11 @@ public class SelfProfilePageSteps {
 	 * 
 	 * @param name
 	 *            name of the user
-	 * 
-	 * @throws NoSuchUserException
+	 * @throws Exception 
 	 */
 	@And("I see user name on self profile page (.*)")
 	public void ISeeUserNameOnSelfProfilePage(String name)
-			throws NoSuchUserException {
+			throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		String actualName = PagesCollection.selfProfilePage.getUserName();
 		Assert.assertEquals(name, actualName);

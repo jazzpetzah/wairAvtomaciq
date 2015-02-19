@@ -215,7 +215,7 @@ public class ConversationPage extends OSXPage {
 		return messageEntries.size();
 	}
 
-	public int getNumberOfImageEntries() {
+	public int getNumberOfImageEntries() throws Exception {
 		DriverUtils.setImplicitWaitValue(driver, 1);
 		List<WebElement> conversationImages = driver.findElements(By
 				.xpath(OSXLocators.xpathConversationImageEntry));
@@ -223,7 +223,7 @@ public class ConversationPage extends OSXPage {
 		return conversationImages.size();
 	}
 
-	public boolean isMessageSent(String message) {
+	public boolean isMessageSent(String message) throws Exception {
 		boolean isSend = false;
 		String xpath = String.format(
 				OSXLocators.xpathFormatSpecificMessageEntry, message);
@@ -246,8 +246,7 @@ public class ConversationPage extends OSXPage {
 		soundCloudLinkButton.click();
 	}
 
-	public boolean isSoundCloudContainerVisible() {
-
+	public boolean isSoundCloudContainerVisible() throws Exception {
 		return DriverUtils
 				.waitUntilElementAppears(
 						driver,
@@ -424,7 +423,7 @@ public class ConversationPage extends OSXPage {
 		}
 	}
 
-	public boolean isMediaLinkAppearsInDialog(String link) {
+	public boolean isMediaLinkAppearsInDialog(String link) throws Exception {
 		return DriverUtils.waitUntilElementAppears(driver, By.name(link));
 	}
 
@@ -446,7 +445,7 @@ public class ConversationPage extends OSXPage {
 		return listResult;
 	}
 
-	public MessageEntry receiveMessage(String message, boolean checkTime) {
+	public MessageEntry receiveMessage(String message, boolean checkTime) throws Exception {
 		DriverUtils.setImplicitWaitValue(driver, 120);
 		try {
 			Date receivedDate = new Date();

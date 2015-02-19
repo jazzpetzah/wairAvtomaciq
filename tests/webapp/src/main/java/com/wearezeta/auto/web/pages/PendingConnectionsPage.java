@@ -18,7 +18,7 @@ public class PendingConnectionsPage extends WebPage {
 		super(URL, path);
 	}
 
-	public void acceptRequestFromUser(String user) {
+	public void acceptRequestFromUser(String user) throws Exception {
 		String xpath = String.format(
 				WebAppLocators.ConnectToPage.xpathFormatAcceptRequestButton,
 				user);

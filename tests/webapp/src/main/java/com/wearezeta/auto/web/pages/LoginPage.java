@@ -67,7 +67,7 @@ public class LoginPage extends WebPage {
 		passwordInput.sendKeys(password);
 	}
 
-	public boolean waitForLogin() {
+	public boolean waitForLogin() throws Exception {
 		boolean noSignIn = DriverUtils.waitUntilElementDissapear(driver,
 				By.id(WebAppLocators.LoginPage.idLoginButton), 40);
 		boolean noSignInSpinner = DriverUtils.waitUntilElementDissapear(driver, By.className(WebAppLocators.LoginPage.classNameSpinner), 40);

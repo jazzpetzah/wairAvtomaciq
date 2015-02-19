@@ -60,7 +60,7 @@ public class ConversationPage extends WebPage {
 		conversationInput.sendKeys(Keys.ENTER);
 	}
 
-	public boolean isActionMessageSent(String message) {
+	public boolean isActionMessageSent(String message) throws Exception {
 		boolean isSend = false;
 		String xpath = String.format(
 				WebAppLocators.ConversationPage.xpathActionMessageEntry,
@@ -73,7 +73,7 @@ public class ConversationPage extends WebPage {
 		return isSend;
 	}
 
-	public boolean isMessageSent(String message) {
+	public boolean isMessageSent(String message) throws Exception {
 		boolean isSend = false;
 		String xpath = String
 				.format(WebAppLocators.ConversationPage.xpathFormatSpecificTextMessageEntry,
@@ -146,7 +146,7 @@ public class ConversationPage extends WebPage {
 		}
 	}
 
-	public boolean isPictureSent(String pictureName) {
+	public boolean isPictureSent(String pictureName) throws Exception {
 		@SuppressWarnings("unused")
 		final String picturePath = WebCommonUtils
 				.getFullPicturePath(pictureName);

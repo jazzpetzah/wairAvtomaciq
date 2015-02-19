@@ -94,7 +94,7 @@ public class RegistrationPage extends OSXPage {
 		confirmChosenPictureButton.click();
 	}
 	
-	public boolean isConfirmationRequested() {
+	public boolean isConfirmationRequested() throws Exception {
 		return DriverUtils.waitUntilElementAppears(driver, By.id(OSXLocators.idConfirmationRequestedText), 60);
 	}
 	

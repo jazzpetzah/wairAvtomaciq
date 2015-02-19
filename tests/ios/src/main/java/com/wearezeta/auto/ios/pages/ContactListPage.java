@@ -95,11 +95,9 @@ public class ContactListPage extends IOSPage {
 				.getLocation().x < oldLocation;
 	}
 
-	public boolean isPlayPauseButtonVisible(String contact) {
-		boolean flag = false;
-		flag = DriverUtils.waitUntilElementAppears(driver, By.xpath(String
+	public boolean isPlayPauseButtonVisible(String contact) throws Exception {
+		return DriverUtils.waitUntilElementAppears(driver, By.xpath(String
 				.format(IOSLocators.xpathContactListPlayPauseButton, contact)));
-		return flag;
 	}
 
 	public void tapPlayPauseButton() {
@@ -138,7 +136,7 @@ public class ContactListPage extends IOSPage {
 		return page;
 	}
 
-	public String getFirstDialogName(String name) {
+	public String getFirstDialogName(String name) throws Exception {
 
 		DriverUtils.waitUntilElementAppears(driver, By.xpath(String.format(
 				IOSLocators.xpathFirstInContactList, name)));
@@ -242,7 +240,7 @@ public class ContactListPage extends IOSPage {
 		return new GroupChatPage(url, path);
 	}
 
-	public boolean waitForContactListToLoad() {
+	public boolean waitForContactListToLoad() throws Exception {
 		return DriverUtils.waitUntilElementAppears(driver,
 				By.xpath(IOSLocators.xpathMyUserInContactList));
 	}
@@ -286,7 +284,7 @@ public class ContactListPage extends IOSPage {
 		return page;
 	}
 
-	public boolean isPendingRequestInContactList() {
+	public boolean isPendingRequestInContactList() throws Exception {
 		return DriverUtils.waitUntilElementAppears(driver,
 				By.xpath(IOSLocators.xpathPendingRequest));
 	}
@@ -296,11 +294,11 @@ public class ContactListPage extends IOSPage {
 		return new PendingRequestsPage(url, path);
 	}
 
-	public boolean isDisplayedInContactList(String name) {
+	public boolean isDisplayedInContactList(String name) throws Exception {
 		return DriverUtils.waitUntilElementAppears(driver, By.name(name));
 	}
 
-	public boolean isTutorialShown() {
+	public boolean isTutorialShown() throws Exception {
 		// this.refreshUITree();
 		DriverUtils.waitUntilElementAppears(driver,
 				By.name(IOSLocators.nameTutorialView));

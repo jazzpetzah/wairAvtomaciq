@@ -1,7 +1,6 @@
 package com.wearezeta.auto.osx.pages;
 
 import java.awt.HeadlessException;
-import java.io.IOException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -128,7 +127,8 @@ public class PeoplePickerPage extends OSXPage {
 		unblockUserButton.click();
 	}
 
-	public boolean areSearchResultsContainUser(String username) {
+	public boolean areSearchResultsContainUser(String username)
+			throws Exception {
 		String xpath = String.format(
 				OSXLocators.xpathFormatPeoplePickerSearchResultUser, username);
 
@@ -202,8 +202,7 @@ public class PeoplePickerPage extends OSXPage {
 
 	}
 
-	public boolean isPeoplePickerPageVisible() throws InterruptedException,
-			IOException {
+	public boolean isPeoplePickerPageVisible() throws Exception {
 		boolean isFound = false;
 		isFound = DriverUtils.waitUntilElementAppears(driver,
 				peoplePickerSearchResultTable, 5);
@@ -240,14 +239,14 @@ public class PeoplePickerPage extends OSXPage {
 		return new ConversationPage(url, path);
 	}
 
-	public boolean isTopPeopleVisible() {
+	public boolean isTopPeopleVisible() throws Exception {
 		return DriverUtils
 				.waitUntilElementAppears(
 						driver,
 						By.xpath(OSXLocators.xpathPeoplePickerTopContactsSectionHeader));
 	}
 
-	public boolean isCreateConversationButtonVisible() {
+	public boolean isCreateConversationButtonVisible() throws Exception {
 		if (DriverUtils.waitUntilElementAppears(driver,
 				createConversationButton, 5)) {
 			return NSPoint.fromString(

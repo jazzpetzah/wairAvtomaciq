@@ -20,9 +20,10 @@ public class PeoplePickerPageSteps {
 	 * 
 	 * @param user
 	 *            user name or email
+	 * @throws Exception 
 	 */
 	@When("^I search for (.*) in People Picker$")
-	public void ISearchForUserInPeoplePicker(String user) {
+	public void ISearchForUserInPeoplePicker(String user) throws Exception {
 		try {
 			user = usrMgr.findUserByNameOrNameAlias(user).getEmail();
 		} catch (NoSuchUserException e) {
@@ -44,9 +45,10 @@ public class PeoplePickerPageSteps {
 	 * 
 	 * @param user
 	 *            user name or email
+	 * @throws Exception 
 	 */
 	@When("^I select (.*) from People Picker results$")
-	public void ISelectUserFromPeoplePickerResults(String user) {
+	public void ISelectUserFromPeoplePickerResults(String user) throws Exception {
 		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
 		PagesCollection.peoplePickerPage.selectUserFromSearchResult(user);
 	}

@@ -16,9 +16,10 @@ public class InvitationCodePageSteps {
 	 * Checks that opened page is Invitation page
 	 * 
 	 * @step. ^I see invitation page$
+	 * @throws Exception 
 	 */
 	@Given("^I see invitation page$")
-	public void ISeeInvitationPage() {
+	public void ISeeInvitationPage() throws Exception {
 		if (!PagesCollection.invitationCodePage.isVisible()) {
 			skipInvitation = true;
 		}

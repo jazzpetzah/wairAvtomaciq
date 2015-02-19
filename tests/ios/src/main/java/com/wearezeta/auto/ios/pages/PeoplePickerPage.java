@@ -86,7 +86,7 @@ public class PeoplePickerPage extends IOSPage {
 		}
 	}
 
-	public Boolean isPeoplePickerPageVisible() {
+	public Boolean isPeoplePickerPageVisible() throws Exception {
 
 		boolean result = DriverUtils.waitUntilElementAppears(driver,
 				By.name(IOSLocators.namePickerClearButton));
@@ -123,7 +123,7 @@ public class PeoplePickerPage extends IOSPage {
 		peoplePickerSearch.sendKeys(text);
 	}
 
-	public boolean waitUserPickerFindUser(String user) {
+	public boolean waitUserPickerFindUser(String user) throws Exception {
 		return DriverUtils.waitUntilElementAppears(driver, By.name(user));
 	}
 	
@@ -205,7 +205,7 @@ public class PeoplePickerPage extends IOSPage {
 		return page;
 	}
 
-	private WebElement PickUser(String name) {
+	private WebElement PickUser(String name) throws Exception {
 		WebElement user = null;
 		fillTextInPeoplePickerSearch(name);
 		waitUserPickerFindUser(name);
@@ -221,7 +221,7 @@ public class PeoplePickerPage extends IOSPage {
 		return DriverUtils.isElementDisplayed(contactsLabel);
 	}
 
-	public void selectUser(String name) {
+	public void selectUser(String name) throws Exception {
 		DriverUtils.waitUntilElementClickable(driver, userPickerSearchResult);
 		driver.findElement(By.name(name)).click();
 	}

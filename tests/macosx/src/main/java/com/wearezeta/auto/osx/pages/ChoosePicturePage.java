@@ -39,7 +39,7 @@ public class ChoosePicturePage extends OSXPage {
 		return isVisible;
 	}
 
-	public void searchForImage(String imageName) {
+	public void searchForImage(String imageName) throws Exception {
 		DriverUtils.setDefaultImplicitWait(driver);
 		String xpath = String.format(OSXLocators.xpathFormatFinderImageFile,
 				imageName);

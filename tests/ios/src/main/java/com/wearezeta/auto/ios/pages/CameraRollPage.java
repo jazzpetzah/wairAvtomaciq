@@ -37,7 +37,7 @@ public class CameraRollPage extends IOSPage{
 	}
 	
 	
-	public void pressSelectFromLibraryButton() throws InterruptedException{
+	public void pressSelectFromLibraryButton() throws Exception{
 		DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameCameraLibraryButton));
 		cameraLibraryButton.click();
 	}
@@ -62,7 +62,7 @@ public class CameraRollPage extends IOSPage{
 		libraryFirstPicture.click();
 	}
 	
-	public void pressConfirmButton() throws InterruptedException{
+	public void pressConfirmButton() throws Exception{
 		DriverUtils.waitUntilElementAppears(driver, By.name(IOSLocators.nameConfirmPictureButton));
 		confirmPictureButton.click();
 	}

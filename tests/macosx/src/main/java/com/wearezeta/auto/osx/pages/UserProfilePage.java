@@ -55,7 +55,7 @@ public class UserProfilePage extends OSXPage {
 		super(URL, path, false);
 	}
 
-	public void openPictureSettings() {
+	public void openPictureSettings() throws Exception {
 		Actions builder = new Actions(driver);
 		builder.moveToElement(mainWindow).build().perform();
 		userPictureButton.click();
@@ -74,7 +74,7 @@ public class UserProfilePage extends OSXPage {
 		doCameraShotButton.click();
 	}
 
-	public void confirmPictureChoice() throws InterruptedException {
+	public void confirmPictureChoice() throws Exception {
 		Thread.sleep(3000);
 		confirmPictureChoiceButton.click();
 		try {
@@ -87,7 +87,7 @@ public class UserProfilePage extends OSXPage {
 		removeUserPictureCheckBox.click();
 	}
 
-	public void confirmPhotoRemoving() {
+	public void confirmPhotoRemoving() throws Exception {
 		removeUserPictureConfirmationButton.click();
 		try {
 			pictureSettingsCloseButton.click();
@@ -103,7 +103,7 @@ public class UserProfilePage extends OSXPage {
 		return email.equals(selfProfileEmailTextField.getText());
 	}
 	
-	public boolean selfProfileNameEquals(String name) {
+	public boolean selfProfileNameEquals(String name) throws Exception {
 		String xpath = String.format(OSXLocators.xpathFormatSelfProfileNameTextField, name);
 		log.debug("Looking for name " + name + " by xpath '" + xpath + "' in user profile.");
 		return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath), 60);

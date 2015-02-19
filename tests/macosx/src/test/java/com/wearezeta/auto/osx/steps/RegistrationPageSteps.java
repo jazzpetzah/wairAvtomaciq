@@ -132,12 +132,13 @@ public class RegistrationPageSteps {
 	 * clicked
 	 * 
 	 * @step. I see confirmation page
+	 * @throws Exception 
 	 * 
 	 * @throws AssertionError
 	 *             if confirmation page did not appear
 	 */
 	@Then("I see confirmation page")
-	public void ISeeConfirmationPage() {
+	public void ISeeConfirmationPage() throws Exception {
 		Assert.assertTrue(PagesCollection.registrationPage
 				.isConfirmationRequested());
 	}

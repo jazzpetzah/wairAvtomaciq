@@ -36,7 +36,7 @@ public class PersonalInfoPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathPersonalInfoPage)
 	private WebElement personalPage;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.namePictureButton)
 	private WebElement pictureButton;
 
@@ -86,7 +86,7 @@ public class PersonalInfoPage extends IOSPage {
 		return email;
 	}
 
-	public boolean isSettingsButtonVisible() {
+	public boolean isSettingsButtonVisible() throws Exception {
 		DriverUtils.setImplicitWaitValue(driver, 3);
 		boolean result = DriverUtils.isElementDisplayed(settingsButton);
 		DriverUtils.setDefaultImplicitWait(driver);
@@ -146,12 +146,12 @@ public class PersonalInfoPage extends IOSPage {
 		profileNameEditField.sendKeys("\n");
 	}
 
-	public void waitForSettingsButtonAppears() {
+	public void waitForSettingsButtonAppears() throws Exception {
 		DriverUtils.waitUntilElementAppears(driver,
 				By.name(IOSLocators.nameProfileSettingsButton));
 	}
 
-	public void waitForEmailFieldVisible() {
+	public void waitForEmailFieldVisible() throws Exception {
 		DriverUtils.waitUntilElementAppears(driver,
 				By.xpath(IOSLocators.xpathEmailField));
 	}

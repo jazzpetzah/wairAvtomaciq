@@ -164,13 +164,13 @@ public class ConversationPageSteps {
 	}
 
 	@Then("I see random message in conversation$")
-	public void ThenISeeRandomMessageInConversation() {
+	public void ThenISeeRandomMessageInConversation() throws Exception {
 		Assert.assertTrue(PagesCollection.conversationPage
 				.isMessageSent(randomMessage));
 	}
 
 	@Then("I see picture in conversation$")
-	public void ThenISeePictureInConversation() {
+	public void ThenISeePictureInConversation() throws Exception {
 		int afterNumberOfImages = -1;
 
 		boolean isNumberIncreased = false;
@@ -550,7 +550,7 @@ public class ConversationPageSteps {
 	}
 
 	@When("I count number of images in conversation")
-	public void ICountNumberOfImagesInConversation() {
+	public void ICountNumberOfImagesInConversation() throws Exception {
 		beforeNumberOfImages = PagesCollection.conversationPage
 				.getNumberOfImageEntries();
 	}

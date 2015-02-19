@@ -487,7 +487,7 @@ public class DialogPage extends AndroidPage {
 		return true;
 	}
 
-	public boolean isDialogVisible() {
+	public boolean isDialogVisible() throws Exception {
 		return DriverUtils.waitUntilElementAppears(driver,
 				By.id(AndroidLocators.DialogPage.idMessage));
 	}

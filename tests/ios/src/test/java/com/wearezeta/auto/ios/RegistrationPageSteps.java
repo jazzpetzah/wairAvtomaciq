@@ -304,7 +304,7 @@ public class RegistrationPageSteps {
 	}
 
 	@When("I click Create Account Button")
-	public void IClickCreateAccountButton() {
+	public void IClickCreateAccountButton() throws Exception {
 		PagesCollection.registrationPage.clickCreateAccountButton();
 	}
 

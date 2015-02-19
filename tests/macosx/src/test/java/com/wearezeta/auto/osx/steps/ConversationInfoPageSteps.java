@@ -44,12 +44,12 @@ public class ConversationInfoPageSteps {
 	}
 
 	@When("I remove selected user from conversation")
-	public void WhenIRemoveSelectedUserFromConversation() {
+	public void WhenIRemoveSelectedUserFromConversation() throws Exception {
 		PagesCollection.conversationInfoPage.removeUser();
 	}
 
 	@When("I leave conversation")
-	public void WhenILeaveConversation() {
+	public void WhenILeaveConversation() throws Exception {
 		PagesCollection.conversationInfoPage.leaveConversation();
 	}
 

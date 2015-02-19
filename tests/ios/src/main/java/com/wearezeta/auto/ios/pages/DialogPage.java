@@ -239,7 +239,7 @@ public class DialogPage extends IOSPage {
 		return conversationImages.size();
 	}
 
-	public void startMediaContent() {
+	public void startMediaContent() throws Exception {
 		boolean flag = DriverUtils.waitUntilElementAppears(driver,
 				By.xpath(IOSLocators.xpathMediaConversationCell));
 		if (flag) {
@@ -392,7 +392,7 @@ public class DialogPage extends IOSPage {
 		return page;
 	}
 
-	public boolean isMediaContainerVisible() {
+	public boolean isMediaContainerVisible() throws Exception {
 		DriverUtils.waitUntilElementAppears(driver,
 				By.xpath(IOSLocators.xpathMediaConversationCell));
 		return mediaLinkCell != null;

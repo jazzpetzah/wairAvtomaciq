@@ -87,12 +87,12 @@ public class CommonIOSSteps {
 	}
 
 	@When("^I see keyboard$")
-	public void ISeeKeyboard() {
+	public void ISeeKeyboard() throws Exception {
 		Assert.assertTrue(PagesCollection.dialogPage.isKeyboardVisible());
 	}
 
 	@When("^I dont see keyboard$")
-	public void IDontSeeKeyboard() {
+	public void IDontSeeKeyboard() throws Exception {
 		Assert.assertFalse(PagesCollection.dialogPage.isKeyboardVisible());
 	}
 
@@ -107,12 +107,12 @@ public class CommonIOSSteps {
 	}
 
 	@When("^I accept alert$")
-	public void IAcceptAlert() {
+	public void IAcceptAlert() throws Exception {
 		PagesCollection.loginPage.acceptAlert();
 	}
 
 	@When("^I dismiss alert$")
-	public void IDismissAlert() {
+	public void IDismissAlert() throws Exception {
 		PagesCollection.loginPage.dismissAlert();
 	}
 

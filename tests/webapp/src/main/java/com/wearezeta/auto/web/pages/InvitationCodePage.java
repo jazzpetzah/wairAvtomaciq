@@ -32,8 +32,9 @@ public class InvitationCodePage extends WebPage {
 		this.path = path;
 	}
 
-	public boolean isVisible() {
-		boolean result = DriverUtils.waitUntilElementAppears(driver, By.id(WebAppLocators.InvitationCodePage.idCodeInput), 5);
+	public boolean isVisible() throws Exception {
+		boolean result = DriverUtils.waitUntilElementAppears(driver,
+				By.id(WebAppLocators.InvitationCodePage.idCodeInput), 5);
 		return result;
 	}
 
