@@ -4,6 +4,7 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.osx.pages.PagesCollection;
 import com.wearezeta.auto.osx.pages.PeoplePickerPage;
 
 import cucumber.api.java.en.Given;
@@ -158,7 +159,7 @@ public class PeoplePickerPageSteps {
 			CommonOSXSteps.senderPages.getPeoplePickerPage()
 					.closePeoplePicker();
 			Thread.sleep(1000);
-			CommonOSXSteps.senderPages.getContactListPage().openPeoplePicker();
+			PagesCollection.contactListPage.openPeoplePicker();
 			topPeopleisVisible = CommonOSXSteps.senderPages
 					.getPeoplePickerPage().isTopPeopleVisible();
 		}
@@ -188,8 +189,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@Then("^I press create conversation to enter conversation$")
 	public void IPressCreateConversationToEnterConversation() throws Throwable {
-		CommonOSXSteps.senderPages
-				.setConversationPage(CommonOSXSteps.senderPages
-						.getPeoplePickerPage().addSelectedUsersToConversation());
+		PagesCollection.conversationPage = CommonOSXSteps.senderPages
+				.getPeoplePickerPage().addSelectedUsersToConversation();
 	}
 }

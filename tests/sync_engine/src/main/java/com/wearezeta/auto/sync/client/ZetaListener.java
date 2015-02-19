@@ -13,12 +13,11 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.BasePage;
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
-import com.wearezeta.auto.osx.steps.ContactListPageSteps;
+import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.sync.ExecutionContext;
 
 public class ZetaListener extends Thread {
@@ -124,15 +123,11 @@ public class ZetaListener extends Thread {
 				dialogPage = com.wearezeta.auto.android.pages.PagesCollection.dialogPage;
 				return dialogPage.getPageSource();
 			case Mac:
-				com.wearezeta.auto.osx.steps.CommonOSXSteps.senderPages
-						.setConversationPage(new com.wearezeta.auto.osx.pages.ConversationPage(
-								CommonUtils
-										.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
-								CommonUtils
-										.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
-				com.wearezeta.auto.osx.pages.ConversationPage conversationPage = com.wearezeta.auto.osx.steps.CommonOSXSteps.senderPages
-						.getConversationPage();
-				return conversationPage.getPageSource();
+				com.wearezeta.auto.osx.pages.PagesCollection.conversationPage = new com.wearezeta.auto.osx.pages.ConversationPage(
+						OSXExecutionContext.appiumUrl,
+						OSXExecutionContext.wirePath);
+				dialogPage = com.wearezeta.auto.osx.pages.PagesCollection.conversationPage;
+				return dialogPage.getPageSource();
 			case iOS:
 				dialogPage = com.wearezeta.auto.ios.pages.PagesCollection.dialogPage;
 				return dialogPage.getPageSource();
@@ -198,14 +193,9 @@ public class ZetaListener extends Thread {
 
 	public void waitForMessageOsx(String message, boolean checkTime) {
 		try {
-			com.wearezeta.auto.osx.steps.CommonOSXSteps.senderPages
-					.setConversationPage(new com.wearezeta.auto.osx.pages.ConversationPage(
-							CommonUtils
-									.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
-							CommonUtils
-									.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
-			com.wearezeta.auto.osx.pages.ConversationPage conversationPage = com.wearezeta.auto.osx.steps.CommonOSXSteps.senderPages
-					.getConversationPage();
+			com.wearezeta.auto.osx.pages.PagesCollection.conversationPage = new com.wearezeta.auto.osx.pages.ConversationPage(
+					OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+			com.wearezeta.auto.osx.pages.ConversationPage conversationPage = com.wearezeta.auto.osx.pages.PagesCollection.conversationPage;
 			MessageEntry entry = conversationPage.receiveMessage(message,
 					checkTime);
 			if (entry != null) {
