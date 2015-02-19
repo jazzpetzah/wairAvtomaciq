@@ -432,9 +432,9 @@ public class ConversationPageSteps {
 		PeoplePickerPageSteps ppSteps = new PeoplePickerPageSteps();
 		clSteps.GivenIOpenConversationWith(user1);
 		this.WhenIOpenPeoplePickerFromConversation();
-		ppSteps.WhenISearchForUser(user2);
-		ppSteps.WhenISeeUserFromSearchResults(user2);
-		ppSteps.WhenIAddUserFromSearchResults(user2);
+		ppSteps.ISearchForUser(user2);
+		ppSteps.ISeeUserFromSearchResults(user2);
+		ppSteps.IAddUserFromSearchResults(user2);
 	}
 
 	@Given("^I post media link (.*)$")

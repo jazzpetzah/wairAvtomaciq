@@ -82,8 +82,8 @@ Feature: Register new user
     And I take registration picture from image file userpicture_portrait.jpg
     And I enter invalid emails
     Then I see that all emails not accepted
-    
-@staging @1964
+
+  @regression @1964
   Scenario Outline: Verify automatic email verification is performed
     Given I am signed out from ZClient
     And I see Sign In screen
@@ -95,11 +95,10 @@ Feature: Register new user
     And I enter password <Password>
     And I submit registration data
     And I see confirmation page
-	And I open activation link in browser
-	Then I see that user activated
+    And I open activation link in browser
+    Then I see that user activated
     And I see self profile of registered user
-	
+
     Examples: 
       | Email      | Password      | Name      | ImageFile                 |
       | user1Email | user1Password | user1Name | userpicture_landscape.jpg |
-
