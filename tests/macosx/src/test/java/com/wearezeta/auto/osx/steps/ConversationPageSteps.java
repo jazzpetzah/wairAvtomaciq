@@ -1,6 +1,7 @@
 package com.wearezeta.auto.osx.steps;
 
 import java.awt.image.BufferedImage;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -485,6 +486,8 @@ public class ConversationPageSteps {
 
 	private void verifySoundCloudButtonState(String expectedState) {
 		String actualState = "";
+		long startDate = new Date().getTime();
+		long endDate;
 		for (int i = 0; i < 3; i++) {
 			actualState = PagesCollection.conversationPage
 					.getSoundCloudButtonState();
@@ -494,6 +497,8 @@ public class ConversationPageSteps {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 			}
+			endDate = new Date().getTime();
+			log.debug("Try #" + (i+1) + " finished with incorrect result after " + (endDate - startDate) + "ms from start");
 		}
 		Assert.assertEquals("SoundCloud button state " + actualState
 				+ " differs from expected " + expectedState, expectedState,
