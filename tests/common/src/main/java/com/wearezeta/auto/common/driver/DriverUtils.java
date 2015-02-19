@@ -73,7 +73,7 @@ public class DriverUtils {
 					.pollingEvery(1, TimeUnit.SECONDS)
 					.ignoring(NoSuchElementException.class);
 
-			wait.until(new Function<WebDriver, Boolean>() {
+			return wait.until(new Function<WebDriver, Boolean>() {
 				public Boolean apply(WebDriver driver) {
 					return (driver.findElements(by).size() == 0);
 				}
@@ -83,7 +83,6 @@ public class DriverUtils {
 		} finally {
 			setDefaultImplicitWait(driver);
 		}
-		return false;
 	}
 
 	public static boolean waitUntilElementAppears(RemoteWebDriver driver,
@@ -95,7 +94,7 @@ public class DriverUtils {
 					.pollingEvery(1, TimeUnit.SECONDS)
 					.ignoring(NoSuchElementException.class);
 
-			wait.until(new Function<WebDriver, Boolean>() {
+			return wait.until(new Function<WebDriver, Boolean>() {
 				public Boolean apply(WebDriver driver) {
 					if (el_or_locator instanceof WebElement) {
 						return ((WebElement) el_or_locator).isDisplayed();
@@ -111,7 +110,6 @@ public class DriverUtils {
 		} finally {
 			setDefaultImplicitWait(driver);
 		}
-		return true;
 	}
 
 	public static boolean waitUntilElementAppears(RemoteWebDriver driver,
@@ -158,7 +156,7 @@ public class DriverUtils {
 					.pollingEvery(1, TimeUnit.SECONDS)
 					.ignoring(NoSuchElementException.class);
 
-			wait.until(new Function<WebDriver, Boolean>() {
+			return wait.until(new Function<WebDriver, Boolean>() {
 				@Override
 				public Boolean apply(WebDriver t) {
 					return String
@@ -168,7 +166,6 @@ public class DriverUtils {
 							.equals("complete");
 				}
 			});
-			return true;
 		} catch (TimeoutException e) {
 			return false;
 		} finally {
