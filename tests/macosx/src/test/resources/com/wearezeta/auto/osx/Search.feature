@@ -1,6 +1,6 @@
 Feature: Search
 
-  @staging @id1391
+  @regression @id1391
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

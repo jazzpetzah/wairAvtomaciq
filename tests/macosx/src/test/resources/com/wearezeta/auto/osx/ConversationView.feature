@@ -245,7 +245,7 @@ Feature: Conversation
       | Login      | Password      | Name      | Contact   | SoundCloudLink                             | Time |
       | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/20sekunder/erika-no | 30   |
 
-  @staging @id378
+  @regression @id378
   Scenario Outline: Media bar disappears when playing media is back in view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
