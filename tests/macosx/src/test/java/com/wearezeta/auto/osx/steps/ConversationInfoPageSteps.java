@@ -5,7 +5,6 @@ import java.awt.image.BufferedImage;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -15,6 +14,7 @@ import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ConversationInfoPage;
+import com.wearezeta.auto.osx.pages.PagesCollection;
 import com.wearezeta.auto.osx.util.NSPoint;
 
 import cucumber.api.java.en.Then;
@@ -28,59 +28,47 @@ public class ConversationInfoPageSteps {
 	@When("I choose user (.*) in Conversation info")
 	public void WhenIChooseUserInConversationInfo(String user) throws Exception {
 		user = usrMgr.findUserByNameOrNameAlias(user).getName();
-		CommonOSXSteps.senderPages
-				.setConversationInfoPage(new ConversationInfoPage(
-						CommonUtils
-								.getOsxAppiumUrlFromConfig(ConversationInfoPage.class),
-						CommonUtils
-								.getOsxApplicationPathFromConfig(ConversationInfoPage.class)));
-		CommonOSXSteps.senderPages.getConversationInfoPage().selectUser(user);
-		CommonOSXSteps.senderPages.getConversationInfoPage()
-				.selectUserIfNotSelected(user);
+		PagesCollection.conversationInfoPage = new ConversationInfoPage(
+				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+		PagesCollection.conversationInfoPage.selectUser(user);
+		PagesCollection.conversationInfoPage.selectUserIfNotSelected(user);
 	}
 
 	@Then("I do not see user (.*) in Conversation info")
 	public void IDontSeeUserInConversationInfo(String user) throws Exception {
 		user = usrMgr.findUserByNameOrNameAlias(user).getName();
-		CommonOSXSteps.senderPages
-				.setConversationInfoPage(new ConversationInfoPage(
-						CommonUtils
-								.getOsxAppiumUrlFromConfig(ConversationInfoPage.class),
-						CommonUtils
-								.getOsxApplicationPathFromConfig(ConversationInfoPage.class)));
-		Assert.assertTrue(CommonOSXSteps.senderPages.getConversationInfoPage()
+		PagesCollection.conversationInfoPage = new ConversationInfoPage(
+				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+		Assert.assertTrue(PagesCollection.conversationInfoPage
 				.userIsNotExistInConversation(user));
 	}
 
 	@When("I remove selected user from conversation")
 	public void WhenIRemoveSelectedUserFromConversation() {
-		CommonOSXSteps.senderPages.getConversationInfoPage().removeUser();
+		PagesCollection.conversationInfoPage.removeUser();
 	}
 
 	@When("I leave conversation")
 	public void WhenILeaveConversation() {
-		CommonOSXSteps.senderPages.getConversationInfoPage()
-				.leaveConversation();
+		PagesCollection.conversationInfoPage.leaveConversation();
 	}
 
 	@Then("I see conversation name (.*) in conversation info")
 	public void ISeeConversationNameInConversationInfo(String contact) {
 		if (contact.equals(OSXLocators.RANDOM_KEYWORD)) {
-			contact = CommonOSXSteps.senderPages.getConversationInfoPage()
+			contact = PagesCollection.conversationInfoPage
 					.getCurrentConversationName();
 		} else {
 			contact = usrMgr.replaceAliasesOccurences(contact,
 					FindBy.NAME_ALIAS);
 		}
-		Assert.assertTrue(CommonOSXSteps.senderPages.getConversationInfoPage()
+		Assert.assertTrue(PagesCollection.conversationInfoPage
 				.isConversationNameEquals(contact));
 	}
 
 	@Then("I see that conversation has (.*) people")
 	public void ISeeThatConversationHasPeople(int expectedNumberOfPeople) {
-		ConversationInfoPage conversationInfo = CommonOSXSteps.senderPages
-				.getConversationInfoPage();
-		int actualNumberOfPeople = conversationInfo
+		int actualNumberOfPeople = PagesCollection.conversationInfoPage
 				.numberOfPeopleInConversation();
 		Assert.assertTrue("Actual number of people in chat ("
 				+ actualNumberOfPeople + ") is not the same as expected ("
@@ -90,9 +78,8 @@ public class ConversationInfoPageSteps {
 
 	@Then("I see (.*) participants avatars")
 	public void ISeeParticipantsAvatars(int number) {
-		ConversationInfoPage conversationInfo = CommonOSXSteps.senderPages
-				.getConversationInfoPage();
-		int actual = conversationInfo.numberOfParticipantsAvatars();
+		int actual = PagesCollection.conversationInfoPage
+				.numberOfParticipantsAvatars();
 		Assert.assertTrue("Actual number of avatars (" + actual
 				+ ") is not the same as expected (" + number + ")",
 				actual == number);
@@ -100,42 +87,35 @@ public class ConversationInfoPageSteps {
 
 	@When("I select to remove user from group chat")
 	public void ISelectToRemoveUserFromGroupChat() {
-		ConversationInfoPage conversationInfo = CommonOSXSteps.senderPages
-				.getConversationInfoPage();
-		conversationInfo.tryRemoveUser();
+		PagesCollection.conversationInfoPage.tryRemoveUser();
 	}
 
 	@Then("I see confirmation request about removing user")
 	public void ISeeConfirmationRequestAboutRemovingUser() {
-		ConversationInfoPage conversationInfo = CommonOSXSteps.senderPages
-				.getConversationInfoPage();
 		Assert.assertTrue(
 				"There is no confirmation request on removing user from group chat",
-				conversationInfo.isRemoveUserConfirmationAppear());
+				PagesCollection.conversationInfoPage
+						.isRemoveUserConfirmationAppear());
 	}
 
 	@Then("I see user (.*) personal info")
 	public void ISeeUserPersonalInfo(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		ConversationInfoPage conversationInfo = CommonOSXSteps.senderPages
-				.getConversationInfoPage();
-		conversationInfo.isContactPersonalInfoAppear(contact);
+		PagesCollection.conversationInfoPage
+				.isContactPersonalInfoAppear(contact);
 	}
 
 	@When("I return to participant view from personal info")
 	public void IReturnToParticipantViewFromPersonalInfo() {
-		ConversationInfoPage conversationInfo = CommonOSXSteps.senderPages
-				.getConversationInfoPage();
-		conversationInfo.goBackFromUserProfileView();
+		PagesCollection.conversationInfoPage.goBackFromUserProfileView();
 	}
 
 	@Then("^I see (.*) name in Conversation info$")
 	public void ISeeContactNameInConversationInfo(String contact)
 			throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		ConversationInfoPage conversationInfo = CommonOSXSteps.senderPages
-				.getConversationInfoPage();
-		Assert.assertTrue(conversationInfo.isUserNameDisplayed(contact));
+		Assert.assertTrue(PagesCollection.conversationInfoPage
+				.isUserNameDisplayed(contact));
 	}
 
 	@Then("^I see (.*) email in Conversation info$")
@@ -146,11 +126,9 @@ public class ConversationInfoPageSteps {
 		String email = dstUser.getEmail();
 		Assert.assertNotNull(
 				"Can't find an e-mail for contact user " + contact, email);
-		ConversationInfoPage conversationInfo = CommonOSXSteps.senderPages
-				.getConversationInfoPage();
 		log.debug("Looking for email " + email + " in single chat user info.");
-		Assert.assertTrue(conversationInfo.isEmailButtonExists(email
-				.toLowerCase()));
+		Assert.assertTrue(PagesCollection.conversationInfoPage
+				.isEmailButtonExists(email.toLowerCase()));
 	}
 
 	@Then("^I dont see (.*) email in Conversation info$")
@@ -161,25 +139,22 @@ public class ConversationInfoPageSteps {
 		String email = dstUser.getEmail();
 		Assert.assertNotNull(
 				"Can't find an e-mail for contact user " + contact, email);
-		ConversationInfoPage conversationInfo = CommonOSXSteps.senderPages
-				.getConversationInfoPage();
 		log.debug("Looking for email " + email + " in single chat user info.");
-		Assert.assertFalse(conversationInfo.isEmailButtonExists(email
-				.toLowerCase()));
+		Assert.assertFalse(PagesCollection.conversationInfoPage
+				.isEmailButtonExists(email.toLowerCase()));
 	}
 
 	@Then("^I see (.*) photo in Conversation info$")
 	public void ISeeContactPhotoInConversationInfo(String photo)
 			throws Throwable {
-		ConversationInfoPage conversationInfo = CommonOSXSteps.senderPages
-				.getConversationInfoPage();
-		conversationInfo.openImageInPopup();
-		BufferedImage screen = conversationInfo.takeScreenshot();
+		PagesCollection.conversationInfoPage.openImageInPopup();
+		BufferedImage screen = PagesCollection.conversationInfoPage
+				.takeScreenshot();
 		BufferedImage picture = ImageUtil
 				.readImageFromFile(OSXExecutionContext.userDocuments + "/"
 						+ photo);
 
-		NSPoint avatarWinSize = conversationInfo
+		NSPoint avatarWinSize = PagesCollection.conversationInfoPage
 				.retrieveAvatarFullScreenWindowSize();
 
 		if (OSXCommonUtils.isRetinaDisplay(screen.getWidth(),
@@ -197,48 +172,48 @@ public class ConversationInfoPageSteps {
 				String.format(
 						"Overlap between two images has no enough score. Expected >= %f, current = %f",
 						minOverlapScore, score), score >= minOverlapScore);
-		conversationInfo.closeImagePopup();
+		PagesCollection.conversationInfoPage.closeImagePopup();
 	}
 
 	@Then("^I see add new people button$")
 	public void ISeeAddNewPeopleButton() throws Throwable {
-		Assert.assertTrue(CommonOSXSteps.senderPages.getConversationInfoPage()
+		Assert.assertTrue(PagesCollection.conversationInfoPage
 				.isAddPeopleButtonExists());
 	}
 
 	@Then("^I see block a person button$")
 	public void ISeeBlockAPersonButton() throws Throwable {
-		Assert.assertTrue(CommonOSXSteps.senderPages.getConversationInfoPage()
+		Assert.assertTrue(PagesCollection.conversationInfoPage
 				.isBlockUserButtonExists());
 	}
 
 	@Then("^I see open conversation button$")
 	public void ISeeOpenConversationButton() {
-		Assert.assertTrue(CommonOSXSteps.senderPages.getConversationInfoPage()
+		Assert.assertTrue(PagesCollection.conversationInfoPage
 				.isOpenConversationButtonExists());
 	}
 
 	@Then("^I see pending button$")
 	public void ISeePendingButton() {
-		Assert.assertTrue(CommonOSXSteps.senderPages.getConversationInfoPage()
+		Assert.assertTrue(PagesCollection.conversationInfoPage
 				.isPendingButtonExists());
 	}
 
 	@Then("^I see connect button$")
 	public void ISeeConnectButton() {
-		Assert.assertTrue(CommonOSXSteps.senderPages.getConversationInfoPage()
+		Assert.assertTrue(PagesCollection.conversationInfoPage
 				.isConnectButtonExists());
 	}
 
 	@Then("^I see remove person from conversation button$")
 	public void ISeeRemovePersonFromConversationButton() {
-		Assert.assertTrue(CommonOSXSteps.senderPages.getConversationInfoPage()
+		Assert.assertTrue(PagesCollection.conversationInfoPage
 				.isRemoveUserFromConversationButtonExists());
 	}
 
 	@Then("^I see connection request message (.*)$")
 	public void ISeeConnectionRequestMessage(String message) {
-		Assert.assertTrue(CommonOSXSteps.senderPages.getConversationInfoPage()
+		Assert.assertTrue(PagesCollection.conversationInfoPage
 				.isSentConnectionRequestMessageExists(message));
 	}
 }

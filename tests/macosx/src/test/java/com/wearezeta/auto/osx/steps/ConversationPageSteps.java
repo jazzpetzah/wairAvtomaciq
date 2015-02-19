@@ -85,15 +85,13 @@ public class ConversationPageSteps {
 		}
 		PagesCollection.conversationPage.writeNewMessage("");
 		PagesCollection.conversationPage.openChooseImageDialog();
-		CommonOSXSteps.senderPages.setChoosePicturePage(new ChoosePicturePage(
-				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath));
+		PagesCollection.choosePicturePage = new ChoosePicturePage(
+				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
 
-		ChoosePicturePage choosePicturePage = CommonOSXSteps.senderPages
-				.getChoosePicturePage();
 		Assert.assertTrue("Choose picture page were not opened.",
-				choosePicturePage.isVisible());
+				PagesCollection.choosePicturePage.isVisible());
 
-		choosePicturePage.openImage(imageFilename);
+		PagesCollection.choosePicturePage.openImage(imageFilename);
 	}
 
 	@Then("^I see HD picture (.*) in conversation with (.*)$")
@@ -366,28 +364,22 @@ public class ConversationPageSteps {
 		IScrollDownToConversation();
 		PagesCollection.conversationPage.writeNewMessage("");
 		PagesCollection.conversationPage.openConversationPeoplePicker();
-		CommonOSXSteps.senderPages
-				.setConversationInfoPage(new ConversationInfoPage(
-						OSXExecutionContext.appiumUrl,
-						OSXExecutionContext.wirePath));
-		ConversationInfoPage conversationPeople = CommonOSXSteps.senderPages
-				.getConversationInfoPage();
-		if (!conversationPeople.isPeoplePopoverDisplayed()) {
+		PagesCollection.conversationInfoPage = new ConversationInfoPage(
+				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+		if (!PagesCollection.conversationInfoPage.isPeoplePopoverDisplayed()) {
 			PagesCollection.conversationPage.openConversationPeoplePicker();
 		}
-		CommonOSXSteps.senderPages.setPeoplePickerPage(conversationPeople
-				.openPeoplePicker());
+		PagesCollection.peoplePickerPage = PagesCollection.conversationInfoPage
+				.openPeoplePicker();
 	}
 
 	@When("I open Conversation info")
 	public void WhenIOpenConversationInfo() throws Exception {
 		PagesCollection.conversationPage.writeNewMessage("");
 		PagesCollection.conversationPage.openConversationPeoplePicker();
-		if (CommonOSXSteps.senderPages.getConversationInfoPage() == null) {
-			CommonOSXSteps.senderPages
-					.setConversationInfoPage(new ConversationInfoPage(
-							OSXExecutionContext.appiumUrl,
-							OSXExecutionContext.wirePath));
+		if (PagesCollection.conversationInfoPage == null) {
+			PagesCollection.conversationInfoPage = new ConversationInfoPage(
+					OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
 		}
 	}
 
@@ -516,7 +508,7 @@ public class ConversationPageSteps {
 	@Then("^I see conversation name (.*) in conversation$")
 	public void ISeeConversationNameInConversation(String name) {
 		if (name.equals(OSXLocators.RANDOM_KEYWORD)) {
-			name = CommonOSXSteps.senderPages.getConversationInfoPage()
+			name = PagesCollection.conversationInfoPage
 					.getCurrentConversationName();
 		}
 		String result = PagesCollection.conversationPage

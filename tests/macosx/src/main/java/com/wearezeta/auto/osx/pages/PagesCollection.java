@@ -11,15 +11,20 @@ public class PagesCollection extends AbstractPagesCollection {
 	public static LoginPage loginPage = null;
 
 	public static ContactListPage contactListPage = null;
-	
+
 	public static ConversationPage conversationPage = null;
-	
-	private ChoosePicturePage choosePicturePage = null;
-	private PeoplePickerPage peoplePickerPage = null;
-	private ConversationInfoPage conversationInfoPage = null;
-	private UserProfilePage userProfilePage = null;
-	private RegistrationPage registrationPage = null;
-	private ChangePasswordPage changePasswordPage = null;
+
+	public static ChoosePicturePage choosePicturePage = null;
+
+	public static PeoplePickerPage peoplePickerPage = null;
+
+	public static ConversationInfoPage conversationInfoPage = null;
+
+	public static UserProfilePage userProfilePage = null;
+
+	public static RegistrationPage registrationPage = null;
+
+	public static ChangePasswordPage changePasswordPage = null;
 
 	public void closeAllPages() throws Exception {
 		for (Field f : this.getClass().getDeclaredFields()) {
@@ -31,54 +36,5 @@ public class PagesCollection extends AbstractPagesCollection {
 				}
 			}
 		}
-	}
-
-	public ChoosePicturePage getChoosePicturePage() {
-		return choosePicturePage;
-	}
-
-	public void setChoosePicturePage(ChoosePicturePage choosePicturePage) {
-		this.choosePicturePage = choosePicturePage;
-	}
-
-	public PeoplePickerPage getPeoplePickerPage() {
-		return peoplePickerPage;
-	}
-
-	public void setPeoplePickerPage(PeoplePickerPage peoplePickerPage) {
-		this.peoplePickerPage = peoplePickerPage;
-	}
-
-	public ConversationInfoPage getConversationInfoPage() {
-		return conversationInfoPage;
-	}
-
-	public void setConversationInfoPage(
-			ConversationInfoPage conversationInfoPage) {
-		this.conversationInfoPage = conversationInfoPage;
-	}
-
-	public UserProfilePage getUserProfilePage() {
-		return userProfilePage;
-	}
-
-	public void setUserProfilePage(UserProfilePage userProfilePage) {
-		this.userProfilePage = userProfilePage;
-	}
-
-	public RegistrationPage getRegistrationPage() {
-		return registrationPage;
-	}
-
-	public void setRegistrationPage(RegistrationPage registrationPage) {
-		this.registrationPage = registrationPage;
-	}
-
-	public ChangePasswordPage getChangePasswordPage() {
-		return changePasswordPage;
-	}
-
-	public void setChangePasswordPage(ChangePasswordPage page) {
-		this.changePasswordPage = page;
 	}
 }

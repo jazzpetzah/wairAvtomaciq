@@ -83,16 +83,15 @@ public class PerformanceSteps {
 					try {
 						PagesCollection.conversationPage
 								.shortcutChooseImageDialog();
-						CommonOSXSteps.senderPages
-								.setChoosePicturePage(new ChoosePicturePage(
-										OSXExecutionContext.appiumUrl,
-										OSXExecutionContext.wirePath));
+						PagesCollection.choosePicturePage = new ChoosePicturePage(
+								OSXExecutionContext.appiumUrl,
+								OSXExecutionContext.wirePath);
 
-						ChoosePicturePage choosePicturePage = CommonOSXSteps.senderPages
-								.getChoosePicturePage();
-						Assert.assertTrue(choosePicturePage.isVisible());
+						Assert.assertTrue(PagesCollection.choosePicturePage
+								.isVisible());
 
-						choosePicturePage.openImage(picturename);
+						PagesCollection.choosePicturePage
+								.openImage(picturename);
 					} catch (Exception ex) {
 						perfCommon.getLogger().debug("Image posting failed: ",
 								ex);
