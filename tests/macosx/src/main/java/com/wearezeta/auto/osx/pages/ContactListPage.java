@@ -241,17 +241,21 @@ public class ContactListPage extends OSXPage {
 	}
 	
 	public void pressLaterButton() throws Exception {
-		int count = 0;
-		boolean isFound = false;
-		do {
+		if (DriverUtils.waitUntilElementAppears(driver,
+				shareContactsLaterButton, 5)) {
+			int count = 0;
 			try {
-				shareContactsLaterButton.click();
-
-				DriverUtils.waitUntilElementDissapear(driver, By.xpath(OSXLocators.idShareContactsLaterButton));
-				isFound = true;
-			} catch (NoSuchElementException e) { }
-			count++;
-		} while (count < 10 && !isFound);
+				DriverUtils.setImplicitWaitValue(driver, 3);
+				do {
+					count++;
+					shareContactsLaterButton.click();
+					Thread.sleep(1000);
+				} while (count < 10);
+			} catch (NoSuchElementException e) {
+			} finally {
+				DriverUtils.setDefaultImplicitWait(driver);
+			}
+		}
 	}
 	
 	public int numberOfContacts() {
