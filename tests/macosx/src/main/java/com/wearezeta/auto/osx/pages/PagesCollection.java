@@ -22,7 +22,7 @@ public class PagesCollection extends AbstractPagesCollection {
 			if (OSXPage.class.isAssignableFrom(f.getType())) {
 				OSXPage page = (OSXPage) f.get(this);
 				if (page != null) {
-					page.Close();
+					page.close();
 				}
 			}
 		}

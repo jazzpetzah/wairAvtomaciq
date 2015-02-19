@@ -93,18 +93,32 @@ public class WebCommonUtils extends CommonUtils {
 		return ip;
 	}
 
-	public static void putScriptsOnExecutionNode(String node) throws Exception {
+	public static void createTmpDirectoryOnNode(String filesDir)
+			throws Exception {
+		String commandTemplate = SSHPASS_PATH
+				+ "sshpass -p %s "
+				+ "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
+				+ "%s@%s mkdir -p %s";
+		String command = String.format(commandTemplate,
+				getJenkinsSuperUserPassword(CommonUtils.class),
+				getJenkinsSuperUserLogin(CommonUtils.class),
+				WebAppExecutionContext.seleniumNodeIp, filesDir);
+		WebCommonUtils
+				.executeOsXCommand(new String[] { "bash", "-c", command });
+	}
+
+	public static void putFilesOnExecutionNode(String node, String filesDir)
+			throws Exception {
+		createTmpDirectoryOnNode(filesDir);
 		String commandTemplate = SSHPASS_PATH
 				+ "sshpass -p %s "
 				+ "scp -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 				+ "%s/* %s@%s:%s";
 
 		String command = String.format(commandTemplate,
-				getJenkinsSuperUserPassword(CommonUtils.class),
-				WebAppExecutionContext.temporaryScriptsLocation,
+				getJenkinsSuperUserPassword(CommonUtils.class), filesDir,
 				getJenkinsSuperUserLogin(CommonUtils.class),
-				WebAppExecutionContext.seleniumNodeIp,
-				WebAppExecutionContext.temporaryScriptsLocation);
+				WebAppExecutionContext.seleniumNodeIp, filesDir);
 		WebCommonUtils
 				.executeOsXCommand(new String[] { "bash", "-c", command });
 	}

@@ -46,6 +46,12 @@ public class ParticipantsPopupPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.UserProfilePopupPage.xpathAddPeopleMessage)
 	private WebElement addPeopleMessage;
 	
+	@FindBy(how = How.XPATH, using = WebAppLocators.UserProfilePopupPage.xpathConversationTitle)
+	private WebElement conversationTitle;
+	
+	@FindBy(how = How.XPATH, using = WebAppLocators.UserProfilePopupPage.xpathConversationTitleInput)
+	private WebElement conversationTitleInput;
+	
 
 	public ParticipantsPopupPage(String URL, String path) throws Exception {
 		super(URL, path);
@@ -120,5 +126,15 @@ public class ParticipantsPopupPage extends WebPage {
 		String xpath = String.format(WebAppLocators.UserProfilePopupPage.xpathParticipantName, name);
 		WebElement participant = driver.findElementByXPath(xpath);
 		participant.click();
+	}
+
+	public void setConversationTitle(String title) {
+		conversationTitle.click();
+		conversationTitleInput.clear();
+		conversationTitleInput.sendKeys(title+"\n");
+	}
+	
+	public String getConversationTitle() {
+		return conversationTitle.getText();
 	}
 }

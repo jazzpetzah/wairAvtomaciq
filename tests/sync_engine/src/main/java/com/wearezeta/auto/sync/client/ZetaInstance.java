@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.BuildVersionInfo;
 import com.wearezeta.auto.common.misc.ClientDeviceInfo;
@@ -14,61 +14,66 @@ import com.wearezeta.auto.sync.ExecutionContext;
 import com.wearezeta.auto.sync.SyncEngineUtil;
 
 public class ZetaInstance {
-	private static final Logger log = ZetaLogger.getLog(ZetaInstance.class.getSimpleName());
-	//settings
+	private static final Logger log = ZetaLogger.getLog(ZetaInstance.class
+			.getSimpleName());
+	// settings
 	private boolean isEnabled = false;
 	private boolean isSendUsingBackend = false;
 	private int messagesToSend = -1;
 	private int messagesSendingInterval = 0;
 
-	private String platform;
-	
-	//state
+	private Platform platform;
+
+	// state
 	private InstanceState state = InstanceState.CREATED;
 
 	private ZetaSender sender;
 	private ZetaListener listener;
-	
+
 	private ClientUser userInstance;
-	
-	//results
+
+	// results
 	private long startupTimeMs;
+	@SuppressWarnings("unused")
 	private long loginAndContactListLoadingTimeMs;
+	@SuppressWarnings("unused")
 	private long conversationLoadingTimeMs;
 	private boolean isOrderCorrect;
 	private ArrayList<MessageEntry> messagesListAfterTest;
 	private BuildVersionInfo versionInfo;
 	private ClientDeviceInfo deviceInfo;
-	
-	public ZetaInstance(String platform) {
+
+	public ZetaInstance(Platform platform) {
 		this.platform = platform;
-		
-		if (platform.equals(CommonUtils.PLATFORM_NAME_ANDROID)) {
+
+		switch (platform) {
+		case Android:
 			try {
 				isEnabled = SyncEngineUtil
-					.getAndroidClientEnabledFromConfig(ExecutionContext.class);
+						.getAndroidClientEnabledFromConfig(ExecutionContext.class);
 			} catch (Exception e) {
 				isEnabled = true;
 				log.warn("Failed to read property android.client.enabled from config file. Set to 'true' by default");
 			}
-			
+
 			try {
 				isSendUsingBackend = SyncEngineUtil
 						.getAndroidBackendSenderFromConfig(this.getClass());
 			} catch (Exception e) {
 				isSendUsingBackend = false;
 				log.warn("Failed to read property android.backend.sender from config file. Set to 'false' by default");
-				
+
 			}
-		} else if (platform.equals(CommonUtils.PLATFORM_NAME_IOS)) {
+			break;
+		case iOS:
 			try {
 				isEnabled = SyncEngineUtil
-					.getIosClientEnabledFromConfig(ExecutionContext.class);
+						.getIosClientEnabledFromConfig(ExecutionContext.class);
 			} catch (Exception e) {
 				isEnabled = true;
 				log.warn("Failed to read property ios.client.enabled from config file. Set to 'true' by default");
 			}
-			
+
 			try {
 				isSendUsingBackend = SyncEngineUtil
 						.getIosBackendSenderFromConfig(this.getClass());
@@ -76,16 +81,16 @@ public class ZetaInstance {
 				isSendUsingBackend = false;
 				log.warn("Failed to read property ios.backend.sender from config file. Set to 'false' by default");
 			}
-		} else if (platform.equals(CommonUtils.PLATFORM_NAME_OSX)) {
-
+			break;
+		case Mac:
 			try {
 				isEnabled = SyncEngineUtil
-					.getOSXClientEnabledFromConfig(ExecutionContext.class);
+						.getOSXClientEnabledFromConfig(ExecutionContext.class);
 			} catch (Exception e) {
 				isEnabled = true;
 				log.warn("Failed to read property osx.client.enabled from config file. Set to 'true' by default");
 			}
-			
+
 			try {
 				isSendUsingBackend = SyncEngineUtil
 						.getOSXBackendSenderFromConfig(this.getClass());
@@ -93,64 +98,67 @@ public class ZetaInstance {
 				isSendUsingBackend = false;
 				log.warn("Failed to read property osx.backend.sender from config file. Set to 'false' by default");
 			}
-		} else {
+			break;
+		default:
 			state = InstanceState.ERROR_WRONG_PLATFORM;
 		}
-		
+
 		try {
-			messagesSendingInterval = SyncEngineUtil.getAcceptanceMaxSendingIntervalFromConfig(ExecutionContext.class);
-			
+			messagesSendingInterval = SyncEngineUtil
+					.getAcceptanceMaxSendingIntervalFromConfig(ExecutionContext.class);
+
 		} catch (Exception e) {
 			messagesSendingInterval = 0;
 			log.warn("Failed to read property acceptance.max.sending.interval.sec from config file. Set to '0' by default");
 		}
-		
+
 		try {
-			messagesToSend = SyncEngineUtil.getClientMessagesCount(ExecutionContext.class);
-			
+			messagesToSend = SyncEngineUtil
+					.getClientMessagesCount(ExecutionContext.class);
+
 		} catch (Exception e) {
 			messagesToSend = -1;
 			log.warn("Failed to read property acceptance.messages.count from config file. Set to '0' by default");
 		}
-		
+
 		if (isEnabled) {
 			createSender();
 			createListener();
 		}
 	}
-	
+
 	public void createSender() {
 		sender = new ZetaSender(this, messagesToSend);
 	}
-	
+
 	public void createListener() {
 		listener = new ZetaListener(this);
 	}
-	
+
 	public ZetaSender sender() {
 		return sender;
 	}
-	
+
 	public ZetaListener listener() {
 		return listener;
 	}
-	
+
 	public InstanceState getState() {
 		return state;
 	}
-	
+
 	public void setState(InstanceState state) {
 		this.state = state;
 	}
-	
+
 	public void setIsSendUsingBackend(boolean value) {
 		isSendUsingBackend = value;
 	}
-	
+
 	public boolean getIsSendUsingBackend() {
 		return isSendUsingBackend;
 	}
-	
+
 	public boolean isEnabled() {
 		return isEnabled;
 	}
@@ -167,11 +175,11 @@ public class ZetaInstance {
 		this.userInstance = userInstance;
 	}
 
-	public String getPlatform() {
+	public Platform getPlatform() {
 		return platform;
 	}
 
-	public void setPlatform(String platform) {
+	public void setPlatform(Platform platform) {
 		this.platform = platform;
 	}
 
@@ -211,7 +219,8 @@ public class ZetaInstance {
 		return messagesListAfterTest;
 	}
 
-	public void setMessagesListAfterTest(ArrayList<MessageEntry> messagesListAfterTest) {
+	public void setMessagesListAfterTest(
+			ArrayList<MessageEntry> messagesListAfterTest) {
 		this.messagesListAfterTest = messagesListAfterTest;
 	}
 
