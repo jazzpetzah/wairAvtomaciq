@@ -60,7 +60,7 @@ public class PeoplePickerPage extends OSXPage {
 
 	private String url;
 	private String path;
-	
+
 	public PeoplePickerPage(String URL, String path) throws Exception {
 		super(URL, path);
 		this.url = URL;
@@ -241,8 +241,10 @@ public class PeoplePickerPage extends OSXPage {
 	}
 
 	public boolean isTopPeopleVisible() {
-		return DriverUtils.waitUntilElementAppears(driver,
-				By.xpath(OSXLocators.xpathPeoplePickerTopContactsSectionHeader));
+		return DriverUtils
+				.waitUntilElementAppears(
+						driver,
+						By.xpath(OSXLocators.xpathPeoplePickerTopContactsSectionHeader));
 	}
 
 	public boolean isCreateConversationButtonVisible() {
