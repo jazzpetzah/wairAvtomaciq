@@ -29,7 +29,11 @@ public class CommonUtils {
 	private static final String IOS_PING_IMAGE = "ios_ping_image.png";
 	private static final String IOS_HOT_PING_IMAGE = "ios_hot_ping_image.png";
 	private static final String IOS_AVATAR_CLOCK_IMAGE = "searchedAvatarWithClock.png";
-
+	private static final String MEDIABAR_PLAY_IMAGE = "android_mediabar_play_image.png";
+	private static final String MEDIABAR_PAUSE_IMAGE = "android_mediabar_pause_image.png";
+	private static final String MEDIA_PLAY_IMAGE = "android_media_play_image.png";
+	private static final String MEDIA_PAUSE_IMAGE = "android_media_pause_image.png";
+	
 	private static final Random rand = new Random();
 	public static final int BACKEND_SYNC_TIMEOUT = 5000 + rand.nextInt(4000); // milliseconds
 
@@ -150,7 +154,27 @@ public class CommonUtils {
 				+ RESULT_USER_IMAGE;
 		return path;
 	}
+	
+	public static String getMediaBarPlayIconPath(Class<?> c) throws Exception {
+		String path = getValueFromConfig(c, "defaultImagesPath") + MEDIABAR_PLAY_IMAGE;
+		return path;
+	}
 
+	public static String getMediaBarPauseIconPath(Class<?> c) throws Exception {
+		String path = getValueFromConfig(c, "defaultImagesPath") + MEDIABAR_PAUSE_IMAGE;
+		return path;
+	}
+	
+	public static String getMediaPlayIconPath(Class<?> c) throws Exception {
+		String path = getValueFromConfig(c, "defaultImagesPath") + MEDIA_PLAY_IMAGE;
+		return path;
+	}
+
+	public static String getMediaPauseIconPath(Class<?> c) throws Exception {
+		String path = getValueFromConfig(c, "defaultImagesPath") + MEDIA_PAUSE_IMAGE;
+		return path;
+	}
+	
 	public static String getPictureResultsPathFromConfig(Class<?> c)
 			throws Exception {
 		return getValueFromConfig(c, "pictureResultsPath");

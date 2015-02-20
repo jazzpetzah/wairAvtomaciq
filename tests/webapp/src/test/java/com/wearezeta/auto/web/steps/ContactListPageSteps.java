@@ -189,15 +189,15 @@ public class ContactListPageSteps {
 	}
 	
 	/**
-	 * Mute conversation by choosing it from Contact List
+	 * Toggle mute button for conversation by choosing it from Contact List
 	 * 
-	 * @step. ^I mute conversation (.*)$
+	 * @step. ^I toggle mute for conversation (.*)$
 	 * 
 	 * @param contact
 	 *            conversation name string
 	 * @throws InterruptedException
 	 */
-	@When("^I mute conversation (.*)$")
+	@When("^I toggle mute for conversation (.*)$")
 	public void IClickMuteButton(String contact) throws InterruptedException {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		PagesCollection.contactListPage.clickActionsButtonForContact(contact);
@@ -218,5 +218,19 @@ public class ContactListPageSteps {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 
 		Assert.assertTrue(PagesCollection.contactListPage.isConversationMuted(contact));
+	}
+	
+	/**
+	 * Verify that conversation is muted by checking mute icon is invisible
+	 * 
+	 * @step. ^I see that conversation (.*) is not muted$
+	 * @param contact
+	 * 			conversation name string
+	 */
+	@When("^I see that conversation (.*) is not muted$")
+	public void ISeeConversationIsNotMuted(String contact) {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+
+		Assert.assertFalse(PagesCollection.contactListPage.isConversationMuted(contact));
 	}
 }

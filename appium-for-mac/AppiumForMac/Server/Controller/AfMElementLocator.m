@@ -92,7 +92,6 @@
 		NSMutableDictionary *pathMap = [NSMutableDictionary new];
 		GDataXMLDocument *doc = [self.session xmlPageSourceFromElement:baseElement pathMap:pathMap];
         NSString* xmlSource = [[NSString alloc] initWithData:doc.XMLData encoding:NSUTF8StringEncoding];
-        NSLog(@"%@", xmlSource);
 		NSError *error;
 		NSArray *matches = [doc nodesForXPath:self.value error:&error];
 		if (error != nil)

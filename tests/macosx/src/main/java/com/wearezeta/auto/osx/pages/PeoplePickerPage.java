@@ -29,6 +29,9 @@ public class PeoplePickerPage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathMainWindow)
 	private WebElement mainWindow;
 
+	@FindBy(how = How.NAME, using = OSXLocators.namePeoplePickerAddToConversationButton)
+	private WebElement addToConversationButton;
+
 	@FindBy(how = How.NAME, using = OSXLocators.namePeoplePickerCreateConversationButton)
 	private WebElement createConversationButton;
 
@@ -57,7 +60,7 @@ public class PeoplePickerPage extends OSXPage {
 
 	private String url;
 	private String path;
-	
+
 	public PeoplePickerPage(String URL, String path) throws Exception {
 		super(URL, path);
 		this.url = URL;
@@ -201,18 +204,14 @@ public class PeoplePickerPage extends OSXPage {
 
 	public boolean isPeoplePickerPageVisible() throws InterruptedException,
 			IOException {
-		boolean flag = false;
-		try {
-			peoplePickerSearchResultTable.isEnabled();
-			flag = true;
-		} catch (NoSuchElementException e) {
+		boolean isFound = false;
+		isFound = DriverUtils.waitUntilElementAppears(driver,
+				peoplePickerSearchResultTable, 5);
+		if (!isFound) {
+			isFound = DriverUtils.waitUntilElementAppears(driver,
+					peoplePickerTopContactsSectionHeader, 5);
 		}
-		try {
-			peoplePickerTopContactsSectionHeader.isEnabled();
-			flag = true;
-		} catch (NoSuchElementException e) {
-		}
-		return flag;
+		return isFound;
 	}
 
 	public void closePeoplePicker() {
@@ -230,27 +229,33 @@ public class PeoplePickerPage extends OSXPage {
 
 	public void chooseUserInSearchResults(String user) throws Exception {
 		selectUserInSearchResults(user);
-		DriverUtils.setImplicitWaitValue(driver, 3);
-		try {
-			addSelectedUsersToConversation();
-		} catch (NoSuchElementException e) {
-		} finally {
-			DriverUtils.setDefaultImplicitWait(driver);
-		}
+		addSelectedUsersToConversation();
 	}
 
 	public ConversationPage addSelectedUsersToConversation() throws Exception {
-		createConversationButton.click();
+		if (isCreateConversationButtonVisible())
+			createConversationButton.click();
+		else
+			addToConversationButton.click();
 		return new ConversationPage(url, path);
 	}
 
 	public boolean isTopPeopleVisible() {
-		return DriverUtils.waitUntilElementAppears(driver,
-				By.xpath(OSXLocators.xpathPeoplePickerTopContactsSectionHeader));
+		return DriverUtils
+				.waitUntilElementAppears(
+						driver,
+						By.xpath(OSXLocators.xpathPeoplePickerTopContactsSectionHeader),
+						3);
 	}
 
 	public boolean isCreateConversationButtonVisible() {
-		return NSPoint.fromString(createConversationButton.getAttribute("AXSize")).y() > 0;
+		if (DriverUtils.waitUntilElementAppears(driver,
+				createConversationButton, 5)) {
+			return NSPoint.fromString(
+					createConversationButton.getAttribute("AXSize")).y() > 0;
+		} else {
+			return false;
+		}
 	}
 
 	public void selectUserFromTopPeople() throws Exception {

@@ -1,6 +1,7 @@
 package com.wearezeta.auto.osx.steps;
 
 import java.awt.image.BufferedImage;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -15,12 +16,11 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;
-import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationInfoPage;
-import com.wearezeta.auto.osx.pages.ConversationPage;
-import com.wearezeta.auto.osx.pages.OSXPage;
+import com.wearezeta.auto.osx.pages.PagesCollection;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -47,15 +47,14 @@ public class ConversationPageSteps {
 	public void UserSendsRandomMessageToConversation(
 			String msgFromUserNameAlias, String dstUserNameAlias)
 			throws Exception {
-		randomMessage = CommonUtils.generateRandomString(10);
+		randomMessage = CommonUtils.generateGUID();
 		CommonSteps.getInstance().UserSentMessageToUser(msgFromUserNameAlias,
 				dstUserNameAlias, randomMessage);
 	}
 
 	@When("I write message (.*)")
 	public void IWriteMessage(String message) {
-		CommonOSXSteps.senderPages.getConversationPage().writeNewMessage(
-				message);
+		PagesCollection.conversationPage.writeNewMessage(message);
 	}
 
 	/**
@@ -67,8 +66,8 @@ public class ConversationPageSteps {
 	 */
 	@When("I can not write a random message")
 	public void ICanNotWriteAMessage() {
-		boolean messageTextArea = CommonOSXSteps.senderPages
-				.getConversationPage().isMessageTextAreaVisible();
+		boolean messageTextArea = PagesCollection.conversationPage
+				.isMessageTextAreaVisible();
 		Assert.assertFalse(
 				"This is a pending user, message area should be hidden and not possible to send any message",
 				messageTextArea);
@@ -76,31 +75,24 @@ public class ConversationPageSteps {
 
 	@When("I send message")
 	public void WhenISendMessage() {
-		CommonOSXSteps.senderPages.getConversationPage().sendNewMessage();
+		PagesCollection.conversationPage.sendNewMessage();
 	}
 
 	@When("I send picture (.*)")
 	public void WhenISendPicture(String imageFilename) throws Exception {
 		if (beforeNumberOfImages < 0) {
-			beforeNumberOfImages = CommonOSXSteps.senderPages
-					.getConversationPage().getNumberOfImageEntries();
+			beforeNumberOfImages = PagesCollection.conversationPage
+					.getNumberOfImageEntries();
 		}
-		CommonOSXSteps.senderPages.getConversationPage().writeNewMessage("");
-		CommonOSXSteps.senderPages.getConversationPage()
-				.openChooseImageDialog();
-		CommonOSXSteps.senderPages
-				.setChoosePicturePage(new ChoosePicturePage(
-						CommonUtils
-								.getOsxAppiumUrlFromConfig(ContactListPage.class),
-						CommonUtils
-								.getOsxApplicationPathFromConfig(ContactListPage.class)));
+		PagesCollection.conversationPage.writeNewMessage("");
+		PagesCollection.conversationPage.openChooseImageDialog();
+		PagesCollection.choosePicturePage = new ChoosePicturePage(
+				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
 
-		ChoosePicturePage choosePicturePage = CommonOSXSteps.senderPages
-				.getChoosePicturePage();
 		Assert.assertTrue("Choose picture page were not opened.",
-				choosePicturePage.isVisible());
+				PagesCollection.choosePicturePage.isVisible());
 
-		choosePicturePage.openImage(imageFilename);
+		PagesCollection.choosePicturePage.openImage(imageFilename);
 	}
 
 	@Then("^I see HD picture (.*) in conversation with (.*)$")
@@ -112,8 +104,8 @@ public class ConversationPageSteps {
 
 		boolean isNumberIncreased = false;
 		for (int i = 0; i < 60; i++) {
-			afterNumberOfImages = CommonOSXSteps.senderPages
-					.getConversationPage().getNumberOfImageEntries();
+			afterNumberOfImages = PagesCollection.conversationPage
+					.getNumberOfImageEntries();
 			if (afterNumberOfImages == beforeNumberOfImages + 1) {
 				isNumberIncreased = true;
 				break;
@@ -155,7 +147,8 @@ public class ConversationPageSteps {
 		} while (retry == true && retriesCount < 5);
 
 		BufferedImage origSentPicture = ImageUtil
-				.readImageFromFile(OSXPage.imagesPath + filename);
+				.readImageFromFile(OSXExecutionContext.userDocuments + "/"
+						+ filename);
 
 		Assert.assertNotNull(
 				"Can't get picture asset from conversation via backend.\n"
@@ -172,7 +165,7 @@ public class ConversationPageSteps {
 
 	@Then("I see random message in conversation$")
 	public void ThenISeeRandomMessageInConversation() {
-		Assert.assertTrue(CommonOSXSteps.senderPages.getConversationPage()
+		Assert.assertTrue(PagesCollection.conversationPage
 				.isMessageSent(randomMessage));
 	}
 
@@ -182,8 +175,8 @@ public class ConversationPageSteps {
 
 		boolean isNumberIncreased = false;
 		for (int i = 0; i < 10; i++) {
-			afterNumberOfImages = CommonOSXSteps.senderPages
-					.getConversationPage().getNumberOfImageEntries();
+			afterNumberOfImages = PagesCollection.conversationPage
+					.getNumberOfImageEntries();
 			if (afterNumberOfImages == beforeNumberOfImages + 1) {
 				isNumberIncreased = true;
 				break;
@@ -195,10 +188,10 @@ public class ConversationPageSteps {
 		}
 
 		if (!isNumberIncreased) {
-			log.debug("New picture was not found. Check source: " + CommonOSXSteps.senderPages
-			.getConversationPage().getPageSource());
+			log.debug("New picture was not found. Check source: "
+					+ PagesCollection.conversationPage.getPageSource());
 		}
-		
+
 		Assert.assertTrue("Incorrect images count: before - "
 				+ beforeNumberOfImages + ", after - " + afterNumberOfImages,
 				isNumberIncreased);
@@ -206,36 +199,32 @@ public class ConversationPageSteps {
 
 	@When("I scroll down to conversation")
 	public void IScrollDownToConversation() throws Exception {
-		CommonOSXSteps.senderPages.getConversationPage()
-				.scrollDownToLastMessage();
+		PagesCollection.conversationPage.scrollDownToLastMessage();
 	}
 
 	private void calcNumberOfPings(String user) {
 		if (beforeNumberOfKnocks < 0) {
-			beforeNumberOfKnocks = CommonOSXSteps.senderPages
-					.getConversationPage().getNumberOfYouPingedMessages(
-							String.format(OSXLocators.xpathOtherPingedMessage,
-									user));
+			beforeNumberOfKnocks = PagesCollection.conversationPage
+					.getNumberOfYouPingedMessages(String.format(
+							OSXLocators.xpathOtherPingedMessage, user));
 		}
 		if (beforeNumberOfHotKnocks < 0) {
-			beforeNumberOfHotKnocks = CommonOSXSteps.senderPages
-					.getConversationPage().getNumberOfYouPingedMessages(
-							String.format(
-									OSXLocators.xpathOtherPingedAgainMessage,
-									user));
+			beforeNumberOfHotKnocks = PagesCollection.conversationPage
+					.getNumberOfYouPingedMessages(String.format(
+							OSXLocators.xpathOtherPingedAgainMessage, user));
 		}
 	}
 
 	@When("I ping user")
 	public void WhenIPingUser() {
 		calcNumberOfPings("YOU");
-		CommonOSXSteps.senderPages.getConversationPage().ping();
+		PagesCollection.conversationPage.ping();
 	}
 
 	@When("I ping again user")
 	public void IPingAgainUser() {
 		calcNumberOfPings("YOU");
-		CommonOSXSteps.senderPages.getConversationPage().pingAgain();
+		PagesCollection.conversationPage.pingAgain();
 	}
 
 	@When("^User (.*) pings in chat (.*)$")
@@ -262,9 +251,8 @@ public class ConversationPageSteps {
 
 		if (dialogLastMessage.equals(expectedPingMessage)) {
 			for (int i = 0; i < 3; i++) {
-				afterNumberOfKnocks = CommonOSXSteps.senderPages
-						.getConversationPage().getNumberOfYouPingedMessages(
-								OSXLocators.xpathOtherPingedMessage);
+				afterNumberOfKnocks = PagesCollection.conversationPage
+						.getNumberOfYouPingedMessages(OSXLocators.xpathOtherPingedMessage);
 				if (afterNumberOfKnocks == beforeNumberOfKnocks + 1) {
 					isNumberIncreased = true;
 					break;
@@ -281,9 +269,8 @@ public class ConversationPageSteps {
 							+ afterNumberOfKnocks, isNumberIncreased);
 		} else {
 			for (int i = 0; i < 3; i++) {
-				afterNumberOfHotKnocks = CommonOSXSteps.senderPages
-						.getConversationPage().getNumberOfYouPingedMessages(
-								OSXLocators.xpathOtherPingedAgainMessage);
+				afterNumberOfHotKnocks = PagesCollection.conversationPage
+						.getNumberOfYouPingedMessages(OSXLocators.xpathOtherPingedAgainMessage);
 				if (afterNumberOfHotKnocks == beforeNumberOfHotKnocks + 1) {
 					isNumberIncreased = true;
 					break;
@@ -314,10 +301,9 @@ public class ConversationPageSteps {
 		boolean isNumberIncreased = false;
 		int afterNumberOfKnocks = -1;
 		for (int i = 0; i < 3; i++) {
-			afterNumberOfKnocks = CommonOSXSteps.senderPages
-					.getConversationPage().getNumberOfYouPingedMessages(
-							String.format(OSXLocators.xpathOtherPingedMessage,
-									user));
+			afterNumberOfKnocks = PagesCollection.conversationPage
+					.getNumberOfYouPingedMessages(String.format(
+							OSXLocators.xpathOtherPingedMessage, user));
 			if (afterNumberOfKnocks == beforeNumberOfKnocks + 1) {
 				isNumberIncreased = true;
 				break;
@@ -335,11 +321,9 @@ public class ConversationPageSteps {
 		boolean isNumberIncreased = false;
 		int afterNumberOfHotKnocks = -1;
 		for (int i = 0; i < 3; i++) {
-			afterNumberOfHotKnocks = CommonOSXSteps.senderPages
-					.getConversationPage().getNumberOfYouPingedMessages(
-							String.format(
-									OSXLocators.xpathOtherPingedAgainMessage,
-									user));
+			afterNumberOfHotKnocks = PagesCollection.conversationPage
+					.getNumberOfYouPingedMessages(String.format(
+							OSXLocators.xpathOtherPingedAgainMessage, user));
 			if (afterNumberOfHotKnocks == beforeNumberOfHotKnocks + 1) {
 				isNumberIncreased = true;
 				break;
@@ -357,8 +341,7 @@ public class ConversationPageSteps {
 		msg = usrMgr.replaceAliasesOccurences(msg, FindBy.NAME_ALIAS);
 		msg = msg.toUpperCase();
 		Assert.assertTrue(String.format("Message '%s' not found.", msg),
-				CommonOSXSteps.senderPages.getConversationPage()
-						.isMessageExist(msg));
+				PagesCollection.conversationPage.isMessageExist(msg));
 	}
 
 	@Then("I see message (.*) in conversation$")
@@ -380,38 +363,24 @@ public class ConversationPageSteps {
 	@When("I open People Picker from conversation")
 	public void WhenIOpenPeoplePickerFromConversation() throws Exception {
 		IScrollDownToConversation();
-		ConversationPage conversationPage = CommonOSXSteps.senderPages
-				.getConversationPage();
-		conversationPage.writeNewMessage("");
-		conversationPage.openConversationPeoplePicker();
-		CommonOSXSteps.senderPages
-				.setConversationInfoPage(new ConversationInfoPage(
-						CommonUtils
-								.getOsxAppiumUrlFromConfig(ConversationInfoPage.class),
-						CommonUtils
-								.getOsxApplicationPathFromConfig(ConversationInfoPage.class)));
-		ConversationInfoPage conversationPeople = CommonOSXSteps.senderPages
-				.getConversationInfoPage();
-		if (!conversationPeople.isPeoplePopoverDisplayed()) {
-			conversationPage.openConversationPeoplePicker();
+		PagesCollection.conversationPage.writeNewMessage("");
+		PagesCollection.conversationPage.openConversationPeoplePicker();
+		PagesCollection.conversationInfoPage = new ConversationInfoPage(
+				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+		if (!PagesCollection.conversationInfoPage.isPeoplePopoverDisplayed()) {
+			PagesCollection.conversationPage.openConversationPeoplePicker();
 		}
-		CommonOSXSteps.senderPages.setPeoplePickerPage(conversationPeople
-				.openPeoplePicker());
+		PagesCollection.peoplePickerPage = PagesCollection.conversationInfoPage
+				.openPeoplePicker();
 	}
 
 	@When("I open Conversation info")
 	public void WhenIOpenConversationInfo() throws Exception {
-		ConversationPage conversationPage = CommonOSXSteps.senderPages
-				.getConversationPage();
-		conversationPage.writeNewMessage("");
-		conversationPage.openConversationPeoplePicker();
-		if (CommonOSXSteps.senderPages.getConversationInfoPage() == null) {
-			CommonOSXSteps.senderPages
-					.setConversationInfoPage(new ConversationInfoPage(
-							CommonUtils
-									.getOsxAppiumUrlFromConfig(ConversationInfoPage.class),
-							CommonUtils
-									.getOsxApplicationPathFromConfig(ConversationInfoPage.class)));
+		PagesCollection.conversationPage.writeNewMessage("");
+		PagesCollection.conversationPage.openConversationPeoplePicker();
+		if (PagesCollection.conversationInfoPage == null) {
+			PagesCollection.conversationInfoPage = new ConversationInfoPage(
+					OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
 		}
 	}
 
@@ -439,15 +408,15 @@ public class ConversationPageSteps {
 
 	@Given("^I post media link (.*)$")
 	public void WhenIPostMediaLink(String link) throws Throwable {
-		CommonOSXSteps.senderPages.getConversationPage().writeNewMessage(link);
+		PagesCollection.conversationPage.writeNewMessage(link);
 	}
 
 	@Then("^I see media link (.*) and media in dialog$")
 	public void ThenISeeMediaLinkAndMediaInDialog(String link) throws Throwable {
-		ConversationPage page = CommonOSXSteps.senderPages
-				.getConversationPage();
-		boolean isLinkAppears = page.isMediaLinkAppearsInDialog(link);
-		boolean mediaVisible = page.isSoundCloudContainerVisible();
+		boolean isLinkAppears = PagesCollection.conversationPage
+				.isMediaLinkAppearsInDialog(link);
+		boolean mediaVisible = PagesCollection.conversationPage
+				.isSoundCloudContainerVisible();
 		Assert.assertTrue("SoundCloud Container is missing in dialog",
 				isLinkAppears);
 		Assert.assertTrue("SoundCloud Container is missing in dialog",
@@ -456,8 +425,7 @@ public class ConversationPageSteps {
 
 	@When("^I tap SoundCloud link$")
 	public void WhenITapSoundCloudLink() throws Throwable {
-		CommonOSXSteps.senderPages.getConversationPage()
-				.tapOnSoundCloudMessage();
+		PagesCollection.conversationPage.tapOnSoundCloudMessage();
 	}
 
 	@Then("^I see the embedded media is playing$")
@@ -473,7 +441,7 @@ public class ConversationPageSteps {
 			WhenISendMessage();
 			Thread.sleep(500);
 		}
-		CommonOSXSteps.senderPages.getConversationPage().writeNewMessage(link);
+		PagesCollection.conversationPage.writeNewMessage(link);
 		WhenISendMessage();
 	}
 
@@ -481,16 +449,14 @@ public class ConversationPageSteps {
 	public void WhenIScrollMediaOutOfSightUntilMediaBarAppears()
 			throws Throwable {
 		Thread.sleep(2000);
-		ConversationPage conversationPage = CommonOSXSteps.senderPages
-				.getConversationPage();
-		conversationPage.scrollDownTillMediaBarAppears();
+		PagesCollection.conversationPage.scrollDownTillMediaBarAppears();
 		Assert.assertTrue("Media bar doesn't appear",
-				conversationPage.isMediaBarVisible());
+				PagesCollection.conversationPage.isMediaBarVisible());
 	}
 
 	@When("^I pause playing media in media bar$")
 	public void WhenIPausePlayingTheMediaInMediaBar() throws Throwable {
-		CommonOSXSteps.senderPages.getConversationPage().pressPlayPauseButton();
+		PagesCollection.conversationPage.pressPlayPauseButton();
 	}
 
 	@Then("^The playing media is paused$")
@@ -500,7 +466,7 @@ public class ConversationPageSteps {
 
 	@When("^I press play in media bar$")
 	public void WhenIPressPlayInMediaBar() throws Throwable {
-		CommonOSXSteps.senderPages.getConversationPage().pressPlayPauseButton();
+		PagesCollection.conversationPage.pressPlayPauseButton();
 	}
 
 	@Then("^The media is playing$")
@@ -510,7 +476,7 @@ public class ConversationPageSteps {
 
 	@When("^I stop media in media bar$")
 	public void WhenIStopMediaInMediaBar() throws Throwable {
-		CommonOSXSteps.senderPages.getConversationPage().pressStopButton();
+		PagesCollection.conversationPage.pressStopButton();
 	}
 
 	@Then("^The media stops playing$")
@@ -520,8 +486,10 @@ public class ConversationPageSteps {
 
 	private void verifySoundCloudButtonState(String expectedState) {
 		String actualState = "";
+		long startDate = new Date().getTime();
+		long endDate;
 		for (int i = 0; i < 3; i++) {
-			actualState = CommonOSXSteps.senderPages.getConversationPage()
+			actualState = PagesCollection.conversationPage
 					.getSoundCloudButtonState();
 			if (actualState.equals(expectedState))
 				break;
@@ -529,6 +497,8 @@ public class ConversationPageSteps {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 			}
+			endDate = new Date().getTime();
+			log.debug("Try #" + (i+1) + " finished with incorrect result after " + (endDate - startDate) + "ms from start");
 		}
 		Assert.assertEquals("SoundCloud button state " + actualState
 				+ " differs from expected " + expectedState, expectedState,
@@ -537,16 +507,16 @@ public class ConversationPageSteps {
 
 	@When("^I press the media bar title$")
 	public void WhenIPressTheMediaBarTitle() {
-		CommonOSXSteps.senderPages.getConversationPage().pressMediaTitle();
+		PagesCollection.conversationPage.pressMediaTitle();
 	}
 
 	@Then("^I see conversation name (.*) in conversation$")
 	public void ISeeConversationNameInConversation(String name) {
 		if (name.equals(OSXLocators.RANDOM_KEYWORD)) {
-			name = CommonOSXSteps.senderPages.getConversationInfoPage()
+			name = PagesCollection.conversationInfoPage
 					.getCurrentConversationName();
 		}
-		String result = CommonOSXSteps.senderPages.getConversationPage()
+		String result = PagesCollection.conversationPage
 				.getLastConversationNameChangeMessage();
 		// workaround for bug with irrelevant characters in conversation name
 		// after renaming it
@@ -559,14 +529,13 @@ public class ConversationPageSteps {
 	public void WhenIWaitTillPlaybackFinishes(int time)
 			throws InterruptedException {
 		Thread.sleep(time * 1000);
-		String currentState = CommonOSXSteps.senderPages.getConversationPage()
+		String currentState = PagesCollection.conversationPage
 				.getSoundCloudButtonState();
 		if (currentState.equals("Pause")) {
 			// if song still playing due to some lags, wait once more
 			log.debug("Seems like audio track still not finished to play. Waiting for finish once more. "
 					+ "Current playback time: "
-					+ CommonOSXSteps.senderPages.getConversationPage()
-							.getCurrentPlaybackTime());
+					+ PagesCollection.conversationPage.getCurrentPlaybackTime());
 			Thread.sleep(time * 1000);
 		}
 		Assert.assertEquals("Current state \"" + currentState
@@ -575,25 +544,24 @@ public class ConversationPageSteps {
 
 	@Then("^I see media bar disappears$")
 	public void ThenISeeMediaBarDisappears() {
-		boolean isVisible = CommonOSXSteps.senderPages.getConversationPage()
+		boolean isVisible = PagesCollection.conversationPage
 				.isMediaBarVisible();
 		Assert.assertFalse("Media bar is still visible", isVisible);
 	}
 
 	@When("I count number of images in conversation")
 	public void ICountNumberOfImagesInConversation() {
-		beforeNumberOfImages = CommonOSXSteps.senderPages.getConversationPage()
+		beforeNumberOfImages = PagesCollection.conversationPage
 				.getNumberOfImageEntries();
 	}
 
 	@When("I open Documents folder in Finder")
 	public void IOpenDocumentsFolderInFinder() {
-		CommonOSXSteps.senderPages.getConversationPage().openFinder();
+		PagesCollection.conversationPage.openFinder();
 	}
 
 	@When("I drag picture (.*) to conversation")
 	public void IDragPictureToConversation(String picture) throws Exception {
-		CommonOSXSteps.senderPages.getConversationPage()
-				.dragPictureToConversation(picture);
+		PagesCollection.conversationPage.dragPictureToConversation(picture);
 	}
 }

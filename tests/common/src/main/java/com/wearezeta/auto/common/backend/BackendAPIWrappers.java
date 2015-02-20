@@ -509,10 +509,10 @@ public final class BackendAPIWrappers {
 				lastReadEvent, null, null);
 	}
 
-	public static void updateConvMutedState(ClientUser user, String convId,
+	public static void updateConvMutedState(ClientUser user, ClientUser mutedUser,
 			boolean muted) throws Exception {
 		tryLoginByUser(user);
-		BackendREST.updateConvSelfInfo(generateAuthToken(user), convId, null,
+		BackendREST.updateConvSelfInfo(generateAuthToken(user), getConversationWithSingleUser(user, mutedUser), null,
 				muted, null);
 	}
 

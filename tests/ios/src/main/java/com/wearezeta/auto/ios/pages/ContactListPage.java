@@ -350,6 +350,11 @@ public class ContactListPage extends IOSPage {
 		WebElement contact = findNameInContactList(conversation);
 		DriverUtils.clickSilenceConversationButton(driver, contact);
 	}
+	
+	public void unsilenceConversation(String conversation) {
+		WebElement contact = findNameInContactList(conversation);
+		DriverUtils.clickSilenceConversationButton(driver, contact);
+	}
 
 	public boolean isConversationSilenced(String conversation)
 			throws Exception {

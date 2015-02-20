@@ -33,7 +33,7 @@ public class LoginPage extends WebPage {
 	private String path;
 
 	public LoginPage(String url, String path) throws Exception {
-		super(url, path, true);
+		super(url, path, false);
 
 		this.url = url;
 		this.path = path;

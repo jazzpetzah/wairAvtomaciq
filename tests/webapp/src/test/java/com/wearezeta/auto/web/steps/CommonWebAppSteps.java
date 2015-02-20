@@ -198,6 +198,23 @@ public class CommonWebAppSteps {
 			InterruptedException {
 		commonSteps.WaitForTime(seconds);
 	}
+	
+	/**
+	 * Mute conversation
+	 * 
+	 * @step. ^(.*) muted conversation with (.*)$
+	 * @param userToNameAlias
+	 * 			user who want to mute conversation
+	 * @param muteUserNameAlias
+	 * 			conversation or user to be muted
+	 * @throws Exception
+	 */
+	@When("^(.*) muted conversation with (.*)$")
+	public void MuteConversationWithUser(String userToNameAlias,
+			String muteUserNameAlias) throws Exception {
+		commonSteps.MuteConversationWithUser(userToNameAlias,
+				muteUserNameAlias);
+	}
 
 	@After
 	public void tearDown() throws Exception {

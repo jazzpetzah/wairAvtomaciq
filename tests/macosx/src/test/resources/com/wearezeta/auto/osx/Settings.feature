@@ -1,6 +1,6 @@
 Feature: Settings
 
-  @staging @1964
+  @regression @1964
   Scenario Outline: Verify possibility of reseting password
     Given There is 1 user where <Name> is me
     Given I am signed out from ZClient
