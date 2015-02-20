@@ -85,7 +85,8 @@ Feature: People View
   Scenario Outline: Verify correct group info page information
     Given There are 3 users where <Name> is me
     Given <Contact1> has an avatar picture from file <Picture>
-    Given <Contact2> has an accent color <Color>
+    Given <Contact2> has an accent color <Color1>
+    Given <Contact1> has an accent color <Color2>
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Contact1> has a name <Contact1NewName>
     Given <Contact2> has a name <Contact2NewName>
@@ -99,8 +100,8 @@ Feature: People View
     And I see the correct participant <Contact1NewName> and <Contact2NewName> avatars
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName  | Picture                      | Color        | Contact1NewName   | Contact2NewName       |
-      | user1Email | user1Password | user1Name | user3Name | user2Name | 3                 | GroupInfoCheck | aqaPictureContact600_800.jpg | BrightOrange | aqaPictureContact | aqaAvatar TestContact |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName  | Picture                      | Color1       | Color2      | Contact1NewName   | Contact2NewName       |
+      | user1Email | user1Password | user1Name | user3Name | user2Name | 3                 | GroupInfoCheck | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow | aqaPictureContact | aqaAvatar TestContact |
 
   @smoke @id1395
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People

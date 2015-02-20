@@ -112,7 +112,20 @@ public class DialogPageSteps {
 	public void WhenIPressPlayPauseButton() throws Throwable {
 		PagesCollection.dialogPage.tapPlayPauseBtn();
 	}
-
+	
+	/**
+	 * Tap on Play/Pause button on Media Bar
+	 * 
+	 * @step. ^I press PlayPause on Mediabar button$
+	 * 
+	 * @throws Throwable
+	 * 
+	 */
+	@When("^I press PlayPause on Mediabar button$")
+	public void WhenIPressPlayPauseOnMediaBarButton() throws Throwable {
+		PagesCollection.dialogPage.tapPlayPauseMediaBarBtn();
+	}
+	
 	@When("^I press \"(.*)\" button$")
 	public void WhenIPressButton(String buttonName) throws Throwable {
 		switch (buttonName.toLowerCase()) {
@@ -193,6 +206,22 @@ public class DialogPageSteps {
 				.swipeUp(1000);
 	}
 
+	/**
+	 * Swipe down on dialog page
+	 * 
+	 * @step. ^I swipe down on dialog page$
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I swipe down on dialog page$")
+	public void WhenISwipedownOnDialogPage() throws Exception{
+		if (PagesCollection.dialogPage == null) {
+			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
+		}
+		PagesCollection.dialogPage.swipeDown(1000);
+	}
+	
 	@When("^I navigate back from dialog page$")
 	public void WhenINavigateBackFromDialogPage() throws Exception {
 		PagesCollection.contactListPage = PagesCollection.dialogPage
@@ -267,5 +296,37 @@ public class DialogPageSteps {
 		Assert.assertEquals(message.toLowerCase().trim(),
 				PagesCollection.dialogPage.getLastMessageFromDialog()
 						.toLowerCase().trim());
+	}
+	
+	/**
+	 * Verify that I see Play or Pause button on Mediabar
+	 * 
+	 * @step. ^I see (.*) on Mediabar$
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@Then("^I see (.*) on Mediabar$")
+	public void ThenIseeOnMediaBar(String iconLabel) throws Exception {
+		double score = PagesCollection.dialogPage.checkMediaBarControlIcon(iconLabel);
+		Assert.assertTrue(
+				"Overlap between two images has not enough score. Expected >= 0.75, current = "
+						+ score, score >= 0.75d);
+	}
+	
+	/**
+	 * Verify that I see Play or Pause button in Media item
+	 * 
+	 * @step. ^I see (.*) button in Media$
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@Then("^I see (.*) button in Media$")
+	public void ThenISeeButtonInMedia(String iconLabel) throws Exception {
+		double score = PagesCollection.dialogPage.checkMediaControlIcon(iconLabel);
+		Assert.assertTrue(
+				"Overlap between two images has not enough score. Expected >= 0.75, current = "
+						+ score, score >= 0.75d);
 	}
 }
