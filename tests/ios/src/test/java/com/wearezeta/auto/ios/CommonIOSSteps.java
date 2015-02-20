@@ -90,8 +90,8 @@ public class CommonIOSSteps {
 		ZetaFormatter.setBuildNumber(IOSCommonUtils
 				.readClientVersionFromPlist().getClientBuildNumber());
 
-		PagesCollection.loginPage = new LoginPage(driver, PlatformDrivers
-				.getInstance().getExplicitWait(CURRENT_PLATFORM));
+		PagesCollection.loginPage = new LoginPage(driver,
+				PlatformDrivers.createDefaultExplicitWait(driver));
 		ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
 	}
 

@@ -33,7 +33,7 @@ public class CommonWebAppSteps {
 	public static final Logger log = ZetaLogger.getLog(CommonWebAppSteps.class
 			.getSimpleName());
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	
+
 	public static final Platform CURRENT_PLATFORM = Platform.Web;
 
 	static {
@@ -49,7 +49,7 @@ public class CommonWebAppSteps {
 		return WebCommonUtils
 				.getWebAppBrowserNameFromConfig(CommonWebAppSteps.class);
 	}
-	
+
 	private ZetaWebAppDriver resetWebAppDriver(String url) throws Exception {
 		final String browser = getBrowser();
 		final DesiredCapabilities capabilities;
@@ -94,8 +94,8 @@ public class CommonWebAppSteps {
 		final String path = CommonUtils
 				.getWebAppApplicationPathFromConfig(CommonWebAppSteps.class);
 		final ZetaWebAppDriver webDriver = resetWebAppDriver(url);
-		final WebDriverWait wait = PlatformDrivers.getInstance()
-				.getExplicitWait(Platform.Web);
+		final WebDriverWait wait = PlatformDrivers
+				.createDefaultExplicitWait(webDriver);
 		try {
 			if (!getBrowser().equals("safari")) {
 				webDriver.manage().window().maximize();
@@ -287,7 +287,7 @@ public class CommonWebAppSteps {
 		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
 			PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
 		}
-		
+
 		commonSteps.getUserManager().resetUsers();
 	}
 }

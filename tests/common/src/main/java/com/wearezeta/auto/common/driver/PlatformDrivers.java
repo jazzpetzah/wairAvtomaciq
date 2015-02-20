@@ -20,7 +20,6 @@ public final class PlatformDrivers {
 			.getSimpleName());
 
 	private HashMap<Platform, RemoteWebDriver> drivers = new HashMap<Platform, RemoteWebDriver>();
-	private HashMap<Platform, WebDriverWait> waits = new HashMap<Platform, WebDriverWait>();
 
 	private static PlatformDrivers instance = null;
 
@@ -91,7 +90,6 @@ public final class PlatformDrivers {
 		}
 
 		setDefaultImplicitWaitTimeout(platformInCapabilities);
-		initExplicitWait(platformInCapabilities);
 
 		return this.getDriver(platformInCapabilities);
 	}
@@ -108,14 +106,6 @@ public final class PlatformDrivers {
 				.getDriverTimeoutFromConfig(getClass())), TimeUnit.SECONDS);
 	}
 
-	private void initExplicitWait(Platform platform) throws Exception {
-		waits.put(
-				platform,
-				new WebDriverWait(this.getDriver(platform), Integer
-						.parseInt(CommonUtils
-								.getDriverTimeoutFromConfig(getClass()))));
-	}
-
 	public RemoteWebDriver getDriver(Platform platform) {
 		if (!drivers.containsKey(platform)) {
 			throw new RuntimeException(String.format(
@@ -124,12 +114,10 @@ public final class PlatformDrivers {
 		return drivers.get(platform);
 	}
 
-	public WebDriverWait getExplicitWait(Platform platform) {
-		if (!waits.containsKey(platform)) {
-			throw new RuntimeException(String.format(
-					"Please initialize %s platform driver first", platform));
-		}
-		return waits.get(platform);
+	public static WebDriverWait createDefaultExplicitWait(RemoteWebDriver driver)
+			throws Exception {
+		return new WebDriverWait(driver, Integer.parseInt(CommonUtils
+				.getDriverTimeoutFromConfig(PlatformDrivers.class)));
 	}
 
 	public synchronized void quitDriver(Platform platform) {
@@ -139,7 +127,6 @@ public final class PlatformDrivers {
 					"Successfully quit driver instance for platfrom '%s'",
 					platform.getName()));
 		} finally {
-			waits.remove(platform);
 			drivers.remove(platform);
 		}
 	}

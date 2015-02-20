@@ -78,8 +78,8 @@ public class CommonAndroidSteps {
 	private void initFirstPage(boolean isUnicode) throws Exception {
 		final ZetaAndroidDriver driver = resetAndroidDriver(getUrl(),
 				getPath(), isUnicode);
-		final WebDriverWait wait = PlatformDrivers.getInstance()
-				.getExplicitWait(Platform.Android);
+		final WebDriverWait wait = PlatformDrivers
+				.createDefaultExplicitWait(driver);
 		PagesCollection.loginPage = new LoginPage(driver, wait);
 		ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
 		PagesCollection.loginPage.dismissUpdate();

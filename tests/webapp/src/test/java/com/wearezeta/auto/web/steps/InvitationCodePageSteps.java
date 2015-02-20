@@ -42,10 +42,11 @@ public class InvitationCodePageSteps {
 			PagesCollection.loginPage = PagesCollection.invitationCodePage
 					.proceed();
 		} else {
-			PagesCollection.loginPage = new LoginPage(
-					(ZetaWebAppDriver) PlatformDrivers.getInstance().getDriver(
-							CommonWebAppSteps.CURRENT_PLATFORM), PlatformDrivers.getInstance()
-							.getExplicitWait(CommonWebAppSteps.CURRENT_PLATFORM));
+			final ZetaWebAppDriver driver = (ZetaWebAppDriver) PlatformDrivers
+					.getInstance()
+					.getDriver(CommonWebAppSteps.CURRENT_PLATFORM);
+			PagesCollection.loginPage = new LoginPage(driver,
+					PlatformDrivers.createDefaultExplicitWait(driver));
 		}
 	}
 }

@@ -78,8 +78,8 @@ public class CommonOSXSteps {
 		senderPages = new PagesCollection();
 
 		final ZetaOSXDriver driver = resetOSXDriver(OSXExecutionContext.appiumUrl);
-		final WebDriverWait wait = PlatformDrivers.getInstance()
-				.getExplicitWait(CURRENT_PLATFORM);
+		final WebDriverWait wait = PlatformDrivers
+				.createDefaultExplicitWait(driver);
 
 		PagesCollection.mainMenuPage = new MainMenuPage(driver, wait);
 		PagesCollection.loginPage = new LoginPage(driver, wait);
