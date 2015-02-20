@@ -34,6 +34,7 @@ public class CommonAndroidSteps {
 				"warn");
 	}
 
+	private static boolean skipBeforeAfter = false;
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	public static final Platform CURRENT_PLATFORM = Platform.Android;
@@ -87,6 +88,9 @@ public class CommonAndroidSteps {
 
 	@Before("@performance")
 	public void setUpPerformance() throws Exception {
+		if (this.isSkipBeforeAfter()) {
+			return;
+		}
 		try {
 			AndroidCommonUtils.disableHints();
 		} catch (Exception e) {
@@ -97,12 +101,18 @@ public class CommonAndroidSteps {
 
 	@Before({ "~@unicode", "~@performance" })
 	public void setUp() throws Exception {
+		if (this.isSkipBeforeAfter()) {
+			return;
+		}
 		commonBefore();
 		initFirstPage(false);
 	}
 
 	@Before({ "@unicode", "~@performance" })
 	public void setUpUnicode() throws Exception {
+		if (this.isSkipBeforeAfter()) {
+			return;
+		}
 		commonBefore();
 		initFirstPage(true);
 	}
@@ -320,5 +330,13 @@ public class CommonAndroidSteps {
 		}
 
 		commonSteps.getUserManager().resetUsers();
+	}
+
+	public boolean isSkipBeforeAfter() {
+		return skipBeforeAfter;
+	}
+
+	public void setSkipBeforeAfter(boolean skipBeforeAfter) {
+		CommonAndroidSteps.skipBeforeAfter = skipBeforeAfter;
 	}
 }

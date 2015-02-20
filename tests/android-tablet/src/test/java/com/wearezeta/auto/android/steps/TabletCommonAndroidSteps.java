@@ -25,6 +25,9 @@ public class TabletCommonAndroidSteps {
 	}
 	
 	private CommonAndroidSteps steps = new CommonAndroidSteps();
+	{
+		steps.setSkipBeforeAfter(true);
+	}
 	
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 
@@ -65,11 +68,6 @@ public class TabletCommonAndroidSteps {
 	@After
 	public void tabletTearDown() throws Exception {
 		TabletLoginPage.clearPagesCollection();
-		
-//		if (PlatformDrivers.getInstance().hasDriver(CommonAndroidSteps.CURRENT_PLATFORM)) {
-//			PlatformDrivers.getInstance().quitDriver(CommonAndroidSteps.CURRENT_PLATFORM);
-//		}
-		
 		commonSteps.getUserManager().resetUsers();
 	}
 }
