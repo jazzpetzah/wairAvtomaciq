@@ -517,7 +517,7 @@ public class DialogPage extends AndroidPage {
 			path = CommonUtils.getMediaBarPauseIconPath(DialogPage.class);
 		}
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
-		return ImageUtil.getOverlapScore(mediaImage, templateImage);
+		return ImageUtil.getOverlapScore(mediaImage, templateImage, ImageUtil.RESIZE_NORESIZE);
 	}
 
 	public double checkMediaControlIcon(String label) throws Exception {
