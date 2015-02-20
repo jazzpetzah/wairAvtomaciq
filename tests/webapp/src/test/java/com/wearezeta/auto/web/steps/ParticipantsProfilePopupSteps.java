@@ -20,10 +20,11 @@ public class ParticipantsProfilePopupSteps {
 	 * Verify that participant profile popup is shown
 	 * 
 	 * @step. ^I see Participant Profile Popup Page$
+	 * @throws Exception 
 	 * 
 	 */
 	@When("^I see Participant Profile Popup Page$")
-	public void ISeeUserProfilePopupPage() {
+	public void ISeeUserProfilePopupPage() throws Exception {
 		Assert.assertTrue(PagesCollection.participantsPopupPage
 				.isParticipantsProfilePopupPageVisible());
 	}

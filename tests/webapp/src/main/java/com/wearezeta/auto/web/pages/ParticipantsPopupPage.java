@@ -59,7 +59,7 @@ public class ParticipantsPopupPage extends WebPage {
 		super(driver, wait);
 	}
 
-	public boolean isParticipantsProfilePopupPageVisible() {
+	public boolean isParticipantsProfilePopupPageVisible() throws Exception {
 		return DriverUtils.waitUntilElementAppears(driver, userProfilePopup, 10);
 	}
 
