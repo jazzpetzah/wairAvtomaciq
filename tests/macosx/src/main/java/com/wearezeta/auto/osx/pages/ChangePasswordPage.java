@@ -5,17 +5,20 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXConstants;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class ChangePasswordPage extends OSXPage {
 
-	private static final Logger log = ZetaLogger.getLog(ChangePasswordPage.class.getSimpleName());
-	
+	private static final Logger log = ZetaLogger
+			.getLog(ChangePasswordPage.class.getSimpleName());
+
 	@FindBy(how = How.XPATH, using = OSXLocators.ChangePasswordPage.xpathEmailTextField)
 	private WebElement emailTextField;
 
@@ -28,8 +31,9 @@ public class ChangePasswordPage extends OSXPage {
 	@FindBy(how = How.NAME, using = OSXLocators.ChangePasswordPage.nameQuitSafariButton)
 	private WebElement quitSafariButton;
 
-	public ChangePasswordPage(String URL, String path) throws Exception {
-		super(URL, path);
+	public ChangePasswordPage(ZetaOSXDriver driver, WebDriverWait wait)
+			throws Exception {
+		super(driver, wait);
 	}
 
 	public void enterEmailForChangePasswordAndSubmit(String email)
@@ -51,10 +55,11 @@ public class ChangePasswordPage extends OSXPage {
 				.waitUntilElementAppears(
 						driver,
 						By.xpath(OSXLocators.ChangePasswordPage.xpathPasswordChangedMessage),
-						30);
-		
-		if (!isFound) log.debug(driver.getPageSource());
-		
+						10);
+
+		if (!isFound)
+			log.debug(driver.getPageSource());
+
 		quitSafariButton.click();
 
 		driver.navigate().to(

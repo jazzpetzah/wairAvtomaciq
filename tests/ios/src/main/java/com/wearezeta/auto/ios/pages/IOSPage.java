@@ -12,7 +12,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -25,18 +24,12 @@ import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public abstract class IOSPage extends BasePage {
-	protected static ZetaIOSDriver driver;
-	protected static WebDriverWait wait;
-
 	private static final int SWIPE_DELAY = 10 * 1000; // milliseconds
-
-	DesiredCapabilities capabilities = new DesiredCapabilities();
-
-	private String url = "";
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameMainWindow)
 	protected WebElement content;
@@ -67,55 +60,16 @@ public abstract class IOSPage extends BasePage {
 
 	private static String imagesPath = "";
 
-	public IOSPage(String URL, String path) throws Exception {
-		this(URL, path, true);
+	public IOSPage(ZetaIOSDriver driver, WebDriverWait wait) throws Exception {
+		super(driver, wait);
+
+		setImagesPath(CommonUtils.getSimulatorImagesPathFromConfig(this
+				.getClass()));
 	}
 
-	public IOSPage(String URL, String path, boolean acceptAlerts)
-			throws Exception {
-		String bt = "staging";
-		String deviceName = "";
-
-		try {
-			setImagesPath(CommonUtils.getSimulatorImagesPathFromConfig(this
-					.getClass()));
-			bt = CommonUtils.getBackendType(this.getClass());
-			deviceName = CommonUtils.getDeviceName(this.getClass());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		url = URL;
-		capabilities.setCapability("platformName", Platform.iOS.getName());
-		capabilities.setCapability("app", path);
-		capabilities.setCapability("deviceName", deviceName);
-		capabilities.setCapability("platformVersion", "8.1");
-		capabilities.setCapability("processArguments",
-				"--args -TutorialOverlaysEnabled 0 -UseHockey 0 -ZMBackendEnvironmentType "
-						+ bt);
-		if (false == acceptAlerts) {
-			initWithoutAutoAccept();
-		} else {
-			initWithAutoAccept();
-		}
-	}
-
-	private void initWithAutoAccept() throws Exception {
-		capabilities.setCapability("autoAcceptAlerts", true);
-		super.InitConnection(url, capabilities);
-
-		storeDriverAndWait();
-	}
-
-	private void initWithoutAutoAccept() throws Exception {
-
-		super.InitConnection(url, capabilities);
-
-		storeDriverAndWait();
-	}
-
-	private void storeDriverAndWait() {
-		driver = (ZetaIOSDriver) drivers.get(Platform.iOS);
-		wait = (WebDriverWait) waits.get(Platform.iOS);
+	@Override
+	public ZetaIOSDriver getDriver() {
+		return (ZetaIOSDriver) driver;
 	}
 
 	@Override
@@ -128,37 +82,40 @@ public abstract class IOSPage extends BasePage {
 
 	@Override
 	public IOSPage swipeLeft(int time) throws Exception {
-		DriverUtils.swipeLeft(driver, content, time);
+		DriverUtils.swipeLeft(this.getDriver(), content, time);
 		return returnBySwipe(SwipeDirection.LEFT);
 	}
 
 	public IOSPage swipeLeft(int time, int percentX, int percentY)
 			throws Exception {
-		DriverUtils.swipeLeft(driver, content, time, percentX, percentY);
+		DriverUtils.swipeLeft(this.getDriver(), content, time, percentX,
+				percentY);
 		return returnBySwipe(SwipeDirection.LEFT);
 	}
 
 	@Override
 	public IOSPage swipeRight(int time) throws Exception {
-		DriverUtils.swipeRight(driver, content, time);
+		DriverUtils.swipeRight(this.getDriver(), content, time);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 
 	public IOSPage swipeRight(int time, int percentX, int percentY)
 			throws Exception {
-		DriverUtils.swipeRight(driver, content, time, percentX, percentY);
+		DriverUtils.swipeRight(this.getDriver(), content, time, percentX,
+				percentY);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 
 	@Override
 	public IOSPage swipeUp(int time) throws Exception {
-		DriverUtils.swipeUp(driver, content, time);
+		DriverUtils.swipeUp(this.getDriver(), content, time);
 		return returnBySwipe(SwipeDirection.UP);
 	}
 
 	public IOSPage swipeUp(int time, int percentX, int percentY)
 			throws Exception {
-		DriverUtils.swipeUp(driver, content, time, percentX, percentY);
+		DriverUtils
+				.swipeUp(this.getDriver(), content, time, percentX, percentY);
 		return returnBySwipe(SwipeDirection.UP);
 	}
 
@@ -178,22 +135,23 @@ public abstract class IOSPage extends BasePage {
 
 	@Override
 	public IOSPage swipeDown(int time) throws Exception {
-		DriverUtils.swipeDown(driver, content, time);
+		DriverUtils.swipeDown(this.getDriver(), content, time);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
 	public IOSPage swipeDown(int time, int percentX, int percentY)
 			throws Exception {
-		DriverUtils.swipeDown(driver, content, time, percentX, percentY);
+		DriverUtils.swipeDown(this.getDriver(), content, time, percentX,
+				percentY);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
 	public void smallScrollUp() {
-		driver.swipe(10, 220, 10, 200, 500);
+		this.getDriver().swipe(10, 220, 10, 200, 500);
 	}
 
 	public void smallScrollDown() {
-		driver.swipe(20, 300, 20, 400, 500);
+		this.getDriver().swipe(20, 300, 20, 400, 500);
 	}
 
 	public static void clearPagesCollection() throws IllegalArgumentException,
@@ -240,17 +198,17 @@ public abstract class IOSPage extends BasePage {
 
 	public void pasteStringToInput(WebElement element, String text) {
 		IOSCommonUtils.copyToSystemClipboard(text);
-		DriverUtils.iOSLongTap(driver, element);
+		DriverUtils.iOSLongTap(this.getDriver(), element);
 		clickPopupPasteButton();
 	}
 
 	public void inputStringFromKeyboard(String returnKey)
 			throws InterruptedException {
 		IOSKeyboard keyboard = IOSKeyboard.getInstance();
-		keyboard.typeString(returnKey, driver);
+		keyboard.typeString(returnKey, this.getDriver());
 	}
 
-	public boolean isKeyboardVisible() {
+	public boolean isKeyboardVisible() throws Exception {
 		DriverUtils.waitUntilElementDissapear(driver,
 				By.className(IOSLocators.classNameKeyboard));
 		return DriverUtils.isElementDisplayed(keyboard);
@@ -265,7 +223,8 @@ public abstract class IOSPage extends BasePage {
 	}
 
 	public static Object executeScript(String script) {
-		return driver.executeScript(script);
+		return PlatformDrivers.getInstance().getDriver(Platform.iOS)
+				.executeScript(script);
 	}
 
 	public boolean isSimulator() throws Throwable {
@@ -288,11 +247,11 @@ public abstract class IOSPage extends BasePage {
 	}
 
 	public void hideKeyboard() {
-		driver.hideKeyboard();
+		this.getDriver().hideKeyboard();
 	}
 
-	public void acceptAlert() {
-		DriverUtils.waitUntilAlertAppears(driver);
+	public void acceptAlert() throws Exception {
+		DriverUtils.waitUntilAlertAppears(this.getDriver());
 		try {
 			driver.switchTo().alert().accept();
 		} catch (Exception e) {
@@ -304,8 +263,8 @@ public abstract class IOSPage extends BasePage {
 		driver.executeScript("au.backgroundApp(" + Integer.toString(time) + ")");
 	}
 
-	public void dismissAlert() {
-		DriverUtils.waitUntilAlertAppears(driver);
+	public void dismissAlert() throws Exception {
+		DriverUtils.waitUntilAlertAppears(this.getDriver());
 		try {
 			driver.switchTo().alert().dismiss();
 		} catch (Exception e) {

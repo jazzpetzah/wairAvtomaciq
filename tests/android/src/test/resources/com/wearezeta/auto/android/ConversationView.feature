@@ -214,6 +214,7 @@ Feature: Conversation View
     And I tap Dialog page bottom
     And I press PlayPause media item button
     And I swipe down on dialog page
+    And I swipe down on dialog page
     Then I see PAUSE on Mediabar
     And I press PlayPause on Mediabar button
     And Contact <Contact1> send message to user <Name>

@@ -16,10 +16,11 @@ public class UserProfilePopupPageSteps {
 	 * Verify that User profile popup is shown
 	 * 
 	 * @step. I see User Profile Popup Page
+	 * @throws Exception 
 	 * 
 	 */
 	@When("I see User Profile Popup Page")
-	public void ISeeUserProfilePopupPage() {
+	public void ISeeUserProfilePopupPage() throws Exception {
 		Assert.assertTrue(PagesCollection.userProfilePopupPage
 				.isUserProfilePopupPageVisible());
 	}

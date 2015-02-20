@@ -5,16 +5,17 @@ import io.appium.java_client.AppiumDriver;
 import java.io.IOException;
 import java.util.UUID;
 
-import javax.mail.MessagingException;
-import javax.ws.rs.core.UriBuilderException;
-
 import org.apache.log4j.Logger;
-import org.json.JSONException;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
-import com.wearezeta.auto.common.backend.BackendRequestException;
+import com.wearezeta.auto.common.driver.PlatformDrivers;
+import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -36,6 +37,8 @@ public class CommonOSXSteps {
 			.getSimpleName());
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+
+	public static final Platform CURRENT_PLATFORM = Platform.Mac;
 
 	static {
 		System.setProperty("java.awt.headless", "false");
@@ -60,19 +63,34 @@ public class CommonOSXSteps {
 		}
 	}
 
-	@Before("@performance")
-	public void setUpPerformance() throws Exception, UriBuilderException,
-			IOException, MessagingException, JSONException,
-			BackendRequestException, InterruptedException {
+	private ZetaOSXDriver resetOSXDriver(String url) throws Exception {
+		final DesiredCapabilities capabilities = new DesiredCapabilities();
+		capabilities.setCapability(CapabilityType.BROWSER_NAME, "");
+		capabilities.setCapability(CapabilityType.PLATFORM, CURRENT_PLATFORM
+				.getName().toUpperCase());
+		capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
+
+		return (ZetaOSXDriver) PlatformDrivers.getInstance().resetDriver(url,
+				capabilities);
+	}
+
+	private void commonBefore() throws Exception {
 		senderPages = new PagesCollection();
 
-		PagesCollection.mainMenuPage = new MainMenuPage(
-				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
-		PagesCollection.loginPage = new LoginPage(
-				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+		final ZetaOSXDriver driver = resetOSXDriver(OSXExecutionContext.appiumUrl);
+		final WebDriverWait wait = PlatformDrivers
+				.createDefaultExplicitWait(driver);
+
+		PagesCollection.mainMenuPage = new MainMenuPage(driver, wait);
+		PagesCollection.loginPage = new LoginPage(driver, wait);
 		ZetaFormatter.setDriver((AppiumDriver) PagesCollection.loginPage
 				.getDriver());
 		PagesCollection.loginPage.sendProblemReportIfFound();
+	}
+
+	@Before("@performance")
+	public void setUpPerformance() throws Exception {
+		commonBefore();
 	}
 
 	@Before("~@performance")
@@ -85,15 +103,7 @@ public class CommonOSXSteps {
 		OSXCommonUtils.setZClientBackend(CommonUtils.getBackendType(this
 				.getClass()));
 
-		senderPages = new PagesCollection();
-
-		PagesCollection.mainMenuPage = new MainMenuPage(
-				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
-		PagesCollection.loginPage = new LoginPage(
-				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
-		ZetaFormatter.setDriver((AppiumDriver) PagesCollection.loginPage
-				.getDriver());
-		PagesCollection.loginPage.sendProblemReportIfFound();
+		commonBefore();
 
 		resetBackendSettingsIfOverwritten();
 	}
@@ -287,5 +297,9 @@ public class CommonOSXSteps {
 		OSXCommonUtils.killWireIfStuck();
 
 		CommonUtils.enableTcpForAppName(OSXCommonUtils.APP_NAME);
+
+		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+			PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+		}
 	}
 }

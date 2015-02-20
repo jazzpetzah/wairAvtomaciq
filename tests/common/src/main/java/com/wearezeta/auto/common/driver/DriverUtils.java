@@ -24,6 +24,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -47,114 +48,85 @@ public class DriverUtils {
 	}
 
 	public static boolean isElementDisplayed(WebElement element) {
-		boolean flag = true;
 		try {
-			flag = element.isDisplayed();
+			return element.isDisplayed();
 		} catch (Exception ex) {
-			flag = false;
+			// ex.printStackTrace();
+			return false;
 		}
-		return flag;
+	}
+
+	private static final int DEFAULT_LOOKUP_TIMEOUT = 20;
+
+	public static boolean waitUntilElementDissapear(RemoteWebDriver driver,
+			final By by) throws Exception {
+		return waitUntilElementDissapear(driver, by, DEFAULT_LOOKUP_TIMEOUT);
 	}
 
 	public static boolean waitUntilElementDissapear(RemoteWebDriver driver,
-			final By by) {
-		return waitUntilElementDissapear(driver, by, 20);
-	}
-
-	public static boolean waitUntilElementDissapear(RemoteWebDriver driver,
-			final By by, int timeout) {
-
-		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-		// changing to true may cause false positive result
-		Boolean bool = false;
+			final By by, int timeout) throws Exception {
+		turnOffImplicitWait(driver);
 		try {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
 					.withTimeout(timeout, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
 					.ignoring(NoSuchElementException.class);
 
-			bool = wait.until(new Function<WebDriver, Boolean>() {
-
+			return wait.until(new Function<WebDriver, Boolean>() {
 				public Boolean apply(WebDriver driver) {
 					return (driver.findElements(by).size() == 0);
 				}
 			});
-		} catch (Exception ex) {
-			// debug output for WebApp sign in issue
-			if (driver instanceof ZetaWebAppDriver) {
-				log.debug(ex.getMessage());
-			}
+		} catch (TimeoutException ex) {
+			return true;
 		} finally {
 			setDefaultImplicitWait(driver);
 		}
-		return bool;
 	}
-	
-	public static boolean waitUntilElementAppears(RemoteWebDriver driver,
-			final WebElement el, int timeout) {
 
-		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-		Boolean bool = false;
+	public static boolean waitUntilElementAppears(RemoteWebDriver driver,
+			final Object el_or_locator, int timeout) throws Exception {
+		assert((el_or_locator instanceof WebElement) || (el_or_locator instanceof By));
+		turnOffImplicitWait(driver);
 		try {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
 					.withTimeout(timeout, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
 					.ignoring(NoSuchElementException.class);
 
-			bool = wait.until(new Function<WebDriver, Boolean>() {
-
+			return wait.until(new Function<WebDriver, Boolean>() {
 				public Boolean apply(WebDriver driver) {
-					return el.isDisplayed();
+					if (el_or_locator instanceof WebElement) {
+						return ((WebElement) el_or_locator).isDisplayed();
+					} else if (el_or_locator instanceof By) {
+						return (driver.findElements((By) el_or_locator).size() > 0);
+					} else {
+						return false;
+					}
 				}
 			});
-		} catch (Exception ex) {
-
+		} catch (TimeoutException ex) {
+			return false;
 		} finally {
 			setDefaultImplicitWait(driver);
 		}
-		return bool;
 	}
 
 	public static boolean waitUntilElementAppears(RemoteWebDriver driver,
-			final By by) {
-		return waitUntilElementAppears(driver, by, 20);
-	}
-
-	public static boolean waitUntilElementAppears(RemoteWebDriver driver,
-			final By by, int timeout) {
-
-		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-		Boolean bool = false;
-		try {
-			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-					.withTimeout(timeout, TimeUnit.SECONDS)
-					.pollingEvery(1, TimeUnit.SECONDS)
-					.ignoring(NoSuchElementException.class);
-
-			bool = wait.until(new Function<WebDriver, Boolean>() {
-
-				public Boolean apply(WebDriver driver) {
-					return (driver.findElements(by).size() > 0);
-				}
-			});
-		} catch (Exception ex) {
-
-		} finally {
-			setDefaultImplicitWait(driver);
-		}
-		return bool;
+			final Object el_or_locator) throws Exception {
+		return waitUntilElementAppears(driver, el_or_locator,
+				DEFAULT_LOOKUP_TIMEOUT);
 	}
 
 	public static boolean waitUntilElementClickable(RemoteWebDriver driver,
-			final WebElement element) {
-		return waitUntilElementClickable(driver, element, 20);
+			final WebElement element) throws Exception {
+		return waitUntilElementClickable(driver, element,
+				DEFAULT_LOOKUP_TIMEOUT);
 	}
 
 	public static boolean waitUntilElementClickable(RemoteWebDriver driver,
-			final WebElement element, int timeout) {
-
-		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-		Boolean bool = false;
+			final WebElement element, int timeout) throws Exception {
+		turnOffImplicitWait(driver);
 		try {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
 					.withTimeout(timeout, TimeUnit.SECONDS)
@@ -162,30 +134,29 @@ public class DriverUtils {
 					.ignoring(NoSuchElementException.class);
 
 			wait.until(ExpectedConditions.elementToBeClickable(element));
-			bool = true;
-		} catch (Exception ex) {
-			bool = false;
+			return true;
+		} catch (TimeoutException e) {
+			return false;
 		} finally {
 			setDefaultImplicitWait(driver);
 		}
-		return bool;
 	}
 
-	public static boolean waitUntilWebPageLoaded(RemoteWebDriver driver) {
-		return waitUntilWebPageLoaded(driver, 20);
+	public static boolean waitUntilWebPageLoaded(RemoteWebDriver driver)
+			throws Exception {
+		return waitUntilWebPageLoaded(driver, DEFAULT_LOOKUP_TIMEOUT);
 	}
 
 	public static boolean waitUntilWebPageLoaded(RemoteWebDriver driver,
-			int timeout) {
-		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-		Boolean bool = false;
+			int timeout) throws Exception {
+		turnOffImplicitWait(driver);
 		try {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
 					.withTimeout(timeout, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
 					.ignoring(NoSuchElementException.class);
 
-			bool = wait.until(new Function<WebDriver, Boolean>() {
+			return wait.until(new Function<WebDriver, Boolean>() {
 				@Override
 				public Boolean apply(WebDriver t) {
 					return String
@@ -195,46 +166,39 @@ public class DriverUtils {
 							.equals("complete");
 				}
 			});
-		} catch (Exception ex) {
-			// do nothing
+		} catch (TimeoutException e) {
+			return false;
 		} finally {
 			setDefaultImplicitWait(driver);
 		}
-		return bool;
 	}
 
 	public static boolean waitUntilElementVisible(RemoteWebDriver driver,
-			final WebElement element) {
-
-		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-		Boolean bool = false;
+			final WebElement element) throws Exception {
+		turnOffImplicitWait(driver);
 		try {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
 					.withTimeout(20, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
 					.ignoring(NoSuchElementException.class);
-
 			wait.until(ExpectedConditions.visibilityOf(element));
-			bool = true;
-		} catch (Exception ex) {
-			bool = false;
+			return true;
+		} catch (TimeoutException e) {
+			return false;
 		} finally {
 			setDefaultImplicitWait(driver);
 		}
-		return bool;
 	}
 
-	public static void waitUntilAlertAppears(AppiumDriver driver) {
-		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+	public static void waitUntilAlertAppears(AppiumDriver driver)
+			throws Exception {
+		DriverUtils.turnOffImplicitWait(driver);
 		try {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
 					.withTimeout(20, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
 					.ignoring(NoSuchElementException.class);
-
 			wait.until(ExpectedConditions.alertIsPresent());
-		} catch (Exception ex) {
-
 		} finally {
 			setDefaultImplicitWait(driver);
 		}
@@ -247,23 +211,19 @@ public class DriverUtils {
 
 	public static boolean waitForElementWithTextByXPath(String xpath,
 			String name, AppiumDriver driver) throws InterruptedException {
-		boolean flag = true;
-		boolean found = false;
 		int counter = 0;
-		while (flag) {
+		while (true) {
 			counter++;
 			List<WebElement> contactsList = driver.findElementsByXPath(String
 					.format(xpath, name));
 			if (contactsList.size() > 0) {
-				found = true;
-				break;
+				return true;
 			}
 			Thread.sleep(200);
-			if (counter == 10) {
-				flag = false;
+			if (counter >= 10) {
+				return false;
 			}
 		}
-		return found;
 	}
 
 	public static void scrollToElement(AppiumDriver driver, WebElement element) {
@@ -292,8 +252,10 @@ public class DriverUtils {
 			int time, int percentX, int percentY) {
 		final Point coords = element.getLocation();
 		final Dimension elementSize = element.getSize();
-		final int xOffset = (int) Math.round(elementSize.width * (percentX / 100.0));
-		final int yOffset = (int) Math.round(elementSize.height * (percentY / 100.0));
+		final int xOffset = (int) Math.round(elementSize.width
+				* (percentX / 100.0));
+		final int yOffset = (int) Math.round(elementSize.height
+				* (percentY / 100.0));
 		try {
 			driver.swipe(coords.x + xOffset, coords.y + yOffset, coords.x,
 					coords.y + yOffset, time);
@@ -312,8 +274,10 @@ public class DriverUtils {
 			int time, int percentX, int percentY) {
 		final Point coords = element.getLocation();
 		final Dimension elementSize = element.getSize();
-		final int xOffset = (int) Math.round(elementSize.width * (percentX / 100.0));
-		final int yOffset = (int) Math.round(elementSize.height * (percentY / 100.0));
+		final int xOffset = (int) Math.round(elementSize.width
+				* (percentX / 100.0));
+		final int yOffset = (int) Math.round(elementSize.height
+				* (percentY / 100.0));
 		try {
 			driver.swipe(coords.x, coords.y + yOffset, coords.x + xOffset,
 					coords.y + yOffset, time);
@@ -336,8 +300,10 @@ public class DriverUtils {
 			int time, int percentX, int percentY) {
 		final Point coords = element.getLocation();
 		final Dimension elementSize = element.getSize();
-		final int xOffset = (int) Math.round(elementSize.width * (percentX / 100.0));
-		final int yOffset = (int) Math.round(elementSize.height * (percentY / 100.0));
+		final int xOffset = (int) Math.round(elementSize.width
+				* (percentX / 100.0));
+		final int yOffset = (int) Math.round(elementSize.height
+				* (percentY / 100.0));
 		try {
 			driver.swipe(coords.x + xOffset, coords.y + yOffset, coords.x
 					+ xOffset, coords.y, time);
@@ -355,8 +321,10 @@ public class DriverUtils {
 			int time, int percentX, int percentY) {
 		final Point coords = element.getLocation();
 		final Dimension elementSize = element.getSize();
-		final int xOffset = (int) Math.round(elementSize.width * (percentX / 100.0));
-		final int yOffset = (int) Math.round(elementSize.height * (percentY / 100.0));
+		final int xOffset = (int) Math.round(elementSize.width
+				* (percentX / 100.0));
+		final int yOffset = (int) Math.round(elementSize.height
+				* (percentY / 100.0));
 		try {
 			driver.swipe(coords.x + xOffset, coords.y, coords.x + xOffset,
 					coords.y + yOffset, time);
@@ -490,17 +458,14 @@ public class DriverUtils {
 		driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
 	}
 
-	public static void setDefaultImplicitWait(RemoteWebDriver driver) {
-		try {
-			driver.manage()
-					.timeouts()
-					.implicitlyWait(
-							Integer.parseInt(CommonUtils
-									.getDriverTimeoutFromConfig(BasePage.class)),
-							TimeUnit.SECONDS);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public static void setDefaultImplicitWait(RemoteWebDriver driver)
+			throws Exception {
+		driver.manage()
+				.timeouts()
+				.implicitlyWait(
+						Integer.parseInt(CommonUtils
+								.getDriverTimeoutFromConfig(BasePage.class)),
+						TimeUnit.SECONDS);
 	}
 
 	public static void setImplicitWaitValue(RemoteWebDriver driver, int seconds) {
@@ -547,7 +512,7 @@ public class DriverUtils {
 	public static void clickSilenceConversationButton(AppiumDriver driver,
 			WebElement element) {
 		Point coords = element.getLocation();
-		driver.tap(1, coords.x - (coords.x/2 - coords.x/8), coords.y, 1);
+		driver.tap(1, coords.x - (coords.x / 2 - coords.x / 8), coords.y, 1);
 	}
 
 	/*
@@ -558,6 +523,6 @@ public class DriverUtils {
 	public static void clickArchiveConversationButton(AppiumDriver driver,
 			WebElement element) {
 		Point coords = element.getLocation();
-		driver.tap(1, coords.x - (coords.x/2 + coords.x/8), coords.y, 1);
+		driver.tap(1, coords.x - (coords.x / 2 + coords.x / 8), coords.y, 1);
 	}
 }

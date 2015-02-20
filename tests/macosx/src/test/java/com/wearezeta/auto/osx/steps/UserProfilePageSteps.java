@@ -23,7 +23,7 @@ public class UserProfilePageSteps {
 	private BufferedImage userProfileAfter = null;
 
 	@Given("I open picture settings")
-	public void GivenIOpenPictureSettings() throws IOException {
+	public void GivenIOpenPictureSettings() throws Exception {
 		PagesCollection.userProfilePage.openPictureSettings();
 	}
 
@@ -31,7 +31,8 @@ public class UserProfilePageSteps {
 	public void WhenIChooseToSelectPictureFromImageFile() throws Exception {
 		PagesCollection.userProfilePage.openChooseImageFileDialog();
 		PagesCollection.choosePicturePage = new ChoosePicturePage(
-				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+				PagesCollection.userProfilePage.getDriver(),
+				PagesCollection.userProfilePage.getWait());
 	}
 
 	@When("I choose to select picture from camera")
@@ -49,14 +50,14 @@ public class UserProfilePageSteps {
 	}
 
 	@When("I shoot picture using camera")
-	public void WhenIShootPictureUsingCamera() throws InterruptedException {
+	public void WhenIShootPictureUsingCamera() throws Exception {
 		PagesCollection.userProfilePage.doPhotoInCamera();
 		PagesCollection.userProfilePage.confirmPictureChoice();
 	}
 
 	@Then("I see changed user picture from image (.*)")
 	public void ThenISeeChangedUserPictureFromImage(String filename)
-			throws IOException {
+			throws Exception {
 		PagesCollection.userProfilePage.openPictureSettings();
 		BufferedImage referenceImage = PagesCollection.userProfilePage
 				.takeScreenshot();
@@ -95,7 +96,7 @@ public class UserProfilePageSteps {
 	}
 
 	@When("I confirm photo removing")
-	public void IConfirmPhotoRemoving() {
+	public void IConfirmPhotoRemoving() throws Exception {
 		PagesCollection.userProfilePage.confirmPhotoRemoving();
 	}
 

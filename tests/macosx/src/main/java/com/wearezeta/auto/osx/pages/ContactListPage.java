@@ -20,9 +20,11 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.common.base.Function;
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.util.NSPoint;
@@ -55,15 +57,16 @@ public class ContactListPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idMainWindowCloseButton)
 	private WebElement closeWindowButton;
 
-	public ContactListPage(String URL, String path) throws Exception {
-		super(URL, path);
+	public ContactListPage(ZetaOSXDriver driver, WebDriverWait wait)
+			throws Exception {
+		super(driver, wait);
 	}
 
 	public void openPeoplePicker() {
 		addConversationButton.click();
 	}
 
-	public boolean waitUntilMainWindowAppears() {
+	public boolean waitUntilMainWindowAppears() throws Exception {
 		return DriverUtils.waitUntilElementAppears(driver,
 				By.xpath(OSXLocators.xpathMainWindow));
 	}
@@ -88,7 +91,7 @@ public class ContactListPage extends OSXPage {
 		engine.eval(script);
 	}
 
-	public boolean isContactWithNameExists(String name) {
+	public boolean isContactWithNameExists(String name) throws Exception {
 		log.debug("Looking for contact with name '" + name + "'");
 		if (name.contains(",")) {
 			String[] exContacts = name.split(",");
@@ -113,7 +116,7 @@ public class ContactListPage extends OSXPage {
 		return false;
 	}
 
-	public boolean isContactWithNameDoesNotExist(String name) {
+	public boolean isContactWithNameDoesNotExist(String name) throws Exception {
 		if (name.contains(",")) {
 			String[] exContacts = name.split(",");
 
@@ -201,7 +204,7 @@ public class ContactListPage extends OSXPage {
 		return false;
 	}
 
-	public boolean waitForSignOut() {
+	public boolean waitForSignOut() throws Exception {
 		DriverUtils.setImplicitWaitValue(driver, 1);
 		boolean noContactList = DriverUtils.waitUntilElementDissapear(driver,
 				By.id(OSXLocators.idContactEntry));
@@ -225,7 +228,7 @@ public class ContactListPage extends OSXPage {
 		return el != null;
 	}
 
-	public boolean isInvitationExist() {
+	public boolean isInvitationExist() throws Exception {
 		return DriverUtils.waitUntilElementAppears(driver,
 				By.id(OSXLocators.idAcceptConnectionRequestButton));
 	}
@@ -272,7 +275,7 @@ public class ContactListPage extends OSXPage {
 		}
 	}
 
-	public int numberOfContacts() {
+	public int numberOfContacts() throws Exception {
 		DriverUtils.setImplicitWaitValue(driver, 3);
 		int result = contactsTextFields.size();
 		DriverUtils.setDefaultImplicitWait(driver);
@@ -362,12 +365,14 @@ public class ContactListPage extends OSXPage {
 		toggleMenu.click();
 	}
 
-	public boolean isConversationMutedButtonVisible(String conversation) {
+	public boolean isConversationMutedButtonVisible(String conversation)
+			throws Exception {
 		return DriverUtils.waitUntilElementAppears(driver, By.xpath(String
 				.format(OSXLocators.xpathFormatMutedButton, conversation)));
 	}
 
-	public boolean isConversationMutedButtonNotVisible(String conversation) {
+	public boolean isConversationMutedButtonNotVisible(String conversation)
+			throws Exception {
 		return DriverUtils.waitUntilElementDissapear(driver, By.xpath(String
 				.format(OSXLocators.xpathFormatMutedButton, conversation)));
 	}

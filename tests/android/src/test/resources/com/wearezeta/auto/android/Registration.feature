@@ -15,7 +15,7 @@ Feature: Registration
     And I minimize the application
     And I activate user by URL
     And I restore the application
-    #And I verify registration address
+    And I wait for 10 seconds
     And I see Contact list with no contacts and my name <Name>
 
     Examples: 

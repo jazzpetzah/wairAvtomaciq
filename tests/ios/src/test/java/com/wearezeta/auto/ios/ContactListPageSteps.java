@@ -43,7 +43,7 @@ public class ContactListPageSteps {
 	}
 
 	@When("I dismiss tutorial layout")
-	public void IDismissTutorial() {
+	public void IDismissTutorial() throws Exception {
 		boolean tutorialIsVisible = PagesCollection.contactListPage
 				.isTutorialShown();
 		if (tutorialIsVisible) {
@@ -272,13 +272,13 @@ public class ContactListPageSteps {
 	}
 
 	@When("I see Pending request link in contact list")
-	public void ISeePendingRequestLinkInContacts() {
+	public void ISeePendingRequestLinkInContacts() throws Exception {
 		Assert.assertTrue("Pending request link is not in Contact list",
 				PagesCollection.contactListPage.isPendingRequestInContactList());
 	}
 
 	@When("I dont see Pending request link in contact list")
-	public void IDontSeePendingRequestLinkInContacts() {
+	public void IDontSeePendingRequestLinkInContacts() throws Exception {
 		Assert.assertFalse(PagesCollection.contactListPage
 				.isPendingRequestInContactList());
 	}
