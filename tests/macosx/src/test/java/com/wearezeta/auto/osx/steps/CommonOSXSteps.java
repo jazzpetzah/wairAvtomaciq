@@ -66,9 +66,9 @@ public class CommonOSXSteps {
 	private ZetaOSXDriver resetOSXDriver(String url) throws Exception {
 		final DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability(CapabilityType.BROWSER_NAME, "");
-		capabilities.setCapability(CapabilityType.PLATFORM, Platform.Mac
+		capabilities.setCapability(CapabilityType.PLATFORM, CURRENT_PLATFORM
 				.getName().toUpperCase());
-		capabilities.setCapability("platformName", Platform.Mac.getName());
+		capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
 
 		return (ZetaOSXDriver) PlatformDrivers.getInstance().resetDriver(url,
 				capabilities);

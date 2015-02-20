@@ -54,7 +54,7 @@ public class CommonIOSSteps {
 	private ZetaIOSDriver resetIOSDriver(boolean enableAutoAcceptAlerts)
 			throws Exception {
 		final DesiredCapabilities capabilities = new DesiredCapabilities();
-		capabilities.setCapability("platformName", Platform.iOS.getName());
+		capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
 		capabilities.setCapability("app", getPath());
 		final String deviceName = CommonUtils.getDeviceName(this.getClass());
 		capabilities.setCapability("deviceName", deviceName);
@@ -81,20 +81,18 @@ public class CommonIOSSteps {
 	}
 
 	private void commonBefore(ZetaIOSDriver driver) throws Exception {
-//		if (PagesCollection.loginPage != null
-//				&& PagesCollection.loginPage.getDriver().isSessionLost()) {
-//			log.info("Session was lost, reseting pages collection");
-//			IOSPage.clearPagesCollection();
-//		}
+		// if (PagesCollection.loginPage != null
+		// && PagesCollection.loginPage.getDriver().isSessionLost()) {
+		// log.info("Session was lost, reseting pages collection");
+		// IOSPage.clearPagesCollection();
+		// }
 
 		ZetaFormatter.setBuildNumber(IOSCommonUtils
 				.readClientVersionFromPlist().getClientBuildNumber());
 
-		if (PagesCollection.loginPage == null) {
-			PagesCollection.loginPage = new LoginPage(driver, PlatformDrivers
-					.getInstance().getExplicitWait(CURRENT_PLATFORM));
-			ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
-		}
+		PagesCollection.loginPage = new LoginPage(driver, PlatformDrivers
+				.getInstance().getExplicitWait(CURRENT_PLATFORM));
+		ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
 	}
 
 	@When("^I see keyboard$")
@@ -326,7 +324,6 @@ public class CommonIOSSteps {
 
 	@After
 	public void tearDown() throws Exception {
-		PagesCollection.loginPage.close();
 		IOSPage.clearPagesCollection();
 		IOSKeyboard.dispose();
 

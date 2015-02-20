@@ -80,11 +80,9 @@ public class CommonAndroidSteps {
 				getPath(), isUnicode);
 		final WebDriverWait wait = PlatformDrivers.getInstance()
 				.getExplicitWait(Platform.Android);
-		if (PagesCollection.loginPage == null) {
-			PagesCollection.loginPage = new LoginPage(driver, wait);
-			ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
-			PagesCollection.loginPage.dismissUpdate();
-		}
+		PagesCollection.loginPage = new LoginPage(driver, wait);
+		ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
+		PagesCollection.loginPage.dismissUpdate();
 	}
 
 	@Before("@performance")
@@ -315,7 +313,6 @@ public class CommonAndroidSteps {
 
 	@After
 	public void tearDown() throws Exception {
-		PagesCollection.loginPage.close();
 		AndroidPage.clearPagesCollection();
 
 		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
@@ -323,14 +320,5 @@ public class CommonAndroidSteps {
 		}
 
 		commonSteps.getUserManager().resetUsers();
-	}
-
-	@Override
-	protected void finalize() throws Throwable {
-		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
-			PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
-		}
-
-		super.finalize();
 	}
 }

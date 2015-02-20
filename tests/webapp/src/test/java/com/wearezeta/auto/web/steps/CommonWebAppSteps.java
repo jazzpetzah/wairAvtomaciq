@@ -49,7 +49,7 @@ public class CommonWebAppSteps {
 		return WebCommonUtils
 				.getWebAppBrowserNameFromConfig(CommonWebAppSteps.class);
 	}
-
+	
 	private ZetaWebAppDriver resetWebAppDriver(String url) throws Exception {
 		final String browser = getBrowser();
 		final DesiredCapabilities capabilities;

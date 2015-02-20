@@ -2,6 +2,7 @@ package com.wearezeta.auto.common.driver;
 
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
@@ -116,10 +117,18 @@ public final class PlatformDrivers {
 	}
 
 	public RemoteWebDriver getDriver(Platform platform) {
+		if (!drivers.containsKey(platform)) {
+			throw new RuntimeException(String.format(
+					"Please initialize %s platform driver first", platform));
+		}
 		return drivers.get(platform);
 	}
 
 	public WebDriverWait getExplicitWait(Platform platform) {
+		if (!waits.containsKey(platform)) {
+			throw new RuntimeException(String.format(
+					"Please initialize %s platform driver first", platform));
+		}
 		return waits.get(platform);
 	}
 
@@ -133,5 +142,18 @@ public final class PlatformDrivers {
 			waits.remove(platform);
 			drivers.remove(platform);
 		}
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		for (Entry<Platform, RemoteWebDriver> entry : drivers.entrySet()) {
+			try {
+				entry.getValue().quit();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		super.finalize();
 	}
 }
