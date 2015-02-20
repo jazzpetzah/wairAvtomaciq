@@ -37,10 +37,10 @@ public class CommonUtils {
 	private static final Random rand = new Random();
 	public static final int BACKEND_SYNC_TIMEOUT = 5000 + rand.nextInt(4000); // milliseconds
 
-	public static final String PLATFORM_NAME_OSX = "Mac";
-	public static final String PLATFORM_NAME_ANDROID = "Android";
-	public static final String PLATFORM_NAME_IOS = "iOS";
-	public static final String PLATFORM_NAME_WEB = "WebApp";
+//	public static final String PLATFORM_NAME_OSX = "Mac";
+//	public static final String PLATFORM_NAME_ANDROID = "Android";
+//	public static final String PLATFORM_NAME_IOS = "iOS";
+//	public static final String PLATFORM_NAME_WEB = "ANY";
 
 	private static final Logger log = ZetaLogger.getLog(CommonUtils.class
 			.getSimpleName());
@@ -339,7 +339,12 @@ public class CommonUtils {
 			throws Exception {
 		return getValueFromConfig(c, "deviceName");
 	}
-
+	
+	public static String getJenkinsSuperUserLogin(Class<?> c)
+			throws Exception {
+		return getValueFromCommonConfig(c, "jenkinsSuLogin");
+	}
+	
 	public static String getJenkinsSuperUserPassword(Class<?> c)
 			throws Exception {
 		return getValueFromCommonConfig(c, "jenkinsSuPassword");
@@ -347,13 +352,23 @@ public class CommonUtils {
 
 	public static BufferedImage getElementScreenshot(WebElement element,
 			AppiumDriver driver) throws IOException {
+		return getElementScreenshot(element, driver, "iPhone 6");
+	}
+	
+	public static BufferedImage getElementScreenshot(WebElement element,
+			AppiumDriver driver, String deviceName) throws IOException {
+		int multiply = 3;
+		if(deviceName.equals("iPhone 6")) {
+			multiply = 2;
+		}
+		
 		BufferedImage screenshot = DriverUtils
 				.takeScreenshot((ZetaDriver) driver);
 		org.openqa.selenium.Point elementLocation = element.getLocation();
 		Dimension elementSize = element.getSize();
-		return screenshot.getSubimage(elementLocation.x * 2,
-				elementLocation.y * 2, elementSize.width * 2,
-				elementSize.height * 2);
+		return screenshot.getSubimage(elementLocation.x * multiply,
+				elementLocation.y * multiply, elementSize.width * multiply,
+				elementSize.height * multiply);
 	}
 
 	public static String getContactName(String login) {

@@ -5,18 +5,18 @@ import java.util.LinkedHashMap;
 
 import org.apache.log4j.Logger;
 
-import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.sync.client.InstanceState;
 import com.wearezeta.auto.sync.client.ZetaInstance;
-
 import com.wearezeta.auto.sync.report.ReportData;
 
 public class ExecutionContext {
+	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(ExecutionContext.class.getSimpleName());
 	
-	public static HashMap<String, ZetaInstance> clients = new HashMap<String, ZetaInstance>();
+	public static HashMap<Platform, ZetaInstance> clients = new HashMap<Platform, ZetaInstance>();
 
 	public static LinkedHashMap<String, MessageEntry> sentMessages = new LinkedHashMap<String, MessageEntry>();
 
@@ -25,13 +25,13 @@ public class ExecutionContext {
 		
 	}
 	
-	public static boolean isAndroidEnabled() { return clients.get(CommonUtils.PLATFORM_NAME_ANDROID).isEnabled(); }
-	public static boolean isIosEnabled() { return clients.get(CommonUtils.PLATFORM_NAME_IOS).isEnabled(); }
-	public static boolean isOsxEnabled() { return clients.get(CommonUtils.PLATFORM_NAME_OSX).isEnabled(); }
+	public static boolean isAndroidEnabled() { return clients.get(Platform.Android).isEnabled(); }
+	public static boolean isIosEnabled() { return clients.get(Platform.iOS).isEnabled(); }
+	public static boolean isOsxEnabled() { return clients.get(Platform.Mac).isEnabled(); }
 
-	public static ZetaInstance androidZeta() { return clients.get(CommonUtils.PLATFORM_NAME_ANDROID); }
-	public static ZetaInstance iosZeta() { return clients.get(CommonUtils.PLATFORM_NAME_IOS); }
-	public static ZetaInstance osxZeta() { return clients.get(CommonUtils.PLATFORM_NAME_OSX); }
+	public static ZetaInstance androidZeta() { return clients.get(Platform.Android); }
+	public static ZetaInstance iosZeta() { return clients.get(Platform.iOS); }
+	public static ZetaInstance osxZeta() { return clients.get(Platform.Mac); }
 
 	public static boolean allInstancesFinishSending() {
 		boolean result = true;
@@ -53,7 +53,7 @@ public class ExecutionContext {
 		return result;
 	}
 	
-	public static boolean isPlatformMessagesOrderCorrect(String platform) {
+	public static boolean isPlatformMessagesOrderCorrect(Platform platform) {
 		return clients.get(platform).isOrderCorrect();
 	}
 	

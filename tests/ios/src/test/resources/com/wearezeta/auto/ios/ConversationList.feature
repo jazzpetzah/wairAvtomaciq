@@ -57,12 +57,33 @@ Feature: Conversation List
     And I see Contact list with my name <Name>
     When I swipe right on a <Contact>
     And I archive conversation <Contact>
+    Then I dont see conversation <Contact> in contact list
     And I open archived conversations
     Then I see user <Contact> in contact list
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+      
+   @staging @id1335
+   Scenario Outline: Verify unsilence the conversation
+    Given There are 2 users where <Name> is me
+     Given <Contact> is connected to <Name>
+     Given User <Contact> change  name to <NewName>
+     Given User <Name> change  accent color to <Color>
+     Given I Sign in using login <Login> and password <Password>
+     And I see Contact list with my name <Name>
+     When I swipe right on a <Contact>
+     And I silence conversation <Contact>
+     And I see conversation <Contact> is silenced
+     And I swipe right on a <Contact>
+     And I unsilence conversation <Contact>
+     Then I see conversation <Contact> is unsilenced
+
+     Examples: 
+       | Login      | Password      | Name      | Contact   | Color        | NewName |
+       | user1Email | user1Password | user1Name | user2Name | BrightOrange | SILENCE |
+      
       
   @staging @id1075
   Scenario Outline: Verify messages are marked as read with disappearing unread dot

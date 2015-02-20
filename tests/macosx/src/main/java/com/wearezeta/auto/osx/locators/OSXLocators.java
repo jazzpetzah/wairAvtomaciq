@@ -26,14 +26,14 @@ public final class OSXLocators {
 	public static final String idAddConversationButton = "addConversationButton";
 	public static final String idPeoplePickerSearchField = "people_picker_searchfield";
 	public static final String idPeoplePickerTopContactsSectionHeader = "people_picker_topcpnverstion_sectionheader";
-	public static final String xpathPeoplePickerTopContactsSectionHeader = "//AXStaticText[@AXIdentifier='people_picker_topcpnverstion_sectionheader']";
+	public static final String xpathPeoplePickerTopContactsSectionHeader = "//AXStaticText[@AXValue='TOP PEOPLE']";
 	public static final String idPeoplePickerDismissButton = "people_picker_cancel_button";
 	public static final String idPeoplePickerSearchResultEntry = "people_picker_result_namefield";
 	public static final String xpathPeoplePickerSearchResultTable = "//AXTable[@AXIdentifier='people_picker_searchresult']";
 	public static final String idUnblockUserButton = "unblock";
 	public static final String idPeoplePickerTopContactsGrid = "people_picker_user_collectionview";
 	public static final String xpathPeoplePickerTopContacts = "//AXGrid[@AXIdentifier='people_picker_user_collectionview']";
-	public static final String xpathPeoplePickerTopContactAvatar = "//AXUnknown[@AXSize='w=88.00 h=104.00']";
+	public static final String xpathPeoplePickerTopContactAvatar = "//AXRow[descendant::AXStaticText[@AXValue='TOP PEOPLE']]/following-sibling::AXRow[1]//AXUnknown";
 	
 	public static final String idShowMenuButton = "clshowMenuButton";
 	public static final String idMuteButton = "muteButton";
@@ -87,6 +87,7 @@ public final class OSXLocators {
 	public static final String idBlockUserButtonSingleChat = "userProfileViewButtonOnTheRight";
 	//OLD: public static final String idPeoplePickerAddToConversationButton = "people_picker_confirm_button";
 	public static final String namePeoplePickerAddToConversationButton = "ADD TO CONVERSATION";
+	public static final String namePeoplePickerCreateConversationButton = "CREATE CONVERSATION";
 	public static final String idLeaveConversationButton = "leaveButton";
 	public static final String idRemoveUserFromConversation = "userProfileViewButtonOnTheRight";
 	public static final String idConversationScrollArea = "ConversationScrollArea";

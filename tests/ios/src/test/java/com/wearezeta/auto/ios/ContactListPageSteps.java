@@ -27,18 +27,18 @@ public class ContactListPageSteps {
 		Assert.assertTrue("Username : " + name
 				+ " dind't appear in contact list",
 				PagesCollection.loginPage.isLoginFinished(name));
-		PagesCollection.peoplePickerPage = PagesCollection.loginPage
-				.clickLaterButton();
-		if (null != PagesCollection.peoplePickerPage) {
-			PeoplePickerPageSteps steps = new PeoplePickerPageSteps();
-			steps.WhenISeePeoplePickerPage();
-			steps.IClickCloseButtonDismissPeopleView();
-			// workaround for black screen
-			PagesCollection.peoplePickerPage.minimizeApplication(5);
-			if (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
-				steps.IClickCloseButtonDismissPeopleView();
-			}
-		}
+//		PagesCollection.peoplePickerPage = PagesCollection.loginPage
+//				.clickLaterButton();
+//		if (null != PagesCollection.peoplePickerPage) {
+//			PeoplePickerPageSteps steps = new PeoplePickerPageSteps();
+//			steps.WhenISeePeoplePickerPage();
+//			steps.IClickCloseButtonDismissPeopleView();
+//			// workaround for black screen
+//			PagesCollection.peoplePickerPage.minimizeApplication(5);
+//			if (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
+//				steps.IClickCloseButtonDismissPeopleView();
+//			}
+//		}
 	}
 
 	@When("I dismiss tutorial layout")
@@ -348,6 +348,23 @@ public class ContactListPageSteps {
 		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
 		PagesCollection.contactListPage.silenceConversation(conversation);
 	}
+	
+	/**
+	 * Conversation gets unsilenced by pressing the silence button
+	 * 
+	 * @step. ^I unsilence conversation (.*)$
+	 * 
+	 * @param conversation
+	 *            conversation name to unsilence
+	 * @throws Exception
+	 *             if conversation is not found
+	 * 
+	 */
+	@When("^I unsilence conversation (.*)$")
+		public void IUnSilenceConversation(String conversation) throws Exception {
+			conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
+			PagesCollection.contactListPage.unsilenceConversation(conversation);
+		}
 
 	/**
 	 * Verifies, that the conversation is really silenced
@@ -368,6 +385,26 @@ public class ContactListPageSteps {
 		Assert.assertTrue("Conversation is not silenced", isSilenced);
 
 	}
+	
+	/**
+	 * Verifies, that the conversation is unsilenced
+	 * 
+	 * @step. ^I see conversation (.*) is unsilenced$
+	 * 
+	 * @param conversation
+	 *            conversation name to unsilence
+	 * @throws Exception
+	 * 
+	 */
+	@Then("^I see conversation (.*) is unsilenced$")
+		public void ISeeConversationIsUnSilenced(String conversation)
+				throws Exception {
+			conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
+			boolean isSilenced = PagesCollection.contactListPage
+					.isConversationSilenced(conversation);
+			Assert.assertFalse("Conversation is silenced", isSilenced);
+	
+		}
 
 	/**
 	 * Conversation gets archived by pressing the archive button

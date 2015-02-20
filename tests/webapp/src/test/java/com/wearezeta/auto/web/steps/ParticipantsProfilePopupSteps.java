@@ -9,6 +9,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ParticipantsProfilePopupSteps {
@@ -57,8 +58,8 @@ public class ParticipantsProfilePopupSteps {
 	 * @param name
 	 *            user name string
 	 */
-	@When("^I click on participant (.*)$") 
-	public void IClickOnParticipant(String name){
+	@When("^I click on participant (.*)$")
+	public void IClickOnParticipant(String name) {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		PagesCollection.participantsPopupPage.clickOnParticipant(name);
 	}
@@ -151,7 +152,8 @@ public class ParticipantsProfilePopupSteps {
 	 */
 	@When("^I see Add People message$")
 	public void ISeeAddPeopleMessage() {
-		Assert.assertTrue(PagesCollection.participantsPopupPage.isAddPeopleMessageShown());
+		Assert.assertTrue(PagesCollection.participantsPopupPage
+				.isAddPeopleMessageShown());
 	}
 	
 	/**
@@ -165,9 +167,38 @@ public class ParticipantsProfilePopupSteps {
 	public void ISeeContactsDisplayedOnParticipantPopup(String contactsAliases) {
 	
 		List<String> contacts = CommonSteps.splitAliases(contactsAliases);
-		for (String s: contacts) {
+		for (String s : contacts) {
 			s = usrMgr.replaceAliasesOccurences(s, FindBy.NAME_ALIAS);
-			Assert.assertTrue(PagesCollection.participantsPopupPage.isParticipantVisible(s));
+			Assert.assertTrue(PagesCollection.participantsPopupPage
+					.isParticipantVisible(s));
 		}
+	}
+
+	/**
+	 * Set new title for converstaion in participants popup
+	 * 
+	 * @step. I change grout conversation title to (.*)
+	 * 
+	 * @param title
+	 *            new conversation title string
+	 * 
+	 */
+	@When("I change grout conversation title to (.*)")
+	public void IChangeGroupChatTitleTo(String title) {
+		PagesCollection.participantsPopupPage.setConversationTitle(title);
+	}
+
+	/**
+	 * Verify conversation title in participants popup
+	 * 
+	 * @step. ^I see conversation title (.*) in Participants profile$
+	 * 
+	 * @param title
+	 *            expected title string
+	 */
+	@Then("^I see conversation title (.*) in Participants profile$")
+	public void ISeeConversationTitle(String title) {
+		Assert.assertEquals(title,
+				PagesCollection.participantsPopupPage.getConversationTitle());
 	}
 }

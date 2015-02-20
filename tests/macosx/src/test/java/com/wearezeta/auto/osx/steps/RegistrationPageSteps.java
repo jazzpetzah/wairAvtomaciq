@@ -13,9 +13,10 @@ import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.ContactListPage;
-import com.wearezeta.auto.osx.pages.RegistrationPage;
+import com.wearezeta.auto.osx.pages.PagesCollection;
 import com.wearezeta.auto.osx.pages.UserProfilePage;
 
 import cucumber.api.java.en.Then;
@@ -49,8 +50,8 @@ public class RegistrationPageSteps {
 			this.userToRegister.clearNameAliases();
 			this.userToRegister.addNameAlias(name);
 		}
-		CommonOSXSteps.senderPages.getRegistrationPage().enterName(
-				this.userToRegister.getName());
+		PagesCollection.registrationPage.enterName(this.userToRegister
+				.getName());
 	}
 
 	/**
@@ -77,8 +78,8 @@ public class RegistrationPageSteps {
 			this.userToRegister.clearEmailAliases();
 			this.userToRegister.addEmailAlias(email);
 		}
-		CommonOSXSteps.senderPages.getRegistrationPage().enterEmail(
-				this.userToRegister.getEmail());
+		PagesCollection.registrationPage.enterEmail(this.userToRegister
+				.getEmail());
 	}
 
 	/**
@@ -104,8 +105,8 @@ public class RegistrationPageSteps {
 			this.userToRegister.clearPasswordAliases();
 			this.userToRegister.addPasswordAlias(password);
 		}
-		CommonOSXSteps.senderPages.getRegistrationPage().enterPassword(
-				this.userToRegister.getPassword());
+		PagesCollection.registrationPage.enterPassword(this.userToRegister
+				.getPassword());
 	}
 
 	/**
@@ -118,14 +119,12 @@ public class RegistrationPageSteps {
 	 */
 	@When("I submit registration data")
 	public void ISubmitRegistrationData() throws Exception {
-		RegistrationPage registrationPage = CommonOSXSteps.senderPages
-				.getRegistrationPage();
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
-		registrationPage.setListener(IMAPSMailbox.createDefaultInstance()
-				.startMboxListener(expectedHeaders));
+		PagesCollection.registrationPage.setListener(IMAPSMailbox
+				.createDefaultInstance().startMboxListener(expectedHeaders));
 
-		CommonOSXSteps.senderPages.getRegistrationPage().submitRegistration();
+		PagesCollection.registrationPage.submitRegistration();
 	}
 
 	/**
@@ -139,7 +138,7 @@ public class RegistrationPageSteps {
 	 */
 	@Then("I see confirmation page")
 	public void ISeeConfirmationPage() {
-		Assert.assertTrue(CommonOSXSteps.senderPages.getRegistrationPage()
+		Assert.assertTrue(PagesCollection.registrationPage
 				.isConfirmationRequested());
 	}
 
@@ -152,8 +151,9 @@ public class RegistrationPageSteps {
 	 */
 	@Then("I verify registration address")
 	public void IVerifyRegistrationAddress() throws Exception {
-		BackendAPIWrappers.activateRegisteredUser(CommonOSXSteps.senderPages
-				.getRegistrationPage().getListener());
+		BackendAPIWrappers
+				.activateRegisteredUser(PagesCollection.registrationPage
+						.getListener());
 	}
 
 	/**
@@ -163,7 +163,7 @@ public class RegistrationPageSteps {
 	 */
 	@When("I choose register using camera")
 	public void IChooseRegisterUsingCamera() {
-		CommonOSXSteps.senderPages.getRegistrationPage().chooseToTakePicture();
+		PagesCollection.registrationPage.chooseToTakePicture();
 	}
 
 	/**
@@ -176,8 +176,8 @@ public class RegistrationPageSteps {
 	@When("I take registration picture from camera")
 	public void ITakeRegistrationPictureFromCamera()
 			throws InterruptedException {
-		CommonOSXSteps.senderPages.getRegistrationPage().chooseToTakePicture();
-		CommonOSXSteps.senderPages.getRegistrationPage().acceptTakenPicture();
+		PagesCollection.registrationPage.chooseToTakePicture();
+		PagesCollection.registrationPage.acceptTakenPicture();
 	}
 
 	/**
@@ -187,7 +187,7 @@ public class RegistrationPageSteps {
 	 */
 	@When("I choose register with image")
 	public void IChooseRegisterWithImage() {
-		CommonOSXSteps.senderPages.getRegistrationPage().chooseToPickImage();
+		PagesCollection.registrationPage.chooseToPickImage();
 	}
 
 	/**
@@ -213,7 +213,7 @@ public class RegistrationPageSteps {
 
 		choosePicturePage.openImage(imageFile);
 
-		CommonOSXSteps.senderPages.getRegistrationPage().acceptTakenPicture();
+		PagesCollection.registrationPage.acceptTakenPicture();
 	}
 
 	/**
@@ -225,12 +225,8 @@ public class RegistrationPageSteps {
 	 */
 	@Then("I see contact list of registered user")
 	public void ISeeContactListOfRegisteredUser() throws Exception {
-		CommonOSXSteps.senderPages
-				.setContactListPage(new ContactListPage(
-						CommonUtils
-								.getOsxAppiumUrlFromConfig(RegistrationPageSteps.class),
-						CommonUtils
-								.getOsxApplicationPathFromConfig(RegistrationPageSteps.class)));
+		PagesCollection.contactListPage = new ContactListPage(
+				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
 		ContactListPageSteps clSteps = new ContactListPageSteps();
 		clSteps.ISeeMyNameInContactList(this.userToRegister.getName());
 	}
@@ -244,12 +240,8 @@ public class RegistrationPageSteps {
 	 */
 	@Then("I see self profile of registered user")
 	public void ISeeSelfProfileOfRegisteredUser() throws Exception {
-		CommonOSXSteps.senderPages
-				.setUserProfilePage(new UserProfilePage(
-						CommonUtils
-								.getOsxAppiumUrlFromConfig(RegistrationPageSteps.class),
-						CommonUtils
-								.getOsxApplicationPathFromConfig(RegistrationPageSteps.class)));
+		PagesCollection.userProfilePage = new UserProfilePage(
+				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
 		UserProfilePageSteps upSteps = new UserProfilePageSteps();
 		upSteps.ISeeNameInUserProfile(this.userToRegister.getName());
 	}
@@ -267,14 +259,12 @@ public class RegistrationPageSteps {
 	 */
 	@Then("I enter invalid emails")
 	public void IEnterInvalidEmails() {
-		RegistrationPage registrationPage = CommonOSXSteps.senderPages
-				.getRegistrationPage();
 		for (String invalidEmail : INVALID_EMAILS) {
-			registrationPage.enterEmail(invalidEmail);
-			if (!registrationPage.isInvalidEmailMessageAppear()) {
+			PagesCollection.registrationPage.enterEmail(invalidEmail);
+			if (!PagesCollection.registrationPage.isInvalidEmailMessageAppear()) {
 				consideredValidEmails.add(invalidEmail);
 			}
-			registrationPage.enterEmail("");
+			PagesCollection.registrationPage.enterEmail("");
 		}
 	}
 
@@ -306,10 +296,8 @@ public class RegistrationPageSteps {
 	 */
 	@Then("I see that email invalid")
 	public void ISeeThatEmailInvalid() {
-		RegistrationPage registrationPage = CommonOSXSteps.senderPages
-				.getRegistrationPage();
 		Assert.assertTrue("Email accepted but shouldn't be.",
-				registrationPage.isInvalidEmailMessageAppear());
+				PagesCollection.registrationPage.isInvalidEmailMessageAppear());
 	}
 
 	/**
@@ -326,14 +314,10 @@ public class RegistrationPageSteps {
 	 */
 	@Then("I see email (.*) without spaces")
 	public void ISeeEmailWithoutSpaces(String email) {
-		RegistrationPage registrationPage = CommonOSXSteps.senderPages
-				.getRegistrationPage();
-		Assert.assertTrue(
-				"It was accepted to enter spaces in email '"
-						+ registrationPage.getEnteredEmail()
-						+ "' but shouldn't be.",
-				registrationPage.getEnteredEmail().equals(
-						email.replaceAll(" ", "")));
+		Assert.assertTrue("It was accepted to enter spaces in email '"
+				+ PagesCollection.registrationPage.getEnteredEmail()
+				+ "' but shouldn't be.", PagesCollection.registrationPage
+				.getEnteredEmail().equals(email.replaceAll(" ", "")));
 	}
 
 	/**
@@ -345,9 +329,7 @@ public class RegistrationPageSteps {
 	 */
 	@When("^I open activation link in browser$")
 	public void IOpenActivationLinkInBrowser() throws Exception {
-		RegistrationPage registrationPage = CommonOSXSteps.senderPages
-				.getRegistrationPage();
-		registrationPage.activateUserFromBrowser();
+		PagesCollection.registrationPage.activateUserFromBrowser();
 	}
 
 	/**
@@ -361,8 +343,6 @@ public class RegistrationPageSteps {
 	 */
 	@When("^I see that user activated$")
 	public void ISeeUserActivated() {
-		RegistrationPage registrationPage = CommonOSXSteps.senderPages
-				.getRegistrationPage();
-		Assert.assertTrue(registrationPage.isUserActivated());
+		Assert.assertTrue(PagesCollection.registrationPage.isUserActivated());
 	}
 }

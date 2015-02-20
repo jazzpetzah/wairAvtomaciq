@@ -110,8 +110,26 @@ Feature: People View
     And I see Participant Profile Popup Page
     And I click Add people button on Participant Profile Popup Page
     And I confirm add to group chat
+
     #add last verification - that no one left to add
-    
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName       | Message   |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | AddToGroupChat | you added |
+
+  @staging @id1683
+  Scenario Outline: Verify the name of the group conversation can be edited
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name <Name> in Contact list
+    And I open conversation with <ChatName>
+    And I click show participant profile button
+    And I see Participant Profile Popup Page
+    And I change grout conversation title to <ChatNameEdit>
+    Then I see conversation title <ChatNameEdit> in Participants profile
+    And I see <Message> action in conversation
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName     | ChatNameEdit   | Message                  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | BaseChatName | EditedCahtName | renamed the conversation |

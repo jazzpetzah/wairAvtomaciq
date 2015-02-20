@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -121,13 +122,25 @@ public class ContactListPage extends WebPage {
 	}
 	
 	public boolean isConversationMuted(String conversationName) {
-
+		//moving focus from contact - to now show ... button
+		try {
+			DriverUtils.moveMouserOver(driver, selfName);
+		} catch (WebDriverException e) {
+			//do nothing (safari workaround)
+		}
 		WebElement contact = getContactWithName(conversationName);
-
-		WebElement muteIcon = contact.findElement(By
-				.className(WebAppLocators.ContactListPage.classMuteIcon));
-
-		return muteIcon.isDisplayed();
+		boolean result = false;
+		
+		try {
+			WebElement muteIcon = contact.findElement(By
+					.className(WebAppLocators.ContactListPage.classMuteIcon));
+			DriverUtils.waitUntilElementAppears(driver, muteIcon, 5);
+			result = muteIcon.isDisplayed();
+		} catch (NoSuchElementException ex) {
+			
+		}
+		
+		return result;
 	}
 
 	public void clickActionsButtonForContact(String conversationName) {

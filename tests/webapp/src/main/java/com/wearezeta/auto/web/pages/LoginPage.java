@@ -33,7 +33,7 @@ public class LoginPage extends WebPage {
 	private String path;
 
 	public LoginPage(String url, String path) throws Exception {
-		super(url, path, true);
+		super(url, path, false);
 
 		this.url = url;
 		this.path = path;
@@ -70,6 +70,7 @@ public class LoginPage extends WebPage {
 	public boolean waitForLogin() {
 		boolean noSignIn = DriverUtils.waitUntilElementDissapear(driver,
 				By.id(WebAppLocators.LoginPage.idLoginButton), 40);
-		return noSignIn;
+		boolean noSignInSpinner = DriverUtils.waitUntilElementDissapear(driver, By.className(WebAppLocators.LoginPage.classNameSpinner), 40);
+		return noSignIn && noSignInSpinner;
 	}
 }

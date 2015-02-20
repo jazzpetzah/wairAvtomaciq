@@ -33,31 +33,32 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public abstract class BasePage {
 
-	protected static HashMap<String, RemoteWebDriver> drivers = new HashMap<String, RemoteWebDriver>();
-	protected static HashMap<String, WebDriverWait> waits = new HashMap<String, WebDriverWait>();
+	protected static HashMap<Platform, RemoteWebDriver> drivers = new HashMap<Platform, RemoteWebDriver>();
+	protected static HashMap<Platform, WebDriverWait> waits = new HashMap<Platform, WebDriverWait>();
 	private static final Logger log = ZetaLogger.getLog(BasePage.class
 			.getSimpleName());
 	private static ZetaElementLocatorFactory zetaLocatorFactory;
-	private String pagePlatform;
+	private Platform platform;
 
 	protected synchronized void InitConnection(String URL,
 			DesiredCapabilities capabilities) throws Exception {
-
-		final String platform = (String) capabilities
-				.getCapability("platformName");
-		if (null == drivers || drivers.isEmpty()
-				|| drivers.get(platform) == null) {
-			if (platform.equals(CommonUtils.PLATFORM_NAME_ANDROID)) {
-				drivers.put(platform, new ZetaAndroidDriver(new URL(URL),
-						capabilities));
-			} else if (platform.equals(CommonUtils.PLATFORM_NAME_IOS)) {
-				drivers.put(platform, new ZetaIOSDriver(new URL(URL),
-						capabilities));
-			} else if (platform.equals(CommonUtils.PLATFORM_NAME_OSX)) {
-				drivers.put(platform, new ZetaOSXDriver(new URL(URL),
-						capabilities));
-			} else if (platform.equals(CommonUtils.PLATFORM_NAME_WEB)) {
-				capabilities.setCapability("platformName", "ANY");
+		final Platform platformInCapabilities = Platform
+				.getByName((String) capabilities.getCapability("platformName"));
+		if (!drivers.containsKey(platformInCapabilities)) {
+			switch (platformInCapabilities) {
+			case Mac:
+				drivers.put(platformInCapabilities, new ZetaOSXDriver(new URL(
+						URL), capabilities));
+				break;
+			case iOS:
+				drivers.put(platformInCapabilities, new ZetaIOSDriver(new URL(
+						URL), capabilities));
+				break;
+			case Android:
+				drivers.put(platformInCapabilities, new ZetaAndroidDriver(
+						new URL(URL), capabilities));
+				break;
+			case Web:
 				int tryNum = 0;
 				final int maxTries = 3;
 				WebDriverException savedException = null;
@@ -65,8 +66,9 @@ public abstract class BasePage {
 					// Try to reconnect WebDriver,
 					// because sometimes Safari driver is non-responsive
 					try {
-						drivers.put(platform, new ZetaWebAppDriver(
-								new URL(URL), capabilities));
+						drivers.put(
+								platformInCapabilities,
+								new ZetaWebAppDriver(new URL(URL), capabilities));
 						break;
 					} catch (WebDriverException e) {
 						if (e.getMessage().contains("Failed to connect")) {
@@ -80,35 +82,31 @@ public abstract class BasePage {
 				if (tryNum >= maxTries) {
 					throw savedException;
 				}
-			} else {
-				throw new RuntimeException(String.format(
-						"Platform name '%s' is unknown", platform));
+				break;
+			default:
+				throw new RuntimeException(
+						String.format("Platform name '%s' is unknown",
+								platformInCapabilities));
 			}
-			try {
-				drivers.get(platform)
-						.manage()
-						.timeouts()
-						.implicitlyWait(
-								Integer.parseInt(CommonUtils
-										.getDriverTimeoutFromConfig(getClass())),
-								TimeUnit.SECONDS);
 
-				waits.put(
-						platform,
-						new WebDriverWait(
-								drivers.get(platform),
-								Integer.parseInt(CommonUtils
-										.getDriverTimeoutFromConfig(getClass()))));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			drivers.get(platformInCapabilities)
+					.manage()
+					.timeouts()
+					.implicitlyWait(
+							Integer.parseInt(CommonUtils
+									.getDriverTimeoutFromConfig(getClass())),
+							TimeUnit.SECONDS);
+			waits.put(
+					platformInCapabilities,
+					new WebDriverWait(drivers.get(platformInCapabilities),
+							Integer.parseInt(CommonUtils
+									.getDriverTimeoutFromConfig(getClass()))));
 		}
 
-		pagePlatform = platform;
+		this.platform = platformInCapabilities;
 
 		zetaLocatorFactory = new ZetaElementLocatorFactory(
-				drivers.get(platform), Long.parseLong(CommonUtils
+				drivers.get(platformInCapabilities), Long.parseLong(CommonUtils
 						.getDriverTimeoutFromConfig(getClass())),
 				AppiumFieldDecorator.DEFAULT_TIMEUNIT);
 		FieldDecorator zetaFieldDecorator = new ZetaFieldDecorator(
@@ -116,16 +114,18 @@ public abstract class BasePage {
 		PageFactory.initElements(zetaFieldDecorator, this);
 	}
 
-	public synchronized void Close() throws Exception {
-		if (drivers.get(pagePlatform) != null) {
-			drivers.get(pagePlatform).quit();
-			drivers.put(pagePlatform, null);
+	public synchronized void close() throws Exception {
+		if (drivers.containsKey(platform) && drivers.get(platform) != null) {
+			try {
+				drivers.get(platform).quit();
+			} finally {
+				drivers.remove(platform);
+			}
 		}
 	}
 
 	public BufferedImage takeScreenshot() throws IOException {
-		return DriverUtils.takeScreenshot((ZetaDriver) drivers
-				.get(pagePlatform));
+		return DriverUtils.takeScreenshot((ZetaDriver) drivers.get(platform));
 	}
 
 	public BufferedImage getElementScreenshot(WebElement element)
@@ -153,7 +153,7 @@ public abstract class BasePage {
 
 	public void refreshUITree() {
 		try {
-			drivers.get(pagePlatform).getPageSource();
+			drivers.get(platform).getPageSource();
 		} catch (WebDriverException ex) {
 
 		}
@@ -180,10 +180,10 @@ public abstract class BasePage {
 	}
 
 	public String getPageSource() {
-		return drivers.get(pagePlatform).getPageSource();
+		return drivers.get(platform).getPageSource();
 	}
 
-	public static RemoteWebDriver getDriver(String id) {
+	public static RemoteWebDriver getDriver(Platform id) {
 		return drivers.get(id);
 	}
 

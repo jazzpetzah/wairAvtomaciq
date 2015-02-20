@@ -43,7 +43,7 @@ public class DialogPageSteps {
 	}
 
 	@When("^I input (.*) message and send it$")
-	public void ITypeTheMessageAndSendIt(String myMessage) throws Throwable {
+	public void ITypeTheMessageAndSendIt(String myMessage) throws Exception {
 		message = myMessage;
 
 		PagesCollection.dialogPage.typeMessage(myMessage);

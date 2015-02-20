@@ -20,7 +20,6 @@ import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.ImageFullScreenPage;
-import com.wearezeta.auto.ios.pages.OtherUserOnPendingProfilePage;
 import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.ios.pages.CameraRollPage;
@@ -138,6 +137,29 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.sendStringToInput(message + "\n");
 	}
 
+	/**
+	 * Verifies that the title bar is present with a certain conversation name
+	 * 
+	 * @step. ^I see title bar in conversation name (.*)$
+	 * 
+	 * @param convName
+	 * 			name of the conversation
+	 * 
+	 * @throws InterruptedException 
+	 * 	
+	 * @throws AssertionError
+	 *             if title bar is not visible
+	 *            
+	 * @throws AssertionError
+	 *             if title bar has incorrect name
+	 */
+	@Then("^I see title bar in conversation name (.*)$")
+	public void ThenITitleBar(String convName) throws NoSuchUserException, InterruptedException {
+		String chatName = usrMgr.findUserByNameOrNameAlias(convName).getName();
+		Assert.assertTrue("Title bar is not on the page",PagesCollection.dialogPage.isTitleBarDisplayed());
+		Assert.assertTrue("Title bar has incorrect name",PagesCollection.dialogPage.isTitleBarNamed(chatName));
+	}
+	
 	/**
 	 * Click open conversation details button in 1:1 dialog
 	 * 
@@ -520,7 +542,7 @@ public class DialogPageSteps {
 
 	@When("^I send using script predefined message (.*)$")
 	public void ISendUsingScriptPredefinedMessage(String message)
-			throws Throwable {
+			throws Exception {
 		PagesCollection.dialogPage.sendMessageUsingScript(message);
 	}
 

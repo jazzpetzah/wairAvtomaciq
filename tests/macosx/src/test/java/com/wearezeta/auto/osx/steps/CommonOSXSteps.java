@@ -19,9 +19,9 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
+import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.pages.LoginPage;
 import com.wearezeta.auto.osx.pages.MainMenuPage;
-import com.wearezeta.auto.osx.pages.OSXPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
 
 import cucumber.api.java.After;
@@ -53,10 +53,10 @@ public class CommonOSXSteps {
 		if (!OSXCommonUtils.isBackendTypeSet(CommonUtils
 				.getBackendType(CommonOSXSteps.class))) {
 			log.debug("Backend setting were overwritten. Trying to restart app.");
-			senderPages.getMainMenuPage().quitZClient();
+			PagesCollection.mainMenuPage.quitZClient();
 			OSXCommonUtils.setZClientBackend(CommonUtils
 					.getBackendType(CommonOSXSteps.class));
-			senderPages.getLoginPage().startApp();
+			PagesCollection.loginPage.startApp();
 		}
 	}
 
@@ -64,17 +64,15 @@ public class CommonOSXSteps {
 	public void setUpPerformance() throws Exception, UriBuilderException,
 			IOException, MessagingException, JSONException,
 			BackendRequestException, InterruptedException {
-		String path = CommonUtils
-				.getOsxApplicationPathFromConfig(CommonOSXSteps.class);
 		senderPages = new PagesCollection();
 
-		senderPages.setMainMenuPage(new MainMenuPage(CommonUtils
-				.getOsxAppiumUrlFromConfig(CommonOSXSteps.class), path));
-		senderPages.setLoginPage(new LoginPage(CommonUtils
-				.getOsxAppiumUrlFromConfig(CommonOSXSteps.class), path));
-		ZetaFormatter.setDriver((AppiumDriver) senderPages.getLoginPage()
+		PagesCollection.mainMenuPage = new MainMenuPage(
+				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+		PagesCollection.loginPage = new LoginPage(
+				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+		ZetaFormatter.setDriver((AppiumDriver) PagesCollection.loginPage
 				.getDriver());
-		senderPages.getLoginPage().sendProblemReportIfFound();
+		PagesCollection.loginPage.sendProblemReportIfFound();
 	}
 
 	@Before("~@performance")
@@ -87,17 +85,15 @@ public class CommonOSXSteps {
 		OSXCommonUtils.setZClientBackend(CommonUtils.getBackendType(this
 				.getClass()));
 
-		String path = CommonUtils
-				.getOsxApplicationPathFromConfig(CommonOSXSteps.class);
 		senderPages = new PagesCollection();
 
-		senderPages.setMainMenuPage(new MainMenuPage(CommonUtils
-				.getOsxAppiumUrlFromConfig(CommonOSXSteps.class), path));
-		senderPages.setLoginPage(new LoginPage(CommonUtils
-				.getOsxAppiumUrlFromConfig(CommonOSXSteps.class), path));
-		ZetaFormatter.setDriver((AppiumDriver) senderPages.getLoginPage()
+		PagesCollection.mainMenuPage = new MainMenuPage(
+				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+		PagesCollection.loginPage = new LoginPage(
+				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+		ZetaFormatter.setDriver((AppiumDriver) PagesCollection.loginPage
 				.getDriver());
-		senderPages.getLoginPage().sendProblemReportIfFound();
+		PagesCollection.loginPage.sendProblemReportIfFound();
 
 		resetBackendSettingsIfOverwritten();
 	}
@@ -183,7 +179,8 @@ public class CommonOSXSteps {
 	public void ContactSendImageToConversation(String imageSenderUserNameAlias,
 			String imageFileName, String conversationType,
 			String dstConversationName) throws Exception {
-		String imagePath = OSXPage.imagesPath + "/" + imageFileName;
+		String imagePath = OSXExecutionContext.userDocuments + "/"
+				+ imageFileName;
 		Boolean isGroup = null;
 		if (conversationType.equals("single user")) {
 			isGroup = false;
@@ -211,7 +208,7 @@ public class CommonOSXSteps {
 	@When("^I change user (.*) avatar picture from file (.*)$")
 	public void IChangeUserAvatarPictureFromFile(String user, String picture)
 			throws Exception {
-		String picturePath = OSXPage.imagesPath + "/" + picture;
+		String picturePath = OSXExecutionContext.userDocuments + "/" + picture;
 		try {
 			user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		} catch (NoSuchUserException e) {
@@ -252,28 +249,34 @@ public class CommonOSXSteps {
 	}
 
 	@When("^Contact (.*) sends random message to conversation (.*)")
-	public void ContactSendsRandomMessageToConversation(String msgFromUserNameAlias, String dstUserNameAlias) throws Exception {
+	public void ContactSendsRandomMessageToConversation(
+			String msgFromUserNameAlias, String dstUserNameAlias)
+			throws Exception {
 		String message = UUID.randomUUID().toString();
-		ContactSendsMessageToConversation(msgFromUserNameAlias, message, dstUserNameAlias);
+		ContactSendsMessageToConversation(msgFromUserNameAlias, message,
+				dstUserNameAlias);
 	}
-	
+
 	@When("^Contact (.*) sends message (.*) to conversation (.*)$")
 	public void ContactSendsMessageToConversation(String msgFromUserNameAlias,
 			String message, String dstUserNameAlias) throws Exception {
-		commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstUserNameAlias, message);
+		commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
+				dstUserNameAlias, message);
 	}
-	
+
 	@When("^Contact (.*) posts messages and media link (.*) to conversation (.*)$")
 	public void ContactPostsMessagesAndMediaLink(String msgFromUserNameAlias,
 			String mediaLink, String dstUserNameAlias) throws Exception {
 		final int RANDOM_MESSAGE_COUNT = 20;
 		for (int i = 0; i <= RANDOM_MESSAGE_COUNT; i++) {
-			ContactSendsRandomMessageToConversation(msgFromUserNameAlias, dstUserNameAlias);
+			ContactSendsRandomMessageToConversation(msgFromUserNameAlias,
+					dstUserNameAlias);
 			Thread.sleep(500);
 		}
-		ContactSendsMessageToConversation(msgFromUserNameAlias, mediaLink, dstUserNameAlias);
+		ContactSendsMessageToConversation(msgFromUserNameAlias, mediaLink,
+				dstUserNameAlias);
 	}
-	
+
 	@After
 	public void tearDown() throws Exception {
 		senderPages.closeAllPages();

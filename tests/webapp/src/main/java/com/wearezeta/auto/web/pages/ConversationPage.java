@@ -2,9 +2,6 @@ package com.wearezeta.auto.web.pages;
 
 import java.util.List;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -13,15 +10,16 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.WebAppConstants;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class ConversationPage extends WebPage {
 
+	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(ConversationPage.class
 			.getSimpleName());
 
@@ -90,10 +88,9 @@ public class ConversationPage extends WebPage {
 
 	public WebPage clickShowUserProfileButton(boolean isGroup) throws Exception {
 		showParticipants.click();
-		if(isGroup) {
+		if (isGroup) {
 			return new ParticipantsPopupPage(url, path);
-		}
-		else {
+		} else {
 			return new UserProfilePopupPage(url, path);
 		}
 	}
@@ -103,12 +100,12 @@ public class ConversationPage extends WebPage {
 		return new ParticipantsPopupPage(url, path);
 	}
 
-	public void sendPicture(String pictureName) throws Exception {
+	public void sendPicture(String pictureName, boolean isGroup)
+			throws Exception {
 		final String picturePath = WebCommonUtils
 				.getFullPicturePath(pictureName);
-
 		final String showImageLabelJScript = "$('"
-				+ WebAppLocators.ConversationPage.cssSendImageLabel
+				+ WebAppLocators.ConversationPage.cssRightControlsPanel
 				+ "').css({'opacity': '100'});";
 		driver.executeScript(showImageLabelJScript);
 		if (WebCommonUtils.getWebAppBrowserNameFromConfig(
@@ -116,29 +113,23 @@ public class ConversationPage extends WebPage {
 			// sendKeys() call to file input element does nothing on safari
 			// so instead of sendKeys() we are using AppleScript which chooses
 			// required image in open file dialog
-			final String showPathInputJScript = "$('"
-					+ WebAppLocators.ConversationPage.cssSendImageLabel
-					+ "').find('"
-					+ WebAppLocators.ConversationPage.cssSendImageInput
-					+ "').css({'left': '0'});";
-			driver.executeScript(showPathInputJScript);
-			//waiting few seconds till we can click on element
-			Thread.sleep(2000);
-			imagePathInput.click();
-			String script = String
-					.format(CommonUtils
-							.readTextFileFromResources(WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT),
-							WebCommonUtils.getPicturesPath(), pictureName);
-			ScriptEngineManager mgr = new ScriptEngineManager();
-			ScriptEngine engine = mgr.getEngineByName("AppleScriptEngine");
-			if (engine != null) {
-				engine.eval(script);
-			} else {
-				log.debug("No script engine factory for AppleScript. Existing script engine factories: "
-						+ mgr.getEngineFactories());
-				throw new Exception(
-						"Failed to get script engine to execute AppleScript.");
-			}
+			String scriptDestination = WebAppExecutionContext.temporaryScriptsLocation
+					+ "/" + WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT;
+			final String GROUP_CHAT_LABEL_INDEX = "-2";
+			final String SINGLE_CHAT_LABEL_INDEX = "-3";
+			WebCommonUtils
+					.formatTextInFileAndSave(
+							WebCommonUtils.getScriptsTemplatesPath()
+									+ WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT,
+							scriptDestination, new String[] {
+									(isGroup ? GROUP_CHAT_LABEL_INDEX
+											: SINGLE_CHAT_LABEL_INDEX),
+									WebCommonUtils.getPicturesPath(),
+									pictureName });
+			WebCommonUtils.putFilesOnExecutionNode(
+					WebAppExecutionContext.seleniumNodeIp,
+					WebAppExecutionContext.temporaryScriptsLocation);
+			WebCommonUtils.executeAppleScriptFromFile(scriptDestination);
 		} else {
 			final String showPathInputJScript = "$('"
 					+ WebAppLocators.ConversationPage.cssSendImageLabel

@@ -61,8 +61,7 @@ public abstract class AndroidPage extends BasePage {
 		LoggingPreferences object = new LoggingPreferences();
 		object.enable("logcat", Level.ALL);
 		capabilities.setCapability(CapabilityType.LOGGING_PREFS, object);
-		capabilities.setCapability("platformName",
-				CommonUtils.PLATFORM_NAME_ANDROID);
+		capabilities.setCapability("platformName", Platform.Android.getName());
 		capabilities.setCapability("deviceName",
 				CommonUtils.getAndroidDeviceNameFromConfig(AndroidPage.class));
 		capabilities.setCapability("app", path);
@@ -95,9 +94,8 @@ public abstract class AndroidPage extends BasePage {
 	}
 
 	private void storeDriverAndWait() {
-		driver = (ZetaAndroidDriver) drivers
-				.get(CommonUtils.PLATFORM_NAME_ANDROID);
-		wait = waits.get(CommonUtils.PLATFORM_NAME_ANDROID);
+		driver = (ZetaAndroidDriver) drivers.get(Platform.Android);
+		wait = waits.get(Platform.Android);
 	}
 
 	public void selectPhoto() {
@@ -145,14 +143,14 @@ public abstract class AndroidPage extends BasePage {
 	}
 
 	@Override
-	public void Close() throws Exception {
+	public void close() throws Exception {
 		showLogs();
 		try {
 			AndroidCommonUtils.killAndroidClient();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		super.Close();
+		super.close();
 	}
 
 	public abstract AndroidPage returnBySwipe(SwipeDirection direction)
@@ -184,8 +182,6 @@ public abstract class AndroidPage extends BasePage {
 					+ elementSize.height - 300, coords.x + elementSize.width
 					/ 2, coords.y, time);
 		} catch (Exception ex) {
-
-		}
 
 	}
 

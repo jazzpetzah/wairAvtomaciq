@@ -1,15 +1,18 @@
 package com.wearezeta.auto.osx.steps;
 
 import java.util.ArrayList;
+
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.PerformanceCommon;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.PerformanceCommon.PerformanceLoop;
+import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationPage;
+import com.wearezeta.auto.osx.pages.PagesCollection;
 
 import cucumber.api.java.en.When;
 
@@ -28,85 +31,73 @@ public class PerformanceSteps {
 	 * 
 	 * @param timeout
 	 *            number of minutes to run the loop
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I start testing cycle for (\\d+) minutes$")
 	public void WhenIStartTestingCycleForMinutes(int timeout) throws Exception {
-		CommonOSXSteps.senderPages
-				.setContactListPage(new ContactListPage(
-						CommonUtils
-								.getOsxAppiumUrlFromConfig(LoginPageSteps.class),
-						CommonUtils
-								.getOsxApplicationPathFromConfig(LoginPageSteps.class)));
+		PagesCollection.contactListPage = new ContactListPage(
+				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
 
 		perfCommon.runPerformanceLoop(new PerformanceLoop() {
 			public void run() throws Exception {
 				// Send messages cycle by UI
 				for (int i = 0; i < PerformanceCommon.SEND_MESSAGE_NUM; i++) {
 					ArrayList<WebElement> visibleContactsList = new ArrayList<WebElement>(
-							CommonOSXSteps.senderPages.getContactListPage()
-									.getContacts());
+							PagesCollection.contactListPage.getContacts());
 					visibleContactsList.remove(0);
 
 					final int contactIdx = perfCommon.random
 							.nextInt(visibleContactsList.size() - 1);
 					String contact = visibleContactsList.get(contactIdx)
 							.getText();
-					CommonOSXSteps.senderPages.getContactListPage()
-							.openConversation(contact, false);
+					PagesCollection.contactListPage.openConversation(contact,
+							false);
 
-					CommonOSXSteps.senderPages.setConversationPage(new ConversationPage(
-							CommonUtils
-									.getOsxAppiumUrlFromConfig(ContactListPageSteps.class),
-							CommonUtils
-									.getOsxApplicationPathFromConfig(ContactListPageSteps.class)));
-					int numberMessages = CommonOSXSteps.senderPages
-							.getConversationPage().getNumberOfMessageEntries(
-									contact);
-					int numberPictures = CommonOSXSteps.senderPages
-							.getConversationPage().getNumberOfImageEntries();
+					PagesCollection.conversationPage = new ConversationPage(
+							OSXExecutionContext.appiumUrl,
+							OSXExecutionContext.wirePath);
+					int numberMessages = PagesCollection.conversationPage
+							.getNumberOfMessageEntries(contact);
+					int numberPictures = PagesCollection.conversationPage
+							.getNumberOfImageEntries();
 					if (numberMessages > 0 || numberPictures > 0) {
 						try {
-							CommonOSXSteps.senderPages.getConversationPage()
+							PagesCollection.conversationPage
 									.scrollDownToLastMessage();
 						} catch (Exception exep) {
 							System.out.println("no need to scroll");
 						}
 					}
 					randomMessage = CommonUtils.generateGUID();
-					CommonOSXSteps.senderPages.getConversationPage()
+					PagesCollection.conversationPage
 							.writeNewMessage(randomMessage);
-					CommonOSXSteps.senderPages.getConversationPage()
-							.sendNewMessage();
+					PagesCollection.conversationPage.sendNewMessage();
 					try {
-						CommonOSXSteps.senderPages.getConversationPage()
+						PagesCollection.conversationPage
 								.scrollDownToLastMessage();
-						CommonOSXSteps.senderPages.getConversationPage()
+						PagesCollection.conversationPage
 								.scrollDownToLastMessage();
 					} catch (Exception ex) {
 						perfCommon.getLogger().debug("Scrolling fail: ", ex);
 					}
 					try {
-						CommonOSXSteps.senderPages.getConversationPage()
+						PagesCollection.conversationPage
 								.shortcutChooseImageDialog();
-						CommonOSXSteps.senderPages
-								.setChoosePicturePage(new ChoosePicturePage(
-										CommonUtils
-												.getOsxAppiumUrlFromConfig(ContactListPage.class),
-										CommonUtils
-												.getOsxApplicationPathFromConfig(ContactListPage.class)));
+						PagesCollection.choosePicturePage = new ChoosePicturePage(
+								OSXExecutionContext.appiumUrl,
+								OSXExecutionContext.wirePath);
 
-						ChoosePicturePage choosePicturePage = CommonOSXSteps.senderPages
-								.getChoosePicturePage();
-						Assert.assertTrue(choosePicturePage.isVisible());
+						Assert.assertTrue(PagesCollection.choosePicturePage
+								.isVisible());
 
-						choosePicturePage.openImage(picturename);
+						PagesCollection.choosePicturePage
+								.openImage(picturename);
 					} catch (Exception ex) {
 						perfCommon.getLogger().debug("Image posting failed: ",
 								ex);
 					}
 					try {
-						CommonOSXSteps.senderPages.getConversationPage()
+						PagesCollection.conversationPage
 								.scrollDownToLastMessage();
 					} catch (Exception exep) {
 						perfCommon.getLogger().debug("Scrolling fail: ", exep);
@@ -120,14 +111,13 @@ public class PerformanceSteps {
 	}
 
 	public void minimizeClient() throws Exception {
-		CommonOSXSteps.senderPages.getContactListPage()
-				.waitUntilMainWindowAppears();
-		CommonOSXSteps.senderPages.getContactListPage().minimizeZClient();
+		PagesCollection.contactListPage.waitUntilMainWindowAppears();
+		PagesCollection.contactListPage.minimizeZClient();
 		perfCommon.getLogger().debug("Client minimized");
 	}
 
 	public void restoreClient() throws Exception {
-		CommonOSXSteps.senderPages.getContactListPage().restoreZClient();
+		PagesCollection.contactListPage.restoreZClient();
 		perfCommon.getLogger().debug("Client restored");
 	}
 

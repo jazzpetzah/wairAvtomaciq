@@ -8,7 +8,7 @@ public final class IOSLocators {
 	
 	public static final String nameRegisterButton = "SignUp";
 	
-	public static final String xpathTermsOfServiceButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]";
+	public static final String nameTermsOfServiceButton = "LegalCheckmarkButton";
 	
 	public static final String nameLoginButton = "ConfirmSignIn";
 	
@@ -47,6 +47,8 @@ public final class IOSLocators {
 	public static final String nameYouRenamedConversation = "YOU RENAMED THE CONVERSATION";
 	
 	public static final String xpathDialogTextMessage = "//UIATableCell/UIATextView";
+	
+	public static final String xpathDialogTitleBar = "//UIAApplication[1]/UIAWindow[2]/UIAStaticText[1]";
 	
 	public static final String xpathFormatDialogTextMessage = "//UIATableCell/UIATextView[@value='%s']";
 	
@@ -168,7 +170,7 @@ public final class IOSLocators {
 	
 	public static final String xpathYouAddedMessageCellFormat = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[1]";
 	
-	public static final String xpathPersonalInfoPage = "//UIAApplication[1]/UIAWindow[1]";
+	public static final String xpathPersonalInfoPage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']";
 	
 	public static final String nameCameraButton = "cameraButton";
 	
@@ -218,7 +220,7 @@ public final class IOSLocators {
 
 	public static final String nameProfileName = "ProfileSelfNameField";
 	
-	public static final String xpathProfileNameEditField = "//UIAApplication[1]/UIAWindow[1]/UIAElement[1]/UIATextView[1]";
+	public static final String xpathProfileNameEditField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAElement[1]/UIATextView[1]";
 	
 	public static final String nameSelfNameTooShortError = "AT LEAST 2 CHARACTERS ";
 	
@@ -228,13 +230,13 @@ public final class IOSLocators {
 	
 	public static final String nameOptionsSettingsButton = "Settings";
 	
-	public static final String xpathSettingsPage = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]";
+	public static final String xpathSettingsPage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]";
 	
 	public static final String nameSoundAlertsButton = "Sound Alerts";
 	
-	public static final String xpathSoundAlertsPage = "//UIAApplication[1]/UIAWindow[1]/UIANavigationBar[1]/UIAImage[1]";
+	public static final String xpathSoundAlertsPage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIANavigationBar[1]/UIAImage[1]";
 	
-	public static final String xpathAllSoundAlertsButton = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]";
+	public static final String xpathAllSoundAlertsButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[1]";
 	
 	public static final String nameSettingsChangePasswordButton = "Change Password";
 	
@@ -412,8 +414,8 @@ public final class IOSLocators {
 	public static final String NamePeoplePickerTopPeopleLabel = "TOP PEOPLE";
 	public static final String xpathPeoplePickerUserAvatar = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell/UIAStaticText[@name='%s']/..";
 	public static final String namePeoplePickerAddToConversationButton = "ADD TO CONVERSATION";
-	public static final String xpathPeoplePickerTopConnectionsAvatar = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell[%d]";
-	public static final String xpathPeoplePickerAllTopPeople = "//UIAApplication[1]/UIAWindow[1]/UIACollectionView[1]/UIACollectionCell";
+	public static final String xpathPeoplePickerTopConnectionsAvatar = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[%d]";
+	public static final String xpathPeoplePickerAllTopPeople = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell";
 	public static final String nameShareButton = "SHARE";
 	public static final String nameContinueUploadButton = "SHARE";
 	public static final String namePeopleYouMayKnowLabel = "PEOPLE YOU MAY KNOW";

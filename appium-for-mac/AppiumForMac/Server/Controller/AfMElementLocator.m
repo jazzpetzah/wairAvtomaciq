@@ -92,7 +92,6 @@
 		NSMutableDictionary *pathMap = [NSMutableDictionary new];
 		GDataXMLDocument *doc = [self.session xmlPageSourceFromElement:baseElement pathMap:pathMap];
         NSString* xmlSource = [[NSString alloc] initWithData:doc.XMLData encoding:NSUTF8StringEncoding];
-        NSLog(@"%@", xmlSource);
 		NSError *error;
 		NSArray *matches = [doc nodesForXPath:self.value error:&error];
 		if (error != nil)
@@ -417,8 +416,10 @@
     NSArray *elementsToSearch;
 	if (baseElement != nil)
     {
-        // search the children if this is an element
-        elementsToSearch = baseElement.AXChildren;
+        if ([baseElement.AXRole caseInsensitiveCompare:@"AXUnknown"] != NSOrderedSame) {
+            // search the children if this is an element
+            elementsToSearch = baseElement.AXChildren;
+        }
     }
     else
     {

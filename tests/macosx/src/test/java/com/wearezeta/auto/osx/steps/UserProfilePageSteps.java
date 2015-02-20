@@ -5,13 +5,12 @@ import java.io.IOException;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;
-import com.wearezeta.auto.osx.pages.OSXPage;
-import com.wearezeta.auto.osx.pages.UserProfilePage;
+import com.wearezeta.auto.osx.pages.PagesCollection;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -25,54 +24,47 @@ public class UserProfilePageSteps {
 
 	@Given("I open picture settings")
 	public void GivenIOpenPictureSettings() throws IOException {
-		CommonOSXSteps.senderPages.getUserProfilePage().openPictureSettings();
+		PagesCollection.userProfilePage.openPictureSettings();
 	}
 
 	@When("I choose to select picture from image file")
 	public void WhenIChooseToSelectPictureFromImageFile() throws Exception {
-		CommonOSXSteps.senderPages.getUserProfilePage()
-				.openChooseImageFileDialog();
-		CommonOSXSteps.senderPages
-				.setChoosePicturePage(new ChoosePicturePage(
-						CommonUtils
-								.getOsxAppiumUrlFromConfig(UserProfilePageSteps.class),
-						CommonUtils
-								.getOsxApplicationPathFromConfig(UserProfilePageSteps.class)));
+		PagesCollection.userProfilePage.openChooseImageFileDialog();
+		PagesCollection.choosePicturePage = new ChoosePicturePage(
+				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
 	}
 
 	@When("I choose to select picture from camera")
 	public void WhenIChooseToSelectPictureFromCamera() {
-		CommonOSXSteps.senderPages.getUserProfilePage().openCameraDialog();
+		PagesCollection.userProfilePage.openCameraDialog();
 	}
 
 	@When("I select image file (.*)")
 	public void WhenISelectImageFile(String imageFilename) throws Exception {
-		ChoosePicturePage choosePicturePage = CommonOSXSteps.senderPages
-				.getChoosePicturePage();
-		Assert.assertTrue(choosePicturePage.isVisible());
+		Assert.assertTrue(PagesCollection.choosePicturePage.isVisible());
 
-		choosePicturePage.openImage(imageFilename);
+		PagesCollection.choosePicturePage.openImage(imageFilename);
 
-		CommonOSXSteps.senderPages.getUserProfilePage().confirmPictureChoice();
+		PagesCollection.userProfilePage.confirmPictureChoice();
 	}
 
 	@When("I shoot picture using camera")
 	public void WhenIShootPictureUsingCamera() throws InterruptedException {
-		CommonOSXSteps.senderPages.getUserProfilePage().doPhotoInCamera();
-		CommonOSXSteps.senderPages.getUserProfilePage().confirmPictureChoice();
+		PagesCollection.userProfilePage.doPhotoInCamera();
+		PagesCollection.userProfilePage.confirmPictureChoice();
 	}
 
 	@Then("I see changed user picture from image (.*)")
 	public void ThenISeeChangedUserPictureFromImage(String filename)
 			throws IOException {
-		UserProfilePage userProfile = CommonOSXSteps.senderPages
-				.getUserProfilePage();
-		userProfile.openPictureSettings();
-		BufferedImage referenceImage = userProfile.takeScreenshot();
+		PagesCollection.userProfilePage.openPictureSettings();
+		BufferedImage referenceImage = PagesCollection.userProfilePage
+				.takeScreenshot();
 
 		final double minOverlapScore = 0.55d;
 		BufferedImage templateImage = ImageUtil
-				.readImageFromFile(OSXPage.imagesPath + filename);
+				.readImageFromFile(OSXExecutionContext.userDocuments + "/"
+						+ filename);
 		final double score = ImageUtil.getOverlapScore(referenceImage,
 				templateImage);
 		Assert.assertTrue(
@@ -83,12 +75,10 @@ public class UserProfilePageSteps {
 
 	@Then("^I see changed user picture$")
 	public void ThenISeeChangedUserPicture() throws IOException {
-		UserProfilePage userProfile = CommonOSXSteps.senderPages
-				.getUserProfilePage();
 		if (userProfileAfter != null) {
 			userProfileBefore = userProfileAfter;
 		}
-		userProfileAfter = userProfile.takeScreenshot();
+		userProfileAfter = PagesCollection.userProfilePage.takeScreenshot();
 
 		final double minOverlapScore = 0.985d;
 		final double score = ImageUtil.getOverlapScore(userProfileAfter,
@@ -101,23 +91,17 @@ public class UserProfilePageSteps {
 
 	@When("I select to remove photo")
 	public void ISelectToRemovePhoto() {
-		UserProfilePage userProfile = CommonOSXSteps.senderPages
-				.getUserProfilePage();
-		userProfile.chooseToRemovePhoto();
+		PagesCollection.userProfilePage.chooseToRemovePhoto();
 	}
 
 	@When("I confirm photo removing")
 	public void IConfirmPhotoRemoving() {
-		UserProfilePage userProfile = CommonOSXSteps.senderPages
-				.getUserProfilePage();
-		userProfile.confirmPhotoRemoving();
+		PagesCollection.userProfilePage.confirmPhotoRemoving();
 	}
 
 	@When("I cancel photo removing")
 	public void ICancelPhotoRemoving() {
-		UserProfilePage userProfile = CommonOSXSteps.senderPages
-				.getUserProfilePage();
-		userProfile.cancelPhotoRemoving();
+		PagesCollection.userProfilePage.cancelPhotoRemoving();
 	}
 
 	@Then("I see user profile picture is not set")
@@ -127,16 +111,14 @@ public class UserProfilePageSteps {
 
 	@When("I see photo in User profile")
 	public void ISeePhotoInUserProfile() throws IOException {
-		userProfileBefore = CommonOSXSteps.senderPages.getUserProfilePage()
-				.takeScreenshot();
+		userProfileBefore = PagesCollection.userProfilePage.takeScreenshot();
 	}
 
 	@Then("I see name (.*) in User profile")
 	public void ISeeNameInUserProfile(String name) throws Exception {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		UserProfilePage userProfile = CommonOSXSteps.senderPages
-				.getUserProfilePage();
-		Assert.assertTrue(userProfile.selfProfileNameEquals(name));
+		Assert.assertTrue(PagesCollection.userProfilePage
+				.selfProfileNameEquals(name));
 	}
 
 	@Then("I see email of (.*) in User profile")
@@ -144,8 +126,6 @@ public class UserProfilePageSteps {
 		ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(name);
 		name = dstUser.getName();
 		String email = dstUser.getEmail();
-		UserProfilePage userProfile = CommonOSXSteps.senderPages
-				.getUserProfilePage();
-		userProfile.selfProfileEmailEquals(email);
+		PagesCollection.userProfilePage.selfProfileEmailEquals(email);
 	}
 }
