@@ -82,7 +82,7 @@ Feature: Conversation
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
-    When I mute conversation <Contact>
+    When I toggle mute for conversation <Contact>
     Then I see that conversation <Contact> is muted
 
     Examples: 
@@ -103,3 +103,23 @@ Feature: Conversation
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+
+  @staging @id1706
+  Scenario Outline: Verify you cannot Ping several times in a row
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name <Name> in Contact list
+    And I open conversation with <Contact>
+	When I click ping button  
+	Then I see ping message <PING>
+	And I wait for 2 seconds
+	When I click ping button  
+	Then I see ping message <PING_AGAIN>
+	And I wait for 2 seconds
+	When I click ping button 
+	Then I see only one ping message
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | PING   | PING_AGAIN   |
+      | user1Email | user1Password | user1Name | user2Name | pinged | pinged again |
