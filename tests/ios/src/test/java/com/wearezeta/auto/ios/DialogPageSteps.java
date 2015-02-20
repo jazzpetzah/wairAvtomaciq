@@ -319,7 +319,7 @@ public class DialogPageSteps {
 
 	@Then("I see media link (.*) and media in dialog")
 	public void ISeeMediaLinkAndMediaInDialog(String link)
-			throws InterruptedException {
+			throws Exception {
 		Assert.assertTrue("Media is missing in dialog",
 				PagesCollection.dialogPage.isMediaContainerVisible());
 
@@ -450,7 +450,7 @@ public class DialogPageSteps {
 	}
 
 	@Then("I see conversation view is scrolled back to the playing media link (.*)")
-	public void ISeeConversationViewIsScrolledBackToThePlayingMedia(String link) {
+	public void ISeeConversationViewIsScrolledBackToThePlayingMedia(String link) throws Exception {
 		Assert.assertEquals(link.toLowerCase(), PagesCollection.dialogPage
 				.getLastMessageFromDialog().toLowerCase());
 		Assert.assertTrue("View did not scroll back",

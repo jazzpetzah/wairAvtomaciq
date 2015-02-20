@@ -5,8 +5,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
@@ -21,24 +23,18 @@ public class PeoplePickerPage extends WebPage {
 	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.PeoplePickerPage.classNameCreateConversationButton)
 	private WebElement createConversationButton;
 
-	private String url;
-	@SuppressWarnings("unused")
-	private String path;
-	
-	public PeoplePickerPage(String URL, String path) throws Exception {
-		super(URL, path);
-		
-		this.url = URL;
-		this.path = path;
+	public PeoplePickerPage(ZetaWebAppDriver driver, WebDriverWait wait)
+			throws Exception {
+		super(driver, wait);
 	}
 
-	public void searchForUser(String searchText) {
+	public void searchForUser(String searchText) throws Exception {
 		DriverUtils.waitUntilElementClickable(driver, searchInput);
 		searchInput.clear();
 		searchInput.sendKeys(searchText);
 	}
 
-	public void selectUserFromSearchResult(String user) {
+	public void selectUserFromSearchResult(String user) throws Exception {
 		String xpath = String
 				.format(WebAppLocators.PeoplePickerPage.xpathFormatSearchListItemWithName,
 						user);
@@ -56,20 +52,25 @@ public class PeoplePickerPage extends WebPage {
 	}
 
 	private void clickNotConnectedUser(String name) {
-		String foundUserXpath = WebAppLocators.PeoplePickerPage.xpathSearchResultByName.apply(name);
-		WebElement foundUserElement = driver.findElement(By.xpath(foundUserXpath));
+		String foundUserXpath = WebAppLocators.PeoplePickerPage.xpathSearchResultByName
+				.apply(name);
+		WebElement foundUserElement = driver.findElement(By
+				.xpath(foundUserXpath));
 		foundUserElement.click();
 	}
-	
-	public ConnectToPopupPage clickNotConnectedUserName(String name) throws Exception {
+
+	public ConnectToPopupPage clickNotConnectedUserName(String name)
+			throws Exception {
 		clickNotConnectedUser(name);
-		return new ConnectToPopupPage(url, name);
+		return new ConnectToPopupPage(this.getDriver(), this.getWait());
 	}
-	
+
 	public boolean isUserFound(String name) {
-		String foundUserXpath = WebAppLocators.PeoplePickerPage.xpathSearchResultByName.apply(name);
-		WebElement foundUserElement = driver.findElement(By.xpath(foundUserXpath));
+		String foundUserXpath = WebAppLocators.PeoplePickerPage.xpathSearchResultByName
+				.apply(name);
+		WebElement foundUserElement = driver.findElement(By
+				.xpath(foundUserXpath));
 		return DriverUtils.isElementDisplayed(foundUserElement);
 	}
-	
+
 }

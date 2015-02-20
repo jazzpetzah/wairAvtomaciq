@@ -103,6 +103,10 @@ public final class WebAppLocators {
 		public static final String cssSendImageInput = "input[type=\"file\"]";
 
 		public static final String xpathImageMessageEntry = "//div[@class='message-asset-image']";
+		
+		public static final String xpathPingButton = "//span[contains(@class, 'zi-ping') and contains(@class,'controls-right-button')]";
+		
+		public static final String classPingMessage = "pinged";
 	}
 
 	public static final class ConnectToPage {

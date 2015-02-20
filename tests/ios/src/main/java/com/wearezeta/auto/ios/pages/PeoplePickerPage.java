@@ -9,11 +9,13 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
+import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class PeoplePickerPage extends IOSPage {
@@ -48,8 +50,8 @@ public class PeoplePickerPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.namePeoplePickerAddToConversationButton)
 	private WebElement addToConversationBtn;
 
-//	@FindBy(how = How.NAME, using = IOSLocators.nameLaterButton)
-//	private WebElement laterButton;
+	// @FindBy(how = How.NAME, using = IOSLocators.nameLaterButton)
+	// private WebElement laterButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameShareButton)
 	private WebElement shareButton;
@@ -59,34 +61,30 @@ public class PeoplePickerPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.namePeopleYouMayKnowLabel)
 	private WebElement peopleYouMayKnowLabel;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameUnblockButton)
 	private WebElement unblockButton;
-	
+
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathPeoplePickerAllTopPeople)
 	private List<WebElement> topPeopleList;
-	
-	private String url;
-	private String path;
 
 	private int numberTopSelected = 0;
 
-	public PeoplePickerPage(String URL, String path) throws Exception {
-		super(URL, path);
-		url = URL;
-		this.path = path;
+	public PeoplePickerPage(ZetaIOSDriver driver, WebDriverWait wait)
+			throws Exception {
+		super(driver, wait);
 	}
 
 	public void clickLaterButton() {
-//		if (DriverUtils.isElementDisplayed(laterButton)) {
-//			laterButton.click();
-//		}
+		// if (DriverUtils.isElementDisplayed(laterButton)) {
+		// laterButton.click();
+		// }
 		if (DriverUtils.isElementDisplayed(shareButton)) {
 			shareButton.click();
 		}
 	}
 
-	public Boolean isPeoplePickerPageVisible() {
+	public Boolean isPeoplePickerPageVisible() throws Exception {
 
 		boolean result = DriverUtils.waitUntilElementAppears(driver,
 				By.name(IOSLocators.namePickerClearButton));
@@ -95,7 +93,7 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public void tapOnPeoplePickerSearch() {
-		driver.tap(1, peoplePickerSearch.getLocation().x + 40,
+		this.getDriver().tap(1, peoplePickerSearch.getLocation().x + 40,
 				peoplePickerSearch.getLocation().y + 30, 1);// workaround for
 															// people picker
 															// activation
@@ -113,48 +111,47 @@ public class PeoplePickerPage extends IOSPage {
 		return ImageUtil.getOverlapScore(clockImage, templateImage);
 	}
 
-	public BufferedImage getAvatarClockIconScreenShot(String name) throws IOException {
-		return getElementScreenshot(driver
-				.findElement(By
-						.name(name)));
+	public BufferedImage getAvatarClockIconScreenShot(String name)
+			throws IOException {
+		return getElementScreenshot(driver.findElement(By.name(name)));
 	}
 
 	public void fillTextInPeoplePickerSearch(String text) {
 		peoplePickerSearch.sendKeys(text);
 	}
 
-	public boolean waitUserPickerFindUser(String user) {
+	public boolean waitUserPickerFindUser(String user) throws Exception {
 		return DriverUtils.waitUntilElementAppears(driver, By.name(user));
 	}
-	
+
 	public ConnectToPage clickOnNotConnectedUser(String name) throws Exception {
 		ConnectToPage page;
 		driver.findElement(By.name(name)).click();
-		page = new ConnectToPage(url, path);
+		page = new ConnectToPage(this.getDriver(), this.getWait());
 		return page;
 	}
 
 	public ConnectToPage pickUserAndTap(String name) throws Exception {
 
 		PickUser(name).click();
-		return new ConnectToPage(url, path);
+		return new ConnectToPage(this.getDriver(), this.getWait());
 	}
 
 	public PendingRequestsPage pickIgnoredUserAndTap(String name)
 			throws Exception {
 		PickUser(name).click();
-		return new PendingRequestsPage(url, path);
+		return new PendingRequestsPage(this.getDriver(), this.getWait());
 	}
 
 	public ContactListPage dismissPeoplePicker() throws Exception {
 		peoplePickerClearBtn.click();
-		return new ContactListPage(url, path);
+		return new ContactListPage(this.getDriver(), this.getWait());
 	}
 
 	public boolean isAddToConversationBtnVisible() {
 		return DriverUtils.isElementDisplayed(addToConversationBtn);
 	}
-	
+
 	public boolean addToConversationNotVisible() {
 		boolean flag;
 		try {
@@ -169,9 +166,9 @@ public class PeoplePickerPage extends IOSPage {
 	public IOSPage clickOnGoButton(boolean isGroupChat) throws Exception {
 		goButton.click();
 		if (isGroupChat) {
-			return new GroupChatPage(url, path);
+			return new GroupChatPage(this.getDriver(), this.getWait());
 		} else {
-			return new DialogPage(url, path);
+			return new DialogPage(this.getDriver(), this.getWait());
 		}
 	}
 
@@ -179,7 +176,7 @@ public class PeoplePickerPage extends IOSPage {
 			throws Throwable {
 		GroupChatInfoPage page = null;
 		driver.findElement(By.name(name)).click();
-		page = new GroupChatInfoPage(url, path);
+		page = new GroupChatInfoPage(this.getDriver(), this.getWait());
 		return page;
 	}
 
@@ -188,7 +185,7 @@ public class PeoplePickerPage extends IOSPage {
 		IOSPage page = null;
 		switch (direction) {
 		case DOWN: {
-			page = new ContactListPage(url, path);
+			page = new ContactListPage(this.getDriver(), this.getWait());
 			break;
 		}
 		case UP: {
@@ -205,7 +202,7 @@ public class PeoplePickerPage extends IOSPage {
 		return page;
 	}
 
-	private WebElement PickUser(String name) {
+	private WebElement PickUser(String name) throws Exception {
 		WebElement user = null;
 		fillTextInPeoplePickerSearch(name);
 		waitUserPickerFindUser(name);
@@ -221,7 +218,7 @@ public class PeoplePickerPage extends IOSPage {
 		return DriverUtils.isElementDisplayed(contactsLabel);
 	}
 
-	public void selectUser(String name) {
+	public void selectUser(String name) throws Exception {
 		DriverUtils.waitUntilElementClickable(driver, userPickerSearchResult);
 		driver.findElement(By.name(name)).click();
 	}
@@ -244,9 +241,9 @@ public class PeoplePickerPage extends IOSPage {
 	public IOSPage clickCreateConversationButton() throws Throwable {
 		createConverstaionButton.click();
 		if (numberTopSelected >= 2) {
-			return new GroupChatPage(url, path);
+			return new GroupChatPage(this.getDriver(), this.getWait());
 		} else {
-			return new DialogPage(url, path);
+			return new DialogPage(this.getDriver(), this.getWait());
 		}
 	}
 
@@ -277,14 +274,14 @@ public class PeoplePickerPage extends IOSPage {
 
 	public GroupChatPage clickAddToCoversationButton() throws Exception {
 		addToConversationBtn.click();
-		return new GroupChatPage(url, path);
+		return new GroupChatPage(this.getDriver(), this.getWait());
 	}
 
 	public OtherUserOnPendingProfilePage clickOnUserOnPending(String contact)
 			throws Exception {
 		OtherUserOnPendingProfilePage page;
 		driver.findElement(By.name(contact)).click();
-		page = new OtherUserOnPendingProfilePage(url, path);
+		page = new OtherUserOnPendingProfilePage(this.getDriver(), this.getWait());
 		return page;
 	}
 
@@ -302,18 +299,18 @@ public class PeoplePickerPage extends IOSPage {
 	public boolean isPeopleYouMayKnowLabelVisible() {
 		return DriverUtils.isElementDisplayed(peopleYouMayKnowLabel);
 	}
-	
+
 	public DialogPage unblockUser() throws Exception {
 		unblockButton.click();
-		return new DialogPage(url, path);
+		return new DialogPage(this.getDriver(), this.getWait());
 	}
-	
+
 	public int getNumberOfSelectedTopPeople() {
 		int selectedPeople = 0;
-		for (WebElement people: topPeopleList){
+		for (WebElement people : topPeopleList) {
 			if (people.getAttribute("value").equals("1")) {
 				selectedPeople++;
-			}	
+			}
 		}
 		return selectedPeople;
 	}

@@ -29,7 +29,8 @@ public class ConversationInfoPageSteps {
 	public void WhenIChooseUserInConversationInfo(String user) throws Exception {
 		user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		PagesCollection.conversationInfoPage = new ConversationInfoPage(
-				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+				PagesCollection.loginPage.getDriver(),
+				PagesCollection.loginPage.getWait());
 		PagesCollection.conversationInfoPage.selectUser(user);
 		PagesCollection.conversationInfoPage.selectUserIfNotSelected(user);
 	}
@@ -38,18 +39,19 @@ public class ConversationInfoPageSteps {
 	public void IDontSeeUserInConversationInfo(String user) throws Exception {
 		user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		PagesCollection.conversationInfoPage = new ConversationInfoPage(
-				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+				PagesCollection.loginPage.getDriver(),
+				PagesCollection.loginPage.getWait());
 		Assert.assertTrue(PagesCollection.conversationInfoPage
 				.userIsNotExistInConversation(user));
 	}
 
 	@When("I remove selected user from conversation")
-	public void WhenIRemoveSelectedUserFromConversation() {
+	public void WhenIRemoveSelectedUserFromConversation() throws Exception {
 		PagesCollection.conversationInfoPage.removeUser();
 	}
 
 	@When("I leave conversation")
-	public void WhenILeaveConversation() {
+	public void WhenILeaveConversation() throws Exception {
 		PagesCollection.conversationInfoPage.leaveConversation();
 	}
 

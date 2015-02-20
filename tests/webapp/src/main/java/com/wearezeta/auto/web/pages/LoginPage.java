@@ -6,8 +6,10 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
@@ -29,14 +31,9 @@ public class LoginPage extends WebPage {
 	@FindBy(how = How.ID, using = WebAppLocators.LoginPage.idLoginButton)
 	private WebElement loginButton;
 
-	private String url;
-	private String path;
-
-	public LoginPage(String url, String path) throws Exception {
-		super(url, path, false);
-
-		this.url = url;
-		this.path = path;
+	public LoginPage(ZetaWebAppDriver driver, WebDriverWait wait)
+			throws Exception {
+		super(driver, wait);
 	}
 
 	public boolean isVisible() {
@@ -51,10 +48,10 @@ public class LoginPage extends WebPage {
 	}
 
 	public ContactListPage confirmSignIn() throws Exception {
-		
+
 		loginButton.click();
 
-		return new ContactListPage(url, path);
+		return new ContactListPage(this.getDriver(), this.getWait());
 	}
 
 	public void inputEmail(String email) {
@@ -67,10 +64,11 @@ public class LoginPage extends WebPage {
 		passwordInput.sendKeys(password);
 	}
 
-	public boolean waitForLogin() {
+	public boolean waitForLogin() throws Exception {
 		boolean noSignIn = DriverUtils.waitUntilElementDissapear(driver,
 				By.id(WebAppLocators.LoginPage.idLoginButton), 40);
-		boolean noSignInSpinner = DriverUtils.waitUntilElementDissapear(driver, By.className(WebAppLocators.LoginPage.classNameSpinner), 40);
+		boolean noSignInSpinner = DriverUtils.waitUntilElementDissapear(driver,
+				By.className(WebAppLocators.LoginPage.classNameSpinner), 40);
 		return noSignIn && noSignInSpinner;
 	}
 }

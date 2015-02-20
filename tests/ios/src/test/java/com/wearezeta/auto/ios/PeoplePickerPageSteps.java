@@ -27,10 +27,9 @@ public class PeoplePickerPageSteps {
 	@When("I see Upload contacts dialog")
 	public void WhenISeeUploadContactsDialog() throws Exception {
 		if (PagesCollection.peoplePickerPage == null) {
-			String path = CommonUtils
-					.getIosApplicationPathFromConfig(TestRun.class);
 			PagesCollection.peoplePickerPage = new PeoplePickerPage(
-					CommonUtils.getIosAppiumUrlFromConfig(TestRun.class), path);
+					PagesCollection.loginPage.getDriver(),
+					PagesCollection.loginPage.getWait());
 		}
 		Assert.assertTrue("Upload dialog is not shown",
 				PagesCollection.peoplePickerPage.isUploadDialogShown());
@@ -158,13 +157,14 @@ public class PeoplePickerPageSteps {
 	 * Verifies that a clock is present on a pending user's searched avatar
 	 * 
 	 * @step. ^I see the user avatar with a clock$
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	
+
 	@Then("^I see the user (.*) avatar with a clock$")
 	public void ISeeUserWithAvatarClock(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertTrue("Avatar does not have a clock icon",
+		Assert.assertTrue(
+				"Avatar does not have a clock icon",
 				PagesCollection.peoplePickerPage.checkAvatarClockIcon(contact) > 0.95);
 	}
 
@@ -318,7 +318,8 @@ public class PeoplePickerPageSteps {
 	 */
 	@Then("^I see that (\\d+) contacts are selected$")
 	public void ISeeThatContactsAreSelected(int number) {
-		int numberOfSelectedTopPeople = PagesCollection.peoplePickerPage.getNumberOfSelectedTopPeople();
+		int numberOfSelectedTopPeople = PagesCollection.peoplePickerPage
+				.getNumberOfSelectedTopPeople();
 		Assert.assertEquals(number, numberOfSelectedTopPeople);
 	}
 }

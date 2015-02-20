@@ -109,10 +109,11 @@ public class ContactListPageSteps {
 	 * 
 	 * @param contact
 	 *            conversation name string
+	 * @throws Exception 
 	 * 
 	 */
 	@When("^I archive conversation (.*)$")
-	public void IClickArchiveButton(String contact) {
+	public void IClickArchiveButton(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		PagesCollection.contactListPage.clickActionsButtonForContact(contact);
 		PagesCollection.contactListPage
@@ -145,8 +146,8 @@ public class ContactListPageSteps {
 	@Given("^I do not see Contact list with name (.*)$")
 	public void IDoNotSeeContactListWithName(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		Assert.assertFalse(PagesCollection.contactListPage
-				.isContactWithNameExists(name));
+		Assert.assertTrue(PagesCollection.contactListPage
+				.contactWithNameNotVisible(name));
 	}
 
 	/**
@@ -195,10 +196,10 @@ public class ContactListPageSteps {
 	 * 
 	 * @param contact
 	 *            conversation name string
-	 * @throws InterruptedException
+	 * @throws Exception 
 	 */
 	@When("^I toggle mute for conversation (.*)$")
-	public void IClickMuteButton(String contact) throws InterruptedException {
+	public void IClickMuteButton(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		PagesCollection.contactListPage.clickActionsButtonForContact(contact);
 		Thread.sleep(1000);
@@ -212,9 +213,10 @@ public class ContactListPageSteps {
 	 * @step. ^I see that conversation (.*) is muted$
 	 * @param contact
 	 * 			conversation name string
+	 * @throws Exception 
 	 */
 	@When("^I see that conversation (.*) is muted$")
-	public void ISeeConversationIsMuted(String contact) {
+	public void ISeeConversationIsMuted(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 
 		Assert.assertTrue(PagesCollection.contactListPage.isConversationMuted(contact));
@@ -226,9 +228,10 @@ public class ContactListPageSteps {
 	 * @step. ^I see that conversation (.*) is not muted$
 	 * @param contact
 	 * 			conversation name string
+	 * @throws Exception 
 	 */
 	@When("^I see that conversation (.*) is not muted$")
-	public void ISeeConversationIsNotMuted(String contact) {
+	public void ISeeConversationIsNotMuted(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 
 		Assert.assertFalse(PagesCollection.contactListPage.isConversationMuted(contact));

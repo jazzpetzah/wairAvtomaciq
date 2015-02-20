@@ -126,7 +126,7 @@ public class PersonalInfoPageSteps {
 	}
 
 	@When("I see Personal page")
-	public void ISeePersonalPage() {
+	public void ISeePersonalPage() throws Exception {
 		PagesCollection.personalInfoPage.waitForSettingsButtonAppears();
 	}
 

@@ -1,11 +1,18 @@
 package com.wearezeta.auto.web.steps;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.LocalFileDetector;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.common.io.Files;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
+import com.wearezeta.auto.common.driver.PlatformDrivers;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.common.WebAppConstants;
@@ -27,6 +34,8 @@ public class CommonWebAppSteps {
 			.getSimpleName());
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
+	public static final Platform CURRENT_PLATFORM = Platform.Web;
+
 	static {
 		System.setProperty("java.awt.headless", "false");
 		System.setProperty("org.apache.commons.logging.Log",
@@ -36,16 +45,67 @@ public class CommonWebAppSteps {
 				"warn");
 	}
 
+	private static String getBrowser() throws Exception {
+		return WebCommonUtils
+				.getWebAppBrowserNameFromConfig(CommonWebAppSteps.class);
+	}
+
+	private ZetaWebAppDriver resetWebAppDriver(String url) throws Exception {
+		final String browser = getBrowser();
+		final DesiredCapabilities capabilities;
+
+		switch (browser) {
+		case "chrome":
+			capabilities = DesiredCapabilities.chrome();
+			break;
+		case "firefox":
+			capabilities = DesiredCapabilities.firefox();
+			break;
+		case "safari":
+			capabilities = DesiredCapabilities.safari();
+			break;
+		case "ie":
+			capabilities = DesiredCapabilities.internetExplorer();
+			break;
+		default:
+			throw new NotImplementedException(
+					"Incorrect browser name is set - "
+							+ browser
+							+ ". Please choose one of the following: chrome | firefox | safari | ie");
+		}
+		final String webPlatformName = WebCommonUtils
+				.getPlatformNameFromConfig(WebPage.class);
+		if (webPlatformName.length() > 0) {
+			// Use undocumented grid property to match platforms
+			// https://groups.google.com/forum/#!topic/selenium-users/PRsEBcbpNlM
+			capabilities.setCapability("applicationName", webPlatformName);
+		}
+		capabilities.setCapability("platformName", Platform.Web.getName());
+		final ZetaWebAppDriver webDriver = (ZetaWebAppDriver) PlatformDrivers
+				.getInstance().resetDriver(url, capabilities);
+		webDriver.setFileDetector(new LocalFileDetector());
+		return webDriver;
+	}
+
 	@Before("~@performance")
 	public void setUp() throws Exception {
-
-		String url = CommonUtils
+		final String url = CommonUtils
 				.getWebAppAppiumUrlFromConfig(CommonWebAppSteps.class);
-		String path = CommonUtils
+		final String path = CommonUtils
 				.getWebAppApplicationPathFromConfig(CommonWebAppSteps.class);
+		final ZetaWebAppDriver webDriver = resetWebAppDriver(url);
+		final WebDriverWait wait = PlatformDrivers
+				.createDefaultExplicitWait(webDriver);
+		try {
+			if (!getBrowser().equals("safari")) {
+				webDriver.manage().window().maximize();
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 
-		PagesCollection.invitationCodePage = new InvitationCodePage(url, path);
-
+		PagesCollection.invitationCodePage = new InvitationCodePage(webDriver,
+				wait, path);
 		ZetaFormatter.setDriver(PagesCollection.invitationCodePage.getDriver());
 
 		// put AppleScript for execution to Selenium node
@@ -198,22 +258,22 @@ public class CommonWebAppSteps {
 			InterruptedException {
 		commonSteps.WaitForTime(seconds);
 	}
-	
+
 	/**
 	 * Mute conversation
 	 * 
 	 * @step. ^(.*) muted conversation with (.*)$
 	 * @param userToNameAlias
-	 * 			user who want to mute conversation
+	 *            user who want to mute conversation
 	 * @param muteUserNameAlias
-	 * 			conversation or user to be muted
+	 *            conversation or user to be muted
 	 * @throws Exception
 	 */
 	@When("^(.*) muted conversation with (.*)$")
 	public void MuteConversationWithUser(String userToNameAlias,
 			String muteUserNameAlias) throws Exception {
-		commonSteps.MuteConversationWithUser(userToNameAlias,
-				muteUserNameAlias);
+		commonSteps
+				.MuteConversationWithUser(userToNameAlias, muteUserNameAlias);
 	}
 
 	@After
@@ -223,6 +283,10 @@ public class CommonWebAppSteps {
 		}
 
 		WebPage.clearPagesCollection();
+
+		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+			PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+		}
 
 		commonSteps.getUserManager().resetUsers();
 	}

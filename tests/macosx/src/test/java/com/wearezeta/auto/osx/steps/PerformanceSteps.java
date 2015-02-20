@@ -8,7 +8,6 @@ import org.openqa.selenium.WebElement;
 import com.wearezeta.auto.common.PerformanceCommon;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.PerformanceCommon.PerformanceLoop;
-import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationPage;
@@ -36,7 +35,8 @@ public class PerformanceSteps {
 	@When("^I start testing cycle for (\\d+) minutes$")
 	public void WhenIStartTestingCycleForMinutes(int timeout) throws Exception {
 		PagesCollection.contactListPage = new ContactListPage(
-				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+				PagesCollection.loginPage.getDriver(),
+				PagesCollection.loginPage.getWait());
 
 		perfCommon.runPerformanceLoop(new PerformanceLoop() {
 			public void run() throws Exception {
@@ -54,8 +54,8 @@ public class PerformanceSteps {
 							false);
 
 					PagesCollection.conversationPage = new ConversationPage(
-							OSXExecutionContext.appiumUrl,
-							OSXExecutionContext.wirePath);
+							PagesCollection.contactListPage.getDriver(),
+							PagesCollection.contactListPage.getWait());
 					int numberMessages = PagesCollection.conversationPage
 							.getNumberOfMessageEntries(contact);
 					int numberPictures = PagesCollection.conversationPage
@@ -84,8 +84,8 @@ public class PerformanceSteps {
 						PagesCollection.conversationPage
 								.shortcutChooseImageDialog();
 						PagesCollection.choosePicturePage = new ChoosePicturePage(
-								OSXExecutionContext.appiumUrl,
-								OSXExecutionContext.wirePath);
+								PagesCollection.conversationPage.getDriver(),
+								PagesCollection.conversationPage.getWait());
 
 						Assert.assertTrue(PagesCollection.choosePicturePage
 								.isVisible());

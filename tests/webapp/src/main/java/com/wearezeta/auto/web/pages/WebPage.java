@@ -3,78 +3,36 @@ package com.wearezeta.auto.web.pages;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import org.apache.commons.lang3.NotImplementedException;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.LocalFileDetector;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.BasePage;
-import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
-import com.wearezeta.auto.web.common.WebCommonUtils;
 
 public class WebPage extends BasePage {
-	protected static ZetaWebAppDriver driver;
-	protected static WebDriverWait wait;
-
-	public WebPage(String URL, String path) throws Exception {
-		this(URL, path, false);
+	@Override
+	public ZetaWebAppDriver getDriver() {
+		return (ZetaWebAppDriver) this.driver;
 	}
 
-	public WebPage(String URL, String path, boolean doNavigate)
+	private String url = null;
+
+	public String getUrl() {
+		return this.url;
+	}
+
+	public WebPage(ZetaWebAppDriver driver, WebDriverWait wait)
 			throws Exception {
+		this(driver, wait, null);
+	}
 
-		final String browser = WebCommonUtils
-				.getWebAppBrowserNameFromConfig(WebPage.class);
+	public WebPage(ZetaWebAppDriver driver, WebDriverWait wait, String url)
+			throws Exception {
+		super(driver, wait);
 
-		DesiredCapabilities capabilities;
-
-		switch (browser) {
-		case "chrome":
-			capabilities = DesiredCapabilities.chrome();
-			break;
-		case "firefox":
-			capabilities = DesiredCapabilities.firefox();
-			break;
-		case "safari":
-			capabilities = DesiredCapabilities.safari();
-			break;
-		case "ie":
-			capabilities = DesiredCapabilities.internetExplorer();
-			break;
-		default:
-			throw new NotImplementedException(
-					"Incorrect browser name is set - "
-							+ browser
-							+ ". Please choose one of the following: chrome | firefox | safari | ie");
-		}
-		final String webPlatformName = WebCommonUtils
-				.getPlatformNameFromConfig(WebPage.class);
-		if (webPlatformName.length() > 0) {
-			// Use undocumented grid property to match platforms
-			// https://groups.google.com/forum/#!topic/selenium-users/PRsEBcbpNlM
-			capabilities.setCapability("applicationName", webPlatformName);
-		}
-		capabilities.setCapability("platformName", Platform.Web.getName());
-
-		super.InitConnection(URL, capabilities);
-
-		driver = (ZetaWebAppDriver) drivers.get(Platform.Web);
-		wait = waits.get(Platform.Web);
-
-		driver.setFileDetector(new LocalFileDetector());
-		try {
-			if (!browser.equals("safari")) {
-				driver.manage().window().maximize();
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-
-		if (doNavigate) {
-			driver.navigate().to(path);
+		this.url = url;
+		if (url != null) {
+			this.getDriver().navigate().to(url);
 		}
 	}
 
@@ -84,7 +42,7 @@ public class WebPage extends BasePage {
 	}
 
 	public BufferedImage takeScreenshot() throws IOException {
-		return DriverUtils.takeScreenshot(driver);
+		return DriverUtils.takeScreenshot(this.getDriver());
 	}
 
 	public static void clearPagesCollection() throws IllegalArgumentException,
@@ -111,9 +69,5 @@ public class WebPage extends BasePage {
 	@Override
 	public BasePage swipeDown(int time) throws IOException {
 		return null;
-	}
-
-	public RemoteWebDriver getDriver() {
-		return driver;
 	}
 }

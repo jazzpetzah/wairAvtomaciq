@@ -62,12 +62,13 @@ public class ConversationPageSteps {
 	 * Checks that last sent random message appear in conversation
 	 * 
 	 * @step. ^I see random message in conversation$
+	 * @throws Exception 
 	 * 
 	 * @throws AssertionError
 	 *             if message did not appear in conversation
 	 */
 	@Then("^I see random message in conversation$")
-	public void ThenISeeRandomMessageInConversation() {
+	public void ThenISeeRandomMessageInConversation() throws Exception {
 		Assert.assertTrue(PagesCollection.conversationPage
 				.isMessageSent(randomMessage));
 	}
@@ -138,12 +139,13 @@ public class ConversationPageSteps {
 	 * Checks action message (e.g. you left, etc.) appear in conversation
 	 * 
 	 * @step. ^I see (.*) action in conversation$
+	 * @throws Exception 
 	 * 
 	 * @throws AssertionError
 	 *             if action message did not appear in conversation
 	 */
 	@Then("^I see (.*) action in conversation$")
-	public void ThenISeeActionInConversation(String message) {
+	public void ThenISeeActionInConversation(String message) throws Exception {
 		Assert.assertTrue(PagesCollection.conversationPage
 				.isActionMessageSent(message));
 	}
@@ -159,11 +161,12 @@ public class ConversationPageSteps {
 	 * @param message
 	 * 
 	 * @param contact
+	 * @throws Exception 
 	 * 
 	 */
 	@Then("^I see (.*) action for (.*) in conversation$")
 	public void ThenISeeActionForContactInConversation(String message,
-			String contact) {
+			String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		Assert.assertTrue(PagesCollection.conversationPage
 				.isActionMessageSent(message + " " + contact));
@@ -186,5 +189,37 @@ public class ConversationPageSteps {
 		steps.ISearchForUser(contact);
 		steps.ISelectUserFromPeoplePickerResults(contact);
 		steps.IChooseToCreateConversationFromPopupPage();
+	}
+	
+	/**
+	 * Click ping button to send ping and hot ping
+	 * @step. ^I click ping button$
+	 * @throws Exception
+	 */
+	@When("^I click ping button$")
+	public void IClickPingButton() throws Exception {
+		PagesCollection.conversationPage.clickPingButton();
+	}
+	
+	/**
+	 * Verify ping (or ping again) message is visible in conversation
+	 * @step. ^I see ping message (.*)$
+	 * @param message
+	 * 			pinged/pinged again
+	 * @throws Exception
+	 */
+	@When("^I see ping message (.*)$")
+	public void ISeePingMessage(String message) throws Exception {
+		Assert.assertTrue(PagesCollection.conversationPage.isPingMessageVisible(message));
+	}
+	
+	/**
+	 * Verify that there is only one ping message visible in conversation
+	 * @step. ^I see only one ping message$
+	 * @throws Exception
+	 */
+	@When("^I see only one ping message$")
+	public void ISeeOnlyOnePingMessage() throws Exception {
+		Assert.assertEquals(PagesCollection.conversationPage.numberOfPingMessagesVisible(), 1);
 	}
 }

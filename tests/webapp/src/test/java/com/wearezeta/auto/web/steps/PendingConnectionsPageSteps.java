@@ -17,9 +17,10 @@ public class PendingConnectionsPageSteps {
 	 * 
 	 * @param user
 	 *            name of user which sent connection request
+	 * @throws Exception 
 	 */
 	@When("^I accept connection request from user (.*)$")
-	public void IAcceptConnectionRequestFromUser(String user) {
+	public void IAcceptConnectionRequestFromUser(String user) throws Exception {
 		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
 		PagesCollection.pendingConnectionsPage.acceptRequestFromUser(user);
 	}

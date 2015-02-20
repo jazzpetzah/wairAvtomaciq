@@ -11,6 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.CommonUtils;
@@ -21,37 +22,37 @@ import com.wearezeta.auto.common.locators.ZetaFindBy;
 import com.wearezeta.auto.common.locators.ZetaHow;
 
 public class LoginPage extends AndroidPage {
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPeoplePickerClearbtn")
 	private WebElement pickerClearBtn;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idSignInButton")
 	private WebElement signInButton;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idWelcomeSlogan")
 	private WebElement welcomeSlogan;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idYourName")
 	private WebElement yourUser;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idSignUpButton")
 	protected WebElement signUpButton;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idForgotPass")
 	private WebElement forgotPasswordButton;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idLoginButton")
 	protected WebElement confirmSignInButton;
 
-	@AndroidFindBy(xpath =  AndroidLocators.LoginPage.xpathLoginInput)
+	@AndroidFindBy(xpath = AndroidLocators.LoginPage.xpathLoginInput)
 	private WebElement loginInput;
-	
-	@AndroidFindBy(xpath =  AndroidLocators.LoginPage.xpathPasswordInput)
+
+	@AndroidFindBy(xpath = AndroidLocators.LoginPage.xpathPasswordInput)
 	private WebElement passwordInput;
-	
-	@FindBy(className  = AndroidLocators.CommonLocators.classEditText)
+
+	@FindBy(className = AndroidLocators.CommonLocators.classEditText)
 	private List<WebElement> editText;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idLoginError")
 	private WebElement loginError;
 
@@ -63,70 +64,53 @@ public class LoginPage extends AndroidPage {
 
 	@FindBy(how = How.ID, using = AndroidLocators.CommonLocators.idDismissUpdateButton)
 	private WebElement dismissUpdateButton;
-	
-	private String url;
-	private String path;
+
 	private static final String LOGIN_ERROR_TEXT = "WRONG ADDRESS OR PASSWORD.\nPLEASE TRY AGAIN.";
 
-	public LoginPage(String URL, String path) throws Exception {
-
-		super(URL, path);
-		this.url = URL;
-		this.path = path;
-	}
-	
-	public LoginPage(String URL, String path, boolean isUnicode) throws Exception {
-
-		super(URL, path, isUnicode);
-		this.url = URL;
-		this.path = path;
-	}
-	
-	
-	public ZetaAndroidDriver getDriver() {
-		return driver;
+	public LoginPage(ZetaAndroidDriver driver, WebDriverWait wait)
+			throws Exception {
+		super(driver, wait);
 	}
 
 	public Boolean isVisible() {
-
 		return welcomeSlogan != null;
 	}
 
 	public Boolean isLoginError() {
 		return loginError.isDisplayed();
 	}
-	
-	public Boolean isLoginErrorTextOk() {	
+
+	public Boolean isLoginErrorTextOk() {
 		return loginError.getText().equals(LOGIN_ERROR_TEXT);
 	}
-	
+
 	public LoginPage SignIn() throws IOException {
 		refreshUITree();
-		wait.until(ExpectedConditions.visibilityOf(signInButton));
+		this.getWait().until(ExpectedConditions.visibilityOf(signInButton));
 		signInButton.click();
 		return this;
 	}
-	
+
 	public SettingsPage forgotPassword() throws Exception {
 		refreshUITree();
-		wait.until(ExpectedConditions.visibilityOf(forgotPasswordButton));
+		this.getWait().until(
+				ExpectedConditions.visibilityOf(forgotPasswordButton));
 		forgotPasswordButton.click();
-		return new SettingsPage(url, path);
+		return new SettingsPage(this.getDriver(), this.getWait());
 	}
 
 	public ContactListPage LogIn() throws Exception {
 		confirmSignInButton.click();
-		return new ContactListPage(url, path);
+		return new ContactListPage(this.getDriver(), this.getWait());
 	}
 
 	public void setLogin(String login) throws Exception {
 		refreshUITree();
-		if(CommonUtils.getAndroidApiLvl(LoginPage.class) > 42){
+		if (CommonUtils.getAndroidApiLvl(LoginPage.class) > 42) {
 			loginInput.sendKeys(login);
-		}
-		else{
-			for(WebElement editField : editText){
-				if (editField.getText().toLowerCase().equals("email")){
+		} else {
+			for (WebElement editField : editText) {
+				if (editField.getText().toLowerCase().equals("email")) {
 					editField.sendKeys(login);
 				}
 			}
@@ -134,51 +118,56 @@ public class LoginPage extends AndroidPage {
 	}
 
 	public void setPassword(String password) throws Exception {
-		if(CommonUtils.getAndroidApiLvl(LoginPage.class) > 42){
+		if (CommonUtils.getAndroidApiLvl(LoginPage.class) > 42) {
 			passwordInput.click();
 			passwordInput.sendKeys(password);
-		}
-		else{
-			for(WebElement editField : editText){
-				if (editField.getText().toLowerCase().isEmpty()){
+		} else {
+			for (WebElement editField : editText) {
+				if (editField.getText().toLowerCase().isEmpty()) {
 					editField.sendKeys(password);
 				}
 			}
 		}
 	}
 
-	public boolean waitForLoginScreenDisappear() {
-		return DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.LoginPage.idLoginButton), 40);
-	}
-	public boolean waitForLogin() {
-
-		return DriverUtils.waitUntilElementDissapear(driver, By.id(AndroidLocators.LoginPage.idLoginProgressBar), 40);
+	public boolean waitForLoginScreenDisappear() throws Exception {
+		return DriverUtils.waitUntilElementDissapear(driver,
+				By.id(AndroidLocators.LoginPage.idLoginButton), 40);
 	}
 
-	public Boolean isLoginFinished(String contact) throws NumberFormatException, Exception {
+	public boolean waitForLogin() throws Exception {
+
+		return DriverUtils.waitUntilElementDissapear(driver,
+				By.id(AndroidLocators.LoginPage.idLoginProgressBar), 40);
+	}
+
+	public Boolean isLoginFinished(String contact)
+			throws NumberFormatException, Exception {
 		refreshUITree();
-		try{
-			wait.until(ExpectedConditions.visibilityOf(yourUser));
-		}
-		catch (Exception ex){
+		try {
+			this.getWait().until(ExpectedConditions.visibilityOf(yourUser));
+		} catch (Exception ex) {
 			refreshUITree();
-			if(isVisible(pickerClearBtn)){
+			if (isVisible(pickerClearBtn)) {
 				pickerClearBtn.click();
-			}
-			else{
-				if(!isVisible(yourUser)){
+			} else {
+				if (!isVisible(yourUser)) {
 					navigateBack();
 				}
 			}
 			refreshUITree();
 		}
 
-		return DriverUtils.waitForElementWithTextByXPath(AndroidLocators.ContactListPage.xpathContacts,contact,driver);
+		return DriverUtils.waitForElementWithTextByXPath(
+				AndroidLocators.ContactListPage.xpathContacts, contact,
+				this.getDriver());
 	}
 
-	public Boolean isWelcomeButtonsExist(){
+	public Boolean isWelcomeButtonsExist() {
 		refreshUITree();
-		wait.until(ExpectedConditions.visibilityOfAllElements(welcomeSloganContainer));
+		this.getWait().until(
+				ExpectedConditions
+						.visibilityOfAllElements(welcomeSloganContainer));
 		return welcomeSloganContainer.size() > 0;
 	}
 
@@ -190,19 +179,22 @@ public class LoginPage extends AndroidPage {
 
 	public RegistrationPage join() throws Exception {
 		signUpButton.click();
-		DriverUtils.waitUntilElementDissapear(driver, AndroidLocators.LoginPage.getByForLoginPageRegistrationButton());
-		return new RegistrationPage(url, path);
+		DriverUtils
+				.waitUntilElementDissapear(driver, AndroidLocators.LoginPage
+						.getByForLoginPageRegistrationButton());
+		return new RegistrationPage(this.getDriver(), this.getWait());
 	}
-	
+
 	public void dismissUpdate() {
 		try {
 			dismissUpdateButton.click();
 		} catch (NoSuchElementException e) {
-			
+
 		}
 	}
-	
-	public boolean isDismissUpdateVisible() {
-		return DriverUtils.waitUntilElementAppears(driver, By.id(AndroidLocators.CommonLocators.idDismissUpdateButton));
+
+	public boolean isDismissUpdateVisible() throws Exception {
+		return DriverUtils.waitUntilElementAppears(driver,
+				By.id(AndroidLocators.CommonLocators.idDismissUpdateButton));
 	}
 }
