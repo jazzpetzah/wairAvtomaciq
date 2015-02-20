@@ -14,7 +14,6 @@ import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.locators.OSXLocators;
-import com.wearezeta.auto.osx.pages.ConversationInfoPage;
 import com.wearezeta.auto.osx.pages.ConversationPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
 import com.wearezeta.auto.osx.pages.PeoplePickerPage;
@@ -25,26 +24,24 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ContactListPageSteps {
+
 	private static final Logger log = ZetaLogger
 			.getLog(ContactListPageSteps.class.getSimpleName());
+
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	@Given("^I see my name (.*) in Contact list$")
 	public void ISeeMyNameInContactList(String name) throws Exception {
 		PagesCollection.loginPage.sendProblemReportIfFound();
 		PagesCollection.contactListPage.pressLaterButton();
-		PagesCollection.contactListPage.pressLaterButton();
-		Thread.sleep(1000);
-		CommonOSXSteps.senderPages.setPeoplePickerPage(new PeoplePickerPage(
-				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath));
-		PeoplePickerPage peoplePickerPage = CommonOSXSteps.senderPages
-				.getPeoplePickerPage();
-		if (peoplePickerPage.isPeoplePickerPageVisible()) {
+		PagesCollection.peoplePickerPage = new PeoplePickerPage(
+				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+		if (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
 			log.debug("People picker appears. Closing it.");
-			peoplePickerPage.closePeoplePicker();
+			PagesCollection.peoplePickerPage.closePeoplePicker();
 		} else {
 			log.debug("No people picker found.\nPage source: "
-					+ peoplePickerPage.getPageSource());
+					+ PagesCollection.peoplePickerPage.getPageSource());
 		}
 		GivenISeeContactListWithName(name);
 	}
@@ -52,7 +49,7 @@ public class ContactListPageSteps {
 	@Given("I see Contact list with name (.*)")
 	public void GivenISeeContactListWithName(String name) throws Exception {
 		if (name.equals(OSXLocators.RANDOM_KEYWORD)) {
-			name = CommonOSXSteps.senderPages.getConversationInfoPage()
+			name = PagesCollection.conversationInfoPage
 					.getCurrentConversationName();
 		} else {
 			name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
@@ -101,7 +98,7 @@ public class ContactListPageSteps {
 	private void clickOnContactListEntry(String contact, boolean isUserProfile)
 			throws MalformedURLException, IOException, NoSuchUserException {
 		if (contact.equals(OSXLocators.RANDOM_KEYWORD)) {
-			contact = CommonOSXSteps.senderPages.getConversationInfoPage()
+			contact = PagesCollection.conversationInfoPage
 					.getCurrentConversationName();
 		} else {
 			if (!contact.contains(",")) {
@@ -141,15 +138,15 @@ public class ContactListPageSteps {
 	@Given("I go to user (.*) profile")
 	public void GivenIGoToUserProfile(String user) throws Exception {
 		clickOnContactListEntry(user, true);
-		CommonOSXSteps.senderPages.setUserProfilePage(new UserProfilePage(
-				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath));
+		PagesCollection.userProfilePage = new UserProfilePage(
+				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
 	}
 
 	@When("I open People Picker from contact list")
 	public void WhenIOpenPeoplePickerFromContactList() throws Exception {
 		PagesCollection.contactListPage.openPeoplePicker();
-		CommonOSXSteps.senderPages.setPeoplePickerPage(new PeoplePickerPage(
-				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath));
+		PagesCollection.peoplePickerPage = new PeoplePickerPage(
+				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
 	}
 
 	@When("I change mute state of conversation with (.*)")
@@ -205,16 +202,16 @@ public class ContactListPageSteps {
 	@When("I set name {1}(.*) {1}for conversation$")
 	public void ISetRandomNameForConversation(String name)
 			throws MalformedURLException, IOException {
-		ConversationInfoPage conversationInfo = CommonOSXSteps.senderPages
-				.getConversationInfoPage();
 		name = StringParser.unescapeString(name);
 		if (name.equals(OSXLocators.RANDOM_KEYWORD)) {
-			conversationInfo.setCurrentConversationName(CommonUtils
-					.generateGUID());
+			PagesCollection.conversationInfoPage
+					.setCurrentConversationName(CommonUtils.generateGUID());
 		} else {
-			conversationInfo.setCurrentConversationName(name);
+			PagesCollection.conversationInfoPage
+					.setCurrentConversationName(name);
 		}
-		conversationInfo.setNewConversationName(conversationInfo
-				.getCurrentConversationName());
+		PagesCollection.conversationInfoPage
+				.setNewConversationName(PagesCollection.conversationInfoPage
+						.getCurrentConversationName());
 	}
 }

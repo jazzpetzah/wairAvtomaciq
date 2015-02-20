@@ -240,6 +240,12 @@ public final class AndroidLocators {
 		public static final String idBackgroundOverlay = LOCATORS_PACKAGE
 				+ ":id/v_background_dark_overlay";
 
+		public static final String idMediaBarControl = LOCATORS_PACKAGE
+				+ ":id/gtv__conversation_header__mediabar__control";
+		
+		public static final String idMediaBarClose = LOCATORS_PACKAGE
+				+ ":id/gtv__conversation_header__mediabar__cancel";
+
 		public static final String idPlayPauseMedia = LOCATORS_PACKAGE
 				+ ":id/iv__media_play";
 

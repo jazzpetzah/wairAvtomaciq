@@ -1,5 +1,6 @@
 package com.wearezeta.auto.osx.pages;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -7,11 +8,14 @@ import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXConstants;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class ChangePasswordPage extends OSXPage {
 
+	private static final Logger log = ZetaLogger.getLog(ChangePasswordPage.class.getSimpleName());
+	
 	@FindBy(how = How.XPATH, using = OSXLocators.ChangePasswordPage.xpathEmailTextField)
 	private WebElement emailTextField;
 
@@ -47,7 +51,10 @@ public class ChangePasswordPage extends OSXPage {
 				.waitUntilElementAppears(
 						driver,
 						By.xpath(OSXLocators.ChangePasswordPage.xpathPasswordChangedMessage),
-						10);
+						30);
+		
+		if (!isFound) log.debug(driver.getPageSource());
+		
 		quitSafariButton.click();
 
 		driver.navigate().to(

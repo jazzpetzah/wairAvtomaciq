@@ -182,6 +182,18 @@ public abstract class AndroidPage extends BasePage {
 					+ elementSize.height - 300, coords.x + elementSize.width
 					/ 2, coords.y, time);
 		} catch (Exception ex) {
+		
+		}
+	}
+
+	public void dialogsPagesSwipeDown(int time) {
+		Point coords = content.getLocation();
+		Dimension elementSize = content.getSize();
+		try {
+			driver.swipe(coords.x + elementSize.width / 2, coords.y, coords.x
+					+ elementSize.width / 2, coords.y + elementSize.height
+					- 300, time);
+		} catch (Exception ex) {
 
 		}
 

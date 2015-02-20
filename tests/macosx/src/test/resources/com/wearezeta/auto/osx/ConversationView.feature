@@ -242,8 +242,8 @@ Feature: Conversation
     Then I see media bar disappears
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | SoundCloudLink                             | Time |
-      | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/20sekunder/erika-no | 30   |
+      | Login      | Password      | Name      | Contact   | SoundCloudLink                                                                | Time |
+      | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/rayne-bibobiboheartless-han/1-minute-flying-bumble-bee | 90   |
 
   @regression @id378
   Scenario Outline: Media bar disappears when playing media is back in view

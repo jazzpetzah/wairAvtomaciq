@@ -1,6 +1,7 @@
 package com.wearezeta.auto.osx.steps;
 
 import java.awt.image.BufferedImage;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -85,15 +86,13 @@ public class ConversationPageSteps {
 		}
 		PagesCollection.conversationPage.writeNewMessage("");
 		PagesCollection.conversationPage.openChooseImageDialog();
-		CommonOSXSteps.senderPages.setChoosePicturePage(new ChoosePicturePage(
-				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath));
+		PagesCollection.choosePicturePage = new ChoosePicturePage(
+				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
 
-		ChoosePicturePage choosePicturePage = CommonOSXSteps.senderPages
-				.getChoosePicturePage();
 		Assert.assertTrue("Choose picture page were not opened.",
-				choosePicturePage.isVisible());
+				PagesCollection.choosePicturePage.isVisible());
 
-		choosePicturePage.openImage(imageFilename);
+		PagesCollection.choosePicturePage.openImage(imageFilename);
 	}
 
 	@Then("^I see HD picture (.*) in conversation with (.*)$")
@@ -366,28 +365,22 @@ public class ConversationPageSteps {
 		IScrollDownToConversation();
 		PagesCollection.conversationPage.writeNewMessage("");
 		PagesCollection.conversationPage.openConversationPeoplePicker();
-		CommonOSXSteps.senderPages
-				.setConversationInfoPage(new ConversationInfoPage(
-						OSXExecutionContext.appiumUrl,
-						OSXExecutionContext.wirePath));
-		ConversationInfoPage conversationPeople = CommonOSXSteps.senderPages
-				.getConversationInfoPage();
-		if (!conversationPeople.isPeoplePopoverDisplayed()) {
+		PagesCollection.conversationInfoPage = new ConversationInfoPage(
+				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+		if (!PagesCollection.conversationInfoPage.isPeoplePopoverDisplayed()) {
 			PagesCollection.conversationPage.openConversationPeoplePicker();
 		}
-		CommonOSXSteps.senderPages.setPeoplePickerPage(conversationPeople
-				.openPeoplePicker());
+		PagesCollection.peoplePickerPage = PagesCollection.conversationInfoPage
+				.openPeoplePicker();
 	}
 
 	@When("I open Conversation info")
 	public void WhenIOpenConversationInfo() throws Exception {
 		PagesCollection.conversationPage.writeNewMessage("");
 		PagesCollection.conversationPage.openConversationPeoplePicker();
-		if (CommonOSXSteps.senderPages.getConversationInfoPage() == null) {
-			CommonOSXSteps.senderPages
-					.setConversationInfoPage(new ConversationInfoPage(
-							OSXExecutionContext.appiumUrl,
-							OSXExecutionContext.wirePath));
+		if (PagesCollection.conversationInfoPage == null) {
+			PagesCollection.conversationInfoPage = new ConversationInfoPage(
+					OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
 		}
 	}
 
@@ -493,6 +486,8 @@ public class ConversationPageSteps {
 
 	private void verifySoundCloudButtonState(String expectedState) {
 		String actualState = "";
+		long startDate = new Date().getTime();
+		long endDate;
 		for (int i = 0; i < 3; i++) {
 			actualState = PagesCollection.conversationPage
 					.getSoundCloudButtonState();
@@ -502,6 +497,8 @@ public class ConversationPageSteps {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 			}
+			endDate = new Date().getTime();
+			log.debug("Try #" + (i+1) + " finished with incorrect result after " + (endDate - startDate) + "ms from start");
 		}
 		Assert.assertEquals("SoundCloud button state " + actualState
 				+ " differs from expected " + expectedState, expectedState,
@@ -516,7 +513,7 @@ public class ConversationPageSteps {
 	@Then("^I see conversation name (.*) in conversation$")
 	public void ISeeConversationNameInConversation(String name) {
 		if (name.equals(OSXLocators.RANDOM_KEYWORD)) {
-			name = CommonOSXSteps.senderPages.getConversationInfoPage()
+			name = PagesCollection.conversationInfoPage
 					.getCurrentConversationName();
 		}
 		String result = PagesCollection.conversationPage

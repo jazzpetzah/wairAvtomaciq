@@ -74,10 +74,6 @@ public class WebPage extends BasePage {
 		}
 
 		if (doNavigate) {
-			// After beta code is applied we should wait till sign in page
-			// pointed to production backend will be loaded before loading
-			// staging page
-			Thread.sleep(5000);
 			driver.navigate().to(path);
 		}
 	}

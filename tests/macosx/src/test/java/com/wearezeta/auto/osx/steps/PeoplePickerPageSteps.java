@@ -5,7 +5,6 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.osx.pages.PagesCollection;
-import com.wearezeta.auto.osx.pages.PeoplePickerPage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
@@ -30,7 +29,7 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		CommonOSXSteps.senderPages.getPeoplePickerPage().searchForText(user);
+		PagesCollection.peoplePickerPage.searchForText(user);
 	}
 
 	/**
@@ -46,7 +45,7 @@ public class PeoplePickerPageSteps {
 	@When("I search by email for user (.*)")
 	public void ISearchByEmailForUser(String user) throws Exception {
 		String email = usrMgr.findUserByNameOrNameAlias(user).getEmail();
-		CommonOSXSteps.senderPages.getPeoplePickerPage().searchForText(email);
+		PagesCollection.peoplePickerPage.searchForText(email);
 	}
 
 	/**
@@ -69,10 +68,9 @@ public class PeoplePickerPageSteps {
 		}
 
 		Assert.assertTrue("User " + user + " not found in results",
-				CommonOSXSteps.senderPages.getPeoplePickerPage()
+				PagesCollection.peoplePickerPage
 						.areSearchResultsContainUser(user));
-		CommonOSXSteps.senderPages.getPeoplePickerPage()
-				.scrollToUserInSearchResults(user);
+		PagesCollection.peoplePickerPage.scrollToUserInSearchResults(user);
 	}
 
 	/**
@@ -92,8 +90,7 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		CommonOSXSteps.senderPages.getPeoplePickerPage()
-				.chooseUserInSearchResults(user);
+		PagesCollection.peoplePickerPage.chooseUserInSearchResults(user);
 	}
 
 	/**
@@ -114,9 +111,7 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			// ignore silently
 		}
-		PeoplePickerPage page = CommonOSXSteps.senderPages
-				.getPeoplePickerPage();
-		page.selectUserInSearchResults(user);
+		PagesCollection.peoplePickerPage.selectUserInSearchResults(user);
 
 	}
 
@@ -128,8 +123,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("I send invitation to user")
 	public void WhenISendInvitationToUser() {
-		CommonOSXSteps.senderPages.getPeoplePickerPage()
-				.sendInvitationToUserIfRequested();
+		PagesCollection.peoplePickerPage.sendInvitationToUserIfRequested();
 	}
 
 	/**
@@ -139,7 +133,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("I unblock user")
 	public void IUnblockUserInPeoplePicker() {
-		CommonOSXSteps.senderPages.getPeoplePickerPage().unblockUser();
+		PagesCollection.peoplePickerPage.unblockUser();
 	}
 
 	/**
@@ -152,16 +146,15 @@ public class PeoplePickerPageSteps {
 	 */
 	@Then("^I see Top People list in People Picker$")
 	public void ISeeTopPeopleListInPeoplePicker() throws Throwable {
-		Thread.sleep(2000);
-		boolean topPeopleisVisible = CommonOSXSteps.senderPages
-				.getPeoplePickerPage().isTopPeopleVisible();
+		boolean topPeopleisVisible = PagesCollection.peoplePickerPage
+				.isTopPeopleVisible();
 		if (!topPeopleisVisible) {
-			CommonOSXSteps.senderPages.getPeoplePickerPage()
-					.closePeoplePicker();
+			PagesCollection.peoplePickerPage.closePeoplePicker();
+			// waiting till People Picker disappearance animation done
 			Thread.sleep(1000);
 			PagesCollection.contactListPage.openPeoplePicker();
-			topPeopleisVisible = CommonOSXSteps.senderPages
-					.getPeoplePickerPage().isTopPeopleVisible();
+			topPeopleisVisible = PagesCollection.peoplePickerPage
+					.isTopPeopleVisible();
 		}
 		Assert.assertTrue("Top People not shown", topPeopleisVisible);
 	}
@@ -175,8 +168,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@Then("^I choose person from Top People$")
 	public void IChoosePersonFromTopPeople() throws Throwable {
-		CommonOSXSteps.senderPages.getPeoplePickerPage()
-				.selectUserFromTopPeople();
+		PagesCollection.peoplePickerPage.selectUserFromTopPeople();
 	}
 
 	/**
@@ -189,7 +181,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@Then("^I press create conversation to enter conversation$")
 	public void IPressCreateConversationToEnterConversation() throws Throwable {
-		PagesCollection.conversationPage = CommonOSXSteps.senderPages
-				.getPeoplePickerPage().addSelectedUsersToConversation();
+		PagesCollection.conversationPage = PagesCollection.peoplePickerPage
+				.addSelectedUsersToConversation();
 	}
 }

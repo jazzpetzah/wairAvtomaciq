@@ -11,11 +11,9 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
-import com.wearezeta.auto.osx.pages.ChangePasswordPage;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
-import com.wearezeta.auto.osx.pages.RegistrationPage;
 import com.wearezeta.auto.osx.pages.UserProfilePage;
 
 import cucumber.api.java.en.Given;
@@ -74,11 +72,10 @@ public class LoginPageSteps {
 		Assert.assertTrue("Failed to login",
 				PagesCollection.loginPage.waitForLogin());
 
-		PagesCollection.contactListPage = new ContactListPage(OSXExecutionContext.appiumUrl,
-				OSXExecutionContext.wirePath);
-		CommonOSXSteps.senderPages
-				.setUserProfilePage(new UserProfilePage(OSXExecutionContext.appiumUrl,
-						OSXExecutionContext.wirePath));
+		PagesCollection.contactListPage = new ContactListPage(
+				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+		PagesCollection.userProfilePage = new UserProfilePage(
+				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
 	}
 
 	/**
@@ -107,9 +104,8 @@ public class LoginPageSteps {
 		if (page instanceof ContactListPage) {
 			PagesCollection.contactListPage = (ContactListPage) page;
 		}
-		CommonOSXSteps.senderPages
-				.setUserProfilePage(new UserProfilePage(OSXExecutionContext.appiumUrl,
-						OSXExecutionContext.wirePath));
+		PagesCollection.userProfilePage = new UserProfilePage(
+				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
 	}
 
 	/**
@@ -181,9 +177,9 @@ public class LoginPageSteps {
 	 */
 	@Then("I have returned to Sign In screen")
 	public void ThenISeeSignInScreen() {
-		Assert.assertTrue("Failed to logout", PagesCollection.contactListPage.waitForSignOut());
-		Assert.assertTrue(PagesCollection.contactListPage
-				.isSignOutFinished());
+		Assert.assertTrue("Failed to logout",
+				PagesCollection.contactListPage.waitForSignOut());
+		Assert.assertTrue(PagesCollection.contactListPage.isSignOutFinished());
 	}
 
 	/**
@@ -195,9 +191,8 @@ public class LoginPageSteps {
 	 */
 	@When("I start registration")
 	public void IStartRegistration() throws Exception {
-		RegistrationPage registration = PagesCollection.loginPage
+		PagesCollection.registrationPage = PagesCollection.loginPage
 				.startRegistration();
-		CommonOSXSteps.senderPages.setRegistrationPage(registration);
 	}
 
 	/**
@@ -290,9 +285,8 @@ public class LoginPageSteps {
 	 */
 	@When("^I go to Forgot Password page$")
 	public void IGoToForgotPasswordPage() throws Exception {
-		CommonOSXSteps.senderPages
-				.setChangePasswordPage(PagesCollection.loginPage
-						.openStagingForgotPasswordPage());
+		PagesCollection.changePasswordPage = PagesCollection.loginPage
+				.openStagingForgotPasswordPage();
 	}
 
 	/**
@@ -313,14 +307,12 @@ public class LoginPageSteps {
 			// Ignore silently
 		}
 
-		ChangePasswordPage changePasswordPage = CommonOSXSteps.senderPages
-				.getChangePasswordPage();
-
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", email);
 		PagesCollection.loginPage.setListener(IMAPSMailbox
 				.createDefaultInstance().startMboxListener(expectedHeaders));
-		changePasswordPage.enterEmailForChangePasswordAndSubmit(email);
+		PagesCollection.changePasswordPage
+				.enterEmailForChangePasswordAndSubmit(email);
 	}
 
 	/**
@@ -333,9 +325,8 @@ public class LoginPageSteps {
 	 */
 	@When("^I open change password link from email$")
 	public void IOpenChangePasswordLinkFromEmail() throws Exception {
-		CommonOSXSteps.senderPages
-				.setChangePasswordPage(PagesCollection.loginPage
-						.openResetPasswordPage());
+		PagesCollection.changePasswordPage = PagesCollection.loginPage
+				.openResetPasswordPage();
 	}
 
 	/**
@@ -359,9 +350,7 @@ public class LoginPageSteps {
 			// Ignore silently
 		}
 
-		ChangePasswordPage changePasswordPage = CommonOSXSteps.senderPages
-				.getChangePasswordPage();
-
-		Assert.assertTrue(changePasswordPage.resetPasswordSetNew(password));
+		Assert.assertTrue(PagesCollection.changePasswordPage
+				.resetPasswordSetNew(password));
 	}
 }
