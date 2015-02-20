@@ -35,7 +35,7 @@ public class UserProfilePopupPage extends WebPage {
 	}
 
 	public boolean isUserProfilePopupPageVisible() {
-		return DriverUtils.isElementDisplayed(userProfilePopup);
+		return DriverUtils.waitUntilElementAppears(driver, userProfilePopup, 10);
 	}
 
 	public String getUserName() {

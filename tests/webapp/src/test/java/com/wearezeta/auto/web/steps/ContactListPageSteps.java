@@ -145,8 +145,8 @@ public class ContactListPageSteps {
 	@Given("^I do not see Contact list with name (.*)$")
 	public void IDoNotSeeContactListWithName(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		Assert.assertFalse(PagesCollection.contactListPage
-				.isContactWithNameExists(name));
+		Assert.assertTrue(PagesCollection.contactListPage
+				.contactWithNameNotVisible(name));
 	}
 
 	/**

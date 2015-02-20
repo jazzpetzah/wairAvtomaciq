@@ -59,7 +59,7 @@ public class ParticipantsPopupPage extends WebPage {
 	}
 	
 	public boolean isParticipantsProfilePopupPageVisible() {
-		return DriverUtils.isElementDisplayed(userProfilePopup);
+		return DriverUtils.waitUntilElementAppears(driver, userProfilePopup, 10);
 	}
 	
 	public boolean isAddPeopleMessageShown() {

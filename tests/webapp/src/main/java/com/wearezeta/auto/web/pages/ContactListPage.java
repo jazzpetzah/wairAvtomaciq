@@ -71,6 +71,17 @@ public class ContactListPage extends WebPage {
 			return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath), 20);
 		}
 	}
+	
+	public boolean contactWithNameNotVisible(String name) {
+		log.debug("Looking for contact with name '" + name + "'");
+		if (name.contains(",")) {
+			return retrieveNoNameGroupContact(name) != null;
+		} else {
+			final String xpath = WebAppLocators.ContactListPage.xpathContactListEntryByName
+					.apply(name);
+			return DriverUtils.waitUntilElementDissapear(driver, By.xpath(xpath), 20);
+		}
+	}
 
 	public String getSelfName() {
 		return selfName.getText();
