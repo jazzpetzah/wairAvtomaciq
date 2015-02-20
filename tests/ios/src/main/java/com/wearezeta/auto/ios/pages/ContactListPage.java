@@ -393,14 +393,10 @@ public class ContactListPage extends IOSPage {
 		if (visible == true){
 		referenceImage = ImageUtil.readImageFromFile(IOSPage
 				.getImagesPath() + "unreadDot.png");
-		//score = ImageUtil.getOverlapScore(referenceImage,
-				//unreadDot);
 		score = ImageUtil.getOverlapScore(referenceImage, unreadDot, ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 		} else {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "noUnreadDot.png");
-			//score = ImageUtil.getOverlapScore(referenceImage,
-					//unreadDot);
 			score = ImageUtil.getOverlapScore(referenceImage, unreadDot, ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 		}
 
