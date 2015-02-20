@@ -392,18 +392,18 @@ public class ContactListPage extends IOSPage {
 		double score = 0;
 		WebElement contact = findCellInContactList(conversation);
 		unreadDot = getScreenshotByCoordinates(contact.getLocation().x, contact.getLocation().y + contactListContainer.getLocation().y, contact.getSize().width/4, contact.getSize().height*2);
-//		File outputfile = new File("TESTDOT.png");
-//		ImageIO.write(unreadDot, "png", outputfile);
 		if (visible == true){
 		referenceImage = ImageUtil.readImageFromFile(IOSPage
 				.getImagesPath() + "unreadDot.png");
-		score = ImageUtil.getOverlapScore(referenceImage,
-				unreadDot);
+		//score = ImageUtil.getOverlapScore(referenceImage,
+				//unreadDot);
+		score = ImageUtil.getOverlapScore(referenceImage, unreadDot, ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 		} else {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "noUnreadDot.png");
-			score = ImageUtil.getOverlapScore(referenceImage,
-					unreadDot);
+			//score = ImageUtil.getOverlapScore(referenceImage,
+					//unreadDot);
+			score = ImageUtil.getOverlapScore(referenceImage, unreadDot, ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 		}
 		
 		if (score <= MIN_ACCEPTABLE_IMAGE_UNREADDOT_VALUE) {

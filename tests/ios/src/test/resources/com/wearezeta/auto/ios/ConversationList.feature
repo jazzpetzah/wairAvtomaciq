@@ -85,7 +85,7 @@ Feature: Conversation List
        | user1Email | user1Password | user1Name | user2Name | BrightOrange | SILENCE |
       
       
-  @staging @id1075
+  @torun @staging @id1075
   Scenario Outline: Verify messages are marked as read with disappearing unread dot
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
