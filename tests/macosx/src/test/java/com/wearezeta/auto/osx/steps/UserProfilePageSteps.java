@@ -31,7 +31,8 @@ public class UserProfilePageSteps {
 	public void WhenIChooseToSelectPictureFromImageFile() throws Exception {
 		PagesCollection.userProfilePage.openChooseImageFileDialog();
 		PagesCollection.choosePicturePage = new ChoosePicturePage(
-				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+				PagesCollection.userProfilePage.getDriver(),
+				PagesCollection.userProfilePage.getWait());
 	}
 
 	@When("I choose to select picture from camera")

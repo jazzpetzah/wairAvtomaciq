@@ -9,6 +9,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.sikuli.script.App;
 import org.sikuli.script.Env;
 import org.sikuli.script.FindFailed;
@@ -16,6 +17,7 @@ import org.sikuli.script.Screen;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.util.NSPoint;
@@ -57,13 +59,9 @@ public class PeoplePickerPage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathPeoplePickerTopContactAvatar)
 	private WebElement peoplePickerTopContactAvatar;
 
-	private String url;
-	private String path;
-
-	public PeoplePickerPage(String URL, String path) throws Exception {
-		super(URL, path);
-		this.url = URL;
-		this.path = path;
+	public PeoplePickerPage(ZetaOSXDriver driver, WebDriverWait wait)
+			throws Exception {
+		super(driver, wait);
 	}
 
 	public WebElement findSearchField() {
@@ -236,7 +234,7 @@ public class PeoplePickerPage extends OSXPage {
 			createConversationButton.click();
 		else
 			addToConversationButton.click();
-		return new ConversationPage(url, path);
+		return new ConversationPage(this.getDriver(), this.getWait());
 	}
 
 	public boolean isTopPeopleVisible() throws Exception {

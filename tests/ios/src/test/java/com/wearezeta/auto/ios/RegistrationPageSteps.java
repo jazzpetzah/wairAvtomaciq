@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.LanguageUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
@@ -211,8 +210,7 @@ public class RegistrationPageSteps {
 
 		if (flag) {
 			PagesCollection.registrationPage.setEmail(email + "\n");
-		}
-		else {
+		} else {
 			PagesCollection.registrationPage.setEmail(this.userToRegister
 					.getEmail() + "\n");
 		}
@@ -312,9 +310,8 @@ public class RegistrationPageSteps {
 	public void ContactListLoadsWithOnlyMyName(String name) throws Throwable {
 		name = this.userToRegister.getName();
 		PagesCollection.contactListPage = new ContactListPage(
-				CommonUtils.getIosAppiumUrlFromConfig(ContactListPage.class),
-				CommonUtils
-						.getIosApplicationPathFromConfig(ContactListPage.class));
+				PagesCollection.loginPage.getDriver(),
+				PagesCollection.loginPage.getWait());
 		PagesCollection.contactListPage.waitForContactListToLoad();
 		Assert.assertTrue("My username is not displayed first",
 				PagesCollection.contactListPage
@@ -337,7 +334,7 @@ public class RegistrationPageSteps {
 	public void NaviateFromPassScreenToWelcomeScreen() {
 		PagesCollection.registrationPage.navigateToWelcomePage();
 	}
-	
+
 	/**
 	 * Navigates from any page in the registration process, back to the welcome
 	 * page

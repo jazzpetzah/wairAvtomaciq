@@ -23,9 +23,11 @@ import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.osx.locators.OSXLocators;
@@ -81,9 +83,9 @@ public class ConversationPage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathConversationViewScrollArea)
 	private WebElement conversationView;
 
-	public ConversationPage(String URL, String path) throws Exception {
-
-		super(URL, path);
+	public ConversationPage(ZetaOSXDriver driver, WebDriverWait wait)
+			throws Exception {
+		super(driver, wait);
 	}
 
 	public Boolean isVisible() {
@@ -445,7 +447,8 @@ public class ConversationPage extends OSXPage {
 		return listResult;
 	}
 
-	public MessageEntry receiveMessage(String message, boolean checkTime) throws Exception {
+	public MessageEntry receiveMessage(String message, boolean checkTime)
+			throws Exception {
 		DriverUtils.setImplicitWaitValue(driver, 120);
 		try {
 			Date receivedDate = new Date();

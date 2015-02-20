@@ -6,9 +6,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
+import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class VideoPlayerPage extends IOSPage {
@@ -34,14 +36,9 @@ public class VideoPlayerPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameVideoNextButton)
 	private WebElement videoNextButton;
 
-	private String url;
-	private String path;
-
-	public VideoPlayerPage(String URL, String path) throws Exception {
-		super(URL, path);
-
-		this.url = URL;
-		this.path = path;
+	public VideoPlayerPage(ZetaIOSDriver driver, WebDriverWait wait)
+			throws Exception {
+		super(driver, wait);
 	}
 
 	public void waitForVideoPlayerPage() throws Exception {
@@ -60,13 +57,13 @@ public class VideoPlayerPage extends IOSPage {
 
 	public DialogPage clickVideoDoneButton() throws Exception {
 		DialogPage page = null;
-		DriverUtils.mobileTapByCoordinates(driver, videoDoneButton);
+		DriverUtils.mobileTapByCoordinates(this.getDriver(), videoDoneButton);
 		try {
-			DriverUtils.mobileTapByCoordinates(driver, videoDoneButton);
+			DriverUtils.mobileTapByCoordinates(this.getDriver(), videoDoneButton);
 		} catch (WebDriverException e) {
 
 		}
-		page = new DialogPage(url, path);
+		page = new DialogPage(this.getDriver(), this.getWait());
 		return page;
 
 	}

@@ -6,9 +6,11 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
@@ -28,8 +30,9 @@ public class ChoosePicturePage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathSelectColumnViewButton)
 	private WebElement selectColumnViewButton;
 
-	public ChoosePicturePage(String URL, String path) throws Exception {
-		super(URL, path, false);
+	public ChoosePicturePage(ZetaOSXDriver driver, WebDriverWait wait)
+			throws Exception {
+		super(driver, wait);
 	}
 
 	public Boolean isVisible() {

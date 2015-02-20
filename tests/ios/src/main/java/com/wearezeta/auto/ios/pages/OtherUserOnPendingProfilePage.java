@@ -6,9 +6,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
+import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class OtherUserOnPendingProfilePage extends IOSPage {
@@ -22,9 +24,9 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameOtherProfilePageStartConversationButton)
 	private WebElement startConversationButton;
 
-	public OtherUserOnPendingProfilePage(String URL, String path)
+	public OtherUserOnPendingProfilePage(ZetaIOSDriver driver, WebDriverWait wait)
 			throws Exception {
-		super(URL, path);
+		super(driver, wait);
 	}
 
 	public boolean isClosePageButtonVisible() throws Exception {

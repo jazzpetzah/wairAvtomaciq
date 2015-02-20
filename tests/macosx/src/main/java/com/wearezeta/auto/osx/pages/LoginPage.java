@@ -1,7 +1,5 @@
 package com.wearezeta.auto.osx.pages;
 
-import io.appium.java_client.AppiumDriver;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -13,14 +11,15 @@ import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.email.MBoxChangesListener;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.common.OSXConstants;
-import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class LoginPage extends OSXPage {
@@ -62,9 +61,8 @@ public class LoginPage extends OSXPage {
 
 	private MBoxChangesListener listener;
 
-	public LoginPage(String URL, String path) throws Exception {
-
-		super(URL, path);
+	public LoginPage(ZetaOSXDriver driver, WebDriverWait wait) throws Exception {
+		super(driver, wait);
 	}
 
 	public Boolean isVisible() {
@@ -84,8 +82,7 @@ public class LoginPage extends OSXPage {
 	public ContactListPage confirmSignIn() throws Exception {
 		Thread.sleep(1000);
 		signInButton.click();
-		return new ContactListPage(OSXExecutionContext.appiumUrl,
-				OSXExecutionContext.wirePath);
+		return new ContactListPage(this.getDriver(), this.getWait());
 	}
 
 	public void setLogin(String login) {
@@ -130,8 +127,8 @@ public class LoginPage extends OSXPage {
 				break;
 		}
 		registerButton.click();
-		RegistrationPage page = new RegistrationPage(
-				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+		RegistrationPage page = new RegistrationPage(this.getDriver(),
+				this.getWait());
 		return page;
 	}
 
@@ -141,8 +138,8 @@ public class LoginPage extends OSXPage {
 			driver.findElement(By.id(OSXLocators.LoginPage.idLoginPage));
 		} catch (NoSuchElementException e) {
 			log.info("Logging out because previous user is signed in.");
-			MainMenuPage menu = new MainMenuPage(OSXExecutionContext.appiumUrl,
-					OSXExecutionContext.wirePath);
+			MainMenuPage menu = new MainMenuPage(this.getDriver(),
+					this.getWait());
 			menu.SignOut();
 		} finally {
 			DriverUtils.setDefaultImplicitWait(driver);
@@ -219,10 +216,6 @@ public class LoginPage extends OSXPage {
 		driver.executeScript(script);
 	}
 
-	public AppiumDriver getDriver() {
-		return driver;
-	}
-
 	public ChangePasswordPage openResetPasswordPage() throws Exception {
 		String passwordResetLink = BackendAPIWrappers
 				.getPasswordResetLink(this.listener);
@@ -231,8 +224,7 @@ public class LoginPage extends OSXPage {
 						.readTextFileFromResources(OSXConstants.Scripts.OPEN_SAFARI_WITH_URL_SCRIPT),
 						passwordResetLink);
 		driver.executeScript(script);
-		return new ChangePasswordPage(OSXExecutionContext.appiumUrl,
-				OSXExecutionContext.wirePath);
+		return new ChangePasswordPage(this.getDriver(), this.getWait());
 	}
 
 	public ChangePasswordPage openStagingForgotPasswordPage() throws Exception {
@@ -241,8 +233,7 @@ public class LoginPage extends OSXPage {
 						.readTextFileFromResources(OSXConstants.Scripts.OPEN_SAFARI_WITH_URL_SCRIPT),
 						OSXConstants.BrowserActions.STAGING_CHANGE_PASSWORD_URL);
 		driver.executeScript(script);
-		return new ChangePasswordPage(OSXExecutionContext.appiumUrl,
-				OSXExecutionContext.wirePath);
+		return new ChangePasswordPage(this.getDriver(), this.getWait());
 	}
 
 	public boolean isForgotPasswordPageAppears() throws Exception {

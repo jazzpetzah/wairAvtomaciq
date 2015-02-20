@@ -87,7 +87,8 @@ public class ConversationPageSteps {
 		PagesCollection.conversationPage.writeNewMessage("");
 		PagesCollection.conversationPage.openChooseImageDialog();
 		PagesCollection.choosePicturePage = new ChoosePicturePage(
-				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+				PagesCollection.conversationPage.getDriver(),
+				PagesCollection.conversationPage.getWait());
 
 		Assert.assertTrue("Choose picture page were not opened.",
 				PagesCollection.choosePicturePage.isVisible());
@@ -366,7 +367,8 @@ public class ConversationPageSteps {
 		PagesCollection.conversationPage.writeNewMessage("");
 		PagesCollection.conversationPage.openConversationPeoplePicker();
 		PagesCollection.conversationInfoPage = new ConversationInfoPage(
-				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+				PagesCollection.conversationPage.getDriver(),
+				PagesCollection.conversationPage.getWait());
 		if (!PagesCollection.conversationInfoPage.isPeoplePopoverDisplayed()) {
 			PagesCollection.conversationPage.openConversationPeoplePicker();
 		}
@@ -380,7 +382,8 @@ public class ConversationPageSteps {
 		PagesCollection.conversationPage.openConversationPeoplePicker();
 		if (PagesCollection.conversationInfoPage == null) {
 			PagesCollection.conversationInfoPage = new ConversationInfoPage(
-					OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+					PagesCollection.conversationPage.getDriver(),
+					PagesCollection.conversationPage.getWait());
 		}
 	}
 
@@ -498,7 +501,9 @@ public class ConversationPageSteps {
 			} catch (InterruptedException e) {
 			}
 			endDate = new Date().getTime();
-			log.debug("Try #" + (i+1) + " finished with incorrect result after " + (endDate - startDate) + "ms from start");
+			log.debug("Try #" + (i + 1)
+					+ " finished with incorrect result after "
+					+ (endDate - startDate) + "ms from start");
 		}
 		Assert.assertEquals("SoundCloud button state " + actualState
 				+ " differs from expected " + expectedState, expectedState,

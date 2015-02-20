@@ -1,6 +1,7 @@
 package com.wearezeta.auto.web.steps;
 
-import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.driver.PlatformDrivers;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
@@ -16,7 +17,7 @@ public class InvitationCodePageSteps {
 	 * Checks that opened page is Invitation page
 	 * 
 	 * @step. ^I see invitation page$
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Given("^I see invitation page$")
 	public void ISeeInvitationPage() throws Exception {
@@ -42,10 +43,9 @@ public class InvitationCodePageSteps {
 					.proceed();
 		} else {
 			PagesCollection.loginPage = new LoginPage(
-					CommonUtils
-							.getWebAppAppiumUrlFromConfig(InvitationCodePageSteps.class),
-					CommonUtils
-							.getWebAppApplicationPathFromConfig(InvitationCodePageSteps.class));
+					(ZetaWebAppDriver) PlatformDrivers.getInstance().getDriver(
+							CommonWebAppSteps.CURRENT_PLATFORM), PlatformDrivers.getInstance()
+							.getExplicitWait(CommonWebAppSteps.CURRENT_PLATFORM));
 		}
 	}
 }

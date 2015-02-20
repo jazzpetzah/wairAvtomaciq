@@ -20,9 +20,11 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.common.base.Function;
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.util.NSPoint;
@@ -55,8 +57,9 @@ public class ContactListPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idMainWindowCloseButton)
 	private WebElement closeWindowButton;
 
-	public ContactListPage(String URL, String path) throws Exception {
-		super(URL, path);
+	public ContactListPage(ZetaOSXDriver driver, WebDriverWait wait)
+			throws Exception {
+		super(driver, wait);
 	}
 
 	public void openPeoplePicker() {
@@ -362,12 +365,14 @@ public class ContactListPage extends OSXPage {
 		toggleMenu.click();
 	}
 
-	public boolean isConversationMutedButtonVisible(String conversation) throws Exception {
+	public boolean isConversationMutedButtonVisible(String conversation)
+			throws Exception {
 		return DriverUtils.waitUntilElementAppears(driver, By.xpath(String
 				.format(OSXLocators.xpathFormatMutedButton, conversation)));
 	}
 
-	public boolean isConversationMutedButtonNotVisible(String conversation) throws Exception {
+	public boolean isConversationMutedButtonNotVisible(String conversation)
+			throws Exception {
 		return DriverUtils.waitUntilElementDissapear(driver, By.xpath(String
 				.format(OSXLocators.xpathFormatMutedButton, conversation)));
 	}

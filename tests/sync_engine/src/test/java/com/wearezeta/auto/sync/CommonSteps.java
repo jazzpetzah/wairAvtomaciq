@@ -130,13 +130,16 @@ public class CommonSteps {
 				com.wearezeta.auto.osx.steps.CommonOSXSteps.senderPages = new com.wearezeta.auto.osx.pages.PagesCollection();
 
 				long startDate = new Date().getTime();
-				try {
-					com.wearezeta.auto.osx.pages.PagesCollection.mainMenuPage = new com.wearezeta.auto.osx.pages.MainMenuPage(
-							osxAppiumUrl, osxPath);
-					com.wearezeta.auto.osx.pages.PagesCollection.loginPage = new com.wearezeta.auto.osx.pages.LoginPage(
-							osxAppiumUrl, osxPath);
-				} catch (Exception e) {
-				}
+				// FIXME: Refactor OSX driver initilization
+				// try {
+				// com.wearezeta.auto.osx.pages.PagesCollection.mainMenuPage =
+				// new com.wearezeta.auto.osx.pages.MainMenuPage(
+				// osxAppiumUrl, osxPath);
+				// com.wearezeta.auto.osx.pages.PagesCollection.loginPage = new
+				// com.wearezeta.auto.osx.pages.LoginPage(
+				// osxAppiumUrl, osxPath);
+				// } catch (Exception e) {
+				// }
 				long endDate = new Date().getTime();
 				ExecutionContext.osxZeta()
 						.setStartupTimeMs(endDate - startDate);
@@ -181,15 +184,17 @@ public class CommonSteps {
 			public void run() {
 				if (com.wearezeta.auto.android.pages.PagesCollection.loginPage == null) {
 					long startDate = new Date().getTime();
-					try {
-						com.wearezeta.auto.android.pages.PagesCollection.loginPage = new com.wearezeta.auto.android.pages.LoginPage(
-								androidAppiumUrl, androidPath);
-						com.wearezeta.auto.android.pages.PagesCollection.loginPage
-								.isVisible();
-					} catch (Exception e) {
-						log.debug(e.getMessage());
-						e.printStackTrace();
-					}
+					// FIXME: Refactor android driver initilization
+					// try {
+					// com.wearezeta.auto.android.pages.PagesCollection.loginPage
+					// = new com.wearezeta.auto.android.pages.LoginPage(
+					// androidAppiumUrl, androidPath);
+					// com.wearezeta.auto.android.pages.PagesCollection.loginPage
+					// .isVisible();
+					// } catch (Exception e) {
+					// log.debug(e.getMessage());
+					// e.printStackTrace();
+					// }
 					long endDate = new Date().getTime();
 					try {
 						startDate = readDateFromAppiumLog(AndroidCommonUtils
@@ -219,21 +224,24 @@ public class CommonSteps {
 			public void run() {
 				if (com.wearezeta.auto.ios.pages.PagesCollection.loginPage == null) {
 					long startDate = new Date().getTime();
-					try {
-						if (CommonUtils
-								.getIsSimulatorFromConfig(CommonSteps.class)) {
-							com.wearezeta.auto.ios.pages.PagesCollection.loginPage = new com.wearezeta.auto.ios.pages.LoginPage(
-									iosAppiumPath, iosPath, true);
-						} else {
-							com.wearezeta.auto.ios.pages.PagesCollection.loginPage = new com.wearezeta.auto.ios.pages.LoginPage(
-									iosAppiumPath, iosPath, true);
-						}
-						com.wearezeta.auto.ios.pages.PagesCollection.loginPage
-								.isLoginButtonVisible();
-					} catch (MalformedURLException e) {
-					} catch (IOException e) {
-					} catch (Exception e) {
-					}
+					// try {
+					// FIXME: Refactor iOS driver initialization
+					// if (CommonUtils
+					// .getIsSimulatorFromConfig(CommonSteps.class)) {
+					// com.wearezeta.auto.ios.pages.PagesCollection.loginPage =
+					// new com.wearezeta.auto.ios.pages.LoginPage(
+					// iosAppiumPath, iosPath);
+					// } else {
+					// com.wearezeta.auto.ios.pages.PagesCollection.loginPage =
+					// new com.wearezeta.auto.ios.pages.LoginPage(
+					// iosAppiumPath, iosPath, true);
+					// }
+					// com.wearezeta.auto.ios.pages.PagesCollection.loginPage
+					// .isLoginButtonVisible();
+					// } catch (MalformedURLException e) {
+					// } catch (IOException e) {
+					// } catch (Exception e) {
+					// }
 
 					long endDate = new Date().getTime();
 					try {

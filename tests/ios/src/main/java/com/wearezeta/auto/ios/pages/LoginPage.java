@@ -12,6 +12,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.ContactListPage;
@@ -77,29 +78,11 @@ public class LoginPage extends IOSPage {
 
 	private String password;
 
-	private String url;
-
-	private String path;
-
 	public String message;
 
-	public LoginPage(String URL, String path) throws Exception {
-
-		super(URL, path);
-		this.url = URL;
-		this.path = path;
-	}
-
-	public LoginPage(String URL, String path, boolean acceptAlerts)
+	public LoginPage(ZetaIOSDriver driver, WebDriverWait wait)
 			throws Exception {
-
-		super(URL, path, acceptAlerts);
-		this.url = URL;
-		this.path = path;
-	}
-
-	public ZetaIOSDriver getDriver() {
-		return driver;
+		super(driver, wait);
 	}
 
 	public Boolean isVisible() {
@@ -115,14 +98,14 @@ public class LoginPage extends IOSPage {
 	public PeoplePickerPage clickLaterButton() throws Exception {
 		if (DriverUtils.isElementDisplayed(shareButton)) {
 			shareButton.click();
-			return new PeoplePickerPage(url, path);
+			return new PeoplePickerPage(this.getDriver(), this.getWait());
 		} else {
 			// workaround for Sync Engine scenario
 			// on real iOS device when contacts are shared there is no
 			// Share Contacts dialog but people picker page appears, which we
 			// not process in case no Share Contacts dialog
 			if (!CommonUtils.getIsSimulatorFromConfig(LoginPage.class)) {
-				return new PeoplePickerPage(url, path);
+				return new PeoplePickerPage(this.getDriver(), this.getWait());
 			}
 		}
 
@@ -141,7 +124,7 @@ public class LoginPage extends IOSPage {
 
 		if (DriverUtils.waitUntilElementDissapear(driver,
 				By.name(IOSLocators.nameLoginButton), 40)) {
-			return new ContactListPage(url, path);
+			return new ContactListPage(this.getDriver(), this.getWait());
 		} else {
 			return null;
 		}
@@ -159,7 +142,7 @@ public class LoginPage extends IOSPage {
 		termsOfServiceButton.click();
 		registerButton.click();
 
-		return new RegistrationPage(url, path);
+		return new RegistrationPage(this.getDriver(), this.getWait());
 	}
 
 	public String getLogin() {
@@ -189,9 +172,9 @@ public class LoginPage extends IOSPage {
 
 	public Boolean isLoginFinished(String contact) throws Exception {
 		try {
-			wait.until(ExpectedConditions.presenceOfElementLocated(By
+			this.getWait().until(ExpectedConditions.presenceOfElementLocated(By
 					.name(contact)));
-			wait.until(ExpectedConditions.visibilityOfElementLocated(By
+			this.getWait().until(ExpectedConditions.visibilityOfElementLocated(By
 					.name(contact)));
 		} catch (WebDriverException ex) {
 			log.debug(ex.getMessage());
@@ -213,24 +196,24 @@ public class LoginPage extends IOSPage {
 	public void tapHoldEmailInput() {
 		message = driver.findElement(By.name(IOSLocators.nameLoginField))
 				.getText();
-		driver.tap(1, driver.findElement(By.name(IOSLocators.nameLoginField)),
+		this.getDriver().tap(1, this.getDriver().findElement(By.name(IOSLocators.nameLoginField)),
 				1000);
 	}
 
 	public void openTermsLink() {
 		Point p = termsButton.getLocation();
 		Dimension k = termsButton.getSize();
-		driver.tap(1, (p.x) + (k.width - 70), (p.y) + (k.height - 16), 1);
+		this.getDriver().tap(1, (p.x) + (k.width - 70), (p.y) + (k.height - 16), 1);
 	}
 
 	public void openPrivacyLink() {
 		Point p = privacyButton.getLocation();
 		Dimension k = privacyButton.getSize();
-		driver.tap(1, (p.x) + (k.width / 3), (p.y) + (k.height - 8), 1);
+		this.getDriver().tap(1, (p.x) + (k.width / 3), (p.y) + (k.height - 8), 1);
 	}
 
 	public void closeTermsPrivacyController() {
-		wait.until(ExpectedConditions
+		this.getWait().until(ExpectedConditions
 				.elementToBeClickable(termsPrivacyCloseButton));
 		termsPrivacyCloseButton.click();
 	}

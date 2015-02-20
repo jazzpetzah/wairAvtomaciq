@@ -7,10 +7,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
+import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class ConnectToPage extends IOSPage {
@@ -32,15 +34,11 @@ public class ConnectToPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameSendConnectionInputField)
 	private WebElement sendConnectionInput;
 
-	private String url;
-	private String path;
 	private String inviteMessage = CommonSteps.CONNECTION_MESSAGE;
 
-	public ConnectToPage(String URL, String path) throws Exception {
-		super(URL, path);
-
-		this.url = URL;
-		this.path = path;
+	public ConnectToPage(ZetaIOSDriver driver, WebDriverWait wait)
+			throws Exception {
+		super(driver, wait);
 	}
 
 	public Boolean isConnectToUserDialogVisible() {
@@ -86,20 +84,20 @@ public class ConnectToPage extends IOSPage {
 
 	public PeoplePickerPage clickSendButton() throws Throwable {
 		sendConnectButton.click();
-		return new PeoplePickerPage(url, path);
+		return new PeoplePickerPage(this.getDriver(), this.getWait());
 	}
 
 	public ContactListPage sendInvitation(String name) throws Exception {
 		ContactListPage page = null;
 		fillTextInConnectDialog();
 		sendConnectButton.click();
-		page = new ContactListPage(url, path);
+		page = new ContactListPage(this.getDriver(), this.getWait());
 		return page;
 	}
 
 	public PeoplePickerPage closeConnectDialog() throws Exception {
 		closeConnectDialoButon.click();
-		return new PeoplePickerPage(url, path);
+		return new PeoplePickerPage(this.getDriver(), this.getWait());
 	}
 
 	@Override
@@ -119,7 +117,7 @@ public class ConnectToPage extends IOSPage {
 
 	public PeoplePickerPage sendInvitation() throws Exception {
 		connectOtherUserButton.click();
-		return new PeoplePickerPage(url, path);
+		return new PeoplePickerPage(this.getDriver(), this.getWait());
 	}
 
 	public void acceptInvitation() {

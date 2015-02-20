@@ -10,11 +10,13 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
+import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -23,8 +25,6 @@ import com.wearezeta.auto.ios.locators.IOSLocators;
 public class GroupChatInfoPage extends IOSPage {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-	private String url;
-	private String path;
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.80;
 
 	private final String AQA_PICTURE_CONTACT = "AQAPICTURECONTACT";
@@ -65,10 +65,9 @@ public class GroupChatInfoPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameOtherUserProfilePageCloseButton)
 	private WebElement closeButton;
 
-	public GroupChatInfoPage(String URL, String path) throws Exception {
-		super(URL, path);
-		this.url = URL;
-		this.path = path;
+	public GroupChatInfoPage(ZetaIOSDriver driver, WebDriverWait wait)
+			throws Exception {
+		super(driver, wait);
 	}
 
 	public String getGroupChatName() {
@@ -96,7 +95,7 @@ public class GroupChatInfoPage extends IOSPage {
 
 	public GroupChatPage closeGroupChatInfoPage() throws Exception {
 		closeButton.click();
-		return new GroupChatPage(url, path);
+		return new GroupChatPage(this.getDriver(), this.getWait());
 	}
 
 	public boolean areParticipantAvatarCorrect(String contact)
@@ -114,7 +113,8 @@ public class GroupChatInfoPage extends IOSPage {
 		BufferedImage avatarIcon = null;
 		boolean flag = false;
 		for (WebElement avatar : participantAvatars) {
-			avatarIcon = CommonUtils.getElementScreenshot(avatar, driver);
+			avatarIcon = CommonUtils.getElementScreenshot(avatar,
+					this.getDriver());
 			String avatarName = avatar.getAttribute("name");
 			if (avatarName.equalsIgnoreCase(name)) {
 				BufferedImage realImage = ImageUtil.readImageFromFile(IOSPage
@@ -194,7 +194,8 @@ public class GroupChatInfoPage extends IOSPage {
 			if (getParticipantName(participant).equalsIgnoreCase(
 					participantName)) {
 				participant.click();
-				page = new OtherUserPersonalInfoPage(url, path);
+				page = new OtherUserPersonalInfoPage(this.getDriver(),
+						this.getWait());
 				return page;
 			}
 		}
@@ -263,16 +264,16 @@ public class GroupChatInfoPage extends IOSPage {
 
 	public OtherUserPersonalInfoPage selectContactByName(String name)
 			throws Exception {
-		DriverUtils.mobileTapByCoordinates(driver,
+		DriverUtils.mobileTapByCoordinates(this.getDriver(),
 				driver.findElementByName(name.toUpperCase()));
 
-		return new OtherUserPersonalInfoPage(url, path);
+		return new OtherUserPersonalInfoPage(this.getDriver(), this.getWait());
 	}
 
 	public ConnectToPage selectNotConnectedUser(String name) throws Exception {
 		driver.findElementByName(name.toUpperCase()).click();
 
-		return new ConnectToPage(url, path);
+		return new ConnectToPage(this.getDriver(), this.getWait());
 	}
 
 	public boolean isLeaveConversationAlertVisible() throws Exception {
@@ -285,18 +286,18 @@ public class GroupChatInfoPage extends IOSPage {
 		IOSPage page = null;
 		switch (direction) {
 		case DOWN: {
-			page = new GroupChatPage(url, path);
+			page = new GroupChatPage(this.getDriver(), this.getWait());
 			break;
 		}
 		case UP: {
 			break;
 		}
 		case LEFT: {
-			page = new GroupChatInfoPage(url, path);
+			page = new GroupChatInfoPage(this.getDriver(), this.getWait());
 			break;
 		}
 		case RIGHT: {
-			page = new ContactListPage(url, path);
+			page = new ContactListPage(this.getDriver(), this.getWait());
 			break;
 		}
 		}
@@ -312,7 +313,7 @@ public class GroupChatInfoPage extends IOSPage {
 	}
 
 	public BufferedImage takeScreenShot() throws IOException {
-		return DriverUtils.takeScreenshot(driver);
+		return DriverUtils.takeScreenshot(this.getDriver());
 	}
 
 	public void clickOnAddButton() {
@@ -327,7 +328,7 @@ public class GroupChatInfoPage extends IOSPage {
 	public PeoplePickerPage clickOnAddDialogContinueButton() throws Throwable {
 		PeoplePickerPage page = null;
 		addDialogContinueButton.click();
-		page = new PeoplePickerPage(url, path);
+		page = new PeoplePickerPage(this.getDriver(), this.getWait());
 		return page;
 	}
 }

@@ -6,9 +6,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
+import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class PersonalInfoPage extends IOSPage {
@@ -67,13 +69,9 @@ public class PersonalInfoPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathChangePasswordPageChangePasswordButton)
 	private WebElement changePasswordPageChangePasswordButton;
 
-	private String url;
-	private String path;
-
-	public PersonalInfoPage(String URL, String path) throws Exception {
-		super(URL, path);
-		url = URL;
-		this.path = path;
+	public PersonalInfoPage(ZetaIOSDriver driver, WebDriverWait wait)
+			throws Exception {
+		super(driver, wait);
 	}
 
 	public String getUserNameValue() {
@@ -118,12 +116,12 @@ public class PersonalInfoPage extends IOSPage {
 	public LoginPage clickSignoutButton() throws Exception {
 		LoginPage page;
 		signoutButton.click();
-		page = new LoginPage(url, path);
+		page = new LoginPage(this.getDriver(), this.getWait());
 		return page;
 	}
 
 	public void tapOnEditNameField() {
-		wait.until(ExpectedConditions
+		this.getWait().until(ExpectedConditions
 				.elementToBeClickable(profileNameEditField));
 		profileNameEditField.click();
 	}
@@ -137,12 +135,12 @@ public class PersonalInfoPage extends IOSPage {
 	}
 
 	public void enterNameInNamefield(String username) {
-		DriverUtils.mobileTapByCoordinates(driver, profileNameEditField);
+		DriverUtils.mobileTapByCoordinates(this.getDriver(), profileNameEditField);
 		profileNameEditField.sendKeys(username);
 	}
 
 	public void pressEnterInNameField() {
-		DriverUtils.mobileTapByCoordinates(driver, profileNameEditField);
+		DriverUtils.mobileTapByCoordinates(this.getDriver(), profileNameEditField);
 		profileNameEditField.sendKeys("\n");
 	}
 
@@ -173,7 +171,7 @@ public class PersonalInfoPage extends IOSPage {
 	public CameraRollPage pressCameraButton() throws Exception {
 
 		CameraRollPage page;
-		page = new CameraRollPage(url, path);
+		page = new CameraRollPage(this.getDriver(), this.getWait());
 		pictureButton.click();
 
 		return page;
@@ -194,7 +192,7 @@ public class PersonalInfoPage extends IOSPage {
 			break;
 		}
 		case RIGHT: {
-			page = new ContactListPage(url, path);
+			page = new ContactListPage(this.getDriver(), this.getWait());
 			break;
 		}
 		}

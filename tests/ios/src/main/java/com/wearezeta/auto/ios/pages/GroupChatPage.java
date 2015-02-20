@@ -9,16 +9,14 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
+import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class GroupChatPage extends DialogPage {
-
-	private String url;
-	private String path;
-
 	@FindBy(how = How.NAME, using = IOSLocators.nameMainWindow)
 	private WebElement groupChatWindow;
 
@@ -34,10 +32,9 @@ public class GroupChatPage extends DialogPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameYouRenamedConversationMessage)
 	private WebElement yourRenamedMessage;
 
-	public GroupChatPage(String URL, String path) throws Exception {
-		super(URL, path);
-		this.url = URL;
-		this.path = path;
+	public GroupChatPage(ZetaIOSDriver driver, WebDriverWait wait)
+			throws Exception {
+		super(driver, wait);
 	}
 
 	public boolean areRequiredContactsAddedToChat(List<String> names) {
@@ -139,7 +136,7 @@ public class GroupChatPage extends DialogPage {
 			}
 		}
 
-		return new GroupChatInfoPage(url, path);
+		return new GroupChatInfoPage(this.getDriver(), this.getWait());
 	}
 
 	@Override
@@ -149,7 +146,7 @@ public class GroupChatPage extends DialogPage {
 
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
-		driver.swipe(coords.x + elementSize.width / 2, coords.y
+		this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y
 				+ elementSize.height - 170, coords.x + elementSize.width / 2,
 				coords.y + 40, time);
 		return returnBySwipe(SwipeDirection.UP);
@@ -162,7 +159,7 @@ public class GroupChatPage extends DialogPage {
 
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
-		driver.swipe(coords.x + 10, coords.y + 30, coords.x + elementSize.width
+		this.getDriver().swipe(coords.x + 10, coords.y + 30, coords.x + elementSize.width
 				/ 2 + 20, coords.y + 30, time);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
@@ -176,14 +173,14 @@ public class GroupChatPage extends DialogPage {
 			break;
 		}
 		case UP: {
-			page = new GroupChatInfoPage(url, path);
+			page = new GroupChatInfoPage(this.getDriver(), this.getWait());
 			break;
 		}
 		case LEFT: {
 			break;
 		}
 		case RIGHT: {
-			page = new ContactListPage(url, path);
+			page = new ContactListPage(this.getDriver(), this.getWait());
 			break;
 		}
 		}

@@ -10,7 +10,6 @@ import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
@@ -73,9 +72,11 @@ public class LoginPageSteps {
 				PagesCollection.loginPage.waitForLogin());
 
 		PagesCollection.contactListPage = new ContactListPage(
-				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+				PagesCollection.loginPage.getDriver(),
+				PagesCollection.loginPage.getWait());
 		PagesCollection.userProfilePage = new UserProfilePage(
-				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+				PagesCollection.loginPage.getDriver(),
+				PagesCollection.loginPage.getWait());
 	}
 
 	/**
@@ -105,7 +106,8 @@ public class LoginPageSteps {
 			PagesCollection.contactListPage = (ContactListPage) page;
 		}
 		PagesCollection.userProfilePage = new UserProfilePage(
-				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+				PagesCollection.loginPage.getDriver(),
+				PagesCollection.loginPage.getWait());
 	}
 
 	/**
@@ -133,7 +135,7 @@ public class LoginPageSteps {
 	 * 
 	 * @param password
 	 *            user password string
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@When("I have entered password (.*)")
 	public void WhenIHaveEnteredPassword(String password) throws Exception {
@@ -175,7 +177,7 @@ public class LoginPageSteps {
 	 * When called after logout, checks that Sign In screen is opened
 	 * 
 	 * @step. I have returned to Sign In screen
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Then("I have returned to Sign In screen")
 	public void ThenISeeSignInScreen() throws Exception {
@@ -245,7 +247,7 @@ public class LoginPageSteps {
 	 * Checks that No internet connection error appears when internet is blocked
 	 * 
 	 * @step. ^I see internet connectivity error message$
-	 * @throws Exception 
+	 * @throws Exception
 	 * 
 	 * @throws AssertionError
 	 *             if there is no message about internet connection error

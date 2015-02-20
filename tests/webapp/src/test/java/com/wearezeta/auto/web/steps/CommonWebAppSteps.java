@@ -34,7 +34,7 @@ public class CommonWebAppSteps {
 			.getSimpleName());
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	
-	private static final Platform CURRENT_PLATFORM = Platform.Web;
+	public static final Platform CURRENT_PLATFORM = Platform.Web;
 
 	static {
 		System.setProperty("java.awt.headless", "false");
@@ -289,13 +289,5 @@ public class CommonWebAppSteps {
 		}
 		
 		commonSteps.getUserManager().resetUsers();
-	}
-
-	@Override
-	protected void finalize() throws Throwable {
-		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
-			PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
-		}
-		super.finalize();
 	}
 }
