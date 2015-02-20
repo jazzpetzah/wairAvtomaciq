@@ -4,10 +4,14 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
+import com.wearezeta.auto.common.driver.PlatformDrivers;
+import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
@@ -21,6 +25,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
 public class CommonIOSSteps {
+	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(CommonIOSSteps.class
 			.getSimpleName());
 
@@ -34,65 +39,69 @@ public class CommonIOSSteps {
 				"warn");
 	}
 
+	public static final Platform CURRENT_PLATFORM = Platform.iOS;
+	public static final String PLATFORM_VERSION = "8.1";
+
+	private static String getUrl() throws Exception {
+		return CommonUtils.getIosAppiumUrlFromConfig(CommonIOSSteps.class);
+	}
+
+	private static String getPath() throws Exception {
+		return CommonUtils
+				.getIosApplicationPathFromConfig(CommonIOSSteps.class);
+	}
+
+	private ZetaIOSDriver resetIOSDriver(boolean enableAutoAcceptAlerts)
+			throws Exception {
+		final DesiredCapabilities capabilities = new DesiredCapabilities();
+		capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
+		capabilities.setCapability("app", getPath());
+		final String deviceName = CommonUtils.getDeviceName(this.getClass());
+		capabilities.setCapability("deviceName", deviceName);
+		capabilities.setCapability("platformVersion", PLATFORM_VERSION);
+		final String backendType = CommonUtils.getBackendType(this.getClass());
+		capabilities.setCapability("processArguments",
+				"--args -TutorialOverlaysEnabled 0 -UseHockey 0 -ZMBackendEnvironmentType "
+						+ backendType);
+		if (enableAutoAcceptAlerts) {
+			capabilities.setCapability("autoAcceptAlerts", true);
+		}
+		return (ZetaIOSDriver) PlatformDrivers.getInstance().resetDriver(
+				getUrl(), capabilities);
+	}
+
 	@Before("~@noAcceptAlert")
 	public void setUpAcceptAlerts() throws Exception {
-		commonBefore();
-
-		String path = CommonUtils
-				.getIosApplicationPathFromConfig(TestRun.class);
-
-		if (PagesCollection.loginPage == null) {
-			PagesCollection.loginPage = new LoginPage(
-					CommonUtils.getIosAppiumUrlFromConfig(TestRun.class), path);
-			ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
-		}
-
+		commonBefore(resetIOSDriver(true));
 	}
 
 	@Before("@noAcceptAlert")
 	public void setUpNoAlerts() throws Exception {
-		commonBefore();
-
-		String path = CommonUtils
-				.getIosApplicationPathFromConfig(TestRun.class);
-
-		if (PagesCollection.loginPage == null) {
-			PagesCollection.loginPage = new LoginPage(
-					CommonUtils.getIosAppiumUrlFromConfig(TestRun.class), path,
-					false);
-			ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
-		}
-
+		commonBefore(resetIOSDriver(false));
 	}
 
-	private void commonBefore() throws Exception {
-
-		if (PagesCollection.loginPage != null
-				&& PagesCollection.loginPage.getDriver().isSessionLost()) {
-			log.info("Session was lost, reseting pages collection");
-			IOSPage.clearPagesCollection();
-		}
+	private void commonBefore(ZetaIOSDriver driver) throws Exception {
+		// if (PagesCollection.loginPage != null
+		// && PagesCollection.loginPage.getDriver().isSessionLost()) {
+		// log.info("Session was lost, reseting pages collection");
+		// IOSPage.clearPagesCollection();
+		// }
 
 		ZetaFormatter.setBuildNumber(IOSCommonUtils
 				.readClientVersionFromPlist().getClientBuildNumber());
-	}
 
-	@After
-	public void tearDown() throws Exception {
-		PagesCollection.loginPage.close();
-		IOSPage.clearPagesCollection();
-		IOSKeyboard.dispose();
-
-		commonSteps.getUserManager().resetUsers();
+		PagesCollection.loginPage = new LoginPage(driver,
+				PlatformDrivers.createDefaultExplicitWait(driver));
+		ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
 	}
 
 	@When("^I see keyboard$")
-	public void ISeeKeyboard() {
+	public void ISeeKeyboard() throws Exception {
 		Assert.assertTrue(PagesCollection.dialogPage.isKeyboardVisible());
 	}
 
 	@When("^I dont see keyboard$")
-	public void IDontSeeKeyboard() {
+	public void IDontSeeKeyboard() throws Exception {
 		Assert.assertFalse(PagesCollection.dialogPage.isKeyboardVisible());
 	}
 
@@ -107,28 +116,28 @@ public class CommonIOSSteps {
 	}
 
 	@When("^I accept alert$")
-	public void IAcceptAlert() {
+	public void IAcceptAlert() throws Exception {
 		PagesCollection.loginPage.acceptAlert();
 	}
 
 	@When("^I dismiss alert$")
-	public void IDismissAlert() {
+	public void IDismissAlert() throws Exception {
 		PagesCollection.loginPage.dismissAlert();
 	}
 
 	/**
-	* Closes the app for a certain amount of time in seconds
-	* 
-	* @param seconds
-	*           time in seconds to close the app
-	* 
-	* @step. ^I close the app for (.*) seconds$
-	*/
+	 * Closes the app for a certain amount of time in seconds
+	 * 
+	 * @param seconds
+	 *            time in seconds to close the app
+	 * 
+	 * @step. ^I close the app for (.*) seconds$
+	 */
 	@When("^I close the app for (.*) seconds$")
-		public void ICloseApp(int seconds) {
+	public void ICloseApp(int seconds) {
 		PagesCollection.iOSPage.minimizeApplication(seconds);
 	}
-	
+
 	@Given("^(.*) has sent connection request to (.*)$")
 	public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
 			String usersToNameAliases) throws Throwable {
@@ -205,13 +214,14 @@ public class CommonIOSSteps {
 		commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
 				dstUserNameAlias, CommonUtils.generateRandomString(10));
 	}
-	
+
 	@When("^Contact (.*) send number (.*) of message to user (.*)$")
-	public void UserSendNumberOfMessageToConversation(String msgFromUserNameAlias, int numberOfMessages,
+	public void UserSendNumberOfMessageToConversation(
+			String msgFromUserNameAlias, int numberOfMessages,
 			String dstUserNameAlias) throws Exception {
-		for(int i = 0; i <= numberOfMessages; i++){
-		commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
-				dstUserNameAlias, CommonUtils.generateRandomString(10));
+		for (int i = 0; i <= numberOfMessages; i++) {
+			commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
+					dstUserNameAlias, CommonUtils.generateRandomString(10));
 		}
 	}
 
@@ -261,9 +271,10 @@ public class CommonIOSSteps {
 	 */
 
 	@When("^User (\\w+) name starts with (.*)$")
-	public void IChangeUserNameToNameStartingWith(String userNameAlias, String startLetter)
-			throws Exception {
-		String newName = startLetter.concat(UUID.randomUUID().toString().replace("-", ""));
+	public void IChangeUserNameToNameStartingWith(String userNameAlias,
+			String startLetter) throws Exception {
+		String newName = startLetter.concat(UUID.randomUUID().toString()
+				.replace("-", ""));
 		commonSteps.IChangeUserName(userNameAlias, newName);
 	}
 
@@ -291,13 +302,12 @@ public class CommonIOSSteps {
 		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query,
 				timeout);
 	}
-	
+
 	@When("^Contact (.*) sends image (.*) to (.*) conversation (.*)")
 	public void ContactSendImageToConversation(String imageSenderUserNameAlias,
 			String imageFileName, String conversationType,
 			String dstConversationName) throws Exception {
-		String imagePath = IOSPage
-				.getImagesPath() + imageFileName;
+		String imagePath = IOSPage.getImagesPath() + imageFileName;
 		Boolean isGroup = null;
 		if (conversationType.equals("single user")) {
 			isGroup = false;
@@ -310,5 +320,17 @@ public class CommonIOSSteps {
 		}
 		commonSteps.UserSendsImageToConversation(imageSenderUserNameAlias,
 				imagePath, dstConversationName, isGroup);
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		IOSPage.clearPagesCollection();
+		IOSKeyboard.dispose();
+
+		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+			PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+		}
+
+		commonSteps.getUserManager().resetUsers();
 	}
 }

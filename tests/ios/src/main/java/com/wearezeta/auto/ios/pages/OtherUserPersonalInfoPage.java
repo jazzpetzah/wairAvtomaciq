@@ -4,95 +4,93 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
+import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
-public class OtherUserPersonalInfoPage extends IOSPage{
-	
+public class OtherUserPersonalInfoPage extends IOSPage {
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameOtherUserEmailField)
 	private WebElement otherUserEmail;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameRemoveFromConversation)
 	private WebElement removeFromChat;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameComfirmRemoveButton)
 	private WebElement confirmRemove;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameAddContactToChatButton)
 	private WebElement addButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameContinueButton)
 	private WebElement continueButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameExitOtherUserPersonalInfoPageButton)
 	private WebElement exitOtherPersonalInfoPageButton;
-	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherPersonalInfoPageNameField )
+
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherPersonalInfoPageNameField)
 	private WebElement nameField;
-	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherPersonalInfoPageEmailField )
+
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherPersonalInfoPageEmailField)
 	private WebElement emailField;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameAddContactToChatButton)
 	private WebElement startDialogButton;
-	
-	private String url;
-	private String path;
-	
-	public OtherUserPersonalInfoPage(String URL, String path) throws Exception {
-		super(URL, path);
-		this.url = URL;
-		this.path = path;
 
+	public OtherUserPersonalInfoPage(ZetaIOSDriver driver, WebDriverWait wait)
+			throws Exception {
+		super(driver, wait);
 	}
-	
+
 	public void catchContinueAlert() {
 		try {
-			WebElement el = driver.findElementByName(IOSLocators.nameContinueButton);
+			WebElement el = driver
+					.findElementByName(IOSLocators.nameContinueButton);
 			el.click();
-		}
-		catch (NoSuchElementException ex) {
-			//do nothing
+		} catch (NoSuchElementException ex) {
+			// do nothing
 		}
 	}
-	
-	public IOSPage leavePageToGroupInfoPage() throws Exception{
+
+	public IOSPage leavePageToGroupInfoPage() throws Exception {
 		exitOtherPersonalInfoPageButton.click();
-		return new GroupChatInfoPage(url, path);
+		return new GroupChatInfoPage(this.getDriver(), this.getWait());
 	}
-	
+
 	public PeoplePickerPage addContactToChat() throws Exception {
 		addButton.click();
 		catchContinueAlert();
-		return new PeoplePickerPage(url, path);
+		return new PeoplePickerPage(this.getDriver(), this.getWait());
 	}
-	
+
 	public boolean isOtherUserProfileEmailVisible(String name) {
-		
-		WebElement otherUserEmail = driver.findElementByXPath(String.format(IOSLocators.xpathOtherUserName, name.toUpperCase()));
+
+		WebElement otherUserEmail = driver.findElementByXPath(String.format(
+				IOSLocators.xpathOtherUserName, name.toUpperCase()));
 		return otherUserEmail.isDisplayed();
 	}
-	
+
 	public boolean isOtherUserProfileNameVisible(String name) {
 		WebElement otherUserName = driver.findElementByName(name);
-		return  otherUserName.isEnabled();
+		return otherUserName.isEnabled();
 	}
-	
-	public void continueToAddUser(){
+
+	public void continueToAddUser() {
 		continueButton.click();
 	}
-	
+
 	public void removeFromConversation() {
-		
-		DriverUtils.mobileTapByCoordinates(driver, removeFromChat);
+
+		DriverUtils.mobileTapByCoordinates(this.getDriver(), removeFromChat);
 	}
-	
+
 	public boolean isRemoveFromConversationAlertVisible() {
 		return confirmRemove.isDisplayed();
 	}
-	
+
 	public void confirmRemove() {
 		confirmRemove.click();
 	}
@@ -100,41 +98,40 @@ public class OtherUserPersonalInfoPage extends IOSPage{
 	public String getNameFieldValue() {
 		return nameField.getAttribute("value");
 	}
-	
+
 	public String getEmailFieldValue() {
 		return emailField.getAttribute("value");
 	}
-	
-	public DialogPage clickOnStartDialogButton() throws Throwable{
+
+	public DialogPage clickOnStartDialogButton() throws Throwable {
 		DialogPage page = null;
-		driver.tap(1, driver.findElementByName(IOSLocators.nameAddContactToChatButton), 1);
-		page = new DialogPage(url, path);
+		this.getDriver().tap(
+				1,
+				this.getDriver().findElementByName(
+						IOSLocators.nameAddContactToChatButton), 1);
+		page = new DialogPage(this.getDriver(), this.getWait());
 		return page;
 	}
-	
+
 	@Override
 	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
 		IOSPage page = null;
-		switch (direction){
-		case DOWN:
-		{
-			page = new ContactListPage(url, path);
+		switch (direction) {
+		case DOWN: {
+			page = new ContactListPage(this.getDriver(), this.getWait());
 			break;
 		}
-		case UP:
-		{
+		case UP: {
 			return this;
 		}
-		case LEFT:
-		{
-			page = new DialogPage(url, path);
+		case LEFT: {
+			page = new DialogPage(this.getDriver(), this.getWait());
 			break;
 		}
-		case RIGHT:
-		{
+		case RIGHT: {
 			break;
 		}
-	}	
+		}
 		return page;
 	}
 

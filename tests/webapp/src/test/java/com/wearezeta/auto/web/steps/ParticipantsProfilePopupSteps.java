@@ -114,9 +114,10 @@ public class ParticipantsProfilePopupSteps {
 	 * @step. ^I input user name (.*) in search field$
 	 * 
 	 * @param name
+	 * @throws Exception 
 	 */
 	@When("^I input user name (.*) in search field$")
-	public void ISearchForUser(String name) {
+	public void ISearchForUser(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		PagesCollection.participantsPopupPage.searchForUser(name);
 	}
@@ -127,9 +128,10 @@ public class ParticipantsProfilePopupSteps {
 	 * @step. ^I select (.*) from Popup Page search results$
 	 * 
 	 * @param user
+	 * @throws Exception 
 	 */
 	@When("^I select (.*) from Popup Page search results$")
-	public void ISelectUserFromPeoplePickerResults(String user) {
+	public void ISelectUserFromPeoplePickerResults(String user) throws Exception {
 		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
 		PagesCollection.participantsPopupPage.selectUserFromSearchResult(user);
 	}

@@ -9,7 +9,7 @@ import cucumber.api.java.en.When;
 public class VideoPlayerPageSteps {
 
 	@When("I see video player page is opened")
-	public void ISeeVideoPlayerPage() throws InterruptedException {
+	public void ISeeVideoPlayerPage() throws Exception {
 		PagesCollection.videoPlayerPage.waitForVideoPlayerPage();
 		Assert.assertTrue("Video Player is not opened",
 				PagesCollection.videoPlayerPage.isVideoPlayerPageOpened());

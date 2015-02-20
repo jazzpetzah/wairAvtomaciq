@@ -7,13 +7,11 @@ import java.util.Map;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.pages.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
@@ -132,12 +130,13 @@ public class RegistrationPageSteps {
 	 * clicked
 	 * 
 	 * @step. I see confirmation page
+	 * @throws Exception
 	 * 
 	 * @throws AssertionError
 	 *             if confirmation page did not appear
 	 */
 	@Then("I see confirmation page")
-	public void ISeeConfirmationPage() {
+	public void ISeeConfirmationPage() throws Exception {
 		Assert.assertTrue(PagesCollection.registrationPage
 				.isConfirmationRequested());
 	}
@@ -205,10 +204,8 @@ public class RegistrationPageSteps {
 	public void ITakeRegistrationPictureFromImageFile(String imageFile)
 			throws Exception {
 		ChoosePicturePage choosePicturePage = new ChoosePicturePage(
-				CommonUtils
-						.getOsxAppiumUrlFromConfig(RegistrationPageSteps.class),
-				CommonUtils
-						.getOsxApplicationPathFromConfig(RegistrationPageSteps.class));
+				PagesCollection.loginPage.getDriver(),
+				PagesCollection.loginPage.getWait());
 		Assert.assertTrue(choosePicturePage.isVisible());
 
 		choosePicturePage.openImage(imageFile);
@@ -226,7 +223,8 @@ public class RegistrationPageSteps {
 	@Then("I see contact list of registered user")
 	public void ISeeContactListOfRegisteredUser() throws Exception {
 		PagesCollection.contactListPage = new ContactListPage(
-				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+				PagesCollection.loginPage.getDriver(),
+				PagesCollection.loginPage.getWait());
 		ContactListPageSteps clSteps = new ContactListPageSteps();
 		clSteps.ISeeMyNameInContactList(this.userToRegister.getName());
 	}
@@ -241,7 +239,8 @@ public class RegistrationPageSteps {
 	@Then("I see self profile of registered user")
 	public void ISeeSelfProfileOfRegisteredUser() throws Exception {
 		PagesCollection.userProfilePage = new UserProfilePage(
-				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+				PagesCollection.loginPage.getDriver(),
+				PagesCollection.loginPage.getWait());
 		UserProfilePageSteps upSteps = new UserProfilePageSteps();
 		upSteps.ISeeNameInUserProfile(this.userToRegister.getName());
 	}

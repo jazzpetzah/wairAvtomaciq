@@ -13,12 +13,14 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
+import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
 import com.wearezeta.auto.common.locators.ZetaHow;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -114,22 +116,18 @@ public class DialogPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.XPATH, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "xpathDialogPageBottomLinearLayout")
 	private WebElement dialogPageBottomLinearLayout;
 
-	private String url;
-	private String path;
 	private int initMessageCount;
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.95;
 	private final String DIALOG_IMAGE = "android_dialog_sendpicture_result.png";
 
-	public DialogPage(String URL, String path) throws Exception {
-		super(URL, path);
-
-		this.url = URL;
-		this.path = path;
+	public DialogPage(ZetaAndroidDriver driver, WebDriverWait wait)
+			throws Exception {
+		super(driver, wait);
 	}
 
 	public void waitForCursorInputVisible() {
 		refreshUITree();
-		wait.until(ExpectedConditions.visibilityOf(cursorInput));
+		this.getWait().until(ExpectedConditions.visibilityOf(cursorInput));
 		initMessageCount = messagesList.size();
 	}
 
@@ -142,15 +140,15 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void multiTapOnCursorInput() throws InterruptedException {
-		DriverUtils.androidMultiTap(driver, cursorInput, 2, 0.2);
+		DriverUtils.androidMultiTap(this.getDriver(), cursorInput, 2, 0.2);
 	}
 
 	public void SwipeOnCursorInput() {
-		DriverUtils.swipeRight(driver, cursorInput, 1000);
+		DriverUtils.swipeRight(this.getDriver(), cursorInput, 1000);
 	}
 
 	public void SwipeLeftOnCursorInput() {
-		DriverUtils.swipeLeft(driver, closeCursor, 1000);
+		DriverUtils.swipeLeft(this.getDriver(), closeCursor, 1000);
 	}
 
 	public void tapAddPictureBtn() {
@@ -168,7 +166,7 @@ public class DialogPage extends AndroidPage {
 		refreshUITree();
 		cursorInput.sendKeys(message + "\\n");
 		// DriverUtils.mobileTapByCoordinates(driver, backgroundOverlay);
-		driver.hideKeyboard();
+		this.getDriver().hideKeyboard();
 	}
 
 	public String getLastMessageFromDialog() {
@@ -198,14 +196,15 @@ public class DialogPage extends AndroidPage {
 			break;
 		}
 		case UP: {
-			page = new OtherUserPersonalInfoPage(url, path);
+			page = new OtherUserPersonalInfoPage(this.getDriver(),
+					this.getWait());
 			break;
 		}
 		case LEFT: {
 			break;
 		}
 		case RIGHT: {
-			page = new ContactListPage(url, path);
+			page = new ContactListPage(this.getDriver(), this.getWait());
 			break;
 		}
 		}
@@ -256,7 +255,7 @@ public class DialogPage extends AndroidPage {
 
 	public Boolean isKnockIconVisible() {
 		refreshUITree();
-		wait.until(ExpectedConditions.visibilityOf(knockIcon));
+		this.getWait().until(ExpectedConditions.visibilityOf(knockIcon));
 		return knockIcon.isDisplayed();
 	}
 
@@ -272,13 +271,14 @@ public class DialogPage extends AndroidPage {
 
 	public ContactListPage navigateBack() throws Exception {
 		driver.navigate().back();
-		return new ContactListPage(url, path);
+		return new ContactListPage(this.getDriver(), this.getWait());
 	}
 
 	public boolean isHintVisible() throws InterruptedException, IOException {
 		refreshUITree();// TODO workaround
 		try {
-			wait.until(ExpectedConditions.elementToBeClickable(closeHintBtn));
+			this.getWait().until(
+					ExpectedConditions.elementToBeClickable(closeHintBtn));
 		} catch (NoSuchElementException e) {
 			return false;
 		}
@@ -344,14 +344,14 @@ public class DialogPage extends AndroidPage {
 		Dimension elementSize = driver.manage().window().getSize();
 		switch (direction) {
 		case "up":
-			driver.swipe(coords.x + elementSize.width / 2, coords.y
-					+ elementSize.height / 2, coords.x + elementSize.width / 2,
-					coords.y + 120, 1000);
+			this.getDriver().swipe(coords.x + elementSize.width / 2,
+					coords.y + elementSize.height / 2,
+					coords.x + elementSize.width / 2, coords.y + 120, 1000);
 			break;
 		case "down":
-			driver.swipe(coords.x + elementSize.width / 2, coords.y + 150,
-					coords.x + elementSize.width / 2, coords.y
-							+ elementSize.height - 200, 1000);
+			this.getDriver().swipe(coords.x + elementSize.width / 2,
+					coords.y + 150, coords.x + elementSize.width / 2,
+					coords.y + elementSize.height - 200, 1000);
 			break;
 		default:
 			log.fatal("Unknown direction");
@@ -384,8 +384,9 @@ public class DialogPage extends AndroidPage {
 
 	public ArrayList<MessageEntry> listAllMessages(boolean checkTime) {
 		try {
-			driver.hideKeyboard();
+			this.getDriver().hideKeyboard();
 		} catch (WebDriverException e) {
+			e.printStackTrace();
 		}
 
 		String lastMessage = messagesList.get(messagesList.size() - 1)
@@ -491,7 +492,7 @@ public class DialogPage extends AndroidPage {
 		return true;
 	}
 
-	public boolean isDialogVisible() {
+	public boolean isDialogVisible() throws Exception {
 		return DriverUtils.waitUntilElementAppears(driver,
 				By.id(AndroidLocators.DialogPage.idMessage));
 	}

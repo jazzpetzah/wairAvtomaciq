@@ -8,6 +8,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.sikuli.script.App;
 import org.sikuli.script.Env;
 import org.sikuli.script.FindFailed;
@@ -15,6 +16,7 @@ import org.sikuli.script.Screen;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.util.NSPoint;
 
@@ -70,16 +72,11 @@ public class ConversationInfoPage extends OSXPage {
 
 	public String currentConversationName;
 
-	private String url;
-	private String path;
-
-	public ConversationInfoPage(String URL, String path) throws Exception {
-		super(URL, path);
-		this.url = URL;
-		this.path = path;
+	public ConversationInfoPage(ZetaOSXDriver driver, WebDriverWait wait) throws Exception {
+		super(driver, wait);
 	}
 
-	public boolean userIsNotExistInConversation(String user) {
+	public boolean userIsNotExistInConversation(String user) throws Exception {
 		String xpath = String.format(
 				OSXLocators.xpathFormatPeoplePickerUserCell, user);
 		return DriverUtils.waitUntilElementDissapear(driver, By.xpath(xpath));
@@ -108,7 +105,7 @@ public class ConversationInfoPage extends OSXPage {
 		}
 	}
 
-	private void confirmIfRequested() {
+	private void confirmIfRequested() throws Exception {
 		try {
 			DriverUtils.setImplicitWaitValue(driver, 3);
 			confirmationViewConfirmButton.click();
@@ -129,10 +126,10 @@ public class ConversationInfoPage extends OSXPage {
 			groupChatAddPeopleButton.click();
 		}
 		confirmIfRequested();
-		return new PeoplePickerPage(url, path);
+		return new PeoplePickerPage(this.getDriver(), this.getWait());
 	}
 
-	public void removeUser() {
+	public void removeUser() throws Exception {
 		removeUserFromConversationButton.click();
 		confirmIfRequested();
 		conversationScrollArea.click();
@@ -151,7 +148,7 @@ public class ConversationInfoPage extends OSXPage {
 		}
 	}
 
-	public void leaveConversation() {
+	public void leaveConversation() throws Exception {
 		leaveConversationButton.click();
 		confirmIfRequested();
 	}
@@ -258,7 +255,7 @@ public class ConversationInfoPage extends OSXPage {
 		return el.isDisplayed();
 	}
 
-	public boolean isEmailButtonExists(String email) {
+	public boolean isEmailButtonExists(String email) throws Exception {
 		return DriverUtils.waitUntilElementAppears(driver, By.xpath(String
 				.format(OSXLocators.xpathSingleChatUserEmailButton, email)));
 	}

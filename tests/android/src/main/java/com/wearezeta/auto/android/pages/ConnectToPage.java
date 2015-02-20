@@ -1,16 +1,17 @@
 package com.wearezeta.auto.android.pages;
 
 import java.util.List;
-import org.openqa.selenium.*;
 
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 
 import com.wearezeta.auto.common.locators.ZetaHow;
 
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.SwipeDirection;
+import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
 
 public class ConnectToPage extends AndroidPage {
@@ -45,14 +46,9 @@ public class ConnectToPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idConfirmBtn")
 	private WebElement confirmBtn;
 
-	private String url;
-	private String path;
-
-	public ConnectToPage(String URL, String path) throws Exception {
-		super(URL, path);
-
-		this.url = URL;
-		this.path = path;
+	public ConnectToPage(ZetaAndroidDriver driver, WebDriverWait wait)
+			throws Exception {
+		super(driver, wait);
 	}
 
 	@Override
@@ -66,30 +62,30 @@ public class ConnectToPage extends AndroidPage {
 
 	public void pressConfirmBtn() throws Exception {
 		refreshUITree();
-		wait.until(ExpectedConditions.elementToBeClickable(confirmBtn));
+		this.getWait().until(ExpectedConditions.elementToBeClickable(confirmBtn));
 		confirmBtn.click();
 	}
 
 	public ContactListPage navigateBack() throws Exception {
 		driver.navigate().back();
-		return new ContactListPage(url, path);
+		return new ContactListPage(this.getDriver(), this.getWait());
 	}
 
 	public String getConnectToHeader() {
 		refreshUITree();
-		wait.until(ExpectedConditions.visibilityOf(connectToHeader));
+		this.getWait().until(ExpectedConditions.visibilityOf(connectToHeader));
 		return connectToHeader.getText().toLowerCase();
 	}
 
 	public DialogPage pressAcceptConnectButton() throws Exception {
 		connectAcceptBtn.click();
-		return new DialogPage(url, path);
+		return new DialogPage(this.getDriver(), this.getWait());
 	}
 
 	public ContactListPage pressIgnoreButton() throws Exception {
 		refreshUITree();
 		connectIgnoreBtn.click();
-		return new ContactListPage(url, path);
+		return new ContactListPage(this.getDriver(), this.getWait());
 	}
 
 	public boolean isIgnoreConnectButtonVisible() throws Exception {
@@ -115,16 +111,13 @@ public class ConnectToPage extends AndroidPage {
 	}
 
 	public ContactListPage pressConnectButton() throws Exception {
-		refreshUITree();
 		try {
-			wait.until(ExpectedConditions
-					.elementToBeClickable(sendConnectionRequestButton));
 			sendConnectionRequestButton.click();
 		} catch (NoSuchElementException ex) {
-			driver.hideKeyboard();
+			navigateBack();
 			sendConnectionRequestButton.click();
 		}
-		return new ContactListPage(url, path);
+		return new ContactListPage(this.getDriver(), this.getWait());
 	}
 
 	public boolean getConnectButtonState() {
@@ -138,7 +131,7 @@ public class ConnectToPage extends AndroidPage {
 
 	public PeoplePickerPage clickCloseButton() throws Exception {
 		closeButton.click();
-		return new PeoplePickerPage(url, path);
+		return new PeoplePickerPage(this.getDriver(), this.getWait());
 	}
 
 }

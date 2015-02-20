@@ -10,9 +10,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
@@ -33,8 +34,9 @@ public class ContactListPage extends WebPage {
 	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.ContactListPage.classNameOpenPeoplePickerButton)
 	private WebElement openPeoplePickerButton;
 
-	public ContactListPage(String URL, String path) throws Exception {
-		super(URL, path);
+	public ContactListPage(ZetaWebAppDriver driver, WebDriverWait wait)
+			throws Exception {
+		super(driver, wait);
 	}
 
 	private WebElement retrieveNoNameGroupContact(String name) {
@@ -56,19 +58,20 @@ public class ContactListPage extends WebPage {
 		return null;
 	}
 
-	public boolean waitForContactListVisible() {
+	public boolean waitForContactListVisible() throws Exception {
 		return DriverUtils.waitUntilElementVisible(driver,
 				openPeoplePickerButton);
 	}
 
-	public boolean isContactWithNameExists(String name) {
+	public boolean isContactWithNameExists(String name) throws Exception {
 		log.debug("Looking for contact with name '" + name + "'");
 		if (name.contains(",")) {
 			return retrieveNoNameGroupContact(name) != null;
 		} else {
 			final String xpath = WebAppLocators.ContactListPage.xpathContactListEntryByName
 					.apply(name);
-			return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath), 20);
+			return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath),
+					20);
 		}
 	}
 	
@@ -102,11 +105,12 @@ public class ContactListPage extends WebPage {
 	}
 
 	public void openArchive() {
-		wait.until(ExpectedConditions.elementToBeClickable(archive));
+		this.getWait().until(ExpectedConditions.elementToBeClickable(archive));
 		archive.click();
 	}
 
-	public void clickArchiveConversationForContact(String conversationName) {
+	public void clickArchiveConversationForContact(String conversationName)
+			throws Exception {
 
 		WebElement contact = getContactWithName(conversationName);
 
@@ -116,51 +120,54 @@ public class ContactListPage extends WebPage {
 
 		archiveButton.click();
 	}
-	
-	public void clickMuteConversationForContact(String conversationName) {
+
+	public void clickMuteConversationForContact(String conversationName)
+			throws Exception {
 
 		WebElement contact = getContactWithName(conversationName);
 
 		List<WebElement> muteButtons = contact.findElements(By
 				.className(WebAppLocators.ContactListPage.classMuteButton));
-		for (WebElement e: muteButtons) {
-			if(e.isDisplayed()) {
+		for (WebElement e : muteButtons) {
+			if (e.isDisplayed()) {
 				DriverUtils.waitUntilElementClickable(driver, e);
 
 				e.click();
 			}
 		}
 	}
-	
-	public boolean isConversationMuted(String conversationName) {
-		//moving focus from contact - to now show ... button
+
+	public boolean isConversationMuted(String conversationName)
+			throws Exception {
+		// moving focus from contact - to now show ... button
 		try {
 			DriverUtils.moveMouserOver(driver, selfName);
 		} catch (WebDriverException e) {
-			//do nothing (safari workaround)
+			// do nothing (safari workaround)
 		}
 		WebElement contact = getContactWithName(conversationName);
 		boolean result = false;
-		
+
 		try {
 			WebElement muteIcon = contact.findElement(By
 					.className(WebAppLocators.ContactListPage.classMuteIcon));
 			DriverUtils.waitUntilElementAppears(driver, muteIcon, 5);
 			result = muteIcon.isDisplayed();
 		} catch (NoSuchElementException ex) {
-			
+
 		}
-		
+
 		return result;
 	}
 
-	public void clickActionsButtonForContact(String conversationName) {
+	public void clickActionsButtonForContact(String conversationName)
+			throws Exception {
 
 		WebElement contact = getContactWithName(conversationName);
 		try {
 			DriverUtils.moveMouserOver(driver, contact);
 		} catch (WebDriverException e) {
-			//do nothing (safari workaround)
+			// do nothing (safari workaround)
 		}
 		WebElement actionsButton = contact.findElement(By
 				.className(WebAppLocators.ContactListPage.classActionsButton));
@@ -179,22 +186,15 @@ public class ContactListPage extends WebPage {
 			WebElement contact = retrieveNoNameGroupContact(conversationName);
 			if (contact != null) {
 				contact.click();
-				return new ConversationPage(
-						CommonUtils
-								.getWebAppAppiumUrlFromConfig(ContactListPage.class),
-						CommonUtils
-								.getWebAppApplicationPathFromConfig(ContactListPage.class));
+				return new ConversationPage(this.getDriver(), this.getWait());
 			}
 		} else {
 			for (WebElement contact : this.contactListEntries) {
 				if (contact.getText().equals(conversationName)) {
 					DriverUtils.waitUntilElementClickable(driver, contact);
 					contact.click();
-					return new ConversationPage(
-							CommonUtils
-									.getWebAppAppiumUrlFromConfig(ContactListPage.class),
-							CommonUtils
-									.getWebAppApplicationPathFromConfig(ContactListPage.class));
+					return new ConversationPage(this.getDriver(),
+							this.getWait());
 				}
 			}
 		}
@@ -206,25 +206,16 @@ public class ContactListPage extends WebPage {
 	public PendingConnectionsPage openConnectionRequestsList(String listAlias)
 			throws Exception {
 		openConversation(listAlias);
-		return new PendingConnectionsPage(
-				CommonUtils.getWebAppAppiumUrlFromConfig(ContactListPage.class),
-				CommonUtils
-						.getWebAppApplicationPathFromConfig(ContactListPage.class));
+		return new PendingConnectionsPage(this.getDriver(), this.getWait());
 	}
 
 	public SelfProfilePage openSelfProfile() throws Exception {
 		selfName.click();
-		return new SelfProfilePage(
-				CommonUtils.getWebAppAppiumUrlFromConfig(ContactListPage.class),
-				CommonUtils
-						.getWebAppApplicationPathFromConfig(ContactListPage.class));
+		return new SelfProfilePage(this.getDriver(), this.getWait());
 	}
 
 	public PeoplePickerPage openPeoplePicker() throws Exception {
 		openPeoplePickerButton.click();
-		return new PeoplePickerPage(
-				CommonUtils.getWebAppAppiumUrlFromConfig(ContactListPage.class),
-				CommonUtils
-						.getWebAppApplicationPathFromConfig(ContactListPage.class));
+		return new PeoplePickerPage(this.getDriver(), this.getWait());
 	}
 }

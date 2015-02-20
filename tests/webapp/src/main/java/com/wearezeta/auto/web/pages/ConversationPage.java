@@ -9,8 +9,10 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
@@ -47,15 +49,8 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.ConversationPage.classPingMessage)
 	private WebElement pingMessage;
 
-	private String url;
-	private String path;
-
-	public ConversationPage(String URL, String path) throws Exception {
-
-		super(URL, path);
-
-		this.url = URL;
-		this.path = path;
+	public ConversationPage(ZetaWebAppDriver driver, WebDriverWait wait) throws Exception {
+		super(driver, wait);
 	}
 
 	public void writeNewMessage(String message) {
@@ -66,7 +61,7 @@ public class ConversationPage extends WebPage {
 		conversationInput.sendKeys(Keys.ENTER);
 	}
 
-	public boolean isActionMessageSent(String message) {
+	public boolean isActionMessageSent(String message) throws Exception {
 		boolean isSend = false;
 		String xpath = String.format(
 				WebAppLocators.ConversationPage.xpathActionMessageEntry,
@@ -79,7 +74,7 @@ public class ConversationPage extends WebPage {
 		return isSend;
 	}
 
-	public boolean isMessageSent(String message) {
+	public boolean isMessageSent(String message) throws Exception {
 		boolean isSend = false;
 		String xpath = String
 				.format(WebAppLocators.ConversationPage.xpathFormatSpecificTextMessageEntry,
@@ -96,15 +91,15 @@ public class ConversationPage extends WebPage {
 		DriverUtils.waitUntilElementClickable(driver, showParticipants);
 		showParticipants.click();
 		if (isGroup) {
-			return new ParticipantsPopupPage(url, path);
+			return new ParticipantsPopupPage(this.getDriver(), this.getWait());
 		} else {
-			return new UserProfilePopupPage(url, path);
+			return new UserProfilePopupPage(this.getDriver(), this.getWait());
 		}
 	}
 
 	public ParticipantsPopupPage clickShowParticipantsButton() throws Exception {
 		showParticipants.click();
-		return new ParticipantsPopupPage(url, path);
+		return new ParticipantsPopupPage(this.getDriver(), this.getWait());
 	}
 
 	public void sendPicture(String pictureName, boolean isGroup)
@@ -153,7 +148,7 @@ public class ConversationPage extends WebPage {
 		}
 	}
 
-	public boolean isPictureSent(String pictureName) {
+	public boolean isPictureSent(String pictureName) throws Exception {
 		@SuppressWarnings("unused")
 		final String picturePath = WebCommonUtils
 				.getFullPicturePath(pictureName);

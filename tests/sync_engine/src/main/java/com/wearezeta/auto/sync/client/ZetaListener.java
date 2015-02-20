@@ -14,10 +14,10 @@ import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.Platform;
+import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
-import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.sync.ExecutionContext;
 
 public class ZetaListener extends Thread {
@@ -124,8 +124,10 @@ public class ZetaListener extends Thread {
 				return dialogPage.getPageSource();
 			case Mac:
 				com.wearezeta.auto.osx.pages.PagesCollection.conversationPage = new com.wearezeta.auto.osx.pages.ConversationPage(
-						OSXExecutionContext.appiumUrl,
-						OSXExecutionContext.wirePath);
+						com.wearezeta.auto.osx.pages.PagesCollection.loginPage
+								.getDriver(),
+						com.wearezeta.auto.osx.pages.PagesCollection.loginPage
+								.getWait());
 				dialogPage = com.wearezeta.auto.osx.pages.PagesCollection.conversationPage;
 				return dialogPage.getPageSource();
 			case iOS:
@@ -194,7 +196,10 @@ public class ZetaListener extends Thread {
 	public void waitForMessageOsx(String message, boolean checkTime) {
 		try {
 			com.wearezeta.auto.osx.pages.PagesCollection.conversationPage = new com.wearezeta.auto.osx.pages.ConversationPage(
-					OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+					com.wearezeta.auto.osx.pages.PagesCollection.loginPage
+							.getDriver(),
+					com.wearezeta.auto.osx.pages.PagesCollection.loginPage
+							.getWait());
 			com.wearezeta.auto.osx.pages.ConversationPage conversationPage = com.wearezeta.auto.osx.pages.PagesCollection.conversationPage;
 			MessageEntry entry = conversationPage.receiveMessage(message,
 					checkTime);
@@ -256,7 +261,7 @@ public class ZetaListener extends Thread {
 	}
 
 	public boolean isSessionLost() {
-		return ((ZetaDriver) com.wearezeta.auto.common.BasePage
-				.getDriver(parent.getPlatform())).isSessionLost();
+		return ((ZetaDriver) PlatformDrivers.getInstance().getDriver(
+				parent.getPlatform())).isSessionLost();
 	}
 }

@@ -46,7 +46,7 @@ public class GroupChatInfoPageSteps {
 
 	@When("^I see the correct number of participants in the title (.*)$")
 	public void IVerifyParticipantNumber(String realNumberOfParticipants)
-			throws IOException {
+			throws Exception {
 		Assert.assertTrue(PagesCollection.groupChatInfoPage
 				.isNumberOfParticipants(Integer
 						.parseInt(realNumberOfParticipants)));

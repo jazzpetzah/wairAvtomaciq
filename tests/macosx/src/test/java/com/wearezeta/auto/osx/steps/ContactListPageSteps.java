@@ -12,7 +12,6 @@ import com.wearezeta.auto.common.misc.StringParser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ConversationPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
@@ -35,7 +34,8 @@ public class ContactListPageSteps {
 		PagesCollection.loginPage.sendProblemReportIfFound();
 		PagesCollection.contactListPage.pressLaterButton();
 		PagesCollection.peoplePickerPage = new PeoplePickerPage(
-				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+				PagesCollection.loginPage.getDriver(),
+				PagesCollection.loginPage.getWait());
 		if (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
 			log.debug("People picker appears. Closing it.");
 			PagesCollection.peoplePickerPage.closePeoplePicker();
@@ -132,21 +132,24 @@ public class ContactListPageSteps {
 	public void GivenIOpenConversationWith(String contact) throws Exception {
 		clickOnContactListEntry(contact, false);
 		PagesCollection.conversationPage = new ConversationPage(
-				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+				PagesCollection.loginPage.getDriver(),
+				PagesCollection.loginPage.getWait());
 	}
 
 	@Given("I go to user (.*) profile")
 	public void GivenIGoToUserProfile(String user) throws Exception {
 		clickOnContactListEntry(user, true);
 		PagesCollection.userProfilePage = new UserProfilePage(
-				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+				PagesCollection.loginPage.getDriver(),
+				PagesCollection.loginPage.getWait());
 	}
 
 	@When("I open People Picker from contact list")
 	public void WhenIOpenPeoplePickerFromContactList() throws Exception {
 		PagesCollection.contactListPage.openPeoplePicker();
 		PagesCollection.peoplePickerPage = new PeoplePickerPage(
-				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
+				PagesCollection.loginPage.getDriver(),
+				PagesCollection.loginPage.getWait());
 	}
 
 	@When("I change mute state of conversation with (.*)")
