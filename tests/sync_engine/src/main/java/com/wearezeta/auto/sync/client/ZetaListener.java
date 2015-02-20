@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.Platform;
+import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
@@ -256,7 +257,7 @@ public class ZetaListener extends Thread {
 	}
 
 	public boolean isSessionLost() {
-		return ((ZetaDriver) com.wearezeta.auto.common.BasePage
-				.getDriver(parent.getPlatform())).isSessionLost();
+		return ((ZetaDriver) PlatformDrivers.getInstance().getDriver(
+				parent.getPlatform())).isSessionLost();
 	}
 }

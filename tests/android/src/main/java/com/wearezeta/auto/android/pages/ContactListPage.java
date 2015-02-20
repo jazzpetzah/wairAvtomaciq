@@ -13,10 +13,12 @@ import com.wearezeta.auto.common.locators.ZetaHow;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
+import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
@@ -70,21 +72,18 @@ public class ContactListPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idSearchHintClose")
 	private WebElement closeHintBtn;
 
-	private String url;
-	private String path;
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
 			.getSimpleName());
 
-	public ContactListPage(String URL, String path) throws Exception {
-		super(URL, path);
-		this.url = URL;
-		this.path = path;
+	public ContactListPage(ZetaAndroidDriver driver, WebDriverWait wait)
+			throws Exception {
+		super(driver, wait);
 	}
 
 	public AndroidPage tapOnName(String name) throws Exception {
 		AndroidPage page = null;
 		WebElement el = findInContactList(name, 5);
-		wait.until(ExpectedConditions.visibilityOf(el));
+		this.getWait().until(ExpectedConditions.visibilityOf(el));
 		el.click();
 		refreshUITree();
 		page = getPages();
@@ -105,7 +104,7 @@ public class ContactListPage extends AndroidPage {
 		AndroidPage page = null;
 		refreshUITree();
 		contacts.get(id).click();
-		page = new DialogPage(url, path);
+		page = new DialogPage(this.getDriver(), this.getWait());
 		return page;
 	}
 
@@ -136,7 +135,7 @@ public class ContactListPage extends AndroidPage {
 			} else {
 				if (cyclesNumber > 0) {
 					cyclesNumber--;
-					DriverUtils.swipeUp(driver, mainControl, 500);
+					DriverUtils.swipeUp(this.getDriver(), mainControl, 500);
 					contact = findInContactList(name, cyclesNumber);
 				}
 			}
@@ -147,7 +146,7 @@ public class ContactListPage extends AndroidPage {
 	public void swipeRightOnContact(int time, String contact) throws Exception {
 		WebElement el = driver.findElementByXPath(String.format(
 				AndroidLocators.ContactListPage.xpathContactFrame, contact));
-		DriverUtils.swipeRight(driver, el, time);
+		DriverUtils.swipeRight(this.getDriver(), el, time);
 	}
 
 	public AndroidPage swipeOnArchiveUnarchive(String contact) throws Exception {
@@ -155,13 +154,13 @@ public class ContactListPage extends AndroidPage {
 				.findElementByXPath(String
 						.format(AndroidLocators.ContactListPage.xpathContactListArchiveUnarchive,
 								contact));
-		DriverUtils.swipeRight(driver, el, 1000);
+		DriverUtils.swipeRight(this.getDriver(), el, 1000);
 		AndroidPage page = null;
 		refreshUITree();
 		if (!isVisible(cursorInput)) {
-			page = new ContactListPage(url, path);
+			page = new ContactListPage(this.getDriver(), this.getWait());
 		} else if (isVisible(cursorInput)) {
-			page = new DialogPage(url, path);
+			page = new DialogPage(this.getDriver(), this.getWait());
 		}
 		return page;
 	}
@@ -174,7 +173,8 @@ public class ContactListPage extends AndroidPage {
 	public boolean isHintVisible() throws InterruptedException, IOException {
 		refreshUITree();// TODO workaround
 		try {
-			wait.until(ExpectedConditions.elementToBeClickable(closeHintBtn));
+			this.getWait().until(
+					ExpectedConditions.elementToBeClickable(closeHintBtn));
 		} catch (NoSuchElementException e) {
 			return false;
 		} catch (TimeoutException e) {
@@ -190,7 +190,7 @@ public class ContactListPage extends AndroidPage {
 	@Override
 	public AndroidPage swipeDown(int time) throws Exception {
 		refreshUITree();
-		DriverUtils.swipeDown(driver, content, time);
+		DriverUtils.swipeDown(this.getDriver(), content, time);
 		Thread.sleep(2000);
 		if (!isVisible(pickerClearBtn) && isVisible(openStartUIButton)) {
 			refreshUITree();
@@ -209,7 +209,7 @@ public class ContactListPage extends AndroidPage {
 		AndroidPage page = null;
 		switch (direction) {
 		case DOWN: {
-			page = new PeoplePickerPage(url, path);
+			page = new PeoplePickerPage(this.getDriver(), this.getWait());
 			break;
 		}
 		case UP: {
@@ -248,7 +248,8 @@ public class ContactListPage extends AndroidPage {
 		DriverUtils.waitUntilElementDissapear(driver,
 				By.id(AndroidLocators.ContactListPage.idSimpleDialogPageText));
 		// TODO: we need this as sometimes we see people picker after login
-		PagesCollection.peoplePickerPage = new PeoplePickerPage(url, path);
+		PagesCollection.peoplePickerPage = new PeoplePickerPage(
+				this.getDriver(), this.getWait());
 		return this;
 	}
 
@@ -259,11 +260,11 @@ public class ContactListPage extends AndroidPage {
 	private AndroidPage getPages() throws Exception {
 		AndroidPage page = null;
 		if (isVisible(connectToHeader)) {
-			page = new ConnectToPage(url, path);
+			page = new ConnectToPage(this.getDriver(), this.getWait());
 		} else if (isVisible(selfUserName)) {
-			page = new PersonalInfoPage(url, path);
+			page = new PersonalInfoPage(this.getDriver(), this.getWait());
 		} else if (isVisible(cursorInput)) {
-			page = new DialogPage(url, path);
+			page = new DialogPage(this.getDriver(), this.getWait());
 		}
 
 		return page;

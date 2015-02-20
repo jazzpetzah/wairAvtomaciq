@@ -1,12 +1,22 @@
 package com.wearezeta.auto.android;
 
+import java.util.logging.Level;
+
+import org.openqa.selenium.logging.LoggingPreferences;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.LoginPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
+import com.wearezeta.auto.common.driver.PlatformDrivers;
+import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
@@ -26,66 +36,77 @@ public class CommonAndroidSteps {
 
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+	private static final Platform CURRENT_PLATFORM = Platform.Android;
 
 	public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
-	private String path;
+
+	private static String getUrl() throws Exception {
+		return CommonUtils
+				.getAndroidAppiumUrlFromConfig(CommonAndroidSteps.class);
+	}
+
+	private static String getPath() throws Exception {
+		return CommonUtils
+				.getAndroidApplicationPathFromConfig(CommonAndroidSteps.class);
+	}
+
+	private ZetaAndroidDriver resetAndroidDriver(String url, String path,
+			boolean isUnicode) throws Exception {
+		final DesiredCapabilities capabilities = new DesiredCapabilities();
+		LoggingPreferences object = new LoggingPreferences();
+		object.enable("logcat", Level.ALL);
+		capabilities.setCapability(CapabilityType.LOGGING_PREFS, object);
+		capabilities.setCapability("platformName", Platform.Android.getName());
+		capabilities.setCapability("deviceName", CommonUtils
+				.getAndroidDeviceNameFromConfig(CommonAndroidSteps.class));
+		capabilities.setCapability("app", path);
+		capabilities.setCapability("appPackage", CommonUtils
+				.getAndroidPackageFromConfig(CommonAndroidSteps.class));
+		capabilities.setCapability("appActivity", CommonUtils
+				.getAndroidActivityFromConfig(CommonAndroidSteps.class));
+		capabilities.setCapability("appWaitActivity", CommonUtils
+				.getAndroidActivityFromConfig(CommonAndroidSteps.class));
+		if (isUnicode) {
+			capabilities.setCapability("unicodeKeyboard", true);
+			capabilities.setCapability("resetKeyboard", true);
+		}
+
+		return (ZetaAndroidDriver) PlatformDrivers.getInstance().resetDriver(
+				url, capabilities);
+	}
+
+	private void initFirstPage(boolean isUnicode) throws Exception {
+		final ZetaAndroidDriver driver = resetAndroidDriver(getUrl(),
+				getPath(), isUnicode);
+		final WebDriverWait wait = PlatformDrivers.getInstance()
+				.getExplicitWait(Platform.Android);
+		if (PagesCollection.loginPage == null) {
+			PagesCollection.loginPage = new LoginPage(driver, wait);
+			ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
+			PagesCollection.loginPage.dismissUpdate();
+		}
+	}
 
 	@Before("@performance")
 	public void setUpPerformance() throws Exception {
 		try {
 			AndroidCommonUtils.disableHints();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		path = CommonUtils
-				.getAndroidApplicationPathFromConfig(CommonAndroidSteps.class);
-		if (PagesCollection.loginPage == null) {
-			PagesCollection.loginPage = new LoginPage(
-					CommonUtils
-							.getAndroidAppiumUrlFromConfig(CommonAndroidSteps.class),
-					path);
-			ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
-			PagesCollection.loginPage.dismissUpdate();
-		}
+		initFirstPage(false);
 	}
 
 	@Before({ "~@unicode", "~@performance" })
 	public void setUp() throws Exception {
-
 		commonBefore();
-
-		if (PagesCollection.loginPage == null) {
-			PagesCollection.loginPage = new LoginPage(
-					CommonUtils
-							.getAndroidAppiumUrlFromConfig(CommonAndroidSteps.class),
-					path);
-			ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
-			PagesCollection.loginPage.dismissUpdate();
-		}
+		initFirstPage(false);
 	}
 
 	@Before({ "@unicode", "~@performance" })
 	public void setUpUnicode() throws Exception {
-
 		commonBefore();
-
-		if (PagesCollection.loginPage == null) {
-			PagesCollection.loginPage = new LoginPage(
-					CommonUtils
-							.getAndroidAppiumUrlFromConfig(CommonAndroidSteps.class),
-					path, true);
-			ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
-			PagesCollection.loginPage.dismissUpdate();
-		}
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		PagesCollection.loginPage.close();
-		AndroidPage.clearPagesCollection();
-
-		commonSteps.getUserManager().resetUsers();
+		initFirstPage(true);
 	}
 
 	@When("^I press back button$")
@@ -113,9 +134,6 @@ public class CommonAndroidSteps {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		path = CommonUtils
-				.getAndroidApplicationPathFromConfig(CommonAndroidSteps.class);
 
 		ZetaFormatter.setBuildNumber(AndroidCommonUtils
 				.readClientVersionFromAdb());
@@ -244,7 +262,7 @@ public class CommonAndroidSteps {
 		commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
 				dstUserNameAlias, CommonUtils.generateRandomString(10));
 	}
-	
+
 	@Given("^There \\w+ (\\d+) user[s]*$")
 	public void ThereAreNUsers(int count) throws Exception {
 		commonSteps.ThereAreNUsers(count);
@@ -274,12 +292,13 @@ public class CommonAndroidSteps {
 		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query,
 				timeout);
 	}
-	
+
 	@When("^Contact (.*) sends image (.*) to (.*) conversation (.*)")
 	public void ContactSendImageToConversation(String imageSenderUserNameAlias,
 			String imageFileName, String conversationType,
 			String dstConversationName) throws Exception {
-		String imagePath = CommonUtils.getImagesPath(CommonAndroidSteps.class) + imageFileName;
+		String imagePath = CommonUtils.getImagesPath(CommonAndroidSteps.class)
+				+ imageFileName;
 		Boolean isGroup = null;
 		if (conversationType.equals("single user")) {
 			isGroup = false;
@@ -292,5 +311,26 @@ public class CommonAndroidSteps {
 		}
 		commonSteps.UserSendsImageToConversation(imageSenderUserNameAlias,
 				imagePath, dstConversationName, isGroup);
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		PagesCollection.loginPage.close();
+		AndroidPage.clearPagesCollection();
+
+		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+			PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+		}
+
+		commonSteps.getUserManager().resetUsers();
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+			PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+		}
+
+		super.finalize();
 	}
 }

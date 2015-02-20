@@ -5,8 +5,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
@@ -22,14 +24,9 @@ public class InvitationCodePage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.InvitationCodePage.xpathProceedButton)
 	private WebElement proceedButton;
 
-	private String url;
-	private String path;
-
-	public InvitationCodePage(String url, String path) throws Exception {
-		super(url, path, true);
-
-		this.url = url;
-		this.path = path;
+	public InvitationCodePage(ZetaWebAppDriver driver, WebDriverWait wait,
+			String url) throws Exception {
+		super(driver, wait, url);
 	}
 
 	public boolean isVisible() throws Exception {
@@ -44,6 +41,6 @@ public class InvitationCodePage extends WebPage {
 
 	public LoginPage proceed() throws Exception {
 		proceedButton.click();
-		return new LoginPage(url, path);
+		return new LoginPage(this.getDriver(), this.getWait());
 	}
 }

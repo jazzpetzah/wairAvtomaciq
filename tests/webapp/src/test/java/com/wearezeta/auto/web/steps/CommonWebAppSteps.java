@@ -1,11 +1,18 @@
 package com.wearezeta.auto.web.steps;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.LocalFileDetector;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.common.io.Files;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
+import com.wearezeta.auto.common.driver.PlatformDrivers;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.common.WebAppConstants;
@@ -26,6 +33,8 @@ public class CommonWebAppSteps {
 	public static final Logger log = ZetaLogger.getLog(CommonWebAppSteps.class
 			.getSimpleName());
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+	
+	private static final Platform CURRENT_PLATFORM = Platform.Web;
 
 	static {
 		System.setProperty("java.awt.headless", "false");
@@ -36,29 +45,67 @@ public class CommonWebAppSteps {
 				"warn");
 	}
 
-	private void resetEnvironment() throws Exception {
-		if (PagesCollection.invitationCodePage != null) {
-			PagesCollection.invitationCodePage.close();
+	private static String getBrowser() throws Exception {
+		return WebCommonUtils
+				.getWebAppBrowserNameFromConfig(CommonWebAppSteps.class);
+	}
+
+	private ZetaWebAppDriver resetWebAppDriver(String url) throws Exception {
+		final String browser = getBrowser();
+		final DesiredCapabilities capabilities;
+
+		switch (browser) {
+		case "chrome":
+			capabilities = DesiredCapabilities.chrome();
+			break;
+		case "firefox":
+			capabilities = DesiredCapabilities.firefox();
+			break;
+		case "safari":
+			capabilities = DesiredCapabilities.safari();
+			break;
+		case "ie":
+			capabilities = DesiredCapabilities.internetExplorer();
+			break;
+		default:
+			throw new NotImplementedException(
+					"Incorrect browser name is set - "
+							+ browser
+							+ ". Please choose one of the following: chrome | firefox | safari | ie");
 		}
-
-		WebPage.clearPagesCollection();
-
-		commonSteps.getUserManager().resetUsers();
+		final String webPlatformName = WebCommonUtils
+				.getPlatformNameFromConfig(WebPage.class);
+		if (webPlatformName.length() > 0) {
+			// Use undocumented grid property to match platforms
+			// https://groups.google.com/forum/#!topic/selenium-users/PRsEBcbpNlM
+			capabilities.setCapability("applicationName", webPlatformName);
+		}
+		capabilities.setCapability("platformName", Platform.Web.getName());
+		final ZetaWebAppDriver webDriver = (ZetaWebAppDriver) PlatformDrivers
+				.getInstance().resetDriver(url, capabilities);
+		webDriver.setFileDetector(new LocalFileDetector());
+		return webDriver;
 	}
 
 	@Before("~@performance")
 	public void setUp() throws Exception {
-		// @After step is not executed in case of critical error or
-		// in case there are failures in before step
-		resetEnvironment();
-
-		String url = CommonUtils
+		final String url = CommonUtils
 				.getWebAppAppiumUrlFromConfig(CommonWebAppSteps.class);
-		String path = CommonUtils
+		final String path = CommonUtils
 				.getWebAppApplicationPathFromConfig(CommonWebAppSteps.class);
+		final ZetaWebAppDriver webDriver = resetWebAppDriver(url);
+		final WebDriverWait wait = PlatformDrivers.getInstance()
+				.getExplicitWait(Platform.Web);
+		try {
+			if (!getBrowser().equals("safari")) {
+				webDriver.manage().window().maximize();
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 
-		PagesCollection.invitationCodePage = new InvitationCodePage(url, path);
-
+		PagesCollection.invitationCodePage = new InvitationCodePage(webDriver,
+				wait, path);
 		ZetaFormatter.setDriver(PagesCollection.invitationCodePage.getDriver());
 
 		// put AppleScript for execution to Selenium node
@@ -231,18 +278,23 @@ public class CommonWebAppSteps {
 
 	@After
 	public void tearDown() throws Exception {
-		resetEnvironment();
+		if (PagesCollection.invitationCodePage != null) {
+			PagesCollection.invitationCodePage.close();
+		}
+
+		WebPage.clearPagesCollection();
+
+		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+			PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+		}
+		
+		commonSteps.getUserManager().resetUsers();
 	}
 
 	@Override
 	protected void finalize() throws Throwable {
-		// Close the session in any case 
-		try {
-			if (PagesCollection.invitationCodePage != null) {
-				PagesCollection.invitationCodePage.close();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+			PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
 		}
 		super.finalize();
 	}

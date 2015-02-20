@@ -5,8 +5,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
@@ -21,15 +23,9 @@ public class PeoplePickerPage extends WebPage {
 	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.PeoplePickerPage.classNameCreateConversationButton)
 	private WebElement createConversationButton;
 
-	private String url;
-	@SuppressWarnings("unused")
-	private String path;
-
-	public PeoplePickerPage(String URL, String path) throws Exception {
-		super(URL, path);
-
-		this.url = URL;
-		this.path = path;
+	public PeoplePickerPage(ZetaWebAppDriver driver, WebDriverWait wait)
+			throws Exception {
+		super(driver, wait);
 	}
 
 	public void searchForUser(String searchText) throws Exception {
@@ -66,7 +62,7 @@ public class PeoplePickerPage extends WebPage {
 	public ConnectToPopupPage clickNotConnectedUserName(String name)
 			throws Exception {
 		clickNotConnectedUser(name);
-		return new ConnectToPopupPage(url, name);
+		return new ConnectToPopupPage(this.getDriver(), this.getWait());
 	}
 
 	public boolean isUserFound(String name) {

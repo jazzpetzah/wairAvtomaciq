@@ -36,7 +36,7 @@ public class SelfProfilePageSteps {
 	 * 
 	 * @param name
 	 *            the name of menu item
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@And("^I select (.*) menu item on self profile page$")
 	public void ISelectGearMenuItem(String name) throws Exception {
@@ -54,10 +54,8 @@ public class SelfProfilePageSteps {
 	@Then("^I see Settings dialog$")
 	public void ISeeSetingsDialog() throws Exception {
 		PagesCollection.settingsPage = new SettingsPage(
-				CommonUtils
-						.getWebAppAppiumUrlFromConfig(SelfProfilePageSteps.class),
-				CommonUtils
-						.getWebAppApplicationPathFromConfig(SelfProfilePageSteps.class));
+				PagesCollection.loginPage.getDriver(),
+				PagesCollection.loginPage.getWait());
 		Assert.assertTrue(PagesCollection.settingsPage.isVisible());
 	}
 
@@ -68,11 +66,10 @@ public class SelfProfilePageSteps {
 	 * 
 	 * @param name
 	 *            name of the user
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@And("I see user name on self profile page (.*)")
-	public void ISeeUserNameOnSelfProfilePage(String name)
-			throws Exception {
+	public void ISeeUserNameOnSelfProfilePage(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		String actualName = PagesCollection.selfProfilePage.getUserName();
 		Assert.assertEquals(name, actualName);

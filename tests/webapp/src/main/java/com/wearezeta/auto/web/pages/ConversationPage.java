@@ -9,8 +9,10 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
@@ -41,15 +43,8 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathSendImageInput)
 	private WebElement imagePathInput;
 
-	private String url;
-	private String path;
-
-	public ConversationPage(String URL, String path) throws Exception {
-
-		super(URL, path);
-
-		this.url = URL;
-		this.path = path;
+	public ConversationPage(ZetaWebAppDriver driver, WebDriverWait wait) throws Exception {
+		super(driver, wait);
 	}
 
 	public void writeNewMessage(String message) {
@@ -89,15 +84,15 @@ public class ConversationPage extends WebPage {
 	public WebPage clickShowUserProfileButton(boolean isGroup) throws Exception {
 		showParticipants.click();
 		if (isGroup) {
-			return new ParticipantsPopupPage(url, path);
+			return new ParticipantsPopupPage(this.getDriver(), this.getWait());
 		} else {
-			return new UserProfilePopupPage(url, path);
+			return new UserProfilePopupPage(this.getDriver(), this.getWait());
 		}
 	}
 
 	public ParticipantsPopupPage clickShowParticipantsButton() throws Exception {
 		showParticipants.click();
-		return new ParticipantsPopupPage(url, path);
+		return new ParticipantsPopupPage(this.getDriver(), this.getWait());
 	}
 
 	public void sendPicture(String pictureName, boolean isGroup)

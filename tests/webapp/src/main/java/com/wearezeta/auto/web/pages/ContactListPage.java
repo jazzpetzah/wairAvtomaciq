@@ -10,9 +10,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
@@ -33,8 +34,9 @@ public class ContactListPage extends WebPage {
 	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.ContactListPage.classNameOpenPeoplePickerButton)
 	private WebElement openPeoplePickerButton;
 
-	public ContactListPage(String URL, String path) throws Exception {
-		super(URL, path);
+	public ContactListPage(ZetaWebAppDriver driver, WebDriverWait wait)
+			throws Exception {
+		super(driver, wait);
 	}
 
 	private WebElement retrieveNoNameGroupContact(String name) {
@@ -92,7 +94,7 @@ public class ContactListPage extends WebPage {
 	}
 
 	public void openArchive() {
-		wait.until(ExpectedConditions.elementToBeClickable(archive));
+		this.getWait().until(ExpectedConditions.elementToBeClickable(archive));
 		archive.click();
 	}
 
@@ -124,7 +126,8 @@ public class ContactListPage extends WebPage {
 		}
 	}
 
-	public boolean isConversationMuted(String conversationName) throws Exception {
+	public boolean isConversationMuted(String conversationName)
+			throws Exception {
 		// moving focus from contact - to now show ... button
 		try {
 			DriverUtils.moveMouserOver(driver, selfName);
@@ -146,7 +149,8 @@ public class ContactListPage extends WebPage {
 		return result;
 	}
 
-	public void clickActionsButtonForContact(String conversationName) throws Exception {
+	public void clickActionsButtonForContact(String conversationName)
+			throws Exception {
 
 		WebElement contact = getContactWithName(conversationName);
 		try {
@@ -171,22 +175,15 @@ public class ContactListPage extends WebPage {
 			WebElement contact = retrieveNoNameGroupContact(conversationName);
 			if (contact != null) {
 				contact.click();
-				return new ConversationPage(
-						CommonUtils
-								.getWebAppAppiumUrlFromConfig(ContactListPage.class),
-						CommonUtils
-								.getWebAppApplicationPathFromConfig(ContactListPage.class));
+				return new ConversationPage(this.getDriver(), this.getWait());
 			}
 		} else {
 			for (WebElement contact : this.contactListEntries) {
 				if (contact.getText().equals(conversationName)) {
 					DriverUtils.waitUntilElementClickable(driver, contact);
 					contact.click();
-					return new ConversationPage(
-							CommonUtils
-									.getWebAppAppiumUrlFromConfig(ContactListPage.class),
-							CommonUtils
-									.getWebAppApplicationPathFromConfig(ContactListPage.class));
+					return new ConversationPage(this.getDriver(),
+							this.getWait());
 				}
 			}
 		}
@@ -198,25 +195,16 @@ public class ContactListPage extends WebPage {
 	public PendingConnectionsPage openConnectionRequestsList(String listAlias)
 			throws Exception {
 		openConversation(listAlias);
-		return new PendingConnectionsPage(
-				CommonUtils.getWebAppAppiumUrlFromConfig(ContactListPage.class),
-				CommonUtils
-						.getWebAppApplicationPathFromConfig(ContactListPage.class));
+		return new PendingConnectionsPage(this.getDriver(), this.getWait());
 	}
 
 	public SelfProfilePage openSelfProfile() throws Exception {
 		selfName.click();
-		return new SelfProfilePage(
-				CommonUtils.getWebAppAppiumUrlFromConfig(ContactListPage.class),
-				CommonUtils
-						.getWebAppApplicationPathFromConfig(ContactListPage.class));
+		return new SelfProfilePage(this.getDriver(), this.getWait());
 	}
 
 	public PeoplePickerPage openPeoplePicker() throws Exception {
 		openPeoplePickerButton.click();
-		return new PeoplePickerPage(
-				CommonUtils.getWebAppAppiumUrlFromConfig(ContactListPage.class),
-				CommonUtils
-						.getWebAppApplicationPathFromConfig(ContactListPage.class));
+		return new PeoplePickerPage(this.getDriver(), this.getWait());
 	}
 }

@@ -11,6 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.CommonUtils;
@@ -64,31 +65,14 @@ public class LoginPage extends AndroidPage {
 	@FindBy(how = How.ID, using = AndroidLocators.CommonLocators.idDismissUpdateButton)
 	private WebElement dismissUpdateButton;
 
-	private String url;
-	private String path;
 	private static final String LOGIN_ERROR_TEXT = "WRONG ADDRESS OR PASSWORD.\nPLEASE TRY AGAIN.";
 
-	public LoginPage(String URL, String path) throws Exception {
-
-		super(URL, path);
-		this.url = URL;
-		this.path = path;
-	}
-
-	public LoginPage(String URL, String path, boolean isUnicode)
+	public LoginPage(ZetaAndroidDriver driver, WebDriverWait wait)
 			throws Exception {
-
-		super(URL, path, isUnicode);
-		this.url = URL;
-		this.path = path;
-	}
-
-	public ZetaAndroidDriver getDriver() {
-		return driver;
+		super(driver, wait);
 	}
 
 	public Boolean isVisible() {
-
 		return welcomeSlogan != null;
 	}
 
@@ -102,21 +86,22 @@ public class LoginPage extends AndroidPage {
 
 	public LoginPage SignIn() throws IOException {
 		refreshUITree();
-		wait.until(ExpectedConditions.visibilityOf(signInButton));
+		this.getWait().until(ExpectedConditions.visibilityOf(signInButton));
 		signInButton.click();
 		return this;
 	}
 
 	public SettingsPage forgotPassword() throws Exception {
 		refreshUITree();
-		wait.until(ExpectedConditions.visibilityOf(forgotPasswordButton));
+		this.getWait().until(
+				ExpectedConditions.visibilityOf(forgotPasswordButton));
 		forgotPasswordButton.click();
-		return new SettingsPage(url, path);
+		return new SettingsPage(this.getDriver(), this.getWait());
 	}
 
 	public ContactListPage LogIn() throws Exception {
 		confirmSignInButton.click();
-		return new ContactListPage(url, path);
+		return new ContactListPage(this.getDriver(), this.getWait());
 	}
 
 	public void setLogin(String login) throws Exception {
@@ -160,7 +145,7 @@ public class LoginPage extends AndroidPage {
 			throws NumberFormatException, Exception {
 		refreshUITree();
 		try {
-			wait.until(ExpectedConditions.visibilityOf(yourUser));
+			this.getWait().until(ExpectedConditions.visibilityOf(yourUser));
 		} catch (Exception ex) {
 			refreshUITree();
 			if (isVisible(pickerClearBtn)) {
@@ -174,13 +159,15 @@ public class LoginPage extends AndroidPage {
 		}
 
 		return DriverUtils.waitForElementWithTextByXPath(
-				AndroidLocators.ContactListPage.xpathContacts, contact, driver);
+				AndroidLocators.ContactListPage.xpathContacts, contact,
+				this.getDriver());
 	}
 
 	public Boolean isWelcomeButtonsExist() {
 		refreshUITree();
-		wait.until(ExpectedConditions
-				.visibilityOfAllElements(welcomeSloganContainer));
+		this.getWait().until(
+				ExpectedConditions
+						.visibilityOfAllElements(welcomeSloganContainer));
 		return welcomeSloganContainer.size() > 0;
 	}
 
@@ -195,7 +182,7 @@ public class LoginPage extends AndroidPage {
 		DriverUtils
 				.waitUntilElementDissapear(driver, AndroidLocators.LoginPage
 						.getByForLoginPageRegistrationButton());
-		return new RegistrationPage(url, path);
+		return new RegistrationPage(this.getDriver(), this.getWait());
 	}
 
 	public void dismissUpdate() {

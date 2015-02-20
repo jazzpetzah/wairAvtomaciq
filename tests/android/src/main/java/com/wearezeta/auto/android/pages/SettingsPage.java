@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import android.view.KeyEvent;
 
@@ -18,24 +19,24 @@ public class SettingsPage extends AndroidPage {
 
 	@FindBy(how = How.XPATH, using = AndroidLocators.SettingsPage.xpathSettingPageTitle)
 	private WebElement settingsTitle;
-	
-	@FindBy(xpath=AndroidLocators.Chrome.ForgotPasswordPage.xpathEditField)
+
+	@FindBy(xpath = AndroidLocators.Chrome.ForgotPasswordPage.xpathEditField)
 	private WebElement editField;
-	
-	@FindBy(xpath=AndroidLocators.Chrome.ForgotPasswordPage.xpathChangePasswordButton)
+
+	@FindBy(xpath = AndroidLocators.Chrome.ForgotPasswordPage.xpathChangePasswordButton)
 	private WebElement changePassswordButton;
-	
-	@FindBy(xpath=AndroidLocators.Chrome.xpathChrome)
+
+	@FindBy(xpath = AndroidLocators.Chrome.xpathChrome)
 	private WebElement chromeBrowser;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.Chrome.CLASS_NAME, locatorKey = "idUrlBar")
 	private WebElement urlBar;
-	
+
 	private static final String SERVER_URL = "https://staging-website.wire.com/forgot/";
-	
-	public SettingsPage(String URL, String path) throws Exception {
-		super(URL, path);
-		// TODO Auto-generated constructor stub
+
+	public SettingsPage(ZetaAndroidDriver driver, WebDriverWait wait)
+			throws Exception {
+		super(driver, wait);
 	}
 
 	@Override
@@ -44,50 +45,49 @@ public class SettingsPage extends AndroidPage {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	public boolean isSettingsPageVisible() {
-		
+
 		return settingsTitle.isDisplayed();
 	}
-	
-	public void requestResetPassword(String email) throws Exception{
+
+	public void requestResetPassword(String email) throws Exception {
 		refreshUITree();
-		wait.until(ExpectedConditions.visibilityOf(editField));
-		if(CommonUtils.getAndroidApiLvl(RegistrationPage.class) < 43){
+		this.getWait().until(ExpectedConditions.visibilityOf(editField));
+		if (CommonUtils.getAndroidApiLvl(RegistrationPage.class) < 43) {
 			int ln = urlBar.getText().length();
 			urlBar.click();
-			for(int i = 0; i < ln; i++){
-				driver.sendKeyEvent(KeyEvent.KEYCODE_DEL);
+			for (int i = 0; i < ln; i++) {
+				this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_DEL);
 			}
-		}
-		else{
+		} else {
 			urlBar.clear();
 		}
 		urlBar.sendKeys(SERVER_URL);
-		driver.sendKeyEvent(KeyEvent.KEYCODE_ENTER);
-		wait.until(ExpectedConditions.visibilityOf(editField));
+		this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_ENTER);
+		this.getWait().until(ExpectedConditions.visibilityOf(editField));
 		editField.click();
 		editField.sendKeys(email);
-		driver.sendKeyEvent(KeyEvent.KEYCODE_ENTER);
+		this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_ENTER);
 	}
 
-	public PeoplePickerPage resetByLink(String link, String newPass) throws Exception {
+	public PeoplePickerPage resetByLink(String link, String newPass)
+			throws Exception {
 		refreshUITree();
-		if(CommonUtils.getAndroidApiLvl(RegistrationPage.class) < 43){
+		if (CommonUtils.getAndroidApiLvl(RegistrationPage.class) < 43) {
 			int ln = urlBar.getText().length();
 			urlBar.click();
-			for(int i = 0; i < ln; i++){
-				driver.sendKeyEvent(KeyEvent.KEYCODE_DEL);
+			for (int i = 0; i < ln; i++) {
+				this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_DEL);
 			}
-		}
-		else{
+		} else {
 			urlBar.clear();
 		}
 		urlBar.sendKeys(link);
-		driver.sendKeyEvent(KeyEvent.KEYCODE_ENTER);
+		this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_ENTER);
 		editField.click();
 		editField.sendKeys(newPass);
-		driver.sendKeyEvent(KeyEvent.KEYCODE_ENTER);
+		this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_ENTER);
 		return null;
 	}
 

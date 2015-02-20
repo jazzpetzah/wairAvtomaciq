@@ -3,7 +3,6 @@ package com.wearezeta.auto.android.pages;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
 import java.util.List;
-import java.util.logging.Level;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -13,9 +12,6 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.logging.LogEntry;
-import org.openqa.selenium.logging.LoggingPreferences;
-import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -28,10 +24,6 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public abstract class AndroidPage extends BasePage {
-	protected static ZetaAndroidDriver driver;
-	protected static WebDriverWait wait;
-
-	private DesiredCapabilities capabilities = new DesiredCapabilities();
 	private static final Logger log = ZetaLogger.getLog(CommonUtils.class
 			.getSimpleName());
 
@@ -47,55 +39,14 @@ public abstract class AndroidPage extends BasePage {
 	@FindBy(xpath = AndroidLocators.CommonLocators.xpathImage)
 	private List<WebElement> image;
 
-	private String url;
-
-	public AndroidPage(String URL, String path) throws Exception {
-		this(URL, path, false);
+	@Override
+	public ZetaAndroidDriver getDriver() {
+		return (ZetaAndroidDriver) this.driver;
 	}
 
-	public AndroidPage(String URL, String path, boolean isUnicode)
+	public AndroidPage(ZetaAndroidDriver driver, WebDriverWait wait)
 			throws Exception {
-
-		url = URL;
-
-		LoggingPreferences object = new LoggingPreferences();
-		object.enable("logcat", Level.ALL);
-		capabilities.setCapability(CapabilityType.LOGGING_PREFS, object);
-		capabilities.setCapability("platformName", Platform.Android.getName());
-		capabilities.setCapability("deviceName",
-				CommonUtils.getAndroidDeviceNameFromConfig(AndroidPage.class));
-		capabilities.setCapability("app", path);
-		capabilities.setCapability("appPackage",
-				CommonUtils.getAndroidPackageFromConfig(AndroidPage.class));
-		capabilities.setCapability("appActivity",
-				CommonUtils.getAndroidActivityFromConfig(AndroidPage.class));
-		capabilities.setCapability("appWaitActivity",
-				CommonUtils.getAndroidActivityFromConfig(AndroidPage.class));
-
-		if (isUnicode) {
-			initUnicodeDriver();
-		} else {
-			initNoneUnicodeDriver();
-		}
-	}
-
-	private void initUnicodeDriver() throws Exception {
-		capabilities.setCapability("unicodeKeyboard", true);
-		capabilities.setCapability("resetKeyboard", true);
-		super.InitConnection(url, capabilities);
-
-		storeDriverAndWait();
-	}
-
-	private void initNoneUnicodeDriver() throws Exception {
-		super.InitConnection(url, capabilities);
-
-		storeDriverAndWait();
-	}
-
-	private void storeDriverAndWait() {
-		driver = (ZetaAndroidDriver) drivers.get(Platform.Android);
-		wait = waits.get(Platform.Android);
+		super(driver, wait);
 	}
 
 	public void selectPhoto() {
@@ -114,7 +65,7 @@ public abstract class AndroidPage extends BasePage {
 	}
 
 	public void hideKeyboard() {
-		driver.hideKeyboard();
+		this.getDriver().hideKeyboard();
 	}
 
 	public AndroidPage navigateBack() throws Exception {
@@ -123,15 +74,13 @@ public abstract class AndroidPage extends BasePage {
 	}
 
 	public void minimizeApplication() throws InterruptedException {
-
-		driver.sendKeyEvent(3);
+		this.getDriver().sendKeyEvent(3);
 		Thread.sleep(1000);
 	}
 
 	public void restoreApplication() {
-
 		try {
-			driver.runAppInBackground(10);
+			this.getDriver().runAppInBackground(10);
 			Thread.sleep(1000);
 		} catch (WebDriverException ex) {
 			// do nothing, sometimes after restoring the app we have this
@@ -158,19 +107,19 @@ public abstract class AndroidPage extends BasePage {
 
 	@Override
 	public AndroidPage swipeLeft(int time) throws Exception {
-		DriverUtils.swipeLeft(driver, content, time);
+		DriverUtils.swipeLeft(this.getDriver(), content, time);
 		return returnBySwipe(SwipeDirection.LEFT);
 	}
 
 	@Override
 	public AndroidPage swipeRight(int time) throws Exception {
-		DriverUtils.swipeRight(driver, content, time);
+		DriverUtils.swipeRight(this.getDriver(), content, time);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 
 	@Override
 	public AndroidPage swipeUp(int time) throws Exception {
-		DriverUtils.swipeUp(driver, content, time);
+		DriverUtils.swipeUp(this.getDriver(), content, time);
 		return returnBySwipe(SwipeDirection.UP);
 	}
 
@@ -178,9 +127,9 @@ public abstract class AndroidPage extends BasePage {
 		Point coords = content.getLocation();
 		Dimension elementSize = content.getSize();
 		try {
-			driver.swipe(coords.x + elementSize.width / 2, coords.y
-					+ elementSize.height - 300, coords.x + elementSize.width
-					/ 2, coords.y, time);
+			this.getDriver().swipe(coords.x + elementSize.width / 2,
+					coords.y + elementSize.height - 300,
+					coords.x + elementSize.width / 2, coords.y, time);
 		} catch (Exception ex) {
 
 		}
@@ -190,7 +139,7 @@ public abstract class AndroidPage extends BasePage {
 	@Override
 	public AndroidPage swipeDown(int time) throws Exception {
 
-		DriverUtils.swipeDown(driver, content, time);
+		DriverUtils.swipeDown(this.getDriver(), content, time);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
@@ -223,10 +172,10 @@ public abstract class AndroidPage extends BasePage {
 
 	}
 
-	private static void showLogs() throws Exception {
+	private void showLogs() throws Exception {
 		if (CommonUtils.getAndroidLogs(AndroidPage.class)) {
-			List<LogEntry> logEntries = driver.manage().logs().get("logcat")
-					.getAll();
+			List<LogEntry> logEntries = this.getDriver().manage().logs()
+					.get("logcat").getAll();
 			for (LogEntry entry : logEntries) {
 				log.error(entry.getMessage().toString());
 			}

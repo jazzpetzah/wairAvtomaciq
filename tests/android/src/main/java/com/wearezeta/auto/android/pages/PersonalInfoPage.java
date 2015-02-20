@@ -7,18 +7,16 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
+import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
 import com.wearezeta.auto.common.locators.ZetaHow;
 
 public class PersonalInfoPage extends AndroidPage {
-
-	private String url;
-	private String path;
-
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idBackgroundOverlay")
 	private WebElement backgroundOverlay;
 
@@ -64,11 +62,9 @@ public class PersonalInfoPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idProfileOptionsButton")
 	private List<WebElement> settingsButtonList;
 
-	public PersonalInfoPage(String URL, String path) throws Exception {
-		super(URL, path);
-		this.url = URL;
-		this.path = path;
-
+	public PersonalInfoPage(ZetaAndroidDriver driver, WebDriverWait wait)
+			throws Exception {
+		super(driver, wait);
 	}
 
 	public boolean isPersonalInfoVisible() {
@@ -77,12 +73,11 @@ public class PersonalInfoPage extends AndroidPage {
 	}
 
 	public void waitForEmailFieldVisible() {
-
-		wait.until(ExpectedConditions.visibilityOf(emailField));
+		this.getWait().until(ExpectedConditions.visibilityOf(emailField));
 	}
 
 	public void clickOnPage() throws InterruptedException {
-		DriverUtils.androidMultiTap(driver, page, 1, 0.2);
+		DriverUtils.androidMultiTap(this.getDriver(), page, 1, 0.2);
 	}
 
 	public void tapChangePhotoButton() {
@@ -119,7 +114,7 @@ public class PersonalInfoPage extends AndroidPage {
 			break;
 		}
 		case RIGHT: {
-			page = new ContactListPage(url, path);
+			page = new ContactListPage(this.getDriver(), this.getWait());
 			break;
 		}
 		}
@@ -134,26 +129,27 @@ public class PersonalInfoPage extends AndroidPage {
 	public SettingsPage tapSettingsButton() throws Exception {
 		refreshUITree();
 		settingsButton.click();
-		return new SettingsPage(url, path);
+		return new SettingsPage(this.getDriver(), this.getWait());
 	}
 
 	public void waitForConfirmBtn() {
-		wait.until(ExpectedConditions.visibilityOf(confirmBtn));
+		this.getWait().until(ExpectedConditions.visibilityOf(confirmBtn));
 	}
 
 	public void tapOnMyName() throws Exception {
 		refreshUITree();
-		wait.until(ExpectedConditions.visibilityOf(nameField));
+		this.getWait().until(ExpectedConditions.visibilityOf(nameField));
 		nameField.click();
 		refreshUITree();
-		DriverUtils.waitUntilElementAppears(driver, AndroidLocators.PersonalInfoPage.getByForNameEditField());
+		DriverUtils.waitUntilElementAppears(driver,
+				AndroidLocators.PersonalInfoPage.getByForNameEditField());
 	}
 
 	public void changeName(String name, String newName) throws Exception {
 		DriverUtils.waitUntilElementDissapear(driver,
 				By.id(AndroidLocators.PersonalInfoPage.idNameField));
 		refreshUITree();
-		wait.until(ExpectedConditions.visibilityOf(nameEdit));
+		this.getWait().until(ExpectedConditions.visibilityOf(nameEdit));
 		nameEdit.sendKeys(newName);
 		driver.navigate().back();
 		Thread.sleep(1000);
@@ -162,7 +158,7 @@ public class PersonalInfoPage extends AndroidPage {
 	@Override
 	public ContactListPage navigateBack() throws Exception {
 		driver.navigate().back();
-		return new ContactListPage(url, path);
+		return new ContactListPage(this.getDriver(), this.getWait());
 	}
 
 	public String getUserName() {
@@ -173,7 +169,7 @@ public class PersonalInfoPage extends AndroidPage {
 	public AboutPage tapAboutButton() throws Exception {
 		refreshUITree();
 		aboutButton.click();
-		return new AboutPage(url, path);
+		return new AboutPage(this.getDriver(), this.getWait());
 	}
 
 	public boolean isSettingsVisible() {
