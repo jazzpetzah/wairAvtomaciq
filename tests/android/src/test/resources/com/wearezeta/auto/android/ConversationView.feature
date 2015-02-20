@@ -29,8 +29,8 @@ Feature: Conversation View
     Then I see Hello-Hey message <Message> with <Action> in the dialog
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Message    | Action |
-      | user1Email | user1Password | user1Name | user2Name | YOU        | PINGED |
+      | Login      | Password      | Name      | Contact   | Message | Action |
+      | user1Email | user1Password | user1Name | user2Name | YOU     | PINGED |
 
   @id318 @smoke
   Scenario Outline: Send Camera picture to contact
@@ -71,9 +71,9 @@ Feature: Conversation View
     And I navigate back from dialog page
     And I see <Contact1> and <Contact2> chat in contact list
 
-    Examples:
-      | Login      | Password      | Name      | Contact1   | Contact2    |
-      | user1Email | user1Password | user1Name | user2Name | user3Name   |
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |
 
   @id320 @smoke
   Scenario Outline: Send message to group chat
@@ -88,9 +88,9 @@ Feature: Conversation View
     And I type the message and send it
     Then I see my message in the dialog
 
-    Examples:
-      | Login      | Password      | Name      | Contact1   | Contact2    | GroupChatName     |
-      | user1Email | user1Password | user1Name | user2Name | user3Name    | SendMessGroupChat |
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName     |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessGroupChat |
 
   @id143 @regression
   Scenario Outline: Send Long Message to contact
@@ -136,7 +136,7 @@ Feature: Conversation View
     And I input <Message> message and send it
     Then I see my message in the dialog
 
-    Examples:
+    Examples: 
       | Login      | Password      | Name      | Contact   | Message                           |
       | user1Email | user1Password | user1Name | user2Name | ÄäÖöÜüß simple message in english |
 
@@ -153,8 +153,8 @@ Feature: Conversation View
     Then I see my message in the dialog
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Message   |
-      | user1Email | user1Password | user1Name | user2Name | :) ;) :(  |
+      | Login      | Password      | Name      | Contact   | Message  |
+      | user1Email | user1Password | user1Name | user2Name | :) ;) :( |
 
   @id147 @unicode @regression
   Scenario Outline: Send double byte chars
@@ -168,9 +168,9 @@ Feature: Conversation View
     And I input <Message> message and send it
     Then I see my message in the dialog
 
-    Examples:
-      | Login      | Password      | Name      | Contact   | Message                         |
-      | user1Email | user1Password | user1Name | user2Name | 畑 はたけ hatake field of crops  |
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Message                     |
+      | user1Email | user1Password | user1Name | user2Name | 畑 はたけ hatake field of crops |
 
   @regression @id162
   Scenario Outline: Send picture from gallery into 1:1 conversation
@@ -191,3 +191,35 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+
+  @id1504 @staging
+  Scenario Outline: Verify you can play/pause media from the Media Bar (SoundCloud)
+    Given There are 3 users where <Name> is me
+    Given <Name> is connected to <Contact1>,<Contact2>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And Contact <Contact1> send message to user <Name>
+    And Contact <Contact1> send message to user <Name>
+    And Contact <Contact1> send message to user <Name>
+    And Contact <Contact1> send message to user <Name>
+    And Contact <Contact1> send message to user <Name>
+    And Contact <Contact1> send message to user <Name>
+    And Contact <Contact1> send message to user <Name>
+    And Contact <Contact1> send message to user <Name>
+    And Contact <Contact1> send message to user <Name>
+    And I tap on text input
+    And I input <SoudCloudLink> message and send it
+    And I tap Dialog page bottom
+    And I press PlayPause media item button
+    And I swipe down on dialog page
+    Then I see PAUSE on Mediabar
+    And I press PlayPause on Mediabar button
+    And Contact <Contact1> send message to user <Name>
+    And I tap Dialog page bottom
+    And I see PLAY button in Media
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | SoudCloudLink                                              |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |

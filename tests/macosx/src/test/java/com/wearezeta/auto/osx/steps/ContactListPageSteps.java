@@ -34,8 +34,6 @@ public class ContactListPageSteps {
 	public void ISeeMyNameInContactList(String name) throws Exception {
 		PagesCollection.loginPage.sendProblemReportIfFound();
 		PagesCollection.contactListPage.pressLaterButton();
-		PagesCollection.contactListPage.pressLaterButton();
-		Thread.sleep(1000);
 		PagesCollection.peoplePickerPage = new PeoplePickerPage(
 				OSXExecutionContext.appiumUrl, OSXExecutionContext.wirePath);
 		if (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
