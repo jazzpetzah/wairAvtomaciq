@@ -65,12 +65,13 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
       
-  @staging @id1075
+  @torun @staging @id1075
   Scenario Outline: Verify messages are marked as read with disappearing unread dot
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given User <Contact> change  name to <NewName>
     Given User <Name> change  accent color to <Color>
+    Given I wait for 15 seconds
     Given Contact <Contact> send number <Number> of message to user <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

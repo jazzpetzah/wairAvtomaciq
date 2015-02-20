@@ -1,8 +1,11 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
+
+import javax.imageio.ImageIO;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -384,6 +387,8 @@ public class ContactListPage extends IOSPage {
 		double score = 0;
 		WebElement contact = findCellInContactList(conversation);
 		unreadDot = getScreenshotByCoordinates(contact.getLocation().x, contact.getLocation().y + contactListContainer.getLocation().y, contact.getSize().width/4, contact.getSize().height*2);
+//		File outputfile = new File("TESTDOT.png");
+//		ImageIO.write(unreadDot, "png", outputfile);
 		if (visible == true){
 		referenceImage = ImageUtil.readImageFromFile(IOSPage
 				.getImagesPath() + "unreadDot.png");
