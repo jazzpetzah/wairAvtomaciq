@@ -274,3 +274,18 @@ Feature: Connect
   	Examples: 
       | Login      | Password      | Name      | Contact   | ContactEmail |
       | user1Email | user1Password | user1Name | user2Name | user2Email   |
+  
+  @torun @staging @id1492
+  Scenario Outline: Verify you can send an invitation via mail
+  	Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I swipe down contact list
+    And I see People picker page
+    And I press the send an invite button
+    And I press the copy button
+    
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |

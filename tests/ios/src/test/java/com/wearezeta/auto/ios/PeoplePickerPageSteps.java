@@ -322,4 +322,27 @@ public class PeoplePickerPageSteps {
 				.getNumberOfSelectedTopPeople();
 		Assert.assertEquals(number, numberOfSelectedTopPeople);
 	}
+	
+	/**
+	 * Presses the Send An Invite button in the people picker. To invite 
+	 * people via mail.
+	 * 
+	 * @step. ^I press the send an invite button$
+	 * 
+	 */
+	@When("^I press the send an invite button$")
+	public void IPressTheSendAnInviteButton(){
+		PagesCollection.peoplePickerPage.tapSendInviteButton();
+	}
+
+	/**
+	 * Presses the Copy button on the Send Invitation pop up
+	 * 
+	 * @step. ^I press the copy button$
+	 * 
+	 */
+	@When("^I press the copy button$")
+	public void IPressTheCopyButton(){
+		PagesCollection.peoplePickerPage.tapSendInviteCopyButton();
+	}
 }

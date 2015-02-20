@@ -67,6 +67,12 @@ public class PeoplePickerPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathPeoplePickerAllTopPeople)
 	private List<WebElement> topPeopleList;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathInviteCopyButton)
+	private WebElement inviteCopyButton;
+
+	@FindBy(how = How.NAME, using = IOSLocators.nameSendAnInviteButton)
+	private WebElement sendInviteButton;
 
 	private int numberTopSelected = 0;
 
@@ -313,6 +319,14 @@ public class PeoplePickerPage extends IOSPage {
 			}
 		}
 		return selectedPeople;
+	}
+	
+	public void tapSendInviteButton(){
+		sendInviteButton.click();
+	}
+	
+	public void tapSendInviteCopyButton(){
+		inviteCopyButton.click();
 	}
 
 }

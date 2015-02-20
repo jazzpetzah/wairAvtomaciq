@@ -419,7 +419,10 @@ public final class IOSLocators {
 	public static final String nameShareButton = "SHARE";
 	public static final String nameContinueUploadButton = "SHARE";
 	public static final String namePeopleYouMayKnowLabel = "PEOPLE YOU MAY KNOW";
-	
+	public static final String nameSendAnInviteButton = "EmptySearch_SendInviteButton";
+	public static final String xpathInviteCopyButton = "//UIAApplication[1]/UIAWindow[2]/UIAActivityView[1]/UIAActionSheet[1]/UIAScrollView[1]/UIACollectionView[1]/UIACollectionCell[2]/UIACollectionView[1]/UIACollectionCell[@name='Copy']";
+	//UIAApplication[1]/UIAWindow[2]/UIAActivityView[1]/UIAActionSheet[1]/UIAScrollView[1]/UIACollectionView[1]/UIACollectionCell[2]/UIACollectionView[1]/UIACollectionCell[@name='Copy']
+
 	//////////////////
 	//Connect to page
 	//////////////////
