@@ -244,7 +244,8 @@ public class PeoplePickerPage extends OSXPage {
 		return DriverUtils
 				.waitUntilElementAppears(
 						driver,
-						By.xpath(OSXLocators.xpathPeoplePickerTopContactsSectionHeader));
+						By.xpath(OSXLocators.xpathPeoplePickerTopContactsSectionHeader),
+						3);
 	}
 
 	public boolean isCreateConversationButtonVisible() {
