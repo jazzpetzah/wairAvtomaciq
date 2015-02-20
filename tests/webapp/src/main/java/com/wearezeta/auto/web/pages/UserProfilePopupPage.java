@@ -28,7 +28,7 @@ public class UserProfilePopupPage extends WebPage {
 		super(driver, wait);
 	}
 
-	public boolean isUserProfilePopupPageVisible() {
+	public boolean isUserProfilePopupPageVisible() throws Exception {
 		return DriverUtils.waitUntilElementAppears(driver, userProfilePopup, 10);
 	}
 

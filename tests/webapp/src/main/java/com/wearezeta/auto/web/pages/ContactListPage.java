@@ -75,7 +75,7 @@ public class ContactListPage extends WebPage {
 		}
 	}
 	
-	public boolean contactWithNameNotVisible(String name) {
+	public boolean contactWithNameNotVisible(String name) throws Exception {
 		log.debug("Looking for contact with name '" + name + "'");
 		if (name.contains(",")) {
 			return retrieveNoNameGroupContact(name) != null;

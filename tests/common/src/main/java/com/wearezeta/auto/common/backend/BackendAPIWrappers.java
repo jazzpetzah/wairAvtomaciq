@@ -189,7 +189,7 @@ public final class BackendAPIWrappers {
 				srcImageAsByteArray, guessMimeType(src));
 	}
 
-	private static String getConversationIdByName(ClientUser ownerUser,
+	public static String getConversationIdByName(ClientUser ownerUser,
 			String conversationName) throws Exception {
 		JSONArray jsonArray = getConversations(ownerUser);
 		for (int i = 0; i < jsonArray.length(); i++) {
@@ -521,6 +521,13 @@ public final class BackendAPIWrappers {
 		tryLoginByUser(ownerUser);
 		BackendREST.updateConvSelfInfo(generateAuthToken(ownerUser),
 				getConversationWithSingleUser(ownerUser, archivedUser), null,
+				null, true);
+	}
+	
+	public static void archiveGroupConv(ClientUser selfUser, String conversationToArchive) throws Exception{
+		tryLoginByUser(selfUser);
+		BackendREST.updateConvSelfInfo(generateAuthToken(selfUser),
+				conversationToArchive, null,
 				null, true);
 	}
 
