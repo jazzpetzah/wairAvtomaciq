@@ -133,8 +133,12 @@ public class WebCommonUtils extends CommonUtils {
 				getJenkinsSuperUserPassword(CommonUtils.class),
 				getJenkinsSuperUserLogin(CommonUtils.class),
 				WebAppExecutionContext.seleniumNodeIp, script);
-		WebCommonUtils
-				.executeOsXCommand(new String[] { "bash", "-c", command });
+		if (WebCommonUtils.executeOsXCommand(new String[] { "bash", "-c",
+				command }) == 255) {
+			WebCommonUtils.executeOsXCommand(new String[] { "bash", "-c",
+					command });
+		}
+
 	}
 
 	public static void formatTextInFileAndSave(String srcFile, String dstFile,

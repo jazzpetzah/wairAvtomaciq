@@ -51,11 +51,12 @@ public class CommonUtils {
 		return System.getProperty("os.name");
 	}
 
-	public static void executeOsXCommand(String[] cmd) throws Exception {
+	public static int executeOsXCommand(String[] cmd) throws Exception {
 		Process process = Runtime.getRuntime().exec(cmd);
 		log.debug("Process started for cmdline " + Arrays.toString(cmd));
 		outputErrorStreamToLog(process.getErrorStream());
 		log.debug("Process exited with code " + process.waitFor());
+		return process.waitFor();
 	}
 
 	public static String executeOsXCommandWithOutput(String[] cmd)

@@ -56,7 +56,7 @@ public final class WebAppLocators {
 		public static final String xpathContactListEntries = xpathParentContactListItem
 				+ "/div[2]//li/div[contains(@class, 'center-column')]";
 
-		public static final String classNameOpenPeoplePickerButton = "plus-button";
+		public static final String classNameOpenPeoplePickerButton = "icon-plus";
 	}
 
 	public static final class SettingsPage {
