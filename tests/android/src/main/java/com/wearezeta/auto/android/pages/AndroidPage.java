@@ -182,7 +182,8 @@ public abstract class AndroidPage extends BasePage {
 					+ elementSize.height - 300, coords.x + elementSize.width
 					/ 2, coords.y, time);
 		} catch (Exception ex) {
-
+		
+		}
 	}
 
 	public void dialogsPagesSwipeDown(int time) {
