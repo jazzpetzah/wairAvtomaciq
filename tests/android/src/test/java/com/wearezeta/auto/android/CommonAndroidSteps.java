@@ -56,7 +56,7 @@ public class CommonAndroidSteps {
 		LoggingPreferences object = new LoggingPreferences();
 		object.enable("logcat", Level.ALL);
 		capabilities.setCapability(CapabilityType.LOGGING_PREFS, object);
-		capabilities.setCapability("platformName", Platform.Android.getName());
+		capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
 		capabilities.setCapability("deviceName", CommonUtils
 				.getAndroidDeviceNameFromConfig(CommonAndroidSteps.class));
 		capabilities.setCapability("app", path);
