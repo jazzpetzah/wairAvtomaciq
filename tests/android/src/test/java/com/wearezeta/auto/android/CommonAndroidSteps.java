@@ -36,7 +36,7 @@ public class CommonAndroidSteps {
 
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	private static final Platform CURRENT_PLATFORM = Platform.Android;
+	public static final Platform CURRENT_PLATFORM = Platform.Android;
 
 	public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
 
@@ -50,22 +50,22 @@ public class CommonAndroidSteps {
 				.getAndroidApplicationPathFromConfig(CommonAndroidSteps.class);
 	}
 
-	private ZetaAndroidDriver resetAndroidDriver(String url, String path,
-			boolean isUnicode) throws Exception {
+	public ZetaAndroidDriver resetAndroidDriver(String url, String path,
+			boolean isUnicode, Class<?> cls) throws Exception {
 		final DesiredCapabilities capabilities = new DesiredCapabilities();
 		LoggingPreferences object = new LoggingPreferences();
 		object.enable("logcat", Level.ALL);
 		capabilities.setCapability(CapabilityType.LOGGING_PREFS, object);
 		capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
 		capabilities.setCapability("deviceName", CommonUtils
-				.getAndroidDeviceNameFromConfig(CommonAndroidSteps.class));
+				.getAndroidDeviceNameFromConfig(cls));
 		capabilities.setCapability("app", path);
 		capabilities.setCapability("appPackage", CommonUtils
-				.getAndroidPackageFromConfig(CommonAndroidSteps.class));
+				.getAndroidPackageFromConfig(cls));
 		capabilities.setCapability("appActivity", CommonUtils
-				.getAndroidActivityFromConfig(CommonAndroidSteps.class));
+				.getAndroidActivityFromConfig(cls));
 		capabilities.setCapability("appWaitActivity", CommonUtils
-				.getAndroidActivityFromConfig(CommonAndroidSteps.class));
+				.getAndroidActivityFromConfig(cls));
 		if (isUnicode) {
 			capabilities.setCapability("unicodeKeyboard", true);
 			capabilities.setCapability("resetKeyboard", true);
@@ -77,7 +77,7 @@ public class CommonAndroidSteps {
 
 	private void initFirstPage(boolean isUnicode) throws Exception {
 		final ZetaAndroidDriver driver = resetAndroidDriver(getUrl(),
-				getPath(), isUnicode);
+				getPath(), isUnicode, this.getClass());
 		final WebDriverWait wait = PlatformDrivers
 				.createDefaultExplicitWait(driver);
 		PagesCollection.loginPage = new LoginPage(driver, wait);
