@@ -15,7 +15,6 @@ Feature: Conversation List
   #Examples:
   #| Login   | Password    | Name    | Contact1    |
   #| aqaUser | aqaPassword | aqaUser | aqaContact1 |
-  
   @regression @id1333
   Scenario Outline: Unarchive conversation
     Given There are 2 users where <Name> is me
@@ -64,27 +63,26 @@ Feature: Conversation List
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
-      
-   @staging @id1335
-   Scenario Outline: Verify unsilence the conversation
-    Given There are 2 users where <Name> is me
-     Given <Contact> is connected to <Name>
-     Given User <Contact> change  name to <NewName>
-     Given User <Name> change  accent color to <Color>
-     Given I Sign in using login <Login> and password <Password>
-     And I see Contact list with my name <Name>
-     When I swipe right on a <Contact>
-     And I silence conversation <Contact>
-     And I see conversation <Contact> is silenced
-     And I swipe right on a <Contact>
-     And I unsilence conversation <Contact>
-     Then I see conversation <Contact> is unsilenced
 
-     Examples: 
-       | Login      | Password      | Name      | Contact   | Color        | NewName |
-       | user1Email | user1Password | user1Name | user2Name | BrightOrange | SILENCE |
-      
-      
+  @staging @id1335
+  Scenario Outline: Verify unsilence the conversation
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Contact> change  name to <NewName>
+    Given User <Name> change  accent color to <Color>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact>
+    And I silence conversation <Contact>
+    And I see conversation <Contact> is silenced
+    And I swipe right on a <Contact>
+    And I unsilence conversation <Contact>
+    Then I see conversation <Contact> is unsilenced
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Color        | NewName |
+      | user1Email | user1Password | user1Name | user2Name | BrightOrange | SILENCE |
+
   @staging @id1075
   Scenario Outline: Verify messages are marked as read with disappearing unread dot
     Given There are 2 users where <Name> is me
@@ -100,14 +98,14 @@ Feature: Conversation List
     And I scroll to the end of the conversation
     And I swipe right on Dialog page
     Then I dont see an unread message dot for <Contact>
-    
+
     Examples: 
       | Login      | Password      | Name      | Contact   | Number | NewName    | Color        |
-      | user1Email | user1Password | user1Name | user2Name | 30		| UNREAD DOT | BrightOrange |
-  
+      | user1Email | user1Password | user1Name | user2Name | 30     | UNREAD DOT | BrightOrange |
+
   @staging @id1481
   Scenario Outline: Verify archive a group conversation
-  	Given There are 3 users where <Name> is me
+    Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -117,15 +115,14 @@ Feature: Conversation List
     Then I dont see conversation <GroupChatName> in contact list
     And I open archived conversations
     Then I see user <GroupChatName> in contact list
-    
+
     Examples: 
-      | Login      | Password      | Name      | Contact1    | Contact2   | GroupChatName        |
-      | user1Email | user1Password | user1Name | user2Name   | user3Name  | ArchiveGroupChat     |
-      
-      
+      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName    |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | ArchiveGroupChat |
+
   @staging @id1481
   Scenario Outline: Verify unarchive a group conversation
-  	Given There are 3 users where <Name> is me
+    Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given Myself archived conversation having groupname <GroupChatName>
@@ -135,8 +132,7 @@ Feature: Conversation List
     And I tap on contact name <GroupChatName>
     And I navigate back to conversations view
     Then I see first item in contact list named <GroupChatName>
-    
+
     Examples: 
-      | Login      | Password      | Name      | Contact1    | Contact2   | GroupChatName        |
-      | user1Email | user1Password | user1Name | user2Name   | user3Name  | ArchiveGroupChat     |
-  
+      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName    |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | ArchiveGroupChat |
