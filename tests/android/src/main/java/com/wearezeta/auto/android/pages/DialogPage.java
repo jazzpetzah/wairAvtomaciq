@@ -4,21 +4,13 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
+import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -37,7 +29,8 @@ import com.wearezeta.auto.common.misc.MessageEntry;
 public class DialogPage extends AndroidPage {
 	private static final Logger log = ZetaLogger.getLog(DialogPage.class
 			.getSimpleName());
-
+	public static final String MEDIA_PLAY = "PLAY";
+	public static final String MEDIA_PAUSE = "PAUSE";
 	public static final String PING_LABEL = "PINGED";
 	public static final String HOT_PING_LABEL = "PINGED AGAIN";
 	public static final String I_LEFT_CHAT_MESSAGE = "YOU HAVE LEFT";
@@ -108,6 +101,9 @@ public class DialogPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idPlayPauseMedia")
 	private WebElement playPauseBtn;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMediaBarControl")
+	private WebElement mediaBarControl;
+	
 	@AndroidFindBy(xpath = AndroidLocators.DialogPage.xpathAddPicture)
 	private WebElement addPictureBtn;
 
@@ -183,12 +179,20 @@ public class DialogPage extends AndroidPage {
 		Thread.sleep(1000);
 		return returnBySwipe(SwipeDirection.UP);
 	}
-
+	
+	@Override
+	public AndroidPage swipeDown(int time) throws Exception {
+		dialogsPagesSwipeDown(time);// TODO workaround
+		Thread.sleep(1000);
+		return returnBySwipe(SwipeDirection.DOWN);
+	}
+	
 	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
 		AndroidPage page = null;
 		switch (direction) {
 		case DOWN: {
+			page = this;
 			break;
 		}
 		case UP: {
@@ -502,5 +506,36 @@ public class DialogPage extends AndroidPage {
 		refreshUITree();
 		dialogPageBottomLinearLayout.click();
 	}
+	
+	public double checkMediaBarControlIcon(String label) throws Exception {
+		refreshUITree();
+		String path = null;
+		BufferedImage mediaImage = getElementScreenshot(mediaBarControl);
+		if (label.equals(MEDIA_PLAY)) {
+			path = CommonUtils.getMediaBarPlayIconPath(DialogPage.class);
+		} else if (label.equals(MEDIA_PAUSE)) {
+			path = CommonUtils.getMediaBarPauseIconPath(DialogPage.class);
+		}
+		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
+		return ImageUtil.getOverlapScore(mediaImage, templateImage);
+	}
 
+	public double checkMediaControlIcon(String label) throws Exception {
+		refreshUITree();
+		String path = null;
+		BufferedImage mediaImage = getElementScreenshot(playPauseBtn);
+		if (label.equals(MEDIA_PLAY)) {
+			path = CommonUtils.getMediaPlayIconPath(DialogPage.class);
+		} else if (label.equals(MEDIA_PAUSE)) {
+			path = CommonUtils.getMediaPauseIconPath(DialogPage.class);
+		}
+		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
+		return ImageUtil.getOverlapScore(mediaImage, templateImage, ImageUtil.RESIZE_NORESIZE);
+	}
+
+	public void tapPlayPauseMediaBarBtn() {
+		refreshUITree();
+		mediaBarControl.click();
+		
+	}
 }

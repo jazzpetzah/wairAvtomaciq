@@ -347,6 +347,11 @@ public class ContactListPage extends IOSPage {
 		WebElement contact = findNameInContactList(conversation);
 		DriverUtils.clickSilenceConversationButton(this.getDriver(), contact);
 	}
+	
+	public void unsilenceConversation(String conversation) {
+		WebElement contact = findNameInContactList(conversation);
+		DriverUtils.clickSilenceConversationButton(this.getDriver(), contact);
+	}
 
 	public boolean isConversationSilenced(String conversation) throws Exception {
 		String deviceType = CommonUtils.getDeviceName(this.getClass());

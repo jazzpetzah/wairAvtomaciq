@@ -42,6 +42,12 @@ public class ConversationPage extends WebPage {
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathSendImageInput)
 	private WebElement imagePathInput;
+	
+	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathPingButton)
+	private WebElement pingButton;
+	
+	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.ConversationPage.classPingMessage)
+	private WebElement pingMessage;
 
 	public ConversationPage(ZetaWebAppDriver driver, WebDriverWait wait) throws Exception {
 		super(driver, wait);
@@ -82,6 +88,7 @@ public class ConversationPage extends WebPage {
 	}
 
 	public WebPage clickShowUserProfileButton(boolean isGroup) throws Exception {
+		DriverUtils.waitUntilElementClickable(driver, showParticipants);
 		showParticipants.click();
 		if (isGroup) {
 			return new ParticipantsPopupPage(this.getDriver(), this.getWait());
@@ -152,5 +159,24 @@ public class ConversationPage extends WebPage {
 						By.xpath(WebAppLocators.ConversationPage.xpathImageMessageEntry),
 						40);
 		return isAnyPictureMsgFound && (imageMessageEntries.size() > 0);
+	}
+	
+	public void clickPingButton() {
+
+		pingButton.click();
+	}
+	
+	public boolean isPingMessageVisible(String message) {
+		String text = pingMessage.getText();
+		if (text.toLowerCase().contains(message.toLowerCase())) {
+			return pingMessage.isDisplayed();
+		} else {
+			return false;
+		}
+	}
+	
+	public int numberOfPingMessagesVisible() {
+		
+		return driver.findElementsByClassName(WebAppLocators.ConversationPage.classPingMessage).size() - 1;
 	}
 }

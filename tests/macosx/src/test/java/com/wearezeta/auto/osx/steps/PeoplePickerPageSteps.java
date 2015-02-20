@@ -146,11 +146,11 @@ public class PeoplePickerPageSteps {
 	 */
 	@Then("^I see Top People list in People Picker$")
 	public void ISeeTopPeopleListInPeoplePicker() throws Throwable {
-		Thread.sleep(2000);
 		boolean topPeopleisVisible = PagesCollection.peoplePickerPage
 				.isTopPeopleVisible();
 		if (!topPeopleisVisible) {
 			PagesCollection.peoplePickerPage.closePeoplePicker();
+			// waiting till People Picker disappearance animation done
 			Thread.sleep(1000);
 			PagesCollection.contactListPage.openPeoplePicker();
 			topPeopleisVisible = PagesCollection.peoplePickerPage

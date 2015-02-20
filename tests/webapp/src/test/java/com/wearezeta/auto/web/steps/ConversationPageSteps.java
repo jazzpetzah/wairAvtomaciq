@@ -190,4 +190,36 @@ public class ConversationPageSteps {
 		steps.ISelectUserFromPeoplePickerResults(contact);
 		steps.IChooseToCreateConversationFromPopupPage();
 	}
+	
+	/**
+	 * Click ping button to send ping and hot ping
+	 * @step. ^I click ping button$
+	 * @throws Exception
+	 */
+	@When("^I click ping button$")
+	public void IClickPingButton() throws Exception {
+		PagesCollection.conversationPage.clickPingButton();
+	}
+	
+	/**
+	 * Verify ping (or ping again) message is visible in conversation
+	 * @step. ^I see ping message (.*)$
+	 * @param message
+	 * 			pinged/pinged again
+	 * @throws Exception
+	 */
+	@When("^I see ping message (.*)$")
+	public void ISeePingMessage(String message) throws Exception {
+		Assert.assertTrue(PagesCollection.conversationPage.isPingMessageVisible(message));
+	}
+	
+	/**
+	 * Verify that there is only one ping message visible in conversation
+	 * @step. ^I see only one ping message$
+	 * @throws Exception
+	 */
+	@When("^I see only one ping message$")
+	public void ISeeOnlyOnePingMessage() throws Exception {
+		Assert.assertEquals(PagesCollection.conversationPage.numberOfPingMessagesVisible(), 1);
+	}
 }

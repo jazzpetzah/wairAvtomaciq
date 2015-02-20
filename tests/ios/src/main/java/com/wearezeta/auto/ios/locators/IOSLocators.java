@@ -48,7 +48,7 @@ public final class IOSLocators {
 	
 	public static final String xpathDialogTextMessage = "//UIATableCell/UIATextView";
 	
-	public static final String xpathDialogTitleBar = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[1]";
+	public static final String xpathDialogTitleBar = "//UIAApplication[1]/UIAWindow[2]/UIAStaticText[1]";
 	
 	public static final String xpathFormatDialogTextMessage = "//UIATableCell/UIATextView[@value='%s']";
 	

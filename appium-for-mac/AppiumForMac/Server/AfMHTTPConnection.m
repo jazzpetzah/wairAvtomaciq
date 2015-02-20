@@ -52,8 +52,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_VERBOSE;
     path = [path stringByReplacingOccurrencesOfString:@"/wd/hub/" withString:@"/"];
     NSArray *pathComponents = [[path substringFromIndex:1] componentsSeparatedByString:@"/"];
 
-    NSLog(@"%@", path);
-    NSLog(@"%@", method);
+    NSLog(@"Call for URL: %@ %@", method, path);
     
     // GET /status
 	if ([path isEqualToString:@"/status"] && [method isEqualToString:@"GET"])
