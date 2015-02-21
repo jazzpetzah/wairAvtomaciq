@@ -20,6 +20,7 @@ public class IMAPSMailbox {
 	private static final String MAILS_FOLDER = "Inbox";
 	private static final int NEW_MSG_MIN_CHECK_INTERVAL = 5 * 1000; // milliseconds
 	private static final int FOLDER_OPEN_TIMEOUT = 60 * 5; // seconds
+	private static final int TOO_MANY_CONNECTIONS_TIMEOUT = 60 * 3 * 1000; // milliseconds
 
 	private final Random random = new Random();
 
@@ -166,7 +167,17 @@ public class IMAPSMailbox {
 		final Properties props = System.getProperties();
 		final Session session = Session.getInstance(props, null);
 		this.store = session.getStore(MAIL_PROTOCOL);
-		this.store.connect(mailServer, -1, user, password);
+		try {
+			this.store.connect(mailServer, -1, user, password);
+		} catch (AuthenticationFailedException e) {
+			if (e.getMessage().contains("simultaneous")) {
+				Thread.sleep(TOO_MANY_CONNECTIONS_TIMEOUT);
+				this.store.connect(mailServer, -1, user, password);
+			} else {
+				throw e;
+			}
+			
+		}
 		this.folder = this.store.getDefaultFolder().getFolder(mailFolder);
 	}
 
