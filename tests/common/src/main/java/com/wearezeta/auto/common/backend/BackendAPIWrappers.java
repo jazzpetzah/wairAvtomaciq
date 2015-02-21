@@ -47,7 +47,7 @@ public final class BackendAPIWrappers {
 	}
 
 	public static ClientUser createUser(ClientUser user) throws Exception {
-		IMAPSMailbox mbox = IMAPSMailbox.createDefaultInstance();
+		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", user.getEmail());
 		MBoxChangesListener listener = mbox.startMboxListener(expectedHeaders);

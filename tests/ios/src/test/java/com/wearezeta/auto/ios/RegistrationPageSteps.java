@@ -296,7 +296,7 @@ public class RegistrationPageSteps {
 
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
-		this.listener = IMAPSMailbox.createDefaultInstance().startMboxListener(
+		this.listener = IMAPSMailbox.getInstance().startMboxListener(
 				expectedHeaders);
 		PagesCollection.registrationPage.inputPassword();
 	}
@@ -355,7 +355,7 @@ public class RegistrationPageSteps {
 	public void ISubmitRegistrationData() throws Exception {
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
-		this.listener = IMAPSMailbox.createDefaultInstance().startMboxListener(
+		this.listener = IMAPSMailbox.getInstance().startMboxListener(
 				expectedHeaders);
 
 		PagesCollection.registrationPage.createAccount();
