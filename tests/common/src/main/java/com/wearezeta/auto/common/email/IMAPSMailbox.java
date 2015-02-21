@@ -153,7 +153,7 @@ public class IMAPSMailbox {
 
 	private static IMAPSMailbox instance = null;
 
-	public static IMAPSMailbox getInstance() throws Exception {
+	public static synchronized IMAPSMailbox getInstance() throws Exception {
 		if (instance == null) {
 			instance = new IMAPSMailbox(getServerName(), MAILS_FOLDER,
 					getName(), getPassword());
