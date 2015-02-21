@@ -13,23 +13,45 @@ import java.util.concurrent.TimeoutException;
 
 import javax.mail.*;
 
+import org.apache.log4j.Logger;
+
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class IMAPSMailbox {
 	private static final String MAIL_PROTOCOL = "imaps";
 	private static final String MAILS_FOLDER = "Inbox";
 	private static final int NEW_MSG_MIN_CHECK_INTERVAL = 5 * 1000; // milliseconds
 	private static final int FOLDER_OPEN_TIMEOUT = 60 * 5; // seconds
-	private static final int TOO_MANY_CONNECTIONS_TIMEOUT = 60 * 3 * 1000; // milliseconds
+	private static final int TOO_MANY_CONNECTIONS_TIMEOUT = 60 * 5 * 1000; // milliseconds
+
+	private static final Logger log = ZetaLogger.getLog(IMAPSMailbox.class
+			.getSimpleName());
 
 	private final Random random = new Random();
 
 	private final Semaphore folderStateGuard = new Semaphore(1);
 
-	private Store store = null;
-
-	private Store getStore() {
-		return this.store;
+	private static Store store = null;
+	static {
+		final Properties props = System.getProperties();
+		final Session session = Session.getInstance(props, null);
+		try {
+			try {
+				store = session.getStore(MAIL_PROTOCOL);
+				store.connect(getServerName(), -1, getName(), getPassword());
+			} catch (AuthenticationFailedException e) {
+				if (e.getMessage().contains("simultaneous")) {
+					Thread.sleep(TOO_MANY_CONNECTIONS_TIMEOUT);
+					store.connect(getServerName(), -1, getName(), getPassword());
+				} else {
+					throw e;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 
 	private Folder folder = null;
@@ -44,8 +66,8 @@ public class IMAPSMailbox {
 		this.openFolder(this.getFolder());
 	}
 
-	public synchronized void openFolder(Folder folderToOpen)
-			throws MessagingException, InterruptedException {
+	public void openFolder(Folder folderToOpen) throws MessagingException,
+			InterruptedException {
 		folderStateGuard.tryAcquire(FOLDER_OPEN_TIMEOUT, TimeUnit.SECONDS);
 		if (!folderToOpen.isOpen()) {
 			folderToOpen.open(Folder.READ_ONLY);
@@ -56,8 +78,7 @@ public class IMAPSMailbox {
 		this.closeFolder(this.getFolder());
 	}
 
-	public synchronized void closeFolder(Folder folderToClose)
-			throws MessagingException {
+	public void closeFolder(Folder folderToClose) throws MessagingException {
 		try {
 			if (folderToClose.isOpen()) {
 				folderToClose.close(false);
@@ -128,23 +149,12 @@ public class IMAPSMailbox {
 		}
 	}
 
-	{
+	static {
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override
 			public void run() {
 				try {
-					Folder folder = IMAPSMailbox.this.getFolder();
-					if (folder != null && folder.isOpen()) {
-						folder.close(false);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				try {
-					Store store = IMAPSMailbox.this.getStore();
-					if (store != null) {
-						store.close();
-					}
+					store.close();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -156,29 +166,15 @@ public class IMAPSMailbox {
 
 	public static synchronized IMAPSMailbox getInstance() throws Exception {
 		if (instance == null) {
-			instance = new IMAPSMailbox(getServerName(), MAILS_FOLDER,
-					getName(), getPassword());
+			instance = new IMAPSMailbox();
+			log.debug(String.format("Created %s singleton",
+					IMAPSMailbox.class.getSimpleName()));
 		}
 		return instance;
 	}
 
-	private IMAPSMailbox(String mailServer, String mailFolder, String user,
-			String password) throws Exception {
-		final Properties props = System.getProperties();
-		final Session session = Session.getInstance(props, null);
-		this.store = session.getStore(MAIL_PROTOCOL);
-		try {
-			this.store.connect(mailServer, -1, user, password);
-		} catch (AuthenticationFailedException e) {
-			if (e.getMessage().contains("simultaneous")) {
-				Thread.sleep(TOO_MANY_CONNECTIONS_TIMEOUT);
-				this.store.connect(mailServer, -1, user, password);
-			} else {
-				throw e;
-			}
-			
-		}
-		this.folder = this.store.getDefaultFolder().getFolder(mailFolder);
+	private IMAPSMailbox() throws Exception {
+		this.folder = store.getDefaultFolder().getFolder(MAILS_FOLDER);
 	}
 
 	public static String getServerName() throws Exception {
