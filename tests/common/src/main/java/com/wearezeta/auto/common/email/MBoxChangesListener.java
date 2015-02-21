@@ -13,7 +13,7 @@ import javax.mail.MessagingException;
 import javax.mail.event.MessageCountEvent;
 import javax.mail.event.MessageCountListener;
 
-public class MBoxChangesListener implements MessageCountListener,
+class MBoxChangesListener implements MessageCountListener,
 		Callable<Message> {
 	private static final int NEW_MSG_MIN_CHECK_INTERVAL = 5 * 1000; // milliseconds
 	

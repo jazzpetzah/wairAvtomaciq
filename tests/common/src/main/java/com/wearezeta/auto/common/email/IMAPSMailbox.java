@@ -108,7 +108,6 @@ public class IMAPSMailbox {
 		this.openFolder();
 		MBoxChangesListener listener = new MBoxChangesListener(this,
 				expectedHeaders);
-
 		folder.addMessageCountListener(listener);
 		return pool.submit(listener);
 	}
