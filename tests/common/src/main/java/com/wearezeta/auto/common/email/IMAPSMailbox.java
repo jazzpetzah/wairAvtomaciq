@@ -27,19 +27,19 @@ public class IMAPSMailbox {
 
 	private Store store = null;
 
-	public Store getStore() {
+	private Store getStore() {
 		return this.store;
 	}
 
 	private Folder folder = null;
 
-	public Folder getFolder() {
+	private Folder getFolder() {
 		return this.folder;
 	}
 
 	private Thread messagesCountNotifier;
 
-	private synchronized void openFolder() throws MessagingException,
+	public synchronized void openFolder() throws MessagingException,
 			InterruptedException {
 		if (!folder.isOpen()) {
 			folderStateGuard.tryAcquire(FOLDER_OPEN_TIMEOUT, TimeUnit.SECONDS);
@@ -47,7 +47,7 @@ public class IMAPSMailbox {
 		}
 	}
 
-	private synchronized void closeFolder() throws MessagingException {
+	public synchronized void closeFolder() throws MessagingException {
 		if (folder.isOpen()) {
 			folder.close(false);
 			folderStateGuard.release();
@@ -83,7 +83,7 @@ public class IMAPSMailbox {
 		messagesCountNotifier = new Thread() {
 			@Override
 			public void run() {
-				Folder dstFolder = IMAPSMailbox.this.folder;
+				Folder dstFolder = IMAPSMailbox.this.getFolder();
 				while (dstFolder != null && dstFolder.isOpen()) {
 					try {
 						Thread.sleep(NEW_MSG_MIN_CHECK_INTERVAL

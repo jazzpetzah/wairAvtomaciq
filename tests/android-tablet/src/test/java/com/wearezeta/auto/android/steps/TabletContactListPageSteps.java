@@ -6,6 +6,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import cucumber.api.java.en.When;
 
 public class TabletContactListPageSteps {
+	@SuppressWarnings("unused")
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	
 	/**
