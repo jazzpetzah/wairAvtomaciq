@@ -15,7 +15,7 @@ import javax.mail.event.MessageCountListener;
 
 class MBoxChangesListener implements MessageCountListener,
 		Callable<Message> {
-	private static final int NEW_MSG_MIN_CHECK_INTERVAL = 5 * 1000; // milliseconds
+	private static final int NEW_MSG_MIN_CHECK_INTERVAL = 1000; // milliseconds
 	
 	private Map<String, String> expectedHeaders = new HashMap<String, String>();
 	private CountDownLatch waitObj = new CountDownLatch(1);
