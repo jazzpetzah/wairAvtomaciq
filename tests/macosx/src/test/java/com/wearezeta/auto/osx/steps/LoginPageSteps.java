@@ -314,8 +314,8 @@ public class LoginPageSteps {
 
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", email);
-		PagesCollection.loginPage.setListener(IMAPSMailbox
-				.getInstance().startMboxListener(expectedHeaders));
+		PagesCollection.loginPage.setPasswordResetMessage(IMAPSMailbox
+				.getInstance().getMessage(expectedHeaders));
 		PagesCollection.changePasswordPage
 				.enterEmailForChangePasswordAndSubmit(email);
 	}

@@ -2,6 +2,9 @@ package com.wearezeta.auto.osx.pages;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.concurrent.Future;
+
+import javax.mail.Message;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -14,7 +17,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
-import com.wearezeta.auto.common.email.MBoxChangesListener;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.common.OSXConstants;
@@ -49,7 +51,7 @@ public class RegistrationPage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathRegistrationPictureConfirmationButton)
 	private WebElement confirmChosenPictureButton;
 
-	private MBoxChangesListener listener;
+	private Future<Message> activationMessage;
 
 	private String activationResponse = null;
 
@@ -117,7 +119,7 @@ public class RegistrationPage extends OSXPage {
 
 	public void activateUserFromBrowser() throws Exception {
 		String activationLink = BackendAPIWrappers
-				.getUserActivationLink(this.listener);
+				.getUserActivationLink(this.activationMessage);
 		String script = String
 				.format(OSXCommonUtils
 						.readTextFileFromResources(OSXConstants.Scripts.ACTIVATE_USER_SCRIPT),
@@ -135,11 +137,11 @@ public class RegistrationPage extends OSXPage {
 				.contains(OSXLocators.RegistrationPage.ACTIVATION_RESPONSE_VERIFIED);
 	}
 
-	public void setListener(MBoxChangesListener listener) {
-		this.listener = listener;
+	public void setActivationMessage(Future<Message> activationMessage) {
+		this.activationMessage = activationMessage;
 	}
 
-	public MBoxChangesListener getListener() {
-		return listener;
+	public Future<Message> getActivationMessage() {
+		return activationMessage;
 	}
 }

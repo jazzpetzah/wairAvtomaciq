@@ -4,6 +4,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Future;
+
+import javax.mail.Message;
 
 import org.junit.Assert;
 
@@ -11,7 +14,6 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.LanguageUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.email.IMAPSMailbox;
-import com.wearezeta.auto.common.email.MBoxChangesListener;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -27,7 +29,7 @@ public class RegistrationPageSteps {
 
 	private ClientUser userToRegister = null;
 
-	private MBoxChangesListener listener;
+	private Future<Message> activationMessage;
 
 	public static final int maxCheckCnt = 2;
 
@@ -296,7 +298,7 @@ public class RegistrationPageSteps {
 
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
-		this.listener = IMAPSMailbox.getInstance().startMboxListener(
+		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
 				expectedHeaders);
 		PagesCollection.registrationPage.inputPassword();
 	}
@@ -355,9 +357,8 @@ public class RegistrationPageSteps {
 	public void ISubmitRegistrationData() throws Exception {
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
-		this.listener = IMAPSMailbox.getInstance().startMboxListener(
+		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
 				expectedHeaders);
-
 		PagesCollection.registrationPage.createAccount();
 	}
 
@@ -406,7 +407,7 @@ public class RegistrationPageSteps {
 
 	@Then("^I verify registration address$")
 	public void IVerifyRegistrationAddress() throws Exception {
-		BackendAPIWrappers.activateRegisteredUser(this.listener);
+		BackendAPIWrappers.activateRegisteredUser(this.activationMessage);
 		userToRegister.setUserState(UserState.Created);
 	}
 

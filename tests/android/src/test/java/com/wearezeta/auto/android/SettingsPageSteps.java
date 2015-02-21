@@ -2,13 +2,15 @@ package com.wearezeta.auto.android;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Future;
+
+import javax.mail.Message;
 
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.email.IMAPSMailbox;
-import com.wearezeta.auto.common.email.MBoxChangesListener;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -18,7 +20,7 @@ import cucumber.api.java.en.When;
 
 public class SettingsPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	private MBoxChangesListener listener;
+	private Future<Message> passwordResetMessage;
 	private ClientUser userToRegister = null;
 
 	@When("^I request reset password for (.*)$")
@@ -45,10 +47,11 @@ public class SettingsPageSteps {
 		}
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
-		this.listener = IMAPSMailbox.getInstance().startMboxListener(
+		this.passwordResetMessage = IMAPSMailbox.getInstance().getMessage(
 				expectedHeaders);
 
-		String link = BackendAPIWrappers.getPasswordResetLink(this.listener);
+		String link = BackendAPIWrappers
+				.getPasswordResetLink(this.passwordResetMessage);
 		PagesCollection.peoplePickerPage = PagesCollection.settingsPage
 				.resetByLink(link, newPass);
 	}

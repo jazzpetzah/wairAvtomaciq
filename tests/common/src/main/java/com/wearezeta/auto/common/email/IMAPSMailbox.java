@@ -5,11 +5,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Random;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import javax.mail.*;
 
@@ -21,14 +21,11 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 public class IMAPSMailbox {
 	private static final String MAIL_PROTOCOL = "imaps";
 	private static final String MAILS_FOLDER = "Inbox";
-	private static final int NEW_MSG_MIN_CHECK_INTERVAL = 5 * 1000; // milliseconds
 	private static final int FOLDER_OPEN_TIMEOUT = 60 * 5; // seconds
 	private static final int TOO_MANY_CONNECTIONS_TIMEOUT = 60 * 5 * 1000; // milliseconds
 
 	private static final Logger log = ZetaLogger.getLog(IMAPSMailbox.class
 			.getSimpleName());
-
-	private final Random random = new Random();
 
 	private final Semaphore folderStateGuard = new Semaphore(1);
 
@@ -56,13 +53,11 @@ public class IMAPSMailbox {
 
 	private Folder folder = null;
 
-	private Folder getFolder() {
+	protected Folder getFolder() {
 		return this.folder;
 	}
 
-	private Thread messagesCountNotifier;
-
-	private void openFolder() throws MessagingException, InterruptedException {
+	protected void openFolder() throws MessagingException, InterruptedException {
 		this.openFolder(this.getFolder());
 	}
 
@@ -74,7 +69,7 @@ public class IMAPSMailbox {
 		}
 	}
 
-	private void closeFolder() throws MessagingException {
+	protected void closeFolder() throws MessagingException {
 		this.closeFolder(this.getFolder());
 	}
 
@@ -106,47 +101,16 @@ public class IMAPSMailbox {
 		}
 	}
 
-	public MBoxChangesListener startMboxListener(
-			Map<String, String> expectedHeaders) throws MessagingException,
-			InterruptedException {
-		this.openFolder();
-		CountDownLatch wait = new CountDownLatch(1);
-		MBoxChangesListener listener = new MBoxChangesListener(this,
-				expectedHeaders, wait);
-		// This is to force mbox update notifications
-		messagesCountNotifier = new Thread() {
-			@Override
-			public void run() {
-				Folder dstFolder = IMAPSMailbox.this.getFolder();
-				while (dstFolder != null && dstFolder.isOpen()) {
-					try {
-						Thread.sleep(NEW_MSG_MIN_CHECK_INTERVAL
-								+ random.nextInt(NEW_MSG_MIN_CHECK_INTERVAL));
-					} catch (InterruptedException e) {
-						return;
-					}
-				}
-			}
-		};
-		messagesCountNotifier.start();
-		folder.addMessageCountListener(listener);
-		return listener;
-	}
+	private final ExecutorService pool = Executors.newFixedThreadPool(5);
 
-	public static Message getFilteredMessage(MBoxChangesListener listener,
-			int timeout) throws Exception {
-		try {
-			Message message = listener.getMatchedMessage(timeout);
-			if (message != null) {
-				return message;
-			}
-			throw new TimeoutException(
-					String.format(
-							"The email message for user %s has not been received within %s second(s) timeout",
-							getName(), timeout));
-		} finally {
-			listener.getParentMBox().closeFolder();
-		}
+	public Future<Message> getMessage(Map<String, String> expectedHeaders)
+			throws MessagingException, InterruptedException {
+		this.openFolder();
+		MBoxChangesListener listener = new MBoxChangesListener(this,
+				expectedHeaders);
+
+		folder.addMessageCountListener(listener);
+		return pool.submit(listener);
 	}
 
 	static {

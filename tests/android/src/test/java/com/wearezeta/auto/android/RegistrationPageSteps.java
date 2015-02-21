@@ -3,13 +3,15 @@ package com.wearezeta.auto.android;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Future;
+
+import javax.mail.Message;
 
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.email.IMAPSMailbox;
-import com.wearezeta.auto.common.email.MBoxChangesListener;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -22,7 +24,7 @@ public class RegistrationPageSteps {
 
 	private ClientUser userToRegister = null;
 
-	private MBoxChangesListener listener;
+	private Future<Message> activationMessage;
 
 	@When("^I press Camera button twice$")
 	public void WhenIPressCameraButton() throws IOException,
@@ -108,7 +110,7 @@ public class RegistrationPageSteps {
 
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
-		this.listener = IMAPSMailbox.getInstance().startMboxListener(
+		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
 				expectedHeaders);
 	}
 
@@ -120,11 +122,12 @@ public class RegistrationPageSteps {
 
 	@Then("^I verify registration address$")
 	public void IVerifyRegistrationAddress() throws Throwable {
-		BackendAPIWrappers.activateRegisteredUser(this.listener);
+		BackendAPIWrappers.activateRegisteredUser(this.activationMessage);
 		this.userToRegister.setUserState(UserState.Created);
-		PagesCollection.contactListPage = PagesCollection.registrationPage.continueRegistration();
+		PagesCollection.contactListPage = PagesCollection.registrationPage
+				.continueRegistration();
 	}
-	
+
 	/**
 	 * Activates user using browser by URL from mail
 	 * 
@@ -133,8 +136,10 @@ public class RegistrationPageSteps {
 	 * @throws Exception
 	 */
 	@Then("^I activate user by URL$")
-	public void WhenIActivateUserByUrl() throws Exception{
-		String link = BackendAPIWrappers.getUserActivationLink(this.listener);
-		PagesCollection.peoplePickerPage = PagesCollection.registrationPage.activateByLink(link);
+	public void WhenIActivateUserByUrl() throws Exception {
+		String link = BackendAPIWrappers
+				.getUserActivationLink(this.activationMessage);
+		PagesCollection.peoplePickerPage = PagesCollection.registrationPage
+				.activateByLink(link);
 	}
 }

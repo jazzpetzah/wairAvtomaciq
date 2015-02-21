@@ -2,35 +2,49 @@ package com.wearezeta.auto.common.email;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.Map.Entry;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
+import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.event.MessageCountEvent;
 import javax.mail.event.MessageCountListener;
 
-public class MBoxChangesListener implements MessageCountListener {
+public class MBoxChangesListener implements MessageCountListener,
+		Callable<Message> {
+	private static final int NEW_MSG_MIN_CHECK_INTERVAL = 5 * 1000; // milliseconds
+	
 	private Map<String, String> expectedHeaders = new HashMap<String, String>();
-	private CountDownLatch waitObj;
+	private CountDownLatch waitObj = new CountDownLatch(1);
 	private Message matchedMessage;
 	private IMAPSMailbox parentMBox;
-
-	public IMAPSMailbox getParentMBox() {
-		return this.parentMBox;
-	}
+	private final Random random = new Random();
+	private Thread messagesCountNotifier;
 
 	public MBoxChangesListener(IMAPSMailbox parentMBox,
-			Map<String, String> expectedHeaders, CountDownLatch wait) {
+			Map<String, String> expectedHeaders) {
 		this.expectedHeaders = expectedHeaders;
-		this.waitObj = wait;
 		this.parentMBox = parentMBox;
-	}
 
-	public Message getMatchedMessage(int timeout) throws InterruptedException {
-		this.waitObj.await(timeout, TimeUnit.SECONDS);
-		return this.matchedMessage;
+		// This is to force mbox update notifications
+		messagesCountNotifier = new Thread() {
+			@Override
+			public void run() {
+				Folder dstFolder = parentMBox.getFolder();
+				while (dstFolder != null && dstFolder.isOpen()) {
+					try {
+						Thread.sleep(NEW_MSG_MIN_CHECK_INTERVAL
+								+ random.nextInt(NEW_MSG_MIN_CHECK_INTERVAL));
+					} catch (InterruptedException e) {
+						return;
+					}
+				}
+			}
+		};
+		messagesCountNotifier.start();
 	}
 
 	@Override
@@ -69,4 +83,14 @@ public class MBoxChangesListener implements MessageCountListener {
 		// TODO Auto-generated method stub
 	}
 
+	@Override
+	public Message call() throws Exception {
+		try {
+			this.waitObj.await();
+			return this.matchedMessage;
+		} finally {
+			messagesCountNotifier.interrupt();
+			this.parentMBox.closeFolder();
+		}
+	}
 }
