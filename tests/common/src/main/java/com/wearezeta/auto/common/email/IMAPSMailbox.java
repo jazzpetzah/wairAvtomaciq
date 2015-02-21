@@ -39,14 +39,15 @@ public class IMAPSMailbox {
 
 	private Thread messagesCountNotifier;
 
-	private void openFolder() throws MessagingException, InterruptedException {
+	private synchronized void openFolder() throws MessagingException,
+			InterruptedException {
 		if (!folder.isOpen()) {
 			folderStateGuard.tryAcquire(FOLDER_OPEN_TIMEOUT, TimeUnit.SECONDS);
 			folder.open(Folder.READ_ONLY);
 		}
 	}
 
-	private void closeFolder() throws MessagingException {
+	private synchronized void closeFolder() throws MessagingException {
 		if (folder.isOpen()) {
 			folder.close(false);
 			folderStateGuard.release();
