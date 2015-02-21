@@ -89,8 +89,8 @@ class MBoxChangesListener implements MessageCountListener,
 			this.waitObj.await();
 			return this.matchedMessage;
 		} finally {
-			messagesCountNotifier.interrupt();
 			this.parentMBox.closeFolder();
+			messagesCountNotifier.interrupt();
 		}
 	}
 }
