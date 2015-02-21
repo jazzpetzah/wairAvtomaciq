@@ -19,7 +19,7 @@ public class BackendMessage {
 	public BackendMessage(Message msg) throws Exception {
 		this.msg = msg;
 
-		IMAPSMailbox.getInstance().openFolder();
+		IMAPSMailbox.getInstance().openFolder(msg.getFolder());
 		try {
 			@SuppressWarnings("unchecked")
 			Enumeration<Header> hdrs = msg.getAllHeaders();
@@ -28,7 +28,7 @@ public class BackendMessage {
 				mapHeaders.put(hdr.getName(), hdr.getValue());
 			}
 		} finally {
-			IMAPSMailbox.getInstance().closeFolder();
+			IMAPSMailbox.getInstance().closeFolder(msg.getFolder());
 		}
 	}
 
@@ -38,7 +38,7 @@ public class BackendMessage {
 	}
 
 	public String getContent() throws Exception {
-		IMAPSMailbox.getInstance().openFolder();
+		IMAPSMailbox.getInstance().openFolder(msg.getFolder());
 		try {
 			Object msgContent = this.msg.getContent();
 			if (msgContent instanceof Multipart) {
@@ -55,7 +55,7 @@ public class BackendMessage {
 				return msgContent.toString();
 			}
 		} finally {
-			IMAPSMailbox.getInstance().closeFolder();
+			IMAPSMailbox.getInstance().closeFolder(msg.getFolder());
 		}
 	}
 
