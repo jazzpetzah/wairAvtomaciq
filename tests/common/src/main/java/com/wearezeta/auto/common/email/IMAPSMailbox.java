@@ -41,15 +41,18 @@ public class IMAPSMailbox {
 
 	public synchronized void openFolder() throws MessagingException,
 			InterruptedException {
+		folderStateGuard.tryAcquire(FOLDER_OPEN_TIMEOUT, TimeUnit.SECONDS);
 		if (!folder.isOpen()) {
-			folderStateGuard.tryAcquire(FOLDER_OPEN_TIMEOUT, TimeUnit.SECONDS);
 			folder.open(Folder.READ_ONLY);
 		}
 	}
 
 	public synchronized void closeFolder() throws MessagingException {
-		if (folder.isOpen()) {
-			folder.close(false);
+		try {
+			if (folder.isOpen()) {
+				folder.close(false);
+			}
+		} finally {
 			folderStateGuard.release();
 		}
 	}
