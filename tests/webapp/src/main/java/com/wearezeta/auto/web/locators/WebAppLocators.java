@@ -91,7 +91,7 @@ public final class WebAppLocators {
 
 		public static final String xpathActionMessageEntry = "//div[contains(@class,'special')]//div[@class='action' and contains(text(), '%s')]";
 
-		public static final String xpathSendImageLabel = "//label[contains(@class,'controls-right-button') and contains(@class,'zi-picture')]";
+		public static final String xpathSendImageLabel = "//label[contains(@class,'controls-right-button') and contains(@class,'icon-library')]";
 
 		public static final String cssRightControlsPanel = "div.controls-right";
 
@@ -104,7 +104,7 @@ public final class WebAppLocators {
 
 		public static final String xpathImageMessageEntry = "//div[@class='message-asset-image']";
 		
-		public static final String xpathPingButton = "//span[contains(@class, 'zi-ping') and contains(@class,'controls-right-button')]";
+		public static final String xpathPingButton = "//span[contains(@class, 'icon-ping') and contains(@class,'controls-right-button')]";
 		
 		public static final String classPingMessage = "pinged";
 	}
@@ -136,9 +136,9 @@ public final class WebAppLocators {
 
 		public static final String idUserProfilePage = "participants-bubble";
 
-		public static final String xpathNameAddPeopleButton = "//div[@class='footer-button-left icon-plus icon-button']";
+		public static final String xpathNameAddPeopleButton = "//div[contains(@class,'footer-button-left') and contains(@class,'icon-plus')]";
 
-		public static final String xpathNameBlockButton = "//div[@class='footer-button-right icon-block icon-button']";
+		public static final String xpathNameBlockButton = "//div[contains(@class,'footer-button-right') and contains(@class,'icon-block')]";
 
 		public static final String xpathUserName = "//div[@class='name']";
 
@@ -152,7 +152,7 @@ public final class WebAppLocators {
 
 		public static final String xpathParticipantName = "//div[@class='search-list-item-name' and text()='%s']/..";
 
-		public static final String xpathRemoveFromGroupChat = "//div[@class='footer-button-right icon-leave icon-button']";
+		public static final String xpathRemoveFromGroupChat = "//div[contains(@class,'footer-button-right') and contains(@class,'icon-leave')]";
 
 		public static final String xpathGroupAddPeopleButton = "//div[contains(@class, 'participants-group-add')]";
 
