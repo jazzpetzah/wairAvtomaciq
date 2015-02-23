@@ -106,12 +106,12 @@ public class RegistrationPageSteps {
 
 	@When("^I submit registration data$")
 	public void ISubmitRegistrationData() throws Exception {
-		PagesCollection.registrationPage.createAccount();
-
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
 		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
 				expectedHeaders);
+
+		PagesCollection.registrationPage.createAccount();
 	}
 
 	@Then("^I see confirmation page$")
