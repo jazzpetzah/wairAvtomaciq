@@ -1,6 +1,5 @@
 package com.wearezeta.auto.common.email;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,12 +9,11 @@ import javax.mail.MessagingException;
 
 public class PasswordResetMessage extends WireMessage {
 
-	public PasswordResetMessage(Message msg) throws MessagingException, IOException {
+	public PasswordResetMessage(Message msg) throws Exception {
 		super(msg);
 	}
 
-	public String extractPasswordResetLink() throws IOException,
-			MessagingException {
+	public String extractPasswordResetLink() throws Exception {
 		ArrayList<String> links = new ArrayList<String>();
 
 		String regex = "<a href=\"([^\"]*)\"[^>]*>CHANGE PASSWORD</a>";

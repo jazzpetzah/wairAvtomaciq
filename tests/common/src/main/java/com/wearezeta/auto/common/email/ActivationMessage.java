@@ -1,6 +1,5 @@
 package com.wearezeta.auto.common.email;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,13 +9,11 @@ import javax.mail.MessagingException;
 
 public class ActivationMessage extends WireMessage {
 
-	public ActivationMessage(Message msg) throws MessagingException,
-			IOException {
+	public ActivationMessage(Message msg) throws Exception {
 		super(msg);
 	}
 
-	public String extractActivationLink() throws IOException,
-			MessagingException {
+	public String extractActivationLink() throws Exception {
 		ArrayList<String> links = new ArrayList<String>();
 
 		String regex = "<a href=\"([^\"]*)\"[^>]*>VERIFY</a>";

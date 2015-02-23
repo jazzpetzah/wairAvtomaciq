@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.wearezeta.suite_splitter.Testcase;
@@ -116,7 +117,14 @@ public class ResultJSON extends TestcasesStorage {
 		for (String path : sortedPaths) {
 			final String json = FileUtils.readFileToString(new File(path),
 					"UTF-8");
-			updateMainReport(resultJSON, new JSONArray(json));
+			try {
+				updateMainReport(resultJSON, new JSONArray(json));
+			} catch (JSONException e) {
+				System.out.println(String.format(
+						"Skipping and removing '%s' as non valid...", path));
+				e.printStackTrace();
+				new File(path).delete();
+			}
 		}
 
 		FileUtils.writeStringToFile(new File(resultPath),

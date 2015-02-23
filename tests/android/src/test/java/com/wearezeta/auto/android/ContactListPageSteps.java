@@ -172,7 +172,10 @@ public class ContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.contactListPage.swipeRightOnContact(1000, contact);
+		AndroidPage page = PagesCollection.contactListPage.swipeRightOnContact(1000, contact);
+		if (page instanceof DialogPage) {
+			PagesCollection.dialogPage = (DialogPage) page;
+		}
 	}
 
 	@When("^I swipe archive conversation (.*)$")
@@ -191,7 +194,7 @@ public class ContactListPageSteps {
 
 	@When("^I swipe up contact list$")
 	public void ISwipeUpContactList() throws Exception {
-		PagesCollection.contactListPage.swipeUp(1000);
+		PagesCollection.contactListPage.dialogsPagesSwipeUp(1000);
 	}
 
 	@Then("^I see (.*) and (.*) chat in contact list$")

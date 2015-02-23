@@ -517,7 +517,7 @@ public class DialogPage extends AndroidPage {
 			path = CommonUtils.getMediaBarPauseIconPath(DialogPage.class);
 		}
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
-		return ImageUtil.getOverlapScore(mediaImage, templateImage, ImageUtil.RESIZE_NORESIZE);
+		return ImageUtil.getOverlapScore(mediaImage, templateImage, ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 	}
 
 	public double checkMediaControlIcon(String label) throws Exception {
@@ -530,7 +530,7 @@ public class DialogPage extends AndroidPage {
 			path = CommonUtils.getMediaPauseIconPath(DialogPage.class);
 		}
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
-		return ImageUtil.getOverlapScore(mediaImage, templateImage, ImageUtil.RESIZE_NORESIZE);
+		return ImageUtil.getOverlapScore(mediaImage, templateImage, ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 	}
 
 	public void tapPlayPauseMediaBarBtn() {

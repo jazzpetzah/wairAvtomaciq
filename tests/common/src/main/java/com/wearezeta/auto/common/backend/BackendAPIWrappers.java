@@ -14,6 +14,10 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+
+import javax.mail.Message;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -23,7 +27,6 @@ import org.json.JSONObject;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.email.ActivationMessage;
 import com.wearezeta.auto.common.email.IMAPSMailbox;
-import com.wearezeta.auto.common.email.MBoxChangesListener;
 import com.wearezeta.auto.common.email.PasswordResetMessage;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -47,38 +50,38 @@ public final class BackendAPIWrappers {
 	}
 
 	public static ClientUser createUser(ClientUser user) throws Exception {
-		IMAPSMailbox mbox = IMAPSMailbox.createDefaultInstance();
+		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", user.getEmail());
-		MBoxChangesListener listener = mbox.startMboxListener(expectedHeaders);
+		Future<Message> activationMessage = mbox.getMessage(expectedHeaders);
 		BackendREST.registerNewUser(user.getEmail(), user.getName(),
 				user.getPassword());
-		activateRegisteredUser(listener);
+		activateRegisteredUser(activationMessage);
 		user.setUserState(UserState.Created);
 		return user;
 	}
 
-	public static void activateRegisteredUser(MBoxChangesListener listener)
+	public static void activateRegisteredUser(Future<Message> activationMessage)
 			throws Exception {
 		ActivationMessage registrationInfo = new ActivationMessage(
-				IMAPSMailbox.getFilteredMessage(listener, ACTIVATION_TIMEOUT));
+				activationMessage.get(ACTIVATION_TIMEOUT, TimeUnit.SECONDS));
 		BackendREST.activateNewUser(registrationInfo.getXZetaKey(),
 				registrationInfo.getXZetaCode());
 		log.debug(String.format("User %s is activated",
 				registrationInfo.getLastUserEmail()));
 	}
 
-	public static String getUserActivationLink(MBoxChangesListener listener)
+	public static String getUserActivationLink(Future<Message> activationMessage)
 			throws Exception {
 		ActivationMessage registrationInfo = new ActivationMessage(
-				IMAPSMailbox.getFilteredMessage(listener, ACTIVATION_TIMEOUT));
+				activationMessage.get(ACTIVATION_TIMEOUT, TimeUnit.SECONDS));
 		return registrationInfo.extractActivationLink();
 	}
-	
-	public static String getPasswordResetLink(MBoxChangesListener listener)
-			throws Exception {
+
+	public static String getPasswordResetLink(
+			Future<Message> passwordResetMessage) throws Exception {
 		PasswordResetMessage resetPassword = new PasswordResetMessage(
-				IMAPSMailbox.getFilteredMessage(listener, ACTIVATION_TIMEOUT));
+				passwordResetMessage.get(ACTIVATION_TIMEOUT, TimeUnit.SECONDS));
 		return resetPassword.extractPasswordResetLink();
 	}
 
@@ -509,11 +512,12 @@ public final class BackendAPIWrappers {
 				lastReadEvent, null, null);
 	}
 
-	public static void updateConvMutedState(ClientUser user, ClientUser mutedUser,
-			boolean muted) throws Exception {
+	public static void updateConvMutedState(ClientUser user,
+			ClientUser mutedUser, boolean muted) throws Exception {
 		tryLoginByUser(user);
-		BackendREST.updateConvSelfInfo(generateAuthToken(user), getConversationWithSingleUser(user, mutedUser), null,
-				muted, null);
+		BackendREST.updateConvSelfInfo(generateAuthToken(user),
+				getConversationWithSingleUser(user, mutedUser), null, muted,
+				null);
 	}
 
 	public static void archiveUserConv(ClientUser ownerUser,
@@ -523,12 +527,12 @@ public final class BackendAPIWrappers {
 				getConversationWithSingleUser(ownerUser, archivedUser), null,
 				null, true);
 	}
-	
-	public static void archiveGroupConv(ClientUser selfUser, String conversationToArchive) throws Exception{
+
+	public static void archiveGroupConv(ClientUser selfUser,
+			String conversationToArchive) throws Exception {
 		tryLoginByUser(selfUser);
 		BackendREST.updateConvSelfInfo(generateAuthToken(selfUser),
-				conversationToArchive, null,
-				null, true);
+				conversationToArchive, null, null, true);
 	}
 
 	public static void unarchiveUserConv(ClientUser ownerUser,

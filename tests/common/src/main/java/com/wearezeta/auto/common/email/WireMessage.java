@@ -1,13 +1,11 @@
 package com.wearezeta.auto.common.email;
 
-import java.io.IOException;
-
 import javax.mail.Message;
 import javax.mail.MessagingException;
 
 public class WireMessage extends BackendMessage {
 
-	public WireMessage(Message msg) throws MessagingException, IOException {
+	public WireMessage(Message msg) throws Exception {
 		super(msg);
 	}
 

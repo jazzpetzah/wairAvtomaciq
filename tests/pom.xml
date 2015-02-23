@@ -10,6 +10,7 @@
 		<module>common</module>
 		<module>ios</module>
 		<module>android</module>
+		<module>android-tablet</module>
 		<module>audio</module>
 		<module>macosx</module>
 		<module>webapp</module>
