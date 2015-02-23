@@ -117,6 +117,9 @@ public class DialogPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathDialogTitleBar)
 	private WebElement titleBar;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameSoundCloudPause)
+	private WebElement soundCloudPause;
 
 	private String connectMessage = "Hi %s, let’s connect on wire. %s";
 	private String connectingLabel = "CONNECTING TO %s";
@@ -244,6 +247,14 @@ public class DialogPage extends IOSPage {
 				By.xpath(IOSLocators.xpathMediaConversationCell));
 		if (flag) {
 			mediaLinkCell.click();
+			try {
+				DriverUtils.setImplicitWaitValue(driver, 5);
+				if (!DriverUtils.isElementDisplayed(soundCloudPause)) {
+					mediaLinkCell.click();
+				}
+			} finally {
+				DriverUtils.setDefaultImplicitWait(driver);
+			}
 		} else {
 			Assert.fail("Media container element is missing in elements tree");
 		}
