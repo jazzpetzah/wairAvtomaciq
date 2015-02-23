@@ -120,8 +120,10 @@ public class ResultJSON extends TestcasesStorage {
 			try {
 				updateMainReport(resultJSON, new JSONArray(json));
 			} catch (JSONException e) {
-				System.out.println(String.format("Skipping %s...", path));
+				System.out.println(String.format(
+						"Skipping and removing '%s' as non valid...", path));
 				e.printStackTrace();
+				new File(path).delete();
 			}
 		}
 
