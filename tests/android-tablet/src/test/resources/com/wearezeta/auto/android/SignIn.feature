@@ -5,7 +5,7 @@ Feature: Sign In
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I see sign in screen
-    When I press tablet Sign in button
+    When I press Sign in button
     And I have entered login <Login>
     And I have entered password <Password>
     And I attempt to press Login button
@@ -19,7 +19,7 @@ Feature: Sign In
   @id1413 @staging
   Scenario Outline: Negative case for sign in
     Given I see sign in screen
-    When I press tablet Sign in button
+    When I press Sign in button
     And I have entered login <Login>
     And I have entered password <Password>
     And I attempt to press Login button

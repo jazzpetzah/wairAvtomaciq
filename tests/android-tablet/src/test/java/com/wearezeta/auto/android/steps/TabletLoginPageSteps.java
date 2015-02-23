@@ -1,7 +1,5 @@
 package com.wearezeta.auto.android.steps;
 
-import java.io.IOException;
-
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.PagesCollection;
@@ -42,7 +40,7 @@ public class TabletLoginPageSteps {
 			// Ignore silently
 		}
 		Assert.assertNotNull(TabletPagesCollection.loginPage.isVisible());
-		TabletPagesCollection.loginPage.tabletSignIn();
+		TabletPagesCollection.loginPage.SignIn();
 		TabletPagesCollection.loginPage.setLogin(login);
 		TabletPagesCollection.loginPage.setPassword(password);
 		try {
@@ -82,17 +80,5 @@ public class TabletLoginPageSteps {
 	public void WhenIPressJoinButton() throws Exception {
 		TabletPagesCollection.registrationPage = TabletPagesCollection.loginPage.tabletJoin();
 		PagesCollection.registrationPage = TabletPagesCollection.registrationPage;
-	}
-
-	/**
-	 * Taps SignIn button on Welcome page
-	 * 
-	 * @step. I press tablet Sign in button
-	 * 
-	 * @throws IOException
-	 */
-	@When("I press tablet Sign in button")
-	public void WhenIPressSignInButton() throws IOException {
-		TabletPagesCollection.loginPage.tabletSignIn();
 	}
 }
