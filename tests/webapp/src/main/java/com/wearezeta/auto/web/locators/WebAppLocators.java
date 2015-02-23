@@ -95,7 +95,7 @@ public final class WebAppLocators {
 
 		public static final String cssRightControlsPanel = "div.controls-right";
 
-		public static final String cssSendImageLabel = "label.controls-right-button.zi-picture";
+		public static final String cssSendImageLabel = "label.controls-right-button.icon-library.icon-button";
 
 		public static final String xpathSendImageInput = xpathSendImageLabel
 				+ "/input[@type='file']";
