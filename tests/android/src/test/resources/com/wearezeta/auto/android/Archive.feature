@@ -7,11 +7,9 @@ Feature: Archive
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe right on a <Contact>
-    And I swipe archive conversation <Contact>
     Then Contact name <Contact> is not in list
     And I swipe up contact list
     And I swipe right on a <Contact>
-    And I swipe archive conversation <Contact>
     And I see dialog page
 
     Examples: 
@@ -26,11 +24,9 @@ Feature: Archive
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe right on a <GroupChatName>
-    And I swipe archive conversation <GroupChatName>
     Then Contact name <GroupChatName> is not in list
     And I swipe up contact list
     And I swipe right on a <GroupChatName>
-    And I swipe archive conversation <GroupChatName>
     And I see dialog page
 
     Examples: 
