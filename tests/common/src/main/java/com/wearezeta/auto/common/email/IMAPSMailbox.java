@@ -22,7 +22,7 @@ public class IMAPSMailbox {
 	private static final String MAIL_PROTOCOL = "imaps";
 	private static final String MAILS_FOLDER = "Inbox";
 	private static final int FOLDER_OPEN_TIMEOUT = 60 * 5; // seconds
-	private static final int TOO_MANY_CONNECTIONS_TIMEOUT = 60 * 5 * 1000; // milliseconds
+	private static final int MBOX_MAX_CONNECT_RETRIES = 10;
 
 	private static final Logger log = ZetaLogger.getLog(IMAPSMailbox.class
 			.getSimpleName());
@@ -34,16 +34,25 @@ public class IMAPSMailbox {
 		final Properties props = System.getProperties();
 		final Session session = Session.getInstance(props, null);
 		try {
-			try {
-				store = session.getStore(MAIL_PROTOCOL);
-				store.connect(getServerName(), -1, getName(), getPassword());
-			} catch (AuthenticationFailedException e) {
-				if (e.getMessage().contains("simultaneous")) {
-					Thread.sleep(TOO_MANY_CONNECTIONS_TIMEOUT);
+			int ntry = 0;
+			Exception savedException = null;
+			do {
+				try {
+					store = session.getStore(MAIL_PROTOCOL);
 					store.connect(getServerName(), -1, getName(), getPassword());
-				} else {
-					throw e;
+					break;
+				} catch (Exception e) {
+					log.debug(String
+							.format("Failed to connect to the mailbox (ntry %d of %d):",
+									ntry, MBOX_MAX_CONNECT_RETRIES));
+					e.printStackTrace();
+					savedException = e;
 				}
+				Thread.sleep(30 * 1000);
+				ntry++;
+			} while (ntry < MBOX_MAX_CONNECT_RETRIES);
+			if (ntry >= MBOX_MAX_CONNECT_RETRIES) {
+				throw savedException;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
