@@ -118,7 +118,10 @@ public class IMAPSMailbox {
 		MBoxChangesListener listener = new MBoxChangesListener(this,
 				expectedHeaders);
 		folder.addMessageCountListener(listener);
-		return pool.submit(listener);
+		Future<Message> result = pool.submit(listener);
+		//trying to wait after listener initialization to avoid missing emails straight after the initialization
+		Thread.sleep(2000);
+		return result;
 	}
 
 	static {

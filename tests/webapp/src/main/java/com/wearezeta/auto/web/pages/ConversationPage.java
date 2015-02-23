@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -157,7 +158,12 @@ public class ConversationPage extends WebPage {
 	}
 	
 	public void clickPingButton() {
-
+		
+		try {
+			DriverUtils.moveMouserOver(driver, pingButton);
+		} catch (WebDriverException e) {
+			// do nothing (safari workaround)
+		}
 		pingButton.click();
 	}
 	
