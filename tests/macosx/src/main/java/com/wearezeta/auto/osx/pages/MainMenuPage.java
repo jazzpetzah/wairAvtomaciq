@@ -13,6 +13,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
+import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class MainMenuPage extends OSXPage {
@@ -27,7 +28,7 @@ public class MainMenuPage extends OSXPage {
 
 	public MainMenuPage(ZetaOSXDriver driver, WebDriverWait wait)
 			throws Exception {
-		super(driver, wait);
+		super(driver, wait, OSXExecutionContext.wirePath);
 	}
 
 	public void SignOut() throws Exception {

@@ -17,7 +17,7 @@ public abstract class OSXPage extends BasePage {
 	}
 
 	public OSXPage(ZetaOSXDriver driver, WebDriverWait wait) throws Exception {
-		this(driver, wait, OSXExecutionContext.wirePath);
+		this(driver, wait, null);
 	}
 
 	public OSXPage(ZetaOSXDriver driver, WebDriverWait wait, String path)
@@ -39,6 +39,11 @@ public abstract class OSXPage extends BasePage {
 
 	public void startApp() throws Exception {
 		driver.navigate().to(OSXExecutionContext.wirePath);
+	}
+
+	public static void clearPagesCollection() throws IllegalArgumentException,
+			IllegalAccessException {
+		clearPagesCollection(PagesCollection.class, OSXPage.class);
 	}
 
 	// not used in OS X

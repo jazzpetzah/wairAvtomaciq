@@ -23,6 +23,7 @@ import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.pages.LoginPage;
 import com.wearezeta.auto.osx.pages.MainMenuPage;
+import com.wearezeta.auto.osx.pages.OSXPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
 
 import cucumber.api.java.After;
@@ -49,8 +50,6 @@ public class CommonOSXSteps {
 				"warn");
 	}
 
-	public static PagesCollection senderPages;
-
 	public static void resetBackendSettingsIfOverwritten() throws IOException,
 			Exception {
 		if (!OSXCommonUtils.isBackendTypeSet(CommonUtils
@@ -75,8 +74,6 @@ public class CommonOSXSteps {
 	}
 
 	private void commonBefore() throws Exception {
-		senderPages = new PagesCollection();
-
 		final ZetaOSXDriver driver = resetOSXDriver(OSXExecutionContext.appiumUrl);
 		final WebDriverWait wait = PlatformDrivers
 				.createDefaultExplicitWait(driver);
@@ -289,8 +286,8 @@ public class CommonOSXSteps {
 
 	@After
 	public void tearDown() throws Exception {
-		senderPages.closeAllPages();
-
+		OSXPage.clearPagesCollection();
+		
 		commonSteps.getUserManager().resetUsers();
 
 		// workaround for stuck on Send picture test

@@ -69,7 +69,7 @@ Feature: Connect to user
     When I wait up to 15 seconds until <Contact> exists in backend search results
     And I search by email for user <Contact>
     And I see user <Contact> in search results
-    And I add user <Contact> from search results
+    And I select user <Contact> from search results
     And I unblock user
     Then I open conversation with <Contact>
     And I see random message in conversation
