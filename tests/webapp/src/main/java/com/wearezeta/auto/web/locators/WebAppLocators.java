@@ -30,13 +30,13 @@ public final class WebAppLocators {
 
 		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
 
-		public static final String classArchiveButton = "zi-archive";
+		public static final String classArchiveButton = "icon-archive";
 
-		public static final String classMuteButton = "zi-silence";
+		public static final String classMuteButton = "icon-silence";
 
 		public static final String classMuteIcon = "conversation-muted";
 
-		public static final String classActionsButton = "zi-actions";
+		public static final String classActionsButton = "icon-more";
 
 		public static final String xpathSelfProfileEntry = xpathParentContactListItem
 				+ "//div[contains(@class, 'center-column')]";
