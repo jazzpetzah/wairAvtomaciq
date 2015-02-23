@@ -78,7 +78,7 @@ public class DriverUtils {
 				}
 			});
 		} catch (TimeoutException ex) {
-			return true;
+			return false;
 		} finally {
 			setDefaultImplicitWait(driver);
 		}
