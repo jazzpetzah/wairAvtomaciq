@@ -136,9 +136,9 @@ public final class WebAppLocators {
 
 		public static final String idUserProfilePage = "participants-bubble";
 
-		public static final String xpathNameAddPeopleButton = "//div[@class='footer-button-left zi zi-add zi-button']";
+		public static final String xpathNameAddPeopleButton = "//div[@class='footer-button-left icon-plus icon-button']";
 
-		public static final String xpathNameBlockButton = "//div[@class='footer-button-right zi zi-block zi-button']";
+		public static final String xpathNameBlockButton = "//div[@class='footer-button-right icon-block icon-button']";
 
 		public static final String xpathUserName = "//div[@class='name']";
 
