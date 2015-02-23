@@ -123,6 +123,19 @@ public abstract class AndroidPage extends BasePage {
 		return returnBySwipe(SwipeDirection.UP);
 	}
 
+	public void elementSwipeRight(WebElement el, int time) {
+		Point coords = el.getLocation();
+		Dimension elementSize = el.getSize();
+		try {
+			this.getDriver().swipe(coords.x + 20,
+					coords.y + elementSize.height / 2,
+					coords.x + elementSize.width - 20,
+					coords.y + elementSize.height / 2, time);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
 	public void dialogsPagesSwipeUp(int time) {
 		Point coords = content.getLocation();
 		Dimension elementSize = content.getSize();

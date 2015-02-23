@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.mail.BodyPart;
-import javax.mail.Folder;
 import javax.mail.Header;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -17,13 +16,10 @@ public class BackendMessage {
 	private Message msg;
 	private Map<String, String> mapHeaders = new HashMap<String, String>();
 
-	public BackendMessage(Message msg) throws MessagingException, IOException {
+	public BackendMessage(Message msg) throws Exception {
 		this.msg = msg;
 
-		final boolean wasFolderOpened = msg.getFolder().isOpen();
-		if (!wasFolderOpened) {
-			msg.getFolder().open(Folder.READ_ONLY);
-		}
+		IMAPSMailbox.getInstance().openFolder(msg.getFolder());
 		try {
 			@SuppressWarnings("unchecked")
 			Enumeration<Header> hdrs = msg.getAllHeaders();
@@ -32,9 +28,7 @@ public class BackendMessage {
 				mapHeaders.put(hdr.getName(), hdr.getValue());
 			}
 		} finally {
-			if (!wasFolderOpened) {
-				msg.getFolder().close(false);
-			}
+			IMAPSMailbox.getInstance().closeFolder(msg.getFolder());
 		}
 	}
 
@@ -43,11 +37,8 @@ public class BackendMessage {
 		return this.mapHeaders.get(headerName);
 	}
 
-	public String getContent() throws IOException, MessagingException {
-		final boolean wasFolderOpened = this.msg.getFolder().isOpen();
-		if (!wasFolderOpened) {
-			msg.getFolder().open(Folder.READ_ONLY);
-		}
+	public String getContent() throws Exception {
+		IMAPSMailbox.getInstance().openFolder(msg.getFolder());
 		try {
 			Object msgContent = this.msg.getContent();
 			if (msgContent instanceof Multipart) {
@@ -64,9 +55,7 @@ public class BackendMessage {
 				return msgContent.toString();
 			}
 		} finally {
-			if (!wasFolderOpened) {
-				msg.getFolder().close(false);
-			}
+			IMAPSMailbox.getInstance().closeFolder(msg.getFolder());
 		}
 	}
 

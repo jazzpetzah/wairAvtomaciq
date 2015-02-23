@@ -41,12 +41,12 @@ public final class PlatformDrivers {
 			DesiredCapabilities capabilities) throws Exception {
 		final Platform platformInCapabilities = Platform
 				.getByName((String) capabilities.getCapability("platformName"));
-		log.debug(String.format("Resetting driver instance for platfrom '%s'",
-				platformInCapabilities.getName()));
 		if (this.hasDriver(platformInCapabilities)) {
 			this.quitDriver(platformInCapabilities);
 		}
-
+		log.debug(String.format(
+				"Creating driver instance for platform '%s'...",
+				platformInCapabilities.name()));
 		switch (platformInCapabilities) {
 		case Mac:
 			drivers.put(platformInCapabilities, new ZetaOSXDriver(new URL(url),
@@ -109,7 +109,8 @@ public final class PlatformDrivers {
 	public RemoteWebDriver getDriver(Platform platform) {
 		if (!drivers.containsKey(platform)) {
 			throw new RuntimeException(String.format(
-					"Please initialize %s platform driver first", platform));
+					"Please initialize %s platform driver first",
+					platform.name()));
 		}
 		return drivers.get(platform);
 	}
@@ -125,7 +126,7 @@ public final class PlatformDrivers {
 			drivers.get(platform).quit();
 			log.debug(String.format(
 					"Successfully quit driver instance for platfrom '%s'",
-					platform.getName()));
+					platform.name()));
 		} finally {
 			drivers.remove(platform);
 		}
