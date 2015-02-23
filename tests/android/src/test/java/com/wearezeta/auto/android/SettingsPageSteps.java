@@ -48,7 +48,7 @@ public class SettingsPageSteps {
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
 		this.passwordResetMessage = IMAPSMailbox.getInstance().getMessage(
-				expectedHeaders);
+				expectedHeaders, BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
 
 		String link = BackendAPIWrappers
 				.getPasswordResetLink(this.passwordResetMessage);
