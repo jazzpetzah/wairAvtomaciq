@@ -55,7 +55,7 @@ public class ChangePasswordPage extends OSXPage {
 				.waitUntilElementAppears(
 						driver,
 						By.xpath(OSXLocators.ChangePasswordPage.xpathPasswordChangedMessage),
-						10);
+						30);
 
 		if (!isFound)
 			log.debug(driver.getPageSource());
