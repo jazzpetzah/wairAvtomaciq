@@ -28,18 +28,18 @@ public class ContactListPageSteps {
 		Assert.assertTrue("Username : " + name
 				+ " dind't appear in contact list",
 				PagesCollection.loginPage.isLoginFinished(name));
-//		PagesCollection.peoplePickerPage = PagesCollection.loginPage
-//				.clickLaterButton();
-//		if (null != PagesCollection.peoplePickerPage) {
-//			PeoplePickerPageSteps steps = new PeoplePickerPageSteps();
-//			steps.WhenISeePeoplePickerPage();
-//			steps.IClickCloseButtonDismissPeopleView();
-//			// workaround for black screen
-//			PagesCollection.peoplePickerPage.minimizeApplication(5);
-//			if (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
-//				steps.IClickCloseButtonDismissPeopleView();
-//			}
-//		}
+		PagesCollection.peoplePickerPage = PagesCollection.loginPage
+				.clickLaterButton();
+		if (null != PagesCollection.peoplePickerPage) {
+			PeoplePickerPageSteps steps = new PeoplePickerPageSteps();
+			steps.WhenISeePeoplePickerPage();
+			steps.IClickCloseButtonDismissPeopleView();
+			// workaround for black screen
+			PagesCollection.peoplePickerPage.minimizeApplication(3);
+			if (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
+				steps.IClickCloseButtonDismissPeopleView();
+			}
+		}
 	}
 
 	@When("I dismiss tutorial layout")
