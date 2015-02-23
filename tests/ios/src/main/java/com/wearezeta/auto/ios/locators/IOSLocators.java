@@ -345,6 +345,8 @@ public final class IOSLocators {
 	
 	public static final String MEDIA_STATE_STOPPED = "ended";
 	
+	public static final String nameSoundCloudPause = "Pause";
+	
 	
 	/////////////////////////////
 	//Image Full screen Locators
