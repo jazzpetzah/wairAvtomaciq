@@ -70,9 +70,10 @@ public class IMAPSMailbox {
 		this.openFolder(this.getFolder());
 	}
 
-	public void openFolder(Folder folderToOpen) throws MessagingException,
-			InterruptedException {
+	public void openFolder(Folder folderToOpen)
+			throws MessagingException, InterruptedException {
 		folderStateGuard.tryAcquire(FOLDER_OPEN_TIMEOUT, TimeUnit.SECONDS);
+
 		if (!folderToOpen.isOpen()) {
 			folderToOpen.open(Folder.READ_ONLY);
 		}
@@ -82,7 +83,8 @@ public class IMAPSMailbox {
 		this.closeFolder(this.getFolder());
 	}
 
-	public void closeFolder(Folder folderToClose) throws MessagingException {
+	public void closeFolder(Folder folderToClose)
+			throws MessagingException {
 		try {
 			if (folderToClose.isOpen()) {
 				folderToClose.close(false);
@@ -112,15 +114,13 @@ public class IMAPSMailbox {
 
 	private final ExecutorService pool = Executors.newFixedThreadPool(5);
 
-	public Future<Message> getMessage(Map<String, String> expectedHeaders)
-			throws MessagingException, InterruptedException {
+	public Future<Message> getMessage(Map<String, String> expectedHeaders,
+			int timeoutSeconds) throws MessagingException, InterruptedException {
 		this.openFolder();
 		MBoxChangesListener listener = new MBoxChangesListener(this,
-				expectedHeaders);
+				expectedHeaders, timeoutSeconds);
 		folder.addMessageCountListener(listener);
 		Future<Message> result = pool.submit(listener);
-		//trying to wait after listener initialization to avoid missing emails straight after the initialization
-		Thread.sleep(2000);
 		return result;
 	}
 
