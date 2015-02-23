@@ -1,6 +1,6 @@
 Feature: Archive
 
-  @1511 @staging
+  @1511 @regression
   Scenario Outline: Verify you can archive and unarchive
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -16,7 +16,7 @@ Feature: Archive
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @1512 @staging
+  @1512 @regression
   Scenario Outline: Verify you can archive and unarchive group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
