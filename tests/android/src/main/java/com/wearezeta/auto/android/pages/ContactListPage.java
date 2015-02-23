@@ -143,10 +143,18 @@ public class ContactListPage extends AndroidPage {
 		return contact;
 	}
 
-	public void swipeRightOnContact(int time, String contact) throws Exception {
+	public AndroidPage swipeRightOnContact(int time, String contact)
+			throws Exception {
+		AndroidPage page = null;
 		WebElement el = driver.findElementByXPath(String.format(
 				AndroidLocators.ContactListPage.xpathContactFrame, contact));
-		DriverUtils.swipeRight(this.getDriver(), el, time);
+		elementSwipeRight(el, time);
+		if (!isVisible(cursorInput)) {
+			page = new ContactListPage(this.getDriver(), this.getWait());
+		} else if (isVisible(cursorInput)) {
+			page = new DialogPage(this.getDriver(), this.getWait());
+		}
+		return page;
 	}
 
 	public AndroidPage swipeOnArchiveUnarchive(String contact) throws Exception {
