@@ -142,7 +142,7 @@ public final class WebAppLocators {
 
 		public static final String xpathUserName = "//div[@class='name']";
 
-		public static final String xpathLeaveGroupChat = "//div[@class='participants-group-leave zi zi-leave zi-button']";
+		public static final String xpathLeaveGroupChat = "//div[contains(@class,'participants-group-leave')]";
 
 		public static final String xpathConfirmLeaveButton = "//div[@class='zeta-button zeta-button-medium' and text()='leave']";
 
@@ -152,9 +152,9 @@ public final class WebAppLocators {
 
 		public static final String xpathParticipantName = "//div[@class='search-list-item-name' and text()='%s']/..";
 
-		public static final String xpathRemoveFromGroupChat = "//div[@class='footer-button-right zi zi-delete zi-button']";
+		public static final String xpathRemoveFromGroupChat = "//div[@class='footer-button-right icon-leave icon-button']";
 
-		public static final String xpathGroupAddPeopleButton = "//div[@class='participants-group-add zi zi-add zi-button']";
+		public static final String xpathGroupAddPeopleButton = "//div[contains(@class, 'participants-group-add')]";
 
 		public static final String xpathProfilePageSearchField = "//div[@class='participants-search-header']//input[@class='search-input']";
 
