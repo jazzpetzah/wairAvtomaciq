@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios;
 
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.image.BufferedImage;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
