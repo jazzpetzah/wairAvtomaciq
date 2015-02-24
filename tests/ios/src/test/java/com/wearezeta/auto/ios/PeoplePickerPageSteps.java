@@ -12,13 +12,13 @@ import com.wearezeta.auto.ios.pages.GroupChatPage;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.ios.pages.PeoplePickerPage;
-import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class PeoplePickerPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+	
 
 	@When("^I see People picker page$")
 	public void WhenISeePeoplePickerPage() throws Exception {
@@ -350,12 +350,5 @@ public class PeoplePickerPageSteps {
 		PagesCollection.peoplePickerPage.tapSendInviteCopyButton();
 	}
 	
-	@Then("^I check copied content from (.*)$")
-	public void ICheckCopiedContentFrom(String mail) throws UnsupportedFlavorException, Exception{
-		mail = usrMgr.findUserByEmailOrEmailAlias(mail).getEmail();
-		String expectedContent = "I’m on Wire. Search for %s";
-		final String finalString = String.format(expectedContent, mail);
-		System.out.print(finalString);
 
-	}
 }
