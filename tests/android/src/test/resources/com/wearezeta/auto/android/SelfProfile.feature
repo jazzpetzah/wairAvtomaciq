@@ -34,7 +34,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id328 @smoke
+  @id328 @smoke @regression
   Scenario Outline: ZClient change name
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

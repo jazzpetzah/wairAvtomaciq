@@ -3,7 +3,6 @@ package com.wearezeta.auto.common.email;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Map.Entry;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
@@ -16,14 +15,13 @@ import javax.mail.event.MessageCountEvent;
 import javax.mail.event.MessageCountListener;
 
 class MBoxChangesListener implements MessageCountListener, Callable<Message> {
-	private static final int NEW_MSG_MIN_CHECK_INTERVAL = 1000; // milliseconds
+	private static final int NEW_MSG_CHECK_INTERVAL = 500; // milliseconds
 	private static final int RECENT_MSGS_CNT = 20;
 
 	private Map<String, String> expectedHeaders = new HashMap<String, String>();
 	private CountDownLatch waitObj = new CountDownLatch(1);
 	private Message matchedMessage;
 	private IMAPSMailbox parentMBox;
-	private final Random random = new Random();
 	private Thread messagesCountNotifier;
 	private int timeoutSeconds;
 
@@ -40,8 +38,7 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 				Folder dstFolder = parentMBox.getFolder();
 				while (dstFolder != null && dstFolder.isOpen()) {
 					try {
-						Thread.sleep(NEW_MSG_MIN_CHECK_INTERVAL
-								+ random.nextInt(NEW_MSG_MIN_CHECK_INTERVAL));
+						Thread.sleep(NEW_MSG_CHECK_INTERVAL);
 					} catch (InterruptedException e) {
 						return;
 					}

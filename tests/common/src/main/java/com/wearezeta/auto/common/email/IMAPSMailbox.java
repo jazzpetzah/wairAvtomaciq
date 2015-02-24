@@ -70,8 +70,8 @@ public class IMAPSMailbox {
 		this.openFolder(this.getFolder());
 	}
 
-	public void openFolder(Folder folderToOpen)
-			throws MessagingException, InterruptedException {
+	public void openFolder(Folder folderToOpen) throws MessagingException,
+			InterruptedException {
 		folderStateGuard.tryAcquire(FOLDER_OPEN_TIMEOUT, TimeUnit.SECONDS);
 
 		if (!folderToOpen.isOpen()) {
@@ -83,8 +83,7 @@ public class IMAPSMailbox {
 		this.closeFolder(this.getFolder());
 	}
 
-	public void closeFolder(Folder folderToClose)
-			throws MessagingException {
+	public void closeFolder(Folder folderToClose) throws MessagingException {
 		try {
 			if (folderToClose.isOpen()) {
 				folderToClose.close(false);
@@ -112,7 +111,7 @@ public class IMAPSMailbox {
 		}
 	}
 
-	private final ExecutorService pool = Executors.newFixedThreadPool(5);
+	private final ExecutorService pool = Executors.newFixedThreadPool(1);
 
 	public Future<Message> getMessage(Map<String, String> expectedHeaders,
 			int timeoutSeconds) throws MessagingException, InterruptedException {
