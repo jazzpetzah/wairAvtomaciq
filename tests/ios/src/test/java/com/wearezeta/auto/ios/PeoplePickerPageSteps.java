@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios;
 
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 
 import org.junit.Assert;
@@ -11,6 +12,7 @@ import com.wearezeta.auto.ios.pages.GroupChatPage;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.ios.pages.PeoplePickerPage;
+import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -339,10 +341,21 @@ public class PeoplePickerPageSteps {
 	 * Presses the Copy button on the Send Invitation pop up
 	 * 
 	 * @step. ^I press the copy button$
+	 * @throws Exception 
+	 * @throws UnsupportedFlavorException 
 	 * 
 	 */
 	@When("^I press the copy button$")
-	public void IPressTheCopyButton(){
+	public void IPressTheCopyButton() throws UnsupportedFlavorException, Exception{
 		PagesCollection.peoplePickerPage.tapSendInviteCopyButton();
+	}
+	
+	@Then("^I check copied content from (.*)$")
+	public void ICheckCopiedContentFrom(String mail) throws UnsupportedFlavorException, Exception{
+		mail = usrMgr.findUserByEmailOrEmailAlias(mail).getEmail();
+		String expectedContent = "I’m on Wire. Search for %s";
+		final String finalString = String.format(expectedContent, mail);
+		System.out.print(finalString);
+
 	}
 }

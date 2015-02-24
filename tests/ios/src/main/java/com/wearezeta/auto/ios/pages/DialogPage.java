@@ -738,6 +738,7 @@ public class DialogPage extends IOSPage {
 			pasteStringToInput(el, text);
 		}
 	}
+	
 
 	public double checkPingIcon(String label) throws Exception {
 		String path = null;

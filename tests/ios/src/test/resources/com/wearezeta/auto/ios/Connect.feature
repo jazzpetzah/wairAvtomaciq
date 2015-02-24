@@ -285,6 +285,13 @@ Feature: Connect
     And I see People picker page
     And I press the send an invite button
     And I press the copy button
+    And I click clear button
+    And I tap on contact name <Contact>
+    And I see dialog page
+    And I tap on text input
+    And I tap and hold on message input
+    And I click on popup Paste item
+    Then I check copied content from <Login>
     
     Examples: 
       | Login      | Password      | Name      | Contact   |
