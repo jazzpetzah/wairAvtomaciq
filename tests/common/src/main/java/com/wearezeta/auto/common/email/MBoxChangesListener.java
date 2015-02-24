@@ -56,13 +56,18 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 			final String expectedHeaderName = expectedHeader.getKey();
 			final String expectedHeaderValue = expectedHeader.getValue();
 			try {
-				final String[] headerValue = msg.getHeader(expectedHeaderName);
+				String[] headerValue = null;
+				try {
+					headerValue = msg.getHeader(expectedHeaderName);
+				} catch (NullPointerException e) {
+					// Ignore NPE bug in java mail lib
+				}
 				if (headerValue != null) {
 					if (headerValue[0].equals(expectedHeaderValue)) {
 						isHeaderFound = true;
 					}
 				}
-			} catch (MessagingException e1) {
+			} catch (MessagingException e) {
 				isHeaderFound = false;
 			}
 			allHeadersFound = allHeadersFound & isHeaderFound;
@@ -100,12 +105,17 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 		}
 		// Fallback to recent messages if the listener is unable
 		// to find anything
-		List<Message> recentMsgs = this.parentMBox
-				.getRecentMessages(RECENT_MSGS_CNT);
-		for (Message msg : recentMsgs) {
-			if (areAllHeadersInMessage(msg)) {
-				return msg;
+		this.parentMBox.openFolder();
+		try {
+			List<Message> recentMsgs = this.parentMBox.getRecentMessages(
+					RECENT_MSGS_CNT, false);
+			for (Message msg : recentMsgs) {
+				if (areAllHeadersInMessage(msg)) {
+					return msg;
+				}
 			}
+		} finally {
+			this.parentMBox.closeFolder();
 		}
 		throw new RuntimeException(
 				String.format(
