@@ -69,6 +69,7 @@ public class PeoplePickerPage extends IOSPage {
 	private List<WebElement> topPeopleList;
 
 	private int numberTopSelected = 0;
+	private boolean laterClicked = false;
 
 	public PeoplePickerPage(ZetaIOSDriver driver, WebDriverWait wait)
 			throws Exception {
@@ -76,11 +77,12 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public void clickLaterButton() {
-		// if (DriverUtils.isElementDisplayed(laterButton)) {
-		// laterButton.click();
-		// }
+		if (isLaterClicked()) {
+			return;
+		}
 		if (DriverUtils.isElementDisplayed(shareButton)) {
 			shareButton.click();
+			setLaterClicked(true);
 		}
 	}
 
@@ -313,6 +315,14 @@ public class PeoplePickerPage extends IOSPage {
 			}
 		}
 		return selectedPeople;
+	}
+
+	public boolean isLaterClicked() {
+		return laterClicked;
+	}
+
+	public void setLaterClicked(boolean laterClicked) {
+		this.laterClicked = laterClicked;
 	}
 
 }

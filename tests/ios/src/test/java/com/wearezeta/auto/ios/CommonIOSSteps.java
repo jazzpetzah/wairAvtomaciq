@@ -59,6 +59,7 @@ public class CommonIOSSteps {
 		final String deviceName = CommonUtils.getDeviceName(this.getClass());
 		capabilities.setCapability("deviceName", deviceName);
 		capabilities.setCapability("platformVersion", PLATFORM_VERSION);
+		capabilities.setCapability("sendKeyStrategy", "grouped");
 		final String backendType = CommonUtils.getBackendType(this.getClass());
 		capabilities.setCapability("processArguments",
 				"--args -TutorialOverlaysEnabled 0 -UseHockey 0 -ZMBackendEnvironmentType "
