@@ -787,12 +787,14 @@ public class DialogPage extends IOSPage {
 		return pingedMessages.size();
 	}
 
-	public DialogPage scrollToEndOfConversation() {
-		DialogPage page = null;
+	public void scrollToEndOfConversation() {
 		WebElement el = driver.findElement(By
 				.xpath(IOSLocators.xpathLastChatMessage));
-		DriverUtils.scrollToElement(this.getDriver(), el);
-		return page;
+		try {
+			DriverUtils.scrollToElement(this.getDriver(), el);
+		} catch (WebDriverException e) {
+			
+		}
 	}
 
 	public boolean isTitleBarDisplayed() throws InterruptedException {

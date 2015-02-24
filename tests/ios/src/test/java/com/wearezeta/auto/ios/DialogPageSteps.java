@@ -305,11 +305,9 @@ public class DialogPageSteps {
 	public void ITypeAndSendLongTextAndMediaLink(String link)
 			throws InterruptedException {
 		PagesCollection.dialogPage.sendMessageUsingScript(longMessage);
-		PagesCollection.dialogPage.sendStringToInput(CommonUtils
-				.generateRandomString(10) + "\n");
-		Thread.sleep(3000);
+		Thread.sleep(1000);
 		PagesCollection.dialogPage.sendMessageUsingScript(link);
-		Thread.sleep(3000);
+		Thread.sleep(1000);
 	}
 
 	@When("^I memorize message send time$")
@@ -326,7 +324,7 @@ public class DialogPageSteps {
 		for (int i = 0; i < 10; i++) {
 			if (!link.equalsIgnoreCase(PagesCollection.dialogPage
 					.getLastMessageFromDialog())) {
-				Thread.sleep(6000);
+				Thread.sleep(1000);
 			}
 		}
 		Assert.assertEquals(link.toLowerCase(), PagesCollection.dialogPage
