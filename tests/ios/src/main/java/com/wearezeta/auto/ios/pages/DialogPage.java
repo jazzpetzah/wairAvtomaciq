@@ -799,7 +799,7 @@ public class DialogPage extends IOSPage {
 		// wait for the title bar to animate onto the page
 		Thread.sleep(1000);
 		// check if the title bar is off the page or not
-		return titleBar.getLocation().y > 0;
+		return titleBar.getLocation().y >= 0;
 	}
 
 	public boolean isTitleBarNamed(String chatName) {
