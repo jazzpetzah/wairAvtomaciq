@@ -3,6 +3,7 @@ package com.wearezeta.auto.common.usrmgmt;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -216,6 +217,8 @@ public class ClientUsersManager {
 		return result;
 	}
 
+	private final Random random = new Random();
+
 	// ! Mutates the users list
 	private void generateUsers(List<ClientUser> usersToCreate) throws Exception {
 		ExecutorService executor = Executors
@@ -225,34 +228,41 @@ public class ClientUsersManager {
 		for (final ClientUser userToCreate : usersToCreate) {
 			Runnable worker = new Thread(new Runnable() {
 				public void run() {
-					int count = 0;
+					int retryNumber = 0;
 					int intervalSeconds = 1;
-					while (count < NUMBER_OF_REGISTRATION_RETRIES) {
+					do {
+						long sleepInterval = 1000;
 						try {
 							BackendAPIWrappers.createUser(userToCreate);
 							createdClientsCount.incrementAndGet();
-							break;
+							return;
+						} catch (BackendRequestException e) {
+							e.printStackTrace();
+							if (e.getReturnCode() == HttpStatus.SC_METHOD_FAILURE) {
+								sleepInterval = (intervalSeconds + random
+										.nextInt(BackendAPIWrappers.BACKEND_ACTIVATION_TIMEOUT)) * 2000;
+								intervalSeconds *= 2;
+							}
 						} catch (Exception e) {
-							log.debug(String.format(
-									"Failed to create user '%s'. Retrying...",
-									userToCreate.getName()));
 							e.printStackTrace();
 						}
-						count++;
+						log.debug(String
+								.format("Failed to create user '%s'. Retrying (retry number: %d)...",
+										userToCreate.getName(), retryNumber));
 						try {
-							Thread.sleep(intervalSeconds * 1000);
-							intervalSeconds *= 2;
-						} catch (InterruptedException e) {
+							Thread.sleep(sleepInterval);
+						} catch (InterruptedException ex) {
 							return;
 						}
-					}
+						retryNumber++;
+					} while (retryNumber < NUMBER_OF_REGISTRATION_RETRIES);
 				}
 			});
 			executor.execute(worker);
 		}
 		executor.shutdown();
 		final int usersCreationTimeout = BackendAPIWrappers.BACKEND_ACTIVATION_TIMEOUT
-				* usersToCreate.size() * NUMBER_OF_REGISTRATION_RETRIES;
+				* usersToCreate.size() * NUMBER_OF_REGISTRATION_RETRIES * 2;
 		if (!executor.awaitTermination(usersCreationTimeout, TimeUnit.SECONDS)) {
 			throw new BackendRequestException(
 					String.format(
