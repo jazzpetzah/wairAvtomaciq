@@ -55,6 +55,9 @@ public final class BackendAPIWrappers {
 		expectedHeaders.put("Delivered-To", user.getEmail());
 		Future<Message> activationMessage = mbox.getMessage(expectedHeaders,
 				BACKEND_ACTIVATION_TIMEOUT);
+		log.debug(String.format(
+				"Started email listener for message containing headers %s...",
+				expectedHeaders.toString()));
 		BackendREST.registerNewUser(user.getEmail(), user.getName(),
 				user.getPassword());
 		activateRegisteredUser(activationMessage);
@@ -66,8 +69,12 @@ public final class BackendAPIWrappers {
 			throws Exception {
 		final ActivationMessage registrationInfo = new ActivationMessage(
 				activationMessage.get());
-		BackendREST.activateNewUser(registrationInfo.getXZetaKey(),
-				registrationInfo.getXZetaCode());
+		final String key = registrationInfo.getXZetaKey();
+		final String code = registrationInfo.getXZetaCode();
+		log.debug(String
+				.format("Received activation email message with key: %s, code: %s. Proceeding with activation...",
+						key, code));
+		BackendREST.activateNewUser(key, code);
 		log.debug(String.format("User %s is activated",
 				registrationInfo.getLastUserEmail()));
 	}

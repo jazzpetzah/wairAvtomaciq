@@ -20,7 +20,6 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 public class ClientUsersManager {
 	private static final int MAX_PARALLEL_USER_CREATION_TASKS = 5;
 	private static final int NUMBER_OF_REGISTRATION_RETRIES = 3;
-	private static final int USERS_CREATION_TIMEOUT = 60 * 5; // seconds
 
 	private static final String NAME_ALIAS_TEMPLATE = "user%dName";
 	private static final String PASSWORD_ALIAS_TEMPLATE = "user%dPassword";
@@ -252,12 +251,13 @@ public class ClientUsersManager {
 			executor.execute(worker);
 		}
 		executor.shutdown();
-		if (!executor
-				.awaitTermination(USERS_CREATION_TIMEOUT, TimeUnit.SECONDS)) {
+		final int usersCreationTimeout = BackendAPIWrappers.BACKEND_ACTIVATION_TIMEOUT
+				* usersToCreate.size() * NUMBER_OF_REGISTRATION_RETRIES;
+		if (!executor.awaitTermination(usersCreationTimeout, TimeUnit.SECONDS)) {
 			throw new BackendRequestException(
 					String.format(
 							"The backend has failed to prepare predefined users within %d seconds timeout",
-							USERS_CREATION_TIMEOUT));
+							usersCreationTimeout));
 		}
 		if (createdClientsCount.get() != usersToCreate.size()) {
 			throw new BackendRequestException(
