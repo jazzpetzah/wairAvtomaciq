@@ -18,7 +18,6 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.ios.locators.IOSLocators;
-import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 
 public class PeoplePickerPage extends IOSPage {
 
