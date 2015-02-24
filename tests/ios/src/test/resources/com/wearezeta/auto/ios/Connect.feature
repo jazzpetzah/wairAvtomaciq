@@ -245,10 +245,10 @@ Feature: Connect
     Examples: 
       | Login      | Password      | Name      | Contact   | Picture     |
       | user1Email | user1Password | user1Name | user2Name | testing.jpg |
-      
+
   @regression @id596
   Scenario Outline: Verify you cannot send the invitation message twice
-  	Given There are 2 users where <Name> is me
+    Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe down contact list
@@ -270,14 +270,14 @@ Feature: Connect
     And I see user <Contact> found on People picker page
     And I tap on user on pending name on People picker page <Contact>
     Then I see <Contact> user pending profile page
-    
-  	Examples: 
+
+    Examples: 
       | Login      | Password      | Name      | Contact   | ContactEmail |
       | user1Email | user1Password | user1Name | user2Name | user2Email   |
-  
+
   @staging @id1492
   Scenario Outline: Verify you can send an invitation via mail
-  	Given There are 2 users where <Name> is me
+    Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -293,7 +293,7 @@ Feature: Connect
     And I click on popup Paste item
     And I send the message
     Then I check copied content from <Login>
-    
+
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
