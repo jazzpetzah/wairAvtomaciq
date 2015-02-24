@@ -31,6 +31,7 @@ public class ContactListPageSteps {
 		PagesCollection.peoplePickerPage = PagesCollection.loginPage
 				.clickLaterButton();
 		if (null != PagesCollection.peoplePickerPage) {
+			PagesCollection.peoplePickerPage.setLaterClicked(true);
 			PeoplePickerPageSteps steps = new PeoplePickerPageSteps();
 			steps.WhenISeePeoplePickerPage();
 			steps.IClickCloseButtonDismissPeopleView();
