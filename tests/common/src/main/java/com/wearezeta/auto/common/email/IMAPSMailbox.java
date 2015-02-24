@@ -2,108 +2,94 @@ package com.wearezeta.auto.common.email;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Random;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.TimeUnit;
 
 import javax.mail.*;
 
+import org.apache.log4j.Logger;
+
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class IMAPSMailbox {
-	private static final Semaphore semaphore = new Semaphore(1);
 	private static final String MAIL_PROTOCOL = "imaps";
 	private static final String MAILS_FOLDER = "Inbox";
-	private static final int NEW_MSG_MIN_CHECK_INTERVAL = 5000; // seconds
+	private static final int FOLDER_OPEN_TIMEOUT = 60 * 5; // seconds
+	private static final int MBOX_MAX_CONNECT_RETRIES = 10;
 
-	private static final Random random = new Random();
+	private static final Logger log = ZetaLogger.getLog(IMAPSMailbox.class
+			.getSimpleName());
+
+	private final Semaphore folderStateGuard = new Semaphore(1);
+
+	private static Store store = null;
+	static {
+		final Properties props = System.getProperties();
+		final Session session = Session.getInstance(props, null);
+		try {
+			int ntry = 0;
+			Exception savedException = null;
+			do {
+				try {
+					store = session.getStore(MAIL_PROTOCOL);
+					store.connect(getServerName(), -1, getName(), getPassword());
+					break;
+				} catch (Exception e) {
+					log.debug(String
+							.format("Failed to connect to the mailbox (ntry %d of %d):",
+									ntry, MBOX_MAX_CONNECT_RETRIES));
+					e.printStackTrace();
+					savedException = e;
+				}
+				Thread.sleep(30 * 1000);
+				ntry++;
+			} while (ntry < MBOX_MAX_CONNECT_RETRIES);
+			if (ntry >= MBOX_MAX_CONNECT_RETRIES) {
+				throw savedException;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
 
 	private Folder folder = null;
-	private String user;
-	private Thread messagesCountNotifier;
 
-	private static Map<String, Store> CACHED_STORES = new HashMap<String, Store>();
-
-	private static Store getCachedStore(String serverName, String user,
-			String password) throws MessagingException, InterruptedException {
-		semaphore.acquire();
-		try {
-			if (!CACHED_STORES.containsKey(serverName)) {
-				Properties props = System.getProperties();
-				Session session = Session.getInstance(props, null);
-				Store store = session.getStore(MAIL_PROTOCOL);
-				store.connect(serverName, -1, user, password);
-				CACHED_STORES.put(serverName, store);
-			}
-			return CACHED_STORES.get(serverName);
-		} finally {
-			semaphore.release();
-		}
+	protected Folder getFolder() {
+		return this.folder;
 	}
 
-	public static void clearCaches() throws MessagingException,
+	protected void openFolder() throws MessagingException, InterruptedException {
+		this.openFolder(this.getFolder());
+	}
+
+	public void openFolder(Folder folderToOpen) throws MessagingException,
 			InterruptedException {
-		semaphore.acquire();
+		folderStateGuard.tryAcquire(FOLDER_OPEN_TIMEOUT, TimeUnit.SECONDS);
+
+		if (!folderToOpen.isOpen()) {
+			folderToOpen.open(Folder.READ_ONLY);
+		}
+	}
+
+	protected void closeFolder() throws MessagingException {
+		this.closeFolder(this.getFolder());
+	}
+
+	public void closeFolder(Folder folderToClose) throws MessagingException {
 		try {
-			for (String serverName : CACHED_STORES.keySet()) {
-				Store store = CACHED_STORES.get(serverName);
-				try {
-					final Folder inbox = store.getDefaultFolder().getFolder(
-							MAILS_FOLDER);
-					if (inbox.isOpen()) {
-						inbox.close(false);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				store.close();
+			if (folderToClose.isOpen()) {
+				folderToClose.close(false);
 			}
-			CACHED_STORES.clear();
 		} finally {
-			semaphore.release();
-		}
-	}
-
-	public IMAPSMailbox(String mailServer, String mailFolder, String user,
-			String password) throws MessagingException, InterruptedException {
-		this.user = user;
-		Store store = getCachedStore(mailServer, user, password);
-		Folder defaultFolder = store.getDefaultFolder();
-		this.folder = defaultFolder.getFolder(mailFolder);
-	}
-
-	public String getUser() {
-		return this.user;
-	}
-
-	private void openFolder() throws MessagingException, InterruptedException {
-		int tryNum = 0;
-		final int maxRetry = 5;
-
-		if (!folder.isOpen()) {
-			while (true) {
-				try {
-					folder.open(Folder.READ_ONLY);
-					return;
-				} catch (MessagingException ex) {
-					Thread.sleep((tryNum + 1) * 3 * 1000);
-					tryNum++;
-					if (tryNum >= maxRetry) {
-						throw ex;
-					}
-				}
-			}
-		}
-	}
-
-	private void closeFolder() throws MessagingException {
-		if (folder.isOpen()) {
-			folder.close(false);
+			folderStateGuard.release();
 		}
 	}
 
@@ -125,48 +111,16 @@ public class IMAPSMailbox {
 		}
 	}
 
-	public MBoxChangesListener startMboxListener(
-			Map<String, String> expectedHeaders) throws MessagingException,
-			InterruptedException {
-		this.openFolder();
-		CountDownLatch wait = new CountDownLatch(1);
-		MBoxChangesListener listener = new MBoxChangesListener(this,
-				expectedHeaders, wait);
-		// This is to force mbox update notifications
-		messagesCountNotifier = new Thread() {
-			@Override
-			public void run() {
-				Folder dstFolder = IMAPSMailbox.this.folder;
-				while (dstFolder != null && dstFolder.isOpen()) {
-					try {
-						Thread.sleep(NEW_MSG_MIN_CHECK_INTERVAL
-								+ random.nextInt(NEW_MSG_MIN_CHECK_INTERVAL));
-					} catch (InterruptedException e) {
-						return;
-					}
-				}
-			}
-		};
-		messagesCountNotifier.start();
-		folder.addMessageCountListener(listener);
-		return listener;
-	}
+	private final ExecutorService pool = Executors.newFixedThreadPool(1);
 
-	public static Message getFilteredMessage(MBoxChangesListener listener,
-			int timeout) throws TimeoutException, InterruptedException,
-			MessagingException {
-		try {
-			Message message = listener.getMatchedMessage(timeout);
-			if (message != null) {
-				return message;
-			}
-			throw new TimeoutException(
-					String.format(
-							"The email message for user %s has not been received within %s second(s) timeout",
-							listener.getParentMBox().getUser(), timeout));
-		} finally {
-			listener.getParentMBox().closeFolder();
-		}
+	public Future<Message> getMessage(Map<String, String> expectedHeaders,
+			int timeoutSeconds) throws MessagingException, InterruptedException {
+		this.openFolder();
+		MBoxChangesListener listener = new MBoxChangesListener(this,
+				expectedHeaders, timeoutSeconds);
+		folder.addMessageCountListener(listener);
+		Future<Message> result = pool.submit(listener);
+		return result;
 	}
 
 	static {
@@ -174,7 +128,7 @@ public class IMAPSMailbox {
 			@Override
 			public void run() {
 				try {
-					IMAPSMailbox.clearCaches();
+					store.close();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -182,10 +136,23 @@ public class IMAPSMailbox {
 		});
 	}
 
-	public static IMAPSMailbox createDefaultInstance() throws Exception {
-		return new IMAPSMailbox(
-				CommonUtils.getDefaultEmailServerFromConfig(IMAPSMailbox.class),
-				MAILS_FOLDER, getName(), getPassword());
+	private static IMAPSMailbox instance = null;
+
+	public static synchronized IMAPSMailbox getInstance() throws Exception {
+		if (instance == null) {
+			instance = new IMAPSMailbox();
+			log.debug(String.format("Created %s singleton",
+					IMAPSMailbox.class.getSimpleName()));
+		}
+		return instance;
+	}
+
+	private IMAPSMailbox() throws Exception {
+		this.folder = store.getDefaultFolder().getFolder(MAILS_FOLDER);
+	}
+
+	public static String getServerName() throws Exception {
+		return CommonUtils.getDefaultEmailServerFromConfig(IMAPSMailbox.class);
 	}
 
 	public static String getName() throws Exception {

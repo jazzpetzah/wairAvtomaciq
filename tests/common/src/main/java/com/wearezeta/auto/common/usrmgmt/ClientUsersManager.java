@@ -11,19 +11,23 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
+import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
+import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class ClientUsersManager {
 	private static final int MAX_PARALLEL_USER_CREATION_TASKS = 5;
-	private static final int NUMBER_OF_REGISTRATION_RETRIES = 5;
-	private static final int USERS_CREATION_TIMEOUT = 60 * 5; // seconds
+	private static final int NUMBER_OF_REGISTRATION_RETRIES = 3;
 
 	private static final String NAME_ALIAS_TEMPLATE = "user%dName";
 	private static final String PASSWORD_ALIAS_TEMPLATE = "user%dPassword";
 	private static final String EMAIL_ALIAS_TEMPLATE = "user%dEmail";
 	private static final int MAX_USERS = 1001;
+
+	private static final Logger log = ZetaLogger
+			.getLog(ClientUsersManager.class.getSimpleName());
 
 	private void setClientUserAliases(ClientUser user, String[] nameAliases,
 			String[] passwordAliases, String[] emailAliases) {
@@ -222,19 +226,22 @@ public class ClientUsersManager {
 			Runnable worker = new Thread(new Runnable() {
 				public void run() {
 					int count = 0;
-					int waitTime = 1;
+					int intervalSeconds = 1;
 					while (count < NUMBER_OF_REGISTRATION_RETRIES) {
 						try {
 							BackendAPIWrappers.createUser(userToCreate);
 							createdClientsCount.incrementAndGet();
 							break;
 						} catch (Exception e) {
+							log.debug(String.format(
+									"Failed to create user '%s'. Retrying...",
+									userToCreate.getName()));
 							e.printStackTrace();
 						}
 						count++;
 						try {
-							Thread.sleep(waitTime * 1000);
-							waitTime *= 2;
+							Thread.sleep(intervalSeconds * 1000);
+							intervalSeconds *= 2;
 						} catch (InterruptedException e) {
 							return;
 						}
@@ -244,12 +251,13 @@ public class ClientUsersManager {
 			executor.execute(worker);
 		}
 		executor.shutdown();
-		if (!executor
-				.awaitTermination(USERS_CREATION_TIMEOUT, TimeUnit.SECONDS)) {
+		final int usersCreationTimeout = BackendAPIWrappers.BACKEND_ACTIVATION_TIMEOUT
+				* usersToCreate.size() * NUMBER_OF_REGISTRATION_RETRIES;
+		if (!executor.awaitTermination(usersCreationTimeout, TimeUnit.SECONDS)) {
 			throw new BackendRequestException(
 					String.format(
 							"The backend has failed to prepare predefined users within %d seconds timeout",
-							USERS_CREATION_TIMEOUT));
+							usersCreationTimeout));
 		}
 		if (createdClientsCount.get() != usersToCreate.size()) {
 			throw new BackendRequestException(

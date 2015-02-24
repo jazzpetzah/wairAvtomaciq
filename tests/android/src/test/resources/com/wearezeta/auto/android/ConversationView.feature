@@ -172,7 +172,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Message                     |
       | user1Email | user1Password | user1Name | user2Name | 畑 はたけ hatake field of crops |
 
-  @regression @id162
+  @id162 @regression
   Scenario Outline: Send picture from gallery into 1:1 conversation
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -211,6 +211,7 @@ Feature: Conversation View
     And Contact <Contact1> send message to user <Name>
     And I tap on text input
     And I input <SoudCloudLink> message and send it
+    And Contact <Contact1> send message to user <Name>
     And I tap Dialog page bottom
     And I press PlayPause media item button
     And I swipe down on dialog page

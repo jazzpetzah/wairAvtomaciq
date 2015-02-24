@@ -30,13 +30,13 @@ public final class WebAppLocators {
 
 		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
 
-		public static final String classArchiveButton = "zi-archive";
+		public static final String classArchiveButton = "icon-archive";
 
-		public static final String classMuteButton = "zi-silence";
+		public static final String classMuteButton = "icon-silence";
 
 		public static final String classMuteIcon = "conversation-muted";
 
-		public static final String classActionsButton = "zi-actions";
+		public static final String classActionsButton = "icon-more";
 
 		public static final String xpathSelfProfileEntry = xpathParentContactListItem
 				+ "//div[contains(@class, 'center-column')]";
@@ -91,11 +91,11 @@ public final class WebAppLocators {
 
 		public static final String xpathActionMessageEntry = "//div[contains(@class,'special')]//div[@class='action' and contains(text(), '%s')]";
 
-		public static final String xpathSendImageLabel = "//label[contains(@class,'controls-right-button') and contains(@class,'zi-picture')]";
+		public static final String xpathSendImageLabel = "//label[contains(@class,'controls-right-button') and contains(@class,'icon-library')]";
 
 		public static final String cssRightControlsPanel = "div.controls-right";
 
-		public static final String cssSendImageLabel = "label.controls-right-button.zi-picture";
+		public static final String cssSendImageLabel = "label.controls-right-button.icon-library.icon-button";
 
 		public static final String xpathSendImageInput = xpathSendImageLabel
 				+ "/input[@type='file']";
@@ -104,7 +104,7 @@ public final class WebAppLocators {
 
 		public static final String xpathImageMessageEntry = "//div[@class='message-asset-image']";
 		
-		public static final String xpathPingButton = "//span[contains(@class, 'zi-ping') and contains(@class,'controls-right-button')]";
+		public static final String xpathPingButton = "//span[contains(@class, 'icon-ping') and contains(@class,'controls-right-button')]";
 		
 		public static final String classPingMessage = "pinged";
 	}
@@ -136,13 +136,13 @@ public final class WebAppLocators {
 
 		public static final String idUserProfilePage = "participants-bubble";
 
-		public static final String xpathNameAddPeopleButton = "//div[@class='footer-button-left zi zi-add zi-button']";
+		public static final String xpathNameAddPeopleButton = "//div[contains(@class,'footer-button-left') and contains(@class,'icon-plus')]";
 
-		public static final String xpathNameBlockButton = "//div[@class='footer-button-right zi zi-block zi-button']";
+		public static final String xpathNameBlockButton = "//div[contains(@class,'footer-button-right') and contains(@class,'icon-block')]";
 
 		public static final String xpathUserName = "//div[@class='name']";
 
-		public static final String xpathLeaveGroupChat = "//div[@class='participants-group-leave zi zi-leave zi-button']";
+		public static final String xpathLeaveGroupChat = "//div[contains(@class,'participants-group-leave')]";
 
 		public static final String xpathConfirmLeaveButton = "//div[@class='zeta-button zeta-button-medium' and text()='leave']";
 
@@ -152,9 +152,9 @@ public final class WebAppLocators {
 
 		public static final String xpathParticipantName = "//div[@class='search-list-item-name' and text()='%s']/..";
 
-		public static final String xpathRemoveFromGroupChat = "//div[@class='footer-button-right zi zi-delete zi-button']";
+		public static final String xpathRemoveFromGroupChat = "//div[contains(@class,'footer-button-right') and contains(@class,'icon-leave')]";
 
-		public static final String xpathGroupAddPeopleButton = "//div[@class='participants-group-add zi zi-add zi-button']";
+		public static final String xpathGroupAddPeopleButton = "//div[contains(@class, 'participants-group-add')]";
 
 		public static final String xpathProfilePageSearchField = "//div[@class='participants-search-header']//input[@class='search-input']";
 

@@ -53,7 +53,7 @@ public class SettingsPage extends AndroidPage {
 
 	public void requestResetPassword(String email) throws Exception {
 		refreshUITree();
-		this.getWait().until(ExpectedConditions.visibilityOf(editField));
+		this.getWait().until(ExpectedConditions.elementToBeClickable(editField));
 		if (CommonUtils.getAndroidApiLvl(RegistrationPage.class) < 43) {
 			int ln = urlBar.getText().length();
 			urlBar.click();

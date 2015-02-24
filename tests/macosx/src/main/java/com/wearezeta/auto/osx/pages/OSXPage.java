@@ -6,9 +6,9 @@ import java.io.IOException;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.BasePage;
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
+import com.wearezeta.auto.osx.common.OSXExecutionContext;
 
 public abstract class OSXPage extends BasePage {
 	@Override
@@ -38,8 +38,12 @@ public abstract class OSXPage extends BasePage {
 	}
 
 	public void startApp() throws Exception {
-		driver.navigate().to(
-				CommonUtils.getOsxApplicationPathFromConfig(OSXPage.class));
+		driver.navigate().to(OSXExecutionContext.wirePath);
+	}
+
+	public static void clearPagesCollection() throws IllegalArgumentException,
+			IllegalAccessException {
+		clearPagesCollection(PagesCollection.class, OSXPage.class);
 	}
 
 	// not used in OS X

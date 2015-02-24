@@ -1,17 +1,19 @@
 package com.wearezeta.auto.android.pages;
 
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+
 public class TabletRegistrationPage extends RegistrationPage {
-	private String url;
-	private String path;
 
-	public TabletRegistrationPage(String URL, String path) throws Exception {
-		super(URL, path);
-		this.url = URL;
-		this.path = path;
+	public TabletRegistrationPage(ZetaAndroidDriver driver, WebDriverWait wait)
+			throws Exception {
+		super(driver, wait);
 	}
-
+	
 	public PersonalInfoPage initProfilePage() throws Exception {
 		refreshUITree();
-		return new PersonalInfoPage(url, path);
+		return new PersonalInfoPage(getDriver(), getWait());
 	}
+
 }

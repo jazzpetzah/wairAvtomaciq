@@ -18,8 +18,6 @@ public final class TabletAndroidLocators {
 	public static final class TabletLoginPage {
 		
 		public static final String CLASS_NAME = TabletAndroidLocators.CLASS_NAME + "$TabletLoginPage";
-		public static final String idTabletSignInButton = LOCATORS_PACKAGE + ":id/ttv__confirmation__confirm";
-		public static final String idTabletSignUpButton = LOCATORS_PACKAGE + ":id/ttv__confirmation__cancel";
 		
 	}
 }

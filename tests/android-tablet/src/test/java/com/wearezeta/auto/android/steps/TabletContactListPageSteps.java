@@ -1,4 +1,4 @@
-package com.wearezeta.auto.android;
+package com.wearezeta.auto.android.steps;
 
 import com.wearezeta.auto.android.pages.TabletPagesCollection;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -6,6 +6,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import cucumber.api.java.en.When;
 
 public class TabletContactListPageSteps {
+	@SuppressWarnings("unused")
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	
 	/**

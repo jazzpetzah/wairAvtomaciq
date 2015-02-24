@@ -78,7 +78,7 @@ public class DriverUtils {
 				}
 			});
 		} catch (TimeoutException ex) {
-			return true;
+			return false;
 		} finally {
 			setDefaultImplicitWait(driver);
 		}
@@ -175,10 +175,15 @@ public class DriverUtils {
 
 	public static boolean waitUntilElementVisible(RemoteWebDriver driver,
 			final WebElement element) throws Exception {
+		return waitUntilElementVisible(driver, element, 20);
+	}
+	
+	public static boolean waitUntilElementVisible(RemoteWebDriver driver,
+			final WebElement element, int timeout) throws Exception {
 		turnOffImplicitWait(driver);
 		try {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-					.withTimeout(20, TimeUnit.SECONDS)
+					.withTimeout(timeout, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
 					.ignoring(NoSuchElementException.class);
 			wait.until(ExpectedConditions.visibilityOf(element));

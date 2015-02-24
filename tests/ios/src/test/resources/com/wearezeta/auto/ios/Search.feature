@@ -140,6 +140,7 @@ Feature: Search
     And I input message in connect dialog with <NumOfMessageChars> characters
     And I see message with max number of characters
     And I click Connect button on connect to dialog
+    And I wait for 10 seconds
     Then I see the user <UnconnectedUser> avatar with a clock
     And I click close button to dismiss people view
     And I see conversation with not connected user <UnconnectedUser>

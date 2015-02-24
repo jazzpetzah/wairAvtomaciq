@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -79,8 +78,8 @@ public class CommonSteps {
 	public void teardown() throws Exception {
 		// osx teardown
 		if (ExecutionContext.isOsxEnabled()) {
-			com.wearezeta.auto.osx.steps.CommonOSXSteps.senderPages
-					.closeAllPages();
+			com.wearezeta.auto.osx.pages.PagesCollection.loginPage.close();
+			com.wearezeta.auto.osx.pages.OSXPage.clearPagesCollection();
 		}
 
 		// android teardown
@@ -127,8 +126,6 @@ public class CommonSteps {
 				.getClass());
 		executor.execute(new Runnable() {
 			public void run() {
-				com.wearezeta.auto.osx.steps.CommonOSXSteps.senderPages = new com.wearezeta.auto.osx.pages.PagesCollection();
-
 				long startDate = new Date().getTime();
 				// FIXME: Refactor OSX driver initilization
 				// try {

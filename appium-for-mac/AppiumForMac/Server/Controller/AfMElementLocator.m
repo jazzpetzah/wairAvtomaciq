@@ -217,8 +217,21 @@
     NSArray *elementsToSearch;
 	if (baseElement != nil)
     {
-        if ([baseElement.AXRole caseInsensitiveCompare:@"AXUnknown"] != NSOrderedSame) {
-            // search the children if this is an element
+        if ([baseElement.AXRole caseInsensitiveCompare:@"AXUnknown"] == NSOrderedSame)
+        {
+            NSArray *children = baseElement.AXChildren;
+            NSMutableArray *filtered = [NSMutableArray new];
+            for (PFUIElement* val in children)
+            {
+                if ([val.AXRole caseInsensitiveCompare:@"AXUnknown"] != NSOrderedSame)
+                {
+                    [filtered addObject:val];
+                }
+            }
+            elementsToSearch = [filtered copy];
+        }
+        else
+        {
             elementsToSearch = baseElement.AXChildren;
         }
     }
@@ -416,8 +429,21 @@
     NSArray *elementsToSearch;
 	if (baseElement != nil)
     {
-        if ([baseElement.AXRole caseInsensitiveCompare:@"AXUnknown"] != NSOrderedSame) {
-            // search the children if this is an element
+        if ([baseElement.AXRole caseInsensitiveCompare:@"AXUnknown"] == NSOrderedSame)
+        {
+            NSArray *children = baseElement.AXChildren;
+            NSMutableArray *filtered = [NSMutableArray new];
+            for (PFUIElement* val in children)
+            {
+                if ([val.AXRole caseInsensitiveCompare:@"AXUnknown"] != NSOrderedSame)
+                {
+                    [filtered addObject:val];
+                }
+            }
+            elementsToSearch = [filtered copy];
+        }
+        else
+        {
             elementsToSearch = baseElement.AXChildren;
         }
     }

@@ -3,6 +3,9 @@ package com.wearezeta.auto.osx.pages;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
+
+import javax.mail.Message;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -16,7 +19,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
-import com.wearezeta.auto.common.email.MBoxChangesListener;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.common.OSXConstants;
@@ -59,7 +61,7 @@ public class LoginPage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.LoginPage.xpathForgotPasswordButton)
 	private WebElement forgotPasswordButton;
 
-	private MBoxChangesListener listener;
+	private Future<Message> passwordResetMessage;
 
 	public LoginPage(ZetaOSXDriver driver, WebDriverWait wait) throws Exception {
 		super(driver, wait);
@@ -218,7 +220,7 @@ public class LoginPage extends OSXPage {
 
 	public ChangePasswordPage openResetPasswordPage() throws Exception {
 		String passwordResetLink = BackendAPIWrappers
-				.getPasswordResetLink(this.listener);
+				.getPasswordResetLink(this.passwordResetMessage);
 		String script = String
 				.format(OSXCommonUtils
 						.readTextFileFromResources(OSXConstants.Scripts.OPEN_SAFARI_WITH_URL_SCRIPT),
@@ -252,11 +254,11 @@ public class LoginPage extends OSXPage {
 		forgotPasswordButton.click();
 	}
 
-	public MBoxChangesListener getListener() {
-		return listener;
+	public Future<Message> getPasswordResetMessage() {
+		return passwordResetMessage;
 	}
 
-	public void setListener(MBoxChangesListener listener) {
-		this.listener = listener;
+	public void setPasswordResetMessage(Future<Message> passwordResetMessage) {
+		this.passwordResetMessage = passwordResetMessage;
 	}
 }

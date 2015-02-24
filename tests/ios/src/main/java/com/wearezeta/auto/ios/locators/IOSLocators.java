@@ -345,6 +345,8 @@ public final class IOSLocators {
 	
 	public static final String MEDIA_STATE_STOPPED = "ended";
 	
+	public static final String nameSoundCloudPause = "Pause";
+	
 	
 	/////////////////////////////
 	//Image Full screen Locators
@@ -403,7 +405,7 @@ public final class IOSLocators {
 	public static final String namePendingRequestIgnoreButton = "IGNORE";
 	public static final String namePendingRequestConnectButton = "CONNECT";
 	public static final String xpathPendingRequesterName = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAScrollView[1]/UIATextView[1]";
-	public static final String xpathPendingRequestMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAScrollView[1]/UIATextView[3]";
+	public static final String xpathPendingRequestMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAScrollView[1]/UIAStaticText[1]";
 	
 	/////////////////////////////
 	//People picker

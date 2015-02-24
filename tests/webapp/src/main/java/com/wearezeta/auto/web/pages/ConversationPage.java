@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -110,6 +110,12 @@ public class ConversationPage extends WebPage {
 				+ WebAppLocators.ConversationPage.cssRightControlsPanel
 				+ "').css({'opacity': '100'});";
 		driver.executeScript(showImageLabelJScript);
+		final String showPathInputJScript = "$('"
+				+ WebAppLocators.ConversationPage.cssSendImageLabel
+				+ "').find('"
+				+ WebAppLocators.ConversationPage.cssSendImageInput
+				+ "').css({'left': '0'});";
+		driver.executeScript(showPathInputJScript);
 		if (WebCommonUtils.getWebAppBrowserNameFromConfig(
 				ConversationPage.class).equals(WebAppConstants.Browser.SAFARI)) {
 			// sendKeys() call to file input element does nothing on safari
@@ -133,18 +139,8 @@ public class ConversationPage extends WebPage {
 					WebAppExecutionContext.temporaryScriptsLocation);
 			WebCommonUtils.executeAppleScriptFromFile(scriptDestination);
 		} else {
-			final String showPathInputJScript = "$('"
-					+ WebAppLocators.ConversationPage.cssSendImageLabel
-					+ "').find('"
-					+ WebAppLocators.ConversationPage.cssSendImageInput
-					+ "').css({'left': '0'});";
-			driver.executeScript(showPathInputJScript);
-			if (DriverUtils.waitUntilElementVisible(driver, imagePathInput)) {
-				imagePathInput.sendKeys(picturePath);
-			} else {
-				throw new TimeoutException(
-						"Image input is still not visible after timeout");
-			}
+			DriverUtils.waitUntilElementVisible(driver, imagePathInput, 10);
+			imagePathInput.sendKeys(picturePath);
 		}
 	}
 
@@ -162,7 +158,12 @@ public class ConversationPage extends WebPage {
 	}
 	
 	public void clickPingButton() {
-
+		
+		try {
+			DriverUtils.moveMouserOver(driver, pingButton);
+		} catch (WebDriverException e) {
+			// do nothing (safari workaround)
+		}
 		pingButton.click();
 	}
 	

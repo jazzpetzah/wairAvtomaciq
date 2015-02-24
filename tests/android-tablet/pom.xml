@@ -16,7 +16,7 @@
 		<TestRun>DevRun</TestRun>
 		<Url>http://127.0.0.1:4723/wd/hub</Url>
 		<appPath>/Project/zclient.apk</appPath>
-		<package>com.wire.tablet</package>
+		<package>com.waz.zclient.dev</package>
 		<generateUsers>true</generateUsers>
 		<activity>com.waz.zclient.MainActivity</activity>
 		<driverTimeoutSeconds>15</driverTimeoutSeconds>
@@ -25,6 +25,7 @@
 		<androidAppiumLogPath>/Project/appium_android.log</androidAppiumLogPath>
 		<defaultEmail>smoketester.android@wearezeta.com</defaultEmail>
 		<androidVersion>44</androidVersion>
+		<androidLogs>false</androidLogs>
 	</properties>
 
 	<dependencies>
@@ -54,6 +55,14 @@
 			<type>jar</type>
 		</dependency>
 
+		<dependency>
+			<groupId>com.wearezeta.auto</groupId>
+			<artifactId>auto-android</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<classifier>tests</classifier>
+			<type>jar</type>
+		</dependency>
+		
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

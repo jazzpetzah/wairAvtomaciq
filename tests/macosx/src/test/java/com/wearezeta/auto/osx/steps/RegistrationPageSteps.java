@@ -119,8 +119,9 @@ public class RegistrationPageSteps {
 	public void ISubmitRegistrationData() throws Exception {
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
-		PagesCollection.registrationPage.setListener(IMAPSMailbox
-				.createDefaultInstance().startMboxListener(expectedHeaders));
+		PagesCollection.registrationPage.setActivationMessage(IMAPSMailbox
+				.getInstance().getMessage(expectedHeaders,
+						BackendAPIWrappers.UI_ACTIVATION_TIMEOUT));
 
 		PagesCollection.registrationPage.submitRegistration();
 	}
@@ -152,7 +153,7 @@ public class RegistrationPageSteps {
 	public void IVerifyRegistrationAddress() throws Exception {
 		BackendAPIWrappers
 				.activateRegisteredUser(PagesCollection.registrationPage
-						.getListener());
+						.getActivationMessage());
 	}
 
 	/**

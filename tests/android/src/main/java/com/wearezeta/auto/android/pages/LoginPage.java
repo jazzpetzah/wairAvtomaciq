@@ -94,7 +94,7 @@ public class LoginPage extends AndroidPage {
 	public SettingsPage forgotPassword() throws Exception {
 		refreshUITree();
 		this.getWait().until(
-				ExpectedConditions.visibilityOf(forgotPasswordButton));
+				ExpectedConditions.elementToBeClickable(forgotPasswordButton));
 		forgotPasswordButton.click();
 		return new SettingsPage(this.getDriver(), this.getWait());
 	}

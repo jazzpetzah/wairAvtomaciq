@@ -7,7 +7,7 @@ import cucumber.api.junit.Cucumber;
 
 
 @RunWith(Cucumber.class)
-@CucumberOptions(format = {"html:target/report", "json:target/test_report.json", "com.wearezeta.auto.common.ZetaFormatter"}, tags  = { "~@staging" } )
+@CucumberOptions(features="src/test/resources", format = {"html:target/report", "json:target/test_report.json", "com.wearezeta.auto.common.ZetaFormatter"}, tags  = { "~@staging" } )
 public class TestRun {
 
 }

@@ -45,7 +45,7 @@ Feature: Connect to user
     And I wait up to 15 seconds until <ContactEmail> exists in backend search results
     And I search by email for user <Contact>
     And I see user <Contact> in search results
-    And I add user <Contact> from search results
+    And I select user <Contact> from search results
     And I send invitation to user
     Then I see Contact list with name <Contact>
 
@@ -69,7 +69,7 @@ Feature: Connect to user
     When I wait up to 15 seconds until <Contact> exists in backend search results
     And I search by email for user <Contact>
     And I see user <Contact> in search results
-    And I add user <Contact> from search results
+    And I select user <Contact> from search results
     And I unblock user
     Then I open conversation with <Contact>
     And I see random message in conversation
@@ -111,7 +111,7 @@ Feature: Connect to user
     Given I wait up to 60 seconds until <ContactEmail> exists in backend search results
     And I search by email for user <Contact>
     And I see user <Contact> in search results
-    And I add user <Contact> from search results
+    And I select user <Contact> from search results
     And I send invitation to user
     And I open conversation with <Contact>
     Then I can not write a random message
