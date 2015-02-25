@@ -283,6 +283,8 @@ Feature: Connect
     And I see Contact list with my name <Name>
     When I swipe down contact list
     And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
     And I press the send an invite button
     And I press the copy button
     And I click clear button
