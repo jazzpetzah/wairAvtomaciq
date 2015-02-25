@@ -57,9 +57,10 @@ public class PeoplePickerPageSteps {
 	 * Creates conversation with selected users
 	 * 
 	 * @step. ^I choose to create conversation from People Picker$
+	 * @throws Exception 
 	 */
 	@When("^I choose to create conversation from People Picker$")
-	public void IChooseToCreateConversationFromPeoplePicker() {
+	public void IChooseToCreateConversationFromPeoplePicker() throws Exception {
 		PagesCollection.peoplePickerPage.createConversation();
 	}
 
