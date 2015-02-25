@@ -42,14 +42,15 @@ public class ConversationPage extends WebPage {
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathSendImageInput)
 	private WebElement imagePathInput;
-	
+
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathPingButton)
 	private WebElement pingButton;
-	
+
 	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.ConversationPage.classPingMessage)
 	private WebElement pingMessage;
 
-	public ConversationPage(ZetaWebAppDriver driver, WebDriverWait wait) throws Exception {
+	public ConversationPage(ZetaWebAppDriver driver, WebDriverWait wait)
+			throws Exception {
 		super(driver, wait);
 	}
 
@@ -123,16 +124,12 @@ public class ConversationPage extends WebPage {
 			// required image in open file dialog
 			String scriptDestination = WebAppExecutionContext.temporaryScriptsLocation
 					+ "/" + WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT;
-			final String GROUP_CHAT_LABEL_INDEX = "-2";
-			final String SINGLE_CHAT_LABEL_INDEX = "-3";
 			WebCommonUtils
 					.formatTextInFileAndSave(
 							WebCommonUtils.getScriptsTemplatesPath()
 									+ WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT,
-							scriptDestination, new String[] {
-									(isGroup ? GROUP_CHAT_LABEL_INDEX
-											: SINGLE_CHAT_LABEL_INDEX),
-									WebCommonUtils.getPicturesPath(),
+							scriptDestination,
+							new String[] { WebCommonUtils.getPicturesPath(),
 									pictureName });
 			WebCommonUtils.putFilesOnExecutionNode(
 					WebAppExecutionContext.seleniumNodeIp,
@@ -156,9 +153,9 @@ public class ConversationPage extends WebPage {
 						40);
 		return isAnyPictureMsgFound && (imageMessageEntries.size() > 0);
 	}
-	
+
 	public void clickPingButton() {
-		
+
 		try {
 			DriverUtils.moveMouserOver(driver, pingButton);
 		} catch (WebDriverException e) {
@@ -166,7 +163,7 @@ public class ConversationPage extends WebPage {
 		}
 		pingButton.click();
 	}
-	
+
 	public boolean isPingMessageVisible(String message) {
 		String text = pingMessage.getText();
 		if (text.toLowerCase().contains(message.toLowerCase())) {
@@ -175,9 +172,10 @@ public class ConversationPage extends WebPage {
 			return false;
 		}
 	}
-	
+
 	public int numberOfPingMessagesVisible() {
-		
-		return driver.findElementsByClassName(WebAppLocators.ConversationPage.classPingMessage).size() - 1;
+
+		return driver.findElementsByClassName(
+				WebAppLocators.ConversationPage.classPingMessage).size() - 1;
 	}
 }
