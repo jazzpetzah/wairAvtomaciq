@@ -2,9 +2,21 @@ tell application "System Events" to tell application process "Safari"
 	set frontmost to true
 end tell
 delay 2
-tell application "System Events" to tell process "Safari"
-	click button "no files selected" of group %s of UI element 1 of scroll area 1 of group 1 of group 1 of group 1 of window 1
+set allButtons to {}
+tell application "System Events"
+	tell process "Safari"
+		with timeout of 0 seconds
+			set tElements to entire contents of window 1
+		end timeout
+		repeat with i in tElements
+			if class of i is button then set end of allButtons to contents of i
+		end repeat
+		repeat with i in allButtons
+			if title of i is "no files selected" then click i
+		end repeat
+	end tell
 end tell
+allButtons
 delay 2
 tell application "Safari"
 	set posixpath to "%s"
