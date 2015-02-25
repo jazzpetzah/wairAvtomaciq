@@ -433,10 +433,15 @@ public class ContactListPageSteps {
 	 * @throws Exception 
 	 * 
 	 */
-	@When("^I see unread messages dot for (.*)$")
-	public void ISeeUnreadMessagesDot(String conversation) throws IOException, Exception{
+	@When("^I see unread (.*) messages dot for (.*)$")
+	public void ISeeUnreadMessagesDot(String dotSize, String conversation) throws IOException, Exception{
 		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
-		boolean unreadDotSeen = PagesCollection.contactListPage.unreadDotIsVisible(true, conversation);
+		boolean unreadDotSeen = false;
+		if (dotSize.equals("big")){
+		unreadDotSeen = PagesCollection.contactListPage.unreadDotIsVisible(true, true, conversation);
+		} else{
+			unreadDotSeen = PagesCollection.contactListPage.unreadDotIsVisible(true, false, conversation);
+		}
 		Assert.assertTrue("No unread dot visible.", unreadDotSeen);
 	}
 	
@@ -455,7 +460,7 @@ public class ContactListPageSteps {
 	@Then("^I dont see an unread message dot for (.*)$")
 	public void IDontSeeAnUnreadMessageDot(String conversation) throws IOException, Exception{
 		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
-		boolean noUnreadDotSeen = PagesCollection.contactListPage.unreadDotIsVisible(false, conversation);
+		boolean noUnreadDotSeen = PagesCollection.contactListPage.unreadDotIsVisible(false, false, conversation);
 		Assert.assertTrue("No unread dot visible.", noUnreadDotSeen);
 
 	}

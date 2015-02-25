@@ -83,17 +83,23 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   | Color        | NewName |
       | user1Email | user1Password | user1Name | user2Name | BrightOrange | SILENCE |
 
-  @staging @id1075
+  @torun @staging @id1075
   Scenario Outline: Verify messages are marked as read with disappearing unread dot
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given User <Contact> change  name to <NewName>
     Given User <Name> change  accent color to <Color>
     Given I wait for 15 seconds
-    Given Contact <Contact> send number <Number> of message to user <Name>
+    Given Contact <Contact> send number <Number2> of message to user <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    And I see unread messages dot for <Contact>
+    And I see unread <DotSizeSmall> messages dot for <Contact>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I swipe right on Dialog page
+    Then I dont see an unread message dot for <Contact>
+    And Contact <Contact> send number <Number> of message to user <Name>
+    And I see unread <DotSizeBig> messages dot for <Contact>
     When I tap on contact name <Contact>
     And I see dialog page
     And I scroll to the end of the conversation
@@ -101,8 +107,8 @@ Feature: Conversation List
     Then I dont see an unread message dot for <Contact>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Number | NewName    | Color        |
-      | user1Email | user1Password | user1Name | user2Name | 30     | UNREAD DOT | BrightOrange |
+      | Login      | Password      | Name      | Contact   | Number | NewName    | Color        |Number2 | DotSizeSmall |DotSizeBig |
+      | user1Email | user1Password | user1Name | user2Name | 30     | UNREAD DOT | BrightOrange | 2		 | small		|big		|
 
   @staging @id2040
   Scenario Outline: Verify archive a group conversation
