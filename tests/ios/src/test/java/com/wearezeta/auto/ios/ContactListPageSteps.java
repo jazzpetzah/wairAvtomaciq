@@ -428,6 +428,8 @@ public class ContactListPageSteps {
 	 * 
 	 * @param conversation
 	 *            conversation name to check for unread dot
+	 * @param dotSize
+	 * 			  tells if dot is big or small 
 	 * 
 	 * @throws IOException 
 	 * @throws Exception 
