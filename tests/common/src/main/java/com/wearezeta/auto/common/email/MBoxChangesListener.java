@@ -1,7 +1,6 @@
 package com.wearezeta.auto.common.email;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.Callable;
@@ -97,25 +96,29 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 		try {
 			if (this.waitObj.await(timeoutSeconds, TimeUnit.SECONDS)) {
 				return this.matchedMessage;
+			} else {
+				// Fallback to recent messages if the listener is unable
+				// to find anything
+				final int currentMsgsCount = this.parentMBox.getFolder()
+						.getMessageCount();
+				Message[] fetchedMsgs;
+				if (RECENT_MSGS_CNT > currentMsgsCount) {
+					fetchedMsgs = this.parentMBox.getFolder().getMessages();
+				} else {
+					fetchedMsgs = this.parentMBox.getFolder().getMessages(
+							currentMsgsCount - RECENT_MSGS_CNT,
+							currentMsgsCount);
+				}
+				for (Message msg : fetchedMsgs) {
+					if (areAllHeadersInMessage(msg)) {
+						return msg;
+					}
+				}
 			}
 		} finally {
 			this.parentMBox.getFolder().removeMessageCountListener(this);
 			this.parentMBox.closeFolder();
 			messagesCountNotifier.interrupt();
-		}
-		// Fallback to recent messages if the listener is unable
-		// to find anything
-		this.parentMBox.openFolder();
-		try {
-			List<Message> recentMsgs = this.parentMBox.getRecentMessages(
-					RECENT_MSGS_CNT, false);
-			for (Message msg : recentMsgs) {
-				if (areAllHeadersInMessage(msg)) {
-					return msg;
-				}
-			}
-		} finally {
-			this.parentMBox.closeFolder();
 		}
 		throw new RuntimeException(
 				String.format(
