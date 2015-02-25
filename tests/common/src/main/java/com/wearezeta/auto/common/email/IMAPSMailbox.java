@@ -95,15 +95,7 @@ public class IMAPSMailbox {
 
 	public List<Message> getRecentMessages(int msgsCount)
 			throws MessagingException, InterruptedException {
-		return getRecentMessages(msgsCount, true);
-	}
-
-	protected List<Message> getRecentMessages(int msgsCount,
-			boolean isAutomaicFolderControlEnabled) throws MessagingException,
-			InterruptedException {
-		if (isAutomaicFolderControlEnabled) {
-			this.openFolder();
-		}
+		this.openFolder();
 		try {
 			int currentMsgsCount = folder.getMessageCount();
 			Message[] fetchedMsgs;
@@ -115,9 +107,7 @@ public class IMAPSMailbox {
 			}
 			return new ArrayList<Message>(Arrays.asList(fetchedMsgs));
 		} finally {
-			if (isAutomaicFolderControlEnabled) {
-				this.closeFolder();
-			}
+			this.closeFolder();
 		}
 	}
 
