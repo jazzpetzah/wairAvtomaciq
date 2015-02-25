@@ -93,7 +93,7 @@ public class IMAPSMailbox {
 		}
 	}
 
-	protected List<Message> getRecentMessages(int msgsCount)
+	public List<Message> getRecentMessages(int msgsCount)
 			throws MessagingException, InterruptedException {
 		this.openFolder();
 		try {
