@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.*;
 
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -381,18 +380,24 @@ public class ContactListPage extends IOSPage {
 		DriverUtils.clickArchiveConversationButton(this.getDriver(), contact);
 	}
 
-	public boolean unreadDotIsVisible(boolean visible, String conversation)
+	public boolean unreadDotIsVisible(boolean visible, boolean bigUnreadDot, String conversation)
 			throws IOException {
 		BufferedImage unreadDot = null;
 		BufferedImage referenceImage = null;
 		double score = 0;
 		WebElement contact = findCellInContactList(conversation);
 		unreadDot = getScreenshotByCoordinates(contact.getLocation().x, contact.getLocation().y + contactListContainer.getLocation().y, contact.getSize().width/4, contact.getSize().height*2);
-		if (visible == true){
+		if (visible == true && bigUnreadDot ==  true){
 		referenceImage = ImageUtil.readImageFromFile(IOSPage
 				.getImagesPath() + "unreadDot.png");
 		score = ImageUtil.getOverlapScore(referenceImage, unreadDot, ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-		} else {
+		} 
+		else if (visible == true && bigUnreadDot ==  false){
+			referenceImage = ImageUtil.readImageFromFile(IOSPage
+					.getImagesPath() + "unreadDot_small.png");
+			score = ImageUtil.getOverlapScore(referenceImage, unreadDot, ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+			}
+		else if (visible == false && bigUnreadDot ==  false){
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "noUnreadDot.png");
 			score = ImageUtil.getOverlapScore(referenceImage, unreadDot, ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
@@ -401,6 +406,7 @@ public class ContactListPage extends IOSPage {
 		if (score <= MIN_ACCEPTABLE_IMAGE_UNREADDOT_VALUE) {
 			return false;
 		}
+
 		return true;
 	}
 
