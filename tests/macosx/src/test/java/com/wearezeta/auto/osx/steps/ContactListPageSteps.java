@@ -138,7 +138,8 @@ public class ContactListPageSteps {
 		String currentUserEmail = usrMgr.getSelfUser().getEmail();
 		PagesCollection.peoplePickerPage = PagesCollection.contactListPage
 				.openPeoplePicker();
-		if (!ContactListPage.shareContactsProcessedUsers.get(currentUserEmail)) {
+		Boolean isUsedAlready = ContactListPage.shareContactsProcessedUsers.get(currentUserEmail);
+		if (isUsedAlready == null) {
 			PagesCollection.contactListPage.pressLaterButton();
 			ContactListPage.shareContactsProcessedUsers.put(currentUserEmail,
 					false);
