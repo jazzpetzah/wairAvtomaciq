@@ -16,21 +16,29 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.wearezeta.auto.android.CommonAndroidSteps;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.android.pages.LoginPage;
+import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
+import com.wearezeta.auto.common.driver.PlatformDrivers;
+import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.BuildVersionInfo;
 import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 import com.wearezeta.auto.common.misc.MessageEntry;
+import com.wearezeta.auto.ios.CommonIOSSteps;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
+import com.wearezeta.auto.osx.steps.CommonOSXSteps;
 import com.wearezeta.auto.sync.client.InstanceState;
-import com.wearezeta.auto.sync.client.ZetaInstance;
+import com.wearezeta.auto.sync.client.WireInstance;
 import com.wearezeta.auto.sync.report.ReportData;
 import com.wearezeta.auto.sync.report.ReportGenerator;
 import com.wearezeta.auto.sync.ExecutionContext;
@@ -58,20 +66,6 @@ public class CommonSteps {
 
 	@Before
 	public void setup() throws Exception {
-		OSXCommonUtils.removeAllZClientSettingsFromDefaults();
-
-		String backendType = CommonUtils.getBackendType(this.getClass());
-
-		// setting backend configuration for all platforms
-		OSXCommonUtils.deleteZClientLoginFromKeychain();
-		OSXCommonUtils.removeAllZClientSettingsFromDefaults();
-		OSXCommonUtils.deleteCacheFolder();
-
-		OSXCommonUtils.setZClientBackend(backendType);
-
-		String androidBEFlagFilePath = AndroidCommonUtils
-				.createBackendJSON(backendType);
-		AndroidCommonUtils.deployBackendFile(androidBEFlagFilePath);
 	}
 
 	@After
@@ -120,47 +114,20 @@ public class CommonSteps {
 	}
 
 	private void startOsxClient(ExecutorService executor) throws Exception {
-		final String osxPath = CommonUtils.getOsxApplicationPathFromConfig(this
-				.getClass());
-		final String osxAppiumUrl = CommonUtils.getOsxAppiumUrlFromConfig(this
-				.getClass());
 		executor.execute(new Runnable() {
 			public void run() {
-				long startDate = new Date().getTime();
-				// FIXME: Refactor OSX driver initilization
-				// try {
-				// com.wearezeta.auto.osx.pages.PagesCollection.mainMenuPage =
-				// new com.wearezeta.auto.osx.pages.MainMenuPage(
-				// osxAppiumUrl, osxPath);
-				// com.wearezeta.auto.osx.pages.PagesCollection.loginPage = new
-				// com.wearezeta.auto.osx.pages.LoginPage(
-				// osxAppiumUrl, osxPath);
-				// } catch (Exception e) {
-				// }
-				long endDate = new Date().getTime();
-				ExecutionContext.osxZeta()
-						.setStartupTimeMs(endDate - startDate);
+				CommonOSXSteps osxSteps = new CommonOSXSteps();
+				try {
+					osxSteps.setUp();
+				} catch (Exception e) {
+					log.debug("Failed to start OSX client. Error message: "
+							+ e.getMessage());
+					e.printStackTrace();
+				}
+				ExecutionContext.osxZeta().setStartupTimeMs(
+						osxSteps.startupTime);
 				log.debug("OSX application startup time: "
 						+ ExecutionContext.osxZeta().getStartupTimeMs() + "ms");
-				ZetaFormatter
-						.setDriver(com.wearezeta.auto.osx.pages.PagesCollection.loginPage
-								.getDriver());
-				try {
-					com.wearezeta.auto.osx.pages.PagesCollection.loginPage
-							.sendProblemReportIfFound();
-					if (!OSXCommonUtils.isBackendTypeSet(CommonUtils
-							.getBackendType(this.getClass()))) {
-						log.debug("Backend setting were overwritten. Trying to restart app.");
-						com.wearezeta.auto.osx.pages.PagesCollection.mainMenuPage
-								.quitZClient();
-						OSXCommonUtils.setZClientBackend(CommonUtils
-								.getBackendType(this.getClass()));
-						com.wearezeta.auto.osx.pages.PagesCollection.loginPage
-								.startApp();
-					}
-				} catch (Exception e) {
-					log.debug("Failed to check backend type and restart app if necessary.");
-				}
 			}
 		});
 	}
@@ -180,19 +147,26 @@ public class CommonSteps {
 		executor.execute(new Runnable() {
 			public void run() {
 				if (com.wearezeta.auto.android.pages.PagesCollection.loginPage == null) {
+					CommonAndroidSteps androidSteps = new CommonAndroidSteps();
 					long startDate = new Date().getTime();
-					// FIXME: Refactor android driver initilization
-					// try {
-					// com.wearezeta.auto.android.pages.PagesCollection.loginPage
-					// = new com.wearezeta.auto.android.pages.LoginPage(
-					// androidAppiumUrl, androidPath);
-					// com.wearezeta.auto.android.pages.PagesCollection.loginPage
-					// .isVisible();
-					// } catch (Exception e) {
-					// log.debug(e.getMessage());
-					// e.printStackTrace();
-					// }
-					long endDate = new Date().getTime();
+					long endDate = 0;
+					try {
+						androidSteps.commonBefore();
+						final ZetaAndroidDriver driver = androidSteps
+								.resetAndroidDriver(androidAppiumUrl,
+										androidPath, false, this.getClass());
+						final WebDriverWait wait = PlatformDrivers
+								.createDefaultExplicitWait(driver);
+						PagesCollection.loginPage = new LoginPage(driver, wait);
+						endDate = new Date().getTime();
+						ZetaFormatter.setDriver(PagesCollection.loginPage
+								.getDriver());
+					} catch (Exception e) {
+						log.debug("Failed to start Android client. Error message: "
+								+ e.getMessage());
+						e.printStackTrace();
+					}
+
 					try {
 						startDate = readDateFromAppiumLog(AndroidCommonUtils
 								.getAndroidAppiumLogPathFromConfig(CommonSteps.class));
@@ -203,6 +177,7 @@ public class CommonSteps {
 					}
 					ExecutionContext.androidZeta().setStartupTimeMs(
 							endDate - startDate);
+
 					log.debug("Android application startup time: "
 							+ ExecutionContext.androidZeta().getStartupTimeMs()
 							+ "ms");
@@ -212,34 +187,18 @@ public class CommonSteps {
 	}
 
 	private void startIosClient(ExecutorService executor) throws Exception {
-		final String iosPath = CommonUtils.getIosApplicationPathFromConfig(this
-				.getClass());
-		final String iosAppiumPath = CommonUtils.getIosAppiumUrlFromConfig(this
-				.getClass());
-
 		executor.execute(new Runnable() {
 			public void run() {
 				if (com.wearezeta.auto.ios.pages.PagesCollection.loginPage == null) {
+					CommonIOSSteps iosSteps = new CommonIOSSteps();
 					long startDate = new Date().getTime();
-					// try {
-					// FIXME: Refactor iOS driver initialization
-					// if (CommonUtils
-					// .getIsSimulatorFromConfig(CommonSteps.class)) {
-					// com.wearezeta.auto.ios.pages.PagesCollection.loginPage =
-					// new com.wearezeta.auto.ios.pages.LoginPage(
-					// iosAppiumPath, iosPath);
-					// } else {
-					// com.wearezeta.auto.ios.pages.PagesCollection.loginPage =
-					// new com.wearezeta.auto.ios.pages.LoginPage(
-					// iosAppiumPath, iosPath, true);
-					// }
-					// com.wearezeta.auto.ios.pages.PagesCollection.loginPage
-					// .isLoginButtonVisible();
-					// } catch (MalformedURLException e) {
-					// } catch (IOException e) {
-					// } catch (Exception e) {
-					// }
-
+					try {
+						iosSteps.setUpAcceptAlerts();
+					} catch (Exception e) {
+						log.debug("Failed to start iOS client. Error message: "
+								+ e.getMessage());
+						e.printStackTrace();
+					}
 					long endDate = new Date().getTime();
 					try {
 						startDate = readDateFromAppiumLog(IOSCommonUtils
@@ -306,7 +265,7 @@ public class CommonSteps {
 		ArrayList<ClientUser> usersList = new ArrayList<ClientUser>(
 				usrMgr.getCreatedUsers());
 		for (Platform platform : SyncEngineUtil.platforms) {
-			ZetaInstance client = new ZetaInstance(platform);
+			WireInstance client = WireInstance.getInstance(platform);
 			client.setUserInstance(usersList.get(i++));
 			ExecutionContext.clients.put(platform, client);
 		}
@@ -457,7 +416,7 @@ public class CommonSteps {
 					executor.execute(new Runnable() {
 						public void run() {
 							ExecutionContext.osxZeta().listener()
-									.waitForMessageOsx(message, true);
+									.waitForMessage(message, true);
 						}
 					});
 				}
@@ -466,7 +425,7 @@ public class CommonSteps {
 					executor.execute(new Runnable() {
 						public void run() {
 							ExecutionContext.androidZeta().listener()
-									.waitForMessageAndroid(message, true);
+									.waitForMessage(message, true);
 						}
 					});
 				}
@@ -520,7 +479,7 @@ public class CommonSteps {
 						public void run() {
 							try {
 								ExecutionContext.iosZeta().listener()
-										.waitForMessageIos(message, true);
+										.waitForMessage(message, true);
 							} catch (NoSuchElementException e) {
 								log.error("iOS: Wait for message sent from OS X finished with incorrect result.\n"
 										+ e.getMessage());
@@ -541,7 +500,7 @@ public class CommonSteps {
 					executor.execute(new Runnable() {
 						public void run() {
 							ExecutionContext.androidZeta().listener()
-									.waitForMessageAndroid(message, true);
+									.waitForMessage(message, true);
 						}
 					});
 				}
@@ -576,7 +535,7 @@ public class CommonSteps {
 					executor.execute(new Runnable() {
 						public void run() {
 							ExecutionContext.osxZeta().listener()
-									.waitForMessageOsx(message, true);
+									.waitForMessage(message, true);
 						}
 					});
 				}
@@ -586,7 +545,7 @@ public class CommonSteps {
 						public void run() {
 							try {
 								ExecutionContext.iosZeta().listener()
-										.waitForMessageIos(message, true);
+										.waitForMessage(message, true);
 							} catch (NoSuchElementException e) {
 								log.error("iOS: Wait for message sent from Android finished with incorrect result.\n"
 										+ e.getMessage());
@@ -674,19 +633,19 @@ public class CommonSteps {
 		ArrayList<MessageEntry> iosMessages = new ArrayList<MessageEntry>();
 		if (ExecutionContext.isIosEnabled()) {
 			iosMessages = ExecutionContext.iosZeta().listener()
-					.receiveChatMessages(false);
+					.receiveAllChatMessages(false);
 		}
 
 		ArrayList<MessageEntry> osxMessages = new ArrayList<MessageEntry>();
 		if (ExecutionContext.isOsxEnabled()) {
 			osxMessages = ExecutionContext.osxZeta().listener()
-					.receiveChatMessages(false);
+					.receiveAllChatMessages(false);
 		}
 
 		ArrayList<MessageEntry> androidMessages = new ArrayList<MessageEntry>();
 		if (ExecutionContext.isAndroidEnabled()) {
 			androidMessages = ExecutionContext.androidZeta().listener()
-					.receiveChatMessages(false);
+					.receiveAllChatMessages(false);
 		}
 
 		ArrayList<MessageEntry> sentMessages = new ArrayList<MessageEntry>(
@@ -804,36 +763,26 @@ public class CommonSteps {
 
 	@Then("I perform acceptance checks")
 	public void IPerformAcceptanceChecks() {
-		boolean isTestPassed = true;
-		String comment = "Acceptance checks results:\n";
+		String commentFormat = "Acceptance checks results:\n"
+				+ "\tClients stability check - %s\n"
+				+ "\tMessages receiving check - %s\n"
+				+ "\tMessages receive time check - %s\n"
+				+ "\tMessages order check - %s\n";
 
-		if (!ExecutionContext.report.areClientsStable) {
-			isTestPassed = false;
-			comment += "\tClients stability check - failed\n";
-		} else {
-			comment += "\tClients stability check - passed\n";
-		}
+		boolean isTestPassed = (ExecutionContext.report.areClientsStable
+				&& ExecutionContext.report.areMessagesReceived
+				&& ExecutionContext.report.areMessagesReceiveTimeCorrect && ExecutionContext.report.areMessagesOrderCorrect);
 
-		if (!ExecutionContext.report.areMessagesReceived) {
-			isTestPassed = false;
-			comment += "\tMessages receiving check - failed\n";
-		} else {
-			comment += "\tMessages receiving check - passed\n";
-		}
-
-		if (!ExecutionContext.report.areMessagesReceiveTimeCorrect) {
-			isTestPassed = false;
-			comment += "\tMessages receive time check - failed\n";
-		} else {
-			comment += "\tMessages receive time check - passed\n";
-		}
-
-		if (!ExecutionContext.report.areMessagesOrderCorrect) {
-			isTestPassed = false;
-			comment += "\tMessages order check - failed\n";
-		} else {
-			comment += "\tMessages order check - passed\n";
-		}
+		String comment = String
+				.format(commentFormat,
+						SyncEngineUtil
+								.prepareCheckStatus(ExecutionContext.report.areClientsStable),
+						SyncEngineUtil
+								.prepareCheckStatus(ExecutionContext.report.areMessagesReceived),
+						SyncEngineUtil
+								.prepareCheckStatus(ExecutionContext.report.areMessagesReceiveTimeCorrect),
+						SyncEngineUtil
+								.prepareCheckStatus(ExecutionContext.report.areMessagesOrderCorrect));
 
 		Assert.assertTrue(comment, isTestPassed);
 	}

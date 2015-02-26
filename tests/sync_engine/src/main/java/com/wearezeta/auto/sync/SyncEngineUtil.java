@@ -81,4 +81,8 @@ public class SyncEngineUtil {
 		return platform == Platform.Android || platform == Platform.iOS
 				|| platform == Platform.Mac;
 	}
+
+	public static String prepareCheckStatus(boolean check) {
+		return (check ? "passed" : "failed");
+	}
 }

@@ -15,8 +15,8 @@ import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.sync.ExecutionContext;
 import com.wearezeta.auto.sync.client.InstanceState;
-import com.wearezeta.auto.sync.client.ZetaInstance;
-import com.wearezeta.auto.sync.client.ZetaSender;
+import com.wearezeta.auto.sync.client.WireInstance;
+import com.wearezeta.auto.sync.client.sender.WireSender;
 
 class UserReport {
 	public String name;
@@ -77,7 +77,7 @@ public class ReportData {
 	public ArrayList<String> androidMessages;
 
 	public void fillReportInfo() {
-		for (Map.Entry<Platform, ZetaInstance> client : ExecutionContext.clients
+		for (Map.Entry<Platform, WireInstance> client : ExecutionContext.clients
 				.entrySet()) {
 			UserReport user = new UserReport();
 			if (client.getValue().isEnabled()) {
@@ -115,7 +115,7 @@ public class ReportData {
 			for (Map.Entry<String, MessageEntry> message : ExecutionContext
 					.iosZeta().listener().registeredMessages.entrySet()) {
 				if (message.getValue().appearanceDate
-						.after(ZetaSender.sendingStartDate)) {
+						.after(WireSender.sendingStartDate)) {
 
 					iosReceivedMessages.put(message.getKey(),
 							message.getValue());
@@ -134,7 +134,7 @@ public class ReportData {
 			for (Map.Entry<String, MessageEntry> message : ExecutionContext
 					.androidZeta().listener().registeredMessages.entrySet()) {
 				if (message.getValue().appearanceDate
-						.after(ZetaSender.sendingStartDate)) {
+						.after(WireSender.sendingStartDate)) {
 					androidReceivedMessages.put(message.getKey(),
 							message.getValue());
 				}
@@ -152,7 +152,7 @@ public class ReportData {
 			for (Map.Entry<String, MessageEntry> message : ExecutionContext
 					.osxZeta().listener().registeredMessages.entrySet()) {
 				if (message.getValue().appearanceDate
-						.after(ZetaSender.sendingStartDate)) {
+						.after(WireSender.sendingStartDate)) {
 
 					osxReceivedMessages.put(message.getKey(),
 							message.getValue());
