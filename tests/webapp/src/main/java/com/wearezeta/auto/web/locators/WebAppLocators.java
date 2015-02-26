@@ -140,7 +140,7 @@ public final class WebAppLocators {
 
 		public static final String xpathNameBlockButton = "//div[contains(@class,'footer-button-right') and contains(@class,'icon-block')]";
 
-		public static final String xpathUserName = "//div[not(*) and @class='name']";
+		public static final String xpathUserName = "//div[@class='name' and @data-uie-name='status-user']";
 
 		public static final String xpathLeaveGroupChat = "//div[contains(@class,'participants-group-leave')]";
 
