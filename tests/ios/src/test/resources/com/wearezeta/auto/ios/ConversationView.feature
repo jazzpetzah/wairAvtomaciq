@@ -79,8 +79,11 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
+    And I wait for 5 seconds
     And I swipe right on Dialog page
     And I tap on contact name <Contact>
+    And I type and send long message and media link <SoundCloudLink>
+    And I scroll to the end of the conversation
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -106,6 +109,7 @@ Feature: Conversation View
     And I type and send long message and media link <SoundCloudLink>
     And I swipe right on Dialog page
     And I tap on contact name <Contact>
+    And I type and send long message and media link <SoundCloudLink>
     And I scroll to the end of the conversation
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
@@ -151,6 +155,7 @@ Feature: Conversation View
     And I type and send long message and media link <SoundCloudLink>
     And I swipe right on Dialog page
     And I tap on contact name <Contact1>
+    And I type and send long message and media link <SoundCloudLink>
     And I scroll to the end of the conversation
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link

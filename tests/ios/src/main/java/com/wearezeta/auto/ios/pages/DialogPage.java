@@ -173,11 +173,6 @@ public class DialogPage extends IOSPage {
 		conversationInput.sendKeys(message);
 	}
 
-	public void ScrollToLastMessage() {
-		// DriverUtils.scrollToElement(driver,
-		// messagesList.get(messagesList.size()-1));
-	}
-
 	public void scrollToTheEndOfConversation() {
 		String script = IOSLocators.scriptCursorInputPath + ".tap();";
 		driver.executeScript(script);
@@ -243,21 +238,14 @@ public class DialogPage extends IOSPage {
 	}
 
 	public void startMediaContent() throws Exception {
-		boolean flag = DriverUtils.waitUntilElementAppears(driver,
-				By.xpath(IOSLocators.xpathMediaConversationCell));
-		if (flag) {
-			mediaLinkCell.click();
-			try {
-				DriverUtils.setImplicitWaitValue(driver, 5);
-				if (!DriverUtils.isElementDisplayed(soundCloudPause)) {
-					mediaLinkCell.click();
-				}
-			} finally {
-				DriverUtils.setDefaultImplicitWait(driver);
+		boolean flag = DriverUtils.isElementDisplayed(mediaLinkCell);
+		if (!flag) {
+
+			if (!DriverUtils.isElementDisplayed(mediaLinkCell)) {
+				throw new NoSuchElementException("media container is not present");
 			}
-		} else {
-			Assert.fail("Media container element is missing in elements tree");
-		}
+		} 
+		mediaLinkCell.click();
 	}
 
 	public DialogPage scrollDownTilMediaBarAppears() throws Exception {

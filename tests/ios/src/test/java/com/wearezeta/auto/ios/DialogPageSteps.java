@@ -314,7 +314,6 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.sendMessageUsingScript(longMessage);
 		Thread.sleep(1000);
 		PagesCollection.dialogPage.sendMessageUsingScript(link);
-		Thread.sleep(1000);
 	}
 
 	@When("^I memorize message send time$")

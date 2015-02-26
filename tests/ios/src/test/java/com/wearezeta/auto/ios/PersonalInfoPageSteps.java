@@ -161,7 +161,7 @@ public class PersonalInfoPageSteps {
 	@When("I swipe right on the personal page")
 	public void ISwipeRightOnPersonalPage() throws Exception {
 		PagesCollection.contactListPage = (ContactListPage) PagesCollection.personalInfoPage
-				.swipeRight(500);
+				.swipeRight(1000);
 	}
 
 	@When("I click on Settings button from the options menu")
