@@ -1,6 +1,7 @@
 package com.wearezeta.auto.osx.pages;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -30,6 +31,7 @@ import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.util.NSPoint;
 
 public class ContactListPage extends OSXPage {
+
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
 			.getSimpleName());
 
@@ -57,13 +59,16 @@ public class ContactListPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idMainWindowCloseButton)
 	private WebElement closeWindowButton;
 
+	public static HashMap<String, Boolean> shareContactsProcessedUsers = new HashMap<String, Boolean>();
+
 	public ContactListPage(ZetaOSXDriver driver, WebDriverWait wait)
 			throws Exception {
 		super(driver, wait);
 	}
 
-	public void openPeoplePicker() {
+	public PeoplePickerPage openPeoplePicker() throws Exception {
 		addConversationButton.click();
+		return new PeoplePickerPage(this.getDriver(), this.getWait());
 	}
 
 	public boolean waitUntilMainWindowAppears() throws Exception {

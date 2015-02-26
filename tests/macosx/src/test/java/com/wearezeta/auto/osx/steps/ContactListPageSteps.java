@@ -13,9 +13,9 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.osx.locators.OSXLocators;
+import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
-import com.wearezeta.auto.osx.pages.PeoplePickerPage;
 import com.wearezeta.auto.osx.pages.UserProfilePage;
 
 import cucumber.api.java.en.Given;
@@ -32,17 +32,6 @@ public class ContactListPageSteps {
 	@Given("^I see my name (.*) in Contact list$")
 	public void ISeeMyNameInContactList(String name) throws Exception {
 		PagesCollection.loginPage.sendProblemReportIfFound();
-		PagesCollection.contactListPage.pressLaterButton();
-		PagesCollection.peoplePickerPage = new PeoplePickerPage(
-				PagesCollection.loginPage.getDriver(),
-				PagesCollection.loginPage.getWait());
-		if (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
-			log.debug("People picker appears. Closing it.");
-			PagesCollection.peoplePickerPage.closePeoplePicker();
-		} else {
-			log.debug("No people picker found.\nPage source: "
-					+ PagesCollection.peoplePickerPage.getPageSource());
-		}
 		GivenISeeContactListWithName(name);
 	}
 
@@ -146,10 +135,14 @@ public class ContactListPageSteps {
 
 	@When("I open People Picker from contact list")
 	public void WhenIOpenPeoplePickerFromContactList() throws Exception {
-		PagesCollection.contactListPage.openPeoplePicker();
-		PagesCollection.peoplePickerPage = new PeoplePickerPage(
-				PagesCollection.loginPage.getDriver(),
-				PagesCollection.loginPage.getWait());
+		String currentUserEmail = usrMgr.getSelfUser().getEmail();
+		PagesCollection.peoplePickerPage = PagesCollection.contactListPage
+				.openPeoplePicker();
+		if (!ContactListPage.shareContactsProcessedUsers.get(currentUserEmail)) {
+			PagesCollection.contactListPage.pressLaterButton();
+			ContactListPage.shareContactsProcessedUsers.put(currentUserEmail,
+					false);
+		}
 	}
 
 	@When("I change mute state of conversation with (.*)")
