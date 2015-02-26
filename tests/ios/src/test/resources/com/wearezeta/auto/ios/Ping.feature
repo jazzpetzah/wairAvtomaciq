@@ -23,7 +23,7 @@ Feature: Ping
       | Login      | Password      | Name      | Contact1    | Contact2   | Action1 | Action2      | GroupChatName        | Color		 |
       | user1Email | user1Password | user1Name | user2Name   | user3Name  | PINGED  | PINGED AGAIN | ReceivePingGroupChat | BrightOrange |
 
-  @torun @regression @id1358
+  @regression @id1358
   Scenario Outline: Verify you can see Ping on the other side (group conversation)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
