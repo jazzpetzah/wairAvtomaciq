@@ -1,6 +1,6 @@
 Feature: Ping
 
-  @torun @regression @id1357
+  @regression @id1357
   Scenario Outline: Verify you can send Ping in a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -23,10 +23,11 @@ Feature: Ping
       | Login      | Password      | Name      | Contact1    | Contact2   | Action1 | Action2      | GroupChatName        | Color		 |
       | user1Email | user1Password | user1Name | user2Name   | user3Name  | PINGED  | PINGED AGAIN | ReceivePingGroupChat | BrightOrange |
 
-  @regression @id1358
+  @torun @regression @id1358
   Scenario Outline: Verify you can see Ping on the other side (group conversation)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given User <Contact1> change  name to <ContactName>
     Given User <Contact1> change  accent color to <Color>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     And I Sign in using login <Login> and password <Password>
@@ -42,5 +43,5 @@ Feature: Ping
     And I see <Action2> icon in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact1    | Contact2   | Action1 | Action2      | GroupChatName        | Color        |
-      | user1Email | user1Password | user1Name | user2Name   | user3Name  | PINGED  | PINGED AGAIN | ReceivePingGroupChat | BrightOrange |
+      | Login      | Password      | Name      | Contact1    | Contact2   | Action1 | Action2      | GroupChatName        | Color        | ContactName |
+      | user1Email | user1Password | user1Name | user2Name   | user3Name  | PINGED  | PINGED AGAIN | ReceivePingGroupChat | BrightOrange | OtherUser   |

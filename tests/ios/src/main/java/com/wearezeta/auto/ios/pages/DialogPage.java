@@ -52,12 +52,12 @@ public class DialogPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameTextInput)
 	private WebElement textInput;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathYouPinged)
-	private WebElement youPinged;
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathPinged)
+	private WebElement pinged;
 	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathYouPingedAgain)
-	private WebElement youPingedAgain;
-
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathPingedAgain)
+	private WebElement pingedAgain;
+	
 	@FindBy(how = How.NAME, using = IOSLocators.nameOpenConversationDetails)
 	protected WebElement openConversationDetails;
 
@@ -772,8 +772,8 @@ public class DialogPage extends IOSPage {
 	private static final int PING_ICON_Y_OFFSET = 7;
 
 	private BufferedImage getPingIconScreenShot() throws IOException {
-		Point elementLocation = youPinged.getLocation();
-		Dimension elementSize = youPinged.getSize();
+		Point elementLocation = pinged.getLocation();
+		Dimension elementSize = pinged.getSize();
 		int x = elementLocation.x * 2 + elementSize.width * 2;
 		int y = (elementLocation.y - PING_ICON_Y_OFFSET) * 2;
 		int w = PING_ICON_WIDTH;
@@ -782,8 +782,8 @@ public class DialogPage extends IOSPage {
 	}
 	
 	private BufferedImage getPingAgainIconScreenShot() throws IOException {
-		Point elementLocation = youPingedAgain.getLocation();
-		Dimension elementSize = youPingedAgain.getSize();
+		Point elementLocation = pingedAgain.getLocation();
+		Dimension elementSize = pingedAgain.getSize();
 		int x = elementLocation.x * 2 + elementSize.width * 2;
 		int y = (elementLocation.y - PING_ICON_Y_OFFSET) * 2;
 		int w = PING_ICON_WIDTH;
