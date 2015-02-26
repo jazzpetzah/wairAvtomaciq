@@ -100,7 +100,13 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 	}
 
 	public String getEmailFieldValue() {
-		return emailField.getAttribute("value");
+		String result = "";
+		try {
+			result = emailField.getAttribute("value");
+		} catch (NoSuchElementException ex) {
+			
+		}
+		return result;
 	}
 
 	public DialogPage clickOnStartDialogButton() throws Throwable {

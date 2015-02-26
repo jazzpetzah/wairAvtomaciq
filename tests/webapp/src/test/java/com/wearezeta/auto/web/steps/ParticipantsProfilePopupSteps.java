@@ -180,13 +180,12 @@ public class ParticipantsProfilePopupSteps {
 	/**
 	 * Set new title for converstaion in participants popup
 	 * 
-	 * @step. I change grout conversation title to (.*)
+	 * @step. I change group conversation title to (.*)
 	 * 
 	 * @param title
 	 *            new conversation title string
-	 * 
 	 */
-	@When("I change grout conversation title to (.*)")
+	@When("I change group conversation title to (.*)")
 	public void IChangeGroupChatTitleTo(String title) {
 		PagesCollection.participantsPopupPage.setConversationTitle(title);
 	}
