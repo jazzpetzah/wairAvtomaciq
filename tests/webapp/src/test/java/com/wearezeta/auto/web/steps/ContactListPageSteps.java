@@ -203,7 +203,7 @@ public class ContactListPageSteps {
 	public void IClickMuteButton(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		PagesCollection.contactListPage.clickActionsButtonForContact(contact);
-		Thread.sleep(1000);
+		Thread.sleep(3000);
 		PagesCollection.contactListPage
 				.clickMuteConversationForContact(contact);
 	}
