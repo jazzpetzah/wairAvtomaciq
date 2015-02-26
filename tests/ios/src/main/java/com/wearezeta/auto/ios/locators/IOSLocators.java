@@ -210,9 +210,9 @@ public final class IOSLocators {
 	
 	//public static final String nameOtherPersonalInfoPageEmailField = "ProfileOtherEmailField";
 	
-	public static final String xpathOtherPersonalInfoPageNameField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATextView[3]";
+	public static final String xpathOtherPersonalInfoPageNameField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[6]";
 	
-	public static final String xpathOtherPersonalInfoPageEmailField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATextView[4]";
+	public static final String xpathOtherPersonalInfoPageEmailField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATextView[contains(@name, 'wearezeta.com')]";
 	
 	///////////////////////
 	//Self profile page
