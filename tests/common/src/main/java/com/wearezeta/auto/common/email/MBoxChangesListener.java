@@ -15,7 +15,6 @@ import javax.mail.event.MessageCountListener;
 
 class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 	private static final int NEW_MSG_CHECK_INTERVAL = 500; // milliseconds
-	private static final int RECENT_MSGS_CNT = 20;
 
 	private Map<String, String> expectedHeaders = new HashMap<String, String>();
 	private CountDownLatch waitObj = new CountDownLatch(1);
@@ -34,12 +33,18 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 		messagesCountNotifier = new Thread() {
 			@Override
 			public void run() {
-				Folder dstFolder = parentMBox.getFolder();
-				while (dstFolder != null && dstFolder.isOpen()) {
+				final Folder dstFolder = parentMBox.getFolder();
+				while (dstFolder != null) {
 					try {
+						if (!dstFolder.isOpen()) {
+							dstFolder.open(Folder.READ_ONLY);
+						}
+						dstFolder.getMessageCount();
 						Thread.sleep(NEW_MSG_CHECK_INTERVAL);
 					} catch (InterruptedException e) {
 						return;
+					} catch (MessagingException e) {
+						// Ignore exception
 					}
 				}
 			}
@@ -67,7 +72,7 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 					}
 				}
 			} catch (MessagingException e) {
-				isHeaderFound = false;
+				e.printStackTrace();
 			}
 			allHeadersFound = allHeadersFound & isHeaderFound;
 		}
@@ -96,24 +101,6 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 		try {
 			if (this.waitObj.await(timeoutSeconds, TimeUnit.SECONDS)) {
 				return this.matchedMessage;
-			} else {
-				// Fallback to recent messages if the listener is unable
-				// to find anything
-				final int currentMsgsCount = this.parentMBox.getFolder()
-						.getMessageCount();
-				Message[] fetchedMsgs;
-				if (RECENT_MSGS_CNT > currentMsgsCount) {
-					fetchedMsgs = this.parentMBox.getFolder().getMessages();
-				} else {
-					fetchedMsgs = this.parentMBox.getFolder().getMessages(
-							currentMsgsCount - RECENT_MSGS_CNT,
-							currentMsgsCount);
-				}
-				for (Message msg : fetchedMsgs) {
-					if (areAllHeadersInMessage(msg)) {
-						return msg;
-					}
-				}
 			}
 		} finally {
 			this.parentMBox.getFolder().removeMessageCountListener(this);
