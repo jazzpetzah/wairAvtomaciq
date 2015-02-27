@@ -133,3 +133,46 @@ Feature: People View
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName     | ChatNameEdit   | Message                  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | BaseChatName | EditedCahtName | renamed the conversation |
+
+  @staging @id1697
+  Scenario Outline: Verify the new conversation is created on the other end from 1to1
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name <Name> in Contact list
+    And I open conversation with <Contact1>
+    And I click show participant profile button
+    And I see Participant Profile Popup Page
+    When I click Add people button on Participant Profile Popup Page
+    And I see Add People message
+    And I confirm add to group chat
+    And I wait up to 15 seconds until <Contact2> exists in backend search results
+    And I input user name <Contact2> in search field
+    And I select <Contact2> from Popup Page search results
+    And I choose to create conversation from Popup Page
+    And I see Contact list with name <Contact1>,<Contact2>
+    And I open conversation with <Contact1>,<Contact2>
+    Then I see <Message> action for <Contact2>,<Contact1> in conversation
+    And I open self profile
+    And I click gear button on self profile page
+    And I select Sign Out menu item on self profile page
+    And I see Sign In page
+    And I Sign in using login <Contact1> and password <Password>
+    And User <Contact1> is me
+    And I see my name <Contact1> in Contact list
+    And I see Contact list with name <Name>,<Contact2>
+    And I open conversation with <Name>,<Contact2>
+    And I see user <Name> action <Message2> for <Contact2>,<Contact1> in conversation
+    And I open self profile
+    And I click gear button on self profile page
+    And I select Sign Out menu item on self profile page
+    And I see Sign In page
+    And I Sign in using login <Contact2> and password <Password>
+    And User <Contact2> is me
+    And I see my name <Contact2> in Contact list
+    And I see Contact list with name <Name>,<Contact1>
+    And I see user <Name> action <Message2> for <Contact2>,<Contact1> in conversation
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | Message                         | Message2                    |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | you started a conversation with | started a conversation with |
