@@ -126,7 +126,7 @@ Feature: People View
     And I open conversation with <ChatName>
     And I click show participant profile button
     And I see Participant Profile Popup Page
-    And I change grout conversation title to <ChatNameEdit>
+    And I change group conversation title to <ChatNameEdit>
     Then I see conversation title <ChatNameEdit> in Participants profile
     And I see <Message> action in conversation
 

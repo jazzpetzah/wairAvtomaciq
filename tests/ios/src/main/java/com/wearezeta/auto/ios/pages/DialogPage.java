@@ -52,9 +52,12 @@ public class DialogPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameTextInput)
 	private WebElement textInput;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathYouPinged)
-	private WebElement youPinged;
-
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathPinged)
+	private WebElement pinged;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathPingedAgain)
+	private WebElement pingedAgain;
+	
 	@FindBy(how = How.NAME, using = IOSLocators.nameOpenConversationDetails)
 	protected WebElement openConversationDetails;
 
@@ -740,10 +743,12 @@ public class DialogPage extends IOSPage {
 
 	public double checkPingIcon(String label) throws Exception {
 		String path = null;
-		BufferedImage pingImage = getPingIconScreenShot();
+		BufferedImage pingImage = null;
 		if (label.equals(PING_LABEL)) {
+			pingImage = getPingIconScreenShot();
 			path = CommonUtils.getPingIconPathIOS(GroupChatPage.class);
 		} else if (label.equals(HOT_PING_LABEL)) {
+			pingImage = getPingAgainIconScreenShot();
 			path = CommonUtils.getHotPingIconPathIOS(GroupChatPage.class);
 		}
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
@@ -755,8 +760,18 @@ public class DialogPage extends IOSPage {
 	private static final int PING_ICON_Y_OFFSET = 7;
 
 	private BufferedImage getPingIconScreenShot() throws IOException {
-		Point elementLocation = youPinged.getLocation();
-		Dimension elementSize = youPinged.getSize();
+		Point elementLocation = pinged.getLocation();
+		Dimension elementSize = pinged.getSize();
+		int x = elementLocation.x * 2 + elementSize.width * 2;
+		int y = (elementLocation.y - PING_ICON_Y_OFFSET) * 2;
+		int w = PING_ICON_WIDTH;
+		int h = PING_ICON_HEIGHT;
+		return getScreenshotByCoordinates(x, y, w, h);
+	}
+	
+	private BufferedImage getPingAgainIconScreenShot() throws IOException {
+		Point elementLocation = pingedAgain.getLocation();
+		Dimension elementSize = pingedAgain.getSize();
 		int x = elementLocation.x * 2 + elementSize.width * 2;
 		int y = (elementLocation.y - PING_ICON_Y_OFFSET) * 2;
 		int w = PING_ICON_WIDTH;

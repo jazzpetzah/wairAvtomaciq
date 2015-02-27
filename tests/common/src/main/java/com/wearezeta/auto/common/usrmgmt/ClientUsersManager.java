@@ -262,7 +262,7 @@ public class ClientUsersManager {
 		}
 		executor.shutdown();
 		final int usersCreationTimeout = BackendAPIWrappers.BACKEND_ACTIVATION_TIMEOUT
-				* usersToCreate.size() * NUMBER_OF_REGISTRATION_RETRIES * 2;
+				* usersToCreate.size() * NUMBER_OF_REGISTRATION_RETRIES * 3;
 		if (!executor.awaitTermination(usersCreationTimeout, TimeUnit.SECONDS)) {
 			throw new BackendRequestException(
 					String.format(

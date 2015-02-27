@@ -73,7 +73,9 @@ public class PeoplePickerPage extends OSXPage {
 				return textArea;
 			}
 		}
-		return null;
+		throw new NoSuchElementException(
+				String.format("Failed to find Search Field element with Class '%s' and ID '%s'",
+						"AXTextArea", OSXLocators.idPeoplePickerSearchField));
 	}
 
 	public WebElement findCancelButton() {
