@@ -275,7 +275,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | ContactEmail |
       | user1Email | user1Password | user1Name | user2Name | user2Email   |
 
-  @staging @id1492
+  @regression @id1492
   Scenario Outline: Verify you can send an invitation via mail
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
