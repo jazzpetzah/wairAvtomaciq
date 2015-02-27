@@ -1,6 +1,6 @@
 Feature: People View
 
-  @staging @id1691
+  @smoke @id1691
   Scenario Outline: Start group chat with users from contact list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -39,7 +39,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id1692
+  @smoke @id1692
   Scenario Outline: Leave from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -61,7 +61,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       | Message  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat | you left |
 
-  @staging @id1694
+  @smoke @id1694
   Scenario Outline: Verify you can remove participants from a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -116,7 +116,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName       | Message   |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | AddToGroupChat | you added |
 
-  @staging @id1683
+  @smoke @id1683
   Scenario Outline: Verify the name of the group conversation can be edited
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

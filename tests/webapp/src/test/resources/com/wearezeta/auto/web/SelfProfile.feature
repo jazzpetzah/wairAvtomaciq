@@ -1,6 +1,6 @@
 Feature: Self Profile
 
-  @staging @id1743
+  @smoke @id1743
   Scenario Outline: I can change my name
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
