@@ -3,6 +3,7 @@ package com.wearezeta.auto.web.pages;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.BasePage;
@@ -69,5 +70,10 @@ public class WebPage extends BasePage {
 	@Override
 	public BasePage swipeDown(int time) throws IOException {
 		return null;
+	}
+	
+	public void acceptAlert() {
+		Alert popup = getDriver().switchTo().alert();
+		popup.accept();
 	}
 }
