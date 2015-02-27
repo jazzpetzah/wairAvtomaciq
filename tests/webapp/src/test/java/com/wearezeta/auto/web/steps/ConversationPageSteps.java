@@ -168,8 +168,47 @@ public class ConversationPageSteps {
 	public void ThenISeeActionForContactInConversation(String message,
 			String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		if (contact.contains(",")) {
+			contact = contact.replaceAll(",", ", ");
+		}
 		Assert.assertTrue(PagesCollection.conversationPage
 				.isActionMessageSent(message + " " + contact));
+	}
+	
+	/**
+	 * Checks action message (e.g. you left, etc.) appear in conversation
+	 * 
+	 * @step. ^I see (.*) user (.*) action for (.*) in conversation
+	 * 
+	 * @throws AssertionError
+	 *             if action message did not appear in conversation
+	 * 
+	 * @param message
+	 * message string
+	 * 
+	 * @param user1
+	 * user who did action string
+	 * 
+	 * @param user2
+	 * user who was actioned string
+	 * 
+	 * @throws Exception 
+	 * 
+	 */
+	@Then("^I see user (.*) action (.*) for (.*) in conversation$")
+	public void ThenISeeUserActionForContactInConversation(String user1, String message,
+			String contacts) throws Exception {
+		user1 = usrMgr.replaceAliasesOccurences(user1, FindBy.NAME_ALIAS);
+		contacts = usrMgr.replaceAliasesOccurences(contacts, FindBy.NAME_ALIAS);
+		if (contacts.contains(",")) {
+			contacts = contacts.replaceAll(",", ", ");
+		}
+		if (contacts.contains(usrMgr.getSelfUser().getName())){
+			contacts = contacts.replace(usrMgr.getSelfUser().getName(), "you");
+		}
+		String actionMessage=user1 + " " + message + " " + contacts;
+		Assert.assertTrue(PagesCollection.conversationPage
+				.isActionMessageSent(actionMessage));
 	}
 
 	/**

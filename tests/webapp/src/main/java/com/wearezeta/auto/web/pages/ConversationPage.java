@@ -63,16 +63,10 @@ public class ConversationPage extends WebPage {
 	}
 
 	public boolean isActionMessageSent(String message) throws Exception {
-		boolean isSend = false;
 		String xpath = String.format(
 				WebAppLocators.ConversationPage.xpathActionMessageEntry,
 				message);
-		DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath));
-		WebElement element = driver.findElement(By.xpath(xpath));
-		if (element != null) {
-			isSend = true;
-		}
-		return isSend;
+		return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath));
 	}
 
 	public boolean isMessageSent(String message) throws Exception {
