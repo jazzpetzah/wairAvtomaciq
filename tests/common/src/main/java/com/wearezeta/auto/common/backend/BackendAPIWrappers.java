@@ -41,7 +41,7 @@ import com.wearezeta.auto.image_send.SelfImageProcessor;
 // argument by performing automatic login (set id and session token attributes)
 public final class BackendAPIWrappers {
 	public static final int UI_ACTIVATION_TIMEOUT = 120; // seconds
-	public static final int BACKEND_ACTIVATION_TIMEOUT = 15; // seconds
+	public static final int BACKEND_ACTIVATION_TIMEOUT = 10; // seconds
 	public static final int ACTIVATION_RETRY_COUNT = 3;
 
 	private static final Logger log = ZetaLogger

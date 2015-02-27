@@ -20,7 +20,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class ClientUsersManager {
 	private static final int MAX_PARALLEL_USER_CREATION_TASKS = 5;
-	private static final int NUMBER_OF_REGISTRATION_RETRIES = 3;
+	private static final int NUMBER_OF_REGISTRATION_RETRIES = 5;
 
 	private static final String NAME_ALIAS_TEMPLATE = "user%dName";
 	private static final String PASSWORD_ALIAS_TEMPLATE = "user%dPassword";
@@ -247,8 +247,10 @@ public class ClientUsersManager {
 							e.printStackTrace();
 						}
 						log.debug(String
-								.format("Failed to create user '%s'. Retrying (retry number: %d)...",
-										userToCreate.getName(), retryNumber));
+								.format("Failed to create user '%s'. Retrying (%d of %d)...",
+										userToCreate.getName(),
+										retryNumber + 1,
+										NUMBER_OF_REGISTRATION_RETRIES));
 						try {
 							Thread.sleep(sleepInterval);
 						} catch (InterruptedException ex) {

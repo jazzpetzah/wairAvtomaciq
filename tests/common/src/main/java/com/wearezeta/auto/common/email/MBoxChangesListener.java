@@ -53,30 +53,34 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 	}
 
 	private boolean areAllHeadersInMessage(Message msg) {
-		boolean allHeadersFound = true;
 		for (Entry<String, String> expectedHeader : this.expectedHeaders
 				.entrySet()) {
 			boolean isHeaderFound = false;
 			final String expectedHeaderName = expectedHeader.getKey();
 			final String expectedHeaderValue = expectedHeader.getValue();
 			try {
-				String[] headerValue = null;
+				String[] headerValues = null;
 				try {
-					headerValue = msg.getHeader(expectedHeaderName);
+					headerValues = msg.getHeader(expectedHeaderName);
 				} catch (NullPointerException e) {
 					// Ignore NPE bug in java mail lib
 				}
-				if (headerValue != null) {
-					if (headerValue[0].equals(expectedHeaderValue)) {
-						isHeaderFound = true;
+				if (headerValues != null) {
+					for (String headerValue : headerValues) {
+						if (headerValue.equals(expectedHeaderValue)) {
+							isHeaderFound = true;
+							break;
+						}
 					}
 				}
 			} catch (MessagingException e) {
 				e.printStackTrace();
 			}
-			allHeadersFound = allHeadersFound & isHeaderFound;
+			if (!isHeaderFound) {
+				return false;
+			}
 		}
-		return allHeadersFound;
+		return true;
 	}
 
 	@Override
