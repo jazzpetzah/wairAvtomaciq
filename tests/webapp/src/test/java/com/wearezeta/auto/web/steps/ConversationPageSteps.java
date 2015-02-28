@@ -62,7 +62,7 @@ public class ConversationPageSteps {
 	 * Checks that last sent random message appear in conversation
 	 * 
 	 * @step. ^I see random message in conversation$
-	 * @throws Exception 
+	 * @throws Exception
 	 * 
 	 * @throws AssertionError
 	 *             if message did not appear in conversation
@@ -139,7 +139,7 @@ public class ConversationPageSteps {
 	 * Checks action message (e.g. you left, etc.) appear in conversation
 	 * 
 	 * @step. ^I see (.*) action in conversation$
-	 * @throws Exception 
+	 * @throws Exception
 	 * 
 	 * @throws AssertionError
 	 *             if action message did not appear in conversation
@@ -161,7 +161,7 @@ public class ConversationPageSteps {
 	 * @param message
 	 * 
 	 * @param contact
-	 * @throws Exception 
+	 * @throws Exception
 	 * 
 	 */
 	@Then("^I see (.*) action for (.*) in conversation$")
@@ -174,7 +174,7 @@ public class ConversationPageSteps {
 		Assert.assertTrue(PagesCollection.conversationPage
 				.isActionMessageSent(message + " " + contact));
 	}
-	
+
 	/**
 	 * Checks action message (e.g. you left, etc.) appear in conversation
 	 * 
@@ -184,29 +184,29 @@ public class ConversationPageSteps {
 	 *             if action message did not appear in conversation
 	 * 
 	 * @param message
-	 * message string
+	 *            message string
 	 * 
 	 * @param user1
-	 * user who did action string
+	 *            user who did action string
 	 * 
-	 * @param user2
-	 * user who was actioned string
+	 * @param contacts
+	 *            user(s) who was actioned string
 	 * 
-	 * @throws Exception 
+	 * @throws Exception
 	 * 
 	 */
 	@Then("^I see user (.*) action (.*) for (.*) in conversation$")
-	public void ThenISeeUserActionForContactInConversation(String user1, String message,
-			String contacts) throws Exception {
+	public void ThenISeeUserActionForContactInConversation(String user1,
+			String message, String contacts) throws Exception {
 		user1 = usrMgr.replaceAliasesOccurences(user1, FindBy.NAME_ALIAS);
 		contacts = usrMgr.replaceAliasesOccurences(contacts, FindBy.NAME_ALIAS);
 		if (contacts.contains(",")) {
 			contacts = contacts.replaceAll(",", ", ");
 		}
-		if (contacts.contains(usrMgr.getSelfUser().getName())){
+		if (contacts.contains(usrMgr.getSelfUser().getName())) {
 			contacts = contacts.replace(usrMgr.getSelfUser().getName(), "you");
 		}
-		String actionMessage=user1 + " " + message + " " + contacts;
+		String actionMessage = user1 + " " + message + " " + contacts;
 		Assert.assertTrue(PagesCollection.conversationPage
 				.isActionMessageSent(actionMessage));
 	}
@@ -229,9 +229,10 @@ public class ConversationPageSteps {
 		steps.ISelectUserFromPeoplePickerResults(contact);
 		steps.IChooseToCreateConversationFromPopupPage();
 	}
-	
+
 	/**
 	 * Click ping button to send ping and hot ping
+	 * 
 	 * @step. ^I click ping button$
 	 * @throws Exception
 	 */
@@ -239,26 +240,31 @@ public class ConversationPageSteps {
 	public void IClickPingButton() throws Exception {
 		PagesCollection.conversationPage.clickPingButton();
 	}
-	
+
 	/**
 	 * Verify ping (or ping again) message is visible in conversation
+	 * 
 	 * @step. ^I see ping message (.*)$
 	 * @param message
-	 * 			pinged/pinged again
+	 *            pinged/pinged again
 	 * @throws Exception
 	 */
 	@When("^I see ping message (.*)$")
 	public void ISeePingMessage(String message) throws Exception {
-		Assert.assertTrue(PagesCollection.conversationPage.isPingMessageVisible(message));
+		Assert.assertTrue(PagesCollection.conversationPage
+				.isPingMessageVisible(message));
 	}
-	
+
 	/**
 	 * Verify that there is only one ping message visible in conversation
+	 * 
 	 * @step. ^I see only one ping message$
 	 * @throws Exception
 	 */
 	@When("^I see only one ping message$")
 	public void ISeeOnlyOnePingMessage() throws Exception {
-		Assert.assertEquals(PagesCollection.conversationPage.numberOfPingMessagesVisible(), 1);
+		Assert.assertEquals(
+				PagesCollection.conversationPage.numberOfPingMessagesVisible(),
+				1);
 	}
 }
