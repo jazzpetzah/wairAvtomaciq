@@ -1,6 +1,10 @@
 package com.wearezeta.auto.common.email;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.Callable;
@@ -61,6 +65,9 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 			try {
 				String[] headerValues = null;
 				try {
+					if (!msg.getFolder().isOpen()) {
+						msg.getFolder().open(Folder.READ_ONLY);
+					}
 					headerValues = msg.getHeader(expectedHeaderName);
 				} catch (NullPointerException e) {
 					// Ignore NPE bug in java mail lib
@@ -83,9 +90,24 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 		return true;
 	}
 
+	private static class MessagesByDateComparator implements
+			Comparator<Message> {
+		@Override
+		public int compare(Message m1, Message m2) {
+			try {
+				return m1.getSentDate().compareTo(m2.getSentDate());
+			} catch (MessagingException e) {
+				e.printStackTrace();
+				return 0;
+			}
+		}
+	}
+
 	@Override
 	public void messagesAdded(MessageCountEvent e) {
-		final Message[] addedMessages = e.getMessages();
+		List<Message> addedMessages = Arrays.asList(e.getMessages());
+		Collections.sort(addedMessages,
+				Collections.reverseOrder(new MessagesByDateComparator()));
 		for (Message msg : addedMessages) {
 			if (areAllHeadersInMessage(msg)) {
 				this.matchedMessage = msg;

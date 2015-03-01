@@ -19,7 +19,6 @@ import java.util.concurrent.Future;
 import javax.mail.Message;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -41,8 +40,7 @@ import com.wearezeta.auto.image_send.SelfImageProcessor;
 // argument by performing automatic login (set id and session token attributes)
 public final class BackendAPIWrappers {
 	public static final int UI_ACTIVATION_TIMEOUT = 120; // seconds
-	public static final int BACKEND_ACTIVATION_TIMEOUT = 10; // seconds
-	public static final int ACTIVATION_RETRY_COUNT = 3;
+	public static final int BACKEND_ACTIVATION_TIMEOUT = 30; // seconds
 
 	private static final Logger log = ZetaLogger
 			.getLog(BackendAPIWrappers.class.getSimpleName());
@@ -76,28 +74,9 @@ public final class BackendAPIWrappers {
 		log.debug(String
 				.format("Received activation email message with key: %s, code: %s. Proceeding with activation...",
 						key, code));
-		int ntry = 0;
-		Exception savedException = null;
-		while (ntry < ACTIVATION_RETRY_COUNT) {
-			try {
-				BackendREST.activateNewUser(key, code);
-				log.debug(String.format("User %s is activated",
-						registrationInfo.getLastUserEmail()));
-				return;
-			} catch (BackendRequestException e) {
-				log.debug(String
-						.format("Activation for user %s failed. Retrying (%d of %d)...",
-								registrationInfo.getLastUserEmail(), ntry + 1,
-								ACTIVATION_RETRY_COUNT));
-				e.printStackTrace();
-				if (e.getReturnCode() == HttpStatus.SC_NOT_FOUND) {
-					Thread.sleep(100 * (ntry + 1));
-				}
-				savedException = e;
-			}
-			ntry++;
-		}
-		throw savedException;
+		BackendREST.activateNewUser(key, code);
+		log.debug(String.format("User %s is activated",
+				registrationInfo.getLastUserEmail()));
 	}
 
 	public static String getUserActivationLink(Future<Message> activationMessage)
