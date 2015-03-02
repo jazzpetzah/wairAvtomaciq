@@ -82,7 +82,8 @@ public class ConversationPage extends WebPage {
 		return isSend;
 	}
 
-	public WebPage clickShowUserProfileButton(boolean isGroup) throws Exception {
+	public ConversationPopupPage clickShowUserProfileButton(boolean isGroup)
+			throws Exception {
 		DriverUtils.waitUntilElementClickable(driver, showParticipants);
 		showParticipants.click();
 		if (isGroup) {
