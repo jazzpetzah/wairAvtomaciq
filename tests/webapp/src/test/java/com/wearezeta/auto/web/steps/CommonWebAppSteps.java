@@ -93,6 +93,7 @@ public class CommonWebAppSteps {
 				.getWebAppAppiumUrlFromConfig(CommonWebAppSteps.class);
 		final String path = CommonUtils
 				.getWebAppApplicationPathFromConfig(CommonWebAppSteps.class);
+		WebAppExecutionContext.browserName = getBrowser();
 		final ZetaWebAppDriver webDriver = resetWebAppDriver(url);
 		final WebDriverWait wait = PlatformDrivers
 				.createDefaultExplicitWait(webDriver);
@@ -109,8 +110,8 @@ public class CommonWebAppSteps {
 		ZetaFormatter.setDriver(PagesCollection.invitationCodePage.getDriver());
 
 		// put AppleScript for execution to Selenium node
-		if (WebCommonUtils.getWebAppBrowserNameFromConfig(
-				CommonWebAppSteps.class).equals(WebAppConstants.Browser.SAFARI)) {
+		if (WebAppExecutionContext.browserName
+				.equals(WebAppConstants.Browser.SAFARI)) {
 			try {
 				WebAppExecutionContext.seleniumNodeIp = WebCommonUtils
 						.getNodeIp(PagesCollection.invitationCodePage

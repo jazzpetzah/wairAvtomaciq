@@ -47,7 +47,8 @@ public class PeoplePickerPage extends WebPage {
 		userEl.click();
 	}
 
-	public void createConversation() {
+	public void createConversation() throws Exception {
+		DriverUtils.waitUntilElementClickable(driver, createConversationButton);
 		createConversationButton.click();
 	}
 

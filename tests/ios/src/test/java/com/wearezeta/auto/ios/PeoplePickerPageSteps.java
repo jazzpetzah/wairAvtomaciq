@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios;
 
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 
 import org.junit.Assert;
@@ -17,6 +18,7 @@ import cucumber.api.java.en.When;
 
 public class PeoplePickerPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+	
 
 	@When("^I see People picker page$")
 	public void WhenISeePeoplePickerPage() throws Exception {
@@ -322,4 +324,31 @@ public class PeoplePickerPageSteps {
 				.getNumberOfSelectedTopPeople();
 		Assert.assertEquals(number, numberOfSelectedTopPeople);
 	}
+	
+	/**
+	 * Presses the Send An Invite button in the people picker. To invite 
+	 * people via mail.
+	 * 
+	 * @step. ^I press the send an invite button$
+	 * 
+	 */
+	@When("^I press the send an invite button$")
+	public void IPressTheSendAnInviteButton(){
+		PagesCollection.peoplePickerPage.tapSendInviteButton();
+	}
+
+	/**
+	 * Presses the Copy button on the Send Invitation pop up
+	 * 
+	 * @step. ^I press the copy button$
+	 * @throws Exception 
+	 * @throws UnsupportedFlavorException 
+	 * 
+	 */
+	@When("^I press the copy button$")
+	public void IPressTheCopyButton() throws UnsupportedFlavorException, Exception{
+		PagesCollection.peoplePickerPage.tapSendInviteCopyButton();
+	}
+	
+
 }

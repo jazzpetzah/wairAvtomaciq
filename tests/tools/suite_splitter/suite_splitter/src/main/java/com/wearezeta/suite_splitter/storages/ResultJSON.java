@@ -54,7 +54,7 @@ public class ResultJSON extends TestcasesStorage {
 					if (srcStepPriority > dstStepPriority) {
 						dstSteps.getJSONObject(dstStepIdx)
 								.getJSONObject("result")
-								.put("result", srcStepResult);
+								.put("status", srcStepResult);
 					}
 				}
 			}

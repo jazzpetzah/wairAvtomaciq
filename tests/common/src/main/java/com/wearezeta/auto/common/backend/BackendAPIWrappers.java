@@ -15,7 +15,6 @@ import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 import javax.mail.Message;
 
@@ -40,7 +39,8 @@ import com.wearezeta.auto.image_send.SelfImageProcessor;
 // Almost all methods of this class mutate ClientUser
 // argument by performing automatic login (set id and session token attributes)
 public final class BackendAPIWrappers {
-	public static final int ACTIVATION_TIMEOUT = 120; // seconds
+	public static final int UI_ACTIVATION_TIMEOUT = 120; // seconds
+	public static final int BACKEND_ACTIVATION_TIMEOUT = 25; // seconds
 
 	private static final Logger log = ZetaLogger
 			.getLog(BackendAPIWrappers.class.getSimpleName());
@@ -53,7 +53,11 @@ public final class BackendAPIWrappers {
 		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", user.getEmail());
-		Future<Message> activationMessage = mbox.getMessage(expectedHeaders);
+		Future<Message> activationMessage = mbox.getMessage(expectedHeaders,
+				BACKEND_ACTIVATION_TIMEOUT);
+		log.debug(String.format(
+				"Started email listener for message containing headers %s...",
+				expectedHeaders.toString()));
 		BackendREST.registerNewUser(user.getEmail(), user.getName(),
 				user.getPassword());
 		activateRegisteredUser(activationMessage);
@@ -63,10 +67,14 @@ public final class BackendAPIWrappers {
 
 	public static void activateRegisteredUser(Future<Message> activationMessage)
 			throws Exception {
-		ActivationMessage registrationInfo = new ActivationMessage(
-				activationMessage.get(ACTIVATION_TIMEOUT, TimeUnit.SECONDS));
-		BackendREST.activateNewUser(registrationInfo.getXZetaKey(),
-				registrationInfo.getXZetaCode());
+		final ActivationMessage registrationInfo = new ActivationMessage(
+				activationMessage.get());
+		final String key = registrationInfo.getXZetaKey();
+		final String code = registrationInfo.getXZetaCode();
+		log.debug(String
+				.format("Received activation email message with key: %s, code: %s. Proceeding with activation...",
+						key, code));
+		BackendREST.activateNewUser(key, code);
 		log.debug(String.format("User %s is activated",
 				registrationInfo.getLastUserEmail()));
 	}
@@ -74,14 +82,14 @@ public final class BackendAPIWrappers {
 	public static String getUserActivationLink(Future<Message> activationMessage)
 			throws Exception {
 		ActivationMessage registrationInfo = new ActivationMessage(
-				activationMessage.get(ACTIVATION_TIMEOUT, TimeUnit.SECONDS));
+				activationMessage.get());
 		return registrationInfo.extractActivationLink();
 	}
 
 	public static String getPasswordResetLink(
 			Future<Message> passwordResetMessage) throws Exception {
 		PasswordResetMessage resetPassword = new PasswordResetMessage(
-				passwordResetMessage.get(ACTIVATION_TIMEOUT, TimeUnit.SECONDS));
+				passwordResetMessage.get());
 		return resetPassword.extractPasswordResetLink();
 	}
 

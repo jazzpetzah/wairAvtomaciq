@@ -1,5 +1,7 @@
 package com.wearezeta.auto.ios.pages;
 
+import io.appium.java_client.AppiumDriver;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -52,9 +54,12 @@ public class DialogPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameTextInput)
 	private WebElement textInput;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathYouPinged)
-	private WebElement youPinged;
-
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathPinged)
+	private WebElement pinged;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathPingedAgain)
+	private WebElement pingedAgain;
+	
 	@FindBy(how = How.NAME, using = IOSLocators.nameOpenConversationDetails)
 	protected WebElement openConversationDetails;
 
@@ -117,6 +122,9 @@ public class DialogPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathDialogTitleBar)
 	private WebElement titleBar;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameSoundCloudPause)
+	private WebElement soundCloudPause;
 
 	private String connectMessage = "Hi %s, let’s connect on wire. %s";
 	private String connectingLabel = "CONNECTING TO %s";
@@ -168,11 +176,6 @@ public class DialogPage extends IOSPage {
 
 	public void sendStringToInput(String message) throws InterruptedException {
 		conversationInput.sendKeys(message);
-	}
-
-	public void ScrollToLastMessage() {
-		// DriverUtils.scrollToElement(driver,
-		// messagesList.get(messagesList.size()-1));
 	}
 
 	public void scrollToTheEndOfConversation() {
@@ -240,13 +243,16 @@ public class DialogPage extends IOSPage {
 	}
 
 	public void startMediaContent() throws Exception {
-		boolean flag = DriverUtils.waitUntilElementAppears(driver,
-				By.xpath(IOSLocators.xpathMediaConversationCell));
+		boolean flag = DriverUtils.isElementDisplayed(mediaLinkCell);
 		if (flag) {
 			mediaLinkCell.click();
-		} else {
-			Assert.fail("Media container element is missing in elements tree");
 		}
+		else {
+			String lastMessageXPath = String.format(
+					IOSLocators.xpathLastMessageFormat, messagesList.size());
+			WebElement el = driver.findElementByXPath(lastMessageXPath);
+			((AppiumDriver)driver).tap(1, 10, el.getLocation().y + el.getSize().height + (el.getSize().height / 2), 1);
+		} 
 	}
 
 	public DialogPage scrollDownTilMediaBarAppears() throws Exception {
@@ -741,10 +747,12 @@ public class DialogPage extends IOSPage {
 
 	public double checkPingIcon(String label) throws Exception {
 		String path = null;
-		BufferedImage pingImage = getPingIconScreenShot();
+		BufferedImage pingImage = null;
 		if (label.equals(PING_LABEL)) {
+			pingImage = getPingIconScreenShot();
 			path = CommonUtils.getPingIconPathIOS(GroupChatPage.class);
 		} else if (label.equals(HOT_PING_LABEL)) {
+			pingImage = getPingAgainIconScreenShot();
 			path = CommonUtils.getHotPingIconPathIOS(GroupChatPage.class);
 		}
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
@@ -756,8 +764,18 @@ public class DialogPage extends IOSPage {
 	private static final int PING_ICON_Y_OFFSET = 7;
 
 	private BufferedImage getPingIconScreenShot() throws IOException {
-		Point elementLocation = youPinged.getLocation();
-		Dimension elementSize = youPinged.getSize();
+		Point elementLocation = pinged.getLocation();
+		Dimension elementSize = pinged.getSize();
+		int x = elementLocation.x * 2 + elementSize.width * 2;
+		int y = (elementLocation.y - PING_ICON_Y_OFFSET) * 2;
+		int w = PING_ICON_WIDTH;
+		int h = PING_ICON_HEIGHT;
+		return getScreenshotByCoordinates(x, y, w, h);
+	}
+	
+	private BufferedImage getPingAgainIconScreenShot() throws IOException {
+		Point elementLocation = pingedAgain.getLocation();
+		Dimension elementSize = pingedAgain.getSize();
 		int x = elementLocation.x * 2 + elementSize.width * 2;
 		int y = (elementLocation.y - PING_ICON_Y_OFFSET) * 2;
 		int w = PING_ICON_WIDTH;
@@ -776,19 +794,21 @@ public class DialogPage extends IOSPage {
 		return pingedMessages.size();
 	}
 
-	public DialogPage scrollToEndOfConversation() {
-		DialogPage page = null;
+	public void scrollToEndOfConversation() {
 		WebElement el = driver.findElement(By
 				.xpath(IOSLocators.xpathLastChatMessage));
-		DriverUtils.scrollToElement(this.getDriver(), el);
-		return page;
+		try {
+			DriverUtils.scrollToElement(this.getDriver(), el);
+		} catch (WebDriverException e) {
+			
+		}
 	}
 
 	public boolean isTitleBarDisplayed() throws InterruptedException {
 		// wait for the title bar to animate onto the page
 		Thread.sleep(1000);
 		// check if the title bar is off the page or not
-		return titleBar.getLocation().y > 0;
+		return titleBar.getLocation().y >= 0;
 	}
 
 	public boolean isTitleBarNamed(String chatName) {

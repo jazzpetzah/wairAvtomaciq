@@ -120,7 +120,8 @@ public class RegistrationPageSteps {
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
 		PagesCollection.registrationPage.setActivationMessage(IMAPSMailbox
-				.getInstance().getMessage(expectedHeaders));
+				.getInstance().getMessage(expectedHeaders,
+						BackendAPIWrappers.UI_ACTIVATION_TIMEOUT));
 
 		PagesCollection.registrationPage.submitRegistration();
 	}

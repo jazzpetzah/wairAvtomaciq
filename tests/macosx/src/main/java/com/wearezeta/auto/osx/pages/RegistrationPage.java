@@ -109,6 +109,8 @@ public class RegistrationPage extends OSXPage {
 	}
 
 	public boolean isInvalidEmailMessageAppear() {
+		passwordField.click();
+		findEmailField().click();
 		try {
 			return driver.findElement(By
 					.xpath(OSXLocators.xpathPleaseProvideEmailAddress)) != null;

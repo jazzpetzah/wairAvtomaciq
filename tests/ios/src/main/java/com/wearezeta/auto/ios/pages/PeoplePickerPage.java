@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
@@ -67,8 +68,15 @@ public class PeoplePickerPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathPeoplePickerAllTopPeople)
 	private List<WebElement> topPeopleList;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathInviteCopyButton)
+	private WebElement inviteCopyButton;
+
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathSendAnInviteButton)
+	private WebElement sendInviteButton;
 
 	private int numberTopSelected = 0;
+	private boolean laterClicked = false;
 
 	public PeoplePickerPage(ZetaIOSDriver driver, WebDriverWait wait)
 			throws Exception {
@@ -76,11 +84,12 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public void clickLaterButton() {
-		// if (DriverUtils.isElementDisplayed(laterButton)) {
-		// laterButton.click();
-		// }
+		if (isLaterClicked()) {
+			return;
+		}
 		if (DriverUtils.isElementDisplayed(shareButton)) {
 			shareButton.click();
+			setLaterClicked(true);
 		}
 	}
 
@@ -313,6 +322,22 @@ public class PeoplePickerPage extends IOSPage {
 			}
 		}
 		return selectedPeople;
+	}
+	
+	public void tapSendInviteButton(){
+		sendInviteButton.click();
+	}
+	
+	public void tapSendInviteCopyButton() throws UnsupportedFlavorException, Exception{
+		inviteCopyButton.click();
+	}
+
+	public boolean isLaterClicked() {
+		return laterClicked;
+	}
+
+	public void setLaterClicked(boolean laterClicked) {
+		this.laterClicked = laterClicked;
 	}
 
 }

@@ -1,6 +1,6 @@
 Feature: Conversation List
 
-  @id324 @smoke
+  @id324 @smoke @regression
   Scenario Outline: Mute conversation
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to <Name>

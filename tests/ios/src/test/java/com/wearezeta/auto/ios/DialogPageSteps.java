@@ -15,6 +15,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
@@ -45,6 +46,7 @@ public class DialogPageSteps {
 	public static long memTime;
 	public String pingId;
 	private int beforeNumberOfImages = 0;
+	final String sendInviteMailContent = "I’m on Wire. Search for %s";
 
 	@When("^I see dialog page$")
 	public void WhenISeeDialogPage() throws Exception {
@@ -143,23 +145,26 @@ public class DialogPageSteps {
 	 * @step. ^I see title bar in conversation name (.*)$
 	 * 
 	 * @param convName
-	 * 			name of the conversation
+	 *            name of the conversation
 	 * 
-	 * @throws InterruptedException 
-	 * 	
+	 * @throws InterruptedException
+	 * 
 	 * @throws AssertionError
 	 *             if title bar is not visible
-	 *            
+	 * 
 	 * @throws AssertionError
 	 *             if title bar has incorrect name
 	 */
 	@Then("^I see title bar in conversation name (.*)$")
-	public void ThenITitleBar(String convName) throws NoSuchUserException, InterruptedException {
+	public void ThenITitleBar(String convName) throws NoSuchUserException,
+			InterruptedException {
 		String chatName = usrMgr.findUserByNameOrNameAlias(convName).getName();
-		Assert.assertTrue("Title bar is not on the page",PagesCollection.dialogPage.isTitleBarDisplayed());
-		Assert.assertTrue("Title bar has incorrect name",PagesCollection.dialogPage.isTitleBarNamed(chatName));
+		Assert.assertTrue("Title bar is not on the page",
+				PagesCollection.dialogPage.isTitleBarDisplayed());
+		Assert.assertTrue("Title bar has incorrect name",
+				PagesCollection.dialogPage.isTitleBarNamed(chatName));
 	}
-	
+
 	/**
 	 * Click open conversation details button in 1:1 dialog
 	 * 
@@ -186,18 +191,21 @@ public class DialogPageSteps {
 	}
 
 	/**
-	 * Swipes up on the pending dialog page in order to access the pending personal info page
+	 * Swipes up on the pending dialog page in order to access the pending
+	 * personal info page
 	 * 
-	 * @step. ^I swipe up on pending dialog page to open other user pending personal page$
+	 * @step. ^I swipe up on pending dialog page to open other user pending
+	 *        personal page$
 	 * 
 	 * @throws Throwable
 	 */
-	
+
 	@When("^I swipe up on pending dialog page to open other user pending personal page$")
 	public void WhenISwipeUpOnPendingDialogPage() throws Throwable {
-		PagesCollection.otherUserOnPendingProfilePage = PagesCollection.dialogPage.swipePendingDialogPageUp(500);
+		PagesCollection.otherUserOnPendingProfilePage = PagesCollection.dialogPage
+				.swipePendingDialogPageUp(500);
 	}
-	
+
 	@Then("^I see message in the dialog$")
 	public void ThenISeeMessageInTheDialog() throws Throwable {
 		String dialogLastMessage = PagesCollection.dialogPage
@@ -305,11 +313,8 @@ public class DialogPageSteps {
 	public void ITypeAndSendLongTextAndMediaLink(String link)
 			throws InterruptedException {
 		PagesCollection.dialogPage.sendMessageUsingScript(longMessage);
-		PagesCollection.dialogPage.sendStringToInput(CommonUtils
-				.generateRandomString(10) + "\n");
-		Thread.sleep(3000);
+		Thread.sleep(1000);
 		PagesCollection.dialogPage.sendMessageUsingScript(link);
-		Thread.sleep(3000);
 	}
 
 	@When("^I memorize message send time$")
@@ -318,15 +323,14 @@ public class DialogPageSteps {
 	}
 
 	@Then("I see media link (.*) and media in dialog")
-	public void ISeeMediaLinkAndMediaInDialog(String link)
-			throws Exception {
+	public void ISeeMediaLinkAndMediaInDialog(String link) throws Exception {
 		Assert.assertTrue("Media is missing in dialog",
 				PagesCollection.dialogPage.isMediaContainerVisible());
 
 		for (int i = 0; i < 10; i++) {
 			if (!link.equalsIgnoreCase(PagesCollection.dialogPage
 					.getLastMessageFromDialog())) {
-				Thread.sleep(6000);
+				Thread.sleep(1000);
 			}
 		}
 		Assert.assertEquals(link.toLowerCase(), PagesCollection.dialogPage
@@ -347,10 +351,8 @@ public class DialogPageSteps {
 	@When("I swipe right on Dialog page")
 	public void ISwipeRightOnDialogPage() throws Exception {
 		PagesCollection.contactListPage = (ContactListPage) PagesCollection.dialogPage
-				.swipeRight(
-						1000,
-						DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL,
-						30);
+				.swipeRight(1000,
+						DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, 30);
 	}
 
 	@When("I send long message")
@@ -450,7 +452,8 @@ public class DialogPageSteps {
 	}
 
 	@Then("I see conversation view is scrolled back to the playing media link (.*)")
-	public void ISeeConversationViewIsScrolledBackToThePlayingMedia(String link) throws Exception {
+	public void ISeeConversationViewIsScrolledBackToThePlayingMedia(String link)
+			throws Exception {
 		Assert.assertEquals(link.toLowerCase(), PagesCollection.dialogPage
 				.getLastMessageFromDialog().toLowerCase());
 		Assert.assertTrue("View did not scroll back",
@@ -571,6 +574,7 @@ public class DialogPageSteps {
 	public void UserPingInChatByBE(String contact, String conversationName)
 			throws Exception {
 		ClientUser yourСontact = usrMgr.findUserByNameOrNameAlias(contact);
+		conversationName = usrMgr.replaceAliasesOccurences(conversationName, FindBy.NAME_ALIAS);
 		pingId = BackendAPIWrappers.sendPingToConversation(yourСontact,
 				conversationName);
 		Thread.sleep(1000);
@@ -580,6 +584,7 @@ public class DialogPageSteps {
 	public void UserHotPingInChatByBE(String contact, String conversationName)
 			throws Exception {
 		ClientUser yourСontact = usrMgr.findUserByNameOrNameAlias(contact);
+		conversationName = usrMgr.replaceAliasesOccurences(conversationName, FindBy.NAME_ALIAS);
 		BackendAPIWrappers.sendHotPingToConversation(yourСontact,
 				conversationName, pingId);
 		Thread.sleep(1000);
@@ -619,6 +624,26 @@ public class DialogPageSteps {
 	@When("^I scroll to the end of the conversation$")
 	public void IScrollToTheEndOfTheConversation() {
 		PagesCollection.dialogPage.scrollToEndOfConversation();
+	}
+
+	/**
+	 * Checks if the copied content from send an invite via mail is correct
+	 * 
+	 * @step. ^I check copied content from (.*)$
+	 * @param mail
+	 *            Email thats the invite sent from
+	 * @throws Exception
+	 * 
+	 */
+	@Then("^I check copied content from (.*)$")
+	public void ICheckCopiedContentFrom(String mail) throws Exception {
+		mail = usrMgr.findUserByEmailOrEmailAlias(mail).getEmail();
+		final String finalString = String.format(sendInviteMailContent, mail);
+		String lastMessage = PagesCollection.dialogPage
+				.getLastMessageFromDialog();
+		boolean messageContainsContent = lastMessage.contains(finalString);
+		Assert.assertTrue("Mail Invite content is not shown in lastMessage",
+				messageContainsContent);
 	}
 
 }

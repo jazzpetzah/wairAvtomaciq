@@ -28,18 +28,19 @@ public class ContactListPageSteps {
 		Assert.assertTrue("Username : " + name
 				+ " dind't appear in contact list",
 				PagesCollection.loginPage.isLoginFinished(name));
-//		PagesCollection.peoplePickerPage = PagesCollection.loginPage
-//				.clickLaterButton();
-//		if (null != PagesCollection.peoplePickerPage) {
-//			PeoplePickerPageSteps steps = new PeoplePickerPageSteps();
-//			steps.WhenISeePeoplePickerPage();
-//			steps.IClickCloseButtonDismissPeopleView();
-//			// workaround for black screen
-//			PagesCollection.peoplePickerPage.minimizeApplication(5);
-//			if (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
-//				steps.IClickCloseButtonDismissPeopleView();
-//			}
-//		}
+		PagesCollection.peoplePickerPage = PagesCollection.loginPage
+				.clickLaterButton();
+		if (null != PagesCollection.peoplePickerPage) {
+			PagesCollection.peoplePickerPage.setLaterClicked(true);
+			PeoplePickerPageSteps steps = new PeoplePickerPageSteps();
+			steps.WhenISeePeoplePickerPage();
+			steps.IClickCloseButtonDismissPeopleView();
+			// workaround for black screen
+			PagesCollection.peoplePickerPage.minimizeApplication(2);
+			if (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
+				steps.IClickCloseButtonDismissPeopleView();
+			}
+		}
 	}
 
 	@When("I dismiss tutorial layout")
@@ -427,15 +428,22 @@ public class ContactListPageSteps {
 	 * 
 	 * @param conversation
 	 *            conversation name to check for unread dot
+	 * @param dotSize
+	 * 			  tells if dot is big or small 
 	 * 
 	 * @throws IOException 
 	 * @throws Exception 
 	 * 
 	 */
-	@When("^I see unread messages dot for (.*)$")
-	public void ISeeUnreadMessagesDot(String conversation) throws IOException, Exception{
+	@When("^I see unread (.*) messages dot for (.*)$")
+	public void ISeeUnreadMessagesDot(String dotSize, String conversation) throws IOException, Exception{
 		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
-		boolean unreadDotSeen = PagesCollection.contactListPage.unreadDotIsVisible(true, conversation);
+		boolean unreadDotSeen = false;
+		if (dotSize.equals("big")){
+		unreadDotSeen = PagesCollection.contactListPage.unreadDotIsVisible(true, true, conversation);
+		} else{
+			unreadDotSeen = PagesCollection.contactListPage.unreadDotIsVisible(true, false, conversation);
+		}
 		Assert.assertTrue("No unread dot visible.", unreadDotSeen);
 	}
 	
@@ -454,7 +462,7 @@ public class ContactListPageSteps {
 	@Then("^I dont see an unread message dot for (.*)$")
 	public void IDontSeeAnUnreadMessageDot(String conversation) throws IOException, Exception{
 		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
-		boolean noUnreadDotSeen = PagesCollection.contactListPage.unreadDotIsVisible(false, conversation);
+		boolean noUnreadDotSeen = PagesCollection.contactListPage.unreadDotIsVisible(false, false, conversation);
 		Assert.assertTrue("No unread dot visible.", noUnreadDotSeen);
 
 	}

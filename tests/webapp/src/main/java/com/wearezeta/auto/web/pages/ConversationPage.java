@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -42,14 +42,15 @@ public class ConversationPage extends WebPage {
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathSendImageInput)
 	private WebElement imagePathInput;
-	
+
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathPingButton)
 	private WebElement pingButton;
-	
+
 	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.ConversationPage.classPingMessage)
 	private WebElement pingMessage;
 
-	public ConversationPage(ZetaWebAppDriver driver, WebDriverWait wait) throws Exception {
+	public ConversationPage(ZetaWebAppDriver driver, WebDriverWait wait)
+			throws Exception {
 		super(driver, wait);
 	}
 
@@ -62,16 +63,10 @@ public class ConversationPage extends WebPage {
 	}
 
 	public boolean isActionMessageSent(String message) throws Exception {
-		boolean isSend = false;
 		String xpath = String.format(
 				WebAppLocators.ConversationPage.xpathActionMessageEntry,
 				message);
-		DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath));
-		WebElement element = driver.findElement(By.xpath(xpath));
-		if (element != null) {
-			isSend = true;
-		}
-		return isSend;
+		return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath));
 	}
 
 	public boolean isMessageSent(String message) throws Exception {
@@ -110,41 +105,32 @@ public class ConversationPage extends WebPage {
 				+ WebAppLocators.ConversationPage.cssRightControlsPanel
 				+ "').css({'opacity': '100'});";
 		driver.executeScript(showImageLabelJScript);
-		if (WebCommonUtils.getWebAppBrowserNameFromConfig(
-				ConversationPage.class).equals(WebAppConstants.Browser.SAFARI)) {
+		final String showPathInputJScript = "$('"
+				+ WebAppLocators.ConversationPage.cssSendImageLabel
+				+ "').find('"
+				+ WebAppLocators.ConversationPage.cssSendImageInput
+				+ "').css({'left': '0'});";
+		driver.executeScript(showPathInputJScript);
+		if (WebAppExecutionContext.browserName.equals(WebAppConstants.Browser.SAFARI)) {
 			// sendKeys() call to file input element does nothing on safari
 			// so instead of sendKeys() we are using AppleScript which chooses
 			// required image in open file dialog
 			String scriptDestination = WebAppExecutionContext.temporaryScriptsLocation
 					+ "/" + WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT;
-			final String GROUP_CHAT_LABEL_INDEX = "-2";
-			final String SINGLE_CHAT_LABEL_INDEX = "-3";
 			WebCommonUtils
 					.formatTextInFileAndSave(
 							WebCommonUtils.getScriptsTemplatesPath()
 									+ WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT,
-							scriptDestination, new String[] {
-									(isGroup ? GROUP_CHAT_LABEL_INDEX
-											: SINGLE_CHAT_LABEL_INDEX),
-									WebCommonUtils.getPicturesPath(),
+							scriptDestination,
+							new String[] { WebCommonUtils.getPicturesPath(),
 									pictureName });
 			WebCommonUtils.putFilesOnExecutionNode(
 					WebAppExecutionContext.seleniumNodeIp,
 					WebAppExecutionContext.temporaryScriptsLocation);
 			WebCommonUtils.executeAppleScriptFromFile(scriptDestination);
 		} else {
-			final String showPathInputJScript = "$('"
-					+ WebAppLocators.ConversationPage.cssSendImageLabel
-					+ "').find('"
-					+ WebAppLocators.ConversationPage.cssSendImageInput
-					+ "').css({'left': '0'});";
-			driver.executeScript(showPathInputJScript);
-			if (DriverUtils.waitUntilElementVisible(driver, imagePathInput)) {
-				imagePathInput.sendKeys(picturePath);
-			} else {
-				throw new TimeoutException(
-						"Image input is still not visible after timeout");
-			}
+			DriverUtils.waitUntilElementVisible(driver, imagePathInput, 10);
+			imagePathInput.sendKeys(picturePath);
 		}
 	}
 
@@ -160,12 +146,17 @@ public class ConversationPage extends WebPage {
 						40);
 		return isAnyPictureMsgFound && (imageMessageEntries.size() > 0);
 	}
-	
+
 	public void clickPingButton() {
 
+		try {
+			DriverUtils.moveMouserOver(driver, pingButton);
+		} catch (WebDriverException e) {
+			// do nothing (safari workaround)
+		}
 		pingButton.click();
 	}
-	
+
 	public boolean isPingMessageVisible(String message) {
 		String text = pingMessage.getText();
 		if (text.toLowerCase().contains(message.toLowerCase())) {
@@ -174,9 +165,10 @@ public class ConversationPage extends WebPage {
 			return false;
 		}
 	}
-	
+
 	public int numberOfPingMessagesVisible() {
-		
-		return driver.findElementsByClassName(WebAppLocators.ConversationPage.classPingMessage).size() - 1;
+
+		return driver.findElementsByClassName(
+				WebAppLocators.ConversationPage.classPingMessage).size() - 1;
 	}
 }

@@ -58,7 +58,8 @@ public final class IOSLocators {
 	
 	public static final String nameOpenConversationDetails = "conversationDetailButton";
 	
-	public static final String xpathYouPinged = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[2]/UIAStaticText[contains(@name, 'YOU PINGED')]";
+	public static final String xpathPinged = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/UIAStaticText[contains(@name, 'PINGED')]";
+	public static final String xpathPingedAgain = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/UIAStaticText[contains(@name, 'PINGED AGAIN')]";
 	
 	public static final String xpathLastDialogMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]";
 	
@@ -210,9 +211,9 @@ public final class IOSLocators {
 	
 	//public static final String nameOtherPersonalInfoPageEmailField = "ProfileOtherEmailField";
 	
-	public static final String xpathOtherPersonalInfoPageNameField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATextView[3]";
+	public static final String xpathOtherPersonalInfoPageNameField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[6]";
 	
-	public static final String xpathOtherPersonalInfoPageEmailField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATextView[4]";
+	public static final String xpathOtherPersonalInfoPageEmailField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATextView[contains(@name, 'wearezeta.com')]";
 	
 	///////////////////////
 	//Self profile page
@@ -345,6 +346,8 @@ public final class IOSLocators {
 	
 	public static final String MEDIA_STATE_STOPPED = "ended";
 	
+	public static final String nameSoundCloudPause = "Pause";
+	
 	
 	/////////////////////////////
 	//Image Full screen Locators
@@ -402,8 +405,8 @@ public final class IOSLocators {
 	
 	public static final String namePendingRequestIgnoreButton = "IGNORE";
 	public static final String namePendingRequestConnectButton = "CONNECT";
-	public static final String xpathPendingRequesterName = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAScrollView[1]/UIATextView[1]";
-	public static final String xpathPendingRequestMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAScrollView[1]/UIATextView[3]";
+	public static final String xpathPendingRequesterName = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAScrollView[1]/UIAStaticText[1]";
+	public static final String xpathPendingRequestMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAScrollView[1]/UIAStaticText[2]";
 	
 	/////////////////////////////
 	//People picker
@@ -419,7 +422,9 @@ public final class IOSLocators {
 	public static final String nameShareButton = "SHARE";
 	public static final String nameContinueUploadButton = "SHARE";
 	public static final String namePeopleYouMayKnowLabel = "PEOPLE YOU MAY KNOW";
-	
+	public static final String xpathSendAnInviteButton = "//UIACollectionCell[@name='Send an invitation']";
+	public static final String xpathInviteCopyButton = "//UIACollectionCell[@name='Copy']";
+
 	//////////////////
 	//Connect to page
 	//////////////////
