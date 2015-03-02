@@ -467,5 +467,12 @@ public final class IOSLocators {
 	public static final String nameUnblockButton = "UNBLOCK";
 	
 	public static final String xpathContactListContainer = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]";
+	
+	////////////////////////////
+	//Reset Password from Sign In
+	////////////////////////////
+	public static final String nameForgotPasswordButton = "FORGOT PASSWORD? CHANGE";
+	public static final String xpathChangePasswordEmailField = "//UIAApplication[1]/UIAWindow[2]/UIAScrollView[1]/UIAScrollView[1]/UIAWebView[1]/UIATextField[1]";
+
 }
 

@@ -73,6 +73,15 @@ public class LoginPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameShareButton)
 	private WebElement shareButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameForgotPasswordButton)
+	private WebElement changePasswordButtonSignIn;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathChangePasswordEmailField)
+	private WebElement changePWEmailField;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathChangePasswordPageChangePasswordButton)
+	private WebElement changePasswordPageChangePasswordButton;
 
 	private String login;
 
@@ -243,5 +252,15 @@ public class LoginPage extends IOSPage {
 		DriverUtils.waitUntilElementAppears(driver,
 				By.name(IOSLocators.nameIgnoreUpdateButton));
 		ignoreUpdateButton.click();
+	}
+	
+	public PersonalInfoPage tapChangePasswordButton() throws Exception{
+		changePasswordButtonSignIn.click();
+		return new PersonalInfoPage(this.getDriver(), this.getWait());
+	}
+	
+	public void tapEmailFieldToChangePassword(){
+		changePWEmailField.click();
+		changePasswordPageChangePasswordButton.click();
 	}
 }

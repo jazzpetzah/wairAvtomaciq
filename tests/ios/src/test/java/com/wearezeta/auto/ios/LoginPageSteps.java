@@ -355,5 +355,22 @@ public class LoginPageSteps {
 		Assert.assertTrue("I don't see wrong credentials notification",
 				PagesCollection.loginPage.wrongCredentialsNotificationIsShown());
 	}
+	
+	/**
+	 * Clicks on the Forgot/Change password button on the Sign In screen
+	 * 
+	 * @step. ^I click on Change Password button on SignIn$
+	 * @throws Exception 
+	 */
+	@When("^I click on Change Password button on SignIn$")
+	public void IClickOnChangePasswordButtonOnSignIn() throws Exception{
+		PagesCollection.personalInfoPage = PagesCollection.loginPage.tapChangePasswordButton();
+	}
+	
+	@Then("^I type in email (.*) to change password$")
+	public void ITypeInEmailToChangePassword(String email){
+		PagesCollection.loginPage.tapEmailFieldToChangePassword();
+
+	}
 
 }
