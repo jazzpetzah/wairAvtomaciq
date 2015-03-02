@@ -22,7 +22,7 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 
 	private Map<String, String> expectedHeaders = new HashMap<String, String>();
 	private CountDownLatch waitObj = new CountDownLatch(1);
-	private Message matchedMessage;
+	private Message matchedMessage = null;
 	private IMAPSMailbox parentMBox;
 	private Thread messagesCountNotifier;
 	private int timeoutSeconds;
