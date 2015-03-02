@@ -14,7 +14,6 @@ Feature: Registration
     Then I see confirmation page
     And I minimize the application
     And I activate user by URL
-    And I restore the application
     And I wait for 10 seconds
     And I see Contact list with no contacts and my name <Name>
 

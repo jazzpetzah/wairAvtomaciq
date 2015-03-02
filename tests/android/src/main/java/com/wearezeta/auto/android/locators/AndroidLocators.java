@@ -11,13 +11,19 @@ public final class AndroidLocators {
 
 	public static final String CLASS_NAME = "com.wearezeta.auto.android.locators.AndroidLocators";
 
-	public static final class Chrome {
+	public static final class Browsers {
 		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME
 				+ "$Chrome";
 
 		public static final String xpathChrome = "//android.widget.TextView[@text='Chrome']";
 
+		public static final String xpathFirefox = "//android.widget.TextView[@text='Firefox']";
+
+		public static final String xpathConnect = "//android.webkit.WebView/android.view.View[6]";
+
 		public static final String idUrlBar = "com.android.chrome:id/url_bar";
+
+		public static final String idFirefoxUrlBar = "org.mozilla.firefox:id/url_bar_entry";
 
 		public static final String xpathUrlBar42 = "//android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.widget.EditText";
 
@@ -242,7 +248,7 @@ public final class AndroidLocators {
 
 		public static final String idMediaBarControl = LOCATORS_PACKAGE
 				+ ":id/gtv__conversation_header__mediabar__control";
-		
+
 		public static final String idMediaBarClose = LOCATORS_PACKAGE
 				+ ":id/gtv__conversation_header__mediabar__cancel";
 
