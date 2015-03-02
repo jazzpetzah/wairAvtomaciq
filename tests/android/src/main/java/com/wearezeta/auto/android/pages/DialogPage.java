@@ -117,7 +117,7 @@ public class DialogPage extends AndroidPage {
 	private WebElement dialogPageBottomLinearLayout;
 
 	private int initMessageCount;
-	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.95;
+	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.75;
 	private final String DIALOG_IMAGE = "android_dialog_sendpicture_result.png";
 
 	public DialogPage(ZetaAndroidDriver driver, WebDriverWait wait)
@@ -310,7 +310,7 @@ public class DialogPage extends AndroidPage {
 		BufferedImage dialogImage = getElementScreenshot(image);
 		BufferedImage realImage = ImageUtil.readImageFromFile(CommonUtils
 				.getImagesPath(CommonUtils.class) + DIALOG_IMAGE);
-		double score = ImageUtil.getOverlapScore(realImage, dialogImage);
+		double score = ImageUtil.getOverlapScore(realImage, dialogImage, ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 		if (score >= MIN_ACCEPTABLE_IMAGE_VALUE) {
 			flag = true;
 		}
