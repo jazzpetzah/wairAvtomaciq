@@ -58,7 +58,7 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 					} catch (InterruptedException e) {
 						return;
 					} catch (MessagingException e) {
-						// Ignore exception
+						e.printStackTrace();
 					}
 				}
 			}
