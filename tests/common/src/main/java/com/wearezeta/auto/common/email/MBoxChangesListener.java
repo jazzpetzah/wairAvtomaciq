@@ -17,6 +17,10 @@ import javax.mail.MessagingException;
 import javax.mail.event.MessageCountEvent;
 import javax.mail.event.MessageCountListener;
 
+import org.apache.log4j.Logger;
+
+import com.wearezeta.auto.common.log.ZetaLogger;
+
 class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 	private static final int NEW_MSG_CHECK_INTERVAL = 500; // milliseconds
 
@@ -26,6 +30,9 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 	private IMAPSMailbox parentMBox;
 	private Thread messagesCountNotifier;
 	private int timeoutSeconds;
+
+	private static final Logger log = ZetaLogger
+			.getLog(MBoxChangesListener.class.getSimpleName());
 
 	public MBoxChangesListener(IMAPSMailbox parentMBox,
 			Map<String, String> expectedHeaders, int timeoutSeconds) {
@@ -62,6 +69,7 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 	private boolean areAllHeadersInMessage(Message msg) {
 		for (Entry<String, String> expectedHeader : this.expectedHeaders
 				.entrySet()) {
+			log.debug("Recived a new email message");
 			boolean isHeaderFound = false;
 			final String expectedHeaderName = expectedHeader.getKey();
 			final String expectedHeaderValue = expectedHeader.getValue();
@@ -75,9 +83,18 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 				} catch (NullPointerException e) {
 					// Ignore NPE bug in java mail lib
 				}
+				log.debug(String.format(
+						"Checking if the email message contains %s: %s header",
+						expectedHeaderName, expectedHeaderValue));
 				if (headerValues != null) {
 					for (String headerValue : headerValues) {
+						log.debug(String.format("%s: %s -> %s",
+								expectedHeaderName, headerValue,
+								expectedHeaderValue));
 						if (headerValue.equals(expectedHeaderValue)) {
+							log.debug(String.format(
+									"The expected header value '%s' is found in the email",
+									expectedHeaderValue));
 							isHeaderFound = true;
 							break;
 						}
