@@ -121,6 +121,9 @@ public class IMAPSMailbox {
 		MBoxChangesListener listener = new MBoxChangesListener(this,
 				expectedHeaders, timeoutSeconds);
 		folder.addMessageCountListener(listener);
+		log.debug(String.format(
+				"Started email listener for message containing headers %s...",
+				expectedHeaders.toString()));
 		// Sometimes a message is delivered very quickly
 		// and we don't have enough time to catch it
 		// after the listener has just started
