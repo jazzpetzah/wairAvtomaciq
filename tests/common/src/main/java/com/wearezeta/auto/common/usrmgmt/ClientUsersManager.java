@@ -93,7 +93,7 @@ public class ClientUsersManager {
 		resetClientsList(this.users, MAX_USERS);
 	}
 
-	public static ClientUsersManager getInstance() {
+	public synchronized static ClientUsersManager getInstance() {
 		if (instance == null) {
 			try {
 				instance = new ClientUsersManager();
