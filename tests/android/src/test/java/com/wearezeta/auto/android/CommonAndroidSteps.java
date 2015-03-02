@@ -70,15 +70,15 @@ public class CommonAndroidSteps {
 		object.enable("logcat", Level.ALL);
 		capabilities.setCapability(CapabilityType.LOGGING_PREFS, object);
 		capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
-		capabilities.setCapability("deviceName", CommonUtils
-				.getAndroidDeviceNameFromConfig(cls));
+		capabilities.setCapability("deviceName",
+				CommonUtils.getAndroidDeviceNameFromConfig(cls));
 		capabilities.setCapability("app", path);
-		capabilities.setCapability("appPackage", CommonUtils
-				.getAndroidPackageFromConfig(cls));
-		capabilities.setCapability("appActivity", CommonUtils
-				.getAndroidActivityFromConfig(cls));
-		capabilities.setCapability("appWaitActivity", CommonUtils
-				.getAndroidActivityFromConfig(cls));
+		capabilities.setCapability("appPackage",
+				CommonUtils.getAndroidPackageFromConfig(cls));
+		capabilities.setCapability("appActivity",
+				CommonUtils.getAndroidActivityFromConfig(cls));
+		capabilities.setCapability("appWaitActivity",
+				CommonUtils.getAndroidActivityFromConfig(cls));
 		if (isUnicode) {
 			capabilities.setCapability("unicodeKeyboard", true);
 			capabilities.setCapability("resetKeyboard", true);
@@ -162,7 +162,8 @@ public class CommonAndroidSteps {
 	@When("^I minimize the application$")
 	public void IMimizeApllication() throws Exception {
 		if (PagesCollection.loginPage != null) {
-			PagesCollection.commonAndroidPage = PagesCollection.loginPage.minimizeApplication();
+			PagesCollection.commonAndroidPage = PagesCollection.loginPage
+					.minimizeApplication();
 		}
 	}
 
@@ -215,18 +216,20 @@ public class CommonAndroidSteps {
 	}
 
 	@When("^I connect using invitation link from (.*)$")
-	public void WhenIConnectUsingInvitationLinkFrom(String name) throws Exception {
+	public void WhenIConnectUsingInvitationLinkFrom(String name)
+			throws Exception {
 		try {
-			BackendAPIWrappers.tryLoginByUser(usrMgr.findUserByNameOrNameAlias(name));
+			BackendAPIWrappers.tryLoginByUser(usrMgr
+					.findUserByNameOrNameAlias(name));
 			name = usrMgr.findUserByNameOrNameAlias(name).getId();
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		String link = GenerateWebLink.getInvitationToken(name);
 		PagesCollection.commonAndroidPage.ConnectByInvitationLink(link);
-		
+
 	}
-	
+
 	@Given("^(.*) is connected to (.*)$")
 	public void UserIsConnectedTo(String userFromNameAlias,
 			String usersToNameAliases) throws Exception {
@@ -390,7 +393,7 @@ public class CommonAndroidSteps {
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
 		this.passwordResetMessage = IMAPSMailbox.getInstance().getMessage(
-				expectedHeaders);
+				expectedHeaders, BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
 
 		String link = BackendAPIWrappers
 				.getPasswordResetLink(this.passwordResetMessage);
