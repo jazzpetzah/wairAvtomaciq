@@ -247,8 +247,10 @@ public class ClientUsersManager {
 							e.printStackTrace();
 						}
 						log.debug(String
-								.format("Failed to create user '%s'. Retrying (retry number: %d)...",
-										userToCreate.getName(), retryNumber));
+								.format("Failed to create user '%s'. Retrying (%d of %d)...",
+										userToCreate.getName(),
+										retryNumber + 1,
+										NUMBER_OF_REGISTRATION_RETRIES));
 						try {
 							Thread.sleep(sleepInterval);
 						} catch (InterruptedException ex) {
@@ -262,7 +264,7 @@ public class ClientUsersManager {
 		}
 		executor.shutdown();
 		final int usersCreationTimeout = BackendAPIWrappers.BACKEND_ACTIVATION_TIMEOUT
-				* usersToCreate.size() * NUMBER_OF_REGISTRATION_RETRIES * 2;
+				* usersToCreate.size() * NUMBER_OF_REGISTRATION_RETRIES * 3;
 		if (!executor.awaitTermination(usersCreationTimeout, TimeUnit.SECONDS)) {
 			throw new BackendRequestException(
 					String.format(

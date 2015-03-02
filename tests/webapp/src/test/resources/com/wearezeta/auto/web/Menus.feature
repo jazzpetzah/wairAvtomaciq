@@ -1,6 +1,6 @@
 Feature: Menus
 
-  @staging @id1648
+  @smoke @id1648
   Scenario Outline: Check Preferences opening
     Given There is 1 user where <Name> is me
     Given I Sign in using login <Email> and password <Password>

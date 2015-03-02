@@ -140,7 +140,7 @@ public final class WebAppLocators {
 
 		public static final String xpathNameBlockButton = "//div[contains(@class,'footer-button-right') and contains(@class,'icon-block')]";
 
-		public static final String xpathUserName = "//div[not(*) and @class='name']";
+		public static final String xpathUserName = "//div[@class='name' and @data-uie-name='status-user']";
 
 		public static final String xpathLeaveGroupChat = "//div[contains(@class,'participants-group-leave')]";
 
@@ -154,13 +154,13 @@ public final class WebAppLocators {
 
 		public static final String xpathRemoveFromGroupChat = "//div[contains(@class,'footer-button-right') and contains(@class,'icon-leave')]";
 
-		public static final String xpathGroupAddPeopleButton = "//div[contains(@class, 'participants-group-add')]";
+		public static final String xpathGroupAddPeopleButton = "//*[contains(@class,'participants-group-add')]";
 
 		public static final String xpathProfilePageSearchField = "//div[@class='participants-search-header']//input[@class='search-input']";
 
 		public static final String xpathAddPeopleMessage = "//div[@class='confirm-content' and span[text()='Add people and share history?']]";
 		
-		public static final String xpathConversationTitle = "//div[@class='participants-group-header']/div[@class='name']/span";
+		public static final String xpathConversationTitle = "//div[@class='participants-group-header']/div[@class='name']/div";
 		
 		public static final String xpathConversationTitleInput = "//div[@class='participants-group-header']/div[@class='name']/textarea";
 

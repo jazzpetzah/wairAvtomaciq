@@ -15,7 +15,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id1571
+  @smoke @id1571
   Scenario Outline: Verify sending a connection request to user choosen from search
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>

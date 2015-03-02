@@ -23,6 +23,7 @@ public class IMAPSMailbox {
 	private static final String MAILS_FOLDER = "Inbox";
 	private static final int FOLDER_OPEN_TIMEOUT = 60 * 5; // seconds
 	private static final int MBOX_MAX_CONNECT_RETRIES = 10;
+	private static final int INITIAL_WAIT_DURATION = 2; // seconds
 
 	private static final Logger log = ZetaLogger.getLog(IMAPSMailbox.class
 			.getSimpleName());
@@ -116,11 +117,15 @@ public class IMAPSMailbox {
 	public Future<Message> getMessage(Map<String, String> expectedHeaders,
 			int timeoutSeconds) throws MessagingException, InterruptedException {
 		this.openFolder();
+		timeoutSeconds += INITIAL_WAIT_DURATION;
 		MBoxChangesListener listener = new MBoxChangesListener(this,
 				expectedHeaders, timeoutSeconds);
 		folder.addMessageCountListener(listener);
-		Future<Message> result = pool.submit(listener);
-		return result;
+		// Sometimes a message is delivered very quickly
+		// and we don't have enough time to catch it
+		// after the listener has just started
+		Thread.sleep(INITIAL_WAIT_DURATION * 1000);
+		return pool.submit(listener);
 	}
 
 	static {
