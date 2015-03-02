@@ -154,7 +154,7 @@ public final class WebAppLocators {
 
 		public static final String xpathRemoveFromGroupChat = "//div[contains(@class,'footer-button-right') and contains(@class,'icon-leave')]";
 
-		public static final String xpathGroupAddPeopleButton = "//*[@data-uie-value='add people']";
+		public static final String xpathGroupAddPeopleButton = "//*[contains(@class,'participants-group-add')]";
 
 		public static final String xpathProfilePageSearchField = "//div[@class='participants-search-header']//input[@class='search-input']";
 
