@@ -197,6 +197,25 @@ public class CommonIOSSteps {
 	}
 	
 	/**
+	 * Silences conversation in backend
+	 * 
+	 * @step. ^(.*) silenced conversation with (.*)$
+	 * 
+	 * @param userToNameAlias
+	 *            user that mutes the conversation
+	 * @param archivedUserNameAlias
+	 * 			  name of group conversation to mute
+	 * @throws Exception 
+	 * 
+	 */
+	@When("^(.*) silenced conversation with (.*)$")
+	public void MuteConversationWithUser(String userToNameAlias,
+			String mutedUserNameAlias) throws Exception {
+		commonSteps.MuteConversationWithUser(userToNameAlias,
+				mutedUserNameAlias);
+	}
+	
+	/**
 	 * Verifies that an unread message dot is NOT seen in the conversation list
 	 * 
 	 * @step. ^(.*) archived conversation having groupname (.*)$

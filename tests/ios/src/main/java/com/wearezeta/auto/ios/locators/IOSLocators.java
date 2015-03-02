@@ -117,7 +117,7 @@ public final class IOSLocators {
 	
 	public static final String classUIATextView = "UIATextView";
 	
-    public static final String xpathEmailVerifPrompt = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[contains(@name, 'We sent an email to ')]";
+    public static final String xpathEmailVerifPrompt = "//UIAApplication[1]/UIAWindow[2]/UIAStaticText[contains(@name, 'We sent an email to ')]";
 
 	
 	
