@@ -23,7 +23,7 @@ public class IMAPSMailbox {
 	private static final String MAILS_FOLDER = "Inbox";
 	private static final int FOLDER_OPEN_TIMEOUT = 60 * 15; // seconds
 	private static final int MBOX_MAX_CONNECT_RETRIES = 10;
-	private static final int INITIAL_WAIT_DURATION = 5; // seconds
+	private static final int INITIAL_WAIT_DURATION = 3; // seconds
 
 	private static final Logger log = ZetaLogger.getLog(IMAPSMailbox.class
 			.getSimpleName());

@@ -1,8 +1,10 @@
 package com.wearezeta.auto.common.email;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +32,7 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 	private IMAPSMailbox parentMBox;
 	private Thread messagesCountNotifier;
 	private int timeoutSeconds;
+	private long listenerStartedTimestamp;
 
 	private static final Logger log = ZetaLogger
 			.getLog(MBoxChangesListener.class.getSimpleName());
@@ -42,6 +45,7 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 		}
 		this.parentMBox = parentMBox;
 		this.timeoutSeconds = timeoutSeconds;
+		this.listenerStartedTimestamp = new Date().getTime();
 
 		// This is to force mbox update notifications
 		messagesCountNotifier = new Thread() {
@@ -92,9 +96,9 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 								expectedHeaderName, headerValue,
 								expectedHeaderValue));
 						if (headerValue.equals(expectedHeaderValue)) {
-							log.debug(String.format(
-									"The expected header value '%s' is found in the email",
-									expectedHeaderValue));
+							log.debug(String
+									.format("The expected header value '%s' is found in the email",
+											expectedHeaderValue));
 							isHeaderFound = true;
 							break;
 						}
@@ -123,12 +127,26 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 		}
 	}
 
+	private List<Message> filterReceivedMessages(Message[] deliveredMessages) {
+		final List<Message> addedMessages = Arrays.asList(deliveredMessages);
+		List<Message> result = new ArrayList<Message>();
+		for (Message msg : addedMessages) {
+			try {
+				if (msg.getSentDate().getTime() >= this.listenerStartedTimestamp) {
+					result.add(msg);
+				}
+			} catch (MessagingException e) {
+				e.printStackTrace();
+			}
+		}
+		Collections.sort(result,
+				Collections.reverseOrder(new MessagesByDateComparator()));
+		return result;
+	}
+
 	@Override
 	public void messagesAdded(MessageCountEvent e) {
-		List<Message> addedMessages = Arrays.asList(e.getMessages());
-		Collections.sort(addedMessages,
-				Collections.reverseOrder(new MessagesByDateComparator()));
-		for (Message msg : addedMessages) {
+		for (Message msg : filterReceivedMessages(e.getMessages())) {
 			if (areAllHeadersInMessage(msg)) {
 				this.matchedMessage = msg;
 				this.waitObj.countDown();
