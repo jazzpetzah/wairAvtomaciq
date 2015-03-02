@@ -18,9 +18,9 @@ Feature: Ping
     And I see You Pinged Again message in the dialog
     Then I see <Action2> icon in conversation
 
-    Examples:
-      | Login      | Password      | Name      | Contact1    | Contact2   | Action1 | Action2      | GroupChatName        | Color		 |
-      | user1Email | user1Password | user1Name | user2Name   | user3Name  | PINGED  | PINGED AGAIN | ReceivePingGroupChat | BrightOrange |
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | Action1 | Action2      | GroupChatName        | Color        |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | PINGED  | PINGED AGAIN | ReceivePingGroupChat | BrightOrange |
 
   @regression @id1358
   Scenario Outline: Verify you can see Ping on the other side (group conversation)
@@ -42,13 +42,13 @@ Feature: Ping
     And I see <Action2> icon in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact1    | Contact2   | Action1 | Action2      | GroupChatName        | Color        | ContactName |
-      | user1Email | user1Password | user1Name | user2Name   | user3Name  | PINGED  | PINGED AGAIN | ReceivePingGroupChat | BrightOrange | OtherUser   |
-      
+      | Login      | Password      | Name      | Contact1  | Contact2  | Action1 | Action2      | GroupChatName        | Color        | ContactName |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | PINGED  | PINGED AGAIN | ReceivePingGroupChat | BrightOrange | OtherUser   |
+
   @staging @id1356
   Scenario Outline: Verify you can see Ping on the other side (1:1 conversation)
-  	Given There are 2 users where <Name> is me
-  	Given User <Contact1> change  name to <ContactName>
+    Given There are 2 users where <Name> is me
+    Given User <Contact1> change  name to <ContactName>
     Given Myself is connected to <Contact1>
     Given User <Contact1> change  accent color to <Color>
     And I Sign in using login <Login> and password <Password>
@@ -64,5 +64,5 @@ Feature: Ping
     And I see <Action2> icon in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact1    | Action1 | Action2      | Color        | ContactName |
-      | user1Email | user1Password | user1Name | user2Name   | PINGED  | PINGED AGAIN | BrightOrange | OtherUser   |
+      | Login      | Password      | Name      | Contact1  | Action1 | Action2      | Color        | ContactName |
+      | user1Email | user1Password | user1Name | user2Name | PINGED  | PINGED AGAIN | BrightOrange | OtherUser   |
