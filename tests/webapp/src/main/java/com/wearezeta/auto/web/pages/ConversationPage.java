@@ -112,6 +112,8 @@ public class ConversationPage extends WebPage {
 				+ WebAppLocators.ConversationPage.cssSendImageInput
 				+ "').css({'left': '0'});";
 		driver.executeScript(showPathInputJScript);
+		//trying to wait for elements will appear on Safari
+		Thread.sleep(3000);
 		if (WebAppExecutionContext.browserName.equals(WebAppConstants.Browser.SAFARI)) {
 			// sendKeys() call to file input element does nothing on safari
 			// so instead of sendKeys() we are using AppleScript which chooses

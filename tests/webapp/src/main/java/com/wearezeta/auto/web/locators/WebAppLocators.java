@@ -38,6 +38,9 @@ public final class WebAppLocators {
 
 		public static final String classActionsButton = "icon-more";
 
+		public static final String xpathFormatActionsButton = "//li[contains(@class,'conversation-list-item') and @data-uie-value='%s']"
+				+ "//span[contains(@data-uie-name,'go-options')]";
+
 		public static final String xpathSelfProfileEntry = xpathParentContactListItem
 				+ "//div[contains(@class, 'center-column')]";
 

@@ -74,7 +74,7 @@ public class ContactListPage extends WebPage {
 					20);
 		}
 	}
-	
+
 	public boolean contactWithNameNotVisible(String name) throws Exception {
 		log.debug("Looking for contact with name '" + name + "'");
 		if (name.contains(",")) {
@@ -82,7 +82,8 @@ public class ContactListPage extends WebPage {
 		} else {
 			final String xpath = WebAppLocators.ContactListPage.xpathContactListEntryByName
 					.apply(name);
-			return DriverUtils.waitUntilElementDissapear(driver, By.xpath(xpath), 20);
+			return DriverUtils.waitUntilElementDissapear(driver,
+					By.xpath(xpath), 20);
 		}
 	}
 
@@ -169,8 +170,10 @@ public class ContactListPage extends WebPage {
 		} catch (WebDriverException e) {
 			// do nothing (safari workaround)
 		}
-		WebElement actionsButton = contact.findElement(By
-				.className(WebAppLocators.ContactListPage.classActionsButton));
+		String xpath = String.format(
+				WebAppLocators.ContactListPage.xpathFormatActionsButton,
+				conversationName);
+		WebElement actionsButton = contact.findElement(By.xpath(xpath));
 
 		DriverUtils.waitUntilElementClickable(driver, actionsButton, 5);
 
