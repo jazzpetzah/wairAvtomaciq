@@ -29,7 +29,10 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 
 	public MBoxChangesListener(IMAPSMailbox parentMBox,
 			Map<String, String> expectedHeaders, int timeoutSeconds) {
-		this.expectedHeaders = expectedHeaders;
+		// clone map
+		for (Entry<String, String> entry : expectedHeaders.entrySet()) {
+			this.expectedHeaders.put(entry.getKey(), entry.getValue());
+		}
 		this.parentMBox = parentMBox;
 		this.timeoutSeconds = timeoutSeconds;
 
