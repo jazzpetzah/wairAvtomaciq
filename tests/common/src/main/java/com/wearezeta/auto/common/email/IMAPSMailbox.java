@@ -23,12 +23,13 @@ public class IMAPSMailbox {
 	private static final String MAILS_FOLDER = "Inbox";
 	private static final int FOLDER_OPEN_TIMEOUT = 60 * 15; // seconds
 	private static final int MBOX_MAX_CONNECT_RETRIES = 10;
-	private static final int INITIAL_WAIT_DURATION = 3; // seconds
+	private static final int NEW_MSG_CHECK_INTERVAL = 500; // milliseconds
 
 	private static final Logger log = ZetaLogger.getLog(IMAPSMailbox.class
 			.getSimpleName());
 
 	private final Semaphore folderStateGuard = new Semaphore(1);
+	private Thread messagesCountNotifier = null;
 
 	private static Store store = null;
 	static {
@@ -69,10 +70,38 @@ public class IMAPSMailbox {
 
 	protected void openFolder() throws MessagingException, InterruptedException {
 		this.openFolder(this.getFolder());
+
+		if (messagesCountNotifier == null) {
+			// This is to force mbox update notifications
+			messagesCountNotifier = new Thread() {
+				@Override
+				public void run() {
+					log.debug("Email message notifier thread starting...");
+					while (IMAPSMailbox.this.getFolder() != null
+							&& !this.isInterrupted()) {
+						try {
+							if (!IMAPSMailbox.this.getFolder().isOpen()) {
+								IMAPSMailbox.this.getFolder().open(
+										Folder.READ_ONLY);
+							}
+							IMAPSMailbox.this.getFolder().getMessageCount();
+							Thread.sleep(NEW_MSG_CHECK_INTERVAL);
+						} catch (InterruptedException e) {
+							log.debug("Email message notifier thread has been successfully interrupted");
+							return;
+						} catch (MessagingException e) {
+							e.printStackTrace();
+						}
+					}
+					log.debug("Email message notifier thread exited");
+				}
+			};
+			messagesCountNotifier.start();
+		}
 	}
 
-	public void openFolder(Folder folderToOpen) throws MessagingException,
-			InterruptedException {
+	public void openFolder(final Folder folderToOpen)
+			throws MessagingException, InterruptedException {
 		folderStateGuard.tryAcquire(FOLDER_OPEN_TIMEOUT, TimeUnit.SECONDS);
 
 		if (!folderToOpen.isOpen()) {
@@ -81,7 +110,14 @@ public class IMAPSMailbox {
 	}
 
 	protected void closeFolder() throws MessagingException {
-		this.closeFolder(this.getFolder());
+		try {
+			this.closeFolder(this.getFolder());
+		} finally {
+			if (messagesCountNotifier != null) {
+				messagesCountNotifier.interrupt();
+				messagesCountNotifier = null;
+			}
+		}
 	}
 
 	public void closeFolder(Folder folderToClose) throws MessagingException {
@@ -117,17 +153,12 @@ public class IMAPSMailbox {
 	public Future<Message> getMessage(Map<String, String> expectedHeaders,
 			int timeoutSeconds) throws MessagingException, InterruptedException {
 		this.openFolder();
-		timeoutSeconds += INITIAL_WAIT_DURATION;
 		MBoxChangesListener listener = new MBoxChangesListener(this,
 				expectedHeaders, timeoutSeconds);
-		folder.addMessageCountListener(listener);
+		this.getFolder().addMessageCountListener(listener);
 		log.debug(String.format(
 				"Started email listener for message containing headers %s...",
 				expectedHeaders.toString()));
-		// Sometimes a message is delivered very quickly
-		// and we don't have enough time to catch it
-		// after the listener has just started
-		Thread.sleep(INITIAL_WAIT_DURATION * 1000);
 		return pool.submit(listener);
 	}
 
