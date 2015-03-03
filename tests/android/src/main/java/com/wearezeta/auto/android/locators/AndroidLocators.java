@@ -13,7 +13,7 @@ public final class AndroidLocators {
 
 	public static final class Browsers {
 		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME
-				+ "$Chrome";
+				+ "$Browsers";
 
 		public static final String xpathChrome = "//android.widget.TextView[@text='Chrome']";
 
