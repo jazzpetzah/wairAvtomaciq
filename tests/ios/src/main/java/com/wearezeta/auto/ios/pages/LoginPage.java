@@ -177,7 +177,8 @@ public class LoginPage extends IOSPage {
 			this.getWait().until(ExpectedConditions.visibilityOfElementLocated(By
 					.name(contact)));
 		} catch (WebDriverException ex) {
-			log.debug(ex.getMessage());
+			log.debug(ex.getMessage() + ", Page source: " + driver.getPageSource());
+			ex.printStackTrace();
 		}
 		return DriverUtils.waitUntilElementAppears(driver, By.name(contact));
 	}
