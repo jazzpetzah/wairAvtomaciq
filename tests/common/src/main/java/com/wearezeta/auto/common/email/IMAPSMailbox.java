@@ -68,10 +68,21 @@ public class IMAPSMailbox {
 		return this.folder;
 	}
 
-	protected void openFolder() throws MessagingException, InterruptedException {
-		this.openFolder(this.getFolder());
+	protected void openFolder(boolean shouldStartNotifier)
+			throws MessagingException, InterruptedException {
+		this.openFolder(this.getFolder(), shouldStartNotifier);
+	}
 
-		if (messagesCountNotifier == null) {
+	public void openFolder(final Folder folderToOpen,
+			boolean shouldStartNotifier) throws MessagingException,
+			InterruptedException {
+		folderStateGuard.tryAcquire(FOLDER_OPEN_TIMEOUT, TimeUnit.SECONDS);
+
+		if (!folderToOpen.isOpen()) {
+			folderToOpen.open(Folder.READ_ONLY);
+		}
+
+		if (shouldStartNotifier && messagesCountNotifier == null) {
 			// This is to force mbox update notifications
 			messagesCountNotifier = new Thread() {
 				@Override
@@ -100,39 +111,29 @@ public class IMAPSMailbox {
 		}
 	}
 
-	public void openFolder(final Folder folderToOpen)
-			throws MessagingException, InterruptedException {
-		folderStateGuard.tryAcquire(FOLDER_OPEN_TIMEOUT, TimeUnit.SECONDS);
-
-		if (!folderToOpen.isOpen()) {
-			folderToOpen.open(Folder.READ_ONLY);
-		}
+	protected void closeFolder(boolean shouldStopNotifier)
+			throws MessagingException {
+		this.closeFolder(this.getFolder(), shouldStopNotifier);
 	}
 
-	protected void closeFolder() throws MessagingException {
-		try {
-			this.closeFolder(this.getFolder());
-		} finally {
-			if (messagesCountNotifier != null) {
-				messagesCountNotifier.interrupt();
-				messagesCountNotifier = null;
-			}
-		}
-	}
-
-	public void closeFolder(Folder folderToClose) throws MessagingException {
+	public void closeFolder(Folder folderToClose, boolean shouldStopNotifier)
+			throws MessagingException {
 		try {
 			if (folderToClose.isOpen()) {
 				folderToClose.close(false);
 			}
 		} finally {
+			if (shouldStopNotifier && messagesCountNotifier != null) {
+				messagesCountNotifier.interrupt();
+				messagesCountNotifier = null;
+			}
 			folderStateGuard.release();
 		}
 	}
 
 	public List<Message> getRecentMessages(int msgsCount)
 			throws MessagingException, InterruptedException {
-		this.openFolder();
+		this.openFolder(false);
 		try {
 			int currentMsgsCount = folder.getMessageCount();
 			Message[] fetchedMsgs;
@@ -144,7 +145,7 @@ public class IMAPSMailbox {
 			}
 			return new ArrayList<Message>(Arrays.asList(fetchedMsgs));
 		} finally {
-			this.closeFolder();
+			this.closeFolder(false);
 		}
 	}
 
@@ -152,7 +153,7 @@ public class IMAPSMailbox {
 
 	public Future<Message> getMessage(Map<String, String> expectedHeaders,
 			int timeoutSeconds) throws MessagingException, InterruptedException {
-		this.openFolder();
+		this.openFolder(true);
 		MBoxChangesListener listener = new MBoxChangesListener(this,
 				expectedHeaders, timeoutSeconds);
 		this.getFolder().addMessageCountListener(listener);

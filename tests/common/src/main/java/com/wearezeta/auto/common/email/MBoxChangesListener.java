@@ -148,7 +148,7 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 			}
 		} finally {
 			this.parentMBox.getFolder().removeMessageCountListener(this);
-			this.parentMBox.closeFolder();
+			this.parentMBox.closeFolder(true);
 		}
 		throw new RuntimeException(
 				String.format(
