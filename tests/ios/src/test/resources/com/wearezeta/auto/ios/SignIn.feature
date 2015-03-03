@@ -44,8 +44,7 @@ Feature: Sign In
 
   @torun @staging @id1479
   Scenario Outline: Verify possibility of reseting password (welcome page)
-    Given There is 1 user where <Name> is me
-    And I see sign in screen
+    Given I see sign in screen
     And I press Sign in button
     And I click on Change Password button on SignIn
     Then I see reset password page
@@ -53,5 +52,5 @@ Feature: Sign In
     And I press Change Password button in browser
 
     Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Login    				  | Password      | Name      |
+      | smoketester@wearezeta.com | user1Password | user1Name |
