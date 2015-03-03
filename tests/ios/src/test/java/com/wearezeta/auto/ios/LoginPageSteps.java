@@ -4,7 +4,9 @@ import org.junit.Assert;
 
 import java.io.IOException;
 
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
@@ -367,10 +369,26 @@ public class LoginPageSteps {
 		PagesCollection.personalInfoPage = PagesCollection.loginPage.tapChangePasswordButton();
 	}
 	
+	
+	/**
+	 * Types the mail into the field, where change password link should be send to
+	 * 
+	 * @step. ^I type in email (.*) to change password$
+	 * @param email
+	 * @throws Exception 
+	 */
 	@Then("^I type in email (.*) to change password$")
-	public void ITypeInEmailToChangePassword(String email){
-		PagesCollection.loginPage.tapEmailFieldToChangePassword();
+	public void ITypeInEmailToChangePassword(String email) throws Exception{
+		//PagesCollection.loginPage.changeAppContext();
+		//email = usrMgr.findUserByNameOrNameAlias(name).getName();
+		email = usrMgr.replaceAliasesOccurences(email,FindBy.EMAIL_ALIAS)
+;		PagesCollection.loginPage.tapEmailFieldToChangePassword(email);
 
+	}
+	
+	@Then("^I press Change Password button in browser$")
+	public void IPressChangePasswordButtonInBrowser(){
+		PagesCollection.loginPage.tapChangePasswordButtonInWebView();
 	}
 
 }
