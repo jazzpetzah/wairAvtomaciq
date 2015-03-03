@@ -50,7 +50,7 @@
 		<iosImagesPath>img/</iosImagesPath>
 		<iosClientInfoPlist>/Project/builds_info/Info_ios.plist</iosClientInfoPlist>
 		<iosAppiumLogPath>/Project/appium_ios.log</iosAppiumLogPath>
-		<deviceName>iPhone 6</deviceName>
+		<deviceName>iPhone 5</deviceName>
 	</properties>
 
 	<dependencies>
