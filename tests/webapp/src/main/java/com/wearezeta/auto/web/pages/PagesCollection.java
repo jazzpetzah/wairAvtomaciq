@@ -25,4 +25,8 @@ public class PagesCollection extends AbstractPagesCollection {
 	public static ConnectToPopupPage connectToPopupPage = null;
 	
 	public static ParticipantsPopupPage participantsPopupPage = null;
+	
+	public static AuthorizationPage authorizationPage = null;
+	
+	public static RegistrationPage registrationPage = null;
 }
