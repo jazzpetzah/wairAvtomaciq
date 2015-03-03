@@ -1,8 +1,10 @@
 package com.wearezeta.auto.common.email;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +19,10 @@ import javax.mail.MessagingException;
 import javax.mail.event.MessageCountEvent;
 import javax.mail.event.MessageCountListener;
 
+import org.apache.log4j.Logger;
+
+import com.wearezeta.auto.common.log.ZetaLogger;
+
 class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 	private static final int NEW_MSG_CHECK_INTERVAL = 500; // milliseconds
 
@@ -26,12 +32,20 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 	private IMAPSMailbox parentMBox;
 	private Thread messagesCountNotifier;
 	private int timeoutSeconds;
+	private long listenerStartedTimestamp;
+
+	private static final Logger log = ZetaLogger
+			.getLog(MBoxChangesListener.class.getSimpleName());
 
 	public MBoxChangesListener(IMAPSMailbox parentMBox,
 			Map<String, String> expectedHeaders, int timeoutSeconds) {
-		this.expectedHeaders = expectedHeaders;
+		// clone map
+		for (Entry<String, String> entry : expectedHeaders.entrySet()) {
+			this.expectedHeaders.put(entry.getKey(), entry.getValue());
+		}
 		this.parentMBox = parentMBox;
 		this.timeoutSeconds = timeoutSeconds;
+		this.listenerStartedTimestamp = new Date().getTime();
 
 		// This is to force mbox update notifications
 		messagesCountNotifier = new Thread() {
@@ -48,7 +62,7 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 					} catch (InterruptedException e) {
 						return;
 					} catch (MessagingException e) {
-						// Ignore exception
+						e.printStackTrace();
 					}
 				}
 			}
@@ -59,6 +73,7 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 	private boolean areAllHeadersInMessage(Message msg) {
 		for (Entry<String, String> expectedHeader : this.expectedHeaders
 				.entrySet()) {
+			log.debug("Recived a new email message");
 			boolean isHeaderFound = false;
 			final String expectedHeaderName = expectedHeader.getKey();
 			final String expectedHeaderValue = expectedHeader.getValue();
@@ -72,9 +87,18 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 				} catch (NullPointerException e) {
 					// Ignore NPE bug in java mail lib
 				}
+				log.debug(String.format(
+						"Checking if the email message contains %s: %s header",
+						expectedHeaderName, expectedHeaderValue));
 				if (headerValues != null) {
 					for (String headerValue : headerValues) {
+						log.debug(String.format("%s: %s -> %s",
+								expectedHeaderName, headerValue,
+								expectedHeaderValue));
 						if (headerValue.equals(expectedHeaderValue)) {
+							log.debug(String
+									.format("The expected header value '%s' is found in the email",
+											expectedHeaderValue));
 							isHeaderFound = true;
 							break;
 						}
@@ -103,12 +127,26 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 		}
 	}
 
+	private List<Message> filterReceivedMessages(Message[] deliveredMessages) {
+		final List<Message> addedMessages = Arrays.asList(deliveredMessages);
+		List<Message> result = new ArrayList<Message>();
+		for (Message msg : addedMessages) {
+			try {
+				if (msg.getSentDate().getTime() >= this.listenerStartedTimestamp) {
+					result.add(msg);
+				}
+			} catch (MessagingException e) {
+				e.printStackTrace();
+			}
+		}
+		Collections.sort(result,
+				Collections.reverseOrder(new MessagesByDateComparator()));
+		return result;
+	}
+
 	@Override
 	public void messagesAdded(MessageCountEvent e) {
-		List<Message> addedMessages = Arrays.asList(e.getMessages());
-		Collections.sort(addedMessages,
-				Collections.reverseOrder(new MessagesByDateComparator()));
-		for (Message msg : addedMessages) {
+		for (Message msg : filterReceivedMessages(e.getMessages())) {
 			if (areAllHeadersInMessage(msg)) {
 				this.matchedMessage = msg;
 				this.waitObj.countDown();

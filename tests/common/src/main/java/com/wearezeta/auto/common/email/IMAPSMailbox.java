@@ -21,9 +21,9 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 public class IMAPSMailbox {
 	private static final String MAIL_PROTOCOL = "imaps";
 	private static final String MAILS_FOLDER = "Inbox";
-	private static final int FOLDER_OPEN_TIMEOUT = 60 * 5; // seconds
+	private static final int FOLDER_OPEN_TIMEOUT = 60 * 15; // seconds
 	private static final int MBOX_MAX_CONNECT_RETRIES = 10;
-	private static final int INITIAL_WAIT_DURATION = 2; // seconds
+	private static final int INITIAL_WAIT_DURATION = 3; // seconds
 
 	private static final Logger log = ZetaLogger.getLog(IMAPSMailbox.class
 			.getSimpleName());
@@ -121,6 +121,9 @@ public class IMAPSMailbox {
 		MBoxChangesListener listener = new MBoxChangesListener(this,
 				expectedHeaders, timeoutSeconds);
 		folder.addMessageCountListener(listener);
+		log.debug(String.format(
+				"Started email listener for message containing headers %s...",
+				expectedHeaders.toString()));
 		// Sometimes a message is delivered very quickly
 		// and we don't have enough time to catch it
 		// after the listener has just started

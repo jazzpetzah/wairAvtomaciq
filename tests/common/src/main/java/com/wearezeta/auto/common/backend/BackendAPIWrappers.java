@@ -55,9 +55,6 @@ public final class BackendAPIWrappers {
 		expectedHeaders.put("Delivered-To", user.getEmail());
 		Future<Message> activationMessage = mbox.getMessage(expectedHeaders,
 				BACKEND_ACTIVATION_TIMEOUT);
-		log.debug(String.format(
-				"Started email listener for message containing headers %s...",
-				expectedHeaders.toString()));
 		BackendREST.registerNewUser(user.getEmail(), user.getName(),
 				user.getPassword());
 		activateRegisteredUser(activationMessage);
