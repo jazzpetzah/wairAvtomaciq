@@ -270,7 +270,7 @@ public class CommonSteps {
 			ExecutionContext.clients.put(platform, client);
 		}
 
-		ExecutorService executor = Executors.newFixedThreadPool(3);
+		ExecutorService executor = Executors.newFixedThreadPool(1);
 
 		// OSX initialization
 		if (ExecutionContext.isOsxEnabled()) {
