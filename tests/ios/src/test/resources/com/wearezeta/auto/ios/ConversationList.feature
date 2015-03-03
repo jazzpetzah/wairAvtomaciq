@@ -48,7 +48,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   | Color        | NewName |
       | user1Email | user1Password | user1Name | user2Name | BrightOrange | SILENCE |
 
-  @staging @id1332
+  @regression @id1332
   Scenario Outline: Verify archive a conversation
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -83,7 +83,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   | Color        | NewName |
       | user1Email | user1Password | user1Name | user2Name | BrightOrange | SILENCE |
 
-  @staging @id1075
+  @regression @id1075
   Scenario Outline: Verify messages are marked as read with disappearing unread dot
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -110,7 +110,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   | Number | NewName    | Color        |Number2 | DotSizeSmall |DotSizeBig |
       | user1Email | user1Password | user1Name | user2Name | 30     | UNREAD DOT | BrightOrange | 2		 | small		|big		|
 
-  @staging @id2040
+  @regression @id2040
   Scenario Outline: Verify archive a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -127,7 +127,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Email | user1Password | user1Name | user2Name | user3Name | ArchiveGroupChat |
 
-  @staging @id2041
+  @regression @id2041
   Scenario Outline: Verify unarchive a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

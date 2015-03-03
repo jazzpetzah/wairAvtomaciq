@@ -80,3 +80,16 @@ Feature: Search
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+      
+   @id1494 @regression
+   Scenario Outline: Verify possibility of invitation accepting 
+    Given There is 3 users where <Name> is me
+    And Myself is connected to <Contact1>
+    And I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    And I minimize the application
+    When I connect using invitation link from <Contact2>
+    
+    Examples: 
+      | Login      | Password      | Name      | Contact1   | Contact2 |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |

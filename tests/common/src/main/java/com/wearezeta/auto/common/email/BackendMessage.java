@@ -13,22 +13,35 @@ import javax.mail.Multipart;
 import javax.mail.Part;
 
 public class BackendMessage {
-	private Message msg;
+	private String content;
 	private Map<String, String> mapHeaders = new HashMap<String, String>();
 
 	public BackendMessage(Message msg) throws Exception {
-		this.msg = msg;
-
-		IMAPSMailbox.getInstance().openFolder(msg.getFolder());
+		IMAPSMailbox.getInstance().openFolder(msg.getFolder(), false);
 		try {
 			@SuppressWarnings("unchecked")
-			Enumeration<Header> hdrs = msg.getAllHeaders();
+			final Enumeration<Header> hdrs = msg.getAllHeaders();
 			while (hdrs.hasMoreElements()) {
-				Header hdr = hdrs.nextElement();
+				final Header hdr = hdrs.nextElement();
 				mapHeaders.put(hdr.getName(), hdr.getValue());
 			}
+
+			final Object msgContent = msg.getContent();
+			if (msgContent instanceof Multipart) {
+				final Multipart multipart = (Multipart) msgContent;
+				final StringBuilder multipartContent = new StringBuilder();
+				for (int j = 0; j < multipart.getCount(); j++) {
+					final BodyPart bodyPart = multipart.getBodyPart(j);
+					if (bodyPart.getDisposition() == null) {
+						multipartContent.append(getText(bodyPart));
+					}
+				}
+				this.content = multipartContent.toString();
+			} else {
+				this.content = msgContent.toString();
+			}
 		} finally {
-			IMAPSMailbox.getInstance().closeFolder(msg.getFolder());
+			IMAPSMailbox.getInstance().closeFolder(msg.getFolder(), false);
 		}
 	}
 
@@ -37,26 +50,8 @@ public class BackendMessage {
 		return this.mapHeaders.get(headerName);
 	}
 
-	public String getContent() throws Exception {
-		IMAPSMailbox.getInstance().openFolder(msg.getFolder());
-		try {
-			Object msgContent = this.msg.getContent();
-			if (msgContent instanceof Multipart) {
-				Multipart multipart = (Multipart) msgContent;
-				StringBuilder multipartContent = new StringBuilder();
-				for (int j = 0; j < multipart.getCount(); j++) {
-					BodyPart bodyPart = multipart.getBodyPart(j);
-					if (bodyPart.getDisposition() == null) {
-						multipartContent.append(getText(bodyPart));
-					}
-				}
-				return multipartContent.toString();
-			} else {
-				return msgContent.toString();
-			}
-		} finally {
-			IMAPSMailbox.getInstance().closeFolder(msg.getFolder());
-		}
+	public String getContent() {
+		return this.content;
 	}
 
 	/**

@@ -28,7 +28,8 @@ public class SelfProfilePage extends WebPage {
 		super(driver, wait);
 	}
 
-	public void clickGearButton() {
+	public void clickGearButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(driver, gearButton);
 		gearButton.click();
 	}
 

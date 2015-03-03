@@ -73,9 +73,10 @@ public abstract class AndroidPage extends BasePage {
 		return null;
 	}
 
-	public void minimizeApplication() throws InterruptedException {
+	public CommonAndroidPage minimizeApplication() throws Exception {
 		this.getDriver().sendKeyEvent(3);
 		Thread.sleep(1000);
+		return new  CommonAndroidPage(this.getDriver(), this.getWait());
 	}
 
 	public void restoreApplication() {

@@ -63,16 +63,10 @@ public class ConversationPage extends WebPage {
 	}
 
 	public boolean isActionMessageSent(String message) throws Exception {
-		boolean isSend = false;
 		String xpath = String.format(
 				WebAppLocators.ConversationPage.xpathActionMessageEntry,
 				message);
-		DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath));
-		WebElement element = driver.findElement(By.xpath(xpath));
-		if (element != null) {
-			isSend = true;
-		}
-		return isSend;
+		return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath));
 	}
 
 	public boolean isMessageSent(String message) throws Exception {
@@ -88,7 +82,8 @@ public class ConversationPage extends WebPage {
 		return isSend;
 	}
 
-	public WebPage clickShowUserProfileButton(boolean isGroup) throws Exception {
+	public ConversationPopupPage clickShowUserProfileButton(boolean isGroup)
+			throws Exception {
 		DriverUtils.waitUntilElementClickable(driver, showParticipants);
 		showParticipants.click();
 		if (isGroup) {
@@ -117,8 +112,10 @@ public class ConversationPage extends WebPage {
 				+ WebAppLocators.ConversationPage.cssSendImageInput
 				+ "').css({'left': '0'});";
 		driver.executeScript(showPathInputJScript);
-		if (WebCommonUtils.getWebAppBrowserNameFromConfig(
-				ConversationPage.class).equals(WebAppConstants.Browser.SAFARI)) {
+		// trying to wait for elements will appear on Safari
+		Thread.sleep(3000);
+		if (WebAppExecutionContext.browserName
+				.equals(WebAppConstants.Browser.SAFARI)) {
 			// sendKeys() call to file input element does nothing on safari
 			// so instead of sendKeys() we are using AppleScript which chooses
 			// required image in open file dialog
@@ -155,11 +152,14 @@ public class ConversationPage extends WebPage {
 	}
 
 	public void clickPingButton() {
-
 		try {
-			DriverUtils.moveMouserOver(driver, pingButton);
+			DriverUtils.moveMouserOver(driver, conversationInput);
 		} catch (WebDriverException e) {
 			// do nothing (safari workaround)
+		}
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
 		}
 		pingButton.click();
 	}

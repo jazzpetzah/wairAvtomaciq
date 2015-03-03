@@ -50,7 +50,7 @@ public class LoginPageSteps {
 	
 	@When("I press FORGOT PASSWORD button")
 	public void WhenIPressForgotPasswordButton() throws Exception {
-		PagesCollection.settingsPage = PagesCollection.loginPage.forgotPassword();
+		PagesCollection.commonAndroidPage = PagesCollection.loginPage.forgotPassword();
 	}
 
 	@When("I press Log in button")

@@ -1,5 +1,7 @@
 package com.wearezeta.auto.ios.pages;
 
+import io.appium.java_client.AppiumDriver;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -242,13 +244,15 @@ public class DialogPage extends IOSPage {
 
 	public void startMediaContent() throws Exception {
 		boolean flag = DriverUtils.isElementDisplayed(mediaLinkCell);
-		if (!flag) {
-
-			if (!DriverUtils.isElementDisplayed(mediaLinkCell)) {
-				throw new NoSuchElementException("media container is not present");
-			}
+		if (flag) {
+			mediaLinkCell.click();
+		}
+		else {
+			String lastMessageXPath = String.format(
+					IOSLocators.xpathLastMessageFormat, messagesList.size());
+			WebElement el = driver.findElementByXPath(lastMessageXPath);
+			((AppiumDriver)driver).tap(1, 10, el.getLocation().y + el.getSize().height + (el.getSize().height / 2), 1);
 		} 
-		mediaLinkCell.click();
 	}
 
 	public DialogPage scrollDownTilMediaBarAppears() throws Exception {

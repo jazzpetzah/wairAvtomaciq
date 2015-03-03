@@ -36,8 +36,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  #ZIOS-2975
-  @staging @id1056
+  @regression @id1056
   Scenario Outline: Attempt to enter a name with 1 char
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

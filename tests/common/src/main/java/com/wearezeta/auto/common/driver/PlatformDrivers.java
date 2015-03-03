@@ -26,7 +26,7 @@ public final class PlatformDrivers {
 	private PlatformDrivers() {
 	}
 
-	public static PlatformDrivers getInstance() {
+	public synchronized static PlatformDrivers getInstance() {
 		if (instance == null) {
 			instance = new PlatformDrivers();
 		}
@@ -132,16 +132,19 @@ public final class PlatformDrivers {
 		}
 	}
 
-	@Override
-	protected void finalize() throws Throwable {
-		for (Entry<Platform, RemoteWebDriver> entry : drivers.entrySet()) {
-			try {
-				entry.getValue().quit();
-			} catch (Exception e) {
-				e.printStackTrace();
+	{
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			@Override
+			public void run() {
+				for (Entry<Platform, RemoteWebDriver> entry : drivers
+						.entrySet()) {
+					try {
+						entry.getValue().quit();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
 			}
-		}
-
-		super.finalize();
+		});
 	}
 }

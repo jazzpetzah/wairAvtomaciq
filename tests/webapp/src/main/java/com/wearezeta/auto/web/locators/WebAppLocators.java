@@ -20,12 +20,12 @@ public final class WebAppLocators {
 		public static final String idPasswordInput = "wire-password";
 
 		public static final String idLoginButton = "wire-login";
-		
+
 		public static final String classNameSpinner = "loading-spinner";
 	}
 
 	public static final class ContactListPage {
-		
+
 		public static final String xpathArchive = "//div[contains(@class, 'conversation-list-item-archive')]//div[contains(@class, 'center-column') and text()='Archive']";
 
 		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
@@ -37,6 +37,9 @@ public final class WebAppLocators {
 		public static final String classMuteIcon = "conversation-muted";
 
 		public static final String classActionsButton = "icon-more";
+
+		public static final String xpathFormatActionsButton = "//li[contains(@class,'conversation-list-item') and @data-uie-value='%s']"
+				+ "//span[contains(@data-uie-name,'go-options')]";
 
 		public static final String xpathSelfProfileEntry = xpathParentContactListItem
 				+ "//div[contains(@class, 'center-column')]";
@@ -103,9 +106,9 @@ public final class WebAppLocators {
 		public static final String cssSendImageInput = "input[type=\"file\"]";
 
 		public static final String xpathImageMessageEntry = "//div[@class='message-asset-image']";
-		
+
 		public static final String xpathPingButton = "//span[contains(@class, 'icon-ping') and contains(@class,'controls-right-button')]";
-		
+
 		public static final String classPingMessage = "pinged";
 	}
 
@@ -132,15 +135,20 @@ public final class WebAppLocators {
 				xpathSearhResultList, name);
 	}
 
-	public static final class UserProfilePopupPage {
+	public static final class ConversationPopupPage {
 
-		public static final String idUserProfilePage = "participants-bubble";
+		public static final String idConversationPopupPage = "participants-bubble";
 
-		public static final String xpathNameAddPeopleButton = "//div[contains(@class,'footer-button-left') and contains(@class,'icon-plus')]";
+		public static final String xpathAddPeopleMessage = "//div[@class='confirm-content' and span[text()='Add people and share history?']]";
 
-		public static final String xpathNameBlockButton = "//div[contains(@class,'footer-button-right') and contains(@class,'icon-block')]";
+		public static final String xpathConfirmAddButton = "//div[@class='zeta-button zeta-button-medium' and text()='continue']";
 
-		public static final String xpathUserName = "//div[@class='name' and @data-uie-name='status-user']";
+		public static final String xpathProfilePageSearchField = "//div[@class='participants-search-header']//input[@class='search-input']";
+	}
+
+	public static final class ParticipantsProfilePopupPage {
+
+		public static final String xpathAddPeopleButton = "//*[contains(@class,'participants-group-add')]";
 
 		public static final String xpathLeaveGroupChat = "//div[contains(@class,'participants-group-leave')]";
 
@@ -148,22 +156,22 @@ public final class WebAppLocators {
 
 		public static final String xpathConfirmRemoveButton = "//div[@class='zeta-button zeta-button-medium' and text()='remove']";
 
-		public static final String xpathConfirmAddButton = "//div[@class='zeta-button zeta-button-medium' and text()='continue']";
-
-		public static final String xpathParticipantName = "//div[@class='search-list-item-name' and text()='%s']/..";
-
 		public static final String xpathRemoveFromGroupChat = "//div[contains(@class,'footer-button-right') and contains(@class,'icon-leave')]";
 
-		public static final String xpathGroupAddPeopleButton = "//div[contains(@class, 'participants-group-add')]";
+		public static final String xpathConversationTitle = "//div[@class='participants-group-header']/div[@class='name']/div";
 
-		public static final String xpathProfilePageSearchField = "//div[@class='participants-search-header']//input[@class='search-input']";
-
-		public static final String xpathAddPeopleMessage = "//div[@class='confirm-content' and span[text()='Add people and share history?']]";
-		
-		public static final String xpathConversationTitle = "//div[@class='participants-group-header']/div[@class='name']/span";
-		
 		public static final String xpathConversationTitleInput = "//div[@class='participants-group-header']/div[@class='name']/textarea";
+	}
 
+	public static final class UserProfilePopupPage {
+
+		public static final String xpathAddPeopleButton = "//*[@data-uie-value='add people']";
+
+		public static final String xpathNameBlockButton = "//div[contains(@class,'footer-button-right') and contains(@class,'icon-block')]";
+
+		public static final String xpathUserName = "//div[@class='name' and @data-uie-name='status-user']";
+
+		public static final String xpathParticipantName = "//div[@class='search-list-item-name' and text()='%s']/..";
 	}
 
 	public static final class ConnectToPopup {

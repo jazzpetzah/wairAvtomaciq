@@ -9,15 +9,12 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
-public class UserProfilePopupPage extends WebPage {
-
-	@FindBy(how = How.ID, using = WebAppLocators.UserProfilePopupPage.idUserProfilePage)
-	private WebElement userProfilePopup;
+public class UserProfilePopupPage extends ConversationPopupPage {
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.UserProfilePopupPage.xpathUserName)
 	private WebElement userName;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.UserProfilePopupPage.xpathNameAddPeopleButton)
+	@FindBy(how = How.XPATH, using = WebAppLocators.UserProfilePopupPage.xpathAddPeopleButton)
 	private WebElement addPeopleButton;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.UserProfilePopupPage.xpathNameBlockButton)
@@ -29,7 +26,7 @@ public class UserProfilePopupPage extends WebPage {
 	}
 
 	public boolean isUserProfilePopupPageVisible() throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver, userProfilePopup, 10);
+		return this.isConversationPopupPageVisible();
 	}
 
 	public String getUserName() {
@@ -38,6 +35,12 @@ public class UserProfilePopupPage extends WebPage {
 
 	public boolean isAddPeopleButtonVisible() {
 		return DriverUtils.isElementDisplayed(addPeopleButton);
+	}
+
+	@Override
+	public void clickAddPeopleButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(driver, addPeopleButton);
+		addPeopleButton.click();
 	}
 
 	public boolean isBlockButtonVisible() {

@@ -15,6 +15,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
@@ -573,6 +574,7 @@ public class DialogPageSteps {
 	public void UserPingInChatByBE(String contact, String conversationName)
 			throws Exception {
 		ClientUser yourСontact = usrMgr.findUserByNameOrNameAlias(contact);
+		conversationName = usrMgr.replaceAliasesOccurences(conversationName, FindBy.NAME_ALIAS);
 		pingId = BackendAPIWrappers.sendPingToConversation(yourСontact,
 				conversationName);
 		Thread.sleep(1000);
@@ -582,6 +584,7 @@ public class DialogPageSteps {
 	public void UserHotPingInChatByBE(String contact, String conversationName)
 			throws Exception {
 		ClientUser yourСontact = usrMgr.findUserByNameOrNameAlias(contact);
+		conversationName = usrMgr.replaceAliasesOccurences(conversationName, FindBy.NAME_ALIAS);
 		BackendAPIWrappers.sendHotPingToConversation(yourСontact,
 				conversationName, pingId);
 		Thread.sleep(1000);

@@ -40,7 +40,7 @@ import com.wearezeta.auto.image_send.SelfImageProcessor;
 // argument by performing automatic login (set id and session token attributes)
 public final class BackendAPIWrappers {
 	public static final int UI_ACTIVATION_TIMEOUT = 120; // seconds
-	public static final int BACKEND_ACTIVATION_TIMEOUT = 15; // seconds
+	public static final int BACKEND_ACTIVATION_TIMEOUT = 60; // seconds
 
 	private static final Logger log = ZetaLogger
 			.getLog(BackendAPIWrappers.class.getSimpleName());
@@ -55,9 +55,6 @@ public final class BackendAPIWrappers {
 		expectedHeaders.put("Delivered-To", user.getEmail());
 		Future<Message> activationMessage = mbox.getMessage(expectedHeaders,
 				BACKEND_ACTIVATION_TIMEOUT);
-		log.debug(String.format(
-				"Started email listener for message containing headers %s...",
-				expectedHeaders.toString()));
 		BackendREST.registerNewUser(user.getEmail(), user.getName(),
 				user.getPassword());
 		activateRegisteredUser(activationMessage);

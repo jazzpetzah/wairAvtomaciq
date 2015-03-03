@@ -24,7 +24,7 @@ public class RegistrationPageSteps {
 
 	private ClientUser userToRegister = null;
 
-	private Future<Message> activationMessage;
+	public static Future<Message> activationMessage;
 
 	@When("^I press Camera button twice$")
 	public void WhenIPressCameraButton() throws IOException,
@@ -108,9 +108,8 @@ public class RegistrationPageSteps {
 	public void ISubmitRegistrationData() throws Exception {
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
-		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
+		RegistrationPageSteps.activationMessage = IMAPSMailbox.getInstance().getMessage(
 				expectedHeaders, BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
-
 		PagesCollection.registrationPage.createAccount();
 	}
 
@@ -122,24 +121,10 @@ public class RegistrationPageSteps {
 
 	@Then("^I verify registration address$")
 	public void IVerifyRegistrationAddress() throws Throwable {
-		BackendAPIWrappers.activateRegisteredUser(this.activationMessage);
+		BackendAPIWrappers.activateRegisteredUser(RegistrationPageSteps.activationMessage);
 		this.userToRegister.setUserState(UserState.Created);
 		PagesCollection.contactListPage = PagesCollection.registrationPage
 				.continueRegistration();
 	}
 
-	/**
-	 * Activates user using browser by URL from mail
-	 * 
-	 * @step. ^I activate user by URL$
-	 * 
-	 * @throws Exception
-	 */
-	@Then("^I activate user by URL$")
-	public void WhenIActivateUserByUrl() throws Exception {
-		String link = BackendAPIWrappers
-				.getUserActivationLink(this.activationMessage);
-		PagesCollection.peoplePickerPage = PagesCollection.registrationPage
-				.activateByLink(link);
-	}
 }

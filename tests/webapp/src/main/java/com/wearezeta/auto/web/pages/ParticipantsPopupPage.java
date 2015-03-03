@@ -1,7 +1,6 @@
 package com.wearezeta.auto.web.pages;
 
 import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -13,45 +12,31 @@ import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
-public class ParticipantsPopupPage extends WebPage {
+public class ParticipantsPopupPage extends ConversationPopupPage {
 
+	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger
 			.getLog(ParticipantsPopupPage.class.getSimpleName());
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.UserProfilePopupPage.xpathLeaveGroupChat)
+	@FindBy(how = How.XPATH, using = WebAppLocators.ParticipantsProfilePopupPage.xpathLeaveGroupChat)
 	private WebElement leaveButton;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.UserProfilePopupPage.xpathConfirmLeaveButton)
+	@FindBy(how = How.XPATH, using = WebAppLocators.ParticipantsProfilePopupPage.xpathConfirmLeaveButton)
 	private WebElement confirmLeaveButton;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.UserProfilePopupPage.xpathConfirmRemoveButton)
+	@FindBy(how = How.XPATH, using = WebAppLocators.ParticipantsProfilePopupPage.xpathConfirmRemoveButton)
 	private WebElement confirmRemoveButton;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.UserProfilePopupPage.xpathConfirmAddButton)
-	private WebElement confirmAddButton;
-
-	@FindBy(how = How.XPATH, using = WebAppLocators.UserProfilePopupPage.xpathRemoveFromGroupChat)
+	@FindBy(how = How.XPATH, using = WebAppLocators.ParticipantsProfilePopupPage.xpathRemoveFromGroupChat)
 	private WebElement removeFromGroupChatButton;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.UserProfilePopupPage.xpathProfilePageSearchField)
-	private WebElement profilePageSearchField;
+	@FindBy(how = How.XPATH, using = WebAppLocators.ParticipantsProfilePopupPage.xpathAddPeopleButton)
+	private WebElement addPeopleButton;
 
-	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.PeoplePickerPage.classNameCreateConversationButton)
-	private WebElement createConversationButton;
-
-	@FindBy(how = How.XPATH, using = WebAppLocators.UserProfilePopupPage.xpathGroupAddPeopleButton)
-	private WebElement groupAddPeopleButton;
-
-	@FindBy(how = How.ID, using = WebAppLocators.UserProfilePopupPage.idUserProfilePage)
-	private WebElement userProfilePopup;
-
-	@FindBy(how = How.XPATH, using = WebAppLocators.UserProfilePopupPage.xpathAddPeopleMessage)
-	private WebElement addPeopleMessage;
-
-	@FindBy(how = How.XPATH, using = WebAppLocators.UserProfilePopupPage.xpathConversationTitle)
+	@FindBy(how = How.XPATH, using = WebAppLocators.ParticipantsProfilePopupPage.xpathConversationTitle)
 	private WebElement conversationTitle;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.UserProfilePopupPage.xpathConversationTitleInput)
+	@FindBy(how = How.XPATH, using = WebAppLocators.ParticipantsProfilePopupPage.xpathConversationTitleInput)
 	private WebElement conversationTitleInput;
 
 	public ParticipantsPopupPage(ZetaWebAppDriver driver, WebDriverWait wait)
@@ -60,21 +45,13 @@ public class ParticipantsPopupPage extends WebPage {
 	}
 
 	public boolean isParticipantsProfilePopupPageVisible() throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver, userProfilePopup, 10);
+		return this.isConversationPopupPageVisible();
 	}
 
-	public boolean isAddPeopleMessageShown() {
-		return addPeopleMessage.isDisplayed();
-	}
-
-	public void clickCreateConversation() {
-		createConversationButton.click();
-	}
-
-	public void searchForUser(String searchText) throws Exception {
-		DriverUtils.waitUntilElementClickable(driver, profilePageSearchField);
-		profilePageSearchField.clear();
-		profilePageSearchField.sendKeys(searchText);
+	@Override
+	public void clickAddPeopleButton() throws Exception {
+		DriverUtils.waitUntilElementVisible(driver, addPeopleButton);
+		addPeopleButton.click();
 	}
 
 	public void leaveGroupChat() {
@@ -97,28 +74,6 @@ public class ParticipantsPopupPage extends WebPage {
 
 	public void removeFromGroupChat() {
 		removeFromGroupChatButton.click();
-	}
-
-	public void confirmAddPeople() {
-		this.getWait().until(ExpectedConditions.elementToBeClickable(confirmAddButton));
-		confirmAddButton.click();
-	}
-
-	public void clickAddPeopleButton() {
-		groupAddPeopleButton.click();
-	}
-
-	public void selectUserFromSearchResult(String user) throws Exception {
-		String xpath = String
-				.format(WebAppLocators.PeoplePickerPage.xpathFormatSearchListItemWithName,
-						user);
-		WebElement userEl = driver.findElement(By.xpath(xpath));
-		boolean isClickable = DriverUtils.waitUntilElementClickable(driver,
-				userEl);
-		boolean isVisible = DriverUtils.waitUntilElementVisible(driver, userEl);
-		log.debug("Found user element is clickable: " + isClickable
-				+ ", isVisible: " + isVisible);
-		userEl.click();
 	}
 
 	public boolean isParticipantVisible(String name) {
