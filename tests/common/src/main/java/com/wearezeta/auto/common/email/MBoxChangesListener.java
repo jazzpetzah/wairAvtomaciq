@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +13,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import javax.mail.Folder;
+import javax.mail.Header;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.event.MessageCountEvent;
@@ -24,15 +24,12 @@ import org.apache.log4j.Logger;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 class MBoxChangesListener implements MessageCountListener, Callable<Message> {
-	private static final int NEW_MSG_CHECK_INTERVAL = 500; // milliseconds
 
 	private Map<String, String> expectedHeaders = new HashMap<String, String>();
 	private CountDownLatch waitObj = new CountDownLatch(1);
 	private Message matchedMessage = null;
 	private IMAPSMailbox parentMBox;
-	private Thread messagesCountNotifier;
 	private int timeoutSeconds;
-	private long listenerStartedTimestamp;
 
 	private static final Logger log = ZetaLogger
 			.getLog(MBoxChangesListener.class.getSimpleName());
@@ -45,44 +42,17 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 		}
 		this.parentMBox = parentMBox;
 		this.timeoutSeconds = timeoutSeconds;
-		this.listenerStartedTimestamp = new Date().getTime();
-
-		// This is to force mbox update notifications
-		messagesCountNotifier = new Thread() {
-			@Override
-			public void run() {
-				final Folder dstFolder = parentMBox.getFolder();
-				while (dstFolder != null) {
-					try {
-						if (!dstFolder.isOpen()) {
-							dstFolder.open(Folder.READ_ONLY);
-						}
-						dstFolder.getMessageCount();
-						Thread.sleep(NEW_MSG_CHECK_INTERVAL);
-					} catch (InterruptedException e) {
-						return;
-					} catch (MessagingException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		};
-		messagesCountNotifier.start();
 	}
 
 	private boolean areAllHeadersInMessage(Message msg) {
 		for (Entry<String, String> expectedHeader : this.expectedHeaders
 				.entrySet()) {
-			log.debug("Recived a new email message");
 			boolean isHeaderFound = false;
 			final String expectedHeaderName = expectedHeader.getKey();
 			final String expectedHeaderValue = expectedHeader.getValue();
 			try {
 				String[] headerValues = null;
 				try {
-					if (!msg.getFolder().isOpen()) {
-						msg.getFolder().open(Folder.READ_ONLY);
-					}
 					headerValues = msg.getHeader(expectedHeaderName);
 				} catch (NullPointerException e) {
 					// Ignore NPE bug in java mail lib
@@ -127,26 +97,36 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 		}
 	}
 
-	private List<Message> filterReceivedMessages(Message[] deliveredMessages) {
+	private List<Message> preprocessReceivedMessages(Message[] deliveredMessages) {
 		final List<Message> addedMessages = Arrays.asList(deliveredMessages);
-		List<Message> result = new ArrayList<Message>();
-		for (Message msg : addedMessages) {
-			try {
-				if (msg.getSentDate().getTime() >= this.listenerStartedTimestamp) {
-					result.add(msg);
-				}
-			} catch (MessagingException e) {
-				e.printStackTrace();
-			}
-		}
+		List<Message> result = new ArrayList<Message>(addedMessages);
 		Collections.sort(result,
 				Collections.reverseOrder(new MessagesByDateComparator()));
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
+	private void logMessages(Message[] deliveredMessages) {
+		for (Message msg : deliveredMessages) {
+			log.debug("Received new message with headers:");
+			Enumeration<Header> hdrs;
+			try {
+				hdrs = msg.getAllHeaders();
+			} catch (MessagingException e) {
+				e.printStackTrace();
+				continue;
+			}
+			while (hdrs.hasMoreElements()) {
+				final Header hdr = hdrs.nextElement();
+				log.debug(String.format("\t\t%s: %s", hdr.getName(), hdr.getValue()));
+			}
+		}
+	}
+
 	@Override
 	public void messagesAdded(MessageCountEvent e) {
-		for (Message msg : filterReceivedMessages(e.getMessages())) {
+		logMessages(e.getMessages());
+		for (Message msg : preprocessReceivedMessages(e.getMessages())) {
 			if (areAllHeadersInMessage(msg)) {
 				this.matchedMessage = msg;
 				this.waitObj.countDown();
@@ -169,7 +149,6 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 		} finally {
 			this.parentMBox.getFolder().removeMessageCountListener(this);
 			this.parentMBox.closeFolder();
-			messagesCountNotifier.interrupt();
 		}
 		throw new RuntimeException(
 				String.format(
