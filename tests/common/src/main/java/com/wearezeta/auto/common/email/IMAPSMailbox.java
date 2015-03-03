@@ -2,6 +2,7 @@ package com.wearezeta.auto.common.email;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -87,15 +88,15 @@ public class IMAPSMailbox {
 			messagesCountNotifier = new Thread() {
 				@Override
 				public void run() {
-					log.debug("Email message notifier thread starting...");
+					log.debug("Starting email messages notifier thread...");
 					while (IMAPSMailbox.this.getFolder() != null
 							&& !this.isInterrupted()) {
 						try {
 							if (!IMAPSMailbox.this.getFolder().isOpen()) {
 								IMAPSMailbox.this.getFolder().open(
 										Folder.READ_ONLY);
+								IMAPSMailbox.this.getFolder().getMessageCount();
 							}
-							IMAPSMailbox.this.getFolder().getMessageCount();
 							Thread.sleep(NEW_MSG_CHECK_INTERVAL);
 						} catch (InterruptedException e) {
 							log.debug("Email message notifier thread has been successfully interrupted");
@@ -154,8 +155,9 @@ public class IMAPSMailbox {
 	public Future<Message> getMessage(Map<String, String> expectedHeaders,
 			int timeoutSeconds) throws MessagingException, InterruptedException {
 		this.openFolder(true);
+		final long listenerStartedTimestamp = new Date().getTime();
 		MBoxChangesListener listener = new MBoxChangesListener(this,
-				expectedHeaders, timeoutSeconds);
+				expectedHeaders, timeoutSeconds, listenerStartedTimestamp);
 		this.getFolder().addMessageCountListener(listener);
 		log.debug(String.format(
 				"Started email listener for message containing headers %s...",
