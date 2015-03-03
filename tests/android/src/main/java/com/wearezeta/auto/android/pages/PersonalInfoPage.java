@@ -150,6 +150,7 @@ public class PersonalInfoPage extends AndroidPage {
 				By.id(AndroidLocators.PersonalInfoPage.idNameField));
 		refreshUITree();
 		this.getWait().until(ExpectedConditions.visibilityOf(nameEdit));
+		nameEdit.clear();
 		nameEdit.sendKeys(newName);
 		driver.navigate().back();
 		Thread.sleep(1000);
