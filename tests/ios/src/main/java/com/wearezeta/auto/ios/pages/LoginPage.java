@@ -1,7 +1,10 @@
 package com.wearezeta.auto.ios.pages;
 
+import io.appium.java_client.AppiumDriver;
+
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -82,6 +85,12 @@ public class LoginPage extends IOSPage {
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathChangePasswordPageChangePasswordButton)
 	private WebElement changePasswordPageChangePasswordButton;
+	
+	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameUIATextField)
+	private List<WebElement> textFields;
+	
+	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameUIAButton)
+	private List<WebElement> uiButtons;
 
 	private String login;
 
@@ -259,8 +268,27 @@ public class LoginPage extends IOSPage {
 		return new PersonalInfoPage(this.getDriver(), this.getWait());
 	}
 	
-	public void tapEmailFieldToChangePassword(){
-		changePWEmailField.click();
-		changePasswordPageChangePasswordButton.click();
+	public void tapEmailFieldToChangePassword(String email) throws InterruptedException{
+		for (WebElement textField : textFields){
+			String valueOfField = textField.getAttribute("value");
+			if(valueOfField.equals("Email")){
+				DriverUtils.mobileTapByCoordinates(getDriver(), textField);
+				this.inputStringFromKeyboard(email);
+			}
+		}
 	}
+	
+	public void changeAppContext(){
+		DriverUtils.changeAppContext(getDriver());
+	}
+	
+	public void tapChangePasswordButtonInWebView(){
+		for (WebElement uiButton : uiButtons){
+			String nameOfButton = uiButton.getAttribute("name");
+			if(nameOfButton.equals("CHANGE PASSWORD")){
+				DriverUtils.mobileTapByCoordinates(getDriver(), uiButton);
+			}
+		}
+	}
+	
 }

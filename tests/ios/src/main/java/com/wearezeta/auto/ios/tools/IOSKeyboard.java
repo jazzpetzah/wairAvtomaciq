@@ -8,7 +8,7 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 public class IOSKeyboard {
 	private static final String TAP_KEYBOARD_BUTTON = "target.frontMostApp().keyboard().elements()[\"%s\"].tap();";
 	private static final KeyboardState UNKNOWN_STATE = new KeyboardStateUnknown();
-	private static final int TAP_DELAY = 20;
+	private static final int TAP_DELAY = 500;
 	private List<KeyboardState> CACHED_STATES = new ArrayList<KeyboardState>();
 	private static final String DEFAULT_RETURN_NAME = "Send";
 	

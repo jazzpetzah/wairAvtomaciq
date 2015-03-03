@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
@@ -529,5 +530,10 @@ public class DriverUtils {
 			WebElement element) {
 		Point coords = element.getLocation();
 		driver.tap(1, coords.x - (coords.x / 2 + coords.x / 8), coords.y, 1);
+	}
+	
+	public static void changeAppContext(AppiumDriver driver){
+		Set<String> contextNames = driver.getContextHandles();
+		driver.context((String) contextNames.toArray()[1]); // set context to WEBVIEW_1
 	}
 }
