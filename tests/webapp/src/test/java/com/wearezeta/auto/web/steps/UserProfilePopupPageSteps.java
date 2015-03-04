@@ -16,7 +16,7 @@ public class UserProfilePopupPageSteps {
 	 * Verify that User profile popup is shown
 	 * 
 	 * @step. I see User Profile Popup Page
-	 * @throws Exception 
+	 * @throws Exception
 	 * 
 	 */
 	@When("I see User Profile Popup Page")
@@ -39,7 +39,7 @@ public class UserProfilePopupPageSteps {
 		Assert.assertEquals(name,
 				PagesCollection.userProfilePopupPage.getUserName());
 	}
-	
+
 	/**
 	 * Verify that Add people button is shown on User profile popup
 	 * 
@@ -51,7 +51,7 @@ public class UserProfilePopupPageSteps {
 		Assert.assertTrue(PagesCollection.userProfilePopupPage
 				.isAddPeopleButtonVisible());
 	}
-	
+
 	/**
 	 * Verify that Block button is shown on User profile popup
 	 * 
@@ -63,5 +63,4 @@ public class UserProfilePopupPageSteps {
 		Assert.assertTrue(PagesCollection.userProfilePopupPage
 				.isBlockButtonVisible());
 	}
-	
 }

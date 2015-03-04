@@ -13,14 +13,14 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ParticipantsProfilePopupSteps {
-	
+
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
 	 * Verify that participant profile popup is shown
 	 * 
 	 * @step. ^I see Participant Profile Popup Page$
-	 * @throws Exception 
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I see Participant Profile Popup Page$")
@@ -28,7 +28,7 @@ public class ParticipantsProfilePopupSteps {
 		Assert.assertTrue(PagesCollection.participantsPopupPage
 				.isParticipantsProfilePopupPageVisible());
 	}
-	
+
 	/**
 	 * Click on leave group chat button in participant profile popup
 	 * 
@@ -39,7 +39,7 @@ public class ParticipantsProfilePopupSteps {
 	public void IClickLeaveGroupChat() {
 		PagesCollection.participantsPopupPage.leaveGroupChat();
 	}
-	
+
 	/**
 	 * Confirm leaving group chat by clicking LEAVE button
 	 * 
@@ -50,7 +50,7 @@ public class ParticipantsProfilePopupSteps {
 	public void IClickConfirmLeaveGroupChat() {
 		PagesCollection.participantsPopupPage.confirmLeaveGroupChat();
 	}
-	
+
 	/**
 	 * Click on a participant in participant profile popup
 	 * 
@@ -75,7 +75,7 @@ public class ParticipantsProfilePopupSteps {
 	public void IRemoveUserFromGroupChat() {
 		PagesCollection.participantsPopupPage.removeFromGroupChat();
 	}
-	
+
 	/**
 	 * Confirm removing from group chat by clicking REMOVE button
 	 * 
@@ -86,79 +86,7 @@ public class ParticipantsProfilePopupSteps {
 	public void IClickConfirmRemoveFromGroupChat() {
 		PagesCollection.participantsPopupPage.confirmRemoveFromGroupChat();
 	}
-	
-	/**
-	 * Click on add people button
-	 * 
-	 * @step. ^I click Add people button on Participant Profile Popup Page$
-	 * 
-	 */
-	@When("^I click Add people button on Participant Profile Popup Page$")
-	public void IClickAddPeopleButtonOnUserProfilePopupPage() {
-		PagesCollection.participantsPopupPage.clickAddPeopleButton();
-	}
-	
-	/**
-	 * Click on continue people button
-	 * 
-	 * @step. ^I confirm add to group chat$
-	 * 
-	 */
-	@When("^I confirm add to group chat$")
-	public void IClickConfirmAddGroupChat() {
-		PagesCollection.participantsPopupPage.confirmAddPeople();
-	}
-	
-	/**
-	 * Input user name in search field
-	 * 
-	 * @step. ^I input user name (.*) in search field$
-	 * 
-	 * @param name
-	 * @throws Exception 
-	 */
-	@When("^I input user name (.*) in search field$")
-	public void ISearchForUser(String name) throws Exception {
-		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		PagesCollection.participantsPopupPage.searchForUser(name);
-	}
-	
-	/**
-	 * Select user found in search results
-	 * 
-	 * @step. ^I select (.*) from Popup Page search results$
-	 * 
-	 * @param user
-	 * @throws Exception 
-	 */
-	@When("^I select (.*) from Popup Page search results$")
-	public void ISelectUserFromPeoplePickerResults(String user) throws Exception {
-		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
-		PagesCollection.participantsPopupPage.selectUserFromSearchResult(user);
-	}
-	
-	/**
-	 * Creates conversation with selected users from Popup Page
-	 * 
-	 * @step. ^I choose to create conversation from Popup Page$
-	 */
-	@When("^I choose to create conversation from Popup Page$")
-	public void IChooseToCreateConversationFromPopupPage() {
-		PagesCollection.participantsPopupPage.clickCreateConversation();
-	}
-	
-	/**
-	 * Verifies there is a question if you want to add people
-	 * 
-	 * @step. ^I see Add People message$
-	 * 
-	 */
-	@When("^I see Add People message$")
-	public void ISeeAddPeopleMessage() {
-		Assert.assertTrue(PagesCollection.participantsPopupPage
-				.isAddPeopleMessageShown());
-	}
-	
+
 	/**
 	 * Verifies that contact is displayed on Participant profile popup
 	 * 
@@ -168,7 +96,7 @@ public class ParticipantsProfilePopupSteps {
 	 */
 	@When("^I see (.*) displayed on Participant Profile Page$")
 	public void ISeeContactsDisplayedOnParticipantPopup(String contactsAliases) {
-	
+
 		List<String> contacts = CommonSteps.splitAliases(contactsAliases);
 		for (String s : contacts) {
 			s = usrMgr.replaceAliasesOccurences(s, FindBy.NAME_ALIAS);

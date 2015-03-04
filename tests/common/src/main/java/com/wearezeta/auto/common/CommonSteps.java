@@ -29,7 +29,7 @@ public final class CommonSteps {
 
 	private static CommonSteps instance = null;
 
-	public static CommonSteps getInstance() {
+	public synchronized static CommonSteps getInstance() {
 		if (instance == null) {
 			instance = new CommonSteps();
 		}

@@ -351,8 +351,6 @@ Feature: Conversation View
     And I see dialog page
     And I post media link <YouTubeLink>
     Then I see media link <YouTubeLink> and media in dialog
-    And I swipe right on Dialog page
-    And I tap on contact name <Contact>
     And I click video container for the first time
     And I see video player page is opened
 
@@ -553,7 +551,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  | SoundCloudLink                                                                       |
       | user1Email | user1Password | user1Name | user2Name | user3Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
-  @staging @id1137
+  @regression @id1137
   Scenario Outline: Verify appearance of title bar for conversation, restored from background
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

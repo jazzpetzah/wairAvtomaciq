@@ -22,9 +22,10 @@ public class SelfProfilePageSteps {
 	 * Clicks the gear button on Self Profile page
 	 * 
 	 * @step. ^I click gear button on self profile page$
+	 * @throws Exception
 	 */
 	@And("^I click gear button on self profile page$")
-	public void IClickGearButton() {
+	public void IClickGearButton() throws Exception {
 		PagesCollection.selfProfilePage.clickGearButton();
 	}
 

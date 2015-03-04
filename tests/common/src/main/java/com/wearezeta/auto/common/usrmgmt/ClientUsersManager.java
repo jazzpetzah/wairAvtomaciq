@@ -19,8 +19,8 @@ import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class ClientUsersManager {
-	private static final int MAX_PARALLEL_USER_CREATION_TASKS = 5;
-	private static final int NUMBER_OF_REGISTRATION_RETRIES = 3;
+	private static final int MAX_PARALLEL_USER_CREATION_TASKS = 25;
+	private static final int NUMBER_OF_REGISTRATION_RETRIES = 5;
 
 	private static final String NAME_ALIAS_TEMPLATE = "user%dName";
 	private static final String PASSWORD_ALIAS_TEMPLATE = "user%dPassword";
@@ -93,7 +93,7 @@ public class ClientUsersManager {
 		resetClientsList(this.users, MAX_USERS);
 	}
 
-	public static ClientUsersManager getInstance() {
+	public synchronized static ClientUsersManager getInstance() {
 		if (instance == null) {
 			try {
 				instance = new ClientUsersManager();

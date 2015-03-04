@@ -37,16 +37,13 @@ public final class PerformanceCommon {
 	public static final int SIMULTANEOUS_MSGS_COUNT = 5;
 
 	private static final String DEFAULT_PERF_IMAGE = "perf/default.jpg";
-	private InputStream defaultImage = null;
 
 	private static PerformanceCommon instance = null;
 
 	private PerformanceCommon() {
-		final ClassLoader classLoader = this.getClass().getClassLoader();
-		defaultImage = classLoader.getResourceAsStream(DEFAULT_PERF_IMAGE);
 	}
 
-	public static PerformanceCommon getInstance() {
+	public synchronized static PerformanceCommon getInstance() {
 		if (instance == null) {
 			instance = new PerformanceCommon();
 		}
@@ -120,18 +117,19 @@ public final class PerformanceCommon {
 
 	private void sendDefaultImageToUser(int imagesCount) throws Exception {
 		final ClientUser selfUser = getUserManager().getSelfUserOrThrowError();
-		for (int i = 0; i < imagesCount; i++) {
-			final String contact = getRandomContactName(selfUser);
-			BackendAPIWrappers.sendPictureToChatByName(selfUser, contact,
-					defaultImage);
+		final ClassLoader classLoader = this.getClass().getClassLoader();
+		final InputStream defaultImage = classLoader
+				.getResourceAsStream(DEFAULT_PERF_IMAGE);
+		try {
+			for (int i = 0; i < imagesCount; i++) {
+				final String contact = getRandomContactName(selfUser);
+				BackendAPIWrappers.sendPictureToChatByName(selfUser, contact,
+						defaultImage);
+			}
+		} finally {
+			if (defaultImage != null) {
+				defaultImage.close();
+			}
 		}
-	}
-
-	@Override
-	protected void finalize() throws Throwable {
-		if (defaultImage != null) {
-			defaultImage.close();
-		}
-		super.finalize();
 	}
 }

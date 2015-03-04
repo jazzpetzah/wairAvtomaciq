@@ -228,8 +228,9 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public void selectUser(String name) throws Exception {
-		DriverUtils.waitUntilElementClickable(driver, userPickerSearchResult);
-		driver.findElement(By.name(name)).click();
+		WebElement el = driver.findElement(By.name(name));
+		DriverUtils.waitUntilElementClickable(driver, el);
+		el.click();
 	}
 
 	public void tapNumberOfTopConnections(int numberToTap) {

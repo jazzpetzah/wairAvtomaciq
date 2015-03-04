@@ -84,6 +84,7 @@ public class ConversationPageSteps {
 	public void WhenIClickShowUserProfileButton() throws Exception {
 		PagesCollection.userProfilePopupPage = (UserProfilePopupPage) PagesCollection.conversationPage
 				.clickShowUserProfileButton(false);
+		PagesCollection.conversationPopupPage = PagesCollection.userProfilePopupPage;
 	}
 
 	/**
@@ -97,6 +98,7 @@ public class ConversationPageSteps {
 	public void WhenIClickShowParticipantsProfileButton() throws Exception {
 		PagesCollection.participantsPopupPage = (ParticipantsPopupPage) PagesCollection.conversationPage
 				.clickShowUserProfileButton(true);
+		PagesCollection.conversationPopupPage = PagesCollection.participantsPopupPage;
 	}
 
 	/**
@@ -222,12 +224,12 @@ public class ConversationPageSteps {
 	@When("^I add (.*) to group chat$")
 	public void IAddContactToGroupChat(String contact) throws Exception {
 		WhenIClickShowParticipantsProfileButton();
-		ParticipantsProfilePopupSteps steps = new ParticipantsProfilePopupSteps();
-		steps.IClickAddPeopleButtonOnUserProfilePopupPage();
-		steps.IClickConfirmAddGroupChat();
-		steps.ISearchForUser(contact);
-		steps.ISelectUserFromPeoplePickerResults(contact);
-		steps.IChooseToCreateConversationFromPopupPage();
+		ConversationPopupPageSteps cpSteps = new ConversationPopupPageSteps();
+		cpSteps.IClickAddPeopleButton();
+		cpSteps.IClickConfirmAddToChat();
+		cpSteps.ISearchForUser(contact);
+		cpSteps.ISelectUserFromPeoplePickerResults(contact);
+		cpSteps.IChooseToCreateConversationFromPopupPage();
 	}
 
 	/**

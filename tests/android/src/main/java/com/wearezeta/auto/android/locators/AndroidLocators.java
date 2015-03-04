@@ -11,13 +11,34 @@ public final class AndroidLocators {
 
 	public static final String CLASS_NAME = "com.wearezeta.auto.android.locators.AndroidLocators";
 
-	public static final class Chrome {
+	public static final class Gmail {
 		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME
-				+ "$Chrome";
+				+ "$Gmail";
+
+		public static final String idSubject = "com.google.android.gm:id/subject";
+
+		public static final String idBoby = "com.google.android.gm:id/body";
+	}
+
+	public static final class Browsers {
+		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME
+				+ "$Browsers";
 
 		public static final String xpathChrome = "//android.widget.TextView[@text='Chrome']";
 
+		public static final String xpathFirefox = "//android.widget.TextView[@text='Firefox']";
+
+		public static final String xpathConnect = "//android.webkit.WebView/android.view.View[6]";
+
 		public static final String idUrlBar = "com.android.chrome:id/url_bar";
+
+		public static final String idFirefoxUrlBar = "org.mozilla.firefox:id/url_bar_entry";
+
+		public static final String idFirefoxUrlBarEditText = "org.mozilla.firefox:id/url_edit_text";
+
+		public static final String xpathFirefoxUrlBar42 = "//android.widget.LinearLayout[preceding-sibling::android.widget.RelativeLayout]/android.widget.ViewFlipper/android.widget.RelativeLayout/android.widget.ImageView[following-sibling::android.widget.ImageButton and preceding-sibling::android.widget.LinearLayout[child::android.widget.ImageButton]]";
+
+		public static final String xpathFirefoxUrlBarEditText42 = "//android.widget.LinearLayout/android.widget.EditText";
 
 		public static final String xpathUrlBar42 = "//android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.widget.EditText";
 
@@ -242,7 +263,7 @@ public final class AndroidLocators {
 
 		public static final String idMediaBarControl = LOCATORS_PACKAGE
 				+ ":id/gtv__conversation_header__mediabar__control";
-		
+
 		public static final String idMediaBarClose = LOCATORS_PACKAGE
 				+ ":id/gtv__conversation_header__mediabar__cancel";
 
@@ -436,6 +457,10 @@ public final class AndroidLocators {
 
 		public static final String xpathTopConversationContact = "//android.widget.TextView[@text='%s']";
 
+		public static final String xpathGmailLink = "//android.widget.TextView[@text='Gmail']";
+
+		public static final String xpathDestinationFrame = "//*[@resource-id='android:id/resolver_grid' or @resource-id='android:id/resolver_list']";
+
 		public static final String idParticipantsClose = LOCATORS_PACKAGE
 				+ ":id/gtv__participants__close";
 
@@ -479,6 +504,9 @@ public final class AndroidLocators {
 				+ ":id/ttv_pickuser_searchconversation_name";
 
 		public static final String xpathOtherText = "//android.widget.ListView/android.widget.LinearLayout/android.widget.TextView[@text='OTHERS']";
+
+		public static final String xpathSendInvitationFrame = "//android.widget.LinearLayout[child::android.widget.FrameLayout[@resource-id='"
+				+ LOCATORS_PACKAGE + ":id/fl_pickuser__invite__bubble']]";
 
 		public static final String xpathPeoplePickerGroup = "//android.widget.TextView[@resource-id='"
 				+ LOCATORS_PACKAGE

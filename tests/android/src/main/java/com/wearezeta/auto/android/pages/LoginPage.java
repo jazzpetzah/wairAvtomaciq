@@ -1,10 +1,7 @@
 package com.wearezeta.auto.android.pages;
 
-import io.appium.java_client.pagefactory.AndroidFindBy;
-
 import java.io.IOException;
 import java.util.List;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -44,10 +41,10 @@ public class LoginPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idLoginButton")
 	protected WebElement confirmSignInButton;
 
-	@AndroidFindBy(xpath = AndroidLocators.LoginPage.xpathLoginInput)
+	@FindBy(xpath = AndroidLocators.LoginPage.xpathLoginInput)
 	private WebElement loginInput;
 
-	@AndroidFindBy(xpath = AndroidLocators.LoginPage.xpathPasswordInput)
+	@FindBy(xpath = AndroidLocators.LoginPage.xpathPasswordInput)
 	private WebElement passwordInput;
 
 	@FindBy(className = AndroidLocators.CommonLocators.classEditText)
@@ -91,12 +88,12 @@ public class LoginPage extends AndroidPage {
 		return this;
 	}
 
-	public SettingsPage forgotPassword() throws Exception {
+	public CommonAndroidPage forgotPassword() throws Exception {
 		refreshUITree();
 		this.getWait().until(
 				ExpectedConditions.elementToBeClickable(forgotPasswordButton));
 		forgotPasswordButton.click();
-		return new SettingsPage(this.getDriver(), this.getWait());
+		return new CommonAndroidPage(this.getDriver(), this.getWait());
 	}
 
 	public ContactListPage LogIn() throws Exception {
@@ -157,7 +154,6 @@ public class LoginPage extends AndroidPage {
 			}
 			refreshUITree();
 		}
-
 		return DriverUtils.waitForElementWithTextByXPath(
 				AndroidLocators.ContactListPage.xpathContacts, contact,
 				this.getDriver());

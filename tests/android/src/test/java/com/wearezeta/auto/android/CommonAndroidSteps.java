@@ -1,7 +1,13 @@
 package com.wearezeta.auto.android;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 
+import javax.mail.Message;
+
+import org.junit.Assert;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -13,16 +19,21 @@ import com.wearezeta.auto.android.pages.LoginPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.GenerateWebLink;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import com.wearezeta.auto.common.email.IMAPSMailbox;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class CommonAndroidSteps {
@@ -34,6 +45,8 @@ public class CommonAndroidSteps {
 				"warn");
 	}
 
+	private Future<Message> passwordResetMessage;
+	private ClientUser userToRegister = null;
 	private static boolean skipBeforeAfter = false;
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -58,15 +71,15 @@ public class CommonAndroidSteps {
 		object.enable("logcat", Level.ALL);
 		capabilities.setCapability(CapabilityType.LOGGING_PREFS, object);
 		capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
-		capabilities.setCapability("deviceName", CommonUtils
-				.getAndroidDeviceNameFromConfig(cls));
+		capabilities.setCapability("deviceName",
+				CommonUtils.getAndroidDeviceNameFromConfig(cls));
 		capabilities.setCapability("app", path);
-		capabilities.setCapability("appPackage", CommonUtils
-				.getAndroidPackageFromConfig(cls));
-		capabilities.setCapability("appActivity", CommonUtils
-				.getAndroidActivityFromConfig(cls));
-		capabilities.setCapability("appWaitActivity", CommonUtils
-				.getAndroidActivityFromConfig(cls));
+		capabilities.setCapability("appPackage",
+				CommonUtils.getAndroidPackageFromConfig(cls));
+		capabilities.setCapability("appActivity",
+				CommonUtils.getAndroidActivityFromConfig(cls));
+		capabilities.setCapability("appWaitActivity",
+				CommonUtils.getAndroidActivityFromConfig(cls));
 		if (isUnicode) {
 			capabilities.setCapability("unicodeKeyboard", true);
 			capabilities.setCapability("resetKeyboard", true);
@@ -148,9 +161,10 @@ public class CommonAndroidSteps {
 	}
 
 	@When("^I minimize the application$")
-	public void IMimizeApllication() throws InterruptedException {
+	public void IMimizeApllication() throws Exception {
 		if (PagesCollection.loginPage != null) {
-			PagesCollection.loginPage.minimizeApplication();
+			PagesCollection.commonAndroidPage = PagesCollection.loginPage
+					.minimizeApplication();
 		}
 	}
 
@@ -200,6 +214,21 @@ public class CommonAndroidSteps {
 			// Ignore silently
 		}
 		commonSteps.IChangeUserName(name, newName);
+	}
+
+	@When("^I connect using invitation link from (.*)$")
+	public void WhenIConnectUsingInvitationLinkFrom(String name)
+			throws Exception {
+		try {
+			BackendAPIWrappers.tryLoginByUser(usrMgr
+					.findUserByNameOrNameAlias(name));
+			name = usrMgr.findUserByNameOrNameAlias(name).getId();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+		String link = GenerateWebLink.getInvitationToken(name);
+		PagesCollection.commonAndroidPage.ConnectByInvitationLink(link);
+
 	}
 
 	@Given("^(.*) is connected to (.*)$")
@@ -339,4 +368,87 @@ public class CommonAndroidSteps {
 	public void setSkipBeforeAfter(boolean skipBeforeAfter) {
 		CommonAndroidSteps.skipBeforeAfter = skipBeforeAfter;
 	}
+
+	@When("^I request reset password for (.*)$")
+	public void WhenIRequestResetPassword(String email) throws Exception {
+		try {
+			email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+		PagesCollection.commonAndroidPage.requestResetPassword(email);
+	}
+
+	@Then("^I reset (.*) password by URL to new (.*)$")
+	public void WhenIResetPasswordByUrl(String name, String newPass)
+			throws Exception {
+		try {
+			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
+		} catch (NoSuchUserException e) {
+			if (this.userToRegister == null) {
+				this.userToRegister = new ClientUser();
+			}
+			this.userToRegister.setName(name);
+			this.userToRegister.addNameAlias(name);
+		}
+		Map<String, String> expectedHeaders = new HashMap<String, String>();
+		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
+		this.passwordResetMessage = IMAPSMailbox.getInstance().getMessage(
+				expectedHeaders, BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
+
+		String link = BackendAPIWrappers
+				.getPasswordResetLink(this.passwordResetMessage);
+		PagesCollection.peoplePickerPage = PagesCollection.commonAndroidPage
+				.resetByLink(link, newPass);
+	}
+
+	/**
+	 * Activates user using browser by URL from mail
+	 * 
+	 * @step. ^I activate user by URL$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I activate user by URL$")
+	public void WhenIActivateUserByUrl() throws Exception {
+		String link = BackendAPIWrappers
+				.getUserActivationLink(RegistrationPageSteps.activationMessage);
+		PagesCollection.peoplePickerPage = PagesCollection.commonAndroidPage
+				.activateByLink(link);
+	}
+
+	/**
+	 * Verify mail subject
+	 * 
+	 * @step. ^mail subject is (.*)$
+	 * 
+	 * @param subject
+	 *            string
+	 * 
+	 */
+	@Then("^mail subject is (.*)$")
+	public void ThenMailSubjectIs(String subject) {
+		Assert.assertEquals(subject,
+				PagesCollection.commonAndroidPage.getGmailSubject());
+	}
+
+	/**
+	 * Verify mail content
+	 * 
+	 * @step. ^mail content contains my $
+	 * 
+	 * @param email
+	 *            string
+	 * 
+	 */
+	@Then("^mail content contains my (.*)$")
+	public void ThenMailContentContains(String email) {
+		try {
+			email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+		Assert.assertTrue(PagesCollection.commonAndroidPage.mailContains(email));
+	}
+
 }

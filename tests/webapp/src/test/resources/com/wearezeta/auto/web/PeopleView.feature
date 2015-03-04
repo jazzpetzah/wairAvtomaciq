@@ -91,9 +91,9 @@ Feature: People View
     And I open conversation with <ChatName>
     And I click show participant profile button
     And I see Participant Profile Popup Page
-    When I click Add people button on Participant Profile Popup Page
+    When I click Add People button
     And I see Add People message
-    And I confirm add to group chat
+    And I confirm add to chat
     And I input user name <Contact3> in search field
     And I select <Contact3> from Popup Page search results
     And I choose to create conversation from Popup Page
@@ -108,8 +108,8 @@ Feature: People View
     When I open conversation with <ChatName>
     And I click show participant profile button
     And I see Participant Profile Popup Page
-    And I click Add people button on Participant Profile Popup Page
-    And I confirm add to group chat
+    And I click Add People button
+    And I confirm add to chat
 
     #add last verification - that no one left to add
     Examples: 
@@ -141,11 +141,11 @@ Feature: People View
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <Contact1>
-    And I click show participant profile button
-    And I see Participant Profile Popup Page
-    When I click Add people button on Participant Profile Popup Page
+    And I click show user profile button
+    And I see User Profile Popup Page
+    When I click Add People button
     And I see Add People message
-    And I confirm add to group chat
+    And I confirm add to chat
     And I wait up to 15 seconds until <Contact2> exists in backend search results
     And I input user name <Contact2> in search field
     And I select <Contact2> from Popup Page search results
