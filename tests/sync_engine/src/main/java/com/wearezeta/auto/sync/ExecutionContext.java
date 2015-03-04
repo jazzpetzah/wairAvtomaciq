@@ -77,9 +77,5 @@ public class ExecutionContext {
 		return result;
 	}
 
-	public static boolean isPlatformMessagesOrderCorrect(Platform platform) {
-		return clients.get(platform).isOrderCorrect();
-	}
-
 	public static ReportData report = new ReportData();
 }

@@ -33,7 +33,7 @@ public class AndroidListener extends WireListener {
 	}
 
 	@Override
-	public ArrayList<MessageEntry> receiveAllChatMessages(boolean checkTime) {
+	public ArrayList<MessageEntry> receiveAllChatMessagesImpl(boolean checkTime) {
 		try {
 			return PagesCollection.dialogPage.listAllMessages(checkTime);
 		} catch (Exception e) {

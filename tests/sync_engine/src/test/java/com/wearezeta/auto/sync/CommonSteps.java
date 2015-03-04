@@ -19,7 +19,6 @@ import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.BuildVersionInfo;
 import com.wearezeta.auto.common.misc.ClientDeviceInfo;
-import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.sync.client.InstanceState;
@@ -247,67 +246,18 @@ public class CommonSteps {
 
 		ExecutionContext.iosZeta().listener().storePageSource(true);
 		ExecutionContext.osxZeta().listener().storePageSource(true);
+
+		for (WireInstance client : ExecutionContext.clients.values()) {
+			client.listener().receiveAllChatMessages(false);
+		}
 	}
 
 	@Given("I collect messages order data")
 	public void ICollectMessagesOrderData() {
-		ArrayList<MessageEntry> iosMessages = new ArrayList<MessageEntry>();
-		if (ExecutionContext.isIosEnabled()) {
-			iosMessages = ExecutionContext.iosZeta().listener()
-					.receiveAllChatMessages(false);
+		for (WireInstance client : ExecutionContext.clients.values()) {
+			client.results().copyWholeMessagesList();
+			client.results().checkMessagesOrderCorrectness();
 		}
-
-		ArrayList<MessageEntry> osxMessages = new ArrayList<MessageEntry>();
-		if (ExecutionContext.isOsxEnabled()) {
-			osxMessages = ExecutionContext.osxZeta().listener()
-					.receiveAllChatMessages(false);
-		}
-
-		ArrayList<MessageEntry> androidMessages = new ArrayList<MessageEntry>();
-		if (ExecutionContext.isAndroidEnabled()) {
-			androidMessages = ExecutionContext.androidZeta().listener()
-					.receiveAllChatMessages(false);
-		}
-
-		ArrayList<MessageEntry> sentMessages = new ArrayList<MessageEntry>(
-				ExecutionContext.sentMessages.values());
-
-		boolean iosOrderCorrect = true;
-		boolean osxOrderCorrect = true;
-		boolean androidOrderCorrect = true;
-
-		for (int i = 0; i < sentMessages.size(); i++) {
-			try {
-				if (!sentMessages.get(i).messageContent.equals(osxMessages
-						.get(i).messageContent))
-					osxOrderCorrect = false;
-			} catch (Exception e) {
-				osxOrderCorrect = false;
-			}
-			try {
-				if (!sentMessages.get(i).messageContent.equals(iosMessages
-						.get(i).messageContent))
-					iosOrderCorrect = false;
-			} catch (Exception e) {
-				iosOrderCorrect = false;
-			}
-			try {
-				if (!sentMessages.get(i).messageContent.equals(androidMessages
-						.get(i).messageContent))
-					androidOrderCorrect = false;
-			} catch (Exception e) {
-				androidOrderCorrect = false;
-			}
-		}
-
-		ExecutionContext.iosZeta().setMessagesListAfterTest(iosMessages);
-		ExecutionContext.osxZeta().setMessagesListAfterTest(osxMessages);
-		ExecutionContext.androidZeta()
-				.setMessagesListAfterTest(androidMessages);
-
-		ExecutionContext.iosZeta().setOrderCorrect(iosOrderCorrect);
-		ExecutionContext.osxZeta().setOrderCorrect(osxOrderCorrect);
-		ExecutionContext.androidZeta().setOrderCorrect(androidOrderCorrect);
 	}
 
 	@Given("I build results report")

@@ -45,7 +45,7 @@ public class OSXListener extends WireListener {
 	private static final String UUID_TEXT_MESSAGE_PATTERN = "<AXGroup[^>]*>\\s*<AXStaticText[^>]*AXValue=\"([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\"[^>]*/>\\s*</AXGroup>";
 
 	@Override
-	public ArrayList<MessageEntry> receiveAllChatMessages(boolean checkTime) {
+	public ArrayList<MessageEntry> receiveAllChatMessagesImpl(boolean checkTime) {
 		try {
 			return new ArrayList<MessageEntry>(parsePageSources(checkTime)
 					.values());

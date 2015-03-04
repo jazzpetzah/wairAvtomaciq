@@ -38,7 +38,7 @@ public class IOSListener extends WireListener {
 	private static final String UUID_TEXT_MESSAGE_PATTERN = "<UIATextView[^>]*value=\"[^\"a-z0-9]*([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\"[^>]*>\\s*</UIATextView>";
 
 	@Override
-	public ArrayList<MessageEntry> receiveAllChatMessages(boolean checkTime) {
+	public ArrayList<MessageEntry> receiveAllChatMessagesImpl(boolean checkTime) {
 		try {
 			return new ArrayList<MessageEntry>(parsePageSources(checkTime)
 					.values());

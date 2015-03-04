@@ -29,6 +29,8 @@ public abstract class WireListener extends Thread {
 		return owner.platform();
 	}
 
+	public ArrayList<MessageEntry> allMessagesList = new ArrayList<MessageEntry>();
+
 	public LinkedHashMap<String, MessageEntry> registeredMessages = new LinkedHashMap<String, MessageEntry>();
 	public LinkedHashMap<String, MessageEntry> notReceivedMessages = new LinkedHashMap<String, MessageEntry>();
 
@@ -82,7 +84,13 @@ public abstract class WireListener extends Thread {
 
 	public abstract void storePageSourceImpl(boolean doScroll);
 
-	public abstract ArrayList<MessageEntry> receiveAllChatMessages(
+	public void receiveAllChatMessages(boolean checkTime) {
+		if (owner.isEnabled()) {
+			receiveAllChatMessagesImpl(checkTime);
+		}
+	}
+
+	public abstract ArrayList<MessageEntry> receiveAllChatMessagesImpl(
 			boolean checkTime);
 
 	public void scrollToTheEndOfConversation() {

@@ -326,28 +326,28 @@ public class ReportData {
 		isOsxStable = ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED;
 		areClientsStable = isAndroidStable && isIosStable && isOsxStable;
 
-		isOsxMessagesOrderCorrect = ExecutionContext
-				.isPlatformMessagesOrderCorrect(Platform.Mac);
-		isAndroidMessagesOrderCorrect = ExecutionContext
-				.isPlatformMessagesOrderCorrect(Platform.Android);
-		isIosMessagesOrderCorrect = ExecutionContext
-				.isPlatformMessagesOrderCorrect(Platform.iOS);
+		isOsxMessagesOrderCorrect = ExecutionContext.osxZeta().results()
+				.isOrderCorrect();
+		isAndroidMessagesOrderCorrect = ExecutionContext.androidZeta()
+				.results().isOrderCorrect();
+		isIosMessagesOrderCorrect = ExecutionContext.iosZeta().results()
+				.isOrderCorrect();
 		areMessagesOrderCorrect = isOsxMessagesOrderCorrect
 				&& isAndroidMessagesOrderCorrect && isIosMessagesOrderCorrect;
 
 		iosMessages = new ArrayList<String>();
 		for (MessageEntry iosMessageEntry : ExecutionContext.iosZeta()
-				.getMessagesListAfterTest()) {
+				.results().getAllMessagesList()) {
 			iosMessages.add(iosMessageEntry.messageContent);
 		}
 		osxMessages = new ArrayList<String>();
 		for (MessageEntry osxMessageEntry : ExecutionContext.osxZeta()
-				.getMessagesListAfterTest()) {
+				.results().getAllMessagesList()) {
 			osxMessages.add(osxMessageEntry.messageContent);
 		}
 		androidMessages = new ArrayList<String>();
 		for (MessageEntry androidMessageEntry : ExecutionContext.androidZeta()
-				.getMessagesListAfterTest()) {
+				.results().getAllMessagesList()) {
 			androidMessages.add(androidMessageEntry.messageContent);
 		}
 	}

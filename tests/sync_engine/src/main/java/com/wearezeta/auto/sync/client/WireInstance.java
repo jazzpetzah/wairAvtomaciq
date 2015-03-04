@@ -1,7 +1,5 @@
 package com.wearezeta.auto.sync.client;
 
-import java.util.ArrayList;
-
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -10,7 +8,6 @@ import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.BuildVersionInfo;
 import com.wearezeta.auto.common.misc.ClientDeviceInfo;
-import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.sync.ExecutionContext;
 import com.wearezeta.auto.sync.SEConstants;
 import com.wearezeta.auto.sync.SyncEngineUtil;
@@ -49,9 +46,8 @@ public abstract class WireInstance {
 	private ClientUser userInstance;
 
 	// results
+	private InstanceTestResults results = new InstanceTestResults(this);
 	protected long startupTime;
-	private boolean orderCorrect;
-	private ArrayList<MessageEntry> messagesListAfterTest;
 	private BuildVersionInfo versionInfo;
 	private ClientDeviceInfo deviceInfo;
 
@@ -198,6 +194,10 @@ public abstract class WireInstance {
 		return listener;
 	}
 
+	public InstanceTestResults results() {
+		return results;
+	}
+
 	// getters and setters
 
 	public boolean isEnabled() {
@@ -248,15 +248,6 @@ public abstract class WireInstance {
 		this.messagesSendingInterval = messagesSendingInterval;
 	}
 
-	public ArrayList<MessageEntry> getMessagesListAfterTest() {
-		return messagesListAfterTest;
-	}
-
-	public void setMessagesListAfterTest(
-			ArrayList<MessageEntry> messagesListAfterTest) {
-		this.messagesListAfterTest = messagesListAfterTest;
-	}
-
 	public ClientUser getUserInstance() {
 		return userInstance;
 	}
@@ -279,13 +270,5 @@ public abstract class WireInstance {
 
 	public void setDeviceInfo(ClientDeviceInfo deviceInfo) {
 		this.deviceInfo = deviceInfo;
-	}
-
-	public boolean isOrderCorrect() {
-		return orderCorrect;
-	}
-
-	public void setOrderCorrect(boolean orderCorrect) {
-		this.orderCorrect = orderCorrect;
 	}
 }
