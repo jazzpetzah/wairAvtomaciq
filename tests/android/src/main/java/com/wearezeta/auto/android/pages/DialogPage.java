@@ -522,6 +522,7 @@ public class DialogPage extends AndroidPage {
 
 	public double checkMediaControlIcon(String label) throws Exception {
 		refreshUITree();
+		getWait().until(ExpectedConditions.elementToBeClickable(playPauseBtn));
 		String path = null;
 		BufferedImage mediaImage = getElementScreenshot(playPauseBtn);
 		if (label.equals(MEDIA_PLAY)) {
