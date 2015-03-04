@@ -40,7 +40,10 @@ public class AsyncProcess {
 			public void run() {
 				do {
 					try {
-						log.debug(logPrefix + reader.readLine());
+						final String logLine = reader.readLine();
+						if (logLine != null) {
+							log.debug(String.format("%s%s", logPrefix, logLine));
+						}
 					} catch (IOException e) {
 						break;
 					}
