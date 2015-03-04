@@ -28,9 +28,12 @@ public class ContactListPageSteps {
 		Assert.assertTrue("Username : " + name
 				+ " dind't appear in contact list",
 				PagesCollection.loginPage.isLoginFinished(name));
+		log.debug("Login finished. Click on later button...");
 		PagesCollection.peoplePickerPage = PagesCollection.loginPage
 				.clickLaterButton();
+		log.debug("Later button clicked.");
 		if (null != PagesCollection.peoplePickerPage) {
+			log.debug("We are on start ui");
 			PagesCollection.peoplePickerPage.setLaterClicked(true);
 			PeoplePickerPageSteps steps = new PeoplePickerPageSteps();
 			steps.WhenISeePeoplePickerPage();
