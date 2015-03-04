@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -9,6 +10,7 @@ import android.view.KeyEvent;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
@@ -22,7 +24,13 @@ public class CommonAndroidPage extends AndroidPage {
 		// TODO Auto-generated constructor stub
 	}
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.Browsers.CLASS_NAME, locatorKey = "idFirefoxUrlBar")
+	@FindBy(id = AndroidLocators.Gmail.idSubject)
+	private WebElement gmailSubject;
+
+	@FindBy(id = AndroidLocators.Gmail.idBoby)
+	private WebElement gmailContent;
+
+	@FindBy(id = AndroidLocators.Browsers.idFirefoxUrlBar)
 	private WebElement urlBar;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.Browsers.CLASS_NAME, locatorKey = "idUrlBar")
@@ -101,12 +109,23 @@ public class CommonAndroidPage extends AndroidPage {
 
 	private void setFirefoxBrowserURL(String link) throws Exception {
 		refreshUITree();
+		DriverUtils.waitUntilElementAppears(this.getDriver(),
+				By.id(AndroidLocators.Browsers.idFirefoxUrlBar));
 		urlBar.click();
 		for (int i = 0; i < 10; i++) {
 			this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_DEL);
 		}
 		urlBar.sendKeys(link);
 		this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_ENTER);
+	}
+
+	public String getGmailSubject() {
+		getWait().until(ExpectedConditions.visibilityOf(gmailSubject));
+		return gmailSubject.getText();
+	}
+
+	public boolean mailContains(String email) {
+		return gmailContent.getText().contains(email);
 	}
 
 }

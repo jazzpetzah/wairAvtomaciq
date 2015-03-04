@@ -7,6 +7,7 @@ import java.util.logging.Level;
 
 import javax.mail.Message;
 
+import org.junit.Assert;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -415,4 +416,39 @@ public class CommonAndroidSteps {
 		PagesCollection.peoplePickerPage = PagesCollection.commonAndroidPage
 				.activateByLink(link);
 	}
+
+	/**
+	 * Verify mail subject
+	 * 
+	 * @step. ^mail subject is (.*)$
+	 * 
+	 * @param subject
+	 *            string
+	 * 
+	 */
+	@Then("^mail subject is (.*)$")
+	public void ThenMailSubjectIs(String subject) {
+		Assert.assertEquals(subject,
+				PagesCollection.commonAndroidPage.getGmailSubject());
+	}
+
+	/**
+	 * Verify mail content
+	 * 
+	 * @step. ^mail content contains my $
+	 * 
+	 * @param email
+	 *            string
+	 * 
+	 */
+	@Then("^mail content contains my (.*)$")
+	public void ThenMailContentContains(String email) {
+		try {
+			email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+		Assert.assertTrue(PagesCollection.commonAndroidPage.mailContains(email));
+	}
+
 }
