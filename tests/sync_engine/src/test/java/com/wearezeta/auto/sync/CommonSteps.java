@@ -179,6 +179,8 @@ public class CommonSteps {
 				final String message = CommonUtils.generateGUID();
 				sender.sender().sendTextMessage(
 						SEConstants.Common.TEST_CONVERSATION, message);
+				log.debug(String.format("%s: message '%s' sent.",
+						sender.platform(), message));
 				ExecutorService executor = Executors
 						.newFixedThreadPool(listeners.length);
 				for (final WireInstance listener : listeners) {
@@ -189,6 +191,9 @@ public class CommonSteps {
 								try {
 									listener.listener().waitForMessage(message,
 											true);
+									log.debug(String
+											.format("%s: message received successfully.",
+													listener.platform()));
 								} catch (NoSuchElementException e) {
 									log.debug(String.format(
 											"%s: message was not found.\n%s",
@@ -224,15 +229,15 @@ public class CommonSteps {
 	private void sendWithoutIntervalAndNoListen(WireInstance sender) {
 		if (sender.isEnabled()
 				&& sender.getState() != InstanceState.ERROR_CRASHED) {
-			for (int i = 0; i < sender.getMessagesToSend(); i++) {
+			for (int i = 1; i <= sender.getMessagesToSend(); i++) {
 				long startDate = new Date().getTime();
 				final String message = CommonUtils.generateGUID();
 				sender.sender().sendTextMessage(
 						SEConstants.Common.TEST_CONVERSATION, message, false);
 				long endDate = new Date().getTime();
-				log.debug(String.format(
-						"%s: Time consumed for sending text message #%s - %ms",
-						sender.platform(), i, (endDate - startDate)));
+				log.debug(String
+						.format("%s: Time consumed for sending text message #%s - %sms",
+								sender.platform(), i, (endDate - startDate)));
 			}
 		}
 	}

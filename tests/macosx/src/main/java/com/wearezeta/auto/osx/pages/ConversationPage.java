@@ -458,8 +458,6 @@ public class ConversationPage extends OSXPage {
 							message)));
 			long endDate = new Date().getTime();
 			long time = endDate - startDate;
-			log.debug("OSX: Message '" + message + "' received in "
-					+ (endDate - startDate) + "ms");
 			if (messageElement != null) {
 				return new MessageEntry("text", message, new Date(
 						receivedDate.getTime() + time / 2), checkTime);
