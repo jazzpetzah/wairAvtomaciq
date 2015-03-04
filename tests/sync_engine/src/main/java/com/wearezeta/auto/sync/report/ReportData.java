@@ -84,7 +84,7 @@ public class ReportData {
 				user.name = client.getValue().getUserInstance().getEmail();
 				user.loggedOnPlatform = client.getKey();
 				user.startupTime = Double.toString(client.getValue()
-						.getStartupTimeMs() / 1000d) + "s";
+						.getStartupTime() / 1000d) + "s";
 				user.buildVersion = client.getValue().getVersionInfo();
 				user.deviceData = client.getValue().getDeviceInfo();
 				user.isEnabled = true;
@@ -196,12 +196,11 @@ public class ReportData {
 				final MessageEntry osxMessage;
 				final MessageEntry iosMessage;
 				final MessageEntry androidMessage;
-				switch(report.sentFrom) {
+				switch (report.sentFrom) {
 				case Mac:
 					report.isOsxReceiveTimeOK = true;
 					report.osxReceiveTime = "-1";
-					iosMessage = iosReceivedMessages.get(entry
-							.getKey());
+					iosMessage = iosReceivedMessages.get(entry.getKey());
 					if (iosMessage != null) {
 						long time = iosMessage.appearanceDate.getTime()
 								- sentMessage.appearanceDate.getTime();
@@ -238,8 +237,7 @@ public class ReportData {
 				case iOS:
 					report.isIosReceiveTimeOK = true;
 					report.iosReceiveTime = "-1";
-					osxMessage = osxReceivedMessages.get(entry
-							.getKey());
+					osxMessage = osxReceivedMessages.get(entry.getKey());
 					if (osxMessage != null) {
 						long time = osxMessage.appearanceDate.getTime()
 								- sentMessage.appearanceDate.getTime();
@@ -276,8 +274,7 @@ public class ReportData {
 				case Android:
 					report.isAndroidReceiveTimeOK = true;
 					report.androidReceiveTime = "-1";
-					osxMessage = osxReceivedMessages.get(entry
-							.getKey());
+					osxMessage = osxReceivedMessages.get(entry.getKey());
 					if (osxMessage != null) {
 						long time = osxMessage.appearanceDate.getTime()
 								- sentMessage.appearanceDate.getTime();
@@ -293,8 +290,7 @@ public class ReportData {
 						report.osxReceiveTime = "not received";
 						report.isOsxReceiveTimeOK = false;
 					}
-					iosMessage = iosReceivedMessages.get(entry
-							.getKey());
+					iosMessage = iosReceivedMessages.get(entry.getKey());
 					if (iosMessage != null) {
 						long time = iosMessage.appearanceDate.getTime()
 								- sentMessage.appearanceDate.getTime();

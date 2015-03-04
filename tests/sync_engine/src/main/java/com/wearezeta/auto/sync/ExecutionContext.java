@@ -16,6 +16,7 @@ import com.wearezeta.auto.sync.client.platform.OSXWireInstance;
 import com.wearezeta.auto.sync.report.ReportData;
 
 public class ExecutionContext {
+
 	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(ExecutionContext.class
 			.getSimpleName());

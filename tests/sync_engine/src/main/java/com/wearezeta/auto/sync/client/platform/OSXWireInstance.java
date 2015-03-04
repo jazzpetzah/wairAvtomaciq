@@ -2,8 +2,12 @@ package com.wearezeta.auto.sync.client.platform;
 
 import org.apache.log4j.Logger;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.osx.pages.OSXPage;
+import com.wearezeta.auto.osx.pages.PagesCollection;
+import com.wearezeta.auto.osx.steps.CommonOSXSteps;
 import com.wearezeta.auto.sync.ExecutionContext;
 import com.wearezeta.auto.sync.SyncEngineUtil;
 import com.wearezeta.auto.sync.client.WireInstance;
@@ -15,7 +19,7 @@ public class OSXWireInstance extends WireInstance {
 	private static final Logger log = ZetaLogger.getLog(OSXWireInstance.class
 			.getSimpleName());
 
-	public OSXWireInstance() {
+	public OSXWireInstance() throws Exception {
 		super(Platform.Mac);
 	}
 
@@ -30,7 +34,7 @@ public class OSXWireInstance extends WireInstance {
 	}
 
 	@Override
-	public void readPlatformSettings() {
+	public void readPlatformSettings() throws Exception {
 		try {
 			enabled = SyncEngineUtil
 					.getOSXClientEnabledFromConfig(ExecutionContext.class);
@@ -48,6 +52,30 @@ public class OSXWireInstance extends WireInstance {
 			log.warn("Failed to read property osx.backend.sender "
 					+ "from config file. Set to 'false' by default");
 		}
+
+		wirePath = CommonUtils.getOsxApplicationPathFromConfig(this.getClass());
+
+		appiumUrl = CommonUtils.getOsxAppiumUrlFromConfig(this.getClass());
+	}
+
+	@Override
+	public void closeAndClearImpl() throws Exception {
+		PagesCollection.loginPage.close();
+		OSXPage.clearPagesCollection();
+	}
+
+	@Override
+	public void startClientProcedureImpl() {
+		CommonOSXSteps osxSteps = new CommonOSXSteps();
+		try {
+			osxSteps.setUp();
+		} catch (Exception e) {
+			log.debug("Failed to start OSX client. Error message: "
+					+ e.getMessage());
+			e.printStackTrace();
+		}
+		startupTime = osxSteps.startupTime;
+		log.debug("OSX application startup time: " + startupTime + "ms");
 	}
 
 }

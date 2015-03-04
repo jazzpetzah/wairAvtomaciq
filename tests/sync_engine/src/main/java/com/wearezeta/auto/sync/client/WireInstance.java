@@ -31,6 +31,9 @@ public abstract class WireInstance {
 
 	private Platform platform;
 
+	protected String wirePath;
+	protected String appiumUrl;
+
 	// state
 	private InstanceState state = InstanceState.CREATED;
 
@@ -40,17 +43,13 @@ public abstract class WireInstance {
 	private ClientUser userInstance;
 
 	// results
-	private long startupTimeMs;
-	@SuppressWarnings("unused")
-	private long loginAndContactListLoadingTimeMs;
-	@SuppressWarnings("unused")
-	private long conversationLoadingTimeMs;
+	protected long startupTime;
 	private boolean isOrderCorrect;
 	private ArrayList<MessageEntry> messagesListAfterTest;
 	private BuildVersionInfo versionInfo;
 	private ClientDeviceInfo deviceInfo;
 
-	public WireInstance(Platform platform) {
+	public WireInstance(Platform platform) throws Exception {
 		this.platform = platform;
 
 		readPlatformSettings();
@@ -81,13 +80,31 @@ public abstract class WireInstance {
 		}
 	}
 
-	public abstract void readPlatformSettings();
+	public abstract void readPlatformSettings() throws Exception;
 
 	public abstract void createSender();
 
 	public abstract void createListener();
 
-	public static WireInstance getInstance(Platform platform) {
+	public Runnable startClientProcedure() {
+		return new Runnable() {
+			public void run() {
+				startClientProcedureImpl();
+			}
+		};
+	}
+
+	public abstract void startClientProcedureImpl();
+
+	public void closeAndClear() throws Exception {
+		if (enabled) {
+			closeAndClearImpl();
+		}
+	}
+
+	public abstract void closeAndClearImpl() throws Exception;
+
+	public static WireInstance getInstance(Platform platform) throws Exception {
 		WireInstance instance = null;
 		switch (platform) {
 		case Android:
@@ -128,12 +145,12 @@ public abstract class WireInstance {
 		this.enabled = enabled;
 	}
 
-	public long getStartupTimeMs() {
-		return startupTimeMs;
+	public long getStartupTime() {
+		return startupTime;
 	}
 
-	public void setStartupTimeMs(long startupTimeMs) {
-		this.startupTimeMs = startupTimeMs;
+	public void setStartupTime(long startupTime) {
+		this.startupTime = startupTime;
 	}
 
 	public InstanceState getState() {
