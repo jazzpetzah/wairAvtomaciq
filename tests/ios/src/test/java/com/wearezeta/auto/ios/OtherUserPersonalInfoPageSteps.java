@@ -3,7 +3,7 @@ package com.wearezeta.auto.ios;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.ios.pages.ContactListPage;
+import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.ios.pages.PeoplePickerPage;
 
@@ -68,11 +68,23 @@ public class OtherUserPersonalInfoPageSteps {
 		PagesCollection.dialogPage = PagesCollection.otherUserPersonalInfoPage
 				.clickOnStartDialogButton();
 	}
+	
+	/**
+	 * Close other user personal info page to return to 1on1 dialog
+	 * 
+	 * @step. ^I close user profile page to return to dialog page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I close user profile page to return to dialog page$")
+	public void ICloseUserProfileForDialog() throws Exception {
+		PagesCollection.dialogPage = PagesCollection.otherUserPersonalInfoPage.leavePageToDialogPage();
+	}
 
 	@When("^I swipe down on other user profile page$")
 	public void ISwipeDownOnUserProfilePage() throws Exception {
-		PagesCollection.contactListPage = (ContactListPage) PagesCollection.otherUserPersonalInfoPage
-				.swipeDown(5000);
+		PagesCollection.dialogPage = (DialogPage) PagesCollection.otherUserPersonalInfoPage
+				.swipeDown(1000);
 	}
 
 }
