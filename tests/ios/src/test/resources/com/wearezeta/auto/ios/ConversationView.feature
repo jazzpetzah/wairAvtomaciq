@@ -351,8 +351,6 @@ Feature: Conversation View
     And I see dialog page
     And I post media link <YouTubeLink>
     Then I see media link <YouTubeLink> and media in dialog
-    And I swipe right on Dialog page
-    And I tap on contact name <Contact>
     And I click video container for the first time
     And I see video player page is opened
 
