@@ -22,7 +22,7 @@ public class PerformanceSteps {
 	private final PerformanceCommon perfCommon = PerformanceCommon
 			.getInstance();
 	private static final int PERF_MON_INIT_DELAY = 5000; // milliseconds
-	private static final int PERF_MON_STOP_TIMEOUT = 5 * 60 * 1000; // milliseconds
+	private static final int PERF_MON_STOP_TIMEOUT = 60 * 1000; // milliseconds
 	private static final String ACTIVITY_MONITOR_TEMPLATE_PATH = "/Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/Resources/templates/Activity\\ Monitor.tracetemplate";
 
 	private AsyncProcess perfMon = null;

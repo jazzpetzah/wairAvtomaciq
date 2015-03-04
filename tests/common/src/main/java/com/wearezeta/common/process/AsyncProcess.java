@@ -133,7 +133,6 @@ public class AsyncProcess {
 	 */
 	public int getPid() throws Exception {
 		if (process.getClass().getName().equals("java.lang.UNIXProcess")) {
-			/* get the PID on unix/linux systems */
 			Field f = process.getClass().getDeclaredField("pid");
 			f.setAccessible(true);
 			return f.getInt(process);
