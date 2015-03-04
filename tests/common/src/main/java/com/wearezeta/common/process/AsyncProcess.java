@@ -3,6 +3,7 @@ package com.wearezeta.common.process;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.concurrent.TimeoutException;
 
@@ -11,7 +12,6 @@ import org.apache.log4j.Logger;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class AsyncProcess {
-	private static final int STOP_TIMEOUT = 5; // seconds
 	private static final int IS_RUNNING_CHECK_INTERVAL = 100; // milliseconds
 	private static final String STDOUT_LOG_PREFIX = "STDOUT: ";
 	private static final String STDERR_LOG_PREFIX = "STDERR: ";
@@ -80,19 +80,28 @@ public class AsyncProcess {
 		}
 	}
 
-	public synchronized void stop() throws InterruptedException,
-			TimeoutException {
+	public synchronized void stop(String signal, long timeoutMilliseconds)
+			throws Exception {
 		try {
-			process.destroy();
+			if (signal == null) {
+				process.destroy();
+			} else {
+				final String killCmd = String.format("kill -%s %s", signal,
+						this.getPid());
+				log.debug("Executing: " + killCmd);
+				Runtime.getRuntime().exec(
+						new String[] { "/bin/bash", "-c", killCmd });
+			}
 			long milliSecondsElapsed = 0;
 			while (this.isRunning()) {
 				Thread.sleep(IS_RUNNING_CHECK_INTERVAL);
 				milliSecondsElapsed += IS_RUNNING_CHECK_INTERVAL;
-				if (milliSecondsElapsed >= STOP_TIMEOUT * 1000) {
+				if (milliSecondsElapsed >= timeoutMilliseconds) {
 					throw new TimeoutException(
 							String.format(
-									"The application %s has not been stopped after %s second(s) timeout",
-									Arrays.toString(this.cmd), STOP_TIMEOUT));
+									"The application %s has not been stopped after %s milliseconds timeout",
+									Arrays.toString(this.cmd),
+									timeoutMilliseconds));
 				}
 			}
 			log.debug(String
@@ -105,6 +114,28 @@ public class AsyncProcess {
 			if (shouldLogStdErr && stdErrMonitor.isAlive()) {
 				stdErrMonitor.interrupt();
 			}
+		}
+	}
+
+	public void stop(long timeoutMilliseconds) throws Exception {
+		this.stop(null, timeoutMilliseconds);
+	}
+
+	/**
+	 * http://www.golesny.de/p/code/javagetpid
+	 * 
+	 * @return process id
+	 * @throws Exception
+	 */
+	public int getPid() throws Exception {
+		if (process.getClass().getName().equals("java.lang.UNIXProcess")) {
+			/* get the PID on unix/linux systems */
+			Field f = process.getClass().getDeclaredField("pid");
+			f.setAccessible(true);
+			return f.getInt(process);
+		} else {
+			throw new UnsupportedOperationException(
+					"getPid implementation is not available for non-Unix systems");
 		}
 	}
 }

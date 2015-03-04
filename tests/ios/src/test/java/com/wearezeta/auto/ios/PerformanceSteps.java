@@ -22,6 +22,7 @@ public class PerformanceSteps {
 	private final PerformanceCommon perfCommon = PerformanceCommon
 			.getInstance();
 	private static final int PERF_MON_INIT_DELAY = 8000; // milliseconds
+	private static final int PERF_MON_STOP_TIMEOUT = 8000; // milliseconds
 	private static final String ACTIVITY_MONITOR_TEMPLATE_PATH = "/Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/Resources/templates/Activity\\ Monitor.tracetemplate";
 
 	private AsyncProcess perfMon = null;
@@ -136,6 +137,7 @@ public class PerformanceSteps {
 			throw new RuntimeException(
 					"Performance monitor has been unexpectedly killed before. Please check execution logs to get more details.");
 		}
-		this.getPerfMon().stop();
+		// Sending SIGINT to properly terminate perf monitor
+		this.getPerfMon().stop("2", PERF_MON_STOP_TIMEOUT);
 	}
 }
