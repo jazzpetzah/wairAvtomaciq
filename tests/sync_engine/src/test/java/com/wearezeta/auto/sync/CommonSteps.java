@@ -3,7 +3,6 @@ package com.wearezeta.auto.sync;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -135,42 +134,6 @@ public class CommonSteps {
 		}
 	}
 
-	private LinkedHashMap<Date, String> iosPageSources = new LinkedHashMap<Date, String>();
-	private LinkedHashMap<Date, String> osxPageSources = new LinkedHashMap<Date, String>();
-
-	private void storeIosPageSource(boolean last) {
-		if (ExecutionContext.isIosEnabled()
-				&& ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
-			if (!last) {
-				try {
-					ExecutionContext.iosZeta().listener()
-							.scrollToTheEndOfConversation();
-				} catch (NoSuchElementException e) {
-					log.error("Failed to get iOS page source. Client could be crashed.\n"
-							+ e.getMessage());
-					e.printStackTrace();
-					if (ExecutionContext.iosZeta().listener().isSessionLost()) {
-						log.error("Session lost on iOS client. No checks for next time.");
-						ExecutionContext.iosZeta().setState(
-								InstanceState.ERROR_CRASHED);
-					}
-				}
-			}
-			String iosSource = ExecutionContext.iosZeta().listener()
-					.getChatSource();
-			iosPageSources.put(new Date(), iosSource);
-		}
-	}
-
-	private void storeOsxPageSource() {
-		if (ExecutionContext.isOsxEnabled()
-				&& ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED) {
-			String chatSource = ExecutionContext.osxZeta().listener()
-					.getChatSource();
-			osxPageSources.put(new Date(), chatSource);
-		}
-	}
-
 	private void sendAndListen(WireInstance sender, WireInstance... listeners)
 			throws Exception {
 		if (sender.isEnabled()
@@ -249,55 +212,45 @@ public class CommonSteps {
 		sendAndListen(ExecutionContext.iosZeta(), ExecutionContext.osxZeta(),
 				ExecutionContext.androidZeta());
 
-		storeIosPageSource(false);
-		storeOsxPageSource();
+		ExecutionContext.iosZeta().listener().storePageSource(false);
+		ExecutionContext.osxZeta().listener().storePageSource(false);
 
 		// iOS: send messages without interval and without listening them
 		sendWithoutIntervalAndNoListen(ExecutionContext.iosZeta());
 
-		storeIosPageSource(false);
-		storeOsxPageSource();
+		ExecutionContext.iosZeta().listener().storePageSource(false);
+		ExecutionContext.osxZeta().listener().storePageSource(false);
 
 		// send from osx, receive on ios and android
 		sendAndListen(ExecutionContext.osxZeta(), ExecutionContext.iosZeta(),
 				ExecutionContext.androidZeta());
 
-		storeIosPageSource(false);
-		storeOsxPageSource();
+		ExecutionContext.iosZeta().listener().storePageSource(false);
+		ExecutionContext.osxZeta().listener().storePageSource(false);
 
 		// send from android, receive on ios and osx
 		sendAndListen(ExecutionContext.androidZeta(),
 				ExecutionContext.iosZeta(), ExecutionContext.osxZeta());
 
-		storeIosPageSource(false);
-		storeOsxPageSource();
+		ExecutionContext.iosZeta().listener().storePageSource(false);
+		ExecutionContext.osxZeta().listener().storePageSource(false);
 
 		// OSX: send messages without interval and without listening them
 		// It is possible that short interval required for OSX
 		sendWithoutIntervalAndNoListen(ExecutionContext.osxZeta());
 
-		storeIosPageSource(false);
-		storeOsxPageSource();
+		ExecutionContext.iosZeta().listener().storePageSource(false);
+		ExecutionContext.osxZeta().listener().storePageSource(false);
 
 		// Android: send messages without interval and without listening them
 		sendWithoutIntervalAndNoListen(ExecutionContext.androidZeta());
 
-		storeIosPageSource(true);
-		storeOsxPageSource();
+		ExecutionContext.iosZeta().listener().storePageSource(true);
+		ExecutionContext.osxZeta().listener().storePageSource(true);
 	}
 
 	@Given("I collect messages order data")
 	public void ICollectMessagesOrderData() {
-		if (ExecutionContext.iosZeta().isEnabled()) {
-			ExecutionContext.iosZeta().listener()
-					.setPageSources(iosPageSources);
-		}
-
-		if (ExecutionContext.osxZeta().isEnabled()) {
-			ExecutionContext.osxZeta().listener()
-					.setPageSources(osxPageSources);
-		}
-
 		ArrayList<MessageEntry> iosMessages = new ArrayList<MessageEntry>();
 		if (ExecutionContext.isIosEnabled()) {
 			iosMessages = ExecutionContext.iosZeta().listener()

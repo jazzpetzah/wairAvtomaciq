@@ -1,6 +1,7 @@
 package com.wearezeta.auto.sync.client.listener;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 
@@ -66,7 +67,6 @@ public class OSXListener extends WireListener {
 		} catch (Exception e) {
 			// TODO: process exception
 			log.error(e.getMessage());
-			e.printStackTrace();
 		}
 		return "";
 	}
@@ -76,4 +76,9 @@ public class OSXListener extends WireListener {
 		return UUID_TEXT_MESSAGE_PATTERN;
 	}
 
+	@Override
+	public void storePageSourceImpl(boolean doScroll) {
+		String chatSource = getChatSource();
+		pageSources.put(new Date(), chatSource);
+	}
 }

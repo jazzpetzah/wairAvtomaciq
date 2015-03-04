@@ -22,17 +22,17 @@ public abstract class WireSender extends Thread {
 	private static final Logger log = ZetaLogger.getLog(WireSender.class
 			.getSimpleName());
 
-	private WireInstance parent;
+	private WireInstance owner;
 	private int toSend;
 
 	private Platform platform() {
-		return parent.platform();
+		return owner.platform();
 	}
 
 	public static Date sendingStartDate = null;
 
 	public WireSender(WireInstance parent, int numberOfMessages) {
-		this.parent = parent;
+		this.owner = parent;
 		this.toSend = numberOfMessages;
 	}
 
@@ -43,7 +43,7 @@ public abstract class WireSender extends Thread {
 				log.debug("Incorrect platform is set for client: " + platform());
 			}
 
-			if (parent.getState() != InstanceState.SENDING) {
+			if (owner.getState() != InstanceState.SENDING) {
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
@@ -58,20 +58,20 @@ public abstract class WireSender extends Thread {
 			sendTextMessage(SEConstants.Common.TEST_CONVERSATION, message);
 			toSend--;
 
-			if (parent.getMessagesSendingInterval() > 0) {
+			if (owner.getMessagesSendingInterval() > 0) {
 				try {
-					Thread.sleep(parent.getMessagesSendingInterval() * 1000);
+					Thread.sleep(owner.getMessagesSendingInterval() * 1000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
 		}
 		log.debug("All messages sent. Waiting for listener.");
-		parent.setState(InstanceState.FINAL_LISTENING);
+		owner.setState(InstanceState.FINAL_LISTENING);
 	}
 
 	private ClientUser backendClient() {
-		return parent.getUserInstance();
+		return owner.getUserInstance();
 	}
 
 	public void sendTextMessage(String chat, String message) {
@@ -84,7 +84,7 @@ public abstract class WireSender extends Thread {
 		}
 
 		try {
-			if (parent.isSendToBackend()) {
+			if (owner.isSendToBackend()) {
 				sendTextMessageBackend(SEConstants.Common.TEST_CONVERSATION,
 						message);
 			} else {

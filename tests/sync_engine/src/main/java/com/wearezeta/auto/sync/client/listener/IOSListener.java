@@ -1,14 +1,17 @@
 package com.wearezeta.auto.sync.client.listener;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
+import org.openqa.selenium.NoSuchElementException;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.sync.ExecutionContext;
+import com.wearezeta.auto.sync.client.InstanceState;
 import com.wearezeta.auto.sync.client.platform.IOSWireInstance;
 
 public class IOSListener extends WireListener {
@@ -62,6 +65,27 @@ public class IOSListener extends WireListener {
 	@Override
 	public String UUID_TEXT_MESSAGE_PATTERN() {
 		return UUID_TEXT_MESSAGE_PATTERN;
+	}
+
+	@Override
+	public void storePageSourceImpl(boolean doScroll) {
+		if (!doScroll) {
+			try {
+				scrollToTheEndOfConversation();
+			} catch (NoSuchElementException e) {
+				log.error(String.format("%s: failed to get page source.\n%s",
+						owner.platform(), e.getMessage()));
+				if (isSessionLost()) {
+					log.error(String.format(
+							"%s: session lost. Client testing stopped.",
+							owner.platform()));
+					ExecutionContext.iosZeta().setState(
+							InstanceState.ERROR_CRASHED);
+				}
+			}
+		}
+		String chatSource = getChatSource();
+		pageSources.put(new Date(), chatSource);
 	}
 
 }

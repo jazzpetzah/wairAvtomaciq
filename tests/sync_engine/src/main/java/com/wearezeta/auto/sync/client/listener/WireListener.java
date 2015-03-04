@@ -23,10 +23,10 @@ public abstract class WireListener extends Thread {
 	private static final Logger log = ZetaLogger.getLog(WireListener.class
 			.getSimpleName());
 
-	protected WireInstance parent;
+	protected WireInstance owner;
 
 	protected Platform platform() {
-		return parent.platform();
+		return owner.platform();
 	}
 
 	public LinkedHashMap<String, MessageEntry> registeredMessages = new LinkedHashMap<String, MessageEntry>();
@@ -34,16 +34,16 @@ public abstract class WireListener extends Thread {
 
 	public LinkedHashMap<Date, String> pageSources = new LinkedHashMap<Date, String>();
 
-	public WireListener(WireInstance parent) {
-		this.parent = parent;
+	public WireListener(WireInstance owner) {
+		this.owner = owner;
 	}
 
 	public abstract String UUID_TEXT_MESSAGE_PATTERN();
 
 	@Override
 	public void run() {
-		while (parent.getState() != InstanceState.FINISHED
-				&& parent.getState() != InstanceState.ERROR_CRASHED) {
+		while (owner.getState() != InstanceState.FINISHED
+				&& owner.getState() != InstanceState.ERROR_CRASHED) {
 			boolean isLastListen = false;
 			if (ExecutionContext.allInstancesFinishSending()) {
 				isLastListen = true;
@@ -52,12 +52,12 @@ public abstract class WireListener extends Thread {
 			pageSources.put(new Date(), getChatSource());
 
 			if (isLastListen) {
-				log.debug(parent.platform()
+				log.debug(owner.platform()
 						+ "listener: all messages sent, received and processed. Closing");
-				parent.setState(InstanceState.FINISHED);
+				owner.setState(InstanceState.FINISHED);
 			}
-			if (parent.getState() == InstanceState.CREATED) {
-				parent.setState(InstanceState.SENDING);
+			if (owner.getState() == InstanceState.CREATED) {
+				owner.setState(InstanceState.SENDING);
 			}
 			try {
 				Thread.sleep(50);
@@ -72,6 +72,15 @@ public abstract class WireListener extends Thread {
 	public abstract String getChatSource();
 
 	public abstract void waitForMessage(String message, boolean checkTime);
+
+	public void storePageSource(boolean doScroll) {
+		if (owner.isEnabled()
+				&& owner.getState() != InstanceState.ERROR_CRASHED) {
+			storePageSourceImpl(doScroll);
+		}
+	}
+
+	public abstract void storePageSourceImpl(boolean doScroll);
 
 	public abstract ArrayList<MessageEntry> receiveAllChatMessages(
 			boolean checkTime);
@@ -110,6 +119,6 @@ public abstract class WireListener extends Thread {
 
 	public boolean isSessionLost() {
 		return ((ZetaDriver) PlatformDrivers.getInstance().getDriver(
-				parent.platform())).isSessionLost();
+				owner.platform())).isSessionLost();
 	}
 }

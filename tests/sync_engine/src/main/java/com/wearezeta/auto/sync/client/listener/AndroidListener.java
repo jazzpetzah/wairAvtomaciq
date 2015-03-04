@@ -63,4 +63,9 @@ public class AndroidListener extends WireListener {
 		return UUID_TEXT_MESSAGE_PATTERN;
 	}
 
+	@Override
+	public void storePageSourceImpl(boolean doScroll) {
+		// do nothing. Android test doesn't require page sources
+	}
+
 }
