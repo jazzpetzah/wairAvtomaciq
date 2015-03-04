@@ -28,6 +28,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 public class LoginPage extends IOSPage {
 	private static final Logger log = ZetaLogger.getLog(LoginPage.class
 			.getSimpleName());
+	
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameMainWindow)
 	private WebElement viewPager;
@@ -291,4 +292,19 @@ public class LoginPage extends IOSPage {
 		}
 	}
 	
+	public void changeURLInBrowser(String URL) throws InterruptedException{
+		for (WebElement uiButton : uiButtons){
+			String nameOfButton = uiButton.getAttribute("name");
+			if(nameOfButton.equals("URL")){
+				DriverUtils.mobileTapByCoordinates(getDriver(), uiButton);
+				this.inputStringFromKeyboard(URL);
+			}
+			for (WebElement uiButton2 : uiButtons){
+				String nameOfButton2 = uiButton2.getAttribute("name");
+				if(nameOfButton2.equals("Go")){
+					DriverUtils.mobileTapByCoordinates(getDriver(), uiButton2);
+			}
+		}
+	  }
+	}
 }

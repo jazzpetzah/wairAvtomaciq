@@ -48,8 +48,11 @@ Feature: Sign In
     And I press Sign in button
     And I click on Change Password button on SignIn
     Then I see reset password page
+    And I change URL to staging
     And I type in email <Login> to change password
     And I press Change Password button in browser
+    And I copy link from email and past it into Safari
+   
 
     Examples: 
       | Login    				  | Password      | Name      |

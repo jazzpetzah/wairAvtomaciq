@@ -3,8 +3,16 @@ package com.wearezeta.auto.ios;
 import org.junit.Assert;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Future;
+
+import javax.mail.Message;
 
 import com.wearezeta.auto.common.CommonSteps;
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.common.email.IMAPSMailbox;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -20,6 +28,9 @@ import cucumber.api.java.en.*;
  */
 public class LoginPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+	private ClientUser userToRegister = null;
+	private Future<Message> activationMessage;
+	private static final String stagingURLForgot = "https://staging-website.wire.com/forgot/";
 
 	/**
 	 * Verifies whether sign in screen is the current screen
@@ -381,6 +392,12 @@ public class LoginPageSteps {
 	public void ITypeInEmailToChangePassword(String email) throws Exception{
 		email = usrMgr.replaceAliasesOccurences(email,FindBy.EMAIL_ALIAS);		
 		PagesCollection.loginPage.tapEmailFieldToChangePassword(email);
+		
+		//activate the user, to get access to the mails
+		Map<String, String> expectedHeaders = new HashMap<String, String>();
+		expectedHeaders.put("Delivered-To",email);
+		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
+				expectedHeaders, BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
 	}
 	
 	/**
@@ -392,6 +409,18 @@ public class LoginPageSteps {
 	@Then("^I press Change Password button in browser$")
 	public void IPressChangePasswordButtonInBrowser(){
 		PagesCollection.loginPage.tapChangePasswordButtonInWebView();
+	}
+	
+	@Then("^I change URL to staging$")
+	public void IChangeURLToStaging() throws InterruptedException{
+		PagesCollection.loginPage.changeURLInBrowser(stagingURLForgot);
+	}
+
+	@Then("^I copy link from email and past it into Safari$")
+	public void ICopyLinkFromEmailAndPastItIntoSafari() throws Exception{
+		String link = BackendAPIWrappers.getPasswordResetLink(this.activationMessage);
+		System.out.print(link);
+		PagesCollection.loginPage.changeURLInBrowser(link);
 	}
 
 }
