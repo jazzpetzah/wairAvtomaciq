@@ -1,4 +1,4 @@
-package com.wearezeta.auto.sync.report;
+package com.wearezeta.auto.sync.report.data;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -11,33 +11,11 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.BuildVersionInfo;
-import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.sync.ExecutionContext;
 import com.wearezeta.auto.sync.client.InstanceState;
 import com.wearezeta.auto.sync.client.WireInstance;
 import com.wearezeta.auto.sync.client.sender.WireSender;
-
-class UserReport {
-	public String name;
-	public Platform loggedOnPlatform;
-	public String startupTime;
-	public BuildVersionInfo buildVersion;
-	public ClientDeviceInfo deviceData;
-	public boolean isEnabled;
-}
-
-class MessageReport {
-	public String message;
-	public Platform sentFrom;
-	public boolean isOsxReceiveTimeOK;
-	public String osxReceiveTime;
-	public boolean isIosReceiveTimeOK;
-	public String iosReceiveTime;
-	public boolean isAndroidReceiveTimeOK;
-	public String androidReceiveTime;
-	public boolean checkTime = true;
-}
 
 public class ReportData {
 	@SuppressWarnings("unused")

@@ -24,8 +24,8 @@ import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.sync.client.InstanceState;
 import com.wearezeta.auto.sync.client.WireInstance;
-import com.wearezeta.auto.sync.report.ReportData;
 import com.wearezeta.auto.sync.report.ReportGenerator;
+import com.wearezeta.auto.sync.report.data.ReportData;
 import com.wearezeta.auto.sync.ExecutionContext;
 import com.wearezeta.auto.sync.SyncEngineUtil;
 

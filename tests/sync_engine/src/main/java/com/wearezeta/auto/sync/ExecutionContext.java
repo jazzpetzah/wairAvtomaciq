@@ -13,7 +13,7 @@ import com.wearezeta.auto.sync.client.WireInstance;
 import com.wearezeta.auto.sync.client.platform.AndroidWireInstance;
 import com.wearezeta.auto.sync.client.platform.IOSWireInstance;
 import com.wearezeta.auto.sync.client.platform.OSXWireInstance;
-import com.wearezeta.auto.sync.report.ReportData;
+import com.wearezeta.auto.sync.report.data.ReportData;
 
 public class ExecutionContext {
 
