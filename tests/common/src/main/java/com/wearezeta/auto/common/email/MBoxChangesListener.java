@@ -1,7 +1,6 @@
 package com.wearezeta.auto.common.email;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
@@ -24,24 +23,28 @@ import org.apache.log4j.Logger;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 class MBoxChangesListener implements MessageCountListener, Callable<Message> {
+	private static final long MAX_MSG_DELIVERY_OFFSET = 10000; // milliseconds
 
 	private Map<String, String> expectedHeaders = new HashMap<String, String>();
 	private CountDownLatch waitObj = new CountDownLatch(1);
 	private Message matchedMessage = null;
 	private IMAPSMailbox parentMBox;
 	private int timeoutSeconds;
+	private long filterMessagesAfter;
 
 	private static final Logger log = ZetaLogger
 			.getLog(MBoxChangesListener.class.getSimpleName());
 
 	public MBoxChangesListener(IMAPSMailbox parentMBox,
-			Map<String, String> expectedHeaders, int timeoutSeconds) {
+			Map<String, String> expectedHeaders, int timeoutSeconds,
+			long filterMessagesAfter) {
 		// clone map
 		for (Entry<String, String> entry : expectedHeaders.entrySet()) {
 			this.expectedHeaders.put(entry.getKey(), entry.getValue());
 		}
 		this.parentMBox = parentMBox;
 		this.timeoutSeconds = timeoutSeconds;
+		this.filterMessagesAfter = filterMessagesAfter;
 	}
 
 	private boolean areAllHeadersInMessage(Message msg) {
@@ -98,8 +101,21 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 	}
 
 	private List<Message> preprocessReceivedMessages(Message[] deliveredMessages) {
-		final List<Message> addedMessages = Arrays.asList(deliveredMessages);
-		List<Message> result = new ArrayList<Message>(addedMessages);
+		List<Message> result = new ArrayList<Message>();
+		for (Message msg : deliveredMessages) {
+			try {
+				log.debug("\tMessage timestamp:" + msg.getSentDate().getTime());
+				log.debug("\tListener timestamp:" + filterMessagesAfter);
+				if (msg.getSentDate().getTime() + MAX_MSG_DELIVERY_OFFSET >= filterMessagesAfter) {
+					result.add(msg);
+					log.debug("\tMessage accepted by timestamp");
+				} else {
+					log.debug("\tMessage rejected because it is outdated");
+				}
+			} catch (MessagingException e) {
+				e.printStackTrace();
+			}
+		}
 		Collections.sort(result,
 				Collections.reverseOrder(new MessagesByDateComparator()));
 		return result;
@@ -118,7 +134,8 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 			}
 			while (hdrs.hasMoreElements()) {
 				final Header hdr = hdrs.nextElement();
-				log.debug(String.format("\t\t%s: %s", hdr.getName(), hdr.getValue()));
+				log.debug(String.format("\t\t%s: %s", hdr.getName(),
+						hdr.getValue()));
 			}
 		}
 	}
