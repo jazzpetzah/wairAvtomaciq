@@ -379,13 +379,16 @@ public class LoginPageSteps {
 	 */
 	@Then("^I type in email (.*) to change password$")
 	public void ITypeInEmailToChangePassword(String email) throws Exception{
-		//PagesCollection.loginPage.changeAppContext();
-		//email = usrMgr.findUserByNameOrNameAlias(name).getName();
-		email = usrMgr.replaceAliasesOccurences(email,FindBy.EMAIL_ALIAS)
-;		PagesCollection.loginPage.tapEmailFieldToChangePassword(email);
-
+		email = usrMgr.replaceAliasesOccurences(email,FindBy.EMAIL_ALIAS);		
+		PagesCollection.loginPage.tapEmailFieldToChangePassword(email);
 	}
 	
+	/**
+	 * Presses the change password button in the safari webview
+	 * 
+	 * @step. ^I press Change Password button in browser$
+	 *
+	 */
 	@Then("^I press Change Password button in browser$")
 	public void IPressChangePasswordButtonInBrowser(){
 		PagesCollection.loginPage.tapChangePasswordButtonInWebView();
