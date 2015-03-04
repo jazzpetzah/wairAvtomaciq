@@ -15,6 +15,8 @@ public class SEConstants {
 		public static final int STARTUP_TIMEOUT_MIN = 10;
 
 		public static final int SIGN_IN_TIMEOUT_MIN = 20;
+
+		public static final int AWAITING_MESSAGES_TIMEOUT_MIN = 10;
 	}
 
 	public static final class Common {

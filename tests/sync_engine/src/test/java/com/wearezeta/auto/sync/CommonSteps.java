@@ -171,229 +171,112 @@ public class CommonSteps {
 		}
 	}
 
+	private void sendAndListen(WireInstance sender, WireInstance... listeners)
+			throws Exception {
+		if (sender.isEnabled()
+				&& sender.getState() != InstanceState.ERROR_CRASHED) {
+			for (int i = 0; i < sender.getMessagesToSend(); i++) {
+				final String message = CommonUtils.generateGUID();
+				sender.sender().sendTextMessage(
+						SEConstants.Common.TEST_CONVERSATION, message);
+				ExecutorService executor = Executors
+						.newFixedThreadPool(listeners.length);
+				for (final WireInstance listener : listeners) {
+					if (listener.isEnabled()
+							&& listener.getState() != InstanceState.ERROR_CRASHED) {
+						executor.execute(new Runnable() {
+							public void run() {
+								try {
+									listener.listener().waitForMessage(message,
+											true);
+								} catch (NoSuchElementException e) {
+									log.debug(String.format(
+											"%s: message was not found.\n%s",
+											listener.platform(), e.getMessage()));
+									if (listener.listener().isSessionLost()) {
+										log.error("%s: session lost. Client testing stopped.");
+										listener.setState(InstanceState.ERROR_CRASHED);
+									}
+								}
+							}
+						});
+					}
+				}
+				executor.shutdown();
+				if (!executor.awaitTermination(
+						SEConstants.Execution.AWAITING_MESSAGES_TIMEOUT_MIN,
+						TimeUnit.MINUTES)) {
+					throw new Exception(
+							String.format(
+									"Message awaiting was not finished in expected time (%s minutes).",
+									SEConstants.Execution.AWAITING_MESSAGES_TIMEOUT_MIN));
+				}
+				if (sender.getMessagesSendingInterval() > 0) {
+					try {
+						Thread.sleep(sender.getMessagesSendingInterval() * 1000);
+					} catch (InterruptedException e) {
+					}
+				}
+			}
+		}
+	}
+
+	private void sendWithoutIntervalAndNoListen(WireInstance sender) {
+		if (sender.isEnabled()
+				&& sender.getState() != InstanceState.ERROR_CRASHED) {
+			for (int i = 0; i < sender.getMessagesToSend(); i++) {
+				long startDate = new Date().getTime();
+				final String message = CommonUtils.generateGUID();
+				sender.sender().sendTextMessage(
+						SEConstants.Common.TEST_CONVERSATION, message, false);
+				long endDate = new Date().getTime();
+				log.debug(String.format(
+						"%s: Time consumed for sending text message #%s - %ms",
+						sender.platform(), i, (endDate - startDate)));
+			}
+		}
+	}
+
 	@Given("I run serial sync engine test")
 	public void IRunSerialSyncEngineTest() throws InterruptedException,
 			Exception {
-		// send ios, receive osx and android
-		if (ExecutionContext.isIosEnabled()
-				&& ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
-			for (int i = 0; i < ExecutionContext.iosZeta().getMessagesToSend(); i++) {
-				final String message = CommonUtils.generateGUID();
-				ExecutionContext
-						.iosZeta()
-						.sender()
-						.sendTextMessage(SEConstants.Common.TEST_CONVERSATION,
-								message);
-				ExecutorService executor = Executors.newFixedThreadPool(2);
-				if (ExecutionContext.isOsxEnabled()
-						&& ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED) {
-					executor.execute(new Runnable() {
-						public void run() {
-							ExecutionContext.osxZeta().listener()
-									.waitForMessage(message, true);
-						}
-					});
-				}
-				if (ExecutionContext.isAndroidEnabled()
-						&& ExecutionContext.androidZeta().getState() != InstanceState.ERROR_CRASHED) {
-					executor.execute(new Runnable() {
-						public void run() {
-							ExecutionContext.androidZeta().listener()
-									.waitForMessage(message, true);
-						}
-					});
-				}
-				executor.shutdown();
-				if (!executor.awaitTermination(10, TimeUnit.MINUTES)) {
-					throw new Exception("Work was not finished in useful time.");
-				}
-				log.debug("Sent message #" + i + " from iOS client");
-				if (ExecutionContext.iosZeta().getMessagesSendingInterval() > 0) {
-					try {
-						Thread.sleep(ExecutionContext.iosZeta()
-								.getMessagesSendingInterval() * 1000);
-					} catch (InterruptedException e) {
-					}
-				}
-			}
-		}
+		// send from ios, receive on osx and android
+		sendAndListen(ExecutionContext.iosZeta(), ExecutionContext.osxZeta(),
+				ExecutionContext.androidZeta());
+
 		storeIosPageSource(false);
 		storeOsxPageSource();
 
-		// fast sending of messages from iOS
-		if (ExecutionContext.isIosEnabled()
-				&& ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
-			for (int i = 0; i < ExecutionContext.iosZeta().getMessagesToSend(); i++) {
-				long startDate = new Date().getTime();
-				final String message = CommonUtils.generateGUID();
-				ExecutionContext
-						.iosZeta()
-						.sender()
-						.sendTextMessage(SEConstants.Common.TEST_CONVERSATION,
-								message, false);
-				long endDate = new Date().getTime();
-				log.debug("Time consumed for sending text message #" + i
-						+ " from iOS: " + (endDate - startDate) + "ms");
-			}
-		}
+		// iOS: send messages without interval and without listening them
+		sendWithoutIntervalAndNoListen(ExecutionContext.iosZeta());
+
 		storeIosPageSource(false);
 		storeOsxPageSource();
 
-		// send osx, receive ios and android
-		if (ExecutionContext.isOsxEnabled()
-				&& ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED) {
-			for (int i = 0; i < ExecutionContext.osxZeta().getMessagesToSend(); i++) {
-				final String message = CommonUtils.generateGUID();
-				ExecutionContext
-						.osxZeta()
-						.sender()
-						.sendTextMessage(SEConstants.Common.TEST_CONVERSATION,
-								message);
-				ExecutorService executor = Executors.newFixedThreadPool(2);
-				if (ExecutionContext.isIosEnabled()
-						&& ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
-					executor.execute(new Runnable() {
-						public void run() {
-							try {
-								ExecutionContext.iosZeta().listener()
-										.waitForMessage(message, true);
-							} catch (NoSuchElementException e) {
-								log.error("iOS: Wait for message sent from OS X finished with incorrect result.\n"
-										+ e.getMessage());
-								e.printStackTrace();
-								if (ExecutionContext.iosZeta().listener()
-										.isSessionLost()) {
-									log.error("Session lost on iOS client. No checks for next time.");
-									ExecutionContext.iosZeta().setState(
-											InstanceState.ERROR_CRASHED);
-								}
+		// send from osx, receive on ios and android
+		sendAndListen(ExecutionContext.osxZeta(), ExecutionContext.iosZeta(),
+				ExecutionContext.androidZeta());
 
-							}
-						}
-					});
-				}
-				if (ExecutionContext.isAndroidEnabled()
-						&& ExecutionContext.androidZeta().getState() != InstanceState.ERROR_CRASHED) {
-					executor.execute(new Runnable() {
-						public void run() {
-							ExecutionContext.androidZeta().listener()
-									.waitForMessage(message, true);
-						}
-					});
-				}
-				executor.shutdown();
-				if (!executor.awaitTermination(10, TimeUnit.MINUTES)) {
-					throw new Exception("Work was not finished in useful time.");
-				}
-				log.debug("Sent message #" + i + " from OSX client");
-				if (ExecutionContext.osxZeta().getMessagesSendingInterval() > 0) {
-					try {
-						Thread.sleep(ExecutionContext.osxZeta()
-								.getMessagesSendingInterval() * 1000);
-					} catch (InterruptedException e) {
-					}
-				}
-			}
-		}
 		storeIosPageSource(false);
 		storeOsxPageSource();
 
-		// send android, receive ios and osx
-		if (ExecutionContext.isAndroidEnabled()
-				&& ExecutionContext.androidZeta().getState() != InstanceState.ERROR_CRASHED) {
-			for (int i = 0; i < ExecutionContext.androidZeta()
-					.getMessagesToSend(); i++) {
-				final String message = CommonUtils.generateGUID();
-				ExecutionContext
-						.androidZeta()
-						.sender()
-						.sendTextMessage(SEConstants.Common.TEST_CONVERSATION,
-								message);
-				ExecutorService executor = Executors.newFixedThreadPool(2);
-				if (ExecutionContext.isOsxEnabled()
-						&& ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED) {
-					executor.execute(new Runnable() {
-						public void run() {
-							ExecutionContext.osxZeta().listener()
-									.waitForMessage(message, true);
-						}
-					});
-				}
-				if (ExecutionContext.isIosEnabled()
-						&& ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
-					executor.execute(new Runnable() {
-						public void run() {
-							try {
-								ExecutionContext.iosZeta().listener()
-										.waitForMessage(message, true);
-							} catch (NoSuchElementException e) {
-								log.error("iOS: Wait for message sent from Android finished with incorrect result.\n"
-										+ e.getMessage());
-								e.printStackTrace();
-								if (ExecutionContext.iosZeta().listener()
-										.isSessionLost()) {
-									log.error("Session lost on iOS client. No checks for next time.");
-									ExecutionContext.iosZeta().setState(
-											InstanceState.ERROR_CRASHED);
-								}
-							}
-						}
-					});
-				}
-				executor.shutdown();
-				if (!executor.awaitTermination(10, TimeUnit.MINUTES)) {
-					throw new Exception("Work was not finished in useful time.");
-				}
-				log.debug("Sent message #" + i + " from Android client");
-				if (ExecutionContext.androidZeta().getMessagesSendingInterval() > 0) {
-					try {
-						Thread.sleep(ExecutionContext.androidZeta()
-								.getMessagesSendingInterval() * 1000);
-					} catch (InterruptedException e) {
-					}
-				}
-			}
-		}
+		// send from android, receive on ios and osx
+		sendAndListen(ExecutionContext.androidZeta(),
+				ExecutionContext.iosZeta(), ExecutionContext.osxZeta());
+
 		storeIosPageSource(false);
 		storeOsxPageSource();
 
-		// fast sending of messages from OSX
-		if (ExecutionContext.isOsxEnabled()
-				&& ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED) {
-			for (int i = 0; i < ExecutionContext.osxZeta().getMessagesToSend(); i++) {
-				long startDate = new Date().getTime();
-				final String message = CommonUtils.generateGUID();
-				ExecutionContext
-						.osxZeta()
-						.sender()
-						.sendTextMessage(SEConstants.Common.TEST_CONVERSATION,
-								message, false);
-				long endDate = new Date().getTime();
-				log.debug("Time consumed for sending text message #" + i
-						+ " from OSX: " + (endDate - startDate) + "ms");
-				Thread.sleep(1000);
-			}
-		}
+		// OSX: send messages without interval and without listening them
+		// It is possible that short interval required for OSX
+		sendWithoutIntervalAndNoListen(ExecutionContext.osxZeta());
+
 		storeIosPageSource(false);
 		storeOsxPageSource();
 
-		// fast sending of messages from Android
-		if (ExecutionContext.isAndroidEnabled()
-				&& ExecutionContext.androidZeta().getState() != InstanceState.ERROR_CRASHED) {
-			for (int i = 0; i < ExecutionContext.androidZeta()
-					.getMessagesToSend(); i++) {
-				long startDate = new Date().getTime();
-				final String message = CommonUtils.generateGUID();
-				ExecutionContext
-						.androidZeta()
-						.sender()
-						.sendTextMessage(SEConstants.Common.TEST_CONVERSATION,
-								message, false);
-				long endDate = new Date().getTime();
-				log.debug("Time consumed for sending text message #" + i
-						+ " from Android: " + (endDate - startDate) + "ms");
-			}
-		}
+		// Android: send messages without interval and without listening them
+		sendWithoutIntervalAndNoListen(ExecutionContext.androidZeta());
+
 		storeIosPageSource(true);
 		storeOsxPageSource();
 	}
