@@ -80,17 +80,21 @@ public class AsyncProcess {
 		}
 	}
 
-	public synchronized void stop(String signal, long timeoutMilliseconds)
-			throws Exception {
+	public synchronized void stop(String signal, int[] pids,
+			long timeoutMilliseconds) throws Exception {
 		try {
-			if (signal == null) {
-				process.destroy();
-			} else {
-				final String killCmd = String.format("kill -%s %s", signal,
-						this.getPid());
-				log.debug("Executing: " + killCmd);
-				Runtime.getRuntime().exec(
-						new String[] { "/bin/bash", "-c", killCmd });
+			if (this.isRunning()) {
+				if (signal == null) {
+					process.destroy();
+				} else {
+					for (final int pid : pids) {
+						final String killCmd = String.format("kill -%s %s",
+								signal, pid);
+						log.debug("Executing: " + killCmd);
+						Runtime.getRuntime().exec(
+								new String[] { "/bin/bash", "-c", killCmd });
+					}
+				}
 			}
 			long milliSecondsElapsed = 0;
 			while (this.isRunning()) {
@@ -118,7 +122,7 @@ public class AsyncProcess {
 	}
 
 	public void stop(long timeoutMilliseconds) throws Exception {
-		this.stop(null, timeoutMilliseconds);
+		this.stop(null, null, timeoutMilliseconds);
 	}
 
 	/**
