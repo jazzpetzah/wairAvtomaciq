@@ -59,6 +59,11 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 		exitOtherPersonalInfoPageButton.click();
 		return new GroupChatInfoPage(this.getDriver(), this.getWait());
 	}
+	
+	public DialogPage leavePageToDialogPage() throws Exception {
+		exitOtherPersonalInfoPageButton.click();
+		return new DialogPage(this.getDriver(), this.getWait());
+	}
 
 	public PeoplePickerPage addContactToChat() throws Exception {
 		addButton.click();
@@ -124,14 +129,13 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 		IOSPage page = null;
 		switch (direction) {
 		case DOWN: {
-			page = new ContactListPage(this.getDriver(), this.getWait());
+			page = new DialogPage(this.getDriver(), this.getWait());
 			break;
 		}
 		case UP: {
 			return this;
 		}
 		case LEFT: {
-			page = new DialogPage(this.getDriver(), this.getWait());
 			break;
 		}
 		case RIGHT: {
