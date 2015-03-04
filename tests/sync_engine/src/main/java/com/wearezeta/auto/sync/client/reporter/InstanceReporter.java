@@ -1,31 +1,35 @@
-package com.wearezeta.auto.sync.client;
+package com.wearezeta.auto.sync.client.reporter;
 
 import java.util.ArrayList;
 
+import com.wearezeta.auto.common.misc.BuildVersionInfo;
+import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.sync.ExecutionContext;
+import com.wearezeta.auto.sync.client.WireInstance;
 
-public class InstanceTestResults {
+public abstract class InstanceReporter {
 
 	private ArrayList<MessageEntry> allMessagesList = new ArrayList<MessageEntry>();
-
 	private boolean orderCorrect;
+	private BuildVersionInfo version;
+	private ClientDeviceInfo device;
 
 	private WireInstance owner;
 
-	public InstanceTestResults(WireInstance owner) {
+	public InstanceReporter(WireInstance owner) {
 		this.owner = owner;
 	}
 
 	public void copyWholeMessagesList() {
-		if (owner.enabled) {
-			this.allMessagesList = owner.listener.allMessagesList;
+		if (owner.isEnabled()) {
+			this.allMessagesList = owner.listener().allMessagesList;
 		}
 	}
 
 	public void checkMessagesOrderCorrectness() {
 		orderCorrect = true;
-		if (owner.enabled) {
+		if (owner.isEnabled()) {
 			ArrayList<MessageEntry> sentMessages = new ArrayList<MessageEntry>(
 					ExecutionContext.sentMessages.values());
 			for (int i = 0; i < sentMessages.size(); i++) {
@@ -39,6 +43,17 @@ public class InstanceTestResults {
 			}
 		}
 	}
+
+	public void readClientVersionAndDeviceInfo() {
+		if (owner.isEnabled()) {
+			device = readClientDevice();
+			version = readBuildVersion();
+		}
+	}
+
+	protected abstract ClientDeviceInfo readClientDevice();
+
+	protected abstract BuildVersionInfo readBuildVersion();
 
 	// getters and setters
 	public ArrayList<MessageEntry> getAllMessagesList() {
@@ -57,4 +72,19 @@ public class InstanceTestResults {
 		this.orderCorrect = orderCorrect;
 	}
 
+	public BuildVersionInfo getVersion() {
+		return version;
+	}
+
+	public void setVersion(BuildVersionInfo version) {
+		this.version = version;
+	}
+
+	public ClientDeviceInfo getDevice() {
+		return device;
+	}
+
+	public void setDevice(ClientDeviceInfo device) {
+		this.device = device;
+	}
 }

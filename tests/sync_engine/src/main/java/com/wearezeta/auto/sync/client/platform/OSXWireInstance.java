@@ -14,6 +14,7 @@ import com.wearezeta.auto.sync.ExecutionContext;
 import com.wearezeta.auto.sync.SyncEngineUtil;
 import com.wearezeta.auto.sync.client.WireInstance;
 import com.wearezeta.auto.sync.client.listener.OSXListener;
+import com.wearezeta.auto.sync.client.reporter.OSXInstanceReporter;
 import com.wearezeta.auto.sync.client.sender.OSXSender;
 
 public class OSXWireInstance extends WireInstance {
@@ -102,5 +103,10 @@ public class OSXWireInstance extends WireInstance {
 	@Override
 	public String NAME_ALIAS() {
 		return NAME_ALIAS;
+	}
+
+	@Override
+	public void createTestResults() {
+		this.reporter = new OSXInstanceReporter(this);
 	}
 }

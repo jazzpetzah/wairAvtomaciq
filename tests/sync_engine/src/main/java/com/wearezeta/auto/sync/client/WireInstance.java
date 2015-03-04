@@ -6,8 +6,6 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.misc.BuildVersionInfo;
-import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 import com.wearezeta.auto.sync.ExecutionContext;
 import com.wearezeta.auto.sync.SEConstants;
 import com.wearezeta.auto.sync.SyncEngineUtil;
@@ -15,6 +13,7 @@ import com.wearezeta.auto.sync.client.listener.WireListener;
 import com.wearezeta.auto.sync.client.platform.AndroidWireInstance;
 import com.wearezeta.auto.sync.client.platform.IOSWireInstance;
 import com.wearezeta.auto.sync.client.platform.OSXWireInstance;
+import com.wearezeta.auto.sync.client.reporter.InstanceReporter;
 import com.wearezeta.auto.sync.client.sender.WireSender;
 
 public abstract class WireInstance {
@@ -46,10 +45,8 @@ public abstract class WireInstance {
 	private ClientUser userInstance;
 
 	// results
-	private InstanceTestResults results = new InstanceTestResults(this);
+	protected InstanceReporter reporter;
 	protected long startupTime;
-	private BuildVersionInfo versionInfo;
-	private ClientDeviceInfo deviceInfo;
 
 	public WireInstance(Platform platform) throws Exception {
 		this.platform = platform;
@@ -89,6 +86,8 @@ public abstract class WireInstance {
 	public abstract void createSender();
 
 	public abstract void createListener();
+
+	public abstract void createTestResults();
 
 	public Runnable startClientProcedure() {
 		return new Runnable() {
@@ -194,8 +193,8 @@ public abstract class WireInstance {
 		return listener;
 	}
 
-	public InstanceTestResults results() {
-		return results;
+	public InstanceReporter reporter() {
+		return reporter;
 	}
 
 	// getters and setters
@@ -254,21 +253,5 @@ public abstract class WireInstance {
 
 	public void setUserInstance(ClientUser userInstance) {
 		this.userInstance = userInstance;
-	}
-
-	public BuildVersionInfo getVersionInfo() {
-		return versionInfo;
-	}
-
-	public void setVersionInfo(BuildVersionInfo versionInfo) {
-		this.versionInfo = versionInfo;
-	}
-
-	public ClientDeviceInfo getDeviceInfo() {
-		return deviceInfo;
-	}
-
-	public void setDeviceInfo(ClientDeviceInfo deviceInfo) {
-		this.deviceInfo = deviceInfo;
 	}
 }

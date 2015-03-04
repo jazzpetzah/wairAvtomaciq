@@ -63,8 +63,8 @@ public class ReportData {
 				user.loggedOnPlatform = client.getKey();
 				user.startupTime = Double.toString(client.getValue()
 						.getStartupTime() / 1000d) + "s";
-				user.buildVersion = client.getValue().getVersionInfo();
-				user.deviceData = client.getValue().getDeviceInfo();
+				user.buildVersion = client.getValue().reporter().getVersion();
+				user.deviceData = client.getValue().reporter().getDevice();
 				user.isEnabled = true;
 			} else {
 				user.loggedOnPlatform = client.getKey();
@@ -326,28 +326,28 @@ public class ReportData {
 		isOsxStable = ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED;
 		areClientsStable = isAndroidStable && isIosStable && isOsxStable;
 
-		isOsxMessagesOrderCorrect = ExecutionContext.osxZeta().results()
+		isOsxMessagesOrderCorrect = ExecutionContext.osxZeta().reporter()
 				.isOrderCorrect();
 		isAndroidMessagesOrderCorrect = ExecutionContext.androidZeta()
-				.results().isOrderCorrect();
-		isIosMessagesOrderCorrect = ExecutionContext.iosZeta().results()
+				.reporter().isOrderCorrect();
+		isIosMessagesOrderCorrect = ExecutionContext.iosZeta().reporter()
 				.isOrderCorrect();
 		areMessagesOrderCorrect = isOsxMessagesOrderCorrect
 				&& isAndroidMessagesOrderCorrect && isIosMessagesOrderCorrect;
 
 		iosMessages = new ArrayList<String>();
 		for (MessageEntry iosMessageEntry : ExecutionContext.iosZeta()
-				.results().getAllMessagesList()) {
+				.reporter().getAllMessagesList()) {
 			iosMessages.add(iosMessageEntry.messageContent);
 		}
 		osxMessages = new ArrayList<String>();
 		for (MessageEntry osxMessageEntry : ExecutionContext.osxZeta()
-				.results().getAllMessagesList()) {
+				.reporter().getAllMessagesList()) {
 			osxMessages.add(osxMessageEntry.messageContent);
 		}
 		androidMessages = new ArrayList<String>();
 		for (MessageEntry androidMessageEntry : ExecutionContext.androidZeta()
-				.results().getAllMessagesList()) {
+				.reporter().getAllMessagesList()) {
 			androidMessages.add(androidMessageEntry.messageContent);
 		}
 	}

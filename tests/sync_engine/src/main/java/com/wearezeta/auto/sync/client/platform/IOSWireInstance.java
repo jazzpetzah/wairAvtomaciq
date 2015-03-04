@@ -19,6 +19,7 @@ import com.wearezeta.auto.sync.ExecutionContext;
 import com.wearezeta.auto.sync.SyncEngineUtil;
 import com.wearezeta.auto.sync.client.WireInstance;
 import com.wearezeta.auto.sync.client.listener.IOSListener;
+import com.wearezeta.auto.sync.client.reporter.IOSInstanceReporter;
 import com.wearezeta.auto.sync.client.sender.IOSSender;
 
 public class IOSWireInstance extends WireInstance {
@@ -132,5 +133,10 @@ public class IOSWireInstance extends WireInstance {
 	@Override
 	public String NAME_ALIAS() {
 		return NAME_ALIAS;
+	}
+
+	@Override
+	public void createTestResults() {
+		this.reporter = new IOSInstanceReporter(this);
 	}
 }

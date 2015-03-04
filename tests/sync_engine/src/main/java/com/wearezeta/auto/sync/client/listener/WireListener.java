@@ -86,7 +86,7 @@ public abstract class WireListener extends Thread {
 
 	public void receiveAllChatMessages(boolean checkTime) {
 		if (owner.isEnabled()) {
-			receiveAllChatMessagesImpl(checkTime);
+			allMessagesList = receiveAllChatMessagesImpl(checkTime);
 		}
 	}
 

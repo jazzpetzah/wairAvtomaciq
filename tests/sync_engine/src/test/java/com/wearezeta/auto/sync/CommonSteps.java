@@ -1,6 +1,5 @@
 package com.wearezeta.auto.sync;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
@@ -11,16 +10,11 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.NoSuchElementException;
 
-import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.misc.BuildVersionInfo;
-import com.wearezeta.auto.common.misc.ClientDeviceInfo;
-import com.wearezeta.auto.ios.tools.IOSCommonUtils;
-import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.sync.client.InstanceState;
 import com.wearezeta.auto.sync.client.WireInstance;
 import com.wearezeta.auto.sync.report.ReportGenerator;
@@ -255,8 +249,8 @@ public class CommonSteps {
 	@Given("I collect messages order data")
 	public void ICollectMessagesOrderData() {
 		for (WireInstance client : ExecutionContext.clients.values()) {
-			client.results().copyWholeMessagesList();
-			client.results().checkMessagesOrderCorrectness();
+			client.reporter().copyWholeMessagesList();
+			client.reporter().checkMessagesOrderCorrectness();
 		}
 	}
 
@@ -269,67 +263,9 @@ public class CommonSteps {
 
 	@Then("I collect builds and devices info")
 	public void ICollectBuildsAndDevicesInfo() {
-		if (ExecutionContext.isAndroidEnabled()) {
-			BuildVersionInfo androidClientInfo = new BuildVersionInfo();
-			ClientDeviceInfo androidDeviceInfo = new ClientDeviceInfo();
-			try {
-				androidClientInfo = AndroidCommonUtils.readClientVersion();
-				androidDeviceInfo = AndroidCommonUtils.readDeviceInfo();
-				log.debug("Following info were taken from android device: "
-						+ androidDeviceInfo);
-			} catch (InterruptedException iex) {
-				log.error(iex.getMessage());
-			} catch (IOException ioex) {
-				log.error(ioex.getMessage());
-			} catch (Exception ex) {
-				log.error(ex.getMessage());
-			}
-			ExecutionContext.androidZeta().setVersionInfo(androidClientInfo);
-			ExecutionContext.androidZeta().setDeviceInfo(androidDeviceInfo);
+		for (WireInstance client : ExecutionContext.clients.values()) {
+			client.reporter().readClientVersionAndDeviceInfo();
 		}
-
-		if (ExecutionContext.isIosEnabled()) {
-			BuildVersionInfo iosClientInfo = new BuildVersionInfo();
-			ClientDeviceInfo iosDeviceInfo = new ClientDeviceInfo();
-			try {
-				iosClientInfo = IOSCommonUtils.readClientVersionFromPlist();
-			} catch (Exception e) {
-				log.error("Failed to get iOS client info from Info.plist.\n"
-						+ e.getMessage());
-			}
-			ExecutionContext.iosZeta().setVersionInfo(iosClientInfo);
-			try {
-				iosDeviceInfo = IOSCommonUtils.readDeviceInfo();
-			} catch (Exception e) {
-				log.error("Failed to get iOS device info. Seems like client were crashed during test.\n"
-						+ e.getMessage());
-			}
-			log.debug("Following info were taken from iOS device: "
-					+ iosDeviceInfo);
-			ExecutionContext.iosZeta().setDeviceInfo(iosDeviceInfo);
-		}
-
-		if (ExecutionContext.isOsxEnabled()) {
-			BuildVersionInfo osxClientInfo = new BuildVersionInfo();
-			ClientDeviceInfo osxDeviceInfo = new ClientDeviceInfo();
-			try {
-				osxClientInfo = OSXCommonUtils.readClientVersionFromPlist();
-			} catch (Exception e) {
-				log.error("Failed to read client info for OSX client.\n"
-						+ e.getMessage());
-			}
-			ExecutionContext.osxZeta().setVersionInfo(osxClientInfo);
-			try {
-				osxDeviceInfo = OSXCommonUtils.readDeviceInfo();
-				log.debug("Following info were taken from OSX device: "
-						+ osxDeviceInfo);
-			} catch (Exception e) {
-				log.error("Error while getting device information for OS X client.\n"
-						+ e.getMessage());
-			}
-			ExecutionContext.osxZeta().setDeviceInfo(osxDeviceInfo);
-		}
-
 	}
 
 	@Then("I perform acceptance checks")
