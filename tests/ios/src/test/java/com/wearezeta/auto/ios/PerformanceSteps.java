@@ -13,6 +13,7 @@ import com.wearezeta.auto.common.PerformanceCommon;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.PerformanceCommon.PerformanceLoop;
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.common.process.AsyncProcess;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -20,17 +21,17 @@ import cucumber.api.java.en.When;
 public class PerformanceSteps {
 	private final PerformanceCommon perfCommon = PerformanceCommon
 			.getInstance();
-	private static final int PERF_MON_NOT_STARTED = -1;
-	private static final int PERF_MON_INIT_DELAY = 2000; // milliseconds
+	private static final int PERF_MON_INIT_DELAY = 8000; // milliseconds
+	private static final String ACTIVITY_MONITOR_TEMPLATE_PATH = "/Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/Resources/templates/Activity\\ Monitor.tracetemplate";
 
-	private int perfMonPid = PERF_MON_NOT_STARTED;
+	private AsyncProcess perfMon = null;
 
-	public int getPerfMonPid() {
-		return perfMonPid;
+	public AsyncProcess getPerfMon() {
+		return perfMon;
 	}
 
-	public void setPerfMonPid(int perfMonPid) {
-		this.perfMonPid = perfMonPid;
+	public void setPerfMon(AsyncProcess perfMon) {
+		this.perfMon = perfMon;
 	}
 
 	/**
@@ -99,18 +100,16 @@ public class PerformanceSteps {
 	@When("^I start performance monitoring for the connected iPhone$")
 	public void IStartPerfMon() throws Exception {
 		final String iPhoneUDID = IOSCommonUtils.getConnectediPhoneUDID(true);
-		final String strPid = CommonUtils
-				.executeOsXCommandWithOutput(new String[] {
-						"/bin/bash",
-						"-c",
-						"cd $HOME && instruments -v"
-								+ " -t /Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/Resources/templates/Activity\\ Monitor.tracetemplate"
-								+ " -w " + iPhoneUDID + " 1>&2 & echo $!" });
-		if (strPid.length() > 0) {
-			this.setPerfMonPid(Integer.parseInt(strPid.trim()));
-			// This should be enough to initialize instruments and start
-			// monitoring
-			Thread.sleep(PERF_MON_INIT_DELAY);
+		final String[] cmd = {
+				"/bin/bash",
+				"-c",
+				String.format("cd $HOME && instruments -v -t %s -w %s",
+						ACTIVITY_MONITOR_TEMPLATE_PATH, iPhoneUDID) };
+		final AsyncProcess ap = new AsyncProcess(cmd, true, true);
+		ap.start();
+		Thread.sleep(PERF_MON_INIT_DELAY);
+		if (ap.isRunning()) {
+			setPerfMon(ap);
 		} else {
 			throw new RuntimeException(
 					"There are failures while starting perf monitor. Please check the log for more details.");
@@ -129,18 +128,14 @@ public class PerformanceSteps {
 	 */
 	@Then("^I finish performance monitoring for the connected iPhone$")
 	public void IStopPerfMon() throws Exception {
-		if (this.getPerfMonPid() == PERF_MON_NOT_STARTED) {
+		if (this.getPerfMon() == null) {
 			throw new RuntimeException(
 					"Please call the Start minitor step first");
 		}
-
-		CommonUtils
-				.executeOsXCommandWithOutput(new String[] {
-						"/bin/bash",
-						"-c",
-						String.format(
-								"kill -SIGINT %d 1>&2"
-										+ " && while [ -n \"`ps axu | grep \\\\b%d\\\\b | grep -v grep`\" ]; do sleep 1; done",
-								this.getPerfMonPid(), this.getPerfMonPid()) });
+		if (!this.getPerfMon().isRunning()) {
+			throw new RuntimeException(
+					"Performance monitor has been unexpectedly killed before. Please check execution logs to get more details.");
+		}
+		this.getPerfMon().stop();
 	}
 }
