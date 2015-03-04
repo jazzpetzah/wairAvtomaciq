@@ -107,7 +107,7 @@ public class PerformanceSteps {
 								+ " -t /Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/Resources/templates/Activity\\ Monitor.tracetemplate"
 								+ " -w " + iPhoneUDID + " 1>&2 & echo $!" });
 		if (strPid.length() > 0) {
-			this.setPerfMonPid(Integer.parseInt(strPid));
+			this.setPerfMonPid(Integer.parseInt(strPid.trim()));
 			// This should be enough to initialize instruments and start
 			// monitoring
 			Thread.sleep(PERF_MON_INIT_DELAY);

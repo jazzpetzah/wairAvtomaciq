@@ -86,7 +86,7 @@ public class IOSCommonUtils {
 								+ deviceName
 								+ "/,/Serial/p' | grep 'Serial Number:' | awk -F ': ' '{print $2}'" });
 		if (result.length() > 0) {
-			return result;
+			return result.trim();
 		} else {
 			if (shouldThrowException) {
 				throw new RuntimeException(
