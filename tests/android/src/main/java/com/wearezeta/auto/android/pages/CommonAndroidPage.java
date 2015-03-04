@@ -30,9 +30,13 @@ public class CommonAndroidPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.Gmail.idBoby)
 	private WebElement gmailContent;
 
-	@FindBy(id = AndroidLocators.Browsers.idFirefoxUrlBar)
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.Browsers.CLASS_NAME, locatorKey = "idFirefoxUrlBar")
 	private WebElement urlBar;
 
+
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.Browsers.CLASS_NAME, locatorKey = "idFirefoxUrlBarEditText")
+	private WebElement urlBarEditText;
+	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.Browsers.CLASS_NAME, locatorKey = "idUrlBar")
 	private WebElement chromeUrlBar;
 
@@ -55,6 +59,7 @@ public class CommonAndroidPage extends AndroidPage {
 
 	public PeoplePickerPage activateByLink(String link) throws Exception {
 		openFirefoxBrowser();
+		Thread.sleep(5000);
 		setFirefoxBrowserURL(link);
 		return new PeoplePickerPage(this.getDriver(), this.getWait());
 	}
@@ -115,7 +120,7 @@ public class CommonAndroidPage extends AndroidPage {
 		for (int i = 0; i < 10; i++) {
 			this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_DEL);
 		}
-		urlBar.sendKeys(link);
+		urlBarEditText.sendKeys(link);
 		this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_ENTER);
 	}
 
