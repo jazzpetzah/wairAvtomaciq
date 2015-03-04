@@ -6,6 +6,9 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.CommonAndroidSteps;
+import com.wearezeta.auto.android.ContactListPageSteps;
+import com.wearezeta.auto.android.DialogPageSteps;
+import com.wearezeta.auto.android.LoginPageSteps;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.LoginPage;
@@ -16,7 +19,6 @@ import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.sync.CommonSteps;
 import com.wearezeta.auto.sync.ExecutionContext;
 import com.wearezeta.auto.sync.SyncEngineUtil;
 import com.wearezeta.auto.sync.client.WireInstance;
@@ -27,6 +29,8 @@ public class AndroidWireInstance extends WireInstance {
 
 	private static final Logger log = ZetaLogger
 			.getLog(AndroidWireInstance.class.getSimpleName());
+
+	private String NAME_ALIAS = "user2Name";
 
 	public AndroidWireInstance() throws Exception {
 		super(Platform.Android);
@@ -67,6 +71,14 @@ public class AndroidWireInstance extends WireInstance {
 				.getClass());
 
 		appiumUrl = CommonUtils.getAndroidAppiumUrlFromConfig(this.getClass());
+
+		try {
+			appiumLogPath = AndroidCommonUtils
+					.getAndroidAppiumLogPathFromConfig(AndroidWireInstance.class);
+		} catch (Exception e) {
+			appiumLogPath = null;
+			log.warn("Failed to read property androidAppiumLogPath from config file.");
+		}
 	}
 
 	@Override
@@ -108,9 +120,7 @@ public class AndroidWireInstance extends WireInstance {
 			}
 
 			try {
-				startDate = SyncEngineUtil
-						.readDateFromAppiumLog(AndroidCommonUtils
-								.getAndroidAppiumLogPathFromConfig(CommonSteps.class));
+				startDate = SyncEngineUtil.readDateFromAppiumLog(appiumLogPath);
 			} catch (Exception e) {
 				log.error("Failed to read Android application startup time from Appium log.\n"
 						+ "Approximate value will be used. " + e.getMessage());
@@ -119,5 +129,30 @@ public class AndroidWireInstance extends WireInstance {
 
 			log.debug("Android application startup time: " + startupTime + "ms");
 		}
+	}
+
+	@Override
+	public void signInImpl(String userAlias, String email, String password)
+			throws Throwable {
+		if (PagesCollection.loginPage.isDismissUpdateVisible()) {
+			PagesCollection.loginPage.dismissUpdate();
+		}
+		LoginPageSteps androidLoginPageSteps = new LoginPageSteps();
+		androidLoginPageSteps.GivenISignIn(email, password);
+		ContactListPageSteps androidContactListPageSteps = new ContactListPageSteps();
+		androidContactListPageSteps.GivenISeeContactListWithMyName(userAlias);
+	}
+
+	@Override
+	public void openConversationImpl(String chatName) throws Exception {
+		ContactListPageSteps androidContactListPageSteps = new ContactListPageSteps();
+		DialogPageSteps androidDialogPageSteps = new DialogPageSteps();
+		androidContactListPageSteps.WhenITapOnContactName(chatName);
+		androidDialogPageSteps.WhenISeeDialogPage();
+	}
+
+	@Override
+	public String NAME_ALIAS() {
+		return NAME_ALIAS;
 	}
 }

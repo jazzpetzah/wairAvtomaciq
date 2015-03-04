@@ -38,12 +38,8 @@ import cucumber.api.java.en.Then;
 public class CommonSteps {
 
 	static {
-		System.setProperty("java.awt.headless", "false");
-		System.setProperty("org.apache.commons.logging.Log",
-				"org.apache.commons.logging.impl.SimpleLog");
-		System.setProperty(
-				"org.apache.commons.logging.simplelog.log.org.apache.http",
-				"warn");
+		SyncEngineUtil.defineHeadlessEnvironment();
+		SyncEngineUtil.disableSeleniumLogs();
 	}
 
 	private static final Logger log = ZetaLogger.getLog(CommonSteps.class
@@ -99,7 +95,8 @@ public class CommonSteps {
 			ExecutionContext.clients.put(platform, client);
 		}
 
-		ExecutorService executor = Executors.newFixedThreadPool(1);
+		ExecutorService executor = Executors
+				.newFixedThreadPool(SEConstants.Execution.STARTUP_THREAD_POOL_SIZE);
 
 		for (WireInstance client : ExecutionContext.clients.values()) {
 			executor.execute(client.startClientProcedure());
@@ -107,80 +104,34 @@ public class CommonSteps {
 
 		executor.shutdown();
 
-		if (!executor.awaitTermination(10, TimeUnit.MINUTES)) {
+		if (!executor.awaitTermination(
+				SEConstants.Execution.STARTUP_TIMEOUT_MIN, TimeUnit.MINUTES)) {
 			throw new Exception(
-					"Clients startup was not finished in useful time.");
+					String.format(
+							"Clients startup was not finished in expected time (%s minutes).",
+							SEConstants.Execution.STARTUP_TIMEOUT_MIN));
 		}
 	}
 
 	@Given("I sign in to all platform clients and go to conversation (.*)")
 	public void ISignInToAllPlatformClients(String conversation)
 			throws InterruptedException, Exception {
-		ExecutorService executor = Executors.newFixedThreadPool(3);
 
-		final OSXClientSteps osxSteps = new OSXClientSteps();
-		final AndroidClientSteps androidSteps = new AndroidClientSteps();
-		final IOSClientSteps iosSteps = new IOSClientSteps();
+		ExecutorService executor = Executors
+				.newFixedThreadPool(SEConstants.Execution.SIGN_IN_THREAD_POOL_SIZE);
 
-		final String conversationName = conversation;
+		for (WireInstance client : ExecutionContext.clients.values()) {
+			executor.execute(client.signInAndOpenConversation());
+		}
 
-		executor.execute(new Runnable() {
-			public void run() {
-				try {
-					osxSteps.OSXISignInUsingLoginAndPassword(
-							SyncEngineUtil.OSX_NAME_ALIAS,
-							SyncEngineUtil.PASSWORD_ALIAS);
-					osxSteps.OSXIOpenConversationWith(conversationName);
-				} catch (Throwable e) {
-					log.fatal("OSX client crashed during login and opening conversation.\n"
-							+ e.getMessage());
-					ExecutionContext.osxZeta().setState(
-							InstanceState.ERROR_CRASHED);
-					// TODO: process crash
-				}
-				log.debug("OSX client login finished.");
-			}
-		});
-		executor.execute(new Runnable() {
-			public void run() {
-				try {
-					androidSteps.AndroidISignInUsingLoginAndPassword(
-							SyncEngineUtil.ANDROID_NAME_ALIAS,
-							SyncEngineUtil.PASSWORD_ALIAS);
-					androidSteps.AndroidIOpenConversationWith(conversationName);
-				} catch (Throwable e) {
-					log.fatal("Android client crashed during login and opening conversation.\n"
-							+ e.getMessage());
-					e.printStackTrace();
-					ExecutionContext.androidZeta().setState(
-							InstanceState.ERROR_CRASHED);
-					// TODO: process crash
-				}
-				log.debug("Android client login finished.");
-			}
-		});
-		executor.execute(new Runnable() {
-			public void run() {
-				try {
-					iosSteps.IOSISignInUsingLoginAndPassword(
-							SyncEngineUtil.IOS_NAME_ALIAS,
-							SyncEngineUtil.PASSWORD_ALIAS);
-					iosSteps.IOSIOpenConversationWith(conversationName);
-				} catch (Throwable e) {
-					log.error("iOS client crashed during login and opening conversation.\n"
-							+ e.getMessage());
-					e.printStackTrace();
-					ExecutionContext.iosZeta().setState(
-							InstanceState.ERROR_CRASHED);
-					// TODO: process crash
-				}
-				log.debug("iOS client login finished.");
-			}
-		});
 		executor.shutdown();
-		if (!executor.awaitTermination(20, TimeUnit.MINUTES)) {
+
+		if (!executor.awaitTermination(
+				SEConstants.Execution.SIGN_IN_TIMEOUT_MIN, TimeUnit.MINUTES)) {
 			throw new Exception(
-					"Clients sign in was not finished in 20 minutes.");
+					String.format(
+							"Clients sign in was not finished in expected time (%s minutes).",
+							SEConstants.Execution.SIGN_IN_TIMEOUT_MIN));
 		}
 	}
 
@@ -228,8 +179,11 @@ public class CommonSteps {
 				&& ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
 			for (int i = 0; i < ExecutionContext.iosZeta().getMessagesToSend(); i++) {
 				final String message = CommonUtils.generateGUID();
-				ExecutionContext.iosZeta().sender()
-						.sendTextMessage(SyncEngineUtil.CHAT_NAME, message);
+				ExecutionContext
+						.iosZeta()
+						.sender()
+						.sendTextMessage(SEConstants.Common.TEST_CONVERSATION,
+								message);
 				ExecutorService executor = Executors.newFixedThreadPool(2);
 				if (ExecutionContext.isOsxEnabled()
 						&& ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED) {
@@ -275,8 +229,8 @@ public class CommonSteps {
 				ExecutionContext
 						.iosZeta()
 						.sender()
-						.sendTextMessage(SyncEngineUtil.CHAT_NAME, message,
-								false);
+						.sendTextMessage(SEConstants.Common.TEST_CONVERSATION,
+								message, false);
 				long endDate = new Date().getTime();
 				log.debug("Time consumed for sending text message #" + i
 						+ " from iOS: " + (endDate - startDate) + "ms");
@@ -290,8 +244,11 @@ public class CommonSteps {
 				&& ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED) {
 			for (int i = 0; i < ExecutionContext.osxZeta().getMessagesToSend(); i++) {
 				final String message = CommonUtils.generateGUID();
-				ExecutionContext.osxZeta().sender()
-						.sendTextMessage(SyncEngineUtil.CHAT_NAME, message);
+				ExecutionContext
+						.osxZeta()
+						.sender()
+						.sendTextMessage(SEConstants.Common.TEST_CONVERSATION,
+								message);
 				ExecutorService executor = Executors.newFixedThreadPool(2);
 				if (ExecutionContext.isIosEnabled()
 						&& ExecutionContext.iosZeta().getState() != InstanceState.ERROR_CRASHED) {
@@ -347,8 +304,11 @@ public class CommonSteps {
 			for (int i = 0; i < ExecutionContext.androidZeta()
 					.getMessagesToSend(); i++) {
 				final String message = CommonUtils.generateGUID();
-				ExecutionContext.androidZeta().sender()
-						.sendTextMessage(SyncEngineUtil.CHAT_NAME, message);
+				ExecutionContext
+						.androidZeta()
+						.sender()
+						.sendTextMessage(SEConstants.Common.TEST_CONVERSATION,
+								message);
 				ExecutorService executor = Executors.newFixedThreadPool(2);
 				if (ExecutionContext.isOsxEnabled()
 						&& ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED) {
@@ -406,8 +366,8 @@ public class CommonSteps {
 				ExecutionContext
 						.osxZeta()
 						.sender()
-						.sendTextMessage(SyncEngineUtil.CHAT_NAME, message,
-								false);
+						.sendTextMessage(SEConstants.Common.TEST_CONVERSATION,
+								message, false);
 				long endDate = new Date().getTime();
 				log.debug("Time consumed for sending text message #" + i
 						+ " from OSX: " + (endDate - startDate) + "ms");
@@ -427,8 +387,8 @@ public class CommonSteps {
 				ExecutionContext
 						.androidZeta()
 						.sender()
-						.sendTextMessage(SyncEngineUtil.CHAT_NAME, message,
-								false);
+						.sendTextMessage(SEConstants.Common.TEST_CONVERSATION,
+								message, false);
 				long endDate = new Date().getTime();
 				log.debug("Time consumed for sending text message #" + i
 						+ " from Android: " + (endDate - startDate) + "ms");

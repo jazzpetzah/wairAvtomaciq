@@ -22,12 +22,7 @@ public class SyncEngineUtil {
 
 	public static final int USERS_CREATION_TIMEOUT = 60 * 5; // seconds
 
-	public static final String CHAT_NAME = "SyncEngineTest";
-
-	public static final String OSX_NAME_ALIAS = "user1Name";
-	public static final String ANDROID_NAME_ALIAS = "user2Name";
-	public static final String IOS_NAME_ALIAS = "user3Name";
-	public static final String PASSWORD_ALIAS = "user1Password";
+	public String PASSWORD_ALIAS = "user1Password";
 
 	public static final Platform[] platforms = new Platform[] { Platform.Mac,
 			Platform.Android, Platform.iOS };
@@ -125,6 +120,18 @@ public class SyncEngineUtil {
 			throws NumberFormatException, Exception {
 		return Integer.parseInt(CommonUtils.getValueFromConfig(c,
 				"acceptance.messages.count"));
+	}
+
+	public static void defineHeadlessEnvironment() {
+		System.setProperty("java.awt.headless", "false");
+	}
+
+	public static void disableSeleniumLogs() {
+		System.setProperty("org.apache.commons.logging.Log",
+				"org.apache.commons.logging.impl.SimpleLog");
+		System.setProperty(
+				"org.apache.commons.logging.simplelog.log.org.apache.http",
+				"warn");
 	}
 
 	public static boolean isPlatformCorrect(Platform platform) {

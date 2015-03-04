@@ -8,6 +8,8 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.pages.OSXPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
 import com.wearezeta.auto.osx.steps.CommonOSXSteps;
+import com.wearezeta.auto.osx.steps.ContactListPageSteps;
+import com.wearezeta.auto.osx.steps.LoginPageSteps;
 import com.wearezeta.auto.sync.ExecutionContext;
 import com.wearezeta.auto.sync.SyncEngineUtil;
 import com.wearezeta.auto.sync.client.WireInstance;
@@ -18,6 +20,8 @@ public class OSXWireInstance extends WireInstance {
 
 	private static final Logger log = ZetaLogger.getLog(OSXWireInstance.class
 			.getSimpleName());
+
+	private String NAME_ALIAS = "user1Name";
 
 	public OSXWireInstance() throws Exception {
 		super(Platform.Mac);
@@ -56,6 +60,8 @@ public class OSXWireInstance extends WireInstance {
 		wirePath = CommonUtils.getOsxApplicationPathFromConfig(this.getClass());
 
 		appiumUrl = CommonUtils.getOsxAppiumUrlFromConfig(this.getClass());
+
+		appiumLogPath = null;
 	}
 
 	@Override
@@ -78,4 +84,23 @@ public class OSXWireInstance extends WireInstance {
 		log.debug("OSX application startup time: " + startupTime + "ms");
 	}
 
+	@Override
+	public void signInImpl(String userAlias, String email, String password)
+			throws Throwable {
+		LoginPageSteps osxLoginPageSteps = new LoginPageSteps();
+		osxLoginPageSteps.GivenISignInUsingLoginAndPassword(email, password);
+		ContactListPageSteps osxClPageSteps = new ContactListPageSteps();
+		osxClPageSteps.ISeeMyNameInContactList(userAlias);
+	}
+
+	@Override
+	public void openConversationImpl(String chatName) throws Exception {
+		ContactListPageSteps osxContactListPageSteps = new ContactListPageSteps();
+		osxContactListPageSteps.GivenIOpenConversationWith(chatName);
+	}
+
+	@Override
+	public String NAME_ALIAS() {
+		return NAME_ALIAS;
+	}
 }

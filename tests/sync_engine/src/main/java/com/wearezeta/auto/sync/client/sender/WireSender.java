@@ -12,6 +12,7 @@ import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.sync.ExecutionContext;
+import com.wearezeta.auto.sync.SEConstants;
 import com.wearezeta.auto.sync.SyncEngineUtil;
 import com.wearezeta.auto.sync.client.InstanceState;
 import com.wearezeta.auto.sync.client.WireInstance;
@@ -54,7 +55,7 @@ public abstract class WireSender extends Thread {
 			log.debug(toSend + " messages to send from " + platform());
 
 			String message = CommonUtils.generateGUID();
-			sendTextMessage(SyncEngineUtil.CHAT_NAME, message);
+			sendTextMessage(SEConstants.Common.TEST_CONVERSATION, message);
 			toSend--;
 
 			if (parent.getMessagesSendingInterval() > 0) {
@@ -84,7 +85,8 @@ public abstract class WireSender extends Thread {
 
 		try {
 			if (parent.isSendToBackend()) {
-				sendTextMessageBackend(SyncEngineUtil.CHAT_NAME, message);
+				sendTextMessageBackend(SEConstants.Common.TEST_CONVERSATION,
+						message);
 			} else {
 				sendTextMessageClient(message);
 			}

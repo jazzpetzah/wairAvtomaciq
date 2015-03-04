@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.BuildVersionInfo;
 import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.sync.ExecutionContext;
+import com.wearezeta.auto.sync.SEConstants;
 import com.wearezeta.auto.sync.SyncEngineUtil;
 import com.wearezeta.auto.sync.client.listener.WireListener;
 import com.wearezeta.auto.sync.client.platform.AndroidWireInstance;
@@ -23,6 +25,9 @@ public abstract class WireInstance {
 	private static final Logger log = ZetaLogger.getLog(WireInstance.class
 			.getSimpleName());
 
+	protected final ClientUsersManager usrMgr = ClientUsersManager
+			.getInstance();
+
 	// settings
 	protected boolean enabled = false;
 	protected boolean sendToBackend = false;
@@ -33,6 +38,7 @@ public abstract class WireInstance {
 
 	protected String wirePath;
 	protected String appiumUrl;
+	protected String appiumLogPath;
 
 	// state
 	private InstanceState state = InstanceState.CREATED;
@@ -44,7 +50,7 @@ public abstract class WireInstance {
 
 	// results
 	protected long startupTime;
-	private boolean isOrderCorrect;
+	private boolean orderCorrect;
 	private ArrayList<MessageEntry> messagesListAfterTest;
 	private BuildVersionInfo versionInfo;
 	private ClientDeviceInfo deviceInfo;
@@ -80,6 +86,8 @@ public abstract class WireInstance {
 		}
 	}
 
+	public abstract String NAME_ALIAS();
+
 	public abstract void readPlatformSettings() throws Exception;
 
 	public abstract void createSender();
@@ -89,12 +97,67 @@ public abstract class WireInstance {
 	public Runnable startClientProcedure() {
 		return new Runnable() {
 			public void run() {
-				startClientProcedureImpl();
+				if (enabled) {
+					startClientProcedureImpl();
+				} else {
+					log.debug(String.format("%s: execution disabled. Skipped.",
+							platform));
+				}
 			}
 		};
 	}
 
 	public abstract void startClientProcedureImpl();
+
+	public Runnable signInAndOpenConversation() {
+		return new Runnable() {
+			public void run() {
+				if (enabled) {
+					try {
+						// resolve user email and password by aliases
+						String email = usrMgr.findUserByNameOrNameAlias(
+								NAME_ALIAS()).getEmail();
+						String password = usrMgr.findUserByNameOrNameAlias(
+								NAME_ALIAS()).getPassword();
+						log.debug(String.format(
+								"%s: Found user data %s:%s for alias %s",
+								platform, email, password, NAME_ALIAS()));
+						log.debug(String.format(
+								"%s: Started sign in using credentials %s:%s",
+								platform, email, password));
+						signInImpl(NAME_ALIAS(), email, password);
+					} catch (Throwable e) {
+						log.fatal(String
+								.format("%s: Client crashed during sign in procedure.\n%s",
+										platform, e.getMessage()));
+						e.printStackTrace();
+						state = InstanceState.ERROR_CRASHED;
+					}
+					try {
+						log.debug(String.format("%s: Open test conversation",
+								platform));
+						openConversationImpl(SEConstants.Common.TEST_CONVERSATION);
+					} catch (Throwable e) {
+						log.fatal(String
+								.format("%s: Client crashed on opening conversation.\n%s",
+										platform, e.getMessage()));
+						e.printStackTrace();
+						state = InstanceState.ERROR_CRASHED;
+					}
+					log.debug(String
+							.format("%s: Client login finished %s",
+									platform,
+									(state == InstanceState.ERROR_CRASHED) ? "with errors."
+											: "successfully."));
+				}
+			}
+		};
+	}
+
+	public abstract void signInImpl(String userAlias, String email,
+			String password) throws Throwable;
+
+	public abstract void openConversationImpl(String chatName) throws Exception;
 
 	public void closeAndClear() throws Exception {
 		if (enabled) {
@@ -202,14 +265,6 @@ public abstract class WireInstance {
 		this.userInstance = userInstance;
 	}
 
-	public boolean isOrderCorrect() {
-		return isOrderCorrect;
-	}
-
-	public void setOrderCorrect(boolean isOrderCorrect) {
-		this.isOrderCorrect = isOrderCorrect;
-	}
-
 	public BuildVersionInfo getVersionInfo() {
 		return versionInfo;
 	}
@@ -224,5 +279,13 @@ public abstract class WireInstance {
 
 	public void setDeviceInfo(ClientDeviceInfo deviceInfo) {
 		this.deviceInfo = deviceInfo;
+	}
+
+	public boolean isOrderCorrect() {
+		return orderCorrect;
+	}
+
+	public void setOrderCorrect(boolean orderCorrect) {
+		this.orderCorrect = orderCorrect;
 	}
 }
