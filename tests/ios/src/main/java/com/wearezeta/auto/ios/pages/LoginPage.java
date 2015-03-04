@@ -24,7 +24,6 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class LoginPage extends IOSPage {
 
-	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(LoginPage.class
 			.getSimpleName());
 

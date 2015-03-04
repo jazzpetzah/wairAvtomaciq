@@ -161,6 +161,12 @@ public class ContactListPage extends IOSPage {
 			if (flag) {
 				if (contactListNames.isEmpty()) {
 					log.debug(driver.getPageSource());
+					try {
+						ImageUtil.storeImageToFile(
+								DriverUtils.takeScreenshot(getDriver()),
+								"/Project/ios_crash_debug.png");
+					} catch (IOException e) {
+					}
 					continue;
 				}
 				WebElement el = contactListNames
