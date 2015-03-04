@@ -72,6 +72,7 @@ public abstract class WireInstance {
 					+ "from config file. Set to '0' by default");
 		}
 
+		createReporter();
 		if (enabled) {
 			createSender();
 			createListener();
