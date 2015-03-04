@@ -551,7 +551,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  | SoundCloudLink                                                                       |
       | user1Email | user1Password | user1Name | user2Name | user3Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
-  @staging @id1137
+  @regression @id1137
   Scenario Outline: Verify appearance of title bar for conversation, restored from background
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
