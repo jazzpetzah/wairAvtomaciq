@@ -11,6 +11,16 @@ public final class AndroidLocators {
 
 	public static final String CLASS_NAME = "com.wearezeta.auto.android.locators.AndroidLocators";
 
+	
+	public static final class Gmail {
+		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME
+				+ "$Gmail";
+		
+		public static final String idSubject = "com.google.android.gm:id/subject";
+		
+		public static final String idBoby = "com.google.android.gm:id/body";
+	}
+	
 	public static final class Browsers {
 		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME
 				+ "$Browsers";
@@ -442,6 +452,11 @@ public final class AndroidLocators {
 
 		public static final String xpathTopConversationContact = "//android.widget.TextView[@text='%s']";
 
+		
+		public static final String xpathGmailLink = "//android.widget.TextView[@text='Gmail']";
+		
+		public static final String xpathDestinationFrame = "//*[@resource-id='android:id/resolver_grid' or @resource-id='android:id/resolver_list']";
+		
 		public static final String idParticipantsClose = LOCATORS_PACKAGE
 				+ ":id/gtv__participants__close";
 
@@ -485,6 +500,10 @@ public final class AndroidLocators {
 				+ ":id/ttv_pickuser_searchconversation_name";
 
 		public static final String xpathOtherText = "//android.widget.ListView/android.widget.LinearLayout/android.widget.TextView[@text='OTHERS']";
+		
+		public static final String xpathSendInvitationFrame = "//android.widget.LinearLayout[child::android.widget.FrameLayout[@resource-id='"
+				+ LOCATORS_PACKAGE
+				+ ":id/fl_pickuser__invite__bubble']]";
 
 		public static final String xpathPeoplePickerGroup = "//android.widget.TextView[@resource-id='"
 				+ LOCATORS_PACKAGE

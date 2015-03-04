@@ -24,6 +24,12 @@ public class CommonAndroidPage extends AndroidPage {
 		// TODO Auto-generated constructor stub
 	}
 
+	@FindBy(id = AndroidLocators.Gmail.idSubject)
+	private WebElement gmailSubject;
+
+	@FindBy(id = AndroidLocators.Gmail.idBoby)
+	private WebElement gmailContent;
+
 	@FindBy(id = AndroidLocators.Browsers.idFirefoxUrlBar)
 	private WebElement urlBar;
 
@@ -103,13 +109,23 @@ public class CommonAndroidPage extends AndroidPage {
 
 	private void setFirefoxBrowserURL(String link) throws Exception {
 		refreshUITree();
-		DriverUtils.waitUntilElementAppears(this.getDriver(),By.id(AndroidLocators.Browsers.idFirefoxUrlBar));
+		DriverUtils.waitUntilElementAppears(this.getDriver(),
+				By.id(AndroidLocators.Browsers.idFirefoxUrlBar));
 		urlBar.click();
 		for (int i = 0; i < 10; i++) {
 			this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_DEL);
 		}
 		urlBar.sendKeys(link);
 		this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_ENTER);
+	}
+
+	public String getGmailSubject() {
+		getWait().until(ExpectedConditions.visibilityOf(gmailSubject));
+		return gmailSubject.getText();
+	}
+
+	public boolean mailContains(String email) {
+		return gmailContent.getText().contains(email);
 	}
 
 }
