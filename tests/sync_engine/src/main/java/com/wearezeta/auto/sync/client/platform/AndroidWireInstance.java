@@ -84,7 +84,8 @@ public class AndroidWireInstance extends WireInstance {
 
 	@Override
 	public void closeAndClearImpl() throws Exception {
-		PagesCollection.loginPage.close();
+		if (PagesCollection.loginPage != null)
+			PagesCollection.loginPage.close();
 		AndroidPage.clearPagesCollection();
 	}
 
@@ -126,9 +127,7 @@ public class AndroidWireInstance extends WireInstance {
 				log.error("Failed to read Android application startup time from Appium log.\n"
 						+ "Approximate value will be used. " + e.getMessage());
 			}
-			startupTime = endDate - startDate;
-
-			log.debug("Android application startup time: " + startupTime + "ms");
+			reporter.setStartupTime(endDate - startDate);
 		}
 	}
 
@@ -158,7 +157,7 @@ public class AndroidWireInstance extends WireInstance {
 	}
 
 	@Override
-	public void createTestResults() {
+	public void createReporter() {
 		this.reporter = new AndroidInstanceReporter(this);
 	}
 }

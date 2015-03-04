@@ -10,6 +10,7 @@ import com.wearezeta.auto.sync.client.WireInstance;
 
 public abstract class InstanceReporter {
 
+	private long startupTime;
 	private ArrayList<MessageEntry> allMessagesList = new ArrayList<MessageEntry>();
 	private boolean orderCorrect;
 	private BuildVersionInfo version;
@@ -86,5 +87,13 @@ public abstract class InstanceReporter {
 
 	public void setDevice(ClientDeviceInfo device) {
 		this.device = device;
+	}
+
+	public long getStartupTime() {
+		return startupTime;
+	}
+
+	public void setStartupTime(long startupTime) {
+		this.startupTime = startupTime;
 	}
 }

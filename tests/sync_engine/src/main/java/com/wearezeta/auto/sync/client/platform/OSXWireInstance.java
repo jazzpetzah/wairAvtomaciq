@@ -67,22 +67,16 @@ public class OSXWireInstance extends WireInstance {
 
 	@Override
 	public void closeAndClearImpl() throws Exception {
-		PagesCollection.loginPage.close();
+		if (PagesCollection.loginPage != null)
+			PagesCollection.loginPage.close();
 		OSXPage.clearPagesCollection();
 	}
 
 	@Override
-	public void startClientProcedureImpl() {
+	public void startClientProcedureImpl() throws Exception {
 		CommonOSXSteps osxSteps = new CommonOSXSteps();
-		try {
-			osxSteps.setUp();
-		} catch (Exception e) {
-			log.debug("Failed to start OSX client. Error message: "
-					+ e.getMessage());
-			e.printStackTrace();
-		}
-		startupTime = osxSteps.startupTime;
-		log.debug("OSX application startup time: " + startupTime + "ms");
+		osxSteps.setUp();
+		reporter.setStartupTime(osxSteps.startupTime);
 	}
 
 	@Override
@@ -106,7 +100,7 @@ public class OSXWireInstance extends WireInstance {
 	}
 
 	@Override
-	public void createTestResults() {
+	public void createReporter() {
 		this.reporter = new OSXInstanceReporter(this);
 	}
 }

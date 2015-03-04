@@ -78,23 +78,18 @@ public class IOSWireInstance extends WireInstance {
 
 	@Override
 	public void closeAndClearImpl() throws Exception {
-		PagesCollection.loginPage.close();
+		if (PagesCollection.loginPage != null)
+			PagesCollection.loginPage.close();
 		IOSPage.clearPagesCollection();
 		IOSKeyboard.dispose();
 	}
 
 	@Override
-	public void startClientProcedureImpl() {
+	public void startClientProcedureImpl() throws Exception {
 		if (PagesCollection.loginPage == null) {
 			CommonIOSSteps iosSteps = new CommonIOSSteps();
 			long startDate = new Date().getTime();
-			try {
-				iosSteps.setUpAcceptAlerts();
-			} catch (Exception e) {
-				log.debug("Failed to start iOS client. Error message: "
-						+ e.getMessage());
-				e.printStackTrace();
-			}
+			iosSteps.setUpAcceptAlerts();
 			long endDate = new Date().getTime();
 			try {
 				startDate = SyncEngineUtil.readDateFromAppiumLog(appiumLogPath);
@@ -102,8 +97,7 @@ public class IOSWireInstance extends WireInstance {
 				log.error("Failed to read iOS application startup time from Appium log.\n"
 						+ "Approximate value will be used. " + e.getMessage());
 			}
-			startupTime = endDate - startDate;
-			log.debug("iOS application startup time: " + startupTime + "ms");
+			reporter.setStartupTime(endDate - startDate);
 			try {
 				com.wearezeta.auto.ios.pages.PagesCollection.loginPage
 						.ignoreUpdate();
@@ -136,7 +130,7 @@ public class IOSWireInstance extends WireInstance {
 	}
 
 	@Override
-	public void createTestResults() {
+	public void createReporter() {
 		this.reporter = new IOSInstanceReporter(this);
 	}
 }

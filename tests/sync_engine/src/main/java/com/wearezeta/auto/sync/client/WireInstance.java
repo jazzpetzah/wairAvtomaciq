@@ -37,7 +37,7 @@ public abstract class WireInstance {
 	protected String appiumLogPath;
 
 	// state
-	private InstanceState state = InstanceState.CREATED;
+	protected InstanceState state = InstanceState.CREATED;
 
 	protected WireSender sender;
 	protected WireListener listener;
@@ -46,7 +46,6 @@ public abstract class WireInstance {
 
 	// results
 	protected InstanceReporter reporter;
-	protected long startupTime;
 
 	public WireInstance(Platform platform) throws Exception {
 		this.platform = platform;
@@ -87,13 +86,24 @@ public abstract class WireInstance {
 
 	public abstract void createListener();
 
-	public abstract void createTestResults();
+	public abstract void createReporter();
 
 	public Runnable startClientProcedure() {
 		return new Runnable() {
 			public void run() {
 				if (enabled) {
-					startClientProcedureImpl();
+					try {
+						startClientProcedureImpl();
+						log.debug(String.format(
+								"%s: application started in %sms", platform,
+								reporter.getStartupTime()));
+					} catch (Exception e) {
+						log.debug(String.format(
+								"%s: failed to start Wire.\n%s", platform,
+								e.getMessage()));
+						state = InstanceState.ERROR_CRASHED;
+						reporter.setStartupTime(0);
+					}
 				} else {
 					log.debug(String.format("%s: execution disabled. Skipped.",
 							platform));
@@ -102,7 +112,7 @@ public abstract class WireInstance {
 		};
 	}
 
-	public abstract void startClientProcedureImpl();
+	public abstract void startClientProcedureImpl() throws Exception;
 
 	public Runnable signInAndOpenConversation() {
 		return new Runnable() {
@@ -205,14 +215,6 @@ public abstract class WireInstance {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
-	}
-
-	public long getStartupTime() {
-		return startupTime;
-	}
-
-	public void setStartupTime(long startupTime) {
-		this.startupTime = startupTime;
 	}
 
 	public InstanceState getState() {

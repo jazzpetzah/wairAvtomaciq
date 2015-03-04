@@ -61,8 +61,9 @@ public class ReportData {
 			if (client.getValue().isEnabled()) {
 				user.name = client.getValue().getUserInstance().getEmail();
 				user.loggedOnPlatform = client.getKey();
-				user.startupTime = Double.toString(client.getValue()
-						.getStartupTime() / 1000d) + "s";
+				user.startupTime = Double.toString(client.getValue().reporter()
+						.getStartupTime() / 1000d)
+						+ "s";
 				user.buildVersion = client.getValue().reporter().getVersion();
 				user.deviceData = client.getValue().reporter().getDevice();
 				user.isEnabled = true;
