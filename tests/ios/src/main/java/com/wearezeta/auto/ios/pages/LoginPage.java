@@ -153,7 +153,11 @@ public class LoginPage extends IOSPage {
 	public void setLogin(String login) throws Exception {
 		String script = String.format(IOSLocators.scriptSignInEmailPath
 				+ ".setValue(\"%s\")", login);
-		driver.executeScript(script);
+		try {
+			driver.executeScript(script);
+		} catch (WebDriverException ex) {
+			log.debug("fucking appium! " + ex.getMessage());
+		}
 	}
 
 	public String getPassword() {
@@ -163,7 +167,11 @@ public class LoginPage extends IOSPage {
 	public void setPassword(String password) throws Exception {
 		String script = String.format(IOSLocators.scriptSignInPasswordPath
 				+ ".setValue(\"%s\")", password);
-		driver.executeScript(script);
+		try {
+			driver.executeScript(script);
+		} catch (WebDriverException ex) {
+			log.debug("fucking web appium! " + ex.getMessage());
+		}
 	}
 
 	public boolean waitForLogin() throws Exception {
