@@ -624,6 +624,8 @@ public final class AndroidLocators {
 		public static final String idNextArrow = LOCATORS_PACKAGE
 				+ ":id/gtv__sign_up__next";
 
+		public static final String idSignUpGalleryIcon = LOCATORS_PACKAGE + ":id/gtv__sign_up__gallery_icon";
+		
 		public static final String xpathNameEdit42 = "//android.widget.EditText";
 
 		public static final String xpathNewPasswordField42 = "//android.widget.EditText";
