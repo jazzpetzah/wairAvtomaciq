@@ -28,6 +28,7 @@ public class ContactListPageSteps {
 		Assert.assertTrue("Username : " + name
 				+ " dind't appear in contact list",
 				PagesCollection.loginPage.isLoginFinished(name));
+		PagesCollection.loginPage.waitForLaterButton(5);
 		PagesCollection.peoplePickerPage = PagesCollection.loginPage
 				.clickLaterButton();
 		if (null != PagesCollection.peoplePickerPage) {
