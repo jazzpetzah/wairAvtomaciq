@@ -61,6 +61,11 @@ public class LoginPageSteps {
 		invitationPageSteps.ISeeInvitationPage();
 		invitationPageSteps.IEnterInvitationCode();
 
+		//workaround for IE and Safari
+		if (PagesCollection.loginPage != null) {
+			PagesCollection.authorizationPage.clickSignInButton();
+		}
+		
 		this.IEnterEmail(login);
 		this.IEnterPassword(password);
 		this.IPressSignInButton();
