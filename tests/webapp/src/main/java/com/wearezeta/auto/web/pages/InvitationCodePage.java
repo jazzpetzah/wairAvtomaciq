@@ -39,8 +39,9 @@ public class InvitationCodePage extends WebPage {
 		codeInput.sendKeys(code);
 	}
 
-	public AuthorizationPage proceed() throws Exception {
+	public LoginPage proceed() throws Exception {
 		proceedButton.click();
-		return new AuthorizationPage(this.getDriver(), this.getWait());
+		String url = this.getUrl() + "#login";
+		return new LoginPage(this.getDriver(), this.getWait(), url);
 	}
 }
