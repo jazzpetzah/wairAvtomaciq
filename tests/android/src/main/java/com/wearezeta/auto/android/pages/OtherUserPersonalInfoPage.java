@@ -263,7 +263,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	public String getSubHeader() {
-		return participantsSubHeader.getText();
+		return participantsSubHeader.getText().toLowerCase();
 	}
 
 	public String getConversationName() {
@@ -297,7 +297,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 			if (avatarName.equalsIgnoreCase(contact1)) {
 				BufferedImage realImage = ImageUtil.readImageFromFile(path
 						+ AVATAR_WITH_IMAGE);
-				double score = ImageUtil.getOverlapScore(realImage, avatarIcon);
+				double score = ImageUtil.getOverlapScore(realImage, avatarIcon,ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 				if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
 					return false;
 				}
@@ -307,7 +307,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 				// must be a yellow user with initials AT
 				BufferedImage realImage = ImageUtil.readImageFromFile(path
 						+ AVATAR_NO_IMAGE);
-				double score = ImageUtil.getOverlapScore(realImage, avatarIcon);
+				double score = ImageUtil.getOverlapScore(realImage, avatarIcon,ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 				if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
 					return false;
 				}

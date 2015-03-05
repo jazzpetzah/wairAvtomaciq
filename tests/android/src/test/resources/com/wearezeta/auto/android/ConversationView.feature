@@ -192,7 +192,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id1504 @staging
+  @id1504 @regression
   Scenario Outline: Verify you can play/pause media from the Media Bar (SoundCloud)
     Given There are 3 users where <Name> is me
     Given <Name> is connected to <Contact1>,<Contact2>

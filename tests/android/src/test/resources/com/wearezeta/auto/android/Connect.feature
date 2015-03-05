@@ -442,7 +442,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | Contact1  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @id1397 @staging
+  @id1397 @regression
   Scenario Outline: Verify you do not receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>

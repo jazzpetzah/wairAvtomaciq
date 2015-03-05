@@ -221,7 +221,7 @@ Feature: People View
     And I see <Contact1> user profile page
     And I press Add button
     And I see People picker page
-    And I dont see keyboard
+    #And I dont see keyboard
     And I tap on connected user <Contact2> on People picker page
     And I see user <Contact2> on People picker page is selected
     And I tap on connected user <Contact2> on People picker page
@@ -292,7 +292,7 @@ Feature: People View
     And I see user <Contact3> on People picker page is NOT selected
     And I click close button to dismiss people view
     And I see <Contact1> user profile page
-    And I swipe down on other user profile page
+    And I close user profile page to return to dialog page
     And I see dialog page
     And I swipe right on Dialog page
     And I see Contact list with my name <Name>

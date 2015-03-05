@@ -26,6 +26,8 @@
 		<defaultEmail>smoketester.ios@wearezeta.com</defaultEmail>
 		<iosClientInfoPlist>/Project/builds_info/Info_ios.plist</iosClientInfoPlist>
 		<deviceName>iPhone 6</deviceName>
+		<perfDuration>1</perfDuration> <!-- Performance test duration, minutes -->
+		<perfUsersCount>11</perfUsersCount> <!-- The number of contacts for perf test -->
 	</properties>
 
 	<dependencies>
@@ -160,6 +162,10 @@
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/test/resources</directory>
 				<filtering>true</filtering>
 			</resource>
 		</resources>

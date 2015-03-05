@@ -37,16 +37,13 @@ public final class PerformanceCommon {
 	public static final int SIMULTANEOUS_MSGS_COUNT = 5;
 
 	private static final String DEFAULT_PERF_IMAGE = "perf/default.jpg";
-	private InputStream defaultImage = null;
 
 	private static PerformanceCommon instance = null;
 
 	private PerformanceCommon() {
-		final ClassLoader classLoader = this.getClass().getClassLoader();
-		defaultImage = classLoader.getResourceAsStream(DEFAULT_PERF_IMAGE);
 	}
 
-	public static PerformanceCommon getInstance() {
+	public synchronized static PerformanceCommon getInstance() {
 		if (instance == null) {
 			instance = new PerformanceCommon();
 		}
@@ -85,10 +82,17 @@ public final class PerformanceCommon {
 
 			loop.run();
 
-			Thread.sleep((MIN_WAIT_SECONDS + random.nextInt(MAX_WAIT_SECONDS
-					- MIN_WAIT_SECONDS + 1)) * 1000);
+			final long sleepDurationSeconds = (MIN_WAIT_SECONDS + random
+					.nextInt(MAX_WAIT_SECONDS - MIN_WAIT_SECONDS + 1));
+			getLogger().debug(
+					String.format("Sleeping %s seconds", sleepDurationSeconds));
+			Thread.sleep(sleepDurationSeconds * 1000);
 			minutesElapsed = java.time.Duration.between(startDateTime,
 					LocalDateTime.now()).toMinutes();
+			getLogger()
+					.debug(String
+							.format("Approximately %s minute(s) left till the end of the perf test",
+									timeoutMinutes - minutesElapsed));
 		} while (minutesElapsed <= timeoutMinutes);
 	}
 
@@ -120,18 +124,19 @@ public final class PerformanceCommon {
 
 	private void sendDefaultImageToUser(int imagesCount) throws Exception {
 		final ClientUser selfUser = getUserManager().getSelfUserOrThrowError();
-		for (int i = 0; i < imagesCount; i++) {
-			final String contact = getRandomContactName(selfUser);
-			BackendAPIWrappers.sendPictureToChatByName(selfUser, contact,
-					defaultImage);
+		final ClassLoader classLoader = this.getClass().getClassLoader();
+		final InputStream defaultImage = classLoader
+				.getResourceAsStream(DEFAULT_PERF_IMAGE);
+		try {
+			for (int i = 0; i < imagesCount; i++) {
+				final String contact = getRandomContactName(selfUser);
+				BackendAPIWrappers.sendPictureToChatByName(selfUser, contact,
+						defaultImage);
+			}
+		} finally {
+			if (defaultImage != null) {
+				defaultImage.close();
+			}
 		}
-	}
-
-	@Override
-	protected void finalize() throws Throwable {
-		if (defaultImage != null) {
-			defaultImage.close();
-		}
-		super.finalize();
 	}
 }

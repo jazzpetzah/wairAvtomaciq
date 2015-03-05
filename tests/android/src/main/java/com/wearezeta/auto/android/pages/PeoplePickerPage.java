@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -54,8 +55,14 @@ public class PeoplePickerPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idNoResultsFound")
 	private WebElement noResults;
 
+	@ZetaFindBy(how = ZetaHow.XPATH, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "xpathSendInvitationFrame")
+	private WebElement sendInvitationFrame;
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectToHeader")
 	private List<WebElement> connectToHeader;
+
+	@FindBy(xpath = AndroidLocators.PeoplePickerPage.xpathGmailLink)
+	private WebElement gmailLink;
 
 	public PeoplePickerPage(ZetaAndroidDriver driver, WebDriverWait wait)
 			throws Exception {
@@ -250,5 +257,26 @@ public class PeoplePickerPage extends AndroidPage {
 				contact));
 		DriverUtils.androidLongClick(this.getDriver(), el);
 		return this;
+	}
+
+	public void tapOnSendInvitation() {
+		sendInvitationFrame.click();
+	}
+
+	public CommonAndroidPage tapOnGmailLink() throws NumberFormatException,
+			Exception {
+		if (!isVisible(gmailLink)) {
+			DriverUtils
+					.swipeUp(
+							this.getDriver(),
+							this.getDriver()
+									.findElementByXPath(
+											AndroidLocators.PeoplePickerPage.xpathDestinationFrame),
+							500, 50, 50);
+			this.getWait().until(
+					ExpectedConditions.elementToBeClickable(gmailLink));
+		}
+		gmailLink.click();
+		return new CommonAndroidPage(this.getDriver(), this.getWait());
 	}
 }
