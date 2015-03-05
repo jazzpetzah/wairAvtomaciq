@@ -3,7 +3,12 @@ package com.wearezeta.auto.ios.tools;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+import org.eclipse.jetty.util.log.Log;
+import org.openqa.selenium.WebDriverException;
+
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class IOSKeyboard {
 	private static final String TAP_KEYBOARD_BUTTON = "target.frontMostApp().keyboard().elements()[\"%s\"].tap();";
@@ -12,6 +17,8 @@ public class IOSKeyboard {
 	private List<KeyboardState> CACHED_STATES = new ArrayList<KeyboardState>();
 	private static final String DEFAULT_RETURN_NAME = "Send";
 	
+	private static final Logger log = ZetaLogger.getLog(IOSKeyboard.class
+			.getSimpleName());
 	private String returnName = DEFAULT_RETURN_NAME;
 
 	public String getReturnName() {
@@ -115,9 +122,13 @@ public class IOSKeyboard {
 					} 
 					break;
 			}
-
-			driver.executeScript(String.format(TAP_KEYBOARD_BUTTON,
-					messageChar));
+			
+			try {
+				driver.executeScript(String.format(TAP_KEYBOARD_BUTTON,
+						messageChar));
+			} catch (WebDriverException ex) {
+				log.debug(ex.getMessage());
+			}
 		}
 		Thread.sleep(TAP_DELAY);
 	}
