@@ -8,7 +8,7 @@ import cucumber.api.java.en.Then;
 public class TabletRegistrationPageSteps {
 	
 	/**
-	 * Initialyse profile page opened after automatic login
+	 * Initializes profile page opened after automatic login
 	 * 
 	 * @step. ^I passed login automatically$
 	 * 
