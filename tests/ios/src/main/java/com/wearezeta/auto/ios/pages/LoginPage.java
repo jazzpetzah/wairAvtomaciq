@@ -23,7 +23,6 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class LoginPage extends IOSPage {
-
 	private static final Logger log = ZetaLogger.getLog(LoginPage.class
 			.getSimpleName());
 
@@ -81,7 +80,8 @@ public class LoginPage extends IOSPage {
 
 	public String message;
 
-	public LoginPage(ZetaIOSDriver driver, WebDriverWait wait) throws Exception {
+	public LoginPage(ZetaIOSDriver driver, WebDriverWait wait)
+			throws Exception {
 		super(driver, wait);
 	}
 
@@ -180,12 +180,10 @@ public class LoginPage extends IOSPage {
 
 	public Boolean isLoginFinished(String contact) throws Exception {
 		try {
-			this.getWait().until(
-					ExpectedConditions.presenceOfElementLocated(By
-							.name(contact)));
-			this.getWait().until(
-					ExpectedConditions.visibilityOfElementLocated(By
-							.name(contact)));
+			this.getWait().until(ExpectedConditions.presenceOfElementLocated(By
+					.name(contact)));
+			this.getWait().until(ExpectedConditions.visibilityOfElementLocated(By
+					.name(contact)));
 		} catch (WebDriverException ex) {
 		}
 		return DriverUtils.waitUntilElementAppears(driver, By.name(contact));
@@ -205,30 +203,25 @@ public class LoginPage extends IOSPage {
 	public void tapHoldEmailInput() {
 		message = driver.findElement(By.name(IOSLocators.nameLoginField))
 				.getText();
-		this.getDriver().tap(
-				1,
-				this.getDriver().findElement(
-						By.name(IOSLocators.nameLoginField)), 1000);
+		this.getDriver().tap(1, this.getDriver().findElement(By.name(IOSLocators.nameLoginField)),
+				1000);
 	}
 
 	public void openTermsLink() {
 		Point p = termsButton.getLocation();
 		Dimension k = termsButton.getSize();
-		this.getDriver().tap(1, (p.x) + (k.width - 70),
-				(p.y) + (k.height - 16), 1);
+		this.getDriver().tap(1, (p.x) + (k.width - 70), (p.y) + (k.height - 16), 1);
 	}
 
 	public void openPrivacyLink() {
 		Point p = privacyButton.getLocation();
 		Dimension k = privacyButton.getSize();
-		this.getDriver().tap(1, (p.x) + (k.width / 3), (p.y) + (k.height - 8),
-				1);
+		this.getDriver().tap(1, (p.x) + (k.width / 3), (p.y) + (k.height - 8), 1);
 	}
 
 	public void closeTermsPrivacyController() {
-		this.getWait().until(
-				ExpectedConditions
-						.elementToBeClickable(termsPrivacyCloseButton));
+		this.getWait().until(ExpectedConditions
+				.elementToBeClickable(termsPrivacyCloseButton));
 		termsPrivacyCloseButton.click();
 	}
 

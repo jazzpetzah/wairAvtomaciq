@@ -160,13 +160,6 @@ public class ContactListPage extends IOSPage {
 			}
 			if (flag) {
 				if (contactListNames.isEmpty()) {
-					log.debug(driver.getPageSource());
-					try {
-						ImageUtil.storeImageToFile(
-								DriverUtils.takeScreenshot(getDriver()),
-								"/Project/ios_crash_debug.png");
-					} catch (IOException e) {
-					}
 					continue;
 				}
 				WebElement el = contactListNames
@@ -199,8 +192,7 @@ public class ContactListPage extends IOSPage {
 				WebElement el = contactListCells
 						.get(contactListCells.size() - 1);
 				this.getWait().until(ExpectedConditions.visibilityOf(el));
-				this.getWait().until(
-						ExpectedConditions.elementToBeClickable(el));
+				this.getWait().until(ExpectedConditions.elementToBeClickable(el));
 				DriverUtils.scrollToElement(this.getDriver(), el);
 			} else {
 				break;
@@ -229,8 +221,7 @@ public class ContactListPage extends IOSPage {
 
 	public IOSPage swipeRightOnContact(int time, String contact)
 			throws Exception {
-		DriverUtils.swipeRight(this.getDriver(),
-				findNameInContactList(contact), time);
+		DriverUtils.swipeRight(this.getDriver(), findNameInContactList(contact), time);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 
@@ -345,9 +336,9 @@ public class ContactListPage extends IOSPage {
 	public IOSPage swipeDown(int time) throws Exception {
 		Point coords = content.getLocation();
 		Dimension elementSize = content.getSize();
-		this.getDriver().swipe(coords.x + elementSize.width / 2,
-				coords.y + 150, coords.x + elementSize.width / 2,
-				coords.y + elementSize.height - 150, time);
+		this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y + 150, coords.x
+				+ elementSize.width / 2, coords.y + elementSize.height - 150,
+				time);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
@@ -363,7 +354,7 @@ public class ContactListPage extends IOSPage {
 		WebElement contact = findNameInContactList(conversation);
 		DriverUtils.clickSilenceConversationButton(this.getDriver(), contact);
 	}
-
+	
 	public void unsilenceConversation(String conversation) {
 		WebElement contact = findNameInContactList(conversation);
 		DriverUtils.clickSilenceConversationButton(this.getDriver(), contact);
@@ -396,30 +387,27 @@ public class ContactListPage extends IOSPage {
 		DriverUtils.clickArchiveConversationButton(this.getDriver(), contact);
 	}
 
-	public boolean unreadDotIsVisible(boolean visible, boolean bigUnreadDot,
-			String conversation) throws IOException {
+	public boolean unreadDotIsVisible(boolean visible, boolean bigUnreadDot, String conversation)
+			throws IOException {
 		BufferedImage unreadDot = null;
 		BufferedImage referenceImage = null;
 		double score = 0;
 		WebElement contact = findCellInContactList(conversation);
-		unreadDot = getScreenshotByCoordinates(contact.getLocation().x,
-				contact.getLocation().y + contactListContainer.getLocation().y,
-				contact.getSize().width / 4, contact.getSize().height * 2);
-		if (visible == true && bigUnreadDot == true) {
-			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "unreadDot.png");
-			score = ImageUtil.getOverlapScore(referenceImage, unreadDot,
-					ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-		} else if (visible == true && bigUnreadDot == false) {
+		unreadDot = getScreenshotByCoordinates(contact.getLocation().x, contact.getLocation().y + contactListContainer.getLocation().y, contact.getSize().width/4, contact.getSize().height*2);
+		if (visible == true && bigUnreadDot ==  true){
+		referenceImage = ImageUtil.readImageFromFile(IOSPage
+				.getImagesPath() + "unreadDot.png");
+		score = ImageUtil.getOverlapScore(referenceImage, unreadDot, ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+		} 
+		else if (visible == true && bigUnreadDot ==  false){
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "unreadDot_small.png");
-			score = ImageUtil.getOverlapScore(referenceImage, unreadDot,
-					ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-		} else if (visible == false && bigUnreadDot == false) {
+			score = ImageUtil.getOverlapScore(referenceImage, unreadDot, ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+			}
+		else if (visible == false && bigUnreadDot ==  false){
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "noUnreadDot.png");
-			score = ImageUtil.getOverlapScore(referenceImage, unreadDot,
-					ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+			score = ImageUtil.getOverlapScore(referenceImage, unreadDot, ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 		}
 
 		if (score <= MIN_ACCEPTABLE_IMAGE_UNREADDOT_VALUE) {
