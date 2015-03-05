@@ -55,5 +55,5 @@ Feature: Sign In
    
 
     Examples: 
-      | Login    				  | Password      | Name      |
-      | smoketester@wearezeta.com | user1Password | user1Name |
+      | Login    			  	      | Password      | Name      |
+      | smoketester.ios@wearezeta.com | user1Password | user1Name |

@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
+import javax.script.ScriptException;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -306,5 +308,28 @@ public class LoginPage extends IOSPage {
 			}
 		}
 	  }
+	}
+	
+	public void pasteIntoSafariInput(){
+		for (WebElement uiButton : uiButtons){
+			String nameOfButton = uiButton.getAttribute("name");
+			if(nameOfButton.equals("URL")){
+				DriverUtils.iOSLongTap(getDriver(), uiButton);
+				//this.inputStringFromKeyboard(URL);
+			}
+		}
+//		for (WebElement uiButton2 : uiButtons){
+//			String nameOfButton2 = uiButton2.getAttribute("name");
+//			if(nameOfButton2.equals("Clear text")){
+//				DriverUtils.mobileTapByCoordinates(getDriver(), uiButton2);
+//		}
+//	}
+//		for (WebElement uiButton3 : uiButtons){
+//			String nameOfButton3 = uiButton3.getAttribute("name");
+//			if(nameOfButton3.equals("URL")){
+//				//DriverUtils.mobileTapByCoordinates(getDriver(), uiButton3);
+//				DriverUtils.iOSLongTap(getDriver(), uiButton3);
+//		}
+//	}
 	}
 }

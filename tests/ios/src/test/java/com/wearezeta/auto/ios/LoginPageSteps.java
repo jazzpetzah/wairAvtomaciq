@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios;
 
 import org.junit.Assert;
+import org.openqa.selenium.By;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.Map;
 import java.util.concurrent.Future;
 
 import javax.mail.Message;
+import javax.script.ScriptException;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
@@ -16,6 +18,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
@@ -378,8 +381,13 @@ public class LoginPageSteps {
 	@When("^I click on Change Password button on SignIn$")
 	public void IClickOnChangePasswordButtonOnSignIn() throws Exception{
 		PagesCollection.personalInfoPage = PagesCollection.loginPage.tapChangePasswordButton();
+		
 	}
-	
+
+	@Then("^I change URL to staging$")
+	public void IChangeURLToStaging() throws InterruptedException{
+		PagesCollection.loginPage.changeURLInBrowser(stagingURLForgot);
+	}
 	
 	/**
 	 * Types the mail into the field, where change password link should be send to
@@ -393,9 +401,17 @@ public class LoginPageSteps {
 		email = usrMgr.replaceAliasesOccurences(email,FindBy.EMAIL_ALIAS);		
 		PagesCollection.loginPage.tapEmailFieldToChangePassword(email);
 		
+		userToRegister = new ClientUser();
+		this.userToRegister.setName("SmoketesterReset");
+		this.userToRegister.clearNameAliases();
+		this.userToRegister.addNameAlias("SmoketesterReset");
+		this.userToRegister.setEmail(email);
+		this.userToRegister.clearEmailAliases();
+		this.userToRegister.addEmailAlias(email);
+		
 		//activate the user, to get access to the mails
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
-		expectedHeaders.put("Delivered-To",email);
+		expectedHeaders.put("Delivered-To",this.userToRegister.getEmail());
 		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
 				expectedHeaders, BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
 	}
@@ -411,16 +427,14 @@ public class LoginPageSteps {
 		PagesCollection.loginPage.tapChangePasswordButtonInWebView();
 	}
 	
-	@Then("^I change URL to staging$")
-	public void IChangeURLToStaging() throws InterruptedException{
-		PagesCollection.loginPage.changeURLInBrowser(stagingURLForgot);
-	}
 
 	@Then("^I copy link from email and past it into Safari$")
 	public void ICopyLinkFromEmailAndPastItIntoSafari() throws Exception{
 		String link = BackendAPIWrappers.getPasswordResetLink(this.activationMessage);
 		System.out.print(link);
-		PagesCollection.loginPage.changeURLInBrowser(link);
+
+		PagesCollection.loginPage.pasteIntoSafariInput();
+		//PagesCollection.loginPage.changeURLInBrowser(link);
 	}
 
 }
