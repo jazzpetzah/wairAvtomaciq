@@ -23,8 +23,8 @@ public class LoginPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
-	 * Enters user email and password into corresponding fields on sign in screen
-	 * then taps "Sign In" button
+	 * Enters user email and password into corresponding fields on sign in
+	 * screen then taps "Sign In" button
 	 * 
 	 * @step. ^I Sign in using login (.*) and password (.*)$
 	 * 
@@ -61,11 +61,12 @@ public class LoginPageSteps {
 		invitationPageSteps.ISeeInvitationPage();
 		invitationPageSteps.IEnterInvitationCode();
 
-		//workaround for IE and Safari
+		// workaround for IE and Safari
 		if (PagesCollection.loginPage != null) {
-			PagesCollection.authorizationPage.clickSignInButton();
+			PagesCollection.loginPage = PagesCollection.authorizationPage
+					.clickSignInButton();
 		}
-		
+
 		this.IEnterEmail(login);
 		this.IEnterPassword(password);
 		this.IPressSignInButton();
