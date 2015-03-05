@@ -21,7 +21,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @id38 @staging
+  @id38 @regression
   Scenario: Verify the taken photo/selected picture could be changed during registration process
     Given I see sign in screen
     When I press Join button

@@ -189,6 +189,8 @@ public final class WebAppLocators {
 	public static final class AuthorizationPage {
 		
 		public static final String xpathCreateAccountButton = "//*[contains(@class, 'btn-create-welcome') and @data-uie-name='go-register']";
+		
+		public static final String xpathSignInButton = "//*[@data-uie-name='go-sign-in']";
 	}
 	
 	public static final class RegistrationPage {

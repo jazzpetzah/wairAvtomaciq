@@ -2,7 +2,7 @@ package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
-import com.wearezeta.auto.web.pages.LoginPage;
+import com.wearezeta.auto.web.pages.AuthorizationPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
 import cucumber.api.java.en.Given;
@@ -45,7 +45,7 @@ public class InvitationCodePageSteps {
 			final ZetaWebAppDriver driver = (ZetaWebAppDriver) PlatformDrivers
 					.getInstance()
 					.getDriver(CommonWebAppSteps.CURRENT_PLATFORM);
-			PagesCollection.loginPage = new LoginPage(driver,
+			PagesCollection.authorizationPage = new AuthorizationPage(driver,
 					PlatformDrivers.createDefaultExplicitWait(driver));
 		}
 	}

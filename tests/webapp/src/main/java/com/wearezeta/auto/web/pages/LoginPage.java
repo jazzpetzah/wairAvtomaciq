@@ -38,10 +38,6 @@ public class LoginPage extends WebPage {
 			throws Exception {
 		super(driver, wait); 
 	}
-	
-	public LoginPage(ZetaWebAppDriver driver, WebDriverWait wait, String url) throws Exception {
-		super (driver, wait, url);
-	}
 
 	public boolean isVisible() {
 		WebElement page = null;
