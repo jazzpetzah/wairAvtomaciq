@@ -41,6 +41,8 @@ public class InvitationCodePage extends WebPage {
 
 	public LoginPage proceed() throws Exception {
 		proceedButton.click();
+		//waiting till page will be loaded before opening #login page
+		Thread.sleep(3000);
 		String url = this.getUrl() + "#login";
 		return new LoginPage(this.getDriver(), this.getWait(), url);
 	}

@@ -1,11 +1,15 @@
 package com.wearezeta.auto.android.pages;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.NoSuchElementException;
+
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
@@ -20,6 +24,9 @@ public class RegistrationPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConfirmButton")
 	private WebElement confirmImageButton;
+
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.RegistrationPage.CLASS_NAME, locatorKey = "idSignUpGalleryIcon")
+	protected WebElement signUpGalleryIcon;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idNameEdit")
 	protected WebElement nameField;
@@ -41,6 +48,12 @@ public class RegistrationPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConfirmCancelButton")
 	private WebElement laterBtn;
+
+	@FindBy(xpath = AndroidLocators.CommonLocators.xpathImagesFrameLayout)
+	private List<WebElement> frameLayouts;
+
+	@FindBy(xpath = AndroidLocators.CommonLocators.xpathImage)
+	private List<WebElement> image;
 
 	private static final String YOUR_NAME = "your full name";
 	private static final String EMAIL = "email";
@@ -64,11 +77,22 @@ public class RegistrationPage extends AndroidPage {
 	}
 
 	public void selectPicture() {
-		// TODO Auto-generated method stub
+		signUpGalleryIcon.click();
 	}
 
 	public void chooseFirstPhoto() {
-		// TODO Auto-generated method stub
+		refreshUITree();
+		try {
+			frameLayouts.get(0).click();
+			return;
+		} catch (Exception ex) {
+
+		}
+		try {
+			image.get(0).click();
+			return;
+		} catch (Exception ex) {
+		}
 	}
 
 	public boolean isPictureSelected() throws Exception {
