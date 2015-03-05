@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.*;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -17,11 +18,15 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class ContactListPage extends IOSPage {
-	// private static final Logger log = ZetaLogger.getLog("iOS:" +
-	// ContactListPage.class.getSimpleName());
+	
+	@SuppressWarnings("unused")
+	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
+			.getSimpleName());
+
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.90;
 	private final double MIN_ACCEPTABLE_IMAGE_UNREADDOT_VALUE = 0.99;
 
@@ -156,10 +161,14 @@ public class ContactListPage extends IOSPage {
 				}
 			}
 			if (flag) {
+				if (contactListNames.isEmpty()) {
+					continue;
+				}
 				WebElement el = contactListNames
 						.get(contactListNames.size() - 1);
 				this.getWait().until(ExpectedConditions.visibilityOf(el));
-				this.getWait().until(ExpectedConditions.elementToBeClickable(el));
+				this.getWait().until(
+						ExpectedConditions.elementToBeClickable(el));
 				DriverUtils.scrollToElement(this.getDriver(), el);
 			} else {
 				break;

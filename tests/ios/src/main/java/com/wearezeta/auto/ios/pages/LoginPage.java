@@ -185,7 +185,6 @@ public class LoginPage extends IOSPage {
 			this.getWait().until(ExpectedConditions.visibilityOfElementLocated(By
 					.name(contact)));
 		} catch (WebDriverException ex) {
-			log.debug(ex.getMessage());
 		}
 		return DriverUtils.waitUntilElementAppears(driver, By.name(contact));
 	}

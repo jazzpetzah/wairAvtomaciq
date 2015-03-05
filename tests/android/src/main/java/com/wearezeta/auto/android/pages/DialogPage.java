@@ -386,7 +386,7 @@ public class DialogPage extends AndroidPage {
 		try {
 			this.getDriver().hideKeyboard();
 		} catch (WebDriverException e) {
-			e.printStackTrace();
+			log.debug("No keyboard visible. Nothing to hide.");
 		}
 
 		String lastMessage = messagesList.get(messagesList.size() - 1)
