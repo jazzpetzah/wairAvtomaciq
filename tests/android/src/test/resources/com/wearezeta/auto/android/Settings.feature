@@ -54,6 +54,7 @@ Feature: Settings
     Given Myself is connected to <Contact>
     Given I see sign in screen
     When I press Sign in button
+    And I hide keyboard
     And I press FORGOT PASSWORD button
     And I request reset password for <Email>
     Then I reset <Name> password by URL to new <NewPassword>
