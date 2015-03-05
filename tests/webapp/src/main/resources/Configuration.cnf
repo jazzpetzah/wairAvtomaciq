@@ -9,3 +9,4 @@ driverTimeoutSeconds=${driverTimeoutSeconds}
 defaultEmail=${defaultEmail}
 browserName=${browser}
 platformName=${platform}
+webappImagesPath=${webappImagesPath}

@@ -39,10 +39,7 @@ public class InvitationCodePageSteps {
 	public void IEnterInvitationCode() throws Exception {
 		if (!skipInvitation) {
 			PagesCollection.invitationCodePage.inputCode(INVITATION_CODE);
-//			PagesCollection.loginPage = PagesCollection.invitationCodePage
-//					.proceed();
-			
-			PagesCollection.authorizationPage = PagesCollection.invitationCodePage
+			PagesCollection.loginPage = PagesCollection.invitationCodePage
 					.proceed();
 		} else {
 			final ZetaWebAppDriver driver = (ZetaWebAppDriver) PlatformDrivers
