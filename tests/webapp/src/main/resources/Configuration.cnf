@@ -3,7 +3,7 @@
 hubHost=${hubHost}
 hubPort=${hubPort}
 webappAppiumUrl=${url}
-webappApplicationPath=https://app.wire.com/login.html?env=${backendType}
+webappApplicationPath=https://app.wire.com/auth.html?env=${backendType}
 pictureResultsPath=${pictureResultsPath}
 driverTimeoutSeconds=${driverTimeoutSeconds}
 defaultEmail=${defaultEmail}
