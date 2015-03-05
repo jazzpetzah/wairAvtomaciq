@@ -62,7 +62,7 @@ public class LoginPageSteps {
 		invitationPageSteps.IEnterInvitationCode();
 
 		// workaround for IE and Safari
-		if (PagesCollection.loginPage != null) {
+		if (PagesCollection.loginPage == null) {
 			PagesCollection.loginPage = PagesCollection.authorizationPage
 					.clickSignInButton();
 		}
