@@ -3,7 +3,8 @@ package com.wearezeta.auto.sync;
 public class SEConstants {
 
 	public static final class Acceptance {
-
+		
+		public static final int ACCEPTED_RECEIVE_TIME_MS = 5000;
 	}
 
 	public static final class Execution {

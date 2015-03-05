@@ -13,6 +13,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.BuildVersionInfo;
 import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.sync.ExecutionContext;
+import com.wearezeta.auto.sync.SEConstants;
 import com.wearezeta.auto.sync.client.InstanceState;
 import com.wearezeta.auto.sync.client.WireInstance;
 import com.wearezeta.auto.sync.client.sender.WireSender;
@@ -186,7 +187,7 @@ public class ReportData {
 						report.iosReceiveTime = Double.toString(time / 1000d)
 								+ "s";
 						iosSumReceiveTime += time;
-						if (time > 5000) {
+						if (time > SEConstants.Acceptance.ACCEPTED_RECEIVE_TIME_MS) {
 							report.isIosReceiveTimeOK = false;
 						} else {
 							report.isIosReceiveTimeOK = true;
@@ -203,7 +204,7 @@ public class ReportData {
 						androidSumReceiveTime += time;
 						report.androidReceiveTime = Double
 								.toString(time / 1000d) + "s";
-						if (time > 5000) {
+						if (time > SEConstants.Acceptance.ACCEPTED_RECEIVE_TIME_MS) {
 							report.isAndroidReceiveTimeOK = false;
 						} else {
 							report.isAndroidReceiveTimeOK = true;
@@ -223,7 +224,7 @@ public class ReportData {
 						osxSumReceiveTime += time;
 						report.osxReceiveTime = Double.toString(time / 1000d)
 								+ "s";
-						if (time > 5000) {
+						if (time > SEConstants.Acceptance.ACCEPTED_RECEIVE_TIME_MS) {
 							report.isOsxReceiveTimeOK = false;
 						} else {
 							report.isOsxReceiveTimeOK = true;
@@ -240,7 +241,7 @@ public class ReportData {
 						androidSumReceiveTime += time;
 						report.androidReceiveTime = Double
 								.toString(time / 1000d) + "s";
-						if (time > 5000) {
+						if (time > SEConstants.Acceptance.ACCEPTED_RECEIVE_TIME_MS) {
 							report.isAndroidReceiveTimeOK = false;
 						} else {
 							report.isAndroidReceiveTimeOK = true;
@@ -260,7 +261,7 @@ public class ReportData {
 						osxSumReceiveTime += time;
 						report.osxReceiveTime = Double.toString(time / 1000d)
 								+ "s";
-						if (time > 5000) {
+						if (time > SEConstants.Acceptance.ACCEPTED_RECEIVE_TIME_MS) {
 							report.isOsxReceiveTimeOK = false;
 						} else {
 							report.isOsxReceiveTimeOK = true;
@@ -276,7 +277,7 @@ public class ReportData {
 						iosSumReceiveTime += time;
 						report.iosReceiveTime = Double.toString(time / 1000d)
 								+ "s";
-						if (time > 5000) {
+						if (time > SEConstants.Acceptance.ACCEPTED_RECEIVE_TIME_MS) {
 							report.isIosReceiveTimeOK = false;
 						} else {
 							report.isIosReceiveTimeOK = true;
