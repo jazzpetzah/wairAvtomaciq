@@ -326,7 +326,7 @@ public class DialogPageSteps {
 	public void ThenISeeButtonInMedia(String iconLabel) throws Exception {
 		double score = PagesCollection.dialogPage.checkMediaControlIcon(iconLabel);
 		Assert.assertTrue(
-				"Overlap between two images has not enough score. Expected >= 0.75, current = "
-						+ score, score >= 0.75d);
+				"Overlap between two images has not enough score. Expected >= 0.72, current = "
+						+ score, score >= 0.72d);
 	}
 }
