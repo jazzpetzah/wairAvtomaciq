@@ -49,9 +49,6 @@ public class TabletDialogPageSteps {
 	 * 
 	 * @step. ^I see participant pop-over$
 	 * 
-	 * @param name
-	 *            user name string
-	 * 
 	 * @throws Exception
 	 */
 	@Then("^I see participant pop-over$")
@@ -78,5 +75,31 @@ public class TabletDialogPageSteps {
 				.isOtherUserNameVisible(contact));
 		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
 				.isOtherUserMailVisible(email));
+	}
+	
+	/**
+	 * Check that participant pop-over will be closed after tapping on close button 
+	 * 
+	 * @step. ^I can close pop-over by close button$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I can close pop-over by close button$")
+	public void ThenICanClosePopOverByCloseButton() throws Exception {
+		TabletPagesCollection.dialogPage.tapOnParticipantsClose();
+		Assert.assertTrue(!TabletPagesCollection.dialogPage.isPopOverDisplayed());
+	}
+	
+	/**
+	 * Check that participant pop-over will be closed after tapping outside pop-over
+	 * 
+	 * @step. ^I can close pop-over by tapping outside$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I can close pop-over by tapping outside$")
+	public void ThenICanClosePopOverByTappingOutside() throws Exception {
+		TabletPagesCollection.dialogPage.tapOnProfileButton();
+		Assert.assertTrue(!TabletPagesCollection.dialogPage.isPopOverDisplayed());
 	}
 }

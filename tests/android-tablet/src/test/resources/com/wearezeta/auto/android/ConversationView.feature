@@ -12,6 +12,11 @@ Feature: Conversation View
     And I tap on profile button
     Then I see participant pop-over
     And I see <Contact> name and email in pop-over
+    And I can close pop-over by close button
+    When I tap on profile button
+    Then I see participant pop-over
+    And I see <Contact> name and email in pop-over
+    And I can close pop-over by tapping outside
 
     Examples: 
       | Login      | Password      | Name      | Contact   |

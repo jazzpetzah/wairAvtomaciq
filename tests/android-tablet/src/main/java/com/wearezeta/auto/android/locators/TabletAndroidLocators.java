@@ -31,6 +31,9 @@ public final class TabletAndroidLocators {
 		public static final String CLASS_NAME = TabletAndroidLocators.CLASS_NAME + "$TabletDialogPage";
 	
 		public static final String idProfileIcon = LOCATORS_PACKAGE + ":id/gtv__cursor_participants";
+		
+		public static final String idParticipantsClose = LOCATORS_PACKAGE
+				+ ":id/gtv__participants__close";
 	
 	}
 	
