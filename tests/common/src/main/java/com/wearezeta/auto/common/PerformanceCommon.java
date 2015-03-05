@@ -82,10 +82,17 @@ public final class PerformanceCommon {
 
 			loop.run();
 
-			Thread.sleep((MIN_WAIT_SECONDS + random.nextInt(MAX_WAIT_SECONDS
-					- MIN_WAIT_SECONDS + 1)) * 1000);
+			final long sleepDurationSeconds = (MIN_WAIT_SECONDS + random
+					.nextInt(MAX_WAIT_SECONDS - MIN_WAIT_SECONDS + 1));
+			getLogger().debug(
+					String.format("Sleeping %s seconds", sleepDurationSeconds));
+			Thread.sleep(sleepDurationSeconds * 1000);
 			minutesElapsed = java.time.Duration.between(startDateTime,
 					LocalDateTime.now()).toMinutes();
+			getLogger()
+					.debug(String
+							.format("Approximately %s minute(s) left till the end of the perf test",
+									timeoutMinutes - minutesElapsed));
 		} while (minutesElapsed <= timeoutMinutes);
 	}
 

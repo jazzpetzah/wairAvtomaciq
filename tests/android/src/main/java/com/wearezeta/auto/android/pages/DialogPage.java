@@ -386,7 +386,7 @@ public class DialogPage extends AndroidPage {
 		try {
 			this.getDriver().hideKeyboard();
 		} catch (WebDriverException e) {
-			e.printStackTrace();
+			log.debug("No keyboard visible. Nothing to hide.");
 		}
 
 		String lastMessage = messagesList.get(messagesList.size() - 1)
@@ -522,6 +522,7 @@ public class DialogPage extends AndroidPage {
 
 	public double checkMediaControlIcon(String label) throws Exception {
 		refreshUITree();
+		getWait().until(ExpectedConditions.elementToBeClickable(playPauseBtn));
 		String path = null;
 		BufferedImage mediaImage = getElementScreenshot(playPauseBtn);
 		if (label.equals(MEDIA_PLAY)) {

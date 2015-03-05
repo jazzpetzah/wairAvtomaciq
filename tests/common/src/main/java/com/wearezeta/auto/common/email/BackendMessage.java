@@ -17,7 +17,7 @@ public class BackendMessage {
 	private Map<String, String> mapHeaders = new HashMap<String, String>();
 
 	public BackendMessage(Message msg) throws Exception {
-		IMAPSMailbox.getInstance().openFolder(msg.getFolder());
+		IMAPSMailbox.getInstance().openFolder(msg.getFolder(), false);
 		try {
 			@SuppressWarnings("unchecked")
 			final Enumeration<Header> hdrs = msg.getAllHeaders();
@@ -41,7 +41,7 @@ public class BackendMessage {
 				this.content = msgContent.toString();
 			}
 		} finally {
-			IMAPSMailbox.getInstance().closeFolder(msg.getFolder());
+			IMAPSMailbox.getInstance().closeFolder(msg.getFolder(), false);
 		}
 	}
 

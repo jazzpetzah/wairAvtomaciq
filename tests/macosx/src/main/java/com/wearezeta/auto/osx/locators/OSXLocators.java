@@ -87,7 +87,7 @@ public final class OSXLocators {
 	public static final String idBlockUserButtonSingleChat = "userProfileViewButtonOnTheRight";
 	//OLD: public static final String idPeoplePickerAddToConversationButton = "people_picker_confirm_button";
 	public static final String namePeoplePickerAddToConversationButton = "ADD TO CONVERSATION";
-	public static final String namePeoplePickerCreateConversationButton = "CREATE CONVERSATION";
+	public static final String namePeoplePickerOpenConversationButton = "OPEN CONVERSATION";
 	public static final String idLeaveConversationButton = "leaveButton";
 	public static final String idRemoveUserFromConversation = "userProfileViewButtonOnTheRight";
 	public static final String idConversationScrollArea = "ConversationScrollArea";

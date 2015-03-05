@@ -263,7 +263,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	public String getSubHeader() {
-		return participantsSubHeader.getText();
+		return participantsSubHeader.getText().toLowerCase();
 	}
 
 	public String getConversationName() {

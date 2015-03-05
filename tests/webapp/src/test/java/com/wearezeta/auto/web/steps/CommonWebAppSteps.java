@@ -35,6 +35,8 @@ public class CommonWebAppSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	public static final Platform CURRENT_PLATFORM = Platform.Web;
+	
+	private static final String DEFAULT_USER_PICTURE = "aqaPictureContact600_800.jpg";
 
 	static {
 		System.setProperty("java.awt.headless", "false");
@@ -143,6 +145,16 @@ public class CommonWebAppSteps {
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
 			throws Exception {
 		commonSteps.ThereAreNUsersWhereXIsMe(count, myNameAlias);
+		String avatar = CommonUtils.getWebAppImagesPathFromConfig(getClass()) + "/" + DEFAULT_USER_PICTURE;
+		commonSteps.IChangeUserAvatarPicture(myNameAlias, avatar);
+	}
+	
+	@When("^User (\\w+) change avatar picture to (.*)$")
+	public void IChangeUserAvatarPicture(String userNameAlias, String path)
+			throws Exception {
+		String rootPath = CommonUtils.getWebAppImagesPathFromConfig(getClass());
+		commonSteps.IChangeUserAvatarPicture(userNameAlias, rootPath + "/"
+				+ path);
 	}
 
 	/**

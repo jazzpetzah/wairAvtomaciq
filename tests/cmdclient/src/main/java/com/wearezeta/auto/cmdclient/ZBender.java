@@ -70,7 +70,7 @@ public class ZBender
 				
 				log.info("Sending message " + Integer.toString(i + 1) + " of " + Integer.toString(messageCount) + 
 						" to contact " + contact);
-				BackendAPIWrappers.sendDialogMessageByChatName(user, contact, Integer.toString(i + 1) + " " + CommonUtils.generateGUID());
+				BackendAPIWrappers.sendDialogMessageByChatName(user, contact, Integer.toString(i + 1) + ". " + "I support and oppose many things, but not strongly enough to pick up a pen.");
 				Thread.sleep(interval * 1000);
 			}
 			
@@ -82,7 +82,7 @@ public class ZBender
 				
 				log.info("Sending message " + Integer.toString(count) + " to contact " + contact);
 				
-				BackendAPIWrappers.sendDialogMessageByChatName(user, contact, Integer.toString(count) + " " + CommonUtils.generateGUID());
+				BackendAPIWrappers.sendDialogMessageByChatName(user, contact, Integer.toString(count) + ". " + "I support and oppose many things, but not strongly enough to pick up a pen.");
 				count++;
 				Thread.sleep(interval * 1000);
 			}

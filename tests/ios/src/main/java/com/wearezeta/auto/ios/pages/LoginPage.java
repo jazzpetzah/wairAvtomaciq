@@ -94,6 +94,10 @@ public class LoginPage extends IOSPage {
 		signInButton.click();
 		return this;
 	}
+	
+	public void waitForLaterButton(int time) throws Exception {
+		DriverUtils.waitUntilElementAppears(getDriver(), shareButton, time);
+	}
 
 	public PeoplePickerPage clickLaterButton() throws Exception {
 		if (DriverUtils.isElementDisplayed(shareButton)) {
@@ -152,7 +156,11 @@ public class LoginPage extends IOSPage {
 	public void setLogin(String login) throws Exception {
 		String script = String.format(IOSLocators.scriptSignInEmailPath
 				+ ".setValue(\"%s\")", login);
-		driver.executeScript(script);
+		try {
+			driver.executeScript(script);
+		} catch (WebDriverException ex) {
+			log.debug("fucking appium! " + ex.getMessage());
+		}
 	}
 
 	public String getPassword() {
@@ -162,7 +170,11 @@ public class LoginPage extends IOSPage {
 	public void setPassword(String password) throws Exception {
 		String script = String.format(IOSLocators.scriptSignInPasswordPath
 				+ ".setValue(\"%s\")", password);
-		driver.executeScript(script);
+		try {
+			driver.executeScript(script);
+		} catch (WebDriverException ex) {
+			log.debug("fucking web appium! " + ex.getMessage());
+		}
 	}
 
 	public boolean waitForLogin() throws Exception {
@@ -177,7 +189,6 @@ public class LoginPage extends IOSPage {
 			this.getWait().until(ExpectedConditions.visibilityOfElementLocated(By
 					.name(contact)));
 		} catch (WebDriverException ex) {
-			log.debug(ex.getMessage());
 		}
 		return DriverUtils.waitUntilElementAppears(driver, By.name(contact));
 	}

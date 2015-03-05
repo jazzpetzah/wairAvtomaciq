@@ -1,4 +1,4 @@
-package com.wearezeta.auto.sync.report;
+package com.wearezeta.auto.sync.report.data;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -11,33 +11,12 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.BuildVersionInfo;
-import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.sync.ExecutionContext;
+import com.wearezeta.auto.sync.SEConstants;
 import com.wearezeta.auto.sync.client.InstanceState;
-import com.wearezeta.auto.sync.client.ZetaInstance;
-import com.wearezeta.auto.sync.client.ZetaSender;
-
-class UserReport {
-	public String name;
-	public Platform loggedOnPlatform;
-	public String startupTime;
-	public BuildVersionInfo buildVersion;
-	public ClientDeviceInfo deviceData;
-	public boolean isEnabled;
-}
-
-class MessageReport {
-	public String message;
-	public Platform sentFrom;
-	public boolean isOsxReceiveTimeOK;
-	public String osxReceiveTime;
-	public boolean isIosReceiveTimeOK;
-	public String iosReceiveTime;
-	public boolean isAndroidReceiveTimeOK;
-	public String androidReceiveTime;
-	public boolean checkTime = true;
-}
+import com.wearezeta.auto.sync.client.WireInstance;
+import com.wearezeta.auto.sync.client.sender.WireSender;
 
 public class ReportData {
 	@SuppressWarnings("unused")
@@ -77,16 +56,17 @@ public class ReportData {
 	public ArrayList<String> androidMessages;
 
 	public void fillReportInfo() {
-		for (Map.Entry<Platform, ZetaInstance> client : ExecutionContext.clients
+		for (Map.Entry<Platform, WireInstance> client : ExecutionContext.clients
 				.entrySet()) {
 			UserReport user = new UserReport();
 			if (client.getValue().isEnabled()) {
 				user.name = client.getValue().getUserInstance().getEmail();
 				user.loggedOnPlatform = client.getKey();
-				user.startupTime = Double.toString(client.getValue()
-						.getStartupTimeMs() / 1000d) + "s";
-				user.buildVersion = client.getValue().getVersionInfo();
-				user.deviceData = client.getValue().getDeviceInfo();
+				user.startupTime = Double.toString(client.getValue().reporter()
+						.getStartupTime() / 1000d)
+						+ "s";
+				user.buildVersion = client.getValue().reporter().getVersion();
+				user.deviceData = client.getValue().reporter().getDevice();
 				user.isEnabled = true;
 			} else {
 				user.loggedOnPlatform = client.getKey();
@@ -115,7 +95,7 @@ public class ReportData {
 			for (Map.Entry<String, MessageEntry> message : ExecutionContext
 					.iosZeta().listener().registeredMessages.entrySet()) {
 				if (message.getValue().appearanceDate
-						.after(ZetaSender.sendingStartDate)) {
+						.after(WireSender.sendingStartDate)) {
 
 					iosReceivedMessages.put(message.getKey(),
 							message.getValue());
@@ -134,7 +114,7 @@ public class ReportData {
 			for (Map.Entry<String, MessageEntry> message : ExecutionContext
 					.androidZeta().listener().registeredMessages.entrySet()) {
 				if (message.getValue().appearanceDate
-						.after(ZetaSender.sendingStartDate)) {
+						.after(WireSender.sendingStartDate)) {
 					androidReceivedMessages.put(message.getKey(),
 							message.getValue());
 				}
@@ -152,7 +132,7 @@ public class ReportData {
 			for (Map.Entry<String, MessageEntry> message : ExecutionContext
 					.osxZeta().listener().registeredMessages.entrySet()) {
 				if (message.getValue().appearanceDate
-						.after(ZetaSender.sendingStartDate)) {
+						.after(WireSender.sendingStartDate)) {
 
 					osxReceivedMessages.put(message.getKey(),
 							message.getValue());
@@ -196,19 +176,18 @@ public class ReportData {
 				final MessageEntry osxMessage;
 				final MessageEntry iosMessage;
 				final MessageEntry androidMessage;
-				switch(report.sentFrom) {
+				switch (report.sentFrom) {
 				case Mac:
 					report.isOsxReceiveTimeOK = true;
 					report.osxReceiveTime = "-1";
-					iosMessage = iosReceivedMessages.get(entry
-							.getKey());
+					iosMessage = iosReceivedMessages.get(entry.getKey());
 					if (iosMessage != null) {
 						long time = iosMessage.appearanceDate.getTime()
 								- sentMessage.appearanceDate.getTime();
 						report.iosReceiveTime = Double.toString(time / 1000d)
 								+ "s";
 						iosSumReceiveTime += time;
-						if (time > 5000) {
+						if (time > SEConstants.Acceptance.ACCEPTED_RECEIVE_TIME_MS) {
 							report.isIosReceiveTimeOK = false;
 						} else {
 							report.isIosReceiveTimeOK = true;
@@ -225,7 +204,7 @@ public class ReportData {
 						androidSumReceiveTime += time;
 						report.androidReceiveTime = Double
 								.toString(time / 1000d) + "s";
-						if (time > 5000) {
+						if (time > SEConstants.Acceptance.ACCEPTED_RECEIVE_TIME_MS) {
 							report.isAndroidReceiveTimeOK = false;
 						} else {
 							report.isAndroidReceiveTimeOK = true;
@@ -238,15 +217,14 @@ public class ReportData {
 				case iOS:
 					report.isIosReceiveTimeOK = true;
 					report.iosReceiveTime = "-1";
-					osxMessage = osxReceivedMessages.get(entry
-							.getKey());
+					osxMessage = osxReceivedMessages.get(entry.getKey());
 					if (osxMessage != null) {
 						long time = osxMessage.appearanceDate.getTime()
 								- sentMessage.appearanceDate.getTime();
 						osxSumReceiveTime += time;
 						report.osxReceiveTime = Double.toString(time / 1000d)
 								+ "s";
-						if (time > 5000) {
+						if (time > SEConstants.Acceptance.ACCEPTED_RECEIVE_TIME_MS) {
 							report.isOsxReceiveTimeOK = false;
 						} else {
 							report.isOsxReceiveTimeOK = true;
@@ -263,7 +241,7 @@ public class ReportData {
 						androidSumReceiveTime += time;
 						report.androidReceiveTime = Double
 								.toString(time / 1000d) + "s";
-						if (time > 5000) {
+						if (time > SEConstants.Acceptance.ACCEPTED_RECEIVE_TIME_MS) {
 							report.isAndroidReceiveTimeOK = false;
 						} else {
 							report.isAndroidReceiveTimeOK = true;
@@ -276,15 +254,14 @@ public class ReportData {
 				case Android:
 					report.isAndroidReceiveTimeOK = true;
 					report.androidReceiveTime = "-1";
-					osxMessage = osxReceivedMessages.get(entry
-							.getKey());
+					osxMessage = osxReceivedMessages.get(entry.getKey());
 					if (osxMessage != null) {
 						long time = osxMessage.appearanceDate.getTime()
 								- sentMessage.appearanceDate.getTime();
 						osxSumReceiveTime += time;
 						report.osxReceiveTime = Double.toString(time / 1000d)
 								+ "s";
-						if (time > 5000) {
+						if (time > SEConstants.Acceptance.ACCEPTED_RECEIVE_TIME_MS) {
 							report.isOsxReceiveTimeOK = false;
 						} else {
 							report.isOsxReceiveTimeOK = true;
@@ -293,15 +270,14 @@ public class ReportData {
 						report.osxReceiveTime = "not received";
 						report.isOsxReceiveTimeOK = false;
 					}
-					iosMessage = iosReceivedMessages.get(entry
-							.getKey());
+					iosMessage = iosReceivedMessages.get(entry.getKey());
 					if (iosMessage != null) {
 						long time = iosMessage.appearanceDate.getTime()
 								- sentMessage.appearanceDate.getTime();
 						iosSumReceiveTime += time;
 						report.iosReceiveTime = Double.toString(time / 1000d)
 								+ "s";
-						if (time > 5000) {
+						if (time > SEConstants.Acceptance.ACCEPTED_RECEIVE_TIME_MS) {
 							report.isIosReceiveTimeOK = false;
 						} else {
 							report.isIosReceiveTimeOK = true;
@@ -352,28 +328,28 @@ public class ReportData {
 		isOsxStable = ExecutionContext.osxZeta().getState() != InstanceState.ERROR_CRASHED;
 		areClientsStable = isAndroidStable && isIosStable && isOsxStable;
 
-		isOsxMessagesOrderCorrect = ExecutionContext
-				.isPlatformMessagesOrderCorrect(Platform.Mac);
-		isAndroidMessagesOrderCorrect = ExecutionContext
-				.isPlatformMessagesOrderCorrect(Platform.Android);
-		isIosMessagesOrderCorrect = ExecutionContext
-				.isPlatformMessagesOrderCorrect(Platform.iOS);
+		isOsxMessagesOrderCorrect = ExecutionContext.osxZeta().reporter()
+				.isOrderCorrect();
+		isAndroidMessagesOrderCorrect = ExecutionContext.androidZeta()
+				.reporter().isOrderCorrect();
+		isIosMessagesOrderCorrect = ExecutionContext.iosZeta().reporter()
+				.isOrderCorrect();
 		areMessagesOrderCorrect = isOsxMessagesOrderCorrect
 				&& isAndroidMessagesOrderCorrect && isIosMessagesOrderCorrect;
 
 		iosMessages = new ArrayList<String>();
 		for (MessageEntry iosMessageEntry : ExecutionContext.iosZeta()
-				.getMessagesListAfterTest()) {
+				.reporter().getAllMessagesList()) {
 			iosMessages.add(iosMessageEntry.messageContent);
 		}
 		osxMessages = new ArrayList<String>();
 		for (MessageEntry osxMessageEntry : ExecutionContext.osxZeta()
-				.getMessagesListAfterTest()) {
+				.reporter().getAllMessagesList()) {
 			osxMessages.add(osxMessageEntry.messageContent);
 		}
 		androidMessages = new ArrayList<String>();
 		for (MessageEntry androidMessageEntry : ExecutionContext.androidZeta()
-				.getMessagesListAfterTest()) {
+				.reporter().getAllMessagesList()) {
 			androidMessages.add(androidMessageEntry.messageContent);
 		}
 	}

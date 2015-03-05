@@ -84,10 +84,10 @@ public class App {
 
 		if ((tc instanceof ZephyrTestcase)
 				&& ((ZephyrTestcase) tc).getAutomatedScriptPath() != null) {
-			return String.format("[%s] %s -> <em>%s</em>", StringUtils
-					.join(idLinks, " "), StringEscapeUtils.escapeXml(tc
-					.getName()), transformURLIntoLinks(((ZephyrTestcase) tc)
-					.getAutomatedScriptPath()));
+			return String.format("[%s] %s -> <em>%s</em>", StringUtils.join(
+					idLinks, " "), StringEscapeUtils.escapeXml(tc.getName()),
+					transformURLIntoLinks(((ZephyrTestcase) tc)
+							.getAutomatedScriptPath()));
 		} else {
 			return String.format("[%s] %s", StringUtils.join(idLinks, " "),
 					StringEscapeUtils.escapeXml(tc.getName()));
@@ -305,9 +305,40 @@ public class App {
 		reportData.put(NEWLY_MUTED_TESTCASES, newlyMutedTestcases);
 		reportData.put(NON_MUTED_TESTCASES, nonMutedTestcases);
 
+		printBriefReport(executedTestcases);
+
 		final String title = String.format("[%s] Post-Execution Report",
 				getCurrentDateTimeStamp());
 		return prapareReportingModel(title, reportData, zephyrDB.getServer());
+	}
+
+	private static void printBriefReport(
+			final List<ExecutedCucumberTestcase> executedTestcases) {
+		final int executedTCsCount = executedTestcases.size();
+		int passedTCsCount = 0;
+		int failedTCsCount = 0;
+		int skippedTCsCount = 0;
+		for (ExecutedCucumberTestcase tc : executedTestcases) {
+			switch (tc.getStatus()) {
+			case Failed:
+				failedTCsCount++;
+				break;
+			case Passed:
+				passedTCsCount++;
+				break;
+			case Skipped:
+				skippedTCsCount++;
+				break;
+			default:
+				break;
+			}
+		}
+		System.out.println(String.format("%d tests passed out of %d",
+				passedTCsCount, executedTCsCount));
+		System.out.println(String.format("%d tests failed out of %d",
+				failedTCsCount, executedTCsCount));
+		System.out.println(String.format("%d tests skipped out of %d",
+				skippedTCsCount, executedTCsCount));
 	}
 
 	private static boolean syncZephyrUnmutedWithExecutedTC(
@@ -395,6 +426,8 @@ public class App {
 		reportData.put(OLD_MUTED_TESTCASES_IN_ZEPHYR, previouslyMutedTestcases);
 		reportData.put(NEWLY_UNMUTED_TESTCASES, newlyUnmutedTestcases);
 		reportData.put(NON_MUTED_TESTCASES, nonMutedTestcases);
+
+		printBriefReport(executedTestcases);
 
 		final String title = String.format(
 				"[%s] Muted Tests Verification Report",

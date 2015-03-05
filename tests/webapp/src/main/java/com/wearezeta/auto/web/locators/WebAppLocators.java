@@ -185,6 +185,26 @@ public final class WebAppLocators {
 		public static final String xpathConnectButton = "//div[@id='people-picker-user-bubble']//div[text()='connect']";
 
 	}
+	
+	public static final class AuthorizationPage {
+		
+		public static final String xpathCreateAccountButton = "//*[contains(@class, 'btn-create-welcome') and @data-uie-name='go-register']";
+		
+		public static final String xpathSignInButton = "//*[@data-uie-name='go-sign-in']";
+	}
+	
+	public static final class RegistrationPage {
+		
+		public static final String xpathNameFiled = "//*[@data-uie-name='enter-name']";
+		
+		public static final String idEmailFiled = "wire-create-email";
+		
+		public static final String idPasswordFiled = "wire-create-password";
+		
+		public static final String idCreateAccountButton = "wire-create";
+		
+		public static final String idVerificationEmail = "wire-sent-email";
+	}
 
 	public static final class Common {
 

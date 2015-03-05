@@ -3,6 +3,7 @@ package com.wearezeta.auto.osx.steps;
 import io.appium.java_client.AppiumDriver;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
@@ -74,6 +75,7 @@ public class CommonOSXSteps {
 	}
 
 	private void commonBefore() throws Exception {
+		long startDate = new Date().getTime();
 		final ZetaOSXDriver driver = resetOSXDriver(OSXExecutionContext.appiumUrl);
 		final WebDriverWait wait = PlatformDrivers
 				.createDefaultExplicitWait(driver);
@@ -82,6 +84,9 @@ public class CommonOSXSteps {
 		PagesCollection.loginPage = new LoginPage(driver, wait);
 		ZetaFormatter.setDriver((AppiumDriver) PagesCollection.loginPage
 				.getDriver());
+		long endDate = new Date().getTime();
+		// saving time of startup for Sync Engine
+		startupTime = endDate - startDate;
 		PagesCollection.loginPage.sendProblemReportIfFound();
 	}
 
@@ -287,7 +292,7 @@ public class CommonOSXSteps {
 	@After
 	public void tearDown() throws Exception {
 		OSXPage.clearPagesCollection();
-		
+
 		commonSteps.getUserManager().resetUsers();
 
 		// workaround for stuck on Send picture test
@@ -299,4 +304,6 @@ public class CommonOSXSteps {
 			PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
 		}
 	}
+
+	public Long startupTime = null;
 }

@@ -23,10 +23,9 @@ public class PeoplePickerPageSteps {
 	public void WhenITapOnSearchInputOnPeoplePickerPage() throws Throwable {
 		PagesCollection.peoplePickerPage.tapPeopleSearch();
 	}
-	
+
 	@When("^I tap on (.*) in Top People$")
-	public void WhenITapInTopPeople(String contact)
-			throws Exception {
+	public void WhenITapInTopPeople(String contact) throws Exception {
 		try {
 			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		} catch (NoSuchUserException e) {
@@ -34,7 +33,7 @@ public class PeoplePickerPageSteps {
 		}
 		PagesCollection.peoplePickerPage.tapOnContactInTopPeoples(contact);
 	}
-	
+
 	@When("^I tap on create conversation$")
 	public void WhenITapOnCreateConversation() throws Throwable {
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.peoplePickerPage
@@ -85,7 +84,8 @@ public class PeoplePickerPageSteps {
 	@When("^I input in search field user name to connect to (.*)$")
 	public void WhenIInputInSearchFieldUserNameToConnectTo(String contact)
 			throws Throwable {
-		// FIXME : ambiguous use of email field when the step states only user name 
+		// FIXME : ambiguous use of email field when the step states only user
+		// name
 		String email = null;
 		try {
 			ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(contact);
@@ -94,7 +94,7 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		
+
 		if (email != null) {
 			PagesCollection.peoplePickerPage.typeTextInPeopleSearch(email);
 		} else {
@@ -146,6 +146,20 @@ public class PeoplePickerPageSteps {
 		PagesCollection.peoplePickerPage.selectContactByLongTap(contact);
 	}
 
+	/**
+	 * Tap on Gmail link
+	 * 
+	 * @step. ^I tap on Gmail link$
+	 * @throws Exception 
+	 * @throws NumberFormatException 
+	 * 
+	 */
+	@When("^I tap on Gmail link$")
+	public void WhenITapOnGmailLink() throws NumberFormatException, Exception {
+		PagesCollection.commonAndroidPage = PagesCollection.peoplePickerPage
+				.tapOnGmailLink();
+	}
+
 	@When("^I tap on group name found on People picker page (.*)$")
 	public void WhenITapOnGroupNameFoundOnPeoplePickerPage(String contact)
 			throws Throwable {
@@ -159,6 +173,17 @@ public class PeoplePickerPageSteps {
 		Assert.assertTrue("Add to conversation button is not visible",
 				PagesCollection.peoplePickerPage
 						.isAddToConversationBtnVisible());
+	}
+
+	/**
+	 * Tap on Send an invitation
+	 * 
+	 * @step. ^I tap on Send an invitation$
+	 * 
+	 */
+	@When("^I tap on Send an invitation$")
+	public void WhenITapOnSendAnInvitation() {
+		PagesCollection.peoplePickerPage.tapOnSendInvitation();
 	}
 
 	@When("^I click on Add to conversation button$")

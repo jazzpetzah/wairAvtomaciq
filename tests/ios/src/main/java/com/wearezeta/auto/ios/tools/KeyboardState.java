@@ -2,7 +2,11 @@ package com.wearezeta.auto.ios.tools;
 
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
+import org.openqa.selenium.WebDriverException;
+
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import com.wearezeta.auto.common.log.ZetaLogger;
 
 public abstract class KeyboardState {
 	private static final String TAP_KEYBOARD_BUTTON = "target.frontMostApp().keyboard().elements()[\"%s\"].tap();";
@@ -11,6 +15,9 @@ public abstract class KeyboardState {
 	public static final String MORE_SYMBOLS = "more, symbols";
 	public static final String SHIFT = "shift";
 	private ZetaIOSDriver driver = null;
+	
+	private static final Logger log = ZetaLogger.getLog(KeyboardState.class
+			.getSimpleName());
 
 	protected KeyboardState(ZetaIOSDriver driver) {
 
@@ -20,7 +27,11 @@ public abstract class KeyboardState {
 	public abstract void switchTo(KeyboardState finalState);
 	
 	protected void tapKey(String name){
-		driver.executeScript(String.format(TAP_KEYBOARD_BUTTON, name));
+		try {
+			driver.executeScript(String.format(TAP_KEYBOARD_BUTTON, name));
+		}catch (WebDriverException ex) {
+			log.debug(ex.getMessage());
+		}
 	}
 	
 	public abstract String getCharacterSetPattern();
