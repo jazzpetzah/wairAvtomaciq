@@ -94,6 +94,10 @@ public class LoginPage extends IOSPage {
 		signInButton.click();
 		return this;
 	}
+	
+	public void waitForLaterButton(int time) throws Exception {
+		DriverUtils.waitUntilElementAppears(getDriver(), shareButton, time);
+	}
 
 	public PeoplePickerPage clickLaterButton() throws Exception {
 		if (DriverUtils.isElementDisplayed(shareButton)) {
