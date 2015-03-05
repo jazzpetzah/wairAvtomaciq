@@ -310,9 +310,9 @@
     NSDictionary *options = [NSDictionary dictionary];
 
     BOOL foundImage = [pasteboard canReadObjectForClasses:classArray options:options];
-    if (foundImage)
+    NSArray *objectsToPaste = [pasteboard readObjectsForClasses:classArray options:options];
+    if (foundImage && [objectsToPaste count])
     {
-        NSArray *objectsToPaste = [pasteboard readObjectsForClasses:classArray options:options];
         NSImage *image = [objectsToPaste objectAtIndex:0];
         CGImageRef cgRef = [image CGImageForProposedRect:NULL
                                                  context:nil

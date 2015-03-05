@@ -288,6 +288,11 @@ public class CommonUtils {
 			throws Exception {
 		return getValueFromConfig(c, "webappApplicationPath");
 	}
+	
+	public static String getWebAppImagesPathFromConfig(Class<?> c)
+			throws Exception {
+		return getValueFromConfig(c, "webappImagesPath");
+	}
 
 	public static String getAndroidApplicationPathFromConfig(Class<?> c)
 			throws Exception {

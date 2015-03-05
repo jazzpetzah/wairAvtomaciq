@@ -41,6 +41,7 @@ public class InvitationCodePage extends WebPage {
 
 	public LoginPage proceed() throws Exception {
 		proceedButton.click();
-		return new LoginPage(this.getDriver(), this.getWait());
+		String url = this.getUrl() + "#login";
+		return new LoginPage(this.getDriver(), this.getWait(), url);
 	}
 }
