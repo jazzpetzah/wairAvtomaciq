@@ -1,10 +1,9 @@
 package com.wearezeta.auto.common;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.lang3.NotImplementedException;
 
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
@@ -158,19 +157,21 @@ public final class CommonSteps {
 				.findUserByNameOrNameAlias(archiveConversationWithUser);
 		BackendAPIWrappers.archiveUserConv(user, archivedUser);
 	}
-	
-	public void ArchiveConversationWithGroup(String aUser, String archiveConversationWithGroup) throws Exception{
+
+	public void ArchiveConversationWithGroup(String aUser,
+			String archiveConversationWithGroup) throws Exception {
 		ClientUser user = usrMgr.findUserByNameOrNameAlias(aUser);
-		final String conversationIDToArchive = BackendAPIWrappers.getConversationIdByName(user,archiveConversationWithGroup);
+		final String conversationIDToArchive = BackendAPIWrappers
+				.getConversationIdByName(user, archiveConversationWithGroup);
 		BackendAPIWrappers.archiveGroupConv(user, conversationIDToArchive);
 	}
-	
+
 	public void MuteConversationWithUser(String usersToNameAliases,
 			String muteConversationWithUser) throws Exception {
 		ClientUser user = usrMgr.findUserByNameOrNameAlias(usersToNameAliases);
 		ClientUser mutedUser = usrMgr
 				.findUserByNameOrNameAlias(muteConversationWithUser);
-		
+
 		BackendAPIWrappers.updateConvMutedState(user, mutedUser, true);
 	}
 
@@ -247,14 +248,23 @@ public final class CommonSteps {
 
 	public void IChangeUserAvatarPicture(String userNameAlias,
 			String picturePath) throws Exception {
+		final ClientUser dstUser = usrMgr
+				.findUserByNameOrNameAlias(userNameAlias);
 		if (new File(picturePath).exists()) {
-			BackendAPIWrappers.updateUserPicture(
-					usrMgr.findUserByNameOrNameAlias(userNameAlias),
-					picturePath);
+			BackendAPIWrappers.updateUserPicture(dstUser, picturePath);
 		} else {
-			throw new NotImplementedException(
-					"Please implement loading pictures from resources");
-			// TODO: extract picture from resources
+			// Trying to load the picture from resources if this does not exist
+			// on the file system
+			final ClassLoader classLoader = this.getClass().getClassLoader();
+			final InputStream imageStream = classLoader
+					.getResourceAsStream(picturePath);
+			try {
+				BackendAPIWrappers.updateUserPicture(dstUser, imageStream);
+			} finally {
+				if (imageStream != null) {
+					imageStream.close();
+				}
+			}
 		}
 	}
 
