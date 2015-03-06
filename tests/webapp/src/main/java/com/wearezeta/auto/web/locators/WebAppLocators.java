@@ -169,7 +169,7 @@ public final class WebAppLocators {
 
 	public static final class UserProfilePopupPage {
 
-		public static final String xpathAddPeopleButton = "//*[@data-uie-value='add people']";
+		public static final String xpathAddPeopleButton = "//*[@data-uie-name='do-add-people']";
 
 		public static final String xpathNameBlockButton = "//div[contains(@class,'footer-button-right') and contains(@class,'icon-block')]";
 
