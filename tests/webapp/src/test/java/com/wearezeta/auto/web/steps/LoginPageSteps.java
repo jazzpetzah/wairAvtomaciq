@@ -135,12 +135,17 @@ public class LoginPageSteps {
 	 * Verifies whether Sign In page is the current page
 	 * 
 	 * @step. ^I see Sign In page$
+	 * @throws Exception
 	 * 
 	 * @throws AssertionError
 	 *             if current page is not Sign In page
 	 */
 	@Given("^I see Sign In page$")
-	public void ISeeSignInPage() {
+	public void ISeeSignInPage() throws Exception {
+		if (PagesCollection.authorizationPage != null) {
+			PagesCollection.loginPage = PagesCollection.authorizationPage
+					.clickSignInButton();
+		}
 		Assert.assertNotNull(PagesCollection.loginPage.isVisible());
 	}
 }
