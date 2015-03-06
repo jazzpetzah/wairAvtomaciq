@@ -58,6 +58,18 @@ public class ContactListPage extends WebPage {
 		return null;
 	}
 
+	public PeoplePickerPage isHiddenByPeoplePicker() throws Exception {
+		if (DriverUtils
+				.waitUntilElementAppears(
+						driver,
+						By.className(WebAppLocators.ContactListPage.classNamePeoplePickerVisible),
+						3)) {
+			return new PeoplePickerPage(this.getDriver(), this.getWait());
+		} else {
+			return null;
+		}
+	}
+
 	public boolean waitForContactListVisible() throws Exception {
 		return DriverUtils.waitUntilElementVisible(driver,
 				openPeoplePickerButton);
