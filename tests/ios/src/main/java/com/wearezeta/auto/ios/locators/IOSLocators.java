@@ -28,7 +28,7 @@ public final class IOSLocators {
 	
 	public static final String classNameContactListNames = "UIACollectionCell";
 	
-	public static final String xpathContactListNames = "//UIAApplication/UIAWindow/UIACollectionView/UIACollectionCell/UIAStaticText";
+	public static final String classNameContactList = "UIAStaticText";
 	
 	public static final String xpathContactListCells = "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell";
 	
@@ -59,6 +59,7 @@ public final class IOSLocators {
 	public static final String nameOpenConversationDetails = "conversationDetailButton";
 	
 	public static final String xpathPinged = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/UIAStaticText[contains(@name, 'PINGED')]";
+	
 	public static final String xpathPingedAgain = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/UIAStaticText[contains(@name, 'PINGED AGAIN')]";
 	
 	public static final String xpathLastDialogMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]";
