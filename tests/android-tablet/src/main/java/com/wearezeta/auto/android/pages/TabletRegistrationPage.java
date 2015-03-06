@@ -11,9 +11,9 @@ public class TabletRegistrationPage extends RegistrationPage {
 		super(driver, wait);
 	}
 	
-	public PersonalInfoPage initProfilePage() throws Exception {
+	public TabletPersonalInfoPage initProfilePage() throws Exception {
 		refreshUITree();
-		return new PersonalInfoPage(getDriver(), getWait());
+		return new TabletPersonalInfoPage(getDriver(), getWait());
 	}
 
 }

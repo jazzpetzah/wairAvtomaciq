@@ -23,6 +23,9 @@ public class PeoplePickerPage extends WebPage {
 	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.PeoplePickerPage.classNameCreateConversationButton)
 	private WebElement createConversationButton;
 
+	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathCloseSearchButton)
+	private WebElement closeSearchButton;
+
 	public PeoplePickerPage(ZetaWebAppDriver driver, WebDriverWait wait)
 			throws Exception {
 		super(driver, wait);
@@ -72,6 +75,11 @@ public class PeoplePickerPage extends WebPage {
 		WebElement foundUserElement = driver.findElement(By
 				.xpath(foundUserXpath));
 		return DriverUtils.isElementDisplayed(foundUserElement);
+	}
+
+	public void closeSearch() throws Exception {
+		DriverUtils.waitUntilElementClickable(driver, closeSearchButton);
+		closeSearchButton.click();
 	}
 
 }

@@ -19,8 +19,8 @@ public class TabletLoginPage extends LoginPage {
 		confirmSignInButton.click();
 	}
 	
-	public PersonalInfoPage initProfilePage() throws Exception {
-		return new PersonalInfoPage(getDriver(), getWait());
+	public TabletPersonalInfoPage initProfilePage() throws Exception {
+		return new TabletPersonalInfoPage(getDriver(), getWait());
 	}
 	
 	public TabletContactListPage initContactListPage() throws Exception {

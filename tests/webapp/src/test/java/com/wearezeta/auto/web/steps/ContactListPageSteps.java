@@ -49,6 +49,11 @@ public class ContactListPageSteps {
 	@Given("I see Contact list with name (.*)")
 	public void GivenISeeContactListWithName(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		PagesCollection.peoplePickerPage = PagesCollection.contactListPage
+				.isHiddenByPeoplePicker();
+		if (PagesCollection.peoplePickerPage != null) {
+			PagesCollection.peoplePickerPage.closeSearch();
+		}
 		log.debug("Looking for contact with name " + name);
 		Assert.assertTrue("No contact list loaded.",
 				PagesCollection.contactListPage.waitForContactListVisible());
@@ -109,7 +114,7 @@ public class ContactListPageSteps {
 	 * 
 	 * @param contact
 	 *            conversation name string
-	 * @throws Exception 
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I archive conversation (.*)$")
@@ -189,7 +194,7 @@ public class ContactListPageSteps {
 		PagesCollection.peoplePickerPage = PagesCollection.contactListPage
 				.openPeoplePicker();
 	}
-	
+
 	/**
 	 * Toggle mute button for conversation by choosing it from Contact List
 	 * 
@@ -197,7 +202,7 @@ public class ContactListPageSteps {
 	 * 
 	 * @param contact
 	 *            conversation name string
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@When("^I toggle mute for conversation (.*)$")
 	public void IClickMuteButton(String contact) throws Exception {
@@ -207,34 +212,36 @@ public class ContactListPageSteps {
 		PagesCollection.contactListPage
 				.clickMuteConversationForContact(contact);
 	}
-	
+
 	/**
 	 * Verify that conversation is muted by checking mute icon
 	 * 
 	 * @step. ^I see that conversation (.*) is muted$
 	 * @param contact
-	 * 			conversation name string
-	 * @throws Exception 
+	 *            conversation name string
+	 * @throws Exception
 	 */
 	@When("^I see that conversation (.*) is muted$")
 	public void ISeeConversationIsMuted(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 
-		Assert.assertTrue(PagesCollection.contactListPage.isConversationMuted(contact));
+		Assert.assertTrue(PagesCollection.contactListPage
+				.isConversationMuted(contact));
 	}
-	
+
 	/**
 	 * Verify that conversation is muted by checking mute icon is invisible
 	 * 
 	 * @step. ^I see that conversation (.*) is not muted$
 	 * @param contact
-	 * 			conversation name string
-	 * @throws Exception 
+	 *            conversation name string
+	 * @throws Exception
 	 */
 	@When("^I see that conversation (.*) is not muted$")
 	public void ISeeConversationIsNotMuted(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 
-		Assert.assertFalse(PagesCollection.contactListPage.isConversationMuted(contact));
+		Assert.assertFalse(PagesCollection.contactListPage
+				.isConversationMuted(contact));
 	}
 }

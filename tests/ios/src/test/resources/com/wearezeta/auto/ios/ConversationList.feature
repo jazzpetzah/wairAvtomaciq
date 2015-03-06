@@ -70,10 +70,9 @@ Feature: Conversation List
     Given <Contact> is connected to <Name>
     Given User <Contact> change  name to <NewName>
     Given User <Name> change  accent color to <Color>
+    Given <Name> silenced conversation with <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I swipe right on a <Contact>
-    And I silence conversation <Contact>
     And I see conversation <Contact> is silenced
     And I swipe right on a <Contact>
     And I unsilence conversation <Contact>
