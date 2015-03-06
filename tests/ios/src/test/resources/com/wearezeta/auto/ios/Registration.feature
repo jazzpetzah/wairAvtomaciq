@@ -368,6 +368,9 @@ Feature: Registration
     And I see confirmation page
     And I navigate back to welcome page
     And I press Sign in button
+    And I have entered login <Email>
+    And I have entered password <Password>
+    And I attempt to press Login button
     Then I see email verification reminder
     
      Examples: 
