@@ -145,7 +145,7 @@ public class CommonWebAppSteps {
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
 			throws Exception {
 		commonSteps.ThereAreNUsersWhereXIsMe(count, myNameAlias);
-		commonSteps.IChangeUserAvatarPicture(myNameAlias, "default");
+		IChangeUserAvatarPicture(myNameAlias, "default");
 	}
 
 	@When("^User (\\w+) change avatar picture to (.*)$")
