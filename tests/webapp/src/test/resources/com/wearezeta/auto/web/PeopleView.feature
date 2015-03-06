@@ -157,8 +157,9 @@ Feature: People View
     And I click gear button on self profile page
     And I select Sign Out menu item on self profile page
     And I see Sign In page
-    And I Sign in using login <Contact1> and password <Password>
     And User <Contact1> is me
+    And User <Contact1> change avatar picture to default
+    And I Sign in using login <Contact1> and password <Password>
     And I see my name <Contact1> in Contact list
     And I see Contact list with name <Name>,<Contact2>
     And I open conversation with <Name>,<Contact2>
@@ -167,8 +168,9 @@ Feature: People View
     And I click gear button on self profile page
     And I select Sign Out menu item on self profile page
     And I see Sign In page
-    And I Sign in using login <Contact2> and password <Password>
     And User <Contact2> is me
+    And User <Contact2> change avatar picture to default
+    And I Sign in using login <Contact2> and password <Password>
     And I see my name <Contact2> in Contact list
     And I see Contact list with name <Name>,<Contact1>
     And I see user <Name> action <Message2> for <Contact2>,<Contact1> in conversation
