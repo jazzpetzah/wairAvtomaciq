@@ -142,7 +142,8 @@ public class LoginPageSteps {
 	 */
 	@Given("^I see Sign In page$")
 	public void ISeeSignInPage() throws Exception {
-		if (PagesCollection.authorizationPage != null) {
+		if (PagesCollection.authorizationPage != null
+				&& PagesCollection.authorizationPage.isVisible()) {
 			PagesCollection.loginPage = PagesCollection.authorizationPage
 					.clickSignInButton();
 		}

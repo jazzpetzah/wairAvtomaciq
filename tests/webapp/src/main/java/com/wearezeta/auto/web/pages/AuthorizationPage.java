@@ -37,8 +37,7 @@ public class AuthorizationPage extends WebPage {
 	}
 
 	public boolean isVisible() throws Exception {
-		DriverUtils.waitUntilElementAppears(driver, createAccount);
-		return createAccount.isDisplayed();
+		return DriverUtils.waitUntilElementAppears(driver, createAccount, 5);
 	}
 
 }
