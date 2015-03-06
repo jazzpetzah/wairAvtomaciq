@@ -33,8 +33,8 @@ public class PeoplePickerPage extends OSXPage {
 	@FindBy(how = How.NAME, using = OSXLocators.namePeoplePickerAddToConversationButton)
 	private WebElement addToConversationButton;
 
-	@FindBy(how = How.NAME, using = OSXLocators.namePeoplePickerCreateConversationButton)
-	private WebElement createConversationButton;
+	@FindBy(how = How.NAME, using = OSXLocators.namePeoplePickerOpenConversationButton)
+	private WebElement openConversationButton;
 
 	private WebElement searchField;
 
@@ -74,7 +74,8 @@ public class PeoplePickerPage extends OSXPage {
 			}
 		}
 		throw new NoSuchElementException(
-				String.format("Failed to find Search Field element with Class '%s' and ID '%s'",
+				String.format(
+						"Failed to find Search Field element with Class '%s' and ID '%s'",
 						"AXTextArea", OSXLocators.idPeoplePickerSearchField));
 	}
 
@@ -232,8 +233,8 @@ public class PeoplePickerPage extends OSXPage {
 	}
 
 	public ConversationPage addSelectedUsersToConversation() throws Exception {
-		if (isCreateConversationButtonVisible())
-			createConversationButton.click();
+		if (isOpenConversationButtonVisible())
+			openConversationButton.click();
 		else
 			addToConversationButton.click();
 		return new ConversationPage(this.getDriver(), this.getWait());
@@ -247,11 +248,11 @@ public class PeoplePickerPage extends OSXPage {
 						3);
 	}
 
-	public boolean isCreateConversationButtonVisible() throws Exception {
-		if (DriverUtils.waitUntilElementAppears(driver,
-				createConversationButton, 5)) {
+	public boolean isOpenConversationButtonVisible() throws Exception {
+		if (DriverUtils.waitUntilElementAppears(driver, openConversationButton,
+				5)) {
 			return NSPoint.fromString(
-					createConversationButton.getAttribute("AXSize")).y() > 0;
+					openConversationButton.getAttribute("AXSize")).y() > 0;
 		} else {
 			return false;
 		}
@@ -263,9 +264,9 @@ public class PeoplePickerPage extends OSXPage {
 		try {
 			App.focus(CommonUtils
 					.getOsxApplicationPathFromConfig(PeoplePickerPage.class));
-			if (!isCreateConversationButtonVisible())
+			if (!isOpenConversationButtonVisible())
 				s.click(Env.getMouseLocation());
-			if (!isCreateConversationButtonVisible())
+			if (!isOpenConversationButtonVisible())
 				s.click(Env.getMouseLocation());
 		} catch (HeadlessException e) {
 			e.printStackTrace();

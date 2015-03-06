@@ -11,6 +11,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
 public class TabletLoginPageSteps {
+	
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	
 	/**

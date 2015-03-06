@@ -76,7 +76,7 @@ public abstract class AndroidPage extends BasePage {
 	public CommonAndroidPage minimizeApplication() throws Exception {
 		this.getDriver().sendKeyEvent(3);
 		Thread.sleep(1000);
-		return new  CommonAndroidPage(this.getDriver(), this.getWait());
+		return new CommonAndroidPage(this.getDriver(), this.getWait());
 	}
 
 	public void restoreApplication() {
@@ -165,6 +165,46 @@ public abstract class AndroidPage extends BasePage {
 	public AndroidPage swipeDown(int time) throws Exception {
 
 		DriverUtils.swipeDown(this.getDriver(), content, time);
+		return returnBySwipe(SwipeDirection.DOWN);
+	}
+	
+	public AndroidPage swipeRightCoordinates(int time) throws Exception {
+		DriverUtils.swipeRightCoordinates(this.getDriver(), time);
+		return returnBySwipe(SwipeDirection.RIGHT);
+	}
+	
+	public AndroidPage swipeRightCoordinates(int time, int horizontalPercent) throws Exception {
+		DriverUtils.swipeRightCoordinates(this.getDriver(), time, horizontalPercent);
+		return returnBySwipe(SwipeDirection.RIGHT);
+	}
+	
+	public AndroidPage swipeLeftCoordinates(int time) throws Exception {
+		DriverUtils.swipeLeftCoordinates(this.getDriver(), time);
+		return returnBySwipe(SwipeDirection.LEFT);
+	}
+	
+	public AndroidPage swipeLeftCoordinates(int time, int horizontalPercent) throws Exception {
+		DriverUtils.swipeLeftCoordinates(this.getDriver(), time, horizontalPercent);
+		return returnBySwipe(SwipeDirection.LEFT);
+	}
+	
+	public AndroidPage swipeUpCoordinates(int time) throws Exception {
+		DriverUtils.swipeUpCoordinates(this.getDriver(), time);
+		return returnBySwipe(SwipeDirection.UP);
+	}
+	
+	public AndroidPage swipeUpCoordinates(int time, int verticalPercent) throws Exception {
+		DriverUtils.swipeUpCoordinates(this.getDriver(), time, verticalPercent);
+		return returnBySwipe(SwipeDirection.UP);
+	}
+	
+	public AndroidPage swipeDownCoordinates(int time) throws Exception {
+		DriverUtils.swipeDownCoordinates(this.getDriver(), time);
+		return returnBySwipe(SwipeDirection.DOWN);
+	}
+	
+	public AndroidPage swipeDownCoordinates(int time, int verticalPercent) throws Exception {
+		DriverUtils.swipeDownCoordinates(this.getDriver(), time, verticalPercent);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 

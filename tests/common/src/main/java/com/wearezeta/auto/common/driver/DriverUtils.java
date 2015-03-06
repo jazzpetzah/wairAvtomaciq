@@ -87,7 +87,7 @@ public class DriverUtils {
 
 	public static boolean waitUntilElementAppears(RemoteWebDriver driver,
 			final Object el_or_locator, int timeout) throws Exception {
-		assert((el_or_locator instanceof WebElement) || (el_or_locator instanceof By));
+		assert ((el_or_locator instanceof WebElement) || (el_or_locator instanceof By));
 		turnOffImplicitWait(driver);
 		try {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
@@ -178,7 +178,7 @@ public class DriverUtils {
 			final WebElement element) throws Exception {
 		return waitUntilElementVisible(driver, element, 20);
 	}
-	
+
 	public static boolean waitUntilElementVisible(RemoteWebDriver driver,
 			final WebElement element, int timeout) throws Exception {
 		turnOffImplicitWait(driver);
@@ -343,6 +343,91 @@ public class DriverUtils {
 			int time) {
 		swipeDown(driver, element, time, SWIPE_X_DEFAULT_PERCENTAGE_VERTICAL,
 				SWIPE_Y_DEFAULT_PERCENTAGE_VERTICAL);
+	}
+
+	public static void swipeByCoordinates(AppiumDriver driver, int time,
+			int startPercentX, int startPercentY, int endPercentX,
+			int endPercentY) throws Exception {
+		driver.context("NATIVE_APP");
+		final Dimension screenSize = driver.manage().window().getSize();
+		final int startX = (int) Math.round(screenSize.width
+				* (startPercentX / 100.0));
+		final int startY = (int) Math.round(screenSize.height
+				* (startPercentY / 100.0));
+		final int endX = (int) Math.round(screenSize.width
+				* (endPercentX / 100.0));
+		final int endY = (int) Math.round(screenSize.height
+				* (endPercentY / 100.0));
+		try {
+			driver.swipe(startX, startY, endX, endY, time);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	public static final int SWIPE_X_DEFAULT_PERCENTAGE_START = 10;
+	public static final int SWIPE_X_DEFAULT_PERCENTAGE_END = 90;
+	public static final int SWIPE_Y_DEFAULT_PERCENTAGE_START = 10;
+	public static final int SWIPE_Y_DEFAULT_PERCENTAGE_END = 90;
+
+	public static void swipeRightCoordinates(AppiumDriver driver, int time)
+			throws Exception {
+		swipeByCoordinates(driver, time, SWIPE_X_DEFAULT_PERCENTAGE_START,
+				SWIPE_Y_DEFAULT_PERCENTAGE_HORIZONTAL,
+				SWIPE_X_DEFAULT_PERCENTAGE_END,
+				SWIPE_Y_DEFAULT_PERCENTAGE_HORIZONTAL);
+	}
+
+	public static void swipeRightCoordinates(AppiumDriver driver, int time,
+			int horizontalPercent) throws Exception {
+		swipeByCoordinates(driver, time, SWIPE_X_DEFAULT_PERCENTAGE_START,
+				horizontalPercent, SWIPE_X_DEFAULT_PERCENTAGE_END,
+				horizontalPercent);
+	}
+
+	public static void swipeLeftCoordinates(AppiumDriver driver, int time)
+			throws Exception {
+		swipeByCoordinates(driver, time, SWIPE_X_DEFAULT_PERCENTAGE_END,
+				SWIPE_Y_DEFAULT_PERCENTAGE_HORIZONTAL,
+				SWIPE_X_DEFAULT_PERCENTAGE_START,
+				SWIPE_Y_DEFAULT_PERCENTAGE_HORIZONTAL);
+	}
+
+	public static void swipeLeftCoordinates(AppiumDriver driver, int time,
+			int horizontalPercent) throws Exception {
+		swipeByCoordinates(driver, time, SWIPE_X_DEFAULT_PERCENTAGE_END,
+				horizontalPercent, SWIPE_X_DEFAULT_PERCENTAGE_START,
+				horizontalPercent);
+	}
+
+	public static void swipeUpCoordinates(AppiumDriver driver, int time)
+			throws Exception {
+		swipeByCoordinates(driver, time, SWIPE_X_DEFAULT_PERCENTAGE_VERTICAL,
+				SWIPE_Y_DEFAULT_PERCENTAGE_END,
+				SWIPE_X_DEFAULT_PERCENTAGE_VERTICAL,
+				SWIPE_Y_DEFAULT_PERCENTAGE_START);
+	}
+
+	public static void swipeUpCoordinates(AppiumDriver driver, int time,
+			int verticalPercent) throws Exception {
+		swipeByCoordinates(driver, time, verticalPercent,
+				SWIPE_Y_DEFAULT_PERCENTAGE_END, verticalPercent,
+				SWIPE_Y_DEFAULT_PERCENTAGE_START);
+	}
+
+	public static void swipeDownCoordinates(AppiumDriver driver, int time)
+			throws Exception {
+		swipeByCoordinates(driver, time, SWIPE_X_DEFAULT_PERCENTAGE_VERTICAL,
+				SWIPE_Y_DEFAULT_PERCENTAGE_START,
+				SWIPE_X_DEFAULT_PERCENTAGE_VERTICAL,
+				SWIPE_Y_DEFAULT_PERCENTAGE_END);
+	}
+
+	public static void swipeDownCoordinates(AppiumDriver driver, int time,
+			int verticalPercent) throws Exception {
+		swipeByCoordinates(driver, time, verticalPercent,
+				SWIPE_Y_DEFAULT_PERCENTAGE_START, verticalPercent,
+				SWIPE_Y_DEFAULT_PERCENTAGE_END);
 	}
 
 	public static void androidMultiTap(AppiumDriver driver, WebElement element,

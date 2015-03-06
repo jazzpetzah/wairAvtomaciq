@@ -60,6 +60,8 @@ public final class WebAppLocators {
 				+ "/div[2]//li/div[contains(@class, 'center-column')]";
 
 		public static final String classNameOpenPeoplePickerButton = "icon-plus";
+
+		public static final String classNamePeoplePickerVisible = "people-picker-is-visible";
 	}
 
 	public static final class SettingsPage {
@@ -133,6 +135,8 @@ public final class WebAppLocators {
 				name) -> String.format(
 				"%s/div[@class='search-list-item-name' and text()='%s']",
 				xpathSearhResultList, name);
+
+		public static final String xpathCloseSearchButton = "//div[contains(@class,'search-close')]";
 	}
 
 	public static final class ConversationPopupPage {
@@ -165,7 +169,7 @@ public final class WebAppLocators {
 
 	public static final class UserProfilePopupPage {
 
-		public static final String xpathAddPeopleButton = "//*[@data-uie-value='add people']";
+		public static final String xpathAddPeopleButton = "//*[@data-uie-name='do-add-people']";
 
 		public static final String xpathNameBlockButton = "//div[contains(@class,'footer-button-right') and contains(@class,'icon-block')]";
 
@@ -184,6 +188,26 @@ public final class WebAppLocators {
 
 		public static final String xpathConnectButton = "//div[@id='people-picker-user-bubble']//div[text()='connect']";
 
+	}
+
+	public static final class AuthorizationPage {
+
+		public static final String xpathCreateAccountButton = "//*[contains(@class, 'btn-create-welcome') and @data-uie-name='go-register']";
+
+		public static final String xpathSignInButton = "//*[@data-uie-name='go-sign-in']";
+	}
+
+	public static final class RegistrationPage {
+
+		public static final String xpathNameFiled = "//*[@data-uie-name='enter-name']";
+
+		public static final String idEmailFiled = "wire-create-email";
+
+		public static final String idPasswordFiled = "wire-create-password";
+
+		public static final String idCreateAccountButton = "wire-create";
+
+		public static final String idVerificationEmail = "wire-sent-email";
 	}
 
 	public static final class Common {

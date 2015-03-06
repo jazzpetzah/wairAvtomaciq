@@ -193,14 +193,6 @@ public class OSXCommonUtils extends CommonUtils {
 		return CommonUtils.getValueFromConfig(c, "osxClientInfoPlist");
 	}
 
-	public static void startActivityMonitoringInstrument() throws Exception {
-		CommonUtils
-				.executeOsXCommand(new String[] {
-						"/bin/bash",
-						"-c",
-						"instruments -t /Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/Resources/templates/Activity\\ Monitor.tracetemplate" });
-	}
-
 	public static void killWireIfStuck() {
 		try {
 			executeOsXCommand(new String[] { "/bin/bash", "-c",

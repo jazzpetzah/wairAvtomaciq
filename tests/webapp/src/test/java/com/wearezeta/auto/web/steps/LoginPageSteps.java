@@ -23,8 +23,8 @@ public class LoginPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
-	 * Enters user email and password into corresponding fields on sign in screen
-	 * then taps "Sign In" button
+	 * Enters user email and password into corresponding fields on sign in
+	 * screen then taps "Sign In" button
 	 * 
 	 * @step. ^I Sign in using login (.*) and password (.*)$
 	 * 
@@ -60,6 +60,12 @@ public class LoginPageSteps {
 		InvitationCodePageSteps invitationPageSteps = new InvitationCodePageSteps();
 		invitationPageSteps.ISeeInvitationPage();
 		invitationPageSteps.IEnterInvitationCode();
+
+		// workaround for IE and Safari
+		if (PagesCollection.loginPage == null) {
+			PagesCollection.loginPage = PagesCollection.authorizationPage
+					.clickSignInButton();
+		}
 
 		this.IEnterEmail(login);
 		this.IEnterPassword(password);
@@ -129,12 +135,18 @@ public class LoginPageSteps {
 	 * Verifies whether Sign In page is the current page
 	 * 
 	 * @step. ^I see Sign In page$
+	 * @throws Exception
 	 * 
 	 * @throws AssertionError
 	 *             if current page is not Sign In page
 	 */
 	@Given("^I see Sign In page$")
-	public void ISeeSignInPage() {
+	public void ISeeSignInPage() throws Exception {
+		if (PagesCollection.authorizationPage != null
+				&& PagesCollection.authorizationPage.isVisible()) {
+			PagesCollection.loginPage = PagesCollection.authorizationPage
+					.clickSignInButton();
+		}
 		Assert.assertNotNull(PagesCollection.loginPage.isVisible());
 	}
 }

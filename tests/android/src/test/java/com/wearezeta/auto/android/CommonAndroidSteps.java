@@ -1,5 +1,8 @@
 package com.wearezeta.auto.android;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -20,6 +23,7 @@ import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.GenerateWebLink;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
@@ -45,6 +49,7 @@ public class CommonAndroidSteps {
 				"warn");
 	}
 
+	private static ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
 	private Future<Message> passwordResetMessage;
 	private ClientUser userToRegister = null;
 	private static boolean skipBeforeAfter = false;
@@ -137,6 +142,13 @@ public class CommonAndroidSteps {
 		}
 	}
 
+	@When("^I hide keyboard")
+	public void IHideKeyboard() {
+		if (PagesCollection.loginPage != null) {
+			PagesCollection.loginPage.hideKeyboard();
+		}
+	}
+
 	public void commonBefore() throws Exception {
 		try {
 			AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
@@ -166,6 +178,33 @@ public class CommonAndroidSteps {
 			PagesCollection.commonAndroidPage = PagesCollection.loginPage
 					.minimizeApplication();
 		}
+	}
+
+	/**
+	 * Takes screenshot for comparison
+	 * 
+	 * @step. ^I take screenshot$
+	 * 
+	 * @throws IOException
+	 * 
+	 */
+	@When("^I take screenshot$")
+	public void WhenITake1stScreenshot() throws IOException {
+		images.add(PagesCollection.loginPage.takeScreenshot());
+	}
+
+	/**
+	 * Compare that 1st and 2nd screenshots are not equal
+	 * 
+	 * @step. ^I compare 1st and 2nd screenshots and they are different$
+	 * 
+	 * 
+	 */
+	@Then("^I compare 1st and 2nd screenshots and they are different$")
+	public void ThenICompare1st2ndScreenshotsAndTheyAreDifferent() {
+		double score = ImageUtil.getOverlapScore(images.get(0), images.get(1));
+		Assert.assertTrue(score < 0.5d);
+		images.clear();
 	}
 
 	@When("^I restore the application$")
