@@ -30,6 +30,7 @@ public class AuthorizationPage extends WebPage {
 	}
 
 	public LoginPage clickSignInButton() throws Exception {
+		DriverUtils.waitUntilElementVisible(driver, signInButton);
 		DriverUtils.waitUntilElementClickable(driver, signInButton);
 		signInButton.click();
 
