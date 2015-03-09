@@ -32,6 +32,10 @@ public class PeoplePickerPage extends WebPage {
 	}
 
 	public void searchForUser(String searchText) throws Exception {
+		assert DriverUtils
+				.waitUntilElementAppears(
+						driver,
+						By.className(WebAppLocators.PeoplePickerPage.classNameSearchInput));
 		DriverUtils.waitUntilElementClickable(driver, searchInput);
 		searchInput.clear();
 		searchInput.sendKeys(searchText);
