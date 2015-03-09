@@ -77,8 +77,9 @@ public class PeoplePickerPage extends WebPage {
 	}
 
 	public void closeSearch() throws Exception {
+		DriverUtils.waitUntilElementAppears(driver, By
+				.xpath(WebAppLocators.PeoplePickerPage.xpathCloseSearchButton));
 		DriverUtils.waitUntilElementClickable(driver, closeSearchButton);
 		closeSearchButton.click();
 	}
-
 }

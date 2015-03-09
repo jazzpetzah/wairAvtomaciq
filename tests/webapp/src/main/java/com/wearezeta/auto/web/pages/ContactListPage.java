@@ -30,7 +30,7 @@ public class ContactListPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathArchive)
 	private WebElement archive;
 
-	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.ContactListPage.classNameOpenPeoplePickerButton)
+	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathOpenPeoplePickerButton)
 	private WebElement openPeoplePickerButton;
 
 	public ContactListPage(ZetaWebAppDriver driver, WebDriverWait wait)
@@ -70,8 +70,10 @@ public class ContactListPage extends WebPage {
 	}
 
 	public boolean waitForContactListVisible() throws Exception {
-		return DriverUtils.waitUntilElementVisible(driver,
-				openPeoplePickerButton);
+		return DriverUtils
+				.waitUntilElementAppears(
+						driver,
+						By.xpath(WebAppLocators.ContactListPage.xpathOpenPeoplePickerButton));
 	}
 
 	public boolean isContactWithNameExists(String name) throws Exception {

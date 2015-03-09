@@ -63,7 +63,7 @@ public final class WebAppLocators {
 		public static final String xpathContactListEntries = xpathParentContactListItem
 				+ "/div[2]//li/div[contains(@class, 'center-column')]";
 
-		public static final String classNameOpenPeoplePickerButton = "icon-plus";
+		public static final String xpathOpenPeoplePickerButton = "//*[@data-uie-name='go-search']";
 
 		public static final String classNamePeoplePickerVisible = "people-picker-is-visible";
 	}
@@ -223,7 +223,7 @@ public final class WebAppLocators {
 		public static final String idVerificationEmail = "wire-sent-email";
 
 		public static final String xpathSwitchToSignInButton = "//*[@data-uie-name='go-sign-in']";
-		
+
 		public static final String xpathGoToCreateAccountButton = "(//*[@data-uie-name='go-register'])[2]";
 	}
 
