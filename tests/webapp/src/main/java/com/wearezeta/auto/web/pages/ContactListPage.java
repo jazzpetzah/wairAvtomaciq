@@ -215,11 +215,18 @@ public class ContactListPage extends WebPage {
 	}
 
 	public SelfProfilePage openSelfProfile() throws Exception {
+		DriverUtils.waitUntilElementAppears(this.getDriver(),
+				By.xpath(WebAppLocators.ContactListPage.xpathSelfProfileEntry));
 		selfName.click();
 		return new SelfProfilePage(this.getDriver(), this.getWait());
 	}
 
 	public PeoplePickerPage openPeoplePicker() throws Exception {
+		DriverUtils
+				.waitUntilElementAppears(
+						this.getDriver(),
+						By.xpath(WebAppLocators.ContactListPage.xpathOpenPeoplePickerButton));
+		DriverUtils.waitUntilElementClickable(driver, openPeoplePickerButton);
 		openPeoplePickerButton.click();
 		return new PeoplePickerPage(this.getDriver(), this.getWait());
 	}
