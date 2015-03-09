@@ -133,7 +133,11 @@ public class ConversationPage extends WebPage {
 					WebAppExecutionContext.temporaryScriptsLocation);
 			WebCommonUtils.executeAppleScriptFromFile(scriptDestination);
 		} else {
-			DriverUtils.waitUntilElementVisible(driver, imagePathInput, 10);
+			assert DriverUtils
+					.isElementDisplayed(
+							driver,
+							By.xpath(WebAppLocators.ConversationPage.xpathSendImageInput),
+							10);
 			imagePathInput.sendKeys(picturePath);
 		}
 	}

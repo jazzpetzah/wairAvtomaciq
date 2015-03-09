@@ -1,6 +1,6 @@
 Feature: Sign In
 
-  @smoke @id1788 @torun
+  @smoke @id1788
   Scenario Outline: Sign in to ZClient
     Given There is 1 user where <Name> is me
     Given I see invitation page

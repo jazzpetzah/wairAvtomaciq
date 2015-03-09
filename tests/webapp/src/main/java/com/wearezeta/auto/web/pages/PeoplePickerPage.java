@@ -41,10 +41,11 @@ public class PeoplePickerPage extends WebPage {
 		String xpath = String
 				.format(WebAppLocators.PeoplePickerPage.xpathFormatSearchListItemWithName,
 						user);
+		final boolean isVisible = DriverUtils.isElementDisplayed(driver,
+				By.xpath(xpath), DriverUtils.DEFAULT_VISIBILITY_TIMEOUT);
 		WebElement userEl = driver.findElement(By.xpath(xpath));
-		boolean isClickable = DriverUtils.waitUntilElementClickable(driver,
-				userEl);
-		boolean isVisible = DriverUtils.waitUntilElementVisible(driver, userEl);
+		final boolean isClickable = DriverUtils.waitUntilElementClickable(
+				driver, userEl);
 		log.debug("Found user element is clickable: " + isClickable
 				+ ", isVisible: " + isVisible);
 		userEl.click();

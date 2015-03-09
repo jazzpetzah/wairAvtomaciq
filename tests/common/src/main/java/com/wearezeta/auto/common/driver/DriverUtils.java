@@ -40,6 +40,8 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class DriverUtils {
+	public static final int DEFAULT_VISIBILITY_TIMEOUT = 20;
+	
 	private static final Logger log = ZetaLogger.getLog(DriverUtils.class
 			.getSimpleName());
 
@@ -186,28 +188,6 @@ public class DriverUtils {
 							.equals("complete");
 				}
 			});
-		} catch (TimeoutException e) {
-			return false;
-		} finally {
-			setDefaultImplicitWait(driver);
-		}
-	}
-
-	public static boolean waitUntilElementVisible(RemoteWebDriver driver,
-			final WebElement element) throws Exception {
-		return waitUntilElementVisible(driver, element, 20);
-	}
-
-	public static boolean waitUntilElementVisible(RemoteWebDriver driver,
-			final WebElement element, int timeout) throws Exception {
-		turnOffImplicitWait(driver);
-		try {
-			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-					.withTimeout(timeout, TimeUnit.SECONDS)
-					.pollingEvery(1, TimeUnit.SECONDS)
-					.ignoring(NoSuchElementException.class);
-			wait.until(ExpectedConditions.visibilityOf(element));
-			return true;
 		} catch (TimeoutException e) {
 			return false;
 		} finally {
