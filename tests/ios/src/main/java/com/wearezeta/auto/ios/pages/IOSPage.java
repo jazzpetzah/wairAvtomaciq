@@ -211,7 +211,8 @@ public abstract class IOSPage extends BasePage {
 	public boolean isKeyboardVisible() throws Exception {
 		DriverUtils.waitUntilElementDissapear(driver,
 				By.className(IOSLocators.classNameKeyboard));
-		return DriverUtils.isElementDisplayed(keyboard);
+		return DriverUtils.isElementDisplayed(this.getDriver(),
+				By.className(IOSLocators.classNameKeyboard));
 	}
 
 	public void clickKeyboardDeleteButton() {

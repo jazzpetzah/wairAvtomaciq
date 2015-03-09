@@ -84,7 +84,7 @@ public class GroupChatPage extends DialogPage {
 								+ contact.toUpperCase())).isDisplayed();
 	}
 
-	public boolean isYouAddedUserMessageShown(String user) {
+	public boolean isYouAddedUserMessageShown(String user) throws Exception {
 		return isMessageShownInGroupChat(String.format(
 				IOSLocators.nameYouAddetToGroupChatMessage, user.toUpperCase()));
 	}
@@ -95,11 +95,9 @@ public class GroupChatPage extends DialogPage {
 						name));
 	}
 
-	public boolean isMessageShownInGroupChat(String message) {
-		boolean flag = false;
-		flag = DriverUtils.isElementDisplayed(driver.findElement(By
-				.name(message)));
-		return flag;
+	public boolean isMessageShownInGroupChat(String message) throws Exception {
+		return DriverUtils.isElementDisplayed(this.getDriver(),
+				By.name(message));
 	}
 
 	public boolean isContactAvailableInChat(String contact) {
@@ -124,12 +122,14 @@ public class GroupChatPage extends DialogPage {
 	@Override
 	public IOSPage openConversationDetailsClick() throws Exception {
 		for (int i = 0; i < 3; i++) {
-			if (DriverUtils.isElementDisplayed(openConversationDetails)) {
+			if (DriverUtils.isElementDisplayed(this.getDriver(),
+					By.name(IOSLocators.nameOpenConversationDetails))) {
 				openConversationDetails.click();
 				DriverUtils.waitUntilElementAppears(driver,
 						By.name(IOSLocators.nameAddContactToChatButton), 5);
 			}
-			if (DriverUtils.isElementDisplayed(addInfoPage)) {
+			if (DriverUtils.isElementDisplayed(this.getDriver(),
+					By.name(IOSLocators.nameAddContactToChatButton))) {
 				break;
 			} else {
 				swipeUp(1000);
@@ -146,9 +146,9 @@ public class GroupChatPage extends DialogPage {
 
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
-		this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y
-				+ elementSize.height - 170, coords.x + elementSize.width / 2,
-				coords.y + 40, time);
+		this.getDriver().swipe(coords.x + elementSize.width / 2,
+				coords.y + elementSize.height - 170,
+				coords.x + elementSize.width / 2, coords.y + 40, time);
 		return returnBySwipe(SwipeDirection.UP);
 	}
 
@@ -159,8 +159,8 @@ public class GroupChatPage extends DialogPage {
 
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
-		this.getDriver().swipe(coords.x + 10, coords.y + 30, coords.x + elementSize.width
-				/ 2 + 20, coords.y + 30, time);
+		this.getDriver().swipe(coords.x + 10, coords.y + 30,
+				coords.x + elementSize.width / 2 + 20, coords.y + 30, time);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 
@@ -187,8 +187,9 @@ public class GroupChatPage extends DialogPage {
 		return page;
 	}
 
-	public boolean isYouLeftMessageShown() {
-		return DriverUtils.isElementDisplayed(youLeftMessage);
+	public boolean isYouLeftMessageShown() throws Exception {
+		return DriverUtils.isElementDisplayed(this.getDriver(),
+				By.name(IOSLocators.nameYouLeftMessage));
 	}
 
 }

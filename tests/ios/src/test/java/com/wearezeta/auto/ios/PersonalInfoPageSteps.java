@@ -43,7 +43,7 @@ public class PersonalInfoPageSteps {
 	}
 
 	@When("I see error message asking for more characters")
-	public void ISeeErrorMessageForMoreCharacters() {
+	public void ISeeErrorMessageForMoreCharacters() throws Exception {
 		Assert.assertTrue("Error message is not shown",
 				PagesCollection.personalInfoPage.isTooShortNameErrorMessage());
 	}

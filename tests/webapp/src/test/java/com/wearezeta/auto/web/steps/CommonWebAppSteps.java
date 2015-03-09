@@ -216,6 +216,7 @@ public class CommonWebAppSteps {
 	@Given("^User (\\w+) is [Mm]e$")
 	public void UserXIsMe(String nameAlias) throws Exception {
 		commonSteps.UserXIsMe(nameAlias);
+		IChangeUserAvatarPicture(nameAlias, "default");
 	}
 
 	/**

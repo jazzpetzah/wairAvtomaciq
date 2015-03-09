@@ -59,7 +59,8 @@ public class VideoPlayerPage extends IOSPage {
 		DialogPage page = null;
 		DriverUtils.mobileTapByCoordinates(this.getDriver(), videoDoneButton);
 		try {
-			DriverUtils.mobileTapByCoordinates(this.getDriver(), videoDoneButton);
+			DriverUtils.mobileTapByCoordinates(this.getDriver(),
+					videoDoneButton);
 		} catch (WebDriverException e) {
 
 		}
@@ -68,8 +69,9 @@ public class VideoPlayerPage extends IOSPage {
 
 	}
 
-	public void clickPauseButton() {
-		if (DriverUtils.isElementDisplayed(videoPauseButton)) {
+	public void clickPauseButton() throws Exception {
+		if (DriverUtils.isElementDisplayed(this.getDriver(),
+				By.name(IOSLocators.nameVideoPauseButton))) {
 			videoPauseButton.click();
 		} else {
 			tapVideoPage();

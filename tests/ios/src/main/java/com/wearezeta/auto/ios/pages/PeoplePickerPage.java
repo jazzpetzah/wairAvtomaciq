@@ -68,7 +68,7 @@ public class PeoplePickerPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathPeoplePickerAllTopPeople)
 	private List<WebElement> topPeopleList;
-	
+
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathInviteCopyButton)
 	private WebElement inviteCopyButton;
 
@@ -83,11 +83,12 @@ public class PeoplePickerPage extends IOSPage {
 		super(driver, wait);
 	}
 
-	public void clickLaterButton() {
+	public void clickLaterButton() throws Exception {
 		if (isLaterClicked()) {
 			return;
 		}
-		if (DriverUtils.isElementDisplayed(shareButton)) {
+		if (DriverUtils.isElementDisplayed(this.getDriver(),
+				By.name(IOSLocators.nameShareButton))) {
 			shareButton.click();
 			setLaterClicked(true);
 		}
@@ -157,8 +158,9 @@ public class PeoplePickerPage extends IOSPage {
 		return new ContactListPage(this.getDriver(), this.getWait());
 	}
 
-	public boolean isAddToConversationBtnVisible() {
-		return DriverUtils.isElementDisplayed(addToConversationBtn);
+	public boolean isAddToConversationBtnVisible() throws Exception {
+		return DriverUtils.isElementDisplayed(this.getDriver(),
+				By.name(IOSLocators.namePeoplePickerAddToConversationButton));
 	}
 
 	public boolean addToConversationNotVisible() {
@@ -223,8 +225,9 @@ public class PeoplePickerPage extends IOSPage {
 		peoplePickerSearch.clear();
 	}
 
-	public boolean isContactsLabelVisible() {
-		return DriverUtils.isElementDisplayed(contactsLabel);
+	public boolean isContactsLabelVisible() throws Exception {
+		return DriverUtils.isElementDisplayed(this.getDriver(),
+				By.name(IOSLocators.namePeoplePickerContactsLabel));
 	}
 
 	public void selectUser(String name) throws Exception {
@@ -244,8 +247,9 @@ public class PeoplePickerPage extends IOSPage {
 		}
 	}
 
-	public boolean isCreateConversationButtonVisible() {
-		return DriverUtils.isElementDisplayed(createConverstaionButton);
+	public boolean isCreateConversationButtonVisible() throws Exception {
+		return DriverUtils.isElementDisplayed(this.getDriver(),
+				By.name(IOSLocators.nameCreateConversationButton));
 	}
 
 	public IOSPage clickCreateConversationButton() throws Throwable {
@@ -257,8 +261,9 @@ public class PeoplePickerPage extends IOSPage {
 		}
 	}
 
-	public boolean isTopPeopleLabelVisible() {
-		return DriverUtils.isElementDisplayed(topPeopleLabel);
+	public boolean isTopPeopleLabelVisible() throws Exception {
+		return DriverUtils.isElementDisplayed(this.getDriver(),
+				By.name(IOSLocators.NamePeoplePickerTopPeopleLabel));
 	}
 
 	public boolean isUserSelected(String name) {
@@ -291,23 +296,27 @@ public class PeoplePickerPage extends IOSPage {
 			throws Exception {
 		OtherUserOnPendingProfilePage page;
 		driver.findElement(By.name(contact)).click();
-		page = new OtherUserOnPendingProfilePage(this.getDriver(), this.getWait());
+		page = new OtherUserOnPendingProfilePage(this.getDriver(),
+				this.getWait());
 		return page;
 	}
 
-	public boolean isUploadDialogShown() {
-		boolean isLaterBtnVisible = DriverUtils.isElementDisplayed(shareButton);
+	public boolean isUploadDialogShown() throws Exception {
+		boolean isLaterBtnVisible = DriverUtils.isElementDisplayed(
+				this.getDriver(), By.name(IOSLocators.nameShareButton));
 		return isLaterBtnVisible;
 	}
 
-	public void clickContinueButton() {
-		if (DriverUtils.isElementDisplayed(continueButton)) {
+	public void clickContinueButton() throws Exception {
+		if (DriverUtils.isElementDisplayed(this.getDriver(),
+				By.name(IOSLocators.nameContinueUploadButton))) {
 			continueButton.click();
 		}
 	}
 
-	public boolean isPeopleYouMayKnowLabelVisible() {
-		return DriverUtils.isElementDisplayed(peopleYouMayKnowLabel);
+	public boolean isPeopleYouMayKnowLabelVisible() throws Exception {
+		return DriverUtils.isElementDisplayed(this.getDriver(),
+				By.name(IOSLocators.namePeopleYouMayKnowLabel));
 	}
 
 	public DialogPage unblockUser() throws Exception {
@@ -324,12 +333,13 @@ public class PeoplePickerPage extends IOSPage {
 		}
 		return selectedPeople;
 	}
-	
-	public void tapSendInviteButton(){
+
+	public void tapSendInviteButton() {
 		sendInviteButton.click();
 	}
-	
-	public void tapSendInviteCopyButton() throws UnsupportedFlavorException, Exception{
+
+	public void tapSendInviteCopyButton() throws UnsupportedFlavorException,
+			Exception {
 		inviteCopyButton.click();
 	}
 

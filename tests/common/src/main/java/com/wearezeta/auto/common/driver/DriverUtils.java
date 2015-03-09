@@ -47,11 +47,39 @@ public class DriverUtils {
 		return s == null || s.length() == 0;
 	}
 
-	public static boolean isElementDisplayed(WebElement element) {
+	/**
+	 * Please use this method ONLY if you know that the element already exists
+	 * on the current page. If not then it will cause 10-15 seconds delay every
+	 * time it is called.
+	 * 
+	 * There is overloaded version of this method, which accepts By parameter,
+	 * and it should be used in case when an element has not been checked for
+	 * existence yet
+	 * 
+	 * @param driver
+	 * @param element
+	 * @return boolean value
+	 * @throws Exception
+	 */
+	public static boolean isElementDisplayed(RemoteWebDriver driver,
+			WebElement element) throws Exception {
 		try {
 			return element.isDisplayed();
-		} catch (Exception ex) {
-			// ex.printStackTrace();
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+	}
+
+	public static boolean isElementDisplayed(RemoteWebDriver driver, By by)
+			throws Exception {
+		return isElementDisplayed(driver, by, 1);
+	}
+
+	public static boolean isElementDisplayed(RemoteWebDriver driver, By by,
+			int timeoutSeconds) throws Exception {
+		if (waitUntilElementAppears(driver, by, timeoutSeconds)) {
+			return driver.findElement(by).isDisplayed();
+		} else {
 			return false;
 		}
 	}
@@ -85,8 +113,7 @@ public class DriverUtils {
 	}
 
 	public static boolean waitUntilElementAppears(RemoteWebDriver driver,
-			final Object el_or_locator, int timeout) throws Exception {
-		assert ((el_or_locator instanceof WebElement) || (el_or_locator instanceof By));
+			final By locator, int timeout) throws Exception {
 		turnOffImplicitWait(driver);
 		try {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
@@ -96,13 +123,7 @@ public class DriverUtils {
 
 			return wait.until(new Function<WebDriver, Boolean>() {
 				public Boolean apply(WebDriver driver) {
-					if (el_or_locator instanceof WebElement) {
-						return ((WebElement) el_or_locator).isDisplayed();
-					} else if (el_or_locator instanceof By) {
-						return (driver.findElements((By) el_or_locator).size() > 0);
-					} else {
-						return false;
-					}
+					return (driver.findElements(locator).size() > 0);
 				}
 			});
 		} catch (TimeoutException ex) {
@@ -113,9 +134,8 @@ public class DriverUtils {
 	}
 
 	public static boolean waitUntilElementAppears(RemoteWebDriver driver,
-			final Object el_or_locator) throws Exception {
-		return waitUntilElementAppears(driver, el_or_locator,
-				DEFAULT_LOOKUP_TIMEOUT);
+			final By locator) throws Exception {
+		return waitUntilElementAppears(driver, locator, DEFAULT_LOOKUP_TIMEOUT);
 	}
 
 	public static boolean waitUntilElementClickable(RemoteWebDriver driver,

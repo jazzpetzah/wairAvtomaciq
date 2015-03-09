@@ -43,9 +43,9 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 		startConversationButton.click();
 	}
 
-	public boolean isUserNameDisplayed(String name) {
+	public boolean isUserNameDisplayed(String name) throws Exception {
 		WebElement otherUserName = driver.findElementByName(name);
-		return DriverUtils.isElementDisplayed(otherUserName);
+		return DriverUtils.isElementDisplayed(this.getDriver(), otherUserName);
 	}
 
 	@Override

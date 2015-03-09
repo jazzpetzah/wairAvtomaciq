@@ -89,7 +89,7 @@ public class GroupChatPageSteps {
 	}
 
 	@Then("I see You Left message in group chat")
-	public void ISeeYouLeftMessage() {
+	public void ISeeYouLeftMessage() throws Exception {
 		Assert.assertTrue(PagesCollection.groupChatPage.isYouLeftMessageShown());
 	}
 
@@ -126,7 +126,7 @@ public class GroupChatPageSteps {
 	}
 
 	@When("I see message in group chat (.*)")
-	public void ISeeMessageInGroupChat(String message) {
+	public void ISeeMessageInGroupChat(String message) throws Exception {
 		PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.iOSPage;
 		Assert.assertTrue(PagesCollection.groupChatPage
 				.isMessageShownInGroupChat(message));

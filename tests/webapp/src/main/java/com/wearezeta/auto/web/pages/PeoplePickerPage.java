@@ -69,12 +69,11 @@ public class PeoplePickerPage extends WebPage {
 		return new ConnectToPopupPage(this.getDriver(), this.getWait());
 	}
 
-	public boolean isUserFound(String name) {
+	public boolean isUserFound(String name) throws Exception {
 		String foundUserXpath = WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 				.apply(name);
-		WebElement foundUserElement = driver.findElement(By
-				.xpath(foundUserXpath));
-		return DriverUtils.isElementDisplayed(foundUserElement);
+		return DriverUtils.isElementDisplayed(this.getDriver(),
+				By.xpath(foundUserXpath));
 	}
 
 	public void closeSearch() throws Exception {

@@ -13,15 +13,19 @@ public final class WebAppLocators {
 
 	public static final class LoginPage {
 
-		public static final String idLoginPage = "login-page";
+		public static final String xpathLoginPage = "//*[@data-uie-name='go-wire-dot-com']";
 
-		public static final String idEmailInput = "wire-email";
+		public static final String xpathEmailInput = "//*[@data-uie-name='enter-email']";
 
-		public static final String idPasswordInput = "wire-password";
-
-		public static final String idLoginButton = "wire-login";
+		public static final String xpathPasswordInput = "//*[@data-uie-name='enter-password']";
 
 		public static final String classNameSpinner = "loading-spinner";
+
+		public static final String xpathSwitchToRegisterButton = "//*[@data-uie-name='go-register]";
+
+		public static final String xpathCreateAccountButton = "//*[@data-uie-name='do-register']";
+
+		public static final String xpathSignInButton = "//*[@data-uie-name='do-sign-in']";
 	}
 
 	public static final class ContactListPage {
@@ -206,13 +210,6 @@ public final class WebAppLocators {
 
 	}
 
-	public static final class AuthorizationPage {
-
-		public static final String xpathCreateAccountButton = "//*[@data-uie-name='go-register']";
-
-		public static final String xpathSignInButton = "//*[@data-uie-name='go-sign-in']";
-	}
-
 	public static final class RegistrationPage {
 
 		public static final String xpathNameFiled = "//*[@data-uie-name='enter-name']";
@@ -224,6 +221,10 @@ public final class WebAppLocators {
 		public static final String idCreateAccountButton = "wire-create";
 
 		public static final String idVerificationEmail = "wire-sent-email";
+
+		public static final String xpathSwitchToSignInButton = "//*[@data-uie-name='go-sign-in']";
+		
+		public static final String xpathGoToCreateAccountButton = "(//*[@data-uie-name='go-register'])[2]";
 	}
 
 	public static final class Common {

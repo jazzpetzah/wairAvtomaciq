@@ -155,7 +155,8 @@ Feature: People View
     Then I see <Message> action for <Contact2>,<Contact1> in conversation
     And I open self profile
     And I click gear button on self profile page
-    And I select Sign Out menu item on self profile page
+    And I select Sign out menu item on self profile page
+    And I switch to sign in page
     And I see Sign In page
     And User <Contact1> is me
     And User <Contact1> change avatar picture to default
@@ -166,7 +167,8 @@ Feature: People View
     And I see user <Name> action <Message2> for <Contact2>,<Contact1> in conversation
     And I open self profile
     And I click gear button on self profile page
-    And I select Sign Out menu item on self profile page
+    And I select Sign out menu item on self profile page
+    And I switch to sign in page
     And I see Sign In page
     And User <Contact2> is me
     And User <Contact2> change avatar picture to default

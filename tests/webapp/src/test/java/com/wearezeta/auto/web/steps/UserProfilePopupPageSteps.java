@@ -44,10 +44,11 @@ public class UserProfilePopupPageSteps {
 	 * Verify that Add people button is shown on User profile popup
 	 * 
 	 * @step. I see Add people button on User Profile Popup Page
+	 * @throws Exception 
 	 * 
 	 */
 	@When("I see Add people button on User Profile Popup Page")
-	public void ISeeAddPeopleButtonOnUserProfilePopupPage() {
+	public void ISeeAddPeopleButtonOnUserProfilePopupPage() throws Exception {
 		Assert.assertTrue(PagesCollection.userProfilePopupPage
 				.isAddPeopleButtonVisible());
 	}
@@ -56,10 +57,11 @@ public class UserProfilePopupPageSteps {
 	 * Verify that Block button is shown on User profile popup
 	 * 
 	 * @step. I see Block button on User Profile Popup Page
+	 * @throws Exception 
 	 * 
 	 */
 	@When("I see Block button on User Profile Popup Page")
-	public void ISeeBlockButtonOnUserProfilePopupPage() {
+	public void ISeeBlockButtonOnUserProfilePopupPage() throws Exception {
 		Assert.assertTrue(PagesCollection.userProfilePopupPage
 				.isBlockButtonVisible());
 	}

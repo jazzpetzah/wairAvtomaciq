@@ -38,8 +38,11 @@ public abstract class ConversationPopupPage extends WebPage {
 	}
 
 	public boolean isConversationPopupPageVisible() throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver, conversationPopup,
-				10);
+		return DriverUtils
+				.waitUntilElementAppears(
+						driver,
+						By.id(WebAppLocators.ConversationPopupPage.idConversationPopupPage),
+						10);
 	}
 
 	public boolean isAddPeopleMessageShown() {

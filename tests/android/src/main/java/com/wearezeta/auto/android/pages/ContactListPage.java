@@ -90,7 +90,8 @@ public class ContactListPage extends AndroidPage {
 		// workaround for incorrect tap
 		if (page == null) {
 			el = findInContactList(name, 1);
-			if (el != null && DriverUtils.isElementDisplayed(el)) {
+			if (el != null
+					&& DriverUtils.isElementDisplayed(this.getDriver(), el)) {
 				this.restoreApplication();
 				el.click();
 				log.debug("tap on contact for the second time");
@@ -173,9 +174,9 @@ public class ContactListPage extends AndroidPage {
 		return page;
 	}
 
-	public boolean isContactMuted() {
-
-		return DriverUtils.isElementDisplayed(mutedIcon);
+	public boolean isContactMuted() throws Exception {
+		return DriverUtils.isElementDisplayed(this.getDriver(),
+				By.id(AndroidLocators.ContactListPage.idMutedIcon));
 	}
 
 	public boolean isHintVisible() throws InterruptedException, IOException {

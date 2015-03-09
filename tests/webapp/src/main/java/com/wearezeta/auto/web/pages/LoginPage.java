@@ -2,7 +2,6 @@ package com.wearezeta.auto.web.pages;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -22,39 +21,29 @@ public class LoginPage extends WebPage {
 	private static final Logger log = ZetaLogger.getLog(LoginPage.class
 			.getSimpleName());
 
-	@FindBy(how = How.ID, using = WebAppLocators.LoginPage.idLoginPage)
-	private WebElement page;
+	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathCreateAccountButton)
+	private WebElement createAccountButton;
 
-	@FindBy(how = How.ID, using = WebAppLocators.LoginPage.idEmailInput)
+	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathSignInButton)
+	private WebElement signInButton;
+
+	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathSwitchToRegisterButton)
+	private WebElement switchToRegisterButton;
+
+	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathEmailInput)
 	private WebElement emailInput;
 
-	@FindBy(how = How.ID, using = WebAppLocators.LoginPage.idPasswordInput)
+	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathPasswordInput)
 	private WebElement passwordInput;
-
-	@FindBy(how = How.ID, using = WebAppLocators.LoginPage.idLoginButton)
-	private WebElement loginButton;
 
 	public LoginPage(ZetaWebAppDriver driver, WebDriverWait wait)
 			throws Exception {
-		super(driver, wait); 
+		super(driver, wait);
 	}
 
-	public boolean isVisible() {
-		WebElement page = null;
-		try {
-			page = driver.findElement(By
-					.id(WebAppLocators.LoginPage.idLoginPage));
-		} catch (NoSuchElementException e) {
-			page = null;
-		}
-		return page != null;
-	}
-
-	public ContactListPage confirmSignIn() throws Exception {
-
-		loginButton.click();
-
-		return new ContactListPage(this.getDriver(), this.getWait());
+	public boolean isVisible() throws Exception {
+		return DriverUtils.waitUntilElementAppears(driver,
+				By.xpath(WebAppLocators.LoginPage.xpathLoginPage));
 	}
 
 	public void inputEmail(String email) {
@@ -67,8 +56,7 @@ public class LoginPage extends WebPage {
 		passwordInput.sendKeys(password);
 	}
 
-	private boolean waitForLoginButtonDisappearance()
-			throws Exception {
+	private boolean waitForLoginButtonDisappearance() throws Exception {
 		// workarounds for IE driver bugs:
 		// 1. when findElements() returns one RemoteWebElement instead of list
 		// of elements and throws WebDriverException
@@ -76,7 +64,7 @@ public class LoginPage extends WebPage {
 		boolean noSignIn = false;
 		try {
 			noSignIn = DriverUtils.waitUntilElementDissapear(driver,
-					By.id(WebAppLocators.LoginPage.idLoginButton), 40);
+					By.xpath(WebAppLocators.LoginPage.xpathSignInButton), 40);
 		} catch (WebDriverException e) {
 			if (WebAppExecutionContext.browserName
 					.equals(WebAppConstants.Browser.INTERNET_EXPLORER)) {
@@ -93,5 +81,21 @@ public class LoginPage extends WebPage {
 		boolean noSignInSpinner = DriverUtils.waitUntilElementDissapear(driver,
 				By.className(WebAppLocators.LoginPage.classNameSpinner), 40);
 		return noSignIn && noSignInSpinner;
+	}
+
+	public RegistrationPage switchToRegistrationPage() throws Exception {
+		if (DriverUtils.isElementDisplayed(this.getDriver(),
+				By.xpath(WebAppLocators.LoginPage.xpathCreateAccountButton))) {
+			switchToRegisterButton.click();
+		}
+
+		return new RegistrationPage(this.getDriver(), this.getWait());
+	}
+
+	public ContactListPage clickSignInButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(driver, signInButton);
+		signInButton.click();
+
+		return new ContactListPage(this.getDriver(), this.getWait());
 	}
 }

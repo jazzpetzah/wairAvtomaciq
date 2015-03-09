@@ -30,17 +30,15 @@ public class InvitationCodePage extends WebPage {
 	}
 
 	public boolean isVisible() throws Exception {
-		boolean result = DriverUtils.waitUntilElementAppears(driver,
+		return DriverUtils.waitUntilElementAppears(driver,
 				By.id(WebAppLocators.InvitationCodePage.idCodeInput), 5);
-		return result;
 	}
 
 	public void inputCode(String code) {
 		codeInput.sendKeys(code);
 	}
 
-	public LoginPage proceed() throws Exception {
+	public void proceed() throws Exception {
 		proceedButton.click();
-		return new LoginPage(this.getDriver(), this.getWait());
 	}
 }
