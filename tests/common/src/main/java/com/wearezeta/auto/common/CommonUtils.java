@@ -289,11 +289,6 @@ public class CommonUtils {
 		return getValueFromConfig(c, "webappApplicationPath");
 	}
 	
-	public static String getWebAppImagesPathFromConfig(Class<?> c)
-			throws Exception {
-		return getValueFromConfig(c, "webappImagesPath");
-	}
-
 	public static String getAndroidApplicationPathFromConfig(Class<?> c)
 			throws Exception {
 		return getValueFromConfig(c, "androidApplicationPath");
@@ -328,6 +323,11 @@ public class CommonUtils {
 		}
 	}
 
+	public static String getWebAppImagesPathFromConfig(Class<?> c)
+			throws Exception {
+		return getValueFromConfig(c, "webappImagesPath");
+	}
+	
 	public static String getUserPicturePathFromConfig(Class<?> c)
 			throws Exception {
 		return getValueFromConfig(c, "pathToUserpic");

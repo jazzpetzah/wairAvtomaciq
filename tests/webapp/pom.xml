@@ -26,6 +26,7 @@
 		<platform></platform>
 		<!-- edge | staging | production -->
 		<backendType>staging</backendType>
+		<webappImagesPath>img/</webappImagesPath>
 	</properties>
 
 	<dependencies>

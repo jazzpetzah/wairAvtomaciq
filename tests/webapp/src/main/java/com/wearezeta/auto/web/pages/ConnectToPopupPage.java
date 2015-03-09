@@ -22,7 +22,7 @@ public class ConnectToPopupPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConnectToPopup.xpathUserName)
 	private WebElement userName;
 
-	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.ConnectToPopup.classNameConnectionMessage)
+	@FindBy(how = How.XPATH, using = WebAppLocators.ConnectToPopup.xpathNameConnectionMessage)
 	private WebElement connectionText;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConnectToPopup.xpathConnectButton)

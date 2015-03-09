@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.eclipse.jetty.util.log.Log;
 import org.openqa.selenium.WebDriverException;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
