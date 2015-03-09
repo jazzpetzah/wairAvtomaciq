@@ -1,6 +1,5 @@
 Feature: Registration
 
-@torun
 Scenario Outline: Registration
     Given I see invitation page
     Given I enter invitation code
