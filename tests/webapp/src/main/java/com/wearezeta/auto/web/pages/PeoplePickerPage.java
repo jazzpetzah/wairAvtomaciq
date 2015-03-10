@@ -14,6 +14,7 @@ import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class PeoplePickerPage extends WebPage {
 
+	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class
 			.getSimpleName());
 
@@ -45,13 +46,10 @@ public class PeoplePickerPage extends WebPage {
 		String xpath = String
 				.format(WebAppLocators.PeoplePickerPage.xpathFormatSearchListItemWithName,
 						user);
-		final boolean isVisible = DriverUtils.isElementDisplayed(driver,
-				By.xpath(xpath), DriverUtils.DEFAULT_VISIBILITY_TIMEOUT);
+		assert DriverUtils.isElementDisplayed(driver, By.xpath(xpath),
+				DriverUtils.DEFAULT_VISIBILITY_TIMEOUT);
 		WebElement userEl = driver.findElement(By.xpath(xpath));
-		final boolean isClickable = DriverUtils.waitUntilElementClickable(
-				driver, userEl);
-		log.debug("Found user element is clickable: " + isClickable
-				+ ", isVisible: " + isVisible);
+		assert DriverUtils.waitUntilElementClickable(driver, userEl);
 		userEl.click();
 	}
 
