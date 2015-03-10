@@ -17,12 +17,9 @@ class ExecuteJob(CliHandlerBase):
                             help='Special security token, which allows to run the job remotely')
         parser.add_argument('--block', action='store_true',
                             help='If exists then this job will block its caller until finished')
-        parser.add_argument('--invoke-queue-delay',
-                            help='Timer delay for job invocation detection (default is 5 seconds)')
         parser.add_argument('--cause',
                             help='Jenkins job cause')
-        parser.set_defaults(params=None, token=None, block=False, cause=None,
-                            invoke_queue_delay=5)
+        parser.set_defaults(params=None, token=None, block=False, cause=None)
 
     def _encoded_params_to_dict(self, encoded_params):
         result_dict = {}
@@ -47,7 +44,6 @@ class ExecuteJob(CliHandlerBase):
         start_time = datetime.now()
         job.invoke(securitytoken=args.token,
                    block=args.block,
-                   invoke_block_delay=int(args.invoke_queue_delay),
                    build_params=self._encoded_params_to_dict(args.params),
                    cause=args.cause)
         if args.block:

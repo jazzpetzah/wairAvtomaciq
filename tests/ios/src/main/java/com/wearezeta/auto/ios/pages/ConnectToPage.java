@@ -124,14 +124,14 @@ public class ConnectToPage extends IOSPage {
 		connectOtherUserButton.click();
 	}
 
-	public boolean isSendButtonVisible() {
-		boolean flag = false;
-		flag = DriverUtils.isElementDisplayed(sendConnectButton);
-		return flag;
+	public boolean isSendButtonVisible() throws Exception {
+		return DriverUtils.isElementDisplayed(this.getDriver(),
+				By.name(IOSLocators.nameSendConnectButton));
 	}
 
-	public boolean isSendConnectionInputVisible() {
-		return DriverUtils.isElementDisplayed(sendConnectionInput);
+	public boolean isSendConnectionInputVisible() throws Exception {
+		return DriverUtils.isElementDisplayed(this.getDriver(),
+				By.name(IOSLocators.nameSendConnectionInputField));
 	}
 
 }

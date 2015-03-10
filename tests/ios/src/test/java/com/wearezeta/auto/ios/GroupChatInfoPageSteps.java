@@ -143,7 +143,7 @@ public class GroupChatInfoPageSteps {
 	}
 
 	@When("I see Add people to group chat dialog")
-	public void ISeeAddPeopleToGroupChatDialog() {
+	public void ISeeAddPeopleToGroupChatDialog() throws Exception {
 		Assert.assertTrue(PagesCollection.groupChatInfoPage
 				.isAddDialogHeaderVisible());
 	}

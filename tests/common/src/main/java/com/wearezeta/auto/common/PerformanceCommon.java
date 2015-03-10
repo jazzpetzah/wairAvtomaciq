@@ -36,7 +36,7 @@ public final class PerformanceCommon {
 	private static final int MAX_WAIT_SECONDS = 30;
 	public static final int SIMULTANEOUS_MSGS_COUNT = 5;
 
-	private static final String DEFAULT_PERF_IMAGE = "perf/default.jpg";
+	public static final String DEFAULT_PERF_IMAGE = "perf/default.jpg";
 
 	private static PerformanceCommon instance = null;
 

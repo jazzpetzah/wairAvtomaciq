@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -22,14 +23,15 @@ public class ConnectToPopupPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConnectToPopup.xpathUserName)
 	private WebElement userName;
 
-	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.ConnectToPopup.classNameConnectionMessage)
+	@FindBy(how = How.XPATH, using = WebAppLocators.ConnectToPopup.xpathNameConnectionMessage)
 	private WebElement connectionText;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConnectToPopup.xpathConnectButton)
 	private WebElement connectButton;
 
-	public boolean isConntectPopupVisible() {
-		return DriverUtils.isElementDisplayed(connectPopupWindow);
+	public boolean isConntectPopupVisible() throws Exception {
+		return DriverUtils.isElementDisplayed(this.getDriver(),
+				By.id(WebAppLocators.ConnectToPopup.idConnectionPopupWindow));
 	}
 
 	public String getUserName() {

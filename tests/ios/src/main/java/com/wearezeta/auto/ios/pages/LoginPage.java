@@ -80,8 +80,7 @@ public class LoginPage extends IOSPage {
 
 	public String message;
 
-	public LoginPage(ZetaIOSDriver driver, WebDriverWait wait)
-			throws Exception {
+	public LoginPage(ZetaIOSDriver driver, WebDriverWait wait) throws Exception {
 		super(driver, wait);
 	}
 
@@ -94,13 +93,15 @@ public class LoginPage extends IOSPage {
 		signInButton.click();
 		return this;
 	}
-	
+
 	public void waitForLaterButton(int time) throws Exception {
-		DriverUtils.waitUntilElementAppears(getDriver(), shareButton, time);
+		DriverUtils.waitUntilElementAppears(getDriver(),
+				By.name(IOSLocators.nameShareButton), time);
 	}
 
 	public PeoplePickerPage clickLaterButton() throws Exception {
-		if (DriverUtils.isElementDisplayed(shareButton)) {
+		if (DriverUtils.isElementDisplayed(this.getDriver(),
+				By.name(IOSLocators.nameShareButton))) {
 			shareButton.click();
 			return new PeoplePickerPage(this.getDriver(), this.getWait());
 		} else {
@@ -116,10 +117,9 @@ public class LoginPage extends IOSPage {
 		return null;
 	}
 
-	public boolean isSelfProfileVisible() {
-
-		return DriverUtils
-				.isElementDisplayed(PagesCollection.loginPage.selfProfileName);
+	public boolean isSelfProfileVisible() throws Exception {
+		return DriverUtils.isElementDisplayed(this.getDriver(),
+				By.name(IOSLocators.nameProfileName));
 	}
 
 	public IOSPage login() throws Exception {
@@ -184,10 +184,12 @@ public class LoginPage extends IOSPage {
 
 	public Boolean isLoginFinished(String contact) throws Exception {
 		try {
-			this.getWait().until(ExpectedConditions.presenceOfElementLocated(By
-					.name(contact)));
-			this.getWait().until(ExpectedConditions.visibilityOfElementLocated(By
-					.name(contact)));
+			this.getWait().until(
+					ExpectedConditions.presenceOfElementLocated(By
+							.name(contact)));
+			this.getWait().until(
+					ExpectedConditions.visibilityOfElementLocated(By
+							.name(contact)));
 		} catch (WebDriverException ex) {
 		}
 		return DriverUtils.waitUntilElementAppears(driver, By.name(contact));
@@ -207,25 +209,30 @@ public class LoginPage extends IOSPage {
 	public void tapHoldEmailInput() {
 		message = driver.findElement(By.name(IOSLocators.nameLoginField))
 				.getText();
-		this.getDriver().tap(1, this.getDriver().findElement(By.name(IOSLocators.nameLoginField)),
-				1000);
+		this.getDriver().tap(
+				1,
+				this.getDriver().findElement(
+						By.name(IOSLocators.nameLoginField)), 1000);
 	}
 
 	public void openTermsLink() {
 		Point p = termsButton.getLocation();
 		Dimension k = termsButton.getSize();
-		this.getDriver().tap(1, (p.x) + (k.width - 70), (p.y) + (k.height - 16), 1);
+		this.getDriver().tap(1, (p.x) + (k.width - 70),
+				(p.y) + (k.height - 16), 1);
 	}
 
 	public void openPrivacyLink() {
 		Point p = privacyButton.getLocation();
 		Dimension k = privacyButton.getSize();
-		this.getDriver().tap(1, (p.x) + (k.width / 3), (p.y) + (k.height - 8), 1);
+		this.getDriver().tap(1, (p.x) + (k.width / 3), (p.y) + (k.height - 8),
+				1);
 	}
 
 	public void closeTermsPrivacyController() {
-		this.getWait().until(ExpectedConditions
-				.elementToBeClickable(termsPrivacyCloseButton));
+		this.getWait().until(
+				ExpectedConditions
+						.elementToBeClickable(termsPrivacyCloseButton));
 		termsPrivacyCloseButton.click();
 	}
 
@@ -238,16 +245,18 @@ public class LoginPage extends IOSPage {
 		passwordField.click();
 	}
 
-	public Boolean errorMailNotificationIsShown() {
-		return DriverUtils.isElementDisplayed(errorMailNotification);
+	public Boolean errorMailNotificationIsShown() throws Exception {
+		return DriverUtils.isElementDisplayed(this.getDriver(),
+				By.name(IOSLocators.nameErrorMailNotification));
 	}
 
 	public Boolean errorMailNotificationIsNotShown() {
 		return (ExpectedConditions.visibilityOf(errorMailNotification) == null);
 	}
 
-	public Boolean wrongCredentialsNotificationIsShown() {
-		return DriverUtils.isElementDisplayed(wrongCredentialsNotification);
+	public Boolean wrongCredentialsNotificationIsShown() throws Exception {
+		return DriverUtils.isElementDisplayed(this.getDriver(),
+				By.name(IOSLocators.nameWrongCredentialsNotification));
 	}
 
 	public void ignoreUpdate() throws Exception {

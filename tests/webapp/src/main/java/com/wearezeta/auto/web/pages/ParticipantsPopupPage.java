@@ -1,6 +1,7 @@
 package com.wearezeta.auto.web.pages;
 
 import org.apache.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -50,7 +51,11 @@ public class ParticipantsPopupPage extends ConversationPopupPage {
 
 	@Override
 	public void clickAddPeopleButton() throws Exception {
-		DriverUtils.waitUntilElementVisible(driver, addPeopleButton);
+		assert DriverUtils
+				.isElementDisplayed(
+						driver,
+						By.xpath(WebAppLocators.ParticipantsProfilePopupPage.xpathAddPeopleButton),
+						DriverUtils.DEFAULT_VISIBILITY_TIMEOUT);
 		addPeopleButton.click();
 	}
 

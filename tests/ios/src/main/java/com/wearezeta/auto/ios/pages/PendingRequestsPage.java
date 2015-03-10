@@ -83,8 +83,9 @@ public class PendingRequestsPage extends IOSPage {
 		return page;
 	}
 
-	public boolean isConnectButtonDisplayed() {
-		return DriverUtils.isElementDisplayed(connectRequestButton);
+	public boolean isConnectButtonDisplayed() throws Exception {
+		return DriverUtils.isElementDisplayed(this.getDriver(),
+				By.name(IOSLocators.namePendingRequestConnectButton));
 	}
 
 	public String getRequesterName() {

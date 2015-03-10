@@ -88,9 +88,10 @@ public class PeoplePickerPageSteps {
 	 * 
 	 * @param name
 	 *            user name string
+	 * @throws Exception 
 	 */
 	@When("I see user (.*) found on Search")
-	public void ISeeUserFoundOnSearch(String name) {
+	public void ISeeUserFoundOnSearch(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		Assert.assertTrue(PagesCollection.peoplePickerPage.isUserFound(name));
 	}

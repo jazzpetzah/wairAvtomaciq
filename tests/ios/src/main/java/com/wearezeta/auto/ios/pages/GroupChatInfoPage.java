@@ -320,8 +320,9 @@ public class GroupChatInfoPage extends IOSPage {
 		addContactButton.click();
 	}
 
-	public boolean isAddDialogHeaderVisible() {
-		boolean flag = DriverUtils.isElementDisplayed(addDialogHeader);
+	public boolean isAddDialogHeaderVisible() throws Exception {
+		boolean flag = DriverUtils.isElementDisplayed(this.getDriver(),
+				By.name(IOSLocators.nameAddPeopleDialogHeader));
 		return flag;
 	}
 

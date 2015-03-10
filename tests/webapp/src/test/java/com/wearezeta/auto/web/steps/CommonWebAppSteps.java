@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.google.common.io.Files;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.PerformanceCommon;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
@@ -36,7 +37,7 @@ public class CommonWebAppSteps {
 
 	public static final Platform CURRENT_PLATFORM = Platform.Web;
 
-	private static final String DEFAULT_USER_PICTURE = "aqaPictureContact600_800.jpg";
+	private static final String DEFAULT_USER_PICTURE = PerformanceCommon.DEFAULT_PERF_IMAGE;
 
 	static {
 		System.setProperty("java.awt.headless", "false");
@@ -145,16 +146,17 @@ public class CommonWebAppSteps {
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
 			throws Exception {
 		commonSteps.ThereAreNUsersWhereXIsMe(count, myNameAlias);
-		commonSteps.IChangeUserAvatarPicture(myNameAlias, "default");
+		IChangeUserAvatarPicture(myNameAlias, "default");
 	}
 
 	@When("^User (\\w+) change avatar picture to (.*)$")
 	public void IChangeUserAvatarPicture(String userNameAlias, String path)
 			throws Exception {
 		String avatar = null;
-		String rootPath = CommonUtils.getWebAppImagesPathFromConfig(getClass());
+		final String rootPath = CommonUtils
+				.getWebAppImagesPathFromConfig(getClass());
 		if (path.equals("default")) {
-			avatar = rootPath + "/" + DEFAULT_USER_PICTURE;
+			avatar = DEFAULT_USER_PICTURE;
 		} else {
 			avatar = rootPath + "/" + path;
 		}
@@ -214,6 +216,7 @@ public class CommonWebAppSteps {
 	@Given("^User (\\w+) is [Mm]e$")
 	public void UserXIsMe(String nameAlias) throws Exception {
 		commonSteps.UserXIsMe(nameAlias);
+		IChangeUserAvatarPicture(nameAlias, "default");
 	}
 
 	/**

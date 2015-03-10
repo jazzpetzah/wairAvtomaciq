@@ -114,7 +114,7 @@ public class RegistrationPageSteps {
 	}
 
 	@Then("^I see confirmation page$")
-	public void ISeeConfirmationPage() {
+	public void ISeeConfirmationPage() throws Exception {
 		Assert.assertTrue(PagesCollection.registrationPage
 				.isConfirmationVisible());
 	}

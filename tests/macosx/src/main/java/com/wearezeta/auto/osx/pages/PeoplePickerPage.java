@@ -206,10 +206,13 @@ public class PeoplePickerPage extends OSXPage {
 	public boolean isPeoplePickerPageVisible() throws Exception {
 		boolean isFound = false;
 		isFound = DriverUtils.waitUntilElementAppears(driver,
-				peoplePickerSearchResultTable, 5);
+				By.xpath(OSXLocators.xpathPeoplePickerSearchResultTable), 5);
 		if (!isFound) {
-			isFound = DriverUtils.waitUntilElementAppears(driver,
-					peoplePickerTopContactsSectionHeader, 5);
+			isFound = DriverUtils
+					.waitUntilElementAppears(
+							driver,
+							By.xpath(OSXLocators.xpathPeoplePickerTopContactsSectionHeader),
+							5);
 		}
 		return isFound;
 	}
@@ -249,8 +252,8 @@ public class PeoplePickerPage extends OSXPage {
 	}
 
 	public boolean isOpenConversationButtonVisible() throws Exception {
-		if (DriverUtils.waitUntilElementAppears(driver, openConversationButton,
-				5)) {
+		if (DriverUtils.waitUntilElementAppears(driver,
+				By.name(OSXLocators.namePeoplePickerOpenConversationButton), 5)) {
 			return NSPoint.fromString(
 					openConversationButton.getAttribute("AXSize")).y() > 0;
 		} else {

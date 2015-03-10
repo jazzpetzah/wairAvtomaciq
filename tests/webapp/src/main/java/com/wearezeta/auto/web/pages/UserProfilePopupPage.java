@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -33,8 +34,11 @@ public class UserProfilePopupPage extends ConversationPopupPage {
 		return userName.getText();
 	}
 
-	public boolean isAddPeopleButtonVisible() {
-		return DriverUtils.isElementDisplayed(addPeopleButton);
+	public boolean isAddPeopleButtonVisible() throws Exception {
+		return DriverUtils
+				.isElementDisplayed(
+						this.getDriver(),
+						By.xpath(WebAppLocators.UserProfilePopupPage.xpathAddPeopleButton));
 	}
 
 	@Override
@@ -43,7 +47,10 @@ public class UserProfilePopupPage extends ConversationPopupPage {
 		addPeopleButton.click();
 	}
 
-	public boolean isBlockButtonVisible() {
-		return DriverUtils.isElementDisplayed(blockButton);
+	public boolean isBlockButtonVisible() throws Exception {
+		return DriverUtils
+				.isElementDisplayed(
+						this.getDriver(),
+						By.xpath(WebAppLocators.UserProfilePopupPage.xpathNameBlockButton));
 	}
 }

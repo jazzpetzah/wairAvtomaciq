@@ -85,10 +85,8 @@ public class PersonalInfoPage extends IOSPage {
 	}
 
 	public boolean isSettingsButtonVisible() throws Exception {
-		DriverUtils.setImplicitWaitValue(driver, 3);
-		boolean result = DriverUtils.isElementDisplayed(settingsButton);
-		DriverUtils.setDefaultImplicitWait(driver);
-		return result;
+		return DriverUtils.isElementDisplayed(this.getDriver(),
+				By.name(IOSLocators.nameProfileSettingsButton));
 	}
 
 	public PersonalInfoPage clickOnSettingsButton() {
@@ -121,13 +119,14 @@ public class PersonalInfoPage extends IOSPage {
 	}
 
 	public void tapOnEditNameField() {
-		this.getWait().until(ExpectedConditions
-				.elementToBeClickable(profileNameEditField));
+		this.getWait().until(
+				ExpectedConditions.elementToBeClickable(profileNameEditField));
 		profileNameEditField.click();
 	}
 
-	public boolean isTooShortNameErrorMessage() {
-		return DriverUtils.isElementDisplayed(nameTooShortError);
+	public boolean isTooShortNameErrorMessage() throws Exception {
+		return DriverUtils.isElementDisplayed(this.getDriver(),
+				By.name(IOSLocators.nameSelfNameTooShortError));
 	}
 
 	public void clearNameField() {
@@ -135,12 +134,14 @@ public class PersonalInfoPage extends IOSPage {
 	}
 
 	public void enterNameInNamefield(String username) {
-		DriverUtils.mobileTapByCoordinates(this.getDriver(), profileNameEditField);
+		DriverUtils.mobileTapByCoordinates(this.getDriver(),
+				profileNameEditField);
 		profileNameEditField.sendKeys(username);
 	}
 
 	public void pressEnterInNameField() {
-		DriverUtils.mobileTapByCoordinates(this.getDriver(), profileNameEditField);
+		DriverUtils.mobileTapByCoordinates(this.getDriver(),
+				profileNameEditField);
 		profileNameEditField.sendKeys("\n");
 	}
 

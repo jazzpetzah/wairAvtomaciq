@@ -40,7 +40,7 @@ public class RegistrationPageSteps {
 	BufferedImage profileImage;
 
 	@Then("I see Take or select photo label and smile")
-	public void ISeeTakeOrSelectPhotoLabel() {
+	public void ISeeTakeOrSelectPhotoLabel() throws Exception {
 		Assert.assertTrue(PagesCollection.registrationPage
 				.isTakeOrSelectPhotoLabelVisible());
 		Assert.assertTrue(PagesCollection.registrationPage
@@ -48,7 +48,7 @@ public class RegistrationPageSteps {
 	}
 
 	@Then("I don't see Take or select photo label and smile")
-	public void IDontSeeTakeOrSelectPhotoLabel() {
+	public void IDontSeeTakeOrSelectPhotoLabel() throws Exception {
 		Assert.assertFalse(PagesCollection.registrationPage
 				.isTakeOrSelectPhotoLabelVisible());
 	}

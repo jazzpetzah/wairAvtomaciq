@@ -72,7 +72,8 @@ public class ConversationInfoPage extends OSXPage {
 
 	public String currentConversationName;
 
-	public ConversationInfoPage(ZetaOSXDriver driver, WebDriverWait wait) throws Exception {
+	public ConversationInfoPage(ZetaOSXDriver driver, WebDriverWait wait)
+			throws Exception {
 		super(driver, wait);
 	}
 
@@ -115,8 +116,9 @@ public class ConversationInfoPage extends OSXPage {
 		}
 	}
 
-	public boolean isPeoplePopoverDisplayed() {
-		return DriverUtils.isElementDisplayed(peoplePopover);
+	public boolean isPeoplePopoverDisplayed() throws Exception {
+		return DriverUtils.isElementDisplayed(this.getDriver(),
+				By.xpath(OSXLocators.xpathPeoplePopover));
 	}
 
 	public PeoplePickerPage openPeoplePicker() throws Exception {

@@ -312,11 +312,12 @@ public class LoginPageSteps {
 	 * Verifies whether error message about email field is visible
 	 * 
 	 * @step. ^I see error with email notification$
+	 * @throws Exception 
 	 * @throws AssertionError
 	 *             if error notification is not visible
 	 */
 	@Then("^I see error with email notification$")
-	public void ISeeErrorWithEmailNotification() {
+	public void ISeeErrorWithEmailNotification() throws Exception {
 		Assert.assertTrue("I don't see error mail notification",
 				PagesCollection.loginPage.errorMailNotificationIsShown());
 	}
@@ -349,9 +350,10 @@ public class LoginPageSteps {
 	 * current screen
 	 * 
 	 * @step. ^I see wrong credentials notification$
+	 * @throws Exception 
 	 */
 	@Then("^I see wrong credentials notification$")
-	public void ISeeWrongCredentialsNotification() {
+	public void ISeeWrongCredentialsNotification() throws Exception {
 		Assert.assertTrue("I don't see wrong credentials notification",
 				PagesCollection.loginPage.wrongCredentialsNotificationIsShown());
 	}

@@ -203,7 +203,7 @@ public class CommonIOSSteps {
 	 * 
 	 * @param userToNameAlias
 	 *            user that mutes the conversation
-	 * @param archivedUserNameAlias
+	 * @param mutedUserNameAlias
 	 * 			  name of group conversation to mute
 	 * @throws Exception 
 	 * 

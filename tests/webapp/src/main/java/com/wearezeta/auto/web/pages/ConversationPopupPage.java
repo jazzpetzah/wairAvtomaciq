@@ -38,8 +38,11 @@ public abstract class ConversationPopupPage extends WebPage {
 	}
 
 	public boolean isConversationPopupPageVisible() throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver, conversationPopup,
-				10);
+		return DriverUtils
+				.waitUntilElementAppears(
+						driver,
+						By.id(WebAppLocators.ConversationPopupPage.idConversationPopupPage),
+						10);
 	}
 
 	public boolean isAddPeopleMessageShown() {
@@ -63,10 +66,11 @@ public abstract class ConversationPopupPage extends WebPage {
 		String xpath = String
 				.format(WebAppLocators.PeoplePickerPage.xpathFormatSearchListItemWithName,
 						user);
+		final boolean isVisible = DriverUtils.isElementDisplayed(driver,
+				By.xpath(xpath), DriverUtils.DEFAULT_VISIBILITY_TIMEOUT);
 		WebElement userEl = driver.findElement(By.xpath(xpath));
-		boolean isClickable = DriverUtils.waitUntilElementClickable(driver,
-				userEl);
-		boolean isVisible = DriverUtils.waitUntilElementVisible(driver, userEl);
+		final boolean isClickable = DriverUtils.waitUntilElementClickable(
+				driver, userEl);
 		log.debug("Found user element is clickable: " + isClickable
 				+ ", isVisible: " + isVisible);
 		userEl.click();

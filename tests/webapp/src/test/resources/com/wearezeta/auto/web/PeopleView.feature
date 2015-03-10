@@ -59,7 +59,7 @@ Feature: People View
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       | Message  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat | you left |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat | YOU LEFT |
 
   @smoke @id1694
   Scenario Outline: Verify you can remove participants from a group conversation
@@ -79,7 +79,7 @@ Feature: People View
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       | Message     |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat | you removed |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat | YOU REMOVED |
 
   @staging @id1687
   Scenario Outline: Verify you can add participants to the group conversation by searching the user directory
@@ -114,7 +114,7 @@ Feature: People View
     #add last verification - that no one left to add
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName       | Message   |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | AddToGroupChat | you added |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | AddToGroupChat | YOU ADDED |
 
   @smoke @id1683
   Scenario Outline: Verify the name of the group conversation can be edited
@@ -132,7 +132,7 @@ Feature: People View
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName     | ChatNameEdit   | Message                  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | BaseChatName | EditedCahtName | renamed the conversation |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | BaseChatName | EditedCahtName | RENAMED THE CONVERSATION |
 
   @staging @id1697
   Scenario Outline: Verify the new conversation is created on the other end from 1to1
@@ -155,7 +155,8 @@ Feature: People View
     Then I see <Message> action for <Contact2>,<Contact1> in conversation
     And I open self profile
     And I click gear button on self profile page
-    And I select Sign Out menu item on self profile page
+    And I select Sign out menu item on self profile page
+    And I switch to sign in page
     And I see Sign In page
     And User <Contact1> is me
     And User <Contact1> change avatar picture to default
@@ -166,7 +167,8 @@ Feature: People View
     And I see user <Name> action <Message2> for <Contact2>,<Contact1> in conversation
     And I open self profile
     And I click gear button on self profile page
-    And I select Sign Out menu item on self profile page
+    And I select Sign out menu item on self profile page
+    And I switch to sign in page
     And I see Sign In page
     And User <Contact2> is me
     And User <Contact2> change avatar picture to default
@@ -177,4 +179,4 @@ Feature: People View
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Message                         | Message2                    |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | you started a conversation with | started a conversation with |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | YOU STARTED A CONVERSATION WITH | STARTED A CONVERSATION WITH |
