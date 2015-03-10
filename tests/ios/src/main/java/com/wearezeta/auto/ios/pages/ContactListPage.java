@@ -23,7 +23,6 @@ import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class ContactListPage extends IOSPage {
 
-	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
 			.getSimpleName());
 
@@ -253,8 +252,12 @@ public class ContactListPage extends IOSPage {
 	}
 
 	public boolean waitForContactListToLoad() throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver,
+		boolean waitForUser = DriverUtils.waitUntilElementAppears(driver,
 				By.xpath(IOSLocators.xpathMyUserInContactList));
+		if (!waitForUser) {
+			log.debug(this.getDriver().getPageSource());
+		}
+		return waitForUser;
 	}
 
 	private WebElement findChatInContactList(String contact1, String contact2) {
