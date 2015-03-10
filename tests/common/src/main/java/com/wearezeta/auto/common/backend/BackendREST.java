@@ -35,8 +35,6 @@ final class BackendREST {
 
 	private static String backendUrl = "not set";
 
-	private static final int LOGIN_TOO_FREQUENT_ERROR = 429;
-
 	static {
 		log.setLevel(Level.DEBUG);
 	}
@@ -133,27 +131,8 @@ final class BackendREST {
 		requestBody.put("email", email);
 		requestBody.put("password", password);
 		requestBody.put("label", "");
-		int tryNum = 1;
-		String output = "";
-		int toWait = 1;
-		while (tryNum < 5) {
-			try {
-				output = httpPost(webResource, requestBody.toString(),
-						new int[] { HttpStatus.SC_OK });
-				break;
-			} catch (BackendRequestException e) {
-				if (e.getReturnCode() == LOGIN_TOO_FREQUENT_ERROR) {
-					log.debug(String
-							.format("Login request for login number #%d failed. Retrying...",
-									tryNum));
-					tryNum++;
-					Thread.sleep(toWait * 1000);
-					toWait *= 2;
-				} else {
-					throw e;
-				}
-			}
-		}
+		final String output = httpPost(webResource, requestBody.toString(),
+				new int[] { HttpStatus.SC_OK });;
 		writeLog(new String[] {
 				"Output from Server ....  login By User " + email,
 				output + "\n" });

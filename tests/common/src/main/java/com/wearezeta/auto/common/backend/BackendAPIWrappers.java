@@ -41,6 +41,10 @@ import com.wearezeta.auto.image_send.SelfImageProcessor;
 public final class BackendAPIWrappers {
 	public static final int UI_ACTIVATION_TIMEOUT = 120; // seconds
 	public static final int BACKEND_ACTIVATION_TIMEOUT = 60; // seconds
+	
+	private static final int REQUEST_TOO_FREQUENT_ERROR = 429;
+	private static final int SERVER_SIDE_ERROR = 500;
+	private static final int MAX_RETRIES = 5;
 
 	private static final Logger log = ZetaLogger
 			.getLog(BackendAPIWrappers.class.getSimpleName());
@@ -340,8 +344,31 @@ public final class BackendAPIWrappers {
 			}
 		}
 
-		final JSONObject loggedUserInfo = BackendREST.login(user.getEmail(),
-				user.getPassword());
+		JSONObject loggedUserInfo = null;
+		int tryNum = 0;
+		while (tryNum < MAX_RETRIES) {
+			try {
+				loggedUserInfo = BackendREST.login(user.getEmail(),
+						user.getPassword());
+				break;
+			} catch (BackendRequestException e) {
+				if (e.getReturnCode() == REQUEST_TOO_FREQUENT_ERROR) {
+					log.debug(String
+							.format("Login request failed. Retrying (%d of %d)...",
+									tryNum + 1, MAX_RETRIES));
+					e.printStackTrace();
+					tryNum++;
+					if (tryNum >= MAX_RETRIES) {
+						throw e;
+					} else {
+						Thread.sleep((tryNum + 1) * 2000);
+					}
+				} else {
+					throw e;
+				}
+			}
+		}
+		
 		user.setAccessToken(loggedUserInfo.getString("access_token"));
 		user.setTokenType(loggedUserInfo.getString("token_type"));
 		final JSONObject additionalUserInfo = BackendREST
@@ -437,8 +464,30 @@ public final class BackendAPIWrappers {
 	}
 
 	private static JSONArray getConversations(ClientUser user) throws Exception {
-		JSONObject conversationsInfo = BackendREST
-				.getConversationsInfo(generateAuthToken(user));
+		JSONObject conversationsInfo = null;
+		int tryNum = 0;
+		while (tryNum < MAX_RETRIES) {
+			try {
+				conversationsInfo = BackendREST
+						.getConversationsInfo(generateAuthToken(user));
+				break;
+			} catch (BackendRequestException e) {
+				if (e.getReturnCode() == SERVER_SIDE_ERROR) {
+					log.debug(String
+							.format("Server side request failed. Retrying (%d of %d)...",
+									tryNum + 1, MAX_RETRIES));
+					e.printStackTrace();
+					tryNum++;
+					if (tryNum >= MAX_RETRIES) {
+						throw e;
+					} else {
+						Thread.sleep((tryNum + 1) * 2000);
+					}
+				} else {
+					throw e;
+				}
+			}
+		}
 		return conversationsInfo.getJSONArray("conversations");
 	}
 
