@@ -112,6 +112,11 @@ public class LoginPage extends AndroidPage {
 				}
 			}
 		}
+		try {
+			hideKeyboard();
+		} catch (Exception ex) {
+			//
+		}
 	}
 
 	public void setPassword(String password) throws Exception {
@@ -124,6 +129,11 @@ public class LoginPage extends AndroidPage {
 					editField.sendKeys(password);
 				}
 			}
+		}
+		try {
+			hideKeyboard();
+		} catch (Exception ex) {
+			//
 		}
 	}
 

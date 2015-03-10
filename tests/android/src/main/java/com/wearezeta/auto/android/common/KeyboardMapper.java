@@ -265,7 +265,7 @@ public class KeyboardMapper {
         case '_': keyCode = KeyEvent.KEYCODE_MINUS;
         break;
 
-        case '+': keyCode = KeyEvent.KEYCODE_EQUALS;
+        case '+': keyCode = KeyEvent.KEYCODE_PLUS;
         break;
 
         case '{': keyCode = KeyEvent.KEYCODE_LEFT_BRACKET;
