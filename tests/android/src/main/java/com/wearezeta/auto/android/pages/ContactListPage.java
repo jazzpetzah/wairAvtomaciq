@@ -30,6 +30,9 @@ public class ContactListPage extends AndroidPage {
 	@FindBy(className = AndroidLocators.CommonLocators.classNameLoginPage)
 	private WebElement content;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConversationListFrame")
+	private WebElement contactListFrame;	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idContactListNames")
 	private List<WebElement> contactListNames;
 
@@ -100,6 +103,10 @@ public class ContactListPage extends AndroidPage {
 		return page;
 	}
 
+	public void contactListSwipeUp(int time) {
+		elementSwipeUp(contactListFrame, time);
+	}
+	
 	public AndroidPage tapOnContactByPosition(List<WebElement> contacts, int id)
 			throws Exception {
 		AndroidPage page = null;

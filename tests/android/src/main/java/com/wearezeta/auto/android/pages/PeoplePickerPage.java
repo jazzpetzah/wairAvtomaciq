@@ -82,7 +82,12 @@ public class PeoplePickerPage extends AndroidPage {
 
 	public void typeTextInPeopleSearch(String contactName)
 			throws InterruptedException {
-		pickerSearch.sendKeys(contactName);
+		refreshUITree();
+		// pickerSearch. sendKeys(contactName);
+		for (char ch : contactName.toCharArray()) {
+			int keyCode = KeyboardMapper.getPrimaryKeyCode(ch);
+			this.getDriver().sendKeyEvent(keyCode);
+		}
 		this.getDriver().sendKeyEvent(66);
 	}
 

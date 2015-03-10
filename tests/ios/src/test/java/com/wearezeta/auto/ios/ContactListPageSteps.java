@@ -25,9 +25,13 @@ public class ContactListPageSteps {
 	public void GivenISeeContactListWithMyName(String name) throws Throwable {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 
+		boolean loginFinished = PagesCollection.loginPage.isLoginFinished(name);
+		if (!loginFinished) {
+			log.debug(PagesCollection.loginPage.getPageSource());
+		}
 		Assert.assertTrue("Username : " + name
 				+ " dind't appear in contact list",
-				PagesCollection.loginPage.isLoginFinished(name));
+				loginFinished);
 		PagesCollection.loginPage.waitForLaterButton(5);
 		PagesCollection.peoplePickerPage = PagesCollection.loginPage
 				.clickLaterButton();

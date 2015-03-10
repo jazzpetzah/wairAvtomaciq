@@ -168,6 +168,9 @@ public final class AndroidLocators {
 		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME
 				+ "$ContactListPage";
 
+		public static final String idConversationListFrame = LOCATORS_PACKAGE
+				+ ":id/pfac__conversation_list";
+		
 		public static final String idOpenStartUIButton = LOCATORS_PACKAGE
 				+ ":id/gtv__conversation_list__sticky_menu__trigger_startui";
 
