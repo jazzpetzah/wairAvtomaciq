@@ -81,16 +81,20 @@ public class ParticipantsPopupPage extends ConversationPopupPage {
 		removeFromGroupChatButton.click();
 	}
 
-	public boolean isParticipantVisible(String name) {
-		String xpath = String.format(
-				WebAppLocators.UserProfilePopupPage.xpathParticipantName, name);
-		return driver.findElementByXPath(xpath).isDisplayed();
+	public boolean isParticipantVisible(String name) throws Exception {
+		final By locator = By.xpath(String.format(
+				WebAppLocators.UserProfilePopupPage.xpathParticipantName, name));
+		return DriverUtils.isElementDisplayed(driver, locator, 5);
 	}
 
-	public void clickOnParticipant(String name) {
-		String xpath = String.format(
-				WebAppLocators.UserProfilePopupPage.xpathParticipantName, name);
-		WebElement participant = driver.findElementByXPath(xpath);
+	public void clickOnParticipant(String name) throws Exception {
+		final By locator = By
+				.xpath(String
+						.format(WebAppLocators.UserProfilePopupPage.xpathParticipantName,
+								name));
+		assert DriverUtils.isElementDisplayed(driver, locator, 3);
+		WebElement participant = driver.findElement(locator);
+		assert DriverUtils.waitUntilElementClickable(driver, participant);
 		participant.click();
 	}
 
