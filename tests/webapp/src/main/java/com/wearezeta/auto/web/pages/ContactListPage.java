@@ -14,6 +14,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.WebAppConstants;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class ContactListPage extends WebPage {
@@ -227,7 +229,14 @@ public class ContactListPage extends WebPage {
 						this.getDriver(),
 						By.xpath(WebAppLocators.ContactListPage.xpathOpenPeoplePickerButton));
 		DriverUtils.waitUntilElementClickable(driver, openPeoplePickerButton);
-		openPeoplePickerButton.click();
+		if (WebAppExecutionContext.browserName
+				.equals(WebAppConstants.Browser.INTERNET_EXPLORER)) {
+			driver.executeScript(String.format(
+					"$(document).find(\"%s\").click();",
+					WebAppLocators.ContactListPage.cssOpenPeoplePickerButton));
+		} else {
+			openPeoplePickerButton.click();
+		}
 		return new PeoplePickerPage(this.getDriver(), this.getWait());
 	}
 }

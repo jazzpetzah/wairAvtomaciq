@@ -65,6 +65,8 @@ public final class WebAppLocators {
 
 		public static final String xpathOpenPeoplePickerButton = "//*[@data-uie-name='go-search']";
 
+		public static final String cssOpenPeoplePickerButton = "*[data-uie-name='go-search']";
+
 		public static final String classNamePeoplePickerVisible = "people-picker-is-visible";
 	}
 

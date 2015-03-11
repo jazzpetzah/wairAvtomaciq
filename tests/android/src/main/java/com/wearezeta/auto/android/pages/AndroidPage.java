@@ -155,7 +155,7 @@ public abstract class AndroidPage extends BasePage {
 		try {
 			this.getDriver().swipe(coords.x + elementSize.width / 2,
 					coords.y + elementSize.height - 300,
-					coords.x + elementSize.width / 2, coords.y, time);
+					coords.x + elementSize.width / 2, coords.y + 20, time);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -165,7 +165,7 @@ public abstract class AndroidPage extends BasePage {
 		Point coords = content.getLocation();
 		Dimension elementSize = content.getSize();
 		try {
-			this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y,
+			this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y + 20,
 					coords.x + elementSize.width / 2,
 					coords.y + elementSize.height - 300, time);
 		} catch (Exception ex) {
