@@ -156,7 +156,8 @@ public final class WebAppLocators {
 		public static final String xpathConfirmAddButton = xpathConversationPopupPage
 				+ "//*[@data-uie-name='do-confirm' and @data-uie-value='continue']";
 
-		public static final String xpathProfilePageSearchHeader = "//div[contains(@class, 'participants-search-header'])";
+		public static final String xpathProfilePageSearchHeader = "//div[contains(@class, 'participants-search-header')]";
+
 		public static final String xpathProfilePageSearchField = xpathProfilePageSearchHeader
 				+ "//input";
 	}

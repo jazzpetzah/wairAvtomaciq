@@ -47,10 +47,10 @@ Feature: Connect
     And I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
+    And User <Name2> is me
     And I switch to sign in page
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
-    And User <Name2> is me
     And I see my name <Name2> in Contact list
     And I see connection request
     And I open connection requests list
@@ -59,10 +59,10 @@ Feature: Connect
     And I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
+    And User <Name> is me
     And I switch to sign in page
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
-    And User <Name> is me
     And I see my name <Name> in Contact list
     Then I see Contact list with name <Name2>
     And I open conversation with <Name2>
