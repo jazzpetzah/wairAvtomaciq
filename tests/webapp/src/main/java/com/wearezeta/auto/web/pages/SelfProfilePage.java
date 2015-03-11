@@ -1,11 +1,14 @@
 package com.wearezeta.auto.web.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.google.common.base.Function;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.WebAppLocators;
@@ -41,6 +44,23 @@ public class SelfProfilePage extends WebPage {
 		final WebElement itemElement = driver.findElement(By
 				.xpath(menuItemXPath));
 		itemElement.click();
+	}
+
+	public boolean checkNameInSelfProfile(String name) throws Exception {
+		DriverUtils.waitUntilElementAppears(driver,
+				By.xpath(WebAppLocators.SelfProfilePage.xpathSelfUserName));
+
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+
+		return wait.until(new Function<WebDriver, Boolean>() {
+			public Boolean apply(WebDriver driver) {
+				if (userName.getText().equals(name)) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		});
 	}
 
 	public String getUserName() throws Exception {
