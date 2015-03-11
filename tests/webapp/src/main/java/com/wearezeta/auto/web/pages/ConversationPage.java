@@ -34,7 +34,7 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idConversationInput)
 	private WebElement conversationInput;
 
-	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.ConversationPage.classNameShowParticipantsButton)
+	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathShowParticipantsButton)
 	private WebElement showParticipants;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathSendImageLabel)
@@ -91,7 +91,14 @@ public class ConversationPage extends WebPage {
 	public ConversationPopupPage clickShowUserProfileButton(boolean isGroup)
 			throws Exception {
 		DriverUtils.waitUntilElementClickable(driver, showParticipants);
-		showParticipants.click();
+		if (WebAppExecutionContext.browserName
+				.equals(WebAppConstants.Browser.INTERNET_EXPLORER)) {
+			driver.executeScript(String
+					.format("$('.%s').click();",
+							WebAppLocators.ConversationPage.classNameShowParticipantsButton));
+		} else {
+			showParticipants.click();
+		}
 		if (isGroup) {
 			return new ParticipantsPopupPage(this.getDriver(), this.getWait());
 		} else {

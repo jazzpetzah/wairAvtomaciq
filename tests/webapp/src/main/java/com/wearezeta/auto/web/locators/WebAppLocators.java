@@ -98,6 +98,8 @@ public final class WebAppLocators {
 
 		public static final String classNameShowParticipantsButton = "show-participants";
 
+		public static final String xpathShowParticipantsButton = "//*[@data-uie-name='do-participants']";
+
 		public static final String xpathActionMessageEntries = "//div[contains(@class,'special')]//div[@class='action']";
 
 		public static final String xpathSendImageLabel = "//label[contains(@class,'controls-right-button') and contains(@class,'icon-library')]";
