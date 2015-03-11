@@ -3,6 +3,7 @@ package com.wearezeta.auto.web.steps;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -55,6 +56,15 @@ public class CommonWebAppSteps {
 				.getWebAppBrowserNameFromConfig(CommonWebAppSteps.class);
 	}
 
+	private static void setCustomOperaProfile(DesiredCapabilities capabilities,
+			String browserPlatform) throws Exception {
+		final String userProfileRoot = WebCommonUtils
+				.getOperaProfileRoot(browserPlatform);
+		ChromeOptions options = new ChromeOptions();
+		options.addArguments("user-data-dir=" + userProfileRoot);
+		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+	}
+
 	private ZetaWebAppDriver resetWebAppDriver(String url) throws Exception {
 		final String browser = getBrowser();
 		final DesiredCapabilities capabilities;
@@ -84,7 +94,18 @@ public class CommonWebAppSteps {
 			// Use undocumented grid property to match platforms
 			// https://groups.google.com/forum/#!topic/selenium-users/PRsEBcbpNlM
 			capabilities.setCapability("applicationName", webPlatformName);
+
+			if (webPlatformName.toLowerCase().contains("opera")) {
+				// This is to fix Desktop Notifications alert appearance in Opera
+				setCustomOperaProfile(capabilities, webPlatformName);
+			}
 		}
+
+		// This could useful for testing on your local machine running Opera
+		// Do not forget to set real user name in profile path instead of
+		// default one
+		// setCustomOperaProfile(capabilities, "win7_opera");
+
 		capabilities.setCapability("platformName", Platform.Web.getName());
 		final ZetaWebAppDriver webDriver = (ZetaWebAppDriver) PlatformDrivers
 				.getInstance().resetDriver(url, capabilities);
