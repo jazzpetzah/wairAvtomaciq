@@ -2,6 +2,7 @@ package com.wearezeta.auto.web.steps;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -36,6 +37,7 @@ public class CommonWebAppSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	public static final Platform CURRENT_PLATFORM = Platform.Web;
+	private static final int MAX_DRIVER_CREATION_RETRIES = 3;
 
 	private static final String DEFAULT_USER_PICTURE = PerformanceCommon.DEFAULT_PERF_IMAGE;
 
@@ -97,19 +99,30 @@ public class CommonWebAppSteps {
 		final String path = CommonUtils
 				.getWebAppApplicationPathFromConfig(CommonWebAppSteps.class);
 		WebAppExecutionContext.browserName = getBrowser();
-		final ZetaWebAppDriver webDriver = resetWebAppDriver(url);
-		final WebDriverWait wait = PlatformDrivers
-				.createDefaultExplicitWait(webDriver);
-		try {
-			if (!getBrowser().equals("safari")) {
+		int tryNum = 1;
+		ZetaWebAppDriver webDriver;
+		WebDriverWait wait;
+		do {
+			try {
+				webDriver = resetWebAppDriver(url);
+				wait = PlatformDrivers.createDefaultExplicitWait(webDriver);
 				webDriver.manage().window().maximize();
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
 
-		PagesCollection.invitationCodePage = new InvitationCodePage(webDriver,
-				wait, path);
+				PagesCollection.invitationCodePage = new InvitationCodePage(
+						webDriver, wait, path);
+				break;
+			} catch (WebDriverException e) {
+				log.debug(String
+						.format("Driver initialization failed. Trying to recreate (%d of %d)...",
+								tryNum, MAX_DRIVER_CREATION_RETRIES));
+				e.printStackTrace();
+				if (tryNum >= MAX_DRIVER_CREATION_RETRIES) {
+					throw e;
+				} else {
+					tryNum++;
+				}
+			}
+		} while (tryNum <= MAX_DRIVER_CREATION_RETRIES);
 		ZetaFormatter.setDriver(PagesCollection.invitationCodePage.getDriver());
 
 		// put AppleScript for execution to Selenium node

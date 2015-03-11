@@ -98,6 +98,8 @@ public final class WebAppLocators {
 
 		public static final String classNameShowParticipantsButton = "show-participants";
 
+		public static final String xpathShowParticipantsButton = "//*[@data-uie-name='do-participants']";
+
 		public static final String xpathActionMessageEntries = "//div[contains(@class,'special')]//div[@class='action']";
 
 		public static final String xpathSendImageLabel = "//label[contains(@class,'controls-right-button') and contains(@class,'icon-library')]";
@@ -154,12 +156,14 @@ public final class WebAppLocators {
 		public static final String xpathConfirmAddButton = xpathConversationPopupPage
 				+ "//*[@data-uie-name='do-confirm' and @data-uie-value='continue']";
 
-		public static final String xpathProfilePageSearchHeader = "//div[contains(@class, 'participants-search-header'])";
+		public static final String xpathProfilePageSearchHeader = "//div[contains(@class, 'participants-search-header')]";
+
 		public static final String xpathProfilePageSearchField = xpathProfilePageSearchHeader
 				+ "//input";
 	}
 
 	public static final class ParticipantsProfilePopupPage {
+
 		private static final String xpathFooterDiv = "//div[contains(@class, 'participants-group-footer')]";
 
 		public static final String xpathAddPeopleButton = xpathFooterDiv
@@ -229,6 +233,6 @@ public final class WebAppLocators {
 
 	public static final class Common {
 
-		public static final String CONTACT_LIST_ONE_PERSON_WAITING = "One person waiting";
+		public static final String CONTACT_LIST_ONE_PERSON_WAITING = "1 person waiting";
 	}
 }
