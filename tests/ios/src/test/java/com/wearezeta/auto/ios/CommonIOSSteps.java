@@ -62,7 +62,7 @@ public class CommonIOSSteps {
 		capabilities.setCapability("sendKeyStrategy", "grouped");
 		final String backendType = CommonUtils.getBackendType(this.getClass());
 		capabilities.setCapability("processArguments",
-				"--args -TutorialOverlaysEnabled 0 -UseHockey 0 -ZMBackendEnvironmentType "
+				"--args -TutorialOverlaysEnabled 0 -SkipFirstTimeUseChecks 1 -UseHockey 0 -ZMBackendEnvironmentType "
 						+ backendType);
 		if (enableAutoAcceptAlerts) {
 			capabilities.setCapability("autoAcceptAlerts", true);
