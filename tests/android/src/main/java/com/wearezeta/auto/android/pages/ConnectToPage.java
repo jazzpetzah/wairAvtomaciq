@@ -62,7 +62,8 @@ public class ConnectToPage extends AndroidPage {
 
 	public void pressConfirmBtn() throws Exception {
 		refreshUITree();
-		this.getWait().until(ExpectedConditions.elementToBeClickable(confirmBtn));
+		this.getWait().until(
+				ExpectedConditions.elementToBeClickable(confirmBtn));
 		confirmBtn.click();
 	}
 
@@ -108,15 +109,16 @@ public class ConnectToPage extends AndroidPage {
 
 	public void typeConnectionRequies(String message) throws Exception {
 		connectionRequestMessage.sendKeys(message);
+		try {
+			hideKeyboard();
+		} catch (Exception ex) {
+
+		}
 	}
 
 	public ContactListPage pressConnectButton() throws Exception {
-		try {
-			sendConnectionRequestButton.click();
-		} catch (NoSuchElementException ex) {
-			navigateBack();
-			sendConnectionRequestButton.click();
-		}
+		refreshUITree();
+		sendConnectionRequestButton.click();
 		return new ContactListPage(this.getDriver(), this.getWait());
 	}
 

@@ -210,6 +210,8 @@ public final class AndroidLocators {
 		public static final String idMutedIcon = LOCATORS_PACKAGE
 				+ ":id/tv_conv_list_voice_muted";
 
+		public static final String xpathConversationListFrame42 = "//android.widget.FrameLayout[child::android.widget.ListView]";
+		
 		public static final String xpathOpenStartUIButton42 = "//android.widget.LinearLayout/android.widget.LinearLayout/android.widget.TextView[following-sibling::android.widget.TextView]";
 
 		public static final String xpathYourName42 = "//android.widget.LinearLayout/android.widget.LinearLayout/android.widget.TextView[preceding-sibling::android.widget.TextView]";
@@ -246,7 +248,7 @@ public final class AndroidLocators {
 		public static final String idSearchHintClose = LOCATORS_PACKAGE
 				+ ":id/zb__search_hint__close_button";
 
-		public static final String idDismissUpdateButton = "android:id/button2";
+		public static final String xpathDismissUpdateButton = "//android.widget.Button[@text='Dismiss']";
 
 		public static final String xpathConfirmBtn42 = "//android.widget.TextView[@text='LEAVE' or @text='REMOVE']";
 

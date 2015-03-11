@@ -153,6 +153,7 @@ public class ContactListPage extends AndroidPage {
 
 	public AndroidPage swipeRightOnContact(int time, String contact)
 			throws Exception {
+		refreshUITree();
 		AndroidPage page = null;
 		WebElement el = driver.findElementByXPath(String.format(
 				AndroidLocators.ContactListPage.xpathContactFrame, contact));

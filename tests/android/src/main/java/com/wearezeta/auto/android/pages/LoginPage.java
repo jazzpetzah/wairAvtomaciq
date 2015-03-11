@@ -59,7 +59,7 @@ public class LoginPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idContactListNames")
 	private WebElement contactListNames;
 
-	@FindBy(how = How.ID, using = AndroidLocators.CommonLocators.idDismissUpdateButton)
+	@FindBy(how = How.XPATH, using = AndroidLocators.CommonLocators.xpathDismissUpdateButton)
 	private WebElement dismissUpdateButton;
 
 	private static final String LOGIN_ERROR_TEXT = "WRONG ADDRESS OR PASSWORD.\nPLEASE TRY AGAIN.";
@@ -201,6 +201,6 @@ public class LoginPage extends AndroidPage {
 
 	public boolean isDismissUpdateVisible() throws Exception {
 		return DriverUtils.waitUntilElementAppears(driver,
-				By.id(AndroidLocators.CommonLocators.idDismissUpdateButton));
+				By.xpath(AndroidLocators.CommonLocators.xpathDismissUpdateButton));
 	}
 }

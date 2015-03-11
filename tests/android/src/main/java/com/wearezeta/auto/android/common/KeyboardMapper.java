@@ -241,6 +241,9 @@ public class KeyboardMapper {
         case '#': keyCode = KeyEvent.KEYCODE_3;
         break;
 
+        case ' ': keyCode = KeyEvent.KEYCODE_SPACE;
+        break;
+        
         case '$': keyCode = KeyEvent.KEYCODE_4;
         break;
 
