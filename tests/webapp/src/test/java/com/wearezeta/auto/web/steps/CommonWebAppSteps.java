@@ -4,6 +4,7 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -65,16 +66,31 @@ public class CommonWebAppSteps {
 		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 	}
 
+	private static void setCustomFirefoxProfile(DesiredCapabilities capabilities) {
+		FirefoxProfile profile = new FirefoxProfile();
+		profile.setPreference("dom.webnotifications.enabled", false);
+		capabilities.setCapability("firefox_profile", profile);
+	}
+
 	private ZetaWebAppDriver resetWebAppDriver(String url) throws Exception {
 		final String browser = getBrowser();
 		final DesiredCapabilities capabilities;
-
+		final String webPlatformName = WebCommonUtils
+				.getPlatformNameFromConfig(WebPage.class);
 		switch (browser) {
 		case "chrome":
 			capabilities = DesiredCapabilities.chrome();
+			if (webPlatformName.toLowerCase().contains("opera")) {
+				// This is to fix Desktop Notifications alert appearance in
+				// Opera
+				setCustomOperaProfile(capabilities, webPlatformName);
+			}
 			break;
 		case "firefox":
 			capabilities = DesiredCapabilities.firefox();
+			// This is to fix Desktop Notifications alert appearance in
+			// Firefox
+			setCustomFirefoxProfile(capabilities);
 			break;
 		case "safari":
 			capabilities = DesiredCapabilities.safari();
@@ -88,17 +104,10 @@ public class CommonWebAppSteps {
 							+ browser
 							+ ". Please choose one of the following: chrome | firefox | safari | ie");
 		}
-		final String webPlatformName = WebCommonUtils
-				.getPlatformNameFromConfig(WebPage.class);
 		if (webPlatformName.length() > 0) {
 			// Use undocumented grid property to match platforms
 			// https://groups.google.com/forum/#!topic/selenium-users/PRsEBcbpNlM
 			capabilities.setCapability("applicationName", webPlatformName);
-
-			if (webPlatformName.toLowerCase().contains("opera")) {
-				// This is to fix Desktop Notifications alert appearance in Opera
-				setCustomOperaProfile(capabilities, webPlatformName);
-			}
 		}
 
 		// This could useful for testing on your local machine running Opera
