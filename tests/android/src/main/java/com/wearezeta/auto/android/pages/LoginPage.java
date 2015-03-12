@@ -3,12 +3,12 @@ package com.wearezeta.auto.android.pages;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -19,9 +19,12 @@ import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
 import com.wearezeta.auto.common.locators.ZetaHow;
+import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class LoginPage extends AndroidPage {
 
+	private static final Logger log = ZetaLogger.getLog(LoginPage.class.getSimpleName());
+	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPeoplePickerClearbtn")
 	private WebElement pickerClearBtn;
 
@@ -106,7 +109,12 @@ public class LoginPage extends AndroidPage {
 	public void setLogin(String login) throws Exception {
 		refreshUITree();
 		if (CommonUtils.getAndroidApiLvl(LoginPage.class) > 42) {
-			loginInput.sendKeys(login);
+			try {
+				loginInput.sendKeys(login);
+			} catch (Exception e) {
+				log.debug(driver.getPageSource());
+				
+			}
 		} else {
 			for (WebElement editField : editText) {
 				if (editField.getText().toLowerCase().equals("email")) {
