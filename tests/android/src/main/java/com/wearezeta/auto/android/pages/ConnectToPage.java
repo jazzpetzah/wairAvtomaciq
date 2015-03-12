@@ -122,11 +122,7 @@ public class ConnectToPage extends AndroidPage {
 
 	public ContactListPage pressConnectButton() throws Exception {
 		refreshUITree();
-		if (isVisible(connectBtn)) {
-			connectBtn.click();
-		} else if (isVisible(sendConnectionRequestButton)) {
-			sendConnectionRequestButton.click();
-		}
+		sendConnectionRequestButton.click();
 		return new ContactListPage(this.getDriver(), this.getWait());
 	}
 
