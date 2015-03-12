@@ -51,9 +51,15 @@ Feature: Sign In
     And I change URL to staging
     And I type in email <Login> to change password
     And I press Change Password button in browser
-    And I copy link from email and past it into Safari
+    #And I copy link from email and past it into Safari
+    And I type in new password <NewPassword>
+    And I press Change Password button in browser
+    And I see password changed confirmation page
+    And Return to Wire app
+    And I press Sign in button
+    Then I Sign in using login <Login> and password <NewPassword>
    
 
     Examples: 
-      | Login    			  	      | Password      | Name      |
-      | smoketester.ios@wearezeta.com | user1Password | user1Name |
+      | Login    			  	      | Password      | Name      | NewPassword   |
+      | smoketester.ios@wearezeta.com | user1Password | user1Name | aqa123456789  |

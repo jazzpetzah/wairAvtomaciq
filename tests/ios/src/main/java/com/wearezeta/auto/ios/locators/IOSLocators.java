@@ -475,6 +475,9 @@ public final class IOSLocators {
 	public static final String nameForgotPasswordButton = "FORGOT PASSWORD? CHANGE";
 	public static final String xpathChangePasswordEmailField = "//UIAApplication[@name='Safari']/UIAWindow[2]/UIAScrollView[1]/UIAScrollView[1]/UIAWebView[1]/UIATextField[@value='Email']";
 	public static final String classNameUIATextField = "UIATextField";
+	public static final String classNameUIASecureTextField = "UIASecureTextField";
+	public static final String xpathChangedPasswordConfirmationText = "//UIAApplication[1]/UIAWindow[2]/UIAScrollView[1]/UIAScrollView[1]/UIAWebView[1]/UIAStaticText[@name='Password changed']";
+
 
 }
 

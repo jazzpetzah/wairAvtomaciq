@@ -94,6 +94,12 @@ public class LoginPage extends IOSPage {
 	
 	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameUIAButton)
 	private List<WebElement> uiButtons;
+	
+	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameUIASecureTextField)
+	private List<WebElement> secureTextFields;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathChangedPasswordConfirmationText)
+	private WebElement changedPasswordPageConfirmation;
 
 	private String login;
 
@@ -321,26 +327,17 @@ public class LoginPage extends IOSPage {
 	  }
 	}
 	
-	public void pasteIntoSafariInput(){
-		for (WebElement uiButton : uiButtons){
-			String nameOfButton = uiButton.getAttribute("name");
-			if(nameOfButton.equals("URL")){
-				DriverUtils.iOSLongTap(getDriver(), uiButton);
-				//this.inputStringFromKeyboard(URL);
+	public void tapPasswordFieldToChangePassword(String newPassword) throws Exception{
+		for (WebElement secureTextField : secureTextFields){
+			String valueOfField = secureTextField.getAttribute("name");
+			if(valueOfField.equals("Password")){
+				DriverUtils.mobileTapByCoordinates(getDriver(), secureTextField);
+				this.inputStringFromKeyboard(newPassword);
 			}
 		}
-//		for (WebElement uiButton2 : uiButtons){
-//			String nameOfButton2 = uiButton2.getAttribute("name");
-//			if(nameOfButton2.equals("Clear text")){
-//				DriverUtils.mobileTapByCoordinates(getDriver(), uiButton2);
-//		}
-//	}
-//		for (WebElement uiButton3 : uiButtons){
-//			String nameOfButton3 = uiButton3.getAttribute("name");
-//			if(nameOfButton3.equals("URL")){
-//				//DriverUtils.mobileTapByCoordinates(getDriver(), uiButton3);
-//				DriverUtils.iOSLongTap(getDriver(), uiButton3);
-//		}
-//	}
+	}
+	
+	public boolean passwordConfiamtionIsVisible(){
+		return changedPasswordPageConfirmation.isDisplayed();
 	}
 }

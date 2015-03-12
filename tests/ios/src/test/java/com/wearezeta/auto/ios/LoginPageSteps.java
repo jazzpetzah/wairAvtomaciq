@@ -384,7 +384,7 @@ public class LoginPageSteps {
 		
 	}
 
-	@Then("^I change URL to staging$")
+	@When("^I change URL to staging$")
 	public void IChangeURLToStaging() throws InterruptedException{
 		PagesCollection.loginPage.changeURLInBrowser(stagingURLForgot);
 	}
@@ -396,7 +396,7 @@ public class LoginPageSteps {
 	 * @param email
 	 * @throws Exception 
 	 */
-	@Then("^I type in email (.*) to change password$")
+	@When("^I type in email (.*) to change password$")
 	public void ITypeInEmailToChangePassword(String email) throws Exception{
 		email = usrMgr.replaceAliasesOccurences(email,FindBy.EMAIL_ALIAS);		
 		PagesCollection.loginPage.tapEmailFieldToChangePassword(email);
@@ -422,19 +422,58 @@ public class LoginPageSteps {
 	 * @step. ^I press Change Password button in browser$
 	 *
 	 */
-	@Then("^I press Change Password button in browser$")
+	@When("^I press Change Password button in browser$")
 	public void IPressChangePasswordButtonInBrowser(){
 		PagesCollection.loginPage.tapChangePasswordButtonInWebView();
 	}
 	
+	/**
+	 * Copies the link in the email and types it into the safari search field
+	 * 
+	 * @step. ^I copy link from email and past it into Safari
+	 * @throws Exception
+	 */
+	@When("^I copy link from email and past it into Safari$")
+	public void ICopyLinkFromEmailAndPastItIntoSafari() throws Exception {
+		String link = BackendAPIWrappers
+				.getPasswordResetLink(this.activationMessage);
+		PagesCollection.loginPage.changeURLInBrowser(link);
+	}
+	
+	/**
+	 * Types the new password into the password field
+	 * 
+	 * @step. ^I type in new password (.*)$
+	 * @param newPassword
+	 *            that gets set as new password by typing it into the field
+	 * @throws Exception 
+	 */
+	@When("^I type in new password (.*)$")
+	public void ITypeInNewPassword(String newPassword) throws Exception {
+		PagesCollection.loginPage.tapPasswordFieldToChangePassword(newPassword);
+	}
+	
+	/**
+	 * Verifys that the confirmation page for changed password is visible
+	 * 
+	 * @step. ^I see password changed confirmation page$
+	 * 
+	 */
+	@When("^I see password changed confirmation page$")
+	public void ISeePasswordChangedConfirmationPage(){
+		boolean confirmationIsVisible = PagesCollection.loginPage.passwordConfiamtionIsVisible();
+		Assert.assertTrue("Password changed confirmation is not visible", confirmationIsVisible);
+	}
+    
+	/**
+	 * Returns in Simulator back to Wire App
+	 * 
+	 * @step. ^Return to Wire app$
+	 * 
+	 */
+	@When("^Return to Wire app$")
+	public void ReturnToWireApp(){
 
-	@Then("^I copy link from email and past it into Safari$")
-	public void ICopyLinkFromEmailAndPastItIntoSafari() throws Exception{
-		String link = BackendAPIWrappers.getPasswordResetLink(this.activationMessage);
-		System.out.print(link);
-
-		PagesCollection.loginPage.pasteIntoSafariInput();
-		//PagesCollection.loginPage.changeURLInBrowser(link);
 	}
 
 }
