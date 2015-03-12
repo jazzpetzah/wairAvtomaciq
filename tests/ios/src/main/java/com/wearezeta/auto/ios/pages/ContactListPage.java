@@ -336,7 +336,7 @@ public class ContactListPage extends IOSPage {
 	public IOSPage tapOnContactByIndex(List<WebElement> contacts, int index)
 			throws Exception {
 		log.debug(String.format("Tapping on contact #%s. It's name - ", index,
-				contacts.get(index).getAttribute("name")));
+				contacts.get(index).getAttribute("value")));
 		IOSPage page = null;
 		DriverUtils.waitUntilElementClickable(driver, contacts.get(index));
 		contacts.get(index).click();
