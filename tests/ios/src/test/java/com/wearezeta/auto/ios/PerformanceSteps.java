@@ -59,7 +59,6 @@ public class PerformanceSteps {
 					ArrayList<WebElement> visibleContactsList = new ArrayList<WebElement>(
 							PagesCollection.contactListPage
 									.GetVisibleContacts());
-					visibleContactsList.remove(0);
 
 					int randomChatIdx = perfCommon.random
 							.nextInt(visibleContactsList.size() - 1);

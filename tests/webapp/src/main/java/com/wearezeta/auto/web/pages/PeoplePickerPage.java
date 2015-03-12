@@ -14,6 +14,7 @@ import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class PeoplePickerPage extends WebPage {
 
+	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class
 			.getSimpleName());
 
@@ -32,6 +33,10 @@ public class PeoplePickerPage extends WebPage {
 	}
 
 	public void searchForUser(String searchText) throws Exception {
+		assert DriverUtils
+				.waitUntilElementAppears(
+						driver,
+						By.className(WebAppLocators.PeoplePickerPage.classNameSearchInput));
 		DriverUtils.waitUntilElementClickable(driver, searchInput);
 		searchInput.clear();
 		searchInput.sendKeys(searchText);
@@ -41,12 +46,10 @@ public class PeoplePickerPage extends WebPage {
 		String xpath = String
 				.format(WebAppLocators.PeoplePickerPage.xpathFormatSearchListItemWithName,
 						user);
+		assert DriverUtils.isElementDisplayed(driver, By.xpath(xpath),
+				DriverUtils.DEFAULT_VISIBILITY_TIMEOUT);
 		WebElement userEl = driver.findElement(By.xpath(xpath));
-		boolean isClickable = DriverUtils.waitUntilElementClickable(driver,
-				userEl);
-		boolean isVisible = DriverUtils.waitUntilElementVisible(driver, userEl);
-		log.debug("Found user element is clickable: " + isClickable
-				+ ", isVisible: " + isVisible);
+		assert DriverUtils.waitUntilElementClickable(driver, userEl);
 		userEl.click();
 	}
 
@@ -69,17 +72,18 @@ public class PeoplePickerPage extends WebPage {
 		return new ConnectToPopupPage(this.getDriver(), this.getWait());
 	}
 
-	public boolean isUserFound(String name) {
+	public boolean isUserFound(String name) throws Exception {
 		String foundUserXpath = WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 				.apply(name);
-		WebElement foundUserElement = driver.findElement(By
-				.xpath(foundUserXpath));
-		return DriverUtils.isElementDisplayed(foundUserElement);
+		return DriverUtils.isElementDisplayed(this.getDriver(),
+				By.xpath(foundUserXpath));
 	}
 
 	public void closeSearch() throws Exception {
-		DriverUtils.waitUntilElementClickable(driver, closeSearchButton);
+		assert DriverUtils.isElementDisplayed(driver, By
+				.xpath(WebAppLocators.PeoplePickerPage.xpathCloseSearchButton),
+				5);
+		assert DriverUtils.waitUntilElementClickable(driver, closeSearchButton);
 		closeSearchButton.click();
 	}
-
 }

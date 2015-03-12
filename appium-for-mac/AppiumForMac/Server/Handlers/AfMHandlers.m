@@ -295,6 +295,20 @@
 	}
 	else
 	{
+        
+        // processing for crash when NSRange object exist in dictionary
+        // converting all dictionary entries to NSString
+        if ([result isKindOfClass:[NSDictionary class]]) {
+            NSMutableDictionary *jsonMutable = [result mutableCopy];
+            NSMutableDictionary *jsonProcessed = [[NSMutableDictionary alloc] init];
+            for (id key in jsonMutable) {
+                id value = [jsonMutable objectForKey:key ];
+                NSString *stringValue = [NSString stringWithFormat:@"%@", value];
+                [jsonProcessed setObject:stringValue forKey: key];
+                
+            }
+            result = jsonProcessed;
+        }
 		return [self respondWithJson:(NSDictionary*)result status:kAfMStatusCodeJavascriptError session: sessionId];
 	}
 }

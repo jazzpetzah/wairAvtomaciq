@@ -3,8 +3,7 @@ Feature: Registration
 Scenario Outline: Registration
     Given I see invitation page
     Given I enter invitation code
-    Given I see authorization page
-	Given I click create account button 
+    Given I switch to registration page
 	When I input name <Name>
 	And I input email <Email>
 	And I input password <Password>

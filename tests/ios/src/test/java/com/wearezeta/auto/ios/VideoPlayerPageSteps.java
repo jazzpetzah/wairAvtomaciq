@@ -23,7 +23,7 @@ public class VideoPlayerPageSteps {
 	}
 
 	@When("I tap Pause button on Video player page")
-	public void ITapPauseButtonOnVideoPlayerPage() {
+	public void ITapPauseButtonOnVideoPlayerPage() throws Exception {
 		PagesCollection.videoPlayerPage.clickPauseButton();
 	}
 

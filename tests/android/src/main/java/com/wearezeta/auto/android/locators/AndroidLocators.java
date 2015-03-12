@@ -168,6 +168,9 @@ public final class AndroidLocators {
 		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME
 				+ "$ContactListPage";
 
+		public static final String idConversationListFrame = LOCATORS_PACKAGE
+				+ ":id/pfac__conversation_list";
+		
 		public static final String idOpenStartUIButton = LOCATORS_PACKAGE
 				+ ":id/gtv__conversation_list__sticky_menu__trigger_startui";
 
@@ -207,6 +210,8 @@ public final class AndroidLocators {
 		public static final String idMutedIcon = LOCATORS_PACKAGE
 				+ ":id/tv_conv_list_voice_muted";
 
+		public static final String xpathConversationListFrame42 = "//android.widget.FrameLayout[child::android.widget.ListView]";
+		
 		public static final String xpathOpenStartUIButton42 = "//android.widget.LinearLayout/android.widget.LinearLayout/android.widget.TextView[following-sibling::android.widget.TextView]";
 
 		public static final String xpathYourName42 = "//android.widget.LinearLayout/android.widget.LinearLayout/android.widget.TextView[preceding-sibling::android.widget.TextView]";
@@ -243,7 +248,7 @@ public final class AndroidLocators {
 		public static final String idSearchHintClose = LOCATORS_PACKAGE
 				+ ":id/zb__search_hint__close_button";
 
-		public static final String idDismissUpdateButton = "android:id/button2";
+		public static final String xpathDismissUpdateButton = "//android.widget.Button[@text='Dismiss']";
 
 		public static final String xpathConfirmBtn42 = "//android.widget.TextView[@text='LEAVE' or @text='REMOVE']";
 
@@ -496,7 +501,10 @@ public final class AndroidLocators {
 
 		public static final String idSendConnectionRequestButton = LOCATORS_PACKAGE
 				+ ":id/zb__send_connect_request__connect_button";
-
+		
+		public static final String idConnectButton = LOCATORS_PACKAGE
+				+ ":id/rl__participants__left__action";
+		
 		public static final String idNoResultsFound = LOCATORS_PACKAGE
 				+ ":id/ttv_pickuser__error_header";
 

@@ -181,4 +181,15 @@ public class WebCommonUtils extends CommonUtils {
 				fis.close();
 		}
 	}
+	
+	public static String getOperaProfileRoot(String browserPlatform) throws Exception {
+		if (browserPlatform.toLowerCase().contains("win")) {
+			return String.format("C:\\Users\\%s\\AppData\\Roaming\\Opera Software\\Opera Stable\\", 
+					CommonUtils.getJenkinsSuperUserLogin(WebCommonUtils.class));
+		} else {
+			// Should be Mac OS otherwise ;)
+			return String.format("/Users/%s/Library/Application Support/Opera Software/Opera Stable/", 
+					CommonUtils.getJenkinsSuperUserLogin(WebCommonUtils.class));
+		}
+	}
 }

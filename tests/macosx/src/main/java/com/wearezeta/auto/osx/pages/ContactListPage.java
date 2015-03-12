@@ -264,7 +264,7 @@ public class ContactListPage extends OSXPage {
 
 	public void pressLaterButton() throws Exception {
 		if (DriverUtils.waitUntilElementAppears(driver,
-				shareContactsLaterButton, 5)) {
+				By.id(OSXLocators.idShareContactsLaterButton), 5)) {
 			int count = 0;
 			try {
 				DriverUtils.setImplicitWaitValue(driver, 3);

@@ -103,7 +103,7 @@ public class DialogPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMediaBarControl")
 	private WebElement mediaBarControl;
-	
+
 	@AndroidFindBy(xpath = AndroidLocators.DialogPage.xpathAddPicture)
 	private WebElement addPictureBtn;
 
@@ -179,14 +179,14 @@ public class DialogPage extends AndroidPage {
 		Thread.sleep(1000);
 		return returnBySwipe(SwipeDirection.UP);
 	}
-	
+
 	@Override
 	public AndroidPage swipeDown(int time) throws Exception {
 		dialogsPagesSwipeDown(time);// TODO workaround
 		Thread.sleep(1000);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
-	
+
 	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
 		AndroidPage page = null;
@@ -236,9 +236,10 @@ public class DialogPage extends AndroidPage {
 		takePhotoButton.click();
 	}
 
-	public void changeCamera() {
+	public void changeCamera() throws Exception {
 		refreshUITree();// TODO workaround
-		if (DriverUtils.isElementDisplayed(changeCameraButton)) {
+		if (DriverUtils.isElementDisplayed(this.getDriver(),
+				By.id(AndroidLocators.DialogPage.idDialogChangeCameraButton))) {
 			changeCameraButton.click();
 		}
 	}
@@ -295,7 +296,7 @@ public class DialogPage extends AndroidPage {
 
 	}
 
-	public void sendFrontCameraImage() throws InterruptedException {
+	public void sendFrontCameraImage() throws Exception {
 		SwipeOnCursorInput();
 		tapAddPictureBtn();
 		changeCamera();
@@ -310,7 +311,8 @@ public class DialogPage extends AndroidPage {
 		BufferedImage dialogImage = getElementScreenshot(image);
 		BufferedImage realImage = ImageUtil.readImageFromFile(CommonUtils
 				.getImagesPath(CommonUtils.class) + DIALOG_IMAGE);
-		double score = ImageUtil.getOverlapScore(realImage, dialogImage, ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
+		double score = ImageUtil.getOverlapScore(realImage, dialogImage,
+				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 		if (score >= MIN_ACCEPTABLE_IMAGE_VALUE) {
 			flag = true;
 		}
@@ -506,7 +508,7 @@ public class DialogPage extends AndroidPage {
 		refreshUITree();
 		dialogPageBottomLinearLayout.click();
 	}
-	
+
 	public double checkMediaBarControlIcon(String label) throws Exception {
 		refreshUITree();
 		String path = null;
@@ -517,7 +519,8 @@ public class DialogPage extends AndroidPage {
 			path = CommonUtils.getMediaBarPauseIconPath(DialogPage.class);
 		}
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
-		return ImageUtil.getOverlapScore(mediaImage, templateImage, ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
+		return ImageUtil.getOverlapScore(mediaImage, templateImage,
+				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 	}
 
 	public double checkMediaControlIcon(String label) throws Exception {
@@ -531,12 +534,13 @@ public class DialogPage extends AndroidPage {
 			path = CommonUtils.getMediaPauseIconPath(DialogPage.class);
 		}
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
-		return ImageUtil.getOverlapScore(mediaImage, templateImage, ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
+		return ImageUtil.getOverlapScore(mediaImage, templateImage,
+				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 	}
 
 	public void tapPlayPauseMediaBarBtn() {
 		refreshUITree();
 		mediaBarControl.click();
-		
+
 	}
 }

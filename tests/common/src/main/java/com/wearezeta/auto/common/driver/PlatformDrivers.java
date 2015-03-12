@@ -6,7 +6,6 @@ import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -47,47 +46,25 @@ public final class PlatformDrivers {
 		log.debug(String.format(
 				"Creating driver instance for platform '%s'...",
 				platformInCapabilities.name()));
+		RemoteWebDriver platformDriver = null;
 		switch (platformInCapabilities) {
 		case Mac:
-			drivers.put(platformInCapabilities, new ZetaOSXDriver(new URL(url),
-					capabilities));
+			platformDriver = new ZetaOSXDriver(new URL(url), capabilities);
 			break;
 		case iOS:
-			drivers.put(platformInCapabilities, new ZetaIOSDriver(new URL(url),
-					capabilities));
+			platformDriver = new ZetaIOSDriver(new URL(url), capabilities);
 			break;
 		case Android:
-			drivers.put(platformInCapabilities, new ZetaAndroidDriver(new URL(
-					url), capabilities));
+			platformDriver = new ZetaAndroidDriver(new URL(url), capabilities);
 			break;
 		case Web:
-			int tryNum = 0;
-			final int maxTries = 3;
-			WebDriverException savedException = null;
-			do {
-				// Try to reconnect WebDriver,
-				// because sometimes Safari driver is non-responsive
-				try {
-					drivers.put(platformInCapabilities, new ZetaWebAppDriver(
-							new URL(url), capabilities));
-					break;
-				} catch (WebDriverException e) {
-					if (e.getMessage().contains("Failed to connect")) {
-						savedException = e;
-						tryNum++;
-					} else {
-						throw e;
-					}
-				}
-			} while (tryNum < maxTries);
-			if (tryNum >= maxTries) {
-				throw savedException;
-			}
+			platformDriver = new ZetaWebAppDriver(new URL(url), capabilities);
 			break;
 		default:
 			throw new RuntimeException(String.format(
-					"Platform name '%s' is unknown", platformInCapabilities));
+					"Platform '%s' is unknown", platformInCapabilities));
 		}
+		drivers.put(platformInCapabilities, platformDriver);
 
 		setDefaultImplicitWaitTimeout(platformInCapabilities);
 

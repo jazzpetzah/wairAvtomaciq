@@ -5,6 +5,7 @@ Feature: Sign In
     Given There is 1 user where <Name> is me
     Given I see invitation page
     Given I enter invitation code
+    Given I switch to sign in page
     Given I see Sign In page
     When I enter email <Email>
     And I enter password <Password>

@@ -58,9 +58,10 @@ public class ParticipantsProfilePopupSteps {
 	 * 
 	 * @param name
 	 *            user name string
+	 * @throws Exception
 	 */
 	@When("^I click on participant (.*)$")
-	public void IClickOnParticipant(String name) {
+	public void IClickOnParticipant(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		PagesCollection.participantsPopupPage.clickOnParticipant(name);
 	}
@@ -93,10 +94,11 @@ public class ParticipantsProfilePopupSteps {
 	 * @step. ^I see (.*) displayed on Participant Profile Page$
 	 * 
 	 * @param contactsAliases
+	 * @throws Exception
 	 */
 	@When("^I see (.*) displayed on Participant Profile Page$")
-	public void ISeeContactsDisplayedOnParticipantPopup(String contactsAliases) {
-
+	public void ISeeContactsDisplayedOnParticipantPopup(String contactsAliases)
+			throws Exception {
 		List<String> contacts = CommonSteps.splitAliases(contactsAliases);
 		for (String s : contacts) {
 			s = usrMgr.replaceAliasesOccurences(s, FindBy.NAME_ALIAS);

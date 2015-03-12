@@ -1,16 +1,12 @@
 package com.wearezeta.auto.web.steps;
 
-import java.io.IOException;
-
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.web.pages.ContactListPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
-import com.wearezeta.auto.web.pages.WebPage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
@@ -61,12 +57,7 @@ public class LoginPageSteps {
 		invitationPageSteps.ISeeInvitationPage();
 		invitationPageSteps.IEnterInvitationCode();
 
-		// workaround for IE and Safari
-		if (PagesCollection.loginPage == null) {
-			PagesCollection.loginPage = PagesCollection.authorizationPage
-					.clickSignInButton();
-		}
-
+		PagesCollection.registrationPage.switchToLoginPage();
 		this.IEnterEmail(login);
 		this.IEnterPassword(password);
 		this.IPressSignInButton();
@@ -78,21 +69,15 @@ public class LoginPageSteps {
 	 * 
 	 * @step. ^I press Sign In button$
 	 * 
-	 * @throws IOException
+	 * @throws Exception
+	 *             if Selenium fails to wait until sign in action completes
 	 */
 	@When("^I press Sign In button$")
 	public void IPressSignInButton() throws Exception {
-		WebPage page = PagesCollection.loginPage.confirmSignIn();
-
-		Assert.assertNotNull(
-				"Login page or ContactList page expected. Page couldn't be null",
-				page);
+		PagesCollection.contactListPage = PagesCollection.loginPage
+				.clickSignInButton();
 
 		Assert.assertTrue(PagesCollection.loginPage.waitForLogin());
-
-		if (page instanceof ContactListPage) {
-			PagesCollection.contactListPage = (ContactListPage) page;
-		}
 	}
 
 	/**
@@ -142,11 +127,20 @@ public class LoginPageSteps {
 	 */
 	@Given("^I see Sign In page$")
 	public void ISeeSignInPage() throws Exception {
-		if (PagesCollection.authorizationPage != null
-				&& PagesCollection.authorizationPage.isVisible()) {
-			PagesCollection.loginPage = PagesCollection.authorizationPage
-					.clickSignInButton();
-		}
-		Assert.assertNotNull(PagesCollection.loginPage.isVisible());
+		Assert.assertTrue(PagesCollection.loginPage.isVisible());
+	}
+
+	/**
+	 * Clicks the corresponding switcher button to make the registration page
+	 * active
+	 * 
+	 * @step. ^I switch to registration page$
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I switch to registration page$")
+	public void ISwitchToRegistrationPage() throws Exception {
+		PagesCollection.registrationPage = PagesCollection.loginPage
+				.switchToRegistrationPage();
 	}
 }

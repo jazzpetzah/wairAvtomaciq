@@ -22,6 +22,9 @@ public class ConnectToPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectRequestAccept")
 	private WebElement connectAcceptBtn;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectButton")
+	private WebElement connectBtn;
+	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectRequestIgnore")
 	private WebElement connectIgnoreBtn;
 
@@ -62,7 +65,8 @@ public class ConnectToPage extends AndroidPage {
 
 	public void pressConfirmBtn() throws Exception {
 		refreshUITree();
-		this.getWait().until(ExpectedConditions.elementToBeClickable(confirmBtn));
+		this.getWait().until(
+				ExpectedConditions.elementToBeClickable(confirmBtn));
 		confirmBtn.click();
 	}
 
@@ -108,15 +112,17 @@ public class ConnectToPage extends AndroidPage {
 
 	public void typeConnectionRequies(String message) throws Exception {
 		connectionRequestMessage.sendKeys(message);
+		try {
+			hideKeyboard();
+			Thread.sleep(1000);
+		} catch (Exception ex) {
+
+		}
 	}
 
 	public ContactListPage pressConnectButton() throws Exception {
-		try {
-			sendConnectionRequestButton.click();
-		} catch (NoSuchElementException ex) {
-			navigateBack();
-			sendConnectionRequestButton.click();
-		}
+		refreshUITree();
+		sendConnectionRequestButton.click();
 		return new ContactListPage(this.getDriver(), this.getWait());
 	}
 

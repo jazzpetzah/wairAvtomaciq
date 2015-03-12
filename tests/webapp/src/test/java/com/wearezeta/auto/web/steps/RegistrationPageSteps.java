@@ -18,6 +18,7 @@ import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.UserState;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -83,7 +84,8 @@ public class RegistrationPageSteps {
 	}
 
 	@When("^I submit registration$")
-	public void ISubmitRegistration() throws MessagingException, InterruptedException, Exception {
+	public void ISubmitRegistration() throws MessagingException,
+			InterruptedException, Exception {
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
 		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
@@ -97,10 +99,16 @@ public class RegistrationPageSteps {
 		Assert.assertTrue(PagesCollection.registrationPage
 				.isVerificationEmailCorrect(email));
 	}
-	
+
 	@Then("^I verify registration email$")
 	public void IVerifyRegistrationEmail() throws Exception {
 		BackendAPIWrappers.activateRegisteredUser(this.activationMessage);
 		userToRegister.setUserState(UserState.Created);
+	}
+
+	@Given("^I switch to sign in page$")
+	public void ISwitchToLoginPage() throws Exception {
+		PagesCollection.loginPage = PagesCollection.registrationPage
+				.switchToLoginPage();
 	}
 }

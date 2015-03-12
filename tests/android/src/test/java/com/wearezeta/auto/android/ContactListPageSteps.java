@@ -194,7 +194,7 @@ public class ContactListPageSteps {
 
 	@When("^I swipe up contact list$")
 	public void ISwipeUpContactList() throws Exception {
-		PagesCollection.contactListPage.dialogsPagesSwipeUp(1000);
+		PagesCollection.contactListPage.contactListSwipeUp(1000);
 	}
 
 	@Then("^I see (.*) and (.*) chat in contact list$")

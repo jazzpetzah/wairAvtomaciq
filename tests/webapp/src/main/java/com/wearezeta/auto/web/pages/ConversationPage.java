@@ -1,6 +1,7 @@
 package com.wearezeta.auto.web.pages;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -34,7 +35,7 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idConversationInput)
 	private WebElement conversationInput;
 
-	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.ConversationPage.classNameShowParticipantsButton)
+	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathShowParticipantsButton)
 	private WebElement showParticipants;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathSendImageLabel)
@@ -62,20 +63,27 @@ public class ConversationPage extends WebPage {
 		conversationInput.sendKeys(Keys.ENTER);
 	}
 
-	public boolean isActionMessageSent(String message) throws Exception {
-		String xpath = String.format(
-				WebAppLocators.ConversationPage.xpathActionMessageEntry,
-				message);
-		return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath));
+	public boolean isActionMessageSent(final String message) throws Exception {
+		final By locator = By
+				.xpath(WebAppLocators.ConversationPage.xpathActionMessageEntries);
+		assert DriverUtils.waitUntilElementAppears(this.getDriver(), locator);
+		final List<WebElement> actionMessages = this.getDriver()
+				.findElements(locator).stream().filter(x -> x.isDisplayed())
+				.collect(Collectors.toList());
+		// Get the most recent action message only
+		final String actionMessageInUI = actionMessages.get(
+				actionMessages.size() - 1).getText();
+		return actionMessageInUI.toUpperCase().contains(message.toUpperCase());
 	}
 
 	public boolean isMessageSent(String message) throws Exception {
 		boolean isSend = false;
-		String xpath = String
-				.format(WebAppLocators.ConversationPage.xpathFormatSpecificTextMessageEntry,
-						message);
-		DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath));
-		WebElement element = driver.findElement(By.xpath(xpath));
+		final By locator = By
+				.xpath(String
+						.format(WebAppLocators.ConversationPage.xpathFormatSpecificTextMessageEntry,
+								message));
+		DriverUtils.waitUntilElementAppears(driver, locator);
+		WebElement element = driver.findElement(locator);
 		if (element != null) {
 			isSend = true;
 		}
@@ -85,7 +93,14 @@ public class ConversationPage extends WebPage {
 	public ConversationPopupPage clickShowUserProfileButton(boolean isGroup)
 			throws Exception {
 		DriverUtils.waitUntilElementClickable(driver, showParticipants);
-		showParticipants.click();
+		if (WebAppExecutionContext.browserName
+				.equals(WebAppConstants.Browser.INTERNET_EXPLORER)) {
+			driver.executeScript(String
+					.format("$('.%s').click();",
+							WebAppLocators.ConversationPage.classNameShowParticipantsButton));
+		} else {
+			showParticipants.click();
+		}
 		if (isGroup) {
 			return new ParticipantsPopupPage(this.getDriver(), this.getWait());
 		} else {
@@ -133,7 +148,11 @@ public class ConversationPage extends WebPage {
 					WebAppExecutionContext.temporaryScriptsLocation);
 			WebCommonUtils.executeAppleScriptFromFile(scriptDestination);
 		} else {
-			DriverUtils.waitUntilElementVisible(driver, imagePathInput, 10);
+			assert DriverUtils
+					.isElementDisplayed(
+							driver,
+							By.xpath(WebAppLocators.ConversationPage.xpathSendImageInput),
+							10);
 			imagePathInput.sendKeys(picturePath);
 		}
 	}

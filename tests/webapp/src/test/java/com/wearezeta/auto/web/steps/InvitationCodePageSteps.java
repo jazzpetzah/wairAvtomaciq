@@ -1,17 +1,14 @@
 package com.wearezeta.auto.web.steps;
 
-import com.wearezeta.auto.common.driver.PlatformDrivers;
-import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
-import com.wearezeta.auto.web.pages.AuthorizationPage;
+import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
+import com.wearezeta.auto.web.pages.RegistrationPage;
 
 import cucumber.api.java.en.Given;
 
 public class InvitationCodePageSteps {
 
 	private static final String INVITATION_CODE = "zeta22beta";
-
-	private boolean skipInvitation = false;
 
 	/**
 	 * Checks that opened page is Invitation page
@@ -21,9 +18,7 @@ public class InvitationCodePageSteps {
 	 */
 	@Given("^I see invitation page$")
 	public void ISeeInvitationPage() throws Exception {
-		if (!PagesCollection.invitationCodePage.isVisible()) {
-			skipInvitation = true;
-		}
+		// FIXME: This a stub
 	}
 
 	/**
@@ -37,16 +32,16 @@ public class InvitationCodePageSteps {
 	 */
 	@Given("I enter invitation code")
 	public void IEnterInvitationCode() throws Exception {
-		if (!skipInvitation) {
+		if (PagesCollection.invitationCodePage.isVisible()) {
 			PagesCollection.invitationCodePage.inputCode(INVITATION_CODE);
-			PagesCollection.loginPage = PagesCollection.invitationCodePage
-					.proceed();
-		} else {
-			final ZetaWebAppDriver driver = (ZetaWebAppDriver) PlatformDrivers
-					.getInstance()
-					.getDriver(CommonWebAppSteps.CURRENT_PLATFORM);
-			PagesCollection.authorizationPage = new AuthorizationPage(driver,
-					PlatformDrivers.createDefaultExplicitWait(driver));
+			PagesCollection.invitationCodePage.proceed();
 		}
+
+		PagesCollection.loginPage = new LoginPage(
+				PagesCollection.invitationCodePage.getDriver(),
+				PagesCollection.invitationCodePage.getWait());
+		PagesCollection.registrationPage = new RegistrationPage(
+				PagesCollection.invitationCodePage.getDriver(),
+				PagesCollection.invitationCodePage.getWait());
 	}
 }

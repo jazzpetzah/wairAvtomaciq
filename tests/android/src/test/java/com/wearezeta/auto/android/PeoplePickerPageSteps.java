@@ -86,20 +86,13 @@ public class PeoplePickerPageSteps {
 			throws Throwable {
 		// FIXME : ambiguous use of email field when the step states only user
 		// name
-		String email = null;
 		try {
 			ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(contact);
 			contact = dstUser.getName();
-			email = dstUser.getEmail();
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-
-		if (email != null) {
-			PagesCollection.peoplePickerPage.typeTextInPeopleSearch(email);
-		} else {
-			PagesCollection.peoplePickerPage.typeTextInPeopleSearch(contact);
-		}
+		PagesCollection.peoplePickerPage.typeTextInPeopleSearch(contact);
 	}
 
 	@When("^I add in search field user name to connect to (.*)$")

@@ -132,8 +132,9 @@ public class RegistrationPage extends IOSPage {
 		return takePhotoSmile.isEnabled();
 	}
 
-	public boolean isTakeOrSelectPhotoLabelVisible() {
-		return DriverUtils.isElementDisplayed(takePhotoHintLabel);
+	public boolean isTakeOrSelectPhotoLabelVisible() throws Exception {
+		return DriverUtils.isElementDisplayed(this.getDriver(),
+				By.name(IOSLocators.nameTakePhotoHintLabel));
 	}
 
 	public boolean isNameLabelVisible() {

@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -15,6 +14,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.WebAppConstants;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class ContactListPage extends WebPage {
@@ -31,7 +32,7 @@ public class ContactListPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathArchive)
 	private WebElement archive;
 
-	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.ContactListPage.classNameOpenPeoplePickerButton)
+	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathOpenPeoplePickerButton)
 	private WebElement openPeoplePickerButton;
 
 	public ContactListPage(ZetaWebAppDriver driver, WebDriverWait wait)
@@ -71,8 +72,10 @@ public class ContactListPage extends WebPage {
 	}
 
 	public boolean waitForContactListVisible() throws Exception {
-		return DriverUtils.waitUntilElementVisible(driver,
-				openPeoplePickerButton);
+		return DriverUtils
+				.waitUntilElementAppears(
+						driver,
+						By.xpath(WebAppLocators.ContactListPage.xpathOpenPeoplePickerButton));
 	}
 
 	public boolean isContactWithNameExists(String name) throws Exception {
@@ -158,19 +161,8 @@ public class ContactListPage extends WebPage {
 		} catch (WebDriverException e) {
 			// do nothing (safari workaround)
 		}
-		WebElement contact = getContactWithName(conversationName);
-		boolean result = false;
-
-		try {
-			WebElement muteIcon = contact.findElement(By
-					.className(WebAppLocators.ContactListPage.classMuteIcon));
-			DriverUtils.waitUntilElementAppears(driver, muteIcon, 5);
-			result = muteIcon.isDisplayed();
-		} catch (NoSuchElementException ex) {
-
-		}
-
-		return result;
+		return DriverUtils.isElementDisplayed(this.getDriver(),
+				By.className(WebAppLocators.ContactListPage.classMuteIcon), 5);
 	}
 
 	public void clickActionsButtonForContact(String conversationName)
@@ -225,12 +217,26 @@ public class ContactListPage extends WebPage {
 	}
 
 	public SelfProfilePage openSelfProfile() throws Exception {
+		DriverUtils.waitUntilElementAppears(this.getDriver(),
+				By.xpath(WebAppLocators.ContactListPage.xpathSelfProfileEntry));
 		selfName.click();
 		return new SelfProfilePage(this.getDriver(), this.getWait());
 	}
 
 	public PeoplePickerPage openPeoplePicker() throws Exception {
-		openPeoplePickerButton.click();
+		DriverUtils
+				.waitUntilElementAppears(
+						this.getDriver(),
+						By.xpath(WebAppLocators.ContactListPage.xpathOpenPeoplePickerButton));
+		DriverUtils.waitUntilElementClickable(driver, openPeoplePickerButton);
+		if (WebAppExecutionContext.browserName
+				.equals(WebAppConstants.Browser.INTERNET_EXPLORER)) {
+			driver.executeScript(String.format(
+					"$(document).find(\"%s\").click();",
+					WebAppLocators.ContactListPage.cssOpenPeoplePickerButton));
+		} else {
+			openPeoplePickerButton.click();
+		}
 		return new PeoplePickerPage(this.getDriver(), this.getWait());
 	}
 }

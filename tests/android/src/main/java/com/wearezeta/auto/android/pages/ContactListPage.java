@@ -30,6 +30,9 @@ public class ContactListPage extends AndroidPage {
 	@FindBy(className = AndroidLocators.CommonLocators.classNameLoginPage)
 	private WebElement content;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConversationListFrame")
+	private WebElement contactListFrame;	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idContactListNames")
 	private List<WebElement> contactListNames;
 
@@ -90,7 +93,8 @@ public class ContactListPage extends AndroidPage {
 		// workaround for incorrect tap
 		if (page == null) {
 			el = findInContactList(name, 1);
-			if (el != null && DriverUtils.isElementDisplayed(el)) {
+			if (el != null
+					&& DriverUtils.isElementDisplayed(this.getDriver(), el)) {
 				this.restoreApplication();
 				el.click();
 				log.debug("tap on contact for the second time");
@@ -99,6 +103,10 @@ public class ContactListPage extends AndroidPage {
 		return page;
 	}
 
+	public void contactListSwipeUp(int time) {
+		elementSwipeUp(contactListFrame, time);
+	}
+	
 	public AndroidPage tapOnContactByPosition(List<WebElement> contacts, int id)
 			throws Exception {
 		AndroidPage page = null;
@@ -145,6 +153,7 @@ public class ContactListPage extends AndroidPage {
 
 	public AndroidPage swipeRightOnContact(int time, String contact)
 			throws Exception {
+		refreshUITree();
 		AndroidPage page = null;
 		WebElement el = driver.findElementByXPath(String.format(
 				AndroidLocators.ContactListPage.xpathContactFrame, contact));
@@ -173,9 +182,9 @@ public class ContactListPage extends AndroidPage {
 		return page;
 	}
 
-	public boolean isContactMuted() {
-
-		return DriverUtils.isElementDisplayed(mutedIcon);
+	public boolean isContactMuted() throws Exception {
+		return DriverUtils.isElementDisplayed(this.getDriver(),
+				By.id(AndroidLocators.ContactListPage.idMutedIcon));
 	}
 
 	public boolean isHintVisible() throws InterruptedException, IOException {

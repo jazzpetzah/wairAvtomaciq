@@ -99,7 +99,8 @@ public class RegistrationPage extends AndroidPage {
 		refreshUITree();
 		DriverUtils.waitUntilElementAppears(driver,
 				AndroidLocators.DialogPage.getByForDialogConfirmImageButtn());
-		return DriverUtils.isElementDisplayed(confirmImageButton);
+		return DriverUtils.isElementDisplayed(this.getDriver(),
+				AndroidLocators.DialogPage.getByForDialogConfirmImageButtn());
 	}
 
 	public void confirmPicture() {
@@ -145,10 +146,10 @@ public class RegistrationPage extends AndroidPage {
 
 	}
 
-	public boolean isConfirmationVisible() {
+	public boolean isConfirmationVisible() throws Exception {
 		refreshUITree();
 		this.getWait().until(ExpectedConditions.visibilityOf(verifyEmailBtn));
-		return DriverUtils.isElementDisplayed(verifyEmailBtn);
+		return DriverUtils.isElementDisplayed(this.getDriver(), verifyEmailBtn);
 	}
 
 	public ContactListPage continueRegistration() throws Exception {

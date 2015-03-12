@@ -38,30 +38,30 @@ public class PeoplePickerPageSteps {
 	}
 
 	@When("I dont see Upload contacts dialog")
-	public void WhenIDontSeeUploadContactsDialog() {
+	public void WhenIDontSeeUploadContactsDialog() throws Exception {
 		Assert.assertFalse("Upload dialog is shown",
 				PagesCollection.peoplePickerPage.isUploadDialogShown());
 	}
 
 	@When("I click Later button on Upload dialog")
-	public void IClickLaterButtonOnUploadDialog() {
+	public void IClickLaterButtonOnUploadDialog() throws Exception {
 		PagesCollection.peoplePickerPage.clickLaterButton();
 	}
 
 	@When("I click Continue button on Upload dialog")
-	public void IClickContinueButtonOnUploadDialog() {
+	public void IClickContinueButtonOnUploadDialog() throws Exception {
 		PagesCollection.peoplePickerPage.clickContinueButton();
 	}
 
 	@When("I see PEOPLE YOU MAY KNOW label")
-	public void ISeePepopleYouMayKnowLabel() {
+	public void ISeePepopleYouMayKnowLabel() throws Exception {
 		Assert.assertTrue("PEOPLE YOU MAY KNOW lable is not visible",
 				PagesCollection.peoplePickerPage
 						.isPeopleYouMayKnowLabelVisible());
 	}
 
 	@When("I dont see PEOPLE YOU MAY KNOW label")
-	public void IDontSeePepopleYouMayKnowLabel() {
+	public void IDontSeePepopleYouMayKnowLabel() throws Exception {
 		Assert.assertFalse("PEOPLE YOU MAY KNOW lable is visible",
 				PagesCollection.peoplePickerPage
 						.isPeopleYouMayKnowLabelVisible());
@@ -178,7 +178,7 @@ public class PeoplePickerPageSteps {
 	}
 
 	@When("^I see Add to conversation button$")
-	public void WhenISeeAddToConversationButton() {
+	public void WhenISeeAddToConversationButton() throws Exception {
 		Assert.assertTrue("Add to conversation button is not visible",
 				PagesCollection.peoplePickerPage
 						.isAddToConversationBtnVisible());
@@ -222,13 +222,13 @@ public class PeoplePickerPageSteps {
 	}
 
 	@When("I see contact list on People picker page")
-	public void ISeeContactListOnPeoplePickerPage() {
+	public void ISeeContactListOnPeoplePickerPage() throws Exception {
 		Assert.assertTrue("Contacts label is not shown",
 				PagesCollection.peoplePickerPage.isContactsLabelVisible());
 	}
 
 	@When("I see top people list on People picker page")
-	public void ISeeTopPeopleListOnPeoplePickerPage() {
+	public void ISeeTopPeopleListOnPeoplePickerPage() throws Exception {
 		Assert.assertTrue("Top People label is not shown",
 				PagesCollection.peoplePickerPage.isTopPeopleLabelVisible());
 	}
@@ -240,7 +240,7 @@ public class PeoplePickerPageSteps {
 	}
 
 	@When("I see Create Conversation button on People picker page")
-	public void ISeeCreateConversationButton() {
+	public void ISeeCreateConversationButton() throws Exception {
 		Assert.assertTrue("Create Conversation button is not visible.",
 				PagesCollection.peoplePickerPage
 						.isCreateConversationButtonVisible());

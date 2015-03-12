@@ -14,6 +14,7 @@ import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public abstract class ConversationPopupPage extends WebPage {
 
+	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger
 			.getLog(ConversationPopupPage.class.getSimpleName());
 
@@ -38,8 +39,11 @@ public abstract class ConversationPopupPage extends WebPage {
 	}
 
 	public boolean isConversationPopupPageVisible() throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver, conversationPopup,
-				10);
+		return DriverUtils
+				.waitUntilElementAppears(
+						driver,
+						By.id(WebAppLocators.ConversationPopupPage.idConversationPopupPage),
+						10);
 	}
 
 	public boolean isAddPeopleMessageShown() {
@@ -63,12 +67,11 @@ public abstract class ConversationPopupPage extends WebPage {
 		String xpath = String
 				.format(WebAppLocators.PeoplePickerPage.xpathFormatSearchListItemWithName,
 						user);
+		assert DriverUtils.isElementDisplayed(driver,
+				By.xpath(xpath), DriverUtils.DEFAULT_VISIBILITY_TIMEOUT);
 		WebElement userEl = driver.findElement(By.xpath(xpath));
-		boolean isClickable = DriverUtils.waitUntilElementClickable(driver,
-				userEl);
-		boolean isVisible = DriverUtils.waitUntilElementVisible(driver, userEl);
-		log.debug("Found user element is clickable: " + isClickable
-				+ ", isVisible: " + isVisible);
+		assert DriverUtils.waitUntilElementClickable(
+				driver, userEl);
 		userEl.click();
 	}
 

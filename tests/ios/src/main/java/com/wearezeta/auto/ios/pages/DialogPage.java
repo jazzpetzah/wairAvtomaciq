@@ -56,10 +56,10 @@ public class DialogPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathPinged)
 	private WebElement pinged;
-	
+
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathPingedAgain)
 	private WebElement pingedAgain;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameOpenConversationDetails)
 	protected WebElement openConversationDetails;
 
@@ -122,7 +122,7 @@ public class DialogPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathDialogTitleBar)
 	private WebElement titleBar;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameSoundCloudPause)
 	private WebElement soundCloudPause;
 
@@ -142,13 +142,14 @@ public class DialogPage extends IOSPage {
 		return startedConversationMessage.getText();
 	}
 
-	public boolean isPingMessageVisible(String msg) {
+	public boolean isPingMessageVisible(String msg) throws Exception {
 
-		return DriverUtils.isElementDisplayed(driver.findElement(By.name(msg)));
+		return DriverUtils.isElementDisplayed(this.getDriver(), By.name(msg));
 	}
 
-	public boolean isPingButtonVisible() {
-		return DriverUtils.isElementDisplayed(pingButton);
+	public boolean isPingButtonVisible() throws Exception {
+		return DriverUtils.isElementDisplayed(this.getDriver(),
+				By.name(IOSLocators.namePingButton));
 	}
 
 	public void pressPingButton() {
@@ -166,7 +167,12 @@ public class DialogPage extends IOSPage {
 	}
 
 	public void tapOnCursorInput() {
-		conversationInput.click();
+		try {
+			conversationInput.click();
+		} catch (NoSuchElementException e) {
+			log.debug(driver.getPageSource());
+			throw e;
+		}
 	}
 
 	public void multiTapOnCursorInput() throws InterruptedException {
@@ -243,16 +249,18 @@ public class DialogPage extends IOSPage {
 	}
 
 	public void startMediaContent() throws Exception {
-		boolean flag = DriverUtils.isElementDisplayed(mediaLinkCell);
+		boolean flag = DriverUtils.isElementDisplayed(this.getDriver(),
+				By.xpath(IOSLocators.xpathMediaConversationCell));
 		if (flag) {
 			mediaLinkCell.click();
-		}
-		else {
+		} else {
 			String lastMessageXPath = String.format(
 					IOSLocators.xpathLastMessageFormat, messagesList.size());
 			WebElement el = driver.findElementByXPath(lastMessageXPath);
-			((AppiumDriver)driver).tap(1, 10, el.getLocation().y + el.getSize().height + (el.getSize().height / 2), 1);
-		} 
+			((AppiumDriver) driver).tap(1, 10,
+					el.getLocation().y + el.getSize().height
+							+ (el.getSize().height / 2), 1);
+		}
 	}
 
 	public DialogPage scrollDownTilMediaBarAppears() throws Exception {
@@ -317,12 +325,14 @@ public class DialogPage extends IOSPage {
 	public IOSPage openConversationDetailsClick() throws Exception {
 
 		for (int i = 0; i < 3; i++) {
-			if (DriverUtils.isElementDisplayed(openConversationDetails)) {
+			if (DriverUtils.isElementDisplayed(this.getDriver(),
+					By.name(IOSLocators.nameOpenConversationDetails))) {
 				openConversationDetails.click();
 				DriverUtils.waitUntilElementAppears(driver,
 						By.name(IOSLocators.nameAddContactToChatButton), 5);
 			}
-			if (DriverUtils.isElementDisplayed(addInfoPage)) {
+			if (DriverUtils.isElementDisplayed(this.getDriver(),
+					By.name(IOSLocators.nameAddContactToChatButton))) {
 				break;
 			} else {
 				swipeUp(1000);
@@ -693,9 +703,9 @@ public class DialogPage extends IOSPage {
 			Dimension elementSize = driver.manage().window().getSize();
 
 			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
-				this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y + 50,
-						coords.x + elementSize.width / 2, coords.y
-								+ elementSize.height - 100, 500);
+				this.getDriver().swipe(coords.x + elementSize.width / 2,
+						coords.y + 50, coords.x + elementSize.width / 2,
+						coords.y + elementSize.height - 100, 500);
 			} else {
 				DriverUtils.iOSSimulatorSwipeDialogPageDown(CommonUtils
 						.getSwipeScriptPath(IOSPage.class));
@@ -770,7 +780,7 @@ public class DialogPage extends IOSPage {
 		int h = PING_ICON_HEIGHT;
 		return getScreenshotByCoordinates(x, y, w, h);
 	}
-	
+
 	private BufferedImage getPingAgainIconScreenShot() throws IOException {
 		Point elementLocation = pingedAgain.getLocation();
 		Dimension elementSize = pingedAgain.getSize();
@@ -798,7 +808,7 @@ public class DialogPage extends IOSPage {
 		try {
 			DriverUtils.scrollToElement(this.getDriver(), el);
 		} catch (WebDriverException e) {
-			
+
 		}
 	}
 

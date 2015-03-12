@@ -2,6 +2,8 @@ package com.wearezeta.auto.android.pages;
 
 import java.io.IOException;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -17,9 +19,12 @@ import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
 import com.wearezeta.auto.common.locators.ZetaHow;
+import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class LoginPage extends AndroidPage {
 
+	private static final Logger log = ZetaLogger.getLog(LoginPage.class.getSimpleName());
+	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPeoplePickerClearbtn")
 	private WebElement pickerClearBtn;
 
@@ -59,7 +64,7 @@ public class LoginPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idContactListNames")
 	private WebElement contactListNames;
 
-	@FindBy(how = How.ID, using = AndroidLocators.CommonLocators.idDismissUpdateButton)
+	@FindBy(how = How.XPATH, using = AndroidLocators.CommonLocators.xpathDismissUpdateButton)
 	private WebElement dismissUpdateButton;
 
 	private static final String LOGIN_ERROR_TEXT = "WRONG ADDRESS OR PASSWORD.\nPLEASE TRY AGAIN.";
@@ -104,13 +109,24 @@ public class LoginPage extends AndroidPage {
 	public void setLogin(String login) throws Exception {
 		refreshUITree();
 		if (CommonUtils.getAndroidApiLvl(LoginPage.class) > 42) {
-			loginInput.sendKeys(login);
+			try {
+				loginInput.sendKeys(login);
+			} catch (Exception e) {
+				log.debug(driver.getPageSource());
+				
+			}
 		} else {
 			for (WebElement editField : editText) {
 				if (editField.getText().toLowerCase().equals("email")) {
 					editField.sendKeys(login);
 				}
 			}
+		}
+		try {
+			hideKeyboard();
+			Thread.sleep(1000);
+		} catch (Exception ex) {
+			//
 		}
 	}
 
@@ -124,6 +140,12 @@ public class LoginPage extends AndroidPage {
 					editField.sendKeys(password);
 				}
 			}
+		}
+		try {
+			hideKeyboard();
+			Thread.sleep(1000);
+		} catch (Exception ex) {
+			//
 		}
 	}
 
@@ -191,6 +213,6 @@ public class LoginPage extends AndroidPage {
 
 	public boolean isDismissUpdateVisible() throws Exception {
 		return DriverUtils.waitUntilElementAppears(driver,
-				By.id(AndroidLocators.CommonLocators.idDismissUpdateButton));
+				By.xpath(AndroidLocators.CommonLocators.xpathDismissUpdateButton));
 	}
 }
