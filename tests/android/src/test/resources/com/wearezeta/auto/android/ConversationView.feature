@@ -209,6 +209,10 @@ Feature: Conversation View
     And Contact <Contact1> send message to user <Name>
     And Contact <Contact1> send message to user <Name>
     And Contact <Contact1> send message to user <Name>
+    And Contact <Contact1> send message to user <Name>
+    And Contact <Contact1> send message to user <Name>
+    And Contact <Contact1> send message to user <Name>
+    And Contact <Contact1> send message to user <Name>
     And I tap on text input
     And I input <SoudCloudLink> message and send it
     And Contact <Contact1> send message to user <Name>

@@ -501,7 +501,10 @@ public final class AndroidLocators {
 
 		public static final String idSendConnectionRequestButton = LOCATORS_PACKAGE
 				+ ":id/zb__send_connect_request__connect_button";
-
+		
+		public static final String idConnectButton = LOCATORS_PACKAGE
+				+ ":id/rl__participants__left__action";
+		
 		public static final String idNoResultsFound = LOCATORS_PACKAGE
 				+ ":id/ttv_pickuser__error_header";
 
