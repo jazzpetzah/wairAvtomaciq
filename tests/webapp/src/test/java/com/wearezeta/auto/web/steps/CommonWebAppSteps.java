@@ -9,7 +9,6 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.google.common.io.Files;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.PerformanceCommon;
@@ -167,8 +166,6 @@ public class CommonWebAppSteps {
 						+ e.getMessage());
 				e.printStackTrace();
 			}
-			WebAppExecutionContext.temporaryScriptsLocation = Files
-					.createTempDir().getAbsolutePath();
 		}
 	}
 

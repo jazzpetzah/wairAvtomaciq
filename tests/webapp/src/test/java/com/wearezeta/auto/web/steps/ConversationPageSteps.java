@@ -117,8 +117,7 @@ public class ConversationPageSteps {
 	@When("^I send picture (.*) to ([a-z]*) conversation$")
 	public void WhenISendPicture(String pictureName, String chatType)
 			throws Exception {
-		boolean isGroup = (chatType.equals("group") ? true : false);
-		PagesCollection.conversationPage.sendPicture(pictureName, isGroup);
+		PagesCollection.conversationPage.sendPicture(pictureName);
 	}
 
 	/**

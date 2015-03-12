@@ -1,5 +1,7 @@
 package com.wearezeta.auto.web.pages;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -113,8 +115,45 @@ public class ConversationPage extends WebPage {
 		return new ParticipantsPopupPage(this.getDriver(), this.getWait());
 	}
 
-	public void sendPicture(String pictureName, boolean isGroup)
+	private static final String TMP_ROOT = "/tmp";
+
+	/**
+	 * https://code.google.com/p/selenium/issues/detail?id=4220
+	 * 
+	 * @param pictureName
+	 * @throws Exception
+	 */
+	private static void sendPictureInSafari(String pictureName)
 			throws Exception {
+		final ClassLoader classLoader = ConversationPage.class.getClassLoader();
+		final InputStream scriptStream = classLoader.getResourceAsStream(String
+				.format("%s/%s",
+						WebAppConstants.Scripts.RESOURCES_SCRIPTS_ROOT,
+						WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT));
+		final String srcScriptPath = String.format("%s/%s", TMP_ROOT,
+				WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT);
+		try {
+			WebCommonUtils.formatTextInFileAndSave(scriptStream, srcScriptPath,
+					new String[] { WebCommonUtils.getPicturesPath(),
+							pictureName });
+		} finally {
+			if (scriptStream != null) {
+				scriptStream.close();
+			}
+		}
+		final String dstScriptPath = srcScriptPath;
+		try {
+			WebCommonUtils.putFileOnExecutionNode(
+					WebAppExecutionContext.seleniumNodeIp, srcScriptPath,
+					dstScriptPath);
+		} finally {
+			new File(srcScriptPath).delete();
+		}
+		WebCommonUtils.executeAppleScriptFileOnNode(
+				WebAppExecutionContext.seleniumNodeIp, dstScriptPath);
+	}
+
+	public void sendPicture(String pictureName) throws Exception {
 		final String picturePath = WebCommonUtils
 				.getFullPicturePath(pictureName);
 		final String showImageLabelJScript = "$('"
@@ -127,32 +166,13 @@ public class ConversationPage extends WebPage {
 				+ WebAppLocators.ConversationPage.cssSendImageInput
 				+ "').css({'left': '0'});";
 		driver.executeScript(showPathInputJScript);
-		// trying to wait for elements will appear on Safari
-		Thread.sleep(3000);
+		assert DriverUtils.isElementDisplayed(driver,
+				By.xpath(WebAppLocators.ConversationPage.xpathSendImageInput),
+				10);
 		if (WebAppExecutionContext.browserName
 				.equals(WebAppConstants.Browser.SAFARI)) {
-			// sendKeys() call to file input element does nothing on safari
-			// so instead of sendKeys() we are using AppleScript which chooses
-			// required image in open file dialog
-			String scriptDestination = WebAppExecutionContext.temporaryScriptsLocation
-					+ "/" + WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT;
-			WebCommonUtils
-					.formatTextInFileAndSave(
-							WebCommonUtils.getScriptsTemplatesPath()
-									+ WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT,
-							scriptDestination,
-							new String[] { WebCommonUtils.getPicturesPath(),
-									pictureName });
-			WebCommonUtils.putFilesOnExecutionNode(
-					WebAppExecutionContext.seleniumNodeIp,
-					WebAppExecutionContext.temporaryScriptsLocation);
-			WebCommonUtils.executeAppleScriptFromFile(scriptDestination);
+			sendPictureInSafari(picturePath);
 		} else {
-			assert DriverUtils
-					.isElementDisplayed(
-							driver,
-							By.xpath(WebAppLocators.ConversationPage.xpathSendImageInput),
-							10);
 			imagePathInput.sendKeys(picturePath);
 		}
 	}

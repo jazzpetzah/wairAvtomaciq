@@ -2,8 +2,8 @@ package com.wearezeta.auto.web.common;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
@@ -27,7 +27,7 @@ public class WebCommonUtils extends CommonUtils {
 			.getSimpleName());
 
 	// workaround for local executions in case sshpass is not in the PATH
-	private static final String SSHPASS_PATH = "";
+	private static final String SSHPASS_PREFIX = "/usr/local/bin/";
 
 	public static String getWebAppBrowserNameFromConfig(Class<?> c)
 			throws Exception {
@@ -93,46 +93,28 @@ public class WebCommonUtils extends CommonUtils {
 		return ip;
 	}
 
-	public static void createTmpDirectoryOnNode(String filesDir)
-			throws Exception {
-		String commandTemplate = SSHPASS_PATH
+	public static void putFileOnExecutionNode(String node, String srcPath,
+			String dstPath) throws Exception {
+		String commandTemplate = SSHPASS_PREFIX
 				+ "sshpass -p %s "
-				+ "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
-				+ "%s@%s mkdir -p %s";
+				+ "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
+				+ "%s %s@%s:%s";
 		String command = String.format(commandTemplate,
-				getJenkinsSuperUserPassword(CommonUtils.class),
-				getJenkinsSuperUserLogin(CommonUtils.class),
-				WebAppExecutionContext.seleniumNodeIp, filesDir);
+				getJenkinsSuperUserPassword(CommonUtils.class), srcPath,
+				getJenkinsSuperUserLogin(CommonUtils.class), node, dstPath);
 		WebCommonUtils
 				.executeOsXCommand(new String[] { "bash", "-c", command });
 	}
 
-	public static void putFilesOnExecutionNode(String node, String filesDir)
-			throws Exception {
-		createTmpDirectoryOnNode(filesDir);
-		String commandTemplate = SSHPASS_PATH
-				+ "sshpass -p %s "
-				+ "scp -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
-				+ "%s/* %s@%s:%s";
-
-		String command = String.format(commandTemplate,
-				getJenkinsSuperUserPassword(CommonUtils.class), filesDir,
-				getJenkinsSuperUserLogin(CommonUtils.class),
-				WebAppExecutionContext.seleniumNodeIp, filesDir);
-		WebCommonUtils
-				.executeOsXCommand(new String[] { "bash", "-c", command });
-	}
-
-	public static void executeAppleScriptFromFile(String script)
-			throws Exception {
-		String commandTemplate = SSHPASS_PATH
+	public static void executeAppleScriptFileOnNode(String node,
+			String scriptPath) throws Exception {
+		String commandTemplate = SSHPASS_PREFIX
 				+ "sshpass -p %s "
 				+ "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 				+ "%s@%s osascript %s";
 		String command = String.format(commandTemplate,
 				getJenkinsSuperUserPassword(CommonUtils.class),
-				getJenkinsSuperUserLogin(CommonUtils.class),
-				WebAppExecutionContext.seleniumNodeIp, script);
+				getJenkinsSuperUserLogin(CommonUtils.class), node, scriptPath);
 		if (WebCommonUtils.executeOsXCommand(new String[] { "bash", "-c",
 				command }) == 255) {
 			WebCommonUtils.executeOsXCommand(new String[] { "bash", "-c",
@@ -141,16 +123,14 @@ public class WebCommonUtils extends CommonUtils {
 
 	}
 
-	public static void formatTextInFileAndSave(String srcFile, String dstFile,
+	public static void formatTextInFileAndSave(InputStream fis, String dstFile,
 			Object[] params) throws IOException {
 		String script = "";
 
-		FileInputStream fis = null;
 		InputStreamReader isr = null;
 		BufferedReader br = null;
 
 		try {
-			fis = new FileInputStream(srcFile);
 			isr = new InputStreamReader(fis);
 			br = new BufferedReader(isr);
 			String t;
@@ -177,19 +157,22 @@ public class WebCommonUtils extends CommonUtils {
 				br.close();
 			if (isr != null)
 				isr.close();
-			if (fis != null)
-				fis.close();
 		}
 	}
-	
-	public static String getOperaProfileRoot(String browserPlatform) throws Exception {
+
+	public static String getOperaProfileRoot(String browserPlatform)
+			throws Exception {
 		if (browserPlatform.toLowerCase().contains("win")) {
-			return String.format("C:\\Users\\%s\\AppData\\Roaming\\Opera Software\\Opera Stable\\", 
-					CommonUtils.getJenkinsSuperUserLogin(WebCommonUtils.class));
+			return String
+					.format("C:\\Users\\%s\\AppData\\Roaming\\Opera Software\\Opera Stable\\",
+							CommonUtils
+									.getJenkinsSuperUserLogin(WebCommonUtils.class));
 		} else {
 			// Should be Mac OS otherwise ;)
-			return String.format("/Users/%s/Library/Application Support/Opera Software/Opera Stable/", 
-					CommonUtils.getJenkinsSuperUserLogin(WebCommonUtils.class));
+			return String
+					.format("/Users/%s/Library/Application Support/Opera Software/Opera Stable/",
+							CommonUtils
+									.getJenkinsSuperUserLogin(WebCommonUtils.class));
 		}
 	}
 }
