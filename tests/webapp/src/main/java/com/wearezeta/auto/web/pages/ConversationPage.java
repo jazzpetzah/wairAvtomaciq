@@ -1,6 +1,7 @@
 package com.wearezeta.auto.web.pages;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -66,8 +67,9 @@ public class ConversationPage extends WebPage {
 		final By locator = By
 				.xpath(WebAppLocators.ConversationPage.xpathActionMessageEntries);
 		assert DriverUtils.waitUntilElementAppears(this.getDriver(), locator);
-		final List<WebElement> actionMessages = this.getDriver().findElements(
-				locator);
+		final List<WebElement> actionMessages = this.getDriver()
+				.findElements(locator).stream().filter(x -> x.isDisplayed())
+				.collect(Collectors.toList());
 		// Get the most recent action message only
 		final String actionMessageInUI = actionMessages.get(
 				actionMessages.size() - 1).getText();
