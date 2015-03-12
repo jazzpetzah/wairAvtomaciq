@@ -62,7 +62,8 @@ Feature: Conversation View
     And I see <Contact1> user profile page
     And I press add contact button
     And I see People picker page
-    And I input in People picker search field user name <Contact2>
+    And I tap on Search input on People picker page
+    And I input in search field user name to connect to <Contact2>
     And I see user <Contact2> found on People picker page
     And I tap on user name found on People picker page <Contact2>
     And I see Add to conversation button
