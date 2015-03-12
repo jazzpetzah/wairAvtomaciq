@@ -2,11 +2,13 @@ package com.wearezeta.auto.android.pages;
 
 import java.io.IOException;
 import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -114,6 +116,7 @@ public class LoginPage extends AndroidPage {
 		}
 		try {
 			hideKeyboard();
+			Thread.sleep(1000);
 		} catch (Exception ex) {
 			//
 		}
@@ -132,6 +135,7 @@ public class LoginPage extends AndroidPage {
 		}
 		try {
 			hideKeyboard();
+			Thread.sleep(1000);
 		} catch (Exception ex) {
 			//
 		}
