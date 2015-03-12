@@ -118,9 +118,11 @@ public class ConversationPage extends WebPage {
 	private static final String TMP_ROOT = "/tmp";
 
 	/**
-	 * https://code.google.com/p/selenium/issues/detail?id=4220
+	 * Workaround for https://code.google.com/p/selenium/issues/detail?id=4220
 	 * 
 	 * @param pictureName
+	 *            the path to the original picture to be uploaded into
+	 *            conversation
 	 * @throws Exception
 	 */
 	private static void sendPictureInSafari(String pictureName)
@@ -132,10 +134,14 @@ public class ConversationPage extends WebPage {
 						WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT));
 		final String srcScriptPath = String.format("%s/%s", TMP_ROOT,
 				WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT);
+		final File srcImage = new File(pictureName);
+		assert srcImage.exists() : "There's no image by path "
+				+ srcImage.getCanonicalPath() + " on your local file system";
+		final File dstImage = new File(String.format("%s/%s", TMP_ROOT,
+				srcImage.getName()));
 		try {
 			WebCommonUtils.formatTextInFileAndSave(scriptStream, srcScriptPath,
-					new String[] { WebCommonUtils.getPicturesPath(),
-							pictureName });
+					new String[] { dstImage.getParent(), dstImage.getName() });
 		} finally {
 			if (scriptStream != null) {
 				scriptStream.close();
@@ -144,11 +150,22 @@ public class ConversationPage extends WebPage {
 		final String dstScriptPath = srcScriptPath;
 		try {
 			WebCommonUtils.putFileOnExecutionNode(
+					WebAppExecutionContext.seleniumNodeIp,
+					srcImage.getAbsolutePath(), dstImage.getAbsolutePath());
+			WebCommonUtils.putFileOnExecutionNode(
 					WebAppExecutionContext.seleniumNodeIp, srcScriptPath,
 					dstScriptPath);
 		} finally {
 			new File(srcScriptPath).delete();
 		}
+
+		// This is to kill extra Safari instances. Otherwise our applescript
+		// just
+		// won't work
+		WebCommonUtils
+				.executeCommandOnNode(
+						WebAppExecutionContext.seleniumNodeIp,
+						"kill -SIGTERM `ps axu | grep Safari | grep -v grep | grep -v safaridriver | awk '{print $2}'`");
 		WebCommonUtils.executeAppleScriptFileOnNode(
 				WebAppExecutionContext.seleniumNodeIp, dstScriptPath);
 	}

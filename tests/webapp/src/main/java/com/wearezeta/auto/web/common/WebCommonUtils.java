@@ -106,6 +106,19 @@ public class WebCommonUtils extends CommonUtils {
 				.executeOsXCommand(new String[] { "bash", "-c", command });
 	}
 
+	public static void executeCommandOnNode(String node, String cmd)
+			throws Exception {
+		String commandTemplate = SSHPASS_PREFIX
+				+ "sshpass -p %s "
+				+ "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
+				+ "%s@%s %s";
+		String command = String.format(commandTemplate,
+				getJenkinsSuperUserPassword(CommonUtils.class),
+				getJenkinsSuperUserLogin(CommonUtils.class), node, cmd);
+		WebCommonUtils
+				.executeOsXCommand(new String[] { "bash", "-c", command });
+	}
+
 	public static void executeAppleScriptFileOnNode(String node,
 			String scriptPath) throws Exception {
 		String commandTemplate = SSHPASS_PREFIX
@@ -120,7 +133,6 @@ public class WebCommonUtils extends CommonUtils {
 			WebCommonUtils.executeOsXCommand(new String[] { "bash", "-c",
 					command });
 		}
-
 	}
 
 	public static void formatTextInFileAndSave(InputStream fis, String dstFile,
