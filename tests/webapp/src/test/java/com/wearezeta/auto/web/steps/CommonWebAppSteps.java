@@ -7,6 +7,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.LocalFileDetector;
+import org.openqa.selenium.safari.SafariOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.CommonSteps;
@@ -71,6 +72,12 @@ public class CommonWebAppSteps {
 		capabilities.setCapability("firefox_profile", profile);
 	}
 
+	private static void setCustomSafariProfile(DesiredCapabilities capabilities) {
+		SafariOptions options = new SafariOptions();
+		options.setUseCleanSession(true);
+		capabilities.setCapability(SafariOptions.CAPABILITY, options);
+	}
+
 	private ZetaWebAppDriver resetWebAppDriver(String url) throws Exception {
 		final String browser = getBrowser();
 		final DesiredCapabilities capabilities;
@@ -80,7 +87,7 @@ public class CommonWebAppSteps {
 		case "chrome":
 			capabilities = DesiredCapabilities.chrome();
 			if (webPlatformName.toLowerCase().contains("opera")) {
-				// This is to fix Desktop Notifications alert appearance in
+				// This is to fix Desktop Notifications alerts appearance in
 				// Opera
 				setCustomOperaProfile(capabilities, webPlatformName);
 			}
@@ -93,6 +100,7 @@ public class CommonWebAppSteps {
 			break;
 		case "safari":
 			capabilities = DesiredCapabilities.safari();
+			setCustomSafariProfile(capabilities);
 			break;
 		case "ie":
 			capabilities = DesiredCapabilities.internetExplorer();

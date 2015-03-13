@@ -160,8 +160,7 @@ public class ConversationPage extends WebPage {
 		}
 
 		// This is to kill extra Safari instances. Otherwise our applescript
-		// just
-		// won't work
+		// just won't work
 		WebCommonUtils
 				.executeCommandOnNode(
 						WebAppExecutionContext.seleniumNodeIp,
