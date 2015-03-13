@@ -31,7 +31,7 @@ public class InvitationCodePage extends WebPage {
 
 	public boolean isVisible() throws Exception {
 		return DriverUtils.waitUntilElementAppears(driver,
-				By.id(WebAppLocators.InvitationCodePage.idCodeInput), 5);
+				By.id(WebAppLocators.InvitationCodePage.idCodeInput), 2);
 	}
 
 	public void inputCode(String code) {
