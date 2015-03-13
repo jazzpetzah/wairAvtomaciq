@@ -83,6 +83,7 @@ Feature: Conversation
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I toggle mute for conversation <Contact>
+    And I open self profile
     Then I see that conversation <Contact> is muted
 
     Examples: 
@@ -98,6 +99,7 @@ Feature: Conversation
     And I see my name <Name> in Contact list
     And I see that conversation <Contact> is muted
     When I toggle mute for conversation <Contact>
+    And I open self profile
     Then I see that conversation <Contact> is not muted
 
     Examples: 
