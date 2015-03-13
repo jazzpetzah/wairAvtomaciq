@@ -76,7 +76,7 @@ Feature: Conversation
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendPictureGroupChat | userpicture_landscape.jpg |
 
-  @staging @id1918
+  @smoke @id1918
   Scenario Outline: Mute 1on1 conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
