@@ -1,7 +1,7 @@
 try
     do shell script "kill -9 $(ps axu | grep Safari.app | grep -v grep | grep -v safaridriver | awk '{print $2}')"
 on error errMsg
-    display dialog "ERROR: " & errMsg
+    do shell script "echo " & quoted form of errMsg & " 2>&1"
 end try
 
 delay 1
