@@ -1,3 +1,6 @@
+do shell script "kill -SIGTERM $(ps axu | grep Safari.app | grep -v grep | grep -v safaridriver | awk '{print $2}')"
+
+delay 1
 tell application "Safari"
     activate
     set theWindow to item 1 of windows
