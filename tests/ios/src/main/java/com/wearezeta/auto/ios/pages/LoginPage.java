@@ -16,7 +16,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.ContactListPage;
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
@@ -105,16 +104,8 @@ public class LoginPage extends IOSPage {
 			shareButton.click();
 			return new PeoplePickerPage(this.getDriver(), this.getWait());
 		} else {
-			// workaround for Sync Engine scenario
-			// on real iOS device when contacts are shared there is no
-			// Share Contacts dialog but people picker page appears, which we
-			// not process in case no Share Contacts dialog
-			if (!CommonUtils.getIsSimulatorFromConfig(LoginPage.class)) {
-				return new PeoplePickerPage(this.getDriver(), this.getWait());
-			}
+			return null;
 		}
-
-		return null;
 	}
 
 	public boolean isSelfProfileVisible() throws Exception {

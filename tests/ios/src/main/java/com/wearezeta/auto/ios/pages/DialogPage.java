@@ -167,7 +167,12 @@ public class DialogPage extends IOSPage {
 	}
 
 	public void tapOnCursorInput() {
-		conversationInput.click();
+		try {
+			conversationInput.click();
+		} catch (NoSuchElementException e) {
+			log.debug(driver.getPageSource());
+			throw e;
+		}
 	}
 
 	public void multiTapOnCursorInput() throws InterruptedException {

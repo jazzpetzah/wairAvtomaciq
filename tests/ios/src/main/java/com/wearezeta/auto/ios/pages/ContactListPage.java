@@ -330,7 +330,7 @@ public class ContactListPage extends IOSPage {
 	}
 
 	public List<WebElement> GetVisibleContacts() {
-		return contactListNames;
+		return driver.findElements(By.className(IOSLocators.classNameContactListNames));
 	}
 
 	public IOSPage tapOnContactByIndex(List<WebElement> contacts, int index)

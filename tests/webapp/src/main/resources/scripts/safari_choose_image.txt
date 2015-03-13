@@ -1,6 +1,13 @@
-tell application "System Events" to tell application process "Safari"
-	set frontmost to true
+tell application "Safari"
+    activate
+    set theWindow to item 1 of windows
+    if index of theWindow is not 1 then
+        set index to 1
+        set visible to false
+        set visible to true
+    end if
 end tell
+
 delay 2
 set allButtons to {}
 tell application "System Events"
@@ -17,6 +24,7 @@ tell application "System Events"
 	end tell
 end tell
 allButtons
+
 delay 2
 tell application "Safari"
 	set posixpath to "%s"

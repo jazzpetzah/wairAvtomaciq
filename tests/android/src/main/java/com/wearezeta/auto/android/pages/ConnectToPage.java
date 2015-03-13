@@ -22,6 +22,9 @@ public class ConnectToPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectRequestAccept")
 	private WebElement connectAcceptBtn;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectButton")
+	private WebElement connectBtn;
+	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectRequestIgnore")
 	private WebElement connectIgnoreBtn;
 
@@ -111,6 +114,7 @@ public class ConnectToPage extends AndroidPage {
 		connectionRequestMessage.sendKeys(message);
 		try {
 			hideKeyboard();
+			Thread.sleep(1000);
 		} catch (Exception ex) {
 
 		}

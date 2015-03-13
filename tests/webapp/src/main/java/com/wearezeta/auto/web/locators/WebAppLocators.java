@@ -92,9 +92,9 @@ public final class WebAppLocators {
 
 	public static final class ConversationPage {
 
-		public static final String xpathTextMessageEntry = "//div[contains(@class,'message')]/div[@class='text']";
+		public static final String xpathTextMessageEntry = "//*[@data-uie-name='item-message']//div[@class='text']";
 
-		public static final String xpathFormatSpecificTextMessageEntry = "//div[contains(@class,'message')]/div[@class='text' and text()='%s']";
+		public static final String xpathFormatSpecificTextMessageEntry = "//*[@data-uie-name='item-message']//div[@class='text' and text()='%s']";
 
 		public static final String idConversationInput = "conversation-input-text";
 
@@ -102,7 +102,7 @@ public final class WebAppLocators {
 
 		public static final String xpathShowParticipantsButton = "//*[@data-uie-name='do-participants']";
 
-		public static final String xpathActionMessageEntries = "//div[contains(@class,'special')]//div[@class='action']";
+		public static final String xpathActionMessageEntries = "//*[@data-uie-name='item-message' and contains(@class, 'special')]//div[contains(@class, 'action')]";
 
 		public static final String xpathSendImageLabel = "//label[contains(@class,'controls-right-button') and contains(@class,'icon-library')]";
 

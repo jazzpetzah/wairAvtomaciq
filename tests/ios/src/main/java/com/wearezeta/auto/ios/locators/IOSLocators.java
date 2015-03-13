@@ -234,7 +234,7 @@ public final class IOSLocators {
 	
 	public static final String xpathSettingsPage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]";
 	
-	public static final String nameSoundAlertsButton = "Sound Alerts";
+	public static final String nameSoundAlertsButton = "Notifications";
 	
 	public static final String xpathSoundAlertsPage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIANavigationBar[1]/UIAImage[1]";
 	
