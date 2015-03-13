@@ -32,7 +32,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id2043
+  @smoke @id2043
   Scenario Outline: Verify 1to1 conversation is successfully created for sender end after connection is accepted
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>

@@ -31,7 +31,7 @@ Feature: Conversation
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessageGroupChat |
 
-  @staging @id1545
+  @smoke @id1545
   Scenario Outline: Archive and unarchive conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -104,7 +104,7 @@ Feature: Conversation
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id1706
+  @smoke @id1706
   Scenario Outline: Verify you cannot Ping several times in a row
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
