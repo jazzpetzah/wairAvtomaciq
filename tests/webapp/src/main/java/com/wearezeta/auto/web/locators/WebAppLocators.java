@@ -36,7 +36,7 @@ public final class WebAppLocators {
 
 		public static final String classArchiveButton = "icon-archive";
 
-		public static final String classMuteButton = "icon-silence";
+		public static final String xpathMuteButton = "//*[@data-uie-name='do-notify']";
 
 		public static final String classMuteIcon = "conversation-muted";
 

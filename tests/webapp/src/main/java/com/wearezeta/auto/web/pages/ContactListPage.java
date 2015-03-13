@@ -158,7 +158,7 @@ public class ContactListPage extends WebPage {
 		WebElement contact = getContactWithName(conversationName);
 
 		List<WebElement> muteButtons = contact.findElements(By
-				.className(WebAppLocators.ContactListPage.classMuteButton));
+				.xpath(WebAppLocators.ContactListPage.xpathMuteButton));
 		for (WebElement e : muteButtons) {
 			if (e.isDisplayed()) {
 				DriverUtils.waitUntilElementClickable(driver, e);
