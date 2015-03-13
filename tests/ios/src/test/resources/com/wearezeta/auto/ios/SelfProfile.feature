@@ -1,6 +1,6 @@
 Feature: Self Profile
 
-  @smoke @id344 @deployPictures
+  @torun @smoke @id344 @deployPictures
   Scenario Outline: Change your profile picture
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

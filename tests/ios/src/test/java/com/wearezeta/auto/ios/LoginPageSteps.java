@@ -471,10 +471,13 @@ public class LoginPageSteps {
 	 * Returns in Simulator back to Wire App
 	 * 
 	 * @step. ^Return to Wire app$
+	 * @throws IOException 
+	 * @throws ScriptException 
 	 * 
 	 */
 	@When("^Return to Wire app$")
-	public void ReturnToWireApp(){
+	public void ReturnToWireApp() throws IOException, ScriptException{
+		PagesCollection.loginPage.pressSimulatorHomeButton();
 
 	}
 

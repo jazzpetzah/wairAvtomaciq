@@ -31,6 +31,11 @@ public class LoginPage extends IOSPage {
 	private static final Logger log = ZetaLogger.getLog(LoginPage.class
 			.getSimpleName());
 	
+	final String[] scriptString = new String[] {
+			 "tell application \"System Events\"",
+	         "tell application \"iOS Simulator\" to activate",
+	         "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
+	         "end tell" };
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameMainWindow)
 	private WebElement viewPager;
@@ -340,5 +345,9 @@ public class LoginPage extends IOSPage {
 	
 	public boolean passwordConfiamtionIsVisible(){
 		return changedPasswordPageConfirmation.isDisplayed();
+	}
+	
+	public void pressSimulatorHomeButton() throws IOException, ScriptException{
+		cmdVscript(scriptString);
 	}
 }
