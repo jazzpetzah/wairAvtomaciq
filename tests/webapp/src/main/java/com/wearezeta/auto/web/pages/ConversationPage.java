@@ -79,17 +79,11 @@ public class ConversationPage extends WebPage {
 	}
 
 	public boolean isMessageSent(String message) throws Exception {
-		boolean isSend = false;
 		final By locator = By
 				.xpath(String
 						.format(WebAppLocators.ConversationPage.xpathFormatSpecificTextMessageEntry,
 								message));
-		DriverUtils.waitUntilElementAppears(driver, locator);
-		WebElement element = driver.findElement(locator);
-		if (element != null) {
-			isSend = true;
-		}
-		return isSend;
+		return DriverUtils.isElementDisplayed(driver, locator, 5);
 	}
 
 	public ConversationPopupPage clickShowUserProfileButton(boolean isGroup)
