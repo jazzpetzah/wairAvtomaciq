@@ -353,7 +353,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id798 @deployPictures
+  @regression @id798 @deployPictures
   Scenario Outline: Email verification reminder is displayed when attempt is made to sign in with unverified email
     Given I see sign in screen
     When I press Join button
