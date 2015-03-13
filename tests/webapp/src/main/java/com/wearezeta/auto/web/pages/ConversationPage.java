@@ -158,7 +158,7 @@ public class ConversationPage extends WebPage {
 		WebCommonUtils
 				.executeCommandOnNode(
 						WebAppExecutionContext.seleniumNodeIp,
-						"kill -SIGTERM `ps axu | grep Safari | grep -v grep | grep -v safaridriver | awk '{print $2}'`");
+						"kill -SIGTERM $(ps axu | grep Safari.app | grep -v grep | grep -v safaridriver | awk '{print $2}')");
 		WebCommonUtils.executeAppleScriptFileOnNode(
 				WebAppExecutionContext.seleniumNodeIp, dstScriptPath);
 	}
