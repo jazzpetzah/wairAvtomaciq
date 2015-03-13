@@ -59,8 +59,8 @@ public class ContactListPageSteps {
 				PagesCollection.contactListPage.waitForContactListVisible());
 		if (usrMgr.isSelfUserSet()
 				&& usrMgr.getSelfUser().getName().equals(name)) {
-			Assert.assertTrue(PagesCollection.contactListPage.getSelfName()
-					.equals(name));
+			Assert.assertTrue(PagesCollection.contactListPage
+					.checkNameInContactList(name));
 		} else {
 			boolean result = false;
 			for (int i = 0; i < 5; i++) {

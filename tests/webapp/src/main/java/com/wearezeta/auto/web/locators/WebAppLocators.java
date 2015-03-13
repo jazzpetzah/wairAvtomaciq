@@ -45,8 +45,7 @@ public final class WebAppLocators {
 		public static final String xpathFormatActionsButton = "//li[contains(@class,'conversation-list-item') and @data-uie-value='%s']"
 				+ "//span[contains(@data-uie-name,'go-options')]";
 
-		public static final String xpathSelfProfileEntry = xpathParentContactListItem
-				+ "//div[contains(@class, 'center-column')]";
+		public static final String xpathSelfProfileEntry = "//*[@data-uie-name='go-self-profile']";
 
 		// index starts from 1
 		// self name is not included
@@ -137,12 +136,12 @@ public final class WebAppLocators {
 
 		public static final String classNameCreateConversationButton = "search-button-add";
 
-		public static final String xpathSearhResultList = "//div[@class='search-list-item']";
+		public static final String xpathSearchResultList = "//*[@data-uie-name='item-user']";
 
 		public static final Function<String, String> xpathSearchResultByName = (
 				name) -> String.format(
-				"%s/div[@class='search-list-item-name' and text()='%s']",
-				xpathSearhResultList, name);
+				"%s//div[@class='search-list-item-name' and text()='%s']",
+				xpathSearchResultList, name);
 
 		public static final String xpathCloseSearchButton = "//div[contains(@class,'search-close')]";
 	}
