@@ -71,7 +71,8 @@ public class SelfProfilePageSteps {
 	@And("I see user name on self profile page (.*)")
 	public void ISeeUserNameOnSelfProfilePage(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		boolean nameCorrect = PagesCollection.selfProfilePage.checkNameInSelfProfile(name);
+		boolean nameCorrect = PagesCollection.selfProfilePage
+				.checkNameInSelfProfile(name);
 		Assert.assertTrue(nameCorrect);
 	}
 

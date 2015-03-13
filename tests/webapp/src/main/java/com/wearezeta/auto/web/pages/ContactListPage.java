@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -11,6 +12,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.google.common.base.Function;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -102,8 +104,21 @@ public class ContactListPage extends WebPage {
 		}
 	}
 
-	public String getSelfName() {
-		return selfName.getText();
+	public boolean checkNameInContactList(String name) throws Exception {
+		DriverUtils.waitUntilElementAppears(driver,
+				By.xpath(WebAppLocators.ContactListPage.xpathSelfProfileEntry));
+
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+
+		return wait.until(new Function<WebDriver, Boolean>() {
+			public Boolean apply(WebDriver driver) {
+				if (selfName.getText().equals(name)) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		});
 	}
 
 	public WebElement getContactWithName(String name) {

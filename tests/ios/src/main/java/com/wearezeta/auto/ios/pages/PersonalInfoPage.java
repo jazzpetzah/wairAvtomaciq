@@ -75,7 +75,7 @@ public class PersonalInfoPage extends IOSPage {
 	}
 
 	public String getUserNameValue() {
-		String name = profileNameField.getText();
+		String name = profileNameEditField.getText();
 		return name;
 	}
 
@@ -122,6 +122,11 @@ public class PersonalInfoPage extends IOSPage {
 		this.getWait().until(
 				ExpectedConditions.elementToBeClickable(profileNameEditField));
 		profileNameEditField.click();
+	}
+	
+	public void changeName(String newName) throws Exception {
+		profileNameEditField.clear();
+		profileNameEditField.sendKeys(newName);
 	}
 
 	public boolean isTooShortNameErrorMessage() throws Exception {

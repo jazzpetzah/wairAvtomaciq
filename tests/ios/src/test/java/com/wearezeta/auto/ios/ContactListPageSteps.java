@@ -473,5 +473,5 @@ public class ContactListPageSteps {
 		Assert.assertTrue("No unread dot visible.", noUnreadDotSeen);
 
 	}
-
+	
 }
