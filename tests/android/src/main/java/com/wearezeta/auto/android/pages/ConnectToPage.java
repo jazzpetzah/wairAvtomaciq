@@ -111,13 +111,8 @@ public class ConnectToPage extends AndroidPage {
 	}
 
 	public void typeConnectionRequies(String message) throws Exception {
+		refreshUITree();
 		connectionRequestMessage.sendKeys(message);
-		try {
-			hideKeyboard();
-			Thread.sleep(1000);
-		} catch (Exception ex) {
-
-		}
 	}
 
 	public ContactListPage pressConnectButton() throws Exception {
