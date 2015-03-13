@@ -65,7 +65,7 @@ Feature: Self Profile
     And I see error message asking for more characters
 	And I change <Name> to <NewUsername>
 	And I swipe right on the personal page
-	And I see Contact list with new name <NewUsername>
+	And I see Contact list with my name <NewUsername>
 	And I tap on my name <NewUsername>
 	Then I see my new name <NewUsername>
 

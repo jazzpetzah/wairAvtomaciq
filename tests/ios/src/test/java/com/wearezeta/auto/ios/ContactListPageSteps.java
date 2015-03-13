@@ -474,21 +474,4 @@ public class ContactListPageSteps {
 
 	}
 	
-	/**
-	 * Verifies name in contact list changed
-	 * 
-	 * @step. ^I see Contact list with new name (.*)$
-	 * 
-	 * @param name
-	 *            name of user at top of contact list
-	 * 
-	 * @throws AssertionError 
-	 *  			  if the user does not exist
-	 * 
-	 */
-	@When("^I see Contact list with new name (.*)$")
-	public void ISeeContactListNameChange(String name) throws Throwable {
-		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-	}
-	
 }
