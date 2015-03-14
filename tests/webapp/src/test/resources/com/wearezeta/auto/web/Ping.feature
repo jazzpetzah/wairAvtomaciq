@@ -10,7 +10,7 @@ Feature: Ping
     When I click ping button  
     Then I see ping message <PING>
     When I click ping button  
-	Then I see ping message <PING_AGAIN>
+    Then I see ping message <PING_AGAIN>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | PING   | PING_AGAIN   |
