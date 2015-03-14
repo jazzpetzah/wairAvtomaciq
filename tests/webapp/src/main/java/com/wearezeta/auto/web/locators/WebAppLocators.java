@@ -165,13 +165,9 @@ public final class WebAppLocators {
 
 	public static final class ParticipantsProfilePopupPage {
 
-		private static final String xpathFooterDiv = "//div[contains(@class, 'participants-group-footer')]";
+		public static final String xpathAddPeopleButton = "//*[@data-uie-name='do-add-people']";
 
-		public static final String xpathAddPeopleButton = xpathFooterDiv
-				+ "/div[contains(@class, 'icon-plus')]";
-
-		public static final String xpathLeaveGroupChat = xpathFooterDiv
-				+ "/div[contains(@class, 'icon-leave')]";
+		public static final String xpathLeaveGroupChat = "//*[@data-uie-name='do-leave']";
 
 		public static final String xpathConfirmLeaveButton = "//*[@data-uie-name='do-confirm' and @data-uie-value='leave']";
 
