@@ -145,8 +145,8 @@ public class ContactListPage extends WebPage {
 
 		WebElement contact = getContactWithName(conversationName);
 
-		WebElement archiveButton = contact.findElement(By
-				.className(WebAppLocators.ContactListPage.classArchiveButton));
+		WebElement archiveButton = contact.findElement(By.xpath("."
+				+ WebAppLocators.ContactListPage.xpathArchiveButton));
 		DriverUtils.waitUntilElementClickable(driver, archiveButton);
 
 		archiveButton.click();
@@ -182,18 +182,14 @@ public class ContactListPage extends WebPage {
 
 	public void clickActionsButtonForContact(String conversationName)
 			throws Exception {
-
-		WebElement contact = getContactWithName(conversationName);
+		final WebElement contact = getContactWithName(conversationName);
 		try {
 			DriverUtils.moveMouserOver(driver, contact);
 		} catch (WebDriverException e) {
 			// do nothing (safari workaround)
 		}
-		String xpath = String.format(
-				WebAppLocators.ContactListPage.xpathFormatActionsButton,
-				conversationName);
-		WebElement actionsButton = contact.findElement(By.xpath(xpath));
-
+		final WebElement actionsButton = contact.findElement(By.xpath("."
+				+ WebAppLocators.ContactListPage.xpathActionsButton));
 		DriverUtils.waitUntilElementClickable(driver, actionsButton, 5);
 
 		actionsButton.click();

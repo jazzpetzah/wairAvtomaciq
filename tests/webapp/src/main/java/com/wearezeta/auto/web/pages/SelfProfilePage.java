@@ -22,7 +22,7 @@ public class SelfProfilePage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathSelfUserNameInput)
 	private WebElement userNameInput;
 
-	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.SelfProfilePage.classNameSelfUserMail)
+	@FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathNameSelfUserMail)
 	private WebElement userMail;
 
 	public SelfProfilePage(ZetaWebAppDriver driver, WebDriverWait wait)

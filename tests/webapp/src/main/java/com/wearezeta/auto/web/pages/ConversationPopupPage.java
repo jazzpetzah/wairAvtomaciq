@@ -64,14 +64,13 @@ public abstract class ConversationPopupPage extends WebPage {
 	}
 
 	public void selectUserFromSearchResult(String user) throws Exception {
-		String xpath = String
-				.format(WebAppLocators.PeoplePickerPage.xpathFormatSearchListItemWithName,
-						user);
-		assert DriverUtils.isElementDisplayed(driver,
-				By.xpath(xpath), DriverUtils.DEFAULT_VISIBILITY_TIMEOUT);
-		WebElement userEl = driver.findElement(By.xpath(xpath));
-		assert DriverUtils.waitUntilElementClickable(
-				driver, userEl);
+		final By locator = By
+				.xpath(WebAppLocators.PeoplePickerPage.xpathSearchResultByName
+						.apply(user));
+		assert DriverUtils.isElementDisplayed(driver, locator,
+				DriverUtils.DEFAULT_VISIBILITY_TIMEOUT);
+		WebElement userEl = driver.findElement(locator);
+		assert DriverUtils.waitUntilElementClickable(driver, userEl);
 		userEl.click();
 	}
 

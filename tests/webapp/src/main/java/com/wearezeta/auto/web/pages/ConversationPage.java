@@ -40,9 +40,6 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathShowParticipantsButton)
 	private WebElement showParticipants;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathSendImageLabel)
-	private WebElement sendImageLabel;
-
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathSendImageInput)
 	private WebElement imagePathInput;
 

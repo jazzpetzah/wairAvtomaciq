@@ -34,16 +34,13 @@ public final class WebAppLocators {
 
 		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
 
-		public static final String classArchiveButton = "icon-archive";
+		public static final String xpathArchiveButton = "//*[@data-uie-name='do-archive']";
 
 		public static final String xpathMuteButton = "//*[@data-uie-name='do-notify']";
 
 		public static final String classMuteIcon = "conversation-muted";
 
-		public static final String classActionsButton = "icon-more";
-
-		public static final String xpathFormatActionsButton = "//li[contains(@class,'conversation-list-item') and @data-uie-value='%s']"
-				+ "//span[contains(@data-uie-name,'go-options')]";
+		public static final String xpathActionsButton = "//*[@data-uie-name='go-options']";
 
 		public static final String xpathSelfProfileEntry = "//*[@data-uie-name='go-self-profile']";
 
@@ -82,11 +79,11 @@ public final class WebAppLocators {
 				name) -> String.format("%s//a[text()='%s']", xpathGearMenuRoot,
 				name);
 
-		public static final String xpathSelfUserName = "//input-element[@class='self-profile-name']/span";
+		public static final String xpathSelfUserName = "//*[@data-uie-name='enter-name']/span";
 
-		public static final String xpathSelfUserNameInput = "//input-element[@class='self-profile-name']/textarea";
+		public static final String xpathSelfUserNameInput = "//*[@data-uie-name='enter-name']/textarea";
 
-		public static final String classNameSelfUserMail = "self-profile-mail";
+		public static final String xpathNameSelfUserMail = "//*[@data-uie-name='enter-email']";
 	}
 
 	public static final class ConversationPage {
@@ -97,26 +94,24 @@ public final class WebAppLocators {
 
 		public static final String idConversationInput = "conversation-input-text";
 
+		// This is needed for IE workaround
 		public static final String classNameShowParticipantsButton = "show-participants";
 
 		public static final String xpathShowParticipantsButton = "//*[@data-uie-name='do-participants']";
 
 		public static final String xpathActionMessageEntries = "//*[@data-uie-name='item-message' and contains(@class, 'special')]//div[contains(@class, 'action')]";
 
-		public static final String xpathSendImageLabel = "//label[contains(@class,'controls-right-button') and contains(@class,'icon-library')]";
-
 		public static final String cssRightControlsPanel = "div.controls-right";
 
 		public static final String cssSendImageLabel = "label.controls-right-button.icon-library.icon-button";
 
-		public static final String xpathSendImageInput = xpathSendImageLabel
-				+ "/input[@type='file']";
+		public static final String xpathSendImageInput = "//input[@type='file' and @data-uie-name='do-share-image']";
 
 		public static final String cssSendImageInput = "input[type=\"file\"]";
 
 		public static final String xpathImageMessageEntry = "//div[@class='message-asset-image']";
 
-		public static final String xpathPingButton = "//span[contains(@class, 'icon-ping') and contains(@class,'controls-right-button')]";
+		public static final String xpathPingButton = "//*[@data-uie-name='do-ping']";
 
 		public static final String classPingMessage = "pinged";
 	}
@@ -132,16 +127,11 @@ public final class WebAppLocators {
 
 		public static final String classNameSearchInput = "search-input";
 
-		public static final String xpathFormatSearchListItemWithName = "//div[@class='search-list-item-name' and text()='%s']";
-
 		public static final String classNameCreateConversationButton = "search-button-add";
-
-		public static final String xpathSearchResultList = "//*[@data-uie-name='item-user']";
 
 		public static final Function<String, String> xpathSearchResultByName = (
 				name) -> String.format(
-				"%s//div[@class='search-list-item-name' and text()='%s']",
-				xpathSearchResultList, name);
+				"//div[@data-uie-name='item-user' and text()='%s']", name);
 
 		public static final String xpathCloseSearchButton = "//div[contains(@class,'search-close')]";
 	}
