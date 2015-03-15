@@ -155,35 +155,37 @@ public final class WebAppLocators {
 	}
 
 	public static final class ParticipantsProfilePopupPage {
+		public static final String xpathProfileRoot = "//*[@id='participants-bubble']";
 
-		public static final String xpathAddPeopleButton = "//*[@data-uie-name='do-add-people']";
+		public static final String xpathAddPeopleButton = xpathProfileRoot + "//*[@data-uie-name='do-add-people']";
 
-		public static final String xpathLeaveGroupChat = "//*[@data-uie-name='do-leave']";
+		public static final String xpathLeaveGroupChat = xpathProfileRoot + "//*[@data-uie-name='do-leave']";
 
-		public static final String xpathConfirmLeaveButton = "//*[@data-uie-name='do-confirm' and @data-uie-value='leave']";
+		public static final String xpathConfirmLeaveButton = xpathProfileRoot + "//*[@data-uie-name='do-confirm' and @data-uie-value='leave']";
 
-		public static final String xpathConfirmRemoveButton = "//*[@data-uie-name='do-confirm' and @data-uie-value='remove']";
+		public static final String xpathConfirmRemoveButton = xpathProfileRoot + "//*[@data-uie-name='do-confirm' and @data-uie-value='remove']";
 
-		public static final String xpathRemoveFromGroupChat = "//*[@data-uie-name='do-remove']";
+		public static final String xpathRemoveFromGroupChat = xpathProfileRoot+ "//*[@data-uie-name='do-remove']";
 
-		private static final String xpathHeaderDiv = "//div[contains(@class, 'participants-group-header')]";
+		private static final String xpathHeaderDiv = xpathProfileRoot + "//div[contains(@class, 'participants-group-header')]";
 
-		public static final String xpathConversationTitle = xpathHeaderDiv
+		public static final String xpathConversationTitle = xpathProfileRoot + xpathHeaderDiv
 				+ "/div[contains(@class, 'name')]/div";
 
-		public static final String xpathConversationTitleInput = xpathHeaderDiv
+		public static final String xpathConversationTitleInput = xpathProfileRoot + xpathHeaderDiv
 				+ "/div[contains(@class, 'name')]/textarea";
 	}
 
 	public static final class UserProfilePopupPage {
+		public static final String xpathProfilePopupRoot = "//user-profile";
 
-		public static final String xpathAddPeopleButton = "//*[@data-uie-name='do-add-people']";
+		public static final String xpathAddPeopleButton = xpathProfilePopupRoot + "//*[@data-uie-name='do-add-people']";
 
-		public static final String xpathNameBlockButton = "//*[@data-uie-name='do-block']";
+		public static final String xpathNameBlockButton = xpathProfilePopupRoot + "//*[@data-uie-name='do-block']";
 
-		public static final String xpathUserName = "//*[@data-uie-name='status-user']";
+		public static final String xpathUserName = xpathProfilePopupRoot + "//*[@data-uie-name='status-user']";
 
-		public static final String xpathParticipantName = "//div[@class='search-list-item-name' and text()='%s']/..";
+		public static final String xpathParticipantName = xpathProfilePopupRoot + "//div[@class='search-list-item-name' and text()='%s']/..";
 	}
 
 	public static final class ConnectToPopup {

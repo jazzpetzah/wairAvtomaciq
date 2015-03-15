@@ -40,7 +40,7 @@ public abstract class ConversationPopupPage extends WebPage {
 
 	public boolean isConversationPopupPageVisible() throws Exception {
 		return DriverUtils
-				.waitUntilElementAppears(
+				.isElementDisplayed(
 						driver,
 						By.id(WebAppLocators.ConversationPopupPage.idConversationPopupPage),
 						10);
