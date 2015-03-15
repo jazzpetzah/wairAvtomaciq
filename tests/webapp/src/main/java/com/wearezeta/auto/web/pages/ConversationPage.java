@@ -83,7 +83,7 @@ public class ConversationPage extends WebPage {
 		return DriverUtils.isElementDisplayed(driver, locator, 5);
 	}
 
-	public ConversationPopupPage clickShowUserProfileButton(boolean isGroup)
+	public PeoplePickerPage clickShowUserProfileButton(boolean isGroup)
 			throws Exception {
 		DriverUtils.waitUntilElementClickable(driver, showParticipants);
 		if (WebAppExecutionContext.browserName
@@ -94,16 +94,12 @@ public class ConversationPage extends WebPage {
 		} else {
 			showParticipants.click();
 		}
-		if (isGroup) {
-			return new ParticipantsPopupPage(this.getDriver(), this.getWait());
-		} else {
-			return new UserProfilePopupPage(this.getDriver(), this.getWait());
-		}
+		return new PeoplePickerPage(this.getDriver(), this.getWait());
 	}
 
-	public ParticipantsPopupPage clickShowParticipantsButton() throws Exception {
+	public PeoplePickerPage clickShowParticipantsButton() throws Exception {
 		showParticipants.click();
-		return new ParticipantsPopupPage(this.getDriver(), this.getWait());
+		return new PeoplePickerPage(this.getDriver(), this.getWait());
 	}
 
 	private static final String TMP_ROOT = "/tmp";
