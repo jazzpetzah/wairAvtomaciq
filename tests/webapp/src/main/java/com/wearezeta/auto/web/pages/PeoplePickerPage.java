@@ -5,13 +5,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.locators.WebAppLocators;
+import com.wearezeta.auto.web.pages.popovers.ConnectToPopoverContainer;
 
 public class PeoplePickerPage extends WebPage {
 
@@ -19,70 +19,24 @@ public class PeoplePickerPage extends WebPage {
 	private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class
 			.getSimpleName());
 
-	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.PeoplePickerPage.classNameSearchInput)
+	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathNameSearchInput)
 	private WebElement searchInput;
 
-	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.PeoplePickerPage.classNameCreateConversationButton)
-	private WebElement createConversationButton;
+	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathNameCreateConversationButton)
+	private WebElement openOrCreateConversationButton;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathCloseSearchButton)
 	private WebElement closeSearchButton;
-
-	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathLeaveGroupChat)
-	private WebElement leaveButton;
-
-	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathConfirmLeaveButton)
-	private WebElement confirmLeaveButton;
-
-	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathConfirmRemoveButton)
-	private WebElement confirmRemoveButton;
-
-	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathRemoveFromGroupChat)
-	private WebElement removeFromGroupChatButton;
-
-	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathConversationTitle)
-	private WebElement conversationTitle;
-
-	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathConversationTitleInput)
-	private WebElement conversationTitleInput;
-
-	@FindBy(how = How.ID, using = WebAppLocators.PeoplePickerPage.idConversationPopupPage)
-	protected WebElement conversationPopup;
-
-	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathAddPeopleMessage)
-	private WebElement addPeopleMessage;
-
-	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathConfirmAddButton)
-	private WebElement confirmAddButton;
-
-	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathProfilePageSearchField)
-	private WebElement profilePageSearchField;
-
-	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathUserName)
-	private WebElement userName;
-
-	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathAddPeopleButton)
-	private WebElement addPeopleButton;
-
-	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathNameBlockButton)
-	private WebElement blockButton;
 
 	public PeoplePickerPage(ZetaWebAppDriver driver, WebDriverWait wait)
 			throws Exception {
 		super(driver, wait);
 	}
 
-	public void clickAddPeopleButton() throws Exception {
-		final By locator = By
-				.xpath(WebAppLocators.PeoplePickerPage.xpathAddPeopleButton);
-		assert DriverUtils.isElementDisplayed(driver, locator, 5);
-		assert DriverUtils.waitUntilElementClickable(driver, addPeopleButton);
-		addPeopleButton.click();
-	}
-
 	public void createConversation() throws Exception {
-		DriverUtils.waitUntilElementClickable(driver, createConversationButton);
-		createConversationButton.click();
+		DriverUtils.waitUntilElementClickable(driver,
+				openOrCreateConversationButton);
+		openOrCreateConversationButton.click();
 	}
 
 	private void clickNotConnectedUser(String name) {
@@ -93,10 +47,12 @@ public class PeoplePickerPage extends WebPage {
 		foundUserElement.click();
 	}
 
-	public ConnectToPopupPage clickNotConnectedUserName(String name)
+	public ConnectToPopoverContainer clickNotConnectedUserName(String name)
 			throws Exception {
 		clickNotConnectedUser(name);
-		return new ConnectToPopupPage(this.getDriver(), this.getWait());
+		PagesCollection.popoverPage = new ConnectToPopoverContainer(
+				this.getDriver(), this.getWait());
+		return (ConnectToPopoverContainer) PagesCollection.popoverPage;
 	}
 
 	public boolean isUserFound(String name) throws Exception {
@@ -114,76 +70,21 @@ public class PeoplePickerPage extends WebPage {
 		closeSearchButton.click();
 	}
 
-	public boolean isParticipantsProfilePopupPageVisible() throws Exception {
-		return this.isConversationPopupPageVisible();
-	}
-
-	public void leaveGroupChat() {
-		this.getWait().until(
-				ExpectedConditions.elementToBeClickable(leaveButton));
-		leaveButton.click();
-	}
-
-	public void confirmLeaveGroupChat() {
-		this.getWait().until(
-				ExpectedConditions.elementToBeClickable(confirmLeaveButton));
-		confirmLeaveButton.click();
-	}
-
-	public void confirmRemoveFromGroupChat() {
-		this.getWait().until(
-				ExpectedConditions.elementToBeClickable(confirmRemoveButton));
-		confirmRemoveButton.click();
-	}
-
-	public void removeFromGroupChat() {
-		removeFromGroupChatButton.click();
-	}
-
 	public boolean isParticipantVisible(String name) throws Exception {
-		final By locator = By.xpath(String.format(
-				WebAppLocators.PeoplePickerPage.xpathParticipantName, name));
+		final By locator = By
+				.xpath(WebAppLocators.PeoplePickerPage.xpathSearchResultByName
+						.apply(name));
 		return DriverUtils.isElementDisplayed(driver, locator, 5);
 	}
 
 	public void clickOnParticipant(String name) throws Exception {
-		final By locator = By.xpath(String.format(
-				WebAppLocators.PeoplePickerPage.xpathParticipantName, name));
+		final By locator = By
+				.xpath(WebAppLocators.PeoplePickerPage.xpathSearchResultByName
+						.apply(name));
 		assert DriverUtils.isElementDisplayed(driver, locator, 3);
 		WebElement participant = driver.findElement(locator);
 		assert DriverUtils.waitUntilElementClickable(driver, participant);
 		participant.click();
-	}
-
-	public void setConversationTitle(String title) {
-		conversationTitle.click();
-		conversationTitleInput.clear();
-		conversationTitleInput.sendKeys(title + "\n");
-	}
-
-	public String getConversationTitle() {
-		return conversationTitle.getText();
-	}
-
-	public boolean isConversationPopupPageVisible() throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver,
-				By.id(WebAppLocators.PeoplePickerPage.idConversationPopupPage),
-				10);
-	}
-
-	public boolean isAddPeopleMessageShown() {
-		return addPeopleMessage.isDisplayed();
-	}
-
-	public void confirmAddPeople() throws Exception {
-		DriverUtils.waitUntilElementClickable(driver, confirmAddButton);
-		confirmAddButton.click();
-	}
-
-	public void searchForUser(String searchText) throws Exception {
-		DriverUtils.waitUntilElementClickable(driver, profilePageSearchField);
-		profilePageSearchField.clear();
-		profilePageSearchField.sendKeys(searchText);
 	}
 
 	public void selectUserFromSearchResult(String user) throws Exception {
@@ -198,24 +99,6 @@ public class PeoplePickerPage extends WebPage {
 	}
 
 	public void clickCreateConversation() {
-		createConversationButton.click();
-	}
-
-	public boolean isUserProfilePopupPageVisible() throws Exception {
-		return this.isConversationPopupPageVisible();
-	}
-
-	public String getUserName() {
-		return userName.getText();
-	}
-
-	public boolean isAddPeopleButtonVisible() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
-				By.xpath(WebAppLocators.PeoplePickerPage.xpathAddPeopleButton));
-	}
-
-	public boolean isBlockButtonVisible() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
-				By.xpath(WebAppLocators.PeoplePickerPage.xpathNameBlockButton));
+		openOrCreateConversationButton.click();
 	}
 }

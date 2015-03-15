@@ -21,6 +21,9 @@ import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
+import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
+import com.wearezeta.auto.web.pages.popovers.PeoplePopoverContainer;
+import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
 
 public class ConversationPage extends WebPage {
 
@@ -83,7 +86,7 @@ public class ConversationPage extends WebPage {
 		return DriverUtils.isElementDisplayed(driver, locator, 5);
 	}
 
-	public PeoplePickerPage clickShowUserProfileButton(boolean isGroup)
+	public PeoplePopoverContainer clickShowUserProfileButton(boolean isGroup)
 			throws Exception {
 		DriverUtils.waitUntilElementClickable(driver, showParticipants);
 		if (WebAppExecutionContext.browserName
@@ -94,7 +97,12 @@ public class ConversationPage extends WebPage {
 		} else {
 			showParticipants.click();
 		}
-		return new PeoplePickerPage(this.getDriver(), this.getWait());
+		if (isGroup) {
+			return new GroupPopoverContainer(this.getDriver(), this.getWait());
+		} else {
+			return new SingleUserPopoverContainer(this.getDriver(),
+					this.getWait());
+		}
 	}
 
 	public PeoplePickerPage clickShowParticipantsButton() throws Exception {

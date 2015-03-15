@@ -23,8 +23,8 @@ Feature: Connect
     When I open People Picker from Contact List
     And I wait up to 15 seconds until <Contact> exists in backend search results
     And I search for <Contact> in People Picker
-    And I see user <Contact> found on Search
-    And I click on not connected user <Contact> found by Search
+    And I see user <Contact> found in People Picker
+    And I click on not connected user <Contact> found in People Picker
     And I click Connect button on Connect to popup
     Then I see Contact list with name <Contact>
 
@@ -40,15 +40,15 @@ Feature: Connect
     When I open People Picker from Contact List
     And I wait up to 15 seconds until <Name2> exists in backend search results
     And I search for <Name2> in People Picker
-    And I see user <Name2> found on Search
-    And I click on not connected user <Name2> found by Search
+    And I see user <Name2> found in People Picker
+    And I click on not connected user <Name2> found in People Picker
     And I click Connect button on Connect to popup
     And I see Contact list with name <Name2>
     And I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
     And User <Name2> is me
-    And I switch to sign in page
+    And I switch to Sign In page
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
     And I see my name <Name2> in Contact list

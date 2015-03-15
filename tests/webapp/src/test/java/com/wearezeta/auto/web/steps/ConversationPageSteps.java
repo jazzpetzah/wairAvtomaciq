@@ -80,7 +80,7 @@ public class ConversationPageSteps {
 	 */
 	@When("I click show user profile button")
 	public void WhenIClickShowUserProfileButton() throws Exception {
-		PagesCollection.peoplePickerPage = PagesCollection.conversationPage
+		PagesCollection.popoverPage = PagesCollection.conversationPage
 				.clickShowUserProfileButton(false);
 	}
 
@@ -93,7 +93,7 @@ public class ConversationPageSteps {
 	 */
 	@When("I click show participant profile button")
 	public void WhenIClickShowParticipantsProfileButton() throws Exception {
-		PagesCollection.peoplePickerPage = PagesCollection.conversationPage
+		PagesCollection.popoverPage = PagesCollection.conversationPage
 				.clickShowUserProfileButton(true);
 	}
 
@@ -219,7 +219,7 @@ public class ConversationPageSteps {
 	@When("^I add (.*) to group chat$")
 	public void IAddContactToGroupChat(String contact) throws Exception {
 		WhenIClickShowParticipantsProfileButton();
-		PeoplePickerPageSteps cpSteps = new PeoplePickerPageSteps();
+		GroupPopoverPageSteps cpSteps = new GroupPopoverPageSteps();
 		cpSteps.IClickAddPeopleButton();
 		cpSteps.IClickConfirmAddToChat();
 		cpSteps.ISearchForUser(contact);
