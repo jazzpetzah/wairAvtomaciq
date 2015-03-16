@@ -31,4 +31,16 @@ class SingleUserInfoPopoverPage extends AbstractUserInfoPopoverPage {
 	public String getUserName() {
 		return getUserNameElement().getText();
 	}
+
+	private WebElement getAddButtonElement() {
+		return this.getSharedElement(PopoverLocators.Shared.xpathAddButton);
+	}
+
+	public boolean isAddButtonVisible() {
+		return getAddButtonElement().isDisplayed();
+	}
+
+	public boolean isBlockButtonVisible() {
+		return blockButton.isDisplayed();
+	}
 }

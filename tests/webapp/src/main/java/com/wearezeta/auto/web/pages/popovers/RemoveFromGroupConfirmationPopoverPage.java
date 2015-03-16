@@ -10,8 +10,8 @@ import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.PopoverLocators;
 
 class RemoveFromGroupConfirmationPopoverPage extends AbstractPopoverPage {
-	@FindBy(how = How.XPATH, using = PopoverLocators.GroupPopover.ParticipantsListPage.xpathConfirmLeaveButton)
-	private WebElement confirmLeaveButton;
+	@FindBy(how = How.XPATH, using = PopoverLocators.GroupPopover.RemoveParticipantConfirmationPage.xpathConfirmRemoveButton)
+	private WebElement confirmRemoveButton;
 
 	public RemoveFromGroupConfirmationPopoverPage(ZetaWebAppDriver driver,
 			WebDriverWait wait, PeoplePopoverContainer container)
@@ -19,14 +19,14 @@ class RemoveFromGroupConfirmationPopoverPage extends AbstractPopoverPage {
 		super(driver, wait, container);
 	}
 
-	public void confirmLeaveGroupChat() throws Exception {
-		assert DriverUtils
-				.waitUntilElementClickable(driver, confirmLeaveButton);
-		confirmLeaveButton.click();
+	public void confirmRemoveFromGroupChat() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(driver,
+				confirmRemoveButton);
+		confirmRemoveButton.click();
 	}
 
 	@Override
 	protected String getXpathLocator() {
-		return PopoverLocators.GroupPopover.ParticipantsListPage.xpathConfirmLeaveButton;
+		return PopoverLocators.GroupPopover.RemoveParticipantConfirmationPage.xpathConfirmRemoveButton;
 	}
 }

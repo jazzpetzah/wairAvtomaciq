@@ -33,4 +33,12 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 	public String getUserName() {
 		return singleUserPopoverPage.getUserName();
 	}
+
+	public boolean isAddButtonVisible() {
+		return this.singleUserPopoverPage.isAddButtonVisible();
+	}
+
+	public boolean isBlockButtonVisible() {
+		return this.singleUserPopoverPage.isBlockButtonVisible();
+	}
 }

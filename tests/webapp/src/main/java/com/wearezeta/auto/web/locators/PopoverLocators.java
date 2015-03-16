@@ -58,7 +58,7 @@ public final class PopoverLocators {
 
 			public static final Function<String, String> xpathParticipantByName = (
 					name) -> String.format(
-					"%s//div[@data-uie-name='item-user' and text()='%s']",
+					"%s//*[@data-uie-name='item-user' and .//*[text()='%s']]",
 					xpathRootLocator, name);
 		}
 
@@ -70,6 +70,16 @@ public final class PopoverLocators {
 		public static final class ParticipantInfoPage {
 			public static final String xpathRemoveButton = xpathRootLocator
 					+ "//*[@data-uie-name='do-remove']";
+		}
+
+		public static final class ConnectedParticipantPage {
+			public static final String xpathOpenConversationButton = xpathRootLocator
+					+ "//*[@data-uie-name='go-conversation']";
+		}
+
+		public static final class NonConnectedParticipantPage {
+			public static final String xpathConnectButton = xpathRootLocator
+					+ "//*[@data-uie-name='do-connect']";
 		}
 	}
 

@@ -4,7 +4,6 @@ Feature: People View
   Scenario Outline: Start group chat with users from contact list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    And I wait for 30 seconds
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open People Picker from Contact List
@@ -29,7 +28,7 @@ Feature: People View
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open conversation with <Contact>
-    And I click Show People popover button
+    And I click People button in one to one conversation
     Then I see Single User Profile popover
     And I see username <Contact> on Single User Profile popover
     And I see Add people button on Single User Profile popover
@@ -47,10 +46,10 @@ Feature: People View
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
-    And I click Show People popover button
+    And I click People button in group conversation
     And I see Group Participants popover
     When I click Leave button on Group Participants popover
-    And I confirm leave group chat on Group Participants popover
+    And I confirm leave group conversation on Group Participants popover
     And I wait for 2 seconds
     Then I do not see Contact list with name <ChatName>
     When I open archive
@@ -69,7 +68,7 @@ Feature: People View
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
-    And I click Show People popover button
+    And I click People button in group conversation
     And I see Group Participants popover
     When I click on participant <Contact1> on Group Participants popover
     And I click Remove button on Group Participants popover
@@ -89,7 +88,7 @@ Feature: People View
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
-    And I click Show People popover button
+    And I click People button in group conversation
     And I see Group Participants popover
     When I click Add People button on Group Participants popover
     And I see Add People message on Group Participants popover
@@ -124,7 +123,7 @@ Feature: People View
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <ChatName>
-    And I click Show People popover button
+    And I click People button in group conversation
     And I see Group Participants popover
     And I change group conversation title to <ChatNameEdit> on Group Participants popover
     Then I see conversation title <ChatNameEdit> on Group Participants popover
@@ -141,7 +140,7 @@ Feature: People View
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <Contact1>
-    And I click Show People popover button
+    And I click People button in one to one conversation
     And I see Single User Profile popover
     When I click Add People button on Single User Profile popover
     And I wait up to 15 seconds until <Contact2> exists in backend search results

@@ -7,6 +7,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
 
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class SingleUserPopoverPageSteps {
@@ -96,5 +97,29 @@ public class SingleUserPopoverPageSteps {
 		Assert.assertEquals(name,
 				((SingleUserPopoverContainer) PagesCollection.popoverPage)
 						.getUserName());
+	}
+
+	/**
+	 * Verifies whether Add People button exists on the popover
+	 * 
+	 * @step. ^I see Add people button on Single User Profile popover$
+	 * 
+	 */
+	@Then("^I see Add people button on Single User Profile popover$")
+	public void ISeeAddButton() {
+		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
+				.isAddButtonVisible());
+	}
+
+	/**
+	 * Verifies whether Block button exists on the popover
+	 * 
+	 * @step. ^I see Block button on Single User Profile popover$
+	 * 
+	 */
+	@Then("^I see Block button on Single User Profile popover$")
+	public void ISeeBlockButton() {
+		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
+				.isBlockButtonVisible());
 	}
 }

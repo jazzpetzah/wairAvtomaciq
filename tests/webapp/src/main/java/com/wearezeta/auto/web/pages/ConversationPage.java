@@ -86,7 +86,7 @@ public class ConversationPage extends WebPage {
 		return DriverUtils.isElementDisplayed(driver, locator, 5);
 	}
 
-	public PeoplePopoverContainer clickShowUserProfileButton(boolean isGroup)
+	public PeoplePopoverContainer clickPeopleButton(boolean isGroup)
 			throws Exception {
 		DriverUtils.waitUntilElementClickable(driver, showParticipants);
 		if (WebAppExecutionContext.browserName

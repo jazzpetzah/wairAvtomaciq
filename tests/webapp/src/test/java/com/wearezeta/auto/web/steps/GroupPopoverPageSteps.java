@@ -45,11 +45,11 @@ public class GroupPopoverPageSteps {
 	 * Confirm leaving group chat by clicking LEAVE button on Group Participants
 	 * popover
 	 * 
-	 * @step. ^I confirm leave group chat Group Participants popover$
+	 * @step. ^I confirm leave group conversation on Group Participants popover$
 	 * @throws Exception
 	 * 
 	 */
-	@When("^I confirm leave group chat Group Participants popover$")
+	@When("^I confirm leave group conversation on Group Participants popover$")
 	public void IClickConfirmLeaveGroupChat() throws Exception {
 		((GroupPopoverContainer) PagesCollection.popoverPage)
 				.confirmLeaveGroupChat();
@@ -72,13 +72,13 @@ public class GroupPopoverPageSteps {
 	}
 
 	/**
-	 * Remove participant from group chat by clicking - button
+	 * Remove participant from group chat by clicking "exit" button
 	 * 
-	 * @step. ^I click Remove on Group Participants popover$
+	 * @step. ^I click Remove button on Group Participants popover$
 	 * @throws Exception
 	 * 
 	 */
-	@When("^I click Remove on Group Participants popover$")
+	@When("^I click Remove button on Group Participants popover$")
 	public void IRemoveUserFromGroupChat() throws Exception {
 		((GroupPopoverContainer) PagesCollection.popoverPage)
 				.clickRemoveFromGroupChat();
@@ -92,7 +92,7 @@ public class GroupPopoverPageSteps {
 	 * 
 	 */
 	@When("^I confirm remove from group chat on Group Participants popover$")
-	public void IClickConfirmRemoveFromGroupChat() throws Exception {
+	public void IConfirmRemoveFromGroupChat() throws Exception {
 		((GroupPopoverContainer) PagesCollection.popoverPage)
 				.confirmRemoveFromGroupChat();
 	}
