@@ -42,21 +42,20 @@ Feature: Sign In
       | WrongMail  | WrongPassword |
       | wrongwrong | wrong         |
 
-  @staging @id1479
+  @torun @staging @id1479
   Scenario Outline: Verify possibility of reseting password (welcome page)
     Given I see sign in screen
     And I press Sign in button
     And I click on Change Password button on SignIn
     Then I see reset password page
     And I change URL to staging
-    #And I type in email <Login> to change password
-    #And I press Change Password button in browser
-    #And I copy link from email and past it into Safari
-    #And I type in new password <NewPassword>
-    #And I press Change Password button in browser
-    #And I see password changed confirmation page
+    And I type in email <Login> to change password
+    And I press Change Password button in browser
+    And I copy link from email and past it into Safari
+    And I type in new password <NewPassword>
+    And I press Change Password button in browser
+    And I see password changed confirmation page
     And Return to Wire app
-    And I press Sign in button
     And I Sign in using login <Login> and password <NewPassword>
     Then I see Contact list with my name <Name>
    

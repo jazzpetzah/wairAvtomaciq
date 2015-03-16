@@ -346,7 +346,8 @@ public class LoginPage extends IOSPage {
 		return changedPasswordPageConfirmation.isDisplayed();
 	}
 	
-	public void pressSimulatorHomeButton() throws IOException, ScriptException{
+	public void pressSimulatorHomeButton() throws Exception{
 		cmdVscript(scriptString);
+		DriverUtils.resetApp(getDriver());
 	}
 }
