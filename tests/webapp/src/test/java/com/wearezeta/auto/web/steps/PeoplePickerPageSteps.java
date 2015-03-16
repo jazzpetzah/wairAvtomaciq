@@ -30,12 +30,12 @@ public class PeoplePickerPageSteps {
 	/**
 	 * Input user name in search field of People Picker
 	 * 
-	 * @step. ^I input user name (.*) in search field of People Picker$
+	 * @step. ^I type (.*) in search field of People Picker$
 	 * 
 	 * @param name
 	 * @throws Exception
 	 */
-	@When("^I input user name (.*) in search field of People Picker$")
+	@When("^I type (.*) in search field of People Picker$")
 	public void ISearchForUser(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		PagesCollection.peoplePickerPage.searchForUser(name);

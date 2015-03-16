@@ -133,7 +133,7 @@ public final class WebAppLocators {
 
 		public static final Function<String, String> xpathSearchResultByName = (
 				name) -> String.format(
-				"%s//div[@data-uie-name='item-user' and text()='%s']",
+				"%s//*[@data-uie-name='item-user' and .//*[text()='%s']]",
 				xpathRoot, name);
 
 		public static final String xpathCloseSearchButton = xpathRoot

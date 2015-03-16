@@ -12,7 +12,7 @@ public final class PopoverLocators {
 		public static final String xpathCreateConversationButton = "//div[contains[@class, 'search-button-add']]";
 		public static final Function<String, String> xpathSearchResultByName = (
 				name) -> String.format(
-				"//div[@data-uie-name='item-user' and text()='%s']", name);
+				"//*[@data-uie-name='item-user' and .//*[text()='%s']]", name);
 		public static final String xpathContinueButton = "//*[@data-uie-value='continue' and @data-uie-name='do-confirm']";
 	}
 

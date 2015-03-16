@@ -59,7 +59,7 @@ public class PeoplePickerPage extends WebPage {
 		String foundUserXpath = WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 				.apply(name);
 		return DriverUtils.isElementDisplayed(this.getDriver(),
-				By.xpath(foundUserXpath));
+				By.xpath(foundUserXpath), 3);
 	}
 
 	public void closeSearch() throws Exception {

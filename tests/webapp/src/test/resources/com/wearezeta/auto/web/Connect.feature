@@ -15,14 +15,14 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id1571
+  @smoke @id1571 @torun
   Scenario Outline: Verify sending a connection request to user choosen from search
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open People Picker from Contact List
     And I wait up to 15 seconds until <Contact> exists in backend search results
-    And I search for <Contact> in People Picker
+    And I type <Contact> in search field of People Picker
     And I see user <Contact> found in People Picker
     And I click on not connected user <Contact> found in People Picker
     And I see Connect To popover
@@ -40,7 +40,7 @@ Feature: Connect
     And I see my name <Name> in Contact list
     When I open People Picker from Contact List
     And I wait up to 15 seconds until <Name2> exists in backend search results
-    And I search for <Name2> in People Picker
+    And I type <Name2> in search field of People Picker
     And I see user <Name2> found in People Picker
     And I click on not connected user <Name2> found in People Picker
     And I see Connect To popover

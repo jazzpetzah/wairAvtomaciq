@@ -9,10 +9,10 @@ Feature: People View
     And I see my name <Name> in Contact list
     When I open People Picker from Contact List
     And I wait up to 15 seconds until <Contact1> exists in backend search results
-    And I search for <Contact1> in People Picker
+    And I type <Contact1> in search field of People Picker
     And I select <Contact1> from People Picker results
     And I wait up to 15 seconds until <Contact2> exists in backend search results
-    And I search for <Contact2> in People Picker
+    And I type <Contact2> in search field of People Picker
     And I select <Contact2> from People Picker results
     And I choose to create conversation from People Picker
     And I see Contact list with name <Name>
