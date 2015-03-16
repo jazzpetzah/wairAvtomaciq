@@ -101,11 +101,11 @@ Feature: People View
     When I add <Contact4> to group chat
     And I open conversation with <ChatName>
     Then I see <Message> action for <Contact4> in conversation
-    And I click Show People popover button
+    And I click People button in group conversation
     And I see Group Participants popover
     And I see <Contact3>,<Contact4> displayed on Group Participants popover
     When I open conversation with <ChatName>
-    And I click Show People popover button
+    And I click People button in group conversation
     And I see Group Participants popover
     And I click Add People button on Group Participants popover
     And I confirm add to chat on Group Participants popover

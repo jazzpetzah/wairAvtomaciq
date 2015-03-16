@@ -23,7 +23,7 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 	}
 
 	public void clickAddPeopleButton() throws Exception {
-		this.addPeoplePopoverPage.clickCreateConversation();
+		this.singleUserPopoverPage.clickAddPeopleButton();
 	}
 
 	public void selectUserFromSearchResult(String user) {

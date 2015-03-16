@@ -68,7 +68,7 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 				.confirmRemoveFromGroupChat();
 	}
 
-	public void clickAddPeopleButton() {
+	public void clickAddPeopleButton() throws Exception {
 		this.participantsListPopoverPage.clickAddPeopleButton();
 	}
 

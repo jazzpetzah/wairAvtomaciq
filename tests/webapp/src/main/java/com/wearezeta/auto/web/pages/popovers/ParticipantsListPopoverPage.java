@@ -51,12 +51,26 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 		return PopoverLocators.GroupPopover.ParticipantsListPage.xpathLeaveGroupChat;
 	}
 
-	private WebElement getAddPeopleButton() {
+	@Override
+	protected WebElement getSharedElement(String xpath) {
+		return this
+				.getDriver()
+				.findElement(
+						By.xpath(String
+								.format("%s%s%s",
+										this.getContainer().getXpathLocator(),
+										PopoverLocators.GroupPopover.ParticipantsListPage.xpathPageRootLocator,
+										xpath)));
+	}
+
+	private WebElement getAddPeopleElement() {
 		return this.getSharedElement(PopoverLocators.Shared.xpathAddButton);
 	}
 
-	public void clickAddPeopleButton() {
-		getAddPeopleButton().click();
+	public void clickAddPeopleButton() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
+				getAddPeopleElement());
+		getAddPeopleElement().click();
 	}
 
 	public boolean isParticipantVisible(String name) throws Exception {

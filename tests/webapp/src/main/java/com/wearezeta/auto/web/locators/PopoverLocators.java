@@ -9,7 +9,7 @@ public final class PopoverLocators {
 		public static final String xpathUserEmail = "//*[@data-uie-name='status-user-email']";
 		public static final String xpathAddButton = "//*[@data-uie-name='do-add-people']";
 		public static final String xpathSearchInputField = "//input[@type='text' and contains(@class, 'search-input')]";
-		public static final String xpathCreateConversationButton = "//div[contains[@class, 'search-button-add']]";
+		public static final String xpathCreateConversationButton = "//div[contains(@class, 'search-button-add')]";
 		public static final Function<String, String> xpathSearchResultByName = (
 				name) -> String.format(
 				"//*[@data-uie-name='item-user' and .//*[text()='%s']]", name);
@@ -29,11 +29,13 @@ public final class PopoverLocators {
 	}
 
 	public static final class SingleUserPopover {
-		public static final String xpathRootLocator = "//user-profile";
+		public static final String xpathRootLocator = "//div[@id='participants-bubble']";
 
 		public static final class SingleUserInfoPage {
+			public static final String xpathPageRootLocator = "//user-profile";
+
 			public static final String xpathBlockButton = xpathRootLocator
-					+ "//*[@data-uie-name='do-block']";
+					+ xpathPageRootLocator + "//*[@data-uie-name='do-block']";
 		}
 	}
 
@@ -41,7 +43,10 @@ public final class PopoverLocators {
 		public static final String xpathRootLocator = "//div[@id='participants-bubble']";
 
 		public static final class ParticipantsListPage {
+			public static final String xpathPageRootLocator = "//div[contains(@class, 'participants-group')]";
+
 			private static final String xpathHeaderDiv = xpathRootLocator
+					+ xpathPageRootLocator
 					+ "//div[contains(@class, 'participants-group-header')]";
 
 			public static final String xpathConversationTitle = xpathHeaderDiv
@@ -51,15 +56,16 @@ public final class PopoverLocators {
 					+ "/div[contains(@class, 'name')]/textarea";
 
 			public static final String xpathLeaveGroupChat = xpathRootLocator
-					+ "//*[@data-uie-name='do-leave']";
+					+ xpathPageRootLocator + "//*[@data-uie-name='do-leave']";
 
 			public static final String xpathConfirmLeaveButton = xpathRootLocator
+					+ xpathPageRootLocator
 					+ "//*[@data-uie-name='do-confirm' and @data-uie-value='leave']";
 
 			public static final Function<String, String> xpathParticipantByName = (
 					name) -> String.format(
 					"%s//*[@data-uie-name='item-user' and .//*[text()='%s']]",
-					xpathRootLocator, name);
+					xpathRootLocator + xpathPageRootLocator, name);
 		}
 
 		public static final class RemoveParticipantConfirmationPage {

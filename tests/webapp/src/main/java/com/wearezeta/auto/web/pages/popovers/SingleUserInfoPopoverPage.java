@@ -1,10 +1,12 @@
 package com.wearezeta.auto.web.pages.popovers;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.PopoverLocators;
 
@@ -20,8 +22,19 @@ class SingleUserInfoPopoverPage extends AbstractUserInfoPopoverPage {
 
 	@Override
 	protected String getXpathLocator() {
-		return String.format("%s%s", this.getContainer().getXpathLocator(),
-				PopoverLocators.Shared.xpathAddButton);
+		return PopoverLocators.SingleUserPopover.SingleUserInfoPage.xpathBlockButton;
+	}
+
+	@Override
+	protected WebElement getSharedElement(String xpath) {
+		return this
+				.getDriver()
+				.findElement(
+						By.xpath(String
+								.format("%s%s%s",
+										this.getContainer().getXpathLocator(),
+										PopoverLocators.SingleUserPopover.SingleUserInfoPage.xpathPageRootLocator,
+										xpath)));
 	}
 
 	private WebElement getUserNameElement() {
@@ -42,5 +55,11 @@ class SingleUserInfoPopoverPage extends AbstractUserInfoPopoverPage {
 
 	public boolean isBlockButtonVisible() {
 		return blockButton.isDisplayed();
+	}
+
+	public void clickAddPeopleButton() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
+				getAddButtonElement());
+		getAddButtonElement().click();
 	}
 }
