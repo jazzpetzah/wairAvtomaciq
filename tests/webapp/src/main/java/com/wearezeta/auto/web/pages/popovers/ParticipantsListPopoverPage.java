@@ -20,6 +20,9 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 	@FindBy(how = How.XPATH, using = PopoverLocators.GroupPopover.ParticipantsListPage.xpathLeaveGroupChat)
 	private WebElement leaveButton;
 
+	@FindBy(how = How.XPATH, using = PopoverLocators.GroupPopover.ParticipantsListPage.xpathAddButton)
+	private WebElement addPeopleButton;
+	
 	public ParticipantsListPopoverPage(ZetaWebAppDriver driver,
 			WebDriverWait wait, PeoplePopoverContainer container)
 			throws Exception {
@@ -49,5 +52,9 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 	@Override
 	protected String getXpathLocator() {
 		return PopoverLocators.GroupPopover.ParticipantsListPage.xpathLeaveGroupChat;
+	}
+
+	public void clickAddPeopleButton() {
+		addPeopleButton.click();
 	}
 }

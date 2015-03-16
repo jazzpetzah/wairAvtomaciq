@@ -108,6 +108,9 @@ public final class PopoverLocators {
 		public static final String xpathRootLocator = "//div[@id='participants-bubble']";
 
 		public static final class ParticipantsListPage {
+			public static final String xpathAddButton = xpathRootLocator
+					+ Shared.xpathAddButton;
+
 			private static final String xpathHeaderDiv = xpathRootLocator
 					+ "//div[contains(@class, 'participants-group-header')]";
 

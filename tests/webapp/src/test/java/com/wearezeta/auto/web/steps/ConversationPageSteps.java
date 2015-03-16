@@ -72,27 +72,14 @@ public class ConversationPageSteps {
 	}
 
 	/**
-	 * Click on the button from conversation that popups user profile
-	 * 
-	 * @step. I click show user profile button
-	 * 
-	 * @throws Exception
-	 */
-	@When("I click show user profile button")
-	public void WhenIClickShowUserProfileButton() throws Exception {
-		PagesCollection.popoverPage = PagesCollection.conversationPage
-				.clickShowUserProfileButton(false);
-	}
-
-	/**
 	 * Click on the button from conversation that popups participant profile
 	 * 
-	 * @step. I click show participants profile button
+	 * @step. I click Show People popover button
 	 * 
 	 * @throws Exception
 	 */
-	@When("I click show participant profile button")
-	public void WhenIClickShowParticipantsProfileButton() throws Exception {
+	@When("^I click Show People popover button$")
+	public void WhenIClickShowPeoplePopoverButton() throws Exception {
 		PagesCollection.popoverPage = PagesCollection.conversationPage
 				.clickShowUserProfileButton(true);
 	}
@@ -218,7 +205,7 @@ public class ConversationPageSteps {
 	 */
 	@When("^I add (.*) to group chat$")
 	public void IAddContactToGroupChat(String contact) throws Exception {
-		WhenIClickShowParticipantsProfileButton();
+		WhenIClickShowPeoplePopoverButton();
 		GroupPopoverPageSteps cpSteps = new GroupPopoverPageSteps();
 		cpSteps.IClickAddPeopleButton();
 		cpSteps.IClickConfirmAddToChat();

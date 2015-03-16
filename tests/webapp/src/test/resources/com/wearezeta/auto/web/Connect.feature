@@ -25,7 +25,8 @@ Feature: Connect
     And I search for <Contact> in People Picker
     And I see user <Contact> found in People Picker
     And I click on not connected user <Contact> found in People Picker
-    And I click Connect button on Connect to popup
+    And I see Connect To popover
+    And I click Connect button on Connect To popover
     Then I see Contact list with name <Contact>
 
     Examples: 
@@ -42,7 +43,8 @@ Feature: Connect
     And I search for <Name2> in People Picker
     And I see user <Name2> found in People Picker
     And I click on not connected user <Name2> found in People Picker
-    And I click Connect button on Connect to popup
+    And I see Connect To popover
+    And I click Connect button on Connect To popover
     And I see Contact list with name <Name2>
     And I open self profile
     And I click gear button on self profile page

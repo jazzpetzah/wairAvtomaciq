@@ -78,11 +78,11 @@ public class GroupPopoverPageSteps {
 	/**
 	 * Verify that participant profile popup is shown
 	 * 
-	 * @step. ^I see Participant Profile Popup Page$
+	 * @step. ^I see Group Participants Popover$
 	 * @throws Exception
 	 * 
 	 */
-	@When("^I see Participant Profile Popup Page$")
+	@When("^I see Group Participants Popover$")
 	public void ISeeUserProfilePopupPage() throws Exception {
 		PagesCollection.popoverPage.waitUntilVisibleOrThrowException();
 	}
@@ -145,7 +145,7 @@ public class GroupPopoverPageSteps {
 	 * Confirm removing from group chat by clicking REMOVE button
 	 * 
 	 * @step. ^I confirm remove from group chat$
-	 * @throws Exception 
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I confirm remove from group chat$")
@@ -203,22 +203,23 @@ public class GroupPopoverPageSteps {
 	/**
 	 * Click on add people button
 	 * 
-	 * @step. ^I click Add People button$
+	 * @step. ^I click Add People button in Group Participants popover$
 	 * @throws Exception
 	 * 
 	 */
-	@When("^I click Add People button$")
-	public void IClickAddPeopleButton() throws Exception {
-		PagesCollection.peoplePickerPage.clickAddPeopleButton();
+	@When("^I click Add People button in Group Participants popover$")
+	public void IClickAddPeopleButtonInGroupPopover() throws Exception {
+		((GroupPopoverContainer) PagesCollection.popoverPage)
+				.clickAddPeopleButton();
 	}
 
 	/**
 	 * Verifies there is a question if you want to add people
 	 * 
-	 * @step. ^I see Add People message$
+	 * @step. ^I see Add People message in Group Participants popover$
 	 * 
 	 */
-	@When("^I see Add People message$")
+	@When("^I see Add People message in Group Participants popover$")
 	public void ISeeAddPeopleMessage() {
 		Assert.assertTrue(PagesCollection.peoplePickerPage
 				.isAddPeopleMessageShown());
