@@ -40,9 +40,6 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathShowParticipantsButton)
 	private WebElement showParticipants;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathSendImageLabel)
-	private WebElement sendImageLabel;
-
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathSendImageInput)
 	private WebElement imagePathInput;
 
@@ -79,17 +76,11 @@ public class ConversationPage extends WebPage {
 	}
 
 	public boolean isMessageSent(String message) throws Exception {
-		boolean isSend = false;
 		final By locator = By
 				.xpath(String
 						.format(WebAppLocators.ConversationPage.xpathFormatSpecificTextMessageEntry,
 								message));
-		DriverUtils.waitUntilElementAppears(driver, locator);
-		WebElement element = driver.findElement(locator);
-		if (element != null) {
-			isSend = true;
-		}
-		return isSend;
+		return DriverUtils.isElementDisplayed(driver, locator, 5);
 	}
 
 	public ConversationPopupPage clickShowUserProfileButton(boolean isGroup)
@@ -159,12 +150,6 @@ public class ConversationPage extends WebPage {
 			new File(srcScriptPath).delete();
 		}
 
-		// This is to kill extra Safari instances. Otherwise our applescript
-		// just won't work
-		WebCommonUtils
-				.executeCommandOnNode(
-						WebAppExecutionContext.seleniumNodeIp,
-						"kill -SIGTERM `ps axu | grep Safari | grep -v grep | grep -v safaridriver | awk '{print $2}'`");
 		WebCommonUtils.executeAppleScriptFileOnNode(
 				WebAppExecutionContext.seleniumNodeIp, dstScriptPath);
 	}

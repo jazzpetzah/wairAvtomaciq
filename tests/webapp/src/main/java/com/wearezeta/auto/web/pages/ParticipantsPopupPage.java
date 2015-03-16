@@ -51,11 +51,10 @@ public class ParticipantsPopupPage extends ConversationPopupPage {
 
 	@Override
 	public void clickAddPeopleButton() throws Exception {
-		assert DriverUtils
-				.isElementDisplayed(
-						driver,
-						By.xpath(WebAppLocators.ParticipantsProfilePopupPage.xpathAddPeopleButton),
-						DriverUtils.DEFAULT_VISIBILITY_TIMEOUT);
+		final By locator = By
+				.xpath(WebAppLocators.ParticipantsProfilePopupPage.xpathAddPeopleButton);
+		assert DriverUtils.isElementDisplayed(driver, locator, 5);
+		assert DriverUtils.waitUntilElementClickable(driver, addPeopleButton);
 		addPeopleButton.click();
 	}
 
@@ -82,8 +81,10 @@ public class ParticipantsPopupPage extends ConversationPopupPage {
 	}
 
 	public boolean isParticipantVisible(String name) throws Exception {
-		final By locator = By.xpath(String.format(
-				WebAppLocators.UserProfilePopupPage.xpathParticipantName, name));
+		final By locator = By
+				.xpath(String
+						.format(WebAppLocators.UserProfilePopupPage.xpathParticipantName,
+								name));
 		return DriverUtils.isElementDisplayed(driver, locator, 5);
 	}
 

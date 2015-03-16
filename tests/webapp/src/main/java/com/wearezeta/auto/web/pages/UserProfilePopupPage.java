@@ -38,7 +38,8 @@ public class UserProfilePopupPage extends ConversationPopupPage {
 		return DriverUtils
 				.isElementDisplayed(
 						this.getDriver(),
-						By.xpath(WebAppLocators.UserProfilePopupPage.xpathAddPeopleButton));
+						By.xpath(WebAppLocators.UserProfilePopupPage.xpathAddPeopleButton),
+						5);
 	}
 
 	@Override

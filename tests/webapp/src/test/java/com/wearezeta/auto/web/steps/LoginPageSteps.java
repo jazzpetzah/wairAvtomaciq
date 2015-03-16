@@ -138,7 +138,7 @@ public class LoginPageSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^I switch to registration page$")
+	@Given("^I switch to [Rr]egistration page$")
 	public void ISwitchToRegistrationPage() throws Exception {
 		PagesCollection.registrationPage = PagesCollection.loginPage
 				.switchToRegistrationPage();

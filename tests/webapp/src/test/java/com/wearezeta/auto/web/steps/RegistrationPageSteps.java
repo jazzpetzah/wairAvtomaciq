@@ -106,7 +106,7 @@ public class RegistrationPageSteps {
 		userToRegister.setUserState(UserState.Created);
 	}
 
-	@Given("^I switch to sign in page$")
+	@Given("^I switch to [Ss]ign [Ii]n page$")
 	public void ISwitchToLoginPage() throws Exception {
 		PagesCollection.loginPage = PagesCollection.registrationPage
 				.switchToLoginPage();

@@ -252,6 +252,7 @@ public class LoginPage extends OSXPage {
 
 	public void forgotPassword() {
 		forgotPasswordButton.click();
+		try { Thread.sleep(5000); } catch (InterruptedException e) { }
 	}
 
 	public Future<Message> getPasswordResetMessage() {

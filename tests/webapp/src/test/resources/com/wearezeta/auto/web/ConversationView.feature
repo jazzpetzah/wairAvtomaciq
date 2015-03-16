@@ -31,7 +31,7 @@ Feature: Conversation
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessageGroupChat |
 
-  @staging @id1545
+  @smoke @id1545
   Scenario Outline: Archive and unarchive conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -76,13 +76,14 @@ Feature: Conversation
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendPictureGroupChat | userpicture_landscape.jpg |
 
-  @staging @id1918
+  @smoke @id1918
   Scenario Outline: Mute 1on1 conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I toggle mute for conversation <Contact>
+    And I open self profile
     Then I see that conversation <Contact> is muted
 
     Examples: 
@@ -98,13 +99,14 @@ Feature: Conversation
     And I see my name <Name> in Contact list
     And I see that conversation <Contact> is muted
     When I toggle mute for conversation <Contact>
+    And I open self profile
     Then I see that conversation <Contact> is not muted
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id1706
+  @smoke @id1706
   Scenario Outline: Verify you cannot Ping several times in a row
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
