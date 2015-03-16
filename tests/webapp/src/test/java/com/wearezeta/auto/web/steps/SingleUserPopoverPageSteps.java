@@ -1,18 +1,12 @@
 package com.wearezeta.auto.web.steps;
 
-import java.util.List;
-
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.web.pages.PagesCollection;
-import com.wearezeta.auto.web.pages.popovers.PeoplePopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
 
-import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class SingleUserPopoverPageSteps {
@@ -20,164 +14,87 @@ public class SingleUserPopoverPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
-	 * Verify that User profile popup is shown
+	 * Verify that Single User Profile popover is visible
 	 * 
-	 * @step. I see User Profile Popup Page
+	 * @step. I see Single User Profile popover
 	 * @throws Exception
 	 * 
 	 */
-	@When("I see User Profile Popup Page")
-	public void ISeeUserProfilePopupPage() throws Exception {
+	@When("I see Single User Profile popover")
+	public void ISeeSingleUserPopup() throws Exception {
 		PagesCollection.popoverPage.waitUntilVisibleOrThrowException();
 	}
 
 	/**
-	 * Creates conversation with selected users
+	 * Creates conversation with selected users from Single User Profile popover
 	 * 
-	 * @step. ^I choose to create conversation from People Picker$
+	 * @step. ^I choose to create conversation from Single User Profile popover$
 	 * @throws Exception
 	 */
-	@When("^I choose to create conversation from People Picker$")
-	public void IChooseToCreateConversationFromPeoplePicker() throws Exception {
-		PagesCollection.peoplePickerPage.createConversation();
-	}
-
-	/**
-	 * Verify if user is found by Search
-	 * 
-	 * @step. I see user (.*) found on Search
-	 * 
-	 * @param name
-	 *            user name string
-	 * @throws Exception
-	 */
-	@When("I see user (.*) found on Search")
-	public void ISeeUserFoundOnSearch(String name) throws Exception {
-		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		Assert.assertTrue(PagesCollection.peoplePickerPage.isUserFound(name));
-	}
-
-	/**
-	 * Confirm removing from group chat by clicking REMOVE button
-	 * 
-	 * @step. ^I confirm remove from group chat$
-	 * 
-	 */
-	@When("^I confirm remove from group chat$")
-	public void IClickConfirmRemoveFromGroupChat() {
-		PagesCollection.peoplePickerPage.confirmRemoveFromGroupChat();
-	}
-
-	/**
-	 * Verifies that contact is displayed on Participant profile popup
-	 * 
-	 * @step. ^I see (.*) displayed on Participant Profile Page$
-	 * 
-	 * @param contactsAliases
-	 * @throws Exception
-	 */
-	@When("^I see (.*) displayed on Participant Profile Page$")
-	public void ISeeContactsDisplayedOnParticipantPopup(String contactsAliases)
+	@When("^I choose to create conversation from Single User Profile popover$")
+	public void IChooseToCreateConversationFromSingleUserPopover()
 			throws Exception {
-		List<String> contacts = CommonSteps.splitAliases(contactsAliases);
-		for (String s : contacts) {
-			s = usrMgr.replaceAliasesOccurences(s, FindBy.NAME_ALIAS);
-			Assert.assertTrue(PagesCollection.peoplePickerPage
-					.isParticipantVisible(s));
-		}
+		((SingleUserPopoverContainer) PagesCollection.popoverPage)
+				.clickCreateConversation();
 	}
 
 	/**
-	 * Click on add people button
+	 * Click on add people button on Single User Profile popover
 	 * 
-	 * @step. ^I click Add People button$
+	 * @step. ^I click Add People button on Single User Profile popover$
 	 * @throws Exception
 	 * 
 	 */
-	@When("^I click Add People button$")
+	@When("^I click Add People button on Single User Profile popover$")
 	public void IClickAddPeopleButton() throws Exception {
-		PagesCollection.peoplePickerPage.clickAddPeopleButton();
+		((SingleUserPopoverContainer) PagesCollection.popoverPage)
+				.clickAddPeopleButton();
 	}
 
 	/**
-	 * Verifies there is a question if you want to add people
+	 * Input user name in search field on Single User Profile popover
 	 * 
-	 * @step. ^I see Add People message$
-	 * 
-	 */
-	@When("^I see Add People message$")
-	public void ISeeAddPeopleMessage() {
-		Assert.assertTrue(PagesCollection.peoplePickerPage
-				.isAddPeopleMessageShown());
-	}
-
-	/**
-	 * Input user name in search field
-	 * 
-	 * @step. ^I input user name (.*) in search field$
+	 * @step. ^I input user name (.*) in search field on Single User Profile
+	 *        popover$
 	 * 
 	 * @param name
 	 * @throws Exception
 	 */
-	@When("^I input user name (.*) in search field$")
+	@When("^I input user name (.*) in search field on Single User Profile popover$")
 	public void ISearchForUser(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		PagesCollection.peoplePickerPage.searchForUser(name);
+		((SingleUserPopoverContainer) PagesCollection.popoverPage)
+				.searchForUser(name);
 	}
 
 	/**
 	 * Select user found in search results
 	 * 
-	 * @step. ^I select (.*) from Popup Page search results$
+	 * @step. ^I select (.*) from Single User Profile popover search results$
 	 * 
 	 * @param user
 	 * @throws Exception
 	 */
-	@When("^I select (.*) from Popup Page search results$")
-	public void ISelectUserFromPeoplePickerResults(String user)
-			throws Exception {
+	@When("^I select (.*) from Single User Profile popover search results$")
+	public void ISelectUserFromSearchResults(String user) throws Exception {
 		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
-		PagesCollection.peoplePickerPage.selectUserFromSearchResult(user);
+		((SingleUserPopoverContainer) PagesCollection.popoverPage)
+				.selectUserFromSearchResult(user);
 	}
 
 	/**
-	 * Compares if name on User profile popup page is same as expected
+	 * Compares if name on Single User Profile popover is same as expected
 	 * 
-	 * @step. I see on User Profile Popup Page User username (.*)
+	 * @step. ^I see username (.*) on Single User Profile popover$
 	 * 
 	 * @param name
 	 *            user name string
 	 */
-	@When("I see on User Profile Popup Page User username (.*)")
+	@When("^I see username (.*) on Single User Profile popover$")
 	public void IseeUserNameOnUserProfilePage(String name) {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		Assert.assertEquals(name,
-				PagesCollection.peoplePickerPage.getUserName());
-	}
-
-	/**
-	 * Verify that Add people button is shown on User profile popup
-	 * 
-	 * @step. I see Add people button on User Profile Popup Page
-	 * @throws Exception
-	 * 
-	 */
-	@When("I see Add people button on User Profile Popup Page")
-	public void ISeeAddPeopleButtonOnUserProfilePopupPage() throws Exception {
-		Assert.assertTrue(((SingleUserPopoverContainer)PagesCollection.popoverPage)
-				.isAddPeopleButtonVisible());
-	}
-
-	/**
-	 * Verify that Block button is shown on User profile popup
-	 * 
-	 * @step. I see Block button on User Profile Popup Page
-	 * @throws Exception
-	 * 
-	 */
-	@When("I see Block button on User Profile Popup Page")
-	public void ISeeBlockButtonOnUserProfilePopupPage() throws Exception {
-		Assert.assertTrue(((SingleUserPopoverContainer)PagesCollection.popoverPage)
-				.isBlockButtonVisible());
+				((SingleUserPopoverContainer) PagesCollection.popoverPage)
+						.getUserName());
 	}
 }

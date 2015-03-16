@@ -30,11 +30,10 @@ Feature: People View
     And I see my name <Name> in Contact list
     When I open conversation with <Contact>
     And I click Show People popover button
-    Then I see Singe User Profile popover
-    # Then I see User Profile Popup Page
-    And I see username <Contact> on Singe User Profile popover
-    And I see Add people button on User Profile Popup Page
-    And I see Block button on User Profile Popup Page
+    Then I see Single User Profile popover
+    And I see username <Contact> on Single User Profile popover
+    And I see Add people button on Single User Profile popover
+    And I see Block button on Single User Profile popover
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
@@ -50,8 +49,8 @@ Feature: People View
     And I open conversation with <ChatName>
     And I click Show People popover button
     And I see Group Participants popover
-    When I click leave group chat
-    And I confirm leave group chat
+    When I click Leave button on Group Participants popover
+    And I confirm leave group chat on Group Participants popover
     And I wait for 2 seconds
     Then I do not see Contact list with name <ChatName>
     When I open archive
@@ -72,9 +71,9 @@ Feature: People View
     And I open conversation with <ChatName>
     And I click Show People popover button
     And I see Group Participants popover
-    When I click on participant <Contact1>
-    And I remove user from group chat
-    And I confirm remove from group chat
+    When I click on participant <Contact1> on Group Participants popover
+    And I click Remove button on Group Participants popover
+    And I confirm remove from group chat on Group Participants popover
     And I open conversation with <ChatName>
     Then I see <Message> action in conversation
 
@@ -127,8 +126,8 @@ Feature: People View
     And I open conversation with <ChatName>
     And I click Show People popover button
     And I see Group Participants popover
-    And I change group conversation title to <ChatNameEdit>
-    Then I see conversation title <ChatNameEdit> in Participants profile
+    And I change group conversation title to <ChatNameEdit> on Group Participants popover
+    Then I see conversation title <ChatNameEdit> on Group Participants popover
     And I see <Message> action in conversation
 
     Examples: 

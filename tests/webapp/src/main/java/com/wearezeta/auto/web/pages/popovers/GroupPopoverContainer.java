@@ -68,6 +68,26 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 	}
 
 	public void clickAddPeopleButton() {
-		this.participantsListPopoverPage.clickAddPeopleButton();		
+		this.participantsListPopoverPage.clickAddPeopleButton();
+	}
+
+	public boolean isParticipantVisible(String name) throws Exception {
+		return this.participantsListPopoverPage.isParticipantVisible(name);
+	}
+
+	public boolean isAddPeopleMessageShown() throws Exception {
+		return this.addPeopleConfirmationPopoverPage.isCurrent();
+	}
+
+	public String getConversationTitle() {
+		return this.participantsListPopoverPage.getConversationTitle();
+	}
+
+	public void selectUserFromSearchResult(String name) {
+		this.addPeoplePopoverPage.selectUserFromSearchResult(name);
+	}
+
+	public void confirmAddPeople() {
+		this.addPeopleConfirmationPopoverPage.clickContinueButton();
 	}
 }

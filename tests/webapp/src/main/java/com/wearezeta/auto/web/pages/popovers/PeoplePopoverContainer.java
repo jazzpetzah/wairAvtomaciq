@@ -17,7 +17,7 @@ public abstract class PeoplePopoverContainer extends AbstractPopoverContainer {
 		addPeoplePopoverPage.searchForUser(searchText);
 	}
 
-	public void createConversation() throws Exception {
-		addPeoplePopoverPage.createConversation();
+	public void clickCreateConversation() throws Exception {
+		addPeoplePopoverPage.clickCreateConversation();
 	}
 }

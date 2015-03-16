@@ -20,9 +20,6 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 	@FindBy(how = How.XPATH, using = PopoverLocators.GroupPopover.ParticipantsListPage.xpathLeaveGroupChat)
 	private WebElement leaveButton;
 
-	@FindBy(how = How.XPATH, using = PopoverLocators.GroupPopover.ParticipantsListPage.xpathAddButton)
-	private WebElement addPeopleButton;
-	
 	public ParticipantsListPopoverPage(ZetaWebAppDriver driver,
 			WebDriverWait wait, PeoplePopoverContainer container)
 			throws Exception {
@@ -41,7 +38,7 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 
 	public void clickOnParticipant(String name) throws Exception {
 		final By locator = By
-				.xpath(PopoverLocators.GroupPopover.ParticipantsListPage.xpathSearchResultByName
+				.xpath(PopoverLocators.GroupPopover.ParticipantsListPage.xpathParticipantByName
 						.apply(name));
 		assert DriverUtils.isElementDisplayed(driver, locator, 3);
 		WebElement participant = driver.findElement(locator);
@@ -54,7 +51,22 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 		return PopoverLocators.GroupPopover.ParticipantsListPage.xpathLeaveGroupChat;
 	}
 
+	private WebElement getAddPeopleButton() {
+		return this.getSharedElement(PopoverLocators.Shared.xpathAddButton);
+	}
+
 	public void clickAddPeopleButton() {
-		addPeopleButton.click();
+		getAddPeopleButton().click();
+	}
+
+	public boolean isParticipantVisible(String name) throws Exception {
+		final By locator = By
+				.xpath(PopoverLocators.GroupPopover.ParticipantsListPage.xpathParticipantByName
+						.apply(name));
+		return DriverUtils.isElementDisplayed(driver, locator, 3);
+	}
+
+	public String getConversationTitle() {
+		return conversationTitle.getText();
 	}
 }

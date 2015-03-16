@@ -9,7 +9,6 @@ import com.wearezeta.auto.web.pages.PagesCollection;
 import cucumber.api.java.en.When;
 
 public class PeoplePickerPageSteps {
-
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
@@ -29,14 +28,14 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * Input user name in search field
+	 * Input user name in search field of People Picker
 	 * 
-	 * @step. ^I input user name (.*) in search field$
+	 * @step. ^I input user name (.*) in search field of People Picker$
 	 * 
 	 * @param name
 	 * @throws Exception
 	 */
-	@When("^I input user name (.*) in search field$")
+	@When("^I input user name (.*) in search field of People Picker$")
 	public void ISearchForUser(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		PagesCollection.peoplePickerPage.searchForUser(name);
@@ -67,7 +66,7 @@ public class PeoplePickerPageSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@When("I click on not connected user (.*) found by Search")
+	@When("I click on not connected user (.*) found in People Picker")
 	public void IClickNotConnecteUserFoundInPeoplePicker(String name)
 			throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);

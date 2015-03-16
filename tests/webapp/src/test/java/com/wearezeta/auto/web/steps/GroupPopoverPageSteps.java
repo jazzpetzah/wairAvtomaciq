@@ -7,7 +7,6 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
 
@@ -19,109 +18,53 @@ public class GroupPopoverPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
-	 * Search for user in People Picker
+	 * Verify that Group Participants popover is shown
 	 * 
-	 * @step. ^I search for (.*) in People Picker$
-	 * 
-	 * @param user
-	 *            user name or email
-	 * @throws Exception
-	 */
-	@When("^I search for (.*) in People Picker$")
-	public void ISearchForUserInPeoplePicker(String user) throws Exception {
-		try {
-			user = usrMgr.findUserByNameOrNameAlias(user).getEmail();
-		} catch (NoSuchUserException e) {
-		}
-		PagesCollection.peoplePickerPage.searchForUser(user);
-
-		// waiting till status of found contact will be changed to connection
-		// requires further investigation (possible defect)
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-		}
-	}
-
-	/**
-	 * Clicks on user found by search to open connect dialog
-	 * 
-	 * @step. I click on not connected user (.*) found by Search
-	 * 
-	 * @param name
-	 *            user name string
-	 * 
-	 * @throws Exception
-	 */
-	@When("I click on not connected user (.*) found by Search")
-	public void IClickNotConnecteUserOnSearch(String name) throws Exception {
-		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		PagesCollection.connectToPopupPage = PagesCollection.peoplePickerPage
-				.clickNotConnectedUserName(name);
-	}
-
-	/**
-	 * Verify if user is found by Search
-	 * 
-	 * @step. I see user (.*) found on Search
-	 * 
-	 * @param name
-	 *            user name string
-	 * @throws Exception
-	 */
-	@When("I see user (.*) found on Search")
-	public void ISeeUserFoundOnSearch(String name) throws Exception {
-		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		Assert.assertTrue(PagesCollection.peoplePickerPage.isUserFound(name));
-	}
-
-	/**
-	 * Verify that participant profile popup is shown
-	 * 
-	 * @step. ^I see Group Participants Popover$
+	 * @step. ^I see Group Participants popover$
 	 * @throws Exception
 	 * 
 	 */
-	@When("^I see Group Participants Popover$")
+	@When("^I see Group Participants popover$")
 	public void ISeeUserProfilePopupPage() throws Exception {
 		PagesCollection.popoverPage.waitUntilVisibleOrThrowException();
 	}
 
 	/**
-	 * Click on leave group chat button in participant profile popup
+	 * Click leave group chat button on Group Participants popover
 	 * 
-	 * @step. ^I click leave group chat$
+	 * @step. ^I click Leave button on Group Participants popover$
 	 * 
 	 */
-	@When("^I click leave group chat$")
+	@When("^I click Leave button on Group Participants popover$")
 	public void IClickLeaveGroupChat() {
 		((GroupPopoverContainer) PagesCollection.popoverPage)
 				.clickLeaveGroupChat();
 	}
 
 	/**
-	 * Confirm leaving group chat by clicking LEAVE button
+	 * Confirm leaving group chat by clicking LEAVE button on Group Participants
+	 * popover
 	 * 
-	 * @step. ^I confirm leave group chat$
+	 * @step. ^I confirm leave group chat Group Participants popover$
 	 * @throws Exception
 	 * 
 	 */
-	@When("^I confirm leave group chat$")
+	@When("^I confirm leave group chat Group Participants popover$")
 	public void IClickConfirmLeaveGroupChat() throws Exception {
 		((GroupPopoverContainer) PagesCollection.popoverPage)
 				.confirmLeaveGroupChat();
 	}
 
 	/**
-	 * Click on a participant in participant profile popup
+	 * Click on a participant on Group Participants popover
 	 * 
-	 * @step. ^I click on participant (.*)$
+	 * @step. ^I click on participant (.*) on Group Participants popover$
 	 * 
 	 * @param name
 	 *            user name string
 	 * @throws Exception
 	 */
-	@When("^I click on participant (.*)$")
+	@When("^I click on participant (.*) on Group Participants popover$")
 	public void IClickOnParticipant(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		((GroupPopoverContainer) PagesCollection.popoverPage)
@@ -131,11 +74,11 @@ public class GroupPopoverPageSteps {
 	/**
 	 * Remove participant from group chat by clicking - button
 	 * 
-	 * @step. ^I remove user from group chat$
+	 * @step. ^I click Remove on Group Participants popover$
 	 * @throws Exception
 	 * 
 	 */
-	@When("^I remove user from group chat$")
+	@When("^I click Remove on Group Participants popover$")
 	public void IRemoveUserFromGroupChat() throws Exception {
 		((GroupPopoverContainer) PagesCollection.popoverPage)
 				.clickRemoveFromGroupChat();
@@ -144,71 +87,73 @@ public class GroupPopoverPageSteps {
 	/**
 	 * Confirm removing from group chat by clicking REMOVE button
 	 * 
-	 * @step. ^I confirm remove from group chat$
+	 * @step. ^I confirm remove from group chat on Group Participants popover$
 	 * @throws Exception
 	 * 
 	 */
-	@When("^I confirm remove from group chat$")
+	@When("^I confirm remove from group chat on Group Participants popover$")
 	public void IClickConfirmRemoveFromGroupChat() throws Exception {
 		((GroupPopoverContainer) PagesCollection.popoverPage)
 				.confirmRemoveFromGroupChat();
 	}
 
 	/**
-	 * Verifies that contact is displayed on Participant profile popup
+	 * Verifies that contact is displayed on Group Participants popover
 	 * 
-	 * @step. ^I see (.*) displayed on Participant Profile Page$
+	 * @step. ^I see (.*) displayed on Group Participants popovere$
 	 * 
 	 * @param contactsAliases
 	 * @throws Exception
 	 */
-	@When("^I see (.*) displayed on Participant Profile Page$")
-	public void ISeeContactsDisplayedOnParticipantPopup(String contactsAliases)
-			throws Exception {
+	@When("^I see (.*) displayed on Group Participants popover$")
+	public void ISeeContactsDisplayed(String contactsAliases) throws Exception {
 		List<String> contacts = CommonSteps.splitAliases(contactsAliases);
-		for (String s : contacts) {
-			s = usrMgr.replaceAliasesOccurences(s, FindBy.NAME_ALIAS);
-			Assert.assertTrue(PagesCollection.peoplePickerPage
-					.isParticipantVisible(s));
+		for (String contact : contacts) {
+			contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+			Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
+					.isParticipantVisible(contact));
 		}
 	}
 
 	/**
-	 * Set new title for converstaion in participants popup
+	 * Set new title for converstaion on Group Participants popover
 	 * 
-	 * @step. I change group conversation title to (.*)
+	 * @step. I change group conversation title to (.*) on Group Participants
+	 *        popover
 	 * 
 	 * @param title
 	 *            new conversation title string
 	 */
-	@When("I change group conversation title to (.*)")
+	@When("^I change group conversation title to (.*) on Group Participants popover$")
 	public void IChangeGroupChatTitleTo(String title) {
-		PagesCollection.peoplePickerPage.setConversationTitle(title);
+		((GroupPopoverContainer) PagesCollection.popoverPage)
+				.setConversationTitle(title);
 	}
 
 	/**
-	 * Verify conversation title in participants popup
+	 * Verify conversation title on Group Participants popover
 	 * 
-	 * @step. ^I see conversation title (.*) in Participants profile$
+	 * @step. ^I see conversation title (.*) on Group Participants popover$
 	 * 
 	 * @param title
 	 *            expected title string
 	 */
-	@Then("^I see conversation title (.*) in Participants profile$")
+	@Then("^I see conversation title (.*) on Group Participants popover$")
 	public void ISeeConversationTitle(String title) {
 		Assert.assertEquals(title,
-				PagesCollection.peoplePickerPage.getConversationTitle());
+				((GroupPopoverContainer) PagesCollection.popoverPage)
+						.getConversationTitle());
 	}
 
 	/**
 	 * Click on add people button
 	 * 
-	 * @step. ^I click Add People button in Group Participants popover$
+	 * @step. ^I click Add People button on Group Participants popover$
 	 * @throws Exception
 	 * 
 	 */
-	@When("^I click Add People button in Group Participants popover$")
-	public void IClickAddPeopleButtonInGroupPopover() throws Exception {
+	@When("^I click Add People button on Group Participants popover$")
+	public void IClickAddPeopleButton() throws Exception {
 		((GroupPopoverContainer) PagesCollection.popoverPage)
 				.clickAddPeopleButton();
 	}
@@ -216,76 +161,70 @@ public class GroupPopoverPageSteps {
 	/**
 	 * Verifies there is a question if you want to add people
 	 * 
-	 * @step. ^I see Add People message in Group Participants popover$
+	 * @step. ^I see Add People message on Group Participants popover$
+	 * @throws Exception 
 	 * 
 	 */
-	@When("^I see Add People message in Group Participants popover$")
-	public void ISeeAddPeopleMessage() {
-		Assert.assertTrue(PagesCollection.peoplePickerPage
+	@When("^I see Add People message on Group Participants popover$")
+	public void ISeeAddPeopleMessage() throws Exception {
+		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
 				.isAddPeopleMessageShown());
 	}
 
 	/**
 	 * Input user name in search field
 	 * 
-	 * @step. ^I input user name (.*) in search field$
+	 * @step. ^I input user name (.*) in search field on Group Participants
+	 *        popover$
 	 * 
 	 * @param name
 	 * @throws Exception
 	 */
-	@When("^I input user name (.*) in search field$")
+	@When("^I input user name (.*) in search field on Group Participants popover$")
 	public void ISearchForUser(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		PagesCollection.peoplePickerPage.searchForUser(name);
+		((GroupPopoverContainer) PagesCollection.popoverPage)
+				.searchForUser(name);
 	}
 
 	/**
 	 * Select user found in search results
 	 * 
-	 * @step. ^I select (.*) from Popup Page search results$
+	 * @step. ^I select (.*) from Group Participants popover search results$
 	 * 
 	 * @param user
 	 * @throws Exception
 	 */
-	@When("^I select (.*) from Popup Page search results$")
-	public void ISelectUserFromPeoplePickerResults(String user)
-			throws Exception {
+	@When("^I select (.*) from Group Participants popover search results$")
+	public void ISelectUserFromSearchResults(String user) throws Exception {
 		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
-		PagesCollection.peoplePickerPage.selectUserFromSearchResult(user);
+		((GroupPopoverContainer) PagesCollection.popoverPage)
+				.selectUserFromSearchResult(user);
 	}
 
 	/**
-	 * Creates conversation with selected users from Popup Page
+	 * Creates conversation with selected users from on Group Participants
+	 * popover
 	 * 
-	 * @step. ^I choose to create conversation from Popup Page$
+	 * @step. ^I choose to create conversation from Group Participants popover$
+	 * @throws Exception 
 	 */
-	@When("^I choose to create conversation from Popup Page$")
-	public void IChooseToCreateConversationFromPopupPage() {
-		PagesCollection.peoplePickerPage.clickCreateConversation();
+	@When("^I choose to create conversation from Group Participants popover$")
+	public void IChooseToCreateConversation() throws Exception {
+		((GroupPopoverContainer) PagesCollection.popoverPage)
+				.clickCreateConversation();
 	}
 
 	/**
 	 * Click on continue people button
 	 * 
-	 * @step. ^I confirm add to group chat$
+	 * @step. ^I confirm add to group chat on Group Participants popover$
 	 * @throws Exception
 	 * 
 	 */
-	@When("^I confirm add to chat$")
+	@When("^I confirm add to chat on Group Participants popover$")
 	public void IClickConfirmAddToChat() throws Exception {
-		PagesCollection.peoplePickerPage.confirmAddPeople();
-	}
-
-	/**
-	 * Verify that Block button is shown on User profile popup
-	 * 
-	 * @step. I see Block button on User Profile Popup Page
-	 * @throws Exception
-	 * 
-	 */
-	@When("I see Block button on User Profile Popup Page")
-	public void ISeeBlockButtonOnUserProfilePopupPage() throws Exception {
-		Assert.assertTrue(PagesCollection.peoplePickerPage
-				.isBlockButtonVisible());
+		((GroupPopoverContainer) PagesCollection.popoverPage)
+				.confirmAddPeople();
 	}
 }

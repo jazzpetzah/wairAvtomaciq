@@ -210,8 +210,8 @@ public class ConversationPageSteps {
 		cpSteps.IClickAddPeopleButton();
 		cpSteps.IClickConfirmAddToChat();
 		cpSteps.ISearchForUser(contact);
-		cpSteps.ISelectUserFromPeoplePickerResults(contact);
-		cpSteps.IChooseToCreateConversationFromPopupPage();
+		cpSteps.ISelectUserFromSearchResults(contact);
+		cpSteps.IChooseToCreateConversation();
 	}
 
 	/**

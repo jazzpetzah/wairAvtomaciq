@@ -1,6 +1,7 @@
 package com.wearezeta.auto.web.pages.popovers;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -25,5 +26,11 @@ abstract class AbstractPopoverPage extends WebPage {
 	public boolean isCurrent() throws Exception {
 		return DriverUtils.isElementDisplayed(driver,
 				By.xpath(getXpathLocator()));
+	}
+
+	protected WebElement getSharedElement(String relativeXpath) {
+		return this.getDriver().findElement(
+				By.xpath(String.format("%s%s", this.getContainer()
+						.getXpathLocator(), relativeXpath)));
 	}
 }

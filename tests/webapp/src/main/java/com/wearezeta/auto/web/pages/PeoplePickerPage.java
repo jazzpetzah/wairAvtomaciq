@@ -101,4 +101,8 @@ public class PeoplePickerPage extends WebPage {
 	public void clickCreateConversation() {
 		openOrCreateConversationButton.click();
 	}
+
+	public void searchForUser(String name) {
+		searchInput.sendKeys(name);
+	}
 }
