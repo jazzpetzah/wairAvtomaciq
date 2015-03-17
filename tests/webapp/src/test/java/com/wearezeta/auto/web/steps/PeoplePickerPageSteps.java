@@ -4,39 +4,12 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
 import cucumber.api.java.en.When;
 
 public class PeoplePickerPageSteps {
-
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
-	/**
-	 * Search for user in People Picker
-	 * 
-	 * @step. ^I search for (.*) in People Picker$
-	 * 
-	 * @param user
-	 *            user name or email
-	 * @throws Exception 
-	 */
-	@When("^I search for (.*) in People Picker$")
-	public void ISearchForUserInPeoplePicker(String user) throws Exception {
-		try {
-			user = usrMgr.findUserByNameOrNameAlias(user).getEmail();
-		} catch (NoSuchUserException e) {
-		}
-		PagesCollection.peoplePickerPage.searchForUser(user);
-		
-		// waiting till status of found contact will be changed to connection
-		// requires further investigation (possible defect)
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-		}
-	}
 
 	/**
 	 * Selects user from search results in People Picker
@@ -45,54 +18,70 @@ public class PeoplePickerPageSteps {
 	 * 
 	 * @param user
 	 *            user name or email
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@When("^I select (.*) from People Picker results$")
-	public void ISelectUserFromPeoplePickerResults(String user) throws Exception {
+	public void ISelectUserFromPeoplePickerResults(String user)
+			throws Exception {
 		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
 		PagesCollection.peoplePickerPage.selectUserFromSearchResult(user);
 	}
 
 	/**
-	 * Creates conversation with selected users
+	 * Input user name in search field of People Picker
 	 * 
-	 * @step. ^I choose to create conversation from People Picker$
-	 * @throws Exception 
+	 * @step. ^I type (.*) in search field of People Picker$
+	 * 
+	 * @param name
+	 * @throws Exception
 	 */
-	@When("^I choose to create conversation from People Picker$")
-	public void IChooseToCreateConversationFromPeoplePicker() throws Exception {
-		PagesCollection.peoplePickerPage.createConversation();
+	@When("^I type (.*) in search field of People Picker$")
+	public void ISearchForUser(String name) throws Exception {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		PagesCollection.peoplePickerPage.searchForUser(name);
+	}
+
+	/**
+	 * Verify if user is found by Search in People Picker
+	 * 
+	 * @step. I see user (.*) found in People Picker
+	 * 
+	 * @param name
+	 *            user name string
+	 * @throws Exception
+	 */
+	@When("I see user (.*) found in People Picker")
+	public void ISeeUserFoundInPeoplePicker(String name) throws Exception {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		Assert.assertTrue(PagesCollection.peoplePickerPage.isUserFound(name));
 	}
 
 	/**
 	 * Clicks on user found by search to open connect dialog
 	 * 
-	 * @step. I click on not connected user (.*) found by Search
+	 * @step. I click on not connected user (.*) found in People Picker
 	 * 
 	 * @param name
 	 *            user name string
 	 * 
 	 * @throws Exception
 	 */
-	@When("I click on not connected user (.*) found by Search")
-	public void IClickNotConnecteUserOnSearch(String name) throws Exception {
+	@When("I click on not connected user (.*) found in People Picker")
+	public void IClickNotConnecteUserFoundInPeoplePicker(String name)
+			throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		PagesCollection.connectToPopupPage = PagesCollection.peoplePickerPage
+		PagesCollection.popoverPage = PagesCollection.peoplePickerPage
 				.clickNotConnectedUserName(name);
 	}
 
 	/**
-	 * Verify if user is found by Search
+	 * Creates conversation with users selected in People Picker
 	 * 
-	 * @step. I see user (.*) found on Search
-	 * 
-	 * @param name
-	 *            user name string
-	 * @throws Exception 
+	 * @step. ^I choose to create conversation from People Picker$
+	 * @throws Exception
 	 */
-	@When("I see user (.*) found on Search")
-	public void ISeeUserFoundOnSearch(String name) throws Exception {
-		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		Assert.assertTrue(PagesCollection.peoplePickerPage.isUserFound(name));
+	@When("^I choose to create conversation from People Picker$")
+	public void IChooseToCreateConversationFromPeoplePicker() throws Exception {
+		PagesCollection.peoplePickerPage.createConversation();
 	}
 }

@@ -8,8 +8,6 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.PagesCollection;
-import com.wearezeta.auto.web.pages.ParticipantsPopupPage;
-import com.wearezeta.auto.web.pages.UserProfilePopupPage;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -74,31 +72,29 @@ public class ConversationPageSteps {
 	}
 
 	/**
-	 * Click on the button from conversation that popups user profile
+	 * Click People button in 1:1 conversation
 	 * 
-	 * @step. I click show user profile button
+	 * @step. I click People button in one to one conversation$
 	 * 
 	 * @throws Exception
 	 */
-	@When("I click show user profile button")
-	public void WhenIClickShowUserProfileButton() throws Exception {
-		PagesCollection.userProfilePopupPage = (UserProfilePopupPage) PagesCollection.conversationPage
-				.clickShowUserProfileButton(false);
-		PagesCollection.conversationPopupPage = PagesCollection.userProfilePopupPage;
+	@When("^I click People button in one to one conversation$")
+	public void WhenIClickPeopleButtonIn1to1() throws Exception {
+		PagesCollection.popoverPage = PagesCollection.conversationPage
+				.clickPeopleButton(false);
 	}
 
 	/**
-	 * Click on the button from conversation that popups participant profile
+	 * Click People button in a group conversation
 	 * 
-	 * @step. I click show participants profile button
+	 * @step. I click People button in group conversation$
 	 * 
 	 * @throws Exception
 	 */
-	@When("I click show participant profile button")
-	public void WhenIClickShowParticipantsProfileButton() throws Exception {
-		PagesCollection.participantsPopupPage = (ParticipantsPopupPage) PagesCollection.conversationPage
-				.clickShowUserProfileButton(true);
-		PagesCollection.conversationPopupPage = PagesCollection.participantsPopupPage;
+	@When("^I click People button in group conversation$")
+	public void WhenIClickPeopleButtonInGroup() throws Exception {
+		PagesCollection.popoverPage = PagesCollection.conversationPage
+				.clickPeopleButton(true);
 	}
 
 	/**
@@ -222,13 +218,13 @@ public class ConversationPageSteps {
 	 */
 	@When("^I add (.*) to group chat$")
 	public void IAddContactToGroupChat(String contact) throws Exception {
-		WhenIClickShowParticipantsProfileButton();
-		ConversationPopupPageSteps cpSteps = new ConversationPopupPageSteps();
+		WhenIClickPeopleButtonInGroup();
+		GroupPopoverPageSteps cpSteps = new GroupPopoverPageSteps();
 		cpSteps.IClickAddPeopleButton();
 		cpSteps.IClickConfirmAddToChat();
 		cpSteps.ISearchForUser(contact);
-		cpSteps.ISelectUserFromPeoplePickerResults(contact);
-		cpSteps.IChooseToCreateConversationFromPopupPage();
+		cpSteps.ISelectUserFromSearchResults(contact);
+		cpSteps.IChooseToCreateConversation();
 	}
 
 	/**
