@@ -199,7 +199,7 @@ public class PersonalInfoPageSteps {
 	/**
 	 * I change name in textfield
 	 * 
-	 * @step. ^I change (.*) to (.*)$
+	 * @step. ^I change name (.*) to (.*)$
 	 * 
 	 * @param name
 	 *            new username in textfield
@@ -208,7 +208,7 @@ public class PersonalInfoPageSteps {
 	 *  			  no such user exists
 	 * 
 	 */
-	@When("^I change (.*) to (.*)$")
+	@When("^I change name (.*) to (.*)$")
 	public void IChangeNameTo(String name, String newName) throws Throwable {
 		try{
 			name = usrMgr.findUserByNameOrNameAlias(name).getName();
