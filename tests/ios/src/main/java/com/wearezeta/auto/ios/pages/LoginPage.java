@@ -302,11 +302,7 @@ public class LoginPage extends IOSPage {
 			}
 		}
 	}
-	
-	public void changeAppContext(){
-		DriverUtils.changeAppContext(getDriver());
-	}
-	
+
 	public void tapChangePasswordButtonInWebView(){
 		for (WebElement uiButton : uiButtons){
 			String nameOfButton = uiButton.getAttribute("name");

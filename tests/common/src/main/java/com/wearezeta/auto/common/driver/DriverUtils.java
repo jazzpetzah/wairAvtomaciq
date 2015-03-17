@@ -621,16 +621,4 @@ public class DriverUtils {
 	public static void resetApp(AppiumDriver driver){
 		driver.resetApp();
 	}
-	
-	public static void launchApp(AppiumDriver driver){
-		driver.launchApp();
-	}
-	
-	public static void changeAppContext(AppiumDriver driver){
-		Set<String> contextNames = driver.getContextHandles();
-		for (String contextName : contextNames) {
-		    System.out.println(contextNames); //prints out something like NATIVE_APP \n WEBVIEW_1
-		}
-		//driver.context((String) contextNames.toArray()[1]); // set context to WEBVIEW_1
-	}
 }
