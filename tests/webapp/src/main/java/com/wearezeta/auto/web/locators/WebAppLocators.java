@@ -111,7 +111,7 @@ public final class WebAppLocators {
 
 		public static final String xpathImageMessageEntry = "//div[@class='message-asset-image']";
 
-		public static final String xpathPingButton = "//*[@data-uie-name='do-ping']";
+		public static final String xpathPingButton = "//*[@data-uie-name='do-ping' or @data-uie-name='do-hot-ping']";
 
 		public static final String classPingMessage = "pinged";
 	}
