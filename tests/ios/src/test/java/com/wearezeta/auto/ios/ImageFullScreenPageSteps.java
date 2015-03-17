@@ -1,6 +1,9 @@
 package com.wearezeta.auto.ios;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.script.ScriptException;
 
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -9,17 +12,19 @@ import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 import org.junit.Assert;
 
 public class ImageFullScreenPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+	public static final double FULLSCREEN_SCORE = 0.3;
 
 	BufferedImage referenceImage;
 
 	@When("^I see Full Screen Page opened$")
-	public void ISeeFullScreenPage() {
+	public void ISeeFullScreenPage(){
 		Assert.assertTrue(PagesCollection.imageFullScreenPage
 				.isImageFullScreenShown());
 	}
@@ -97,6 +102,30 @@ public class ImageFullScreenPageSteps {
 	@When("I tap close fullscreen page button")
 	public void ITapCloseFullscreenButton() throws Exception {
 		PagesCollection.imageFullScreenPage.clickCloseButton();
+	}
+	
+	/**
+	 * When the image is shown in fullscreen mode, the device gets rotated
+	 * 
+	 * @step. ^I rotate image in fullscreen mode$
+	 * @throws ScriptException 
+	 * @throws IOException 
+	 * @throws InterruptedException 
+	 */
+	@Then("^I rotate image in fullscreen mode$")
+	public void IRotateImageInFullscreenMode() throws ScriptException, IOException, InterruptedException{
+		PagesCollection.imageFullScreenPage.rotateSimulatorLeft();
+		Thread.sleep(2000);
+		referenceImage = PagesCollection.imageFullScreenPage.takeScreenshot();
+		BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage
+				.getImagesPath() + "fullscreenImageView.png");
+		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);
+		System.out.print("SCORE: " + score);
+		Assert.assertTrue(
+				"Overlap between two images has no enough score. Expected <= "
+						+ FULLSCREEN_SCORE + " , current = " + score,
+				score <= FULLSCREEN_SCORE);
+		
 	}
 
 }
