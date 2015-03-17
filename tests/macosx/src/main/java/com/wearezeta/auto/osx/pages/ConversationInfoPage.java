@@ -3,6 +3,7 @@ package com.wearezeta.auto.osx.pages;
 import java.awt.HeadlessException;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -17,11 +18,15 @@ import org.sikuli.script.Screen;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.util.NSPoint;
 
 @SuppressWarnings("deprecation")
 public class ConversationInfoPage extends OSXPage {
+	
+	private static final Logger log = ZetaLogger.getLog(ConversationInfoPage.class.getSimpleName());
+	
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathPeoplePopover)
 	private WebElement peoplePopover;
 
@@ -86,8 +91,12 @@ public class ConversationInfoPage extends OSXPage {
 	public void selectUser(String user) {
 		String xpath = String.format(
 				OSXLocators.xpathFormatPeoplePickerUserCell, user);
-		WebElement el = driver.findElement(By.xpath(xpath));
-		el.click();
+		try {
+			WebElement el = driver.findElement(By.xpath(xpath));
+			el.click();
+		} catch (NoSuchElementException e) {
+			log.debug("Can't find user cell. Page source: " + driver.getPageSource());
+		}
 	}
 
 	public void selectUserIfNotSelected(String user) throws Exception {
