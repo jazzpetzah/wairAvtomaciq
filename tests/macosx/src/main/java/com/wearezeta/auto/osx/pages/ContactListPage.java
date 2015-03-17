@@ -400,4 +400,17 @@ public class ContactListPage extends OSXPage {
 	public void showArchivedConversations() {
 		showArchivedButton.click();
 	}
+	
+	public PeoplePickerPage isHiddenByPeoplePicker() throws Exception {
+		if (DriverUtils
+				.waitUntilElementAppears(
+						driver,
+						By.id(OSXLocators.idShareContactsLaterButton),
+						3)) {
+			return new PeoplePickerPage(this.getDriver(), this.getWait());
+		} else {
+			return null;
+		}
+	}
+
 }
