@@ -58,14 +58,15 @@ public final class PopoverLocators {
 			public static final String xpathLeaveGroupChat = xpathRootLocator
 					+ xpathPageRootLocator + "//*[@data-uie-name='do-leave']";
 
-			public static final String xpathConfirmLeaveButton = xpathRootLocator
-					+ xpathPageRootLocator
-					+ "//*[@data-uie-name='do-confirm' and @data-uie-value='leave']";
-
 			public static final Function<String, String> xpathParticipantByName = (
 					name) -> String.format(
 					"%s//*[@data-uie-name='item-user' and .//*[text()='%s']]",
 					xpathRootLocator + xpathPageRootLocator, name);
+		}
+
+		public static final class LeaveGroupConfirmationPage {
+			public static final String xpathConfirmLeaveButton = xpathRootLocator
+					+ "//*[@data-uie-name='do-confirm' and @data-uie-value='leave']";
 		}
 
 		public static final class RemoveParticipantConfirmationPage {
