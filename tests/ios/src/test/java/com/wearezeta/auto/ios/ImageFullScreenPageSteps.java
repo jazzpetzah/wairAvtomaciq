@@ -19,7 +19,7 @@ import org.junit.Assert;
 
 public class ImageFullScreenPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	public static final double FULLSCREEN_SCORE = 0.3;
+	public static final double FULLSCREEN_SCORE = 0.25;
 
 	BufferedImage referenceImage;
 
