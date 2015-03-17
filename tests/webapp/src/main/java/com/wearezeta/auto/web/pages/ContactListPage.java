@@ -31,8 +31,8 @@ public class ContactListPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathSelfProfileEntry)
 	private WebElement selfName;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathArchive)
-	private WebElement archive;
+	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathOpenArchivedConvosList)
+	private WebElement openArchivedConvosList;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathOpenPeoplePickerButton)
 	private WebElement openPeoplePickerButton;
@@ -136,8 +136,10 @@ public class ContactListPage extends WebPage {
 	}
 
 	public void openArchive() {
-		this.getWait().until(ExpectedConditions.elementToBeClickable(archive));
-		archive.click();
+		this.getWait()
+				.until(ExpectedConditions
+						.elementToBeClickable(openArchivedConvosList));
+		openArchivedConvosList.click();
 	}
 
 	public void clickArchiveConversationForContact(String conversationName)

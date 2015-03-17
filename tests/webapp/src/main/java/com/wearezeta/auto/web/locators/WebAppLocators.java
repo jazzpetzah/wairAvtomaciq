@@ -34,6 +34,8 @@ public final class WebAppLocators {
 
 		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
 
+		public static final String xpathOpenArchivedConvosList = "//*[@data-uie-name='go-archive']";
+		
 		public static final Function<String, String> xpathArchiveButtonByContactName = (
 				name) -> String.format(xpathConvoItemByNamePattern
 				+ "//*[@data-uie-name='do-archive']",
