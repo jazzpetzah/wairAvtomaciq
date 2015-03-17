@@ -30,19 +30,7 @@ public class TabletDialogPage extends DialogPage {
 	}
 
 	public boolean isProfileButtonDisplayed() throws Exception {
-		try {
-		return profileButton.isDisplayed();
-		} catch (Exception e) {
-			return false;
-		}
-	}
-	
-	public boolean isOtherUserNameDisplayed() throws Exception {
-		try {
-			return otherUserName.isDisplayed();
-		} catch (Exception e) {
-			return false;
-		}
+		return isVisible(profileButton);
 	}
 
 	public void tapOnProfileButton() {
@@ -61,8 +49,8 @@ public class TabletDialogPage extends DialogPage {
 	}
 
 	public boolean isPopOverDisplayed() throws Exception {
-		if (isProfileButtonDisplayed() && isOtherUserNameDisplayed()
-				&& addContactBtn.isDisplayed()) {
+		if (isVisible(profileButton) && isVisible(otherUserName)
+				&& isVisible(addContactBtn)) {
 			return true;
 		} else {
 			return false;
