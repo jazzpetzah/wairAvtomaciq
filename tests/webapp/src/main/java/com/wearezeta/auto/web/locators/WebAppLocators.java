@@ -30,13 +30,24 @@ public final class WebAppLocators {
 
 	public static final class ContactListPage {
 
-		public static final String xpathArchive = "//div[contains(@class, 'conversation-list-item-archive')]";
+		private static final String xpathConvoItemByNamePattern = "%s/div[2]//li[div[contains(@class, 'center-column') and text()='%s']]";
 
 		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
 
-		public static final String xpathArchiveButton = "//*[@data-uie-name='do-archive']";
+		public static final Function<String, String> xpathArchiveButtonByContactName = (
+				name) -> String.format(xpathConvoItemByNamePattern
+				+ "//*[@data-uie-name='do-archive']",
+				xpathParentContactListItem, name);
 
-		public static final String xpathMuteButton = "//*[@data-uie-name='do-notify']";
+		public static final Function<String, String> xpathMuteButtonByContactName = (
+				name) -> String.format(xpathConvoItemByNamePattern
+				+ "//*[@data-uie-name='do-silence']",
+				xpathParentContactListItem, name);
+
+		public static final Function<String, String> xpathUnmuteButtonByContactName = (
+				name) -> String.format(xpathConvoItemByNamePattern
+				+ "//*[@data-uie-name='do-notify']",
+				xpathParentContactListItem, name);
 
 		public static final String classMuteIcon = "conversation-muted";
 
@@ -52,9 +63,8 @@ public final class WebAppLocators {
 				xpathParentContactListItem, index);
 
 		public static final Function<String, String> xpathContactListEntryByName = (
-				name) -> String
-				.format("%s/div[2]//li[div[contains(@class, 'center-column') and text()='%s']]",
-						xpathParentContactListItem, name);
+				name) -> String.format(xpathConvoItemByNamePattern,
+				xpathParentContactListItem, name);
 
 		public static final String xpathContactListEntries = xpathParentContactListItem
 				+ "/div[2]//li/div[contains(@class, 'center-column')]";

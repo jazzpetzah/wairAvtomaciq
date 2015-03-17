@@ -142,30 +142,22 @@ public class ContactListPage extends WebPage {
 
 	public void clickArchiveConversationForContact(String conversationName)
 			throws Exception {
-
-		WebElement contact = getContactWithName(conversationName);
-
-		WebElement archiveButton = contact.findElement(By.xpath("."
-				+ WebAppLocators.ContactListPage.xpathArchiveButton));
-		DriverUtils.waitUntilElementClickable(driver, archiveButton);
-
+		final By locator = By
+				.xpath(WebAppLocators.ContactListPage.xpathArchiveButtonByContactName
+						.apply(conversationName));
+		assert DriverUtils.isElementDisplayed(driver, locator, 5);
+		final WebElement archiveButton = this.getDriver().findElement(locator);
 		archiveButton.click();
 	}
 
 	public void clickMuteConversationForContact(String conversationName)
 			throws Exception {
-
-		WebElement contact = getContactWithName(conversationName);
-
-		List<WebElement> muteButtons = contact.findElements(By
-				.xpath(WebAppLocators.ContactListPage.xpathMuteButton));
-		for (WebElement e : muteButtons) {
-			if (e.isDisplayed()) {
-				DriverUtils.waitUntilElementClickable(driver, e);
-
-				e.click();
-			}
-		}
+		final By locator = By
+				.xpath(WebAppLocators.ContactListPage.xpathMuteButtonByContactName
+						.apply(conversationName));
+		assert DriverUtils.isElementDisplayed(driver, locator, 5);
+		final WebElement muteButton = this.getDriver().findElement(locator);
+		muteButton.click();
 	}
 
 	public boolean isConversationMuted(String conversationName)
