@@ -1,12 +1,7 @@
 package com.wearezeta.auto.ios.pages;
 
-import io.appium.java_client.AppiumDriver;
-
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
-
-import javax.script.ScriptException;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;

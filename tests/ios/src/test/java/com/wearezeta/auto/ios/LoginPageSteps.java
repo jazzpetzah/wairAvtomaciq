@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios;
 
 import org.junit.Assert;
-import org.openqa.selenium.By;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -9,16 +8,13 @@ import java.util.Map;
 import java.util.concurrent.Future;
 
 import javax.mail.Message;
-import javax.script.ScriptException;
 
-import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
