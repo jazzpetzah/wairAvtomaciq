@@ -1,0 +1,53 @@
+package com.wearezeta.auto.web.pages.popovers;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
+import com.wearezeta.auto.web.locators.PopoverLocators;
+
+class AddPeoplePopoverPage extends AbstractPopoverPage {
+	public AddPeoplePopoverPage(ZetaWebAppDriver driver, WebDriverWait wait,
+			PeoplePopoverContainer container) throws Exception {
+		super(driver, wait, container);
+	}
+
+	@Override
+	protected String getXpathLocator() {
+		return String.format("%s%s", this.getContainer().getXpathLocator(),
+				PopoverLocators.Shared.xpathSearchInputField);
+	}
+
+	private WebElement getSearchFieldElement() {
+		return this
+				.getSharedElement(PopoverLocators.Shared.xpathSearchInputField);
+	}
+
+	public void searchForUser(String searchText) throws Exception {
+		DriverUtils.waitUntilElementClickable(driver, getSearchFieldElement());
+		getSearchFieldElement().clear();
+		getSearchFieldElement().sendKeys(searchText);
+	}
+
+	private WebElement getCreateConversationButton() {
+		return this
+				.getSharedElement(PopoverLocators.Shared.xpathCreateConversationButton);
+	}
+
+	public void clickCreateConversation() throws Exception {
+		DriverUtils.waitUntilElementClickable(driver,
+				getCreateConversationButton());
+		getCreateConversationButton().click();
+	}
+
+	private WebElement getFoundItemElement(String name) {
+		return this
+				.getSharedElement(PopoverLocators.Shared.xpathSearchResultByName
+						.apply(name));
+	}
+
+	public void selectUserFromSearchResult(String name) {
+		this.getFoundItemElement(name).click();
+	}
+}

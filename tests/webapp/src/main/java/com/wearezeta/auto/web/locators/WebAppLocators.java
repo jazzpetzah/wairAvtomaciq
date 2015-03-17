@@ -111,7 +111,6 @@ public final class WebAppLocators {
 
 		public static final String xpathImageMessageEntry = "//div[@class='message-asset-image']";
 
-		// TODO: Ping and hot ping are two different buttons
 		public static final String xpathPingButton = "//*[@data-uie-name='do-ping' or @data-uie-name='do-hot-ping']";
 
 		public static final String classPingMessage = "pinged";
@@ -125,83 +124,20 @@ public final class WebAppLocators {
 	}
 
 	public static final class PeoplePickerPage {
+		public static final String xpathRoot = "//div[@id='people-picker']";
 
-		public static final String classNameSearchInput = "search-input";
+		public static final String xpathNameSearchInput = xpathRoot + "//input";
 
-		public static final String classNameCreateConversationButton = "search-button-add";
+		public static final String xpathNameCreateConversationButton = xpathRoot
+				+ "//div[contains(@class, 'search-button-add')]";
 
 		public static final Function<String, String> xpathSearchResultByName = (
 				name) -> String.format(
-				"//div[@data-uie-name='item-user' and text()='%s']", name);
+				"%s//*[@data-uie-name='item-user' and .//*[text()='%s']]",
+				xpathRoot, name);
 
-		public static final String xpathCloseSearchButton = "//div[contains(@class,'search-close')]";
-	}
-
-	public static final class ConversationPopupPage {
-
-		public static final String idConversationPopupPage = "participants-bubble";
-		private static final String xpathConversationPopupPage = "//div[@id='participants-bubble']";
-
-		public static final String xpathAddPeopleMessage = xpathConversationPopupPage
-				+ "//div[contains(@class, 'confirm-content')]";
-
-		public static final String xpathConfirmAddButton = xpathConversationPopupPage
-				+ "//*[@data-uie-name='do-confirm' and @data-uie-value='continue']";
-
-		public static final String xpathProfilePageSearchHeader = "//div[contains(@class, 'participants-search-header')]";
-
-		public static final String xpathProfilePageSearchField = xpathProfilePageSearchHeader
-				+ "//input";
-	}
-
-	public static final class ParticipantsProfilePopupPage {
-		public static final String xpathProfileRoot = "//*[@id='participants-bubble']";
-
-		public static final String xpathAddPeopleButton = xpathProfileRoot + "//*[@data-uie-name='do-add-people']";
-
-		public static final String xpathLeaveGroupChat = xpathProfileRoot + "//*[@data-uie-name='do-leave']";
-
-		public static final String xpathConfirmLeaveButton = xpathProfileRoot + "//*[@data-uie-name='do-confirm' and @data-uie-value='leave']";
-
-		public static final String xpathConfirmRemoveButton = xpathProfileRoot + "//*[@data-uie-name='do-confirm' and @data-uie-value='remove']";
-
-		public static final String xpathRemoveFromGroupChat = xpathProfileRoot+ "//*[@data-uie-name='do-remove']";
-
-		private static final String xpathHeaderDiv = xpathProfileRoot + "//div[contains(@class, 'participants-group-header')]";
-
-		public static final String xpathConversationTitle = xpathProfileRoot + xpathHeaderDiv
-				+ "/div[contains(@class, 'name')]/div";
-
-		public static final String xpathConversationTitleInput = xpathProfileRoot + xpathHeaderDiv
-				+ "/div[contains(@class, 'name')]/textarea";
-	}
-
-	public static final class UserProfilePopupPage {
-		public static final String xpathProfilePopupRoot = "//user-profile";
-
-		public static final String xpathAddPeopleButton = xpathProfilePopupRoot + "//*[@data-uie-name='do-add-people']";
-
-		public static final String xpathNameBlockButton = xpathProfilePopupRoot + "//*[@data-uie-name='do-block']";
-
-		public static final String xpathUserName = xpathProfilePopupRoot + "//*[@data-uie-name='status-user']";
-
-		public static final String xpathParticipantName = xpathProfilePopupRoot + "//div[@class='search-list-item-name' and text()='%s']/..";
-	}
-
-	public static final class ConnectToPopup {
-
-		public static final String idConnectionPopupWindow = "people-picker-user-bubble";
-		private static final String xpathConnectionPopupWindow = "//div[@id='people-picker-user-bubble']";
-
-		public static final String xpathUserName = xpathConnectionPopupWindow
-				+ "//*[@data-uie-name='status-user']";
-
-		public static final String xpathNameConnectionMessage = xpathConnectionPopupWindow
-				+ "//*[@data-uie-name='enter-connect-message']";
-
-		public static final String xpathConnectButton = xpathConnectionPopupWindow
-				+ "//*[@data-uie-name='do-connect']";
-
+		public static final String xpathCloseSearchButton = xpathRoot
+				+ "//div[contains(@class,'search-close')]";
 	}
 
 	public static final class RegistrationPage {

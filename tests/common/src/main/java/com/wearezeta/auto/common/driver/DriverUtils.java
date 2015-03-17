@@ -615,4 +615,8 @@ public class DriverUtils {
 		Point coords = element.getLocation();
 		driver.tap(1, coords.x - (coords.x / 2 + coords.x / 8), coords.y, 1);
 	}
+	
+	public static void resetApp(AppiumDriver driver){
+		driver.resetApp();
+	}
 }
