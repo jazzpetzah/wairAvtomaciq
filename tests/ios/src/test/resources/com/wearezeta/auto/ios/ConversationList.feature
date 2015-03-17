@@ -48,7 +48,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   | Color        | NewName |
       | user1Email | user1Password | user1Name | user2Name | BrightOrange | SILENCE |
 
-  @torun @regression @id1332
+  @regression @id1332
   Scenario Outline: Verify archive a conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
