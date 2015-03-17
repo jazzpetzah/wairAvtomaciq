@@ -565,3 +565,22 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact   | CloseAppTime |
       | user1Email | user1Password | user1Name | user2Name | 2            |
+      
+  @torun @staging @id1480
+  Scenario Outline: Rotate image in fullscreen mode
+  	Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    And Contact <Contact> sends image <Picture> to single user conversation <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I see new photo in the dialog
+    And I memorize message send time
+    And I tap and hold image to open full screen
+    And I see Full Screen Page opened
+    Then I rotate image in fullscreen mode
+    
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Picture	 |
+      | user1Email | user1Password | user1Name | user2Name | testing.jpg |
+  
