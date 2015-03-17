@@ -113,6 +113,7 @@ public class ContactListPage extends OSXPage {
 					return true;
 				}
 			}
+			log.debug("Can't find correct contact list entry. Page source: " + driver.getPageSource());
 		} else {
 			String xpath = String.format(
 					OSXLocators.xpathFormatContactEntryWithName, name);
