@@ -400,6 +400,8 @@ public final class IOSLocators {
 	
 	public static final String xpathPendingRequest = "//UIACollectionCell[contains(@name,' waiting')]/UIAStaticText[1]";
 	
+	public static final String nameArchiveButton = "ARCHIVE";
+	public static final String xpathArchiveButton = "//UIACollectionCell[%s]/UIAButton[@name='ARCHIVE']";
 	////////////////////////////////
 	//Pending requests page locators
 	//////////////////////////////////

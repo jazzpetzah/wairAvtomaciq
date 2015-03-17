@@ -50,19 +50,22 @@ Feature: Conversation List
 
   @torun @regression @id1332
   Scenario Outline: Verify archive a conversation
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe right on a <Contact>
     And I archive conversation <Contact>
     Then I dont see conversation <Contact> in contact list
+    And I long swipe right to archive conversation <Contact2>
+    Then I dont see conversation <Contact2> in contact list
     And I open archived conversations
     Then I see user <Contact> in contact list
+    Then I see user <Contact2> in contact list
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact   | Contact2 |
+      | user1Email | user1Password | user1Name | user2Name | user3Name|
 
   @staging @id1335
   Scenario Outline: Verify unsilence the conversation
