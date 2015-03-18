@@ -59,14 +59,14 @@ Feature: Settings
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
       
-  @staging @id2074
+  @torun @staging @id2074
   Scenario Outline: Verify you can access Help site within the app
   	Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     And I tap on my name <Name>
     And I click on Settings button on personal page
-    And I click on Help button from the options menu
+    When I click on Help button from the options menu
     Then I see Support web page
     
     Examples: 
