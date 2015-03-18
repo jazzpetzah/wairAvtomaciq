@@ -53,7 +53,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | username | Contact   |
       | user1Email | user1Password | user1Name | c        | user2Name |
       
-  @staging @id1463
+  @regression @id1463
   Scenario Outline: Verify name change
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

@@ -10,7 +10,7 @@ import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.PopoverLocators;
 
 class LeaveGroupConfirmationPopoverPage extends AbstractPopoverPage {
-	@FindBy(how = How.XPATH, using = PopoverLocators.GroupPopover.ParticipantsListPage.xpathConfirmLeaveButton)
+	@FindBy(how = How.XPATH, using = PopoverLocators.GroupPopover.LeaveGroupConfirmationPage.xpathConfirmLeaveButton)
 	private WebElement confirmLeaveButton;
 
 	public LeaveGroupConfirmationPopoverPage(ZetaWebAppDriver driver,
@@ -27,6 +27,6 @@ class LeaveGroupConfirmationPopoverPage extends AbstractPopoverPage {
 
 	@Override
 	protected String getXpathLocator() {
-		return PopoverLocators.GroupPopover.ParticipantsListPage.xpathConfirmLeaveButton;
+		return PopoverLocators.GroupPopover.LeaveGroupConfirmationPage.xpathConfirmLeaveButton;
 	}
 }
