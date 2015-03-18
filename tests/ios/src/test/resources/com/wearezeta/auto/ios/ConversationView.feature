@@ -566,7 +566,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | CloseAppTime |
       | user1Email | user1Password | user1Name | user2Name | 2            |
       
-  @torun @staging @id1480
+  @staging @id1480
   Scenario Outline: Rotate image in fullscreen mode
   	Given There are 2 users where <Name> is me
   	Given User <Contact> change  name to <NewName>
