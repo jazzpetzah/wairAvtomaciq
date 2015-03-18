@@ -1,6 +1,7 @@
 package com.wearezeta.auto.web.pages;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -10,6 +11,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.common.base.Function;
@@ -190,6 +193,21 @@ public class ContactListPage extends WebPage {
 		optionsButton.click();
 	}
 
+	private static final int SELECTION_TIMEOUT = 5; // seconds
+	private static final String NON_SELECTED_ITEM_COLOR = "rgba(255, 255, 255, 1)";
+
+	private void waitUtilConvoItemIsSelected(WebElement item) {
+		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(
+				SELECTION_TIMEOUT, TimeUnit.SECONDS).pollingEvery(1,
+				TimeUnit.SECONDS);
+		wait.until(new Function<WebDriver, Boolean>() {
+			public Boolean apply(WebDriver driver) {
+				return !item.getCssValue("color").equals(
+						NON_SELECTED_ITEM_COLOR);
+			}
+		});
+	}
+
 	public ConversationPage openConversation(String conversationName)
 			throws Exception {
 		DriverUtils.waitUntilElementAppears(driver, By
@@ -199,6 +217,7 @@ public class ContactListPage extends WebPage {
 			WebElement contact = retrieveNoNameGroupContact(conversationName);
 			if (contact != null) {
 				contact.click();
+				waitUtilConvoItemIsSelected(contact);
 				return new ConversationPage(this.getDriver(), this.getWait());
 			}
 		} else {
@@ -206,6 +225,7 @@ public class ContactListPage extends WebPage {
 				if (contact.getText().equals(conversationName)) {
 					DriverUtils.waitUntilElementClickable(driver, contact);
 					contact.click();
+					waitUtilConvoItemIsSelected(contact);
 					return new ConversationPage(this.getDriver(),
 							this.getWait());
 				}
