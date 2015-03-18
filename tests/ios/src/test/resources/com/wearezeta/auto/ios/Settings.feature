@@ -59,7 +59,7 @@ Feature: Settings
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
       
-  @torun @staging
+  @staging @id2074
   Scenario Outline: Verify you can access Help site within the app
   	Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
