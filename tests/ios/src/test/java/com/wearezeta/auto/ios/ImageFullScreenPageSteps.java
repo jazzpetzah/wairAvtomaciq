@@ -1,10 +1,8 @@
 package com.wearezeta.auto.ios;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.script.ScriptException;
 
 import com.wearezeta.auto.common.ImageUtil;
@@ -119,8 +117,6 @@ public class ImageFullScreenPageSteps {
 		PagesCollection.imageFullScreenPage.rotateSimulatorLeft();
 		Thread.sleep(2000);
 		referenceImage = PagesCollection.imageFullScreenPage.takeScreenshot();
-//		File outputfile = new File("rotatedFullscreenImage.png");
-//		ImageIO.write(referenceImage, "png", outputfile);
 		BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage
 				.getImagesPath() + "rotatedFullscreenImage.png");
 		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);
