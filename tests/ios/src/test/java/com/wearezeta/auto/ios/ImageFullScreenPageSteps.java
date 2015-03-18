@@ -1,8 +1,10 @@
 package com.wearezeta.auto.ios;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.script.ScriptException;
 
 import com.wearezeta.auto.common.ImageUtil;
@@ -19,7 +21,7 @@ import org.junit.Assert;
 
 public class ImageFullScreenPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	public static final double FULLSCREEN_SCORE = 0.25;
+	public static final double FULLSCREEN_SCORE = 0.9;
 
 	BufferedImage referenceImage;
 
@@ -118,13 +120,13 @@ public class ImageFullScreenPageSteps {
 		Thread.sleep(2000);
 		referenceImage = PagesCollection.imageFullScreenPage.takeScreenshot();
 		BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage
-				.getImagesPath() + "fullscreenImageView.png");
+				.getImagesPath() + "rotatedFullscreenImage.png");
 		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);
 		System.out.print("SCORE: " + score);
 		Assert.assertTrue(
-				"Overlap between two images has no enough score. Expected <= "
+				"Overlap between two images has no enough score. Expected >= "
 						+ FULLSCREEN_SCORE + " , current = " + score,
-				score <= FULLSCREEN_SCORE);
+				score >= FULLSCREEN_SCORE);
 		
 	}
 
