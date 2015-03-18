@@ -65,6 +65,9 @@ public class ContactListPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathContactListContainer)
 	private WebElement contactListContainer;
+	
+//	@FindBy(how = How.NAME, using = IOSLocators.nameArchiveButton)
+//	private WebElement archiveButton;
 
 	private int oldLocation = 0;
 
@@ -405,6 +408,7 @@ public class ContactListPage extends IOSPage {
 	public void archiveConversation(String conversation) {
 		WebElement contact = findNameInContactList(conversation);
 		DriverUtils.clickArchiveConversationButton(this.getDriver(), contact);
+		//DriverUtils.mobileTapByCoordinates(getDriver(), archiveButton);
 	}
 
 	public boolean unreadDotIsVisible(boolean visible, boolean bigUnreadDot,
