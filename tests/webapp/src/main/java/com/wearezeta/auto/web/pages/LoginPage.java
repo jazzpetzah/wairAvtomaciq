@@ -84,7 +84,7 @@ public class LoginPage extends WebPage {
 	}
 
 	public RegistrationPage switchToRegistrationPage() throws Exception {
-		if (DriverUtils.isElementDisplayed(this.getDriver(),
+		if (!DriverUtils.isElementDisplayed(this.getDriver(),
 				By.xpath(WebAppLocators.LoginPage.xpathCreateAccountButton))) {
 			switchToRegisterButton.click();
 		}

@@ -21,7 +21,7 @@ public final class WebAppLocators {
 
 		public static final String classNameSpinner = "loading-spinner";
 
-		public static final String xpathSwitchToRegisterButton = "//*[@data-uie-name='go-register]";
+		public static final String xpathSwitchToRegisterButton = "//*[@data-uie-name='go-register']";
 
 		public static final String xpathCreateAccountButton = "//*[@data-uie-name='do-register']";
 
@@ -35,7 +35,7 @@ public final class WebAppLocators {
 		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
 
 		public static final String xpathOpenArchivedConvosList = "//*[@data-uie-name='go-archive']";
-		
+
 		public static final Function<String, String> xpathArchiveButtonByContactName = (
 				name) -> String.format(xpathConvoItemByNamePattern
 				+ "//*[@data-uie-name='do-archive']",
@@ -53,7 +53,10 @@ public final class WebAppLocators {
 
 		public static final String classMuteIcon = "conversation-muted";
 
-		public static final String xpathActionsButton = "//*[@data-uie-name='go-options']";
+		public static final Function<String, String> xpathOptionsButtonByContactName = (
+				name) -> String.format(xpathConvoItemByNamePattern
+				+ "//*[@data-uie-name='go-options']",
+				xpathParentContactListItem, name);
 
 		public static final String xpathSelfProfileEntry = "//*[@data-uie-name='go-self-profile']";
 
@@ -166,7 +169,7 @@ public final class WebAppLocators {
 
 		public static final String xpathSwitchToSignInButton = "//*[@data-uie-name='go-sign-in']";
 
-		public static final String xpathGoToCreateAccountButton = "(//*[@data-uie-name='go-register'])[2]";
+		// public static final String xpathGoToCreateAccountButton = "(//*[@data-uie-name='go-register'])[2]";
 	}
 
 	public static final class Common {
