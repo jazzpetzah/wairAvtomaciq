@@ -82,7 +82,7 @@ Feature: Conversation
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
-    When I toggle mute for conversation <Contact>
+    When I set muted state for conversation <Contact>
     And I open self profile
     Then I see that conversation <Contact> is muted
 
@@ -98,7 +98,7 @@ Feature: Conversation
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I see that conversation <Contact> is muted
-    When I toggle mute for conversation <Contact>
+    When I set unmuted state for conversation <Contact>
     And I open self profile
     Then I see that conversation <Contact> is not muted
 

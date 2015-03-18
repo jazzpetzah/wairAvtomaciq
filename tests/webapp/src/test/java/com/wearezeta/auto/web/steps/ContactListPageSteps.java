@@ -196,20 +196,37 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Toggle mute button for conversation by choosing it from Contact List
+	 * Silence the particular conversation from the list
 	 * 
-	 * @step. ^I toggle mute for conversation (.*)$
+	 * @step. ^I set muted state for conversation (.*)
 	 * 
 	 * @param contact
 	 *            conversation name string
 	 * @throws Exception
 	 */
-	@When("^I toggle mute for conversation (.*)$")
-	public void IClickMuteButton(String contact) throws Exception {
+	@When("^I set muted state for conversation (.*)")
+	public void ISetMutedStateFor(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		PagesCollection.contactListPage.clickActionsButtonForContact(contact);
 		PagesCollection.contactListPage
 				.clickMuteConversationForContact(contact);
+	}
+	
+	/**
+	 * Set unmuted state for the particular conversation from the list if it is already muted
+	 * 
+	 * @step. ^I set unmuted state for conversation (.*)
+	 * 
+	 * @param contact
+	 *            conversation name string
+	 * @throws Exception
+	 */
+	@When("^I set unmuted state for conversation (.*)")
+	public void ISetUnmutedStateFor(String contact) throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		PagesCollection.contactListPage.clickActionsButtonForContact(contact);
+		PagesCollection.contactListPage
+				.clickUnmuteConversationForContact(contact);
 	}
 
 	/**

@@ -244,4 +244,14 @@ public class ContactListPage extends WebPage {
 		}
 		return new PeoplePickerPage(this.getDriver(), this.getWait());
 	}
+
+	public void clickUnmuteConversationForContact(String conversationName)
+			throws Exception {
+		final By locator = By
+				.xpath(WebAppLocators.ContactListPage.xpathUnmuteButtonByContactName
+						.apply(conversationName));
+		assert DriverUtils.isElementDisplayed(driver, locator, 5);
+		final WebElement unmuteButton = this.getDriver().findElement(locator);
+		unmuteButton.click();
+	}
 }
