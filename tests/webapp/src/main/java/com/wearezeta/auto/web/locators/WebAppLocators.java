@@ -170,9 +170,6 @@ public final class WebAppLocators {
 		public static final String idVerificationEmail = "wire-sent-email";
 
 		public static final String xpathSwitchToSignInButton = "//*[@data-uie-name='go-sign-in']";
-
-		// public static final String xpathGoToCreateAccountButton =
-		// "(//*[@data-uie-name='go-register'])[2]";
 	}
 
 	public static final class Common {

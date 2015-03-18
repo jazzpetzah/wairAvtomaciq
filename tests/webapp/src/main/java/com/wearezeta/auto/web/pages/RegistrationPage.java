@@ -24,9 +24,6 @@ public class RegistrationPage extends WebPage {
 	@FindBy(how = How.ID, using = WebAppLocators.RegistrationPage.idCreateAccountButton)
 	private WebElement createAccount;
 
-//	@FindBy(how = How.XPATH, using = WebAppLocators.RegistrationPage.xpathGoToCreateAccountButton)
-//	private WebElement goToCreateAccountButton;
-
 	@FindBy(how = How.ID, using = WebAppLocators.RegistrationPage.idVerificationEmail)
 	private WebElement verificationEmail;
 
