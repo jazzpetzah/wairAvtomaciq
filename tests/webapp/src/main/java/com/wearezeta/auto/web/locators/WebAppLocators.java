@@ -30,11 +30,11 @@ public final class WebAppLocators {
 
 	public static final class ContactListPage {
 
-		private static final String xpathConvoItemByNamePattern = "%s/div[2]//li[div[contains(@class, 'center-column') and text()='%s']]";
+		private static final String xpathConvoItemByNamePattern = "%s//li[@data-uie-name='item-conversation' and @data-uie-value='%s' and not(contains(@class, 'archived'))]";
 
 		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
 
-		public static final String xpathOpenArchivedConvosList = "//*[@data-uie-name='go-archive']";
+		public static final String xpathOpenArchivedConvosButton = "//*[@data-uie-name='go-archive']";
 
 		public static final Function<String, String> xpathArchiveButtonByContactName = (
 				name) -> String.format(xpathConvoItemByNamePattern
@@ -65,16 +65,24 @@ public final class WebAppLocators {
 		// index starts from 1
 		// self name is not included
 		public static final Function<Integer, String> xpathContactListEntryByIndex = (
-				index) -> String.format(
-				"%s/div[2]//ul/li[%d]//div[contains(@class, 'center-column')]",
-				xpathParentContactListItem, index);
+				index) -> String
+				.format("%s//ul/li[@data-uie-name='item-conversation' and not(contains(@class, 'archived'))][%d]//div[contains(@class, 'center-column')]",
+						xpathParentContactListItem, index);
 
 		public static final Function<String, String> xpathContactListEntryByName = (
-				name) -> String.format(xpathConvoItemByNamePattern,
+				name) -> String.format(xpathConvoItemByNamePattern
+				+ "//div[contains(@class, 'center-column')]",
 				xpathParentContactListItem, name);
 
 		public static final String xpathContactListEntries = xpathParentContactListItem
-				+ "/div[2]//li/div[contains(@class, 'center-column')]";
+				+ "//li[@data-uie-name='item-conversation' and not(contains(@class, 'archived'))]";
+		public static final String xpathArchivedContactListEntries = xpathParentContactListItem
+				+ "//li[@data-uie-name='item-conversation' and contains(@class, 'archived')]";
+
+		public static final Function<String, String> xpathArchivedContactListEntryByName = (
+				name) -> String
+				.format("%s//li[contains(@class, 'archived') and @data-uie-name='item-conversation' and @data-uie-value='%s']//div[contains(@class, 'center-column')]",
+						xpathParentContactListItem, name);
 
 		public static final String xpathOpenPeoplePickerButton = "//*[@data-uie-name='go-search']";
 
