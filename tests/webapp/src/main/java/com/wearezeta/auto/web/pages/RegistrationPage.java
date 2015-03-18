@@ -24,9 +24,6 @@ public class RegistrationPage extends WebPage {
 	@FindBy(how = How.ID, using = WebAppLocators.RegistrationPage.idCreateAccountButton)
 	private WebElement createAccount;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.RegistrationPage.xpathGoToCreateAccountButton)
-	private WebElement goToCreateAccountButton;
-
 	@FindBy(how = How.ID, using = WebAppLocators.RegistrationPage.idVerificationEmail)
 	private WebElement verificationEmail;
 
@@ -61,12 +58,8 @@ public class RegistrationPage extends WebPage {
 	}
 
 	public LoginPage switchToLoginPage() throws Exception {
-		if (DriverUtils.isElementDisplayed(this.getDriver(),
-				By.id(WebAppLocators.RegistrationPage.idCreateAccountButton))
-				|| DriverUtils
-						.isElementDisplayed(
-								this.getDriver(),
-								By.xpath(WebAppLocators.RegistrationPage.xpathGoToCreateAccountButton))) {
+		if (!DriverUtils.isElementDisplayed(this.getDriver(),
+				By.xpath(WebAppLocators.LoginPage.xpathSignInButton))) {
 			switchToSignInButton.click();
 		}
 

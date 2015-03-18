@@ -21,7 +21,7 @@ public final class WebAppLocators {
 
 		public static final String classNameSpinner = "loading-spinner";
 
-		public static final String xpathSwitchToRegisterButton = "//*[@data-uie-name='go-register]";
+		public static final String xpathSwitchToRegisterButton = "//*[@data-uie-name='go-register']";
 
 		public static final String xpathCreateAccountButton = "//*[@data-uie-name='do-register']";
 
@@ -30,17 +30,35 @@ public final class WebAppLocators {
 
 	public static final class ContactListPage {
 
-		public static final String xpathArchive = "//div[contains(@class, 'conversation-list-item-archive')]";
+		private static final String xpathConvoItemByNamePattern = "%s/div[2]//li[div[contains(@class, 'center-column') and text()='%s']]";
 
 		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
 
-		public static final String xpathArchiveButton = "//*[@data-uie-name='do-archive']";
+		public static final String xpathOpenArchivedConvosList = "//*[@data-uie-name='go-archive']";
 
-		public static final String xpathMuteButton = "//*[@data-uie-name='do-notify']";
+		public static final Function<String, String> xpathArchiveButtonByContactName = (
+				name) -> String.format(xpathConvoItemByNamePattern
+				+ "//*[@data-uie-name='do-archive']",
+				xpathParentContactListItem, name);
+
+		public static final Function<String, String> xpathMuteButtonByContactName = (
+				name) -> String.format(xpathConvoItemByNamePattern
+				+ "//*[@data-uie-name='do-silence']",
+				xpathParentContactListItem, name);
+
+		public static final Function<String, String> xpathUnmuteButtonByContactName = (
+				name) -> String.format(xpathConvoItemByNamePattern
+				+ "//*[@data-uie-name='do-notify']",
+				xpathParentContactListItem, name);
 
 		public static final String classMuteIcon = "conversation-muted";
 
-		public static final String xpathActionsButton = "//*[@data-uie-name='go-options']";
+		public static final Function<String, String> xpathOptionsButtonByContactName = (
+				name) -> String.format(xpathConvoItemByNamePattern
+				+ "//*[@data-uie-name='go-options']",
+				xpathParentContactListItem, name);
+
+		public static final String classOptionsButton = ".text-theme.conversation-list-item [data-uie-name=go-options]";
 
 		public static final String xpathSelfProfileEntry = "//*[@data-uie-name='go-self-profile']";
 
@@ -52,9 +70,8 @@ public final class WebAppLocators {
 				xpathParentContactListItem, index);
 
 		public static final Function<String, String> xpathContactListEntryByName = (
-				name) -> String
-				.format("%s/div[2]//li[div[contains(@class, 'center-column') and text()='%s']]",
-						xpathParentContactListItem, name);
+				name) -> String.format(xpathConvoItemByNamePattern,
+				xpathParentContactListItem, name);
 
 		public static final String xpathContactListEntries = xpathParentContactListItem
 				+ "/div[2]//li/div[contains(@class, 'center-column')]";
@@ -153,8 +170,6 @@ public final class WebAppLocators {
 		public static final String idVerificationEmail = "wire-sent-email";
 
 		public static final String xpathSwitchToSignInButton = "//*[@data-uie-name='go-sign-in']";
-
-		public static final String xpathGoToCreateAccountButton = "(//*[@data-uie-name='go-register'])[2]";
 	}
 
 	public static final class Common {

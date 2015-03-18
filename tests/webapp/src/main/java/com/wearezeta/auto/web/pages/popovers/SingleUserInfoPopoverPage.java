@@ -1,6 +1,5 @@
 package com.wearezeta.auto.web.pages.popovers;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -26,15 +25,12 @@ class SingleUserInfoPopoverPage extends AbstractUserInfoPopoverPage {
 	}
 
 	@Override
-	protected WebElement getSharedElement(String xpath) {
-		return this
-				.getDriver()
-				.findElement(
-						By.xpath(String
-								.format("%s%s%s",
-										this.getContainer().getXpathLocator(),
-										PopoverLocators.SingleUserPopover.SingleUserInfoPage.xpathPageRootLocator,
-										xpath)));
+	protected WebElement getSharedElement(String relativeXpath) {
+		return super
+				.getSharedElement(String
+						.format("%s%s",
+								PopoverLocators.SingleUserPopover.SingleUserInfoPage.xpathPageRootLocator,
+								relativeXpath));
 	}
 
 	private WebElement getUserNameElement() {

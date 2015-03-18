@@ -52,15 +52,12 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 	}
 
 	@Override
-	protected WebElement getSharedElement(String xpath) {
-		return this
-				.getDriver()
-				.findElement(
-						By.xpath(String
-								.format("%s%s%s",
-										this.getContainer().getXpathLocator(),
-										PopoverLocators.GroupPopover.ParticipantsListPage.xpathPageRootLocator,
-										xpath)));
+	protected WebElement getSharedElement(String relativeXpath) {
+		return super
+				.getSharedElement(String
+						.format("%s%s",
+								PopoverLocators.GroupPopover.ParticipantsListPage.xpathPageRootLocator,
+								relativeXpath));
 	}
 
 	private WebElement getAddPeopleElement() {

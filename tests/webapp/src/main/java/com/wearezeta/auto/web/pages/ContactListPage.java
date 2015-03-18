@@ -1,6 +1,7 @@
 package com.wearezeta.auto.web.pages;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -10,6 +11,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.common.base.Function;
@@ -31,8 +34,8 @@ public class ContactListPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathSelfProfileEntry)
 	private WebElement selfName;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathArchive)
-	private WebElement archive;
+	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathOpenArchivedConvosList)
+	private WebElement openArchivedConvosList;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathOpenPeoplePickerButton)
 	private WebElement openPeoplePickerButton;
@@ -136,36 +139,30 @@ public class ContactListPage extends WebPage {
 	}
 
 	public void openArchive() {
-		this.getWait().until(ExpectedConditions.elementToBeClickable(archive));
-		archive.click();
+		this.getWait()
+				.until(ExpectedConditions
+						.elementToBeClickable(openArchivedConvosList));
+		openArchivedConvosList.click();
 	}
 
 	public void clickArchiveConversationForContact(String conversationName)
 			throws Exception {
-
-		WebElement contact = getContactWithName(conversationName);
-
-		WebElement archiveButton = contact.findElement(By.xpath("."
-				+ WebAppLocators.ContactListPage.xpathArchiveButton));
-		DriverUtils.waitUntilElementClickable(driver, archiveButton);
-
+		final By locator = By
+				.xpath(WebAppLocators.ContactListPage.xpathArchiveButtonByContactName
+						.apply(conversationName));
+		assert DriverUtils.isElementDisplayed(driver, locator, 5);
+		final WebElement archiveButton = this.getDriver().findElement(locator);
 		archiveButton.click();
 	}
 
 	public void clickMuteConversationForContact(String conversationName)
 			throws Exception {
-
-		WebElement contact = getContactWithName(conversationName);
-
-		List<WebElement> muteButtons = contact.findElements(By
-				.xpath(WebAppLocators.ContactListPage.xpathMuteButton));
-		for (WebElement e : muteButtons) {
-			if (e.isDisplayed()) {
-				DriverUtils.waitUntilElementClickable(driver, e);
-
-				e.click();
-			}
-		}
+		final By locator = By
+				.xpath(WebAppLocators.ContactListPage.xpathMuteButtonByContactName
+						.apply(conversationName));
+		assert DriverUtils.isElementDisplayed(driver, locator, 5);
+		final WebElement muteButton = this.getDriver().findElement(locator);
+		muteButton.click();
 	}
 
 	public boolean isConversationMuted(String conversationName)
@@ -180,19 +177,42 @@ public class ContactListPage extends WebPage {
 				By.className(WebAppLocators.ContactListPage.classMuteIcon), 5);
 	}
 
-	public void clickActionsButtonForContact(String conversationName)
+	public void clickOptionsButtonForContact(String conversationName)
 			throws Exception {
-		final WebElement contact = getContactWithName(conversationName);
 		try {
-			DriverUtils.moveMouserOver(driver, contact);
+			DriverUtils.moveMouserOver(driver,
+					getContactWithName(conversationName));
 		} catch (WebDriverException e) {
-			// do nothing (safari workaround)
+			// Safari workaround
 		}
-		final WebElement actionsButton = contact.findElement(By.xpath("."
-				+ WebAppLocators.ContactListPage.xpathActionsButton));
-		DriverUtils.waitUntilElementClickable(driver, actionsButton, 5);
+		final By locator = By
+				.xpath(WebAppLocators.ContactListPage.xpathOptionsButtonByContactName
+						.apply(conversationName));
+		if (!DriverUtils.isElementDisplayed(driver, locator, 5)) {
+			// Safari workaround
+			final String showOptionsButtonJScript = "$('"
+					+ WebAppLocators.ContactListPage.classOptionsButton
+					+ "').css({'opacity': '100'})";
+			driver.executeScript(showOptionsButtonJScript);
+			assert DriverUtils.isElementDisplayed(driver, locator);
+		}
+		final WebElement optionsButton = driver.findElement(locator);
+		optionsButton.click();
+	}
 
-		actionsButton.click();
+	private static final int SELECTION_TIMEOUT = 5; // seconds
+	private static final String NON_SELECTED_ITEM_COLOR = "rgba(255, 255, 255, 1)";
+
+	private void waitUtilConvoItemIsSelected(WebElement item) {
+		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(
+				SELECTION_TIMEOUT, TimeUnit.SECONDS).pollingEvery(1,
+				TimeUnit.SECONDS);
+		wait.until(new Function<WebDriver, Boolean>() {
+			public Boolean apply(WebDriver driver) {
+				return !item.getCssValue("color").equals(
+						NON_SELECTED_ITEM_COLOR);
+			}
+		});
 	}
 
 	public ConversationPage openConversation(String conversationName)
@@ -204,6 +224,7 @@ public class ContactListPage extends WebPage {
 			WebElement contact = retrieveNoNameGroupContact(conversationName);
 			if (contact != null) {
 				contact.click();
+				waitUtilConvoItemIsSelected(contact);
 				return new ConversationPage(this.getDriver(), this.getWait());
 			}
 		} else {
@@ -211,6 +232,7 @@ public class ContactListPage extends WebPage {
 				if (contact.getText().equals(conversationName)) {
 					DriverUtils.waitUntilElementClickable(driver, contact);
 					contact.click();
+					waitUtilConvoItemIsSelected(contact);
 					return new ConversationPage(this.getDriver(),
 							this.getWait());
 				}
@@ -249,5 +271,15 @@ public class ContactListPage extends WebPage {
 			openPeoplePickerButton.click();
 		}
 		return new PeoplePickerPage(this.getDriver(), this.getWait());
+	}
+
+	public void clickUnmuteConversationForContact(String conversationName)
+			throws Exception {
+		final By locator = By
+				.xpath(WebAppLocators.ContactListPage.xpathUnmuteButtonByContactName
+						.apply(conversationName));
+		assert DriverUtils.isElementDisplayed(driver, locator, 5);
+		final WebElement unmuteButton = this.getDriver().findElement(locator);
+		unmuteButton.click();
 	}
 }
