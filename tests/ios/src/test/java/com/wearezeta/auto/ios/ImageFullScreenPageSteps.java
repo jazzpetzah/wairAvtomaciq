@@ -119,6 +119,8 @@ public class ImageFullScreenPageSteps {
 		PagesCollection.imageFullScreenPage.rotateSimulatorLeft();
 		Thread.sleep(2000);
 		referenceImage = PagesCollection.imageFullScreenPage.takeScreenshot();
+//		File outputfile = new File("rotatedFullscreenImage.png");
+//		ImageIO.write(referenceImage, "png", outputfile);
 		BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage
 				.getImagesPath() + "rotatedFullscreenImage.png");
 		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);

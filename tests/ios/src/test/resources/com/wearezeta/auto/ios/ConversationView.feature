@@ -569,6 +569,8 @@ Feature: Conversation View
   @torun @staging @id1480
   Scenario Outline: Rotate image in fullscreen mode
   	Given There are 2 users where <Name> is me
+  	Given User <Contact> change  name to <NewName>
+    Given User <Contact> change  accent color to <Color>
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And Contact <Contact> sends image <Picture> to single user conversation <Name>
@@ -581,6 +583,6 @@ Feature: Conversation View
     Then I rotate image in fullscreen mode
     
     Examples: 
-      | Login      | Password      | Name      | Contact   | Picture	 |
-      | user1Email | user1Password | user1Name | user2Name | testing.jpg |
+      | Login      | Password      | Name      | Contact   | Picture	 | Color 	   | NewName          |
+      | user1Email | user1Password | user1Name | user2Name | testing.jpg | BrightOrange| RotateFullscreen |
   
