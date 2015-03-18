@@ -174,19 +174,20 @@ public class ContactListPage extends WebPage {
 				By.className(WebAppLocators.ContactListPage.classMuteIcon), 5);
 	}
 
-	public void clickActionsButtonForContact(String conversationName)
+	public void clickOptionsButtonForContact(String conversationName)
 			throws Exception {
-		final WebElement contact = getContactWithName(conversationName);
 		try {
-			DriverUtils.moveMouserOver(driver, contact);
+			DriverUtils.moveMouserOver(driver,
+					getContactWithName(conversationName));
 		} catch (WebDriverException e) {
 			// do nothing (safari workaround)
 		}
-		final WebElement actionsButton = contact.findElement(By.xpath("."
-				+ WebAppLocators.ContactListPage.xpathActionsButton));
-		DriverUtils.waitUntilElementClickable(driver, actionsButton, 5);
-
-		actionsButton.click();
+		final By locator = By
+				.xpath(WebAppLocators.ContactListPage.xpathOptionsButtonByContactName
+						.apply(conversationName));
+		assert DriverUtils.isElementDisplayed(driver, locator, 5);
+		final WebElement optionsButton = driver.findElement(locator);
+		optionsButton.click();
 	}
 
 	public ConversationPage openConversation(String conversationName)

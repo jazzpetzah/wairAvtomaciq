@@ -35,7 +35,7 @@ public final class WebAppLocators {
 		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
 
 		public static final String xpathOpenArchivedConvosList = "//*[@data-uie-name='go-archive']";
-		
+
 		public static final Function<String, String> xpathArchiveButtonByContactName = (
 				name) -> String.format(xpathConvoItemByNamePattern
 				+ "//*[@data-uie-name='do-archive']",
@@ -53,7 +53,10 @@ public final class WebAppLocators {
 
 		public static final String classMuteIcon = "conversation-muted";
 
-		public static final String xpathActionsButton = "//*[@data-uie-name='go-options']";
+		public static final Function<String, String> xpathOptionsButtonByContactName = (
+				name) -> String.format(xpathConvoItemByNamePattern
+				+ "//*[@data-uie-name='go-options']",
+				xpathParentContactListItem, name);
 
 		public static final String xpathSelfProfileEntry = "//*[@data-uie-name='go-self-profile']";
 

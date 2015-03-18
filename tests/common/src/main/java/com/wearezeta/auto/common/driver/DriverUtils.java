@@ -41,7 +41,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class DriverUtils {
 	public static final int DEFAULT_VISIBILITY_TIMEOUT = 20;
-	
+
 	private static final Logger log = ZetaLogger.getLog(DriverUtils.class
 			.getSimpleName());
 
@@ -80,7 +80,14 @@ public class DriverUtils {
 	public static boolean isElementDisplayed(RemoteWebDriver driver, By by,
 			int timeoutSeconds) throws Exception {
 		if (waitUntilElementAppears(driver, by, timeoutSeconds)) {
-			return driver.findElement(by).isDisplayed();
+			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+					.withTimeout(timeoutSeconds / 2 + 1, TimeUnit.SECONDS)
+					.pollingEvery(1, TimeUnit.SECONDS);
+			return wait.until(new Function<WebDriver, Boolean>() {
+				public Boolean apply(WebDriver driver) {
+					return driver.findElement(by).isDisplayed();
+				}
+			});
 		} else {
 			return false;
 		}
@@ -615,8 +622,8 @@ public class DriverUtils {
 		Point coords = element.getLocation();
 		driver.tap(1, coords.x - (coords.x / 2 + coords.x / 8), coords.y, 1);
 	}
-	
-	public static void resetApp(AppiumDriver driver){
+
+	public static void resetApp(AppiumDriver driver) {
 		driver.resetApp();
 	}
 }
