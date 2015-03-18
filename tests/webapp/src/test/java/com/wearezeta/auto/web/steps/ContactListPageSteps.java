@@ -121,7 +121,6 @@ public class ContactListPageSteps {
 	public void IClickArchiveButton(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		PagesCollection.contactListPage.clickOptionsButtonForContact(contact);
-		Thread.sleep(1000);
 		PagesCollection.contactListPage
 				.clickArchiveConversationForContact(contact);
 	}

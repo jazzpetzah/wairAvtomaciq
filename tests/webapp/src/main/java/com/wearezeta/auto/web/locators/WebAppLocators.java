@@ -58,6 +58,8 @@ public final class WebAppLocators {
 				+ "//*[@data-uie-name='go-options']",
 				xpathParentContactListItem, name);
 
+		public static final String classOptionsButton = ".text-theme.conversation-list-item [data-uie-name=go-options]";
+
 		public static final String xpathSelfProfileEntry = "//*[@data-uie-name='go-self-profile']";
 
 		// index starts from 1
@@ -169,7 +171,8 @@ public final class WebAppLocators {
 
 		public static final String xpathSwitchToSignInButton = "//*[@data-uie-name='go-sign-in']";
 
-		// public static final String xpathGoToCreateAccountButton = "(//*[@data-uie-name='go-register'])[2]";
+		// public static final String xpathGoToCreateAccountButton =
+		// "(//*[@data-uie-name='go-register'])[2]";
 	}
 
 	public static final class Common {

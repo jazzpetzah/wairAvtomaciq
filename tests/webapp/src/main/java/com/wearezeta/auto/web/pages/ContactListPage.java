@@ -183,12 +183,19 @@ public class ContactListPage extends WebPage {
 			DriverUtils.moveMouserOver(driver,
 					getContactWithName(conversationName));
 		} catch (WebDriverException e) {
-			// do nothing (safari workaround)
+			// Safari workaround
 		}
 		final By locator = By
 				.xpath(WebAppLocators.ContactListPage.xpathOptionsButtonByContactName
 						.apply(conversationName));
-		assert DriverUtils.isElementDisplayed(driver, locator, 5);
+		if (!DriverUtils.isElementDisplayed(driver, locator, 5)) {
+			// Safari workaround
+			final String showOptionsButtonJScript = "$('"
+					+ WebAppLocators.ContactListPage.classOptionsButton
+					+ "').css({'opacity': '100'})";
+			driver.executeScript(showOptionsButtonJScript);
+			assert DriverUtils.isElementDisplayed(driver, locator);
+		}
 		final WebElement optionsButton = driver.findElement(locator);
 		optionsButton.click();
 	}
