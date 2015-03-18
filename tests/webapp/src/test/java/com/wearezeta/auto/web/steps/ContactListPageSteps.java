@@ -178,7 +178,9 @@ public class ContactListPageSteps {
 	 */
 	@When("^I see connection request$")
 	public void ISeeConnectInvitation() throws Exception {
-		GivenISeeContactListWithName(WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING);
+		Assert.assertTrue(PagesCollection.contactListPage
+				.getIncomingPendingItemText().equals(
+						WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING));
 	}
 
 	/**
@@ -191,7 +193,7 @@ public class ContactListPageSteps {
 	@Given("^I open connection requests list$")
 	public void IOpenConnectionRequestsList() throws Exception {
 		PagesCollection.pendingConnectionsPage = PagesCollection.contactListPage
-				.openConnectionRequestsList(WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING);
+				.openConnectionRequestsList();
 
 	}
 

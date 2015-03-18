@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -47,6 +48,9 @@ public class ContactListPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathOpenPeoplePickerButton)
 	private WebElement openPeoplePickerButton;
 
+	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathIncomingPendingConvoItem)
+	private WebElement incomingPendingEntry;
+
 	public ContactListPage(ZetaWebAppDriver driver, WebDriverWait wait)
 			throws Exception {
 		super(driver, wait);
@@ -69,7 +73,8 @@ public class ContactListPage extends WebPage {
 			boolean includeArchived, boolean throwOnError) throws Exception {
 		if (conversationName.contains(DEFAULT_GROUP_CONVO_NAMES_SEPARATOR)) {
 			final Set<String> initialNamesSet = new HashSet<String>(
-					Arrays.asList(conversationName.split(",")));
+					Arrays.asList(conversationName.split(","))).stream()
+					.map(x -> x.trim()).collect(Collectors.toSet());
 			List<WebElement> convoNamesToCheck = new ArrayList<WebElement>();
 			if (DriverUtils
 					.isElementDisplayed(
@@ -89,7 +94,8 @@ public class ContactListPage extends WebPage {
 			for (WebElement convoItem : convoNamesToCheck) {
 				final String convoName = convoItem.getText();
 				final Set<String> convoItemNamesSet = new HashSet<String>(
-						Arrays.asList(convoName.split(",")));
+						Arrays.asList(convoName.split(","))).stream()
+						.map(x -> x.trim()).collect(Collectors.toSet());
 				if (convoItemNamesSet.equals(initialNamesSet)) {
 					return convoName;
 				}
@@ -263,9 +269,10 @@ public class ContactListPage extends WebPage {
 		return new ConversationPage(this.getDriver(), this.getWait());
 	}
 
-	public PendingConnectionsPage openConnectionRequestsList(String listAlias)
-			throws Exception {
-		openConversation(listAlias);
+	public PendingConnectionsPage openConnectionRequestsList() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(driver,
+				incomingPendingEntry);
+		incomingPendingEntry.click();
 		return new PendingConnectionsPage(this.getDriver(), this.getWait());
 	}
 
@@ -325,5 +332,12 @@ public class ContactListPage extends WebPage {
 		waitUtilConvoItemIsSelected(unarchivedEntry);
 
 		return new ConversationPage(this.getDriver(), this.getWait());
+	}
+
+	public String getIncomingPendingItemText() throws Exception {
+		final By entryLocator = By
+				.xpath(WebAppLocators.ContactListPage.xpathIncomingPendingConvoItem);
+		assert DriverUtils.isElementDisplayed(driver, entryLocator, 3) : "There are no visible incoming pending connections in the conversations list";
+		return incomingPendingEntry.getText();
 	}
 }
