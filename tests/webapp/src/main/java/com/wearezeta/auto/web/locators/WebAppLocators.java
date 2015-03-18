@@ -21,7 +21,7 @@ public final class WebAppLocators {
 
 		public static final String classNameSpinner = "loading-spinner";
 
-		public static final String xpathSwitchToRegisterButton = "//*[@data-uie-name='go-register]";
+		public static final String xpathSwitchToRegisterButton = "//*[@data-uie-name='go-register']";
 
 		public static final String xpathCreateAccountButton = "//*[@data-uie-name='do-register']";
 
@@ -169,7 +169,7 @@ public final class WebAppLocators {
 
 		public static final String xpathSwitchToSignInButton = "//*[@data-uie-name='go-sign-in']";
 
-		public static final String xpathGoToCreateAccountButton = "(//*[@data-uie-name='go-register'])[2]";
+		// public static final String xpathGoToCreateAccountButton = "(//*[@data-uie-name='go-register'])[2]";
 	}
 
 	public static final class Common {
