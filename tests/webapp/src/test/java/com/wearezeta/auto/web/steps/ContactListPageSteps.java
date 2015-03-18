@@ -70,7 +70,7 @@ public class ContactListPageSteps {
 				Thread.sleep(1000);
 			}
 			assert false : "Conversation list entry '" + name
-					+ "'is not visible after timeout expired";
+					+ "' is not visible after timeout expired";
 		}
 	}
 
