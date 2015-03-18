@@ -337,8 +337,10 @@ public class ContactListPage extends IOSPage {
 	public IOSPage tapOnContactByIndex(List<WebElement> contacts, int index)
 			throws Exception {
 		IOSPage page = null;
+		log.debug(DriverUtils.isElementDisplayed(driver, contacts.get(index)));
 		DriverUtils.waitUntilElementClickable(driver, contacts.get(index));
 		try {
+			log.debug(contacts.get(index).getAttribute("name"));
 			contacts.get(index).click();
 		} catch (WebDriverException e) {
 			BufferedImage im = DriverUtils.takeScreenshot(this.getDriver());
