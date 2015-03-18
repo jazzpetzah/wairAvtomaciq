@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -337,7 +338,12 @@ public class ContactListPage extends IOSPage {
 			throws Exception {
 		IOSPage page = null;
 		DriverUtils.waitUntilElementClickable(driver, contacts.get(index));
-		contacts.get(index).click();
+		try {
+			contacts.get(index).click();
+		} catch (WebDriverException e) {
+			log.debug("Can't select contact by index " + index + ". Page source: " +driver.getPageSource());
+			throw e;
+		}
 		page = new DialogPage(this.getDriver(), this.getWait());
 		return page;
 	}
