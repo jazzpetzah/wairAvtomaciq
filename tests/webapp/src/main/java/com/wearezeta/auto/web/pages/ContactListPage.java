@@ -265,6 +265,7 @@ public class ContactListPage extends WebPage {
 				+ conversationName
 				+ "' has not been found in the conversations list";
 		final WebElement entry = driver.findElement(entryLocator);
+		entry.click();
 		waitUtilConvoItemIsSelected(entry);
 		return new ConversationPage(this.getDriver(), this.getWait());
 	}
