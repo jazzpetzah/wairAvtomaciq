@@ -71,6 +71,9 @@ public class PersonalInfoPage extends IOSPage {
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameOptionsHelpButton)
 	private WebElement settingsHelpButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathSettingsHelpHeader)
+	private WebElement supportWebPageHeader;
 
 	public PersonalInfoPage(ZetaIOSDriver driver, WebDriverWait wait)
 			throws Exception {

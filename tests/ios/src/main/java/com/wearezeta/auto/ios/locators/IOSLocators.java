@@ -246,6 +246,8 @@ public final class IOSLocators {
 	
 	public static final String nameOptionsHelpButton = "Help";
 	
+	public static final String xpathSettingsHelpHeader = "//UIAApplication[1]/UIAWindow[2]/UIAScrollView[1]/UIAScrollView[1]/UIAWebView[1]/UIALink[1]";
+	
 	///////////////////////
 	//Other User Profile
 	//////////////////////
