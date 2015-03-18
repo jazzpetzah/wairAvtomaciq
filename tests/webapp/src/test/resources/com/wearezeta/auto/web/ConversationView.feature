@@ -40,7 +40,7 @@ Feature: Conversation
     When I archive conversation <Contact>
     Then I do not see Contact list with name <Contact>
     When I open archive
-    And I open conversation with <Contact>
+    And I unarchive conversation <Contact>
     Then I see Contact list with name <Contact>
 
     Examples: 

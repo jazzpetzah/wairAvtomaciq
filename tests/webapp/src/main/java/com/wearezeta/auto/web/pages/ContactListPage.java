@@ -1,6 +1,10 @@
 package com.wearezeta.auto.web.pages;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
@@ -31,11 +35,14 @@ public class ContactListPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathContactListEntries)
 	private List<WebElement> contactListEntries;
 
+	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathArchivedContactListEntries)
+	private List<WebElement> archivedContactListEntries;
+
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathSelfProfileEntry)
 	private WebElement selfName;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathOpenArchivedConvosList)
-	private WebElement openArchivedConvosList;
+	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathOpenArchivedConvosButton)
+	private WebElement openArchivedConvosButton;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathOpenPeoplePickerButton)
 	private WebElement openPeoplePickerButton;
@@ -45,23 +52,63 @@ public class ContactListPage extends WebPage {
 		super(driver, wait);
 	}
 
-	private WebElement retrieveNoNameGroupContact(String name) {
-		String[] exContacts = name.split(",");
+	private static final String DEFAULT_GROUP_CONVO_NAMES_SEPARATOR = ",";
 
-		for (WebElement contact : this.contactListEntries) {
-			boolean isFound = true;
-			String realContact = contact.getText();
-			for (String exContact : exContacts) {
-				if (!realContact.contains(exContact.trim())) {
-					isFound = false;
+	/**
+	 * Fixes default group conversation name, because we never know the original
+	 * order of participant names in group convo name
+	 * 
+	 * @param conversationName
+	 *            the initial name
+	 * @return fixed group convo name, as it is displayed in conversation list.
+	 *         'conversationName' is not going to be changed if there are no
+	 *         comma character(s)
+	 * @throws Exception
+	 */
+	private String fixDefaultGroupConvoName(String conversationName,
+			boolean includeArchived, boolean throwOnError) throws Exception {
+		if (conversationName.contains(DEFAULT_GROUP_CONVO_NAMES_SEPARATOR)) {
+			final Set<String> initialNamesSet = new HashSet<String>(
+					Arrays.asList(conversationName.split(",")));
+			List<WebElement> convoNamesToCheck = new ArrayList<WebElement>();
+			if (DriverUtils
+					.isElementDisplayed(
+							driver,
+							By.xpath(WebAppLocators.ContactListPage.xpathContactListEntries),
+							3)) {
+				convoNamesToCheck.addAll(contactListEntries);
+			}
+			if (includeArchived) {
+				if (DriverUtils
+						.isElementDisplayed(
+								driver,
+								By.xpath(WebAppLocators.ContactListPage.xpathArchivedContactListEntries))) {
+					convoNamesToCheck.addAll(archivedContactListEntries);
 				}
 			}
-			if (isFound) {
-				return contact;
+			for (WebElement convoItem : convoNamesToCheck) {
+				final String convoName = convoItem.getText();
+				final Set<String> convoItemNamesSet = new HashSet<String>(
+						Arrays.asList(convoName.split(",")));
+				if (convoItemNamesSet.equals(initialNamesSet)) {
+					return convoName;
+				}
 			}
+			if (throwOnError) {
+				throw new RuntimeException(String.format(
+						"Group conversation '%s' does not exists in the list",
+						conversationName));
+			} else {
+				return null;
+			}
+		} else {
+			return conversationName;
 		}
+	}
 
-		return null;
+	private String fixDefaultGroupConvoName(String conversationName,
+			boolean includeArchived) throws Exception {
+		return fixDefaultGroupConvoName(conversationName, includeArchived, true);
 	}
 
 	public PeoplePickerPage isHiddenByPeoplePicker() throws Exception {
@@ -83,70 +130,54 @@ public class ContactListPage extends WebPage {
 						By.xpath(WebAppLocators.ContactListPage.xpathOpenPeoplePickerButton));
 	}
 
-	public boolean isContactWithNameExists(String name) throws Exception {
+	public boolean isSelfNameEntryExist(String name) throws Exception {
+		log.debug("Looking for self name entry '" + name + "'");
+		return DriverUtils.isElementDisplayed(driver,
+				By.xpath(WebAppLocators.ContactListPage.xpathSelfProfileEntry),
+				5);
+	}
+
+	public boolean isConvoListEntryWithNameExist(String name) throws Exception {
 		log.debug("Looking for contact with name '" + name + "'");
-		if (name.contains(",")) {
-			return retrieveNoNameGroupContact(name) != null;
-		} else {
-			final String xpath = WebAppLocators.ContactListPage.xpathContactListEntryByName
-					.apply(name);
-			return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath),
-					20);
+		name = fixDefaultGroupConvoName(name, false, false);
+		if (name == null) {
+			return false;
 		}
+		final String xpath = WebAppLocators.ContactListPage.xpathContactListEntryByName
+				.apply(name);
+		return DriverUtils.isElementDisplayed(driver, By.xpath(xpath), 5);
 	}
 
-	public boolean contactWithNameNotVisible(String name) throws Exception {
+	public boolean isConvoListEntryNotVisible(String name) throws Exception {
 		log.debug("Looking for contact with name '" + name + "'");
-		if (name.contains(",")) {
-			return retrieveNoNameGroupContact(name) != null;
-		} else {
-			final String xpath = WebAppLocators.ContactListPage.xpathContactListEntryByName
-					.apply(name);
-			return DriverUtils.waitUntilElementDissapear(driver,
-					By.xpath(xpath), 20);
+		name = fixDefaultGroupConvoName(name, false, false);
+		if (name == null) {
+			return true;
 		}
+		final String xpath = WebAppLocators.ContactListPage.xpathContactListEntryByName
+				.apply(name);
+		return DriverUtils.waitUntilElementDissapear(driver, By.xpath(xpath),
+				10);
 	}
 
-	public boolean checkNameInContactList(String name) throws Exception {
-		DriverUtils.waitUntilElementAppears(driver,
-				By.xpath(WebAppLocators.ContactListPage.xpathSelfProfileEntry));
-
-		WebDriverWait wait = new WebDriverWait(driver, 10);
-
-		return wait.until(new Function<WebDriver, Boolean>() {
-			public Boolean apply(WebDriver driver) {
-				if (selfName.getText().equals(name)) {
-					return true;
-				} else {
-					return false;
-				}
-			}
-		});
-	}
-
-	public WebElement getContactWithName(String name) {
-		WebElement result = null;
-
-		if (name.contains(",")) {
-			result = retrieveNoNameGroupContact(name);
-		} else {
-			final String xpath = WebAppLocators.ContactListPage.xpathContactListEntryByName
-					.apply(name);
-			result = driver.findElement(By.xpath(xpath));
-		}
-
-		return result;
+	public WebElement getContactWithName(String name, boolean includeArchived)
+			throws Exception {
+		name = fixDefaultGroupConvoName(name, includeArchived);
+		final String xpath = WebAppLocators.ContactListPage.xpathContactListEntryByName
+				.apply(name);
+		return driver.findElement(By.xpath(xpath));
 	}
 
 	public void openArchive() {
-		this.getWait()
-				.until(ExpectedConditions
-						.elementToBeClickable(openArchivedConvosList));
-		openArchivedConvosList.click();
+		this.getWait().until(
+				ExpectedConditions
+						.elementToBeClickable(openArchivedConvosButton));
+		openArchivedConvosButton.click();
 	}
 
 	public void clickArchiveConversationForContact(String conversationName)
 			throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
 		final By locator = By
 				.xpath(WebAppLocators.ContactListPage.xpathArchiveButtonByContactName
 						.apply(conversationName));
@@ -157,6 +188,7 @@ public class ContactListPage extends WebPage {
 
 	public void clickMuteConversationForContact(String conversationName)
 			throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
 		final By locator = By
 				.xpath(WebAppLocators.ContactListPage.xpathMuteButtonByContactName
 						.apply(conversationName));
@@ -165,6 +197,7 @@ public class ContactListPage extends WebPage {
 		muteButton.click();
 	}
 
+	// FIXME: check muted state exactly for 'conversationName'
 	public boolean isConversationMuted(String conversationName)
 			throws Exception {
 		// moving focus from contact - to now show ... button
@@ -181,10 +214,11 @@ public class ContactListPage extends WebPage {
 			throws Exception {
 		try {
 			DriverUtils.moveMouserOver(driver,
-					getContactWithName(conversationName));
+					getContactWithName(conversationName, false));
 		} catch (WebDriverException e) {
 			// Safari workaround
 		}
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
 		final By locator = By
 				.xpath(WebAppLocators.ContactListPage.xpathOptionsButtonByContactName
 						.apply(conversationName));
@@ -217,30 +251,16 @@ public class ContactListPage extends WebPage {
 
 	public ConversationPage openConversation(String conversationName)
 			throws Exception {
-		DriverUtils.waitUntilElementAppears(driver, By
-				.xpath(WebAppLocators.ContactListPage.xpathContactListEntries));
-
-		if (conversationName.contains(",")) {
-			WebElement contact = retrieveNoNameGroupContact(conversationName);
-			if (contact != null) {
-				contact.click();
-				waitUtilConvoItemIsSelected(contact);
-				return new ConversationPage(this.getDriver(), this.getWait());
-			}
-		} else {
-			for (WebElement contact : this.contactListEntries) {
-				if (contact.getText().equals(conversationName)) {
-					DriverUtils.waitUntilElementClickable(driver, contact);
-					contact.click();
-					waitUtilConvoItemIsSelected(contact);
-					return new ConversationPage(this.getDriver(),
-							this.getWait());
-				}
-			}
-		}
-		throw new RuntimeException(String.format(
-				"Conversation '%s' does not exist in the conversations list",
-				conversationName));
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final By entryLocator = By
+				.xpath(WebAppLocators.ContactListPage.xpathContactListEntryByName
+						.apply(conversationName));
+		assert DriverUtils.isElementDisplayed(driver, entryLocator, 3) : "Conversation item '"
+				+ conversationName
+				+ "' has not been found in the conversations list";
+		final WebElement entry = driver.findElement(entryLocator);
+		waitUtilConvoItemIsSelected(entry);
+		return new ConversationPage(this.getDriver(), this.getWait());
 	}
 
 	public PendingConnectionsPage openConnectionRequestsList(String listAlias)
@@ -275,11 +295,35 @@ public class ContactListPage extends WebPage {
 
 	public void clickUnmuteConversationForContact(String conversationName)
 			throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
 		final By locator = By
 				.xpath(WebAppLocators.ContactListPage.xpathUnmuteButtonByContactName
 						.apply(conversationName));
 		assert DriverUtils.isElementDisplayed(driver, locator, 5);
 		final WebElement unmuteButton = this.getDriver().findElement(locator);
 		unmuteButton.click();
+	}
+
+	public ConversationPage unarchiveConversation(String conversationName)
+			throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final By archivedEntryLocator = By
+				.xpath(WebAppLocators.ContactListPage.xpathArchivedContactListEntryByName
+						.apply(conversationName));
+		assert DriverUtils.isElementDisplayed(driver, archivedEntryLocator, 3);
+		final WebElement archivedEntry = driver
+				.findElement(archivedEntryLocator);
+		archivedEntry.click();
+
+		final By unarchivedEntryLocator = By
+				.xpath(WebAppLocators.ContactListPage.xpathContactListEntryByName
+						.apply(conversationName));
+		assert DriverUtils
+				.isElementDisplayed(driver, unarchivedEntryLocator, 3);
+		final WebElement unarchivedEntry = driver
+				.findElement(unarchivedEntryLocator);
+		waitUtilConvoItemIsSelected(unarchivedEntry);
+
+		return new ConversationPage(this.getDriver(), this.getWait());
 	}
 }
