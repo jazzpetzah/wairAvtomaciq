@@ -77,17 +77,21 @@ public class DriverUtils {
 		return isElementDisplayed(driver, by, 1);
 	}
 
-	public static boolean isElementDisplayed(RemoteWebDriver driver, By by,
+	public static boolean isElementDisplayed(RemoteWebDriver driver, final By by,
 			int timeoutSeconds) throws Exception {
 		if (waitUntilElementAppears(driver, by, timeoutSeconds)) {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
 					.withTimeout(timeoutSeconds / 2 + 1, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS);
-			return wait.until(new Function<WebDriver, Boolean>() {
-				public Boolean apply(WebDriver driver) {
-					return driver.findElement(by).isDisplayed();
-				}
-			});
+			try {
+				return wait.until(new Function<WebDriver, Boolean>() {
+					public Boolean apply(WebDriver driver) {
+						return driver.findElement(by).isDisplayed();
+					}
+				});
+			} catch (TimeoutException e) {
+				return false;
+			}
 		} else {
 			return false;
 		}
