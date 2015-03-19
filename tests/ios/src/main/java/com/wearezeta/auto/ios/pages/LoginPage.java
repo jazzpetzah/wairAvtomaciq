@@ -24,6 +24,12 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 public class LoginPage extends IOSPage {
 	private static final Logger log = ZetaLogger.getLog(LoginPage.class
 			.getSimpleName());
+	
+	final String[] scriptString = new String[] {
+			 "tell application \"System Events\"",
+	         "tell application \"iOS Simulator\" to activate",
+	         "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
+	         "end tell" };
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameMainWindow)
 	private WebElement viewPager;
@@ -72,6 +78,27 @@ public class LoginPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameShareButton)
 	private WebElement shareButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameForgotPasswordButton)
+	private WebElement changePasswordButtonSignIn;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathChangePasswordEmailField)
+	private WebElement changePWEmailField;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathChangePasswordPageChangePasswordButton)
+	private WebElement changePasswordPageChangePasswordButton;
+	
+	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameUIATextField)
+	private List<WebElement> textFields;
+	
+	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameUIAButton)
+	private List<WebElement> uiButtons;
+	
+	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameUIASecureTextField)
+	private List<WebElement> secureTextFields;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathChangedPasswordConfirmationText)
+	private WebElement changedPasswordPageConfirmation;
 
 	private String login;
 
@@ -254,5 +281,64 @@ public class LoginPage extends IOSPage {
 		DriverUtils.waitUntilElementAppears(driver,
 				By.name(IOSLocators.nameIgnoreUpdateButton));
 		ignoreUpdateButton.click();
+	}
+	
+	public PersonalInfoPage tapChangePasswordButton() throws Exception{
+		changePasswordButtonSignIn.click();
+		return new PersonalInfoPage(this.getDriver(), this.getWait());
+	}
+	
+	public void tapEmailFieldToChangePassword(String email) throws InterruptedException{
+		for (WebElement textField : textFields){
+			String valueOfField = textField.getAttribute("value");
+			if(valueOfField.equals("Email")){
+				DriverUtils.mobileTapByCoordinates(getDriver(), textField);
+				this.inputStringFromKeyboard(email);
+			}
+		}
+	}
+
+	public void tapChangePasswordButtonInWebView(){
+		for (WebElement uiButton : uiButtons){
+			String nameOfButton = uiButton.getAttribute("name");
+			if(nameOfButton.equals("CHANGE PASSWORD")){
+				DriverUtils.mobileTapByCoordinates(getDriver(), uiButton);
+			}
+		}
+	}
+	
+	public void changeURLInBrowser(String URL) throws InterruptedException{
+		for (WebElement uiButton : uiButtons){
+			String nameOfButton = uiButton.getAttribute("name");
+			if(nameOfButton.equals("URL")){
+				DriverUtils.mobileTapByCoordinates(getDriver(), uiButton);
+				this.inputStringFromKeyboard(URL);
+			}
+			for (WebElement uiButton2 : uiButtons){
+				String nameOfButton2 = uiButton2.getAttribute("name");
+				if(nameOfButton2.equals("Go")){
+					DriverUtils.mobileTapByCoordinates(getDriver(), uiButton2);
+			}
+		}
+	  }
+	}
+	
+	public void tapPasswordFieldToChangePassword(String newPassword) throws Exception{
+		for (WebElement secureTextField : secureTextFields){
+			String valueOfField = secureTextField.getAttribute("name");
+			if(valueOfField.equals("Password")){
+				DriverUtils.mobileTapByCoordinates(getDriver(), secureTextField);
+				this.inputStringFromKeyboard(newPassword);
+			}
+		}
+	}
+	
+	public boolean passwordConfiamtionIsVisible(){
+		return changedPasswordPageConfirmation.isDisplayed();
+	}
+	
+	public void pressSimulatorHomeButton() throws Exception{
+		cmdVscript(scriptString);
+		DriverUtils.resetApp(getDriver());
 	}
 }

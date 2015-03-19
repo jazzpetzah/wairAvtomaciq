@@ -232,14 +232,14 @@ public abstract class IOSPage extends BasePage {
 		return CommonUtils.getIsSimulatorFromConfig(IOSPage.class);
 	}
 
-	public void cmdVscript() throws ScriptException {
-		final String[] scriptArr = new String[] {
-				"property thisapp: \"iOS Simulator\"",
-				"tell application \"System Events\"", " tell process thisapp",
-				" click menu item \"Paste\" of menu \"Edit\" of menu bar 1",
-				" end tell", "end tell" };
+	public void cmdVscript(String[] scriptString) throws ScriptException {
+//		final String[] scriptArr = new String[] {
+//				"property thisapp: \"iOS Simulator\"",
+//				"tell application \"System Events\"", " tell process thisapp",
+//				" click menu item \"Paste\" of menu \"Edit\" of menu bar 1",
+//				" end tell", "end tell" };
 
-		final String script = StringUtils.join(scriptArr, "\n");
+		final String script = StringUtils.join(scriptString, "\n");
 		ScriptEngineManager mgr = new ScriptEngineManager();
 		ScriptEngine engine = mgr.getEngineByName("AppleScriptEngine");
 		if (null != engine) {

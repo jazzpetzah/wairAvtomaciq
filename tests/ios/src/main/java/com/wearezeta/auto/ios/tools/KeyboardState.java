@@ -4,7 +4,9 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
@@ -27,10 +29,15 @@ public abstract class KeyboardState {
 	public abstract void switchTo(KeyboardState finalState);
 	
 	protected void tapKey(String name){
-		try {
-			driver.executeScript(String.format(TAP_KEYBOARD_BUTTON, name));
-		}catch (WebDriverException ex) {
-			log.debug(ex.getMessage());
+		if (name.equals(MORE_SYMBOLS) || name.equals(SHIFT) || name.equals(MORE_LETTERS) || name.equals(MORE_NUMBERS)) {
+			WebElement key = driver.findElementByName(name);
+			DriverUtils.mobileTapByCoordinates(driver, key);
+		} else {
+			try {
+				driver.executeScript(String.format(TAP_KEYBOARD_BUTTON, name));
+			}catch (WebDriverException ex) {
+				log.debug(ex.getMessage());
+			}
 		}
 	}
 	

@@ -2,10 +2,10 @@ package com.wearezeta.auto.common.email;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -16,6 +16,7 @@ import javax.mail.*;
 
 import org.apache.log4j.Logger;
 
+import com.sun.mail.iap.ConnectionException;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
@@ -74,13 +75,26 @@ public class IMAPSMailbox {
 		this.openFolder(this.getFolder(), shouldStartNotifier);
 	}
 
+	private static Random random = new Random();
+
 	public void openFolder(final Folder folderToOpen,
 			boolean shouldStartNotifier) throws MessagingException,
 			InterruptedException {
 		folderStateGuard.tryAcquire(FOLDER_OPEN_TIMEOUT, TimeUnit.SECONDS);
 
 		if (!folderToOpen.isOpen()) {
-			folderToOpen.open(Folder.READ_ONLY);
+			try {
+				folderToOpen.open(Folder.READ_ONLY);
+			} catch (Throwable e) {
+				try {
+					if (e instanceof ConnectionException) {
+						Thread.sleep(1000 * (5 + random.nextInt(30)));
+					}
+				} finally {
+					folderStateGuard.release();
+				}
+				throw e;
+			}
 		}
 
 		if (shouldStartNotifier && messagesCountNotifier == null) {
@@ -154,10 +168,15 @@ public class IMAPSMailbox {
 
 	public Future<Message> getMessage(Map<String, String> expectedHeaders,
 			int timeoutSeconds) throws MessagingException, InterruptedException {
+		return getMessage(expectedHeaders, timeoutSeconds, 0);
+	}
+
+	public Future<Message> getMessage(Map<String, String> expectedHeaders,
+			int timeoutSeconds, long rejectMessagesBeforeTimestamp)
+			throws MessagingException, InterruptedException {
 		this.openFolder(true);
-		final long listenerStartedTimestamp = new Date().getTime();
 		MBoxChangesListener listener = new MBoxChangesListener(this,
-				expectedHeaders, timeoutSeconds, listenerStartedTimestamp);
+				expectedHeaders, timeoutSeconds, rejectMessagesBeforeTimestamp);
 		this.getFolder().addMessageCountListener(listener);
 		log.debug(String.format(
 				"Started email listener for message containing headers %s...",
