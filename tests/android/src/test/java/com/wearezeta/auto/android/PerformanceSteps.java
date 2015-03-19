@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.openqa.selenium.WebElement;
 
-import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.PerformanceCommon;
@@ -34,9 +33,18 @@ public class PerformanceSteps {
 				// Send message to random visible chat
 				for (int i = 0; i < PerformanceCommon.SEND_MESSAGE_NUM; i++) {
 					// --Get list of visible dialogs visible dialog
-					ArrayList<WebElement> visibleContactsList = new ArrayList<WebElement>(
-							PagesCollection.contactListPage
-									.GetVisibleContacts());
+					PagesCollection.contactListPage
+							.waitForConversationListLoad();
+					ArrayList<WebElement> visibleContactsList;
+					int counter = 0;
+					do {
+						Thread.sleep(1000);
+						visibleContactsList = new ArrayList<WebElement>(
+								PagesCollection.contactListPage
+										.GetVisibleContacts());
+						counter++;
+					} while ((visibleContactsList.isEmpty()
+							|| visibleContactsList == null) && counter != 3);
 					visibleContactsList.remove(0);
 					// --
 
@@ -45,21 +53,28 @@ public class PerformanceSteps {
 					PagesCollection.dialogPage = (DialogPage) PagesCollection.contactListPage
 							.tapOnContactByPosition(visibleContactsList,
 									randomInt);
-					Thread.sleep(1000);
-					PagesCollection.dialogPage.tapOnCursorFrame();
+					PagesCollection.dialogPage.isDialogVisible();
+					PagesCollection.dialogPage
+							.tapDialogPageBottomLinearLayout();
 					PagesCollection.dialogPage.typeMessage(CommonUtils
 							.generateGUID());
 					Thread.sleep(1000);
-					PagesCollection.dialogPage.swipeDown(500);
 					if (perfCommon.random.nextBoolean()) {
-						Thread.sleep(1000);
+						PagesCollection.contactListPage = PagesCollection.dialogPage
+								.navigateBack();
+						PagesCollection.dialogPage = (DialogPage) PagesCollection.contactListPage
+								.tapOnContactByPosition(visibleContactsList,
+										randomInt);
+						PagesCollection.dialogPage.isDialogVisible();
+						PagesCollection.dialogPage
+								.tapDialogPageBottomLinearLayout();
 						PagesCollection.dialogPage.sendFrontCameraImage();
 					}
 					for (int y = 0; y < 2; y++) {
 						PagesCollection.dialogPage.swipeDown(500);
 					}
-					PagesCollection.contactListPage = (ContactListPage) PagesCollection.dialogPage
-							.swipeRight(500);
+					PagesCollection.contactListPage = PagesCollection.dialogPage
+							.navigateBack();
 				}
 
 				/*
