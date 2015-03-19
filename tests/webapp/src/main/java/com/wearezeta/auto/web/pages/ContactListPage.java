@@ -323,7 +323,7 @@ public class ContactListPage extends WebPage {
 
 	public ConversationPage unarchiveConversation(String conversationName)
 			throws Exception {
-		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		conversationName = fixDefaultGroupConvoName(conversationName, true);
 		final By archivedEntryLocator = By
 				.xpath(WebAppLocators.ContactListPage.xpathArchivedContactListEntryByName
 						.apply(conversationName));
