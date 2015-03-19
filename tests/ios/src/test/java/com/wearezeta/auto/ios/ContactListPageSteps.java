@@ -23,7 +23,6 @@ public class ContactListPageSteps {
 
 	@Given("^I see Contact list with my name (.*)$")
 	public void GivenISeeContactListWithMyName(String name) throws Throwable {
-		//name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		name = usrMgr.replaceAliasesOccurences(name,FindBy.NAME_ALIAS);
 
 		boolean loginFinished = PagesCollection.loginPage.isLoginFinished(name);
