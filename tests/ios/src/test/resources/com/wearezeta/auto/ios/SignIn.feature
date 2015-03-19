@@ -42,7 +42,7 @@ Feature: Sign In
       | WrongMail  | WrongPassword |
       | wrongwrong | wrong         |
 
-  @torun @staging @id1479
+  @staging @id1479
   Scenario Outline: Verify possibility of reseting password (welcome page)
     Given I see sign in screen
     And I press Sign in button
