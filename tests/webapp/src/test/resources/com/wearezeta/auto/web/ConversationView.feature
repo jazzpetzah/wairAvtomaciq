@@ -113,13 +113,10 @@ Feature: Conversation
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open conversation with <Contact>
-	When I click ping button  
+	When I click ping button
 	Then I see ping message <PING>
-	And I wait for 2 seconds
-	When I click ping button  
+	When I click ping button
 	Then I see ping message <PING_AGAIN>
-	And I wait for 2 seconds
-	When I click ping button 
 	Then I see only one ping message
 
     Examples: 

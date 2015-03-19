@@ -208,13 +208,16 @@ public class ConversationPage extends WebPage {
 		pingButton.click();
 	}
 
-	public boolean isPingMessageVisible(String message) {
-		String text = pingMessage.getText();
-		if (text.toLowerCase().contains(message.toLowerCase())) {
-			return pingMessage.isDisplayed();
-		} else {
-			return false;
-		}
+	private static final int PING_MESSAGE_TIMEOUT = 3; // seconds
+
+	public boolean isPingMessageVisible(String message) throws Exception {
+		final By locator = By
+				.className(WebAppLocators.ConversationPage.classPingMessage);
+		assert DriverUtils.isElementDisplayed(driver, locator,
+				PING_MESSAGE_TIMEOUT) : "Ping message has not been shown within "
+				+ PING_MESSAGE_TIMEOUT + " second(s) timeout";
+		return pingMessage.getText().toLowerCase()
+				.contains(message.toLowerCase());
 	}
 
 	public int numberOfPingMessagesVisible() {

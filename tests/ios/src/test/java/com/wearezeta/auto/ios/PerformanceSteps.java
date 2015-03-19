@@ -53,9 +53,18 @@ public class PerformanceSteps {
 				for (int i = 0; i < PerformanceCommon.SEND_MESSAGE_NUM; i++) {
 					// Get list of visible dialogs, remove self user name from
 					// this list
-					Assert.assertTrue("Contact list didn't load",
-							PagesCollection.contactListPage
-									.waitForContactListToLoad());
+					boolean isLoaded = PagesCollection.contactListPage
+							.waitForContactListToLoad();
+					if (!isLoaded) {
+						PagesCollection.contactListPage = (ContactListPage) PagesCollection.dialogPage
+								.swipeRight(
+										500,
+										DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL,
+										30);
+					}
+					isLoaded = PagesCollection.contactListPage
+							.waitForContactListToLoad();
+					Assert.assertTrue("Contact list didn't load", isLoaded);
 					ArrayList<WebElement> visibleContactsList = new ArrayList<WebElement>(
 							PagesCollection.contactListPage
 									.GetVisibleContacts());

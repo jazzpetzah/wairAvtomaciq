@@ -243,17 +243,19 @@ public class ContactListPage extends WebPage {
 	private static final int SELECTION_TIMEOUT = 5; // seconds
 	private static final String NON_SELECTED_ITEM_COLOR = "rgba(255, 255, 255, 1)";
 
-	private void waitUtilConvoItemIsSelected(WebElement item) {
+	private void waitUtilEntryIsSelected(WebElement entry) {
 		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(
 				SELECTION_TIMEOUT, TimeUnit.SECONDS).pollingEvery(1,
 				TimeUnit.SECONDS);
 		wait.until(new Function<WebDriver, Boolean>() {
 			public Boolean apply(WebDriver driver) {
-				return !item.getCssValue("color").equals(
+				return !entry.getCssValue("color").equals(
 						NON_SELECTED_ITEM_COLOR);
 			}
 		});
 	}
+
+	private static final int OPEN_CONVO_LIST_ENTRY_TIMEOUT = 3; // seconds
 
 	public ConversationPage openConversation(String conversationName)
 			throws Exception {
@@ -261,12 +263,14 @@ public class ContactListPage extends WebPage {
 		final By entryLocator = By
 				.xpath(WebAppLocators.ContactListPage.xpathContactListEntryByName
 						.apply(conversationName));
-		assert DriverUtils.isElementDisplayed(driver, entryLocator, 3) : "Conversation item '"
+		assert DriverUtils.isElementDisplayed(driver, entryLocator,
+				OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Conversation item '"
 				+ conversationName
-				+ "' has not been found in the conversations list";
+				+ "' has not been found in the conversations list within "
+				+ OPEN_CONVO_LIST_ENTRY_TIMEOUT + " second(s) timeoutÏ";
 		final WebElement entry = driver.findElement(entryLocator);
 		entry.click();
-		waitUtilConvoItemIsSelected(entry);
+		waitUtilEntryIsSelected(entry);
 		return new ConversationPage(this.getDriver(), this.getWait());
 	}
 
@@ -278,9 +282,14 @@ public class ContactListPage extends WebPage {
 	}
 
 	public SelfProfilePage openSelfProfile() throws Exception {
-		DriverUtils.waitUntilElementAppears(this.getDriver(),
-				By.xpath(WebAppLocators.ContactListPage.xpathSelfProfileEntry));
-		selfName.click();
+		final By entryLocator = By
+				.xpath(WebAppLocators.ContactListPage.xpathSelfProfileEntry);
+		assert DriverUtils.isElementDisplayed(driver, entryLocator,
+				OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Self profile entry has not been found within "
+				+ OPEN_CONVO_LIST_ENTRY_TIMEOUT + " second(s) timeout";
+		final WebElement entry = driver.findElement(entryLocator);
+		entry.click();
+		waitUtilEntryIsSelected(entry);
 		return new SelfProfilePage(this.getDriver(), this.getWait());
 	}
 
@@ -330,7 +339,7 @@ public class ContactListPage extends WebPage {
 				.isElementDisplayed(driver, unarchivedEntryLocator, 3);
 		final WebElement unarchivedEntry = driver
 				.findElement(unarchivedEntryLocator);
-		waitUtilConvoItemIsSelected(unarchivedEntry);
+		waitUtilEntryIsSelected(unarchivedEntry);
 
 		return new ConversationPage(this.getDriver(), this.getWait());
 	}
