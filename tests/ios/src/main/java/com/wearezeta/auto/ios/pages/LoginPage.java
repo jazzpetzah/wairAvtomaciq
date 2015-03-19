@@ -325,7 +325,7 @@ public class LoginPage extends IOSPage {
 	
 	public void tapPasswordFieldToChangePassword(String newPassword) throws Exception{
 		for (WebElement secureTextField : secureTextFields){
-			String valueOfField = secureTextField.getAttribute("name");
+			String valueOfField = secureTextField.getAttribute("value");
 			if(valueOfField.equals("Password")){
 				DriverUtils.mobileTapByCoordinates(getDriver(), secureTextField);
 				this.inputStringFromKeyboard(newPassword);
