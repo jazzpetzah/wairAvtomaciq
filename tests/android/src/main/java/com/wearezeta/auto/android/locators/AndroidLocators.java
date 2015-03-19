@@ -275,6 +275,9 @@ public final class AndroidLocators {
 		public static final String idPlayPauseMedia = LOCATORS_PACKAGE
 				+ ":id/iv__media_play";
 
+		public static final String idAddParticipants = LOCATORS_PACKAGE
+				+ ":id/gtv__cursor_participants";
+		
 		public static final String idKnockMessage = LOCATORS_PACKAGE
 				+ ":id/ttv__row_conversation__knock_message";
 

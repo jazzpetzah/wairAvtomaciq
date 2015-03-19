@@ -61,5 +61,5 @@ Feature: Sign In
    
 
     Examples: 
-      | Login    			  	      | Password      | Name      | NewPassword   |
-      | smoketester.ios@wearezeta.com | user1Password | user1Name | aqa123456789  |
+      | Login    			  	      | Password      | Name      		 | NewPassword   |
+      | smoketester.ios@wearezeta.com | user1Password | SmoketesterReset | aqa123456789  |
