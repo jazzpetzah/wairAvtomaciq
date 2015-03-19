@@ -228,12 +228,13 @@ public class ClientUsersManager {
 		for (final ClientUser userToCreate : usersToCreate) {
 			Runnable worker = new Thread(new Runnable() {
 				public void run() {
-					int retryNumber = 0;
+					int retryNumber = 1;
 					int intervalSeconds = 1;
 					do {
 						long sleepInterval = 1000;
 						try {
-							BackendAPIWrappers.createUser(userToCreate);
+							BackendAPIWrappers.createUser(userToCreate,
+									retryNumber);
 							createdClientsCount.incrementAndGet();
 							return;
 						} catch (BackendRequestException e) {
@@ -248,8 +249,7 @@ public class ClientUsersManager {
 						}
 						log.debug(String
 								.format("Failed to create user '%s'. Retrying (%d of %d)...",
-										userToCreate.getName(),
-										retryNumber + 1,
+										userToCreate.getName(), retryNumber,
 										NUMBER_OF_REGISTRATION_RETRIES));
 						try {
 							Thread.sleep(sleepInterval);
@@ -257,7 +257,7 @@ public class ClientUsersManager {
 							return;
 						}
 						retryNumber++;
-					} while (retryNumber < NUMBER_OF_REGISTRATION_RETRIES);
+					} while (retryNumber <= NUMBER_OF_REGISTRATION_RETRIES);
 				}
 			});
 			executor.execute(worker);

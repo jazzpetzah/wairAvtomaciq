@@ -65,6 +65,9 @@ public class ContactListPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathContactListContainer)
 	private WebElement contactListContainer;
+	
+//	@FindBy(how = How.NAME, using = IOSLocators.nameArchiveButton)
+//	private WebElement archiveButton;
 
 	private int oldLocation = 0;
 
@@ -337,10 +340,14 @@ public class ContactListPage extends IOSPage {
 	public IOSPage tapOnContactByIndex(List<WebElement> contacts, int index)
 			throws Exception {
 		IOSPage page = null;
+		log.debug(DriverUtils.isElementDisplayed(driver, contacts.get(index)));
 		DriverUtils.waitUntilElementClickable(driver, contacts.get(index));
 		try {
+			log.debug(contacts.get(index).getAttribute("name"));
 			contacts.get(index).click();
 		} catch (WebDriverException e) {
+			BufferedImage im = DriverUtils.takeScreenshot(this.getDriver());
+			ImageUtil.storeImageToFile(im, "/Project/ios_crash.jpg");
 			log.debug("Can't select contact by index " + index + ". Page source: " +driver.getPageSource());
 			throw e;
 		}
@@ -401,6 +408,7 @@ public class ContactListPage extends IOSPage {
 	public void archiveConversation(String conversation) {
 		WebElement contact = findNameInContactList(conversation);
 		DriverUtils.clickArchiveConversationButton(this.getDriver(), contact);
+		//DriverUtils.mobileTapByCoordinates(getDriver(), archiveButton);
 	}
 
 	public boolean unreadDotIsVisible(boolean visible, boolean bigUnreadDot,

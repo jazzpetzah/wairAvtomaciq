@@ -53,7 +53,7 @@ Feature: People View
     And I wait for 2 seconds
     Then I do not see Contact list with name <ChatName>
     When I open archive
-    And I open conversation with <ChatName>
+    And I unarchive conversation <ChatName>
     Then I see <Message> action in conversation
 
     Examples: 

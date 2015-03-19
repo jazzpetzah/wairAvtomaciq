@@ -60,38 +60,52 @@ public class ContactListPageSteps {
 		if (usrMgr.isSelfUserSet()
 				&& usrMgr.getSelfUser().getName().equals(name)) {
 			Assert.assertTrue(PagesCollection.contactListPage
-					.checkNameInContactList(name));
+					.isSelfNameEntryExist(name));
 		} else {
-			boolean result = false;
 			for (int i = 0; i < 5; i++) {
-				result = PagesCollection.contactListPage
-						.isContactWithNameExists(name);
-				if (result)
-					break;
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
+				if (PagesCollection.contactListPage
+						.isConvoListEntryWithNameExist(name)) {
+					return;
 				}
+				Thread.sleep(1000);
 			}
-			Assert.assertTrue(result);
+			assert false : "Conversation list entry '" + name
+					+ "' is not visible after timeout expired";
 		}
 	}
 
 	/**
 	 * Opens conversation by choosing it from Contact List
 	 * 
-	 * @step. I open conversation with (.*)
+	 * @step. ^I open conversation with (.*)
 	 * 
 	 * @param contact
 	 *            conversation name string
 	 * 
 	 * @throws Exception
 	 */
-	@Given("I open conversation with (.*)")
+	@Given("^I open conversation with (.*)")
 	public void GivenIOpenConversationWith(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		PagesCollection.conversationPage = PagesCollection.contactListPage
 				.openConversation(contact);
+	}
+
+	/**
+	 * Unarchives conversation 'name'
+	 * 
+	 * @step. I unarchive conversation with (.*)
+	 * 
+	 * @param name
+	 *            conversation name string
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I unarchive conversation (.*)")
+	public void GivenIUnarchiveConversation(String name) throws Exception {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		PagesCollection.conversationPage = PagesCollection.contactListPage
+				.unarchiveConversation(name);
 	}
 
 	/**
@@ -121,7 +135,6 @@ public class ContactListPageSteps {
 	public void IClickArchiveButton(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		PagesCollection.contactListPage.clickOptionsButtonForContact(contact);
-		Thread.sleep(1000);
 		PagesCollection.contactListPage
 				.clickArchiveConversationForContact(contact);
 	}
@@ -153,7 +166,7 @@ public class ContactListPageSteps {
 	public void IDoNotSeeContactListWithName(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		Assert.assertTrue(PagesCollection.contactListPage
-				.contactWithNameNotVisible(name));
+				.isConvoListEntryNotVisible(name));
 	}
 
 	/**
@@ -165,7 +178,9 @@ public class ContactListPageSteps {
 	 */
 	@When("^I see connection request$")
 	public void ISeeConnectInvitation() throws Exception {
-		GivenISeeContactListWithName(WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING);
+		Assert.assertTrue(PagesCollection.contactListPage
+				.getIncomingPendingItemText().equals(
+						WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING));
 	}
 
 	/**
@@ -178,7 +193,7 @@ public class ContactListPageSteps {
 	@Given("^I open connection requests list$")
 	public void IOpenConnectionRequestsList() throws Exception {
 		PagesCollection.pendingConnectionsPage = PagesCollection.contactListPage
-				.openConnectionRequestsList(WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING);
+				.openConnectionRequestsList();
 
 	}
 
@@ -211,9 +226,10 @@ public class ContactListPageSteps {
 		PagesCollection.contactListPage
 				.clickMuteConversationForContact(contact);
 	}
-	
+
 	/**
-	 * Set unmuted state for the particular conversation from the list if it is already muted
+	 * Set unmuted state for the particular conversation from the list if it is
+	 * already muted
 	 * 
 	 * @step. ^I set unmuted state for conversation (.*)
 	 * 

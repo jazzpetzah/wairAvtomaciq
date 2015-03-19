@@ -2,7 +2,6 @@ package com.wearezeta.auto.common.email;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -169,10 +168,15 @@ public class IMAPSMailbox {
 
 	public Future<Message> getMessage(Map<String, String> expectedHeaders,
 			int timeoutSeconds) throws MessagingException, InterruptedException {
+		return getMessage(expectedHeaders, timeoutSeconds, 0);
+	}
+
+	public Future<Message> getMessage(Map<String, String> expectedHeaders,
+			int timeoutSeconds, long rejectMessagesBeforeTimestamp)
+			throws MessagingException, InterruptedException {
 		this.openFolder(true);
-		final long listenerStartedTimestamp = new Date().getTime();
 		MBoxChangesListener listener = new MBoxChangesListener(this,
-				expectedHeaders, timeoutSeconds, listenerStartedTimestamp);
+				expectedHeaders, timeoutSeconds, rejectMessagesBeforeTimestamp);
 		this.getFolder().addMessageCountListener(listener);
 		log.debug(String.format(
 				"Started email listener for message containing headers %s...",

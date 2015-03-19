@@ -236,5 +236,24 @@ public class PersonalInfoPageSteps {
 		Assert.assertTrue(name.equals(PagesCollection.personalInfoPage
 				.getUserNameValue()));
 	}
+	
+	/**
+	 * It clicks the Help button in the settings option menu
+	 * @step. ^I click on Help button from the options menu$
+	 */
+	@When("^I click on Help button from the options menu$")
+	public void IClickOnHelpButtonFromTheOptionsMenu(){
+		PagesCollection.personalInfoPage.clickOnHelpButton();
+	}
+
+	/**
+	 * Verifies that it sees the Support web page
+	 * @step. ^I see Support web page$
+	 */
+	@Then("^I see Support web page$")
+	public void ISeeSupportWebPage(){
+		Assert.assertTrue(PagesCollection.personalInfoPage
+				.isSupportWebPageVisible());
+	}
 
 }
