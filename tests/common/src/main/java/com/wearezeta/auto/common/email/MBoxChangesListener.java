@@ -23,8 +23,6 @@ import org.apache.log4j.Logger;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 class MBoxChangesListener implements MessageCountListener, Callable<Message> {
-	private static final long MAX_MSG_DELIVERY_OFFSET = 10000; // milliseconds
-
 	private Map<String, String> expectedHeaders = new HashMap<String, String>();
 	private CountDownLatch waitObj = new CountDownLatch(1);
 	private Message matchedMessage = null;
@@ -106,11 +104,11 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 			try {
 				log.debug("\tMessage timestamp:" + msg.getSentDate().getTime());
 				log.debug("\tListener timestamp:" + filterMessagesAfter);
-				if (msg.getSentDate().getTime() + MAX_MSG_DELIVERY_OFFSET >= filterMessagesAfter) {
+				if (msg.getSentDate().getTime() >= filterMessagesAfter) {
 					result.add(msg);
 					log.debug("\tMessage accepted by timestamp");
 				} else {
-					log.debug("\tMessage rejected because it is outdated");
+					log.debug("\t!!! Message rejected because it is outdated. Please check your local time (should be in sync with world time)!");
 				}
 			} catch (MessagingException e) {
 				e.printStackTrace();

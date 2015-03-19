@@ -41,10 +41,12 @@ import com.wearezeta.auto.image_send.SelfImageProcessor;
 public final class BackendAPIWrappers {
 	public static final int UI_ACTIVATION_TIMEOUT = 120; // seconds
 	public static final int BACKEND_ACTIVATION_TIMEOUT = 60; // seconds
-	
+
 	private static final int REQUEST_TOO_FREQUENT_ERROR = 429;
 	private static final int SERVER_SIDE_ERROR = 500;
 	private static final int MAX_RETRIES = 5;
+
+	private static final long MAX_MSG_DELIVERY_OFFSET = 10000; // milliseconds
 
 	private static final Logger log = ZetaLogger
 			.getLog(BackendAPIWrappers.class.getSimpleName());
@@ -53,12 +55,35 @@ public final class BackendAPIWrappers {
 		BackendREST.setDefaultBackendURL(url);
 	}
 
-	public static ClientUser createUser(ClientUser user) throws Exception {
+	/**
+	 * Creates a new user by sending the corresponding request to the backend
+	 * 
+	 * @param user
+	 *            ClientUser instance with initial iser parameters
+	 *            (name/email/password)
+	 * @param retryNumber
+	 *            set this to 1 if it is the first time you try to create this
+	 *            particular user
+	 * @return Created ClientUser instance (with id property filled)
+	 * @throws Exception
+	 */
+	public static ClientUser createUser(ClientUser user, int retryNumber)
+			throws Exception {
 		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", user.getEmail());
-		Future<Message> activationMessage = mbox.getMessage(expectedHeaders,
-				BACKEND_ACTIVATION_TIMEOUT);
+		Future<Message> activationMessage;
+		if (retryNumber == 1) {
+			activationMessage = mbox.getMessage(expectedHeaders,
+					BACKEND_ACTIVATION_TIMEOUT);
+		} else {
+			// The MAX_MSG_DELIVERY_OFFSET is necessary because of small time
+			// difference between
+			// UTC and your local machine
+			activationMessage = mbox.getMessage(expectedHeaders,
+					BACKEND_ACTIVATION_TIMEOUT, new Date().getTime()
+							- MAX_MSG_DELIVERY_OFFSET);
+		}
 		BackendREST.registerNewUser(user.getEmail(), user.getName(),
 				user.getPassword());
 		activateRegisteredUser(activationMessage);
@@ -353,9 +378,9 @@ public final class BackendAPIWrappers {
 				break;
 			} catch (BackendRequestException e) {
 				if (e.getReturnCode() == REQUEST_TOO_FREQUENT_ERROR) {
-					log.debug(String
-							.format("Login request failed. Retrying (%d of %d)...",
-									tryNum + 1, MAX_RETRIES));
+					log.debug(String.format(
+							"Login request failed. Retrying (%d of %d)...",
+							tryNum + 1, MAX_RETRIES));
 					e.printStackTrace();
 					tryNum++;
 					if (tryNum >= MAX_RETRIES) {
@@ -368,7 +393,7 @@ public final class BackendAPIWrappers {
 				}
 			}
 		}
-		
+
 		user.setAccessToken(loggedUserInfo.getString("access_token"));
 		user.setTokenType(loggedUserInfo.getString("token_type"));
 		final JSONObject additionalUserInfo = BackendREST
