@@ -68,7 +68,7 @@ public class RegistrationPage extends WebPage {
 
 	public LoginPage switchToLoginPage() throws Exception {
 		final By locator = By.xpath(WebAppLocators.LoginPage.xpathSignInButton);
-		if (!DriverUtils.isElementDisplayed(this.getDriver(), locator)) {
+		if (!DriverUtils.isElementDisplayed(this.getDriver(), locator, 3)) {
 			switchToSignInButton.click();
 		}
 		assert DriverUtils.isElementDisplayed(this.getDriver(), locator) : "Sign in page is not visible";
