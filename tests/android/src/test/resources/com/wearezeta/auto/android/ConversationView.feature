@@ -193,7 +193,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
       
-  @torun @id163
+  @id163 @staging
   Scenario Outline: Send image using existing camera rolls (portrait) in group chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
