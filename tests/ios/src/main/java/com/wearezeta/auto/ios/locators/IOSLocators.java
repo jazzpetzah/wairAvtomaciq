@@ -230,7 +230,7 @@ public final class IOSLocators {
 	
 	public static final String nameTermsOfUseButton = "Terms of Use";
 	
-	public static final String nameOptionsSettingsButton = "Settings";
+	public static final String nameOptionsSettingsButton = "SETTINGS";
 	
 	public static final String xpathSettingsPage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]";
 	
