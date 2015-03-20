@@ -21,7 +21,7 @@ public final class WebAppLocators {
 
 		public static final String classNameSpinner = "loading-spinner";
 
-		public static final String xpathSwitchToRegisterButton = "//*[@data-uie-name='go-register']";
+		public static final String xpathSwitchToRegisterButtons = "//*[@data-uie-name='go-register']";
 
 		public static final String xpathCreateAccountButton = "//*[@data-uie-name='do-register']";
 
@@ -169,16 +169,21 @@ public final class WebAppLocators {
 	}
 
 	public static final class RegistrationPage {
+		public static final String xpathRootForm = "//form[@id='form-create']";
+		public static final String cssRootForm = "#form-create";
 
-		public static final String xpathNameFiled = "//*[@data-uie-name='enter-name']";
+		public static final String cssNameFiled = cssRootForm
+				+ " [data-uie-name=enter-name]";
 
-		public static final String idEmailFiled = "wire-create-email";
+		public static final String cssEmailFiled = cssRootForm
+				+ " [data-uie-name=enter-email]";
 
-		public static final String idPasswordFiled = "wire-create-password";
+		public static final String cssPasswordFiled = cssRootForm
+				+ " [data-uie-name=enter-password]";
 
 		public static final String idCreateAccountButton = "wire-create";
 
-		public static final String idVerificationEmail = "wire-sent-email";
+		public static final String cssVerificationEmail = ".form-posted-success span.wire-sent-email";
 
 		public static final String xpathSwitchToSignInButton = "//*[@data-uie-name='go-sign-in']";
 	}

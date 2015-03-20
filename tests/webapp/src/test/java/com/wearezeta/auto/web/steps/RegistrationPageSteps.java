@@ -32,7 +32,16 @@ public class RegistrationPageSteps {
 
 	public static final int maxCheckCnt = 2;
 
-	@When("^I input name (.*)$")
+	/**
+	 * Enter user name into registration form
+	 * 
+	 * @step. ^I input user name (.*)
+	 * 
+	 * @param name
+	 *            user name/alias
+	 * @throws Exception
+	 */
+	@When("^I input user name (.*)")
 	public void IEnterName(String name) throws Exception {
 		try {
 			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
@@ -48,7 +57,16 @@ public class RegistrationPageSteps {
 				.getName());
 	}
 
-	@When("^I input email (.*)$")
+	/**
+	 * Enter user email into registration form
+	 * 
+	 * @step. ^I input user email (.*)
+	 * 
+	 * @param email
+	 *            user email/alias
+	 * @throws Exception
+	 */
+	@When("^I input user email (.*)")
 	public void IEnterEmail(String email) throws Exception {
 		boolean flag = false;
 		try {
@@ -70,7 +88,16 @@ public class RegistrationPageSteps {
 		}
 	}
 
-	@When("^I input password (.*)$")
+	/**
+	 * Enter user password into registration form
+	 * 
+	 * @step. ^I input user password (.*)
+	 * 
+	 * @param password
+	 *            user password/alias
+	 * @throws IOException
+	 */
+	@When("^I input user password (.*)")
 	public void IEnterPassword(String password) throws IOException {
 		try {
 			this.userToRegister.setPassword(usrMgr.findUserByPasswordAlias(
@@ -83,6 +110,15 @@ public class RegistrationPageSteps {
 				.getPassword());
 	}
 
+	/**
+	 * Submit registration form
+	 * 
+	 * @step. ^I submit registration$
+	 * 
+	 * @throws MessagingException
+	 * @throws InterruptedException
+	 * @throws Exception
+	 */
 	@When("^I submit registration$")
 	public void ISubmitRegistration() throws MessagingException,
 			InterruptedException, Exception {
@@ -93,6 +129,16 @@ public class RegistrationPageSteps {
 		PagesCollection.registrationPage.submitRegistration();
 	}
 
+	/**
+	 * Verifiy whether email address, which is visible on email confirmation
+	 * page is the same as the expected one
+	 * 
+	 * @step. ^I see email (.*) verification page$
+	 * 
+	 * @param email
+	 *            expected email/alias
+	 * @throws NoSuchUserException
+	 */
 	@Then("^I see email (.*) verification page$")
 	public void ISeeVerificationEmail(String email) throws NoSuchUserException {
 		email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
@@ -100,12 +146,26 @@ public class RegistrationPageSteps {
 				.isVerificationEmailCorrect(email));
 	}
 
+	/**
+	 * Activate newly registered user on the backend
+	 * 
+	 * @step. ^I verify registration email$
+	 * 
+	 * @throws Exception
+	 */
 	@Then("^I verify registration email$")
 	public void IVerifyRegistrationEmail() throws Exception {
 		BackendAPIWrappers.activateRegisteredUser(this.activationMessage);
 		userToRegister.setUserState(UserState.Created);
 	}
 
+	/**
+	 * Switch to Sign In page
+	 * 
+	 * @step. ^I switch to [Ss]ign [Ii]n page$
+	 * 
+	 * @throws Exception
+	 */
 	@Given("^I switch to [Ss]ign [Ii]n page$")
 	public void ISwitchToLoginPage() throws Exception {
 		PagesCollection.loginPage = PagesCollection.registrationPage

@@ -12,19 +12,19 @@ import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class RegistrationPage extends WebPage {
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.RegistrationPage.xpathNameFiled)
+	@FindBy(how = How.CSS, using = WebAppLocators.RegistrationPage.cssNameFiled)
 	private WebElement nameField;
 
-	@FindBy(how = How.ID, using = WebAppLocators.RegistrationPage.idEmailFiled)
+	@FindBy(how = How.CSS, using = WebAppLocators.RegistrationPage.cssEmailFiled)
 	private WebElement emailField;
 
-	@FindBy(how = How.ID, using = WebAppLocators.RegistrationPage.idPasswordFiled)
+	@FindBy(how = How.CSS, using = WebAppLocators.RegistrationPage.cssPasswordFiled)
 	private WebElement passwordField;
 
 	@FindBy(how = How.ID, using = WebAppLocators.RegistrationPage.idCreateAccountButton)
 	private WebElement createAccount;
 
-	@FindBy(how = How.ID, using = WebAppLocators.RegistrationPage.idVerificationEmail)
+	@FindBy(how = How.CSS, using = WebAppLocators.RegistrationPage.cssVerificationEmail)
 	private WebElement verificationEmail;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.RegistrationPage.xpathSwitchToSignInButton)
@@ -33,18 +33,28 @@ public class RegistrationPage extends WebPage {
 	public RegistrationPage(ZetaWebAppDriver driver, WebDriverWait wait)
 			throws Exception {
 		super(driver, wait);
-		// TODO Auto-generated constructor stub
+	}
+
+	private void removeReadonlyAttr(String cssLocator) {
+		driver.executeScript(String.format(
+				"$(document).find(\"%s\").removeAttr('readonly');", cssLocator));
 	}
 
 	public void enterName(String name) {
+		removeReadonlyAttr(WebAppLocators.RegistrationPage.cssNameFiled);
+		nameField.clear();
 		nameField.sendKeys(name);
 	}
 
 	public void enterEmail(String email) {
+		removeReadonlyAttr(WebAppLocators.RegistrationPage.cssEmailFiled);
+		emailField.clear();
 		emailField.sendKeys(email);
 	}
 
 	public void enterPassword(String password) {
+		removeReadonlyAttr(WebAppLocators.RegistrationPage.cssPasswordFiled);
+		passwordField.clear();
 		passwordField.sendKeys(password);
 	}
 
@@ -53,15 +63,15 @@ public class RegistrationPage extends WebPage {
 	}
 
 	public boolean isVerificationEmailCorrect(String email) {
-
 		return verificationEmail.getText().equalsIgnoreCase(email);
 	}
 
 	public LoginPage switchToLoginPage() throws Exception {
-		if (!DriverUtils.isElementDisplayed(this.getDriver(),
-				By.xpath(WebAppLocators.LoginPage.xpathSignInButton))) {
+		final By locator = By.xpath(WebAppLocators.LoginPage.xpathSignInButton);
+		if (!DriverUtils.isElementDisplayed(this.getDriver(), locator)) {
 			switchToSignInButton.click();
 		}
+		assert DriverUtils.isElementDisplayed(this.getDriver(), locator) : "Sign in page is not visible";
 
 		return new LoginPage(this.getDriver(), this.getWait());
 	}
