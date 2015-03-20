@@ -59,6 +59,7 @@ public class CommonOSXSteps {
 			PagesCollection.mainMenuPage.quitZClient();
 			OSXCommonUtils.setZClientBackend(CommonUtils
 					.getBackendType(CommonOSXSteps.class));
+			OSXCommonUtils.disableStartUI();
 			PagesCollection.loginPage.startApp();
 		}
 	}
