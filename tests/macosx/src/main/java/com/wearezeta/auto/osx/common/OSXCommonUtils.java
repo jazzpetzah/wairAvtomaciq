@@ -105,15 +105,11 @@ public class OSXCommonUtils extends CommonUtils {
 		}
 	}
 
-	public static void setZClientBackend(String bt) throws Exception {
+	public static void setZClientBackendAndDisableStartUI(String bt)
+			throws Exception {
 		resetOSXPrefsDaemon();
 		for (String domain : BACKEND_TYPE_DOMAIN_NAMES) {
 			setZClientBackendForDomain(domain, bt);
-		}
-	}
-
-	public static void disableStartUI() throws Exception {
-		for (String domain : BACKEND_TYPE_DOMAIN_NAMES) {
 			disableStartUIOnFirstLogin(domain);
 		}
 	}
