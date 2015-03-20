@@ -272,12 +272,13 @@ public class ConversationPage extends OSXPage {
 		NSPoint windowPosition = NSPoint.fromString(viewPager
 				.getAttribute("AXPosition"));
 
-		NSPoint windowSize = NSPoint.fromString(viewPager.getAttribute("AXSize"));
+		NSPoint windowSize = NSPoint.fromString(viewPager
+				.getAttribute("AXSize"));
 		log.debug("Window size: " + windowSize);
-		
+
 		log.debug("Window position: " + windowPosition);
 		log.debug("Initial media bar position: " + mediaBarPosition);
-		
+
 		// get scrollbar for conversation view
 		WebElement conversationDecrementSB = null;
 
@@ -391,9 +392,9 @@ public class ConversationPage extends OSXPage {
 	public boolean isMediaBarVisible() {
 		NSPoint mediaBarPosition = NSPoint.fromString(mediabarBarTitle
 				.getAttribute("AXPosition"));
-		NSPoint windowPosition = NSPoint.fromString(viewPager
+		NSPoint conversationPosition = NSPoint.fromString(conversationView
 				.getAttribute("AXPosition"));
-		if (mediaBarPosition.y() >= windowPosition.y())
+		if (mediaBarPosition.y() >= conversationPosition.y())
 			return true;
 		else
 			return false;
