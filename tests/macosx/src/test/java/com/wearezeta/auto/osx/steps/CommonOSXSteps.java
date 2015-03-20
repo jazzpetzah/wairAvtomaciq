@@ -105,6 +105,8 @@ public class CommonOSXSteps {
 		OSXCommonUtils.setZClientBackend(CommonUtils.getBackendType(this
 				.getClass()));
 
+		OSXCommonUtils.disableStartUI();
+
 		commonBefore();
 
 		resetBackendSettingsIfOverwritten();
