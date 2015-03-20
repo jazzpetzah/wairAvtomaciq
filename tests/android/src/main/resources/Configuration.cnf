@@ -1,16 +1,16 @@
 #Configuration file for Android tests
 #Configure before running tests
-androidAppiumUrl=${Url}
-androidApplicationPath=${appPath}
-package=${package}
-activity=${activity}
-generateUsers=${generateUsers}
-driverTimeoutSeconds=${driverTimeoutSeconds}
-resultImage=${resultImage}
-defaultImagesPath=${Root}/${defaultImagesPath}
-pictureResultsPath=${pictureResultsPath}
-androidClientInfoPath=${androidClientInfoPath}
-androidAppiumLogPath=${androidAppiumLogPath}
-defaultEmail=${defaultEmail}
-androidVersion=${androidVersion}
-androidLogs=${androidLogs}
+androidAppiumUrl=http://127.0.0.1:4723/wd/hub
+androidApplicationPath=/Users/deancook/Documents/Builds/225.apk
+package=com.wire.candidate
+activity=com.waz.zclient.MainActivity
+generateUsers=true
+driverTimeoutSeconds=30
+resultImage=/Users/deancook/Documents/Builds/images/
+defaultImagesPath=/Users/deancook/Documents/Github/zautomation/tests/tools/img
+pictureResultsPath=/Users/deancook/Documents/Builds/images
+androidClientInfoPath=/Users/deancook/Documents/Builds/build_info/classes.dex
+androidAppiumLogPath=/Users/deancook/Documents/Builds/appium_android.log
+defaultEmail=smoketester@wearezeta.com
+androidVersion=44
+androidLogs=/Users/deancook/Documents/Builds/Logs
