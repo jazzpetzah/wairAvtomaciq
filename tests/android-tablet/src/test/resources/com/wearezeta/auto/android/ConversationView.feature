@@ -31,6 +31,7 @@ Feature: Conversation View
     And I see conversation list loaded with my name <Name>
     And I tap on tablet contact name <Contact>
     And I see tablet dialog page
+    And I rotate UI to landscape
     And I tap on profile button
     Then I see participant pop-over
     And I see <Contact> name and email in pop-over
