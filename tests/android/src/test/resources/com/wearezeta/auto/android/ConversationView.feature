@@ -192,6 +192,26 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+      
+  @id163 @staging
+  Scenario Outline: Send image using existing camera rolls (portrait) in group chat
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I swipe on text input
+    And I press Add Picture button
+    And I press "Gallery" button
+    And I select picture for dialog
+    And I press "Confirm" button
+    Then I see new photo in the dialog
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+      
 
   @id1504 @regression
   Scenario Outline: Verify you can play/pause media from the Media Bar (SoundCloud)

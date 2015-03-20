@@ -43,12 +43,6 @@ public class ContactListPageSteps {
 		} else {
 			name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		}
-		PagesCollection.peoplePickerPage = PagesCollection.contactListPage
-				.isHiddenByPeoplePicker();
-		if (PagesCollection.peoplePickerPage != null) {
-			PagesCollection.contactListPage.pressLaterButton();
-			PagesCollection.peoplePickerPage.closePeoplePicker();
-		}
 		log.debug("Looking for contact with name " + name);
 		Assert.assertTrue(PagesCollection.contactListPage
 				.isContactWithNameExists(name));

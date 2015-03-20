@@ -57,7 +57,7 @@ public class CommonOSXSteps {
 				.getBackendType(CommonOSXSteps.class))) {
 			log.debug("Backend setting were overwritten. Trying to restart app.");
 			PagesCollection.mainMenuPage.quitZClient();
-			OSXCommonUtils.setZClientBackend(CommonUtils
+			OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
 					.getBackendType(CommonOSXSteps.class));
 			PagesCollection.loginPage.startApp();
 		}
@@ -102,10 +102,8 @@ public class CommonOSXSteps {
 		OSXCommonUtils.removeAllZClientSettingsFromDefaults();
 		OSXCommonUtils.deleteCacheFolder();
 
-		OSXCommonUtils.setZClientBackend(CommonUtils.getBackendType(this
-				.getClass()));
-
-		OSXCommonUtils.disableStartUI();
+		OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
+				.getBackendType(this.getClass()));
 
 		commonBefore();
 
