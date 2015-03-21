@@ -87,6 +87,18 @@ public final class WebAppLocators {
 		public static final String xpathSelfUserNameInput = "//input-element[@class='self-profile-name']/textarea";
 
 		public static final String classNameSelfUserMail = "self-profile-mail";
+
+		private static final String xpathAccentColorPicker = "//*[@data-uie-name='enter-accent-color']";
+
+		public static final String xpathAccentColorPickerChildren = xpathAccentColorPicker
+				+ "/div";
+
+		public static final Function<Integer, String> xpathAccentColorDivById = (
+				id) -> String.format("[%s]", xpathAccentColorPickerChildren, id);
+
+		public static final String xpathCurrentAccentColorCircleDiv = xpathAccentColorPicker
+				+ "/div[contains(@class, 'selected')]/div[contains(@class,'circle')]";
+
 	}
 
 	public static final class ConversationPage {

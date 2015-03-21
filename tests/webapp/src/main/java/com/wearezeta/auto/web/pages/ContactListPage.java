@@ -120,7 +120,7 @@ public class ContactListPage extends WebPage {
 			}
 		});
 	}
-
+	
 	public WebElement getContactWithName(String name) {
 		WebElement result = null;
 
@@ -254,4 +254,10 @@ public class ContactListPage extends WebPage {
 		}
 		return new PeoplePickerPage(this.getDriver(), this.getWait());
 	}
+	
+	public String getSelfNameColor() {
+		return selfName.getCssValue("color");
+	}
+	
+	
 }
