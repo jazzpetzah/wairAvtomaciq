@@ -40,7 +40,7 @@ public class ContactListPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathArchivedContactListEntries)
 	private List<WebElement> archivedContactListEntries;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathSelfProfileEntry)
+	@FindBy(how = How.CSS, using = WebAppLocators.ContactListPage.cssSelfProfileEntry)
 	private WebElement selfName;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathOpenArchivedConvosButton)
@@ -48,9 +48,6 @@ public class ContactListPage extends WebPage {
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathOpenPeoplePickerButton)
 	private WebElement openPeoplePickerButton;
-
-	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathIncomingPendingConvoItem)
-	private WebElement incomingPendingEntry;
 
 	public ContactListPage(ZetaWebAppDriver driver, WebDriverWait wait)
 			throws Exception {
@@ -139,9 +136,11 @@ public class ContactListPage extends WebPage {
 
 	public boolean isSelfNameEntryExist(String name) throws Exception {
 		log.debug("Looking for self name entry '" + name + "'");
-		return DriverUtils.isElementDisplayed(driver,
-				By.xpath(WebAppLocators.ContactListPage.xpathSelfProfileEntry),
-				5);
+		return DriverUtils
+				.isElementDisplayed(
+						driver,
+						By.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileEntry),
+						5);
 	}
 
 	public boolean isConvoListEntryWithNameExist(String name) throws Exception {
@@ -298,7 +297,7 @@ public class ContactListPage extends WebPage {
 
 	public PendingConnectionsPage openConnectionRequestsList() throws Exception {
 		final By entryLocator = By
-				.xpath(WebAppLocators.ContactListPage.xpathIncomingPendingConvoItem);
+				.cssSelector(WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
 		assert DriverUtils.isElementDisplayed(driver, entryLocator,
 				OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Incoming connection requests entry has not been found within "
 				+ OPEN_CONVO_LIST_ENTRY_TIMEOUT + " second(s) timeout";
@@ -309,7 +308,7 @@ public class ContactListPage extends WebPage {
 
 	public SelfProfilePage openSelfProfile() throws Exception {
 		final By entryLocator = By
-				.xpath(WebAppLocators.ContactListPage.xpathSelfProfileEntry);
+				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileEntry);
 		assert DriverUtils.isElementDisplayed(driver, entryLocator,
 				OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Self profile entry has not been found within "
 				+ OPEN_CONVO_LIST_ENTRY_TIMEOUT + " second(s) timeout";
@@ -369,8 +368,8 @@ public class ContactListPage extends WebPage {
 
 	public String getIncomingPendingItemText() throws Exception {
 		final By entryLocator = By
-				.xpath(WebAppLocators.ContactListPage.xpathIncomingPendingConvoItem);
+				.cssSelector(WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
 		assert DriverUtils.isElementDisplayed(driver, entryLocator, 3) : "There are no visible incoming pending connections in the conversations list";
-		return incomingPendingEntry.getText();
+		return driver.findElement(entryLocator).getText();
 	}
 }
