@@ -141,7 +141,7 @@ public class SelfProfilePageSteps {
 	 * @throws Exception
 	 */
 
-	@Then("^I verify my accent color is set to (\\w+)$")
+	@Then("^I verify my accent color in color picker is set to (\\w+)$")
 	public void IVerifyMyAccentColor(String colorName) {
 		final int expectedColorId = AccentColor.getByName(colorName).getId();
 		final int actualColorId = PagesCollection.selfProfilePage
