@@ -41,7 +41,7 @@ public class RegistrationPageSteps {
 	 *            user name/alias
 	 * @throws Exception
 	 */
-	@When("^I enter user name (.*) on Registration page")
+	@When("^I enter user name (.*) on Registration page$")
 	public void IEnterName(String name) throws Exception {
 		try {
 			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
@@ -133,13 +133,13 @@ public class RegistrationPageSteps {
 	 * Verifiy whether email address, which is visible on email confirmation
 	 * page is the same as the expected one
 	 * 
-	 * @step. ^I see email (.*) verification page$
+	 * @step. ^I see email (.*) on [Vv]erification page$
 	 * 
 	 * @param email
 	 *            expected email/alias
 	 * @throws NoSuchUserException
 	 */
-	@Then("^I see email (.*) verification page$")
+	@Then("^I see email (.*) on [Vv]erification page$")
 	public void ISeeVerificationEmail(String email) throws NoSuchUserException {
 		email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
 		Assert.assertTrue(PagesCollection.registrationPage

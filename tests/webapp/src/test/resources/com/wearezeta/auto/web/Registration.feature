@@ -9,7 +9,7 @@ Feature: Registration
     And I enter user email <Email> on Registration page 
     And I enter user password <Password> on Registration page 
     And I submit registration form
-    Then I see email <Email> verification page
+    Then I see email <Email> on Verification page
     When I verify registration email
 	
     Examples: 
