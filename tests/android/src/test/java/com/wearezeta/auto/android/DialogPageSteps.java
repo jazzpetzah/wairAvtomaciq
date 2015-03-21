@@ -234,10 +234,8 @@ public class DialogPageSteps {
 			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
 		}
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertEquals("connected to",
+		Assert.assertEquals("connected to "+contact.toLowerCase(),
 				PagesCollection.dialogPage.getConnectRequestChatLabel());
-		Assert.assertEquals(contact.toLowerCase(),
-				PagesCollection.dialogPage.getConnectRequestChatUserName());
 	}
 
 	@Then("I see uploaded picture")

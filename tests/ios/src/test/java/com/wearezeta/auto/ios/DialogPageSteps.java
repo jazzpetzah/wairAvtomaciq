@@ -47,12 +47,12 @@ public class DialogPageSteps {
 	public String pingId;
 	private int beforeNumberOfImages = 0;
 	final String sendInviteMailContent = "I’m on Wire. Search for %s";
+	final String automationMessage = "iPhone has stupid spell checker";
 
 	@When("^I see dialog page$")
 	public void WhenISeeDialogPage() throws Exception {
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.iOSPage;
 		PagesCollection.dialogPage.waitForCursorInputVisible();
-		// PagesCollection.dialogPage.waitForYouAddedCellVisible();
 	}
 
 	@When("I tap on dialog page")
@@ -72,7 +72,8 @@ public class DialogPageSteps {
 
 	@When("^I type the message$")
 	public void WhenITypeTheMessage() throws Throwable {
-		message = CommonUtils.generateGUID().replace('-', 'x');
+		//message = CommonUtils.generateGUID().replace('-', 'x');
+		message = automationMessage;
 		PagesCollection.dialogPage.sendStringToInput(message);
 	}
 
@@ -135,7 +136,8 @@ public class DialogPageSteps {
 
 	@When("^I type the message and send it$")
 	public void ITypeTheMessageAndSendIt() throws Throwable {
-		message = CommonUtils.generateGUID().replace('-', 'x');
+		//message = CommonUtils.generateGUID().replace('-', 'x');
+		message = automationMessage;
 		PagesCollection.dialogPage.sendStringToInput(message + "\n");
 	}
 

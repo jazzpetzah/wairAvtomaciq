@@ -24,7 +24,7 @@ public class OSXCommonUtils extends CommonUtils {
 			"com.wearezeta.zclient.mac.internal", "com.wearezeta.zclient.mac" };
 
 	public static final String APP_NAME = "Wire";
-	
+
 	private static final Logger log = ZetaLogger.getLog(OSXCommonUtils.class
 			.getSimpleName());
 
@@ -100,15 +100,17 @@ public class OSXCommonUtils extends CommonUtils {
 
 	public static void removeAllZClientSettingsFromDefaults() throws Exception {
 		resetOSXPrefsDaemon();
-		for (String domain: BACKEND_TYPE_DOMAIN_NAMES) {
+		for (String domain : BACKEND_TYPE_DOMAIN_NAMES) {
 			removeZClientDomain(domain);
 		}
 	}
 
-	public static void setZClientBackend(String bt) throws Exception {
+	public static void setZClientBackendAndDisableStartUI(String bt)
+			throws Exception {
 		resetOSXPrefsDaemon();
-		for (String domain: BACKEND_TYPE_DOMAIN_NAMES) {
+		for (String domain : BACKEND_TYPE_DOMAIN_NAMES) {
 			setZClientBackendForDomain(domain, bt);
+			disableStartUIOnFirstLogin(domain);
 		}
 	}
 
@@ -130,8 +132,15 @@ public class OSXCommonUtils extends CommonUtils {
 		executeOsXCommand(new String[] { "/bin/bash", "-c", setBackendTypeCmd });
 	}
 
+	private static void disableStartUIOnFirstLogin(String domain)
+			throws Exception {
+		final String disableCmd = String.format(
+				"defaults write %s ZCSkipFirstTimeUseChecks -bool YES", domain);
+		executeOsXCommand(new String[] { "/bin/bash", "-c", disableCmd });
+	}
+
 	public static boolean isBackendTypeSet(String bt) throws Exception {
-		for (String domain: BACKEND_TYPE_DOMAIN_NAMES) {
+		for (String domain : BACKEND_TYPE_DOMAIN_NAMES) {
 			if (!isBackendTypeSetForDomain(domain, bt)) {
 				return false;
 			}
@@ -200,10 +209,10 @@ public class OSXCommonUtils extends CommonUtils {
 		} catch (Exception e) {
 		}
 	}
-	
+
 	public static boolean isRetinaDisplay(int width, int height) {
 		if (width == 2560 && height == 1600) {
-			return true;			
+			return true;
 		} else {
 			return false;
 		}

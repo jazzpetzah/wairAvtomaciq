@@ -68,6 +68,12 @@ public class PersonalInfoPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathChangePasswordPageChangePasswordButton)
 	private WebElement changePasswordPageChangePasswordButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameOptionsHelpButton)
+	private WebElement settingsHelpButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathSettingsHelpHeader)
+	private WebElement supportWebPageHeader;
 
 	public PersonalInfoPage(ZetaIOSDriver driver, WebDriverWait wait)
 			throws Exception {
@@ -223,6 +229,14 @@ public class PersonalInfoPage extends IOSPage {
 
 	public void isDefaultSoundValOne() {
 		allSoundAlertsButton.getAttribute("value").equals("1");
+	}
+	
+	public void clickOnHelpButton(){
+		settingsHelpButton.click();
+	}
+	
+	public boolean isSupportWebPageVisible() {
+		return supportWebPageHeader.isDisplayed();
 	}
 
 }

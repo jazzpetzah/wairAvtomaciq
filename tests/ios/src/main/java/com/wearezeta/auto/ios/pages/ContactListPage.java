@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -64,6 +65,9 @@ public class ContactListPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathContactListContainer)
 	private WebElement contactListContainer;
+	
+//	@FindBy(how = How.NAME, using = IOSLocators.nameArchiveButton)
+//	private WebElement archiveButton;
 
 	private int oldLocation = 0;
 
@@ -336,8 +340,17 @@ public class ContactListPage extends IOSPage {
 	public IOSPage tapOnContactByIndex(List<WebElement> contacts, int index)
 			throws Exception {
 		IOSPage page = null;
+		log.debug(DriverUtils.isElementDisplayed(driver, contacts.get(index)));
 		DriverUtils.waitUntilElementClickable(driver, contacts.get(index));
-		contacts.get(index).click();
+		try {
+			log.debug(contacts.get(index).getAttribute("name"));
+			contacts.get(index).click();
+		} catch (WebDriverException e) {
+			BufferedImage im = DriverUtils.takeScreenshot(this.getDriver());
+			ImageUtil.storeImageToFile(im, "/Project/ios_crash.jpg");
+			log.debug("Can't select contact by index " + index + ". Page source: " +driver.getPageSource());
+			throw e;
+		}
 		page = new DialogPage(this.getDriver(), this.getWait());
 		return page;
 	}
@@ -395,6 +408,7 @@ public class ContactListPage extends IOSPage {
 	public void archiveConversation(String conversation) {
 		WebElement contact = findNameInContactList(conversation);
 		DriverUtils.clickArchiveConversationButton(this.getDriver(), contact);
+		//DriverUtils.mobileTapByCoordinates(getDriver(), archiveButton);
 	}
 
 	public boolean unreadDotIsVisible(boolean visible, boolean bigUnreadDot,

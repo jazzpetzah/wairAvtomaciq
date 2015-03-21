@@ -27,9 +27,6 @@ public class LoginPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathSignInButton)
 	private WebElement signInButton;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathSwitchToRegisterButton)
-	private WebElement switchToRegisterButton;
-
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathEmailInput)
 	private WebElement emailInput;
 
@@ -84,10 +81,18 @@ public class LoginPage extends WebPage {
 	}
 
 	public RegistrationPage switchToRegistrationPage() throws Exception {
-		if (DriverUtils.isElementDisplayed(this.getDriver(),
-				By.xpath(WebAppLocators.LoginPage.xpathCreateAccountButton))) {
-			switchToRegisterButton.click();
+		final By locator = By
+				.xpath(WebAppLocators.LoginPage.xpathSwitchToRegisterButtons);
+		if (DriverUtils.waitUntilElementAppears(this.getDriver(), locator, 2)) {
+			for (WebElement btn : driver.findElements(locator)) {
+				if (btn.isDisplayed()) {
+					btn.click();
+					break;
+				}
+			}
 		}
+		assert DriverUtils.isElementDisplayed(driver,
+				By.xpath(WebAppLocators.RegistrationPage.xpathRootForm)) : "Registration page is not visible";
 
 		return new RegistrationPage(this.getDriver(), this.getWait());
 	}

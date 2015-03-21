@@ -1,15 +1,16 @@
 Feature: Registration
 
-Scenario Outline: Registration
+  @staging
+  Scenario Outline: Registration
     Given I see invitation page
     Given I enter invitation code
-    Given I switch to registration page
-	When I input name <Name>
-	And I input email <Email>
-	And I input password <Password>
-	And I submit registration
-	Then I see email <Email> verification page
-	When I verify registration email
+    Given I switch to Registration page
+    When I enter user name <Name> on Registration page 
+    And I enter user email <Email> on Registration page 
+    And I enter user password <Password> on Registration page 
+    And I submit registration form
+    Then I see email <Email> on Verification page
+    When I verify registration email
 	
     Examples: 
       | Email      | Password      | Name      |

@@ -226,15 +226,15 @@ public final class IOSLocators {
 	
 	public static final String nameSelfNameTooShortError = "AT LEAST 2 CHARACTERS ";
 	
-	public static final String nameSettingsAboutButton = "About";
+	public static final String nameSettingsAboutButton = "ABOUT";
 	
 	public static final String nameTermsOfUseButton = "Terms of Use";
 	
-	public static final String nameOptionsSettingsButton = "Settings";
+	public static final String nameOptionsSettingsButton = "SETTINGS";
 	
 	public static final String xpathSettingsPage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]";
 	
-	public static final String nameSoundAlertsButton = "Notifications";
+	public static final String nameSoundAlertsButton = "Alerts";
 	
 	public static final String xpathSoundAlertsPage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIANavigationBar[1]/UIAImage[1]";
 	
@@ -243,6 +243,10 @@ public final class IOSLocators {
 	public static final String nameSettingsChangePasswordButton = "Change Password";
 	
 	public static final String xpathChangePasswordPageChangePasswordButton = "//UIAApplication[1]/UIAWindow[2]/UIAScrollView[1]/UIAScrollView[1]/UIAWebView[1]/UIAButton[1]";
+	
+	public static final String nameOptionsHelpButton = "Help";
+	
+	public static final String xpathSettingsHelpHeader = "//UIAApplication[@name='Safari']/UIAWindow[2]/UIAScrollView[1]/UIAScrollView[1]/UIAWebView[1]/UIALink[@name='Support']";
 	
 	///////////////////////
 	//Other User Profile
@@ -261,7 +265,7 @@ public final class IOSLocators {
 	
 	public static final String nameTakePhotoHintLabel = "CHOOSE A PICTURE  AND PICK A COLOR";
 	
-	public static final String xpathFirstChatInChatListTextField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell[1]/UIAStaticText[1]";
+	public static final String xpathFirstChatInChatListTextField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[1]/UIAStaticText[1]";
 	
 	public static final String xpathParticipantAvatar = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[%s]";
 	
@@ -400,6 +404,8 @@ public final class IOSLocators {
 	
 	public static final String xpathPendingRequest = "//UIACollectionCell[contains(@name,' waiting')]/UIAStaticText[1]";
 	
+//	public static final String nameArchiveButton = "ARCHIVE";
+	
 	////////////////////////////////
 	//Pending requests page locators
 	//////////////////////////////////
@@ -468,5 +474,16 @@ public final class IOSLocators {
 	public static final String nameUnblockButton = "UNBLOCK";
 	
 	public static final String xpathContactListContainer = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]";
+	
+	////////////////////////////
+	//Reset Password from Sign In
+	////////////////////////////
+	public static final String nameForgotPasswordButton = "FORGOT PASSWORD? CHANGE";
+	public static final String xpathChangePasswordEmailField = "//UIAApplication[@name='Safari']/UIAWindow[2]/UIAScrollView[1]/UIAScrollView[1]/UIAWebView[1]/UIATextField[@value='Email']";
+	public static final String classNameUIATextField = "UIATextField";
+	public static final String classNameUIASecureTextField = "UIASecureTextField";
+	public static final String xpathChangedPasswordConfirmationText = "//UIAApplication[1]/UIAWindow[2]/UIAScrollView[1]/UIAScrollView[1]/UIAWebView[1]/UIAStaticText[@name='Password changed']";
+
+
 }
 

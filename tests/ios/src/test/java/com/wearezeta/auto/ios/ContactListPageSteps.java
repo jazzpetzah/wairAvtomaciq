@@ -23,31 +23,28 @@ public class ContactListPageSteps {
 
 	@Given("^I see Contact list with my name (.*)$")
 	public void GivenISeeContactListWithMyName(String name) throws Throwable {
-		name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		name = usrMgr.replaceAliasesOccurences(name,FindBy.NAME_ALIAS);
 
 		boolean loginFinished = PagesCollection.loginPage.isLoginFinished(name);
 		if (!loginFinished) {
 			log.debug(PagesCollection.loginPage.getPageSource());
 		}
 		Assert.assertTrue("Username : " + name
-				+ " dind't appear in contact list",
-				loginFinished);
-		/*PagesCollection.loginPage.waitForLaterButton(5);
-		PagesCollection.peoplePickerPage = PagesCollection.loginPage
-				.clickLaterButton();
-		if (null != PagesCollection.peoplePickerPage) {
-			PagesCollection.peoplePickerPage.setLaterClicked(true);
-			PeoplePickerPageSteps steps = new PeoplePickerPageSteps();
-			steps.WhenISeePeoplePickerPage();
-			steps.IClickCloseButtonDismissPeopleView();
-			// workaround for black screen
-			if (CommonUtils.getIsSimulatorFromConfig(ContactListPageSteps.class)) {
-				PagesCollection.peoplePickerPage.minimizeApplication(2);
-			}
-			if (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
-				steps.IClickCloseButtonDismissPeopleView();
-			}
-		}*/
+				+ " dind't appear in contact list", loginFinished);
+		/*
+		 * PagesCollection.loginPage.waitForLaterButton(5);
+		 * PagesCollection.peoplePickerPage = PagesCollection.loginPage
+		 * .clickLaterButton(); if (null != PagesCollection.peoplePickerPage) {
+		 * PagesCollection.peoplePickerPage.setLaterClicked(true);
+		 * PeoplePickerPageSteps steps = new PeoplePickerPageSteps();
+		 * steps.WhenISeePeoplePickerPage();
+		 * steps.IClickCloseButtonDismissPeopleView(); // workaround for black
+		 * screen if
+		 * (CommonUtils.getIsSimulatorFromConfig(ContactListPageSteps.class)) {
+		 * PagesCollection.peoplePickerPage.minimizeApplication(2); } if
+		 * (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
+		 * steps.IClickCloseButtonDismissPeopleView(); } }
+		 */
 	}
 
 	@When("I dismiss tutorial layout")
@@ -353,7 +350,7 @@ public class ContactListPageSteps {
 		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
 		PagesCollection.contactListPage.silenceConversation(conversation);
 	}
-	
+
 	/**
 	 * Conversation gets unsilenced by pressing the silence button
 	 * 
@@ -366,10 +363,10 @@ public class ContactListPageSteps {
 	 * 
 	 */
 	@When("^I unsilence conversation (.*)$")
-		public void IUnSilenceConversation(String conversation) throws Exception {
-			conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
-			PagesCollection.contactListPage.unsilenceConversation(conversation);
-		}
+	public void IUnSilenceConversation(String conversation) throws Exception {
+		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
+		PagesCollection.contactListPage.unsilenceConversation(conversation);
+	}
 
 	/**
 	 * Verifies, that the conversation is really silenced
@@ -390,7 +387,7 @@ public class ContactListPageSteps {
 		Assert.assertTrue("Conversation is not silenced", isSilenced);
 
 	}
-	
+
 	/**
 	 * Verifies, that the conversation is unsilenced
 	 * 
@@ -402,14 +399,14 @@ public class ContactListPageSteps {
 	 * 
 	 */
 	@Then("^I see conversation (.*) is unsilenced$")
-		public void ISeeConversationIsUnSilenced(String conversation)
-				throws Exception {
-			conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
-			boolean isSilenced = PagesCollection.contactListPage
-					.isConversationSilenced(conversation);
-			Assert.assertFalse("Conversation is silenced", isSilenced);
-	
-		}
+	public void ISeeConversationIsUnSilenced(String conversation)
+			throws Exception {
+		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
+		boolean isSilenced = PagesCollection.contactListPage
+				.isConversationSilenced(conversation);
+		Assert.assertFalse("Conversation is silenced", isSilenced);
+
+	}
 
 	/**
 	 * Conversation gets archived by pressing the archive button
@@ -424,10 +421,11 @@ public class ContactListPageSteps {
 	 */
 	@When("^I archive conversation (.*)$")
 	public void IArchiveConversation(String conversation) throws Exception {
-		conversation = usrMgr.replaceAliasesOccurences(conversation, FindBy.NAME_ALIAS);
+		conversation = usrMgr.replaceAliasesOccurences(conversation,
+				FindBy.NAME_ALIAS);
 		PagesCollection.contactListPage.archiveConversation(conversation);
 	}
-	
+
 	/**
 	 * Verifies that an unread message dot is in the conversation list
 	 * 
@@ -436,24 +434,27 @@ public class ContactListPageSteps {
 	 * @param conversation
 	 *            conversation name to check for unread dot
 	 * @param dotSize
-	 * 			  tells if dot is big or small 
+	 *            tells if dot is big or small
 	 * 
-	 * @throws IOException 
-	 * @throws Exception 
+	 * @throws IOException
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I see unread (.*) messages dot for (.*)$")
-	public void ISeeUnreadMessagesDot(String dotSize, String conversation) throws IOException, Exception{
+	public void ISeeUnreadMessagesDot(String dotSize, String conversation)
+			throws IOException, Exception {
 		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
 		boolean unreadDotSeen = false;
-		if (dotSize.equals("big")){
-		unreadDotSeen = PagesCollection.contactListPage.unreadDotIsVisible(true, true, conversation);
-		} else{
-			unreadDotSeen = PagesCollection.contactListPage.unreadDotIsVisible(true, false, conversation);
+		if (dotSize.equals("big")) {
+			unreadDotSeen = PagesCollection.contactListPage.unreadDotIsVisible(
+					true, true, conversation);
+		} else {
+			unreadDotSeen = PagesCollection.contactListPage.unreadDotIsVisible(
+					true, false, conversation);
 		}
 		Assert.assertTrue("No unread dot visible.", unreadDotSeen);
 	}
-	
+
 	/**
 	 * Verifies that an unread message dot is NOT seen in the conversation list
 	 * 
@@ -462,16 +463,32 @@ public class ContactListPageSteps {
 	 * @param conversation
 	 *            conversation name to check for unread dot
 	 * 
-	 * @throws IOException 
-	 * @throws Exception 
+	 * @throws IOException
+	 * @throws Exception
 	 * 
 	 */
 	@Then("^I dont see an unread message dot for (.*)$")
-	public void IDontSeeAnUnreadMessageDot(String conversation) throws IOException, Exception{
+	public void IDontSeeAnUnreadMessageDot(String conversation)
+			throws IOException, Exception {
 		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
-		boolean noUnreadDotSeen = PagesCollection.contactListPage.unreadDotIsVisible(false, false, conversation);
+		boolean noUnreadDotSeen = PagesCollection.contactListPage
+				.unreadDotIsVisible(false, false, conversation);
 		Assert.assertTrue("No unread dot visible.", noUnreadDotSeen);
 
 	}
-	
+
+	/**
+	 * Doing a long right swipe to archive the conversation immediately
+	 * 
+	 * @step. ^I long swipe right to archive conversation (.*)$
+	 * @param conversation
+	 *            to archive
+	 * @throws Exception 
+	 */
+	@When("^I long swipe right to archive conversation (.*)$")
+	public void ILongSwipeRightToArchiveConversation(String conversation) throws Exception {
+		conversation = usrMgr.replaceAliasesOccurences(conversation, FindBy.NAME_ALIAS);
+		PagesCollection.contactListPage.swipeRightOnContact(1000, conversation);
+	}
+
 }

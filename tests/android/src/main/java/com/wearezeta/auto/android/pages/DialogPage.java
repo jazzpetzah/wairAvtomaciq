@@ -71,6 +71,9 @@ public class DialogPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConnectRequestDialog")
 	private WebElement connectRequestDialog;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idAddParticipants")
+	private WebElement addParticipant;
+	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMessage")
 	private WebElement conversationMessage;
 
@@ -144,6 +147,7 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void SwipeOnCursorInput() {
+		getWait().until(ExpectedConditions.elementToBeClickable(cursorInput));
 		DriverUtils.swipeRight(this.getDriver(), cursorInput, 1000);
 	}
 
@@ -260,9 +264,19 @@ public class DialogPage extends AndroidPage {
 		return knockIcon.isDisplayed();
 	}
 
-	public String getConnectRequestChatLabel() {
+	public String getConnectRequestChatLabel() throws Exception {
+		if (isConnectRequestChatLabelVisible()) {
+			return connectRequestChatLabel.getText().toLowerCase().trim();
+		} else {
+			return "CHAT HEAD NOT FOUND";
+		}
+	}
+
+	public boolean isConnectRequestChatLabelVisible() throws Exception {
 		refreshUITree();
-		return connectRequestChatLabel.getText().toLowerCase().trim();
+		this.getWait().until(
+				ExpectedConditions.visibilityOf(connectRequestChatLabel));
+		return isVisible(connectRequestChatLabel);
 	}
 
 	public String getConnectRequestChatUserName() {
@@ -297,11 +311,22 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void sendFrontCameraImage() throws Exception {
-		SwipeOnCursorInput();
-		tapAddPictureBtn();
-		changeCamera();
-		Thread.sleep(1000);
-		takePhoto();
+		if (isVisible(addParticipant)) {
+			cursorInput.click();
+			navigateBack();
+			SwipeOnCursorInput();
+			tapAddPictureBtn();
+			changeCamera();
+			Thread.sleep(1000);
+			takePhoto();
+		} else {
+			cursurFrame.click();
+			Thread.sleep(500);
+			SwipeOnCursorInput();
+			tapAddPictureBtn();
+			changeCamera();
+			takePhoto();
+		}
 		Thread.sleep(1000);
 		confirm();
 	}
@@ -504,9 +529,11 @@ public class DialogPage extends AndroidPage {
 		playPauseBtn.click();
 	}
 
-	public void tapDialogPageBottomLinearLayout() {
+	public void tapDialogPageBottomLinearLayout() throws NumberFormatException, Exception {
 		refreshUITree();
-		dialogPageBottomLinearLayout.click();
+		if(!isVisible(addParticipant)) {
+			dialogPageBottomLinearLayout.click();
+		}
 	}
 
 	public double checkMediaBarControlIcon(String label) throws Exception {
