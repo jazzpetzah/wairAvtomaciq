@@ -5,10 +5,10 @@ Feature: Registration
     Given I see invitation page
     Given I enter invitation code
     Given I switch to Registration page
-    When I input user name <Name>
-    And I input user email <Email>
-    And I input user password <Password>
-    And I submit registration
+    When I enter user name <Name> on Registration page 
+    And I enter user email <Email> on Registration page 
+    And I enter user password <Password> on Registration page 
+    And I submit registration form
     Then I see email <Email> verification page
     When I verify registration email
 	

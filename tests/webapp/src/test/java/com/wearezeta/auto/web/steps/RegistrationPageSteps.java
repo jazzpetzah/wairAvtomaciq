@@ -35,13 +35,13 @@ public class RegistrationPageSteps {
 	/**
 	 * Enter user name into registration form
 	 * 
-	 * @step. ^I input user name (.*)
+	 * @step. ^I enter user name (.*) on Registration page$
 	 * 
 	 * @param name
 	 *            user name/alias
 	 * @throws Exception
 	 */
-	@When("^I input user name (.*)")
+	@When("^I enter user name (.*) on Registration page")
 	public void IEnterName(String name) throws Exception {
 		try {
 			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
@@ -60,13 +60,13 @@ public class RegistrationPageSteps {
 	/**
 	 * Enter user email into registration form
 	 * 
-	 * @step. ^I input user email (.*)
+	 * @step. ^I enter user email (.*) on Registration page$
 	 * 
 	 * @param email
 	 *            user email/alias
 	 * @throws Exception
 	 */
-	@When("^I input user email (.*)")
+	@When("^I enter user email (.*) on Registration page$")
 	public void IEnterEmail(String email) throws Exception {
 		boolean flag = false;
 		try {
@@ -91,13 +91,13 @@ public class RegistrationPageSteps {
 	/**
 	 * Enter user password into registration form
 	 * 
-	 * @step. ^I input user password (.*)
+	 * @step. ^I enter user password (.*) on Registration page$
 	 * 
 	 * @param password
 	 *            user password/alias
 	 * @throws IOException
 	 */
-	@When("^I input user password (.*)")
+	@When("^I enter user password (.*) on Registration page$")
 	public void IEnterPassword(String password) throws IOException {
 		try {
 			this.userToRegister.setPassword(usrMgr.findUserByPasswordAlias(
@@ -113,13 +113,13 @@ public class RegistrationPageSteps {
 	/**
 	 * Submit registration form
 	 * 
-	 * @step. ^I submit registration$
+	 * @step. ^I submit registration form$
 	 * 
 	 * @throws MessagingException
 	 * @throws InterruptedException
 	 * @throws Exception
 	 */
-	@When("^I submit registration$")
+	@When("^I submit registration form$")
 	public void ISubmitRegistration() throws MessagingException,
 			InterruptedException, Exception {
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
