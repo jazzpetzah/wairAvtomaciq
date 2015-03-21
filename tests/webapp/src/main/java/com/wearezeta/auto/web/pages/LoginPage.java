@@ -61,7 +61,7 @@ public class LoginPage extends WebPage {
 		boolean noSignIn = false;
 		try {
 			noSignIn = DriverUtils.waitUntilElementDissapear(driver,
-					By.xpath(WebAppLocators.LoginPage.xpathSignInButton), 40);
+					By.xpath(WebAppLocators.LoginPage.xpathSignInButton), 60);
 		} catch (WebDriverException e) {
 			if (WebAppExecutionContext.browserName
 					.equals(WebAppConstants.Browser.INTERNET_EXPLORER)) {
