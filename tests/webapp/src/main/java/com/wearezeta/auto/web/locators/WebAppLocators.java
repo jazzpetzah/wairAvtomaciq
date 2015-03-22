@@ -119,7 +119,7 @@ public final class WebAppLocators {
 				+ "/div";
 
 		public static final Function<Integer, String> xpathAccentColorDivById = (
-				id) -> String.format("[%s]", xpathAccentColorPickerChildren, id);
+				id) -> String.format("%s[%s]", xpathAccentColorPickerChildren, id);
 
 		public static final String xpathCurrentAccentColorCircleDiv = xpathAccentColorPicker
 				+ "/div[contains(@class, 'selected')]/div[contains(@class,'circle')]";
