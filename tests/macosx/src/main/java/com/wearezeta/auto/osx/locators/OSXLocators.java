@@ -200,7 +200,7 @@ public final class OSXLocators {
 	
 	public static final class RegistrationPage {
 		
-		public static final String ACTIVATION_RESPONSE_VERIFIED = "Account verified.";
+		public static final String ACTIVATION_RESPONSE_VERIFIED = "Account created.";
 	}
 	
 	public static final class ChangePasswordPage {
