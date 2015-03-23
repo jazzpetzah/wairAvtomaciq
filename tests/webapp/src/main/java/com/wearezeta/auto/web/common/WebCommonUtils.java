@@ -46,6 +46,11 @@ public class WebCommonUtils extends CommonUtils {
 		return Integer.parseInt(getValueFromConfig(c, "hubPort"));
 	}
 
+	public static String getExtendedLoggingLevelInConfig(Class<?> c)
+			throws Exception {
+		return getValueFromConfig(c, "extendedLoggingLevel");
+	}
+
 	public static String getScriptsTemplatesPath() {
 		return String.format("%s/Documents/scripts/",
 				System.getProperty("user.home"));
