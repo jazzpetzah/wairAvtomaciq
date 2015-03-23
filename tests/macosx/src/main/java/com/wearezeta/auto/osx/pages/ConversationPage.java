@@ -303,6 +303,7 @@ public class ConversationPage extends OSXPage {
 				mediaBarPosition = NSPoint.fromString(mediabarBarTitle
 						.getAttribute("AXPosition"));
 				log.debug("Current media bar position: " + mediaBarPosition);
+				log.debug("Media play state: " + getSoundCloudButtonState());
 				long endDate = new Date().getTime();
 				if (endDate - startDate > TIMEOUT_MINUTES * 60 * 1000)
 					break;
