@@ -120,4 +120,26 @@ public class IOSCommonUtils {
 		}
 		return resultTime;
 	}
+
+	public static void collectSimulatorLogs(Date testStartedDate)
+			throws Exception {
+		log.debug("iOS Simulator Logs:");
+		final String simId = CommonUtils
+				.executeOsXCommandWithOutput(
+						new String[] { "/bin/bash", "-c",
+								"xcrun simctl list devices | grep Booted | cut -d '(' -f2 | cut -d ')' -f1" })
+				.trim();
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+		final String logStartTime = sdf.format(testStartedDate);
+		final String logEndTime = sdf.format(new Date());
+		final String collectedLogEntries = CommonUtils
+				.executeOsXCommandWithOutput(new String[] {
+						"/bin/bash",
+						"-c",
+						String.format(
+								"awk -v start=%s -v stop=%s 'start <= $3 && $3 < stop' $HOME/Library/Logs/CoreSimulator/%s/system.log"
+										+ " | grep -Ei '(wire|zclient|CoreSimulator)'",
+								logStartTime, logEndTime, simId) });
+		log.debug(collectedLogEntries);
+	}
 }
