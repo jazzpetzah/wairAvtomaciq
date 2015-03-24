@@ -312,6 +312,7 @@ public final class CommonSteps {
 	public void UserCallsToConversation(String userNameAlias,
 			String conversationName) throws Exception {
 		ClientUser caller = usrMgr.findUserByNameOrNameAlias(userNameAlias);
+		conversationName = usrMgr.replaceAliasesOccurences(conversationName, FindBy.NAME_ALIAS);
 		CallingUtil.startCall(caller, conversationName);
 	}
 
