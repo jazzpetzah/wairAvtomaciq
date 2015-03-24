@@ -147,8 +147,11 @@ public class CommonWebAppSteps {
 			capabilities.setCapability("applicationName", webPlatformName);
 		}
 
-		setExtendedLoggingLevel(capabilities,
-				WebCommonUtils.getExtendedLoggingLevelInConfig(getClass()));
+		if (!browser.equalsIgnoreCase("ie")) {
+			// Logging feature crashes IE }:@
+			setExtendedLoggingLevel(capabilities,
+					WebCommonUtils.getExtendedLoggingLevelInConfig(getClass()));
+		}
 
 		// This could useful for testing on your local machine running Opera
 		// Do not forget to set real user name in profile path instead of
@@ -393,8 +396,10 @@ public class CommonWebAppSteps {
 
 		WebPage.clearPagesCollection();
 
-		writeBrowserLogsIntoMainLog(PlatformDrivers.getInstance().getDriver(
-				CURRENT_PLATFORM));
+		if (!getBrowser().equalsIgnoreCase("ie")) {
+			writeBrowserLogsIntoMainLog(PlatformDrivers.getInstance()
+					.getDriver(CURRENT_PLATFORM));
+		}
 
 		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
 			PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
