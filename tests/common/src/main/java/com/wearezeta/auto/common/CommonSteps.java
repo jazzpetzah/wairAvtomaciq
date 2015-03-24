@@ -9,6 +9,7 @@ import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.backend.ConnectionStatus;
+import com.wearezeta.auto.common.calling.CallingUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
@@ -306,5 +307,15 @@ public final class CommonSteps {
 		BackendAPIWrappers.waitUntilContactsFound(
 				usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query, 1,
 				true, timeout);
+	}
+
+	public void UserCallsToConversation(String userNameAlias,
+			String conversationName) throws Exception {
+		ClientUser caller = usrMgr.findUserByNameOrNameAlias(userNameAlias);
+		CallingUtil.startCall(caller, conversationName);
+	}
+
+	public void StopCurrentCall() throws Exception {
+		CallingUtil.stopCall();
 	}
 }
