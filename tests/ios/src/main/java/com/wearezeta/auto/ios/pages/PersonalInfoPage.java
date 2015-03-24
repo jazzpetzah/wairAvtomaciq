@@ -27,7 +27,7 @@ public class PersonalInfoPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameProfileSettingsButton)
 	private WebElement settingsButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameSettingsAboutButton)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathSettingsAboutButton)
 	private WebElement aboutButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameTermsOfUseButton)
@@ -51,7 +51,7 @@ public class PersonalInfoPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathSettingsPage)
 	private WebElement settingsPage;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameOptionsSettingsButton)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathOptionsSettingsButton)
 	private WebElement optionsSettingsButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameSoundAlertsButton)
