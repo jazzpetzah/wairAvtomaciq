@@ -32,7 +32,7 @@ public class GroupChatInfoPage extends IOSPage {
 
 	private String conversationName = null;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameLeaveConversation)
+	@FindBy(how = How.NAME, using = IOSLocators.nameConversationMenu)
 	private WebElement leaveChat;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameLeaveConversationButton)
@@ -254,8 +254,10 @@ public class GroupChatInfoPage extends IOSPage {
 		exitGroupInfoPageButton.click();
 	}
 
-	public void leaveConversation() {
+	public void leaveConversation() throws InterruptedException {
 		leaveChat.click();
+		Thread.sleep(2000);
+		leaveChatButton.click();
 	}
 
 	public void confirmLeaveConversation() {

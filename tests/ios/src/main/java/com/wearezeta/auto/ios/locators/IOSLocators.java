@@ -156,7 +156,7 @@ public final class IOSLocators {
 	
 	public static final String xpathFormatSpecificMessageContains = "//UIATextView[contains(@name,'%s')]";
 	
-	public static final String nameLeaveConversation = "metaControllerRightButton";
+	public static final String nameConversationMenu = "metaControllerRightButton";
 	
 	public static final String nameLeaveConversationAlert = "Leave the conversation?";
 
