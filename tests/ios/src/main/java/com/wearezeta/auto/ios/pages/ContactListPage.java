@@ -159,7 +159,7 @@ public class ContactListPage extends IOSPage {
 		WebElement contact = null;
 		for (int i = 0; i < 5; i++) {
 			for (WebElement listName : contactListNames) {
-				if (listName.getText().equals(name)) {
+				if (listName.getText().equals(name) && listName.isDisplayed()) {
 					contact = listName;
 					flag = false;
 					break;
