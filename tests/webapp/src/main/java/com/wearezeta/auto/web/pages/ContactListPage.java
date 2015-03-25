@@ -153,23 +153,6 @@ public class ContactListPage extends WebPage {
 				.apply(name);
 		return DriverUtils.isElementDisplayed(driver, By.xpath(xpath), 5);
 	}
-
-	public boolean checkNameInContactList(String name) throws Exception {
-		DriverUtils.waitUntilElementAppears(driver,
-				By.xpath(WebAppLocators.ContactListPage.xpathSelfProfileEntry));
-
-		WebDriverWait wait = new WebDriverWait(driver, 10);
-
-		return wait.until(new Function<WebDriver, Boolean>() {
-			public Boolean apply(WebDriver driver) {
-				if (selfName.getText().equals(name)) {
-					return true;
-				} else {
-					return false;
-				}
-			}
-		});
-	}
 	
 	public boolean isConvoListEntryNotVisible(String name) throws Exception {
 		log.debug("Looking for contact with name '" + name + "'");
