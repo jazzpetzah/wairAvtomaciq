@@ -172,26 +172,6 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact   | Message                     |
       | user1Email | user1Password | user1Name | user2Name | 畑 はたけ hatake field of crops |
-
-  @id162 @regression
-  Scenario Outline: Send picture from gallery into 1:1 conversation
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe on text input
-    And I press Add Picture button
-    And I press "Gallery" button
-    And I select picture for dialog
-    And I press "Confirm" button
-    Then I see new photo in the dialog
-    Then I see uploaded picture
-
-    Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
       
   @id163 @staging
   Scenario Outline: Send image using existing camera rolls (portrait) in group chat
@@ -211,7 +191,26 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
-      
+
+  @id162 @staging
+  Scenario Outline: Send image using existing camera rolls (landscape) in 1:1 chat
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I swipe on text input
+    And I press Add Picture button
+    And I press "Gallery" button
+    When I rotate UI to landscape
+    And I select picture for dialog
+    And I press "Confirm" button
+    Then I see new photo in the dialog
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
 
   @id1504 @regression
   Scenario Outline: Verify you can play/pause media from the Media Bar (SoundCloud)
