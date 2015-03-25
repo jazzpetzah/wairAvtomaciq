@@ -489,5 +489,15 @@ public class CommonAndroidSteps {
 		}
 		Assert.assertTrue(PagesCollection.commonAndroidPage.mailContains(email));
 	}
+	
+	@When("^I rotate UI to landscape$")
+	public void WhenIRotateUILandscape() throws Exception {
+		PagesCollection.loginPage.rotateLandscape();   
+	}
+	
+	@When("^I rotate UI to portrait$")
+	public void WhenIRotateUIPortrait() throws Exception {
+		PagesCollection.loginPage.rotatePortrait();   
+	}
 
 }
