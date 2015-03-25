@@ -213,7 +213,7 @@ Feature: Conversation View
       | user1Email | user1Password | user1Name | user2Name |
       
 
-  @torun @id1625 @staging
+  @id162 @staging
   Scenario Outline: Send image using existing camera rolls (landscape) in group chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
