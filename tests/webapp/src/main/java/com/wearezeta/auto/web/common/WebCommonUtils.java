@@ -192,4 +192,17 @@ public class WebCommonUtils extends CommonUtils {
 									.getJenkinsSuperUserLogin(WebCommonUtils.class));
 		}
 	}
+
+	public static boolean isElementFocused(RemoteWebDriver driver,
+			String cssLocator) {
+		final String isFocusedScript = "return $('" + cssLocator
+				+ "').is(':focus');";
+		return (Boolean) driver.executeScript(isFocusedScript);
+	}
+
+	public static void setFocusToElement(RemoteWebDriver driver,
+			String cssLocator) {
+		final String setFocusScript = "$('" + cssLocator + "').focus();";
+		driver.executeScript(setFocusScript);
+	}
 }

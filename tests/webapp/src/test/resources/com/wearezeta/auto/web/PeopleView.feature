@@ -104,6 +104,7 @@ Feature: People View
     And I click People button in group conversation
     And I see Group Participants popover
     And I see <Contact3>,<Contact4> displayed on Group Participants popover
+    And I close Group Participants popover
     When I open conversation with <ChatName>
     And I click People button in group conversation
     And I see Group Participants popover
