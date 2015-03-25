@@ -73,7 +73,6 @@ public class CommonIOSSteps {
 		}
 
 		testStartedDate = new Date();
-
 		return (ZetaIOSDriver) PlatformDrivers.getInstance().resetDriver(
 				getUrl(), capabilities);
 	}
@@ -402,7 +401,8 @@ public class CommonIOSSteps {
 		IOSKeyboard.dispose();
 
 		if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-			IOSCommonUtils.collectSimulatorLogs(testStartedDate);
+			IOSCommonUtils.collectSimulatorLogs(
+					CommonUtils.getDeviceName(getClass()), testStartedDate);
 		}
 
 		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {

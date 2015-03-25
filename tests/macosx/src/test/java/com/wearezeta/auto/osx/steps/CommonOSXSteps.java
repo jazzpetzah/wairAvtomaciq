@@ -26,6 +26,7 @@ import com.wearezeta.auto.osx.pages.LoginPage;
 import com.wearezeta.auto.osx.pages.MainMenuPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
+import com.wearezeta.auto.osx.pages.welcome.WelcomePage;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -81,6 +82,7 @@ public class CommonOSXSteps {
 				.createDefaultExplicitWait(driver);
 
 		PagesCollection.mainMenuPage = new MainMenuPage(driver, wait);
+		PagesCollection.welcomePage = new WelcomePage(driver, wait);
 		PagesCollection.loginPage = new LoginPage(driver, wait);
 		ZetaFormatter.setDriver((AppiumDriver) PagesCollection.loginPage
 				.getDriver());
@@ -287,6 +289,13 @@ public class CommonOSXSteps {
 		}
 		ContactSendsMessageToConversation(msgFromUserNameAlias, mediaLink,
 				dstUserNameAlias);
+	}
+
+	@When("^(.*) calls (.*)$")
+	public void UserCallsToConversation(String callerUserNameAlias,
+			String conversationNameAlias) throws Exception {
+		commonSteps.UserCallsToConversation(callerUserNameAlias,
+				conversationNameAlias);
 	}
 
 	@After

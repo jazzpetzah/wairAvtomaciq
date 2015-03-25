@@ -23,7 +23,7 @@ Feature: Conversation View
       | user1Email | user1Password | user1Name | user2Name |
       
   @id2050 @staging
-    Scenario Outline: See correct one-to-one pop-over after rotations
+    Scenario Outline: One-to-one pop-over hidden after rotations
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in to self profile using login <Login> and password <Password>
@@ -34,13 +34,12 @@ Feature: Conversation View
     And I rotate UI to landscape
     And I tap on profile button
     Then I see participant pop-over
-    And I see <Contact> name and email in pop-over
     When I rotate UI to portrait
+    Then I do not see participant pop-over
+    When I tap on profile button
     Then I see participant pop-over
-    And I see <Contact> name and email in pop-over
     When I rotate UI to landscape
-    Then I see participant pop-over
-    And I see <Contact> name and email in pop-over
+    Then I do not see participant pop-over
     
 
     Examples: 

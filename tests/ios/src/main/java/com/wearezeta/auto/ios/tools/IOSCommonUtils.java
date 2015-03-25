@@ -121,14 +121,21 @@ public class IOSCommonUtils {
 		return resultTime;
 	}
 
-	public static void collectSimulatorLogs(Date testStartedDate)
+	private static String getIOSSimulatorIdByDeviceName(String deviceName)
 			throws Exception {
-		log.debug("iOS Simulator Logs:");
-		final String simId = CommonUtils
-				.executeOsXCommandWithOutput(
-						new String[] { "/bin/bash", "-c",
-								"xcrun simctl list devices | grep Booted | cut -d '(' -f2 | cut -d ')' -f1" })
+		return CommonUtils.executeOsXCommandWithOutput(
+				new String[] {
+						"/bin/bash",
+						"-c",
+						"xcrun simctl list devices | grep -i '" + deviceName
+								+ "' | cut -d '(' -f2 | cut -d ')' -f1" })
 				.trim();
+	}
+
+	public static void collectSimulatorLogs(String deviceName,
+			Date testStartedDate) throws Exception {
+		log.debug("iOS Simulator Logs:");
+		final String simId = getIOSSimulatorIdByDeviceName(deviceName);
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 		final String logStartTime = sdf.format(testStartedDate);
 		final String logEndTime = sdf.format(new Date());

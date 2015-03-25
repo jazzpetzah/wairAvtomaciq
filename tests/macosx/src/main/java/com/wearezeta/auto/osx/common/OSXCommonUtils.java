@@ -217,4 +217,8 @@ public class OSXCommonUtils extends CommonUtils {
 			return false;
 		}
 	}
+
+	public static boolean osxAXValueToBoolean(String value) {
+		return value.equals("0") ? false : true;
+	}
 }
