@@ -16,7 +16,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | NewName     | Contact   |
       | user1Email | user1Password | user1Name | NewUserName | user2Name |
 
-  @torun @staging @id1753
+  @staging @id1753
   Scenario Outline: Verify correct accent color showing after sign out and sign in
     Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
