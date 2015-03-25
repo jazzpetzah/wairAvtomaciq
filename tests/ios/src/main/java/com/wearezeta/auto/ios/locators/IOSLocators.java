@@ -52,6 +52,8 @@ public final class IOSLocators {
 	
 	public static final String xpathFormatDialogTextMessage = "//UIATableCell/UIATextView[@value='%s']";
 	
+	public static final String xpathUserMessageEntry = "//UIATableCell[@name='%s']";
+	
 	public static final String nameConversationCursorInput = "ConversationTextInputField";
 	
 	public static final String nameTextInput = "ComposeControllerTextView";
@@ -484,6 +486,11 @@ public final class IOSLocators {
 	public static final String classNameUIASecureTextField = "UIASecureTextField";
 	public static final String xpathChangedPasswordConfirmationText = "//UIAApplication[1]/UIAWindow[2]/UIAScrollView[1]/UIAScrollView[1]/UIAWebView[1]/UIAStaticText[@name='Password changed']";
 
-
+	public final class StartedCallPage {
+		
+		public static final String xpathCallingMessageUser = "//UIAStaticText[contains(@name, 'CALLING') and contains(@name, '%s')]";
+		
+		public static final String xpathCallingMessage = "//UIAStaticText[contains(@name, 'CALLING')]";
+	}
 }
 

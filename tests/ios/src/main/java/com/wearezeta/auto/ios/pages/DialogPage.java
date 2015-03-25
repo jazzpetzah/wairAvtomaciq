@@ -148,7 +148,7 @@ public class DialogPage extends IOSPage {
 		return startedConversationMessage.getText();
 	}
 
-	public boolean isPingMessageVisible(String msg) throws Exception {
+	public boolean isMessageVisible(String msg) throws Exception {
 
 		return DriverUtils.isElementDisplayed(this.getDriver(), By.name(msg));
 	}
@@ -170,6 +170,12 @@ public class DialogPage extends IOSPage {
 	public void waitForYouAddedCellVisible() {
 		this.getWait().until(
 				ExpectedConditions.visibilityOf(youAddedCell.get(0)));
+	}
+	
+	public StartedCallPage clickOnCallButtonForContact(String contact) throws Exception {
+		WebElement el = driver.findElementByXPath(String.format(IOSLocators.xpathUserMessageEntry, contact));
+		el.findElement(By.className("UIAButton")).click();
+		return new StartedCallPage(getDriver(), getWait());
 	}
 
 	public void tapOnCursorInput() {
