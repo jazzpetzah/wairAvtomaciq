@@ -54,7 +54,8 @@ public class ConnectToPageSteps {
 	}
 
 	@Then("^I see that connection is pending$")
-	public void ThenConnectionIsPending() {
+	public void ThenConnectionIsPending() throws NumberFormatException,
+			Exception {
 		if (PagesCollection.connectToPage == null) {
 			PagesCollection.connectToPage = (ConnectToPage) PagesCollection.androidPage;
 		}

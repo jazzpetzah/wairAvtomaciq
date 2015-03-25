@@ -199,7 +199,7 @@ public class PersonalInfoPageSteps {
 	/**
 	 * I change name in textfield
 	 * 
-	 * @step. ^I change (.*) to (.*)$
+	 * @step. ^I change name (.*) to (.*)$
 	 * 
 	 * @param name
 	 *            new username in textfield
@@ -208,7 +208,7 @@ public class PersonalInfoPageSteps {
 	 *  			  no such user exists
 	 * 
 	 */
-	@When("^I change (.*) to (.*)$")
+	@When("^I change name (.*) to (.*)$")
 	public void IChangeNameTo(String name, String newName) throws Throwable {
 		try{
 			name = usrMgr.findUserByNameOrNameAlias(name).getName();
@@ -235,6 +235,25 @@ public class PersonalInfoPageSteps {
 	public void ISeeMyNewName(String name) throws Throwable {
 		Assert.assertTrue(name.equals(PagesCollection.personalInfoPage
 				.getUserNameValue()));
+	}
+	
+	/**
+	 * It clicks the Help button in the settings option menu
+	 * @step. ^I click on Help button from the options menu$
+	 */
+	@When("^I click on Help button from the options menu$")
+	public void IClickOnHelpButtonFromTheOptionsMenu(){
+		PagesCollection.personalInfoPage.clickOnHelpButton();
+	}
+
+	/**
+	 * Verifies that it sees the Support web page
+	 * @step. ^I see Support web page$
+	 */
+	@Then("^I see Support web page$")
+	public void ISeeSupportWebPage(){
+		Assert.assertTrue(PagesCollection.personalInfoPage
+				.isSupportWebPageVisible());
 	}
 
 }

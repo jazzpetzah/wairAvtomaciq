@@ -9,6 +9,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.logging.LogEntry;
@@ -71,6 +72,18 @@ public abstract class AndroidPage extends BasePage {
 	public AndroidPage navigateBack() throws Exception {
 		driver.navigate().back();
 		return null;
+	}
+	
+	public void rotateLandscape() throws Exception {
+		this.getDriver().rotate(ScreenOrientation.LANDSCAPE);
+	}
+	
+	public void rotatePortrait() throws Exception {
+		this.getDriver().rotate(ScreenOrientation.PORTRAIT);
+	}
+	
+	public ScreenOrientation getOrientation() throws Exception {
+		return this.getDriver().getOrientation();
 	}
 
 	public CommonAndroidPage minimizeApplication() throws Exception {

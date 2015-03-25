@@ -62,12 +62,12 @@ public class LoginPageSteps {
 		log.debug("Starting to Sign in using login " + login + " and password "
 				+ password);
 
-		PagesCollection.loginPage.startSignIn();
+		PagesCollection.loginPage = PagesCollection.welcomePage.startSignIn();
 
 		PagesCollection.loginPage.setLogin(login);
 		PagesCollection.loginPage.setPassword(password);
 
-		PagesCollection.loginPage.confirmSignIn();
+		PagesCollection.loginPage.signIn();
 
 		Assert.assertTrue("Failed to login",
 				PagesCollection.loginPage.waitForLogin());
@@ -81,16 +81,6 @@ public class LoginPageSteps {
 	}
 
 	/**
-	 * Clicks on Sign In button on Welcome screen and opens Sign In screen
-	 * 
-	 * @step. I start Sign In
-	 */
-	@When("I start Sign In")
-	public void WhenIStartSignIn() {
-		PagesCollection.loginPage.startSignIn();
-	}
-
-	/**
 	 * Clicks on Sign In button and submits entered credentials
 	 * 
 	 * @step. I press Sign In button
@@ -99,7 +89,7 @@ public class LoginPageSteps {
 	 */
 	@When("I press Sign In button")
 	public void WhenIPressSignInButton() throws Exception {
-		OSXPage page = PagesCollection.loginPage.confirmSignIn();
+		OSXPage page = PagesCollection.loginPage.signIn();
 		Assert.assertNotNull(
 				"After sign in button click Login page or Contact List page should appear. Page couldn't be null",
 				page);
@@ -149,32 +139,6 @@ public class LoginPageSteps {
 	}
 
 	/**
-	 * Checks that Sign In screen is visible
-	 * 
-	 * @step. I see Sign In screen
-	 * 
-	 * @throws AssertionError
-	 *             if Sign In screen did not appear
-	 */
-	@Given("I see Sign In screen")
-	public void GivenISeeSignInScreen() {
-		Assert.assertNotNull(PagesCollection.loginPage.isVisible());
-	}
-
-	/**
-	 * Checks that user is not signed in client and resets backend settings
-	 * 
-	 * @step. I am signed out from ZClient
-	 * 
-	 * @throws Exception
-	 */
-	@Given("I am signed out from ZClient")
-	public void GivenIAmSignedOutFromZClient() throws Exception {
-		PagesCollection.loginPage.logoutIfNotSignInPage();
-		CommonOSXSteps.resetBackendSettingsIfOverwritten();
-	}
-
-	/**
 	 * When called after logout, checks that Sign In screen is opened
 	 * 
 	 * @step. I have returned to Sign In screen
@@ -185,19 +149,6 @@ public class LoginPageSteps {
 		Assert.assertTrue("Failed to logout",
 				PagesCollection.contactListPage.waitForSignOut());
 		Assert.assertTrue(PagesCollection.contactListPage.isSignOutFinished());
-	}
-
-	/**
-	 * Accepts terms of service and starts registration
-	 * 
-	 * @step. I start registration
-	 * 
-	 * @throws Exception
-	 */
-	@When("I start registration")
-	public void IStartRegistration() throws Exception {
-		PagesCollection.registrationPage = PagesCollection.loginPage
-				.startRegistration();
 	}
 
 	/**

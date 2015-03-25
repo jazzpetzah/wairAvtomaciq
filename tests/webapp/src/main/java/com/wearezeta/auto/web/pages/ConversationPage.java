@@ -21,6 +21,9 @@ import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
+import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
+import com.wearezeta.auto.web.pages.popovers.PeoplePopoverContainer;
+import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
 
 public class ConversationPage extends WebPage {
 
@@ -39,9 +42,6 @@ public class ConversationPage extends WebPage {
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathShowParticipantsButton)
 	private WebElement showParticipants;
-
-	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathSendImageLabel)
-	private WebElement sendImageLabel;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathSendImageInput)
 	private WebElement imagePathInput;
@@ -86,7 +86,7 @@ public class ConversationPage extends WebPage {
 		return DriverUtils.isElementDisplayed(driver, locator, 5);
 	}
 
-	public ConversationPopupPage clickShowUserProfileButton(boolean isGroup)
+	public PeoplePopoverContainer clickPeopleButton(boolean isGroup)
 			throws Exception {
 		DriverUtils.waitUntilElementClickable(driver, showParticipants);
 		if (WebAppExecutionContext.browserName
@@ -98,15 +98,16 @@ public class ConversationPage extends WebPage {
 			showParticipants.click();
 		}
 		if (isGroup) {
-			return new ParticipantsPopupPage(this.getDriver(), this.getWait());
+			return new GroupPopoverContainer(this.getDriver(), this.getWait());
 		} else {
-			return new UserProfilePopupPage(this.getDriver(), this.getWait());
+			return new SingleUserPopoverContainer(this.getDriver(),
+					this.getWait());
 		}
 	}
 
-	public ParticipantsPopupPage clickShowParticipantsButton() throws Exception {
+	public PeoplePickerPage clickShowParticipantsButton() throws Exception {
 		showParticipants.click();
-		return new ParticipantsPopupPage(this.getDriver(), this.getWait());
+		return new PeoplePickerPage(this.getDriver(), this.getWait());
 	}
 
 	private static final String TMP_ROOT = "/tmp";
@@ -207,13 +208,16 @@ public class ConversationPage extends WebPage {
 		pingButton.click();
 	}
 
-	public boolean isPingMessageVisible(String message) {
-		String text = pingMessage.getText();
-		if (text.toLowerCase().contains(message.toLowerCase())) {
-			return pingMessage.isDisplayed();
-		} else {
-			return false;
-		}
+	private static final int PING_MESSAGE_TIMEOUT = 3; // seconds
+
+	public boolean isPingMessageVisible(String message) throws Exception {
+		final By locator = By
+				.className(WebAppLocators.ConversationPage.classPingMessage);
+		assert DriverUtils.isElementDisplayed(driver, locator,
+				PING_MESSAGE_TIMEOUT) : "Ping message has not been shown within "
+				+ PING_MESSAGE_TIMEOUT + " second(s) timeout";
+		return pingMessage.getText().toLowerCase()
+				.contains(message.toLowerCase());
 	}
 
 	public int numberOfPingMessagesVisible() {

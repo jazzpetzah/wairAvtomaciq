@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios;
 
+import java.util.Date;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
@@ -30,6 +31,7 @@ public class CommonIOSSteps {
 			.getSimpleName());
 
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
+	private Date testStartedDate;
 
 	static {
 		System.setProperty("org.apache.commons.logging.Log",
@@ -61,12 +63,16 @@ public class CommonIOSSteps {
 		capabilities.setCapability("platformVersion", PLATFORM_VERSION);
 		capabilities.setCapability("sendKeyStrategy", "grouped");
 		final String backendType = CommonUtils.getBackendType(this.getClass());
-		capabilities.setCapability("processArguments",
-				"--args -TutorialOverlaysEnabled 0 -SkipFirstTimeUseChecks 1 -UseHockey 0 -ZMBackendEnvironmentType "
-						+ backendType);
+		capabilities
+				.setCapability(
+						"processArguments",
+						"--args -TutorialOverlaysEnabled 0 -SkipFirstTimeUseChecks 1 -UseHockey 0 -ZMBackendEnvironmentType "
+								+ backendType);
 		if (enableAutoAcceptAlerts) {
 			capabilities.setCapability("autoAcceptAlerts", true);
 		}
+
+		testStartedDate = new Date();
 		return (ZetaIOSDriver) PlatformDrivers.getInstance().resetDriver(
 				getUrl(), capabilities);
 	}
@@ -195,7 +201,7 @@ public class CommonIOSSteps {
 		commonSteps.ArchiveConversationWithUser(userToNameAlias,
 				archivedUserNameAlias);
 	}
-	
+
 	/**
 	 * Silences conversation in backend
 	 * 
@@ -204,8 +210,8 @@ public class CommonIOSSteps {
 	 * @param userToNameAlias
 	 *            user that mutes the conversation
 	 * @param mutedUserNameAlias
-	 * 			  name of group conversation to mute
-	 * @throws Exception 
+	 *            name of group conversation to mute
+	 * @throws Exception
 	 * 
 	 */
 	@When("^(.*) silenced conversation with (.*)$")
@@ -214,7 +220,7 @@ public class CommonIOSSteps {
 		commonSteps.MuteConversationWithUser(userToNameAlias,
 				mutedUserNameAlias);
 	}
-	
+
 	/**
 	 * Verifies that an unread message dot is NOT seen in the conversation list
 	 * 
@@ -223,8 +229,8 @@ public class CommonIOSSteps {
 	 * @param userToNameAlias
 	 *            user that archives the group conversation
 	 * @param archivedUserNameAlias
-	 * 			  name of group conversation to archive
-	 * @throws Exception 
+	 *            name of group conversation to archive
+	 * @throws Exception
 	 * 
 	 */
 	@When("^(.*) archived conversation having groupname (.*)$")
@@ -233,7 +239,7 @@ public class CommonIOSSteps {
 		commonSteps.ArchiveConversationWithGroup(userToNameAlias,
 				archivedUserNameAlias);
 	}
-   
+
 	@When("^(.*) accept all requests$")
 	public void AcceptAllIncomingConnectionRequests(String userToNameAlias)
 			throws Exception {
@@ -341,6 +347,34 @@ public class CommonIOSSteps {
 		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query,
 				timeout);
 	}
+	
+	/**
+	 * Start a call using autocall tool
+	 * 
+	 * @step. ^Contact (.*) calls to conversation (.*)$
+	 * @param starterNameAlias
+	 * 		user who will start a call
+	 * @param destinationNameAlias
+	 * 		user who will receive a call
+	 * @throws Exception
+	 */
+	@When("^Contact (.*) calls to conversation (.*)$")
+	public void ContactCallsToConversation(String starterNameAlias, String destinationNameAlias) throws Exception {
+		commonSteps.UserCallsToConversation(starterNameAlias, destinationNameAlias);
+	}
+	
+	/**
+	 * End current call initiated by autocall tool
+	 * 
+	 * @step. ^Current call is ended$
+	 * 		
+	 * @throws Exception
+	 */
+	@When("^Current call is ended$")
+	public void EndCurrectCall() throws Exception {
+		commonSteps.StopCurrentCall();
+		Thread.sleep(1000);
+	}
 
 	@When("^Contact (.*) sends image (.*) to (.*) conversation (.*)")
 	public void ContactSendImageToConversation(String imageSenderUserNameAlias,
@@ -365,6 +399,11 @@ public class CommonIOSSteps {
 	public void tearDown() throws Exception {
 		IOSPage.clearPagesCollection();
 		IOSKeyboard.dispose();
+
+		if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+			IOSCommonUtils.collectSimulatorLogs(
+					CommonUtils.getDeviceName(getClass()), testStartedDate);
+		}
 
 		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
 			PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);

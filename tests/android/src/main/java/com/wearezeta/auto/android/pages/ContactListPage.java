@@ -107,6 +107,10 @@ public class ContactListPage extends AndroidPage {
 		elementSwipeUp(contactListFrame, time);
 	}
 	
+	public void waitForConversationListLoad(){
+		getWait().until(ExpectedConditions.visibilityOf(contactListFrame));
+	} 
+	
 	public AndroidPage tapOnContactByPosition(List<WebElement> contacts, int id)
 			throws Exception {
 		AndroidPage page = null;

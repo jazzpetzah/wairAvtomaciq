@@ -27,7 +27,7 @@ public class PersonalInfoPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameProfileSettingsButton)
 	private WebElement settingsButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameSettingsAboutButton)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathSettingsAboutButton)
 	private WebElement aboutButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameTermsOfUseButton)
@@ -51,7 +51,7 @@ public class PersonalInfoPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathSettingsPage)
 	private WebElement settingsPage;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameOptionsSettingsButton)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathOptionsSettingsButton)
 	private WebElement optionsSettingsButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameSoundAlertsButton)
@@ -68,6 +68,12 @@ public class PersonalInfoPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathChangePasswordPageChangePasswordButton)
 	private WebElement changePasswordPageChangePasswordButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameOptionsHelpButton)
+	private WebElement settingsHelpButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathSettingsHelpHeader)
+	private WebElement supportWebPageHeader;
 
 	public PersonalInfoPage(ZetaIOSDriver driver, WebDriverWait wait)
 			throws Exception {
@@ -223,6 +229,14 @@ public class PersonalInfoPage extends IOSPage {
 
 	public void isDefaultSoundValOne() {
 		allSoundAlertsButton.getAttribute("value").equals("1");
+	}
+	
+	public void clickOnHelpButton(){
+		settingsHelpButton.click();
+	}
+	
+	public boolean isSupportWebPageVisible() {
+		return supportWebPageHeader.isDisplayed();
 	}
 
 }

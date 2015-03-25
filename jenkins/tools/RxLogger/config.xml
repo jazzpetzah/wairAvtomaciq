@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><Configuration>
+    <Plugin name="SnapshotPlugin">
+        <Setting type="boolean" name="Log network info" value="true"/>
+        <Setting type="int" name="Log Interval (msec)" value="1800000"/>
+        <Setting type="boolean" name="Log processes" value="true"/>
+        <Setting type="string" name="Log path" value="/storage/emulated/0/RxLogger/snapshots/"/>
+        <Setting type="boolean" name="Log CPU usage" value="true"/>
+        <Setting type="boolean" name="Enable Plugin" value="true"/>
+        <Setting type="string" name="Log filename" value="snapshot"/>
+        <Setting type="boolean" name="Log system properties" value="true"/>
+        <Setting type="boolean" name="Log threads" value="false"/>
+        <Setting type="boolean" name="Log memory usage" value="true"/>
+        <Setting type="boolean" name="Log filesystem info" value="true"/>
+        <Setting type="boolean" name="Log power info" value="true"/>
+        <Setting type="int" name="Log file count" value="96"/>
+        <Setting type="boolean" name="Log usage stats" value="true"/>
+    </Plugin>
+    <Plugin name="LogCatPlugin">
+        <Setting type="int" name="Event log file count" value="2"/>
+        <Setting type="int" name="Main log interval (msec)" value="30000"/>
+        <Setting type="int" name="Max main log size (KB)" value="512"/>
+        <Setting type="string" name="Log path" value="/storage/emulated/0/RxLogger/"/>
+        <Setting type="string" name="Event log filter" value=""/>
+        <Setting type="boolean" name="Enable radio logcat" value="true"/>
+        <Setting type="boolean" name="Enable system logcat" value="true"/>
+        <Setting type="int" name="Main log file count" value="2"/>
+        <Setting type="string" name="Main log filter" value=""/>
+        <Setting type="int" name="Max radio log size (KB)" value="512"/>
+        <Setting type="string" name="Radio log filter" value=""/>
+        <Setting type="int" name="Event log interval (msec)" value="30000"/>
+        <Setting type="string" name="System log filename" value="System"/>
+        <Setting type="int" name="Radio log interval (msec)" value="30000"/>
+        <Setting type="string" name="System log filter" value=""/>
+        <Setting type="int" name="System log file count" value="2"/>
+        <Setting type="boolean" name="Enable event logcat" value="true"/>
+        <Setting type="string" name="Radio log filename" value="Radio"/>
+        <Setting type="boolean" name="Enable main logcat" value="true"/>
+        <Setting type="boolean" name="Enable Plugin" value="true"/>
+        <Setting type="int" name="Radio log file count" value="2"/>
+        <Setting type="int" name="Max event log size (KB)" value="512"/>
+        <Setting type="string" name="Event log filename" value="Event"/>
+        <Setting type="string" name="Main log filename" value="Main"/>
+        <Setting type="int" name="Max system log size (KB)" value="512"/>
+        <Setting type="int" name="System log interval (msec)" value="30000"/>
+    </Plugin>
+    <Plugin name="ANRPlugin">
+        <Setting type="string" name="Log path" value="/storage/emulated/0/RxLogger/anr/"/>
+        <Setting type="int" name="Max file size (KB)" value="5120"/>
+        <Setting type="boolean" name="Enable Plugin" value="true"/>
+    </Plugin>
+    <Plugin name="TCPDumpPlugin">
+        <Setting type="string" name="Log path" value="/storage/emulated/0/RxLogger/"/>
+        <Setting type="int" name="Max file size (MB)" value="5"/>
+        <Setting type="int" name="Log file count" value="2"/>
+        <Setting type="string" name="Base filename" value="capture.pcap"/>
+        <Setting type="boolean" name="Enable Plugin" value="false"/>
+    </Plugin>
+    <Plugin name="PushPullClientPlugin">
+        <Setting type="string" name="Local directory to push" value="/storage/emulated/0/RxLogger/"/>
+        <Setting type="string" name="Temp files directory" value="/storage/emulated/0/RxLoggerPush/"/>
+        <Setting type="string" name="Wakeup for push time" value="00:00:00"/>
+        <Setting type="string" name="Remote pull directory" value="/PushPullClient/Pull/"/>
+        <Setting type="int" name="Push interval (msec)" value="7200000"/>
+        <Setting type="boolean" name="Enable pull" value="false"/>
+        <Setting type="string" name="Password" value="password"/>
+        <Setting type="string" name="Local pull directory" value="/storage/emulated/0/RxLogger/config/"/>
+        <Setting type="boolean" name="Enable push" value="true"/>
+        <Setting type="boolean" name="Enable Plugin" value="false"/>
+        <Setting type="string" name="Remote push directory" value="/PushPullClient/Push/"/>
+        <Setting type="string" name="Remote pull filename" value="config.xml"/>
+        <Setting type="int" name="Pull interval (msec)" value="10800000"/>
+        <Setting type="boolean" name="Do push on start" value="true"/>
+        <Setting type="string" name="Username" value="username"/>
+        <Setting type="string" name="Hostname" value="ftp.somewhere.com"/>
+    </Plugin>
+    <Plugin name="KernelLogPlugin">
+        <Setting type="string" name="Kernel Log Filename" value="KLog"/>
+        <Setting type="int" name="Kernel Log Interval (msec)" value="30000"/>
+        <Setting type="int" name="Kernel Log File Count" value="2"/>
+        <Setting type="string" name="Log Path" value="/storage/emulated/0/RxLogger/"/>
+        <Setting type="int" name="Max Kernel Log Size (KB)" value="512"/>
+        <Setting type="boolean" name="Enable Plugin" value="false"/>
+    </Plugin>
+    <Plugin name="Main Log">
+        <Setting type="boolean" name="Gps" value="false"/>
+        <Setting type="boolean" name="Bluetooth" value="true"/>
+        <Setting type="boolean" name="Power" value="true"/>
+        <Setting type="string" name="Log path" value="/storage/emulated/0/RxLogger/"/>
+        <Setting type="boolean" name="System resources" value="true"/>
+        <Setting type="int" name="Log interval (msec)" value="5000"/>
+        <Setting type="int" name="Log max size (KB)" value="2048"/>
+        <Setting type="boolean" name="Cellular" value="true"/>
+        <Setting type="string" name="Log base filename" value="Resource"/>
+        <Setting type="boolean" name="Network" value="true"/>
+        <Setting type="int" name="Gps update frequency (msec)" value="60000"/>
+        <Setting type="boolean" name="Wifi" value="true"/>
+        <Setting type="int" name="Log file count" value="1"/>
+    </Plugin>
+</Configuration>

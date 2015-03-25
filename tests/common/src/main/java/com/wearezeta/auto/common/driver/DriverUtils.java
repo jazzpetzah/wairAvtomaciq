@@ -41,7 +41,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class DriverUtils {
 	public static final int DEFAULT_VISIBILITY_TIMEOUT = 20;
-	
+
 	private static final Logger log = ZetaLogger.getLog(DriverUtils.class
 			.getSimpleName());
 
@@ -77,10 +77,21 @@ public class DriverUtils {
 		return isElementDisplayed(driver, by, 1);
 	}
 
-	public static boolean isElementDisplayed(RemoteWebDriver driver, By by,
+	public static boolean isElementDisplayed(RemoteWebDriver driver, final By by,
 			int timeoutSeconds) throws Exception {
 		if (waitUntilElementAppears(driver, by, timeoutSeconds)) {
-			return driver.findElement(by).isDisplayed();
+			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+					.withTimeout(timeoutSeconds / 2 + 1, TimeUnit.SECONDS)
+					.pollingEvery(1, TimeUnit.SECONDS);
+			try {
+				return wait.until(new Function<WebDriver, Boolean>() {
+					public Boolean apply(WebDriver driver) {
+						return driver.findElement(by).isDisplayed();
+					}
+				});
+			} catch (TimeoutException e) {
+				return false;
+			}
 		} else {
 			return false;
 		}
@@ -448,25 +459,23 @@ public class DriverUtils {
 		}
 
 	}
-
 	public static void mobileTapByCoordinates(AppiumDriver driver,
-			WebElement element) {
+			WebElement element, int offsetX, int offsetY) {
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
 
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		HashMap<String, Double> tapObject = new HashMap<String, Double>();
-		tapObject
-				.put("x",
-						(double) (coords.x + elementSize.width - elementSize.width / 2)); // in
-																							// pixels
-																							// from
-																							// left
-		tapObject.put("y", (double) (coords.y + elementSize.height - 20));// in
-																			// pixels
-																			// from
-																			// top
+		double x = (double) ((coords.x + offsetX + elementSize.width) - elementSize.width / 2);
+		tapObject.put("x", x); 
+		double y = (double) ((coords.y + offsetY + elementSize.height) - elementSize.height / 2);
+		tapObject.put("y", y);
 		js.executeScript("mobile: tap", tapObject);
+	}
+
+	public static void mobileTapByCoordinates(AppiumDriver driver,
+			WebElement element) {
+		mobileTapByCoordinates (driver, element, 0, 0);
 	}
 
 	public static void androidLongClick(AppiumDriver driver, WebElement element) {
@@ -614,5 +623,9 @@ public class DriverUtils {
 			WebElement element) {
 		Point coords = element.getLocation();
 		driver.tap(1, coords.x - (coords.x / 2 + coords.x / 8), coords.y, 1);
+	}
+
+	public static void resetApp(AppiumDriver driver) {
+		driver.resetApp();
 	}
 }

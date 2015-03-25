@@ -53,7 +53,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | username | Contact   |
       | user1Email | user1Password | user1Name | c        | user2Name |
       
-  @staging @id1463
+  @regression @id1463
   Scenario Outline: Verify name change
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -63,7 +63,7 @@ Feature: Self Profile
     And I tap to edit my name
     And I attempt to input an empty name and press return
     And I see error message asking for more characters
-	And I change <Name> to <NewUsername>
+	And I change name <Name> to <NewUsername>
 	And I swipe right on the personal page
 	And I see Contact list with my name <NewUsername>
 	And I tap on my name <NewUsername>

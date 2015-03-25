@@ -256,6 +256,16 @@ public class AndroidCommonUtils extends CommonUtils {
 		return new ClientDeviceInfo(os, osBuild, deviceName, gsmNetworkType, isWifiEnabled);
 	}
 	
+	public static String getRxLogResourceFilePathFromConfig(Class<?> c)
+			throws Exception {
+		return CommonUtils.getValueFromConfig(c, "resourceFilePath");
+	}
+	
+	public static String getRxLogResultsPathFromConfig(Class<?> c)
+			throws Exception {
+		return CommonUtils.getValueFromConfig(c, "resultsPath");
+	}
+	
 	public static String getAndroidClientInfoPathFromConfig(Class<?> c)
 			throws Exception {
 		return CommonUtils.getValueFromConfig(c, "androidClientInfoPath");

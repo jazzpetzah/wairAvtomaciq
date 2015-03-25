@@ -356,6 +356,11 @@ public class CommonUtils {
 		return getValueFromCommonConfig(c, "jenkinsSuPassword");
 	}
 
+	public static String getJenkinsProjectDir(Class<?> c)
+			throws Exception {
+		return getValueFromCommonConfig(c, "jenkinsProjectDir");
+	}
+	
 	public static BufferedImage getElementScreenshot(WebElement element,
 			AppiumDriver driver) throws IOException {
 		return getElementScreenshot(element, driver, "iPhone 6");

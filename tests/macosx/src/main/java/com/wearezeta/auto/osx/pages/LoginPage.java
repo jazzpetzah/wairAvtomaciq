@@ -25,25 +25,20 @@ import com.wearezeta.auto.osx.common.OSXConstants;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class LoginPage extends OSXPage {
+
 	private static final Logger log = ZetaLogger.getLog(LoginPage.class
 			.getSimpleName());
 
 	@FindBy(how = How.ID, using = OSXLocators.LoginPage.idLoginPage)
-	private WebElement viewPager;
-
-	@FindBy(how = How.XPATH, using = OSXLocators.LoginPage.xpathAcceptTermsOfServiceCheckBox)
-	private WebElement acceptTermsOfServiceCheckBox;
-
-	@FindBy(how = How.NAME, using = OSXLocators.LoginPage.nameRegisterButton)
-	private WebElement registerButton;
+	private WebElement window;
 
 	@FindBy(how = How.NAME, using = OSXLocators.LoginPage.nameSignInButton)
 	private WebElement signInButton;
 
-	@FindBy(how = How.CSS, using = OSXLocators.relativePathLoginField)
+	@FindBy(how = How.CSS, using = OSXLocators.LoginPage.relativePathLoginField)
 	private WebElement loginField;
 
-	@FindBy(how = How.ID, using = OSXLocators.idPasswordField)
+	@FindBy(how = How.ID, using = OSXLocators.LoginPage.idPasswordField)
 	private WebElement passwordField;
 
 	@FindBy(how = How.ID, using = OSXLocators.idSendProblemReportButton)
@@ -67,21 +62,12 @@ public class LoginPage extends OSXPage {
 		super(driver, wait);
 	}
 
-	public Boolean isVisible() {
-		WebElement page = null;
-		try {
-			page = driver.findElement(By.id(OSXLocators.LoginPage.idLoginPage));
-		} catch (NoSuchElementException e) {
-			page = null;
-		}
-		return page != null;
+	public boolean isVisible() throws Exception {
+		return DriverUtils.waitUntilElementAppears(driver,
+				By.id(OSXLocators.LoginPage.idPasswordField));
 	}
 
-	public void startSignIn() {
-		signInButton.click();
-	}
-
-	public ContactListPage confirmSignIn() throws Exception {
+	public ContactListPage signIn() throws Exception {
 		Thread.sleep(1000);
 		signInButton.click();
 		return new ContactListPage(this.getDriver(), this.getWait());
@@ -120,32 +106,6 @@ public class LoginPage extends OSXPage {
 		}
 
 		return el != null;
-	}
-
-	public RegistrationPage startRegistration() throws Exception {
-		acceptTermsOfServiceCheckBox.click();
-		for (int i = 0; i < 3; i++) {
-			if (registerButton.getAttribute("AXEnabled").equals("1"))
-				break;
-		}
-		registerButton.click();
-		RegistrationPage page = new RegistrationPage(this.getDriver(),
-				this.getWait());
-		return page;
-	}
-
-	public void logoutIfNotSignInPage() throws Exception {
-		DriverUtils.setImplicitWaitValue(driver, 1);
-		try {
-			driver.findElement(By.id(OSXLocators.LoginPage.idLoginPage));
-		} catch (NoSuchElementException e) {
-			log.info("Logging out because previous user is signed in.");
-			MainMenuPage menu = new MainMenuPage(this.getDriver(),
-					this.getWait());
-			menu.SignOut();
-		} finally {
-			DriverUtils.setDefaultImplicitWait(driver);
-		}
 	}
 
 	public void sendProblemReportIfFound() throws Exception {
@@ -252,6 +212,10 @@ public class LoginPage extends OSXPage {
 
 	public void forgotPassword() {
 		forgotPasswordButton.click();
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+		}
 	}
 
 	public Future<Message> getPasswordResetMessage() {

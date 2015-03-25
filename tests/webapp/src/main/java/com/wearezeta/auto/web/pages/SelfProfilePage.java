@@ -1,5 +1,7 @@
 package com.wearezeta.auto.web.pages;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -8,6 +10,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.common.base.Function;
+import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.WebAppLocators;
@@ -22,8 +25,11 @@ public class SelfProfilePage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathSelfUserNameInput)
 	private WebElement userNameInput;
 
-	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.SelfProfilePage.classNameSelfUserMail)
+	@FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathNameSelfUserMail)
 	private WebElement userMail;
+
+	@FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathAccentColorPickerChildren)
+	private List<WebElement> colorsInColorPicker;
 
 	public SelfProfilePage(ZetaWebAppDriver driver, WebDriverWait wait)
 			throws Exception {
@@ -76,5 +82,36 @@ public class SelfProfilePage extends WebPage {
 		userName.click();
 		userNameInput.clear();
 		userNameInput.sendKeys(name + "\n");
+	}
+
+	public void selectAccentColor(String colorName) throws Exception {
+		final int id = AccentColor.getByName(colorName).getId();
+		final String xpathAccentColorDiv = WebAppLocators.SelfProfilePage.xpathAccentColorDivById
+				.apply(id);
+		assert DriverUtils.waitUntilElementAppears(driver,
+				By.xpath(xpathAccentColorDiv));
+		final WebElement accentColorDiv = driver
+				.findElementByXPath(xpathAccentColorDiv);
+		assert DriverUtils.waitUntilElementClickable(driver, accentColorDiv);
+		accentColorDiv.click();
+	}
+
+	public String getCurrentAccentColor() {
+		final WebElement accentColorCircleDiv = driver
+				.findElementByXPath(WebAppLocators.SelfProfilePage.xpathCurrentAccentColorCircleDiv);
+		return accentColorCircleDiv.getCssValue("border-top-color");
+	}
+
+	public int getCurrentAccentColorId() {
+		int i = 1;
+		for (WebElement childDiv : colorsInColorPicker) {
+			if (childDiv.getAttribute("class").toLowerCase()
+					.contains("selected")) {
+				return i;
+			}
+			i++;
+		}
+		throw new RuntimeException(
+				"No accent color is selected in color picker");
 	}
 }
