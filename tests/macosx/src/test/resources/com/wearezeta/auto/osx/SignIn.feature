@@ -3,8 +3,7 @@ Feature: Sign In
   @smoke @id690
   Scenario Outline: Sign in ZClient
     Given There is 1 user where <Name> is me
-    Given I am signed out from ZClient
-    And I see Sign In screen
+    And I see Welcome screen
     When I start Sign In
     And I have entered login <Login>
     And I have entered password <Password>
@@ -41,8 +40,7 @@ Feature: Sign In
 
   @regression @id1120
   Scenario Outline: Verify I see wrong address or password message
-    Given I am signed out from ZClient
-    And I see Sign In screen
+    And I see Welcome screen
     When I start Sign In
     And I have entered login <Login>
     And I have entered password <Password>
@@ -62,9 +60,8 @@ Feature: Sign In
   @regression @id1116
   Scenario Outline: Verify Sign In progress behaviour while there are probelms with internet connectivity
     Given There is 1 user where <Name> is me
-    Given I am signed out from ZClient
     Given Internet connection is lost
-    And I see Sign In screen
+    And I see Welcome screen
     When I start Sign In
     And I have entered login <Login>
     And I have entered password <Password>

@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
@@ -135,8 +136,17 @@ public class ContactListPage extends IOSPage {
 	public IOSPage tapOnName(String name) throws Exception {
 		IOSPage page = null;
 		WebElement el = findNameInContactList(name);
-		this.getWait().until(ExpectedConditions.elementToBeClickable(el));
-		el.click();
+		boolean clickableGlitch = false;
+		try {
+			this.getWait().until(ExpectedConditions.elementToBeClickable(el));
+		} catch (org.openqa.selenium.TimeoutException ex) {
+			clickableGlitch = true;
+		}
+		if (clickableGlitch) {
+			DriverUtils.mobileTapByCoordinates(getDriver(), el);
+		} else {
+			el.click();
+		}
 		if (isProfilePageVisible()) {
 			page = new PersonalInfoPage(this.getDriver(), this.getWait());
 		} else {
@@ -159,7 +169,7 @@ public class ContactListPage extends IOSPage {
 		WebElement contact = null;
 		for (int i = 0; i < 5; i++) {
 			for (WebElement listName : contactListNames) {
-				if (listName.getText().equals(name)) {
+				if (listName.getText().equals(name) && listName.isDisplayed()) {
 					contact = listName;
 					flag = false;
 					break;

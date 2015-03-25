@@ -189,6 +189,7 @@ public class ContactListPage extends WebPage {
 						.apply(conversationName));
 		assert DriverUtils.isElementDisplayed(driver, locator, 5);
 		final WebElement archiveButton = this.getDriver().findElement(locator);
+		assert DriverUtils.waitUntilElementClickable(driver, archiveButton);
 		archiveButton.click();
 	}
 
@@ -200,6 +201,7 @@ public class ContactListPage extends WebPage {
 						.apply(conversationName));
 		assert DriverUtils.isElementDisplayed(driver, locator, 5);
 		final WebElement muteButton = this.getDriver().findElement(locator);
+		assert DriverUtils.waitUntilElementClickable(driver, muteButton);
 		muteButton.click();
 	}
 

@@ -57,6 +57,18 @@ public class TabletDialogPageSteps {
 	public void ThenISeeUserPopOver() throws Exception {
 		Assert.assertTrue(TabletPagesCollection.dialogPage.isPopOverDisplayed());
 	}
+	
+	/**
+	 * Check that participant pop-over is not visible
+	 * 
+	 * @step. ^I do not see participant pop-over$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I do not see participant pop-over$")
+	public void ThenIDoNotSeeUserPopOver() throws Exception {
+		Assert.assertFalse(TabletPagesCollection.dialogPage.isPopOverDisplayed());
+	}
 
 	/**
 	 * Check name and email in participant pop-over

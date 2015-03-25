@@ -7,3 +7,4 @@ defaultBackEndUrl=https://staging-nginz-https.zinfra.io
 backendType=staging
 jenkinsSuLogin=jenkins
 jenkinsSuPassword=123456
+jenkinsProjectDir=/Project/
