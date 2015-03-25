@@ -123,12 +123,14 @@ public class IOSCommonUtils {
 
 	private static String getIOSSimulatorIdByDeviceName(String deviceName)
 			throws Exception {
-		return CommonUtils.executeOsXCommandWithOutput(
-				new String[] {
-						"/bin/bash",
-						"-c",
-						"xcrun simctl list devices | grep -i '" + deviceName
-								+ "' | cut -d '(' -f2 | cut -d ')' -f1" })
+		return CommonUtils
+				.executeOsXCommandWithOutput(
+						new String[] {
+								"/bin/bash",
+								"-c",
+								"xcrun simctl list devices | grep -i '"
+										+ deviceName
+										+ "' | tail -n 1 | cut -d '(' -f2 | cut -d ')' -f1" })
 				.trim();
 	}
 

@@ -8,7 +8,7 @@ import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.pages.WebPage;
 
 public abstract class AbstractPopoverContainer extends WebPage {
-	private final static int VISIBILITY_TIMEOUT = 5; // seconds
+	private final static int VISIBILITY_TIMEOUT = 3; // seconds
 
 	public AbstractPopoverContainer(ZetaWebAppDriver driver, WebDriverWait wait)
 			throws Exception {
