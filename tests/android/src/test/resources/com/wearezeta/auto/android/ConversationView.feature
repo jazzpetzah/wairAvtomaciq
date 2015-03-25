@@ -214,7 +214,7 @@ Feature: Conversation View
       
 
   @id162 @staging
-  Scenario Outline: Send image using existing camera rolls (landscape) in group chat
+  Scenario Outline: Send image using existing camera rolls (landscape) in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
