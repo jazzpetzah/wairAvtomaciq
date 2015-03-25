@@ -99,7 +99,7 @@ public class SelfProfilePage extends WebPage {
 	public String getCurrentAccentColor() {
 		final WebElement accentColorCircleDiv = driver
 				.findElementByXPath(WebAppLocators.SelfProfilePage.xpathCurrentAccentColorCircleDiv);
-		return accentColorCircleDiv.getCssValue("background-color");
+		return accentColorCircleDiv.getCssValue("border-top-color");
 	}
 
 	public int getCurrentAccentColorId() {

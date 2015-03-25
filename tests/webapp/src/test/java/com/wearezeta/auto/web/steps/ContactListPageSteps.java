@@ -289,7 +289,7 @@ public class ContactListPageSteps {
 				.getSelfNameColor();
 		final String colorInColorPicker = PagesCollection.selfProfilePage
 				.getCurrentAccentColor();
-		Assert.assertTrue("Colors are not same",
+		Assert.assertTrue("Colors are not the same",
 				colorInColorPicker.equalsIgnoreCase(selfNameColor));
 
 	}
