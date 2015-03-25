@@ -3,6 +3,8 @@ package com.wearezeta.auto.osx.pages;
 import java.lang.reflect.Field;
 
 import com.wearezeta.auto.common.AbstractPagesCollection;
+import com.wearezeta.auto.osx.pages.calling.CallPage;
+import com.wearezeta.auto.osx.pages.welcome.WelcomePage;
 
 public class PagesCollection extends AbstractPagesCollection {
 
@@ -22,9 +24,13 @@ public class PagesCollection extends AbstractPagesCollection {
 
 	public static UserProfilePage userProfilePage = null;
 
+	public static WelcomePage welcomePage = null;
+	
 	public static RegistrationPage registrationPage = null;
 
 	public static ChangePasswordPage changePasswordPage = null;
+
+	public static CallPage callPage = null;
 
 	public void closeAllPages() throws Exception {
 		for (Field f : this.getClass().getDeclaredFields()) {

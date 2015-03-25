@@ -33,7 +33,7 @@ public class RegistrationPage extends OSXPage {
 	// @FindBy(how = How.ID, using = OSXLocators.idRegistrationEmailField)
 	private WebElement emailField;
 
-	@FindBy(how = How.ID, using = OSXLocators.idPasswordField)
+	@FindBy(how = How.ID, using = OSXLocators.RegistrationPage.idPasswordField)
 	private WebElement passwordField;
 
 	@FindBy(how = How.ID, using = OSXLocators.idSubmitRegistrationButton)
@@ -138,7 +138,7 @@ public class RegistrationPage extends OSXPage {
 		return activationResponse
 				.contains(OSXLocators.RegistrationPage.ACTIVATION_RESPONSE_VERIFIED);
 	}
-
+	
 	public void setActivationMessage(Future<Message> activationMessage) {
 		this.activationMessage = activationMessage;
 	}
