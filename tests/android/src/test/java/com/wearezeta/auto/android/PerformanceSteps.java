@@ -2,17 +2,22 @@ package com.wearezeta.auto.android;
 
 import java.util.ArrayList;
 
+import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.android.common.AndroidGeneratePerfomanceReport;
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.PerformanceCommon;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.PerformanceCommon.PerformanceLoop;
 
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class PerformanceSteps {
+	private static final String RXLOGGER_RESOURCE_FILE_PATH = "/sdcard/RxLogger/Resource0.csv";
 	private final PerformanceCommon perfCommon = PerformanceCommon
 			.getInstance();
 
@@ -27,7 +32,7 @@ public class PerformanceSteps {
 	 * @throws Throwable
 	 */
 	@When("^I start test cycle for (\\d+) minutes$")
-	public void WhenIStartTestCycleForNMinutes(int timeout) throws Throwable {
+	public void WhenIStartTestCycleForNMinutes(int timeout) throws Exception {
 		perfCommon.runPerformanceLoop(new PerformanceLoop() {
 			public void run() throws Exception {
 				// Send message to random visible chat
@@ -84,5 +89,11 @@ public class PerformanceSteps {
 				 */
 			}
 		}, timeout);
+	}
+
+	@Then("^I generate performance report$")
+	public void ThenIGeneratePerformanceReport() throws Exception{
+		AndroidCommonUtils.copyFileFromAndroid(AndroidCommonUtils.getRxLogResourceFilePathFromConfig(PerformanceSteps.class), RXLOGGER_RESOURCE_FILE_PATH);
+		Assert.assertTrue(AndroidGeneratePerfomanceReport.generateRunReport());
 	}
 }

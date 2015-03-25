@@ -20,4 +20,5 @@ public class PagesCollection extends AbstractPagesCollection{
 	 public static ImageFullScreenPage imageFullScreenPage = null;
 	 public static PendingRequestsPage pendingRequestsPage = null;
 	 public static OtherUserOnPendingProfilePage otherUserOnPendingProfilePage = null;
+	 public static CallPage callPage = null;
 }

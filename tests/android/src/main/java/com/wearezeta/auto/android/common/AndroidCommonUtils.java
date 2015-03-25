@@ -49,6 +49,17 @@ public class AndroidCommonUtils extends CommonUtils {
 		}
 	}
 	
+	public static void copyFileFromAndroid(String filePathOnSystem,  String filePathOnDevice) throws Exception {
+		if (getOsName().contains(OS_NAME_WINDOWS)) {
+			Runtime.getRuntime().exec(
+					"cmd /C adb pull " + filePathOnDevice + " "
+							+ filePathOnSystem);
+		} else {
+			executeOsXCommand(new String[] { "/bin/bash", "-c", ADB_PREFIX + "adb pull "
+					+ filePathOnDevice + " " + filePathOnSystem });
+		}
+	}
+	
 	public static void disableHints() throws Exception {
 		if (getOsName().contains(OS_NAME_WINDOWS)) {
 			Runtime.getRuntime().exec(

@@ -153,7 +153,7 @@ public class ContactListPage extends WebPage {
 				.apply(name);
 		return DriverUtils.isElementDisplayed(driver, By.xpath(xpath), 5);
 	}
-
+	
 	public boolean isConvoListEntryNotVisible(String name) throws Exception {
 		log.debug("Looking for contact with name '" + name + "'");
 		name = fixDefaultGroupConvoName(name, false, false);
@@ -332,6 +332,10 @@ public class ContactListPage extends WebPage {
 			openPeoplePickerButton.click();
 		}
 		return new PeoplePickerPage(this.getDriver(), this.getWait());
+	}
+	
+	public String getSelfNameColor() {
+		return selfName.getCssValue("color");
 	}
 
 	public void clickUnmuteConversationForContact(String conversationName)
