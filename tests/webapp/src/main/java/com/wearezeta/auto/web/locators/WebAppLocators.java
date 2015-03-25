@@ -158,7 +158,7 @@ public final class WebAppLocators {
 	public static final class PeoplePickerPage {
 		public static final String xpathRoot = "//div[@id='people-picker']";
 
-		public static final String xpathNameSearchInput = xpathRoot + "//input";
+		public static final String cssNameSearchInput = "div#people-picker input";
 
 		public static final String xpathNameCreateConversationButton = xpathRoot
 				+ "//div[contains(@class, 'search-button-add')]";
