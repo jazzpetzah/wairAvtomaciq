@@ -46,6 +46,11 @@ public class WebCommonUtils extends CommonUtils {
 		return Integer.parseInt(getValueFromConfig(c, "hubPort"));
 	}
 
+	public static String getExtendedLoggingLevelInConfig(Class<?> c)
+			throws Exception {
+		return getValueFromConfig(c, "extendedLoggingLevel");
+	}
+
 	public static String getScriptsTemplatesPath() {
 		return String.format("%s/Documents/scripts/",
 				System.getProperty("user.home"));
@@ -186,5 +191,18 @@ public class WebCommonUtils extends CommonUtils {
 							CommonUtils
 									.getJenkinsSuperUserLogin(WebCommonUtils.class));
 		}
+	}
+
+	public static boolean isElementFocused(RemoteWebDriver driver,
+			String cssLocator) {
+		final String isFocusedScript = "return $('" + cssLocator
+				+ "').is(':focus');";
+		return (Boolean) driver.executeScript(isFocusedScript);
+	}
+
+	public static void setFocusToElement(RemoteWebDriver driver,
+			String cssLocator) {
+		final String setFocusScript = "$('" + cssLocator + "').focus();";
+		driver.executeScript(setFocusScript);
 	}
 }

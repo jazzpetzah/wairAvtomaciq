@@ -234,6 +234,7 @@ Feature: Connect
     And I see user <Contact> found on People picker page
     And I tap on connected user <Contact> on People picker page
     And I unblock user
+    And I wait for 5 seconds
     Then I see User <Contact> Pinged message in the conversation
     And I see new photo in the dialog
     And I see message in the dialog

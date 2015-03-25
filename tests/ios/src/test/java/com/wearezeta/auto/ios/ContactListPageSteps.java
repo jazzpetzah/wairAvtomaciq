@@ -79,14 +79,8 @@ public class ContactListPageSteps {
 			// Ignore silently
 		}
 		IOSPage page = null;
-		try {
-			page = PagesCollection.contactListPage.tapOnName(name);
-		} catch (org.openqa.selenium.TimeoutException ex) {
-			// workaround for black screen
-			log.debug("Oh no! it is black screen issue!");
-			PagesCollection.contactListPage.minimizeApplication(5);
-			page = PagesCollection.contactListPage.tapOnName(name);
-		}
+
+		page = PagesCollection.contactListPage.tapOnName(name);
 
 		if (page instanceof DialogPage) {
 			PagesCollection.dialogPage = (DialogPage) page;

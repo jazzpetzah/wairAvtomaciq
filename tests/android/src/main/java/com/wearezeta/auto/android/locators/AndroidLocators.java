@@ -143,7 +143,7 @@ public final class AndroidLocators {
 				+ ":id/zb__connect_request__ignore_button";
 
 		public static final String idPaticipantsPendingLabel = LOCATORS_PACKAGE
-				+ ":id/ttv__participants__pending_label";
+				+ ":id/ttv__participants__left_label";
 
 		public static final String xpathConnectToHeader42 = "//android.widget.EditText[following-sibling::android.widget.TextView]";
 

@@ -156,7 +156,7 @@ public final class IOSLocators {
 	
 	public static final String xpathFormatSpecificMessageContains = "//UIATextView[contains(@name,'%s')]";
 	
-	public static final String nameLeaveConversation = "metaControllerRightButton";
+	public static final String nameConversationMenu = "metaControllerRightButton";
 	
 	public static final String nameLeaveConversationAlert = "Leave the conversation?";
 
@@ -226,11 +226,11 @@ public final class IOSLocators {
 	
 	public static final String nameSelfNameTooShortError = "AT LEAST 2 CHARACTERS ";
 	
-	public static final String nameSettingsAboutButton = "ABOUT";
+	public static final String xpathSettingsAboutButton = "//UIAButton[@name='ABOUT' or @name='About']";
 	
 	public static final String nameTermsOfUseButton = "Terms of Use";
 	
-	public static final String nameOptionsSettingsButton = "SETTINGS";
+	public static final String xpathOptionsSettingsButton = "//UIAButton[@name='SETTINGS' or @name='Settings']";
 	
 	public static final String xpathSettingsPage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]";
 	

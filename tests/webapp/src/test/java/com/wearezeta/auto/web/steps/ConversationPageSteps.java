@@ -85,6 +85,39 @@ public class ConversationPageSteps {
 	}
 
 	/**
+	 * Click People button in a group conversation to close People Popover
+	 * 
+	 * @step. ^I close Group Participants popover$
+	 * 
+	 * @throws Exception
+	 *             if the popover is not visible
+	 */
+	@When("^I close Group Participants popover$")
+	public void WhenICloseGroupParticipantsPopover() throws Exception {
+		if (PagesCollection.popoverPage != null) {
+
+			PagesCollection.popoverPage.waitUntilVisibleOrThrowException();
+			PagesCollection.conversationPage.clickPeopleButton(true);
+		}
+	}
+
+	/**
+	 * Click People button in 1:1 conversation to close People Popover
+	 * 
+	 * @step. ^I close Single User Profile popover$
+	 * 
+	 * @throws Exception
+	 *             if the popover is not visible
+	 */
+	@When("^I close Single User Profile popover$")
+	public void WhenICloseSingleUserPopover() throws Exception {
+		if (PagesCollection.popoverPage != null) {
+			PagesCollection.popoverPage.waitUntilVisibleOrThrowException();
+			PagesCollection.conversationPage.clickPeopleButton(false);
+		}
+	}
+
+	/**
 	 * Click People button in a group conversation
 	 * 
 	 * @step. I click People button in group conversation$

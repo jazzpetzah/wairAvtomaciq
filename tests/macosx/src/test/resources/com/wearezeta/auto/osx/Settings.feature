@@ -3,8 +3,7 @@ Feature: Settings
   @regression @1964
   Scenario Outline: Verify possibility of reseting password
     Given There is 1 user where <Name> is me
-    Given I am signed out from ZClient
-    Given I see Sign In screen
+    Given I see Welcome screen
     Given I start Sign In
     When I select to Reset Password
     Then I see Forgot Password page in browser

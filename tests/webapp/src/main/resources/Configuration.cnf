@@ -10,3 +10,4 @@ defaultEmail=${defaultEmail}
 browserName=${browser}
 platformName=${platform}
 webappImagesPath=${webappImagesPath}
+extendedLoggingLevel=${extendedLoggingLevel}

@@ -459,25 +459,23 @@ public class DriverUtils {
 		}
 
 	}
-
 	public static void mobileTapByCoordinates(AppiumDriver driver,
-			WebElement element) {
+			WebElement element, int offsetX, int offsetY) {
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
 
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		HashMap<String, Double> tapObject = new HashMap<String, Double>();
-		tapObject
-				.put("x",
-						(double) (coords.x + elementSize.width - elementSize.width / 2)); // in
-																							// pixels
-																							// from
-																							// left
-		tapObject.put("y", (double) (coords.y + elementSize.height - 20));// in
-																			// pixels
-																			// from
-																			// top
+		double x = (double) ((coords.x + offsetX + elementSize.width) - elementSize.width / 2);
+		tapObject.put("x", x); 
+		double y = (double) ((coords.y + offsetY + elementSize.height) - elementSize.height / 2);
+		tapObject.put("y", y);
 		js.executeScript("mobile: tap", tapObject);
+	}
+
+	public static void mobileTapByCoordinates(AppiumDriver driver,
+			WebElement element) {
+		mobileTapByCoordinates (driver, element, 0, 0);
 	}
 
 	public static void androidLongClick(AppiumDriver driver, WebElement element) {

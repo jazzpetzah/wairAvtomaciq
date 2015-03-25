@@ -34,8 +34,7 @@ public final class WebAppLocators {
 
 		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
 
-		public static final String xpathIncomingPendingConvoItem = xpathParentContactListItem
-				+ "//li[@data-uie-name='item-pending-request']//div[contains(@class, 'center-column')]";
+		public static final String cssIncomingPendingConvoItem = "div#conversation-list li[data-uie-name=item-pending-request] div.center-column";
 
 		public static final String xpathOpenArchivedConvosButton = "//*[@data-uie-name='go-archive']";
 
@@ -63,7 +62,7 @@ public final class WebAppLocators {
 
 		public static final String classOptionsButton = ".text-theme.conversation-list-item [data-uie-name=go-options]";
 
-		public static final String xpathSelfProfileEntry = "//*[@data-uie-name='go-self-profile']";
+		public static final String cssSelfProfileEntry = "[data-uie-name=go-self-profile]";
 
 		// index starts from 1
 		// self name is not included
@@ -76,6 +75,11 @@ public final class WebAppLocators {
 				name) -> String.format(xpathConvoItemByNamePattern
 				+ "//div[contains(@class, 'center-column')]",
 				xpathParentContactListItem, name);
+
+		public static final Function<String, String> cssContactListEntryByName = (
+				name) -> String
+				.format("div#conversation-list li[data-uie-name=item-conversation][data-uie-value='%s'] div.center-column",
+						name);
 
 		public static final String xpathContactListEntries = xpathParentContactListItem
 				+ "//li[@data-uie-name='item-conversation' and not(contains(@class, 'archived'))]";
@@ -167,7 +171,7 @@ public final class WebAppLocators {
 	public static final class PeoplePickerPage {
 		public static final String xpathRoot = "//div[@id='people-picker']";
 
-		public static final String xpathNameSearchInput = xpathRoot + "//input";
+		public static final String cssNameSearchInput = "div#people-picker input";
 
 		public static final String xpathNameCreateConversationButton = xpathRoot
 				+ "//div[contains(@class, 'search-button-add')]";

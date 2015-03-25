@@ -1,12 +1,20 @@
 package com.wearezeta.auto.web.steps;
 
+import java.util.logging.Level;
+
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.LoggingPreferences;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.LocalFileDetector;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -78,6 +86,28 @@ public class CommonWebAppSteps {
 		capabilities.setCapability(SafariOptions.CAPABILITY, options);
 	}
 
+	private static void setExtendedLoggingLevel(
+			DesiredCapabilities capabilities, String loggingLevelName) {
+		final LoggingPreferences logs = new LoggingPreferences();
+		// set it to SEVERE by default
+		Level level = Level.SEVERE;
+		try {
+			level = Level.parse(loggingLevelName);
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			// Just continue with the default logging level
+		}
+		logs.enable(LogType.BROWSER, level);
+		// logs.enable(LogType.CLIENT, Level.ALL);
+		// logs.enable(LogType.DRIVER, Level.ALL);
+		// logs.enable(LogType.PERFORMANCE, Level.ALL);
+		// logs.enable(LogType.PROFILER, Level.ALL);
+		// logs.enable(LogType.SERVER, Level.ALL);
+		capabilities.setCapability(CapabilityType.LOGGING_PREFS, logs);
+		log.debug("Browser logging level has been set to '" + level.getName()
+				+ "'");
+	}
+
 	private ZetaWebAppDriver resetWebAppDriver(String url) throws Exception {
 		final String browser = getBrowser();
 		final DesiredCapabilities capabilities;
@@ -115,6 +145,12 @@ public class CommonWebAppSteps {
 			// Use undocumented grid property to match platforms
 			// https://groups.google.com/forum/#!topic/selenium-users/PRsEBcbpNlM
 			capabilities.setCapability("applicationName", webPlatformName);
+		}
+
+		if (!browser.equalsIgnoreCase("ie")) {
+			// Logging feature crashes IE }:@
+			setExtendedLoggingLevel(capabilities,
+					WebCommonUtils.getExtendedLoggingLevelInConfig(getClass()));
 		}
 
 		// This could useful for testing on your local machine running Opera
@@ -344,6 +380,14 @@ public class CommonWebAppSteps {
 				.MuteConversationWithUser(userToNameAlias, muteUserNameAlias);
 	}
 
+	private void writeBrowserLogsIntoMainLog(RemoteWebDriver driver) {
+		log.debug("BROWSER CONSOLE LOGS:");
+		LogEntries logEntries = driver.manage().logs().get(LogType.BROWSER);
+		for (LogEntry logEntry : logEntries) {
+			log.debug(logEntry.getMessage());
+		}
+	}
+
 	@After
 	public void tearDown() throws Exception {
 		if (PagesCollection.invitationCodePage != null) {
@@ -351,6 +395,11 @@ public class CommonWebAppSteps {
 		}
 
 		WebPage.clearPagesCollection();
+
+		if (!getBrowser().equalsIgnoreCase("ie")) {
+			writeBrowserLogsIntoMainLog(PlatformDrivers.getInstance()
+					.getDriver(CURRENT_PLATFORM));
+		}
 
 		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
 			PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);

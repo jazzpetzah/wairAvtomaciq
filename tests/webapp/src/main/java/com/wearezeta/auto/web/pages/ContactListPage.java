@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -39,7 +40,7 @@ public class ContactListPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathArchivedContactListEntries)
 	private List<WebElement> archivedContactListEntries;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathSelfProfileEntry)
+	@FindBy(how = How.CSS, using = WebAppLocators.ContactListPage.cssSelfProfileEntry)
 	private WebElement selfName;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathOpenArchivedConvosButton)
@@ -47,9 +48,6 @@ public class ContactListPage extends WebPage {
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathOpenPeoplePickerButton)
 	private WebElement openPeoplePickerButton;
-
-	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathIncomingPendingConvoItem)
-	private WebElement incomingPendingEntry;
 
 	public ContactListPage(ZetaWebAppDriver driver, WebDriverWait wait)
 			throws Exception {
@@ -138,9 +136,11 @@ public class ContactListPage extends WebPage {
 
 	public boolean isSelfNameEntryExist(String name) throws Exception {
 		log.debug("Looking for self name entry '" + name + "'");
-		return DriverUtils.isElementDisplayed(driver,
-				By.xpath(WebAppLocators.ContactListPage.xpathSelfProfileEntry),
-				5);
+		return DriverUtils
+				.isElementDisplayed(
+						driver,
+						By.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileEntry),
+						5);
 	}
 
 	public boolean isConvoListEntryWithNameExist(String name) throws Exception {
@@ -189,6 +189,7 @@ public class ContactListPage extends WebPage {
 						.apply(conversationName));
 		assert DriverUtils.isElementDisplayed(driver, locator, 5);
 		final WebElement archiveButton = this.getDriver().findElement(locator);
+		assert DriverUtils.waitUntilElementClickable(driver, archiveButton);
 		archiveButton.click();
 	}
 
@@ -200,6 +201,7 @@ public class ContactListPage extends WebPage {
 						.apply(conversationName));
 		assert DriverUtils.isElementDisplayed(driver, locator, 5);
 		final WebElement muteButton = this.getDriver().findElement(locator);
+		assert DriverUtils.waitUntilElementClickable(driver, muteButton);
 		muteButton.click();
 	}
 
@@ -240,19 +242,40 @@ public class ContactListPage extends WebPage {
 		optionsButton.click();
 	}
 
-	private static final int SELECTION_TIMEOUT = 5; // seconds
+	private static final int SELECTION_TIMEOUT = 3; // seconds
 	private static final String NON_SELECTED_ITEM_COLOR = "rgba(255, 255, 255, 1)";
 
-	private void waitUtilEntryIsSelected(WebElement entry) {
+	private boolean isEntrySelected(WebElement entry) {
+		return !entry.getCssValue("color").equals(NON_SELECTED_ITEM_COLOR);
+	}
+
+	private void waitUtilEntryIsSelected(final WebElement entry) {
 		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(
 				SELECTION_TIMEOUT, TimeUnit.SECONDS).pollingEvery(1,
 				TimeUnit.SECONDS);
 		wait.until(new Function<WebDriver, Boolean>() {
 			public Boolean apply(WebDriver driver) {
-				return !entry.getCssValue("color").equals(
-						NON_SELECTED_ITEM_COLOR);
+				return isEntrySelected(entry);
 			}
 		});
+	}
+
+	public void clickWithJS(String cssSelector) {
+		driver.executeScript(String.format("$(document).find(\"%s\").click();",
+				cssSelector));
+	}
+
+	private void selectEntryWithRetry(By locator, String cssLocator) {
+		final WebElement entry = driver.findElement(locator);
+		if (!isEntrySelected(entry)) {
+			entry.click();
+			try {
+				waitUtilEntryIsSelected(entry);
+			} catch (TimeoutException e) {
+				clickWithJS(cssLocator);
+				waitUtilEntryIsSelected(entry);
+			}
+		}
 	}
 
 	private static final int OPEN_CONVO_LIST_ENTRY_TIMEOUT = 3; // seconds
@@ -267,29 +290,32 @@ public class ContactListPage extends WebPage {
 				OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Conversation item '"
 				+ conversationName
 				+ "' has not been found in the conversations list within "
-				+ OPEN_CONVO_LIST_ENTRY_TIMEOUT + " second(s) timeoutÏ";
-		final WebElement entry = driver.findElement(entryLocator);
-		entry.click();
-		waitUtilEntryIsSelected(entry);
+				+ OPEN_CONVO_LIST_ENTRY_TIMEOUT + " second(s) timeout";
+		selectEntryWithRetry(entryLocator,
+				WebAppLocators.ContactListPage.cssContactListEntryByName
+						.apply(conversationName));
 		return new ConversationPage(this.getDriver(), this.getWait());
 	}
 
 	public PendingConnectionsPage openConnectionRequestsList() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(driver,
-				incomingPendingEntry);
-		incomingPendingEntry.click();
+		final By entryLocator = By
+				.cssSelector(WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
+		assert DriverUtils.isElementDisplayed(driver, entryLocator,
+				OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Incoming connection requests entry has not been found within "
+				+ OPEN_CONVO_LIST_ENTRY_TIMEOUT + " second(s) timeout";
+		selectEntryWithRetry(entryLocator,
+				WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
 		return new PendingConnectionsPage(this.getDriver(), this.getWait());
 	}
 
 	public SelfProfilePage openSelfProfile() throws Exception {
 		final By entryLocator = By
-				.xpath(WebAppLocators.ContactListPage.xpathSelfProfileEntry);
+				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileEntry);
 		assert DriverUtils.isElementDisplayed(driver, entryLocator,
 				OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Self profile entry has not been found within "
 				+ OPEN_CONVO_LIST_ENTRY_TIMEOUT + " second(s) timeout";
-		final WebElement entry = driver.findElement(entryLocator);
-		entry.click();
-		waitUtilEntryIsSelected(entry);
+		selectEntryWithRetry(entryLocator,
+				WebAppLocators.ContactListPage.cssSelfProfileEntry);
 		return new SelfProfilePage(this.getDriver(), this.getWait());
 	}
 
@@ -301,9 +327,7 @@ public class ContactListPage extends WebPage {
 		DriverUtils.waitUntilElementClickable(driver, openPeoplePickerButton);
 		if (WebAppExecutionContext.browserName
 				.equals(WebAppConstants.Browser.INTERNET_EXPLORER)) {
-			driver.executeScript(String.format(
-					"$(document).find(\"%s\").click();",
-					WebAppLocators.ContactListPage.cssOpenPeoplePickerButton));
+			clickWithJS(WebAppLocators.ContactListPage.cssOpenPeoplePickerButton);
 		} else {
 			openPeoplePickerButton.click();
 		}
@@ -350,8 +374,8 @@ public class ContactListPage extends WebPage {
 
 	public String getIncomingPendingItemText() throws Exception {
 		final By entryLocator = By
-				.xpath(WebAppLocators.ContactListPage.xpathIncomingPendingConvoItem);
+				.cssSelector(WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
 		assert DriverUtils.isElementDisplayed(driver, entryLocator, 3) : "There are no visible incoming pending connections in the conversations list";
-		return incomingPendingEntry.getText();
+		return driver.findElement(entryLocator).getText();
 	}
 }
