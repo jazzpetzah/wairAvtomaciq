@@ -1,4 +1,4 @@
-package com.wearezeta.auto.osx.pages;
+package com.wearezeta.auto.osx.pages.common;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -13,6 +13,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
+import com.wearezeta.auto.osx.pages.OSXPage;
 
 public class ChoosePicturePage extends OSXPage {
 	private static final Logger log = ZetaLogger.getLog(ChoosePicturePage.class

@@ -67,7 +67,7 @@ public class LoginPageSteps {
 
 		PagesCollection.loginPage = PagesCollection.welcomePage.startSignIn();
 
-		PagesCollection.loginPage.setLogin(login);
+		PagesCollection.loginPage.typeEmail(login);
 		PagesCollection.loginPage.setPassword(password);
 
 		PagesCollection.contactListPage = PagesCollection.loginPage.signIn();
@@ -93,15 +93,15 @@ public class LoginPageSteps {
 	}
 
 	@When("^I [Ss]ign [Ii]n expecting (sucessful login|error|[Nn]o [Ii]nternet message)$")
-	public void  ISignInExpectingResult(String result) throws Exception {
+	public void ISignInExpectingResult(String result) throws Exception {
 		OSXPage page = null;
-		for (LoginBehaviourEnum value: LoginBehaviourEnum.values()) {
+		for (LoginBehaviourEnum value : LoginBehaviourEnum.values()) {
 			if (value.getResult().toLowerCase().equals(result.toLowerCase())) {
 				page = PagesCollection.loginPage.signIn(value);
 			}
 		}
 		if (page instanceof ContactListPage) {
-			PagesCollection.contactListPage = (ContactListPage)page;
+			PagesCollection.contactListPage = (ContactListPage) page;
 			PagesCollection.userProfilePage = new UserProfilePage(
 					PagesCollection.contactListPage.getDriver(),
 					PagesCollection.contactListPage.getWait());
@@ -111,6 +111,7 @@ public class LoginPageSteps {
 			PagesCollection.loginPage = (LoginPage) page;
 		}
 	}
+
 	/**
 	 * Enters login in corresponding field on Sign In page
 	 * 
@@ -126,7 +127,7 @@ public class LoginPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.loginPage.setLogin(login);
+		PagesCollection.loginPage.typeEmail(login);
 	}
 
 	/**

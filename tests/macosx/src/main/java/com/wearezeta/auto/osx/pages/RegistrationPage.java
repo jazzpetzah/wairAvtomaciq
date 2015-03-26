@@ -1,19 +1,24 @@
 package com.wearezeta.auto.osx.pages;
 
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import javax.mail.Message;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.google.common.base.Function;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
@@ -27,17 +32,17 @@ public class RegistrationPage extends OSXPage {
 	private static final Logger log = ZetaLogger.getLog(RegistrationPage.class
 			.getSimpleName());
 
-	@FindBy(how = How.CLASS_NAME, using = OSXLocators.classNameLoginField)
-	private WebElement nameField;
+	@FindBy(how = How.CSS, using = OSXLocators.RegistrationPage.relativePathFullNameField)
+	private WebElement fullNameField;
 
-	// @FindBy(how = How.ID, using = OSXLocators.idRegistrationEmailField)
+	@FindBy(how = How.CSS, using = OSXLocators.RegistrationPage.relativePathEmailField)
 	private WebElement emailField;
 
 	@FindBy(how = How.ID, using = OSXLocators.RegistrationPage.idPasswordField)
 	private WebElement passwordField;
 
-	@FindBy(how = How.ID, using = OSXLocators.idSubmitRegistrationButton)
-	private WebElement submitRegistrationButton;
+	@FindBy(how = How.ID, using = OSXLocators.RegistrationPage.idCreateAccountButton)
+	private WebElement createAccountButton;
 
 	@FindBy(how = How.ID, using = OSXLocators.idConfirmationRequestedText)
 	private WebElement confirmationRequestedField;
@@ -60,34 +65,39 @@ public class RegistrationPage extends OSXPage {
 		super(driver, wait);
 	}
 
-	public void enterName(String name) {
-		nameField.sendKeys(name);
+	public void typeFullName(String name) {
+		fullNameField.sendKeys(name);
 	}
 
-	public WebElement findEmailField() {
-		ArrayList<WebElement> candidates = new ArrayList<WebElement>(
-				driver.findElements(By
-						.className(OSXLocators.classNameLoginField)));
-		return candidates.get(1);
-	}
-
-	public void enterEmail(String email) {
-		emailField = findEmailField();
+	public void typeEmail(String email) {
 		emailField.sendKeys(email);
 	}
 
 	public String getEnteredEmail() {
-		emailField = findEmailField();
 		return emailField.getText();
 	}
 
-	public void enterPassword(String password) {
+	public void typePassword(String password) {
 		passwordField.click();
 		passwordField.sendKeys(password);
 	}
 
-	public void submitRegistration() {
-		submitRegistrationButton.click();
+	public void createAccount() throws Exception {
+		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(5,
+				TimeUnit.SECONDS).pollingEvery(1, TimeUnit.SECONDS);
+
+		try {
+			wait.until(new Function<WebDriver, Boolean>() {
+				public Boolean apply(WebDriver driver) {
+					return createAccountButton.isEnabled();
+				}
+			});
+		} catch (TimeoutException e) {
+			throw new Exception("Create account button is disabled. "
+					+ "Please check registration data.");
+		}
+
+		createAccountButton.click();
 	}
 
 	public void chooseToTakePicture() {
@@ -110,7 +120,7 @@ public class RegistrationPage extends OSXPage {
 
 	public boolean isInvalidEmailMessageAppear() {
 		passwordField.click();
-		findEmailField().click();
+		emailField.click();
 		try {
 			return driver.findElement(By
 					.xpath(OSXLocators.xpathPleaseProvideEmailAddress)) != null;
@@ -138,7 +148,7 @@ public class RegistrationPage extends OSXPage {
 		return activationResponse
 				.contains(OSXLocators.RegistrationPage.ACTIVATION_RESPONSE_VERIFIED);
 	}
-	
+
 	public void setActivationMessage(Future<Message> activationMessage) {
 		this.activationMessage = activationMessage;
 	}

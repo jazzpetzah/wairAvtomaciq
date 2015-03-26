@@ -1,7 +1,5 @@
 package com.wearezeta.auto.osx.pages;
 
-import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 
@@ -10,7 +8,6 @@ import javax.mail.Message;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -37,14 +34,11 @@ public class LoginPage extends OSXPage {
 	@FindBy(how = How.NAME, using = OSXLocators.LoginPage.nameSignInButton)
 	private WebElement signInButton;
 
-	@FindBy(how = How.CSS, using = OSXLocators.LoginPage.relativePathLoginField)
-	private WebElement loginField;
+	@FindBy(how = How.CSS, using = OSXLocators.LoginPage.relativePathEmailField)
+	private WebElement emailField;
 
 	@FindBy(how = How.ID, using = OSXLocators.LoginPage.idPasswordField)
 	private WebElement passwordField;
-
-	@FindBy(how = How.ID, using = OSXLocators.idSendProblemReportButton)
-	private WebElement sendProblemReportButton;
 
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathWrongCredentialsMessage)
 	private WebElement wrongCredentialsMessage;
@@ -60,7 +54,7 @@ public class LoginPage extends OSXPage {
 
 	public boolean isVisible() throws Exception {
 		return DriverUtils.waitUntilElementAppears(driver,
-				By.id(OSXLocators.LoginPage.idPasswordField));
+				By.id(OSXLocators.LoginPage.idPasswordField), 10);
 	}
 
 	public ContactListPage signIn() throws Exception {
@@ -83,8 +77,8 @@ public class LoginPage extends OSXPage {
 		}
 	}
 
-	public void setLogin(String login) {
-		loginField.sendKeys(login);
+	public void typeEmail(String email) {
+		emailField.sendKeys(email);
 	}
 
 	public void setPassword(String password) throws Exception {
@@ -116,47 +110,6 @@ public class LoginPage extends OSXPage {
 		}
 
 		return el != null;
-	}
-
-	public void sendProblemReportIfFound() throws Exception {
-		long startDate = new Date().getTime();
-		boolean isReport = false;
-		for (int i = 0; i < 10; i++) {
-			List<WebElement> windows = driver.findElements(By
-					.xpath("//AXWindow"));
-			if (windows.size() > 0) {
-				for (WebElement win : windows) {
-					if (win.getAttribute("AXIdentifier").equals(
-							OSXLocators.idSendProblemReportWindow)) {
-						isReport = true;
-					}
-				}
-				if (!isReport) {
-					log.debug("No need to close report. Correct window opened.");
-					return;
-				}
-			}
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-			}
-		}
-
-		DriverUtils.setImplicitWaitValue(driver, 1);
-		boolean isProblemReported = false;
-		try {
-			sendProblemReportButton.click();
-			isProblemReported = true;
-		} catch (NoSuchElementException e) {
-		} catch (NoSuchWindowException e) {
-		} finally {
-			if (isProblemReported) {
-				log.debug("ZClient were crashed on previous run.");
-			}
-			DriverUtils.setDefaultImplicitWait(driver);
-		}
-		long endDate = new Date().getTime();
-		log.debug("Sending problem report took " + (endDate - startDate) + "ms");
 	}
 
 	public boolean isWrongCredentialsMessageDisplayed() {
