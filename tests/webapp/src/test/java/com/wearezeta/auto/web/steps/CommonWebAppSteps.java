@@ -323,6 +323,25 @@ public class CommonWebAppSteps {
 	}
 
 	/**
+	 * TODO
+	 */
+	@Given("^(.*) is waiting for call to accept it$")
+	public void GivenContactIsWaitingForCallToAcceptIt(String userNameAlias)
+			throws Throwable {
+		commonSteps.waitForCallToAccept(userNameAlias);
+	}
+
+	@When("^(.*) accepts the call$")
+	public void ContactAcceptsTheCall(String userNameAlias) throws Throwable {
+		// TODO
+	}
+
+	@When("^I allow access to the microphone$")
+	public void IAllowAccessToTheMicrophone() throws Throwable {
+		// TODO
+	}
+
+	/**
 	 * Pings BackEnd until user is indexed and avialable in search
 	 * 
 	 * @step. ^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in

@@ -319,4 +319,10 @@ public final class CommonSteps {
 	public void StopCurrentCall() throws Exception {
 		CallingUtil.stopCall();
 	}
+	
+	public void waitForCallToAccept(String userNameAlias)
+			throws Exception {
+		ClientUser callee = usrMgr.findUserByNameOrNameAlias(userNameAlias);
+		CallingUtil.waitForCallToAccept(callee);
+	}
 }

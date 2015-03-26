@@ -62,4 +62,11 @@ public class CallingUtil {
 		CommonUtils.executeOsXCommand(new String[] { "bash", "-c",
 				"kill -s SIGINT " + currentCallPid });
 	}
+	
+	public static void waitForCallToAccept(ClientUser caller)
+			throws Exception {
+		String email = caller.getEmail();
+		String password = caller.getPassword();
+		// TODO: Start blender with email + password
+	}
 }

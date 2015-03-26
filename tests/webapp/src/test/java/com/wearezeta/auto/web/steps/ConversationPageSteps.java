@@ -297,4 +297,14 @@ public class ConversationPageSteps {
 				PagesCollection.conversationPage.numberOfPingMessagesVisible(),
 				1);
 	}
+	
+	/**
+	 * Start call in opened conversation
+	 * 
+	 * * @step. ^I call$
+	 */
+	@When("^I call$")
+	public void ICallUser() throws Throwable {
+		PagesCollection.conversationPage.clickCallButton();
+	}
 }
