@@ -194,15 +194,15 @@ public class CommonAndroidSteps {
 	}
 	
 	/**
-	 * Taps on
+	 * Taps on the center of the screen
 	 * 
 	 * @step. ^I tap on center of screen$
 	 * 
-	 * @throws IOException
+	 * @throws Throwable
 	 * 
 	 */
 	@When("^I tap on center of screen")
-	public void WhenITapOnCenterOfScreen() throws IOException {
+	public void WhenITapOnCenterOfScreen() throws Throwable {
 		PagesCollection.dialogPage.tapOnCenterOfScreen();
 	}
 
