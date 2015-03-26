@@ -65,7 +65,7 @@ Feature: Sign In
     When I start Sign In
     And I have entered login <Login>
     And I have entered password <Password>
-    And I press Sign In button
+    And I sign in expecting No Internet message
     Then I see internet connectivity error message
     When Internet connection is restored
     And I press Sign In button

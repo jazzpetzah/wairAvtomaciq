@@ -20,9 +20,11 @@ import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.osx.common.LoginBehaviourEnum;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.common.OSXConstants;
 import com.wearezeta.auto.osx.locators.OSXLocators;
+import com.wearezeta.auto.osx.pages.common.NoInternetConnectionPage;
 
 public class LoginPage extends OSXPage {
 
@@ -47,12 +49,6 @@ public class LoginPage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathWrongCredentialsMessage)
 	private WebElement wrongCredentialsMessage;
 
-	@FindBy(how = How.XPATH, using = OSXLocators.xpathNoInternetConnectionMessage)
-	private WebElement noInternetConnectionMessage;
-
-	@FindBy(how = How.ID, using = OSXLocators.idCloseNoInternetDialogButton)
-	private WebElement closeNoInternetDialog;
-
 	@FindBy(how = How.XPATH, using = OSXLocators.LoginPage.xpathForgotPasswordButton)
 	private WebElement forgotPasswordButton;
 
@@ -68,9 +64,23 @@ public class LoginPage extends OSXPage {
 	}
 
 	public ContactListPage signIn() throws Exception {
-		Thread.sleep(1000);
+		return (ContactListPage) signIn(LoginBehaviourEnum.SUCCESSFUL);
+	}
+
+	public OSXPage signIn(LoginBehaviourEnum expectedBehaviour)
+			throws Exception {
 		signInButton.click();
-		return new ContactListPage(this.getDriver(), this.getWait());
+		switch (expectedBehaviour) {
+		case SUCCESSFUL:
+			return new ContactListPage(this.getDriver(), this.getWait());
+		case ERROR:
+			return this;
+		case NO_INTERNET:
+			return new NoInternetConnectionPage(this.getDriver(),
+					this.getWait());
+		default:
+			throw new Exception("Unsupported expected sign in behaviour");
+		}
 	}
 
 	public void setLogin(String login) {
@@ -157,15 +167,6 @@ public class LoginPage extends OSXPage {
 		} catch (NoSuchElementException e) {
 			return false;
 		}
-	}
-
-	public boolean isNoInternetMessageAppears() throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver,
-				By.xpath(OSXLocators.xpathNoInternetConnectionMessage), 60);
-	}
-
-	public void closeNoInternetDialog() {
-		closeNoInternetDialog.click();
 	}
 
 	public void setPasswordUsingScript(String password) {

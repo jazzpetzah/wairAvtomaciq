@@ -12,26 +12,26 @@ public class WelcomePageSteps {
 	/**
 	 * Checks that Welcome screen is visible
 	 * 
-	 * @step. I see Welcome screen
+	 * @step. ^I see [Ww]elcome screen$
 	 * 
 	 * @throws Exception
 	 * 
 	 * @throws AssertionError
 	 *             if Welcome screen did not appear
 	 */
-	@Given("^I see Welcome screen$")
-	public void GivenISeeWelcomeScreen() throws Exception {
+	@Given("^I see [Ww]elcome screen$")
+	public void ISeeWelcomeScreen() throws Exception {
 		Assert.assertTrue(PagesCollection.welcomePage.isVisible());
 	}
 
 	/**
 	 * Accepts terms of service and starts registration
 	 * 
-	 * @step. I start registration
+	 * @step. ^I start [Rr]egistration$
 	 * 
 	 * @throws Exception
 	 */
-	@When("I start registration")
+	@When("^I start [Rr]egistration$")
 	public void IStartRegistration() throws Exception {
 		PagesCollection.registrationPage = PagesCollection.welcomePage
 				.startRegistration();
@@ -40,12 +40,12 @@ public class WelcomePageSteps {
 	/**
 	 * Clicks on Sign In button on Welcome screen and opens Sign In screen
 	 * 
-	 * @step. I start Sign In
+	 * @step. ^I start [Ss]ign [Ii]n$
 	 * 
 	 * @throws Exception
 	 */
-	@When("I start Sign In")
-	public void WhenIStartSignIn() throws Exception {
+	@When("^I start [Ss]ign [Ii]n$")
+	public void IStartSignIn() throws Exception {
 		PagesCollection.loginPage = PagesCollection.welcomePage.startSignIn();
 	}
 
