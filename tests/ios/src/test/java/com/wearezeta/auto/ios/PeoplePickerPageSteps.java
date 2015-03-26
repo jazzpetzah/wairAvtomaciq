@@ -4,7 +4,6 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 
 import org.junit.Assert;
-import org.openqa.selenium.NoSuchElementException;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;

@@ -76,7 +76,6 @@ public class PeoplePickerPage extends IOSPage {
 	private WebElement sendInviteButton;
 
 	private int numberTopSelected = 0;
-	private boolean laterClicked = false;
 
 	public PeoplePickerPage(ZetaIOSDriver driver, WebDriverWait wait)
 			throws Exception {
@@ -84,13 +83,9 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public void clickLaterButton() throws Exception {
-		if (isLaterClicked()) {
-			return;
-		}
 		if (DriverUtils.isElementDisplayed(this.getDriver(),
 				By.name(IOSLocators.nameShareButton))) {
 			shareButton.click();
-			setLaterClicked(true);
 		}
 	}
 
@@ -341,14 +336,6 @@ public class PeoplePickerPage extends IOSPage {
 	public void tapSendInviteCopyButton() throws UnsupportedFlavorException,
 			Exception {
 		inviteCopyButton.click();
-	}
-
-	public boolean isLaterClicked() {
-		return laterClicked;
-	}
-
-	public void setLaterClicked(boolean laterClicked) {
-		this.laterClicked = laterClicked;
 	}
 
 }
