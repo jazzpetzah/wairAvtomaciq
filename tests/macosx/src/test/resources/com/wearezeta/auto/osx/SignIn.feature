@@ -5,8 +5,8 @@ Feature: Sign In
     Given There is 1 user where <Name> is me
     And I see Welcome screen
     When I start Sign In
-    And I have entered login <Login>
-    And I have entered password <Password>
+    And I type login <Login>
+    And I type password <Password>
     And I press Sign In button
     Then I see my name <Name> in Contact list
 
@@ -38,19 +38,19 @@ Feature: Sign In
       | Login      | Login2     | Password      | Password2     | Name      | Name2     |
       | user1Email | user2Email | user1Password | user2Password | user1Name | user2Name |
 
-  @regression @id1120
+  @regression @id1120 @torun
   Scenario Outline: Verify I see wrong address or password message
     And I see Welcome screen
     When I start Sign In
-    And I have entered login <Login>
-    And I have entered password <Password>
+    And I type login <Login>
+    And I type password <Password>
     And I press Sign In button
     Then I see wrong credentials message
-    When I have entered login <Login2>
+    When I type login <Login2>
     Then I do not see wrong credentials message
     When I press Sign In button
     And I see wrong credentials message
-    And I input password <Password2> using script
+    And I type password <Password2> by AppleScript
     Then I do not see wrong credentials message
 
     Examples: 
@@ -63,8 +63,8 @@ Feature: Sign In
     Given Internet connection is lost
     And I see Welcome screen
     When I start Sign In
-    And I have entered login <Login>
-    And I have entered password <Password>
+    And I type login <Login>
+    And I type password <Password>
     And I sign in expecting No Internet message
     Then I see internet connectivity error message
     When Internet connection is restored
