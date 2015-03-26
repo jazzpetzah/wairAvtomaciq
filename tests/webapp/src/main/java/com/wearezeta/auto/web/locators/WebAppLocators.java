@@ -4,6 +4,10 @@ import java.util.function.Function;
 
 public final class WebAppLocators {
 
+	public static final class ActivationPage {
+		public static final String xpathSuccessfullResult = "//div[@id='200']//p[contains(@class, 'title') and contains(.,'Account created')]";
+	}
+
 	public static final class InvitationCodePage {
 
 		public static final String idCodeInput = "code";
@@ -123,7 +127,8 @@ public final class WebAppLocators {
 				+ "/div";
 
 		public static final Function<Integer, String> xpathAccentColorDivById = (
-				id) -> String.format("%s[%s]", xpathAccentColorPickerChildren, id);
+				id) -> String.format("%s[%s]", xpathAccentColorPickerChildren,
+				id);
 
 		public static final String xpathCurrentAccentColorCircleDiv = xpathAccentColorPicker
 				+ "/div[contains(@class, 'selected')]/div[contains(@class,'circle')]";

@@ -8,6 +8,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.URL;
+import java.util.Set;
+
+import net.sourceforge.htmlunit.corejs.javascript.JavaScriptException;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -15,6 +18,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHttpEntityEnclosingRequest;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -204,5 +208,48 @@ public class WebCommonUtils extends CommonUtils {
 			String cssLocator) {
 		final String setFocusScript = "$('" + cssLocator + "').focus();";
 		driver.executeScript(setFocusScript);
+	}
+
+	private static Set<String> previousHandles = null;
+
+	/**
+	 * Opens a new tab for the given URL
+	 * 
+	 * http://stackoverflow.com/questions/6421988/webdriver-open-new-tab
+	 * 
+	 * @param url
+	 *            The URL to
+	 * @throws JavaScriptException
+	 *             If unable to open tab
+	 */
+	public static void openUrlInNewTab(RemoteWebDriver driver, String url) {
+		previousHandles = driver.getWindowHandles();
+		String script = "var d=document,a=d.createElement('a');a.target='_blank';a.href='%s';a.innerHTML='.';d.body.appendChild(a);return a";
+		Object element = driver.executeScript(String.format(script, url));
+		if (element instanceof WebElement) {
+			WebElement anchor = (WebElement) element;
+			anchor.click();
+			driver.executeScript(
+					"var a=arguments[0];a.parentNode.removeChild(a);", anchor);
+			Set<String> currentHandles = driver.getWindowHandles();
+			if (previousHandles.equals(currentHandles)) {
+				throw new JavaScriptException(element, "Unable to open tab", 1);
+			}
+			currentHandles.removeAll(previousHandles);
+			final String newTabHandle = currentHandles.iterator().next();
+			driver.switchTo().window(newTabHandle);
+		} else {
+			throw new JavaScriptException(element, "Unable to open tab", 1);
+		}
+	}
+
+	public static void switchToPreviousTab(RemoteWebDriver driver) {
+		Set<String> currentHandles = driver.getWindowHandles();
+		if (previousHandles.equals(currentHandles)) {
+			return;
+		}
+		currentHandles.retainAll(previousHandles);
+		final String oldTabHandle = currentHandles.iterator().next();
+		driver.switchTo().window(oldTabHandle);
 	}
 }

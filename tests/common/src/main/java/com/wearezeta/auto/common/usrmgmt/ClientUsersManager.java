@@ -9,6 +9,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
@@ -22,9 +23,12 @@ public class ClientUsersManager {
 	private static final int MAX_PARALLEL_USER_CREATION_TASKS = 25;
 	private static final int NUMBER_OF_REGISTRATION_RETRIES = 5;
 
-	private static final String NAME_ALIAS_TEMPLATE = "user%dName";
-	private static final String PASSWORD_ALIAS_TEMPLATE = "user%dPassword";
-	private static final String EMAIL_ALIAS_TEMPLATE = "user%dEmail";
+	public static final Function<Integer, String> NAME_ALIAS_TEMPLATE = idx -> String
+			.format("user%dName", idx);
+	public static final Function<Integer, String> PASSWORD_ALIAS_TEMPLATE = idx -> String
+			.format("user%dPassword", idx);
+	public static final Function<Integer, String> EMAIL_ALIAS_TEMPLATE = idx -> String
+			.format("user%dEmail", idx);
 	private static final int MAX_USERS = 1001;
 
 	private static final Logger log = ZetaLogger
@@ -58,12 +62,12 @@ public class ClientUsersManager {
 		dstList.clear();
 		for (int userIdx = 0; userIdx < maxCount; userIdx++) {
 			ClientUser pendingUser = new ClientUser();
-			final String[] nameAliases = new String[] { String.format(
-					NAME_ALIAS_TEMPLATE, userIdx + 1) };
-			final String[] passwordAliases = new String[] { String.format(
-					PASSWORD_ALIAS_TEMPLATE, userIdx + 1) };
-			final String[] emailAliases = new String[] { String.format(
-					EMAIL_ALIAS_TEMPLATE, userIdx + 1) };
+			final String[] nameAliases = new String[] { NAME_ALIAS_TEMPLATE
+					.apply(userIdx + 1) };
+			final String[] passwordAliases = new String[] { PASSWORD_ALIAS_TEMPLATE
+					.apply(userIdx + 1) };
+			final String[] emailAliases = new String[] { EMAIL_ALIAS_TEMPLATE
+					.apply(userIdx + 1) };
 			setClientUserAliases(pendingUser, nameAliases, passwordAliases,
 					emailAliases);
 			dstList.add(pendingUser);
@@ -436,5 +440,23 @@ public class ClientUsersManager {
 			this.users.set(appendPos, sharedUsers.get(sharedUserIdx));
 			appendPos++;
 		}
+	}
+
+	/**
+	 * Add custom user to the end of internal list of users, so then it is
+	 * possible to use it in "standard" steps
+	 * 
+	 * Be careful when use this method. Make sure, that this user has been
+	 * already created and has all the necessary aliases already set
+	 * 
+	 * @param user
+	 *            prepared ClientUser instance
+	 * 
+	 * @return index in users list
+	 */
+	public int appendCustomUser(ClientUser user) {
+		int appendPos = getCreatedUsers().size();
+		this.users.set(appendPos, user);
+		return appendPos;
 	}
 }
