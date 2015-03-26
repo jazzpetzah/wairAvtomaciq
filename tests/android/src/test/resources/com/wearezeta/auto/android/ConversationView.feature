@@ -227,19 +227,19 @@ Feature: Conversation View
     And I press "Confirm" button
     Then I see new photo in the dialog
     And I select last photo in dialog
-    #And I rotate UI to landscape
-    #And I swipe up on dialog page
-    #And I rotate UI to portrait
-    #Then I select last photo in dialog
-    #And I rotate UI to landscape
-    #And I swipe down on dialog page
-    #And I rotate UI to portrait
-    #Then I select last photo in dialog
+    And I rotate UI to landscape
+    And I swipe up on dialog page
+    And I rotate UI to portrait
+    Then I select last photo in dialog
+    And I rotate UI to landscape
+    And I swipe down on dialog page
+    And I rotate UI to portrait
+    Then I select last photo in dialog
     And I rotate UI to landscape
     And I tap on center of screen
     And I press "Image Close" button
     Then I rotate UI to portrait
-    And I swipe right on dialog page
+    And I navigate back from dialog page
     And I see Contact list with my name <Name>
     
     Examples: 
