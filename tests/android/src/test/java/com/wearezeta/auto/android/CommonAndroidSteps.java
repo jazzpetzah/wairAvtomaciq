@@ -135,6 +135,14 @@ public class CommonAndroidSteps {
 		initFirstPage(true);
 	}
 
+	/**
+	 * Presses the android back button
+	 * 
+	 * @step. ^I press back button$
+	 * 
+	 * @throws IOException
+	 * 
+	 */
 	@When("^I press back button$")
 	public void PressBackButton() throws Exception {
 		if (PagesCollection.loginPage != null) {
@@ -142,6 +150,14 @@ public class CommonAndroidSteps {
 		}
 	}
 
+	/**
+	 * Hides the system keyboard
+	 * 
+	 * @step. ^I hide keyboard$
+	 * 
+	 * @throws IOException
+	 * 
+	 */
 	@When("^I hide keyboard")
 	public void IHideKeyboard() {
 		if (PagesCollection.loginPage != null) {
@@ -172,6 +188,14 @@ public class CommonAndroidSteps {
 				.readClientVersionFromAdb());
 	}
 
+	/**
+	 * Sends the application into back stack and displays the home screen.
+	 * 
+	 * @step. ^I minimize the application$
+	 * 
+	 * @throws IOException
+	 * 
+	 */
 	@When("^I minimize the application$")
 	public void IMimizeApllication() throws Exception {
 		if (PagesCollection.loginPage != null) {
@@ -198,7 +222,6 @@ public class CommonAndroidSteps {
 	 * 
 	 * @step. ^I compare 1st and 2nd screenshots and they are different$
 	 * 
-	 * 
 	 */
 	@Then("^I compare 1st and 2nd screenshots and they are different$")
 	public void ThenICompare1st2ndScreenshotsAndTheyAreDifferent() {
@@ -207,6 +230,12 @@ public class CommonAndroidSteps {
 		images.clear();
 	}
 
+	/**
+	 * Restores the application from a minimized state.
+	 * 
+	 * @step. ^I restore the application$
+	 * 
+	 */
 	@When("^I restore the application$")
 	public void IRestoreApllication() {
 		if (PagesCollection.loginPage != null) {
@@ -214,6 +243,17 @@ public class CommonAndroidSteps {
 		}
 	}
 
+	/**
+	 * Verifies that user A has sent a connection request to user B
+	 * 
+	 * @step. ^(.*) has sent connection request to (.*)$
+	 * 
+	 * @param userFromNameAlias
+	 *            the user from which the connection request originated
+	 * @param usersToNameAliases
+	 *            the target user
+	 * 
+	 */
 	@Given("^(.*) has sent connection request to (.*)$")
 	public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
 			String usersToNameAliases) throws Throwable {
@@ -221,6 +261,21 @@ public class CommonAndroidSteps {
 				usersToNameAliases);
 	}
 
+	/**
+	 * Verifies that user A has an avatar matching the picture in file X
+	 * 
+	 * @step. ^(.*) has an avatar picture from file (.*)$
+	 * 
+	 * @param name
+	 *            the user to check
+	 * @param picture
+	 *            the file name of the picture to check against. The file name
+	 *            is relative to the pictures directory as defined in the
+	 *            Configurations.cnf file
+	 * 
+	 * @throws Throwable
+	 * 
+	 */
 	@Given("^(.*) has an avatar picture from file (.*)$")
 	public void GivenUserHasAnAvatarPicture(String name, String picture)
 			throws Throwable {
@@ -234,6 +289,19 @@ public class CommonAndroidSteps {
 		commonSteps.IChangeUserAvatarPicture(name, picturePath);
 	}
 
+	/**
+	 * Verifies that user A has an accent color C
+	 * 
+	 * @step. ^(.*) has an accent color (.*)$
+	 * 
+	 * @param name
+	 *            the user to check
+	 * @param colorName
+	 *            the assumed accent color
+	 * 
+	 * @throws Throwable
+	 * 
+	 */
 	@Given("^(.*) has an accent color (.*)$")
 	public void GivenUserHasAnAccentColor(String name, String colorName)
 			throws Throwable {
@@ -245,6 +313,19 @@ public class CommonAndroidSteps {
 		commonSteps.IChangeUserAccentColor(name, colorName);
 	}
 
+	/**
+	 * Verifies that user A has the name X
+	 * 
+	 * @step. ^(.*) has a name (.*)$
+	 * 
+	 * @param name
+	 *            the user to check
+	 * @param newName
+	 *            the name to check they have
+	 * 
+	 * @throws Throwable
+	 * 
+	 */
 	@Given("^(.*) has a name (.*)$")
 	public void GivenUserHasAName(String name, String newName) throws Throwable {
 		try {
@@ -255,6 +336,17 @@ public class CommonAndroidSteps {
 		commonSteps.IChangeUserName(name, newName);
 	}
 
+	/**
+	 * Connects current user with a connection link from user B
+	 * 
+	 * @step. ^I connect using invitation link from (.*)$
+	 * 
+	 * @param name
+	 *            the user from which the connection link came
+	 * 
+	 * @throws Exception
+	 * 
+	 */
 	@When("^I connect using invitation link from (.*)$")
 	public void WhenIConnectUsingInvitationLinkFrom(String name)
 			throws Exception {
@@ -270,44 +362,132 @@ public class CommonAndroidSteps {
 
 	}
 
+	/**
+	 * Verifies that user A is connected to a given list of users
+	 * 
+	 * @step. ^(.*) is connected to (.*)$
+	 * 
+	 * @param userFromNameAlias
+	 *            the user to check
+	 * @param usersToNameAliases
+	 *            A {@value CommonSteps.ALIASES_SEPARATOR} separated list of
+	 *            user names to check to see if connected to user A.
+	 * 
+	 * @throws Exception
+	 * 
+	 */
 	@Given("^(.*) is connected to (.*)$")
 	public void UserIsConnectedTo(String userFromNameAlias,
 			String usersToNameAliases) throws Exception {
 		commonSteps.UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
 	}
 
+	/**
+	 * Verifies that user A is in a group chat with a group of other users
+	 * 
+	 * @step. ^(.*) has group chat (.*) with (.*)$
+	 * 
+	 * @param chatOwnerNameAlias
+	 *            the user to check
+	 * @param chatName
+	 *            The name of the group chat
+	 * @param otherParticipantsNameAliases
+	 *            A {@value CommonSteps.ALIASES_SEPARATOR} separated list of
+	 *            user names to check to see if in a group conversation with
+	 *            user A.
+	 * 
+	 * @throws Exception
+	 * 
+	 */
 	@Given("^(.*) has group chat (.*) with (.*)$")
 	public void UserHasGroupChatWithContacts(String chatOwnerNameAlias,
-			String chatName, String otherParticipantsNameAlises)
+			String chatName, String otherParticipantsNameAliases)
 			throws Exception {
 		commonSteps.UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName,
-				otherParticipantsNameAlises);
+				otherParticipantsNameAliases);
 	}
 
+	/**
+	 * Allows user A to ignore all incoming connection requests
+	 * 
+	 * @step. ^(.*) ignore all requests$
+	 * 
+	 * @param userToNameAlias
+	 *            the user who will do the ignoring
+	 * 
+	 * @throws Exception
+	 * 
+	 */
 	@When("^(.*) ignore all requests$")
 	public void IgnoreAllIncomingConnectRequest(String userToNameAlias)
 			throws Exception {
 		commonSteps.IgnoreAllIncomingConnectRequest(userToNameAlias);
 	}
 
+	/**
+	 * Allows test to wait for T seconds
+	 * 
+	 * @step. ^I wait for (.*) second[s]*$
+	 * 
+	 * @param seconds
+	 *            The number of seconds to wait
+	 *            
+	 * @throws NumberFormatException
+	 *             , InterruptedException
+	 * 
+	 */
 	@When("^I wait for (.*) second[s]*$")
 	public void WaitForTime(String seconds) throws NumberFormatException,
 			InterruptedException {
 		commonSteps.WaitForTime(seconds);
 	}
 
+	/**
+	 * User A blocks user B
+	 * 
+	 * @step. ^User (.*) blocks user (.*)$
+	 * 
+	 * @param blockAsUserNameAlias
+	 *            The user to do the blocking
+	 * @param userToBlockNameAlias
+	 *            The user to block
+	 *            
+	 * @throws Exception
+	 * 
+	 */
 	@When("^User (.*) blocks user (.*)$")
 	public void BlockContact(String blockAsUserNameAlias,
 			String userToBlockNameAlias) throws Exception {
 		commonSteps.BlockContact(blockAsUserNameAlias, userToBlockNameAlias);
 	}
 
+	/**
+	 * User A blocks user B
+	 * 
+	 * @step. ^(.*) accept all requests$
+	 * 
+	 * @throws Exception
+	 * 
+	 */
 	@When("^(.*) accept all requests$")
 	public void AcceptAllIncomingConnectionRequests(String userToNameAlias)
 			throws Exception {
 		commonSteps.AcceptAllIncomingConnectionRequests(userToNameAlias);
 	}
 
+	/**
+	 * User A sends a ping to a conversation
+	 * 
+	 * @step. ^Contact (.*) ping conversation (.*)$
+	 * 
+	 * @param pingFromUserNameAlias
+	 *            The user to do the pinging
+	 * @param dstConversationName
+	 *            the target converation to send the ping to
+	 *            
+	 * @throws Exception
+	 * 
+	 */
 	@When("^Contact (.*) ping conversation (.*)$")
 	public void UserPingedConversation(String pingFromUserNameAlias,
 			String dstConversationName) throws Exception {
@@ -315,6 +495,19 @@ public class CommonAndroidSteps {
 				dstConversationName);
 	}
 
+	/**
+	 * User A sends a hotping to a conversation
+	 * 
+	 * @step. ^Contact (.*) hotping conversation (.*)$
+	 * 
+	 * @param hotPingFromUserNameAlias
+	 *            The user to do the hotpinging
+	 * @param dstConversationName
+	 *            the target converation to send the ping to
+	 *            
+	 * @throws Exception
+	 * 
+	 */
 	@When("^Contact (.*) hotping conversation (.*)$")
 	public void UserHotPingedConversation(String hotPingFromUserNameAlias,
 			String dstConversationName) throws Exception {
@@ -322,16 +515,47 @@ public class CommonAndroidSteps {
 				dstConversationName);
 	}
 
+	/**
+	 * Transfers Wire contacts to Mac
+	 * (Why is this step in the android step files? - dean).
+	 * 
+	 * @step. ^I add contacts list users to Mac contacts$
+	 *        
+	 * @throws Exception
+	 * 
+	 */
 	@When("^I add contacts list users to Mac contacts$")
 	public void AddContactsUsersToMacContacts() throws Exception {
 		commonSteps.AddContactsUsersToMacContacts();
 	}
 
+	/**
+	 * Removes Wire contacts from Mac
+	 * (Why is this step in the android step files? - dean).
+	 * 
+	 * @step. ^I remove contacts list users from Mac contacts$
+	 *        
+	 * @throws Exception
+	 * 
+	 */
 	@When("^I remove contacts list users from Mac contacts$")
 	public void IRemoveContactsListUsersFromMacContact() throws Exception {
 		commonSteps.IRemoveContactsListUsersFromMacContact();
 	}
 
+	/**
+	 * User A sends a simple text message to user B
+	 * 
+	 * @step. ^Contact (.*) send message to user (.*)$
+	 * 
+	 * @param msgFromUserNameAlias
+	 *            the user who sends the message
+	 * @param dstUserNameAlias
+	 *            The user to receive the message
+	 * 
+	 * @throws Exception
+	 * 
+	 */
 	@When("^Contact (.*) send message to user (.*)$")
 	public void UserSendMessageToConversation(String msgFromUserNameAlias,
 			String dstUserNameAlias) throws Exception {
@@ -339,28 +563,91 @@ public class CommonAndroidSteps {
 				dstUserNameAlias, CommonUtils.generateRandomString(10));
 	}
 
+	/**
+	 * Verifies that there are N new users for a test, and makes them if they don't exist.
+	 * 
+	 * @step. ^There \\w+ (\\d+) user[s]*$
+	 * 
+	 * @param count
+	 * 			the number of users to make
+	 * 
+	 * @throws Exception
+	 * 
+	 */
 	@Given("^There \\w+ (\\d+) user[s]*$")
 	public void ThereAreNUsers(int count) throws Exception {
 		commonSteps.ThereAreNUsers(count);
 	}
 
+	/**
+	 * Verifies that there are N new users for a test, makes them if they don't exist, and sets one of those users to be the current user. 
+	 * 
+	 * @step. ^There \\w+ (\\d+) user[s]* where (.*) is me$
+	 * 
+	 * @param count
+	 * 			the number of users to make
+	 * @param myNameAlias
+	 * 			the name of the user to set as the current user 
+	 * 
+	 * @throws Exception
+	 * 
+	 */
 	@Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
 			throws Exception {
 		commonSteps.ThereAreNUsersWhereXIsMe(count, myNameAlias);
 	}
 
+	/**
+	 * Verifies that there are N new users for a test all sharing a common prefix in their names and makes them if they don't exist. 
+	 * 
+	 * @step. ^There \\w+ (\\d+) shared user[s]* with name prefix (\\w+)$
+	 * 
+	 * @param count
+	 * 			the number of users to make
+	 * @param namePrefix
+	 * 			the prefix for all of the users to share
+	 *  
+	 * @throws Exception
+	 * 
+	 */
 	@Given("^There \\w+ (\\d+) shared user[s]* with name prefix (\\w+)$")
 	public void ThereAreNSharedUsersWithNamePrefix(int count, String namePrefix)
 			throws Exception {
 		commonSteps.ThereAreNSharedUsersWithNamePrefix(count, namePrefix);
 	}
 
+	/**
+	 * Sets the current user to one of the pre-defined users based on the name of that user. 
+	 * 
+	 * @step. ^User (\\w+) is [Mm]e$
+	 * 
+	 * @param nameAlias
+	 * 			the user to set as current user.
+	 * 
+	 * @throws Exception
+	 * 
+	 */
 	@Given("^User (\\w+) is [Mm]e$")
 	public void UserXIsMe(String nameAlias) throws Exception {
 		commonSteps.UserXIsMe(nameAlias);
 	}
 
+	/**
+	 * Waits for a given time to verify that another user exists in search results
+	 * 
+	 * @step. ^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in backend search results$
+	 * 
+	 * @param searchByNameAlias
+	 * 			the user to search for in the query results.
+	 * @param timeout
+	 * 			the length of time to wait before giving up the search.
+	 * @param query
+	 * 			the search query to pass to the backend, which will return a list of users. 
+	 * 
+	 * @throws Exception
+	 * 
+	 */
 	@Given("^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in backend search results$")
 	public void UserWaitsUntilContactExistsInHisSearchResults(
 			String searchByNameAlias, int timeout, String query)
@@ -369,6 +656,23 @@ public class CommonAndroidSteps {
 				timeout);
 	}
 
+	/**
+	 * Sends an image from one user to a conversation
+	 * 
+	 * @step. ^Contact (.*) sends image (.*) to (.*) conversation (.*)$
+	 * 
+	 * @param imageSenderUserNameAlias
+	 * 			the user to sending the image
+	 * @param imageFileName
+	 * 			the file path name of the image to send. The path name is defined relative to the image file defined in Configuration.cnf.
+	 * @param conversationType
+	 * 			"single user" or "group" conversation. 
+	 * @param dstConversationName
+	 * 			the name of the conversation to send the image to. 
+	 *
+	 * @throws Exception
+	 * 
+	 */
 	@When("^Contact (.*) sends image (.*) to (.*) conversation (.*)")
 	public void ContactSendImageToConversation(String imageSenderUserNameAlias,
 			String imageFileName, String conversationType,
@@ -408,6 +712,17 @@ public class CommonAndroidSteps {
 		CommonAndroidSteps.skipBeforeAfter = skipBeforeAfter;
 	}
 
+	/**
+	 * Sends a reset password request for a given user's account
+	 * 
+	 * @step. ^I request reset password for (.*)$
+	 * 
+	 * @param email
+	 * 			the email of the account of which you want to reset the password.
+	 *
+	 * @throws Exception
+	 * 
+	 */
 	@When("^I request reset password for (.*)$")
 	public void WhenIRequestResetPassword(String email) throws Exception {
 		try {
@@ -418,6 +733,19 @@ public class CommonAndroidSteps {
 		PagesCollection.commonAndroidPage.requestResetPassword(email);
 	}
 
+	/**
+	 * Resets the password for a given user's account to a newly defined password
+	 * 
+	 * @step. ^I reset (.*) password by URL to new (.*)$
+	 * 
+	 * @param name
+	 * 			the name of the user for which you want to reset the password.
+	 * @param newPass
+	 * 			the new password.
+	 * 
+	 * @throws Exception
+	 * 
+	 */
 	@Then("^I reset (.*) password by URL to new (.*)$")
 	public void WhenIResetPasswordByUrl(String name, String newPass)
 			throws Exception {
@@ -462,7 +790,7 @@ public class CommonAndroidSteps {
 	 * @step. ^mail subject is (.*)$
 	 * 
 	 * @param subject
-	 *            string
+	 *            the email subject header to check
 	 * 
 	 */
 	@Then("^mail subject is (.*)$")
@@ -472,12 +800,12 @@ public class CommonAndroidSteps {
 	}
 
 	/**
-	 * Verify mail content
+	 * Verify that the open email message contains the given email address somewhere within
 	 * 
 	 * @step. ^mail content contains my $
 	 * 
 	 * @param email
-	 *            string
+	 *            the email to check for within the open message
 	 * 
 	 */
 	@Then("^mail content contains my (.*)$")
@@ -489,27 +817,29 @@ public class CommonAndroidSteps {
 		}
 		Assert.assertTrue(PagesCollection.commonAndroidPage.mailContains(email));
 	}
-	
+
 	/**
 	 * Rotate device to landscape
 	 * 
 	 * @step. ^I rotate UI to landscape$
 	 * 
+	 * @throws Exception
 	 */
 	@When("^I rotate UI to landscape$")
 	public void WhenIRotateUILandscape() throws Exception {
-		PagesCollection.loginPage.rotateLandscape();   
+		PagesCollection.loginPage.rotateLandscape();
 	}
-	
+
 	/**
 	 * Rotate device to portrait
 	 * 
 	 * @step. ^I rotate UI to portrait$
 	 * 
+	 * @throws Exception
 	 */
 	@When("^I rotate UI to portrait$")
 	public void WhenIRotateUIPortrait() throws Exception {
-		PagesCollection.loginPage.rotatePortrait();   
+		PagesCollection.loginPage.rotatePortrait();
 	}
 
 }
