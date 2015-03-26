@@ -140,6 +140,10 @@ public class DialogPageSteps {
 			break;
 		case "gallery":
 			PagesCollection.dialogPage.openGallery();
+			break;
+		case "image close":
+			PagesCollection.dialogPage.closeFullScreenImage();
+			break;
 		}
 	}
 
@@ -174,6 +178,11 @@ public class DialogPageSteps {
 	@Then("^I see new photo in the dialog$")
 	public void ThenISeeNewPhotoInTheDialog() throws Throwable {
 		Assert.assertTrue(PagesCollection.dialogPage.isImageExists());
+	}
+	
+	@When("^I select last photo in dialog$")
+	public void WhenISelectLastPhotoInDialog() throws Throwable {
+		PagesCollection.dialogPage.clickLastImageFromDialog();
 	}
 
 	@Then("^I see (.*) added (.*) message on Dialog page$")
