@@ -94,6 +94,7 @@ public class PerformanceSteps {
 	@Then("^I generate performance report$")
 	public void ThenIGeneratePerformanceReport() throws Exception{
 		AndroidCommonUtils.copyFileFromAndroid(AndroidCommonUtils.getRxLogResourceFilePathFromConfig(PerformanceSteps.class), RXLOGGER_RESOURCE_FILE_PATH);
+		Thread.sleep(5000);
 		Assert.assertTrue(AndroidGeneratePerfomanceReport.generateRunReport());
 	}
 }
