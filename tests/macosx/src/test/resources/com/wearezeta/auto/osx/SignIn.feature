@@ -25,7 +25,7 @@ Feature: Sign In
     And I choose to select picture from image file
     And I select image file userpicture_portrait.jpg
     And I see photo in User profile
-    When I am signing out
+    When I sign out
     And I Sign in using login <Login> and password <Password>
     Then I see my name <Name> in Contact list
     And I go to user <Name> profile
