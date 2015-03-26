@@ -67,7 +67,7 @@ public class LoginPageSteps {
 
 		PagesCollection.loginPage = PagesCollection.welcomePage.startSignIn();
 
-		PagesCollection.loginPage.setLogin(login);
+		PagesCollection.loginPage.typeEmail(login);
 		PagesCollection.loginPage.setPassword(password);
 
 		PagesCollection.contactListPage = PagesCollection.loginPage.signIn();
@@ -127,7 +127,7 @@ public class LoginPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.loginPage.setLogin(login);
+		PagesCollection.loginPage.typeEmail(login);
 	}
 
 	/**

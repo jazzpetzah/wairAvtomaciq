@@ -34,8 +34,8 @@ public class LoginPage extends OSXPage {
 	@FindBy(how = How.NAME, using = OSXLocators.LoginPage.nameSignInButton)
 	private WebElement signInButton;
 
-	@FindBy(how = How.CSS, using = OSXLocators.LoginPage.relativePathLoginField)
-	private WebElement loginField;
+	@FindBy(how = How.CSS, using = OSXLocators.LoginPage.relativePathEmailField)
+	private WebElement emailField;
 
 	@FindBy(how = How.ID, using = OSXLocators.LoginPage.idPasswordField)
 	private WebElement passwordField;
@@ -77,8 +77,8 @@ public class LoginPage extends OSXPage {
 		}
 	}
 
-	public void setLogin(String login) {
-		loginField.sendKeys(login);
+	public void typeEmail(String email) {
+		emailField.sendKeys(email);
 	}
 
 	public void setPassword(String password) throws Exception {

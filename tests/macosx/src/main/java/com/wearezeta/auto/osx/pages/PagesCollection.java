@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 
 import com.wearezeta.auto.common.AbstractPagesCollection;
 import com.wearezeta.auto.osx.pages.calling.CallPage;
+import com.wearezeta.auto.osx.pages.common.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.common.MainMenuPage;
 import com.wearezeta.auto.osx.pages.common.NoInternetConnectionPage;
 import com.wearezeta.auto.osx.pages.common.ProblemReportPage;

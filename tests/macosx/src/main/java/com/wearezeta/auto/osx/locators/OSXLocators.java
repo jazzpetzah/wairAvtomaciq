@@ -6,11 +6,8 @@ public final class OSXLocators {
 
 	public static final String xpathWrongCredentialsMessage = "//AXTextArea[starts-with(@AXValue, 'WRONG ADDRESS OR PASSWORD')]";
 
-	public static final String classNameLoginField = "AXTextArea";
-
 	public static final String idRegistrationTakePictureButton = "RegistrationTakePictureButton";
 	public static final String idRegistrationPickImageButton = "RegistrationPickImageButton";
-	public static final String idSubmitRegistrationButton = "RegistrationCreateButton";
 	public static final String idConfirmationRequestedText = "_NS:30";
 	public static final String xpathRegistrationPictureConfirmationButton = "//AXButton[1]";
 
@@ -187,7 +184,7 @@ public final class OSXLocators {
 
 		public static final String idPasswordField = "TempLoginViewControllerPasswordField";
 
-		public static final String relativePathLoginField = "id,"
+		public static final String relativePathEmailField = "id,"
 				+ idPasswordField + ",0,-40";
 
 		public static final String nameSignInButton = "SIGN IN";
@@ -198,6 +195,14 @@ public final class OSXLocators {
 	public static final class RegistrationPage {
 
 		public static final String idPasswordField = "TempLoginViewControllerPasswordField";
+
+		public static final String relativePathFullNameField = "id,"
+				+ idPasswordField + ",0,-80";
+
+		public static final String relativePathEmailField = "id,"
+				+ idPasswordField + ",0,-40";
+
+		public static final String idCreateAccountButton = "RegistrationCreateButton";
 
 		public static final String ACTIVATION_RESPONSE_VERIFIED = "Account created.";
 	}
