@@ -309,6 +309,7 @@
             }
             result = jsonProcessed;
         }
+        NSLog(@"Script execution failed with result: %@", result);
 		return [self respondWithJson:(NSDictionary*)result status:kAfMStatusCodeJavascriptError session: sessionId];
 	}
 }
