@@ -4,6 +4,7 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 
 import org.junit.Assert;
+import org.openqa.selenium.NoSuchElementException;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -198,8 +199,11 @@ public class PeoplePickerPageSteps {
 
 	@When("^I click on Go button$")
 	public void WhenIClickOnGoButton() throws Exception {
-		PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.peoplePickerPage
+		PagesCollection.iOSPage = PagesCollection.peoplePickerPage
 				.clickOnGoButton(true);
+		if (PagesCollection.iOSPage instanceof GroupChatPage) {
+			PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.iOSPage;
+		}
 	}
 
 	@When("^I click clear button$")
@@ -248,10 +252,14 @@ public class PeoplePickerPageSteps {
 
 	@When("I click Create Conversation button on People picker page")
 	public void IClickCreateConversationButton() throws Throwable {
-		PagesCollection.iOSPage = PagesCollection.peoplePickerPage
-				.clickCreateConversationButton();
-		if (PagesCollection.iOSPage instanceof GroupChatPage) {
-			PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.iOSPage;
+		if (!PagesCollection.peoplePickerPage.isKeyboardVisible()) {
+			PagesCollection.iOSPage = PagesCollection.peoplePickerPage
+					.clickCreateConversationButton();
+			if (PagesCollection.iOSPage instanceof GroupChatPage) {
+				PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.iOSPage;
+			}
+		}else {
+			WhenIClickOnGoButton();
 		}
 	}
 

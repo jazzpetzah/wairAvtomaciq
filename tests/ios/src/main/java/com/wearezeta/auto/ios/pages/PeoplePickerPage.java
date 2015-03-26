@@ -176,7 +176,7 @@ public class PeoplePickerPage extends IOSPage {
 
 	public IOSPage clickOnGoButton(boolean isGroupChat) throws Exception {
 		goButton.click();
-		if (isGroupChat) {
+		if (numberTopSelected >= 2 || isGroupChat) {
 			return new GroupChatPage(this.getDriver(), this.getWait());
 		} else {
 			return new DialogPage(this.getDriver(), this.getWait());
