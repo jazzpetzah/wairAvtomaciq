@@ -212,7 +212,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
       
-  @torun @id2078 @staging
+  @id2078 @staging
   Scenario Outline: I want to exit fullscreen view in landscape (rotations)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>

@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -180,6 +181,14 @@ public class DialogPageSteps {
 		Assert.assertTrue(PagesCollection.dialogPage.isImageExists());
 	}
 	
+	/**
+	 * Selects the last picture sent in a conversation view dialog
+	 * 
+	 * @step. ^I select last photo in dialog$
+	 * 
+	 * @throws Throwable
+	 * 
+	 */
 	@When("^I select last photo in dialog$")
 	public void WhenISelectLastPhotoInDialog() throws Throwable {
 		PagesCollection.dialogPage.clickLastImageFromDialog();
