@@ -67,6 +67,9 @@ public class DialogPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogImages")
 	private WebElement image;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogImages")
+	private List<WebElement> imageList;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConnectRequestDialog")
 	private WebElement connectRequestDialog;
@@ -100,6 +103,9 @@ public class DialogPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idSearchHintClose")
 	private WebElement closeHintBtn;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idCloseImageBtn")
+	private WebElement closeImageBtn;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idPlayPauseMedia")
 	private WebElement playPauseBtn;
@@ -141,6 +147,10 @@ public class DialogPage extends AndroidPage {
 	public void tapOnCursorFrame() {
 		cursurFrame.click();
 	}
+	
+	public void tapOnCenterOfScreen() {
+		DriverUtils.genericTap(this.getDriver());
+	}
 
 	public void multiTapOnCursorInput() throws InterruptedException {
 		DriverUtils.androidMultiTap(this.getDriver(), cursorInput, 2, 0.2);
@@ -172,9 +182,13 @@ public class DialogPage extends AndroidPage {
 		// DriverUtils.mobileTapByCoordinates(driver, backgroundOverlay);
 		this.getDriver().hideKeyboard();
 	}
-
+	
 	public String getLastMessageFromDialog() {
 		return messagesList.get(messagesList.size() - 1).getText();
+	}
+
+	public void clickLastImageFromDialog() {
+		imageList.get(imageList.size() - 1).click();
 	}
 
 	@Override
@@ -307,7 +321,11 @@ public class DialogPage extends AndroidPage {
 	public void openGallery() {
 		refreshUITree();
 		galleryBtn.click();
-
+	}
+	
+	public void closeFullScreenImage() {
+		refreshUITree();
+		closeImageBtn.click();
 	}
 
 	public void sendFrontCameraImage() throws Exception {
