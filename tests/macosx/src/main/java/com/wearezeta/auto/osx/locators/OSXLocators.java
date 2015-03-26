@@ -6,22 +6,16 @@ public final class OSXLocators {
 
 	public static final String xpathWrongCredentialsMessage = "//AXTextArea[starts-with(@AXValue, 'WRONG ADDRESS OR PASSWORD')]";
 
-	public static final String idLoginField = "TempLoginViewControllerUsernameField";
-	public static final String classNameLoginField = "AXTextArea";
-
 	public static final String idRegistrationTakePictureButton = "RegistrationTakePictureButton";
 	public static final String idRegistrationPickImageButton = "RegistrationPickImageButton";
-	public static final String idSubmitRegistrationButton = "RegistrationCreateButton";
 	public static final String idConfirmationRequestedText = "_NS:30";
 	public static final String xpathRegistrationPictureConfirmationButton = "//AXButton[1]";
-	public static final String idRegistrationEmailField = "RegistrationEmailField";
 
 	public static final String idContactEntry = "clListItemNameField";
 	public static final String idAddImageButton = "AddImageButton";
 	public static final String idPeopleButton = "PeopleButton";
 	public static final String idAddConversationButton = "addConversationButton";
 	public static final String idPeoplePickerSearchField = "people_picker_searchfield";
-	public static final String idPeoplePickerTopContactsSectionHeader = "people_picker_topcpnverstion_sectionheader";
 	public static final String xpathPeoplePickerTopContactsSectionHeader = "//AXStaticText[@AXValue='TOP PEOPLE']";
 	public static final String idPeoplePickerDismissButton = "people_picker_cancel_button";
 	public static final String idPeoplePickerSearchResultEntry = "people_picker_result_namefield";
@@ -72,7 +66,6 @@ public final class OSXLocators {
 
 	public static final String idChooseImageCancelButton = "_NS:53";
 	public static final String idChooseImageOpenButton = "_NS:55";
-	public static final String idChooseDirectoryPopUp = "_NS:40";
 	public static final String xpathFormatFinderImageFile = "//AXTextField[@AXValue='%s']";
 	public static final String xpathFormatFavoritesFolderPopUp = "//AXStaticText[@AXValue='%s']";
 	public static final String xpathSelectColumnViewButton = "//AXRadioButton[@AXDescription='column view' or @AXLabel='column view']";
@@ -81,8 +74,6 @@ public final class OSXLocators {
 	public static final String idConfirmationViewConfirmButton = "ConfirmationViewConfirmButton";
 	public static final String idAddPeopleButtonSingleChat = "userProfileViewButtonOnTheLeft";
 	public static final String idBlockUserButtonSingleChat = "userProfileViewButtonOnTheRight";
-	// OLD: public static final String idPeoplePickerAddToConversationButton =
-	// "people_picker_confirm_button";
 	public static final String namePeoplePickerAddToConversationButton = "ADD TO CONVERSATION";
 	public static final String namePeoplePickerOpenConversationButton = "OPEN CONVERSATION";
 	public static final String idLeaveConversationButton = "leaveButton";
@@ -100,8 +91,6 @@ public final class OSXLocators {
 
 	public static final String xpathFormatMutedButton = "//AXCell[AXStaticText[@AXValue='%s']]/AXImage[@AXTitle='']";
 
-	public static final String xpathFailedApplicationDialogCancel = "//AXWindow[@AXIdentifier='_NS:162']/AXButton[@AXIdentifier='_NS:9']";
-	public static final String xpathFailedApplicationDialogSend = "//AXWindow[@AXIdentifier='_NS:162']/AXButton[@AXIdentifier='_NS:13']";
 	public static final String idSendProblemReportWindow = "_NS:162";
 	public static final String idSendProblemReportButton = "_NS:13";
 
@@ -156,8 +145,6 @@ public final class OSXLocators {
 
 	public static final String CONTACT_LIST_ONE_CONNECT_REQUEST = "One person waiting";
 
-	public static final String xpathConversationTextMessageEntry = "//AXWebArea/AXGroup/AXStaticText";
-
 	public static final String idShareContactsLaterButton = "ConfirmationViewCancelButton";
 
 	public static final String idMainWindowMinimizeButton = "MainWindowMinimizeButton";
@@ -176,22 +163,18 @@ public final class OSXLocators {
 
 	public static final String xpathFormatSentConnectionRequestMessage = "//AXPopover//AXTextArea[@AXValue='%s']";
 
-	public static final String xpathNoInternetConnectionMessage = "//AXStaticText[@AXValue='No Internet Connection']";
-
-	public static final String idCloseNoInternetDialogButton = "_NS:14";
-
 	public static final String xpathAvatarFullScreenWindow = "//AXWindow[@AXRoleDescription='floating window']";
 
 	public static final class WelcomePage {
-		
+
 		public static final String idWelcomePage = "_NS:6";
-		
+
 		public static final String nameSignInButton = "SIGN IN";
 
 		public static final String nameRegisterButton = "REGISTER";
 
 		public static final String nameTermsOfUseLink = "TERMS OF USE";
-		
+
 		public static final String xpathAcceptTermsOfUseCheckbox = "//AXCheckBox";
 	}
 
@@ -200,10 +183,10 @@ public final class OSXLocators {
 		public static final String idLoginPage = "_NS:6";
 
 		public static final String idPasswordField = "TempLoginViewControllerPasswordField";
-		
-		public static final String relativePathLoginField = "id," + idPasswordField
-				+ ",0,-40";
-		
+
+		public static final String relativePathEmailField = "id,"
+				+ idPasswordField + ",0,-40";
+
 		public static final String nameSignInButton = "SIGN IN";
 
 		public static final String xpathForgotPasswordButton = "//AXButton[contains(@AXTitle, 'FORGOT PASSWORD')]";
@@ -212,7 +195,15 @@ public final class OSXLocators {
 	public static final class RegistrationPage {
 
 		public static final String idPasswordField = "TempLoginViewControllerPasswordField";
-		
+
+		public static final String relativePathFullNameField = "id,"
+				+ idPasswordField + ",0,-80";
+
+		public static final String relativePathEmailField = "id,"
+				+ idPasswordField + ",0,-40";
+
+		public static final String idCreateAccountButton = "RegistrationCreateButton";
+
 		public static final String ACTIVATION_RESPONSE_VERIFIED = "Account created.";
 	}
 
@@ -234,16 +225,33 @@ public final class OSXLocators {
 		public static final String idJoinCallButton = "JoinButton";
 
 		public static final String idCancelCallButton = "JoinButton";
-		
+
 		public static final String idMuteMicrophoneButton = "MuteButton";
-		
+
 		public static final String idIgnoreCallButton = "IgnoreCallButton";
 
 		public static final String xpathFormatSubscriberName = "//AXStaticText[@AXValue='%s']";
-		
+
 		public static final String xpathFormatCallingUserMessage = "//AXStaticText[@AXValue='CALLING %s']";
-		
+
 		public static final String xpathFormatUserCallsMessage = "//AXStaticText[@AXValue='%s IS CALLING']";
+
+		public static final String nameTransferCallHereButton = "TRANSFER CALL HERE";
 	}
 
+	public static final class NoInternetConnectionPage {
+
+		public static final String idOKButton = "_NS:14";
+
+		public static final String xpathNoInternetMessage = "//AXStaticText[contains(@AXValue,'No Internet Connection')]";
+	}
+
+	public static final class ProblemReportPage {
+
+		public static final String idWindow = "_NS:162";
+
+		public static final String nameCancelButton = "Cancel";
+
+		public static final String nameSendButton = "Send";
+	}
 }

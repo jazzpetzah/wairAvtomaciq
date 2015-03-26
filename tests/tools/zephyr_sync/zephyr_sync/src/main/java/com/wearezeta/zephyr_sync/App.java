@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -57,6 +58,7 @@ public class App {
 	private static final String EXECUTION_TYPE_VERIFICATION_SYNC = "verification_sync";
 	private static final String EXECUTION_TYPE_PHASE_SYNC = "phase_sync";
 	private static final String EXECUTION_TYPE_PHASE_VERIFICATION = "phase_verification";
+	private static final String EXECUTION_TYPE_ZEPHYR_DB_FIX = "zephyr_db_fix";
 
 	private static String transformURLIntoLinks(String text) {
 		final String urlValidationRegex = "(https?|ftp)://(www\\d?|[a-zA-Z0-9]+)?.[a-zA-Z0-9-]+(\\:|.)([a-zA-Z0-9.]+|(\\d+)?)([/?:].*)?";
@@ -494,7 +496,8 @@ public class App {
 								+ EXECUTION_TYPE_RESULTS_SYNC + " or "
 								+ EXECUTION_TYPE_VERIFICATION_SYNC + " or "
 								+ EXECUTION_TYPE_PHASE_SYNC + " or "
-								+ EXECUTION_TYPE_PHASE_VERIFICATION).hasArg()
+								+ EXECUTION_TYPE_PHASE_VERIFICATION + " or "
+								+ EXECUTION_TYPE_ZEPHYR_DB_FIX).hasArg()
 				.isRequired().create());
 		options.addOption(OptionBuilder
 				.withLongOpt(PARAM_ZEPHYR_SERVER)
@@ -601,6 +604,11 @@ public class App {
 				.getPhaseByName(cmdLine.getOptionValue(PARAM_PHASE_NAME));
 	}
 
+	private static Map<String, Integer> executeFixZephyrDBAction(
+			CommandLine cmdLine, ZephyrDB zephyrDB) throws Exception {
+		return zephyrDB.fixLostTestcases();
+	}
+
 	public static void main(String[] args) throws Exception {
 		final Options options = createCmdlineOptions();
 		HelpFormatter formatter = new HelpFormatter();
@@ -655,6 +663,26 @@ public class App {
 										line.getOptionValue(PARAM_PHASE_NAME),
 										line.getOptionValue(PARAM_CYCLE_NAME),
 										phase.getScheduledTo().toString()));
+			} else if (executionType.equals(EXECUTION_TYPE_ZEPHYR_DB_FIX)) {
+				final Map<String, Integer> countOfFixedTestcases = executeFixZephyrDBAction(
+						line, zephyrDB);
+				boolean isDBOk = true;
+				for (Entry<String, Integer> statsEntry : countOfFixedTestcases
+						.entrySet()) {
+					final String statsEntryName = statsEntry.getKey();
+					final int fixedTCCount = statsEntry.getValue();
+					if (fixedTCCount > 0) {
+						System.out
+								.println(String
+										.format("Successfully restored %d test case(s) in '%s' module of Zephyr database",
+												fixedTCCount, statsEntryName));
+						isDBOk = false;
+					}
+				}
+				if (isDBOk) {
+					System.out
+							.println("Zephyr database is in a good shape and does not require any fixes");
+				}
 			} else {
 				formatter.printHelp("zephyr_sync", options);
 				System.exit(1);

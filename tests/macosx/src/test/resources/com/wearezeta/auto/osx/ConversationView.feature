@@ -161,12 +161,12 @@ Feature: Conversation
     And I write random message
     And I send message
     And I see random message in conversation
-    When I am signing out
+    When I sign out
     And I Sign in using login <Contact1> and password <Password>
     And I see my name <Contact1> in Contact list
     And I open conversation with <ChatName>
     Then I see random message in conversation
-    And I am signing out
+    And I sign out
     And I Sign in using login <Contact2> and password <Password>
     And I see my name <Contact2> in Contact list
     And I open conversation with <ChatName>
@@ -186,12 +186,12 @@ Feature: Conversation
     And I open conversation with <ChatName>
     And I send picture testing.jpg
     And I see picture in conversation
-    When I am signing out
+    When I sign out
     And I Sign in using login <Contact1> and password <Password>
     And I see my name <Contact1> in Contact list
     And I open conversation with <ChatName>
     Then I see picture in conversation
-    And I am signing out
+    And I sign out
     And I Sign in using login <Contact2> and password <Password>
     And I see my name <Contact2> in Contact list
     And I open conversation with <ChatName>
@@ -211,12 +211,12 @@ Feature: Conversation
     And I open conversation with <ChatName>
     When I post media link <SoundCloudLink>
     And I see media link <SoundCloudLink> and media in dialog
-    And I am signing out
+    And I sign out
     And I Sign in using login <Contact1> and password <Password>
     And I see my name <Contact1> in Contact list
     And I open conversation with <ChatName>
     Then I see media link <SoundCloudLink> and media in dialog
-    And I am signing out
+    And I sign out
     And I Sign in using login <Contact2> and password <Password>
     And I see my name <Contact2> in Contact list
     And I open conversation with <ChatName>

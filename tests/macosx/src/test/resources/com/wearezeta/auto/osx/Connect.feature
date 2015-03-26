@@ -25,7 +25,7 @@ Feature: Connect to user
     And I open conversation with One person waiting
     And I accept invitation
     And I see Contact list with name <Contact>
-    And I am signing out
+    And I sign out
     And I Sign in using login <Contact> and password <Password>
     And I see my name <Contact> in Contact list
     Then I see Contact list with name <Name>
@@ -92,7 +92,7 @@ Feature: Connect to user
     And I open conversation with One person waiting
     And I ignore invitation
     Then I do not see conversation <Contact> in contact list
-    When I am signing out
+    When I sign out
     Given I Sign in using login <Contact> and password <Password>
     And I see my name <Contact> in Contact list
     And I open conversation with <Name>

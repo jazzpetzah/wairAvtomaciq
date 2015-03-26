@@ -236,6 +236,7 @@ public class AndroidGeneratePerfomanceReport {
 	}
 
 	private static void saveSummaryReport() throws Exception {
+		boolean finished = false;
 		List<String[]> savedData = new ArrayList<>();
 		List<String[]> newData = new ArrayList<>();
 		String resultsPath = AndroidCommonUtils
@@ -271,15 +272,22 @@ public class AndroidGeneratePerfomanceReport {
 						savedData.get(savedData.size() - 2)));
 				newData.add(generateSummaryReportString(rx,
 						savedData.get(savedData.size() - 1)));
+				finished = true;
 			} else {
 				String[] entries = "Measurement,Average Value,Average Diff %,Median Value,Median Diff %,Total Value,Total Diff %"
 						.split(",");
+				String[] nextEntries = {
+						new SimpleDateFormat("yyyy-MM-dd HH:mm")
+								.format(Calendar.getInstance().getTime()), " ",
+						AndroidCommonUtils.readClientVersionFromAdb() };
 				newData.add(entries);
+				newData.add(nextEntries);
 				newData.add(generateSummaryReportString(cpu));
 				newData.add(generateSummaryReportString(physMem));
 				newData.add(generateSummaryReportString(storMem));
 				newData.add(generateSummaryReportString(tx));
 				newData.add(generateSummaryReportString(rx));
+				finished = true;
 			}
 		} catch (Exception ex) {
 			log.error("Failed to generate summary report string.\n"
@@ -289,7 +297,7 @@ public class AndroidGeneratePerfomanceReport {
 			if (savedData.size() > 0) {
 				writer.writeAll(savedData);
 			}
-			if (newData.size() == 6) {
+			if (finished) {
 				writer.writeAll(newData);
 			}
 			writer.flush();

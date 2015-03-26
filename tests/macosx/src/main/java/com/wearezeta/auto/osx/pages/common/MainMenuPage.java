@@ -1,4 +1,4 @@
-package com.wearezeta.auto.osx.pages;
+package com.wearezeta.auto.osx.pages.common;
 
 import java.io.IOException;
 
@@ -15,6 +15,8 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.locators.OSXLocators;
+import com.wearezeta.auto.osx.pages.LoginPage;
+import com.wearezeta.auto.osx.pages.OSXPage;
 
 public class MainMenuPage extends OSXPage {
 	private static final Logger log = ZetaLogger.getLog(MainMenuPage.class
@@ -31,7 +33,7 @@ public class MainMenuPage extends OSXPage {
 		super(driver, wait, OSXExecutionContext.wirePath);
 	}
 
-	public void SignOut() throws Exception {
+	public void signOut() throws Exception {
 		// signOutMenuItem.click();
 		quitZClient();
 		try {
@@ -67,7 +69,7 @@ public class MainMenuPage extends OSXPage {
 	@Override
 	public void close() throws Exception {
 		try {
-			SignOut();
+			signOut();
 			quitZClientMenuItem.click();
 		} catch (Exception e) {
 		}

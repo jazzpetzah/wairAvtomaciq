@@ -31,7 +31,8 @@ public class ContactListPageSteps {
 
 	@Given("^I see my name (.*) in Contact list$")
 	public void ISeeMyNameInContactList(String name) throws Exception {
-		PagesCollection.loginPage.sendProblemReportIfFound();
+		PagesCollection.contactListPage
+				.sendProblemReportIfAppears(PagesCollection.problemReportPage);
 		GivenISeeContactListWithName(name);
 	}
 
@@ -121,16 +122,16 @@ public class ContactListPageSteps {
 	public void GivenIOpenConversationWith(String contact) throws Exception {
 		clickOnContactListEntry(contact, false);
 		PagesCollection.conversationPage = new ConversationPage(
-				PagesCollection.loginPage.getDriver(),
-				PagesCollection.loginPage.getWait());
+				PagesCollection.mainMenuPage.getDriver(),
+				PagesCollection.mainMenuPage.getWait());
 	}
 
 	@Given("I go to user (.*) profile")
 	public void GivenIGoToUserProfile(String user) throws Exception {
 		clickOnContactListEntry(user, true);
 		PagesCollection.userProfilePage = new UserProfilePage(
-				PagesCollection.loginPage.getDriver(),
-				PagesCollection.loginPage.getWait());
+				PagesCollection.mainMenuPage.getDriver(),
+				PagesCollection.mainMenuPage.getWait());
 	}
 
 	@When("I open People Picker from contact list")
@@ -138,7 +139,8 @@ public class ContactListPageSteps {
 		String currentUserEmail = usrMgr.getSelfUser().getEmail();
 		PagesCollection.peoplePickerPage = PagesCollection.contactListPage
 				.openPeoplePicker();
-		Boolean isUsedAlready = ContactListPage.shareContactsProcessedUsers.get(currentUserEmail);
+		Boolean isUsedAlready = ContactListPage.shareContactsProcessedUsers
+				.get(currentUserEmail);
 		if (isUsedAlready == null) {
 			PagesCollection.contactListPage.pressLaterButton();
 			ContactListPage.shareContactsProcessedUsers.put(currentUserEmail,

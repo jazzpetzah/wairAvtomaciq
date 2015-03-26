@@ -4,18 +4,18 @@ import com.wearezeta.auto.osx.pages.PagesCollection;
 
 import cucumber.api.java.en.When;
 
-public class ZClientMenuSteps {
+public class MainMenuSteps {
 
 	/**
 	 * Signs out from Wire
 	 * 
-	 * @step. I am signing out
+	 * @step. ^I [Ss]ign [Oo]ut$
 	 * 
 	 * @throws Exception
 	 */
-	@When("I am signing out")
-	public void WhenIAmSigningOut() throws Exception {
-		PagesCollection.mainMenuPage.SignOut();
+	@When("^I [Ss]ign [Oo]ut$")
+	public void ISignOut() throws Exception {
+		PagesCollection.mainMenuPage.signOut();
 		CommonOSXSteps.resetBackendSettingsIfOverwritten();
 	}
 }

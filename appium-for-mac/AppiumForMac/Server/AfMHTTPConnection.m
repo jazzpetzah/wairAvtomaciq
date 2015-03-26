@@ -267,7 +267,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_VERBOSE;
     // GET /session/:sessionId/element/:id/enabled
     if (pathComponents.count == 5 && [[pathComponents objectAtIndex:0] isEqualToString:@"session"] && [[pathComponents objectAtIndex:2] isEqualToString:@"element"] && [[pathComponents objectAtIndex:4] isEqualToString:@"enabled"] && [method isEqualToString:@"GET"])
 	{
-        return [SERVER.handler getElementIsSelected:path];
+        return [SERVER.handler getElementIsEnabled:path];
 	}
 
     // GET /session/:sessionId/element/:id/attribute/:name
