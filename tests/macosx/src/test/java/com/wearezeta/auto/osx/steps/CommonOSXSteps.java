@@ -23,9 +23,9 @@ import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.pages.LoginPage;
-import com.wearezeta.auto.osx.pages.MainMenuPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
+import com.wearezeta.auto.osx.pages.common.MainMenuPage;
 import com.wearezeta.auto.osx.pages.welcome.WelcomePage;
 
 import cucumber.api.java.After;
@@ -34,6 +34,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
 public class CommonOSXSteps {
+	
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 
 	public static final Logger log = ZetaLogger.getLog(CommonOSXSteps.class

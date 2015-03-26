@@ -10,6 +10,7 @@ import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ContactListPageSteps {
@@ -275,5 +276,21 @@ public class ContactListPageSteps {
 
 		Assert.assertFalse(PagesCollection.contactListPage
 				.isConversationMuted(contact));
+	}
+	/**
+	 * Verify that my name color is the same as in color picker
+	 * 
+	 * @step. ^I verify my name color is the same as in color picker$
+	 * 
+	 */
+	@Then("^I verify my name color is the same as in color picker$")
+	public void IVerifyMyNameColor() {
+		final String selfNameColor = PagesCollection.contactListPage
+				.getSelfNameColor();
+		final String colorInColorPicker = PagesCollection.selfProfilePage
+				.getCurrentAccentColor();
+		Assert.assertTrue("Colors are not the same",
+				colorInColorPicker.equalsIgnoreCase(selfNameColor));
+
 	}
 }

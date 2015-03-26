@@ -6,7 +6,7 @@ Feature: Sign Out
     Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
-    When I am signing out
+    When I sign out
     Then I have returned to Sign In screen
 
     Examples: 

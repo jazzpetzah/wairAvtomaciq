@@ -8,6 +8,7 @@ Feature: Performance Tests
     And I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I start test cycle for <Time> minutes
+    Then I generate performance report
 
     Examples: 
       | Login      | Name          | Password      | Name      | UsersNumber | UserNamePrefix | Time  |

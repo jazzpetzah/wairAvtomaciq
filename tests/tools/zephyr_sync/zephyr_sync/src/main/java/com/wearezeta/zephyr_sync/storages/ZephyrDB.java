@@ -7,8 +7,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -27,11 +31,11 @@ public class ZephyrDB extends TestcasesStorage {
 	private final static long DEFAULT_TESTER_ID = 2;
 
 	private String server;
+
 	public String getServer() {
 		return this.server;
 	}
-	
-	
+
 	public ZephyrDB(String server) throws SQLException {
 		this.server = server;
 		conn = DriverManager.getConnection(String.format(
@@ -369,5 +373,148 @@ public class ZephyrDB extends TestcasesStorage {
 		} finally {
 			super.finalize();
 		}
+	}
+
+	private static final String OSX_ROOT_NAME = "OSX";
+	private static final long OSX_LOST_FOUND_MODULE_ID = 973;
+	private static final String IOS_ROOT_NAME = "iOS";
+	private static final long IOS_LOST_FOUND_MODULE_ID = 972;
+	private static final String ANDROID_ROOT_NAME = "Android";
+	private static final long ANDROID_LOST_FOUND_MODULE_ID = 971;
+	private static final String WEBAPP_ROOT_NAME = "WebApp";
+	private static final long WEBAPP_LOST_FOUND_MODULE_ID = 974;
+	private static final String UNKNOWN_ROOT_NAME = "Unknown";
+	private static final long UNKNOWN_LOST_FOUND_MODULE_ID = 976;
+	private static Map<String, Long> modulesMappingByPlatform = new LinkedHashMap<String, Long>();
+	static {
+		modulesMappingByPlatform.put(ANDROID_ROOT_NAME,
+				ANDROID_LOST_FOUND_MODULE_ID);
+		modulesMappingByPlatform.put(IOS_ROOT_NAME, IOS_LOST_FOUND_MODULE_ID);
+		modulesMappingByPlatform.put(OSX_ROOT_NAME, OSX_LOST_FOUND_MODULE_ID);
+		modulesMappingByPlatform.put(WEBAPP_ROOT_NAME,
+				WEBAPP_LOST_FOUND_MODULE_ID);
+		// Unknown platform should be the last one
+		modulesMappingByPlatform.put(UNKNOWN_ROOT_NAME,
+				UNKNOWN_LOST_FOUND_MODULE_ID);
+
+	}
+
+	public Map<String, Integer> fixLostTestcases() throws SQLException {
+		Map<String, Integer> countOfFixedTestcases = new HashMap<String, Integer>();
+		countOfFixedTestcases.put(ANDROID_ROOT_NAME, 0);
+		countOfFixedTestcases.put(IOS_ROOT_NAME, 0);
+		countOfFixedTestcases.put(OSX_ROOT_NAME, 0);
+		countOfFixedTestcases.put(WEBAPP_ROOT_NAME, 0);
+		countOfFixedTestcases.put(UNKNOWN_ROOT_NAME, 0);
+
+		Set<Long> allCorruptedTCsInPlatforms = new LinkedHashSet<Long>();
+		for (Entry<String, Long> entry : modulesMappingByPlatform.entrySet()) {
+			String whereClause = "";
+			final String platformName = entry.getKey();
+			switch (platformName) {
+			case ANDROID_ROOT_NAME:
+				whereClause = "(itcc.cycle.name COLLATE UTF8_GENERAL_CI LIKE '%ANDROID%')";
+				break;
+			case IOS_ROOT_NAME:
+				whereClause = "(itcc.cycle.name COLLATE UTF8_GENERAL_CI LIKE '%IOS%')";
+				break;
+			case OSX_ROOT_NAME:
+				whereClause = "(itcc.cycle.name COLLATE UTF8_GENERAL_CI LIKE '%OSX%' "
+						+ "OR itcc.cycle.name COLLATE UTF8_GENERAL_CI LIKE '%OS X%')";
+				break;
+			case WEBAPP_ROOT_NAME:
+				whereClause = "(itcc.cycle.name COLLATE UTF8_GENERAL_CI LIKE '%WEBAPP%' "
+						+ "OR itcc.cycle.name COLLATE UTF8_GENERAL_CI LIKE '%WEB APP%')";
+				break;
+			case UNKNOWN_ROOT_NAME:
+				break;
+			default:
+				throw new RuntimeException(String.format(
+						"Unknown platform name '%s'", platformName));
+			}
+
+			Set<Long> corruptedTCIds = new LinkedHashSet<Long>();
+			PreparedStatement prepStmt;
+			if (platformName.equals(UNKNOWN_ROOT_NAME)) {
+				final String getAllCorruptedIdsSQL = "SELECT DISTINCT testcase_id FROM itcc.tcr_catalog_tree_testcase "
+						+ "INNER JOIN itcc.tcr_catalog_tree "
+						+ "ON tcr_catalog_tree_testcase.tcr_catalog_tree_id = tcr_catalog_tree.id "
+						+ "WHERE testcase_id NOT IN "
+						+ "  (SELECT tcr_catalog_tree_testcase.testcase_id FROM itcc.tcr_catalog_tree_testcase "
+						+ "   INNER JOIN itcc.tcr_catalog_tree "
+						+ "   ON tcr_catalog_tree_testcase.tcr_catalog_tree_id = tcr_catalog_tree.id "
+						+ "   WHERE tcr_catalog_tree.type = 'Module') "
+						+ "ORDER BY testcase_id ";
+
+				prepStmt = conn.prepareStatement(getAllCorruptedIdsSQL);
+				ResultSet rs = prepStmt.executeQuery();
+				try {
+					while (rs.next()) {
+						final long currentId = rs.getLong("testcase_id");
+						if (!allCorruptedTCsInPlatforms.contains(currentId)) {
+							corruptedTCIds.add(currentId);
+						}
+					}
+				} finally {
+					rs.close();
+					prepStmt.close();
+				}
+			} else {
+				final String getCorruptedIdsForPlatformSQL = "SELECT DISTINCT testcase_id FROM itcc.tcr_catalog_tree_testcase "
+						+ "INNER JOIN itcc.tcr_catalog_tree "
+						+ "ON tcr_catalog_tree_testcase.tcr_catalog_tree_id = tcr_catalog_tree.id "
+						+ "WHERE testcase_id NOT IN "
+						+ "  (SELECT tcr_catalog_tree_testcase.testcase_id FROM itcc.tcr_catalog_tree_testcase "
+						+ "   INNER JOIN itcc.tcr_catalog_tree "
+						+ "   ON tcr_catalog_tree_testcase.tcr_catalog_tree_id = tcr_catalog_tree.id "
+						+ "   WHERE tcr_catalog_tree.type = 'Module') "
+						+ "AND tcr_catalog_tree.id IN "
+						+ "  (SELECT tcr_catalog_tree.id FROM itcc.tcr_catalog_tree "
+						+ "   INNER JOIN itcc.cycle_catalog_map "
+						+ "   ON tcr_catalog_tree.id = cycle_catalog_map.tcr_catalog_tree_id "
+						+ "   WHERE cycle_catalog_map.cycle_id IN "
+						+ "     (SELECT cycle.id FROM itcc.cycle "
+						+ "      INNER JOIN itcc.cycle_catalog_map "
+						+ "      ON cycle.id = cycle_catalog_map.cycle_id "
+						+ "      WHERE "
+						+ whereClause
+						+ ")) "
+						+ "ORDER BY testcase_id ";
+
+				prepStmt = conn.prepareStatement(getCorruptedIdsForPlatformSQL);
+				ResultSet rs = prepStmt.executeQuery();
+				try {
+					while (rs.next()) {
+						corruptedTCIds.add(rs.getLong("testcase_id"));
+					}
+				} finally {
+					rs.close();
+					prepStmt.close();
+				}
+			}
+
+			final long dstModuleId = entry.getValue();
+			for (long corruptedTCId : corruptedTCIds) {
+				System.out.println(String.format(
+						">>> Restoring test case #%s for '%s' platform...",
+						corruptedTCId, platformName));
+				prepStmt = conn
+						.prepareStatement("INSERT INTO itcc.tcr_catalog_tree_testcase "
+								+ "(isOriginal, revision, testcase_id, tcr_catalog_tree_id, state_flag) "
+								+ "VALUES (1, 0, ?, ?, 0)");
+				try {
+					prepStmt.setLong(1, corruptedTCId);
+					prepStmt.setLong(2, dstModuleId);
+					prepStmt.execute();
+					countOfFixedTestcases.put(platformName,
+							countOfFixedTestcases.get(platformName) + 1);
+				} finally {
+					prepStmt.close();
+				}
+			}
+			allCorruptedTCsInPlatforms.addAll(corruptedTCIds);
+		}
+
+		return countOfFixedTestcases;
 	}
 }

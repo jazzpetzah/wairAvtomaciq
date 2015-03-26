@@ -115,6 +115,19 @@ public final class WebAppLocators {
 
 		public static final String xpathSelfUserNameInput = "//*[@data-uie-name='enter-name']/textarea";
 
+		public static final String classNameSelfUserMail = "self-profile-mail";
+
+		private static final String xpathAccentColorPicker = "//*[@data-uie-name='enter-accent-color']";
+
+		public static final String xpathAccentColorPickerChildren = xpathAccentColorPicker
+				+ "/div";
+
+		public static final Function<Integer, String> xpathAccentColorDivById = (
+				id) -> String.format("%s[%s]", xpathAccentColorPickerChildren, id);
+
+		public static final String xpathCurrentAccentColorCircleDiv = xpathAccentColorPicker
+				+ "/div[contains(@class, 'selected')]/div[contains(@class,'circle')]";
+
 		public static final String xpathNameSelfUserMail = "//*[@data-uie-name='enter-email']";
 	}
 
@@ -158,7 +171,7 @@ public final class WebAppLocators {
 	public static final class PeoplePickerPage {
 		public static final String xpathRoot = "//div[@id='people-picker']";
 
-		public static final String xpathNameSearchInput = xpathRoot + "//input";
+		public static final String cssNameSearchInput = "div#people-picker input";
 
 		public static final String xpathNameCreateConversationButton = xpathRoot
 				+ "//div[contains(@class, 'search-button-add')]";

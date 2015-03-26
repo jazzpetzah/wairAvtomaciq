@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.popovers.ConnectToPopoverContainer;
 
@@ -19,7 +20,7 @@ public class PeoplePickerPage extends WebPage {
 	private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class
 			.getSimpleName());
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathNameSearchInput)
+	@FindBy(how = How.CSS, using = WebAppLocators.PeoplePickerPage.cssNameSearchInput)
 	private WebElement searchInput;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathNameCreateConversationButton)
@@ -102,7 +103,12 @@ public class PeoplePickerPage extends WebPage {
 		openOrCreateConversationButton.click();
 	}
 
-	public void searchForUser(String name) {
+	public void searchForUser(String name) throws Exception {
+		if (!WebCommonUtils.isElementFocused(driver,
+				WebAppLocators.PeoplePickerPage.cssNameSearchInput)) {
+			WebCommonUtils.setFocusToElement(driver,
+					WebAppLocators.PeoplePickerPage.cssNameSearchInput);
+		}
 		searchInput.sendKeys(name);
 	}
 }
