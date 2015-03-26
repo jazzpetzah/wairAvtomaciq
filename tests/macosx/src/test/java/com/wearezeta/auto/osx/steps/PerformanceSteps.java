@@ -35,8 +35,8 @@ public class PerformanceSteps {
 	@When("^I start testing cycle for (\\d+) minutes$")
 	public void WhenIStartTestingCycleForMinutes(int timeout) throws Exception {
 		PagesCollection.contactListPage = new ContactListPage(
-				PagesCollection.loginPage.getDriver(),
-				PagesCollection.loginPage.getWait());
+				PagesCollection.mainMenuPage.getDriver(),
+				PagesCollection.mainMenuPage.getWait());
 
 		perfCommon.runPerformanceLoop(new PerformanceLoop() {
 			public void run() throws Exception {

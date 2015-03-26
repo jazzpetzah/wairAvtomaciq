@@ -169,15 +169,15 @@ public final class OSXLocators {
 	public static final String xpathAvatarFullScreenWindow = "//AXWindow[@AXRoleDescription='floating window']";
 
 	public static final class WelcomePage {
-		
+
 		public static final String idWelcomePage = "_NS:6";
-		
+
 		public static final String nameSignInButton = "SIGN IN";
 
 		public static final String nameRegisterButton = "REGISTER";
 
 		public static final String nameTermsOfUseLink = "TERMS OF USE";
-		
+
 		public static final String xpathAcceptTermsOfUseCheckbox = "//AXCheckBox";
 	}
 
@@ -186,10 +186,10 @@ public final class OSXLocators {
 		public static final String idLoginPage = "_NS:6";
 
 		public static final String idPasswordField = "TempLoginViewControllerPasswordField";
-		
-		public static final String relativePathLoginField = "id," + idPasswordField
-				+ ",0,-40";
-		
+
+		public static final String relativePathLoginField = "id,"
+				+ idPasswordField + ",0,-40";
+
 		public static final String nameSignInButton = "SIGN IN";
 
 		public static final String xpathForgotPasswordButton = "//AXButton[contains(@AXTitle, 'FORGOT PASSWORD')]";
@@ -198,7 +198,7 @@ public final class OSXLocators {
 	public static final class RegistrationPage {
 
 		public static final String idPasswordField = "TempLoginViewControllerPasswordField";
-		
+
 		public static final String ACTIVATION_RESPONSE_VERIFIED = "Account created.";
 	}
 
@@ -220,22 +220,33 @@ public final class OSXLocators {
 		public static final String idJoinCallButton = "JoinButton";
 
 		public static final String idCancelCallButton = "JoinButton";
-		
+
 		public static final String idMuteMicrophoneButton = "MuteButton";
-		
+
 		public static final String idIgnoreCallButton = "IgnoreCallButton";
 
 		public static final String xpathFormatSubscriberName = "//AXStaticText[@AXValue='%s']";
-		
+
 		public static final String xpathFormatCallingUserMessage = "//AXStaticText[@AXValue='CALLING %s']";
-		
+
 		public static final String xpathFormatUserCallsMessage = "//AXStaticText[@AXValue='%s IS CALLING']";
+
+		public static final String nameTransferCallHereButton = "TRANSFER CALL HERE";
 	}
 
 	public static final class NoInternetConnectionPage {
-		
+
 		public static final String idOKButton = "_NS:14";
-		
+
 		public static final String xpathNoInternetMessage = "//AXStaticText[contains(@AXValue,'No Internet Connection')]";
+	}
+
+	public static final class ProblemReportPage {
+
+		public static final String idWindow = "_NS:162";
+
+		public static final String nameCancelButton = "Cancel";
+
+		public static final String nameSendButton = "Send";
 	}
 }

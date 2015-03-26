@@ -205,8 +205,8 @@ public class RegistrationPageSteps {
 	public void ITakeRegistrationPictureFromImageFile(String imageFile)
 			throws Exception {
 		ChoosePicturePage choosePicturePage = new ChoosePicturePage(
-				PagesCollection.loginPage.getDriver(),
-				PagesCollection.loginPage.getWait());
+				PagesCollection.mainMenuPage.getDriver(),
+				PagesCollection.mainMenuPage.getWait());
 		Assert.assertTrue(choosePicturePage.isVisible());
 
 		choosePicturePage.openImage(imageFile);
@@ -224,8 +224,8 @@ public class RegistrationPageSteps {
 	@Then("I see contact list of registered user")
 	public void ISeeContactListOfRegisteredUser() throws Exception {
 		PagesCollection.contactListPage = new ContactListPage(
-				PagesCollection.loginPage.getDriver(),
-				PagesCollection.loginPage.getWait());
+				PagesCollection.mainMenuPage.getDriver(),
+				PagesCollection.mainMenuPage.getWait());
 		ContactListPageSteps clSteps = new ContactListPageSteps();
 		clSteps.ISeeMyNameInContactList(this.userToRegister.getName());
 	}
@@ -240,8 +240,8 @@ public class RegistrationPageSteps {
 	@Then("I see self profile of registered user")
 	public void ISeeSelfProfileOfRegisteredUser() throws Exception {
 		PagesCollection.userProfilePage = new UserProfilePage(
-				PagesCollection.loginPage.getDriver(),
-				PagesCollection.loginPage.getWait());
+				PagesCollection.mainMenuPage.getDriver(),
+				PagesCollection.mainMenuPage.getWait());
 		UserProfilePageSteps upSteps = new UserProfilePageSteps();
 		upSteps.ISeeNameInUserProfile(this.userToRegister.getName());
 	}

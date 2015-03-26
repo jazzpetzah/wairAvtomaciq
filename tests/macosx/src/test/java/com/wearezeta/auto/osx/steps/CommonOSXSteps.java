@@ -22,10 +22,10 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
-import com.wearezeta.auto.osx.pages.LoginPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
 import com.wearezeta.auto.osx.pages.common.MainMenuPage;
+import com.wearezeta.auto.osx.pages.common.ProblemReportPage;
 import com.wearezeta.auto.osx.pages.welcome.WelcomePage;
 
 import cucumber.api.java.After;
@@ -34,7 +34,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
 public class CommonOSXSteps {
-	
+
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 
 	public static final Logger log = ZetaLogger.getLog(CommonOSXSteps.class
@@ -84,13 +84,16 @@ public class CommonOSXSteps {
 
 		PagesCollection.mainMenuPage = new MainMenuPage(driver, wait);
 		PagesCollection.welcomePage = new WelcomePage(driver, wait);
-		PagesCollection.loginPage = new LoginPage(driver, wait);
-		ZetaFormatter.setDriver((AppiumDriver) PagesCollection.loginPage
+		PagesCollection.problemReportPage = new ProblemReportPage(driver, wait);
+
+		ZetaFormatter.setDriver((AppiumDriver) PagesCollection.welcomePage
 				.getDriver());
 		long endDate = new Date().getTime();
 		// saving time of startup for Sync Engine
 		startupTime = endDate - startDate;
-		PagesCollection.loginPage.sendProblemReportIfFound();
+
+		PagesCollection.welcomePage
+				.sendProblemReportIfAppears(PagesCollection.problemReportPage);
 	}
 
 	@Before("@performance")
