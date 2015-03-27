@@ -244,6 +244,9 @@ public final class AndroidLocators {
 
 		public static final String idGalleryBtn = LOCATORS_PACKAGE
 				+ ":id/gtv__camera_control__pick_from_gallery";
+		
+		public static final String idCloseImageBtn = LOCATORS_PACKAGE
+				+ ":id/gtv__single_image_message__close";
 
 		public static final String idSearchHintClose = LOCATORS_PACKAGE
 				+ ":id/zb__search_hint__close_button";

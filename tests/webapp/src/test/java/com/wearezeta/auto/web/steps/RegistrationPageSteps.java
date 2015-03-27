@@ -16,6 +16,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.UserState;
+import com.wearezeta.auto.web.pages.ActivationPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
 import cucumber.api.java.en.Given;
@@ -170,5 +171,37 @@ public class RegistrationPageSteps {
 	public void ISwitchToLoginPage() throws Exception {
 		PagesCollection.loginPage = PagesCollection.registrationPage
 				.switchToLoginPage();
+	}
+
+	private static final int ACTIVATION_TIMEOUT = 5; // seconds
+
+	/**
+	 * Activates user using browser URL from activation email
+	 * 
+	 * @step. ^I activate user by URL$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I activate user by URL$")
+	public void WhenIActivateUserByUrl() throws Exception {
+		final String link = BackendAPIWrappers
+				.getUserActivationLink(this.activationMessage);
+		ActivationPage activationPage = new ActivationPage(
+				PagesCollection.registrationPage.getDriver(),
+				PagesCollection.registrationPage.getWait(), link);
+		activationPage.openInNewTab();
+		activationPage.verifyActivation(ACTIVATION_TIMEOUT);
+		activationPage.close();
+
+		this.userToRegister.setUserState(UserState.Created);
+		// indexes in aliases start from 1
+		final int userIndex = usrMgr.appendCustomUser(userToRegister) + 1;
+		userToRegister.addEmailAlias(ClientUsersManager.EMAIL_ALIAS_TEMPLATE
+				.apply(userIndex));
+		userToRegister.addNameAlias(ClientUsersManager.NAME_ALIAS_TEMPLATE
+				.apply(userIndex));
+		userToRegister
+				.addPasswordAlias(ClientUsersManager.PASSWORD_ALIAS_TEMPLATE
+						.apply(userIndex));
 	}
 }

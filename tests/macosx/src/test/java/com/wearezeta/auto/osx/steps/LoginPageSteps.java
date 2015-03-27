@@ -11,6 +11,7 @@ import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.osx.common.InputMethodEnum;
 import com.wearezeta.auto.osx.common.LoginBehaviourEnum;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.LoginPage;
@@ -68,7 +69,7 @@ public class LoginPageSteps {
 		PagesCollection.loginPage = PagesCollection.welcomePage.startSignIn();
 
 		PagesCollection.loginPage.typeEmail(login);
-		PagesCollection.loginPage.setPassword(password);
+		PagesCollection.loginPage.typePassword(password);
 
 		PagesCollection.contactListPage = PagesCollection.loginPage.signIn();
 
@@ -89,7 +90,7 @@ public class LoginPageSteps {
 	 */
 	@When("^I press [Ss]ign [Ii]n button$")
 	public void WhenIPressSignInButton() throws Exception {
-		ISignInExpectingResult("successful login");
+		ISignInExpectingResult(LoginBehaviourEnum.SUCCESSFUL.getResult());
 	}
 
 	@When("^I [Ss]ign [Ii]n expecting (sucessful login|error|[Nn]o [Ii]nternet message)$")
@@ -115,13 +116,13 @@ public class LoginPageSteps {
 	/**
 	 * Enters login in corresponding field on Sign In page
 	 * 
-	 * @step. I have entered login (.*)
+	 * @step. ^I type login (.*)$
 	 * 
 	 * @param login
 	 *            user login string
 	 */
-	@When("I have entered login (.*)")
-	public void WhenIHaveEnteredLogin(String login) {
+	@When("^I type login (.*)$")
+	public void ITypeLogin(String login) {
 		try {
 			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
 		} catch (NoSuchUserException e) {
@@ -131,22 +132,48 @@ public class LoginPageSteps {
 	}
 
 	/**
-	 * Enters password in corresponding field on Sign In page
+	 * Enters password in corresponding field on Sign In page (this step doesn't
+	 * support password with spaces in it, use full version: 'I type password
+	 * (.*) by sending keys' for password with spaces testing)
 	 * 
-	 * @step. I have entered password (.*)
+	 * @step. ^I type password (\\S*)$
 	 * 
 	 * @param password
 	 *            user password string
+	 *
 	 * @throws Exception
 	 */
-	@When("I have entered password (.*)")
-	public void WhenIHaveEnteredPassword(String password) throws Exception {
+	@When("^I type password (\\S*)$")
+	public void ITypePassword(String password) throws Exception {
+		ITypePasswordByMode(password, InputMethodEnum.SEND_KEYS.getMethod());
+	}
+
+	/**
+	 * Enters password in corresponding field on Sign In page using specified
+	 * input mode
+	 * 
+	 * @step. ^I type password (.*) by (sending keys|AppleScript)$
+	 * 
+	 * @param password
+	 *            user password string
+	 * @param mode
+	 *            set value mode ('sending keys' - sends text using
+	 *            WebElement.sendKeys() method | 'AppleScript')
+	 *
+	 * @throws Exception
+	 */
+	@When("^I type password (.*) by (sending keys|AppleScript)$")
+	public void ITypePasswordByMode(String password, String mode)
+			throws Exception {
 		try {
 			password = usrMgr.findUserByPasswordAlias(password).getPassword();
 		} catch (NoSuchUserException e) {
-			// Ignore silently
 		}
-		PagesCollection.loginPage.setPassword(password);
+		for (InputMethodEnum method : InputMethodEnum.values()) {
+			if (method.getMethod().toLowerCase().equals(mode.toLowerCase())) {
+				PagesCollection.loginPage.typePassword(password, method);
+			}
+		}
 	}
 
 	/**
@@ -160,19 +187,6 @@ public class LoginPageSteps {
 		Assert.assertTrue("Failed to logout",
 				PagesCollection.contactListPage.waitForSignOut());
 		Assert.assertTrue(PagesCollection.contactListPage.isSignOutFinished());
-	}
-
-	/**
-	 * Sets password on Sign In screen using Apple Script
-	 * 
-	 * @step. I input password (.*) using script
-	 * 
-	 * @param password
-	 *            user password string
-	 */
-	@When("I input password (.*) using script")
-	public void IInputPasswordUsingScript(String password) {
-		PagesCollection.loginPage.setPasswordUsingScript(password);
 	}
 
 	/**

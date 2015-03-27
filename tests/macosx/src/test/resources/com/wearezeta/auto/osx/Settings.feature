@@ -12,8 +12,8 @@ Feature: Settings
     And I enter user email <Email> to change password
     And I open change password link from email
     And I reset password to <NewPassword>
-    And I have entered login <Email>
-    And I have entered password <NewPassword>
+    And I type login <Email>
+    And I type password <NewPassword>
     And I press Sign In button
     Then I see name <Name> in User profile
 

@@ -17,6 +17,7 @@ import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.osx.common.InputMethodEnum;
 import com.wearezeta.auto.osx.common.LoginBehaviourEnum;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.common.OSXConstants;
@@ -73,7 +74,9 @@ public class LoginPage extends OSXPage {
 			return new NoInternetConnectionPage(this.getDriver(),
 					this.getWait());
 		default:
-			throw new Exception("Unsupported expected sign in behaviour");
+			throw new Exception(String.format(
+					"Unsupported expected sign in behaviour - %s",
+					expectedBehaviour));
 		}
 	}
 
@@ -81,13 +84,28 @@ public class LoginPage extends OSXPage {
 		emailField.sendKeys(email);
 	}
 
-	public void setPassword(String password) throws Exception {
-		DriverUtils.turnOffImplicitWait(driver);
-		try {
+	public void typePassword(String password) throws Exception {
+		typePassword(password, InputMethodEnum.SEND_KEYS);
+	}
+
+	public void typePassword(String password, InputMethodEnum method)
+			throws Exception {
+		switch (method) {
+		case SEND_KEYS:
 			passwordField.sendKeys(password);
-		} catch (NoSuchElementException e) {
-		} finally {
-			DriverUtils.setDefaultImplicitWait(driver);
+			break;
+		case APPLE_SCRIPT:
+			passwordField.clear();
+			String script = String
+					.format(OSXCommonUtils
+							.readTextFileFromResources(OSXConstants.Scripts.INPUT_PASSWORD_LOGIN_PAGE_SCRIPT),
+							password);
+			driver.executeScript(script);
+
+			break;
+		default:
+			throw new Exception(String.format("Unsupported input method - %s",
+					method));
 		}
 	}
 

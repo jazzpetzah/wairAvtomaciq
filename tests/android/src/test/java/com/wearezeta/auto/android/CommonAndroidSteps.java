@@ -192,6 +192,19 @@ public class CommonAndroidSteps {
 	public void WhenITake1stScreenshot() throws IOException {
 		images.add(PagesCollection.loginPage.takeScreenshot());
 	}
+	
+	/**
+	 * Taps on the center of the screen
+	 * 
+	 * @step. ^I tap on center of screen$
+	 * 
+	 * @throws Throwable
+	 * 
+	 */
+	@When("^I tap on center of screen")
+	public void WhenITapOnCenterOfScreen() throws Throwable {
+		PagesCollection.dialogPage.tapOnCenterOfScreen();
+	}
 
 	/**
 	 * Compare that 1st and 2nd screenshots are not equal
