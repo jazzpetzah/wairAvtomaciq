@@ -176,7 +176,7 @@ public class RegistrationPageSteps {
 	private static final int ACTIVATION_TIMEOUT = 5; // seconds
 
 	/**
-	 * Activates user using browser by URL from mail
+	 * Activates user using browser URL from activation email
 	 * 
 	 * @step. ^I activate user by URL$
 	 * 
