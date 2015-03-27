@@ -25,6 +25,7 @@ import com.google.common.base.Function;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
@@ -33,6 +34,8 @@ public class ContactListPage extends WebPage {
 
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
 			.getSimpleName());
+
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathContactListEntries)
 	private List<WebElement> contactListEntries;
@@ -134,13 +137,16 @@ public class ContactListPage extends WebPage {
 						By.xpath(WebAppLocators.ContactListPage.xpathOpenPeoplePickerButton));
 	}
 
-	public boolean isSelfNameEntryExist(String name) throws Exception {
-		log.debug("Looking for self name entry '" + name + "'");
-		return DriverUtils
-				.isElementDisplayed(
-						driver,
-						By.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileEntry),
-						5);
+	public boolean isSelfNameEntryExist() throws Exception {
+		final By locator = By
+				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileEntry);
+		assert DriverUtils.isElementDisplayed(driver, locator, 5);
+		final String selfNameElementText = driver.findElement(locator)
+				.getText();
+		log.debug(String.format("Looking for self name entry '%s'...",
+				selfNameElementText));
+		return selfNameElementText.equals(usrMgr.getSelfUserOrThrowError()
+				.getName());
 	}
 
 	public boolean isConvoListEntryWithNameExist(String name) throws Exception {
@@ -153,7 +159,7 @@ public class ContactListPage extends WebPage {
 				.apply(name);
 		return DriverUtils.isElementDisplayed(driver, By.xpath(xpath), 5);
 	}
-	
+
 	public boolean isConvoListEntryNotVisible(String name) throws Exception {
 		log.debug("Looking for contact with name '" + name + "'");
 		name = fixDefaultGroupConvoName(name, false, false);
@@ -333,7 +339,7 @@ public class ContactListPage extends WebPage {
 		}
 		return new PeoplePickerPage(this.getDriver(), this.getWait());
 	}
-	
+
 	public String getSelfNameColor() {
 		return selfName.getCssValue("color");
 	}

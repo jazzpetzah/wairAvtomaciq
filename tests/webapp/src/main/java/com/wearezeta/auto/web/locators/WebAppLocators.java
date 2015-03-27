@@ -210,6 +210,15 @@ public final class WebAppLocators {
 		public static final String xpathSwitchToSignInButton = "//*[@data-uie-name='go-sign-in']";
 	}
 
+	public static final class SelfPictureUploadPage {
+		public static final String xpathRootDiv = "//div[@id='self-upload']";
+
+		public static final String cssSendPictureInput = "div#self-upload input[data-uie-name=do-select-picture]";
+
+		public static final String xpathConfirmPictureSelectionButton = xpathRootDiv
+				+ "//*[@data-uie-name='do-set-picture']";
+	}
+
 	public static final class Common {
 
 		public static final String CONTACT_LIST_ONE_PERSON_WAITING = "1 person waiting";
