@@ -85,7 +85,8 @@ public class PeoplePickerPage extends IOSPage {
 	public void clickLaterButton() throws Exception {
 		if (DriverUtils.isElementDisplayed(this.getDriver(),
 				By.name(IOSLocators.nameShareButton))) {
-			shareButton.click();
+			//shareButton.click();
+			DriverUtils.mobileTapByCoordinates(getDriver(), shareButton);
 		}
 	}
 
