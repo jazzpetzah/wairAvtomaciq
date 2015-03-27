@@ -323,6 +323,6 @@ public final class CommonSteps {
 	public void waitForCallToAccept(String userNameAlias)
 			throws Exception {
 		ClientUser callee = usrMgr.findUserByNameOrNameAlias(userNameAlias);
-		CallingUtil.waitForCallToAccept(callee);
+		CallingUtil.waitsForCallToAccept(callee);
 	}
 }

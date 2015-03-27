@@ -63,10 +63,10 @@ public class CallingUtil {
 				"kill -s SIGINT " + currentCallPid });
 	}
 	
-	public static void waitForCallToAccept(ClientUser caller)
+	public static void waitsForCallToAccept(ClientUser caller)
 			throws Exception {
 		String email = caller.getEmail();
 		String password = caller.getPassword();
-		// TODO: Start blender with email + password
+		GoogleComputeEngine.createInstanceAndStartBlender(email, password);
 	}
 }
