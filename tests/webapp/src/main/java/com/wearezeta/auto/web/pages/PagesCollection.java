@@ -24,4 +24,6 @@ public class PagesCollection extends AbstractPagesCollection {
 	public static PeoplePickerPage peoplePickerPage = null;
 
 	public static RegistrationPage registrationPage = null;
+	
+	public static SelfPictureUploadPage selfPictureUploadPage = null;
 }

@@ -23,17 +23,22 @@ public class ContactListPageSteps {
 	/**
 	 * Checks that we can see signed in user in Contact List
 	 * 
-	 * @step. ^I see my name (.*) in Contact list$
-	 * 
-	 * @param name
-	 *            user name string
+	 * @step. ^I see my name in Contact list$
 	 * 
 	 * @throws AssertionError
-	 *             if user name does not appear in Contact List
+	 *             if self user name does not appear at the top of Contact List
 	 */
-	@Given("^I see my name (.*) in Contact list$")
-	public void ISeeMyNameInContactList(String name) throws Exception {
-		GivenISeeContactListWithName(name);
+	@Given("^I see my name in Contact list$")
+	public void ISeeMyNameInContactList() throws Exception {
+		PagesCollection.peoplePickerPage = PagesCollection.contactListPage
+				.isHiddenByPeoplePicker();
+		if (PagesCollection.peoplePickerPage != null) {
+			PagesCollection.peoplePickerPage.closeSearch();
+		}
+		Assert.assertTrue("No contact list loaded.",
+				PagesCollection.contactListPage.waitForContactListVisible());
+		Assert.assertTrue(PagesCollection.contactListPage
+				.isSelfNameEntryExist());
 	}
 
 	/**
@@ -58,21 +63,15 @@ public class ContactListPageSteps {
 		log.debug("Looking for contact with name " + name);
 		Assert.assertTrue("No contact list loaded.",
 				PagesCollection.contactListPage.waitForContactListVisible());
-		if (usrMgr.isSelfUserSet()
-				&& usrMgr.getSelfUser().getName().equals(name)) {
-			Assert.assertTrue(PagesCollection.contactListPage
-					.isSelfNameEntryExist(name));
-		} else {
-			for (int i = 0; i < 5; i++) {
-				if (PagesCollection.contactListPage
-						.isConvoListEntryWithNameExist(name)) {
-					return;
-				}
-				Thread.sleep(1000);
+		for (int i = 0; i < 5; i++) {
+			if (PagesCollection.contactListPage
+					.isConvoListEntryWithNameExist(name)) {
+				return;
 			}
-			assert false : "Conversation list entry '" + name
-					+ "' is not visible after timeout expired";
+			Thread.sleep(1000);
 		}
+		throw new AssertionError("Conversation list entry '" + name
+				+ "' is not visible after timeout expired");
 	}
 
 	/**
@@ -277,6 +276,7 @@ public class ContactListPageSteps {
 		Assert.assertFalse(PagesCollection.contactListPage
 				.isConversationMuted(contact));
 	}
+
 	/**
 	 * Verify that my name color is the same as in color picker
 	 * 

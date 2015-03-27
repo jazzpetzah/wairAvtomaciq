@@ -215,7 +215,7 @@ public class CommonWebAppSteps {
 
 	/**
 	 * Creates specified number of users and sets user with specified name as
-	 * main user
+	 * main user. Avatar picture for Self user is set automatically
 	 * 
 	 * @step. ^There \\w+ (\\d+) user[s]* where (.*) is me$
 	 * 
@@ -233,6 +233,36 @@ public class CommonWebAppSteps {
 		IChangeUserAvatarPicture(myNameAlias, "default");
 	}
 
+	/**
+	 * Creates specified number of users and sets user with specified name as
+	 * main user. Avatar picture for Self user is NOT set automatically
+	 * 
+	 * @step. ^There \\w+ (\\d+) user[s]* where (.*) is me without avatar
+	 *        picture$
+	 * 
+	 * @param count
+	 *            number of users to create
+	 * @param myNameAlias
+	 *            user name or name alias to use as main user
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^There \\w+ (\\d+) user[s]* where (.*) is me without avatar picture$")
+	public void ThereAreNUsersWhereXIsMeWithoutAvatar(int count,
+			String myNameAlias) throws Exception {
+		commonSteps.ThereAreNUsersWhereXIsMe(count, myNameAlias);
+	}
+
+	/**
+	 * Set avatar picture for a particular user
+	 * 
+	 * @param userNameAlias
+	 *            user name/alias
+	 * @param path
+	 *            path to a picture on a local file system or 'default' to set
+	 *            the default picture
+	 * @throws Exception
+	 */
 	@When("^User (\\w+) change avatar picture to (.*)$")
 	public void IChangeUserAvatarPicture(String userNameAlias, String path)
 			throws Exception {
@@ -288,7 +318,8 @@ public class CommonWebAppSteps {
 	}
 
 	/**
-	 * Sets self user to be the current user
+	 * Sets self user to be the current user. Avatar picture for this user is
+	 * set automatically
 	 * 
 	 * @step. ^User (\\w+) is [Mm]e$
 	 * 

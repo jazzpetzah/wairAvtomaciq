@@ -14,7 +14,7 @@ Feature: Registration
     And User <Name> is Me
     # This has to be done automatically at some time
     And I Sign in using login <Email> and password <Password>
-    Then I see my name <Name> in Contact list
+    Then I see my name in Contact list
     When I open self profile
     Then I see user name on self profile page <Name>
     Then I see user email on self profile page <Email>
@@ -22,3 +22,25 @@ Feature: Registration
     Examples: 
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
+
+  @staging @id2064
+  Scenario Outline: Photo selection dialogue - choose picture from library
+    Given There is 1 user where <Name> is me without avatar picture
+    And I Sign in using login <Login> and password <Password>
+    And I see Self Picture Upload dialog
+    And I choose <PictureName> as my self picture on Self Picture Upload dialog
+    And I confirm picture selection on Self Picture Upload dialog
+    Then I see my name in Contact list
+    When I open self profile
+    And I click gear button on self profile page
+    And I select Sign out menu item on self profile page
+    And I switch to sign in page
+    And I see Sign In page
+    When I Sign in using login <Login> and password <Password>
+    Then I do not see Self Picture Upload dialog
+    Then I see my name in Contact list
+
+    Examples: 
+      | Login      | Password      | Name      | PictureName               |
+      | user1Email | user1Password | user1Name | userpicture_landscape.jpg |
+   

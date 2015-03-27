@@ -5,7 +5,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> has sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
+    And I see my name in Contact list
     When I see connection request
     And I open connection requests list
     And I accept connection request from user <Contact>
@@ -19,7 +19,7 @@ Feature: Connect
   Scenario Outline: Verify sending a connection request to user choosen from search
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
+    And I see my name in Contact list
     When I open People Picker from Contact List
     And I wait up to 15 seconds until <Contact> exists in backend search results
     And I type <Contact> in search field of People Picker
@@ -37,7 +37,7 @@ Feature: Connect
   Scenario Outline: Verify 1to1 conversation is successfully created for sender end after connection is accepted
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
+    And I see my name in Contact list
     When I open People Picker from Contact List
     And I wait up to 15 seconds until <Name2> exists in backend search results
     And I type <Name2> in search field of People Picker
@@ -53,7 +53,7 @@ Feature: Connect
     And I switch to Sign In page
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
-    And I see my name <Name2> in Contact list
+    And I see my name in Contact list
     And I see connection request
     And I open connection requests list
     And I accept connection request from user <Name>
@@ -65,7 +65,7 @@ Feature: Connect
     And I switch to sign in page
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
+    And I see my name in Contact list
     Then I see Contact list with name <Name2>
     And I open conversation with <Name2>
     And I see <Message> action for <Name2> in conversation

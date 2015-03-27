@@ -23,6 +23,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.pages.ConversationPage;
 
 @SuppressWarnings("deprecation")
 public class WebCommonUtils extends CommonUtils {
@@ -144,7 +145,7 @@ public class WebCommonUtils extends CommonUtils {
 		}
 	}
 
-	public static void formatTextInFileAndSave(InputStream fis, String dstFile,
+	private static void formatTextInFileAndSave(InputStream fis, String dstFile,
 			Object[] params) throws IOException {
 		String script = "";
 
@@ -251,5 +252,50 @@ public class WebCommonUtils extends CommonUtils {
 		currentHandles.retainAll(previousHandles);
 		final String oldTabHandle = currentHandles.iterator().next();
 		driver.switchTo().window(oldTabHandle);
+	}
+
+	private static final String TMP_ROOT = "/tmp";
+
+	/**
+	 * Workaround for https://code.google.com/p/selenium/issues/detail?id=4220
+	 * 
+	 * @param pictureName
+	 *            the path to the original picture to be uploaded into
+	 *            conversation
+	 * @throws Exception
+	 */
+	public static void sendPictureInSafari(String pictureName) throws Exception {
+		final ClassLoader classLoader = ConversationPage.class.getClassLoader();
+		final InputStream scriptStream = classLoader.getResourceAsStream(String
+				.format("%s/%s",
+						WebAppConstants.Scripts.RESOURCES_SCRIPTS_ROOT,
+						WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT));
+		final String srcScriptPath = String.format("%s/%s", TMP_ROOT,
+				WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT);
+		final File srcImage = new File(pictureName);
+		assert srcImage.exists() : "There's no image by path "
+				+ srcImage.getCanonicalPath() + " on your local file system";
+		final File dstImage = new File(String.format("%s/%s", TMP_ROOT,
+				srcImage.getName()));
+		try {
+			formatTextInFileAndSave(scriptStream, srcScriptPath, new String[] {
+					dstImage.getParent(), dstImage.getName() });
+		} finally {
+			if (scriptStream != null) {
+				scriptStream.close();
+			}
+		}
+		final String dstScriptPath = srcScriptPath;
+		try {
+			putFileOnExecutionNode(WebAppExecutionContext.seleniumNodeIp,
+					srcImage.getAbsolutePath(), dstImage.getAbsolutePath());
+			putFileOnExecutionNode(WebAppExecutionContext.seleniumNodeIp,
+					srcScriptPath, dstScriptPath);
+		} finally {
+			new File(srcScriptPath).delete();
+		}
+
+		executeAppleScriptFileOnNode(WebAppExecutionContext.seleniumNodeIp,
+				dstScriptPath);
 	}
 }
