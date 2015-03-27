@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @torun @id1936
+  @staging @id1936
   Scenario Outline: Verify new user can be registered
     Given I see invitation page
     Given I enter invitation code
