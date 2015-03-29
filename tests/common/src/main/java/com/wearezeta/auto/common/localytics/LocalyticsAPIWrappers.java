@@ -21,6 +21,11 @@ public final class LocalyticsAPIWrappers {
 		return result;
 	}
 
+	private static String dateToLocalyticsShortTimestamp(Date dt) {
+		final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		return formatter.format(dt);
+	}
+
 	public int getNumberOfEventOccurencesPerPeriod(String appId,
 			String eventName, Date periodStart, Date periodEnd)
 			throws Exception {
@@ -33,10 +38,10 @@ public final class LocalyticsAPIWrappers {
 		queryData.put("dimensions",
 				stringsArrayToJSONArray(new String[] { "event_name" }));
 		JSONObject conditionsData = new JSONObject();
-		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-ddTHH:mm");
-		JSONArray periodDefinition = stringsArrayToJSONArray(new String[] {
-				"between", sdf.format(periodStart), sdf.format(periodEnd) });
-		conditionsData.put("hour", periodDefinition);
+		JSONArray dayPeriodDefinition = stringsArrayToJSONArray(new String[] {
+				"between", dateToLocalyticsShortTimestamp(periodStart),
+				dateToLocalyticsShortTimestamp(periodEnd) });
+		conditionsData.put("day", dayPeriodDefinition);
 		queryData.put("conditions", conditionsData);
 
 		final JSONObject result = LocalyticsRestAPI.query(token, queryData);
@@ -68,13 +73,13 @@ public final class LocalyticsAPIWrappers {
 		queryData.put("metrics",
 				stringsArrayToJSONArray(new String[] { caninicalMetricsName }));
 		queryData.put("dimensions",
-				stringsArrayToJSONArray(new String[] { "hour" }));
+				stringsArrayToJSONArray(new String[] { "day" }));
 		JSONObject conditionsData = new JSONObject();
 		conditionsData.put("event_name", eventName);
-		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-ddTHH:mm");
-		JSONArray periodDefinition = stringsArrayToJSONArray(new String[] {
-				"between", sdf.format(periodStart), sdf.format(periodEnd) });
-		conditionsData.put("hour", periodDefinition);
+		JSONArray dayPeriodDefinition = stringsArrayToJSONArray(new String[] {
+				"between", dateToLocalyticsShortTimestamp(periodStart),
+				dateToLocalyticsShortTimestamp(periodEnd) });
+		conditionsData.put("day", dayPeriodDefinition);
 		queryData.put("conditions", conditionsData);
 
 		final JSONObject result = LocalyticsRestAPI.query(token, queryData);

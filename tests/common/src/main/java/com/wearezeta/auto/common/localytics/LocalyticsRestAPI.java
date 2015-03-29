@@ -25,7 +25,7 @@ final class LocalyticsRestAPI {
 			.getSimpleName());
 
 	private static final String BASE_URL = "https://api.localytics.com/v1";
-	private static final String MEDIA_TYPE_LOCALYTICS_JSON = "application/vnd.localytics.v1+hal+json";
+	private static final String MEDIA_TYPE_LOCALYTICS_JSON = MediaType.APPLICATION_JSON; // "application/vnd.localytics.v1+hal+json";
 	private static final String QUERY_ENDPOINT = "query";
 
 	private static void verifyRequestResult(int currentResponseCode,
