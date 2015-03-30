@@ -61,7 +61,6 @@
 		36D203DF17A5D8B900011A3A /* AfMHTTPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 36D203DE17A5D8B900011A3A /* AfMHTTPConnection.m */; };
 		36D203E217A5DE7000011A3A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36D203E117A5DE7000011A3A /* Security.framework */; };
 		36D7968A17BF1A4B00D1B81E /* PFAssistive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36D7968917BF1A4B00D1B81E /* PFAssistive.framework */; };
-		5B7FB9841AC9699F0016B457 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5B7FB9821AC9699F0016B457 /* MainMenu.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -190,7 +189,6 @@
 		36D203DE17A5D8B900011A3A /* AfMHTTPConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AfMHTTPConnection.m; sourceTree = "<group>"; };
 		36D203E117A5DE7000011A3A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		36D7968917BF1A4B00D1B81E /* PFAssistive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PFAssistive.framework; path = Frameworks/PFAssistive.framework; sourceTree = "<group>"; };
-		5B7FB9831AC9699F0016B457 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -272,7 +270,6 @@
 				3614DE1517A58EF600853962 /* Utility */,
 				3610349A17A4990E00DB79AA /* AppiumForMacAppDelegate.h */,
 				3610349B17A4990E00DB79AA /* AppiumForMacAppDelegate.m */,
-				5B7FB9821AC9699F0016B457 /* MainMenu.xib */,
 			);
 			path = AppiumForMac;
 			sourceTree = "<group>";
@@ -598,7 +595,6 @@
 				36D203D117A5D6B300011A3A /* AboutCocoaAsyncSocket.txt in Resources */,
 				36D203D317A5D6B300011A3A /* AboutCocoaLumberjack.txt in Resources */,
 				36D203DB17A5D6B300011A3A /* README.txt in Resources */,
-				5B7FB9841AC9699F0016B457 /* MainMenu.xib in Resources */,
 				3623981317AFF9C700DE5719 /* appium-for-mac.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -716,14 +712,6 @@
 				361034AF17A4990F00DB79AA /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		5B7FB9821AC9699F0016B457 /* MainMenu.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				5B7FB9831AC9699F0016B457 /* en */,
-			);
-			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
