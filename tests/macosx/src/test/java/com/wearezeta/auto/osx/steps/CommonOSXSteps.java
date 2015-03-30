@@ -22,6 +22,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
+import com.wearezeta.auto.osx.pages.LoginPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
 import com.wearezeta.auto.osx.pages.common.MainMenuPage;
@@ -84,6 +85,7 @@ public class CommonOSXSteps {
 
 		PagesCollection.mainMenuPage = new MainMenuPage(driver, wait);
 		PagesCollection.welcomePage = new WelcomePage(driver, wait);
+		PagesCollection.loginPage = new LoginPage(driver, wait);
 		PagesCollection.problemReportPage = new ProblemReportPage(driver, wait);
 
 		ZetaFormatter.setDriver((AppiumDriver) PagesCollection.welcomePage
