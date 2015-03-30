@@ -21,9 +21,10 @@ public final class LocalyticsAPIWrappers {
 		return result;
 	}
 
-	private static String dateToLocalyticsShortTimestamp(Date dt) {
-		final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		return formatter.format(dt);
+	private static String dateToLocalyticsFullTimestamp(Date dt) {
+		final SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd");
+		final SimpleDateFormat timeFmt = new SimpleDateFormat("HH:mm");
+		return String.format("%sT%s", dateFmt.format(dt), timeFmt.format(dt));
 	}
 
 	public int getNumberOfEventOccurencesPerPeriod(String appId,
@@ -38,10 +39,10 @@ public final class LocalyticsAPIWrappers {
 		queryData.put("dimensions",
 				stringsArrayToJSONArray(new String[] { "event_name" }));
 		JSONObject conditionsData = new JSONObject();
-		JSONArray dayPeriodDefinition = stringsArrayToJSONArray(new String[] {
-				"between", dateToLocalyticsShortTimestamp(periodStart),
-				dateToLocalyticsShortTimestamp(periodEnd) });
-		conditionsData.put("day", dayPeriodDefinition);
+		JSONArray hourPeriodDefinition = stringsArrayToJSONArray(new String[] {
+				"between", dateToLocalyticsFullTimestamp(periodStart),
+				dateToLocalyticsFullTimestamp(periodEnd) });
+		conditionsData.put("hour", hourPeriodDefinition);
 		queryData.put("conditions", conditionsData);
 
 		final JSONObject result = LocalyticsRestAPI.query(token, queryData);
@@ -57,44 +58,51 @@ public final class LocalyticsAPIWrappers {
 			}
 			return numberOfOccurences;
 		} else {
-			throw new RuntimeException("No resusts were returned!");
+			throw new RuntimeException("No results were returned!");
 		}
 	}
 
-	public int getNumberOfEventAttributeOccurencesPerPeriod(String appId,
-			String eventName, String attributeName, Date periodStart,
-			Date periodEnd) throws Exception {
+	public int getNumberOfAttributeOccurencesPerPeriod(String appId,
+			String eventName, String attributeName, String attributeValue,
+			Date periodStart, Date periodEnd) throws Exception {
 		JSONObject queryData = new JSONObject();
 		queryData
 				.put("app_id", stringsArrayToJSONArray(new String[] { appId }));
 		// https://api.localytics.com/docs#query-attribute-explorer
-		final String caninicalMetricsName = String.format("sum(n:%s)",
+		final String caninicalAttributeName = String.format("a:%s",
 				attributeName);
 		queryData.put("metrics",
-				stringsArrayToJSONArray(new String[] { caninicalMetricsName }));
-		queryData.put("dimensions",
-				stringsArrayToJSONArray(new String[] { "day" }));
+				stringsArrayToJSONArray(new String[] { "occurrences" }));
+		queryData
+				.put("dimensions",
+						stringsArrayToJSONArray(new String[] { caninicalAttributeName }));
 		JSONObject conditionsData = new JSONObject();
 		conditionsData.put("event_name", eventName);
-		JSONArray dayPeriodDefinition = stringsArrayToJSONArray(new String[] {
-				"between", dateToLocalyticsShortTimestamp(periodStart),
-				dateToLocalyticsShortTimestamp(periodEnd) });
-		conditionsData.put("day", dayPeriodDefinition);
+		JSONArray hourPeriodDefinition = stringsArrayToJSONArray(new String[] {
+				"between", dateToLocalyticsFullTimestamp(periodStart),
+				dateToLocalyticsFullTimestamp(periodEnd) });
+		conditionsData.put("hour", hourPeriodDefinition);
 		queryData.put("conditions", conditionsData);
 
 		final JSONObject result = LocalyticsRestAPI.query(token, queryData);
 		if (result.has("results")) {
-			JSONArray results = result.getJSONArray("results");
+			final JSONArray results = result.getJSONArray("results");
 			int numberOfOccurences = 0;
 			for (int idx = 0; idx < results.length(); idx++) {
-				if (results.getJSONObject(idx).has(caninicalMetricsName)) {
-					numberOfOccurences += results.getJSONObject(idx).getInt(
-							caninicalMetricsName);
+				if (results.getJSONObject(idx).has(caninicalAttributeName)) {
+					if (attributeValue == null) {
+						numberOfOccurences += results.getJSONObject(idx)
+								.getInt("occurentces");
+					} else if (results.getJSONObject(idx)
+							.getString(caninicalAttributeName)
+							.equals(attributeValue)) {
+						return results.getJSONObject(idx).getInt("occurentces");
+					}
 				}
 			}
 			return numberOfOccurences;
 		} else {
-			throw new RuntimeException("No resusts were returned!");
+			throw new RuntimeException("No results were returned!");
 		}
 	}
 }

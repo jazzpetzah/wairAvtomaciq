@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.concurrent.Future;
 
 import javax.mail.Message;
-import javax.mail.MessagingException;
 
 import org.junit.Assert;
 
@@ -116,18 +115,27 @@ public class RegistrationPageSteps {
 	 * 
 	 * @step. ^I submit registration form$
 	 * 
-	 * @throws MessagingException
-	 * @throws InterruptedException
 	 * @throws Exception
 	 */
 	@When("^I submit registration form$")
-	public void ISubmitRegistration() throws MessagingException,
-			InterruptedException, Exception {
+	public void ISubmitRegistration() throws Exception {
+		PagesCollection.registrationPage.submitRegistration();
+	}
+
+	/**
+	 * Start monitoring thread for activation email. Please put this step BEFORE
+	 * you submit the registration form
+	 * 
+	 * @step. ^I start activation email monitoring$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I start activation email monitoring$")
+	public void IStartActivationEmailMonitoring() throws Exception {
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
 		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
 				expectedHeaders, BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
-		PagesCollection.registrationPage.submitRegistration();
 	}
 
 	/**
@@ -148,7 +156,8 @@ public class RegistrationPageSteps {
 	}
 
 	/**
-	 * Activate newly registered user on the backend
+	 * Activate newly registered user on the backend. Don't forget to call the
+	 * 'I start activation email monitoring' step before this one
 	 * 
 	 * @step. ^I verify registration email$
 	 * 
@@ -176,7 +185,8 @@ public class RegistrationPageSteps {
 	private static final int ACTIVATION_TIMEOUT = 5; // seconds
 
 	/**
-	 * Activates user using browser URL from activation email
+	 * Activates user using browser URL from activation email. Don't forget to
+	 * call the 'I start activation email monitoring' step before this one
 	 * 
 	 * @step. ^I activate user by URL$
 	 * 
