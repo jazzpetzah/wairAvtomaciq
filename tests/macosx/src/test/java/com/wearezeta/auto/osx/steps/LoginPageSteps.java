@@ -11,10 +11,14 @@ import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.osx.common.InputMethodEnum;
+import com.wearezeta.auto.osx.common.LoginBehaviourEnum;
 import com.wearezeta.auto.osx.pages.ContactListPage;
+import com.wearezeta.auto.osx.pages.LoginPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
 import com.wearezeta.auto.osx.pages.UserProfilePage;
+import com.wearezeta.auto.osx.pages.common.NoInternetConnectionPage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -62,116 +66,114 @@ public class LoginPageSteps {
 		log.debug("Starting to Sign in using login " + login + " and password "
 				+ password);
 
-		PagesCollection.loginPage.startSignIn();
+		PagesCollection.loginPage = PagesCollection.welcomePage.startSignIn();
 
-		PagesCollection.loginPage.setLogin(login);
-		PagesCollection.loginPage.setPassword(password);
+		PagesCollection.loginPage.typeEmail(login);
+		PagesCollection.loginPage.typePassword(password);
 
-		PagesCollection.loginPage.confirmSignIn();
+		PagesCollection.contactListPage = PagesCollection.loginPage.signIn();
 
 		Assert.assertTrue("Failed to login",
 				PagesCollection.loginPage.waitForLogin());
 
-		PagesCollection.contactListPage = new ContactListPage(
-				PagesCollection.loginPage.getDriver(),
-				PagesCollection.loginPage.getWait());
 		PagesCollection.userProfilePage = new UserProfilePage(
 				PagesCollection.loginPage.getDriver(),
 				PagesCollection.loginPage.getWait());
-	}
-
-	/**
-	 * Clicks on Sign In button on Welcome screen and opens Sign In screen
-	 * 
-	 * @step. I start Sign In
-	 */
-	@When("I start Sign In")
-	public void WhenIStartSignIn() {
-		PagesCollection.loginPage.startSignIn();
 	}
 
 	/**
 	 * Clicks on Sign In button and submits entered credentials
 	 * 
-	 * @step. I press Sign In button
+	 * @step. ^I press [Ss]ign [Ii]n button$
 	 * 
 	 * @throws Exception
 	 */
-	@When("I press Sign In button")
+	@When("^I press [Ss]ign [Ii]n button$")
 	public void WhenIPressSignInButton() throws Exception {
-		OSXPage page = PagesCollection.loginPage.confirmSignIn();
-		Assert.assertNotNull(
-				"After sign in button click Login page or Contact List page should appear. Page couldn't be null",
-				page);
+		ISignInExpectingResult(LoginBehaviourEnum.SUCCESSFUL.getResult());
+	}
+
+	@When("^I [Ss]ign [Ii]n expecting (sucessful login|error|[Nn]o [Ii]nternet message)$")
+	public void ISignInExpectingResult(String result) throws Exception {
+		OSXPage page = null;
+		for (LoginBehaviourEnum value : LoginBehaviourEnum.values()) {
+			if (value.getResult().toLowerCase().equals(result.toLowerCase())) {
+				page = PagesCollection.loginPage.signIn(value);
+			}
+		}
 		if (page instanceof ContactListPage) {
 			PagesCollection.contactListPage = (ContactListPage) page;
+			PagesCollection.userProfilePage = new UserProfilePage(
+					PagesCollection.contactListPage.getDriver(),
+					PagesCollection.contactListPage.getWait());
+		} else if (page instanceof NoInternetConnectionPage) {
+			PagesCollection.noInternetPage = (NoInternetConnectionPage) page;
+		} else if (page instanceof LoginPage) {
+			PagesCollection.loginPage = (LoginPage) page;
 		}
-		PagesCollection.userProfilePage = new UserProfilePage(
-				PagesCollection.loginPage.getDriver(),
-				PagesCollection.loginPage.getWait());
 	}
 
 	/**
 	 * Enters login in corresponding field on Sign In page
 	 * 
-	 * @step. I have entered login (.*)
+	 * @step. ^I type login (.*)$
 	 * 
 	 * @param login
 	 *            user login string
 	 */
-	@When("I have entered login (.*)")
-	public void WhenIHaveEnteredLogin(String login) {
+	@When("^I type login (.*)$")
+	public void ITypeLogin(String login) {
 		try {
 			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.loginPage.setLogin(login);
+		PagesCollection.loginPage.typeEmail(login);
 	}
 
 	/**
-	 * Enters password in corresponding field on Sign In page
+	 * Enters password in corresponding field on Sign In page (this step doesn't
+	 * support password with spaces in it, use full version: 'I type password
+	 * (.*) by sending keys' for password with spaces testing)
 	 * 
-	 * @step. I have entered password (.*)
+	 * @step. ^I type password (\\S*)$
 	 * 
 	 * @param password
 	 *            user password string
+	 *
 	 * @throws Exception
 	 */
-	@When("I have entered password (.*)")
-	public void WhenIHaveEnteredPassword(String password) throws Exception {
+	@When("^I type password (\\S*)$")
+	public void ITypePassword(String password) throws Exception {
+		ITypePasswordByMode(password, InputMethodEnum.SEND_KEYS.getMethod());
+	}
+
+	/**
+	 * Enters password in corresponding field on Sign In page using specified
+	 * input mode
+	 * 
+	 * @step. ^I type password (.*) by (sending keys|AppleScript)$
+	 * 
+	 * @param password
+	 *            user password string
+	 * @param mode
+	 *            set value mode ('sending keys' - sends text using
+	 *            WebElement.sendKeys() method | 'AppleScript')
+	 *
+	 * @throws Exception
+	 */
+	@When("^I type password (.*) by (sending keys|AppleScript)$")
+	public void ITypePasswordByMode(String password, String mode)
+			throws Exception {
 		try {
 			password = usrMgr.findUserByPasswordAlias(password).getPassword();
 		} catch (NoSuchUserException e) {
-			// Ignore silently
 		}
-		PagesCollection.loginPage.setPassword(password);
-	}
-
-	/**
-	 * Checks that Sign In screen is visible
-	 * 
-	 * @step. I see Sign In screen
-	 * 
-	 * @throws AssertionError
-	 *             if Sign In screen did not appear
-	 */
-	@Given("I see Sign In screen")
-	public void GivenISeeSignInScreen() {
-		Assert.assertNotNull(PagesCollection.loginPage.isVisible());
-	}
-
-	/**
-	 * Checks that user is not signed in client and resets backend settings
-	 * 
-	 * @step. I am signed out from ZClient
-	 * 
-	 * @throws Exception
-	 */
-	@Given("I am signed out from ZClient")
-	public void GivenIAmSignedOutFromZClient() throws Exception {
-		PagesCollection.loginPage.logoutIfNotSignInPage();
-		CommonOSXSteps.resetBackendSettingsIfOverwritten();
+		for (InputMethodEnum method : InputMethodEnum.values()) {
+			if (method.getMethod().toLowerCase().equals(mode.toLowerCase())) {
+				PagesCollection.loginPage.typePassword(password, method);
+			}
+		}
 	}
 
 	/**
@@ -185,32 +187,6 @@ public class LoginPageSteps {
 		Assert.assertTrue("Failed to logout",
 				PagesCollection.contactListPage.waitForSignOut());
 		Assert.assertTrue(PagesCollection.contactListPage.isSignOutFinished());
-	}
-
-	/**
-	 * Accepts terms of service and starts registration
-	 * 
-	 * @step. I start registration
-	 * 
-	 * @throws Exception
-	 */
-	@When("I start registration")
-	public void IStartRegistration() throws Exception {
-		PagesCollection.registrationPage = PagesCollection.loginPage
-				.startRegistration();
-	}
-
-	/**
-	 * Sets password on Sign In screen using Apple Script
-	 * 
-	 * @step. I input password (.*) using script
-	 * 
-	 * @param password
-	 *            user password string
-	 */
-	@When("I input password (.*) using script")
-	public void IInputPasswordUsingScript(String password) {
-		PagesCollection.loginPage.setPasswordUsingScript(password);
 	}
 
 	/**
@@ -242,22 +218,6 @@ public class LoginPageSteps {
 	public void IDoNotSeeWrongCredentialsMessage() {
 		Assert.assertFalse(PagesCollection.loginPage
 				.isWrongCredentialsMessageDisplayed());
-	}
-
-	/**
-	 * Checks that No internet connection error appears when internet is blocked
-	 * 
-	 * @step. ^I see internet connectivity error message$
-	 * @throws Exception
-	 * 
-	 * @throws AssertionError
-	 *             if there is no message about internet connection error
-	 */
-	@Then("^I see internet connectivity error message$")
-	public void ISeeInternetConnectivityErrorMessage() throws Exception {
-		Assert.assertTrue(PagesCollection.loginPage
-				.isNoInternetMessageAppears());
-		PagesCollection.loginPage.closeNoInternetDialog();
 	}
 
 	/**

@@ -248,13 +248,13 @@ Feature: People View
     And I create group chat with <Contact1> and <Contact2>
     And I open conversation with <Contact1>, <Contact2>
     And I see message YOU STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
-    When I am signing out
+    When I sign out
     And I Sign in using login <Contact1Email> and password <Password>
     And I see my name <Contact1> in Contact list
     Then I see Contact list with name <Name>, <Contact2>
     And I open conversation with <Name>, <Contact2>
     And I see message <Name> STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
-    And I am signing out
+    And I sign out
     And I Sign in using login <Contact2Email> and password <Password>
     And I see my name <Contact2> in Contact list
     Then I see Contact list with name <Name>, <Contact1>
@@ -285,7 +285,7 @@ Feature: People View
     And I go to archive
     And I open conversation with <ChatName>
     And I see message YOU LEFT in conversation
-    Then I am signing out
+    Then I sign out
     And I Sign in using login <Contact1Email> and password <Password>
     And I see my name <Contact1> in Contact list
     And I open conversation with <ChatName>
@@ -351,7 +351,7 @@ Feature: People View
     And I add user <Contact1> from search results
     And I open conversation with <ChatName>
     And I see message YOU ADDED <Contact1> in conversation
-    Then I am signing out
+    Then I sign out
     And I Sign in using login <Contact1> and password <Password>
     And I see my name <Contact1> in Contact list
     And I open conversation with <ChatName>

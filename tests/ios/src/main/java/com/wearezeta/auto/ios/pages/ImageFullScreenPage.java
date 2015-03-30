@@ -2,6 +2,8 @@ package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
 
+import javax.script.ScriptException;
+
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -12,6 +14,12 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class ImageFullScreenPage extends IOSPage {
+	
+	final String[] rotateLeftScript = new String[] {
+			 "tell application \"System Events\"",
+	         "tell application \"iOS Simulator\" to activate",
+	         "tell application \"System Events\" to keystroke (ASCII character 28) using {command down}",
+	         "end tell" };
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameImageFullScreenPage)
 	private WebElement imageFullScreen;
@@ -71,6 +79,10 @@ public class ImageFullScreenPage extends IOSPage {
 
 	public String getTimeStamp() {
 		return fullScreenTimeStamp.getText();
+	}
+	
+	public void rotateSimulatorLeft() throws ScriptException{
+		cmdVscript(rotateLeftScript);
 	}
 
 	@Override

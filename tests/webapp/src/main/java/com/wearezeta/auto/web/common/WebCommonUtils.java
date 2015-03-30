@@ -2,12 +2,15 @@ package com.wearezeta.auto.web.common;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.URL;
+import java.util.Set;
+
+import net.sourceforge.htmlunit.corejs.javascript.JavaScriptException;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -15,10 +18,12 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHttpEntityEnclosingRequest;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.pages.ConversationPage;
 
 @SuppressWarnings("deprecation")
 public class WebCommonUtils extends CommonUtils {
@@ -27,7 +32,7 @@ public class WebCommonUtils extends CommonUtils {
 			.getSimpleName());
 
 	// workaround for local executions in case sshpass is not in the PATH
-	private static final String SSHPASS_PATH = "";
+	private static final String SSHPASS_PREFIX = "/usr/local/bin/";
 
 	public static String getWebAppBrowserNameFromConfig(Class<?> c)
 			throws Exception {
@@ -44,6 +49,11 @@ public class WebCommonUtils extends CommonUtils {
 
 	public static int getHubPortFromConfig(Class<?> c) throws Exception {
 		return Integer.parseInt(getValueFromConfig(c, "hubPort"));
+	}
+
+	public static String getExtendedLoggingLevelInConfig(Class<?> c)
+			throws Exception {
+		return getValueFromConfig(c, "extendedLoggingLevel");
 	}
 
 	public static String getScriptsTemplatesPath() {
@@ -93,64 +103,56 @@ public class WebCommonUtils extends CommonUtils {
 		return ip;
 	}
 
-	public static void createTmpDirectoryOnNode(String filesDir)
+	public static void putFileOnExecutionNode(String node, String srcPath,
+			String dstPath) throws Exception {
+		String commandTemplate = SSHPASS_PREFIX
+				+ "sshpass -p %s "
+				+ "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
+				+ "%s %s@%s:%s";
+		String command = String.format(commandTemplate,
+				getJenkinsSuperUserPassword(CommonUtils.class), srcPath,
+				getJenkinsSuperUserLogin(CommonUtils.class), node, dstPath);
+		WebCommonUtils
+				.executeOsXCommand(new String[] { "bash", "-c", command });
+	}
+
+	public static void executeCommandOnNode(String node, String cmd)
 			throws Exception {
-		String commandTemplate = SSHPASS_PATH
+		String commandTemplate = SSHPASS_PREFIX
 				+ "sshpass -p %s "
 				+ "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
-				+ "%s@%s mkdir -p %s";
+				+ "%s@%s %s";
 		String command = String.format(commandTemplate,
 				getJenkinsSuperUserPassword(CommonUtils.class),
-				getJenkinsSuperUserLogin(CommonUtils.class),
-				WebAppExecutionContext.seleniumNodeIp, filesDir);
+				getJenkinsSuperUserLogin(CommonUtils.class), node, cmd);
 		WebCommonUtils
 				.executeOsXCommand(new String[] { "bash", "-c", command });
 	}
 
-	public static void putFilesOnExecutionNode(String node, String filesDir)
-			throws Exception {
-		createTmpDirectoryOnNode(filesDir);
-		String commandTemplate = SSHPASS_PATH
-				+ "sshpass -p %s "
-				+ "scp -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
-				+ "%s/* %s@%s:%s";
-
-		String command = String.format(commandTemplate,
-				getJenkinsSuperUserPassword(CommonUtils.class), filesDir,
-				getJenkinsSuperUserLogin(CommonUtils.class),
-				WebAppExecutionContext.seleniumNodeIp, filesDir);
-		WebCommonUtils
-				.executeOsXCommand(new String[] { "bash", "-c", command });
-	}
-
-	public static void executeAppleScriptFromFile(String script)
-			throws Exception {
-		String commandTemplate = SSHPASS_PATH
+	public static void executeAppleScriptFileOnNode(String node,
+			String scriptPath) throws Exception {
+		String commandTemplate = SSHPASS_PREFIX
 				+ "sshpass -p %s "
 				+ "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 				+ "%s@%s osascript %s";
 		String command = String.format(commandTemplate,
 				getJenkinsSuperUserPassword(CommonUtils.class),
-				getJenkinsSuperUserLogin(CommonUtils.class),
-				WebAppExecutionContext.seleniumNodeIp, script);
+				getJenkinsSuperUserLogin(CommonUtils.class), node, scriptPath);
 		if (WebCommonUtils.executeOsXCommand(new String[] { "bash", "-c",
 				command }) == 255) {
 			WebCommonUtils.executeOsXCommand(new String[] { "bash", "-c",
 					command });
 		}
-
 	}
 
-	public static void formatTextInFileAndSave(String srcFile, String dstFile,
+	private static void formatTextInFileAndSave(InputStream fis, String dstFile,
 			Object[] params) throws IOException {
 		String script = "";
 
-		FileInputStream fis = null;
 		InputStreamReader isr = null;
 		BufferedReader br = null;
 
 		try {
-			fis = new FileInputStream(srcFile);
 			isr = new InputStreamReader(fis);
 			br = new BufferedReader(isr);
 			String t;
@@ -177,19 +179,123 @@ public class WebCommonUtils extends CommonUtils {
 				br.close();
 			if (isr != null)
 				isr.close();
-			if (fis != null)
-				fis.close();
 		}
 	}
-	
-	public static String getOperaProfileRoot(String browserPlatform) throws Exception {
+
+	public static String getOperaProfileRoot(String browserPlatform)
+			throws Exception {
 		if (browserPlatform.toLowerCase().contains("win")) {
-			return String.format("C:\\Users\\%s\\AppData\\Roaming\\Opera Software\\Opera Stable\\", 
-					CommonUtils.getJenkinsSuperUserLogin(WebCommonUtils.class));
+			return String
+					.format("C:\\Users\\%s\\AppData\\Roaming\\Opera Software\\Opera Stable\\",
+							CommonUtils
+									.getJenkinsSuperUserLogin(WebCommonUtils.class));
 		} else {
 			// Should be Mac OS otherwise ;)
-			return String.format("/Users/%s/Library/Application Support/Opera Software/Opera Stable/", 
-					CommonUtils.getJenkinsSuperUserLogin(WebCommonUtils.class));
+			return String
+					.format("/Users/%s/Library/Application Support/Opera Software/Opera Stable/",
+							CommonUtils
+									.getJenkinsSuperUserLogin(WebCommonUtils.class));
 		}
+	}
+
+	public static boolean isElementFocused(RemoteWebDriver driver,
+			String cssLocator) {
+		final String isFocusedScript = "return $('" + cssLocator
+				+ "').is(':focus');";
+		return (Boolean) driver.executeScript(isFocusedScript);
+	}
+
+	public static void setFocusToElement(RemoteWebDriver driver,
+			String cssLocator) {
+		final String setFocusScript = "$('" + cssLocator + "').focus();";
+		driver.executeScript(setFocusScript);
+	}
+
+	private static Set<String> previousHandles = null;
+
+	/**
+	 * Opens a new tab for the given URL
+	 * 
+	 * http://stackoverflow.com/questions/6421988/webdriver-open-new-tab
+	 * 
+	 * @param url
+	 *            The URL to
+	 * @throws JavaScriptException
+	 *             If unable to open tab
+	 */
+	public static void openUrlInNewTab(RemoteWebDriver driver, String url) {
+		previousHandles = driver.getWindowHandles();
+		String script = "var d=document,a=d.createElement('a');a.target='_blank';a.href='%s';a.innerHTML='.';d.body.appendChild(a);return a";
+		Object element = driver.executeScript(String.format(script, url));
+		if (element instanceof WebElement) {
+			WebElement anchor = (WebElement) element;
+			anchor.click();
+			driver.executeScript(
+					"var a=arguments[0];a.parentNode.removeChild(a);", anchor);
+			Set<String> currentHandles = driver.getWindowHandles();
+			if (previousHandles.equals(currentHandles)) {
+				throw new JavaScriptException(element, "Unable to open tab", 1);
+			}
+			currentHandles.removeAll(previousHandles);
+			final String newTabHandle = currentHandles.iterator().next();
+			driver.switchTo().window(newTabHandle);
+		} else {
+			throw new JavaScriptException(element, "Unable to open tab", 1);
+		}
+	}
+
+	public static void switchToPreviousTab(RemoteWebDriver driver) {
+		Set<String> currentHandles = driver.getWindowHandles();
+		if (previousHandles.equals(currentHandles)) {
+			return;
+		}
+		currentHandles.retainAll(previousHandles);
+		final String oldTabHandle = currentHandles.iterator().next();
+		driver.switchTo().window(oldTabHandle);
+	}
+
+	private static final String TMP_ROOT = "/tmp";
+
+	/**
+	 * Workaround for https://code.google.com/p/selenium/issues/detail?id=4220
+	 * 
+	 * @param pictureName
+	 *            the path to the original picture to be uploaded into
+	 *            conversation
+	 * @throws Exception
+	 */
+	public static void sendPictureInSafari(String pictureName) throws Exception {
+		final ClassLoader classLoader = ConversationPage.class.getClassLoader();
+		final InputStream scriptStream = classLoader.getResourceAsStream(String
+				.format("%s/%s",
+						WebAppConstants.Scripts.RESOURCES_SCRIPTS_ROOT,
+						WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT));
+		final String srcScriptPath = String.format("%s/%s", TMP_ROOT,
+				WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT);
+		final File srcImage = new File(pictureName);
+		assert srcImage.exists() : "There's no image by path "
+				+ srcImage.getCanonicalPath() + " on your local file system";
+		final File dstImage = new File(String.format("%s/%s", TMP_ROOT,
+				srcImage.getName()));
+		try {
+			formatTextInFileAndSave(scriptStream, srcScriptPath, new String[] {
+					dstImage.getParent(), dstImage.getName() });
+		} finally {
+			if (scriptStream != null) {
+				scriptStream.close();
+			}
+		}
+		final String dstScriptPath = srcScriptPath;
+		try {
+			putFileOnExecutionNode(WebAppExecutionContext.seleniumNodeIp,
+					srcImage.getAbsolutePath(), dstImage.getAbsolutePath());
+			putFileOnExecutionNode(WebAppExecutionContext.seleniumNodeIp,
+					srcScriptPath, dstScriptPath);
+		} finally {
+			new File(srcScriptPath).delete();
+		}
+
+		executeAppleScriptFileOnNode(WebAppExecutionContext.seleniumNodeIp,
+				dstScriptPath);
 	}
 }

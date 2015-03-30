@@ -27,6 +27,11 @@
 		<!-- edge | staging | production -->
 		<backendType>staging</backendType>
 		<webappImagesPath>img/</webappImagesPath>
+		<!-- The levels in descending order are: SEVERE (highest value), WARNING, 
+			INFO, CONFIG, FINE, FINER, FINEST (lowest value). In addition there is a 
+			level OFF that can be used to turn off logging, and a level ALL that can 
+			be used to enable logging of all messages. -->
+		<extendedLoggingLevel>SEVERE</extendedLoggingLevel>
 	</properties>
 
 	<dependencies>

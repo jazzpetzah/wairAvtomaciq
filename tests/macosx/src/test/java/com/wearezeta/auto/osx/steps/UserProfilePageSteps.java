@@ -9,8 +9,8 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
-import com.wearezeta.auto.osx.pages.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
+import com.wearezeta.auto.osx.pages.common.ChoosePicturePage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;

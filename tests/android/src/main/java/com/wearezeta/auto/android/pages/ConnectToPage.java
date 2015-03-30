@@ -1,7 +1,5 @@
 package com.wearezeta.auto.android.pages;
 
-import java.util.List;
-
 import org.openqa.selenium.*;
 
 import com.wearezeta.auto.common.locators.ZetaHow;
@@ -22,14 +20,11 @@ public class ConnectToPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectRequestAccept")
 	private WebElement connectAcceptBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectButton")
-	private WebElement connectBtn;
-	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectRequestIgnore")
 	private WebElement connectIgnoreBtn;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idPaticipantsPendingLabel")
-	private List<WebElement> pendingText;
+	private WebElement pendingText;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idConnectionRequiesMessage")
 	private WebElement connectionRequestMessage;
@@ -97,8 +92,8 @@ public class ConnectToPage extends AndroidPage {
 		return connectIgnoreBtn.isDisplayed() && connectAcceptBtn.isDisplayed();
 	}
 
-	public boolean isPending() {
-		return pendingText.size() > 0;
+	public boolean isPending() throws NumberFormatException, Exception {
+		return isVisible(pendingText);
 	}
 
 	public void tapEditConnectionRequies() {
@@ -111,13 +106,8 @@ public class ConnectToPage extends AndroidPage {
 	}
 
 	public void typeConnectionRequies(String message) throws Exception {
+		refreshUITree();
 		connectionRequestMessage.sendKeys(message);
-		try {
-			hideKeyboard();
-			Thread.sleep(1000);
-		} catch (Exception ex) {
-
-		}
 	}
 
 	public ContactListPage pressConnectButton() throws Exception {

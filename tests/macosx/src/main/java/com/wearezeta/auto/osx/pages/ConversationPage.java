@@ -269,8 +269,15 @@ public class ConversationPage extends OSXPage {
 	public void scrollDownTillMediaBarAppears() throws Exception {
 		NSPoint mediaBarPosition = NSPoint.fromString(mediabarBarTitle
 				.getAttribute("AXPosition"));
-		NSPoint windowPosition = NSPoint.fromString(viewPager
+		NSPoint conversationPosition = NSPoint.fromString(conversationView
 				.getAttribute("AXPosition"));
+
+		NSPoint windowSize = NSPoint.fromString(viewPager
+				.getAttribute("AXSize"));
+		log.debug("Window size: " + windowSize);
+
+		log.debug("Window position: " + conversationPosition);
+		log.debug("Initial media bar position: " + mediaBarPosition);
 
 		// get scrollbar for conversation view
 		WebElement conversationDecrementSB = null;
@@ -278,7 +285,7 @@ public class ConversationPage extends OSXPage {
 		WebElement scrollArea = driver.findElement(By
 				.id(OSXLocators.idConversationScrollArea));
 
-		if (mediaBarPosition.y() < windowPosition.y()) {
+		if (mediaBarPosition.y() < conversationPosition.y()) {
 			WebElement scrollBar = scrollArea.findElement(By
 					.xpath("//AXScrollBar[1]"));
 			List<WebElement> scrollButtons = scrollBar.findElements(By
@@ -291,10 +298,12 @@ public class ConversationPage extends OSXPage {
 			}
 			long TIMEOUT_MINUTES = 1;
 			long startDate = new Date().getTime();
-			while (mediaBarPosition.y() < windowPosition.y()) {
+			while (mediaBarPosition.y() < conversationPosition.y()) {
 				conversationDecrementSB.click();
 				mediaBarPosition = NSPoint.fromString(mediabarBarTitle
 						.getAttribute("AXPosition"));
+				log.debug("Current media bar position: " + mediaBarPosition);
+				log.debug("Media play state: " + getSoundCloudButtonState());
 				long endDate = new Date().getTime();
 				if (endDate - startDate > TIMEOUT_MINUTES * 60 * 1000)
 					break;
@@ -384,9 +393,9 @@ public class ConversationPage extends OSXPage {
 	public boolean isMediaBarVisible() {
 		NSPoint mediaBarPosition = NSPoint.fromString(mediabarBarTitle
 				.getAttribute("AXPosition"));
-		NSPoint windowPosition = NSPoint.fromString(viewPager
+		NSPoint conversationPosition = NSPoint.fromString(conversationView
 				.getAttribute("AXPosition"));
-		if (mediaBarPosition.y() >= windowPosition.y())
+		if (mediaBarPosition.y() >= conversationPosition.y())
 			return true;
 		else
 			return false;

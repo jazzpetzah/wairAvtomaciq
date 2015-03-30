@@ -192,6 +192,19 @@ public class CommonAndroidSteps {
 	public void WhenITake1stScreenshot() throws IOException {
 		images.add(PagesCollection.loginPage.takeScreenshot());
 	}
+	
+	/**
+	 * Taps on the center of the screen
+	 * 
+	 * @step. ^I tap on center of screen$
+	 * 
+	 * @throws Throwable
+	 * 
+	 */
+	@When("^I tap on center of screen")
+	public void WhenITapOnCenterOfScreen() throws Throwable {
+		PagesCollection.dialogPage.tapOnCenterOfScreen();
+	}
 
 	/**
 	 * Compare that 1st and 2nd screenshots are not equal
@@ -203,7 +216,7 @@ public class CommonAndroidSteps {
 	@Then("^I compare 1st and 2nd screenshots and they are different$")
 	public void ThenICompare1st2ndScreenshotsAndTheyAreDifferent() {
 		double score = ImageUtil.getOverlapScore(images.get(0), images.get(1));
-		Assert.assertTrue(score < 0.5d);
+		Assert.assertTrue(score < 0.55d);
 		images.clear();
 	}
 
@@ -488,6 +501,28 @@ public class CommonAndroidSteps {
 			// Ignore silently
 		}
 		Assert.assertTrue(PagesCollection.commonAndroidPage.mailContains(email));
+	}
+	
+	/**
+	 * Rotate device to landscape
+	 * 
+	 * @step. ^I rotate UI to landscape$
+	 * 
+	 */
+	@When("^I rotate UI to landscape$")
+	public void WhenIRotateUILandscape() throws Exception {
+		PagesCollection.loginPage.rotateLandscape();   
+	}
+	
+	/**
+	 * Rotate device to portrait
+	 * 
+	 * @step. ^I rotate UI to portrait$
+	 * 
+	 */
+	@When("^I rotate UI to portrait$")
+	public void WhenIRotateUIPortrait() throws Exception {
+		PagesCollection.loginPage.rotatePortrait();   
 	}
 
 }

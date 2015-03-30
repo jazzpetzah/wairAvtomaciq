@@ -309,6 +309,7 @@
             }
             result = jsonProcessed;
         }
+        NSLog(@"Script execution failed with result: %@", result);
 		return [self respondWithJson:(NSDictionary*)result status:kAfMStatusCodeJavascriptError session: sessionId];
 	}
 }
@@ -1019,10 +1020,10 @@
 		[self respondWithJsonError:status session:sessionId];
 	}
 
-	id value = [element value];
+	id value = element.AXValue;
     if (value != nil && [value isKindOfClass:[NSString class]])
     {
-        [element setValue:@""];
+        [element setAXValue:@""];
     }
 
     // TODO: Add error handling

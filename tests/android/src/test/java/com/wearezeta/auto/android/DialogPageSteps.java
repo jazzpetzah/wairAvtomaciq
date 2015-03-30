@@ -140,6 +140,10 @@ public class DialogPageSteps {
 			break;
 		case "gallery":
 			PagesCollection.dialogPage.openGallery();
+			break;
+		case "image close":
+			PagesCollection.dialogPage.closeFullScreenImage();
+			break;
 		}
 	}
 
@@ -174,6 +178,19 @@ public class DialogPageSteps {
 	@Then("^I see new photo in the dialog$")
 	public void ThenISeeNewPhotoInTheDialog() throws Throwable {
 		Assert.assertTrue(PagesCollection.dialogPage.isImageExists());
+	}
+	
+	/**
+	 * Selects the last picture sent in a conversation view dialog
+	 * 
+	 * @step. ^I select last photo in dialog$
+	 * 
+	 * @throws Throwable
+	 * 
+	 */
+	@When("^I select last photo in dialog$")
+	public void WhenISelectLastPhotoInDialog() throws Throwable {
+		PagesCollection.dialogPage.clickLastImageFromDialog();
 	}
 
 	@Then("^I see (.*) added (.*) message on Dialog page$")
@@ -234,10 +251,8 @@ public class DialogPageSteps {
 			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
 		}
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertEquals("connected to",
+		Assert.assertEquals("connected to "+contact.toLowerCase(),
 				PagesCollection.dialogPage.getConnectRequestChatLabel());
-		Assert.assertEquals(contact.toLowerCase(),
-				PagesCollection.dialogPage.getConnectRequestChatUserName());
 	}
 
 	@Then("I see uploaded picture")

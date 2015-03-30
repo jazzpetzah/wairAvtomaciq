@@ -5,7 +5,7 @@ Feature: Conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
+    And I see my name in Contact list
     And I open conversation with <Contact>
     When I write random message
     And I send message
@@ -21,7 +21,7 @@ Feature: Conversation
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
+    And I see my name in Contact list
     And I open conversation with <ChatName>
     When I write random message
     And I send message
@@ -31,16 +31,16 @@ Feature: Conversation
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessageGroupChat |
 
-  @staging @id1545
+  @smoke @id1545
   Scenario Outline: Archive and unarchive conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
+    And I see my name in Contact list
     When I archive conversation <Contact>
     Then I do not see Contact list with name <Contact>
     When I open archive
-    And I open conversation with <Contact>
+    And I unarchive conversation <Contact>
     Then I see Contact list with name <Contact>
 
     Examples: 
@@ -52,7 +52,7 @@ Feature: Conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
+    And I see my name in Contact list
     And I open conversation with <Contact>
     And I send picture <PictureName> to single conversation
     Then I see sent picture <PictureName> in the conversation view
@@ -67,7 +67,7 @@ Feature: Conversation
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
+    And I see my name in Contact list
     And I open conversation with <ChatName>
     When I send picture <PictureName> to group conversation
     Then I see sent picture <PictureName> in the conversation view
@@ -76,13 +76,14 @@ Feature: Conversation
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendPictureGroupChat | userpicture_landscape.jpg |
 
-  @staging @id1918
+  @smoke @id1918
   Scenario Outline: Mute 1on1 conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
-    When I toggle mute for conversation <Contact>
+    And I see my name in Contact list
+    When I set muted state for conversation <Contact>
+    And I open self profile
     Then I see that conversation <Contact> is muted
 
     Examples: 
@@ -95,29 +96,27 @@ Feature: Conversation
     Given Myself is connected to <Contact>
     Given <Name> muted conversation with <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
+    And I see my name in Contact list
     And I see that conversation <Contact> is muted
-    When I toggle mute for conversation <Contact>
+    When I set unmuted state for conversation <Contact>
+    And I open self profile
     Then I see that conversation <Contact> is not muted
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id1706
+  @smoke @id1706
   Scenario Outline: Verify you cannot Ping several times in a row
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
+    And I see my name in Contact list
     And I open conversation with <Contact>
-	When I click ping button  
+	When I click ping button
 	Then I see ping message <PING>
-	And I wait for 2 seconds
-	When I click ping button  
+	When I click ping button
 	Then I see ping message <PING_AGAIN>
-	And I wait for 2 seconds
-	When I click ping button 
 	Then I see only one ping message
 
     Examples: 

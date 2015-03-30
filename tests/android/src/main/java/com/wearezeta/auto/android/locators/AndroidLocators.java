@@ -143,7 +143,7 @@ public final class AndroidLocators {
 				+ ":id/zb__connect_request__ignore_button";
 
 		public static final String idPaticipantsPendingLabel = LOCATORS_PACKAGE
-				+ ":id/ttv__participants__pending_label";
+				+ ":id/ttv__participants__left_label";
 
 		public static final String xpathConnectToHeader42 = "//android.widget.EditText[following-sibling::android.widget.TextView]";
 
@@ -244,6 +244,9 @@ public final class AndroidLocators {
 
 		public static final String idGalleryBtn = LOCATORS_PACKAGE
 				+ ":id/gtv__camera_control__pick_from_gallery";
+		
+		public static final String idCloseImageBtn = LOCATORS_PACKAGE
+				+ ":id/gtv__single_image_message__close";
 
 		public static final String idSearchHintClose = LOCATORS_PACKAGE
 				+ ":id/zb__search_hint__close_button";
@@ -275,6 +278,9 @@ public final class AndroidLocators {
 		public static final String idPlayPauseMedia = LOCATORS_PACKAGE
 				+ ":id/iv__media_play";
 
+		public static final String idAddParticipants = LOCATORS_PACKAGE
+				+ ":id/gtv__cursor_participants";
+		
 		public static final String idKnockMessage = LOCATORS_PACKAGE
 				+ ":id/ttv__row_conversation__knock_message";
 

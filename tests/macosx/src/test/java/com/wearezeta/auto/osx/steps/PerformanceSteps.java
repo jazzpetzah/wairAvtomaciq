@@ -8,10 +8,10 @@ import org.openqa.selenium.WebElement;
 import com.wearezeta.auto.common.PerformanceCommon;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.PerformanceCommon.PerformanceLoop;
-import com.wearezeta.auto.osx.pages.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
+import com.wearezeta.auto.osx.pages.common.ChoosePicturePage;
 
 import cucumber.api.java.en.When;
 
@@ -35,8 +35,8 @@ public class PerformanceSteps {
 	@When("^I start testing cycle for (\\d+) minutes$")
 	public void WhenIStartTestingCycleForMinutes(int timeout) throws Exception {
 		PagesCollection.contactListPage = new ContactListPage(
-				PagesCollection.loginPage.getDriver(),
-				PagesCollection.loginPage.getWait());
+				PagesCollection.mainMenuPage.getDriver(),
+				PagesCollection.mainMenuPage.getWait());
 
 		perfCommon.runPerformanceLoop(new PerformanceLoop() {
 			public void run() throws Exception {
@@ -112,7 +112,7 @@ public class PerformanceSteps {
 
 	public void minimizeClient() throws Exception {
 		PagesCollection.contactListPage.waitUntilMainWindowAppears();
-		PagesCollection.contactListPage.minimizeZClient();
+		PagesCollection.contactListPage.minimizeWindow();
 		perfCommon.getLogger().debug("Client minimized");
 	}
 

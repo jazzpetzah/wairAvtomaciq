@@ -23,9 +23,11 @@ import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.pages.LoginPage;
-import com.wearezeta.auto.osx.pages.MainMenuPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
+import com.wearezeta.auto.osx.pages.common.MainMenuPage;
+import com.wearezeta.auto.osx.pages.common.ProblemReportPage;
+import com.wearezeta.auto.osx.pages.welcome.WelcomePage;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -33,6 +35,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
 public class CommonOSXSteps {
+
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 
 	public static final Logger log = ZetaLogger.getLog(CommonOSXSteps.class
@@ -57,9 +60,9 @@ public class CommonOSXSteps {
 				.getBackendType(CommonOSXSteps.class))) {
 			log.debug("Backend setting were overwritten. Trying to restart app.");
 			PagesCollection.mainMenuPage.quitZClient();
-			OSXCommonUtils.setZClientBackend(CommonUtils
+			OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
 					.getBackendType(CommonOSXSteps.class));
-			PagesCollection.loginPage.startApp();
+			PagesCollection.mainMenuPage.startApp();
 		}
 	}
 
@@ -81,13 +84,18 @@ public class CommonOSXSteps {
 				.createDefaultExplicitWait(driver);
 
 		PagesCollection.mainMenuPage = new MainMenuPage(driver, wait);
+		PagesCollection.welcomePage = new WelcomePage(driver, wait);
 		PagesCollection.loginPage = new LoginPage(driver, wait);
-		ZetaFormatter.setDriver((AppiumDriver) PagesCollection.loginPage
+		PagesCollection.problemReportPage = new ProblemReportPage(driver, wait);
+
+		ZetaFormatter.setDriver((AppiumDriver) PagesCollection.welcomePage
 				.getDriver());
 		long endDate = new Date().getTime();
 		// saving time of startup for Sync Engine
 		startupTime = endDate - startDate;
-		PagesCollection.loginPage.sendProblemReportIfFound();
+
+		PagesCollection.welcomePage
+				.sendProblemReportIfAppears(PagesCollection.problemReportPage);
 	}
 
 	@Before("@performance")
@@ -102,8 +110,8 @@ public class CommonOSXSteps {
 		OSXCommonUtils.removeAllZClientSettingsFromDefaults();
 		OSXCommonUtils.deleteCacheFolder();
 
-		OSXCommonUtils.setZClientBackend(CommonUtils.getBackendType(this
-				.getClass()));
+		OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
+				.getBackendType(this.getClass()));
 
 		commonBefore();
 
@@ -287,6 +295,19 @@ public class CommonOSXSteps {
 		}
 		ContactSendsMessageToConversation(msgFromUserNameAlias, mediaLink,
 				dstUserNameAlias);
+	}
+
+	@When("^(.*) calls (.*)$")
+	public void UserCallsToConversation(String callerUserNameAlias,
+			String conversationNameAlias) throws Exception {
+		commonSteps.UserCallsToConversation(callerUserNameAlias,
+				conversationNameAlias);
+	}
+
+	@When("^(.*) dismisses call$")
+	public void UserCallsToConversation(String callerUserNameAlias)
+			throws Exception {
+		commonSteps.StopCurrentCall();
 	}
 
 	@After

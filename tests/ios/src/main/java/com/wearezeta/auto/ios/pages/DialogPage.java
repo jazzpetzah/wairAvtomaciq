@@ -41,6 +41,12 @@ public class DialogPage extends IOSPage {
 	public static final String PING_LABEL = "PINGED";
 	public static final String HOT_PING_LABEL = "PINGED AGAIN";
 	private static final long PING_ANIMATION_TIME = 3000;
+	
+	final String[] scriptArr = new String[] {
+			"property thisapp: \"iOS Simulator\"",
+			"tell application \"System Events\"", " tell process thisapp",
+			" click menu item \"Paste\" of menu \"Edit\" of menu bar 1",
+			" end tell", "end tell" };
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameMainWindow)
 	private WebElement dialogWindow;
@@ -142,7 +148,7 @@ public class DialogPage extends IOSPage {
 		return startedConversationMessage.getText();
 	}
 
-	public boolean isPingMessageVisible(String msg) throws Exception {
+	public boolean isMessageVisible(String msg) throws Exception {
 
 		return DriverUtils.isElementDisplayed(this.getDriver(), By.name(msg));
 	}
@@ -164,6 +170,12 @@ public class DialogPage extends IOSPage {
 	public void waitForYouAddedCellVisible() {
 		this.getWait().until(
 				ExpectedConditions.visibilityOf(youAddedCell.get(0)));
+	}
+	
+	public StartedCallPage clickOnCallButtonForContact(String contact) throws Exception {
+		WebElement el = driver.findElementByXPath(String.format(IOSLocators.xpathUserMessageEntry, contact));
+		el.findElement(By.className("UIAButton")).click();
+		return new StartedCallPage(getDriver(), getWait());
 	}
 
 	public void tapOnCursorInput() {
@@ -503,7 +515,7 @@ public class DialogPage extends IOSPage {
 
 	public void tapHoldTextInput() {
 		try {
-			cmdVscript();
+			cmdVscript(scriptArr);
 		} catch (ScriptException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -746,7 +758,7 @@ public class DialogPage extends IOSPage {
 		WebElement el = driver.findElement(By
 				.name(IOSLocators.nameConversationCursorInput));
 		if (isSimulator()) {
-			cmdVscript();
+			cmdVscript(scriptArr);
 			pasteStringToInput(el, text);
 		} else {
 			pasteStringToInput(el, text);

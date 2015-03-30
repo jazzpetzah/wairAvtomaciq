@@ -1,15 +1,23 @@
 package com.wearezeta.auto.web.steps;
 
+import java.util.logging.Level;
+
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.LoggingPreferences;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.LocalFileDetector;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.safari.SafariOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.google.common.io.Files;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.PerformanceCommon;
@@ -72,6 +80,34 @@ public class CommonWebAppSteps {
 		capabilities.setCapability("firefox_profile", profile);
 	}
 
+	private static void setCustomSafariProfile(DesiredCapabilities capabilities) {
+		SafariOptions options = new SafariOptions();
+		options.setUseCleanSession(true);
+		capabilities.setCapability(SafariOptions.CAPABILITY, options);
+	}
+
+	private static void setExtendedLoggingLevel(
+			DesiredCapabilities capabilities, String loggingLevelName) {
+		final LoggingPreferences logs = new LoggingPreferences();
+		// set it to SEVERE by default
+		Level level = Level.SEVERE;
+		try {
+			level = Level.parse(loggingLevelName);
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			// Just continue with the default logging level
+		}
+		logs.enable(LogType.BROWSER, level);
+		// logs.enable(LogType.CLIENT, Level.ALL);
+		// logs.enable(LogType.DRIVER, Level.ALL);
+		// logs.enable(LogType.PERFORMANCE, Level.ALL);
+		// logs.enable(LogType.PROFILER, Level.ALL);
+		// logs.enable(LogType.SERVER, Level.ALL);
+		capabilities.setCapability(CapabilityType.LOGGING_PREFS, logs);
+		log.debug("Browser logging level has been set to '" + level.getName()
+				+ "'");
+	}
+
 	private ZetaWebAppDriver resetWebAppDriver(String url) throws Exception {
 		final String browser = getBrowser();
 		final DesiredCapabilities capabilities;
@@ -81,7 +117,7 @@ public class CommonWebAppSteps {
 		case "chrome":
 			capabilities = DesiredCapabilities.chrome();
 			if (webPlatformName.toLowerCase().contains("opera")) {
-				// This is to fix Desktop Notifications alert appearance in
+				// This is to fix Desktop Notifications alerts appearance in
 				// Opera
 				setCustomOperaProfile(capabilities, webPlatformName);
 			}
@@ -94,6 +130,7 @@ public class CommonWebAppSteps {
 			break;
 		case "safari":
 			capabilities = DesiredCapabilities.safari();
+			setCustomSafariProfile(capabilities);
 			break;
 		case "ie":
 			capabilities = DesiredCapabilities.internetExplorer();
@@ -108,6 +145,12 @@ public class CommonWebAppSteps {
 			// Use undocumented grid property to match platforms
 			// https://groups.google.com/forum/#!topic/selenium-users/PRsEBcbpNlM
 			capabilities.setCapability("applicationName", webPlatformName);
+		}
+
+		if (!browser.equalsIgnoreCase("ie")) {
+			// Logging feature crashes IE }:@
+			setExtendedLoggingLevel(capabilities,
+					WebCommonUtils.getExtendedLoggingLevelInConfig(getClass()));
 		}
 
 		// This could useful for testing on your local machine running Opera
@@ -167,14 +210,12 @@ public class CommonWebAppSteps {
 						+ e.getMessage());
 				e.printStackTrace();
 			}
-			WebAppExecutionContext.temporaryScriptsLocation = Files
-					.createTempDir().getAbsolutePath();
 		}
 	}
 
 	/**
 	 * Creates specified number of users and sets user with specified name as
-	 * main user
+	 * main user. Avatar picture for Self user is set automatically
 	 * 
 	 * @step. ^There \\w+ (\\d+) user[s]* where (.*) is me$
 	 * 
@@ -192,6 +233,36 @@ public class CommonWebAppSteps {
 		IChangeUserAvatarPicture(myNameAlias, "default");
 	}
 
+	/**
+	 * Creates specified number of users and sets user with specified name as
+	 * main user. Avatar picture for Self user is NOT set automatically
+	 * 
+	 * @step. ^There \\w+ (\\d+) user[s]* where (.*) is me without avatar
+	 *        picture$
+	 * 
+	 * @param count
+	 *            number of users to create
+	 * @param myNameAlias
+	 *            user name or name alias to use as main user
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^There \\w+ (\\d+) user[s]* where (.*) is me without avatar picture$")
+	public void ThereAreNUsersWhereXIsMeWithoutAvatar(int count,
+			String myNameAlias) throws Exception {
+		commonSteps.ThereAreNUsersWhereXIsMe(count, myNameAlias);
+	}
+
+	/**
+	 * Set avatar picture for a particular user
+	 * 
+	 * @param userNameAlias
+	 *            user name/alias
+	 * @param path
+	 *            path to a picture on a local file system or 'default' to set
+	 *            the default picture
+	 * @throws Exception
+	 */
 	@When("^User (\\w+) change avatar picture to (.*)$")
 	public void IChangeUserAvatarPicture(String userNameAlias, String path)
 			throws Exception {
@@ -247,7 +318,8 @@ public class CommonWebAppSteps {
 	}
 
 	/**
-	 * Sets self user to be the current user
+	 * Sets self user to be the current user. Avatar picture for this user is
+	 * set automatically
 	 * 
 	 * @step. ^User (\\w+) is [Mm]e$
 	 * 
@@ -339,6 +411,14 @@ public class CommonWebAppSteps {
 				.MuteConversationWithUser(userToNameAlias, muteUserNameAlias);
 	}
 
+	private void writeBrowserLogsIntoMainLog(RemoteWebDriver driver) {
+		log.debug("BROWSER CONSOLE LOGS:");
+		LogEntries logEntries = driver.manage().logs().get(LogType.BROWSER);
+		for (LogEntry logEntry : logEntries) {
+			log.debug(logEntry.getMessage());
+		}
+	}
+
 	@After
 	public void tearDown() throws Exception {
 		if (PagesCollection.invitationCodePage != null) {
@@ -346,6 +426,11 @@ public class CommonWebAppSteps {
 		}
 
 		WebPage.clearPagesCollection();
+
+		if (!getBrowser().equalsIgnoreCase("ie")) {
+			writeBrowserLogsIntoMainLog(PlatformDrivers.getInstance()
+					.getDriver(CURRENT_PLATFORM));
+		}
 
 		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
 			PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);

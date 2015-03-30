@@ -26,9 +26,17 @@
 		<defaultEmail>smoketester.android@wearezeta.com</defaultEmail>
 		<androidVersion>44</androidVersion>
 		<androidLogs>false</androidLogs>
+		<resourceFilePath>/Project/</resourceFilePath>
+		<resultsPath>/results/</resultsPath>
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>3.3</version>
+		</dependency>
+
 		<dependency>
 			<groupId>com.google.android</groupId>
 			<artifactId>android</artifactId>

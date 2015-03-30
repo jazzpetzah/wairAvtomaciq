@@ -49,6 +49,17 @@ public class AndroidCommonUtils extends CommonUtils {
 		}
 	}
 	
+	public static void copyFileFromAndroid(String filePathOnSystem,  String filePathOnDevice) throws Exception {
+		if (getOsName().contains(OS_NAME_WINDOWS)) {
+			Runtime.getRuntime().exec(
+					"cmd /C adb pull " + filePathOnDevice + " "
+							+ filePathOnSystem);
+		} else {
+			executeOsXCommand(new String[] { "/bin/bash", "-c", ADB_PREFIX + "adb pull "
+					+ filePathOnDevice + " " + filePathOnSystem });
+		}
+	}
+	
 	public static void disableHints() throws Exception {
 		if (getOsName().contains(OS_NAME_WINDOWS)) {
 			Runtime.getRuntime().exec(
@@ -254,6 +265,16 @@ public class AndroidCommonUtils extends CommonUtils {
 		Boolean isWifiEnabled = isWifiEnabled();
 		
 		return new ClientDeviceInfo(os, osBuild, deviceName, gsmNetworkType, isWifiEnabled);
+	}
+	
+	public static String getRxLogResourceFilePathFromConfig(Class<?> c)
+			throws Exception {
+		return CommonUtils.getValueFromConfig(c, "resourceFilePath");
+	}
+	
+	public static String getRxLogResultsPathFromConfig(Class<?> c)
+			throws Exception {
+		return CommonUtils.getValueFromConfig(c, "resultsPath");
 	}
 	
 	public static String getAndroidClientInfoPathFromConfig(Class<?> c)

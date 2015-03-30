@@ -41,7 +41,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class DriverUtils {
 	public static final int DEFAULT_VISIBILITY_TIMEOUT = 20;
-	
+
 	private static final Logger log = ZetaLogger.getLog(DriverUtils.class
 			.getSimpleName());
 
@@ -77,10 +77,21 @@ public class DriverUtils {
 		return isElementDisplayed(driver, by, 1);
 	}
 
-	public static boolean isElementDisplayed(RemoteWebDriver driver, By by,
-			int timeoutSeconds) throws Exception {
+	public static boolean isElementDisplayed(RemoteWebDriver driver,
+			final By by, int timeoutSeconds) throws Exception {
 		if (waitUntilElementAppears(driver, by, timeoutSeconds)) {
-			return driver.findElement(by).isDisplayed();
+			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+					.withTimeout(timeoutSeconds / 2 + 1, TimeUnit.SECONDS)
+					.pollingEvery(1, TimeUnit.SECONDS);
+			try {
+				return wait.until(new Function<WebDriver, Boolean>() {
+					public Boolean apply(WebDriver driver) {
+						return driver.findElement(by).isDisplayed();
+					}
+				});
+			} catch (TimeoutException e) {
+				return false;
+			}
 		} else {
 			return false;
 		}
@@ -364,6 +375,40 @@ public class DriverUtils {
 		}
 	}
 
+	public static final int DEFAULT_PERCENTAGE = 50;
+	public static final int DEFAULT_TIME = 500; //milliseconds
+	public static final int DEFAULT_FINGERS = 1;
+
+	public static void genericTap(AppiumDriver driver) {
+		genericTap(driver, DEFAULT_TIME, DEFAULT_FINGERS, DEFAULT_PERCENTAGE,
+				DEFAULT_PERCENTAGE);
+	}
+
+	public static void genericTap(AppiumDriver driver, int percentX,
+			int percentY) {
+		genericTap(driver, DEFAULT_TIME, DEFAULT_FINGERS, percentX, percentY);
+	}
+
+	public static void genericTap(AppiumDriver driver, int time, int percentX,
+			int percentY) {
+		genericTap(driver, time, DEFAULT_FINGERS, percentX, percentY);
+	}
+
+	public static void genericTap(AppiumDriver driver, int time, int fingers,
+			int percentX, int percentY) {
+		final Dimension screenSize = driver.manage().window().getSize();
+		final int xCoords = (int) Math
+				.round(screenSize.width * (percentX / 100.0));
+		final int yCoords = (int) Math.round(screenSize.height
+				* (percentY / 100.0));
+		try {
+			driver.tap(fingers, xCoords, yCoords, time);
+		} catch (Exception ex) {
+			// ignore;
+		}
+
+	}
+
 	public static final int SWIPE_X_DEFAULT_PERCENTAGE_START = 10;
 	public static final int SWIPE_X_DEFAULT_PERCENTAGE_END = 90;
 	public static final int SWIPE_Y_DEFAULT_PERCENTAGE_START = 10;
@@ -450,23 +495,22 @@ public class DriverUtils {
 	}
 
 	public static void mobileTapByCoordinates(AppiumDriver driver,
-			WebElement element) {
+			WebElement element, int offsetX, int offsetY) {
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
 
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		HashMap<String, Double> tapObject = new HashMap<String, Double>();
-		tapObject
-				.put("x",
-						(double) (coords.x + elementSize.width - elementSize.width / 2)); // in
-																							// pixels
-																							// from
-																							// left
-		tapObject.put("y", (double) (coords.y + elementSize.height - 20));// in
-																			// pixels
-																			// from
-																			// top
+		double x = (double) ((coords.x + offsetX + elementSize.width) - elementSize.width / 2);
+		tapObject.put("x", x);
+		double y = (double) ((coords.y + offsetY + elementSize.height) - elementSize.height / 2);
+		tapObject.put("y", y);
 		js.executeScript("mobile: tap", tapObject);
+	}
+
+	public static void mobileTapByCoordinates(AppiumDriver driver,
+			WebElement element) {
+		mobileTapByCoordinates(driver, element, 0, 0);
 	}
 
 	public static void androidLongClick(AppiumDriver driver, WebElement element) {
@@ -614,5 +658,9 @@ public class DriverUtils {
 			WebElement element) {
 		Point coords = element.getLocation();
 		driver.tap(1, coords.x - (coords.x / 2 + coords.x / 8), coords.y, 1);
+	}
+
+	public static void resetApp(AppiumDriver driver) {
+		driver.resetApp();
 	}
 }

@@ -67,10 +67,16 @@ public class DialogPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogImages")
 	private WebElement image;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogImages")
+	private List<WebElement> imageList;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConnectRequestDialog")
 	private WebElement connectRequestDialog;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idAddParticipants")
+	private WebElement addParticipant;
+	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMessage")
 	private WebElement conversationMessage;
 
@@ -97,6 +103,9 @@ public class DialogPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idSearchHintClose")
 	private WebElement closeHintBtn;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idCloseImageBtn")
+	private WebElement closeImageBtn;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idPlayPauseMedia")
 	private WebElement playPauseBtn;
@@ -138,12 +147,17 @@ public class DialogPage extends AndroidPage {
 	public void tapOnCursorFrame() {
 		cursurFrame.click();
 	}
+	
+	public void tapOnCenterOfScreen() {
+		DriverUtils.genericTap(this.getDriver());
+	}
 
 	public void multiTapOnCursorInput() throws InterruptedException {
 		DriverUtils.androidMultiTap(this.getDriver(), cursorInput, 2, 0.2);
 	}
 
 	public void SwipeOnCursorInput() {
+		getWait().until(ExpectedConditions.elementToBeClickable(cursorInput));
 		DriverUtils.swipeRight(this.getDriver(), cursorInput, 1000);
 	}
 
@@ -168,9 +182,13 @@ public class DialogPage extends AndroidPage {
 		// DriverUtils.mobileTapByCoordinates(driver, backgroundOverlay);
 		this.getDriver().hideKeyboard();
 	}
-
+	
 	public String getLastMessageFromDialog() {
 		return messagesList.get(messagesList.size() - 1).getText();
+	}
+
+	public void clickLastImageFromDialog() {
+		imageList.get(imageList.size() - 1).click();
 	}
 
 	@Override
@@ -260,9 +278,19 @@ public class DialogPage extends AndroidPage {
 		return knockIcon.isDisplayed();
 	}
 
-	public String getConnectRequestChatLabel() {
+	public String getConnectRequestChatLabel() throws Exception {
+		if (isConnectRequestChatLabelVisible()) {
+			return connectRequestChatLabel.getText().toLowerCase().trim();
+		} else {
+			return "CHAT HEAD NOT FOUND";
+		}
+	}
+
+	public boolean isConnectRequestChatLabelVisible() throws Exception {
 		refreshUITree();
-		return connectRequestChatLabel.getText().toLowerCase().trim();
+		this.getWait().until(
+				ExpectedConditions.visibilityOf(connectRequestChatLabel));
+		return isVisible(connectRequestChatLabel);
 	}
 
 	public String getConnectRequestChatUserName() {
@@ -293,15 +321,30 @@ public class DialogPage extends AndroidPage {
 	public void openGallery() {
 		refreshUITree();
 		galleryBtn.click();
-
+	}
+	
+	public void closeFullScreenImage() {
+		refreshUITree();
+		closeImageBtn.click();
 	}
 
 	public void sendFrontCameraImage() throws Exception {
-		SwipeOnCursorInput();
-		tapAddPictureBtn();
-		changeCamera();
-		Thread.sleep(1000);
-		takePhoto();
+		if (isVisible(addParticipant)) {
+			cursorInput.click();
+			navigateBack();
+			SwipeOnCursorInput();
+			tapAddPictureBtn();
+			changeCamera();
+			Thread.sleep(1000);
+			takePhoto();
+		} else {
+			cursurFrame.click();
+			Thread.sleep(500);
+			SwipeOnCursorInput();
+			tapAddPictureBtn();
+			changeCamera();
+			takePhoto();
+		}
 		Thread.sleep(1000);
 		confirm();
 	}
@@ -504,9 +547,11 @@ public class DialogPage extends AndroidPage {
 		playPauseBtn.click();
 	}
 
-	public void tapDialogPageBottomLinearLayout() {
+	public void tapDialogPageBottomLinearLayout() throws NumberFormatException, Exception {
 		refreshUITree();
-		dialogPageBottomLinearLayout.click();
+		if(!isVisible(addParticipant)) {
+			dialogPageBottomLinearLayout.click();
+		}
 	}
 
 	public double checkMediaBarControlIcon(String label) throws Exception {

@@ -7,6 +7,7 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.CameraRollPage;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.IOSPage;
@@ -193,6 +194,66 @@ public class PersonalInfoPageSteps {
 	@When("I verify that all is the default selected value")
 	public void IVerifyAllIsDefaultValue() {
 		PagesCollection.personalInfoPage.isDefaultSoundValOne();
+	}
+	
+	/**
+	 * I change name in textfield
+	 * 
+	 * @step. ^I change name (.*) to (.*)$
+	 * 
+	 * @param name
+	 *            new username in textfield
+	 * 
+	 * @throws AssertionError 
+	 *  			  no such user exists
+	 * 
+	 */
+	@When("^I change name (.*) to (.*)$")
+	public void IChangeNameTo(String name, String newName) throws Throwable {
+		try{
+			name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+		PagesCollection.personalInfoPage.changeName(newName);
+		usrMgr.getSelfUser().setName(newName);
+	}
+	
+	/**
+	 * Verifies name in text field is changed
+	 * 
+	 * @step. ^I see my new name (.*)$
+	 * 
+	 * @param name
+	 *            new username in textfield
+	 * 
+	 * @throws AssertionError 
+	 *  			  no such user exists
+	 * 
+	 */
+	@Then("^I see my new name (.*)$")
+	public void ISeeMyNewName(String name) throws Throwable {
+		Assert.assertTrue(name.equals(PagesCollection.personalInfoPage
+				.getUserNameValue()));
+	}
+	
+	/**
+	 * It clicks the Help button in the settings option menu
+	 * @step. ^I click on Help button from the options menu$
+	 */
+	@When("^I click on Help button from the options menu$")
+	public void IClickOnHelpButtonFromTheOptionsMenu(){
+		PagesCollection.personalInfoPage.clickOnHelpButton();
+	}
+
+	/**
+	 * Verifies that it sees the Support web page
+	 * @step. ^I see Support web page$
+	 */
+	@Then("^I see Support web page$")
+	public void ISeeSupportWebPage(){
+		Assert.assertTrue(PagesCollection.personalInfoPage
+				.isSupportWebPageVisible());
 	}
 
 }

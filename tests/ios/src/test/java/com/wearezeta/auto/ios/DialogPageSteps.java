@@ -47,12 +47,12 @@ public class DialogPageSteps {
 	public String pingId;
 	private int beforeNumberOfImages = 0;
 	final String sendInviteMailContent = "I’m on Wire. Search for %s";
+	final String automationMessage = "iPhone has stupid spell checker";
 
 	@When("^I see dialog page$")
 	public void WhenISeeDialogPage() throws Exception {
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.iOSPage;
 		PagesCollection.dialogPage.waitForCursorInputVisible();
-		// PagesCollection.dialogPage.waitForYouAddedCellVisible();
 	}
 
 	@When("I tap on dialog page")
@@ -72,7 +72,8 @@ public class DialogPageSteps {
 
 	@When("^I type the message$")
 	public void WhenITypeTheMessage() throws Throwable {
-		message = CommonUtils.generateGUID().replace('-', 'x');
+		//message = CommonUtils.generateGUID().replace('-', 'x');
+		message = automationMessage;
 		PagesCollection.dialogPage.sendStringToInput(message);
 	}
 
@@ -96,7 +97,7 @@ public class DialogPageSteps {
 		String pingmessage = IOSLocators.nameYouPingedMessage;
 
 		Assert.assertTrue(PagesCollection.dialogPage
-				.isPingMessageVisible(pingmessage));
+				.isMessageVisible(pingmessage));
 	}
 
 	@Then("^I see You Pinged Again message in the dialog$")
@@ -104,7 +105,7 @@ public class DialogPageSteps {
 		String pingagainmessage = IOSLocators.nameYouPingedAgainMessage;
 
 		Assert.assertTrue(PagesCollection.dialogPage
-				.isPingMessageVisible(pingagainmessage));
+				.isMessageVisible(pingagainmessage));
 	}
 
 	@Then("^I see User (.*) Pinged message in the conversation$")
@@ -113,10 +114,10 @@ public class DialogPageSteps {
 		String expectedPingMessage = username.toUpperCase() + " PINGED";
 		if (PagesCollection.dialogPage != null) {
 			Assert.assertTrue(PagesCollection.dialogPage
-					.isPingMessageVisible(expectedPingMessage));
+					.isMessageVisible(expectedPingMessage));
 		} else {
 			Assert.assertTrue(PagesCollection.groupChatPage
-					.isPingMessageVisible(expectedPingMessage));
+					.isMessageVisible(expectedPingMessage));
 		}
 	}
 
@@ -126,16 +127,17 @@ public class DialogPageSteps {
 		String expectedPingMessage = username.toUpperCase() + " PINGED AGAIN";
 		if (PagesCollection.dialogPage != null) {
 			Assert.assertTrue(PagesCollection.dialogPage
-					.isPingMessageVisible(expectedPingMessage));
+					.isMessageVisible(expectedPingMessage));
 		} else {
 			Assert.assertTrue(PagesCollection.groupChatPage
-					.isPingMessageVisible(expectedPingMessage));
+					.isMessageVisible(expectedPingMessage));
 		}
 	}
 
 	@When("^I type the message and send it$")
 	public void ITypeTheMessageAndSendIt() throws Throwable {
-		message = CommonUtils.generateGUID().replace('-', 'x');
+		//message = CommonUtils.generateGUID().replace('-', 'x');
+		message = automationMessage;
 		PagesCollection.dialogPage.sendStringToInput(message + "\n");
 	}
 
@@ -500,17 +502,14 @@ public class DialogPageSteps {
 
 	@When("I input message with leading empty spaces")
 	public void IInpuMessageWithLeadingEmptySpace() throws Throwable {
-		String randomMessage = CommonUtils.generateRandomString(10)
-				.toLowerCase();
-		message = onlySpacesMessage + randomMessage;
+		message = onlySpacesMessage + automationMessage;
 		PagesCollection.dialogPage.sendStringToInput(message);
-		message = randomMessage;
+		message = automationMessage;
 	}
 
 	@When("I input message with trailing emtpy spaces")
 	public void IInputMessageWithTrailingEmptySpace() throws Throwable {
-		message = CommonUtils.generateRandomString(10).toLowerCase() + "."
-				+ onlySpacesMessage;
+		message = automationMessage + "." + onlySpacesMessage;
 		PagesCollection.dialogPage.sendStringToInput(message);
 	}
 
@@ -645,5 +644,35 @@ public class DialogPageSteps {
 		Assert.assertTrue("Mail Invite content is not shown in lastMessage",
 				messageContainsContent);
 	}
-
+	
+	/**
+	 * Check that missed call UI is visible in dialog
+	 * @step. ^I see missed call from contact (.*)$
+	 * @param contact
+	 * 		User name who called
+	 * @throws Exception
+	 */
+	@When("^I see missed call from contact (.*)$")
+	public void ISeeMissedCall(String contact) throws Exception {
+		String username = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		String expectedCallMessage = username.toUpperCase() + " CALLED";
+		if (PagesCollection.dialogPage != null) {
+			Assert.assertTrue(PagesCollection.dialogPage
+					.isMessageVisible(expectedCallMessage));
+		}
+	}
+	
+	/**
+	 * Start a call by clicking missed call button in dialog
+	 * @step. ^I click missed call button to call contact (.*)$
+	 * @param contact
+	 * 		User name who called
+	 * @throws Exception
+	 */
+	@When("^I click missed call button to call contact (.*)$")
+	public void IClickMissedCallButton(String contact) throws Exception {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		PagesCollection.callPage = PagesCollection.dialogPage
+					.clickOnCallButtonForContact(contact.toUpperCase());
+	}
 }

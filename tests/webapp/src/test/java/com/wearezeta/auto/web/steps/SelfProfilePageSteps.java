@@ -2,6 +2,7 @@ package com.wearezeta.auto.web.steps;
 
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
@@ -71,7 +72,8 @@ public class SelfProfilePageSteps {
 	@And("I see user name on self profile page (.*)")
 	public void ISeeUserNameOnSelfProfilePage(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		boolean nameCorrect = PagesCollection.selfProfilePage.checkNameInSelfProfile(name);
+		boolean nameCorrect = PagesCollection.selfProfilePage
+				.checkNameInSelfProfile(name);
 		Assert.assertTrue(nameCorrect);
 	}
 
@@ -101,14 +103,51 @@ public class SelfProfilePageSteps {
 	/**
 	 * Set new username on self profile page
 	 * 
-	 * @step. I change username to (.*)
+	 * @step. ^I change username to (.*)
 	 * 
 	 * @param name
 	 *            new username string
 	 */
-	@And("I change username to (.*)")
+	@And("^I change username to (.*)")
 	public void IChangeUserNameTo(String name) {
 		PagesCollection.selfProfilePage.setUserName(name);
 		usrMgr.getSelfUser().setName(name);
 	}
+
+	/**
+	 * Set accent color on self profile page
+	 * 
+	 * @step. ^I set my accent color to (\\w+)$
+	 * 
+	 * @param colorName
+	 *            one of these colors: StrongBlue, StrongLimeGreen,
+	 *            BrightYellow, VividRed, BrightOrange, SoftPink, Violet
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I set my accent color to (\\w+)$")
+	public void ISetMyAccentColorTo(String colorName) throws Exception {
+		PagesCollection.selfProfilePage.selectAccentColor(colorName);
+	}
+
+	/*
+	 * Verify my accent color in color picker is equal to expected color
+	 * 
+	 * @step. ^I verify my accent color in color picker is set to (\\w+) color$
+	 * 
+	 * @param colorName one of these colors: StrongBlue, StrongLimeGreen,
+	 * BrightYellow, VividRed, BrightOrange, SoftPink, Violet
+	 * 
+	 * @throws Exception
+	 */
+
+	@Then("^I verify my accent color in color picker is set to (\\w+) color$")
+	public void IVerifyMyAccentColor(String colorName) {
+		final int expectedColorId = AccentColor.getByName(colorName).getId();
+		final int actualColorId = PagesCollection.selfProfilePage
+				.getCurrentAccentColorId();
+		Assert.assertTrue("my actual accent color is not set",
+				actualColorId == expectedColorId);
+	}
+
 }

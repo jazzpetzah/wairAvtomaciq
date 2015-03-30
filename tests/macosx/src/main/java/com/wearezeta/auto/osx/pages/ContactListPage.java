@@ -28,15 +28,13 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
+import com.wearezeta.auto.osx.pages.common.ProblemReportPage;
 import com.wearezeta.auto.osx.util.NSPoint;
 
-public class ContactListPage extends OSXPage {
+public class ContactListPage extends MainWirePage {
 
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
 			.getSimpleName());
-
-	@FindBy(how = How.XPATH, using = OSXLocators.xpathMainWindow)
-	private WebElement mainWindow;
 
 	@FindBy(how = How.ID, using = OSXLocators.idAcceptConnectionRequestButton)
 	private WebElement acceptInvitationButton;
@@ -53,17 +51,16 @@ public class ContactListPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.idShareContactsLaterButton)
 	private WebElement shareContactsLaterButton;
 
-	@FindBy(how = How.ID, using = OSXLocators.idMainWindowMinimizeButton)
-	private WebElement minimizeWindowButton;
-
-	@FindBy(how = How.ID, using = OSXLocators.idMainWindowCloseButton)
-	private WebElement closeWindowButton;
-
 	public static HashMap<String, Boolean> shareContactsProcessedUsers = new HashMap<String, Boolean>();
 
 	public ContactListPage(ZetaOSXDriver driver, WebDriverWait wait)
 			throws Exception {
 		super(driver, wait);
+	}
+
+	public boolean isVisible() throws Exception {
+		return DriverUtils.waitUntilElementAppears(driver,
+				By.xpath(OSXLocators.xpathMainWindow));
 	}
 
 	public PeoplePickerPage openPeoplePicker() throws Exception {
@@ -74,10 +71,6 @@ public class ContactListPage extends OSXPage {
 	public boolean waitUntilMainWindowAppears() throws Exception {
 		return DriverUtils.waitUntilElementAppears(driver,
 				By.xpath(OSXLocators.xpathMainWindow));
-	}
-
-	public void minimizeZClient() {
-		minimizeWindowButton.click();
 	}
 
 	public void restoreZClient() throws InterruptedException, ScriptException,
@@ -113,6 +106,8 @@ public class ContactListPage extends OSXPage {
 					return true;
 				}
 			}
+			log.debug("Can't find correct contact list entry. Page source: "
+					+ driver.getPageSource());
 		} else {
 			String xpath = String.format(
 					OSXLocators.xpathFormatContactEntryWithName, name);
@@ -311,6 +306,9 @@ public class ContactListPage extends OSXPage {
 
 		NSPoint userPosition = NSPoint.fromString(userContact
 				.getAttribute("AXPosition"));
+		if (conversation.isDisplayed()) {
+			return;
+		}
 		if (userPosition.y() > latestPoint.y()
 				|| userPosition.y() < mainPosition.y()) {
 			WebElement scrollBar = scrollArea.findElement(By
@@ -357,7 +355,7 @@ public class ContactListPage extends OSXPage {
 		}
 
 		Actions builder = new Actions(driver);
-		Action moveMouseToContact = builder.moveToElement(mainWindow)
+		Action moveMouseToContact = builder.moveToElement(window)
 				.moveToElement(getContactWithName(contact)).build();
 		moveMouseToContact.perform();
 
@@ -398,5 +396,21 @@ public class ContactListPage extends OSXPage {
 
 	public void showArchivedConversations() {
 		showArchivedButton.click();
+	}
+
+	public PeoplePickerPage isHiddenByPeoplePicker() throws Exception {
+		if (DriverUtils.waitUntilElementAppears(driver,
+				By.id(OSXLocators.idShareContactsLaterButton), 3)) {
+			return new PeoplePickerPage(this.getDriver(), this.getWait());
+		} else {
+			return null;
+		}
+	}
+
+	public void sendProblemReportIfAppears(ProblemReportPage reportPage)
+			throws Exception {
+		if (!isVisible()) {
+			reportPage.sendReportIfAppears();
+		}
 	}
 }

@@ -10,6 +10,7 @@ import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ContactListPageSteps {
@@ -22,17 +23,22 @@ public class ContactListPageSteps {
 	/**
 	 * Checks that we can see signed in user in Contact List
 	 * 
-	 * @step. ^I see my name (.*) in Contact list$
-	 * 
-	 * @param name
-	 *            user name string
+	 * @step. ^I see my name in Contact list$
 	 * 
 	 * @throws AssertionError
-	 *             if user name does not appear in Contact List
+	 *             if self user name does not appear at the top of Contact List
 	 */
-	@Given("^I see my name (.*) in Contact list$")
-	public void ISeeMyNameInContactList(String name) throws Exception {
-		GivenISeeContactListWithName(name);
+	@Given("^I see my name in Contact list$")
+	public void ISeeMyNameInContactList() throws Exception {
+		PagesCollection.peoplePickerPage = PagesCollection.contactListPage
+				.isHiddenByPeoplePicker();
+		if (PagesCollection.peoplePickerPage != null) {
+			PagesCollection.peoplePickerPage.closeSearch();
+		}
+		Assert.assertTrue("No contact list loaded.",
+				PagesCollection.contactListPage.waitForContactListVisible());
+		Assert.assertTrue(PagesCollection.contactListPage
+				.isSelfNameEntryExist());
 	}
 
 	/**
@@ -57,41 +63,49 @@ public class ContactListPageSteps {
 		log.debug("Looking for contact with name " + name);
 		Assert.assertTrue("No contact list loaded.",
 				PagesCollection.contactListPage.waitForContactListVisible());
-		if (usrMgr.isSelfUserSet()
-				&& usrMgr.getSelfUser().getName().equals(name)) {
-			Assert.assertTrue(PagesCollection.contactListPage.getSelfName()
-					.equals(name));
-		} else {
-			boolean result = false;
-			for (int i = 0; i < 5; i++) {
-				result = PagesCollection.contactListPage
-						.isContactWithNameExists(name);
-				if (result)
-					break;
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-				}
+		for (int i = 0; i < 5; i++) {
+			if (PagesCollection.contactListPage
+					.isConvoListEntryWithNameExist(name)) {
+				return;
 			}
-			Assert.assertTrue(result);
+			Thread.sleep(1000);
 		}
+		throw new AssertionError("Conversation list entry '" + name
+				+ "' is not visible after timeout expired");
 	}
 
 	/**
 	 * Opens conversation by choosing it from Contact List
 	 * 
-	 * @step. I open conversation with (.*)
+	 * @step. ^I open conversation with (.*)
 	 * 
 	 * @param contact
 	 *            conversation name string
 	 * 
 	 * @throws Exception
 	 */
-	@Given("I open conversation with (.*)")
+	@Given("^I open conversation with (.*)")
 	public void GivenIOpenConversationWith(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		PagesCollection.conversationPage = PagesCollection.contactListPage
 				.openConversation(contact);
+	}
+
+	/**
+	 * Unarchives conversation 'name'
+	 * 
+	 * @step. I unarchive conversation with (.*)
+	 * 
+	 * @param name
+	 *            conversation name string
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I unarchive conversation (.*)")
+	public void GivenIUnarchiveConversation(String name) throws Exception {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		PagesCollection.conversationPage = PagesCollection.contactListPage
+				.unarchiveConversation(name);
 	}
 
 	/**
@@ -120,8 +134,7 @@ public class ContactListPageSteps {
 	@When("^I archive conversation (.*)$")
 	public void IClickArchiveButton(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		PagesCollection.contactListPage.clickActionsButtonForContact(contact);
-		Thread.sleep(1000);
+		PagesCollection.contactListPage.clickOptionsButtonForContact(contact);
 		PagesCollection.contactListPage
 				.clickArchiveConversationForContact(contact);
 	}
@@ -153,7 +166,7 @@ public class ContactListPageSteps {
 	public void IDoNotSeeContactListWithName(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		Assert.assertTrue(PagesCollection.contactListPage
-				.contactWithNameNotVisible(name));
+				.isConvoListEntryNotVisible(name));
 	}
 
 	/**
@@ -165,7 +178,9 @@ public class ContactListPageSteps {
 	 */
 	@When("^I see connection request$")
 	public void ISeeConnectInvitation() throws Exception {
-		GivenISeeContactListWithName(WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING);
+		Assert.assertTrue(PagesCollection.contactListPage
+				.getIncomingPendingItemText().equals(
+						WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING));
 	}
 
 	/**
@@ -178,7 +193,7 @@ public class ContactListPageSteps {
 	@Given("^I open connection requests list$")
 	public void IOpenConnectionRequestsList() throws Exception {
 		PagesCollection.pendingConnectionsPage = PagesCollection.contactListPage
-				.openConnectionRequestsList(WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING);
+				.openConnectionRequestsList();
 
 	}
 
@@ -196,21 +211,38 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Toggle mute button for conversation by choosing it from Contact List
+	 * Silence the particular conversation from the list
 	 * 
-	 * @step. ^I toggle mute for conversation (.*)$
+	 * @step. ^I set muted state for conversation (.*)
 	 * 
 	 * @param contact
 	 *            conversation name string
 	 * @throws Exception
 	 */
-	@When("^I toggle mute for conversation (.*)$")
-	public void IClickMuteButton(String contact) throws Exception {
+	@When("^I set muted state for conversation (.*)")
+	public void ISetMutedStateFor(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		PagesCollection.contactListPage.clickActionsButtonForContact(contact);
-		Thread.sleep(3000);
+		PagesCollection.contactListPage.clickOptionsButtonForContact(contact);
 		PagesCollection.contactListPage
 				.clickMuteConversationForContact(contact);
+	}
+
+	/**
+	 * Set unmuted state for the particular conversation from the list if it is
+	 * already muted
+	 * 
+	 * @step. ^I set unmuted state for conversation (.*)
+	 * 
+	 * @param contact
+	 *            conversation name string
+	 * @throws Exception
+	 */
+	@When("^I set unmuted state for conversation (.*)")
+	public void ISetUnmutedStateFor(String contact) throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		PagesCollection.contactListPage.clickOptionsButtonForContact(contact);
+		PagesCollection.contactListPage
+				.clickUnmuteConversationForContact(contact);
 	}
 
 	/**
@@ -243,5 +275,22 @@ public class ContactListPageSteps {
 
 		Assert.assertFalse(PagesCollection.contactListPage
 				.isConversationMuted(contact));
+	}
+
+	/**
+	 * Verify that my name color is the same as in color picker
+	 * 
+	 * @step. ^I verify my name color is the same as in color picker$
+	 * 
+	 */
+	@Then("^I verify my name color is the same as in color picker$")
+	public void IVerifyMyNameColor() {
+		final String selfNameColor = PagesCollection.contactListPage
+				.getSelfNameColor();
+		final String colorInColorPicker = PagesCollection.selfProfilePage
+				.getCurrentAccentColor();
+		Assert.assertTrue("Colors are not the same",
+				colorInColorPicker.equalsIgnoreCase(selfNameColor));
+
 	}
 }
