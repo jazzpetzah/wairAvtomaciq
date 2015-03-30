@@ -38,9 +38,9 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see my name in Contact list
+    And I wait up to 15 seconds until <Login2> exists in backend search results
     When I open People Picker from Contact List
-    And I wait up to 15 seconds until <Name2> exists in backend search results
-    And I type <Name2> in search field of People Picker
+    And I type <Login2> in search field of People Picker
     And I see user <Name2> found in People Picker
     And I click on not connected user <Name2> found in People Picker
     And I see Connect To popover

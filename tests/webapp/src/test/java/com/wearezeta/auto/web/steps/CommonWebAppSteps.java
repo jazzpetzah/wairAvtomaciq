@@ -26,7 +26,6 @@ import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
@@ -44,7 +43,6 @@ public class CommonWebAppSteps {
 
 	public static final Logger log = ZetaLogger.getLog(CommonWebAppSteps.class
 			.getSimpleName());
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	public static final Platform CURRENT_PLATFORM = Platform.Web;
 	private static final int MAX_DRIVER_CREATION_RETRIES = 3;
@@ -374,7 +372,6 @@ public class CommonWebAppSteps {
 	public void UserWaitsUntilContactExistsInHisSearchResults(
 			String searchByNameAlias, int timeout, String query)
 			throws Exception {
-		query = usrMgr.findUserByNameOrNameAlias(query).getName();
 		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query,
 				timeout);
 	}
