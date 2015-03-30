@@ -26,7 +26,6 @@ import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
@@ -44,7 +43,6 @@ public class CommonWebAppSteps {
 
 	public static final Logger log = ZetaLogger.getLog(CommonWebAppSteps.class
 			.getSimpleName());
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	public static final Platform CURRENT_PLATFORM = Platform.Web;
 	private static final int MAX_DRIVER_CREATION_RETRIES = 3;
@@ -217,7 +215,7 @@ public class CommonWebAppSteps {
 	 * Creates specified number of users and sets user with specified name as
 	 * main user. Avatar picture for Self user is set automatically
 	 * 
-	 * @step. ^There \\w+ (\\d+) user[s]* where (.*) is me$
+	 * @step. ^There (?:is|are) (\\d+) users? where (.*) is me$"
 	 * 
 	 * @param count
 	 *            number of users to create
@@ -226,7 +224,7 @@ public class CommonWebAppSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
+	@Given("^There (?:is|are) (\\d+) users? where (.*) is me$")
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
 			throws Exception {
 		commonSteps.ThereAreNUsersWhereXIsMe(count, myNameAlias);
@@ -237,7 +235,7 @@ public class CommonWebAppSteps {
 	 * Creates specified number of users and sets user with specified name as
 	 * main user. Avatar picture for Self user is NOT set automatically
 	 * 
-	 * @step. ^There \\w+ (\\d+) user[s]* where (.*) is me without avatar
+	 * @step. ^There (?:is|are) (\\d+) users? where (.*) is me without avatar
 	 *        picture$
 	 * 
 	 * @param count
@@ -247,7 +245,7 @@ public class CommonWebAppSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^There \\w+ (\\d+) user[s]* where (.*) is me without avatar picture$")
+	@Given("^There (?:is|are) (\\d+) users? where (.*) is me without avatar picture$")
 	public void ThereAreNUsersWhereXIsMeWithoutAvatar(int count,
 			String myNameAlias) throws Exception {
 		commonSteps.ThereAreNUsersWhereXIsMe(count, myNameAlias);
@@ -256,6 +254,8 @@ public class CommonWebAppSteps {
 	/**
 	 * Set avatar picture for a particular user
 	 * 
+	 * @step. ^User (\\w+) changes? avatar picture to (.*)
+	 * 
 	 * @param userNameAlias
 	 *            user name/alias
 	 * @param path
@@ -263,7 +263,7 @@ public class CommonWebAppSteps {
 	 *            the default picture
 	 * @throws Exception
 	 */
-	@When("^User (\\w+) change avatar picture to (.*)$")
+	@When("^User (\\w+) changes? avatar picture to (.*)")
 	public void IChangeUserAvatarPicture(String userNameAlias, String path)
 			throws Exception {
 		String avatar = null;
@@ -280,7 +280,7 @@ public class CommonWebAppSteps {
 	/**
 	 * Creates connection between to users
 	 * 
-	 * @step. ^(.*) is connected to (.*)$
+	 * @step. ^(.*) is connected to (.*)
 	 * 
 	 * @param userFromNameAlias
 	 *            user which sends connection request
@@ -289,7 +289,7 @@ public class CommonWebAppSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^(.*) is connected to (.*)$")
+	@Given("^(.*) is connected to (.*)")
 	public void UserIsConnectedTo(String userFromNameAlias,
 			String usersToNameAliases) throws Exception {
 		commonSteps.UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
@@ -298,7 +298,7 @@ public class CommonWebAppSteps {
 	/**
 	 * Creates group chat with specified users
 	 * 
-	 * @step. ^(.*) has group chat (.*) with (.*)$
+	 * @step. ^(.*) (?:has|have) group chat (.*) with (.*)
 	 * 
 	 * @param chatOwnerNameAlias
 	 *            user that creates group chat
@@ -309,7 +309,7 @@ public class CommonWebAppSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^(.*) has group chat (.*) with (.*)$")
+	@Given("^(.*) (?:has|have) group chat (.*) with (.*)")
 	public void UserHasGroupChatWithContacts(String chatOwnerNameAlias,
 			String chatName, String otherParticipantsNameAlises)
 			throws Exception {
@@ -337,7 +337,7 @@ public class CommonWebAppSteps {
 	/**
 	 * Sends connection request by one user to another
 	 * 
-	 * @step. ^(.*) has sent connection request to (.*)$
+	 * @step. ^(.*) (?:has|have) sent connection request to (.*)
 	 * 
 	 * @param userFromNameAlias
 	 *            user that sends connection request
@@ -346,7 +346,7 @@ public class CommonWebAppSteps {
 	 *
 	 * @throws Exception
 	 */
-	@Given("^(.*) has sent connection request to (.*)$")
+	@Given("^(.*) (?:has|have) sent connection request to (.*)")
 	public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
 			String usersToNameAliases) throws Throwable {
 		commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
@@ -356,8 +356,8 @@ public class CommonWebAppSteps {
 	/**
 	 * Pings BackEnd until user is indexed and avialable in search
 	 * 
-	 * @step. ^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in
-	 *        backend search results$
+	 * @step. ^(\\w+) waits? up to (\\d+) seconds? until (.*) exists in backend
+	 *        search results$
 	 * 
 	 * @param searchByNameAlias
 	 *            user name to search string
@@ -370,11 +370,10 @@ public class CommonWebAppSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in backend search results$")
+	@Given("^(\\w+) waits? up to (\\d+) seconds? until (.*) exists in backend search results$")
 	public void UserWaitsUntilContactExistsInHisSearchResults(
 			String searchByNameAlias, int timeout, String query)
 			throws Exception {
-		query = usrMgr.findUserByNameOrNameAlias(query).getName();
 		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query,
 				timeout);
 	}
@@ -382,13 +381,13 @@ public class CommonWebAppSteps {
 	/**
 	 * Wait for specified amount of seconds
 	 * 
-	 * @step. ^I wait for (.*) seconds$
+	 * @step. "^I wait for (.*) seconds?$
 	 * 
 	 * @param seconds
 	 * @throws NumberFormatException
 	 * @throws InterruptedException
 	 */
-	@When("^I wait for (.*) seconds$")
+	@When("^I wait for (.*) seconds?$")
 	public void WaitForTime(String seconds) throws NumberFormatException,
 			InterruptedException {
 		commonSteps.WaitForTime(seconds);

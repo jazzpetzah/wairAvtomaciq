@@ -102,8 +102,8 @@ public final class CommonLocalyticsSteps {
 								"'%s' events count has not been changed within %s second(s) timeout",
 								eventName, secondsTimeout));
 			} else {
-				log.debug(String.format("%s > %s -> OK", currentValue,
-						snapshottedValue));
+				log.debug(String.format("%s: %s > %s -> OK", eventName,
+						currentValue, snapshottedValue));
 			}
 		}
 	}
@@ -222,8 +222,8 @@ public final class CommonLocalyticsSteps {
 								"'%s' attribute count has not been changed within %s second(s) timeout",
 								singleKey, secondsTimeout));
 			} else {
-				log.debug(String.format("%s > %s -> OK", currentValue,
-						snapshottedValue));
+				log.debug(String.format("%s: %s > %s -> OK", singleKey,
+						currentValue, snapshottedValue));
 			}
 		}
 	}

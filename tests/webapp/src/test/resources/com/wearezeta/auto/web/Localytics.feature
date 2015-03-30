@@ -3,14 +3,14 @@ Feature: Localytics
 #***************************************************
 # Start of regFailed event
 #***************************************************
-  @localytics
+  @localytics @torun
   Scenario Outline: Verify 'regFailed:reason=The given e-mail address or phone number is in use.' stats
     Given I take snapshot of <AttrName> attribute count
     Given I see invitation page
     Given I enter invitation code
     Given I switch to Registration page
-    When I enter user name <Name> on Registration page 
-    And I enter user email <Email> on Registration page 
+    When I enter user name <Name> on Registration page
+    And I enter user email <Email> on Registration page
     And I enter user password <Password> on Registration page 
     And I submit registration form
     And I wait for 5 seconds
@@ -34,7 +34,7 @@ Feature: Localytics
 #   regAddedPicture:source=fromCarousel
 #   regAddedPicture:source=fromCamera
 
-  @localytics
+  @localytics @torun
   Scenario Outline: Verify 'regAddedPicture:source=fromPhotoLibrary' stats
     Given I take snapshot of <AttrName> attribute count
     Given There is 1 user where <Name> is me without avatar picture
@@ -88,6 +88,7 @@ Feature: Localytics
     Given There are 1 users where <Name> is me
     Given I have sent connection request to <Contact>
     Given I Sign in using login <Login> and password <Password>
+    And I see my name in Contact list
     And I see Contact list with name <Contact>
     And I wait for 65 seconds
 
@@ -101,6 +102,7 @@ Feature: Localytics
     Given There are 2 users where <Name> is me
     Given <Contact> has sent connection request to Me
     Given I Sign in using login <Login> and password <Password>
+    And I see my name in Contact list
     And I see Contact list with name <Contact>
     And I wait for 65 seconds
 
@@ -114,6 +116,7 @@ Feature: Localytics
     Given There are 2 users where <Name> is me
     Given <Contact> has sent connection request to Me
     Given I Sign in using login <Login> and password <Password>
+    And I see my name in Contact list
     And I see connection request
     And I open connection requests list
     And I accept connection request from user <Contact>
@@ -157,7 +160,7 @@ Feature: Localytics
   Scenario Outline: Verify "session:textMessagesSentActual=5" stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact2>
+    Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see my name in Contact list
     And I open conversation with <Contact>
@@ -178,7 +181,7 @@ Feature: Localytics
     Then I see random message in conversation
     And I wait for 65 seconds
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact   | AttrName                         |
       | user1Email | user1Password | user1Name | user2Name | session:textMessagesSentActual=5 |
 
@@ -244,7 +247,7 @@ Feature: Localytics
 
   @torun @localytics
   Scenario Outline: Verify count of each attribute is increased
-    Then I verify the count of <AttrName> attribute has been increased within 600 seconds
+    Then I verify the count of <AttrName> attribute has been increased within 300 seconds
 
     Examples:
       | AttrName                                                             |
