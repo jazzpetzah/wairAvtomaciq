@@ -174,7 +174,7 @@ public final class AndroidLocators {
 		public static final String idOpenStartUIButton = LOCATORS_PACKAGE
 				+ ":id/gtv__conversation_list__sticky_menu__trigger_startui";
 
-		public static final String xpathContactListNames42 = "//android.support.v4.view.ViewPager/android.widget.ListView/android.widget.FrameLayout/android.widget.TextView[4]";
+		public static final String xpathContactListNames42 = "//android.support.v4.view.ViewPager/android.widget.ListView/android.widget.FrameLayout/android.widget.TextView[2]";
 
 		public static final String xpathSelfUserName42 = "//android.support.v4.view.ViewPager/android.widget.ListView/android.widget.FrameLayout/android.widget.TextView[@visible='true'][1]";
 

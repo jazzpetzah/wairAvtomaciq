@@ -185,6 +185,11 @@ public class PeoplePickerPageSteps {
 				.clickOnAddToCoversationButton();
 	}
 
+	@When("^I navigate back to Conversations List")
+	public void WhenINavigateBackToConversationsList() throws Exception {
+		PagesCollection.contactListPage = PagesCollection.peoplePickerPage.navigateBack();
+	}
+	
 	@Then("^I see user (.*)  in People picker$")
 	public void ThenISeeUserInPeoplePicker(String contact) throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();

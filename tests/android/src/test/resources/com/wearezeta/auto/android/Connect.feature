@@ -15,6 +15,7 @@ Feature: Connect
     And I tap on edit connect request field
     And I type Connect request "<Message>"
     And I press Connect button
+    And I navigate back to Conversations List
     Then I see contact list loaded with User name <Contact>
 
     Examples: 

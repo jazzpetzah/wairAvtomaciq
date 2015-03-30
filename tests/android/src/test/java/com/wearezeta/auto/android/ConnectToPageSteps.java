@@ -17,10 +17,10 @@ public class ConnectToPageSteps {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		PagesCollection.connectToPage = (ConnectToPage) PagesCollection.androidPage;
 
-		Thread.sleep(2000);
-		if (PagesCollection.contactListPage.isHintVisible()) {
-			PagesCollection.contactListPage.closeHint();
-		}
+//		Thread.sleep(2000);
+//		if (PagesCollection.contactListPage.isHintVisible()) {
+//			PagesCollection.contactListPage.closeHint();
+//		}
 
 		Assert.assertEquals(contact.toLowerCase(),
 				PagesCollection.connectToPage.getConnectToHeader());
