@@ -3,8 +3,8 @@ package com.wearezeta.auto.web.steps;
 import com.wearezeta.auto.common.localytics.CommonLocalyticsSteps;
 import com.wearezeta.auto.common.localytics.LocalyticsAPIWrappers;
 
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 
 public class LocalyticsSteps {
 	// ID for webapp staging
@@ -30,7 +30,7 @@ public class LocalyticsSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I take snapshot of (.*) events? count$")
+	@Given("^I take snapshot of (.*) events? count$")
 	public void ITakeSnapshotOfXEventCount(String events) throws Exception {
 		commonSteps.ITakeSnapshotOfXEventCount(events);
 	}
@@ -54,7 +54,7 @@ public class LocalyticsSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I take snapshot of (.*) attributes? count$")
+	@Given("^I take snapshot of (.*) attributes? count$")
 	public void ITakeSnapshotOfXAttributesCount(String attributes)
 			throws Exception {
 		commonSteps.ITakeSnapshotOfXAttributesCount(attributes);
