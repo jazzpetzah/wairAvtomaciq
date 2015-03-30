@@ -12,7 +12,6 @@
 		3610349517A4990E00DB79AA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3610349417A4990E00DB79AA /* main.m */; };
 		3610349917A4990E00DB79AA /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 3610349717A4990E00DB79AA /* Credits.rtf */; };
 		3610349C17A4990E00DB79AA /* AppiumForMacAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3610349B17A4990E00DB79AA /* AppiumForMacAppDelegate.m */; };
-		3610349F17A4990F00DB79AA /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3610349D17A4990F00DB79AA /* MainMenu.xib */; };
 		361034A717A4990F00DB79AA /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 361034A617A4990F00DB79AA /* SenTestingKit.framework */; };
 		361034A817A4990F00DB79AA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3610348817A4990E00DB79AA /* Cocoa.framework */; };
 		361034B017A4990F00DB79AA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 361034AE17A4990F00DB79AA /* InfoPlist.strings */; };
@@ -100,7 +99,6 @@
 		3610349817A4990E00DB79AA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		3610349A17A4990E00DB79AA /* AppiumForMacAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppiumForMacAppDelegate.h; sourceTree = "<group>"; };
 		3610349B17A4990E00DB79AA /* AppiumForMacAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppiumForMacAppDelegate.m; sourceTree = "<group>"; };
-		3610349E17A4990F00DB79AA /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		361034A517A4990F00DB79AA /* AppiumForMacTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppiumForMacTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		361034A617A4990F00DB79AA /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		361034AD17A4990F00DB79AA /* AppiumForMacTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AppiumForMacTests-Info.plist"; sourceTree = "<group>"; };
@@ -272,7 +270,6 @@
 				3614DE1517A58EF600853962 /* Utility */,
 				3610349A17A4990E00DB79AA /* AppiumForMacAppDelegate.h */,
 				3610349B17A4990E00DB79AA /* AppiumForMacAppDelegate.m */,
-				3610349D17A4990F00DB79AA /* MainMenu.xib */,
 			);
 			path = AppiumForMac;
 			sourceTree = "<group>";
@@ -557,7 +554,7 @@
 			name = AppiumForMacTests;
 			productName = AppiumAppleScriptProxyTests;
 			productReference = 361034A517A4990F00DB79AA /* AppiumForMacTests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productType = "com.apple.product-type.bundle.ocunit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -595,7 +592,6 @@
 			files = (
 				3610349317A4990E00DB79AA /* InfoPlist.strings in Resources */,
 				3610349917A4990E00DB79AA /* Credits.rtf in Resources */,
-				3610349F17A4990F00DB79AA /* MainMenu.xib in Resources */,
 				36D203D117A5D6B300011A3A /* AboutCocoaAsyncSocket.txt in Resources */,
 				36D203D317A5D6B300011A3A /* AboutCocoaLumberjack.txt in Resources */,
 				36D203DB17A5D6B300011A3A /* README.txt in Resources */,
@@ -708,14 +704,6 @@
 				3610349817A4990E00DB79AA /* en */,
 			);
 			name = Credits.rtf;
-			sourceTree = "<group>";
-		};
-		3610349D17A4990F00DB79AA /* MainMenu.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				3610349E17A4990F00DB79AA /* en */,
-			);
-			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
 		361034AE17A4990F00DB79AA /* InfoPlist.strings */ = {
