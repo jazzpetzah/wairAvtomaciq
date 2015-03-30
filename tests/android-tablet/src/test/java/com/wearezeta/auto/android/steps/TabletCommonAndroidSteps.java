@@ -71,31 +71,4 @@ public class TabletCommonAndroidSteps {
 		TabletLoginPage.clearPagesCollection();
 		commonSteps.getUserManager().resetUsers();
 	}
-
-	/**
-	 * Rotates UI to landscape
-	 * 
-	 * @step. ^I rotate UI to landscape$
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I rotate UI to landscape$")
-	public void WhenIRotateUILandscape() throws Exception {
-		TabletPagesCollection.loginPage.rotateLandscape();
-	}
-
-	/**
-	 * Rotates UI to portrait
-	 * 
-	 * @step. ^I rotate UI to portrait$
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I rotate UI to portrait$")
-	public void WhenIRotateUIPortrait() throws Exception {
-		TabletPagesCollection.loginPage.rotatePortrait();
-
-	}
 }
