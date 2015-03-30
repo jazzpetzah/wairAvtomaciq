@@ -1,7 +1,7 @@
 Feature: Calling
 
   @smoke @id1860 @blender
-  Scenario Outline: Send text while in the call with same user
+  Scenario Outline: Send text, image and knock while in the call with same user
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given <Contact> is waiting for call to accept it
