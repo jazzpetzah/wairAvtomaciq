@@ -213,4 +213,9 @@ public class ContactListPageSteps {
 				.setNewConversationName(PagesCollection.conversationInfoPage
 						.getCurrentConversationName());
 	}
+
+	@When("^I minimize Wire$")
+	public void IMinimizeWire() {
+		PagesCollection.contactListPage.minimizeWindow();
+	}
 }

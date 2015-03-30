@@ -31,13 +31,10 @@ import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.common.ProblemReportPage;
 import com.wearezeta.auto.osx.util.NSPoint;
 
-public class ContactListPage extends OSXPage {
+public class ContactListPage extends MainWirePage {
 
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
 			.getSimpleName());
-
-	@FindBy(how = How.XPATH, using = OSXLocators.xpathMainWindow)
-	private WebElement mainWindow;
 
 	@FindBy(how = How.ID, using = OSXLocators.idAcceptConnectionRequestButton)
 	private WebElement acceptInvitationButton;
@@ -53,12 +50,6 @@ public class ContactListPage extends OSXPage {
 
 	@FindBy(how = How.ID, using = OSXLocators.idShareContactsLaterButton)
 	private WebElement shareContactsLaterButton;
-
-	@FindBy(how = How.ID, using = OSXLocators.idMainWindowMinimizeButton)
-	private WebElement minimizeWindowButton;
-
-	@FindBy(how = How.ID, using = OSXLocators.idMainWindowCloseButton)
-	private WebElement closeWindowButton;
 
 	public static HashMap<String, Boolean> shareContactsProcessedUsers = new HashMap<String, Boolean>();
 
@@ -80,10 +71,6 @@ public class ContactListPage extends OSXPage {
 	public boolean waitUntilMainWindowAppears() throws Exception {
 		return DriverUtils.waitUntilElementAppears(driver,
 				By.xpath(OSXLocators.xpathMainWindow));
-	}
-
-	public void minimizeZClient() {
-		minimizeWindowButton.click();
 	}
 
 	public void restoreZClient() throws InterruptedException, ScriptException,
@@ -319,6 +306,9 @@ public class ContactListPage extends OSXPage {
 
 		NSPoint userPosition = NSPoint.fromString(userContact
 				.getAttribute("AXPosition"));
+		if (conversation.isDisplayed()) {
+			return;
+		}
 		if (userPosition.y() > latestPoint.y()
 				|| userPosition.y() < mainPosition.y()) {
 			WebElement scrollBar = scrollArea.findElement(By
@@ -365,7 +355,7 @@ public class ContactListPage extends OSXPage {
 		}
 
 		Actions builder = new Actions(driver);
-		Action moveMouseToContact = builder.moveToElement(mainWindow)
+		Action moveMouseToContact = builder.moveToElement(window)
 				.moveToElement(getContactWithName(contact)).build();
 		moveMouseToContact.perform();
 

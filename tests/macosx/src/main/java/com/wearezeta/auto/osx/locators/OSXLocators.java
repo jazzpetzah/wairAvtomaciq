@@ -254,4 +254,28 @@ public final class OSXLocators {
 
 		public static final String nameSendButton = "Send";
 	}
+
+	public static final class CallingFloatingPage {
+
+		public static final String xpathWindow = "//AXWindow[@AXRoleDescription='system floating window']";
+
+		public static final String xpathCloseButton = "//AXButton[@AXRoleDescription='close button']";
+
+		public static final String xpathFormatCallerNameText = "//AXStaticText[@AXValue='%s']";
+
+		public static final String nameLaterButton = "LATER";
+
+		public static final String nameAnswerButton = "ANSWER";
+	}
+
+	public static final class MainWirePage {
+
+		public static final String xpathWindow = "//AXWindow[@AXRoleDescription='standard window']";
+		
+		public static final String xpathCloseButton = "//AXButton[@AXRoleDescription='close button']";
+		
+		public static final String xpathMinimizeButton = "//AXButton[@AXRoleDescription='minimize button']";
+		
+		public static final String xpathZoomButton = "//AXButton[@AXRoleDescription='zoom button']";
+	}
 }

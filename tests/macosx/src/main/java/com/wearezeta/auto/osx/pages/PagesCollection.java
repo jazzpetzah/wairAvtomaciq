@@ -8,6 +8,7 @@ import com.wearezeta.auto.osx.pages.common.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.common.MainMenuPage;
 import com.wearezeta.auto.osx.pages.common.NoInternetConnectionPage;
 import com.wearezeta.auto.osx.pages.common.ProblemReportPage;
+import com.wearezeta.auto.osx.pages.floating.CallingFloatingPage;
 import com.wearezeta.auto.osx.pages.welcome.WelcomePage;
 
 public class PagesCollection extends AbstractPagesCollection {
@@ -42,6 +43,9 @@ public class PagesCollection extends AbstractPagesCollection {
 
 	public static ProblemReportPage problemReportPage = null;
 
+	//floating pages
+	public static CallingFloatingPage callingFloatingPage = null;
+	
 	public void closeAllPages() throws Exception {
 		for (Field f : this.getClass().getDeclaredFields()) {
 			f.setAccessible(true);

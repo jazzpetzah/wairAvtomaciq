@@ -302,6 +302,12 @@ public class CommonOSXSteps {
 				conversationNameAlias);
 	}
 
+	@When("^(.*) dismisses call$")
+	public void UserCallsToConversation(String callerUserNameAlias)
+			throws Exception {
+		commonSteps.StopCurrentCall();
+	}
+
 	@After
 	public void tearDown() throws Exception {
 		OSXPage.clearPagesCollection();
