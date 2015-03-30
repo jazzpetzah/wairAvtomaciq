@@ -1,5 +1,20 @@
 Feature: People View
 
+  @torun @staging 
+  Scenario Outline: Open Participants view
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>, <Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>, <Contact2>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    And I tap on group chat with name <GroupChatName>
+    And I open conversation details
+    Then I see correct conversation name <GroupChatName>
+    
+     Examples: 
+      | Login      | Password      | Name      | Contact1    | Contact2    | GroupChatName |
+      | user1Email | user1Password | user1Name | user2Name   | user3Name   | abrakadabra |
+
   @smoke @id1393
   Scenario Outline: Start group chat with users from contact list
     Given There are 3 users where <Name> is me
