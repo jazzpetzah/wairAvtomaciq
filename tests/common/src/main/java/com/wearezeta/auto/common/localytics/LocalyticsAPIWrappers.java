@@ -92,11 +92,11 @@ public final class LocalyticsAPIWrappers {
 				if (results.getJSONObject(idx).has(caninicalAttributeName)) {
 					if (attributeValue == null) {
 						numberOfOccurences += results.getJSONObject(idx)
-								.getInt("occurentces");
+								.getInt("occurrences");
 					} else if (results.getJSONObject(idx)
 							.getString(caninicalAttributeName)
 							.equals(attributeValue)) {
-						return results.getJSONObject(idx).getInt("occurentces");
+						return results.getJSONObject(idx).getInt("occurrences");
 					}
 				}
 			}

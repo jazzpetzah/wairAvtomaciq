@@ -34,7 +34,7 @@ public final class CommonLocalyticsSteps {
 		this.appId = appId;
 	}
 
-	private static final String EVENTS_SEPARATOR = "|";
+	private static final String EVENTS_SEPARATOR = "\\|";
 
 	private static List<String> splitEvents(String events) {
 		return new ArrayList<String>(Arrays.asList(events
@@ -59,7 +59,7 @@ public final class CommonLocalyticsSteps {
 		}
 	}
 
-	private static final int SECONDS_INTERVAL = 5;
+	private static final int SECONDS_INTERVAL = 20;
 
 	private static void pingDrivers() {
 		Collection<RemoteWebDriver> registeredDrivers = PlatformDrivers
@@ -101,6 +101,9 @@ public final class CommonLocalyticsSteps {
 						String.format(
 								"'%s' events count has not been changed within %s second(s) timeout",
 								eventName, secondsTimeout));
+			} else {
+				log.debug(String.format("%s > %s -> OK", currentValue,
+						snapshottedValue));
 			}
 		}
 	}
@@ -218,6 +221,9 @@ public final class CommonLocalyticsSteps {
 						String.format(
 								"'%s' attribute count has not been changed within %s second(s) timeout",
 								singleKey, secondsTimeout));
+			} else {
+				log.debug(String.format("%s > %s -> OK", currentValue,
+						snapshottedValue));
 			}
 		}
 	}
