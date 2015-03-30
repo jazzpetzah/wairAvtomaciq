@@ -301,10 +301,32 @@ public class ConversationPageSteps {
 	/**
 	 * Start call in opened conversation
 	 * 
-	 * * @step. ^I call$
+	 * @step. ^I call$
 	 */
 	@When("^I call$")
 	public void ICallUser() throws Throwable {
 		PagesCollection.conversationPage.clickCallButton();
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @step. ^(.*) accepts the call$
+	 * @param userNameAlias
+	 * @throws Throwable
+	 */
+	@When("^(.*) accepts the call$")
+	public void ContactAcceptsTheCall(String userNameAlias) throws Throwable {
+		Assert.assertTrue(PagesCollection.conversationPage.isCalleeAcceptingCall());
+	}
+	
+	/**
+	 * End the current call
+	 * 
+	 * @step. ^I end the call$
+	 */
+	@When("^I end the call$")
+	public void IEndTheCall() throws Throwable {
+		PagesCollection.conversationPage.clickCloseButton();
 	}
 }

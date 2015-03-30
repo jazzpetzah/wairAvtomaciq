@@ -1,6 +1,8 @@
 package com.wearezeta.auto.common.calling;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.security.GeneralSecurityException;
 
 import org.apache.log4j.Logger;
 
@@ -67,6 +69,10 @@ public class CallingUtil {
 			throws Exception {
 		String email = caller.getEmail();
 		String password = caller.getPassword();
-		GoogleComputeEngine.createInstanceAndStartBlender(email, password);
+		GoogleComputeEngine.createInstanceAndStartBlender("blender-for-" + caller.getId(), email, password);
+	}
+
+	public static void deleteAllBlenderInstances() throws IOException, GeneralSecurityException {
+		GoogleComputeEngine.deleteAllInstancesWhereNameContains("blender-for-");
 	}
 }

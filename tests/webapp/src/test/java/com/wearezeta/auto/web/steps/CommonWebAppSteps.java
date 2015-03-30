@@ -1,5 +1,7 @@
 package com.wearezeta.auto.web.steps;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.logging.Level;
 
 import org.apache.commons.lang3.NotImplementedException;
@@ -23,6 +25,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.PerformanceCommon;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
+import com.wearezeta.auto.common.calling.CallingUtil;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -64,6 +67,16 @@ public class CommonWebAppSteps {
 		return WebCommonUtils
 				.getWebAppBrowserNameFromConfig(CommonWebAppSteps.class);
 	}
+	
+	private static void setCustomChromeProfile(DesiredCapabilities capabilities,
+			String browserPlatform) throws Exception {
+		ChromeOptions options = new ChromeOptions();
+		// simulate a fake webcam and mic for testing
+		options.addArguments("use-fake-device-for-media-stream");
+		// allow skipping the security prompt for sharing the media device
+		options.addArguments("use-fake-ui-for-media-stream");
+		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+	}
 
 	private static void setCustomOperaProfile(DesiredCapabilities capabilities,
 			String browserPlatform) throws Exception {
@@ -71,12 +84,18 @@ public class CommonWebAppSteps {
 				.getOperaProfileRoot(browserPlatform);
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("user-data-dir=" + userProfileRoot);
+		// simulate a fake webcam and mic for testing
+		options.addArguments("use-fake-device-for-media-stream");
+		// allow skipping the security prompt for sharing the media device
+		options.addArguments("use-fake-ui-for-media-stream");
 		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 	}
 
 	private static void setCustomFirefoxProfile(DesiredCapabilities capabilities) {
 		FirefoxProfile profile = new FirefoxProfile();
 		profile.setPreference("dom.webnotifications.enabled", false);
+		// allow skipping the security prompt for sharing the media device
+		profile.setPreference("media.navigator.permission.disabled", true);
 		capabilities.setCapability("firefox_profile", profile);
 	}
 
@@ -120,6 +139,8 @@ public class CommonWebAppSteps {
 				// This is to fix Desktop Notifications alerts appearance in
 				// Opera
 				setCustomOperaProfile(capabilities, webPlatformName);
+			} else {
+				setCustomChromeProfile(capabilities, webPlatformName);
 			}
 			break;
 		case "firefox":
@@ -331,16 +352,6 @@ public class CommonWebAppSteps {
 		commonSteps.waitForCallToAccept(userNameAlias);
 	}
 
-	@When("^(.*) accepts the call$")
-	public void ContactAcceptsTheCall(String userNameAlias) throws Throwable {
-		// TODO
-	}
-
-	@When("^I allow access to the microphone$")
-	public void IAllowAccessToTheMicrophone() throws Throwable {
-		// TODO
-	}
-
 	/**
 	 * Pings BackEnd until user is indexed and avialable in search
 	 * 
@@ -425,5 +436,10 @@ public class CommonWebAppSteps {
 		}
 
 		commonSteps.getUserManager().resetUsers();
+	}
+	
+	@After("@blender")
+	public void afterScenario() throws IOException, GeneralSecurityException {
+	    CallingUtil.deleteAllBlenderInstances();
 	}
 }

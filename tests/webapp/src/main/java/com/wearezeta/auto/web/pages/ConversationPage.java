@@ -241,4 +241,14 @@ public class ConversationPage extends WebPage {
 		}
 		callButton.click();
 	}
+
+	public boolean isCalleeAcceptingCall() throws Exception {
+		final By locator = By.xpath(WebAppLocators.ConversationPage.xpathTalkingHalo);
+		return DriverUtils.isElementDisplayed(driver, locator, 30);
+	}
+
+	public void clickCloseButton() {
+		final By locator = By.xpath(WebAppLocators.ConversationPage.xpathCloseButton);
+		
+	}
 }
