@@ -77,7 +77,7 @@ public class SelfPictureUploadPage extends WebPage {
 	private static final Random random = new Random();
 
 	private static final int COUNT_OF_CAROUSEL_PICTURES = 5;
-	private static final int CHANGE_PICTURE_TRANSITION_TIMEOUT_SECONDS = 2;
+	private static final int CHANGE_PICTURE_TRANSITION_TIMEOUT_SECONDS = 1;
 
 	public void selectRandomPictureFromCarousel() throws InterruptedException {
 		for (int i = 0; i < COUNT_OF_CAROUSEL_PICTURES; i++) {
