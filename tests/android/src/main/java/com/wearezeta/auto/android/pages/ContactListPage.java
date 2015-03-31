@@ -31,7 +31,7 @@ public class ContactListPage extends AndroidPage {
 	private WebElement content;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConversationListFrame")
-	private WebElement contactListFrame;	
+	private WebElement contactListFrame;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idContactListNames")
 	private List<WebElement> contactListNames;
@@ -106,11 +106,11 @@ public class ContactListPage extends AndroidPage {
 	public void contactListSwipeUp(int time) {
 		elementSwipeUp(contactListFrame, time);
 	}
-	
-	public void waitForConversationListLoad(){
+
+	public void waitForConversationListLoad() {
 		getWait().until(ExpectedConditions.visibilityOf(contactListFrame));
-	} 
-	
+	}
+
 	public AndroidPage tapOnContactByPosition(List<WebElement> contacts, int id)
 			throws Exception {
 		AndroidPage page = null;
@@ -278,6 +278,9 @@ public class ContactListPage extends AndroidPage {
 		return findInContactList(name, 0) != null;
 	}
 
+	public Boolean isContactExists(String name, int cycles) throws Exception {
+		return findInContactList(name, cycles) != null;
+	}
 	private AndroidPage getPages() throws Exception {
 		AndroidPage page = null;
 		if (isVisible(connectToHeader)) {
@@ -296,5 +299,22 @@ public class ContactListPage extends AndroidPage {
 		DriverUtils.waitUntilElementAppears(driver,
 				By.id(AndroidLocators.ContactListPage.idPlayPauseMedia));
 		return isVisible(playPauseMedia);
+	}
+
+	public void waitForContactListLoadFinished() throws InterruptedException {
+
+		if (contactListNames != null && contactListNames.size() > 0) {
+			waitForContacListLoading();
+		}
+
+	}
+
+	private void waitForContacListLoading() throws InterruptedException {
+		for (WebElement contact : contactListNames) {
+			if (contact.getText().equals("...")) {
+				Thread.sleep(500);
+				waitForContacListLoading();
+			}
+		}
 	}
 }

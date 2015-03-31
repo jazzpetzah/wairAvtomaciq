@@ -38,7 +38,7 @@ Feature: Sign In
       | Login      | Login2     | Password      | Password2     | Name      | Name2     |
       | user1Email | user2Email | user1Password | user2Password | user1Name | user2Name |
 
-  @regression @id1120 @torun
+  @regression @id1120
   Scenario Outline: Verify I see wrong address or password message
     And I see Welcome screen
     When I start Sign In

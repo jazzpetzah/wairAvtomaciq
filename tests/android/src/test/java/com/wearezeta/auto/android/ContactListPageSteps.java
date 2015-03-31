@@ -87,6 +87,7 @@ public class ContactListPageSteps {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
+		PagesCollection.contactListPage.waitForContactListLoadFinished();
 
 	}
 
@@ -222,7 +223,8 @@ public class ContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(value));
+		PagesCollection.contactListPage.waitForConversationListLoad();
+		Assert.assertTrue(PagesCollection.contactListPage.isContactExists(value,5));
 	}
 
 	@Then("^Contact (.*) is muted$")

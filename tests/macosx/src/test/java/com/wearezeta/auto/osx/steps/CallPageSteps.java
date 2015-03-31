@@ -9,6 +9,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.osx.pages.PagesCollection;
 import com.wearezeta.auto.osx.pages.calling.IncomingCallPage;
 import com.wearezeta.auto.osx.pages.calling.StartedCallPage;
+import com.wearezeta.auto.osx.pages.floating.CallingFloatingPage;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -159,5 +160,42 @@ public class CallPageSteps {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		Assert.assertTrue(((StartedCallPage) PagesCollection.callPage)
 				.isOngoingCallVisible(contact.toUpperCase()));
+	}
+
+	/**
+	 * Checks that incoming call popup appears when Wire is minimized
+	 * 
+	 * @step. ^I see incoming call popup from (.*)$
+	 * 
+	 * @param contact
+	 *            conversation with call
+	 * 
+	 * @throws Exception
+	 * 
+	 * @throws AssertionError
+	 *             if there is no ongoing call in UI
+	 */
+	@When("^I see incoming call popup from (.*)$")
+	public void ISeeIncomingCallFromContactWhileMinimized(String contact)
+			throws Exception {
+		PagesCollection.callingFloatingPage = new CallingFloatingPage(
+				PagesCollection.contactListPage.getDriver(),
+				PagesCollection.contactListPage.getWait());
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		Assert.assertTrue(PagesCollection.callingFloatingPage
+				.isCallFromUserVisible(contact));
+	}
+
+	/**
+	 * Answer call from popup when Wire is minimized
+	 * 
+	 * @step. ^I answer call from popup$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I answer call from popup$")
+	public void IAnswerCallWhileMinimized() throws Exception {
+		PagesCollection.callPage = PagesCollection.callingFloatingPage
+				.answerCall();
 	}
 }

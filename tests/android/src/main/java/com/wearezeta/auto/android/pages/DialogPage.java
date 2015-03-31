@@ -44,6 +44,9 @@ public class DialogPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMessage")
 	private List<WebElement> messagesList;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMessage")
+	private WebElement messageInList;
+	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idCursorFrame")
 	private WebElement cursurFrame;
 
@@ -67,7 +70,7 @@ public class DialogPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogImages")
 	private WebElement image;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogImages")
 	private List<WebElement> imageList;
 
@@ -76,7 +79,7 @@ public class DialogPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idAddParticipants")
 	private WebElement addParticipant;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMessage")
 	private WebElement conversationMessage;
 
@@ -103,7 +106,7 @@ public class DialogPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idSearchHintClose")
 	private WebElement closeHintBtn;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idCloseImageBtn")
 	private WebElement closeImageBtn;
 
@@ -125,7 +128,7 @@ public class DialogPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.XPATH, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "xpathDialogPageBottomLinearLayout")
 	private WebElement dialogPageBottomLinearLayout;
 
-	private int initMessageCount;
+	private int initMessageCount = 0;
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.75;
 	private final String DIALOG_IMAGE = "android_dialog_sendpicture_result.png";
 
@@ -134,10 +137,19 @@ public class DialogPage extends AndroidPage {
 		super(driver, wait);
 	}
 
-	public void waitForCursorInputVisible() {
+	public void waitForCursorInputVisible() throws Exception {
 		refreshUITree();
-		this.getWait().until(ExpectedConditions.visibilityOf(cursorInput));
-		initMessageCount = messagesList.size();
+		int counter = 0;
+		while (!isVisible(cursorInput)) {
+			Thread.sleep(500);
+			counter++;
+			if (counter == 10) {
+				break;
+			}
+		}
+		if( isVisible(messageInList)) {
+			initMessageCount = messagesList.size();
+		}
 	}
 
 	public void tapOnCursorInput() {
@@ -147,7 +159,7 @@ public class DialogPage extends AndroidPage {
 	public void tapOnCursorFrame() {
 		cursurFrame.click();
 	}
-	
+
 	public void tapOnCenterOfScreen() {
 		DriverUtils.genericTap(this.getDriver());
 	}
@@ -182,7 +194,7 @@ public class DialogPage extends AndroidPage {
 		// DriverUtils.mobileTapByCoordinates(driver, backgroundOverlay);
 		this.getDriver().hideKeyboard();
 	}
-	
+
 	public String getLastMessageFromDialog() {
 		return messagesList.get(messagesList.size() - 1).getText();
 	}
@@ -322,7 +334,7 @@ public class DialogPage extends AndroidPage {
 		refreshUITree();
 		galleryBtn.click();
 	}
-	
+
 	public void closeFullScreenImage() {
 		refreshUITree();
 		closeImageBtn.click();
@@ -547,9 +559,10 @@ public class DialogPage extends AndroidPage {
 		playPauseBtn.click();
 	}
 
-	public void tapDialogPageBottomLinearLayout() throws NumberFormatException, Exception {
+	public void tapDialogPageBottomLinearLayout() throws NumberFormatException,
+			Exception {
 		refreshUITree();
-		if(!isVisible(addParticipant)) {
+		if (!isVisible(addParticipant)) {
 			dialogPageBottomLinearLayout.click();
 		}
 	}

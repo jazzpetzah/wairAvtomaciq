@@ -83,11 +83,11 @@ public class PeoplePickerPage extends AndroidPage {
 	public void typeTextInPeopleSearch(String contactName)
 			throws InterruptedException {
 		refreshUITree();
-		// pickerSearch. sendKeys(contactName);
-		for (char ch : contactName.toCharArray()) {
-			int keyCode = KeyboardMapper.getPrimaryKeyCode(ch);
-			this.getDriver().sendKeyEvent(keyCode);
-		}
+		pickerSearch.sendKeys(contactName);
+//		for (char ch : contactName.toCharArray()) {
+//			int keyCode = KeyboardMapper.getPrimaryKeyCode(ch);
+//			this.getDriver().sendKeyEvent(keyCode);
+//		}
 		this.getDriver().sendKeyEvent(66);
 	}
 
@@ -176,8 +176,9 @@ public class PeoplePickerPage extends AndroidPage {
 		return flag;
 	}
 
-	public void waitUserPickerFindUser(String contactName) {
+	public void waitUserPickerFindUser(String contactName) throws InterruptedException {
 		for (int i = 0; i < 5; i++) {
+			refreshUITree();
 			List<WebElement> elements = pickerSearchUsers;
 			for (WebElement element : elements) {
 				try {
@@ -189,9 +190,15 @@ public class PeoplePickerPage extends AndroidPage {
 					continue;
 				}
 			}
+			Thread.sleep(1000);
 		}
 	}
 
+	public ContactListPage navigateBack() throws Exception {
+		driver.navigate().back();
+		return new ContactListPage(this.getDriver(), this.getWait());
+	}
+	
 	public boolean isAddToConversationBtnVisible() {
 		return addToConversationsButton.isDisplayed();
 	}
