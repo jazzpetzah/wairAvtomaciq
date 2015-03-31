@@ -41,8 +41,7 @@ public class InvitationCodePageSteps {
 		PagesCollection.loginPage = new LoginPage(
 				PagesCollection.invitationCodePage.getDriver(),
 				PagesCollection.invitationCodePage.getWait(),
-				CommonUtils
-						.getWebAppApplicationPathFromConfig(CommonWebAppSteps.class));
+				CommonUtils.getWebAppApplicationPathFromConfig(this.getClass()));
 		PagesCollection.registrationPage = new RegistrationPage(
 				PagesCollection.invitationCodePage.getDriver(),
 				PagesCollection.invitationCodePage.getWait());

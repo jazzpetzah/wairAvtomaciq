@@ -10,7 +10,6 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.WebAppLocators;
-import com.wearezeta.auto.web.steps.CommonWebAppSteps;
 
 public class RegistrationPage extends WebPage {
 
@@ -75,10 +74,7 @@ public class RegistrationPage extends WebPage {
 		}
 		assert DriverUtils.isElementDisplayed(this.getDriver(), locator) : "Sign in page is not visible";
 
-		return new LoginPage(
-				this.getDriver(),
-				this.getWait(),
-				CommonUtils
-						.getWebAppApplicationPathFromConfig(CommonWebAppSteps.class));
+		return new LoginPage(this.getDriver(), this.getWait(),
+				CommonUtils.getWebAppApplicationPathFromConfig(this.getClass()));
 	}
 }
