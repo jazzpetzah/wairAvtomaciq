@@ -32,7 +32,7 @@ Feature: Localytics
 
 # TODO:
 #   regAddedPicture:source=fromCarousel
-#   regAddedPicture:source=fromCamera
+#   regAddedPicture:source=fromCamera -> probably, not possible
 
   @localytics @torun
   Scenario Outline: Verify 'regAddedPicture:source=fromPhotoLibrary' stats
