@@ -60,7 +60,7 @@ public class SelfPictureUploadPageSteps {
 	public void IUploadMyPicture(String pictureName) throws Exception {
 		PagesCollection.selfPictureUploadPage.uploadPicture(pictureName);
 	}
-	
+
 	/**
 	 * Confirm picture upload
 	 * 
@@ -73,6 +73,31 @@ public class SelfPictureUploadPageSteps {
 	 */
 	@And("^I confirm picture selection on Self Picture Upload dialog$")
 	public void IConfirmPictureSelection() throws Exception {
-		PagesCollection.selfPictureUploadPage.confirmPictureSelection();;
+		PagesCollection.selfPictureUploadPage.confirmPictureSelection();
+		;
+	}
+
+	/**
+	 * Force Carousel mode on Self Picture Upload dialog
+	 * 
+	 * @step. ^I force carousel mode on Self Picture Upload dialog$
+	 * 
+	 */
+	@And("^I force carousel mode on Self Picture Upload dialog$")
+	public void IForceCarouselMode() {
+		PagesCollection.selfPictureUploadPage.forceCarouselMode();
+	}
+
+	/**
+	 * Select random picture from carousel on Self Picture Upload dialog
+	 * 
+	 * @step. ^I select random picture from carousel on Self Picture Upload
+	 *        dialog$
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I select random picture from carousel on Self Picture Upload dialog$")
+	public void ISelectRandomPictureFromCariouusel() throws Exception {
+		PagesCollection.selfPictureUploadPage.selectRandomPictureFromCarousel();
 	}
 }
