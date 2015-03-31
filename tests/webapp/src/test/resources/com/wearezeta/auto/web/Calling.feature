@@ -21,3 +21,22 @@ Feature: Calling
     Examples: 
       | Login      | Password      | Name      | Contact   | PING   | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | pinged | userpicture_landscape.jpg |
+      
+  @torun @blender
+  Scenario Outline: Call a user twice in a row
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> is waiting for call to accept it
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name <Name> in Contact list
+    And I open conversation with <Contact>
+    When I call
+    And <Contact> accepts the call
+    And I end the call
+    And I call
+    Then <Contact> accepts the call
+    
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+      
