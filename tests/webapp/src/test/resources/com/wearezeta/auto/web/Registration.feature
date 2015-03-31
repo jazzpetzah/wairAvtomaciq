@@ -14,7 +14,7 @@ Feature: Registration
     And User <Name> is Me
     # This has to be done automatically at some time
     And I Sign in using login <Email> and password <Password>
-    Then I see my name in Contact list
+    Then I see my name on top of Contact list
     When I open self profile
     Then I see user name on self profile page <Name>
     Then I see user email on self profile page <Email>
@@ -30,7 +30,7 @@ Feature: Registration
     And I see Self Picture Upload dialog
     And I choose <PictureName> as my self picture on Self Picture Upload dialog
     And I confirm picture selection on Self Picture Upload dialog
-    Then I see my name in Contact list
+    Then I see my name on top of Contact list
     When I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
@@ -38,7 +38,7 @@ Feature: Registration
     And I see Sign In page
     When I Sign in using login <Login> and password <Password>
     Then I do not see Self Picture Upload dialog
-    Then I see my name in Contact list
+    Then I see my name on top of Contact list
 
     Examples: 
       | Login      | Password      | Name      | PictureName               |
@@ -52,7 +52,7 @@ Feature: Registration
     And I force carousel mode on Self Picture Upload dialog
     And I select random picture from carousel on Self Picture Upload dialog
     And I confirm picture selection on Self Picture Upload dialog
-    Then I see my name in Contact list
+    Then I see my name on top of Contact list
     When I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
@@ -60,7 +60,7 @@ Feature: Registration
     And I see Sign In page
     When I Sign in using login <Login> and password <Password>
     Then I do not see Self Picture Upload dialog
-    Then I see my name in Contact list
+    Then I see my name on top of Contact list
 
     Examples: 
       | Login      | Password      | Name      |
