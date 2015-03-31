@@ -96,7 +96,7 @@ Feature: Localytics
       | Login      | Password      | Name      | Contact    | AttrName                                        |
       | user1Email | user1Password | user1Name | user2Name  | session:totalOutgoingConnectionRequestsActual=1 |
 
-  @staging @localytics @id2160
+  @staging @localytics @id2161
   Scenario Outline: Verify "session:totalIncomingConnectionRequestsActual=1" stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
@@ -110,7 +110,7 @@ Feature: Localytics
       | Login      | Password      | Name      | Contact   | AttrName                                        |
       | user1Email | user1Password | user1Name | user2Name | session:totalIncomingConnectionRequestsActual=1 |
 
-  @staging @localytics @id2161
+  @staging @localytics @id2170
   Scenario Outline: Verify "session:connectRequestsAcceptedActual=1" stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
