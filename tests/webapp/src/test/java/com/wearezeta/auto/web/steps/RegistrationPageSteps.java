@@ -203,5 +203,7 @@ public class RegistrationPageSteps {
 		userToRegister
 				.addPasswordAlias(ClientUsersManager.PASSWORD_ALIAS_TEMPLATE
 						.apply(userIndex));
+		
+		PagesCollection.loginPage.navigateTo();
 	}
 }

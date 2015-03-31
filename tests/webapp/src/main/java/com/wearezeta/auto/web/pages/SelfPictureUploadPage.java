@@ -1,5 +1,7 @@
 package com.wearezeta.auto.web.pages;
 
+import java.util.Random;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -19,6 +21,12 @@ public class SelfPictureUploadPage extends WebPage {
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.SelfPictureUploadPage.xpathConfirmPictureSelectionButton)
 	private WebElement pictureSelectionConfirmButton;
+
+	@FindBy(how = How.XPATH, using = WebAppLocators.SelfPictureUploadPage.xpathNextCarouselImageBtn)
+	private WebElement nextCarouselImageBtn;
+
+	@FindBy(how = How.XPATH, using = WebAppLocators.SelfPictureUploadPage.xpathPreviousCarouselImageBtn)
+	private WebElement previousCarouselImageBtn;
 
 	public SelfPictureUploadPage(ZetaWebAppDriver driver, WebDriverWait wait)
 			throws Exception {
@@ -59,5 +67,26 @@ public class SelfPictureUploadPage extends WebPage {
 						By.xpath(WebAppLocators.SelfPictureUploadPage.xpathConfirmPictureSelectionButton),
 						5);
 		pictureSelectionConfirmButton.click();
+	}
+
+	public void forceCarouselMode() {
+		final String forceCarouselScript = "window.app.view.content.self_profile.show_get_picture();";
+		driver.executeScript(forceCarouselScript);
+	}
+
+	private static final Random random = new Random();
+
+	private static final int COUNT_OF_CAROUSEL_PICTURES = 5;
+	private static final int CHANGE_PICTURE_TRANSITION_TIMEOUT_SECONDS = 1;
+
+	public void selectRandomPictureFromCarousel() throws InterruptedException {
+		for (int i = 0; i < COUNT_OF_CAROUSEL_PICTURES; i++) {
+			if (random.nextInt(100) < 50) {
+				nextCarouselImageBtn.click();
+			} else {
+				previousCarouselImageBtn.click();
+			}
+			Thread.sleep(CHANGE_PICTURE_TRANSITION_TIMEOUT_SECONDS * 1000);
+		}
 	}
 }

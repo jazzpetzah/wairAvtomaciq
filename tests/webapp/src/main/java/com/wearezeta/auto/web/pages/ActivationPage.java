@@ -1,7 +1,5 @@
 package com.wearezeta.auto.web.pages;
 
-import java.net.URL;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -33,14 +31,6 @@ public class ActivationPage extends WebPage {
 	@Override
 	public void close() throws Exception {
 		WebCommonUtils.switchToPreviousTab(driver);
-
-		// TODO: Remove this navigation code when automatic redirect after email
-		// verification is done
-		final URL currentUrl = new URL(driver.getCurrentUrl());
-		driver.navigate().to(
-				String.format("%s://%s", currentUrl.getProtocol(),
-						currentUrl.getAuthority()));
-
 		super.close();
 	}
 }
