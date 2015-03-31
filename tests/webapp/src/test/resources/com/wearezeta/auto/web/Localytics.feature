@@ -68,8 +68,8 @@ Feature: Localytics
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see my name in Contact list
-    When I open People Picker from Contact List
     And I wait up to 15 seconds until <ContactEmail> exists in backend search results
+    When I open People Picker from Contact List
     And I type <ContactEmail> in search field of People Picker
     And I see user <Contact> found in People Picker
     And I click on not connected user <Contact> found in People Picker
@@ -85,7 +85,7 @@ Feature: Localytics
   @torun @localytics
   Scenario Outline: Verify "session:totalOutgoingConnectionRequestsActual=1" stats
     Given I take snapshot of <AttrName> attribute count
-    Given There are 1 users where <Name> is me
+    Given There are 2 users where <Name> is me
     Given I have sent connection request to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see my name in Contact list
