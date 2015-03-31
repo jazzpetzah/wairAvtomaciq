@@ -181,6 +181,7 @@ public class CommonWebAppSteps {
 
 				PagesCollection.invitationCodePage = new InvitationCodePage(
 						webDriver, wait, path);
+				PagesCollection.invitationCodePage.navigateTo();
 				break;
 			} catch (WebDriverException e) {
 				log.debug(String

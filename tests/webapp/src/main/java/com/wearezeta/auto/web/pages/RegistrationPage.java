@@ -6,9 +6,11 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.WebAppLocators;
+import com.wearezeta.auto.web.steps.CommonWebAppSteps;
 
 public class RegistrationPage extends WebPage {
 
@@ -73,6 +75,10 @@ public class RegistrationPage extends WebPage {
 		}
 		assert DriverUtils.isElementDisplayed(this.getDriver(), locator) : "Sign in page is not visible";
 
-		return new LoginPage(this.getDriver(), this.getWait());
+		return new LoginPage(
+				this.getDriver(),
+				this.getWait(),
+				CommonUtils
+						.getWebAppApplicationPathFromConfig(CommonWebAppSteps.class));
 	}
 }
