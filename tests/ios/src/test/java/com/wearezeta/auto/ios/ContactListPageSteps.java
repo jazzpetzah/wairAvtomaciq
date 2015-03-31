@@ -484,7 +484,7 @@ public class ContactListPageSteps {
 	@When("^I long swipe right to archive conversation (.*)$")
 	public void ILongSwipeRightToArchiveConversation(String conversation) throws Exception {
 		conversation = usrMgr.replaceAliasesOccurences(conversation, FindBy.NAME_ALIAS);
-		PagesCollection.contactListPage.swipeRightOnContact(1000, conversation);
+		PagesCollection.contactListPage.longSwipeRightOnContact(1000, conversation);
 	}
 
 }

@@ -242,6 +242,13 @@ public class ContactListPage extends IOSPage {
 				findNameInContactList(contact), time, 70, 50);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
+	
+	public IOSPage longSwipeRightOnContact(int time, String contact)
+			throws Exception {
+		DriverUtils.swipeRight(this.getDriver(),
+				findNameInContactList(contact), time);
+		return returnBySwipe(SwipeDirection.RIGHT);
+	}
 
 	private String getFirstConversationName() {
 		String text = firstChatInChatListTextField.getText();
