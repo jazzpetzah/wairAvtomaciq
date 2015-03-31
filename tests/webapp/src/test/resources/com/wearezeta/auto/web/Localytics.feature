@@ -3,7 +3,7 @@ Feature: Localytics
 #***************************************************
 # Start of regFailed event
 #***************************************************
-  @localytics @torun
+  @localytics @staging @id2155
   Scenario Outline: Verify 'regFailed:reason=The given e-mail address or phone number is in use.' stats
     Given I take snapshot of <AttrName> attribute count
     Given I see invitation page
@@ -34,7 +34,7 @@ Feature: Localytics
 #   regAddedPicture:source=fromCarousel
 #   regAddedPicture:source=fromCamera -> probably, not possible
 
-  @localytics @torun
+  @localytics @staging @id2156  
   Scenario Outline: Verify 'regAddedPicture:source=fromPhotoLibrary' stats
     Given I take snapshot of <AttrName> attribute count
     Given There is 1 user where <Name> is me without avatar picture
@@ -62,7 +62,7 @@ Feature: Localytics
 #        "incomingCallsAcceptedActual",
 #        "voiceCallsInitiatedActual",
 
-  @torun @localytics
+  @staging @localytics @id2159
   Scenario Outline: Verify "session:connectRequestsSentActual=1" stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
@@ -82,7 +82,7 @@ Feature: Localytics
       | Login      | Password      | Name      | Contact   | ContactEmail | AttrName                            |
       | user1Email | user1Password | user1Name | user2Name | user2Email   | session:connectRequestsSentActual=1 |
 
-  @torun @localytics
+  @staging @localytics @id2160
   Scenario Outline: Verify "session:totalOutgoingConnectionRequestsActual=1" stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
@@ -96,7 +96,7 @@ Feature: Localytics
       | Login      | Password      | Name      | Contact    | AttrName                                        |
       | user1Email | user1Password | user1Name | user2Name  | session:totalOutgoingConnectionRequestsActual=1 |
 
-  @torun @localytics
+  @staging @localytics @id2160
   Scenario Outline: Verify "session:totalIncomingConnectionRequestsActual=1" stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
@@ -110,7 +110,7 @@ Feature: Localytics
       | Login      | Password      | Name      | Contact   | AttrName                                        |
       | user1Email | user1Password | user1Name | user2Name | session:totalIncomingConnectionRequestsActual=1 |
 
-  @torun @localytics
+  @staging @localytics @id2161
   Scenario Outline: Verify "session:connectRequestsAcceptedActual=1" stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
@@ -127,7 +127,7 @@ Feature: Localytics
       | Login      | Password      | Name      | Contact   | AttrName                                |
       | user1Email | user1Password | user1Name | user2Name | session:connectRequestsAcceptedActual=1 |
 
-  @torun @localytics
+  @staging @localytics @id2162
   Scenario Outline: Verify "session:pingsSentActual=1" stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
@@ -143,7 +143,7 @@ Feature: Localytics
       | Login      | Password      | Name      | Contact   | PING   | AttrName                  |
       | user1Email | user1Password | user1Name | user2Name | pinged | session:pingsSentActual=1 |
 
-  @torun @localytics
+  @staging @localytics @id2163
   Scenario Outline: Verify "session:totalContactsActual=3" stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 4 users where <Name> is me
@@ -156,7 +156,7 @@ Feature: Localytics
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | AttrName                      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | session:totalContactsActual=3 |
 
-  @torun @localytics
+  @staging @localytics @id2164
   Scenario Outline: Verify "session:textMessagesSentActual=5" stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
@@ -185,7 +185,7 @@ Feature: Localytics
       | Login      | Password      | Name      | Contact   | AttrName                         |
       | user1Email | user1Password | user1Name | user2Name | session:textMessagesSentActual=5 |
 
-  @torun @localytics
+  @staging @localytics @id2165
   Scenario Outline: Verify "session:totalGroupConversationsActual=2" stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 4 users where <Name> is me
@@ -209,7 +209,7 @@ Feature: Localytics
 # Start of regSucceeded event
 #***************************************************
 
-  @torun @localytics
+  @staging @localytics @id2166
   Scenario Outline: Verify "regSucceeded" stats
     Given I take snapshot of <EventName> event count
     Given I see invitation page
@@ -245,7 +245,7 @@ Feature: Localytics
 # Common verification
 #***************************************************
 
-  @torun @localytics
+  @staging @localytics
   Scenario Outline: Verify count of each attribute is increased
     Then I verify the count of <AttrName> attribute has been increased within 300 seconds
 
@@ -263,7 +263,7 @@ Feature: Localytics
       | session:textMessagesSentActual=5                                     |
       | session:totalGroupConversationsActual=2                              |
 
-  @torun @localytics
+  @staging @localytics
   Scenario Outline: Verify count of each event is increased
     Then I verify the count of <EventName> event has been increased within 600 seconds
 

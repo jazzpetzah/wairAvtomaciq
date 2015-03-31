@@ -215,7 +215,7 @@ public class CommonWebAppSteps {
 	 * Creates specified number of users and sets user with specified name as
 	 * main user. Avatar picture for Self user is set automatically
 	 * 
-	 * @step. ^There (?:is|are) (\\d+) users? where (.*) is me$"
+	 * @step. ^There (?:is|are) (\\d+) users? where (.*) is me$
 	 * 
 	 * @param count
 	 *            number of users to create
@@ -381,7 +381,7 @@ public class CommonWebAppSteps {
 	/**
 	 * Wait for specified amount of seconds
 	 * 
-	 * @step. "^I wait for (.*) seconds?$
+	 * @step. ^I wait for (.*) seconds?$
 	 * 
 	 * @param seconds
 	 * @throws NumberFormatException
