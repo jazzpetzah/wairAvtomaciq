@@ -67,7 +67,7 @@ Feature: Localytics
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
-    And I see my name in Contact list
+    And I see my name on top of Contact list
     And I wait up to 15 seconds until <ContactEmail> exists in backend search results
     When I open People Picker from Contact List
     And I type <ContactEmail> in search field of People Picker
@@ -88,7 +88,7 @@ Feature: Localytics
     Given There are 2 users where <Name> is me
     Given I have sent connection request to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name in Contact list
+    And I see my name on top of Contact list
     And I see Contact list with name <Contact>
     And I wait for 65 seconds
 
@@ -102,7 +102,7 @@ Feature: Localytics
     Given There are 2 users where <Name> is me
     Given <Contact> has sent connection request to Me
     Given I Sign in using login <Login> and password <Password>
-    And I see my name in Contact list
+    And I see my name on top of Contact list
     And I see Contact list with name <Contact>
     And I wait for 65 seconds
 
@@ -116,7 +116,7 @@ Feature: Localytics
     Given There are 2 users where <Name> is me
     Given <Contact> has sent connection request to Me
     Given I Sign in using login <Login> and password <Password>
-    And I see my name in Contact list
+    And I see my name on top of Contact list
     And I see connection request
     And I open connection requests list
     And I accept connection request from user <Contact>
@@ -133,7 +133,7 @@ Feature: Localytics
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name in Contact list
+    And I see my name on top of Contact list
     And I open conversation with <Contact>
     When I click ping button  
     Then I see ping message <PING>
@@ -149,7 +149,7 @@ Feature: Localytics
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name in Contact list
+    And I see my name on top of Contact list
     And I wait for 65 seconds
 
     Examples: 
@@ -162,7 +162,7 @@ Feature: Localytics
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name in Contact list
+    And I see my name on top of Contact list
     And I open conversation with <Contact>
     When I write random message
     And I send message
@@ -193,7 +193,7 @@ Feature: Localytics
     Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
     Given Myself has group chat <ChatName2> with <Contact2>,<Contact3>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name in Contact list
+    And I see my name on top of Contact list
     And I wait for 65 seconds
 
     Examples: 
