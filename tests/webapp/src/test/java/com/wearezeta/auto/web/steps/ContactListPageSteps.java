@@ -29,7 +29,7 @@ public class ContactListPageSteps {
 	 *             if self user name does not appear at the top of Contact List
 	 */
 	@Given("^I see my name on top of Contact list$")
-	public void ISeeMyNameInContactList() throws Exception {
+	public void ISeeMyNameOnTopOfContactList() throws Exception {
 		PagesCollection.peoplePickerPage = PagesCollection.contactListPage
 				.isHiddenByPeoplePicker();
 		if (PagesCollection.peoplePickerPage != null) {
