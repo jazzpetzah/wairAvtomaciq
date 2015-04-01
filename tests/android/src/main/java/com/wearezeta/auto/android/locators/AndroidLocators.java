@@ -197,6 +197,9 @@ public final class AndroidLocators {
 		public static final String idConvList = LOCATORS_PACKAGE
 				+ ":id/pv__conv_list";
 
+		public static final String idMissedCallIcon = LOCATORS_PACKAGE
+				+ ":id/sci__list__missed_call";
+		
 		public static final String idConfirmCancelButtonPicker = LOCATORS_PACKAGE
 				+ ":id/zb__confirm_dialog__cancel_button";
 
@@ -271,6 +274,9 @@ public final class AndroidLocators {
 
 		public static final String idMediaBarControl = LOCATORS_PACKAGE
 				+ ":id/gtv__conversation_header__mediabar__control";
+		
+		public static final String idMissedCallMesage = LOCATORS_PACKAGE
+				+ ":id/ttv__row_conversation__missed_call";
 
 		public static final String idMediaBarClose = LOCATORS_PACKAGE
 				+ ":id/gtv__conversation_header__mediabar__cancel";

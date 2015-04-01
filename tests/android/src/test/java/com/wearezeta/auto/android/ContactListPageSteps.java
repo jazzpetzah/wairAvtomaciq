@@ -263,4 +263,16 @@ public class ContactListPageSteps {
 		Assert.assertTrue(PagesCollection.contactListPage
 				.isPlayPauseMediaButtonVisible());
 	}
+	
+	/**
+	 * Check that conversation list contains missed call icon
+	 * 
+	 * @step. ^Conversation List contains missed call icon$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^Conversation List contains missed call icon$")
+	public void ThenISeeMissedCallIcon() throws Exception {
+		Assert.assertTrue(PagesCollection.contactListPage.isVisibleMissedCallIcon());
+	}
 }
