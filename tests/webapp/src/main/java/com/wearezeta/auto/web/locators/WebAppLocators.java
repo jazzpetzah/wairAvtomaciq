@@ -40,7 +40,7 @@ public final class WebAppLocators {
 		public static final String cssParentContactListItem = "div#conversation-list";
 
 		public static final String cssIncomingPendingConvoItem = cssParentContactListItem
-				+ " div[data-uie-name=item-pending-request]";
+				+ " [data-uie-name=item-pending-request]";
 
 		public static final String xpathOpenArchivedConvosButton = "//*[@data-uie-name='go-archive']";
 
