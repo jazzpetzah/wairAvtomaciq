@@ -28,7 +28,7 @@ public final class IOSLocators {
 	
 	public static final String classNameContactListNames = "UIACollectionCell";
 	
-	public static final String classNameContactList = "UIAStaticText";
+	public static final String xpathNameContactList = "//UIACollectionCell/UIAStaticText";
 	
 	public static final String xpathContactListCells = "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell";
 	
