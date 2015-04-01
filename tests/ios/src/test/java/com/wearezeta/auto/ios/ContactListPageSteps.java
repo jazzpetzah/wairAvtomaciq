@@ -381,7 +381,25 @@ public class ContactListPageSteps {
 		boolean isSilenced = PagesCollection.contactListPage
 				.isConversationSilenced(conversation);
 		Assert.assertTrue("Conversation is not silenced", isSilenced);
-
+	}
+	
+	/**
+	 * Verifies, that the conversation got silenced before from backend
+	 * 
+	 * @step. ^I see conversation (.*) got silenced before$
+	 * 
+	 * @param conversation
+	 *            conversation name to silence
+	 * @throws Exception
+	 * 
+	 */
+	@Then("^I see conversation (.*) got silenced before$")
+	public void ISeeConversationGotSilencedBefore(String conversation)
+			throws Exception {
+		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
+		boolean isSilenced = PagesCollection.contactListPage
+				.isConversationSilencedBefore(conversation);
+		Assert.assertTrue("Conversation is not silenced", isSilenced);
 	}
 
 	/**
@@ -398,7 +416,8 @@ public class ContactListPageSteps {
 	public void ISeeConversationIsUnSilenced(String conversation)
 			throws Exception {
 		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
-		boolean isSilenced = PagesCollection.contactListPage
+		boolean isSilenced = 
+				PagesCollection.contactListPage
 				.isConversationSilenced(conversation);
 		Assert.assertFalse("Conversation is silenced", isSilenced);
 

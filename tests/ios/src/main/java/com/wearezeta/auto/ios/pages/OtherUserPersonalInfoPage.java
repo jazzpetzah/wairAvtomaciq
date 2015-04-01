@@ -46,6 +46,12 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameSilenceConversationButton)
 	private WebElement silenceMenuButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathSilenceConversationButton)
+	private WebElement menuSilenceButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameUnsilenceConversationButton)
+	private WebElement notifyMenuButton;
 
 	public OtherUserPersonalInfoPage(ZetaIOSDriver driver, WebDriverWait wait)
 			throws Exception {
@@ -137,7 +143,11 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 	}
 	
 	public void clickSilenceMenuButton() throws InterruptedException{
-		silenceMenuButton.click();
+		menuSilenceButton.click();
+	}
+	
+	public void clickNotifyMenuButton() throws InterruptedException{
+		notifyMenuButton.click();
         Thread.sleep(2000);
 	}
 

@@ -67,23 +67,23 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   | Contact2 |
       | user1Email | user1Password | user1Name | user2Name | user3Name|
 
-  @staging @id1335
-  Scenario Outline: Verify unsilence the conversation
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
-    Given User <Contact> change  name to <NewName>
-    Given User <Name> change  accent color to <Color>
-    Given <Name> silenced conversation with <Contact>
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    And I see conversation <Contact> is silenced
-    And I swipe right on a <Contact>
-    And I unsilence conversation <Contact>
-    Then I see conversation <Contact> is unsilenced
+ # @staging @id1335
+  #Scenario Outline: Verify unsilence the conversation
+    #Given There are 2 users where <Name> is me
+    #Given <Contact> is connected to <Name>
+    #Given User <Contact> change  name to <NewName>
+    #Given User <Name> change  accent color to <Color>
+    #Given <Name> silenced conversation with <Contact>
+   # Given I Sign in using login <Login> and password <Password>
+    #And I see Contact list with my name <Name>
+    #And I see conversation <Contact> is silenced
+    #And I swipe right on a <Contact>
+    #And I unsilence conversation <Contact>
+    #Then I see conversation <Contact> is unsilenced
 
-    Examples: 
-      | Login      | Password      | Name      | Contact   | Color        | NewName |
-      | user1Email | user1Password | user1Name | user2Name | BrightOrange | SILENCE |
+   # Examples: 
+      #| Login      | Password      | Name      | Contact   | Color        | NewName |
+      #| user1Email | user1Password | user1Name | user2Name | BrightOrange | SILENCE |
 
   @regression @id1075 @id2153
   Scenario Outline: Verify messages are marked as read with disappearing unread dot

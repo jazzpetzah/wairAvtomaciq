@@ -363,9 +363,9 @@ Feature: People View
   @torun @regression @id1462
   Scenario Outline: Verify silence the conversation
     Given There are 2 users where <Name> is me
+    Given User <Name> change  accent color to <Color>
     Given <Contact> is connected to <Name>
     Given User <Contact> change  name to <NewName>
-    Given User <Name> change  accent color to <Color>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -380,5 +380,30 @@ Feature: People View
     Then I see conversation <Contact> is silenced
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Color        | NewName |
-      | user1Email | user1Password | user1Name | user2Name | BrightOrange | SILENCE |
+      | Login      | Password      | Name      | Contact   | Color  | NewName |
+      | user1Email | user1Password | user1Name | user2Name | Violet | SILENCE |
+      
+  @staging @id1335
+  Scenario Outline: Verify unsilence the conversation
+    Given There are 2 users where <Name> is me
+    Given User <Name> change accent color to <Color>
+    Given <Contact> is connected to <Name>
+    Given User <Contact> change  name to <NewName>
+    Given <Name> silenced conversation with <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    And I see conversation <Contact> got silenced before
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I open conversation details
+    And I press conversation menu button
+    And I press menu notify button
+    And I close user profile page to return to dialog page
+    And I see dialog page
+    And I swipe right on Dialog page
+    And I see Contact list with my name <Name>
+    #Then I see conversation <Contact> is unsilenced
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Color  | NewName |
+      | user1Email | user1Password | user1Name | user2Name | Violet | SILENCE |

@@ -108,5 +108,16 @@ public class OtherUserPersonalInfoPageSteps {
 	public void IPressMenuSilenceButton() throws InterruptedException{
 		PagesCollection.otherUserPersonalInfoPage.clickSilenceMenuButton();
 	}
+	
+	/**
+	 * Presses the notify button in the conversation detail menu
+	 * 
+	 * @step. ^I press menu notify button$
+	 * @throws InterruptedException 
+	 */
+	@When("^I press menu notify button$")
+	public void IPressMenuNotifyButton() throws InterruptedException{
+		PagesCollection.otherUserPersonalInfoPage.clickNotifyMenuButton();
+	}
 
 }
