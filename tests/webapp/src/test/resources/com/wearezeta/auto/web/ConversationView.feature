@@ -5,7 +5,7 @@ Feature: Conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name in Contact list
+    And I see my name on top of Contact list
     And I open conversation with <Contact>
     When I write random message
     And I send message
@@ -21,7 +21,7 @@ Feature: Conversation
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name in Contact list
+    And I see my name on top of Contact list
     And I open conversation with <ChatName>
     When I write random message
     And I send message
@@ -36,7 +36,7 @@ Feature: Conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name in Contact list
+    And I see my name on top of Contact list
     When I archive conversation <Contact>
     Then I do not see Contact list with name <Contact>
     When I open archive
@@ -52,7 +52,7 @@ Feature: Conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name in Contact list
+    And I see my name on top of Contact list
     And I open conversation with <Contact>
     And I send picture <PictureName> to single conversation
     Then I see sent picture <PictureName> in the conversation view
@@ -67,7 +67,7 @@ Feature: Conversation
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name in Contact list
+    And I see my name on top of Contact list
     And I open conversation with <ChatName>
     When I send picture <PictureName> to group conversation
     Then I see sent picture <PictureName> in the conversation view
@@ -81,7 +81,7 @@ Feature: Conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name in Contact list
+    And I see my name on top of Contact list
     When I set muted state for conversation <Contact>
     And I open self profile
     Then I see that conversation <Contact> is muted
@@ -96,7 +96,7 @@ Feature: Conversation
     Given Myself is connected to <Contact>
     Given <Name> muted conversation with <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name in Contact list
+    And I see my name on top of Contact list
     And I see that conversation <Contact> is muted
     When I set unmuted state for conversation <Contact>
     And I open self profile
@@ -111,7 +111,7 @@ Feature: Conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name in Contact list
+    And I see my name on top of Contact list
     And I open conversation with <Contact>
 	When I click ping button
 	Then I see ping message <PING>

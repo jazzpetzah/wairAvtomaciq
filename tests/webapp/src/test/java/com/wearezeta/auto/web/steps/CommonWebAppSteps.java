@@ -1,5 +1,7 @@
 package com.wearezeta.auto.web.steps;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.logging.Level;
 
 import org.apache.commons.lang3.NotImplementedException;
@@ -23,6 +25,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.PerformanceCommon;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
+import com.wearezeta.auto.common.calling.CallingUtil;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -33,10 +36,13 @@ import com.wearezeta.auto.web.pages.InvitationCodePage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.WebPage;
 
+import cucumber.api.PendingException;
+import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
+import cucumber.api.junit.Cucumber;
 
 public class CommonWebAppSteps {
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
@@ -62,6 +68,16 @@ public class CommonWebAppSteps {
 		return WebCommonUtils
 				.getWebAppBrowserNameFromConfig(CommonWebAppSteps.class);
 	}
+	
+	private static void setCustomChromeProfile(DesiredCapabilities capabilities,
+			String browserPlatform) throws Exception {
+		ChromeOptions options = new ChromeOptions();
+		// simulate a fake webcam and mic for testing
+		options.addArguments("use-fake-device-for-media-stream");
+		// allow skipping the security prompt for sharing the media device
+		options.addArguments("use-fake-ui-for-media-stream");
+		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+	}
 
 	private static void setCustomOperaProfile(DesiredCapabilities capabilities,
 			String browserPlatform) throws Exception {
@@ -69,12 +85,18 @@ public class CommonWebAppSteps {
 				.getOperaProfileRoot(browserPlatform);
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("user-data-dir=" + userProfileRoot);
+		// simulate a fake webcam and mic for testing
+		options.addArguments("use-fake-device-for-media-stream");
+		// allow skipping the security prompt for sharing the media device
+		options.addArguments("use-fake-ui-for-media-stream");
 		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 	}
 
 	private static void setCustomFirefoxProfile(DesiredCapabilities capabilities) {
 		FirefoxProfile profile = new FirefoxProfile();
 		profile.setPreference("dom.webnotifications.enabled", false);
+		// allow skipping the security prompt for sharing the media device
+		profile.setPreference("media.navigator.permission.disabled", true);
 		capabilities.setCapability("firefox_profile", profile);
 	}
 
@@ -118,6 +140,8 @@ public class CommonWebAppSteps {
 				// This is to fix Desktop Notifications alerts appearance in
 				// Opera
 				setCustomOperaProfile(capabilities, webPlatformName);
+			} else {
+				setCustomChromeProfile(capabilities, webPlatformName);
 			}
 			break;
 		case "firefox":
@@ -211,12 +235,19 @@ public class CommonWebAppSteps {
 			}
 		}
 	}
+	
+	@Given("^my browser supports calling$")
+	public void MyBrowserSupportsCalling() throws Exception {
+		if(!getBrowser().equals("chrome") && !getBrowser().equals("firefox")) {
+			throw new PendingException("Browser " + getBrowser() + " does not support calling.");
+		}
+	}
 
 	/**
 	 * Creates specified number of users and sets user with specified name as
 	 * main user. Avatar picture for Self user is set automatically
 	 * 
-	 * @step. ^There \\w+ (\\d+) user[s]* where (.*) is me$
+	 * @step. ^There (?:is|are) (\\d+) users? where (.*) is me$
 	 * 
 	 * @param count
 	 *            number of users to create
@@ -225,7 +256,7 @@ public class CommonWebAppSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
+	@Given("^There (?:is|are) (\\d+) users? where (.*) is me$")
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
 			throws Exception {
 		commonSteps.ThereAreNUsersWhereXIsMe(count, myNameAlias);
@@ -236,7 +267,7 @@ public class CommonWebAppSteps {
 	 * Creates specified number of users and sets user with specified name as
 	 * main user. Avatar picture for Self user is NOT set automatically
 	 * 
-	 * @step. ^There \\w+ (\\d+) user[s]* where (.*) is me without avatar
+	 * @step. ^There (?:is|are) (\\d+) users? where (.*) is me without avatar
 	 *        picture$
 	 * 
 	 * @param count
@@ -246,7 +277,7 @@ public class CommonWebAppSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^There \\w+ (\\d+) user[s]* where (.*) is me without avatar picture$")
+	@Given("^There (?:is|are) (\\d+) users? where (.*) is me without avatar picture$")
 	public void ThereAreNUsersWhereXIsMeWithoutAvatar(int count,
 			String myNameAlias) throws Exception {
 		commonSteps.ThereAreNUsersWhereXIsMe(count, myNameAlias);
@@ -255,6 +286,8 @@ public class CommonWebAppSteps {
 	/**
 	 * Set avatar picture for a particular user
 	 * 
+	 * @step. ^User (\\w+) changes? avatar picture to (.*)
+	 * 
 	 * @param userNameAlias
 	 *            user name/alias
 	 * @param path
@@ -262,7 +295,7 @@ public class CommonWebAppSteps {
 	 *            the default picture
 	 * @throws Exception
 	 */
-	@When("^User (\\w+) change avatar picture to (.*)$")
+	@When("^User (\\w+) changes? avatar picture to (.*)")
 	public void IChangeUserAvatarPicture(String userNameAlias, String path)
 			throws Exception {
 		String avatar = null;
@@ -279,7 +312,7 @@ public class CommonWebAppSteps {
 	/**
 	 * Creates connection between to users
 	 * 
-	 * @step. ^(.*) is connected to (.*)$
+	 * @step. ^(.*) is connected to (.*)
 	 * 
 	 * @param userFromNameAlias
 	 *            user which sends connection request
@@ -288,7 +321,7 @@ public class CommonWebAppSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^(.*) is connected to (.*)$")
+	@Given("^(.*) is connected to (.*)")
 	public void UserIsConnectedTo(String userFromNameAlias,
 			String usersToNameAliases) throws Exception {
 		commonSteps.UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
@@ -297,7 +330,7 @@ public class CommonWebAppSteps {
 	/**
 	 * Creates group chat with specified users
 	 * 
-	 * @step. ^(.*) has group chat (.*) with (.*)$
+	 * @step. ^(.*) (?:has|have) group chat (.*) with (.*)
 	 * 
 	 * @param chatOwnerNameAlias
 	 *            user that creates group chat
@@ -308,7 +341,7 @@ public class CommonWebAppSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^(.*) has group chat (.*) with (.*)$")
+	@Given("^(.*) (?:has|have) group chat (.*) with (.*)")
 	public void UserHasGroupChatWithContacts(String chatOwnerNameAlias,
 			String chatName, String otherParticipantsNameAlises)
 			throws Exception {
@@ -336,7 +369,7 @@ public class CommonWebAppSteps {
 	/**
 	 * Sends connection request by one user to another
 	 * 
-	 * @step. ^(.*) has sent connection request to (.*)$
+	 * @step. ^(.*) (?:has|have) sent connection request to (.*)
 	 * 
 	 * @param userFromNameAlias
 	 *            user that sends connection request
@@ -345,7 +378,7 @@ public class CommonWebAppSteps {
 	 *
 	 * @throws Exception
 	 */
-	@Given("^(.*) has sent connection request to (.*)$")
+	@Given("^(.*) (?:has|have) sent connection request to (.*)")
 	public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
 			String usersToNameAliases) throws Throwable {
 		commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
@@ -353,10 +386,19 @@ public class CommonWebAppSteps {
 	}
 
 	/**
+	 * TODO
+	 */
+	@Given("^(.*) is waiting for call to accept it$")
+	public void GivenContactIsWaitingForCallToAcceptIt(String userNameAlias)
+			throws Throwable {
+		commonSteps.waitForCallToAccept(userNameAlias);
+	}
+
+	/**
 	 * Pings BackEnd until user is indexed and avialable in search
 	 * 
-	 * @step. ^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in
-	 *        backend search results$
+	 * @step. ^(\\w+) waits? up to (\\d+) seconds? until (.*) exists in backend
+	 *        search results$
 	 * 
 	 * @param searchByNameAlias
 	 *            user name to search string
@@ -369,7 +411,7 @@ public class CommonWebAppSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in backend search results$")
+	@Given("^(\\w+) waits? up to (\\d+) seconds? until (.*) exists in backend search results$")
 	public void UserWaitsUntilContactExistsInHisSearchResults(
 			String searchByNameAlias, int timeout, String query)
 			throws Exception {
@@ -380,13 +422,13 @@ public class CommonWebAppSteps {
 	/**
 	 * Wait for specified amount of seconds
 	 * 
-	 * @step. ^I wait for (.*) seconds$
+	 * @step. ^I wait for (.*) seconds?$
 	 * 
 	 * @param seconds
 	 * @throws NumberFormatException
 	 * @throws InterruptedException
 	 */
-	@When("^I wait for (.*) seconds$")
+	@When("^I wait for (.*) seconds?$")
 	public void WaitForTime(String seconds) throws NumberFormatException,
 			InterruptedException {
 		commonSteps.WaitForTime(seconds);
@@ -435,5 +477,10 @@ public class CommonWebAppSteps {
 		}
 
 		commonSteps.getUserManager().resetUsers();
+	}
+	
+	@After("@blender")
+	public void afterScenario() throws IOException, GeneralSecurityException {
+	    CallingUtil.deleteAllBlenderInstances();
 	}
 }

@@ -431,4 +431,16 @@ public class CommonUtils {
 		}
 		return full;
 	}
+	
+	public static void defineNoHeadlessEnvironment() {
+		System.setProperty("java.awt.headless", "false");
+	}
+
+	public static void disableSeleniumLogs() {
+		System.setProperty("org.apache.commons.logging.Log",
+				"org.apache.commons.logging.impl.SimpleLog");
+		System.setProperty(
+				"org.apache.commons.logging.simplelog.log.org.apache.http",
+				"warn");
+	}
 }

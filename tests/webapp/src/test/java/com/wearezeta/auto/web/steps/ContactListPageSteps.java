@@ -21,15 +21,15 @@ public class ContactListPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
-	 * Checks that we can see signed in user in Contact List
+	 * Checks that we can see signed in user on top of Contact List
 	 * 
-	 * @step. ^I see my name in Contact list$
+	 * @step. ^I see my name on top of Contact list$
 	 * 
 	 * @throws AssertionError
 	 *             if self user name does not appear at the top of Contact List
 	 */
-	@Given("^I see my name in Contact list$")
-	public void ISeeMyNameInContactList() throws Exception {
+	@Given("^I see my name on top of Contact list$")
+	public void ISeeMyNameOnTopOfContactList() throws Exception {
 		PagesCollection.peoplePickerPage = PagesCollection.contactListPage
 				.isHiddenByPeoplePicker();
 		if (PagesCollection.peoplePickerPage != null) {

@@ -1,10 +1,6 @@
-package com.wearezeta.auto.osx.pages;
+package com.wearezeta.auto.osx.pages.welcome;
 
-import java.util.Map;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-
-import javax.mail.Message;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -19,16 +15,14 @@ import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.common.base.Function;
-import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.osx.common.OSXCommonUtils;
-import com.wearezeta.auto.osx.common.OSXConstants;
 import com.wearezeta.auto.osx.locators.OSXLocators;
+import com.wearezeta.auto.osx.pages.OSXPage;
 
 public class RegistrationPage extends OSXPage {
 
+	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(RegistrationPage.class
 			.getSimpleName());
 
@@ -44,9 +38,6 @@ public class RegistrationPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.RegistrationPage.idCreateAccountButton)
 	private WebElement createAccountButton;
 
-	@FindBy(how = How.ID, using = OSXLocators.idConfirmationRequestedText)
-	private WebElement confirmationRequestedField;
-
 	@FindBy(how = How.ID, using = OSXLocators.idRegistrationTakePictureButton)
 	private WebElement takePictureButton;
 
@@ -55,10 +46,6 @@ public class RegistrationPage extends OSXPage {
 
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathRegistrationPictureConfirmationButton)
 	private WebElement confirmChosenPictureButton;
-
-	private Future<Message> activationMessage;
-
-	private String activationResponse = null;
 
 	public RegistrationPage(ZetaOSXDriver driver, WebDriverWait wait)
 			throws Exception {
@@ -82,7 +69,10 @@ public class RegistrationPage extends OSXPage {
 		passwordField.sendKeys(password);
 	}
 
-	public void createAccount() throws Exception {
+	public VerificationPage createAccount(String email) throws Exception {
+		VerificationPage verificationPage = new VerificationPage(
+				this.getDriver(), this.getWait(), email);
+
 		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(5,
 				TimeUnit.SECONDS).pollingEvery(1, TimeUnit.SECONDS);
 
@@ -98,6 +88,7 @@ public class RegistrationPage extends OSXPage {
 		}
 
 		createAccountButton.click();
+		return verificationPage;
 	}
 
 	public void chooseToTakePicture() {
@@ -113,11 +104,6 @@ public class RegistrationPage extends OSXPage {
 		confirmChosenPictureButton.click();
 	}
 
-	public boolean isConfirmationRequested() throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver,
-				By.id(OSXLocators.idConfirmationRequestedText), 60);
-	}
-
 	public boolean isInvalidEmailMessageAppear() {
 		passwordField.click();
 		emailField.click();
@@ -129,31 +115,4 @@ public class RegistrationPage extends OSXPage {
 		}
 	}
 
-	public void activateUserFromBrowser() throws Exception {
-		String activationLink = BackendAPIWrappers
-				.getUserActivationLink(this.activationMessage);
-		String script = String
-				.format(OSXCommonUtils
-						.readTextFileFromResources(OSXConstants.Scripts.ACTIVATE_USER_SCRIPT),
-						activationLink);
-
-		@SuppressWarnings("unchecked")
-		Map<String, String> value = (Map<String, String>) driver
-				.executeScript(script);
-		activationResponse = value.get("result");
-		log.debug(activationResponse);
-	}
-
-	public boolean isUserActivated() {
-		return activationResponse
-				.contains(OSXLocators.RegistrationPage.ACTIVATION_RESPONSE_VERIFIED);
-	}
-
-	public void setActivationMessage(Future<Message> activationMessage) {
-		this.activationMessage = activationMessage;
-	}
-
-	public Future<Message> getActivationMessage() {
-		return activationMessage;
-	}
 }

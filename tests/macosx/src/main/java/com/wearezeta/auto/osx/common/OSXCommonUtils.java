@@ -15,27 +15,27 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.BuildVersionInfo;
 import com.wearezeta.auto.common.misc.ClientDeviceInfo;
-import com.wearezeta.auto.osx.pages.ContactListPage;
 
 public class OSXCommonUtils extends CommonUtils {
 	private static final int PREFS_DAEMON_RESTART_TIMEOUT = 1000;
-	private static final String[] BACKEND_TYPE_DOMAIN_NAMES = new String[] {
-			"com.wearezeta.zclient.mac.development",
-			"com.wearezeta.zclient.mac.internal", "com.wearezeta.zclient.mac" };
-
-	public static final String APP_NAME = "Wire";
+	private static final String[] BACKEND_TYPE_DOMAIN_NAMES = ConfigurationDomainEnum.domainsList;
 
 	private static final Logger log = ZetaLogger.getLog(OSXCommonUtils.class
 			.getSimpleName());
 
-	public static String getZClientProcessName() throws Exception {
-		String getZClientProcess = CommonUtils
-				.getOsxApplicationPathFromConfig(ContactListPage.class);
-		File file = new File(getZClientProcess);
-		getZClientProcess = file.getName().replace(".app", "");
-		return getZClientProcess;
+	/*
+	 * Retrieves Wire process name from config
+	 */
+	public static String getWireProcessName() throws Exception {
+		String wireProcessName = OSXExecutionContext.wirePath;
+		File file = new File(wireProcessName);
+		wireProcessName = file.getName().replace(".app", "");
+		return wireProcessName;
 	}
 
+	/*
+	 * 
+	 */
 	public static String getOsXVersion() throws Exception {
 		String command = "sw_vers -productVersion";
 
@@ -79,12 +79,13 @@ public class OSXCommonUtils extends CommonUtils {
 	}
 
 	public static void deleteCacheFolder() throws Exception {
-		String command = "rm -rf " + System.getProperty("user.home")
-				+ "/Library/Containers/com.wearezeta.zclient.mac*";
+		String command = String.format(
+				"rm -rf %s/Library/Containers/com.wearezeta.zclient.mac*",
+				System.getProperty("user.home"));
 		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
 	}
 
-	public static void deleteZClientLoginFromKeychain() throws Exception {
+	public static void deleteWireLoginFromKeychain() throws Exception {
 		String command = "security delete-generic-password -s \"zeta staging-nginz-https.zinfra.io\"";
 
 		if (!getOsName().contains(OS_NAME_WINDOWS)) {
@@ -127,8 +128,9 @@ public class OSXCommonUtils extends CommonUtils {
 
 	private static void setZClientBackendForDomain(String domain, String bt)
 			throws Exception {
-		final String setBackendTypeCmd = "defaults write " + domain
-				+ " ZMBackendEnvironmentType -string " + bt;
+		final String setBackendTypeCmd = String.format(
+				"defaults write %s ZMBackendEnvironmentType -string %s",
+				domain, bt);
 		executeOsXCommand(new String[] { "/bin/bash", "-c", setBackendTypeCmd });
 	}
 
@@ -150,8 +152,8 @@ public class OSXCommonUtils extends CommonUtils {
 
 	private static boolean isBackendTypeSetForDomain(String domain, String bt)
 			throws Exception {
-		String command = "defaults read " + domain
-				+ " ZMBackendEnvironmentType";
+		String command = String.format(
+				"defaults read %s ZMBackendEnvironmentType", domain);
 		String result = executeOsXCommandWithOutput(new String[] { "/bin/bash",
 				"-c", command });
 		return result.contains(bt);

@@ -162,8 +162,14 @@ public final class WebAppLocators {
 		public static final String xpathImageMessageEntry = "//div[@class='message-asset-image']";
 
 		public static final String xpathPingButton = "//*[@data-uie-name='do-ping' or @data-uie-name='do-hot-ping']";
+		
+		public static final String xpathCallButton = "//*[@data-uie-name='do-call']";
+		
+		public static final String xpathTalkingHalo = "//*[contains(@class,'cc-halo-talking')]";
 
 		public static final String classPingMessage = "pinged";
+
+		public static final String xpathCloseButton = "//*[contains(@class,'cc-button')]//*[contains(@class,'icon-close')]";
 	}
 
 	public static final class ConnectToPage {

@@ -2,13 +2,10 @@ package com.wearezeta.auto.osx.steps;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -117,29 +114,8 @@ public class RegistrationPageSteps {
 	 */
 	@When("I submit registration data")
 	public void ISubmitRegistrationData() throws Exception {
-		Map<String, String> expectedHeaders = new HashMap<String, String>();
-		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
-		PagesCollection.registrationPage.setActivationMessage(IMAPSMailbox
-				.getInstance().getMessage(expectedHeaders,
-						BackendAPIWrappers.UI_ACTIVATION_TIMEOUT));
-
-		PagesCollection.registrationPage.createAccount();
-	}
-
-	/**
-	 * Checks that e-mail confirmation page appers after Create Account button
-	 * clicked
-	 * 
-	 * @step. I see confirmation page
-	 * @throws Exception
-	 * 
-	 * @throws AssertionError
-	 *             if confirmation page did not appear
-	 */
-	@Then("I see confirmation page")
-	public void ISeeConfirmationPage() throws Exception {
-		Assert.assertTrue(PagesCollection.registrationPage
-				.isConfirmationRequested());
+		PagesCollection.verificationPage = PagesCollection.registrationPage
+				.createAccount(this.userToRegister.getEmail());
 	}
 
 	/**
@@ -152,7 +128,7 @@ public class RegistrationPageSteps {
 	@Then("I verify registration address")
 	public void IVerifyRegistrationAddress() throws Exception {
 		BackendAPIWrappers
-				.activateRegisteredUser(PagesCollection.registrationPage
+				.activateRegisteredUser(PagesCollection.verificationPage
 						.getActivationMessage());
 	}
 
@@ -318,31 +294,5 @@ public class RegistrationPageSteps {
 				+ PagesCollection.registrationPage.getEnteredEmail()
 				+ "' but shouldn't be.", PagesCollection.registrationPage
 				.getEnteredEmail().equals(email.replaceAll(" ", "")));
-	}
-
-	/**
-	 * Opens activation link in browser and stores response message
-	 * 
-	 * @step. ^I open activation link in browser$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I open activation link in browser$")
-	public void IOpenActivationLinkInBrowser() throws Exception {
-		PagesCollection.registrationPage.activateUserFromBrowser();
-	}
-
-	/**
-	 * Checks that response message from activation using browser says that user
-	 * activated successfully
-	 * 
-	 * @step. ^I see that user activated$
-	 * 
-	 * @throws AssertionError
-	 *             if activation response different from expected on success
-	 */
-	@When("^I see that user activated$")
-	public void ISeeUserActivated() {
-		Assert.assertTrue(PagesCollection.registrationPage.isUserActivated());
 	}
 }

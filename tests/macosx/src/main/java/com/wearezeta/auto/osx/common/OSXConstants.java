@@ -1,6 +1,14 @@
 package com.wearezeta.auto.osx.common;
 
 public class OSXConstants {
+	
+	public static final class Apps {
+		
+		public static final String WIRE = "Wire";
+		
+		public static final String DOCK = "Dock";
+	}
+
 	public static final class Scripts {
 
 		private static final String SCRIPTS_FOLDER = "/scripts/";
