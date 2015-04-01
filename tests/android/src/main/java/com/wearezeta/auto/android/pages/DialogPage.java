@@ -47,6 +47,9 @@ public class DialogPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMessage")
 	private WebElement messageInList;
 	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMissedCallMesage")
+	private WebElement missedCallMessage;
+	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idCursorFrame")
 	private WebElement cursurFrame;
 
@@ -600,5 +603,10 @@ public class DialogPage extends AndroidPage {
 		refreshUITree();
 		mediaBarControl.click();
 
+	}
+
+	public String getMissedCallMessage() {
+		refreshUITree();
+		return missedCallMessage.getText();
 	}
 }
