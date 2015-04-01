@@ -1,6 +1,5 @@
 package com.wearezeta.auto.web.steps;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.RegistrationPage;
