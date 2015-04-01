@@ -131,16 +131,14 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 		return page;
 	}
 	
-	public void openConversationMenu(){
+	public void openConversationMenu() throws InterruptedException{
 		conversationMenuButton.click();
+		Thread.sleep(2000);
 	}
 	
-	public void clickSilenceMenuButton(){
-//		this.getWait().until(
-//				ExpectedConditions
-//						.elementToBeClickable(silenceMenuButton));
-//		silenceMenuButton.click();
-//		DriverUtils.mobileTapByCoordinates(this.getDriver(), silenceMenuButton);
+	public void clickSilenceMenuButton() throws InterruptedException{
+		silenceMenuButton.click();
+        Thread.sleep(2000);
 	}
 
 	@Override
