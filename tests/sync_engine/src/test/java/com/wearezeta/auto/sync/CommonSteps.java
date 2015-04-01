@@ -30,8 +30,8 @@ import cucumber.api.java.en.Then;
 public class CommonSteps {
 
 	static {
-		SyncEngineUtil.defineHeadlessEnvironment();
-		SyncEngineUtil.disableSeleniumLogs();
+		CommonUtils.defineNoHeadlessEnvironment();
+		CommonUtils.disableSeleniumLogs();
 	}
 
 	private static final Logger log = ZetaLogger.getLog(CommonSteps.class

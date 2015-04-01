@@ -2,13 +2,15 @@ Feature: Performance
 
   @performance
   Scenario Outline: Normal usage performance testing
-    Given There are <UsersNumber> shared users with name prefix <UserNamePrefix>
+    Given There are <UsersCount> shared users with name prefix <UserNamePrefix>
     Given User <Name> is Me
     Given Myself is connected to all other users
-    Given I Sign in using login <Login> and password <Password>
+    When I start performance monitoring for OS X
+    And I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
-    And I start testing cycle for <Time> minutes
+    And I start test cycle for <Time> minutes
+    Then I finish performance monitoring for OS X
 
     Examples: 
-      | Login      | Name          | Password      | Name      | UsersNumber | UserNamePrefix | Time  |
-      | user1Email | user1Name     | user1Password | user1Name | 11          | perf           | 5     |
+      | Login      | Name      | Password      | UsersCount        | Time            | UserNamePrefix |
+      | user1Email | user1Name | user1Password | ${perfUsersCount} | ${perfDuration} | perf           |

@@ -14,12 +14,10 @@ import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
-public class UserProfilePage extends OSXPage {
+public class UserProfilePage extends MainWirePage {
+	
 	private static final Logger log = ZetaLogger.getLog(UserProfilePage.class
 			.getSimpleName());
-
-	@FindBy(how = How.XPATH, using = OSXLocators.xpathMainWindow)
-	private WebElement mainWindow;
 
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathOpenUserPictureSettingsButton)
 	private WebElement userPictureButton;
@@ -61,7 +59,7 @@ public class UserProfilePage extends OSXPage {
 
 	public void openPictureSettings() throws Exception {
 		Actions builder = new Actions(driver);
-		builder.moveToElement(mainWindow).build().perform();
+		builder.moveToElement(window).build().perform();
 		userPictureButton.click();
 		DriverUtils.waitUntilElementAppears(driver,
 				By.xpath(OSXLocators.xpathPictureFromImageFile));

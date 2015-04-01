@@ -172,7 +172,7 @@ Feature: People View
       | Login      | Password      | Name      | GroupCreator | NonConnectedContact | GroupChatName |
       | user1Email | user1Password | user1Name | user2Name    | user3Name           | TESTCHAT      |
 
-  @regression @id393
+  @regression @id393 @id2174
   Scenario Outline: Verify you can start 1:1 conversation from a group conversation profile
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
