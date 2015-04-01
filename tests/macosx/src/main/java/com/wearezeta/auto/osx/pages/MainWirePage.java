@@ -1,10 +1,12 @@
 package com.wearezeta.auto.osx.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
@@ -25,6 +27,11 @@ public class MainWirePage extends OSXPage {
 	public MainWirePage(ZetaOSXDriver driver, WebDriverWait wait)
 			throws Exception {
 		super(driver, wait);
+	}
+
+	public boolean isMainWindowVisible() throws Exception {
+		return DriverUtils.waitUntilElementAppears(driver,
+				By.xpath(OSXLocators.MainWirePage.xpathWindow));
 	}
 
 	public void minimizeWindow() {

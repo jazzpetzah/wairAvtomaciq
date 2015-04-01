@@ -83,7 +83,7 @@ public class OSXWireInstance extends WireInstance {
 	public void signInImpl(String userAlias, String email, String password)
 			throws Throwable {
 		LoginPageSteps osxLoginPageSteps = new LoginPageSteps();
-		osxLoginPageSteps.GivenISignInUsingLoginAndPassword(email, password);
+		osxLoginPageSteps.ISignInUsingLoginAndPassword(email, password);
 		ContactListPageSteps osxClPageSteps = new ContactListPageSteps();
 		osxClPageSteps.ISeeMyNameInContactList(userAlias);
 	}
