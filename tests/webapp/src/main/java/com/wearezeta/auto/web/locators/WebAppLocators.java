@@ -39,7 +39,8 @@ public final class WebAppLocators {
 		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
 		public static final String cssParentContactListItem = "div#conversation-list";
 
-		public static final String cssIncomingPendingConvoItem = cssParentContactListItem + " div[data-uie-name=item-pending-request]";
+		public static final String cssIncomingPendingConvoItem = cssParentContactListItem
+				+ " div[data-uie-name=item-pending-request]";
 
 		public static final String xpathOpenArchivedConvosButton = "//*[@data-uie-name='go-archive']";
 
@@ -60,19 +61,19 @@ public final class WebAppLocators {
 
 		public static final String classMuteIcon = "conversation-muted";
 
-		public static final Function<String, String> xpathOptionsButtonByContactName = (
-				name) -> String.format(xpathConvoItemByNamePattern
-				+ "/parent::li//*[@data-uie-name='go-options']",
-				xpathParentContactListItem, name);
-
-		public static final String cssOptionsButton = ".text-theme.conversation-list-item [data-uie-name=go-options]";
+		// public static final String cssOptionsButton =
+		// ".text-theme.conversation-list-item [data-uie-name=go-options]";
 
 		public static final String cssSelfProfileEntry = "[data-uie-name=go-self-profile]";
 
 		public static final Function<String, String> cssContactListEntryByName = (
-				name) -> String
-				.format("%s div[data-uie-name=item-conversation][data-uie-value='%s']",
-						cssParentContactListItem, name);
+				name) -> String.format(
+				"%s div[data-uie-name=item-conversation][data-uie-value='%s']",
+				cssParentContactListItem, name);
+
+		public static final Function<String, String> cssOptionsButtonByContactName = (
+				name) -> String.format("%s [data-uie-name=go-options]",
+				cssContactListEntryByName.apply(name));
 
 		public static final String xpathContactListEntries = xpathParentContactListItem
 				+ "//li[//*[@data-uie-name='item-conversation'] and not(contains(@class, 'archived'))]";

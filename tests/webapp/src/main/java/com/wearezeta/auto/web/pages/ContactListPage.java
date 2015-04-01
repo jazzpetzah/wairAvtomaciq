@@ -234,14 +234,13 @@ public class ContactListPage extends WebPage {
 			// Safari workaround
 		}
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
-		final By locator = By
-				.xpath(WebAppLocators.ContactListPage.xpathOptionsButtonByContactName
-						.apply(conversationName));
+		final String cssOptionsButtonLocator = WebAppLocators.ContactListPage.cssOptionsButtonByContactName
+				.apply(conversationName);
+		final By locator = By.cssSelector(cssOptionsButtonLocator);
 		if (!DriverUtils.isElementDisplayed(driver, locator, 5)) {
 			// Safari workaround
 			final String showOptionsButtonJScript = "$('"
-					+ WebAppLocators.ContactListPage.cssOptionsButton
-					+ "').css({'opacity': '100'})";
+					+ cssOptionsButtonLocator + "').css({'opacity': '100'})";
 			driver.executeScript(showOptionsButtonJScript);
 			assert DriverUtils.isElementDisplayed(driver, locator);
 		}
