@@ -21,7 +21,7 @@
 		<driverTimeoutSeconds>30</driverTimeoutSeconds>
 		<defaultEmail>smoketester.webapp@wearezeta.com</defaultEmail>
 		<!-- chrome | firefox | ie | safari -->
-		<browser>firefox</browser>
+		<browser>chrome</browser>
 		<!-- mavericks | yosemite | win7 | win7_ie10 | win7_ie11 | <empty> -->
 		<platform></platform>
 		<!-- edge | staging | production -->
