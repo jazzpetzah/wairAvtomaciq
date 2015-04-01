@@ -37,9 +37,6 @@ public class GoogleComputeEngine {
 	private static final String ZONE = "europe-west1-c";
 	private static final String PROJECT = "wire-app";
 
-	/** Global instance of the HTTP transport. */
-	private static HttpTransport httpTransport;
-
 	/** Global instance of the JSON factory. */
 	private static final JsonFactory JSON_FACTORY = JacksonFactory
 			.getDefaultInstance();
@@ -61,7 +58,7 @@ public class GoogleComputeEngine {
 	public static void createInstanceAndStartBlender(String instanceName,
 			String username, String password) throws Exception {
 		// Create compute engine object for listing instances
-		httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+		HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
 		Compute compute = new Compute.Builder(httpTransport, JSON_FACTORY,
 				authorize()).setApplicationName(APPLICATION_NAME).build();
 
@@ -157,13 +154,13 @@ public class GoogleComputeEngine {
 
 		// Finally, let's run it.
 		log.debug(instance.toPrettyString());
-		waitForDisk2(compute, instanceName, ZONE, PROJECT);
+		waitForDisk(compute, instanceName, ZONE, PROJECT);
 		Operation op = ins.execute();
 		log.debug(op.toPrettyString());
-		waitForInstance2(compute, instanceName, ZONE, PROJECT);
+		waitForInstance(compute, instanceName, ZONE, PROJECT);
 	}
 
-	private static void waitForDisk2(Compute compute, String diskName,
+	private static void waitForDisk(Compute compute, String diskName,
 			String zone, String projectId) throws Exception {
 		long timeout = System.currentTimeMillis() + 2 * 60000L;
 		while (true) {
@@ -190,7 +187,7 @@ public class GoogleComputeEngine {
 		}
 	}
 
-	private static void waitForInstance2(Compute compute, String instanceName,
+	private static void waitForInstance(Compute compute, String instanceName,
 			String zone, String projectId) throws Exception {
 		long timeout = System.currentTimeMillis() + 2 * 60000L;
 		while (true) {
@@ -225,6 +222,7 @@ public class GoogleComputeEngine {
 
 	public static void deleteAllInstancesWhereNameContains(String pattern) throws IOException, GeneralSecurityException {
 		log.info("Delete blender instances on Google Compute Engine...");
+		HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
 		Compute compute = new Compute.Builder(httpTransport, JSON_FACTORY,
 				authorize()).setApplicationName(APPLICATION_NAME).build();
 		InstanceList instances = compute.instances().list(PROJECT, ZONE).execute();

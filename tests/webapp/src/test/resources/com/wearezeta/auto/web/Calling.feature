@@ -1,7 +1,8 @@
 Feature: Calling
 
-  @smoke @id1860 @blender
+  @staging @id1860 @blender
   Scenario Outline: Send text, image and knock while in the call with same user
+    Given my browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given <Contact> is waiting for call to accept it
@@ -22,8 +23,9 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | PING   | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | pinged | userpicture_landscape.jpg |
       
-  @torun @blender
+  @staging @blender
   Scenario Outline: Call a user twice in a row
+    Given my browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given <Contact> is waiting for call to accept it

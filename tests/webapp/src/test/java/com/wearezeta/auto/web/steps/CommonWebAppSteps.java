@@ -37,10 +37,13 @@ import com.wearezeta.auto.web.pages.InvitationCodePage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.WebPage;
 
+import cucumber.api.PendingException;
+import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
+import cucumber.api.junit.Cucumber;
 
 public class CommonWebAppSteps {
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
@@ -231,6 +234,13 @@ public class CommonWebAppSteps {
 						+ e.getMessage());
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	@Given("^my browser supports calling$")
+	public void MyBrowserSupportsCalling() throws Exception {
+		if(!getBrowser().equals("chrome") && !getBrowser().equals("firefox")) {
+			throw new PendingException("Browser " + getBrowser() + " does not support calling.");
 		}
 	}
 
