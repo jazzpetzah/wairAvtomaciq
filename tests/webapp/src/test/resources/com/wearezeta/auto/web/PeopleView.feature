@@ -17,11 +17,11 @@ Feature: People View
     And I see my name on top of Contact list
     Then I see Contact list with name <Contact1>,<Contact2>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @smoke @id1686
+  @smoke @id1686 @torun
   Scenario Outline: Verify you can access proﬁle information for the other participant in a 1to1 conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -34,7 +34,7 @@ Feature: People View
     And I see Add people button on Single User Profile popover
     And I see Block button on Single User Profile popover
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 

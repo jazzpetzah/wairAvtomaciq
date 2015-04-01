@@ -34,68 +34,55 @@ public final class WebAppLocators {
 
 	public static final class ContactListPage {
 
-		private static final String xpathConvoItemByNamePattern = "%s//li[@data-uie-name='item-conversation' and @data-uie-value='%s' and not(contains(@class, 'archived'))]";
+		private static final String xpathConvoItemByNamePattern = "%s//div[@data-uie-name='item-conversation' and @data-uie-value='%s' and not(contains(@class, 'archived'))]";
 
 		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
+		public static final String cssParentContactListItem = "div#conversation-list";
 
-		public static final String cssIncomingPendingConvoItem = "div#conversation-list li[data-uie-name=item-pending-request] div.center-column";
+		public static final String cssIncomingPendingConvoItem = cssParentContactListItem + " div[data-uie-name=item-pending-request]";
 
 		public static final String xpathOpenArchivedConvosButton = "//*[@data-uie-name='go-archive']";
 
 		public static final Function<String, String> xpathArchiveButtonByContactName = (
 				name) -> String.format(xpathConvoItemByNamePattern
-				+ "//*[@data-uie-name='do-archive']",
+				+ "/parent::li//*[@data-uie-name='do-archive']",
 				xpathParentContactListItem, name);
 
 		public static final Function<String, String> xpathMuteButtonByContactName = (
 				name) -> String.format(xpathConvoItemByNamePattern
-				+ "//*[@data-uie-name='do-silence']",
+				+ "/parent::li//*[@data-uie-name='do-silence']",
 				xpathParentContactListItem, name);
 
 		public static final Function<String, String> xpathUnmuteButtonByContactName = (
 				name) -> String.format(xpathConvoItemByNamePattern
-				+ "//*[@data-uie-name='do-notify']",
+				+ "/parent::li//*[@data-uie-name='do-notify']",
 				xpathParentContactListItem, name);
 
 		public static final String classMuteIcon = "conversation-muted";
 
 		public static final Function<String, String> xpathOptionsButtonByContactName = (
 				name) -> String.format(xpathConvoItemByNamePattern
-				+ "//*[@data-uie-name='go-options']",
+				+ "/parent::li//*[@data-uie-name='go-options']",
 				xpathParentContactListItem, name);
 
-		public static final String classOptionsButton = ".text-theme.conversation-list-item [data-uie-name=go-options]";
+		public static final String cssOptionsButton = ".text-theme.conversation-list-item [data-uie-name=go-options]";
 
 		public static final String cssSelfProfileEntry = "[data-uie-name=go-self-profile]";
 
-		// index starts from 1
-		// self name is not included
-		public static final Function<Integer, String> xpathContactListEntryByIndex = (
-				index) -> String
-				.format("%s//ul/li[@data-uie-name='item-conversation' and not(contains(@class, 'archived'))][%d]//div[contains(@class, 'center-column')]",
-						xpathParentContactListItem, index);
-
-		public static final Function<String, String> xpathContactListEntryByName = (
-				name) -> String.format(xpathConvoItemByNamePattern
-				+ "//div[contains(@class, 'center-column')]",
-				xpathParentContactListItem, name);
-
 		public static final Function<String, String> cssContactListEntryByName = (
 				name) -> String
-				.format("div#conversation-list li[data-uie-name=item-conversation][data-uie-value='%s'] div.center-column",
-						name);
+				.format("%s div[data-uie-name=item-conversation][data-uie-value='%s']",
+						cssParentContactListItem, name);
 
 		public static final String xpathContactListEntries = xpathParentContactListItem
-				+ "//li[@data-uie-name='item-conversation' and not(contains(@class, 'archived'))]";
+				+ "//li[//*[@data-uie-name='item-conversation'] and not(contains(@class, 'archived'))]";
 		public static final String xpathArchivedContactListEntries = xpathParentContactListItem
-				+ "//li[@data-uie-name='item-conversation' and contains(@class, 'archived')]";
+				+ "//li[//*[@data-uie-name='item-conversation'] and contains(@class, 'archived')]";
 
 		public static final Function<String, String> xpathArchivedContactListEntryByName = (
 				name) -> String
-				.format("%s//li[contains(@class, 'archived') and @data-uie-name='item-conversation' and @data-uie-value='%s']//div[contains(@class, 'center-column')]",
+				.format("%s//li[contains(@class, 'archived')]//div[@data-uie-name='item-conversation' and @data-uie-value='%s']",
 						xpathParentContactListItem, name);
-
-		public static final String xpathOpenPeoplePickerButton = "//*[@data-uie-name='go-search']";
 
 		public static final String cssOpenPeoplePickerButton = "*[data-uie-name='go-search']";
 
@@ -162,9 +149,9 @@ public final class WebAppLocators {
 		public static final String xpathImageMessageEntry = "//div[@class='message-asset-image']";
 
 		public static final String xpathPingButton = "//*[@data-uie-name='do-ping' or @data-uie-name='do-hot-ping']";
-		
+
 		public static final String xpathCallButton = "//*[@data-uie-name='do-call']";
-		
+
 		public static final String xpathTalkingHalo = "//*[contains(@class,'cc-halo-talking')]";
 
 		public static final String classPingMessage = "pinged";
