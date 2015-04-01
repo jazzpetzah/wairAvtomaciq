@@ -46,6 +46,9 @@ public class ConversationPage extends WebPage {
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathPingButton)
 	private WebElement pingButton;
+	
+	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathCallButton)
+	private WebElement callButton;
 
 	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.ConversationPage.classPingMessage)
 	private WebElement pingMessage;
@@ -174,5 +177,28 @@ public class ConversationPage extends WebPage {
 
 		return driver.findElementsByClassName(
 				WebAppLocators.ConversationPage.classPingMessage).size() - 1;
+	}
+
+	public void clickCallButton() {
+		try {
+			DriverUtils.moveMouserOver(driver, conversationInput);
+		} catch (WebDriverException e) {
+			// do nothing (safari workaround)
+		}
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+		}
+		callButton.click();
+	}
+
+	public boolean isCalleeAcceptingCall() throws Exception {
+		final By locator = By.xpath(WebAppLocators.ConversationPage.xpathTalkingHalo);
+		return DriverUtils.isElementDisplayed(driver, locator, 30);
+	}
+
+	public void clickCloseButton() {
+		final By locator = By.xpath(WebAppLocators.ConversationPage.xpathCloseButton);
+		
 	}
 }
