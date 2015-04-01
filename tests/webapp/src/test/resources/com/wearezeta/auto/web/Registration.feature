@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @staging @id1936
+  @smoke @id1936
   Scenario Outline: Verify new user can be registered
     Given I see invitation page
     Given I enter invitation code
@@ -24,7 +24,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id2064
+  @smoke @id2064
   Scenario Outline: Photo selection dialogue - choose picture from library
     Given There is 1 user where <Name> is me without avatar picture
     And I Sign in using login <Login> and password <Password>
@@ -45,7 +45,7 @@ Feature: Registration
       | Login      | Password      | Name      | PictureName               |
       | user1Email | user1Password | user1Name | userpicture_landscape.jpg |
       
-  @staging @id2065
+  @smoke @id2065
   Scenario Outline: Photo selection dialogue - choose picture from carousel
     Given There is 1 user where <Name> is me without avatar picture
     And I Sign in using login <Login> and password <Password>

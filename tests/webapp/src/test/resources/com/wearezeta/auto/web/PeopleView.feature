@@ -80,7 +80,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       | Message     |
       | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat | YOU REMOVED |
 
-  @staging @id1687
+  @smoke @id1687
   Scenario Outline: Verify you can add participants to the group conversation by searching the user directory
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
