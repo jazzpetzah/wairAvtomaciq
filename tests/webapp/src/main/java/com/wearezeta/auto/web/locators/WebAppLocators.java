@@ -34,7 +34,7 @@ public final class WebAppLocators {
 
 	public static final class ContactListPage {
 
-		private static final String xpathConvoItemByNamePattern = "%s//div[@data-uie-name='item-conversation' and @data-uie-value='%s' and not(contains(@class, 'archived'))]";
+		private static final String xpathConvoItemByNamePattern = "%s//div[@data-uie-name='item-conversation' and @data-uie-value='%s']";
 
 		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
 		public static final String cssParentContactListItem = "div#conversation-list";
@@ -46,23 +46,23 @@ public final class WebAppLocators {
 
 		public static final Function<String, String> xpathArchiveButtonByContactName = (
 				name) -> String.format(xpathConvoItemByNamePattern
-				+ "/parent::li//*[@data-uie-name='do-archive']",
+				+ "/following::*[@data-uie-name='do-archive']",
 				xpathParentContactListItem, name);
 
 		public static final Function<String, String> xpathMuteButtonByContactName = (
 				name) -> String.format(xpathConvoItemByNamePattern
-				+ "/parent::li//*[@data-uie-name='do-silence']",
+				+ "/following::*[@data-uie-name='do-silence']",
 				xpathParentContactListItem, name);
 
 		public static final Function<String, String> xpathUnmuteButtonByContactName = (
 				name) -> String.format(xpathConvoItemByNamePattern
-				+ "/parent::li//*[@data-uie-name='do-notify']",
+				+ "/following::*[@data-uie-name='do-notify']",
 				xpathParentContactListItem, name);
 
-		public static final String classMuteIcon = "conversation-muted";
-
-		// public static final String cssOptionsButton =
-		// ".text-theme.conversation-list-item [data-uie-name=go-options]";
+		public static final Function<String, String> xpathMuteIconByContactName = (
+						name) -> String.format(xpathConvoItemByNamePattern
+						+ "/following::*[@data-uie-name='status-silence']",
+						xpathParentContactListItem, name);
 
 		public static final String cssSelfProfileEntry = "[data-uie-name=go-self-profile]";
 
@@ -76,13 +76,14 @@ public final class WebAppLocators {
 				cssContactListEntryByName.apply(name));
 
 		public static final String xpathContactListEntries = xpathParentContactListItem
-				+ "//li[//*[@data-uie-name='item-conversation'] and not(contains(@class, 'archived'))]";
+				+ "//*[@data-uie-name='item-conversation']";
 		public static final String xpathArchivedContactListEntries = xpathParentContactListItem
-				+ "//li[//*[@data-uie-name='item-conversation'] and contains(@class, 'archived')]";
+				+ "//*[@data-uie-name='item-conversation-archived']";
 
+		// FIXME: bug in webapp -> @data-uie-value should belong to div
 		public static final Function<String, String> xpathArchivedContactListEntryByName = (
 				name) -> String
-				.format("%s//li[contains(@class, 'archived')]//div[@data-uie-name='item-conversation' and @data-uie-value='%s']",
+				.format("%s//*[@data-uie-name='item-conversation-archived' and ./ancestor-or-self::*[@data-uie-value='%s']]",
 						xpathParentContactListItem, name);
 
 		public static final String cssOpenPeoplePickerButton = "*[data-uie-name='go-search']";

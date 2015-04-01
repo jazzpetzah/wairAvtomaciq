@@ -212,7 +212,6 @@ public class ContactListPage extends WebPage {
 		muteButton.click();
 	}
 
-	// FIXME: check muted state exactly for 'conversationName'
 	public boolean isConversationMuted(String conversationName)
 			throws Exception {
 		// moving focus from contact - to now show ... button
@@ -221,8 +220,11 @@ public class ContactListPage extends WebPage {
 		} catch (WebDriverException e) {
 			// do nothing (safari workaround)
 		}
-		return DriverUtils.isElementDisplayed(this.getDriver(),
-				By.className(WebAppLocators.ContactListPage.classMuteIcon), 5);
+		return DriverUtils
+				.isElementDisplayed(
+						this.getDriver(),
+						By.xpath(WebAppLocators.ContactListPage.xpathMuteIconByContactName
+								.apply(conversationName)), 5);
 	}
 
 	public void clickOptionsButtonForContact(String conversationName)

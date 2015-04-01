@@ -21,7 +21,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @smoke @id1686 @torun
+  @smoke @id1686
   Scenario Outline: Verify you can access proﬁle information for the other participant in a 1to1 conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
