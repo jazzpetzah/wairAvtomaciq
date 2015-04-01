@@ -37,12 +37,10 @@ import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.WebPage;
 
 import cucumber.api.PendingException;
-import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
-import cucumber.api.junit.Cucumber;
 
 public class CommonWebAppSteps {
 	private final CommonSteps commonSteps = CommonSteps.getInstance();

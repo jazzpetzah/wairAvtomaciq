@@ -1,9 +1,7 @@
 package com.wearezeta.auto.common;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +15,6 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.OSXAddressBookHelpers;
 
-import cucumber.api.java.After;
 
 public final class CommonSteps {
 	public static final String CONNECTION_NAME = "CONNECT TO ";
