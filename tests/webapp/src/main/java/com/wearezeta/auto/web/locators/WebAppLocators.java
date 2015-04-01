@@ -72,7 +72,7 @@ public final class WebAppLocators {
 				cssParentContactListItem, name);
 
 		public static final Function<String, String> cssOptionsButtonByContactName = (
-				name) -> String.format("%s [data-uie-name=go-options]",
+				name) -> String.format("%s + div [data-uie-name=go-options]",
 				cssContactListEntryByName.apply(name));
 
 		public static final String xpathContactListEntries = xpathParentContactListItem
