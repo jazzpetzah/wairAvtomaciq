@@ -199,6 +199,6 @@ public class ConversationPage extends WebPage {
 
 	public void clickCloseButton() {
 		final By locator = By.xpath(WebAppLocators.ConversationPage.xpathCloseButton);
-		
+		driver.findElement(locator).click();
 	}
 }
