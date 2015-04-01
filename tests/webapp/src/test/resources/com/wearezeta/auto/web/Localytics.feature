@@ -3,7 +3,7 @@ Feature: Localytics
 #***************************************************
 # Start of regFailed event
 #***************************************************
-  @localytics @staging @id2155
+  @localytics @id2155
   Scenario Outline: Verify 'regFailed:reason=The given e-mail address or phone number is in use.' stats
     Given I take snapshot of <AttrName> attribute count
     Given I see invitation page
@@ -31,10 +31,9 @@ Feature: Localytics
 #***************************************************
 
 # TODO:
-#   regAddedPicture:source=fromCarousel
 #   regAddedPicture:source=fromCamera -> probably, not possible
 
-  @localytics @staging @id2156  
+  @localytics @id2156
   Scenario Outline: Verify 'regAddedPicture:source=fromPhotoLibrary' stats
     Given I take snapshot of <AttrName> attribute count
     Given There is 1 user where <Name> is me without avatar picture
@@ -44,9 +43,24 @@ Feature: Localytics
     And I confirm picture selection on Self Picture Upload dialog
     And I wait for 5 seconds
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | PictureName               | AttrName                                |
       | user1Email | user1Password | user1Name | userpicture_landscape.jpg | regAddedPicture:source=fromPhotoLibrary |
+
+  @localytics @id2157
+  Scenario Outline: Verify 'regAddedPicture:source=fromCarousel' stats
+    Given I take snapshot of <AttrName> attribute count
+    Given There is 1 user where <Name> is me without avatar picture
+    And I Sign in using login <Login> and password <Password>
+    And I see Self Picture Upload dialog
+    And I force carousel mode on Self Picture Upload dialog
+    And I select random picture from carousel on Self Picture Upload dialog
+    And I confirm picture selection on Self Picture Upload dialog
+    And I wait for 5 seconds
+
+    Examples:
+      | Login      | Password      | Name      | AttrName                            |
+      | user1Email | user1Password | user1Name | regAddedPicture:source=fromCarousel |
 
 #***************************************************
 # End of regAddedPicture event
@@ -62,7 +76,7 @@ Feature: Localytics
 #        "incomingCallsAcceptedActual",
 #        "voiceCallsInitiatedActual",
 
-  @staging @localytics @id2159
+  @localytics @id2159
   Scenario Outline: Verify "session:connectRequestsSentActual=1" stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
@@ -82,7 +96,7 @@ Feature: Localytics
       | Login      | Password      | Name      | Contact   | ContactEmail | AttrName                            |
       | user1Email | user1Password | user1Name | user2Name | user2Email   | session:connectRequestsSentActual=1 |
 
-  @staging @localytics @id2160
+  @localytics @id2160
   Scenario Outline: Verify "session:totalOutgoingConnectionRequestsActual=1" stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
@@ -96,7 +110,7 @@ Feature: Localytics
       | Login      | Password      | Name      | Contact    | AttrName                                        |
       | user1Email | user1Password | user1Name | user2Name  | session:totalOutgoingConnectionRequestsActual=1 |
 
-  @staging @localytics @id2161
+  @localytics @id2161
   Scenario Outline: Verify "session:totalIncomingConnectionRequestsActual=1" stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
@@ -110,7 +124,7 @@ Feature: Localytics
       | Login      | Password      | Name      | Contact   | AttrName                                        |
       | user1Email | user1Password | user1Name | user2Name | session:totalIncomingConnectionRequestsActual=1 |
 
-  @staging @localytics @id2170
+  @localytics @id2170
   Scenario Outline: Verify "session:connectRequestsAcceptedActual=1" stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
@@ -127,7 +141,7 @@ Feature: Localytics
       | Login      | Password      | Name      | Contact   | AttrName                                |
       | user1Email | user1Password | user1Name | user2Name | session:connectRequestsAcceptedActual=1 |
 
-  @staging @localytics @id2162
+  @localytics @id2162
   Scenario Outline: Verify "session:pingsSentActual=1" stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
@@ -143,7 +157,7 @@ Feature: Localytics
       | Login      | Password      | Name      | Contact   | PING   | AttrName                  |
       | user1Email | user1Password | user1Name | user2Name | pinged | session:pingsSentActual=1 |
 
-  @staging @localytics @id2163
+  @localytics @id2163
   Scenario Outline: Verify "session:totalContactsActual=3" stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 4 users where <Name> is me
@@ -156,7 +170,7 @@ Feature: Localytics
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | AttrName                      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | session:totalContactsActual=3 |
 
-  @staging @localytics @id2164
+  @localytics @id2164
   Scenario Outline: Verify "session:textMessagesSentActual=5" stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
@@ -185,7 +199,7 @@ Feature: Localytics
       | Login      | Password      | Name      | Contact   | AttrName                         |
       | user1Email | user1Password | user1Name | user2Name | session:textMessagesSentActual=5 |
 
-  @staging @localytics @id2165
+  @localytics @id2165
   Scenario Outline: Verify "session:totalGroupConversationsActual=2" stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 4 users where <Name> is me
@@ -209,7 +223,7 @@ Feature: Localytics
 # Start of regSucceeded event
 #***************************************************
 
-  @staging @localytics @id2166
+  @localytics @id2166
   Scenario Outline: Verify "regSucceeded" stats
     Given I take snapshot of <EventName> event count
     Given I see invitation page
@@ -245,7 +259,7 @@ Feature: Localytics
 # Common verification
 #***************************************************
 
-  @staging @localytics
+  @localytics
   Scenario Outline: Verify count of each attribute is increased
     Then I verify the count of <AttrName> attribute has been increased within 300 seconds
 
@@ -254,6 +268,7 @@ Feature: Localytics
       | regFailed:reason=The given e-mail address or phone number is in use. |
       | regFailed:reason=Bad e-mail address                                  |
       | regAddedPicture:source=fromPhotoLibrary                              |
+      | regAddedPicture:source=fromCarousel                                  |
       | session:connectRequestsSentActual=1                                  |
       | session:totalOutgoingConnectionRequestsActual=1                      |
       | session:totalIncomingConnectionRequestsActual=1                      |
@@ -263,7 +278,7 @@ Feature: Localytics
       | session:textMessagesSentActual=5                                     |
       | session:totalGroupConversationsActual=2                              |
 
-  @staging @localytics
+  @localytics
   Scenario Outline: Verify count of each event is increased
     Then I verify the count of <EventName> event has been increased within 600 seconds
 

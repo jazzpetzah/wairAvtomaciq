@@ -1,5 +1,7 @@
 package com.wearezeta.auto.web.steps;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.logging.Level;
 
 import org.apache.commons.lang3.NotImplementedException;
@@ -23,6 +25,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.PerformanceCommon;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
+import com.wearezeta.auto.common.calling.CallingUtil;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -33,10 +36,13 @@ import com.wearezeta.auto.web.pages.InvitationCodePage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.WebPage;
 
+import cucumber.api.PendingException;
+import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
+import cucumber.api.junit.Cucumber;
 
 public class CommonWebAppSteps {
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
@@ -62,6 +68,16 @@ public class CommonWebAppSteps {
 		return WebCommonUtils
 				.getWebAppBrowserNameFromConfig(CommonWebAppSteps.class);
 	}
+	
+	private static void setCustomChromeProfile(DesiredCapabilities capabilities,
+			String browserPlatform) throws Exception {
+		ChromeOptions options = new ChromeOptions();
+		// simulate a fake webcam and mic for testing
+		options.addArguments("use-fake-device-for-media-stream");
+		// allow skipping the security prompt for sharing the media device
+		options.addArguments("use-fake-ui-for-media-stream");
+		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+	}
 
 	private static void setCustomOperaProfile(DesiredCapabilities capabilities,
 			String browserPlatform) throws Exception {
@@ -69,12 +85,18 @@ public class CommonWebAppSteps {
 				.getOperaProfileRoot(browserPlatform);
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("user-data-dir=" + userProfileRoot);
+		// simulate a fake webcam and mic for testing
+		options.addArguments("use-fake-device-for-media-stream");
+		// allow skipping the security prompt for sharing the media device
+		options.addArguments("use-fake-ui-for-media-stream");
 		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 	}
 
 	private static void setCustomFirefoxProfile(DesiredCapabilities capabilities) {
 		FirefoxProfile profile = new FirefoxProfile();
 		profile.setPreference("dom.webnotifications.enabled", false);
+		// allow skipping the security prompt for sharing the media device
+		profile.setPreference("media.navigator.permission.disabled", true);
 		capabilities.setCapability("firefox_profile", profile);
 	}
 
@@ -118,6 +140,8 @@ public class CommonWebAppSteps {
 				// This is to fix Desktop Notifications alerts appearance in
 				// Opera
 				setCustomOperaProfile(capabilities, webPlatformName);
+			} else {
+				setCustomChromeProfile(capabilities, webPlatformName);
 			}
 			break;
 		case "firefox":
@@ -209,6 +233,13 @@ public class CommonWebAppSteps {
 						+ e.getMessage());
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	@Given("^my browser supports calling$")
+	public void MyBrowserSupportsCalling() throws Exception {
+		if(!getBrowser().equals("chrome") && !getBrowser().equals("firefox")) {
+			throw new PendingException("Browser " + getBrowser() + " does not support calling.");
 		}
 	}
 
@@ -355,6 +386,15 @@ public class CommonWebAppSteps {
 	}
 
 	/**
+	 * TODO
+	 */
+	@Given("^(.*) is waiting for call to accept it$")
+	public void GivenContactIsWaitingForCallToAcceptIt(String userNameAlias)
+			throws Throwable {
+		commonSteps.waitForCallToAccept(userNameAlias);
+	}
+
+	/**
 	 * Pings BackEnd until user is indexed and avialable in search
 	 * 
 	 * @step. ^(\\w+) waits? up to (\\d+) seconds? until (.*) exists in backend
@@ -437,5 +477,10 @@ public class CommonWebAppSteps {
 		}
 
 		commonSteps.getUserManager().resetUsers();
+	}
+	
+	@After("@blender")
+	public void afterScenario() throws IOException, GeneralSecurityException {
+	    CallingUtil.deleteAllBlenderInstances();
 	}
 }
