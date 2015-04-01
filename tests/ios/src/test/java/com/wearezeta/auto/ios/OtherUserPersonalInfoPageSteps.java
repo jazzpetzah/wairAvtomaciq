@@ -86,5 +86,25 @@ public class OtherUserPersonalInfoPageSteps {
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.otherUserPersonalInfoPage
 				.swipeDown(1000);
 	}
+	
+	/**
+	 * Opens the conversation details menu by clicking the according button
+	 * 
+	 * @step. ^I press conversation menu button$
+	 */
+	@When("^I press conversation menu button$")
+	public void IPressConversationMenuButton(){
+		PagesCollection.otherUserPersonalInfoPage.openConversationMenu();
+	}
+
+	/**
+	 * Presses the silence button in the conversation detail menu
+	 * 
+	 * @step. ^I press menu silence button$
+	 */
+	@When("^I press menu silence button$")
+	public void IPressMenuSilenceButton(){
+		PagesCollection.otherUserPersonalInfoPage.clickSilenceMenuButton();
+	}
 
 }

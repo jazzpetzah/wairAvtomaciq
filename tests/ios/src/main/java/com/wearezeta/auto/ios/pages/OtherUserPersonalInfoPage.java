@@ -4,6 +4,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -39,6 +40,12 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameAddContactToChatButton)
 	private WebElement startDialogButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameConversationMenu)
+	private WebElement conversationMenuButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameSilenceConversationButton)
+	private WebElement silenceMenuButton;
 
 	public OtherUserPersonalInfoPage(ZetaIOSDriver driver, WebDriverWait wait)
 			throws Exception {
@@ -122,6 +129,18 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 						IOSLocators.nameAddContactToChatButton), 1);
 		page = new DialogPage(this.getDriver(), this.getWait());
 		return page;
+	}
+	
+	public void openConversationMenu(){
+		conversationMenuButton.click();
+	}
+	
+	public void clickSilenceMenuButton(){
+//		this.getWait().until(
+//				ExpectedConditions
+//						.elementToBeClickable(silenceMenuButton));
+//		silenceMenuButton.click();
+//		DriverUtils.mobileTapByCoordinates(this.getDriver(), silenceMenuButton);
 	}
 
 	@Override
