@@ -117,7 +117,7 @@ Feature: Localytics
     Given <Contact> has sent connection request to Me
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
-    And I see Contact list with name <Contact>
+    And I see connection request from one user
     And I wait for 65 seconds
 
   Examples:
@@ -131,8 +131,8 @@ Feature: Localytics
     Given <Contact> has sent connection request to Me
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
-    And I see connection request
-    And I open connection requests list
+    And I see connection request from one user
+    And I open the list of incoming connection requests
     And I accept connection request from user <Contact>
     And I see Contact list with name <Contact>
     And I wait for 65 seconds

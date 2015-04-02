@@ -172,12 +172,12 @@ public class ContactListPageSteps {
 	/**
 	 * Checks that connection request is displayed in Conversation List
 	 * 
-	 * @step. ^I see connection request$
+	 * @step. ^I see connection request from one user$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I see connection request$")
-	public void ISeeConnectInvitation() throws Exception {
+	@When("^I see connection request from one user$")
+	public void ISeeIncomingConnectionFromOneUser() throws Exception {
 		Assert.assertTrue(PagesCollection.contactListPage
 				.getIncomingPendingItemText().equals(
 						WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING));
@@ -186,15 +186,14 @@ public class ContactListPageSteps {
 	/**
 	 * Opens list of connection requests from Contact list
 	 * 
-	 * @step. ^I open connection requests list$
+	 * @step. ^I open the list of incoming connection requests$
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^I open connection requests list$")
-	public void IOpenConnectionRequestsList() throws Exception {
+	@Given("^I open the list of incoming connection requests$")
+	public void IOpenIncomingConnectionRequestsList() throws Exception {
 		PagesCollection.pendingConnectionsPage = PagesCollection.contactListPage
 				.openConnectionRequestsList();
-
 	}
 
 	/**
