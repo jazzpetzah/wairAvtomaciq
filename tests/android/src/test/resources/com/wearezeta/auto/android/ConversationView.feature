@@ -192,7 +192,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id162 @staging @torun
+  @id162 @staging
   Scenario Outline: Send image using existing camera rolls (landscape) in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -283,27 +283,3 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | SoudCloudLink                                              |
       | user1Email | user1Password | user1Name | user2Name | user3Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
-
-        @id2085 @staging 
-  Scenario Outline: Send image using existing camera rolls (landscape) in 1:1 chat
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    And I minimize the application
-    And I open the gallery application
-    
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe on text input
-    And I press Add Picture button
-    And I press "Gallery" button
-    When I rotate UI to landscape
-    And I select picture for dialog
-    And I press "Confirm" button
-    Then I see new photo in the dialog
-
-    Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
-      

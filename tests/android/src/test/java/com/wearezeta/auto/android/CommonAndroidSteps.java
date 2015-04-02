@@ -180,14 +180,6 @@ public class CommonAndroidSteps {
 		}
 	}
 
-	
-	
-	@When("^I open the gallery application$")
-	public void IOpenGalleryApp() throws Exception {
-		AndroidCommonUtils.openGalleryApplication();
-		
-	}
-	
 	/**
 	 * Takes screenshot for comparison
 	 * 
