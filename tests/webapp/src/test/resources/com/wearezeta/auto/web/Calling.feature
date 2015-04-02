@@ -14,7 +14,7 @@ Feature: Calling
     And I write random message
     And I send message
     And I click ping button
-    And I send picture <PictureName> to single conversation
+    And I send picture <PictureName> to the current conversation
     Then I see random message in conversation
     And I see ping message <PING>
     And I see sent picture <PictureName> in the conversation view

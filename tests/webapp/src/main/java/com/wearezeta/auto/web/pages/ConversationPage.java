@@ -41,12 +41,12 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathShowParticipantsButton)
 	private WebElement showParticipants;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathSendImageInput)
+	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssSendImageInput)
 	private WebElement imagePathInput;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathPingButton)
 	private WebElement pingButton;
-	
+
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathCallButton)
 	private WebElement callButton;
 
@@ -124,9 +124,11 @@ public class ConversationPage extends WebPage {
 				+ WebAppLocators.ConversationPage.cssSendImageInput
 				+ "\").css({'left': '0'});";
 		driver.executeScript(showPathInputJScript);
-		assert DriverUtils.isElementDisplayed(driver,
-				By.xpath(WebAppLocators.ConversationPage.xpathSendImageInput),
-				10);
+		assert DriverUtils
+				.isElementDisplayed(
+						driver,
+						By.cssSelector(WebAppLocators.ConversationPage.cssSendImageInput),
+						5);
 		if (WebAppExecutionContext.browserName
 				.equals(WebAppConstants.Browser.SAFARI)) {
 			WebCommonUtils.sendPictureInSafari(picturePath);
@@ -193,12 +195,14 @@ public class ConversationPage extends WebPage {
 	}
 
 	public boolean isCalleeAcceptingCall() throws Exception {
-		final By locator = By.xpath(WebAppLocators.ConversationPage.xpathTalkingHalo);
+		final By locator = By
+				.xpath(WebAppLocators.ConversationPage.xpathTalkingHalo);
 		return DriverUtils.isElementDisplayed(driver, locator, 30);
 	}
 
 	public void clickCloseButton() {
-		final By locator = By.xpath(WebAppLocators.ConversationPage.xpathCloseButton);
+		final By locator = By
+				.xpath(WebAppLocators.ConversationPage.xpathCloseButton);
 		driver.findElement(locator).click();
 	}
 }
