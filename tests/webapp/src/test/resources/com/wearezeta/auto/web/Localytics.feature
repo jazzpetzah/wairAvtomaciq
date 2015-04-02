@@ -77,7 +77,7 @@ Feature: Localytics
 #        "voiceCallsInitiatedActual",
 
   @localytics @id2159
-  Scenario Outline: Verify "session:connectRequestsSentActual=1" stats
+  Scenario Outline: Verify 'session:connectRequestsSentActual=1' stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
@@ -97,7 +97,7 @@ Feature: Localytics
       | user1Email | user1Password | user1Name | user2Name | user2Email   | session:connectRequestsSentActual=1 |
 
   @localytics @id2160
-  Scenario Outline: Verify "session:totalOutgoingConnectionRequestsActual=1" stats
+  Scenario Outline: Verify 'session:totalOutgoingConnectionRequestsActual=1' stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
     Given I have sent connection request to <Contact>
@@ -111,7 +111,7 @@ Feature: Localytics
       | user1Email | user1Password | user1Name | user2Name  | session:totalOutgoingConnectionRequestsActual=1 |
 
   @localytics @id2161
-  Scenario Outline: Verify "session:totalIncomingConnectionRequestsActual=1" stats
+  Scenario Outline: Verify 'session:totalIncomingConnectionRequestsActual=1' stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
     Given <Contact> has sent connection request to Me
@@ -125,7 +125,7 @@ Feature: Localytics
       | user1Email | user1Password | user1Name | user2Name | session:totalIncomingConnectionRequestsActual=1 |
 
   @localytics @id2170
-  Scenario Outline: Verify "session:connectRequestsAcceptedActual=1" stats
+  Scenario Outline: Verify 'session:connectRequestsAcceptedActual=1' stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
     Given <Contact> has sent connection request to Me
@@ -142,7 +142,7 @@ Feature: Localytics
       | user1Email | user1Password | user1Name | user2Name | session:connectRequestsAcceptedActual=1 |
 
   @localytics @id2162
-  Scenario Outline: Verify "session:pingsSentActual=1" stats
+  Scenario Outline: Verify 'session:pingsSentActual=1' stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -158,7 +158,7 @@ Feature: Localytics
       | user1Email | user1Password | user1Name | user2Name | pinged | session:pingsSentActual=1 |
 
   @localytics @id2163
-  Scenario Outline: Verify "session:totalContactsActual=3" stats
+  Scenario Outline: Verify 'session:totalContactsActual=3' stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -171,7 +171,7 @@ Feature: Localytics
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | session:totalContactsActual=3 |
 
   @localytics @id2164
-  Scenario Outline: Verify "session:textMessagesSentActual=5" stats
+  Scenario Outline: Verify 'session:textMessagesSentActual=5' stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -200,7 +200,7 @@ Feature: Localytics
       | user1Email | user1Password | user1Name | user2Name | session:textMessagesSentActual=5 |
 
   @localytics @id2165
-  Scenario Outline: Verify "session:totalGroupConversationsActual=2" stats
+  Scenario Outline: Verify 'session:totalGroupConversationsActual=2' stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -224,7 +224,7 @@ Feature: Localytics
 #***************************************************
 
   @localytics @id2166
-  Scenario Outline: Verify "regSucceeded" stats
+  Scenario Outline: Verify 'regSucceeded' stats
     Given I take snapshot of <EventName> event count
     Given I see invitation page
     Given I enter invitation code
