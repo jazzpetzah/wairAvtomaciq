@@ -236,7 +236,7 @@ public class DialogPage extends IOSPage {
 		CameraRollPage page;
 		addPictureButton.click();
 		DriverUtils.waitUntilElementAppears(driver,
-				By.name(IOSLocators.nameCameraLibraryButton));
+				By.xpath(IOSLocators.xpathCameraLibraryButton));
 		page = new CameraRollPage(this.getDriver(), this.getWait());
 
 		return page;
