@@ -1,7 +1,7 @@
 package com.wearezeta.auto.osx.locators;
 
 public final class OSXLocators {
-	
+
 	public static final String idRegistrationTakePictureButton = "RegistrationTakePictureButton";
 	public static final String idRegistrationPickImageButton = "RegistrationPickImageButton";
 	public static final String xpathRegistrationPictureConfirmationButton = "//AXButton[1]";
@@ -31,7 +31,6 @@ public final class OSXLocators {
 	public static final String xpathMessageEntry = "//AXGroup/AXStaticText";
 	public static final String xpathConversationLastNewNameEntry = "//AXHeading/AXStaticText[last()]";
 	public static final String xpathNewMessageTextArea = "//AXTextArea";
-	public static final String xpathFileListScrollArea = "//AXScrollArea";
 	public static final String xpathConversationImageEntry = "//AXGroup/AXImage";
 	public static final String xpathSearchResultsScrollArea = "//AXScrollArea[AXTable[@AXIdentifier='people_picker_searchresult']]";
 	public static final String xpathConversationMessageGroup = "//AXWebArea/AXGroup";
@@ -47,19 +46,14 @@ public final class OSXLocators {
 	public static final String YOU_PINGED_MESSAGE = "YOU PINGED";
 	public static final String YOU_PINGED_AGAIN_MESSAGE = "YOU PINGED AGAIN";
 	public static final String USER_PINGED_MESSAGE = "PINGED";
-//	public static final String USER_PINGED_AGAIN_MESSAGE = "PINGED AGIAN";
+	// public static final String USER_PINGED_AGAIN_MESSAGE = "PINGED AGIAN";
 	public static final String YOU_ADDED_MESSAGE = "YOU ADDED";
-//	public static final String YOU_REMOVED_MESSAGE = "YOU REMOVED";
-//	public static final String CONNECTED_TO_MESSAGE = "CONNECTED TO";
+	// public static final String YOU_REMOVED_MESSAGE = "YOU REMOVED";
+	// public static final String CONNECTED_TO_MESSAGE = "CONNECTED TO";
 	public static final String USER_ADDED_MESSAGE_FORMAT = " ADDED ";
 	public static final String YOU_STARTED_CONVERSATION_MESSAGE = "YOU STARTED A CONVERSATION WITH";
 	public static final String USER_STARTED_CONVERSATION_MESSAGE_FORMAT = " STARTED A CONVERSATION WITH ";
 
-	public static final String idChooseImageCancelButton = "_NS:53";
-	public static final String idChooseImageOpenButton = "_NS:55";
-	public static final String xpathFormatFinderImageFile = "//AXTextField[@AXValue='%s']";
-	public static final String xpathFormatFavoritesFolderPopUp = "//AXStaticText[@AXValue='%s']";
-	public static final String xpathSelectColumnViewButton = "//AXRadioButton[@AXDescription='column view' or @AXLabel='column view']";
 
 	public static final String idAddPeopleButtonGroupChat = "addButton";
 	public static final String idConfirmationViewConfirmButton = "ConfirmationViewConfirmButton";
@@ -137,7 +131,7 @@ public final class OSXLocators {
 	public static final String xpathPeoplePopover = "//AXPopover";
 
 	public static final String xpathImagePopupCloseButton = "//AXWindow[@AXRoleDescription='floating window']/AXButton[@AXRoleDescription='close button']";
-	
+
 	public static final String xpathOpenSingleChatButton = "//AXPopover/AXButton[@AXTitle='OPEN CONVERSATION']";
 
 	public static final String xpathPendingButton = "//AXPopover/AXButton[@AXTitle='PENDING']";
@@ -173,7 +167,7 @@ public final class OSXLocators {
 		public static final String nameSignInButton = "SIGN IN";
 
 		public static final String xpathForgotPasswordButton = "//AXButton[contains(@AXTitle, 'FORGOT PASSWORD')]";
-		
+
 		public static final String xpathWrongCredentialsMessage = "//AXTextArea[starts-with(@AXValue, 'WRONG ADDRESS OR PASSWORD')]";
 	}
 
@@ -265,10 +259,10 @@ public final class OSXLocators {
 	}
 
 	public static final class ContactListPage {
-	
+
 		public static final String idOpenSearchUIButton = "addConversationButton";
 	}
-	
+
 	public static final class MainMenuPage {
 
 		public static final String nameSignOutMenuItem = "Sign Out";
@@ -277,17 +271,32 @@ public final class OSXLocators {
 
 		public static final String xpathFormatDockApplicationIcon = "//AXDockItem[@AXRoleDescription='application dock item' and contains(@AXTitle,'%s')]";
 	}
-	
+
 	public static final class VerificationPage {
-		
+
 		public static final String idEnvelopeImage = "_NS:9";
-	
+
 		public static final String idEmailSentMessage = "_NS:30";
-		
+
 		public static final String xpathFormatEmailSentMessage = "//AXStaticText[contains(@AXValue,'%s')]";
-		
+
 		public static final String idDidntGetTheMessageMessage = "_NS:51";
-		
+
 		public static final String nameReSendLink = "Re-send";
+	}
+
+	public static final class ChoosePicturePage {
+
+		public static final String idOpenButton = "_NS:55";
+
+		public static final String idCancelButton = "_NS:53";
+
+		public static final String xpathFileListScrollArea = "//AXScrollArea";
+
+		public static final String xpathSelectColumnViewButton = "//AXRadioButton[@AXDescription='column view' or @AXLabel='column view']";
+
+		public static final String xpathFormatFinderImageFile = "//AXTextField[@AXValue='%s']";
+		
+		public static final String xpathFormatFavoritesFolderPopUp = "//AXStaticText[@AXValue='%s']";
 	}
 }

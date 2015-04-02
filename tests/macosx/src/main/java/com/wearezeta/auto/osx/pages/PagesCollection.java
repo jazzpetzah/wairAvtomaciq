@@ -35,7 +35,7 @@ public class PagesCollection extends AbstractPagesCollection {
 
 	public static ConversationInfoPage conversationInfoPage = null;
 
-	public static UserProfilePage userProfilePage = null;
+	public static SelfProfilePage selfProfilePage = null;
 
 	public static ChangePasswordPage changePasswordPage = null;
 
