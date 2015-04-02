@@ -43,9 +43,9 @@ public class SelfPictureUploadPage extends WebPage {
 	public void uploadPicture(String pictureName) throws Exception {
 		final String picturePath = WebCommonUtils
 				.getFullPicturePath(pictureName);
-		final String showPathInputJScript = "$('"
+		final String showPathInputJScript = "$(\""
 				+ WebAppLocators.SelfPictureUploadPage.cssSendPictureInput
-				+ "').css({'left': '0', 'opacity': '100', 'z-index': '100'});";
+				+ "\").css({'left': '0', 'opacity': '100', 'z-index': '100'});";
 		driver.executeScript(showPathInputJScript);
 		assert DriverUtils
 				.isElementDisplayed(
