@@ -17,7 +17,7 @@ public class ActivationPage extends WebPage {
 		this.url = url;
 	}
 
-	public void openInNewTab() {
+	public void openInNewTab() throws Exception {
 		WebCommonUtils.openUrlInNewTab(
 				PagesCollection.registrationPage.getDriver(), this.url);
 	}
