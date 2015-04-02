@@ -114,15 +114,15 @@ public class ConversationPage extends WebPage {
 	public void sendPicture(String pictureName) throws Exception {
 		final String picturePath = WebCommonUtils
 				.getFullPicturePath(pictureName);
-		final String showImageLabelJScript = "$('"
+		final String showImageLabelJScript = "$(\""
 				+ WebAppLocators.ConversationPage.cssRightControlsPanel
-				+ "').css({'opacity': '100'});";
+				+ "\").css({'opacity': '100'});";
 		driver.executeScript(showImageLabelJScript);
-		final String showPathInputJScript = "$('"
+		final String showPathInputJScript = "$(\""
 				+ WebAppLocators.ConversationPage.cssSendImageLabel
-				+ "').find('"
+				+ "\").find(\""
 				+ WebAppLocators.ConversationPage.cssSendImageInput
-				+ "').css({'left': '0'});";
+				+ "\").css({'left': '0'});";
 		driver.executeScript(showPathInputJScript);
 		assert DriverUtils.isElementDisplayed(driver,
 				By.xpath(WebAppLocators.ConversationPage.xpathSendImageInput),

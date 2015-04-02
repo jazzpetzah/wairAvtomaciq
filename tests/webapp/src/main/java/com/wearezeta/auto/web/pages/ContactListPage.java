@@ -241,8 +241,8 @@ public class ContactListPage extends WebPage {
 		final By locator = By.cssSelector(cssOptionsButtonLocator);
 		if (!DriverUtils.isElementDisplayed(driver, locator, 5)) {
 			// Safari workaround
-			final String showOptionsButtonJScript = "$('"
-					+ cssOptionsButtonLocator + "').css({'opacity': '100'})";
+			final String showOptionsButtonJScript = "$(\""
+					+ cssOptionsButtonLocator + "\").css({'opacity': '100'})";
 			driver.executeScript(showOptionsButtonJScript);
 			assert DriverUtils.isElementDisplayed(driver, locator);
 		}

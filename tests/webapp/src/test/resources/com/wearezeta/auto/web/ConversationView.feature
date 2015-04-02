@@ -31,7 +31,7 @@ Feature: Conversation
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessageGroupChat |
 
-  @smoke @id1545
+  @smoke @id1545 @torun
   Scenario Outline: Archive and unarchive conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
