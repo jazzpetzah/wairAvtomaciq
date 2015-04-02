@@ -133,26 +133,23 @@ public class ConversationPageSteps {
 	/**
 	 * Send a picture into current conversation
 	 * 
-	 * @step. ^I send picture (.*) to ([a-z]*) conversation$
+	 * @step. ^I send picture (.*) to the current conversation$
 	 * 
 	 * @param pictureName
 	 *            the name of a picture file. This file should already exist in
 	 *            the ~/Documents folder
-	 * @param chatType
-	 *            specifies is it group chat or conversation with single user
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I send picture (.*) to ([a-z]*) conversation$")
-	public void WhenISendPicture(String pictureName, String chatType)
-			throws Exception {
+	@When("^I send picture (.*) to the current conversation$")
+	public void WhenISendPicture(String pictureName) throws Exception {
 		PagesCollection.conversationPage.sendPicture(pictureName);
 	}
 
 	/**
 	 * Verifies whether previously sent picture exists in the conversation view
 	 * 
-	 * @step. ^I send picture (.*)
+	 * @step. ^I see sent picture (.*) in the conversation view$
 	 * 
 	 * @param pictureName
 	 *            the name of a picture file. This file should already exist in
@@ -296,5 +293,38 @@ public class ConversationPageSteps {
 		Assert.assertEquals(
 				PagesCollection.conversationPage.numberOfPingMessagesVisible(),
 				1);
+	}
+
+	/**
+	 * Start call in opened conversation
+	 * 
+	 * @step. ^I call$
+	 */
+	@When("^I call$")
+	public void ICallUser() throws Throwable {
+		PagesCollection.conversationPage.clickCallButton();
+	}
+
+	/**
+	 * 
+	 * 
+	 * @step. ^(.*) accepts the call$
+	 * @param userNameAlias
+	 * @throws Throwable
+	 */
+	@When("^(.*) accepts the call$")
+	public void ContactAcceptsTheCall(String userNameAlias) throws Throwable {
+		Assert.assertTrue(PagesCollection.conversationPage
+				.isCalleeAcceptingCall());
+	}
+
+	/**
+	 * End the current call
+	 * 
+	 * @step. ^I end the call$
+	 */
+	@When("^I end the call$")
+	public void IEndTheCall() throws Throwable {
+		PagesCollection.conversationPage.clickCloseButton();
 	}
 }

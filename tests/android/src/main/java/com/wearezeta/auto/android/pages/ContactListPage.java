@@ -33,6 +33,9 @@ public class ContactListPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConversationListFrame")
 	private WebElement contactListFrame;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idMissedCallIcon")
+	private WebElement missedCallIcon;
+	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idContactListNames")
 	private List<WebElement> contactListNames;
 
@@ -316,5 +319,10 @@ public class ContactListPage extends AndroidPage {
 				waitForContacListLoading();
 			}
 		}
+	}
+
+	public boolean isVisibleMissedCallIcon() throws Exception {
+		refreshUITree();
+		return isVisible(missedCallIcon);
 	}
 }

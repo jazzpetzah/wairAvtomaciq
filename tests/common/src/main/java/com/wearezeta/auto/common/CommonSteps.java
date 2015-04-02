@@ -15,6 +15,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.OSXAddressBookHelpers;
 
+
 public final class CommonSteps {
 	public static final String CONNECTION_NAME = "CONNECT TO ";
 	public static final String CONNECTION_MESSAGE = "Hello!";
@@ -319,4 +320,15 @@ public final class CommonSteps {
 	public void StopCurrentCall() throws Exception {
 		CallingUtil.stopCall();
 	}
+	
+	public void waitForCallToAccept(String userNameAlias)
+			throws Exception {
+		ClientUser callee = usrMgr.findUserByNameOrNameAlias(userNameAlias);
+		CallingUtil.waitsForCallToAccept(callee);
+	}
+
+	public void waitForCalleeToAcceptCall() {
+		
+	}
+
 }

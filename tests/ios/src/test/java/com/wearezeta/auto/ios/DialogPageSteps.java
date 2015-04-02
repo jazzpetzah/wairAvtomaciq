@@ -365,7 +365,7 @@ public class DialogPageSteps {
 	@When("^I post media link (.*)$")
 	public void IPostMediaLink(String link) throws Throwable {
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.iOSPage;
-		PagesCollection.dialogPage.sendStringToInput(link + "\n");
+		PagesCollection.dialogPage.sendMessageUsingScript(link);
 	}
 
 	@When("^I tap media link$")

@@ -50,6 +50,33 @@ public final class AndroidLocators {
 		}
 	}
 
+	public static final class CallingOverlay {
+		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME
+				+ "$CallingOverlay";
+		
+		public static final String idCallingMute = LOCATORS_PACKAGE
+				+ ":id/cib__calling_mute";
+		
+		public static final String idCallingAccept = LOCATORS_PACKAGE
+				+ ":id/gtv__calling__accept";
+		
+		public static final String idIncominCallerAvatar = LOCATORS_PACKAGE
+				+ ":id/civ__calling";
+	
+		
+		public static final String idCallMessage = LOCATORS_PACKAGE
+				+ ":id/ttv__calling__message";
+		
+		public static final String idCallingMicMute = LOCATORS_PACKAGE
+				+ ":id/cib__calling__mic_mute";
+		
+		public static final String idCallingSpeaker = LOCATORS_PACKAGE
+				+ ":id/cib__calling__speaker";
+		
+		public static final String idCallingDismiss = LOCATORS_PACKAGE
+				+ ":id/cib__calling__dismiss";
+	}
+	
 	public static final class SettingsPage {
 
 		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME
@@ -197,6 +224,9 @@ public final class AndroidLocators {
 		public static final String idConvList = LOCATORS_PACKAGE
 				+ ":id/pv__conv_list";
 
+		public static final String idMissedCallIcon = LOCATORS_PACKAGE
+				+ ":id/sci__list__missed_call";
+		
 		public static final String idConfirmCancelButtonPicker = LOCATORS_PACKAGE
 				+ ":id/zb__confirm_dialog__cancel_button";
 
@@ -271,6 +301,9 @@ public final class AndroidLocators {
 
 		public static final String idMediaBarControl = LOCATORS_PACKAGE
 				+ ":id/gtv__conversation_header__mediabar__control";
+		
+		public static final String idMissedCallMesage = LOCATORS_PACKAGE
+				+ ":id/ttv__row_conversation__missed_call";
 
 		public static final String idMediaBarClose = LOCATORS_PACKAGE
 				+ ":id/gtv__conversation_header__mediabar__cancel";

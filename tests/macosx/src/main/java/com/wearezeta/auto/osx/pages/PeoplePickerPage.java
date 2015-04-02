@@ -23,12 +23,9 @@ import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.util.NSPoint;
 
 @SuppressWarnings("deprecation")
-public class PeoplePickerPage extends OSXPage {
+public class PeoplePickerPage extends MainWirePage {
 	private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class
 			.getSimpleName());
-
-	@FindBy(how = How.XPATH, using = OSXLocators.xpathMainWindow)
-	private WebElement mainWindow;
 
 	@FindBy(how = How.NAME, using = OSXLocators.namePeoplePickerAddToConversationButton)
 	private WebElement addToConversationButton;
@@ -141,10 +138,10 @@ public class PeoplePickerPage extends OSXPage {
 	}
 
 	public void scrollToUserInSearchResults(String user) {
-		NSPoint mainPosition = NSPoint.fromString(mainWindow
+		NSPoint mainPosition = NSPoint.fromString(window
 				.getAttribute("AXPosition"));
 		NSPoint mainSize = NSPoint
-				.fromString(mainWindow.getAttribute("AXSize"));
+				.fromString(window.getAttribute("AXSize"));
 
 		NSPoint latestPoint = new NSPoint(mainPosition.x() + mainSize.x(),
 				mainPosition.y() + mainSize.y());

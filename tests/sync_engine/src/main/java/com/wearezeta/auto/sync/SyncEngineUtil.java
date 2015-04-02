@@ -122,18 +122,6 @@ public class SyncEngineUtil {
 				"acceptance.messages.count"));
 	}
 
-	public static void defineHeadlessEnvironment() {
-		System.setProperty("java.awt.headless", "false");
-	}
-
-	public static void disableSeleniumLogs() {
-		System.setProperty("org.apache.commons.logging.Log",
-				"org.apache.commons.logging.impl.SimpleLog");
-		System.setProperty(
-				"org.apache.commons.logging.simplelog.log.org.apache.http",
-				"warn");
-	}
-
 	public static boolean isPlatformCorrect(Platform platform) {
 		return platform == Platform.Android || platform == Platform.iOS
 				|| platform == Platform.Mac;

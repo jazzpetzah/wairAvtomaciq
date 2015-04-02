@@ -1,6 +1,7 @@
 package com.wearezeta.auto.common.driver;
 
 import java.net.URL;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
@@ -90,6 +91,10 @@ public final class PlatformDrivers {
 					platform.name()));
 		}
 		return drivers.get(platform);
+	}
+	
+	public Collection<RemoteWebDriver> getRegisteredDrivers() {
+		return drivers.values();
 	}
 
 	public static WebDriverWait createDefaultExplicitWait(RemoteWebDriver driver)

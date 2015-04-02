@@ -42,7 +42,7 @@ public class ContactListPage extends MainWirePage {
 	@FindBy(how = How.ID, using = OSXLocators.idContactEntry)
 	private List<WebElement> contactsTextFields;
 
-	@FindBy(how = How.ID, using = OSXLocators.idAddConversationButton)
+	@FindBy(how = How.ID, using = OSXLocators.ContactListPage.idOpenSearchUIButton)
 	private WebElement addConversationButton;
 
 	@FindBy(how = How.ID, using = OSXLocators.idShowArchivedButton)
@@ -60,7 +60,7 @@ public class ContactListPage extends MainWirePage {
 
 	public boolean isVisible() throws Exception {
 		return DriverUtils.waitUntilElementAppears(driver,
-				By.xpath(OSXLocators.xpathMainWindow));
+				By.xpath(OSXLocators.ContactListPage.idOpenSearchUIButton));
 	}
 
 	public PeoplePickerPage openPeoplePicker() throws Exception {
@@ -70,14 +70,14 @@ public class ContactListPage extends MainWirePage {
 
 	public boolean waitUntilMainWindowAppears() throws Exception {
 		return DriverUtils.waitUntilElementAppears(driver,
-				By.xpath(OSXLocators.xpathMainWindow));
+				By.xpath(OSXLocators.MainWirePage.xpathWindow));
 	}
 
 	public void restoreZClient() throws InterruptedException, ScriptException,
 			IOException {
 		final String[] scriptArr = new String[] {
-				"property bi : \"com.wearezeta.zclient.mac\"",
-				"property thisapp: \"ZClient\"",
+				"property bi : \"com.wearezeta.zclient.mac.development\"",
+				"property thisapp: \"Wire\"",
 				"tell application id bi to activate",
 				"tell application \"System Events\"", " tell process thisapp",
 				" click last menu item of menu \"Window\" of menu bar 1",

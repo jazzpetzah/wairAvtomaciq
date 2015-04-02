@@ -33,9 +33,9 @@ public class LoginPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathPasswordInput)
 	private WebElement passwordInput;
 
-	public LoginPage(ZetaWebAppDriver driver, WebDriverWait wait)
+	public LoginPage(ZetaWebAppDriver driver, WebDriverWait wait, String url)
 			throws Exception {
-		super(driver, wait);
+		super(driver, wait, url);
 	}
 
 	public boolean isVisible() throws Exception {

@@ -10,7 +10,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.common.KeyboardMapper;
 import com.wearezeta.auto.android.locators.AndroidLocators;
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -83,11 +82,11 @@ public class PeoplePickerPage extends AndroidPage {
 	public void typeTextInPeopleSearch(String contactName)
 			throws InterruptedException {
 		refreshUITree();
-		pickerSearch.sendKeys(contactName);
-//		for (char ch : contactName.toCharArray()) {
-//			int keyCode = KeyboardMapper.getPrimaryKeyCode(ch);
-//			this.getDriver().sendKeyEvent(keyCode);
-//		}
+//		pickerSearch.sendKeys(contactName);
+		for (char ch : contactName.toCharArray()) {
+			int keyCode = KeyboardMapper.getPrimaryKeyCode(ch);
+			this.getDriver().sendKeyEvent(keyCode);
+		}
 		this.getDriver().sendKeyEvent(66);
 	}
 
@@ -110,7 +109,7 @@ public class PeoplePickerPage extends AndroidPage {
 		AndroidPage page = null;
 		refreshUITree();
 		pickerSearchUser.click();
-		if (CommonUtils.getAndroidApiLvl(PeoplePickerPage.class) > 42) {
+		/*if (CommonUtils.getAndroidApiLvl(PeoplePickerPage.class) > 42) {
 			DriverUtils
 					.waitUntilElementDissapear(
 							driver,
@@ -118,8 +117,9 @@ public class PeoplePickerPage extends AndroidPage {
 		} else {
 			DriverUtils.waitUntilElementDissapear(driver,
 					By.xpath(AndroidLocators.PeoplePickerPage.xpathOtherText));
-		}
+		}*/
 		refreshUITree();
+		DriverUtils.turnOffImplicitWait(this.getDriver());
 		if (driver.findElements(
 				AndroidLocators.OtherUserPersonalInfoPage
 						.getByForOtherUserPersonalInfoUnlockButton()).size() > 0) {
@@ -134,6 +134,7 @@ public class PeoplePickerPage extends AndroidPage {
 		} else {
 			page = new DialogPage(this.getDriver(), this.getWait());
 		}
+		DriverUtils.setDefaultImplicitWait(this.getDriver());
 		return page;
 	}
 
@@ -177,7 +178,7 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public void waitUserPickerFindUser(String contactName) throws InterruptedException {
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 50; i++) {
 			refreshUITree();
 			List<WebElement> elements = pickerSearchUsers;
 			for (WebElement element : elements) {
@@ -190,7 +191,7 @@ public class PeoplePickerPage extends AndroidPage {
 					continue;
 				}
 			}
-			Thread.sleep(1000);
+			Thread.sleep(100);
 		}
 	}
 

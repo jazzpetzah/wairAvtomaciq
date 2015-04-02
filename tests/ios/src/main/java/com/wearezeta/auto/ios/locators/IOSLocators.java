@@ -28,9 +28,11 @@ public final class IOSLocators {
 	
 	public static final String classNameContactListNames = "UIACollectionCell";
 	
-	public static final String classNameContactList = "UIAStaticText";
+	public static final String xpathNameContactList = "//UIACollectionCell/UIAStaticText";
 	
 	public static final String xpathContactListCells = "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell";
+	
+	public static final String xpathSelfName = "//UIAStaticText[@name='%s']";
 	
 	public static final String nameProfileSettingsButton = "SettingsButton";
 
@@ -90,7 +92,7 @@ public final class IOSLocators {
 	
 	public static final String namePingButton = "ComposeControllerPingButton";
 	
-	public static final String nameCameraLibraryButton = "Camera Roll"; 
+	public static final String xpathCameraLibraryButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAButton[4]"; 
 	
 	public static final String nameCameraRollCancel = "Cancel";
 	

@@ -7,11 +7,11 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXConstants;
+import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class ChangePasswordPage extends OSXPage {
@@ -41,8 +41,7 @@ public class ChangePasswordPage extends OSXPage {
 		driver.navigate().to(OSXConstants.BrowserActions.SAFARI);
 		emailTextField.sendKeys(email);
 		changePasswordButton.click();
-		driver.navigate().to(
-				CommonUtils.getOsxApplicationPathFromConfig(LoginPage.class));
+		driver.navigate().to(OSXExecutionContext.wirePath);
 	}
 
 	public boolean resetPasswordSetNew(String password) throws Exception {
@@ -62,8 +61,7 @@ public class ChangePasswordPage extends OSXPage {
 
 		quitSafariButton.click();
 
-		driver.navigate().to(
-				CommonUtils.getOsxApplicationPathFromConfig(LoginPage.class));
+		driver.navigate().to(OSXExecutionContext.wirePath);
 
 		return isFound;
 	}

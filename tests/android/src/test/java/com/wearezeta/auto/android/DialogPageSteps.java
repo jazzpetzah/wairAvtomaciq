@@ -344,4 +344,20 @@ public class DialogPageSteps {
 				"Overlap between two images has not enough score. Expected >= 0.72, current = "
 						+ score, score >= 0.72d);
 	}
+	
+	/**
+	 * Verify that dialog page contains missed call from contact
+	 * 
+	 * @step. ^I see dialog with missed call from (.*)$
+	 * 
+	 * @param contact
+	 *            contact name string
+	 * 
+	 * @throws NoSuchUserException
+	 */
+	@Then("^I see dialog with missed call from (.*)$")
+	public void ThenISeeDialogWithMissedCallFrom(String contact) throws NoSuchUserException {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		Assert.assertEquals(contact + " CALLED", PagesCollection.dialogPage.getMissedCallMessage());
+	}
 }
