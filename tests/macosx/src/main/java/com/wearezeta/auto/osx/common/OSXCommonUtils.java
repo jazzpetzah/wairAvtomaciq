@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -222,5 +224,23 @@ public class OSXCommonUtils extends CommonUtils {
 
 	public static boolean osxAXValueToBoolean(String value) {
 		return value.equals("0") ? false : true;
+	}
+
+	private static final String LOG_FILTER_REGEX = "(wire|zclient|appium)";
+
+	public static void collectSystemLogs(Date testStartedDate) throws Exception {
+		log.debug("System Logs:");
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+		final String logStartTime = sdf.format(testStartedDate);
+		final String logEndTime = sdf.format(new Date());
+		final String collectedLogEntries = CommonUtils
+				.executeOsXCommandWithOutput(new String[] {
+						"/bin/bash",
+						"-c",
+						String.format(
+								"awk -v start=%s -v stop=%s 'start <= $3 && $3 < stop' /private/var/log/system.log"
+										+ " | grep -Ei '(%s)'", logStartTime,
+								logEndTime, LOG_FILTER_REGEX) });
+		log.debug(collectedLogEntries);
 	}
 }

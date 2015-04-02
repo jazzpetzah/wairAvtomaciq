@@ -76,7 +76,7 @@ public class OSXWireInstance extends WireInstance {
 	public void startClientProcedureImpl() throws Exception {
 		CommonOSXSteps osxSteps = new CommonOSXSteps();
 		osxSteps.setUp();
-		reporter.setStartupTime(osxSteps.startupTime);
+		reporter.setStartupTime(osxSteps.getStartupTime());
 	}
 
 	@Override

@@ -59,7 +59,8 @@ public class RegistrationPage extends WebPage {
 		passwordField.sendKeys(password);
 	}
 
-	public void submitRegistration() {
+	public void submitRegistration() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(driver, createAccount) : "'Create Account' button is not clickable after timeout";
 		createAccount.click();
 	}
 
