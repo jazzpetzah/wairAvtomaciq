@@ -61,14 +61,12 @@ public class ContactListPageSteps {
 	@When("^I tap on my name (.*)$")
 	public void WhenITapOnMyName(String name) throws Exception {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		IOSPage page = PagesCollection.contactListPage.tapOnName(name);
+		IOSPage page = PagesCollection.contactListPage.tapOnMyName(name);
 
 		if (page instanceof PersonalInfoPage) {
 			PagesCollection.personalInfoPage = (PersonalInfoPage) page;
 			PagesCollection.personalInfoPage.waitForEmailFieldVisible();
-		} else {
-			PagesCollection.dialogPage = (DialogPage) page;
-		}
+		} 
 	}
 
 	@When("^I tap on contact name (.*)$")
