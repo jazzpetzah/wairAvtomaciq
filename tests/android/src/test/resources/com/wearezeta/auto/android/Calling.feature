@@ -1,6 +1,6 @@
 Feature: Calling
 
-  @staging
+  @staging @id373
   Scenario Outline: Verify calling from missed call indicator in conversation
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -17,7 +17,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging
+  @staging @id373
   Scenario Outline: Verify calling from missed call indicator in Conversation List
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>

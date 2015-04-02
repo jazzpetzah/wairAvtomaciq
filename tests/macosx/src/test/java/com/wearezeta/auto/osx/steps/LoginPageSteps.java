@@ -16,7 +16,7 @@ import com.wearezeta.auto.osx.common.LoginBehaviourEnum;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
-import com.wearezeta.auto.osx.pages.UserProfilePage;
+import com.wearezeta.auto.osx.pages.SelfProfilePage;
 import com.wearezeta.auto.osx.pages.common.NoInternetConnectionPage;
 import com.wearezeta.auto.osx.pages.welcome.LoginPage;
 
@@ -83,7 +83,7 @@ public class LoginPageSteps {
 		}
 		if (page instanceof ContactListPage) {
 			PagesCollection.contactListPage = (ContactListPage) page;
-			PagesCollection.userProfilePage = new UserProfilePage(
+			PagesCollection.selfProfilePage = new SelfProfilePage(
 					PagesCollection.contactListPage.getDriver(),
 					PagesCollection.contactListPage.getWait());
 		} else if (page instanceof NoInternetConnectionPage) {

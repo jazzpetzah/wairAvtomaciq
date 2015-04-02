@@ -1,6 +1,7 @@
 package com.wearezeta.auto.common.calling;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,7 +59,8 @@ public class GoogleComputeEngine {
 	public static void createInstanceAndStartBlender(String instanceName,
 			String username, String password) throws Exception {
 		// Create compute engine object for listing instances
-		HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+		HttpTransport httpTransport = GoogleNetHttpTransport
+				.newTrustedTransport();
 		Compute compute = new Compute.Builder(httpTransport, JSON_FACTORY,
 				authorize()).setApplicationName(APPLICATION_NAME).build();
 
@@ -67,9 +69,17 @@ public class GoogleComputeEngine {
 		List<Items> items = new ArrayList<>();
 		Items startUpScript = new Items();
 		startUpScript.setKey("startup-script");
-		startUpScript.setValue(new Scanner(GoogleComputeEngine.class
-				.getResourceAsStream("/startblender.sh"), "UTF-8")
-				.useDelimiter("\\A").next());
+		InputStream startBlenderScriptStream = null;
+		try {
+			startBlenderScriptStream = GoogleComputeEngine.class
+					.getResourceAsStream("/startblender.sh");
+			startUpScript.setValue(new Scanner(startBlenderScriptStream,
+					"UTF-8").useDelimiter("\\A").next());
+		} finally {
+			if (startBlenderScriptStream != null) {
+				startBlenderScriptStream.close();
+			}
+		}
 		items.add(startUpScript);
 		items.add(new Items().setKey("username").setValue(username));
 		items.add(new Items().setKey("password").setValue(password));
@@ -220,16 +230,19 @@ public class GoogleComputeEngine {
 		compute.instances().delete(PROJECT, ZONE, instance).execute();
 	}
 
-	public static void deleteAllInstancesWhereNameContains(String pattern) throws IOException, GeneralSecurityException {
+	public static void deleteAllInstancesWhereNameContains(String pattern)
+			throws IOException, GeneralSecurityException {
 		log.info("Delete blender instances on Google Compute Engine...");
-		HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+		HttpTransport httpTransport = GoogleNetHttpTransport
+				.newTrustedTransport();
 		Compute compute = new Compute.Builder(httpTransport, JSON_FACTORY,
 				authorize()).setApplicationName(APPLICATION_NAME).build();
-		InstanceList instances = compute.instances().list(PROJECT, ZONE).execute();
+		InstanceList instances = compute.instances().list(PROJECT, ZONE)
+				.execute();
 		for (Instance instance : instances.getItems()) {
-			if(instance.getName().contains(pattern)) {
+			if (instance.getName().contains(pattern)) {
 				log.info("Delete blender instance: " + instance.getName());
-				deleteInstance(compute, instance.getName());	
+				deleteInstance(compute, instance.getName());
 			}
 		}
 		log.info("All blender instances deleted.");

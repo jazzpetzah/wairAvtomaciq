@@ -30,7 +30,7 @@ public class ContactListPage extends IOSPage {
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.90;
 	private final double MIN_ACCEPTABLE_IMAGE_UNREADDOT_VALUE = 0.99;
 
-	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameContactList)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathNameContactList)
 	private List<WebElement> contactListNames;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathContactListCells)

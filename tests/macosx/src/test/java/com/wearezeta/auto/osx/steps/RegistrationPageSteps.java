@@ -11,7 +11,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
-import com.wearezeta.auto.osx.pages.UserProfilePage;
+import com.wearezeta.auto.osx.pages.SelfProfilePage;
 import com.wearezeta.auto.osx.pages.common.ChoosePicturePage;
 
 import cucumber.api.java.en.Then;
@@ -215,10 +215,10 @@ public class RegistrationPageSteps {
 	 */
 	@Then("I see self profile of registered user")
 	public void ISeeSelfProfileOfRegisteredUser() throws Exception {
-		PagesCollection.userProfilePage = new UserProfilePage(
+		PagesCollection.selfProfilePage = new SelfProfilePage(
 				PagesCollection.mainMenuPage.getDriver(),
 				PagesCollection.mainMenuPage.getWait());
-		UserProfilePageSteps upSteps = new UserProfilePageSteps();
+		SelfProfilePageSteps upSteps = new SelfProfilePageSteps();
 		upSteps.ISeeNameInUserProfile(this.userToRegister.getName());
 	}
 

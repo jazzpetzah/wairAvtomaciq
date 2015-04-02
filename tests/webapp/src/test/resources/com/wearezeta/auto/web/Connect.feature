@@ -6,8 +6,8 @@ Feature: Connect
     Given <Contact> has sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
-    When I see connection request
-    And I open connection requests list
+    When I see connection request from one user
+    And I open the list of incoming connection requests
     And I accept connection request from user <Contact>
     Then I see Contact list with name <Contact>
 
@@ -54,8 +54,8 @@ Feature: Connect
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
     And I see my name on top of Contact list
-    And I see connection request
-    And I open connection requests list
+    And I see connection request from one user
+    And I open the list of incoming connection requests
     And I accept connection request from user <Name>
     And I see Contact list with name <Name>
     And I open self profile
