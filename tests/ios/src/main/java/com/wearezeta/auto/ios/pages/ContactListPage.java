@@ -119,21 +119,15 @@ public class ContactListPage extends IOSPage {
 				IOSLocators.xpathContactListPlayPauseButton, name)));
 		DriverUtils.iOSMultiTap(this.getDriver(), element, 1);
 	}
-
-	private boolean isProfilePageVisible() {
-		boolean result = false;
-
-		try {
-			result = profileName.isDisplayed();
-		} catch (org.openqa.selenium.NoSuchElementException ex) {
-			// do nothing
-		}
-
-		return result;
+	
+	public PersonalInfoPage tapOnMyName(String name) throws Exception {
+		WebElement el = driver.findElementByXPath(String.format(IOSLocators.xpathSelfName, name));
+		el.click();
+		
+		return new PersonalInfoPage(this.getDriver(), this.getWait());
 	}
 
 	public IOSPage tapOnName(String name) throws Exception {
-		IOSPage page = null;
 		WebElement el = findNameInContactList(name);
 		boolean clickableGlitch = false;
 		try {
@@ -146,12 +140,8 @@ public class ContactListPage extends IOSPage {
 		} else {
 			el.click();
 		}
-		if (isProfilePageVisible()) {
-			page = new PersonalInfoPage(this.getDriver(), this.getWait());
-		} else {
-			page = new DialogPage(this.getDriver(), this.getWait());
-		}
-		return page;
+
+		return new DialogPage(this.getDriver(), this.getWait());
 	}
 
 	public String getFirstDialogName(String name) throws Exception {
