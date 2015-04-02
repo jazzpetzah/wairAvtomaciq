@@ -477,9 +477,4 @@ public class CommonWebAppSteps {
 
 		commonSteps.getUserManager().resetUsers();
 	}
-
-	@After("@blender")
-	public void afterScenario() throws IOException, GeneralSecurityException {
-		CallingUtil.deleteAllBlenderInstances();
-	}
 }
