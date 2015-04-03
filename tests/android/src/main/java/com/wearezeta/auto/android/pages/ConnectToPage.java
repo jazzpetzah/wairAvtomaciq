@@ -112,6 +112,7 @@ public class ConnectToPage extends AndroidPage {
 
 	public ContactListPage pressConnectButton() throws Exception {
 		refreshUITree();
+		this.getWait().until(ExpectedConditions.elementToBeClickable(sendConnectionRequestButton));
 		sendConnectionRequestButton.click();
 		return new ContactListPage(this.getDriver(), this.getWait());
 	}
