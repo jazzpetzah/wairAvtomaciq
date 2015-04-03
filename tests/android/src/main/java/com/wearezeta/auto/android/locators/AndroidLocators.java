@@ -374,7 +374,8 @@ public final class AndroidLocators {
 
 		public static final String xpathAddPicture = "//android.widget.FrameLayout/android.widget.LinearLayout/android.widget.TextView[2]";
 
-		public static final String xpathPing = "//android.widget.FrameLayout/android.widget.LinearLayout/android.widget.TextView[3]";
+		public static final String idPing = LOCATORS_PACKAGE
+				+ ":id/gtv__cursor_knock";
 
 		public static final String xpathFormatSpecificMessage = "//android.widget.TextView[@resource-id='"
 				+ LOCATORS_PACKAGE

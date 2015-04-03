@@ -122,7 +122,7 @@ public class DialogPage extends AndroidPage {
 	@AndroidFindBy(xpath = AndroidLocators.DialogPage.xpathAddPicture)
 	private WebElement addPictureBtn;
 
-	@AndroidFindBy(xpath = AndroidLocators.DialogPage.xpathPing)
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idPing")
 	private WebElement pingBtn;
 
 	@AndroidFindBy(xpath = AndroidLocators.OtherUserPersonalInfoPage.xpathGroupChatInfoLinearLayout)
