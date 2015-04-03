@@ -43,7 +43,7 @@ Feature: Conversation
     And I unarchive conversation <Contact>
     Then I see Contact list with name <Contact>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
@@ -54,7 +54,7 @@ Feature: Conversation
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
     And I open conversation with <Contact>
-    And I send picture <PictureName> to single conversation
+    And I send picture <PictureName> to the current conversation
     Then I see sent picture <PictureName> in the conversation view
 
     Examples: 
@@ -69,7 +69,7 @@ Feature: Conversation
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
     And I open conversation with <ChatName>
-    When I send picture <PictureName> to group conversation
+    When I send picture <PictureName> to the current conversation
     Then I see sent picture <PictureName> in the conversation view
 
     Examples: 

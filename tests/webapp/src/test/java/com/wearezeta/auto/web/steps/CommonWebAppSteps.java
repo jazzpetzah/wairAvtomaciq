@@ -6,6 +6,7 @@ import java.util.logging.Level;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
+import org.json.JSONException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
@@ -66,9 +67,10 @@ public class CommonWebAppSteps {
 		return WebCommonUtils
 				.getWebAppBrowserNameFromConfig(CommonWebAppSteps.class);
 	}
-	
-	private static void setCustomChromeProfile(DesiredCapabilities capabilities,
-			String browserPlatform) throws Exception {
+
+	private static void setCustomChromeProfile(
+			DesiredCapabilities capabilities, String browserPlatform)
+			throws Exception {
 		ChromeOptions options = new ChromeOptions();
 		// simulate a fake webcam and mic for testing
 		options.addArguments("use-fake-device-for-media-stream");
@@ -226,18 +228,17 @@ public class CommonWebAppSteps {
 				WebAppExecutionContext.seleniumNodeIp = WebCommonUtils
 						.getNodeIp(PagesCollection.invitationCodePage
 								.getDriver());
-			} catch (Exception e) {
-				log.debug("Error on checking node IP for Safari test. Error message: "
-						+ e.getMessage());
-				e.printStackTrace();
+			} catch (JSONException e) {
+				log.debug("It seems that Safari driver is not part of a grid. Setting node IP to localhost...");
 			}
 		}
 	}
-	
+
 	@Given("^my browser supports calling$")
 	public void MyBrowserSupportsCalling() throws Exception {
-		if(!getBrowser().equals("chrome") && !getBrowser().equals("firefox")) {
-			throw new PendingException("Browser " + getBrowser() + " does not support calling.");
+		if (!getBrowser().equals("chrome") && !getBrowser().equals("firefox")) {
+			throw new PendingException("Browser " + getBrowser()
+					+ " does not support calling.");
 		}
 	}
 
@@ -476,9 +477,9 @@ public class CommonWebAppSteps {
 
 		commonSteps.getUserManager().resetUsers();
 	}
-	
+
 	@After("@blender")
 	public void afterScenario() throws IOException, GeneralSecurityException {
-	    CallingUtil.deleteAllBlenderInstances();
+		CallingUtil.deleteAllBlenderInstances();
 	}
 }

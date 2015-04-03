@@ -40,7 +40,7 @@ public final class WebAppLocators {
 		public static final String cssParentContactListItem = "div#conversation-list";
 
 		public static final String cssIncomingPendingConvoItem = cssParentContactListItem
-				+ " [data-uie-name=item-pending-request]";
+				+ " [data-uie-name=item-pending-requests]";
 
 		public static final String xpathOpenArchivedConvosButton = "//*[@data-uie-name='go-archive']";
 
@@ -144,9 +144,7 @@ public final class WebAppLocators {
 
 		public static final String cssSendImageLabel = "label.controls-right-button.icon-library.icon-button";
 
-		public static final String xpathSendImageInput = "//input[@type='file' and @data-uie-name='do-share-image']";
-
-		public static final String cssSendImageInput = "input[type=\"file\"]";
+		public static final String cssSendImageInput = "input[data-uie-name=do-share-image]";
 
 		public static final String xpathImageMessageEntry = "//div[@class='message-asset-image']";
 
