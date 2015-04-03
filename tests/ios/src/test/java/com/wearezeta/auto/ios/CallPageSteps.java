@@ -26,4 +26,40 @@ public class CallPageSteps {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertTrue(((StartedCallPage)PagesCollection.callPage).isCallingMessageVisible(contact.toUpperCase()));
 	}
+	
+	/**
+	 * 
+	 * Verify that calling UI buttons are visible
+	 * @step. ^I see mute call, end call and speakers buttons$
+	 * @throws Exception
+	 */
+	@When("^I see mute call, end call and speakers buttons$")
+	public void ISeeCallingPageButtons() throws Exception {
+
+		Assert.assertTrue(((StartedCallPage)PagesCollection.callPage).isEndCallVisible());
+		Assert.assertTrue(((StartedCallPage)PagesCollection.callPage).isMuteCallVisible());
+		Assert.assertTrue(((StartedCallPage)PagesCollection.callPage).isSpeakersVisible());
+	}
+	
+	/**
+	 * Click on end call button
+	 * @step. ^I end started call$
+	 * @throws Exception
+	 */
+	@When("^I end started call$")
+	public void IEndStartedCall() throws Exception {
+
+		((StartedCallPage)PagesCollection.callPage).clickEndCallButton();
+	}
+	
+	/**
+	 * Verify that calling page is not visible
+	 * @step. ^I dont see calling page$
+	 * @throws Exception
+	 */
+	@When("^I dont see calling page$")
+	public void IDontSeeCallPage() throws Exception {
+
+		Assert.assertFalse(((StartedCallPage)PagesCollection.callPage).isCallingMessageVisible());
+	}
 }
