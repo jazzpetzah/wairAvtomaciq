@@ -30,6 +30,7 @@ Feature: Conversation View
     Then I see You Pinged message in the dialog
     And I swipe the text input cursor
     And I click Ping button
+    And I wait for 1 seconds
     Then I see You Pinged Again message in the dialog
 
     Examples: 

@@ -70,7 +70,7 @@ public class SelfPictureUploadPage extends WebPage {
 	}
 
 	public void forceCarouselMode() {
-		final String forceCarouselScript = "window.app.view.content.self_profile.show_get_picture();";
+		final String forceCarouselScript = "window.wire.app.view.content.self_profile.show_get_picture();";
 		driver.executeScript(forceCarouselScript);
 	}
 
