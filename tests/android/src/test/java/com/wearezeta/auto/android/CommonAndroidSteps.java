@@ -181,6 +181,34 @@ public class CommonAndroidSteps {
 	}
 
 	/**
+	 * Opens the gallery application (com.google.android.gallery3d)
+	 * 
+	 * @step. ^I open the gallery application$
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	
+	@When("^I open the gallery application$")
+	public void IOpenGalleryApp() throws Exception {
+		AndroidCommonUtils.openGalleryApplication();
+	}
+
+	/**
+	 * Opens the gallery application and shares the default photo to wire (com.google.android.gallery3d)
+	 * 
+	 * @step. ^I share image from Gallery to Wire$
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I share image from Gallery to Wire$")
+	public void IShareImageFromGallery() throws Exception {
+		IOpenGalleryApp();
+		PagesCollection.contactListPage.shareImageToWireFromGallery();
+	}
+	
+	/**
 	 * Takes screenshot for comparison
 	 * 
 	 * @step. ^I take screenshot$
