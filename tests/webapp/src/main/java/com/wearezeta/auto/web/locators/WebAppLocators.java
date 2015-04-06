@@ -60,9 +60,9 @@ public final class WebAppLocators {
 				xpathParentContactListItem, name);
 
 		public static final Function<String, String> xpathMuteIconByContactName = (
-						name) -> String.format(xpathConvoItemByNamePattern
-						+ "/following::*[@data-uie-name='status-silence']",
-						xpathParentContactListItem, name);
+				name) -> String.format(xpathConvoItemByNamePattern
+				+ "/following::*[@data-uie-name='status-silence']",
+				xpathParentContactListItem, name);
 
 		public static final String cssSelfProfileEntry = "[data-uie-name=go-self-profile]";
 
@@ -160,10 +160,13 @@ public final class WebAppLocators {
 	}
 
 	public static final class ConnectToPage {
+		public static final Function<String, String> xpathAcceptRequestButtonByName = name -> String
+				.format("//div[contains(@class, 'connect-name') and span[text()='%s']]/following-sibling::div/div[@id='accept']",
+						name);
 
-		public static final String xpathFormatAcceptRequestButton = "//div[@class='connect-name' and span[text()='%s']]/following-sibling::div/div[@id='accept']";
-
-		public static final String xpathFormatIgnoreReqestButton = "//div[@class='connect-name' and span[text()='%s']]/following-sibling::div/div[@id='ignore']";
+		public static final Function<String, String> xpathIgnoreReqestButtonByName = name -> String
+				.format("//div[contains(@class, 'connect-name') and span[text()='%s']]/following-sibling::div/div[@id='ignore']",
+						name);
 	}
 
 	public static final class PeoplePickerPage {
