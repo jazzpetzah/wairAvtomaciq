@@ -515,7 +515,7 @@ final class BackendREST {
 		}
 		requestBody.put("users", userIds);
 		final String output = httpPost(webResource, requestBody.toString(),
-				new int[] { HttpStatus.SC_OK });
+				new int[] { HttpStatus.SC_OK, HttpStatus.SC_NO_CONTENT });
 		writeLog(new String[] { "Output from Server .... Add contacts to group convo "
 				+ output + "\n" });
 		return new JSONObject(output);

@@ -128,17 +128,8 @@ Feature: Conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
-    And I open conversation with <ChatName>
-    And I write message <Msg1FromUserA>
-    And I send message
-    And I open self profile
-    And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
-    And User <Contact1> is me
-    And I switch to sign in page
-    And I see Sign In page
+    Given User Myself sent message <Msg1FromUserA> to conversation <ChatName>
+    Given User <Contact1> is me
     And I Sign in using login <Contact1Email> and password <Contact1Password>
     And I see Contact list with name <ChatName>
     When I open conversation with <ChatName>
@@ -157,5 +148,5 @@ Feature: Conversation
     Then I see <Msg2FromUserA> message
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  | ChatName  | Msg1FromUserA | Msg2FromUserA |
-      | user1Email | user1Password | user1Name | user2Name | user2Email    | user2Password    | user3Name | GroupChat | Message1      | Message2      |
+      | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  | ChatName  | Msg1FromUserA | Msg2FromUserA |
+      | user1Name | user2Name | user2Email    | user2Password    | user3Name | GroupChat | Message1      | Message2      |

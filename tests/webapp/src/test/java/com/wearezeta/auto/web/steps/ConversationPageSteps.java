@@ -289,7 +289,7 @@ public class ConversationPageSteps {
 	 * @param message
 	 * @throws Exception
 	 */
-	@When("^I see (.*) message$")
+	@Then("^I see (.*) message$")
 	public void ISeeMessage(String message) throws Exception {
 		Assert.assertTrue(PagesCollection.conversationPage
 				.isTextMessageVisible(message));
@@ -302,7 +302,7 @@ public class ConversationPageSteps {
 	 * @param message
 	 * @throws Exception
 	 */
-	@When("^I do not see (.*) message$")
+	@Then("^I do not see (.*) message$")
 	public void IDontSeeMessage(String message) throws Exception {
 		Assert.assertFalse(PagesCollection.conversationPage
 				.isTextMessageVisible(message));

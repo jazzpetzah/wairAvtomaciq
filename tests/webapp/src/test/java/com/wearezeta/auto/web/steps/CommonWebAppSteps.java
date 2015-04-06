@@ -470,7 +470,8 @@ public class CommonWebAppSteps {
 	}
 
 	/**
-	 * Add a new contact(s) to the existing group conversation on the backend
+	 * Add one or more of your contacts to the existing group conversation on
+	 * the backend
 	 * 
 	 * @step. ^User (.*) added contacts? (.*) to group chat (.*)
 	 * 
@@ -485,7 +486,7 @@ public class CommonWebAppSteps {
 	@Given("^User (.*) added contacts? (.*) to group chat (.*)")
 	public void UserXAddedContactsToGroupChat(String asUser, String contacts,
 			String conversationName) throws Exception {
-		commonSteps.UserXAddedContactsToGroupChat(asUser, conversationName,
+		commonSteps.UserXAddedContactsToGroupChat(asUser, contacts,
 				conversationName);
 	}
 
