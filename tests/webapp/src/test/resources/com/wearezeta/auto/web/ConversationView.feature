@@ -123,7 +123,7 @@ Feature: Conversation
       | Login      | Password      | Name      | Contact   | PING   | PING_AGAIN   |
       | user1Email | user1Password | user1Name | user2Name | pinged | pinged again |
 
-  @torun @id2011
+  @staging @id2011
   Scenario Outline: I can see missed messages when rejoining a conversation after leaving it
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
