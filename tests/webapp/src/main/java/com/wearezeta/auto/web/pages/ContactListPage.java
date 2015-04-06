@@ -120,13 +120,13 @@ public class ContactListPage extends WebPage {
 
 	public PeoplePickerPage isHiddenByPeoplePicker() throws Exception {
 		if (DriverUtils
-				.waitUntilElementAppears(
+				.waitUntilElementDissapear(
 						driver,
 						By.className(WebAppLocators.ContactListPage.classNamePeoplePickerVisible),
-						3)) {
-			return new PeoplePickerPage(this.getDriver(), this.getWait());
-		} else {
+						5)) {
 			return null;
+		} else {
+			return new PeoplePickerPage(this.getDriver(), this.getWait());
 		}
 	}
 
