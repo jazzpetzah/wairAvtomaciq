@@ -157,7 +157,8 @@ Feature: Connect
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
     And I Connect with contact by pressing button
-    Then I see Connect to <Contact> Dialog page
+    Then I see dialog page
+    And I see Connect to <Contact> Dialog page
 
     Examples: 
       | Login      | Password      | Name      | Contact   | WaitingMess      |

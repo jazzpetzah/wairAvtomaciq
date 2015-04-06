@@ -193,6 +193,12 @@ public class ContactListPageSteps {
 		}
 	}
 
+
+	@When("^I press Open StartUI Button")
+	public void WhenIPressOpenStartUIButton() throws Exception {
+		PagesCollection.peoplePickerPage = PagesCollection.contactListPage.pressOpenStartUIButton();
+	}
+	
 	@When("^I swipe up contact list$")
 	public void ISwipeUpContactList() throws Exception {
 		PagesCollection.contactListPage.contactListSwipeUp(1000);

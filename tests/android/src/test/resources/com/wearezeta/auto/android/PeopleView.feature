@@ -10,12 +10,11 @@ Feature: People View
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <GroupChatName>
+    And I see dialog page
     And I swipe up on dialog page
     And I tap on group chat contact <Contact1NewName>
     Then I see <Contact1> user name and email
 
-    # This step requires to be rewritten to support multiple screen resolutions
-    # And I see correct background image
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName   | Picture                      | Contact1NewName   |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupInfoCheck2 | aqaPictureContact600_800.jpg | aqaPictureContact |
@@ -60,7 +59,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat |
 
-  @id322 @smoke @regression
+  @id322 @smoke @regression 
   Scenario Outline: Remove from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -75,6 +74,7 @@ Feature: People View
     And I confirm remove
     Then I do not see <Contact2> on group chat info page
     And I return to group chat page
+    And I see dialog page
     Then I see  message <Message> contact <Contact2> on group page
 
     Examples: 
@@ -100,7 +100,7 @@ Feature: People View
     And I see the correct participant <Contact1NewName> and <Contact2NewName> avatars
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName  | Picture                      | Color1       | Color2      | Contact1NewName   | Contact2NewName       |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName  | Picture                      | Color1       | Color2       | Contact1NewName   | Contact2NewName       |
       | user1Email | user1Password | user1Name | user3Name | user2Name | 3                 | GroupInfoCheck | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow | aqaPictureContact | aqaAvatar TestContact |
 
   @id1395 @smoke @regression
@@ -121,3 +121,4 @@ Feature: People View
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
+
