@@ -283,6 +283,32 @@ public class ConversationPageSteps {
 	}
 
 	/**
+	 * Verify a text message is visible in conversation
+	 * 
+	 * @step. ^I see (.*) message$
+	 * @param message
+	 * @throws Exception
+	 */
+	@When("^I see (.*) message$")
+	public void ISeeMessage(String message) throws Exception {
+		Assert.assertTrue(PagesCollection.conversationPage
+				.isTextMessageVisible(message));
+	}
+	
+	/**
+	 * Verify a text message is not visible in conversation
+	 * 
+	 * @step. ^I do not see (.*) message$
+	 * @param message
+	 * @throws Exception
+	 */
+	@When("^I do not see (.*) message$")
+	public void IDontSeeMessage(String message) throws Exception {
+		Assert.assertFalse(PagesCollection.conversationPage
+				.isTextMessageVisible(message));
+	}
+	
+	/**
 	 * Verify that there is only one ping message visible in conversation
 	 * 
 	 * @step. ^I see only one ping message$

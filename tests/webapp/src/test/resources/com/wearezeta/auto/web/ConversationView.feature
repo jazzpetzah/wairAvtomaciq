@@ -122,3 +122,40 @@ Feature: Conversation
     Examples: 
       | Login      | Password      | Name      | Contact   | PING   | PING_AGAIN   |
       | user1Email | user1Password | user1Name | user2Name | pinged | pinged again |
+
+  @torun @id2011
+  Scenario Outline: I can see missed messages when rejoining a conversation after leaving it
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name on top of Contact list
+    And I open conversation with <ChatName>
+    And I write message <Msg1FromUserA>
+    And I send message
+    And I open self profile
+    And I click gear button on self profile page
+    And I select Sign out menu item on self profile page
+    And User <Contact1> is me
+    And I switch to sign in page
+    And I see Sign In page
+    And I Sign in using login <Contact1Email> and password <Contact1Password>
+    And I see Contact list with name <ChatName>
+    When I open conversation with <ChatName>
+    Then I see <Msg1FromUserA> message
+    And I click People button in group conversation
+    And I see Group Participants popover
+    When I click Leave button on Group Participants popover
+    And I confirm leave group conversation on Group Participants popover
+    Then I do not see Contact list with name <ChatName>
+    And User <Name> sent message <Msg2FromUserA> to conversation <ChatName>
+    When I open archive
+    And I unarchive conversation <ChatName>
+    When I open conversation with <ChatName>
+    Then I do not see <Msg2FromUserA> message
+    When User <Name> added contact <Contact1> to group chat <ChatName>
+    Then I see <Msg2FromUserA> message
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  | ChatName  | Msg1FromUserA | Msg2FromUserA |
+      | user1Email | user1Password | user1Name | user2Name | user2Email    | user2Password    | user3Name | GroupChat | Message1      | Message2      |
