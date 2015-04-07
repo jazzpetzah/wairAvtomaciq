@@ -51,11 +51,10 @@ public class AndroidCommonUtils extends CommonUtils {
 	
 	public static void openGalleryApplication() throws Exception{
 		if (getOsName().contains(OS_NAME_WINDOWS)) {
-			Runtime.getRuntime().exec("cmd /C adb shell am force-stop com.google.android.gallery3d");
+			Runtime.getRuntime().exec("cmd /C adb shell pm clear com.google.android.gallery3d");
 			Runtime.getRuntime().exec("cmd /C adb shell am start -t image/* -a android.intent.action.VIEW");
 		} else {
 			executeOsXCommand(new String[] { "/bin/bash", "-c", ADB_PREFIX + "adb shell pm clear com.google.android.gallery3d" });
-			//executeOsXCommand(new String[] { "/bin/bash", "-c", ADB_PREFIX + "adb shell am force-stop com.google.android.gallery3d" });
 			executeOsXCommand(new String[] { "/bin/bash", "-c", ADB_PREFIX + "adb shell am start -t image/* -a android.intent.action.VIEW" });
 		}
 	}

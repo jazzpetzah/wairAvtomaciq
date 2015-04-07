@@ -81,9 +81,6 @@ public class ContactListPage extends AndroidPage {
 	@FindBy(xpath = AndroidLocators.CommonLocators.xpathGalleryCameraAlbum)
 	private WebElement galleryCameraAlbumButton;
 	
-	@FindBy(xpath = AndroidLocators.CommonLocators.xpathGalleryShareButton)
-	private WebElement galleryShareSelectionButton;
-	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idConversationSendOption")
 	private WebElement conversationShareOption;
 	
@@ -340,8 +337,12 @@ public class ContactListPage extends AndroidPage {
 	
 	public void shareImageToWireFromGallery(){
 		galleryCameraAlbumButton.click();
-		this.getWait().until(ExpectedConditions.visibilityOf(galleryShareSelectionButton));
-		galleryShareSelectionButton.click();
+		List<WebElement> galleryImageViews = driver.findElementsByClassName("android.widget.ImageView");
+		for(WebElement imageView: galleryImageViews){
+			if(imageView.getAttribute("name").equals("Share with")){
+				imageView.click();
+			}
+		}
 		List<WebElement> textViewElements = driver.findElementsByClassName("android.widget.TextView");
 		for(WebElement textView: textViewElements){
 			if(textView.getAttribute("text").equals("See all")){

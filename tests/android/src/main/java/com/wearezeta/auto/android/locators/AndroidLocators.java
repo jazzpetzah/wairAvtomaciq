@@ -282,9 +282,7 @@ public final class AndroidLocators {
 				+ ":id/zb__search_hint__close_button";
 
 		public static final String xpathGalleryCameraAlbum = "//android.widget.FrameLayout[1]/android.widget.RelativeLayout[1]/android.view.View[1]";
-		
-		public static final String xpathGalleryShareButton = "//android.widget.FrameLayout[2]/android.view.View[1]/android.widget.LinearLayout[3]/android.view.View[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.ImageView[1]";
-		
+
 		public static final String xpathGalleryMoreShareOptions = "//android.widget.ListView[1]/android.widget.LinearLayout[%s]/android.widget.LinearLayout[1]/android.widget.TextView[1]";
 		
 		public static final String idConversationSendOption = LOCATORS_PACKAGE
