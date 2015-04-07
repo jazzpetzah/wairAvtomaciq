@@ -28,7 +28,7 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * Input user name in search field of People Picker
+	 * Input user name/email in search field of People Picker
 	 * 
 	 * @step. ^I type (.*) in search field of People Picker$
 	 * 
@@ -36,9 +36,12 @@ public class PeoplePickerPageSteps {
 	 * @throws Exception
 	 */
 	@When("^I type (.*) in search field of People Picker$")
-	public void ISearchForUser(String name) throws Exception {
-		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		PagesCollection.peoplePickerPage.searchForUser(name);
+	public void ISearchForUser(String nameOrEmail) throws Exception {
+		nameOrEmail = usrMgr.replaceAliasesOccurences(nameOrEmail,
+				FindBy.NAME_ALIAS);
+		nameOrEmail = usrMgr.replaceAliasesOccurences(nameOrEmail,
+				FindBy.EMAIL_ALIAS);
+		PagesCollection.peoplePickerPage.searchForUser(nameOrEmail);
 	}
 
 	/**

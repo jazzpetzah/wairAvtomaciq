@@ -16,7 +16,7 @@ import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
-import com.wearezeta.auto.osx.pages.UserProfilePage;
+import com.wearezeta.auto.osx.pages.SelfProfilePage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -129,7 +129,7 @@ public class ContactListPageSteps {
 	@Given("I go to user (.*) profile")
 	public void GivenIGoToUserProfile(String user) throws Exception {
 		clickOnContactListEntry(user, true);
-		PagesCollection.userProfilePage = new UserProfilePage(
+		PagesCollection.selfProfilePage = new SelfProfilePage(
 				PagesCollection.mainMenuPage.getDriver(),
 				PagesCollection.mainMenuPage.getWait());
 	}

@@ -61,14 +61,9 @@ public class ContactListPageSteps {
 	@When("^I tap on my name (.*)$")
 	public void WhenITapOnMyName(String name) throws Exception {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		IOSPage page = PagesCollection.contactListPage.tapOnName(name);
+		PagesCollection.personalInfoPage = PagesCollection.contactListPage.tapOnMyName(name);
 
-		if (page instanceof PersonalInfoPage) {
-			PagesCollection.personalInfoPage = (PersonalInfoPage) page;
-			PagesCollection.personalInfoPage.waitForEmailFieldVisible();
-		} else {
-			PagesCollection.dialogPage = (DialogPage) page;
-		}
+		PagesCollection.personalInfoPage.waitForEmailFieldVisible();
 	}
 
 	@When("^I tap on contact name (.*)$")
@@ -197,7 +192,7 @@ public class ContactListPageSteps {
 	@When("^I swipe right on a (.*)$")
 	public void ISwipeRightOnContact(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		PagesCollection.contactListPage.swipeRightOnContact(500, contact);
+		PagesCollection.contactListPage.swipeRightOnContact(1500, contact);
 	}
 
 	@When("^I click mute conversation$")
@@ -484,7 +479,7 @@ public class ContactListPageSteps {
 	@When("^I long swipe right to archive conversation (.*)$")
 	public void ILongSwipeRightToArchiveConversation(String conversation) throws Exception {
 		conversation = usrMgr.replaceAliasesOccurences(conversation, FindBy.NAME_ALIAS);
-		PagesCollection.contactListPage.swipeRightOnContact(1000, conversation);
+		PagesCollection.contactListPage.longSwipeRightOnContact(1000, conversation);
 	}
 
 }

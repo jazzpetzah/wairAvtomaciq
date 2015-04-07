@@ -262,6 +262,17 @@ public class DialogPageSteps {
 				.pressAddPictureButton();
 		PagesCollection.cameraRollPage = (CameraRollPage) page;
 	}
+	
+	/**
+	 * Click call button to start a call
+	 * @step. ^I press call button$
+	 * @throws Throwable
+	 */
+	@When("^I press call button$")
+	public void IPressCallButton() throws Throwable {
+
+		PagesCollection.callPage = PagesCollection.dialogPage.pressCallButton();
+	}
 
 	@When("^I click Ping button$")
 	public void IPressPingButton() throws Throwable {
@@ -365,7 +376,7 @@ public class DialogPageSteps {
 	@When("^I post media link (.*)$")
 	public void IPostMediaLink(String link) throws Throwable {
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.iOSPage;
-		PagesCollection.dialogPage.sendStringToInput(link + "\n");
+		PagesCollection.dialogPage.sendMessageUsingScript(link);
 	}
 
 	@When("^I tap media link$")

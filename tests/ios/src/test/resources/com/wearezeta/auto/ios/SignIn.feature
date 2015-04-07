@@ -42,7 +42,7 @@ Feature: Sign In
       | WrongMail  | WrongPassword |
       | wrongwrong | wrong         |
 
-  @staging @id1479
+  @regression @id1479 @id1403
   Scenario Outline: Verify possibility of reseting password (welcome page)
     Given I see sign in screen
     And I press Sign in button

@@ -149,5 +149,4 @@ public class SelfProfilePageSteps {
 		Assert.assertTrue("my actual accent color is not set",
 				actualColorId == expectedColorId);
 	}
-
 }

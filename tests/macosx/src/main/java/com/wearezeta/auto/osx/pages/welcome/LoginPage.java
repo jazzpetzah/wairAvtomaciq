@@ -1,4 +1,4 @@
-package com.wearezeta.auto.osx.pages;
+package com.wearezeta.auto.osx.pages.welcome;
 
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -22,6 +22,9 @@ import com.wearezeta.auto.osx.common.LoginBehaviourEnum;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.common.OSXConstants;
 import com.wearezeta.auto.osx.locators.OSXLocators;
+import com.wearezeta.auto.osx.pages.ChangePasswordPage;
+import com.wearezeta.auto.osx.pages.ContactListPage;
+import com.wearezeta.auto.osx.pages.OSXPage;
 import com.wearezeta.auto.osx.pages.common.NoInternetConnectionPage;
 
 public class LoginPage extends OSXPage {
@@ -41,7 +44,7 @@ public class LoginPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.LoginPage.idPasswordField)
 	private WebElement passwordField;
 
-	@FindBy(how = How.XPATH, using = OSXLocators.xpathWrongCredentialsMessage)
+	@FindBy(how = How.XPATH, using = OSXLocators.LoginPage.xpathWrongCredentialsMessage)
 	private WebElement wrongCredentialsMessage;
 
 	@FindBy(how = How.XPATH, using = OSXLocators.LoginPage.xpathForgotPasswordButton)

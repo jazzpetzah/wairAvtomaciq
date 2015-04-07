@@ -73,15 +73,15 @@ public abstract class AndroidPage extends BasePage {
 		driver.navigate().back();
 		return null;
 	}
-	
+
 	public void rotateLandscape() throws Exception {
 		this.getDriver().rotate(ScreenOrientation.LANDSCAPE);
 	}
-	
+
 	public void rotatePortrait() throws Exception {
 		this.getDriver().rotate(ScreenOrientation.PORTRAIT);
 	}
-	
+
 	public ScreenOrientation getOrientation() throws Exception {
 		return this.getDriver().getOrientation();
 	}
@@ -161,6 +161,18 @@ public abstract class AndroidPage extends BasePage {
 			ex.printStackTrace();
 		}
 	}
+
+	public void elementSwipeDown(WebElement el, int time) {
+		Point coords = el.getLocation();
+		Dimension elementSize = el.getSize();
+		try {
+			this.getDriver().swipe(coords.x + elementSize.width / 2,
+					coords.y + 50, coords.x + elementSize.width / 2,
+					coords.y + elementSize.height - 300, time);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
 	
 	public void dialogsPagesSwipeUp(int time) {
 		Point coords = content.getLocation();
@@ -178,8 +190,8 @@ public abstract class AndroidPage extends BasePage {
 		Point coords = content.getLocation();
 		Dimension elementSize = content.getSize();
 		try {
-			this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y + 50,
-					coords.x + elementSize.width / 2,
+			this.getDriver().swipe(coords.x + elementSize.width / 2,
+					coords.y + 50, coords.x + elementSize.width / 2,
 					coords.y + elementSize.height - 300, time);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -192,44 +204,51 @@ public abstract class AndroidPage extends BasePage {
 		DriverUtils.swipeDown(this.getDriver(), content, time);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
-	
+
 	public AndroidPage swipeRightCoordinates(int time) throws Exception {
 		DriverUtils.swipeRightCoordinates(this.getDriver(), time);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
-	
-	public AndroidPage swipeRightCoordinates(int time, int horizontalPercent) throws Exception {
-		DriverUtils.swipeRightCoordinates(this.getDriver(), time, horizontalPercent);
+
+	public AndroidPage swipeRightCoordinates(int time, int horizontalPercent)
+			throws Exception {
+		DriverUtils.swipeRightCoordinates(this.getDriver(), time,
+				horizontalPercent);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
-	
+
 	public AndroidPage swipeLeftCoordinates(int time) throws Exception {
 		DriverUtils.swipeLeftCoordinates(this.getDriver(), time);
 		return returnBySwipe(SwipeDirection.LEFT);
 	}
-	
-	public AndroidPage swipeLeftCoordinates(int time, int horizontalPercent) throws Exception {
-		DriverUtils.swipeLeftCoordinates(this.getDriver(), time, horizontalPercent);
+
+	public AndroidPage swipeLeftCoordinates(int time, int horizontalPercent)
+			throws Exception {
+		DriverUtils.swipeLeftCoordinates(this.getDriver(), time,
+				horizontalPercent);
 		return returnBySwipe(SwipeDirection.LEFT);
 	}
-	
+
 	public AndroidPage swipeUpCoordinates(int time) throws Exception {
 		DriverUtils.swipeUpCoordinates(this.getDriver(), time);
 		return returnBySwipe(SwipeDirection.UP);
 	}
-	
-	public AndroidPage swipeUpCoordinates(int time, int verticalPercent) throws Exception {
+
+	public AndroidPage swipeUpCoordinates(int time, int verticalPercent)
+			throws Exception {
 		DriverUtils.swipeUpCoordinates(this.getDriver(), time, verticalPercent);
 		return returnBySwipe(SwipeDirection.UP);
 	}
-	
+
 	public AndroidPage swipeDownCoordinates(int time) throws Exception {
 		DriverUtils.swipeDownCoordinates(this.getDriver(), time);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
-	
-	public AndroidPage swipeDownCoordinates(int time, int verticalPercent) throws Exception {
-		DriverUtils.swipeDownCoordinates(this.getDriver(), time, verticalPercent);
+
+	public AndroidPage swipeDownCoordinates(int time, int verticalPercent)
+			throws Exception {
+		DriverUtils.swipeDownCoordinates(this.getDriver(), time,
+				verticalPercent);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 

@@ -31,8 +31,11 @@ public class ContactListPage extends AndroidPage {
 	private WebElement content;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConversationListFrame")
-	private WebElement contactListFrame;	
+	private WebElement contactListFrame;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idMissedCallIcon")
+	private WebElement missedCallIcon;
+	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idContactListNames")
 	private List<WebElement> contactListNames;
 
@@ -106,11 +109,11 @@ public class ContactListPage extends AndroidPage {
 	public void contactListSwipeUp(int time) {
 		elementSwipeUp(contactListFrame, time);
 	}
-	
-	public void waitForConversationListLoad(){
+
+	public void waitForConversationListLoad() {
 		getWait().until(ExpectedConditions.visibilityOf(contactListFrame));
-	} 
-	
+	}
+
 	public AndroidPage tapOnContactByPosition(List<WebElement> contacts, int id)
 			throws Exception {
 		AndroidPage page = null;
@@ -211,19 +214,15 @@ public class ContactListPage extends AndroidPage {
 	@Override
 	public AndroidPage swipeDown(int time) throws Exception {
 		refreshUITree();
-		DriverUtils.swipeDown(this.getDriver(), content, time);
-		Thread.sleep(2000);
-		if (!isVisible(pickerClearBtn) && isVisible(openStartUIButton)) {
-			refreshUITree();
-			try {
-				openStartUIButton.click();
-			} catch (NoSuchElementException ex) {
-
-			}
-		}
+		elementSwipeDown(content, time);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
+	public PeoplePickerPage pressOpenStartUIButton() throws Exception{
+		refreshUITree();
+		openStartUIButton.click();
+		return new PeoplePickerPage(this.getDriver(), this.getWait());
+	}
 	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
 
@@ -278,6 +277,9 @@ public class ContactListPage extends AndroidPage {
 		return findInContactList(name, 0) != null;
 	}
 
+	public Boolean isContactExists(String name, int cycles) throws Exception {
+		return findInContactList(name, cycles) != null;
+	}
 	private AndroidPage getPages() throws Exception {
 		AndroidPage page = null;
 		if (isVisible(connectToHeader)) {
@@ -296,5 +298,27 @@ public class ContactListPage extends AndroidPage {
 		DriverUtils.waitUntilElementAppears(driver,
 				By.id(AndroidLocators.ContactListPage.idPlayPauseMedia));
 		return isVisible(playPauseMedia);
+	}
+
+	public void waitForContactListLoadFinished() throws InterruptedException {
+
+		if (contactListNames.size() > 0) {
+			waitForContacListLoading();
+		}
+
+	}
+
+	private void waitForContacListLoading() throws InterruptedException {
+		for (WebElement contact : contactListNames) {
+			if (contact.getText().contains("...")) {
+				Thread.sleep(500);
+				waitForContacListLoading();
+			}
+		}
+	}
+
+	public boolean isVisibleMissedCallIcon() throws Exception {
+		refreshUITree();
+		return isVisible(missedCallIcon);
 	}
 }

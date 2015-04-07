@@ -15,6 +15,7 @@ Feature: Ping
     And I see <Action1> icon in conversation
     And I swipe the text input cursor
     And I click Ping button
+    And I wait for 1 seconds
     And I see You Pinged Again message in the dialog
     Then I see <Action2> icon in conversation
 

@@ -13,7 +13,7 @@ import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class CameraRollPage extends IOSPage {
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameCameraLibraryButton)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathCameraLibraryButton)
 	private WebElement cameraLibraryButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameCameraRollCancel)
@@ -35,7 +35,7 @@ public class CameraRollPage extends IOSPage {
 
 	public void pressSelectFromLibraryButton() throws Exception {
 		DriverUtils.waitUntilElementAppears(driver,
-				By.name(IOSLocators.nameCameraLibraryButton));
+				By.xpath(IOSLocators.xpathCameraLibraryButton));
 		cameraLibraryButton.click();
 	}
 

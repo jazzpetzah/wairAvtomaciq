@@ -49,7 +49,7 @@ public class ContactListPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathOpenArchivedConvosButton)
 	private WebElement openArchivedConvosButton;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathOpenPeoplePickerButton)
+	@FindBy(how = How.CSS, using = WebAppLocators.ContactListPage.cssOpenPeoplePickerButton)
 	private WebElement openPeoplePickerButton;
 
 	public ContactListPage(ZetaWebAppDriver driver, WebDriverWait wait)
@@ -120,13 +120,13 @@ public class ContactListPage extends WebPage {
 
 	public PeoplePickerPage isHiddenByPeoplePicker() throws Exception {
 		if (DriverUtils
-				.waitUntilElementAppears(
+				.waitUntilElementDissapear(
 						driver,
 						By.className(WebAppLocators.ContactListPage.classNamePeoplePickerVisible),
-						3)) {
-			return new PeoplePickerPage(this.getDriver(), this.getWait());
-		} else {
+						5)) {
 			return null;
+		} else {
+			return new PeoplePickerPage(this.getDriver(), this.getWait());
 		}
 	}
 
@@ -134,7 +134,7 @@ public class ContactListPage extends WebPage {
 		return DriverUtils
 				.waitUntilElementAppears(
 						driver,
-						By.xpath(WebAppLocators.ContactListPage.xpathOpenPeoplePickerButton));
+						By.cssSelector(WebAppLocators.ContactListPage.cssOpenPeoplePickerButton));
 	}
 
 	public boolean isSelfNameEntryExist() throws Exception {
@@ -155,9 +155,10 @@ public class ContactListPage extends WebPage {
 		if (name == null) {
 			return false;
 		}
-		final String xpath = WebAppLocators.ContactListPage.xpathContactListEntryByName
+		final String locator = WebAppLocators.ContactListPage.cssContactListEntryByName
 				.apply(name);
-		return DriverUtils.isElementDisplayed(driver, By.xpath(xpath), 5);
+		return DriverUtils.isElementDisplayed(driver, By.cssSelector(locator),
+				5);
 	}
 
 	public boolean isConvoListEntryNotVisible(String name) throws Exception {
@@ -166,18 +167,18 @@ public class ContactListPage extends WebPage {
 		if (name == null) {
 			return true;
 		}
-		final String xpath = WebAppLocators.ContactListPage.xpathContactListEntryByName
+		final String locator = WebAppLocators.ContactListPage.cssContactListEntryByName
 				.apply(name);
-		return DriverUtils.waitUntilElementDissapear(driver, By.xpath(xpath),
-				10);
+		return DriverUtils.waitUntilElementDissapear(driver,
+				By.cssSelector(locator), 5);
 	}
 
 	public WebElement getContactWithName(String name, boolean includeArchived)
 			throws Exception {
 		name = fixDefaultGroupConvoName(name, includeArchived);
-		final String xpath = WebAppLocators.ContactListPage.xpathContactListEntryByName
+		final String locator = WebAppLocators.ContactListPage.cssContactListEntryByName
 				.apply(name);
-		return driver.findElement(By.xpath(xpath));
+		return driver.findElement(By.cssSelector(locator));
 	}
 
 	public void openArchive() {
@@ -211,7 +212,6 @@ public class ContactListPage extends WebPage {
 		muteButton.click();
 	}
 
-	// FIXME: check muted state exactly for 'conversationName'
 	public boolean isConversationMuted(String conversationName)
 			throws Exception {
 		// moving focus from contact - to now show ... button
@@ -220,8 +220,11 @@ public class ContactListPage extends WebPage {
 		} catch (WebDriverException e) {
 			// do nothing (safari workaround)
 		}
-		return DriverUtils.isElementDisplayed(this.getDriver(),
-				By.className(WebAppLocators.ContactListPage.classMuteIcon), 5);
+		return DriverUtils
+				.isElementDisplayed(
+						this.getDriver(),
+						By.xpath(WebAppLocators.ContactListPage.xpathMuteIconByContactName
+								.apply(conversationName)), 5);
 	}
 
 	public void clickOptionsButtonForContact(String conversationName)
@@ -233,14 +236,13 @@ public class ContactListPage extends WebPage {
 			// Safari workaround
 		}
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
-		final By locator = By
-				.xpath(WebAppLocators.ContactListPage.xpathOptionsButtonByContactName
-						.apply(conversationName));
+		final String cssOptionsButtonLocator = WebAppLocators.ContactListPage.cssOptionsButtonByContactName
+				.apply(conversationName);
+		final By locator = By.cssSelector(cssOptionsButtonLocator);
 		if (!DriverUtils.isElementDisplayed(driver, locator, 5)) {
 			// Safari workaround
-			final String showOptionsButtonJScript = "$('"
-					+ WebAppLocators.ContactListPage.classOptionsButton
-					+ "').css({'opacity': '100'})";
+			final String showOptionsButtonJScript = "$(\""
+					+ cssOptionsButtonLocator + "\").css({'opacity': '100'})";
 			driver.executeScript(showOptionsButtonJScript);
 			assert DriverUtils.isElementDisplayed(driver, locator);
 		}
@@ -290,7 +292,7 @@ public class ContactListPage extends WebPage {
 			throws Exception {
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
 		final By entryLocator = By
-				.xpath(WebAppLocators.ContactListPage.xpathContactListEntryByName
+				.cssSelector(WebAppLocators.ContactListPage.cssContactListEntryByName
 						.apply(conversationName));
 		assert DriverUtils.isElementDisplayed(driver, entryLocator,
 				OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Conversation item '"
@@ -329,7 +331,7 @@ public class ContactListPage extends WebPage {
 		DriverUtils
 				.waitUntilElementAppears(
 						this.getDriver(),
-						By.xpath(WebAppLocators.ContactListPage.xpathOpenPeoplePickerButton));
+						By.cssSelector(WebAppLocators.ContactListPage.cssOpenPeoplePickerButton));
 		DriverUtils.waitUntilElementClickable(driver, openPeoplePickerButton);
 		if (WebAppExecutionContext.browserName
 				.equals(WebAppConstants.Browser.INTERNET_EXPLORER)) {
@@ -367,7 +369,7 @@ public class ContactListPage extends WebPage {
 		archivedEntry.click();
 
 		final By unarchivedEntryLocator = By
-				.xpath(WebAppLocators.ContactListPage.xpathContactListEntryByName
+				.cssSelector(WebAppLocators.ContactListPage.cssContactListEntryByName
 						.apply(conversationName));
 		assert DriverUtils
 				.isElementDisplayed(driver, unarchivedEntryLocator, 3);

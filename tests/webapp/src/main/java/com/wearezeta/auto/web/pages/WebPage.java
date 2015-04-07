@@ -32,8 +32,16 @@ public class WebPage extends BasePage {
 		super(driver, wait);
 
 		this.url = url;
-		if (url != null) {
-			this.getDriver().navigate().to(url);
+	}
+
+	public void navigateTo() {
+		if (this.url != null) {
+			driver.navigate().to(this.url);
+		} else {
+			throw new RuntimeException(
+					String.format(
+							"'%s' page does not support direct navigation and can be loaded from other pages only",
+							this.getClass().getSimpleName()));
 		}
 	}
 
@@ -71,7 +79,7 @@ public class WebPage extends BasePage {
 	public BasePage swipeDown(int time) throws IOException {
 		return null;
 	}
-	
+
 	public void acceptAlert() {
 		Alert popup = getDriver().switchTo().alert();
 		popup.accept();

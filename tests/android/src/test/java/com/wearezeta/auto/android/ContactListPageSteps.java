@@ -87,6 +87,7 @@ public class ContactListPageSteps {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
+		PagesCollection.contactListPage.waitForContactListLoadFinished();
 
 	}
 
@@ -192,6 +193,12 @@ public class ContactListPageSteps {
 		}
 	}
 
+
+	@When("^I press Open StartUI Button")
+	public void WhenIPressOpenStartUIButton() throws Exception {
+		PagesCollection.peoplePickerPage = PagesCollection.contactListPage.pressOpenStartUIButton();
+	}
+	
 	@When("^I swipe up contact list$")
 	public void ISwipeUpContactList() throws Exception {
 		PagesCollection.contactListPage.contactListSwipeUp(1000);
@@ -222,7 +229,8 @@ public class ContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(value));
+		PagesCollection.contactListPage.waitForConversationListLoad();
+		Assert.assertTrue(PagesCollection.contactListPage.isContactExists(value,5));
 	}
 
 	@Then("^Contact (.*) is muted$")
@@ -260,5 +268,17 @@ public class ContactListPageSteps {
 			throws NumberFormatException, Exception {
 		Assert.assertTrue(PagesCollection.contactListPage
 				.isPlayPauseMediaButtonVisible());
+	}
+	
+	/**
+	 * Check that conversation list contains missed call icon
+	 * 
+	 * @step. ^Conversation List contains missed call icon$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^Conversation List contains missed call icon$")
+	public void ThenISeeMissedCallIcon() throws Exception {
+		Assert.assertTrue(PagesCollection.contactListPage.isVisibleMissedCallIcon());
 	}
 }

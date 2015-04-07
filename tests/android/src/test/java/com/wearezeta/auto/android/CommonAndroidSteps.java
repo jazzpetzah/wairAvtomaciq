@@ -216,7 +216,7 @@ public class CommonAndroidSteps {
 	@Then("^I compare 1st and 2nd screenshots and they are different$")
 	public void ThenICompare1st2ndScreenshotsAndTheyAreDifferent() {
 		double score = ImageUtil.getOverlapScore(images.get(0), images.get(1));
-		Assert.assertTrue(score < 0.55d);
+		Assert.assertTrue(score < 0.50d);
 		images.clear();
 	}
 
@@ -421,6 +421,34 @@ public class CommonAndroidSteps {
 		CommonAndroidSteps.skipBeforeAfter = skipBeforeAfter;
 	}
 
+	/**
+	 * Start a call using autocall tool
+	 * 
+	 * @step. ^Contact (.*) calls to conversation (.*)$
+	 * @param starterNameAlias
+	 * 		user who will start a call
+	 * @param destinationNameAlias
+	 * 		user who will receive a call
+	 * @throws Exception
+	 */
+	@When("^Contact (.*) calls to conversation (.*)$")
+	public void ContactCallsToConversation(String starterNameAlias, String destinationNameAlias) throws Exception {
+		commonSteps.UserCallsToConversation(starterNameAlias, destinationNameAlias);
+	}
+	
+	/**
+	 * End current call initiated by autocall tool
+	 * 
+	 * @step. ^Current call is ended$
+	 * 		
+	 * @throws Exception
+	 */
+	@When("^Current call is ended$")
+	public void EndCurrectCall() throws Exception {
+		commonSteps.StopCurrentCall();
+		Thread.sleep(1000);
+	}
+	
 	@When("^I request reset password for (.*)$")
 	public void WhenIRequestResetPassword(String email) throws Exception {
 		try {

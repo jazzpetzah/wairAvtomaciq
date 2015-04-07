@@ -34,68 +34,57 @@ public final class WebAppLocators {
 
 	public static final class ContactListPage {
 
-		private static final String xpathConvoItemByNamePattern = "%s//li[@data-uie-name='item-conversation' and @data-uie-value='%s' and not(contains(@class, 'archived'))]";
+		private static final String xpathConvoItemByNamePattern = "%s//div[@data-uie-name='item-conversation' and @data-uie-value='%s']";
 
 		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
+		public static final String cssParentContactListItem = "div#conversation-list";
 
-		public static final String cssIncomingPendingConvoItem = "div#conversation-list li[data-uie-name=item-pending-request] div.center-column";
+		public static final String cssIncomingPendingConvoItem = cssParentContactListItem
+				+ " [data-uie-name=item-pending-requests]";
 
 		public static final String xpathOpenArchivedConvosButton = "//*[@data-uie-name='go-archive']";
 
 		public static final Function<String, String> xpathArchiveButtonByContactName = (
 				name) -> String.format(xpathConvoItemByNamePattern
-				+ "//*[@data-uie-name='do-archive']",
+				+ "/following::*[@data-uie-name='do-archive']",
 				xpathParentContactListItem, name);
 
 		public static final Function<String, String> xpathMuteButtonByContactName = (
 				name) -> String.format(xpathConvoItemByNamePattern
-				+ "//*[@data-uie-name='do-silence']",
+				+ "/following::*[@data-uie-name='do-silence']",
 				xpathParentContactListItem, name);
 
 		public static final Function<String, String> xpathUnmuteButtonByContactName = (
 				name) -> String.format(xpathConvoItemByNamePattern
-				+ "//*[@data-uie-name='do-notify']",
+				+ "/following::*[@data-uie-name='do-notify']",
 				xpathParentContactListItem, name);
 
-		public static final String classMuteIcon = "conversation-muted";
-
-		public static final Function<String, String> xpathOptionsButtonByContactName = (
+		public static final Function<String, String> xpathMuteIconByContactName = (
 				name) -> String.format(xpathConvoItemByNamePattern
-				+ "//*[@data-uie-name='go-options']",
+				+ "/following::*[@data-uie-name='status-silence']",
 				xpathParentContactListItem, name);
-
-		public static final String classOptionsButton = ".text-theme.conversation-list-item [data-uie-name=go-options]";
 
 		public static final String cssSelfProfileEntry = "[data-uie-name=go-self-profile]";
 
-		// index starts from 1
-		// self name is not included
-		public static final Function<Integer, String> xpathContactListEntryByIndex = (
-				index) -> String
-				.format("%s//ul/li[@data-uie-name='item-conversation' and not(contains(@class, 'archived'))][%d]//div[contains(@class, 'center-column')]",
-						xpathParentContactListItem, index);
-
-		public static final Function<String, String> xpathContactListEntryByName = (
-				name) -> String.format(xpathConvoItemByNamePattern
-				+ "//div[contains(@class, 'center-column')]",
-				xpathParentContactListItem, name);
-
 		public static final Function<String, String> cssContactListEntryByName = (
-				name) -> String
-				.format("div#conversation-list li[data-uie-name=item-conversation][data-uie-value='%s'] div.center-column",
-						name);
+				name) -> String.format(
+				"%s div[data-uie-name=item-conversation][data-uie-value='%s']",
+				cssParentContactListItem, name);
+
+		public static final Function<String, String> cssOptionsButtonByContactName = (
+				name) -> String.format("%s + div [data-uie-name=go-options]",
+				cssContactListEntryByName.apply(name));
 
 		public static final String xpathContactListEntries = xpathParentContactListItem
-				+ "//li[@data-uie-name='item-conversation' and not(contains(@class, 'archived'))]";
+				+ "//*[@data-uie-name='item-conversation']";
 		public static final String xpathArchivedContactListEntries = xpathParentContactListItem
-				+ "//li[@data-uie-name='item-conversation' and contains(@class, 'archived')]";
+				+ "//*[@data-uie-name='item-conversation-archived']";
 
+		// FIXME: bug in webapp -> @data-uie-value should belong to div
 		public static final Function<String, String> xpathArchivedContactListEntryByName = (
 				name) -> String
-				.format("%s//li[contains(@class, 'archived') and @data-uie-name='item-conversation' and @data-uie-value='%s']//div[contains(@class, 'center-column')]",
+				.format("%s//*[@data-uie-name='item-conversation-archived' and ./ancestor-or-self::*[@data-uie-value='%s']]",
 						xpathParentContactListItem, name);
-
-		public static final String xpathOpenPeoplePickerButton = "//*[@data-uie-name='go-search']";
 
 		public static final String cssOpenPeoplePickerButton = "*[data-uie-name='go-search']";
 
@@ -155,22 +144,33 @@ public final class WebAppLocators {
 
 		public static final String cssSendImageLabel = "label.controls-right-button.icon-library.icon-button";
 
-		public static final String xpathSendImageInput = "//input[@type='file' and @data-uie-name='do-share-image']";
-
-		public static final String cssSendImageInput = "input[type=\"file\"]";
+		public static final String cssSendImageInput = "input[data-uie-name=do-share-image]";
 
 		public static final String xpathImageMessageEntry = "//div[@class='message-asset-image']";
 
 		public static final String xpathPingButton = "//*[@data-uie-name='do-ping' or @data-uie-name='do-hot-ping']";
 
+		public static final String xpathCallButton = "//*[@data-uie-name='do-call']";
+
+		public static final String xpathTalkingHalo = "//*[contains(@class,'cc-halo-talking')]";
+
 		public static final String classPingMessage = "pinged";
+
+		public static final String xpathCloseButton = "//*[contains(@class,'cc-button')]//*[contains(@class,'icon-close')]";
+
+		public static final Function<String, String> textMessageByText = text -> String
+				.format("//*[@data-uie-name='item-message']//div[@class='text' and text()='%s']",
+						text);
 	}
 
 	public static final class ConnectToPage {
+		public static final Function<String, String> xpathAcceptRequestButtonByName = name -> String
+				.format("//div[contains(@class, 'connect-name') and span[text()='%s']]/following-sibling::div/div[@id='accept']",
+						name);
 
-		public static final String xpathFormatAcceptRequestButton = "//div[@class='connect-name' and span[text()='%s']]/following-sibling::div/div[@id='accept']";
-
-		public static final String xpathFormatIgnoreReqestButton = "//div[@class='connect-name' and span[text()='%s']]/following-sibling::div/div[@id='ignore']";
+		public static final Function<String, String> xpathIgnoreReqestButtonByName = name -> String
+				.format("//div[contains(@class, 'connect-name') and span[text()='%s']]/following-sibling::div/div[@id='ignore']",
+						name);
 	}
 
 	public static final class PeoplePickerPage {
@@ -217,6 +217,12 @@ public final class WebAppLocators {
 
 		public static final String xpathConfirmPictureSelectionButton = xpathRootDiv
 				+ "//*[@data-uie-name='do-set-picture']";
+
+		public static final String xpathNextCarouselImageBtn = xpathRootDiv
+				+ "//div[contains(@class, 'carousel-arrows')]//span[contains(@class, 'carousel-arrow-right')]";
+
+		public static final String xpathPreviousCarouselImageBtn = xpathRootDiv
+				+ "//div[contains(@class, 'carousel-arrows')]//span[contains(@class, 'carousel-arrow-left')]";
 	}
 
 	public static final class Common {

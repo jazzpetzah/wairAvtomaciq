@@ -41,11 +41,14 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathShowParticipantsButton)
 	private WebElement showParticipants;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathSendImageInput)
+	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssSendImageInput)
 	private WebElement imagePathInput;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathPingButton)
 	private WebElement pingButton;
+
+	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathCallButton)
+	private WebElement callButton;
 
 	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.ConversationPage.classPingMessage)
 	private WebElement pingMessage;
@@ -111,19 +114,21 @@ public class ConversationPage extends WebPage {
 	public void sendPicture(String pictureName) throws Exception {
 		final String picturePath = WebCommonUtils
 				.getFullPicturePath(pictureName);
-		final String showImageLabelJScript = "$('"
+		final String showImageLabelJScript = "$(\""
 				+ WebAppLocators.ConversationPage.cssRightControlsPanel
-				+ "').css({'opacity': '100'});";
+				+ "\").css({'opacity': '100'});";
 		driver.executeScript(showImageLabelJScript);
-		final String showPathInputJScript = "$('"
+		final String showPathInputJScript = "$(\""
 				+ WebAppLocators.ConversationPage.cssSendImageLabel
-				+ "').find('"
+				+ "\").find(\""
 				+ WebAppLocators.ConversationPage.cssSendImageInput
-				+ "').css({'left': '0'});";
+				+ "\").css({'left': '0'});";
 		driver.executeScript(showPathInputJScript);
-		assert DriverUtils.isElementDisplayed(driver,
-				By.xpath(WebAppLocators.ConversationPage.xpathSendImageInput),
-				10);
+		assert DriverUtils
+				.isElementDisplayed(
+						driver,
+						By.cssSelector(WebAppLocators.ConversationPage.cssSendImageInput),
+						5);
 		if (WebAppExecutionContext.browserName
 				.equals(WebAppConstants.Browser.SAFARI)) {
 			WebCommonUtils.sendPictureInSafari(picturePath);
@@ -174,5 +179,40 @@ public class ConversationPage extends WebPage {
 
 		return driver.findElementsByClassName(
 				WebAppLocators.ConversationPage.classPingMessage).size() - 1;
+	}
+
+	public void clickCallButton() {
+		try {
+			DriverUtils.moveMouserOver(driver, conversationInput);
+		} catch (WebDriverException e) {
+			// do nothing (safari workaround)
+		}
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+		}
+		callButton.click();
+	}
+
+	public boolean isCalleeAcceptingCall() throws Exception {
+		final By locator = By
+				.xpath(WebAppLocators.ConversationPage.xpathTalkingHalo);
+		return DriverUtils.isElementDisplayed(driver, locator, 30);
+	}
+
+	public void clickCloseButton() {
+		final By locator = By
+				.xpath(WebAppLocators.ConversationPage.xpathCloseButton);
+		driver.findElement(locator).click();
+	}
+
+	private static final int TEXT_MESSAGE_VISIBILITY_TIMEOUT_SECONDS = 5;
+
+	public boolean isTextMessageVisible(String message) throws Exception {
+		final By locator = By
+				.xpath(WebAppLocators.ConversationPage.textMessageByText
+						.apply(message));
+		return DriverUtils.isElementDisplayed(driver, locator,
+				TEXT_MESSAGE_VISIBILITY_TIMEOUT_SECONDS);
 	}
 }

@@ -33,7 +33,7 @@ import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.util.NSPoint;
 
-public class ConversationPage extends OSXPage {
+public class ConversationPage extends MainWirePage {
 	private static final Logger log = ZetaLogger.getLog(ConversationPage.class
 			.getSimpleName());
 
@@ -42,9 +42,6 @@ public class ConversationPage extends OSXPage {
 
 	static String SOUNDCLOUD_BUTTON_STATE;
 	int numberSoundCloudButtons;
-
-	@FindBy(how = How.XPATH, using = OSXLocators.xpathMainWindow)
-	private WebElement viewPager;
 
 	private WebElement newMessageTextArea = findNewMessageTextArea();
 
@@ -86,11 +83,6 @@ public class ConversationPage extends OSXPage {
 	public ConversationPage(ZetaOSXDriver driver, WebDriverWait wait)
 			throws Exception {
 		super(driver, wait);
-	}
-
-	public Boolean isVisible() {
-
-		return viewPager != null;
 	}
 
 	public WebElement findNewMessageTextArea() {
@@ -190,7 +182,7 @@ public class ConversationPage extends OSXPage {
 
 	public void shortcutChooseImageDialog() throws ScriptException {
 		final String[] scriptArr = new String[] {
-				"property bi : \"com.wearezeta.zclient.mac\"",
+				"property bi : \"com.wearezeta.zclient.mac.development\"",
 				"tell application id bi",
 				"activate",
 				"tell application \"System Events\" to keystroke \"p\" using {command down, shift down}",
@@ -272,7 +264,7 @@ public class ConversationPage extends OSXPage {
 		NSPoint conversationPosition = NSPoint.fromString(conversationView
 				.getAttribute("AXPosition"));
 
-		NSPoint windowSize = NSPoint.fromString(viewPager
+		NSPoint windowSize = NSPoint.fromString(window
 				.getAttribute("AXSize"));
 		log.debug("Window size: " + windowSize);
 

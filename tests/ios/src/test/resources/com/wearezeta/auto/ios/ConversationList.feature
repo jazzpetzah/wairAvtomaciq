@@ -48,7 +48,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   | Color        | NewName |
       | user1Email | user1Password | user1Name | user2Name | BrightOrange | SILENCE |
 
-  @regression @id1332
+  @regression @id1332 @id2171 @id2172
   Scenario Outline: Verify archive a conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -85,7 +85,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   | Color        | NewName |
       | user1Email | user1Password | user1Name | user2Name | BrightOrange | SILENCE |
 
-  @regression @id1075
+  @regression @id1075 @id2153
   Scenario Outline: Verify messages are marked as read with disappearing unread dot
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>

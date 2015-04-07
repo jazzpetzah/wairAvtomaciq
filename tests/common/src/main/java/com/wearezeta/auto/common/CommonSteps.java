@@ -221,6 +221,16 @@ public final class CommonSteps {
 		Thread.sleep(1000);
 	}
 
+	public void UserSentMessageToConversation(String userFromNameAlias,
+			String dstConversationName, String message) throws Exception {
+		ClientUser userFrom = usrMgr
+				.findUserByNameOrNameAlias(userFromNameAlias);
+		dstConversationName = usrMgr.replaceAliasesOccurences(
+				dstConversationName, FindBy.NAME_ALIAS);
+		BackendAPIWrappers.sendDialogMessageByChatName(userFrom,
+				dstConversationName, message);
+	}
+
 	public void UserSendsImageToConversation(String imageSenderUserNameAlias,
 			String imagePath, String dstConversationName, Boolean isGroup)
 			throws Exception {
@@ -312,11 +322,35 @@ public final class CommonSteps {
 	public void UserCallsToConversation(String userNameAlias,
 			String conversationName) throws Exception {
 		ClientUser caller = usrMgr.findUserByNameOrNameAlias(userNameAlias);
-		conversationName = usrMgr.replaceAliasesOccurences(conversationName, FindBy.NAME_ALIAS);
+		conversationName = usrMgr.replaceAliasesOccurences(conversationName,
+				FindBy.NAME_ALIAS);
 		CallingUtil.startCall(caller, conversationName);
 	}
 
 	public void StopCurrentCall() throws Exception {
 		CallingUtil.stopCall();
 	}
+
+	public void waitForCallToAccept(String userNameAlias) throws Exception {
+		ClientUser callee = usrMgr.findUserByNameOrNameAlias(userNameAlias);
+		CallingUtil.waitsForCallToAccept(callee);
+	}
+
+	public void waitForCalleeToAcceptCall() {
+
+	}
+
+	public void UserXAddedContactsToGroupChat(String userAsNameAlias,
+			String contactsToAddNameAliases, String chatName) throws Exception {
+		final ClientUser userAs = usrMgr
+				.findUserByNameOrNameAlias(userAsNameAlias);
+		List<ClientUser> contactsToAdd = new ArrayList<ClientUser>();
+		for (String contactNameAlias : splitAliases(contactsToAddNameAliases)) {
+			contactsToAdd.add(usrMgr
+					.findUserByNameOrNameAlias(contactNameAlias));
+		}
+		BackendAPIWrappers.addContactsToGroupConversation(userAs,
+				contactsToAdd, chatName);
+	}
+
 }
