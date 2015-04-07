@@ -84,12 +84,18 @@ public class CallingServiceClient {
 	            out.write(object.toString());
 	            out.close();
 			}
-            Scanner s = new Scanner(connection.getInputStream()).useDelimiter("\\A");
-            String response = s.hasNext() ? s.next() : "";
+			Scanner s = null;
+			String response = null;
+			try {
+				s = new Scanner(connection.getInputStream()).useDelimiter("\\A");
+				response = s.hasNext() ? s.next() : "";
+			} finally {
+				s.close();
+			}
             log.info("Response: " + response);
             return new JSONObject(response);
         } catch (Exception e) {
-        	log.info(connection.getResponseMessage());
+        	log.error(connection.getResponseMessage());
             throw new Exception("\nError while using calling service REST Service", e);
         }
 	}

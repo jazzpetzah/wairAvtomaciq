@@ -8,6 +8,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 
 public class CallingUtil {
 
+	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(CallingUtil.class
 			.getSimpleName());
 
@@ -17,12 +18,12 @@ public class CallingUtil {
 		String password = caller.getPassword();
 		String conversationId = BackendAPIWrappers.getConversationIdByName(
 				caller, conversationName);
-		CallingServiceClient csc = new CallingServiceClient("localhost", "8080");
+		CallingServiceClient csc = new CallingServiceClient("192.168.10.44", "21980");
 		csc.makeCall(email, password, conversationId, "staging", "autocall");
 	}
 
 	public static void stopCall() throws Exception {
-		CallingServiceClient csc = new CallingServiceClient("localhost", "8080");
+		CallingServiceClient csc = new CallingServiceClient("192.168.10.44", "21980");
 		csc.stopCall("");
 	}
 	
@@ -30,7 +31,7 @@ public class CallingUtil {
 			throws Exception {
 		String email = caller.getEmail();
 		String password = caller.getPassword();
-		CallingServiceClient csc = new CallingServiceClient("localhost", "8080");
+		CallingServiceClient csc = new CallingServiceClient("192.168.10.44", "21980");
 		csc.waitToAcceptCall(email, password, "staging", "webdriver");
 	}
 
