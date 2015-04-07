@@ -133,7 +133,7 @@ Feature: Conversation
     And I Sign in using login <Contact1Email> and password <Contact1Password>
     And I see Contact list with name <ChatName>
     When I open conversation with <ChatName>
-    Then I see <Msg1FromUserA> message
+    Then I see text message <Msg1FromUserA>
     And I click People button in group conversation
     And I see Group Participants popover
     When I click Leave button on Group Participants popover
@@ -143,9 +143,9 @@ Feature: Conversation
     When I open archive
     And I unarchive conversation <ChatName>
     When I open conversation with <ChatName>
-    Then I do not see <Msg2FromUserA> message
+    Then I do not see text message <Msg2FromUserA>
     When User <Name> added contact <Contact1> to group chat <ChatName>
-    Then I see <Msg2FromUserA> message
+    Then I see text message <Msg2FromUserA>
 
     Examples: 
       | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  | ChatName  | Msg1FromUserA | Msg2FromUserA |
