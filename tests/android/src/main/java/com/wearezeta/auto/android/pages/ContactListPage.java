@@ -214,19 +214,15 @@ public class ContactListPage extends AndroidPage {
 	@Override
 	public AndroidPage swipeDown(int time) throws Exception {
 		refreshUITree();
-		DriverUtils.swipeDown(this.getDriver(), content, time);
-		Thread.sleep(2000);
-		if (!isVisible(pickerClearBtn) && isVisible(openStartUIButton)) {
-			refreshUITree();
-			try {
-				openStartUIButton.click();
-			} catch (NoSuchElementException ex) {
-
-			}
-		}
+		elementSwipeDown(content, time);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
+	public PeoplePickerPage pressOpenStartUIButton() throws Exception{
+		refreshUITree();
+		openStartUIButton.click();
+		return new PeoplePickerPage(this.getDriver(), this.getWait());
+	}
 	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
 
@@ -306,7 +302,7 @@ public class ContactListPage extends AndroidPage {
 
 	public void waitForContactListLoadFinished() throws InterruptedException {
 
-		if (contactListNames != null && contactListNames.size() > 0) {
+		if (contactListNames.size() > 0) {
 			waitForContacListLoading();
 		}
 
@@ -314,7 +310,7 @@ public class ContactListPage extends AndroidPage {
 
 	private void waitForContacListLoading() throws InterruptedException {
 		for (WebElement contact : contactListNames) {
-			if (contact.getText().equals("...")) {
+			if (contact.getText().contains("...")) {
 				Thread.sleep(500);
 				waitForContacListLoading();
 			}

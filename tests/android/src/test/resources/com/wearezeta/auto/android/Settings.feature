@@ -9,6 +9,7 @@ Feature: Settings
     When I tap on my name <Name>
     And I tap options button
     And I tap settings button
+    And I wait for 2 seconds
     Then I see settings page
     When I press back button
     Then I see personal info page
@@ -54,7 +55,6 @@ Feature: Settings
     Given Myself is connected to <Contact>
     Given I see sign in screen
     When I press Sign in button
-    And I hide keyboard
     And I press FORGOT PASSWORD button
     And I request reset password for <Email>
     Then I reset <Name> password by URL to new <NewPassword>

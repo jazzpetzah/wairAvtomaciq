@@ -72,6 +72,10 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idUnblockBtn")
 	private WebElement unblockButton;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idParticipantsClose")
+	private WebElement closeButton;
+	
+	
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameFrameLayout)
 	private WebElement frameLayout;
 
@@ -272,7 +276,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	public DialogPage tabBackButton() throws Exception {
-		driver.navigate().back();
+		refreshUITree();
+		closeButton.click();
 		return new DialogPage(this.getDriver(), this.getWait());
 	}
 

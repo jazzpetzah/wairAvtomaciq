@@ -9,13 +9,14 @@ Feature: People View
     Given <Contact1> has a name <Contact1NewName>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
+    And I see contact list loaded with User name <Contact1>
+    And I see contact list loaded with User name <Contact2>
     When I tap on contact name <GroupChatName>
+    And I see dialog page
     And I swipe up on dialog page
     And I tap on group chat contact <Contact1NewName>
     Then I see <Contact1> user name and email
 
-    # This step requires to be rewritten to support multiple screen resolutions
-    # And I see correct background image
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName   | Picture                      | Contact1NewName   |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupInfoCheck2 | aqaPictureContact600_800.jpg | aqaPictureContact |
@@ -67,6 +68,8 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
+    And I see contact list loaded with User name <Contact1>
+    And I see contact list loaded with User name <Contact2>
     When I tap on contact name <GroupChatName>
     And I see dialog page
     And I swipe up on dialog page
@@ -75,6 +78,7 @@ Feature: People View
     And I confirm remove
     Then I do not see <Contact2> on group chat info page
     And I return to group chat page
+    And I see dialog page
     Then I see  message <Message> contact <Contact2> on group page
 
     Examples: 
@@ -93,14 +97,17 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
+    And I see contact list loaded with User name <Contact1>
+    And I see contact list loaded with User name <Contact2>
     When I tap on contact name <GroupChatName>
+    And I see dialog page
     And I swipe up on dialog page
     Then I see that the conversation name is <GroupChatName>
     And I see the correct number of participants in the title <ParticipantNumber>
     And I see the correct participant <Contact1NewName> and <Contact2NewName> avatars
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName  | Picture                      | Color1       | Color2      | Contact1NewName   | Contact2NewName       |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName  | Picture                      | Color1       | Color2       | Contact1NewName   | Contact2NewName       |
       | user1Email | user1Password | user1Name | user3Name | user2Name | 3                 | GroupInfoCheck | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow | aqaPictureContact | aqaAvatar TestContact |
 
   @id1395 @smoke @regression
@@ -121,3 +128,4 @@ Feature: People View
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
+
