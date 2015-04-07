@@ -67,9 +67,9 @@ public class PersonalInfoPage extends AndroidPage {
 		super(driver, wait);
 	}
 
-	public boolean isPersonalInfoVisible() {
+	public boolean isPersonalInfoVisible() throws Exception {
 		refreshUITree();
-		return emailField.isDisplayed();
+		return isVisible(emailField);
 	}
 
 	public void waitForEmailFieldVisible() {

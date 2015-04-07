@@ -1,6 +1,6 @@
 Feature: Calling
 
-  @staging @id1831
+  @regression @id1831
   Scenario Outline: Verify calling from missed call indicator in conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -19,7 +19,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
       
-  @staging @id2067
+  @regression @id2067
   Scenario Outline: Verify starting and ending outgoing call by same person
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -33,6 +33,22 @@ Feature: Calling
     And I see calling message for contact <Contact>
     When I end started call
     Then I dont see calling page
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+      
+      
+  @staging @id896
+  Scenario Outline: Verify ignoring of incoming call
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When Contact <Contact> calls to conversation <Name>
+    And I see incoming calling message for contact <Contact>
+    And I end incoming call
+    Then I dont see incoming call page
 
     Examples: 
       | Login      | Password      | Name      | Contact   |

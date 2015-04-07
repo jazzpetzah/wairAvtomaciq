@@ -450,6 +450,46 @@ public class CommonWebAppSteps {
 				.MuteConversationWithUser(userToNameAlias, muteUserNameAlias);
 	}
 
+	/**
+	 * Send message to a conversation
+	 * 
+	 * @step. ^User (.*) sent message (.*) to conversation (.*)
+	 * @param userToNameAlias
+	 *            user who want to mute conversation
+	 * @param message
+	 *            message to send
+	 * @param conversationName
+	 *            the name of existing conversation to send the message to
+	 * @throws Exception
+	 */
+	@When("^User (.*) sent message (.*) to conversation (.*)")
+	public void UserSentMessageToConversation(String userFromNameAlias,
+			String message, String conversationName) throws Exception {
+		commonSteps.UserSentMessageToConversation(userFromNameAlias,
+				conversationName, message);
+	}
+
+	/**
+	 * Add one or more of your contacts to the existing group conversation on
+	 * the backend
+	 * 
+	 * @step. ^User (.*) added contacts? (.*) to group chat (.*)
+	 * 
+	 * @param asUser
+	 *            user name to add as
+	 * @param contacts
+	 *            the comma separated list of contacts to add
+	 * @param conversationName
+	 *            conversation name to add contacts to
+	 * @throws Exception
+	 */
+	@Given("^User (.*) added contacts? (.*) to group chat (.*)")
+	public void UserXAddedContactsToGroupChat(String asUser, String contacts,
+			String conversationName) throws Exception {
+		commonSteps.UserXAddedContactsToGroupChat(asUser, contacts,
+				conversationName);
+	}
+
 	private void writeBrowserLogsIntoMainLog(RemoteWebDriver driver) {
 		log.debug("BROWSER CONSOLE LOGS:");
 		LogEntries logEntries = driver.manage().logs().get(LogType.BROWSER);

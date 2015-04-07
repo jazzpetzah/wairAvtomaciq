@@ -359,8 +359,8 @@ public final class AndroidLocators {
 		public static final String idDialogPageBottomFrameLayout = LOCATORS_PACKAGE
 				+ ":id/cv";
 
-		public static final String xpathDialogPageBottomLinearLayout = "//android.widget.FrameLayout[@resource-id='"
-				+ LOCATORS_PACKAGE + ":id/cv']/android.widget.LinearLayout";
+		public static final String idDialogPageBottom =  LOCATORS_PACKAGE
+				+ ":id/fl__cursor__user_avatar_container";
 
 		public static final String idConnectRequestChatLabel = LOCATORS_PACKAGE
 				+ ":id/ttv__row_conversation__connect_request__chathead_footer__label";
@@ -370,7 +370,8 @@ public final class AndroidLocators {
 
 		public static final String xpathCloseCursor = "//android.support.v4.view.ViewPager[1]/android.widget.ListView[1]/android.widget.FrameLayout[1]";
 
-		public static final String xpathAddPicture = "//android.widget.FrameLayout/android.widget.LinearLayout/android.widget.TextView[2]";
+		public static final String idAddPicture = LOCATORS_PACKAGE
+				+ ":id/gtv__cursor_picture";
 
 		public static final String idPing = LOCATORS_PACKAGE
 				+ ":id/gtv__cursor_knock";
@@ -519,9 +520,15 @@ public final class AndroidLocators {
 		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME
 				+ "$PeoplePickerPage";
 
+		public static final String idPickerTopPeopleHeader = LOCATORS_PACKAGE
+				+ ":id/ttv_pickuser__list_header_title";
+		
 		public static final String idPickerUsersUnselected = LOCATORS_PACKAGE
 				+ ":id/pick_user_chathead_unselected";
 
+		public static final String idPickerListContainer = LOCATORS_PACKAGE
+				+ ":id/pfac__pickuser__header_list_view";
+		
 		public static final String idPickerBtnDone = LOCATORS_PACKAGE
 				+ ":id/ttv_pickuser_confirmbutton__title";
 

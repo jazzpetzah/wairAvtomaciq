@@ -162,6 +162,18 @@ public abstract class AndroidPage extends BasePage {
 		}
 	}
 
+	public void elementSwipeDown(WebElement el, int time) {
+		Point coords = el.getLocation();
+		Dimension elementSize = el.getSize();
+		try {
+			this.getDriver().swipe(coords.x + elementSize.width / 2,
+					coords.y + 50, coords.x + elementSize.width / 2,
+					coords.y + elementSize.height - 300, time);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
 	public void dialogsPagesSwipeUp(int time) {
 		Point coords = content.getLocation();
 		Dimension elementSize = content.getSize();

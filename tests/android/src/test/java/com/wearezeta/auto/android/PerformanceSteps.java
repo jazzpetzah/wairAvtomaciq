@@ -60,7 +60,7 @@ public class PerformanceSteps {
 									randomInt);
 					PagesCollection.dialogPage.isDialogVisible();
 					PagesCollection.dialogPage
-							.tapDialogPageBottomLinearLayout();
+							.tapDialogPageBottom();
 					PagesCollection.dialogPage.typeMessage(CommonUtils
 							.generateGUID());
 					Thread.sleep(1000);
@@ -72,7 +72,7 @@ public class PerformanceSteps {
 										randomInt);
 						PagesCollection.dialogPage.isDialogVisible();
 						PagesCollection.dialogPage
-								.tapDialogPageBottomLinearLayout();
+								.tapDialogPageBottom();
 						PagesCollection.dialogPage.sendFrontCameraImage();
 					}
 					for (int y = 0; y < 2; y++) {

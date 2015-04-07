@@ -466,6 +466,19 @@ public final class BackendAPIWrappers {
 				conversationName);
 	}
 
+	public static void addContactsToGroupConversation(ClientUser asUser,
+			List<ClientUser> contacts, String conversationName)
+			throws Exception {
+		asUser = tryLoginByUser(asUser);
+		List<String> ids = new ArrayList<String>();
+		for (ClientUser contact : contacts) {
+			tryLoginByUser(contact);
+			ids.add(contact.getId());
+		}
+		BackendREST.addContactsToGroupConvo(generateAuthToken(asUser), ids,
+				getConversationIdByName(asUser, conversationName));
+	}
+
 	public static void sendConversationMessage(ClientUser userFrom,
 			String convId, String message) throws Exception {
 		tryLoginByUser(userFrom);
