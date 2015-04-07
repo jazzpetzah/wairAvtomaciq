@@ -2,9 +2,9 @@ Feature: Search
 
   @staging @id2147 
   Scenario Outline: Verify search by email
-	Given There are 2 users where <Name> is me
-	Given I Sign in using login <Login> and password <Password>
-	When I see Contact list with my name <Name>
+    Given There are 2 users where <Name> is me
+    Given I Sign in using login <Login> and password <Password>
+    When I see Contact list with my name <Name>
     And I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -17,9 +17,9 @@ Feature: Search
 
   @staging @id2148 
   Scenario Outline: Verify search by name
-	Given There are 2 users where <Name> is me
-	Given I Sign in using login <Login> and password <Password>
-	When I see Contact list with my name <Name>
+    Given There are 2 users where <Name> is me
+    Given I Sign in using login <Login> and password <Password>
+    When I see Contact list with my name <Name>
     And I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
