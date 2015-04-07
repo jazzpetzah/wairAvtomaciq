@@ -37,3 +37,19 @@ Feature: Calling
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+      
+      
+  @staging @id896
+  Scenario Outline: Verify ignoring of incoming call
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When Contact <Contact> calls to conversation <Name>
+    And I see incoming calling message for contact <Contact>
+    And I end incoming call
+    Then I dont see incoming call page
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |

@@ -501,6 +501,17 @@ public final class IOSLocators {
 		public static final String xpathMuteCallButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[5]";
 	}
 	
+	public final class IncomingCallPage {
+		
+		public static final String xpathCallingMessageUser = "//UIAStaticText[contains(@name, 'IS CALLING') and contains(@name, '%s')]";
+		
+		public static final String xpathAcceptCallButton = "//UIAApplication[1]/UIAWindow[@name='ZClientNotificationWindow']/UIAButton[1]";
+		
+		public static final String xpathEndCallButton = "//UIAApplication[1]/UIAWindow[@name='ZClientNotificationWindow']/UIAButton[2]";
+		
+		public static final String xpathCallingMessage = "//UIAStaticText[contains(@name, 'IS CALLING')]";
+	}
+	
 	public final class DialogPage {
 		public static final String xpathCallButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAButton[5]";
 	}

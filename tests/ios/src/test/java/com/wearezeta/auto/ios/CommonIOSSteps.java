@@ -15,6 +15,7 @@ import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.pages.IOSPage;
+import com.wearezeta.auto.ios.pages.IncomingCallPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
@@ -361,6 +362,8 @@ public class CommonIOSSteps {
 	@When("^Contact (.*) calls to conversation (.*)$")
 	public void ContactCallsToConversation(String starterNameAlias, String destinationNameAlias) throws Exception {
 		commonSteps.UserCallsToConversation(starterNameAlias, destinationNameAlias);
+		PagesCollection.callPage = new IncomingCallPage(PagesCollection.loginPage.getDriver(), 
+					PagesCollection.loginPage.getWait());
 	}
 	
 	/**
