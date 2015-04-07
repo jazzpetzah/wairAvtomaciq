@@ -24,4 +24,19 @@ public class PendingConnectionsPageSteps {
 		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
 		PagesCollection.pendingConnectionsPage.acceptRequestFromUser(user);
 	}
+	
+	/**
+	 * Ignore connection request received from specified user
+	 * 
+	 * @step. ^I ignore connection request from user (.*)$
+	 * 
+	 * @param user
+	 *            name of user which sent connection request
+	 * @throws Exception 
+	 */
+	@When("^I ignore connection request from user (.*)$")
+	public void IIgnoreConnectionRequestFromUser(String user) throws Exception {
+		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
+		PagesCollection.pendingConnectionsPage.ignoreRequestFromUser(user);
+	}
 }
