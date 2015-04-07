@@ -66,7 +66,7 @@ public class CommonIOSSteps {
 		capabilities
 				.setCapability(
 						"processArguments",
-						"--args -TutorialOverlaysEnabled 0 -SkipFirstTimeUseChecks 1 -UseHockey 0 -ZMBackendEnvironmentType "
+						"--args -TutorialOverlaysEnabled 0 -SkipFirstTimeUseChecks 1 -DisableHockeyUpdates 1 -UseHockey 1 -ZMBackendEnvironmentType "
 								+ backendType);
 		if (enableAutoAcceptAlerts) {
 			capabilities.setCapability("autoAcceptAlerts", true);

@@ -157,6 +157,10 @@ public final class WebAppLocators {
 		public static final String classPingMessage = "pinged";
 
 		public static final String xpathCloseButton = "//*[contains(@class,'cc-button')]//*[contains(@class,'icon-close')]";
+
+		public static final Function<String, String> textMessageByText = text -> String
+				.format("//*[@data-uie-name='item-message']//div[@class='text' and text()='%s']",
+						text);
 	}
 
 	public static final class ConnectToPage {

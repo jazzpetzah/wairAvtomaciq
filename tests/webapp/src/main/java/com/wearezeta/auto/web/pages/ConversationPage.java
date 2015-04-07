@@ -205,4 +205,14 @@ public class ConversationPage extends WebPage {
 				.xpath(WebAppLocators.ConversationPage.xpathCloseButton);
 		driver.findElement(locator).click();
 	}
+
+	private static final int TEXT_MESSAGE_VISIBILITY_TIMEOUT_SECONDS = 5;
+
+	public boolean isTextMessageVisible(String message) throws Exception {
+		final By locator = By
+				.xpath(WebAppLocators.ConversationPage.textMessageByText
+						.apply(message));
+		return DriverUtils.isElementDisplayed(driver, locator,
+				TEXT_MESSAGE_VISIBILITY_TIMEOUT_SECONDS);
+	}
 }

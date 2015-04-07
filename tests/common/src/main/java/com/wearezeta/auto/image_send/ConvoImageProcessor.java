@@ -44,7 +44,7 @@ public class ConvoImageProcessor extends ImageAssetProcessor {
 		resultAssetData.setIsInline(true);
 		resultAssetData.setIsPublic(originalImageAsset.getIsPublic());
 		resultAssetData.setNonce(String.valueOf(UUID.randomUUID()));
-		resultAssetData.setNativePush(originalImageAsset.getNativePush());
+		resultAssetData.setNativePush(false);
 		return resultAssetData;
 	}
 
