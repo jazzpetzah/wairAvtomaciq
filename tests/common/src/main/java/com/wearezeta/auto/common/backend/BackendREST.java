@@ -276,7 +276,8 @@ final class BackendREST {
 					.type(request.getContentType())
 					.header("Content-Disposition",
 							request.getContentDisposition())
-					.header("Content-Length", request.getContentLength());
+					.header("Content-Length", request.getContentLength())
+					.header("native-push", false);
 			final String output = httpPost(webResource, request.getPayload(),
 					new int[] { HttpStatus.SC_CREATED });
 			writeLog(new String[] { "Output from Server ....", output + "\n" });
