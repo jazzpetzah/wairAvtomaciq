@@ -119,7 +119,7 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 		return result;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	private void logMessages(Message[] deliveredMessages) {
 		for (Message msg : deliveredMessages) {
 			log.debug("Received new message with headers:");
@@ -140,7 +140,6 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 
 	@Override
 	public void messagesAdded(MessageCountEvent e) {
-		logMessages(e.getMessages());
 		for (Message msg : preprocessReceivedMessages(e.getMessages())) {
 			if (areAllHeadersInMessage(msg)) {
 				this.matchedMessage = msg;

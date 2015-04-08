@@ -1,0 +1,13 @@
+try
+    do shell script "kill -9 $(ps axu | grep Safari.app | grep -v grep | grep -v safaridriver | awk '{print $2}')"
+    delay 3
+on error errMsg
+    do shell script "echo " & quoted form of errMsg & " 2>&1"
+end try
+
+
+tell application "Safari"
+    tell window 1
+        set current tab to (make new tab with properties {URL:"%s"})
+    end tell
+end tell

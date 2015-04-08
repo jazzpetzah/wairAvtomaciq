@@ -119,17 +119,17 @@ public class DialogPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMediaBarControl")
 	private WebElement mediaBarControl;
 
-	@AndroidFindBy(xpath = AndroidLocators.DialogPage.xpathAddPicture)
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idAddPicture")
 	private WebElement addPictureBtn;
-
-	@AndroidFindBy(xpath = AndroidLocators.DialogPage.xpathPing)
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idPing")
 	private WebElement pingBtn;
 
 	@AndroidFindBy(xpath = AndroidLocators.OtherUserPersonalInfoPage.xpathGroupChatInfoLinearLayout)
 	private List<WebElement> linearLayout;
 
-	@ZetaFindBy(how = ZetaHow.XPATH, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "xpathDialogPageBottomLinearLayout")
-	private WebElement dialogPageBottomLinearLayout;
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogPageBottom")
+	private WebElement dialogPageBottom;
 
 	private int initMessageCount = 0;
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.75;
@@ -562,11 +562,11 @@ public class DialogPage extends AndroidPage {
 		playPauseBtn.click();
 	}
 
-	public void tapDialogPageBottomLinearLayout() throws NumberFormatException,
+	public void tapDialogPageBottom() throws NumberFormatException,
 			Exception {
 		refreshUITree();
 		if (!isVisible(addParticipant)) {
-			dialogPageBottomLinearLayout.click();
+			dialogPageBottom.click();
 		}
 	}
 

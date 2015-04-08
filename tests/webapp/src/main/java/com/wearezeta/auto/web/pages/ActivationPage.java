@@ -9,17 +9,14 @@ import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class ActivationPage extends WebPage {
-	private String url;
-
 	public ActivationPage(ZetaWebAppDriver driver, WebDriverWait wait,
 			String url) throws Exception {
-		super(driver, wait);
-		this.url = url;
+		super(driver, wait, url);
 	}
 
-	public void openInNewTab() {
+	public void openInNewTab() throws Exception {
 		WebCommonUtils.openUrlInNewTab(
-				PagesCollection.registrationPage.getDriver(), this.url);
+				PagesCollection.registrationPage.getDriver(), this.getUrl());
 	}
 
 	public void verifyActivation(int timeoutSeconds) throws Exception {

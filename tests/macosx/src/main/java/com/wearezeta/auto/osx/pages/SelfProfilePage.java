@@ -13,10 +13,11 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
+import com.wearezeta.auto.osx.pages.common.ChoosePicturePage;
 
-public class UserProfilePage extends MainWirePage {
-	
-	private static final Logger log = ZetaLogger.getLog(UserProfilePage.class
+public class SelfProfilePage extends MainWirePage {
+
+	private static final Logger log = ZetaLogger.getLog(SelfProfilePage.class
 			.getSimpleName());
 
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathOpenUserPictureSettingsButton)
@@ -52,7 +53,7 @@ public class UserProfilePage extends MainWirePage {
 	@FindBy(how = How.ID, using = OSXLocators.idSelfProfileEmailTextField)
 	private WebElement selfProfileEmailTextField;
 
-	public UserProfilePage(ZetaOSXDriver driver, WebDriverWait wait)
+	public SelfProfilePage(ZetaOSXDriver driver, WebDriverWait wait)
 			throws Exception {
 		super(driver, wait);
 	}
@@ -65,8 +66,9 @@ public class UserProfilePage extends MainWirePage {
 				By.xpath(OSXLocators.xpathPictureFromImageFile));
 	}
 
-	public void openChooseImageFileDialog() {
+	public ChoosePicturePage openChooseImageFileDialog() throws Exception {
 		choosePictureFromImageFileButton.click();
+		return new ChoosePicturePage(this.getDriver(), this.getWait());
 	}
 
 	public void openCameraDialog() {

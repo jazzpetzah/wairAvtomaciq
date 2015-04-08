@@ -46,6 +46,14 @@ public class CommonOSXSteps {
 
 	public static final Platform CURRENT_PLATFORM = Platform.Mac;
 
+	private Date testStartedTimestamp;
+
+	private long startupTime = -1;
+
+	public long getStartupTime() {
+		return this.startupTime;
+	}
+
 	static {
 		// for Jenkins slaves we should define that environment has display
 		CommonUtils.defineNoHeadlessEnvironment();
@@ -77,7 +85,7 @@ public class CommonOSXSteps {
 	}
 
 	private void commonBefore() throws Exception {
-		long startDate = new Date().getTime();
+		this.testStartedTimestamp = new Date();
 		final ZetaOSXDriver driver = resetOSXDriver(OSXExecutionContext.appiumUrl);
 		final WebDriverWait wait = PlatformDrivers
 				.createDefaultExplicitWait(driver);
@@ -89,9 +97,9 @@ public class CommonOSXSteps {
 
 		ZetaFormatter.setDriver((AppiumDriver) PagesCollection.welcomePage
 				.getDriver());
-		long endDate = new Date().getTime();
 		// saving time of startup for Sync Engine
-		startupTime = endDate - startDate;
+		this.startupTime = new Date().getTime()
+				- this.testStartedTimestamp.getTime();
 
 		PagesCollection.welcomePage
 				.sendProblemReportIfAppears(PagesCollection.problemReportPage);
@@ -321,6 +329,8 @@ public class CommonOSXSteps {
 
 	@After
 	public void tearDown() throws Exception {
+		OSXCommonUtils.collectSystemLogs(testStartedTimestamp);
+
 		OSXPage.clearPagesCollection();
 
 		commonSteps.getUserManager().resetUsers();
@@ -335,5 +345,4 @@ public class CommonOSXSteps {
 		}
 	}
 
-	public Long startupTime = null;
 }

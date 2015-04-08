@@ -1,6 +1,6 @@
 Feature: Ping
 
-  @staging @id1705
+  @smoke @id1705
   Scenario Outline: Send ping in 1on1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

@@ -262,6 +262,17 @@ public class DialogPageSteps {
 				.pressAddPictureButton();
 		PagesCollection.cameraRollPage = (CameraRollPage) page;
 	}
+	
+	/**
+	 * Click call button to start a call
+	 * @step. ^I press call button$
+	 * @throws Throwable
+	 */
+	@When("^I press call button$")
+	public void IPressCallButton() throws Throwable {
+
+		PagesCollection.callPage = PagesCollection.dialogPage.pressCallButton();
+	}
 
 	@When("^I click Ping button$")
 	public void IPressPingButton() throws Throwable {

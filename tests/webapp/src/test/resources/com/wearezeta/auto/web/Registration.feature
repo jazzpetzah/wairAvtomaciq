@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @staging @id1936
+  @smoke @id1936
   Scenario Outline: Verify new user can be registered
     Given I see invitation page
     Given I enter invitation code
@@ -24,6 +24,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
+  # Moved to staging because of https://wearezeta.atlassian.net/browse/WEBAPP-1020
   @staging @id2064
   Scenario Outline: Photo selection dialogue - choose picture from library
     Given There is 1 user where <Name> is me without avatar picture
@@ -44,7 +45,8 @@ Feature: Registration
     Examples: 
       | Login      | Password      | Name      | PictureName               |
       | user1Email | user1Password | user1Name | userpicture_landscape.jpg |
-      
+
+  # Moved to staging because of https://wearezeta.atlassian.net/browse/WEBAPP-1020
   @staging @id2065
   Scenario Outline: Photo selection dialogue - choose picture from carousel
     Given There is 1 user where <Name> is me without avatar picture
