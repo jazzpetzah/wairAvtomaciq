@@ -361,6 +361,14 @@ public class CommonUtils {
 		return getValueFromCommonConfig(c, "jenkinsProjectDir");
 	}
 	
+	public static String getDefaultCallingServiceHostFromConfig(Class<?> c) throws Exception {
+		return getValueFromCommonConfig(c, "defaultCallingServiceHost");
+	}
+	
+	public static String getDefaultCallingServicePortFromConfig(Class<?> c) throws Exception {
+		return getValueFromCommonConfig(c, "defaultCallingServicePort");
+	}
+	
 	public static BufferedImage getElementScreenshot(WebElement element,
 			AppiumDriver driver) throws IOException {
 		return getElementScreenshot(element, driver, "iPhone 6");

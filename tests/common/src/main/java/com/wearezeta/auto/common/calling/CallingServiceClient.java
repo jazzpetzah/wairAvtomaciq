@@ -72,7 +72,9 @@ public class CallingServiceClient {
 		log.info("Sending object: " + object.toString());
 		HttpURLConnection connection = null;
 		try {
-            URL url = new URL("http://" + this.host + ":" + this.port + path);
+			String urlString = "http://" + this.host + ":" + this.port + path;
+			log.info("To: " + urlString);
+            URL url = new URL(urlString);
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod(requestMethod);
             connection.setRequestProperty("Content-Type", "application/json");
@@ -95,7 +97,9 @@ public class CallingServiceClient {
             log.info("Response: " + response);
             return new JSONObject(response);
         } catch (Exception e) {
-        	log.error(connection.getResponseMessage());
+			if (connection != null) {
+				log.error(connection.getResponseMessage());
+			}
             throw new Exception("\nError while using calling service REST Service", e);
         }
 	}
