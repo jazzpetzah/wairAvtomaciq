@@ -43,7 +43,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name |
 
   @staging @id2014
-  Scenario Outline: Verify calling from missed call indicator in conversation
+  Scenario Outline: Missed call notification (adressee)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
