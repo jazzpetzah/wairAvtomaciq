@@ -36,11 +36,6 @@ public class InvitationCodePageSteps {
 			PagesCollection.invitationCodePage.inputCode(INVITATION_CODE);
 			PagesCollection.loginPage = PagesCollection.invitationCodePage
 					.proceed();
-			// Waiting for cookie to be set
-			Thread.sleep(1000);
-			// Temporary workaround for the invitation page, which doesn't keep
-			// query parameters
-			PagesCollection.loginPage.navigateTo();
 		} else {
 			PagesCollection.loginPage = new LoginPage(
 					PagesCollection.invitationCodePage.getDriver(),
