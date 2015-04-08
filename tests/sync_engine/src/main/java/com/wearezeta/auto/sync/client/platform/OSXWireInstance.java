@@ -76,14 +76,14 @@ public class OSXWireInstance extends WireInstance {
 	public void startClientProcedureImpl() throws Exception {
 		CommonOSXSteps osxSteps = new CommonOSXSteps();
 		osxSteps.setUp();
-		reporter.setStartupTime(osxSteps.startupTime);
+		reporter.setStartupTime(osxSteps.getStartupTime());
 	}
 
 	@Override
 	public void signInImpl(String userAlias, String email, String password)
 			throws Throwable {
 		LoginPageSteps osxLoginPageSteps = new LoginPageSteps();
-		osxLoginPageSteps.GivenISignInUsingLoginAndPassword(email, password);
+		osxLoginPageSteps.ISignInUsingLoginAndPassword(email, password);
 		ContactListPageSteps osxClPageSteps = new ContactListPageSteps();
 		osxClPageSteps.ISeeMyNameInContactList(userAlias);
 	}

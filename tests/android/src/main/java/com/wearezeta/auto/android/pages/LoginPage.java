@@ -88,7 +88,7 @@ public class LoginPage extends AndroidPage {
 
 	public LoginPage SignIn() throws IOException {
 		refreshUITree();
-		this.getWait().until(ExpectedConditions.visibilityOf(signInButton));
+		//this.getWait().until(ExpectedConditions.visibilityOf(signInButton));
 		signInButton.click();
 		return this;
 	}
@@ -122,12 +122,12 @@ public class LoginPage extends AndroidPage {
 				}
 			}
 		}
-		try {
+		/*try {
 			hideKeyboard();
 			Thread.sleep(1000);
 		} catch (Exception ex) {
 			//
-		}
+		}*/
 	}
 
 	public void setPassword(String password) throws Exception {
@@ -141,12 +141,12 @@ public class LoginPage extends AndroidPage {
 				}
 			}
 		}
-		try {
+		/*try {
 			hideKeyboard();
 			Thread.sleep(1000);
 		} catch (Exception ex) {
 			//
-		}
+		}*/
 	}
 
 	public boolean waitForLoginScreenDisappear() throws Exception {
@@ -155,7 +155,6 @@ public class LoginPage extends AndroidPage {
 	}
 
 	public boolean waitForLogin() throws Exception {
-
 		return DriverUtils.waitUntilElementDissapear(driver,
 				By.id(AndroidLocators.LoginPage.idLoginProgressBar), 40);
 	}
@@ -169,16 +168,16 @@ public class LoginPage extends AndroidPage {
 			refreshUITree();
 			if (isVisible(pickerClearBtn)) {
 				pickerClearBtn.click();
-			} else {
+			} /*else {
 				if (!isVisible(yourUser)) {
 					navigateBack();
 				}
-			}
+			}*/
 			refreshUITree();
 		}
-		return DriverUtils.waitForElementWithTextByXPath(
+		return ( isVisible(yourUser) && DriverUtils.waitForElementWithTextByXPath(
 				AndroidLocators.ContactListPage.xpathContacts, contact,
-				this.getDriver());
+				this.getDriver()));
 	}
 
 	public Boolean isWelcomeButtonsExist() {

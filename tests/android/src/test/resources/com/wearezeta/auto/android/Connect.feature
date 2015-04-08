@@ -15,6 +15,8 @@ Feature: Connect
     And I tap on edit connect request field
     And I type Connect request "<Message>"
     And I press Connect button
+    And I see People picker page
+    And I navigate back to Conversations List
     Then I see contact list loaded with User name <Contact>
 
     Examples: 
@@ -62,6 +64,8 @@ Feature: Connect
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     And <Contact2> has sent connection request to <Name>
+    And I wait for 2 seconds
+    And I see contact list loaded with User name <WaitingMess2>
     When I tap on contact name <WaitingMess2>
     And I press Ignore connect button
     And I navigate back from connect page
@@ -69,7 +73,6 @@ Feature: Connect
     And <Contact3> has sent connection request to <Name>
     And <Contact4> has sent connection request to <Name>
     And I see contact list loaded with User name <WaitingMess3>
-    And I wait for 5 seconds
     And I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -105,6 +108,7 @@ Feature: Connect
     And I tap on user name found on People picker page <Contact2>
     And I see connect to <Contact2> dialog
     And I Connect with contact by pressing button
+    And I wait for 5 seconds
     Then I navigate back from dialog page
     And I see contact list loaded with User name <WaitingMess2>
 
@@ -153,7 +157,8 @@ Feature: Connect
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
     And I Connect with contact by pressing button
-    Then I see Connect to <Contact> Dialog page
+    Then I see dialog page
+    And I see Connect to <Contact> Dialog page
 
     Examples: 
       | Login      | Password      | Name      | Contact   | WaitingMess      |
@@ -380,13 +385,14 @@ Feature: Connect
   @regression @id720
   Scenario Outline: I do not want to be seen in the search results of someone I blocked
     Given There are 2 users where <Name> is me
-    Given User <Contact> blocks user <Name>
+    Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
+    And User <Contact> blocks user <Name>
+    And I wait for 120 seconds
     When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
-    And I wait for 90 seconds
     And I input in search field user name to connect to <Contact>
     Then I see that no results found
 
@@ -399,6 +405,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
+    And I wait for 120 seconds
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     And I swipe down contact list

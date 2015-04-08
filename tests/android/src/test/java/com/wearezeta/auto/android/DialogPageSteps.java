@@ -97,7 +97,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I tap Dialog page bottom$")
 	public void WhenITapOnDialogPageBottom() throws Throwable {
-		PagesCollection.dialogPage.tapDialogPageBottomLinearLayout();
+		PagesCollection.dialogPage.tapDialogPageBottom();
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class DialogPageSteps {
 	public void WhenIPressPlayPauseButton() throws Throwable {
 		PagesCollection.dialogPage.tapPlayPauseBtn();
 	}
-	
+
 	/**
 	 * Tap on Play/Pause button on Media Bar
 	 * 
@@ -125,7 +125,7 @@ public class DialogPageSteps {
 	public void WhenIPressPlayPauseOnMediaBarButton() throws Throwable {
 		PagesCollection.dialogPage.tapPlayPauseMediaBarBtn();
 	}
-	
+
 	@When("^I press \"(.*)\" button$")
 	public void WhenIPressButton(String buttonName) throws Throwable {
 		switch (buttonName.toLowerCase()) {
@@ -140,6 +140,10 @@ public class DialogPageSteps {
 			break;
 		case "gallery":
 			PagesCollection.dialogPage.openGallery();
+			break;
+		case "image close":
+			PagesCollection.dialogPage.closeFullScreenImage();
+			break;
 		}
 	}
 
@@ -174,6 +178,19 @@ public class DialogPageSteps {
 	@Then("^I see new photo in the dialog$")
 	public void ThenISeeNewPhotoInTheDialog() throws Throwable {
 		Assert.assertTrue(PagesCollection.dialogPage.isImageExists());
+	}
+
+	/**
+	 * Selects the last picture sent in a conversation view dialog
+	 * 
+	 * @step. ^I select last photo in dialog$
+	 * 
+	 * @throws Throwable
+	 * 
+	 */
+	@When("^I select last photo in dialog$")
+	public void WhenISelectLastPhotoInDialog() throws Throwable {
+		PagesCollection.dialogPage.clickLastImageFromDialog();
 	}
 
 	@Then("^I see (.*) added (.*) message on Dialog page$")
@@ -215,13 +232,13 @@ public class DialogPageSteps {
 	 * 
 	 */
 	@When("^I swipe down on dialog page$")
-	public void WhenISwipedownOnDialogPage() throws Exception{
+	public void WhenISwipedownOnDialogPage() throws Exception {
 		if (PagesCollection.dialogPage == null) {
 			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
 		}
 		PagesCollection.dialogPage.swipeDown(1000);
 	}
-	
+
 	@When("^I navigate back from dialog page$")
 	public void WhenINavigateBackFromDialogPage() throws Exception {
 		PagesCollection.contactListPage = PagesCollection.dialogPage
@@ -234,7 +251,7 @@ public class DialogPageSteps {
 			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
 		}
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertEquals("connected to "+contact.toLowerCase(),
+		Assert.assertEquals("connected to " + contact.toLowerCase(),
 				PagesCollection.dialogPage.getConnectRequestChatLabel());
 	}
 
@@ -295,7 +312,7 @@ public class DialogPageSteps {
 				PagesCollection.dialogPage.getLastMessageFromDialog()
 						.toLowerCase().trim());
 	}
-	
+
 	/**
 	 * Verify that I see Play or Pause button on Mediabar
 	 * 
@@ -306,12 +323,13 @@ public class DialogPageSteps {
 	 */
 	@Then("^I see (.*) on Mediabar$")
 	public void ThenIseeOnMediaBar(String iconLabel) throws Exception {
-		double score = PagesCollection.dialogPage.checkMediaBarControlIcon(iconLabel);
+		double score = PagesCollection.dialogPage
+				.checkMediaBarControlIcon(iconLabel);
 		Assert.assertTrue(
 				"Overlap between two images has not enough score. Expected >= 0.75, current = "
 						+ score, score >= 0.75d);
 	}
-	
+
 	/**
 	 * Verify that I see Play or Pause button in Media item
 	 * 
@@ -322,9 +340,28 @@ public class DialogPageSteps {
 	 */
 	@Then("^I see (.*) button in Media$")
 	public void ThenISeeButtonInMedia(String iconLabel) throws Exception {
-		double score = PagesCollection.dialogPage.checkMediaControlIcon(iconLabel);
+		double score = PagesCollection.dialogPage
+				.checkMediaControlIcon(iconLabel);
 		Assert.assertTrue(
 				"Overlap between two images has not enough score. Expected >= 0.72, current = "
 						+ score, score >= 0.72d);
+	}
+
+	/**
+	 * Verify that dialog page contains missed call from contact
+	 * 
+	 * @step. ^I see dialog with missed call from (.*)$
+	 * 
+	 * @param contact
+	 *            contact name string
+	 * 
+	 * @throws NoSuchUserException
+	 */
+	@Then("^I see dialog with missed call from (.*)$")
+	public void ThenISeeDialogWithMissedCallFrom(String contact)
+			throws NoSuchUserException {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		Assert.assertEquals(contact + " CALLED",
+				PagesCollection.dialogPage.getMissedCallMessage());
 	}
 }

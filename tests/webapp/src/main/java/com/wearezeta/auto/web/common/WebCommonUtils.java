@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.URL;
+import java.util.Set;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -15,6 +16,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHttpEntityEnclosingRequest;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -140,13 +142,11 @@ public class WebCommonUtils extends CommonUtils {
 		}
 	}
 
-	public static void formatTextInFileAndSave(InputStream fis, String dstFile,
-			Object[] params) throws IOException {
+	private static void formatTextInFileAndSave(InputStream fis,
+			String dstFile, Object[] params) throws IOException {
 		String script = "";
-
 		InputStreamReader isr = null;
 		BufferedReader br = null;
-
 		try {
 			isr = new InputStreamReader(fis);
 			br = new BufferedReader(isr);
@@ -157,7 +157,6 @@ public class WebCommonUtils extends CommonUtils {
 				}
 			}
 			script = String.format(script, params);
-
 			File dstFileInstance = new File(dstFile);
 			dstFileInstance.getParentFile().mkdirs();
 			if (dstFileInstance.exists()) {
@@ -167,13 +166,13 @@ public class WebCommonUtils extends CommonUtils {
 			PrintWriter out = new PrintWriter(dstFile);
 			out.write(script);
 			out.close();
-		} catch (IOException e) {
-			log.debug(e.getMessage());
 		} finally {
-			if (br != null)
+			if (br != null) {
 				br.close();
-			if (isr != null)
+			}
+			if (isr != null) {
 				isr.close();
+			}
 		}
 	}
 
@@ -195,14 +194,139 @@ public class WebCommonUtils extends CommonUtils {
 
 	public static boolean isElementFocused(RemoteWebDriver driver,
 			String cssLocator) {
-		final String isFocusedScript = "return $('" + cssLocator
-				+ "').is(':focus');";
+		final String isFocusedScript = "return $(\"" + cssLocator
+				+ "\").is(':focus');";
 		return (Boolean) driver.executeScript(isFocusedScript);
 	}
 
 	public static void setFocusToElement(RemoteWebDriver driver,
 			String cssLocator) {
-		final String setFocusScript = "$('" + cssLocator + "').focus();";
+		final String setFocusScript = "$(\"" + cssLocator + "\").focus();";
 		driver.executeScript(setFocusScript);
+	}
+
+	private static void openNewTabInSafari(String url) throws Exception {
+		final ClassLoader classLoader = WebCommonUtils.class.getClassLoader();
+		final InputStream scriptStream = classLoader.getResourceAsStream(String
+				.format("%s/%s",
+						WebAppConstants.Scripts.RESOURCES_SCRIPTS_ROOT,
+						WebAppConstants.Scripts.SAFARI_OPEN_TAB_SCRIPT));
+		final String srcScriptPath = String.format("%s/%s", TMP_ROOT,
+				WebAppConstants.Scripts.SAFARI_OPEN_TAB_SCRIPT);
+		try {
+			formatTextInFileAndSave(scriptStream, srcScriptPath,
+					new String[] { url });
+		} finally {
+			if (scriptStream != null) {
+				scriptStream.close();
+			}
+		}
+		final String dstScriptPath = srcScriptPath;
+		try {
+			putFileOnExecutionNode(WebAppExecutionContext.seleniumNodeIp,
+					srcScriptPath, dstScriptPath);
+		} finally {
+			new File(srcScriptPath).delete();
+		}
+
+		executeAppleScriptFileOnNode(WebAppExecutionContext.seleniumNodeIp,
+				dstScriptPath);
+	}
+
+	private static Set<String> previousHandles = null;
+
+	/**
+	 * Opens a new tab for the given URL
+	 * 
+	 * http://stackoverflow.com/questions/6421988/webdriver-open-new-tab
+	 * https://code.google.com/p/selenium/issues/detail?id=7518
+	 * 
+	 * @param url
+	 *            The URL to
+	 * @throws Exception
+	 * @throws RuntimeException
+	 *             If unable to open tab
+	 */
+	public static void openUrlInNewTab(RemoteWebDriver driver, String url)
+			throws Exception {
+		previousHandles = driver.getWindowHandles();
+		if (WebAppExecutionContext.browserName
+				.equals(WebAppConstants.Browser.SAFARI)) {
+			openNewTabInSafari(url);
+		} else {
+			String script = "var d=document,a=d.createElement('a');a.target='_blank';a.href='%s';a.innerHTML='.';d.body.appendChild(a);return a";
+			Object element = driver.executeScript(String.format(script, url));
+			if (element instanceof WebElement) {
+				WebElement anchor = (WebElement) element;
+				anchor.click();
+				driver.executeScript(
+						"var a=arguments[0];a.parentNode.removeChild(a);",
+						element);
+			} else {
+				throw new RuntimeException("Unable to open a new tab");
+			}
+		}
+		Set<String> currentHandles = driver.getWindowHandles();
+		if (previousHandles.equals(currentHandles)) {
+			throw new RuntimeException("Unable to open a new tab");
+		}
+		currentHandles.removeAll(previousHandles);
+		final String newTabHandle = currentHandles.iterator().next();
+		driver.switchTo().window(newTabHandle);
+	}
+
+	public static void switchToPreviousTab(RemoteWebDriver driver) {
+		Set<String> currentHandles = driver.getWindowHandles();
+		if (previousHandles.equals(currentHandles)) {
+			return;
+		}
+		currentHandles.retainAll(previousHandles);
+		final String oldTabHandle = currentHandles.iterator().next();
+		driver.switchTo().window(oldTabHandle);
+	}
+
+	private static final String TMP_ROOT = "/tmp";
+
+	/**
+	 * Workaround for https://code.google.com/p/selenium/issues/detail?id=4220
+	 * 
+	 * @param pictureName
+	 *            the path to the original picture to be uploaded into
+	 *            conversation
+	 * @throws Exception
+	 */
+	public static void sendPictureInSafari(String pictureName) throws Exception {
+		final ClassLoader classLoader = WebCommonUtils.class.getClassLoader();
+		final InputStream scriptStream = classLoader.getResourceAsStream(String
+				.format("%s/%s",
+						WebAppConstants.Scripts.RESOURCES_SCRIPTS_ROOT,
+						WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT));
+		final String srcScriptPath = String.format("%s/%s", TMP_ROOT,
+				WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT);
+		final File srcImage = new File(pictureName);
+		assert srcImage.exists() : "There's no image by path "
+				+ srcImage.getCanonicalPath() + " on your local file system";
+		final File dstImage = new File(String.format("%s/%s", TMP_ROOT,
+				srcImage.getName()));
+		try {
+			formatTextInFileAndSave(scriptStream, srcScriptPath, new String[] {
+					dstImage.getParent(), dstImage.getName() });
+		} finally {
+			if (scriptStream != null) {
+				scriptStream.close();
+			}
+		}
+		final String dstScriptPath = srcScriptPath;
+		try {
+			putFileOnExecutionNode(WebAppExecutionContext.seleniumNodeIp,
+					srcImage.getAbsolutePath(), dstImage.getAbsolutePath());
+			putFileOnExecutionNode(WebAppExecutionContext.seleniumNodeIp,
+					srcScriptPath, dstScriptPath);
+		} finally {
+			new File(srcScriptPath).delete();
+		}
+
+		executeAppleScriptFileOnNode(WebAppExecutionContext.seleniumNodeIp,
+				dstScriptPath);
 	}
 }

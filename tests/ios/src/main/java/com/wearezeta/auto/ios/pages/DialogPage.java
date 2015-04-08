@@ -92,6 +92,9 @@ public class DialogPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameAddPictureButton)
 	private WebElement addPictureButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.DialogPage.xpathCallButton)
+	private WebElement callButton;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherConversationCellFormat)
 	private WebElement imageCell;
@@ -160,6 +163,11 @@ public class DialogPage extends IOSPage {
 
 	public void pressPingButton() {
 		pingButton.click();
+	}
+	
+	public StartedCallPage pressCallButton() throws Exception {
+		callButton.click();
+		return new StartedCallPage(getDriver(), getWait());
 	}
 
 	public void waitForCursorInputVisible() {
@@ -236,7 +244,7 @@ public class DialogPage extends IOSPage {
 		CameraRollPage page;
 		addPictureButton.click();
 		DriverUtils.waitUntilElementAppears(driver,
-				By.name(IOSLocators.nameCameraLibraryButton));
+				By.xpath(IOSLocators.xpathCameraLibraryButton));
 		page = new CameraRollPage(this.getDriver(), this.getWait());
 
 		return page;

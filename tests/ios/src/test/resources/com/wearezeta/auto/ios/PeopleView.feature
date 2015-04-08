@@ -13,6 +13,7 @@ Feature: People View
     And I see <Contact1> user profile page
     And I press Add button
     And I see People picker page
+    And I wait up to 15 seconds until <Contact2> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact2>
     And I see user <Contact2> found on People picker page
@@ -171,7 +172,7 @@ Feature: People View
       | Login      | Password      | Name      | GroupCreator | NonConnectedContact | GroupChatName |
       | user1Email | user1Password | user1Name | user2Name    | user3Name           | TESTCHAT      |
 
-  @regression @id393
+  @regression @id393 @id2174
   Scenario Outline: Verify you can start 1:1 conversation from a group conversation profile
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

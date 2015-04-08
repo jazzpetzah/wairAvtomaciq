@@ -60,7 +60,7 @@ public class PerformanceSteps {
 									randomInt);
 					PagesCollection.dialogPage.isDialogVisible();
 					PagesCollection.dialogPage
-							.tapDialogPageBottomLinearLayout();
+							.tapDialogPageBottom();
 					PagesCollection.dialogPage.typeMessage(CommonUtils
 							.generateGUID());
 					Thread.sleep(1000);
@@ -72,7 +72,7 @@ public class PerformanceSteps {
 										randomInt);
 						PagesCollection.dialogPage.isDialogVisible();
 						PagesCollection.dialogPage
-								.tapDialogPageBottomLinearLayout();
+								.tapDialogPageBottom();
 						PagesCollection.dialogPage.sendFrontCameraImage();
 					}
 					for (int y = 0; y < 2; y++) {
@@ -94,6 +94,7 @@ public class PerformanceSteps {
 	@Then("^I generate performance report$")
 	public void ThenIGeneratePerformanceReport() throws Exception{
 		AndroidCommonUtils.copyFileFromAndroid(AndroidCommonUtils.getRxLogResourceFilePathFromConfig(PerformanceSteps.class), RXLOGGER_RESOURCE_FILE_PATH);
+		Thread.sleep(5000);
 		Assert.assertTrue(AndroidGeneratePerfomanceReport.generateRunReport());
 	}
 }

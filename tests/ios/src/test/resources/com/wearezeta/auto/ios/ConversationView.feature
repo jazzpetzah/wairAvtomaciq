@@ -30,13 +30,14 @@ Feature: Conversation View
     Then I see You Pinged message in the dialog
     And I swipe the text input cursor
     And I click Ping button
+    And I wait for 1 seconds
     Then I see You Pinged Again message in the dialog
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id332 @deployPictures
+  @smoke @id332 @deployPictures @id1470
   Scenario Outline: Send a camera roll picture to user from contact list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

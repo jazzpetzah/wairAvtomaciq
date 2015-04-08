@@ -47,6 +47,12 @@ public class PeoplePickerPageSteps {
 				.tapClearButton();
 	}
 
+	@When("^I swipe down people picker$")
+	public void ISwipeDownContactList() throws Exception {
+		PagesCollection.contactListPage = (ContactListPage) PagesCollection.peoplePickerPage
+				.swipeDown(500);
+	}
+
 	@When("^I input in People picker search field user name (.*)$")
 	public void WhenIInputInPeoplePickerSearchFieldUserName(String contact)
 			throws Exception {
@@ -123,7 +129,7 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.peoplePickerPage.waitUserPickerFindUser(contact);
+		// PagesCollection.peoplePickerPage.waitUserPickerFindUser(contact);
 		PagesCollection.androidPage = PagesCollection.peoplePickerPage
 				.selectContact(contact);
 
@@ -143,8 +149,8 @@ public class PeoplePickerPageSteps {
 	 * Tap on Gmail link
 	 * 
 	 * @step. ^I tap on Gmail link$
-	 * @throws Exception 
-	 * @throws NumberFormatException 
+	 * @throws Exception
+	 * @throws NumberFormatException
 	 * 
 	 */
 	@When("^I tap on Gmail link$")
@@ -185,6 +191,12 @@ public class PeoplePickerPageSteps {
 				.clickOnAddToCoversationButton();
 	}
 
+	@When("^I navigate back to Conversations List")
+	public void WhenINavigateBackToConversationsList() throws Exception {
+		PagesCollection.contactListPage = PagesCollection.peoplePickerPage
+				.navigateBack();
+	}
+
 	@Then("^I see user (.*)  in People picker$")
 	public void ThenISeeUserInPeoplePicker(String contact) throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
@@ -201,6 +213,18 @@ public class PeoplePickerPageSteps {
 		}
 		Assert.assertTrue(PagesCollection.peoplePickerPage
 				.groupIsVisible(contact));
+	}
+
+	@Then("^I see TOP PEOPLE$")
+	public void ThenISeeTopPeople() throws Exception {
+		Assert.assertTrue(PagesCollection.peoplePickerPage
+				.ispTopPeopleHeaderVisible());
+	}
+
+	@Then("^I do not see TOP PEOPLE$")
+	public void ThenIDontSeeTopPeople() throws Exception {
+		Assert.assertFalse(PagesCollection.peoplePickerPage
+				.ispTopPeopleHeaderVisible());
 	}
 
 }

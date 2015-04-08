@@ -14,7 +14,6 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
-import cucumber.api.java.en.When;
 
 public class TabletCommonAndroidSteps {
 	static {
@@ -70,32 +69,5 @@ public class TabletCommonAndroidSteps {
 	public void tabletTearDown() throws Exception {
 		TabletLoginPage.clearPagesCollection();
 		commonSteps.getUserManager().resetUsers();
-	}
-
-	/**
-	 * Rotates UI to landscape
-	 * 
-	 * @step. ^I rotate UI to landscape$
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I rotate UI to landscape$")
-	public void WhenIRotateUILandscape() throws Exception {
-		TabletPagesCollection.loginPage.rotateLandscape();
-	}
-
-	/**
-	 * Rotates UI to portrait
-	 * 
-	 * @step. ^I rotate UI to portrait$
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I rotate UI to portrait$")
-	public void WhenIRotateUIPortrait() throws Exception {
-		TabletPagesCollection.loginPage.rotatePortrait();
-
 	}
 }

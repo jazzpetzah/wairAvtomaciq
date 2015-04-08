@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.concurrent.Future;
 
 import javax.mail.Message;
-import javax.mail.MessagingException;
 
 import org.junit.Assert;
 
@@ -16,6 +15,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.UserState;
+import com.wearezeta.auto.web.pages.ActivationPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
 import cucumber.api.java.en.Given;
@@ -115,18 +115,27 @@ public class RegistrationPageSteps {
 	 * 
 	 * @step. ^I submit registration form$
 	 * 
-	 * @throws MessagingException
-	 * @throws InterruptedException
 	 * @throws Exception
 	 */
 	@When("^I submit registration form$")
-	public void ISubmitRegistration() throws MessagingException,
-			InterruptedException, Exception {
+	public void ISubmitRegistration() throws Exception {
+		PagesCollection.registrationPage.submitRegistration();
+	}
+
+	/**
+	 * Start monitoring thread for activation email. Please put this step BEFORE
+	 * you submit the registration form
+	 * 
+	 * @step. ^I start activation email monitoring$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I start activation email monitoring$")
+	public void IStartActivationEmailMonitoring() throws Exception {
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
 		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
 				expectedHeaders, BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
-		PagesCollection.registrationPage.submitRegistration();
 	}
 
 	/**
@@ -147,7 +156,8 @@ public class RegistrationPageSteps {
 	}
 
 	/**
-	 * Activate newly registered user on the backend
+	 * Activate newly registered user on the backend. Don't forget to call the
+	 * 'I start activation email monitoring' step before this one
 	 * 
 	 * @step. ^I verify registration email$
 	 * 
@@ -170,5 +180,42 @@ public class RegistrationPageSteps {
 	public void ISwitchToLoginPage() throws Exception {
 		PagesCollection.loginPage = PagesCollection.registrationPage
 				.switchToLoginPage();
+	}
+
+	private static final int ACTIVATION_TIMEOUT = 5; // seconds
+
+	/**
+	 * Activates user using browser URL from activation email. Don't forget to
+	 * call the 'I start activation email monitoring' step before this one
+	 * 
+	 * @step. ^I activate user by URL$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I activate user by URL$")
+	public void WhenIActivateUserByUrl() throws Exception {
+		final String link = BackendAPIWrappers
+				.getUserActivationLink(this.activationMessage);
+		ActivationPage activationPage = new ActivationPage(
+				PagesCollection.registrationPage.getDriver(),
+				PagesCollection.registrationPage.getWait(), link);
+		activationPage.navigateTo();
+		activationPage.verifyActivation(ACTIVATION_TIMEOUT);
+		PagesCollection.loginPage.navigateTo();
+
+//		activationPage.openInNewTab();
+//		activationPage.verifyActivation(ACTIVATION_TIMEOUT);
+//		activationPage.close();
+
+		this.userToRegister.setUserState(UserState.Created);
+		// indexes in aliases start from 1
+		final int userIndex = usrMgr.appendCustomUser(userToRegister) + 1;
+		userToRegister.addEmailAlias(ClientUsersManager.EMAIL_ALIAS_TEMPLATE
+				.apply(userIndex));
+		userToRegister.addNameAlias(ClientUsersManager.NAME_ALIAS_TEMPLATE
+				.apply(userIndex));
+		userToRegister
+				.addPasswordAlias(ClientUsersManager.PASSWORD_ALIAS_TEMPLATE
+						.apply(userIndex));
 	}
 }

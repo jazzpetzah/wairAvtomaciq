@@ -11,13 +11,14 @@ import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.osx.common.InputMethodEnum;
 import com.wearezeta.auto.osx.common.LoginBehaviourEnum;
 import com.wearezeta.auto.osx.pages.ContactListPage;
-import com.wearezeta.auto.osx.pages.LoginPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
-import com.wearezeta.auto.osx.pages.UserProfilePage;
+import com.wearezeta.auto.osx.pages.SelfProfilePage;
 import com.wearezeta.auto.osx.pages.common.NoInternetConnectionPage;
+import com.wearezeta.auto.osx.pages.welcome.LoginPage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -45,39 +46,19 @@ public class LoginPageSteps {
 	 *             if login operation was unsuccessful
 	 */
 	@Given("I Sign in using login (.*) and password (.*)")
-	public void GivenISignInUsingLoginAndPassword(String login, String password)
+	public void ISignInUsingLoginAndPassword(String login, String password)
 			throws Exception {
-		try {
-			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
-		} catch (NoSuchUserException e) {
-			try {
-				// search for email by name aliases in case name is specified
-				login = usrMgr.findUserByNameOrNameAlias(login).getEmail();
-			} catch (NoSuchUserException ex) {
-			}
-		}
+		log.debug(String.format("Sign in using email %s and password %s",
+				login, password));
+		WelcomePageSteps welcomePageSteps = new WelcomePageSteps();
+		welcomePageSteps.IStartSignIn();
+		this.ITypeLogin(login);
+		this.ITypePassword(password);
+		this.IPressSignInButton();
 
-		try {
-			password = usrMgr.findUserByPasswordAlias(password).getPassword();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		log.debug("Starting to Sign in using login " + login + " and password "
-				+ password);
-
-		PagesCollection.loginPage = PagesCollection.welcomePage.startSignIn();
-
-		PagesCollection.loginPage.setLogin(login);
-		PagesCollection.loginPage.setPassword(password);
-
-		PagesCollection.contactListPage = PagesCollection.loginPage.signIn();
-
-		Assert.assertTrue("Failed to login",
-				PagesCollection.loginPage.waitForLogin());
-
-		PagesCollection.userProfilePage = new UserProfilePage(
-				PagesCollection.loginPage.getDriver(),
-				PagesCollection.loginPage.getWait());
+		Assert.assertTrue(String.format(
+				"Failed to sign in using email %s and password %s", login,
+				password), PagesCollection.loginPage.waitForLogin());
 	}
 
 	/**
@@ -88,21 +69,21 @@ public class LoginPageSteps {
 	 * @throws Exception
 	 */
 	@When("^I press [Ss]ign [Ii]n button$")
-	public void WhenIPressSignInButton() throws Exception {
-		ISignInExpectingResult("successful login");
+	public void IPressSignInButton() throws Exception {
+		ISignInExpectingResult(LoginBehaviourEnum.SUCCESSFUL.getResult());
 	}
 
 	@When("^I [Ss]ign [Ii]n expecting (sucessful login|error|[Nn]o [Ii]nternet message)$")
-	public void  ISignInExpectingResult(String result) throws Exception {
+	public void ISignInExpectingResult(String result) throws Exception {
 		OSXPage page = null;
-		for (LoginBehaviourEnum value: LoginBehaviourEnum.values()) {
+		for (LoginBehaviourEnum value : LoginBehaviourEnum.values()) {
 			if (value.getResult().toLowerCase().equals(result.toLowerCase())) {
 				page = PagesCollection.loginPage.signIn(value);
 			}
 		}
 		if (page instanceof ContactListPage) {
-			PagesCollection.contactListPage = (ContactListPage)page;
-			PagesCollection.userProfilePage = new UserProfilePage(
+			PagesCollection.contactListPage = (ContactListPage) page;
+			PagesCollection.selfProfilePage = new SelfProfilePage(
 					PagesCollection.contactListPage.getDriver(),
 					PagesCollection.contactListPage.getWait());
 		} else if (page instanceof NoInternetConnectionPage) {
@@ -111,41 +92,73 @@ public class LoginPageSteps {
 			PagesCollection.loginPage = (LoginPage) page;
 		}
 	}
+
 	/**
 	 * Enters login in corresponding field on Sign In page
 	 * 
-	 * @step. I have entered login (.*)
+	 * @step. ^I type login (.*)$
 	 * 
 	 * @param login
 	 *            user login string
 	 */
-	@When("I have entered login (.*)")
-	public void WhenIHaveEnteredLogin(String login) {
+	@When("^I type login (.*)$")
+	public void ITypeLogin(String login) {
 		try {
 			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
 		} catch (NoSuchUserException e) {
-			// Ignore silently
+			try {
+				// search for email by name aliases in case name is specified
+				login = usrMgr.findUserByNameOrNameAlias(login).getEmail();
+			} catch (NoSuchUserException ex) {
+			}
 		}
-		PagesCollection.loginPage.setLogin(login);
+
+		PagesCollection.loginPage.typeEmail(login);
 	}
 
 	/**
-	 * Enters password in corresponding field on Sign In page
+	 * Enters password in corresponding field on Sign In page (this step doesn't
+	 * support password with spaces in it, use full version: 'I type password
+	 * (.*) by sending keys' for password with spaces testing)
 	 * 
-	 * @step. I have entered password (.*)
+	 * @step. ^I type password (\\S*)$
 	 * 
 	 * @param password
 	 *            user password string
+	 *
 	 * @throws Exception
 	 */
-	@When("I have entered password (.*)")
-	public void WhenIHaveEnteredPassword(String password) throws Exception {
+	@When("^I type password (\\S*)$")
+	public void ITypePassword(String password) throws Exception {
+		ITypePasswordByMode(password, InputMethodEnum.SEND_KEYS.getMethod());
+	}
+
+	/**
+	 * Enters password in corresponding field on Sign In page using specified
+	 * input mode
+	 * 
+	 * @step. ^I type password (.*) by (sending keys|AppleScript)$
+	 * 
+	 * @param password
+	 *            user password string
+	 * @param mode
+	 *            set value mode ('sending keys' - sends text using
+	 *            WebElement.sendKeys() method | 'AppleScript')
+	 *
+	 * @throws Exception
+	 */
+	@When("^I type password (.*) by (sending keys|AppleScript)$")
+	public void ITypePasswordByMode(String password, String mode)
+			throws Exception {
 		try {
 			password = usrMgr.findUserByPasswordAlias(password).getPassword();
 		} catch (NoSuchUserException e) {
-			// Ignore silently
 		}
-		PagesCollection.loginPage.setPassword(password);
+		for (InputMethodEnum method : InputMethodEnum.values()) {
+			if (method.getMethod().toLowerCase().equals(mode.toLowerCase())) {
+				PagesCollection.loginPage.typePassword(password, method);
+			}
+		}
 	}
 
 	/**
@@ -159,19 +172,6 @@ public class LoginPageSteps {
 		Assert.assertTrue("Failed to logout",
 				PagesCollection.contactListPage.waitForSignOut());
 		Assert.assertTrue(PagesCollection.contactListPage.isSignOutFinished());
-	}
-
-	/**
-	 * Sets password on Sign In screen using Apple Script
-	 * 
-	 * @step. I input password (.*) using script
-	 * 
-	 * @param password
-	 *            user password string
-	 */
-	@When("I input password (.*) using script")
-	public void IInputPasswordUsingScript(String password) {
-		PagesCollection.loginPage.setPasswordUsingScript(password);
 	}
 
 	/**

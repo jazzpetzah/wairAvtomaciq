@@ -5,7 +5,7 @@ Feature: Sign Out
     Given There are 2 users where <Name> is me
     Given User <Name2> change avatar picture to default
     Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
+    And I see my name on top of Contact list
     When I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
@@ -13,7 +13,7 @@ Feature: Sign Out
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
     And User <Name2> is me
-    Then I see my name <Name2> in Contact list
+    Then I see my name on top of Contact list
     And I open self profile
     And I see user name on self profile page <Name2>
     And I see user email on self profile page <Login2>

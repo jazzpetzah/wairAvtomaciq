@@ -21,11 +21,13 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
+import com.wearezeta.auto.osx.common.OSXConstants;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
-import com.wearezeta.auto.osx.pages.LoginPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
-import com.wearezeta.auto.osx.pages.common.MainMenuPage;
+import com.wearezeta.auto.osx.pages.common.MainMenuAndDockPage;
+import com.wearezeta.auto.osx.pages.common.ProblemReportPage;
+import com.wearezeta.auto.osx.pages.welcome.LoginPage;
 import com.wearezeta.auto.osx.pages.welcome.WelcomePage;
 
 import cucumber.api.java.After;
@@ -34,7 +36,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
 public class CommonOSXSteps {
-	
+
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 
 	public static final Logger log = ZetaLogger.getLog(CommonOSXSteps.class
@@ -44,13 +46,19 @@ public class CommonOSXSteps {
 
 	public static final Platform CURRENT_PLATFORM = Platform.Mac;
 
+	private Date testStartedTimestamp;
+
+	private long startupTime = -1;
+
+	public long getStartupTime() {
+		return this.startupTime;
+	}
+
 	static {
-		System.setProperty("java.awt.headless", "false");
-		System.setProperty("org.apache.commons.logging.Log",
-				"org.apache.commons.logging.impl.SimpleLog");
-		System.setProperty(
-				"org.apache.commons.logging.simplelog.log.org.apache.http",
-				"warn");
+		// for Jenkins slaves we should define that environment has display
+		CommonUtils.defineNoHeadlessEnvironment();
+		// disabling selenium logs to exclude not used output from log
+		CommonUtils.disableSeleniumLogs();
 	}
 
 	public static void resetBackendSettingsIfOverwritten() throws IOException,
@@ -58,10 +66,10 @@ public class CommonOSXSteps {
 		if (!OSXCommonUtils.isBackendTypeSet(CommonUtils
 				.getBackendType(CommonOSXSteps.class))) {
 			log.debug("Backend setting were overwritten. Trying to restart app.");
-			PagesCollection.mainMenuPage.quitZClient();
+			PagesCollection.mainMenuPage.quitWire();
 			OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
 					.getBackendType(CommonOSXSteps.class));
-			PagesCollection.loginPage.startApp();
+			PagesCollection.mainMenuPage.startApp();
 		}
 	}
 
@@ -77,31 +85,45 @@ public class CommonOSXSteps {
 	}
 
 	private void commonBefore() throws Exception {
-		long startDate = new Date().getTime();
+		this.testStartedTimestamp = new Date();
 		final ZetaOSXDriver driver = resetOSXDriver(OSXExecutionContext.appiumUrl);
 		final WebDriverWait wait = PlatformDrivers
 				.createDefaultExplicitWait(driver);
 
-		PagesCollection.mainMenuPage = new MainMenuPage(driver, wait);
+		PagesCollection.mainMenuPage = new MainMenuAndDockPage(driver, wait);
 		PagesCollection.welcomePage = new WelcomePage(driver, wait);
 		PagesCollection.loginPage = new LoginPage(driver, wait);
-		ZetaFormatter.setDriver((AppiumDriver) PagesCollection.loginPage
+		PagesCollection.problemReportPage = new ProblemReportPage(driver, wait);
+
+		ZetaFormatter.setDriver((AppiumDriver) PagesCollection.welcomePage
 				.getDriver());
-		long endDate = new Date().getTime();
 		// saving time of startup for Sync Engine
-		startupTime = endDate - startDate;
-		PagesCollection.loginPage.sendProblemReportIfFound();
+		this.startupTime = new Date().getTime()
+				- this.testStartedTimestamp.getTime();
+
+		PagesCollection.welcomePage
+				.sendProblemReportIfAppears(PagesCollection.problemReportPage);
 	}
 
 	@Before("@performance")
 	public void setUpPerformance() throws Exception {
+		CommonUtils.enableTcpForAppName(OSXConstants.Apps.WIRE);
+		OSXCommonUtils.deleteWireLoginFromKeychain();
+		OSXCommonUtils.removeAllZClientSettingsFromDefaults();
+		OSXCommonUtils.deleteCacheFolder();
+
+		OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
+				.getBackendType(this.getClass()));
+
 		commonBefore();
+
+		resetBackendSettingsIfOverwritten();
 	}
 
 	@Before("~@performance")
 	public void setUp() throws Exception {
-		CommonUtils.enableTcpForAppName(OSXCommonUtils.APP_NAME);
-		OSXCommonUtils.deleteZClientLoginFromKeychain();
+		CommonUtils.enableTcpForAppName(OSXConstants.Apps.WIRE);
+		OSXCommonUtils.deleteWireLoginFromKeychain();
 		OSXCommonUtils.removeAllZClientSettingsFromDefaults();
 		OSXCommonUtils.deleteCacheFolder();
 
@@ -247,12 +269,12 @@ public class CommonOSXSteps {
 
 	@Given("^Internet connection is lost$")
 	public void InternetConnectionIsLost() throws Exception {
-		commonSteps.BlockTcpConnectionForApp(OSXCommonUtils.APP_NAME);
+		commonSteps.BlockTcpConnectionForApp(OSXConstants.Apps.WIRE);
 	}
 
 	@Given("^Internet connection is restored$")
 	public void InternetConnectionIsRestored() throws Exception {
-		commonSteps.EnableTcpConnectionForApp(OSXCommonUtils.APP_NAME);
+		commonSteps.EnableTcpConnectionForApp(OSXConstants.Apps.WIRE);
 	}
 
 	@Given("^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in backend search results$")
@@ -299,8 +321,16 @@ public class CommonOSXSteps {
 				conversationNameAlias);
 	}
 
+	@When("^(.*) dismisses call$")
+	public void UserCallsToConversation(String callerUserNameAlias)
+			throws Exception {
+		commonSteps.StopCurrentCall();
+	}
+
 	@After
 	public void tearDown() throws Exception {
+		OSXCommonUtils.collectSystemLogs(testStartedTimestamp);
+
 		OSXPage.clearPagesCollection();
 
 		commonSteps.getUserManager().resetUsers();
@@ -308,12 +338,11 @@ public class CommonOSXSteps {
 		// workaround for stuck on Send picture test
 		OSXCommonUtils.killWireIfStuck();
 
-		CommonUtils.enableTcpForAppName(OSXCommonUtils.APP_NAME);
+		CommonUtils.enableTcpForAppName(OSXConstants.Apps.WIRE);
 
 		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
 			PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
 		}
 	}
 
-	public Long startupTime = null;
 }

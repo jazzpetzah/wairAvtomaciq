@@ -18,7 +18,6 @@ Feature: Register new user
   #      | Email   | Password    | Name    |
   #      | aqaUser | aqaPassword | aqaUser |
   
-  #ZOSX-2857
   @smoke @id177
   Scenario Outline: Register new user with image - landscape image
     And I see Welcome screen
@@ -37,7 +36,6 @@ Feature: Register new user
       | Email      | Password      | Name      | ImageFile                 |
       | user1Email | user1Password | user1Name | userpicture_landscape.jpg |
 
-  #ZOSX-2857
   @smoke @id177
   Scenario Outline: Register new user with image - portrait image
     And I see Welcome screen

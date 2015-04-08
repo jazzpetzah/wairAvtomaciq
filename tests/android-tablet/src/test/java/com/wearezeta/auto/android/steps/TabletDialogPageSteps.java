@@ -2,7 +2,9 @@ package com.wearezeta.auto.android.steps;
 
 import org.junit.Assert;
 
+import com.wearezeta.auto.android.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
+import com.wearezeta.auto.android.pages.TabletDialogPage;
 import com.wearezeta.auto.android.pages.TabletPagesCollection;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -13,6 +15,15 @@ public class TabletDialogPageSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
+	@When("^I swipe up on tablet dialog page$")
+	public void WhenISwipeUpOnDialogPage() throws Exception {
+		if (TabletPagesCollection.dialogPage == null) {
+			TabletPagesCollection.dialogPage = (TabletDialogPage) TabletPagesCollection.androidPage;
+		}
+		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) TabletPagesCollection.dialogPage
+				.swipeUp(1000);
+	}
+	
 	/**
 	 * Checks visibility of dialog page
 	 * 

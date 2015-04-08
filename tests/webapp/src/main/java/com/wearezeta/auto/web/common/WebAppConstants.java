@@ -15,6 +15,8 @@ public class WebAppConstants {
 
 	public static final class Scripts {
 		public static final String SAFARI_SEND_PICTURE_SCRIPT = "safari_choose_image.txt";
+		
+		public static final String SAFARI_OPEN_TAB_SCRIPT = "safari_open_tab.txt";
 
 		public static final String RESOURCES_SCRIPTS_ROOT = "scripts";
 	}

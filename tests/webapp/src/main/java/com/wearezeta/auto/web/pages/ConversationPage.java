@@ -1,7 +1,5 @@
 package com.wearezeta.auto.web.pages;
 
-import java.io.File;
-import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,11 +41,14 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathShowParticipantsButton)
 	private WebElement showParticipants;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathSendImageInput)
+	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssSendImageInput)
 	private WebElement imagePathInput;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathPingButton)
 	private WebElement pingButton;
+
+	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathCallButton)
+	private WebElement callButton;
 
 	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.ConversationPage.classPingMessage)
 	private WebElement pingMessage;
@@ -110,73 +111,27 @@ public class ConversationPage extends WebPage {
 		return new PeoplePickerPage(this.getDriver(), this.getWait());
 	}
 
-	private static final String TMP_ROOT = "/tmp";
-
-	/**
-	 * Workaround for https://code.google.com/p/selenium/issues/detail?id=4220
-	 * 
-	 * @param pictureName
-	 *            the path to the original picture to be uploaded into
-	 *            conversation
-	 * @throws Exception
-	 */
-	private static void sendPictureInSafari(String pictureName)
-			throws Exception {
-		final ClassLoader classLoader = ConversationPage.class.getClassLoader();
-		final InputStream scriptStream = classLoader.getResourceAsStream(String
-				.format("%s/%s",
-						WebAppConstants.Scripts.RESOURCES_SCRIPTS_ROOT,
-						WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT));
-		final String srcScriptPath = String.format("%s/%s", TMP_ROOT,
-				WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT);
-		final File srcImage = new File(pictureName);
-		assert srcImage.exists() : "There's no image by path "
-				+ srcImage.getCanonicalPath() + " on your local file system";
-		final File dstImage = new File(String.format("%s/%s", TMP_ROOT,
-				srcImage.getName()));
-		try {
-			WebCommonUtils.formatTextInFileAndSave(scriptStream, srcScriptPath,
-					new String[] { dstImage.getParent(), dstImage.getName() });
-		} finally {
-			if (scriptStream != null) {
-				scriptStream.close();
-			}
-		}
-		final String dstScriptPath = srcScriptPath;
-		try {
-			WebCommonUtils.putFileOnExecutionNode(
-					WebAppExecutionContext.seleniumNodeIp,
-					srcImage.getAbsolutePath(), dstImage.getAbsolutePath());
-			WebCommonUtils.putFileOnExecutionNode(
-					WebAppExecutionContext.seleniumNodeIp, srcScriptPath,
-					dstScriptPath);
-		} finally {
-			new File(srcScriptPath).delete();
-		}
-
-		WebCommonUtils.executeAppleScriptFileOnNode(
-				WebAppExecutionContext.seleniumNodeIp, dstScriptPath);
-	}
-
 	public void sendPicture(String pictureName) throws Exception {
 		final String picturePath = WebCommonUtils
 				.getFullPicturePath(pictureName);
-		final String showImageLabelJScript = "$('"
+		final String showImageLabelJScript = "$(\""
 				+ WebAppLocators.ConversationPage.cssRightControlsPanel
-				+ "').css({'opacity': '100'});";
+				+ "\").css({'opacity': '100'});";
 		driver.executeScript(showImageLabelJScript);
-		final String showPathInputJScript = "$('"
+		final String showPathInputJScript = "$(\""
 				+ WebAppLocators.ConversationPage.cssSendImageLabel
-				+ "').find('"
+				+ "\").find(\""
 				+ WebAppLocators.ConversationPage.cssSendImageInput
-				+ "').css({'left': '0'});";
+				+ "\").css({'left': '0'});";
 		driver.executeScript(showPathInputJScript);
-		assert DriverUtils.isElementDisplayed(driver,
-				By.xpath(WebAppLocators.ConversationPage.xpathSendImageInput),
-				10);
+		assert DriverUtils
+				.isElementDisplayed(
+						driver,
+						By.cssSelector(WebAppLocators.ConversationPage.cssSendImageInput),
+						5);
 		if (WebAppExecutionContext.browserName
 				.equals(WebAppConstants.Browser.SAFARI)) {
-			sendPictureInSafari(picturePath);
+			WebCommonUtils.sendPictureInSafari(picturePath);
 		} else {
 			imagePathInput.sendKeys(picturePath);
 		}
@@ -224,5 +179,40 @@ public class ConversationPage extends WebPage {
 
 		return driver.findElementsByClassName(
 				WebAppLocators.ConversationPage.classPingMessage).size() - 1;
+	}
+
+	public void clickCallButton() {
+		try {
+			DriverUtils.moveMouserOver(driver, conversationInput);
+		} catch (WebDriverException e) {
+			// do nothing (safari workaround)
+		}
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+		}
+		callButton.click();
+	}
+
+	public boolean isCalleeAcceptingCall() throws Exception {
+		final By locator = By
+				.xpath(WebAppLocators.ConversationPage.xpathTalkingHalo);
+		return DriverUtils.isElementDisplayed(driver, locator, 30);
+	}
+
+	public void clickCloseButton() {
+		final By locator = By
+				.xpath(WebAppLocators.ConversationPage.xpathCloseButton);
+		driver.findElement(locator).click();
+	}
+
+	private static final int TEXT_MESSAGE_VISIBILITY_TIMEOUT_SECONDS = 5;
+
+	public boolean isTextMessageVisible(String message) throws Exception {
+		final By locator = By
+				.xpath(WebAppLocators.ConversationPage.textMessageByText
+						.apply(message));
+		return DriverUtils.isElementDisplayed(driver, locator,
+				TEXT_MESSAGE_VISIBILITY_TIMEOUT_SECONDS);
 	}
 }

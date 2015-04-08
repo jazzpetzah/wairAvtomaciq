@@ -18,9 +18,9 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.locators.OSXLocators;
-import com.wearezeta.auto.osx.pages.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.ConversationInfoPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
+import com.wearezeta.auto.osx.pages.common.ChoosePicturePage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;

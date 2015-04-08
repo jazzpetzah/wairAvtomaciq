@@ -2,20 +2,17 @@ package com.wearezeta.auto.osx.steps;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.osx.pages.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
-import com.wearezeta.auto.osx.pages.UserProfilePage;
+import com.wearezeta.auto.osx.pages.SelfProfilePage;
+import com.wearezeta.auto.osx.pages.common.ChoosePicturePage;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -48,7 +45,7 @@ public class RegistrationPageSteps {
 			this.userToRegister.clearNameAliases();
 			this.userToRegister.addNameAlias(name);
 		}
-		PagesCollection.registrationPage.enterName(this.userToRegister
+		PagesCollection.registrationPage.typeFullName(this.userToRegister
 				.getName());
 	}
 
@@ -76,7 +73,7 @@ public class RegistrationPageSteps {
 			this.userToRegister.clearEmailAliases();
 			this.userToRegister.addEmailAlias(email);
 		}
-		PagesCollection.registrationPage.enterEmail(this.userToRegister
+		PagesCollection.registrationPage.typeEmail(this.userToRegister
 				.getEmail());
 	}
 
@@ -103,7 +100,7 @@ public class RegistrationPageSteps {
 			this.userToRegister.clearPasswordAliases();
 			this.userToRegister.addPasswordAlias(password);
 		}
-		PagesCollection.registrationPage.enterPassword(this.userToRegister
+		PagesCollection.registrationPage.typePassword(this.userToRegister
 				.getPassword());
 	}
 
@@ -117,29 +114,8 @@ public class RegistrationPageSteps {
 	 */
 	@When("I submit registration data")
 	public void ISubmitRegistrationData() throws Exception {
-		Map<String, String> expectedHeaders = new HashMap<String, String>();
-		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
-		PagesCollection.registrationPage.setActivationMessage(IMAPSMailbox
-				.getInstance().getMessage(expectedHeaders,
-						BackendAPIWrappers.UI_ACTIVATION_TIMEOUT));
-
-		PagesCollection.registrationPage.submitRegistration();
-	}
-
-	/**
-	 * Checks that e-mail confirmation page appers after Create Account button
-	 * clicked
-	 * 
-	 * @step. I see confirmation page
-	 * @throws Exception
-	 * 
-	 * @throws AssertionError
-	 *             if confirmation page did not appear
-	 */
-	@Then("I see confirmation page")
-	public void ISeeConfirmationPage() throws Exception {
-		Assert.assertTrue(PagesCollection.registrationPage
-				.isConfirmationRequested());
+		PagesCollection.verificationPage = PagesCollection.registrationPage
+				.createAccount(this.userToRegister.getEmail());
 	}
 
 	/**
@@ -152,7 +128,7 @@ public class RegistrationPageSteps {
 	@Then("I verify registration address")
 	public void IVerifyRegistrationAddress() throws Exception {
 		BackendAPIWrappers
-				.activateRegisteredUser(PagesCollection.registrationPage
+				.activateRegisteredUser(PagesCollection.verificationPage
 						.getActivationMessage());
 	}
 
@@ -205,8 +181,8 @@ public class RegistrationPageSteps {
 	public void ITakeRegistrationPictureFromImageFile(String imageFile)
 			throws Exception {
 		ChoosePicturePage choosePicturePage = new ChoosePicturePage(
-				PagesCollection.loginPage.getDriver(),
-				PagesCollection.loginPage.getWait());
+				PagesCollection.mainMenuPage.getDriver(),
+				PagesCollection.mainMenuPage.getWait());
 		Assert.assertTrue(choosePicturePage.isVisible());
 
 		choosePicturePage.openImage(imageFile);
@@ -224,8 +200,8 @@ public class RegistrationPageSteps {
 	@Then("I see contact list of registered user")
 	public void ISeeContactListOfRegisteredUser() throws Exception {
 		PagesCollection.contactListPage = new ContactListPage(
-				PagesCollection.loginPage.getDriver(),
-				PagesCollection.loginPage.getWait());
+				PagesCollection.mainMenuPage.getDriver(),
+				PagesCollection.mainMenuPage.getWait());
 		ContactListPageSteps clSteps = new ContactListPageSteps();
 		clSteps.ISeeMyNameInContactList(this.userToRegister.getName());
 	}
@@ -239,10 +215,10 @@ public class RegistrationPageSteps {
 	 */
 	@Then("I see self profile of registered user")
 	public void ISeeSelfProfileOfRegisteredUser() throws Exception {
-		PagesCollection.userProfilePage = new UserProfilePage(
-				PagesCollection.loginPage.getDriver(),
-				PagesCollection.loginPage.getWait());
-		UserProfilePageSteps upSteps = new UserProfilePageSteps();
+		PagesCollection.selfProfilePage = new SelfProfilePage(
+				PagesCollection.mainMenuPage.getDriver(),
+				PagesCollection.mainMenuPage.getWait());
+		SelfProfilePageSteps upSteps = new SelfProfilePageSteps();
 		upSteps.ISeeNameInUserProfile(this.userToRegister.getName());
 	}
 
@@ -260,11 +236,11 @@ public class RegistrationPageSteps {
 	@Then("I enter invalid emails")
 	public void IEnterInvalidEmails() {
 		for (String invalidEmail : INVALID_EMAILS) {
-			PagesCollection.registrationPage.enterEmail(invalidEmail);
+			PagesCollection.registrationPage.typeEmail(invalidEmail);
 			if (!PagesCollection.registrationPage.isInvalidEmailMessageAppear()) {
 				consideredValidEmails.add(invalidEmail);
 			}
-			PagesCollection.registrationPage.enterEmail("");
+			PagesCollection.registrationPage.typeEmail("");
 		}
 	}
 
@@ -318,31 +294,5 @@ public class RegistrationPageSteps {
 				+ PagesCollection.registrationPage.getEnteredEmail()
 				+ "' but shouldn't be.", PagesCollection.registrationPage
 				.getEnteredEmail().equals(email.replaceAll(" ", "")));
-	}
-
-	/**
-	 * Opens activation link in browser and stores response message
-	 * 
-	 * @step. ^I open activation link in browser$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I open activation link in browser$")
-	public void IOpenActivationLinkInBrowser() throws Exception {
-		PagesCollection.registrationPage.activateUserFromBrowser();
-	}
-
-	/**
-	 * Checks that response message from activation using browser says that user
-	 * activated successfully
-	 * 
-	 * @step. ^I see that user activated$
-	 * 
-	 * @throws AssertionError
-	 *             if activation response different from expected on success
-	 */
-	@When("^I see that user activated$")
-	public void ISeeUserActivated() {
-		Assert.assertTrue(PagesCollection.registrationPage.isUserActivated());
 	}
 }

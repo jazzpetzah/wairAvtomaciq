@@ -9,14 +9,13 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
-import com.wearezeta.auto.osx.pages.ChoosePicturePage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-public class UserProfilePageSteps {
+public class SelfProfilePageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private BufferedImage userProfileBefore = null;
@@ -24,20 +23,18 @@ public class UserProfilePageSteps {
 
 	@Given("I open picture settings")
 	public void GivenIOpenPictureSettings() throws Exception {
-		PagesCollection.userProfilePage.openPictureSettings();
+		PagesCollection.selfProfilePage.openPictureSettings();
 	}
 
 	@When("I choose to select picture from image file")
 	public void WhenIChooseToSelectPictureFromImageFile() throws Exception {
-		PagesCollection.userProfilePage.openChooseImageFileDialog();
-		PagesCollection.choosePicturePage = new ChoosePicturePage(
-				PagesCollection.userProfilePage.getDriver(),
-				PagesCollection.userProfilePage.getWait());
+		PagesCollection.choosePicturePage = PagesCollection.selfProfilePage
+				.openChooseImageFileDialog();
 	}
 
 	@When("I choose to select picture from camera")
 	public void WhenIChooseToSelectPictureFromCamera() {
-		PagesCollection.userProfilePage.openCameraDialog();
+		PagesCollection.selfProfilePage.openCameraDialog();
 	}
 
 	@When("I select image file (.*)")
@@ -46,20 +43,20 @@ public class UserProfilePageSteps {
 
 		PagesCollection.choosePicturePage.openImage(imageFilename);
 
-		PagesCollection.userProfilePage.confirmPictureChoice();
+		PagesCollection.selfProfilePage.confirmPictureChoice();
 	}
 
 	@When("I shoot picture using camera")
 	public void WhenIShootPictureUsingCamera() throws Exception {
-		PagesCollection.userProfilePage.doPhotoInCamera();
-		PagesCollection.userProfilePage.confirmPictureChoice();
+		PagesCollection.selfProfilePage.doPhotoInCamera();
+		PagesCollection.selfProfilePage.confirmPictureChoice();
 	}
 
 	@Then("I see changed user picture from image (.*)")
 	public void ThenISeeChangedUserPictureFromImage(String filename)
 			throws Exception {
-		PagesCollection.userProfilePage.openPictureSettings();
-		BufferedImage referenceImage = PagesCollection.userProfilePage
+		PagesCollection.selfProfilePage.openPictureSettings();
+		BufferedImage referenceImage = PagesCollection.selfProfilePage
 				.takeScreenshot();
 
 		final double minOverlapScore = 0.55d;
@@ -79,7 +76,7 @@ public class UserProfilePageSteps {
 		if (userProfileAfter != null) {
 			userProfileBefore = userProfileAfter;
 		}
-		userProfileAfter = PagesCollection.userProfilePage.takeScreenshot();
+		userProfileAfter = PagesCollection.selfProfilePage.takeScreenshot();
 
 		final double minOverlapScore = 0.985d;
 		final double score = ImageUtil.getOverlapScore(userProfileAfter,
@@ -92,17 +89,17 @@ public class UserProfilePageSteps {
 
 	@When("I select to remove photo")
 	public void ISelectToRemovePhoto() {
-		PagesCollection.userProfilePage.chooseToRemovePhoto();
+		PagesCollection.selfProfilePage.chooseToRemovePhoto();
 	}
 
 	@When("I confirm photo removing")
 	public void IConfirmPhotoRemoving() throws Exception {
-		PagesCollection.userProfilePage.confirmPhotoRemoving();
+		PagesCollection.selfProfilePage.confirmPhotoRemoving();
 	}
 
 	@When("I cancel photo removing")
 	public void ICancelPhotoRemoving() {
-		PagesCollection.userProfilePage.cancelPhotoRemoving();
+		PagesCollection.selfProfilePage.cancelPhotoRemoving();
 	}
 
 	@Then("I see user profile picture is not set")
@@ -112,13 +109,13 @@ public class UserProfilePageSteps {
 
 	@When("I see photo in User profile")
 	public void ISeePhotoInUserProfile() throws IOException {
-		userProfileBefore = PagesCollection.userProfilePage.takeScreenshot();
+		userProfileBefore = PagesCollection.selfProfilePage.takeScreenshot();
 	}
 
 	@Then("I see name (.*) in User profile")
 	public void ISeeNameInUserProfile(String name) throws Exception {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		Assert.assertTrue(PagesCollection.userProfilePage
+		Assert.assertTrue(PagesCollection.selfProfilePage
 				.selfProfileNameEquals(name));
 	}
 
@@ -127,6 +124,6 @@ public class UserProfilePageSteps {
 		ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(name);
 		name = dstUser.getName();
 		String email = dstUser.getEmail();
-		PagesCollection.userProfilePage.selfProfileEmailEquals(email);
+		PagesCollection.selfProfilePage.selfProfileEmailEquals(email);
 	}
 }

@@ -77,8 +77,8 @@ public class DriverUtils {
 		return isElementDisplayed(driver, by, 1);
 	}
 
-	public static boolean isElementDisplayed(RemoteWebDriver driver, final By by,
-			int timeoutSeconds) throws Exception {
+	public static boolean isElementDisplayed(RemoteWebDriver driver,
+			final By by, int timeoutSeconds) throws Exception {
 		if (waitUntilElementAppears(driver, by, timeoutSeconds)) {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
 					.withTimeout(timeoutSeconds / 2 + 1, TimeUnit.SECONDS)
@@ -375,6 +375,40 @@ public class DriverUtils {
 		}
 	}
 
+	public static final int DEFAULT_PERCENTAGE = 50;
+	public static final int DEFAULT_TIME = 500; //milliseconds
+	public static final int DEFAULT_FINGERS = 1;
+
+	public static void genericTap(AppiumDriver driver) {
+		genericTap(driver, DEFAULT_TIME, DEFAULT_FINGERS, DEFAULT_PERCENTAGE,
+				DEFAULT_PERCENTAGE);
+	}
+
+	public static void genericTap(AppiumDriver driver, int percentX,
+			int percentY) {
+		genericTap(driver, DEFAULT_TIME, DEFAULT_FINGERS, percentX, percentY);
+	}
+
+	public static void genericTap(AppiumDriver driver, int time, int percentX,
+			int percentY) {
+		genericTap(driver, time, DEFAULT_FINGERS, percentX, percentY);
+	}
+
+	public static void genericTap(AppiumDriver driver, int time, int fingers,
+			int percentX, int percentY) {
+		final Dimension screenSize = driver.manage().window().getSize();
+		final int xCoords = (int) Math
+				.round(screenSize.width * (percentX / 100.0));
+		final int yCoords = (int) Math.round(screenSize.height
+				* (percentY / 100.0));
+		try {
+			driver.tap(fingers, xCoords, yCoords, time);
+		} catch (Exception ex) {
+			// ignore;
+		}
+
+	}
+
 	public static final int SWIPE_X_DEFAULT_PERCENTAGE_START = 10;
 	public static final int SWIPE_X_DEFAULT_PERCENTAGE_END = 90;
 	public static final int SWIPE_Y_DEFAULT_PERCENTAGE_START = 10;
@@ -459,6 +493,7 @@ public class DriverUtils {
 		}
 
 	}
+
 	public static void mobileTapByCoordinates(AppiumDriver driver,
 			WebElement element, int offsetX, int offsetY) {
 		Point coords = element.getLocation();
@@ -467,7 +502,7 @@ public class DriverUtils {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		HashMap<String, Double> tapObject = new HashMap<String, Double>();
 		double x = (double) ((coords.x + offsetX + elementSize.width) - elementSize.width / 2);
-		tapObject.put("x", x); 
+		tapObject.put("x", x);
 		double y = (double) ((coords.y + offsetY + elementSize.height) - elementSize.height / 2);
 		tapObject.put("y", y);
 		js.executeScript("mobile: tap", tapObject);
@@ -475,7 +510,7 @@ public class DriverUtils {
 
 	public static void mobileTapByCoordinates(AppiumDriver driver,
 			WebElement element) {
-		mobileTapByCoordinates (driver, element, 0, 0);
+		mobileTapByCoordinates(driver, element, 0, 0);
 	}
 
 	public static void androidLongClick(AppiumDriver driver, WebElement element) {

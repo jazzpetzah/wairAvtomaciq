@@ -1,4 +1,4 @@
-package com.wearezeta.auto.osx.pages;
+package com.wearezeta.auto.osx.pages.common;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -8,26 +8,28 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.locators.OSXLocators;
+import com.wearezeta.auto.osx.pages.OSXPage;
 
 public class ChoosePicturePage extends OSXPage {
+
 	private static final Logger log = ZetaLogger.getLog(ChoosePicturePage.class
 			.getSimpleName());
 
-	@FindBy(how = How.ID, using = OSXLocators.idChooseImageCancelButton)
-	private WebElement cancelButton;
-
-	@FindBy(how = How.ID, using = OSXLocators.idChooseImageOpenButton)
+	@FindBy(how = How.ID, using = OSXLocators.ChoosePicturePage.idOpenButton)
 	private WebElement openButton;
 
-	@FindBy(how = How.XPATH, using = OSXLocators.xpathFileListScrollArea)
+	@FindBy(how = How.ID, using = OSXLocators.ChoosePicturePage.idCancelButton)
+	private WebElement cancelButton;
+
+	@FindBy(how = How.XPATH, using = OSXLocators.ChoosePicturePage.xpathFileListScrollArea)
 	private WebElement fileListArea;
 
-	@FindBy(how = How.XPATH, using = OSXLocators.xpathSelectColumnViewButton)
+	@FindBy(how = How.XPATH, using = OSXLocators.ChoosePicturePage.xpathSelectColumnViewButton)
 	private WebElement selectColumnViewButton;
 
 	public ChoosePicturePage(ZetaOSXDriver driver, WebDriverWait wait)
@@ -44,7 +46,8 @@ public class ChoosePicturePage extends OSXPage {
 
 	public void searchForImage(String imageName) throws Exception {
 		DriverUtils.setDefaultImplicitWait(driver);
-		String xpath = String.format(OSXLocators.xpathFormatFinderImageFile,
+		String xpath = String.format(
+				OSXLocators.ChoosePicturePage.xpathFormatFinderImageFile,
 				imageName);
 
 		WebElement el = driver.findElement(By.xpath(xpath));
@@ -64,8 +67,9 @@ public class ChoosePicturePage extends OSXPage {
 
 	public void goToSelectedFavoritesFolder(String folderName) {
 		try {
-			String xpath = String.format(
-					OSXLocators.xpathFormatFavoritesFolderPopUp, folderName);
+			String xpath = String
+					.format(OSXLocators.ChoosePicturePage.xpathFormatFavoritesFolderPopUp,
+							folderName);
 			WebElement folder = driver.findElement(By.xpath(xpath));
 			folder.click();
 		} catch (NoSuchElementException e) {
@@ -75,13 +79,11 @@ public class ChoosePicturePage extends OSXPage {
 	}
 
 	public boolean isOpenButtonEnabled() {
-		String value = openButton.getAttribute("AXEnabled");
-		if (value.equals("0")) {
+		try {
+			return openButton.isEnabled();
+		} catch (NoSuchElementException e) {
 			return false;
-		} else if (value.equals("1")) {
-			return true;
 		}
-		return false;
 	}
 
 	public void openImage(String filename) throws Exception {
@@ -100,9 +102,7 @@ public class ChoosePicturePage extends OSXPage {
 					+ "key code 36\n"
 					+ "end tell";
 			driver.executeScript(openImageScript);
-			driver.navigate()
-					.to(CommonUtils
-							.getOsxApplicationPathFromConfig(ChoosePicturePage.class));
+			driver.navigate().to(OSXExecutionContext.wirePath);
 		}
 	}
 }

@@ -4,7 +4,7 @@ import com.wearezeta.auto.osx.pages.PagesCollection;
 
 import cucumber.api.java.en.When;
 
-public class MainMenuSteps {
+public class MainMenuAndDockSteps {
 
 	/**
 	 * Signs out from Wire
@@ -17,5 +17,15 @@ public class MainMenuSteps {
 	public void ISignOut() throws Exception {
 		PagesCollection.mainMenuPage.signOut();
 		CommonOSXSteps.resetBackendSettingsIfOverwritten();
+	}
+
+	/**
+	 * Restores Wire
+	 * 
+	 * @step. ^I restore application (.*) from [Dd]ock$
+	 */
+	@When("^I restore application (.*) from [Dd]ock$")
+	public void IRestoreApplicationFromDock(String app) {
+		PagesCollection.mainMenuPage.clickWireIconOnDock();
 	}
 }

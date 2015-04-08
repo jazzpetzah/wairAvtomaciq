@@ -205,6 +205,34 @@ public class CommonAndroidSteps {
 	}
 
 	/**
+	 * Opens the gallery application (com.google.android.gallery3d)
+	 * 
+	 * @step. ^I open the gallery application$
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	
+	@When("^I open the gallery application$")
+	public void IOpenGalleryApp() throws Exception {
+		AndroidCommonUtils.openGalleryApplication();
+	}
+
+	/**
+	 * Opens the gallery application and shares the default photo to wire (com.google.android.gallery3d)
+	 * 
+	 * @step. ^I share image from Gallery to Wire$
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I share image from Gallery to Wire$")
+	public void IShareImageFromGallery() throws Exception {
+		IOpenGalleryApp();
+		PagesCollection.contactListPage.shareImageToWireFromGallery();
+	}
+	
+	/**
 	 * Takes screenshot for comparison
 	 * 
 	 * @step. ^I take screenshot$
@@ -216,6 +244,19 @@ public class CommonAndroidSteps {
 	public void WhenITake1stScreenshot() throws IOException {
 		images.add(PagesCollection.loginPage.takeScreenshot());
 	}
+	
+	/**
+	 * Taps on the center of the screen
+	 * 
+	 * @step. ^I tap on center of screen$
+	 * 
+	 * @throws Throwable
+	 * 
+	 */
+	@When("^I tap on center of screen")
+	public void WhenITapOnCenterOfScreen() throws Throwable {
+		PagesCollection.dialogPage.tapOnCenterOfScreen();
+	}
 
 	/**
 	 * Compare that 1st and 2nd screenshots are not equal
@@ -226,7 +267,7 @@ public class CommonAndroidSteps {
 	@Then("^I compare 1st and 2nd screenshots and they are different$")
 	public void ThenICompare1st2ndScreenshotsAndTheyAreDifferent() {
 		double score = ImageUtil.getOverlapScore(images.get(0), images.get(1));
-		Assert.assertTrue(score < 0.55d);
+		Assert.assertTrue(score < 0.50d);
 		images.clear();
 	}
 
@@ -713,15 +754,39 @@ public class CommonAndroidSteps {
 	}
 
 	/**
-	 * Sends a reset password request for a given user's account
+	 * Start a call using autocall tool
 	 * 
-	 * @step. ^I request reset password for (.*)$
+	 * @step. ^Contact (.*) calls to conversation (.*)$
+	 * @param starterNameAlias
+	 * 		user who will start a call
+	 * @param destinationNameAlias
+	 * 		user who will receive a call
+	 * @throws Exception
+	 */
+	@When("^Contact (.*) calls to conversation (.*)$")
+	public void ContactCallsToConversation(String starterNameAlias, String destinationNameAlias) throws Exception {
+		commonSteps.UserCallsToConversation(starterNameAlias, destinationNameAlias);
+	}
+	
+	/**
+	 * End current call initiated by autocall tool
+	 * 
+	 * @step. ^Current call is ended$
+	 * 		
+	 * @throws Exception
+	 */
+	@When("^Current call is ended$")
+	public void EndCurrectCall() throws Exception {
+		commonSteps.StopCurrentCall();
+		Thread.sleep(1000);
+	}
+	
+	/**
+	 * Resets the password for the given email address
 	 * 
 	 * @param email
-	 * 			the email of the account of which you want to reset the password.
-	 *
+	 * 			the email associated to the account
 	 * @throws Exception
-	 * 
 	 */
 	@When("^I request reset password for (.*)$")
 	public void WhenIRequestResetPassword(String email) throws Exception {
