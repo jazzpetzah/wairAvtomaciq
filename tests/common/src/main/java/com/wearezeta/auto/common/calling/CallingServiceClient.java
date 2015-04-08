@@ -33,7 +33,7 @@ public class CallingServiceClient {
 		call.put("email", email);
 		call.put("password", password);
 		call.put("conversationId", conversationId);
-		call.put("wireBackend", backend);
+		call.put("backend", backend);
 		call.put("callBackend", callBackend);
 
 		return request("/api/call", "POST", call).getString("callId");
