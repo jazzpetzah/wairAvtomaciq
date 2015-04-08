@@ -168,16 +168,16 @@ public class LoginPage extends AndroidPage {
 			refreshUITree();
 			if (isVisible(pickerClearBtn)) {
 				pickerClearBtn.click();
-			} else {
+			} /*else {
 				if (!isVisible(yourUser)) {
 					navigateBack();
 				}
-			}
+			}*/
 			refreshUITree();
 		}
-		return DriverUtils.waitForElementWithTextByXPath(
+		return ( isVisible(yourUser) && DriverUtils.waitForElementWithTextByXPath(
 				AndroidLocators.ContactListPage.xpathContacts, contact,
-				this.getDriver());
+				this.getDriver()));
 	}
 
 	public Boolean isWelcomeButtonsExist() {

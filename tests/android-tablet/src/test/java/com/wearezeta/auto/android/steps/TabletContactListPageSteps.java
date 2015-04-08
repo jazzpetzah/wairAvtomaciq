@@ -3,6 +3,7 @@ package com.wearezeta.auto.android.steps;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.PagesCollection;
+import com.wearezeta.auto.android.pages.PeoplePickerPage;
 import com.wearezeta.auto.android.pages.TabletPagesCollection;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -70,5 +71,11 @@ public class TabletContactListPageSteps {
 		TabletPagesCollection.androidPage = TabletPagesCollection.contactListPage
 				.tapOnName(value);
 		PagesCollection.androidPage = TabletPagesCollection.androidPage;
+	}
+	
+	@When("^I swipe down on tablet contact list$")
+	public void ISwipeDownContactList() throws Exception {
+		PagesCollection.peoplePickerPage = (PeoplePickerPage) TabletPagesCollection.contactListPage
+				.swipeDown(1000);
 	}
 }

@@ -12,6 +12,7 @@ Feature: Self Profile
     And I press Gallery button
     And I select picture
     And I press Confirm button
+    And I wait for 120 seconds
     And I tap on personal info screen
     Then I see changed user picture
 

@@ -18,6 +18,8 @@ public final class TabletAndroidLocators {
 		
 		public static final String CLASS_NAME = TabletAndroidLocators.CLASS_NAME + "$TabletContactListPage";
 		
+		public static final String idRootLeftView = LOCATORS_PACKAGE + ":id/fl__root__left_view";
+		
 	}
 	
 	public static final class TabletLoginPage {
@@ -27,6 +29,8 @@ public final class TabletAndroidLocators {
 	}
 	
 	public static final class TabletDialogPage {
+		
+		public static final String idRootParticipantContainer = LOCATORS_PACKAGE + ":id/fl__root__participant_container";
 		
 		public static final String CLASS_NAME = TabletAndroidLocators.CLASS_NAME + "$TabletDialogPage";
 	

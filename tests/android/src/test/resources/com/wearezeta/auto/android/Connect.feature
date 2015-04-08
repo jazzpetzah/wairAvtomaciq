@@ -405,6 +405,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
+    And I wait for 120 seconds
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     And I swipe down contact list
