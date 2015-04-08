@@ -297,7 +297,7 @@ public class CommonIOSSteps {
 				+ path);
 	}
 
-	@When("^User (\\w+) change  name to (.*)$")
+	@When("^User (\\w+) change name to (.*)$")
 	public void IChangeUserName(String userNameAlias, String newName)
 			throws Exception {
 		commonSteps.IChangeUserName(userNameAlias, newName);
@@ -324,10 +324,11 @@ public class CommonIOSSteps {
 		commonSteps.IChangeUserName(userNameAlias, newName);
 	}
 
-	@When("^User (\\w+) change  accent color to (.*)$")
+	@When("^User (\\w+) change accent color to (.*)$")
 	public void IChangeAccentColor(String userNameAlias, String newColor)
 			throws Exception {
 		commonSteps.IChangeUserAccentColor(userNameAlias, newColor);
+		Thread.sleep(1000);
 	}
 
 	@Given("^There \\w+ (\\d+) shared user[s]* with name prefix (\\w+)$")

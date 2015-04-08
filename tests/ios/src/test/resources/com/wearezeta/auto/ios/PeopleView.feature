@@ -99,10 +99,10 @@ Feature: People View
   Scenario Outline: Verify correct group info page information
     Given There are 3 users where <Name> is me
     Given User <Contact1> change avatar picture to <Picture>
-    Given User <Contact1> change  name to AQAPICTURECONTACT
-    Given User <Contact2> change  name to AQAAVATAR TestContact
-    Given User <Contact2> change  accent color to <Color>
-    Given User <Contact1> change  accent color to <Color1>
+    Given User <Contact1> change name to AQAPICTURECONTACT
+    Given User <Contact2> change name to AQAAVATAR TestContact
+    Given User <Contact2> change accent color to <Color>
+    Given User <Contact1> change accent color to <Color1>
     Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -363,10 +363,10 @@ Feature: People View
   @torun @regression @id1462
   Scenario Outline: Verify silence the conversation
     Given There are 2 users where <Name> is me
+    Given User <Name> change accent color to <Color>
     Given <Contact> is connected to <Name>
-    Given User <Name> change  accent color to <Color>
-    Given User <Contact> change  accent color to <Color>
-    Given User <Contact> change  name to <NewName>
+    Given User <Contact> change accent color to <Color>
+    Given User <Contact> change name to <NewName>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -389,7 +389,7 @@ Feature: People View
     Given There are 2 users where <Name> is me
     Given User <Name> change accent color to <Color>
     Given <Contact> is connected to <Name>
-    Given User <Contact> change  name to <NewName>
+    Given User <Contact> change name to <NewName>
     Given <Name> silenced conversation with <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

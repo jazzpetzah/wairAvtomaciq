@@ -36,8 +36,8 @@ Feature: Conversation List
   #Scenario Outline: Verify silence the conversation
     #Given There are 2 users where <Name> is me
     #Given <Contact> is connected to <Name>
-    #Given User <Contact> change  name to <NewName>
-    #Given User <Name> change  accent color to <Color>
+    #Given User <Contact> change name to <NewName>
+    #Given User <Name> change accent color to <Color>
     #Given I Sign in using login <Login> and password <Password>
     #And I see Contact list with my name <Name>
    # When I swipe right on a <Contact>
@@ -71,8 +71,8 @@ Feature: Conversation List
   #Scenario Outline: Verify unsilence the conversation
     #Given There are 2 users where <Name> is me
     #Given <Contact> is connected to <Name>
-    #Given User <Contact> change  name to <NewName>
-    #Given User <Name> change  accent color to <Color>
+    #Given User <Contact> change name to <NewName>
+    #Given User <Name> change accent color to <Color>
     #Given <Name> silenced conversation with <Contact>
    # Given I Sign in using login <Login> and password <Password>
     #And I see Contact list with my name <Name>
@@ -89,8 +89,8 @@ Feature: Conversation List
   Scenario Outline: Verify messages are marked as read with disappearing unread dot
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
-    Given User <Contact> change  name to <NewName>
-    Given User <Name> change  accent color to <Color>
+    Given User <Contact> change name to <NewName>
+    Given User <Name> change accent color to <Color>
     Given I wait for 15 seconds
     Given Contact <Contact> send number <Number2> of message to user <Name>
     Given I Sign in using login <Login> and password <Password>
