@@ -399,7 +399,7 @@ public class ContactListPage extends IOSPage {
 		WebElement element = findCellInContactList(conversation);
 		silencedConversation = CommonUtils.getElementScreenshot(element,
 				this.getDriver(), CommonUtils.getDeviceName(this.getClass()));
-		File outputfile = new File("silenceTestIphone6.png");
+		File outputfile = new File("verifyUnsilenceTestIphone6.png");
 		ImageIO.write(silencedConversation, "png", outputfile);
 //		if (deviceType.equals("iPhone 6 Plus")) {
 //			referenceImage = ImageUtil.readImageFromFile(IOSPage

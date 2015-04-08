@@ -381,8 +381,8 @@ Feature: People View
     Then I see conversation <Contact> is silenced
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Color  | NewName |
-      | user1Email | user1Password | user1Name | user2Name | Violet | SILENCE |
+      | Login      | Password      | Name      | Contact   | Color        | NewName |
+      | user1Email | user1Password | user1Name | user2Name | BrightYellow | SILENCE |
       
   @staging @id1335
   Scenario Outline: Verify unsilence the conversation
@@ -403,8 +403,8 @@ Feature: People View
     And I see dialog page
     And I swipe right on Dialog page
     And I see Contact list with my name <Name>
-    #Then I see conversation <Contact> is unsilenced
+    Then I see conversation <Contact> is unsilenced
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Color  | NewName |
-      | user1Email | user1Password | user1Name | user2Name | Violet | SILENCE |
+      | Login      | Password      | Name      | Contact   | Color        | NewName |
+      | user1Email | user1Password | user1Name | user2Name | BrightYellow | SILENCE |
