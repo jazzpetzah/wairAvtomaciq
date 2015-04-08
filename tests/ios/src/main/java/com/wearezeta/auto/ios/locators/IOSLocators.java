@@ -308,6 +308,8 @@ public final class IOSLocators {
 
 	public static String xpathNumberPeopleText = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[contains(@name, 'people')]";
 	
+	public static final String addPeopleCountTextSubstring = "Add";
+	
 	public static final String peopleCountTextSubstring = " people";
 	
 	///////////////////////
@@ -491,6 +493,8 @@ public final class IOSLocators {
 	public final class StartedCallPage {
 		
 		public static final String xpathCallingMessageUser = "//UIAStaticText[contains(@name, 'CALLING') and contains(@name, '%s')]";
+		
+		public static final String xpathStartedCallMessageUser = "//UIAStaticText[@name='%s']";
 		
 		public static final String xpathCallingMessage = "//UIAStaticText[contains(@name, 'CALLING')]";
 		

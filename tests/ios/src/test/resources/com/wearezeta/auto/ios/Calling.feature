@@ -53,3 +53,19 @@ Feature: Calling
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+      
+  @staging @id2093
+  Scenario Outline: Verify acepting incoming call
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When Contact <Contact> calls to conversation <Name>
+    And I see incoming calling message for contact <Contact>
+    And I accept incoming call
+    Then I see mute call, end call and speakers buttons
+    And I see started call message for contact <Contact>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |

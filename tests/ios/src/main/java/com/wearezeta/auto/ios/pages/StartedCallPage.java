@@ -29,9 +29,14 @@ public class StartedCallPage extends CallPage {
 		return DriverUtils.isElementDisplayed(getDriver(), callingMessage);
 	}
 	
-	public boolean isCallingMessageVisible(String contact) {
+	public boolean isIncomingCallMessageVisible(String contact) {
 		return driver.findElementByXPath(
 				String.format(IOSLocators.StartedCallPage.xpathCallingMessageUser, contact)).isDisplayed();
+	}
+	
+	public boolean isStartedCallMessageVisible(String contact) {
+		return driver.findElementByXPath(
+				String.format(IOSLocators.StartedCallPage.xpathStartedCallMessageUser, contact)).isDisplayed();
 	}
 	
 	public StartedCallPage(ZetaIOSDriver driver, WebDriverWait wait)
