@@ -157,6 +157,8 @@ public final class WebAppLocators {
 		public static final String classPingMessage = "pinged";
 
 		public static final String xpathCloseButton = "//*[contains(@class,'cc-button')]//*[contains(@class,'icon-close')]";
+
+		public static final String xpathMissedCallAction = "//*[@data-uie-value='call']//div[@class='action']";
 	}
 
 	public static final class ConnectToPage {

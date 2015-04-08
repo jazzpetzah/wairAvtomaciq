@@ -1,5 +1,7 @@
 package com.wearezeta.auto.common.calling;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -56,8 +58,16 @@ public class CallingServiceClient {
 	}
 
 	public void stopCall(String callId) throws JSONException, Exception {
-		request("/api/call/" + callId + "/stop", "PUT", new JSONObject());
-		request("/api/waitingForInstances/" + callId + "/stop", "PUT", new JSONObject());
+		try {
+			request("/api/call/" + callId + "/stop", "PUT", new JSONObject());
+		} catch (FileNotFoundException e) {
+			log.error("Could not stop call with id " + callId + ": " + e.getMessage());
+		}
+		try {
+			request("/api/waitingForInstances/" + callId + "/stop", "PUT", new JSONObject());
+		} catch (FileNotFoundException e) {
+			log.error("Could not stop call with id " + callId + ": " + e.getMessage());
+		}
 	}
 
 	public String getCallStatus(String callId) throws JSONException, Exception {
@@ -68,40 +78,35 @@ public class CallingServiceClient {
 		return request("/api/waitingInstance/" + callId + "/status", "GET", new JSONObject()).getString("status");
 	}
 
-	private JSONObject request(String path, String requestMethod, JSONObject object) throws Exception {
+	private JSONObject request(String path, String requestMethod, JSONObject object) throws IOException {
 		log.info("Sending object: " + object.toString());
 		HttpURLConnection connection = null;
+		String urlString = "http://" + this.host + ":" + this.port + path;
+		log.info("To: " + urlString);
+		URL url = new URL(urlString);
+		connection = (HttpURLConnection) url.openConnection();
+		connection.setRequestMethod(requestMethod);
+		connection.setRequestProperty("Content-Type", "application/json");
+		connection.setConnectTimeout(5000);
+		connection.setReadTimeout(30000);
+		if (!requestMethod.equals("GET")) {
+			connection.setDoOutput(true);
+			OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
+			out.write(object.toString());
+			out.close();
+		}
+		Scanner s = null;
+		String response = null;
 		try {
-			String urlString = "http://" + this.host + ":" + this.port + path;
-			log.info("To: " + urlString);
-			URL url = new URL(urlString);
-			connection = (HttpURLConnection) url.openConnection();
-			connection.setRequestMethod(requestMethod);
-			connection.setRequestProperty("Content-Type", "application/json");
-			connection.setConnectTimeout(5000);
-			connection.setReadTimeout(30000);
-			if (!requestMethod.equals("GET")) {
-				connection.setDoOutput(true);
-				OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
-				out.write(object.toString());
-				out.close();
-			}
-			Scanner s = null;
-			String response = null;
-			try {
-				s = new Scanner(connection.getInputStream()).useDelimiter("\\A");
-				response = s.hasNext() ? s.next() : "";
-			} finally {
+			s = new Scanner(connection.getInputStream()).useDelimiter("\\A");
+			response = s.hasNext() ? s.next() : "";
+		} finally {
+			if (s != null) {
 				s.close();
 			}
-			log.info("Response: " + response);
-			return new JSONObject(response);
-		} catch (Exception e) {
-			if (connection != null) {
-				log.error(connection.getResponseMessage());
-			}
-			throw new Exception("\nError while using calling service REST Service", e);
 		}
+		log.info("Response: " + response);
+		return new JSONObject(response);
 	}
 
 }

@@ -205,4 +205,10 @@ public class ConversationPage extends WebPage {
 				.xpath(WebAppLocators.ConversationPage.xpathCloseButton);
 		driver.findElement(locator).click();
 	}
+
+	public String getMissedCallMessage() {
+		final By locator = By
+				.xpath(WebAppLocators.ConversationPage.xpathMissedCallAction);
+		return driver.findElement(locator).getText();
+	}
 }
