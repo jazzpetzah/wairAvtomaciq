@@ -1,8 +1,11 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
+
+import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -29,6 +32,7 @@ public class ContactListPage extends IOSPage {
 
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.90;
 	private final double MIN_ACCEPTABLE_IMAGE_UNREADDOT_VALUE = 0.99;
+	private final double MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE =0.80;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathNameContactList)
 	private List<WebElement> contactListNames;
@@ -447,6 +451,28 @@ public class ContactListPage extends IOSPage {
 			return false;
 		}
 
+		return true;
+	}
+	
+	public boolean missedCallIndicatorIsVisible(String conversation)
+			throws IOException {
+		BufferedImage missedCallIndicator = null;
+		BufferedImage referenceImage = null;
+		double score = 0;
+		WebElement contact = findCellInContactList(conversation);
+		missedCallIndicator = getScreenshotByCoordinates(
+				contact.getLocation().x, contact.getLocation().y + contactListContainer.getLocation().y/2,
+				contact.getSize().width/4, contact.getSize().height*2);
+//		File outputfile = new File("missedCallIndicator.png");
+//		ImageIO.write(missedCallIndicator, "png", outputfile);
+		referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()
+				+ "missedCallIndicator.png");
+
+		score = ImageUtil.getOverlapScore(referenceImage, missedCallIndicator,
+				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+		if (score <= MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE) {
+			return false;
+		}
 		return true;
 	}
 
