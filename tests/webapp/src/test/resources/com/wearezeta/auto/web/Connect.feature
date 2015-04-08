@@ -20,8 +20,8 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
-    When I open People Picker from Contact List
     And I wait up to 15 seconds until <Contact> exists in backend search results
+    When I open People Picker from Contact List
     And I type <Contact> in search field of People Picker
     And I see user <Contact> found in People Picker
     And I click on not connected user <Contact> found in People Picker
