@@ -69,3 +69,24 @@ Feature: Calling
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+      
+  @torun @staging @id1228 
+  Scenario Outline: Verify missed call indicator appearance
+  	Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact1>
+    Given User <Name> change  accent color to <Color>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When Contact <Contact> calls to conversation <Name>
+    And I wait for 5 seconds
+    And Current call is ended
+    Then I see missed call indicator in list for contact <Contact>
+    When Contact <Contact> send number <Number> of message to user <Name>
+    #Then I see missed call indicator in list for contact <Contact>
+    When Contact <Contact1> send number <Number> of message to user <Name>
+    #Then I see missed call indicator in list for contact <Contact>
+    
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Contact1  | Number | Color           |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | 2      | StrongLimeGreen |
+  
