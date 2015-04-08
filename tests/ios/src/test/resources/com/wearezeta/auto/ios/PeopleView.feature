@@ -363,8 +363,9 @@ Feature: People View
   @torun @regression @id1462
   Scenario Outline: Verify silence the conversation
     Given There are 2 users where <Name> is me
-    Given User <Name> change  accent color to <Color>
     Given <Contact> is connected to <Name>
+    Given User <Name> change  accent color to <Color>
+    Given User <Contact> change  accent color to <Color>
     Given User <Contact> change  name to <NewName>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
