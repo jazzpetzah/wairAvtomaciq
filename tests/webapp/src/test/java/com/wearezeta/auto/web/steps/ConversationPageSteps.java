@@ -289,7 +289,7 @@ public class ConversationPageSteps {
 	 * @param message
 	 * @throws Exception
 	 */
-	@Then("^I see text message (.)")
+	@Then("^I see text message (.*)")
 	public void ISeeTextMessage(String message) throws Exception {
 		Assert.assertTrue(PagesCollection.conversationPage
 				.isTextMessageVisible(message));
