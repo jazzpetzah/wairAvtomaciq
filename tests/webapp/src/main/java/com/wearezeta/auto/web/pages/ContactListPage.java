@@ -118,18 +118,6 @@ public class ContactListPage extends WebPage {
 		return fixDefaultGroupConvoName(conversationName, includeArchived, true);
 	}
 
-	public PeoplePickerPage isHiddenByPeoplePicker() throws Exception {
-		if (DriverUtils
-				.waitUntilElementDissapear(
-						driver,
-						By.className(WebAppLocators.ContactListPage.classNamePeoplePickerVisible),
-						5)) {
-			return null;
-		} else {
-			return new PeoplePickerPage(this.getDriver(), this.getWait());
-		}
-	}
-
 	public boolean waitForContactListVisible() throws Exception {
 		return DriverUtils
 				.waitUntilElementAppears(
