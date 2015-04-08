@@ -285,12 +285,12 @@ public class ConversationPageSteps {
 	/**
 	 * Verify a text message is visible in conversation
 	 * 
-	 * @step. ^I see (.*) message$
+	 * @step. ^I see text message (.*)
 	 * @param message
 	 * @throws Exception
 	 */
-	@Then("^I see (.*) message$")
-	public void ISeeMessage(String message) throws Exception {
+	@Then("^I see text message (.*)")
+	public void ISeeTextMessage(String message) throws Exception {
 		Assert.assertTrue(PagesCollection.conversationPage
 				.isTextMessageVisible(message));
 	}
@@ -298,12 +298,12 @@ public class ConversationPageSteps {
 	/**
 	 * Verify a text message is not visible in conversation
 	 * 
-	 * @step. ^I do not see (.*) message$
+	 * @step. ^I do not see text message (.*)
 	 * @param message
 	 * @throws Exception
 	 */
-	@Then("^I do not see (.*) message$")
-	public void IDontSeeMessage(String message) throws Exception {
+	@Then("^I do not see text message (.*)")
+	public void IDontSeeTextMessage(String message) throws Exception {
 		Assert.assertFalse(PagesCollection.conversationPage
 				.isTextMessageVisible(message));
 	}

@@ -87,8 +87,6 @@ public final class WebAppLocators {
 						xpathParentContactListItem, name);
 
 		public static final String cssOpenPeoplePickerButton = "*[data-uie-name='go-search']";
-
-		public static final String classNamePeoplePickerVisible = "people-picker-is-visible";
 	}
 
 	public static final class SettingsPage {
@@ -188,6 +186,8 @@ public final class WebAppLocators {
 
 		public static final String xpathCloseSearchButton = xpathRoot
 				+ "//div[contains(@class,'search-close')]";
+
+		public static final String classNamePeoplePickerVisible = "people-picker-is-visible";
 	}
 
 	public static final class RegistrationPage {
