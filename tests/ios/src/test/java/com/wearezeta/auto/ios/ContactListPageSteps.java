@@ -481,5 +481,22 @@ public class ContactListPageSteps {
 		conversation = usrMgr.replaceAliasesOccurences(conversation, FindBy.NAME_ALIAS);
 		PagesCollection.contactListPage.longSwipeRightOnContact(1000, conversation);
 	}
+	
+	/**
+	 * Verify that missed call indicator is seen in conversation list
+	 * 
+	 * @step. ^I see missed call indicator in list for contact (.*)$
+	 * @param contact
+	 *            the missed call is from
+	 * @throws NoSuchUserException
+	 * @throws IOException 
+	 */
+	@Then("^I see missed call indicator in list for contact (.*)$")
+	public void ISeeMissedCallIndicatorInListForContact(String contact)
+			throws NoSuchUserException, IOException {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		boolean missedCallSeen = PagesCollection.contactListPage.missedCallIndicatorIsVisible(contact);
+		Assert.assertTrue("No missed call indicator visible.", missedCallSeen);
+	}
 
 }
