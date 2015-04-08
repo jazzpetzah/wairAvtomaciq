@@ -1,7 +1,5 @@
 package com.wearezeta.auto.web.steps;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.logging.Level;
 
 import org.apache.commons.lang3.NotImplementedException;
@@ -26,7 +24,6 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.PerformanceCommon;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
-import com.wearezeta.auto.common.calling.CallingUtil;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -516,10 +513,5 @@ public class CommonWebAppSteps {
 		}
 
 		commonSteps.getUserManager().resetUsers();
-	}
-
-	@After("@blender")
-	public void afterScenario() throws IOException, GeneralSecurityException {
-		CallingUtil.deleteAllBlenderInstances();
 	}
 }

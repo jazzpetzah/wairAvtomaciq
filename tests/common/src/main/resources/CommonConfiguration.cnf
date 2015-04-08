@@ -8,3 +8,5 @@ backendType=staging
 jenkinsSuLogin=jenkins
 jenkinsSuPassword=123456
 jenkinsProjectDir=/Project/
+defaultCallingServiceHost=${defaultCallingServiceHost}
+defaultCallingServicePort=${defaultCallingServicePort}

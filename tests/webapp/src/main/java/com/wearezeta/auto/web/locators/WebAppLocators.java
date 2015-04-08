@@ -159,6 +159,8 @@ public final class WebAppLocators {
 		public static final Function<String, String> textMessageByText = text -> String
 				.format("//*[@data-uie-name='item-message']//div[@class='text' and text()='%s']",
 						text);
+
+		public static final String xpathMissedCallAction = "//*[@data-uie-value='call']//div[@class='action']";
 	}
 
 	public static final class ConnectToPage {
