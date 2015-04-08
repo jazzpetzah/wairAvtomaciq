@@ -479,7 +479,7 @@ public final class IOSLocators {
 	////////////////////////////
 	public static final String nameUnblockButton = "UNBLOCK";
 	
-	public static final String xpathContactListContainer = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]";
+	public static final String xpathContactListContainer = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]";
 	
 	////////////////////////////
 	//Reset Password from Sign In
