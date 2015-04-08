@@ -15,7 +15,13 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class CallingServiceClient {
 
-	private static final Logger log = ZetaLogger.getLog(CallingServiceClient.class.getSimpleName());
+	private static final int INSTANCE_STATUS_CHANGE_PULL_FEQUENZY = 2000;
+	private static final int INSTANCE_STATUS_CHANGE_TIMEOUT = 15000;
+	private static final int HTTP_CONNECT_TIMEOUT = 5000;
+	private static final int HTTP_READ_TIMEOUT = 30000;
+
+	private static final Logger log = ZetaLogger
+			.getLog(CallingServiceClient.class.getSimpleName());
 
 	public class WireBackend {
 		public static final String STAGING = "staging";
@@ -30,7 +36,9 @@ public class CallingServiceClient {
 		this.port = port;
 	}
 
-	public String makeCall(String email, String password, String conversationId, String backend, String callBackend) throws JSONException, Exception {
+	public String makeCall(String email, String password,
+			String conversationId, String backend, String callBackend)
+			throws Exception {
 		JSONObject call = new JSONObject();
 		call.put("email", email);
 		call.put("password", password);
@@ -41,44 +49,64 @@ public class CallingServiceClient {
 		return request("/api/call", "POST", call).getString("callId");
 	}
 
-	public String waitToAcceptCall(String email, String password, String backend, String callBackend) throws JSONException, Exception {
+	public String waitToAcceptCall(String email, String password,
+			String backend, String callBackend) throws Exception {
 		JSONObject waitingInstance = new JSONObject();
 		waitingInstance.put("email", email);
 		waitingInstance.put("password", password);
 		waitingInstance.put("backend", backend);
 		waitingInstance.put("callBackend", callBackend);
 
-		String callId = request("/api/waitingInstance", "POST", waitingInstance).getString("callId");
+		String callId = request("/api/waitingInstance", "POST", waitingInstance)
+				.getString("callId");
 
-		while (!getWaitingInstanceStatus(callId).equals("waiting")) {
-			Thread.sleep(2000);
+		long timeout = System.currentTimeMillis()
+				+ INSTANCE_STATUS_CHANGE_TIMEOUT;
+
+		while (!getWaitingInstanceStatus(callId).equals("waiting")
+				&& System.currentTimeMillis() <= timeout) {
+			Thread.sleep(INSTANCE_STATUS_CHANGE_PULL_FEQUENZY);
 		}
 
 		return callId;
 	}
 
-	public void stopCall(String callId) throws JSONException, Exception {
+	public void stopCall(String callId) throws JSONException, IOException {
 		try {
-			request("/api/call/" + callId + "/stop", "PUT", new JSONObject());
+			stopOngoingCall(callId);
 		} catch (FileNotFoundException e) {
-			log.error("Could not stop call with id " + callId + ": " + e.getMessage());
+			log.error("Could not stop call with id " + callId + ": "
+					+ e.getMessage());
 		}
 		try {
-			request("/api/waitingForInstances/" + callId + "/stop", "PUT", new JSONObject());
+			stopWaitingInstance(callId);
 		} catch (FileNotFoundException e) {
-			log.error("Could not stop call with id " + callId + ": " + e.getMessage());
+			log.error("Could not stop call with id " + callId + ": "
+					+ e.getMessage());
 		}
 	}
 
-	public String getCallStatus(String callId) throws JSONException, Exception {
-		return request("/api/call/" + callId + "/status", "GET", new JSONObject()).getString("status");
+	public void stopOngoingCall(String callId) throws IOException {
+		request("/api/call/" + callId + "/stop", "PUT", new JSONObject());
 	}
 
-	public String getWaitingInstanceStatus(String callId) throws JSONException, Exception {
-		return request("/api/waitingInstance/" + callId + "/status", "GET", new JSONObject()).getString("status");
+	public void stopWaitingInstance(String callId) throws IOException {
+		request("/api/waitingForInstances/" + callId + "/stop", "PUT",
+				new JSONObject());
 	}
 
-	private JSONObject request(String path, String requestMethod, JSONObject object) throws IOException {
+	public String getCallStatus(String callId) throws Exception {
+		return request("/api/call/" + callId + "/status", "GET",
+				new JSONObject()).getString("status");
+	}
+
+	public String getWaitingInstanceStatus(String callId) throws Exception {
+		return request("/api/waitingInstance/" + callId + "/status", "GET",
+				new JSONObject()).getString("status");
+	}
+
+	private JSONObject request(String path, String requestMethod,
+			JSONObject object) throws IOException {
 		log.info("Sending object: " + object.toString());
 		HttpURLConnection connection = null;
 		String urlString = "http://" + this.host + ":" + this.port + path;
@@ -87,13 +115,19 @@ public class CallingServiceClient {
 		connection = (HttpURLConnection) url.openConnection();
 		connection.setRequestMethod(requestMethod);
 		connection.setRequestProperty("Content-Type", "application/json");
-		connection.setConnectTimeout(5000);
-		connection.setReadTimeout(30000);
+		connection.setConnectTimeout(HTTP_CONNECT_TIMEOUT);
+		connection.setReadTimeout(HTTP_READ_TIMEOUT);
 		if (!requestMethod.equals("GET")) {
 			connection.setDoOutput(true);
-			OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
-			out.write(object.toString());
-			out.close();
+			OutputStreamWriter out = null;
+			try {
+				out = new OutputStreamWriter(connection.getOutputStream());
+				out.write(object.toString());
+			} finally {
+				if (out != null) {
+					out.close();
+				}
+			}
 		}
 		Scanner s = null;
 		String response = null;
