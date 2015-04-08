@@ -1,5 +1,35 @@
 Feature: Search
 
+  @staging @id2147 
+  Scenario Outline: Verify search by email
+    Given There are 2 users where <Name> is me
+    Given I Sign in using login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user email <ContactEmail>
+    Then I see user <ContactName> found on People picker page
+
+	Examples:
+	 | Login      | Password      | Name      | ContactEmail  | ContactName |
+     | user1Email | user1Password | user1Name | user2Email | user2Name |
+
+  @staging @id2148 
+  Scenario Outline: Verify search by name
+    Given There are 2 users where <Name> is me
+    Given I Sign in using login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact>
+    Then I see user <Contact> found on People picker page
+
+	Examples:
+	 | Login      | Password      | Name      | Contact  |
+     | user1Email | user1Password | user1Name | user2Name |
+
   @regression @id299 @noAcceptAlert
   Scenario Outline: Verify denying address book uploading
     Given There is 1 user where <Name> is me

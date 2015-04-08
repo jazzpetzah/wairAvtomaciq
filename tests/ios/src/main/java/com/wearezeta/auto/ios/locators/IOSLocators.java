@@ -308,6 +308,8 @@ public final class IOSLocators {
 
 	public static String xpathNumberPeopleText = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[contains(@name, 'people')]";
 	
+	public static final String addPeopleCountTextSubstring = "Add";
+	
 	public static final String peopleCountTextSubstring = " people";
 	
 	///////////////////////
@@ -492,6 +494,8 @@ public final class IOSLocators {
 		
 		public static final String xpathCallingMessageUser = "//UIAStaticText[contains(@name, 'CALLING') and contains(@name, '%s')]";
 		
+		public static final String xpathStartedCallMessageUser = "//UIAStaticText[@name='%s']";
+		
 		public static final String xpathCallingMessage = "//UIAStaticText[contains(@name, 'CALLING')]";
 		
 		public static final String xpathEndCallButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[3]";
@@ -499,6 +503,17 @@ public final class IOSLocators {
 		public static final String xpathSpeakersButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[4]";
 		
 		public static final String xpathMuteCallButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[5]";
+	}
+	
+	public final class IncomingCallPage {
+		
+		public static final String xpathCallingMessageUser = "//UIAStaticText[contains(@name, 'IS CALLING') and contains(@name, '%s')]";
+		
+		public static final String xpathAcceptCallButton = "//UIAApplication[1]/UIAWindow[@name='ZClientNotificationWindow']/UIAButton[1]";
+		
+		public static final String xpathEndCallButton = "//UIAApplication[1]/UIAWindow[@name='ZClientNotificationWindow']/UIAButton[2]";
+		
+		public static final String xpathCallingMessage = "//UIAStaticText[contains(@name, 'IS CALLING')]";
 	}
 	
 	public final class DialogPage {

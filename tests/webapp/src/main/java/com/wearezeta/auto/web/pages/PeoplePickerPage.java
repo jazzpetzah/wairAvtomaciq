@@ -111,4 +111,13 @@ public class PeoplePickerPage extends WebPage {
 		}
 		searchInput.sendKeys(name);
 	}
+	
+	public boolean isVisibleAfterTimeout(int secondsTimeout)
+			throws Exception {
+		Thread.sleep(secondsTimeout * 1000);
+		return DriverUtils
+				.isElementDisplayed(
+						driver,
+						By.className(WebAppLocators.PeoplePickerPage.classNamePeoplePickerVisible));
+	}
 }

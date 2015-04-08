@@ -8,6 +8,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.PagesCollection;
+import com.wearezeta.auto.web.pages.PeoplePickerPage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -20,6 +21,20 @@ public class ContactListPageSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
+	private static final int PEOPLE_PICKER_VISIBILITY_TIMEOUT_SECONDS = 3;
+	
+	private void closePeoplePickerIfVisible() throws Exception {
+		if (PagesCollection.peoplePickerPage == null) {
+			PagesCollection.peoplePickerPage = new PeoplePickerPage(
+					PagesCollection.contactListPage.getDriver(),
+					PagesCollection.contactListPage.getWait());
+		}
+		if (PagesCollection.peoplePickerPage
+				.isVisibleAfterTimeout(PEOPLE_PICKER_VISIBILITY_TIMEOUT_SECONDS)) {
+			PagesCollection.peoplePickerPage.closeSearch();
+		}
+	}
+
 	/**
 	 * Checks that we can see signed in user on top of Contact List
 	 * 
@@ -30,11 +45,7 @@ public class ContactListPageSteps {
 	 */
 	@Given("^I see my name on top of Contact list$")
 	public void ISeeMyNameOnTopOfContactList() throws Exception {
-		PagesCollection.peoplePickerPage = PagesCollection.contactListPage
-				.isHiddenByPeoplePicker();
-		if (PagesCollection.peoplePickerPage != null) {
-			PagesCollection.peoplePickerPage.closeSearch();
-		}
+		closePeoplePickerIfVisible();
 		Assert.assertTrue("No contact list loaded.",
 				PagesCollection.contactListPage.waitForContactListVisible());
 		Assert.assertTrue(PagesCollection.contactListPage
@@ -55,11 +66,7 @@ public class ContactListPageSteps {
 	@Given("I see Contact list with name (.*)")
 	public void GivenISeeContactListWithName(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		PagesCollection.peoplePickerPage = PagesCollection.contactListPage
-				.isHiddenByPeoplePicker();
-		if (PagesCollection.peoplePickerPage != null) {
-			PagesCollection.peoplePickerPage.closeSearch();
-		}
+		closePeoplePickerIfVisible();
 		log.debug("Looking for contact with name " + name);
 		Assert.assertTrue("No contact list loaded.",
 				PagesCollection.contactListPage.waitForContactListVisible());
