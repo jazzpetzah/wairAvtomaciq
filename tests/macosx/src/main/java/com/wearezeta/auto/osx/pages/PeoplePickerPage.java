@@ -33,6 +33,9 @@ public class PeoplePickerPage extends MainWirePage {
 	@FindBy(how = How.NAME, using = OSXLocators.namePeoplePickerOpenConversationButton)
 	private WebElement openConversationButton;
 
+	@FindBy(how = How.NAME, using = OSXLocators.namePeoplePickerCreateConversationButton)
+	private WebElement createConversationButton;
+
 	private WebElement searchField;
 
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathPeoplePickerSearchResultTable)
@@ -140,8 +143,7 @@ public class PeoplePickerPage extends MainWirePage {
 	public void scrollToUserInSearchResults(String user) {
 		NSPoint mainPosition = NSPoint.fromString(window
 				.getAttribute("AXPosition"));
-		NSPoint mainSize = NSPoint
-				.fromString(window.getAttribute("AXSize"));
+		NSPoint mainSize = NSPoint.fromString(window.getAttribute("AXSize"));
 
 		NSPoint latestPoint = new NSPoint(mainPosition.x() + mainSize.x(),
 				mainPosition.y() + mainSize.y());
@@ -233,7 +235,9 @@ public class PeoplePickerPage extends MainWirePage {
 	}
 
 	public ConversationPage addSelectedUsersToConversation() throws Exception {
-		if (isOpenConversationButtonVisible())
+		if (isCreateConversationButtonVisible()) {
+			createConversationButton.click();
+		} else if (isOpenConversationButtonVisible())
 			openConversationButton.click();
 		else
 			addToConversationButton.click();
@@ -246,6 +250,17 @@ public class PeoplePickerPage extends MainWirePage {
 						driver,
 						By.xpath(OSXLocators.xpathPeoplePickerTopContactsSectionHeader),
 						3);
+	}
+
+	public boolean isCreateConversationButtonVisible() throws Exception {
+		if (DriverUtils.waitUntilElementAppears(driver,
+				By.name(OSXLocators.namePeoplePickerCreateConversationButton),
+				5)) {
+			return NSPoint.fromString(
+					createConversationButton.getAttribute("AXSize")).y() > 0;
+		} else {
+			return false;
+		}
 	}
 
 	public boolean isOpenConversationButtonVisible() throws Exception {
