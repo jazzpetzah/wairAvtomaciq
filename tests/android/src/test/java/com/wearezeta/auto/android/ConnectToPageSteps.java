@@ -12,6 +12,12 @@ import cucumber.api.java.en.When;
 public class ConnectToPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
+	/**
+	 * Verifies that the current screen shows the connect to dialog with a user you have not yet connected with
+	 * @param contact
+	 * 		The name of the user with whom you are not yet connected.
+	 * @throws Throwable
+	 */
 	@When("^I see connect to (.*) dialog$")
 	public void WhenISeeConnectToUserDialog(String contact) throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
@@ -26,18 +32,30 @@ public class ConnectToPageSteps {
 				PagesCollection.connectToPage.getConnectToHeader());
 	}
 
+	/**
+	 * Verifies that the connect and ignore buttons are visible when viewing the dialog of a user who has sent you a connection request.
+	 * @throws Exception
+	 */
 	@Then("^I see Accept and Ignore buttons$")
 	public void ISeeConnectAndIgnoreButtons() throws Exception {
 		Assert.assertTrue(PagesCollection.connectToPage
 				.isIgnoreConnectButtonVisible());
 	}
 
+	/**
+	 * Presses the accept connection request button from within the dialog of a user who has sent you a connection request.
+	 * @throws Exception
+	 */
 	@When("^I Connect with contact by pressing button$")
 	public void WhenIConnectWithContactByPressionButton() throws Exception {
 		PagesCollection.dialogPage = PagesCollection.connectToPage
 				.pressAcceptConnectButton();
 	}
 
+	/**
+	 * Presses the ignore connection request button from within the dialog of a user who has sent you a connection request.
+	 * @throws Exception
+	 */
 	@When("^I press Ignore connect button$")
 	public void WhenIPressIgnoreConnectButton() throws Exception {
 		if (PagesCollection.connectToPage == null) {
@@ -47,6 +65,10 @@ public class ConnectToPageSteps {
 				.pressIgnoreButton();
 	}
 
+	/**
+	 * Navigates back from the 
+	 * @throws Exception
+	 */
 	@When("^I navigate back from connect page$")
 	public void WhenINavigateBackFromDialogPage() throws Exception {
 		PagesCollection.contactListPage = PagesCollection.connectToPage
