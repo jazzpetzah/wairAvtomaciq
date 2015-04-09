@@ -23,11 +23,6 @@ public class CallingServiceClient {
 	private static final Logger log = ZetaLogger
 			.getLog(CallingServiceClient.class.getSimpleName());
 
-	public class WireBackend {
-		public static final String STAGING = "staging";
-		public static final String PRODUCTION = "production";
-	}
-
 	private String host;
 	private String port;
 
