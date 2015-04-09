@@ -68,7 +68,7 @@ public class CallingServiceClient {
 		while (System.currentTimeMillis() <= timeout) {
 			try {
 				status = getWaitingInstanceStatus(callId);
-				if (status.equals("waiting")) {
+				if (status.equals(CallingServiceStatus.Waiting)) {
 					return callId;
 				}
 			} catch (java.net.SocketTimeoutException e) {
