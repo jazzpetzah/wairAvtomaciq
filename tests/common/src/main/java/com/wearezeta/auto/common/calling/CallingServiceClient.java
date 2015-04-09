@@ -63,8 +63,16 @@ public class CallingServiceClient {
 		long timeout = System.currentTimeMillis()
 				+ INSTANCE_STATUS_CHANGE_TIMEOUT;
 
-		while (!getWaitingInstanceStatus(callId).equals("waiting")
-				&& System.currentTimeMillis() <= timeout) {
+		boolean waiting = false;
+
+		while (!waiting && System.currentTimeMillis() <= timeout) {
+			try {
+				if (getWaitingInstanceStatus(callId).equals("waiting")) {
+					waiting = true;
+				}
+			} catch (java.net.SocketTimeoutException e) {
+				log.warn("Network problem occured:" + e.getMessage());
+			}
 			Thread.sleep(INSTANCE_STATUS_CHANGE_PULL_FEQUENZY);
 		}
 
