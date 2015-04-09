@@ -15,6 +15,8 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class CallingServiceClient {
 
+	private static final String URL_PROTOCOL = "http://";
+
 	// all timeout constants are in milliseconds
 	private static final int INSTANCE_STATUS_CHANGE_PULL_FEQUENZY = 2000;
 	private static final int INSTANCE_STATUS_CHANGE_TIMEOUT = 60000;
@@ -120,7 +122,7 @@ public class CallingServiceClient {
 			JSONObject object) throws IOException {
 		log.info("Sending object: " + object.toString());
 		HttpURLConnection connection = null;
-		String urlString = "http://" + this.host + ":" + this.port + path;
+		String urlString = URL_PROTOCOL + this.host + ":" + this.port + path;
 		log.info("To: " + urlString);
 		URL url = new URL(urlString);
 		connection = (HttpURLConnection) url.openConnection();
