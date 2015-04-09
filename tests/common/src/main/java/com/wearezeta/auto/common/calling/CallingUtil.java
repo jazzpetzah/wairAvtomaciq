@@ -24,7 +24,8 @@ public class CallingUtil {
 		CallingServiceClient csc = new CallingServiceClient(
 				getCallingServiceHost(), getCallingServicePort());
 		currentCallId = csc.makeCall(email, password, conversationId,
-				CommonUtils.getBackendType(CallingUtil.class), "autocall");
+				CommonUtils.getBackendType(CallingUtil.class),
+				CallingServiceBackend.Autocall);
 	}
 
 	public static void stopCall() throws Exception {
@@ -39,7 +40,8 @@ public class CallingUtil {
 		CallingServiceClient csc = new CallingServiceClient(
 				getCallingServiceHost(), getCallingServicePort());
 		csc.waitToAcceptCall(email, password,
-				CommonUtils.getBackendType(CallingUtil.class), "webdriver");
+				CommonUtils.getBackendType(CallingUtil.class),
+				CallingServiceBackend.Webdriver);
 	}
 
 	private static String getCallingServiceHost() throws Exception {

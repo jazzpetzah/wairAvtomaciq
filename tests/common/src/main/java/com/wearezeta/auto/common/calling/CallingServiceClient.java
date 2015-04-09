@@ -15,6 +15,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class CallingServiceClient {
 
+	// all timeout constants are in milliseconds
 	private static final int INSTANCE_STATUS_CHANGE_PULL_FEQUENZY = 2000;
 	private static final int INSTANCE_STATUS_CHANGE_TIMEOUT = 60000;
 	private static final int HTTP_CONNECT_TIMEOUT = 5000;
@@ -32,25 +33,25 @@ public class CallingServiceClient {
 	}
 
 	public String makeCall(String email, String password,
-			String conversationId, String backend, String callBackend)
-			throws Exception {
+			String conversationId, String backend,
+			CallingServiceBackend callBackend) throws Exception {
 		JSONObject call = new JSONObject();
 		call.put("email", email);
 		call.put("password", password);
 		call.put("conversationId", conversationId);
 		call.put("backend", backend);
-		call.put("callBackend", callBackend);
+		call.put("callBackend", callBackend.getName());
 
 		return request("/api/call", "POST", call).getString("callId");
 	}
 
 	public String waitToAcceptCall(String email, String password,
-			String backend, String callBackend) throws Exception {
+			String backend, CallingServiceBackend callBackend) throws Exception {
 		JSONObject waitingInstance = new JSONObject();
 		waitingInstance.put("email", email);
 		waitingInstance.put("password", password);
 		waitingInstance.put("backend", backend);
-		waitingInstance.put("callBackend", callBackend);
+		waitingInstance.put("callBackend", callBackend.getName());
 
 		String callId = request("/api/waitingInstance", "POST", waitingInstance)
 				.getString("callId");
