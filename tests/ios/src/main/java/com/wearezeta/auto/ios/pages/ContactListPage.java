@@ -1,11 +1,8 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
-
-import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
