@@ -495,8 +495,29 @@ public class ContactListPageSteps {
 	public void ISeeMissedCallIndicatorInListForContact(String contact)
 			throws NoSuchUserException, IOException {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		boolean missedCallSeen = PagesCollection.contactListPage.missedCallIndicatorIsVisible(contact);
+		boolean missedCallSeen = PagesCollection.contactListPage.missedCallIndicatorIsVisible(true,contact);
 		Assert.assertTrue("No missed call indicator visible.", missedCallSeen);
+	}
+	
+	/**
+	 * Verify that missed call indicator got moved down and is still seen in
+	 * conversation list
+	 * 
+	 * @step. ^I see missed call indicator got moved down in list for contact
+	 *        (.*)$
+	 * @param contact
+	 *            the missed call is from
+	 * @throws NoSuchUserException
+	 * @throws IOException
+	 */
+	@Then("^I see missed call indicator got moved down in list for contact (.*)$")
+	public void ISeeMissedCallIndicatorGotMovedDownInListForContact(
+			String contact) throws NoSuchUserException, IOException {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		boolean missedCallSeen = PagesCollection.contactListPage
+				.missedCallIndicatorIsVisible(false, contact);
+		Assert.assertTrue("No missed call indicator visible.", missedCallSeen);
+
 	}
 
 }

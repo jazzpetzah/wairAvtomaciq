@@ -82,9 +82,9 @@ Feature: Calling
     And Current call is ended
     Then I see missed call indicator in list for contact <Contact>
     When Contact <Contact> send number <Number> of message to user <Name>
-    #Then I see missed call indicator in list for contact <Contact>
+    Then I see missed call indicator in list for contact <Contact>
     When Contact <Contact1> send number <Number> of message to user <Name>
-    #Then I see missed call indicator in list for contact <Contact>
+    Then I see missed call indicator got moved down in list for contact <Contact>
     
     Examples: 
       | Login      | Password      | Name      | Contact   | Contact1  | Number | Color           |

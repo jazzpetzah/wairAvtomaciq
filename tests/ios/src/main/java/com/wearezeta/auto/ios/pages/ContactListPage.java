@@ -454,24 +454,40 @@ public class ContactListPage extends IOSPage {
 		return true;
 	}
 	
-	public boolean missedCallIndicatorIsVisible(String conversation)
-			throws IOException {
+	public boolean missedCallIndicatorIsVisible(boolean isFirstInList,
+			String conversation) throws IOException {
 		BufferedImage missedCallIndicator = null;
 		BufferedImage referenceImage = null;
 		double score = 0;
 		WebElement contact = findCellInContactList(conversation);
-		missedCallIndicator = getScreenshotByCoordinates(
-				contact.getLocation().x, contact.getLocation().y + contactListContainer.getLocation().y/2,
-				contact.getSize().width/4, contact.getSize().height*2);
-//		File outputfile = new File("missedCallIndicator.png");
-//		ImageIO.write(missedCallIndicator, "png", outputfile);
-		referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()
-				+ "missedCallIndicator.png");
+		if (isFirstInList) {
+			missedCallIndicator = getScreenshotByCoordinates(
+					contact.getLocation().x, contact.getLocation().y
+							+ contactListContainer.getLocation().y / 2,
+					contact.getSize().width / 4, contact.getSize().height * 2);
+			referenceImage = ImageUtil.readImageFromFile(IOSPage
+					.getImagesPath() + "missedCallIndicator.png");
 
-		score = ImageUtil.getOverlapScore(referenceImage, missedCallIndicator,
-				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-		if (score <= MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE) {
-			return false;
+			score = ImageUtil.getOverlapScore(referenceImage,
+					missedCallIndicator,
+					ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+			if (score <= MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE) {
+				return false;
+			}
+		} else {
+			missedCallIndicator = getScreenshotByCoordinates(
+					contact.getLocation().x, contact.getLocation().y + contactListContainer.getLocation().y*2,
+					contact.getSize().width / 3, contact.getSize().height);
+			referenceImage = ImageUtil.readImageFromFile(IOSPage
+					.getImagesPath() + "missedCallIndicator2.png");
+
+			score = ImageUtil.getOverlapScore(referenceImage,
+					missedCallIndicator,
+					ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+			if (score <= MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE) {
+				return false;
+			}
+			
 		}
 		return true;
 	}
