@@ -11,12 +11,4 @@ public class CallingServiceException extends Exception {
 	public CallingServiceException(String message) {
 		super(message);
 	}
-
-	public CallingServiceException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	public CallingServiceException(Throwable cause) {
-		super(cause);
-	}
 }
