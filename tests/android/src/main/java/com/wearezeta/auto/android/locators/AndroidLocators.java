@@ -316,7 +316,7 @@ public final class AndroidLocators {
 				+ ":id/gtv__conversation_header__mediabar__cancel";
 
 		public static final String idPlayPauseMedia = LOCATORS_PACKAGE
-				+ ":id/iv__media_play";
+				+ ":id/gtv__media_play";
 
 		public static final String idAddParticipants = LOCATORS_PACKAGE
 				+ ":id/gtv__cursor_participants";
