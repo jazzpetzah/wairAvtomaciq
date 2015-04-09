@@ -404,6 +404,7 @@ Feature: Connect
   Scenario Outline: I want to unblock someone from their Profile view
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
+    Given <Contact2> is connected to <Name>
     Given User <Name> blocks user <Contact1>
     And I wait for 120 seconds
     Given I Sign in using login <Login> and password <Password>
