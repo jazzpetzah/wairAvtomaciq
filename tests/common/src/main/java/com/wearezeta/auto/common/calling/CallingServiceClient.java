@@ -47,6 +47,8 @@ public class CallingServiceClient {
 
 	public String waitToAcceptCall(String email, String password,
 			String backend, CallingServiceBackend callBackend) throws Exception {
+		String status = null;
+
 		JSONObject waitingInstance = new JSONObject();
 		waitingInstance.put("email", email);
 		waitingInstance.put("password", password);
@@ -59,12 +61,11 @@ public class CallingServiceClient {
 		long timeout = System.currentTimeMillis()
 				+ INSTANCE_STATUS_CHANGE_TIMEOUT;
 
-		boolean waiting = false;
-
-		while (!waiting && System.currentTimeMillis() <= timeout) {
+		while (System.currentTimeMillis() <= timeout) {
 			try {
-				if (getWaitingInstanceStatus(callId).equals("waiting")) {
-					waiting = true;
+				status = getWaitingInstanceStatus(callId);
+				if (status.equals("waiting")) {
+					return callId;
 				}
 			} catch (java.net.SocketTimeoutException e) {
 				log.warn("Network problem occured:" + e.getMessage());
@@ -72,7 +73,13 @@ public class CallingServiceClient {
 			Thread.sleep(INSTANCE_STATUS_CHANGE_PULL_FEQUENZY);
 		}
 
-		return callId;
+		throw new CallingServiceException(
+				"Timeout of "
+						+ INSTANCE_STATUS_CHANGE_TIMEOUT
+						+ " ms was reached for creating the instance for call "
+						+ callId
+						+ ". Maybe you used the wrong username/password. Last status was: "
+						+ status);
 	}
 
 	public void stopCall(String callId) throws JSONException, IOException {
