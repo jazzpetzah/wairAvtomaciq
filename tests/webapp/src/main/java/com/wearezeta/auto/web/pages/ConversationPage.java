@@ -215,4 +215,10 @@ public class ConversationPage extends WebPage {
 		return DriverUtils.isElementDisplayed(driver, locator,
 				TEXT_MESSAGE_VISIBILITY_TIMEOUT_SECONDS);
 	}
+
+	public String getMissedCallMessage() {
+		final By locator = By
+				.xpath(WebAppLocators.ConversationPage.xpathMissedCallAction);
+		return driver.findElement(locator).getText();
+	}
 }

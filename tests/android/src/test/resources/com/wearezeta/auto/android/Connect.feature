@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @id191 @id193 @smoke @regression
+  @id191 @id193 @smoke @regression 
   Scenario Outline: Send invitation message to a user
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
@@ -23,7 +23,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | Contact1  | Message       |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Hellow friend |
 
-  @id323 @smoke
+  @id323 @smoke 
   Scenario Outline: Accept connection request
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
@@ -382,7 +382,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | Contact1  | Message      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Hello friend |
 
-  @regression @id720
+  @regression_off @id720
   Scenario Outline: I do not want to be seen in the search results of someone I blocked
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -402,27 +402,28 @@ Feature: Connect
 
   @id723 @regression
   Scenario Outline: I want to unblock someone from their Profile view
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
-    Given User <Name> blocks user <Contact>
+    Given There are 3 users where <Name> is me
+    Given <Contact1> is connected to <Name>
+    Given <Contact2> is connected to <Name>
+    Given User <Name> blocks user <Contact1>
     And I wait for 120 seconds
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     And I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
-    And I input in search field user name to connect to <Contact>
-    And I see user <Contact> found on People picker page
-    And I tap on user name found on People picker page <Contact>
+    And I input in search field user name to connect to <Contact1>
+    And I see user <Contact1> found on People picker page
+    And I tap on user name found on People picker page <Contact1>
     Then User info should be shown with Block button
     And I click Unblock button
     And I see dialog page
     And I navigate back from dialog page
-    And I see contact list loaded with User name <Contact>
+    And I see contact list loaded with User name <Contact1>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact1   | Contact2 |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |
 
   @id1405 @regression
   Scenario Outline: Impossibility of starting 1:1 conversation with pending user (Search)
