@@ -16,7 +16,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 public class CallingServiceClient {
 
 	private static final int INSTANCE_STATUS_CHANGE_PULL_FEQUENZY = 2000;
-	private static final int INSTANCE_STATUS_CHANGE_TIMEOUT = 15000;
+	private static final int INSTANCE_STATUS_CHANGE_TIMEOUT = 60000;
 	private static final int HTTP_CONNECT_TIMEOUT = 5000;
 	private static final int HTTP_READ_TIMEOUT = 30000;
 
