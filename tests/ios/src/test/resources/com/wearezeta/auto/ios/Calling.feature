@@ -70,8 +70,8 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
       
-  @torun @staging @id1228 
-  Scenario Outline: Verify missed call indicator appearance
+  @staging @id1228 
+  Scenario Outline: Verify missed call indicator appearance (list)
   	Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
     Given User <Name> change  accent color to <Color>
