@@ -160,7 +160,7 @@ public final class WebAppLocators {
 				.format("//*[@data-uie-name='item-message']//div[@class='text' and text()='%s']",
 						text);
 
-		public static final String xpathMissedCallAction = "//*[@data-uie-value='call']//div[@class='action']";
+		public static final String xpathMissedCallAction = "//*[@data-uie-value='call']//div[contains(@class, 'action')]";
 	}
 
 	public static final class ConnectToPage {

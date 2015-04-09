@@ -35,6 +35,7 @@ Feature: Calling
     When I call
     And <Contact> accepts the call
     And I end the call
+    And I wait for 3 seconds
     And I call
     Then <Contact> accepts the call
 
