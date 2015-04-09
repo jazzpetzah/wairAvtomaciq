@@ -14,6 +14,15 @@ public class CallingUtil {
 			.getSimpleName());
 
 	private static String currentCallId = "";
+	private static CallingServiceClient csc = null;
+	static {
+		try {
+			csc = new CallingServiceClient(getCallingServiceHost(),
+					getCallingServicePort());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public static void startCall(ClientUser caller, String conversationName)
 			throws Exception {
@@ -21,24 +30,18 @@ public class CallingUtil {
 		String password = caller.getPassword();
 		String conversationId = BackendAPIWrappers.getConversationIdByName(
 				caller, conversationName);
-		CallingServiceClient csc = new CallingServiceClient(
-				getCallingServiceHost(), getCallingServicePort());
 		currentCallId = csc.makeCall(email, password, conversationId,
 				CommonUtils.getBackendType(CallingUtil.class),
 				CallingServiceBackend.Autocall);
 	}
 
 	public static void stopCall() throws Exception {
-		CallingServiceClient csc = new CallingServiceClient(
-				getCallingServiceHost(), getCallingServicePort());
 		csc.stopCall(currentCallId);
 	}
 
 	public static void waitsForCallToAccept(ClientUser caller) throws Exception {
 		String email = caller.getEmail();
 		String password = caller.getPassword();
-		CallingServiceClient csc = new CallingServiceClient(
-				getCallingServiceHost(), getCallingServicePort());
 		csc.waitToAcceptCall(email, password,
 				CommonUtils.getBackendType(CallingUtil.class),
 				CallingServiceBackend.Webdriver);
