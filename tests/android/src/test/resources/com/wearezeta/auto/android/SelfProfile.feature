@@ -44,11 +44,12 @@ Feature: Self Profile
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I see personal info page
+    And I wait for 10 seconds
     And I tap on my name
     And I change <Name> to <NewName>
     And I swipe right to contact list
     Then I see contact list loaded with User name <NewName>
-    When I tap on my name <NewName>
+    And I tap on my name <NewName>
     Then I see my new name <NewName> and return old <Name>
 
     Examples: 
