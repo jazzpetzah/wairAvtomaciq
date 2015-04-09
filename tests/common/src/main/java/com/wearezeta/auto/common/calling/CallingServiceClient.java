@@ -7,6 +7,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 
+import javax.ws.rs.core.MediaType;
+
 import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -127,7 +129,7 @@ public class CallingServiceClient {
 		URL url = new URL(urlString);
 		connection = (HttpURLConnection) url.openConnection();
 		connection.setRequestMethod(requestMethod);
-		connection.setRequestProperty("Content-Type", "application/json");
+		connection.setRequestProperty("Content-Type", MediaType.APPLICATION_JSON);
 		connection.setConnectTimeout(HTTP_CONNECT_TIMEOUT);
 		connection.setReadTimeout(HTTP_READ_TIMEOUT);
 		if (!requestMethod.equals("GET")) {
