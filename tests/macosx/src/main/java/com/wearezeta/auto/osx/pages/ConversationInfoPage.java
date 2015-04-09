@@ -168,6 +168,7 @@ public class ConversationInfoPage extends OSXPage {
 
 	public void setNewConversationName(String name) {
 		latestSetConversationName = name;
+		conversationNameEdit.clear();
 		conversationNameEdit.sendKeys(latestSetConversationName + "\\n");
 	}
 

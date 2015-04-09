@@ -84,6 +84,7 @@ public class LoginPage extends OSXPage {
 	}
 
 	public void typeEmail(String email) {
+		emailField.clear();
 		emailField.sendKeys(email);
 	}
 
