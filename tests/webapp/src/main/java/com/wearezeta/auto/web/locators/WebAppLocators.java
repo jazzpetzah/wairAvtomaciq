@@ -86,11 +86,21 @@ public final class WebAppLocators {
 				.format("%s//*[@data-uie-name='item-conversation-archived' and ./ancestor-or-self::*[@data-uie-value='%s']]",
 						xpathParentContactListItem, name);
 
-		public static final String cssOpenPeoplePickerButton = "*[data-uie-name='go-search']";
+		public static final String cssOpenPeoplePickerButton = "[data-uie-name=go-search]";
 	}
 
 	public static final class SettingsPage {
 		public static final String xpathSettingsDialogRoot = "//div[@id='self-settings' and contains(@class, 'modal-show')]";
+
+		public static final String xpathSettingsCloseButton = "//div[@id='self-settings']//*[@data-uie-name='do-close']";
+
+		public static final String xpathSoundAlertsSettings = "//*[@data-uie-name='enter-sound-alerts']";
+
+		public static final String classNameSoundNoneLabel = "sound-left";
+
+		public static final String classNameSoundSomeLabel = "sound-center";
+
+		public static final String classNameSoundAllLabel = "sound-right";
 	}
 
 	public static final class SelfProfilePage {
