@@ -534,6 +534,17 @@ final class BackendREST {
 		return new JSONObject(output);
 	}
 
+	public static JSONObject getSuggestions(AuthToken token) throws Exception {
+		Builder webResource = buildDefaultRequestWithAuth("search/suggestions",
+				MediaType.APPLICATION_JSON, token).type(
+				MediaType.APPLICATION_JSON);
+		final String output = httpGet(webResource,
+				new int[] { HttpStatus.SC_OK });
+		writeLog(new String[] { "Output from Server .... Get Suggestions "
+				+ output + "\n" });
+		return new JSONObject(output);
+	}
+
 	public static void setDefaultBackendURL(String url) {
 		backendUrl = url;
 	}
