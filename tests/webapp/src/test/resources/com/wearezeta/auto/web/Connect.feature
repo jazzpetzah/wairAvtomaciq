@@ -113,7 +113,7 @@ Feature: Connect
       | Login      | Login2     | Password      | Password2     | Name      | Name2     |
       | user1Email | user2Email | user1Password | user2Password | user1Name | user2Name |
 
-  @torun @id1554
+  @staging @id1554
   Scenario Outline: Verify you can block a person from profile view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -127,7 +127,7 @@ Feature: Connect
     And I confirm user blocking on Single User Profile popover
     Then I do not see Contact list with name <Contact>
     Then I do not see Single User Profile popover
-    Then I see user name on self profile page <Name>
+    Then I see my name is selected on top of Contact list
 
     Examples: 
       | Login      | Password      | Name      | Contact   |

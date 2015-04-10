@@ -9,6 +9,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.PeoplePickerPage;
+import com.wearezeta.auto.web.pages.SelfProfilePage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -22,7 +23,7 @@ public class ContactListPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private static final int PEOPLE_PICKER_VISIBILITY_TIMEOUT_SECONDS = 3;
-	
+
 	private void closePeoplePickerIfVisible() throws Exception {
 		if (PagesCollection.peoplePickerPage == null) {
 			PagesCollection.peoplePickerPage = new PeoplePickerPage(
@@ -50,6 +51,27 @@ public class ContactListPageSteps {
 				PagesCollection.contactListPage.waitForContactListVisible());
 		Assert.assertTrue(PagesCollection.contactListPage
 				.isSelfNameEntryExist());
+	}
+
+	/**
+	 * Verify whether self name entry is selected in the convo list
+	 * 
+	 * @step. ^I see my name is selected on top of Contact list$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see my name is selected on top of Contact list$")
+	public void ISeeMyNameIsSelctedOnTopOfContactList() throws Exception {
+		closePeoplePickerIfVisible();
+		Assert.assertTrue("No contact list loaded.",
+				PagesCollection.contactListPage.waitForContactListVisible());
+		Assert.assertTrue(PagesCollection.contactListPage
+				.isSelfNameEntrySelected());
+		if (PagesCollection.selfProfilePage == null) {
+			PagesCollection.selfProfilePage = new SelfProfilePage(
+					PagesCollection.contactListPage.getDriver(),
+					PagesCollection.contactListPage.getWait());
+		}
 	}
 
 	/**
