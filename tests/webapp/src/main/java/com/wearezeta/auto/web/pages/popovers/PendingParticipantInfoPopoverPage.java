@@ -30,4 +30,8 @@ class PendingParticipantInfoPopoverPage extends AbstractUserInfoPopoverPage {
 	public void clickPendingButton() {
 		pendingButton.click();
 	}
+
+	public String getPendingButtonCaption() {
+		return pendingButton.getText();
+	}
 }

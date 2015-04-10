@@ -38,7 +38,8 @@ public class GroupPopoverPageSteps {
 	 */
 	@Then("^I do not see Group Participants popover$")
 	public void IDontSeeUserProfilePopupPage() throws Exception {
-		PagesCollection.popoverPage.waitUntilInvisibleOrThrowException();
+		Assert.assertFalse("Popover is still visible",
+				PagesCollection.popoverPage.isDisplayed());
 	}
 
 	/**
@@ -96,8 +97,20 @@ public class GroupPopoverPageSteps {
 				"Pending button is not visible on Group Participants popover",
 				((GroupPopoverContainer) PagesCollection.popoverPage)
 						.isPendingButtonVisible());
+		Assert.assertTrue(
+				"Pending button is not visible on Group Participants popover",
+				((GroupPopoverContainer) PagesCollection.popoverPage)
+						.getPendingButtonCaption().trim()
+						.equalsIgnoreCase("Pending"));
 	}
 
+	/**
+	 * Click Pending button on Group Participants popover
+	 * 
+	 * @step. ^I click Pending button on Group Participants popover$
+	 * 
+	 * @throws Exception
+	 */
 	@Then("^I click Pending button on Group Participants popover$")
 	public void IClickPendingButton() throws Exception {
 		((GroupPopoverContainer) PagesCollection.popoverPage)

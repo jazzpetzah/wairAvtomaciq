@@ -101,13 +101,13 @@ public class ContactListPageSteps {
 	/**
 	 * Verifies whether the particular conversation is selected in the list
 	 * 
-	 * @step. ^I click Pending button on Group Participants popover$
+	 * @step. ^I see conversation with (.*) is selected in conversations list$
 	 * 
 	 * @param convoName
 	 *            conversation name
 	 * @throws Exception
 	 */
-	@Then("^I click Pending button on Group Participants popover$")
+	@Then("^I see conversation with (.*) is selected in conversations list$")
 	public void ISeeConversationIsSelected(String convoName) throws Exception {
 		convoName = usrMgr.replaceAliasesOccurences(convoName,
 				FindBy.NAME_ALIAS);

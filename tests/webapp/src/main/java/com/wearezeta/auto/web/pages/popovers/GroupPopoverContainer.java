@@ -102,4 +102,8 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 	public void clickPendingButton() {
 		this.pendingParticipantInfoPopoverPage.clickPendingButton();
 	}
+
+	public String getPendingButtonCaption() {
+		return this.pendingParticipantInfoPopoverPage.getPendingButtonCaption();
+	}
 }
