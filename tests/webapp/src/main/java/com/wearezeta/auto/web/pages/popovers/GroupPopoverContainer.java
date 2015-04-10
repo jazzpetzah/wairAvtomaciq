@@ -9,6 +9,7 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 	private ParticipantsListPopoverPage participantsListPopoverPage;
 	private ConnectedParticipantInfoPopoverPage connectedParticipantInfoPopoverPage;
 	private NonConnectedParticipantInfoPopoverPage nonConnectedParticipantInfoPopoverPage;
+	private PendingParticipantInfoPopoverPage pendingParticipantInfoPopoverPage;
 	private AddPeopleConfirmationPopoverPage addPeopleConfirmationPopoverPage;
 	private LeaveGroupConfirmationPopoverPage leaveGroupConfirmationPopoverPage;
 	private RemoveFromGroupConfirmationPopoverPage removeFromGroupConfirmationPopoverPage;
@@ -21,6 +22,8 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 		this.connectedParticipantInfoPopoverPage = new ConnectedParticipantInfoPopoverPage(
 				driver, wait, this);
 		this.nonConnectedParticipantInfoPopoverPage = new NonConnectedParticipantInfoPopoverPage(
+				driver, wait, this);
+		this.pendingParticipantInfoPopoverPage = new PendingParticipantInfoPopoverPage(
 				driver, wait, this);
 		this.addPeopleConfirmationPopoverPage = new AddPeopleConfirmationPopoverPage(
 				driver, wait, this);
@@ -90,5 +93,13 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 
 	public void confirmAddPeople() {
 		this.addPeopleConfirmationPopoverPage.clickContinueButton();
+	}
+
+	public boolean isPendingButtonVisible() {
+		return this.pendingParticipantInfoPopoverPage.isPendingButtonVisible();
+	}
+
+	public void clickPendingButton() {
+		this.pendingParticipantInfoPopoverPage.clickPendingButton();
 	}
 }
