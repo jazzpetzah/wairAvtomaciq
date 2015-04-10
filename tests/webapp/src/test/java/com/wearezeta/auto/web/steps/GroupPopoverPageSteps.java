@@ -39,7 +39,7 @@ public class GroupPopoverPageSteps {
 	@Then("^I do not see Group Participants popover$")
 	public void IDontSeeUserProfilePopupPage() throws Exception {
 		Assert.assertFalse("Popover is still visible",
-				PagesCollection.popoverPage.isDisplayed());
+				PagesCollection.popoverPage.isVisible());
 	}
 
 	/**
