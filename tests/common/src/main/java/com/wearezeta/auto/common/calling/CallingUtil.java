@@ -13,7 +13,8 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 public class CallingUtil {
 
 	@SuppressWarnings("unused")
-	private static final Logger log = ZetaLogger.getLog(CallingUtil.class.getSimpleName());
+	private static final Logger log = ZetaLogger.getLog(CallingUtil.class
+			.getSimpleName());
 
 	public static String CALLING_UTIL_PATH = "";
 
@@ -37,33 +38,47 @@ public class CallingUtil {
 	}
 
 	private static String currentCallId = "";
+	private static CallingServiceClient csc = null;
+	static {
+		try {
+			csc = new CallingServiceClient(getCallingServiceHost(),
+					getCallingServicePort());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-	public static void startCall(ClientUser caller, String conversationName) throws Exception {
+	public static void startCall(ClientUser caller, String conversationName)
+			throws Exception {
 		String email = caller.getEmail();
 		String password = caller.getPassword();
-		String conversationId = BackendAPIWrappers.getConversationIdByName(caller, conversationName);
-		CallingServiceClient csc = new CallingServiceClient(getCallingServiceHost(), getCallingServicePort());
-		currentCallId = csc.makeCall(email, password, conversationId, "staging", "autocall");
+		String conversationId = BackendAPIWrappers.getConversationIdByName(
+				caller, conversationName);
+		currentCallId = csc.makeCall(email, password, conversationId,
+				CommonUtils.getBackendType(CallingUtil.class),
+				CallingServiceBackend.Autocall);
 	}
 
 	public static void stopCall() throws Exception {
-		CallingServiceClient csc = new CallingServiceClient(getCallingServiceHost(), getCallingServicePort());
 		csc.stopCall(currentCallId);
 	}
 
 	public static void waitsForCallToAccept(ClientUser caller) throws Exception {
 		String email = caller.getEmail();
 		String password = caller.getPassword();
-		CallingServiceClient csc = new CallingServiceClient(getCallingServiceHost(), getCallingServicePort());
-		csc.waitToAcceptCall(email, password, "staging", "webdriver");
+		csc.waitToAcceptCall(email, password,
+				CommonUtils.getBackendType(CallingUtil.class),
+				CallingServiceBackend.Webdriver);
 	}
 
 	private static String getCallingServiceHost() throws Exception {
-		return CommonUtils.getDefaultCallingServiceHostFromConfig(CallingUtil.class);
+		return CommonUtils
+				.getDefaultCallingServiceHostFromConfig(CallingUtil.class);
 	}
 
 	private static String getCallingServicePort() throws Exception {
-		return CommonUtils.getDefaultCallingServicePortFromConfig(CallingUtil.class);
+		return CommonUtils
+				.getDefaultCallingServicePortFromConfig(CallingUtil.class);
 	}
 
 	public static void setSpeakerSource(String source) throws Exception {
