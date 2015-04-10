@@ -112,3 +112,23 @@ Feature: Connect
     Examples: 
       | Login      | Login2     | Password      | Password2     | Name      | Name2     |
       | user1Email | user2Email | user1Password | user2Password | user1Name | user2Name |
+
+  @torun @id1554
+  Scenario Outline: Verify you can block a person from profile view
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name on top of Contact list
+    And I open conversation with <Contact>
+    And I click People button in one to one conversation
+    Then I see Single User Profile popover
+    And I see Block button on Single User Profile popover
+    When I click Block button on Single User Profile popover
+    And I confirm user blocking on Single User Profile popover
+    Then I do not see Contact list with name <Contact>
+    Then I do not see Single User Profile popover
+    Then I see user name on self profile page <Name>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
