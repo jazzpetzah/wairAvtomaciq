@@ -1,10 +1,8 @@
 package com.wearezeta.auto.common.onboarding;
 
-import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.codec.binary.Base64;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -40,19 +38,12 @@ public final class Card {
 
 	public JSONObject asJSONObject() throws Exception {
 		JSONObject result = new JSONObject();
-		result.put("card_id", encodeItem(this.getId()));
+		result.put("card_id", CommonUtils.encodeSHA256Base64(this.getId()));
 		JSONArray data = new JSONArray();
 		for (String phoneOrEmail : this.getCardData()) {
-			data.put(encodeItem(phoneOrEmail));
+			data.put(CommonUtils.encodeSHA256Base64(phoneOrEmail));
 		}
 		result.put("contact", data);
 		return result;
-	}
-
-	public static String encodeItem(String item) throws Exception {
-		final MessageDigest md = MessageDigest.getInstance("SHA-256");
-		md.update(item.getBytes("UTF-8"));
-		final byte[] digest = md.digest();
-		return Base64.encodeBase64String(digest);
 	}
 }

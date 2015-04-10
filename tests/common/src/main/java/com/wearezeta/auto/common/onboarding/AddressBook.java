@@ -6,7 +6,9 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public final class PhoneBook {
+import com.wearezeta.auto.common.CommonUtils;
+
+public final class AddressBook {
 	List<String> selfData = new ArrayList<String>();
 
 	public List<String> getSelfData() {
@@ -27,10 +29,10 @@ public final class PhoneBook {
 		this.cards = new ArrayList<Card>(cards);
 	}
 
-	public PhoneBook() {
+	public AddressBook() {
 	}
 
-	public PhoneBook(List<String> selfData, List<Card> cards) {
+	public AddressBook(List<String> selfData, List<Card> cards) {
 		this.selfData = new ArrayList<String>(selfData);
 		this.cards = new ArrayList<Card>(cards);
 	}
@@ -47,7 +49,7 @@ public final class PhoneBook {
 		JSONObject result = new JSONObject();
 		JSONArray selfData = new JSONArray();
 		for (String phoneOrEmail : this.getSelfData()) {
-			selfData.put(Card.encodeItem(phoneOrEmail));
+			selfData.put(CommonUtils.encodeSHA256Base64(phoneOrEmail));
 		}
 		result.put("self", selfData);
 		JSONArray cards = new JSONArray();

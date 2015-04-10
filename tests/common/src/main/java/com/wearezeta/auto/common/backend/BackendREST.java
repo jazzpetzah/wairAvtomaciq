@@ -24,6 +24,7 @@ import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource.Builder;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.onboarding.AddressBook;
 import com.wearezeta.auto.image_send.*;
 
 import java.awt.image.BufferedImage;
@@ -517,6 +518,18 @@ final class BackendREST {
 		final String output = httpPost(webResource, requestBody.toString(),
 				new int[] { HttpStatus.SC_OK, HttpStatus.SC_NO_CONTENT });
 		writeLog(new String[] { "Output from Server .... Add contacts to group convo "
+				+ output + "\n" });
+		return new JSONObject(output);
+	}
+
+	public static JSONObject uploadAddressBook(AuthToken token,
+			AddressBook addressBook) throws Exception {
+		Builder webResource = buildDefaultRequestWithAuth("onboarding/v3",
+				MediaType.APPLICATION_JSON, token).type(
+				MediaType.APPLICATION_JSON);
+		final String output = httpPost(webResource, addressBook.asJSONObject()
+				.toString(), new int[] { HttpStatus.SC_OK });
+		writeLog(new String[] { "Output from Server .... Upload Address Book v3 "
 				+ output + "\n" });
 		return new JSONObject(output);
 	}
