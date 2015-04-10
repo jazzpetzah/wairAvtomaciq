@@ -60,7 +60,7 @@ Feature: Self Profile
       | user1Email | user1Password | user1Name | user2Name |
 
 
-  @id325 @staging  @torun
+  @id325 @staging
   Scenario Outline: Check contact personal info in landscape mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
