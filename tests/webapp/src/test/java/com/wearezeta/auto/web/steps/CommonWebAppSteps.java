@@ -198,7 +198,10 @@ public class CommonWebAppSteps {
 			try {
 				webDriver = resetWebAppDriver(url);
 				wait = PlatformDrivers.createDefaultExplicitWait(webDriver);
-				webDriver.manage().window().maximize();
+				// http://stackoverflow.com/questions/14373371/ie-is-continously-maximizing-and-minimizing-when-test-suite-executes
+				if (!WebAppExecutionContext.browserName.equals("ie")) {
+					webDriver.manage().window().maximize();
+				}
 
 				PagesCollection.invitationCodePage = new InvitationCodePage(
 						webDriver, wait, path);
