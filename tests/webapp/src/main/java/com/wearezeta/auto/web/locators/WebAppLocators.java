@@ -33,9 +33,6 @@ public final class WebAppLocators {
 	}
 
 	public static final class ContactListPage {
-
-		private static final String xpathConvoItemByNamePattern = "%s//div[@data-uie-name='item-conversation' and @data-uie-value='%s']";
-
 		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
 		public static final String cssParentContactListItem = "div#conversation-list";
 
@@ -44,25 +41,26 @@ public final class WebAppLocators {
 
 		public static final String xpathOpenArchivedConvosButton = "//*[@data-uie-name='go-archive']";
 
+		public static final Function<String, String> xpathListItemRootWithControlsByName = name -> String
+				.format("//li[contains(@class, 'show-controls') and .//*[@data-uie-name='item-conversation' and @data-uie-value='%s']]",
+						name);
+
 		public static final Function<String, String> xpathArchiveButtonByContactName = (
-				name) -> String.format(xpathConvoItemByNamePattern
-				+ "/following::*[@data-uie-name='do-archive']",
-				xpathParentContactListItem, name);
+				name) -> xpathListItemRootWithControlsByName.apply(name)
+				+ "//*[@data-uie-name='do-archive']";
 
 		public static final Function<String, String> xpathMuteButtonByContactName = (
-				name) -> String.format(xpathConvoItemByNamePattern
-				+ "/following::*[@data-uie-name='do-silence']",
-				xpathParentContactListItem, name);
+				name) -> xpathListItemRootWithControlsByName.apply(name)
+				+ "//*[@data-uie-name='do-silence']";
 
 		public static final Function<String, String> xpathUnmuteButtonByContactName = (
-				name) -> String.format(xpathConvoItemByNamePattern
-				+ "/following::*[@data-uie-name='do-notify']",
-				xpathParentContactListItem, name);
+				name) -> xpathListItemRootWithControlsByName.apply(name)
+				+ "//*[@data-uie-name='do-notify']";
 
 		public static final Function<String, String> xpathMuteIconByContactName = (
-				name) -> String.format(xpathConvoItemByNamePattern
-				+ "/following::*[@data-uie-name='status-silence']",
-				xpathParentContactListItem, name);
+				name) -> String.format(
+				"//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/following::"
+						+ "*[@data-uie-name='status-silence']", name);
 
 		public static final String cssSelfProfileEntry = "[data-uie-name=go-self-profile]";
 
