@@ -51,7 +51,7 @@ Feature: Calling
     And I see my name on top of Contact list
     When I open conversation with <Contact>
     And I call
-    And I wait for 5 seconds
+    And I wait for 2 seconds
     And I end the call
     When I open conversation with <Contact>
     Then I see conversation with my missed call
