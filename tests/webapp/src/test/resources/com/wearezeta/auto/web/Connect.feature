@@ -132,3 +132,24 @@ Feature: Connect
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+
+  @staging @id1548
+  Scenario Outline: Verify impossibility of starting 1:1 conversation with pending user (People view)
+    Given There are 3 users where <Name> is me
+    Given <Contact> is connected to Me,<Contact2>
+    Given <Contact> has group chat <ChatName> with Me,<Contact2>
+    Given <Name> has sent connection request to <Contact2>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name on top of Contact list
+    And I open conversation with <ChatName>
+    And I click People button in group conversation
+    And I see Group Participants popover
+    When I click on participant <Contact2> on Group Participants popover
+    Then I see Pending button on Group Participants popover
+    When I click Pending button on Group Participants popover
+    Then I see conversation with <Contact2> is selected in conversations list
+    Then I do not see Group Participants popover
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Contact2  | ChatName                 |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChatWithPendingUser |

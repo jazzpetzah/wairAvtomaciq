@@ -121,6 +121,24 @@ public class ContactListPageSteps {
 	}
 
 	/**
+	 * Verifies whether the particular conversation is selected in the list
+	 * 
+	 * @step. ^I see conversation with (.*) is selected in conversations list$
+	 * 
+	 * @param convoName
+	 *            conversation name
+	 * @throws Exception
+	 */
+	@Then("^I see conversation with (.*) is selected in conversations list$")
+	public void ISeeConversationIsSelected(String convoName) throws Exception {
+		convoName = usrMgr.replaceAliasesOccurences(convoName,
+				FindBy.NAME_ALIAS);
+		Assert.assertTrue(String.format("Conversation '%s' should be selected",
+				convoName), PagesCollection.contactListPage
+				.isConversationSelected(convoName));
+	}
+
+	/**
 	 * Unarchives conversation 'name'
 	 * 
 	 * @step. I unarchive conversation with (.*)

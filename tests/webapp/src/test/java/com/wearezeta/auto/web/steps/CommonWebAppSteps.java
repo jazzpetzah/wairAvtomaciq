@@ -5,6 +5,8 @@ import java.util.logging.Level;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
@@ -48,6 +50,8 @@ public class CommonWebAppSteps {
 
 	public static final Platform CURRENT_PLATFORM = Platform.Web;
 	private static final int MAX_DRIVER_CREATION_RETRIES = 3;
+	private static final int MIN_WEBAPP_WINDOW_WIDTH = 1366;
+	private static final int MIN_WEBAPP_WINDOW_HEIGHT = 768;
 
 	private static final String DEFAULT_USER_PICTURE = PerformanceCommon.DEFAULT_PERF_IMAGE;
 
@@ -198,7 +202,18 @@ public class CommonWebAppSteps {
 			try {
 				webDriver = resetWebAppDriver(url);
 				wait = PlatformDrivers.createDefaultExplicitWait(webDriver);
-				webDriver.manage().window().maximize();
+				if (WebAppExecutionContext.browserName.equals("ie")) {
+					// http://stackoverflow.com/questions/14373371/ie-is-continously-maximizing-and-minimizing-when-test-suite-executes
+					webDriver.manage().window().setPosition(new Point(0, 0));
+					webDriver
+							.manage()
+							.window()
+							.setSize(
+									new Dimension(MIN_WEBAPP_WINDOW_WIDTH,
+											MIN_WEBAPP_WINDOW_HEIGHT));
+				} else {
+					webDriver.manage().window().maximize();
+				}
 
 				PagesCollection.invitationCodePage = new InvitationCodePage(
 						webDriver, wait, path);

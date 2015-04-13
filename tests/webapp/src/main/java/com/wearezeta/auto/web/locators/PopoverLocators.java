@@ -69,6 +69,11 @@ public final class PopoverLocators {
 					xpathRootLocator + xpathPageRootLocator, name);
 		}
 
+		public static final class PendingParticipantPage {
+			public static final String xpathPendingButton = xpathRootLocator
+					+ "//*[@data-uie-name='go-conversation']";
+		}
+		
 		public static final class LeaveGroupConfirmationPage {
 			public static final String xpathConfirmLeaveButton = xpathRootLocator
 					+ "//*[@data-uie-name='do-confirm' and @data-uie-value='leave']";
