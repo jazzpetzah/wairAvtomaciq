@@ -30,6 +30,19 @@ public class GroupPopoverPageSteps {
 	}
 
 	/**
+	 * Verify that Group Participants popover is not visible
+	 * 
+	 * @step. ^I do not see Group Participants popover$
+	 * @throws Exception
+	 * 
+	 */
+	@Then("^I do not see Group Participants popover$")
+	public void IDontSeeUserProfilePopupPage() throws Exception {
+		Assert.assertFalse("Popover is still visible",
+				PagesCollection.popoverPage.isVisible());
+	}
+
+	/**
 	 * Click leave group chat button on Group Participants popover
 	 * 
 	 * @step. ^I click Leave button on Group Participants popover$
@@ -72,6 +85,39 @@ public class GroupPopoverPageSteps {
 	}
 
 	/**
+	 * Verifies whether Pending button is visible on Group Participants popover
+	 * 
+	 * @step. ^I see Pending button on Group Participants popover$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see Pending button on Group Participants popover$")
+	public void ISeePendingButton() throws Exception {
+		Assert.assertTrue(
+				"Pending button is not visible on Group Participants popover",
+				((GroupPopoverContainer) PagesCollection.popoverPage)
+						.isPendingButtonVisible());
+		Assert.assertTrue(
+				"Pending button is not visible on Group Participants popover",
+				((GroupPopoverContainer) PagesCollection.popoverPage)
+						.getPendingButtonCaption().trim()
+						.equalsIgnoreCase("Pending"));
+	}
+
+	/**
+	 * Click Pending button on Group Participants popover
+	 * 
+	 * @step. ^I click Pending button on Group Participants popover$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I click Pending button on Group Participants popover$")
+	public void IClickPendingButton() throws Exception {
+		((GroupPopoverContainer) PagesCollection.popoverPage)
+				.clickPendingButton();
+	}
+
+	/**
 	 * Remove participant from group chat by clicking "exit" button
 	 * 
 	 * @step. ^I click Remove button on Group Participants popover$
@@ -109,7 +155,8 @@ public class GroupPopoverPageSteps {
 	public void ISeeContactsDisplayed(String contactsAliases) throws Exception {
 		List<String> contacts = CommonSteps.splitAliases(contactsAliases);
 		for (String contact : contacts) {
-			contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+			contact = usrMgr.replaceAliasesOccurences(contact,
+					FindBy.NAME_ALIAS);
 			Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
 					.isParticipantVisible(contact));
 		}
@@ -162,7 +209,7 @@ public class GroupPopoverPageSteps {
 	 * Verifies there is a question if you want to add people
 	 * 
 	 * @step. ^I see Add People message on Group Participants popover$
-	 * @throws Exception 
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I see Add People message on Group Participants popover$")
@@ -207,7 +254,7 @@ public class GroupPopoverPageSteps {
 	 * popover
 	 * 
 	 * @step. ^I choose to create conversation from Group Participants popover$
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@When("^I choose to create conversation from Group Participants popover$")
 	public void IChooseToCreateConversation() throws Exception {

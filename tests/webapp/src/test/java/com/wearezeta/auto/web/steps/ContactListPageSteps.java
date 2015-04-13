@@ -22,7 +22,7 @@ public class ContactListPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private static final int PEOPLE_PICKER_VISIBILITY_TIMEOUT_SECONDS = 3;
-	
+
 	private void closePeoplePickerIfVisible() throws Exception {
 		if (PagesCollection.peoplePickerPage == null) {
 			PagesCollection.peoplePickerPage = new PeoplePickerPage(
@@ -96,6 +96,24 @@ public class ContactListPageSteps {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		PagesCollection.conversationPage = PagesCollection.contactListPage
 				.openConversation(contact);
+	}
+
+	/**
+	 * Verifies whether the particular conversation is selected in the list
+	 * 
+	 * @step. ^I see conversation with (.*) is selected in conversations list$
+	 * 
+	 * @param convoName
+	 *            conversation name
+	 * @throws Exception
+	 */
+	@Then("^I see conversation with (.*) is selected in conversations list$")
+	public void ISeeConversationIsSelected(String convoName) throws Exception {
+		convoName = usrMgr.replaceAliasesOccurences(convoName,
+				FindBy.NAME_ALIAS);
+		Assert.assertTrue(String.format("Conversation '%s' should be selected",
+				convoName), PagesCollection.contactListPage
+				.isConversationSelected(convoName));
 	}
 
 	/**

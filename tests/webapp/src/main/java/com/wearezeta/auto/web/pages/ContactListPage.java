@@ -396,4 +396,19 @@ public class ContactListPage extends WebPage {
 		assert DriverUtils.isElementDisplayed(driver, entryLocator, 3) : "There are no visible incoming pending connections in the conversations list";
 		return driver.findElement(entryLocator).getText();
 	}
+
+	public boolean isConversationSelected(String convoName) throws Exception {
+		convoName = fixDefaultGroupConvoName(convoName, false);
+		final By locator = By
+				.cssSelector(WebAppLocators.ContactListPage.cssContactListEntryByName
+						.apply(convoName));
+		assert DriverUtils.isElementDisplayed(driver, locator, 3);
+		final WebElement entryElement = driver.findElement(locator);
+		try {
+			waitUtilEntryIsSelected(entryElement);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 }
