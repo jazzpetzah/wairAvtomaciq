@@ -6,6 +6,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.pages.PersonalInfoPage;
 import com.wearezeta.auto.android.locators.AndroidLocators;
+import com.wearezeta.auto.android.locators.TabletAndroidLocators;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
@@ -22,6 +24,9 @@ public class TabletPersonalInfoPage extends PersonalInfoPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idProfileOptionsButton")
 	private WebElement optionsButton;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = TabletAndroidLocators.TabletPersonalInfoPage.CLASS_NAME, locatorKey = "idSelfForm")
+	private WebElement page;
+	
 	public TabletPersonalInfoPage(ZetaAndroidDriver driver, WebDriverWait wait)
 			throws Exception {
 		super(driver, wait);
@@ -62,6 +67,10 @@ public class TabletPersonalInfoPage extends PersonalInfoPage {
 		}
 	}
 
+	public void clickOnPage() throws InterruptedException {
+		DriverUtils.androidMultiTap(this.getDriver(), page, 1, 0.2);
+	}
+	
 	public boolean isOptionsButtonVisible() throws Exception {
 		return profileLink.isDisplayed();
 	}

@@ -226,7 +226,9 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public ContactListPage navigateBack() throws Exception {
-		driver.navigate().back();
+		refreshUITree();
+		// driver.navigate().back();
+		pickerClearBtn.click();
 		return new ContactListPage(this.getDriver(), this.getWait());
 	}
 

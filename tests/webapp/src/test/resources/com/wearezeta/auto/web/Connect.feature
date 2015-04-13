@@ -73,8 +73,8 @@ Feature: Connect
     Examples: 
       | Login      | Login2     | Password      | Password2     | Name      | Name2     | Message      |
       | user1Email | user2Email | user1Password | user2Password | user1Name | user2Name | CONNECTED TO |
-      
-  @staging @id1553
+
+  @smoke @id1553
   Scenario Outline: Verify 1:1 conversation is not created on the second end after you ignore connection request
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
