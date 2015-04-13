@@ -61,7 +61,7 @@ public class ContactListPageSteps {
 	 * @throws Exception
 	 */
 	@Then("^I see my name is selected on top of Contact list$")
-	public void ISeeMyNameIsSelctedOnTopOfContactList() throws Exception {
+	public void ISeeMyNameIsSelectedOnTopOfContactList() throws Exception {
 		closePeoplePickerIfVisible();
 		Assert.assertTrue("No contact list loaded.",
 				PagesCollection.contactListPage.waitForContactListVisible());
