@@ -113,7 +113,7 @@ Feature: Connect
       | Login      | Login2     | Password      | Password2     | Name      | Name2     |
       | user1Email | user2Email | user1Password | user2Password | user1Name | user2Name |
 
-  @staging @id1554
+  @regression @id1554
   Scenario Outline: Verify you can block a person from profile view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -133,7 +133,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id1548
+  @regression @id1548
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending user (People view)
     Given There are 3 users where <Name> is me
     Given <Contact> is connected to Me,<Contact2>
