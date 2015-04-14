@@ -30,6 +30,7 @@ public class ContactListPage extends IOSPage {
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.90;
 	private final double MIN_ACCEPTABLE_IMAGE_UNREADDOT_VALUE = 0.99;
 	private final double MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE =0.80;
+	private final double MIN_ACCEPTABLE_IMAGE_ACCENTCOLOR_VALUE = 0.99;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathNameContactList)
 	private List<WebElement> contactListNames;
@@ -487,6 +488,23 @@ public class ContactListPage extends IOSPage {
 			
 		}
 		return true;
+	}
+	
+	public boolean changeOfAccentColorIsVisible(String name) throws IOException{
+		BufferedImage changedAccentColorImage = null;
+		BufferedImage referenceImage = null;
+		double score = 0;
+		WebElement el = driver.findElementByXPath(String.format(IOSLocators.xpathSelfName, name));
+		changedAccentColorImage = getElementScreenshot(el);
+		referenceImage = ImageUtil.readImageFromFile(IOSPage
+				.getImagesPath() + "changedAccentColor.png");
+		score = ImageUtil.getOverlapScore(referenceImage,
+				changedAccentColorImage,
+				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+		if (score >= MIN_ACCEPTABLE_IMAGE_ACCENTCOLOR_VALUE) {
+			return true;
+		}
+		return false;
 	}
 
 }
