@@ -12,6 +12,8 @@ public final class TabletAndroidLocators {
 		
 		public static final String CLASS_NAME = TabletAndroidLocators.CLASS_NAME + "$TabletPersonalInfoPage";
 		
+		public static final String idRootRightView = LOCATORS_PACKAGE + ":id/fl__root__right_view";
+		
 	}
 	
 	public static final class TabletContactListPage {
@@ -44,6 +46,9 @@ public final class TabletAndroidLocators {
 	public static final class TabletPersonalInfoPage {
 		
 		public static final String CLASS_NAME = TabletAndroidLocators.CLASS_NAME + "$TabletPersonalInfoPage";
+		
+		public static final String idSelfForm = LOCATORS_PACKAGE
+		+ ":id/ll_self_form";
 		
 	}
 }

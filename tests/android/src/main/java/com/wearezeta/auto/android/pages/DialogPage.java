@@ -317,7 +317,7 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public ContactListPage navigateBack() throws Exception {
-		driver.navigate().back();
+		swipeRightCoordinates(1000);
 		return new ContactListPage(this.getDriver(), this.getWait());
 	}
 

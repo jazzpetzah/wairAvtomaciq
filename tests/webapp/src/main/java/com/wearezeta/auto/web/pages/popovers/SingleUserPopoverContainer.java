@@ -8,6 +8,7 @@ import com.wearezeta.auto.web.locators.PopoverLocators;
 public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 	private SingleUserInfoPopoverPage singleUserPopoverPage;
 	private AddPeoplePopoverPage addPeoplePopoverPage;
+	private BlockUserConfirmationPopoverPage blockUserConfirmationPopoverPage;
 
 	public SingleUserPopoverContainer(ZetaWebAppDriver driver,
 			WebDriverWait wait) throws Exception {
@@ -15,6 +16,8 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 		this.singleUserPopoverPage = new SingleUserInfoPopoverPage(driver,
 				wait, this);
 		this.addPeoplePopoverPage = new AddPeoplePopoverPage(driver, wait, this);
+		this.blockUserConfirmationPopoverPage = new BlockUserConfirmationPopoverPage(
+				driver, wait, this);
 	}
 
 	@Override
@@ -40,5 +43,13 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 
 	public boolean isBlockButtonVisible() {
 		return this.singleUserPopoverPage.isBlockButtonVisible();
+	}
+
+	public void clickBlockButton() {
+		this.singleUserPopoverPage.clickBlockButton();
+	}
+
+	public void clickConfirmButton() {
+		this.blockUserConfirmationPopoverPage.clickConfirmButton();
 	}
 }

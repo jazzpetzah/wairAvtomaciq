@@ -7,6 +7,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
 
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -17,13 +18,26 @@ public class SingleUserPopoverPageSteps {
 	/**
 	 * Verify that Single User Profile popover is visible
 	 * 
-	 * @step. I see Single User Profile popover
+	 * @step. ^I see Single User Profile popover$
 	 * @throws Exception
 	 * 
 	 */
-	@When("I see Single User Profile popover")
+	@When("^I see Single User Profile popover$")
 	public void ISeeSingleUserPopup() throws Exception {
 		PagesCollection.popoverPage.waitUntilVisibleOrThrowException();
+	}
+
+	/**
+	 * Verifies whether Single User Profile popover is not visible anymore
+	 * 
+	 * @step. ^I do not see Single User Profile popover$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I do not see Single User Profile popover$")
+	public void IDontSeeSingleUserPopup() throws Exception {
+		Assert.assertFalse("Single User Profile is still visible",
+				PagesCollection.popoverPage.isVisible());
 	}
 
 	/**
@@ -121,5 +135,29 @@ public class SingleUserPopoverPageSteps {
 	public void ISeeBlockButton() {
 		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
 				.isBlockButtonVisible());
+	}
+
+	/**
+	 * Click Block button on Single User Profile popover
+	 * 
+	 * @step. ^I click Block button on Single User Profile popover$
+	 * 
+	 */
+	@Then("^I click Block button on Single User Profile popover$")
+	public void IClickBlockButton() {
+		((SingleUserPopoverContainer) PagesCollection.popoverPage)
+				.clickBlockButton();
+	}
+
+	/**
+	 * Confirm blocking user action on Single User Profile popover
+	 * 
+	 * @step. ^I confirm user blocking on Single User Profile popover$
+	 * 
+	 */
+	@And("^I confirm user blocking on Single User Profile popover$")
+	public void IConfirmBlockUser() {
+		((SingleUserPopoverContainer) PagesCollection.popoverPage)
+				.clickConfirmButton();
 	}
 }

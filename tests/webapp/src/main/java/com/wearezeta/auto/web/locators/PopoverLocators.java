@@ -37,6 +37,11 @@ public final class PopoverLocators {
 			public static final String xpathBlockButton = xpathRootLocator
 					+ xpathPageRootLocator + "//*[@data-uie-name='do-block']";
 		}
+
+		public static final class BlockUserConfirmationPage {
+			public static final String xpathConfirmBlockButton = xpathRootLocator
+					+ "//*[@data-uie-name='do-confirm' and @data-uie-value='block']";
+		}
 	}
 
 	public static final class GroupPopover {
@@ -64,6 +69,11 @@ public final class PopoverLocators {
 					xpathRootLocator + xpathPageRootLocator, name);
 		}
 
+		public static final class PendingParticipantPage {
+			public static final String xpathPendingButton = xpathRootLocator
+					+ "//*[@data-uie-name='go-conversation']";
+		}
+		
 		public static final class LeaveGroupConfirmationPage {
 			public static final String xpathConfirmLeaveButton = xpathRootLocator
 					+ "//*[@data-uie-name='do-confirm' and @data-uie-value='leave']";

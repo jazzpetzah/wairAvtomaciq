@@ -30,6 +30,7 @@ Feature: Connect
     Given <Contact> has sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
+    And I wait for 10 seconds
     When I tap on contact name <WaitingMess>
     And I see connect to <Contact> dialog
     And I Connect with contact by pressing button
