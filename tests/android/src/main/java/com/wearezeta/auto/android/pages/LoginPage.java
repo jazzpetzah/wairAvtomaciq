@@ -98,6 +98,10 @@ public class LoginPage extends AndroidPage {
 		this.getWait().until(
 				ExpectedConditions.elementToBeClickable(forgotPasswordButton));
 		forgotPasswordButton.click();
+		Thread.sleep(2000);
+		if(isVisible(forgotPasswordButton)) {
+			DriverUtils.androidMultiTap(this.getDriver(), forgotPasswordButton, 1, 50);
+		}
 		return new CommonAndroidPage(this.getDriver(), this.getWait());
 	}
 
