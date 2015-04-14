@@ -533,5 +533,10 @@ public final class IOSLocators {
 	public static final String xpathChatheadMessage = "//UIAStaticText[@name='%s']";
 	public static final String nameChatheadAvatarImage = "ChatheadAvatarImage";
 	
+	///////////////////
+	//Accent Color Picker
+	//////////////////
+	public static final String nameAccentColorPicker = "AccentColorPickerView";
+	
 }
 
