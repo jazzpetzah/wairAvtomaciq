@@ -6,6 +6,8 @@ import java.text.Normalizer.Form;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
@@ -34,6 +36,7 @@ public class DialogPageSteps {
 	private static final Logger log = ZetaLogger.getLog(DialogPageSteps.class
 			.getSimpleName());
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+	private final CommonSteps commonSteps = CommonSteps.getInstance();
 
 	private String message;
 	private String longMessage = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.";
@@ -685,5 +688,35 @@ public class DialogPageSteps {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		PagesCollection.callPage = PagesCollection.dialogPage
 					.clickOnCallButtonForContact(contact.toUpperCase());
+	}
+	
+	/**
+	 * Checks if a chathaed is visible with message and avatar for 5sec
+	 * 
+	 * @step. ^I see chathead of contact (.*) for (.*) seconds with avatar and
+	 *        message$
+	 * @param contact
+	 *            you see the chathead of
+	 * @param seconds
+	 *            the chathead should be visible
+	 * @throws Exception 
+	 */
+	@Then("^I see chathead of contact (.*) for (.*) seconds with avatar and message$")
+	public void ISeeChatheadOfContactForSecondsWithAvatarAndMessage(
+			String contact, String seconds) throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		boolean chatheadIsVisible = PagesCollection.dialogPage
+				.chatheadIsVisible(contact);
+		Assert.assertTrue("No Chathead visible.", chatheadIsVisible);
+		boolean chMessageIsVisible = PagesCollection.dialogPage
+				.chatheadMessageIsVisible(message);
+		Assert.assertTrue("No Chathead message visible.", chMessageIsVisible);
+		boolean chAvatarImageIsVisible = PagesCollection.dialogPage
+				.chatheadAvatarImageIsVisible();
+		Assert.assertTrue("No Chathead avatar visible.", chAvatarImageIsVisible);
+		commonSteps.WaitForTime(seconds);
+		chatheadIsVisible = PagesCollection.dialogPage
+				.chatheadIsVisible(contact);
+		Assert.assertFalse("Chathead visible.", chatheadIsVisible);
 	}
 }
