@@ -519,5 +519,21 @@ public class ContactListPageSteps {
 		Assert.assertTrue("No missed call indicator visible.", missedCallSeen);
 
 	}
+	
+	/**
+	 * Checks if the self conversation in changed to the new accent color
+	 * 
+	 * @step. I see my names (.*) accent color is changed$
+	 * @param name
+	 *            of yourself to check accent color change
+	 * @throws IOException
+	 */
+	@Then("^I see my names (.*) accent color is changed$")
+	public void ISeeMyNamesAccentColorIsChanged(String name) throws IOException {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		boolean colorIsChanged = PagesCollection.contactListPage
+				.changeOfAccentColorIsVisible(name);
+		Assert.assertTrue("Color is not changed.", colorIsChanged);
+	}
 
 }
