@@ -617,10 +617,13 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And Contact <Contact2> sends random message to user <Name>
-    Then I see chathead of contact <Contact2> for 5 seconds with avatar and message
+    Then I see chathead of contact <Contact2> 
+    And I wait for 5 seconds
+    Then I do not see chathead of contact <Contact2>
+
     
     Examples: 
-      | Login      | Password      | Name      | Contact   | Contact2  | NewName  | Picture 					   |
+      | Login      | Password      | Name      | Contact   | Contact2  | NewName  | Picture 					 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | CHATHEAD | aqaPictureContact600_800.jpg |
  
   
