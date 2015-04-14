@@ -519,5 +519,11 @@ public final class IOSLocators {
 	public final class DialogPage {
 		public static final String xpathCallButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAButton[5]";
 	}
+	
+	public final class DialogInfoPage {
+		public static final String nameEllipsisMenuButton = "metaControllerRightButton";
+		
+		public static final String nameArchiveButton = "ARCHIVE";
+	}
 }
 
