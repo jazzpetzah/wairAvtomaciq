@@ -587,7 +587,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Picture	 | Color 	   | NewName          |
       | user1Email | user1Password | user1Name | user2Name | testing.jpg | BrightOrange| RotateFullscreen |
       
-  @torun @staging @id2132
+  @staging @id2132
   Scenario Outline: Verify displaying chathead when another conversation is opened
     Given There are 3 users where <Name> is me
     Given User <Contact2> change avatar picture to <Picture>
