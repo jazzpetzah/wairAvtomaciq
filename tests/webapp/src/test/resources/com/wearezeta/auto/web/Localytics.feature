@@ -261,7 +261,7 @@ Feature: Localytics
 
   @localytics
   Scenario Outline: Verify count of each attribute is increased
-    Then I verify the count of <AttrName> attribute has been increased within 300 seconds
+    Then I verify the count of <AttrName> attribute has been increased within 400 seconds
 
     Examples:
       | AttrName                                                             |

@@ -133,9 +133,9 @@ public final class WebAppLocators {
 
 	public static final class ConversationPage {
 
-		public static final String xpathTextMessageEntry = "//*[@data-uie-name='item-message']//div[@class='text']";
-
-		public static final String xpathFormatSpecificTextMessageEntry = "//*[@data-uie-name='item-message']//div[@class='text' and text()='%s']";
+		public static final Function<String, String> xpathMessageEntryByText = text -> String
+				.format("//*[@data-uie-name='item-message']//div[contains(@class, 'text') and text()='%s']",
+						text);
 
 		public static final String idConversationInput = "conversation-input-text";
 
@@ -233,6 +233,13 @@ public final class WebAppLocators {
 
 		public static final String xpathPreviousCarouselImageBtn = xpathRootDiv
 				+ "//div[contains(@class, 'carousel-arrows')]//span[contains(@class, 'carousel-arrow-left')]";
+	}
+
+	public static final class ContactsUploadPage {
+		public static final String xpathRootDiv = "//div[@id='self-upload']";
+
+		public static final String xpathCloseButton = xpathRootDiv
+				+ "//*[@data-uie-name='do-close']";
 	}
 
 	public static final class Common {

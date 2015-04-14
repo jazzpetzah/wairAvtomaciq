@@ -32,6 +32,8 @@ Feature: Registration
     And I see Self Picture Upload dialog
     And I choose <PictureName> as my self picture on Self Picture Upload dialog
     And I confirm picture selection on Self Picture Upload dialog
+    And I see Contacts Upload dialog
+    And I close Contacts Upload dialog
     Then I see my name on top of Contact list
     When I open self profile
     And I click gear button on self profile page
@@ -55,6 +57,8 @@ Feature: Registration
     And I force carousel mode on Self Picture Upload dialog
     And I select random picture from carousel on Self Picture Upload dialog
     And I confirm picture selection on Self Picture Upload dialog
+    And I see Contacts Upload dialog
+    And I close Contacts Upload dialog
     Then I see my name on top of Contact list
     When I open self profile
     And I click gear button on self profile page

@@ -29,6 +29,7 @@ public class ContactListPage extends IOSPage {
 
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.90;
 	private final double MIN_ACCEPTABLE_IMAGE_UNREADDOT_VALUE = 0.99;
+	private final double MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE =0.80;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathNameContactList)
 	private List<WebElement> contactListNames;
@@ -447,6 +448,44 @@ public class ContactListPage extends IOSPage {
 			return false;
 		}
 
+		return true;
+	}
+	
+	public boolean missedCallIndicatorIsVisible(boolean isFirstInList,
+			String conversation) throws IOException {
+		BufferedImage missedCallIndicator = null;
+		BufferedImage referenceImage = null;
+		double score = 0;
+		WebElement contact = findCellInContactList(conversation);
+		if (isFirstInList) {
+			missedCallIndicator = getScreenshotByCoordinates(
+					contact.getLocation().x, contact.getLocation().y
+							+ contactListContainer.getLocation().y / 2,
+					contact.getSize().width / 4, contact.getSize().height * 2);
+			referenceImage = ImageUtil.readImageFromFile(IOSPage
+					.getImagesPath() + "missedCallIndicator.png");
+
+			score = ImageUtil.getOverlapScore(referenceImage,
+					missedCallIndicator,
+					ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+			if (score <= MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE) {
+				return false;
+			}
+		} else {
+			missedCallIndicator = getScreenshotByCoordinates(
+					contact.getLocation().x, contact.getLocation().y + contactListContainer.getLocation().y*2,
+					contact.getSize().width / 3, contact.getSize().height);
+			referenceImage = ImageUtil.readImageFromFile(IOSPage
+					.getImagesPath() + "missedCallIndicator2.png");
+
+			score = ImageUtil.getOverlapScore(referenceImage,
+					missedCallIndicator,
+					ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+			if (score <= MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE) {
+				return false;
+			}
+			
+		}
 		return true;
 	}
 

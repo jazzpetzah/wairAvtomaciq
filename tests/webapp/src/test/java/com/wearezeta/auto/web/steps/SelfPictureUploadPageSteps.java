@@ -73,8 +73,8 @@ public class SelfPictureUploadPageSteps {
 	 */
 	@And("^I confirm picture selection on Self Picture Upload dialog$")
 	public void IConfirmPictureSelection() throws Exception {
-		PagesCollection.selfPictureUploadPage.confirmPictureSelection();
-		;
+		PagesCollection.contactsUploadPage = PagesCollection.selfPictureUploadPage
+				.confirmPictureSelection();
 	}
 
 	/**
