@@ -383,7 +383,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | Contact1  | Message      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Hello friend |
 
-  @regression_off @id720
+  @regression_off @id720 @mute
   Scenario Outline: I do not want to be seen in the search results of someone I blocked
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>

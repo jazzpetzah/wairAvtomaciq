@@ -605,4 +605,25 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+      
+  @staging @id2132
+  Scenario Outline: Verify displaying chathead when another conversation is opened
+    Given There are 3 users where <Name> is me
+    Given User <Contact2> change avatar picture to <Picture>
+    Given User <Contact2> change  name to <NewName>
+    Given Myself is connected to <Contact>,<Contact2>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And Contact <Contact2> sends random message to user <Name>
+    Then I see chathead of contact <Contact2> 
+    And I wait for 5 seconds
+    Then I do not see chathead of contact <Contact2>
+
+    
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Contact2  | NewName  | Picture 					 |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | CHATHEAD | aqaPictureContact600_800.jpg |
+ 
   

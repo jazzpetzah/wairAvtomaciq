@@ -345,6 +345,10 @@ public class DialogPage extends AndroidPage {
 		refreshUITree();
 		closeImageBtn.click();
 	}
+	
+	public void tapConversationDetailsButton() {
+		addParticipant.click();
+	}
 
 	public void sendFrontCameraImage() throws Exception {
 		if (isVisible(addParticipant)) {
