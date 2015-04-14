@@ -99,6 +99,19 @@ public class DialogPageSteps {
 	public void WhenITapOnDialogPageBottom() throws Throwable {
 		PagesCollection.dialogPage.tapDialogPageBottom();
 	}
+	
+	/**
+	 * Tap in Dialog page on details button to open participants view
+	 * 
+	 * @step. ^I tap conversation details button$
+	 * 
+	 * @throws Throwable
+	 * 
+	 */
+	@When("^I tap conversation details button$")
+	public void WhenITapConversationDetailsBottom() throws Throwable {
+		PagesCollection.dialogPage.tapConversationDetailsButton();
+	}
 
 	/**
 	 * Tap on Play/Pause media item button
