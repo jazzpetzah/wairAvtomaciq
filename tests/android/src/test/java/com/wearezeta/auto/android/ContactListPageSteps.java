@@ -110,10 +110,8 @@ public class ContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		AndroidPage page = PagesCollection.contactListPage
+		 PagesCollection.androidPage = PagesCollection.contactListPage
 				.tapOnName(value);
-		PagesCollection.androidPage = page;
-		PagesCollection.dialogPage = (DialogPage) page;
 	}
 
 	@When("^I tap on my name (.*)$")

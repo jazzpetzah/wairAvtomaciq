@@ -30,7 +30,7 @@ public final class IOSLocators {
 	
 	public static final String xpathNameContactList = "//UIACollectionCell/UIAStaticText";
 	
-	public static final String xpathContactListCells = "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell";
+	public static final String xpathContactListCells = "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell";
 	
 	public static final String xpathSelfName = "//UIAStaticText[@name='%s']";
 	
@@ -479,7 +479,7 @@ public final class IOSLocators {
 	////////////////////////////
 	public static final String nameUnblockButton = "UNBLOCK";
 	
-	public static final String xpathContactListContainer = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]";
+	public static final String xpathContactListContainer = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]";
 	
 	////////////////////////////
 	//Reset Password from Sign In

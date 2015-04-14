@@ -1,6 +1,6 @@
 Feature: Search
 
-  @staging @id1722
+  @smoke @id1722
   Scenario Outline: Verify the new conversation is created on the other end (Search UI source)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

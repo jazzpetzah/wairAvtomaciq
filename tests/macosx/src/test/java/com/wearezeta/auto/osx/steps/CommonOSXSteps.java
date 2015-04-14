@@ -314,19 +314,6 @@ public class CommonOSXSteps {
 				dstUserNameAlias);
 	}
 
-	@When("^(.*) calls (.*)$")
-	public void UserCallsToConversation(String callerUserNameAlias,
-			String conversationNameAlias) throws Exception {
-		commonSteps.UserCallsToConversation(callerUserNameAlias,
-				conversationNameAlias);
-	}
-
-	@When("^(.*) dismisses call$")
-	public void UserCallsToConversation(String callerUserNameAlias)
-			throws Exception {
-		commonSteps.StopCurrentCall();
-	}
-
 	@After
 	public void tearDown() throws Exception {
 		OSXCommonUtils.collectSystemLogs(testStartedTimestamp);

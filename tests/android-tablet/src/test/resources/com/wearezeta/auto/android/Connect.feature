@@ -1,1 +1,52 @@
 Feature: Connect
+
+@id191 @id193  @staging
+  Scenario Outline: Send invitation message to a user landscape mode
+    Given There are 3 users where <Name> is me
+    Given <Contact1> is connected to <Name>
+    And I rotate UI to landscape
+    Given I Sign in on tablet using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I swipe down on tablet contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in search field user name to connect to <Contact>
+    And I tap on user name found on People picker page <Contact>
+    And I wait for 20 seconds
+    And I see connect to <Contact> dialog
+    And I tap on edit connect request field
+    And I type Connect request "<Message>"
+    And I press Connect button
+    And I see People picker page
+    And I navigate back to Conversations List
+    Then I see contact list loaded with User name <Contact>
+    
+        Examples: 
+      | Login      | Password      | Name      | Contact   | Contact1  | Message       |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | Hellow friend |
+    
+    
+ @id191 @id193 @staging
+  Scenario Outline: Send invitation message to a user portrait mode
+    Given There are 3 users where <Name> is me
+    Given <Contact1> is connected to <Name>
+    And I rotate UI to portrait
+    Given I Sign in on tablet using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I swipe down on tablet contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in search field user name to connect to <Contact>
+    And I tap on user name found on People picker page <Contact>
+    And I see connect to <Contact> dialog
+    And I tap on edit connect request field
+    And I type Connect request "<Message>"
+    And I press Connect button
+    And I see People picker page
+    And I navigate back to Conversations List
+    Then I see contact list loaded with User name <Contact>
+    
+        Examples: 
+      | Login      | Password      | Name      | Contact   | Contact1  | Message       |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | Hellow friend |
+    
