@@ -98,13 +98,9 @@ public class ConnectToPage extends AndroidPage {
 		return isVisible(pendingText);
 	}
 
-	public void tapEditConnectionRequies() {
+	public void tapEditConnectionRequest() {
 		refreshUITree();
 		connectionRequestMessage.clear();
-		/*
-		 * int length = connectionRequestMessage.getText().length(); for(int i =
-		 * 0; i < length; i++) { driver.sendKeyEvent(67); }
-		 */
 	}
 
 	public void typeConnectionRequies(String message) throws Exception {
