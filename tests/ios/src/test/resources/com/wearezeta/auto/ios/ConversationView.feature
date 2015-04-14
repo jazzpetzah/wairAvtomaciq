@@ -587,6 +587,25 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Picture	 | Color 	   | NewName          |
       | user1Email | user1Password | user1Name | user2Name | testing.jpg | BrightOrange| RotateFullscreen |
       
+  @staging @id2124
+  Scenario Outline: Verify archiving conversation from ellipsis menu
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+	And I open conversation details
+	And I open ellipsis menu
+	And I click archive menu button
+	Then I dont see conversation <Contact> in contact list
+    And I open archived conversations
+    Then I see user <Contact> in contact list
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+      
   @staging @id2132
   Scenario Outline: Verify displaying chathead when another conversation is opened
     Given There are 3 users where <Name> is me

@@ -235,6 +235,13 @@ public final class WebAppLocators {
 				+ "//div[contains(@class, 'carousel-arrows')]//span[contains(@class, 'carousel-arrow-left')]";
 	}
 
+	public static final class ContactsUploadPage {
+		public static final String xpathRootDiv = "//div[@id='self-upload']";
+
+		public static final String xpathCloseButton = xpathRootDiv
+				+ "//*[@data-uie-name='do-close']";
+	}
+
 	public static final class Common {
 
 		public static final String CONTACT_LIST_ONE_PERSON_WAITING = "1 person waiting";
