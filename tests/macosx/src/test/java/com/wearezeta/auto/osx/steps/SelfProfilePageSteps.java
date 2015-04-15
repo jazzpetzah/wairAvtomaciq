@@ -11,6 +11,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.pages.PagesCollection;
 
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -126,4 +127,20 @@ public class SelfProfilePageSteps {
 		String email = dstUser.getEmail();
 		PagesCollection.selfProfilePage.selfProfileEmailEquals(email);
 	}
+
+	/**
+	 * Set new username on self profile page
+	 * 
+	 * @step. ^I change username to (.*)
+	 * 
+	 * @param name
+	 *            new username string
+	 */
+	@And("^I change username to (.*)")
+	public void IChangeUserNameTo(String name) {
+		PagesCollection.selfProfilePage.changeUserName(usrMgr.getSelfUser()
+				.getName(), name);
+		usrMgr.getSelfUser().setName(name);
+	}
+
 }

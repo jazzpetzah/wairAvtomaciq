@@ -8,11 +8,11 @@ Feature: Conversation List
     And I see my name <Name> in Contact list
     When I open conversation with <Contact>
     And I change mute state of conversation with <Contact>
-    And I go to user <Name> profile
+    And I open self profile
     Then I see conversation <Contact> is muted
     When I open conversation with <Contact>
     And I change mute state of conversation with <Contact>
-    And I go to user <Name> profile
+    And I open self profile
     Then I see conversation <Contact> is unmuted
 
     Examples: 
