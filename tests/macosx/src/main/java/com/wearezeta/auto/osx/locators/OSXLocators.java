@@ -193,7 +193,7 @@ public final class OSXLocators {
 
 		public static final String xpathEmailTextField = "//AXTextField[@AXPlaceholderValue='Email']";
 
-		public static final String xpathPasswordTextField = "//AXTextField[@AXPlaceholderValue='Password']";
+		public static final String xpathPasswordTextField = "//AXTextField[@AXPlaceholderValue='Enter new password']";
 
 		public static final String nameChangePasswordButton = "CHANGE PASSWORD";
 
