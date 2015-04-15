@@ -490,8 +490,9 @@ final class BackendREST {
 
 	public static JSONObject searchForContacts(AuthToken token, String query)
 			throws Exception {
+		// Changed this to make it look the same as in webapp
 		Builder webResource = buildDefaultRequestWithAuth(
-				String.format("search/contacts?q=%s",
+				String.format("search/contacts?q=%s&size=30&l=3&d=1",
 						URLEncoder.encode(query, "utf-8")),
 				MediaType.APPLICATION_JSON, token).type(
 				MediaType.APPLICATION_JSON);

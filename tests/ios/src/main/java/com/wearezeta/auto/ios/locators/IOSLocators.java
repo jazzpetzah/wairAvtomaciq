@@ -525,5 +525,13 @@ public final class IOSLocators {
 		
 		public static final String nameArchiveButton = "ARCHIVE";
 	}
+	
+	/////////////
+	//Chathead
+	/////////////
+	public static final String xpathChatheadName = "//UIAStaticText[@name='%s']";
+	public static final String xpathChatheadMessage = "//UIAStaticText[@name='%s']";
+	public static final String nameChatheadAvatarImage = "ChatheadAvatarImage";
+	
 }
 
