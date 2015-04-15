@@ -481,7 +481,10 @@ public class ContactListPage extends IOSPage {
 
 		if (score <= MIN_ACCEPTABLE_IMAGE_PING_VALUE) {
 			return false;
+		} else {
+			return true;
 		}
+	}
 
 	public boolean missedCallIndicatorIsVisible(boolean isFirstInList,
 			String conversation) throws IOException {
