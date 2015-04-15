@@ -150,7 +150,25 @@ public class PersonalInfoPage extends AndroidPage {
 				By.id(AndroidLocators.PersonalInfoPage.idNameField));
 		refreshUITree();
 		this.getWait().until(ExpectedConditions.visibilityOf(nameEdit));
-		nameEdit.clear();
+
+		try {
+			nameEdit.clear();
+		} catch (Exception ex) {
+			//ignore silently
+		}
+		
+		//FIX if nameEdit.clear() failed to clear text
+		int stringLength = nameEdit.getText().length();
+		if (stringLength > 0) {
+			for (int i = 0; i < stringLength; i++) {
+				this.getDriver().sendKeyEvent(22); // "KEYCODE_DPAD_RIGHT"
+			}
+
+			for (int i = 0; i < stringLength; i++) {
+				this.getDriver().sendKeyEvent(67); // "KEYCODE_DEL"
+			}
+		}
+		
 		nameEdit.sendKeys(newName);
 		driver.navigate().back();
 		Thread.sleep(1000);

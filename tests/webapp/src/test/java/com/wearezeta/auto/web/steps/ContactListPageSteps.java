@@ -8,6 +8,8 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.PagesCollection;
+import com.wearezeta.auto.web.pages.PeoplePickerPage;
+import com.wearezeta.auto.web.pages.SelfProfilePage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -20,6 +22,20 @@ public class ContactListPageSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
+	private static final int PEOPLE_PICKER_VISIBILITY_TIMEOUT_SECONDS = 3;
+
+	private void closePeoplePickerIfVisible() throws Exception {
+		if (PagesCollection.peoplePickerPage == null) {
+			PagesCollection.peoplePickerPage = new PeoplePickerPage(
+					PagesCollection.contactListPage.getDriver(),
+					PagesCollection.contactListPage.getWait());
+		}
+		if (PagesCollection.peoplePickerPage
+				.isVisibleAfterTimeout(PEOPLE_PICKER_VISIBILITY_TIMEOUT_SECONDS)) {
+			PagesCollection.peoplePickerPage.closeSearch();
+		}
+	}
+
 	/**
 	 * Checks that we can see signed in user on top of Contact List
 	 * 
@@ -30,15 +46,32 @@ public class ContactListPageSteps {
 	 */
 	@Given("^I see my name on top of Contact list$")
 	public void ISeeMyNameOnTopOfContactList() throws Exception {
-		PagesCollection.peoplePickerPage = PagesCollection.contactListPage
-				.isHiddenByPeoplePicker();
-		if (PagesCollection.peoplePickerPage != null) {
-			PagesCollection.peoplePickerPage.closeSearch();
-		}
+		closePeoplePickerIfVisible();
 		Assert.assertTrue("No contact list loaded.",
 				PagesCollection.contactListPage.waitForContactListVisible());
 		Assert.assertTrue(PagesCollection.contactListPage
 				.isSelfNameEntryExist());
+	}
+
+	/**
+	 * Verify whether self name entry is selected in the convo list
+	 * 
+	 * @step. ^I see my name is selected on top of Contact list$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see my name is selected on top of Contact list$")
+	public void ISeeMyNameIsSelectedOnTopOfContactList() throws Exception {
+		closePeoplePickerIfVisible();
+		Assert.assertTrue("No contact list loaded.",
+				PagesCollection.contactListPage.waitForContactListVisible());
+		Assert.assertTrue(PagesCollection.contactListPage
+				.isSelfNameEntrySelected());
+		if (PagesCollection.selfProfilePage == null) {
+			PagesCollection.selfProfilePage = new SelfProfilePage(
+					PagesCollection.contactListPage.getDriver(),
+					PagesCollection.contactListPage.getWait());
+		}
 	}
 
 	/**
@@ -55,11 +88,7 @@ public class ContactListPageSteps {
 	@Given("I see Contact list with name (.*)")
 	public void GivenISeeContactListWithName(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		PagesCollection.peoplePickerPage = PagesCollection.contactListPage
-				.isHiddenByPeoplePicker();
-		if (PagesCollection.peoplePickerPage != null) {
-			PagesCollection.peoplePickerPage.closeSearch();
-		}
+		closePeoplePickerIfVisible();
 		log.debug("Looking for contact with name " + name);
 		Assert.assertTrue("No contact list loaded.",
 				PagesCollection.contactListPage.waitForContactListVisible());
@@ -89,6 +118,24 @@ public class ContactListPageSteps {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		PagesCollection.conversationPage = PagesCollection.contactListPage
 				.openConversation(contact);
+	}
+
+	/**
+	 * Verifies whether the particular conversation is selected in the list
+	 * 
+	 * @step. ^I see conversation with (.*) is selected in conversations list$
+	 * 
+	 * @param convoName
+	 *            conversation name
+	 * @throws Exception
+	 */
+	@Then("^I see conversation with (.*) is selected in conversations list$")
+	public void ISeeConversationIsSelected(String convoName) throws Exception {
+		convoName = usrMgr.replaceAliasesOccurences(convoName,
+				FindBy.NAME_ALIAS);
+		Assert.assertTrue(String.format("Conversation '%s' should be selected",
+				convoName), PagesCollection.contactListPage
+				.isConversationSelected(convoName));
 	}
 
 	/**

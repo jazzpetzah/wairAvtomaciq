@@ -181,6 +181,34 @@ public class CommonAndroidSteps {
 	}
 
 	/**
+	 * Opens the gallery application (com.google.android.gallery3d)
+	 * 
+	 * @step. ^I open the gallery application$
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	
+	@When("^I open the gallery application$")
+	public void IOpenGalleryApp() throws Exception {
+		AndroidCommonUtils.openGalleryApplication();
+	}
+
+	/**
+	 * Opens the gallery application and shares the default photo to wire (com.google.android.gallery3d)
+	 * 
+	 * @step. ^I share image from Gallery to Wire$
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I share image from Gallery to Wire$")
+	public void IShareImageFromGallery() throws Exception {
+		IOpenGalleryApp();
+		PagesCollection.contactListPage.shareImageToWireFromGallery();
+	}
+	
+	/**
 	 * Takes screenshot for comparison
 	 * 
 	 * @step. ^I take screenshot$
@@ -216,7 +244,7 @@ public class CommonAndroidSteps {
 	@Then("^I compare 1st and 2nd screenshots and they are different$")
 	public void ThenICompare1st2ndScreenshotsAndTheyAreDifferent() {
 		double score = ImageUtil.getOverlapScore(images.get(0), images.get(1));
-		Assert.assertTrue(score < 0.50d);
+		Assert.assertTrue(score < 0.70d);
 		images.clear();
 	}
 

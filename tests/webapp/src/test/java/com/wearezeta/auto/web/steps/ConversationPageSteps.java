@@ -3,9 +3,11 @@ package com.wearezeta.auto.web.steps;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
@@ -13,6 +15,8 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ConversationPageSteps {
+
+	private final CommonSteps commonSteps = CommonSteps.getInstance();
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
@@ -283,6 +287,32 @@ public class ConversationPageSteps {
 	}
 
 	/**
+	 * Verify a text message is visible in conversation
+	 * 
+	 * @step. ^I see text message (.*)
+	 * @param message
+	 * @throws Exception
+	 */
+	@Then("^I see text message (.*)")
+	public void ISeeTextMessage(String message) throws Exception {
+		Assert.assertTrue(PagesCollection.conversationPage
+				.isTextMessageVisible(message));
+	}
+	
+	/**
+	 * Verify a text message is not visible in conversation
+	 * 
+	 * @step. ^I do not see text message (.*)
+	 * @param message
+	 * @throws Exception
+	 */
+	@Then("^I do not see text message (.*)")
+	public void IDontSeeTextMessage(String message) throws Exception {
+		Assert.assertFalse(PagesCollection.conversationPage
+				.isTextMessageVisible(message));
+	}
+	
+	/**
 	 * Verify that there is only one ping message visible in conversation
 	 * 
 	 * @step. ^I see only one ping message$
@@ -326,5 +356,54 @@ public class ConversationPageSteps {
 	@When("^I end the call$")
 	public void IEndTheCall() throws Throwable {
 		PagesCollection.conversationPage.clickCloseButton();
+	}
+
+	/**
+	 * Start a call using autocall tool
+	 * 
+	 * @step. ^Contact (.*) calls to conversation (.*)$
+	 * @param starterNameAlias
+	 *            user who will start a call
+	 * @param destinationNameAlias
+	 *            user who will receive a call
+	 * @throws Exception
+	 */
+	@When("^Contact (.*) calls to conversation (.*)$")
+	public void ContactCallsToConversation(String starterNameAlias,
+			String destinationNameAlias) throws Exception {
+		commonSteps.UserCallsToConversation(starterNameAlias,
+				destinationNameAlias);
+	}
+
+	/**
+	 * End current call initiated by autocall tool
+	 * 
+	 * @step. ^Current call is ended$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^Current call is ended$")
+	public void EndCurrectCall() throws Exception {
+		commonSteps.StopCurrentCall();
+		Thread.sleep(1000);
+	}
+
+	/**
+	 * Verify that conversation contains missed call from contact
+	 * 
+	 * @step. ^I see conversation with missed call from (.*)$
+	 * 
+	 * @param contact
+	 *            contact name string
+	 * 
+	 * @throws NoSuchUserException
+	 */
+	@Then("^I see conversation with missed call from (.*)$")
+	public void ThenISeeConversationWithMissedCallFrom(String contact)
+			throws NoSuchUserException {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName()
+				.toUpperCase();
+		Assert.assertEquals(contact + " CALLED",
+				PagesCollection.conversationPage.getMissedCallMessage());
 	}
 }

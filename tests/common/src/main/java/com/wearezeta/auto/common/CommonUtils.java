@@ -7,9 +7,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.security.MessageDigest;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Dimension;
@@ -36,11 +38,6 @@ public class CommonUtils {
 	
 	private static final Random rand = new Random();
 	public static final int BACKEND_SYNC_TIMEOUT = 5000 + rand.nextInt(4000); // milliseconds
-
-//	public static final String PLATFORM_NAME_OSX = "Mac";
-//	public static final String PLATFORM_NAME_ANDROID = "Android";
-//	public static final String PLATFORM_NAME_IOS = "iOS";
-//	public static final String PLATFORM_NAME_WEB = "ANY";
 
 	private static final Logger log = ZetaLogger.getLog(CommonUtils.class
 			.getSimpleName());
@@ -361,6 +358,14 @@ public class CommonUtils {
 		return getValueFromCommonConfig(c, "jenkinsProjectDir");
 	}
 	
+	public static String getDefaultCallingServiceHostFromConfig(Class<?> c) throws Exception {
+		return getValueFromCommonConfig(c, "defaultCallingServiceHost");
+	}
+	
+	public static String getDefaultCallingServicePortFromConfig(Class<?> c) throws Exception {
+		return getValueFromCommonConfig(c, "defaultCallingServicePort");
+	}
+	
 	public static BufferedImage getElementScreenshot(WebElement element,
 			AppiumDriver driver) throws IOException {
 		return getElementScreenshot(element, driver, "iPhone 6");
@@ -442,5 +447,12 @@ public class CommonUtils {
 		System.setProperty(
 				"org.apache.commons.logging.simplelog.log.org.apache.http",
 				"warn");
+	}
+	
+	public static String encodeSHA256Base64(String item) throws Exception {
+		final MessageDigest md = MessageDigest.getInstance("SHA-256");
+		md.update(item.getBytes("UTF-8"));
+		final byte[] digest = md.digest();
+		return Base64.encodeBase64String(digest);
 	}
 }

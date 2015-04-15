@@ -110,7 +110,7 @@ public class ContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.androidPage = PagesCollection.contactListPage
+		 PagesCollection.androidPage = PagesCollection.contactListPage
 				.tapOnName(value);
 	}
 

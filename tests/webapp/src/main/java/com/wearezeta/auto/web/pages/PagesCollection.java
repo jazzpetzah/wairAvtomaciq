@@ -26,4 +26,6 @@ public class PagesCollection extends AbstractPagesCollection {
 	public static RegistrationPage registrationPage = null;
 	
 	public static SelfPictureUploadPage selfPictureUploadPage = null;
+	
+	public static ContactsUploadPage contactsUploadPage = null;
 }

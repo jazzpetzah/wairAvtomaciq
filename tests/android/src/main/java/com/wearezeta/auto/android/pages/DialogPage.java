@@ -182,6 +182,7 @@ public class DialogPage extends AndroidPage {
 
 	public void tapAddPictureBtn() {
 		refreshUITree();
+		this.getWait().until(ExpectedConditions.visibilityOf(addPictureBtn));
 		addPictureBtn.click();
 	}
 
@@ -295,6 +296,8 @@ public class DialogPage extends AndroidPage {
 
 	public String getConnectRequestChatLabel() throws Exception {
 		if (isConnectRequestChatLabelVisible()) {
+			refreshUITree();
+			this.getWait().until(ExpectedConditions.visibilityOf(connectRequestChatLabel));
 			return connectRequestChatLabel.getText().toLowerCase().trim();
 		} else {
 			return "CHAT HEAD NOT FOUND";
@@ -314,7 +317,7 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public ContactListPage navigateBack() throws Exception {
-		driver.navigate().back();
+		swipeRightCoordinates(1000);
 		return new ContactListPage(this.getDriver(), this.getWait());
 	}
 
@@ -341,6 +344,10 @@ public class DialogPage extends AndroidPage {
 	public void closeFullScreenImage() {
 		refreshUITree();
 		closeImageBtn.click();
+	}
+	
+	public void tapConversationDetailsButton() {
+		addParticipant.click();
 	}
 
 	public void sendFrontCameraImage() throws Exception {

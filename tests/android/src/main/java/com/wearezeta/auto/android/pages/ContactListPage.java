@@ -77,6 +77,15 @@ public class ContactListPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idSearchHintClose")
 	private WebElement closeHintBtn;
+	
+	@FindBy(xpath = AndroidLocators.CommonLocators.xpathGalleryCameraAlbum)
+	private WebElement galleryCameraAlbumButton;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idConversationSendOption")
+	private WebElement conversationShareOption;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idConfirmBtn")
+	private WebElement confirmShareButton;
 
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
 			.getSimpleName());
@@ -320,5 +329,30 @@ public class ContactListPage extends AndroidPage {
 	public boolean isVisibleMissedCallIcon() throws Exception {
 		refreshUITree();
 		return isVisible(missedCallIcon);
+	}
+	
+	public void shareImageToWireFromGallery(){
+		galleryCameraAlbumButton.click();
+		List<WebElement> galleryImageViews = driver.findElementsByClassName("android.widget.ImageView");
+		for(WebElement imageView: galleryImageViews){
+			if(imageView.getAttribute("name").equals("Share with")){
+				imageView.click();
+			}
+		}
+		List<WebElement> textViewElements = driver.findElementsByClassName("android.widget.TextView");
+		for(WebElement textView: textViewElements){
+			if(textView.getAttribute("text").equals("See all")){
+				textView.click();
+			}
+		}
+		//find elements again
+		textViewElements = driver.findElementsByClassName("android.widget.TextView");
+		for(WebElement textView: textViewElements){
+			if(textView.getAttribute("text").equals("Wire")){
+				textView.click();
+			}
+		}
+		conversationShareOption.click();
+		confirmShareButton.click();
 	}
 }

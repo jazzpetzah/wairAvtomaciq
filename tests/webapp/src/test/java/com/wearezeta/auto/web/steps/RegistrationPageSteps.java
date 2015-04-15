@@ -199,9 +199,13 @@ public class RegistrationPageSteps {
 		ActivationPage activationPage = new ActivationPage(
 				PagesCollection.registrationPage.getDriver(),
 				PagesCollection.registrationPage.getWait(), link);
-		activationPage.openInNewTab();
+		activationPage.navigateTo();
 		activationPage.verifyActivation(ACTIVATION_TIMEOUT);
-		activationPage.close();
+		PagesCollection.loginPage.navigateTo();
+
+//		activationPage.openInNewTab();
+//		activationPage.verifyActivation(ACTIVATION_TIMEOUT);
+//		activationPage.close();
 
 		this.userToRegister.setUserState(UserState.Created);
 		// indexes in aliases start from 1
@@ -213,7 +217,5 @@ public class RegistrationPageSteps {
 		userToRegister
 				.addPasswordAlias(ClientUsersManager.PASSWORD_ALIAS_TEMPLATE
 						.apply(userIndex));
-		
-		PagesCollection.loginPage.navigateTo();
 	}
 }

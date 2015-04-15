@@ -24,13 +24,16 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @smoke @id2064
+  # Moved to staging because of https://wearezeta.atlassian.net/browse/WEBAPP-1020
+  @staging @id2064
   Scenario Outline: Photo selection dialogue - choose picture from library
     Given There is 1 user where <Name> is me without avatar picture
     And I Sign in using login <Login> and password <Password>
     And I see Self Picture Upload dialog
     And I choose <PictureName> as my self picture on Self Picture Upload dialog
     And I confirm picture selection on Self Picture Upload dialog
+    And I see Contacts Upload dialog
+    And I close Contacts Upload dialog
     Then I see my name on top of Contact list
     When I open self profile
     And I click gear button on self profile page
@@ -44,8 +47,9 @@ Feature: Registration
     Examples: 
       | Login      | Password      | Name      | PictureName               |
       | user1Email | user1Password | user1Name | userpicture_landscape.jpg |
-      
-  @smoke @id2065
+
+  # Moved to staging because of https://wearezeta.atlassian.net/browse/WEBAPP-1020
+  @staging @id2065
   Scenario Outline: Photo selection dialogue - choose picture from carousel
     Given There is 1 user where <Name> is me without avatar picture
     And I Sign in using login <Login> and password <Password>
@@ -53,6 +57,8 @@ Feature: Registration
     And I force carousel mode on Self Picture Upload dialog
     And I select random picture from carousel on Self Picture Upload dialog
     And I confirm picture selection on Self Picture Upload dialog
+    And I see Contacts Upload dialog
+    And I close Contacts Upload dialog
     Then I see my name on top of Contact list
     When I open self profile
     And I click gear button on self profile page

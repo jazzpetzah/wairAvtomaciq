@@ -281,6 +281,13 @@ public final class AndroidLocators {
 		public static final String idSearchHintClose = LOCATORS_PACKAGE
 				+ ":id/zb__search_hint__close_button";
 
+		public static final String xpathGalleryCameraAlbum = "//android.widget.FrameLayout[1]/android.widget.RelativeLayout[1]/android.view.View[1]";
+
+		public static final String xpathGalleryMoreShareOptions = "//android.widget.ListView[1]/android.widget.LinearLayout[%s]/android.widget.LinearLayout[1]/android.widget.TextView[1]";
+		
+		public static final String idConversationSendOption = LOCATORS_PACKAGE
+				+ ":id/tv_conv_list_topic";
+		
 		public static final String xpathDismissUpdateButton = "//android.widget.Button[@text='Dismiss']";
 
 		public static final String xpathConfirmBtn42 = "//android.widget.TextView[@text='LEAVE' or @text='REMOVE']";
@@ -309,7 +316,7 @@ public final class AndroidLocators {
 				+ ":id/gtv__conversation_header__mediabar__cancel";
 
 		public static final String idPlayPauseMedia = LOCATORS_PACKAGE
-				+ ":id/iv__media_play";
+				+ ":id/gtv__media_play";
 
 		public static final String idAddParticipants = LOCATORS_PACKAGE
 				+ ":id/gtv__cursor_participants";
@@ -374,14 +381,18 @@ public final class AndroidLocators {
 				+ ":id/ltv__row_conversation__message' and @text='%s']";
 
 		public static final String xpathMessage = "//android.widget.LinearLayout/android.widget.TextView[contains(@text,'%s')]";
+		
+		public static final String xpathPing42 = "//android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.TextView[2]";
 
+		public static final String xpathAddPicture42 = "//android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.TextView[1]";
+		
 		public static final String xpathBackgroundOverlay42 = "//android.widget.FrameLayout/android.widget.ListView";
 
 		public static final String xpathCursorFrame42 = "//android.support.v4.view.ViewPager/android.widget.ListView/android.widget.FrameLayout";
 
 		public static final String xpathMessage42 = "//android.widget.LinearLayout[ancestor::android.widget.ListView]/android.widget.LinearLayout/android.widget.TextView";
 
-		public static final String xpathConnectRequestChatLabel42 = "//android.widget.TextView[@text='Connected to ']";
+		public static final String xpathConnectRequestChatLabel42 = "//android.widget.TextView[contains(@text, 'Connected to')]";
 
 		public static final String xpathConnectRequestChatUserName42 = "//android.widget.TextView[preceding-sibling::android.widget.TextView[@text='Connected to ']]";
 
@@ -465,9 +476,9 @@ public final class AndroidLocators {
 
 		public static final String xpathOtherUserPersonalInfoSingleName42 = "//android.widget.LinearLayout[child::android.widget.TextView]/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.TextView";
 
-		public static final String xpathLeftActionButton42 = "//android.widget.RelativeLayout/android.widget.RelativeLayout[following-sibling::android.widget.TextView]/android.widget.TextView";
+		public static final String xpathLeftActionButton42 = "//android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.TextView[1]";
 
-		public static final String xpathRightActionButton42 = "//android.widget.RelativeLayout/android.widget.TextView[preceding-sibling::android.widget.RelativeLayout]";
+		public static final String xpathRightActionButton42 = "//android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout[2]/android.widget.TextView[1]";
 
 		public static final String xpathParticipantsHeader42 = "//android.widget.FrameLayout[following-sibling::android.widget.TextView]/android.widget.LinearLayout/android.widget.TextView";
 
@@ -584,6 +595,8 @@ public final class AndroidLocators {
 		public static final String xpathSendConnectionRequestButton42 = "//android.widget.FrameLayout[preceding-sibling::android.widget.RelativeLayout]/android.widget.TextView";
 
 		public static final String xpathPickerBtnDone42 = "//android.widget.TextView[@text='ADD TO CONVERSATION']";
+		
+		public static final String xpathParticipantsClose42 = "//android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.TextView";
 
 	}
 

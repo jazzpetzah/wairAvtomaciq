@@ -29,9 +29,6 @@ public class ConversationPage extends WebPage {
 	private static final Logger log = ZetaLogger.getLog(ConversationPage.class
 			.getSimpleName());
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathTextMessageEntry)
-	private List<WebElement> textMessageEntries;
-
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathImageMessageEntry)
 	private List<WebElement> imageMessageEntries;
 
@@ -81,9 +78,8 @@ public class ConversationPage extends WebPage {
 
 	public boolean isMessageSent(String message) throws Exception {
 		final By locator = By
-				.xpath(String
-						.format(WebAppLocators.ConversationPage.xpathFormatSpecificTextMessageEntry,
-								message));
+				.xpath(WebAppLocators.ConversationPage.xpathMessageEntryByText
+						.apply(message));
 		return DriverUtils.isElementDisplayed(driver, locator, 5);
 	}
 
@@ -204,5 +200,21 @@ public class ConversationPage extends WebPage {
 		final By locator = By
 				.xpath(WebAppLocators.ConversationPage.xpathCloseButton);
 		driver.findElement(locator).click();
+	}
+
+	private static final int TEXT_MESSAGE_VISIBILITY_TIMEOUT_SECONDS = 5;
+
+	public boolean isTextMessageVisible(String message) throws Exception {
+		final By locator = By
+				.xpath(WebAppLocators.ConversationPage.textMessageByText
+						.apply(message));
+		return DriverUtils.isElementDisplayed(driver, locator,
+				TEXT_MESSAGE_VISIBILITY_TIMEOUT_SECONDS);
+	}
+
+	public String getMissedCallMessage() {
+		final By locator = By
+				.xpath(WebAppLocators.ConversationPage.xpathMissedCallAction);
+		return driver.findElement(locator).getText();
 	}
 }

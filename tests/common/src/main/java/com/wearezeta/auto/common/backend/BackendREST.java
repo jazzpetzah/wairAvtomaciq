@@ -24,6 +24,7 @@ import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource.Builder;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.onboarding.AddressBook;
 import com.wearezeta.auto.image_send.*;
 
 import java.awt.image.BufferedImage;
@@ -132,7 +133,8 @@ final class BackendREST {
 		requestBody.put("password", password);
 		requestBody.put("label", "");
 		final String output = httpPost(webResource, requestBody.toString(),
-				new int[] { HttpStatus.SC_OK });;
+				new int[] { HttpStatus.SC_OK });
+		;
 		writeLog(new String[] {
 				"Output from Server ....  login By User " + email,
 				output + "\n" });
@@ -364,8 +366,7 @@ final class BackendREST {
 		return new JSONObject(output);
 	}
 
-	public static JSONObject getLastEventIDs(AuthToken token)
-			throws Exception {
+	public static JSONObject getLastEventIDs(AuthToken token) throws Exception {
 		Builder webResource = buildDefaultRequestWithAuth(
 				String.format("conversations/last-events"),
 				MediaType.APPLICATION_JSON, token);
@@ -460,8 +461,7 @@ final class BackendREST {
 	}
 
 	public static void updateConvSelfInfo(AuthToken token, String convId,
-			String lastRead, Boolean muted, Boolean archived)
-			throws Exception {
+			String lastRead, Boolean muted, Boolean archived) throws Exception {
 		Builder webResource = buildDefaultRequestWithAuth(
 				String.format("conversations/%s/self", convId),
 				MediaType.APPLICATION_JSON, token).type(
@@ -490,14 +490,58 @@ final class BackendREST {
 
 	public static JSONObject searchForContacts(AuthToken token, String query)
 			throws Exception {
+		// Changed this to make it look the same as in webapp
 		Builder webResource = buildDefaultRequestWithAuth(
-				String.format("search/contacts?q=%s",
+				String.format("search/contacts?q=%s&size=30&l=3&d=1",
 						URLEncoder.encode(query, "utf-8")),
 				MediaType.APPLICATION_JSON, token).type(
 				MediaType.APPLICATION_JSON);
 		final String output = httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
 		writeLog(new String[] { "Output from Server .... Search for contacts "
+				+ output + "\n" });
+		return new JSONObject(output);
+	}
+
+	public static JSONObject addContactsToGroupConvo(AuthToken token,
+			List<String> contactsIds, String conversationId) throws Exception {
+		Builder webResource = buildDefaultRequestWithAuth(
+				String.format("conversations/%s/members",
+						URLEncoder.encode(conversationId, "utf-8")),
+				MediaType.APPLICATION_JSON, token).type(
+				MediaType.APPLICATION_JSON);
+		JSONObject requestBody = new JSONObject();
+		JSONArray userIds = new JSONArray();
+		for (String userId : contactsIds) {
+			userIds.put(userId);
+		}
+		requestBody.put("users", userIds);
+		final String output = httpPost(webResource, requestBody.toString(),
+				new int[] { HttpStatus.SC_OK, HttpStatus.SC_NO_CONTENT });
+		writeLog(new String[] { "Output from Server .... Add contacts to group convo "
+				+ output + "\n" });
+		return new JSONObject(output);
+	}
+
+	public static JSONObject uploadAddressBook(AuthToken token,
+			AddressBook addressBook) throws Exception {
+		Builder webResource = buildDefaultRequestWithAuth("onboarding/v3",
+				MediaType.APPLICATION_JSON, token).type(
+				MediaType.APPLICATION_JSON);
+		final String output = httpPost(webResource, addressBook.asJSONObject()
+				.toString(), new int[] { HttpStatus.SC_OK });
+		writeLog(new String[] { "Output from Server .... Upload Address Book v3 "
+				+ output + "\n" });
+		return new JSONObject(output);
+	}
+
+	public static JSONObject getSuggestions(AuthToken token) throws Exception {
+		Builder webResource = buildDefaultRequestWithAuth("search/suggestions",
+				MediaType.APPLICATION_JSON, token).type(
+				MediaType.APPLICATION_JSON);
+		final String output = httpGet(webResource,
+				new int[] { HttpStatus.SC_OK });
+		writeLog(new String[] { "Output from Server .... Get Suggestions "
 				+ output + "\n" });
 		return new JSONObject(output);
 	}

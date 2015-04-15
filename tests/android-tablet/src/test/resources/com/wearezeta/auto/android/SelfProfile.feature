@@ -1,17 +1,95 @@
 Feature: Self Profile
 
   @id328 @staging
-    Scenario Outline: ZClient change name
+  Scenario Outline: ZClient change name in portrait mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in to self profile using login <Login> and password <Password>
-    When I tap on my name
+    And I rotate UI to portrait
+    Given I Sign in on tablet using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    And I see personal info page
+    And I wait for 10 seconds
+    And I tap on my name
     And I change <Name> to <NewName>
-    Then I see personal info page loaded with my name <NewName>
-    When I tap on my name
-    And I change <NewName> to <Name>
-    Then I see personal info page loaded with my name <Name>
+    And I swipe right to contact list
+    Then I see contact list loaded with User name <NewName>
+    When I tap on my name <NewName>
+    Then I see my new name <NewName> and return old <Name>
 
     Examples: 
       | Login      | Password      | Name      | NewName     | Contact   |
       | user1Email | user1Password | user1Name | NewTestName | user2Name |
+
+  @id328 @staging
+  Scenario Outline: ZClient change name in landscape mode
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    And I rotate UI to landscape
+    Given I Sign in on tablet using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    And I see personal info page
+    And I wait for 10 seconds
+    And I tap on my name
+    And I change <Name> to <NewName>
+    Then I see contact list loaded with User name <NewName>
+    When I tap on my name <NewName>
+    Then I see my new name <NewName> and return old <Name>
+
+    Examples: 
+      | Login      | Password      | Name      | NewName     | Contact   |
+      | user1Email | user1Password | user1Name | NewTestName | user2Name |
+
+  @id325 @staging
+  Scenario Outline: Check contact personal info in portrait mode
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    And I rotate UI to portrait
+    Given I Sign in on tablet using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see tablet dialog page
+    And I tap on profile button
+    Then I see <Contact> user name and email
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @id325 @staging
+  Scenario Outline: Check contact personal info in landscape mode
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    And I rotate UI to landscape
+    Given I Sign in on tablet using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see tablet dialog page
+    And I tap on profile button
+    Then I see <Contact> user name and email
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @id205 @staging
+  Scenario Outline: Change user picture in portrait mode
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    And I rotate UI to portrait
+    Given I Sign in on tablet using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    And I tap on tablet personal info screen
+    And I tap change photo button
+    And I press Gallery button
+    And I select picture
+    And I press Confirm button
+    And I wait for 120 seconds
+    And I tap on tablet personal info screen
+    Then I see changed user picture
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |

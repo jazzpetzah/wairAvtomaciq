@@ -6,6 +6,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.android.locators.TabletAndroidLocators;
+import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
 import com.wearezeta.auto.common.locators.ZetaHow;
@@ -17,6 +18,9 @@ public class TabletDialogPage extends DialogPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = TabletAndroidLocators.TabletDialogPage.CLASS_NAME, locatorKey = "idParticipantsClose")
 	private WebElement participantsClose;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = TabletAndroidLocators.TabletDialogPage.CLASS_NAME, locatorKey = "idRootParticipantContainer")
+	private WebElement participantContainer;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsHeader")
 	private WebElement otherUserName;
@@ -30,6 +34,8 @@ public class TabletDialogPage extends DialogPage {
 	}
 
 	public boolean isProfileButtonDisplayed() throws Exception {
+		refreshUITree();
+		this.getWait().until(ExpectedConditions.visibilityOf(profileButton));
 		return isVisible(profileButton);
 	}
 
@@ -55,5 +61,12 @@ public class TabletDialogPage extends DialogPage {
 		} else {
 			return false;
 		}
+	}
+	
+	@Override
+	public AndroidPage swipeUp(int time) throws Exception {
+		elementSwipeUp(participantContainer, time);// TODO workaround
+		Thread.sleep(1000);
+		return returnBySwipe(SwipeDirection.UP);
 	}
 }

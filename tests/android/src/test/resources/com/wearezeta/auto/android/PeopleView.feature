@@ -104,7 +104,11 @@ Feature: People View
     And I swipe up on dialog page
     Then I see that the conversation name is <GroupChatName>
     And I see the correct number of participants in the title <ParticipantNumber>
-    And I see the correct participant <Contact1NewName> and <Contact2NewName> avatars
+    And I return to group chat page
+    When I navigate back from dialog page
+    And I tap on contact name <GroupChatName>
+    And I tap conversation details button
+    Then I see the correct participant <Contact1NewName> and <Contact2NewName> avatars
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName  | Picture                      | Color1       | Color2       | Contact1NewName   | Contact2NewName       |

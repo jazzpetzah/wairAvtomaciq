@@ -98,6 +98,10 @@ public class LoginPage extends AndroidPage {
 		this.getWait().until(
 				ExpectedConditions.elementToBeClickable(forgotPasswordButton));
 		forgotPasswordButton.click();
+		Thread.sleep(2000);
+		if(isVisible(forgotPasswordButton)) {
+			DriverUtils.androidMultiTap(this.getDriver(), forgotPasswordButton, 1, 50);
+		}
 		return new CommonAndroidPage(this.getDriver(), this.getWait());
 	}
 
@@ -168,16 +172,16 @@ public class LoginPage extends AndroidPage {
 			refreshUITree();
 			if (isVisible(pickerClearBtn)) {
 				pickerClearBtn.click();
-			} else {
+			} /*else {
 				if (!isVisible(yourUser)) {
 					navigateBack();
 				}
-			}
+			}*/
 			refreshUITree();
 		}
-		return DriverUtils.waitForElementWithTextByXPath(
+		return ( isVisible(yourUser) && DriverUtils.waitForElementWithTextByXPath(
 				AndroidLocators.ContactListPage.xpathContacts, contact,
-				this.getDriver());
+				this.getDriver()));
 	}
 
 	public Boolean isWelcomeButtonsExist() {
