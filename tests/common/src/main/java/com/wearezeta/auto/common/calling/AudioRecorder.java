@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 
-public class AudioRecorder {
+class AudioRecorder {
 
 	private static final Logger log = ZetaLogger.getLog(AudioRecorder.class
 			.getSimpleName());

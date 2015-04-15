@@ -12,7 +12,6 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource.Builder;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.calling.models.CallingServiceBackend;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
@@ -28,9 +27,9 @@ final class CallingSericeREST {
 					.format("%s%s:%s",
 							URL_PROTOCOL,
 							CommonUtils
-									.getDefaultCallingServiceHostFromConfig(CallingUtil.class),
+									.getDefaultCallingServiceHostFromConfig(CallingSericeREST.class),
 							CommonUtils
-									.getDefaultCallingServicePortFromConfig(CallingUtil.class));
+									.getDefaultCallingServicePortFromConfig(CallingSericeREST.class));
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e.getMessage());
@@ -40,7 +39,7 @@ final class CallingSericeREST {
 	private static Client client = Client.create();
 
 	private static void verifyRequestResult(int currentResponseCode,
-			int[] acceptableResponseCodes) throws BackendRequestException {
+			int[] acceptableResponseCodes) throws CallingServiceException {
 		if (acceptableResponseCodes.length > 0) {
 			boolean isResponseCodeAcceptable = false;
 			for (int code : acceptableResponseCodes) {
@@ -50,7 +49,7 @@ final class CallingSericeREST {
 				}
 			}
 			if (!isResponseCodeAcceptable) {
-				throw new BackendRequestException(
+				throw new CallingServiceException(
 						String.format(
 								"Backend request failed. Request return code is: %d. Expected codes are: %s",
 								currentResponseCode,
@@ -61,153 +60,126 @@ final class CallingSericeREST {
 	}
 
 	private static String httpPost(Builder webResource, Object entity,
-			int[] acceptableResponseCodes) throws BackendRequestException {
-		Object lock = new Object();
-		ClientResponse response;
-		synchronized (lock) {
-			response = webResource.post(ClientResponse.class, entity);
-		}
-		log.debug("HTTP POST request(Input data: " + entity + ", Response: "
-				+ response.toString() + ")");
+			int[] acceptableResponseCodes) throws CallingServiceException {
+		final ClientResponse response = webResource.post(ClientResponse.class,
+				entity);
+		log.debug("HTTP POST request.\nInput data:\n" + entity.toString()
+				+ "\nResponse:\n" + response.toString());
 		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
 		return response.getEntity(String.class);
 	}
 
 	private static String httpPut(Builder webResource, Object entity,
-			int[] acceptableResponseCodes) throws BackendRequestException {
+			int[] acceptableResponseCodes) throws CallingServiceException {
 		ClientResponse response = webResource.put(ClientResponse.class, entity);
-		log.debug("HTTP PUT request(Input data: " + entity + ", Response: "
-				+ response.toString() + ")");
+		log.debug("HTTP PUT request.\nInput data:\n" + entity.toString()
+				+ "\nResponse:\n" + response.toString());
 		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
 		return response.getEntity(String.class);
 	}
 
 	private static String httpGet(Builder webResource,
-			int[] acceptableResponseCodes) throws BackendRequestException {
+			int[] acceptableResponseCodes) throws CallingServiceException {
 		ClientResponse response = webResource.get(ClientResponse.class);
-		log.debug("HTTP GET request(Response: " + response.toString() + ")");
+		log.debug("HTTP GET request.\nResponse:\n" + response.toString());
 		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
 		return response.getEntity(String.class);
 	}
 
 	private static Builder buildDefaultRequest(String restAction, String accept) {
-		return client
-				.resource(String.format("%s/%s", getApiRoot(), restAction))
-				.accept(accept).type(MediaType.APPLICATION_JSON);
+		final String dstUrl = String.format("%s/%s", getApiRoot(), restAction);
+		log.debug(String.format("Request to %s...", dstUrl));
+		return client.resource(dstUrl).accept(accept)
+				.type(MediaType.APPLICATION_JSON);
 	}
 
-	private synchronized static void writeLog(String[] lines) {
-		for (String line : lines) {
-			log.debug(line);
-		}
+	private static Builder buildDefaultRequest(String restAction) {
+		return buildDefaultRequest(restAction, MediaType.WILDCARD);
 	}
 
 	public static JSONObject makeCall(String email, String password,
 			String conversationId, String backend,
-			CallingServiceBackend callBackend) throws BackendRequestException {
-		Builder webResource = buildDefaultRequest("api/call",
-				MediaType.APPLICATION_JSON);
-
+			CallingServiceBackend callBackend) throws CallingServiceException {
+		Builder webResource = buildDefaultRequest("api/call");
 		final JSONObject requestBody = new JSONObject();
 		requestBody.put("email", email);
 		requestBody.put("password", password);
 		requestBody.put("conversationId", conversationId);
 		requestBody.put("backend", backend);
 		requestBody.put("callBackend", callBackend.toString());
-
 		final String output = httpPost(webResource, requestBody.toString(),
 				new int[] { HttpStatus.SC_OK, HttpStatus.SC_CREATED });
-		writeLog(new String[] { "Output from Server .... makeCall ",
-				output + "\n" });
 		return new JSONObject(output);
 	}
 
 	public static JSONObject getCallStatus(String id)
-			throws BackendRequestException {
-		Builder webResource = buildDefaultRequest(
-				String.format("api/call/%s/status", id),
-				MediaType.APPLICATION_JSON);
+			throws CallingServiceException {
+		Builder webResource = buildDefaultRequest(String.format(
+				"api/call/%s/status", id));
 		final String output = httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
-		writeLog(new String[] { "Output from Server .... getCallStatus ",
-				output + "\n" });
 		return new JSONObject(output);
 	}
 
-	public static void muteCall(String id) throws BackendRequestException {
-		Builder webResource = buildDefaultRequest(
-				String.format("api/call/%s/mute", id),
-				MediaType.APPLICATION_JSON);
+	public static void muteCall(String id) throws CallingServiceException {
+		Builder webResource = buildDefaultRequest(String.format(
+				"api/call/%s/mute", id));
 		httpPut(webResource, "", new int[] { HttpStatus.SC_OK });
 	}
 
-	public static void unmuteCall(String id) throws BackendRequestException {
-		Builder webResource = buildDefaultRequest(
-				String.format("api/call/%s/unmute", id),
-				MediaType.APPLICATION_JSON);
+	public static void unmuteCall(String id) throws CallingServiceException {
+		Builder webResource = buildDefaultRequest(String.format(
+				"api/call/%s/unmute", id));
 		httpPut(webResource, "", new int[] { HttpStatus.SC_OK });
 	}
 
-	public static void stopCall(String id) throws BackendRequestException {
-		Builder webResource = buildDefaultRequest(
-				String.format("api/call/%s/stop", id),
-				MediaType.APPLICATION_JSON);
+	public static void stopCall(String id) throws CallingServiceException {
+		Builder webResource = buildDefaultRequest(String.format(
+				"api/call/%s/stop", id));
 		httpGet(webResource, new int[] { HttpStatus.SC_OK });
 	}
 
 	public static JSONObject makeWaitingInstance(String email, String password,
 			String backend, CallingServiceBackend callBackend)
-			throws BackendRequestException {
-		Builder webResource = buildDefaultRequest("api/waitingInstance",
-				MediaType.APPLICATION_JSON);
-
+			throws CallingServiceException {
+		Builder webResource = buildDefaultRequest("api/waitingInstance");
 		final JSONObject requestBody = new JSONObject();
 		requestBody.put("email", email);
 		requestBody.put("password", password);
 		requestBody.put("backend", backend);
 		requestBody.put("callBackend", callBackend.toString());
-
 		final String output = httpPost(webResource, requestBody.toString(),
 				new int[] { HttpStatus.SC_OK, HttpStatus.SC_CREATED });
-		writeLog(new String[] { "Output from Server .... makeWaitingInstance ",
-				output + "\n" });
 		return new JSONObject(output);
 	}
 
 	public static JSONObject getWaitingInstanceStatus(String id)
-			throws BackendRequestException {
-		Builder webResource = buildDefaultRequest(
-				String.format("api/waitingInstance/%s/status", id),
-				MediaType.APPLICATION_JSON);
+			throws CallingServiceException {
+		Builder webResource = buildDefaultRequest(String.format(
+				"api/waitingInstance/%s/status", id));
 		final String output = httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
-		writeLog(new String[] {
-				"Output from Server .... getWaitingInstancetatus ",
-				output + "\n" });
 		return new JSONObject(output);
 	}
 
 	public static void muteWaitingInstance(String id)
-			throws BackendRequestException {
-		Builder webResource = buildDefaultRequest(
-				String.format("api/waitingInstance/%s/mute", id),
-				MediaType.APPLICATION_JSON);
+			throws CallingServiceException {
+		Builder webResource = buildDefaultRequest(String.format(
+				"api/waitingInstance/%s/mute", id));
 		httpPut(webResource, "", new int[] { HttpStatus.SC_OK });
 	}
 
 	public static void unmuteWaitingInstance(String id)
-			throws BackendRequestException {
-		Builder webResource = buildDefaultRequest(
-				String.format("api/waitingInstance/%s/unmute", id),
-				MediaType.APPLICATION_JSON);
+			throws CallingServiceException {
+		Builder webResource = buildDefaultRequest(String.format(
+				"api/waitingInstance/%s/unmute", id));
 		httpPut(webResource, "", new int[] { HttpStatus.SC_OK });
 	}
 
 	public static void stopWaitingInstance(String id)
-			throws BackendRequestException {
-		Builder webResource = buildDefaultRequest(
-				String.format("api/waitingInstance/%s/stop", id),
-				MediaType.APPLICATION_JSON);
+			throws CallingServiceException {
+		Builder webResource = buildDefaultRequest(String.format(
+				"api/waitingInstance/%s/stop", id));
 		httpGet(webResource, new int[] { HttpStatus.SC_OK });
 	}
 

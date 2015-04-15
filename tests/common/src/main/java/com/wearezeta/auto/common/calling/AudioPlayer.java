@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 
-public class AudioPlayer {
+class AudioPlayer {
 
 	private static final Logger log = ZetaLogger.getLog(AudioPlayer.class
 			.getSimpleName());

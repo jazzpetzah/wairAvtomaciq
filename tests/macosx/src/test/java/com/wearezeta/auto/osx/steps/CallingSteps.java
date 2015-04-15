@@ -5,12 +5,10 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.CommonSteps;
-import com.wearezeta.auto.common.calling.AudioPlayer;
-import com.wearezeta.auto.common.calling.AudioRecorder;
-import com.wearezeta.auto.common.calling.CallingUtil;
+import com.wearezeta.auto.common.CommonCallingSteps;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -19,10 +17,11 @@ public class CallingSteps {
 	private static final Logger log = ZetaLogger.getLog(CallingSteps.class
 			.getSimpleName());
 
-	private final CommonSteps commonSteps = CommonSteps.getInstance();
+	private final CommonCallingSteps commonCallingSteps = CommonCallingSteps
+			.getInstance();
 
-	private AudioRecorder recorder;
-	private AudioPlayer player;
+	// private AudioRecorder recorder;
+	// private AudioPlayer player;
 
 	/**
 	 * Calls to specifed user
@@ -39,7 +38,7 @@ public class CallingSteps {
 	@When("^(.*) calls (.*)$")
 	public void UserCallsToConversation(String callerUserNameAlias,
 			String conversationNameAlias) throws Exception {
-		commonSteps.UserXCallsToUserYUsingToolZ(callerUserNameAlias,
+		commonCallingSteps.UserXCallsToUserYUsingToolZ(callerUserNameAlias,
 				conversationNameAlias);
 	}
 
@@ -64,14 +63,15 @@ public class CallingSteps {
 	 */
 	@When("^I start listening to caller$")
 	public void IStartListeningToCaller() throws Exception {
-		// TODO: store previous input and output
-		CallingUtil.setSpeakerSource(CallingUtil.SOUNDFLOWER_2CH);
-		CallingUtil.setMicrophoneSource(CallingUtil.SOUNDFLOWER_2CH);
-		CallingUtil.setInputVolume(100);
-		CallingUtil.setOutputVolume(100);
-		recorder = new AudioRecorder(CallingUtil.AUDIO_TOOLS_PATH
-				+ "/output.wav");
-		recorder.captureAudio();
+		throw new PendingException(
+				"This stuff has to be implemented on the calling backend");
+		// CallingUtil.setSpeakerSource(CallingUtil.SOUNDFLOWER_2CH);
+		// CallingUtil.setMicrophoneSource(CallingUtil.SOUNDFLOWER_2CH);
+		// CallingUtil.setInputVolume(100);
+		// CallingUtil.setOutputVolume(100);
+		// recorder = new AudioRecorder(CallingUtil.AUDIO_TOOLS_PATH
+		// + "/output.wav");
+		// recorder.captureAudio();
 	}
 
 	/**
@@ -86,8 +86,11 @@ public class CallingSteps {
 	 */
 	@When("^Caller says (.*) to call$")
 	public void ContactSaysToCall(String filename) throws IOException {
-		player = new AudioPlayer(CallingUtil.AUDIO_TOOLS_PATH + "/" + filename);
-		player.playAudio();
+		throw new PendingException(
+				"This stuff has to be implemented on the calling backend");
+		// player = new AudioPlayer(CallingUtil.AUDIO_TOOLS_PATH + "/" +
+		// filename);
+		// player.playAudio();
 	}
 
 	/**
@@ -99,11 +102,13 @@ public class CallingSteps {
 	 */
 	@When("^I stop listening to caller$")
 	public void IStopListeningToContact() throws Exception {
-		CallingUtil.setInputVolume(50);
-		CallingUtil.setOutputVolume(50);
-		CallingUtil.setSpeakerSource(CallingUtil.HEADPHONES);
-		CallingUtil.setMicrophoneSource(CallingUtil.INTERNAL_MICROPHONE);
-		recorder.stopCapture();
+		throw new PendingException(
+				"This stuff has to be implemented on the calling backend");
+		// CallingUtil.setInputVolume(50);
+		// CallingUtil.setOutputVolume(50);
+		// CallingUtil.setSpeakerSource(CallingUtil.HEADPHONES);
+		// CallingUtil.setMicrophoneSource(CallingUtil.INTERNAL_MICROPHONE);
+		// recorder.stopCapture();
 	}
 
 	/**
@@ -118,18 +123,20 @@ public class CallingSteps {
 	 */
 	@Then("^I check that I hear all as said from (.*)$")
 	public void ICheckThatIHearAllCorrect(String filename) throws Exception {
+		throw new PendingException(
+				"This stuff has to be implemented on the calling backend");
 		// prepare output file
-		CallingUtil.removeSilenceFromFile(CallingUtil.AUDIO_TOOLS_PATH
-				+ "/output.wav", CallingUtil.AUDIO_TOOLS_PATH
-				+ "/clean_output.wav");
-		CallingUtil
-				.removeSilenceFromFile(CallingUtil.AUDIO_TOOLS_PATH + "/"
-						+ filename, CallingUtil.AUDIO_TOOLS_PATH + "/clean_"
-						+ filename);
-		double score = CallingUtil.calculatePESQScore(
-				CallingUtil.AUDIO_TOOLS_PATH + "/clean_" + filename,
-				CallingUtil.AUDIO_TOOLS_PATH + "/clean_output.wav");
-		log.debug(score);
-		Assert.assertTrue("Incorrect score (" + score + "< 3)", score > 3);
+		// CallingUtil.removeSilenceFromFile(CallingUtil.AUDIO_TOOLS_PATH
+		// + "/output.wav", CallingUtil.AUDIO_TOOLS_PATH
+		// + "/clean_output.wav");
+		// CallingUtil
+		// .removeSilenceFromFile(CallingUtil.AUDIO_TOOLS_PATH + "/"
+		// + filename, CallingUtil.AUDIO_TOOLS_PATH + "/clean_"
+		// + filename);
+		// double score = CallingUtil.calculatePESQScore(
+		// CallingUtil.AUDIO_TOOLS_PATH + "/clean_" + filename,
+		// CallingUtil.AUDIO_TOOLS_PATH + "/clean_output.wav");
+		// log.debug(score);
+		// Assert.assertTrue("Incorrect score (" + score + "< 3)", score > 3);
 	}
 }
