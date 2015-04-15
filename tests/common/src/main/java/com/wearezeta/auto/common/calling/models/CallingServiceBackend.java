@@ -1,4 +1,4 @@
-package com.wearezeta.auto.common.calling;
+package com.wearezeta.auto.common.calling.models;
 
 public enum CallingServiceBackend {
 	
