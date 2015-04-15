@@ -43,6 +43,26 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  |
       | user1Email | user1Password | user1Name | user2Name |
 
+  @staging @id1183
+  Scenario Outline: Verify that Call event can unarchive muted conversation automatically
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name <Name> in Contact list
+    And I open conversation with <Contact1>
+    And I change mute state of conversation with <Contact1>
+    And I archive conversation with <Contact1>
+    And I do not see conversation <Contact1> in contact list
+    When Contact <Contact1> sends random message to conversation <Name>
+    Then I do not see conversation <Contact1> in contact list
+    When <Contact1> calls me
+    Then I see contact <Contact1> in contact list
+    And Caller dismisses call
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  |
+      | user1Email | user1Password | user1Name | user2Name |
+
   Scenario Outline: Check sound quality
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

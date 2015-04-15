@@ -679,7 +679,10 @@ public final class AndroidLocators {
 
 		public static final String idNameEdit = LOCATORS_PACKAGE
 				+ ":id/tet__profile__guided";
-
+		
+		public static final String idRegistrationBack = LOCATORS_PACKAGE
+				+ ":id/gtv__sign_up__previous";
+		
 		public static final String idCreateUserBtn = LOCATORS_PACKAGE
 				+ ":id/zb__sign_up__create_account";
 

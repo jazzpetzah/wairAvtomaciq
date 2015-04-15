@@ -119,4 +119,13 @@ public class SelfProfilePage extends MainWirePage {
 				+ "' in user profile.");
 		return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath), 60);
 	}
+
+	public void changeUserName(String oldName, String newName) {
+		String xpath = String.format(
+				OSXLocators.xpathFormatSelfProfileNameTextField, oldName);
+		WebElement selfName = driver.findElement(By.xpath(xpath));
+		selfName.click();
+		selfName.clear();
+		selfName.sendKeys(newName + "\\n");
+	}
 }

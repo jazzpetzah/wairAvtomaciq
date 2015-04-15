@@ -58,4 +58,8 @@ class SingleUserInfoPopoverPage extends AbstractUserInfoPopoverPage {
 				getAddButtonElement());
 		getAddButtonElement().click();
 	}
+
+	public void clickBlockButton() {
+		blockButton.click();
+	}
 }

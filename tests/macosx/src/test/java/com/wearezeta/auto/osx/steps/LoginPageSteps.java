@@ -35,7 +35,7 @@ public class LoginPageSteps {
 	 * Enters user email and password into corresponding fields on sign in
 	 * screen then taps "Sign In" button
 	 * 
-	 * @step. I Sign in using login (.*) and password (.*)
+	 * @step. ^I [Ss]ign in using login (.*) and password (.*)$
 	 * 
 	 * @param login
 	 *            user login string
@@ -45,7 +45,7 @@ public class LoginPageSteps {
 	 * @throws AssertionError
 	 *             if login operation was unsuccessful
 	 */
-	@Given("I Sign in using login (.*) and password (.*)")
+	@Given("^I [Ss]ign in using login (.*) and password (.*)$")
 	public void ISignInUsingLoginAndPassword(String login, String password)
 			throws Exception {
 		log.debug(String.format("Sign in using email %s and password %s",

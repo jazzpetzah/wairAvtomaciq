@@ -165,7 +165,7 @@ public final class WebAppLocators {
 		public static final String xpathCloseButton = "//*[contains(@class,'cc-button')]//*[contains(@class,'icon-close')]";
 
 		public static final Function<String, String> textMessageByText = text -> String
-				.format("//*[@data-uie-name='item-message']//div[@class='text' and text()='%s']",
+				.format("//*[@data-uie-name='item-message']//*[text()='%s']",
 						text);
 
 		public static final String xpathMissedCallAction = "//*[@data-uie-value='call']//div[contains(@class, 'action')]";
@@ -233,6 +233,13 @@ public final class WebAppLocators {
 
 		public static final String xpathPreviousCarouselImageBtn = xpathRootDiv
 				+ "//div[contains(@class, 'carousel-arrows')]//span[contains(@class, 'carousel-arrow-left')]";
+	}
+
+	public static final class ContactsUploadPage {
+		public static final String xpathRootDiv = "//div[@id='self-upload']";
+
+		public static final String xpathCloseButton = xpathRootDiv
+				+ "//*[@data-uie-name='do-close']";
 	}
 
 	public static final class Common {

@@ -20,7 +20,7 @@ Feature: Sign In
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login2> and password <Password2>
     And I see my name <Name2> in Contact list
-    And I go to user <Name2> profile
+    And I open self profile
     And I open picture settings
     And I choose to select picture from image file
     And I select image file userpicture_portrait.jpg
@@ -28,7 +28,7 @@ Feature: Sign In
     When I sign out
     And I Sign in using login <Login> and password <Password>
     Then I see my name <Name> in Contact list
-    And I go to user <Name> profile
+    And I open self profile
     And I see name <Name> in User profile
     And I see email of <Name> in User profile
     And I open picture settings

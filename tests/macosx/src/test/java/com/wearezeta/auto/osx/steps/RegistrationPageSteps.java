@@ -186,8 +186,26 @@ public class RegistrationPageSteps {
 		Assert.assertTrue(choosePicturePage.isVisible());
 
 		choosePicturePage.openImage(imageFile);
+	}
 
+	/**
+	 * Confirms taken picture
+	 * 
+	 * @step. ^I accept taken picture$
+	 */
+	@When("^I accept taken picture$")
+	public void IAcceptTakenPicture() {
 		PagesCollection.registrationPage.acceptTakenPicture();
+	}
+
+	/**
+	 * Rejects taken picture
+	 * 
+	 * @step. ^I reject taken picture$
+	 */
+	@When("^I reject taken picture$")
+	public void IRejectTakenPicture() {
+		PagesCollection.registrationPage.rejectTakenPicture();
 	}
 
 	/**
@@ -295,4 +313,57 @@ public class RegistrationPageSteps {
 				+ "' but shouldn't be.", PagesCollection.registrationPage
 				.getEnteredEmail().equals(email.replaceAll(" ", "")));
 	}
+
+	/**
+	 * Checks that confirmation dialog appears after picture shot or selected
+	 * 
+	 * @step. ^I see chosen picture confirmation request$
+	 * 
+	 * @throws AssertionError
+	 *             if confirmation dialog doesn't appear
+	 */
+	@Then("^I see chosen picture confirmation request$")
+	public void ISeeChosenPictureConfirmationRequest() {
+		Assert.assertTrue(PagesCollection.registrationPage
+				.isTakePictureConfirmationScreen());
+	}
+
+	/**
+	 * Checks that CHOOSE PICTURE AND SELECT A COLOUR message displayed
+	 * 
+	 * @step. ^I see choose picture and colour request$
+	 * 
+	 * @throws AssertionError
+	 *             if message is not shown
+	 */
+	@Then("^I see choose picture and colour request$")
+	public void ISeeChoosePictureAndColourRequest() throws Exception {
+		Assert.assertTrue(PagesCollection.registrationPage
+				.isChoosePictureMessageVisible());
+	}
+
+	/**
+	 * Checks that CHOOSE PICTURE AND SELECT A COLOUR message not displayed
+	 * 
+	 * @step. ^I do not see choose picture and colour request$
+	 * 
+	 * @throws AssertionError
+	 *             if message is displayed
+	 */
+	@Then("^I do not see choose picture and colour request$")
+	public void IDoNotSeeChoosePictureAndColourRequest() throws Exception {
+		Assert.assertFalse(PagesCollection.registrationPage
+				.isChoosePictureMessageVisible());
+	}
+
+	/**
+	 * Navigates back to previous registration step
+	 * 
+	 * @step. ^I go to previous registration step$
+	 */
+	@When("^I go to previous registration step$")
+	public void IGoToPreviousRegistrationStep() {
+		PagesCollection.registrationPage.goBack();
+	}
+
 }

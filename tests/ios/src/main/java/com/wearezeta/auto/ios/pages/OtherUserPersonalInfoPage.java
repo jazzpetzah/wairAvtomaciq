@@ -30,6 +30,12 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameExitOtherUserPersonalInfoPageButton)
 	private WebElement exitOtherPersonalInfoPageButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.DialogInfoPage.nameEllipsisMenuButton)
+	private WebElement ellipsisMenuButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.DialogInfoPage.nameArchiveButton)
+	private WebElement archiveButton;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherPersonalInfoPageNameField)
 	private WebElement nameField;
@@ -53,6 +59,14 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 		} catch (NoSuchElementException ex) {
 			// do nothing
 		}
+	}
+	
+	public void openEllipsisMenu() {
+		ellipsisMenuButton.click();
+	}
+	
+	public void clickArchiveMenuButton() {
+		archiveButton.click();
 	}
 
 	public IOSPage leavePageToGroupInfoPage() throws Exception {

@@ -65,6 +65,7 @@ public class PerformanceSteps {
 							.generateGUID());
 					Thread.sleep(1000);
 					if (perfCommon.random.nextBoolean()) {
+						PagesCollection.dialogPage.swipeDown(1000);
 						PagesCollection.contactListPage = PagesCollection.dialogPage
 								.navigateBack();
 						PagesCollection.dialogPage = (DialogPage) PagesCollection.contactListPage
@@ -73,10 +74,11 @@ public class PerformanceSteps {
 						PagesCollection.dialogPage.isDialogVisible();
 						PagesCollection.dialogPage
 								.tapDialogPageBottom();
+						Thread.sleep(1000);
 						PagesCollection.dialogPage.sendFrontCameraImage();
 					}
 					for (int y = 0; y < 2; y++) {
-						PagesCollection.dialogPage.swipeDown(500);
+						PagesCollection.dialogPage.swipeDown(1000);
 					}
 					PagesCollection.contactListPage = PagesCollection.dialogPage
 							.navigateBack();

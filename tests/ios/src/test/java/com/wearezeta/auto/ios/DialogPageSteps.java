@@ -700,4 +700,47 @@ public class DialogPageSteps {
 		boolean result = PagesCollection.dialogPage.isTypeOrSlideExists(TAP_OR_SLIDE);
 		Assert.assertTrue(result);
 	}
+	
+	/**
+	 * Checks if a chathaed is visible with message and avatar for 5sec
+	 * 
+	 * @step. ^I see chathead of contact (.*) for (.*) seconds with avatar and
+	 *        message$
+	 * @param contact
+	 *            you see the chathead of
+	 * @param seconds
+	 *            the chathead should be visible
+	 * @throws Exception 
+	 */
+	@Then("^I see chathead of contact (.*)")
+	public void ISeeChatheadOfContactForSecondsWithAvatarAndMessage(
+			String contact) throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		boolean chatheadIsVisible = PagesCollection.dialogPage
+				.chatheadIsVisible(contact);
+		Assert.assertTrue("No Chathead visible.", chatheadIsVisible);
+		boolean chMessageIsVisible = PagesCollection.dialogPage
+				.chatheadMessageIsVisible(message);
+		Assert.assertTrue("No Chathead message visible.", chMessageIsVisible);
+		boolean chAvatarImageIsVisible = PagesCollection.dialogPage
+				.chatheadAvatarImageIsVisible();
+		Assert.assertTrue("No Chathead avatar visible.", chAvatarImageIsVisible);
+	}
+	
+	/**
+	 * Verify that the chathaed is not seen after 5 seconds
+	 * 
+	 * @step. I do not see chathead of contact (.*)
+	 * @param contact
+	 *            you not see the chathead of
+	 * @throws Exception
+	 */
+	@Then("^I do not see chathead of contact (.*)")
+	public void IDoNotSeeChatheadOfContactForSecondsWithAvatarAndMessage(
+			String contact) throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		boolean chatheadIsVisible = PagesCollection.dialogPage
+				.chatheadIsVisible(contact);
+		Assert.assertFalse("Chathead visible.", chatheadIsVisible);
+	}
 }

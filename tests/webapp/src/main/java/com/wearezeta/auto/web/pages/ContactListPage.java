@@ -131,7 +131,7 @@ public class ContactListPage extends WebPage {
 		assert DriverUtils.isElementDisplayed(driver, locator, 5);
 		log.debug(String.format("Looking for self name entry '%s'...", usrMgr
 				.getSelfUserOrThrowError().getName()));
-		
+
 		final String selfNameElementText = getSelfName(locator);
 		log.debug(String.format("Result self name is '%s'.",
 				selfNameElementText));
@@ -140,13 +140,12 @@ public class ContactListPage extends WebPage {
 	}
 
 	private String getSelfName(By locator) {
-		String name="";
+		String name = "";
 		for (int i = 1; i < 6; i++) {
 			name = driver.findElement(locator).getText();
 			if (!name.equals("")) {
 				break;
-			}
-			else {
+			} else {
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
@@ -395,6 +394,19 @@ public class ContactListPage extends WebPage {
 				.cssSelector(WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
 		assert DriverUtils.isElementDisplayed(driver, entryLocator, 3) : "There are no visible incoming pending connections in the conversations list";
 		return driver.findElement(entryLocator).getText();
+	}
+
+	public boolean isSelfNameEntrySelected() throws Exception {
+		final By locator = By
+				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileEntry);
+		assert DriverUtils.isElementDisplayed(driver, locator, 3);
+		final WebElement entry = driver.findElement(locator);
+		try {
+			waitUtilEntryIsSelected(entry);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	public boolean isConversationSelected(String convoName) throws Exception {

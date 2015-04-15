@@ -20,8 +20,8 @@ Feature: Self Profile
     Examples: 
       | Login      | Password      | Name      | NewName     | Contact   |
       | user1Email | user1Password | user1Name | NewTestName | user2Name |
-      
-       @id328 @staging 
+
+  @id328 @staging
   Scenario Outline: ZClient change name in landscape mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -41,8 +41,6 @@ Feature: Self Profile
       | Login      | Password      | Name      | NewName     | Contact   |
       | user1Email | user1Password | user1Name | NewTestName | user2Name |
 
-  
-
   @id325 @staging
   Scenario Outline: Check contact personal info in portrait mode
     Given There are 2 users where <Name> is me
@@ -51,14 +49,13 @@ Feature: Self Profile
     Given I Sign in on tablet using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
-   And I see tablet dialog page
+    And I see tablet dialog page
     And I tap on profile button
     Then I see <Contact> user name and email
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
-
 
   @id325 @staging
   Scenario Outline: Check contact personal info in landscape mode
@@ -68,7 +65,7 @@ Feature: Self Profile
     Given I Sign in on tablet using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
-   And I see tablet dialog page
+    And I see tablet dialog page
     And I tap on profile button
     Then I see <Contact> user name and email
 
@@ -76,8 +73,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-      
-      @id205 @staging
+  @id205 @staging
   Scenario Outline: Change user picture in portrait mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

@@ -113,7 +113,27 @@ Feature: Connect
       | Login      | Login2     | Password      | Password2     | Name      | Name2     |
       | user1Email | user2Email | user1Password | user2Password | user1Name | user2Name |
 
-  @staging @id1548
+  @regression @id1554
+  Scenario Outline: Verify you can block a person from profile view
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name on top of Contact list
+    And I open conversation with <Contact>
+    And I click People button in one to one conversation
+    Then I see Single User Profile popover
+    And I see Block button on Single User Profile popover
+    When I click Block button on Single User Profile popover
+    And I confirm user blocking on Single User Profile popover
+    Then I do not see Contact list with name <Contact>
+    Then I do not see Single User Profile popover
+    Then I see my name is selected on top of Contact list
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @regression @id1548
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending user (People view)
     Given There are 3 users where <Name> is me
     Given <Contact> is connected to Me,<Contact2>

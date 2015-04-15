@@ -479,7 +479,7 @@ public final class IOSLocators {
 	////////////////////////////
 	public static final String nameUnblockButton = "UNBLOCK";
 	
-	public static final String xpathContactListContainer = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]";
+	public static final String xpathContactListContainer = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]";
 	
 	////////////////////////////
 	//Reset Password from Sign In
@@ -519,5 +519,19 @@ public final class IOSLocators {
 	public final class DialogPage {
 		public static final String xpathCallButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAButton[5]";
 	}
+	
+	public final class DialogInfoPage {
+		public static final String nameEllipsisMenuButton = "metaControllerRightButton";
+		
+		public static final String nameArchiveButton = "ARCHIVE";
+	}
+	
+	/////////////
+	//Chathead
+	/////////////
+	public static final String xpathChatheadName = "//UIAStaticText[@name='%s']";
+	public static final String xpathChatheadMessage = "//UIAStaticText[@name='%s']";
+	public static final String nameChatheadAvatarImage = "ChatheadAvatarImage";
+	
 }
 
