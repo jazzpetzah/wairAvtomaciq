@@ -361,7 +361,7 @@ public class CommonIOSSteps {
 	 */
 	@When("^Contact (.*) calls to conversation (.*)$")
 	public void ContactCallsToConversation(String starterNameAlias, String destinationNameAlias) throws Exception {
-		commonSteps.UserCallsToConversation(starterNameAlias, destinationNameAlias);
+		commonSteps.UserXCallsToUserYUsingToolZ(starterNameAlias, destinationNameAlias);
 		PagesCollection.callPage = new IncomingCallPage(PagesCollection.loginPage.getDriver(), 
 					PagesCollection.loginPage.getWait());
 	}

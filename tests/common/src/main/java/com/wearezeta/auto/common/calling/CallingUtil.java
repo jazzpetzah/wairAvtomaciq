@@ -6,12 +6,9 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.calling.models.CallingServiceBackend;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
 
-public class CallingUtil {
+class CallingUtil {
 
 	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(CallingUtil.class
@@ -37,8 +34,6 @@ public class CallingUtil {
 		} catch (Exception e) {
 		}
 	}
-
-	private static String currentCallId = "";
 
 	public static void setSpeakerSource(String source) throws Exception {
 		String cmd = String.format("%saudiodevice output \"%s\"",

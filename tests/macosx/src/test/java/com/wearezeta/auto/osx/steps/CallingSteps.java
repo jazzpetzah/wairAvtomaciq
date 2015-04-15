@@ -39,7 +39,7 @@ public class CallingSteps {
 	@When("^(.*) calls (.*)$")
 	public void UserCallsToConversation(String callerUserNameAlias,
 			String conversationNameAlias) throws Exception {
-		commonSteps.UserCallsToConversation(callerUserNameAlias,
+		commonSteps.UserXCallsToUserYUsingToolZ(callerUserNameAlias,
 				conversationNameAlias);
 	}
 

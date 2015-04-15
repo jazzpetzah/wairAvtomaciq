@@ -113,7 +113,7 @@ final class CallingSericeREST {
 		requestBody.put("password", password);
 		requestBody.put("conversationId", conversationId);
 		requestBody.put("backend", backend);
-		requestBody.put("callBackend", callBackend.getName());
+		requestBody.put("callBackend", callBackend.toString());
 
 		final String output = httpPost(webResource, requestBody.toString(),
 				new int[] { HttpStatus.SC_OK, HttpStatus.SC_CREATED });
@@ -165,7 +165,7 @@ final class CallingSericeREST {
 		requestBody.put("email", email);
 		requestBody.put("password", password);
 		requestBody.put("backend", backend);
-		requestBody.put("callBackend", callBackend.getName());
+		requestBody.put("callBackend", callBackend.toString());
 
 		final String output = httpPost(webResource, requestBody.toString(),
 				new int[] { HttpStatus.SC_OK, HttpStatus.SC_CREATED });

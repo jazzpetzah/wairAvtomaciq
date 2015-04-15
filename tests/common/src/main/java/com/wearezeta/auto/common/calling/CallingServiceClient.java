@@ -64,6 +64,14 @@ public class CallingServiceClient {
 
 	// TODO: mute/unmute
 
+	public static String waitForCall(ClientUser userAs,
+			CallingServiceBackend callBackend) throws Exception {
+		return CallingSericeREST.makeWaitingInstance(userAs.getEmail(),
+				userAs.getPassword(),
+				CommonUtils.getBackendType(CallingServiceClient.class),
+				callBackend).getString("id");
+	}
+
 	private static void waitForInstanceStatus(String instanceId,
 			CallingServiceStatus expectedStatus, int secondsTimeout)
 			throws Exception {
@@ -81,14 +89,6 @@ public class CallingServiceClient {
 				String.format(
 						"Timeout occured while waiting until incoming call '%s' changes its status to '%s' within %s second(s) timeout",
 						instanceId, expectedStatus, secondsTimeout));
-	}
-
-	public static String waitForCall(ClientUser userAs,
-			CallingServiceBackend callBackend) throws Exception {
-		return CallingSericeREST.makeWaitingInstance(userAs.getEmail(),
-				userAs.getPassword(),
-				CommonUtils.getBackendType(CallingServiceClient.class),
-				callBackend).getString("id");
 	}
 
 	public static String waitForCall(ClientUser userAs,

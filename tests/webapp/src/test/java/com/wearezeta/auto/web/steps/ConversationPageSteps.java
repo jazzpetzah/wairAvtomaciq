@@ -371,7 +371,7 @@ public class ConversationPageSteps {
 	@When("^Contact (.*) calls to conversation (.*)$")
 	public void ContactCallsToConversation(String starterNameAlias,
 			String destinationNameAlias) throws Exception {
-		commonSteps.UserCallsToConversation(starterNameAlias,
+		commonSteps.UserXCallsToUserYUsingToolZ(starterNameAlias,
 				destinationNameAlias);
 	}
 

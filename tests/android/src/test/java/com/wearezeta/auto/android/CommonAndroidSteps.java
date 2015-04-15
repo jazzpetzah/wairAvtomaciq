@@ -461,7 +461,7 @@ public class CommonAndroidSteps {
 	 */
 	@When("^Contact (.*) calls to conversation (.*)$")
 	public void ContactCallsToConversation(String starterNameAlias, String destinationNameAlias) throws Exception {
-		commonSteps.UserCallsToConversation(starterNameAlias, destinationNameAlias);
+		commonSteps.UserXCallsToUserYUsingToolZ(starterNameAlias, destinationNameAlias);
 	}
 	
 	/**
