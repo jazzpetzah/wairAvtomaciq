@@ -1,5 +1,19 @@
 Feature: Conversation View
 
+  @staging @id855
+  Scenario Outline: Verify swipe right tutorial appearance
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
+    And I see dialog page
+    Then I see TAPORSLIDE text
+    
+    Examples:
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
   @smoke @id330
   Scenario Outline: Send Message to contact
     Given There are 2 users where <Name> is me

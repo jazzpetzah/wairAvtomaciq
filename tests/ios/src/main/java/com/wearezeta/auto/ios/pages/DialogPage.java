@@ -790,6 +790,7 @@ public class DialogPage extends IOSPage {
 	private static final int PING_ICON_WIDTH = 72;
 	private static final int PING_ICON_HEIGHT = 60;
 	private static final int PING_ICON_Y_OFFSET = 7;
+	
 
 	private BufferedImage getPingIconScreenShot() throws IOException {
 		Point elementLocation = pinged.getLocation();
@@ -841,5 +842,9 @@ public class DialogPage extends IOSPage {
 
 	public boolean isTitleBarNamed(String chatName) {
 		return titleBar.getAttribute("name").equals(chatName.toUpperCase());
+	}
+
+	public boolean isTypeOrSlideExists(String msg) throws Exception {
+		return DriverUtils.waitUntilElementAppears(getDriver(), By.name(msg), 5);
 	}
 }
