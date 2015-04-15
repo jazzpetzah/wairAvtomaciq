@@ -587,7 +587,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Picture	 | Color 	   | NewName          |
       | user1Email | user1Password | user1Name | user2Name | testing.jpg | BrightOrange| RotateFullscreen |
       
-  @staging @id2124
+  @regression @id2124
   Scenario Outline: Verify archiving conversation from ellipsis menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
