@@ -19,14 +19,16 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.osx.common.OSXConstants;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.util.NSPoint;
 
 @SuppressWarnings("deprecation")
 public class ConversationInfoPage extends OSXPage {
-	
-	private static final Logger log = ZetaLogger.getLog(ConversationInfoPage.class.getSimpleName());
-	
+
+	private static final Logger log = ZetaLogger
+			.getLog(ConversationInfoPage.class.getSimpleName());
+
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathPeoplePopover)
 	private WebElement peoplePopover;
 
@@ -54,9 +56,6 @@ public class ConversationInfoPage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathOpenSingleChatButton)
 	private WebElement openSingleChatButton;
 
-	@FindBy(how = How.ID, using = OSXLocators.idConversationScrollArea)
-	private WebElement conversationScrollArea;
-
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathConversationNameEdit)
 	private WebElement conversationNameEdit;
 
@@ -75,11 +74,12 @@ public class ConversationInfoPage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathAvatarFullScreenWindow)
 	private WebElement avatarFullScreenWindow;
 
-	public String currentConversationName;
+	private ConversationPage parent;
 
-	public ConversationInfoPage(ZetaOSXDriver driver, WebDriverWait wait)
-			throws Exception {
+	public ConversationInfoPage(ZetaOSXDriver driver, WebDriverWait wait,
+			ConversationPage parent) throws Exception {
 		super(driver, wait);
+		this.parent = parent;
 	}
 
 	public boolean userIsNotExistInConversation(String user) throws Exception {
@@ -95,7 +95,8 @@ public class ConversationInfoPage extends OSXPage {
 			WebElement el = driver.findElement(By.xpath(xpath));
 			el.click();
 		} catch (NoSuchElementException e) {
-			log.debug("Can't find user cell. Page source: " + driver.getPageSource());
+			log.debug("Can't find user cell. Page source: "
+					+ driver.getPageSource());
 		}
 	}
 
@@ -143,7 +144,7 @@ public class ConversationInfoPage extends OSXPage {
 	public void removeUser() throws Exception {
 		removeUserFromConversationButton.click();
 		confirmIfRequested();
-		conversationScrollArea.click();
+		parent.focusOnConversation();
 	}
 
 	public void tryRemoveUser() {
@@ -240,20 +241,24 @@ public class ConversationInfoPage extends OSXPage {
 		return singleChatBlockUserButton.isDisplayed();
 	}
 
-	public boolean isOpenConversationButtonExists() {
-		return openSingleChatButton.isDisplayed();
+	public boolean isOpenConversationButtonExists() throws Exception {
+		return DriverUtils.isElementDisplayed(driver,
+				By.xpath(OSXLocators.xpathOpenSingleChatButton), 5);
 	}
 
-	public boolean isRemoveUserFromConversationButtonExists() {
-		return removeUserFromConversationButton.isDisplayed();
+	public boolean isRemoveUserFromConversationButtonExists() throws Exception {
+		return DriverUtils.isElementDisplayed(driver,
+				By.id(OSXLocators.idRemoveUserFromConversation), 5);
 	}
 
-	public boolean isConnectButtonExists() {
-		return connectToUserButton.isDisplayed();
+	public boolean isConnectButtonExists() throws Exception {
+		return DriverUtils.isElementDisplayed(driver,
+				By.xpath(OSXLocators.xpathConnectToUserButton), 5);
 	}
 
 	public boolean isUserNameDisplayed(String name) {
-		return singleChatUserNameField.getAttribute("AXValue").equals(name);
+		return singleChatUserNameField.getAttribute(
+				OSXConstants.Attributes.AXVALUE).equals(name);
 	}
 
 	public boolean isPendingButtonExists() {
@@ -278,19 +283,15 @@ public class ConversationInfoPage extends OSXPage {
 		return result;
 	}
 
-	public String getCurrentConversationName() {
-		return currentConversationName;
-	}
-
-	public void setCurrentConversationName(String name) {
-		currentConversationName = name;
-	}
-
 	public void openImageInPopup() {
 		peoplePopover.click();
 	}
 
 	public void closeImagePopup() {
 		imagePopupCloseButton.click();
+	}
+
+	public void connectToUser() {
+		connectToUserButton.click();
 	}
 }

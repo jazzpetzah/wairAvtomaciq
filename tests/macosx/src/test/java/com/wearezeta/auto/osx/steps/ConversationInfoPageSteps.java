@@ -30,7 +30,8 @@ public class ConversationInfoPageSteps {
 		user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		PagesCollection.conversationInfoPage = new ConversationInfoPage(
 				PagesCollection.mainMenuPage.getDriver(),
-				PagesCollection.mainMenuPage.getWait());
+				PagesCollection.mainMenuPage.getWait(),
+				PagesCollection.conversationPage);
 		PagesCollection.conversationInfoPage.selectUser(user);
 		PagesCollection.conversationInfoPage.selectUserIfNotSelected(user);
 	}
@@ -40,7 +41,8 @@ public class ConversationInfoPageSteps {
 		user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		PagesCollection.conversationInfoPage = new ConversationInfoPage(
 				PagesCollection.mainMenuPage.getDriver(),
-				PagesCollection.mainMenuPage.getWait());
+				PagesCollection.mainMenuPage.getWait(),
+				PagesCollection.conversationPage);
 		Assert.assertTrue(PagesCollection.conversationInfoPage
 				.userIsNotExistInConversation(user));
 	}
@@ -58,7 +60,7 @@ public class ConversationInfoPageSteps {
 	@Then("I see conversation name (.*) in conversation info")
 	public void ISeeConversationNameInConversationInfo(String contact) {
 		if (contact.equals(OSXLocators.RANDOM_KEYWORD)) {
-			contact = PagesCollection.conversationInfoPage
+			contact = PagesCollection.conversationPage
 					.getCurrentConversationName();
 		} else {
 			contact = usrMgr.replaceAliasesOccurences(contact,
@@ -190,9 +192,20 @@ public class ConversationInfoPageSteps {
 	}
 
 	@Then("^I see open conversation button$")
-	public void ISeeOpenConversationButton() {
+	public void ISeeOpenConversationButton() throws Exception {
 		Assert.assertTrue(PagesCollection.conversationInfoPage
 				.isOpenConversationButtonExists());
+	}
+
+	@Then("^I do not see open conversation button$")
+	public void IDoNotSeeOpenConversationButton() throws Exception {
+		Assert.assertFalse(PagesCollection.conversationInfoPage
+				.isOpenConversationButtonExists());
+	}
+
+	@Then("^I click on connect button on people popover$")
+	public void IClickOnConnectButtonOnPeoplePopover() {
+		PagesCollection.conversationInfoPage.connectToUser();
 	}
 
 	@Then("^I see pending button$")
@@ -202,13 +215,13 @@ public class ConversationInfoPageSteps {
 	}
 
 	@Then("^I see connect button$")
-	public void ISeeConnectButton() {
+	public void ISeeConnectButton() throws Exception {
 		Assert.assertTrue(PagesCollection.conversationInfoPage
 				.isConnectButtonExists());
 	}
 
 	@Then("^I see remove person from conversation button$")
-	public void ISeeRemovePersonFromConversationButton() {
+	public void ISeeRemovePersonFromConversationButton() throws Exception {
 		Assert.assertTrue(PagesCollection.conversationInfoPage
 				.isRemoveUserFromConversationButtonExists());
 	}

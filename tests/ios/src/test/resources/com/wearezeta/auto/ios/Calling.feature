@@ -39,7 +39,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name |
       
       
-  @staging @id896
+  @regression @id896
   Scenario Outline: Verify ignoring of incoming call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -54,7 +54,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
       
-  @staging @id2093
+  @regression @id2093
   Scenario Outline: Verify acepting incoming call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -70,7 +70,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
       
-  @staging @id1228 
+  @regression @id1228 
   Scenario Outline: Verify missed call indicator appearance (list)
   	Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>

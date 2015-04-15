@@ -2,6 +2,7 @@ package com.wearezeta.auto.osx.steps;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -16,7 +17,6 @@ import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
-import com.wearezeta.auto.osx.pages.SelfProfilePage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -29,17 +29,42 @@ public class ContactListPageSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-	@Given("^I see my name (.*) in Contact list$")
+	/**
+	 * Checks that self profile entry exists in contact list
+	 * 
+	 * @step. ^I see my name (.*) in [Cc]ontact [Ll]ist$
+	 * 
+	 * @param name
+	 *            my name
+	 * 
+	 * @throws AssertionError
+	 *             if there is no self profile entry in contact list
+	 */
+	@Given("^I see my name (.*) in [Cc]ontact [Ll]ist$")
 	public void ISeeMyNameInContactList(String name) throws Exception {
-		PagesCollection.contactListPage
-				.sendProblemReportIfAppears(PagesCollection.problemReportPage);
-		GivenISeeContactListWithName(name);
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		String selfProfileUser = PagesCollection.contactListPage
+				.readSelfProfileName();
+		Assert.assertTrue(String.format(
+				"Another user is logged in. Logged in user %s, expected - %s",
+				selfProfileUser, name), selfProfileUser.equals(name));
 	}
 
-	@Given("I see Contact list with name (.*)")
-	public void GivenISeeContactListWithName(String name) throws Exception {
+	/**
+	 * Checks that contact exists in contact list
+	 * 
+	 * @step. ^I see contact (.*) in [Cc]ontact [Ll]ist$
+	 * 
+	 * @param name
+	 *            contact name
+	 * 
+	 * @throws AssertionError
+	 *             if there is no contact in contact list
+	 */
+	@Given("^I see contact (.*) in [Cc]ontact [Ll]ist$")
+	public void ISeeContactListWithName(String name) throws Exception {
 		if (name.equals(OSXLocators.RANDOM_KEYWORD)) {
-			name = PagesCollection.conversationInfoPage
+			name = PagesCollection.conversationPage
 					.getCurrentConversationName();
 		} else {
 			name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
@@ -49,28 +74,126 @@ public class ContactListPageSteps {
 				.isContactWithNameExists(name));
 	}
 
-	@Given("I do not see conversation {1}(.*) {1}in contact list")
-	public void IDoNotSeeConversationInContactList(String conversation)
-			throws Exception {
+	/**
+	 * Opens self profile
+	 * 
+	 * @step. ^I open self profile$
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I open self profile$")
+	public void GivenIGoToUserProfile() throws Exception {
+		PagesCollection.selfProfilePage = PagesCollection.contactListPage
+				.openSelfProfile();
+	}
+
+	/**
+	 * Opens connection requests
+	 * 
+	 * @step. ^I open connection requests$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I open connection requests$")
+	public void IOpenConnectionRequests() throws Exception {
+		PagesCollection.connectionRequestsPage = PagesCollection.contactListPage
+				.openConnectionRequests();
+	}
+
+	/**
+	 * Checks that there is connection request from 1 user in contact list
+	 * 
+	 * @step. ^I see connect request$
+	 * 
+	 * @throws AssertionError
+	 *             if there is no connection requests or more than 1
+	 */
+	@When("^I see connect request$")
+	public void ISeeConnectRequest() throws Exception {
+		ISeeXConnectRequests(1);
+	}
+
+	/**
+	 * Checks that there is specified number of connection requests in contact
+	 * list
+	 * 
+	 * @step. ^I see (\\d+) connect requests?$
+	 * 
+	 * @param number
+	 *            number of expected connection requests
+	 * 
+	 * @throws AssertionError
+	 *             if number of connection requests is not as expected
+	 */
+	@When("^I see (\\d+) connect requests?$")
+	public void ISeeXConnectRequests(int number) throws Exception {
+		if (number == 1) {
+			ISeeContactListWithName(OSXLocators.ContactListPage.titleSingleConnectRequestCLEntry);
+		} else {
+			ISeeContactListWithName(String
+					.format(OSXLocators.ContactListPage.titleFormatMultipleConnectRequestsCLEntry,
+							number));
+		}
+	}
+
+	/**
+	 * Checks that there is no connection requests in contact list
+	 * 
+	 * @step. ^I do not see connection requests$
+	 * 
+	 * @throws AssertionError
+	 *             if any connection request exists
+	 */
+	@When("^I do not see connection requests$")
+	public void IDoNotSeeConnectionRequests() throws Exception {
+		ArrayList<String> list = PagesCollection.contactListPage.listContacts();
+		boolean isExist = false;
+		for (String contact : list) {
+			if (contact
+					.matches(OSXLocators.ContactListPage.regexPatternConnectRequests)) {
+				isExist = true;
+				break;
+			}
+		}
+		Assert.assertFalse(String.format(
+				"Found connect requests in contact list, "
+						+ "but not expect. Contacts: %s", list.toString()),
+				isExist);
+	}
+
+	/**
+	 * Minimizes Wire window
+	 * 
+	 * @step. ^I minimize Wire$
+	 */
+	@When("^I minimize Wire$")
+	public void IMinimizeWire() {
+		PagesCollection.contactListPage.minimizeWindow();
+	}
+
+	/**
+	 * Checks that there is no conversation in contact list
+	 * 
+	 * @step. ^I do not see conversation (.*) in [Cc]ontact [Ll]ist$
+	 * 
+	 * @param name
+	 *            conversation name
+	 * 
+	 * @throws AssertionError
+	 *             if conversation found in contact list
+	 */
+	@Given("^I do not see conversation (.*) in [Cc]ontact [Ll]ist$")
+	public void IDoNotSeeNameInContactList(String name) throws Exception {
 		try {
-			conversation = usrMgr.findUserByNameOrNameAlias(conversation)
-					.getName();
+			name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		} catch (NoSuchUserException e) {
 			// do nothing
 		}
 		Assert.assertTrue(PagesCollection.contactListPage
-				.isContactWithNameDoesNotExist(conversation));
+				.isContactWithNameDoesNotExist(name));
 	}
 
-	@Then("Contact list appears with my name (.*)")
-	public void ThenContactListAppears(String name) throws Exception {
-		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		Assert.assertTrue("Login finished",
-				PagesCollection.loginPage.waitForLogin());
-		Assert.assertTrue(name + " were not found in contact list",
-				PagesCollection.loginPage.isLoginFinished(name));
-	}
-
+	// to review
 	private String findNoNameGroupChatContacts(String groupChat)
 			throws NoSuchUserException {
 		String result = "";
@@ -88,7 +211,7 @@ public class ContactListPageSteps {
 	private void clickOnContactListEntry(String contact, boolean isUserProfile)
 			throws MalformedURLException, IOException, NoSuchUserException {
 		if (contact.equals(OSXLocators.RANDOM_KEYWORD)) {
-			contact = PagesCollection.conversationInfoPage
+			contact = PagesCollection.conversationPage
 					.getCurrentConversationName();
 		} else {
 			if (!contact.contains(",")) {
@@ -122,14 +245,6 @@ public class ContactListPageSteps {
 	public void GivenIOpenConversationWith(String contact) throws Exception {
 		clickOnContactListEntry(contact, false);
 		PagesCollection.conversationPage = new ConversationPage(
-				PagesCollection.mainMenuPage.getDriver(),
-				PagesCollection.mainMenuPage.getWait());
-	}
-
-	@Given("I go to user (.*) profile")
-	public void GivenIGoToUserProfile(String user) throws Exception {
-		clickOnContactListEntry(user, true);
-		PagesCollection.selfProfilePage = new SelfProfilePage(
 				PagesCollection.mainMenuPage.getDriver(),
 				PagesCollection.mainMenuPage.getWait());
 	}
@@ -172,24 +287,14 @@ public class ContactListPageSteps {
 				.isConversationMutedButtonNotVisible(conversation));
 	}
 
-	@When("I see connect invitation")
-	public void ISeeConnectInvitation() throws Exception {
-		GivenISeeContactListWithName(OSXLocators.CONTACT_LIST_ONE_CONNECT_REQUEST);
-	}
-
-	@When("I accept invitation")
-	public void IAcceptInvitation() {
-		PagesCollection.contactListPage.acceptAllInvitations();
-	}
-
-	@When("I ignore invitation")
-	public void IIgnoreInvitation() {
-		PagesCollection.contactListPage.ignoreAllInvitations();
-	}
-
 	@When("I archive conversation with (.*)")
 	public void IArchiveConversation(String conversation) throws Exception {
-		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
+		try {
+			conversation = usrMgr.findUserByNameOrNameAlias(conversation)
+					.getName();
+		} catch (NoSuchUserException e) {
+			// do nothing
+		}
 		PagesCollection.contactListPage.moveConversationToArchive(conversation);
 	}
 
@@ -203,19 +308,14 @@ public class ContactListPageSteps {
 			throws MalformedURLException, IOException {
 		name = StringParser.unescapeString(name);
 		if (name.equals(OSXLocators.RANDOM_KEYWORD)) {
-			PagesCollection.conversationInfoPage
+			PagesCollection.conversationPage
 					.setCurrentConversationName(CommonUtils.generateGUID());
 		} else {
-			PagesCollection.conversationInfoPage
-					.setCurrentConversationName(name);
+			PagesCollection.conversationPage.setCurrentConversationName(name);
 		}
 		PagesCollection.conversationInfoPage
-				.setNewConversationName(PagesCollection.conversationInfoPage
+				.setNewConversationName(PagesCollection.conversationPage
 						.getCurrentConversationName());
 	}
 
-	@When("^I minimize Wire$")
-	public void IMinimizeWire() {
-		PagesCollection.contactListPage.minimizeWindow();
-	}
 }
