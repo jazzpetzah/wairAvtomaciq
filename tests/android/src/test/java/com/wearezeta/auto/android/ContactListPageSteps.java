@@ -173,7 +173,7 @@ public class ContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		AndroidPage page = PagesCollection.contactListPage.swipeRightOnContact(1000, contact);
+		AndroidPage page = PagesCollection.contactListPage.swipeRightOnContact(1500, contact);
 		if (page instanceof DialogPage) {
 			PagesCollection.dialogPage = (DialogPage) page;
 		}

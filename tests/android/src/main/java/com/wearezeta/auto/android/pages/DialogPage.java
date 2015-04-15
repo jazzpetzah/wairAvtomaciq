@@ -352,8 +352,6 @@ public class DialogPage extends AndroidPage {
 
 	public void sendFrontCameraImage() throws Exception {
 		if (isVisible(addParticipant)) {
-			cursorInput.click();
-			navigateBack();
 			SwipeOnCursorInput();
 			tapAddPictureBtn();
 			changeCamera();

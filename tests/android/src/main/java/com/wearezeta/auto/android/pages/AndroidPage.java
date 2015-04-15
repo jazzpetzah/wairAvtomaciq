@@ -141,9 +141,9 @@ public abstract class AndroidPage extends BasePage {
 		Point coords = el.getLocation();
 		Dimension elementSize = el.getSize();
 		try {
-			this.getDriver().swipe(coords.x + 20,
+			this.getDriver().swipe(coords.x + 30,
 					coords.y + elementSize.height / 2,
-					coords.x + elementSize.width - 20,
+					coords.x + elementSize.width - 10,
 					coords.y + elementSize.height / 2, time);
 		} catch (Exception ex) {
 			ex.printStackTrace();
