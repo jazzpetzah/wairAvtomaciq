@@ -227,3 +227,21 @@ Feature: Search
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name | 
+
+@staging @id2117 @torun
+  Scenario Outline: Verify dismissing with clicking on Hide
+  	Given There are 5 users where <Name> is me
+    Given <Contact1> is connected to <Name>
+    Given <Contact1> is connected to <Contact2>
+    Given <Contact1> is connected to <Contact3>
+    Given <Contact1> is connected to <Contact4>
+    Given I Sign in using login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I swipe down contact list
+    And I see People picker page
+	And I see PEOPLE YOU MAY KNOW label
+	
+	
+    Examples: 
+      | Login      | Password      | Name      | Contact1   | Contact2  | Contact3  | Contact4  |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name | user4Name | user5Name | 
