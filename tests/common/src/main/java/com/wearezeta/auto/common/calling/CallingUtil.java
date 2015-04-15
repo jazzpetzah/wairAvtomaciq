@@ -40,16 +40,6 @@ public class CallingUtil {
 
 	private static String currentCallId = "";
 
-	private static String getCallingServiceHost() throws Exception {
-		return CommonUtils
-				.getDefaultCallingServiceHostFromConfig(CallingUtil.class);
-	}
-
-	private static String getCallingServicePort() throws Exception {
-		return CommonUtils
-				.getDefaultCallingServicePortFromConfig(CallingUtil.class);
-	}
-
 	public static void setSpeakerSource(String source) throws Exception {
 		String cmd = String.format("%saudiodevice output \"%s\"",
 				AUDIO_TOOLS_PATH, source);

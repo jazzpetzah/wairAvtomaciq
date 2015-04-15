@@ -10,37 +10,28 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 
 public class CallingServiceClient {
 
-	private static final String URL_PROTOCOL = "http://";
-
 	// all timeout constants are in milliseconds
 	private static final long POLLING_FREQUENCY_MILLISECONDS = 2000;
 
-	private CallingSericeREST callingApi;
-
-	public CallingServiceClient(String host, String port) {
-		this.callingApi = new CallingSericeREST(String.format("%s%s:%s",
-				URL_PROTOCOL, host, port));
-	}
-
-	public String callToUser(ClientUser userAs, ClientUser userTo,
+	public static String callToUser(ClientUser userAs, ClientUser userTo,
 			CallingServiceBackend callBackend) throws Exception {
-		return this.callingApi.makeCall(
+		return CallingSericeREST.makeCall(
 				userAs.getEmail(),
 				userAs.getPassword(),
 				BackendAPIWrappers.getConversationIdByName(userAs,
 						userTo.getName()),
-				CommonUtils.getBackendType(getClass()), callBackend).getString(
-				"id");
+				CommonUtils.getBackendType(CallingServiceClient.class),
+				callBackend).getString("id");
 	}
 
-	private void waitForCallStatus(String callId,
+	private static void waitForCallStatus(String callId,
 			CallingServiceStatus expectedStatus, int secondsTimeout)
 			throws Exception {
 		final long millisecondsStarted = System.currentTimeMillis();
 		do {
 			final CallingServiceStatus currentStatus = CallingServiceStatus
-					.fromString((String) this.callingApi.getCallStatus(callId)
-							.get("status"));
+					.fromString((String) CallingSericeREST
+							.getCallStatus(callId).get("status"));
 			if (currentStatus == expectedStatus) {
 				return;
 			}
@@ -52,33 +43,34 @@ public class CallingServiceClient {
 						callId, expectedStatus, secondsTimeout));
 	}
 
-	public String callToUser(ClientUser userAs, ClientUser userTo,
+	public static String callToUser(ClientUser userAs, ClientUser userTo,
 			CallingServiceBackend callBackend,
 			CallingServiceStatus expectedStatus, int secondsTimeout)
 			throws Exception {
-		final String callId = this.callToUser(userAs, userTo, callBackend);
+		final String callId = callToUser(userAs, userTo, callBackend);
 		waitForCallStatus(callId, expectedStatus, secondsTimeout);
 		return callId;
 	}
 
-	public void stopCall(String callId) throws Exception {
-		this.callingApi.stopCall(callId);
+	public static void stopCall(String callId) throws Exception {
+		CallingSericeREST.stopCall(callId);
 	}
 
-	public void stopCall(String callId, int secondsTimeout) throws Exception {
-		this.callingApi.stopCall(callId);
+	public static void stopCall(String callId, int secondsTimeout)
+			throws Exception {
+		stopCall(callId);
 		waitForCallStatus(callId, CallingServiceStatus.Inactive, secondsTimeout);
 	}
 
 	// TODO: mute/unmute
 
-	private void waitForInstanceStatus(String instanceId,
+	private static void waitForInstanceStatus(String instanceId,
 			CallingServiceStatus expectedStatus, int secondsTimeout)
 			throws Exception {
 		final long millisecondsStarted = System.currentTimeMillis();
 		do {
 			final CallingServiceStatus currentStatus = CallingServiceStatus
-					.fromString((String) this.callingApi
+					.fromString((String) CallingSericeREST
 							.getWaitingInstanceStatus(instanceId).get("status"));
 			if (currentStatus == expectedStatus) {
 				return;
@@ -91,30 +83,31 @@ public class CallingServiceClient {
 						instanceId, expectedStatus, secondsTimeout));
 	}
 
-	public String waitForCall(ClientUser userAs,
+	public static String waitForCall(ClientUser userAs,
 			CallingServiceBackend callBackend) throws Exception {
-		return this.callingApi.makeWaitingInstance(userAs.getEmail(),
-				userAs.getPassword(), CommonUtils.getBackendType(getClass()),
+		return CallingSericeREST.makeWaitingInstance(userAs.getEmail(),
+				userAs.getPassword(),
+				CommonUtils.getBackendType(CallingServiceClient.class),
 				callBackend).getString("id");
 	}
 
-	public String waitForCall(ClientUser userAs,
+	public static String waitForCall(ClientUser userAs,
 			CallingServiceBackend callBackend,
 			CallingServiceStatus expectedStatus, int secondsTimeout)
 			throws Exception {
-		final String instanceId = this.waitForCall(userAs, callBackend);
+		final String instanceId = waitForCall(userAs, callBackend);
 		waitForInstanceStatus(instanceId, expectedStatus, secondsTimeout);
 		return instanceId;
 	}
 
-	public void stopWaitingInstance(String instanceId) throws Exception {
-		this.callingApi.stopWaitingInstance(instanceId);
+	public static void stopWaitingInstance(String instanceId) throws Exception {
+		CallingSericeREST.stopWaitingInstance(instanceId);
 	}
 
-	public void stopWaitingInstance(String instanceId, int secondsTimeout)
+	public static void stopWaitingInstance(String instanceId, int secondsTimeout)
 			throws Exception {
-		this.callingApi.stopCall(instanceId);
-		waitForCallStatus(instanceId, CallingServiceStatus.Inactive,
+		stopWaitingInstance(instanceId);
+		waitForInstanceStatus(instanceId, CallingServiceStatus.Inactive,
 				secondsTimeout);
 	}
 

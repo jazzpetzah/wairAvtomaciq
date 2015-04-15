@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource.Builder;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.calling.models.CallingServiceBackend;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -19,14 +20,21 @@ final class CallingSericeREST {
 	private static final Logger log = ZetaLogger.getLog(CallingSericeREST.class
 			.getSimpleName());
 
-	private String apiRoot;
+	private static final String URL_PROTOCOL = "http://";
 
-	public String getApiRoot() {
-		return this.apiRoot;
-	}
-
-	public CallingSericeREST(String apiRoot) {
-		this.apiRoot = apiRoot;
+	public static String getApiRoot() {
+		try {
+			return String
+					.format("%s%s:%s",
+							URL_PROTOCOL,
+							CommonUtils
+									.getDefaultCallingServiceHostFromConfig(CallingUtil.class),
+							CommonUtils
+									.getDefaultCallingServicePortFromConfig(CallingUtil.class));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e.getMessage());
+		}
 	}
 
 	private static Client client = Client.create();
@@ -82,7 +90,7 @@ final class CallingSericeREST {
 		return response.getEntity(String.class);
 	}
 
-	private Builder buildDefaultRequest(String restAction, String accept) {
+	private static Builder buildDefaultRequest(String restAction, String accept) {
 		return client
 				.resource(String.format("%s/%s", getApiRoot(), restAction))
 				.accept(accept).type(MediaType.APPLICATION_JSON);
@@ -94,7 +102,7 @@ final class CallingSericeREST {
 		}
 	}
 
-	public JSONObject makeCall(String email, String password,
+	public static JSONObject makeCall(String email, String password,
 			String conversationId, String backend,
 			CallingServiceBackend callBackend) throws BackendRequestException {
 		Builder webResource = buildDefaultRequest("api/call",
@@ -114,7 +122,8 @@ final class CallingSericeREST {
 		return new JSONObject(output);
 	}
 
-	public JSONObject getCallStatus(String id) throws BackendRequestException {
+	public static JSONObject getCallStatus(String id)
+			throws BackendRequestException {
 		Builder webResource = buildDefaultRequest(
 				String.format("api/call/%s/status", id),
 				MediaType.APPLICATION_JSON);
@@ -125,28 +134,28 @@ final class CallingSericeREST {
 		return new JSONObject(output);
 	}
 
-	public void muteCall(String id) throws BackendRequestException {
+	public static void muteCall(String id) throws BackendRequestException {
 		Builder webResource = buildDefaultRequest(
 				String.format("api/call/%s/mute", id),
 				MediaType.APPLICATION_JSON);
 		httpPut(webResource, "", new int[] { HttpStatus.SC_OK });
 	}
-	
-	public void unmuteCall(String id) throws BackendRequestException {
+
+	public static void unmuteCall(String id) throws BackendRequestException {
 		Builder webResource = buildDefaultRequest(
 				String.format("api/call/%s/unmute", id),
 				MediaType.APPLICATION_JSON);
 		httpPut(webResource, "", new int[] { HttpStatus.SC_OK });
 	}
 
-	public void stopCall(String id) throws BackendRequestException {
+	public static void stopCall(String id) throws BackendRequestException {
 		Builder webResource = buildDefaultRequest(
 				String.format("api/call/%s/stop", id),
 				MediaType.APPLICATION_JSON);
 		httpGet(webResource, new int[] { HttpStatus.SC_OK });
 	}
 
-	public JSONObject makeWaitingInstance(String email, String password,
+	public static JSONObject makeWaitingInstance(String email, String password,
 			String backend, CallingServiceBackend callBackend)
 			throws BackendRequestException {
 		Builder webResource = buildDefaultRequest("api/waitingInstance",
@@ -165,7 +174,7 @@ final class CallingSericeREST {
 		return new JSONObject(output);
 	}
 
-	public JSONObject getWaitingInstanceStatus(String id)
+	public static JSONObject getWaitingInstanceStatus(String id)
 			throws BackendRequestException {
 		Builder webResource = buildDefaultRequest(
 				String.format("api/waitingInstance/%s/status", id),
@@ -177,22 +186,25 @@ final class CallingSericeREST {
 				output + "\n" });
 		return new JSONObject(output);
 	}
-	
-	public void muteWaitingInstance(String id) throws BackendRequestException {
+
+	public static void muteWaitingInstance(String id)
+			throws BackendRequestException {
 		Builder webResource = buildDefaultRequest(
 				String.format("api/waitingInstance/%s/mute", id),
 				MediaType.APPLICATION_JSON);
 		httpPut(webResource, "", new int[] { HttpStatus.SC_OK });
 	}
-	
-	public void unmuteWaitingInstance(String id) throws BackendRequestException {
+
+	public static void unmuteWaitingInstance(String id)
+			throws BackendRequestException {
 		Builder webResource = buildDefaultRequest(
 				String.format("api/waitingInstance/%s/unmute", id),
 				MediaType.APPLICATION_JSON);
 		httpPut(webResource, "", new int[] { HttpStatus.SC_OK });
 	}
 
-	public void stopWaitingInstance(String id) throws BackendRequestException {
+	public static void stopWaitingInstance(String id)
+			throws BackendRequestException {
 		Builder webResource = buildDefaultRequest(
 				String.format("api/waitingInstance/%s/stop", id),
 				MediaType.APPLICATION_JSON);
