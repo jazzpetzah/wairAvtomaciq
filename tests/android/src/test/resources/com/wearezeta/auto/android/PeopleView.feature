@@ -134,19 +134,19 @@ Feature: People View
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
 	
-  @id1507 @regression @torun
+  @id1507 @regression
   Scenario Outline: Verify editing the conversation name
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <OldGroupChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    And I tap on contact name <OldGroupChatName>
+    When I tap on contact name <OldGroupChatName>
     And I tap conversation details button
-    Then I rename group conversation to <NewConversationName>
-    Then I return to group chat page
-    And I see a message informing me that I renamed the conversation to <NewConversationName>
-    When I navigate back from dialog page
+    And I rename group conversation to <NewConversationName>
+    And I return to group chat page
+    Then I see a message informing me that I renamed the conversation to <NewConversationName>
+    And I navigate back from dialog page
     And I see contact list loaded with User name <NewConversationName>
 
     Examples: 
