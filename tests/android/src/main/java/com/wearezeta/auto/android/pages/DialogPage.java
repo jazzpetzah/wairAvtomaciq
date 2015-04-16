@@ -130,6 +130,10 @@ public class DialogPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogPageBottom")
 	private WebElement dialogPageBottom;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idNewConversationNameMessage")
+	private WebElement newConversationNameMessage;
+	
 
 	private int initMessageCount = 0;
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.75;
@@ -206,6 +210,10 @@ public class DialogPage extends AndroidPage {
 	public void clickLastImageFromDialog() {
 		imageList.get(imageList.size() - 1).click();
 	}
+	
+	public String getChangedGroupNameMessage() {
+		return newConversationNameMessage.getText();
+	}
 
 	@Override
 	public AndroidPage swipeUp(int time) throws Exception {
@@ -262,11 +270,13 @@ public class DialogPage extends AndroidPage {
 
 	public void confirm() {
 		refreshUITree();// TODO workaround
+		getWait().until(ExpectedConditions.visibilityOf(okButton));
 		okButton.click();
 	}
 
 	public void takePhoto() {
 		refreshUITree();// TODO workaround
+		getWait().until(ExpectedConditions.visibilityOf(takePhotoButton));
 		takePhotoButton.click();
 	}
 
@@ -346,8 +356,9 @@ public class DialogPage extends AndroidPage {
 		closeImageBtn.click();
 	}
 	
-	public void tapConversationDetailsButton() {
+	public OtherUserPersonalInfoPage tapConversationDetailsButton() throws Exception {
 		addParticipant.click();
+		return new OtherUserPersonalInfoPage(this.getDriver(), this.getWait());
 	}
 
 	public void sendFrontCameraImage() throws Exception {

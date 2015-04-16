@@ -33,11 +33,6 @@ public class TabletDialogPageSteps {
 	 */
 	@When("^I see tablet dialog page$")
 	public void WhenISeeTabletDialogPage() throws Exception {
-		if (TabletPagesCollection.dialogPage == null) {
-			TabletPagesCollection.dialogPage = TabletPagesCollection.contactListPage
-					.initDialogPage();
-			PagesCollection.dialogPage = TabletPagesCollection.dialogPage;
-		}
 		Assert.assertTrue(TabletPagesCollection.dialogPage
 				.isProfileButtonDisplayed());
 	}
@@ -52,9 +47,8 @@ public class TabletDialogPageSteps {
 	@When("^I tap on profile button$")
 	public void WhenITapOnProfileButton() throws Exception {
 		TabletPagesCollection.dialogPage.tapOnProfileButton();
-		TabletPagesCollection.otherUserPersonalInfoPage = TabletPagesCollection.dialogPage
+		PagesCollection.otherUserPersonalInfoPage = TabletPagesCollection.dialogPage
 				.initOtherUserPersonalInfoPage();
-		PagesCollection.otherUserPersonalInfoPage = TabletPagesCollection.otherUserPersonalInfoPage;
 	}
 
 	/**

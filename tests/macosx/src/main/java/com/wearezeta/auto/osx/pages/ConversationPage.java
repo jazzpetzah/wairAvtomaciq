@@ -86,7 +86,13 @@ public class ConversationPage extends MainWirePage {
 
 	public ConversationPage(ZetaOSXDriver driver, WebDriverWait wait)
 			throws Exception {
+		this(driver, wait, null);
+	}
+
+	public ConversationPage(ZetaOSXDriver driver, WebDriverWait wait,
+			String conversationName) throws Exception {
 		super(driver, wait);
+		this.currentConversationName = conversationName;
 	}
 
 	public void focusOnConversation() {
@@ -253,11 +259,13 @@ public class ConversationPage extends MainWirePage {
 
 	public void scrollDownTillMediaBarAppears() throws Exception {
 		NSPoint mediaBarPosition = NSPoint.fromString(mediabarBarTitle
-				.getAttribute("AXPosition"));
+				.getAttribute(OSXConstants.Attributes.AXPOSITION));
 		NSPoint conversationPosition = NSPoint
-				.fromString(conversationScrollArea.getAttribute("AXPosition"));
+				.fromString(conversationScrollArea
+						.getAttribute(OSXConstants.Attributes.AXPOSITION));
 
-		NSPoint windowSize = NSPoint.fromString(window.getAttribute("AXSize"));
+		NSPoint windowSize = NSPoint.fromString(window
+				.getAttribute(OSXConstants.Attributes.AXSIZE));
 		log.debug("Window size: " + windowSize);
 
 		log.debug("Window position: " + conversationPosition);
@@ -285,7 +293,7 @@ public class ConversationPage extends MainWirePage {
 			while (mediaBarPosition.y() < conversationPosition.y()) {
 				conversationDecrementSB.click();
 				mediaBarPosition = NSPoint.fromString(mediabarBarTitle
-						.getAttribute("AXPosition"));
+						.getAttribute(OSXConstants.Attributes.AXPOSITION));
 				log.debug("Current media bar position: " + mediaBarPosition);
 				log.debug("Media play state: " + getSoundCloudButtonState());
 				long endDate = new Date().getTime();
@@ -303,8 +311,9 @@ public class ConversationPage extends MainWirePage {
 		int lastPosition = 0;
 		for (WebElement group : groups) {
 			NSPoint position = NSPoint.fromString(group
-					.getAttribute("AXPosition"));
-			NSPoint size = NSPoint.fromString(group.getAttribute("AXSize"));
+					.getAttribute(OSXConstants.Attributes.AXPOSITION));
+			NSPoint size = NSPoint.fromString(group
+					.getAttribute(OSXConstants.Attributes.AXSIZE));
 			if (position == null || size == null) {
 				log.debug("Can't get position or size for current element. Position: "
 						+ position + ", size: " + size);
@@ -319,7 +328,7 @@ public class ConversationPage extends MainWirePage {
 		}
 
 		NSPoint textInputPosition = NSPoint.fromString(newMessageTextArea
-				.getAttribute("AXPosition"));
+				.getAttribute(OSXConstants.Attributes.AXPOSITION));
 
 		// get scrollbar for conversation view
 		WebElement conversationIncrementSB = null;
@@ -348,7 +357,7 @@ public class ConversationPage extends MainWirePage {
 			while (lastGroupPosition.y() > textInputPosition.y()) {
 				conversationIncrementSB.click();
 				lastGroupPosition = NSPoint.fromString(lastGroup
-						.getAttribute("AXPosition"));
+						.getAttribute(OSXConstants.Attributes.AXPOSITION));
 				long endDate = new Date().getTime();
 				if (endDate - startDate > TIMEOUT_MINUTES * 60 * 1000)
 					break;
@@ -376,9 +385,10 @@ public class ConversationPage extends MainWirePage {
 
 	public boolean isMediaBarVisible() {
 		NSPoint mediaBarPosition = NSPoint.fromString(mediabarBarTitle
-				.getAttribute("AXPosition"));
+				.getAttribute(OSXConstants.Attributes.AXPOSITION));
 		NSPoint conversationPosition = NSPoint
-				.fromString(conversationScrollArea.getAttribute("AXPosition"));
+				.fromString(conversationScrollArea
+						.getAttribute(OSXConstants.Attributes.AXPOSITION));
 		if (mediaBarPosition.y() >= conversationPosition.y())
 			return true;
 		else
@@ -480,8 +490,9 @@ public class ConversationPage extends MainWirePage {
 				.id(OSXLocators.ConversationPage.idConversationScrollArea));
 
 		NSPoint targetLocation = NSPoint.fromString(target
-				.getAttribute("AXPosition"));
-		NSPoint targetSize = NSPoint.fromString(target.getAttribute("AXSize"));
+				.getAttribute(OSXConstants.Attributes.AXPOSITION));
+		NSPoint targetSize = NSPoint.fromString(target
+				.getAttribute(OSXConstants.Attributes.AXSIZE));
 
 		int xLoc = targetLocation.x() + targetSize.x() / 2;
 		int yLoc = targetLocation.y() + targetSize.y() / 2;

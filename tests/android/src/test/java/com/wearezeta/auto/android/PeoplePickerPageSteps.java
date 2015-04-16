@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android;
 
 import org.junit.Assert;
+import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -12,7 +13,8 @@ import cucumber.api.java.en.When;
 
 public class PeoplePickerPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
+    public static String randomConnectName = "";
+    
 	@When("^I see People picker page$")
 	public void WhenISeePeoplePickerPage() throws Exception {
 		Assert.assertTrue(PagesCollection.peoplePickerPage
@@ -191,12 +193,25 @@ public class PeoplePickerPageSteps {
 				.clickOnAddToCoversationButton();
 	}
 
-	@When("^I navigate back to Conversations List")
+	@When("^I navigate back to Conversations List$")
 	public void WhenINavigateBackToConversationsList() throws Exception {
 		PagesCollection.contactListPage = PagesCollection.peoplePickerPage
 				.navigateBack();
 	}
 
+
+	/**
+	 * Tap on Random contact from PYMK
+	 * 
+	 * @step. ^I press \\+ button on a random Connect$
+	 * 
+	 */
+	@When("^I press \\+ button on a random Connect$")
+	public void WhenIPressPlusButtonOnARandomConnect() {
+		WebElement randomConnect = PagesCollection.peoplePickerPage.selectRandomConnect(); 
+		randomConnectName = PagesCollection.peoplePickerPage.pressPlusOnContact(randomConnect);
+	}
+	
 	@Then("^I see user (.*)  in People picker$")
 	public void ThenISeeUserInPeoplePicker(String contact) throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();

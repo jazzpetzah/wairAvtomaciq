@@ -1,16 +1,10 @@
 package com.wearezeta.auto.osx.pages;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
-
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -90,22 +84,6 @@ public class ContactListPage extends MainWirePage {
 	public boolean waitUntilMainWindowAppears() throws Exception {
 		return DriverUtils.waitUntilElementAppears(driver,
 				By.xpath(OSXLocators.MainWirePage.xpathWindow));
-	}
-
-	public void restoreZClient() throws InterruptedException, ScriptException,
-			IOException {
-		final String[] scriptArr = new String[] {
-				"property bi : \"com.wearezeta.zclient.mac.development\"",
-				"property thisapp: \"Wire\"",
-				"tell application id bi to activate",
-				"tell application \"System Events\"", " tell process thisapp",
-				" click last menu item of menu \"Window\" of menu bar 1",
-				" end tell", "end tell" };
-
-		final String script = StringUtils.join(scriptArr, "\n");
-		ScriptEngineManager mgr = new ScriptEngineManager();
-		ScriptEngine engine = mgr.getEngineByName("AppleScript");
-		engine.eval(script);
 	}
 
 	public boolean isContactWithNameExists(String name) throws Exception {
@@ -285,9 +263,9 @@ public class ContactListPage extends MainWirePage {
 				.xpath(OSXLocators.xpathConversationListScrollArea));
 
 		NSPoint mainPosition = NSPoint.fromString(scrollArea
-				.getAttribute("AXPosition"));
-		NSPoint mainSize = NSPoint
-				.fromString(scrollArea.getAttribute("AXSize"));
+				.getAttribute(OSXConstants.Attributes.AXPOSITION));
+		NSPoint mainSize = NSPoint.fromString(scrollArea
+				.getAttribute(OSXConstants.Attributes.AXSIZE));
 
 		NSPoint latestPoint = new NSPoint(mainPosition.x() + mainSize.x(),
 				mainPosition.y() + mainSize.y());
@@ -295,7 +273,7 @@ public class ContactListPage extends MainWirePage {
 		WebElement userContact = conversation;
 
 		NSPoint userPosition = NSPoint.fromString(userContact
-				.getAttribute("AXPosition"));
+				.getAttribute(OSXConstants.Attributes.AXPOSITION));
 		if (conversation.isDisplayed()) {
 			return;
 		}
@@ -322,7 +300,7 @@ public class ContactListPage extends MainWirePage {
 						+ latestPoint);
 				peopleIncrementSB.click();
 				userPosition = NSPoint.fromString(userContact
-						.getAttribute("AXPosition"));
+						.getAttribute(OSXConstants.Attributes.AXPOSITION));
 				count++;
 			}
 			count = 0;
@@ -331,7 +309,7 @@ public class ContactListPage extends MainWirePage {
 						+ "; mainPosition point: " + mainPosition);
 				peopleDecrementSB.click();
 				userPosition = NSPoint.fromString(userContact
-						.getAttribute("AXPosition"));
+						.getAttribute(OSXConstants.Attributes.AXPOSITION));
 				count++;
 			}
 		}

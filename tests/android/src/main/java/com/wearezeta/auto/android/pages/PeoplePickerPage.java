@@ -2,6 +2,7 @@ package com.wearezeta.auto.android.pages;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
@@ -26,6 +27,9 @@ public class PeoplePickerPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerTopPeopleHeader")
 	private WebElement pickerTopPeopleHeader;
+
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerUserSlidingRow")
+	private List<WebElement> pickerUserSlidingRow;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPeoplePickerSerchConversations")
 	private List<WebElement> pickerSearchConversations;
@@ -323,5 +327,19 @@ public class PeoplePickerPage extends AndroidPage {
 		}
 		gmailLink.click();
 		return new CommonAndroidPage(this.getDriver(), this.getWait());
+	}
+
+	public WebElement selectRandomConnect() {
+		refreshUITree();
+		Random rand = new Random();
+		int n = rand.nextInt(pickerUserSlidingRow.size() - 1);
+		return pickerUserSlidingRow.get(n);
+	}
+
+	public String pressPlusOnContact(WebElement randomConnect) {
+		refreshUITree();
+		String name = randomConnect.findElement(By.id(AndroidLocators.PeoplePickerPage.idPickerRecomendedName)).getText();
+		randomConnect.findElement(By.id(AndroidLocators.PeoplePickerPage.idPickerRecomendedQuickAdd)).click();
+		return name;
 	}
 }

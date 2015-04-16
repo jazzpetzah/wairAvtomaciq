@@ -198,7 +198,7 @@ public final class IOSLocators {
 
 	public static final String xpathMutedIcon = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[@name='%s']/UIAButton[3]";
 	
-	public static final String xpathContactListPlayPauseButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[@name='%s']/UIAButton";
+	public static final String xpathContactListPlayPauseButton = "//UIACollectionCell[@name='%s']/UIAButton[@name='mediaCellButton']";
 	
 	public static final String nameMuteButton = "ConvCellMuteButton";
 
@@ -248,7 +248,7 @@ public final class IOSLocators {
 	
 	public static final String xpathChangePasswordPageChangePasswordButton = "//UIAApplication[1]/UIAWindow[2]/UIAScrollView[1]/UIAScrollView[1]/UIAWebView[1]/UIAButton[1]";
 	
-	public static final String nameOptionsHelpButton = "HELP";
+	public static final String nameOptionsHelpButton = "SUPPORT";
 	
 	public static final String xpathSettingsHelpHeader = "//UIAApplication[@name='Safari']/UIAWindow[2]/UIAScrollView[1]/UIAScrollView[1]/UIAWebView[1]/UIALink[@name='Support']";
 	
