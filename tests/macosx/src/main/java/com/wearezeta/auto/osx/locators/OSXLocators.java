@@ -68,8 +68,6 @@ public final class OSXLocators {
 
 	public static final String xpathFormatMutedButton = "//AXCell[AXStaticText[@AXValue='%s']]/AXImage[@AXTitle='']";
 
-	public static final String xpathPleaseProvideEmailAddress = "//AXStaticText[@AXValue='PLEASE PROVIDE A VALID EMAIL ADDRESS']";
-
 	public static final String xpathConversationNameEdit = "//AXPopover/AXScrollArea/AXTextArea";
 	public static final String xpathUserAvatar = "//AXPopover/AXScrollArea/AXGrid/AXUnknown";
 
@@ -185,6 +183,8 @@ public final class OSXLocators {
 		public static final String xpathRejectTakenPictureButton = "//AXButton[2]";
 
 		public static final String xpathChoosePictureAndSelectColourMessage = "//*[contains(@AXValue,'CHOOSE A PICTURE AND ') and contains(@AXValue,'SELECT A COLOUR')]";
+
+		public static final String xpathPleaseProvideEmailAddressMessage = "//AXStaticText[@AXValue='PLEASE ENTER A VALID EMAIL ADDRESS']";
 
 		public static final String ACTIVATION_RESPONSE_VERIFIED = "Account created.";
 	}
