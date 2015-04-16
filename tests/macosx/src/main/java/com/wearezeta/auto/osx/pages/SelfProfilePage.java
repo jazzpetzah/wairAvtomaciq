@@ -38,9 +38,6 @@ public class SelfProfilePage extends MainWirePage {
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathPictureSettingsCloseButton)
 	private WebElement pictureSettingsCloseButton;
 
-	@FindBy(how = How.ID, using = OSXLocators.idSelfProfileSettingsButton)
-	private WebElement selfProfileViewSettingsButton;
-
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathRemoveUserPictureCheckBox)
 	private WebElement removeUserPictureCheckBox;
 

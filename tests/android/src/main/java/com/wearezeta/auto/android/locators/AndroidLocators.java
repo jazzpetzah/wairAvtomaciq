@@ -355,6 +355,9 @@ public final class AndroidLocators {
 
 		public static final String idConnectRequestConnectTo = LOCATORS_PACKAGE
 				+ ":id/user_name";
+		
+		public static final String idNewConversationNameMessage = LOCATORS_PACKAGE
+				+ ":id/ttv__row_conversation__new_conversation_name";
 
 		public static final String idDialogPageBottomFrameLayout = LOCATORS_PACKAGE
 				+ ":id/cv";
@@ -437,6 +440,9 @@ public final class AndroidLocators {
 
 		public static final String idParticipantsHeader = LOCATORS_PACKAGE
 				+ ":id/ttv__participants__header";
+		
+		public static final String idParticipantsHeaderEditable = LOCATORS_PACKAGE
+				+ ":id/taet__participants__header__editable";
 
 		public static final String idParticipantsSubHeader = LOCATORS_PACKAGE
 				+ ":id/ttv__participants__sub_header";
