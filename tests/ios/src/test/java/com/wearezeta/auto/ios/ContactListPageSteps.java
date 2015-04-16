@@ -98,11 +98,15 @@ public class ContactListPageSteps {
 	@When("^I swipe down contact list$")
 	public void ISwipeDownContactList() throws Throwable {
 		if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
-			PagesCollection.peoplePickerPage = (PeoplePickerPage) PagesCollection.contactListPage
+			IOSPage page = PagesCollection.contactListPage
 					.swipeDown(500);
+			PagesCollection.peoplePickerPage = (PeoplePickerPage) page;
+			PagesCollection.iOSPage = page;
 		} else {
-			PagesCollection.peoplePickerPage = (PeoplePickerPage) PagesCollection.contactListPage
+			IOSPage page = PagesCollection.contactListPage
 					.swipeDownSimulator();
+			PagesCollection.peoplePickerPage = (PeoplePickerPage) page;
+			PagesCollection.iOSPage = page;
 		}
 	}
 

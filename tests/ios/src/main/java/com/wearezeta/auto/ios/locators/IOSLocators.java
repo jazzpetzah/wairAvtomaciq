@@ -434,7 +434,7 @@ public final class IOSLocators {
 	public static final String xpathPeoplePickerAllTopPeople = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell";
 	public static final String nameShareButton = "SHARE";
 	public static final String nameContinueUploadButton = "SHARE";
-	public static final String namePeopleYouMayKnowLabel = "PEOPLE YOU MAY KNOW";
+	public static final String namePeopleYouMayKnowLabel = "CONNECT";
 	public static final String xpathSendAnInviteButton = "//UIACollectionCell[@name='Send an invitation']";
 	public static final String xpathInviteCopyButton = "//UIACollectionCell[@name='Copy']";
 

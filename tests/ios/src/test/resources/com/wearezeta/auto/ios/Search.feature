@@ -39,7 +39,7 @@ Feature: Search
     And I see Upload contacts dialog
     And I click Continue button on Upload dialog
     And I dismiss alert
-    And I dont see PEOPLE YOU MAY KNOW label
+    And I dont see CONNECT label
     And I click clear button
     And I swipe down contact list
     And I scroll up page a bit
@@ -60,7 +60,7 @@ Feature: Search
     And I see Upload contacts dialog
     And I click Continue button on Upload dialog
     And I accept alert
-    Then I see PEOPLE YOU MAY KNOW label
+    Then I see CONNECT label
     And I see user <Contact1> found on People picker page
     And I see user <Contact2> found on People picker page
     And I remove contacts list users from Mac contacts
@@ -227,7 +227,7 @@ Feature: Search
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name | 
-
+      
 @staging @id2117 @torun
   Scenario Outline: Verify dismissing with clicking on Hide
   	Given There are 5 users where <Name> is me
@@ -239,8 +239,9 @@ Feature: Search
     When I see Contact list with my name <Name>
     And I swipe down contact list
     And I see People picker page
-	And I see PEOPLE YOU MAY KNOW label
-	
+    And I re-enter the people picker if CONNECT label is not there
+	And I see CONNECT label
+	And I hide peoplepicker keyboard
 	
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2  | Contact3  | Contact4  |

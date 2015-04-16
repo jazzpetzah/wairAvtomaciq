@@ -1,12 +1,16 @@
 package com.wearezeta.auto.ios.pages;
 
+import io.appium.java_client.AppiumDriver;
+
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -155,6 +159,19 @@ public class PeoplePickerPage extends IOSPage {
 		return new ContactListPage(this.getDriver(), this.getWait());
 	}
 
+	public void hidePeoplePickerKeyboard() throws Exception {
+		
+		DriverUtils.swipeByCoordinates(getDriver(), 1, 50, 30, 40, 50);
+		
+//		WebElement element = driver.findElement(By
+//				.xpath(IOSLocators.xpathSendAnInviteButton));
+//		Point coords = element.getLocation();
+//		Dimension elementSize = element.getSize();
+//		this.getDriver().swipe(coords.x + elementSize.width / 2,
+//				coords.y + elementSize.height,
+//				coords.x + elementSize.width / 2, coords.y,1);
+	}
+	
 	public boolean isAddToConversationBtnVisible() throws Exception {
 		return DriverUtils.isElementDisplayed(this.getDriver(),
 				By.name(IOSLocators.namePeoplePickerAddToConversationButton));
@@ -263,6 +280,11 @@ public class PeoplePickerPage extends IOSPage {
 				By.name(IOSLocators.NamePeoplePickerTopPeopleLabel));
 	}
 
+	public boolean isConnectLabelVisible() throws Exception {
+		return DriverUtils.isElementDisplayed(this.getDriver(),
+				By.name(IOSLocators.namePeopleYouMayKnowLabel));
+	}
+	
 	public boolean isUserSelected(String name) {
 		WebElement el = driver.findElement(By.xpath(String.format(
 				IOSLocators.xpathPeoplePickerUserAvatar, name)));

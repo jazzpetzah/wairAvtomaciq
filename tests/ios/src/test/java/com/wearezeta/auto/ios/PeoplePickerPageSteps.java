@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.GroupChatPage;
@@ -53,20 +54,25 @@ public class PeoplePickerPageSteps {
 		PagesCollection.peoplePickerPage.clickContinueButton();
 	}
 
-	@When("I see PEOPLE YOU MAY KNOW label")
-	public void ISeePepopleYouMayKnowLabel() throws Exception {
-		Assert.assertTrue("PEOPLE YOU MAY KNOW lable is not visible",
+	@When("I see CONNECT label")
+	public void ISeePeopleYouMayKnowLabel() throws Exception {
+		Assert.assertTrue("CONNECT label is not visible",
 				PagesCollection.peoplePickerPage
 						.isPeopleYouMayKnowLabelVisible());
 	}
 
-	@When("I dont see PEOPLE YOU MAY KNOW label")
-	public void IDontSeePepopleYouMayKnowLabel() throws Exception {
-		Assert.assertFalse("PEOPLE YOU MAY KNOW lable is visible",
+	@When("I dont see CONNECT label")
+	public void IDontSeePeopleYouMayKnowLabel() throws Exception {
+		Assert.assertFalse("CONNECT label is visible",
 				PagesCollection.peoplePickerPage
 						.isPeopleYouMayKnowLabelVisible());
 	}
 
+	@When("I hide peoplepicker keyboard")
+	public void HidePeoplePickerKeyboard() throws Exception {
+		PagesCollection.peoplePickerPage.hidePeoplePickerKeyboard();
+	}
+	
 	@When("I re-enter the people picker if top people list is not there")
 	public void IRetryPeoplePickerIfNotLoaded() throws IOException, Exception {
 		if (!PagesCollection.peoplePickerPage.isTopPeopleLabelVisible()) {
@@ -81,6 +87,20 @@ public class PeoplePickerPageSteps {
 		}
 	}
 
+	@When("I re-enter the people picker if CONNECT label is not there")
+	public void IRetryPeoplePickerIfNoConnectLabel() throws IOException, Exception {
+		while (!PagesCollection.peoplePickerPage.isConnectLabelVisible()) {
+			IClickCloseButtonDismissPeopleView();
+			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
+				PagesCollection.peoplePickerPage = (PeoplePickerPage) PagesCollection.contactListPage
+						.swipeDown(1000);
+			} else {
+				PagesCollection.peoplePickerPage = (PeoplePickerPage) PagesCollection.contactListPage
+						.swipeDownSimulator();
+			}
+		}
+	}
+	
 	@When("^I tap on Search input on People picker page$")
 	public void WhenITapOnSearchInputOnPeoplePickerPage() throws Exception {
 		PagesCollection.peoplePickerPage.tapOnPeoplePickerSearch();
