@@ -35,6 +35,9 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsHeader")
 	private WebElement groupChatName;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsHeaderEditable")
+	private WebElement groupChatNameEditable;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsHeader")
 	private List<WebElement> otherUserName;
@@ -250,8 +253,12 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		}
 	}
 
+	public void tapOnParticipantsHeader() {
+		groupChatName.click();
+	}
+
 	public void renameGroupChat(String chatName) {
-		groupChatName.sendKeys(chatName + "\n");
+		groupChatNameEditable.sendKeys(chatName + "\n");
 	}
 
 	public AndroidPage tapOnContact(String contact) throws Exception {

@@ -199,4 +199,19 @@ public class OtherUserPersonalInfoPageSteps {
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.otherUserPersonalInfoPage
 				.tabBackButton();
 	}
+	
+	/**
+	 * Renames a group conversation by first tapping on the participants header and then sending the message to the text input field
+	 * 
+	 * @step. ^I rename group conversation to (.*)$
+	 * 
+	 * @param newConversationName
+	 * 			the new conversation name
+	 * @throws Throwable
+	 */
+	@Then("^I rename group conversation to (.*)$")
+	public void ThenIRenameGroupConversationTo(String newConversationName) throws Throwable {
+		PagesCollection.otherUserPersonalInfoPage.tapOnParticipantsHeader();
+		PagesCollection.otherUserPersonalInfoPage.renameGroupChat(newConversationName);
+	}
 }
