@@ -80,7 +80,7 @@ Feature: Register new user
     And I enter invalid emails
     Then I see that all emails not accepted
 
-  @regression @id1964
+  @regression @id1096
   Scenario Outline: Verify automatic email verification is performed
     Given I see Welcome screen
     When I start registration
