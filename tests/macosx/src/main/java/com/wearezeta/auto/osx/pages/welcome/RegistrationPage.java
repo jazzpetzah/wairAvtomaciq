@@ -127,8 +127,9 @@ public class RegistrationPage extends OSXPage {
 		passwordField.click();
 		emailField.click();
 		try {
-			return driver.findElement(By
-					.xpath(OSXLocators.xpathPleaseProvideEmailAddress)) != null;
+			return driver
+					.findElement(By
+							.xpath(OSXLocators.RegistrationPage.xpathPleaseProvideEmailAddressMessage)) != null;
 		} catch (NoSuchElementException e) {
 			return false;
 		}
