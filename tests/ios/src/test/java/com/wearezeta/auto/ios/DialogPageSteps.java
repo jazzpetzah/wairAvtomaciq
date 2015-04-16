@@ -687,6 +687,20 @@ public class DialogPageSteps {
 					.clickOnCallButtonForContact(contact.toUpperCase());
 	}
 	
+	public static final String TAP_OR_SLIDE = "TAP OR SLIDE";
+	
+	/**
+	 * Observing tutorial "swipe right" aka "tap or slide"
+	 * @throws Exception 
+	 * @step ^I see TAPORSLIDE text$
+	 *
+	 */
+	@Then("^I see TAPORSLIDE text$")
+	public void ISeeTapOrSlideText() throws Exception{
+		boolean result = PagesCollection.dialogPage.isTypeOrSlideExists(TAP_OR_SLIDE);
+		Assert.assertTrue(result);
+	}
+	
 	/**
 	 * Checks if a chathaed is visible with message and avatar for 5sec
 	 * 
