@@ -284,7 +284,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		if (CommonUtils.getAndroidApiLvl(PeoplePickerPage.class) > 42) {
 			closeButton.click();
 		} else {
-			navigateBack();
+			swipeDownCoordinates(1000);
 		}
 		return new DialogPage(this.getDriver(), this.getWait());
 	}

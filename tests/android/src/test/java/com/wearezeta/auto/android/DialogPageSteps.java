@@ -287,7 +287,7 @@ public class DialogPageSteps {
 	@When("^I swipe right on dialog page$")
 	public void WhenISwipeRightOnGroupDialogPage() throws Throwable {
 		PagesCollection.contactListPage = (ContactListPage) PagesCollection.dialogPage
-				.swipeRight(500);
+				.swipeRightCoordinates(1000);
 	}
 
 	@Then("^I see group chat page with users (.*)$")
