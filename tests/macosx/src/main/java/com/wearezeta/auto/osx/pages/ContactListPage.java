@@ -263,9 +263,9 @@ public class ContactListPage extends MainWirePage {
 				.xpath(OSXLocators.xpathConversationListScrollArea));
 
 		NSPoint mainPosition = NSPoint.fromString(scrollArea
-				.getAttribute("AXPosition"));
-		NSPoint mainSize = NSPoint
-				.fromString(scrollArea.getAttribute("AXSize"));
+				.getAttribute(OSXConstants.Attributes.AXPOSITION));
+		NSPoint mainSize = NSPoint.fromString(scrollArea
+				.getAttribute(OSXConstants.Attributes.AXSIZE));
 
 		NSPoint latestPoint = new NSPoint(mainPosition.x() + mainSize.x(),
 				mainPosition.y() + mainSize.y());
@@ -273,7 +273,7 @@ public class ContactListPage extends MainWirePage {
 		WebElement userContact = conversation;
 
 		NSPoint userPosition = NSPoint.fromString(userContact
-				.getAttribute("AXPosition"));
+				.getAttribute(OSXConstants.Attributes.AXPOSITION));
 		if (conversation.isDisplayed()) {
 			return;
 		}
@@ -300,7 +300,7 @@ public class ContactListPage extends MainWirePage {
 						+ latestPoint);
 				peopleIncrementSB.click();
 				userPosition = NSPoint.fromString(userContact
-						.getAttribute("AXPosition"));
+						.getAttribute(OSXConstants.Attributes.AXPOSITION));
 				count++;
 			}
 			count = 0;
@@ -309,7 +309,7 @@ public class ContactListPage extends MainWirePage {
 						+ "; mainPosition point: " + mainPosition);
 				peopleDecrementSB.click();
 				userPosition = NSPoint.fromString(userContact
-						.getAttribute("AXPosition"));
+						.getAttribute(OSXConstants.Attributes.AXPOSITION));
 				count++;
 			}
 		}

@@ -18,6 +18,7 @@ import org.sikuli.script.Screen;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.osx.common.OSXConstants;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.util.NSPoint;
@@ -90,7 +91,7 @@ public class PeoplePickerPage extends MainWirePage {
 				if (attribute.equals(OSXLocators.idPeoplePickerDismissButton)) {
 					log.debug("Found people picker cancel button. Location "
 							+ NSPoint.fromString(button
-									.getAttribute("AXPosition")));
+									.getAttribute(OSXConstants.Attributes.AXPOSITION)));
 					return button;
 				}
 			}
@@ -142,8 +143,9 @@ public class PeoplePickerPage extends MainWirePage {
 
 	public void scrollToUserInSearchResults(String user) {
 		NSPoint mainPosition = NSPoint.fromString(window
-				.getAttribute("AXPosition"));
-		NSPoint mainSize = NSPoint.fromString(window.getAttribute("AXSize"));
+				.getAttribute(OSXConstants.Attributes.AXPOSITION));
+		NSPoint mainSize = NSPoint.fromString(window
+				.getAttribute(OSXConstants.Attributes.AXSIZE));
 
 		NSPoint latestPoint = new NSPoint(mainPosition.x() + mainSize.x(),
 				mainPosition.y() + mainSize.y());
@@ -169,7 +171,7 @@ public class PeoplePickerPage extends MainWirePage {
 		}
 
 		NSPoint userPosition = NSPoint.fromString(userContact
-				.getAttribute("AXPosition"));
+				.getAttribute(OSXConstants.Attributes.AXPOSITION));
 		if (userPosition.y() > latestPoint.y()
 				|| userPosition.y() < mainPosition.y()) {
 			if (isFoundPeople) {
@@ -191,12 +193,12 @@ public class PeoplePickerPage extends MainWirePage {
 			while (userPosition.y() > latestPoint.y()) {
 				peopleIncrementSB.click();
 				userPosition = NSPoint.fromString(userContact
-						.getAttribute("AXPosition"));
+						.getAttribute(OSXConstants.Attributes.AXPOSITION));
 			}
 			while (userPosition.y() < mainPosition.y()) {
 				peopleDecrementSB.click();
 				userPosition = NSPoint.fromString(userContact
-						.getAttribute("AXPosition"));
+						.getAttribute(OSXConstants.Attributes.AXPOSITION));
 			}
 		}
 
@@ -259,7 +261,8 @@ public class PeoplePickerPage extends MainWirePage {
 						By.name(OSXLocators.PeoplePickerPage.nameCreateConversationButton),
 						5)) {
 			return NSPoint.fromString(
-					createConversationButton.getAttribute("AXSize")).y() > 0;
+					createConversationButton
+							.getAttribute(OSXConstants.Attributes.AXSIZE)).y() > 0;
 		} else {
 			return false;
 		}
@@ -270,7 +273,8 @@ public class PeoplePickerPage extends MainWirePage {
 				.name(OSXLocators.PeoplePickerPage.nameOpenConversationButton),
 				5)) {
 			return NSPoint.fromString(
-					openConversationButton.getAttribute("AXSize")).y() > 0;
+					openConversationButton
+							.getAttribute(OSXConstants.Attributes.AXSIZE)).y() > 0;
 		} else {
 			return false;
 		}
