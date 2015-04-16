@@ -1,7 +1,6 @@
 package com.wearezeta.auto.common;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +18,7 @@ public final class CommonCallingSteps {
 	private static final int CALL_END_TIMEOUT_SECONDS = 30;
 	private static final int INSTANCE_START_TIMEOUT_SECONDS = 30;
 	private static final int INSTANCE_END_TIMEOUT_SECONDS = 30;
+	private static final long POLLING_FREQUENCY_MILLISECONDS = 1000;
 
 	private static CommonCallingSteps instance = null;
 
@@ -89,9 +89,10 @@ public final class CommonCallingSteps {
 		while (System.currentTimeMillis() - millisecondsStarted <= secondsTimeout * 1000) {
 			final CallingServiceStatus currentStatus = CallingServiceClient
 					.getCallStatus(callId);
-			if (Arrays.asList(expectedStatuses).contains(currentStatus)) {
+			if (expectedStatuses.contains(currentStatus)) {
 				return;
 			}
+			Thread.sleep(POLLING_FREQUENCY_MILLISECONDS);
 		}
 		throw new TimeoutException(
 				String.format(
@@ -179,9 +180,10 @@ public final class CommonCallingSteps {
 		while (System.currentTimeMillis() - millisecondsStarted <= secondsTimeout * 1000) {
 			final CallingServiceStatus currentStatus = CallingServiceClient
 					.getWaitingInstanceStatus(instanceId);
-			if (Arrays.asList(expectedStatuses).contains(currentStatus)) {
+			if (expectedStatuses.contains(currentStatus)) {
 				return;
 			}
+			Thread.sleep(POLLING_FREQUENCY_MILLISECONDS);
 		}
 		throw new TimeoutException(
 				String.format(

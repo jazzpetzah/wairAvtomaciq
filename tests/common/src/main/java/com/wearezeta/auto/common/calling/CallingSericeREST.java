@@ -4,12 +4,14 @@ import java.util.Arrays;
 
 import javax.ws.rs.core.MediaType;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource.Builder;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.calling.models.CallingServiceBackend;
@@ -40,22 +42,13 @@ final class CallingSericeREST {
 
 	private static void verifyRequestResult(int currentResponseCode,
 			int[] acceptableResponseCodes) throws CallingServiceException {
-		if (acceptableResponseCodes.length > 0) {
-			boolean isResponseCodeAcceptable = false;
-			for (int code : acceptableResponseCodes) {
-				if (code == currentResponseCode) {
-					isResponseCodeAcceptable = true;
-					break;
-				}
-			}
-			if (!isResponseCodeAcceptable) {
-				throw new CallingServiceException(
-						String.format(
-								"Backend request failed. Request return code is: %d. Expected codes are: %s",
-								currentResponseCode,
-								Arrays.toString(acceptableResponseCodes)),
-						currentResponseCode);
-			}
+		if (!ArrayUtils.contains(acceptableResponseCodes, currentResponseCode)) {
+			throw new CallingServiceException(
+					String.format(
+							"Backend request failed. Request return code is: %d. Expected codes are: %s",
+							currentResponseCode,
+							Arrays.toString(acceptableResponseCodes)),
+					currentResponseCode);
 		}
 	}
 
@@ -63,27 +56,35 @@ final class CallingSericeREST {
 			int[] acceptableResponseCodes) throws CallingServiceException {
 		final ClientResponse response = webResource.post(ClientResponse.class,
 				entity);
-		log.debug("HTTP POST request.\nInput data:\n" + entity.toString()
-				+ "\nResponse:\n" + response.toString());
+		final String responseString = response.getEntity(String.class);
+		log.debug("HTTP POST request.\nInput data: " + entity.toString()
+				+ "\nResponse: " + responseString);
 		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
-		return response.getEntity(String.class);
+		return responseString;
 	}
 
 	private static String httpPut(Builder webResource, Object entity,
 			int[] acceptableResponseCodes) throws CallingServiceException {
 		ClientResponse response = webResource.put(ClientResponse.class, entity);
-		log.debug("HTTP PUT request.\nInput data:\n" + entity.toString()
-				+ "\nResponse:\n" + response.toString());
+		log.debug("HTTP PUT request.\nInput data: " + entity.toString());
 		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
-		return response.getEntity(String.class);
+		try {
+			final String responseString = response.getEntity(String.class);
+			log.debug("Response: " + responseString);
+			return responseString;
+		} catch (UniformInterfaceException e) {
+			log.debug("Response: <EMPTY>");
+			return "";
+		}
 	}
 
 	private static String httpGet(Builder webResource,
 			int[] acceptableResponseCodes) throws CallingServiceException {
 		ClientResponse response = webResource.get(ClientResponse.class);
-		log.debug("HTTP GET request.\nResponse:\n" + response.toString());
+		final String responseString = response.getEntity(String.class);
+		log.debug("HTTP GET request.\nResponse: " + responseString);
 		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
-		return response.getEntity(String.class);
+		return responseString;
 	}
 
 	private static Builder buildDefaultRequest(String restAction, String accept) {
@@ -124,19 +125,22 @@ final class CallingSericeREST {
 	public static void muteCall(String id) throws CallingServiceException {
 		Builder webResource = buildDefaultRequest(String.format(
 				"api/call/%s/mute", id));
-		httpPut(webResource, "", new int[] { HttpStatus.SC_OK });
+		httpPut(webResource, "", new int[] { HttpStatus.SC_OK,
+				HttpStatus.SC_NO_CONTENT });
 	}
 
 	public static void unmuteCall(String id) throws CallingServiceException {
 		Builder webResource = buildDefaultRequest(String.format(
 				"api/call/%s/unmute", id));
-		httpPut(webResource, "", new int[] { HttpStatus.SC_OK });
+		httpPut(webResource, "", new int[] { HttpStatus.SC_OK,
+				HttpStatus.SC_NO_CONTENT });
 	}
 
 	public static void stopCall(String id) throws CallingServiceException {
 		Builder webResource = buildDefaultRequest(String.format(
 				"api/call/%s/stop", id));
-		httpGet(webResource, new int[] { HttpStatus.SC_OK });
+		httpPut(webResource, "", new int[] { HttpStatus.SC_OK,
+				HttpStatus.SC_NO_CONTENT });
 	}
 
 	public static JSONObject makeWaitingInstance(String email, String password,
@@ -166,28 +170,32 @@ final class CallingSericeREST {
 			throws CallingServiceException {
 		Builder webResource = buildDefaultRequest(String.format(
 				"api/waitingInstance/%s/mute", id));
-		httpPut(webResource, "", new int[] { HttpStatus.SC_OK });
+		httpPut(webResource, "", new int[] { HttpStatus.SC_OK,
+				HttpStatus.SC_NO_CONTENT });
 	}
 
 	public static void acceptNextIncomingCall(String id)
 			throws CallingServiceException {
 		Builder webResource = buildDefaultRequest(String.format(
 				"api/waitingInstance/%s/accept", id));
-		httpPut(webResource, "", new int[] { HttpStatus.SC_OK });
+		httpPut(webResource, "", new int[] { HttpStatus.SC_OK,
+				HttpStatus.SC_NO_CONTENT });
 	}
 
 	public static void unmuteWaitingInstance(String id)
 			throws CallingServiceException {
 		Builder webResource = buildDefaultRequest(String.format(
 				"api/waitingInstance/%s/unmute", id));
-		httpPut(webResource, "", new int[] { HttpStatus.SC_OK });
+		httpPut(webResource, "", new int[] { HttpStatus.SC_OK,
+				HttpStatus.SC_NO_CONTENT });
 	}
 
 	public static void stopWaitingInstance(String id)
 			throws CallingServiceException {
 		Builder webResource = buildDefaultRequest(String.format(
 				"api/waitingInstance/%s/stop", id));
-		httpGet(webResource, new int[] { HttpStatus.SC_OK });
+		httpPut(webResource, "", new int[] { HttpStatus.SC_OK,
+				HttpStatus.SC_NO_CONTENT });
 	}
 
 }

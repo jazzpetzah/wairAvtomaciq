@@ -31,4 +31,14 @@ public enum CallingServiceStatus {
 		throw new NoSuchElementException(String.format(
 				"Unknown call status '%s'", stringRepresentation));
 	}
+
+	public static boolean isSubSetContains(CallingServiceStatus[] subSet,
+			CallingServiceStatus item) {
+		for (CallingServiceStatus status : subSet) {
+			if (item == status) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

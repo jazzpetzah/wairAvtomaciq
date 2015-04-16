@@ -33,14 +33,15 @@ public class CallingServiceClient {
 			final CallingServiceStatus currentStatus = CallingServiceStatus
 					.fromString(CallingSericeREST.getCallStatus(callId)
 							.getString("status"));
-			if (Arrays.asList(expectedStatuses).contains(currentStatus)) {
+			if (CallingServiceStatus.isSubSetContains(expectedStatuses,
+					currentStatus)) {
 				return;
 			}
 			Thread.sleep(POLLING_FREQUENCY_MILLISECONDS);
 		} while (System.currentTimeMillis() - millisecondsStarted <= secondsTimeout * 1000);
 		throw new TimeoutException(
 				String.format(
-						"Timeout occured while waiting until outgoing call '%s' changes its status to '%s' within %s second(s) timeout",
+						"Timeout occured while waiting until outgoing call '%s' changes its status to '%s' after %s second(s)",
 						callId, Arrays.toString(expectedStatuses),
 						secondsTimeout));
 	}
@@ -89,14 +90,15 @@ public class CallingServiceClient {
 			final CallingServiceStatus currentStatus = CallingServiceStatus
 					.fromString(CallingSericeREST.getWaitingInstanceStatus(
 							instanceId).getString("status"));
-			if (Arrays.asList(expectedStatuses).contains(currentStatus)) {
+			if (CallingServiceStatus.isSubSetContains(expectedStatuses,
+					currentStatus)) {
 				return;
 			}
 			Thread.sleep(POLLING_FREQUENCY_MILLISECONDS);
 		} while (System.currentTimeMillis() - millisecondsStarted <= secondsTimeout * 1000);
 		throw new TimeoutException(
 				String.format(
-						"Timeout occured while waiting until incoming call '%s' changes its status to '%s' within %s second(s) timeout",
+						"Timeout occured while waiting until incoming call '%s' changes its status to '%s' after %s second(s) ",
 						instanceId, Arrays.toString(expectedStatuses),
 						secondsTimeout));
 	}
