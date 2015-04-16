@@ -1,6 +1,6 @@
 Feature: Settings
 
-  @regression @1964
+  @regression @id1530
   Scenario Outline: Verify possibility of reseting password
     Given There is 1 user where <Name> is me
     Given I see Welcome screen
