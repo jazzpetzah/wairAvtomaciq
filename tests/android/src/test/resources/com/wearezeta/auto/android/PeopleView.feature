@@ -134,7 +134,7 @@ Feature: People View
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
 	
-  @id1507 @regression
+  @id1507 @staging @regression
   Scenario Outline: Verify editing the conversation name
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
