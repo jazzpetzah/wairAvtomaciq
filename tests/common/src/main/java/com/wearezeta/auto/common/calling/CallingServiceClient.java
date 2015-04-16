@@ -1,5 +1,6 @@
 package com.wearezeta.auto.common.calling;
 
+import java.util.Arrays;
 import java.util.concurrent.TimeoutException;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -24,15 +25,15 @@ public class CallingServiceClient {
 				callBackend).getString("id");
 	}
 
-	private static void waitForCallStatus(String callId,
-			CallingServiceStatus expectedStatus, int secondsTimeout)
+	private static void waitForCallStatuses(String callId,
+			CallingServiceStatus[] expectedStatuses, int secondsTimeout)
 			throws Exception {
 		final long millisecondsStarted = System.currentTimeMillis();
 		do {
 			final CallingServiceStatus currentStatus = CallingServiceStatus
-					.fromString((String) CallingSericeREST
-							.getCallStatus(callId).get("status"));
-			if (currentStatus == expectedStatus) {
+					.fromString(CallingSericeREST.getCallStatus(callId)
+							.getString("status"));
+			if (Arrays.asList(expectedStatuses).contains(currentStatus)) {
 				return;
 			}
 			Thread.sleep(POLLING_FREQUENCY_MILLISECONDS);
@@ -40,31 +41,39 @@ public class CallingServiceClient {
 		throw new TimeoutException(
 				String.format(
 						"Timeout occured while waiting until outgoing call '%s' changes its status to '%s' within %s second(s) timeout",
-						callId, expectedStatus, secondsTimeout));
+						callId, Arrays.toString(expectedStatuses),
+						secondsTimeout));
 	}
 
 	public static String callToUser(ClientUser userAs, ClientUser userTo,
 			CallingServiceBackend callBackend,
-			CallingServiceStatus expectedStatus, int secondsTimeout)
+			CallingServiceStatus[] expectedStatuses, int secondsTimeout)
 			throws Exception {
 		final String callId = callToUser(userAs, userTo, callBackend);
-		waitForCallStatus(callId, expectedStatus, secondsTimeout);
+		waitForCallStatuses(callId, expectedStatuses, secondsTimeout);
 		return callId;
+	}
+
+	public static CallingServiceStatus getCallStatus(String instanceId)
+			throws Exception {
+		return CallingServiceStatus.fromString(CallingSericeREST.getCallStatus(
+				instanceId).getString("status"));
 	}
 
 	public static void stopCall(String callId) throws Exception {
 		CallingSericeREST.stopCall(callId);
 	}
 
-	public static void stopCall(String callId, int secondsTimeout)
+	public static void stopCall(String callId,
+			CallingServiceStatus[] expectedStatuses, int secondsTimeout)
 			throws Exception {
 		stopCall(callId);
-		waitForCallStatus(callId, CallingServiceStatus.Inactive, secondsTimeout);
+		waitForCallStatuses(callId, expectedStatuses, secondsTimeout);
 	}
 
 	// TODO: mute/unmute
 
-	public static String waitForCall(ClientUser userAs,
+	public static String startWaitingInstance(ClientUser userAs,
 			CallingServiceBackend callBackend) throws Exception {
 		return CallingSericeREST.makeWaitingInstance(userAs.getEmail(),
 				userAs.getPassword(),
@@ -72,15 +81,15 @@ public class CallingServiceClient {
 				callBackend).getString("id");
 	}
 
-	private static void waitForInstanceStatus(String instanceId,
-			CallingServiceStatus expectedStatus, int secondsTimeout)
+	private static void waitForInstanceStatuses(String instanceId,
+			CallingServiceStatus[] expectedStatuses, int secondsTimeout)
 			throws Exception {
 		final long millisecondsStarted = System.currentTimeMillis();
 		do {
 			final CallingServiceStatus currentStatus = CallingServiceStatus
-					.fromString((String) CallingSericeREST
-							.getWaitingInstanceStatus(instanceId).get("status"));
-			if (currentStatus == expectedStatus) {
+					.fromString(CallingSericeREST.getWaitingInstanceStatus(
+							instanceId).getString("status"));
+			if (Arrays.asList(expectedStatuses).contains(currentStatus)) {
 				return;
 			}
 			Thread.sleep(POLLING_FREQUENCY_MILLISECONDS);
@@ -88,27 +97,39 @@ public class CallingServiceClient {
 		throw new TimeoutException(
 				String.format(
 						"Timeout occured while waiting until incoming call '%s' changes its status to '%s' within %s second(s) timeout",
-						instanceId, expectedStatus, secondsTimeout));
+						instanceId, Arrays.toString(expectedStatuses),
+						secondsTimeout));
 	}
 
-	public static String waitForCall(ClientUser userAs,
+	public static String startWaitingInstance(ClientUser userAs,
 			CallingServiceBackend callBackend,
-			CallingServiceStatus expectedStatus, int secondsTimeout)
+			CallingServiceStatus[] expectedStatuses, int secondsTimeout)
 			throws Exception {
-		final String instanceId = waitForCall(userAs, callBackend);
-		waitForInstanceStatus(instanceId, expectedStatus, secondsTimeout);
+		final String instanceId = startWaitingInstance(userAs, callBackend);
+		waitForInstanceStatuses(instanceId, expectedStatuses, secondsTimeout);
 		return instanceId;
+	}
+
+	public static void acceptNextIncomingCall(String instanceId)
+			throws Exception {
+		CallingSericeREST.acceptNextIncomingCall(instanceId);
 	}
 
 	public static void stopWaitingInstance(String instanceId) throws Exception {
 		CallingSericeREST.stopWaitingInstance(instanceId);
 	}
 
-	public static void stopWaitingInstance(String instanceId, int secondsTimeout)
+	public static void stopWaitingInstance(String instanceId,
+			CallingServiceStatus[] expectedStatuses, int secondsTimeout)
 			throws Exception {
 		stopWaitingInstance(instanceId);
-		waitForInstanceStatus(instanceId, CallingServiceStatus.Inactive,
-				secondsTimeout);
+		waitForInstanceStatuses(instanceId, expectedStatuses, secondsTimeout);
+	}
+
+	public static CallingServiceStatus getWaitingInstanceStatus(
+			String instanceId) throws Exception {
+		return CallingServiceStatus.fromString(CallingSericeREST
+				.getWaitingInstanceStatus(instanceId).getString("status"));
 	}
 
 	// TODO: mute/unmute

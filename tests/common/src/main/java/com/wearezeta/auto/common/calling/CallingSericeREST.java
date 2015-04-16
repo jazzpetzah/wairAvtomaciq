@@ -169,6 +169,13 @@ final class CallingSericeREST {
 		httpPut(webResource, "", new int[] { HttpStatus.SC_OK });
 	}
 
+	public static void acceptNextIncomingCall(String id)
+			throws CallingServiceException {
+		Builder webResource = buildDefaultRequest(String.format(
+				"api/waitingInstance/%s/accept", id));
+		httpPut(webResource, "", new int[] { HttpStatus.SC_OK });
+	}
+
 	public static void unmuteWaitingInstance(String id)
 			throws CallingServiceException {
 		Builder webResource = buildDefaultRequest(String.format(

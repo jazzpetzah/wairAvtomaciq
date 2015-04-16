@@ -1,7 +1,8 @@
-package com.wearezeta.auto.osx.steps;
+package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.CommonCallingSteps;
 
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class CallingSteps {
@@ -66,7 +67,7 @@ public class CallingSteps {
 	 *            number of seconds to wait until call status is changed
 	 * @throws Exception
 	 */
-	@When("(.*) verifies that call status to (.*) is changed to (.*) in (\\d+) seconds?$")
+	@Then("(.*) verifies that call status to (.*) is changed to (.*) in (\\d+) seconds?$")
 	public void UserXVerifesCallStatusToUserY(String userFromNameAlias,
 			String userToNameAlias, String expectedStatuses, int timeoutSeconds)
 			throws Exception {
@@ -91,7 +92,7 @@ public class CallingSteps {
 	 *            number of seconds to wait until call status is changed
 	 * @throws Exception
 	 */
-	@When("(.*) verifies that waiting instance status is changed to (.*) in (\\d+) seconds?$")
+	@Then("(.*) verifies that waiting instance status is changed to (.*) in (\\d+) seconds?$")
 	public void UserXVerifesCallStatusToUserY(String userFromNameAlias,
 			String expectedStatuses, int timeoutSeconds) throws Exception {
 		commonCallingSteps.UserXVerifesWaitingInstanceStatus(userFromNameAlias,
