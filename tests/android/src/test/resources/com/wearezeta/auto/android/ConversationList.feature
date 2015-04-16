@@ -11,11 +11,10 @@ Feature: Conversation List
     And I swipe up on dialog page
     And I press Right conversation button
     And I press Silence conversartion button
-    And I click mute conversation <Contact1>
+    And I return to group chat page
+    And I return to group chat page
+    And I swipe right on dialog page
     Then Contact <Contact1> is muted
-    When I swipe right on a <Contact1>
-    And I click mute conversation <Contact1>
-    Then Contact <Contact1> is not muted
 
     Examples: 
       | Login      | Password      | Name      | Contact1  |
@@ -44,3 +43,35 @@ Feature: Conversation List
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | SoudCloudLink                                              |
       | user1Email | user1Password | user1Name | user2Name | user3Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
+
+  @id2214 @staging
+  Scenario Outline: I can dismiss PYMK by hide button
+    Given There are 2 users where <Name> is me
+    Given <Contact1> is connected to <Name>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I swipe down contact list
+    And I see People picker page
+    And I press Clear button
+    Then I see Contact list with my name <Name>
+	And I do not see TOP PEOPLE
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @id2213 @staging
+  Scenario Outline: I can dismiss PYMK by swipe
+    Given There are 2 users where <Name> is me
+    Given <Contact1> is connected to <Name>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I swipe down contact list
+    And I see People picker page
+    And I swipe down people picker
+    Then I see Contact list with my name <Name>
+    And I do not see TOP PEOPLE
+    
+    Examples: 
+      | Login      | Password      | Name      | Contact1  |
+      | user1Email | user1Password | user1Name | user2Name |

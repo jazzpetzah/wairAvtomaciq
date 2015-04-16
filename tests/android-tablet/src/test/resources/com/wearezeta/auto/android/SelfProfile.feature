@@ -48,7 +48,7 @@ Feature: Self Profile
     And I rotate UI to portrait
     Given I Sign in on tablet using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I tap on contact name <Contact>
+    When I tap on tablet contact name <Contact>
     And I see tablet dialog page
     And I tap on profile button
     Then I see <Contact> user name and email
@@ -64,7 +64,7 @@ Feature: Self Profile
     And I rotate UI to landscape
     Given I Sign in on tablet using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I tap on contact name <Contact>
+    When I tap on tablet contact name <Contact>
     And I see tablet dialog page
     And I tap on profile button
     Then I see <Contact> user name and email

@@ -279,7 +279,7 @@ public class ConversationInfoPage extends OSXPage {
 
 	public NSPoint retrieveAvatarFullScreenWindowSize() {
 		NSPoint result = NSPoint.fromString(avatarFullScreenWindow
-				.getAttribute("AXSize"));
+				.getAttribute(OSXConstants.Attributes.AXSIZE));
 		return result;
 	}
 

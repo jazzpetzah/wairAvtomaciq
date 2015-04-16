@@ -120,7 +120,7 @@ public class ContactListPage extends IOSPage {
 			throws InterruptedException {
 		WebElement element = driver.findElement(By.xpath(String.format(
 				IOSLocators.xpathContactListPlayPauseButton, name)));
-		DriverUtils.iOSMultiTap(this.getDriver(), element, 1);
+		element.click();
 	}
 	
 	public PersonalInfoPage tapOnMyName(String name) throws Exception {

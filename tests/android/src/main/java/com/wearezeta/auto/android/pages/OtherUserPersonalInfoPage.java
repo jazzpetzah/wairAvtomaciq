@@ -35,6 +35,9 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsHeader")
 	private WebElement groupChatName;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsHeaderEditable")
+	private WebElement groupChatNameEditable;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsHeader")
 	private List<WebElement> otherUserName;
@@ -120,7 +123,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
 	public void clickBlockBtn() {
 		refreshUITree();
-		rightConversationButton.click();
+		blockButton.click();
 	}
 
 	public AndroidPage clickUnblockBtn() throws Exception {
@@ -250,8 +253,12 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		}
 	}
 
+	public void tapOnParticipantsHeader() {
+		groupChatName.click();
+	}
+
 	public void renameGroupChat(String chatName) {
-		groupChatName.sendKeys(chatName + "\n");
+		groupChatNameEditable.sendKeys(chatName + "\n");
 	}
 
 	public AndroidPage tapOnContact(String contact) throws Exception {
@@ -284,7 +291,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		if (CommonUtils.getAndroidApiLvl(PeoplePickerPage.class) > 42) {
 			closeButton.click();
 		} else {
-			navigateBack();
+			swipeDownCoordinates(1000);
 		}
 		return new DialogPage(this.getDriver(), this.getWait());
 	}
