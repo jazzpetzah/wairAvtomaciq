@@ -1,5 +1,6 @@
 package com.wearezeta.auto.osx.pages.welcome;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
@@ -15,6 +16,7 @@ import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.common.base.Function;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
@@ -38,14 +40,20 @@ public class RegistrationPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.RegistrationPage.idCreateAccountButton)
 	private WebElement createAccountButton;
 
-	@FindBy(how = How.ID, using = OSXLocators.idRegistrationTakePictureButton)
+	@FindBy(how = How.ID, using = OSXLocators.RegistrationPage.idTakePictureButton)
 	private WebElement takePictureButton;
 
-	@FindBy(how = How.ID, using = OSXLocators.idRegistrationPickImageButton)
+	@FindBy(how = How.ID, using = OSXLocators.RegistrationPage.idPickImageButton)
 	private WebElement pickImageButton;
 
-	@FindBy(how = How.XPATH, using = OSXLocators.xpathRegistrationPictureConfirmationButton)
-	private WebElement confirmChosenPictureButton;
+	@FindBy(how = How.XPATH, using = OSXLocators.RegistrationPage.xpathAcceptTakenPictureButton)
+	private WebElement acceptTakenPictureButton;
+
+	@FindBy(how = How.XPATH, using = OSXLocators.RegistrationPage.xpathRejectTakenPictureButton)
+	private WebElement rejectTakenPictureButton;
+
+	@FindBy(how = How.ID, using = OSXLocators.RegistrationPage.idRegistrationBackButton)
+	private WebElement backButton;
 
 	public RegistrationPage(ZetaOSXDriver driver, WebDriverWait wait)
 			throws Exception {
@@ -99,9 +107,20 @@ public class RegistrationPage extends OSXPage {
 		pickImageButton.click();
 	}
 
-	public void acceptTakenPicture() throws InterruptedException {
-		Thread.sleep(1000);
-		confirmChosenPictureButton.click();
+	public void acceptTakenPicture() {
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+		}
+		acceptTakenPictureButton.click();
+	}
+
+	public void rejectTakenPicture() {
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+		}
+		rejectTakenPictureButton.click();
 	}
 
 	public boolean isInvalidEmailMessageAppear() {
@@ -115,4 +134,21 @@ public class RegistrationPage extends OSXPage {
 		}
 	}
 
+	public void goBack() {
+		backButton.click();
+	}
+
+	public boolean isChoosePictureMessageVisible() throws Exception {
+		return DriverUtils
+				.isElementDisplayed(
+						driver,
+						By.xpath(OSXLocators.RegistrationPage.xpathChoosePictureAndSelectColourMessage));
+	}
+
+	public boolean isTakePictureConfirmationScreen() {
+		final int CONFIRMATION_SCREEN_BUTTONS_COUNT = 2;
+		List<WebElement> buttons = driver.findElements(By
+				.xpath(OSXLocators.RegistrationPage.xpathConfirmPictureButton));
+		return buttons.size() == CONFIRMATION_SCREEN_BUTTONS_COUNT;
+	}
 }

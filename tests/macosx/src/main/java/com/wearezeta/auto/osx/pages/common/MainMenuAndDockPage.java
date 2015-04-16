@@ -22,8 +22,11 @@ import com.wearezeta.auto.osx.pages.welcome.LoginPage;
 
 public class MainMenuAndDockPage extends OSXPage {
 
-	private static final Logger log = ZetaLogger.getLog(MainMenuAndDockPage.class
-			.getSimpleName());
+	private static final Logger log = ZetaLogger
+			.getLog(MainMenuAndDockPage.class.getSimpleName());
+
+	@FindBy(how = How.NAME, using = OSXLocators.MainMenuPage.nameSendImageMenuItem)
+	private WebElement sendImageMenuItem;
 
 	@FindBy(how = How.NAME, using = OSXLocators.MainMenuPage.nameQuitWireMenuItem)
 	private WebElement quitWireMenuItem;
@@ -53,9 +56,7 @@ public class MainMenuAndDockPage extends OSXPage {
 		} catch (InterruptedException e) {
 		}
 
-		driver.navigate()
-				.to(CommonUtils
-						.getOsxApplicationPathFromConfig(MainMenuAndDockPage.class));
+		driver.navigate().to(OSXExecutionContext.wirePath);
 	}
 
 	public void quitWire() throws IOException {
@@ -81,20 +82,27 @@ public class MainMenuAndDockPage extends OSXPage {
 	public void restoreClient() {
 		clickWireIconOnDock();
 	}
-	
+
 	public void clickWireIconOnDock() {
 		clickAppIconOnDock(OSXConstants.Apps.WIRE);
 	}
-	
+
 	public void clickAppIconOnDock(String appName) {
 
 		driver.navigate().to(OSXConstants.Apps.DOCK);
 		try {
-			String xpath = String.format(OSXLocators.MainMenuPage.xpathFormatDockApplicationIcon,
+			String xpath = String.format(
+					OSXLocators.MainMenuPage.xpathFormatDockApplicationIcon,
 					appName);
 			driver.findElement(By.xpath(xpath)).click();
 		} finally {
-			if (driver != null) driver.navigate().to(OSXExecutionContext.wirePath);
+			if (driver != null)
+				driver.navigate().to(OSXExecutionContext.wirePath);
 		}
+	}
+
+	public ChoosePicturePage sendImage() throws Exception {
+		sendImageMenuItem.click();
+		return new ChoosePicturePage(this.getDriver(), this.getWait());
 	}
 }

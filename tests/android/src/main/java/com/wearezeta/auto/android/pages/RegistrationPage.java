@@ -22,9 +22,12 @@ public class RegistrationPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogTakePhotoButton")
 	private WebElement cameraButton;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.RegistrationPage.CLASS_NAME, locatorKey = "idRegistrationBack")
+	private WebElement backButton;
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConfirmButton")
 	private WebElement confirmImageButton;
-
+	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.RegistrationPage.CLASS_NAME, locatorKey = "idSignUpGalleryIcon")
 	protected WebElement signUpGalleryIcon;
 
@@ -161,6 +164,11 @@ public class RegistrationPage extends AndroidPage {
 
 		}
 		return new ContactListPage(this.getDriver(), this.getWait());
+	}
+
+	public void pressBackButton() {
+		refreshUITree();
+		backButton.click();
 	}
 
 }

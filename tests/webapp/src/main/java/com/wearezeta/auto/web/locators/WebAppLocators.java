@@ -165,7 +165,7 @@ public final class WebAppLocators {
 		public static final String xpathCloseButton = "//*[contains(@class,'cc-button')]//*[contains(@class,'icon-close')]";
 
 		public static final Function<String, String> textMessageByText = text -> String
-				.format("//*[@data-uie-name='item-message']//div[@class='text' and text()='%s']",
+				.format("//*[@data-uie-name='item-message']//*[text()='%s']",
 						text);
 
 		public static final String xpathMissedCallAction = "//*[@data-uie-value='call']//div[contains(@class, 'action')]";

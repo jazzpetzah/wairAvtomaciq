@@ -27,13 +27,13 @@ public class PeoplePickerPage extends MainWirePage {
 	private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class
 			.getSimpleName());
 
-	@FindBy(how = How.NAME, using = OSXLocators.namePeoplePickerAddToConversationButton)
+	@FindBy(how = How.NAME, using = OSXLocators.PeoplePickerPage.nameAddToConversationButton)
 	private WebElement addToConversationButton;
 
-	@FindBy(how = How.NAME, using = OSXLocators.namePeoplePickerOpenConversationButton)
+	@FindBy(how = How.NAME, using = OSXLocators.PeoplePickerPage.nameOpenConversationButton)
 	private WebElement openConversationButton;
 
-	@FindBy(how = How.NAME, using = OSXLocators.namePeoplePickerCreateConversationButton)
+	@FindBy(how = How.NAME, using = OSXLocators.PeoplePickerPage.nameCreateConversationButton)
 	private WebElement createConversationButton;
 
 	private WebElement searchField;
@@ -253,9 +253,11 @@ public class PeoplePickerPage extends MainWirePage {
 	}
 
 	public boolean isCreateConversationButtonVisible() throws Exception {
-		if (DriverUtils.waitUntilElementAppears(driver,
-				By.name(OSXLocators.namePeoplePickerCreateConversationButton),
-				5)) {
+		if (DriverUtils
+				.waitUntilElementAppears(
+						driver,
+						By.name(OSXLocators.PeoplePickerPage.nameCreateConversationButton),
+						5)) {
 			return NSPoint.fromString(
 					createConversationButton.getAttribute("AXSize")).y() > 0;
 		} else {
@@ -264,8 +266,9 @@ public class PeoplePickerPage extends MainWirePage {
 	}
 
 	public boolean isOpenConversationButtonVisible() throws Exception {
-		if (DriverUtils.waitUntilElementAppears(driver,
-				By.name(OSXLocators.namePeoplePickerOpenConversationButton), 5)) {
+		if (DriverUtils.waitUntilElementAppears(driver, By
+				.name(OSXLocators.PeoplePickerPage.nameOpenConversationButton),
+				5)) {
 			return NSPoint.fromString(
 					openConversationButton.getAttribute("AXSize")).y() > 0;
 		} else {

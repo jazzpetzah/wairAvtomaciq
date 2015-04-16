@@ -11,6 +11,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
+import com.wearezeta.auto.osx.common.OSXConstants;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class StartedCallPage extends CallPage {
@@ -48,7 +49,7 @@ public class StartedCallPage extends CallPage {
 	}
 
 	public boolean isMicrophoneMuted() {
-		String state = muteMicrophoneButton.getAttribute("AXValue");
+		String state = muteMicrophoneButton.getAttribute(OSXConstants.Attributes.AXVALUE);
 		return OSXCommonUtils.osxAXValueToBoolean(state);
 	}
 
