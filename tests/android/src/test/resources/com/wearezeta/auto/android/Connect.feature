@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @id191 @id193 @smoke @regression 
+  @id191 @id193 @smoke @regression
   Scenario Outline: Send invitation message to a user
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
@@ -23,7 +23,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | Contact1  | Message       |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Hellow friend |
 
-  @id323 @smoke 
+  @id323 @smoke
   Scenario Outline: Accept connection request
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
@@ -423,7 +423,7 @@ Feature: Connect
     And I see contact list loaded with User name <Contact1>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1   | Contact2 |
+      | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
   @id1405 @regression
@@ -470,3 +470,21 @@ Feature: Connect
     Examples: 
       | Login      | Password      | Name      | Contact   | Message          | Picture     |
       | user1Email | user1Password | user1Name | user2Name | Hello my friend! | testing.jpg |
+
+  @id2215 @staging
+  Scenario Outline: I can connect to someone from PYMK by clicking +
+    Given There are 2 users where <Name> is me
+    Given <Contact1> is connected to <Name>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    And I wait for 90 seconds
+    When I swipe down contact list
+    And I see People picker page
+    And I press + button on a random Connect
+  	And I press Clear button
+    Then I see Contact list with my name <Name>
+    And I see contact list loaded with PeoplePicker Random Connect
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  |
+      | user1Email | user1Password | user1Name | user2Name |

@@ -262,11 +262,13 @@ public class DialogPage extends AndroidPage {
 
 	public void confirm() {
 		refreshUITree();// TODO workaround
+		getWait().until(ExpectedConditions.visibilityOf(okButton));
 		okButton.click();
 	}
 
 	public void takePhoto() {
 		refreshUITree();// TODO workaround
+		getWait().until(ExpectedConditions.visibilityOf(takePhotoButton));
 		takePhotoButton.click();
 	}
 

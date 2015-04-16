@@ -527,6 +527,15 @@ public final class AndroidLocators {
 		public static final String idPickerTopPeopleHeader = LOCATORS_PACKAGE
 				+ ":id/ttv_pickuser__list_header_title";
 		
+		public static final String idPickerUserSlidingRow = LOCATORS_PACKAGE
+				+ ":id/ll__pickuser__sliding_row";
+		
+		public static final String idPickerRecomendedName = LOCATORS_PACKAGE
+				+ ":id/ttv_pickuser__recommended_name";
+		
+		public static final String idPickerRecomendedQuickAdd = LOCATORS_PACKAGE
+				+ ":id/gtv__pickuser__recommended__quick_add";
+		
 		public static final String idPickerUsersUnselected = LOCATORS_PACKAGE
 				+ ":id/pick_user_chathead_unselected";
 

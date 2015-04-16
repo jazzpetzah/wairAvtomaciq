@@ -120,7 +120,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
 	public void clickBlockBtn() {
 		refreshUITree();
-		rightConversationButton.click();
+		blockButton.click();
 	}
 
 	public AndroidPage clickUnblockBtn() throws Exception {
