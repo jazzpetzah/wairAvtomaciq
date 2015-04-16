@@ -16,9 +16,11 @@ Feature: Connect
       | user1Email | user1Password | user1Name | user2Name |
 
   @smoke @id1571
-  Scenario Outline: Verify sending a connection request to user choosen from search
+  Scenario Outline: Verify sending a connection request to user chosen from search
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
+    And I see Contacts Upload dialog
+    And I close Contacts Upload dialog
     And I see my name on top of Contact list
     And I wait up to 15 seconds until <Contact> exists in backend search results
     When I open People Picker from Contact List
@@ -37,6 +39,8 @@ Feature: Connect
   Scenario Outline: Verify 1to1 conversation is successfully created for sender end after connection is accepted
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
+    And I see Contacts Upload dialog
+    And I close Contacts Upload dialog
     And I see my name on top of Contact list
     And I wait up to 15 seconds until <Login2> exists in backend search results
     When I open People Picker from Contact List
