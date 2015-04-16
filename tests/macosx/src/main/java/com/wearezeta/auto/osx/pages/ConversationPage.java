@@ -86,7 +86,13 @@ public class ConversationPage extends MainWirePage {
 
 	public ConversationPage(ZetaOSXDriver driver, WebDriverWait wait)
 			throws Exception {
+		this(driver, wait, null);
+	}
+
+	public ConversationPage(ZetaOSXDriver driver, WebDriverWait wait,
+			String conversationName) throws Exception {
 		super(driver, wait);
+		this.currentConversationName = conversationName;
 	}
 
 	public void focusOnConversation() {

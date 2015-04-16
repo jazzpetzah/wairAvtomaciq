@@ -208,7 +208,7 @@ public class ContactListPageSteps {
 		return result;
 	}
 
-	private void clickOnContactListEntry(String contact, boolean isUserProfile)
+	private String clickOnContactListEntry(String contact, boolean isUserProfile)
 			throws MalformedURLException, IOException, NoSuchUserException {
 		if (contact.equals(OSXLocators.RANDOM_KEYWORD)) {
 			contact = PagesCollection.conversationPage
@@ -239,14 +239,15 @@ public class ContactListPageSteps {
 		}
 		Assert.assertTrue("Contact list entry with name " + contact
 				+ " was not found.", isConversationExist);
+		return contact;
 	}
 
 	@Given("I open conversation with (.*)")
 	public void GivenIOpenConversationWith(String contact) throws Exception {
-		clickOnContactListEntry(contact, false);
+		String realName = clickOnContactListEntry(contact, false);
 		PagesCollection.conversationPage = new ConversationPage(
 				PagesCollection.mainMenuPage.getDriver(),
-				PagesCollection.mainMenuPage.getWait());
+				PagesCollection.mainMenuPage.getWait(), realName);
 	}
 
 	@When("I open People Picker from contact list")
