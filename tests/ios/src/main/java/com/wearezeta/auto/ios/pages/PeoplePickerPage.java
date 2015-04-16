@@ -89,7 +89,7 @@ public class PeoplePickerPage extends IOSPage {
 	public void clickLaterButton() throws Exception {
 		if (DriverUtils.isElementDisplayed(this.getDriver(),
 				By.name(IOSLocators.nameShareButton))) {
-			//shareButton.click();
+			// shareButton.click();
 			DriverUtils.mobileTapByCoordinates(getDriver(), shareButton);
 		}
 	}
@@ -160,18 +160,44 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public void hidePeoplePickerKeyboard() throws Exception {
-		
-		DriverUtils.swipeByCoordinates(getDriver(), 1, 50, 30, 40, 50);
-		
-//		WebElement element = driver.findElement(By
-//				.xpath(IOSLocators.xpathSendAnInviteButton));
-//		Point coords = element.getLocation();
-//		Dimension elementSize = element.getSize();
-//		this.getDriver().swipe(coords.x + elementSize.width / 2,
-//				coords.y + elementSize.height,
-//				coords.x + elementSize.width / 2, coords.y,1);
+		DriverUtils.swipeUp(this.getDriver(), sendInviteButton, 500, 50, 40);
 	}
-	
+
+	public void swipeToRevealHideSuggestedContact(String contact)
+			throws Exception {
+		List<WebElement> textElements = driver
+				.findElementsByClassName("UIAStaticText");
+		for (WebElement textElement : textElements) {
+			if (textElement.getText().toLowerCase().equals(contact)) {
+				DriverUtils.swipeRight(this.getDriver(), textElement, 500, 50,
+						50);
+			}
+		}
+	}
+
+	public void tapHideSuggestedContact() throws Exception {
+		List<WebElement> buttonElements = driver
+				.findElementsByClassName("UIAButton");
+		for (WebElement buttonElement : buttonElements) {
+			if (buttonElement.getLocation().x > 0
+					&& buttonElement.getAttribute("name").equals(
+							IOSLocators.nameHideSuggestedContactButton)) {
+				buttonElement.click();
+			}
+		}
+	}
+
+	public boolean isSuggestedContactVisible(String contact) throws Exception {
+		List<WebElement> textElements = driver
+				.findElementsByClassName("UIAStaticText");
+		for (WebElement textElement : textElements) {
+			if (textElement.getText().toLowerCase().equals(contact)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public boolean isAddToConversationBtnVisible() throws Exception {
 		return DriverUtils.isElementDisplayed(this.getDriver(),
 				By.name(IOSLocators.namePeoplePickerAddToConversationButton));
@@ -284,7 +310,7 @@ public class PeoplePickerPage extends IOSPage {
 		return DriverUtils.isElementDisplayed(this.getDriver(),
 				By.name(IOSLocators.namePeopleYouMayKnowLabel));
 	}
-	
+
 	public boolean isUserSelected(String name) {
 		WebElement el = driver.findElement(By.xpath(String.format(
 				IOSLocators.xpathPeoplePickerUserAvatar, name)));

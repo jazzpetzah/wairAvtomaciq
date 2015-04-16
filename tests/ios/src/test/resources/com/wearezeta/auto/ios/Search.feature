@@ -228,13 +228,13 @@ Feature: Search
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name | 
       
-@staging @id2117 @torun
+@staging @id2117
   Scenario Outline: Verify dismissing with clicking on Hide
   	Given There are 5 users where <Name> is me
-    Given <Contact1> is connected to <Name>
-    Given <Contact1> is connected to <Contact2>
-    Given <Contact1> is connected to <Contact3>
-    Given <Contact1> is connected to <Contact4>
+    Given <ContactWithFriends> is connected to <Name>
+    Given <ContactWithFriends> is connected to <Friend1>
+    Given <ContactWithFriends> is connected to <Friend2>
+    Given <ContactWithFriends> is connected to <Friend3>
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I swipe down contact list
@@ -242,7 +242,10 @@ Feature: Search
     And I re-enter the people picker if CONNECT label is not there
 	And I see CONNECT label
 	And I hide peoplepicker keyboard
+	And I swipe to reveal hide button for suggested contact <Friend1>
+	And I tap hide for suggested contact
+	Then I do not see suggested contact <Friend1>
 	
     Examples: 
-      | Login      | Password      | Name      | Contact1   | Contact2  | Contact3  | Contact4  |
-      | user1Email | user1Password | user1Name | user2Name  | user3Name | user4Name | user5Name | 
+      | Login      | Password      | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
+      | user1Email | user1Password | user1Name | user2Name          | user3Name | user4Name | user5Name | 

@@ -435,6 +435,7 @@ public final class IOSLocators {
 	public static final String nameShareButton = "SHARE";
 	public static final String nameContinueUploadButton = "SHARE";
 	public static final String namePeopleYouMayKnowLabel = "CONNECT";
+	public static final String nameHideSuggestedContactButton = "HIDE";
 	public static final String xpathSendAnInviteButton = "//UIACollectionCell[@name='Send an invitation']";
 	public static final String xpathInviteCopyButton = "//UIACollectionCell[@name='Copy']";
 

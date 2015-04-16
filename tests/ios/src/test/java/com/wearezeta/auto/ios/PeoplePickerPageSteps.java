@@ -19,7 +19,6 @@ import cucumber.api.java.en.When;
 
 public class PeoplePickerPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	
 
 	@When("^I see People picker page$")
 	public void WhenISeePeoplePickerPage() throws Exception {
@@ -54,12 +53,26 @@ public class PeoplePickerPageSteps {
 		PagesCollection.peoplePickerPage.clickContinueButton();
 	}
 
+	/**
+	 * Verifies that CONNECT label is visible
+	 * 
+	 * @step. I see CONNECT label
+	 * @throws Exception
+	 */
+
 	@When("I see CONNECT label")
 	public void ISeePeopleYouMayKnowLabel() throws Exception {
 		Assert.assertTrue("CONNECT label is not visible",
 				PagesCollection.peoplePickerPage
 						.isPeopleYouMayKnowLabelVisible());
 	}
+
+	/**
+	 * Verifies that CONNECT label is not visible
+	 * 
+	 * @step. I dont see CONNECT label
+	 * @throws Exception
+	 */
 
 	@When("I dont see CONNECT label")
 	public void IDontSeePeopleYouMayKnowLabel() throws Exception {
@@ -68,13 +81,80 @@ public class PeoplePickerPageSteps {
 						.isPeopleYouMayKnowLabelVisible());
 	}
 
+	/**
+	 * Hides the keyboard on main people picker page
+	 * 
+	 * @step. I hide peoplepicker keyboard
+	 * @throws Exception
+	 */
+
 	@When("I hide peoplepicker keyboard")
 	public void HidePeoplePickerKeyboard() throws Exception {
 		PagesCollection.peoplePickerPage.hidePeoplePickerKeyboard();
 	}
-	
+
+	/**
+	 * Swipes a suggested contact half-way to reveal HIDE button
+	 * 
+	 * @step. I swipe to reveal hide button for suggested contact (.*)
+	 * @param contact
+	 *            name of suggested contact to swipe
+	 * @throws Exception
+	 */
+
+	@When("I swipe to reveal hide button for suggested contact (.*)")
+	public void SwipeToRevealHideButton(String contact) throws Exception {
+		try {
+			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+		PagesCollection.peoplePickerPage
+				.swipeToRevealHideSuggestedContact(contact);
+	}
+
+	/**
+	 * Taps the hide button for a suggested contact
+	 * 
+	 * @step. I tap hide for suggested contact
+	 * @throws Exception
+	 */
+
+	@When("I tap hide for suggested contact")
+	public void ITapHideSuggestedContact() throws Exception {
+		PagesCollection.peoplePickerPage.tapHideSuggestedContact();
+	}
+
+	/**
+	 * Verifies that a user's name is not present in suggested contacts
+	 * 
+	 * @step. I do not see suggested contact (.*)
+	 * @param contact
+	 *            name of suggested contact to check
+	 * @throws Exception
+	 */
+
+	@Then("I do not see suggested contact (.*)")
+	public void IDoNotSeeSuggestedContact(String contact) throws Exception {
+		try {
+			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+		Assert.assertFalse("Suggested contact is still visible",
+				PagesCollection.peoplePickerPage
+						.isSuggestedContactVisible(contact));
+	}
+
+	/**
+	 * A workaround for top people not loading immediately
+	 * 
+	 * @step. I re-enter the people picker if top people list is not there
+	 * @throws Exception
+	 */
+
 	@When("I re-enter the people picker if top people list is not there")
-	public void IRetryPeoplePickerIfNotLoaded() throws IOException, Exception {
+	public void IRetryPeoplePickerIfNotLoaded() throws Exception {
 		if (!PagesCollection.peoplePickerPage.isTopPeopleLabelVisible()) {
 			IClickCloseButtonDismissPeopleView();
 			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
@@ -87,8 +167,15 @@ public class PeoplePickerPageSteps {
 		}
 	}
 
+	/**
+	 * A workaround for CONNECT label not loading immediately
+	 * 
+	 * @step. I re-enter the people picker if CONNECT label is not there
+	 * @throws Exception
+	 */
+
 	@When("I re-enter the people picker if CONNECT label is not there")
-	public void IRetryPeoplePickerIfNoConnectLabel() throws IOException, Exception {
+	public void IRetryPeoplePickerIfNoConnectLabel() throws Exception {
 		while (!PagesCollection.peoplePickerPage.isConnectLabelVisible()) {
 			IClickCloseButtonDismissPeopleView();
 			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
@@ -100,7 +187,7 @@ public class PeoplePickerPageSteps {
 			}
 		}
 	}
-	
+
 	@When("^I tap on Search input on People picker page$")
 	public void WhenITapOnSearchInputOnPeoplePickerPage() throws Exception {
 		PagesCollection.peoplePickerPage.tapOnPeoplePickerSearch();
@@ -277,7 +364,7 @@ public class PeoplePickerPageSteps {
 			if (PagesCollection.iOSPage instanceof GroupChatPage) {
 				PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.iOSPage;
 			}
-		}else {
+		} else {
 			WhenIClickOnGoButton();
 		}
 	}
@@ -351,16 +438,16 @@ public class PeoplePickerPageSteps {
 				.getNumberOfSelectedTopPeople();
 		Assert.assertEquals(number, numberOfSelectedTopPeople);
 	}
-	
+
 	/**
-	 * Presses the Send An Invite button in the people picker. To invite 
-	 * people via mail.
+	 * Presses the Send An Invite button in the people picker. To invite people
+	 * via mail.
 	 * 
 	 * @step. ^I press the send an invite button$
 	 * 
 	 */
 	@When("^I press the send an invite button$")
-	public void IPressTheSendAnInviteButton(){
+	public void IPressTheSendAnInviteButton() {
 		PagesCollection.peoplePickerPage.tapSendInviteButton();
 	}
 
@@ -368,14 +455,14 @@ public class PeoplePickerPageSteps {
 	 * Presses the Copy button on the Send Invitation pop up
 	 * 
 	 * @step. ^I press the copy button$
-	 * @throws Exception 
-	 * @throws UnsupportedFlavorException 
+	 * @throws Exception
+	 * @throws UnsupportedFlavorException
 	 * 
 	 */
 	@When("^I press the copy button$")
-	public void IPressTheCopyButton() throws UnsupportedFlavorException, Exception{
+	public void IPressTheCopyButton() throws UnsupportedFlavorException,
+			Exception {
 		PagesCollection.peoplePickerPage.tapSendInviteCopyButton();
 	}
-	
 
 }
