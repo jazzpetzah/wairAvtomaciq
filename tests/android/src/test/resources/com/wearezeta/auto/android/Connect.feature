@@ -23,8 +23,8 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | Contact1  | Message       |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Hellow friend |
 
-  @id323 @smoke
-  Scenario Outline: Accept connection request
+  @id323 @smoke @regression
+  Scenario Outline: Accept incoming connection request from conversation list
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given <Contact> has sent connection request to <Name>
