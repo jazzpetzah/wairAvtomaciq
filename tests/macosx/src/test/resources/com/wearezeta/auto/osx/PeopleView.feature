@@ -359,3 +359,25 @@ Feature: People View
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | ChatName      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | AddUserSEChat |
+
+  @staging @id1527
+  Scenario Outline: Verify you cannot start 1on1 conversation from a group chat if the other user is not in your contact list
+    Given There are 3 users where <Name> is me
+    Given <Contact1> is connected to <Name>,<Contact2>
+    Given <Contact1> has group chat <ChatName> with <Name>,<Contact2>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name <Name> in Contact list
+    When I open conversation with <ChatName>
+    And I open Conversation info
+    And I choose user <Contact2> in Conversation info
+    And I see connect button
+    Then I do not see open conversation button
+    And I click on connect button on people popover
+	And I do not see conversation <Contact2> in contact list
+	And I see connect popover
+	And I send connection request to selected user
+	Then I see contact <Contact2> in contact list
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName                |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | ParticipantProfilesChat |
