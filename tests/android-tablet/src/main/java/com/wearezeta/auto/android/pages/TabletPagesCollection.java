@@ -6,4 +6,6 @@ public class TabletPagesCollection extends PagesCollection{
 	public static TabletDialogPage dialogPage = null;
 	public static TabletPersonalInfoPage personalInfoPage = null;
 	public static TabletRegistrationPage registrationPage = null;
+	public static TabletConnectToPage connectToPage = null;
+	public static TabletPeoplePickerPage peoplePickerPage  = null;
 }

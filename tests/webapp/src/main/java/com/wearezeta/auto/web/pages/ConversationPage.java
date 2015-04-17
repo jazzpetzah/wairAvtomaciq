@@ -146,16 +146,16 @@ public class ConversationPage extends WebPage {
 		return isAnyPictureMsgFound && (imageMessageEntries.size() > 0);
 	}
 
-	public void clickPingButton() {
+	public void clickPingButton() throws Exception {
 		try {
 			DriverUtils.moveMouserOver(driver, conversationInput);
 		} catch (WebDriverException e) {
 			// do nothing (safari workaround)
 		}
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-		}
+		final By locator = By
+				.xpath(WebAppLocators.ConversationPage.xpathPingButton);
+		assert DriverUtils.isElementDisplayed(driver, locator, 2) : "Ping button has not been shown after 2 seconds";
+		assert DriverUtils.waitUntilElementClickable(driver, pingButton) : "Ping button has to be clieckable";
 		pingButton.click();
 	}
 

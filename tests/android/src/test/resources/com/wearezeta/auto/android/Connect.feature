@@ -145,7 +145,7 @@ Feature: Connect
       | user1Email | user1Password | user1Name | user2Name | user3Name | 1 person waiting |
 
   @id542 @regression
-  Scenario Outline: I want to be taken to the connect inbox right away if the person I select already sent me a connect request
+  Scenario Outline: Accept incoming connection request from search
     Given There are 2 users where <Name> is me
     Given <Contact> has sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
