@@ -367,6 +367,9 @@ public final class AndroidLocators {
 
 		public static final String idConnectRequestConnectTo = LOCATORS_PACKAGE
 				+ ":id/user_name";
+		
+		public static final String idNewConversationNameMessage = LOCATORS_PACKAGE
+				+ ":id/ttv__row_conversation__new_conversation_name";
 
 		public static final String idDialogPageBottomFrameLayout = LOCATORS_PACKAGE
 				+ ":id/cv";
@@ -449,6 +452,9 @@ public final class AndroidLocators {
 
 		public static final String idParticipantsHeader = LOCATORS_PACKAGE
 				+ ":id/ttv__participants__header";
+		
+		public static final String idParticipantsHeaderEditable = LOCATORS_PACKAGE
+				+ ":id/taet__participants__header__editable";
 
 		public static final String idParticipantsSubHeader = LOCATORS_PACKAGE
 				+ ":id/ttv__participants__sub_header";
@@ -538,6 +544,15 @@ public final class AndroidLocators {
 
 		public static final String idPickerTopPeopleHeader = LOCATORS_PACKAGE
 				+ ":id/ttv_pickuser__list_header_title";
+		
+		public static final String idPickerUserSlidingRow = LOCATORS_PACKAGE
+				+ ":id/ll__pickuser__sliding_row";
+		
+		public static final String idPickerRecomendedName = LOCATORS_PACKAGE
+				+ ":id/ttv_pickuser__recommended_name";
+		
+		public static final String idPickerRecomendedQuickAdd = LOCATORS_PACKAGE
+				+ ":id/gtv__pickuser__recommended__quick_add";
 		
 		public static final String idPickerUsersUnselected = LOCATORS_PACKAGE
 				+ ":id/pick_user_chathead_unselected";

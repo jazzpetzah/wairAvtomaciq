@@ -34,9 +34,11 @@ public class SelfPictureUploadPage extends WebPage {
 	}
 
 	public void waitUntilVisible(int secondsTimeout) throws Exception {
-		assert DriverUtils.isElementDisplayed(driver,
-				By.xpath(WebAppLocators.SelfPictureUploadPage.xpathRootDiv),
-				secondsTimeout) : "Picture selection dialog has not been show within "
+		assert DriverUtils
+				.isElementDisplayed(
+						driver,
+						By.xpath(WebAppLocators.SelfPictureUploadPage.xpathSelectPictureButton),
+						secondsTimeout) : "Picture selection dialog has not been show within "
 				+ secondsTimeout + "second(s) timeout";
 	}
 

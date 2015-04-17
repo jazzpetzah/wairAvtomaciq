@@ -143,9 +143,13 @@ public class PersonalInfoPage extends AndroidPage {
 		refreshUITree();
 		DriverUtils.waitUntilElementAppears(driver,
 				AndroidLocators.PersonalInfoPage.getByForNameEditField());
+		if(!isVisible(nameEdit)) {
+			DriverUtils.mobileTapByCoordinates(getDriver(), nameEdit);
+		}
 	}
 
 	public void changeName(String name, String newName) throws Exception {
+		refreshUITree();
 		DriverUtils.waitUntilElementDissapear(driver,
 				By.id(AndroidLocators.PersonalInfoPage.idNameField));
 		refreshUITree();

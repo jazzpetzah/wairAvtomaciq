@@ -110,7 +110,8 @@ public class DialogPageSteps {
 	 */
 	@When("^I tap conversation details button$")
 	public void WhenITapConversationDetailsBottom() throws Throwable {
-		PagesCollection.dialogPage.tapConversationDetailsButton();
+		PagesCollection.otherUserPersonalInfoPage = 
+				((DialogPage) PagesCollection.androidPage).tapConversationDetailsButton();
 	}
 
 	/**
@@ -302,7 +303,7 @@ public class DialogPageSteps {
 	@When("^I swipe right on dialog page$")
 	public void WhenISwipeRightOnGroupDialogPage() throws Throwable {
 		PagesCollection.contactListPage = (ContactListPage) PagesCollection.dialogPage
-				.swipeRight(500);
+				.swipeRightCoordinates(1000);
 	}
 
 	@Then("^I see group chat page with users (.*)$")
@@ -333,7 +334,22 @@ public class DialogPageSteps {
 		Assert.assertTrue(PagesCollection.dialogPage.isMessageExists(message
 				+ " " + contact));
 	}
-
+	
+	/**
+	 * Checks to see that after the group was renamed, the user is informed of the change in the dialog page
+	 * 
+	 * @step. ^I see a message informing me that I renamed the conversation to (.*)$
+	 * 
+	 * @param newConveresationName
+	 * 			the new conversation name to check for
+	 * @throws Throwable
+	 */
+	@Then("^I see a message informing me that I renamed the conversation to (.*)$")
+	public void ThenISeeMessageInformingGroupRename(String newConveresationName)
+			throws Throwable {
+		Assert.assertEquals(PagesCollection.dialogPage.getChangedGroupNameMessage(), newConveresationName);
+	}
+	
 	@Then("^Last message is (.*)$")
 	public void ThenLastMessageIs(String message) {
 		Assert.assertEquals(message.toLowerCase().trim(),
