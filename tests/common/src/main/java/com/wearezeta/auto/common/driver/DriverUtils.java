@@ -23,7 +23,6 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -83,8 +82,7 @@ public class DriverUtils {
 		if (waitUntilElementAppears(driver, by, timeoutSeconds)) {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
 					.withTimeout(timeoutSeconds / 2 + 1, TimeUnit.SECONDS)
-					.pollingEvery(1, TimeUnit.SECONDS)
-					.ignoring(StaleElementReferenceException.class);
+					.pollingEvery(1, TimeUnit.SECONDS);
 			try {
 				return wait.until(new Function<WebDriver, Boolean>() {
 					public Boolean apply(WebDriver driver) {
