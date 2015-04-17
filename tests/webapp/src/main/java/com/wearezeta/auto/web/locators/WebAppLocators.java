@@ -92,13 +92,7 @@ public final class WebAppLocators {
 
 		public static final String xpathSettingsCloseButton = "//div[@id='self-settings']//*[@data-uie-name='do-close']";
 
-		public static final String xpathSoundAlertsSettings = "//*[@data-uie-name='enter-sound-alerts']";
-
-		public static final String classNameSoundNoneLabel = "sound-left";
-
-		public static final String classNameSoundSomeLabel = "sound-center";
-
-		public static final String classNameSoundAllLabel = "sound-right";
+		public static final String cssSoundAlertsLevel = "[data-uie-name=enter-sound-alerts]";
 	}
 
 	public static final class SelfProfilePage {
