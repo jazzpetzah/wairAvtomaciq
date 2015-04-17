@@ -11,14 +11,14 @@ Feature: Connect
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
-    And I tap on user name found on People picker page <Contact>
+    And I tap on user name found on tablet People picker page <Contact>
     And I wait for 20 seconds
-    And I see connect to <Contact> dialog
+    And I see tablet connect to <Contact> dialog
     And I tap on edit connect request field
     And I type Connect request "<Message>"
     And I press Connect button
     And I see People picker page
-    And I navigate back to Conversations List
+    And I press Clear button
     Then I see contact list loaded with User name <Contact>
 
     Examples: 
@@ -36,8 +36,8 @@ Feature: Connect
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
-    And I tap on user name found on People picker page <Contact>
-    And I see connect to <Contact> dialog
+    And I tap on user name found on tablet People picker page <Contact>
+    And I see tablet connect to <Contact> dialog
     And I tap on edit connect request field
     And I type Connect request "<Message>"
     And I press Connect button
