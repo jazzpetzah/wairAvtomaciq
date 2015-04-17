@@ -199,26 +199,41 @@ public class ContactListPage extends WebPage {
 
 	public void clickArchiveConversationForContact(String conversationName)
 			throws Exception {
-		conversationName = fixDefaultGroupConvoName(conversationName, false);
-		final By locator = By
+		waitForOptionButtonsToBeClickable(conversationName);
+
+		final By archiveLocator = By
 				.xpath(WebAppLocators.ContactListPage.xpathArchiveButtonByContactName
 						.apply(conversationName));
-		assert DriverUtils.isElementDisplayed(driver, locator, 5);
-		final WebElement archiveButton = this.getDriver().findElement(locator);
-		assert DriverUtils.waitUntilElementClickable(driver, archiveButton);
+		final WebElement archiveButton = this.getDriver().findElement(
+				archiveLocator);
 		archiveButton.click();
 	}
 
 	public void clickMuteConversationForContact(String conversationName)
 			throws Exception {
-		conversationName = fixDefaultGroupConvoName(conversationName, false);
-		final By locator = By
+		waitForOptionButtonsToBeClickable(conversationName);
+
+		final By muteLocator = By
 				.xpath(WebAppLocators.ContactListPage.xpathMuteButtonByContactName
 						.apply(conversationName));
-		assert DriverUtils.isElementDisplayed(driver, locator, 5);
-		final WebElement muteButton = this.getDriver().findElement(locator);
-		assert DriverUtils.waitUntilElementClickable(driver, muteButton);
+		final WebElement muteButton = this.getDriver().findElement(muteLocator);
 		muteButton.click();
+	}
+
+	private void waitForOptionButtonsToBeClickable(String conversationName)
+			throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final By archiveLocator = By
+				.xpath(WebAppLocators.ContactListPage.xpathArchiveButtonByContactName
+						.apply(conversationName));
+		final By muteLocator = By
+				.xpath(WebAppLocators.ContactListPage.xpathMuteButtonByContactName
+						.apply(conversationName));
+		final WebElement archiveButton = this.getDriver().findElement(
+				archiveLocator);
+		final WebElement muteButton = this.getDriver().findElement(muteLocator);
+		assert DriverUtils.waitUntilElementClickable(driver, archiveButton);
+		assert DriverUtils.waitUntilElementClickable(driver, muteButton);
 	}
 
 	public boolean isConversationMuted(String conversationName)

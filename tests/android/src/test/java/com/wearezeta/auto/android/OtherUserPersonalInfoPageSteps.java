@@ -42,7 +42,7 @@ public class OtherUserPersonalInfoPageSteps {
 
 	@When("^I click Remove$")
 	public void WhenIClickRemove() throws Throwable {
-		PagesCollection.otherUserPersonalInfoPage.clickBlockBtn();
+		PagesCollection.otherUserPersonalInfoPage.pressRightConversationButton();
 	}
 
 	@When("^I see warning message$")

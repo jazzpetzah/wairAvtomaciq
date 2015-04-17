@@ -26,9 +26,9 @@ Feature: Search
     And I wait up to 15 seconds until <Contact2> exists in backend search results
     When I open People Picker from contact list
     And I search for user <Contact1>
-    And I select user <Contact1> from search results
+    And I select connected contact <Contact1> from search results
     And I search for user <Contact2>
-    And I select user <Contact2> from search results
+    And I select connected contact <Contact2> from search results
     And I press create conversation to enter conversation
     And I see my name <Name> in Contact list
     Then I open conversation with <Contact1>,<Contact2>
