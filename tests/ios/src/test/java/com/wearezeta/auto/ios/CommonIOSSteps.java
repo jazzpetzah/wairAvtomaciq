@@ -112,7 +112,7 @@ public class CommonIOSSteps {
 	public void IDontSeeKeyboard() throws Exception {
 		Assert.assertFalse(PagesCollection.dialogPage.isKeyboardVisible());
 	}
-
+	
 	@When("^I press keyboard Delete button$")
 	public void IPressKeyboardDeleteBtn() {
 		PagesCollection.iOSPage.clickKeyboardDeleteButton();
