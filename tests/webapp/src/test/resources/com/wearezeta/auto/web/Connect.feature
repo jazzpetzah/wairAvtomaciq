@@ -84,7 +84,9 @@ Feature: Connect
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
     And I wait up to 15 seconds until <Login2> exists in backend search results
-    When I open People Picker from Contact List
+    When I see Contacts Upload dialog
+    And I close Contacts Upload dialog
+    And I open People Picker from Contact List
     And I type <Login2> in search field of People Picker
     And I see user <Name2> found in People Picker
     And I click on not connected user <Name2> found in People Picker
