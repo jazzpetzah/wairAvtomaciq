@@ -166,7 +166,7 @@ public class PeoplePickerPage extends IOSPage {
 	public void swipeToRevealHideSuggestedContact(String contact)
 			throws Exception {
 		List<WebElement> textElements = driver
-				.findElementsByClassName("UIAStaticText");
+				.findElementsByClassName(IOSLocators.nameSuggestedContactNameTextType);
 		for (WebElement textElement : textElements) {
 			if (textElement.getText().toLowerCase().equals(contact)) {
 				DriverUtils.swipeRight(this.getDriver(), textElement, 500, 50,
@@ -177,7 +177,7 @@ public class PeoplePickerPage extends IOSPage {
 
 	public void tapHideSuggestedContact() throws Exception {
 		List<WebElement> buttonElements = driver
-				.findElementsByClassName("UIAButton");
+				.findElementsByClassName(IOSLocators.nameHideSuggestedContactButtonType);
 		for (WebElement buttonElement : buttonElements) {
 			if (buttonElement.getLocation().x > 0
 					&& buttonElement.getAttribute("name").equals(

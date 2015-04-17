@@ -438,7 +438,9 @@ public final class IOSLocators {
 	public static final String nameHideSuggestedContactButton = "HIDE";
 	public static final String xpathSendAnInviteButton = "//UIACollectionCell[@name='Send an invitation']";
 	public static final String xpathInviteCopyButton = "//UIACollectionCell[@name='Copy']";
-
+	public static final String nameSuggestedContactNameTextType = "UIAStaticText";
+	public static final String nameHideSuggestedContactButtonType = "UIAButton";
+	
 	//////////////////
 	//Connect to page
 	//////////////////
