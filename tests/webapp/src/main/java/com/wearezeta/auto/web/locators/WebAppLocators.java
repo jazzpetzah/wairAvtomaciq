@@ -223,6 +223,9 @@ public final class WebAppLocators {
 	public static final class SelfPictureUploadPage {
 		public static final String xpathRootDiv = "//div[@id='self-upload']";
 
+		public static final String xpathSelectPictureButton = xpathRootDiv
+				+ "//*[@data-uie-name='do-select-picture']/following-sibling::span";
+
 		public static final String cssSendPictureInput = "div#self-upload input[data-uie-name=do-select-picture]";
 
 		public static final String xpathConfirmPictureSelectionButton = xpathRootDiv
