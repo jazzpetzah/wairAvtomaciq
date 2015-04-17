@@ -1,6 +1,6 @@
 Feature: User Profile
 
-  @staging @id478
+  @regression @id478
   Scenario Outline: I can change my name
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

@@ -26,7 +26,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | autocall    |
 
-  @staging @id952
+  @regression @id952
   Scenario Outline: Receive call while Wire is running in background
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -37,13 +37,13 @@ Feature: Calling
     And I see incoming call popup from <Contact1>
     And I answer call from popup
     And I see ongoing call with <Contact1>
-    And <Contact1> stops all calls to me 
+    And <Contact1> stops all calls to me
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | autocall    |
 
-  @staging @id1183
+  @regression @id1183
   Scenario Outline: Verify that Call event can unarchive muted conversation automatically
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
