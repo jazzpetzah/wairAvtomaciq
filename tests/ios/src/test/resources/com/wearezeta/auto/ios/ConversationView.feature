@@ -650,16 +650,17 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
-    And I wait for 7 seconds
+    And I swipe right on Dialog page
+    And I tap on contact name <Contact>
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I swipe right on Dialog page
     And I see play/pause button next to username <Contact> in contact list
     And I tap play/pause button in contact list next to username <Contact>
     And I tap on contact name <Contact>
+    And I scroll media out of sight until media bar appears
     Then I see playing media is paused
     And I swipe right on Dialog page
-    And I see play/pause button next to username <Contact> in contact list
     And I tap play/pause button in contact list next to username <Contact>
     And I tap on contact name <Contact>
     Then I see media is playing
