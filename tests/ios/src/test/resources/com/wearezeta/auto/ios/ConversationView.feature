@@ -641,7 +641,7 @@ Feature: Conversation View
       | user1Email | user1Password | user1Name | user2Name | user3Name | CHATHEAD | aqaPictureContact600_800.jpg |
  
 
-  @torun @staging @id1476
+  @staging @id1476
   Scenario Outline: Play/pause controls can change playing media state (SoundCloud)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
