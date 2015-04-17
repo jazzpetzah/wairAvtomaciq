@@ -115,15 +115,20 @@ public class GroupChatInfoPage extends IOSPage {
 		for (WebElement avatar : participantAvatars) {
 			avatarIcon = CommonUtils.getElementScreenshot(avatar,
 					this.getDriver());
-			String avatarName = avatar.getAttribute("name");
-			if (avatarName.equalsIgnoreCase(name)) {
-				BufferedImage realImage = ImageUtil.readImageFromFile(IOSPage
-						.getImagesPath() + picture);
-				double score = ImageUtil.getOverlapScore(realImage, avatarIcon);
-				if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
-					return false;
-				} else {
-					flag = true;
+			List<WebElement> avatarText = avatar.findElements(By.className("UIAStaticText"));
+			
+			for (WebElement text : avatarText) {
+				String avatarName = text.getAttribute("name");
+				if (avatarName.equalsIgnoreCase(name)) {
+					BufferedImage realImage = ImageUtil.readImageFromFile(IOSPage
+							.getImagesPath() + picture);
+					
+					double score = ImageUtil.getOverlapScore(realImage, avatarIcon, ImageUtil.RESIZE_NORESIZE);
+					if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
+						return false;
+					} else {
+						flag = true;
+					}
 				}
 			}
 		}

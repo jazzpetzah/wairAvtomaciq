@@ -10,6 +10,8 @@ Feature: Sign In
     When I enter email <Email>
     And I enter password <Password>
     And I press Sign In button
+    And I see Contacts Upload dialog
+    And I close Contacts Upload dialog
     Then I see my name on top of Contact list
 
     Examples: 

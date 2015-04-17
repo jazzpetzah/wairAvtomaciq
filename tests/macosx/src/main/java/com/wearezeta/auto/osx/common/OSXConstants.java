@@ -14,6 +14,10 @@ public class OSXConstants {
 	public static final class Attributes {
 
 		public static final String AXVALUE = "AXValue";
+
+		public static final String AXSIZE = "AXSize";
+
+		public static final String AXPOSITION = "AXPosition";
 	}
 
 	public static final class Scripts {

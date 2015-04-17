@@ -133,3 +133,22 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
+	
+  @id1507 @staging
+  Scenario Outline: Verify editing the conversation name
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <OldGroupChatName> with <Contact1>,<Contact2>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <OldGroupChatName>
+    And I tap conversation details button
+    And I rename group conversation to <NewConversationName>
+    And I return to group chat page
+    Then I see a message informing me that I renamed the conversation to <NewConversationName>
+    And I navigate back from dialog page
+    And I see contact list loaded with User name <NewConversationName>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | OldGroupChatName | NewConversationName |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | oldGroupChat 	  | newGroupName		|

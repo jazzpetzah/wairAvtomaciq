@@ -182,7 +182,7 @@ public final class IOSLocators {
 	
 	public static final String namePictureButton = "CameraLibraryButton";
 	
-	public static final String idProvideValidEmailMessage = "PLEASE PROVIDE A VALID EMAIL ADDRESS"; 
+	public static final String idProvideValidEmailMessage = "PLEASE ENTER A VALID EMAIL ADDRESS"; 
 	
 	public static final String nameAddContactToChatButton = "metaControllerLeftButton";
 	
@@ -198,7 +198,7 @@ public final class IOSLocators {
 
 	public static final String xpathMutedIcon = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[@name='%s']/UIAButton[3]";
 	
-	public static final String xpathContactListPlayPauseButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[@name='%s']/UIAButton";
+	public static final String xpathContactListPlayPauseButton = "//UIACollectionCell[@name='%s']/UIAButton[@name='mediaCellButton']";
 	
 	public static final String nameMuteButton = "ConvCellMuteButton";
 

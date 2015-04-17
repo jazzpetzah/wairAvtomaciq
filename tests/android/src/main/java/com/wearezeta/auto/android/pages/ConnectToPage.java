@@ -15,7 +15,7 @@ import com.wearezeta.auto.common.locators.ZetaFindBy;
 public class ConnectToPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectToHeader")
-	private WebElement connectToHeader;
+	protected WebElement connectToHeader;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectRequestAccept")
 	private WebElement connectAcceptBtn;

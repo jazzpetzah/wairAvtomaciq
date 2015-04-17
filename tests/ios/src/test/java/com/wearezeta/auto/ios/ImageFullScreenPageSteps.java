@@ -119,7 +119,7 @@ public class ImageFullScreenPageSteps {
 		referenceImage = PagesCollection.imageFullScreenPage.takeScreenshot();
 		BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage
 				.getImagesPath() + "rotatedFullscreenImage.png");
-		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);
+		double score = ImageUtil.getOverlapScore(referenceImage, templateImage, ImageUtil.RESIZE_NORESIZE);
 		System.out.print("SCORE: " + score);
 		Assert.assertTrue(
 				"Overlap between two images has no enough score. Expected >= "
