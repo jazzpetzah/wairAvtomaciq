@@ -21,7 +21,6 @@ import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.android.pages.LoginPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
-import com.wearezeta.auto.android.pages.PersonalInfoPage;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.GenerateWebLink;

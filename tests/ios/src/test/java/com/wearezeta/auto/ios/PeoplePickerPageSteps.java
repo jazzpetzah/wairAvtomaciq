@@ -1,12 +1,10 @@
 package com.wearezeta.auto.ios;
 
 import java.awt.datatransfer.UnsupportedFlavorException;
-import java.io.IOException;
 
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.GroupChatPage;
