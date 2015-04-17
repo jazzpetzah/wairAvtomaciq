@@ -40,7 +40,6 @@ public class PeoplePickerPageSteps {
 	public void WhenITapOnCreateConversation() throws Throwable {
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.peoplePickerPage
 				.tapCreateConversation();
-		;
 	}
 
 	@When("^I press Clear button$")

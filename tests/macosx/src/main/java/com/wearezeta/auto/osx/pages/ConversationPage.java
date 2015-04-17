@@ -30,6 +30,7 @@ import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.util.NSPoint;
 
 public class ConversationPage extends MainWirePage {
+
 	private static final Logger log = ZetaLogger.getLog(ConversationPage.class
 			.getSimpleName());
 

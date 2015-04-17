@@ -8,9 +8,6 @@ public final class OSXLocators {
 	public static final String idPeoplePickerSearchField = "people_picker_searchfield";
 	public static final String xpathPeoplePickerTopContactsSectionHeader = "//AXStaticText[@AXValue='TOP PEOPLE']";
 	public static final String idPeoplePickerDismissButton = "people_picker_cancel_button";
-	public static final String idPeoplePickerSearchResultEntry = "people_picker_result_namefield";
-	public static final String xpathPeoplePickerSearchResultTable = "//AXTable[@AXIdentifier='people_picker_searchresult']";
-	public static final String idUnblockUserButton = "unblock";
 	public static final String idPeoplePickerTopContactsGrid = "people_picker_user_collectionview";
 	public static final String xpathPeoplePickerTopContacts = "//AXGrid[@AXIdentifier='people_picker_user_collectionview']";
 	public static final String xpathPeoplePickerTopContactAvatar = "//AXRow[descendant::AXStaticText[@AXValue='TOP PEOPLE']]/following-sibling::AXRow[1]//AXUnknown";
@@ -22,7 +19,6 @@ public final class OSXLocators {
 
 	public static final String namePingMenuItem = "Ping";
 	public static final String namePingAgainMenuItem = "Ping Again";
-	public static final String idSendInvitationButton = "send";
 
 	public static final String xpathMessageEntry = "//AXGroup/AXStaticText";
 	public static final String xpathConversationLastNewNameEntry = "//AXHeading/AXStaticText[last()]";
@@ -95,7 +91,6 @@ public final class OSXLocators {
 	public static final String SOUNDCLOUD_BUTTON_STATE_PLAY = "Play";
 	public static final String xpathConversationViewScrollArea = "//AXScrollArea";
 
-	public static final String idSelfProfileSettingsButton = "selfProfileViewSettingsButton";
 	public static final String xpathFormatSelfProfileNameTextField = "//AXTextArea[@AXValue='%s']";
 	public static final String idSelfProfileEmailTextField = "phoneTextField";
 	public static final String idUserProfileViewBackButton = "userProfileViewBackButton";
@@ -112,8 +107,6 @@ public final class OSXLocators {
 	public static final String xpathRemoveUserPictureCancel = "//AXButton[@AXTitle='CANCEL']";
 
 	public static final String idShareContactsLaterButton = "ConfirmationViewCancelButton";
-
-	public static final String xpathPeoplePopover = "//AXPopover";
 
 	public static final String xpathImagePopupCloseButton = "//AXWindow[@AXRoleDescription='floating window']/AXButton[@AXRoleDescription='close button']";
 
@@ -149,7 +142,7 @@ public final class OSXLocators {
 		public static final String appleScriptPasswordFieldPath = "text field 1 of window 1";
 
 		public static final String relativePathEmailField = "id,"
-				+ idPasswordField + ",0,-40";
+				+ idPasswordField + ",center,0,-40";
 
 		public static final String nameSignInButton = "SIGN IN";
 
@@ -163,10 +156,10 @@ public final class OSXLocators {
 		public static final String idPasswordField = "TempLoginViewControllerPasswordField";
 
 		public static final String relativePathFullNameField = "id,"
-				+ idPasswordField + ",0,-80";
+				+ idPasswordField + ",center,0,-80";
 
 		public static final String relativePathEmailField = "id,"
-				+ idPasswordField + ",0,-40";
+				+ idPasswordField + ",center,0,-40";
 
 		public static final String idCreateAccountButton = "RegistrationCreateButton";
 
@@ -274,9 +267,21 @@ public final class OSXLocators {
 		public static final String titleFormatMultipleConnectRequestsCLEntry = "%s people waiting";
 
 		public static final String xpathConnectionRequestsCLEntry = "//AXStaticText[@AXIdentifier='clListItemNameField' and (contains(@AXValue,'person waiting') or contains(@AXValue,'people waiting'))]";
+
+		public static final String xpathFormatPlayPauseButtonCLEntry = "//AXCell[AXStaticText[@AXValue='%s']]/AXButton[@AXIdentifier='clMediaButton']";
 	}
 
 	public static final class PeoplePickerPage {
+
+		public static final String idPeoplePickerSearchResultTable = "people_picker_searchresult";
+
+		public static final String relativePathSearchField = "id,"
+				+ idPeoplePickerSearchResultTable + ",top,20,-20";
+
+		public static final String idPeoplePickerSearchResultEntry = "people_picker_result_namefield";
+
+		public static final String xpathFormatSearchResultEntry = "//AXStaticText[@AXIdentifier='"
+				+ idPeoplePickerSearchResultEntry + "' and @AXValue='%s']";
 
 		public static final String nameAddToConversationButton = "ADD TO CONVERSATION";
 

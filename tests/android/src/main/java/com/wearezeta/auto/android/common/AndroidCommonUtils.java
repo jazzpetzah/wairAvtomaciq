@@ -58,7 +58,14 @@ public class AndroidCommonUtils extends CommonUtils {
 			executeOsXCommand(new String[] { "/bin/bash", "-c", ADB_PREFIX + "adb shell am start -t image/* -a android.intent.action.VIEW" });
 		}
 	}
-
+	
+	public static void openBroswerApplication() throws Exception {
+		if (getOsName().contains(OS_NAME_WINDOWS)) {
+			Runtime.getRuntime().exec("cmd /C adb shell am start -a android.intent.action.VIEW -d http://www.google.com");
+		} else {
+			executeOsXCommand(new String[] { "/bin/bash", "-c", ADB_PREFIX + "adb shell am start -a android.intent.action.VIEW -d http://www.google.com" });
+		}
+	}
 	
 	public static void copyFileFromAndroid(String filePathOnSystem,  String filePathOnDevice) throws Exception {
 		if (getOsName().contains(OS_NAME_WINDOWS)) {

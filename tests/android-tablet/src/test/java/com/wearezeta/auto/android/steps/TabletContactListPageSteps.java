@@ -81,5 +81,6 @@ public class TabletContactListPageSteps {
 	public void ISwipeDownContactList() throws Exception {
 		PagesCollection.peoplePickerPage = (PeoplePickerPage) TabletPagesCollection.contactListPage
 				.swipeDown(1000);
+		TabletPagesCollection.peoplePickerPage = TabletPagesCollection.contactListPage.initPeoplePickerPage();
 	}
 }

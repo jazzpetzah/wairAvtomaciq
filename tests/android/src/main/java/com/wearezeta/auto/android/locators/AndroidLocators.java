@@ -41,7 +41,19 @@ public final class AndroidLocators {
 		public static final String xpathFirefoxUrlBarEditText42 = "//android.widget.LinearLayout/android.widget.EditText";
 
 		public static final String xpathUrlBar42 = "//android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.widget.EditText";
+		
+		public static final String xpathNativeBrowserMenu = "//android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.RelativeLayout[1]/android.widget.RelativeLayout[1]/android.widget.LinearLayout[1]/android.widget.ImageButton[2]";
 
+		public static final String xpathNativeBrowserShareButton = "//android.widget.ListView[1]/android.widget.LinearLayout[5]/android.widget.RelativeLayout[1]/android.widget.TextView[1]";
+
+		public static final String xpathNativeBrowserShareWireButton = "//android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.ListView[1]/android.widget.LinearLayout[3]/android.widget.LinearLayout[1]/android.widget.TextView[contains(@text,'Wire')]";
+
+		public static final String nameNativeBrowserMenuButton = "android.widget.ImageButton";
+		
+		public static final String nameNativeBrowserMoreOptionsButton = "android.widget.TextView";
+		
+		public static final String nameNativeBrowserShareWireButton = "android.widget.TextView";
+		
 		public static final class ForgotPasswordPage {
 
 			public static final String xpathEditField = "//android.webkit.WebView/android.view.View/android.widget.EditText";

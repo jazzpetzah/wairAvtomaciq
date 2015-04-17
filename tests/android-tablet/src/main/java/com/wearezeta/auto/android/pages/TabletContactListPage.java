@@ -85,4 +85,8 @@ public class TabletContactListPage extends ContactListPage {
 		return profileLink.getText();
 	}
 
+
+	public TabletPeoplePickerPage initPeoplePickerPage() throws Exception {
+		return new TabletPeoplePickerPage(getDriver(), getWait());
+	}
 }

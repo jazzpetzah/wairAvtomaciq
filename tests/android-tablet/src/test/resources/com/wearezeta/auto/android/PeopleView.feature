@@ -58,7 +58,7 @@ Feature: People View
     When I swipe down contact list
     And I see People picker page
     And I tap on <Contact1> in Top People
-    And I tap on create conversation
+    And I tap on tablet create conversation
     And I see tablet dialog page
 
     Examples: 
@@ -123,7 +123,7 @@ Feature: People View
     When I swipe down contact list
     And I see People picker page
     And I tap on <Contact1> in Top People
-    And I tap on create conversation
+    And I tap on tablet create conversation
     And I see tablet dialog page
 
     Examples: 

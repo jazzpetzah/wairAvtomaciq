@@ -1,5 +1,8 @@
 package com.wearezeta.auto.osx.common;
 
+import io.appium.java_client.AppiumDriver;
+
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -9,14 +12,18 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.dd.plist.NSDictionary;
 import com.dd.plist.PropertyListParser;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.BuildVersionInfo;
 import com.wearezeta.auto.common.misc.ClientDeviceInfo;
+import com.wearezeta.auto.osx.util.NSPoint;
 
 public class OSXCommonUtils extends CommonUtils {
 	private static final int PREFS_DAEMON_RESTART_TIMEOUT = 1000;
@@ -214,6 +221,17 @@ public class OSXCommonUtils extends CommonUtils {
 		}
 	}
 
+	public static NSPoint calculateScreenResolution(ZetaDriver driver)
+			throws IOException {
+		BufferedImage im = DriverUtils.takeScreenshot(driver);
+		return new NSPoint(im.getWidth(), im.getHeight());
+	}
+
+	public static boolean isRetinaDisplay(ZetaDriver driver) throws IOException {
+		NSPoint size = calculateScreenResolution(driver);
+		return isRetinaDisplay(size.x(), size.y());
+	}
+
 	public static boolean isRetinaDisplay(int width, int height) {
 		if (width == 2560 && height == 1600) {
 			return true;
@@ -224,6 +242,23 @@ public class OSXCommonUtils extends CommonUtils {
 
 	public static boolean osxAXValueToBoolean(String value) {
 		return value.equals("0") ? false : true;
+	}
+
+	public static BufferedImage takeElementScreenshot(WebElement element,
+			AppiumDriver driver) throws IOException {
+		int multiply = 1;
+		if (isRetinaDisplay((ZetaDriver) driver)) {
+			multiply = 2;
+		}
+		BufferedImage screenshot = DriverUtils
+				.takeScreenshot((ZetaDriver) driver);
+		NSPoint elementLocation = NSPoint.fromString(element
+				.getAttribute(OSXConstants.Attributes.AXPOSITION));
+		NSPoint elementSize = NSPoint.fromString(element
+				.getAttribute(OSXConstants.Attributes.AXSIZE));
+		return screenshot.getSubimage(elementLocation.x() * multiply,
+				elementLocation.y() * multiply, elementSize.x() * multiply,
+				elementSize.y() * multiply);
 	}
 
 	private static final String LOG_FILTER_REGEX = "(wire|zclient|appium)";

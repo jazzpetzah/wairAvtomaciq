@@ -166,6 +166,12 @@ public class DialogPage extends AndroidPage {
 	public void tapOnCursorFrame() {
 		cursurFrame.click();
 	}
+	
+	public void sendMessageInInput() throws InterruptedException {
+		this.getDriver().hideKeyboard();
+		Thread.sleep(2000);
+		cursorInput.sendKeys("\\n");
+	}
 
 	public void tapOnCenterOfScreen() {
 		DriverUtils.genericTap(this.getDriver());
@@ -200,7 +206,11 @@ public class DialogPage extends AndroidPage {
 		refreshUITree();
 		cursorInput.sendKeys(message + "\\n");
 		// DriverUtils.mobileTapByCoordinates(driver, backgroundOverlay);
-		this.getDriver().hideKeyboard();
+		try {
+			this.getDriver().hideKeyboard();
+		} catch (Exception ex) {
+			
+		}
 	}
 
 	public String getLastMessageFromDialog() {

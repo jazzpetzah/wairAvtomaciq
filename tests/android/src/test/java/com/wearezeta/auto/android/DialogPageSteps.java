@@ -188,6 +188,21 @@ public class DialogPageSteps {
 		String lastMess = PagesCollection.dialogPage.getLastMessageFromDialog();
 		Assert.assertTrue(lastMess.equals(message.trim()));
 	}
+	
+	/**
+	 * Verifies the URL is in the chat
+	 * 
+	 * @step. ^I see URL in the dialog$
+	 * 
+	 * @throws Throwable
+	 * 
+	 */
+	@Then("^I see URL in the dialog$")
+	public void ThenISeeURLInDialog() throws Throwable {
+		PagesCollection.dialogPage.waitForMessage();
+		String lastMess = PagesCollection.dialogPage.getLastMessageFromDialog();
+		Assert.assertTrue(lastMess.contains("www.google.com"));
+	}
 
 	@Then("^I see new photo in the dialog$")
 	public void ThenISeeNewPhotoInTheDialog() throws Throwable {

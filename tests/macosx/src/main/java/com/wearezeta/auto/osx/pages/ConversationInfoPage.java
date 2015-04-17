@@ -21,6 +21,8 @@ import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXConstants;
 import com.wearezeta.auto.osx.locators.OSXLocators;
+import com.wearezeta.auto.osx.locators.PopoverLocators;
+import com.wearezeta.auto.osx.pages.popovers.ConnectToPopover;
 import com.wearezeta.auto.osx.util.NSPoint;
 
 @SuppressWarnings("deprecation")
@@ -29,7 +31,7 @@ public class ConversationInfoPage extends OSXPage {
 	private static final Logger log = ZetaLogger
 			.getLog(ConversationInfoPage.class.getSimpleName());
 
-	@FindBy(how = How.XPATH, using = OSXLocators.xpathPeoplePopover)
+	@FindBy(how = How.XPATH, using = PopoverLocators.Common.xpathPopoverWindow)
 	private WebElement peoplePopover;
 
 	@FindBy(how = How.ID, using = OSXLocators.idSingleChatUserNameField)
@@ -128,7 +130,7 @@ public class ConversationInfoPage extends OSXPage {
 
 	public boolean isPeoplePopoverDisplayed() throws Exception {
 		return DriverUtils.isElementDisplayed(this.getDriver(),
-				By.xpath(OSXLocators.xpathPeoplePopover));
+				By.xpath(PopoverLocators.Common.xpathPopoverWindow));
 	}
 
 	public PeoplePickerPage openPeoplePicker() throws Exception {
@@ -291,7 +293,8 @@ public class ConversationInfoPage extends OSXPage {
 		imagePopupCloseButton.click();
 	}
 
-	public void connectToUser() {
+	public ConnectToPopover connectToUser() throws Exception {
 		connectToUserButton.click();
+		return new ConnectToPopover(this.getDriver(), this.getWait());
 	}
 }
