@@ -20,13 +20,12 @@ Feature: Calling
     Then I see picture in conversation
     When I open conversation with <Contact1>
     Then I see ongoing call with <Contact1>
-    And <Contact1> dismisses call
+    And Caller dismisses call
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-      
   @staging @id952
   Scenario Outline: Receive call while Wire is running in background
     Given There are 2 users where <Name> is me
@@ -38,10 +37,47 @@ Feature: Calling
     And I see incoming call popup from <Contact1>
     And I answer call from popup
     And I see ongoing call with <Contact1>
-    And <Contact1> dismisses call
+    And Caller dismisses call
 
     Examples: 
       | Login      | Password      | Name      | Contact1  |
       | user1Email | user1Password | user1Name | user2Name |
 
-      
+  @staging @id1183
+  Scenario Outline: Verify that Call event can unarchive muted conversation automatically
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name <Name> in Contact list
+    And I open conversation with <Contact1>
+    And I change mute state of conversation with <Contact1>
+    And I archive conversation with <Contact1>
+    And I do not see conversation <Contact1> in contact list
+    When Contact <Contact1> sends random message to conversation <Name>
+    Then I do not see conversation <Contact1> in contact list
+    When <Contact1> calls me
+    Then I see contact <Contact1> in contact list
+    And Caller dismisses call
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  Scenario Outline: Check sound quality
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name <Name> in Contact list
+    When <Contact1> calls me
+    And I see incoming call from <Contact1>
+    And I accept call
+    And I change microphone state
+    And I start listening to caller
+    And Caller says <AudioFile> to call
+    And I stop listening to caller
+    And Caller dismisses call
+    Then I check that I hear all as said from <AudioFile>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | AudioFile  |
+      | user1Email | user1Password | user1Name | user2Name | source.wav |

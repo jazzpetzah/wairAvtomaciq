@@ -18,8 +18,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.AndroidPage;
+import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.android.pages.LoginPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
+import com.wearezeta.auto.android.pages.PersonalInfoPage;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.GenerateWebLink;
@@ -179,7 +181,69 @@ public class CommonAndroidSteps {
 					.minimizeApplication();
 		}
 	}
+	
+	/**
+	 * Opens the Browser app
+	 * 
+	 * @step. ^I open the native browser application$
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I open the native browser application$")
+	public void IOpenBrowserApp() throws Exception {
+		AndroidCommonUtils.openBroswerApplication();
+	}
 
+	/**
+	 * Opens the gallery application (com.google.android.gallery3d)
+	 * 
+	 * @step. ^I open the gallery application$
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	
+	@When("^I open the gallery application$")
+	public void IOpenGalleryApp() throws Exception {
+		AndroidCommonUtils.openGalleryApplication();
+	}
+
+	/**
+	 * Opens the gallery application and shares the default photo to wire (com.google.android.gallery3d)
+	 * 
+	 * @step. ^I share image from Gallery to Wire$
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I share image from Gallery to Wire$")
+	public void IShareImageFromGallery() throws Exception {
+		IOpenGalleryApp();
+		PagesCollection.contactListPage.shareImageToWireFromGallery();
+	}
+	
+	/**
+	 * Opens the Browser app and shares the URL to wire (http://www.google.com)
+	 * 
+	 * @step. ^I share URL from native browser app to Wire with contact (.*)$
+	 * 
+	 * @param name
+	 * name of contact to share URL with
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I share URL from native browser app to Wire with contact (.*)$")
+	public void IShareURLBrowserApp(String name) throws Exception {
+		IOpenBrowserApp();
+		PagesCollection.contactListPage.shareURLFromNativeBrowser();
+		if (PagesCollection.dialogPage == null) {
+			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
+		}
+		Thread.sleep(5000);
+		PagesCollection.dialogPage.sendMessageInInput();
+	}
+	
 	/**
 	 * Takes screenshot for comparison
 	 * 
@@ -216,7 +280,7 @@ public class CommonAndroidSteps {
 	@Then("^I compare 1st and 2nd screenshots and they are different$")
 	public void ThenICompare1st2ndScreenshotsAndTheyAreDifferent() {
 		double score = ImageUtil.getOverlapScore(images.get(0), images.get(1));
-		Assert.assertTrue(score < 0.55d);
+		Assert.assertTrue(score < 0.70d);
 		images.clear();
 	}
 
@@ -421,6 +485,34 @@ public class CommonAndroidSteps {
 		CommonAndroidSteps.skipBeforeAfter = skipBeforeAfter;
 	}
 
+	/**
+	 * Start a call using autocall tool
+	 * 
+	 * @step. ^Contact (.*) calls to conversation (.*)$
+	 * @param starterNameAlias
+	 * 		user who will start a call
+	 * @param destinationNameAlias
+	 * 		user who will receive a call
+	 * @throws Exception
+	 */
+	@When("^Contact (.*) calls to conversation (.*)$")
+	public void ContactCallsToConversation(String starterNameAlias, String destinationNameAlias) throws Exception {
+		commonSteps.UserCallsToConversation(starterNameAlias, destinationNameAlias);
+	}
+	
+	/**
+	 * End current call initiated by autocall tool
+	 * 
+	 * @step. ^Current call is ended$
+	 * 		
+	 * @throws Exception
+	 */
+	@When("^Current call is ended$")
+	public void EndCurrectCall() throws Exception {
+		commonSteps.StopCurrentCall();
+		Thread.sleep(1000);
+	}
+	
 	@When("^I request reset password for (.*)$")
 	public void WhenIRequestResetPassword(String email) throws Exception {
 		try {

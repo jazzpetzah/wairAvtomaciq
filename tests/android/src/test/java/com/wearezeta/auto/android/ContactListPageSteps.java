@@ -173,7 +173,7 @@ public class ContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		AndroidPage page = PagesCollection.contactListPage.swipeRightOnContact(1000, contact);
+		AndroidPage page = PagesCollection.contactListPage.swipeRightOnContact(1500, contact);
 		if (page instanceof DialogPage) {
 			PagesCollection.dialogPage = (DialogPage) page;
 		}
@@ -193,6 +193,12 @@ public class ContactListPageSteps {
 		}
 	}
 
+
+	@When("^I press Open StartUI Button")
+	public void WhenIPressOpenStartUIButton() throws Exception {
+		PagesCollection.peoplePickerPage = PagesCollection.contactListPage.pressOpenStartUIButton();
+	}
+	
 	@When("^I swipe up contact list$")
 	public void ISwipeUpContactList() throws Exception {
 		PagesCollection.contactListPage.contactListSwipeUp(1000);
@@ -227,6 +233,18 @@ public class ContactListPageSteps {
 		Assert.assertTrue(PagesCollection.contactListPage.isContactExists(value,5));
 	}
 
+	/**
+	 * Check that Conversation List contains Random user from PYMK
+	 * 
+	 * @step. ^I see contact list loaded with PeoplePicker Random Connect$
+	 * 
+	 */
+	
+	@Then("^I see contact list loaded with PeoplePicker Random Connect$")
+	public void ThenISeeContactListLoadedWithPeoplePickerRandomConnect() throws Exception {
+		Assert.assertTrue(PagesCollection.contactListPage.isContactExists(PeoplePickerPageSteps.randomConnectName,5));
+	}
+	
 	@Then("^Contact (.*) is muted$")
 	public void ContactIsMuted(String contact) throws Exception {
 
@@ -262,5 +280,17 @@ public class ContactListPageSteps {
 			throws NumberFormatException, Exception {
 		Assert.assertTrue(PagesCollection.contactListPage
 				.isPlayPauseMediaButtonVisible());
+	}
+	
+	/**
+	 * Check that conversation list contains missed call icon
+	 * 
+	 * @step. ^Conversation List contains missed call icon$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^Conversation List contains missed call icon$")
+	public void ThenISeeMissedCallIcon() throws Exception {
+		Assert.assertTrue(PagesCollection.contactListPage.isVisibleMissedCallIcon());
 	}
 }

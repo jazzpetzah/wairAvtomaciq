@@ -2,19 +2,16 @@ package com.wearezeta.auto.osx.steps;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
-import com.wearezeta.auto.osx.pages.UserProfilePage;
+import com.wearezeta.auto.osx.pages.SelfProfilePage;
 import com.wearezeta.auto.osx.pages.common.ChoosePicturePage;
 
 import cucumber.api.java.en.Then;
@@ -117,29 +114,8 @@ public class RegistrationPageSteps {
 	 */
 	@When("I submit registration data")
 	public void ISubmitRegistrationData() throws Exception {
-		Map<String, String> expectedHeaders = new HashMap<String, String>();
-		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
-		PagesCollection.registrationPage.setActivationMessage(IMAPSMailbox
-				.getInstance().getMessage(expectedHeaders,
-						BackendAPIWrappers.UI_ACTIVATION_TIMEOUT));
-
-		PagesCollection.registrationPage.createAccount();
-	}
-
-	/**
-	 * Checks that e-mail confirmation page appers after Create Account button
-	 * clicked
-	 * 
-	 * @step. I see confirmation page
-	 * @throws Exception
-	 * 
-	 * @throws AssertionError
-	 *             if confirmation page did not appear
-	 */
-	@Then("I see confirmation page")
-	public void ISeeConfirmationPage() throws Exception {
-		Assert.assertTrue(PagesCollection.registrationPage
-				.isConfirmationRequested());
+		PagesCollection.verificationPage = PagesCollection.registrationPage
+				.createAccount(this.userToRegister.getEmail());
 	}
 
 	/**
@@ -152,7 +128,7 @@ public class RegistrationPageSteps {
 	@Then("I verify registration address")
 	public void IVerifyRegistrationAddress() throws Exception {
 		BackendAPIWrappers
-				.activateRegisteredUser(PagesCollection.registrationPage
+				.activateRegisteredUser(PagesCollection.verificationPage
 						.getActivationMessage());
 	}
 
@@ -210,8 +186,26 @@ public class RegistrationPageSteps {
 		Assert.assertTrue(choosePicturePage.isVisible());
 
 		choosePicturePage.openImage(imageFile);
+	}
 
+	/**
+	 * Confirms taken picture
+	 * 
+	 * @step. ^I accept taken picture$
+	 */
+	@When("^I accept taken picture$")
+	public void IAcceptTakenPicture() {
 		PagesCollection.registrationPage.acceptTakenPicture();
+	}
+
+	/**
+	 * Rejects taken picture
+	 * 
+	 * @step. ^I reject taken picture$
+	 */
+	@When("^I reject taken picture$")
+	public void IRejectTakenPicture() {
+		PagesCollection.registrationPage.rejectTakenPicture();
 	}
 
 	/**
@@ -239,10 +233,10 @@ public class RegistrationPageSteps {
 	 */
 	@Then("I see self profile of registered user")
 	public void ISeeSelfProfileOfRegisteredUser() throws Exception {
-		PagesCollection.userProfilePage = new UserProfilePage(
+		PagesCollection.selfProfilePage = new SelfProfilePage(
 				PagesCollection.mainMenuPage.getDriver(),
 				PagesCollection.mainMenuPage.getWait());
-		UserProfilePageSteps upSteps = new UserProfilePageSteps();
+		SelfProfilePageSteps upSteps = new SelfProfilePageSteps();
 		upSteps.ISeeNameInUserProfile(this.userToRegister.getName());
 	}
 
@@ -321,28 +315,55 @@ public class RegistrationPageSteps {
 	}
 
 	/**
-	 * Opens activation link in browser and stores response message
+	 * Checks that confirmation dialog appears after picture shot or selected
 	 * 
-	 * @step. ^I open activation link in browser$
+	 * @step. ^I see chosen picture confirmation request$
 	 * 
-	 * @throws Exception
+	 * @throws AssertionError
+	 *             if confirmation dialog doesn't appear
 	 */
-	@When("^I open activation link in browser$")
-	public void IOpenActivationLinkInBrowser() throws Exception {
-		PagesCollection.registrationPage.activateUserFromBrowser();
+	@Then("^I see chosen picture confirmation request$")
+	public void ISeeChosenPictureConfirmationRequest() {
+		Assert.assertTrue(PagesCollection.registrationPage
+				.isTakePictureConfirmationScreen());
 	}
 
 	/**
-	 * Checks that response message from activation using browser says that user
-	 * activated successfully
+	 * Checks that CHOOSE PICTURE AND SELECT A COLOUR message displayed
 	 * 
-	 * @step. ^I see that user activated$
+	 * @step. ^I see choose picture and colour request$
 	 * 
 	 * @throws AssertionError
-	 *             if activation response different from expected on success
+	 *             if message is not shown
 	 */
-	@When("^I see that user activated$")
-	public void ISeeUserActivated() {
-		Assert.assertTrue(PagesCollection.registrationPage.isUserActivated());
+	@Then("^I see choose picture and colour request$")
+	public void ISeeChoosePictureAndColourRequest() throws Exception {
+		Assert.assertTrue(PagesCollection.registrationPage
+				.isChoosePictureMessageVisible());
 	}
+
+	/**
+	 * Checks that CHOOSE PICTURE AND SELECT A COLOUR message not displayed
+	 * 
+	 * @step. ^I do not see choose picture and colour request$
+	 * 
+	 * @throws AssertionError
+	 *             if message is displayed
+	 */
+	@Then("^I do not see choose picture and colour request$")
+	public void IDoNotSeeChoosePictureAndColourRequest() throws Exception {
+		Assert.assertFalse(PagesCollection.registrationPage
+				.isChoosePictureMessageVisible());
+	}
+
+	/**
+	 * Navigates back to previous registration step
+	 * 
+	 * @step. ^I go to previous registration step$
+	 */
+	@When("^I go to previous registration step$")
+	public void IGoToPreviousRegistrationStep() {
+		PagesCollection.registrationPage.goBack();
+	}
+
 }

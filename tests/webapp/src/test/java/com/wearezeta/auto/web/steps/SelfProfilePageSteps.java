@@ -7,8 +7,6 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.PagesCollection;
-import com.wearezeta.auto.web.pages.SettingsPage;
-
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 
@@ -42,22 +40,6 @@ public class SelfProfilePageSteps {
 	@And("^I select (.*) menu item on self profile page$")
 	public void ISelectGearMenuItem(String name) throws Exception {
 		PagesCollection.selfProfilePage.selectGearMenuItem(name);
-	}
-
-	/**
-	 * Verifies whether settings dialog is visible
-	 * 
-	 * @step. ^I see Settings dialog$
-	 * 
-	 * @throws AssertionError
-	 *             if settings dialog is not currently visible
-	 */
-	@Then("^I see Settings dialog$")
-	public void ISeeSetingsDialog() throws Exception {
-		PagesCollection.settingsPage = new SettingsPage(
-				PagesCollection.loginPage.getDriver(),
-				PagesCollection.loginPage.getWait());
-		Assert.assertTrue(PagesCollection.settingsPage.isVisible());
 	}
 
 	/**
@@ -149,5 +131,4 @@ public class SelfProfilePageSteps {
 		Assert.assertTrue("my actual accent color is not set",
 				actualColorId == expectedColorId);
 	}
-
 }

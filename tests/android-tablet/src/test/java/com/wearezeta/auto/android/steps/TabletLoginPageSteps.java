@@ -14,6 +14,34 @@ public class TabletLoginPageSteps {
 	
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	
+	@Given("^I Sign in on tablet using login (.*) and password (.*)$")
+	public void GivenISignInOnTablet(String login, String password) throws Exception {
+		try {
+			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+		try {
+			password = usrMgr.findUserByPasswordAlias(password).getPassword();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+		Assert.assertNotNull(TabletPagesCollection.loginPage.isVisible());
+		TabletPagesCollection.loginPage.SignIn();
+		TabletPagesCollection.loginPage.setLogin(login);
+		TabletPagesCollection.loginPage.setPassword(password);
+		try {
+			TabletPagesCollection.loginPage.doLogIn();
+			TabletPagesCollection.personalInfoPage = TabletPagesCollection.loginPage.initProfilePage();
+			PagesCollection.personalInfoPage = TabletPagesCollection.personalInfoPage;
+			TabletPagesCollection.contactListPage = TabletPagesCollection.loginPage.initContactListPage();
+			PagesCollection.contactListPage = TabletPagesCollection.contactListPage;
+		} catch (Exception e) {
+			// Ignore silently
+		}
+		Assert.assertNotNull("Login not passed", TabletPagesCollection.personalInfoPage);
+	}
+	
 	/**
 	 * Enter user email and password into corresponding fields on sign in screen
 	 * then taps "Sign In" button

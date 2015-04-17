@@ -11,13 +11,21 @@ import com.wearezeta.auto.common.PerformanceCommon.PerformanceLoop;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
-import com.wearezeta.auto.osx.pages.common.ChoosePicturePage;
+import com.wearezeta.common.process.AsyncProcess;
 
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class PerformanceSteps {
+
 	private final PerformanceCommon perfCommon = PerformanceCommon
 			.getInstance();
+
+	private static final int PERF_MON_INIT_DELAY = 5000; // milliseconds
+	private static final int PERF_MON_STOP_TIMEOUT = 60 * 1000; // milliseconds
+	private static final String ACTIVITY_MONITOR_TEMPLATE_PATH = "/Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/Resources/templates/Activity\\ Monitor.tracetemplate";
+
+	private AsyncProcess perfMon = null;
 
 	private String randomMessage;
 	private static final String picturename = "testing.jpg";
@@ -26,13 +34,13 @@ public class PerformanceSteps {
 	 * Starts standard actions loop (read messages/send messages) to measure
 	 * application performance
 	 * 
-	 * @step. ^I start testing cycle for (\\d+) minutes$
+	 * @step. ^I start test cycle for (\\d+) minutes$
 	 * 
 	 * @param timeout
 	 *            number of minutes to run the loop
 	 * @throws Exception
 	 */
-	@When("^I start testing cycle for (\\d+) minutes$")
+	@When("^I start test cycle for (\\d+) minutes$")
 	public void WhenIStartTestingCycleForMinutes(int timeout) throws Exception {
 		PagesCollection.contactListPage = new ContactListPage(
 				PagesCollection.mainMenuPage.getDriver(),
@@ -81,12 +89,8 @@ public class PerformanceSteps {
 						perfCommon.getLogger().debug("Scrolling fail: ", ex);
 					}
 					try {
-						PagesCollection.conversationPage
-								.shortcutChooseImageDialog();
-						PagesCollection.choosePicturePage = new ChoosePicturePage(
-								PagesCollection.conversationPage.getDriver(),
-								PagesCollection.conversationPage.getWait());
-
+						PagesCollection.choosePicturePage = PagesCollection.mainMenuPage
+								.sendImage();
 						Assert.assertTrue(PagesCollection.choosePicturePage
 								.isVisible());
 
@@ -110,6 +114,62 @@ public class PerformanceSteps {
 		}, timeout);
 	}
 
+	/**
+	 * Start performance monitor tool for the current OS X system. This will
+	 * throw the RuntimeException if instruments failed to start. All the
+	 * collected perf logs will be saved in $HOME folder
+	 * 
+	 * @step. ^I start performance monitoring for OS X$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I start performance monitoring for OS X$")
+	public void IStartPerfMon() throws Exception {
+		final String[] cmd = {
+				"/bin/bash",
+				"-c",
+				String.format("cd $HOME && instruments -v -t %s",
+						ACTIVITY_MONITOR_TEMPLATE_PATH) };
+		final AsyncProcess ap = new AsyncProcess(cmd, true, true);
+		ap.start();
+		Thread.sleep(PERF_MON_INIT_DELAY);
+		if (ap.isRunning()) {
+			setPerfMon(ap);
+		} else {
+			throw new RuntimeException(
+					"There are failures while starting perf monitor. "
+							+ "Please check the log for more details.");
+		}
+	}
+
+	/**
+	 * Stop performance monitor tool for the current OS X system and flush
+	 * performance logs. This will throw RuntimeException if 'I start
+	 * performance monitoring for OS X' step has not been invoked before
+	 * 
+	 * @step. ^I finish performance monitoring for OS X$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I finish performance monitoring for OS X$")
+	public void IStopPerfMon() throws Exception {
+		if (this.getPerfMon() == null) {
+			throw new RuntimeException(
+					"Please call the Start monitor step first");
+		}
+		if (!this.getPerfMon().isRunning()) {
+			throw new RuntimeException(
+					"Performance monitor has been unexpectedly killed before. "
+							+ "Please check execution logs to get more details.");
+		}
+		// the real process id will be this parentPid + 1, because bash forks
+		// a separate process from the command line that we provide
+		final int monitorPid = this.getPerfMon().getPid() + 1;
+		// Sending SIGINT to properly terminate perf monitor
+		this.getPerfMon().stop("2", new int[] { monitorPid },
+				PERF_MON_STOP_TIMEOUT);
+	}
+
 	public void minimizeClient() throws Exception {
 		PagesCollection.contactListPage.waitUntilMainWindowAppears();
 		PagesCollection.contactListPage.minimizeWindow();
@@ -117,8 +177,16 @@ public class PerformanceSteps {
 	}
 
 	public void restoreClient() throws Exception {
-		PagesCollection.contactListPage.restoreZClient();
+		PagesCollection.mainMenuPage.restoreClient();
 		perfCommon.getLogger().debug("Client restored");
+	}
+
+	public AsyncProcess getPerfMon() {
+		return perfMon;
+	}
+
+	public void setPerfMon(AsyncProcess perfMon) {
+		this.perfMon = perfMon;
 	}
 
 }

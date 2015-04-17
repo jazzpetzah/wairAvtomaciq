@@ -23,6 +23,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -82,7 +83,8 @@ public class DriverUtils {
 		if (waitUntilElementAppears(driver, by, timeoutSeconds)) {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
 					.withTimeout(timeoutSeconds / 2 + 1, TimeUnit.SECONDS)
-					.pollingEvery(1, TimeUnit.SECONDS);
+					.pollingEvery(1, TimeUnit.SECONDS)
+					.ignoring(StaleElementReferenceException.class);
 			try {
 				return wait.until(new Function<WebDriver, Boolean>() {
 					public Boolean apply(WebDriver driver) {
@@ -376,7 +378,7 @@ public class DriverUtils {
 	}
 
 	public static final int DEFAULT_PERCENTAGE = 50;
-	public static final int DEFAULT_TIME = 500; //milliseconds
+	public static final int DEFAULT_TIME = 500; // milliseconds
 	public static final int DEFAULT_FINGERS = 1;
 
 	public static void genericTap(AppiumDriver driver) {
@@ -397,8 +399,8 @@ public class DriverUtils {
 	public static void genericTap(AppiumDriver driver, int time, int fingers,
 			int percentX, int percentY) {
 		final Dimension screenSize = driver.manage().window().getSize();
-		final int xCoords = (int) Math
-				.round(screenSize.width * (percentX / 100.0));
+		final int xCoords = (int) Math.round(screenSize.width
+				* (percentX / 100.0));
 		final int yCoords = (int) Math.round(screenSize.height
 				* (percentY / 100.0));
 		try {

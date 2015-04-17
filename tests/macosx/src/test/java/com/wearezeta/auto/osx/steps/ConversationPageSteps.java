@@ -365,12 +365,13 @@ public class ConversationPageSteps {
 	public void WhenIOpenPeoplePickerFromConversation() throws Exception {
 		IScrollDownToConversation();
 		PagesCollection.conversationPage.writeNewMessage("");
-		PagesCollection.conversationPage.openConversationPeoplePicker();
+		PagesCollection.conversationPage.openPeoplePopover();
 		PagesCollection.conversationInfoPage = new ConversationInfoPage(
 				PagesCollection.conversationPage.getDriver(),
-				PagesCollection.conversationPage.getWait());
+				PagesCollection.conversationPage.getWait(),
+				PagesCollection.conversationPage);
 		if (!PagesCollection.conversationInfoPage.isPeoplePopoverDisplayed()) {
-			PagesCollection.conversationPage.openConversationPeoplePicker();
+			PagesCollection.conversationPage.openPeoplePopover();
 		}
 		PagesCollection.peoplePickerPage = PagesCollection.conversationInfoPage
 				.openPeoplePicker();
@@ -379,11 +380,12 @@ public class ConversationPageSteps {
 	@When("I open Conversation info")
 	public void WhenIOpenConversationInfo() throws Exception {
 		PagesCollection.conversationPage.writeNewMessage("");
-		PagesCollection.conversationPage.openConversationPeoplePicker();
+		PagesCollection.conversationPage.openPeoplePopover();
 		if (PagesCollection.conversationInfoPage == null) {
 			PagesCollection.conversationInfoPage = new ConversationInfoPage(
 					PagesCollection.conversationPage.getDriver(),
-					PagesCollection.conversationPage.getWait());
+					PagesCollection.conversationPage.getWait(),
+					PagesCollection.conversationPage);
 		}
 	}
 
@@ -518,7 +520,7 @@ public class ConversationPageSteps {
 	@Then("^I see conversation name (.*) in conversation$")
 	public void ISeeConversationNameInConversation(String name) {
 		if (name.equals(OSXLocators.RANDOM_KEYWORD)) {
-			name = PagesCollection.conversationInfoPage
+			name = PagesCollection.conversationPage
 					.getCurrentConversationName();
 		}
 		String result = PagesCollection.conversationPage

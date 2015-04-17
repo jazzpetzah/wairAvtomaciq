@@ -87,4 +87,21 @@ public class OtherUserPersonalInfoPageSteps {
 				.swipeDown(1000);
 	}
 
+	/**
+	 * Open ellipsis menu in conversation details
+	 * @step. ^I open ellipsis menu$
+	 */
+	@When("^I open ellipsis menu$")
+	public void IOpenEllipsisMenu() {
+		PagesCollection.otherUserPersonalInfoPage.openEllipsisMenu();
+	}
+	
+	/**
+	 * Click archive menu button in ellipsis menu
+	 * @step. ^I click archive menu button$
+	 */
+	@When("^I click archive menu button$")
+	public void IClickArchiveMenu() {
+		PagesCollection.otherUserPersonalInfoPage.clickArchiveMenuButton();
+	}
 }

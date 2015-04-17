@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android;
 
 import org.junit.Assert;
+import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -12,7 +13,8 @@ import cucumber.api.java.en.When;
 
 public class PeoplePickerPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
+    public static String randomConnectName = "";
+    
 	@When("^I see People picker page$")
 	public void WhenISeePeoplePickerPage() throws Exception {
 		Assert.assertTrue(PagesCollection.peoplePickerPage
@@ -38,13 +40,18 @@ public class PeoplePickerPageSteps {
 	public void WhenITapOnCreateConversation() throws Throwable {
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.peoplePickerPage
 				.tapCreateConversation();
-		;
 	}
 
 	@When("^I press Clear button$")
 	public void WhenIPressClearButton() throws Throwable {
 		PagesCollection.contactListPage = PagesCollection.peoplePickerPage
 				.tapClearButton();
+	}
+
+	@When("^I swipe down people picker$")
+	public void ISwipeDownContactList() throws Exception {
+		PagesCollection.contactListPage = (ContactListPage) PagesCollection.peoplePickerPage
+				.swipeDown(500);
 	}
 
 	@When("^I input in People picker search field user name (.*)$")
@@ -123,7 +130,7 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.peoplePickerPage.waitUserPickerFindUser(contact);
+		// PagesCollection.peoplePickerPage.waitUserPickerFindUser(contact);
 		PagesCollection.androidPage = PagesCollection.peoplePickerPage
 				.selectContact(contact);
 
@@ -143,8 +150,8 @@ public class PeoplePickerPageSteps {
 	 * Tap on Gmail link
 	 * 
 	 * @step. ^I tap on Gmail link$
-	 * @throws Exception 
-	 * @throws NumberFormatException 
+	 * @throws Exception
+	 * @throws NumberFormatException
 	 * 
 	 */
 	@When("^I tap on Gmail link$")
@@ -185,9 +192,23 @@ public class PeoplePickerPageSteps {
 				.clickOnAddToCoversationButton();
 	}
 
-	@When("^I navigate back to Conversations List")
+	@When("^I navigate back to Conversations List$")
 	public void WhenINavigateBackToConversationsList() throws Exception {
-		PagesCollection.contactListPage = PagesCollection.peoplePickerPage.navigateBack();
+		PagesCollection.contactListPage = PagesCollection.peoplePickerPage
+				.navigateBack();
+	}
+
+
+	/**
+	 * Tap on Random contact from PYMK
+	 * 
+	 * @step. ^I press \\+ button on a random Connect$
+	 * 
+	 */
+	@When("^I press \\+ button on a random Connect$")
+	public void WhenIPressPlusButtonOnARandomConnect() {
+		WebElement randomConnect = PagesCollection.peoplePickerPage.selectRandomConnect(); 
+		randomConnectName = PagesCollection.peoplePickerPage.pressPlusOnContact(randomConnect);
 	}
 	
 	@Then("^I see user (.*)  in People picker$")
@@ -206,6 +227,18 @@ public class PeoplePickerPageSteps {
 		}
 		Assert.assertTrue(PagesCollection.peoplePickerPage
 				.groupIsVisible(contact));
+	}
+
+	@Then("^I see TOP PEOPLE$")
+	public void ThenISeeTopPeople() throws Exception {
+		Assert.assertTrue(PagesCollection.peoplePickerPage
+				.ispTopPeopleHeaderVisible());
+	}
+
+	@Then("^I do not see TOP PEOPLE$")
+	public void ThenIDontSeeTopPeople() throws Exception {
+		Assert.assertFalse(PagesCollection.peoplePickerPage
+				.ispTopPeopleHeaderVisible());
 	}
 
 }

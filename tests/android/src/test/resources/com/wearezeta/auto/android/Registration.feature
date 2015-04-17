@@ -30,7 +30,7 @@ Feature: Registration
     And I confirm selection
     And I hide keyboard
     And I take screenshot
-    And I press back button
+    And I press Registration back button
     And I press Picture button
     And I choose photo from album
     And I confirm selection

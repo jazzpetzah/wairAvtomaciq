@@ -1,5 +1,8 @@
 package com.wearezeta.auto.osx.common;
 
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
+
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -16,6 +19,8 @@ public class OSXExecutionContext {
 
 	public static String userDocuments = System.getProperty("user.home")
 			+ "/Documents/";
+
+	public static HashMap<String, BufferedImage> screenshots = new HashMap<String, BufferedImage>();
 
 	static {
 		try {

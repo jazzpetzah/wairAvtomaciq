@@ -14,11 +14,11 @@ import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.osx.common.InputMethodEnum;
 import com.wearezeta.auto.osx.common.LoginBehaviourEnum;
 import com.wearezeta.auto.osx.pages.ContactListPage;
-import com.wearezeta.auto.osx.pages.LoginPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
-import com.wearezeta.auto.osx.pages.UserProfilePage;
+import com.wearezeta.auto.osx.pages.SelfProfilePage;
 import com.wearezeta.auto.osx.pages.common.NoInternetConnectionPage;
+import com.wearezeta.auto.osx.pages.welcome.LoginPage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -35,7 +35,7 @@ public class LoginPageSteps {
 	 * Enters user email and password into corresponding fields on sign in
 	 * screen then taps "Sign In" button
 	 * 
-	 * @step. I Sign in using login (.*) and password (.*)
+	 * @step. ^I [Ss]ign in using login (.*) and password (.*)$
 	 * 
 	 * @param login
 	 *            user login string
@@ -45,40 +45,20 @@ public class LoginPageSteps {
 	 * @throws AssertionError
 	 *             if login operation was unsuccessful
 	 */
-	@Given("I Sign in using login (.*) and password (.*)")
-	public void GivenISignInUsingLoginAndPassword(String login, String password)
+	@Given("^I [Ss]ign in using login (.*) and password (.*)$")
+	public void ISignInUsingLoginAndPassword(String login, String password)
 			throws Exception {
-		try {
-			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
-		} catch (NoSuchUserException e) {
-			try {
-				// search for email by name aliases in case name is specified
-				login = usrMgr.findUserByNameOrNameAlias(login).getEmail();
-			} catch (NoSuchUserException ex) {
-			}
-		}
+		log.debug(String.format("Sign in using email %s and password %s",
+				login, password));
+		WelcomePageSteps welcomePageSteps = new WelcomePageSteps();
+		welcomePageSteps.IStartSignIn();
+		this.ITypeLogin(login);
+		this.ITypePassword(password);
+		this.IPressSignInButton();
 
-		try {
-			password = usrMgr.findUserByPasswordAlias(password).getPassword();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		log.debug("Starting to Sign in using login " + login + " and password "
-				+ password);
-
-		PagesCollection.loginPage = PagesCollection.welcomePage.startSignIn();
-
-		PagesCollection.loginPage.typeEmail(login);
-		PagesCollection.loginPage.typePassword(password);
-
-		PagesCollection.contactListPage = PagesCollection.loginPage.signIn();
-
-		Assert.assertTrue("Failed to login",
-				PagesCollection.loginPage.waitForLogin());
-
-		PagesCollection.userProfilePage = new UserProfilePage(
-				PagesCollection.loginPage.getDriver(),
-				PagesCollection.loginPage.getWait());
+		Assert.assertTrue(String.format(
+				"Failed to sign in using email %s and password %s", login,
+				password), PagesCollection.loginPage.waitForLogin());
 	}
 
 	/**
@@ -89,7 +69,7 @@ public class LoginPageSteps {
 	 * @throws Exception
 	 */
 	@When("^I press [Ss]ign [Ii]n button$")
-	public void WhenIPressSignInButton() throws Exception {
+	public void IPressSignInButton() throws Exception {
 		ISignInExpectingResult(LoginBehaviourEnum.SUCCESSFUL.getResult());
 	}
 
@@ -103,7 +83,7 @@ public class LoginPageSteps {
 		}
 		if (page instanceof ContactListPage) {
 			PagesCollection.contactListPage = (ContactListPage) page;
-			PagesCollection.userProfilePage = new UserProfilePage(
+			PagesCollection.selfProfilePage = new SelfProfilePage(
 					PagesCollection.contactListPage.getDriver(),
 					PagesCollection.contactListPage.getWait());
 		} else if (page instanceof NoInternetConnectionPage) {
@@ -126,8 +106,13 @@ public class LoginPageSteps {
 		try {
 			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
 		} catch (NoSuchUserException e) {
-			// Ignore silently
+			try {
+				// search for email by name aliases in case name is specified
+				login = usrMgr.findUserByNameOrNameAlias(login).getEmail();
+			} catch (NoSuchUserException ex) {
+			}
 		}
+
 		PagesCollection.loginPage.typeEmail(login);
 	}
 

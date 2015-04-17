@@ -2,6 +2,7 @@ package com.wearezeta.auto.android.pages;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
@@ -10,7 +11,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.common.KeyboardMapper;
 import com.wearezeta.auto.android.locators.AndroidLocators;
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -24,6 +24,12 @@ public class PeoplePickerPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerSearchUsers")
 	private WebElement pickerSearchUser;
+
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerTopPeopleHeader")
+	private WebElement pickerTopPeopleHeader;
+
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerUserSlidingRow")
+	private List<WebElement> pickerUserSlidingRow;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPeoplePickerSerchConversations")
 	private List<WebElement> pickerSearchConversations;
@@ -58,6 +64,9 @@ public class PeoplePickerPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.XPATH, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "xpathSendInvitationFrame")
 	private WebElement sendInvitationFrame;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerListContainer")
+	private WebElement content;
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectToHeader")
 	private List<WebElement> connectToHeader;
 
@@ -83,11 +92,11 @@ public class PeoplePickerPage extends AndroidPage {
 	public void typeTextInPeopleSearch(String contactName)
 			throws InterruptedException {
 		refreshUITree();
-		pickerSearch.sendKeys(contactName);
-//		for (char ch : contactName.toCharArray()) {
-//			int keyCode = KeyboardMapper.getPrimaryKeyCode(ch);
-//			this.getDriver().sendKeyEvent(keyCode);
-//		}
+		// pickerSearch.sendKeys(contactName);
+		for (char ch : contactName.toCharArray()) {
+			int keyCode = KeyboardMapper.getPrimaryKeyCode(ch);
+			this.getDriver().sendKeyEvent(keyCode);
+		}
 		this.getDriver().sendKeyEvent(66);
 	}
 
@@ -106,20 +115,23 @@ public class PeoplePickerPage extends AndroidPage {
 		return noResults.isDisplayed();
 	}
 
+	public Boolean ispTopPeopleHeaderVisible() throws Exception {
+		return isVisible(pickerTopPeopleHeader);
+	}
+
 	public AndroidPage selectContact(String contactName) throws Exception {
 		AndroidPage page = null;
 		refreshUITree();
 		pickerSearchUser.click();
-		if (CommonUtils.getAndroidApiLvl(PeoplePickerPage.class) > 42) {
-			DriverUtils
-					.waitUntilElementDissapear(
-							driver,
-							By.id(AndroidLocators.PeoplePickerPage.idPickerSearchUsers));
-		} else {
-			DriverUtils.waitUntilElementDissapear(driver,
-					By.xpath(AndroidLocators.PeoplePickerPage.xpathOtherText));
-		}
+		/*
+		 * if (CommonUtils.getAndroidApiLvl(PeoplePickerPage.class) > 42) {
+		 * DriverUtils .waitUntilElementDissapear( driver,
+		 * By.id(AndroidLocators.PeoplePickerPage.idPickerSearchUsers)); } else
+		 * { DriverUtils.waitUntilElementDissapear(driver,
+		 * By.xpath(AndroidLocators.PeoplePickerPage.xpathOtherText)); }
+		 */
 		refreshUITree();
+		DriverUtils.turnOffImplicitWait(this.getDriver());
 		if (driver.findElements(
 				AndroidLocators.OtherUserPersonalInfoPage
 						.getByForOtherUserPersonalInfoUnlockButton()).size() > 0) {
@@ -134,6 +146,7 @@ public class PeoplePickerPage extends AndroidPage {
 		} else {
 			page = new DialogPage(this.getDriver(), this.getWait());
 		}
+		DriverUtils.setDefaultImplicitWait(this.getDriver());
 		return page;
 	}
 
@@ -153,10 +166,31 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	@Override
-	public AndroidPage returnBySwipe(SwipeDirection direction)
-			throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+	public AndroidPage swipeDown(int time) throws Exception {
+		refreshUITree();
+		elementSwipeDown(content, time);
+		return returnBySwipe(SwipeDirection.DOWN);
+	}
+
+	@Override
+	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
+		AndroidPage page = null;
+		switch (direction) {
+		case DOWN: {
+			page = new ContactListPage(this.getDriver(), this.getWait());
+			break;
+		}
+		case UP: {
+			break;
+		}
+		case LEFT: {
+			break;
+		}
+		case RIGHT: {
+			break;
+		}
+		}
+		return page;
 	}
 
 	public boolean isPeoplePickerPageVisible() throws InterruptedException,
@@ -176,8 +210,9 @@ public class PeoplePickerPage extends AndroidPage {
 		return flag;
 	}
 
-	public void waitUserPickerFindUser(String contactName) throws InterruptedException {
-		for (int i = 0; i < 5; i++) {
+	public void waitUserPickerFindUser(String contactName)
+			throws InterruptedException {
+		for (int i = 0; i < 50; i++) {
 			refreshUITree();
 			List<WebElement> elements = pickerSearchUsers;
 			for (WebElement element : elements) {
@@ -190,15 +225,17 @@ public class PeoplePickerPage extends AndroidPage {
 					continue;
 				}
 			}
-			Thread.sleep(1000);
+			Thread.sleep(100);
 		}
 	}
 
 	public ContactListPage navigateBack() throws Exception {
-		driver.navigate().back();
+		refreshUITree();
+		// driver.navigate().back();
+		pickerClearBtn.click();
 		return new ContactListPage(this.getDriver(), this.getWait());
 	}
-	
+
 	public boolean isAddToConversationBtnVisible() {
 		return addToConversationsButton.isDisplayed();
 	}
@@ -290,5 +327,19 @@ public class PeoplePickerPage extends AndroidPage {
 		}
 		gmailLink.click();
 		return new CommonAndroidPage(this.getDriver(), this.getWait());
+	}
+
+	public WebElement selectRandomConnect() {
+		refreshUITree();
+		Random rand = new Random();
+		int n = rand.nextInt(pickerUserSlidingRow.size() - 1);
+		return pickerUserSlidingRow.get(n);
+	}
+
+	public String pressPlusOnContact(WebElement randomConnect) {
+		refreshUITree();
+		String name = randomConnect.findElement(By.id(AndroidLocators.PeoplePickerPage.idPickerRecomendedName)).getText();
+		randomConnect.findElement(By.id(AndroidLocators.PeoplePickerPage.idPickerRecomendedQuickAdd)).click();
+		return name;
 	}
 }

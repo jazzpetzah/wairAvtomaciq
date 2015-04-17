@@ -97,7 +97,21 @@ public class DialogPageSteps {
 	 */
 	@When("^I tap Dialog page bottom$")
 	public void WhenITapOnDialogPageBottom() throws Throwable {
-		PagesCollection.dialogPage.tapDialogPageBottomLinearLayout();
+		PagesCollection.dialogPage.tapDialogPageBottom();
+	}
+	
+	/**
+	 * Tap in Dialog page on details button to open participants view
+	 * 
+	 * @step. ^I tap conversation details button$
+	 * 
+	 * @throws Throwable
+	 * 
+	 */
+	@When("^I tap conversation details button$")
+	public void WhenITapConversationDetailsBottom() throws Throwable {
+		PagesCollection.otherUserPersonalInfoPage = 
+				((DialogPage) PagesCollection.androidPage).tapConversationDetailsButton();
 	}
 
 	/**
@@ -112,7 +126,7 @@ public class DialogPageSteps {
 	public void WhenIPressPlayPauseButton() throws Throwable {
 		PagesCollection.dialogPage.tapPlayPauseBtn();
 	}
-	
+
 	/**
 	 * Tap on Play/Pause button on Media Bar
 	 * 
@@ -125,7 +139,7 @@ public class DialogPageSteps {
 	public void WhenIPressPlayPauseOnMediaBarButton() throws Throwable {
 		PagesCollection.dialogPage.tapPlayPauseMediaBarBtn();
 	}
-	
+
 	@When("^I press \"(.*)\" button$")
 	public void WhenIPressButton(String buttonName) throws Throwable {
 		switch (buttonName.toLowerCase()) {
@@ -174,12 +188,27 @@ public class DialogPageSteps {
 		String lastMess = PagesCollection.dialogPage.getLastMessageFromDialog();
 		Assert.assertTrue(lastMess.equals(message.trim()));
 	}
+	
+	/**
+	 * Verifies the URL is in the chat
+	 * 
+	 * @step. ^I see URL in the dialog$
+	 * 
+	 * @throws Throwable
+	 * 
+	 */
+	@Then("^I see URL in the dialog$")
+	public void ThenISeeURLInDialog() throws Throwable {
+		PagesCollection.dialogPage.waitForMessage();
+		String lastMess = PagesCollection.dialogPage.getLastMessageFromDialog();
+		Assert.assertTrue(lastMess.contains("www.google.com"));
+	}
 
 	@Then("^I see new photo in the dialog$")
 	public void ThenISeeNewPhotoInTheDialog() throws Throwable {
 		Assert.assertTrue(PagesCollection.dialogPage.isImageExists());
 	}
-	
+
 	/**
 	 * Selects the last picture sent in a conversation view dialog
 	 * 
@@ -232,13 +261,13 @@ public class DialogPageSteps {
 	 * 
 	 */
 	@When("^I swipe down on dialog page$")
-	public void WhenISwipedownOnDialogPage() throws Exception{
+	public void WhenISwipedownOnDialogPage() throws Exception {
 		if (PagesCollection.dialogPage == null) {
 			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
 		}
 		PagesCollection.dialogPage.swipeDown(1000);
 	}
-	
+
 	@When("^I navigate back from dialog page$")
 	public void WhenINavigateBackFromDialogPage() throws Exception {
 		PagesCollection.contactListPage = PagesCollection.dialogPage
@@ -251,7 +280,7 @@ public class DialogPageSteps {
 			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
 		}
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertEquals("connected to "+contact.toLowerCase(),
+		Assert.assertEquals("connected to " + contact.toLowerCase(),
 				PagesCollection.dialogPage.getConnectRequestChatLabel());
 	}
 
@@ -274,7 +303,7 @@ public class DialogPageSteps {
 	@When("^I swipe right on dialog page$")
 	public void WhenISwipeRightOnGroupDialogPage() throws Throwable {
 		PagesCollection.contactListPage = (ContactListPage) PagesCollection.dialogPage
-				.swipeRight(500);
+				.swipeRightCoordinates(1000);
 	}
 
 	@Then("^I see group chat page with users (.*)$")
@@ -305,14 +334,29 @@ public class DialogPageSteps {
 		Assert.assertTrue(PagesCollection.dialogPage.isMessageExists(message
 				+ " " + contact));
 	}
-
+	
+	/**
+	 * Checks to see that after the group was renamed, the user is informed of the change in the dialog page
+	 * 
+	 * @step. ^I see a message informing me that I renamed the conversation to (.*)$
+	 * 
+	 * @param newConveresationName
+	 * 			the new conversation name to check for
+	 * @throws Throwable
+	 */
+	@Then("^I see a message informing me that I renamed the conversation to (.*)$")
+	public void ThenISeeMessageInformingGroupRename(String newConveresationName)
+			throws Throwable {
+		Assert.assertEquals(PagesCollection.dialogPage.getChangedGroupNameMessage(), newConveresationName);
+	}
+	
 	@Then("^Last message is (.*)$")
 	public void ThenLastMessageIs(String message) {
 		Assert.assertEquals(message.toLowerCase().trim(),
 				PagesCollection.dialogPage.getLastMessageFromDialog()
 						.toLowerCase().trim());
 	}
-	
+
 	/**
 	 * Verify that I see Play or Pause button on Mediabar
 	 * 
@@ -323,12 +367,13 @@ public class DialogPageSteps {
 	 */
 	@Then("^I see (.*) on Mediabar$")
 	public void ThenIseeOnMediaBar(String iconLabel) throws Exception {
-		double score = PagesCollection.dialogPage.checkMediaBarControlIcon(iconLabel);
+		double score = PagesCollection.dialogPage
+				.checkMediaBarControlIcon(iconLabel);
 		Assert.assertTrue(
 				"Overlap between two images has not enough score. Expected >= 0.75, current = "
 						+ score, score >= 0.75d);
 	}
-	
+
 	/**
 	 * Verify that I see Play or Pause button in Media item
 	 * 
@@ -339,9 +384,28 @@ public class DialogPageSteps {
 	 */
 	@Then("^I see (.*) button in Media$")
 	public void ThenISeeButtonInMedia(String iconLabel) throws Exception {
-		double score = PagesCollection.dialogPage.checkMediaControlIcon(iconLabel);
+		double score = PagesCollection.dialogPage
+				.checkMediaControlIcon(iconLabel);
 		Assert.assertTrue(
 				"Overlap between two images has not enough score. Expected >= 0.72, current = "
 						+ score, score >= 0.72d);
+	}
+
+	/**
+	 * Verify that dialog page contains missed call from contact
+	 * 
+	 * @step. ^I see dialog with missed call from (.*)$
+	 * 
+	 * @param contact
+	 *            contact name string
+	 * 
+	 * @throws NoSuchUserException
+	 */
+	@Then("^I see dialog with missed call from (.*)$")
+	public void ThenISeeDialogWithMissedCallFrom(String contact)
+			throws NoSuchUserException {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		Assert.assertEquals(contact + " CALLED",
+				PagesCollection.dialogPage.getMissedCallMessage());
 	}
 }

@@ -102,7 +102,7 @@ public class PersonalInfoPageSteps {
 	}
 
 	@Then("^I see personal info page$")
-	public void ISeePersonalInfoPage() {
+	public void ISeePersonalInfoPage() throws Exception {
 		Assert.assertTrue(PagesCollection.personalInfoPage
 				.isPersonalInfoVisible());
 	}

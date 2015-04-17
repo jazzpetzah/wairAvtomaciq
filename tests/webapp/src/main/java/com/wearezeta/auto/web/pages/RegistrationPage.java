@@ -6,6 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.WebAppLocators;
@@ -58,7 +59,8 @@ public class RegistrationPage extends WebPage {
 		passwordField.sendKeys(password);
 	}
 
-	public void submitRegistration() {
+	public void submitRegistration() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(driver, createAccount) : "'Create Account' button is not clickable after timeout";
 		createAccount.click();
 	}
 
@@ -68,11 +70,17 @@ public class RegistrationPage extends WebPage {
 
 	public LoginPage switchToLoginPage() throws Exception {
 		final By locator = By.xpath(WebAppLocators.LoginPage.xpathSignInButton);
-		if (!DriverUtils.isElementDisplayed(this.getDriver(), locator, 3)) {
+		if (!DriverUtils.isElementDisplayed(this.getDriver(), locator)
+				&& DriverUtils
+						.isElementDisplayed(
+								this.getDriver(),
+								By.xpath(WebAppLocators.RegistrationPage.xpathSwitchToSignInButton),
+								3)) {
 			switchToSignInButton.click();
 		}
 		assert DriverUtils.isElementDisplayed(this.getDriver(), locator) : "Sign in page is not visible";
 
-		return new LoginPage(this.getDriver(), this.getWait());
+		return new LoginPage(this.getDriver(), this.getWait(),
+				CommonUtils.getWebAppApplicationPathFromConfig(this.getClass()));
 	}
 }

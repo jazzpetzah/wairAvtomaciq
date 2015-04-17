@@ -67,9 +67,9 @@ public class PersonalInfoPage extends AndroidPage {
 		super(driver, wait);
 	}
 
-	public boolean isPersonalInfoVisible() {
+	public boolean isPersonalInfoVisible() throws Exception {
 		refreshUITree();
-		return emailField.isDisplayed();
+		return isVisible(emailField);
 	}
 
 	public void waitForEmailFieldVisible() {
@@ -143,14 +143,36 @@ public class PersonalInfoPage extends AndroidPage {
 		refreshUITree();
 		DriverUtils.waitUntilElementAppears(driver,
 				AndroidLocators.PersonalInfoPage.getByForNameEditField());
+		if(!isVisible(nameEdit)) {
+			DriverUtils.mobileTapByCoordinates(getDriver(), nameEdit);
+		}
 	}
 
 	public void changeName(String name, String newName) throws Exception {
+		refreshUITree();
 		DriverUtils.waitUntilElementDissapear(driver,
 				By.id(AndroidLocators.PersonalInfoPage.idNameField));
 		refreshUITree();
 		this.getWait().until(ExpectedConditions.visibilityOf(nameEdit));
-		nameEdit.clear();
+
+		try {
+			nameEdit.clear();
+		} catch (Exception ex) {
+			//ignore silently
+		}
+		
+		//FIX if nameEdit.clear() failed to clear text
+		int stringLength = nameEdit.getText().length();
+		if (stringLength > 0) {
+			for (int i = 0; i < stringLength; i++) {
+				this.getDriver().sendKeyEvent(22); // "KEYCODE_DPAD_RIGHT"
+			}
+
+			for (int i = 0; i < stringLength; i++) {
+				this.getDriver().sendKeyEvent(67); // "KEYCODE_DEL"
+			}
+		}
+		
 		nameEdit.sendKeys(newName);
 		driver.navigate().back();
 		Thread.sleep(1000);

@@ -5,19 +5,19 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name in Contact list
-    When I open People Picker from Contact List
+    And I see my name on top of Contact list
     And I wait up to 15 seconds until <Contact1> exists in backend search results
+    And I wait up to 15 seconds until <Contact2> exists in backend search results
+    When I open People Picker from Contact List
     And I type <Contact1> in search field of People Picker
     And I select <Contact1> from People Picker results
-    And I wait up to 15 seconds until <Contact2> exists in backend search results
     And I type <Contact2> in search field of People Picker
     And I select <Contact2> from People Picker results
     And I choose to create conversation from People Picker
-    And I see Contact list with name <Name>
+    And I see my name on top of Contact list
     Then I see Contact list with name <Contact1>,<Contact2>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
@@ -26,7 +26,7 @@ Feature: People View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name in Contact list
+    And I see my name on top of Contact list
     When I open conversation with <Contact>
     And I click People button in one to one conversation
     Then I see Single User Profile popover
@@ -34,7 +34,7 @@ Feature: People View
     And I see Add people button on Single User Profile popover
     And I see Block button on Single User Profile popover
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
@@ -44,7 +44,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name in Contact list
+    And I see my name on top of Contact list
     And I open conversation with <ChatName>
     And I click People button in group conversation
     And I see Group Participants popover
@@ -66,7 +66,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name in Contact list
+    And I see my name on top of Contact list
     And I open conversation with <ChatName>
     And I click People button in group conversation
     And I see Group Participants popover
@@ -80,13 +80,13 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       | Message     |
       | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat | YOU REMOVED |
 
-  @staging @id1687
+  @smoke @id1687
   Scenario Outline: Verify you can add participants to the group conversation by searching the user directory
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name in Contact list
+    And I see my name on top of Contact list
     And I open conversation with <ChatName>
     And I click People button in group conversation
     And I see Group Participants popover
@@ -122,7 +122,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name in Contact list
+    And I see my name on top of Contact list
     And I open conversation with <ChatName>
     And I click People button in group conversation
     And I see Group Participants popover
@@ -139,7 +139,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name in Contact list
+    And I see my name on top of Contact list
     And I open conversation with <Contact1>
     And I click People button in one to one conversation
     And I see Single User Profile popover
@@ -158,7 +158,7 @@ Feature: People View
     And I see Sign In page
     And User <Contact1> is me
     And I Sign in using login <Contact1> and password <Password>
-    And I see my name in Contact list
+    And I see my name on top of Contact list
     And I see Contact list with name <Name>,<Contact2>
     And I open conversation with <Name>,<Contact2>
     And I see user <Name> action <Message2> for <Contact2>,<Contact1> in conversation
@@ -169,7 +169,7 @@ Feature: People View
     And I see Sign In page
     And User <Contact2> is me
     And I Sign in using login <Contact2> and password <Password>
-    And I see my name in Contact list
+    And I see my name on top of Contact list
     And I see Contact list with name <Name>,<Contact1>
     And I see user <Name> action <Message2> for <Contact2>,<Contact1> in conversation
 

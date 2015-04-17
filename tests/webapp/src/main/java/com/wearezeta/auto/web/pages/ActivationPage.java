@@ -1,7 +1,5 @@
 package com.wearezeta.auto.web.pages;
 
-import java.net.URL;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -11,17 +9,14 @@ import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class ActivationPage extends WebPage {
-	private String url;
-
 	public ActivationPage(ZetaWebAppDriver driver, WebDriverWait wait,
 			String url) throws Exception {
-		super(driver, wait);
-		this.url = url;
+		super(driver, wait, url);
 	}
 
-	public void openInNewTab() {
+	public void openInNewTab() throws Exception {
 		WebCommonUtils.openUrlInNewTab(
-				PagesCollection.registrationPage.getDriver(), this.url);
+				PagesCollection.registrationPage.getDriver(), this.getUrl());
 	}
 
 	public void verifyActivation(int timeoutSeconds) throws Exception {
@@ -33,14 +28,6 @@ public class ActivationPage extends WebPage {
 	@Override
 	public void close() throws Exception {
 		WebCommonUtils.switchToPreviousTab(driver);
-
-		// TODO: Remove this navigation code when automatic redirect after email
-		// verification is done
-		final URL currentUrl = new URL(driver.getCurrentUrl());
-		driver.navigate().to(
-				String.format("%s://%s", currentUrl.getProtocol(),
-						currentUrl.getAuthority()));
-
 		super.close();
 	}
 }

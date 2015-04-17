@@ -27,7 +27,7 @@ Feature: People View
     When I open conversation with <ChatName>
     And I open Conversation info
     And I set name <NewName> for conversation
-    Then I see Contact list with name <NewName>
+    Then I see contact <NewName> in Contact list
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName          | NewName      |
@@ -45,7 +45,7 @@ Feature: People View
     And I open Conversation info
     And I set name <NewName> for conversation
     Then I do not see conversation <NewName> in contact list
-    And I see Contact list with name <ChatName>
+    And I see contact <ChatName> in Contact list
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName         | NewName |
@@ -61,7 +61,7 @@ Feature: People View
     When I open conversation with <ChatName>
     And I open Conversation info
     And I set name <NewName> for conversation
-    Then I see Contact list with name <ExpectedNewName>
+    Then I see contact <ExpectedNewName> in Contact list
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName         | NewName                                      | ExpectedNewName         |
@@ -86,7 +86,7 @@ Feature: People View
       | user1Email | user1Password | user1Name | user2Name | user3Name | PartViewNavChat |
 
   @regression @id100
-  Scenario Outline: Access proﬁle information for the other participant in a 1on1 conversation
+  Scenario Outline: Access profile information for the other participant in a 1on1 conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I change user <Contact> avatar picture from file aqaPictureContact.jpg
@@ -251,13 +251,13 @@ Feature: People View
     When I sign out
     And I Sign in using login <Contact1Email> and password <Password>
     And I see my name <Contact1> in Contact list
-    Then I see Contact list with name <Name>, <Contact2>
+    Then I see contact <Name>, <Contact2> in Contact list
     And I open conversation with <Name>, <Contact2>
     And I see message <Name> STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
     And I sign out
     And I Sign in using login <Contact2Email> and password <Password>
     And I see my name <Contact2> in Contact list
-    Then I see Contact list with name <Name>, <Contact1>
+    Then I see contact <Name>, <Contact1> in Contact list
     And I open conversation with <Name>, <Contact1>
     And I see message <Name> STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
 

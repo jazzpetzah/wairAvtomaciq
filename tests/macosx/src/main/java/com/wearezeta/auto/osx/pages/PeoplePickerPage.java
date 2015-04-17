@@ -15,26 +15,27 @@ import org.sikuli.script.Env;
 import org.sikuli.script.FindFailed;
 import org.sikuli.script.Screen;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.osx.common.OSXConstants;
+import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.util.NSPoint;
 
 @SuppressWarnings("deprecation")
-public class PeoplePickerPage extends OSXPage {
+public class PeoplePickerPage extends MainWirePage {
 	private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class
 			.getSimpleName());
 
-	@FindBy(how = How.XPATH, using = OSXLocators.xpathMainWindow)
-	private WebElement mainWindow;
-
-	@FindBy(how = How.NAME, using = OSXLocators.namePeoplePickerAddToConversationButton)
+	@FindBy(how = How.NAME, using = OSXLocators.PeoplePickerPage.nameAddToConversationButton)
 	private WebElement addToConversationButton;
 
-	@FindBy(how = How.NAME, using = OSXLocators.namePeoplePickerOpenConversationButton)
+	@FindBy(how = How.NAME, using = OSXLocators.PeoplePickerPage.nameOpenConversationButton)
 	private WebElement openConversationButton;
+
+	@FindBy(how = How.NAME, using = OSXLocators.PeoplePickerPage.nameCreateConversationButton)
+	private WebElement createConversationButton;
 
 	private WebElement searchField;
 
@@ -90,7 +91,7 @@ public class PeoplePickerPage extends OSXPage {
 				if (attribute.equals(OSXLocators.idPeoplePickerDismissButton)) {
 					log.debug("Found people picker cancel button. Location "
 							+ NSPoint.fromString(button
-									.getAttribute("AXPosition")));
+									.getAttribute(OSXConstants.Attributes.AXPOSITION)));
 					return button;
 				}
 			}
@@ -141,10 +142,10 @@ public class PeoplePickerPage extends OSXPage {
 	}
 
 	public void scrollToUserInSearchResults(String user) {
-		NSPoint mainPosition = NSPoint.fromString(mainWindow
-				.getAttribute("AXPosition"));
-		NSPoint mainSize = NSPoint
-				.fromString(mainWindow.getAttribute("AXSize"));
+		NSPoint mainPosition = NSPoint.fromString(window
+				.getAttribute(OSXConstants.Attributes.AXPOSITION));
+		NSPoint mainSize = NSPoint.fromString(window
+				.getAttribute(OSXConstants.Attributes.AXSIZE));
 
 		NSPoint latestPoint = new NSPoint(mainPosition.x() + mainSize.x(),
 				mainPosition.y() + mainSize.y());
@@ -170,7 +171,7 @@ public class PeoplePickerPage extends OSXPage {
 		}
 
 		NSPoint userPosition = NSPoint.fromString(userContact
-				.getAttribute("AXPosition"));
+				.getAttribute(OSXConstants.Attributes.AXPOSITION));
 		if (userPosition.y() > latestPoint.y()
 				|| userPosition.y() < mainPosition.y()) {
 			if (isFoundPeople) {
@@ -192,12 +193,12 @@ public class PeoplePickerPage extends OSXPage {
 			while (userPosition.y() > latestPoint.y()) {
 				peopleIncrementSB.click();
 				userPosition = NSPoint.fromString(userContact
-						.getAttribute("AXPosition"));
+						.getAttribute(OSXConstants.Attributes.AXPOSITION));
 			}
 			while (userPosition.y() < mainPosition.y()) {
 				peopleDecrementSB.click();
 				userPosition = NSPoint.fromString(userContact
-						.getAttribute("AXPosition"));
+						.getAttribute(OSXConstants.Attributes.AXPOSITION));
 			}
 		}
 
@@ -236,7 +237,9 @@ public class PeoplePickerPage extends OSXPage {
 	}
 
 	public ConversationPage addSelectedUsersToConversation() throws Exception {
-		if (isOpenConversationButtonVisible())
+		if (isCreateConversationButtonVisible()) {
+			createConversationButton.click();
+		} else if (isOpenConversationButtonVisible())
 			openConversationButton.click();
 		else
 			addToConversationButton.click();
@@ -251,11 +254,27 @@ public class PeoplePickerPage extends OSXPage {
 						3);
 	}
 
-	public boolean isOpenConversationButtonVisible() throws Exception {
-		if (DriverUtils.waitUntilElementAppears(driver,
-				By.name(OSXLocators.namePeoplePickerOpenConversationButton), 5)) {
+	public boolean isCreateConversationButtonVisible() throws Exception {
+		if (DriverUtils
+				.waitUntilElementAppears(
+						driver,
+						By.name(OSXLocators.PeoplePickerPage.nameCreateConversationButton),
+						5)) {
 			return NSPoint.fromString(
-					openConversationButton.getAttribute("AXSize")).y() > 0;
+					createConversationButton
+							.getAttribute(OSXConstants.Attributes.AXSIZE)).y() > 0;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean isOpenConversationButtonVisible() throws Exception {
+		if (DriverUtils.waitUntilElementAppears(driver, By
+				.name(OSXLocators.PeoplePickerPage.nameOpenConversationButton),
+				5)) {
+			return NSPoint.fromString(
+					openConversationButton
+							.getAttribute(OSXConstants.Attributes.AXSIZE)).y() > 0;
 		} else {
 			return false;
 		}
@@ -265,8 +284,7 @@ public class PeoplePickerPage extends OSXPage {
 		peoplePickerTopContactAvatar.click();
 		Screen s = new Screen();
 		try {
-			App.focus(CommonUtils
-					.getOsxApplicationPathFromConfig(PeoplePickerPage.class));
+			App.focus(OSXExecutionContext.wirePath);
 			if (!isOpenConversationButtonVisible())
 				s.click(Env.getMouseLocation());
 			if (!isOpenConversationButtonVisible())

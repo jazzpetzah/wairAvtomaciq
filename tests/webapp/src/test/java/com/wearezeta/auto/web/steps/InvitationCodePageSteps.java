@@ -34,12 +34,14 @@ public class InvitationCodePageSteps {
 	public void IEnterInvitationCode() throws Exception {
 		if (PagesCollection.invitationCodePage.isVisible()) {
 			PagesCollection.invitationCodePage.inputCode(INVITATION_CODE);
-			PagesCollection.invitationCodePage.proceed();
+			PagesCollection.loginPage = PagesCollection.invitationCodePage
+					.proceed();
+		} else {
+			PagesCollection.loginPage = new LoginPage(
+					PagesCollection.invitationCodePage.getDriver(),
+					PagesCollection.invitationCodePage.getWait(),
+					PagesCollection.invitationCodePage.getUrl());
 		}
-
-		PagesCollection.loginPage = new LoginPage(
-				PagesCollection.invitationCodePage.getDriver(),
-				PagesCollection.invitationCodePage.getWait());
 		PagesCollection.registrationPage = new RegistrationPage(
 				PagesCollection.invitationCodePage.getDriver(),
 				PagesCollection.invitationCodePage.getWait());
