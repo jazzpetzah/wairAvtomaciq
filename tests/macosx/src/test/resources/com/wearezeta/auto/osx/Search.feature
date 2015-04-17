@@ -15,8 +15,8 @@ Feature: Search
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
-      
-  @staging @id469
+
+  @regression @id469
   Scenario Outline: Start group chat with users from contact list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -33,7 +33,6 @@ Feature: Search
     And I see my name <Name> in Contact list
     Then I open conversation with <Contact1>,<Contact2>
 
-    Examples:
+    Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
-      

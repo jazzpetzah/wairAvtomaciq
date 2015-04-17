@@ -53,7 +53,7 @@ Feature: Connect to user
       | Login      | Password      | Name      | Contact   | ContactEmail |
       | user1Email | user1Password | user1Name | user2Name | user2Email   |
 
-  @staging @id1529
+  @regression @id1529
   Scenario Outline: Verify you can unblock someone from search list
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -143,7 +143,7 @@ Feature: Connect to user
       | Login      | Password      | Name      | Contact   | ContactEmail |
       | user1Email | user1Password | user1Name | user2Name | user2Email   |
 
-  @staging @id1035
+  @regression @id1035
   Scenario Outline: Verify incoming connection requests list disappears after all requests are processed
     Given There are 3 users where <Name> is me
     Given <Contact1> has sent connection request to me
