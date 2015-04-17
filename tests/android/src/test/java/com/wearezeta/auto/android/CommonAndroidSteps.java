@@ -20,6 +20,7 @@ import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.LoginPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
+import com.wearezeta.auto.android.pages.PersonalInfoPage;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.GenerateWebLink;
@@ -179,6 +180,19 @@ public class CommonAndroidSteps {
 					.minimizeApplication();
 		}
 	}
+	
+	/**
+	 * Opens the Browser app
+	 * 
+	 * @step. ^I open the native browser application$
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I open the native browser application$")
+	public void IOpenBrowserApp() throws Exception {
+		AndroidCommonUtils.openBroswerApplication();
+	}
 
 	/**
 	 * Opens the gallery application (com.google.android.gallery3d)
@@ -206,6 +220,24 @@ public class CommonAndroidSteps {
 	public void IShareImageFromGallery() throws Exception {
 		IOpenGalleryApp();
 		PagesCollection.contactListPage.shareImageToWireFromGallery();
+	}
+	
+	/**
+	 * Opens the Browser app and shares the URL to wire (http://www.google.com)
+	 * 
+	 * @step. ^I share URL from native browser app to Wire with contact (.*)$
+	 * 
+	 * @param name
+	 * name of contact to share URL with
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I share URL from native browser app to Wire with contact (.*)$")
+	public void IShareURLBrowserApp(String name) throws Exception {
+		IOpenBrowserApp();
+		PagesCollection.contactListPage.shareURLFromNativeBrowser();
+		Thread.sleep(2000);
+		PagesCollection.dialogPage.sendMessageInInput();
 	}
 	
 	/**

@@ -355,4 +355,32 @@ public class ContactListPage extends AndroidPage {
 		conversationShareOption.click();
 		confirmShareButton.click();
 	}
+	
+	public void shareURLFromNativeBrowser() throws InterruptedException {
+		
+		List<WebElement> imageButtonElements = driver
+				.findElementsByClassName("android.widget.ImageButton");
+		for (WebElement imageButton : imageButtonElements) {
+			if (imageButton.getAttribute("name").equals("More options")) {
+				imageButton.click();
+			}
+		}
+		List<WebElement> textViewElements = driver
+				.findElementsByClassName("android.widget.TextView");
+		for (WebElement textView : textViewElements) {
+			if (textView.getAttribute("text").equals("Share page")) {
+				textView.click();
+				break;
+			}
+		}
+		List<WebElement> textElements = driver
+				.findElementsByClassName("android.widget.TextView");
+		for (WebElement textView : textElements) {
+			if (textView.getAttribute("text").equals("Wire")) {
+				textView.click();
+			}
+		}
+		conversationShareOption.click();
+	}
+
 }

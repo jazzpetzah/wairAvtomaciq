@@ -29,7 +29,7 @@ public class AndroidCommonUtils extends CommonUtils {
 	private static final String edgeBackend = "[\"https://edge-nginz-https.zinfra.io\", \"https://edge-nginz-ssl.zinfra.io/await\", \"1003090516085\"]";
 	private static final String productionBackend = "[\"https://prod-nginz-https.wire.com\", \"https://prod-nginz-ssl.wire.com/await\", \"782078216207\"]";
 	
-	public static final String ADB_PREFIX = "";
+	public static final String ADB_PREFIX = "/Applications/Appium.app/Contents/Resources/node_modules/appium/android-sdk-macosx/platform-tools/";
 	
 	public static void uploadPhotoToAndroid(String photoPathOnDevice)
 			throws Exception {
@@ -58,7 +58,14 @@ public class AndroidCommonUtils extends CommonUtils {
 			executeOsXCommand(new String[] { "/bin/bash", "-c", ADB_PREFIX + "adb shell am start -t image/* -a android.intent.action.VIEW" });
 		}
 	}
-
+	
+	public static void openBroswerApplication() throws Exception {
+		if (getOsName().contains(OS_NAME_WINDOWS)) {
+			Runtime.getRuntime().exec("cmd /C adb shell am start -a android.intent.action.VIEW -d http://www.google.com");
+		} else {
+			executeOsXCommand(new String[] { "/bin/bash", "-c", ADB_PREFIX + "adb shell am start -a android.intent.action.VIEW -d http://www.google.com" });
+		}
+	}
 	
 	public static void copyFileFromAndroid(String filePathOnSystem,  String filePathOnDevice) throws Exception {
 		if (getOsName().contains(OS_NAME_WINDOWS)) {
