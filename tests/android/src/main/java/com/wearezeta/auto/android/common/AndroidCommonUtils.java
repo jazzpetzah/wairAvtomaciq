@@ -29,7 +29,7 @@ public class AndroidCommonUtils extends CommonUtils {
 	private static final String edgeBackend = "[\"https://edge-nginz-https.zinfra.io\", \"https://edge-nginz-ssl.zinfra.io/await\", \"1003090516085\"]";
 	private static final String productionBackend = "[\"https://prod-nginz-https.wire.com\", \"https://prod-nginz-ssl.wire.com/await\", \"782078216207\"]";
 	
-	public static final String ADB_PREFIX = "/Applications/Appium.app/Contents/Resources/node_modules/appium/android-sdk-macosx/platform-tools/";
+	public static final String ADB_PREFIX = "";
 	
 	public static void uploadPhotoToAndroid(String photoPathOnDevice)
 			throws Exception {

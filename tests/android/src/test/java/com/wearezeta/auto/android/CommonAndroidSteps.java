@@ -18,6 +18,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.AndroidPage;
+import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.android.pages.LoginPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.android.pages.PersonalInfoPage;
@@ -236,7 +237,10 @@ public class CommonAndroidSteps {
 	public void IShareURLBrowserApp(String name) throws Exception {
 		IOpenBrowserApp();
 		PagesCollection.contactListPage.shareURLFromNativeBrowser();
-		Thread.sleep(2000);
+		if (PagesCollection.dialogPage == null) {
+			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
+		}
+		Thread.sleep(5000);
 		PagesCollection.dialogPage.sendMessageInInput();
 	}
 	
