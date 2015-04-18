@@ -397,15 +397,6 @@ public class CommonWebAppSteps {
 	}
 
 	/**
-	 * TODO
-	 */
-	@Given("^(.*) is waiting for call to accept it$")
-	public void GivenContactIsWaitingForCallToAcceptIt(String userNameAlias)
-			throws Throwable {
-		commonSteps.waitForCallToAccept(userNameAlias);
-	}
-
-	/**
 	 * Pings BackEnd until user is indexed and avialable in search
 	 * 
 	 * @step. ^(\\w+) waits? up to (\\d+) seconds? until (.*) exists in backend

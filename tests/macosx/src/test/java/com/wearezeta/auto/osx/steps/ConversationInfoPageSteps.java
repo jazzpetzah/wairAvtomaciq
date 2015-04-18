@@ -15,6 +15,7 @@ import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ConversationInfoPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
+import com.wearezeta.auto.osx.pages.popovers.ConnectToPopover;
 import com.wearezeta.auto.osx.util.NSPoint;
 
 import cucumber.api.java.en.Then;
@@ -204,8 +205,9 @@ public class ConversationInfoPageSteps {
 	}
 
 	@Then("^I click on connect button on people popover$")
-	public void IClickOnConnectButtonOnPeoplePopover() {
-		PagesCollection.conversationInfoPage.connectToUser();
+	public void IClickOnConnectButtonOnPeoplePopover() throws Exception {
+		PagesCollection.popover = PagesCollection.conversationInfoPage
+				.connectToUser();
 	}
 
 	@Then("^I see pending button$")
@@ -230,5 +232,19 @@ public class ConversationInfoPageSteps {
 	public void ISeeConnectionRequestMessage(String message) {
 		Assert.assertTrue(PagesCollection.conversationInfoPage
 				.isSentConnectionRequestMessageExists(message));
+	}
+
+	/**
+	 * Checks that user is suggested to send connection request to selected user
+	 * 
+	 * @step. ^I see connect popover$
+	 * 
+	 * @throws AssertionError
+	 *             if there is no send request dialog
+	 */
+	@Then("^I see connect popover$")
+	public void ISeeConnectPopover() throws Exception {
+		Assert.assertTrue("There is no connect to user popover opened.",
+				((ConnectToPopover) PagesCollection.popover).isVisible());
 	}
 }

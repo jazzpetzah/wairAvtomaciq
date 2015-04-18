@@ -1,4 +1,4 @@
-package com.wearezeta.auto.osx.steps;
+package com.wearezeta.auto.android;
 
 import com.wearezeta.auto.common.CommonCallingSteps;
 
@@ -45,57 +45,6 @@ public class CallingSteps {
 			String userToNameAlias) throws Exception {
 		commonCallingSteps.UserXStopsCallsToUserY(userFromNameAlias,
 				userToNameAlias);
-	}
-
-	/**
-	 * Verify whether call status is changed to one of the expected values after
-	 * N seconds timeout
-	 * 
-	 * @step. (.*) verifies that call status to (.*) is changed to (.*) in
-	 *        (\\d+) seconds?$
-	 * 
-	 * @param userFromNameAlias
-	 *            caller name/alias
-	 * @param userToNameAlias
-	 *            destination name/alias
-	 * @param expectedStatuses
-	 *            comma-separated list of expected call statuses. Available
-	 *            values: "starting", "waiting", "active", "active_muted",
-	 *            "stopping", "inactive"
-	 * @param timeoutSeconds
-	 *            number of seconds to wait until call status is changed
-	 * @throws Exception
-	 */
-	@When("(.*) verifies that call status to (.*) is changed to (.*) in (\\d+) seconds?$")
-	public void UserXVerifesCallStatusToUserY(String userFromNameAlias,
-			String userToNameAlias, String expectedStatuses, int timeoutSeconds)
-			throws Exception {
-		commonCallingSteps.UserXVerifesCallStatusToUserY(userFromNameAlias,
-				userToNameAlias, expectedStatuses, timeoutSeconds);
-	}
-
-	/**
-	 * Verify whether waiting instance status is changed to one of the expected
-	 * values after N seconds timeout
-	 * 
-	 * @step. (.*) verifies that waiting instance status is changed to (.*) in
-	 *        (\\d+) seconds?$
-	 * 
-	 * @param userFromNameAlias
-	 *            caller name/alias
-	 * @param expectedStatuses
-	 *            comma-separated list of expected call statuses. Available
-	 *            values: "starting", "waiting", "active", "active_muted",
-	 *            "stopping", "inactive"
-	 * @param timeoutSeconds
-	 *            number of seconds to wait until call status is changed
-	 * @throws Exception
-	 */
-	@When("(.*) verifies that waiting instance status is changed to (.*) in (\\d+) seconds?$")
-	public void UserXVerifesCallStatusToUserY(String userFromNameAlias,
-			String expectedStatuses, int timeoutSeconds) throws Exception {
-		commonCallingSteps.UserXVerifesWaitingInstanceStatus(userFromNameAlias,
-				expectedStatuses, timeoutSeconds);
 	}
 
 	/**

@@ -18,7 +18,7 @@ Feature: Archive
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id1531
+  @regression @id1531
   Scenario Outline: Verify you can archive and unarchive group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

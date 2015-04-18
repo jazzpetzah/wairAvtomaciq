@@ -45,15 +45,15 @@ Feature: Connect to user
     And I wait up to 15 seconds until <ContactEmail> exists in backend search results
     And I search by email for user <Contact>
     And I see user <Contact> in search results
-    And I select user <Contact> from search results
-    And I send invitation to user
+    And I select not connected contact <Contact> from search results
+    And I send connection request to selected user
     Then I see contact <Contact> in Contact list
 
     Examples: 
       | Login      | Password      | Name      | Contact   | ContactEmail |
       | user1Email | user1Password | user1Name | user2Name | user2Email   |
 
-  @staging @id1529
+  @regression @id1529
   Scenario Outline: Verify you can unblock someone from search list
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -66,8 +66,8 @@ Feature: Connect to user
     When I wait up to 15 seconds until <Contact> exists in backend search results
     And I search by email for user <Contact>
     And I see user <Contact> in search results
-    And I select user <Contact> from search results
-    And I unblock user
+    And I select blocked contact <Contact> from search results
+    And I unblock selected user
     Then I open conversation with <Contact>
     And Contact <Contact> sends random message to user <Name>
     And I see random message in conversation
@@ -92,8 +92,8 @@ Feature: Connect to user
     When I wait up to 15 seconds until <Contact> exists in backend search results
     And I search by email for user <Contact>
     And I see user <Contact> in search results
-    And I select user <Contact> from search results
-    And I unblock user
+    And I select blocked contact <Contact> from search results
+    And I unblock selected user
     Then I open conversation with <Contact>
     And I see random message in conversation
     And I see message <Contact> PINGED in conversation
@@ -134,8 +134,8 @@ Feature: Connect to user
     Given I wait up to 60 seconds until <ContactEmail> exists in backend search results
     And I search by email for user <Contact>
     And I see user <Contact> in search results
-    And I select user <Contact> from search results
-    And I send invitation to user
+    And I select not connected contact <Contact> from search results
+    And I send connection request to selected user
     And I open conversation with <Contact>
     Then I can not write a random message
 
@@ -143,7 +143,7 @@ Feature: Connect to user
       | Login      | Password      | Name      | Contact   | ContactEmail |
       | user1Email | user1Password | user1Name | user2Name | user2Email   |
 
-  @staging @id1035
+  @regression @id1035
   Scenario Outline: Verify incoming connection requests list disappears after all requests are processed
     Given There are 3 users where <Name> is me
     Given <Contact1> has sent connection request to me

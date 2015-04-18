@@ -21,7 +21,6 @@ import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.android.pages.LoginPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
-import com.wearezeta.auto.android.pages.PersonalInfoPage;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.GenerateWebLink;
@@ -485,34 +484,6 @@ public class CommonAndroidSteps {
 		CommonAndroidSteps.skipBeforeAfter = skipBeforeAfter;
 	}
 
-	/**
-	 * Start a call using autocall tool
-	 * 
-	 * @step. ^Contact (.*) calls to conversation (.*)$
-	 * @param starterNameAlias
-	 * 		user who will start a call
-	 * @param destinationNameAlias
-	 * 		user who will receive a call
-	 * @throws Exception
-	 */
-	@When("^Contact (.*) calls to conversation (.*)$")
-	public void ContactCallsToConversation(String starterNameAlias, String destinationNameAlias) throws Exception {
-		commonSteps.UserCallsToConversation(starterNameAlias, destinationNameAlias);
-	}
-	
-	/**
-	 * End current call initiated by autocall tool
-	 * 
-	 * @step. ^Current call is ended$
-	 * 		
-	 * @throws Exception
-	 */
-	@When("^Current call is ended$")
-	public void EndCurrectCall() throws Exception {
-		commonSteps.StopCurrentCall();
-		Thread.sleep(1000);
-	}
-	
 	@When("^I request reset password for (.*)$")
 	public void WhenIRequestResetPassword(String email) throws Exception {
 		try {
