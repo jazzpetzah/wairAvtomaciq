@@ -15,17 +15,17 @@ Feature: ConversationView
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-	@staging @id1617 
- Scenario Outline: Verify you can see image on the second end in a group conversation 
-	Given There are 3 users where <Name> is me
+  @staging @id1617 
+  Scenario Outline: Verify you can see image on the second end in a group conversation 
+    Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
     And I open conversation with <ChatName>
-	When I send picture <PictureName> to the current conversation
-	Then I see sent picture <PictureName> in the conversation view
-	When I open self profile
+    When I send picture <PictureName> to the current conversation
+    Then I see sent picture <PictureName> in the conversation view
+    When I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
     And I switch to sign in page
@@ -36,10 +36,9 @@ Feature: ConversationView
     And I open conversation with <ChatName>
     Then I see sent picture <PictureName> in the conversation view
 
-	Examples: 
+    Examples: 
 | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | Login2     | Password2     | Name2     |PictureName                |
 | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessageGroupChat | user2Email | user2Password | user2Name | userpicture_landscape.jpg |
-    
       
 
   @smoke @id1628
