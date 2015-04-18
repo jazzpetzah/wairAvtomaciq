@@ -10,6 +10,8 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -328,5 +330,16 @@ public class WebCommonUtils extends CommonUtils {
 
 		executeAppleScriptFileOnNode(WebAppExecutionContext.seleniumNodeIp,
 				dstScriptPath);
+	}
+
+	public static void loadCustomJavascript(RemoteWebDriver driver,
+			String scriptContent) {
+		final String[] loaderJS = new String[] {
+				"var scriptElt = document.createElement('script');",
+				"scriptElt.type = 'text/javascript';",
+				"scriptElt.innerHTML = '"
+						+ StringEscapeUtils.escapeEcmaScript(scriptContent)
+						+ "';", "$('head').append(scriptElt);" };
+		driver.executeScript(StringUtils.join(loaderJS, "\n"));
 	}
 }
