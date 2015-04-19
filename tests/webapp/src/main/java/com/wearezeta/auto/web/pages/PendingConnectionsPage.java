@@ -20,9 +20,9 @@ public class PendingConnectionsPage extends WebPage {
 				.apply(userName);
 		final WebElement acceptButton = driver.findElement(By.xpath(xpath));
 		DriverUtils.waitUntilElementClickable(driver, acceptButton);
-		// Waiting till self-profile page elements will not be clickable
-		Thread.sleep(1000);
 		acceptButton.click();
+		// it takes some time to refresh the conversations list
+		Thread.sleep(1000);
 	}
 
 	public void ignoreRequestFromUser(String userName) throws Exception {
