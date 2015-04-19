@@ -13,6 +13,7 @@ import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.wearezeta.auto.common.CommonCallingSteps;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
@@ -89,6 +90,15 @@ public class CommonOSXSteps {
 	}
 
 	private void commonBefore() throws Exception {
+		try {
+			// async calls/waiting instances cleanup
+			CommonCallingSteps.getInstance().cleanupWaitingInstances();
+			CommonCallingSteps.getInstance().cleanupCalls();
+		} catch (Exception e) {
+			// do not fail if smt fails here
+			e.printStackTrace();
+		}
+
 		this.testStartedTimestamp = new Date();
 		final ZetaOSXDriver driver = resetOSXDriver(OSXExecutionContext.appiumUrl);
 		final WebDriverWait wait = PlatformDrivers
@@ -369,6 +379,15 @@ public class CommonOSXSteps {
 
 	@After
 	public void tearDown() throws Exception {
+		try {
+			// async calls/waiting instances cleanup
+			CommonCallingSteps.getInstance().cleanupWaitingInstances();
+			CommonCallingSteps.getInstance().cleanupCalls();
+		} catch (Exception e) {
+			// do not fail if smt fails here
+			e.printStackTrace();
+		}
+
 		OSXCommonUtils.collectSystemLogs(testStartedTimestamp);
 
 		OSXPage.clearPagesCollection();

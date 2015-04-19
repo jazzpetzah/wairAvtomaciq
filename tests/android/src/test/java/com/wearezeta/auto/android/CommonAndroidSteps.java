@@ -21,6 +21,7 @@ import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.android.pages.LoginPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
+import com.wearezeta.auto.common.CommonCallingSteps;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.GenerateWebLink;
@@ -152,6 +153,15 @@ public class CommonAndroidSteps {
 
 	public void commonBefore() throws Exception {
 		try {
+			// async calls/waiting instances cleanup
+			CommonCallingSteps.getInstance().cleanupWaitingInstances();
+			CommonCallingSteps.getInstance().cleanupCalls();
+		} catch (Exception e) {
+			// do not fail if smt fails here
+			e.printStackTrace();
+		}
+
+		try {
 			AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
 		} catch (Exception ex) {
 			System.out.println("Failed to deploy pictures into simulator");
@@ -180,7 +190,7 @@ public class CommonAndroidSteps {
 					.minimizeApplication();
 		}
 	}
-	
+
 	/**
 	 * Opens the Browser app
 	 * 
@@ -202,14 +212,15 @@ public class CommonAndroidSteps {
 	 * @throws Exception
 	 * 
 	 */
-	
+
 	@When("^I open the gallery application$")
 	public void IOpenGalleryApp() throws Exception {
 		AndroidCommonUtils.openGalleryApplication();
 	}
 
 	/**
-	 * Opens the gallery application and shares the default photo to wire (com.google.android.gallery3d)
+	 * Opens the gallery application and shares the default photo to wire
+	 * (com.google.android.gallery3d)
 	 * 
 	 * @step. ^I share image from Gallery to Wire$
 	 * 
@@ -221,14 +232,14 @@ public class CommonAndroidSteps {
 		IOpenGalleryApp();
 		PagesCollection.contactListPage.shareImageToWireFromGallery();
 	}
-	
+
 	/**
 	 * Opens the Browser app and shares the URL to wire (http://www.google.com)
 	 * 
 	 * @step. ^I share URL from native browser app to Wire with contact (.*)$
 	 * 
 	 * @param name
-	 * name of contact to share URL with
+	 *            name of contact to share URL with
 	 * @throws Exception
 	 * 
 	 */
@@ -242,7 +253,7 @@ public class CommonAndroidSteps {
 		Thread.sleep(5000);
 		PagesCollection.dialogPage.sendMessageInInput();
 	}
-	
+
 	/**
 	 * Takes screenshot for comparison
 	 * 
@@ -255,7 +266,7 @@ public class CommonAndroidSteps {
 	public void WhenITake1stScreenshot() throws IOException {
 		images.add(PagesCollection.loginPage.takeScreenshot());
 	}
-	
+
 	/**
 	 * Taps on the center of the screen
 	 * 
@@ -467,6 +478,15 @@ public class CommonAndroidSteps {
 
 	@After
 	public void tearDown() throws Exception {
+		try {
+			// async calls/waiting instances cleanup
+			CommonCallingSteps.getInstance().cleanupWaitingInstances();
+			CommonCallingSteps.getInstance().cleanupCalls();
+		} catch (Exception e) {
+			// do not fail if smt fails here
+			e.printStackTrace();
+		}
+
 		AndroidPage.clearPagesCollection();
 
 		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
@@ -565,7 +585,7 @@ public class CommonAndroidSteps {
 		}
 		Assert.assertTrue(PagesCollection.commonAndroidPage.mailContains(email));
 	}
-	
+
 	/**
 	 * Rotate device to landscape
 	 * 
@@ -574,9 +594,9 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I rotate UI to landscape$")
 	public void WhenIRotateUILandscape() throws Exception {
-		PagesCollection.loginPage.rotateLandscape();   
+		PagesCollection.loginPage.rotateLandscape();
 	}
-	
+
 	/**
 	 * Rotate device to portrait
 	 * 
@@ -585,7 +605,7 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I rotate UI to portrait$")
 	public void WhenIRotateUIPortrait() throws Exception {
-		PagesCollection.loginPage.rotatePortrait();   
+		PagesCollection.loginPage.rotatePortrait();
 	}
 
 }
