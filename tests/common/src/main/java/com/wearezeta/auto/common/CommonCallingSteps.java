@@ -22,7 +22,7 @@ public final class CommonCallingSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	private static final int CALL_START_TIMEOUT_SECONDS = 30;
 	private static final int CALL_END_TIMEOUT_SECONDS = 30;
-	private static final int INSTANCE_START_TIMEOUT_SECONDS = 30;
+	private static final int INSTANCE_START_TIMEOUT_SECONDS = 120;
 	private static final int INSTANCE_END_TIMEOUT_SECONDS = 30;
 	private static final long POLLING_FREQUENCY_MILLISECONDS = 1000;
 
