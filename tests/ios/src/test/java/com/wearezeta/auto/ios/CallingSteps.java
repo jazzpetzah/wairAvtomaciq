@@ -64,7 +64,7 @@ public class CallingSteps {
 	 *            values: "starting", "waiting", "active", "active_muted",
 	 *            "stopping", "inactive"
 	 * @param timeoutSeconds
-	 *            number of seconds to wait until call status is changed
+	 *            number of seconds to wait until call status is changed.
 	 * @throws Exception
 	 */
 	@Then("(.*) verifies that call status to (.*) is changed to (.*) in (\\d+) seconds?$")
@@ -89,7 +89,10 @@ public class CallingSteps {
 	 *            values: "starting", "waiting", "active", "active_muted",
 	 *            "stopping", "inactive"
 	 * @param timeoutSeconds
-	 *            number of seconds to wait until call status is changed
+	 *            number of seconds to wait until call status is changed. For
+	 *            waiting instances this timeout mostly depends on calling
+	 *            server hardware resources and it is recommended to set its
+	 *            value to 60-90 seconds or even more to keep your tests stable
 	 * @throws Exception
 	 */
 	@Then("(.*) verifies that waiting instance status is changed to (.*) in (\\d+) seconds?$")

@@ -2,7 +2,7 @@ Feature: Calling
 
   @staging @id1860
   Scenario Outline: Send text, image and knock while in the call with same user
-    Given my browser supports calling
+    Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given <Contact> starts waiting instance using <CallBackend>
@@ -27,7 +27,7 @@ Feature: Calling
 
   @staging
   Scenario Outline: Call a user twice in a row
-    Given my browser supports calling
+    Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given <Contact> starts waiting instance using <CallBackend>
@@ -36,12 +36,12 @@ Feature: Calling
     And I see my name on top of Contact list
     And I open conversation with <Contact>
     When I call
-    Then <Contact> verifies that waiting instance status is changed to active in 30 seconds
+    Then <Contact> verifies that waiting instance status is changed to active in 120 seconds
     And I end the call
-    Then <Contact> verifies that waiting instance status is changed to waiting in 30 seconds
+    Then <Contact> verifies that waiting instance status is changed to waiting in 120 seconds
     And <Contact> accepts next incoming call automatically
     And I call
-    Then <Contact> verifies that waiting instance status is changed to active in 30 seconds
+    Then <Contact> verifies that waiting instance status is changed to active in 120 seconds
     And <Contact> stops all waiting instances
 
     Examples: 

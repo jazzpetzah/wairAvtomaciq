@@ -12,8 +12,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
-import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
+import com.wearezeta.auto.web.common.WebAppConstants.Browser;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class SettingsPage extends WebPage {
@@ -83,10 +83,8 @@ public class SettingsPage extends WebPage {
 	public void setSoundAlertsLevel(AlertsLevel newLevel) {
 		assert AlertsLevel.values().length > 1;
 
-		if (WebAppExecutionContext.browserName
-				.equals(WebAppConstants.Browser.SAFARI)
-				|| WebAppExecutionContext.browserName
-						.equals(WebAppConstants.Browser.INTERNET_EXPLORER)) {
+		if (WebAppExecutionContext.currentBrowser.isOneOf(new Browser[] {
+				Browser.Safari, Browser.InternetExplorer })) {
 			// Workaround for Safari and IE
 			// https://code.google.com/p/selenium/issues/detail?id=4136
 			final String[] sliderMoveCode = new String[] {

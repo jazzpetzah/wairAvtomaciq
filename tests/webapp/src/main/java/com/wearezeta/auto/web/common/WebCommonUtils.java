@@ -23,6 +23,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.WebAppConstants.Browser;
 
 @SuppressWarnings("deprecation")
 public class WebCommonUtils extends CommonUtils {
@@ -252,8 +253,7 @@ public class WebCommonUtils extends CommonUtils {
 	public static void openUrlInNewTab(RemoteWebDriver driver, String url)
 			throws Exception {
 		previousHandles = driver.getWindowHandles();
-		if (WebAppExecutionContext.browserName
-				.equals(WebAppConstants.Browser.SAFARI)) {
+		if (WebAppExecutionContext.currentBrowser == Browser.Safari) {
 			openNewTabInSafari(url);
 		} else {
 			String script = "var d=document,a=d.createElement('a');a.target='_blank';a.href='%s';a.innerHTML='.';d.body.appendChild(a);return a";
