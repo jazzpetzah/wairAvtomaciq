@@ -18,7 +18,7 @@
 		<hubHost>127.0.0.1</hubHost>
 		<hubPort>4444</hubPort>
 		<url>http://${hubHost}:${hubPort}/wd/hub</url>
-		<driverTimeoutSeconds>30</driverTimeoutSeconds>
+		<driverTimeoutSeconds>7</driverTimeoutSeconds>
 		<defaultEmail>smoketester.webapp@wearezeta.com</defaultEmail>
 		<!-- chrome | firefox | ie | safari -->
 		<browser>chrome</browser>
