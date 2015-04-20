@@ -95,6 +95,8 @@ public final class AndroidLocators {
 				+ "$SettingsPage";
 
 		public static final String xpathSettingPageTitle = "//android.widget.ListView[1]/android.widget.TextView[@text='Settings']";
+		
+		public static final String xpathSettingPageChangePassword = "//android.widget.RelativeLayout[1]/android.widget.TextView[@text='Change Password']";
 	}
 
 	public static final class LoginPage {
