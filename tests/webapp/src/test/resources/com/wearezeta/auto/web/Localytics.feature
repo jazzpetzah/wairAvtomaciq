@@ -211,6 +211,7 @@ Feature: Localytics
 
   @localytics @id2167
   Scenario Outline: Verify the 'session:incomingCallsMutedActual=1' attribute is sent
+    Given I take snapshot of session:incomingCallsMutedActual=1 attribute count
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Me
     Given I Sign in using login <Login> and password <Password>
@@ -228,6 +229,7 @@ Feature: Localytics
 
   @localytics @id2168
   Scenario Outline: Verify the 'session:incomingCallsAcceptedActual=1' attribute is sent
+    Given I take snapshot of session:incomingCallsAcceptedActual=1 attribute count
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Me
     Given I Sign in using login <Login> and password <Password>
@@ -243,6 +245,7 @@ Feature: Localytics
 
   @localytics @id2169
   Scenario Outline: Verify the 'session:voiceCallsInitiatedActual=1' attribute is sent
+    Given I take snapshot of session:voiceCallsInitiatedActual=1 attribute count
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Me
     Given I Sign in using login <Login> and password <Password>
@@ -293,6 +296,7 @@ Feature: Localytics
 
   @localytics @id2267
   Scenario Outline: Verify the 'voiceCallEnded' stats
+    Given I take snapshot of <EventName> event count
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Me
     Given <Contact> starts waiting instance using <OutCallBackend>
