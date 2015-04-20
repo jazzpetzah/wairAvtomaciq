@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.pages;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -9,9 +10,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class RegistrationPage extends WebPage {
+
+	private static final Logger log = ZetaLogger.getLog(RegistrationPage.class
+			.getSimpleName());
 
 	@FindBy(how = How.CSS, using = WebAppLocators.RegistrationPage.cssNameFiled)
 	private WebElement nameField;
@@ -78,7 +83,17 @@ public class RegistrationPage extends WebPage {
 								3)) {
 			switchToSignInButton.click();
 		}
-		assert DriverUtils.isElementDisplayed(this.getDriver(), locator) : "Sign in page is not visible";
+
+		// FIXME: I'm not sure whether white page instead of sign in is Amazon
+		// issue or webapp issue,
+		// but since this happens randomly in different browsers, then I can
+		// assume this issue has something to do to the hosting and/or Selenium
+		// driver
+		if (!DriverUtils.isElementDisplayed(this.getDriver(), locator)) {
+			log.error("Sign in page has failed to load. Trying to refresh...");
+			driver.navigate().to(driver.getCurrentUrl());
+			assert DriverUtils.isElementDisplayed(this.getDriver(), locator) : "Sign in page is not visible";
+		}
 
 		return new LoginPage(this.getDriver(), this.getWait(),
 				CommonUtils.getWebAppApplicationPathFromConfig(this.getClass()));
