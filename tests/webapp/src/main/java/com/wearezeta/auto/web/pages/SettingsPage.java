@@ -84,8 +84,8 @@ public class SettingsPage extends WebPage {
 		assert AlertsLevel.values().length > 1;
 
 		if (WebAppExecutionContext.currentBrowser.isOneOf(new Browser[] {
-				Browser.Safari, Browser.InternetExplorer })) {
-			// Workaround for Safari and IE
+				Browser.Safari, Browser.InternetExplorer, Browser.Opera })) {
+			// Workaround for Safari, Opera and IE
 			// https://code.google.com/p/selenium/issues/detail?id=4136
 			final String[] sliderMoveCode = new String[] {
 					"$(\"" + WebAppLocators.SettingsPage.cssSoundAlertsLevel

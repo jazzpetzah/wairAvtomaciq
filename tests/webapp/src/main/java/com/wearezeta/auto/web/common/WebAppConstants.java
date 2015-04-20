@@ -6,7 +6,7 @@ public class WebAppConstants {
 
 	public enum Browser {
 		Safari("safari"), InternetExplorer("ie"), Chrome("chrome"), Firefox(
-				"firefox");
+				"firefox"), Opera("opera");
 
 		private final String stringRepresentation;
 
@@ -58,7 +58,7 @@ public class WebAppConstants {
 
 	public static final class Calling {
 		private static final Browser[] BROWSERS_WITH_CALLING_SUPPORT = new Browser[] {
-				Browser.Chrome, Browser.Firefox };
+				Browser.Chrome, Browser.Firefox, Browser.Opera };
 
 		public static boolean isSupportedIn(Browser item) {
 			return Browser

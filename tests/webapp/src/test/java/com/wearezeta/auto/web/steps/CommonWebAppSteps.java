@@ -67,8 +67,18 @@ public class CommonWebAppSteps {
 	}
 
 	private static Browser getBrowser() throws Exception {
-		return Browser.fromString(WebCommonUtils
-				.getWebAppBrowserNameFromConfig(CommonWebAppSteps.class));
+		if (getPlatform().toLowerCase().contains(
+				Browser.Opera.toString().toLowerCase())) {
+			return Browser.Opera;
+		} else {
+			return Browser.fromString(WebCommonUtils
+					.getWebAppBrowserNameFromConfig(CommonWebAppSteps.class));
+		}
+	}
+
+	private static String getPlatform() throws Exception {
+		return WebCommonUtils
+				.getPlatformNameFromConfig(CommonWebAppSteps.class);
 	}
 
 	private static void setCustomChromeProfile(
@@ -134,12 +144,12 @@ public class CommonWebAppSteps {
 	private ZetaWebAppDriver resetWebAppDriver(String url) throws Exception {
 		final Browser browser = getBrowser();
 		final DesiredCapabilities capabilities;
-		final String webPlatformName = WebCommonUtils
-				.getPlatformNameFromConfig(WebPage.class);
+		final String webPlatformName = getPlatform();
 		switch (browser) {
 		case Chrome:
+		case Opera:
 			capabilities = DesiredCapabilities.chrome();
-			if (webPlatformName.toLowerCase().contains("opera")) {
+			if (browser == Browser.Opera) {
 				// This is to fix Desktop Notifications alerts appearance in
 				// Opera
 				setCustomOperaProfile(capabilities, webPlatformName);
