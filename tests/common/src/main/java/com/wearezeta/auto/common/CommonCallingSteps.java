@@ -6,17 +6,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
+import org.apache.log4j.Logger;
+
 import com.wearezeta.auto.common.calling.CallingServiceClient;
 import com.wearezeta.auto.common.calling.models.CallingServiceBackend;
 import com.wearezeta.auto.common.calling.models.CallingServiceStatus;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 public final class CommonCallingSteps {
+	public static final Logger log = ZetaLogger.getLog(CommonCallingSteps.class
+			.getSimpleName());
+
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	private static final int CALL_START_TIMEOUT_SECONDS = 30;
 	private static final int CALL_END_TIMEOUT_SECONDS = 30;
-	private static final int INSTANCE_START_TIMEOUT_SECONDS = 30;
+	private static final int INSTANCE_START_TIMEOUT_SECONDS = 120;
 	private static final int INSTANCE_END_TIMEOUT_SECONDS = 30;
 	private static final long POLLING_FREQUENCY_MILLISECONDS = 1000;
 
@@ -135,6 +141,18 @@ public final class CommonCallingSteps {
 		}
 	}
 
+	public void cleanupCalls() throws Exception {
+		if (waitingInstancesMapping.size() > 0) {
+			log.debug("Executing asynchronous cleanup of active calls leftovers...");
+		}
+		for (Map.Entry<String, List<String>> entry : callsMapping.entrySet()) {
+			for (String callId : entry.getValue()) {
+				CallingServiceClient.stopCall(callId);
+			}
+		}
+		callsMapping.clear();
+	}
+
 	private List<String> getInstanceIdsByReceiver(ClientUser receiver)
 			throws CallNotFoundException {
 		final String instanceKey = makeKey(receiver);
@@ -208,5 +226,18 @@ public final class CommonCallingSteps {
 							new CallingServiceStatus[] { CallingServiceStatus.Inactive },
 							INSTANCE_END_TIMEOUT_SECONDS);
 		}
+	}
+
+	public void cleanupWaitingInstances() throws Exception {
+		if (waitingInstancesMapping.size() > 0) {
+			log.debug("Executing asynchronous cleanup of active waiting instances leftovers...");
+		}
+		for (Map.Entry<String, List<String>> entry : waitingInstancesMapping
+				.entrySet()) {
+			for (String instanceId : entry.getValue()) {
+				CallingServiceClient.stopWaitingInstance(instanceId);
+			}
+		}
+		waitingInstancesMapping.clear();
 	}
 }

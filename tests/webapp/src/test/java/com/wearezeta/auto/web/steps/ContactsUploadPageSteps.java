@@ -6,7 +6,7 @@ import com.wearezeta.auto.web.pages.PagesCollection;
 import cucumber.api.java.en.And;
 
 public class ContactsUploadPageSteps {
-	private static final int VISIBILITY_TIMEOUT = 2; // seconds
+	private static final int VISIBILITY_TIMEOUT = 3; // seconds
 
 	/**
 	 * Verify that Contacts Upload dialog is visible

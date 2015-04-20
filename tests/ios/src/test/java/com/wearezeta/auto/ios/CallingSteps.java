@@ -1,6 +1,8 @@
 package com.wearezeta.auto.ios;
 
 import com.wearezeta.auto.common.CommonCallingSteps;
+import com.wearezeta.auto.ios.pages.IncomingCallPage;
+import com.wearezeta.auto.ios.pages.PagesCollection;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -28,6 +30,8 @@ public class CallingSteps {
 			String userToNameAlias, String callBackend) throws Exception {
 		commonCallingSteps.UserXCallsToUserYUsingCallBackend(userFromNameAlias,
 				userToNameAlias, callBackend);
+		PagesCollection.callPage = new IncomingCallPage(PagesCollection.loginPage.getDriver(), 
+				PagesCollection.loginPage.getWait());
 	}
 
 	/**
@@ -64,7 +68,7 @@ public class CallingSteps {
 	 *            values: "starting", "waiting", "active", "active_muted",
 	 *            "stopping", "inactive"
 	 * @param timeoutSeconds
-	 *            number of seconds to wait until call status is changed
+	 *            number of seconds to wait until call status is changed.
 	 * @throws Exception
 	 */
 	@Then("(.*) verifies that call status to (.*) is changed to (.*) in (\\d+) seconds?$")
@@ -89,7 +93,10 @@ public class CallingSteps {
 	 *            values: "starting", "waiting", "active", "active_muted",
 	 *            "stopping", "inactive"
 	 * @param timeoutSeconds
-	 *            number of seconds to wait until call status is changed
+	 *            number of seconds to wait until call status is changed. For
+	 *            waiting instances this timeout mostly depends on calling
+	 *            server hardware resources and it is recommended to set its
+	 *            value to 60-90 seconds or even more to keep your tests stable
 	 * @throws Exception
 	 */
 	@Then("(.*) verifies that waiting instance status is changed to (.*) in (\\d+) seconds?$")

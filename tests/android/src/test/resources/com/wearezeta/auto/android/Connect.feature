@@ -238,7 +238,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I minimize the application
     And <Contact> has sent connection request to Me
     And I restore the application
@@ -258,8 +258,8 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    And I swipe down contact list
+    Given I see Contact list with my name <Name>
+    When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
@@ -284,10 +284,10 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    And I swipe down contact list
+    Given I see Contact list with my name <Name>
+    When I swipe down contact list
     And I see People picker page
-    When I tap on Search input on People picker page
+    And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
@@ -306,7 +306,7 @@ Feature: Connect
     Given <Contact1> is connected to <Contact2>
     Given <Contact1> has group chat <ChatName> with Myself,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I tap on contact name <ChatName>
     And I swipe up on dialog page
     And I tap on group chat contact <Contact2>
@@ -327,7 +327,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe up on dialog page
@@ -352,7 +352,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page

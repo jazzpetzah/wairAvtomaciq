@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import com.wearezeta.auto.common.CommonCallingSteps;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.Platform;
@@ -88,11 +89,14 @@ public class CommonIOSSteps {
 	}
 
 	private void commonBefore(ZetaIOSDriver driver) throws Exception {
-		// if (PagesCollection.loginPage != null
-		// && PagesCollection.loginPage.getDriver().isSessionLost()) {
-		// log.info("Session was lost, reseting pages collection");
-		// IOSPage.clearPagesCollection();
-		// }
+		try {
+			// async calls/waiting instances cleanup
+			CommonCallingSteps.getInstance().cleanupWaitingInstances();
+			CommonCallingSteps.getInstance().cleanupCalls();
+		} catch (Exception e) {
+			// do not fail if smt fails here
+			e.printStackTrace();
+		}
 
 		ZetaFormatter.setBuildNumber(IOSCommonUtils
 				.readClientVersionFromPlist().getClientBuildNumber());
@@ -111,7 +115,7 @@ public class CommonIOSSteps {
 	public void IDontSeeKeyboard() throws Exception {
 		Assert.assertFalse(PagesCollection.dialogPage.isKeyboardVisible());
 	}
-	
+
 	@When("^I press keyboard Delete button$")
 	public void IPressKeyboardDeleteBtn() {
 		PagesCollection.iOSPage.clickKeyboardDeleteButton();
@@ -369,6 +373,15 @@ public class CommonIOSSteps {
 
 	@After
 	public void tearDown() throws Exception {
+		try {
+			// async calls/waiting instances cleanup
+			CommonCallingSteps.getInstance().cleanupWaitingInstances();
+			CommonCallingSteps.getInstance().cleanupCalls();
+		} catch (Exception e) {
+			// do not fail if smt fails here
+			e.printStackTrace();
+		}
+
 		IOSPage.clearPagesCollection();
 		IOSKeyboard.dispose();
 

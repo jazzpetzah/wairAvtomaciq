@@ -27,8 +27,8 @@ Feature: Menus
     And I click gear button on self profile page
     And I select Settings menu item on self profile page
     And I see Settings dialog
-    And I select Sound Alerts setting to be None
-    And I see Sound Alerts setting is set to None
+    When I select Sound Alerts setting to be None
+    Then I see Sound Alerts setting is set to None
     And I click close settings page button
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
@@ -42,8 +42,8 @@ Feature: Menus
     And I select Settings menu item on self profile page
     And I see Settings dialog
     Then I see Sound Alerts setting is set to None
-    And I select Sound Alerts setting to be Some
-    And I see Sound Alerts setting is set to Some
+    When I select Sound Alerts setting to be Some
+    Then I see Sound Alerts setting is set to Some
     And I click close settings page button
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
@@ -55,8 +55,8 @@ Feature: Menus
     And I open self profile
     And I click gear button on self profile page
     And I select Settings menu item on self profile page
-    And I see Settings dialog
-    And I see Sound Alerts setting is set to Some
+    When I see Settings dialog
+    Then I see Sound Alerts setting is set to Some
 
     Examples: 
       | Email      | Password      | Name      |

@@ -15,9 +15,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
+import com.wearezeta.auto.web.common.WebAppConstants.Browser;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.PeoplePopoverContainer;
@@ -86,8 +86,7 @@ public class ConversationPage extends WebPage {
 	public PeoplePopoverContainer clickPeopleButton(boolean isGroup)
 			throws Exception {
 		DriverUtils.waitUntilElementClickable(driver, showParticipants);
-		if (WebAppExecutionContext.browserName
-				.equals(WebAppConstants.Browser.INTERNET_EXPLORER)) {
+		if (WebAppExecutionContext.currentBrowser == Browser.InternetExplorer) {
 			driver.executeScript(String
 					.format("$('.%s').click();",
 							WebAppLocators.ConversationPage.classNameShowParticipantsButton));
@@ -125,8 +124,7 @@ public class ConversationPage extends WebPage {
 						driver,
 						By.cssSelector(WebAppLocators.ConversationPage.cssSendImageInput),
 						5);
-		if (WebAppExecutionContext.browserName
-				.equals(WebAppConstants.Browser.SAFARI)) {
+		if (WebAppExecutionContext.currentBrowser == Browser.Safari) {
 			WebCommonUtils.sendPictureInSafari(picturePath);
 		} else {
 			imagePathInput.sendKeys(picturePath);
