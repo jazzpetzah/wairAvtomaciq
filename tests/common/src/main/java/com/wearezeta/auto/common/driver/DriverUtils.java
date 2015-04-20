@@ -117,7 +117,9 @@ public class DriverUtils {
 
 			return wait.until(new Function<WebDriver, Boolean>() {
 				public Boolean apply(WebDriver driver) {
-					return (driver.findElements(by).size() == 0);
+					return (driver.findElements(by).size() == 0)
+							|| (driver.findElements(by).size() > 0 && !driver
+									.findElement(by).isDisplayed());
 				}
 			});
 		} catch (TimeoutException ex) {

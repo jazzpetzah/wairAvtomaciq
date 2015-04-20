@@ -4,7 +4,7 @@ Feature: Localytics
 # Start of regFailed event
 #***************************************************
   @localytics @id2155
-  Scenario Outline: Verify 'regFailed:reason=The given e-mail address or phone number is in use.' stats
+  Scenario Outline: Verify 'regFailed' stats
     Given I take snapshot of <AttrName> attribute count
     Given I see invitation page
     Given I enter invitation code
@@ -18,7 +18,7 @@ Feature: Localytics
     Examples: 
       | Name      | Password      | Email                     | AttrName                                                             |
       | user1Name | user1Password | smoketester@wearezeta.com | regFailed:reason=The given e-mail address or phone number is in use. |
-      | user1Name | user1Password | smoketester+123@gmail.com | regFailed:reason=Bad e-mail address                                  |
+      | user1Name | user1Password | smoketester+123@gmail.com | regFailed:reason=Unauthorized e-mail address or phone number.        |
 # FIXME: Are there any other 'reason' values to check ?
 
 #***************************************************
@@ -70,11 +70,6 @@ Feature: Localytics
 #***************************************************
 # Start of session event
 #***************************************************
-
-# TODO: session: \
-#        "incomingCallsMutedActual",
-#        "incomingCallsAcceptedActual",
-#        "voiceCallsInitiatedActual",
 
   @localytics @id2159
   Scenario Outline: Verify 'session:connectRequestsSentActual=1' stats
@@ -214,6 +209,54 @@ Feature: Localytics
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | ChatName1  | ChatName2  | AttrName                                |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GroupChat1 | GroupChat2 | session:totalGroupConversationsActual=2 |
 
+  @localytics @id2167
+  Scenario Outline: Verify the 'session:incomingCallsMutedActual=1' attribute is sent
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to Me
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name on top of Contact list
+    When <Contact> calls me using <CallBackend>
+    Then I see the calling bar
+    And I silence the incoming call
+    Then I do not see the calling bar
+    And <Contact> stops all calls to me
+    And I wait for 65 seconds
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name | autocall    |
+
+  @localytics @id2168
+  Scenario Outline: Verify the 'session:incomingCallsAcceptedActual=1' attribute is sent
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to Me
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name on top of Contact list
+    When <Contact> calls me using <CallBackend>
+    Then I see the calling bar
+    And I accept the incoming call
+    And I wait for 65 seconds
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name | autocall    |
+
+  @localytics @id2169
+  Scenario Outline: Verify the 'session:voiceCallsInitiatedActual=1' attribute is sent
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to Me
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name on top of Contact list
+    When I open conversation with <Contact>
+    And I call
+    Then I see the calling bar
+    # It is not mandatory for the other side to pick up the call
+    And I wait for 65 seconds
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name | autocall    |
+
 #***************************************************
 # End of session event
 #***************************************************
@@ -248,7 +291,28 @@ Feature: Localytics
 # Start of voiceCallEnded event
 #***************************************************
 
-# TODO: implement calling automation
+  @localytics @id2267
+  Scenario Outline: Verify the 'voiceCallEnded' stats
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to Me
+    Given <Contact> starts waiting instance using <OutCallBackend>
+    Given <Contact> accepts next incoming call automatically
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name on top of Contact list
+    When I open conversation with <Contact>
+    And I call
+    When <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see the calling bar
+    Then I end the call
+    When <Contact> calls me using <InCallBackend>
+    And I see the calling bar
+    And I accept the incoming call
+    Then I end the call
+    And I wait for 5 seconds
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | OutCallBackend | InCallBackend  | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | webdriver      | autocall       | 120     |
 
 #***************************************************
 # End of voiceCallEnded event
@@ -266,7 +330,7 @@ Feature: Localytics
     Examples:
       | AttrName                                                             |
       | regFailed:reason=The given e-mail address or phone number is in use. |
-      | regFailed:reason=Bad e-mail address                                  |
+      | regFailed:reason=Unauthorized e-mail address or phone number.        |
       | regAddedPicture:source=fromPhotoLibrary                              |
       | regAddedPicture:source=fromCarousel                                  |
       | session:connectRequestsSentActual=1                                  |
@@ -277,11 +341,15 @@ Feature: Localytics
       | session:totalContactsActual=3                                        |
       | session:textMessagesSentActual=5                                     |
       | session:totalGroupConversationsActual=2                              |
+      | session:incomingCallsMutedActual=1                                   |
+      | session:incomingCallsAcceptedActual=1                                |
+      | session:voiceCallsInitiatedActual=1                                  |
 
   @localytics
   Scenario Outline: Verify count of each event is increased
-    Then I verify the count of <EventName> event has been increased within 600 seconds
+    Then I verify the count of <EventName> event has been increased within 400 seconds
 
     Examples:
-      | EventName    |
-      | regSucceeded |
+      | EventName      |
+      | regSucceeded   |
+      | voiceCallEnded |

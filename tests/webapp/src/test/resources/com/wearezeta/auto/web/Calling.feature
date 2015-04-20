@@ -12,6 +12,8 @@ Feature: Calling
     And I open conversation with <Contact>
     When I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see the calling bar
+    And I accept the incoming call
     And I write random message
     And I send message
     And I click ping button
@@ -37,11 +39,14 @@ Feature: Calling
     And I open conversation with <Contact>
     When I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see the calling bar
+    And I accept the incoming call
     And I end the call
     Then <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
     And <Contact> accepts next incoming call automatically
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see the calling bar
     And <Contact> stops all waiting instances
 
     Examples: 
@@ -51,12 +56,13 @@ Feature: Calling
   @staging @id2014
   Scenario Outline: Missed call notification (adressee)
     Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
+    Given <Contact> is connected to Me
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
     When <Contact> calls me using <CallBackend>
-    And I wait for 5 seconds
+    Then I see the calling bar
     And <Contact> stops all calls to me
+    Then I do not see the calling bar
     When I open conversation with <Contact>
     Then I see conversation with missed call from <Contact>
 
