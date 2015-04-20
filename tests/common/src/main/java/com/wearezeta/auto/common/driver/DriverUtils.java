@@ -35,7 +35,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
-import com.google.common.base.Function;
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -86,11 +85,9 @@ public class DriverUtils {
 					.withTimeout(timeoutSeconds, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS);
 			try {
-				return wait.until(new Function<WebDriver, Boolean>() {
-					public Boolean apply(WebDriver driver) {
-						return (driver.findElements(by).size() > 0)
-								&& driver.findElement(by).isDisplayed();
-					}
+				return wait.until(drv -> {
+					return (drv.findElements(by).size() > 0)
+							&& drv.findElement(by).isDisplayed();
 				});
 			} catch (TimeoutException e) {
 				return false;
@@ -115,16 +112,13 @@ public class DriverUtils {
 					.withTimeout(timeout, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
 					.ignoring(NoSuchElementException.class);
-
-			return wait.until(new Function<WebDriver, Boolean>() {
-				public Boolean apply(WebDriver driver) {
-					try {
-						return (driver.findElements(by).size() == 0)
-								|| (driver.findElements(by).size() > 0 && !driver
-										.findElement(by).isDisplayed());
-					} catch (StaleElementReferenceException e) {
-						return true;
-					}
+			return wait.until(drv -> {
+				try {
+					return (drv.findElements(by).size() == 0)
+							|| (drv.findElements(by).size() > 0 && !drv
+									.findElement(by).isDisplayed());
+				} catch (StaleElementReferenceException e) {
+					return true;
 				}
 			});
 		} catch (TimeoutException ex) {
@@ -142,11 +136,8 @@ public class DriverUtils {
 					.withTimeout(timeout, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
 					.ignoring(NoSuchElementException.class);
-
-			return wait.until(new Function<WebDriver, Boolean>() {
-				public Boolean apply(WebDriver driver) {
-					return (driver.findElements(locator).size() > 0);
-				}
+			return wait.until(drv -> {
+				return (drv.findElements(locator).size() > 0);
 			});
 		} catch (TimeoutException ex) {
 			return false;
@@ -197,16 +188,11 @@ public class DriverUtils {
 					.withTimeout(timeout, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
 					.ignoring(NoSuchElementException.class);
-
-			return wait.until(new Function<WebDriver, Boolean>() {
-				@Override
-				public Boolean apply(WebDriver t) {
-					return String
-							.valueOf(
-									((JavascriptExecutor) driver)
-											.executeScript("return document.readyState"))
-							.equals("complete");
-				}
+			return wait.until(drv -> {
+				return String.valueOf(
+						((JavascriptExecutor) drv)
+								.executeScript("return document.readyState"))
+						.equals("complete");
 			});
 		} catch (TimeoutException e) {
 			return false;
