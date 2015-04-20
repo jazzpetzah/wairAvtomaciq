@@ -315,8 +315,8 @@ Feature: Localytics
     And I wait for 5 seconds
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | OutCallBackend | InCallBackend  | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | webdriver      | autocall       | 120     |
+      | Login      | Password      | Name      | Contact   | OutCallBackend | InCallBackend  | Timeout | EventName      |
+      | user1Email | user1Password | user1Name | user2Name | webdriver      | autocall       | 120     | voiceCallEnded |
 
 #***************************************************
 # End of voiceCallEnded event
