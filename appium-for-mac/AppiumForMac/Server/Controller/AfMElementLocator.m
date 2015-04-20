@@ -390,13 +390,18 @@
         PFUIElement *matchedElement = nil;
         if (windowLocator != nil) {
             PFUIElement *window = [windowLocator findUsingBaseElement:nil statusCode:statusCode];
+            int locateFromX = 0;
+            int locateFromY = 0;
+            if ([params[2] isEqualToString:@"top"]) {
+                locateFromX = window.AXPosition.pointValue.x;
+                locateFromY = window.AXPosition.pointValue.y;
+            } else if ([params[2] isEqualToString:@"center"]) {
+                locateFromX = window.AXPosition.pointValue.x + window.AXSize.pointValue.x/2;
+                locateFromY = window.AXPosition.pointValue.y + window.AXSize.pointValue.y/2;
+            }
             if (window != nil) {
-                int winCenterX =
-                window.AXPosition.pointValue.x + window.AXSize.pointValue.x/2;
-                int winCenterY =
-                window.AXPosition.pointValue.y + window.AXSize.pointValue.y/2;
-                int lookAtX = winCenterX + [params[2] intValue];
-                int lookAtY = winCenterY + [params[3] intValue];
+                int lookAtX = locateFromX + [params[3] intValue];
+                int lookAtY = locateFromY + [params[4] intValue];
                 
                 NSError *error = nil;
                 PFUIElement *newElement = [PFUIElement elementAtPoint:NSMakePoint(lookAtX, lookAtY) withDelegate:nil error:&error];
