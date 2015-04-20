@@ -23,6 +23,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -117,9 +118,13 @@ public class DriverUtils {
 
 			return wait.until(new Function<WebDriver, Boolean>() {
 				public Boolean apply(WebDriver driver) {
-					return (driver.findElements(by).size() == 0)
-							|| (driver.findElements(by).size() > 0 && !driver
-									.findElement(by).isDisplayed());
+					try {
+						return (driver.findElements(by).size() == 0)
+								|| (driver.findElements(by).size() > 0 && !driver
+										.findElement(by).isDisplayed());
+					} catch (StaleElementReferenceException e) {
+						return true;
+					}
 				}
 			});
 		} catch (TimeoutException ex) {
