@@ -4,6 +4,8 @@ import java.util.NoSuchElementException;
 
 public class WebAppConstants {
 
+	public static final String INVITATION_CODE = "zeta22beta";
+
 	public enum Browser {
 		Safari("safari"), InternetExplorer("ie"), Chrome("chrome"), Firefox(
 				"firefox"), Opera("opera");

@@ -11,6 +11,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class RegistrationPage extends WebPage {
@@ -77,28 +78,32 @@ public class RegistrationPage extends WebPage {
 	private static final int MAX_TRIES = 3;
 
 	public LoginPage switchToLoginPage() throws Exception {
-		final By locator = By.xpath(WebAppLocators.LoginPage.xpathSignInButton);
+		final By signInBtnlocator = By.xpath(WebAppLocators.LoginPage.xpathSignInButton);
 		int ntry = 0;
 		// FIXME: temporary workaround for white page instead of sign in issue
 		while (ntry < MAX_TRIES) {
 			try {
-				if (!DriverUtils.isElementDisplayed(this.getDriver(), locator)
+				if (!DriverUtils.isElementDisplayed(this.getDriver(), signInBtnlocator)
 						&& DriverUtils
 								.isElementDisplayed(
 										this.getDriver(),
-										By.xpath(WebAppLocators.RegistrationPage.xpathSwitchToSignInButton),
-										3)) {
+										By.xpath(WebAppLocators.RegistrationPage.xpathSwitchToSignInButton))) {
 					switchToSignInButton.click();
 				}
-				if (DriverUtils.isElementDisplayed(this.getDriver(), locator)) {
+				if (DriverUtils.isElementDisplayed(this.getDriver(), signInBtnlocator)) {
 					break;
 				}
 			} catch (Exception e) {
 				driver.navigate().refresh();
 			}
+			if (PagesCollection.invitationCodePage.isVisible()) {
+				PagesCollection.invitationCodePage
+						.inputCode(WebAppConstants.INVITATION_CODE);
+				PagesCollection.invitationCodePage.proceed();
+			}
 			ntry++;
 		}
-		assert DriverUtils.isElementDisplayed(this.getDriver(), locator) : "Sign in page is not visible";
+		assert DriverUtils.isElementDisplayed(this.getDriver(), signInBtnlocator) : "Sign in page is not visible";
 
 		return new LoginPage(this.getDriver(), this.getWait(),
 				CommonUtils.getWebAppApplicationPathFromConfig(this.getClass()));
