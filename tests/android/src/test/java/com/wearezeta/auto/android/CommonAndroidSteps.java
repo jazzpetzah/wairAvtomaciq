@@ -807,34 +807,6 @@ public class CommonAndroidSteps {
 	public void setSkipBeforeAfter(boolean skipBeforeAfter) {
 		CommonAndroidSteps.skipBeforeAfter = skipBeforeAfter;
 	}
-
-	/**
-	 * Start a call using autocall tool
-	 * 
-	 * @step. ^Contact (.*) calls to conversation (.*)$
-	 * @param starterNameAlias
-	 * 		user who will start a call
-	 * @param destinationNameAlias
-	 * 		user who will receive a call
-	 * @throws Exception
-	 */
-	@When("^Contact (.*) calls to conversation (.*)$")
-	public void ContactCallsToConversation(String starterNameAlias, String destinationNameAlias) throws Exception {
-		commonSteps.UserCallsToConversation(starterNameAlias, destinationNameAlias);
-	}
-	
-	/**
-	 * End current call initiated by autocall tool
-	 * 
-	 * @step. ^Current call is ended$
-	 * 		
-	 * @throws Exception
-	 */
-	@When("^Current call is ended$")
-	public void EndCurrectCall() throws Exception {
-		commonSteps.StopCurrentCall();
-		Thread.sleep(1000);
-	}
 	
 	/**
 	 * Resets the password for the given email address

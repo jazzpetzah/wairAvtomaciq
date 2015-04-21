@@ -93,6 +93,13 @@ public class PerformanceSteps {
 		}, timeout);
 	}
 
+	/**
+	 * Generates android performance report
+	 * 
+	 * @step. ^I generate performance report$
+	 * 
+	 * @throws Exception
+	 */
 	@Then("^I generate performance report$")
 	public void ThenIGeneratePerformanceReport() throws Exception{
 		AndroidCommonUtils.copyFileFromAndroid(AndroidCommonUtils.getRxLogResourceFilePathFromConfig(PerformanceSteps.class), RXLOGGER_RESOURCE_FILE_PATH);
