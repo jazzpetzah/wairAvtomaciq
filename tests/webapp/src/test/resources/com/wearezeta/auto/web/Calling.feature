@@ -52,6 +52,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
 
+  # This has to work even in browsers, which don't support calling
   @staging @id2014
   Scenario Outline: Missed call notification (adressee)
     Given There are 2 users where <Name> is me
@@ -59,9 +60,7 @@ Feature: Calling
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
     When <Contact> calls me using <CallBackend>
-    Then I see the calling bar
     And <Contact> stops all calls to me
-    Then I do not see the calling bar
     When I open conversation with <Contact>
     Then I see conversation with missed call from <Contact>
 
