@@ -74,15 +74,29 @@ public class RegistrationPage extends WebPage {
 		return verificationEmail.getText().equalsIgnoreCase(email);
 	}
 
+	private static final int MAX_TRIES = 3;
+
 	public LoginPage switchToLoginPage() throws Exception {
 		final By locator = By.xpath(WebAppLocators.LoginPage.xpathSignInButton);
-		if (!DriverUtils.isElementDisplayed(this.getDriver(), locator)
-				&& DriverUtils
-						.isElementDisplayed(
-								this.getDriver(),
-								By.xpath(WebAppLocators.RegistrationPage.xpathSwitchToSignInButton),
-								3)) {
-			switchToSignInButton.click();
+		int ntry = 0;
+		// FIXME: temporary workaround for white page instead of sign in issue
+		while (ntry < MAX_TRIES) {
+			try {
+				if (!DriverUtils.isElementDisplayed(this.getDriver(), locator)
+						&& DriverUtils
+								.isElementDisplayed(
+										this.getDriver(),
+										By.xpath(WebAppLocators.RegistrationPage.xpathSwitchToSignInButton),
+										3)) {
+					switchToSignInButton.click();
+				}
+				if (DriverUtils.isElementDisplayed(this.getDriver(), locator)) {
+					break;
+				}
+			} catch (Exception e) {
+				driver.navigate().refresh();
+			}
+			ntry++;
 		}
 		assert DriverUtils.isElementDisplayed(this.getDriver(), locator) : "Sign in page is not visible";
 
