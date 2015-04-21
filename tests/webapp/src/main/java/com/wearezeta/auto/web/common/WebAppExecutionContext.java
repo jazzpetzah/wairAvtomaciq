@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.WebAppConstants.Browser;
-import com.wearezeta.auto.web.steps.CommonWebAppSteps;
 
 public class WebAppExecutionContext {
 
@@ -35,7 +34,7 @@ public class WebAppExecutionContext {
 			} else {
 				currentBrowser = Browser
 						.fromString(WebCommonUtils
-								.getWebAppBrowserNameFromConfig(CommonWebAppSteps.class));
+								.getWebAppBrowserNameFromConfig(WebAppExecutionContext.class));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
