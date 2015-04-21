@@ -158,7 +158,7 @@ public class ConversationPage extends WebPage {
 		final By locator = By
 				.xpath(WebAppLocators.ConversationPage.xpathPingButton);
 		assert DriverUtils.isElementDisplayed(driver, locator, 2) : "Ping button has not been shown after 2 seconds";
-		assert DriverUtils.waitUntilElementClickable(driver, pingButton) : "Ping button has to be clieckable";
+		assert DriverUtils.waitUntilElementClickable(driver, pingButton) : "Ping button has to be clickable";
 		pingButton.click();
 	}
 
