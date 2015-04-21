@@ -25,8 +25,6 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public abstract class AndroidPage extends BasePage {
-	protected final String PACKAGE_NAME = CommonUtils
-	.getAndroidPackageFromConfig(AndroidLocators.class);
 	
 	private static final Logger log = ZetaLogger.getLog(CommonUtils.class
 			.getSimpleName());

@@ -165,6 +165,24 @@ public final class AndroidLocators {
 				+ ":id/iv__about__logo";
 
 	}
+	
+	public static final class CallingOverlayPage {
+		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME
+				+ "$CallingOverlayPage";
+		
+		public static final String idCallingOverlayContainer = LOCATORS_PACKAGE
+				+ ":id/coc__calling__overlay_container";
+		
+		public static final String idIgnoreButton = LOCATORS_PACKAGE
+				+ ":id/cib__calling_mute";
+		
+		public static final String idAcceptButton = LOCATORS_PACKAGE
+				+ ":id/gtv__conversation_list__sticky_menu__trigger_startui";
+		
+		public static final String idCallingUsersName = LOCATORS_PACKAGE
+				+ ":id/ttv__calling__message";
+		
+	}
 
 	public static final class ConnectToPage {
 

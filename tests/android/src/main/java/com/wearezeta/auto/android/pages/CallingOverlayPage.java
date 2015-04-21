@@ -2,26 +2,28 @@ package com.wearezeta.auto.android.pages;
 
 import java.util.List;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import com.wearezeta.auto.common.locators.ZetaFindBy;
+import com.wearezeta.auto.common.locators.ZetaHow;
 
 public class CallingOverlayPage extends AndroidPage {
 
-	By callingOverlayContainer = By.id(PACKAGE_NAME
-			+ ":id/coc__calling__overlay_container");
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlayPage.CLASS_NAME, locatorKey = "idCallingOverlayContainer")
+	private List<WebElement> callingOverlayContainers;
 	
-	By ignoreButton = By.id(PACKAGE_NAME + 
-			":id/cib__calling_mute");
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlayPage.CLASS_NAME, locatorKey = "idIgnoreButton")
+	private WebElement ignoreButton;
 	
-	By acceptButton = By.id(PACKAGE_NAME
-			+ ":id/gtv__conversation_list__sticky_menu__trigger_startui");
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlayPage.CLASS_NAME, locatorKey = "idAcceptButton")
+	private WebElement acceptButton;
 	
-	By callingMessage = By.id(PACKAGE_NAME + 
-			":id/ttv__calling__message");
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlayPage.CLASS_NAME, locatorKey = "idCallingUsersName")
+	private WebElement callingUsersName;
 
 	public CallingOverlayPage(ZetaAndroidDriver driver, WebDriverWait wait)
 			throws Exception {
@@ -35,20 +37,18 @@ public class CallingOverlayPage extends AndroidPage {
 	}
 
 	public boolean isVisible() throws Exception {
-		List<WebElement> callbars = driver
-				.findElements(callingOverlayContainer);
-		if (callbars.size() > 0) {
+		if (callingOverlayContainers.size() > 0) {
 			return true;
 		}
 		return false;
 	}
 
 	public void muteConversation() {
-		driver.findElement(ignoreButton).click();
+		ignoreButton.click();
 	}
 
 	public String getCallersName() {
-		return driver.findElement(callingMessage).getText();
+		return callingUsersName.getText();
 	}
 
 }
