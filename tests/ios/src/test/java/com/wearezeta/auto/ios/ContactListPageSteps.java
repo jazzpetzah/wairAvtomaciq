@@ -487,7 +487,7 @@ public class ContactListPageSteps {
 		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
 		boolean noUnreadDotSeen = PagesCollection.contactListPage
 				.unreadDotIsVisible(false, false, conversation);
-		Assert.assertTrue("No unread dot visible.", noUnreadDotSeen);
+		Assert.assertTrue("Unread dot visible.", noUnreadDotSeen);
 	}
 
 	/**

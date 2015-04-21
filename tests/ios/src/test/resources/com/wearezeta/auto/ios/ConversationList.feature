@@ -42,7 +42,6 @@ Feature: Conversation List
     Given <Contact> is connected to <Name>
     Given User <Contact> change name to <NewName>
     Given User <Name> change accent color to <Color>
-    Given I wait for 15 seconds
     Given Contact <Contact> send number <Number2> of message to user <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -61,7 +60,7 @@ Feature: Conversation List
 
     Examples: 
       | Login      | Password      | Name      | Contact   | Number | NewName    | Color        |Number2 | DotSizeSmall |DotSizeBig |
-      | user1Email | user1Password | user1Name | user2Name | 30     | UNREAD DOT | BrightOrange | 2		 | small		|big		|
+      | user1Email | user1Password | user1Name | user2Name | 30     | UNREAD DOT | BrightYellow | 2		 | small		|big		|
 
   @regression @id2040
   Scenario Outline: Verify archive a group conversation
