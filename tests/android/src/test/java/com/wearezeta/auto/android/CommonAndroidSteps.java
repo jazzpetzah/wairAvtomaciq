@@ -342,8 +342,8 @@ public class CommonAndroidSteps {
 		commonSteps.IChangeUserName(name, newName);
 	}
 
-	@When("^I connect using invitation link from (.*)$")
-	public void WhenIConnectUsingInvitationLinkFrom(String name)
+	@Then("^I connect using invitation link from (.*)$")
+	public void ThenIConnectUsingInvitationLinkFrom(String name)
 			throws Exception {
 		try {
 			BackendAPIWrappers.tryLoginByUser(usrMgr
