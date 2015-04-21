@@ -1,11 +1,8 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
-
-import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -403,13 +400,12 @@ public class ContactListPage extends IOSPage {
 		WebElement element = findCellInContactList(conversation);
 		silencedConversation = CommonUtils.getElementScreenshot(element,
 				this.getDriver(), CommonUtils.getDeviceName(this.getClass()));
-//		File outputfile = new File("silenceTestIphone6plus.png");
-//		ImageIO.write(silencedConversation, "png", outputfile);
 		if (deviceType.equals("iPhone 6 Plus") && isSilenced) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "silenceiPhone6plus.png");
 		} else if (deviceType.equals("iPhone 6 Plus") && !isSilenced) {
-			
+			referenceImage = ImageUtil.readImageFromFile(IOSPage
+					.getImagesPath() + "verifyUnsilenceIphone6plus.png");
 		} else if (deviceType.equals("iPhone 6") && isSilenced){
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "silenceTestIphone6.png");
@@ -432,11 +428,9 @@ public class ContactListPage extends IOSPage {
 		WebElement element = findCellInContactList(conversation);
 		silencedConversation = CommonUtils.getElementScreenshot(element,
 				this.getDriver(), CommonUtils.getDeviceName(this.getClass()));
-//		File outputfile = new File("unsilenceTestiPhone6.png");
-//		ImageIO.write(silencedConversation, "png", outputfile);
 		if (deviceType.equals("iPhone 6 Plus")) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "silenceiPhone6plus.png");
+					.getImagesPath() + "unsilenceTestiPhone6plus.png");
 		} else {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "unsilenceTestiPhone6.png");

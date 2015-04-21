@@ -360,7 +360,7 @@ Feature: People View
       #| Login   | Password    | Name    | Contact1    | Contact2    | Contact3    | ChatName   | message      |
       #| aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | aqaContact3 | QAtestChat | Test Message |
       
-  @torun @regression @id1462
+  @regression @id1462
   Scenario Outline: Verify silence the conversation
     Given There are 2 users where <Name> is me
     Given User <Name> change accent color to <Color>
