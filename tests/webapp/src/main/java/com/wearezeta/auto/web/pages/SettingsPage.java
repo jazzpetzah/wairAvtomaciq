@@ -82,7 +82,7 @@ public class SettingsPage extends WebPage {
 
 	public void setSoundAlertsLevel(SoundAlertsLevel newLevel) {
 		assert SoundAlertsLevel.values().length > 1;
-		if (WebAppExecutionContext.currentBrowser == Browser.Firefox) {
+		if (WebAppExecutionContext.getCurrentBrowser() == Browser.Firefox) {
 			final Actions builder = new Actions(driver);
 			final int width = soundAlertsLevel.getSize().width;
 			final int height = soundAlertsLevel.getSize().height;
