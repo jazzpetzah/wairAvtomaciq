@@ -1,4 +1,4 @@
-Feature: ConversationView
+Feature: Conversation View
 
   @smoke @id1626
   Scenario Outline: Send message in 1on1
