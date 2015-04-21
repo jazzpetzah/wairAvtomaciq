@@ -15,7 +15,7 @@ import com.wearezeta.auto.common.locators.ZetaFindBy;
 public class ConnectToPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectToHeader")
-	private WebElement connectToHeader;
+	protected WebElement connectToHeader;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectRequestAccept")
 	private WebElement connectAcceptBtn;
@@ -66,7 +66,9 @@ public class ConnectToPage extends AndroidPage {
 	}
 
 	public ContactListPage navigateBack() throws Exception {
-		driver.navigate().back();
+		refreshUITree();
+		// driver.navigate().back();
+		swipeRightCoordinates(1000);
 		return new ContactListPage(this.getDriver(), this.getWait());
 	}
 

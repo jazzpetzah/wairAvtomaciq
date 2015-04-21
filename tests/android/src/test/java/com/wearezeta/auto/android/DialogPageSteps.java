@@ -99,6 +99,20 @@ public class DialogPageSteps {
 	public void WhenITapOnDialogPageBottom() throws Throwable {
 		PagesCollection.dialogPage.tapDialogPageBottom();
 	}
+	
+	/**
+	 * Tap in Dialog page on details button to open participants view
+	 * 
+	 * @step. ^I tap conversation details button$
+	 * 
+	 * @throws Throwable
+	 * 
+	 */
+	@When("^I tap conversation details button$")
+	public void WhenITapConversationDetailsBottom() throws Throwable {
+		PagesCollection.otherUserPersonalInfoPage = 
+				((DialogPage) PagesCollection.androidPage).tapConversationDetailsButton();
+	}
 
 	/**
 	 * Tap on Play/Pause media item button
@@ -173,6 +187,21 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.waitForMessage();
 		String lastMess = PagesCollection.dialogPage.getLastMessageFromDialog();
 		Assert.assertTrue(lastMess.equals(message.trim()));
+	}
+	
+	/**
+	 * Verifies the URL is in the chat
+	 * 
+	 * @step. ^I see URL in the dialog$
+	 * 
+	 * @throws Throwable
+	 * 
+	 */
+	@Then("^I see URL in the dialog$")
+	public void ThenISeeURLInDialog() throws Throwable {
+		PagesCollection.dialogPage.waitForMessage();
+		String lastMess = PagesCollection.dialogPage.getLastMessageFromDialog();
+		Assert.assertTrue(lastMess.contains("www.google.com"));
 	}
 
 	@Then("^I see new photo in the dialog$")
@@ -274,7 +303,7 @@ public class DialogPageSteps {
 	@When("^I swipe right on dialog page$")
 	public void WhenISwipeRightOnGroupDialogPage() throws Throwable {
 		PagesCollection.contactListPage = (ContactListPage) PagesCollection.dialogPage
-				.swipeRight(500);
+				.swipeRightCoordinates(1000);
 	}
 
 	@Then("^I see group chat page with users (.*)$")
@@ -305,7 +334,22 @@ public class DialogPageSteps {
 		Assert.assertTrue(PagesCollection.dialogPage.isMessageExists(message
 				+ " " + contact));
 	}
-
+	
+	/**
+	 * Checks to see that after the group was renamed, the user is informed of the change in the dialog page
+	 * 
+	 * @step. ^I see a message informing me that I renamed the conversation to (.*)$
+	 * 
+	 * @param newConveresationName
+	 * 			the new conversation name to check for
+	 * @throws Throwable
+	 */
+	@Then("^I see a message informing me that I renamed the conversation to (.*)$")
+	public void ThenISeeMessageInformingGroupRename(String newConveresationName)
+			throws Throwable {
+		Assert.assertEquals(PagesCollection.dialogPage.getChangedGroupNameMessage(), newConveresationName);
+	}
+	
 	@Then("^Last message is (.*)$")
 	public void ThenLastMessageIs(String message) {
 		Assert.assertEquals(message.toLowerCase().trim(),

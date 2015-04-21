@@ -15,11 +15,15 @@ import org.sikuli.script.Env;
 import org.sikuli.script.FindFailed;
 import org.sikuli.script.Screen;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.osx.common.OSXConstants;
+import com.wearezeta.auto.osx.common.OSXExecutionContext;
+import com.wearezeta.auto.osx.common.SearchResultTypeEnum;
 import com.wearezeta.auto.osx.locators.OSXLocators;
+import com.wearezeta.auto.osx.pages.popovers.ConnectToPopover;
+import com.wearezeta.auto.osx.pages.popovers.UnblockPopover;
 import com.wearezeta.auto.osx.util.NSPoint;
 
 @SuppressWarnings("deprecation")
@@ -27,25 +31,25 @@ public class PeoplePickerPage extends MainWirePage {
 	private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class
 			.getSimpleName());
 
-	@FindBy(how = How.NAME, using = OSXLocators.namePeoplePickerAddToConversationButton)
+	@FindBy(how = How.NAME, using = OSXLocators.PeoplePickerPage.nameAddToConversationButton)
 	private WebElement addToConversationButton;
 
-	@FindBy(how = How.NAME, using = OSXLocators.namePeoplePickerOpenConversationButton)
+	@FindBy(how = How.NAME, using = OSXLocators.PeoplePickerPage.nameOpenConversationButton)
 	private WebElement openConversationButton;
+
+	@FindBy(how = How.NAME, using = OSXLocators.PeoplePickerPage.nameCreateConversationButton)
+	private WebElement createConversationButton;
 
 	private WebElement searchField;
 
-	@FindBy(how = How.XPATH, using = OSXLocators.xpathPeoplePickerSearchResultTable)
+	@FindBy(how = How.ID, using = OSXLocators.PeoplePickerPage.idPeoplePickerSearchResultTable)
 	private WebElement peoplePickerSearchResultTable;
 
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathPeoplePickerTopContactsSectionHeader)
 	private WebElement peoplePickerTopContactsSectionHeader;
 
-	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerSearchResultEntry)
+	@FindBy(how = How.ID, using = OSXLocators.PeoplePickerPage.idPeoplePickerSearchResultEntry)
 	private List<WebElement> searchResults;
-
-	@FindBy(how = How.ID, using = OSXLocators.idUnblockUserButton)
-	private WebElement unblockUserButton;
 
 	@FindBy(how = How.ID, using = OSXLocators.idPeoplePickerTopContactsGrid)
 	private WebElement peoplePickerTopContactsList;
@@ -87,7 +91,7 @@ public class PeoplePickerPage extends MainWirePage {
 				if (attribute.equals(OSXLocators.idPeoplePickerDismissButton)) {
 					log.debug("Found people picker cancel button. Location "
 							+ NSPoint.fromString(button
-									.getAttribute("AXPosition")));
+									.getAttribute(OSXConstants.Attributes.AXPOSITION)));
 					return button;
 				}
 			}
@@ -110,21 +114,6 @@ public class PeoplePickerPage extends MainWirePage {
 		searchField.sendKeys(text);
 	}
 
-	public boolean sendInvitationToUserIfRequested() {
-		try {
-			WebElement sendButton = driver.findElement(By
-					.id(OSXLocators.idSendInvitationButton));
-			sendButton.click();
-		} catch (NoSuchElementException e) {
-			return false;
-		}
-		return true;
-	}
-
-	public void unblockUser() {
-		unblockUserButton.click();
-	}
-
 	public boolean areSearchResultsContainUser(String username)
 			throws Exception {
 		String xpath = String.format(
@@ -139,9 +128,9 @@ public class PeoplePickerPage extends MainWirePage {
 
 	public void scrollToUserInSearchResults(String user) {
 		NSPoint mainPosition = NSPoint.fromString(window
-				.getAttribute("AXPosition"));
-		NSPoint mainSize = NSPoint
-				.fromString(window.getAttribute("AXSize"));
+				.getAttribute(OSXConstants.Attributes.AXPOSITION));
+		NSPoint mainSize = NSPoint.fromString(window
+				.getAttribute(OSXConstants.Attributes.AXSIZE));
 
 		NSPoint latestPoint = new NSPoint(mainPosition.x() + mainSize.x(),
 				mainPosition.y() + mainSize.y());
@@ -167,7 +156,7 @@ public class PeoplePickerPage extends MainWirePage {
 		}
 
 		NSPoint userPosition = NSPoint.fromString(userContact
-				.getAttribute("AXPosition"));
+				.getAttribute(OSXConstants.Attributes.AXPOSITION));
 		if (userPosition.y() > latestPoint.y()
 				|| userPosition.y() < mainPosition.y()) {
 			if (isFoundPeople) {
@@ -189,12 +178,12 @@ public class PeoplePickerPage extends MainWirePage {
 			while (userPosition.y() > latestPoint.y()) {
 				peopleIncrementSB.click();
 				userPosition = NSPoint.fromString(userContact
-						.getAttribute("AXPosition"));
+						.getAttribute(OSXConstants.Attributes.AXPOSITION));
 			}
 			while (userPosition.y() < mainPosition.y()) {
 				peopleDecrementSB.click();
 				userPosition = NSPoint.fromString(userContact
-						.getAttribute("AXPosition"));
+						.getAttribute(OSXConstants.Attributes.AXPOSITION));
 			}
 		}
 
@@ -202,8 +191,11 @@ public class PeoplePickerPage extends MainWirePage {
 
 	public boolean isPeoplePickerPageVisible() throws Exception {
 		boolean isFound = false;
-		isFound = DriverUtils.waitUntilElementAppears(driver,
-				By.xpath(OSXLocators.xpathPeoplePickerSearchResultTable), 5);
+		isFound = DriverUtils
+				.waitUntilElementAppears(
+						driver,
+						By.xpath(OSXLocators.PeoplePickerPage.idPeoplePickerSearchResultTable),
+						5);
 		if (!isFound) {
 			isFound = DriverUtils
 					.waitUntilElementAppears(
@@ -218,22 +210,41 @@ public class PeoplePickerPage extends MainWirePage {
 		findCancelButton().click();
 	}
 
-	public void selectUserInSearchResults(String user) {
-		for (WebElement userEntry : searchResults) {
-			if (userEntry.getText().equals(user)) {
-				userEntry.click();
-				break;
-			}
+	public OSXPage selectContactInSearchResults(String user,
+			SearchResultTypeEnum type) throws Exception {
+		String xpath = String
+				.format(OSXLocators.PeoplePickerPage.xpathFormatSearchResultEntry,
+						user);
+		WebElement userEntry = driver.findElement(By.xpath(xpath));
+		userEntry.click();
+
+		switch (type) {
+		case NOT_CONNECTED:
+			return new ConnectToPopover(this.getDriver(), this.getWait());
+		case BLOCKED:
+			return new UnblockPopover(this.getDriver(), this.getWait());
+		default:
+			return null;
 		}
 	}
 
-	public void chooseUserInSearchResults(String user) throws Exception {
-		selectUserInSearchResults(user);
+	public boolean isRequiredScrollToUser(String user) throws Exception {
+		String xpath = String
+				.format(OSXLocators.PeoplePickerPage.xpathFormatSearchResultEntry,
+						user);
+		return DriverUtils.isElementDisplayed(driver, By.xpath(xpath));
+	}
+
+	public void chooseUserInSearchResults(String user, SearchResultTypeEnum type)
+			throws Exception {
+		selectContactInSearchResults(user, type);
 		addSelectedUsersToConversation();
 	}
 
 	public ConversationPage addSelectedUsersToConversation() throws Exception {
-		if (isOpenConversationButtonVisible())
+		if (isCreateConversationButtonVisible()) {
+			createConversationButton.click();
+		} else if (isOpenConversationButtonVisible())
 			openConversationButton.click();
 		else
 			addToConversationButton.click();
@@ -248,11 +259,27 @@ public class PeoplePickerPage extends MainWirePage {
 						3);
 	}
 
-	public boolean isOpenConversationButtonVisible() throws Exception {
-		if (DriverUtils.waitUntilElementAppears(driver,
-				By.name(OSXLocators.namePeoplePickerOpenConversationButton), 5)) {
+	public boolean isCreateConversationButtonVisible() throws Exception {
+		if (DriverUtils
+				.waitUntilElementAppears(
+						driver,
+						By.name(OSXLocators.PeoplePickerPage.nameCreateConversationButton),
+						5)) {
 			return NSPoint.fromString(
-					openConversationButton.getAttribute("AXSize")).y() > 0;
+					createConversationButton
+							.getAttribute(OSXConstants.Attributes.AXSIZE)).y() > 0;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean isOpenConversationButtonVisible() throws Exception {
+		if (DriverUtils.waitUntilElementAppears(driver, By
+				.name(OSXLocators.PeoplePickerPage.nameOpenConversationButton),
+				5)) {
+			return NSPoint.fromString(
+					openConversationButton
+							.getAttribute(OSXConstants.Attributes.AXSIZE)).y() > 0;
 		} else {
 			return false;
 		}
@@ -262,8 +289,7 @@ public class PeoplePickerPage extends MainWirePage {
 		peoplePickerTopContactAvatar.click();
 		Screen s = new Screen();
 		try {
-			App.focus(CommonUtils
-					.getOsxApplicationPathFromConfig(PeoplePickerPage.class));
+			App.focus(OSXExecutionContext.wirePath);
 			if (!isOpenConversationButtonVisible())
 				s.click(Env.getMouseLocation());
 			if (!isOpenConversationButtonVisible())

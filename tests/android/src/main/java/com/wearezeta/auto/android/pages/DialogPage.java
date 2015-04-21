@@ -130,6 +130,10 @@ public class DialogPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogPageBottom")
 	private WebElement dialogPageBottom;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idNewConversationNameMessage")
+	private WebElement newConversationNameMessage;
+	
 
 	private int initMessageCount = 0;
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.75;
@@ -162,6 +166,12 @@ public class DialogPage extends AndroidPage {
 	public void tapOnCursorFrame() {
 		cursurFrame.click();
 	}
+	
+	public void sendMessageInInput() throws InterruptedException {
+		this.getDriver().hideKeyboard();
+		Thread.sleep(2000);
+		cursorInput.sendKeys("\\n");
+	}
 
 	public void tapOnCenterOfScreen() {
 		DriverUtils.genericTap(this.getDriver());
@@ -182,6 +192,7 @@ public class DialogPage extends AndroidPage {
 
 	public void tapAddPictureBtn() {
 		refreshUITree();
+		this.getWait().until(ExpectedConditions.visibilityOf(addPictureBtn));
 		addPictureBtn.click();
 	}
 
@@ -195,7 +206,11 @@ public class DialogPage extends AndroidPage {
 		refreshUITree();
 		cursorInput.sendKeys(message + "\\n");
 		// DriverUtils.mobileTapByCoordinates(driver, backgroundOverlay);
-		this.getDriver().hideKeyboard();
+		try {
+			this.getDriver().hideKeyboard();
+		} catch (Exception ex) {
+			
+		}
 	}
 
 	public String getLastMessageFromDialog() {
@@ -204,6 +219,10 @@ public class DialogPage extends AndroidPage {
 
 	public void clickLastImageFromDialog() {
 		imageList.get(imageList.size() - 1).click();
+	}
+	
+	public String getChangedGroupNameMessage() {
+		return newConversationNameMessage.getText();
 	}
 
 	@Override
@@ -261,11 +280,13 @@ public class DialogPage extends AndroidPage {
 
 	public void confirm() {
 		refreshUITree();// TODO workaround
+		getWait().until(ExpectedConditions.visibilityOf(okButton));
 		okButton.click();
 	}
 
 	public void takePhoto() {
 		refreshUITree();// TODO workaround
+		getWait().until(ExpectedConditions.visibilityOf(takePhotoButton));
 		takePhotoButton.click();
 	}
 
@@ -295,6 +316,8 @@ public class DialogPage extends AndroidPage {
 
 	public String getConnectRequestChatLabel() throws Exception {
 		if (isConnectRequestChatLabelVisible()) {
+			refreshUITree();
+			this.getWait().until(ExpectedConditions.visibilityOf(connectRequestChatLabel));
 			return connectRequestChatLabel.getText().toLowerCase().trim();
 		} else {
 			return "CHAT HEAD NOT FOUND";
@@ -314,7 +337,7 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public ContactListPage navigateBack() throws Exception {
-		driver.navigate().back();
+		swipeRightCoordinates(1000);
 		return new ContactListPage(this.getDriver(), this.getWait());
 	}
 
@@ -342,11 +365,14 @@ public class DialogPage extends AndroidPage {
 		refreshUITree();
 		closeImageBtn.click();
 	}
+	
+	public OtherUserPersonalInfoPage tapConversationDetailsButton() throws Exception {
+		addParticipant.click();
+		return new OtherUserPersonalInfoPage(this.getDriver(), this.getWait());
+	}
 
 	public void sendFrontCameraImage() throws Exception {
 		if (isVisible(addParticipant)) {
-			cursorInput.click();
-			navigateBack();
 			SwipeOnCursorInput();
 			tapAddPictureBtn();
 			changeCamera();

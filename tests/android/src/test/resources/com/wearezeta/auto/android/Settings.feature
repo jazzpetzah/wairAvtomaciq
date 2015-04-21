@@ -5,7 +5,7 @@ Feature: Settings
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I tap options button
     And I tap settings button
@@ -23,7 +23,7 @@ Feature: Settings
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I tap on my name
     Then Settings button is unreachable
@@ -37,7 +37,7 @@ Feature: Settings
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I tap options button
     And I tap about button
@@ -49,22 +49,31 @@ Feature: Settings
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id2020 @regression
-  Scenario Outline: Verify possibility of reseting password
+  @id863 @regression
+  Scenario Outline: Verify possibility of reseting password from settings
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I see sign in screen
-    When I press Sign in button
-    And I press FORGOT PASSWORD button
-    And I request reset password for <Email>
+    Given I Sign in using login <Login> and password <Password>
+    Given I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    And I tap options button
+    And I tap settings button
+    And I wait for 2 seconds
+    Then I see settings page
+    And I see change password item 
+    When I click on CHANGE PASSWORD 
+    And I request reset password for <Login>
     Then I reset <Name> password by URL to new <NewPassword>
+    When I restore the application
+    And I wait for 2 seconds
+    And I minimize the application
     And I restore the application
     And I press Sign in button
-    And I have entered login <Email>
+    And I have entered login <Login>
     And I have entered password <NewPassword>
     And I press Log in button
     Then Contact list appears with my name <Name>
 
     Examples: 
-      | Email      | Password      | Name      | NewPassword | Contact   |
+      | Login      | Password      | Name      | NewPassword | Contact   |
       | user1Email | user1Password | user1Name | qatest1234  | user2Name |

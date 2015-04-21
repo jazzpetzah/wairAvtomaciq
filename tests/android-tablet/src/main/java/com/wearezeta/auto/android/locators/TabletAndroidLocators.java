@@ -12,11 +12,15 @@ public final class TabletAndroidLocators {
 		
 		public static final String CLASS_NAME = TabletAndroidLocators.CLASS_NAME + "$TabletPersonalInfoPage";
 		
+		public static final String idRootRightView = LOCATORS_PACKAGE + ":id/fl__root__right_view";
+		
 	}
 	
 	public static final class TabletContactListPage {
 		
 		public static final String CLASS_NAME = TabletAndroidLocators.CLASS_NAME + "$TabletContactListPage";
+		
+		public static final String idRootLeftView = LOCATORS_PACKAGE + ":id/fl__root__left_view";
 		
 	}
 	
@@ -27,6 +31,8 @@ public final class TabletAndroidLocators {
 	}
 	
 	public static final class TabletDialogPage {
+		
+		public static final String idRootParticipantContainer = LOCATORS_PACKAGE + ":id/fl__root__participant_container";
 		
 		public static final String CLASS_NAME = TabletAndroidLocators.CLASS_NAME + "$TabletDialogPage";
 	
@@ -40,6 +46,9 @@ public final class TabletAndroidLocators {
 	public static final class TabletPersonalInfoPage {
 		
 		public static final String CLASS_NAME = TabletAndroidLocators.CLASS_NAME + "$TabletPersonalInfoPage";
+		
+		public static final String idSelfForm = LOCATORS_PACKAGE
+		+ ":id/ll_self_form";
 		
 	}
 }

@@ -134,6 +134,9 @@ public class DialogPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameSoundCloudPause)
 	private WebElement soundCloudPause;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameChatheadAvatarImage)
+	private WebElement chatheadAvatarImage;
 
 	private String connectMessage = "Hi %s, let’s connect on wire. %s";
 	private String connectingLabel = "CONNECTING TO %s";
@@ -790,6 +793,7 @@ public class DialogPage extends IOSPage {
 	private static final int PING_ICON_WIDTH = 72;
 	private static final int PING_ICON_HEIGHT = 60;
 	private static final int PING_ICON_Y_OFFSET = 7;
+	
 
 	private BufferedImage getPingIconScreenShot() throws IOException {
 		Point elementLocation = pinged.getLocation();
@@ -841,5 +845,37 @@ public class DialogPage extends IOSPage {
 
 	public boolean isTitleBarNamed(String chatName) {
 		return titleBar.getAttribute("name").equals(chatName.toUpperCase());
+	}
+
+	public boolean isTypeOrSlideExists(String msg) throws Exception {
+		return DriverUtils.waitUntilElementAppears(getDriver(), By.name(msg), 5);
+	}
+
+	public boolean chatheadIsVisible(String contact) throws Exception{
+		List<WebElement> el = driver.findElements(By.xpath(String.format(
+				IOSLocators.xpathChatheadName, contact)));
+		if (el.size()>0){
+			return true;
+		} else {
+			return false;
+		}	
+	}
+	
+	public boolean chatheadMessageIsVisible(String message){
+		WebElement el = driver.findElement(By.xpath(String.format(
+				IOSLocators.xpathChatheadMessage, message)));
+		if (el.isDisplayed()){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean chatheadAvatarImageIsVisible(){
+		if (chatheadAvatarImage.isDisplayed()){
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

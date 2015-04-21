@@ -8,6 +8,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.locators.AndroidLocators;
+import com.wearezeta.auto.android.locators.TabletAndroidLocators;
+import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
 import com.wearezeta.auto.common.locators.ZetaHow;
@@ -20,6 +22,9 @@ public class TabletContactListPage extends ContactListPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idOpenStartUIButton")
 	private WebElement peoplePickerButton;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = TabletAndroidLocators.TabletContactListPage.CLASS_NAME, locatorKey = "idRootLeftView")
+	private WebElement rootLeftView;
 
 	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger
@@ -47,8 +52,41 @@ public class TabletContactListPage extends ContactListPage {
 		}
 	}
 
+	@Override
+	public AndroidPage swipeDown(int time) throws Exception {
+		refreshUITree();
+		elementSwipeDown(rootLeftView, time);
+		return returnBySwipe(SwipeDirection.DOWN);
+	}
+	
+	@Override
+	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
+
+		AndroidPage page = null;
+		switch (direction) {
+		case DOWN: {
+			page = new PeoplePickerPage(this.getDriver(), this.getWait());
+			break;
+		}
+		case UP: {
+			break;
+		}
+		case LEFT: {
+			break;
+		}
+		case RIGHT: {
+			break;
+		}
+		}
+		return page;
+	}
+	
 	public String getSelfName() {
 		return profileLink.getText();
 	}
 
+
+	public TabletPeoplePickerPage initPeoplePickerPage() throws Exception {
+		return new TabletPeoplePickerPage(getDriver(), getWait());
+	}
 }

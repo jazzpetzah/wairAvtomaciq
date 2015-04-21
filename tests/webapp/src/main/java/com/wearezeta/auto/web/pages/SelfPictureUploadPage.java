@@ -10,9 +10,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
-import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
+import com.wearezeta.auto.web.common.WebAppConstants.Browser;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class SelfPictureUploadPage extends WebPage {
@@ -34,9 +34,11 @@ public class SelfPictureUploadPage extends WebPage {
 	}
 
 	public void waitUntilVisible(int secondsTimeout) throws Exception {
-		assert DriverUtils.isElementDisplayed(driver,
-				By.xpath(WebAppLocators.SelfPictureUploadPage.xpathRootDiv),
-				secondsTimeout) : "Picture selection dialog has not been show within "
+		assert DriverUtils
+				.isElementDisplayed(
+						driver,
+						By.xpath(WebAppLocators.SelfPictureUploadPage.xpathSelectPictureButton),
+						secondsTimeout) : "Picture selection dialog has not been show within "
 				+ secondsTimeout + "second(s) timeout";
 	}
 
@@ -52,21 +54,21 @@ public class SelfPictureUploadPage extends WebPage {
 						driver,
 						By.cssSelector(WebAppLocators.SelfPictureUploadPage.cssSendPictureInput),
 						5);
-		if (WebAppExecutionContext.browserName
-				.equals(WebAppConstants.Browser.SAFARI)) {
+		if (WebAppExecutionContext.currentBrowser == Browser.Safari) {
 			WebCommonUtils.sendPictureInSafari(picturePath);
 		} else {
 			picturePathInput.sendKeys(picturePath);
 		}
 	}
 
-	public void confirmPictureSelection() throws Exception {
+	public ContactsUploadPage confirmPictureSelection() throws Exception {
 		assert DriverUtils
 				.isElementDisplayed(
 						driver,
 						By.xpath(WebAppLocators.SelfPictureUploadPage.xpathConfirmPictureSelectionButton),
 						5);
 		pictureSelectionConfirmButton.click();
+		return new ContactsUploadPage(this.getDriver(), this.getWait());
 	}
 
 	public void forceCarouselMode() {

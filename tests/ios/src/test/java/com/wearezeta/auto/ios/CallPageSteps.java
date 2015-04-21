@@ -25,7 +25,7 @@ public class CallPageSteps {
 	@When("^I see calling message for contact (.*)$")
 	public void ISeeCallingMesage(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertTrue(((StartedCallPage)PagesCollection.callPage).isCallingMessageVisible(contact.toUpperCase()));
+		Assert.assertTrue(((StartedCallPage)PagesCollection.callPage).isIncomingCallMessageVisible(contact.toUpperCase()));
 	}
 	
 	/**
@@ -98,5 +98,29 @@ public class CallPageSteps {
 	public void IEndIncomingCall() throws Exception {
 
 		((IncomingCallPage)PagesCollection.callPage).endIncomingCallClick();
+	}
+	
+	/**
+	 * Accept incoming call by clicking accept button
+	 * @step. ^I accept incoming call$
+	 * @throws Exception
+	 */
+	@When("^I accept incoming call$")
+	public void IAcceptIncomingCall() throws Exception {
+
+		PagesCollection.callPage = ((IncomingCallPage)PagesCollection.callPage).acceptIncomingCallClick();
+	}
+	
+	/**
+	 * Verify that started call message is visible
+	 * @step. ^I see started call message for contact (.*)$
+	 * @param contact
+	 * 			contact name with whom you have a call
+	 * @throws Exception
+	 */
+	@When("^I see started call message for contact (.*)$")
+	public void ISeeStartedCallMesage(String contact) throws Exception {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		Assert.assertTrue(((StartedCallPage)PagesCollection.callPage).isStartedCallMessageVisible(contact.toUpperCase()));
 	}
 }

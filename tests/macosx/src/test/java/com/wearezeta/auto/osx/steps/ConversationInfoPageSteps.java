@@ -15,6 +15,7 @@ import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ConversationInfoPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
+import com.wearezeta.auto.osx.pages.popovers.ConnectToPopover;
 import com.wearezeta.auto.osx.util.NSPoint;
 
 import cucumber.api.java.en.Then;
@@ -30,7 +31,8 @@ public class ConversationInfoPageSteps {
 		user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		PagesCollection.conversationInfoPage = new ConversationInfoPage(
 				PagesCollection.mainMenuPage.getDriver(),
-				PagesCollection.mainMenuPage.getWait());
+				PagesCollection.mainMenuPage.getWait(),
+				PagesCollection.conversationPage);
 		PagesCollection.conversationInfoPage.selectUser(user);
 		PagesCollection.conversationInfoPage.selectUserIfNotSelected(user);
 	}
@@ -40,7 +42,8 @@ public class ConversationInfoPageSteps {
 		user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		PagesCollection.conversationInfoPage = new ConversationInfoPage(
 				PagesCollection.mainMenuPage.getDriver(),
-				PagesCollection.mainMenuPage.getWait());
+				PagesCollection.mainMenuPage.getWait(),
+				PagesCollection.conversationPage);
 		Assert.assertTrue(PagesCollection.conversationInfoPage
 				.userIsNotExistInConversation(user));
 	}
@@ -58,7 +61,7 @@ public class ConversationInfoPageSteps {
 	@Then("I see conversation name (.*) in conversation info")
 	public void ISeeConversationNameInConversationInfo(String contact) {
 		if (contact.equals(OSXLocators.RANDOM_KEYWORD)) {
-			contact = PagesCollection.conversationInfoPage
+			contact = PagesCollection.conversationPage
 					.getCurrentConversationName();
 		} else {
 			contact = usrMgr.replaceAliasesOccurences(contact,
@@ -190,9 +193,21 @@ public class ConversationInfoPageSteps {
 	}
 
 	@Then("^I see open conversation button$")
-	public void ISeeOpenConversationButton() {
+	public void ISeeOpenConversationButton() throws Exception {
 		Assert.assertTrue(PagesCollection.conversationInfoPage
 				.isOpenConversationButtonExists());
+	}
+
+	@Then("^I do not see open conversation button$")
+	public void IDoNotSeeOpenConversationButton() throws Exception {
+		Assert.assertFalse(PagesCollection.conversationInfoPage
+				.isOpenConversationButtonExists());
+	}
+
+	@Then("^I click on connect button on people popover$")
+	public void IClickOnConnectButtonOnPeoplePopover() throws Exception {
+		PagesCollection.popover = PagesCollection.conversationInfoPage
+				.connectToUser();
 	}
 
 	@Then("^I see pending button$")
@@ -202,13 +217,13 @@ public class ConversationInfoPageSteps {
 	}
 
 	@Then("^I see connect button$")
-	public void ISeeConnectButton() {
+	public void ISeeConnectButton() throws Exception {
 		Assert.assertTrue(PagesCollection.conversationInfoPage
 				.isConnectButtonExists());
 	}
 
 	@Then("^I see remove person from conversation button$")
-	public void ISeeRemovePersonFromConversationButton() {
+	public void ISeeRemovePersonFromConversationButton() throws Exception {
 		Assert.assertTrue(PagesCollection.conversationInfoPage
 				.isRemoveUserFromConversationButtonExists());
 	}
@@ -217,5 +232,19 @@ public class ConversationInfoPageSteps {
 	public void ISeeConnectionRequestMessage(String message) {
 		Assert.assertTrue(PagesCollection.conversationInfoPage
 				.isSentConnectionRequestMessageExists(message));
+	}
+
+	/**
+	 * Checks that user is suggested to send connection request to selected user
+	 * 
+	 * @step. ^I see connect popover$
+	 * 
+	 * @throws AssertionError
+	 *             if there is no send request dialog
+	 */
+	@Then("^I see connect popover$")
+	public void ISeeConnectPopover() throws Exception {
+		Assert.assertTrue("There is no connect to user popover opened.",
+				((ConnectToPopover) PagesCollection.popover).isVisible());
 	}
 }

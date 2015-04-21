@@ -33,9 +33,6 @@ public final class WebAppLocators {
 	}
 
 	public static final class ContactListPage {
-
-		private static final String xpathConvoItemByNamePattern = "%s//div[@data-uie-name='item-conversation' and @data-uie-value='%s']";
-
 		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
 		public static final String cssParentContactListItem = "div#conversation-list";
 
@@ -44,25 +41,26 @@ public final class WebAppLocators {
 
 		public static final String xpathOpenArchivedConvosButton = "//*[@data-uie-name='go-archive']";
 
+		public static final Function<String, String> xpathListItemRootWithControlsByName = name -> String
+				.format("//li[contains(@class, 'show-controls') and .//*[@data-uie-name='item-conversation' and @data-uie-value='%s']]",
+						name);
+
 		public static final Function<String, String> xpathArchiveButtonByContactName = (
-				name) -> String.format(xpathConvoItemByNamePattern
-				+ "/following::*[@data-uie-name='do-archive']",
-				xpathParentContactListItem, name);
+				name) -> xpathListItemRootWithControlsByName.apply(name)
+				+ "//*[@data-uie-name='do-archive']";
 
 		public static final Function<String, String> xpathMuteButtonByContactName = (
-				name) -> String.format(xpathConvoItemByNamePattern
-				+ "/following::*[@data-uie-name='do-silence']",
-				xpathParentContactListItem, name);
+				name) -> xpathListItemRootWithControlsByName.apply(name)
+				+ "//*[@data-uie-name='do-silence']";
 
 		public static final Function<String, String> xpathUnmuteButtonByContactName = (
-				name) -> String.format(xpathConvoItemByNamePattern
-				+ "/following::*[@data-uie-name='do-notify']",
-				xpathParentContactListItem, name);
+				name) -> xpathListItemRootWithControlsByName.apply(name)
+				+ "//*[@data-uie-name='do-notify']";
 
 		public static final Function<String, String> xpathMuteIconByContactName = (
-				name) -> String.format(xpathConvoItemByNamePattern
-				+ "/following::*[@data-uie-name='status-silence']",
-				xpathParentContactListItem, name);
+				name) -> String.format(
+				"//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/following::"
+						+ "*[@data-uie-name='status-silence']", name);
 
 		public static final String cssSelfProfileEntry = "[data-uie-name=go-self-profile]";
 
@@ -86,11 +84,15 @@ public final class WebAppLocators {
 				.format("%s//*[@data-uie-name='item-conversation-archived' and ./ancestor-or-self::*[@data-uie-value='%s']]",
 						xpathParentContactListItem, name);
 
-		public static final String cssOpenPeoplePickerButton = "*[data-uie-name='go-search']";
+		public static final String cssOpenPeoplePickerButton = "[data-uie-name=go-search]";
 	}
 
 	public static final class SettingsPage {
 		public static final String xpathSettingsDialogRoot = "//div[@id='self-settings' and contains(@class, 'modal-show')]";
+
+		public static final String xpathSettingsCloseButton = "//div[@id='self-settings']//*[@data-uie-name='do-close']";
+
+		public static final String cssSoundAlertsLevel = "[data-uie-name=enter-sound-alerts]";
 	}
 
 	public static final class SelfProfilePage {
@@ -125,9 +127,9 @@ public final class WebAppLocators {
 
 	public static final class ConversationPage {
 
-		public static final String xpathTextMessageEntry = "//*[@data-uie-name='item-message']//div[@class='text']";
-
-		public static final String xpathFormatSpecificTextMessageEntry = "//*[@data-uie-name='item-message']//div[@class='text' and text()='%s']";
+		public static final Function<String, String> xpathMessageEntryByText = text -> String
+				.format("//*[@data-uie-name='item-message']//div[contains(@class, 'text') and text()='%s']",
+						text);
 
 		public static final String idConversationInput = "conversation-input-text";
 
@@ -150,15 +152,21 @@ public final class WebAppLocators {
 
 		public static final String xpathCallButton = "//*[@data-uie-name='do-call']";
 
-		public static final String xpathTalkingHalo = "//*[contains(@class,'cc-halo-talking')]";
-
 		public static final String classPingMessage = "pinged";
 
-		public static final String xpathCloseButton = "//*[contains(@class,'cc-button')]//*[contains(@class,'icon-close')]";
-
 		public static final Function<String, String> textMessageByText = text -> String
-				.format("//*[@data-uie-name='item-message']//div[@class='text' and text()='%s']",
+				.format("//*[@data-uie-name='item-message']//*[text()='%s']",
 						text);
+
+		public static final String xpathMissedCallAction = "//*[@data-uie-value='call']//div[contains(@class, 'action')]";
+
+		public static String xpathCallingBarRoot = "//div[contains(@class, 'call-controls')]";
+
+		public static String xpathAcceptCallButton = xpathCallingBarRoot + "//*[contains(@class, 'icon-check')]";
+
+		public static String xpathEndCallButton = xpathCallingBarRoot + "//*[contains(@class, 'icon-close')]";
+
+		public static String xpathSilenceIncomingCallButton = xpathCallingBarRoot + "//*[contains(@class, 'icon-minus')]";
 	}
 
 	public static final class ConnectToPage {
@@ -213,6 +221,9 @@ public final class WebAppLocators {
 	public static final class SelfPictureUploadPage {
 		public static final String xpathRootDiv = "//div[@id='self-upload']";
 
+		public static final String xpathSelectPictureButton = xpathRootDiv
+				+ "//*[@data-uie-name='do-select-picture']/following-sibling::span";
+
 		public static final String cssSendPictureInput = "div#self-upload input[data-uie-name=do-select-picture]";
 
 		public static final String xpathConfirmPictureSelectionButton = xpathRootDiv
@@ -223,6 +234,19 @@ public final class WebAppLocators {
 
 		public static final String xpathPreviousCarouselImageBtn = xpathRootDiv
 				+ "//div[contains(@class, 'carousel-arrows')]//span[contains(@class, 'carousel-arrow-left')]";
+	}
+
+	public static final class ContactsUploadPage {
+		public static final String xpathRootDiv = "//div[@id='self-upload']";
+
+		public static final String xpathCloseButton = xpathRootDiv
+				+ "//*[@data-uie-name='do-close']";
+
+		public static final String xpathShareContactsButton = xpathRootDiv
+				+ "//*[@data-uie-name='do-google-import']";
+
+		public static final String xpathShowSearchButton = xpathRootDiv
+				+ "//*[@data-uie-name='go-search']";
 	}
 
 	public static final class Common {

@@ -38,8 +38,9 @@ public class IncomingCallPage extends CallPage {
 				String.format(IOSLocators.IncomingCallPage.xpathCallingMessageUser, contact)).isDisplayed();
 	}
 	
-	public void acceptIncomingCallClick() {
+	public StartedCallPage acceptIncomingCallClick() throws Exception {
 		acceptCallButton.click();
+		return new StartedCallPage(getDriver(), getWait());
 	}
 	
 	public void endIncomingCallClick() {

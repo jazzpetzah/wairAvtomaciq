@@ -54,6 +54,11 @@ public class RegistrationPageSteps {
 		PagesCollection.registrationPage.confirmPicture();
 	}
 
+	@When("^I press Registration back button$")
+	public void IPressRegistrationBackButton() {
+		PagesCollection.registrationPage.pressBackButton();
+	}
+	
 	@When("^I enter name (.*)$")
 	public void IEnterName(String name) throws Exception {
 		try {

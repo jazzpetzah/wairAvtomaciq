@@ -6,7 +6,9 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
 import cucumber.api.java.en.Then;
@@ -294,7 +296,7 @@ public class ConversationPageSteps {
 		Assert.assertTrue(PagesCollection.conversationPage
 				.isTextMessageVisible(message));
 	}
-	
+
 	/**
 	 * Verify a text message is not visible in conversation
 	 * 
@@ -307,7 +309,7 @@ public class ConversationPageSteps {
 		Assert.assertFalse(PagesCollection.conversationPage
 				.isTextMessageVisible(message));
 	}
-	
+
 	/**
 	 * Verify that there is only one ping message visible in conversation
 	 * 
@@ -332,25 +334,92 @@ public class ConversationPageSteps {
 	}
 
 	/**
+	 * Wait until calling bar appears
 	 * 
+	 * @step. ^I see the calling bar$
 	 * 
-	 * @step. ^(.*) accepts the call$
-	 * @param userNameAlias
-	 * @throws Throwable
+	 * @throws Exception
 	 */
-	@When("^(.*) accepts the call$")
-	public void ContactAcceptsTheCall(String userNameAlias) throws Throwable {
-		Assert.assertTrue(PagesCollection.conversationPage
-				.isCalleeAcceptingCall());
+	@Then("^I see the calling bar$")
+	public void IWaitForCallingBar() throws Exception {
+		if (PagesCollection.conversationPage == null) {
+			PagesCollection.conversationPage = new ConversationPage(
+					PagesCollection.loginPage.getDriver(),
+					PagesCollection.loginPage.getWait());
+		}
+		PagesCollection.conversationPage.waitForCallingBarToBeDisplayed();
 	}
 
 	/**
-	 * End the current call
+	 * Verifies whether calling bar is not visible anymore
+	 * 
+	 * @step. ^I do not see the calling bar$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I do not see the calling bar$")
+	public void IDoNotCallingBar() throws Exception {
+		if (PagesCollection.conversationPage == null) {
+			PagesCollection.conversationPage = new ConversationPage(
+					PagesCollection.loginPage.getDriver(),
+					PagesCollection.loginPage.getWait());
+		}
+		PagesCollection.conversationPage.verifyCallingBarIsNotVisible();
+	}
+
+	/**
+	 * Accepts incoming call by clicking the check button on the calling bar
+	 * 
+	 * @step. ^I accept the incoming call$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I accept the incoming call$")
+	public void IAcceptIncomingCall() throws Exception {
+		PagesCollection.conversationPage.clickAcceptCallButton();
+	}
+
+	/**
+	 * Silences the icoming call by clicking the corresponding button on the
+	 * calling bar
+	 * 
+	 * @step. ^I silence the incoming call$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I silence the incoming call$")
+	public void ISilenceIncomingCall() throws Exception {
+		PagesCollection.conversationPage.clickSilenceCallButton();
+	}
+
+	/**
+	 * End the current call by clicking the X button on calling bar
 	 * 
 	 * @step. ^I end the call$
+	 * 
+	 * @throws Exception
 	 */
 	@When("^I end the call$")
-	public void IEndTheCall() throws Throwable {
-		PagesCollection.conversationPage.clickCloseButton();
+	public void IEndTheCall() throws Exception {
+		PagesCollection.conversationPage.clickEndCallButton();
+	}
+
+	/**
+	 * Verify that conversation contains missed call from contact
+	 * 
+	 * @step. ^I see conversation with missed call from (.*)$
+	 * 
+	 * @param contact
+	 *            contact name string
+	 * 
+	 * @throws NoSuchUserException
+	 */
+	@Then("^I see conversation with missed call from (.*)$")
+	public void ThenISeeConversationWithMissedCallFrom(String contact)
+			throws NoSuchUserException {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName()
+				.toUpperCase();
+		Assert.assertEquals(contact + " CALLED",
+				PagesCollection.conversationPage.getMissedCallMessage());
 	}
 }

@@ -35,6 +35,9 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsHeader")
 	private WebElement groupChatName;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsHeaderEditable")
+	private WebElement groupChatNameEditable;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsHeader")
 	private List<WebElement> otherUserName;
@@ -120,7 +123,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
 	public void clickBlockBtn() {
 		refreshUITree();
-		rightConversationButton.click();
+		blockButton.click();
 	}
 
 	public AndroidPage clickUnblockBtn() throws Exception {
@@ -181,12 +184,14 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
 	public OtherUserPersonalInfoPage pressRemoveConfirmBtn() throws Exception {
 		refreshUITree();// TODO workaround
-		this.getWait().until(ExpectedConditions.elementToBeClickable(confirmBtn));
+		this.getWait().until(
+				ExpectedConditions.elementToBeClickable(confirmBtn));
 		confirmBtn.click();
 		return new OtherUserPersonalInfoPage(this.getDriver(), this.getWait());
 	}
 
 	public PeoplePickerPage tapAddContactBtn() throws Exception {
+		refreshUITree();
 		addContactBtn.click();
 		return new PeoplePickerPage(this.getDriver(), this.getWait());
 	}
@@ -243,12 +248,17 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		if (connectToHeader.size() > 0) {
 			return new ConnectToPage(this.getDriver(), this.getWait());
 		} else {
-			return new OtherUserPersonalInfoPage(this.getDriver(), this.getWait());
+			return new OtherUserPersonalInfoPage(this.getDriver(),
+					this.getWait());
 		}
 	}
 
+	public void tapOnParticipantsHeader() {
+		groupChatName.click();
+	}
+
 	public void renameGroupChat(String chatName) {
-		groupChatName.sendKeys(chatName + "\n");
+		groupChatNameEditable.sendKeys(chatName + "\n");
 	}
 
 	public AndroidPage tapOnContact(String contact) throws Exception {
@@ -262,7 +272,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		if (connectToHeader.size() > 0) {
 			return new ConnectToPage(this.getDriver(), this.getWait());
 		} else {
-			return new OtherUserPersonalInfoPage(this.getDriver(), this.getWait());
+			return new OtherUserPersonalInfoPage(this.getDriver(),
+					this.getWait());
 		}
 	}
 
@@ -277,7 +288,11 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
 	public DialogPage tabBackButton() throws Exception {
 		refreshUITree();
-		closeButton.click();
+		if (CommonUtils.getAndroidApiLvl(PeoplePickerPage.class) > 42) {
+			closeButton.click();
+		} else {
+			swipeDownCoordinates(1000);
+		}
 		return new DialogPage(this.getDriver(), this.getWait());
 	}
 
@@ -302,7 +317,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 			if (avatarName.equalsIgnoreCase(contact1)) {
 				BufferedImage realImage = ImageUtil.readImageFromFile(path
 						+ AVATAR_WITH_IMAGE);
-				double score = ImageUtil.getOverlapScore(realImage, avatarIcon,ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
+				double score = ImageUtil.getOverlapScore(realImage, avatarIcon,
+						ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 				if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
 					return false;
 				}
@@ -312,7 +328,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 				// must be a yellow user with initials AT
 				BufferedImage realImage = ImageUtil.readImageFromFile(path
 						+ AVATAR_NO_IMAGE);
-				double score = ImageUtil.getOverlapScore(realImage, avatarIcon,ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
+				double score = ImageUtil.getOverlapScore(realImage, avatarIcon,
+						ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 				if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
 					return false;
 				}

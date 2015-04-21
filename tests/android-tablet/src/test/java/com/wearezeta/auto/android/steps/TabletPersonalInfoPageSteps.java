@@ -33,6 +33,11 @@ public class TabletPersonalInfoPageSteps {
 		PagesCollection.contactListPage = TabletPagesCollection.contactListPage;
 	}
 
+	@When("^I tap on tablet personal info screen$")
+	public void WhenITapOnPersonalInfoScreen() throws Throwable {
+		TabletPagesCollection.personalInfoPage.clickOnPage();
+	}
+
 	/**
 	 * Check that personal info page opened and name is correct
 	 * 

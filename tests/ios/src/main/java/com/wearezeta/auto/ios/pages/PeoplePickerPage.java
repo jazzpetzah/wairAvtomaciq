@@ -85,7 +85,7 @@ public class PeoplePickerPage extends IOSPage {
 	public void clickLaterButton() throws Exception {
 		if (DriverUtils.isElementDisplayed(this.getDriver(),
 				By.name(IOSLocators.nameShareButton))) {
-			//shareButton.click();
+			// shareButton.click();
 			DriverUtils.mobileTapByCoordinates(getDriver(), shareButton);
 		}
 	}
@@ -153,6 +153,45 @@ public class PeoplePickerPage extends IOSPage {
 	public ContactListPage dismissPeoplePicker() throws Exception {
 		peoplePickerClearBtn.click();
 		return new ContactListPage(this.getDriver(), this.getWait());
+	}
+
+	public void hidePeoplePickerKeyboard() throws Exception {
+		DriverUtils.swipeUp(this.getDriver(), sendInviteButton, 500, 50, 40);
+	}
+
+	public void swipeToRevealHideSuggestedContact(String contact)
+			throws Exception {
+		List<WebElement> textElements = driver
+				.findElementsByClassName(IOSLocators.nameSuggestedContactNameTextType);
+		for (WebElement textElement : textElements) {
+			if (textElement.getText().toLowerCase().equals(contact)) {
+				DriverUtils.swipeRight(this.getDriver(), textElement, 500, 50,
+						50);
+			}
+		}
+	}
+
+	public void tapHideSuggestedContact() throws Exception {
+		List<WebElement> buttonElements = driver
+				.findElementsByClassName(IOSLocators.nameHideSuggestedContactButtonType);
+		for (WebElement buttonElement : buttonElements) {
+			if (buttonElement.getLocation().x > 0
+					&& buttonElement.getAttribute("name").equals(
+							IOSLocators.nameHideSuggestedContactButton)) {
+				buttonElement.click();
+			}
+		}
+	}
+
+	public boolean isSuggestedContactVisible(String contact) throws Exception {
+		List<WebElement> textElements = driver
+				.findElementsByClassName("UIAStaticText");
+		for (WebElement textElement : textElements) {
+			if (textElement.getText().toLowerCase().equals(contact)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public boolean isAddToConversationBtnVisible() throws Exception {
@@ -261,6 +300,11 @@ public class PeoplePickerPage extends IOSPage {
 	public boolean isTopPeopleLabelVisible() throws Exception {
 		return DriverUtils.isElementDisplayed(this.getDriver(),
 				By.name(IOSLocators.NamePeoplePickerTopPeopleLabel));
+	}
+
+	public boolean isConnectLabelVisible() throws Exception {
+		return DriverUtils.isElementDisplayed(this.getDriver(),
+				By.name(IOSLocators.namePeopleYouMayKnowLabel));
 	}
 
 	public boolean isUserSelected(String name) {

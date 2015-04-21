@@ -861,114 +861,101 @@
 }
 
 // POST /session/:sessionId/element/:id/value
--(AppiumMacHTTPJSONResponse*) postElementValue:(NSString*)path data:(NSData*)postData
+- (AppiumMacHTTPJSONResponse*)postElementValue:(NSString*)path data:(NSData*)postData
 {
-    NSString *sessionId = [Utility getSessionIDFromPath:path];
-    AfMSessionController *session = [self controllerForSession:sessionId];
-    NSString *elementId = [Utility getElementIDFromPath:path];
-    NSDictionary *postParams = [self dictionaryFromPostData:postData];
+    NSString* sessionId = [Utility getSessionIDFromPath:path];
+    AfMSessionController* session = [self controllerForSession:sessionId];
+    NSString* elementId = [Utility getElementIDFromPath:path];
+    NSDictionary* postParams = [self dictionaryFromPostData:postData];
 
-    NSArray *value = [postParams objectForKey:@"value"];
+    NSArray* value = [postParams objectForKey:@"value"];
 
-	// get the element
-    PFUIElement *element = [session.elements objectForKey:elementId];
-    
-	// check the element is valid
-	int status = [self checkElement:element forSession:session];
-	if (status != kAfMStatusCodeSuccess)
-	{
-		[self respondWithJsonError:status session:sessionId];
-	}
-    
-    NSString *stringValue = [value componentsJoinedByString:@""];
+    // get the element
+    PFUIElement* element = [session.elements objectForKey:elementId];
+
+    // check the element is valid
+    int status = [self checkElement:element forSession:session];
+    if (status != kAfMStatusCodeSuccess) {
+        [self respondWithJsonError:status session:sessionId];
+    }
+
+    NSString* stringValue = [value componentsJoinedByString:@""];
     NSLog(@"Setting value \"%@\" in element with index %@", stringValue, elementId);
     BOOL pressEnter = NO;
     if ([stringValue hasSuffix:@"\\n"]) {
         pressEnter = YES;
-        NSRange lastEnterRange = NSMakeRange(0, stringValue.length - 2
-                                             );
+        NSRange lastEnterRange = NSMakeRange(0, stringValue.length - 2);
         stringValue = [stringValue substringWithRange:lastEnterRange];
         NSLog(@"%@", stringValue);
     }
+
     if ([stringValue caseInsensitiveCompare:@""] != NSOrderedSame) {
         // set the value
-        [element setAXValue:stringValue];
+        if ([element.AXValue caseInsensitiveCompare:@""] == NSOrderedSame) {
+            [element setAXValue:stringValue];
 
-        NSMutableDictionary *errorDict = [NSMutableDictionary new];
-
-        NSAppleScript *appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 1\nend tell"];
-        NSString *statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
-    
-        appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 1\nend tell"];
-        statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
-        appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 1\nend tell"];
-        statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
-        appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 1\nend tell"];
-        statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
-        appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 1\nend tell"];
-        statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
-        appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 1\nend tell"];
-        statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
-        appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 51\nend tell"];
-        statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
-        appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 51\nend tell"];
-        statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
-        appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 51\nend tell"];
-        statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
-        appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 51\nend tell"];
-        statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
-        appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 51\nend tell"];
-        statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
-        appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 51\nend tell"];
-        statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
-        
+            NSMutableDictionary* errorDict = [NSMutableDictionary new];
+            NSAppleScript* appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 1\nend tell"];
+            NSString* statusString;
+            for (int i = 0; i < 6; i++) {
+                statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
+            }
+            appForProcNameScript = [[NSAppleScript alloc] initWithSource:@"tell application \"System Events\"\nkey code 51\nend tell"];
+            for (int i = 0; i < 6; i++) {
+                statusString = [[appForProcNameScript executeAndReturnError:&errorDict] stringValue];
+            }
+        }
+        else {
+            NSMutableDictionary* errorDict = [NSMutableDictionary new];
+            NSAppleScript* script = [[NSAppleScript alloc] initWithSource:[NSString stringWithFormat:@"tell application \"System Events\"\nkeystroke \"%@\"\nend tell", stringValue]];
+            [[script executeAndReturnError:&errorDict] stringValue];
+        }
         if (pressEnter) {
-            NSString *result = [self pressEnter:element];
+            NSString* result = [self pressEnter:element];
             NSLog(@"%@", result);
         }
     }
-    else
-    {
+    else {
         ///////////////////////
-    
+
         NSValue* pos = element.AXPosition;
         NSPoint pnt = pos.pointValue;
-    
+
         PFUIElement* parent = element.AXParent;
-    
+
         while ([@"AXApplication" isEqualToString:parent.AXRole]) {
             pnt.x += parent.AXPosition.pointValue.x;
             pnt.y += parent.AXPosition.pointValue.y;
-        
+
             parent = parent.AXParent;
         }
 
         CGEventRef event = CGEventCreate(NULL);
         CGPoint pt = CGEventGetLocation(event);
-        pt.x = pnt.x-20;
-        pt.y = pnt.y-20;
-    
+        pt.x = pnt.x - 20;
+        pt.y = pnt.y - 20;
+
         CGEventRef click1_move = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, pt, kCGMouseButtonLeft);
-//    CGEventRef click1_down = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, pt, kCGMouseButtonLeft);
-//    CGEventRef click1_up = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseUp, pt, kCGMouseButtonLeft);
-    
+        //    CGEventRef click1_down = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, pt, kCGMouseButtonLeft);
+        //    CGEventRef click1_up = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseUp, pt, kCGMouseButtonLeft);
+
         CGEventPost(kCGHIDEventTap, click1_move);
-    
+
         pt.x += 40;
         pt.y += 40;
         click1_move = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, pt, kCGMouseButtonLeft);
         CGEventPost(kCGHIDEventTap, click1_move);
-//    CGEventPost(kCGHIDEventTap, click1_down);
-//    CGEventPost(kCGHIDEventTap, click1_up);
-    
-    // Release the events
-//    CFRelease(click1_up);
-//    CFRelease(click1_down);
-//    CFRelease(click1_move);
-    
-    ///////////////////////
+        //    CGEventPost(kCGHIDEventTap, click1_down);
+        //    CGEventPost(kCGHIDEventTap, click1_up);
+
+        // Release the events
+        //    CFRelease(click1_up);
+        //    CFRelease(click1_down);
+        //    CFRelease(click1_move);
+
+        ///////////////////////
     }
-    return [self respondWithJson:nil status:kAfMStatusCodeSuccess session: sessionId];
+    return [self respondWithJson:nil status:kAfMStatusCodeSuccess session:sessionId];
 }
 
 // POST /session/:sessionId/keys

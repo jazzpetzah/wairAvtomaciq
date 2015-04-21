@@ -49,7 +49,7 @@ public class CommonAndroidPage extends AndroidPage {
 	@FindBy(xpath = AndroidLocators.Browsers.xpathChrome)
 	private WebElement chromeBrowser;
 
-	private static final String SERVER_URL = "https://staging-website.wire.com/forgot/";
+	private static final String SERVER_URL = "https://staging-website.zinfra.io/forgot/";
 
 	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {

@@ -18,8 +18,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.AndroidPage;
+import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.android.pages.LoginPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
+import com.wearezeta.auto.common.CommonCallingSteps;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.GenerateWebLink;
@@ -151,6 +153,15 @@ public class CommonAndroidSteps {
 
 	public void commonBefore() throws Exception {
 		try {
+			// async calls/waiting instances cleanup
+			CommonCallingSteps.getInstance().cleanupWaitingInstances();
+			CommonCallingSteps.getInstance().cleanupCalls();
+		} catch (Exception e) {
+			// do not fail if smt fails here
+			e.printStackTrace();
+		}
+
+		try {
 			AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
 		} catch (Exception ex) {
 			System.out.println("Failed to deploy pictures into simulator");
@@ -181,6 +192,19 @@ public class CommonAndroidSteps {
 	}
 
 	/**
+	 * Opens the Browser app
+	 * 
+	 * @step. ^I open the native browser application$
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I open the native browser application$")
+	public void IOpenBrowserApp() throws Exception {
+		AndroidCommonUtils.openBroswerApplication();
+	}
+
+	/**
 	 * Opens the gallery application (com.google.android.gallery3d)
 	 * 
 	 * @step. ^I open the gallery application$
@@ -188,14 +212,15 @@ public class CommonAndroidSteps {
 	 * @throws Exception
 	 * 
 	 */
-	
+
 	@When("^I open the gallery application$")
 	public void IOpenGalleryApp() throws Exception {
 		AndroidCommonUtils.openGalleryApplication();
 	}
 
 	/**
-	 * Opens the gallery application and shares the default photo to wire (com.google.android.gallery3d)
+	 * Opens the gallery application and shares the default photo to wire
+	 * (com.google.android.gallery3d)
 	 * 
 	 * @step. ^I share image from Gallery to Wire$
 	 * 
@@ -207,7 +232,28 @@ public class CommonAndroidSteps {
 		IOpenGalleryApp();
 		PagesCollection.contactListPage.shareImageToWireFromGallery();
 	}
-	
+
+	/**
+	 * Opens the Browser app and shares the URL to wire (http://www.google.com)
+	 * 
+	 * @step. ^I share URL from native browser app to Wire with contact (.*)$
+	 * 
+	 * @param name
+	 *            name of contact to share URL with
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I share URL from native browser app to Wire with contact (.*)$")
+	public void IShareURLBrowserApp(String name) throws Exception {
+		IOpenBrowserApp();
+		PagesCollection.contactListPage.shareURLFromNativeBrowser();
+		if (PagesCollection.dialogPage == null) {
+			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
+		}
+		Thread.sleep(5000);
+		PagesCollection.dialogPage.sendMessageInInput();
+	}
+
 	/**
 	 * Takes screenshot for comparison
 	 * 
@@ -220,7 +266,7 @@ public class CommonAndroidSteps {
 	public void WhenITake1stScreenshot() throws IOException {
 		images.add(PagesCollection.loginPage.takeScreenshot());
 	}
-	
+
 	/**
 	 * Taps on the center of the screen
 	 * 
@@ -244,7 +290,7 @@ public class CommonAndroidSteps {
 	@Then("^I compare 1st and 2nd screenshots and they are different$")
 	public void ThenICompare1st2ndScreenshotsAndTheyAreDifferent() {
 		double score = ImageUtil.getOverlapScore(images.get(0), images.get(1));
-		Assert.assertTrue(score < 0.50d);
+		Assert.assertTrue(score < 0.70d);
 		images.clear();
 	}
 
@@ -296,8 +342,8 @@ public class CommonAndroidSteps {
 		commonSteps.IChangeUserName(name, newName);
 	}
 
-	@When("^I connect using invitation link from (.*)$")
-	public void WhenIConnectUsingInvitationLinkFrom(String name)
+	@Then("^I connect using invitation link from (.*)$")
+	public void ThenIConnectUsingInvitationLinkFrom(String name)
 			throws Exception {
 		try {
 			BackendAPIWrappers.tryLoginByUser(usrMgr
@@ -432,6 +478,15 @@ public class CommonAndroidSteps {
 
 	@After
 	public void tearDown() throws Exception {
+		try {
+			// async calls/waiting instances cleanup
+			CommonCallingSteps.getInstance().cleanupWaitingInstances();
+			CommonCallingSteps.getInstance().cleanupCalls();
+		} catch (Exception e) {
+			// do not fail if smt fails here
+			e.printStackTrace();
+		}
+
 		AndroidPage.clearPagesCollection();
 
 		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
@@ -449,34 +504,6 @@ public class CommonAndroidSteps {
 		CommonAndroidSteps.skipBeforeAfter = skipBeforeAfter;
 	}
 
-	/**
-	 * Start a call using autocall tool
-	 * 
-	 * @step. ^Contact (.*) calls to conversation (.*)$
-	 * @param starterNameAlias
-	 * 		user who will start a call
-	 * @param destinationNameAlias
-	 * 		user who will receive a call
-	 * @throws Exception
-	 */
-	@When("^Contact (.*) calls to conversation (.*)$")
-	public void ContactCallsToConversation(String starterNameAlias, String destinationNameAlias) throws Exception {
-		commonSteps.UserCallsToConversation(starterNameAlias, destinationNameAlias);
-	}
-	
-	/**
-	 * End current call initiated by autocall tool
-	 * 
-	 * @step. ^Current call is ended$
-	 * 		
-	 * @throws Exception
-	 */
-	@When("^Current call is ended$")
-	public void EndCurrectCall() throws Exception {
-		commonSteps.StopCurrentCall();
-		Thread.sleep(1000);
-	}
-	
 	@When("^I request reset password for (.*)$")
 	public void WhenIRequestResetPassword(String email) throws Exception {
 		try {
@@ -558,7 +585,7 @@ public class CommonAndroidSteps {
 		}
 		Assert.assertTrue(PagesCollection.commonAndroidPage.mailContains(email));
 	}
-	
+
 	/**
 	 * Rotate device to landscape
 	 * 
@@ -567,9 +594,9 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I rotate UI to landscape$")
 	public void WhenIRotateUILandscape() throws Exception {
-		PagesCollection.loginPage.rotateLandscape();   
+		PagesCollection.loginPage.rotateLandscape();
 	}
-	
+
 	/**
 	 * Rotate device to portrait
 	 * 
@@ -578,7 +605,7 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I rotate UI to portrait$")
 	public void WhenIRotateUIPortrait() throws Exception {
-		PagesCollection.loginPage.rotatePortrait();   
+		PagesCollection.loginPage.rotatePortrait();
 	}
 
 }
