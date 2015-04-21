@@ -92,13 +92,7 @@ public final class WebAppLocators {
 
 		public static final String xpathSettingsCloseButton = "//div[@id='self-settings']//*[@data-uie-name='do-close']";
 
-		public static final String xpathSoundAlertsSettings = "//*[@data-uie-name='enter-sound-alerts']";
-
-		public static final String classNameSoundNoneLabel = "sound-left";
-
-		public static final String classNameSoundSomeLabel = "sound-center";
-
-		public static final String classNameSoundAllLabel = "sound-right";
+		public static final String cssSoundAlertsLevel = "[data-uie-name=enter-sound-alerts]";
 	}
 
 	public static final class SelfProfilePage {
@@ -158,17 +152,21 @@ public final class WebAppLocators {
 
 		public static final String xpathCallButton = "//*[@data-uie-name='do-call']";
 
-		public static final String xpathTalkingHalo = "//*[contains(@class,'cc-halo-talking')]";
-
 		public static final String classPingMessage = "pinged";
 
-		public static final String xpathCloseButton = "//*[contains(@class,'cc-button')]//*[contains(@class,'icon-close')]";
-
 		public static final Function<String, String> textMessageByText = text -> String
-				.format("//*[@data-uie-name='item-message']//div[@class='text' and text()='%s']",
+				.format("//*[@data-uie-name='item-message']//*[text()='%s']",
 						text);
 
 		public static final String xpathMissedCallAction = "//*[@data-uie-value='call']//div[contains(@class, 'action')]";
+
+		public static String xpathCallingBarRoot = "//div[contains(@class, 'call-controls')]";
+
+		public static String xpathAcceptCallButton = xpathCallingBarRoot + "//*[contains(@class, 'icon-check')]";
+
+		public static String xpathEndCallButton = xpathCallingBarRoot + "//*[contains(@class, 'icon-close')]";
+
+		public static String xpathSilenceIncomingCallButton = xpathCallingBarRoot + "//*[contains(@class, 'icon-minus')]";
 	}
 
 	public static final class ConnectToPage {
@@ -223,6 +221,9 @@ public final class WebAppLocators {
 	public static final class SelfPictureUploadPage {
 		public static final String xpathRootDiv = "//div[@id='self-upload']";
 
+		public static final String xpathSelectPictureButton = xpathRootDiv
+				+ "//*[@data-uie-name='do-select-picture']/following-sibling::span";
+
 		public static final String cssSendPictureInput = "div#self-upload input[data-uie-name=do-select-picture]";
 
 		public static final String xpathConfirmPictureSelectionButton = xpathRootDiv
@@ -233,6 +234,19 @@ public final class WebAppLocators {
 
 		public static final String xpathPreviousCarouselImageBtn = xpathRootDiv
 				+ "//div[contains(@class, 'carousel-arrows')]//span[contains(@class, 'carousel-arrow-left')]";
+	}
+
+	public static final class ContactsUploadPage {
+		public static final String xpathRootDiv = "//div[@id='self-upload']";
+
+		public static final String xpathCloseButton = xpathRootDiv
+				+ "//*[@data-uie-name='do-close']";
+
+		public static final String xpathShareContactsButton = xpathRootDiv
+				+ "//*[@data-uie-name='do-google-import']";
+
+		public static final String xpathShowSearchButton = xpathRootDiv
+				+ "//*[@data-uie-name='go-search']";
 	}
 
 	public static final class Common {

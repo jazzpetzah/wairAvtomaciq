@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android;
 
 import org.junit.Assert;
+import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -12,6 +13,8 @@ import cucumber.api.java.en.When;
 
 public class PeoplePickerPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+    public static String randomConnectName = "";
+
 
 	/**
 	 * Checks to see that the people picker page (search view) is visible
@@ -66,7 +69,6 @@ public class PeoplePickerPageSteps {
 	public void WhenITapOnCreateConversation() throws Throwable {
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.peoplePickerPage
 				.tapCreateConversation();
-		;
 	}
 
 	/**
@@ -340,6 +342,18 @@ public class PeoplePickerPageSteps {
 				.navigateBack();
 	}
 
+	/**
+	 * Tap on Random contact from PYMK
+	 * 
+	 * @step. ^I press \\+ button on a random Connect$
+	 * 
+	 */
+	@When("^I press \\+ button on a random Connect$")
+	public void WhenIPressPlusButtonOnARandomConnect() {
+		WebElement randomConnect = PagesCollection.peoplePickerPage.selectRandomConnect(); 
+		randomConnectName = PagesCollection.peoplePickerPage.pressPlusOnContact(randomConnect);
+	}
+	
 	/**
 	 * @duplicate {@link #WhenISeeUserFoundOnPeoplePickerPage(String)}
 	 * 

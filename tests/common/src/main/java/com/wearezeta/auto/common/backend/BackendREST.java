@@ -12,6 +12,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -44,23 +45,28 @@ final class BackendREST {
 
 	private static void verifyRequestResult(int currentResponseCode,
 			int[] acceptableResponseCodes) throws BackendRequestException {
-		if (acceptableResponseCodes.length > 0) {
-			boolean isResponseCodeAcceptable = false;
-			for (int code : acceptableResponseCodes) {
-				if (code == currentResponseCode) {
-					isResponseCodeAcceptable = true;
-					break;
-				}
-			}
-			if (!isResponseCodeAcceptable) {
-				throw new BackendRequestException(
-						String.format(
-								"Backend request failed. Request return code is: %d. Expected codes are: %s",
-								currentResponseCode,
-								Arrays.toString(acceptableResponseCodes)),
-						currentResponseCode);
+		if (!ArrayUtils.contains(acceptableResponseCodes, currentResponseCode)) {
+			throw new BackendRequestException(
+					String.format(
+							"Backend request failed. Request return code is: %d. Expected codes are: %s",
+							currentResponseCode,
+							Arrays.toString(acceptableResponseCodes)),
+					currentResponseCode);
+		}
+	}
+
+	private static final String EMPTY_LOG_RECORD = "<EMPTY>";
+
+	private static String formatEntity(Object entity) {
+		String result = "<" + entity.getClass().getSimpleName() + ">";
+		if (entity instanceof String) {
+			if (((String) entity).length() == 0) {
+				result = EMPTY_LOG_RECORD;
+			} else {
+				result = entity.toString();
 			}
 		}
+		return result;
 	}
 
 	private static String httpPost(Builder webResource, Object entity,
@@ -70,58 +76,84 @@ final class BackendREST {
 		synchronized (lock) {
 			response = webResource.post(ClientResponse.class, entity);
 		}
-		log.debug("HTTP POST request(Input data: " + entity + ", Response: "
-				+ response.toString() + ")");
+		String responseStr;
+		try {
+			responseStr = response.getEntity(String.class);
+		} catch (UniformInterfaceException e) {
+			responseStr = "";
+		}
+		log.debug(String.format(
+				"POST REQUEST\n >>> Input data: %s\n >>> Response: %s",
+				formatEntity(entity), (responseStr.length() > 0) ? responseStr
+						: EMPTY_LOG_RECORD));
 		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
-		return response.getEntity(String.class);
+		return responseStr;
 	}
 
 	private static String httpPut(Builder webResource, Object entity,
 			int[] acceptableResponseCodes) throws BackendRequestException {
 		ClientResponse response = webResource.put(ClientResponse.class, entity);
-		log.debug("HTTP PUT request(Input data: " + entity + ", Response: "
-				+ response.toString() + ")");
+		String responseStr;
+		try {
+			responseStr = response.getEntity(String.class);
+		} catch (UniformInterfaceException e) {
+			responseStr = "";
+		}
+		log.debug(String.format(
+				"PUT REQUEST\n >>> Input data: %s\n >>> Response: %s",
+				formatEntity(entity), (responseStr.length() > 0) ? responseStr
+						: EMPTY_LOG_RECORD));
 		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
-		return response.getEntity(String.class);
+		return responseStr;
 	}
 
 	private static Object httpGet(Builder webResource, Class<?> entityClass,
 			int[] acceptableResponseCodes) throws BackendRequestException {
 		ClientResponse response = webResource.get(ClientResponse.class);
-		log.debug("HTTP GET request(Response: " + response.toString() + ")");
+		Object responseObj = null;
+		try {
+			responseObj = response.getEntity(entityClass);
+		} catch (UniformInterfaceException e) {
+			// Do nothing
+		}
+		log.debug(String.format("GET REQUEST\n >>> Response Object: <%s>",
+				entityClass.getName()));
 		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
-		return response.getEntity(entityClass);
+		return responseObj;
 	}
 
 	private static String httpGet(Builder webResource,
 			int[] acceptableResponseCodes) throws BackendRequestException {
 		ClientResponse response = webResource.get(ClientResponse.class);
-		log.debug("HTTP GET request(Response: " + response.toString() + ")");
+		String responseStr;
+		try {
+			responseStr = response.getEntity(String.class);
+		} catch (UniformInterfaceException e) {
+			responseStr = "";
+		}
+		log.debug(String.format("GET REQUEST\n >>> Input data: %s",
+				(responseStr.length() > 0) ? responseStr : EMPTY_LOG_RECORD));
 		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
-		return response.getEntity(String.class);
+		return responseStr;
 	}
 
 	private static Builder buildDefaultRequest(String restAction, String accept)
 			throws Exception {
-		return client
-				.resource(String.format("%s/%s", getBaseURI(), restAction))
-				.accept(accept);
+		final String dstUrl = String.format("%s/%s", getBaseURI(), restAction);
+		log.debug(String.format("Making request to %s...", dstUrl));
+		return client.resource(dstUrl).accept(accept);
 	}
 
 	private static Builder buildDefaultRequestWithAuth(String restAction,
 			String accept, AuthToken token) throws Exception {
+		final String dstUrl = String.format("%s/%s", getBaseURI(), restAction);
+		log.debug(String.format("Making request to %s...", dstUrl));
 		return client
-				.resource(String.format("%s/%s", getBaseURI(), restAction))
+				.resource(dstUrl)
 				.accept(accept)
 				.header(HttpHeaders.AUTHORIZATION,
 						String.format("%s %s", token.getType(),
 								token.getValueOrThrowError()));
-	}
-
-	private synchronized static void writeLog(String[] lines) {
-		for (String line : lines) {
-			log.debug(line);
-		}
 	}
 
 	public static JSONObject login(String email, String password)
@@ -134,11 +166,6 @@ final class BackendREST {
 		requestBody.put("label", "");
 		final String output = httpPost(webResource, requestBody.toString(),
 				new int[] { HttpStatus.SC_OK });
-		;
-		writeLog(new String[] {
-				"Output from Server ....  login By User " + email,
-				output + "\n" });
-
 		return new JSONObject(output);
 	}
 
@@ -148,8 +175,6 @@ final class BackendREST {
 				MediaType.APPLICATION_JSON, token);
 		final String output = httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
-		writeLog(new String[] { "Output from Server .... get User Info By Id ",
-				output + "\n" });
 		return new JSONObject(output);
 	}
 
@@ -158,8 +183,6 @@ final class BackendREST {
 				MediaType.APPLICATION_JSON, token);
 		final String output = httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
-		writeLog(new String[] { "Output from Server .... get User Info ",
-				output + "\n" });
 		return new JSONObject(output);
 	}
 
@@ -174,8 +197,6 @@ final class BackendREST {
 		requestBody.put("message", message);
 		final String output = httpPost(webResource, requestBody.toString(),
 				new int[] { HttpStatus.SC_OK, HttpStatus.SC_CREATED });
-		writeLog(new String[] {
-				"Output from Server .... send Connect Request ", output + "\n" });
 		return new JSONObject(output);
 	}
 
@@ -198,8 +219,6 @@ final class BackendREST {
 				MediaType.APPLICATION_JSON, token);
 		final String output = httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
-		writeLog(new String[] {
-				"Output from Server ....  get connection info ", output + "\n" });
 		return new JSONArray(output);
 	}
 
@@ -211,20 +230,12 @@ final class BackendREST {
 				MediaType.APPLICATION_JSON);
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("status", newStatus.toString());
-		String output = "<NO CONTENT>";
-		try {
-			output = httpPut(webResource, requestBody.toString(), new int[] {
-					HttpStatus.SC_OK, HttpStatus.SC_NO_CONTENT });
-		} catch (UniformInterfaceException e) {
-		}
-		writeLog(new String[] {
-				"Output from Server ....  change Connect Request Status ",
-				output + "\n" });
+		httpPut(webResource, requestBody.toString(), new int[] {
+				HttpStatus.SC_OK, HttpStatus.SC_NO_CONTENT });
 	}
 
 	public static JSONObject registerNewUser(String email, String userName,
 			String password) throws Exception {
-		log.debug("Request for 'Register New User'");
 		Builder webResource = buildDefaultRequest("register",
 				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
 		JSONObject requestBody = new JSONObject();
@@ -233,22 +244,15 @@ final class BackendREST {
 		requestBody.put("password", password);
 		final String output = httpPost(webResource, requestBody.toString(),
 				new int[] { HttpStatus.SC_CREATED });
-		writeLog(new String[] { "Output for 'Register New User' - " + email
-				+ "\n\t" + output });
 		return new JSONObject(output);
 	}
 
 	public static void activateNewUser(String key, String code)
 			throws Exception {
-		log.debug("Request for 'User Activation' (key: " + key + "; code: "
-				+ code + ")");
 		Builder webResource = buildDefaultRequest(
 				String.format("activate?code=%s&key=%s", code, key),
 				MediaType.APPLICATION_JSON);
-		final String output = httpGet(webResource,
-				new int[] { HttpStatus.SC_OK });
-		writeLog(new String[] { "Output for 'User Activation'\n\t"
-				+ (output.trim().isEmpty() ? "<EMPTY OUTPUT>" : output) });
+		httpGet(webResource, new int[] { HttpStatus.SC_OK });
 	}
 
 	public static JSONObject createGroupConversation(AuthToken token,
@@ -262,8 +266,6 @@ final class BackendREST {
 				MediaType.APPLICATION_JSON);
 		final String output = httpPost(webResource, requestBody.toString(),
 				new int[] { HttpStatus.SC_CREATED });
-		writeLog(new String[] { "Output for 'Create Group Chat'" + "\n\t"
-				+ output });
 		return new JSONObject(output);
 	}
 
@@ -280,7 +282,6 @@ final class BackendREST {
 					.header("Content-Length", request.getContentLength());
 			final String output = httpPost(webResource, request.getPayload(),
 					new int[] { HttpStatus.SC_CREATED });
-			writeLog(new String[] { "Output from Server ....", output + "\n" });
 			final JSONObject jsonOutput = new JSONObject(output);
 			result.put(jsonOutput, request.getAssetDataObject());
 		}
@@ -308,9 +309,8 @@ final class BackendREST {
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("content", message);
 		requestBody.put("nonce", CommonUtils.generateGUID());
-		final String output = httpPost(webResource, requestBody.toString(),
+		httpPost(webResource, requestBody.toString(),
 				new int[] { HttpStatus.SC_CREATED });
-		writeLog(new String[] { "Output from Server ....\n\t" + output });
 	}
 
 	public static JSONObject sendConversationPing(AuthToken userFromToken,
@@ -323,7 +323,6 @@ final class BackendREST {
 		requestBody.put("nonce", CommonUtils.generateGUID());
 		final String output = httpPost(webResource, requestBody.toString(),
 				new int[] { HttpStatus.SC_OK, HttpStatus.SC_CREATED });
-		writeLog(new String[] { "Ping output from Server .... " + output + "\n" });
 		return new JSONObject(output);
 	}
 
@@ -338,8 +337,6 @@ final class BackendREST {
 		requestBody.put("nonce", CommonUtils.generateGUID());
 		final String output = httpPost(webResource, requestBody.toString(),
 				new int[] { HttpStatus.SC_OK, HttpStatus.SC_CREATED });
-		writeLog(new String[] { "Hot Ping output from Server .... " + output
-				+ "\n" });
 		return new JSONObject(output);
 	}
 
@@ -349,7 +346,6 @@ final class BackendREST {
 				MediaType.APPLICATION_JSON, token);
 		final String output = httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
-		writeLog(new String[] { "Output for 'Get Conversations' \n\t" + output });
 		return new JSONObject(output);
 	}
 
@@ -360,9 +356,6 @@ final class BackendREST {
 				MediaType.APPLICATION_JSON, token);
 		final String output = httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
-		writeLog(new String[] {
-				"Output from Server .... get Events of Conversation ",
-				output + "\n" });
 		return new JSONObject(output);
 	}
 
@@ -372,8 +365,6 @@ final class BackendREST {
 				MediaType.APPLICATION_JSON, token);
 		final String output = httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
-		writeLog(new String[] { "Output from Server .... get Last Event ID's ",
-				output + "\n" });
 		return new JSONObject(output);
 	}
 
@@ -398,9 +389,6 @@ final class BackendREST {
 		final BufferedImage assetDownload = (BufferedImage) httpGet(
 				webResource, BufferedImage.class,
 				new int[] { HttpStatus.SC_OK });
-		writeLog(new String[] {
-				"Output from Server .... get Asset Download URL ",
-				"ASSET PIC: " + assetDownload + "\n" });
 		return assetDownload;
 	}
 
@@ -454,10 +442,8 @@ final class BackendREST {
 		if (name != null) {
 			requestBody.put("name", name);
 		}
-		final String output = httpPut(webResource, requestBody.toString(),
+		httpPut(webResource, requestBody.toString(),
 				new int[] { HttpStatus.SC_OK });
-		writeLog(new String[] { "Output from Server .... Update Self Info ",
-				output });
 	}
 
 	public static void updateConvSelfInfo(AuthToken token, String convId,
@@ -482,23 +468,20 @@ final class BackendREST {
 				requestBody.put("archived", "false");
 			}
 		}
-		final String output = httpPut(webResource, requestBody.toString(),
-				new int[] { HttpStatus.SC_OK, HttpStatus.SC_CREATED });
-		writeLog(new String[] { "Output from Server .... Update conversation self info "
-				+ output + "\n" });
+		httpPut(webResource, requestBody.toString(), new int[] {
+				HttpStatus.SC_OK, HttpStatus.SC_CREATED });
 	}
 
 	public static JSONObject searchForContacts(AuthToken token, String query)
 			throws Exception {
+		// Changed this to make it look the same as in webapp
 		Builder webResource = buildDefaultRequestWithAuth(
-				String.format("search/contacts?q=%s",
+				String.format("search/contacts?q=%s&size=30&l=3&d=1",
 						URLEncoder.encode(query, "utf-8")),
 				MediaType.APPLICATION_JSON, token).type(
 				MediaType.APPLICATION_JSON);
 		final String output = httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
-		writeLog(new String[] { "Output from Server .... Search for contacts "
-				+ output + "\n" });
 		return new JSONObject(output);
 	}
 
@@ -517,8 +500,6 @@ final class BackendREST {
 		requestBody.put("users", userIds);
 		final String output = httpPost(webResource, requestBody.toString(),
 				new int[] { HttpStatus.SC_OK, HttpStatus.SC_NO_CONTENT });
-		writeLog(new String[] { "Output from Server .... Add contacts to group convo "
-				+ output + "\n" });
 		return new JSONObject(output);
 	}
 
@@ -529,8 +510,6 @@ final class BackendREST {
 				MediaType.APPLICATION_JSON);
 		final String output = httpPost(webResource, addressBook.asJSONObject()
 				.toString(), new int[] { HttpStatus.SC_OK });
-		writeLog(new String[] { "Output from Server .... Upload Address Book v3 "
-				+ output + "\n" });
 		return new JSONObject(output);
 	}
 
@@ -540,8 +519,6 @@ final class BackendREST {
 				MediaType.APPLICATION_JSON);
 		final String output = httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
-		writeLog(new String[] { "Output from Server .... Get Suggestions "
-				+ output + "\n" });
 		return new JSONObject(output);
 	}
 

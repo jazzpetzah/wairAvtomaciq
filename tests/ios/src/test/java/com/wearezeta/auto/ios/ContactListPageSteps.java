@@ -98,11 +98,15 @@ public class ContactListPageSteps {
 	@When("^I swipe down contact list$")
 	public void ISwipeDownContactList() throws Throwable {
 		if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
-			PagesCollection.peoplePickerPage = (PeoplePickerPage) PagesCollection.contactListPage
+			IOSPage page = PagesCollection.contactListPage
 					.swipeDown(500);
+			PagesCollection.peoplePickerPage = (PeoplePickerPage) page;
+			PagesCollection.iOSPage = page;
 		} else {
-			PagesCollection.peoplePickerPage = (PeoplePickerPage) PagesCollection.contactListPage
+			IOSPage page = PagesCollection.contactListPage
 					.swipeDownSimulator();
+			PagesCollection.peoplePickerPage = (PeoplePickerPage) page;
+			PagesCollection.iOSPage = page;
 		}
 	}
 
@@ -465,9 +469,46 @@ public class ContactListPageSteps {
 		boolean noUnreadDotSeen = PagesCollection.contactListPage
 				.unreadDotIsVisible(false, false, conversation);
 		Assert.assertTrue("No unread dot visible.", noUnreadDotSeen);
-
 	}
 
+	/**
+	 * Verifies that a ping symbol is seen in the conversation list
+	 * 
+	 * @step. ^I see ping symbol for (.*)$
+	 * 
+	 * @param conversation
+	 *            conversation name to check for ping
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@Then("^I see ping symbol for (.*)$")
+	public void ISeePingSymbol(String conversation)
+			throws Exception {
+		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
+		boolean pingSymbolPresent = PagesCollection.contactListPage.pingIsVisible(true, false, conversation);
+		Assert.assertTrue("No ping symbol visible.", pingSymbolPresent);
+	}
+	
+	/**
+	 * Verifies that a hotping symbol is seen in the conversation list
+	 * 
+	 * @step. ^I see hotping symbol for (.*)$
+	 * 
+	 * @param conversation
+	 *            conversation name to check for ping
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@Then("^I see hotping symbol for (.*)$")
+	public void ISeeHotPingSymbol(String conversation)
+			throws Exception {
+		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
+		boolean pingSymbolPresent = PagesCollection.contactListPage.pingIsVisible(true, true, conversation);
+		Assert.assertTrue("No hotping symbol visible.", pingSymbolPresent);
+	}
+	
 	/**
 	 * Doing a long right swipe to archive the conversation immediately
 	 * 
@@ -480,6 +521,44 @@ public class ContactListPageSteps {
 	public void ILongSwipeRightToArchiveConversation(String conversation) throws Exception {
 		conversation = usrMgr.replaceAliasesOccurences(conversation, FindBy.NAME_ALIAS);
 		PagesCollection.contactListPage.longSwipeRightOnContact(1000, conversation);
+	}
+	
+	/**
+	 * Verify that missed call indicator is seen in conversation list
+	 * 
+	 * @step. ^I see missed call indicator in list for contact (.*)$
+	 * @param contact
+	 *            the missed call is from
+	 * @throws NoSuchUserException
+	 * @throws IOException 
+	 */
+	@Then("^I see missed call indicator in list for contact (.*)$")
+	public void ISeeMissedCallIndicatorInListForContact(String contact)
+			throws NoSuchUserException, IOException {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		boolean missedCallSeen = PagesCollection.contactListPage.missedCallIndicatorIsVisible(true,contact);
+		Assert.assertTrue("No missed call indicator visible.", missedCallSeen);
+	}
+	
+	/**
+	 * Verify that missed call indicator got moved down and is still seen in
+	 * conversation list
+	 * 
+	 * @step. ^I see missed call indicator got moved down in list for contact
+	 *        (.*)$
+	 * @param contact
+	 *            the missed call is from
+	 * @throws NoSuchUserException
+	 * @throws IOException
+	 */
+	@Then("^I see missed call indicator got moved down in list for contact (.*)$")
+	public void ISeeMissedCallIndicatorGotMovedDownInListForContact(
+			String contact) throws NoSuchUserException, IOException {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		boolean missedCallSeen = PagesCollection.contactListPage
+				.missedCallIndicatorIsVisible(false, contact);
+		Assert.assertTrue("No missed call indicator visible.", missedCallSeen);
+
 	}
 
 }

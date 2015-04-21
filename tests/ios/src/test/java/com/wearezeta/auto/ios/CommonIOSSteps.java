@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import com.wearezeta.auto.common.CommonCallingSteps;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.Platform;
@@ -15,7 +16,6 @@ import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.pages.IOSPage;
-import com.wearezeta.auto.ios.pages.IncomingCallPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
@@ -89,11 +89,14 @@ public class CommonIOSSteps {
 	}
 
 	private void commonBefore(ZetaIOSDriver driver) throws Exception {
-		// if (PagesCollection.loginPage != null
-		// && PagesCollection.loginPage.getDriver().isSessionLost()) {
-		// log.info("Session was lost, reseting pages collection");
-		// IOSPage.clearPagesCollection();
-		// }
+		try {
+			// async calls/waiting instances cleanup
+			CommonCallingSteps.getInstance().cleanupWaitingInstances();
+			CommonCallingSteps.getInstance().cleanupCalls();
+		} catch (Exception e) {
+			// do not fail if smt fails here
+			e.printStackTrace();
+		}
 
 		ZetaFormatter.setBuildNumber(IOSCommonUtils
 				.readClientVersionFromPlist().getClientBuildNumber());
@@ -348,36 +351,6 @@ public class CommonIOSSteps {
 		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query,
 				timeout);
 	}
-	
-	/**
-	 * Start a call using autocall tool
-	 * 
-	 * @step. ^Contact (.*) calls to conversation (.*)$
-	 * @param starterNameAlias
-	 * 		user who will start a call
-	 * @param destinationNameAlias
-	 * 		user who will receive a call
-	 * @throws Exception
-	 */
-	@When("^Contact (.*) calls to conversation (.*)$")
-	public void ContactCallsToConversation(String starterNameAlias, String destinationNameAlias) throws Exception {
-		commonSteps.UserCallsToConversation(starterNameAlias, destinationNameAlias);
-		PagesCollection.callPage = new IncomingCallPage(PagesCollection.loginPage.getDriver(), 
-					PagesCollection.loginPage.getWait());
-	}
-	
-	/**
-	 * End current call initiated by autocall tool
-	 * 
-	 * @step. ^Current call is ended$
-	 * 		
-	 * @throws Exception
-	 */
-	@When("^Current call is ended$")
-	public void EndCurrectCall() throws Exception {
-		commonSteps.StopCurrentCall();
-		Thread.sleep(1000);
-	}
 
 	@When("^Contact (.*) sends image (.*) to (.*) conversation (.*)")
 	public void ContactSendImageToConversation(String imageSenderUserNameAlias,
@@ -400,6 +373,15 @@ public class CommonIOSSteps {
 
 	@After
 	public void tearDown() throws Exception {
+		try {
+			// async calls/waiting instances cleanup
+			CommonCallingSteps.getInstance().cleanupWaitingInstances();
+			CommonCallingSteps.getInstance().cleanupCalls();
+		} catch (Exception e) {
+			// do not fail if smt fails here
+			e.printStackTrace();
+		}
+
 		IOSPage.clearPagesCollection();
 		IOSKeyboard.dispose();
 

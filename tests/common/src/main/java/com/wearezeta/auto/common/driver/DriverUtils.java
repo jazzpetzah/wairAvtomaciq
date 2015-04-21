@@ -23,6 +23,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -34,7 +35,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
-import com.google.common.base.Function;
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -79,21 +79,21 @@ public class DriverUtils {
 
 	public static boolean isElementDisplayed(RemoteWebDriver driver,
 			final By by, int timeoutSeconds) throws Exception {
-		if (waitUntilElementAppears(driver, by, timeoutSeconds)) {
+		turnOffImplicitWait(driver);
+		try {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-					.withTimeout(timeoutSeconds / 2 + 1, TimeUnit.SECONDS)
+					.withTimeout(timeoutSeconds, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS);
 			try {
-				return wait.until(new Function<WebDriver, Boolean>() {
-					public Boolean apply(WebDriver driver) {
-						return driver.findElement(by).isDisplayed();
-					}
+				return wait.until(drv -> {
+					return (drv.findElements(by).size() > 0)
+							&& drv.findElement(by).isDisplayed();
 				});
 			} catch (TimeoutException e) {
 				return false;
 			}
-		} else {
-			return false;
+		} finally {
+			setDefaultImplicitWait(driver);
 		}
 	}
 
@@ -112,10 +112,13 @@ public class DriverUtils {
 					.withTimeout(timeout, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
 					.ignoring(NoSuchElementException.class);
-
-			return wait.until(new Function<WebDriver, Boolean>() {
-				public Boolean apply(WebDriver driver) {
-					return (driver.findElements(by).size() == 0);
+			return wait.until(drv -> {
+				try {
+					return (drv.findElements(by).size() == 0)
+							|| (drv.findElements(by).size() > 0 && !drv
+									.findElement(by).isDisplayed());
+				} catch (StaleElementReferenceException e) {
+					return true;
 				}
 			});
 		} catch (TimeoutException ex) {
@@ -133,11 +136,8 @@ public class DriverUtils {
 					.withTimeout(timeout, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
 					.ignoring(NoSuchElementException.class);
-
-			return wait.until(new Function<WebDriver, Boolean>() {
-				public Boolean apply(WebDriver driver) {
-					return (driver.findElements(locator).size() > 0);
-				}
+			return wait.until(drv -> {
+				return (drv.findElements(locator).size() > 0);
 			});
 		} catch (TimeoutException ex) {
 			return false;
@@ -188,16 +188,11 @@ public class DriverUtils {
 					.withTimeout(timeout, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
 					.ignoring(NoSuchElementException.class);
-
-			return wait.until(new Function<WebDriver, Boolean>() {
-				@Override
-				public Boolean apply(WebDriver t) {
-					return String
-							.valueOf(
-									((JavascriptExecutor) driver)
-											.executeScript("return document.readyState"))
-							.equals("complete");
-				}
+			return wait.until(drv -> {
+				return String.valueOf(
+						((JavascriptExecutor) drv)
+								.executeScript("return document.readyState"))
+						.equals("complete");
 			});
 		} catch (TimeoutException e) {
 			return false;
@@ -376,7 +371,7 @@ public class DriverUtils {
 	}
 
 	public static final int DEFAULT_PERCENTAGE = 50;
-	public static final int DEFAULT_TIME = 500; //milliseconds
+	public static final int DEFAULT_TIME = 500; // milliseconds
 	public static final int DEFAULT_FINGERS = 1;
 
 	public static void genericTap(AppiumDriver driver) {
@@ -397,8 +392,8 @@ public class DriverUtils {
 	public static void genericTap(AppiumDriver driver, int time, int fingers,
 			int percentX, int percentY) {
 		final Dimension screenSize = driver.manage().window().getSize();
-		final int xCoords = (int) Math
-				.round(screenSize.width * (percentX / 100.0));
+		final int xCoords = (int) Math.round(screenSize.width
+				* (percentX / 100.0));
 		final int yCoords = (int) Math.round(screenSize.height
 				* (percentY / 100.0));
 		try {

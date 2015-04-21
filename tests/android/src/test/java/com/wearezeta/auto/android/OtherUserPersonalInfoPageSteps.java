@@ -70,7 +70,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I click Remove$")
 	public void WhenIClickRemove() throws Throwable {
-		PagesCollection.otherUserPersonalInfoPage.clickBlockBtn();
+		PagesCollection.otherUserPersonalInfoPage.pressRightConversationButton();
 	}
 
 	/**
@@ -391,5 +391,20 @@ public class OtherUserPersonalInfoPageSteps {
 	public void ThenIReturnToGroupChatPage() throws Throwable {
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.otherUserPersonalInfoPage
 				.tabBackButton();
+	}
+	
+	/**
+	 * Renames a group conversation by first tapping on the participants header and then sending the message to the text input field
+	 * 
+	 * @step. ^I rename group conversation to (.*)$
+	 * 
+	 * @param newConversationName
+	 * 			the new conversation name
+	 * @throws Throwable
+	 */
+	@Then("^I rename group conversation to (.*)$")
+	public void ThenIRenameGroupConversationTo(String newConversationName) throws Throwable {
+		PagesCollection.otherUserPersonalInfoPage.tapOnParticipantsHeader();
+		PagesCollection.otherUserPersonalInfoPage.renameGroupChat(newConversationName);
 	}
 }

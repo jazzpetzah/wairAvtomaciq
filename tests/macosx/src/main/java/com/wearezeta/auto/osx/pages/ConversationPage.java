@@ -8,11 +8,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
-
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.jboss.netty.handler.timeout.TimeoutException;
 import org.junit.Assert;
@@ -30,12 +25,29 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
+import com.wearezeta.auto.osx.common.OSXConstants;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.util.NSPoint;
 
 public class ConversationPage extends MainWirePage {
+
 	private static final Logger log = ZetaLogger.getLog(ConversationPage.class
 			.getSimpleName());
+
+	@FindBy(how = How.ID, using = OSXLocators.ConversationPage.idConversationScrollArea)
+	private WebElement conversationScrollArea;
+
+	@FindBy(how = How.ID, using = OSXLocators.ConversationPage.idOpenPeoplePopoverButton)
+	private WebElement peoplePopoverButton;
+
+	@FindBy(how = How.ID, using = OSXLocators.ConversationPage.idSendImageButton)
+	private WebElement sendImageButton;
+
+	@FindBy(how = How.ID, using = OSXLocators.ConversationPage.idPingButton)
+	private WebElement pingButton;
+
+	@FindBy(how = How.ID, using = OSXLocators.ConversationPage.idCallButton)
+	private WebElement callButton;
 
 	static final String SOUNDCLOUD_BUTTON_ATT_TITLE = "AXDescription";
 	static final String SOUNDCLOUD_BUTTON_ATT_TITLE_9 = "AXTitle";
@@ -54,12 +66,6 @@ public class ConversationPage extends MainWirePage {
 	@FindBy(how = How.NAME, using = OSXLocators.namePingAgainMenuItem)
 	private WebElement pingAgainMenuItem;
 
-	@FindBy(how = How.ID, using = OSXLocators.idAddImageButton)
-	private WebElement addImageButton;
-
-	@FindBy(how = How.ID, using = OSXLocators.idPeopleButton)
-	private WebElement peopleButton;
-
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathSoundCloudLinkButton)
 	private List<WebElement> soundCloudButtons;
 
@@ -77,12 +83,21 @@ public class ConversationPage extends MainWirePage {
 	@FindBy(how = How.ID, using = OSXLocators.idMediaBarTitelButton)
 	private WebElement mediabarBarTitle;
 
-	@FindBy(how = How.XPATH, using = OSXLocators.xpathConversationViewScrollArea)
-	private WebElement conversationView;
+	public String currentConversationName;
 
 	public ConversationPage(ZetaOSXDriver driver, WebDriverWait wait)
 			throws Exception {
+		this(driver, wait, null);
+	}
+
+	public ConversationPage(ZetaOSXDriver driver, WebDriverWait wait,
+			String conversationName) throws Exception {
 		super(driver, wait);
+		this.currentConversationName = conversationName;
+	}
+
+	public void focusOnConversation() {
+		conversationScrollArea.click();
 	}
 
 	public WebElement findNewMessageTextArea() {
@@ -171,27 +186,12 @@ public class ConversationPage extends MainWirePage {
 		newMessageTextArea.submit();
 	}
 
-	public void openConversationPeoplePicker() {
-		peopleButton.click();
+	public void openPeoplePopover() {
+		peoplePopoverButton.click();
 	}
 
 	public void openChooseImageDialog() throws IOException {
-		log.debug("Open choose image dialog for conversation");
-		addImageButton.click();
-	}
-
-	public void shortcutChooseImageDialog() throws ScriptException {
-		final String[] scriptArr = new String[] {
-				"property bi : \"com.wearezeta.zclient.mac.development\"",
-				"tell application id bi",
-				"activate",
-				"tell application \"System Events\" to keystroke \"p\" using {command down, shift down}",
-				"end tell" };
-
-		final String script = StringUtils.join(scriptArr, "\n");
-		ScriptEngineManager mgr = new ScriptEngineManager();
-		ScriptEngine engine = mgr.getEngineByName("AppleScript");
-		engine.eval(script);
+		sendImageButton.click();
 	}
 
 	public int getNumberOfYouPingedMessages(String xpath) {
@@ -260,12 +260,13 @@ public class ConversationPage extends MainWirePage {
 
 	public void scrollDownTillMediaBarAppears() throws Exception {
 		NSPoint mediaBarPosition = NSPoint.fromString(mediabarBarTitle
-				.getAttribute("AXPosition"));
-		NSPoint conversationPosition = NSPoint.fromString(conversationView
-				.getAttribute("AXPosition"));
+				.getAttribute(OSXConstants.Attributes.AXPOSITION));
+		NSPoint conversationPosition = NSPoint
+				.fromString(conversationScrollArea
+						.getAttribute(OSXConstants.Attributes.AXPOSITION));
 
 		NSPoint windowSize = NSPoint.fromString(window
-				.getAttribute("AXSize"));
+				.getAttribute(OSXConstants.Attributes.AXSIZE));
 		log.debug("Window size: " + windowSize);
 
 		log.debug("Window position: " + conversationPosition);
@@ -275,7 +276,7 @@ public class ConversationPage extends MainWirePage {
 		WebElement conversationDecrementSB = null;
 
 		WebElement scrollArea = driver.findElement(By
-				.id(OSXLocators.idConversationScrollArea));
+				.id(OSXLocators.ConversationPage.idConversationScrollArea));
 
 		if (mediaBarPosition.y() < conversationPosition.y()) {
 			WebElement scrollBar = scrollArea.findElement(By
@@ -293,7 +294,7 @@ public class ConversationPage extends MainWirePage {
 			while (mediaBarPosition.y() < conversationPosition.y()) {
 				conversationDecrementSB.click();
 				mediaBarPosition = NSPoint.fromString(mediabarBarTitle
-						.getAttribute("AXPosition"));
+						.getAttribute(OSXConstants.Attributes.AXPOSITION));
 				log.debug("Current media bar position: " + mediaBarPosition);
 				log.debug("Media play state: " + getSoundCloudButtonState());
 				long endDate = new Date().getTime();
@@ -311,8 +312,9 @@ public class ConversationPage extends MainWirePage {
 		int lastPosition = 0;
 		for (WebElement group : groups) {
 			NSPoint position = NSPoint.fromString(group
-					.getAttribute("AXPosition"));
-			NSPoint size = NSPoint.fromString(group.getAttribute("AXSize"));
+					.getAttribute(OSXConstants.Attributes.AXPOSITION));
+			NSPoint size = NSPoint.fromString(group
+					.getAttribute(OSXConstants.Attributes.AXSIZE));
 			if (position == null || size == null) {
 				log.debug("Can't get position or size for current element. Position: "
 						+ position + ", size: " + size);
@@ -327,13 +329,13 @@ public class ConversationPage extends MainWirePage {
 		}
 
 		NSPoint textInputPosition = NSPoint.fromString(newMessageTextArea
-				.getAttribute("AXPosition"));
+				.getAttribute(OSXConstants.Attributes.AXPOSITION));
 
 		// get scrollbar for conversation view
 		WebElement conversationIncrementSB = null;
 
 		WebElement scrollArea = driver.findElement(By
-				.id(OSXLocators.idConversationScrollArea));
+				.id(OSXLocators.ConversationPage.idConversationScrollArea));
 
 		if (lastGroupPosition == null || textInputPosition == null) {
 			log.debug("No scroll, last group were not found.");
@@ -356,7 +358,7 @@ public class ConversationPage extends MainWirePage {
 			while (lastGroupPosition.y() > textInputPosition.y()) {
 				conversationIncrementSB.click();
 				lastGroupPosition = NSPoint.fromString(lastGroup
-						.getAttribute("AXPosition"));
+						.getAttribute(OSXConstants.Attributes.AXPOSITION));
 				long endDate = new Date().getTime();
 				if (endDate - startDate > TIMEOUT_MINUTES * 60 * 1000)
 					break;
@@ -379,14 +381,15 @@ public class ConversationPage extends MainWirePage {
 	public String getLastConversationNameChangeMessage() {
 		WebElement el = driver.findElement(By
 				.xpath(OSXLocators.xpathConversationLastNewNameEntry));
-		return el.getAttribute("AXValue");
+		return el.getAttribute(OSXConstants.Attributes.AXVALUE);
 	}
 
 	public boolean isMediaBarVisible() {
 		NSPoint mediaBarPosition = NSPoint.fromString(mediabarBarTitle
-				.getAttribute("AXPosition"));
-		NSPoint conversationPosition = NSPoint.fromString(conversationView
-				.getAttribute("AXPosition"));
+				.getAttribute(OSXConstants.Attributes.AXPOSITION));
+		NSPoint conversationPosition = NSPoint
+				.fromString(conversationScrollArea
+						.getAttribute(OSXConstants.Attributes.AXPOSITION));
 		if (mediaBarPosition.y() >= conversationPosition.y())
 			return true;
 		else
@@ -400,7 +403,7 @@ public class ConversationPage extends MainWirePage {
 		try {
 			WebElement el = driver.findElement(By
 					.xpath(OSXLocators.xpathSoundCloudCurrentPlaybackTime));
-			time = el.getAttribute("AXValue");
+			time = el.getAttribute(OSXConstants.Attributes.AXVALUE);
 		} catch (NoSuchElementException e) {
 			log.error("No element that contains playback time");
 		}
@@ -485,11 +488,12 @@ public class ConversationPage extends MainWirePage {
 
 	public void dragPictureToConversation(String picture) throws Exception {
 		WebElement target = driver.findElement(By
-				.id(OSXLocators.idConversationScrollArea));
+				.id(OSXLocators.ConversationPage.idConversationScrollArea));
 
 		NSPoint targetLocation = NSPoint.fromString(target
-				.getAttribute("AXPosition"));
-		NSPoint targetSize = NSPoint.fromString(target.getAttribute("AXSize"));
+				.getAttribute(OSXConstants.Attributes.AXPOSITION));
+		NSPoint targetSize = NSPoint.fromString(target
+				.getAttribute(OSXConstants.Attributes.AXSIZE));
 
 		int xLoc = targetLocation.x() + targetSize.x() / 2;
 		int yLoc = targetLocation.y() + targetSize.y() / 2;
@@ -499,7 +503,7 @@ public class ConversationPage extends MainWirePage {
 				+ "to {0, 0, " + (xLoc - 20) + ", " + (yLoc - 20) + "}";
 		driver.executeScript(scr0);
 
-		driver.navigate().to("Finder");
+		driver.navigate().to(OSXConstants.Apps.FINDER);
 		try {
 			WebElement element = driver.findElement(By.name(picture));
 			Actions builder = new Actions(driver);
@@ -513,5 +517,13 @@ public class ConversationPage extends MainWirePage {
 					.to(CommonUtils
 							.getOsxApplicationPathFromConfig(ConversationPage.class));
 		}
+	}
+
+	public String getCurrentConversationName() {
+		return currentConversationName;
+	}
+
+	public void setCurrentConversationName(String name) {
+		currentConversationName = name;
 	}
 }

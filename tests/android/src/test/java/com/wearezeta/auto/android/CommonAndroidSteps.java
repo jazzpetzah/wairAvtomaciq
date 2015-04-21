@@ -18,8 +18,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.AndroidPage;
+import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.android.pages.LoginPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
+import com.wearezeta.auto.common.CommonCallingSteps;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.GenerateWebLink;
@@ -167,6 +169,15 @@ public class CommonAndroidSteps {
 
 	public void commonBefore() throws Exception {
 		try {
+			// async calls/waiting instances cleanup
+			CommonCallingSteps.getInstance().cleanupWaitingInstances();
+			CommonCallingSteps.getInstance().cleanupCalls();
+		} catch (Exception e) {
+			// do not fail if smt fails here
+			e.printStackTrace();
+		}
+
+		try {
 			AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
 		} catch (Exception ex) {
 			System.out.println("Failed to deploy pictures into simulator");
@@ -205,6 +216,19 @@ public class CommonAndroidSteps {
 	}
 
 	/**
+	 * Opens the Browser app
+	 * 
+	 * @step. ^I open the native browser application$
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I open the native browser application$")
+	public void IOpenBrowserApp() throws Exception {
+		AndroidCommonUtils.openBroswerApplication();
+	}
+
+	/**
 	 * Opens the gallery application (com.google.android.gallery3d)
 	 * 
 	 * @step. ^I open the gallery application$
@@ -212,14 +236,15 @@ public class CommonAndroidSteps {
 	 * @throws Exception
 	 * 
 	 */
-	
+
 	@When("^I open the gallery application$")
 	public void IOpenGalleryApp() throws Exception {
 		AndroidCommonUtils.openGalleryApplication();
 	}
 
 	/**
-	 * Opens the gallery application and shares the default photo to wire (com.google.android.gallery3d)
+	 * Opens the gallery application and shares the default photo to wire
+	 * (com.google.android.gallery3d)
 	 * 
 	 * @step. ^I share image from Gallery to Wire$
 	 * 
@@ -231,7 +256,28 @@ public class CommonAndroidSteps {
 		IOpenGalleryApp();
 		PagesCollection.contactListPage.shareImageToWireFromGallery();
 	}
-	
+
+	/**
+	 * Opens the Browser app and shares the URL to wire (http://www.google.com)
+	 * 
+	 * @step. ^I share URL from native browser app to Wire with contact (.*)$
+	 * 
+	 * @param name
+	 *            name of contact to share URL with
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I share URL from native browser app to Wire with contact (.*)$")
+	public void IShareURLBrowserApp(String name) throws Exception {
+		IOpenBrowserApp();
+		PagesCollection.contactListPage.shareURLFromNativeBrowser();
+		if (PagesCollection.dialogPage == null) {
+			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
+		}
+		Thread.sleep(5000);
+		PagesCollection.dialogPage.sendMessageInInput();
+	}
+
 	/**
 	 * Takes screenshot for comparison
 	 * 
@@ -244,7 +290,7 @@ public class CommonAndroidSteps {
 	public void WhenITake1stScreenshot() throws IOException {
 		images.add(PagesCollection.loginPage.takeScreenshot());
 	}
-	
+
 	/**
 	 * Taps on the center of the screen
 	 * 
@@ -736,6 +782,15 @@ public class CommonAndroidSteps {
 
 	@After
 	public void tearDown() throws Exception {
+		try {
+			// async calls/waiting instances cleanup
+			CommonCallingSteps.getInstance().cleanupWaitingInstances();
+			CommonCallingSteps.getInstance().cleanupCalls();
+		} catch (Exception e) {
+			// do not fail if smt fails here
+			e.printStackTrace();
+		}
+
 		AndroidPage.clearPagesCollection();
 
 		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
@@ -788,6 +843,7 @@ public class CommonAndroidSteps {
 	 * 			the email associated to the account
 	 * @throws Exception
 	 */
+
 	@When("^I request reset password for (.*)$")
 	public void WhenIRequestResetPassword(String email) throws Exception {
 		try {
