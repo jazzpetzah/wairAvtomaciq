@@ -2,8 +2,11 @@ package com.wearezeta.auto.ios.pages;
 
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -78,6 +81,9 @@ public class PeoplePickerPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameInstantConnectButton)
 	private WebElement instantConnectButton;
 	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathSearchResultCell)
+	private WebElement searchResultCell;
+	
 
 	private int numberTopSelected = 0;
 
@@ -117,16 +123,19 @@ public class PeoplePickerPage extends IOSPage {
 	public double checkAvatarClockIcon(String name) throws Exception {
 		String path = null;
 		BufferedImage clockImage = getAvatarClockIconScreenShot(name);
-		path = CommonUtils.getAvatarWithClockIconPathIOS(GroupChatPage.class);
-		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
-		return ImageUtil.getOverlapScore(clockImage, templateImage);
+		//path = CommonUtils.getAvatarWithClockIconPathIOS(GroupChatPage.class);
+		//BufferedImage templateImage = ImageUtil.readImageFromFile(path);
+		//return ImageUtil.getOverlapScore(clockImage, templateImage);
+		File outputfile = new File("new_avatarclock.png");
+		ImageIO.write(clockImage, "png", outputfile);
+		return 0.0;
+		}
 
-	}
-
-	public BufferedImage getAvatarClockIconScreenShot(String name)
-			throws IOException {
-		return getElementScreenshot(driver.findElement(By.name(name)));
-	}
+		public BufferedImage getAvatarClockIconScreenShot(String name)
+		throws IOException {
+		//return getElementScreenshot(driver.findElement(By.name(name)));
+		return getScreenshotByCoordinates(searchResultCell.getLocation().x, searchResultCell.getLocation().y, searchResultCell.getSize().width, searchResultCell.getSize().height);
+		}
 
 	public void fillTextInPeoplePickerSearch(String text) {
 		peoplePickerSearch.sendKeys(text);
