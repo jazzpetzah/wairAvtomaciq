@@ -5,8 +5,8 @@ Feature: Performance Tests
     Given There are <UsersNumber> shared users with name prefix <UserNamePrefix>
     Given User <Name> is Me
     Given Myself is connected to all other users
-    And I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I Sign in using login <Login> and password <Password>
+    Given I see Contact list with my name <Name>
     When I start test cycle for <Time> minutes
     Then I generate performance report
 

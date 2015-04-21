@@ -5,7 +5,7 @@ Feature: Sign Out
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I tap options button
     And I tap sign out button

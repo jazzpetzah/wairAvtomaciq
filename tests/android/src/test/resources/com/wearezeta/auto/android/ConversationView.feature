@@ -5,7 +5,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
@@ -21,7 +21,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe on text input
@@ -37,7 +37,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe on text input
@@ -55,7 +55,7 @@ Feature: Conversation View
     Given There are 3 users where <Name> is me
     Given <Name> is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
     And I swipe up on dialog page
@@ -82,7 +82,7 @@ Feature: Conversation View
     Given <Name> is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I tap on contact name <GroupChatName>
     And I see dialog page
     And I tap on text input
@@ -98,7 +98,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
@@ -114,7 +114,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
@@ -130,7 +130,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
@@ -146,7 +146,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
@@ -162,7 +162,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
@@ -178,7 +178,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe on text input
@@ -197,7 +197,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe on text input
@@ -217,7 +217,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe on text input
@@ -251,7 +251,7 @@ Feature: Conversation View
     Given There are 3 users where <Name> is me
     Given <Name> is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
     And Contact <Contact1> send message to user <Name>
@@ -289,7 +289,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I share image from Gallery to Wire
     Then I see new photo in the dialog
@@ -303,7 +303,7 @@ Feature: Conversation View
     Given There is 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     And I tap on contact name <Contact>
     And I share URL from native browser app to Wire with contact <Contact>
     And I see URL in the dialog

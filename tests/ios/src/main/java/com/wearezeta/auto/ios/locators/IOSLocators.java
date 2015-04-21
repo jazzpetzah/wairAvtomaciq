@@ -167,6 +167,12 @@ public final class IOSLocators {
 	public static final String nameLeaveConversationButton = "LEAVE";
 	
 	public static final String nameYouHaveLeft = "YOU HAVE LEFT";
+	
+	public static final String nameSilenceConversationButton = "SILENCE";
+	
+	public static final String xpathSilenceConversationButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAButton[@name='SILENCE']";
+	
+	public static final String nameUnsilenceConversationButton = "NOTIFY";
     
     public static final String nameComfirmRemoveButton = "REMOVE";
 

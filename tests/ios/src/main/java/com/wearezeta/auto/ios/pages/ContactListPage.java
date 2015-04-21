@@ -393,7 +393,35 @@ public class ContactListPage extends IOSPage {
 		DriverUtils.clickSilenceConversationButton(this.getDriver(), contact);
 	}
 
-	public boolean isConversationSilenced(String conversation) throws Exception {
+	public boolean isConversationSilenced(String conversation, boolean isSilenced) throws Exception {
+		String deviceType = CommonUtils.getDeviceName(this.getClass());
+		BufferedImage silencedConversation = null;
+		BufferedImage referenceImage = null;
+		WebElement element = findCellInContactList(conversation);
+		silencedConversation = CommonUtils.getElementScreenshot(element,
+				this.getDriver(), CommonUtils.getDeviceName(this.getClass()));
+		if (deviceType.equals("iPhone 6 Plus") && isSilenced) {
+			referenceImage = ImageUtil.readImageFromFile(IOSPage
+					.getImagesPath() + "silenceiPhone6plus.png");
+		} else if (deviceType.equals("iPhone 6 Plus") && !isSilenced) {
+			referenceImage = ImageUtil.readImageFromFile(IOSPage
+					.getImagesPath() + "verifyUnsilenceIphone6plus.png");
+		} else if (deviceType.equals("iPhone 6") && isSilenced){
+			referenceImage = ImageUtil.readImageFromFile(IOSPage
+					.getImagesPath() + "silenceTestIphone6.png");
+		} else if (deviceType.equals("iPhone 6") && !isSilenced){
+			referenceImage = ImageUtil.readImageFromFile(IOSPage
+					.getImagesPath() + "verifyUnsilenceTestIphone6.png");
+		}
+		double score = ImageUtil.getOverlapScore(silencedConversation,
+				referenceImage, 0);
+		if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean isConversationSilencedBefore(String conversation) throws Exception {
 		String deviceType = CommonUtils.getDeviceName(this.getClass());
 		BufferedImage silencedConversation = null;
 		BufferedImage referenceImage = null;
@@ -402,10 +430,10 @@ public class ContactListPage extends IOSPage {
 				this.getDriver(), CommonUtils.getDeviceName(this.getClass()));
 		if (deviceType.equals("iPhone 6 Plus")) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "silenceiPhone6plus.png");
+					.getImagesPath() + "unsilenceTestiPhone6plus.png");
 		} else {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "silenceVerification.png");
+					.getImagesPath() + "unsilenceTestiPhone6.png");
 		}
 		double score = ImageUtil.getOverlapScore(silencedConversation,
 				referenceImage, 0);

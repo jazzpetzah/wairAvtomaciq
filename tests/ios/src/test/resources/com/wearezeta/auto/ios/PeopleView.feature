@@ -99,10 +99,10 @@ Feature: People View
   Scenario Outline: Verify correct group info page information
     Given There are 3 users where <Name> is me
     Given User <Contact1> change avatar picture to <Picture>
-    Given User <Contact1> change  name to AQAPICTURECONTACT
-    Given User <Contact2> change  name to AQAAVATAR TestContact
-    Given User <Contact2> change  accent color to <Color>
-    Given User <Contact1> change  accent color to <Color1>
+    Given User <Contact1> change name to AQAPICTURECONTACT
+    Given User <Contact2> change name to AQAAVATAR TestContact
+    Given User <Contact2> change accent color to <Color>
+    Given User <Contact1> change accent color to <Color1>
     Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -359,3 +359,52 @@ Feature: People View
     #Examples: 
       #| Login   | Password    | Name    | Contact1    | Contact2    | Contact3    | ChatName   | message      |
       #| aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | aqaContact3 | QAtestChat | Test Message |
+      
+  @regression @id1462
+  Scenario Outline: Verify silence the conversation
+    Given There are 2 users where <Name> is me
+    Given User <Name> change accent color to <Color>
+    Given <Contact> is connected to <Name>
+    Given User <Contact> change accent color to <Color>
+    Given User <Contact> change name to <NewName>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I open conversation details
+    And I press conversation menu button
+    And I press menu silence button
+    And I close user profile page to return to dialog page
+    And I see dialog page
+    And I swipe right on Dialog page
+    And I see Contact list with my name <Name>
+    Then I see conversation <Contact> is silenced
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Color    | NewName |
+      | user1Email | user1Password | user1Name | user2Name | Violet   | SILENCE |
+      
+  @staging @id1335
+  Scenario Outline: Verify unsilence the conversation
+    Given There are 2 users where <Name> is me
+    Given User <Name> change accent color to <Color>
+    Given <Contact> is connected to <Name>
+    Given User <Contact> change name to <NewName>
+    Given <Name> silenced conversation with <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    And I see conversation <Contact> got silenced before
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I open conversation details
+    And I press conversation menu button
+    And I press menu notify button
+    And I close user profile page to return to dialog page
+    And I see dialog page
+    And I swipe right on Dialog page
+    And I see Contact list with my name <Name>
+    Then I see conversation <Contact> is unsilenced
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Color  | NewName |
+      | user1Email | user1Password | user1Name | user2Name | Violet | SILENCE |

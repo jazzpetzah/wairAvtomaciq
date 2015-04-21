@@ -86,6 +86,39 @@ public class OtherUserPersonalInfoPageSteps {
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.otherUserPersonalInfoPage
 				.swipeDown(1000);
 	}
+	
+	/**
+	 * Opens the conversation details menu by clicking the according button
+	 * 
+	 * @step. ^I press conversation menu button$
+	 * @throws InterruptedException 
+	 */
+	@When("^I press conversation menu button$")
+	public void IPressConversationMenuButton() throws InterruptedException{
+		PagesCollection.otherUserPersonalInfoPage.openConversationMenu();
+	}
+
+	/**
+	 * Presses the silence button in the conversation detail menu
+	 * 
+	 * @step. ^I press menu silence button$
+	 * @throws InterruptedException 
+	 */
+	@When("^I press menu silence button$")
+	public void IPressMenuSilenceButton() throws InterruptedException{
+		PagesCollection.otherUserPersonalInfoPage.clickSilenceMenuButton();
+	}
+	
+	/**
+	 * Presses the notify button in the conversation detail menu
+	 * 
+	 * @step. ^I press menu notify button$
+	 * @throws InterruptedException 
+	 */
+	@When("^I press menu notify button$")
+	public void IPressMenuNotifyButton() throws InterruptedException{
+		PagesCollection.otherUserPersonalInfoPage.clickNotifyMenuButton();
+	}
 
 	/**
 	 * Open ellipsis menu in conversation details
