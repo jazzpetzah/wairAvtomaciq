@@ -26,7 +26,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -48,7 +48,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I tap on contact name <GroupChatName>
     And I see dialog page
     And I swipe up on dialog page
@@ -67,7 +67,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     And I see contact list loaded with User name <Contact1>
     And I see contact list loaded with User name <Contact2>
     When I tap on contact name <GroupChatName>
@@ -96,7 +96,7 @@ Feature: People View
     Given <Contact2> has a name <Contact2NewName>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     And I see contact list loaded with User name <Contact1>
     And I see contact list loaded with User name <Contact2>
     When I tap on contact name <GroupChatName>
@@ -121,7 +121,7 @@ Feature: People View
     Given Contact <Contact1> send message to user <Name>
     Given Contact <Name> send message to user <Contact1>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     And I wait for 90 seconds
     When I swipe down contact list
     And I see People picker page
@@ -140,7 +140,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <OldGroupChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I tap on contact name <OldGroupChatName>
     And I tap conversation details button
     And I rename group conversation to <NewConversationName>
