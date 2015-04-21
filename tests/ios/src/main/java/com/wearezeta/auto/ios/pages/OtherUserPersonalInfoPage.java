@@ -4,6 +4,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -45,6 +46,18 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameAddContactToChatButton)
 	private WebElement startDialogButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameConversationMenu)
+	private WebElement conversationMenuButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameSilenceConversationButton)
+	private WebElement silenceMenuButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathSilenceConversationButton)
+	private WebElement menuSilenceButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameUnsilenceConversationButton)
+	private WebElement notifyMenuButton;
 
 	public OtherUserPersonalInfoPage(ZetaIOSDriver driver, WebDriverWait wait)
 			throws Exception {
@@ -136,6 +149,20 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 						IOSLocators.nameAddContactToChatButton), 1);
 		page = new DialogPage(this.getDriver(), this.getWait());
 		return page;
+	}
+	
+	public void openConversationMenu() throws InterruptedException{
+		conversationMenuButton.click();
+		Thread.sleep(2000);
+	}
+	
+	public void clickSilenceMenuButton() throws InterruptedException{
+		menuSilenceButton.click();
+	}
+	
+	public void clickNotifyMenuButton() throws InterruptedException{
+		notifyMenuButton.click();
+        Thread.sleep(2000);
 	}
 
 	@Override

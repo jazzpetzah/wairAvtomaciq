@@ -255,5 +255,14 @@ public class PersonalInfoPageSteps {
 		Assert.assertTrue(PagesCollection.personalInfoPage
 				.isSupportWebPageVisible());
 	}
+	
+	/**
+	 * Changes the accent color by pickick one by coordinates at the color picker
+	 * @step. ^I change my accent color via the colorpicker$
+	 */
+	@When("^I change my accent color via the colorpicker$")
+	public void IChangeMyAccentColorViaTheColorpicker(){
+		PagesCollection.personalInfoPage.changeAccentColor();
+	}
 
 }

@@ -13,7 +13,7 @@ Feature: Calling
     When I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the calling bar
-    And I accept the incoming call
+    And I end the call
     And I write random message
     And I send message
     And I click ping button
@@ -40,7 +40,6 @@ Feature: Calling
     When I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the calling bar
-    And I accept the incoming call
     And I end the call
     Then <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
     And <Contact> accepts next incoming call automatically
@@ -53,6 +52,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
 
+  # This has to work even in browsers, which don't support calling
   @staging @id2014
   Scenario Outline: Missed call notification (adressee)
     Given There are 2 users where <Name> is me
@@ -60,9 +60,7 @@ Feature: Calling
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
     When <Contact> calls me using <CallBackend>
-    Then I see the calling bar
     And <Contact> stops all calls to me
-    Then I do not see the calling bar
     When I open conversation with <Contact>
     Then I see conversation with missed call from <Contact>
 

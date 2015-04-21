@@ -65,4 +65,25 @@ public class WebAppConstants {
 					.isSubSetContains(BROWSERS_WITH_CALLING_SUPPORT, item);
 		}
 	}
+
+	public static final class ProfileManagement {
+		private static final Browser[] BROWSERS_WITH_PROFILE_MANAGEMENT_SUPPORT = new Browser[] {
+				Browser.Chrome, Browser.Firefox };
+
+		public static boolean isSupportedIn(Browser item) {
+			return Browser.isSubSetContains(
+					BROWSERS_WITH_PROFILE_MANAGEMENT_SUPPORT, item);
+		}
+	}
+
+	public static final class LoggingManagement {
+		// Logging feature crashes IE }:@
+		private static final Browser[] BROWSERS_WITH_LOGGING_SUPPORT = new Browser[] {
+				Browser.Chrome, Browser.Firefox, Browser.Opera, Browser.Safari };
+
+		public static boolean isSupportedIn(Browser item) {
+			return Browser
+					.isSubSetContains(BROWSERS_WITH_LOGGING_SUPPORT, item);
+		}
+	}
 }

@@ -376,11 +376,29 @@ public class ContactListPageSteps {
 	@Then("^I see conversation (.*) is silenced$")
 	public void ISeeConversationIsSilenced(String conversation)
 			throws Exception {
-		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
+		conversation = usrMgr.replaceAliasesOccurences(conversation,FindBy.NAME_ALIAS);
 		boolean isSilenced = PagesCollection.contactListPage
-				.isConversationSilenced(conversation);
+				.isConversationSilenced(conversation, true);
 		Assert.assertTrue("Conversation is not silenced", isSilenced);
-
+	}
+	
+	/**
+	 * Verifies, that the conversation got silenced before from backend
+	 * 
+	 * @step. ^I see conversation (.*) got silenced before$
+	 * 
+	 * @param conversation
+	 *            conversation name to silence
+	 * @throws Exception
+	 * 
+	 */
+	@Then("^I see conversation (.*) got silenced before$")
+	public void ISeeConversationGotSilencedBefore(String conversation)
+			throws Exception {
+		conversation = usrMgr.replaceAliasesOccurences(conversation,FindBy.NAME_ALIAS);
+		boolean isSilenced = PagesCollection.contactListPage
+				.isConversationSilencedBefore(conversation);
+		Assert.assertTrue("Conversation is not silenced", isSilenced);
 	}
 
 	/**
@@ -396,10 +414,11 @@ public class ContactListPageSteps {
 	@Then("^I see conversation (.*) is unsilenced$")
 	public void ISeeConversationIsUnSilenced(String conversation)
 			throws Exception {
-		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
-		boolean isSilenced = PagesCollection.contactListPage
-				.isConversationSilenced(conversation);
-		Assert.assertFalse("Conversation is silenced", isSilenced);
+		conversation = usrMgr.replaceAliasesOccurences(conversation,FindBy.NAME_ALIAS);
+		boolean isSilenced = 
+				PagesCollection.contactListPage
+				.isConversationSilenced(conversation, false);
+		Assert.assertTrue("Conversation is unsilenced", isSilenced);
 
 	}
 
@@ -559,6 +578,22 @@ public class ContactListPageSteps {
 				.missedCallIndicatorIsVisible(false, contact);
 		Assert.assertTrue("No missed call indicator visible.", missedCallSeen);
 
+	}
+	
+	/**
+	 * Checks if the self conversation in changed to the new accent color
+	 * 
+	 * @step. I see my names (.*) accent color is changed$
+	 * @param name
+	 *            of yourself to check accent color change
+	 * @throws IOException
+	 */
+	@Then("^I see my names (.*) accent color is changed$")
+	public void ISeeMyNamesAccentColorIsChanged(String name) throws IOException {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		boolean colorIsChanged = PagesCollection.contactListPage
+				.changeOfAccentColorIsVisible(name);
+		Assert.assertTrue("Color is not changed.", colorIsChanged);
 	}
 
 }

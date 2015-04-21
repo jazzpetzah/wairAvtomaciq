@@ -167,6 +167,12 @@ public final class IOSLocators {
 	public static final String nameLeaveConversationButton = "LEAVE";
 	
 	public static final String nameYouHaveLeft = "YOU HAVE LEFT";
+	
+	public static final String nameSilenceConversationButton = "SILENCE";
+	
+	public static final String xpathSilenceConversationButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAButton[@name='SILENCE']";
+	
+	public static final String nameUnsilenceConversationButton = "NOTIFY";
     
     public static final String nameComfirmRemoveButton = "REMOVE";
 
@@ -535,6 +541,11 @@ public final class IOSLocators {
 	public static final String xpathChatheadName = "//UIAStaticText[@name='%s']";
 	public static final String xpathChatheadMessage = "//UIAStaticText[@name='%s']";
 	public static final String nameChatheadAvatarImage = "ChatheadAvatarImage";
+	
+	///////////////////
+	//Accent Color Picker
+	//////////////////
+	public static final String nameAccentColorPicker = "AccentColorPickerView";
 	
 }
 
