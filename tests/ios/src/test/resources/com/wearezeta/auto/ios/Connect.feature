@@ -300,3 +300,26 @@ Feature: Connect
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+
+  @staging @id2118
+  Scenario Outline: Verify sending connection request by clicking on + icon
+    Given There are 2 users where <Name> is me
+    Given User <UnconnectedUser> name starts with <StartLetter>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    Given I wait up to 15 seconds until <ContactEmail> exists in backend search results
+    And I input in People picker search field user email <ContactEmail>
+    And I see user <UnconnectedUser> found on People picker page
+    And I press the instant connect button
+    And I click close button to dismiss people view
+    And I see first item in contact list named <UnconnectedUser>
+    And I tap on contact name <UnconnectedUser>
+    Then I see Pending Connect to <UnconnectedUser> message on Dialog page from user <Name>
+    
+    Examples: 
+      | Login      | Password      | Name      | UnconnectedUser | ContactEmail | StartLetter |
+      | user1Email | user1Password | user1Name | user2Name 		 | user2Email   | T		      |
+  	

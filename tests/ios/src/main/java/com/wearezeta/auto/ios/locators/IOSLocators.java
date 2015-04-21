@@ -446,6 +446,7 @@ public final class IOSLocators {
 	public static final String xpathInviteCopyButton = "//UIACollectionCell[@name='Copy']";
 	public static final String nameSuggestedContactNameTextType = "UIAStaticText";
 	public static final String nameHideSuggestedContactButtonType = "UIAButton";
+	public static final String nameInstantConnectButton = "instantPlusConnectButton";
 	
 	//////////////////
 	//Connect to page

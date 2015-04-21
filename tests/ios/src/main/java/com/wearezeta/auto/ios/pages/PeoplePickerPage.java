@@ -74,6 +74,10 @@ public class PeoplePickerPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathSendAnInviteButton)
 	private WebElement sendInviteButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameInstantConnectButton)
+	private WebElement instantConnectButton;
+	
 
 	private int numberTopSelected = 0;
 
@@ -116,6 +120,7 @@ public class PeoplePickerPage extends IOSPage {
 		path = CommonUtils.getAvatarWithClockIconPathIOS(GroupChatPage.class);
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
 		return ImageUtil.getOverlapScore(clockImage, templateImage);
+
 	}
 
 	public BufferedImage getAvatarClockIconScreenShot(String name)
@@ -382,6 +387,11 @@ public class PeoplePickerPage extends IOSPage {
 	public void tapSendInviteCopyButton() throws UnsupportedFlavorException,
 			Exception {
 		inviteCopyButton.click();
+	}
+	
+
+	public void pressInstantConnectButton(){
+		instantConnectButton.click();
 	}
 
 }
