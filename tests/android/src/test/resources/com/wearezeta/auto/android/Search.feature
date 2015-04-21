@@ -5,7 +5,7 @@ Feature: Search
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -22,7 +22,7 @@ Feature: Search
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -38,7 +38,7 @@ Feature: Search
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -55,7 +55,7 @@ Feature: Search
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -71,7 +71,7 @@ Feature: Search
     Given There is 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I swipe down contact list
     And I see People picker page
     And I press Clear button
@@ -84,11 +84,11 @@ Feature: Search
   @id1494 @regression
   Scenario Outline: Verify possibility of invitation accepting
     Given There is 3 users where <Name> is me
-    And Myself is connected to <Contact1>
-    And I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    And I minimize the application
-    When I connect using invitation link from <Contact2>
+    Given Myself is connected to <Contact1>
+    Given I Sign in using login <Login> and password <Password>
+    Given I see Contact list with my name <Name>
+    When I minimize the application
+    Then I connect using invitation link from <Contact2>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  |
@@ -97,9 +97,9 @@ Feature: Search
   @id1517 @staging
   Scenario Outline: Verify you can send an invite
     Given There is 2 users where <Name> is me
-    And Myself is connected to <Contact1>
-    And I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given Myself is connected to <Contact1>
+    Given I Sign in using login <Login> and password <Password>
+    Given I see Contact list with my name <Name>
     When I swipe down contact list
     And I see People picker page
     And I tap on Send an invitation

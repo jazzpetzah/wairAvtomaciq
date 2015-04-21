@@ -3,7 +3,9 @@
 hubHost=${hubHost}
 hubPort=${hubPort}
 webappAppiumUrl=${url}
-webappApplicationPath=https://app.wire.com/auth/?env=${backendType}
+webappEdgeApplicationPath=https://app-edge.zinfra.io/
+webappStagingApplicationPath=https://app-staging.zinfra.io/
+webappProductionApplicationPath=https://app.wire.com/
 pictureResultsPath=${pictureResultsPath}
 driverTimeoutSeconds=${driverTimeoutSeconds}
 defaultEmail=${defaultEmail}

@@ -26,7 +26,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.web.common.WebAppConstants;
+import com.wearezeta.auto.web.common.WebAppConstants.Browser;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
@@ -199,26 +199,41 @@ public class ContactListPage extends WebPage {
 
 	public void clickArchiveConversationForContact(String conversationName)
 			throws Exception {
-		conversationName = fixDefaultGroupConvoName(conversationName, false);
-		final By locator = By
+		waitForOptionButtonsToBeClickable(conversationName);
+
+		final By archiveLocator = By
 				.xpath(WebAppLocators.ContactListPage.xpathArchiveButtonByContactName
 						.apply(conversationName));
-		assert DriverUtils.isElementDisplayed(driver, locator, 5);
-		final WebElement archiveButton = this.getDriver().findElement(locator);
-		assert DriverUtils.waitUntilElementClickable(driver, archiveButton);
+		final WebElement archiveButton = this.getDriver().findElement(
+				archiveLocator);
 		archiveButton.click();
 	}
 
 	public void clickMuteConversationForContact(String conversationName)
 			throws Exception {
-		conversationName = fixDefaultGroupConvoName(conversationName, false);
-		final By locator = By
+		waitForOptionButtonsToBeClickable(conversationName);
+
+		final By muteLocator = By
 				.xpath(WebAppLocators.ContactListPage.xpathMuteButtonByContactName
 						.apply(conversationName));
-		assert DriverUtils.isElementDisplayed(driver, locator, 5);
-		final WebElement muteButton = this.getDriver().findElement(locator);
-		assert DriverUtils.waitUntilElementClickable(driver, muteButton);
+		final WebElement muteButton = this.getDriver().findElement(muteLocator);
 		muteButton.click();
+	}
+
+	private void waitForOptionButtonsToBeClickable(String conversationName)
+			throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final By archiveLocator = By
+				.xpath(WebAppLocators.ContactListPage.xpathArchiveButtonByContactName
+						.apply(conversationName));
+		final By muteLocator = By
+				.xpath(WebAppLocators.ContactListPage.xpathMuteButtonByContactName
+						.apply(conversationName));
+		final WebElement archiveButton = this.getDriver().findElement(
+				archiveLocator);
+		final WebElement muteButton = this.getDriver().findElement(muteLocator);
+		assert DriverUtils.waitUntilElementClickable(driver, archiveButton);
+		assert DriverUtils.waitUntilElementClickable(driver, muteButton);
 	}
 
 	public boolean isConversationMuted(String conversationName)
@@ -342,8 +357,7 @@ public class ContactListPage extends WebPage {
 						this.getDriver(),
 						By.cssSelector(WebAppLocators.ContactListPage.cssOpenPeoplePickerButton));
 		DriverUtils.waitUntilElementClickable(driver, openPeoplePickerButton);
-		if (WebAppExecutionContext.browserName
-				.equals(WebAppConstants.Browser.INTERNET_EXPLORER)) {
+		if (WebAppExecutionContext.currentBrowser == Browser.InternetExplorer) {
 			clickWithJS(WebAppLocators.ContactListPage.cssOpenPeoplePickerButton);
 		} else {
 			openPeoplePickerButton.click();

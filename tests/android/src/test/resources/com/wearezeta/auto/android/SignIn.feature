@@ -51,3 +51,26 @@ Feature: Sign In
     Examples: 
       | Login   | Password |
       | aaa 	| aaa 	   |
+      
+  @id2020 @regression
+  Scenario Outline: Verify possibility of reseting password from sign in
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I see sign in screen
+    When I press Sign in button
+    And I press FORGOT PASSWORD button
+    And I request reset password for <Login>
+    Then I reset <Name> password by URL to new <NewPassword>
+    When I restore the application
+    And I wait for 2 seconds
+    And I minimize the application
+    And I restore the application
+    And I press Sign in button
+    And I have entered login <Login>
+    And I have entered password <NewPassword>
+    And I press Log in button
+    Then Contact list appears with my name <Name>
+
+    Examples: 
+      | Login      | Password      | Name      | NewPassword | Contact   |
+      | user1Email | user1Password | user1Name | qatest1234  | user2Name |

@@ -110,7 +110,7 @@ public class ContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		 PagesCollection.androidPage = PagesCollection.contactListPage
+		PagesCollection.androidPage = PagesCollection.contactListPage
 				.tapOnName(value);
 	}
 
@@ -173,7 +173,7 @@ public class ContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		AndroidPage page = PagesCollection.contactListPage.swipeRightOnContact(1000, contact);
+		AndroidPage page = PagesCollection.contactListPage.swipeRightOnContact(1500, contact);
 		if (page instanceof DialogPage) {
 			PagesCollection.dialogPage = (DialogPage) page;
 		}
@@ -233,6 +233,18 @@ public class ContactListPageSteps {
 		Assert.assertTrue(PagesCollection.contactListPage.isContactExists(value,5));
 	}
 
+	/**
+	 * Check that Conversation List contains Random user from PYMK
+	 * 
+	 * @step. ^I see contact list loaded with PeoplePicker Random Connect$
+	 * 
+	 */
+	
+	@Then("^I see contact list loaded with PeoplePicker Random Connect$")
+	public void ThenISeeContactListLoadedWithPeoplePickerRandomConnect() throws Exception {
+		Assert.assertTrue(PagesCollection.contactListPage.isContactExists(PeoplePickerPageSteps.randomConnectName,5));
+	}
+	
 	@Then("^Contact (.*) is muted$")
 	public void ContactIsMuted(String contact) throws Exception {
 

@@ -20,6 +20,8 @@ Feature: Self Profile
   Scenario Outline: Verify correct accent color showing after sign out and sign in
     Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
+    And I see Contacts Upload dialog
+    And I close Contacts Upload dialog
     And I see my name on top of Contact list
     When I open self profile
     And I set my accent color to <ColorName>
@@ -28,6 +30,8 @@ Feature: Self Profile
     And I switch to sign in page
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
+    And I see Contacts Upload dialog
+    And I close Contacts Upload dialog
     And I see my name on top of Contact list
     When I open self profile
     Then I verify my accent color in color picker is set to <ColorName> color

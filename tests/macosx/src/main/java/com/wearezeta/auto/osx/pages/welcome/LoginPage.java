@@ -102,7 +102,8 @@ public class LoginPage extends OSXPage {
 			passwordField.clear();
 			String script = String
 					.format(OSXCommonUtils
-							.readTextFileFromResources(OSXConstants.Scripts.INPUT_PASSWORD_LOGIN_PAGE_SCRIPT),
+							.readTextFileFromResources(OSXConstants.Scripts.SET_WIRE_FIELD_VALUE_SCRIPT),
+							OSXLocators.LoginPage.appleScriptPasswordFieldPath,
 							password);
 			driver.executeScript(script);
 
@@ -142,16 +143,6 @@ public class LoginPage extends OSXPage {
 		} catch (NoSuchElementException e) {
 			return false;
 		}
-	}
-
-	public void setPasswordUsingScript(String password) {
-		String script = "tell application \"Wire\" to activate\n"
-				+ "tell application \"System Events\"\n"
-				+ "tell process \"Wire\"\n"
-				+ "set value of attribute \"AXFocused\" of text field 1 of window 1 to true\n"
-				+ "keystroke \"" + password + "\"\n" + "end tell\n"
-				+ "end tell";
-		driver.executeScript(script);
 	}
 
 	public ChangePasswordPage openResetPasswordPage() throws Exception {

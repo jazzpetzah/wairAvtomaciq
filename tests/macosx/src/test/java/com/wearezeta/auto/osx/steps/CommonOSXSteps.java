@@ -2,17 +2,21 @@ package com.wearezeta.auto.osx.steps;
 
 import io.appium.java_client.AppiumDriver;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Date;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.wearezeta.auto.common.CommonCallingSteps;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
@@ -33,6 +37,7 @@ import com.wearezeta.auto.osx.pages.welcome.WelcomePage;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class CommonOSXSteps {
@@ -85,6 +90,15 @@ public class CommonOSXSteps {
 	}
 
 	private void commonBefore() throws Exception {
+		try {
+			// async calls/waiting instances cleanup
+			CommonCallingSteps.getInstance().cleanupWaitingInstances();
+			CommonCallingSteps.getInstance().cleanupCalls();
+		} catch (Exception e) {
+			// do not fail if smt fails here
+			e.printStackTrace();
+		}
+
 		this.testStartedTimestamp = new Date();
 		final ZetaOSXDriver driver = resetOSXDriver(OSXExecutionContext.appiumUrl);
 		final WebDriverWait wait = PlatformDrivers
@@ -314,8 +328,66 @@ public class CommonOSXSteps {
 				dstUserNameAlias);
 	}
 
+	/**
+	 * Stores screenshot of the whole screen for usage during execution by
+	 * specified alias
+	 * 
+	 * @step. ^I take fullscreen shot and save it as (.*)$
+	 * 
+	 * @param screenshotAlias
+	 *            string id for stored screenshot
+	 * 
+	 * @throws IOException
+	 */
+	@When("^I take fullscreen shot and save it as (.*)$")
+	public void ITakeFullscreenShotAndSaveItAsAlias(String screenshotAlias)
+			throws IOException {
+		BufferedImage shot = PagesCollection.mainMenuPage.takeScreenshot();
+		OSXExecutionContext.screenshots.put(screenshotAlias, shot);
+	}
+
+	/**
+	 * Compares screenshots stored with specified aliases
+	 * 
+	 * @step. ^I see that screen (.*) is changed in comparison with (.*)$
+	 * 
+	 * @param resultAlias
+	 *            current screen appearance
+	 * @param previousAlias
+	 *            screen stored before
+	 * 
+	 * @throws AssertionError
+	 *             if screenshots are similar enough
+	 */
+	@Then("^I see that screen (.*) is changed in comparison with (.*)$")
+	public void ISeeScreensAreDifferent(String resultAlias, String previousAlias) {
+		BufferedImage reference = OSXExecutionContext.screenshots
+				.get(resultAlias);
+		BufferedImage template = OSXExecutionContext.screenshots
+				.get(previousAlias);
+		Assert.assertNotNull(reference);
+		Assert.assertNotNull(template);
+		double score = ImageUtil.getOverlapScore(reference, template,
+				ImageUtil.RESIZE_NORESIZE);
+		log.debug(String.format(
+				"Score for comparison of screens %s and %s is %.3f",
+				resultAlias, previousAlias, score));
+		Assert.assertTrue(String.format(
+				"Screens are the same, but expected not to be. "
+						+ "Score %.3f >= 0.980d", score), score < 0.98d);
+	}
+
 	@After
 	public void tearDown() throws Exception {
+		try {
+			// async calls/waiting instances cleanup
+			CommonCallingSteps.getInstance().cleanupWaitingInstances();
+			CommonCallingSteps.getInstance().cleanupCalls();
+		} catch (Exception e) {
+			// do not fail if smt fails here
+			e.printStackTrace();
+		}
+
 		OSXCommonUtils.collectSystemLogs(testStartedTimestamp);
 
 		OSXPage.clearPagesCollection();

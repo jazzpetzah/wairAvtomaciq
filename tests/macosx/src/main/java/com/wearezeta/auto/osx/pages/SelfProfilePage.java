@@ -38,9 +38,6 @@ public class SelfProfilePage extends MainWirePage {
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathPictureSettingsCloseButton)
 	private WebElement pictureSettingsCloseButton;
 
-	@FindBy(how = How.ID, using = OSXLocators.idSelfProfileSettingsButton)
-	private WebElement selfProfileViewSettingsButton;
-
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathRemoveUserPictureCheckBox)
 	private WebElement removeUserPictureCheckBox;
 
@@ -118,5 +115,14 @@ public class SelfProfilePage extends MainWirePage {
 		log.debug("Looking for name " + name + " by xpath '" + xpath
 				+ "' in user profile.");
 		return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath), 60);
+	}
+
+	public void changeUserName(String oldName, String newName) {
+		String xpath = String.format(
+				OSXLocators.xpathFormatSelfProfileNameTextField, oldName);
+		WebElement selfName = driver.findElement(By.xpath(xpath));
+		selfName.click();
+		selfName.clear();
+		selfName.sendKeys(newName + "\\n");
 	}
 }

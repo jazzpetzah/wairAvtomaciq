@@ -1,5 +1,19 @@
 Feature: Conversation View
 
+  @staging @id855
+  Scenario Outline: Verify swipe right tutorial appearance
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
+    And I see dialog page
+    Then I see TAPORSLIDE text
+    
+    Examples:
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
   @smoke @id330
   Scenario Outline: Send Message to contact
     Given There are 2 users where <Name> is me
@@ -587,7 +601,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Picture	 | Color 	   | NewName          |
       | user1Email | user1Password | user1Name | user2Name | testing.jpg | BrightOrange| RotateFullscreen |
       
-  @staging @id2124
+  @regression @id2124
   Scenario Outline: Verify archiving conversation from ellipsis menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -626,4 +640,31 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Contact2  | NewName  | Picture 					 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | CHATHEAD | aqaPictureContact600_800.jpg |
  
-  
+
+  @staging @id1476
+  Scenario Outline: Play/pause controls can change playing media state (SoundCloud)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I type and send long message and media link <SoundCloudLink>
+    And I swipe right on Dialog page
+    And I tap on contact name <Contact>
+    And I see media link <SoundCloudLink> and media in dialog
+    And I tap media link
+    And I swipe right on Dialog page
+    And I see play/pause button next to username <Contact> in contact list
+    And I tap play/pause button in contact list next to username <Contact>
+    And I tap on contact name <Contact>
+    And I scroll media out of sight until media bar appears
+    Then I see playing media is paused
+    And I swipe right on Dialog page
+    And I tap play/pause button in contact list next to username <Contact>
+    And I tap on contact name <Contact>
+    Then I see media is playing
+    
+    Examples: 
+      | Login      | Password      | Name      | Contact   | SoundCloudLink |
+      | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/isabella-emanuelsson/david-guetta-she-wolf-falling |

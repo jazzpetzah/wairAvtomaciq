@@ -11,7 +11,6 @@ import com.wearezeta.auto.common.PerformanceCommon.PerformanceLoop;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
-import com.wearezeta.auto.osx.pages.common.ChoosePicturePage;
 import com.wearezeta.common.process.AsyncProcess;
 
 import cucumber.api.java.en.Then;
@@ -90,12 +89,8 @@ public class PerformanceSteps {
 						perfCommon.getLogger().debug("Scrolling fail: ", ex);
 					}
 					try {
-						PagesCollection.conversationPage
-								.shortcutChooseImageDialog();
-						PagesCollection.choosePicturePage = new ChoosePicturePage(
-								PagesCollection.conversationPage.getDriver(),
-								PagesCollection.conversationPage.getWait());
-
+						PagesCollection.choosePicturePage = PagesCollection.mainMenuPage
+								.sendImage();
 						Assert.assertTrue(PagesCollection.choosePicturePage
 								.isVisible());
 

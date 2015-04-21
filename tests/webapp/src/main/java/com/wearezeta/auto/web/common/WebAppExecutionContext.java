@@ -3,6 +3,7 @@ package com.wearezeta.auto.web.common;
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.WebAppConstants.Browser;
 
 public class WebAppExecutionContext {
 
@@ -11,12 +12,15 @@ public class WebAppExecutionContext {
 
 	public static String seleniumNodeIp = "127.0.0.1";
 
-	public static String browserName = null;
+	public static Browser currentBrowser = null;
+
 	static {
 		try {
-			browserName = WebCommonUtils
-					.getWebAppBrowserNameFromConfig(WebAppExecutionContext.class);
+			currentBrowser = Browser
+					.fromString(WebCommonUtils
+							.getWebAppBrowserNameFromConfig(WebAppExecutionContext.class));
 		} catch (Exception e) {
+			e.printStackTrace();
 			log.fatal("Failed to read browser name from config file.");
 		}
 	}

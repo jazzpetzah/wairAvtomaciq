@@ -9,6 +9,7 @@ import com.wearezeta.auto.osx.pages.common.MainMenuAndDockPage;
 import com.wearezeta.auto.osx.pages.common.NoInternetConnectionPage;
 import com.wearezeta.auto.osx.pages.common.ProblemReportPage;
 import com.wearezeta.auto.osx.pages.floating.CallingFloatingPage;
+import com.wearezeta.auto.osx.pages.popovers.PopoverPage;
 import com.wearezeta.auto.osx.pages.welcome.LoginPage;
 import com.wearezeta.auto.osx.pages.welcome.RegistrationPage;
 import com.wearezeta.auto.osx.pages.welcome.VerificationPage;
@@ -29,6 +30,8 @@ public class PagesCollection extends AbstractPagesCollection {
 
 	public static ConversationPage conversationPage = null;
 
+	public static ConnectionRequestsPage connectionRequestsPage = null;
+
 	public static ChoosePicturePage choosePicturePage = null;
 
 	public static PeoplePickerPage peoplePickerPage = null;
@@ -47,6 +50,9 @@ public class PagesCollection extends AbstractPagesCollection {
 	public static NoInternetConnectionPage noInternetPage = null;
 
 	public static ProblemReportPage problemReportPage = null;
+
+	// popovers
+	public static PopoverPage popover = null;
 
 	// floating pages
 	public static CallingFloatingPage callingFloatingPage = null;
