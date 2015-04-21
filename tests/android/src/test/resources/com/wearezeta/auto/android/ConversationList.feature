@@ -5,7 +5,7 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
     And I swipe up on dialog page
@@ -25,7 +25,7 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given <Name> is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
     And Contact <Contact1> send message to user <Name>
@@ -49,7 +49,7 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I swipe down contact list
     And I see People picker page
     And I press Clear button
@@ -65,7 +65,7 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I swipe down contact list
     And I see People picker page
     And I swipe down people picker

@@ -16,7 +16,8 @@ public class ActivationPage extends WebPage {
 
 	public void openInNewTab() throws Exception {
 		WebCommonUtils.openUrlInNewTab(
-				PagesCollection.registrationPage.getDriver(), this.getUrl());
+				PagesCollection.registrationPage.getDriver(), this.getUrl(),
+				this.getDriver().getNodeIp());
 	}
 
 	public void verifyActivation(int timeoutSeconds) throws Exception {

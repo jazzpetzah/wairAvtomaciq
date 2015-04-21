@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class InvitationCodePage extends WebPage {
@@ -27,6 +28,16 @@ public class InvitationCodePage extends WebPage {
 	public InvitationCodePage(ZetaWebAppDriver driver, WebDriverWait wait,
 			String url) throws Exception {
 		super(driver, wait, url);
+	}
+
+	@Override
+	public void navigateTo() {
+		super.navigateTo();
+		if (!WebAppExecutionContext.ProfileManagement
+				.isSupportedInCurrentBrowser()) {
+			driver.manage().deleteAllCookies();
+			driver.navigate().refresh();
+		}
 	}
 
 	public boolean isVisible() throws Exception {

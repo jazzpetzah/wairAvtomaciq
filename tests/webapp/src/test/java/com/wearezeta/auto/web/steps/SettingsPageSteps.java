@@ -4,7 +4,7 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.SettingsPage;
-import com.wearezeta.auto.web.pages.SettingsPage.AlertsLevel;
+import com.wearezeta.auto.web.pages.SettingsPage.SoundAlertsLevel;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -37,7 +37,7 @@ public class SettingsPageSteps {
 	 */
 	@When("^I select Sound Alerts setting to be (None|Some|All)")
 	public void ISelectSoundAlertsSetting(String newLevel) {
-		PagesCollection.settingsPage.setSoundAlertsLevel(AlertsLevel
+		PagesCollection.settingsPage.setSoundAlertsLevel(SoundAlertsLevel
 				.fromString(newLevel));
 	}
 

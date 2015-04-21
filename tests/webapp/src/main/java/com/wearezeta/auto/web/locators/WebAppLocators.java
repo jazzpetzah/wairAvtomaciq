@@ -152,17 +152,21 @@ public final class WebAppLocators {
 
 		public static final String xpathCallButton = "//*[@data-uie-name='do-call']";
 
-		public static final String xpathTalkingHalo = "//*[contains(@class,'cc-halo-talking')]";
-
 		public static final String classPingMessage = "pinged";
-
-		public static final String xpathCloseButton = "//*[contains(@class,'cc-button')]//*[contains(@class,'icon-close')]";
 
 		public static final Function<String, String> textMessageByText = text -> String
 				.format("//*[@data-uie-name='item-message']//*[text()='%s']",
 						text);
 
 		public static final String xpathMissedCallAction = "//*[@data-uie-value='call']//div[contains(@class, 'action')]";
+
+		public static String xpathCallingBarRoot = "//div[contains(@class, 'call-controls')]";
+
+		public static String xpathAcceptCallButton = xpathCallingBarRoot + "//*[contains(@class, 'icon-check')]";
+
+		public static String xpathEndCallButton = xpathCallingBarRoot + "//*[contains(@class, 'icon-close')]";
+
+		public static String xpathSilenceIncomingCallButton = xpathCallingBarRoot + "//*[contains(@class, 'icon-minus')]";
 	}
 
 	public static final class ConnectToPage {

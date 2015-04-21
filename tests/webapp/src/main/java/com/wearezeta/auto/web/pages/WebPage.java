@@ -45,11 +45,6 @@ public class WebPage extends BasePage {
 		}
 	}
 
-	@Override
-	public void close() throws Exception {
-		super.close();
-	}
-
 	public BufferedImage takeScreenshot() throws IOException {
 		return DriverUtils.takeScreenshot(this.getDriver());
 	}
