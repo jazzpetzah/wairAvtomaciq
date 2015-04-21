@@ -86,7 +86,7 @@ public class ConversationPage extends WebPage {
 	public PeoplePopoverContainer clickPeopleButton(boolean isGroup)
 			throws Exception {
 		DriverUtils.waitUntilElementClickable(driver, showParticipants);
-		if (WebAppExecutionContext.currentBrowser == Browser.InternetExplorer) {
+		if (WebAppExecutionContext.getCurrentBrowser() == Browser.InternetExplorer) {
 			driver.executeScript(String
 					.format("$('.%s').click();",
 							WebAppLocators.ConversationPage.classNameShowParticipantsButton));
@@ -124,8 +124,8 @@ public class ConversationPage extends WebPage {
 						driver,
 						By.cssSelector(WebAppLocators.ConversationPage.cssSendImageInput),
 						5);
-		if (WebAppExecutionContext.currentBrowser == Browser.Safari) {
-			WebCommonUtils.sendPictureInSafari(picturePath);
+		if (WebAppExecutionContext.getCurrentBrowser() == Browser.Safari) {
+			WebCommonUtils.sendPictureInSafari(picturePath, this.getDriver().getNodeIp());
 		} else {
 			imagePathInput.sendKeys(picturePath);
 		}

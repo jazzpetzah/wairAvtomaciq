@@ -54,8 +54,9 @@ public class SelfPictureUploadPage extends WebPage {
 						driver,
 						By.cssSelector(WebAppLocators.SelfPictureUploadPage.cssSendPictureInput),
 						5);
-		if (WebAppExecutionContext.currentBrowser == Browser.Safari) {
-			WebCommonUtils.sendPictureInSafari(picturePath);
+		if (WebAppExecutionContext.getCurrentBrowser() == Browser.Safari) {
+			WebCommonUtils.sendPictureInSafari(picturePath, this.getDriver()
+					.getNodeIp());
 		} else {
 			picturePathInput.sendKeys(picturePath);
 		}
