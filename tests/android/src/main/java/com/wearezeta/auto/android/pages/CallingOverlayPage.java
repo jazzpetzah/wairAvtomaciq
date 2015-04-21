@@ -10,11 +10,18 @@ import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class CallingOverlayPage extends AndroidPage {
+
+	By callingOverlayContainer = By.id(PACKAGE_NAME
+			+ ":id/coc__calling__overlay_container");
 	
-	By callingOverlayContainer 		= By.id(PACKAGE_NAME + ":id/coc__calling__overlay_container");
-	By ignoreButton 				= By.id(PACKAGE_NAME + ":id/cib__calling_mute");
-	By acceptButton 				= By.id(PACKAGE_NAME + ":id/gtv__conversation_list__sticky_menu__trigger_startui");
-	By callingMessage 				= By.id(PACKAGE_NAME + ":id/ttv__calling__message");
+	By ignoreButton = By.id(PACKAGE_NAME + 
+			":id/cib__calling_mute");
+	
+	By acceptButton = By.id(PACKAGE_NAME
+			+ ":id/gtv__conversation_list__sticky_menu__trigger_startui");
+	
+	By callingMessage = By.id(PACKAGE_NAME + 
+			":id/ttv__calling__message");
 
 	public CallingOverlayPage(ZetaAndroidDriver driver, WebDriverWait wait)
 			throws Exception {
@@ -26,15 +33,16 @@ public class CallingOverlayPage extends AndroidPage {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	public boolean isVisible() throws Exception {
-		List<WebElement> callbars = driver.findElements(callingOverlayContainer);
+		List<WebElement> callbars = driver
+				.findElements(callingOverlayContainer);
 		if (callbars.size() > 0) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	public void muteConversation() {
 		driver.findElement(ignoreButton).click();
 	}
