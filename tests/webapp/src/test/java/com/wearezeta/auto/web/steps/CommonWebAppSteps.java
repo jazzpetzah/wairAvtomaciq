@@ -32,6 +32,7 @@ import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.common.WebAppConstants.Browser;
+import com.wearezeta.auto.web.common.WebAppConstants.LoggingManagement;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.pages.InvitationCodePage;
@@ -182,8 +183,7 @@ public class CommonWebAppSteps {
 			capabilities.setCapability("applicationName", webPlatformName);
 		}
 
-		if (browser != Browser.InternetExplorer) {
-			// Logging feature crashes IE }:@
+		if (LoggingManagement.isSupportedIn(getBrowser())) {
 			setExtendedLoggingLevel(capabilities,
 					WebCommonUtils.getExtendedLoggingLevelInConfig(getClass()));
 		}
@@ -540,19 +540,19 @@ public class CommonWebAppSteps {
 			e.printStackTrace();
 		}
 
-		if (PagesCollection.invitationCodePage != null) {
-			PagesCollection.invitationCodePage.close();
-		}
-
 		WebPage.clearPagesCollection();
 
-		if (getBrowser() != Browser.InternetExplorer) {
-			writeBrowserLogsIntoMainLog(PlatformDrivers.getInstance()
-					.getDriver(CURRENT_PLATFORM));
-		}
-
 		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
-			PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+			try {
+				if (LoggingManagement.isSupportedIn(getBrowser())) {
+					writeBrowserLogsIntoMainLog(PlatformDrivers.getInstance()
+							.getDriver(CURRENT_PLATFORM));
+				}
+				PlatformDrivers.getInstance().getDriver(CURRENT_PLATFORM)
+						.manage().deleteAllCookies();
+			} finally {
+				PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+			}
 		}
 
 		commonSteps.getUserManager().resetUsers();
