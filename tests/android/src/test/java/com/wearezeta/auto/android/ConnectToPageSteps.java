@@ -14,7 +14,9 @@ public class ConnectToPageSteps {
 
 	/**
 	 * Verifies that the current screen shows the connect to dialog with a user you have not yet connected with
+	 * 
 	 * @step. ^I see connect to (.*) dialog$
+	 * 
 	 * @param contact
 	 * 		The name of the user with whom you are not yet connected.
 	 * @throws Throwable
@@ -35,7 +37,9 @@ public class ConnectToPageSteps {
 
 	/**
 	 * Verifies that the connect and ignore buttons are visible when viewing the dialog of a user who has sent you a connection request.
+	 * 
 	 * @step. ^I see Accept and Ignore buttons$
+	 * 
 	 * @throws Exception
 	 */
 	@Then("^I see Accept and Ignore buttons$")
@@ -46,7 +50,9 @@ public class ConnectToPageSteps {
 
 	/**
 	 * Presses the accept connection request button from within the dialog of a user who has sent you a connection request.
+	 * 
 	 * @step. ^I Connect with contact by pressing button$
+	 * 
 	 * @throws Exception
 	 */
 	@When("^I Connect with contact by pressing button$")
@@ -57,7 +63,9 @@ public class ConnectToPageSteps {
 
 	/**
 	 * Presses the ignore connection request button from within the dialog of a user who has sent you a connection request.
+	 * 
 	 * @step. ^I press Ignore connect button$
+	 * 
 	 * @throws Exception
 	 */
 	@When("^I press Ignore connect button$")
@@ -71,7 +79,9 @@ public class ConnectToPageSteps {
 
 	/**
 	 * Navigates back from the connect page to the contactList page
+	 * 
 	 * @step. ^I navigate back from connect page$
+	 * 
 	 * @throws Exception
 	 */
 	@When("^I navigate back from connect page$")
@@ -82,7 +92,9 @@ public class ConnectToPageSteps {
 
 	/**
 	 * Checks to see that a connection request is still pending
+	 * 
 	 * @step. ^I see that connection is pending$
+	 * 
 	 * @throws NumberFormatException
 	 * @throws Exception
 	 */
@@ -98,7 +110,9 @@ public class ConnectToPageSteps {
 	/**
 	 * Taps on the connection request message to put it in focus.
 	 * Note: The message is also cleared (method name does not suggest this).
+	 * 
 	 * @step. ^I tap on edit connect request field$
+	 * 
 	 */
 	@When("^I tap on edit connect request field$")
 	public void WhenITapOnEditConnectRequestField() {
@@ -107,7 +121,9 @@ public class ConnectToPageSteps {
 	
 	/**
 	 * Types a message into the connect message input area
+	 * 
 	 * @step. ^I type Connect request \"(.*)\"$
+	 * 
 	 * @param message
 	 * 		The message to be sent
 	 * @throws Exception
@@ -119,7 +135,9 @@ public class ConnectToPageSteps {
 
 	/**
 	 * Checks to see if the connect button is either enabled or disabled (true or false)
+	 * 
 	 * @step. ^I see connect button enabled state is (.*)$
+	 * 
 	 * @param state
 	 * @throws Throwable
 	 */
@@ -131,7 +149,9 @@ public class ConnectToPageSteps {
 
 	/**
 	 * Checks to see that the counter value has a given number of remaining characters
+	 * 
 	 * @step. ^I see counter value (.*)$
+	 * 
 	 * @param value
 	 * @throws Throwable
 	 */
@@ -143,7 +163,9 @@ public class ConnectToPageSteps {
 
 	/**
 	 * Taps the connect button to send a connection request
+	 * 
 	 * @step. ^I press Connect button$
+	 * 
 	 * @throws Exception
 	 */
 	@When("^I press Connect button$")
@@ -154,6 +176,7 @@ public class ConnectToPageSteps {
 
 	/**
 	 * Blocks an incoming connection request
+	 * 
 	 * @step. ^I Press Block button on connect to page$
 	 * 
 	 */
@@ -166,7 +189,9 @@ public class ConnectToPageSteps {
 	/**
 	 * Presses the "Confirm Block" button that appears after pressing the block button
 	 * (Should the two steps be merged?)
+	 * 
 	 * @step. ^I confirm block on connect to page$
+	 * 
 	 * @throws Throwable
 	 */
 	@When("^I confirm block on connect to page$")
@@ -176,7 +201,9 @@ public class ConnectToPageSteps {
 
 	/**
 	 * Closes the connect to dialog by pressing the cross in the connect to dialog
+	 * 
 	 * @step. ^I close Connect To dialog$
+	 * 
 	 * @throws Exception
 	 */
 	@Then("I close Connect To dialog")
