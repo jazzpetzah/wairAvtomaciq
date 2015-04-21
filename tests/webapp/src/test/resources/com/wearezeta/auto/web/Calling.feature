@@ -13,7 +13,7 @@ Feature: Calling
     When I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the calling bar
-    And I accept the incoming call
+    And I end the call
     And I write random message
     And I send message
     And I click ping button
@@ -40,7 +40,6 @@ Feature: Calling
     When I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the calling bar
-    And I accept the incoming call
     And I end the call
     Then <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
     And <Contact> accepts next incoming call automatically
