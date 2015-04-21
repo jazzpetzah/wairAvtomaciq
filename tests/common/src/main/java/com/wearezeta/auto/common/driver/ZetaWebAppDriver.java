@@ -70,7 +70,6 @@ public class ZetaWebAppDriver extends RemoteWebDriver implements ZetaDriver {
 		InetAddress address = InetAddress
 				.getByName(new URL(hostname).getHost());
 		String ip = address.getHostAddress();
-		log.debug("Test scenarios will be executed on node: " + ip);
 		this.nodeIp = ip;
 	}
 
