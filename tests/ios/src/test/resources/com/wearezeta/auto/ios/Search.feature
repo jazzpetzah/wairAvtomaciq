@@ -261,7 +261,7 @@ Feature: Search
     And I wait up to 15 seconds until <LastName> exists in backend search results
     And I see People picker page 
     And I tap on Search input on People picker page
-    When I input in People picker search field user name <LastName>
+    And I input in People picker search field user name <LastName>
     Then I see user <NewName> found on People picker page
 
   	Examples:
