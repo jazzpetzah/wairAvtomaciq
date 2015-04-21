@@ -12,6 +12,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.WebAppConstants;
+import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class RegistrationPage extends WebPage {
@@ -78,6 +79,7 @@ public class RegistrationPage extends WebPage {
 	private static final int MAX_TRIES = 3;
 
 	public LoginPage switchToLoginPage() throws Exception {
+		WebCommonUtils.forceLogoutFromWebapp(getDriver(), true);
 		final By signInBtnlocator = By.xpath(WebAppLocators.LoginPage.xpathSignInButton);
 		int ntry = 0;
 		// FIXME: temporary workaround for white page instead of sign in issue

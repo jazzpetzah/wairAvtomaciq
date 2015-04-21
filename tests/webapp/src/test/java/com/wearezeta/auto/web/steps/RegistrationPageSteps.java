@@ -182,11 +182,12 @@ public class RegistrationPageSteps {
 				.switchToLoginPage();
 	}
 
-	private static final int ACTIVATION_TIMEOUT = 5; // seconds
+	private static final int ACTIVATION_TIMEOUT = 15; // seconds
 
 	/**
-	 * Activates user using browser URL from activation email. Don't forget to
-	 * call the 'I start activation email monitoring' step before this one
+	 * Activates user using browser URL from activation email and sign him in to
+	 * the app if the activation was successful. Don't forget to call the 'I
+	 * start activation email monitoring' step before this one
 	 * 
 	 * @step. ^I activate user by URL$
 	 * 
@@ -200,12 +201,7 @@ public class RegistrationPageSteps {
 				PagesCollection.registrationPage.getDriver(),
 				PagesCollection.registrationPage.getWait(), link);
 		activationPage.navigateTo();
-		activationPage.verifyActivation(ACTIVATION_TIMEOUT);
-		PagesCollection.loginPage.navigateTo();
-
-//		activationPage.openInNewTab();
-//		activationPage.verifyActivation(ACTIVATION_TIMEOUT);
-//		activationPage.close();
+		PagesCollection.contactListPage = activationPage.verifyActivation(ACTIVATION_TIMEOUT);		
 
 		this.userToRegister.setUserState(UserState.Created);
 		// indexes in aliases start from 1

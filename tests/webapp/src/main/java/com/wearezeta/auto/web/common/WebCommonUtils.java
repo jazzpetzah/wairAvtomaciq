@@ -300,4 +300,15 @@ public class WebCommonUtils extends CommonUtils {
 						+ "';", "$('head').append(scriptElt);" };
 		driver.executeScript(StringUtils.join(loaderJS, "\n"));
 	}
+
+	public static void forceLogoutFromWebapp(RemoteWebDriver driver,
+			boolean areExceptionsSilenced) {
+		try {
+			driver.executeScript("wire.app.logout();");
+		} catch (Exception e) {
+			if (!areExceptionsSilenced) {
+				throw e;
+			}
+		}
+	}
 }

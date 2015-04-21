@@ -376,6 +376,22 @@ public class CommonWebAppSteps {
 	}
 
 	/**
+	 * Sets self user to be the current user. Avatar picture for this user is
+	 * NOT set automatically
+	 * 
+	 * @step. ^User (\\w+) is [Mm]e without avatar$
+	 * 
+	 * @param nameAlias
+	 *            user to be set as self user
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^User (\\w+) is [Mm]e without avatar$")
+	public void UserXIsMeWithoutAvatar(String nameAlias) throws Exception {
+		commonSteps.UserXIsMe(nameAlias);
+	}
+
+	/**
 	 * Sends connection request by one user to another
 	 * 
 	 * @step. ^(.*) (?:has|have) sent connection request to (.*)
@@ -519,8 +535,6 @@ public class CommonWebAppSteps {
 					writeBrowserLogsIntoMainLog(PlatformDrivers.getInstance()
 							.getDriver(CURRENT_PLATFORM));
 				}
-				PlatformDrivers.getInstance().getDriver(CURRENT_PLATFORM)
-						.manage().deleteAllCookies();
 			} finally {
 				PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
 			}

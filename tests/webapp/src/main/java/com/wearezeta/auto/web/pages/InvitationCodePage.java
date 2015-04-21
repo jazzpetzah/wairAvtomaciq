@@ -10,7 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.web.common.WebAppExecutionContext;
+import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class InvitationCodePage extends WebPage {
@@ -34,11 +34,7 @@ public class InvitationCodePage extends WebPage {
 	@Override
 	public void navigateTo() {
 		super.navigateTo();
-		if (!WebAppExecutionContext.ProfileManagement
-				.isSupportedInCurrentBrowser()) {
-			driver.manage().deleteAllCookies();
-			driver.navigate().refresh();
-		}
+		WebCommonUtils.forceLogoutFromWebapp(getDriver(), true);
 
 		// FIXME: I'm not sure whether white page instead of sign in is
 		// Amazon issue or webapp issue,
@@ -58,8 +54,8 @@ public class InvitationCodePage extends WebPage {
 									this.getDriver(),
 									By.xpath(WebAppLocators.RegistrationPage.xpathSwitchToSignInButton)))) {
 					log.error(String
-							.format("Initial page has failed to load. Trying to refresh (%s of %s)...",
-									ntry, MAX_LOAD_RETRIES));
+							.format("Startup page has failed to load. Trying to refresh (%s of %s)...",
+									ntry + 1, MAX_LOAD_RETRIES));
 					driver.navigate().to(driver.getCurrentUrl());
 				} else {
 					break;

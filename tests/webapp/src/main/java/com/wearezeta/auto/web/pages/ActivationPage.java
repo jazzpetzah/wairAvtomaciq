@@ -20,10 +20,13 @@ public class ActivationPage extends WebPage {
 				this.getDriver().getNodeIp());
 	}
 
-	public void verifyActivation(int timeoutSeconds) throws Exception {
-		assert DriverUtils.isElementDisplayed(driver,
-				By.xpath(WebAppLocators.ActivationPage.xpathSuccessfullResult),
-				timeoutSeconds) : "It seems there was some failure while verifying registered account";
+	public ContactListPage verifyActivation(int timeoutSeconds)
+			throws Exception {
+		final By locator = By
+				.xpath(WebAppLocators.ActivationPage.xpathBtnOpenWebApp);
+		assert DriverUtils.isElementDisplayed(driver, locator, timeoutSeconds) : "It seems there was some failure while verifying registered account";
+		driver.findElement(locator).click();
+		return new ContactListPage(getDriver(), getWait());
 	}
 
 	@Override
