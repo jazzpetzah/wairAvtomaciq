@@ -377,7 +377,6 @@ public class ContactListPageSteps {
 	public void ISeeConversationIsSilenced(String conversation)
 			throws Exception {
 		conversation = usrMgr.replaceAliasesOccurences(conversation,FindBy.NAME_ALIAS);
-		//conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
 		boolean isSilenced = PagesCollection.contactListPage
 				.isConversationSilenced(conversation, true);
 		Assert.assertTrue("Conversation is not silenced", isSilenced);
@@ -397,7 +396,6 @@ public class ContactListPageSteps {
 	public void ISeeConversationGotSilencedBefore(String conversation)
 			throws Exception {
 		conversation = usrMgr.replaceAliasesOccurences(conversation,FindBy.NAME_ALIAS);
-		//conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
 		boolean isSilenced = PagesCollection.contactListPage
 				.isConversationSilencedBefore(conversation);
 		Assert.assertTrue("Conversation is not silenced", isSilenced);
@@ -417,7 +415,6 @@ public class ContactListPageSteps {
 	public void ISeeConversationIsUnSilenced(String conversation)
 			throws Exception {
 		conversation = usrMgr.replaceAliasesOccurences(conversation,FindBy.NAME_ALIAS);
-		//conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
 		boolean isSilenced = 
 				PagesCollection.contactListPage
 				.isConversationSilenced(conversation, false);
