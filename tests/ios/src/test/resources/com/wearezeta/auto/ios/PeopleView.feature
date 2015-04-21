@@ -381,8 +381,8 @@ Feature: People View
     Then I see conversation <Contact> is silenced
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Color        | NewName |
-      | user1Email | user1Password | user1Name | user2Name | BrightYellow | SILENCE |
+      | Login      | Password      | Name      | Contact   | Color    | NewName |
+      | user1Email | user1Password | user1Name | user2Name | Violet   | SILENCE |
       
   @staging @id1335
   Scenario Outline: Verify unsilence the conversation
@@ -406,5 +406,5 @@ Feature: People View
     Then I see conversation <Contact> is unsilenced
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Color        | NewName |
-      | user1Email | user1Password | user1Name | user2Name | BrightYellow | SILENCE |
+      | Login      | Password      | Name      | Contact   | Color  | NewName |
+      | user1Email | user1Password | user1Name | user2Name | Violet | SILENCE |

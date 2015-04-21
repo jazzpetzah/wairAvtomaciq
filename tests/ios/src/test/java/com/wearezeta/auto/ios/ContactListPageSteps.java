@@ -379,7 +379,7 @@ public class ContactListPageSteps {
 		conversation = usrMgr.replaceAliasesOccurences(conversation,FindBy.NAME_ALIAS);
 		//conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
 		boolean isSilenced = PagesCollection.contactListPage
-				.isConversationSilenced(conversation);
+				.isConversationSilenced(conversation, true);
 		Assert.assertTrue("Conversation is not silenced", isSilenced);
 	}
 	
@@ -420,8 +420,8 @@ public class ContactListPageSteps {
 		//conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
 		boolean isSilenced = 
 				PagesCollection.contactListPage
-				.isConversationSilenced(conversation);
-		Assert.assertFalse("Conversation is silenced", isSilenced);
+				.isConversationSilenced(conversation, false);
+		Assert.assertTrue("Conversation is unsilenced", isSilenced);
 
 	}
 
