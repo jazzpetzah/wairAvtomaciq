@@ -125,7 +125,8 @@ public class ConversationPage extends WebPage {
 						By.cssSelector(WebAppLocators.ConversationPage.cssSendImageInput),
 						5);
 		if (WebAppExecutionContext.getCurrentBrowser() == Browser.Safari) {
-			WebCommonUtils.sendPictureInSafari(picturePath, this.getDriver().getNodeIp());
+			WebCommonUtils.sendPictureInSafari(picturePath, this.getDriver()
+					.getNodeIp());
 		} else {
 			imagePathInput.sendKeys(picturePath);
 		}
@@ -148,7 +149,11 @@ public class ConversationPage extends WebPage {
 		try {
 			DriverUtils.moveMouserOver(driver, conversationInput);
 		} catch (WebDriverException e) {
-			// do nothing (safari workaround)
+			// (safari workaround)
+			final String showImageLabelJScript = "$(\""
+					+ WebAppLocators.ConversationPage.cssRightControlsPanel
+					+ "\").css({'opacity': '100'});";
+			driver.executeScript(showImageLabelJScript);
 		}
 		final By locator = By
 				.xpath(WebAppLocators.ConversationPage.xpathPingButton);
