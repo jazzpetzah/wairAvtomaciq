@@ -119,10 +119,19 @@ public class ContactListPage extends WebPage {
 	}
 
 	public boolean waitForContactListVisible() throws Exception {
+		// FIXME: Try to refresh the page if convo list is not visible
+		// (workaround for Amazon server issue)
+		if (!DriverUtils
+				.waitUntilElementAppears(
+						driver,
+						By.cssSelector(WebAppLocators.ContactListPage.cssOpenPeoplePickerButton))) {
+			driver.navigate().refresh();
+		}
 		return DriverUtils
 				.waitUntilElementAppears(
 						driver,
 						By.cssSelector(WebAppLocators.ContactListPage.cssOpenPeoplePickerButton));
+
 	}
 
 	public boolean isSelfNameEntryExist() throws Exception {
