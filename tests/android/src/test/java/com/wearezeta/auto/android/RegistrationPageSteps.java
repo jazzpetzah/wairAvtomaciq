@@ -26,6 +26,15 @@ public class RegistrationPageSteps {
 
 	public static Future<Message> activationMessage;
 
+	/**
+	 * Presses the camera button once to bring up the camera, and again to take
+	 * a picture
+	 * 
+	 * @step. ^I see connect button enabled state is (.*)$
+	 * 
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
 	@When("^I press Camera button twice$")
 	public void WhenIPressCameraButton() throws IOException,
 			InterruptedException {
@@ -34,31 +43,75 @@ public class RegistrationPageSteps {
 		PagesCollection.registrationPage.takePhoto();
 	}
 
+	/**
+	 * Presses the camera button to bring up the camera app
+	 * 
+	 * @step. ^I press Picture button$
+	 * 
+	 * @throws IOException
+	 */
 	@When("^I press Picture button$")
 	public void WhenIPressPictureButton() throws IOException {
 		PagesCollection.registrationPage.selectPicture();
 	}
 
+	/**
+	 * Selects the first photo in the phone's stored photos
+	 * 
+	 * @step. ^I choose photo from album$
+	 * 
+	 * @throws IOException
+	 */
 	@When("^I choose photo from album$")
 	public void WhenIPressChoosePhoto() throws IOException {
 		PagesCollection.registrationPage.chooseFirstPhoto();
 	}
 
+	/**
+	 * Checks to see that a picture has been selected from either the gallery or
+	 * the camera
+	 * 
+	 * @step. ^I See selected picture$
+	 * 
+	 * @throws Exception
+	 */
 	@When("^I See selected picture$")
 	public void ISeeSelectedPicture() throws Exception {
 		Assert.assertTrue(PagesCollection.registrationPage.isPictureSelected());
 	}
 
+	/**
+	 * Presses the confirm button to confirm the selected picture
+	 * 
+	 * @step. ^I confirm selection$
+	 * 
+	 * @throws IOException
+	 */
 	@When("^I confirm selection$")
 	public void IConfirmSelection() throws IOException {
 		PagesCollection.registrationPage.confirmPicture();
 	}
 
+	/**
+	 * Goes backwards one step in the registration process. This button is
+	 * available at all steps of the process
+	 * 
+	 * @step. ^I press Registration back button$
+	 * 
+	 */
 	@When("^I press Registration back button$")
 	public void IPressRegistrationBackButton() {
 		PagesCollection.registrationPage.pressBackButton();
 	}
-	
+
+	/**
+	 * Enters a name in the input field in the registration process
+	 * 
+	 * @step. ^I enter name (.*)$
+	 * 
+	 * @param name
+	 * @throws Exception
+	 */
 	@When("^I enter name (.*)$")
 	public void IEnterName(String name) throws Exception {
 		try {
@@ -73,6 +126,15 @@ public class RegistrationPageSteps {
 		PagesCollection.registrationPage.setName(this.userToRegister.getName());
 	}
 
+	/**
+	 * Inputs an email address into the email input field (could these not be
+	 * replaced by a general "input" step?)
+	 * 
+	 * @step. ^I enter email (.*)$
+	 * 
+	 * @param email
+	 * @throws Exception
+	 */
 	@When("^I enter email (.*)$")
 	public void IEnterEmail(String email) throws Exception {
 		try {
@@ -91,6 +153,15 @@ public class RegistrationPageSteps {
 				.getEmail());
 	}
 
+	/**
+	 * Inputs a password into the password input field (could these not be
+	 * replaced by a general "input" step?)
+	 * 
+	 * @step. ^I enter password (.*)$
+	 * 
+	 * @param password
+	 * @throws Exception
+	 */
 	@When("^I enter password (.*)$")
 	public void IEnterPassword(String password) throws Exception {
 		try {
@@ -109,24 +180,51 @@ public class RegistrationPageSteps {
 				.getPassword());
 	}
 
+	/**
+	 * Submits all of the data given in the registration process by pressing the
+	 * "create account" button Also waits at the inbox of the user to check to
+	 * receive the verification email
+	 * 
+	 * @step. ^I submit registration data$
+	 * 
+	 * @throws Exception
+	 */
 	@When("^I submit registration data$")
 	public void ISubmitRegistrationData() throws Exception {
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
-		RegistrationPageSteps.activationMessage = IMAPSMailbox.getInstance().getMessage(
-				expectedHeaders, BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
+		RegistrationPageSteps.activationMessage = IMAPSMailbox.getInstance()
+				.getMessage(expectedHeaders,
+						BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
 		PagesCollection.registrationPage.createAccount();
 	}
 
+	/**
+	 * Checks to see that the confirmation page exists once registration is
+	 * finished. This is the page that tells the user to check their emails
+	 * 
+	 * @step. ^I see confirmation page$
+	 * 
+	 * @throws Exception
+	 */
 	@Then("^I see confirmation page$")
 	public void ISeeConfirmationPage() throws Exception {
 		Assert.assertTrue(PagesCollection.registrationPage
 				.isConfirmationVisible());
 	}
 
+	/**
+	 * Uses the backend API to activate the registered user and then waits for
+	 * the confirmation page to disappear (somehow, locator is not clear...)
+	 * 
+	 * @step. ^I verify registration address$
+	 * 
+	 * @throws Throwable
+	 */
 	@Then("^I verify registration address$")
 	public void IVerifyRegistrationAddress() throws Throwable {
-		BackendAPIWrappers.activateRegisteredUser(RegistrationPageSteps.activationMessage);
+		BackendAPIWrappers
+				.activateRegisteredUser(RegistrationPageSteps.activationMessage);
 		this.userToRegister.setUserState(UserState.Created);
 		PagesCollection.contactListPage = PagesCollection.registrationPage
 				.continueRegistration();
