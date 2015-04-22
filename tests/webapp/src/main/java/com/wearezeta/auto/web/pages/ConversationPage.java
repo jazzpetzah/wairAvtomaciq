@@ -197,9 +197,14 @@ public class ConversationPage extends WebPage {
 				TEXT_MESSAGE_VISIBILITY_TIMEOUT_SECONDS);
 	}
 
-	public String getMissedCallMessage() {
+	private static final int MISSED_CALL_MSG_TIMOEUT = 15;
+
+	public String getMissedCallMessage() throws Exception {
 		final By locator = By
 				.xpath(WebAppLocators.ConversationPage.xpathMissedCallAction);
+		assert DriverUtils.isElementDisplayed(driver, locator,
+				MISSED_CALL_MSG_TIMOEUT) : "Missed call message is not visible after "
+				+ MISSED_CALL_MSG_TIMOEUT + " second(s) timeout";
 		return driver.findElement(locator).getText();
 	}
 

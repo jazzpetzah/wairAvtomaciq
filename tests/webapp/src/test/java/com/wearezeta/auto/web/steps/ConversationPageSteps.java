@@ -6,7 +6,6 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
@@ -411,12 +410,11 @@ public class ConversationPageSteps {
 	 * 
 	 * @param contact
 	 *            contact name string
-	 * 
-	 * @throws NoSuchUserException
+	 * @throws Exception
 	 */
 	@Then("^I see conversation with missed call from (.*)$")
 	public void ThenISeeConversationWithMissedCallFrom(String contact)
-			throws NoSuchUserException {
+			throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName()
 				.toUpperCase();
 		Assert.assertEquals(contact + " CALLED",
