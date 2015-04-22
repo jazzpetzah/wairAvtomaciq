@@ -9,6 +9,13 @@ import cucumber.api.java.en.When;
 
 public class SettingsPageSteps {
 
+	/**
+	 * Checks to see that the settings page is visible
+	 * 
+	 * @step. ^I see settings page$
+	 * 
+	 * @throws Throwable
+	 */
 	@Then("^I see settings page$")
 	public void ISeeSettingsPage() throws Throwable {
 		Assert.assertTrue(PagesCollection.settingsPage.isSettingsPageVisible());

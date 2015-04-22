@@ -184,6 +184,11 @@ public final class AndroidLocators {
 		
 	}
 
+	/**
+	 * All elements in this class are found when you select a user in Wire with whom you are not yet connected.
+	 * OR
+	 * when another user sends a connection request to you.
+	 */
 	public static final class ConnectToPage {
 
 		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME
