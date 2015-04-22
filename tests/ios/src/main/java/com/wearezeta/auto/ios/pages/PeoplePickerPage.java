@@ -7,9 +7,11 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -83,10 +85,13 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public void clickLaterButton() throws Exception {
-		if (DriverUtils.isElementDisplayed(this.getDriver(),
-				By.name(IOSLocators.nameShareButton))) {
-			// shareButton.click();
-			DriverUtils.mobileTapByCoordinates(getDriver(), shareButton);
+		for (int i = 0; i < 3; i++) {
+			if (DriverUtils.isElementDisplayed(this.getDriver(),
+					By.name(IOSLocators.nameShareButton))) {
+				getWait().until(ExpectedConditions.elementToBeClickable(shareButton));
+				DriverUtils.mobileTapByCoordinates(getDriver(), shareButton);
+				break;
+			}
 		}
 	}
 
@@ -124,7 +129,12 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public void fillTextInPeoplePickerSearch(String text) {
-		peoplePickerSearch.sendKeys(text);
+		try {
+			peoplePickerSearch.sendKeys(text);
+		} catch (WebDriverException ex) {
+			peoplePickerSearch.clear();
+			peoplePickerSearch.sendKeys(text);
+		}
 	}
 
 	public boolean waitUserPickerFindUser(String user) throws Exception {
