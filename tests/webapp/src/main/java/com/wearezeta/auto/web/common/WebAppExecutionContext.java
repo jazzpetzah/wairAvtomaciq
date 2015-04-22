@@ -25,6 +25,10 @@ public class WebAppExecutionContext {
 		return currentPlatform;
 	}
 
+	public static boolean isCurrentPlatfromWindows() {
+		return getCurrentPlatform().toLowerCase().contains("win");
+	}
+
 	private static Browser currentBrowser = null;
 	static {
 		try {

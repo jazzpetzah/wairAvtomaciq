@@ -1,5 +1,8 @@
 package com.wearezeta.auto.android;
 
+
+import com.wearezeta.auto.android.pages.CallingOverlayPage;
+import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.CommonCallingSteps;
 
 import cucumber.api.java.en.When;
@@ -27,6 +30,8 @@ public class CallingSteps {
 			String userToNameAlias, String callBackend) throws Exception {
 		commonCallingSteps.UserXCallsToUserYUsingCallBackend(userFromNameAlias,
 				userToNameAlias, callBackend);
+		PagesCollection.callingOverlayPage = new CallingOverlayPage(PagesCollection.loginPage.getDriver(), 
+				PagesCollection.loginPage.getWait());
 	}
 
 	/**

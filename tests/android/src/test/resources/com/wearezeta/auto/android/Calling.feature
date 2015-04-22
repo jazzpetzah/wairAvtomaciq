@@ -31,3 +31,18 @@ Feature: Calling
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | autocall    |
+
+  @staging @id1503
+  Scenario Outline: Silence an incoming call
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given I Sign in using login <Login> and password <Password>
+    Given I see Contact list with my name <Name>
+    When <Contact> calls me using <CallBackend>
+    And I see incoming calling message for contact <Contact>
+    And I click the ignore call button
+    Then I cannot see the call bar
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name | autocall    |

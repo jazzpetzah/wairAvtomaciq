@@ -64,8 +64,7 @@ public class CommonWebAppSteps {
 				"warn");
 	}
 
-	private static void setCustomChromeProfile(
-			DesiredCapabilities capabilities, String browserPlatform)
+	private static void setCustomChromeProfile(DesiredCapabilities capabilities)
 			throws Exception {
 		ChromeOptions options = new ChromeOptions();
 		// simulate a fake webcam and mic for testing
@@ -75,10 +74,9 @@ public class CommonWebAppSteps {
 		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 	}
 
-	private static void setCustomOperaProfile(DesiredCapabilities capabilities,
-			String browserPlatform) throws Exception {
-		final String userProfileRoot = WebCommonUtils
-				.getOperaProfileRoot(browserPlatform);
+	private static void setCustomOperaProfile(DesiredCapabilities capabilities)
+			throws Exception {
+		final String userProfileRoot = WebCommonUtils.getOperaProfileRoot();
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("user-data-dir=" + userProfileRoot);
 		// simulate a fake webcam and mic for testing
@@ -129,18 +127,14 @@ public class CommonWebAppSteps {
 		switch (WebAppExecutionContext.getCurrentBrowser()) {
 		case Chrome:
 			capabilities = DesiredCapabilities.chrome();
-			setCustomChromeProfile(capabilities,
-					WebAppExecutionContext.getCurrentPlatform());
+			setCustomChromeProfile(capabilities);
 			break;
 		case Opera:
 			capabilities = DesiredCapabilities.chrome();
-			setCustomOperaProfile(capabilities,
-					WebAppExecutionContext.getCurrentPlatform());
+			setCustomOperaProfile(capabilities);
 			break;
 		case Firefox:
 			capabilities = DesiredCapabilities.firefox();
-			// This is to fix Desktop Notifications alert appearance in
-			// Firefox
 			setCustomFirefoxProfile(capabilities);
 			break;
 		case Safari:
