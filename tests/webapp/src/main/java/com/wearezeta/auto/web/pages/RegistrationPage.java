@@ -17,7 +17,6 @@ import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class RegistrationPage extends WebPage {
 
-	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(RegistrationPage.class
 			.getSimpleName());
 
