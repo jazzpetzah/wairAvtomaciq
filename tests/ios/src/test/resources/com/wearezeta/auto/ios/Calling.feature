@@ -78,6 +78,8 @@ Feature: Calling
     When <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
     And <Contact> stops all calls to me
+    And I tap on contact name <Contact>
+    And I see dialog page
     Then I see missed call indicator in list for contact <Contact>
 
     Examples: 
