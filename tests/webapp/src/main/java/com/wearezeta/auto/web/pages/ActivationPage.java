@@ -14,12 +14,15 @@ public class ActivationPage extends WebPage {
 		super(driver, wait, url);
 	}
 
-	public ContactListPage openWebApp(int timeoutSeconds) throws Exception {
+	private ContactListPage openWebApp(int timeoutSeconds) throws Exception {
 		final By openWebAppBtnLocator = By
 				.xpath(WebAppLocators.ActivationPage.xpathBtnOpenWebApp);
 		if (DriverUtils.isElementDisplayed(driver, openWebAppBtnLocator,
 				timeoutSeconds)) {
 			driver.findElement(openWebAppBtnLocator).click();
+		} else {
+			throw new RuntimeException(
+					"It seems there was some failure while verifying registered account");
 		}
 		return new ContactListPage(getDriver(), getWait());
 	}
