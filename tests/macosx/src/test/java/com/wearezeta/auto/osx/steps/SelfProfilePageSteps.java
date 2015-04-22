@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
@@ -143,4 +144,83 @@ public class SelfProfilePageSteps {
 		usrMgr.getSelfUser().setName(name);
 	}
 
+	/**
+	 * Selects specified accent color on accent color picker
+	 * 
+	 * @step. ^I change accent color to
+	 *        (StrongBlue|StrongLimeGreen|BrightYellow|
+	 *        VividRed|BrightOrange|SoftPink|Violet)$
+	 * 
+	 * @param colorName
+	 *            one of possible accent colors:
+	 *            StrongBlue|StrongLimeGreen|BrightYellow
+	 *            |VividRed|BrightOrange|SoftPink|Violet
+	 * 
+	 * @throws IOException
+	 */
+	@And("^I change accent color to (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet)$")
+	public void IChangeAccentColor(String colorName) throws IOException {
+		AccentColor accentColor = AccentColor.getByName(colorName);
+		PagesCollection.selfProfilePage.changeAccentColor(accentColor);
+	}
+
+	/**
+	 * Finds selected color on accent color picker and checks that it is the
+	 * same as expected
+	 * 
+	 * @step. ^I see color
+	 *        (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange
+	 *        |SoftPink|Violet) selected on accent color picker$
+	 * 
+	 * @param colorName
+	 *            one of possible accent colors:
+	 *            StrongBlue|StrongLimeGreen|BrightYellow
+	 *            |VividRed|BrightOrange|SoftPink|Violet
+	 * 
+	 * @throws AssertionError
+	 *             if accent color is not equal to expected
+	 */
+	@And("^I see color (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet) selected on accent color picker$")
+	public void ISeeColorXSelectOnAccentColorPicker(String colorName)
+			throws IOException {
+		AccentColor expectedColor = AccentColor.getByName(colorName);
+		AccentColor selectedColor = PagesCollection.selfProfilePage
+				.findSelectedAccentColor();
+		Assert.assertNotNull(
+				"Can't determine selected color from accent color picker.",
+				selectedColor);
+		Assert.assertTrue(String.format(
+				"Selected color (%s) is not as expected (%s)", selectedColor,
+				expectedColor), selectedColor == expectedColor);
+	}
+
+	/**
+	 * Checks that color used for mask background on self profile page is the
+	 * same as expected
+	 * 
+	 * @step. ^I see color
+	 *        (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange
+	 *        |SoftPink|Violet) is the background color of self profile page$
+	 * 
+	 * @param colorName
+	 *            one of possible accent colors:
+	 *            StrongBlue|StrongLimeGreen|BrightYellow
+	 *            |VividRed|BrightOrange|SoftPink|Violet
+	 * 
+	 * @throws AssertionError
+	 *             if accent color is not equal to expected
+	 */
+	@And("^I see color (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet) is the background color of self profile page$")
+	public void ISeeColorXIsTheBackgroundColor(String colorName)
+			throws IOException {
+		AccentColor expectedColor = AccentColor.getByName(colorName);
+		AccentColor backgroundColor = PagesCollection.selfProfilePage
+				.findBackgroundSelfProfileColor();
+		Assert.assertNotNull("Can't determine background color.",
+				backgroundColor);
+		Assert.assertTrue(String.format(
+				"Background color (%s) is not as expected (%s)",
+				backgroundColor, expectedColor),
+				backgroundColor == expectedColor);
+	}
 }

@@ -1,5 +1,8 @@
 package com.wearezeta.auto.osx.pages;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -9,11 +12,15 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.common.ChoosePicturePage;
+import com.wearezeta.auto.osx.util.AccentColorPicker;
+import com.wearezeta.auto.osx.util.AccentColorUtil;
 
 public class SelfProfilePage extends MainWirePage {
 
@@ -49,6 +56,8 @@ public class SelfProfilePage extends MainWirePage {
 
 	@FindBy(how = How.ID, using = OSXLocators.idSelfProfileEmailTextField)
 	private WebElement selfProfileEmailTextField;
+
+	private AccentColorPicker accentColorPicker;
 
 	public SelfProfilePage(ZetaOSXDriver driver, WebDriverWait wait)
 			throws Exception {
@@ -124,5 +133,27 @@ public class SelfProfilePage extends MainWirePage {
 		selfName.click();
 		selfName.clear();
 		selfName.sendKeys(newName + "\\n");
+	}
+
+	public void changeAccentColor(AccentColor color) throws IOException {
+		accentColorPicker = findAccentColorPicker();
+		accentColorPicker.changeAccentColor(color);
+	}
+
+	public AccentColorPicker findAccentColorPicker() throws IOException {
+		return AccentColorPicker.findColorPickerInWindow(this.getDriver(),
+				this.window);
+	}
+
+	public AccentColor findSelectedAccentColor() throws IOException {
+		return AccentColorPicker.findSelectedAccentColor(this.getDriver(),
+				this.window);
+	}
+
+	public AccentColor findBackgroundSelfProfileColor() throws IOException {
+		BufferedImage selfProfileScreen = OSXCommonUtils.takeElementScreenshot(
+				window, this.getDriver());
+		return AccentColorUtil
+				.calculateAccentColorForBackground(selfProfileScreen);
 	}
 }
