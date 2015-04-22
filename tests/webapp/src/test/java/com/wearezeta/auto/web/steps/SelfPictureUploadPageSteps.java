@@ -51,7 +51,7 @@ public class SelfPictureUploadPageSteps {
 	 * 
 	 * @step. ^I choose (.*) as my self picture on Self Picture Upload dialog$
 	 * 
-	 * @param name
+	 * @param pictureName
 	 *            existing picture name
 	 * 
 	 * @throws Exception
@@ -65,9 +65,6 @@ public class SelfPictureUploadPageSteps {
 	 * Confirm picture upload
 	 * 
 	 * @step. ^I confirm picture selection on Self Picture Upload dialog$
-	 * 
-	 * @param name
-	 *            existing picture name
 	 * 
 	 * @throws Exception
 	 */

@@ -465,7 +465,7 @@ public class CommonWebAppSteps {
 	 * Send message to a conversation
 	 * 
 	 * @step. ^User (.*) sent message (.*) to conversation (.*)
-	 * @param userToNameAlias
+	 * @param userFromNameAlias
 	 *            user who want to mute conversation
 	 * @param message
 	 *            message to send
