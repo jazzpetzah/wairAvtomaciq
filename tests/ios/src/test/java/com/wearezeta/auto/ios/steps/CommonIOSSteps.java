@@ -1,4 +1,4 @@
-package com.wearezeta.auto.ios;
+package com.wearezeta.auto.ios.steps;
 
 import java.util.Date;
 import java.util.UUID;

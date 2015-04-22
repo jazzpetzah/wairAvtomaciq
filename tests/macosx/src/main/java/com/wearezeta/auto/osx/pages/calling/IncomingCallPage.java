@@ -34,7 +34,12 @@ public class IncomingCallPage extends CallPage {
 		String xpath = String.format(
 				OSXLocators.CallPage.xpathFormatUserCallsMessage,
 				subscriberName);
-		return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath), 10);
+		boolean result = DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath), 10);
+		if (!result) {
+			log.debug(xpath);
+			log.debug(driver.getPageSource());
+		}
+		return result;
 	}
 
 	public StartedCallPage joinCall() throws Exception {

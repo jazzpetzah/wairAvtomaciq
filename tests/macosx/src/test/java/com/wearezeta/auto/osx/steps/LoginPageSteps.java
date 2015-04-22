@@ -59,6 +59,8 @@ public class LoginPageSteps {
 		Assert.assertTrue(String.format(
 				"Failed to sign in using email %s and password %s", login,
 				password), PagesCollection.loginPage.waitForLogin());
+
+		usrMgr.setSelfUser(usrMgr.findUserByEmailOrEmailAlias(login));
 	}
 
 	/**

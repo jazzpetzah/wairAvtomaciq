@@ -1,4 +1,4 @@
-package com.wearezeta.auto.ios;
+package com.wearezeta.auto.ios.steps;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;

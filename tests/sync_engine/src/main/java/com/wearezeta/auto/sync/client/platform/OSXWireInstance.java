@@ -85,7 +85,7 @@ public class OSXWireInstance extends WireInstance {
 		LoginPageSteps osxLoginPageSteps = new LoginPageSteps();
 		osxLoginPageSteps.ISignInUsingLoginAndPassword(email, password);
 		ContactListPageSteps osxClPageSteps = new ContactListPageSteps();
-		osxClPageSteps.ISeeMyNameInContactList(userAlias);
+		osxClPageSteps.ISeeMyNameInContactList();
 	}
 
 	@Override
