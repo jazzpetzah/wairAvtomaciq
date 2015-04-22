@@ -174,7 +174,7 @@ Feature: Conversation View
       | user1Email | user1Password | user1Name | user2Name | 畑 はたけ hatake field of crops |
       
   @id163 @regression
-  Scenario Outline: Send image using existing camera rolls (portrait) in group chat
+  Scenario Outline: Send image using existing camera rolls (portrait) in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
