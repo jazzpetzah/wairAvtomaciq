@@ -200,7 +200,6 @@ public abstract class AndroidPage extends BasePage {
 
 	@Override
 	public AndroidPage swipeDown(int time) throws Exception {
-
 		DriverUtils.swipeDown(this.getDriver(), content, time);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
@@ -240,11 +239,17 @@ public abstract class AndroidPage extends BasePage {
 		return returnBySwipe(SwipeDirection.UP);
 	}
 
-	public AndroidPage swipeDownCoordinates(int time) throws Exception {
-		DriverUtils.swipeDownCoordinates(this.getDriver(), time);
+	public AndroidPage swipeByCoordinates(int time, int widthStartPercent, int hightStartPercent, int widthEndPercent, int hightEndPercent) throws Exception {
+		DriverUtils.swipeByCoordinates(this.getDriver(), time, widthStartPercent, hightStartPercent, widthEndPercent, hightEndPercent);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
+	public AndroidPage swipeDownCoordinates(int time)
+			throws Exception {
+		DriverUtils.swipeDownCoordinates(this.getDriver(), time);
+		return returnBySwipe(SwipeDirection.DOWN);
+	}
+	
 	public AndroidPage swipeDownCoordinates(int time, int verticalPercent)
 			throws Exception {
 		DriverUtils.swipeDownCoordinates(this.getDriver(), time,
@@ -257,6 +262,18 @@ public abstract class AndroidPage extends BasePage {
 		List<WebElement> buttonsList = element.findElements(By
 				.className(className));
 		buttonsList.get(index).click();
+	}
+	
+	public void tapByCoordinates(int widthPercent, int hightPercent) {
+		DriverUtils.genericTap(this.getDriver(), widthPercent, hightPercent);
+	}
+	
+	public void tapByCoordinates(int time, int widthPercent, int hightPercent) {
+		DriverUtils.genericTap(this.getDriver(), time, widthPercent, hightPercent);
+	}
+	
+	public void tapOnCenterOfScreen() {
+		DriverUtils.genericTap(this.getDriver());
 	}
 
 	public static void clearPagesCollection() throws IllegalArgumentException,

@@ -331,7 +331,7 @@ Feature: Connect
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe up on dialog page
-    And I press Right conversation button
+    And I press options menu button
     And I Press Block button
     #And I confirm block
     Then I do not see Contact list with name <Contact>

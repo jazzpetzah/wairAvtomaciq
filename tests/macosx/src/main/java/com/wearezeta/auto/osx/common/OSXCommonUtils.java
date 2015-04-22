@@ -241,15 +241,20 @@ public class OSXCommonUtils extends CommonUtils {
 	}
 
 	public static boolean osxAXValueToBoolean(String value) {
-		return value.equals("0") ? false : true;
+		return value.equals(OSXConstants.Common.AX_BOOLEAN_FALSE) ? false
+				: true;
+	}
+
+	public static int screenPixelsMultiplier(AppiumDriver driver)
+			throws IOException {
+		return (isRetinaDisplay((ZetaDriver) driver)) ? OSXConstants.Common.SIZE_MULTIPLIER_RETINA
+				: OSXConstants.Common.SIZE_MULTIPLIER_NO_RETINA;
 	}
 
 	public static BufferedImage takeElementScreenshot(WebElement element,
 			AppiumDriver driver) throws IOException {
-		int multiply = 1;
-		if (isRetinaDisplay((ZetaDriver) driver)) {
-			multiply = 2;
-		}
+		int multiply = screenPixelsMultiplier(driver);
+
 		BufferedImage screenshot = DriverUtils
 				.takeScreenshot((ZetaDriver) driver);
 		NSPoint elementLocation = NSPoint.fromString(element

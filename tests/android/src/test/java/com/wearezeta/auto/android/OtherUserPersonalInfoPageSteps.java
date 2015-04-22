@@ -42,7 +42,9 @@ public class OtherUserPersonalInfoPageSteps {
 
 	@When("^I click Remove$")
 	public void WhenIClickRemove() throws Throwable {
-		PagesCollection.otherUserPersonalInfoPage.pressRightConversationButton();
+		//TODO: check for native button click
+		PagesCollection.otherUserPersonalInfoPage
+				.pressOptionsMenuButton();
 	}
 
 	@When("^I see warning message$")
@@ -63,7 +65,8 @@ public class OtherUserPersonalInfoPageSteps {
 
 	@When("^I press add contact button$")
 	public void WhenIPressAddContactButton() throws Exception {
-		PagesCollection.peoplePickerPage = PagesCollection.otherUserPersonalInfoPage.tapAddContactBtn();
+		PagesCollection.peoplePickerPage = PagesCollection.otherUserPersonalInfoPage
+				.tapAddContactBtn();
 	}
 
 	@When("^I Press Block button$")
@@ -125,18 +128,18 @@ public class OtherUserPersonalInfoPageSteps {
 				.swipeRight(500);
 	}
 
-	@When("^I press Right conversation button$")
-	public void WhenIPressRightConversationButton() throws Throwable {
+	@When("^I press options menu button$")
+	public void WhenIPressOptionsMenuButton() throws Throwable {
 		PagesCollection.otherUserPersonalInfoPage
-		.pressRightConversationButton();
+				.pressOptionsMenuButton();
 	}
-	
+
 	@When("^I press Leave conversartion button$")
 	public void WhenIPressLeaveConversationButton() throws Throwable {
 		PagesCollection.contactListPage = PagesCollection.otherUserPersonalInfoPage
-		.pressLeaveButton();
+				.pressLeaveButton();
 	}
-	
+
 	@When("^I press Silence conversartion button$")
 	public void WhenIPressSilenceConversationButton() throws Throwable {
 		PagesCollection.otherUserPersonalInfoPage.pressSilenceButton();
@@ -175,7 +178,7 @@ public class OtherUserPersonalInfoPageSteps {
 			// Ignore silently
 		}
 		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
-				.isParticipantAvatars(contact1,contact2));
+				.isParticipantAvatars(contact1, contact2));
 	}
 
 	@Then("^I see the correct number of participants in the title (.*)$")
@@ -199,19 +202,85 @@ public class OtherUserPersonalInfoPageSteps {
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.otherUserPersonalInfoPage
 				.tabBackButton();
 	}
-	
+
 	/**
-	 * Renames a group conversation by first tapping on the participants header and then sending the message to the text input field
+	 * Renames a group conversation by first tapping on the participants header
+	 * and then sending the message to the text input field
 	 * 
 	 * @step. ^I rename group conversation to (.*)$
 	 * 
 	 * @param newConversationName
-	 * 			the new conversation name
+	 *            the new conversation name
 	 * @throws Throwable
 	 */
 	@Then("^I rename group conversation to (.*)$")
-	public void ThenIRenameGroupConversationTo(String newConversationName) throws Throwable {
+	public void ThenIRenameGroupConversationTo(String newConversationName)
+			throws Throwable {
 		PagesCollection.otherUserPersonalInfoPage.tapOnParticipantsHeader();
-		PagesCollection.otherUserPersonalInfoPage.renameGroupChat(newConversationName);
+		PagesCollection.otherUserPersonalInfoPage
+				.renameGroupChat(newConversationName);
+	}
+
+	/**
+	 * Check that all required 1:1 option menu elements are showed correctly
+	 * 
+	 * @step. ^I see correct 1:1 options menu$
+	 * 
+	 * @throws Throwable
+	 */
+	@Then("^I see correct 1:1 options menu$")
+	public void ThenISeeOneToOneOptionsMenu() throws Throwable {
+		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
+				.isOneToOneOptionsMenuFullyVisible());
+	}
+
+	/**
+	 * Check that any UI content of other user profile is not showed
+	 * 
+	 * @step. ^I do not see (.*) profile page$
+	 * 
+	 * @param Contact
+	 *            other user name
+	 * 
+	 * @throws Throwable
+	 */
+	@Then("^I do not see profile page$")
+	public void IDoNotSeeContactProfile() throws Exception {
+		Assert.assertFalse(PagesCollection.otherUserPersonalInfoPage
+				.isOneToOneUserProfileUIContentVisible());
+	}
+
+	/**
+	 * Check that any UI content of 1:1 options menu is not showed
+	 * 
+	 * @step. ^I do not see 1:1 options menu$
+	 * 
+	 * @throws Throwable
+	 */
+	@Then("^I do not see 1:1 options menu$")
+	public void ThenIDoNotSeeOptionsMenu() throws Throwable {
+		Assert.assertFalse(PagesCollection.otherUserPersonalInfoPage
+				.isOneToOneOptionsMenuUIContentVisible());
+	}
+	
+	/**
+	 * Check that any UI content of other user profile is not showed
+	 * 
+	 * @step. ^I do not see (.*) profile page$
+	 * 
+	 * @param Contact
+	 *            other user name
+	 * 
+	 * @throws Throwable
+	 */
+	@Then("^I see profile page$")
+	public void ISeeCorrectContactProfile() throws Exception {
+		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
+				.isOneToOneUserProfileFullyVisible());
+	}
+	
+	@When("^I do small swipe down")
+	public void IDoSmallSwipeDown() throws Exception {
+		PagesCollection.androidPage.swipeByCoordinates(300, 50, 50, 50, 55);
 	}
 }

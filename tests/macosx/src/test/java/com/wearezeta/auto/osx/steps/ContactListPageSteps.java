@@ -1,5 +1,6 @@
 package com.wearezeta.auto.osx.steps;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -8,11 +9,15 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.StringParser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import com.wearezeta.auto.osx.common.OSXConstants;
+import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationPage;
@@ -32,22 +37,55 @@ public class ContactListPageSteps {
 	/**
 	 * Checks that self profile entry exists in contact list
 	 * 
-	 * @step. ^I see my name (.*) in [Cc]ontact [Ll]ist$
-	 * 
-	 * @param name
-	 *            my name
+	 * @step. ^I see my name in [Cc]ontact [Ll]ist$
 	 * 
 	 * @throws AssertionError
 	 *             if there is no self profile entry in contact list
 	 */
-	@Given("^I see my name (.*) in [Cc]ontact [Ll]ist$")
-	public void ISeeMyNameInContactList(String name) throws Exception {
-		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+	@Given("^I see my name in [Cc]ontact [Ll]ist$")
+	public void ISeeMyNameInContactList() throws Exception {
+		String name = usrMgr.getSelfUser().getName();
 		String selfProfileUser = PagesCollection.contactListPage
 				.readSelfProfileName();
 		Assert.assertTrue(String.format(
 				"Another user is logged in. Logged in user %s, expected - %s",
 				selfProfileUser, name), selfProfileUser.equals(name));
+	}
+
+	// left for backward compatibility (currently there is no need to specify
+	// signed in user for this step)
+	@Deprecated
+	@Given("^I see my name (.*) in [Cc]ontact [Ll]ist$")
+	public void ISeeMyNameXInContactList(String user) throws Exception {
+		ISeeMyNameInContactList();
+	}
+
+	/**
+	 * Checks that color used for text for self profile name in contact list is
+	 * the same as expected
+	 * 
+	 * @step. ^I see my name in [Cc]ontact [Ll]ist highlighted with color (.*)$
+	 * 
+	 * @param colorName
+	 *            one of possible accent colors:
+	 *            StrongBlue|StrongLimeGreen|BrightYellow
+	 *            |VividRed|BrightOrange|SoftPink|Violet
+	 * 
+	 * @throws AssertionError
+	 *             if accent color is not equal to expected
+	 */
+	@Then("^I see my name in [Cc]ontact [Ll]ist highlighted with color (.*)$")
+	public void ISeeMyNameHighlightedWithColor(String colorName)
+			throws IOException {
+		AccentColor expectedColor = AccentColor.getByName(colorName);
+		AccentColor selfNameTextColor = PagesCollection.contactListPage
+				.selfNameEntryTextAccentColor();
+		Assert.assertNotNull("Can't determine text color for self name.",
+				selfNameTextColor);
+		Assert.assertTrue(String.format(
+				"Self name text color (%s) is not as expected (%s)",
+				selfNameTextColor, expectedColor),
+				selfNameTextColor == expectedColor);
 	}
 
 	/**
