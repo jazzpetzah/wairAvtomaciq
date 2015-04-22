@@ -32,7 +32,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | autocall    |
 
-   @staging @id1503
+   @staging @id1503 @torun
    Scenario Outline: Silence an incoming call
    	Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -47,4 +47,19 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | autocall    |
 	 
-	  
+   @staging @id1497 
+   Scenario Outline: Receive call while Wire is running in the background
+   	Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given I Sign in using login <Login> and password <Password>
+    Given I see Contact list with my name <Name>
+    When I minimize the application
+    And <Contact> calls me using <CallBackend>
+    Then I see the call lock screen
+    And I see a call from <Contact> in the call lock screen
+    And I answer the call from the lock screen
+    Then I see started call message for contact <Contact>
+    
+    Examples: 
+      | Login      | Password      | Name      | Contact   | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name | autocall    |
