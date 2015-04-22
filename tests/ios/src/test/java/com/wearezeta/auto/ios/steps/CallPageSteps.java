@@ -1,4 +1,4 @@
-package com.wearezeta.auto.ios;
+package com.wearezeta.auto.ios.steps;
 
 
 import org.junit.Assert;
