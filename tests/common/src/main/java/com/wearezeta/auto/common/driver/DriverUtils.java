@@ -84,7 +84,8 @@ public class DriverUtils {
 		try {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
 					.withTimeout(timeoutSeconds, TimeUnit.SECONDS)
-					.pollingEvery(1, TimeUnit.SECONDS);
+					.pollingEvery(1, TimeUnit.SECONDS)
+					.ignoring(NoSuchElementException.class);
 			try {
 				return wait.until(drv -> {
 					return (drv.findElements(by).size() > 0)
