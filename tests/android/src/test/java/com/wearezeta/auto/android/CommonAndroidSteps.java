@@ -158,7 +158,6 @@ public class CommonAndroidSteps {
 	 * 
 	 * @step. ^I hide keyboard$
 	 * 
-	 * @throws IOException
 	 * 
 	 */
 	@When("^I hide keyboard")
@@ -239,6 +238,8 @@ public class CommonAndroidSteps {
 	/**
 	 * Opens the Browser app
 	 * 
+	 * -unused
+	 * 
 	 * @step. ^I open the native browser application$
 	 * 
 	 * @throws Exception
@@ -251,6 +252,8 @@ public class CommonAndroidSteps {
 
 	/**
 	 * Opens the gallery application (com.google.android.gallery3d)
+	 * 
+	 * -unused
 	 * 
 	 * @step. ^I open the gallery application$
 	 * 
@@ -478,7 +481,7 @@ public class CommonAndroidSteps {
 	 * @param userFromNameAlias
 	 *            the user to check
 	 * @param usersToNameAliases
-	 *            A {@value CommonSteps.ALIASES_SEPARATOR} separated list of
+	 *            A separated list of
 	 *            user names to check to see if connected to user A.
 	 * 
 	 * @throws Exception
@@ -500,7 +503,7 @@ public class CommonAndroidSteps {
 	 * @param chatName
 	 *            The name of the group chat
 	 * @param otherParticipantsNameAliases
-	 *            A {@value CommonSteps.ALIASES_SEPARATOR} separated list of
+	 *            A separated list of
 	 *            user names to check to see if in a group conversation with
 	 *            user A.
 	 * 
@@ -673,6 +676,7 @@ public class CommonAndroidSteps {
 
 	/**
 	 * Verifies that there are N new users for a test, and makes them if they don't exist.
+	 * -unused
 	 * 
 	 * @step. ^There \\w+ (\\d+) user[s]*$
 	 * 

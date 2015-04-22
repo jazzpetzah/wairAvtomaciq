@@ -73,7 +73,6 @@ public class PeoplePickerPageSteps {
 
 	/**
 	 * Presses the close button in the people picker page
-	 * @unclear
 	 * 
 	 * @step. ^I press Clear button$
 	 * 
@@ -86,7 +85,7 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * @unused
+	 * -unused
 	 * 
 	 * @step. ^I swipe down people picker$
 	 * 
@@ -158,7 +157,7 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * @duplicate {@link #WhenIInputInPeoplePickerSearchFieldUserName(String)}
+	 * -duplicate of WhenIInputInPeoplePickerSearchFieldUserName(String)
 	 *  
 	 * @step. ^I input in search field user name to connect to (.*)$
 	 * 
@@ -178,7 +177,7 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * @duplicate {@link #WhenIInputInPeoplePickerSearchFieldUserName(String)}
+	 * -duplicate of WhenIInputInPeoplePickerSearchFieldUserName(String)
 	 * 
 	 * @step. ^I add in search field user name to connect to (.*)$
 	 * 
@@ -245,7 +244,7 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * @unused
+	 * -unused
 	 * 
 	 * @step. ^I long tap on user name found on People picker page (.*)$
 	 * 
@@ -275,7 +274,7 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * @unused
+	 * -unused
 	 * 
 	 * @step. ^I tap on group name found on People picker page (.*)$
 	 * 
@@ -292,7 +291,6 @@ public class PeoplePickerPageSteps {
 
 	/**
 	 * Checks to see if the add to conversation button is visible
-	 * @unclear
 	 * 
 	 * @step. ^I see Add to conversation button$
 	 * 
@@ -317,7 +315,6 @@ public class PeoplePickerPageSteps {
 
 	/**
 	 * Clicks on the Add to conversation button
-	 * @unclear
 	 * 
 	 * @step. ^I click on Add to conversation button$
 	 * 
@@ -355,7 +352,7 @@ public class PeoplePickerPageSteps {
 	}
 	
 	/**
-	 * @duplicate {@link #WhenISeeUserFoundOnPeoplePickerPage(String)}
+	 * -duplicate of WhenISeeUserFoundOnPeoplePickerPage(String)
 	 * 
 	 * @step. ^I see user (.*)  in People picker$
 	 * 

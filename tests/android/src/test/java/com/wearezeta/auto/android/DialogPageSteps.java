@@ -112,7 +112,7 @@ public class DialogPageSteps {
 	/**
 	 * Taps twice on the cursor input
 	 * 
-	 * @unused
+	 * -unused
 	 * 
 	 * @step. ^I multi tap on text input$
 	 * 
@@ -136,7 +136,7 @@ public class DialogPageSteps {
 	}
 
 	/**
-	 * @unused
+	 * -unused
 	 * 
 	 * @step. ^I swipe on text input$
 	 * 
@@ -350,7 +350,7 @@ public class DialogPageSteps {
 	}
 
 	/**
-	 * @unused
+	 * -unused
 	 * 
 	 * @step. ^I see (.*) added (.*) message on Dialog page$
 	 * 
@@ -370,7 +370,7 @@ public class DialogPageSteps {
 	}
 
 	/**
-	 * @unused
+	 * -unused
 	 * 
 	 * @step. ^I multi tap on text input again$
 	 * 
@@ -382,7 +382,7 @@ public class DialogPageSteps {
 	}
 
 	/**
-	 * @unused
+	 * -unused
 	 * 
 	 * @step. ^I swipe left on dialog page$
 	 */
@@ -456,8 +456,8 @@ public class DialogPageSteps {
 	}
 
 	/**
-	 * @unused
-	 * @duplicate
+	 * -unused
+	 * -duplicate
 	 * 
 	 * @step. ^I see uploaded picture$
 	 * 
@@ -491,7 +491,7 @@ public class DialogPageSteps {
 	 * Swipes right on dialog page, presumably to navigate back to the contact
 	 * list
 	 * 
-	 * @see {@link #WhenINavigateBackFromDialogPage()}
+	 * -duplicate of #WhenINavigateBackFromDialogPage()
 	 * 
 	 * @step. ^I swipe right on dialog page$
 	 * 
@@ -527,7 +527,7 @@ public class DialogPageSteps {
 	}
 
 	/**
-	 * @unused
+	 * -unused
 	 * 
 	 * @step. ^I see message that I left chat$
 	 * 
@@ -542,7 +542,6 @@ public class DialogPageSteps {
 	/**
 	 * Used to check that the message "YOU REMOVED XYZ" from group chat appears
 	 * 
-	 * @unclear
 	 * 
 	 * @step. ^I see message (.*) contact (.*) on group page$
 	 * 
@@ -578,7 +577,6 @@ public class DialogPageSteps {
 	 * Used once to check that the last message sent is the same as what is
 	 * expected
 	 * 
-	 * @unclear
 	 * 
 	 * @step. ^Last message is (.*)$
 	 * 
