@@ -45,18 +45,20 @@ public class CallingPageSteps {
 				.getCallersName();
 		Assert.assertEquals(contact, callersName);
 	}
-	
+
 	/**
 	 * Verify that started call message is visible
+	 * 
 	 * @step. ^I see started call message for contact (.*)$
 	 * @param contact
-	 * 			contact name with whom you have a call
+	 *            contact name with whom you have a call
 	 * @throws Exception
 	 */
 	@When("^I see started call message for contact (.*)$")
 	public void ISeeStartedCallMesage(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		String callersName = PagesCollection.callingOverlayPage.getCallersName();
+		String callersName = PagesCollection.callingOverlayPage
+				.getCallersName();
 		Assert.assertEquals(contact, callersName);
 	}
 
@@ -71,9 +73,10 @@ public class CallingPageSteps {
 	public void ICannotSeeTheCallBar() throws Exception {
 		Assert.assertFalse(PagesCollection.callingOverlayPage.isVisible());
 	}
-	
+
 	/**
-	 * Checks to see that the calling lock screen appears when a user calls while Wire is minimised or the phone is locked
+	 * Checks to see that the calling lock screen appears when a user calls
+	 * while Wire is minimised or the phone is locked
 	 * 
 	 * @step. ^I see the call lock screen$
 	 * 
@@ -81,30 +84,34 @@ public class CallingPageSteps {
 	 */
 	@When("I see the call lock screen$")
 	public void ISeeTheCallLockScreen() throws Exception {
-		PagesCollection.callingLockscreenPage = new CallingLockscreenPage(PagesCollection.loginPage.getDriver(), PagesCollection.loginPage.getWait());
+		PagesCollection.callingLockscreenPage = new CallingLockscreenPage(
+				PagesCollection.loginPage.getDriver(),
+				PagesCollection.loginPage.getWait());
 		Assert.assertFalse(PagesCollection.callingOverlayPage.isVisible());
 	}
-	
+
 	/**
-	 * Checks to see that the user calling in the lock screen is the correct user
+	 * Checks to see that the user calling in the lock screen is the correct
+	 * user
 	 * 
 	 * @step. ^I see a call from (.*) in the call lock screen$
 	 * 
 	 * @param contact
-	 * 			The username to compare the "is calling" message to. 
+	 *            The username to compare the "is calling" message to.
 	 * 
 	 * @throws Exception
 	 */
 	@When("I see a call from (.*) in the call lock screen$")
 	public void ISeeACallFromUserInLockScreen(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		String callersName = PagesCollection.callingLockscreenPage.getCallersName();
+		String callersName = PagesCollection.callingLockscreenPage
+				.getCallersName();
 		Assert.assertEquals(contact, callersName);
 	}
-	
-	
+
 	/**
-	 * Answers the call from the lock screen and sets up the calling overlay page
+	 * Answers the call from the lock screen and sets up the calling overlay
+	 * page
 	 * 
 	 * @step. ^I answer the call from the lock screen$
 	 * 
@@ -112,6 +119,7 @@ public class CallingPageSteps {
 	 */
 	@When("I answer the call from the lock screen$")
 	public void IAnswerCallFromTheLockScreen() throws Exception {
-		PagesCollection.callingOverlayPage = PagesCollection.callingLockscreenPage.acceptCall();
+		PagesCollection.callingOverlayPage = PagesCollection.callingLockscreenPage
+				.acceptCall();
 	}
 }

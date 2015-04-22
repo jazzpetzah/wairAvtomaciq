@@ -16,10 +16,10 @@ public class CallingLockscreenPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LockscreenCallingPage.CLASS_NAME, locatorKey = "idLockScreenLogo")
 	private WebElement lockScreenLogo;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LockscreenCallingPage.CLASS_NAME, locatorKey = "idCallingUserName")
 	private WebElement callingUsersName;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LockscreenCallingPage.CLASS_NAME, locatorKey = "idIncomingCallChathead")
 	private WebElement incomingCallChathead;
 
@@ -30,7 +30,6 @@ public class CallingLockscreenPage extends AndroidPage {
 
 	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -42,18 +41,15 @@ public class CallingLockscreenPage extends AndroidPage {
 		refreshUITree();
 		return callingUsersName.getText();
 	}
-	
+
 	public CallingOverlayPage acceptCall() throws Exception {
 		refreshUITree();
-		//elementSwipeRight(incomingCallChathead, 1500);
 		Point coords = incomingCallChathead.getLocation();
 		Dimension elementSize = incomingCallChathead.getSize();
-		getDriver().swipe(coords.x + 30,
-				coords.y + elementSize.height / 2,
+		getDriver().swipe(coords.x + 30, coords.y + elementSize.height / 2,
 				coords.x + elementSize.width * 3,
 				coords.y + elementSize.height / 2, 1500);
 		return new CallingOverlayPage(getDriver(), getWait());
 	}
 
 }
-	
