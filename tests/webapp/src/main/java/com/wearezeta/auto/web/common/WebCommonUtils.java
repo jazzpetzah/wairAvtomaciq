@@ -304,7 +304,7 @@ public class WebCommonUtils extends CommonUtils {
 	public static void forceLogoutFromWebapp(RemoteWebDriver driver,
 			boolean areExceptionsSilenced) {
 		try {
-			driver.executeScript("wire.app.logout();");
+			driver.executeScript("(typeof wire !== 'undefined') && (typeof wire.app !== 'undefined') && wire.app.logout();");
 		} catch (Exception e) {
 			if (!areExceptionsSilenced) {
 				throw e;
