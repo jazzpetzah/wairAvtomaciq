@@ -86,7 +86,7 @@ public class ConversationPage extends WebPage {
 	public PeoplePopoverContainer clickPeopleButton(boolean isGroup)
 			throws Exception {
 		DriverUtils.waitUntilElementClickable(driver, showParticipants);
-		if (WebAppExecutionContext.currentBrowser == Browser.InternetExplorer) {
+		if (WebAppExecutionContext.getCurrentBrowser() == Browser.InternetExplorer) {
 			driver.executeScript(String
 					.format("$('.%s').click();",
 							WebAppLocators.ConversationPage.classNameShowParticipantsButton));
@@ -124,8 +124,9 @@ public class ConversationPage extends WebPage {
 						driver,
 						By.cssSelector(WebAppLocators.ConversationPage.cssSendImageInput),
 						5);
-		if (WebAppExecutionContext.currentBrowser == Browser.Safari) {
-			WebCommonUtils.sendPictureInSafari(picturePath);
+		if (WebAppExecutionContext.getCurrentBrowser() == Browser.Safari) {
+			WebCommonUtils.sendPictureInSafari(picturePath, this.getDriver()
+					.getNodeIp());
 		} else {
 			imagePathInput.sendKeys(picturePath);
 		}
@@ -148,12 +149,16 @@ public class ConversationPage extends WebPage {
 		try {
 			DriverUtils.moveMouserOver(driver, conversationInput);
 		} catch (WebDriverException e) {
-			// do nothing (safari workaround)
+			// (safari workaround)
+			final String showImageLabelJScript = "$(\""
+					+ WebAppLocators.ConversationPage.cssRightControlsPanel
+					+ "\").css({'opacity': '100'});";
+			driver.executeScript(showImageLabelJScript);
 		}
 		final By locator = By
 				.xpath(WebAppLocators.ConversationPage.xpathPingButton);
 		assert DriverUtils.isElementDisplayed(driver, locator, 2) : "Ping button has not been shown after 2 seconds";
-		assert DriverUtils.waitUntilElementClickable(driver, pingButton) : "Ping button has to be clieckable";
+		assert DriverUtils.waitUntilElementClickable(driver, pingButton) : "Ping button has to be clickable";
 		pingButton.click();
 	}
 
@@ -192,9 +197,14 @@ public class ConversationPage extends WebPage {
 				TEXT_MESSAGE_VISIBILITY_TIMEOUT_SECONDS);
 	}
 
-	public String getMissedCallMessage() {
+	private static final int MISSED_CALL_MSG_TIMOEUT = 15;
+
+	public String getMissedCallMessage() throws Exception {
 		final By locator = By
 				.xpath(WebAppLocators.ConversationPage.xpathMissedCallAction);
+		assert DriverUtils.isElementDisplayed(driver, locator,
+				MISSED_CALL_MSG_TIMOEUT) : "Missed call message is not visible after "
+				+ MISSED_CALL_MSG_TIMOEUT + " second(s) timeout";
 		return driver.findElement(locator).getText();
 	}
 

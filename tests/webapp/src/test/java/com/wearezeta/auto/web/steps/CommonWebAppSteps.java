@@ -4,7 +4,6 @@ import java.util.logging.Level;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
-import org.json.JSONException;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriverException;
@@ -30,11 +29,9 @@ import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.web.common.WebAppConstants;
-import com.wearezeta.auto.web.common.WebAppConstants.Browser;
-import com.wearezeta.auto.web.common.WebAppConstants.LoggingManagement;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
+import com.wearezeta.auto.web.common.WebAppConstants.Browser;
 import com.wearezeta.auto.web.pages.InvitationCodePage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.WebPage;
@@ -65,21 +62,6 @@ public class CommonWebAppSteps {
 		System.setProperty(
 				"org.apache.commons.logging.simplelog.log.org.apache.http",
 				"warn");
-	}
-
-	private static Browser getBrowser() throws Exception {
-		if (getPlatform().toLowerCase().contains(
-				Browser.Opera.toString().toLowerCase())) {
-			return Browser.Opera;
-		} else {
-			return Browser.fromString(WebCommonUtils
-					.getWebAppBrowserNameFromConfig(CommonWebAppSteps.class));
-		}
-	}
-
-	private static String getPlatform() throws Exception {
-		return WebCommonUtils
-				.getPlatformNameFromConfig(CommonWebAppSteps.class);
 	}
 
 	private static void setCustomChromeProfile(
@@ -143,20 +125,17 @@ public class CommonWebAppSteps {
 	}
 
 	private ZetaWebAppDriver resetWebAppDriver(String url) throws Exception {
-		final Browser browser = getBrowser();
 		final DesiredCapabilities capabilities;
-		final String webPlatformName = getPlatform();
-		switch (browser) {
+		switch (WebAppExecutionContext.getCurrentBrowser()) {
 		case Chrome:
+			capabilities = DesiredCapabilities.chrome();
+			setCustomChromeProfile(capabilities,
+					WebAppExecutionContext.getCurrentPlatform());
+			break;
 		case Opera:
 			capabilities = DesiredCapabilities.chrome();
-			if (browser == Browser.Opera) {
-				// This is to fix Desktop Notifications alerts appearance in
-				// Opera
-				setCustomOperaProfile(capabilities, webPlatformName);
-			} else {
-				setCustomChromeProfile(capabilities, webPlatformName);
-			}
+			setCustomOperaProfile(capabilities,
+					WebAppExecutionContext.getCurrentPlatform());
 			break;
 		case Firefox:
 			capabilities = DesiredCapabilities.firefox();
@@ -174,16 +153,19 @@ public class CommonWebAppSteps {
 		default:
 			throw new NotImplementedException(
 					"Incorrect browser name is set - "
-							+ browser.toString()
+							+ WebAppExecutionContext.getCurrentBrowser()
+									.toString()
 							+ ". Please choose one of the following: chrome | firefox | safari | ie");
 		}
-		if (webPlatformName.length() > 0) {
+		if (WebAppExecutionContext.getCurrentPlatform().length() > 0) {
 			// Use undocumented grid property to match platforms
 			// https://groups.google.com/forum/#!topic/selenium-users/PRsEBcbpNlM
-			capabilities.setCapability("applicationName", webPlatformName);
+			capabilities.setCapability("applicationName",
+					WebAppExecutionContext.getCurrentPlatform());
 		}
 
-		if (LoggingManagement.isSupportedIn(getBrowser())) {
+		if (WebAppExecutionContext.LoggingManagement
+				.isSupportedInCurrentBrowser()) {
 			setExtendedLoggingLevel(capabilities,
 					WebCommonUtils.getExtendedLoggingLevelInConfig(getClass()));
 		}
@@ -215,7 +197,6 @@ public class CommonWebAppSteps {
 				.getWebAppAppiumUrlFromConfig(CommonWebAppSteps.class);
 		final String path = CommonUtils
 				.getWebAppApplicationPathFromConfig(CommonWebAppSteps.class);
-		WebAppExecutionContext.currentBrowser = getBrowser();
 		int tryNum = 1;
 		ZetaWebAppDriver webDriver;
 		WebDriverWait wait;
@@ -223,7 +204,7 @@ public class CommonWebAppSteps {
 			try {
 				webDriver = resetWebAppDriver(url);
 				wait = PlatformDrivers.createDefaultExplicitWait(webDriver);
-				if (WebAppExecutionContext.currentBrowser.equals("ie")) {
+				if (WebAppExecutionContext.getCurrentBrowser() == Browser.InternetExplorer) {
 					// http://stackoverflow.com/questions/14373371/ie-is-continously-maximizing-and-minimizing-when-test-suite-executes
 					webDriver.manage().window().setPosition(new Point(0, 0));
 					webDriver
@@ -253,17 +234,6 @@ public class CommonWebAppSteps {
 			}
 		} while (tryNum <= MAX_DRIVER_CREATION_RETRIES);
 		ZetaFormatter.setDriver(PagesCollection.invitationCodePage.getDriver());
-
-		// put AppleScript for execution to Selenium node
-		if (WebAppExecutionContext.currentBrowser == Browser.Safari) {
-			try {
-				WebAppExecutionContext.seleniumNodeIp = WebCommonUtils
-						.getNodeIp(PagesCollection.invitationCodePage
-								.getDriver());
-			} catch (JSONException e) {
-				log.debug("It seems that Safari driver is not part of a grid. Setting node IP to localhost...");
-			}
-		}
 	}
 
 	/**
@@ -275,9 +245,9 @@ public class CommonWebAppSteps {
 	 */
 	@Given("^My browser supports calling$")
 	public void MyBrowserSupportsCalling() throws Exception {
-		if (!WebAppConstants.Calling
-				.isSupportedIn(WebAppExecutionContext.currentBrowser)) {
-			throw new PendingException("Browser " + getBrowser()
+		if (!WebAppExecutionContext.Calling.isSupportedInCurrentBrowser()) {
+			throw new PendingException("Browser "
+					+ WebAppExecutionContext.getCurrentBrowser().toString()
 					+ " does not support calling.");
 		}
 	}
@@ -403,6 +373,22 @@ public class CommonWebAppSteps {
 	public void UserXIsMe(String nameAlias) throws Exception {
 		commonSteps.UserXIsMe(nameAlias);
 		IChangeUserAvatarPicture(nameAlias, "default");
+	}
+
+	/**
+	 * Sets self user to be the current user. Avatar picture for this user is
+	 * NOT set automatically
+	 * 
+	 * @step. ^User (\\w+) is [Mm]e without avatar$
+	 * 
+	 * @param nameAlias
+	 *            user to be set as self user
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^User (\\w+) is [Mm]e without avatar$")
+	public void UserXIsMeWithoutAvatar(String nameAlias) throws Exception {
+		commonSteps.UserXIsMe(nameAlias);
 	}
 
 	/**
@@ -544,12 +530,11 @@ public class CommonWebAppSteps {
 
 		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
 			try {
-				if (LoggingManagement.isSupportedIn(getBrowser())) {
+				if (WebAppExecutionContext.LoggingManagement
+						.isSupportedInCurrentBrowser()) {
 					writeBrowserLogsIntoMainLog(PlatformDrivers.getInstance()
 							.getDriver(CURRENT_PLATFORM));
 				}
-				PlatformDrivers.getInstance().getDriver(CURRENT_PLATFORM)
-						.manage().deleteAllCookies();
 			} finally {
 				PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
 			}

@@ -173,8 +173,8 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Message                     |
       | user1Email | user1Password | user1Name | user2Name | 畑 はたけ hatake field of crops |
       
-  @id163 @staging
-  Scenario Outline: Send image using existing camera rolls (portrait) in group chat
+  @id163 @regression
+  Scenario Outline: Send image using existing camera rolls (portrait) in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
@@ -184,6 +184,8 @@ Feature: Conversation View
     And I swipe on text input
     And I press Add Picture button
     And I press "Gallery" button
+    And I rotate UI to portrait
+    And I wait for 1 second
     And I select picture for dialog
     And I press "Confirm" button
     Then I see new photo in the dialog
@@ -192,7 +194,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id162 @staging
+  @id162 @regression
   Scenario Outline: Send image using existing camera rolls (landscape) in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -204,6 +206,7 @@ Feature: Conversation View
     And I press Add Picture button
     And I press "Gallery" button
     When I rotate UI to landscape
+    And I wait for 1 second
     And I select picture for dialog
     And I press "Confirm" button
     Then I see new photo in the dialog

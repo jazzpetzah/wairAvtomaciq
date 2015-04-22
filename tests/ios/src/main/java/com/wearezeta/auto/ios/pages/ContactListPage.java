@@ -460,17 +460,17 @@ public class ContactListPage extends IOSPage {
 				contact.getSize().width / 4, contact.getSize().height * 2);
 		if (visible == true && bigUnreadDot == true) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "unreadDot.png");
+					.getImagesPath() + "new_unreadDot.png");
 			score = ImageUtil.getOverlapScore(referenceImage, unreadDot,
 					ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 		} else if (visible == true && bigUnreadDot == false) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "unreadDot_small.png");
+					.getImagesPath() + "new_unreadDot_small.png");
 			score = ImageUtil.getOverlapScore(referenceImage, unreadDot,
 					ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 		} else if (visible == false && bigUnreadDot == false) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "noUnreadDot.png");
+					.getImagesPath() + "new_noUnreadDot.png");
 			score = ImageUtil.getOverlapScore(referenceImage, unreadDot,
 					ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 		}

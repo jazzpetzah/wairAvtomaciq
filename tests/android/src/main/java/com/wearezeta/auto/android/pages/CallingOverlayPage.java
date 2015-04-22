@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
@@ -14,7 +15,7 @@ import com.wearezeta.auto.common.locators.ZetaHow;
 public class CallingOverlayPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlayPage.CLASS_NAME, locatorKey = "idCallingOverlayContainer")
-	private List<WebElement> callingOverlayContainers;
+	private WebElement callingOverlayContainer;
 	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlayPage.CLASS_NAME, locatorKey = "idIgnoreButton")
 	private WebElement ignoreButton;
@@ -32,15 +33,11 @@ public class CallingOverlayPage extends AndroidPage {
 
 	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public boolean isVisible() throws Exception {
-		if (callingOverlayContainers.size() > 0) {
-			return true;
-		}
-		return false;
+		return DriverUtils.isElementDisplayed(this.getDriver(), callingOverlayContainer);
 	}
 
 	public void muteConversation() {

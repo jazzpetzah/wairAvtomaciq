@@ -6,7 +6,7 @@ import com.wearezeta.auto.web.pages.SelfPictureUploadPage;
 import cucumber.api.java.en.And;
 
 public class SelfPictureUploadPageSteps {
-	private static final int VISIBILITY_TIMEOUT = 5; // seconds
+	private static final int VISIBILITY_TIMEOUT = 10; // seconds
 
 	/**
 	 * Verify that Self Picture Upload dialog is visible

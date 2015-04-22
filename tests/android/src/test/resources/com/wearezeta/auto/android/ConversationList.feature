@@ -9,7 +9,7 @@ Feature: Conversation List
     When I tap on contact name <Contact1>
     And I see dialog page
     And I swipe up on dialog page
-    And I press Right conversation button
+    And I press options menu button
     And I press Silence conversartion button
     And I return to group chat page
     And I return to group chat page

@@ -357,7 +357,7 @@ public class ContactListPage extends WebPage {
 						this.getDriver(),
 						By.cssSelector(WebAppLocators.ContactListPage.cssOpenPeoplePickerButton));
 		DriverUtils.waitUntilElementClickable(driver, openPeoplePickerButton);
-		if (WebAppExecutionContext.currentBrowser == Browser.InternetExplorer) {
+		if (WebAppExecutionContext.getCurrentBrowser() == Browser.InternetExplorer) {
 			clickWithJS(WebAppLocators.ContactListPage.cssOpenPeoplePickerButton);
 		} else {
 			openPeoplePickerButton.click();

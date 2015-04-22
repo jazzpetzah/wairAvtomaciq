@@ -1,4 +1,4 @@
-package com.wearezeta.auto.ios;
+package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.CommonCallingSteps;
 import com.wearezeta.auto.ios.pages.IncomingCallPage;

@@ -36,8 +36,7 @@ public class SingleUserPopoverPageSteps {
 	 */
 	@Then("^I do not see Single User Profile popover$")
 	public void IDontSeeSingleUserPopup() throws Exception {
-		Assert.assertFalse("Single User Profile is still visible",
-				PagesCollection.popoverPage.isVisible());
+		PagesCollection.popoverPage.waitUntilNotVisibleOrThrowException();
 	}
 
 	/**
