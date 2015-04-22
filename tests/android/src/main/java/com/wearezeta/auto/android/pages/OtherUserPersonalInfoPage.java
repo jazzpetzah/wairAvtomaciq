@@ -35,7 +35,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsHeader")
 	private WebElement groupChatName;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsHeaderEditable")
 	private WebElement groupChatNameEditable;
 
@@ -77,8 +77,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idParticipantsClose")
 	private WebElement closeButton;
-	
-	
+
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameFrameLayout)
 	private WebElement frameLayout;
 
@@ -91,6 +90,9 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idLeftActionButton")
 	private WebElement addContactBtn;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idLeftActionLabel")
+	private WebElement addContactLabel;
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsSubHeader")
 	private WebElement participantsSubHeader;
 
@@ -102,7 +104,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		super(driver, wait);
 	}
 
-	public void pressRightConversationButton() {
+	public void pressOptionsMenuButton() {
 		refreshUITree();// TODO workaround
 		this.getWait().until(
 				ExpectedConditions
@@ -131,8 +133,50 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		return new DialogPage(this.getDriver(), this.getWait());
 	}
 
-	public boolean isUnblockBtnVisible() {
-		return unblockButton.isDisplayed();
+	public boolean isUnblockBtnVisible() throws Exception {
+		return isVisible(unblockButton);
+	}
+
+	public boolean isOneToOneOptionsMenuFullyVisible() throws Exception {
+		refreshUITree(); //Fix to pass animation
+		boolean flag = false;
+		if (isVisible(blockButton) && isVisible(silenceButton)
+				&& isVisible(archiveButton)) {
+			flag = true;
+		}
+		return flag;
+	}
+
+	public boolean isOneToOneOptionsMenuUIContentVisible() throws Exception {
+		refreshUITree(); //Fix to pass animation
+		boolean flag = false;
+		if (isVisible(blockButton) || isVisible(silenceButton)
+				|| isVisible(archiveButton)) {
+			flag = true;
+		}
+		return flag;
+	}
+
+	public boolean isOneToOneUserProfileUIContentVisible() throws Exception {
+		refreshUITree(); //Fix to pass animation
+		boolean flag = false;
+		if (isVisible(closeButton) || isVisible(rightConversationButton)
+				|| isVisible(addContactBtn) || isVisible(addContactLabel)
+				|| isVisible(participantsSubHeader) || isVisible(groupChatName)) {
+			flag = true;
+		}
+		return flag;
+	}
+
+	public boolean isOneToOneUserProfileFullyVisible() throws Exception {
+		refreshUITree(); //Fix to pass animation
+		boolean flag = false;
+		if (isVisible(closeButton) && isVisible(rightConversationButton)
+				&& isVisible(addContactBtn) && isVisible(addContactLabel)
+				&& isVisible(participantsSubHeader) && isVisible(groupChatName)) {
+			flag = true;
+		}
+		return flag;
 	}
 
 	@Override
@@ -162,7 +206,11 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		if (otherUserName.size() > 0) {
 			text = otherUserName.get(0).getText().toLowerCase();
 		} else {
-			text = otherUserSingleName.get(0).getText().toLowerCase();
+			try {
+				text = otherUserSingleName.get(0).getText().toLowerCase();
+			} catch (Exception ex) {
+				text = "NONE";
+			}
 		}
 		return text.equals(name.toLowerCase());
 	}
@@ -173,7 +221,11 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		if (otherUserName.size() > 0) {
 			text = otherUserMail.get(0).getText().toLowerCase();
 		} else {
-			text = otherUserSingleMail.get(0).getText().toLowerCase();
+			try {
+				text = otherUserSingleMail.get(0).getText().toLowerCase();
+			} catch (Exception ex) {
+				text = "NONE";
+			}
 		}
 		return text.equals(mail.toLowerCase());
 	}

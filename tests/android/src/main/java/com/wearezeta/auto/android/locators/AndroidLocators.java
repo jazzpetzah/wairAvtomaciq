@@ -473,6 +473,9 @@ public final class AndroidLocators {
 		public static final String idLeftActionButton = LOCATORS_PACKAGE
 				+ ":id/gtv__participants__left__action";
 
+		public static final String idLeftActionLabel = LOCATORS_PACKAGE
+				+ ":id/ttv__participants__left_label";
+		
 		public static final String idRightActionButton = LOCATORS_PACKAGE
 				+ ":id/gtv__participants__right__action";
 
