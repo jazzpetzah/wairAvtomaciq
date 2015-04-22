@@ -1,11 +1,12 @@
 package com.wearezeta.auto.android.pages;
 
-import java.util.List;
-
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
@@ -14,7 +15,7 @@ import com.wearezeta.auto.common.locators.ZetaHow;
 public class CallingLockscreenPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LockscreenCallingPage.CLASS_NAME, locatorKey = "idLockScreenLogo")
-	private List<WebElement> lockScreenLogos;
+	private WebElement lockScreenLogo;
 	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LockscreenCallingPage.CLASS_NAME, locatorKey = "idCallingUserName")
 	private WebElement callingUsersName;
@@ -34,11 +35,7 @@ public class CallingLockscreenPage extends AndroidPage {
 	}
 
 	public boolean isVisible() throws Exception {
-		refreshUITree();
-		if (lockScreenLogos.size() > 0) {
-			return true;
-		}
-		return false;
+		return DriverUtils.isElementDisplayed(this.getDriver(), lockScreenLogo);
 	}
 
 	public String getCallersName() {
@@ -48,8 +45,15 @@ public class CallingLockscreenPage extends AndroidPage {
 	
 	public CallingOverlayPage acceptCall() throws Exception {
 		refreshUITree();
-		elementSwipeRight(incomingCallChathead, 1500);
+		//elementSwipeRight(incomingCallChathead, 1500);
+		Point coords = incomingCallChathead.getLocation();
+		Dimension elementSize = incomingCallChathead.getSize();
+		getDriver().swipe(coords.x + 30,
+				coords.y + elementSize.height / 2,
+				coords.x + elementSize.width * 3,
+				coords.y + elementSize.height / 2, 1500);
 		return new CallingOverlayPage(getDriver(), getWait());
 	}
 
 }
+	

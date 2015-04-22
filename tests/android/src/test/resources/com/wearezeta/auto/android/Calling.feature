@@ -47,7 +47,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | autocall    |
 	 
-   @staging @id1497 
+   @staging @id1497 @torun
    Scenario Outline: Receive call while Wire is running in the background
    	Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
