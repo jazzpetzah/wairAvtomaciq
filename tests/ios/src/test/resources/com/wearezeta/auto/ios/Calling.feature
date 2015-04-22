@@ -80,7 +80,7 @@ Feature: Calling
     And <Contact> stops all calls to me
     And I tap on contact name <Contact>
     And I see dialog page
-    Then I see missed call indicator in list for contact <Contact>
+    Then I see missed call from contact <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend |
