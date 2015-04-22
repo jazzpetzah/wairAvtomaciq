@@ -37,7 +37,7 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	/**
-	 * @unused
+	 * -unused
 	 * 
 	 * @step. ^I swipe down other user profile page$
 	 * 
@@ -50,7 +50,7 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	/**
-	 * @unused
+	 * -unused
 	 * 
 	 * @step. ^I swipe up on other user profile page$
 	 * 
@@ -77,8 +77,7 @@ public class OtherUserPersonalInfoPageSteps {
 
 	/**
 	 * Checks to see that the remove user warning message appears
-	 * @unclear
-	 * @unnecessary
+	 * -unclear
 	 * 
 	 * @step. ^I see warning message$
 	 * 
@@ -140,7 +139,7 @@ public class OtherUserPersonalInfoPageSteps {
 
 	/**
 	 * Checks to see that we can see a given user's profile
-	 * @duplicate {@link #WhenISeeOherUserProfilePage(String)}
+	 * -duplicate of WhenISeeOherUserProfilePage(String)
 	 * 
 	 * @step. ^I see (.*) user name and email$
 	 * 
@@ -185,7 +184,7 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	/**
-	 * @unused
+	 * -unused
 	 * 
 	 * @step. ^I see correct background image$
 	 * 
@@ -226,7 +225,7 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	/**
-	 * @unused
+	 * -unused
 	 * 
 	 * @step. ^I swipe right on other user profile page$
 	 * 
@@ -240,7 +239,7 @@ public class OtherUserPersonalInfoPageSteps {
 
 	/**
 	 * Presses the ellipses ("...") on the right hand side of the other user's profile page
-	 * @unclear
+	 * -unclear
 	 * 
 	 * @step. ^I press Right conversation button$
 	 * 
@@ -254,7 +253,7 @@ public class OtherUserPersonalInfoPageSteps {
 	
 	/**
 	 * Presses the leave conversation button in the conversation settings page
-	 * @outofplace
+	 * -outofplace
 	 * 
 	 * @step. ^I press Leave conversation button$
 	 * 
@@ -268,7 +267,7 @@ public class OtherUserPersonalInfoPageSteps {
 	
 	/**
 	 * Presses the "silence conversation" button in the conversation settings page
-	 * @unused
+	 * -unused
 	 * 
 	 * @step. ^I press Silence conversation button$
 	 * 
@@ -281,7 +280,7 @@ public class OtherUserPersonalInfoPageSteps {
 
 	/**
 	 * Confirms the current user's decision to leave a conversation
-	 * @outofplace
+	 * -outofplace
 	 * 
 	 * @step. ^I confirm leaving$
 	 * 
@@ -293,7 +292,7 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	/**
-	 * @duplicate {@link #WhenITapOnGroupChatContact(String)}
+	 * -duplicate of WhenITapOnGroupChatContact(String)
 	 * 
 	 * @step. ^I select contact (.*)$
 	 * 
@@ -309,7 +308,7 @@ public class OtherUserPersonalInfoPageSteps {
 
 	/**
 	 * Checks to see that the conversation name is what is expected
-	 * @outofplace
+	 * -outofplace
 	 * 
 	 * @step. ^I see that the conversation name is (.*)$
 	 * 
@@ -325,7 +324,7 @@ public class OtherUserPersonalInfoPageSteps {
 
 	/**
 	 * Checks to see that correct avatars for 2 given users appear
-	 * @outofplace
+	 * -outofplace
 	 * 
 	 * @step. ^I see the correct participant (.*) and (.*) avatars$
 	 * 
@@ -352,7 +351,7 @@ public class OtherUserPersonalInfoPageSteps {
 
 	/**
 	 * Checks to see that the correct number of users appears in the group name title
-	 * @outofplace
+	 * -outofplace
 	 * 
 	 * @step. ^I see the correct number of participants in the title (.*)$
 	 * 
@@ -369,7 +368,7 @@ public class OtherUserPersonalInfoPageSteps {
 
 	/**
 	 * Checks to see a given user does not exist in the group chat info page
-	 * @outofplace
+	 * -outofplace
 	 * 
 	 * @step. ^I do not see (.*) on group chat info page$
 	 * 
@@ -433,10 +432,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 * 
 	 * @step. ^I do not see (.*) profile page$
 	 * 
-	 * @param Contact
-	 *            other user name
-	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@Then("^I do not see profile page$")
 	public void IDoNotSeeContactProfile() throws Exception {
@@ -462,10 +458,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 * 
 	 * @step. ^I do not see (.*) profile page$
 	 * 
-	 * @param Contact
-	 *            other user name
-	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@Then("^I see profile page$")
 	public void ISeeCorrectContactProfile() throws Exception {

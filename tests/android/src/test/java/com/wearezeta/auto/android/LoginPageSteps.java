@@ -17,7 +17,7 @@ public class LoginPageSteps {
 	/**
 	 * Checks to see if the sign in screen appears
 	 * 
-	 * @unnecessary the next step would fail if this page wasn't visible?
+	 * -unnecessary the next step would fail if this page wasn't visible?
 	 * 
 	 * @step. ^I see sign in screen$
 	 */
@@ -153,7 +153,7 @@ public class LoginPageSteps {
 	}
 
 	/**
-	 * @unused
+	 * -unused
 	 * 
 	 * @step. ^I see sign in and join buttons$
 	 */
@@ -191,7 +191,7 @@ public class LoginPageSteps {
 	/**
 	 * Checks to see that the login error message contains the correct text
 	 * 
-	 * @unnecessary should perhaps be combined with {@link #LoginErrorMessage()}
+	 * -unnecessary should perhaps be combined with LoginErrorMessage()
 	 * 
 	 * @step. ^Contains wrong name or password text$
 	 * 

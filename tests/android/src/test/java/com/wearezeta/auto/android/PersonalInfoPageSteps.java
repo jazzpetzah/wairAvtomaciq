@@ -144,7 +144,6 @@ public class PersonalInfoPageSteps {
 	/**
 	 * Changes the current user's name to a new one
 	 * 
-	 * @unclear
 	 * 
 	 * @step. ^I change (.*) to (.*)$
 	 * 
@@ -167,7 +166,7 @@ public class PersonalInfoPageSteps {
 	}
 
 	/**
-	 * @unused
+	 * -unused
 	 * 
 	 * @step. ^I swipe right to contact list$
 	 * 
@@ -184,7 +183,7 @@ public class PersonalInfoPageSteps {
 	/**
 	 * Confirms that the current user's name is as given, and then changes it
 	 * back to the old one (Why not reuse the old step
-	 * {@link #IChangeNameTo(String, String)}?)
+	 * IChangeNameTo(String, String))
 	 * 
 	 * @step. ^I see my new name (.*) and return old (.*)$
 	 * 
@@ -243,7 +242,7 @@ public class PersonalInfoPageSteps {
 	}
 
 	/**
-	 * @unused
+	 * -unused
 	 * 
 	 * @step. ^I see Settings$
 	 *
