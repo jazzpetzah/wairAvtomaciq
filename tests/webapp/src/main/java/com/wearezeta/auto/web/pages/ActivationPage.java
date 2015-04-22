@@ -5,7 +5,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
-import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class ActivationPage extends WebPage {
@@ -14,24 +13,23 @@ public class ActivationPage extends WebPage {
 		super(driver, wait, url);
 	}
 
-	public void openInNewTab() throws Exception {
-		WebCommonUtils.openUrlInNewTab(
-				PagesCollection.registrationPage.getDriver(), this.getUrl(),
-				this.getDriver().getNodeIp());
-	}
-
 	public ContactListPage verifyActivation(int timeoutSeconds)
 			throws Exception {
-		final By locator = By
+		final By openWebAppBtnLocator = By
 				.xpath(WebAppLocators.ActivationPage.xpathBtnOpenWebApp);
-		assert DriverUtils.isElementDisplayed(driver, locator, timeoutSeconds) : "It seems there was some failure while verifying registered account";
-		driver.findElement(locator).click();
+		if (DriverUtils.isElementDisplayed(driver, openWebAppBtnLocator,
+				timeoutSeconds)) {
+			driver.findElement(openWebAppBtnLocator).click();
+		} else if (DriverUtils
+				.isElementDisplayed(
+						driver,
+						By.xpath(WebAppLocators.SelfPictureUploadPage.xpathSelectPictureButton),
+						timeoutSeconds)) {
+			// Do nothing
+		} else {
+			throw new RuntimeException(
+					"It seems there was some failure while verifying registered account");
+		}
 		return new ContactListPage(getDriver(), getWait());
-	}
-
-	@Override
-	public void close() throws Exception {
-		WebCommonUtils.switchToPreviousTab(driver);
-		super.close();
 	}
 }
