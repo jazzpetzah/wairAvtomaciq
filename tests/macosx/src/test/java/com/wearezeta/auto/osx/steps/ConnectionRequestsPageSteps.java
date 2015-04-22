@@ -104,7 +104,7 @@ public class ConnectionRequestsPageSteps {
 	 * 
 	 * @step. ^I do not see connection request from user (.*)$
 	 * 
-	 * @param username
+	 * @param user
 	 *            user which sent connection request
 	 * 
 	 * @throws AssertionError
