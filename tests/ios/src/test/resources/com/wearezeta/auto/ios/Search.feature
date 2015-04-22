@@ -254,7 +254,7 @@ Feature: Search
   Scenario Outline: Verify search by second name (something after space)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
-    Given User <Contact> change  name to <NewName>
+    Given User <Contact> change name to <NewName>
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I swipe down contact list
