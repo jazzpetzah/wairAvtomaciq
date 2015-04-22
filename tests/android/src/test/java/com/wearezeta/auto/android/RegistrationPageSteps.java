@@ -30,7 +30,7 @@ public class RegistrationPageSteps {
 	 * Presses the camera button once to bring up the camera, and again to take
 	 * a picture
 	 * 
-	 * @step. ^I see connect button enabled state is (.*)$
+	 * @step. ^I press Camera button twice$
 	 * 
 	 * @throws IOException
 	 * @throws InterruptedException
