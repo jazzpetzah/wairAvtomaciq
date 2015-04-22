@@ -52,7 +52,7 @@ public class CallingPageSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@When("I cannot see the call bar")
+	@When("^I cannot see the call bar$")
 	public void ICannotSeeTheCallBar() throws Exception {
 		Assert.assertFalse(PagesCollection.callingOverlayPage.isVisible());
 	}
