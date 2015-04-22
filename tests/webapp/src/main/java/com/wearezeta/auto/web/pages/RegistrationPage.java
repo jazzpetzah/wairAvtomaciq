@@ -94,6 +94,9 @@ public class RegistrationPage extends WebPage {
 										By.xpath(WebAppLocators.RegistrationPage.xpathSwitchToSignInButton))) {
 					switchToSignInButton.click();
 				} else {
+					log.debug(String
+							.format("Trying to refresh currupted login page. Retry %s of %s...",
+									ntry + 1, MAX_TRIES));
 					driver.navigate().refresh();
 				}
 				if (DriverUtils.isElementDisplayed(this.getDriver(),
