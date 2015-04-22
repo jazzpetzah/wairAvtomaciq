@@ -11,6 +11,9 @@ import com.wearezeta.auto.web.locators.PopoverLocators;
 class PendingParticipantInfoPopoverPage extends AbstractUserInfoPopoverPage {
 	@FindBy(how = How.XPATH, using = PopoverLocators.GroupPopover.PendingParticipantPage.xpathPendingButton)
 	private WebElement pendingButton;
+        
+        @FindBy(how = How.XPATH, using = PopoverLocators.GroupPopover.PendingParticipantPage.xpathPendingTextBox)
+	private WebElement pendingTextBox;
 
 	public PendingParticipantInfoPopoverPage(ZetaWebAppDriver driver,
 			WebDriverWait wait, PeoplePopoverContainer container)
@@ -33,5 +36,8 @@ class PendingParticipantInfoPopoverPage extends AbstractUserInfoPopoverPage {
 
 	public String getPendingButtonCaption() {
 		return pendingButton.getText();
+	}
+        public boolean isPendingTextBoxDisplayed() {
+		return pendingTextBox.isDisplayed();
 	}
 }

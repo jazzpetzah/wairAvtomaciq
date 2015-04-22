@@ -80,7 +80,7 @@ public class GroupPopoverPageSteps {
 	@When("^I click on participant (.*) on Group Participants popover$")
 	public void IClickOnParticipant(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		((GroupPopoverContainer) PagesCollection.popoverPage)
+		PagesCollection.popoverPage = ((GroupPopoverContainer) PagesCollection.popoverPage)
 				.clickOnParticipant(name);
 	}
 
@@ -128,6 +128,19 @@ public class GroupPopoverPageSteps {
 	public void IRemoveUserFromGroupChat() throws Exception {
 		((GroupPopoverContainer) PagesCollection.popoverPage)
 				.clickRemoveFromGroupChat();
+	}
+
+	/**
+	 * Verifies whether Remove button is visible on Group Participants popover
+	 * 
+	 * @step. ^I see Remove button on Group Participants popover$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see Remove button on Group Participants popover$")
+	public void ISeeRemoveUserFromGroupChat() throws Exception {
+		((GroupPopoverContainer) PagesCollection.popoverPage)
+				.isRemoveButtonVisible();
 	}
 
 	/**

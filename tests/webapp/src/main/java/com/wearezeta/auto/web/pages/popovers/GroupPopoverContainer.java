@@ -4,6 +4,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.PopoverLocators;
+import com.wearezeta.auto.web.locators.PopoverLocators.SingleUserPopover;
 
 public class GroupPopoverContainer extends PeoplePopoverContainer {
 	private ParticipantsListPopoverPage participantsListPopoverPage;
@@ -50,8 +51,8 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 		this.leaveGroupConfirmationPopoverPage.confirmLeaveGroupChat();
 	}
 
-	public void clickOnParticipant(String name) throws Exception {
-		this.participantsListPopoverPage.clickOnParticipant(name);
+	public SingleUserPopoverContainer clickOnParticipant(String name) throws Exception {
+		return this.participantsListPopoverPage.clickOnParticipant(name);
 	}
 
 	public void clickRemoveFromGroupChat() throws Exception {
@@ -69,6 +70,16 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 	public void confirmRemoveFromGroupChat() throws Exception {
 		this.removeFromGroupConfirmationPopoverPage
 				.confirmRemoveFromGroupChat();
+	}
+	public boolean isRemoveButtonVisible() throws Exception {
+		if (this.connectedParticipantInfoPopoverPage.isCurrent()) {
+			return this.connectedParticipantInfoPopoverPage.isRemoveButtonVisible();
+		} else if (this.nonConnectedParticipantInfoPopoverPage.isCurrent()) {
+			return this.nonConnectedParticipantInfoPopoverPage.isRemoveButtonVisible();
+		} else {
+			throw new RuntimeException(
+					"The current popover page is neither connected user info nor non-connected user info.");
+		}
 	}
 
 	public void clickAddPeopleButton() throws Exception {
@@ -98,6 +109,7 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 	public boolean isPendingButtonVisible() {
 		return this.pendingParticipantInfoPopoverPage.isPendingButtonVisible();
 	}
+	
 
 	public void clickPendingButton() {
 		this.pendingParticipantInfoPopoverPage.clickPendingButton();
