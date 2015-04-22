@@ -456,6 +456,20 @@ public final class AndroidLocators {
 			}
 		}
 	}
+	
+	public static final class LockscreenCallingPage {
+		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME
+				+ "$LockscreenCallingPage";
+		
+		public static final String idCallingUserName = LOCATORS_PACKAGE
+				+ ":id/ttv__notifications__incoming_call__lockscreen__header";
+	
+		public static final String idLockScreenLogo = LOCATORS_PACKAGE
+				+ ":id/gtv__notifications__incoming_call__lockscreen__logo";
+		
+		public static final String idIncomingCallChathead = LOCATORS_PACKAGE
+				+ ":id/civ__notifications__incoming_call__chathead";
+	}
 
 	public static final class OtherUserPersonalInfoPage {
 
