@@ -22,7 +22,7 @@ public class SelfPictureUploadPageSteps {
 					PagesCollection.loginPage.getWait());
 		}
 		PagesCollection.selfPictureUploadPage
-				.waitUntilVisible(VISIBILITY_TIMEOUT);
+				.waitUntilButtonsAreClickable(VISIBILITY_TIMEOUT);
 	}
 
 	/**
@@ -35,7 +35,7 @@ public class SelfPictureUploadPageSteps {
 	public void IDontSeeSelfPictureUpload() throws Exception {
 		try {
 			PagesCollection.selfPictureUploadPage
-					.waitUntilVisible(VISIBILITY_TIMEOUT);
+					.waitUntilButtonsAreClickable(VISIBILITY_TIMEOUT);
 		} catch (AssertionError e) {
 			// Everything is ok, the page is not visible
 			return;
