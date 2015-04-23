@@ -413,92 +413,9 @@ public class AndroidKeyEvent {
     public static final int KEYCODE_ZOOM_IN         = 168;
     /** Key code constant: Zoom out key. */
     public static final int KEYCODE_ZOOM_OUT        = 169;
-    /** Key code constant: TV key.
-     * On TV remotes, switches to viewing live TV. */
-    public static final int KEYCODE_TV              = 170;
-    /** Key code constant: Window key.
-     * On TV remotes, toggles picture-in-picture mode or other windowing functions. */
-    public static final int KEYCODE_WINDOW          = 171;
-    /** Key code constant: Guide key.
-     * On TV remotes, shows a programming guide. */
-    public static final int KEYCODE_GUIDE           = 172;
-    /** Key code constant: DVR key.
-     * On some TV remotes, switches to a DVR mode for recorded shows. */
-    public static final int KEYCODE_DVR             = 173;
-    /** Key code constant: Bookmark key.
-     * On some TV remotes, bookmarks content or web pages. */
-    public static final int KEYCODE_BOOKMARK        = 174;
-    /** Key code constant: Toggle captions key.
-     * Switches the mode for closed-captioning text, for example during television shows. */
-    public static final int KEYCODE_CAPTIONS        = 175;
-    /** Key code constant: Settings key.
-     * Starts the system settings activity. */
-    public static final int KEYCODE_SETTINGS        = 176;
-    /** Key code constant: TV power key.
-     * On TV remotes, toggles the power on a television screen. */
-    public static final int KEYCODE_TV_POWER        = 177;
-    /** Key code constant: TV input key.
-     * On TV remotes, switches the input on a television screen. */
-    public static final int KEYCODE_TV_INPUT        = 178;
-    /** Key code constant: Set-top-box power key.
-     * On TV remotes, toggles the power on an external Set-top-box. */
-    public static final int KEYCODE_STB_POWER       = 179;
-    /** Key code constant: Set-top-box input key.
-     * On TV remotes, switches the input mode on an external Set-top-box. */
-    public static final int KEYCODE_STB_INPUT       = 180;
-    /** Key code constant: A/V Receiver power key.
-     * On TV remotes, toggles the power on an external A/V Receiver. */
-    public static final int KEYCODE_AVR_POWER       = 181;
-    /** Key code constant: A/V Receiver input key.
-     * On TV remotes, switches the input mode on an external A/V Receiver. */
-    public static final int KEYCODE_AVR_INPUT       = 182;
-    /** Key code constant: Red "programmable" key.
-     * On TV remotes, acts as a contextual/programmable key. */
-    public static final int KEYCODE_PROG_RED        = 183;
-    /** Key code constant: Green "programmable" key.
-     * On TV remotes, actsas a contextual/programmable key. */
-    public static final int KEYCODE_PROG_GREEN      = 184;
-    /** Key code constant: Yellow "programmable" key.
-     * On TV remotes, acts as a contextual/programmable key. */
-    public static final int KEYCODE_PROG_YELLOW     = 185;
-    /** Key code constant: Blue "programmable" key.
-     * On TV remotes, acts as a contextual/programmable key. */
-    public static final int KEYCODE_PROG_BLUE       = 186;
     /** Key code constant: App switch key.
      * Should bring up the application switcher dialog. */
     public static final int KEYCODE_APP_SWITCH      = 187;
-    /** Key code constant: Generic Game Pad Button #1.*/
-    public static final int KEYCODE_BUTTON_1        = 188;
-    /** Key code constant: Generic Game Pad Button #2.*/
-    public static final int KEYCODE_BUTTON_2        = 189;
-    /** Key code constant: Generic Game Pad Button #3.*/
-    public static final int KEYCODE_BUTTON_3        = 190;
-    /** Key code constant: Generic Game Pad Button #4.*/
-    public static final int KEYCODE_BUTTON_4        = 191;
-    /** Key code constant: Generic Game Pad Button #5.*/
-    public static final int KEYCODE_BUTTON_5        = 192;
-    /** Key code constant: Generic Game Pad Button #6.*/
-    public static final int KEYCODE_BUTTON_6        = 193;
-    /** Key code constant: Generic Game Pad Button #7.*/
-    public static final int KEYCODE_BUTTON_7        = 194;
-    /** Key code constant: Generic Game Pad Button #8.*/
-    public static final int KEYCODE_BUTTON_8        = 195;
-    /** Key code constant: Generic Game Pad Button #9.*/
-    public static final int KEYCODE_BUTTON_9        = 196;
-    /** Key code constant: Generic Game Pad Button #10.*/
-    public static final int KEYCODE_BUTTON_10       = 197;
-    /** Key code constant: Generic Game Pad Button #11.*/
-    public static final int KEYCODE_BUTTON_11       = 198;
-    /** Key code constant: Generic Game Pad Button #12.*/
-    public static final int KEYCODE_BUTTON_12       = 199;
-    /** Key code constant: Generic Game Pad Button #13.*/
-    public static final int KEYCODE_BUTTON_13       = 200;
-    /** Key code constant: Generic Game Pad Button #14.*/
-    public static final int KEYCODE_BUTTON_14       = 201;
-    /** Key code constant: Generic Game Pad Button #15.*/
-    public static final int KEYCODE_BUTTON_15       = 202;
-    /** Key code constant: Generic Game Pad Button #16.*/
-    public static final int KEYCODE_BUTTON_16       = 203;
     /** Key code constant: Language Switch key.
      * Toggles the current input language such as switching between English and Japanese on
      * a QWERTY keyboard.  On some devices, the same function may be performed by
@@ -509,9 +426,7 @@ public class AndroidKeyEvent {
      * in certain settings such as on a crowded train.  On some devices, the key may only
      * operate when long-pressed. */
     public static final int KEYCODE_MANNER_MODE     = 205;
-    /** Key code constant: 3D Mode key.
-     * Toggles the display between 2D and 3D mode. */
-    public static final int KEYCODE_3D_MODE         = 206;
+    
     /** Key code constant: Contacts special function key.
      * Used to launch an address book application. */
     public static final int KEYCODE_CONTACTS        = 207;
@@ -524,25 +439,7 @@ public class AndroidKeyEvent {
     /** Key code constant: Calculator special function key.
      * Used to launch a calculator application. */
     public static final int KEYCODE_CALCULATOR      = 210;
-    /** Key code constant: Japanese full-width / half-width key. */
-    public static final int KEYCODE_ZENKAKU_HANKAKU = 211;
-    /** Key code constant: Japanese alphanumeric key. */
-    public static final int KEYCODE_EISU            = 212;
-    /** Key code constant: Japanese non-conversion key. */
-    public static final int KEYCODE_MUHENKAN        = 213;
-    /** Key code constant: Japanese conversion key. */
-    public static final int KEYCODE_HENKAN          = 214;
-    /** Key code constant: Japanese katakana / hiragana key. */
-    public static final int KEYCODE_KATAKANA_HIRAGANA = 215;
-    /** Key code constant: Japanese Yen key. */
-    public static final int KEYCODE_YEN             = 216;
-    /** Key code constant: Japanese Ro key. */
-    public static final int KEYCODE_RO              = 217;
-    /** Key code constant: Japanese kana key. */
-    public static final int KEYCODE_KANA            = 218;
-    /** Key code constant: Assist key.
-     * Launches the global assist activity.  Not delivered to applications. */
-    public static final int KEYCODE_ASSIST          = 219;
+    
     /** Key code constant: Brightness Down key.
      * Adjusts the screen brightness down. */
     public static final int KEYCODE_BRIGHTNESS_DOWN = 220;
@@ -571,102 +468,8 @@ public class AndroidKeyEvent {
     /** Key code constant: '11' key. */
     public static final int KEYCODE_11              = 227;
     /** Key code constant: '12' key. */
-    public static final int KEYCODE_12              = 228;
-    /** Key code constant: Last Channel key.
-     * Goes to the last viewed channel. */
-    public static final int KEYCODE_LAST_CHANNEL    = 229;
-    /** Key code constant: TV data service key.
-     * Displays data services like weather, sports. */
-    public static final int KEYCODE_TV_DATA_SERVICE = 230;
-    /** Key code constant: Voice Assist key.
-     * Launches the global voice assist activity. Not delivered to applications. */
-    public static final int KEYCODE_VOICE_ASSIST = 231;
-    /** Key code constant: Radio key.
-     * Toggles TV service / Radio service. */
-    public static final int KEYCODE_TV_RADIO_SERVICE = 232;
-    /** Key code constant: Teletext key.
-     * Displays Teletext service. */
-    public static final int KEYCODE_TV_TELETEXT = 233;
-    /** Key code constant: Number entry key.
-     * Initiates to enter multi-digit channel nubmber when each digit key is assigned
-     * for selecting separate channel. Corresponds to Number Entry Mode (0x1D) of CEC
-     * User Control Code. */
-    public static final int KEYCODE_TV_NUMBER_ENTRY = 234;
-    /** Key code constant: Analog Terrestrial key.
-     * Switches to analog terrestrial broadcast service. */
-    public static final int KEYCODE_TV_TERRESTRIAL_ANALOG = 235;
-    /** Key code constant: Digital Terrestrial key.
-     * Switches to digital terrestrial broadcast service. */
-    public static final int KEYCODE_TV_TERRESTRIAL_DIGITAL = 236;
-    /** Key code constant: Satellite key.
-     * Switches to digital satellite broadcast service. */
-    public static final int KEYCODE_TV_SATELLITE = 237;
-    /** Key code constant: BS key.
-     * Switches to BS digital satellite broadcasting service available in Japan. */
-    public static final int KEYCODE_TV_SATELLITE_BS = 238;
-    /** Key code constant: CS key.
-     * Switches to CS digital satellite broadcasting service available in Japan. */
-    public static final int KEYCODE_TV_SATELLITE_CS = 239;
-    /** Key code constant: BS/CS key.
-     * Toggles between BS and CS digital satellite services. */
-    public static final int KEYCODE_TV_SATELLITE_SERVICE = 240;
-    /** Key code constant: Toggle Network key.
-     * Toggles selecting broacast services. */
-    public static final int KEYCODE_TV_NETWORK = 241;
-    /** Key code constant: Antenna/Cable key.
-     * Toggles broadcast input source between antenna and cable. */
-    public static final int KEYCODE_TV_ANTENNA_CABLE = 242;
-    /** Key code constant: HDMI #1 key.
-     * Switches to HDMI input #1. */
-    public static final int KEYCODE_TV_INPUT_HDMI_1 = 243;
-    /** Key code constant: HDMI #2 key.
-     * Switches to HDMI input #2. */
-    public static final int KEYCODE_TV_INPUT_HDMI_2 = 244;
-    /** Key code constant: HDMI #3 key.
-     * Switches to HDMI input #3. */
-    public static final int KEYCODE_TV_INPUT_HDMI_3 = 245;
-    /** Key code constant: HDMI #4 key.
-     * Switches to HDMI input #4. */
-    public static final int KEYCODE_TV_INPUT_HDMI_4 = 246;
-    /** Key code constant: Composite #1 key.
-     * Switches to composite video input #1. */
-    public static final int KEYCODE_TV_INPUT_COMPOSITE_1 = 247;
-    /** Key code constant: Composite #2 key.
-     * Switches to composite video input #2. */
-    public static final int KEYCODE_TV_INPUT_COMPOSITE_2 = 248;
-    /** Key code constant: Component #1 key.
-     * Switches to component video input #1. */
-    public static final int KEYCODE_TV_INPUT_COMPONENT_1 = 249;
-    /** Key code constant: Component #2 key.
-     * Switches to component video input #2. */
-    public static final int KEYCODE_TV_INPUT_COMPONENT_2 = 250;
-    /** Key code constant: VGA #1 key.
-     * Switches to VGA (analog RGB) input #1. */
-    public static final int KEYCODE_TV_INPUT_VGA_1 = 251;
-    /** Key code constant: Audio description key.
-     * Toggles audio description off / on. */
-    public static final int KEYCODE_TV_AUDIO_DESCRIPTION = 252;
-    /** Key code constant: Audio description mixing volume up key.
-     * Louden audio description volume as compared with normal audio volume. */
-    public static final int KEYCODE_TV_AUDIO_DESCRIPTION_MIX_UP = 253;
-    /** Key code constant: Audio description mixing volume down key.
-     * Lessen audio description volume as compared with normal audio volume. */
-    public static final int KEYCODE_TV_AUDIO_DESCRIPTION_MIX_DOWN = 254;
-    /** Key code constant: Zoom mode key.
-     * Changes Zoom mode (Normal, Full, Zoom, Wide-zoom, etc.) */
-    public static final int KEYCODE_TV_ZOOM_MODE = 255;
-    /** Key code constant: Contents menu key.
-     * Goes to the title list. Corresponds to Contents Menu (0x0B) of CEC User Control
-     * Code */
-    public static final int KEYCODE_TV_CONTENTS_MENU = 256;
-    /** Key code constant: Media context menu key.
-     * Goes to the context menu of media contents. Corresponds to Media Context-sensitive
-     * Menu (0x11) of CEC User Control Code. */
-    public static final int KEYCODE_TV_MEDIA_CONTEXT_MENU = 257;
-    /** Key code constant: Timer programming key.
-     * Goes to the timer recording menu. Corresponds to Timer Programming (0x54) of
-     * CEC User Control Code. */
-    public static final int KEYCODE_TV_TIMER_PROGRAMMING = 258;
+    public static final int KEYCODE_12              = 228;  
+    
     /** Key code constant: Help key. */
     public static final int KEYCODE_HELP = 259;
 }
