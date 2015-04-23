@@ -353,13 +353,13 @@ public class ContactListPageSteps {
 	 * Verify whether Archive button at the bottom of the convo list is visible
 	 * or not
 	 * 
-	 * @step. ^I( do not)? see Archive button at the bottom of the Contact list$
+	 * @step. ^I( do not)? see Archive button at the bottom of my Contact list$
 	 * 
 	 * @param shouldNotBeVisible
 	 *            is set to true if "do not" part exists in the step
 	 * @throws Exception
 	 */
-	@Then("^I( do not)? see Archive button at the bottom of the Contact list$")
+	@Then("^I( do not)? see Archive button at the bottom of my Contact list$")
 	public void IVerifyArchiveButtonVisibility(boolean shouldNotBeVisible)
 			throws Exception {
 		if (shouldNotBeVisible) {
