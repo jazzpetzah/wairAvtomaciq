@@ -40,3 +40,17 @@ Feature: Self Profile
     Examples: 
       | Login      | Password      | Name      | ColorName    |
       | user1Email | user1Password | user1Name | BrightOrange |
+
+  @torun @id1755
+  Scenario Outline: Verify you can edit your profile picture by dragging a new photo
+    Given There is 1 user where <Name> is me
+    Given I take snapshot of my current profile picture
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name on top of Contact list
+    When I open self profile
+    And I drop <PictureName> to my self profile
+    Then I verify that my current profile picture snapshot differs from the previous one
+
+    Examples: 
+      | Login      | Password      | Name      | PictureName |
+      | user1Email | user1Password | user1Name | Blabla.jpg  |
