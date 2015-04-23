@@ -73,7 +73,7 @@ public class DialogPageSteps {
 
 	@When("^I type the message$")
 	public void WhenITypeTheMessage() throws Throwable {
-		//message = CommonUtils.generateGUID().replace('-', 'x');
+		// message = CommonUtils.generateGUID().replace('-', 'x');
 		message = automationMessage;
 		PagesCollection.dialogPage.sendStringToInput(message);
 	}
@@ -137,7 +137,7 @@ public class DialogPageSteps {
 
 	@When("^I type the message and send it$")
 	public void ITypeTheMessageAndSendIt() throws Throwable {
-		//message = CommonUtils.generateGUID().replace('-', 'x');
+		// message = CommonUtils.generateGUID().replace('-', 'x');
 		message = automationMessage;
 		PagesCollection.dialogPage.sendStringToInput(message + "\n");
 	}
@@ -263,9 +263,10 @@ public class DialogPageSteps {
 				.pressAddPictureButton();
 		PagesCollection.cameraRollPage = (CameraRollPage) page;
 	}
-	
+
 	/**
 	 * Click call button to start a call
+	 * 
 	 * @step. ^I press call button$
 	 * @throws Throwable
 	 */
@@ -585,7 +586,8 @@ public class DialogPageSteps {
 	public void UserPingInChatByBE(String contact, String conversationName)
 			throws Exception {
 		ClientUser yourСontact = usrMgr.findUserByNameOrNameAlias(contact);
-		conversationName = usrMgr.replaceAliasesOccurences(conversationName, FindBy.NAME_ALIAS);
+		conversationName = usrMgr.replaceAliasesOccurences(conversationName,
+				FindBy.NAME_ALIAS);
 		pingId = BackendAPIWrappers.sendPingToConversation(yourСontact,
 				conversationName);
 		Thread.sleep(1000);
@@ -595,7 +597,8 @@ public class DialogPageSteps {
 	public void UserHotPingInChatByBE(String contact, String conversationName)
 			throws Exception {
 		ClientUser yourСontact = usrMgr.findUserByNameOrNameAlias(contact);
-		conversationName = usrMgr.replaceAliasesOccurences(conversationName, FindBy.NAME_ALIAS);
+		conversationName = usrMgr.replaceAliasesOccurences(conversationName,
+				FindBy.NAME_ALIAS);
 		BackendAPIWrappers.sendHotPingToConversation(yourСontact,
 				conversationName, pingId);
 		Thread.sleep(1000);
@@ -656,12 +659,13 @@ public class DialogPageSteps {
 		Assert.assertTrue("Mail Invite content is not shown in lastMessage",
 				messageContainsContent);
 	}
-	
+
 	/**
 	 * Check that missed call UI is visible in dialog
+	 * 
 	 * @step. ^I see missed call from contact (.*)$
 	 * @param contact
-	 * 		User name who called
+	 *            User name who called
 	 * @throws Exception
 	 */
 	@When("^I see missed call from contact (.*)$")
@@ -673,49 +677,47 @@ public class DialogPageSteps {
 					.isMessageVisible(expectedCallMessage));
 		}
 	}
-	
+
 	/**
 	 * Start a call by clicking missed call button in dialog
+	 * 
 	 * @step. ^I click missed call button to call contact (.*)$
 	 * @param contact
-	 * 		User name who called
+	 *            User name who called
 	 * @throws Exception
 	 */
 	@When("^I click missed call button to call contact (.*)$")
 	public void IClickMissedCallButton(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		PagesCollection.callPage = PagesCollection.dialogPage
-					.clickOnCallButtonForContact(contact.toUpperCase());
+				.clickOnCallButtonForContact(contact.toUpperCase());
 	}
-	
+
 	public static final String TAP_OR_SLIDE = "TAP OR SLIDE";
-	
+
 	/**
 	 * Observing tutorial "swipe right" aka "tap or slide"
-	 * @throws Exception 
-	 * @step ^I see TAPORSLIDE text$
-	 *
+	 * 
+	 * @step. ^I see TAPORSLIDE text$
+	 * @throws Exception
 	 */
 	@Then("^I see TAPORSLIDE text$")
-	public void ISeeTapOrSlideText() throws Exception{
-		boolean result = PagesCollection.dialogPage.isTypeOrSlideExists(TAP_OR_SLIDE);
+	public void ISeeTapOrSlideText() throws Exception {
+		boolean result = PagesCollection.dialogPage
+				.isTypeOrSlideExists(TAP_OR_SLIDE);
 		Assert.assertTrue(result);
 	}
-	
+
 	/**
 	 * Checks if a chathaed is visible with message and avatar for 5sec
 	 * 
-	 * @step. ^I see chathead of contact (.*) for (.*) seconds with avatar and
-	 *        message$
+	 * @step. ^I see chathead of contact (.*)
 	 * @param contact
 	 *            you see the chathead of
-	 * @param seconds
-	 *            the chathead should be visible
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Then("^I see chathead of contact (.*)")
-	public void ISeeChatheadOfContactForSecondsWithAvatarAndMessage(
-			String contact) throws Exception {
+	public void ISeeChatheadOfContact(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		boolean chatheadIsVisible = PagesCollection.dialogPage
 				.chatheadIsVisible(contact);
@@ -727,7 +729,7 @@ public class DialogPageSteps {
 				.chatheadAvatarImageIsVisible();
 		Assert.assertTrue("No Chathead avatar visible.", chAvatarImageIsVisible);
 	}
-	
+
 	/**
 	 * Verify that the chathaed is not seen after 5 seconds
 	 * 

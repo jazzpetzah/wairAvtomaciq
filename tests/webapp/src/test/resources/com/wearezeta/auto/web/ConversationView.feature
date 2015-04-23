@@ -32,7 +32,7 @@ Feature: Conversation View
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessageGroupChat |
 
   @smoke @id1612
-  Scenario Outline: Send Camera picture to contact in 1:1
+  Scenario Outline: Send picture to contact in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>

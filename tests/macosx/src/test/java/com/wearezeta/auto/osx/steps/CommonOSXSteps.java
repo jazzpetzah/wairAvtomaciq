@@ -338,7 +338,7 @@ public class CommonOSXSteps {
 	 * 
 	 * @param userNameAlias
 	 *            user name
-	 * @param colorName
+	 * @param newColor
 	 *            one of possible accent colors:
 	 *            StrongBlue|StrongLimeGreen|BrightYellow
 	 *            |VividRed|BrightOrange|SoftPink|Violet

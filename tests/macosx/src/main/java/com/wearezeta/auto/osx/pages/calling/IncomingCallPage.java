@@ -14,7 +14,6 @@ import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class IncomingCallPage extends CallPage {
 
-	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(IncomingCallPage.class
 			.getSimpleName());
 

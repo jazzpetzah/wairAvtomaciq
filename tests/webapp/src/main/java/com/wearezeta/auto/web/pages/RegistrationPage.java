@@ -17,7 +17,6 @@ import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class RegistrationPage extends WebPage {
 
-	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(RegistrationPage.class
 			.getSimpleName());
 
@@ -80,19 +79,27 @@ public class RegistrationPage extends WebPage {
 
 	public LoginPage switchToLoginPage() throws Exception {
 		WebCommonUtils.forceLogoutFromWebapp(getDriver(), true);
-		final By signInBtnlocator = By.xpath(WebAppLocators.LoginPage.xpathSignInButton);
+		final By signInBtnlocator = By
+				.xpath(WebAppLocators.LoginPage.xpathSignInButton);
 		int ntry = 0;
 		// FIXME: temporary workaround for white page instead of sign in issue
 		while (ntry < MAX_TRIES) {
 			try {
-				if (!DriverUtils.isElementDisplayed(this.getDriver(), signInBtnlocator)
+				if (!DriverUtils.isElementDisplayed(this.getDriver(),
+						signInBtnlocator)
 						&& DriverUtils
 								.isElementDisplayed(
 										this.getDriver(),
 										By.xpath(WebAppLocators.RegistrationPage.xpathSwitchToSignInButton))) {
 					switchToSignInButton.click();
+				} else {
+					log.debug(String
+							.format("Trying to refresh currupted login page. Retry %s of %s...",
+									ntry + 1, MAX_TRIES));
+					driver.navigate().refresh();
 				}
-				if (DriverUtils.isElementDisplayed(this.getDriver(), signInBtnlocator)) {
+				if (DriverUtils.isElementDisplayed(this.getDriver(),
+						signInBtnlocator)) {
 					break;
 				}
 			} catch (Exception e) {
@@ -105,7 +112,8 @@ public class RegistrationPage extends WebPage {
 			}
 			ntry++;
 		}
-		assert DriverUtils.isElementDisplayed(this.getDriver(), signInBtnlocator) : "Sign in page is not visible";
+		assert DriverUtils.isElementDisplayed(this.getDriver(),
+				signInBtnlocator) : "Sign in page is not visible";
 
 		return new LoginPage(this.getDriver(), this.getWait(),
 				CommonUtils.getWebAppApplicationPathFromConfig(this.getClass()));

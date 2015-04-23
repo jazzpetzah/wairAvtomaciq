@@ -184,6 +184,11 @@ public final class AndroidLocators {
 		
 	}
 
+	/**
+	 * All elements in this class are found when you select a user in Wire with whom you are not yet connected.
+	 * OR
+	 * when another user sends a connection request to you.
+	 */
 	public static final class ConnectToPage {
 
 		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME
@@ -584,6 +589,12 @@ public final class AndroidLocators {
 		
 		public static final String idPickerUserSlidingRow = LOCATORS_PACKAGE
 				+ ":id/ll__pickuser__sliding_row";
+		
+		public static final String idPickerUserHideMenu = LOCATORS_PACKAGE
+				+ ":id/hrum__pickuser__hide_menu";
+		
+		public static final String xpathPickerUserHideMenu = "//android.widget.FrameLayout[child::android.widget.LinearLayout[@resource-id='"
+				+ LOCATORS_PACKAGE + ":id/hrum__pickuser__hide_menu']]";
 		
 		public static final String idPickerRecomendedName = LOCATORS_PACKAGE
 				+ ":id/ttv_pickuser__recommended_name";

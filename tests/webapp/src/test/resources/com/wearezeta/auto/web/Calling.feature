@@ -1,6 +1,6 @@
 Feature: Calling
 
-  @staging @id1860
+  @regression @id1860
   Scenario Outline: Send text, image and knock while in the call with same user
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -27,7 +27,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | PING   | PictureName               | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | pinged | userpicture_landscape.jpg | webdriver   | 120     |
 
-  @staging @id2237
+  @regression @id2237
   Scenario Outline: Call a user twice in a row
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -53,7 +53,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
 
   # This has to work even in browsers, which don't support calling
-  @staging @id2014
+  @regression @id2014
   Scenario Outline: Missed call notification (adressee)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Me

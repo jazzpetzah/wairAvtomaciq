@@ -22,7 +22,7 @@ public class SelfPictureUploadPageSteps {
 					PagesCollection.loginPage.getWait());
 		}
 		PagesCollection.selfPictureUploadPage
-				.waitUntilVisible(VISIBILITY_TIMEOUT);
+				.waitUntilButtonsAreClickable(VISIBILITY_TIMEOUT);
 	}
 
 	/**
@@ -35,7 +35,7 @@ public class SelfPictureUploadPageSteps {
 	public void IDontSeeSelfPictureUpload() throws Exception {
 		try {
 			PagesCollection.selfPictureUploadPage
-					.waitUntilVisible(VISIBILITY_TIMEOUT);
+					.waitUntilButtonsAreClickable(VISIBILITY_TIMEOUT);
 		} catch (AssertionError e) {
 			// Everything is ok, the page is not visible
 			return;
@@ -51,7 +51,7 @@ public class SelfPictureUploadPageSteps {
 	 * 
 	 * @step. ^I choose (.*) as my self picture on Self Picture Upload dialog$
 	 * 
-	 * @param name
+	 * @param pictureName
 	 *            existing picture name
 	 * 
 	 * @throws Exception
@@ -65,9 +65,6 @@ public class SelfPictureUploadPageSteps {
 	 * Confirm picture upload
 	 * 
 	 * @step. ^I confirm picture selection on Self Picture Upload dialog$
-	 * 
-	 * @param name
-	 *            existing picture name
 	 * 
 	 * @throws Exception
 	 */

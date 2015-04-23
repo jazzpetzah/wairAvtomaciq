@@ -1,4 +1,4 @@
-package com.wearezeta.auto.android;
+package com.wearezeta.auto.android.steps;
 
 import java.util.ArrayList;
 
@@ -29,7 +29,7 @@ public class PerformanceSteps {
 	 * 
 	 * @param timeout
 	 *            number of minutes to run the loop
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I start test cycle for (\\d+) minutes$")
 	public void WhenIStartTestCycleForNMinutes(int timeout) throws Exception {
@@ -93,6 +93,13 @@ public class PerformanceSteps {
 		}, timeout);
 	}
 
+	/**
+	 * Generates android performance report
+	 * 
+	 * @step. ^I generate performance report$
+	 * 
+	 * @throws Exception
+	 */
 	@Then("^I generate performance report$")
 	public void ThenIGeneratePerformanceReport() throws Exception{
 		AndroidCommonUtils.copyFileFromAndroid(AndroidCommonUtils.getRxLogResourceFilePathFromConfig(PerformanceSteps.class), RXLOGGER_RESOURCE_FILE_PATH);

@@ -228,7 +228,7 @@ Feature: Search
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name | 
       
-@staging @id2117
+  @regression @id2117
   Scenario Outline: Verify dismissing with clicking on Hide
   	Given There are 5 users where <Name> is me
     Given <ContactWithFriends> is connected to <Name>

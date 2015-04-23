@@ -139,9 +139,9 @@ public class WebCommonUtils extends CommonUtils {
 		}
 	}
 
-	public static String getOperaProfileRoot(String browserPlatform)
+	public static String getOperaProfileRoot()
 			throws Exception {
-		if (browserPlatform.toLowerCase().contains("win")) {
+		if (WebAppExecutionContext.isCurrentPlatfromWindows()) {
 			return String
 					.format("C:\\Users\\%s\\AppData\\Roaming\\Opera Software\\Opera Stable\\",
 							CommonUtils
@@ -304,7 +304,7 @@ public class WebCommonUtils extends CommonUtils {
 	public static void forceLogoutFromWebapp(RemoteWebDriver driver,
 			boolean areExceptionsSilenced) {
 		try {
-			driver.executeScript("wire.app.logout();");
+			driver.executeScript("(typeof wire !== 'undefined') && (typeof wire.app !== 'undefined') && wire.app.logout();");
 		} catch (Exception e) {
 			if (!areExceptionsSilenced) {
 				throw e;

@@ -1,4 +1,4 @@
-package com.wearezeta.auto.android;
+package com.wearezeta.auto.android.steps;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +23,14 @@ public class DialogPageSteps {
 			+ "Vestibulum blandit nisi felis, id hendrerit quam viverra at. Curabitur nec facilisis felis.";
 	private String message;
 
+	/**
+	 * Waits for the dialog page to appear This step makes no assertions and
+	 * doesn't fail if the dialog page doesn't appear.
+	 * 
+	 * @step. ^I see dialog page$
+	 * 
+	 * @throws Exception
+	 */
 	@When("^I see dialog page$")
 	public void WhenISeeDialogPage() throws Exception {
 		if (PagesCollection.dialogPage == null) {
@@ -31,17 +39,41 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.waitForCursorInputVisible();
 	}
 
+	/**
+	 * Taps on the text input
+	 * 
+	 * @step. ^I tap on text input$
+	 * 
+	 * @throws Exception
+	 */
 	@When("^I tap on text input$")
 	public void WhenITapOnTextInput() throws Exception {
 		PagesCollection.dialogPage.tapOnCursorInput();
 	}
 
+	/**
+	 * Generates a random message and sends it in the chat
+	 * 
+	 * @step. ^I type the message and send it$
+	 * 
+	 * @throws Exception
+	 */
 	@When("^I type the message and send it$")
 	public void WhenITypeRandomMessageAndSendIt() throws Exception {
 		message = CommonUtils.generateGUID();
 		PagesCollection.dialogPage.typeMessage(message);
 	}
 
+	/**
+	 * Inputs a custom message and sends it (Does it actually send the message?)
+	 * 
+	 * @step. ^I input (.*) message and send it$
+	 * 
+	 * @param myMessage
+	 *            the message to send
+	 * 
+	 * @throws Exception
+	 */
 	@When("^I input (.*) message and send it$")
 	public void ITypeTheMessageAndSendIt(String myMessage) throws Exception {
 		message = myMessage;
@@ -49,12 +81,27 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.typeMessage(myMessage);
 	}
 
+	/**
+	 * Types in and sends the default long message
+	 * 
+	 * @step. ^I type long message and send it$
+	 * 
+	 * @throws Throwable
+	 */
 	@When("^I type long message and send it$")
 	public void WhenITypeLongMessageAndSendIt() throws Throwable {
 		message = ANDROID_LONG_MESSAGE;
 		PagesCollection.dialogPage.typeMessage(message);
 	}
 
+	/**
+	 * Types in an message of 5 random lower case leters and 5 random upper case
+	 * letters, and then sends it
+	 * 
+	 * @step. ^I type Upper/Lower case message and send it$
+	 * 
+	 * @throws Throwable
+	 */
 	@When("^I type Upper/Lower case message and send it$")
 	public void WhenITypeUpperLowerCaseAndSendIt() throws Throwable {
 		message = CommonUtils.generateRandomString(5).toLowerCase() + " "
@@ -62,26 +109,63 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.typeMessage(message);
 	}
 
+	/**
+	 * Taps twice on the cursor input
+	 * 
+	 * -unused
+	 * 
+	 * @step. ^I multi tap on text input$
+	 * 
+	 * @throws Throwable
+	 */
 	@When("^I multi tap on text input$")
 	public void WhenIMultiTapOnTextInput() throws Throwable {
 		PagesCollection.dialogPage.multiTapOnCursorInput();
 	}
 
+	/**
+	 * Swipes the text input area to reveal the different input options
+	 * 
+	 * @step. ^I swipe on text input$
+	 * 
+	 * @throws Exception
+	 */
 	@When("^I swipe on text input$")
 	public void WhenISwipeOnTextInput() throws Exception {
 		PagesCollection.dialogPage.SwipeOnCursorInput();
 	}
 
+	/**
+	 * -unused
+	 * 
+	 * @step. ^I swipe on text input$
+	 * 
+	 * @throws Exception
+	 */
 	@When("^I swipe left on text input$")
 	public void WhenISwipeLeftOnTextInput() throws Exception {
 		PagesCollection.dialogPage.SwipeLeftOnCursorInput();
 	}
 
+	/**
+	 * Presses the image input button to open the camera or gallery
+	 * 
+	 * @step. ^I press Add Picture button$
+	 * 
+	 * @throws Throwable
+	 */
 	@When("^I press Add Picture button$")
 	public void WhenIPressAddPictureButton() throws Throwable {
 		PagesCollection.dialogPage.tapAddPictureBtn();
 	}
 
+	/**
+	 * Press on the ping button in the input controls
+	 * 
+	 * @step. ^I press Ping button$
+	 * 
+	 * @throws Throwable
+	 */
 	@When("^I press Ping button$")
 	public void WhenIPressPButton() throws Throwable {
 		PagesCollection.dialogPage.tapPingBtn();
@@ -140,6 +224,16 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.tapPlayPauseMediaBarBtn();
 	}
 
+	/**
+	 * Presses a given button name Not clear which page is returned from a given
+	 * action
+	 * 
+	 * @step. ^I press \"(.*)\" button$
+	 * 
+	 * @param buttonName
+	 *            the button to press
+	 * @throws Throwable
+	 */
 	@When("^I press \"(.*)\" button$")
 	public void WhenIPressButton(String buttonName) throws Throwable {
 		switch (buttonName.toLowerCase()) {
@@ -161,11 +255,28 @@ public class DialogPageSteps {
 		}
 	}
 
+	/**
+	 * Selects the first picture from the gallery to send in the dialog
+	 * 
+	 * @step. ^I select picture for dialog$
+	 * 
+	 * @throws Throwable
+	 */
 	@When("^I select picture for dialog$")
 	public void WhenISelectPicture() throws Throwable {
 		PagesCollection.dialogPage.selectPhoto();
 	}
 
+	/**
+	 * Used to check that a ping has been sent Not very clear what this step
+	 * does
+	 * 
+	 * @step. ^I see Hello-Hey message (.*) with (.*) in the dialog$
+	 * 
+	 * @param message
+	 * @param action
+	 * @throws Exception
+	 */
 	@Then("^I see Hello-Hey message (.*) with (.*) in the dialog$")
 	public void ThenISeeHelloHeyMessageInTheDialog(String message, String action)
 			throws Exception {
@@ -182,6 +293,14 @@ public class DialogPageSteps {
 		 */
 	}
 
+	/**
+	 * Checks to see that a message that has been sent appears in the chat
+	 * history
+	 * 
+	 * @step. ^I see my message in the dialog$
+	 * 
+	 * @throws Throwable
+	 */
 	@Then("^I see my message in the dialog$")
 	public void ThenISeeMyMessageInTheDialog() throws Throwable {
 		PagesCollection.dialogPage.waitForMessage();
@@ -204,6 +323,14 @@ public class DialogPageSteps {
 		Assert.assertTrue(lastMess.contains("www.google.com"));
 	}
 
+	/**
+	 * Checks to see that a photo exists in the chat history. Does not check
+	 * which photo though
+	 * 
+	 * @step. ^I see new photo in the dialog$
+	 * 
+	 * @throws Throwable
+	 */
 	@Then("^I see new photo in the dialog$")
 	public void ThenISeeNewPhotoInTheDialog() throws Throwable {
 		Assert.assertTrue(PagesCollection.dialogPage.isImageExists());
@@ -222,6 +349,15 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.clickLastImageFromDialog();
 	}
 
+	/**
+	 * -unused
+	 * 
+	 * @step. ^I see (.*) added (.*) message on Dialog page$
+	 * 
+	 * @param user
+	 * @param contact
+	 * @throws Throwable
+	 */
 	@Then("^I see (.*) added (.*) message on Dialog page$")
 	public void ISeeAddedMessageOnDialogPage(String user, String contact)
 			throws Throwable {
@@ -233,16 +369,34 @@ public class DialogPageSteps {
 				.isConnectMessageValid(chatMessage));
 	}
 
+	/**
+	 * -unused
+	 * 
+	 * @step. ^I multi tap on text input again$
+	 * 
+	 * @throws Throwable
+	 */
 	@Then("^I multi tap on text input again$")
 	public void ThenIMultiTapOnTextInputAgain() throws Throwable {
 		PagesCollection.dialogPage.multiTapOnCursorInput();
 	}
 
+	/**
+	 * -unused
+	 * 
+	 * @step. ^I swipe left on dialog page$
+	 */
 	@When("^I swipe left on dialog page$")
 	public void WhenISwipeLeftOnDialogPage() throws Exception {
 		PagesCollection.dialogPage.swipeLeft(1000);
 	}
 
+	/**
+	 * 
+	 * @step. ^I swipe up on dialog page
+	 * 
+	 * @throws Exception
+	 */
 	@When("^I swipe up on dialog page$")
 	public void WhenISwipeUpOnDialogPage() throws Exception {
 		if (PagesCollection.dialogPage == null) {
@@ -268,12 +422,29 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.swipeDown(1000);
 	}
 
+	/**
+	 * Navigates back to the contact list page using a swipe right
+	 * 
+	 * @step. ^I navigate back from dialog page$
+	 * 
+	 * @throws Exception
+	 */
 	@When("^I navigate back from dialog page$")
 	public void WhenINavigateBackFromDialogPage() throws Exception {
 		PagesCollection.contactListPage = PagesCollection.dialogPage
 				.navigateBack();
 	}
 
+	/**
+	 * Checks to see that the "Connected To XYZ" appears at the start of a new
+	 * dialog (Should changed step name to "Connected to")
+	 * 
+	 * @step. ^I see Connect to (.*) Dialog page$
+	 * 
+	 * @param contact
+	 * 
+	 * @throws Exception
+	 */
 	@Then("^I see Connect to (.*) Dialog page$")
 	public void ThenIseeConnectToDialogPage(String contact) throws Exception {
 		if (PagesCollection.dialogPage == null) {
@@ -284,11 +455,27 @@ public class DialogPageSteps {
 				PagesCollection.dialogPage.getConnectRequestChatLabel());
 	}
 
+	/**
+	 * -unused
+	 * -duplicate
+	 * 
+	 * @step. ^I see uploaded picture$
+	 * 
+	 * @throws Exception
+	 */
 	@Then("I see uploaded picture")
 	public void ThenISeeChangedUserPicture() throws Exception {
 		Assert.assertTrue(PagesCollection.dialogPage.dialogImageCompare());
 	}
 
+	/**
+	 * Seems to currently be blocked out in all tests
+	 * 
+	 * @step. ^I see (.*) icon$
+	 * 
+	 * @param iconLabel
+	 * @throws Exception
+	 */
 	@Then("^I see (.*) icon$")
 	public void ThenIseeIcon(String iconLabel) throws Exception {
 		double score = PagesCollection.dialogPage.checkPingIcon(iconLabel);
@@ -300,12 +487,31 @@ public class DialogPageSteps {
 	// ------- From Group Chat Page
 	public static final String userRemovedMessage = "YOU REMOVED ";
 
+	/**
+	 * Swipes right on dialog page, presumably to navigate back to the contact
+	 * list
+	 * 
+	 * -duplicate of #WhenINavigateBackFromDialogPage()
+	 * 
+	 * @step. ^I swipe right on dialog page$
+	 * 
+	 * @throws Throwable
+	 */
 	@When("^I swipe right on dialog page$")
 	public void WhenISwipeRightOnGroupDialogPage() throws Throwable {
 		PagesCollection.contactListPage = (ContactListPage) PagesCollection.dialogPage
 				.swipeRightCoordinates(1000);
 	}
 
+	/**
+	 * Checks to see that a group chat exists, where the name of the group chat
+	 * is the list of users
+	 * 
+	 * @step. ^I see group chat page with users (.*)$
+	 * 
+	 * @param participantNameAliases
+	 * @throws Exception
+	 */
 	@Then("^I see group chat page with users (.*)$")
 	public void ThenISeeGroupChatPage(String participantNameAliases)
 			throws Exception {
@@ -320,12 +526,29 @@ public class DialogPageSteps {
 				.isGroupChatDialogContainsNames(participantNames));
 	}
 
+	/**
+	 * -unused
+	 * 
+	 * @step. ^I see message that I left chat$
+	 * 
+	 * @throws Throwable
+	 */
 	@Then("^I see message that I left chat$")
 	public void ThenISeeMessageThatILeftChat() throws Throwable {
 		Assert.assertTrue(PagesCollection.dialogPage
 				.isMessageExists(DialogPage.I_LEFT_CHAT_MESSAGE));
 	}
 
+	/**
+	 * Used to check that the message "YOU REMOVED XYZ" from group chat appears
+	 * 
+	 * 
+	 * @step. ^I see message (.*) contact (.*) on group page$
+	 * 
+	 * @param message
+	 * @param contact
+	 * @throws Throwable
+	 */
 	@Then("^I see  message (.*) contact (.*) on group page$")
 	public void ThenISeeMessageContactOnGroupPage(String message, String contact)
 			throws Throwable {
@@ -350,6 +573,15 @@ public class DialogPageSteps {
 		Assert.assertEquals(PagesCollection.dialogPage.getChangedGroupNameMessage(), newConveresationName);
 	}
 	
+	/**
+	 * Used once to check that the last message sent is the same as what is
+	 * expected
+	 * 
+	 * 
+	 * @step. ^Last message is (.*)$
+	 * 
+	 * @param message
+	 */
 	@Then("^Last message is (.*)$")
 	public void ThenLastMessageIs(String message) {
 		Assert.assertEquals(message.toLowerCase().trim(),
