@@ -1,4 +1,4 @@
-package com.wearezeta.auto.android;
+package com.wearezeta.auto.android.steps;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -576,6 +576,12 @@ public final class AndroidLocators {
 		public static final String idPickerUserSlidingRow = LOCATORS_PACKAGE
 				+ ":id/ll__pickuser__sliding_row";
 		
+		public static final String idPickerUserHideMenu = LOCATORS_PACKAGE
+				+ ":id/hrum__pickuser__hide_menu";
+		
+		public static final String xpathPickerUserHideMenu = "//android.widget.FrameLayout[child::android.widget.LinearLayout[@resource-id='"
+				+ LOCATORS_PACKAGE + ":id/hrum__pickuser__hide_menu']]";
+		
 		public static final String idPickerRecomendedName = LOCATORS_PACKAGE
 				+ ":id/ttv_pickuser__recommended_name";
 		
