@@ -44,11 +44,7 @@ public class CallingLockscreenPage extends AndroidPage {
 
 	public CallingOverlayPage acceptCall() throws Exception {
 		refreshUITree();
-		Point coords = incomingCallChathead.getLocation();
-		Dimension elementSize = incomingCallChathead.getSize();
-		getDriver().swipe(coords.x + 30, coords.y + elementSize.height / 2,
-				coords.x + elementSize.width * 3,
-				coords.y + elementSize.height / 2, 1500);
+		DriverUtils.swipeRight(this.getDriver(), incomingCallChathead, 1500, 200, 50);
 		return new CallingOverlayPage(getDriver(), getWait());
 	}
 
