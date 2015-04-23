@@ -4,6 +4,7 @@ import java.util.logging.Level;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
+import org.json.JSONException;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriverException;
@@ -29,9 +30,10 @@ import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.WebAppConstants;
+import com.wearezeta.auto.web.common.WebAppConstants.Browser;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
-import com.wearezeta.auto.web.common.WebAppConstants.Browser;
 import com.wearezeta.auto.web.pages.InvitationCodePage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.WebPage;
@@ -64,7 +66,13 @@ public class CommonWebAppSteps {
 				"warn");
 	}
 
-	private static void setCustomChromeProfile(DesiredCapabilities capabilities)
+	private static Browser getBrowser() throws Exception {
+		return Browser.fromString(WebCommonUtils
+				.getWebAppBrowserNameFromConfig(CommonWebAppSteps.class));
+	}
+
+	private static void setCustomChromeProfile(
+			DesiredCapabilities capabilities, String browserPlatform)
 			throws Exception {
 		ChromeOptions options = new ChromeOptions();
 		// simulate a fake webcam and mic for testing
@@ -74,9 +82,10 @@ public class CommonWebAppSteps {
 		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 	}
 
-	private static void setCustomOperaProfile(DesiredCapabilities capabilities)
-			throws Exception {
-		final String userProfileRoot = WebCommonUtils.getOperaProfileRoot();
+	private static void setCustomOperaProfile(DesiredCapabilities capabilities,
+			String browserPlatform) throws Exception {
+		final String userProfileRoot = WebCommonUtils
+				.getOperaProfileRoot(browserPlatform);
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("user-data-dir=" + userProfileRoot);
 		// simulate a fake webcam and mic for testing
@@ -123,18 +132,25 @@ public class CommonWebAppSteps {
 	}
 
 	private ZetaWebAppDriver resetWebAppDriver(String url) throws Exception {
+		final Browser browser = getBrowser();
 		final DesiredCapabilities capabilities;
-		switch (WebAppExecutionContext.getCurrentBrowser()) {
+		final String webPlatformName = WebCommonUtils
+				.getPlatformNameFromConfig(WebPage.class);
+		switch (browser) {
 		case Chrome:
 			capabilities = DesiredCapabilities.chrome();
-			setCustomChromeProfile(capabilities);
-			break;
-		case Opera:
-			capabilities = DesiredCapabilities.chrome();
-			setCustomOperaProfile(capabilities);
+			if (webPlatformName.toLowerCase().contains("opera")) {
+				// This is to fix Desktop Notifications alerts appearance in
+				// Opera
+				setCustomOperaProfile(capabilities, webPlatformName);
+			} else {
+				setCustomChromeProfile(capabilities, webPlatformName);
+			}
 			break;
 		case Firefox:
 			capabilities = DesiredCapabilities.firefox();
+			// This is to fix Desktop Notifications alert appearance in
+			// Firefox
 			setCustomFirefoxProfile(capabilities);
 			break;
 		case Safari:
@@ -147,19 +163,17 @@ public class CommonWebAppSteps {
 		default:
 			throw new NotImplementedException(
 					"Incorrect browser name is set - "
-							+ WebAppExecutionContext.getCurrentBrowser()
-									.toString()
+							+ browser.toString()
 							+ ". Please choose one of the following: chrome | firefox | safari | ie");
 		}
-		if (WebAppExecutionContext.getCurrentPlatform().length() > 0) {
+		if (webPlatformName.length() > 0) {
 			// Use undocumented grid property to match platforms
 			// https://groups.google.com/forum/#!topic/selenium-users/PRsEBcbpNlM
-			capabilities.setCapability("applicationName",
-					WebAppExecutionContext.getCurrentPlatform());
+			capabilities.setCapability("applicationName", webPlatformName);
 		}
 
-		if (WebAppExecutionContext.LoggingManagement
-				.isSupportedInCurrentBrowser()) {
+		if (browser != Browser.InternetExplorer) {
+			// Logging feature crashes IE }:@
 			setExtendedLoggingLevel(capabilities,
 					WebCommonUtils.getExtendedLoggingLevelInConfig(getClass()));
 		}
@@ -191,6 +205,7 @@ public class CommonWebAppSteps {
 				.getWebAppAppiumUrlFromConfig(CommonWebAppSteps.class);
 		final String path = CommonUtils
 				.getWebAppApplicationPathFromConfig(CommonWebAppSteps.class);
+		WebAppExecutionContext.currentBrowser = getBrowser();
 		int tryNum = 1;
 		ZetaWebAppDriver webDriver;
 		WebDriverWait wait;
@@ -198,7 +213,7 @@ public class CommonWebAppSteps {
 			try {
 				webDriver = resetWebAppDriver(url);
 				wait = PlatformDrivers.createDefaultExplicitWait(webDriver);
-				if (WebAppExecutionContext.getCurrentBrowser() == Browser.InternetExplorer) {
+				if (WebAppExecutionContext.currentBrowser.equals("ie")) {
 					// http://stackoverflow.com/questions/14373371/ie-is-continously-maximizing-and-minimizing-when-test-suite-executes
 					webDriver.manage().window().setPosition(new Point(0, 0));
 					webDriver
@@ -228,6 +243,17 @@ public class CommonWebAppSteps {
 			}
 		} while (tryNum <= MAX_DRIVER_CREATION_RETRIES);
 		ZetaFormatter.setDriver(PagesCollection.invitationCodePage.getDriver());
+
+		// put AppleScript for execution to Selenium node
+		if (WebAppExecutionContext.currentBrowser == Browser.Safari) {
+			try {
+				WebAppExecutionContext.seleniumNodeIp = WebCommonUtils
+						.getNodeIp(PagesCollection.invitationCodePage
+								.getDriver());
+			} catch (JSONException e) {
+				log.debug("It seems that Safari driver is not part of a grid. Setting node IP to localhost...");
+			}
+		}
 	}
 
 	/**
@@ -239,9 +265,9 @@ public class CommonWebAppSteps {
 	 */
 	@Given("^My browser supports calling$")
 	public void MyBrowserSupportsCalling() throws Exception {
-		if (!WebAppExecutionContext.Calling.isSupportedInCurrentBrowser()) {
-			throw new PendingException("Browser "
-					+ WebAppExecutionContext.getCurrentBrowser().toString()
+		if (!WebAppConstants.Calling
+				.isSupportedIn(WebAppExecutionContext.currentBrowser)) {
+			throw new PendingException("Browser " + getBrowser()
 					+ " does not support calling.");
 		}
 	}
@@ -370,22 +396,6 @@ public class CommonWebAppSteps {
 	}
 
 	/**
-	 * Sets self user to be the current user. Avatar picture for this user is
-	 * NOT set automatically
-	 * 
-	 * @step. ^User (\\w+) is [Mm]e without avatar$
-	 * 
-	 * @param nameAlias
-	 *            user to be set as self user
-	 * 
-	 * @throws Exception
-	 */
-	@Given("^User (\\w+) is [Mm]e without avatar$")
-	public void UserXIsMeWithoutAvatar(String nameAlias) throws Exception {
-		commonSteps.UserXIsMe(nameAlias);
-	}
-
-	/**
 	 * Sends connection request by one user to another
 	 * 
 	 * @step. ^(.*) (?:has|have) sent connection request to (.*)
@@ -465,7 +475,7 @@ public class CommonWebAppSteps {
 	 * Send message to a conversation
 	 * 
 	 * @step. ^User (.*) sent message (.*) to conversation (.*)
-	 * @param userFromNameAlias
+	 * @param userToNameAlias
 	 *            user who want to mute conversation
 	 * @param message
 	 *            message to send
@@ -520,18 +530,19 @@ public class CommonWebAppSteps {
 			e.printStackTrace();
 		}
 
+		if (PagesCollection.invitationCodePage != null) {
+			PagesCollection.invitationCodePage.close();
+		}
+
 		WebPage.clearPagesCollection();
 
+		if (getBrowser() != Browser.InternetExplorer) {
+			writeBrowserLogsIntoMainLog(PlatformDrivers.getInstance()
+					.getDriver(CURRENT_PLATFORM));
+		}
+
 		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
-			try {
-				if (WebAppExecutionContext.LoggingManagement
-						.isSupportedInCurrentBrowser()) {
-					writeBrowserLogsIntoMainLog(PlatformDrivers.getInstance()
-							.getDriver(CURRENT_PLATFORM));
-				}
-			} finally {
-				PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
-			}
+			PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
 		}
 
 		commonSteps.getUserManager().resetUsers();

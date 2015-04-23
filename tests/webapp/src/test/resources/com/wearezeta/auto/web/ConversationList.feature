@@ -1,4 +1,4 @@
-Feature: Conversation List
+Feature: ConversationList
 
   @smoke @id1545
   Scenario Outline: Archive and unarchive conversation

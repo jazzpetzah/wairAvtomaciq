@@ -12,7 +12,6 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
-import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.common.WebAppConstants.Browser;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
@@ -64,7 +63,7 @@ public class LoginPage extends WebPage {
 			noSignIn = DriverUtils.waitUntilElementDissapear(driver,
 					By.xpath(WebAppLocators.LoginPage.xpathSignInButton), 60);
 		} catch (WebDriverException e) {
-			if (WebAppExecutionContext.getCurrentBrowser() == Browser.InternetExplorer) {
+			if (WebAppExecutionContext.currentBrowser == Browser.InternetExplorer) {
 				noSignIn = true;
 			} else {
 				throw e;
@@ -81,7 +80,6 @@ public class LoginPage extends WebPage {
 	}
 
 	public RegistrationPage switchToRegistrationPage() throws Exception {
-		WebCommonUtils.forceLogoutFromWebapp(getDriver(), true);
 		final By locator = By
 				.xpath(WebAppLocators.LoginPage.xpathSwitchToRegisterButtons);
 		if (DriverUtils.waitUntilElementAppears(this.getDriver(), locator, 2)) {

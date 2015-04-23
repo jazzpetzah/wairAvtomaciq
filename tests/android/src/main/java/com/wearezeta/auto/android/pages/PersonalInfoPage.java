@@ -140,13 +140,11 @@ public class PersonalInfoPage extends AndroidPage {
 		refreshUITree();
 		this.getWait().until(ExpectedConditions.visibilityOf(nameField));
 		nameField.click();
-		//Wait because of possible animation
-		Thread.sleep(2000);
 		refreshUITree();
 		DriverUtils.waitUntilElementAppears(driver,
 				AndroidLocators.PersonalInfoPage.getByForNameEditField());
 		if(!isVisible(nameEdit)) {
-			DriverUtils.mobileTapByCoordinates(getDriver(), nameField);
+			DriverUtils.mobileTapByCoordinates(getDriver(), nameEdit);
 		}
 	}
 

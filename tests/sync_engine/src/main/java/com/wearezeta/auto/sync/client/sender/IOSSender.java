@@ -1,7 +1,7 @@
 package com.wearezeta.auto.sync.client.sender;
 
+import com.wearezeta.auto.ios.DialogPageSteps;
 import com.wearezeta.auto.ios.pages.PagesCollection;
-import com.wearezeta.auto.ios.steps.DialogPageSteps;
 import com.wearezeta.auto.sync.client.platform.IOSWireInstance;
 
 public class IOSSender extends WireSender {

@@ -32,7 +32,7 @@ public class PeoplePickerPageSteps {
 	 * 
 	 * @step. ^I type (.*) in search field of People Picker$
 	 * 
-	 * @param nameOrEmail
+	 * @param name
 	 * @throws Exception
 	 */
 	@When("^I type (.*) in search field of People Picker$")

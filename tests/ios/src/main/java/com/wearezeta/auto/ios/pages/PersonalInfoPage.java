@@ -74,9 +74,6 @@ public class PersonalInfoPage extends IOSPage {
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathSettingsHelpHeader)
 	private WebElement supportWebPageHeader;
-	
-	@FindBy(how = How.NAME, using = IOSLocators.nameAccentColorPicker)
-	private WebElement accentColorPicker;
 
 	public PersonalInfoPage(ZetaIOSDriver driver, WebDriverWait wait)
 			throws Exception {
@@ -240,10 +237,6 @@ public class PersonalInfoPage extends IOSPage {
 	
 	public boolean isSupportWebPageVisible() {
 		return supportWebPageHeader.isDisplayed();
-	}
-	
-	public void changeAccentColor(){
-		accentColorPicker.click();
 	}
 
 }

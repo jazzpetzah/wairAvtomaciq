@@ -37,7 +37,7 @@ public class SettingsPage extends WebPage {
 		settingsCloseButton.click();
 	}
 
-	public enum SoundAlertsLevel {
+	public enum AlertsLevel {
 		None("None", 0), Some("Some", 1), All("All", 2);
 
 		private final String stringRepresentation;
@@ -47,7 +47,7 @@ public class SettingsPage extends WebPage {
 			return this.intRepresentation;
 		}
 
-		private SoundAlertsLevel(String stringRepresentation, int intRepresentation) {
+		private AlertsLevel(String stringRepresentation, int intRepresentation) {
 			this.stringRepresentation = stringRepresentation;
 			this.intRepresentation = intRepresentation;
 		}
@@ -57,8 +57,8 @@ public class SettingsPage extends WebPage {
 			return this.stringRepresentation;
 		}
 
-		public static SoundAlertsLevel fromString(String value) {
-			for (SoundAlertsLevel level : SoundAlertsLevel.values()) {
+		public static AlertsLevel fromString(String value) {
+			for (AlertsLevel level : AlertsLevel.values()) {
 				if (level.toString().equalsIgnoreCase(value)) {
 					return level;
 				}
@@ -67,8 +67,8 @@ public class SettingsPage extends WebPage {
 					"There is no alert level with name '%s'", value));
 		}
 
-		public static SoundAlertsLevel fromInt(int value) {
-			for (SoundAlertsLevel level : SoundAlertsLevel.values()) {
+		public static AlertsLevel fromInt(int value) {
+			for (AlertsLevel level : AlertsLevel.values()) {
 				if (level.getIntRepresenation() == value) {
 					return level;
 				}
@@ -80,21 +80,13 @@ public class SettingsPage extends WebPage {
 
 	private static final int SLIDER_CIRCLE_SIZE = 20;
 
-	public void setSoundAlertsLevel(SoundAlertsLevel newLevel) {
-		assert SoundAlertsLevel.values().length > 1;
-		if (WebAppExecutionContext.getCurrentBrowser() == Browser.Firefox) {
-			final Actions builder = new Actions(driver);
-			final int width = soundAlertsLevel.getSize().width;
-			final int height = soundAlertsLevel.getSize().height;
-			final int dstX = (width - SLIDER_CIRCLE_SIZE)
-					/ (SoundAlertsLevel.values().length - 1)
-					* newLevel.getIntRepresenation();
-			final int dstY = height / 2;
-			builder.clickAndHold(soundAlertsLevel)
-					.moveToElement(soundAlertsLevel, dstX, dstY).release()
-					.build().perform();
-		} else {
-			// Workaround for browsers, which don't support native events
+	public void setSoundAlertsLevel(AlertsLevel newLevel) {
+		assert AlertsLevel.values().length > 1;
+
+		if (WebAppExecutionContext.currentBrowser.isOneOf(new Browser[] {
+				Browser.Safari, Browser.InternetExplorer })) {
+			// Workaround for Safari and IE
+			// https://code.google.com/p/selenium/issues/detail?id=4136
 			final String[] sliderMoveCode = new String[] {
 					"$(\"" + WebAppLocators.SettingsPage.cssSoundAlertsLevel
 							+ "\").val(" + newLevel.getIntRepresenation()
@@ -102,11 +94,22 @@ public class SettingsPage extends WebPage {
 					"wire.app.view.content.self_profile.user_repository.save_sound_settings('"
 							+ newLevel.toString().toLowerCase() + "');" };
 			driver.executeScript(StringUtils.join(sliderMoveCode, "\n"));
+		} else {
+			Actions builder = new Actions(driver);
+			final int width = soundAlertsLevel.getSize().width;
+			final int height = soundAlertsLevel.getSize().height;
+			final int dstX = (width - SLIDER_CIRCLE_SIZE)
+					/ (AlertsLevel.values().length - 1)
+					* newLevel.getIntRepresenation();
+			final int dstY = height / 2;
+			builder.clickAndHold(soundAlertsLevel)
+					.moveToElement(soundAlertsLevel, dstX, dstY).release()
+					.build().perform();
 		}
 	}
 
-	public SoundAlertsLevel getSoundAlertsLevel() {
-		return SoundAlertsLevel.fromInt(Integer.parseInt(soundAlertsLevel
+	public AlertsLevel getSoundAlertsLevel() {
+		return AlertsLevel.fromInt(Integer.parseInt(soundAlertsLevel
 				.getAttribute("value")));
 	}
 

@@ -7,7 +7,7 @@ Feature: Ping
     Given Myself has group chat <GroupChatName2> with <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName1> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    And I see Contact list with my name <Name>
     When I tap on contact name <GroupChatName1>
     And I see dialog page
     And I swipe on text input
@@ -34,7 +34,7 @@ Feature: Ping
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    And I see Contact list with my name <Name>
     When I tap on contact name <GroupChatName>
     And I see dialog page
     And Contact <Contact1> ping conversation <GroupChatName>

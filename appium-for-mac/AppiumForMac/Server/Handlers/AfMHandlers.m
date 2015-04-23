@@ -1205,11 +1205,14 @@
         } else {
             CGEventRef event = CGEventCreate(NULL);
             CGPoint pt = CGEventGetLocation(event);
-            pt.x = [xoffsetStr intValue];
-            pt.y = [yoffsetStr intValue];
+            pt.x = pt.x+[xoffsetStr intValue];
+            pt.y = pt.y+[yoffsetStr intValue];
             
             CGEventRef click1_move = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, pt, kCGMouseButtonLeft);
             CGEventPost(kCGHIDEventTap, click1_move);
+            
+            [NSThread sleepForTimeInterval:1.0];
+ //           CFRelease(click1_move);
         }
     } else {
         PFUIElement *element = [session.elements objectForKey:elementId];
@@ -1272,18 +1275,7 @@ BOOL leftMouseButtonPressed = NO;
 -(AppiumMacHTTPJSONResponse*) postClick:(NSString*)path data:(NSData*)postData
 {
     NSString *sessionId = [Utility getSessionIDFromPath:path];
-    //    NSDictionary *postParams = [self dictionaryFromPostData:postData];
-    
-    CGEventRef event = CGEventCreate(NULL);
-    CGPoint pt = CGEventGetLocation(event);
-    NSLog(@"Click button on: %f,%f", pt.x, pt.y);
-    CGEventRef click1_down = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, pt, kCGMouseButtonLeft);
-    CGEventRef click1_up = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseUp, pt, kCGMouseButtonLeft);
-    
-    CGEventPost(kCGHIDEventTap, click1_down);
-    CGEventPost(kCGHIDEventTap, click1_up);
-
-    return [self respondWithJson:nil status:kAfMStatusCodeSuccess session: sessionId];
+    return [self respondWithJsonError:kAfMStatusCodeUnknownError session:sessionId];
 }
 
 // /session/:sessionId/buttondown

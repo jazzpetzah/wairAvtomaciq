@@ -1,7 +1,5 @@
 package com.wearezeta.auto.osx.pages;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,15 +19,12 @@ import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.common.base.Function;
-import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.common.OSXConstants;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.common.ProblemReportPage;
-import com.wearezeta.auto.osx.util.AccentColorUtil;
 import com.wearezeta.auto.osx.util.NSPoint;
 
 public class ContactListPage extends MainWirePage {
@@ -388,12 +383,6 @@ public class ContactListPage extends MainWirePage {
 					.getAttribute(OSXConstants.Attributes.AXVALUE));
 		}
 		return contacts;
-	}
-
-	public AccentColor selfNameEntryTextAccentColor() throws IOException {
-		BufferedImage selfNameScreen = OSXCommonUtils.takeElementScreenshot(
-				selfProfileCLEntry, this.getDriver());
-		return AccentColorUtil.calculateAccentColorForForeground(selfNameScreen);
 	}
 
 	public void sendProblemReportIfAppears(ProblemReportPage reportPage)

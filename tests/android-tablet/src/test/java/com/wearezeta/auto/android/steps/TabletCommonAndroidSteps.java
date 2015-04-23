@@ -5,6 +5,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.android.pages.TabletLoginPage;
 import com.wearezeta.auto.android.pages.TabletPagesCollection;
+import com.wearezeta.auto.android.CommonAndroidSteps;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ZetaFormatter;

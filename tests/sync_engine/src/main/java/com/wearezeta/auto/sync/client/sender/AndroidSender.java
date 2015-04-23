@@ -1,6 +1,6 @@
 package com.wearezeta.auto.sync.client.sender;
 
-import com.wearezeta.auto.android.steps.DialogPageSteps;
+import com.wearezeta.auto.android.DialogPageSteps;
 import com.wearezeta.auto.sync.client.platform.AndroidWireInstance;
 
 public class AndroidSender extends WireSender {

@@ -40,19 +40,11 @@ public class AsyncProcess {
 			public void run() {
 				do {
 					try {
-						if (reader.ready()) {
-							final String logLine = reader.readLine();
-							if (logLine != null) {
-								log.debug(String.format("%s%s", logPrefix,
-										logLine));
-							}
+						final String logLine = reader.readLine();
+						if (logLine != null) {
+							log.debug(String.format("%s%s", logPrefix, logLine));
 						}
 					} catch (IOException e) {
-						break;
-					}
-					try {
-						Thread.sleep(IS_RUNNING_CHECK_INTERVAL);
-					} catch (InterruptedException e) {
 						break;
 					}
 				} while (!this.isInterrupted());

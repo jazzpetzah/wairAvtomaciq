@@ -6,7 +6,7 @@ import com.wearezeta.auto.web.pages.SelfPictureUploadPage;
 import cucumber.api.java.en.And;
 
 public class SelfPictureUploadPageSteps {
-	private static final int VISIBILITY_TIMEOUT = 10; // seconds
+	private static final int VISIBILITY_TIMEOUT = 5; // seconds
 
 	/**
 	 * Verify that Self Picture Upload dialog is visible
@@ -22,7 +22,7 @@ public class SelfPictureUploadPageSteps {
 					PagesCollection.loginPage.getWait());
 		}
 		PagesCollection.selfPictureUploadPage
-				.waitUntilButtonsAreClickable(VISIBILITY_TIMEOUT);
+				.waitUntilVisible(VISIBILITY_TIMEOUT);
 	}
 
 	/**
@@ -35,7 +35,7 @@ public class SelfPictureUploadPageSteps {
 	public void IDontSeeSelfPictureUpload() throws Exception {
 		try {
 			PagesCollection.selfPictureUploadPage
-					.waitUntilButtonsAreClickable(VISIBILITY_TIMEOUT);
+					.waitUntilVisible(VISIBILITY_TIMEOUT);
 		} catch (AssertionError e) {
 			// Everything is ok, the page is not visible
 			return;
@@ -51,7 +51,7 @@ public class SelfPictureUploadPageSteps {
 	 * 
 	 * @step. ^I choose (.*) as my self picture on Self Picture Upload dialog$
 	 * 
-	 * @param pictureName
+	 * @param name
 	 *            existing picture name
 	 * 
 	 * @throws Exception
@@ -65,6 +65,9 @@ public class SelfPictureUploadPageSteps {
 	 * Confirm picture upload
 	 * 
 	 * @step. ^I confirm picture selection on Self Picture Upload dialog$
+	 * 
+	 * @param name
+	 *            existing picture name
 	 * 
 	 * @throws Exception
 	 */

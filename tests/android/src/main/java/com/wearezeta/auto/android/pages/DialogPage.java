@@ -173,6 +173,10 @@ public class DialogPage extends AndroidPage {
 		cursorInput.sendKeys("\\n");
 	}
 
+	public void tapOnCenterOfScreen() {
+		DriverUtils.genericTap(this.getDriver());
+	}
+
 	public void multiTapOnCursorInput() throws InterruptedException {
 		DriverUtils.androidMultiTap(this.getDriver(), cursorInput, 2, 0.2);
 	}

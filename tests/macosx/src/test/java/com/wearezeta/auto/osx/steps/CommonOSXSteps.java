@@ -329,29 +329,6 @@ public class CommonOSXSteps {
 	}
 
 	/**
-	 * Changes accent color of specified user to one from the list using REST
-	 * API
-	 * 
-	 * @step. ^User (\\w+) changes accent color to
-	 *        (StrongBlue|StrongLimeGreen|BrightYellow
-	 *        |VividRed|BrightOrange|SoftPink|Violet)$
-	 * 
-	 * @param userNameAlias
-	 *            user name
-	 * @param newColor
-	 *            one of possible accent colors:
-	 *            StrongBlue|StrongLimeGreen|BrightYellow
-	 *            |VividRed|BrightOrange|SoftPink|Violet
-	 * 
-	 * @throws Exception
-	 */
-	@When("^User (\\w+) changes accent color to (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet)$")
-	public void IChangeAccentColor(String userNameAlias, String newColor)
-			throws Exception {
-		commonSteps.IChangeUserAccentColor(userNameAlias, newColor);
-	}
-
-	/**
 	 * Stores screenshot of the whole screen for usage during execution by
 	 * specified alias
 	 * 

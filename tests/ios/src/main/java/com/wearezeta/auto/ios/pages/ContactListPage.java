@@ -32,7 +32,6 @@ public class ContactListPage extends IOSPage {
 	private final double MIN_ACCEPTABLE_IMAGE_PING_VALUE = 0.99;
 	
 	private final double MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE =0.80;
-	private final double MIN_ACCEPTABLE_IMAGE_ACCENTCOLOR_VALUE = 0.99;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathNameContactList)
 	private List<WebElement> contactListNames;
@@ -393,35 +392,7 @@ public class ContactListPage extends IOSPage {
 		DriverUtils.clickSilenceConversationButton(this.getDriver(), contact);
 	}
 
-	public boolean isConversationSilenced(String conversation, boolean isSilenced) throws Exception {
-		String deviceType = CommonUtils.getDeviceName(this.getClass());
-		BufferedImage silencedConversation = null;
-		BufferedImage referenceImage = null;
-		WebElement element = findCellInContactList(conversation);
-		silencedConversation = CommonUtils.getElementScreenshot(element,
-				this.getDriver(), CommonUtils.getDeviceName(this.getClass()));
-		if (deviceType.equals("iPhone 6 Plus") && isSilenced) {
-			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "silenceiPhone6plus.png");
-		} else if (deviceType.equals("iPhone 6 Plus") && !isSilenced) {
-			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "verifyUnsilenceIphone6plus.png");
-		} else if (deviceType.equals("iPhone 6") && isSilenced){
-			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "silenceTestIphone6.png");
-		} else if (deviceType.equals("iPhone 6") && !isSilenced){
-			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "verifyUnsilenceTestIphone6.png");
-		}
-		double score = ImageUtil.getOverlapScore(silencedConversation,
-				referenceImage, 0);
-		if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
-			return false;
-		}
-		return true;
-	}
-	
-	public boolean isConversationSilencedBefore(String conversation) throws Exception {
+	public boolean isConversationSilenced(String conversation) throws Exception {
 		String deviceType = CommonUtils.getDeviceName(this.getClass());
 		BufferedImage silencedConversation = null;
 		BufferedImage referenceImage = null;
@@ -430,10 +401,10 @@ public class ContactListPage extends IOSPage {
 				this.getDriver(), CommonUtils.getDeviceName(this.getClass()));
 		if (deviceType.equals("iPhone 6 Plus")) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "unsilenceTestiPhone6plus.png");
+					.getImagesPath() + "silenceiPhone6plus.png");
 		} else {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "unsilenceTestiPhone6.png");
+					.getImagesPath() + "silenceVerification.png");
 		}
 		double score = ImageUtil.getOverlapScore(silencedConversation,
 				referenceImage, 0);
@@ -460,17 +431,17 @@ public class ContactListPage extends IOSPage {
 				contact.getSize().width / 4, contact.getSize().height * 2);
 		if (visible == true && bigUnreadDot == true) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "new_unreadDot.png");
+					.getImagesPath() + "unreadDot.png");
 			score = ImageUtil.getOverlapScore(referenceImage, unreadDot,
 					ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 		} else if (visible == true && bigUnreadDot == false) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "new_unreadDot_small.png");
+					.getImagesPath() + "unreadDot_small.png");
 			score = ImageUtil.getOverlapScore(referenceImage, unreadDot,
 					ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 		} else if (visible == false && bigUnreadDot == false) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "new_noUnreadDot.png");
+					.getImagesPath() + "noUnreadDot.png");
 			score = ImageUtil.getOverlapScore(referenceImage, unreadDot,
 					ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 		}
@@ -551,23 +522,6 @@ public class ContactListPage extends IOSPage {
 			
 		}
 		return true;
-	}
-	
-	public boolean changeOfAccentColorIsVisible(String name) throws IOException{
-		BufferedImage changedAccentColorImage = null;
-		BufferedImage referenceImage = null;
-		double score = 0;
-		WebElement el = driver.findElementByXPath(String.format(IOSLocators.xpathSelfName, name));
-		changedAccentColorImage = getElementScreenshot(el);
-		referenceImage = ImageUtil.readImageFromFile(IOSPage
-				.getImagesPath() + "changedAccentColor.png");
-		score = ImageUtil.getOverlapScore(referenceImage,
-				changedAccentColorImage,
-				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-		if (score >= MIN_ACCEPTABLE_IMAGE_ACCENTCOLOR_VALUE) {
-			return true;
-		}
-		return false;
 	}
 
 }

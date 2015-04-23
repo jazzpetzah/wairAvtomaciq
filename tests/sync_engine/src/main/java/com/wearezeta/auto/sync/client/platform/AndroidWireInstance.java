@@ -5,10 +5,10 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.wearezeta.auto.android.steps.CommonAndroidSteps;
-import com.wearezeta.auto.android.steps.ContactListPageSteps;
-import com.wearezeta.auto.android.steps.DialogPageSteps;
-import com.wearezeta.auto.android.steps.LoginPageSteps;
+import com.wearezeta.auto.android.CommonAndroidSteps;
+import com.wearezeta.auto.android.ContactListPageSteps;
+import com.wearezeta.auto.android.DialogPageSteps;
+import com.wearezeta.auto.android.LoginPageSteps;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.LoginPage;

@@ -5,7 +5,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    And I see Contact list with my name <Name>
     When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -29,9 +29,9 @@ Feature: Connect
     Given <Contact1> is connected to <Name>
     Given <Contact> has sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
-    When I wait for 10 seconds
-    And I tap on contact name <WaitingMess>
+    And I see Contact list with my name <Name>
+    And I wait for 10 seconds
+    When I tap on contact name <WaitingMess>
     And I see connect to <Contact> dialog
     And I Connect with contact by pressing button
     Then I see Connect to <Contact> Dialog page
@@ -45,9 +45,9 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
-    Given I do not see Contact list with name <WaitingMess>
-    Given <Contact> has sent connection request to <Name>
+    And I see Contact list with my name <Name>
+    And I do not see Contact list with name <WaitingMess>
+    And <Contact> has sent connection request to <Name>
     When I tap on contact name <WaitingMess>
     And I see connect to <Contact> dialog
     And I press Ignore connect button
@@ -63,10 +63,10 @@ Feature: Connect
     Given There are 5 users where <Name> is me
     Given <Contact1> has sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
-    Given <Contact2> has sent connection request to <Name>
-    When I wait for 2 seconds
-    Then I see contact list loaded with User name <WaitingMess2>
+    And I see Contact list with my name <Name>
+    And <Contact2> has sent connection request to <Name>
+    And I wait for 2 seconds
+    And I see contact list loaded with User name <WaitingMess2>
     When I tap on contact name <WaitingMess2>
     And I press Ignore connect button
     And I navigate back from connect page
@@ -99,8 +99,8 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> has sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
-    Given <Contact2> has sent connection request to <Name>
+    And I see Contact list with my name <Name>
+    And <Contact2> has sent connection request to <Name>
     When I see contact list loaded with User name <WaitingMess1>
     And I swipe down contact list
     And I see People picker page
@@ -122,9 +122,9 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    And I see Contact list with my name <Name>
     And Contact name <WaitingMess> is not in list
-    Given <Contact> has sent connection request to <Name>
+    And <Contact> has sent connection request to <Name>
     When I see contact list loaded with User name <WaitingMess>
     And I tap on contact name <WaitingMess>
     And I press Ignore connect button
@@ -149,7 +149,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> has sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    And I see Contact list with my name <Name>
     When I see contact list loaded with User name <WaitingMess>
     And I swipe down contact list
     And I see People picker page
@@ -170,10 +170,10 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
-    When I swipe down contact list
+    And I see Contact list with my name <Name>
+    And I swipe down contact list
     And I see People picker page
-    And I tap on Search input on People picker page
+    When I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
@@ -193,10 +193,10 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
-    When I swipe down contact list
+    And I see Contact list with my name <Name>
+    And I swipe down contact list
     And I see People picker page
-    And I tap on Search input on People picker page
+    When I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
@@ -214,8 +214,8 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
-    When I swipe down contact list
+    And I see Contact list with my name <Name>
+    And I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
@@ -331,7 +331,7 @@ Feature: Connect
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe up on dialog page
-    And I press options menu button
+    And I press Right conversation button
     And I Press Block button
     #And I confirm block
     Then I do not see Contact list with name <Contact>
@@ -388,10 +388,10 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
-    When User <Contact> blocks user <Name>
+    And I see Contact list with my name <Name>
+    And User <Contact> blocks user <Name>
     And I wait for 120 seconds
-    And I swipe down contact list
+    When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
@@ -431,7 +431,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    And I see Contact list with my name <Name>
     When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -456,7 +456,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
     And I input <Message> message and send it
@@ -477,11 +477,8 @@ Feature: Connect
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
+    And I wait for 90 seconds
     When I swipe down contact list
-    And I see People picker page
-    And I press Clear button
-    And I wait for 30 seconds
-    And I swipe down contact list
     And I see People picker page
     And I press + button on a random Connect
   	And I press Clear button

@@ -18,8 +18,6 @@ public class LoginPageSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-	private static final int MAX_LOGIN_RETRIES = 3;
-
 	/**
 	 * Enters user email and password into corresponding fields on sign in
 	 * screen then taps "Sign In" button
@@ -59,26 +57,10 @@ public class LoginPageSteps {
 		invitationPageSteps.ISeeInvitationPage();
 		invitationPageSteps.IEnterInvitationCode();
 
-		// FIXME: Try to reenter login data if signing in fails to
-		// workaround Amazon page load issues
-		int ntry = 0;
-		while (ntry < MAX_LOGIN_RETRIES) {
-			PagesCollection.registrationPage.switchToLoginPage();
-			this.IEnterEmail(login);
-			this.IEnterPassword(password);
-			try {
-				this.IPressSignInButton();
-				break;
-			} catch (AssertionError e) {
-				log.error(String.format(
-						"Failed to sign in. Retrying (%s of %s)...", ntry + 1,
-						MAX_LOGIN_RETRIES));
-				if (ntry + 1 >= MAX_LOGIN_RETRIES) {
-					throw e;
-				}
-			}
-			ntry++;
-		}
+		PagesCollection.registrationPage.switchToLoginPage();
+		this.IEnterEmail(login);
+		this.IEnterPassword(password);
+		this.IPressSignInButton();
 	}
 
 	/**
@@ -95,9 +77,7 @@ public class LoginPageSteps {
 		PagesCollection.contactListPage = PagesCollection.loginPage
 				.clickSignInButton();
 
-		Assert.assertTrue(
-				"Sign In button/login progress spinner are still visible",
-				PagesCollection.loginPage.waitForLogin());
+		Assert.assertTrue(PagesCollection.loginPage.waitForLogin());
 	}
 
 	/**

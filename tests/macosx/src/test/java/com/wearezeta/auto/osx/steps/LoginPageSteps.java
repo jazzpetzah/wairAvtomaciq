@@ -9,7 +9,6 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.osx.common.InputMethodEnum;
@@ -60,19 +59,6 @@ public class LoginPageSteps {
 		Assert.assertTrue(String.format(
 				"Failed to sign in using email %s and password %s", login,
 				password), PagesCollection.loginPage.waitForLogin());
-
-		ClientUser user = null;
-		try {
-			user = usrMgr.findUserByNameOrNameAlias(login);
-		} catch (NoSuchUserException e) {
-			try {
-				user = usrMgr.findUserByEmailOrEmailAlias(login);
-			} catch (NoSuchUserException ex) {
-			}
-		}
-		if (user != null) {
-			usrMgr.setSelfUser(user);
-		}
 	}
 
 	/**
