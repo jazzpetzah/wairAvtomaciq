@@ -13,9 +13,8 @@ import cucumber.api.java.en.When;
 
 public class PeoplePickerPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-    public static String randomConnectName = "";
-    private static WebElement randomConnect;
-
+	public static String randomConnectName = "";
+	private static WebElement randomConnect;
 
 	/**
 	 * Checks to see that the people picker page (search view) is visible
@@ -139,7 +138,8 @@ public class PeoplePickerPageSteps {
 	/**
 	 * Inputs a part of a username into the search field.
 	 * 
-	 * @step. ^I input in search field part (.*) of user name to connect to (.*)$
+	 * @step. ^I input in search field part (.*) of user name to connect to
+	 *        (.*)$
 	 * 
 	 * @param part
 	 * @param contact
@@ -159,7 +159,7 @@ public class PeoplePickerPageSteps {
 
 	/**
 	 * -duplicate of WhenIInputInPeoplePickerSearchFieldUserName(String)
-	 *  
+	 * 
 	 * @step. ^I input in search field user name to connect to (.*)$
 	 * 
 	 */
@@ -348,30 +348,63 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I press \\+ button on a random Connect$")
 	public void WhenIPressPlusButtonOnARandomConnect() {
-		randomConnect = PagesCollection.peoplePickerPage.selectRandomConnect(); 
-		randomConnectName = PagesCollection.peoplePickerPage.pressPlusOnContact(randomConnect);
+		randomConnect = PagesCollection.peoplePickerPage.selectRandomConnect();
+		randomConnectName = PagesCollection.peoplePickerPage
+				.pressPlusOnContact(randomConnect);
 	}
-	
-	@When("^I swipe on random connect$") 
+
+	/**
+	 * Swipe on Random contact from PYMK
+	 * 
+	 * @step. ^I swipe on random connect$
+	 * 
+	 */
+	@When("^I swipe on random connect$")
 	public void WhenISwipeOnRandomConnect() {
-		randomConnect = PagesCollection.peoplePickerPage.selectRandomConnect(); 
-		randomConnectName = PagesCollection.peoplePickerPage.swipePYMKContact(randomConnect);
+		randomConnect = PagesCollection.peoplePickerPage.selectRandomConnect();
+		randomConnectName = PagesCollection.peoplePickerPage
+				.swipePYMKContact(randomConnect);
 	}
-	
-	@When("^I click on PYMK hide button$") 
+
+	/**
+	 * Hide random connect by swipe (not the same as
+	 * "Swipe on Random contact from PYMK")
+	 * 
+	 * @step. ^I hide random connect by swipe$
+	 * 
+	 */
+	@When("^I hide random connect by swipe$")
+	public void WhenIHideRandomConnectBySwipe() {
+		PagesCollection.peoplePickerPage.swipeRightPYMKHideMenu();
+	}
+
+	/**
+	 * Hide random connect by Hide button
+	 * 
+	 * @step. ^I click on PYMK hide button$
+	 * 
+	 */
+	@When("^I click on PYMK hide button$")
 	public void WhenIClickOnPYMKHideButton() {
-		PagesCollection.peoplePickerPage.clickPYMKHideButton(); 
+		PagesCollection.peoplePickerPage.clickPYMKHideButton();
 	}
-	
+
+	/**
+	 * Verify that random connect is not visible
+	 * 
+	 * @step. ^I do not see random connect$
+	 * 
+	 */
 	@Then("^I do not see random connect$")
-		public void ThenIDonotSeeRandomConnect() {
-			Assert.assertFalse(PagesCollection.peoplePickerPage.pYMKcontactIsVisible(randomConnectName,randomConnect));
+	public void ThenIDonotSeeRandomConnect() {
+		Assert.assertFalse(PagesCollection.peoplePickerPage
+				.pYMKcontactIsVisible(randomConnectName, randomConnect));
 	}
-	
+
 	/**
 	 * -duplicate of WhenISeeUserFoundOnPeoplePickerPage(String)
 	 * 
-	 * @step. ^I see user (.*)  in People picker$
+	 * @step. ^I see user (.*) in People picker$
 	 * 
 	 * @param contact
 	 * @throws Throwable
@@ -386,7 +419,7 @@ public class PeoplePickerPageSteps {
 	/**
 	 * Looks for a group chat in the people picker search view
 	 * 
-	 * @step. ^I see group (.*)  in People picker$
+	 * @step. ^I see group (.*) in People picker$
 	 * 
 	 * @param contact
 	 * @throws Throwable
