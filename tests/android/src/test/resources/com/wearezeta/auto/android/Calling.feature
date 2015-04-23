@@ -80,3 +80,16 @@ Feature: Calling
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | autocall    |
+
+  @staging @id347
+  Scenario Outline: Send text, image and knock while in the call with same user
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given I Sign in using login <Login> and password <Password>
+    Given I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And <Contact> calls me using <CallBackend>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name | autocall    |
