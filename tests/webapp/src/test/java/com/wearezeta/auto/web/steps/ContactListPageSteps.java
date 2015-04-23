@@ -356,18 +356,18 @@ public class ContactListPageSteps {
 	 * @step. ^I( do not)? see Archive button at the bottom of my Contact list$
 	 * 
 	 * @param shouldNotBeVisible
-	 *            is set to true if "do not" part exists in the step
+	 *            is set to null if "do not" part does not exist in the step
 	 * @throws Exception
 	 */
 	@Then("^I( do not)? see Archive button at the bottom of my Contact list$")
-	public void IVerifyArchiveButtonVisibility(boolean shouldNotBeVisible)
+	public void IVerifyArchiveButtonVisibility(String shouldNotBeVisible)
 			throws Exception {
-		if (shouldNotBeVisible) {
-			PagesCollection.contactListPage
-					.waitUntilArhiveButtonIsNotVisible(ARCHIVE_BTN_VISILITY_TIMEOUT);
-		} else {
+		if (shouldNotBeVisible == null) {
 			PagesCollection.contactListPage
 					.waitUntilArhiveButtonIsVisible(ARCHIVE_BTN_VISILITY_TIMEOUT);
+		} else {
+			PagesCollection.contactListPage
+					.waitUntilArhiveButtonIsNotVisible(ARCHIVE_BTN_VISILITY_TIMEOUT);
 		}
 	}
 }
