@@ -35,22 +35,20 @@ public class SingleUserPopoverPageSteps {
 	@Then("^I do not see Single User Profile popover$")
 	public void IDontSeeSingleUserPopup() throws Exception {
 		Assert.assertFalse("Single User Profile is still visible",
-			PagesCollection.popoverPage.isVisible());
+				PagesCollection.popoverPage.isVisible());
 	}
 
 	/**
-	 * Creates conversation with selected users from Single User Profile
-	 * popover
+	 * Creates conversation with selected users from Single User Profile popover
 	 *
-	 * @step. ^I choose to create conversation from Single User Profile
-	 * popover$
+	 * @step. ^I choose to create conversation from Single User Profile popover$
 	 * @throws Exception
 	 */
 	@When("^I choose to create conversation from Single User Profile popover$")
 	public void IChooseToCreateConversationFromSingleUserPopover()
-		throws Exception {
+			throws Exception {
 		((SingleUserPopoverContainer) PagesCollection.popoverPage)
-			.clickCreateConversation();
+				.clickCreateConversation();
 	}
 
 	/**
@@ -63,14 +61,14 @@ public class SingleUserPopoverPageSteps {
 	@When("^I click Add People button on Single User Profile popover$")
 	public void IClickAddPeopleButton() throws Exception {
 		((SingleUserPopoverContainer) PagesCollection.popoverPage)
-			.clickAddPeopleButton();
+				.clickAddPeopleButton();
 	}
 
 	/**
 	 * Input user name in search field on Single User Profile popover
 	 *
 	 * @step. ^I input user name (.*) in search field on Single User Profile
-	 * popover$
+	 *        popover$
 	 *
 	 * @param name
 	 * @throws Exception
@@ -79,14 +77,13 @@ public class SingleUserPopoverPageSteps {
 	public void ISearchForUser(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		((SingleUserPopoverContainer) PagesCollection.popoverPage)
-			.searchForUser(name);
+				.searchForUser(name);
 	}
 
 	/**
 	 * Select user found in search results
 	 *
-	 * @step. ^I select (.*) from Single User Profile popover search
-	 * results$
+	 * @step. ^I select (.*) from Single User Profile popover search results$
 	 *
 	 * @param user
 	 * @throws Exception
@@ -95,7 +92,7 @@ public class SingleUserPopoverPageSteps {
 	public void ISelectUserFromSearchResults(String user) throws Exception {
 		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
 		((SingleUserPopoverContainer) PagesCollection.popoverPage)
-			.selectUserFromSearchResult(user);
+				.selectUserFromSearchResult(user);
 	}
 
 	/**
@@ -103,14 +100,15 @@ public class SingleUserPopoverPageSteps {
 	 *
 	 * @step. ^I see username (.*) on Single User Profile popover$
 	 *
-	 * @param name user name string
+	 * @param name
+	 *            user name string
 	 */
 	@When("^I see username (.*) on Single User Profile popover$")
 	public void IseeUserNameOnUserProfilePage(String name) {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		Assert.assertEquals(name,
-			((SingleUserPopoverContainer) PagesCollection.popoverPage)
-			.getUserName());
+				((SingleUserPopoverContainer) PagesCollection.popoverPage)
+						.getUserName());
 	}
 
 	/**
@@ -122,7 +120,7 @@ public class SingleUserPopoverPageSteps {
 	@When("^I see an avatar on Single User Profile popover$")
 	public void IseeAvatarOnUserProfilePage() {
 		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
-			.isAvatarVisible());
+				.isAvatarVisible());
 	}
 
 	/**
@@ -134,7 +132,7 @@ public class SingleUserPopoverPageSteps {
 	@Then("^I see Add people button on Single User Profile popover$")
 	public void ISeeAddButton() {
 		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
-			.isAddButtonVisible());
+				.isAddButtonVisible());
 	}
 
 	/**
@@ -146,7 +144,7 @@ public class SingleUserPopoverPageSteps {
 	@Then("^I see Block button on Single User Profile popover$")
 	public void ISeeBlockButton() {
 		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
-			.isBlockButtonVisible());
+				.isBlockButtonVisible());
 	}
 
 	/**
@@ -158,7 +156,7 @@ public class SingleUserPopoverPageSteps {
 	@Then("^I click Block button on Single User Profile popover$")
 	public void IClickBlockButton() {
 		((SingleUserPopoverContainer) PagesCollection.popoverPage)
-			.clickBlockButton();
+				.clickBlockButton();
 	}
 
 	/**
@@ -170,12 +168,11 @@ public class SingleUserPopoverPageSteps {
 	@And("^I confirm user blocking on Single User Profile popover$")
 	public void IConfirmBlockUser() {
 		((SingleUserPopoverContainer) PagesCollection.popoverPage)
-			.clickConfirmButton();
+				.clickConfirmButton();
 	}
 
 	/**
-	 * Verifies whether Remove button is visible on Single Participant
-	 * popover
+	 * Verifies whether Remove button is visible on Single Participant popover
 	 *
 	 * @step. ^I see Remove button on Single Participant popover$
 	 *
@@ -184,7 +181,7 @@ public class SingleUserPopoverPageSteps {
 	@When("^I see Remove button on Single Participant popover$")
 	public void ISeeRemoveUserFromGroupChat() throws Exception {
 		((SingleUserPopoverContainer) PagesCollection.popoverPage)
-			.isRemoveButtonVisible();
+				.isRemoveButtonVisible();
 	}
 
 	/**
@@ -197,7 +194,7 @@ public class SingleUserPopoverPageSteps {
 	@Then("^I see Mail on Single Participant popover$")
 	public void ISeeMailOfUser() throws Exception {
 		Assert.assertFalse(((SingleUserPopoverContainer) PagesCollection.popoverPage)
-			.getUserMail().isEmpty());
+				.getUserMail().isEmpty());
 	}
 
 	/**
@@ -210,12 +207,11 @@ public class SingleUserPopoverPageSteps {
 	@Then("^I do not see Mail on Single Participant popover$")
 	public void IDoNotSeeMailOfUser() throws Exception {
 		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
-			.getUserMail().isEmpty());
+				.getUserMail().isEmpty());
 	}
 
 	/**
-	 * Verifies whether Pending button is visible on Single Participant
-	 * popover
+	 * Verifies whether Pending button is visible on Single Participant popover
 	 *
 	 * @step. ^I see Pending button on Single Participant popover$
 	 *
@@ -224,14 +220,14 @@ public class SingleUserPopoverPageSteps {
 	@Then("^I see Pending button on Single Participant popover$")
 	public void ISeePendingButton() throws Exception {
 		Assert.assertTrue(
-			"Pending button is not visible on Single Participant popover",
-			((SingleUserPopoverContainer) PagesCollection.popoverPage)
-			.isPendingButtonVisible());
+				"Pending button is not visible on Single Participant popover",
+				((SingleUserPopoverContainer) PagesCollection.popoverPage)
+						.isPendingButtonVisible());
 		Assert.assertTrue(
-			"Pending button is not visible on Single Participant popover",
-			((SingleUserPopoverContainer) PagesCollection.popoverPage)
-			.getPendingButtonCaption().trim()
-			.equalsIgnoreCase("Pending"));
+				"Pending button is not visible on Single Participant popover",
+				((SingleUserPopoverContainer) PagesCollection.popoverPage)
+						.getPendingButtonCaption().trim()
+						.equalsIgnoreCase("Pending"));
 	}
 
 	/**
@@ -244,7 +240,7 @@ public class SingleUserPopoverPageSteps {
 	@Then("^I click Pending button on Single Participant popover$")
 	public void IClickPendingButton() throws Exception {
 		((SingleUserPopoverContainer) PagesCollection.popoverPage)
-			.clickPendingButton();
+				.clickPendingButton();
 	}
 
 	/**
@@ -257,6 +253,42 @@ public class SingleUserPopoverPageSteps {
 	@Then("^I see Pending text box on Single Participant popover$")
 	public void ISeePendingTextBox() throws Exception {
 		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
-			.isPendingTextBoxVisible());
+				.isPendingTextBoxVisible());
+	}
+
+	/**
+	 * Verifies whether back button tool tip is correct or not.
+	 *
+	 * @step. ^I see correct back button tool tip$
+	 *
+	 */
+	@Then("^I see correct back button tool tip$")
+	public void ThenISeeCorrectBackButtonToolTip() {
+		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
+				.isBackButtonToolTipCorrect());
+	}
+
+	/**
+	 * Verifies whether pending button tool tip is correct or not.
+	 *
+	 * @step. ^I see correct pending button tool tip$
+	 *
+	 */
+	@Then("^I see correct pending button tool tip$")
+	public void ThenISeeCorrectPendingButtonToolTip() {
+		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
+				.isPendingButtonToolTipCorrect());
+	}
+
+	/**
+	 * Verifies whether remove from group button tool tip is correct or not.
+	 *
+	 * @step. ^I see correct remove from group button tool tip$
+	 *
+	 */
+	@Then("^I see correct remove from group button tool tip$")
+	public void ThenISeeCorrectRemoveFromGroupChatButtonToolTip() {
+		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
+				.isRemoveFromGroupChatButtonToolTipCorrect());
 	}
 }

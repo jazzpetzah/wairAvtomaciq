@@ -7,6 +7,7 @@ import com.wearezeta.auto.web.common.WebAppConstants.Browser;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
+import static com.wearezeta.auto.web.locators.WebAppLocators.Common.TITLE_ATTRIBUTE_LOCATOR;
 import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.PeoplePopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
@@ -25,7 +26,9 @@ public class ConversationPage extends WebPage {
 
 	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(ConversationPage.class
-		.getSimpleName());
+			.getSimpleName());
+
+	private static final String TOOLTIP_PEOPLE = "People";
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathImageMessageEntry)
 	private List<WebElement> imageMessageEntries;
@@ -35,9 +38,6 @@ public class ConversationPage extends WebPage {
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathShowParticipantsButton)
 	private WebElement showParticipants;
-
-	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathShowParticipantsButtonToolTip)
-	private WebElement peopleButtonToolTip;
 
 	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssSendImageInput)
 	private WebElement imagePathInput;
@@ -52,7 +52,7 @@ public class ConversationPage extends WebPage {
 	private WebElement pingMessage;
 
 	public ConversationPage(ZetaWebAppDriver driver, WebDriverWait wait)
-		throws Exception {
+			throws Exception {
 		super(driver, wait);
 	}
 
@@ -66,31 +66,31 @@ public class ConversationPage extends WebPage {
 
 	public boolean isActionMessageSent(final String message) throws Exception {
 		final By locator = By
-			.xpath(WebAppLocators.ConversationPage.xpathActionMessageEntries);
+				.xpath(WebAppLocators.ConversationPage.xpathActionMessageEntries);
 		assert DriverUtils.waitUntilElementAppears(this.getDriver(), locator);
 		final List<WebElement> actionMessages = this.getDriver()
-			.findElements(locator).stream().filter(x -> x.isDisplayed())
-			.collect(Collectors.toList());
+				.findElements(locator).stream().filter(x -> x.isDisplayed())
+				.collect(Collectors.toList());
 		// Get the most recent action message only
 		final String actionMessageInUI = actionMessages.get(
-			actionMessages.size() - 1).getText();
+				actionMessages.size() - 1).getText();
 		return actionMessageInUI.toUpperCase().contains(message.toUpperCase());
 	}
 
 	public boolean isMessageSent(String message) throws Exception {
 		final By locator = By
-			.xpath(WebAppLocators.ConversationPage.xpathMessageEntryByText
-				.apply(message));
+				.xpath(WebAppLocators.ConversationPage.xpathMessageEntryByText
+						.apply(message));
 		return DriverUtils.isElementDisplayed(driver, locator, 5);
 	}
 
 	public PeoplePopoverContainer clickPeopleButton(boolean isGroup)
-		throws Exception {
+			throws Exception {
 		DriverUtils.waitUntilElementClickable(driver, showParticipants);
 		if (WebAppExecutionContext.currentBrowser == Browser.InternetExplorer) {
 			driver.executeScript(String
-				.format("$('.%s').click();",
-					WebAppLocators.ConversationPage.classNameShowParticipantsButton));
+					.format("$('.%s').click();",
+							WebAppLocators.ConversationPage.classNameShowParticipantsButton));
 		} else {
 			showParticipants.click();
 		}
@@ -98,7 +98,7 @@ public class ConversationPage extends WebPage {
 			return new GroupPopoverContainer(this.getDriver(), this.getWait());
 		} else {
 			return new SingleUserPopoverContainer(this.getDriver(),
-				this.getWait());
+					this.getWait());
 		}
 	}
 
@@ -107,28 +107,29 @@ public class ConversationPage extends WebPage {
 		return new PeoplePickerPage(this.getDriver(), this.getWait());
 	}
 
-	public boolean isPeopleButtonToolTipVisible() {
-		return peopleButtonToolTip.isDisplayed();
+	public boolean isPeopleButtonToolTipCorrect() {
+		return TOOLTIP_PEOPLE.equals(showParticipants
+				.getAttribute(TITLE_ATTRIBUTE_LOCATOR));
 	}
 
 	public void sendPicture(String pictureName) throws Exception {
 		final String picturePath = WebCommonUtils
-			.getFullPicturePath(pictureName);
+				.getFullPicturePath(pictureName);
 		final String showImageLabelJScript = "$(\""
-			+ WebAppLocators.ConversationPage.cssRightControlsPanel
-			+ "\").css({'opacity': '100'});";
+				+ WebAppLocators.ConversationPage.cssRightControlsPanel
+				+ "\").css({'opacity': '100'});";
 		driver.executeScript(showImageLabelJScript);
 		final String showPathInputJScript = "$(\""
-			+ WebAppLocators.ConversationPage.cssSendImageLabel
-			+ "\").find(\""
-			+ WebAppLocators.ConversationPage.cssSendImageInput
-			+ "\").css({'left': '0'});";
+				+ WebAppLocators.ConversationPage.cssSendImageLabel
+				+ "\").find(\""
+				+ WebAppLocators.ConversationPage.cssSendImageInput
+				+ "\").css({'left': '0'});";
 		driver.executeScript(showPathInputJScript);
 		assert DriverUtils
-			.isElementDisplayed(
-				driver,
-				By.cssSelector(WebAppLocators.ConversationPage.cssSendImageInput),
-				5);
+				.isElementDisplayed(
+						driver,
+						By.cssSelector(WebAppLocators.ConversationPage.cssSendImageInput),
+						5);
 		if (WebAppExecutionContext.currentBrowser == Browser.Safari) {
 			WebCommonUtils.sendPictureInSafari(picturePath);
 		} else {
@@ -139,13 +140,13 @@ public class ConversationPage extends WebPage {
 	public boolean isPictureSent(String pictureName) throws Exception {
 		@SuppressWarnings("unused")
 		final String picturePath = WebCommonUtils
-			.getFullPicturePath(pictureName);
+				.getFullPicturePath(pictureName);
 		// TODO: Add comparison of the original and sent pictures
 		final boolean isAnyPictureMsgFound = DriverUtils
-			.waitUntilElementAppears(
-				driver,
-				By.xpath(WebAppLocators.ConversationPage.xpathImageMessageEntry),
-				40);
+				.waitUntilElementAppears(
+						driver,
+						By.xpath(WebAppLocators.ConversationPage.xpathImageMessageEntry),
+						40);
 		return isAnyPictureMsgFound && (imageMessageEntries.size() > 0);
 	}
 
@@ -156,7 +157,7 @@ public class ConversationPage extends WebPage {
 			// do nothing (safari workaround)
 		}
 		final By locator = By
-			.xpath(WebAppLocators.ConversationPage.xpathPingButton);
+				.xpath(WebAppLocators.ConversationPage.xpathPingButton);
 		assert DriverUtils.isElementDisplayed(driver, locator, 2) : "Ping button has not been shown after 2 seconds";
 		assert DriverUtils.waitUntilElementClickable(driver, pingButton) : "Ping button has to be clieckable";
 		pingButton.click();
@@ -166,18 +167,18 @@ public class ConversationPage extends WebPage {
 
 	public boolean isPingMessageVisible(String message) throws Exception {
 		final By locator = By
-			.className(WebAppLocators.ConversationPage.classPingMessage);
+				.className(WebAppLocators.ConversationPage.classPingMessage);
 		assert DriverUtils.isElementDisplayed(driver, locator,
-			PING_MESSAGE_TIMEOUT) : "Ping message has not been shown within "
-			+ PING_MESSAGE_TIMEOUT + " second(s) timeout";
+				PING_MESSAGE_TIMEOUT) : "Ping message has not been shown within "
+				+ PING_MESSAGE_TIMEOUT + " second(s) timeout";
 		return pingMessage.getText().toLowerCase()
-			.contains(message.toLowerCase());
+				.contains(message.toLowerCase());
 	}
 
 	public int numberOfPingMessagesVisible() {
 
 		return driver.findElementsByClassName(
-			WebAppLocators.ConversationPage.classPingMessage).size() - 1;
+				WebAppLocators.ConversationPage.classPingMessage).size() - 1;
 	}
 
 	public void clickCallButton() {
@@ -195,13 +196,13 @@ public class ConversationPage extends WebPage {
 
 	public boolean isCalleeAcceptingCall() throws Exception {
 		final By locator = By
-			.xpath(WebAppLocators.ConversationPage.xpathTalkingHalo);
+				.xpath(WebAppLocators.ConversationPage.xpathTalkingHalo);
 		return DriverUtils.isElementDisplayed(driver, locator, 30);
 	}
 
 	public void clickCloseButton() {
 		final By locator = By
-			.xpath(WebAppLocators.ConversationPage.xpathCloseButton);
+				.xpath(WebAppLocators.ConversationPage.xpathCloseButton);
 		driver.findElement(locator).click();
 	}
 
@@ -209,15 +210,15 @@ public class ConversationPage extends WebPage {
 
 	public boolean isTextMessageVisible(String message) throws Exception {
 		final By locator = By
-			.xpath(WebAppLocators.ConversationPage.textMessageByText
-				.apply(message));
+				.xpath(WebAppLocators.ConversationPage.textMessageByText
+						.apply(message));
 		return DriverUtils.isElementDisplayed(driver, locator,
-			TEXT_MESSAGE_VISIBILITY_TIMEOUT_SECONDS);
+				TEXT_MESSAGE_VISIBILITY_TIMEOUT_SECONDS);
 	}
 
 	public String getMissedCallMessage() {
 		final By locator = By
-			.xpath(WebAppLocators.ConversationPage.xpathMissedCallAction);
+				.xpath(WebAppLocators.ConversationPage.xpathMissedCallAction);
 		return driver.findElement(locator).getText();
 	}
 }

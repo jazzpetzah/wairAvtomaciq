@@ -80,12 +80,7 @@ Feature: People View
 	 | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       | Message     |
 	 | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat | YOU REMOVED |
 
-# 3 user A, B and C
-# A is connected with C
-# A is not connected to B
-# B is connected with C
-# A, B and C are in a group conversation where A and B are invited from C
- @smoke @id2268 @torun
+ @staging @id2268 @torun
    Scenario Outline: Verify I can see participant profile of user that you requested to connect with in a group conversation
       Given There are 3 users where <Name> is me
       Given Myself is connected to <KnownContact>
@@ -95,35 +90,25 @@ Feature: People View
       Given I Sign in using login <Login> and password <Password>
       Then I see my name on top of Contact list
       When I open conversation with <ChatName>
-      Then I see people button tool tip
+      Then I see correct people button tool tip
       When I click People button in group conversation
       Then I see Group Participants popover
-
-      #Global Then
-      # ✓ persons name
-      # ✓ button to remove person
-      #   person's avatar
-      # X "pending overlay" on user avatar (TODO)
-      # ✓ Not persons email
-      # ✓ button with YOUR pending request that leads to 1:1 convo
-      #   text box with YOUR current connection request
-      # X corresponding hints for each action button (TODO)
-      # X Verify the height of people popover is changed if you switch to individual profile view and is restored after you return to perticipants view
+      Then I see correct add people button tool tip
+      And I see correct leave conversation button tool tip
+      And I see correct rename conversation button tool tip
       When I click on participant <UnknownContact> on Group Participants popover
+      Then I see correct back button tool tip
+      And I see correct pending button tool tip
+      And I see correct remove from group button tool tip
       Then I see username <UnknownContact> on Single User Profile popover
       And I see an avatar on Single User Profile popover
       And I see Remove button on Single Participant popover
       And I do not see Mail on Single Participant popover
       And I see Pending button on Single Participant popover
       And I see Pending text box on Single Participant popover
-
-
       When I click Pending button on Single Participant popover
       Then I see conversation with <UnknownContact> is selected in conversations list
 
-
-
-      #add last verification - that no one left to add
       Examples:
 	 | Login      | Password      | Name      | KnownContact  | UnknownContact  | ChatName               | Message   |
 	 | user1Email | user1Password | user1Name | user2Name     | user3Name       | PeoplePopoverGroupChat | YOU ADDED |

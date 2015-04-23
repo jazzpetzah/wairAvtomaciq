@@ -12,15 +12,15 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 	private PendingParticipantInfoPopoverPage pendingParticipantInfoPopoverPage;
 
 	public SingleUserPopoverContainer(ZetaWebAppDriver driver,
-		WebDriverWait wait) throws Exception {
+			WebDriverWait wait) throws Exception {
 		super(driver, wait);
 		this.singleUserPopoverPage = new SingleUserInfoPopoverPage(driver,
-			wait, this);
+				wait, this);
 		this.addPeoplePopoverPage = new AddPeoplePopoverPage(driver, wait, this);
 		this.blockUserConfirmationPopoverPage = new BlockUserConfirmationPopoverPage(
-			driver, wait, this);
+				driver, wait, this);
 		this.pendingParticipantInfoPopoverPage = new PendingParticipantInfoPopoverPage(
-			driver, wait, this);
+				driver, wait, this);
 	}
 
 	@Override
@@ -77,10 +77,21 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 	}
 
 	public boolean isPendingTextBoxVisible() {
-		return this.pendingParticipantInfoPopoverPage.isPendingTextBoxDisplayed();
+		return this.pendingParticipantInfoPopoverPage
+				.isPendingTextBoxDisplayed();
 	}
 
 	public String getUserMail() {
 		return this.singleUserPopoverPage.getMailText();
+	}
+
+	public boolean isPendingButtonToolTipCorrect() {
+		return this.pendingParticipantInfoPopoverPage
+				.isPendingButtonToolTipCorrect();
+	}
+
+	public boolean isRemoveFromGroupChatButtonToolTipCorrect() {
+		return this.singleUserPopoverPage
+				.isRemoveFromGroupChatButtonToolTipCorrect();
 	}
 }
