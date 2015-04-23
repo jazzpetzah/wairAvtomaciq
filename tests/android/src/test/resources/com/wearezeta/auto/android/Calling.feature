@@ -63,3 +63,20 @@ Feature: Calling
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | autocall    |
+
+  @staging @id1499 @torun
+  Scenario Outline: Receive call while mobile in sleeping mode(screen locked)
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given I Sign in using login <Login> and password <Password>
+    Given I see Contact list with my name <Name>
+    When I lock the device
+    And <Contact> calls me using <CallBackend>
+    Then I see the call lock screen
+    And I see a call from <Contact> in the call lock screen
+    And I answer the call from the lock screen
+    Then I see started call message for contact <Contact>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name | autocall    |

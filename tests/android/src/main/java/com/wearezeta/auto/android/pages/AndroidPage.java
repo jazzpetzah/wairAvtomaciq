@@ -92,6 +92,10 @@ public abstract class AndroidPage extends BasePage {
 		Thread.sleep(1000);
 		return new CommonAndroidPage(this.getDriver(), this.getWait());
 	}
+	
+	public void lockScreen() throws Exception {
+		this.getDriver().sendKeyEvent(26);
+	}
 
 	public void restoreApplication() {
 		try {
