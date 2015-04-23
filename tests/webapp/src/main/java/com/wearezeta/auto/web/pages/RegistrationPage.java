@@ -100,10 +100,10 @@ public class RegistrationPage extends WebPage {
 					log.debug(String
 							.format("Trying to refresh currupted login page (retry %s of %s)...",
 									ntry + 1, MAX_TRIES));
-					driver.navigate().refresh();
+					driver.navigate().to(driver.getCurrentUrl());
 				}
 			} catch (Exception e) {
-				driver.navigate().refresh();
+				driver.navigate().to(driver.getCurrentUrl());
 			}
 			if (PagesCollection.invitationCodePage.isVisible()) {
 				PagesCollection.invitationCodePage

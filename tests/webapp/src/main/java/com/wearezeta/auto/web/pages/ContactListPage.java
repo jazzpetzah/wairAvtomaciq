@@ -125,7 +125,7 @@ public class ContactListPage extends WebPage {
 				.waitUntilElementAppears(
 						driver,
 						By.cssSelector(WebAppLocators.ContactListPage.cssOpenPeoplePickerButton))) {
-			driver.navigate().refresh();
+			driver.navigate().to(driver.getCurrentUrl());
 		}
 		return DriverUtils
 				.waitUntilElementAppears(

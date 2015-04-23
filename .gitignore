@@ -5,3 +5,4 @@
 tests/tools/javadoc-exporter/bin
 tests/tools/javadoc-exporter/target
 *.log*
+.DS_Store
