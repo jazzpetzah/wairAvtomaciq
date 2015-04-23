@@ -6,6 +6,10 @@ public class WebAppConstants {
 
 	public static final String INVITATION_CODE = "zeta22beta";
 
+	public static final String TMP_ROOT = "/tmp";
+
+	public static final String WINDOWS_TMP_ROOT = "C:\\cygwin\\tmp";
+
 	public enum Browser {
 		Safari("safari"), InternetExplorer("ie"), Chrome("chrome"), Firefox(
 				"firefox"), Opera("opera");

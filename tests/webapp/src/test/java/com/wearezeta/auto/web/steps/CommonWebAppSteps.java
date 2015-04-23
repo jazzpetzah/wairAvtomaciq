@@ -40,6 +40,7 @@ import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class CommonWebAppSteps {
@@ -499,6 +500,39 @@ public class CommonWebAppSteps {
 			String conversationName) throws Exception {
 		commonSteps.UserXAddedContactsToGroupChat(asUser, contacts,
 				conversationName);
+	}
+
+	/**
+	 * Record SHA256-hash of current user profile picture
+	 * 
+	 * @step. (.*) takes? snapshot of current profile picture$
+	 * 
+	 * @param asUser
+	 *            user name/alias
+	 * @throws Exception
+	 */
+	@Given("(.*) takes? snapshot of current profile picture$")
+	public void UserXTakesSnapshotOfProfilePicture(String asUser)
+			throws Exception {
+		commonSteps.UserXTakesSnapshotOfProfilePicture(asUser);
+	}
+
+	/**
+	 * Verify whether current user picture is changed since the last snapshot
+	 * was made
+	 * 
+	 * @step. ^I verify that current profile picture snapshot of (.*) differs?
+	 *        from the previous one$
+	 * 
+	 * @param userNameAlias
+	 *            user name/alias
+	 * @throws Exception
+	 */
+	@Then("^I verify that current profile picture snapshot of (.*) differs? from the previous one$")
+	public void UserXVerifiesSnapshotOfProfilePictureIsDifferent(
+			String userNameAlias) throws Exception {
+		commonSteps
+				.UserXVerifiesSnapshotOfProfilePictureIsDifferent(userNameAlias);
 	}
 
 	private void writeBrowserLogsIntoMainLog(RemoteWebDriver driver) {

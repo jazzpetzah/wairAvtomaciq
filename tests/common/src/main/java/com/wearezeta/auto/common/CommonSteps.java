@@ -3,7 +3,11 @@ package com.wearezeta.auto.common;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.junit.Assert;
 
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
@@ -329,6 +333,34 @@ public final class CommonSteps {
 		}
 		BackendAPIWrappers.addContactsToGroupConversation(userAs,
 				contactsToAdd, chatName);
+	}
+
+	private Map<ClientUser, String> profilePictureSnapshotsMap = new HashMap<ClientUser, String>();
+
+	public void UserXTakesSnapshotOfProfilePicture(String userNameAlias)
+			throws Exception {
+		final ClientUser userAs = usrMgr
+				.findUserByNameOrNameAlias(userNameAlias);
+		profilePictureSnapshotsMap.put(userAs,
+				BackendAPIWrappers.getUserPictureHash(userAs));
+	}
+
+	public void UserXVerifiesSnapshotOfProfilePictureIsDifferent(String userNameAlias)
+			throws Exception {
+		final ClientUser userAs = usrMgr
+				.findUserByNameOrNameAlias(userNameAlias);
+		String expectedHash = null;
+		if (profilePictureSnapshotsMap.containsKey(userAs)) {
+			expectedHash = profilePictureSnapshotsMap.get(userAs);
+		} else {
+			throw new RuntimeException(String.format(
+					"Please take user picture snpshot for user '%s' first",
+					userAs.getEmail()));
+		}
+		final String actualHash = BackendAPIWrappers.getUserPictureHash(userAs);
+		Assert.assertFalse(
+				"Actual and previous user pictures are equal, but expected to be different",
+				expectedHash.equals(actualHash));
 	}
 
 }

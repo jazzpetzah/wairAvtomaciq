@@ -7,6 +7,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.PagesCollection;
+
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 
@@ -122,7 +123,6 @@ public class SelfProfilePageSteps {
 	 * 
 	 * @throws Exception
 	 */
-
 	@Then("^I verify my accent color in color picker is set to (\\w+) color$")
 	public void IVerifyMyAccentColor(String colorName) {
 		final int expectedColorId = AccentColor.getByName(colorName).getId();
@@ -130,5 +130,17 @@ public class SelfProfilePageSteps {
 				.getCurrentAccentColorId();
 		Assert.assertTrue("my actual accent color is not set",
 				actualColorId == expectedColorId);
+	}
+
+	/**
+	 * Click camera button on Self Profile page
+	 * 
+	 * @step. ^I click camera button$
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I click camera button$")
+	public void IClickCameraButton() throws Exception {
+		PagesCollection.selfProfilePage.clickCameraButton();
 	}
 }
