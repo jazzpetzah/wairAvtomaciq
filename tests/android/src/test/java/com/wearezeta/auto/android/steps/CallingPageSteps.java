@@ -2,6 +2,7 @@ package com.wearezeta.auto.android.steps;
 
 import org.junit.Assert;
 
+import com.wearezeta.auto.android.pages.CallingLockscreenPage;
 import com.wearezeta.auto.android.pages.CallingOverlayPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
