@@ -384,7 +384,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact   | Color    | NewName |
       | user1Email | user1Password | user1Name | user2Name | Violet   | SILENCE |
       
-  @staging @id1335
+  @regression @id1335
   Scenario Outline: Verify unsilence the conversation
     Given There are 2 users where <Name> is me
     Given User <Name> change accent color to <Color>
