@@ -95,7 +95,8 @@ public class LoginPageSteps {
 		PagesCollection.contactListPage = PagesCollection.loginPage
 				.clickSignInButton();
 
-		Assert.assertTrue("Sign In button/progress spimmer are still visible",
+		Assert.assertTrue(
+				"Sign In button/login progress spinner are still visible",
 				PagesCollection.loginPage.waitForLogin());
 	}
 
