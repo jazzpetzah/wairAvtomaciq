@@ -165,7 +165,30 @@ public final class AndroidLocators {
 				+ ":id/iv__about__logo";
 
 	}
+	
+	public static final class CallingOverlayPage {
+		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME
+				+ "$CallingOverlayPage";
+		
+		public static final String idCallingOverlayContainer = LOCATORS_PACKAGE
+				+ ":id/coc__calling__overlay_container";
+		
+		public static final String idIgnoreButton = LOCATORS_PACKAGE
+				+ ":id/cib__calling_mute";
+		
+		public static final String idAcceptButton = LOCATORS_PACKAGE
+				+ ":id/gtv__conversation_list__sticky_menu__trigger_startui";
+		
+		public static final String idCallingUsersName = LOCATORS_PACKAGE
+				+ ":id/ttv__calling__message";
+		
+	}
 
+	/**
+	 * All elements in this class are found when you select a user in Wire with whom you are not yet connected.
+	 * OR
+	 * when another user sends a connection request to you.
+	 */
 	public static final class ConnectToPage {
 
 		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME
@@ -438,6 +461,20 @@ public final class AndroidLocators {
 			}
 		}
 	}
+	
+	public static final class LockscreenCallingPage {
+		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME
+				+ "$LockscreenCallingPage";
+		
+		public static final String idCallingUserName = LOCATORS_PACKAGE
+				+ ":id/ttv__notifications__incoming_call__lockscreen__header";
+	
+		public static final String idLockScreenLogo = LOCATORS_PACKAGE
+				+ ":id/gtv__notifications__incoming_call__lockscreen__logo";
+		
+		public static final String idIncomingCallChathead = LOCATORS_PACKAGE
+				+ ":id/civ__notifications__incoming_call__chathead";
+	}
 
 	public static final class OtherUserPersonalInfoPage {
 
@@ -473,6 +510,9 @@ public final class AndroidLocators {
 		public static final String idLeftActionButton = LOCATORS_PACKAGE
 				+ ":id/gtv__participants__left__action";
 
+		public static final String idLeftActionLabel = LOCATORS_PACKAGE
+				+ ":id/ttv__participants__left_label";
+		
 		public static final String idRightActionButton = LOCATORS_PACKAGE
 				+ ":id/gtv__participants__right__action";
 
@@ -549,6 +589,12 @@ public final class AndroidLocators {
 		
 		public static final String idPickerUserSlidingRow = LOCATORS_PACKAGE
 				+ ":id/ll__pickuser__sliding_row";
+		
+		public static final String idPickerUserHideMenu = LOCATORS_PACKAGE
+				+ ":id/hrum__pickuser__hide_menu";
+		
+		public static final String xpathPickerUserHideMenu = "//android.widget.FrameLayout[child::android.widget.LinearLayout[@resource-id='"
+				+ LOCATORS_PACKAGE + ":id/hrum__pickuser__hide_menu']]";
 		
 		public static final String idPickerRecomendedName = LOCATORS_PACKAGE
 				+ ":id/ttv_pickuser__recommended_name";

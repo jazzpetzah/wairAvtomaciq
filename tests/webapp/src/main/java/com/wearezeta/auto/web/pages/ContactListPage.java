@@ -119,10 +119,19 @@ public class ContactListPage extends WebPage {
 	}
 
 	public boolean waitForContactListVisible() throws Exception {
+		// FIXME: Try to refresh the page if convo list is not visible
+		// (workaround for Amazon server issue)
+		if (!DriverUtils
+				.waitUntilElementAppears(
+						driver,
+						By.cssSelector(WebAppLocators.ContactListPage.cssOpenPeoplePickerButton))) {
+			driver.navigate().to(driver.getCurrentUrl());
+		}
 		return DriverUtils
 				.waitUntilElementAppears(
 						driver,
 						By.cssSelector(WebAppLocators.ContactListPage.cssOpenPeoplePickerButton));
+
 	}
 
 	public boolean isSelfNameEntryExist() throws Exception {
@@ -357,7 +366,7 @@ public class ContactListPage extends WebPage {
 						this.getDriver(),
 						By.cssSelector(WebAppLocators.ContactListPage.cssOpenPeoplePickerButton));
 		DriverUtils.waitUntilElementClickable(driver, openPeoplePickerButton);
-		if (WebAppExecutionContext.currentBrowser == Browser.InternetExplorer) {
+		if (WebAppExecutionContext.getCurrentBrowser() == Browser.InternetExplorer) {
 			clickWithJS(WebAppLocators.ContactListPage.cssOpenPeoplePickerButton);
 		} else {
 			openPeoplePickerButton.click();

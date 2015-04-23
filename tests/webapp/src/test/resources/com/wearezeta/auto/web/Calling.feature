@@ -1,6 +1,6 @@
 Feature: Calling
 
-  @staging @id1860
+  @regression @id1860
   Scenario Outline: Send text, image and knock while in the call with same user
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -12,6 +12,8 @@ Feature: Calling
     And I open conversation with <Contact>
     When I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see the calling bar
+    And I end the call
     And I write random message
     And I send message
     And I click ping button
@@ -25,7 +27,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | PING   | PictureName               | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | pinged | userpicture_landscape.jpg | webdriver   | 120     |
 
-  @staging @id2237
+  @regression @id2237
   Scenario Outline: Call a user twice in a row
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -37,25 +39,27 @@ Feature: Calling
     And I open conversation with <Contact>
     When I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see the calling bar
     And I end the call
     Then <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
     And <Contact> accepts next incoming call automatically
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see the calling bar
     And <Contact> stops all waiting instances
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
 
-  @staging @id2014
+  # This has to work even in browsers, which don't support calling
+  @regression @id2014
   Scenario Outline: Missed call notification (adressee)
     Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
+    Given <Contact> is connected to Me
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
     When <Contact> calls me using <CallBackend>
-    And I wait for 5 seconds
     And <Contact> stops all calls to me
     When I open conversation with <Contact>
     Then I see conversation with missed call from <Contact>
