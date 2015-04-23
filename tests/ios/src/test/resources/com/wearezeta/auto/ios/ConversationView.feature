@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @staging @id855
+  @regression @id855
   Scenario Outline: Verify swipe right tutorial appearance
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -620,7 +620,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
       
-  @staging @id2132
+  @regression @id2132
   Scenario Outline: Verify displaying chathead when another conversation is opened
     Given There are 3 users where <Name> is me
     Given User <Contact2> change avatar picture to <Picture>

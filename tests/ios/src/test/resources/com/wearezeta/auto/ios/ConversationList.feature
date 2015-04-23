@@ -100,8 +100,8 @@ Feature: Conversation List
   Scenario Outline: Verify Ping animation in the conversations list
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
-    Given User <Contact> change  name to <NewName>
-    Given User <Name> change  accent color to <Color>
+    Given User <Contact> change name to <NewName>
+    Given User <Name> change accent color to <Color>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When Contact <Contact> ping conversation <Name>
