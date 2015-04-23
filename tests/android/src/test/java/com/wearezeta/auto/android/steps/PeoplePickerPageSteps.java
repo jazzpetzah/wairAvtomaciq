@@ -1,4 +1,4 @@
-package com.wearezeta.auto.android;
+package com.wearezeta.auto.android.steps;
 
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
@@ -14,6 +14,7 @@ import cucumber.api.java.en.When;
 public class PeoplePickerPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     public static String randomConnectName = "";
+    private static WebElement randomConnect;
 
 
 	/**
@@ -347,8 +348,24 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I press \\+ button on a random Connect$")
 	public void WhenIPressPlusButtonOnARandomConnect() {
-		WebElement randomConnect = PagesCollection.peoplePickerPage.selectRandomConnect(); 
+		randomConnect = PagesCollection.peoplePickerPage.selectRandomConnect(); 
 		randomConnectName = PagesCollection.peoplePickerPage.pressPlusOnContact(randomConnect);
+	}
+	
+	@When("^I swipe on random connect$") 
+	public void WhenISwipeOnRandomConnect() {
+		randomConnect = PagesCollection.peoplePickerPage.selectRandomConnect(); 
+		randomConnectName = PagesCollection.peoplePickerPage.swipePYMKContact(randomConnect);
+	}
+	
+	@When("^I click on PYMK hide button$") 
+	public void WhenIClickOnPYMKHideButton() {
+		PagesCollection.peoplePickerPage.clickPYMKHideButton(); 
+	}
+	
+	@Then("^I do not see random connect$")
+		public void ThenIDonotSeeRandomConnect() {
+			Assert.assertFalse(PagesCollection.peoplePickerPage.pYMKcontactIsVisible(randomConnectName,randomConnect));
 	}
 	
 	/**
