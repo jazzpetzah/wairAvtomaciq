@@ -7,6 +7,7 @@ public class PagesCollection extends AbstractPagesCollection{
 	public static AndroidPage androidPage = null;
 	public static LoginPage loginPage = null;
 	public static CallingOverlayPage callingOverlayPage = null;
+	public static CallingLockscreenPage callingLockscreenPage = null;
 	public static ContactListPage contactListPage = null;
 	public static PersonalInfoPage personalInfoPage = null;
 	public static DialogPage dialogPage = null;
