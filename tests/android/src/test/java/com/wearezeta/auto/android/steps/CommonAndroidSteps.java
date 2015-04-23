@@ -1,4 +1,4 @@
-package com.wearezeta.auto.android;
+package com.wearezeta.auto.android.steps;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -160,29 +160,29 @@ public class CommonAndroidSteps {
 	 * 
 	 * 
 	 */
-	@When("^I hide keyboard")
+	@When("^I hide keyboard$")
 	public void IHideKeyboard() {
 		if (PagesCollection.loginPage != null) {
 			PagesCollection.loginPage.hideKeyboard();
 		}
 	}
 	
-	@When("^I swipe right")
+	@When("^I swipe right$")
 	public void ISwipeRight() throws Exception {
 		PagesCollection.androidPage.swipeRightCoordinates(DEFAULT_SWIPE_TIME);
 	}
 	
-	@When("^I swipe left")
+	@When("^I swipe left$")
 	public void ISwipeLeft() throws Exception {
 		PagesCollection.androidPage.swipeLeftCoordinates(DEFAULT_SWIPE_TIME);
 	}
 	
-	@When("^I swipe up")
+	@When("^I swipe up$")
 	public void ISwipeUp() throws Exception {
 		PagesCollection.androidPage.swipeUpCoordinates(DEFAULT_SWIPE_TIME);
 	}
 	
-	@When("^I swipe down")
+	@When("^I swipe down$")
 	public void ISwipeDown() throws Exception {
 		PagesCollection.androidPage.swipeDownCoordinates(DEFAULT_SWIPE_TIME);
 	}
