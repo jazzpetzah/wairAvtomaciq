@@ -76,6 +76,8 @@ public final class WebAppLocators {
 
 		public static final String xpathContactListEntries = xpathParentContactListItem
 				+ "//*[@data-uie-name='item-conversation']";
+		public static final Function<Integer, String> xpathContactListEntryByIndex = (
+				idx) -> String.format("(%s)[%s]", xpathContactListEntries, idx);
 		public static final String xpathArchivedContactListEntries = xpathParentContactListItem
 				+ "//*[@data-uie-name='item-conversation-archived']";
 
