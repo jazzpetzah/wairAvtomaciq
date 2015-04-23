@@ -17,6 +17,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.android.common.AndroidKeyEvent;
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -88,9 +89,13 @@ public abstract class AndroidPage extends BasePage {
 	}
 
 	public CommonAndroidPage minimizeApplication() throws Exception {
-		this.getDriver().sendKeyEvent(3);
+		this.getDriver().sendKeyEvent(AndroidKeyEvent.KEYCODE_HOME);
 		Thread.sleep(1000);
 		return new CommonAndroidPage(this.getDriver(), this.getWait());
+	}
+	
+	public void lockScreen() throws Exception {
+		this.getDriver().sendKeyEvent(AndroidKeyEvent.KEYCODE_POWER);
 	}
 
 	public void restoreApplication() {
