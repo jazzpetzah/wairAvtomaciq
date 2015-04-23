@@ -34,6 +34,14 @@ public abstract class AbstractPopoverContainer extends WebPage {
 				+ VISIBILITY_TIMEOUT + " seconds";
 	}
 
+	public void waitUntilNotVisibleOrThrowException() throws Exception {
+		assert DriverUtils.waitUntilElementDissapear(getDriver(),
+				By.xpath(this.getXpathLocator()), VISIBILITY_TIMEOUT) : "Popover "
+				+ this.getXpathLocator()
+				+ " has not been hidden within "
+				+ VISIBILITY_TIMEOUT + " seconds";
+	}
+
 	public boolean isVisible() throws Exception {
 		return DriverUtils.isElementDisplayed(getDriver(),
 				By.xpath(this.getXpathLocator()));

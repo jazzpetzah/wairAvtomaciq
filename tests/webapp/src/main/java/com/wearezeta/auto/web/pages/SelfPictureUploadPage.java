@@ -28,17 +28,18 @@ public class SelfPictureUploadPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.SelfPictureUploadPage.xpathPreviousCarouselImageBtn)
 	private WebElement previousCarouselImageBtn;
 
+	@FindBy(how = How.XPATH, using = WebAppLocators.SelfPictureUploadPage.xpathSelectPictureButton)
+	private WebElement selectPictureButton;
+
 	public SelfPictureUploadPage(ZetaWebAppDriver driver, WebDriverWait wait)
 			throws Exception {
 		super(driver, wait);
 	}
 
-	public void waitUntilVisible(int secondsTimeout) throws Exception {
-		assert DriverUtils
-				.isElementDisplayed(
-						driver,
-						By.xpath(WebAppLocators.SelfPictureUploadPage.xpathSelectPictureButton),
-						secondsTimeout) : "Picture selection dialog has not been show within "
+	public void waitUntilButtonsAreClickable(int secondsTimeout)
+			throws Exception {
+		assert DriverUtils.waitUntilElementClickable(driver,
+				selectPictureButton, secondsTimeout) : "Picture selection dialog button was not clickable within "
 				+ secondsTimeout + "second(s) timeout";
 	}
 
@@ -54,8 +55,9 @@ public class SelfPictureUploadPage extends WebPage {
 						driver,
 						By.cssSelector(WebAppLocators.SelfPictureUploadPage.cssSendPictureInput),
 						5);
-		if (WebAppExecutionContext.currentBrowser == Browser.Safari) {
-			WebCommonUtils.sendPictureInSafari(picturePath);
+		if (WebAppExecutionContext.getCurrentBrowser() == Browser.Safari) {
+			WebCommonUtils.sendPictureInSafari(picturePath, this.getDriver()
+					.getNodeIp());
 		} else {
 			picturePathInput.sendKeys(picturePath);
 		}

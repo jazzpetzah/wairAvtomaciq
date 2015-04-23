@@ -12,14 +12,20 @@ Feature: Registration
     And I submit registration form
     Then I see email <Email> on Verification page
     When I activate user by URL
-    And User <Name> is Me
-    # This has to be done automatically at some time
-    And I Sign in using login <Email> and password <Password>
+    And User <Name> is Me without avatar
+    And I see Self Picture Upload dialog
+    And I force carousel mode on Self Picture Upload dialog
+    And I select random picture from carousel on Self Picture Upload dialog
+    And I confirm picture selection on Self Picture Upload dialog
+    And I see Contacts Upload dialog
+    And I close Contacts Upload dialog
     Then I see my name on top of Contact list
     When I open self profile
     Then I see user name on self profile page <Name>
     Then I see user email on self profile page <Email>
-	
+    And I click gear button on self profile page
+    And I select Sign out menu item on self profile page
+
     Examples: 
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |

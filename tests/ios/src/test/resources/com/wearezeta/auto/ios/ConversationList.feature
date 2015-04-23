@@ -17,22 +17,6 @@ Feature: Conversation List
       | Login      | Password      | Name      | ArchivedUser |
       | user1Email | user1Password | user1Name | user2Name    |
 
-  @regression @id1462
-  Scenario Outline: Verify silence the conversation
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
-    Given User <Contact> change  name to <NewName>
-    Given User <Name> change  accent color to <Color>
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    When I swipe right on a <Contact>
-    And I silence conversation <Contact>
-    Then I see conversation <Contact> is silenced
-
-    Examples: 
-      | Login      | Password      | Name      | Contact   | Color        | NewName |
-      | user1Email | user1Password | user1Name | user2Name | BrightOrange | SILENCE |
-
   @regression @id1332 @id2171 @id2172
   Scenario Outline: Verify archive a conversation
     Given There are 3 users where <Name> is me
@@ -52,31 +36,12 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   | Contact2 |
       | user1Email | user1Password | user1Name | user2Name | user3Name|
 
-  @staging @id1335
-  Scenario Outline: Verify unsilence the conversation
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
-    Given User <Contact> change  name to <NewName>
-    Given User <Name> change  accent color to <Color>
-    Given <Name> silenced conversation with <Contact>
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    And I see conversation <Contact> is silenced
-    And I swipe right on a <Contact>
-    And I unsilence conversation <Contact>
-    Then I see conversation <Contact> is unsilenced
-
-    Examples: 
-      | Login      | Password      | Name      | Contact   | Color        | NewName |
-      | user1Email | user1Password | user1Name | user2Name | BrightOrange | SILENCE |
-
   @regression @id1075 @id2153
   Scenario Outline: Verify messages are marked as read with disappearing unread dot
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
-    Given User <Contact> change  name to <NewName>
-    Given User <Name> change  accent color to <Color>
-    Given I wait for 15 seconds
+    Given User <Contact> change name to <NewName>
+    Given User <Name> change accent color to <Color>
     Given Contact <Contact> send number <Number2> of message to user <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -95,7 +60,7 @@ Feature: Conversation List
 
     Examples: 
       | Login      | Password      | Name      | Contact   | Number | NewName    | Color        |Number2 | DotSizeSmall |DotSizeBig |
-      | user1Email | user1Password | user1Name | user2Name | 30     | UNREAD DOT | BrightOrange | 2		 | small		|big		|
+      | user1Email | user1Password | user1Name | user2Name | 30     | UNREAD DOT | BrightYellow | 2		 | small		|big		|
 
   @regression @id2040
   Scenario Outline: Verify archive a group conversation
@@ -135,8 +100,8 @@ Feature: Conversation List
   Scenario Outline: Verify Ping animation in the conversations list
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
-    Given User <Contact> change  name to <NewName>
-    Given User <Name> change  accent color to <Color>
+    Given User <Contact> change name to <NewName>
+    Given User <Name> change accent color to <Color>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When Contact <Contact> ping conversation <Name>

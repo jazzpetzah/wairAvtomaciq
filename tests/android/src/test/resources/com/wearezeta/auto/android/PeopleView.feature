@@ -26,7 +26,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -48,11 +48,11 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I tap on contact name <GroupChatName>
     And I see dialog page
     And I swipe up on dialog page
-    And I press Right conversation button
+    And I press options menu button
     And I press Leave conversartion button
     And I confirm leaving
     Then I see Contact list with my name <Name>
@@ -67,7 +67,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     And I see contact list loaded with User name <Contact1>
     And I see contact list loaded with User name <Contact2>
     When I tap on contact name <GroupChatName>
@@ -96,7 +96,7 @@ Feature: People View
     Given <Contact2> has a name <Contact2NewName>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     And I see contact list loaded with User name <Contact1>
     And I see contact list loaded with User name <Contact2>
     When I tap on contact name <GroupChatName>
@@ -121,7 +121,7 @@ Feature: People View
     Given Contact <Contact1> send message to user <Name>
     Given Contact <Name> send message to user <Contact1>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     And I wait for 90 seconds
     When I swipe down contact list
     And I see People picker page
@@ -140,7 +140,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <OldGroupChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When I tap on contact name <OldGroupChatName>
     And I tap conversation details button
     And I rename group conversation to <NewConversationName>
@@ -152,3 +152,51 @@ Feature: People View
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | OldGroupChatName | NewConversationName |
       | user1Email | user1Password | user1Name | user2Name | user3Name | oldGroupChat 	  | newGroupName		|
+      
+  @id2236 @staging
+  Scenario Outline: Check interaction with options menu
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given I Sign in using login <Login> and password <Password>
+    Given I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I tap conversation details button
+    And I see <Contact> user profile page
+    And I press options menu button
+    Then I see correct 1:1 options menu
+    And I do not see profile page
+    When I tap on center of screen
+    Then I see profile page
+    And I do not see 1:1 options menu
+    When I press options menu button
+    Then I see correct 1:1 options menu
+    And I do not see profile page
+    When I press back button
+    Then I see profile page
+    And I do not see 1:1 options menu
+    When I press options menu button
+    Then I see correct 1:1 options menu
+    And I do not see profile page
+    When I swipe up
+    Then I see correct 1:1 options menu
+    And I do not see profile page
+    When I swipe left
+    Then I see correct 1:1 options menu
+    And I do not see profile page
+    When I swipe right
+    Then I see correct 1:1 options menu
+    And I do not see profile page
+    When I do small swipe down
+    Then I see correct 1:1 options menu
+    And I do not see profile page
+    When I swipe down
+    Then I see profile page
+    And I do not see 1:1 options menu
+    When I press options menu button
+    Then I see correct 1:1 options menu
+    And I do not see profile page
+     
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |

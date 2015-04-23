@@ -72,3 +72,20 @@ Feature: Self Profile
     Examples: 
       | Login      | Password      | Name      | NewUsername        | Contact   |
       | user1Email | user1Password | user1Name | New Name           | user2Name |
+      
+  @regression @id667
+  Scenario Outline: Verify changing and applying accent color
+  	Given There are 1 users where <Name> is me
+  	Given User <Name> change name to <NewName>
+  	Given User <Name> change accent color to <Color>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    And I change my accent color via the colorpicker
+    And I swipe right on the personal page
+    Then I see my names <Name> accent color is changed
+   
+    Examples: 
+      | Login      | Password      | Name      | NewName           | Color  |
+      | user1Email | user1Password | user1Name | AccentColorChange | Violet |
+  

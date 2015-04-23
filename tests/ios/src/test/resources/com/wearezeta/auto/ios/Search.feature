@@ -228,7 +228,7 @@ Feature: Search
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name | 
       
-@staging @id2117
+  @regression @id2117
   Scenario Outline: Verify dismissing with clicking on Hide
   	Given There are 5 users where <Name> is me
     Given <ContactWithFriends> is connected to <Name>
@@ -248,4 +248,22 @@ Feature: Search
 	
     Examples: 
       | Login      | Password      | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
-      | user1Email | user1Password | user1Name | user2Name          | user3Name | user4Name | user5Name | 
+      | user1Email | user1Password | user1Name | user2Name          | user3Name | user4Name | user5Name |
+
+  @staging @id2149
+  Scenario Outline: Verify search by second name (something after space)
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Contact> change name to <NewName>
+    Given I Sign in using login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I swipe down contact list
+    And I wait up to 15 seconds until <LastName> exists in backend search results
+    And I see People picker page 
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <LastName>
+    Then I see user <NewName> found on People picker page
+
+  	Examples:
+      | Login      | Password      | Name      | Contact       | NewName      | LastName |
+      | user1Email | user1Password | user1Name | user2Name     | NEW NAME     | NAME     |

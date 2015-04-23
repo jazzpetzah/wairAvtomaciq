@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @staging @id855
+  @regression @id855
   Scenario Outline: Verify swipe right tutorial appearance
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -584,8 +584,8 @@ Feature: Conversation View
   @staging @id1480
   Scenario Outline: Rotate image in fullscreen mode
   	Given There are 2 users where <Name> is me
-  	Given User <Contact> change  name to <NewName>
-    Given User <Contact> change  accent color to <Color>
+  	Given User <Contact> change name to <NewName>
+    Given User <Contact> change accent color to <Color>
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And Contact <Contact> sends image <Picture> to single user conversation <Name>
@@ -620,11 +620,11 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
       
-  @staging @id2132
+  @regression @id2132
   Scenario Outline: Verify displaying chathead when another conversation is opened
     Given There are 3 users where <Name> is me
     Given User <Contact2> change avatar picture to <Picture>
-    Given User <Contact2> change  name to <NewName>
+    Given User <Contact2> change name to <NewName>
     Given Myself is connected to <Contact>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>

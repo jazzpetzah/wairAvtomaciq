@@ -7,6 +7,8 @@ public final class WebAppLocators {
 	public static final class ActivationPage {
 
 		public static final String xpathSuccessfullResult = "//div[@id='200']//p[contains(@class, 'title') and contains(.,'Account created')]";
+		public static final String xpathBtnOpenWebApp = "//div[contains(@class, 'success') and not(contains(@class, 'hide'))]"
+				+ "//*[contains(@class, 'btn-open-web') and contains(@class,'btn-success')]";
 	}
 
 	public static final class InvitationCodePage {
@@ -77,6 +79,8 @@ public final class WebAppLocators {
 
 		public static final String xpathContactListEntries = xpathParentContactListItem
 				+ "//*[@data-uie-name='item-conversation']";
+		public static final Function<Integer, String> xpathContactListEntryByIndex = (
+				idx) -> String.format("(%s)[%s]", xpathContactListEntries, idx);
 		public static final String xpathArchivedContactListEntries = xpathParentContactListItem
 				+ "//*[@data-uie-name='item-conversation-archived']";
 
@@ -156,17 +160,24 @@ public final class WebAppLocators {
 
 		public static final String xpathCallButton = "//*[@data-uie-name='do-call']";
 
-		public static final String xpathTalkingHalo = "//*[contains(@class,'cc-halo-talking')]";
-
 		public static final String classPingMessage = "pinged";
-
-		public static final String xpathCloseButton = "//*[contains(@class,'cc-button')]//*[contains(@class,'icon-close')]";
 
 		public static final Function<String, String> textMessageByText = text -> String
 				.format("//*[@data-uie-name='item-message']//*[text()='%s']",
 						text);
 
 		public static final String xpathMissedCallAction = "//*[@data-uie-value='call']//div[contains(@class, 'action')]";
+
+		public static String xpathCallingBarRoot = "//div[contains(@class, 'call-controls')]";
+
+		public static String xpathAcceptCallButton = xpathCallingBarRoot
+				+ "//*[contains(@class, 'icon-check')]";
+
+		public static String xpathEndCallButton = xpathCallingBarRoot
+				+ "//*[contains(@class, 'icon-close')]";
+
+		public static String xpathSilenceIncomingCallButton = xpathCallingBarRoot
+				+ "//*[contains(@class, 'icon-minus')]";
 	}
 
 	public static final class ConnectToPage {

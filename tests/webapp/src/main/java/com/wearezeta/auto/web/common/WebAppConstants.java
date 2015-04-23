@@ -4,9 +4,11 @@ import java.util.NoSuchElementException;
 
 public class WebAppConstants {
 
+	public static final String INVITATION_CODE = "zeta22beta";
+
 	public enum Browser {
 		Safari("safari"), InternetExplorer("ie"), Chrome("chrome"), Firefox(
-				"firefox");
+				"firefox"), Opera("opera");
 
 		private final String stringRepresentation;
 
@@ -54,15 +56,5 @@ public class WebAppConstants {
 		public static final String SAFARI_OPEN_TAB_SCRIPT = "safari_open_tab.txt";
 
 		public static final String RESOURCES_SCRIPTS_ROOT = "scripts";
-	}
-
-	public static final class Calling {
-		private static final Browser[] BROWSERS_WITH_CALLING_SUPPORT = new Browser[] {
-				Browser.Chrome, Browser.Firefox };
-
-		public static boolean isSupportedIn(Browser item) {
-			return Browser
-					.isSubSetContains(BROWSERS_WITH_CALLING_SUPPORT, item);
-		}
 	}
 }

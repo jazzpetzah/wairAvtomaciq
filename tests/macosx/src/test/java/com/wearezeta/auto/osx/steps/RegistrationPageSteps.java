@@ -116,6 +116,7 @@ public class RegistrationPageSteps {
 	public void ISubmitRegistrationData() throws Exception {
 		PagesCollection.verificationPage = PagesCollection.registrationPage
 				.createAccount(this.userToRegister.getEmail());
+		usrMgr.setSelfUser(this.userToRegister);
 	}
 
 	/**
@@ -221,7 +222,7 @@ public class RegistrationPageSteps {
 				PagesCollection.mainMenuPage.getDriver(),
 				PagesCollection.mainMenuPage.getWait());
 		ContactListPageSteps clSteps = new ContactListPageSteps();
-		clSteps.ISeeMyNameInContactList(this.userToRegister.getName());
+		clSteps.ISeeMyNameInContactList();
 	}
 
 	/**
