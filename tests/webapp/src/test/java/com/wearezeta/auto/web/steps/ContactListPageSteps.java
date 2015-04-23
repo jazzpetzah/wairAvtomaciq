@@ -321,4 +321,53 @@ public class ContactListPageSteps {
 				colorInColorPicker.equalsIgnoreCase(selfNameColor));
 
 	}
+
+	/**
+	 * Verify whether the particular conversations list item has expected index
+	 * 
+	 * @step. ^I verify that (.*) index in Contact list is (\\d+)$
+	 * 
+	 * @param convoNameAlias
+	 *            conversation name/alias
+	 * @param expectedIndex
+	 *            the expected index (starts from 1)
+	 * @throws Exception
+	 */
+	@Then("^I verify that (.*) index in Contact list is (\\d+)$")
+	public void IVerifyContactIndex(String convoNameAlias, int expectedIndex)
+			throws Exception {
+		convoNameAlias = usrMgr.replaceAliasesOccurences(convoNameAlias,
+				FindBy.NAME_ALIAS);
+		final int actualIndex = PagesCollection.contactListPage
+				.getItemIndex(convoNameAlias);
+		Assert.assertTrue(
+				String.format(
+						"The index of '%s' item in Conevrsations list does not equal to %s (current value is %s)",
+						convoNameAlias, expectedIndex, actualIndex),
+				actualIndex == expectedIndex);
+	}
+
+	private static final int ARCHIVE_BTN_VISILITY_TIMEOUT = 5; // seconds
+
+	/**
+	 * Verify whether Archive button at the bottom of the convo list is visible
+	 * or not
+	 * 
+	 * @step. ^I( do not)? see Archive button at the bottom of my Contact list$
+	 * 
+	 * @param shouldNotBeVisible
+	 *            is set to null if "do not" part does not exist in the step
+	 * @throws Exception
+	 */
+	@Then("^I( do not)? see Archive button at the bottom of my Contact list$")
+	public void IVerifyArchiveButtonVisibility(String shouldNotBeVisible)
+			throws Exception {
+		if (shouldNotBeVisible == null) {
+			PagesCollection.contactListPage
+					.waitUntilArhiveButtonIsVisible(ARCHIVE_BTN_VISILITY_TIMEOUT);
+		} else {
+			PagesCollection.contactListPage
+					.waitUntilArhiveButtonIsNotVisible(ARCHIVE_BTN_VISILITY_TIMEOUT);
+		}
+	}
 }

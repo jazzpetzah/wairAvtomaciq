@@ -446,4 +446,43 @@ public class ContactListPage extends WebPage {
 			return false;
 		}
 	}
+
+	public int getItemIndex(String convoName) throws Exception {
+		convoName = fixDefaultGroupConvoName(convoName, false);
+		final int entriesCount = driver
+				.findElements(
+						By.xpath(WebAppLocators.ContactListPage.xpathContactListEntries))
+				.size();
+		for (int entryIdx = 1; entryIdx <= entriesCount; entryIdx++) {
+			final WebElement entryElement = driver
+					.findElement(By
+							.xpath(WebAppLocators.ContactListPage.xpathContactListEntryByIndex
+									.apply(entryIdx)));
+			if (entryElement.getAttribute("data-uie-value").equals(convoName)) {
+				return entryIdx;
+			}
+		}
+		throw new AssertionError(String.format(
+				"There is no '%s' conversation in the list", convoName));
+	}
+
+	public void waitUntilArhiveButtonIsNotVisible(int archiveBtnVisilityTimeout)
+			throws Exception {
+		assert DriverUtils
+				.waitUntilElementDissapear(
+						driver,
+						By.xpath(WebAppLocators.ContactListPage.xpathOpenArchivedConvosButton),
+						archiveBtnVisilityTimeout) : "Open Archive button is still visible after "
+				+ archiveBtnVisilityTimeout + " second(s)";
+	}
+
+	public void waitUntilArhiveButtonIsVisible(int archiveBtnVisilityTimeout)
+			throws Exception {
+		assert DriverUtils
+				.isElementDisplayed(
+						driver,
+						By.xpath(WebAppLocators.ContactListPage.xpathOpenArchivedConvosButton),
+						archiveBtnVisilityTimeout) : "Open Archive button is not visible after "
+				+ archiveBtnVisilityTimeout + " second(s)";
+	}
 }
