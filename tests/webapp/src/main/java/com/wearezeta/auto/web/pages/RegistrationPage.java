@@ -92,18 +92,18 @@ public class RegistrationPage extends WebPage {
 										this.getDriver(),
 										By.xpath(WebAppLocators.RegistrationPage.xpathSwitchToSignInButton))) {
 					switchToSignInButton.click();
-				} else {
-					log.debug(String
-							.format("Trying to refresh currupted login page. Retry %s of %s...",
-									ntry + 1, MAX_TRIES));
-					driver.navigate().refresh();
 				}
 				if (DriverUtils.isElementDisplayed(this.getDriver(),
 						signInBtnlocator)) {
 					break;
+				} else {
+					log.debug(String
+							.format("Trying to refresh currupted login page (retry %s of %s)...",
+									ntry + 1, MAX_TRIES));
+					driver.navigate().to(driver.getCurrentUrl());
 				}
 			} catch (Exception e) {
-				driver.navigate().refresh();
+				driver.navigate().to(driver.getCurrentUrl());
 			}
 			if (PagesCollection.invitationCodePage.isVisible()) {
 				PagesCollection.invitationCodePage

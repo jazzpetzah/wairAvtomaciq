@@ -341,13 +341,20 @@ public class PeoplePickerPage extends AndroidPage {
 
 	public String pressPlusOnContact(WebElement randomConnect) {
 		refreshUITree();
-		String name = randomConnect.findElement(By.id(AndroidLocators.PeoplePickerPage.idPickerRecomendedName)).getText();
-		randomConnect.findElement(By.id(AndroidLocators.PeoplePickerPage.idPickerRecomendedQuickAdd)).click();
+		String name = randomConnect.findElement(
+				By.id(AndroidLocators.PeoplePickerPage.idPickerRecomendedName))
+				.getText();
+		randomConnect
+				.findElement(
+						By.id(AndroidLocators.PeoplePickerPage.idPickerRecomendedQuickAdd))
+				.click();
 		return name;
 	}
+
 	public String swipePYMKContact(WebElement randomConnect) {
 		refreshUITree();
-		WebElement element =  randomConnect.findElement(By.id(AndroidLocators.PeoplePickerPage.idPickerRecomendedName));
+		WebElement element = randomConnect.findElement(By
+				.id(AndroidLocators.PeoplePickerPage.idPickerRecomendedName));
 		String name = element.getText();
 		DriverUtils.swipeRight(getDriver(), randomConnect, 1000, 90, 50);
 		return name;
@@ -355,12 +362,22 @@ public class PeoplePickerPage extends AndroidPage {
 
 	public void clickPYMKHideButton() {
 		refreshUITree();
-		 WebElement hideButton = pickerUserHideMenu.findElement(By.className("android.widget.TextView"));
+		WebElement hideButton = pickerUserHideMenu.findElement(By
+				.className("android.widget.TextView"));
 		hideButton.click();
 	}
-	
-	public boolean pYMKcontactIsVisible(String randomConnectName, WebElement element) {
+
+	public boolean pYMKcontactIsVisible(String randomConnectName,
+			WebElement element) {
 		refreshUITree();
-		return  (element.findElement(By.id(AndroidLocators.PeoplePickerPage.idPickerRecomendedName)).getText()).equals(randomConnectName);
+		return (element.findElement(By
+				.id(AndroidLocators.PeoplePickerPage.idPickerRecomendedName))
+				.getText()).equals(randomConnectName);
+	}
+
+	public void swipeRightPYMKHideMenu() {
+		refreshUITree();
+		DriverUtils.swipeRight(getDriver(), pickerUserHideMenu, 1500, 30, 50,
+				90, 50);
 	}
 }

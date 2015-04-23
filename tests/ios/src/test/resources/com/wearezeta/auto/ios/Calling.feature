@@ -105,4 +105,29 @@ Feature: Calling
     Examples: 
       | Login      | Password      | Name      | Contact   | Contact1  | Number | Color           | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | 2      | StrongLimeGreen | autocall    |
+      
+  @calling_basic @id882
+  Scenario Outline: In zeta call for more than 15 mins
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts waiting instance using <CallBackend>
+    Given <Contact> accepts next incoming call automatically
+    Given I Sign in using login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
+    And I see dialog page
+    And I swipe the text input cursor
+    And I press call button
+    And I see mute call, end call and speakers buttons
+    And I see calling message for contact <Contact>
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then I wait for 900 seconds
+    And I see mute call, end call and speakers buttons
+    And I end started call
+    And I dont see calling page
+    And <Contact> stops all waiting instances
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
   

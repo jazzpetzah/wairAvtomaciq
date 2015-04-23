@@ -299,6 +299,26 @@ public class DriverUtils {
 	}
 
 	public static void swipeRight(AppiumDriver driver, WebElement element,
+			int time, int startPercentX, int startPercentY, int endPercentX, int endPercentY) {
+		final Point coords = element.getLocation();
+		final Dimension elementSize = element.getSize();
+		final int xStartOffset = (int) Math.round(elementSize.width
+				* (startPercentX / 100.0));
+		final int yStartOffset = (int) Math.round(elementSize.height
+				* (startPercentY / 100.0));
+		final int xEndOffset = (int) Math.round(elementSize.width
+				* (endPercentX / 100.0));
+		final int yEndOffset = (int) Math.round(elementSize.height
+				* (endPercentY / 100.0));
+		try {
+			driver.swipe(coords.x + xStartOffset, coords.y + yStartOffset, coords.x + xEndOffset,
+					coords.y + yEndOffset, time);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	public static void swipeRight(AppiumDriver driver, WebElement element,
 			int time) {
 		swipeRight(driver, element, time,
 				SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL,

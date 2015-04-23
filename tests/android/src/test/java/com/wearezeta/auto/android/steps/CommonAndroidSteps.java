@@ -224,7 +224,7 @@ public class CommonAndroidSteps {
 	 * 
 	 * @step. ^I minimize the application$
 	 * 
-	 * @throws IOException
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I minimize the application$")
@@ -232,6 +232,22 @@ public class CommonAndroidSteps {
 		if (PagesCollection.loginPage != null) {
 			PagesCollection.commonAndroidPage = PagesCollection.loginPage
 					.minimizeApplication();
+		}
+	}
+	
+	/**
+	 * Locks the device
+	 * 
+	 * @step. ^I lock the device$
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I lock the device$")
+	public void ILockTheDevice() throws Exception {
+		if (PagesCollection.loginPage != null) {
+			PagesCollection.loginPage
+					.lockScreen();
 		}
 	}
 
