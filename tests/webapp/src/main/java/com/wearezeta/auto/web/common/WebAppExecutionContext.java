@@ -81,4 +81,13 @@ public class WebAppExecutionContext {
 					getCurrentBrowser());
 		}
 	}
+
+	public static final class SlowXPathLocation {
+		private static final Browser[] BROWSERS_WITH_SLOW_XPATH_LOCATION = new Browser[] { Browser.InternetExplorer };
+
+		public static boolean existsInCurrentBrowser() {
+			return Browser.isSubSetContains(BROWSERS_WITH_SLOW_XPATH_LOCATION,
+					getCurrentBrowser());
+		}
+	}
 }
