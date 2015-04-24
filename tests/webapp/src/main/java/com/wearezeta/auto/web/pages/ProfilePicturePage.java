@@ -54,7 +54,7 @@ public class ProfilePicturePage extends WebPage {
 				+ " file should exist on hub file system";
 
 		/*
-		 * The code above allows to upload the picture to the remote mode
+		 * The code below allows to upload the picture to the remote mode
 		 * without Selenium interaction This could be useful when we have better
 		 * solution for drag and drop
 		 */
