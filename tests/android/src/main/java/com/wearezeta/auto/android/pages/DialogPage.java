@@ -224,13 +224,11 @@ public class DialogPage extends AndroidPage {
 	public void tapMuteBtn() throws InterruptedException {
 		refreshUITree();
 		muteBtn.click();
-		Thread.sleep(1000);
 	}
 	
 	public void tapSpeakerBtn() throws InterruptedException {
 		refreshUITree();
 		speakerBtn.click();
-		Thread.sleep(1000);
 	}
 	
 	public void tapCancelCallBtn() throws InterruptedException {
@@ -255,12 +253,7 @@ public class DialogPage extends AndroidPage {
 	}
 	
 	public boolean checkCallingOverlay() throws Exception {
-		//better way to do this?
-		try{
-			return callingMessageText.isDisplayed();
-		}catch(NoSuchElementException e){
-			return false;
-		}
+		return DriverUtils.isElementDisplayed(driver, callingMessageText);
 	}
 	
 	public void typeMessage(String message) {

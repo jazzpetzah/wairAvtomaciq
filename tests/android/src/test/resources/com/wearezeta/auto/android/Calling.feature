@@ -81,7 +81,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | autocall    |
 
-        @staging @id2210
+  @staging @id2210 @torun
   Scenario Outline: Calling bar buttons are clickable and change its state
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
