@@ -15,6 +15,8 @@ import com.wearezeta.auto.web.pages.popovers.PeoplePopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
@@ -88,8 +90,17 @@ public class ConversationPage extends WebPage {
 		return DriverUtils.isElementDisplayed(driver, locator, 5);
 	}
 
-	public boolean isYoutubeVideoEmbedded(String url) {
-		return false;
+	public boolean isYoutubeVideoEmbedded(String url) throws Exception {
+		String pattern = "[\\w\\-\\_]{10,12}";
+		Pattern compiledPattern = Pattern.compile(pattern);
+		Matcher matcher = compiledPattern.matcher(url);
+		assert matcher.find() : "Could not find Youtube id in URL: " + url;
+		final String id = matcher.group();
+
+		final By locator = By
+				.xpath(WebAppLocators.ConversationPage.xpathEmbeddedYoutubeVideoById
+						.apply(id));
+		return DriverUtils.isElementDisplayed(driver, locator, 5);
 	}
 
 	public PeoplePopoverContainer clickPeopleButton(boolean isGroup)

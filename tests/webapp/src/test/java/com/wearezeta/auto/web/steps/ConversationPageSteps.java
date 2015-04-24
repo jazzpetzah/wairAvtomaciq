@@ -73,10 +73,10 @@ public class ConversationPageSteps {
 	/**
 	 * Then I see embedded youtube video of <Youtubelink2>
 	 */
-	@Then("^I see embedded youtube video of .*")
-	public void ThenISeeRandomMessageInConversation() throws Exception {
+	@Then("^I see embedded youtube video of (.*)")
+	public void ThenISeeEmbeddedYoutubeVideoOf(String url) throws Exception {
 		Assert.assertTrue(PagesCollection.conversationPage
-				.isMessageSent(randomMessage));
+				.isYoutubeVideoEmbedded(url));
 	}
 
 	/**
