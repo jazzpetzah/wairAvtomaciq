@@ -40,6 +40,7 @@ import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class CommonWebAppSteps {
@@ -512,6 +513,54 @@ public class CommonWebAppSteps {
 	public void MyBrowserSupportsFastLocationByXpath() {
 		if (WebAppExecutionContext.SlowXPathLocation
 				.existsInCurrentBrowser()) {
+			throw new PendingException();
+		}
+	}
+
+	/**
+	 * Record SHA256-hash of current user profile picture
+	 * 
+	 * @step. (.*) takes? snapshot of current profile picture$
+	 * 
+	 * @param asUser
+	 *            user name/alias
+	 * @throws Exception
+	 */
+	@Given("(.*) takes? snapshot of current profile picture$")
+	public void UserXTakesSnapshotOfProfilePicture(String asUser)
+			throws Exception {
+		commonSteps.UserXTakesSnapshotOfProfilePicture(asUser);
+	}
+
+	/**
+	 * Verify whether current user picture is changed since the last snapshot
+	 * was made
+	 * 
+	 * @step. ^I verify that current profile picture snapshot of (.*) differs?
+	 *        from the previous one$
+	 * 
+	 * @param userNameAlias
+	 *            user name/alias
+	 * @throws Exception
+	 */
+	@Then("^I verify that current profile picture snapshot of (.*) differs? from the previous one$")
+	public void UserXVerifiesSnapshotOfProfilePictureIsDifferent(
+			String userNameAlias) throws Exception {
+		commonSteps
+				.UserXVerifiesSnapshotOfProfilePictureIsDifferent(userNameAlias);
+	}
+
+	/**
+	 * Will throw PendingException if the current browser does not support
+	 * synthetic drag and drop
+	 * 
+	 * @step. ^My browser supports synthetic drag and drop$
+	 * 
+	 */
+	@Given("^My browser supports synthetic drag and drop$")
+	public void MyBrowserSupportsSyntheticDragDrop() {
+		if (!WebAppExecutionContext.SyntheticDragAndDrop
+				.isSupportedInCurrentBrowser()) {
 			throw new PendingException();
 		}
 	}

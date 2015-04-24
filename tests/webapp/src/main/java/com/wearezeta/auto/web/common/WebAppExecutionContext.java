@@ -90,4 +90,16 @@ public class WebAppExecutionContext {
 					getCurrentBrowser());
 		}
 	}
+
+	public static final class SyntheticDragAndDrop {
+		private static final Browser[] BROWSERS_WITH_SYNTHETIC_DRAG_DROP_SUPPORT = new Browser[] {
+				Browser.Chrome, Browser.Firefox, Browser.Opera,
+				Browser.InternetExplorer };
+
+		public static boolean isSupportedInCurrentBrowser() {
+			return Browser.isSubSetContains(
+					BROWSERS_WITH_SYNTHETIC_DRAG_DROP_SUPPORT,
+					getCurrentBrowser());
+		}
+	}
 }

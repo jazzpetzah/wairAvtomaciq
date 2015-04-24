@@ -535,6 +535,10 @@ public final class IOSLocators {
 		public static final String nameArchiveButton = "ARCHIVE";
 	}
 	
+	public final class ContactListPage {
+		public static final String nameOpenStartUI = "OpenStartUI";
+	}
+	
 	/////////////
 	//Chathead
 	/////////////

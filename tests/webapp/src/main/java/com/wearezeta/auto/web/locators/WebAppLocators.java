@@ -131,6 +131,8 @@ public final class WebAppLocators {
 				+ "/div[contains(@class, 'selected')]/div[contains(@class,'circle')]";
 
 		public static final String xpathNameSelfUserMail = "//*[@data-uie-name='enter-email']";
+
+		public static final String xpathCameraButton = "//*[@data-uie-name='go-profile-picture-selection']";
 	}
 
 	public static final class ConversationPage {
@@ -270,5 +272,17 @@ public final class WebAppLocators {
 		public static final String CONTACT_LIST_ONE_PERSON_WAITING = "1 person waiting";
 
 		public static final String TITLE_ATTRIBUTE_LOCATOR = "title";
+	}
+
+	public static final class ProfilePicturePage {
+		private static final String xpathRootDiv = "//div[@id='self-upload']";
+
+		public static final String xpathSelectPictureButton = xpathRootDiv
+				+ "//*[@data-uie-name='do-select-picture']/following-sibling::span";
+
+		public static final String xpathConfirmPictureSelectionButton = xpathRootDiv
+				+ "//*[@data-uie-name='do-set-picture']";
+
+		public static String cssDropZone = "#self-upload .self-upload-center";
 	}
 }

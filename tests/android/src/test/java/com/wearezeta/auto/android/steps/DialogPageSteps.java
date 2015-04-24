@@ -440,48 +440,6 @@ public class DialogPageSteps {
 	}
 
 	/**
-	 * -unused
-	 * 
-	 * @step. ^I see (.*) added (.*) message on Dialog page$
-	 * 
-	 * @param user
-	 * @param contact
-	 * @throws Throwable
-	 */
-	@Then("^I see (.*) added (.*) message on Dialog page$")
-	public void ISeeAddedMessageOnDialogPage(String user, String contact)
-			throws Throwable {
-		user = usrMgr.findUserByNameOrNameAlias(user).getName();
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		String chatMessage = user + " ADDED " + contact;
-		Assert.assertTrue(PagesCollection.dialogPage.isConnectMessageVisible());
-		Assert.assertTrue(PagesCollection.dialogPage
-				.isConnectMessageValid(chatMessage));
-	}
-
-	/**
-	 * -unused
-	 * 
-	 * @step. ^I multi tap on text input again$
-	 * 
-	 * @throws Throwable
-	 */
-	@Then("^I multi tap on text input again$")
-	public void ThenIMultiTapOnTextInputAgain() throws Throwable {
-		PagesCollection.dialogPage.multiTapOnCursorInput();
-	}
-
-	/**
-	 * -unused
-	 * 
-	 * @step. ^I swipe left on dialog page$
-	 */
-	@When("^I swipe left on dialog page$")
-	public void WhenISwipeLeftOnDialogPage() throws Exception {
-		PagesCollection.dialogPage.swipeLeft(1000);
-	}
-
-	/**
 	 * 
 	 * @step. ^I swipe up on dialog page
 	 * 
@@ -546,19 +504,6 @@ public class DialogPageSteps {
 	}
 
 	/**
-	 * -unused
-	 * -duplicate
-	 * 
-	 * @step. ^I see uploaded picture$
-	 * 
-	 * @throws Exception
-	 */
-	@Then("I see uploaded picture")
-	public void ThenISeeChangedUserPicture() throws Exception {
-		Assert.assertTrue(PagesCollection.dialogPage.dialogImageCompare());
-	}
-
-	/**
 	 * Seems to currently be blocked out in all tests
 	 * 
 	 * @step. ^I see (.*) icon$
@@ -576,22 +521,6 @@ public class DialogPageSteps {
 
 	// ------- From Group Chat Page
 	public static final String userRemovedMessage = "YOU REMOVED ";
-
-	/**
-	 * Swipes right on dialog page, presumably to navigate back to the contact
-	 * list
-	 * 
-	 * -duplicate of #WhenINavigateBackFromDialogPage()
-	 * 
-	 * @step. ^I swipe right on dialog page$
-	 * 
-	 * @throws Throwable
-	 */
-	@When("^I swipe right on dialog page$")
-	public void WhenISwipeRightOnGroupDialogPage() throws Throwable {
-		PagesCollection.contactListPage = (ContactListPage) PagesCollection.dialogPage
-				.swipeRightCoordinates(1000);
-	}
 
 	/**
 	 * Checks to see that a group chat exists, where the name of the group chat
@@ -614,19 +543,6 @@ public class DialogPageSteps {
 		}
 		Assert.assertTrue(PagesCollection.dialogPage
 				.isGroupChatDialogContainsNames(participantNames));
-	}
-
-	/**
-	 * -unused
-	 * 
-	 * @step. ^I see message that I left chat$
-	 * 
-	 * @throws Throwable
-	 */
-	@Then("^I see message that I left chat$")
-	public void ThenISeeMessageThatILeftChat() throws Throwable {
-		Assert.assertTrue(PagesCollection.dialogPage
-				.isMessageExists(DialogPage.I_LEFT_CHAT_MESSAGE));
 	}
 
 	/**

@@ -319,7 +319,7 @@ public class ContactListPage extends AndroidPage {
 
 	private void waitForContacListLoading() throws InterruptedException {
 		for (WebElement contact : contactListNames) {
-			if (contact.getText().contains("...")) {
+			if (contact.getText().contains("…")) {
 				Thread.sleep(500);
 				waitForContacListLoading();
 			}

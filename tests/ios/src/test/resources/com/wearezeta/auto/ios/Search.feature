@@ -1,11 +1,11 @@
 Feature: Search
 
-  @regression @id2147 
+  @regression @id2147
   Scenario Outline: Verify search by email
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
-    And I swipe down contact list
+    And I open search by clicking plus button
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
@@ -56,7 +56,7 @@ Feature: Search
     Given I Sign in using login <Login> and password <Password>
     When I add contacts list users to Mac contacts
     And I dismiss alert
-    And I swipe down contact list
+    And I open search by clicking plus button
     And I see Upload contacts dialog
     And I click Continue button on Upload dialog
     And I accept alert
@@ -115,7 +115,7 @@ Feature: Search
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I wait for 30 seconds
-    And I swipe down contact list
+    And I open search by clicking plus button
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
@@ -138,7 +138,7 @@ Feature: Search
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I wait for 30 seconds
-    And I swipe down contact list
+    And I open search by clicking plus button
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
@@ -162,7 +162,7 @@ Feature: Search
     Given User <UnconnectedUser> name starts with <StartLetter>
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
-    And I swipe down contact list
+    And I open search by clicking plus button
     And I see People picker page
     And I tap on Search input on People picker page
     And I search for user name <UnconnectedUser> and tap on it on People picker page
@@ -191,7 +191,7 @@ Feature: Search
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I wait for 30 seconds
-    And I swipe down contact list
+    And I open search by clicking plus button
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
@@ -213,7 +213,7 @@ Feature: Search
     Given User <Name> blocks user <Contact>
     Given I Sign in using login <Login> and password <Password>
     When I dont see conversation <Contact> in contact list
-    And I swipe down contact list
+    And I open search by clicking plus button
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
@@ -237,7 +237,7 @@ Feature: Search
     Given <ContactWithFriends> is connected to <Friend3>
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
-    And I swipe down contact list
+    And I open search by clicking plus button
     And I see People picker page
     And I re-enter the people picker if CONNECT label is not there
 	And I see CONNECT label
@@ -259,7 +259,7 @@ Feature: Search
     Given <ContactWithFriends> is connected to <Friend3>
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
-    And I swipe down contact list
+    And I open search by clicking plus button
     And I see People picker page
     And I re-enter the people picker if CONNECT label is not there
     And I see CONNECT label
@@ -278,7 +278,7 @@ Feature: Search
     Given User <Contact> change name to <NewName>
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
-    And I swipe down contact list
+    And I open search by clicking plus button
     And I wait up to 15 seconds until <LastName> exists in backend search results
     And I see People picker page 
     And I tap on Search input on People picker page

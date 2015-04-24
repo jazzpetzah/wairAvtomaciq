@@ -109,6 +109,16 @@ public class ContactListPageSteps {
 			PagesCollection.iOSPage = page;
 		}
 	}
+	
+	/**
+	 * Open search by clicking plus button next to self name
+	 * @step. ^I open search by clicking plus button$
+	 * @throws Exception
+	 */
+	@When("^I open search by clicking plus button$") 
+	public void IOpenSearchByClickingPlus() throws Exception {
+		PagesCollection.peoplePickerPage = PagesCollection.contactListPage.openSearch();
+	}
 
 	@Then("^I see first item in contact list named (.*)$")
 	public void ISeeUserNameFirstInContactList(String value) throws Throwable {
