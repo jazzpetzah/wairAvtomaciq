@@ -232,9 +232,9 @@ public class DialogPageSteps {
 	@Then("^I see (.*) calling button is pressed$")
 	public void WhenIPressCancelCallButton(String buttonName) throws Throwable {
 		double score = PagesCollection.dialogPage.checkCallingButton(buttonName);
-//		Assert.assertTrue(
-//				"Calling button not present or not clicked. Expected >= 0.90, current = "
-//						+ score, score >= 0.90d);
+		Assert.assertTrue(
+				"Calling button not present or not clicked. Expected >= 0.95, current = "
+						+ score, score >= 0.95d);
 	}
 	
 	/**
