@@ -53,7 +53,7 @@ Feature: People View
     And I see dialog page
     And I swipe up on dialog page
     And I press options menu button
-    And I press Leave conversartion button
+    And I press Leave conversation button
     And I confirm leaving
     Then I see Contact list with my name <Name>
 
@@ -182,11 +182,11 @@ Feature: People View
     And I swipe up
     And I swipe right
     And I do small swipe down
-    Then I see profile page
-    And I do not see 1:1 options menu
+    Then I do not see 1:1 options menu
+    #And I see profile page
     When I press options menu button
-    Then I see correct 1:1 options menu
-    And I do not see profile page
+    Then I do not see profile page
+    #And I see correct 1:1 options menu
      
     Examples: 
       | Login      | Password      | Name      | Contact   |
