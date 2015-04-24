@@ -71,6 +71,26 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg |
 
+  @staging @id1585
+  Scenario Outline: Able to send and play youtube link 
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name on top of Contact list
+    And I open conversation with <Contact>
+    When I write message <Youtubelink1>
+    Then I see embedded youtube video of <Youtubelink1>
+    When I write message <Youtubelink2>
+    Then I see embedded youtube video of <Youtubelink2>
+    When I write message <Youtubelink2>
+    Then I see embedded youtube video of <Youtubelink2>
+    When I write message <Youtubelink2>
+    Then I see embedded youtube video of <Youtubelink2>
+ 
+    Examples:
+      | Login      | Password      | Name      | Contact   | Youtubelink1 | Youtubelink2 | Youtubelink3 | Youtubelink4 |
+      | user1Email | user1Password | user1Name | user2Name | http://www.youtube.com/watch?v=JOCtdw9FG-s | https://www.youtube.com/watch?v=txqiwrbYGrs&feature=youtu.be | https://www.youtube.com/v/_1w2aASUpWQ | https://youtu.be/QH2-TGUlwu4 |
+
   @smoke @id1934
   Scenario Outline: Send Camera picture to group chat
     Given There are 3 users where <Name> is me

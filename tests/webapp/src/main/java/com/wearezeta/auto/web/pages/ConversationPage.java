@@ -7,12 +7,16 @@ import com.wearezeta.auto.web.common.WebAppConstants.Browser;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
+
 import static com.wearezeta.auto.web.locators.WebAppLocators.Common.TITLE_ATTRIBUTE_LOCATOR;
+
 import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.PeoplePopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
+
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -82,6 +86,10 @@ public class ConversationPage extends WebPage {
 				.xpath(WebAppLocators.ConversationPage.xpathMessageEntryByText
 						.apply(message));
 		return DriverUtils.isElementDisplayed(driver, locator, 5);
+	}
+
+	public boolean isYoutubeVideoEmbedded(String url) {
+		return false;
 	}
 
 	public PeoplePopoverContainer clickPeopleButton(boolean isGroup)
