@@ -141,6 +141,7 @@ public class SelfProfilePageSteps {
 	 */
 	@And("^I click camera button$")
 	public void IClickCameraButton() throws Exception {
-		PagesCollection.selfProfilePage.clickCameraButton();
+		PagesCollection.profilePicturePage = PagesCollection.selfProfilePage
+				.clickCameraButton();
 	}
 }

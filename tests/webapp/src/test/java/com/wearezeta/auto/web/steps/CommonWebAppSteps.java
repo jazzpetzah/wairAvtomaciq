@@ -535,6 +535,21 @@ public class CommonWebAppSteps {
 				.UserXVerifiesSnapshotOfProfilePictureIsDifferent(userNameAlias);
 	}
 
+	/**
+	 * Will throw PendingException if the current browser does not support
+	 * synthetic drag and drop
+	 * 
+	 * @step. ^My browser supports synthetic drag and drop$
+	 * 
+	 */
+	@Given("^My browser supports synthetic drag and drop$")
+	public void MyBrowserSupportsSyntheticDragDrop() {
+		if (!WebAppExecutionContext.SyntheticDragAndDrop
+				.isSupportedInCurrentBrowser()) {
+			throw new PendingException();
+		}
+	}
+
 	private void writeBrowserLogsIntoMainLog(RemoteWebDriver driver) {
 		log.debug("BROWSER CONSOLE LOGS:");
 		LogEntries logEntries = driver.manage().logs().get(LogType.BROWSER);

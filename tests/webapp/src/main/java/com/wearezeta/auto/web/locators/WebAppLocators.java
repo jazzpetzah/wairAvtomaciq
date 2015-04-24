@@ -127,7 +127,7 @@ public final class WebAppLocators {
 
 		public static final String xpathNameSelfUserMail = "//*[@data-uie-name='enter-email']";
 
-		public static final String xpathCameraButton = "*//[@data-uie-name='go-profile-picture-selection']";
+		public static final String xpathCameraButton = "//*[@data-uie-name='go-profile-picture-selection']";
 	}
 
 	public static final class ConversationPage {

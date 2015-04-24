@@ -414,7 +414,7 @@ public final class BackendAPIWrappers {
 	public static String getUserPictureHash(ClientUser user) throws Exception {
 		final JSONObject userInfo = BackendREST
 				.getUserInfo(generateAuthToken(user));
-		final String picture = userInfo.getString("picture");
+		final String picture = userInfo.getJSONArray("picture").toString();
 		return DigestUtils.sha256Hex(picture);
 	}
 

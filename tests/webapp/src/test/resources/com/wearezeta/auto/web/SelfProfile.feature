@@ -41,11 +41,14 @@ Feature: Self Profile
       | Login      | Password      | Name      | ColorName    |
       | user1Email | user1Password | user1Name | BrightOrange |
 
-  @torun @id1755
+  @staging @id1755
   Scenario Outline: Verify you can edit your profile picture by dragging a new photo
+    Given My browser supports synthetic drag and drop
     Given There is 1 user where <Name> is me
     Given Myself take snapshot of current profile picture
     Given I Sign in using login <Login> and password <Password>
+    And I see Contacts Upload dialog
+    And I close Contacts Upload dialog
     And I see my name on top of Contact list
     When I open self profile
     And I click camera button

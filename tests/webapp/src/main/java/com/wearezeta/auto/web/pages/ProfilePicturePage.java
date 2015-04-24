@@ -12,8 +12,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.web.common.WebAppConstants;
-import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
@@ -54,31 +52,32 @@ public class ProfilePicturePage extends WebPage {
 				.getFullPicturePath(pictureName);
 		assert new File(srcPicturePath).exists() : srcPicturePath
 				+ " file should exist on hub file system";
-		final String dstPicturePathForScp = WebAppConstants.TMP_ROOT + "/"
-				+ pictureName;
-		WebCommonUtils.putFileOnExecutionNode(this.getDriver().getNodeIp(),
-				srcPicturePath, dstPicturePathForScp);
-
-		String dstPicturePath = null;
-		if (WebAppExecutionContext.isCurrentPlatfromWindows()) {
-			dstPicturePath = WebAppConstants.WINDOWS_TMP_ROOT + "\\"
-					+ pictureName;
-		} else {
-			dstPicturePath = dstPicturePathForScp;
-		}
+		// final String dstPicturePathForScp = WebAppConstants.TMP_ROOT + "/"
+		// + pictureName;
+		// WebCommonUtils.putFileOnExecutionNode(this.getDriver().getNodeIp(),
+		// srcPicturePath, dstPicturePathForScp);
+		//
+		// String dstPicturePath = null;
+		// if (WebAppExecutionContext.isCurrentPlatfromWindows()) {
+		// dstPicturePath = WebAppConstants.WINDOWS_TMP_ROOT + "\\"
+		// + pictureName;§
+		// } else {
+		// dstPicturePath = dstPicturePathForScp;
+		// }
 
 		// http://stackoverflow.com/questions/5188240/using-selenium-to-imitate-dragging-a-file-onto-an-upload-element
 		final String inputId = "SelfImageUpload";
 		driver.executeScript(inputId + " = window.$('<input id=\"" + inputId
 				+ "\"/>').attr({type:'file'}).appendTo('body');");
-		driver.findElement(By.id(inputId)).sendKeys(dstPicturePath);
+		// The file is expected to be uploaded automatically by Webdriver
+		driver.findElement(By.id(inputId)).sendKeys(srcPicturePath);
 		driver.executeScript("e = $.Event('drop'); e.originalEvent = {dataTransfer : { files : "
 				+ inputId
 				+ ".get(0).files } }; $(\""
 				+ WebAppLocators.ProfilePicturePage.cssDropZone
 				+ "\").trigger(e);");
 
-		assert DriverUtils.waitUntilElementClickable(driver, confirmButton);
+		assert DriverUtils.waitUntilElementClickable(driver, confirmButton) : "Confirm button is not visible/clickable";
 	}
 
 	public void clickConfirmImageButton() throws Exception {

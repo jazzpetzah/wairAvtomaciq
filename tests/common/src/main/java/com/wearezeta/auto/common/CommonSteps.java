@@ -335,23 +335,23 @@ public final class CommonSteps {
 				contactsToAdd, chatName);
 	}
 
-	private Map<ClientUser, String> profilePictureSnapshotsMap = new HashMap<ClientUser, String>();
+	private Map<String, String> profilePictureSnapshotsMap = new HashMap<String, String>();
 
 	public void UserXTakesSnapshotOfProfilePicture(String userNameAlias)
 			throws Exception {
 		final ClientUser userAs = usrMgr
 				.findUserByNameOrNameAlias(userNameAlias);
-		profilePictureSnapshotsMap.put(userAs,
+		profilePictureSnapshotsMap.put(userAs.getEmail(),
 				BackendAPIWrappers.getUserPictureHash(userAs));
 	}
 
-	public void UserXVerifiesSnapshotOfProfilePictureIsDifferent(String userNameAlias)
-			throws Exception {
+	public void UserXVerifiesSnapshotOfProfilePictureIsDifferent(
+			String userNameAlias) throws Exception {
 		final ClientUser userAs = usrMgr
 				.findUserByNameOrNameAlias(userNameAlias);
 		String expectedHash = null;
-		if (profilePictureSnapshotsMap.containsKey(userAs)) {
-			expectedHash = profilePictureSnapshotsMap.get(userAs);
+		if (profilePictureSnapshotsMap.containsKey(userAs.getEmail())) {
+			expectedHash = profilePictureSnapshotsMap.get(userAs.getEmail());
 		} else {
 			throw new RuntimeException(String.format(
 					"Please take user picture snpshot for user '%s' first",
