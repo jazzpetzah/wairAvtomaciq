@@ -252,7 +252,7 @@ Feature: Search
 
   @staging @id2116
   Scenario Outline: Verify dismissing with one single gesture
-  	Given There are 5 users where <Name> is me
+    Given There are 5 users where <Name> is me
     Given <ContactWithFriends> is connected to <Name>
     Given <ContactWithFriends> is connected to <Friend1>
     Given <ContactWithFriends> is connected to <Friend2>
@@ -262,11 +262,11 @@ Feature: Search
     And I swipe down contact list
     And I see People picker page
     And I re-enter the people picker if CONNECT label is not there
-	And I see CONNECT label
-	And I hide peoplepicker keyboard
-	And I swipe completely to dismiss suggested contact <Friend1>
-	Then I do not see suggested contact <Friend1>
-	
+    And I see CONNECT label
+    And I hide peoplepicker keyboard
+    And I swipe completely to dismiss suggested contact <Friend1>
+    Then I do not see suggested contact <Friend1>
+
     Examples: 
       | Login      | Password      | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
       | user1Email | user1Password | user1Name | user2Name          | user3Name | user4Name | user5Name |
