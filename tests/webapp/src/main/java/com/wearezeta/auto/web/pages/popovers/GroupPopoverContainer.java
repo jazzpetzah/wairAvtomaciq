@@ -1,11 +1,11 @@
 package com.wearezeta.auto.web.pages.popovers;
 
-import org.openqa.selenium.support.ui.WebDriverWait;
-
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.PopoverLocators;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class GroupPopoverContainer extends PeoplePopoverContainer {
+
 	private ParticipantsListPopoverPage participantsListPopoverPage;
 	private ConnectedParticipantInfoPopoverPage connectedParticipantInfoPopoverPage;
 	private NonConnectedParticipantInfoPopoverPage nonConnectedParticipantInfoPopoverPage;
@@ -50,8 +50,9 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 		this.leaveGroupConfirmationPopoverPage.confirmLeaveGroupChat();
 	}
 
-	public void clickOnParticipant(String name) throws Exception {
-		this.participantsListPopoverPage.clickOnParticipant(name);
+	public SingleUserPopoverContainer clickOnParticipant(String name)
+			throws Exception {
+		return this.participantsListPopoverPage.clickOnParticipant(name);
 	}
 
 	public void clickRemoveFromGroupChat() throws Exception {
@@ -71,8 +72,31 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 				.confirmRemoveFromGroupChat();
 	}
 
+	public boolean isRemoveButtonVisible() throws Exception {
+		if (this.connectedParticipantInfoPopoverPage.isCurrent()) {
+			return this.connectedParticipantInfoPopoverPage
+					.isRemoveButtonVisible();
+		} else if (this.nonConnectedParticipantInfoPopoverPage.isCurrent()) {
+			return this.nonConnectedParticipantInfoPopoverPage
+					.isRemoveButtonVisible();
+		} else {
+			throw new RuntimeException(
+					"The current popover page is neither connected user info nor non-connected user info.");
+		}
+	}
+
+	public boolean isLeaveGroupChatButtonToolTipCorrect() throws Exception {
+		return this.participantsListPopoverPage
+				.isLeaveGroupChatButtonToolTipCorrect();
+	}
+
 	public void clickAddPeopleButton() throws Exception {
 		this.participantsListPopoverPage.clickAddPeopleButton();
+	}
+
+	public boolean isAddPeopleButtonToolTipCorrect() throws Exception {
+		return this.participantsListPopoverPage
+				.isAddPeopleButtonToolTipCorrect();
 	}
 
 	public boolean isParticipantVisible(String name) throws Exception {
@@ -105,5 +129,10 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 
 	public String getPendingButtonCaption() {
 		return this.pendingParticipantInfoPopoverPage.getPendingButtonCaption();
+	}
+
+	public boolean isRenameConversationToolTipCorrect() {
+		return this.participantsListPopoverPage
+				.isRenameConversationToolTipCorrect();
 	}
 }

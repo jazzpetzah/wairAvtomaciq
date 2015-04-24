@@ -1,8 +1,18 @@
 package com.wearezeta.auto.web.pages;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
+import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.WebAppConstants.Browser;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
+import com.wearezeta.auto.web.common.WebCommonUtils;
+import com.wearezeta.auto.web.locators.WebAppLocators;
+import static com.wearezeta.auto.web.locators.WebAppLocators.Common.TITLE_ATTRIBUTE_LOCATOR;
+import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
+import com.wearezeta.auto.web.pages.popovers.PeoplePopoverContainer;
+import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -12,22 +22,13 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
-import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.web.common.WebAppExecutionContext;
-import com.wearezeta.auto.web.common.WebCommonUtils;
-import com.wearezeta.auto.web.common.WebAppConstants.Browser;
-import com.wearezeta.auto.web.locators.WebAppLocators;
-import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
-import com.wearezeta.auto.web.pages.popovers.PeoplePopoverContainer;
-import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
-
 public class ConversationPage extends WebPage {
 
 	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(ConversationPage.class
 			.getSimpleName());
+
+	private static final String TOOLTIP_PEOPLE = "People";
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathImageMessageEntry)
 	private List<WebElement> imageMessageEntries;
@@ -104,6 +105,11 @@ public class ConversationPage extends WebPage {
 	public PeoplePickerPage clickShowParticipantsButton() throws Exception {
 		showParticipants.click();
 		return new PeoplePickerPage(this.getDriver(), this.getWait());
+	}
+
+	public boolean isPeopleButtonToolTipCorrect() {
+		return TOOLTIP_PEOPLE.equals(showParticipants
+				.getAttribute(TITLE_ATTRIBUTE_LOCATOR));
 	}
 
 	public void sendPicture(String pictureName) throws Exception {

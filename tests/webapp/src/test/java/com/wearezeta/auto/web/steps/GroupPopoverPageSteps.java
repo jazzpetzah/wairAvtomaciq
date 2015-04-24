@@ -1,17 +1,14 @@
 package com.wearezeta.auto.web.steps;
 
-import java.util.List;
-
-import org.junit.Assert;
-
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
-
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import java.util.List;
+import org.junit.Assert;
 
 public class GroupPopoverPageSteps {
 
@@ -19,10 +16,10 @@ public class GroupPopoverPageSteps {
 
 	/**
 	 * Verify that Group Participants popover is shown
-	 * 
+	 *
 	 * @step. ^I see Group Participants popover$
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@When("^I see Group Participants popover$")
 	public void ISeeUserProfilePopupPage() throws Exception {
@@ -31,10 +28,10 @@ public class GroupPopoverPageSteps {
 
 	/**
 	 * Verify that Group Participants popover is not visible
-	 * 
+	 *
 	 * @step. ^I do not see Group Participants popover$
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Then("^I do not see Group Participants popover$")
 	public void IDontSeeUserProfilePopupPage() throws Exception {
@@ -44,9 +41,9 @@ public class GroupPopoverPageSteps {
 
 	/**
 	 * Click leave group chat button on Group Participants popover
-	 * 
+	 *
 	 * @step. ^I click Leave button on Group Participants popover$
-	 * 
+	 *
 	 */
 	@When("^I click Leave button on Group Participants popover$")
 	public void IClickLeaveGroupChat() {
@@ -57,10 +54,10 @@ public class GroupPopoverPageSteps {
 	/**
 	 * Confirm leaving group chat by clicking LEAVE button on Group Participants
 	 * popover
-	 * 
+	 *
 	 * @step. ^I confirm leave group conversation on Group Participants popover$
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@When("^I confirm leave group conversation on Group Participants popover$")
 	public void IClickConfirmLeaveGroupChat() throws Exception {
@@ -70,9 +67,9 @@ public class GroupPopoverPageSteps {
 
 	/**
 	 * Click on a participant on Group Participants popover
-	 * 
+	 *
 	 * @step. ^I click on participant (.*) on Group Participants popover$
-	 * 
+	 *
 	 * @param name
 	 *            user name string
 	 * @throws Exception
@@ -80,15 +77,15 @@ public class GroupPopoverPageSteps {
 	@When("^I click on participant (.*) on Group Participants popover$")
 	public void IClickOnParticipant(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		((GroupPopoverContainer) PagesCollection.popoverPage)
+		PagesCollection.popoverPage = ((GroupPopoverContainer) PagesCollection.popoverPage)
 				.clickOnParticipant(name);
 	}
 
 	/**
 	 * Verifies whether Pending button is visible on Group Participants popover
-	 * 
+	 *
 	 * @step. ^I see Pending button on Group Participants popover$
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@Then("^I see Pending button on Group Participants popover$")
@@ -106,9 +103,9 @@ public class GroupPopoverPageSteps {
 
 	/**
 	 * Click Pending button on Group Participants popover
-	 * 
+	 *
 	 * @step. ^I click Pending button on Group Participants popover$
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@Then("^I click Pending button on Group Participants popover$")
@@ -119,10 +116,10 @@ public class GroupPopoverPageSteps {
 
 	/**
 	 * Remove participant from group chat by clicking "exit" button
-	 * 
+	 *
 	 * @step. ^I click Remove button on Group Participants popover$
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@When("^I click Remove button on Group Participants popover$")
 	public void IRemoveUserFromGroupChat() throws Exception {
@@ -131,11 +128,24 @@ public class GroupPopoverPageSteps {
 	}
 
 	/**
+	 * Verifies whether Remove button is visible on Group Participants popover
+	 *
+	 * @step. ^I see Remove button on Group Participants popover$
+	 *
+	 * @throws Exception
+	 */
+	@When("^I see Remove button on Group Participants popover$")
+	public void ISeeRemoveUserFromGroupChat() throws Exception {
+		((GroupPopoverContainer) PagesCollection.popoverPage)
+				.isRemoveButtonVisible();
+	}
+
+	/**
 	 * Confirm removing from group chat by clicking REMOVE button
-	 * 
+	 *
 	 * @step. ^I confirm remove from group chat on Group Participants popover$
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@When("^I confirm remove from group chat on Group Participants popover$")
 	public void IConfirmRemoveFromGroupChat() throws Exception {
@@ -145,9 +155,9 @@ public class GroupPopoverPageSteps {
 
 	/**
 	 * Verifies that contact is displayed on Group Participants popover
-	 * 
+	 *
 	 * @step. ^I see (.*) displayed on Group Participants popovere$
-	 * 
+	 *
 	 * @param contactsAliases
 	 * @throws Exception
 	 */
@@ -164,10 +174,10 @@ public class GroupPopoverPageSteps {
 
 	/**
 	 * Set new title for converstaion on Group Participants popover
-	 * 
+	 *
 	 * @step. I change group conversation title to (.*) on Group Participants
 	 *        popover
-	 * 
+	 *
 	 * @param title
 	 *            new conversation title string
 	 */
@@ -179,9 +189,9 @@ public class GroupPopoverPageSteps {
 
 	/**
 	 * Verify conversation title on Group Participants popover
-	 * 
+	 *
 	 * @step. ^I see conversation title (.*) on Group Participants popover$
-	 * 
+	 *
 	 * @param title
 	 *            expected title string
 	 */
@@ -194,10 +204,10 @@ public class GroupPopoverPageSteps {
 
 	/**
 	 * Click on add people button
-	 * 
+	 *
 	 * @step. ^I click Add People button on Group Participants popover$
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@When("^I click Add People button on Group Participants popover$")
 	public void IClickAddPeopleButton() throws Exception {
@@ -207,10 +217,10 @@ public class GroupPopoverPageSteps {
 
 	/**
 	 * Verifies there is a question if you want to add people
-	 * 
+	 *
 	 * @step. ^I see Add People message on Group Participants popover$
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@When("^I see Add People message on Group Participants popover$")
 	public void ISeeAddPeopleMessage() throws Exception {
@@ -220,10 +230,10 @@ public class GroupPopoverPageSteps {
 
 	/**
 	 * Input user name in search field
-	 * 
+	 *
 	 * @step. ^I input user name (.*) in search field on Group Participants
 	 *        popover$
-	 * 
+	 *
 	 * @param name
 	 * @throws Exception
 	 */
@@ -236,9 +246,9 @@ public class GroupPopoverPageSteps {
 
 	/**
 	 * Select user found in search results
-	 * 
+	 *
 	 * @step. ^I select (.*) from Group Participants popover search results$
-	 * 
+	 *
 	 * @param user
 	 * @throws Exception
 	 */
@@ -252,7 +262,7 @@ public class GroupPopoverPageSteps {
 	/**
 	 * Creates conversation with selected users from on Group Participants
 	 * popover
-	 * 
+	 *
 	 * @step. ^I choose to create conversation from Group Participants popover$
 	 * @throws Exception
 	 */
@@ -264,14 +274,55 @@ public class GroupPopoverPageSteps {
 
 	/**
 	 * Click on continue people button
-	 * 
+	 *
 	 * @step. ^I confirm add to group chat on Group Participants popover$
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@When("^I confirm add to chat on Group Participants popover$")
 	public void IClickConfirmAddToChat() throws Exception {
 		((GroupPopoverContainer) PagesCollection.popoverPage)
 				.confirmAddPeople();
+	}
+
+	/**
+	 * Verifies whether add people button tool tip is correct or not.
+	 *
+	 * @throws java.lang.Exception
+	 * @step. ^I see correct add people button tool tip$
+	 *
+	 */
+	@Then("^I see correct add people button tool tip$")
+	public void ThenISeeCorrectAddPeopleButtonToolTip() throws Exception {
+		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
+				.isAddPeopleButtonToolTipCorrect());
+	}
+
+	/**
+	 * Verifies whether leave conversation button tool tip is correct or not.
+	 *
+	 * @throws java.lang.Exception
+	 * @step. ^I see correct leave conversation button tool tip$
+	 *
+	 */
+	@Then("^I see correct leave conversation button tool tip$")
+	public void ThenISeeCorrectLeaveConversationButtonToolTip()
+			throws Exception {
+		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
+				.isLeaveGroupChatButtonToolTipCorrect());
+	}
+
+	/**
+	 * Verifies whether rename conversation button tool tip is correct or not.
+	 *
+	 * @throws java.lang.Exception
+	 * @step. ^I see correct rename conversation button tool tip$
+	 *
+	 */
+	@Then("^I see correct rename conversation button tool tip$")
+	public void ThenISeeCorrectRenameConversationButtonToolTip()
+			throws Exception {
+		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
+				.isRenameConversationToolTipCorrect());
 	}
 }

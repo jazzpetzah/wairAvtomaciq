@@ -5,6 +5,8 @@ import java.util.function.Function;
 public final class WebAppLocators {
 
 	public static final class ActivationPage {
+
+		public static final String xpathSuccessfullResult = "//div[@id='200']//p[contains(@class, 'title') and contains(.,'Account created')]";
 		public static final String xpathBtnOpenWebApp = "//div[contains(@class, 'success') and not(contains(@class, 'hide'))]"
 				+ "//*[contains(@class, 'btn-open-web') and contains(@class,'btn-success')]";
 	}
@@ -34,6 +36,7 @@ public final class WebAppLocators {
 	}
 
 	public static final class ContactListPage {
+
 		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
 		public static final String cssParentContactListItem = "div#conversation-list";
 
@@ -91,6 +94,7 @@ public final class WebAppLocators {
 	}
 
 	public static final class SettingsPage {
+
 		public static final String xpathSettingsDialogRoot = "//div[@id='self-settings' and contains(@class, 'modal-show')]";
 
 		public static final String xpathSettingsCloseButton = "//div[@id='self-settings']//*[@data-uie-name='do-close']";
@@ -99,6 +103,7 @@ public final class WebAppLocators {
 	}
 
 	public static final class SelfProfilePage {
+
 		public static final String xpathGearButton = "//div[@id='show-settings']";
 
 		public static final String xpathGearMenuRoot = "//div[@id='setting-bubble' and contains(@class, 'bubble-show')]";
@@ -178,6 +183,7 @@ public final class WebAppLocators {
 	}
 
 	public static final class ConnectToPage {
+
 		public static final Function<String, String> xpathAcceptRequestButtonByName = name -> String
 				.format("//div[contains(@class, 'connect-name') and span[text()='%s']]/following-sibling::div/div[@id='accept']",
 						name);
@@ -188,6 +194,7 @@ public final class WebAppLocators {
 	}
 
 	public static final class PeoplePickerPage {
+
 		public static final String xpathRoot = "//div[@id='people-picker']";
 
 		public static final String cssNameSearchInput = "div#people-picker input";
@@ -207,6 +214,7 @@ public final class WebAppLocators {
 	}
 
 	public static final class RegistrationPage {
+
 		public static final String xpathRootForm = "//form[@id='form-create']";
 		public static final String cssRootForm = "#form-create";
 
@@ -227,6 +235,7 @@ public final class WebAppLocators {
 	}
 
 	public static final class SelfPictureUploadPage {
+
 		public static final String xpathRootDiv = "//div[@id='self-upload']";
 
 		public static final String xpathSelectPictureButton = xpathRootDiv
@@ -245,6 +254,7 @@ public final class WebAppLocators {
 	}
 
 	public static final class ContactsUploadPage {
+
 		public static final String xpathRootDiv = "//div[@id='self-upload']";
 
 		public static final String xpathCloseButton = xpathRootDiv
@@ -260,6 +270,8 @@ public final class WebAppLocators {
 	public static final class Common {
 
 		public static final String CONTACT_LIST_ONE_PERSON_WAITING = "1 person waiting";
+
+		public static final String TITLE_ATTRIBUTE_LOCATOR = "title";
 	}
 
 	public static final class ProfilePicturePage {
