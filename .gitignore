@@ -1,5 +1,4 @@
 *.metadata
-*.classpath
 *.prefs
 *.pyc
 tests/tools/javadoc-exporter/bin

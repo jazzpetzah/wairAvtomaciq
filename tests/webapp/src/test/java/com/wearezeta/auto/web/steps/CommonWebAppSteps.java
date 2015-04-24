@@ -501,6 +501,21 @@ public class CommonWebAppSteps {
 				conversationName);
 	}
 
+	/**
+	 * Forces the current test to be skipped if current browser does not support
+	 * fast location by XPath
+	 * 
+	 * @step. ^My browser supports fast location by XPath$
+	 * 
+	 */
+	@Given("^My browser supports fast location by XPath$")
+	public void MyBrowserSupportsFastLocationByXpath() {
+		if (WebAppExecutionContext.SlowXPathLocation
+				.existsInCurrentBrowser()) {
+			throw new PendingException();
+		}
+	}
+
 	private void writeBrowserLogsIntoMainLog(RemoteWebDriver driver) {
 		log.debug("BROWSER CONSOLE LOGS:");
 		LogEntries logEntries = driver.manage().logs().get(LogType.BROWSER);
