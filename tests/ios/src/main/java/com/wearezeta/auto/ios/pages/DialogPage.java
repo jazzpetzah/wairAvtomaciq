@@ -173,9 +173,11 @@ public class DialogPage extends IOSPage {
 		return new StartedCallPage(getDriver(), getWait());
 	}
 
-	public void waitForCursorInputVisible() {
+	public boolean waitForCursorInputVisible() throws Exception {
 		this.getWait()
 				.until(ExpectedConditions.visibilityOf(conversationInput));
+		
+		return DriverUtils.isElementDisplayed(getDriver(), conversationInput);
 	}
 
 	public void waitForYouAddedCellVisible() {

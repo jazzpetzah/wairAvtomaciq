@@ -1,11 +1,11 @@
 Feature: Search
 
-  @regression @id2147 
+  @regression @id2147
   Scenario Outline: Verify search by email
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
-    And I swipe down contact list
+    And I open search by clicking plus button
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
