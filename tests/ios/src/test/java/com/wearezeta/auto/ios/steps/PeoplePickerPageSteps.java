@@ -112,6 +112,27 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
+	 * Swipes a suggested contact away completely to dismiss
+	 * 
+	 * @step. I swipe completely to dismiss suggested contact (.*)
+	 * @param contact
+	 *            name of suggested contact to swipe
+	 * @throws Exception
+	 */
+
+	@When("I swipe completely to dismiss suggested contact (.*)")
+	public void SwipeCompletelyToDismiss(String contact) throws Exception {
+		try {
+			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+		PagesCollection.peoplePickerPage
+				.swipeCompletelyToDismissSuggestedContact(contact);
+	}
+	
+	
+	/**
 	 * Taps the hide button for a suggested contact
 	 * 
 	 * @step. I tap hide for suggested contact

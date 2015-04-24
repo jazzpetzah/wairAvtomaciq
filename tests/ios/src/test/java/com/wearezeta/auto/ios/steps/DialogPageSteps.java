@@ -53,7 +53,7 @@ public class DialogPageSteps {
 	@When("^I see dialog page$")
 	public void WhenISeeDialogPage() throws Exception {
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.iOSPage;
-		PagesCollection.dialogPage.waitForCursorInputVisible();
+		Assert.assertTrue(PagesCollection.dialogPage.waitForCursorInputVisible());
 	}
 
 	@When("I tap on dialog page")
@@ -367,7 +367,7 @@ public class DialogPageSteps {
 	public void ISwipeRightOnDialogPage() throws Exception {
 		PagesCollection.contactListPage = (ContactListPage) PagesCollection.dialogPage
 				.swipeRight(1000,
-						DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, 30);
+						DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, 28);
 	}
 
 	@When("I send long message")

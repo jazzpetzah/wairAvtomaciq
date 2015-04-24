@@ -503,6 +503,21 @@ public class CommonWebAppSteps {
 	}
 
 	/**
+	 * Forces the current test to be skipped if current browser does not support
+	 * fast location by XPath
+	 * 
+	 * @step. ^My browser supports fast location by XPath$
+	 * 
+	 */
+	@Given("^My browser supports fast location by XPath$")
+	public void MyBrowserSupportsFastLocationByXpath() {
+		if (WebAppExecutionContext.SlowXPathLocation
+				.existsInCurrentBrowser()) {
+			throw new PendingException();
+		}
+	}
+
+	/**
 	 * Record SHA256-hash of current user profile picture
 	 * 
 	 * @step. (.*) takes? snapshot of current profile picture$

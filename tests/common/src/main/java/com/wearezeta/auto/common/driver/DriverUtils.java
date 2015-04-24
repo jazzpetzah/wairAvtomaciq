@@ -23,10 +23,10 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -119,7 +119,7 @@ public class DriverUtils {
 					return (drv.findElements(by).size() == 0)
 							|| (drv.findElements(by).size() > 0 && !drv
 									.findElement(by).isDisplayed());
-				} catch (StaleElementReferenceException e) {
+				} catch (WebDriverException e) {
 					return true;
 				}
 			});
@@ -273,9 +273,9 @@ public class DriverUtils {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	public static final int SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL = 100;
-	
+
 	public static void swipeLeft(AppiumDriver driver, WebElement element,
 			int time) {
 		swipeLeft(driver, element, time, SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL,
@@ -299,7 +299,8 @@ public class DriverUtils {
 	}
 
 	public static void swipeRight(AppiumDriver driver, WebElement element,
-			int time, int startPercentX, int startPercentY, int endPercentX, int endPercentY) {
+			int time, int startPercentX, int startPercentY, int endPercentX,
+			int endPercentY) {
 		final Point coords = element.getLocation();
 		final Dimension elementSize = element.getSize();
 		final int xStartOffset = (int) Math.round(elementSize.width
@@ -311,18 +312,17 @@ public class DriverUtils {
 		final int yEndOffset = (int) Math.round(elementSize.height
 				* (endPercentY / 100.0));
 		try {
-			driver.swipe(coords.x + xStartOffset, coords.y + yStartOffset, coords.x + xEndOffset,
-					coords.y + yEndOffset, time);
+			driver.swipe(coords.x + xStartOffset, coords.y + yStartOffset,
+					coords.x + xEndOffset, coords.y + yEndOffset, time);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	public static void swipeRight(AppiumDriver driver, WebElement element,
 			int time) {
 		swipeRight(driver, element, time,
-				SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL,
-				DEFAULT_PERCENTAGE);
+				SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, DEFAULT_PERCENTAGE);
 	}
 
 	public static void swipeUp(AppiumDriver driver, WebElement element,
@@ -342,7 +342,7 @@ public class DriverUtils {
 	}
 
 	public static final int SWIPE_Y_DEFAULT_PERCENTAGE_VERTICAL = 100;
-	
+
 	public static void swipeUp(AppiumDriver driver, WebElement element, int time) {
 		swipeUp(driver, element, time, DEFAULT_PERCENTAGE,
 				SWIPE_Y_DEFAULT_PERCENTAGE_VERTICAL);

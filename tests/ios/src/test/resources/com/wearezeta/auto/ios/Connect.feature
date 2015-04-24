@@ -6,7 +6,7 @@ Feature: Connect
     Given Myself is connected to <Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I swipe down contact list
+    When I open search by clicking plus button
     And I see People picker page
     And I tap on Search input on People picker page
     Given I wait up to 15 seconds until <ContactEmail> exists in backend search results
@@ -196,7 +196,7 @@ Feature: Connect
     Given Myself is connected to <Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I swipe down contact list
+    When I open search by clicking plus button
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
@@ -252,7 +252,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I swipe down contact list
+    When I open search by clicking plus button
     And I see People picker page
     And I tap on Search input on People picker page
     And I wait up to 15 seconds until <ContactEmail> exists in backend search results
@@ -282,7 +282,7 @@ Feature: Connect
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I swipe down contact list
+    When I open search by clicking plus button
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
