@@ -165,32 +165,23 @@ Feature: People View
     And I see <Contact> user profile page
     And I press options menu button
     Then I see correct 1:1 options menu
-    And I do not see profile page
     When I tap on center of screen
     Then I see profile page
     And I do not see 1:1 options menu
     When I press options menu button
     Then I see correct 1:1 options menu
-    And I do not see profile page
     When I press back button
     Then I see profile page
     And I do not see 1:1 options menu
     When I press options menu button
     Then I see correct 1:1 options menu
-    And I do not see profile page
-    When I swipe up
-    Then I see correct 1:1 options menu
-    And I do not see profile page
-    When I swipe left
-    Then I see correct 1:1 options menu
-    And I do not see profile page
-    When I swipe right
-    Then I see correct 1:1 options menu
-    And I do not see profile page
-    When I do small swipe down
-    Then I see correct 1:1 options menu
-    And I do not see profile page
     When I swipe down
+    Then I see profile page
+    And I do not see 1:1 options menu
+    When I swipe left
+    And I swipe up
+    And I swipe right
+    And I do small swipe down
     Then I see profile page
     And I do not see 1:1 options menu
     When I press options menu button
