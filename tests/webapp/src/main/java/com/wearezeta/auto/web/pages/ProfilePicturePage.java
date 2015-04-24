@@ -52,6 +52,12 @@ public class ProfilePicturePage extends WebPage {
 				.getFullPicturePath(pictureName);
 		assert new File(srcPicturePath).exists() : srcPicturePath
 				+ " file should exist on hub file system";
+
+		/*
+		 * The code above allows to upload the picture to the remote mode
+		 * without Selenium interaction This could be useful when we have better
+		 * solution for drag and drop
+		 */
 		// final String dstPicturePathForScp = WebAppConstants.TMP_ROOT + "/"
 		// + pictureName;
 		// WebCommonUtils.putFileOnExecutionNode(this.getDriver().getNodeIp(),
