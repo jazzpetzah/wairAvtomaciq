@@ -153,17 +153,6 @@ public class LoginPageSteps {
 	}
 
 	/**
-	 * -unused
-	 * 
-	 * @step. ^I see sign in and join buttons$
-	 */
-	@When("^I see sign in and join buttons$")
-	public void WhenISeeSignInAndJoinButton() {
-		Assert.assertTrue("We don't see sign in buttons",
-				PagesCollection.loginPage.isWelcomeButtonsExist());
-	}
-
-	/**
 	 * Checks to see that the welcome screen is visible
 	 * 
 	 * @step. ^I see sign in and join buttons$

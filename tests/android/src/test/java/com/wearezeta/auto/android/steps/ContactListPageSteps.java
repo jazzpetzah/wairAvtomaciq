@@ -1,10 +1,7 @@
 package com.wearezeta.auto.android.steps;
 
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
-
 import com.wearezeta.auto.android.pages.*;
-import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
@@ -167,52 +164,6 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Establishes a group chat between the current user and two other users
-	 * (Consider making the number of other users variable)
-	 * 
-	 * @step. ^I create group chat with (.*) and (.*)$
-	 * @param contact1
-	 *            The first user
-	 * @param contact2
-	 *            The second user
-	 * @throws Exception
-	 */
-	@When("^I create group chat with (.*) and (.*)$")
-	public void ICreateGroupChat(String contact1, String contact2)
-			throws Exception {
-		try {
-			contact1 = usrMgr.findUserByNameOrNameAlias(contact1).getName();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		try {
-			contact2 = usrMgr.findUserByNameOrNameAlias(contact2).getName();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		WhenITapOnContactName(contact1);
-		DialogPageSteps dialogSteps = new DialogPageSteps();
-		dialogSteps.WhenISeeDialogPage();
-		dialogSteps.WhenISwipeLeftOnDialogPage();
-
-		OtherUserPersonalInfoPageSteps infoPageSteps = new OtherUserPersonalInfoPageSteps();
-		infoPageSteps.WhenISeeOherUserProfilePage(contact1);
-		infoPageSteps.WhenISwipeDownOtherUserProfilePage();
-
-		PeoplePickerPageSteps pickerSteps = new PeoplePickerPageSteps();
-		pickerSteps.WhenISeePeoplePickerPage();
-		pickerSteps.WhenIInputInPeoplePickerSearchFieldUserName(contact2);
-		pickerSteps.WhenISeeUserFoundOnPeoplePickerPage(contact2);
-		pickerSteps.WhenITapOnUserNameFoundOnPeoplePickerPage(contact2);
-		pickerSteps.WhenIClickOnAddToConversationButton();
-
-		DialogPageSteps groupChatSteps = new DialogPageSteps();
-		final String[] names = new String[] { contact1, contact2 };
-		groupChatSteps.ThenISeeGroupChatPage(StringUtils.join(names,
-				CommonSteps.ALIASES_SEPARATOR));
-	}
-
-	/**
 	 * Swipes right on a contact to archive the conversation with that contact
 	 * (Perhaps this step should only half swipe to reveal the archive button,
 	 * since the "I swipe archive conversation" step exists)
@@ -231,28 +182,6 @@ public class ContactListPageSteps {
 		}
 		AndroidPage page = PagesCollection.contactListPage.swipeRightOnContact(
 				1000, contact);
-		if (page instanceof DialogPage) {
-			PagesCollection.dialogPage = (DialogPage) page;
-		}
-	}
-
-	/**
-	 * Doesn't currently work? (See comments for "I swipe right on a contact")
-	 * 
-	 * @step. ^I swipe archive conversation (.*)$
-	 * @param contact
-	 *            the contact on which to swipe to archive
-	 * @throws Exception
-	 */
-	@When("^I swipe archive conversation (.*)$")
-	public void ISwipeArchiveConversation(String contact) throws Exception {
-		try {
-			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		AndroidPage page = PagesCollection.contactListPage
-				.swipeOnArchiveUnarchive(contact);
 		if (page instanceof DialogPage) {
 			PagesCollection.dialogPage = (DialogPage) page;
 		}

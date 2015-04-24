@@ -85,7 +85,7 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * -unused
+	 *  Swipe down people picker
 	 * 
 	 * @step. ^I swipe down people picker$
 	 * 
@@ -193,7 +193,7 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * Checks to see a user has been found in the people picker search list
+	 *  Wait for a user in the people picker search list
 	 * 
 	 * @step. ^I see user (.*) found on People picker page$
 	 * 
@@ -272,22 +272,6 @@ public class PeoplePickerPageSteps {
 	public void WhenITapOnGmailLink() throws NumberFormatException, Exception {
 		PagesCollection.commonAndroidPage = PagesCollection.peoplePickerPage
 				.tapOnGmailLink();
-	}
-
-	/**
-	 * -unused
-	 * 
-	 * @step. ^I tap on group name found on People picker page (.*)$
-	 * 
-	 * @param contact
-	 * @throws Throwable
-	 */
-	@When("^I tap on group name found on People picker page (.*)$")
-	public void WhenITapOnGroupNameFoundOnPeoplePickerPage(String contact)
-			throws Throwable {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		PagesCollection.androidPage = PagesCollection.peoplePickerPage
-				.selectGroup(contact);
 	}
 
 	/**
@@ -402,7 +386,7 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * -duplicate of WhenISeeUserFoundOnPeoplePickerPage(String)
+	 * Check that user exists in People picker
 	 * 
 	 * @step. ^I see user (.*) in People picker$
 	 * 
