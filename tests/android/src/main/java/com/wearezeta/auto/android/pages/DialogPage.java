@@ -33,6 +33,8 @@ public class DialogPage extends AndroidPage {
 	public static final String MEDIA_PAUSE = "PAUSE";
 	public static final String PING_LABEL = "PINGED";
 	public static final String HOT_PING_LABEL = "PINGED AGAIN";
+	public static final String MUTE_BUTTON_LABEL = "MUTE";
+	public static final String SPEAKER_BUTTON_LABEL = "SPEAKER";
 	public static final String I_LEFT_CHAT_MESSAGE = "YOU HAVE LEFT";
 
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classEditText)
@@ -125,6 +127,21 @@ public class DialogPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idPing")
 	private WebElement pingBtn;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idCallingMessage")
+	private WebElement callingMessageText;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idCall")
+	private WebElement callBtn;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMute")
+	private WebElement muteBtn;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idSpeaker")
+	private WebElement speakerBtn;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idCancelCall")
+	private WebElement cancelCallBtn;
+	
 	@AndroidFindBy(xpath = AndroidLocators.OtherUserPersonalInfoPage.xpathGroupChatInfoLinearLayout)
 	private List<WebElement> linearLayout;
 
@@ -198,6 +215,54 @@ public class DialogPage extends AndroidPage {
 		Thread.sleep(1000);
 	}
 
+	public void tapCallBtn() throws InterruptedException {
+		refreshUITree();
+		callBtn.click();
+		Thread.sleep(1000);
+	}
+	
+	public void tapMuteBtn() throws InterruptedException {
+		refreshUITree();
+		muteBtn.click();
+		Thread.sleep(1000);
+	}
+	
+	public void tapSpeakerBtn() throws InterruptedException {
+		refreshUITree();
+		speakerBtn.click();
+		Thread.sleep(1000);
+	}
+	
+	public void tapCancelCallBtn() throws InterruptedException {
+		refreshUITree();
+		cancelCallBtn.click();
+		Thread.sleep(1000);
+	}
+	
+	public double checkCallingButton(String label) throws Exception {
+		refreshUITree();
+		String path = null;
+		BufferedImage callingButtonImage = null;
+		if (label.equals(MUTE_BUTTON_LABEL)) {
+			callingButtonImage = getElementScreenshot(muteBtn);
+			path = CommonUtils.getCallingMuteButtonPath(DialogPage.class);
+		} else if (label.equals(SPEAKER_BUTTON_LABEL)) {
+			callingButtonImage = getElementScreenshot(speakerBtn);
+			path = CommonUtils.getCallingSpeakerButtonPath(DialogPage.class);
+		}
+		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
+		return ImageUtil.getOverlapScore(callingButtonImage, templateImage, ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
+	}
+	
+	public boolean checkCallingOverlay() throws Exception {
+		//better way to do this?
+		try{
+			return callingMessageText.isDisplayed();
+		}catch(NoSuchElementException e){
+			return false;
+		}
+	}
+	
 	public void typeMessage(String message) {
 		refreshUITree();
 		cursorInput.sendKeys(message + "\\n");
@@ -528,7 +593,7 @@ public class DialogPage extends AndroidPage {
 			path = CommonUtils.getHotPingIconPath(DialogPage.class);
 		}
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
-		return ImageUtil.getOverlapScore(pingImage, templateImage);
+		return ImageUtil.getOverlapScore(pingImage, templateImage, ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 	}
 
 	public String getKnockText() {

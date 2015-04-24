@@ -172,6 +172,96 @@ public class DialogPageSteps {
 	}
 
 	/**
+	 * Press on the call button in the input controls
+	 * 
+	 * @step. ^I press Call button$
+	 * 
+	 * @throws Throwable
+	 */
+	@When("^I press Call button$")
+	public void WhenIPressCallButton() throws Throwable {
+		PagesCollection.dialogPage.tapCallBtn();
+	}
+	
+	/**
+	 * Press on the mute button in the calling controls
+	 * 
+	 * @step. ^I press Mute button$
+	 * 
+	 * @throws Throwable
+	 */
+	@When("^I press Mute button$")
+	public void WhenIPressMuteButton() throws Throwable {
+		PagesCollection.dialogPage.tapMuteBtn();
+	}
+	
+	/**
+	 * Press on the Speaker button in the calling controls
+	 * 
+	 * @step. ^I press Speaker button$
+	 * 
+	 * @throws Throwable
+	 */
+	@When("^I press Speaker button$")
+	public void WhenIPressSpeakerButton() throws Throwable {
+		PagesCollection.dialogPage.tapSpeakerBtn();
+	}
+	
+	/**
+	 * Press on the Cancel call button in the Calling controls
+	 * 
+	 * @step. ^I press Cancel call button$
+	 * 
+	 * @throws Throwable
+	 */
+	@When("^I press Cancel call button$")
+	public void WhenIPressCancelCallButton() throws Throwable {
+		PagesCollection.dialogPage.tapCancelCallBtn();
+	}
+	
+	/**
+	 * 	Checks to see if a certain calling button is pressed
+	 * 
+	 * @step. ^I see (.*) calling button is pressed$
+	 * 
+	 * @param buttonName
+	 *        the name of the calling button to check
+	 * 
+	 * @throws Throwable
+	 */
+	@Then("^I see (.*) calling button is pressed$")
+	public void WhenIPressCancelCallButton(String buttonName) throws Throwable {
+		double score = PagesCollection.dialogPage.checkCallingButton(buttonName);
+//		Assert.assertTrue(
+//				"Calling button not present or not clicked. Expected >= 0.90, current = "
+//						+ score, score >= 0.90d);
+	}
+	
+	/**
+	 * 	Checks to see if call overlay is present
+	 * 
+	 * @step. ^I see call overlay$
+	 * 
+	 * @throws Throwable
+	 */
+	@Then("^I see call overlay$")
+	public void WhenISeeCallOverlay() throws Throwable {
+		Assert.assertTrue("Call overlay not visible", PagesCollection.dialogPage.checkCallingOverlay());
+	}
+	
+	/**
+	 * 	Checks to see if call overlay IS NOT present
+	 * 
+	 * @step. ^I do not see call overlay$
+	 * 
+	 * @throws Throwable
+	 */
+	@Then("^I do not see call overlay$")
+	public void WhenIDoNotSeeCallOverlay() throws Throwable {
+		Assert.assertFalse("Call overlay is visible, it should have been dismissed", PagesCollection.dialogPage.checkCallingOverlay());
+	}
+	
+	/**
 	 * Tap on Dialog page bottom for scrolling page to the end
 	 * 
 	 * @step. ^I tap Dialog page bottom$
