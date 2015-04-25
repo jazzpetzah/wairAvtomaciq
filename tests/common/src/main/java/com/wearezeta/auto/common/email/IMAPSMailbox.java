@@ -16,8 +16,7 @@ import javax.mail.*;
 
 import org.apache.log4j.Logger;
 
-import com.sun.mail.iap.CommandFailedException;
-import com.sun.mail.iap.ConnectionException;
+import com.sun.mail.iap.ProtocolException;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
@@ -91,8 +90,8 @@ public class IMAPSMailbox {
 				try {
 					folderToOpen.open(Folder.READ_ONLY);
 					break;
-				} catch (Exception e) {
-					if (((e instanceof CommandFailedException) || (e instanceof ConnectionException))
+				} catch (Exception e) {	
+					if (((e instanceof MessagingException) || (e instanceof ProtocolException))
 							&& ntry + 1 < MAX_OPEN_RETRIES) {
 						log.error(String
 								.format("Folder open operation failed: '%s' (retry %s of %s)...",
