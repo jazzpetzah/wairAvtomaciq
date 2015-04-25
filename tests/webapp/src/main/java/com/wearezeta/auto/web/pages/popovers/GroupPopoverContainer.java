@@ -50,9 +50,8 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 		this.leaveGroupConfirmationPopoverPage.confirmLeaveGroupChat();
 	}
 
-	public SingleUserPopoverContainer clickOnParticipant(String name)
-			throws Exception {
-		return this.participantsListPopoverPage.clickOnParticipant(name);
+	public void clickOnParticipant(String name) throws Exception {
+		this.participantsListPopoverPage.clickOnParticipant(name);
 	}
 
 	public void clickRemoveFromGroupChat() throws Exception {

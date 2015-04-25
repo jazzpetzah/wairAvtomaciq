@@ -77,7 +77,7 @@ public class GroupPopoverPageSteps {
 	@When("^I click on participant (.*) on Group Participants popover$")
 	public void IClickOnParticipant(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		PagesCollection.popoverPage = ((GroupPopoverContainer) PagesCollection.popoverPage)
+		((GroupPopoverContainer) PagesCollection.popoverPage)
 				.clickOnParticipant(name);
 	}
 

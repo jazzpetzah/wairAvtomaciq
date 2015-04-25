@@ -41,7 +41,7 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 		leaveButton.click();
 	}
 
-	public SingleUserPopoverContainer clickOnParticipant(String name)
+	public void clickOnParticipant(String name)
 			throws Exception {
 		final By locator = By
 				.xpath(PopoverLocators.GroupPopover.ParticipantsListPage.xpathParticipantByName
@@ -50,7 +50,6 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 		WebElement participant = driver.findElement(locator);
 		assert DriverUtils.waitUntilElementClickable(driver, participant);
 		participant.click();
-		return new SingleUserPopoverContainer(this.getDriver(), this.getWait());
 	}
 
 	@Override
