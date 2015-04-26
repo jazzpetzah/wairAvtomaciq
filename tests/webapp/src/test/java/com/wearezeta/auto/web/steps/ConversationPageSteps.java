@@ -1,13 +1,19 @@
 package com.wearezeta.auto.web.steps;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
+
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
@@ -197,20 +203,21 @@ public class ConversationPageSteps {
 	 *             if action message did not appear in conversation
 	 *
 	 * @param message
-	 *
-	 * @param contact
+	 *            constant part of the system message
+	 * @param contacts
+	 *            list of comma separated contact names/aliases
 	 * @throws Exception
 	 *
 	 */
 	@Then("^I see (.*) action for (.*) in conversation$")
 	public void ThenISeeActionForContactInConversation(String message,
-			String contact) throws Exception {
-		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		if (contact.contains(",")) {
-			contact = contact.replaceAll(",", ", ");
-		}
+			String contacts) throws Exception {
+		contacts = usrMgr.replaceAliasesOccurences(contacts, FindBy.NAME_ALIAS);
+		Set<String> parts = new HashSet<String>();
+		parts.add(message);
+		parts.addAll(CommonSteps.splitAliases(contacts));
 		Assert.assertTrue(PagesCollection.conversationPage
-				.isActionMessageSent(message + " " + contact));
+				.isActionMessageSent(parts));
 	}
 
 	/**
@@ -238,15 +245,15 @@ public class ConversationPageSteps {
 			String message, String contacts) throws Exception {
 		user1 = usrMgr.replaceAliasesOccurences(user1, FindBy.NAME_ALIAS);
 		contacts = usrMgr.replaceAliasesOccurences(contacts, FindBy.NAME_ALIAS);
-		if (contacts.contains(",")) {
-			contacts = contacts.replaceAll(",", ", ");
-		}
-		if (contacts.contains(usrMgr.getSelfUser().getName())) {
+		if (contacts.contains(usrMgr.getSelfUserOrThrowError().getName())) {
 			contacts = contacts.replace(usrMgr.getSelfUser().getName(), "you");
 		}
-		String actionMessage = user1 + " " + message + " " + contacts;
+		Set<String> parts = new HashSet<String>();
+		parts.add(message);
+		parts.add(user1);
+		parts.addAll(CommonSteps.splitAliases(contacts));
 		Assert.assertTrue(PagesCollection.conversationPage
-				.isActionMessageSent(actionMessage));
+				.isActionMessageSent(parts));
 	}
 
 	/**
