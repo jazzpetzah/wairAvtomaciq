@@ -27,8 +27,9 @@ public class ResultJSON extends TestcasesStorage {
 
 	private static Map<String, Integer> statusPriorityMap = new HashMap<String, Integer>();
 	static {
-		statusPriorityMap.put("failed", 2);
-		statusPriorityMap.put("skipped", 1);
+		statusPriorityMap.put("failed", 3);
+		statusPriorityMap.put("skipped", 2);
+		statusPriorityMap.put("pending", 1);
 		statusPriorityMap.put("passed", 0);
 	}
 
@@ -44,13 +45,13 @@ public class ResultJSON extends TestcasesStorage {
 							.getString("status");
 					final int srcStepPriority = statusPriorityMap
 							.containsKey(srcStepResult) ? statusPriorityMap
-							.get(srcStepResult) : 3;
+							.get(srcStepResult) : 4;
 					final String dstStepResult = dstSteps
 							.getJSONObject(dstStepIdx).getJSONObject("result")
 							.getString("status");
 					final int dstStepPriority = statusPriorityMap
 							.containsKey(dstStepResult) ? statusPriorityMap
-							.get(dstStepResult) : 3;
+							.get(dstStepResult) : 4;
 					if (srcStepPriority > dstStepPriority) {
 						dstSteps.getJSONObject(dstStepIdx)
 								.getJSONObject("result")
