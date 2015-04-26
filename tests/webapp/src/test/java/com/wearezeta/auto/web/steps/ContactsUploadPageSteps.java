@@ -15,7 +15,7 @@ public class ContactsUploadPageSteps {
 	 * @throws Exception
 	 */
 	@And("^I see Contacts Upload dialog$")
-	public void ISeeSelfPictureUpload() throws Exception {
+	public void ISeeContactsUploadDialog() throws Exception {
 		if (PagesCollection.contactsUploadPage == null) {
 			PagesCollection.contactsUploadPage = new ContactsUploadPage(
 					PagesCollection.loginPage.getDriver(),
@@ -31,7 +31,7 @@ public class ContactsUploadPageSteps {
 	 * 
 	 */
 	@And("^I close Contacts Upload dialog$")
-	public void IForceCarouselMode() {
+	public void ICloseContactsUploadDialog() {
 		PagesCollection.contactsUploadPage.close();
 	}
 }
