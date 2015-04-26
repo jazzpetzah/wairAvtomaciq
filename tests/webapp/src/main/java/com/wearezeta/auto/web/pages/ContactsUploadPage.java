@@ -14,19 +14,28 @@ public class ContactsUploadPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactsUploadPage.xpathCloseButton)
 	private WebElement closeButton;
 
+	@FindBy(how = How.XPATH, using = WebAppLocators.ContactsUploadPage.xpathShareContactsButton)
+	private WebElement shareContactsButton;
+
 	public ContactsUploadPage(ZetaWebAppDriver driver, WebDriverWait wait)
 			throws Exception {
 		super(driver, wait);
 	}
 
 	public void waitUntilVisible(int secondsTimeout) throws Exception {
-		assert DriverUtils.isElementDisplayed(driver,
-				By.xpath(WebAppLocators.ContactsUploadPage.xpathShareContactsButton),
-				secondsTimeout) : "Contacts upload dialog has not been show within "
+		assert DriverUtils
+				.isElementDisplayed(
+						driver,
+						By.xpath(WebAppLocators.ContactsUploadPage.xpathShareContactsButton),
+						secondsTimeout) : "Contacts upload dialog has not been show within "
 				+ secondsTimeout + "second(s) timeout";
 	}
 
 	public void close() {
 		closeButton.click();
+	}
+
+	public void clickShareContactsButton() {
+		shareContactsButton.click();
 	}
 }
