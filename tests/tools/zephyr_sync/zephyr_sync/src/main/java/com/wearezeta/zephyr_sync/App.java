@@ -634,8 +634,7 @@ public class App {
 					line.getOptionValue(PARAM_ZEPHYR_SERVER));
 			if (executionType.equals(EXECUTION_TYPE_FEATURES_SYNC)
 					|| executionType.equals(EXECUTION_TYPE_RESULTS_SYNC)
-					|| executionType.equals(EXECUTION_TYPE_VERIFICATION_SYNC)
-					|| executionType.equals(EXECUTION_TYPE_BRIEF_REPORT)) {
+					|| executionType.equals(EXECUTION_TYPE_VERIFICATION_SYNC)) {
 				verifyParameterExists(line, PARAM_HTML_REPORT_PATH);
 				final String htmlReportPath = line
 						.getOptionValue(PARAM_HTML_REPORT_PATH);
