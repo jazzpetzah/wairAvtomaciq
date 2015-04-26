@@ -643,8 +643,6 @@ public class App {
 					ReportGenerator.generate(
 							executeSyncFeaturesAction(line, zephyrDB),
 							htmlReportPath);
-				} else if (executionType.equals(EXECUTION_TYPE_BRIEF_REPORT)) {
-					executeBriefReportAction(line);
 				} else {
 					ReportGenerator.generate(
 							executeSyncResultsAction(line, zephyrDB),
@@ -653,6 +651,8 @@ public class App {
 				System.out
 						.println("Execution report has been successfully saved as "
 								+ htmlReportPath);
+			} else if (executionType.equals(EXECUTION_TYPE_BRIEF_REPORT)) {
+				executeBriefReportAction(line);
 			} else if (executionType.equals(EXECUTION_TYPE_PHASE_SYNC)) {
 				final int updatedTestcasesCount = executeSyncPhaseAction(line,
 						zephyrDB);
