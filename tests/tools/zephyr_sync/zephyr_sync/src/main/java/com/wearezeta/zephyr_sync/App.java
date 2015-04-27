@@ -58,6 +58,7 @@ public class App {
 	private static final String EXECUTION_TYPE_VERIFICATION_SYNC = "verification_sync";
 	private static final String EXECUTION_TYPE_PHASE_SYNC = "phase_sync";
 	private static final String EXECUTION_TYPE_PHASE_VERIFICATION = "phase_verification";
+	private static final String EXECUTION_TYPE_BRIEF_REPORT = "brief_report";
 	private static final String EXECUTION_TYPE_ZEPHYR_DB_FIX = "zephyr_db_fix";
 
 	private static String transformURLIntoLinks(String text) {
@@ -497,6 +498,7 @@ public class App {
 								+ EXECUTION_TYPE_VERIFICATION_SYNC + " or "
 								+ EXECUTION_TYPE_PHASE_SYNC + " or "
 								+ EXECUTION_TYPE_PHASE_VERIFICATION + " or "
+								+ EXECUTION_TYPE_BRIEF_REPORT + " or "
 								+ EXECUTION_TYPE_ZEPHYR_DB_FIX).hasArg()
 				.isRequired().create());
 		options.addOption(OptionBuilder
@@ -604,6 +606,17 @@ public class App {
 				.getPhaseByName(cmdLine.getOptionValue(PARAM_PHASE_NAME));
 	}
 
+	private static void executeBriefReportAction(CommandLine cmdLine)
+			throws Exception {
+		verifyFileParameterExists(cmdLine, PARAM_REPORT_PATH);
+
+		ResultJSON resultJSON = new ResultJSON(
+				cmdLine.getOptionValue(PARAM_REPORT_PATH));
+		final List<ExecutedCucumberTestcase> executedTestcases = resultJSON
+				.getTestcases();
+		printBriefReport(executedTestcases);
+	}
+
 	private static Map<String, Integer> executeFixZephyrDBAction(
 			CommandLine cmdLine, ZephyrDB zephyrDB) throws Exception {
 		return zephyrDB.fixLostTestcases();
@@ -637,6 +650,8 @@ public class App {
 				System.out
 						.println("Execution report has been successfully saved as "
 								+ htmlReportPath);
+			} else if (executionType.equals(EXECUTION_TYPE_BRIEF_REPORT)) {
+				executeBriefReportAction(line);
 			} else if (executionType.equals(EXECUTION_TYPE_PHASE_SYNC)) {
 				final int updatedTestcasesCount = executeSyncPhaseAction(line,
 						zephyrDB);

@@ -1,6 +1,22 @@
 package com.wearezeta.auto.web.pages;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
+import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.WebAppConstants.Browser;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
+import com.wearezeta.auto.web.common.WebCommonUtils;
+import com.wearezeta.auto.web.locators.WebAppLocators;
+
+import static com.wearezeta.auto.web.locators.WebAppLocators.Common.TITLE_ATTRIBUTE_LOCATOR;
+
+import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
+import com.wearezeta.auto.web.pages.popovers.PeoplePopoverContainer;
+import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
+
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
@@ -12,22 +28,11 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
-import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.web.common.WebAppExecutionContext;
-import com.wearezeta.auto.web.common.WebCommonUtils;
-import com.wearezeta.auto.web.common.WebAppConstants.Browser;
-import com.wearezeta.auto.web.locators.WebAppLocators;
-import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
-import com.wearezeta.auto.web.pages.popovers.PeoplePopoverContainer;
-import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
-
 public class ConversationPage extends WebPage {
-
-	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(ConversationPage.class
 			.getSimpleName());
+
+	private static final String TOOLTIP_PEOPLE = "People";
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathImageMessageEntry)
 	private List<WebElement> imageMessageEntries;
@@ -63,7 +68,8 @@ public class ConversationPage extends WebPage {
 		conversationInput.sendKeys(Keys.ENTER);
 	}
 
-	public boolean isActionMessageSent(final String message) throws Exception {
+	public boolean isActionMessageSent(final Set<String> parts)
+			throws Exception {
 		final By locator = By
 				.xpath(WebAppLocators.ConversationPage.xpathActionMessageEntries);
 		assert DriverUtils.waitUntilElementAppears(this.getDriver(), locator);
@@ -73,7 +79,21 @@ public class ConversationPage extends WebPage {
 		// Get the most recent action message only
 		final String actionMessageInUI = actionMessages.get(
 				actionMessages.size() - 1).getText();
-		return actionMessageInUI.toUpperCase().contains(message.toUpperCase());
+		for (String part : parts) {
+			if (!actionMessageInUI.toUpperCase().contains(part.toUpperCase())) {
+				log.error(String
+						.format("'%s' substring has not been found in '%s' action message",
+								part, actionMessageInUI));
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public boolean isActionMessageSent(String message) throws Exception {
+		Set<String> parts = new HashSet<String>();
+		parts.add(message);
+		return isActionMessageSent(parts);
 	}
 
 	public boolean isMessageSent(String message) throws Exception {
@@ -104,6 +124,11 @@ public class ConversationPage extends WebPage {
 	public PeoplePickerPage clickShowParticipantsButton() throws Exception {
 		showParticipants.click();
 		return new PeoplePickerPage(this.getDriver(), this.getWait());
+	}
+
+	public boolean isPeopleButtonToolTipCorrect() {
+		return TOOLTIP_PEOPLE.equals(showParticipants
+				.getAttribute(TITLE_ATTRIBUTE_LOCATOR));
 	}
 
 	public void sendPicture(String pictureName) throws Exception {

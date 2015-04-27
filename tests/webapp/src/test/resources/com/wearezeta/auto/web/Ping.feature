@@ -1,7 +1,10 @@
 Feature: Ping
 
+  # Ping again in IE may fail because it takes quite long to locate this button after 
+  # the first ping was already sent
   @smoke @id1705
   Scenario Outline: Send ping in 1on1
+    Given My browser supports fast location by XPath
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
@@ -18,6 +21,7 @@ Feature: Ping
 
   @smoke @id1706
   Scenario Outline: Verify you cannot Ping several times in a row
+    Given My browser supports fast location by XPath
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>

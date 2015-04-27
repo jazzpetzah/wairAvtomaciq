@@ -28,11 +28,11 @@ public class ContactListPage extends IOSPage {
 			.getSimpleName());
 
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.90;
-	private final double MIN_ACCEPTABLE_IMAGE_UNREADDOT_VALUE = 0.99;
-	private final double MIN_ACCEPTABLE_IMAGE_PING_VALUE = 0.99;
+	private final double MIN_ACCEPTABLE_IMAGE_UNREADDOT_VALUE = 0.90;
+	private final double MIN_ACCEPTABLE_IMAGE_PING_VALUE = 0.90;
 	
 	private final double MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE =0.80;
-	private final double MIN_ACCEPTABLE_IMAGE_ACCENTCOLOR_VALUE = 0.99;
+	private final double MIN_ACCEPTABLE_IMAGE_ACCENTCOLOR_VALUE = 0.90;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathNameContactList)
 	private List<WebElement> contactListNames;
@@ -42,6 +42,9 @@ public class ContactListPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameProfileName)
 	private WebElement profileName;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.ContactListPage.nameOpenStartUI)
+	private WebElement openStartUI;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameMuteButton)
 	private List<WebElement> muteButtons;
@@ -98,6 +101,11 @@ public class ContactListPage extends IOSPage {
 			}
 		}
 	}
+	
+	public PeoplePickerPage openSearch() throws Exception {
+		openStartUI.click();
+		return new PeoplePickerPage(getDriver(), getWait());
+	}
 
 	public boolean isContactMuted(String contact) {
 
@@ -133,6 +141,10 @@ public class ContactListPage extends IOSPage {
 
 	public IOSPage tapOnName(String name) throws Exception {
 		WebElement el = findNameInContactList(name);
+		if (el == null) {
+			this.minimizeApplication(3);
+			el = findNameInContactList(name);
+		}
 		boolean clickableGlitch = false;
 		try {
 			this.getWait().until(ExpectedConditions.elementToBeClickable(el));

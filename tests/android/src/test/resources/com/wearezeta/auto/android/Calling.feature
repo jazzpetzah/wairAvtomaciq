@@ -81,6 +81,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | autocall    |
 
+<<<<<<< HEAD
   @staging @id347
   Scenario Outline: Send text, image and knock while in the call with same user
     Given There are 2 users where <Name> is me
@@ -110,3 +111,26 @@ Feature: Calling
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend | Message                   | SystemMessage | Action |
       | user1Email | user1Password | user1Name | user2Name | autocall    | simple message in english | YOU           | PINGED |
+      
+  @staging @id2210
+  Scenario Outline: Calling bar buttons are clickable and change its state
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given <Name> has an accent color <AccentColor>
+    Given I Sign in using login <Login> and password <Password>
+    Given I see Contact list with my name <Name>
+	When I tap on contact name <Contact>
+	And I see dialog page
+	And I swipe on text input
+	And I press Call button
+	Then I see call overlay
+	And I press Mute button
+	Then I see MUTE calling button is pressed
+	And I press Speaker button
+	Then I see SPEAKER calling button is pressed
+	And I press Cancel call button
+	Then I do not see call overlay
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | AccentColor |
+      | user1Email | user1Password | user1Name | user2Name | StrongBlue  |

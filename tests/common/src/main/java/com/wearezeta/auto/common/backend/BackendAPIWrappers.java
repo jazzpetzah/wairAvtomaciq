@@ -18,6 +18,7 @@ import java.util.concurrent.Future;
 
 import javax.mail.Message;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
@@ -408,6 +409,13 @@ public final class BackendAPIWrappers {
 		final JSONObject userInfo = BackendREST.getUserInfoByID(id,
 				generateAuthToken(user));
 		return userInfo.getString("name");
+	}
+
+	public static String getUserPictureHash(ClientUser user) throws Exception {
+		final JSONObject userInfo = BackendREST
+				.getUserInfo(generateAuthToken(user));
+		final String picture = userInfo.getJSONArray("picture").toString();
+		return DigestUtils.sha256Hex(picture);
 	}
 
 	public static void sendConnectRequest(ClientUser user, ClientUser contact,

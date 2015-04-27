@@ -200,6 +200,96 @@ public class DialogPageSteps {
 	}
 
 	/**
+	 * Press on the call button in the input controls
+	 * 
+	 * @step. ^I press Call button$
+	 * 
+	 * @throws Throwable
+	 */
+	@When("^I press Call button$")
+	public void WhenIPressCallButton() throws Throwable {
+		PagesCollection.dialogPage.tapCallBtn();
+	}
+	
+	/**
+	 * Press on the mute button in the calling controls
+	 * 
+	 * @step. ^I press Mute button$
+	 * 
+	 * @throws Throwable
+	 */
+	@When("^I press Mute button$")
+	public void WhenIPressMuteButton() throws Throwable {
+		PagesCollection.dialogPage.tapMuteBtn();
+	}
+	
+	/**
+	 * Press on the Speaker button in the calling controls
+	 * 
+	 * @step. ^I press Speaker button$
+	 * 
+	 * @throws Throwable
+	 */
+	@When("^I press Speaker button$")
+	public void WhenIPressSpeakerButton() throws Throwable {
+		PagesCollection.dialogPage.tapSpeakerBtn();
+	}
+	
+	/**
+	 * Press on the Cancel call button in the Calling controls
+	 * 
+	 * @step. ^I press Cancel call button$
+	 * 
+	 * @throws Throwable
+	 */
+	@When("^I press Cancel call button$")
+	public void WhenIPressCancelCallButton() throws Throwable {
+		PagesCollection.dialogPage.tapCancelCallBtn();
+	}
+	
+	/**
+	 * 	Checks to see if a certain calling button is pressed
+	 * 
+	 * @step. ^I see (.*) calling button is pressed$
+	 * 
+	 * @param buttonName
+	 *        the name of the calling button to check
+	 * 
+	 * @throws Throwable
+	 */
+	@Then("^I see (.*) calling button is pressed$")
+	public void WhenIPressCancelCallButton(String buttonName) throws Throwable {
+		double score = PagesCollection.dialogPage.checkCallingButton(buttonName);
+		Assert.assertTrue(
+				"Calling button not present or not clicked. Expected >= 0.95, current = "
+						+ score, score >= 0.95d);
+	}
+	
+	/**
+	 * 	Checks to see if call overlay is present
+	 * 
+	 * @step. ^I see call overlay$
+	 * 
+	 * @throws Throwable
+	 */
+	@Then("^I see call overlay$")
+	public void WhenISeeCallOverlay() throws Throwable {
+		Assert.assertTrue("Call overlay not visible", PagesCollection.dialogPage.checkCallingOverlay());
+	}
+	
+	/**
+	 * 	Checks to see if call overlay IS NOT present
+	 * 
+	 * @step. ^I do not see call overlay$
+	 * 
+	 * @throws Throwable
+	 */
+	@Then("^I do not see call overlay$")
+	public void WhenIDoNotSeeCallOverlay() throws Throwable {
+		Assert.assertFalse("Call overlay is visible, it should have been dismissed", PagesCollection.dialogPage.checkCallingOverlay());
+	}
+	
+	/**
 	 * Tap on Dialog page bottom for scrolling page to the end
 	 * 
 	 * @step. ^I tap Dialog page bottom$
@@ -378,48 +468,6 @@ public class DialogPageSteps {
 	}
 
 	/**
-	 * -unused
-	 * 
-	 * @step. ^I see (.*) added (.*) message on Dialog page$
-	 * 
-	 * @param user
-	 * @param contact
-	 * @throws Throwable
-	 */
-	@Then("^I see (.*) added (.*) message on Dialog page$")
-	public void ISeeAddedMessageOnDialogPage(String user, String contact)
-			throws Throwable {
-		user = usrMgr.findUserByNameOrNameAlias(user).getName();
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		String chatMessage = user + " ADDED " + contact;
-		Assert.assertTrue(PagesCollection.dialogPage.isConnectMessageVisible());
-		Assert.assertTrue(PagesCollection.dialogPage
-				.isConnectMessageValid(chatMessage));
-	}
-
-	/**
-	 * -unused
-	 * 
-	 * @step. ^I multi tap on text input again$
-	 * 
-	 * @throws Throwable
-	 */
-	@Then("^I multi tap on text input again$")
-	public void ThenIMultiTapOnTextInputAgain() throws Throwable {
-		PagesCollection.dialogPage.multiTapOnCursorInput();
-	}
-
-	/**
-	 * -unused
-	 * 
-	 * @step. ^I swipe left on dialog page$
-	 */
-	@When("^I swipe left on dialog page$")
-	public void WhenISwipeLeftOnDialogPage() throws Exception {
-		PagesCollection.dialogPage.swipeLeft(1000);
-	}
-
-	/**
 	 * 
 	 * @step. ^I swipe up on dialog page
 	 * 
@@ -484,19 +532,6 @@ public class DialogPageSteps {
 	}
 
 	/**
-	 * -unused
-	 * -duplicate
-	 * 
-	 * @step. ^I see uploaded picture$
-	 * 
-	 * @throws Exception
-	 */
-	@Then("I see uploaded picture")
-	public void ThenISeeChangedUserPicture() throws Exception {
-		Assert.assertTrue(PagesCollection.dialogPage.dialogImageCompare());
-	}
-
-	/**
 	 * Seems to currently be blocked out in all tests
 	 * 
 	 * @step. ^I see (.*) icon$
@@ -514,22 +549,6 @@ public class DialogPageSteps {
 
 	// ------- From Group Chat Page
 	public static final String userRemovedMessage = "YOU REMOVED ";
-
-	/**
-	 * Swipes right on dialog page, presumably to navigate back to the contact
-	 * list
-	 * 
-	 * -duplicate of #WhenINavigateBackFromDialogPage()
-	 * 
-	 * @step. ^I swipe right on dialog page$
-	 * 
-	 * @throws Throwable
-	 */
-	@When("^I swipe right on dialog page$")
-	public void WhenISwipeRightOnGroupDialogPage() throws Throwable {
-		PagesCollection.contactListPage = (ContactListPage) PagesCollection.dialogPage
-				.swipeRightCoordinates(1000);
-	}
 
 	/**
 	 * Checks to see that a group chat exists, where the name of the group chat
@@ -552,19 +571,6 @@ public class DialogPageSteps {
 		}
 		Assert.assertTrue(PagesCollection.dialogPage
 				.isGroupChatDialogContainsNames(participantNames));
-	}
-
-	/**
-	 * -unused
-	 * 
-	 * @step. ^I see message that I left chat$
-	 * 
-	 * @throws Throwable
-	 */
-	@Then("^I see message that I left chat$")
-	public void ThenISeeMessageThatILeftChat() throws Throwable {
-		Assert.assertTrue(PagesCollection.dialogPage
-				.isMessageExists(DialogPage.I_LEFT_CHAT_MESSAGE));
 	}
 
 	/**

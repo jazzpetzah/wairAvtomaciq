@@ -166,7 +166,7 @@ public class PersonalInfoPageSteps {
 	}
 
 	/**
-	 * -unused
+	 * Swipe right to contact list
 	 * 
 	 * @step. ^I swipe right to contact list$
 	 * 
@@ -176,8 +176,7 @@ public class PersonalInfoPageSteps {
 	public void ISwipeRightToContactList() throws Exception {
 
 		PagesCollection.contactListPage = (ContactListPage) PagesCollection.personalInfoPage
-				.navigateBack();
-		// .swipeRight(1000);
+				.swipeRightCoordinates(1000);
 	}
 
 	/**

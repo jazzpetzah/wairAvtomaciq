@@ -416,6 +416,21 @@ public final class AndroidLocators {
 		public static final String idPing = LOCATORS_PACKAGE
 				+ ":id/gtv__cursor_knock";
 
+		public static final String idCallingMessage = LOCATORS_PACKAGE
+				+ ":id/ttv__calling__message";
+		
+		public static final String idCall = LOCATORS_PACKAGE
+				+ ":id/gtv__cursor_call";
+		
+		public static final String idMute = LOCATORS_PACKAGE
+				+ ":id/cib__calling__mic_mute";
+		
+		public static final String idSpeaker = LOCATORS_PACKAGE
+				+ ":id/cib__calling__speaker";
+		
+		public static final String idCancelCall = LOCATORS_PACKAGE
+				+ ":id/cib__calling__dismiss";
+		
 		public static final String xpathFormatSpecificMessage = "//android.widget.TextView[@resource-id='"
 				+ LOCATORS_PACKAGE
 				+ ":id/ltv__row_conversation__message' and @text='%s']";

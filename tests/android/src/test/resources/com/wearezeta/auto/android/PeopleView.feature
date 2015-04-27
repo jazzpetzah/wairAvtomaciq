@@ -53,7 +53,7 @@ Feature: People View
     And I see dialog page
     And I swipe up on dialog page
     And I press options menu button
-    And I press Leave conversartion button
+    And I press Leave conversation button
     And I confirm leaving
     Then I see Contact list with my name <Name>
 
@@ -165,38 +165,69 @@ Feature: People View
     And I see <Contact> user profile page
     And I press options menu button
     Then I see correct 1:1 options menu
-    And I do not see profile page
     When I tap on center of screen
     Then I see profile page
     And I do not see 1:1 options menu
     When I press options menu button
     Then I see correct 1:1 options menu
-    And I do not see profile page
     When I press back button
     Then I see profile page
     And I do not see 1:1 options menu
     When I press options menu button
     Then I see correct 1:1 options menu
-    And I do not see profile page
-    When I swipe up
-    Then I see correct 1:1 options menu
-    And I do not see profile page
-    When I swipe left
-    Then I see correct 1:1 options menu
-    And I do not see profile page
-    When I swipe right
-    Then I see correct 1:1 options menu
-    And I do not see profile page
-    When I do small swipe down
-    Then I see correct 1:1 options menu
-    And I do not see profile page
     When I swipe down
     Then I see profile page
     And I do not see 1:1 options menu
+    When I swipe left
+    And I swipe up
+    And I swipe right
+    And I do small swipe down
+    Then I do not see 1:1 options menu
+    #And I see profile page
     When I press options menu button
-    Then I see correct 1:1 options menu
-    And I do not see profile page
+    Then I do not see profile page
+    #And I see correct 1:1 options menu
      
     Examples: 
       | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+      
+        @id2214 @staging
+  Scenario Outline: I can dismiss PYMK by Hide button
+    Given There are 2 users where <Name> is me
+    Given <Contact1> is connected to <Name>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I swipe down contact list
+    And I see People picker page
+    And I press Clear button
+    And I wait for 30 seconds
+    And I swipe down contact list
+    And I see People picker page
+    And I swipe on random connect
+    And I click on PYMK hide button
+    Then I do not see random connect
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @id2213 @staging 
+  Scenario Outline: I can dismiss PYMK by swipe
+    Given There are 2 users where <Name> is me
+    Given <Contact1> is connected to <Name>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I swipe down contact list
+    And I see People picker page
+    And I press Clear button
+    And I wait for 30 seconds
+    And I swipe down contact list
+    And I see People picker page
+    And I swipe on random connect
+    And I hide random connect by swipe
+    Then I do not see random connect
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  |
       | user1Email | user1Password | user1Name | user2Name |

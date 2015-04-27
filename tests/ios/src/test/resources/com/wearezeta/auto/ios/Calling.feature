@@ -90,7 +90,7 @@ Feature: Calling
   Scenario Outline: Verify missed call indicator appearance (list)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
-    Given User <Name> change  accent color to <Color>
+    Given User <Name> change accent color to <Color>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When <Contact> calls me using <CallBackend>

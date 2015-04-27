@@ -139,8 +139,7 @@ public class WebCommonUtils extends CommonUtils {
 		}
 	}
 
-	public static String getOperaProfileRoot()
-			throws Exception {
+	public static String getOperaProfileRoot() throws Exception {
 		if (WebAppExecutionContext.isCurrentPlatfromWindows()) {
 			return String
 					.format("C:\\Users\\%s\\AppData\\Roaming\\Opera Software\\Opera Stable\\",
@@ -175,7 +174,8 @@ public class WebCommonUtils extends CommonUtils {
 				.format("%s/%s",
 						WebAppConstants.Scripts.RESOURCES_SCRIPTS_ROOT,
 						WebAppConstants.Scripts.SAFARI_OPEN_TAB_SCRIPT));
-		final String srcScriptPath = String.format("%s/%s", TMP_ROOT,
+		final String srcScriptPath = String.format("%s/%s",
+				WebAppConstants.TMP_ROOT,
 				WebAppConstants.Scripts.SAFARI_OPEN_TAB_SCRIPT);
 		try {
 			formatTextInFileAndSave(scriptStream, srcScriptPath,
@@ -246,8 +246,6 @@ public class WebCommonUtils extends CommonUtils {
 		driver.switchTo().window(oldTabHandle);
 	}
 
-	private static final String TMP_ROOT = "/tmp";
-
 	/**
 	 * Workaround for https://code.google.com/p/selenium/issues/detail?id=4220
 	 * 
@@ -263,13 +261,14 @@ public class WebCommonUtils extends CommonUtils {
 				.format("%s/%s",
 						WebAppConstants.Scripts.RESOURCES_SCRIPTS_ROOT,
 						WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT));
-		final String srcScriptPath = String.format("%s/%s", TMP_ROOT,
+		final String srcScriptPath = String.format("%s/%s",
+				WebAppConstants.TMP_ROOT,
 				WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT);
 		final File srcImage = new File(pictureName);
 		assert srcImage.exists() : "There's no image by path "
 				+ srcImage.getCanonicalPath() + " on your local file system";
-		final File dstImage = new File(String.format("%s/%s", TMP_ROOT,
-				srcImage.getName()));
+		final File dstImage = new File(String.format("%s/%s",
+				WebAppConstants.TMP_ROOT, srcImage.getName()));
 		try {
 			formatTextInFileAndSave(scriptStream, srcScriptPath, new String[] {
 					dstImage.getParent(), dstImage.getName() });
