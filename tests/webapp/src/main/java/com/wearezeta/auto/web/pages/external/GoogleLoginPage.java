@@ -41,7 +41,7 @@ public class GoogleLoginPage extends WebPage {
 		final Set<String> handles = driver.getWindowHandles();
 		signInButton.click();
 		// wait for popup to close
-		new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
+		this.getWait().until(new ExpectedCondition<Boolean>() {
 			@Override
 			public Boolean apply(WebDriver input) {
 				return input.getWindowHandles().size() < handles.size();

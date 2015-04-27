@@ -1,9 +1,5 @@
 package com.wearezeta.auto.web.steps;
 
-import java.util.Set;
-
-import org.openqa.selenium.WebDriver;
-
 import com.wearezeta.auto.web.pages.ContactsUploadPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.external.GoogleLoginPage;
@@ -32,11 +28,7 @@ public class ContactsUploadPageSteps {
 
 	@And("^I see Google login popup$")
 	public void ISeeGoogleLoginPopup() throws Exception {
-		WebDriver driver = PagesCollection.contactsUploadPage.getDriver();
-		Set<String> handles = driver.getWindowHandles();
-		handles.remove(driver.getWindowHandle());
-		assert handles.size() > 0 : "No Popup for Google was found";
-		driver.switchTo().window(handles.iterator().next());
+		PagesCollection.contactsUploadPage.switchToGooglePopup();
 		PagesCollection.googeLoginPage = new GoogleLoginPage(
 				PagesCollection.contactsUploadPage.getDriver(),
 				PagesCollection.contactsUploadPage.getWait());

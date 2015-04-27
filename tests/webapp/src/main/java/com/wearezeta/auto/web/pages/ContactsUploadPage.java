@@ -1,6 +1,9 @@
 package com.wearezeta.auto.web.pages;
 
+import java.util.Set;
+
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -37,5 +40,13 @@ public class ContactsUploadPage extends WebPage {
 
 	public void clickShareContactsButton() {
 		shareContactsButton.click();
+	}
+
+	public void switchToGooglePopup() {
+		WebDriver driver = this.getDriver();
+		Set<String> handles = driver.getWindowHandles();
+		handles.remove(driver.getWindowHandle());
+		assert handles.size() > 0 : "No Popup for Google was found";
+		driver.switchTo().window(handles.iterator().next());
 	}
 }
