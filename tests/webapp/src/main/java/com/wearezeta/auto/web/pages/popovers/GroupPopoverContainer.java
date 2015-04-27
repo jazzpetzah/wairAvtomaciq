@@ -6,7 +6,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class GroupPopoverContainer extends PeoplePopoverContainer {
 
-	private SingleUserInfoPopoverPage singleUserPopoverPage;
 	private ParticipantsListPopoverPage participantsListPopoverPage;
 	private ConnectedParticipantInfoPopoverPage connectedParticipantInfoPopoverPage;
 	private NonConnectedParticipantInfoPopoverPage nonConnectedParticipantInfoPopoverPage;
@@ -18,8 +17,6 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 	public GroupPopoverContainer(ZetaWebAppDriver driver, WebDriverWait wait)
 			throws Exception {
 		super(driver, wait);
-		this.singleUserPopoverPage = new SingleUserInfoPopoverPage(driver,
-				wait, this);
 		this.participantsListPopoverPage = new ParticipantsListPopoverPage(
 				driver, wait, this);
 		this.connectedParticipantInfoPopoverPage = new ConnectedParticipantInfoPopoverPage(
@@ -41,6 +38,20 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 		return PopoverLocators.GroupPopover.xpathRootLocator;
 	}
 
+	private AbstractUserInfoPopoverPage getCurrentUserInfoPage()
+			throws Exception {
+		if (this.connectedParticipantInfoPopoverPage.isCurrent()) {
+			return this.connectedParticipantInfoPopoverPage;
+		} else if (this.nonConnectedParticipantInfoPopoverPage.isCurrent()) {
+			return this.nonConnectedParticipantInfoPopoverPage;
+		} else if (this.nonConnectedParticipantInfoPopoverPage.isCurrent()) {
+			return this.nonConnectedParticipantInfoPopoverPage;
+		} else {
+			throw new RuntimeException(
+					"The current popover page is neither connected user info ,non-connected nor pending connection user info.");
+		}
+	}
+
 	public void setConversationTitle(String newTitle) {
 		this.participantsListPopoverPage.setConversationTitle(newTitle);
 	}
@@ -58,15 +69,7 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 	}
 
 	public void clickRemoveFromGroupChat() throws Exception {
-		if (this.connectedParticipantInfoPopoverPage.isCurrent()) {
-			this.connectedParticipantInfoPopoverPage.clickRemoveFromGroupChat();
-		} else if (this.nonConnectedParticipantInfoPopoverPage.isCurrent()) {
-			this.nonConnectedParticipantInfoPopoverPage
-					.clickRemoveFromGroupChat();
-		} else {
-			throw new RuntimeException(
-					"The current popover page is neither connected user info nor non-connected user info.");
-		}
+		getCurrentUserInfoPage().clickRemoveFromGroupChat();
 	}
 
 	public void confirmRemoveFromGroupChat() throws Exception {
@@ -75,16 +78,7 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 	}
 
 	public boolean isRemoveButtonVisible() throws Exception {
-		if (this.connectedParticipantInfoPopoverPage.isCurrent()) {
-			return this.connectedParticipantInfoPopoverPage
-					.isRemoveButtonVisible();
-		} else if (this.nonConnectedParticipantInfoPopoverPage.isCurrent()) {
-			return this.nonConnectedParticipantInfoPopoverPage
-					.isRemoveButtonVisible();
-		} else {
-			throw new RuntimeException(
-					"The current popover page is neither connected user info nor non-connected user info.");
-		}
+		return getCurrentUserInfoPage().isRemoveButtonVisible();
 	}
 
 	public boolean isLeaveGroupChatButtonToolTipCorrect() throws Exception {
@@ -143,25 +137,26 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 				.isPendingButtonToolTipCorrect();
 	}
 
-	public boolean isRemoveFromGroupChatButtonToolTipCorrect() {
-		return this.singleUserPopoverPage
-				.isRemoveFromGroupChatButtonToolTipCorrect();
-	}
-
-	public String getUserName() {
-		return singleUserPopoverPage.getUserName();
-	}
-
-	public boolean isAvatarVisible() {
-		return this.singleUserPopoverPage.isAvatarVisible();
-	}
-
-	public String getUserMail() {
-		return this.singleUserPopoverPage.getMailText();
-	}
-
 	public boolean isPendingTextBoxVisible() {
 		return this.pendingParticipantInfoPopoverPage
 				.isPendingTextBoxDisplayed();
 	}
+
+	public boolean isRemoveFromGroupChatButtonToolTipCorrect() {
+		return this.connectedParticipantInfoPopoverPage
+				.isRemoveFromGroupChatButtonToolTipCorrect();
+	}
+
+	public String getUserName() throws Exception {
+		return this.connectedParticipantInfoPopoverPage.getUserName();
+	}
+
+	public boolean isAvatarVisible() {
+		return this.connectedParticipantInfoPopoverPage.isAvatarVisible();
+	}
+
+	public String getUserMail() throws Exception {
+		return getCurrentUserInfoPage().getMailText();
+	}
+
 }
