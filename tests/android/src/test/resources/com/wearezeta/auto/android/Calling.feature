@@ -81,15 +81,33 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | autocall    |
 
-  @staging @id347
+  @staging @id347 @torun
   Scenario Outline: Send text, image and knock while in the call with same user
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list with my name <Name>
     When I tap on contact name <Contact>
+    And I see dialog page
     And <Contact> calls me using <CallBackend>
+    And I see incoming calling message for contact <Contact>
+    And I answer the call from the overlay bar
+    Then I see started call message for contact <Contact>
+    And I tap on text input
+    And I input <Message> message
+    And I send the message
+    Then I see my message in the dialog
+    And I press back button
+    And I swipe on text input
+    And I press Add Picture button
+    And I press "Take Photo" button
+    And I press "Confirm" button
+    Then I see new photo in the dialog
+    And I swipe on text input
+    And I press Ping button
+    Then I see Hello-Hey message <SystemMessage> with <Action> in the dialog
+    
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | autocall    |
+      | Login      | Password      | Name      | Contact   | CallBackend | Message                           | SystemMessage | Action |
+      | user1Email | user1Password | user1Name | user2Name | autocall    | simple message in english | YOU           | PINGED |

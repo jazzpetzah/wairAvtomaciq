@@ -65,7 +65,7 @@ public class DialogPageSteps {
 	}
 
 	/**
-	 * Inputs a custom message and sends it (Does it actually send the message?)
+	 * Inputs a custom message and sends it
 	 * 
 	 * @step. ^I input (.*) message and send it$
 	 * 
@@ -79,6 +79,37 @@ public class DialogPageSteps {
 		message = myMessage;
 
 		PagesCollection.dialogPage.typeAndSendMessage(myMessage);
+	}
+	
+	/**
+	 * Inputs a custom message and does NOT send it
+	 * 
+	 * @step. ^I input (.*) message and send it$
+	 * 
+	 * @param myMessage
+	 *            the message to send
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I input (.*) message$")
+	public void ITypeInAMessage(String myMessage) throws Exception {
+		message = myMessage;
+		PagesCollection.dialogPage.typeMessage(myMessage);
+	}
+	
+	/**
+	 * Sends the message by pressing the keyboard send button
+	 * 
+	 * @step. ^I send the message$
+	 * 
+	 * @param myMessage
+	 *            the message to send
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I send the message$")
+	public void ISendTheMessage() throws Exception {
+		PagesCollection.dialogPage.pressKeyboardSendButton();
 	}
 
 	/**
