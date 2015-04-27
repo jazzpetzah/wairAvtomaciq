@@ -74,7 +74,7 @@ Feature: Localytics
   Scenario Outline: Verify 'uploadedContacts:source=Gmail' stats
     Given I take snapshot of <AttrName> attribute count
     Given There is 1 user where <Name> is me without avatar picture
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login> and password <Password>
     And I see Self Picture Upload dialog
     And I choose <PictureName> as my self picture on Self Picture Upload dialog
     And I confirm picture selection on Self Picture Upload dialog
