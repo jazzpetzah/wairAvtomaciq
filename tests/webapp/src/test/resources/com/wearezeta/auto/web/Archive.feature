@@ -1,6 +1,6 @@
 Feature: Archive
 
-  @staging @id1540
+  @regression @id1540
   Scenario Outline: Verify the conversation is unarchived when there are new messages in this conversation (simple message)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -16,7 +16,7 @@ Feature: Archive
       | Email      | Password      | Name      | Contact   | Contact2  | Message |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Hello   |
 
-  @staging @id1537
+  @regression @id1537
   Scenario Outline: Verify acrhived list disappears if there are no more archived conversations
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>

@@ -14,27 +14,22 @@ public class SingleUserPopoverPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
-	 * Verify that Single User Profile popover is visible
+	 * Verify that Single User Profile popover is visible or not
 	 *
-	 * @step. ^I see Single User Profile popover$
+	 * @step. ^I( do not)? see Single User Profile popover$
+	 * @param shouldNotBeVisible
+	 *            is set to null if "do not" part is not present
+	 * 
 	 * @throws Exception
 	 *
 	 */
-	@When("^I see Single User Profile popover$")
-	public void ISeeSingleUserPopup() throws Exception {
-		PagesCollection.popoverPage.waitUntilVisibleOrThrowException();
-	}
-
-	/**
-	 * Verifies whether Single User Profile popover is not visible anymore
-	 *
-	 * @step. ^I do not see Single User Profile popover$
-	 *
-	 * @throws Exception
-	 */
-	@Then("^I do not see Single User Profile popover$")
-	public void IDontSeeSingleUserPopup() throws Exception {
-		PagesCollection.popoverPage.waitUntilNotVisibleOrThrowException();
+	@When("^I( do not)? see Single User Profile popover$")
+	public void ISeeSingleUserPopup(String shouldNotBeVisible) throws Exception {
+		if (shouldNotBeVisible == null) {
+			PagesCollection.popoverPage.waitUntilVisibleOrThrowException();
+		} else {
+			PagesCollection.popoverPage.waitUntilNotVisibleOrThrowException();
+		}
 	}
 
 	/**
