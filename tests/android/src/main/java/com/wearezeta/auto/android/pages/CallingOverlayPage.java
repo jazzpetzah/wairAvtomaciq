@@ -46,4 +46,8 @@ public class CallingOverlayPage extends AndroidPage {
 		return callingUsersName.getText();
 	}
 
+	public void acceptCall() {
+		acceptButton.click();
+	}
+
 }
