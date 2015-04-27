@@ -117,3 +117,25 @@ Feature: Conversation List
     Examples: 
       | Login      | Password      | Name      | Contact1  |
       | user1Email | user1Password | user1Name | user2Name |
+
+  @id1514 @staging
+  Scenario Outline: Verify unsilince the conversation
+    Given There are 2 users where <Name> is me
+    Given <Contact1> is connected to <Name>
+    Given <Contact1> is silenced to user <Name>
+    Given I Sign in using login <Login> and password <Password>
+    Given I see Contact list with my name <Name>
+    Given Contact <Contact1> is muted
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I swipe up on dialog page
+    And I press options menu button
+    And I press Notify conversation button
+    And I press back button
+    And I press back button
+    And I navigate back from dialog page
+    Then Contact <Contact1> is not muted
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  |
+      | user1Email | user1Password | user1Name | user2Name |
