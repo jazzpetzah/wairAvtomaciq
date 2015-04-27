@@ -201,8 +201,7 @@ public class DialogPage extends AndroidPage {
 
 	public void typeAndSendMessage(String message) {
 		refreshUITree();
-		cursorInput.sendKeys(message);
-		this.getDriver().sendKeyEvent(AndroidKeyCode.ENTER);
+		cursorInput.sendKeys(message + "\n");
 		// DriverUtils.mobileTapByCoordinates(driver, backgroundOverlay);
 		try {
 			this.getDriver().hideKeyboard();
@@ -211,8 +210,13 @@ public class DialogPage extends AndroidPage {
 		}
 	}
 	
+	public void typeMessage(String message) {
+		refreshUITree();
+		cursorInput.sendKeys(message);
+	}
+	
 	public void pressKeyboardSendButton() {
-		
+		DriverUtils.genericTap(this.getDriver(), 200, 95, 95);
 	}
 
 	public String getLastMessageFromDialog() {
