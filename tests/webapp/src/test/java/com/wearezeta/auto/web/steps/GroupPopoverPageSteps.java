@@ -15,28 +15,24 @@ public class GroupPopoverPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
-	 * Verify that Group Participants popover is shown
+	 * Verify that Group Participants popover is shown or not
 	 *
-	 * @step. ^I see Group Participants popover$
+	 * @step. ^I( do not)? see Group Participants popover$
+	 * 
+	 * @param shouldNotBeVisible
+	 *            is set to null if "do not" part does not exist
+	 * 
 	 * @throws Exception
 	 *
 	 */
-	@When("^I see Group Participants popover$")
-	public void ISeeUserProfilePopupPage() throws Exception {
-		PagesCollection.popoverPage.waitUntilVisibleOrThrowException();
-	}
-
-	/**
-	 * Verify that Group Participants popover is not visible
-	 *
-	 * @step. ^I do not see Group Participants popover$
-	 * @throws Exception
-	 *
-	 */
-	@Then("^I do not see Group Participants popover$")
-	public void IDontSeeUserProfilePopupPage() throws Exception {
-		Assert.assertFalse("Popover is still visible",
-				PagesCollection.popoverPage.isVisible());
+	@When("^I( do not)? see Group Participants popover$")
+	public void ISeeUserProfilePopupPage(String shouldNotBeVisible)
+			throws Exception {
+		if (shouldNotBeVisible == null) {
+			PagesCollection.popoverPage.waitUntilVisibleOrThrowException();
+		} else {
+			PagesCollection.popoverPage.waitUntilNotVisibleOrThrowException();
+		}
 	}
 
 	/**
