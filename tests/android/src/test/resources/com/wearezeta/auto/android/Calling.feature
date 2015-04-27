@@ -92,18 +92,18 @@ Feature: Calling
     And <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I answer the call from the overlay bar
-    Then I see started call message for contact <Contact>
+    And I see started call message for contact <Contact>
     And I tap on text input
     And I input <Message> message
     And I send the message
     Then I see my message in the dialog
-    And I press back button
+    When I press back button
     And I swipe on text input
     And I press Add Picture button
     And I press "Take Photo" button
     And I press "Confirm" button
     Then I see new photo in the dialog
-    And I swipe on text input
+    When I swipe on text input
     And I press Ping button
     Then I see Hello-Hey message <SystemMessage> with <Action> in the dialog
 
