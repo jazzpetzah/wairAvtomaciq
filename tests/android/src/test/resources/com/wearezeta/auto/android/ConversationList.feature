@@ -34,6 +34,8 @@ Feature: Conversation List
     And Contact <Contact1> send message to user <Name>
     And I tap on text input
     And I input <SoudCloudLink> message and send it
+    And I swipe down on dialog page
+    And Contact <Contact1> send message to user <Name>
     And I tap Dialog page bottom
     And I press PlayPause media item button
     And I swipe down on dialog page
