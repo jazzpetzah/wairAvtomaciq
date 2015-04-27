@@ -95,7 +95,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1    | Contact2   |
       | user1Email | user1Password | user1Name | user2Name   | user3Name  |
 
-  @staging @id1396
+  @regression @id1396
   Scenario Outline: Verify correct group info page information
     Given There are 3 users where <Name> is me
     Given User <Contact1> change avatar picture to <Picture>
@@ -238,7 +238,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1    | Contact2   |
       | user1Email | user1Password | user1Name | user2Name   | user3Name  |
             
-  @regression @id557
+  @regression @id556
   Scenario Outline: Verify you can add people from 1:1 people view (via keyboard button)
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
