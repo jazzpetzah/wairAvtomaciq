@@ -102,9 +102,6 @@ public class DialogPageSteps {
 	 * 
 	 * @step. ^I send the message$
 	 * 
-	 * @param myMessage
-	 *            the message to send
-	 * 
 	 * @throws Exception
 	 */
 	@When("^I send the message$")
