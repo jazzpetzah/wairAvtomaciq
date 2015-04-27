@@ -76,8 +76,7 @@ public class GroupPopoverPageSteps {
 	/**
 	 * Verifies whether pending button tool tip is correct or not.
 	 *
-	 * @step. ^I see correct pending button tool tip on Single Participants
-	 *        popover$
+	 * @step. ^I see correct pending button tool tip on Group Participants popover$
 	 *
 	 */
 	@Then("^I see correct pending button tool tip on Group Participants popover$")
