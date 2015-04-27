@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
+import io.appium.java_client.android.AndroidKeyCode;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
 import java.awt.image.BufferedImage;
@@ -198,15 +199,20 @@ public class DialogPage extends AndroidPage {
 		Thread.sleep(1000);
 	}
 
-	public void typeMessage(String message) {
+	public void typeAndSendMessage(String message) {
 		refreshUITree();
-		cursorInput.sendKeys(message + "\\n");
+		cursorInput.sendKeys(message);
+		this.getDriver().sendKeyEvent(AndroidKeyCode.ENTER);
 		// DriverUtils.mobileTapByCoordinates(driver, backgroundOverlay);
 		try {
 			this.getDriver().hideKeyboard();
 		} catch (Exception ex) {
 			
 		}
+	}
+	
+	public void pressKeyboardSendButton() {
+		
 	}
 
 	public String getLastMessageFromDialog() {
