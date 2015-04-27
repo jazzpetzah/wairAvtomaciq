@@ -81,7 +81,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | autocall    |
 
-  @staging @id347 @torun
+  @staging @id347
   Scenario Outline: Send text, image and knock while in the call with same user
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -106,8 +106,7 @@ Feature: Calling
     And I swipe on text input
     And I press Ping button
     Then I see Hello-Hey message <SystemMessage> with <Action> in the dialog
-    
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend | Message                           | SystemMessage | Action |
+      | Login      | Password      | Name      | Contact   | CallBackend | Message                   | SystemMessage | Action |
       | user1Email | user1Password | user1Name | user2Name | autocall    | simple message in english | YOU           | PINGED |
